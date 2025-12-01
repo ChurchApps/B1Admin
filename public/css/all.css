@@ -756,6 +756,21 @@ label .description {
   cursor: default;
 }
 
+/* Website Editor: Disable native image dragging to prevent interference with react-dnd */
+.elementWrapper img,
+.sectionWrapper img,
+.draggable-container img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 /* ===== Website Editor Polish Animations ===== */
 
 /* Fade in animation for new sections and elements */
