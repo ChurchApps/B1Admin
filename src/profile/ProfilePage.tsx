@@ -156,6 +156,17 @@ export const ProfilePage = () => {
     }
   };
 
+  if (isDemo) {
+    return (
+      <>
+        <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
+        <Box sx={{ p: 3 }}>
+          <Alert severity="info">Profile editing is disabled in demo mode.</Alert>
+        </Box>
+      </>
+    );
+  }
+
   return (
     <>
       <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
