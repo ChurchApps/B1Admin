@@ -14,7 +14,7 @@ interface Props {
 export const ContentPicker: React.FC<Props> = (props) => {
   const [activeKey, setActiveKey] = React.useState("person");
   const handlePersonAdd = (p: PersonInterface) => {
-    props.onSelect("person", p.id, p.name.display);
+    props.onSelect("person", p?.id, p?.name?.display || "Unknown");
   };
   const handleGroupAdd = (g: GroupInterface) => {
     props.onSelect("group", g.id, g.name);

@@ -48,6 +48,7 @@ export const AssignmentEdit = (props: Props) => {
 
     for (let i = 0; i < groupMembers.length; i++) {
       const gm = groupMembers[i];
+      const personName = gm.person?.name?.display || "Unknown";
       rows.push(
         <TableRow key={i}>
           <TableCell>
@@ -58,7 +59,7 @@ export const AssignmentEdit = (props: Props) => {
               type="button"
               onClick={() => selectPerson(gm)}
               style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-              {gm.person.name.display}
+              {personName}
             </button>
           </TableCell>
         </TableRow>

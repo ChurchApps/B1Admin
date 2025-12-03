@@ -127,7 +127,7 @@ export function ContentEditor(props: Props) {
       result.push(getAddSection(section.sort + 0.1, zone));
     });
 
-    if (sections.length === 0) {
+    if (!sections || sections.length === 0) {
       result.push(<EmptyState key="empty" />);
     }
     return result;

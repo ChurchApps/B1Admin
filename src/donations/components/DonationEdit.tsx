@@ -163,7 +163,7 @@ export const DonationEdit = memo((props: Props) => {
         </>
       );
     } else {
-      const personText = donation.person === undefined || donation.person === null ? Locale.label("donations.donationEdit.anon") : donation.person.name.display;
+      const personText = donation.person === undefined || donation.person === null ? Locale.label("donations.donationEdit.anon") : (donation.person.name?.display || Locale.label("donations.donationEdit.anon"));
       return (
         <div>
           <button type="button" className="text-decoration" data-cy="donating-person" onClick={handlePersonSelect} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
