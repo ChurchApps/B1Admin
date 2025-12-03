@@ -59,7 +59,7 @@ export function ContentEditor(props: Props) {
   const zones: any = {
     cleanCentered: ["main"],
     embed: ["main"],
-    headerFooter: ["main", "siteFooter"],
+    headerFooter: ["main"],
   };
 
   const churchSettings = props.config?.appearance || context?.userChurch?.settings || {};
