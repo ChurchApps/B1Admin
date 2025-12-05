@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
+  const isDemo = process.env.REACT_APP_STAGE === "demo";
 
   const [password, setPassword] = useState<string>("");
   const [passwordVerify, setPasswordVerify] = useState<string>("");
@@ -155,6 +156,17 @@ export const ProfilePage = () => {
     }
   };
 
+  if (isDemo) {
+    return (
+      <>
+        <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
+        <Box sx={{ p: 3 }}>
+          <Alert severity="info">Profile editing is disabled in demo mode.</Alert>
+        </Box>
+      </>
+    );
+  }
+
   return (
     <>
       <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
@@ -191,7 +203,7 @@ export const ProfilePage = () => {
                 <Grid container spacing={3}>
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Stack spacing={2}>
-                      <TextField fullWidth type="email" name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} />
+                      <TextField fullWidth type="email" name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} disabled={isDemo} />
                       <TextField
                         type={showPassword ? "text" : "password"}
                         fullWidth
@@ -199,11 +211,12 @@ export const ProfilePage = () => {
                         label={Locale.label("profile.profilePage.passNew")}
                         value={password}
                         onChange={handleChange}
-                        helperText={Locale.label("profile.profilePage.passwordHelper")}
+                        disabled={isDemo}
+                        helperText={isDemo ? "Password changes are disabled in demo mode" : Locale.label("profile.profilePage.passwordHelper")}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
-                              <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)}>
+                              <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
                                 {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
                               </IconButton>
                             </InputAdornment>
@@ -223,10 +236,11 @@ export const ProfilePage = () => {
                         label={Locale.label("profile.profilePage.passVer")}
                         value={passwordVerify}
                         onChange={handleChange}
+                        disabled={isDemo}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
-                              <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)}>
+                              <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
                                 {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
                               </IconButton>
                             </InputAdornment>

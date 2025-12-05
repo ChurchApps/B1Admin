@@ -12,7 +12,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import React from "react";
 import { Theme, DroppableArea } from "@churchapps/apphelper-website";
 import { SectionBlock } from "./SectionBlock";
-import { StyleHelper } from "../../helpers/StyleHelper";
+import { StyleHelper } from "@churchapps/apphelper-website";
 import { ElementAdd } from "./elements/ElementAdd";
 import { ElementEdit } from "./elements/ElementEdit";
 import { SectionEdit } from "./SectionEdit";
@@ -47,6 +47,7 @@ export function ContentEditor(props: Props) {
   const [deviceType, setDeviceType] = useState("desktop");
   const windowWidth = useWindowWidth();
   const isMobileViewport = useMediaQuery('(max-width:900px)');
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   const [showAdd, setShowAdd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -58,7 +59,7 @@ export function ContentEditor(props: Props) {
   const zones: any = {
     cleanCentered: ["main"],
     embed: ["main"],
-    headerFooter: ["main", "siteFooter"],
+    headerFooter: ["main"],
   };
 
   const churchSettings = props.config?.appearance || context?.userChurch?.settings || {};
@@ -126,7 +127,7 @@ export function ContentEditor(props: Props) {
       result.push(getAddSection(section.sort + 0.1, zone));
     });
 
-    if (sections.length === 0) {
+    if (!sections || sections.length === 0) {
       result.push(<EmptyState key="empty" />);
     }
     return result;
@@ -163,10 +164,12 @@ export function ContentEditor(props: Props) {
   };
 
   useEffect(() => {
-    const onScroll = (e: any) => { setScrollTop(e.target.documentElement.scrollTop); };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [scrollTop]);
+    const contentEl = contentRef.current;
+    if (!contentEl) return;
+    const onScroll = () => { setScrollTop(contentEl.scrollTop); };
+    contentEl.addEventListener("scroll", onScroll);
+    return () => contentEl.removeEventListener("scroll", onScroll);
+  }, []);
 
 
   const handleRealtimeChange = (element: ElementInterface) => {
@@ -261,68 +264,67 @@ export function ContentEditor(props: Props) {
     );
   }
 
-  return (<>
-    <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
-    <style>{css}</style>
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden" }}>
+      <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
+      <style>{css}</style>
 
-    <EditorToolbar
-      onDone={handleDone}
-      container={container}
-      isPageMode={!!props.pageId}
-      showHelp={showHelp}
-      onToggleHelp={() => setShowHelp(!showHelp)}
-      showAdd={showAdd}
-      onToggleAdd={() => setShowAdd(!showAdd)}
-      deviceType={deviceType}
-      onDeviceTypeChange={setDeviceType}
-    />
+      <EditorToolbar
+        onDone={handleDone}
+        container={container}
+        isPageMode={!!props.pageId}
+        showHelp={showHelp}
+        onToggleHelp={() => setShowHelp(!showHelp)}
+        showAdd={showAdd}
+        onToggleAdd={() => setShowAdd(!showAdd)}
+        deviceType={deviceType}
+        onDeviceTypeChange={setDeviceType}
+      />
 
+      <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }}>
+        <DndProvider backend={HTML5Backend}>
+          <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
+          {showAdd && <ElementAdd includeBlocks={!elementOnlyMode} includeSection={!elementOnlyMode} updateCallback={() => { setShowAdd(false); }} draggingCallback={() => setShowAdd(false)} />}
+          {editElement && <ElementEdit element={editElement} updatedCallback={(updatedElement) => {
+            setEditElement(null);
+            if (updatedElement) {
+              const isNewElement = !editElement.id;
+              if (isNewElement) loadDataInternal();
+              else {
+                const c = { ...container };
+                c.sections.forEach(s => {
+                  realtimeUpdateElement(updatedElement, s.elements);
+                });
+                setContainer(c);
+              }
+            } else {
+              loadDataInternal();
+            }
+          }} onRealtimeChange={handleRealtimeChange} globalStyles={props.config?.globalStyles} />}
+          {editSection && <SectionEdit section={editSection} updatedCallback={() => { setEditSection(null); loadDataInternal(); }} globalStyles={props.config?.globalStyles} />}
 
+          <div style={{ marginTop: 0, paddingTop: 0 }}>
+            {scrollTop > 150 && (
+              <>
+                <div style={{
+                  position: "fixed", bottom: '30px', left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)", maxWidth: "600px"
+                }}>
+                  <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
+                </div>
+                <div style={{
+                  position: "fixed", top: '120px', left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)", maxWidth: "600px"
+                }}>
+                  <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
+                </div>
+              </>
+            )}
 
-    <DndProvider backend={HTML5Backend}>
-      <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
-      {showAdd && <ElementAdd includeBlocks={!elementOnlyMode} includeSection={!elementOnlyMode} updateCallback={() => { setShowAdd(false); }} draggingCallback={() => setShowAdd(false)} />}
-      {editElement && <ElementEdit element={editElement} updatedCallback={(updatedElement) => {
-        setEditElement(null);
-        if (updatedElement) {
-          const isNewElement = !editElement.id;
-          if (isNewElement) loadDataInternal();
-          else {
-            const c = { ...container };
-            c.sections.forEach(s => {
-              realtimeUpdateElement(updatedElement, s.elements);
-            });
-            setContainer(c);
-          }
-        } else {
-          loadDataInternal();
-        }
-      }} onRealtimeChange={handleRealtimeChange} globalStyles={props.config?.globalStyles} />}
-      {editSection && <SectionEdit section={editSection} updatedCallback={() => { setEditSection(null); loadDataInternal(); }} globalStyles={props.config?.globalStyles} />}
-
-      <div style={{ marginTop: 0, paddingTop: 0 }}>
-        {scrollTop > 150 && (
-          <>
-            <div style={{
-              position: "fixed", bottom: '30px', left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)", maxWidth: "600px" 
-            }}>
-              <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
-            </div>
-            <div style={{
-              position: "fixed", top: '50px', left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)", maxWidth: "600px" 
-            }}>
-              <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
-            </div>
-          </>
-        )}
-
-
-
-        <ThemeProvider theme={getTheme()}>
-          {getZoneBoxes()}
-        </ThemeProvider>
+            <ThemeProvider theme={getTheme()}>
+              {getZoneBoxes()}
+            </ThemeProvider>
+          </div>
+        </DndProvider>
       </div>
-    </DndProvider>
-
-  </>);
+    </div>
+  );
 }

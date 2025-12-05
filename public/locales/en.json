@@ -1336,7 +1336,13 @@
       "valueNotes": "Notes on How Values are Calculated",
       "location": "Location",
       "subtitle": "Manage server-wide settings and churches",
-      "translationLookups": "Translation Lookups"
+      "translationLookups": "Translation Lookups",
+      "users": "Users",
+      "userSearch": "Search by Name or Email",
+      "noUsers": "No users found. Please search for a different name or email.",
+      "searchResults": "Search Results",
+      "userChurches": "Churches",
+      "noUserChurches": "This user has no churches associated with their account."
     },
     "reportPage": {
       "report": "Report",

@@ -2,7 +2,7 @@ import React, { CSSProperties } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import { AppearanceHelper } from "@churchapps/apphelper";
 import { Element, YoutubeBackground } from "@churchapps/apphelper-website";
-import { StyleHelper } from "../../helpers/StyleHelper";
+import { StyleHelper } from "@churchapps/apphelper-website";
 import type { SectionInterface, GlobalStyleInterface, ElementInterface } from "../../helpers/Interfaces";
 
 interface Props {

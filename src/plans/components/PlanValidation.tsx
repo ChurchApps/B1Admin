@@ -62,7 +62,7 @@ export const PlanValidation = (props: Props) => {
     conflicts.forEach((c) => {
       issues.push(
         <>
-          <b>{c.person.name.display}:</b> {Locale.label("plans.planValidation.blockCon")} {DateHelper.prettyDate(new Date(c.blockout.startDate))} {Locale.label("plans.planValidation.to")}{" "}
+          <b>{c.person?.name?.display || "Unknown"}:</b> {Locale.label("plans.planValidation.blockCon")} {DateHelper.prettyDate(new Date(c.blockout.startDate))} {Locale.label("plans.planValidation.to")}{" "}
           {DateHelper.prettyDate(new Date(c.blockout.endDate))}.
         </>
       );
@@ -104,7 +104,7 @@ export const PlanValidation = (props: Props) => {
             if (at.startTime < bt.endTime && at.endTime > bt.startTime) {
               issues.push(
                 <>
-                  <b>{person.name.display}:</b> {Locale.label("plans.planValidation.timeCon")} {a.position.name} {Locale.label("plans.planValidation.and")} {b.position.name}{" "}
+                  <b>{person?.name?.display || "Unknown"}:</b> {Locale.label("plans.planValidation.timeCon")} {a.position.name} {Locale.label("plans.planValidation.and")} {b.position.name}{" "}
                   {Locale.label("plans.planValidation.during")} {at.displayName}.
                 </>
               );
@@ -148,7 +148,7 @@ export const PlanValidation = (props: Props) => {
             filtered.forEach((f) => {
               issues.push(
                 <>
-                  <b>{person.name.display}:</b> {Locale.label("plans.planValidation.timeCon2")} {a.position.name} {Locale.label("plans.planValidation.between")} {tc.time.displayName}{" "}
+                  <b>{person?.name?.display || "Unknown"}:</b> {Locale.label("plans.planValidation.timeCon2")} {a.position.name} {Locale.label("plans.planValidation.between")} {tc.time.displayName}{" "}
                   {Locale.label("plans.planValidation.and")} {f.displayName}
                 </>
               );

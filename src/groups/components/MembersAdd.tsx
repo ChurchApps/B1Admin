@@ -50,13 +50,14 @@ export const MembersAdd: React.FC<Props> = (props) => {
     }
     for (let i = 0; i < filtered.length; i++) {
       const gm = filtered[i];
+      const personName = gm.person?.name?.display || "Unknown";
       rows.push(
         <TableRow key={gm.personId}>
           <TableCell>
             <PersonAvatar person={gm.person} size="small" />
           </TableCell>
           <TableCell>
-            <Link to={"/people/" + gm.personId}>{gm.person.name.display}</Link>
+            <Link to={"/people/" + gm.personId}>{personName}</Link>
           </TableCell>
           <TableCell>
             <SmallButton icon="person_add" text={Locale.label("common.add")} onClick={() => addMember(gm)} color="success" data-testid="add-member-button" ariaLabel="Add member to group" />

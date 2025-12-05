@@ -1,6 +1,7 @@
 import React, { CSSProperties, useState } from "react";
 import type { ElementInterface, SectionInterface } from "../../helpers";
-import { ApiHelper, StyleHelper } from "../../helpers";
+import { ApiHelper } from "../../helpers";
+import { StyleHelper } from "@churchapps/apphelper-website";
 import { Box, Container } from "@mui/material";
 import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@churchapps/apphelper-website";
 import type { ChurchInterface } from "@churchapps/helpers";
@@ -153,7 +154,7 @@ export const Section: React.FC<Props> = props => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={() => props.onEdit(props.section, null)}>
+        <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest('.elementWrapper')) { props.onEdit(props.section, null); } }}>
           {result}
         </DraggableWrapper>
       </div>

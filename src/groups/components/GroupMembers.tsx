@@ -96,6 +96,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
     for (let i = 0; i < groupMembers.data.length; i++) {
       const gm = groupMembers.data[i];
+      const personName = gm.person?.name?.display || "Unknown";
       const editLinks = [];
       if (canEdit) {
         if (gm.leader) {
@@ -106,7 +107,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
               onClick={() => handleToggleLeader(gm)}
               color="error"
               data-testid={`remove-leader-button-${gm.id}`}
-              ariaLabel={`Remove leader access for ${gm.person.name.display}`}
+              ariaLabel={`Remove leader access for ${personName}`}
             />
           );
         } else {
@@ -117,7 +118,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
               onClick={() => handleToggleLeader(gm)}
               color="success"
               data-testid={`promote-leader-button-${gm.id}`}
-              ariaLabel={`Promote ${gm.person.name.display} to leader`}
+              ariaLabel={`Promote ${personName} to leader`}
             />
           );
         }
@@ -128,7 +129,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             onClick={() => handleRemove(gm)}
             color="error"
             data-testid={`remove-member-button-${gm.id}`}
-            ariaLabel={`Remove ${gm.person.name.display} from group`}
+            ariaLabel={`Remove ${personName} from group`}
           />
         );
       }
@@ -139,7 +140,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             <PersonAvatar person={gm.person} size="small" />
           </TableCell>
           <TableCell>
-            <Link to={"/people/" + gm.personId}>{gm.person.name.display}</Link>
+            <Link to={"/people/" + gm.personId}>{personName}</Link>
           </TableCell>
           <TableCell style={{ textAlign: "right" }}>{editLinks}</TableCell>
         </TableRow>

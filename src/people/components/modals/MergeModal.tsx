@@ -80,24 +80,28 @@ export const MergeModal: React.FC<Props> = (props) => {
       // TODO:: CONTACT_INFO & NAME are having almost identical code, lets have a function instead.
       switch (key) {
         case SpecialKeys.CONTACT_INFO:
-          const contactKeys = Object.keys(person1.contactInfo) as Array<keyof ContactInfoInterface>;
-          aggregate[SpecialKeys.CONTACT_INFO] = {};
-          contactKeys.forEach((contactKey) => {
-            const cv1 = person1.contactInfo[contactKey];
-            const cv2 = person2.contactInfo[contactKey];
-            const check = primitiveCompare(cv1, cv2);
-            determine(check, key, cv1, cv2, contactKey);
-          });
+          if (person1.contactInfo) {
+            const contactKeys = Object.keys(person1.contactInfo) as Array<keyof ContactInfoInterface>;
+            aggregate[SpecialKeys.CONTACT_INFO] = {};
+            contactKeys.forEach((contactKey) => {
+              const cv1 = person1.contactInfo[contactKey];
+              const cv2 = person2.contactInfo?.[contactKey];
+              const check = primitiveCompare(cv1, cv2);
+              determine(check, key, cv1, cv2, contactKey);
+            });
+          }
           break;
         case SpecialKeys.NAME:
-          const nameKeys = Object.keys(person1.name) as Array<keyof NameInterface>;
-          aggregate[SpecialKeys.NAME] = {};
-          nameKeys.forEach((nameKey) => {
-            const cv1 = person1.name[nameKey];
-            const cv2 = person2.name[nameKey];
-            const check = primitiveCompare(cv1, cv2);
-            determine(check, key, cv1, cv2, nameKey);
-          });
+          if (person1.name) {
+            const nameKeys = Object.keys(person1.name) as Array<keyof NameInterface>;
+            aggregate[SpecialKeys.NAME] = {};
+            nameKeys.forEach((nameKey) => {
+              const cv1 = person1.name[nameKey];
+              const cv2 = person2.name?.[nameKey];
+              const check = primitiveCompare(cv1, cv2);
+              determine(check, key, cv1, cv2, nameKey);
+            });
+          }
           break;
         case SpecialKeys.HOUSEHOLD_ID:
           aggregate.householdId = value1;
@@ -142,8 +146,8 @@ export const MergeModal: React.FC<Props> = (props) => {
       return;
     }
     let person: PersonInterface = { ...aggregatePerson };
-    const contactkeys = Object.keys(person1.contactInfo) as Array<keyof ContactInfoInterface>;
-    const nameKeys = Object.keys(person1.name) as Array<keyof NameInterface>;
+    const contactkeys = person1.contactInfo ? Object.keys(person1.contactInfo) as Array<keyof ContactInfoInterface> : [];
+    const nameKeys = person1.name ? Object.keys(person1.name) as Array<keyof NameInterface> : [];
 
     conflicts.forEach((e) => {
       if (contactkeys.some((c) => c === e.value)) {

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { ApiHelper, UserHelper, Permissions } from "@churchapps/apphelper";
+import { UserHelper, Permissions } from "@churchapps/apphelper";
 import UserContext from "./UserContext";
 import { LoginPage } from "@churchapps/apphelper-login";
-import { Alert, Box } from "@mui/material";
+import { Alert } from "@mui/material";
 
 export const Login: React.FC = () => {
   const [errors] = React.useState<string[]>([]);
@@ -21,7 +21,6 @@ export const Login: React.FC = () => {
     navigate(url);
   };
 
-
   let jwt = search.get("jwt") || cookies.jwt;
   let auth = search.get("auth");
   if (!jwt) jwt = "";
@@ -29,7 +28,6 @@ export const Login: React.FC = () => {
 
   return (
     <div style={{ marginTop: -50 }}>
-
       {process.env.REACT_APP_STAGE === "demo" && (
         <Alert severity="error" style={{ marginTop: 50 }}>
           <b>Demo:</b> This is the demo environment. All data is erased nightly.
@@ -53,7 +51,5 @@ export const Login: React.FC = () => {
         showFooter={true}
       />
     </div>
-
   );
-
 };

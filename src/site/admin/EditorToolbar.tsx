@@ -48,7 +48,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
 
   return (
     <div style={{
-      backgroundColor: "#FFF", position: "sticky", top: 0, width: "100%", zIndex: 1000, boxShadow: "0 2px 12px rgba(0, 0, 0, 0.15)", borderBottom: "1px solid rgba(0, 0, 0, 0.12)" 
+      backgroundColor: "#FFF", width: "100%", zIndex: 1200, boxShadow: "0 2px 12px rgba(0, 0, 0, 0.15)", borderBottom: "1px solid rgba(0, 0, 0, 0.12)" 
     }}>
       <Grid container spacing={0} sx={{ margin: 0, padding: 2 }}>
         <Grid size={{ xs: 4 }} sx={{ display: "flex", alignItems: "center" }}>

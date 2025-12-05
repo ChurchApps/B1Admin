@@ -3,11 +3,12 @@ import { Locale } from "@churchapps/apphelper";
 import {
   Grid, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Card, CardContent 
 } from "@mui/material";
-import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, Settings as AdminIcon } from "@mui/icons-material";
+import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, Settings as AdminIcon, PersonSearch as UserIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
 import { ChurchesTab } from "./components/ChurchesTab";
 import { TranslationTab } from "./components/TranslationTab";
+import { UsersTab } from "./components/UsersTab";
 
 export const AdminPage = () => {
   const [selectedTab, setSelectedTab] = React.useState("churches");
@@ -16,6 +17,8 @@ export const AdminPage = () => {
     switch (selectedTab) {
       case "churches":
         return <ChurchesTab key="churches" />;
+      case "users":
+        return <UsersTab key="users" />;
       case "usage":
         return <UsageTrendsTab key="usage" />;
       case "translation":
@@ -30,6 +33,11 @@ export const AdminPage = () => {
       key: "churches",
       icon: <ChurchIcon />,
       label: Locale.label("serverAdmin.adminPage.churches"),
+    },
+    {
+      key: "users",
+      icon: <UserIcon />,
+      label: Locale.label("serverAdmin.adminPage.users"),
     },
     {
       key: "usage",
