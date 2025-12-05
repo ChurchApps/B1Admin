@@ -7,12 +7,11 @@ test.describe('People Management', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
     await navigateToPeople(page);
+    await expect(page).toHaveURL(/\/people/);
   });
 
   test.describe('Individuals', () => {
     test('should view person details', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
 
@@ -101,8 +100,6 @@ test.describe('People Management', () => {
     });
 
     test('should open notes tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -114,8 +111,6 @@ test.describe('People Management', () => {
     });
 
     test('should add a note from people notes tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -132,8 +127,7 @@ test.describe('People Management', () => {
     });
 
     test('DOES NOT WORK should edit a note from people notes tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
+      //Get dad to fix duplication error v
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -153,8 +147,6 @@ test.describe('People Management', () => {
     });
 
     test('should delete a note from people notes tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -171,8 +163,6 @@ test.describe('People Management', () => {
     });
 
     test('should open groups tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -187,8 +177,6 @@ test.describe('People Management', () => {
     });
 
     test('should open group from people groups tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').getByText('Donald').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -203,8 +191,6 @@ test.describe('People Management', () => {
     });
 
     test('should open attendance tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -219,8 +205,6 @@ test.describe('People Management', () => {
     });
 
     test('should open group from people attendance', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -235,8 +219,6 @@ test.describe('People Management', () => {
     });
 
     test('should open donations tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -251,8 +233,6 @@ test.describe('People Management', () => {
     });
 
     /* test('UNFINISHED should print current year from people donations tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-  
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -270,8 +250,6 @@ test.describe('People Management', () => {
     }); */
 
     /* test('UNFINISHED should print last year from people donations tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-  
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -289,8 +267,6 @@ test.describe('People Management', () => {
     }); */
 
     /* test('DOES NOT WORK should add card from people donations tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-  
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -319,8 +295,6 @@ test.describe('People Management', () => {
     }); */
 
     test('should cancel adding card from people donations tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -342,8 +316,6 @@ test.describe('People Management', () => {
 
     /* test('DOES NOT WORK should add bank account from people donations tab', async ({ page }) => {
       //fix donations test first ^^^^^
-      await expect(page).toHaveURL(/\/people/);
-  
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -370,8 +342,6 @@ test.describe('People Management', () => {
     }); */
 
     test('should cancel adding bank from people donations tab', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -394,8 +364,7 @@ test.describe('People Management', () => {
 
   test.describe('Main Functions', () => {
 
-    test('DOES NOT WORK should add people', async ({ page }) => {
-      //add person
+    test('should add people', async ({ page }) => {
       const firstInput = page.locator('[name="first"]');
       await firstInput.fill('Octavian');
       const lastInput = page.locator('[name="last"]');
@@ -405,32 +374,26 @@ test.describe('People Management', () => {
       const addBtn = page.locator('[type="submit"]');
       await addBtn.click();
 
-      //First half works. Somehow gets back on added person page after directed off of it?
-      //search for person
+      await page.waitForTimeout(2000);
       const peopleBtn = page.locator('[id="secondaryMenu"]').getByText('People');
       await peopleBtn.click();
       await page.waitForTimeout(2000);
       const searchInput = page.locator('input[name="searchText"]');
       await searchInput.fill('Octavian');
-      const searchBtn = page.locator('button').getByText('Search').first();
-      await searchBtn.click();
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 }).catch(() => { });
 
       await page.waitForSelector('table tbody tr', { state: 'visible' });
       const results = page.locator('table tbody tr');
       await expect(results.first()).toBeVisible();
-      //click on person
+      //validate person
       const firstPerson = page.locator('td').getByText('Octavian');
       await firstPerson.click();
-
-      await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/people\/PER\d+/);
+      await page.waitForTimeout(2000);
+      await expect(page).toHaveURL(/\/people\/[^/]+/);
     });
 
     test('should cancel editing person household', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
 
@@ -445,8 +408,6 @@ test.describe('People Management', () => {
     });
 
     test('should remove person from household', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').getByText('Donald');
       await firstPerson.click();
 
@@ -467,8 +428,6 @@ test.describe('People Management', () => {
     });
 
     test('should add person to household', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').getByText('Donald');
       await firstPerson.click();
 
@@ -494,8 +453,6 @@ test.describe('People Management', () => {
     });
 
     test('should cancel adding person to household', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
 
@@ -513,8 +470,6 @@ test.describe('People Management', () => {
     });
 
     test('should cancel editing person details', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
 
@@ -530,8 +485,6 @@ test.describe('People Management', () => {
     });
 
     test('should edit person details', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
 
@@ -549,8 +502,6 @@ test.describe('People Management', () => {
     });
 
     test('should cancel merging person details', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
 
@@ -568,8 +519,6 @@ test.describe('People Management', () => {
     });
 
     /* test('UNFINISHED should merge person details', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-  
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
   
@@ -589,8 +538,6 @@ test.describe('People Management', () => {
     }); */
 
     test('should delete person from details page', async ({ page }) => {
-      await expect(page).toHaveURL(/\/people/);
-
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');

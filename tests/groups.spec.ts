@@ -120,6 +120,7 @@ test.describe('Group Management', () => {
     });
 
     test('UNFINISHED should send a message to group', async ({ page }) => {
+      //SENDING VALIDATION- get dad to fix his end
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -131,6 +132,11 @@ test.describe('Group Management', () => {
       await messageBox.fill('Test Message Sent.');
       const sendBtn = page.locator('button').getByText('Send');
       await sendBtn.click();
+      //vv add validation checking that the message got sent (Currently does not send)
+      const userBtn = page.locator('[id="user-menu-button"]');
+      await userBtn.click();
+      const messagesBtn = page.locator('[data-testid="nav-item-messages"]');
+      await messagesBtn.click();
     });
 
     test('should show templates above group message sender', async ({ page }) => {

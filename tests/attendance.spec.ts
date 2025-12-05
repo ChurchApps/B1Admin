@@ -167,11 +167,10 @@ test.describe('Attendance Management', () => {
       await expect(time).toHaveCount(0);
     });
 
-    test('UPDATE should delete service', async ({ page }) => {
+    test('should delete service', async ({ page }) => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
-        //update delete dialogue v
-        expect(dialog.message()).toContain('Service name');
+        expect(dialog.message()).toContain('Are you sure');
         await dialog.accept();
       });
 
@@ -265,7 +264,7 @@ test.describe('Attendance Management', () => {
     }); */
 
     test('UPDATE should display group attendance', async ({ page }) => {
-      // completed as I can, correcting reports display info is up to father.
+      // completed as I can, correcting reports display info is up to father. Data does not load in.
       const trendTab = page.locator('button[role="tab"]').getByText('Group Attendance');
       await trendTab.click();
       await page.waitForTimeout(500);

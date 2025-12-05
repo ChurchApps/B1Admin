@@ -630,13 +630,13 @@ test.describe('Serving Management', () => {
       await page.waitForTimeout(2000);
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').last();
       await editBtn.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
+      const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
       const validatedDeletion = page.locator('[role="tab"]').getByText('Octavian Key');
       await expect(validatedDeletion).toHaveCount(0);
     });
 
-    test('UNFINISHED should add external link', async ({ page }) => {
+    test('should add external link', async ({ page }) => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
@@ -657,7 +657,12 @@ test.describe('Serving Management', () => {
       await link.fill('https://www.youtube.com/watch?v=6MYAGyZlBY0');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      // console error on save. SQL related?
+      const checkBtn = page.locator('[d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"]');
+      await checkBtn.click();
+
+      await page.waitForTimeout(2000);
+      const validatedAddition = page.locator('a img');
+      await expect(validatedAddition).toHaveCount(1);
     });
 
     test('should cancel adding external link', async ({ page }) => {

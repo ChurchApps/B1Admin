@@ -19,7 +19,7 @@ test.describe('Settings Management', () => {
   }); */
   test.describe('General Settings', () => {
     test('should edit church', async ({ page }) => {
-      const settingsHeader = page.locator('h4').getByText('Grace Community Church');
+      //RESET: const settingsHeader = page.locator('h4').getByText('Grace Community Church');
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
       await editBtn.click();
       const churchName = page.locator('[name="churchName"]');
@@ -28,7 +28,7 @@ test.describe('Settings Management', () => {
       await saveBtn.click();
       const settingHeaderTwo = page.locator('h4').getByText('Grace Community Church Lol');
       await expect(settingHeaderTwo).toHaveCount(1);
-      // reset
+      // RESET:
       /* editBtn.click();
       churchName.fill('Grace Community Church');
       saveBtn.click();
@@ -199,12 +199,13 @@ test.describe('Settings Management', () => {
       await expect(validatedForm).toHaveCount(1);
     });
 
-    test('DOES NOT WORK should edit form', async ({ page }) => {
+    test('should edit form', async ({ page }) => {
       const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
       await formTab.click();
-      //creates duplicate form
+
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
+      await page.waitForTimeout(2000);
       const formName = page.locator('[name="name"]');
       await formName.fill('Octavius Test Form');
       const saveBtn = page.locator('button').getByText('Save');
@@ -226,7 +227,7 @@ test.describe('Settings Management', () => {
       await expect(formName).toHaveCount(0);
     });
 
-    test('DOES NOT WORK should delete form', async ({ page }) => {
+    test('should delete form', async ({ page }) => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -238,10 +239,11 @@ test.describe('Settings Management', () => {
 
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
+      await page.waitForTimeout(2000);
       const deleteBtn = page.locator('button').getByText('Delete').first();
       await deleteBtn.click();
       await page.waitForTimeout(2000);
-      const validatedDeletion = page.locator('a').getByText('Octavian Test Form');
+      const validatedDeletion = page.locator('a').getByText('Octavius Test Form');
       await expect(validatedDeletion).toHaveCount(0);
     });
   });

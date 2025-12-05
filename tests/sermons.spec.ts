@@ -404,7 +404,7 @@ test.describe('Sermons Management', () => {
       await expect(page).toHaveURL(/\/settings/);
     });
 
-    test('DOES NOT WORK should view your stream', async ({ page }) => {
+    test('should view your stream', async ({ page, context }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
       await page.waitForTimeout(500);
@@ -412,7 +412,13 @@ test.describe('Sermons Management', () => {
       const viewBtn = page.locator('a').getByText('View Your Stream');
       await viewBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL('https://grace.demo.b1.church/stream');
+
+      const [newPage] = await Promise.all([
+        context.waitForEvent('page'),
+        viewBtn.click()
+      ]);
+      await newPage.waitForLoadState();
+      await expect(newPage).toHaveURL('https://grace.demo.b1.church/stream');
     });
 
   });
