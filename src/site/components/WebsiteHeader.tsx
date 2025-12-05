@@ -9,7 +9,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AppearanceHelper, ArrayHelper } from "@churchapps/apphelper";
-import { StyleHelper } from "../../helpers/StyleHelper";
+import { StyleHelper } from "@churchapps/apphelper-website";
 import type { SectionInterface, GlobalStyleInterface } from "../../helpers/Interfaces";
 
 interface LinkInterface { id?: string; text?: string; url?: string; parentId?: string; children?: LinkInterface[]; }

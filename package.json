@@ -9,7 +9,7 @@
     "@churchapps/apphelper-forms": "^0.6.0",
     "@churchapps/apphelper-login": "^0.6.0",
     "@churchapps/apphelper-markdown": "^0.6.0",
-    "@churchapps/apphelper-website": "^0.6.0",
+    "@churchapps/apphelper-website": "^0.6.1",
     "@churchapps/helpers": "^1.2.4",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",

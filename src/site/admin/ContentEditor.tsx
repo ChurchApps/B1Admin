@@ -12,7 +12,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import React from "react";
 import { Theme, DroppableArea } from "@churchapps/apphelper-website";
 import { SectionBlock } from "./SectionBlock";
-import { StyleHelper } from "../../helpers/StyleHelper";
+import { StyleHelper } from "@churchapps/apphelper-website";
 import { ElementAdd } from "./elements/ElementAdd";
 import { ElementEdit } from "./elements/ElementEdit";
 import { SectionEdit } from "./SectionEdit";
