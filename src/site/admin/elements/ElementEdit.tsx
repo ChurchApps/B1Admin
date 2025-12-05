@@ -1,9 +1,7 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { AnimationsInterface, BlockInterface, ElementInterface, GlobalStyleInterface, InlineStylesInterface } from "../../../helpers";
-import {
-  Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog 
-} from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
 import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, GalleryModal, Locale } from "@churchapps/apphelper";
 import React from "react";
 
@@ -36,19 +34,28 @@ export function ElementEdit(props: Props) {
   const [element, setElement] = useState<ElementInterface>(null);
   const [errors, setErrors] = useState([]);
   const [innerErrors, setInnerErrors] = useState([]);
-  const parsedData = (element?.answersJSON) ? JSON.parse(element.answersJSON) : {};
-  const parsedStyles = (element?.stylesJSON) ? JSON.parse(element.stylesJSON) : {};
-  const parsedAnimations = (element?.animationsJSON) ? JSON.parse(element.animationsJSON) : {};
+  const parsedData = element?.answersJSON ? JSON.parse(element.answersJSON) : {};
+  const parsedStyles = element?.stylesJSON ? JSON.parse(element.stylesJSON) : {};
+  const parsedAnimations = element?.animationsJSON ? JSON.parse(element.animationsJSON) : {};
 
   const handleCancel = () => props.updatedCallback(element);
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } };
+  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSave();
+    }
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     e.preventDefault();
     const p = { ...element };
     const val = e.target.value;
     switch (e.target.name) {
-      case "elementType": p.elementType = val; break;
-      case "answersJSON": p.answersJSON = val; break;
+      case "elementType":
+        p.elementType = val;
+        break;
+      case "answersJSON":
+        p.answersJSON = val;
+        break;
       default:
         parsedData[e.target.name] = val;
         p.answersJSON = JSON.stringify(parsedData);
@@ -62,8 +69,12 @@ export function ElementEdit(props: Props) {
     const p = { ...element };
     const val: any = e.target.checked.toString();
     switch (e.target.name) {
-      case "elementType": p.elementType = val; break;
-      case "answersJSON": p.answersJSON = val; break;
+      case "elementType":
+        p.elementType = val;
+        break;
+      case "answersJSON":
+        p.answersJSON = val;
+        break;
       default:
         parsedData[e.target.name] = val;
         p.answersJSON = JSON.stringify(parsedData);
@@ -106,30 +117,44 @@ export function ElementEdit(props: Props) {
 
   const handleSave = () => {
     if (innerErrors.length === 0) {
-      ApiHelper.post("/elements", [element], "ContentApi").then((response: any) => {
-        const data = Array.isArray(response) ? response[0] : response;
-        if (data.answersJSON) data.answers = JSON.parse(data.answersJSON);
-        if (data.stylesJSON) data.styles = JSON.parse(data.stylesJSON);
-        if (data.animationsJSON) data.animations = JSON.parse(data.animationsJSON);
-        setElement(data);
-        props.updatedCallback(data);
-      }).catch((error: any) => {
-        console.error("ElementEdit API error:", error);
-      });
+      ApiHelper.post("/elements", [element], "ContentApi")
+        .then((response: any) => {
+          const data = Array.isArray(response) ? response[0] : response;
+          if (data.answersJSON) data.answers = JSON.parse(data.answersJSON);
+          if (data.stylesJSON) data.styles = JSON.parse(data.stylesJSON);
+          if (data.animationsJSON) data.animations = JSON.parse(data.animationsJSON);
+          setElement(data);
+          props.updatedCallback(data);
+        })
+        .catch((error: any) => {
+          console.error("ElementEdit API error:", error);
+        });
     } else {
       setErrors(innerErrors);
     }
   };
 
-
-
   const getTextAlignment = (fieldName: string, label: string = Locale.label("site.elements.textAlignment")) => (
     <FormControl fullWidth>
       <InputLabel>{label}</InputLabel>
-      <Select fullWidth size="small" label={label} name={fieldName} value={parsedData[fieldName] || "left"} onChange={handleChange} data-testid={`text-alignment-${fieldName}-select`} aria-label={`Select ${label.toLowerCase()}`}>
-        <MenuItem value="left" data-testid="text-align-left" aria-label={Locale.label("site.elements.alignLeft")}>{Locale.label("common.left")}</MenuItem>
-        <MenuItem value="center" data-testid="text-align-center" aria-label={Locale.label("site.elements.alignCenter")}>{Locale.label("common.center")}</MenuItem>
-        <MenuItem value="right" data-testid="text-align-right" aria-label={Locale.label("site.elements.alignRight")}>{Locale.label("common.right")}</MenuItem>
+      <Select
+        fullWidth
+        size="small"
+        label={label}
+        name={fieldName}
+        value={parsedData[fieldName] || "left"}
+        onChange={handleChange}
+        data-testid={`text-alignment-${fieldName}-select`}
+        aria-label={`Select ${label.toLowerCase()}`}>
+        <MenuItem value="left" data-testid="text-align-left" aria-label={Locale.label("site.elements.alignLeft")}>
+          {Locale.label("common.left")}
+        </MenuItem>
+        <MenuItem value="center" data-testid="text-align-center" aria-label={Locale.label("site.elements.alignCenter")}>
+          {Locale.label("common.center")}
+        </MenuItem>
+        <MenuItem value="right" data-testid="text-align-right" aria-label={Locale.label("site.elements.alignRight")}>
+          {Locale.label("common.right")}
+        </MenuItem>
       </Select>
     </FormControl>
   );
@@ -140,7 +165,20 @@ export function ElementEdit(props: Props) {
     }
   };
 
-  const getJsonFields = () => (<TextField fullWidth size="small" label={Locale.label("site.elements.answersJSON")} name="answersJSON" value={element.answersJSON} onChange={handleChange} onKeyDown={handleKeyDown} multiline data-testid="answers-json-input" aria-label={Locale.label("site.elements.answersJSONData")} />);
+  const getJsonFields = () => (
+    <TextField
+      fullWidth
+      size="small"
+      label={Locale.label("site.elements.answersJSON")}
+      name="answersJSON"
+      value={element.answersJSON}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      multiline
+      data-testid="answers-json-input"
+      aria-label={Locale.label("site.elements.answersJSONData")}
+    />
+  );
 
   const selectColors = (background: string, textColor: string, headingColor: string, linkColor: string) => {
     const p = { ...element };
@@ -152,20 +190,26 @@ export function ElementEdit(props: Props) {
     setElement(p);
   };
 
-  const getAppearanceFields = (fields: string[]) => <StylesAnimations fields={fields} styles={parsedStyles} onStylesChange={handleStyleChange} animations={parsedAnimations} onAnimationsChange={handleAnimationChange} />;
+  const getAppearanceFields = (fields: string[]) => (
+    <StylesAnimations fields={fields} styles={parsedStyles} onStylesChange={handleStyleChange} animations={parsedAnimations} onAnimationsChange={handleAnimationChange} />
+  );
 
   const getBoxFields = () => (
     <>
       <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.rounded === "true" ? true : false} />} name="rounded" label={Locale.label("site.elements.roundedCorners")} />
       <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.translucent === "true" ? true : false} />} name="translucent" label={Locale.label("site.elements.translucent")} />
       <br />
-      <PickColors background={parsedData?.background} textColor={parsedData?.textColor} headingColor={parsedData?.headingColor || parsedData?.textColor} linkColor={parsedData?.linkColor} updatedCallback={selectColors} globalStyles={props.globalStyles} />
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
-      ])}
+      <PickColors
+        background={parsedData?.background}
+        textColor={parsedData?.textColor}
+        headingColor={parsedData?.headingColor || parsedData?.textColor}
+        linkColor={parsedData?.linkColor}
+        updatedCallback={selectColors}
+        globalStyles={props.globalStyles}
+      />
+      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"])}
     </>
   );
-
 
   const getTextFields = () => (
     <>
@@ -184,75 +228,129 @@ export function ElementEdit(props: Props) {
   );
 
   // TODO: add alt field while saving image and use it here, in image tage.
-  const getTextWithPhotoFields = () => (<>
-    {parsedData.photo && <><img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} /><br /></>}
-    <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button" aria-label={Locale.label("site.elements.selectPhoto")}>{Locale.label("site.elements.selectPhoto")}</Button>
-    <TextField fullWidth size="small" label={Locale.label("site.elements.photoLabel")} name="photoAlt" value={parsedData.photoAlt || ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="photo-alt-input" aria-label={Locale.label("site.elements.photoAlternativeText")} />
-    <FormControl fullWidth>
-      <InputLabel>{Locale.label("site.elements.photoPosition")}</InputLabel>
-      <Select fullWidth size="small" label={Locale.label("site.elements.photoPosition")} name="photoPosition" value={parsedData.photoPosition || ""} onChange={handleChange} data-testid="photo-position-select" aria-label={Locale.label("site.elements.selectPhotoPosition")}>
-        <MenuItem value="left" data-testid="photo-position-left" aria-label={Locale.label("site.elements.positionPhotoLeft")}>{Locale.label("common.left")}</MenuItem>
-        <MenuItem value="right" data-testid="photo-position-right" aria-label={Locale.label("site.elements.positionPhotoRight")}>{Locale.label("common.right")}</MenuItem>
-        <MenuItem value="top" data-testid="photo-position-top" aria-label={Locale.label("site.elements.positionPhotoTop")}>{Locale.label("common.top")}</MenuItem>
-        <MenuItem value="bottom" data-testid="photo-position-bottom" aria-label={Locale.label("site.elements.positionPhotoBottom")}>{Locale.label("common.bottom")}</MenuItem>
-      </Select>
-    </FormControl>
-    {getTextAlignment("textAlignment")}
-    <Box sx={{ marginTop: 2 }}>
-      <HtmlEditor
-        value={parsedData.text || ""}
-        onChange={(val) => {
-          handleHtmlChange("text", val);
-        }}
-        style={{ maxHeight: 200, overflowY: "scroll" }}
+  const getTextWithPhotoFields = () => (
+    <>
+      {parsedData.photo && (
+        <>
+          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} />
+          <br />
+        </>
+      )}
+      <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button" aria-label={Locale.label("site.elements.selectPhoto")}>
+        {Locale.label("site.elements.selectPhoto")}
+      </Button>
+      <TextField
+        fullWidth
+        size="small"
+        label={Locale.label("site.elements.photoLabel")}
+        name="photoAlt"
+        value={parsedData.photoAlt || ""}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        data-testid="photo-alt-input"
+        aria-label={Locale.label("site.elements.photoAlternativeText")}
       />
-    </Box>
-    {getAppearanceFields([
-      "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
-    ])}
-  </>);
+      <FormControl fullWidth>
+        <InputLabel>{Locale.label("site.elements.photoPosition")}</InputLabel>
+        <Select
+          fullWidth
+          size="small"
+          label={Locale.label("site.elements.photoPosition")}
+          name="photoPosition"
+          value={parsedData.photoPosition || ""}
+          onChange={handleChange}
+          data-testid="photo-position-select"
+          aria-label={Locale.label("site.elements.selectPhotoPosition")}>
+          <MenuItem value="left" data-testid="photo-position-left" aria-label={Locale.label("site.elements.positionPhotoLeft")}>
+            {Locale.label("common.left")}
+          </MenuItem>
+          <MenuItem value="right" data-testid="photo-position-right" aria-label={Locale.label("site.elements.positionPhotoRight")}>
+            {Locale.label("common.right")}
+          </MenuItem>
+          <MenuItem value="top" data-testid="photo-position-top" aria-label={Locale.label("site.elements.positionPhotoTop")}>
+            {Locale.label("common.top")}
+          </MenuItem>
+          <MenuItem value="bottom" data-testid="photo-position-bottom" aria-label={Locale.label("site.elements.positionPhotoBottom")}>
+            {Locale.label("common.bottom")}
+          </MenuItem>
+        </Select>
+      </FormControl>
+      {getTextAlignment("textAlignment")}
+      <Box sx={{ marginTop: 2 }}>
+        <HtmlEditor
+          value={parsedData.text || ""}
+          onChange={(val) => {
+            handleHtmlChange("text", val);
+          }}
+          style={{ maxHeight: 200, overflowY: "scroll" }}
+        />
+      </Box>
+      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"])}
+    </>
+  );
 
   // TODO: add alt field while saving image and use it here, in image tage.
-  const getCardFields = () => (<>
-    {parsedData.photo && <><img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} /><br /></>}
-    <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button" aria-label={Locale.label("site.elements.selectPhoto")}>{Locale.label("site.elements.selectPhoto")}</Button>
-    <TextField fullWidth size="small" label={Locale.label("site.elements.photoLabel")} name="photoAlt" value={parsedData.photoAlt || ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="photo-alt-input" aria-label={Locale.label("site.elements.photoAlternativeText")} />
-    <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-    {getTextAlignment("titleAlignment", Locale.label("site.elements.titleAlignment"))}
-    <TextField fullWidth size="small" label={Locale.label("site.elements.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-    {getTextAlignment("textAlignment")}
-    <Box sx={{ marginTop: 2 }}>
-      <HtmlEditor
-        value={parsedData.text || ""}
-        onChange={(val) => {
-          handleHtmlChange("text", val);
-        }}
-        style={{ maxHeight: 200, overflowY: "scroll" }}
+  const getCardFields = () => (
+    <>
+      {parsedData.photo && (
+        <>
+          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} />
+          <br />
+        </>
+      )}
+      <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button" aria-label={Locale.label("site.elements.selectPhoto")}>
+        {Locale.label("site.elements.selectPhoto")}
+      </Button>
+      <TextField
+        fullWidth
+        size="small"
+        label={Locale.label("site.elements.photoLabel")}
+        name="photoAlt"
+        value={parsedData.photoAlt || ""}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        data-testid="photo-alt-input"
+        aria-label={Locale.label("site.elements.photoAlternativeText")}
       />
-    </Box>
-    {getAppearanceFields([
-      "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
-    ])}
-  </>);
+      <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+      {getTextAlignment("titleAlignment", Locale.label("site.elements.titleAlignment"))}
+      <TextField fullWidth size="small" label={Locale.label("site.elements.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+      {getTextAlignment("textAlignment")}
+      <Box sx={{ marginTop: 2 }}>
+        <HtmlEditor
+          value={parsedData.text || ""}
+          onChange={(val) => {
+            handleHtmlChange("text", val);
+          }}
+          style={{ maxHeight: 200, overflowY: "scroll" }}
+        />
+      </Box>
+      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"])}
+    </>
+  );
 
-  const getLogoFields = () => (<>
-    <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-    {getAppearanceFields([
-      "border", "background", "height", "min", "max", "margin", "padding", "width"
-    ])}
-  </>);
+  const getLogoFields = () => (
+    <>
+      <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+      {getAppearanceFields(["border", "background", "height", "min", "max", "margin", "padding", "width"])}
+    </>
+  );
 
   const getStreamFields = () => {
     let blockField = <></>;
     if (parsedData.offlineContent === "block") {
       const options: React.ReactElement[] = [];
-      blocks?.forEach(b => { options.push(<MenuItem value={b.id}>{b.name}</MenuItem>); });
-      blockField = (<FormControl fullWidth>
-        <InputLabel>{Locale.label("site.elements.block")}</InputLabel>
-        <Select fullWidth size="small" label={Locale.label("site.elements.block")} name="targetBlockId" value={parsedData.targetBlockId || ""} onChange={handleChange}>
-          {options}
-        </Select>
-      </FormControl>);
+      blocks?.forEach((b) => {
+        options.push(<MenuItem value={b.id}>{b.name}</MenuItem>);
+      });
+      blockField = (
+        <FormControl fullWidth>
+          <InputLabel>{Locale.label("site.elements.block")}</InputLabel>
+          <Select fullWidth size="small" label={Locale.label("site.elements.block")} name="targetBlockId" value={parsedData.targetBlockId || ""} onChange={handleChange}>
+            {options}
+          </Select>
+        </FormControl>
+      );
     }
     return (
       <>
@@ -272,9 +370,7 @@ export function ElementEdit(props: Props) {
           </Select>
         </FormControl>
         {blockField}
-        {getAppearanceFields([
-          "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
-        ])}
+        {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"])}
       </>
     );
   };
@@ -282,7 +378,15 @@ export function ElementEdit(props: Props) {
   const getIframeFields = () => (
     <>
       <TextField fullWidth size="small" label={Locale.label("site.elements.source")} name="iframeSrc" value={parsedData.iframeSrc || ""} onChange={handleChange} />
-      <TextField fullWidth size="small" label={Locale.label("site.elements.heightPx")} name="iframeHeight" value={parsedData.iframeHeight || ""} placeholder={Locale.label("site.elements.heightPlaceholder")} onChange={handleChange} />
+      <TextField
+        fullWidth
+        size="small"
+        label={Locale.label("site.elements.heightPx")}
+        name="iframeHeight"
+        value={parsedData.iframeHeight || ""}
+        placeholder={Locale.label("site.elements.heightPlaceholder")}
+        onChange={handleChange}
+      />
     </>
   );
 
@@ -312,9 +416,7 @@ export function ElementEdit(props: Props) {
         <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.external === "true" ? true : false} />} name="external" label={Locale.label("site.elements.openInNewTab")} />
         <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.fullWidth === "true" ? true : false} />} name="fullWidth" label={Locale.label("site.elements.fullWidth")} />
       </FormGroup>
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
-      ])}
+      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"])}
     </>
   );
 
@@ -338,33 +440,67 @@ export function ElementEdit(props: Props) {
           {Locale.label("site.elements.videoUrlVimeo")} <br /> {Locale.label("site.elements.idExampleVimeo")}
         </Typography>
       )}
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
-      ])}
+      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"])}
     </>
-
   );
 
   const getRawHTML = () => (
     <>
       <TextField fullWidth label={Locale.label("site.elements.htmlContent")} name="rawHTML" onChange={handleChange} value={parsedData.rawHTML || ""} multiline minRows={7} maxRows={15} />
-      <TextField fullWidth label={Locale.label("site.elements.javascriptExcludeTag")} name="javascript" onChange={handleChange} value={parsedData.javascript || ""} multiline minRows={7} maxRows={15} />
+      <TextField
+        fullWidth
+        label={Locale.label("site.elements.javascriptExcludeTag")}
+        name="javascript"
+        onChange={handleChange}
+        value={parsedData.javascript || ""}
+        multiline
+        minRows={7}
+        maxRows={15}
+      />
     </>
   );
 
   const getMapFields = () => (
     <>
-      <TextField fullWidth size="small" label={Locale.label("site.elements.address")} name="mapAddress" onChange={handleChange} value={parsedData.mapAddress || ""} helperText={Locale.label("site.elements.addressHelper")} />
-      <TextField fullWidth size="small" label={Locale.label("site.elements.label")} name="mapLabel" onChange={handleChange} value={parsedData.mapLabel || ""} helperText={Locale.label("site.elements.nameHelper")} />
-      <Typography fontSize="13px" sx={{ marginTop: 1 }}>{Locale.label("site.elements.zoomLevel")}</Typography>
+      <TextField
+        fullWidth
+        size="small"
+        label={Locale.label("site.elements.address")}
+        name="mapAddress"
+        onChange={handleChange}
+        value={parsedData.mapAddress || ""}
+        helperText={Locale.label("site.elements.addressHelper")}
+      />
+      <TextField
+        fullWidth
+        size="small"
+        label={Locale.label("site.elements.label")}
+        name="mapLabel"
+        onChange={handleChange}
+        value={parsedData.mapLabel || ""}
+        helperText={Locale.label("site.elements.nameHelper")}
+      />
+      <Typography fontSize="13px" sx={{ marginTop: 1 }}>
+        {Locale.label("site.elements.zoomLevel")}
+      </Typography>
       <Slider defaultValue={15} valueLabelDisplay="auto" step={1} min={8} max={20} name="mapZoom" value={parsedData?.mapZoom || 15} onChange={(e: any) => handleChange(e)} />
-      <Typography fontSize="12px" fontStyle="italic">{Locale.label("site.elements.zoomLevelExample")}</Typography>
+      <Typography fontSize="12px" fontStyle="italic">
+        {Locale.label("site.elements.zoomLevelExample")}
+      </Typography>
     </>
   );
 
   const getGroupListFields = () => (
     <>
-      <TextField fullWidth size="small" label={Locale.label("site.elements.label")} name="label" onChange={handleChange} value={parsedData.label || ""} helperText={Locale.label("site.elements.categoriesHelper")} />
+      <TextField
+        fullWidth
+        size="small"
+        label={Locale.label("site.elements.label")}
+        name="label"
+        onChange={handleChange}
+        value={parsedData.label || ""}
+        helperText={Locale.label("site.elements.categoriesHelper")}
+      />
     </>
   );
 
@@ -380,7 +516,11 @@ export function ElementEdit(props: Props) {
         </Select>
       </FormControl>
       <FormGroup>
-        <FormControlLabel control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.autoplay === "true" ? true : false} />} name="autoplay" label={Locale.label("site.elements.autoplay")} />
+        <FormControlLabel
+          control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.autoplay === "true" ? true : false} />}
+          name="autoplay"
+          label={Locale.label("site.elements.autoplay")}
+        />
       </FormGroup>
       {parsedData.autoplay === "true" && (
         <TextField fullWidth size="small" type="number" label={Locale.label("site.elements.slidesIntervalSeconds")} name="interval" onChange={handleChange} value={parsedData.interval || "4"} />
@@ -390,13 +530,28 @@ export function ElementEdit(props: Props) {
 
   const getImageFields = () => (
     <>
-      {parsedData.photo && <><img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} /><br /></>}
-      <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button" aria-label={Locale.label("site.elements.selectPhoto")}>{Locale.label("site.elements.selectPhoto")}</Button>
+      {parsedData.photo && (
+        <>
+          <img src={parsedData.photo} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt={Locale.label("site.elements.imageDescribingTopic")} />
+          <br />
+        </>
+      )}
+      <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button" aria-label={Locale.label("site.elements.selectPhoto")}>
+        {Locale.label("site.elements.selectPhoto")}
+      </Button>
       <TextField fullWidth size="small" label={Locale.label("site.elements.photoLabel")} name="photoAlt" value={parsedData.photoAlt || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
       <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
       <FormGroup sx={{ marginLeft: 0.5 }}>
-        <FormControlLabel control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.external === "true" ? true : false} />} name="external" label={Locale.label("site.elements.openLinkInNewTab")} />
-        <FormControlLabel control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.noResize === "true" ? true : false} />} name="noResize" label={Locale.label("site.elements.doNotResizeImage")} />
+        <FormControlLabel
+          control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.external === "true" ? true : false} />}
+          name="external"
+          label={Locale.label("site.elements.openLinkInNewTab")}
+        />
+        <FormControlLabel
+          control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.noResize === "true" ? true : false} />}
+          name="noResize"
+          label={Locale.label("site.elements.doNotResizeImage")}
+        />
       </FormGroup>
       <FormControl fullWidth sx={{ marginTop: 2 }}>
         <InputLabel>{Locale.label("site.elements.imageAlignment")}</InputLabel>
@@ -419,39 +574,105 @@ export function ElementEdit(props: Props) {
   const getFields = () => {
     let result = getJsonFields();
     switch (element?.elementType) {
-      case "row": result = <><RowEdit parsedData={parsedData} onRealtimeChange={handleRowChange} setErrors={setInnerErrors} />{getAppearanceFields([
-        "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-      ])}</>; break;
-      case "table": result = <><TableEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />{getAppearanceFields([
-        "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-      ])}</>; break;
-      case "box": result = getBoxFields(); break;
-      case "text": result = getTextFields(); break;
-      case "textWithPhoto": result = getTextWithPhotoFields(); break;
-      case "card": result = getCardFields(); break;
-      case "logo": result = getLogoFields(); break;
-      case "donation": result = <></>; break;
-      case "donateLink": result = <><DonateLinkEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />{getAppearanceFields(["border"])}</>; break;
-      case "stream": result = getStreamFields(); break;
-      case "iframe": result = getIframeFields(); break;
-      case "buttonLink": result = getButtonLink(); break;
-      case "video": result = getVideoFields(); break;
-      case "rawHTML": result = getRawHTML(); break;
-      case "form": result = <><FormEdit parsedData={parsedData} handleChange={handleChange} />{getAppearanceFields([
-        "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-      ])}</>; break;
-      case "faq": result = <><FaqEdit parsedData={parsedData} handleChange={handleChange} handleHtmlChange={handleHtmlChange} />{getAppearanceFields([
-        "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-      ])}</>; break;
-      case "map": result = getMapFields(); break;
-      case "sermons": result = <></>; break;
-      case "carousel": result = getCarouselFields(); break;
-      case "image": result = getImageFields(); break;
-      case "whiteSpace": result = getWhiteSpaceFields(); break;
-      case "calendar": result = <><CalendarElementEdit parsedData={parsedData} handleChange={handleChange} />{getAppearanceFields([
-        "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-      ])}</>; break;
-      case "groupList": result = getGroupListFields(); break;
+      case "row":
+        result = (
+          <>
+            <RowEdit parsedData={parsedData} onRealtimeChange={handleRowChange} setErrors={setInnerErrors} />
+            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+          </>
+        );
+        break;
+      case "table":
+        result = (
+          <>
+            <TableEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />
+            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+          </>
+        );
+        break;
+      case "box":
+        result = getBoxFields();
+        break;
+      case "text":
+        result = getTextFields();
+        break;
+      case "textWithPhoto":
+        result = getTextWithPhotoFields();
+        break;
+      case "card":
+        result = getCardFields();
+        break;
+      case "logo":
+        result = getLogoFields();
+        break;
+      case "donation":
+        result = <></>;
+        break;
+      case "donateLink":
+        result = (
+          <>
+            <DonateLinkEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />
+            {getAppearanceFields(["border"])}
+          </>
+        );
+        break;
+      case "stream":
+        result = getStreamFields();
+        break;
+      case "iframe":
+        result = getIframeFields();
+        break;
+      case "buttonLink":
+        result = getButtonLink();
+        break;
+      case "video":
+        result = getVideoFields();
+        break;
+      case "rawHTML":
+        result = getRawHTML();
+        break;
+      case "form":
+        result = (
+          <>
+            <FormEdit parsedData={parsedData} handleChange={handleChange} />
+            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+          </>
+        );
+        break;
+      case "faq":
+        result = (
+          <>
+            <FaqEdit parsedData={parsedData} handleChange={handleChange} handleHtmlChange={handleHtmlChange} />
+            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+          </>
+        );
+        break;
+      case "map":
+        result = getMapFields();
+        break;
+      case "sermons":
+        result = <></>;
+        break;
+      case "carousel":
+        result = getCarouselFields();
+        break;
+      case "image":
+        result = getImageFields();
+        break;
+      case "whiteSpace":
+        result = getWhiteSpaceFields();
+        break;
+      case "calendar":
+        result = (
+          <>
+            <CalendarElementEdit parsedData={parsedData} handleChange={handleChange} />
+            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+          </>
+        );
+        break;
+      case "groupList":
+        result = getGroupListFields();
+        break;
     }
     return result;
   };
@@ -471,7 +692,9 @@ export function ElementEdit(props: Props) {
     setElement(e);
   };
 
-  useEffect(() => { setElement(props.element); }, [props.element]);
+  useEffect(() => {
+    setElement(props.element);
+  }, [props.element]);
 
   useEffect(() => {
     const loadBlocks = async () => {
@@ -489,28 +712,33 @@ export function ElementEdit(props: Props) {
   // Auto-save elements that have no settings to edit
   useEffect(() => {
     const elementHasNoSettings = (elementType: string): boolean => elementType === "sermons" || elementType === "donation";
-    if (element && !element.id && elementHasNoSettings(element.elementType)) { handleSave(); }
+    if (element && !element.id && elementHasNoSettings(element.elementType)) {
+      handleSave();
+    }
   }, [element]);
 
-
-  const getStandardFields = () => (<>
-    <ErrorMessages errors={errors} />
-    {getFields()}
-  </>);
+  const getStandardFields = () => (
+    <>
+      <ErrorMessages errors={errors} />
+      {getFields()}
+    </>
+  );
 
   const getBlockFields = () => {
     const options: React.ReactElement[] = [];
-    blocks?.forEach(b => {
+    blocks?.forEach((b) => {
       options.push(<MenuItem value={b.id}>{b.name}</MenuItem>);
     });
-    return (<>
-      <FormControl fullWidth>
-        <InputLabel>{Locale.label("site.elements.block")}</InputLabel>
-        <Select fullWidth label={Locale.label("site.elements.block")} name="targetBlockId" value={parsedData.targetBlockId || ""} onChange={handleChange}>
-          {options}
-        </Select>
-      </FormControl>
-    </>);
+    return (
+      <>
+        <FormControl fullWidth>
+          <InputLabel>{Locale.label("site.elements.block")}</InputLabel>
+          <Select fullWidth label={Locale.label("site.elements.block")} name="targetBlockId" value={parsedData.targetBlockId || ""} onChange={handleChange}>
+            {options}
+          </Select>
+        </FormControl>
+      </>
+    );
   };
 
   const handleDuplicate = (e: React.MouseEvent) => {
@@ -523,16 +751,27 @@ export function ElementEdit(props: Props) {
   };
 
   if (!element) return <></>;
-  else {
-    return (
+
+  return (
     <Dialog open={true} onClose={handleCancel} fullWidth maxWidth="md" id="elementEditDialog">
-      <InputBox id="dialogForm" headerText={Locale.label("site.elements.editElement")} headerIcon="school" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete} headerActionContent={(props.element.id && <a href="about:blank" onClick={handleDuplicate}>{Locale.label("common.duplicate")}</a>)} data-testid="edit-element-inputbox">
-        <div id="dialogFormContent">
-          {(element?.elementType === "block") ? getBlockFields() : getStandardFields()}
-        </div>
+      <InputBox
+        id="dialogForm"
+        headerText={Locale.label("site.elements.editElement")}
+        headerIcon="school"
+        saveFunction={handleSave}
+        cancelFunction={handleCancel}
+        deleteFunction={handleDelete}
+        headerActionContent={
+          props.element.id && (
+            <a href="about:blank" onClick={handleDuplicate}>
+              {Locale.label("common.duplicate")}
+            </a>
+          )
+        }
+        data-testid="edit-element-inputbox">
+        <div id="dialogFormContent">{element?.elementType === "block" ? getBlockFields() : getStandardFields()}</div>
       </InputBox>
       {selectPhotoField && <GalleryModal onClose={() => setSelectPhotoField(null)} onSelect={handlePhotoSelected} aspectRatio={0} />}
     </Dialog>
-    );
-  }
+  );
 }
