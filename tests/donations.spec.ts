@@ -96,8 +96,7 @@ test.describe('Donations Management', () => {
   });
 
   test.describe('Batches', () => {
-    test('UPDATE should create batch', async ({ page }) => {
-      // UPDATE TEST check for all values in table
+    test('should create batch', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
       await page.waitForTimeout(500);
@@ -106,35 +105,39 @@ test.describe('Donations Management', () => {
       await addBtn.click();
       const batchName = page.locator('[name="name"]');
       await batchName.fill('October 10, 2025 Batch');
-      //Update input to select today, not a day ahead v
       const date = page.locator('[name="date"]');
-      await date.fill('2025-10-01');
+      await date.fill('2025-10-10');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       await page.waitForTimeout(500);
 
       const verifyBatch = page.locator('a').getByText('October 10, 2025 Batch');
       await expect(verifyBatch).toHaveCount(1);
-      //Update date results to show dates, then add date checking
+      const verifyDate = page.locator('p').getByText('Oct 10, 2025');
+      await expect(verifyDate).toHaveCount(1);
     });
 
-    test('DOES NOT WORK should edit batch', async ({ page }) => {
+    test('should edit batch', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
       await page.waitForTimeout(500);
 
       const editBtn = page.locator('[data-cy="edit-0"]');
       await editBtn.click();
+      await page.waitForTimeout(500);
       const batchName = page.locator('[name="name"]');
+      await batchName.fill('October 1, 2025 Batch');
+      await page.waitForTimeout(500);
       const date = page.locator('[name="date"]');
       await date.fill('2025-10-01');
-      await batchName.fill('October 1, 2025 Batch');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       await page.waitForTimeout(500);
 
       const verifyBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await expect(verifyBatch).toHaveCount(1);
+      const verifyDate = page.locator('p').getByText('Oct 1, 2025');
+      await expect(verifyDate).toHaveCount(1);
     });
 
     test('should cancel editing batch', async ({ page }) => {
@@ -157,7 +160,7 @@ test.describe('Donations Management', () => {
       await batchesBtn.click();
       await page.waitForTimeout(500);
 
-      const selBatch = page.locator('a').getByText('October 10, 2025 Batch');
+      const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
       await page.waitForTimeout(500);
 
@@ -179,7 +182,7 @@ test.describe('Donations Management', () => {
       await amount.fill('20.00');
       const addBtn = page.locator('[data-testid="add-donation-submit"]');
       await addBtn.click();
-      //ADD BUTTON NOT WORKING ON TEST- does when I use it?
+
       await page.waitForTimeout(1000);
       const validateName = page.locator('table td').getByText('Anonymous');
       await expect(validateName).toHaveCount(1);
@@ -189,24 +192,25 @@ test.describe('Donations Management', () => {
       await expect(validateAmount).toHaveCount(2);
     });
 
-    test('DOES NOT WORK should edit a batch donation', async ({ page }) => {
+    test('should edit a batch donation', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
       await page.waitForTimeout(500);
 
-      const selBatch = page.locator('a').getByText('October 10, 2025 Batch');
+      const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
       await page.waitForTimeout(500);
 
       const editBtn = page.locator('button').getByText('Edit').last();
       await editBtn.click();
+      await page.waitForTimeout(500);
       const amount = page.locator('input').nth(2);
       await amount.fill('30.00');
-      //SAVE BUTTON NOT WORKING ON TEST- does work when I do it?
+
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validateAmount = page.locator('table td').getByText('$20.00');
-      await expect(validateAmount).toHaveCount(1);
+      const validateAmount = page.locator('table td').getByText('$30.00');
+      await expect(validateAmount).toHaveCount(2);
     });
 
     test('should cancel editing a batch donation', async ({ page }) => {
@@ -214,7 +218,7 @@ test.describe('Donations Management', () => {
       await batchesBtn.click();
       await page.waitForTimeout(500);
 
-      const selBatch = page.locator('a').getByText('October 10, 2025 Batch');
+      const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
       await page.waitForTimeout(500);
 
@@ -227,18 +231,17 @@ test.describe('Donations Management', () => {
       await expect(amount).toHaveCount(0);
     });
 
-    test('DOES NOT WORK should delete a batch donation', async ({ page }) => {
+    test('should delete a batch donation', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
       await page.waitForTimeout(500);
 
-      const selBatch = page.locator('a').getByText('October 10, 2025 Batch');
+      const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
       await page.waitForTimeout(500);
 
       const editBtn = page.locator('button').getByText('Edit').last();
       await editBtn.click();
-      //DELETE BUTTON NOT WORKING ON TEST- does work when I do it?
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
       await page.waitForTimeout(500);
