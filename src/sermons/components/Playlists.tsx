@@ -39,6 +39,7 @@ export const Playlists = () => {
   const [showSearch, setShowSearch] = React.useState<boolean>(false);
   const [photoUrl, setPhotoUrl] = React.useState<string>(null);
   const [photoType, setPhotoType] = React.useState<string>(null);
+  const imageEditorRef = React.useRef<HTMLDivElement>(null);
 
   const handleUpdated = () => {
     setCurrentPlaylist(null);
@@ -209,25 +210,36 @@ export const Playlists = () => {
     }
   }, [showSearch, playlists]);
 
+  React.useEffect(() => {
+    if ((photoUrl || photoUrl === "") && imageEditorRef.current) {
+      imageEditorRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [photoUrl]);
+
   const imageEditor = (photoUrl || photoUrl === "") && (
-    <ImageEditor
-      aspectRatio={16 / 9}
-      outputWidth={640}
-      outputHeight={360}
-      photoUrl={photoUrl}
-      onCancel={() => { setPhotoUrl(null); setPhotoType(null); }}
-      onUpdate={handlePhotoUpdated}
-    />
+    <div ref={imageEditorRef}>
+      <ImageEditor
+        aspectRatio={16 / 9}
+        outputWidth={640}
+        outputHeight={360}
+        photoUrl={photoUrl}
+        onCancel={() => { setPhotoUrl(null); setPhotoType(null); }}
+        onUpdate={handlePhotoUpdated}
+      />
+    </div>
   );
 
   if (currentPlaylist !== null) {
     return (
-      <PlaylistEdit
-        currentPlaylist={currentPlaylist}
-        updatedFunction={handleUpdated}
-        showPhotoEditor={showPhotoEditor}
-        updatedPhoto={(photoType === "playlist" && photoUrl) || null}
-      />
+      <>
+        {imageEditor}
+        <PlaylistEdit
+          currentPlaylist={currentPlaylist}
+          updatedFunction={handleUpdated}
+          showPhotoEditor={showPhotoEditor}
+          updatedPhoto={(photoType === "playlist" && photoUrl) || null}
+        />
+      </>
     );
   }
 
