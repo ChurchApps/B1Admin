@@ -1,4 +1,3 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -13,8 +12,6 @@ Sentry.init({
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration()
   ],
-  tracesSampleRate: 1.0, //  Capture 100% of the transactions
-  tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
   enableLogs: true
