@@ -84,7 +84,8 @@ export class SecondaryMenuHelper {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/funds", label: Locale.label("donations.donations.funds"), icon: "account_balance" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/statements", label: Locale.label("donations.donations.statements") || "Giving Statements", icon: "description" });
 
-    if (path.startsWith("/donations/statements")) label = Locale.label("donations.donations.statements") || "Giving Statements";
+    if (path.startsWith("/donations/stripe-import")) label = "Stripe Import";
+    else if (path.startsWith("/donations/statements")) label = Locale.label("donations.donations.statements") || "Giving Statements";
     else if (path.startsWith("/donations/funds")) label = Locale.label("donations.donations.funds");
     else if (path.startsWith("/donations/batches")) label = Locale.label("donations.donations.batches");
     else if (path.startsWith("/donations")) label = Locale.label("donations.donations.summary");

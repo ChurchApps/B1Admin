@@ -367,6 +367,15 @@ export const DonationBatchesPage = () => {
         <Box sx={{ mt: 3 }}>
           <DonationEvents />
         </Box>
+
+        {/* Stripe Import link */}
+        {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
+          <Box sx={{ mt: 4, textAlign: "center" }}>
+            <Link to="/donations/stripe-import" style={{ color: "#999", fontSize: "0.85rem", textDecoration: "none" }}>
+              Import missing Stripe transactions
+            </Link>
+          </Box>
+        )}
       </Box>
     </>
   );

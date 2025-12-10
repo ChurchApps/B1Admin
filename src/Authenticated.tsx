@@ -31,6 +31,7 @@ const PlanPage = React.lazy(() => import("./plans/PlanPage").then((module) => ({
 const MinistryPage = React.lazy(() => import("./plans/MinistryPage").then((module) => ({ default: module.MinistryPage })));
 const PlanTypePage = React.lazy(() => import("./plans/PlanTypePage").then((module) => ({ default: module.PlanTypePage })));
 const DonationBatchesPage = React.lazy(() => import("./donations/DonationBatchesPage").then((module) => ({ default: module.DonationBatchesPage })));
+const StripeImportPage = React.lazy(() => import("./donations/StripeImportPage").then((module) => ({ default: module.StripeImportPage })));
 const FundsPage = React.lazy(() => import("./donations/FundsPage").then((module) => ({ default: module.FundsPage })));
 const SongsPage = React.lazy(() => import("./plans/songs/SongsPage").then((module) => ({ default: module.SongsPage })));
 const SongPage = React.lazy(() => import("./plans/songs/SongPage").then((module) => ({ default: module.SongPage })));
@@ -100,6 +101,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/donations/funds" element={<FundsPage />} />
           <Route path="/donations/batches/:id" element={<DonationBatchPage />} />
           <Route path="/donations/batches" element={<DonationBatchesPage />} />
+          <Route path="/donations/stripe-import" element={<StripeImportPage />} />
           <Route path="/donations/statements" element={<BatchGivingStatementsPage />} />
           <Route path="/donations" element={<DonationsPage />} />
           <Route path="/forms/:id" element={<FormPage />} />
