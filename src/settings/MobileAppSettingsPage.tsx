@@ -26,6 +26,7 @@ export const MobileAppSettingsPage = () => {
       linkType: "url",
       category: "b1Tab"
     };
+    (newTab as any).visibility = "everyone";
     setSelectedTab(newTab);
   };
 

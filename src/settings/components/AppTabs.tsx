@@ -11,7 +11,8 @@ import {
   ListItemSecondaryAction,
   Tooltip,
   Divider,
-  Icon
+  Icon,
+  Chip
 } from "@mui/material";
 import {
   Edit as EditIcon,
@@ -56,6 +57,18 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
     onSelected(tab);
   };
 
+  const getVisibilityLabel = (visibility: string) => {
+    switch (visibility) {
+      case "everyone": return "everyone";
+      case "visitors": return "logged-in";
+      case "members": return "members";
+      case "staff": return "staff";
+      case "team": return "team";
+      case "groups": return "groups";
+      default: return "everyone";
+    }
+  };
+
   const renderTabItem = (tab: LinkInterface, index: number) => (
     <React.Fragment key={index}>
       <ListItem sx={{ py: 2 }}>
@@ -96,13 +109,20 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
         </ListItemIcon>
         <ListItemText
           primary={
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              {tab.text || Locale.label("settings.appTabs.untitled")}
-            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                {tab.text || Locale.label("settings.appTabs.untitled")}
+              </Typography>
+              <Chip
+                label={getVisibilityLabel((tab as any).visibility)}
+                size="small"
+                sx={{ fontSize: '0.7rem', height: 20 }}
+              />
+            </Stack>
           }
           secondary={
             <Typography variant="body2" color="text.secondary">
-              {tab.linkType === 'url' ? tab.url : `${tab.linkType} - ${tab.linkData}`}
+              {tab.linkType === 'url' ? tab.url : tab.linkType}
             </Typography>
           }
           slotProps={{

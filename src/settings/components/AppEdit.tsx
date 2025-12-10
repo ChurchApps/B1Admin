@@ -13,7 +13,11 @@ import {
   Box,
   Divider,
   IconButton,
-  Grid
+  Grid,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Typography
 } from "@mui/material";
 import {
   Save as SaveIcon,
@@ -21,7 +25,7 @@ import {
   Delete as DeleteIcon,
   Edit as EditIcon
 } from "@mui/icons-material";
-import type { LinkInterface } from "@churchapps/helpers";
+import type { LinkInterface, GroupInterface } from "@churchapps/helpers";
 import { IconPicker } from "../../components/iconPicker";
 import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale, GalleryModal } from "@churchapps/apphelper";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
@@ -41,6 +45,7 @@ interface Props {
 export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () => {} }: Props) {
   const [currentTab, setCurrentTab] = useState<LinkInterface>(null);
   const [pages, setPages] = useState<PageInterface[]>(null);
+  const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showPhotoGallery, setShowPhotoGallery] = useState<boolean>(false);
@@ -48,6 +53,10 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   useEffect(() => {
     setCurrentTab(currentTabFromProps);
   }, [currentTabFromProps]);
+
+  useEffect(() => {
+    ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => setGroups(data || []));
+  }, []);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -70,8 +79,34 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
       case "type": t.linkType = val; break;
       case "page": t.linkData = val; t.url = ArrayHelper.getOne(pages, "id", val).url; break;
       case "url": t.url = val; break;
+      case "visibility":
+        (t as any).visibility = val;
+        if (val !== "groups") (t as any).groupIds = null;
+        break;
     }
     setCurrentTab(t);
+  };
+
+  const handleGroupChange = (groupId: string, checked: boolean) => {
+    const t = { ...currentTab } as any;
+    let groupIds: string[] = t.groupIds ? JSON.parse(t.groupIds) : [];
+    if (checked) {
+      if (!groupIds.includes(groupId)) groupIds.push(groupId);
+    } else {
+      groupIds = groupIds.filter(id => id !== groupId);
+    }
+    t.groupIds = groupIds.length > 0 ? JSON.stringify(groupIds) : null;
+    setCurrentTab(t);
+  };
+
+  const getSelectedGroupIds = (): string[] => {
+    const groupIds = (currentTab as any)?.groupIds;
+    if (!groupIds) return [];
+    try {
+      return JSON.parse(groupIds);
+    } catch {
+      return [];
+    }
   };
 
   const onSelect = useCallback((iconName: string) => {
@@ -249,6 +284,49 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
               {/* Page Selection */}
               {getPage()}
+
+              {/* Visibility */}
+              <FormControl fullWidth>
+                <InputLabel id="visibility">Visibility</InputLabel>
+                <Select
+                  labelId="visibility"
+                  label="Visibility"
+                  name="visibility"
+                  value={(currentTab as any)?.visibility || "everyone"}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="everyone">Everyone (including anonymous)</MenuItem>
+                  <MenuItem value="visitors">Logged-in Users</MenuItem>
+                  <MenuItem value="members">Members & Staff</MenuItem>
+                  <MenuItem value="staff">Staff Only</MenuItem>
+                  <MenuItem value="team">Team Members (serving teams)</MenuItem>
+                  <MenuItem value="groups">Specific Groups...</MenuItem>
+                </Select>
+              </FormControl>
+
+              {/* Group Selection */}
+              {(currentTab as any)?.visibility === "groups" && (
+                <Box sx={{ pl: 2, border: '1px solid #ccc', borderRadius: 1, p: 2 }}>
+                  <Typography variant="subtitle2" sx={{ mb: 1 }}>Select Groups:</Typography>
+                  <FormGroup>
+                    {groups.map(group => (
+                      <FormControlLabel
+                        key={group.id}
+                        control={
+                          <Checkbox
+                            checked={getSelectedGroupIds().includes(group.id)}
+                            onChange={(e) => handleGroupChange(group.id, e.target.checked)}
+                          />
+                        }
+                        label={group.name}
+                      />
+                    ))}
+                  </FormGroup>
+                  {groups.length === 0 && (
+                    <Typography variant="body2" color="text.secondary">No groups found</Typography>
+                  )}
+                </Box>
+              )}
 
               {/* Delete Action */}
               {!UniqueIdHelper.isMissing(currentTab?.id) && (
