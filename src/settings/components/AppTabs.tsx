@@ -72,7 +72,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
   const renderTabItem = (tab: LinkInterface, index: number) => (
     <React.Fragment key={index}>
       <ListItem sx={{ py: 2 }}>
-        <ListItemIcon>
+        <ListItemIcon sx={{ mr: 2 }}>
           {(tab as any)?.photo ? (
             <Box
               sx={{
@@ -96,7 +96,8 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
               sx={{
                 backgroundColor: 'primary.main',
                 borderRadius: '8px',
-                p: 1,
+                width: 71,
+                height: 40,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

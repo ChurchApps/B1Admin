@@ -1,4 +1,5 @@
-import { Chip, Box, useTheme } from "@mui/material";
+import { Chip, Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import type { SectionInterface } from "../../helpers/Interfaces";
 
 interface ZoneBoxProps {
