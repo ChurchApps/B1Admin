@@ -145,10 +145,11 @@ export const PersonEdit = memo((props: Props) => {
   );
 
   const handleDelete = useCallback(() => {
+    if (!person?.id) return;
     if (window.confirm(Locale.label("people.personEdit.confirmMsg"))) {
       ApiHelper.delete("/people/" + person.id.toString(), "MembershipApi").then(() => setRedirect("/people"));
     }
-  }, [person.id]);
+  }, [person?.id]);
 
   const validateEmail = useCallback((email: string) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email), []);
 

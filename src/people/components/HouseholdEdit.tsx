@@ -65,6 +65,7 @@ export function HouseholdEdit(props: Props) {
 
   function addPerson(person?: PersonInterface) {
     const addPerson: PersonInterface = person || selectedPerson;
+    if (!addPerson || !props.household?.id) return;
     addPerson.householdId = props.household.id;
     addPerson.householdRole = "Other";
     const m = [...members];
@@ -81,6 +82,7 @@ export function HouseholdEdit(props: Props) {
   };
 
   function handleSave() {
+    if (!household?.id) return;
     if (validate()) {
       setIsSubmitting(true);
       const promises = [];

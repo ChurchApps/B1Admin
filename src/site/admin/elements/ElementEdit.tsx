@@ -102,7 +102,7 @@ export function ElementEdit(props: Props) {
   const handleStyleChange = (styles: InlineStylesInterface) => {
     const p = { ...element };
     p.styles = styles;
-    p.stylesJSON = Object.keys(styles).length > 0 ? JSON.stringify(styles) : null;
+    p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : null;
 
     setElement(p);
   };
@@ -110,7 +110,7 @@ export function ElementEdit(props: Props) {
   const handleAnimationChange = (animations: AnimationsInterface) => {
     const p = { ...element };
     p.animations = animations;
-    p.animationsJSON = Object.keys(animations).length > 0 ? JSON.stringify(animations) : null;
+    p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : null;
 
     setElement(p);
   };

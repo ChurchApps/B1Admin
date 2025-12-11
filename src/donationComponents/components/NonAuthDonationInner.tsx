@@ -114,7 +114,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       setErrors([stripePM.error.message]);
       setProcessing(false);
     } else {
-      const pm = { id: stripePM.paymentMethod.id, personId: person.id, email: email, name: person.name.display, churchId: props.churchId };
+      const pm = { id: stripePM.paymentMethod.id, personId: person?.id, email: email, name: person?.name?.display, churchId: props.churchId };
       await ApiHelper.post("/paymentmethods/addcard", pm, "GivingApi").then((result) => {
         if (result?.raw?.message) {
           setErrors([result.raw.message]);

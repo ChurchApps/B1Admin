@@ -37,15 +37,16 @@ export const ReportOutput = (props: Props) => {
       const filteredData = data.filter((d) => d.personId !== null);
       filteredData.forEach((d) => {
         const person: PersonInterface = ArrayHelper.getOne(people, "id", d.personId);
+        if (!person) return;
         const funds = Object.assign({}, ...d.funds);
         const obj = {
-          firstName: person.name.first,
-          lastName: person.name.last,
-          email: person.contactInfo?.email,
-          address: person.contactInfo.address1 + (person.contactInfo.address2 ? `, ${person.contactInfo.address2}` : ""),
-          city: person.contactInfo.city,
-          state: person.contactInfo.state,
-          zip: person.contactInfo.zip,
+          firstName: person?.name?.first || "",
+          lastName: person?.name?.last || "",
+          email: person?.contactInfo?.email || "",
+          address: (person?.contactInfo?.address1 || "") + (person?.contactInfo?.address2 ? `, ${person.contactInfo.address2}` : ""),
+          city: person?.contactInfo?.city || "",
+          state: person?.contactInfo?.state || "",
+          zip: person?.contactInfo?.zip || "",
           totalDonation: d.totalAmount,
           ...funds,
         };
@@ -68,7 +69,7 @@ export const ReportOutput = (props: Props) => {
     // Collect all unique keys across all objects
     const allKeys = new Set<string>();
     result.forEach((obj) => {
-      Object.keys(obj).forEach((key) => allKeys.add(key));
+      if (obj) Object.keys(obj).forEach((key) => allKeys.add(key));
     });
 
     // Create headers for all unique keys

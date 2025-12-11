@@ -94,8 +94,12 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
     if (group.id) {
       ApiHelper.get("/sessions?groupId=" + group.id, "AttendanceApi").then(async (data) => {
         if (data.length > 0) {
-          // Sort sessions by date (most recent first)
-          const sortedSessions = [...data].sort((a, b) => new Date(b.sessionDate).getTime() - new Date(a.sessionDate).getTime());
+          // Sort sessions by date (most recent first), with null safety
+          const sortedSessions = [...data].sort((a, b) => {
+            const dateA = a?.sessionDate ? new Date(a.sessionDate).getTime() : 0;
+            const dateB = b?.sessionDate ? new Date(b.sessionDate).getTime() : 0;
+            return dateB - dateA;
+          });
           setSessions(sortedSessions);
 
           // Load attendance counts for all sessions

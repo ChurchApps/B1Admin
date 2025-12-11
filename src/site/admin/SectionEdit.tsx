@@ -108,14 +108,14 @@ export function SectionEdit(props: Props) {
   const handleStyleChange = (styles: { name: string, value: string }[]) => {
     const p = { ...section };
     p.styles = styles;
-    p.stylesJSON = Object.keys(styles).length>0 ? JSON.stringify(styles) : null;
+    p.stylesJSON = styles && Object.keys(styles).length>0 ? JSON.stringify(styles) : null;
     setSection(p);
   };
 
   const handleAnimationChange = (animations: AnimationsInterface) => {
     const p = { ...section };
     p.animations = animations;
-    p.animationsJSON = Object.keys(animations).length>0 ? JSON.stringify(animations) : null;
+    p.animationsJSON = animations && Object.keys(animations).length>0 ? JSON.stringify(animations) : null;
     setSection(p);
   };
 

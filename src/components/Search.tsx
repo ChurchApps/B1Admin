@@ -33,7 +33,7 @@ export const Search: React.FC<Props> = (props) => {
         <TableCell style={{ paddingLeft: 0 }}>
           <PersonAvatar person={person} size="small" />
         </TableCell>
-        <TableCell>{person.name.display}</TableCell>
+        <TableCell>{person?.name?.display}</TableCell>
         <TableCell style={{ paddingRight: 0 }}>
           <button
             type="button"

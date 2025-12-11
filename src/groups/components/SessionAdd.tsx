@@ -33,6 +33,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
   }, [props.group]);
 
   const handleSave = () => {
+    if (!props.group?.id) return;
     if (validate()) {
       const s = { groupId: props.group.id, sessionDate: sessionDate } as SessionInterface;
       if (!UniqueIdHelper.isMissing(serviceTimeId)) s.serviceTimeId = serviceTimeId;

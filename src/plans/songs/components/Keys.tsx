@@ -93,9 +93,13 @@ export const Keys = memo((props: Props) => {
   //<PraiseChartsProducts praiseChartsId={songDetail?.praiseChartsId} />
 
   const download = useCallback(async (product: any) => {
-    const qs = product.download.split("?")[1].split("&");
-    const skus = qs[0].split("=")[1];
-    const keys = qs[1].split("=")[1];
+    if (!product?.download) return;
+    const queryPart = product.download.split("?")[1];
+    if (!queryPart) return;
+    const qs = queryPart.split("&");
+    const skus = qs[0]?.split("=")[1];
+    const keys = qs[1]?.split("=")[1];
+    if (!skus || !keys) return;
     const url = await PraiseChartsHelper.download(skus, product.name + "." + product.file_type, keys);
     const newWindow = window.open(url, "_blank");
     if (newWindow) {

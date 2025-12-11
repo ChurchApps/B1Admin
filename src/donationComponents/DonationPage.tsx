@@ -42,9 +42,9 @@ export const DonationPage: React.FC<Props> = (props) => {
         return;
       }
 
-      const cards = data[0].cards.data.map((card: any) => new StripePaymentMethod(card));
-      const banks = data[0].banks.data.map((bank: any) => new StripePaymentMethod(bank));
-      setCustomerId(data[0].customer.id);
+      const cards = data[0]?.cards?.data?.map((card: any) => new StripePaymentMethod(card)) || [];
+      const banks = data[0]?.banks?.data?.map((bank: any) => new StripePaymentMethod(bank)) || [];
+      setCustomerId(data[0]?.customer?.id);
       setPaymentMethods(cards.concat(banks));
     } catch (error) {
       console.error("Error loading payment methods:", error);

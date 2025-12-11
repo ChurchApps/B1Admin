@@ -319,12 +319,12 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         setCampuses(campusData);
         setServices(serviceData);
         setServiceTimes(serviceTimeData);
-        if (!groups.length) setGroups(groupData);
+        setGroups((prev) => prev.length ? prev : groupData);
       }
     }
 
-    setLoadedCategories([...loadedCategories, category]);
-  }, [loadedCategories, groups]);
+    setLoadedCategories((prev) => [...prev, category]);
+  }, [loadedCategories]);
 
   const handleCategoryExpand = (category: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
     if (isExpanded) {
@@ -490,7 +490,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data) => {
       props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
     });
-  }, [convertConditions, props]);
+  }, [convertConditions, props.updateSearchResults]);
 
   const clearAllFilters = () => {
     setActiveFilters({});
