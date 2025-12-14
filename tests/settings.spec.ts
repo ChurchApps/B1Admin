@@ -175,10 +175,12 @@ test.describe('Settings Management', () => {
   });
 
   test.describe('Form Settings', () => {
-    test('should create form', async ({ page }) => {
+    test.beforeEach(async ({ page }) => {
       const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
       await formTab.click();
+    });
 
+    test('should create form', async ({ page }) => {
       const addBtn = page.locator('[data-testid="add-form-button"]');
       await addBtn.click();
       const formName = page.locator('[name="name"]');
@@ -200,9 +202,6 @@ test.describe('Settings Management', () => {
     });
 
     test('should edit form', async ({ page }) => {
-      const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
-      await formTab.click();
-
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
       await page.waitForTimeout(2000);
@@ -215,9 +214,6 @@ test.describe('Settings Management', () => {
     });
 
     test('should cancel editing form', async ({ page }) => {
-      const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
-      await formTab.click();
-
       const editBtn = page.locator('button').getByText('edit').first();
       await editBtn.click();
       const formName = page.locator('[name="name"]');
@@ -227,15 +223,119 @@ test.describe('Settings Management', () => {
       await expect(formName).toHaveCount(0);
     });
 
-    test('should delete form', async ({ page }) => {
+    test('should add form questions', async ({ page }) => {
+      const form = page.locator('a').getByText('Octavius Test Form');
+      await form.click();
+
+      const addBtn = page.locator('button').getByText('Add Question');
+      await addBtn.click();
+      const selectBox = page.locator('[role="combobox"]').first();
+      await selectBox.click();
+      const multChoice = page.locator('li').getByText('Multiple Choice');
+      await multChoice.click();
+      const title = page.locator('[id="title"]');
+      await title.fill('I support playwright testing. True or False?');
+      const desc = page.locator('[id="title"]');
+      await desc.fill('I support playwright testing. True or False?');
+      const value = page.locator('[name="choiceValue"]');
+      await value.fill('True');
+      const choice = page.locator('[name="choiceText"]');
+      await choice.fill('True');
+      const addOpBtn = page.locator('[id="addQuestionChoiceButton"]');
+      await addOpBtn.click();
+      await value.fill('False');
+      await choice.fill('False');
+      await addOpBtn.click();
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+
+      const validatedAddition = page.locator('td button').getByText('I support playwright testing. True or False?');
+      await expect(validatedAddition).toHaveCount(1);
+    });
+
+    test('should edit form questions', async ({ page }) => {
+      const form = page.locator('a').getByText('Octavius Test Form');
+      await form.click();
+
+      const question = page.locator('td button').getByText('I support playwright testing. True or False?');
+      await question.click();
+      await page.waitForTimeout(2000);
+      const title = page.locator('[id="title"]');
+      await title.fill('True or False? I support playwright testing.');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+
+      const validatedEdit = page.locator('td button').getByText('True or False? I support playwright testing.');
+      await expect(validatedEdit).toHaveCount(1);
+    });
+
+    test('should cancel editing form questions', async ({ page }) => {
+      const form = page.locator('a').getByText('Octavius Test Form');
+      await form.click();
+
+      const question = page.locator('td button').getByText('True or False? I support playwright testing.');
+      await question.click();
+      await page.waitForTimeout(2000);
+      const title = page.locator('[id="title"]');
+      await expect(title).toHaveCount(1);
+      const cancelBtn = page.locator('button').getByText('Cancel');
+      await cancelBtn.click();
+      await expect(title).toHaveCount(0);
+    });
+
+    test('should delete form questions', async ({ page }) => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
         await dialog.accept();
       });
 
-      const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
-      await formTab.click();
+      const form = page.locator('a').getByText('Octavius Test Form');
+      await form.click();
+
+      const question = page.locator('td button').getByText('True or False? I support playwright testing.');
+      await question.click();
+      await page.waitForTimeout(2000);
+      const deleteBtn = page.locator('button').getByText('Delete');
+      await deleteBtn.click();
+      await expect(question).toHaveCount(0);
+    });
+
+    test('should add form members', async ({ page }) => {
+      const form = page.locator('a').getByText('Octavius Test Form');
+      await form.click();
+      const membersTab = page.locator('[role="tab"]').getByText('Form Members');
+      await membersTab.click();
+
+      const personSearch = page.locator('[name="personAddText"]');
+      await personSearch.fill('Dorothy Jackson');
+      const searchBtn = page.locator('[id="searchButton"]');
+      await searchBtn.click();
+      const addBtn = page.locator('button').getByText('Select');
+      await addBtn.click();
+
+      const validatedAddition = page.locator('td a').getByText('Dorothy Jackson');
+      await expect(validatedAddition).toHaveCount(1);
+    });
+
+    test('should remove form members', async ({ page }) => {
+      const form = page.locator('a').getByText('Octavius Test Form');
+      await form.click();
+      const membersTab = page.locator('[role="tab"]').getByText('Form Members');
+      await membersTab.click();
+
+      const removeBtn = page.locator('button').getByText('Remove').last();
+      await removeBtn.click();
+      const validatedDeletion = page.locator('td a').getByText('Dorothy Jackson');
+      await expect(validatedDeletion).toHaveCount(0);
+    });
+
+    test('should delete form', async ({ page }) => {
+      page.once('dialog', async dialog => {
+        expect(dialog.type()).toBe('confirm');
+        expect(dialog.message()).toContain('Are you sure');
+        await dialog.accept();
+      });
 
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();

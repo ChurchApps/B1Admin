@@ -238,31 +238,6 @@ test.describe('Attendance Management', () => {
       expect(resultsTableRows).toHaveCount(36);
     });
 
-    /* test('UNFINISHED should print attendance trends', async ({ page }) => {
-      const trendTab = page.locator('button[role="tab"]').getByText('Attendance Trend');
-      await trendTab.click();
-      await page.waitForTimeout(500);
-  
-      const printBtn = page.locator('button').getByText('print');
-      await printBtn.click();
-      await page.waitForTimeout(500);
-      
-    }); */
-
-    /* test('UNFINISHED should download attendance trends', async ({ page }) => {
-      const trendTab = page.locator('button[role="tab"]').getByText('Attendance Trend');
-      await trendTab.click();
-      await page.waitForTimeout(500);
-  
-      const downloadBtn = page.locator('button').getByText('download');
-      await downloadBtn.click();
-      const summaryBtn = page.locator('button').getByText('Summary');
-      await summaryBtn.click();
-      await page.waitForTimeout(500);
-      // doesn't work? v
-      page.waitForEvent('download');
-    }); */
-
     test('UPDATE should display group attendance', async ({ page }) => {
       // completed as I can, correcting reports display info is up to father. Data does not load in.
       const trendTab = page.locator('button[role="tab"]').getByText('Group Attendance');
