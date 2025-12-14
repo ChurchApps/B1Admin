@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
 import { navigateToPeople } from './helpers/navigation';
 
-// OCTAVIAN is the name used for testing. If you see Octavian entered anywhere, it is a result of these tests.
+// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian/Octavius entered anywhere, it is a result of these tests.
 test.describe('People Management', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
@@ -118,31 +118,30 @@ test.describe('People Management', () => {
       const notesBtn = page.locator('button').getByText('Notes');
       await notesBtn.click();
       const seekNotes = page.locator('textArea').first();
-      await seekNotes.fill('Test Note');
+      await seekNotes.fill('Octavian Test Note');
       const sendBtn = page.locator('button').getByText('send');
       await sendBtn.click();
       await page.waitForTimeout(500);
-      const validatedNote = page.locator('p').getByText('Test Note');
+      const validatedNote = page.locator('p').getByText('Octavian Test Note');
       await expect(validatedNote).toHaveCount(1);
     });
 
-    test('DOES NOT WORK should edit a note from people notes tab', async ({ page }) => {
-      //Get dad to fix duplication error v
+    test('should edit a note from people notes tab', async ({ page }) => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      //DUPLICATES instead of editing during tests- works if I do it though
 
       const notesBtn = page.locator('button').getByText('Notes');
       await notesBtn.click();
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
+      await page.waitForTimeout(500);
       const seekNotes = page.locator('textArea').first();
-      await seekNotes.fill('Testing Note');
+      await seekNotes.fill('Octavius Test Note');
       const sendBtn = page.locator('button').getByText('send');
       await sendBtn.click();
       await page.waitForTimeout(500);
-      const validatedEdit = page.locator('p').getByText('Testing Note');
+      const validatedEdit = page.locator('p').getByText('Octavius Test Note');
       await expect(validatedEdit).toHaveCount(1);
     });
 
@@ -231,40 +230,6 @@ test.describe('People Management', () => {
       const seekEither = seekText.or(seekDate);
       await seekEither.click();
     });
-
-    /* test('UNFINISHED should print current year from people donations tab', async ({ page }) => {
-      const firstPerson = page.locator('table tbody tr').first();
-      await firstPerson.click();
-      await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-  
-      const donationBtn = page.locator('button').getByText('Donations');
-      await donationBtn.click();
-      await page.waitForTimeout(5000);
-  
-      const printBtn = page.locator('[id="download-button"]');
-      await printBtn.click();
-      const currentBtn = page.locator('button').getByText('Current Year (PRINT)');
-      await currentBtn.click();
-      await page.waitForURL(/\/donations\/print\/PER\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/donations\/print\/PER\d+/);
-    }); */
-
-    /* test('UNFINISHED should print last year from people donations tab', async ({ page }) => {
-      const firstPerson = page.locator('table tbody tr').first();
-      await firstPerson.click();
-      await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-  
-      const donationBtn = page.locator('button').getByText('Donations');
-      await donationBtn.click();
-      await page.waitForTimeout(5000);
-  
-      const printBtn = page.locator('[id="download-button"]');
-      await printBtn.click();
-      const previousBtn = page.locator('button').getByText('Last Year (PRINT)');
-      await previousBtn.click();
-      await page.waitForURL(/\/donations\/print\/PER\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/donations\/print\/PER\d+/);
-    }); */
 
     /* test('DOES NOT WORK should add card from people donations tab', async ({ page }) => {
       const firstPerson = page.locator('table tbody tr').first();
@@ -518,24 +483,30 @@ test.describe('People Management', () => {
       await expect(mergeSearch).toHaveCount(0);
     });
 
-    /* test('UNFINISHED should merge person details', async ({ page }) => {
-      const firstPerson = page.locator('table tbody tr').first();
+    test('should merge person details', async ({ page }) => {
+      const firstPerson = page.locator('table tbody tr').getByText('Patricia Moore');
       await firstPerson.click();
-  
+
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/people\/PER\d+/);
-  
+
       const editBtn = page.locator('button [d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
       await editBtn.click();
       const mergeBtn = page.locator('button').getByText('merge');
       await mergeBtn.click();
       const mergeSearch = page.locator('[name="personAddText"]');
-      await mergeSearch.fill('Donald');
+      await mergeSearch.fill('Robert Moore');
       const searchBtn = page.locator('button').getByText("Search");
       await searchBtn.click();
-      const saveBtn = page.locator('button').getByText('Save').first();
-      await saveBtn.click();
-    }); */
+      const mergePplBtn = page.locator('[data-testid="select-person-button"]');
+      await mergePplBtn.click();
+      const confirmBtn = page.locator('button').getByText('Confirm');
+      await confirmBtn.click();
+      await page.waitForTimeout(5000);
+
+      const validatedMerge = page.locator('table tbody tr').getByText('Robert Moore');
+      await expect(validatedMerge).toHaveCount(0);
+    });
 
     test('should delete person from details page', async ({ page }) => {
       page.once('dialog', async dialog => {
