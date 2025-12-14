@@ -18,6 +18,11 @@ export interface ColorInterface {
   accent: string;
   darkAccent: string;
   dark: string;
+  primary?: string;
+  secondary?: string;
+  success?: string;
+  warning?: string;
+  error?: string;
 }
 
 export function PaletteEdit(props: Props) {
@@ -87,6 +92,11 @@ export function PaletteEdit(props: Props) {
       case "accent": p.accent = val; break;
       case "darkAccent": p.darkAccent = val; break;
       case "dark": p.dark = val; break;
+      case "primary": p.primary = val; break;
+      case "secondary": p.secondary = val; break;
+      case "success": p.success = val; break;
+      case "warning": p.warning = val; break;
+      case "error": p.error = val; break;
     }
     setPalette(p);
   };
@@ -192,7 +202,8 @@ export function PaletteEdit(props: Props) {
         p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" 
       }}>
         <CardWithHeader title={Locale.label("site.paletteEdit.colorValues")} icon={<ColorLensIcon />}>
-          <Grid container spacing={2}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.primary" }}>Base Colors</Typography>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
               <TextField type="color" label="Light" fullWidth name="light" value={palette.light} onChange={handleChange} data-testid="light-color-input" aria-label="Light color" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
             </Grid>
@@ -207,6 +218,25 @@ export function PaletteEdit(props: Props) {
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
               <TextField type="color" label="Dark" fullWidth name="dark" value={palette.dark} onChange={handleChange} data-testid="dark-color-input" aria-label="Dark color" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
+            </Grid>
+          </Grid>
+
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.primary" }}>Semantic Colors</Typography>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+              <TextField type="color" label="Primary" fullWidth name="primary" value={palette.primary || "#1976d2"} onChange={handleChange} data-testid="primary-color-input" aria-label="Primary color" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+              <TextField type="color" label="Secondary" fullWidth name="secondary" value={palette.secondary || "#dc004e"} onChange={handleChange} data-testid="secondary-color-input" aria-label="Secondary color" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+              <TextField type="color" label="Success" fullWidth name="success" value={palette.success || "#2e7d32"} onChange={handleChange} data-testid="success-color-input" aria-label="Success color" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+              <TextField type="color" label="Warning" fullWidth name="warning" value={palette.warning || "#ed6c02"} onChange={handleChange} data-testid="warning-color-input" aria-label="Warning color" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+              <TextField type="color" label="Error" fullWidth name="error" value={palette.error || "#d32f2f"} onChange={handleChange} data-testid="error-color-input" aria-label="Error color" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
             </Grid>
           </Grid>
         </CardWithHeader>

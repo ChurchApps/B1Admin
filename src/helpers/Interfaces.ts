@@ -140,6 +140,9 @@ export interface GlobalStyleInterface {
   churchId?: string;
   fonts?: string;
   palette?: any;
+  typography?: string;
+  spacing?: string;
+  borderRadius?: string;
   customCss?: string;
   customJS?: string;
 }
