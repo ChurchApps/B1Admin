@@ -64,7 +64,7 @@ export class EnvironmentHelper {
 
   //NOTE: None of these values are secret.
   static initProd = () => {
-    EnvironmentHelper.Common.GoogleAnalyticsTag = "G-JB7VCG51LF";
+    EnvironmentHelper.Common.GoogleAnalyticsTag = "G-47N4XQJQJ5";
     EnvironmentHelper.LessonsApi = "https://api.lessons.church";
     EnvironmentHelper.B1Url = "https://{subdomain}.b1.church";
   };
