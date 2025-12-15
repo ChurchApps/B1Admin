@@ -1,19 +1,21 @@
 import {
-  Grid, Icon, TextField, Checkbox, Typography, InputAdornment, IconButton, Box, Card, CardContent, Alert, Stack, FormControlLabel 
+  Grid, Icon, TextField, Checkbox, Typography, InputAdornment, IconButton, Box, Card, CardContent, Alert, Stack, FormControlLabel, Switch
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { NotificationPreferences } from "./components/NotificationPreferences";
 import { LinkedAccounts } from "./components/LinkedAccounts";
-import { Person as PersonIcon } from "@mui/icons-material";
+import { Person as PersonIcon, DarkMode, LightMode } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { LoadingButton } from "../components";
 import { useMutation } from "@tanstack/react-query";
+import { useThemeMode } from "../ThemeContext";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const isDemo = process.env.REACT_APP_STAGE === "demo";
+  const { mode, toggleTheme } = useThemeMode();
 
   const [password, setPassword] = useState<string>("");
   const [passwordVerify, setPasswordVerify] = useState<string>("");
@@ -272,6 +274,34 @@ export const ProfilePage = () => {
 
           <LinkedAccounts />
           <NotificationPreferences />
+
+          {/* Theme Preferences Card */}
+          <Card>
+            <CardContent>
+              <Stack spacing={2}>
+                <Typography variant="h6" gutterBottom>
+                  Theme Preferences
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                  <LightMode color={mode === "light" ? "primary" : "disabled"} />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={mode === "dark"}
+                        onChange={toggleTheme}
+                        data-testid="theme-toggle"
+                      />
+                    }
+                    label={mode === "dark" ? "Dark Mode" : "Light Mode"}
+                  />
+                  <DarkMode color={mode === "dark" ? "primary" : "disabled"} />
+                </Box>
+                <Typography variant="body2" color="text.secondary">
+                  Your theme preference is saved automatically and will be remembered on this device.
+                </Typography>
+              </Stack>
+            </CardContent>
+          </Card>
 
           {/* Account Deletion Card */}
           <Card>

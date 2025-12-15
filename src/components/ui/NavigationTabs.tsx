@@ -1,4 +1,4 @@
-import { Tabs, Tab, Menu, MenuItem, Stack, Typography } from "@mui/material";
+import { Tabs, Tab, Menu, MenuItem, Stack, Typography, useTheme } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import React, { memo, useState } from "react";
 
@@ -27,6 +27,7 @@ interface Props {
 export const NavigationTabs = memo((props: Props) => {
   const { selectedTab, onTabChange, tabs, dropdown } = props;
   const [dropdownAnchor, setDropdownAnchor] = useState<null | HTMLElement>(null);
+  const theme = useTheme();
 
   const handleDropdownOpen = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -47,7 +48,7 @@ export const NavigationTabs = memo((props: Props) => {
   };
 
   return (
-    <div style={{ backgroundColor: "#fff", borderBottom: "1px solid #e0e0e0" }}>
+    <div style={{ backgroundColor: theme.palette.background.paper, borderBottom: `1px solid ${theme.palette.divider}` }}>
       <Tabs
         value={selectedTab}
         onChange={handleTabChange}
