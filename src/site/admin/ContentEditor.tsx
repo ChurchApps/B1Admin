@@ -22,6 +22,8 @@ import { EditorToolbar } from "./EditorToolbar";
 import { HelpDialog } from "./HelpDialog";
 import { ZoneBox } from "./ZoneBox";
 import { EmptyState } from "./EmptyState";
+import { useUndoRedo } from "../hooks/useUndoRedo";
+import { HistoryPanel } from "./HistoryPanel";
 
 interface ConfigInterface {
   globalStyles?: GlobalStyleInterface;
@@ -49,6 +51,35 @@ export function ContentEditor(props: Props) {
   const windowWidth = useWindowWidth();
   const isMobileViewport = useMediaQuery("(max-width:900px)");
   const contentRef = React.useRef<HTMLDivElement>(null);
+  const initialSnapshotSavedRef = React.useRef(false);
+
+  // Undo/Redo system
+  const { canUndo, canRedo, undo, redo, saveSnapshot, history, currentHistoryIndex, restoreToIndex } = useUndoRedo({
+    pageId: props.pageId,
+    blockId: props.blockId
+  });
+  const [showHistory, setShowHistory] = useState(false);
+
+  const handleUndo = async () => {
+    const snapshot = await undo();
+    if (snapshot) {
+      window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
+    }
+  };
+
+  const handleRedo = async () => {
+    const snapshot = await redo();
+    if (snapshot) {
+      window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
+    }
+  };
+
+  const handleHistoryRestore = async (index: number) => {
+    const snapshot = await restoreToIndex(index);
+    if (snapshot) {
+      window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
+    }
+  };
 
   const [showAdd, setShowAdd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -78,7 +109,7 @@ export function ContentEditor(props: Props) {
     });
   };
 
-  const loadDataInternal = () => {
+  const loadDataInternal = (snapshotDescription?: string) => {
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       props.loadData(props.pageId || props.blockId).then((p: PageInterface | BlockInterface) => {
         if (p?.sections) {
@@ -87,24 +118,54 @@ export function ContentEditor(props: Props) {
           });
         }
         setContainer(p);
+        // Save snapshot after data loads if description provided
+        if (snapshotDescription && p) {
+          // Use setTimeout to ensure state is updated before saving snapshot
+          setTimeout(() => {
+            saveSnapshot(p, snapshotDescription);
+          }, 100);
+        }
       });
     }
   };
 
   useEffect(loadDataInternal, [props.pageId, props.blockId]);
 
+  // Save initial snapshot when container loads
+  useEffect(() => {
+    if (container && !initialSnapshotSavedRef.current) {
+      saveSnapshot(container, "Initial state");
+      initialSnapshotSavedRef.current = true;
+    }
+  }, [container, saveSnapshot]);
+
+  // Listen for undo/redo restore events - just update UI state (server restore is handled by the hook)
+  useEffect(() => {
+    const handleRestore = (e: CustomEvent) => {
+      const snapshot = e.detail;
+      if (snapshot && snapshot.sections) {
+        const restored = { ...container, sections: snapshot.sections };
+        setContainer(restored);
+      }
+    };
+
+    window.addEventListener("undoredo:restore", handleRestore as unknown as EventListener);
+    return () => window.removeEventListener("undoredo:restore", handleRestore as unknown as EventListener);
+  }, [container]);
+
   useEffect(() => {
     if (isMobileViewport) navigate("/site");
   }, [isMobileViewport]);
 
   const handleDrop = (data: any, sort: number, zone: string) => {
+    if (container) saveSnapshot(container, "Before adding section");
     if (data.data) {
       const section: SectionInterface = data.data;
       section.sort = sort;
       section.zone = zone;
       section.pageId = zone === "siteFooter" ? null : props.pageId;
       ApiHelper.post("/sections", [section], "ContentApi").then(() => {
-        loadDataInternal();
+        loadDataInternal("After adding section");
       });
     } else {
       const sec = {
@@ -139,7 +200,7 @@ export function ContentEditor(props: Props) {
             churchSettings={churchSettings}
             onEdit={handleSectionEdit}
             onMove={() => {
-              loadDataInternal();
+              loadDataInternal("After moving section");
             }}
           />
         );
@@ -151,7 +212,10 @@ export function ContentEditor(props: Props) {
             churchSettings={churchSettings}
             onEdit={handleSectionEdit}
             onMove={() => {
-              loadDataInternal();
+              loadDataInternal("After moving element");
+            }}
+            onBeforeChange={(description) => {
+              if (container) saveSnapshot(container, description);
             }}
             church={context?.userChurch?.church}
             selectedElementId={selectedElementId}
@@ -190,30 +254,33 @@ export function ContentEditor(props: Props) {
 
   const handleElementDelete = (elementId: string) => {
     if (window.confirm("Are you sure you want to delete this element?")) {
+      if (container) saveSnapshot(container, "Before deleting element");
       ApiHelper.delete(`/elements/${elementId}`, "ContentApi").then(() => {
         setSelectedElementId(null);
-        loadDataInternal();
+        loadDataInternal("After deleting element");
       });
     }
   };
 
   const handleElementDuplicate = (elementId: string) => {
+    if (container) saveSnapshot(container, "Before duplicating element");
     ApiHelper.post(`/elements/duplicate/${elementId}`, {}, "ContentApi").then(() => {
       setSelectedElementId(null);
-      loadDataInternal();
+      loadDataInternal("After duplicating element");
     });
   };
 
   const handleElementMove = (elementId: string, direction: "up" | "down") => {
+    if (container) saveSnapshot(container, "Before moving element");
     // Find the element in the sections tree
-    const findAndMoveElement = (elements: ElementInterface[], parentElements?: ElementInterface[]): boolean => {
+    const findAndMoveElement = (elements: ElementInterface[], _parentElements?: ElementInterface[]): boolean => {
       for (let i = 0; i < elements.length; i++) {
         if (elements[i].id === elementId) {
           const currentSort = elements[i].sort;
           const newSort = direction === "up" ? currentSort - 1.5 : currentSort + 1.5;
           elements[i].sort = newSort;
           ApiHelper.post("/elements", [elements[i]], "ContentApi").then(() => {
-            loadDataInternal();
+            loadDataInternal("After moving element");
           });
           return true;
         }
@@ -348,6 +415,18 @@ export function ContentEditor(props: Props) {
           onToggleAdd={() => setShowAdd(!showAdd)}
           deviceType={deviceType}
           onDeviceTypeChange={setDeviceType}
+          canUndo={canUndo}
+          canRedo={canRedo}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          onShowHistory={() => setShowHistory(true)}
+        />
+        <HistoryPanel
+          open={showHistory}
+          onClose={() => setShowHistory(false)}
+          history={history}
+          currentIndex={currentHistoryIndex}
+          onRestore={handleHistoryRestore}
         />
         <Container sx={{ mt: 5 }}>
           <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: 2 }} animation="wave" />
@@ -373,6 +452,18 @@ export function ContentEditor(props: Props) {
         onToggleAdd={() => setShowAdd(!showAdd)}
         deviceType={deviceType}
         onDeviceTypeChange={setDeviceType}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
+        onShowHistory={() => setShowHistory(true)}
+      />
+      <HistoryPanel
+        open={showHistory}
+        onClose={() => setShowHistory(false)}
+        history={history}
+        currentIndex={currentHistoryIndex}
+        onRestore={handleHistoryRestore}
       />
 
       <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }} onClick={handleClickOutside}>
@@ -395,13 +486,15 @@ export function ContentEditor(props: Props) {
                 setEditElement(null);
                 if (updatedElement) {
                   const isNewElement = !editElement.id;
-                  if (isNewElement) loadDataInternal();
+                  if (isNewElement) loadDataInternal("After adding element");
                   else {
                     const c = { ...container };
                     c.sections.forEach((s) => {
                       realtimeUpdateElement(updatedElement, s.elements);
                     });
                     setContainer(c);
+                    // Save snapshot after editing element
+                    saveSnapshot(c, "After editing element");
                   }
                 } else {
                   loadDataInternal();
@@ -415,8 +508,9 @@ export function ContentEditor(props: Props) {
             <SectionEdit
               section={editSection}
               updatedCallback={() => {
+                const isNewSection = !editSection.id;
                 setEditSection(null);
-                loadDataInternal();
+                loadDataInternal(isNewSection ? "After adding section" : "After editing section");
               }}
               globalStyles={props.config?.globalStyles}
             />

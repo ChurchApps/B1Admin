@@ -14,6 +14,7 @@ interface Props {
   churchSettings: any;
   onEdit?: (section: SectionInterface, element: ElementInterface) => void;
   onMove?: () => void;
+  onBeforeChange?: (description: string) => void;
   selectedElementId?: string | null;
   onElementClick?: (elementId: string) => void;
   onElementDoubleClick?: (element: ElementInterface) => void;
@@ -149,6 +150,7 @@ export const Section: React.FC<Props> = props => {
       const element: ElementInterface = data.data;
       element.sort = sort;
       element.sectionId = props.section.id;
+      if (props.onBeforeChange) props.onBeforeChange("Before moving element");
       ApiHelper.post("/elements", [element], "ContentApi").then(() => { props.onMove(); });
     } else {
       const element: ElementInterface = { sectionId: props.section.id, elementType: data.elementType, sort, blockId: props.section.blockId };

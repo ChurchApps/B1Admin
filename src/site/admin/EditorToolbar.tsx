@@ -12,6 +12,11 @@ interface EditorToolbarProps {
   onToggleAdd: () => void;
   deviceType: string;
   onDeviceTypeChange: (deviceType: string) => void;
+  canUndo?: boolean;
+  canRedo?: boolean;
+  onUndo?: () => void;
+  onRedo?: () => void;
+  onShowHistory?: () => void;
 }
 
 export function EditorToolbar(props: EditorToolbarProps) {
@@ -24,7 +29,12 @@ export function EditorToolbar(props: EditorToolbarProps) {
     showAdd,
     onToggleAdd,
     deviceType,
-    onDeviceTypeChange
+    onDeviceTypeChange,
+    canUndo,
+    canRedo,
+    onUndo,
+    onRedo,
+    onShowHistory
   } = props;
 
   const toggleButtonStyles = {
@@ -51,8 +61,25 @@ export function EditorToolbar(props: EditorToolbarProps) {
       backgroundColor: "#FFF", width: "100%", zIndex: 1200, boxShadow: "0 2px 12px rgba(0, 0, 0, 0.15)", borderBottom: "1px solid rgba(0, 0, 0, 0.12)" 
     }}>
       <Grid container spacing={0} sx={{ margin: 0, padding: 2 }}>
-        <Grid size={{ xs: 4 }} sx={{ display: "flex", alignItems: "center" }}>
+        <Grid size={{ xs: 4 }} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <SmallButton icon={"done"} text={Locale.label("common.done")} onClick={onDone} data-testid="content-editor-done-button" />
+          <ToggleButtonGroup size="small" sx={toggleButtonStyles}>
+            <ToggleButton value="undo" onClick={onUndo} disabled={!canUndo}>
+              <Tooltip title="Undo (Ctrl+Z)" placement="top">
+                <Icon>undo</Icon>
+              </Tooltip>
+            </ToggleButton>
+            <ToggleButton value="redo" onClick={onRedo} disabled={!canRedo}>
+              <Tooltip title="Redo (Ctrl+Shift+Z)" placement="top">
+                <Icon>redo</Icon>
+              </Tooltip>
+            </ToggleButton>
+            <ToggleButton value="history" onClick={onShowHistory}>
+              <Tooltip title="View History" placement="top">
+                <Icon>history</Icon>
+              </Tooltip>
+            </ToggleButton>
+          </ToggleButtonGroup>
         </Grid>
         <Grid size={{ xs: 4 }} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           <b style={{ fontSize: "1rem", fontWeight: 600, color: "#333" }}>
