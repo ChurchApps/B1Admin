@@ -5,6 +5,7 @@ import { StyleHelper } from "@churchapps/apphelper-website";
 import { Box, Container } from "@mui/material";
 import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@churchapps/apphelper-website";
 import type { ChurchInterface } from "@churchapps/helpers";
+import { ElementSelection } from "./ElementSelection";
 
 interface Props {
   first?: boolean,
@@ -13,6 +14,13 @@ interface Props {
   churchSettings: any;
   onEdit?: (section: SectionInterface, element: ElementInterface) => void;
   onMove?: () => void;
+  selectedElementId?: string | null;
+  onElementClick?: (elementId: string) => void;
+  onElementDoubleClick?: (element: ElementInterface) => void;
+  onElementDelete?: (elementId: string) => void;
+  onElementDuplicate?: (elementId: string) => void;
+  onElementMove?: (elementId: string, direction: "up" | "down") => void;
+  onElementUpdate?: (element: ElementInterface) => void;
 }
 
 export const Section: React.FC<Props> = props => {
@@ -24,8 +32,39 @@ export const Section: React.FC<Props> = props => {
     const result: React.ReactElement[] = [];
     props.section?.elements?.forEach(e => {
       const textColor = StyleHelper.getTextColor(props.section?.textColor, {}, props.churchSettings);
-      result.push(<Element key={e.id} element={e} onEdit={props.onEdit} onMove={props.onMove} church={props.church} churchSettings={props.churchSettings} textColor={textColor} />);
-      // Don't add DroppableArea here - Element already adds its own when onEdit is provided
+      const elementComponent = <Element key={e.id} element={e} onEdit={props.onEdit} onMove={props.onMove} church={props.church} churchSettings={props.churchSettings} textColor={textColor} />;
+
+      // Wrap with ElementSelection if selection handlers are provided
+      if (props.onElementClick && props.onElementDelete && props.onElementDuplicate && props.onElementMove && props.onElementUpdate) {
+        result.push(
+          <div
+            key={e.id}
+            onClick={(event) => {
+              event.stopPropagation();
+              props.onElementClick(e.id);
+            }}
+            onDoubleClick={(event) => {
+              event.stopPropagation();
+              if (props.onElementDoubleClick) props.onElementDoubleClick(e);
+            }}
+          >
+            <ElementSelection
+              element={e}
+              isSelected={props.selectedElementId === e.id}
+              onEdit={() => props.onEdit(null, e)}
+              onDelete={() => props.onElementDelete(e.id)}
+              onDuplicate={() => props.onElementDuplicate(e.id)}
+              onMoveUp={() => props.onElementMove(e.id, "up")}
+              onMoveDown={() => props.onElementMove(e.id, "down")}
+              onUpdate={props.onElementUpdate}
+            >
+              {elementComponent}
+            </ElementSelection>
+          </div>
+        );
+      } else {
+        result.push(elementComponent);
+      }
     });
     return result;
   };

@@ -43,6 +43,7 @@ export function ContentEditor(props: Props) {
   const [container, setContainer] = useState<PageInterface | BlockInterface>(null);
   const [editSection, setEditSection] = useState<SectionInterface>(null);
   const [editElement, setEditElement] = useState<ElementInterface>(null);
+  const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [deviceType, setDeviceType] = useState("desktop");
   const windowWidth = useWindowWidth();
@@ -153,6 +154,13 @@ export function ContentEditor(props: Props) {
               loadDataInternal();
             }}
             church={context?.userChurch?.church}
+            selectedElementId={selectedElementId}
+            onElementClick={handleElementClick}
+            onElementDoubleClick={handleElementDoubleClick}
+            onElementDelete={handleElementDelete}
+            onElementDuplicate={handleElementDuplicate}
+            onElementMove={handleElementMove}
+            onElementUpdate={handleRealtimeChange}
           />
         );
       result.push(getAddSection(section.sort + 0.1, zone));
@@ -169,6 +177,63 @@ export function ContentEditor(props: Props) {
       if (s.targetBlockId) navigate(`/site/blocks/${s.targetBlockId}`);
       else setEditSection(s);
     } else if (e) setEditElement(e);
+  };
+
+  const handleElementClick = (elementId: string) => {
+    setSelectedElementId(elementId);
+  };
+
+  const handleElementDoubleClick = (element: ElementInterface) => {
+    setSelectedElementId(null);
+    setEditElement(element);
+  };
+
+  const handleElementDelete = (elementId: string) => {
+    if (window.confirm("Are you sure you want to delete this element?")) {
+      ApiHelper.delete(`/elements/${elementId}`, "ContentApi").then(() => {
+        setSelectedElementId(null);
+        loadDataInternal();
+      });
+    }
+  };
+
+  const handleElementDuplicate = (elementId: string) => {
+    ApiHelper.post(`/elements/duplicate/${elementId}`, {}, "ContentApi").then(() => {
+      setSelectedElementId(null);
+      loadDataInternal();
+    });
+  };
+
+  const handleElementMove = (elementId: string, direction: "up" | "down") => {
+    // Find the element in the sections tree
+    const findAndMoveElement = (elements: ElementInterface[], parentElements?: ElementInterface[]): boolean => {
+      for (let i = 0; i < elements.length; i++) {
+        if (elements[i].id === elementId) {
+          const currentSort = elements[i].sort;
+          const newSort = direction === "up" ? currentSort - 1.5 : currentSort + 1.5;
+          elements[i].sort = newSort;
+          ApiHelper.post("/elements", [elements[i]], "ContentApi").then(() => {
+            loadDataInternal();
+          });
+          return true;
+        }
+        if (elements[i].elements && elements[i].elements.length > 0) {
+          if (findAndMoveElement(elements[i].elements, elements)) return true;
+        }
+      }
+      return false;
+    };
+
+    container?.sections?.forEach((section) => {
+      if (section.elements) findAndMoveElement(section.elements);
+    });
+  };
+
+  const handleClickOutside = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('.elementWrapper') && !target.closest('.MuiDialog-root')) {
+      setSelectedElementId(null);
+    }
   };
 
   let rightBarStyle: CSSProperties = {};
@@ -310,7 +375,7 @@ export function ContentEditor(props: Props) {
         onDeviceTypeChange={setDeviceType}
       />
 
-      <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }}>
+      <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }} onClick={handleClickOutside}>
         <DndProvider backend={HTML5Backend}>
           <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
           {showAdd && (
