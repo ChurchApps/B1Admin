@@ -240,17 +240,17 @@
     marked "^16.1.2"
     material-symbols "^0.33.0"
 
-"@churchapps/apphelper-website@^0.6.5":
-  version "0.6.5"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper-website/-/apphelper-website-0.6.5.tgz"
-  integrity sha512-mvP7s81DWu/Yy0PGtjnFQrJ70KKPKxALQxJ4Wqkw8eH2EBJHu8NCTqOyqmmQjj67P/EooQgYvZOlATHowL8Pgg==
+"@churchapps/apphelper-website@^0.6.6":
+  version "0.6.6"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper-website/-/apphelper-website-0.6.6.tgz"
+  integrity sha512-vrZU0Pv/+8oQGw/lkz8cqd7FluZ7gidh9qbBUsVlgM2wOZGUwmPbJjOkedSOikxxmqFqPp+OkV9lhvPLmYYplg==
   dependencies:
     rrule "^2.8.1"
 
-"@churchapps/apphelper@^0.6.0", "@churchapps/apphelper@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.6.3.tgz"
-  integrity sha512-LG0JVFr1AW4VusEvgOY8fNh3GyTRtu9om7WJhq2XilR/2p3FvUlMICkDZttTlN4H+zBKQVNu28BCX7BdYTkuzQ==
+"@churchapps/apphelper@^0.6.0", "@churchapps/apphelper@^0.6.5":
+  version "0.6.5"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.6.5.tgz"
+  integrity sha512-vt25slCqQPSWrrSEEXZZEUoz4gBHlqOshbmNO17GFBYjNSubVqyRZvQhsTa2HDVv8u91t/1ubGnMuDZQu15e4Q==
   dependencies:
     "@churchapps/helpers" "^1.2.4"
     "@emotion/cache" "^11.14.0"
