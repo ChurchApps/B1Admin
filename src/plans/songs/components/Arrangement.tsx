@@ -44,15 +44,17 @@ export const Arrangement = memo((props: Props) => {
     const data: any = await ApiHelper.get("/praiseCharts/raw/" + songDetail.praiseChartsId, "ContentApi");
     const a = { ...props.arrangement };
     const lines = data.details.lyrics.split("\n");
+
     const newLines = [];
     let nextLineIsTitle = true;
     for (let i = 0; i < lines.length; i++) {
-      if (nextLineIsTitle) newLines.push("[" + lines[i] + "]");
-      else newLines.push(lines[i]);
-      if (lines[i].trim() === "") nextLineIsTitle = true;
-      else nextLineIsTitle = false;
+      const line = lines[i].trim();
+      if (nextLineIsTitle) newLines.push(`[${line}]`);
+      else newLines.push(line);
+      nextLineIsTitle = line === ""
     }
-    a.lyrics = newLines.join("\n");
+    a.lyrics = newLines.join("\n").replaceAll("[]", "").trim();
+
     ApiHelper.post("/arrangements", [a], "ContentApi").then(() => {
       setCanImportLyrics(false);
       props.reload();
