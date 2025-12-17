@@ -60,11 +60,15 @@ export const ServiceOrder = memo((props: Props) => {
     try {
       await ApiHelper.post("/plans", updatedPlan, "DoingApi");
       setShowLessonSelector(false);
-      loadData(); // Reload data to get the new lesson items
+      // Directly load lesson items using the venueId we just saved
+      // (props.plan hasn't updated yet, so we can't rely on loadData)
+      const venueData = await ApiHelper.get(`/venues/public/planItems/${venueId}`, "LessonsApi");
+      setPlanItems(venueData || []);
+      setItemsFromLesson(true);
     } catch (error) {
       console.error("Error updating plan with lesson:", error);
     }
-  }, [props.plan, loadData]);
+  }, [props.plan]);
 
   const saveHierarchicalItems = async (items: PlanItemInterface[], parentId?: string): Promise<void> => {
     if (!items || items.length === 0) return;
@@ -195,64 +199,84 @@ export const ServiceOrder = memo((props: Props) => {
     [loadData]
   );
 
-  const wrapPlanItem = useCallback(
-    (pi: PlanItemInterface, index: number) => {
-      return (
-      <>
-        {canEdit && !itemsFromLesson && showHeaderDrop && (
-          <DroppableWrapper
-            accept="planItemHeader"
-            onDrop={(item) => {
-              handleDrop(item, index + 0.5);
-            }}>
-            <Box
-              sx={{
-                height: 40,
-                border: "2px dashed",
-                borderColor: "primary.main",
-                borderRadius: 1,
-                backgroundColor: "primary.light",
-                opacity: 0.3,
-                mb: 1,
-              }}
-            />
-          </DroppableWrapper>
-        )}
-        {canEdit && !itemsFromLesson ? (
-          <DraggableWrapper
-            dndType="planItemHeader"
-            data={pi}
-            draggingCallback={(isDragging) => {
-              setShowHeaderDrop(isDragging);
-            }}>
+  const getSectionDuration = (section: PlanItemInterface) => {
+    let totalSeconds = 0;
+    section.children?.forEach((child) => {
+      if (child.seconds) {
+        totalSeconds += child.seconds;
+      }
+    });
+    return totalSeconds;
+  };
+
+  const renderPlanItems = () => {
+    const result: JSX.Element[] = [];
+    let cumulativeTime = 0;
+
+    planItems.forEach((pi, index) => {
+      const sectionStartTime = cumulativeTime;
+
+      result.push(
+        <React.Fragment key={pi.id || `temp-${index}`}>
+          {canEdit && !itemsFromLesson && showHeaderDrop && (
+            <DroppableWrapper
+              accept="planItemHeader"
+              onDrop={(item) => {
+                handleDrop(item, index + 0.5);
+              }}>
+              <Box
+                sx={{
+                  height: 40,
+                  border: "2px dashed",
+                  borderColor: "primary.main",
+                  borderRadius: 1,
+                  backgroundColor: "primary.light",
+                  opacity: 0.3,
+                  mb: 1,
+                }}
+              />
+            </DroppableWrapper>
+          )}
+          {canEdit && !itemsFromLesson ? (
+            <DraggableWrapper
+              dndType="planItemHeader"
+              data={pi}
+              draggingCallback={(isDragging) => {
+                setShowHeaderDrop(isDragging);
+              }}>
+              <PlanItem
+                planItem={pi}
+                setEditPlanItem={setEditPlanItem}
+                showItemDrop={showItemDrop}
+                onDragChange={(dragging) => {
+                  setShowItemDrop(dragging);
+                }}
+                onChange={() => {
+                  loadData();
+                }}
+                readOnly={itemsFromLesson}
+                startTime={sectionStartTime}
+              />
+            </DraggableWrapper>
+          ) : (
             <PlanItem
               planItem={pi}
-              setEditPlanItem={setEditPlanItem}
-              showItemDrop={showItemDrop}
-              onDragChange={(dragging) => {
-                setShowItemDrop(dragging);
-              }}
-              onChange={() => {
-                loadData();
-              }}
+              setEditPlanItem={itemsFromLesson ? null : setEditPlanItem}
+              showItemDrop={false}
+              onDragChange={() => { }}
+              onChange={() => { }}
               readOnly={itemsFromLesson}
+              startTime={sectionStartTime}
             />
-          </DraggableWrapper>
-        ) : (
-          <PlanItem
-            planItem={pi}
-            setEditPlanItem={itemsFromLesson ? null : setEditPlanItem}
-            showItemDrop={false}
-            onDragChange={() => { }}
-            onChange={() => { }}
-            readOnly={itemsFromLesson}
-          />
-        )}
-      </>
+          )}
+        </React.Fragment>
       );
-    },
-    [canEdit, showHeaderDrop, showItemDrop, handleDrop, loadData, itemsFromLesson]
-  );
+
+      cumulativeTime += getSectionDuration(pi);
+    });
+
+    return result;
+  };
 
   React.useEffect(() => {
     loadData();
@@ -319,7 +343,7 @@ export const ServiceOrder = memo((props: Props) => {
                 </Box>
               ) : (
                 <>
-                  {planItems.map((pi, i) => <React.Fragment key={pi.id || `temp-${i}`}>{wrapPlanItem(pi, i)}</React.Fragment>)}
+                  {renderPlanItems()}
                   {showHeaderDrop && !itemsFromLesson && (
                     <DroppableWrapper
                       accept="planItemHeader"

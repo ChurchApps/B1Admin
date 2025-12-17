@@ -5,6 +5,7 @@ import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
+import { SongDialog } from "./SongDialog";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -13,10 +14,12 @@ interface Props {
   setEditPlanItem: (pi: PlanItemInterface) => void;
   onChange?: () => void;
   readOnly?: boolean;
+  startTime?: number;
 }
 
 export const PlanItem = React.memo((props: Props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -54,7 +57,9 @@ export const PlanItem = React.memo((props: Props) => {
 
   const getChildren = () => {
     const result: JSX.Element[] = [];
+    let cumulativeTime = props.startTime || 0;
     props.planItem.children?.forEach((c, index) => {
+      const childStartTime = cumulativeTime;
       result.push(
         <>
           {props.showItemDrop && (
@@ -82,10 +87,11 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} />
           </DraggableWrapper>
         </>
       );
+      cumulativeTime += c.seconds || 0;
     });
     if (props.showItemDrop) {
       result.push(
@@ -112,49 +118,72 @@ export const PlanItem = React.memo((props: Props) => {
     return result;
   };
 
-  const getHeaderRow = () => (
-    <>
-      <div className="planItemHeader">
-        {!props.readOnly && (
-          <span style={{ float: "right", marginTop: -2, marginBottom: -2 }}>
-            <button
-              type="button"
-              onClick={(e) => setAnchorEl(e.currentTarget)}
-              style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-              <Icon>add</Icon>
-            </button>
-            &nbsp;
-            <button
-              type="button"
-              onClick={() => props.setEditPlanItem(props.planItem)}
-              style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-              <Icon>edit</Icon>
-            </button>
+  const getSectionDuration = () => {
+    let totalSeconds = 0;
+    props.planItem.children?.forEach((child) => {
+      if (child.seconds) {
+        totalSeconds += child.seconds;
+      }
+    });
+    return totalSeconds;
+  };
+
+  const getHeaderRow = () => {
+    const sectionDuration = getSectionDuration();
+    return (
+      <>
+        <div className="planItemHeader">
+          <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+            <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
+            </span>
+            {!props.readOnly && (
+              <>
+                <button
+                  type="button"
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                  style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                  <Icon>add</Icon>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => props.setEditPlanItem(props.planItem)}
+                  style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                  <Icon>edit</Icon>
+                </button>
+              </>
+            )}
           </span>
-        )}
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
-        <span>{props.planItem.label}</span>
-      </div>
-      {getChildren()}
-    </>
-  );
+          {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+          <span>{props.planItem.label}</span>
+        </div>
+        {getChildren()}
+      </>
+    );
+  };
 
   const getItemRow = () => (
     <>
       <div className="planItem">
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.planItem.seconds)}</div>
-        <div>
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
           {!props.readOnly && (
-            <span style={{ float: "right", marginTop: -2, marginBottom: -2 }}>
+            <>
+              <span style={{ width: 24 }} />
               <button
                 type="button"
                 onClick={() => props.setEditPlanItem(props.planItem)}
                 style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
                 <Icon>edit</Icon>
               </button>
-            </span>
+            </>
           )}
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
           {props.planItem.link ? (
             <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
               {props.planItem.label}
@@ -171,21 +200,27 @@ export const PlanItem = React.memo((props: Props) => {
   const getSongRow = () => (
     <>
       <div className="planItem">
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.planItem.seconds)}</div>
-        <div>
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
           {!props.readOnly && (
-            <span style={{ float: "right", marginTop: -2, marginBottom: -2 }}>
+            <>
+              <span style={{ width: 24 }} />
               <button
                 type="button"
                 onClick={() => props.setEditPlanItem(props.planItem)}
                 style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
                 <Icon>edit</Icon>
               </button>
-            </span>
+            </>
           )}
-          {props.planItem.link ? (
-            <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setDialogKeyId(props.planItem.relatedId); }}>
               {props.planItem.label}
             </a>
           ) : (
@@ -245,6 +280,7 @@ export const PlanItem = React.memo((props: Props) => {
           </MenuItem>
         </Menu>
       )}
+      {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
     </>
   );
 });
