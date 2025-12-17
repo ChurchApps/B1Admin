@@ -6,6 +6,7 @@ import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { SongDialog } from "./SongDialog";
+import { LessonDialog } from "./LessonDialog";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -20,6 +21,7 @@ interface Props {
 export const PlanItem = React.memo((props: Props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
+  const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -134,9 +136,10 @@ export const PlanItem = React.memo((props: Props) => {
       <>
         <div className="planItemHeader">
           <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
-            </span>
+            {sectionDuration > 0 && <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>}
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
+          </span>
             {!props.readOnly && (
               <>
                 <button
@@ -166,6 +169,7 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
           <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
@@ -184,7 +188,11 @@ export const PlanItem = React.memo((props: Props) => {
         {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
-          {props.planItem.link ? (
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId); }}>
+              {props.planItem.label}
+            </a>
+          ) : props.planItem.link ? (
             <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
               {props.planItem.label}
             </a>
@@ -201,6 +209,7 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
           <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
@@ -281,6 +290,7 @@ export const PlanItem = React.memo((props: Props) => {
         </Menu>
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
+      {lessonSectionId && <LessonDialog sectionId={lessonSectionId} sectionName={props.planItem.label} onClose={() => setLessonSectionId(null)} />}
     </>
   );
 });

@@ -3,6 +3,7 @@ import { EnvironmentHelper as WebsiteEnvironmentHelper } from "@churchapps/apphe
 
 export class EnvironmentHelper {
   private static LessonsApi = "";
+  static LessonsUrl = "";
   static B1Url = "";
   static ChurchAppsUrl = "";
   static Common = CommonEnvironmentHelper;
@@ -59,6 +60,7 @@ export class EnvironmentHelper {
   //NOTE: None of these values are secret.
   static initStaging = () => {
     EnvironmentHelper.LessonsApi = "https://api.staging.lessons.church";
+    EnvironmentHelper.LessonsUrl = "https://staging.lessons.church";
     EnvironmentHelper.B1Url = "https://{subdomain}.staging.b1.church";
   };
 
@@ -66,6 +68,7 @@ export class EnvironmentHelper {
   static initProd = () => {
     EnvironmentHelper.Common.GoogleAnalyticsTag = "G-47N4XQJQJ5";
     EnvironmentHelper.LessonsApi = "https://api.lessons.church";
+    EnvironmentHelper.LessonsUrl = "https://lessons.church";
     EnvironmentHelper.B1Url = "https://{subdomain}.b1.church";
   };
 }
