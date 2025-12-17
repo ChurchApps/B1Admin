@@ -1192,13 +1192,12 @@
       "subtitle": "Configure plan type settings"
     },
     "serviceOrder": {
+      "add": "Add",
+      "addLesson": "Add Lesson",
       "addSection": "Add Section",
-      "associateLesson": "Associate Lesson",
-      "customize": "Customize",
       "noItems": "No items in service order",
       "orderOfService": "Order of Service",
-      "print": "Print",
-      "switchLesson": "Switch Lesson"
+      "print": "Print"
     }
   },
   "profile": {

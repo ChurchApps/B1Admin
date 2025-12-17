@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Stack, Typography, Button, Box, Card, CardContent } from "@mui/material";
-import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem } from "@mui/material";
+import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import { type PlanInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../helpers";
@@ -11,7 +11,6 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlanItem } from "./PlanItem";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
-import { Link } from "react-router-dom";
 
 interface Props {
   plan: PlanInterface;
@@ -24,51 +23,40 @@ export const ServiceOrder = memo((props: Props) => {
   const [showHeaderDrop, setShowHeaderDrop] = React.useState(false);
   const [showItemDrop, setShowItemDrop] = React.useState(false);
   const [showLessonSelector, setShowLessonSelector] = React.useState(false);
-  const [itemsFromLesson, setItemsFromLesson] = React.useState(false);
+  const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
 
   const loadData = useCallback(async () => {
     if (props.plan?.id) {
       try {
         const data = await ApiHelper.get("/planItems/plan/" + props.plan.id.toString(), "DoingApi");
         setPlanItems(data || []);
-        setItemsFromLesson(false);
-
-        // If no plan items and plan has venue content, load from LessonsApi
-        if ((!data || data.length === 0) && props.plan.contentType === "venue" && props.plan.contentId) {
-          const venueData = await ApiHelper.get(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
-          setPlanItems(venueData || []);
-          setItemsFromLesson(true);
-        }
       } catch (error) {
         console.error("Error loading plan items:", error);
         setPlanItems([]);
-        setItemsFromLesson(false);
       }
     }
-  }, [props.plan?.id, props.plan?.contentType, props.plan?.contentId]);
+  }, [props.plan?.id]);
 
   const addHeader = useCallback(() => {
     setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
   }, [props.plan.id, planItems?.length]);
 
   const handleLessonSelect = useCallback(async (venueId: string) => {
-    const updatedPlan = {
-      ...props.plan,
-      contentType: "venue",
-      contentId: venueId
-    };
     try {
-      await ApiHelper.post("/plans", updatedPlan, "DoingApi");
       setShowLessonSelector(false);
-      // Directly load lesson items using the venueId we just saved
-      // (props.plan hasn't updated yet, so we can't rely on loadData)
+      // Load lesson items from the venue
       const venueData = await ApiHelper.get(`/venues/public/planItems/${venueId}`, "LessonsApi");
-      setPlanItems(venueData || []);
-      setItemsFromLesson(true);
+
+      if (venueData && venueData.length > 0) {
+        // Immediately save the lesson items as editable plan items
+        await saveHierarchicalItems(venueData);
+        // Reload data to show the new editable items
+        loadData();
+      }
     } catch (error) {
-      console.error("Error updating plan with lesson:", error);
+      console.error("Error importing lesson items:", error);
     }
-  }, [props.plan]);
+  }, [props.plan, loadData]);
 
   const saveHierarchicalItems = async (items: PlanItemInterface[], parentId?: string): Promise<void> => {
     if (!items || items.length === 0) return;
@@ -100,28 +88,6 @@ export const ServiceOrder = memo((props: Props) => {
     }
   };
 
-  const handleCustomize = useCallback(async () => {
-    if (!itemsFromLesson || planItems.length === 0) return;
-
-    try {
-      // Save hierarchical plan items level by level
-      await saveHierarchicalItems(planItems);
-
-      // Clear the lesson association from the plan
-      const updatedPlan = {
-        ...props.plan,
-        contentType: null,
-        contentId: null
-      };
-      await ApiHelper.post("/plans", updatedPlan, "DoingApi");
-
-      // Reload data to show the new editable items
-      loadData();
-    } catch (error) {
-      console.error("Error customizing lesson items:", error);
-    }
-  }, [itemsFromLesson, planItems, props.plan, loadData]);
-
   const editContent = useMemo(
     () => (
       <Stack direction="row" spacing={1}>
@@ -139,53 +105,44 @@ export const ServiceOrder = memo((props: Props) => {
         </Button>
         {canEdit && (
           <>
-            {!itemsFromLesson && (
+            <ButtonGroup variant="contained" size="small">
               <Button
-                variant="contained"
                 startIcon={<AddIcon />}
                 onClick={addHeader}
-                size="small"
                 sx={{
                   textTransform: "none",
-                  borderRadius: 2,
+                  borderRadius: "8px 0 0 8px",
                   fontWeight: 600,
                 }}>
                 {Locale.label("plans.serviceOrder.addSection")}
               </Button>
-            )}
-            {itemsFromLesson && planItems.length > 0 && (
               <Button
-                variant="contained"
-                startIcon={<EditIcon />}
-                onClick={handleCustomize}
-                size="small"
+                onClick={(e) => setAddMenuAnchor(e.currentTarget)}
                 sx={{
-                  textTransform: "none",
-                  borderRadius: 2,
-                  fontWeight: 600,
+                  borderRadius: "0 8px 8px 0",
+                  minWidth: 32,
+                  px: 0.5,
                 }}>
-                {Locale.label("plans.serviceOrder.customize")}
+                <ArrowDropDownIcon />
               </Button>
-            )}
-            {(planItems.length === 0 || itemsFromLesson) && (
-              <Button
-                variant="outlined"
-                startIcon={<MenuBookIcon />}
-                onClick={() => setShowLessonSelector(true)}
-                size="small"
-                sx={{
-                  textTransform: "none",
-                  borderRadius: 2,
-                  fontWeight: 600,
-                }}>
-                {itemsFromLesson ? Locale.label("plans.serviceOrder.switchLesson") : Locale.label("plans.serviceOrder.associateLesson")}
-              </Button>
-            )}
+            </ButtonGroup>
+            <Menu
+              anchorEl={addMenuAnchor}
+              open={Boolean(addMenuAnchor)}
+              onClose={() => setAddMenuAnchor(null)}
+            >
+              <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
+                <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
+              </MenuItem>
+              <MenuItem onClick={() => { setAddMenuAnchor(null); setShowLessonSelector(true); }}>
+                <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addLesson")}
+              </MenuItem>
+            </Menu>
           </>
         )}
       </Stack>
     ),
-    [props.plan?.id, addHeader, canEdit, planItems.length, itemsFromLesson, handleCustomize]
+    [props.plan?.id, addHeader, canEdit, addMenuAnchor]
   );
 
   const handleDrop = useCallback(
@@ -218,7 +175,7 @@ export const ServiceOrder = memo((props: Props) => {
 
       result.push(
         <React.Fragment key={pi.id || `temp-${index}`}>
-          {canEdit && !itemsFromLesson && showHeaderDrop && (
+          {canEdit && showHeaderDrop && (
             <DroppableWrapper
               accept="planItemHeader"
               onDrop={(item) => {
@@ -237,7 +194,7 @@ export const ServiceOrder = memo((props: Props) => {
               />
             </DroppableWrapper>
           )}
-          {canEdit && !itemsFromLesson ? (
+          {canEdit ? (
             <DraggableWrapper
               dndType="planItemHeader"
               data={pi}
@@ -254,18 +211,17 @@ export const ServiceOrder = memo((props: Props) => {
                 onChange={() => {
                   loadData();
                 }}
-                readOnly={itemsFromLesson}
                 startTime={sectionStartTime}
               />
             </DraggableWrapper>
           ) : (
             <PlanItem
               planItem={pi}
-              setEditPlanItem={itemsFromLesson ? null : setEditPlanItem}
+              setEditPlanItem={null}
               showItemDrop={false}
               onDragChange={() => { }}
               onChange={() => { }}
-              readOnly={itemsFromLesson}
+              readOnly={true}
               startTime={sectionStartTime}
             />
           )}
@@ -344,7 +300,7 @@ export const ServiceOrder = memo((props: Props) => {
               ) : (
                 <>
                   {renderPlanItems()}
-                  {showHeaderDrop && !itemsFromLesson && (
+                  {showHeaderDrop && (
                     <DroppableWrapper
                       accept="planItemHeader"
                       onDrop={(item) => {
