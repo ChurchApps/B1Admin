@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "tuosito.com",
-      "doneAlert": "Fatto. Si prega di cliccare questo link solo una volta."
+      "doneAlert": "Fatto. Si prega di cliccare questo link solo una volta.",
+      "errorInvalid": "Formato non valido. Inserire solo il dominio (es., tuosito.com o sub.tuosito.org). Non includere http://, percorsi o barre."
     },
     "domainSettingsEdit": {
       "act": "Azione",

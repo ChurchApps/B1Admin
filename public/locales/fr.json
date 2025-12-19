@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "votresite.com",
-      "doneAlert": "Terminé. Veuillez ne cliquer sur ce lien qu'une seule fois."
+      "doneAlert": "Terminé. Veuillez ne cliquer sur ce lien qu'une seule fois.",
+      "errorInvalid": "Format invalide. Entrez uniquement le domaine (ex., votresite.com ou sub.votresite.org). N'incluez pas http://, chemins ou barres obliques."
     },
     "domainSettingsEdit": {
       "act": "Action",

@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "ihreseite.de",
-      "doneAlert": "Fertig. Bitte klicken Sie diesen Link nur einmal."
+      "doneAlert": "Fertig. Bitte klicken Sie diesen Link nur einmal.",
+      "errorInvalid": "Ungültiges Format. Geben Sie nur die Domain ein (z.B. ihreseite.de oder sub.ihreseite.org). Kein http://, Pfade oder Schrägstriche."
     },
     "domainSettingsEdit": {
       "act": "Aktion",

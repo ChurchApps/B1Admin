@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "완료되었습니다. 이 링크는 한 번만 클릭하세요."
+      "doneAlert": "완료되었습니다. 이 링크는 한 번만 클릭하세요.",
+      "errorInvalid": "잘못된 형식입니다. 도메인만 입력하세요 (예: yoursite.com 또는 sub.yoursite.org). http://, 경로 또는 슬래시를 포함하지 마세요."
     },
     "domainSettingsEdit": {
       "act": "작업",

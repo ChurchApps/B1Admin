@@ -1386,7 +1386,8 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "Done.  Please only click this link once."
+      "doneAlert": "Done.  Please only click this link once.",
+      "errorInvalid": "Invalid format. Enter domain only (e.g., yoursite.com or sub.yoursite.org). Do not include http://, paths, or trailing slashes."
     },
     "domainSettingsEdit": {
       "act": "Action",

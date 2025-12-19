@@ -1354,7 +1354,8 @@
     },
     "domain": {
       "domainPlaceholder": "tusitio.com",
-      "doneAlert": "Listo. Por favor haga clic en este enlace solo una vez."
+      "doneAlert": "Listo. Por favor haga clic en este enlace solo una vez.",
+      "errorInvalid": "Formato inválido. Ingrese solo el dominio (ej., tusitio.com o sub.tusitio.org). No incluya http://, rutas ni barras."
     },
     "domainSettingsEdit": {
       "act": "Acción",

@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "Tapos na. Mangyaring i-click lang ang link na ito nang isang beses."
+      "doneAlert": "Tapos na. Mangyaring i-click lang ang link na ito nang isang beses.",
+      "errorInvalid": "Hindi wastong format. Ilagay lamang ang domain (hal., yoursite.com o sub.yoursite.org). Huwag isama ang http://, mga path o slash."
     },
     "domainSettingsEdit": {
       "act": "Aksyon",

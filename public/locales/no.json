@@ -1364,7 +1364,8 @@
     },
     "domain": {
       "domainPlaceholder": "dittsite.com",
-      "doneAlert": "Ferdig. Vennligst klikk bare på denne lenken en gang."
+      "doneAlert": "Ferdig. Vennligst klikk bare på denne lenken en gang.",
+      "errorInvalid": "Ugyldig format. Skriv kun domenet (f.eks. dittsite.com eller sub.dittsite.org). Ikke inkluder http://, stier eller skråstreker."
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Kataloggodkjenningsgruppe",

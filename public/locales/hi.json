@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "पूर्ण। कृपया इस लिंक को केवल एक बार क्लिक करें।"
+      "doneAlert": "पूर्ण। कृपया इस लिंक को केवल एक बार क्लिक करें।",
+      "errorInvalid": "अमान्य प्रारूप। केवल डोमेन दर्ज करें (जैसे, yoursite.com या sub.yoursite.org)। http://, पथ या स्लैश शामिल न करें।"
     },
     "domainSettingsEdit": {
       "act": "क्रिया",

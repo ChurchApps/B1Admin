@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "seusite.com",
-      "doneAlert": "Concluído. Por favor, clique neste link apenas uma vez."
+      "doneAlert": "Concluído. Por favor, clique neste link apenas uma vez.",
+      "errorInvalid": "Formato inválido. Digite apenas o domínio (ex., seusite.com ou sub.seusite.org). Não inclua http://, caminhos ou barras."
     },
     "domainSettingsEdit": {
       "act": "Ação",

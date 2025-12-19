@@ -1353,7 +1353,8 @@
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
-      "doneAlert": "完成。请只点击此链接一次。"
+      "doneAlert": "完成。请只点击此链接一次。",
+      "errorInvalid": "格式无效。仅输入域名（如 yoursite.com 或 sub.yoursite.org）。不要包含 http://、路径或斜杠。"
     },
     "domainSettingsEdit": {
       "act": "操作",
