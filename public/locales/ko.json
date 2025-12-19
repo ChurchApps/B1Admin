@@ -1349,7 +1349,11 @@
       "subdom": "서브도메인",
       "general": "일반",
       "churchInfo": "교회 정보",
-      "churchSettings": "교회 설정"
+      "churchSettings": "교회 설정",
+      "churchInfoSubtitle": "이름, 주소 및 서브도메인",
+      "generalSubtitle": "지원 연락처, 디렉토리 및 가시성",
+      "givingSubtitle": "결제 게이트웨이 및 수수료 옵션",
+      "domainsSubtitle": "사용자 정의 도메인 구성"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

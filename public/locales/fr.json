@@ -1349,7 +1349,11 @@
       "subdom": "Sous-domaine",
       "general": "Général",
       "churchInfo": "Informations sur l'Église",
-      "churchSettings": "Paramètres de l'Église"
+      "churchSettings": "Paramètres de l'Église",
+      "churchInfoSubtitle": "Nom, adresse et sous-domaine",
+      "generalSubtitle": "Contact de support, répertoire et visibilité",
+      "givingSubtitle": "Passerelle de paiement et options de frais",
+      "domainsSubtitle": "Configuration de domaine personnalisé"
     },
     "domain": {
       "domainPlaceholder": "votresite.com",

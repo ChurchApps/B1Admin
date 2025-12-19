@@ -1,6 +1,10 @@
 import React from "react";
-import { ArrayHelper, type DomainInterface, ApiHelper, Locale } from "@churchapps/apphelper";
-import { TextField, Grid, TableCell, TableBody, TableRow, Table, TableHead, Alert } from "@mui/material";
+import { type DomainInterface } from "@churchapps/helpers";
+import { ArrayHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { TextField, TableCell, TableBody, TableRow, Table, TableHead, Alert, Box, Typography, IconButton } from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import LinkIcon from "@mui/icons-material/Link";
 
 interface Props {
   churchId: string;
@@ -119,15 +123,22 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
     domains.forEach((d) => {
       const index = idx;
       result.push(
-        <TableRow>
-          <TableCell>{d.domainName}</TableCell>
-          <TableCell>
-            <button
-              type="button"
+        <TableRow key={index} sx={{ "&:hover": { bgcolor: "action.hover" } }}>
+          <TableCell sx={{ py: 1.5 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <LinkIcon sx={{ color: "text.disabled", fontSize: 18 }} />
+              <Typography variant="body2">{d.domainName}</Typography>
+            </Box>
+          </TableCell>
+          <TableCell sx={{ py: 1.5, width: 50 }}>
+            <IconButton
+              size="small"
               onClick={() => handleDelete(index)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-              {Locale.label("common.delete")}
-            </button>
+              sx={{ color: "error.main", "&:hover": { bgcolor: "error.light", color: "error.contrastText" } }}
+              aria-label={Locale.label("common.delete")}
+            >
+              <DeleteOutlineIcon fontSize="small" />
+            </IconButton>
           </TableCell>
         </TableRow>
       );
@@ -149,51 +160,67 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
 
   return (
-    <>
-      {/* <div className="subHead">{Locale.label("settings.domainSettingsEdit.domains")}</div> */}
-      <p style={{ fontSize: 12 }}>
-        {Locale.label("settings.domainSettingsEdit.domMsg")} <i style={{ fontSize: 12 }}>CNAME: proxy.b1.church</i>
-        {Locale.label("settings.domainSettingsEdit.domMsg2")} <i style={{ fontSize: 12 }}>A: 3.23.251.61</i>
-        {Locale.label("settings.domainSettingsEdit.domMsg3")}{" "}
-        <button type="button" onClick={relink} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-          {Locale.label("settings.domainSettingsEdit.domMsgConnect")}
-        </button>
-        {Locale.label("settings.domainSettingsEdit.domMsg4")}
-      </p>
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          {error && <Alert severity="error" style={{ marginBottom: 16 }}>{error}</Alert>}
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>{Locale.label("settings.domainSettingsEdit.domain")}</TableCell>
-                <TableCell>{Locale.label("settings.domainSettingsEdit.act")}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {getRows()}
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    fullWidth
-                    name="domainName"
-                    size="small"
-                    value={addDomainName}
-                    onChange={handleChange}
-                    placeholder={Locale.label("settings.domain.domainPlaceholder")}
-                    error={!!error}
-                  />
-                </TableCell>
-                <TableCell>
-                  <button type="button" onClick={handleAdd} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-                    {Locale.label("common.add")}
-                  </button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Grid>
-      </Grid>
-    </>
+    <Box>
+      <Box sx={{
+        p: 2,
+        mb: 2,
+        bgcolor: "action.hover",
+        borderRadius: 2,
+        border: "1px solid",
+        borderColor: "divider"
+      }}>
+        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+          {Locale.label("settings.domainSettingsEdit.domMsg")} <code style={{ backgroundColor: "rgba(0,0,0,0.08)", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>CNAME: proxy.b1.church</code>
+          {Locale.label("settings.domainSettingsEdit.domMsg2")} <code style={{ backgroundColor: "rgba(0,0,0,0.08)", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>A: 3.23.251.61</code>
+          {Locale.label("settings.domainSettingsEdit.domMsg3")}{" "}
+          <Typography
+            component="span"
+            onClick={relink}
+            sx={{ color: "primary.main", cursor: "pointer", textDecoration: "underline", "&:hover": { color: "primary.dark" } }}
+          >
+            {Locale.label("settings.domainSettingsEdit.domMsgConnect")}
+          </Typography>
+          {Locale.label("settings.domainSettingsEdit.domMsg4")}
+        </Typography>
+      </Box>
+
+      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+
+      <Table size="small" sx={{ "& .MuiTableCell-root": { borderColor: "divider" } }}>
+        <TableHead>
+          <TableRow sx={{ bgcolor: "action.hover" }}>
+            <TableCell sx={{ fontWeight: 600, py: 1.5 }}>{Locale.label("settings.domainSettingsEdit.domain")}</TableCell>
+            <TableCell sx={{ fontWeight: 600, py: 1.5, width: 50 }}></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {getRows()}
+          <TableRow>
+            <TableCell sx={{ py: 1 }}>
+              <TextField
+                fullWidth
+                name="domainName"
+                size="small"
+                value={addDomainName}
+                onChange={handleChange}
+                placeholder={Locale.label("settings.domain.domainPlaceholder")}
+                error={!!error}
+                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1.5 } }}
+              />
+            </TableCell>
+            <TableCell sx={{ py: 1 }}>
+              <IconButton
+                size="small"
+                onClick={handleAdd}
+                sx={{ color: "primary.main", "&:hover": { bgcolor: "primary.light", color: "primary.contrastText" } }}
+                aria-label={Locale.label("common.add")}
+              >
+                <AddCircleOutlineIcon />
+              </IconButton>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </Box>
   );
 };

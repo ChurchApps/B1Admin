@@ -131,8 +131,8 @@ export const ManageChurch = () => {
         </Box>
       )}
 
-      {/* Tab Content */}
-      {(selectedTab === "roles" || selectedTab === "mobileApps") && <Box sx={{ p: 2 }}>{getCurrentTab()}</Box>}
+      {/* Tab Content - hidden when editing church settings */}
+      {!showChurchSettings && (selectedTab === "roles" || selectedTab === "mobileApps") && <Box sx={{ p: 2 }}>{getCurrentTab()}</Box>}
     </>
   );
 };

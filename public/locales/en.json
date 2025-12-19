@@ -1382,7 +1382,11 @@
       "subdom": "Subdomain",
       "general": "General",
       "churchInfo": "Church Information",
-      "churchSettings": "Church Settings"
+      "churchSettings": "Church Settings",
+      "churchInfoSubtitle": "Name, address, and subdomain",
+      "generalSubtitle": "Support contact, directory, and visibility",
+      "givingSubtitle": "Payment gateway and fee options",
+      "domainsSubtitle": "Custom domain configuration"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

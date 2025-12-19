@@ -2,11 +2,17 @@ import React from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { ApiHelper, InputBox, ErrorMessages, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { GivingSettingsEdit } from "./GivingSettingsEdit";
-import { TextField, Grid, Divider, Chip, Box, Typography } from "@mui/material";
+import { TextField, Grid, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import BusinessIcon from "@mui/icons-material/Business";
+import TuneIcon from "@mui/icons-material/Tune";
+import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import LanguageIcon from "@mui/icons-material/Language";
 import { DomainSettingsEdit } from "./DomainSettingsEdit";
 import { DirectoryApproveSettingsEdit } from "./DirectoryApproveSettingsEdit";
 import { SupportContactSettingsEdit } from "./SupportContactSettingsEdit";
 import { VisbilityPrefSettingsEdit } from "./VisibilityPrefSettingsEdit";
+import { SettingsSectionHeader } from "./SettingsSectionHeader";
 
 interface Props {
   church: ChurchInterface;
@@ -18,6 +24,42 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   const [errors, setErrors] = React.useState([]);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
   const childErrorsRef = React.useRef<string[]>([]);
+  const [expanded, setExpanded] = React.useState<string | false>("church-info");
+
+  const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  // Shared accordion styles for a warm, approachable look
+  const accordionStyles = {
+    mb: 1.5,
+    borderRadius: "12px !important",
+    boxShadow: "none",
+    border: "1px solid",
+    borderColor: "divider",
+    "&:before": { display: "none" },
+    "&.Mui-expanded": {
+      margin: "0 0 12px 0",
+    },
+    transition: "all 0.2s ease-in-out",
+    "&:hover": {
+      borderColor: "primary.light",
+    },
+  };
+
+  const accordionSummaryStyles = {
+    borderRadius: "12px",
+    minHeight: 64,
+    "&.Mui-expanded": {
+      minHeight: 64,
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
+    },
+    "& .MuiAccordionSummary-content": {
+      alignItems: "center",
+      gap: 2,
+    },
+  };
 
   const handleSave = async () => {
     if (validate()) {
@@ -99,42 +141,50 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
     <InputBox id="churchSettingsBox" cancelFunction={props.updatedFunction} saveFunction={handleSave} headerText={Locale.label("settings.churchSettingsEdit.churchSettings")} headerIcon="business">
       <ErrorMessages errors={errors} />
 
-      {/* Church Information Section */}
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "primary.main" }}>
-          {Locale.label("settings.churchSettingsEdit.churchInfo")}
-        </Typography>
-
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <TextField
-              fullWidth
-              name="churchName"
-              label={Locale.label("settings.churchSettingsEdit.churchName")}
-              value={church?.name || ""}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              data-testid="church-name-input"
-              aria-label="Church name"
-            />
+      {/* Church Information Accordion */}
+      <Accordion
+        expanded={expanded === "church-info"}
+        onChange={handleAccordionChange("church-info")}
+        sx={accordionStyles}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
+          <SettingsSectionHeader
+            icon={<BusinessIcon />}
+            color="primary"
+            title={Locale.label("settings.churchSettingsEdit.churchInfo")}
+            subtitle={church?.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle")}
+          />
+        </AccordionSummary>
+        <AccordionDetails sx={{ pt: 2 }}>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                name="churchName"
+                label={Locale.label("settings.churchSettingsEdit.churchName")}
+                value={church?.name || ""}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                data-testid="church-name-input"
+                aria-label="Church name"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                name="subDomain"
+                label={Locale.label("settings.churchSettingsEdit.subdom")}
+                value={church?.subDomain || ""}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                data-testid="subdomain-input"
+                aria-label="Subdomain"
+                helperText={Locale.label("settings.church.subdomainHelper")}
+              />
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <TextField
-              fullWidth
-              name="subDomain"
-              label={Locale.label("settings.churchSettingsEdit.subdom")}
-              value={church?.subDomain || ""}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              data-testid="subdomain-input"
-              aria-label="Subdomain"
-              helperText={Locale.label("settings.church.subdomainHelper")}
-            />
-          </Grid>
-        </Grid>
 
-        <Box sx={{ mt: 2 }}>
-          <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600, color: "text.secondary" }}>
+          <Typography variant="subtitle2" sx={{ mt: 3, mb: 2, fontWeight: 600, color: "text.secondary" }}>
             {Locale.label("person.address")}
           </Typography>
           <Grid container spacing={2}>
@@ -166,32 +216,69 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
               <TextField fullWidth name="country" label={Locale.label("person.country")} value={church?.country || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
             </Grid>
           </Grid>
-        </Box>
-      </Box>
+        </AccordionDetails>
+      </Accordion>
 
-      {/* General Settings Section */}
-      <Divider variant="middle" textAlign="center" sx={{ marginTop: 2, marginBottom: 2 }}>
-        <Chip label={Locale.label("settings.churchSettingsEdit.general")} size="small" color="primary" />
-      </Divider>
-      <SupportContactSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-      <DirectoryApproveSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-      <VisbilityPrefSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+      {/* General Settings Accordion */}
+      <Accordion
+        expanded={expanded === "general"}
+        onChange={handleAccordionChange("general")}
+        sx={accordionStyles}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
+          <SettingsSectionHeader
+            icon={<TuneIcon />}
+            color="secondary"
+            title={Locale.label("settings.churchSettingsEdit.general")}
+            subtitle={Locale.label("settings.churchSettingsEdit.generalSubtitle")}
+          />
+        </AccordionSummary>
+        <AccordionDetails sx={{ pt: 1 }}>
+          <SupportContactSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+          <DirectoryApproveSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+          <VisbilityPrefSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+        </AccordionDetails>
+      </Accordion>
 
-      {/* Giving Settings Section */}
+      {/* Giving Settings Accordion */}
       {UserHelper.checkAccess(Permissions.givingApi.settings.edit) && (
-        <>
-        <Divider variant="middle" textAlign="center" sx={{ marginTop: 2, marginBottom: 2 }}>
-            <Chip label={Locale.label("settings.givingSettingsEdit.giving")} size="small" color="primary" />
-          </Divider>
-          {giveSection()}
-        </>
+        <Accordion
+          expanded={expanded === "giving"}
+          onChange={handleAccordionChange("giving")}
+          sx={accordionStyles}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
+            <SettingsSectionHeader
+              icon={<VolunteerActivismIcon />}
+              color="success"
+              title={Locale.label("settings.givingSettingsEdit.giving")}
+              subtitle={Locale.label("settings.churchSettingsEdit.givingSubtitle")}
+            />
+          </AccordionSummary>
+          <AccordionDetails sx={{ pt: 2 }}>
+            {giveSection()}
+          </AccordionDetails>
+        </Accordion>
       )}
 
-      {/* Domains Section */}
-      <Divider variant="middle" textAlign="center" sx={{ marginTop: 2, marginBottom: 2 }}>
-        <Chip label={Locale.label("settings.domainSettingsEdit.domains")} size="small" color="primary" />
-      </Divider>
-      <DomainSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+      {/* Domains Accordion */}
+      <Accordion
+        expanded={expanded === "domains"}
+        onChange={handleAccordionChange("domains")}
+        sx={accordionStyles}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
+          <SettingsSectionHeader
+            icon={<LanguageIcon />}
+            color="info"
+            title={Locale.label("settings.domainSettingsEdit.domains")}
+            subtitle={Locale.label("settings.churchSettingsEdit.domainsSubtitle")}
+          />
+        </AccordionSummary>
+        <AccordionDetails sx={{ pt: 2 }}>
+          <DomainSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+        </AccordionDetails>
+      </Accordion>
     </InputBox>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography
+  Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography
 } from "@mui/material";
 import { type GenericSettingInterface, type GroupInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
@@ -63,18 +63,18 @@ export const DirectoryApproveSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
 
   return (
-    <div style={{ marginTop: 10, marginBottom: 10 }}>
-      <Stack direction="row" alignItems="center">
-        <Typography>{Locale.label("settings.directoryApprovalSettingsEdit.directoryApprovalGroup")}</Typography>
+    <Box sx={{ mb: 2.5, pb: 2.5, borderBottom: "1px solid", borderColor: "divider" }}>
+      <Stack direction="row" alignItems="center" sx={{ mb: 1.5 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("settings.directoryApprovalSettingsEdit.directoryApprovalGroup")}</Typography>
         <Tooltip title={Locale.label("settings.directoryApprovalSettingsEdit.forceMsg")} arrow>
-          <Icon fontSize="small" sx={{ cursor: "pointer", color: "#757575", paddingLeft: "2px" }}>
-            help
+          <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>
+            help_outline
           </Icon>
         </Tooltip>
       </Stack>
-      <Grid container spacing={{ xs: 0, sm: 1, md: 2 }}>
+      <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
             <InputLabel id="groups">{Locale.label("settings.directoryApprovalSettingsEdit.groups")}</InputLabel>
             <Select labelId="groups" name="groups" label={Locale.label("settings.directoryApprovalSettingsEdit.groups")} value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
               <MenuItem value="">{Locale.label("settings.directoryApprovalSettingsEdit.none")}</MenuItem>
@@ -89,7 +89,7 @@ export const DirectoryApproveSettingsEdit: React.FC<Props> = (props) => {
           </FormControl>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
             <InputLabel id="directoryVisibility">{Locale.label("settings.directoryVisibility.label")}</InputLabel>
             <Select
               fullWidth
@@ -106,6 +106,6 @@ export const DirectoryApproveSettingsEdit: React.FC<Props> = (props) => {
           </FormControl>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };

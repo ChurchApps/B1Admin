@@ -1349,7 +1349,11 @@
       "subdom": "Sottodominio",
       "general": "Generale",
       "churchInfo": "Informazioni sulla Chiesa",
-      "churchSettings": "Impostazioni della Chiesa"
+      "churchSettings": "Impostazioni della Chiesa",
+      "churchInfoSubtitle": "Nome, indirizzo e sottodominio",
+      "generalSubtitle": "Contatto di supporto, directory e visibilità",
+      "givingSubtitle": "Gateway di pagamento e opzioni commissioni",
+      "domainsSubtitle": "Configurazione dominio personalizzato"
     },
     "domain": {
       "domainPlaceholder": "tuosito.com",

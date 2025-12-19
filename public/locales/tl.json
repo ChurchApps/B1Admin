@@ -1349,7 +1349,11 @@
       "subdom": "Subdomain",
       "general": "Pangkalahatan",
       "churchInfo": "Impormasyon ng Simbahan",
-      "churchSettings": "Mga Setting ng Simbahan"
+      "churchSettings": "Mga Setting ng Simbahan",
+      "churchInfoSubtitle": "Pangalan, address at subdomain",
+      "generalSubtitle": "Kontak ng suporta, direktoryo at visibility",
+      "givingSubtitle": "Payment gateway at mga opsyon sa bayad",
+      "domainsSubtitle": "Custom domain configuration"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

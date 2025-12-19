@@ -1350,7 +1350,11 @@
       "subdom": "Subdominio",
       "general": "General",
       "churchInfo": "Información de la Iglesia",
-      "churchSettings": "Configuraciones de la Iglesia"
+      "churchSettings": "Configuraciones de la Iglesia",
+      "churchInfoSubtitle": "Nombre, dirección y subdominio",
+      "generalSubtitle": "Contacto de soporte, directorio y visibilidad",
+      "givingSubtitle": "Pasarela de pagos y opciones de tarifas",
+      "domainsSubtitle": "Configuración de dominio personalizado"
     },
     "domain": {
       "domainPlaceholder": "tusitio.com",

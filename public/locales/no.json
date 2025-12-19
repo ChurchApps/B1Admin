@@ -1349,7 +1349,11 @@
       "subdom": "Subdomene",
       "general": "Generelt",
       "churchInfo": "Kirkeinformasjon",
-      "churchSettings": "Kirkeinnstillinger"
+      "churchSettings": "Kirkeinnstillinger",
+      "churchInfoSubtitle": "Navn, adresse og subdomene",
+      "generalSubtitle": "Supportkontakt, katalog og synlighet",
+      "givingSubtitle": "Betalingsgateway og gebyrinnstillinger",
+      "domainsSubtitle": "Egendefinert domenekonfigurasjon"
     },
     "domainSettingsEdit": {
       "act": "Handling",

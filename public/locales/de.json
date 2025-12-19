@@ -1349,7 +1349,11 @@
       "subdom": "Subdomain",
       "general": "Allgemein",
       "churchInfo": "Kircheninformationen",
-      "churchSettings": "Kircheneinstellungen"
+      "churchSettings": "Kircheneinstellungen",
+      "churchInfoSubtitle": "Name, Adresse und Subdomain",
+      "generalSubtitle": "Supportkontakt, Verzeichnis und Sichtbarkeit",
+      "givingSubtitle": "Zahlungsgateway und Gebührenoptionen",
+      "domainsSubtitle": "Benutzerdefinierte Domainkonfiguration"
     },
     "domain": {
       "domainPlaceholder": "ihreseite.de",

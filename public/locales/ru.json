@@ -1349,7 +1349,11 @@
       "subdom": "Поддомен",
       "general": "Общее",
       "churchInfo": "Информация о церкви",
-      "churchSettings": "Настройки церкви"
+      "churchSettings": "Настройки церкви",
+      "churchInfoSubtitle": "Название, адрес и поддомен",
+      "generalSubtitle": "Контакт поддержки, каталог и видимость",
+      "givingSubtitle": "Платёжный шлюз и настройки комиссий",
+      "domainsSubtitle": "Настройка пользовательского домена"
     },
     "domain": {
       "domainPlaceholder": "вашсайт.com",

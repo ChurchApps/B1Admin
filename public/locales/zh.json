@@ -1349,7 +1349,11 @@
       "subdom": "子域",
       "general": "常规",
       "churchInfo": "教会信息",
-      "churchSettings": "教会设置"
+      "churchSettings": "教会设置",
+      "churchInfoSubtitle": "名称、地址和子域",
+      "generalSubtitle": "支持联系人、目录和可见性",
+      "givingSubtitle": "支付网关和费用选项",
+      "domainsSubtitle": "自定义域名配置"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",

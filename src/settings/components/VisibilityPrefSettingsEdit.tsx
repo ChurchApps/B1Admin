@@ -1,7 +1,7 @@
 import { type GenericSettingInterface, type VisibilityPreferenceInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
 import {
-  FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography, type SelectChangeEvent 
+  Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography, type SelectChangeEvent
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -80,18 +80,18 @@ export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
 
   return (
-    <div style={{ marginBottom: 10 }}>
-      <Stack direction="row" alignItems="center">
-        <Typography>{Locale.label("settings.visibilityPrefSettingsEdit.visibilityPreference")}</Typography>
+    <Box sx={{ mb: 0 }}>
+      <Stack direction="row" alignItems="center" sx={{ mb: 1.5 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("settings.visibilityPrefSettingsEdit.visibilityPreference")}</Typography>
         <Tooltip title={Locale.label("settings.visibilityPrefSettingsEdit.forceMsg")} arrow>
-          <Icon fontSize="small" sx={{ cursor: "pointer", color: "#757575", paddingLeft: "2px" }}>
-            help
+          <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>
+            help_outline
           </Icon>
         </Tooltip>
       </Stack>
-      <Grid container spacing={{ xs: 0, sm: 1, md: 2 }}>
+      <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
             <InputLabel id="address">{Locale.label("settings.visibilityPrefSettingsEdit.address")}</InputLabel>
             <Select fullWidth labelId="address" label={Locale.label("settings.visibilityPrefSettingsEdit.address")} name="address" value={pref.address} defaultValue="" onChange={handlePrefChange}>
               <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
@@ -101,7 +101,7 @@ export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
           </FormControl>
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
             <InputLabel id="phone">{Locale.label("settings.visibilityPrefSettingsEdit.phoneNum")}</InputLabel>
             <Select
               fullWidth
@@ -118,7 +118,7 @@ export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
           </FormControl>
         </Grid>
         <Grid size={{ xs: 12, sm: 12, md: 4 }}>
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
             <InputLabel id="email">{Locale.label("settings.visibilityPrefSettingsEdit.email")}</InputLabel>
             <Select fullWidth labelId="email" label={Locale.label("settings.visibilityPrefSettingsEdit.email")} name="email" value={pref.email} defaultValue="" onChange={handlePrefChange}>
               <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
@@ -128,6 +128,6 @@ export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
           </FormControl>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Icon, Stack, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Icon, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { type GenericSettingInterface, UniqueIdHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
@@ -36,17 +36,18 @@ export const SupportContactSettingsEdit: React.FC<Props> = (props) => {
   useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
 
   return (
-    <div style={{ marginBottom: 10 }}>
-      <Stack direction="row" alignItems="center">
-        <Typography>{Locale.label("settings.supportContactSettingsEdit.supportContact")}</Typography>
+    <Box sx={{ mb: 2.5, pb: 2.5, borderBottom: "1px solid", borderColor: "divider", "&:last-child": { borderBottom: "none", mb: 0, pb: 0 } }}>
+      <Stack direction="row" alignItems="center" sx={{ mb: 1.5 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("settings.supportContactSettingsEdit.supportContact")}</Typography>
         <Tooltip arrow title={Locale.label("settings.supportContactSettingsEdit.forceMsg")}>
-          <Icon fontSize="small" sx={{ cursor: "pointer", color: "#757575", paddingLeft: "2px" }}>
-            help
+          <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>
+            help_outline
           </Icon>
         </Tooltip>
       </Stack>
       <TextField
         fullWidth
+        size="small"
         name="supportContact"
         label={Locale.label("settings.supportContactSettingsEdit.link")}
         value={value || ""}
@@ -56,6 +57,6 @@ export const SupportContactSettingsEdit: React.FC<Props> = (props) => {
         }}
         helperText={Locale.label("settings.supportContactSettingsEdit.linkHelperText")}
       />
-    </div>
+    </Box>
   );
 };

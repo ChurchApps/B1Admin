@@ -1349,7 +1349,11 @@
       "subdom": "उपडोमेन",
       "general": "सामान्य",
       "churchInfo": "चर्च जानकारी",
-      "churchSettings": "चर्च सेटिंग्स"
+      "churchSettings": "चर्च सेटिंग्स",
+      "churchInfoSubtitle": "नाम, पता और उपडोमेन",
+      "generalSubtitle": "सहायता संपर्क, निर्देशिका और दृश्यता",
+      "givingSubtitle": "भुगतान गेटवे और शुल्क विकल्प",
+      "domainsSubtitle": "कस्टम डोमेन कॉन्फ़िगरेशन"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
