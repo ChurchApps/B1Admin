@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Card, Chip, Grid, Icon, IconButton, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import {
   Add as AddIcon,
   Article as ArticleIcon,
@@ -23,6 +24,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
 
 export const PagesPage = () => {
+  const theme = useTheme();
   const windowWidth = useWindowWidth();
   const navigate = useNavigate();
   const [pageTree, setPageTree] = useState<PageLink[]>([]);
@@ -31,6 +33,11 @@ export const PagesPage = () => {
   const [links, setLinks] = useState<LinkInterface[]>([]);
   const [editLink, setEditLink] = useState<LinkInterface | null>(null);
   const [showLogin, setShowLogin] = useState<GenericSettingInterface>();
+
+  console.log("=== Theme ===");
+
+  console.log("Theme in PagesPage:", theme);
+  console.log(theme.palette.mode);
 
   const getExpandControl = (item: PageLink, level: number) => {
     if (item.children && item.children.length > 0) {
@@ -255,7 +262,7 @@ export const PagesPage = () => {
         </Button>
       </PageHeader>
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: "#FFF", paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
+        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.mode === "light" ? "#FFF" : "#292929", paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
           <DndProvider backend={HTML5Backend}>
             <h2 style={{ marginTop: 0 }}>{Locale.label("site.pagesPage.pages")}</h2>
             <div>
