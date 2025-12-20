@@ -255,7 +255,7 @@ export const PagesPage = () => {
         </Button>
       </PageHeader>
       <Grid container spacing={3}>
-        <Grid xs={12} md={2} style={{ backgroundColor: "#FFF", paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
+        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: "#FFF", paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
           <DndProvider backend={HTML5Backend}>
             <h2 style={{ marginTop: 0 }}>{Locale.label("site.pagesPage.pages")}</h2>
             <div>
@@ -295,10 +295,10 @@ export const PagesPage = () => {
                 />
               </div>
             </div>
-            <SiteNavigation links={links} refresh={loadData} select={(link) => {}} handleDrop={handleDrop} />
+            <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} />
           </DndProvider>
         </Grid>
-        <Grid xs={12} md={10} style={{ position: "relative", zIndex: 1 }}>
+        <Grid size={{ xs: 12, md: 10 }} style={{ position: "relative", zIndex: 1 }}>
           <Box sx={{ p: 3 }}>
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
