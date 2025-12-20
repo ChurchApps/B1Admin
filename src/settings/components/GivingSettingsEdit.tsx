@@ -19,7 +19,13 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const [publicKey, setPublicKey] = React.useState("");
   const [privateKey, setPrivateKey] = React.useState("");
   const [payFees, setPayFees] = React.useState<boolean>(false);
+  const [currency, setCurrency] = React.useState("usd");
   const [errors, setErrors] = React.useState<string[]>([]);
+
+  //these are just temporary until we get the list as per the languages we support
+  const stripeSupportedCurrencies = [
+    "usd", "eur", "gbp", "cad", "aud", "inr", "jpy", "sgd", "hkd", "sek", "nok", "dkk", "chf", "mxn", "brl"
+  ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     e.preventDefault();
@@ -32,6 +38,9 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         break;
       case "privateKey":
         setPrivateKey(e.target.value);
+        break;
+      case "currency":
+        setCurrency(e.target.value);
         break;
     }
   };
@@ -75,6 +84,19 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
+  const getCurrency = () => {
+    if (provider !== "Stripe") return null;
+    return (<>
+    <Typography variant="body2" color="textSecondary" component="div">Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here: <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
+    <FormControl fullWidth>
+      <InputLabel>Currency</InputLabel>
+      <Select name="currency" label="Currency" value={currency} onChange={handleChange}>
+        {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
+      </Select>
+    </FormControl>
+    </>)
+  }
+
   const save = async () => {
     try {
       if (provider === "") {
@@ -84,6 +106,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         gw.provider = provider;
         gw.publicKey = publicKey;
         gw.payFees = payFees;
+        gw.currency = currency;
         if (privateKey !== "") gw.privateKey = privateKey;
         await ApiHelper.post("/gateways", [gw], "GivingApi");
       }
@@ -113,11 +136,13 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
       setProvider("");
       setPublicKey("");
       setPayFees(false);
+      setCurrency("usd");
     } else {
       setGateway(gateways[0]);
       setProvider(gateways[0].provider || "");
       setPublicKey(gateways[0].publicKey || "");
       setPayFees(gateways[0].payFees || false);
+      setCurrency(gateways[0].currency || "usd");
     }
     setPrivateKey("");
   };
@@ -157,6 +182,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
           </Grid>
         )}
         {getKeys()}
+        {getCurrency()}
       </Grid>
       <FeeOptionsSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} provider={provider} />
     </>
