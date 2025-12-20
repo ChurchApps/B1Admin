@@ -34,11 +34,6 @@ export const PagesPage = () => {
   const [editLink, setEditLink] = useState<LinkInterface | null>(null);
   const [showLogin, setShowLogin] = useState<GenericSettingInterface>();
 
-  console.log("=== Theme ===");
-
-  console.log("Theme in PagesPage:", theme);
-  console.log(theme.palette.mode);
-
   const getExpandControl = (item: PageLink, level: number) => {
     if (item.children && item.children.length > 0) {
       return (
@@ -278,7 +273,7 @@ export const PagesPage = () => {
                 <Switch
                   onChange={handleSwitchChange}
                   checked={showLogin ? checked : true}
-                  inputProps={{ "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") }}
+                  slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") } }}
                   data-testid="show-login-switch"
                 />
               </Stack>
