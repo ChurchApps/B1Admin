@@ -10,40 +10,56 @@ import {
   Select,
   MenuItem,
   Stack,
+  Typography,
+  Box,
 } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (venueId: string) => void;
+  onSelect: (venueId: string, venueName?: string) => void;
+  venueId?: string;
+  returnVenueName?: boolean;
 }
 
-export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect }) => {
+export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, returnVenueName }) => {
   const [lessonTree, setLessonTree] = useState<any>({});
   const [selectedProgram, setSelectedProgram] = useState<string>("");
   const [selectedStudy, setSelectedStudy] = useState<string>("");
   const [selectedLesson, setSelectedLesson] = useState<string>("");
   const [selectedVenue, setSelectedVenue] = useState<string>("");
+  const [venueInfo, setVenueInfo] = useState<any>(null);
 
   const loadLessonTree = useCallback(async () => {
+    // If venueId is provided, skip loading the tree
+    if (venueId) {
+      try {
+        const venueData = await ApiHelper.getAnonymous("/venues/public/" + venueId, "LessonsApi");
+        setVenueInfo(venueData);
+      } catch (error) {
+        console.error("Error loading venue info:", error);
+      }
+      return;
+    }
+
     try {
       const data = await ApiHelper.getAnonymous("/lessons/public/tree", "LessonsApi");
       setLessonTree(data || {});
-      
+
       // Auto-select defaults
       if (data?.programs?.length > 0) {
         const firstProgram = data.programs[0];
         setSelectedProgram(firstProgram.id);
-        
+
         if (firstProgram.studies?.length > 0) {
           const firstStudy = firstProgram.studies[0];
           setSelectedStudy(firstStudy.id);
-          
+
           if (firstStudy.lessons?.length > 0) {
             const firstLesson = firstStudy.lessons[0];
             setSelectedLesson(firstLesson.id);
-            
+
             if (firstLesson.venues?.length > 0) {
               setSelectedVenue(firstLesson.venues[0].id);
             }
@@ -54,7 +70,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect }) => 
       console.error("Error loading lesson tree:", error);
       setLessonTree({});
     }
-  }, []);
+  }, [venueId]);
 
   const getCurrentProgram = useCallback(() => {
     return lessonTree?.programs?.find((p: any) => p.id === selectedProgram);
@@ -93,17 +109,24 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect }) => 
   }, []);
 
   const handleSelect = useCallback(() => {
-    if (selectedVenue) {
-      onSelect(selectedVenue);
+    if (venueId) {
+      // Use the pre-associated venue
+      onSelect(venueId, venueInfo?.name);
+      onClose();
+    } else if (selectedVenue) {
+      const currentLessonData = getCurrentLesson();
+      const selectedVenueData = currentLessonData?.venues?.find((v: any) => v.id === selectedVenue);
+      onSelect(selectedVenue, returnVenueName ? selectedVenueData?.name : undefined);
       onClose();
     }
-  }, [selectedVenue, onSelect, onClose]);
+  }, [venueId, venueInfo, selectedVenue, getCurrentLesson, returnVenueName, onSelect, onClose]);
 
   const handleClose = useCallback(() => {
     setSelectedProgram("");
     setSelectedStudy("");
     setSelectedLesson("");
     setSelectedVenue("");
+    setVenueInfo(null);
     onClose();
   }, [onClose]);
 
@@ -114,6 +137,31 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect }) => 
   const currentProgram = getCurrentProgram();
   const currentStudy = getCurrentStudy();
   const currentLesson = getCurrentLesson();
+
+  // If venueId is provided, show simplified view
+  if (venueId) {
+    return (
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+        <DialogTitle>{Locale.label("plans.lessonSelector.addFromLesson") || "Add from Associated Lesson"}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ py: 2 }}>
+            <Typography variant="body1">
+              {Locale.label("plans.lessonSelector.usingAssociatedLesson") || "Using associated lesson:"}
+            </Typography>
+            <Typography variant="h6" sx={{ mt: 1, color: "primary.main" }}>
+              {venueInfo?.name || "Loading..."}
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
+          <Button onClick={handleSelect} disabled={!venueInfo} variant="contained">
+            {Locale.label("plans.lessonSelector.addLesson") || "Add Lesson"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>

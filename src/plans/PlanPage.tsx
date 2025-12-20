@@ -40,7 +40,7 @@ export const PlanPage = () => {
 
   const getCurrentTab = () => {
     if (selectedTab === "assignments") return <Assignment plan={plan} />;
-    if (selectedTab === "order") return <ServiceOrder plan={plan} />;
+    if (selectedTab === "order") return <ServiceOrder plan={plan} onPlanUpdate={loadData} />;
     return null;
   };
 

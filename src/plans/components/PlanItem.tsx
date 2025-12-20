@@ -7,6 +7,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
+import { ActionDialog } from "./ActionDialog";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -22,6 +23,7 @@ export const PlanItem = React.memo((props: Props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
+  const [actionId, setActionId] = React.useState<string>(null);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -258,6 +260,42 @@ export const PlanItem = React.memo((props: Props) => {
     </div>
   );
 
+  const getActionRow = () => (
+    <>
+      <div className="planItem">
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
+          {!props.readOnly && (
+            <>
+              <span style={{ width: 24 }} />
+              <button
+                type="button"
+                onClick={() => props.setEditPlanItem(props.planItem)}
+                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                <Icon>edit</Icon>
+              </button>
+            </>
+          )}
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setActionId(props.planItem.relatedId); }}>
+              {props.planItem.label}
+            </a>
+          ) : (
+            props.planItem.label
+          )}
+        </div>
+        {getDescriptionRow()}
+      </div>
+    </>
+  );
+
   const getPlanItem = () => {
     switch (props.planItem.itemType) {
       case "header":
@@ -265,6 +303,8 @@ export const PlanItem = React.memo((props: Props) => {
       case "song":
       case "arrangementKey":
         return getSongRow();
+      case "action":
+        return getActionRow();
       case "item":
         return getItemRow();
     }
@@ -291,6 +331,7 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
       {lessonSectionId && <LessonDialog sectionId={lessonSectionId} sectionName={props.planItem.label} onClose={() => setLessonSectionId(null)} />}
+      {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} />}
     </>
   );
 });
