@@ -343,7 +343,7 @@ export const PagesPage = () => {
                   </Box>
                 ) : (
                   <Table sx={{ minWidth: 650 }}>
-                    <TableHead sx={{ backgroundColor: "grey.50", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
+                    <TableHead sx={{ backgroundColor: theme.palette.mode === "light" ? "grey.50" : "grey.700", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
                       <TableRow>
                         <TableCell>
                           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
