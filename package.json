@@ -54,6 +54,7 @@
     "copyfiles": "^2.4.1",
     "esbuild": "^0.25.5",
     "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.2.0",
