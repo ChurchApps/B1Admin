@@ -1029,7 +1029,14 @@
       "createPlan": "Crea piano",
       "newPlan": "Nuovo piano",
       "noPlans": "Nessun piano trovato",
-      "serviceOrder": "Ordine del Servizio"
+      "serviceOrder": "Ordine del Servizio",
+      "scheduleLesson": "Programma Lezione"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Programma Lezione",
+      "scheduledDate": "Data Programmata",
+      "dateRequired": "Seleziona una data",
+      "venueRequired": "Seleziona una sede"
     },
     "planPage": {
       "assign": "Assegnazioni di Squadra",

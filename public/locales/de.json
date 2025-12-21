@@ -1029,7 +1029,14 @@
       "createPlan": "Plan erstellen",
       "newPlan": "Neuer Plan",
       "noPlans": "Keine Pläne gefunden",
-      "serviceOrder": "Dienstreihenfolge"
+      "serviceOrder": "Dienstreihenfolge",
+      "scheduleLesson": "Lektion planen"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Lektion planen",
+      "scheduledDate": "Geplantes Datum",
+      "dateRequired": "Bitte wählen Sie ein Datum",
+      "venueRequired": "Bitte wählen Sie einen Veranstaltungsort"
     },
     "planPage": {
       "assign": "Teamzuweisungen",

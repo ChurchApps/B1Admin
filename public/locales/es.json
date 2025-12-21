@@ -1030,7 +1030,14 @@
       "createPlan": "Crear plano",
       "newPlan": "Nuevo Plan",
       "noPlans": "No se encontraron planes",
-      "serviceOrder": "Orden de Servicio"
+      "serviceOrder": "Orden de Servicio",
+      "scheduleLesson": "Programar Lección"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Programar Lección",
+      "scheduledDate": "Fecha Programada",
+      "dateRequired": "Por favor seleccione una fecha",
+      "venueRequired": "Por favor seleccione un lugar"
     },
     "planPage": {
       "assign": "Asignaciones de Equipo",

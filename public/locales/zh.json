@@ -1029,7 +1029,14 @@
       "createPlan": "创建计划",
       "newPlan": "新计划",
       "noPlans": "没有找到计划",
-      "serviceOrder": "服务顺序"
+      "serviceOrder": "服务顺序",
+      "scheduleLesson": "安排课程"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "安排课程",
+      "scheduledDate": "预定日期",
+      "dateRequired": "请选择日期",
+      "venueRequired": "请选择场地"
     },
     "planPage": {
       "assign": "团队分配",

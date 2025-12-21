@@ -1029,7 +1029,14 @@
       "createPlan": "Criar plano",
       "newPlan": "Novo Plano",
       "noPlans": "Nenhum plano encontrado",
-      "serviceOrder": "Ordem do Serviço"
+      "serviceOrder": "Ordem do Serviço",
+      "scheduleLesson": "Agendar Lição"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Agendar Lição",
+      "scheduledDate": "Data Agendada",
+      "dateRequired": "Por favor, selecione uma data",
+      "venueRequired": "Por favor, selecione um local"
     },
     "planPage": {
       "assign": "Atribuições de Equipe",

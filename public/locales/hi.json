@@ -1029,7 +1029,14 @@
       "createPlan": "योजना बनाएं",
       "newPlan": "नई योजना",
       "noPlans": "कोई योजना नहीं मिली",
-      "serviceOrder": "सेवा क्रम"
+      "serviceOrder": "सेवा क्रम",
+      "scheduleLesson": "पाठ शेड्यूल करें"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "पाठ शेड्यूल करें",
+      "scheduledDate": "निर्धारित तिथि",
+      "dateRequired": "कृपया एक तिथि चुनें",
+      "venueRequired": "कृपया एक स्थान चुनें"
     },
     "planPage": {
       "assign": "टीम असाइनमेंट",

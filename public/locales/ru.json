@@ -1029,7 +1029,14 @@
       "createPlan": "Создать план",
       "newPlan": "Новый план",
       "noPlans": "Планы не найдены",
-      "serviceOrder": "Порядок служения"
+      "serviceOrder": "Порядок служения",
+      "scheduleLesson": "Запланировать урок"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Запланировать урок",
+      "scheduledDate": "Запланированная дата",
+      "dateRequired": "Пожалуйста, выберите дату",
+      "venueRequired": "Пожалуйста, выберите место"
     },
     "planPage": {
       "assign": "Назначения команд",

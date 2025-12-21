@@ -1029,7 +1029,14 @@
       "createPlan": "Lag plan",
       "newPlan": "Ny plan",
       "noPlans": "Ingen planer funnet",
-      "serviceOrder": "Tjenesteorden"
+      "serviceOrder": "Tjenesteorden",
+      "scheduleLesson": "Planlegg Leksjon"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Planlegg Leksjon",
+      "scheduledDate": "Planlagt Dato",
+      "dateRequired": "Vennligst velg en dato",
+      "venueRequired": "Vennligst velg et sted"
     },
     "planPage": {
       "assign": "Teamtildelinger",

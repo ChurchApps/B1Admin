@@ -1029,7 +1029,14 @@
       "createPlan": "Créer un plan",
       "newPlan": "Nouveau forfait",
       "noPlans": "Aucun plan trouvé",
-      "serviceOrder": "Ordre du Service"
+      "serviceOrder": "Ordre du Service",
+      "scheduleLesson": "Planifier une leçon"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Planifier une leçon",
+      "scheduledDate": "Date prévue",
+      "dateRequired": "Veuillez sélectionner une date",
+      "venueRequired": "Veuillez sélectionner un lieu"
     },
     "planPage": {
       "assign": "Affectations d'Équipe",

@@ -1,8 +1,8 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Box, Container, Typography } from "@mui/material";
 import { Assignment as AssignmentIcon } from "@mui/icons-material";
-import { Loading, PageHeader, Locale, SmallButton, ApiHelper, UserHelper, Permissions } from "@churchapps/apphelper";
+import { Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../helpers";
@@ -11,8 +11,6 @@ import { Breadcrumbs } from "../components/ui";
 
 export const PlanTypePage = () => {
   const params = useParams();
-  const navigate = useNavigate();
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
 
   const planType = useQuery<PlanTypeInterface>({
     queryKey: [`/planTypes/${params.id}`, "DoingApi"],
@@ -23,14 +21,6 @@ export const PlanTypePage = () => {
     queryKey: [`/groups/${planType.data?.ministryId}`, "MembershipApi"],
     enabled: !!planType.data?.ministryId,
   });
-
-  const handleDeletePlanType = React.useCallback(() => {
-    if (window.confirm(Locale.label("plans.planTypePage.deleteConfirm"))) {
-      ApiHelper.delete("/planTypes/" + planType.data?.id, "DoingApi").then(() => {
-        navigate("/plans/ministries/" + ministry.data?.id);
-      });
-    }
-  }, [planType.data?.id, ministry.data?.id, navigate]);
 
   if (planType.isLoading || ministry.isLoading) return <Loading />;
   
@@ -75,9 +65,7 @@ export const PlanTypePage = () => {
         <PageHeader
           icon={<AssignmentIcon />}
           title={planType.data.name || Locale.label("plans.planTypePage.planType")}
-          subtitle={Locale.label("plans.planTypePage.subtitle")}>
-          {canEdit && <SmallButton color="error" icon="delete" onClick={handleDeletePlanType} />}
-        </PageHeader>
+          subtitle={Locale.label("plans.planTypePage.subtitle")} />
       </Box>
 
       {/* Content */}

@@ -1029,7 +1029,14 @@
       "createPlan": "Lumikha ng plano",
       "newPlan": "Bagong plano",
       "noPlans": "Walang nahanap na mga plano",
-      "serviceOrder": "Pagkakasunud-sunod ng Serbisyo"
+      "serviceOrder": "Pagkakasunud-sunod ng Serbisyo",
+      "scheduleLesson": "Mag-iskedyul ng Aralin"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Mag-iskedyul ng Aralin",
+      "scheduledDate": "Naka-iskedyul na Petsa",
+      "dateRequired": "Mangyaring pumili ng petsa",
+      "venueRequired": "Mangyaring pumili ng lugar"
     },
     "planPage": {
       "assign": "Mga Pagtatalaga ng Koponan",
