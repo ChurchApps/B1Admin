@@ -2,25 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
 import { ApiHelper, ArrayHelper, DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
 import { type PlanInterface } from "../../helpers";
-
-interface LessonTreeInterface {
-  programs?: Array<{
-    id: string;
-    name: string;
-    studies?: Array<{
-      id: string;
-      name: string;
-      lessons?: Array<{
-        id: string;
-        name: string;
-        venues?: Array<{
-          id: string;
-          name: string;
-        }>;
-      }>;
-    }>;
-  }>;
-}
+import { type LessonTreeInterface } from "./PlanUtils";
 
 interface Props {
   ministryId: string;
@@ -52,7 +34,6 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   const currentProgram = ArrayHelper.getOne(lessonTree?.programs || [], "id", programId);
   const currentStudy = ArrayHelper.getOne(currentProgram?.studies || [], "id", studyId);
   const currentLesson = ArrayHelper.getOne(currentStudy?.lessons || [], "id", lessonId);
-  const currentVenue = ArrayHelper.getOne(currentLesson?.venues || [], "id", venueId);
 
   // Auto-select defaults when data loads
   useEffect(() => {

@@ -14,6 +14,7 @@ import {
   Box,
 } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { type ActionTreeInterface, type VenueActionsInterface } from "./PlanUtils";
 
 interface Props {
   open: boolean;
@@ -23,14 +24,14 @@ interface Props {
 }
 
 export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId }) => {
-  const [actionTree, setActionTree] = useState<any>({});
+  const [actionTree, setActionTree] = useState<ActionTreeInterface>({});
   const [selectedProgram, setSelectedProgram] = useState<string>("");
   const [selectedStudy, setSelectedStudy] = useState<string>("");
   const [selectedLesson, setSelectedLesson] = useState<string>("");
   const [selectedVenue, setSelectedVenue] = useState<string>("");
   const [selectedSection, setSelectedSection] = useState<string>("");
   const [selectedAction, setSelectedAction] = useState<string>("");
-  const [venueActions, setVenueActions] = useState<any>(null);
+  const [venueActions, setVenueActions] = useState<VenueActionsInterface | null>(null);
 
   const loadActionTree = useCallback(async () => {
     // If venueId is provided, load actions for that venue only

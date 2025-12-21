@@ -12,6 +12,7 @@ import { PlanItem } from "./PlanItem";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
+import { getSectionDuration } from "./PlanUtils";
 
 interface Props {
   plan: PlanInterface;
@@ -280,16 +281,6 @@ export const ServiceOrder = memo((props: Props) => {
     },
     [loadData]
   );
-
-  const getSectionDuration = (section: PlanItemInterface) => {
-    let totalSeconds = 0;
-    section.children?.forEach((child) => {
-      if (child.seconds) {
-        totalSeconds += child.seconds;
-      }
-    });
-    return totalSeconds;
-  };
 
   const renderPlanItems = () => {
     const result: JSX.Element[] = [];

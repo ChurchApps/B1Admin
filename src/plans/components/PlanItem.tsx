@@ -9,6 +9,7 @@ import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
+import { formatTime, getSectionDuration, type SectionInterface } from "./PlanUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -84,13 +85,13 @@ export const PlanItem = React.memo((props: Props) => {
 
       if (venueData?.sections) {
         // Find the section matching this plan item's relatedId
-        const matchingSection = venueData.sections.find((s: any) => s.id === props.planItem.relatedId);
+        const matchingSection = venueData.sections.find((s: SectionInterface) => s.id === props.planItem.relatedId);
 
         if (matchingSection?.actions?.length > 0) {
           const currentSort = props.planItem.sort || 1;
 
           // Create new plan items for each action, starting at the current item's sort position
-          const actionItems = matchingSection.actions.map((action: any, index: number) => ({
+          const actionItems = matchingSection.actions.map((action, index) => ({
             planId: props.planItem.planId,
             parentId: props.planItem.parentId,
             sort: currentSort + index, // Start at current position
@@ -187,18 +188,8 @@ export const PlanItem = React.memo((props: Props) => {
     return result;
   };
 
-  const getSectionDuration = () => {
-    let totalSeconds = 0;
-    props.planItem.children?.forEach((child) => {
-      if (child.seconds) {
-        totalSeconds += child.seconds;
-      }
-    });
-    return totalSeconds;
-  };
-
   const getHeaderRow = () => {
-    const sectionDuration = getSectionDuration();
+    const sectionDuration = getSectionDuration(props.planItem);
     return (
       <>
         <div className="planItemHeader">
@@ -373,12 +364,6 @@ export const PlanItem = React.memo((props: Props) => {
       case "item":
         return getItemRow();
     }
-  };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return minutes + ":" + (secs < 10 ? "0" : "") + secs;
   };
 
   return (

@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { Box, Button, Typography, Icon, Stack } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../helpers";
+import { formatTime, getSectionDuration } from "./PlanUtils";
 
 interface Props {
   lessonItems: PlanItemInterface[];
@@ -10,23 +11,6 @@ interface Props {
 }
 
 export const LessonPreview = memo((props: Props) => {
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return minutes + ":" + (secs < 10 ? "0" : "") + secs;
-  };
-
-  const getSectionDuration = (section: PlanItemInterface) => {
-    let totalSeconds = 0;
-    section.children?.forEach((child) => {
-      if (child.seconds) {
-        totalSeconds += child.seconds;
-      }
-    });
-    return totalSeconds;
-  };
-
   const renderPreviewItem = (item: PlanItemInterface, isChild: boolean = false) => {
     if (item.itemType === "header") {
       const sectionDuration = getSectionDuration(item);
