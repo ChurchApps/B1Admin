@@ -9,6 +9,7 @@ import { LessonSelector } from "./LessonSelector";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlanItem } from "./PlanItem";
+import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 
@@ -26,6 +27,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [showAssociateLessonSelector, setShowAssociateLessonSelector] = React.useState(false);
   const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
   const [venueName, setVenueName] = React.useState<string>("");
+  const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
 
   const loadData = useCallback(async () => {
     if (props.plan?.id) {
@@ -78,25 +80,11 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [props.plan, props.onPlanUpdate]);
 
-  const addHeader = useCallback(() => {
-    setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
-  }, [props.plan.id, planItems?.length]);
+  // Define hasAssociatedLesson early so it can be used by other functions
+  const hasAssociatedLesson = props.plan?.contentType === "venue" && props.plan?.contentId;
 
-  const handleLessonSelect = useCallback(async (venueId: string) => {
-    try {
-      // Load lesson items from the venue
-      const venueData = await ApiHelper.get(`/venues/public/planItems/${venueId}`, "LessonsApi");
-
-      if (venueData && venueData.length > 0) {
-        // Immediately save the lesson items as editable plan items
-        await saveHierarchicalItems(venueData);
-        // Reload data to show the new editable items
-        loadData();
-      }
-    } catch (error) {
-      console.error("Error importing lesson items:", error);
-    }
-  }, [props.plan, loadData]);
+  // Determine if we should show preview mode
+  const showPreviewMode = hasAssociatedLesson && planItems.length === 0 && previewLessonItems.length > 0;
 
   const saveHierarchicalItems = async (items: PlanItemInterface[], parentId?: string): Promise<void> => {
     if (!items || items.length === 0) return;
@@ -128,7 +116,71 @@ export const ServiceOrder = memo((props: Props) => {
     }
   };
 
-  const hasAssociatedLesson = props.plan?.contentType === "venue" && props.plan?.contentId;
+  // Import only lesson sections (not actions) as editable plan items
+  const handleCustomizeLesson = useCallback(async () => {
+    if (!hasAssociatedLesson) return;
+
+    try {
+      const venueData = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
+
+      if (venueData && venueData.length > 0) {
+        // Keep top-level headers with their section children, but strip grandchildren (actions)
+        const sectionsOnly = venueData.map((item: PlanItemInterface) => ({
+          ...item,
+          // Keep children (sections) but strip their children (actions)
+          children: item.children?.map((section: PlanItemInterface) => ({
+            ...section,
+            children: undefined // Remove actions from sections
+          }))
+        }));
+        await saveHierarchicalItems(sectionsOnly);
+        setPreviewLessonItems([]); // Clear preview
+        loadData();
+      }
+    } catch (error) {
+      console.error("Error customizing lesson:", error);
+    }
+  }, [hasAssociatedLesson, props.plan?.contentId, loadData]);
+
+  const addHeader = useCallback(async () => {
+    // If in preview mode, first customize (import sections only), then add header
+    if (showPreviewMode) {
+      await handleCustomizeLesson();
+      // After customizing, the planItems will be reloaded, so we need to add at the end
+      // The sort will be recalculated after loadData completes
+    }
+    setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
+  }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
+
+  const handleLessonSelect = useCallback(async (venueId: string) => {
+    try {
+      // Load lesson items from the venue
+      const venueData = await ApiHelper.getAnonymous(`/venues/public/planItems/${venueId}`, "LessonsApi");
+
+      if (venueData && venueData.length > 0) {
+        // Immediately save the lesson items as editable plan items
+        await saveHierarchicalItems(venueData);
+        // Reload data to show the new editable items
+        loadData();
+      }
+    } catch (error) {
+      console.error("Error importing lesson items:", error);
+    }
+  }, [props.plan, loadData]);
+
+  const loadPreviewLessonItems = useCallback(async () => {
+    if (hasAssociatedLesson && planItems.length === 0) {
+      try {
+        const venueData = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
+        setPreviewLessonItems(venueData || []);
+      } catch (error) {
+        console.error("Error loading preview lesson items:", error);
+        setPreviewLessonItems([]);
+      }
+    } else {
+      setPreviewLessonItems([]);
+    }
+  }, [hasAssociatedLesson, planItems.length, props.plan?.contentId]);
 
   const handleAddLesson = useCallback(async () => {
     if (hasAssociatedLesson) {
@@ -285,6 +337,7 @@ export const ServiceOrder = memo((props: Props) => {
                   loadData();
                 }}
                 startTime={sectionStartTime}
+                associatedVenueId={hasAssociatedLesson ? props.plan.contentId : undefined}
               />
             </DraggableWrapper>
           ) : (
@@ -296,6 +349,7 @@ export const ServiceOrder = memo((props: Props) => {
               onChange={() => { }}
               readOnly={true}
               startTime={sectionStartTime}
+              associatedVenueId={hasAssociatedLesson ? props.plan.contentId : undefined}
             />
           )}
         </React.Fragment>
@@ -311,6 +365,11 @@ export const ServiceOrder = memo((props: Props) => {
     loadData();
     loadVenueName();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load preview lesson items when plan has associated lesson but no plan items
+  React.useEffect(() => {
+    loadPreviewLessonItems();
+  }, [loadPreviewLessonItems]);
 
   return (
     <Box>
@@ -363,15 +422,23 @@ export const ServiceOrder = memo((props: Props) => {
             }}>
             <DndProvider backend={HTML5Backend}>
               {planItems.length === 0 ? (
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    py: 4,
-                    color: "text.secondary",
-                  }}>
-                  <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "grey.400" }} />
-                  <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
-                </Box>
+                showPreviewMode ? (
+                  <LessonPreview
+                    lessonItems={previewLessonItems}
+                    venueName={venueName}
+                    onCustomize={handleCustomizeLesson}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      textAlign: "center",
+                      py: 4,
+                      color: "text.secondary",
+                    }}>
+                    <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "grey.400" }} />
+                    <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
+                  </Box>
+                )
               ) : (
                 <>
                   {renderPlanItems()}

@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 
 interface Props {
   sectionId: string;
   sectionName?: string;
   onClose: () => void;
+  onExpandToActions?: () => void;
 }
 
 export const LessonDialog: React.FC<Props> = (props) => {
@@ -44,6 +46,11 @@ export const LessonDialog: React.FC<Props> = (props) => {
         />
       </DialogContent>
       <DialogActions>
+        {props.onExpandToActions && (
+          <Button variant="contained" onClick={props.onExpandToActions}>
+            {Locale.label("plans.planItem.expandToActions") || "Expand to Actions"}
+          </Button>
+        )}
         <Button variant="outlined" onClick={props.onClose}>Close</Button>
       </DialogActions>
     </Dialog>

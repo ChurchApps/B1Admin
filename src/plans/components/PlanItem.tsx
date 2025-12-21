@@ -8,6 +8,7 @@ import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
+import { ActionSelector } from "./ActionSelector";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -17,6 +18,7 @@ interface Props {
   onChange?: () => void;
   readOnly?: boolean;
   startTime?: number;
+  associatedVenueId?: string;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -24,6 +26,7 @@ export const PlanItem = React.memo((props: Props) => {
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
   const [actionId, setActionId] = React.useState<string>(null);
+  const [showActionSelector, setShowActionSelector] = React.useState(false);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -48,6 +51,68 @@ export const PlanItem = React.memo((props: Props) => {
       sort: props.planItem.children?.length + 1 || 1,
       parentId: props.planItem.id,
     });
+  };
+
+  const addLessonAction = () => {
+    handleClose();
+    setShowActionSelector(true);
+  };
+
+  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number) => {
+    setShowActionSelector(false);
+    // Create new plan item for the action
+    const newPlanItem: PlanItemInterface = {
+      itemType: "action",
+      planId: props.planItem.planId,
+      sort: props.planItem.children?.length + 1 || 1,
+      parentId: props.planItem.id,
+      relatedId: actionId,
+      label: actionName,
+      seconds: seconds || 0,
+    };
+    await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
+    if (props.onChange) props.onChange();
+  };
+
+  // Expand a lesson section item to replace it with individual action items
+  const handleExpandToActions = async () => {
+    if (!props.planItem.relatedId || !props.associatedVenueId) return;
+
+    try {
+      // Fetch actions for the associated venue
+      const venueData = await ApiHelper.getAnonymous(`/venues/public/actions/${props.associatedVenueId}`, "LessonsApi");
+
+      if (venueData?.sections) {
+        // Find the section matching this plan item's relatedId
+        const matchingSection = venueData.sections.find((s: any) => s.id === props.planItem.relatedId);
+
+        if (matchingSection?.actions?.length > 0) {
+          const currentSort = props.planItem.sort || 1;
+
+          // Create new plan items for each action, starting at the current item's sort position
+          const actionItems = matchingSection.actions.map((action: any, index: number) => ({
+            planId: props.planItem.planId,
+            parentId: props.planItem.parentId,
+            sort: currentSort + index, // Start at current position
+            itemType: "action",
+            relatedId: action.id,
+            label: action.name,
+            seconds: action.seconds || 0,
+          }));
+
+          // Delete the original section item first
+          await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
+
+          // Create the new action items
+          await ApiHelper.post("/planItems", actionItems, "DoingApi");
+
+          // Refresh the plan - the API will handle re-sorting
+          if (props.onChange) props.onChange();
+        }
+      }
+    } catch (error) {
+      console.error("Error expanding section to actions:", error);
+    }
   };
 
   const handleDrop = (data: any, sort: number) => {
@@ -91,7 +156,7 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} />
           </DraggableWrapper>
         </>
       );
@@ -327,11 +392,34 @@ export const PlanItem = React.memo((props: Props) => {
           <MenuItem onClick={addItem}>
             <Icon style={{ marginRight: 10 }}>format_list_bulleted</Icon> {Locale.label("plans.planItem.item")}
           </MenuItem>
+          {props.associatedVenueId && (
+            <MenuItem onClick={addLessonAction}>
+              <Icon style={{ marginRight: 10 }}>menu_book</Icon> {Locale.label("plans.planItem.lessonAction") || "Lesson Action"}
+            </MenuItem>
+          )}
         </Menu>
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
-      {lessonSectionId && <LessonDialog sectionId={lessonSectionId} sectionName={props.planItem.label} onClose={() => setLessonSectionId(null)} />}
+      {lessonSectionId && (
+        <LessonDialog
+          sectionId={lessonSectionId}
+          sectionName={props.planItem.label}
+          onClose={() => setLessonSectionId(null)}
+          onExpandToActions={props.associatedVenueId && props.planItem.relatedId ? async () => {
+            setLessonSectionId(null);
+            await handleExpandToActions();
+          } : undefined}
+        />
+      )}
       {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} />}
+      {showActionSelector && props.associatedVenueId && (
+        <ActionSelector
+          open={showActionSelector}
+          onClose={() => setShowActionSelector(false)}
+          onSelect={handleActionSelected}
+          venueId={props.associatedVenueId}
+        />
+      )}
     </>
   );
 });

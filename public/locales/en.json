@@ -1158,7 +1158,9 @@
       "venue": "Venue"
     },
     "planItem": {
+      "expandToActions": "Expand to Actions",
       "item": "Item",
+      "lessonAction": "Lesson Action",
       "song": "Song"
     },
     "planItemEdit": {
@@ -1195,6 +1197,8 @@
       "add": "Add",
       "addLesson": "Add Lesson",
       "addSection": "Add Section",
+      "customizeLesson": "Customize",
+      "lessonPreview": "Lesson Preview",
       "noItems": "No items in service order",
       "orderOfService": "Order of Service",
       "print": "Print"

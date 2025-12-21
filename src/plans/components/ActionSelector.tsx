@@ -18,7 +18,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (actionId: string, actionName: string) => void;
+  onSelect: (actionId: string, actionName: string, seconds?: number) => void;
   venueId?: string;
 }
 
@@ -164,7 +164,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     if (selectedAction) {
       const section = venueId ? getCurrentVenueSection() : getCurrentSection();
       const action = section?.actions?.find((a: any) => a.id === selectedAction);
-      onSelect(selectedAction, action?.name || "Action");
+      onSelect(selectedAction, action?.name || "Action", action?.seconds);
       onClose();
     }
   }, [selectedAction, venueId, getCurrentVenueSection, getCurrentSection, onSelect, onClose]);
