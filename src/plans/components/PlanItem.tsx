@@ -9,7 +9,7 @@ import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
-import { formatTime, getSectionDuration, type SectionInterface } from "./PlanUtils";
+import { formatTime, getSectionDuration, type LessonSectionInterface } from "./PlanUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -85,7 +85,7 @@ export const PlanItem = React.memo((props: Props) => {
 
       if (venueData?.sections) {
         // Find the section matching this plan item's relatedId
-        const matchingSection = venueData.sections.find((s: SectionInterface) => s.id === props.planItem.relatedId);
+        const matchingSection = venueData.sections.find((s: LessonSectionInterface) => s.id === props.planItem.relatedId);
 
         if (matchingSection?.actions?.length > 0) {
           const currentSort = props.planItem.sort || 1;

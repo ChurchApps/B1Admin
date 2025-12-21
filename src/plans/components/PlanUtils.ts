@@ -1,5 +1,18 @@
 import { type PlanItemInterface } from "../../helpers";
 
+// Re-export lesson interfaces from @churchapps/helpers for convenience
+export {
+  type LessonActionInterface,
+  type LessonSectionInterface,
+  type LessonVenueInterface,
+  type LessonInfoInterface,
+  type LessonStudyInterface,
+  type LessonProgramInterface,
+  type LessonTreeInterface,
+  type LessonActionTreeInterface,
+  type VenueActionResponseInterface,
+} from "@churchapps/helpers";
+
 /**
  * Format seconds as "m:ss" time string
  */
@@ -21,61 +34,3 @@ export const getSectionDuration = (section: PlanItemInterface): number => {
   });
   return totalSeconds;
 };
-
-// Shared interfaces for lesson tree structures
-export interface ActionInterface {
-  id: string;
-  name: string;
-  actionType: string;
-  roleName?: string;
-  seconds?: number;
-}
-
-export interface SectionInterface {
-  id: string;
-  name: string;
-  actions?: ActionInterface[];
-}
-
-export interface VenueInterface {
-  id: string;
-  name: string;
-  sections?: SectionInterface[];
-}
-
-export interface LessonInterface {
-  id: string;
-  name: string;
-  venues?: VenueInterface[];
-}
-
-export interface StudyInterface {
-  id: string;
-  name: string;
-  lessons?: LessonInterface[];
-}
-
-export interface ProgramInterface {
-  id: string;
-  name: string;
-  studies?: StudyInterface[];
-}
-
-export interface LessonTreeInterface {
-  programs?: ProgramInterface[];
-}
-
-export interface VenueActionsInterface {
-  venueName?: string;
-  sections?: SectionInterface[];
-}
-
-export interface ActionTreeInterface {
-  programs?: Array<ProgramInterface & {
-    studies?: Array<StudyInterface & {
-      lessons?: Array<LessonInterface & {
-        venues?: Array<VenueInterface>;
-      }>;
-    }>;
-  }>;
-}
