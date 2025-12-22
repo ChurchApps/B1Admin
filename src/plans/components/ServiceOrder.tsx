@@ -42,20 +42,6 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [props.plan?.id]);
 
-  const loadVenueName = useCallback(async () => {
-    if (props.plan?.contentType === "venue" && props.plan?.contentId) {
-      try {
-        const venueData = await ApiHelper.getAnonymous("/venues/public/" + props.plan.contentId, "LessonsApi");
-        if (venueData?.name) {
-          setVenueName(venueData.name);
-        }
-      } catch (error) {
-        console.error("Error loading venue name:", error);
-      }
-    } else {
-      setVenueName("");
-    }
-  }, [props.plan?.contentType, props.plan?.contentId]);
 
   const handleAssociateLesson = useCallback(async (venueId: string, selectedVenueName?: string) => {
     try {
@@ -122,11 +108,11 @@ export const ServiceOrder = memo((props: Props) => {
     if (!hasAssociatedLesson) return;
 
     try {
-      const venueData = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
+      const response = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
 
-      if (venueData && venueData.length > 0) {
+      if (response?.items && response.items.length > 0) {
         // Keep top-level headers with their section children, but strip grandchildren (actions)
-        const sectionsOnly = venueData.map((item: PlanItemInterface) => ({
+        const sectionsOnly = response.items.map((item: PlanItemInterface) => ({
           ...item,
           // Keep children (sections) but strip their children (actions)
           children: item.children?.map((section: PlanItemInterface) => ({
@@ -156,11 +142,11 @@ export const ServiceOrder = memo((props: Props) => {
   const handleLessonSelect = useCallback(async (venueId: string) => {
     try {
       // Load lesson items from the venue
-      const venueData = await ApiHelper.getAnonymous(`/venues/public/planItems/${venueId}`, "LessonsApi");
+      const response = await ApiHelper.getAnonymous(`/venues/public/planItems/${venueId}`, "LessonsApi");
 
-      if (venueData && venueData.length > 0) {
+      if (response?.items && response.items.length > 0) {
         // Immediately save the lesson items as editable plan items
-        await saveHierarchicalItems(venueData);
+        await saveHierarchicalItems(response.items);
         // Reload data to show the new editable items
         loadData();
       }
@@ -172,8 +158,9 @@ export const ServiceOrder = memo((props: Props) => {
   const loadPreviewLessonItems = useCallback(async () => {
     if (hasAssociatedLesson && planItems.length === 0) {
       try {
-        const venueData = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
-        setPreviewLessonItems(venueData || []);
+        const response = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
+        setPreviewLessonItems(response?.items || []);
+        if (response?.venueName) setVenueName(response.venueName);
       } catch (error) {
         console.error("Error loading preview lesson items:", error);
         setPreviewLessonItems([]);
@@ -354,7 +341,6 @@ export const ServiceOrder = memo((props: Props) => {
 
   React.useEffect(() => {
     loadData();
-    loadVenueName();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load preview lesson items when plan has associated lesson but no plan items
