@@ -1,4 +1,5 @@
-import { ApiHelper, type GenericSettingInterface, Locale, UniqueIdHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
+import { type GenericSettingInterface } from "@churchapps/helpers";
 import { Grid, Icon, TextField } from "@mui/material";
 import React from "react";
 
@@ -123,8 +124,8 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
   }, [props.churchId]); //eslint-disable-line
   React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
 
-  const showStripeFields = props.provider === "stripe";
-  const showPayPalFields = props.provider === "paypal";
+  const showStripeFields = props.provider === "Stripe";
+  const showPayPalFields = props.provider === "Paypal";
 
   return (
     <Grid container spacing={2}>
