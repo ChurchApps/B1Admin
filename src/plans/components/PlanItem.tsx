@@ -8,7 +8,9 @@ import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
+import { AddOnDialog } from "./AddOnDialog";
 import { ActionSelector } from "./ActionSelector";
+import { AddOnSelector } from "./AddOnSelector";
 import { formatTime, getSectionDuration, type LessonSectionInterface } from "./PlanUtils";
 
 interface Props {
@@ -27,7 +29,9 @@ export const PlanItem = React.memo((props: Props) => {
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
   const [actionId, setActionId] = React.useState<string>(null);
+  const [addOnId, setAddOnId] = React.useState<string>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
+  const [showAddOnSelector, setShowAddOnSelector] = React.useState(false);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -59,6 +63,11 @@ export const PlanItem = React.memo((props: Props) => {
     setShowActionSelector(true);
   };
 
+  const addAddOn = () => {
+    handleClose();
+    setShowAddOnSelector(true);
+  };
+
   const handleActionSelected = async (actionId: string, actionName: string, seconds?: number) => {
     setShowActionSelector(false);
     // Create new plan item for the action
@@ -69,6 +78,23 @@ export const PlanItem = React.memo((props: Props) => {
       parentId: props.planItem.id,
       relatedId: actionId,
       label: actionName,
+      seconds: seconds || 0,
+    };
+    await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
+    if (props.onChange) props.onChange();
+  };
+
+  const handleAddOnSelected = async (addOnId: string, addOnName: string, image?: string, seconds?: number) => {
+    setShowAddOnSelector(false);
+    // Create new plan item for the add-on
+    const newPlanItem: PlanItemInterface = {
+      itemType: "addOn",
+      planId: props.planItem.planId,
+      sort: props.planItem.children?.length + 1 || 1,
+      parentId: props.planItem.id,
+      relatedId: addOnId,
+      label: addOnName,
+      link: image, // Store the image URL in the link field for display
       seconds: seconds || 0,
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
@@ -388,6 +414,42 @@ export const PlanItem = React.memo((props: Props) => {
     </>
   );
 
+  const getAddOnRow = () => (
+    <>
+      <div className="planItem">
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
+          {!props.readOnly && (
+            <>
+              <span style={{ width: 24 }} />
+              <button
+                type="button"
+                onClick={() => props.setEditPlanItem(props.planItem)}
+                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                <Icon>edit</Icon>
+              </button>
+            </>
+          )}
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setAddOnId(props.planItem.relatedId); }}>
+              {props.planItem.label}
+            </a>
+          ) : (
+            props.planItem.label
+          )}
+        </div>
+        {getDescriptionRow()}
+      </div>
+    </>
+  );
+
   const getPlanItem = () => {
     switch (props.planItem.itemType) {
       case "header":
@@ -397,6 +459,8 @@ export const PlanItem = React.memo((props: Props) => {
         return getSongRow();
       case "action":
         return getActionRow();
+      case "addOn":
+        return getAddOnRow();
       case "lessonSection":
         return getLessonSectionRow();
       case "item":
@@ -420,6 +484,9 @@ export const PlanItem = React.memo((props: Props) => {
               <Icon style={{ marginRight: 10 }}>menu_book</Icon> {Locale.label("plans.planItem.lessonAction") || "Lesson Action"}
             </MenuItem>
           )}
+          <MenuItem onClick={addAddOn}>
+            <Icon style={{ marginRight: 10 }}>extension</Icon> {Locale.label("plans.planItem.addOn") || "Add-On"}
+          </MenuItem>
         </Menu>
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
@@ -435,12 +502,20 @@ export const PlanItem = React.memo((props: Props) => {
         />
       )}
       {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} />}
+      {addOnId && <AddOnDialog addOnId={addOnId} addOnName={props.planItem.label} onClose={() => setAddOnId(null)} />}
       {showActionSelector && props.associatedVenueId && (
         <ActionSelector
           open={showActionSelector}
           onClose={() => setShowActionSelector(false)}
           onSelect={handleActionSelected}
           venueId={props.associatedVenueId}
+        />
+      )}
+      {showAddOnSelector && (
+        <AddOnSelector
+          open={showAddOnSelector}
+          onClose={() => setShowAddOnSelector(false)}
+          onSelect={handleAddOnSelected}
         />
       )}
     </>

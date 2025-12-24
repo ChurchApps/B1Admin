@@ -1139,18 +1139,33 @@
       "venue": "कार्यक्रम का स्थान"
     },
     "planItem": {
+      "addOn": "ऐड-ऑन",
+      "expandToActions": "क्रियाओं में विस्तार करें",
       "item": "वस्तु",
+      "lessonAction": "पाठ क्रिया",
       "song": "गाना"
     },
     "planItemEdit": {
       "description": "विवरण",
       "edit": "संपादित करें",
+      "editAddOn": "ऐड-ऑन संपादित करें",
       "editHeader": "शीर्षलेख संपादित करें",
       "editSong": "गाना संपादित करें",
       "enterSearch": "खोज शब्द दर्ज करें",
       "key": "कुंजी",
       "minutes": "मिनट",
       "seconds": "सेकंड"
+    },
+    "actionSelector": {
+      "action": "क्रिया",
+      "fromAssociatedLesson": "संबंधित पाठ से:",
+      "section": "अनुभाग",
+      "selectAction": "क्रिया चुनें"
+    },
+    "addOnSelector": {
+      "category": "श्रेणी",
+      "noAddOns": "कोई ऐड-ऑन उपलब्ध नहीं",
+      "selectAddOn": "ऐड-ऑन चुनें"
     },
     "planTypeEdit": {
       "add": "जोड़ें",

@@ -1165,6 +1165,7 @@
       "venue": "Venue"
     },
     "planItem": {
+      "addOn": "Add-On",
       "expandToActions": "Expand to Actions",
       "item": "Item",
       "lessonAction": "Lesson Action",
@@ -1173,12 +1174,24 @@
     "planItemEdit": {
       "description": "Description",
       "edit": "Edit",
+      "editAddOn": "Edit Add-On",
       "editHeader": "Edit Header",
       "editSong": "Edit Song",
       "enterSearch": "Enter search term",
       "key": "Key",
       "minutes": "Minutes",
       "seconds": "Seconds"
+    },
+    "actionSelector": {
+      "action": "Action",
+      "fromAssociatedLesson": "From associated lesson:",
+      "section": "Section",
+      "selectAction": "Select Action"
+    },
+    "addOnSelector": {
+      "category": "Category",
+      "noAddOns": "No add-ons available",
+      "selectAddOn": "Select Add-On"
     },
     "planTypeEdit": {
       "add": "Add",

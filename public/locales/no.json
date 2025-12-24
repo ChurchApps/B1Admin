@@ -1139,18 +1139,33 @@
       "venue": "Sted"
     },
     "planItem": {
+      "addOn": "Tillegg",
+      "expandToActions": "Utvid til handlinger",
       "item": "Punkt",
+      "lessonAction": "Leksjonshandling",
       "song": "Sang"
     },
     "planItemEdit": {
       "description": "Beskrivelse",
       "edit": "Rediger",
+      "editAddOn": "Rediger tillegg",
       "editHeader": "Rediger topptekst",
       "editSong": "Rediger sang",
       "enterSearch": "Skriv inn søkeord",
       "key": "Toneart",
       "minutes": "Minutter",
       "seconds": "Sekunder"
+    },
+    "actionSelector": {
+      "action": "Handling",
+      "fromAssociatedLesson": "Fra tilknyttet leksjon:",
+      "section": "Seksjon",
+      "selectAction": "Velg handling"
+    },
+    "addOnSelector": {
+      "category": "Kategori",
+      "noAddOns": "Ingen tillegg tilgjengelig",
+      "selectAddOn": "Velg tillegg"
     },
     "planTypeEdit": {
       "add": "Legg til",

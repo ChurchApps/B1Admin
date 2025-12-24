@@ -1139,18 +1139,33 @@
       "venue": "场地"
     },
     "planItem": {
+      "addOn": "附加组件",
+      "expandToActions": "展开为操作",
       "item": "物品",
+      "lessonAction": "课程操作",
       "song": "歌曲"
     },
     "planItemEdit": {
       "description": "描述",
       "edit": "编辑",
+      "editAddOn": "编辑附加组件",
       "editHeader": "编辑标题",
       "editSong": "编辑歌曲",
       "enterSearch": "输入搜索词",
       "key": "调式",
       "minutes": "分钟",
       "seconds": "秒"
+    },
+    "actionSelector": {
+      "action": "操作",
+      "fromAssociatedLesson": "来自关联课程：",
+      "section": "部分",
+      "selectAction": "选择操作"
+    },
+    "addOnSelector": {
+      "category": "类别",
+      "noAddOns": "没有可用的附加组件",
+      "selectAddOn": "选择附加组件"
     },
     "planTypeEdit": {
       "add": "添加",

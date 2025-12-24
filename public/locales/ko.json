@@ -1139,18 +1139,33 @@
       "venue": "장소"
     },
     "planItem": {
+      "addOn": "추가 기능",
+      "expandToActions": "작업으로 확장",
       "item": "목",
+      "lessonAction": "레슨 작업",
       "song": "노래"
     },
     "planItemEdit": {
       "description": "설명",
       "edit": "편집",
+      "editAddOn": "추가 기능 편집",
       "editHeader": "헤더 편집",
       "editSong": "노래 편집",
       "enterSearch": "검색어를 입력하세요",
       "key": "키",
       "minutes": "분",
       "seconds": "초"
+    },
+    "actionSelector": {
+      "action": "작업",
+      "fromAssociatedLesson": "연결된 레슨에서:",
+      "section": "섹션",
+      "selectAction": "작업 선택"
+    },
+    "addOnSelector": {
+      "category": "카테고리",
+      "noAddOns": "사용 가능한 추가 기능 없음",
+      "selectAddOn": "추가 기능 선택"
     },
     "planTypeEdit": {
       "add": "추가",

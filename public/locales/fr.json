@@ -1139,18 +1139,33 @@
       "venue": "Lieu"
     },
     "planItem": {
+      "addOn": "Extension",
+      "expandToActions": "Développer en actions",
       "item": "Article",
+      "lessonAction": "Action de leçon",
       "song": "Chanson"
     },
     "planItemEdit": {
       "description": "Description",
       "edit": "Modifier",
+      "editAddOn": "Modifier l'extension",
       "editHeader": "Modifier l'en-tête",
       "editSong": "Modifier la chanson",
       "enterSearch": "Entrez le terme de recherche",
       "key": "Tonalité",
       "minutes": "Minutes",
       "seconds": "Secondes"
+    },
+    "actionSelector": {
+      "action": "Action",
+      "fromAssociatedLesson": "De la leçon associée:",
+      "section": "Section",
+      "selectAction": "Sélectionner une action"
+    },
+    "addOnSelector": {
+      "category": "Catégorie",
+      "noAddOns": "Aucune extension disponible",
+      "selectAddOn": "Sélectionner une extension"
     },
     "planTypeEdit": {
       "add": "Ajouter",

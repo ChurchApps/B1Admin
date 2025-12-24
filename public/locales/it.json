@@ -1139,18 +1139,33 @@
       "venue": "Luogo"
     },
     "planItem": {
+      "addOn": "Componente aggiuntivo",
+      "expandToActions": "Espandi in azioni",
       "item": "Articolo",
+      "lessonAction": "Azione della lezione",
       "song": "Canzone"
     },
     "planItemEdit": {
       "description": "Descrizione",
       "edit": "Modifica",
+      "editAddOn": "Modifica componente aggiuntivo",
       "editHeader": "Modifica intestazione",
       "editSong": "Modifica canzone",
       "enterSearch": "Inserisci il termine di ricerca",
       "key": "Tonalità",
       "minutes": "Minuti",
       "seconds": "Secondi"
+    },
+    "actionSelector": {
+      "action": "Azione",
+      "fromAssociatedLesson": "Dalla lezione associata:",
+      "section": "Sezione",
+      "selectAction": "Seleziona azione"
+    },
+    "addOnSelector": {
+      "category": "Categoria",
+      "noAddOns": "Nessun componente aggiuntivo disponibile",
+      "selectAddOn": "Seleziona componente aggiuntivo"
     },
     "planTypeEdit": {
       "add": "Aggiungi",

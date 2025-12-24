@@ -1139,18 +1139,33 @@
       "venue": "Lugar"
     },
     "planItem": {
+      "addOn": "Add-On",
+      "expandToActions": "Palawakin sa mga aksyon",
       "item": "Item",
+      "lessonAction": "Aksyon ng aralin",
       "song": "Kanta"
     },
     "planItemEdit": {
       "description": "Paglalarawan",
       "edit": "I-edit",
+      "editAddOn": "I-edit ang add-on",
       "editHeader": "I -edit ang header",
       "editSong": "I -edit ang kanta",
       "enterSearch": "Ipasok ang termino sa paghahanap",
       "key": "Key",
       "minutes": "Minuto",
       "seconds": "Mga Segundo"
+    },
+    "actionSelector": {
+      "action": "Aksyon",
+      "fromAssociatedLesson": "Mula sa kaugnay na aralin:",
+      "section": "Seksyon",
+      "selectAction": "Pumili ng aksyon"
+    },
+    "addOnSelector": {
+      "category": "Kategorya",
+      "noAddOns": "Walang available na add-on",
+      "selectAddOn": "Pumili ng add-on"
     },
     "planTypeEdit": {
       "add": "Magdagdag",

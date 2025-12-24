@@ -1139,18 +1139,33 @@
       "venue": "Veranstaltungsort"
     },
     "planItem": {
+      "addOn": "Erweiterung",
+      "expandToActions": "Zu Aktionen erweitern",
       "item": "Artikel",
+      "lessonAction": "Lektionsaktion",
       "song": "Lied"
     },
     "planItemEdit": {
       "description": "Beschreibung",
       "edit": "Bearbeiten",
+      "editAddOn": "Erweiterung bearbeiten",
       "editHeader": "Kopfzeile bearbeiten",
       "editSong": "Lied bearbeiten",
       "enterSearch": "Suchbegriff eingeben",
       "key": "Tonart",
       "minutes": "Minuten",
       "seconds": "Sekunden"
+    },
+    "actionSelector": {
+      "action": "Aktion",
+      "fromAssociatedLesson": "Von verknüpfter Lektion:",
+      "section": "Abschnitt",
+      "selectAction": "Aktion auswählen"
+    },
+    "addOnSelector": {
+      "category": "Kategorie",
+      "noAddOns": "Keine Erweiterungen verfügbar",
+      "selectAddOn": "Erweiterung auswählen"
     },
     "planTypeEdit": {
       "add": "Hinzufügen",

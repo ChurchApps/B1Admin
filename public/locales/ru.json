@@ -1139,18 +1139,33 @@
       "venue": "Место проведения"
     },
     "planItem": {
+      "addOn": "Дополнение",
+      "expandToActions": "Развернуть в действия",
       "item": "Элемент",
+      "lessonAction": "Действие урока",
       "song": "Песня"
     },
     "planItemEdit": {
       "description": "Описание",
       "edit": "Редактировать",
+      "editAddOn": "Редактировать дополнение",
       "editHeader": "Изменить заголовок",
       "editSong": "Редактировать песню",
       "enterSearch": "Введите поисковый запрос",
       "key": "Тональность",
       "minutes": "Минуты",
       "seconds": "Секунды"
+    },
+    "actionSelector": {
+      "action": "Действие",
+      "fromAssociatedLesson": "Из связанного урока:",
+      "section": "Раздел",
+      "selectAction": "Выбрать действие"
+    },
+    "addOnSelector": {
+      "category": "Категория",
+      "noAddOns": "Дополнения недоступны",
+      "selectAddOn": "Выбрать дополнение"
     },
     "planTypeEdit": {
       "add": "Добавить",

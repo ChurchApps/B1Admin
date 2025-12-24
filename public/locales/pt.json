@@ -1139,18 +1139,33 @@
       "venue": "Local"
     },
     "planItem": {
+      "addOn": "Complemento",
+      "expandToActions": "Expandir para ações",
       "item": "Item",
+      "lessonAction": "Ação da lição",
       "song": "Canção"
     },
     "planItemEdit": {
       "description": "Descrição",
       "edit": "Editar",
+      "editAddOn": "Editar complemento",
       "editHeader": "Editar cabeçalho",
       "editSong": "Editar música",
       "enterSearch": "Insira o termo de pesquisa",
       "key": "Tom",
       "minutes": "Minutos",
       "seconds": "Segundos"
+    },
+    "actionSelector": {
+      "action": "Ação",
+      "fromAssociatedLesson": "Da lição associada:",
+      "section": "Seção",
+      "selectAction": "Selecionar ação"
+    },
+    "addOnSelector": {
+      "category": "Categoria",
+      "noAddOns": "Nenhum complemento disponível",
+      "selectAddOn": "Selecionar complemento"
     },
     "planTypeEdit": {
       "add": "Adicionar",
