@@ -155,9 +155,9 @@ export const PlanItemEdit = (props: Props) => {
     );
   };
 
-  const showLabel = planItem?.itemType === "header" || planItem?.itemType === "item" || planItem?.itemType === "action" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
-  const showDesc = planItem?.itemType === "item" || planItem?.itemType === "action" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
-  const showDuration = planItem?.itemType === "item" || planItem?.itemType === "action" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
+  const showLabel = planItem?.itemType === "header" || planItem?.itemType === "item" || planItem?.itemType === "action" || planItem?.itemType === "lessonSection" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
+  const showDesc = planItem?.itemType === "item" || planItem?.itemType === "action" || planItem?.itemType === "lessonSection" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
+  const showDuration = planItem?.itemType === "item" || planItem?.itemType === "action" || planItem?.itemType === "lessonSection" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
 
   return (
     <InputBox headerText={getHeaderText()} headerIcon="album" saveFunction={handleSave} cancelFunction={props.onDone} deleteFunction={planItem?.id && handleDelete}>

@@ -352,6 +352,42 @@ export const PlanItem = React.memo((props: Props) => {
     </>
   );
 
+  const getLessonSectionRow = () => (
+    <>
+      <div className="planItem">
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
+          {!props.readOnly && (
+            <>
+              <span style={{ width: 24 }} />
+              <button
+                type="button"
+                onClick={() => props.setEditPlanItem(props.planItem)}
+                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                <Icon>edit</Icon>
+              </button>
+            </>
+          )}
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId); }}>
+              {props.planItem.label}
+            </a>
+          ) : (
+            props.planItem.label
+          )}
+        </div>
+        {getDescriptionRow()}
+      </div>
+    </>
+  );
+
   const getPlanItem = () => {
     switch (props.planItem.itemType) {
       case "header":
@@ -361,6 +397,8 @@ export const PlanItem = React.memo((props: Props) => {
         return getSongRow();
       case "action":
         return getActionRow();
+      case "lessonSection":
+        return getLessonSectionRow();
       case "item":
         return getItemRow();
     }
