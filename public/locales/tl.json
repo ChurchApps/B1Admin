@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Kopyahin mula sa",
+      "copyAll": "Mga Posisyon at Assignments",
+      "copyNothing": "Wala",
+      "copyPositions": "Mga Posisyon Lamang",
+      "copyPrevious": "Kopyahin mula sa Nakaraang Plano",
       "none": "Wala",
       "planAdd": "Magdagdag ng plano",
       "planEdit": "I-edit ang plano",
@@ -1129,6 +1133,7 @@
     "assignment": {
       "addPosition": "Magdagdag ng posisyon",
       "autoAssign": "Auto Assign",
+      "copy": "Kopyahin",
       "saveNotes": "I -save ang Mga Tala"
     },
     "lessonSelector": {

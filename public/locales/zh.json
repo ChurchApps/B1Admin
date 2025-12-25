@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "复制自",
+      "copyAll": "职位和分配",
+      "copyNothing": "无",
+      "copyPositions": "仅职位",
+      "copyPrevious": "从上一个计划复制",
       "none": "无",
       "planAdd": "添加计划",
       "planEdit": "编辑计划",
@@ -1129,6 +1133,7 @@
     "assignment": {
       "addPosition": "添加职位",
       "autoAssign": "自动分配",
+      "copy": "复制",
       "saveNotes": "保存笔记"
     },
     "lessonSelector": {

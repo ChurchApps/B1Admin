@@ -7,6 +7,7 @@ import { type LessonTreeInterface } from "./PlanUtils";
 interface Props {
   ministryId: string;
   planTypeId?: string;
+  plans?: PlanInterface[];
   onSave: (plan: PlanInterface) => void;
   onCancel: () => void;
 }
@@ -19,11 +20,23 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   });
   const [errors, setErrors] = useState<string[]>([]);
   const [lessonTree, setLessonTree] = useState<LessonTreeInterface>({});
+  const [copyMode, setCopyMode] = useState<string>("all"); // "none" | "positions" | "all"
 
   const [programId, setProgramId] = useState<string>("");
   const [studyId, setStudyId] = useState<string>("");
   const [lessonId, setLessonId] = useState<string>("");
   const [venueId, setVenueId] = useState<string>("");
+
+  // Get the most recent plan (first one in the list, sorted by date descending)
+  const previousPlan = React.useMemo(() => {
+    if (!props.plans || props.plans.length === 0) return null;
+    const sorted = [...props.plans].sort((a, b) => {
+      const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
+      const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
+      return dateB - dateA;
+    });
+    return sorted[0];
+  }, [props.plans]);
 
   const getDefault = useCallback((array: Array<{ id: string }> | undefined, currentId: string) => {
     if (!array || array.length === 0) return "";
@@ -127,9 +140,16 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         contentId: venueId,
       };
 
-      const savedPlans = await ApiHelper.post("/plans", [newPlan], "DoingApi");
-      if (savedPlans && savedPlans.length > 0) {
-        props.onSave(savedPlans[0]);
+      let savedPlan: PlanInterface;
+      if (copyMode === "none" || !previousPlan) {
+        const savedPlans = await ApiHelper.post("/plans", [newPlan], "DoingApi");
+        savedPlan = savedPlans?.[0];
+      } else {
+        savedPlan = await ApiHelper.post("/plans/copy/" + previousPlan.id, { ...newPlan, copyMode }, "DoingApi");
+      }
+
+      if (savedPlan) {
+        props.onSave(savedPlan);
       }
     }
   };
@@ -223,6 +243,22 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
             {getVenueOptions()}
           </Select>
         </FormControl>
+
+        {previousPlan && (
+          <FormControl fullWidth>
+            <InputLabel>{Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}</InputLabel>
+            <Select
+              label={Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}
+              value={copyMode}
+              onChange={(e) => setCopyMode(e.target.value)}
+              data-testid="copy-mode-select"
+            >
+              <MenuItem value="none">{Locale.label("plans.planEdit.copyNothing") || "Nothing"}</MenuItem>
+              <MenuItem value="positions">{Locale.label("plans.planEdit.copyPositions") || "Positions Only"}</MenuItem>
+              <MenuItem value="all">{Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}</MenuItem>
+            </Select>
+          </FormControl>
+        )}
       </InputBox>
     </>
   );

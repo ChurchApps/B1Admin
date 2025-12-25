@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Kopier fra",
+      "copyAll": "Posisjoner og tilordninger",
+      "copyNothing": "Ingenting",
+      "copyPositions": "Kun posisjoner",
+      "copyPrevious": "Kopier fra Forrige Plan",
       "none": "Ingen",
       "planAdd": "Legg til plan",
       "planEdit": "Rediger plan",
@@ -1129,6 +1133,7 @@
     "assignment": {
       "addPosition": "Legg til posisjon",
       "autoAssign": "Automatisk tilordning",
+      "copy": "Kopier",
       "saveNotes": "Lagre notater"
     },
     "lessonSelector": {

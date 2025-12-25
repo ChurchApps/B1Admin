@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "복사 출처",
+      "copyAll": "직책 및 배정",
+      "copyNothing": "없음",
+      "copyPositions": "직책만",
+      "copyPrevious": "이전 계획에서 복사",
       "none": "없음",
       "planAdd": "계획 추가",
       "planEdit": "계획 편집",
@@ -1129,6 +1133,7 @@
     "assignment": {
       "addPosition": "직책 추가",
       "autoAssign": "자동 할당",
+      "copy": "복사",
       "saveNotes": "메모 저장"
     },
     "lessonSelector": {

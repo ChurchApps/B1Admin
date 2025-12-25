@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import {
-  Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert 
+  Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem
 } from "@mui/material";
-import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon } from "@mui/icons-material";
+import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import {
   type AssignmentInterface,
   type BlockoutDateInterface,
@@ -41,44 +41,122 @@ export const Assignment = (props: Props) => {
   const [times, setTimes] = React.useState<TimeInterface[]>([]);
   const [blockoutDates, setBlockoutDates] = React.useState<BlockoutDateInterface[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
+  const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
+  const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
 
-  const getAddPositionActions = () => canEdit ? (
-    <Stack direction="row" spacing={1}>
-      <Button
-        variant="outlined"
-        startIcon={<AutoAssignIcon />}
-        onClick={handleAutoAssign}
-        data-testid="auto-assign-button"
-        size="small"
-        sx={{
-          textTransform: "none",
-          borderRadius: 2,
-          fontWeight: 600,
-        }}>
-        {Locale.label("plans.assignment.autoAssign")}
-      </Button>
-      <Button
-        variant="contained"
-        startIcon={<AddIcon />}
-        onClick={() => {
-          setPosition({
-            categoryName: positions?.length > 0 ? positions[0].categoryName : "Band",
-            name: "",
-            planId: props.plan?.id,
-            count: 1,
-          });
-        }}
-        data-testid="add-position-button"
-        size="small"
-        sx={{
-          textTransform: "none",
-          borderRadius: 2,
-          fontWeight: 600,
-        }}>
-        {Locale.label("plans.assignment.addPosition")}
-      </Button>
-    </Stack>
-  ) : null;
+  // Get the most recent plan (excluding current plan)
+  const previousPlan = React.useMemo(() => {
+    if (allPlans.length === 0) return null;
+    const sorted = [...allPlans]
+      .filter(p => p.id !== props.plan?.id)
+      .sort((a, b) => {
+        const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
+        const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
+        return dateB - dateA;
+      });
+    return sorted[0] || null;
+  }, [allPlans, props.plan?.id]);
+
+  const handleCopyClick = (mode: string) => {
+    setCopyMenuAnchor(null);
+    handleCopyFromPrevious(mode);
+  };
+
+  const getAddPositionActions = () => {
+    if (!canEdit) return null;
+
+    // When no positions exist, show copy from previous dropdown instead of Auto Assign
+    if (positions.length === 0 && previousPlan) {
+      return (
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Button
+            variant="outlined"
+            startIcon={<CopyIcon />}
+            endIcon={<ArrowDropDownIcon />}
+            onClick={(e) => setCopyMenuAnchor(e.currentTarget)}
+            size="small"
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              fontWeight: 600,
+            }}>
+            {Locale.label("plans.planEdit.copyPrevious") || "Copy from Previous"}
+          </Button>
+          <Menu
+            anchorEl={copyMenuAnchor}
+            open={Boolean(copyMenuAnchor)}
+            onClose={() => setCopyMenuAnchor(null)}
+          >
+            <MenuItem onClick={() => handleCopyClick("positions")}>
+              {Locale.label("plans.planEdit.copyPositions") || "Positions Only"}
+            </MenuItem>
+            <MenuItem onClick={() => handleCopyClick("all")}>
+              {Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}
+            </MenuItem>
+          </Menu>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              setPosition({
+                categoryName: "Band",
+                name: "",
+                planId: props.plan?.id,
+                count: 1,
+              });
+            }}
+            data-testid="add-position-button"
+            size="small"
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              fontWeight: 600,
+            }}>
+            {Locale.label("plans.assignment.addPosition")}
+          </Button>
+        </Stack>
+      );
+    }
+
+    // When positions exist, show Auto Assign and Add Position buttons
+    return (
+      <Stack direction="row" spacing={1}>
+        <Button
+          variant="outlined"
+          startIcon={<AutoAssignIcon />}
+          onClick={handleAutoAssign}
+          data-testid="auto-assign-button"
+          size="small"
+          sx={{
+            textTransform: "none",
+            borderRadius: 2,
+            fontWeight: 600,
+          }}>
+          {Locale.label("plans.assignment.autoAssign")}
+        </Button>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => {
+            setPosition({
+              categoryName: positions?.length > 0 ? positions[0].categoryName : "Band",
+              name: "",
+              planId: props.plan?.id,
+              count: 1,
+            });
+          }}
+          data-testid="add-position-button"
+          size="small"
+          sx={{
+            textTransform: "none",
+            borderRadius: 2,
+            fontWeight: 600,
+          }}>
+          {Locale.label("plans.assignment.addPosition")}
+        </Button>
+      </Stack>
+    );
+  };
 
   const handleAssignmentSelect = (p: PositionInterface, a: AssignmentInterface) => {
     setAssignment(a);
@@ -140,9 +218,31 @@ export const Assignment = (props: Props) => {
     });
   };
 
+  // Load all plans for the plan type to find previous plan for copy functionality
+  const loadPlans = useCallback(async () => {
+    if (props.plan?.planTypeId) {
+      const plans = await ApiHelper.get("/plans/types/" + props.plan.planTypeId, "DoingApi");
+      setAllPlans(plans || []);
+    } else if (props.plan?.ministryId) {
+      const plans = await ApiHelper.get("/plans", "DoingApi");
+      const filtered = ArrayHelper.getAll(plans || [], "ministryId", props.plan.ministryId);
+      setAllPlans(filtered);
+    }
+  }, [props.plan?.planTypeId, props.plan?.ministryId]);
+
+  const handleCopyFromPrevious = async (copyMode: string) => {
+    if (!previousPlan || !copyMode) return;
+    await ApiHelper.post("/plans/copy/" + previousPlan.id, {
+      ...props.plan,
+      copyMode
+    }, "DoingApi");
+    loadData();
+  };
+
   React.useEffect(() => {
     loadData();
-  }, [props.plan?.id, loadData]);
+    loadPlans();
+  }, [props.plan?.id, loadData, loadPlans]);
 
   return (
     <Grid container spacing={3}>

@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Copiar De",
+      "copyAll": "Posições e Atribuições",
+      "copyNothing": "Nada",
+      "copyPositions": "Apenas Posições",
+      "copyPrevious": "Copiar do Plano Anterior",
       "none": "Nenhum",
       "planAdd": "Adicionar um Plano",
       "planEdit": "Editar Plano",
@@ -1129,6 +1133,7 @@
     "assignment": {
       "addPosition": "Adicionar posição",
       "autoAssign": "Atribuição automática",
+      "copy": "Copiar",
       "saveNotes": "Salvar notas"
     },
     "lessonSelector": {

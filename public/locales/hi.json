@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "से कॉपी करें",
+      "copyAll": "पद और असाइनमेंट",
+      "copyNothing": "कुछ नहीं",
+      "copyPositions": "केवल पद",
+      "copyPrevious": "पिछली योजना से कॉपी",
       "none": "कोई नहीं",
       "planAdd": "योजना जोड़ें",
       "planEdit": "योजना संपादित करें",
@@ -1129,6 +1133,7 @@
     "assignment": {
       "addPosition": "स्थिति जोड़ें",
       "autoAssign": "ऑटो आवंटित",
+      "copy": "कॉपी करें",
       "saveNotes": "नोट्स सहेजें"
     },
     "lessonSelector": {

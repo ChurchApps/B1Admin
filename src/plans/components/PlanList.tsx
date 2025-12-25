@@ -80,6 +80,7 @@ export const PlanList = memo((props: Props) => {
       <LessonScheduleEdit
         ministryId={props.ministry.id}
         planTypeId={props.planTypeId}
+        plans={plans}
         onSave={handleUpdated}
         onCancel={() => setShowLessonSchedule(false)}
       />
