@@ -1189,8 +1189,18 @@
     },
     "planTypePage": {
       "notFound": "Plantyp nicht gefunden",
+      "pairTvApp": "TV-App koppeln",
       "planType": "Plantyp",
-      "subtitle": "Plantypeinstellungen konfigurieren"
+      "subtitle": "Plantypeinstellungen konfigurieren",
+      "tvAppDescription": "Zeigen Sie Ihre Lerninhalte auf jedem Fernseher oder Display mit unserer kostenlosen App",
+      "tvAppTitle": "Auf dem Fernseher anzeigen"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Lessons.church TV-App herunterladen",
+      "instructions": "Geben Sie den 4-stelligen Code ein, der auf dem TV-App-Bildschirm angezeigt wird:",
+      "pairTitle": "Gerät koppeln",
+      "success": "Erfolgreich gekoppelt! Die TV-App zeigt jetzt Inhalte aus diesem Plantyp.",
+      "title": "TV-App koppeln"
     },
     "serviceOrder": {
       "addSection": "Abschnitt hinzufügen",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Button, Container, Typography } from "@mui/material";
-import { Assignment as AssignmentIcon, Link as LinkIcon } from "@mui/icons-material";
+import { Assignment as AssignmentIcon, Tv as TvIcon } from "@mui/icons-material";
 import { Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
@@ -70,21 +70,22 @@ export const PlanTypePage = () => {
           subtitle={Locale.label("plans.planTypePage.subtitle")}
         >
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={() => setShowPairDialog(true)}
-            startIcon={<LinkIcon />}
-            size="small"
+            startIcon={<TvIcon />}
+            size="large"
             sx={{
-              color: "#FFF",
-              backgroundColor: "transparent",
-              borderColor: "#FFF",
+              backgroundColor: "#FFF",
+              color: "primary.main",
+              fontWeight: 600,
+              px: 3,
+              py: 1,
               "&:hover": {
-                backgroundColor: "rgba(255,255,255,0.2)",
-                color: "#FFF",
+                backgroundColor: "rgba(255,255,255,0.9)",
               },
             }}
           >
-            Pair LessonsApp
+            {Locale.label("plans.planTypePage.pairTvApp") || "Pair TV App"}
           </Button>
         </PageHeader>
       </Box>

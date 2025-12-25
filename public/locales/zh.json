@@ -1189,8 +1189,18 @@
     },
     "planTypePage": {
       "notFound": "未找到计划类型",
+      "pairTvApp": "配对电视应用",
       "planType": "计划类型",
-      "subtitle": "配置计划类型设置"
+      "subtitle": "配置计划类型设置",
+      "tvAppDescription": "使用我们的免费应用在任何电视或显示器上展示您的课程内容",
+      "tvAppTitle": "在电视上显示"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "下载 Lessons.church 电视应用",
+      "instructions": "输入电视应用屏幕上显示的4位代码：",
+      "pairTitle": "配对您的设备",
+      "success": "配对成功！电视应用现在将显示此计划类型的内容。",
+      "title": "配对电视应用"
     },
     "serviceOrder": {
       "addSection": "添加部分",

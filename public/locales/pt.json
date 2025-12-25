@@ -1189,8 +1189,18 @@
     },
     "planTypePage": {
       "notFound": "Tipo de plano não encontrado",
+      "pairTvApp": "Parear App de TV",
       "planType": "Tipo de plano",
-      "subtitle": "Definir configurações de tipo de plano"
+      "subtitle": "Definir configurações de tipo de plano",
+      "tvAppDescription": "Exiba o conteúdo das suas lições em qualquer TV ou display usando nosso aplicativo gratuito",
+      "tvAppTitle": "Exibir na TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Baixar o App de TV Lessons.church",
+      "instructions": "Digite o código de 4 caracteres exibido na tela do aplicativo de TV:",
+      "pairTitle": "Parear seu dispositivo",
+      "success": "Pareado com sucesso! O aplicativo de TV agora exibirá o conteúdo deste tipo de plano.",
+      "title": "Parear App de TV"
     },
     "serviceOrder": {
       "addSection": "Adicionar seção",

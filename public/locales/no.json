@@ -1189,8 +1189,18 @@
     },
     "planTypePage": {
       "notFound": "Plantype ikke funnet",
+      "pairTvApp": "Par TV-App",
       "planType": "Plantype",
-      "subtitle": "Konfigurer plantypeinnstillinger"
+      "subtitle": "Konfigurer plantypeinnstillinger",
+      "tvAppDescription": "Vis leksjonsinnholdet ditt på en hvilken som helst TV eller skjerm med vår gratis app",
+      "tvAppTitle": "Vis på TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Last ned Lessons.church TV-appen",
+      "instructions": "Skriv inn den 4-tegns koden som vises på TV-appskjermen:",
+      "pairTitle": "Par enheten din",
+      "success": "Paring vellykket! TV-appen vil nå vise innhold fra denne plantypen.",
+      "title": "Par TV-App"
     },
     "serviceOrder": {
       "addSection": "Legg til seksjon",

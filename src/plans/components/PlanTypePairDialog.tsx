@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
@@ -45,16 +45,48 @@ export const PlanTypePairDialog: React.FC<Props> = ({ planTypeId, onClose }) => 
 
   return (
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Pair LessonsApp</DialogTitle>
+      <DialogTitle>{Locale.label("plans.planTypePairDialog.title") || "Pair TV App"}</DialogTitle>
       <DialogContent>
         {success ? (
           <Alert severity="success" sx={{ mt: 1 }}>
-            Successfully paired! The LessonsApp will now show content from this plan type.
+            {Locale.label("plans.planTypePairDialog.success") || "Successfully paired! The TV app will now show content from this plan type."}
           </Alert>
         ) : (
           <Box sx={{ pt: 1 }}>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              Enter the 4-character code displayed on the LessonsApp screen:
+            {/* Download section */}
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+              {Locale.label("plans.planTypePairDialog.downloadTitle") || "Download the TV App"}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {Locale.label("plans.planTypePage.tvAppDescription") || "Show your lesson content on any TV or display using our free app"}
+            </Typography>
+            <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+              <a href="https://play.google.com/store/apps/details?id=church.lessons.screen" target="_blank" rel="noopener noreferrer">
+                <Box
+                  component="img"
+                  src="https://lessons.church/images/apps/google.png"
+                  alt="Google Play"
+                  sx={{ height: 40 }}
+                />
+              </a>
+              <a href="https://www.amazon.com/Live-Church-Solutions-Lessons-church/dp/B09T38BNQG/" target="_blank" rel="noopener noreferrer">
+                <Box
+                  component="img"
+                  src="https://lessons.church/images/apps/amazon.png"
+                  alt="Amazon App Store"
+                  sx={{ height: 40 }}
+                />
+              </a>
+            </Stack>
+
+            <Divider sx={{ my: 2 }} />
+
+            {/* Pairing section */}
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+              {Locale.label("plans.planTypePairDialog.pairTitle") || "Pair Your Device"}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {Locale.label("plans.planTypePairDialog.instructions") || "Enter the 4-character code displayed on the TV app screen:"}
             </Typography>
 
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}

@@ -1189,8 +1189,18 @@
     },
     "planTypePage": {
       "notFound": "Hindi natagpuan ang uri ng plano",
+      "pairTvApp": "Ipares ang TV App",
       "planType": "Uri ng plano",
-      "subtitle": "I -configure ang mga setting ng uri ng plano"
+      "subtitle": "I -configure ang mga setting ng uri ng plano",
+      "tvAppDescription": "Ipakita ang nilalaman ng iyong aralin sa anumang TV o display gamit ang aming libreng app",
+      "tvAppTitle": "Ipakita sa TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "I-download ang Lessons.church TV App",
+      "instructions": "Ilagay ang 4-character na code na ipinapakita sa TV app screen:",
+      "pairTitle": "Ipares ang iyong device",
+      "success": "Matagumpay na naipares! Ang TV app ay magpapakita na ngayon ng nilalaman mula sa uri ng planong ito.",
+      "title": "Ipares ang TV App"
     },
     "serviceOrder": {
       "addSection": "Magdagdag ng seksyon",

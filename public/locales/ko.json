@@ -1189,8 +1189,18 @@
     },
     "planTypePage": {
       "notFound": "계획 유형을 찾을 수 없습니다.",
+      "pairTvApp": "TV 앱 연결",
       "planType": "계획 유형",
-      "subtitle": "계획 유형 설정 구성"
+      "subtitle": "계획 유형 설정 구성",
+      "tvAppDescription": "무료 앱을 사용하여 TV 또는 디스플레이에 레슨 콘텐츠를 표시하세요",
+      "tvAppTitle": "TV에 표시"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Lessons.church TV 앱 다운로드",
+      "instructions": "TV 앱 화면에 표시된 4자리 코드를 입력하세요:",
+      "pairTitle": "기기 연결",
+      "success": "성공적으로 연결되었습니다! 이제 TV 앱에서 이 계획 유형의 콘텐츠가 표시됩니다.",
+      "title": "TV 앱 연결"
     },
     "serviceOrder": {
       "addSection": "섹션 추가",

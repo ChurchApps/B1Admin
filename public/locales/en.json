@@ -1215,8 +1215,18 @@
     },
     "planTypePage": {
       "notFound": "Plan type not found",
+      "pairTvApp": "Pair TV App",
       "planType": "Plan Type",
-      "subtitle": "Configure plan type settings"
+      "subtitle": "Configure plan type settings",
+      "tvAppDescription": "Show your lesson content on any TV or display using our free app",
+      "tvAppTitle": "Display on TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Download the Lessons.church TV App",
+      "instructions": "Enter the 4-character code displayed on the TV app screen:",
+      "pairTitle": "Pair Your Device",
+      "success": "Successfully paired! The TV app will now show content from this plan type.",
+      "title": "Pair TV App"
     },
     "serviceOrder": {
       "add": "Add",

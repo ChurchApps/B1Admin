@@ -1189,8 +1189,18 @@
     },
     "planTypePage": {
       "notFound": "Tipo di piano non trovato",
+      "pairTvApp": "Associa App TV",
       "planType": "Tipo di piano",
-      "subtitle": "Configura le impostazioni del tipo di piano"
+      "subtitle": "Configura le impostazioni del tipo di piano",
+      "tvAppDescription": "Mostra i contenuti delle lezioni su qualsiasi TV o display usando la nostra app gratuita",
+      "tvAppTitle": "Mostra su TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Scarica l'App TV Lessons.church",
+      "instructions": "Inserisci il codice a 4 caratteri visualizzato sullo schermo dell'app TV:",
+      "pairTitle": "Associa il tuo dispositivo",
+      "success": "Associato con successo! L'app TV mostrerà ora i contenuti di questo tipo di piano.",
+      "title": "Associa App TV"
     },
     "serviceOrder": {
       "addSection": "Aggiungi sezione",
