@@ -12,13 +12,16 @@ import {
   Stack,
   Typography,
   Box,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { type ExternalProviderInterface, type ExternalVenueRefInterface } from "../../helpers";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (venueId: string, venueName?: string) => void;
+  onSelect: (venueId: string, venueName?: string, externalRef?: ExternalVenueRefInterface) => void;
   venueId?: string;
   returnVenueName?: boolean;
 }
@@ -30,6 +33,11 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   const [selectedLesson, setSelectedLesson] = useState<string>("");
   const [selectedVenue, setSelectedVenue] = useState<string>("");
   const [venueInfo, setVenueInfo] = useState<any>(null);
+
+  // External provider state
+  const [providerType, setProviderType] = useState<"internal" | "external">("internal");
+  const [externalProviders, setExternalProviders] = useState<ExternalProviderInterface[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<ExternalProviderInterface | null>(null);
 
   const loadLessonTree = useCallback(async () => {
     // If venueId is provided, skip loading the tree
@@ -71,6 +79,72 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       setLessonTree({});
     }
   }, [venueId]);
+
+  const loadExternalProviders = useCallback(async () => {
+    try {
+      const providers = await ApiHelper.get("/externalProviders", "LessonsApi");
+      setExternalProviders(providers || []);
+    } catch (error) {
+      console.error("Error loading external providers:", error);
+      setExternalProviders([]);
+    }
+  }, []);
+
+  const loadExternalLessonTree = useCallback(async (provider: ExternalProviderInterface) => {
+    if (!provider?.apiUrl) return;
+    try {
+      const response = await fetch(provider.apiUrl);
+      const data = await response.json();
+      setLessonTree(data || {});
+      autoSelectDefaults(data);
+    } catch (error) {
+      console.error("Error loading external lesson tree:", error);
+      setLessonTree({});
+    }
+  }, []);
+
+  const autoSelectDefaults = (data: any) => {
+    if (data?.programs?.length > 0) {
+      const firstProgram = data.programs[0];
+      setSelectedProgram(firstProgram.id);
+      if (firstProgram.studies?.length > 0) {
+        const firstStudy = firstProgram.studies[0];
+        setSelectedStudy(firstStudy.id);
+        if (firstStudy.lessons?.length > 0) {
+          const firstLesson = firstStudy.lessons[0];
+          setSelectedLesson(firstLesson.id);
+          if (firstLesson.venues?.length > 0) {
+            setSelectedVenue(firstLesson.venues[0].id);
+          }
+        }
+      }
+    }
+  };
+
+  const handleProviderTypeChange = useCallback((newType: "internal" | "external") => {
+    setProviderType(newType);
+    setSelectedProvider(null);
+    setLessonTree({});
+    setSelectedProgram("");
+    setSelectedStudy("");
+    setSelectedLesson("");
+    setSelectedVenue("");
+    if (newType === "internal") {
+      loadLessonTree();
+    }
+  }, [loadLessonTree]);
+
+  const handleProviderChange = useCallback((providerId: string) => {
+    const provider = externalProviders.find(p => p.id === providerId);
+    setSelectedProvider(provider || null);
+    setSelectedProgram("");
+    setSelectedStudy("");
+    setSelectedLesson("");
+    setSelectedVenue("");
+    if (provider) {
+      loadExternalLessonTree(provider);
+    }
+  }, [externalProviders, loadExternalLessonTree]);
 
   const getCurrentProgram = useCallback(() => {
     return lessonTree?.programs?.find((p: any) => p.id === selectedProgram);
@@ -116,10 +190,24 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     } else if (selectedVenue) {
       const currentLessonData = getCurrentLesson();
       const selectedVenueData = currentLessonData?.venues?.find((v: any) => v.id === selectedVenue);
-      onSelect(selectedVenue, returnVenueName ? selectedVenueData?.name : undefined);
+      const venueName = returnVenueName ? selectedVenueData?.name : undefined;
+
+      if (providerType === "external" && selectedProvider) {
+        // Create external venue reference
+        const externalRef: ExternalVenueRefInterface = {
+          externalProviderId: selectedProvider.id!,
+          programId: selectedProgram,
+          studyId: selectedStudy,
+          lessonId: selectedLesson,
+          venueId: selectedVenue
+        };
+        onSelect(selectedVenue, venueName, externalRef);
+      } else {
+        onSelect(selectedVenue, venueName);
+      }
       onClose();
     }
-  }, [venueId, venueInfo, selectedVenue, getCurrentLesson, returnVenueName, onSelect, onClose]);
+  }, [venueId, venueInfo, selectedVenue, getCurrentLesson, returnVenueName, onSelect, onClose, providerType, selectedProvider, selectedProgram, selectedStudy, selectedLesson]);
 
   const handleClose = useCallback(() => {
     setSelectedProgram("");
@@ -127,12 +215,18 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setSelectedLesson("");
     setSelectedVenue("");
     setVenueInfo(null);
+    setProviderType("internal");
+    setSelectedProvider(null);
+    setLessonTree({});
     onClose();
   }, [onClose]);
 
   useEffect(() => {
-    if (open) loadLessonTree();
-  }, [open, loadLessonTree]);
+    if (open) {
+      loadLessonTree();
+      loadExternalProviders();
+    }
+  }, [open, loadLessonTree, loadExternalProviders]);
 
   const currentProgram = getCurrentProgram();
   const currentStudy = getCurrentStudy();
@@ -168,7 +262,40 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       <DialogTitle>{Locale.label("plans.lessonSelector.associateLesson")}</DialogTitle>
       <DialogContent>
         <Stack spacing={3} sx={{ mt: 1 }}>
-          <FormControl fullWidth>
+          {externalProviders.length > 0 && (
+            <Box>
+              <Typography variant="body2" sx={{ mb: 1 }}>{Locale.label("plans.lessonSelector.lessonSource") || "Lesson Source"}</Typography>
+              <ToggleButtonGroup
+                value={providerType}
+                exclusive
+                onChange={(_, value) => value && handleProviderTypeChange(value)}
+                size="small"
+                fullWidth
+              >
+                <ToggleButton value="internal">{Locale.label("plans.lessonSelector.lessonsChurch") || "Lessons.church"}</ToggleButton>
+                <ToggleButton value="external">{Locale.label("plans.lessonSelector.externalProvider") || "External Provider"}</ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+          )}
+
+          {providerType === "external" && (
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("plans.lessonSelector.provider") || "Provider"}</InputLabel>
+              <Select
+                value={selectedProvider?.id || ""}
+                onChange={(e) => handleProviderChange(e.target.value)}
+                label={Locale.label("plans.lessonSelector.provider") || "Provider"}
+              >
+                {externalProviders.map((provider) => (
+                  <MenuItem key={provider.id} value={provider.id}>
+                    {provider.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          <FormControl fullWidth disabled={providerType === "external" && !selectedProvider}>
             <InputLabel>{Locale.label("plans.lessonSelector.program")}</InputLabel>
             <Select
               value={selectedProgram}

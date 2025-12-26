@@ -1042,6 +1042,20 @@
       "dateRequired": "Пожалуйста, выберите дату",
       "venueRequired": "Пожалуйста, выберите место"
     },
+    "lessonSelector": {
+      "addFromLesson": "Добавить из связанного урока",
+      "addLesson": "Добавить урок",
+      "associateLesson": "Связать урок",
+      "externalProvider": "Внешний провайдер",
+      "lesson": "Урок",
+      "lessonSource": "Источник урока",
+      "lessonsChurch": "Lessons.church",
+      "program": "Программа",
+      "provider": "Провайдер",
+      "study": "Курс",
+      "usingAssociatedLesson": "Используется связанный урок:",
+      "venue": "Место"
+    },
     "planPage": {
       "assign": "Назначения команд",
       "assignments": "Назначения",

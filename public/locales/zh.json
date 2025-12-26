@@ -1042,6 +1042,20 @@
       "dateRequired": "请选择日期",
       "venueRequired": "请选择场地"
     },
+    "lessonSelector": {
+      "addFromLesson": "从关联课程添加",
+      "addLesson": "添加课程",
+      "associateLesson": "关联课程",
+      "externalProvider": "外部提供商",
+      "lesson": "课程",
+      "lessonSource": "课程来源",
+      "lessonsChurch": "Lessons.church",
+      "program": "课程计划",
+      "provider": "提供商",
+      "study": "学习",
+      "usingAssociatedLesson": "正在使用关联课程:",
+      "venue": "场地"
+    },
     "planPage": {
       "assign": "团队分配",
       "assignments": "分配",

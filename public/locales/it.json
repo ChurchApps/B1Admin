@@ -1042,6 +1042,20 @@
       "dateRequired": "Seleziona una data",
       "venueRequired": "Seleziona una sede"
     },
+    "lessonSelector": {
+      "addFromLesson": "Aggiungi dalla lezione associata",
+      "addLesson": "Aggiungi lezione",
+      "associateLesson": "Associa lezione",
+      "externalProvider": "Fornitore esterno",
+      "lesson": "Lezione",
+      "lessonSource": "Fonte della lezione",
+      "lessonsChurch": "Lessons.church",
+      "program": "Programma",
+      "provider": "Fornitore",
+      "study": "Studio",
+      "usingAssociatedLesson": "Utilizzo della lezione associata:",
+      "venue": "Sede"
+    },
     "planPage": {
       "assign": "Assegnazioni di Squadra",
       "assignments": "Assegnazioni",

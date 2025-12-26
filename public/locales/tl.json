@@ -1042,6 +1042,20 @@
       "dateRequired": "Mangyaring pumili ng petsa",
       "venueRequired": "Mangyaring pumili ng lugar"
     },
+    "lessonSelector": {
+      "addFromLesson": "Magdagdag mula sa nakaugnay na aralin",
+      "addLesson": "Magdagdag ng aralin",
+      "associateLesson": "Iugnay ang aralin",
+      "externalProvider": "Panlabas na tagapagbigay",
+      "lesson": "Aralin",
+      "lessonSource": "Pinagmulan ng aralin",
+      "lessonsChurch": "Lessons.church",
+      "program": "Programa",
+      "provider": "Tagapagbigay",
+      "study": "Pag-aaral",
+      "usingAssociatedLesson": "Ginagamit ang nakaugnay na aralin:",
+      "venue": "Lugar"
+    },
     "planPage": {
       "assign": "Mga Pagtatalaga ng Koponan",
       "assignments": "Mga Pagtatalaga",

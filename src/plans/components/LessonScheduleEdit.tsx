@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField, ToggleButton, ToggleButtonGroup, Box, Typography, type SelectChangeEvent } from "@mui/material";
 import { ApiHelper, ArrayHelper, DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
-import { type PlanInterface } from "../../helpers";
+import { type PlanInterface, type ExternalProviderInterface, type ExternalVenueRefInterface } from "../../helpers";
 import { type LessonTreeInterface } from "./PlanUtils";
 
 interface Props {
@@ -26,6 +26,11 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   const [studyId, setStudyId] = useState<string>("");
   const [lessonId, setLessonId] = useState<string>("");
   const [venueId, setVenueId] = useState<string>("");
+
+  // External provider state
+  const [providerType, setProviderType] = useState<"internal" | "external">("internal");
+  const [externalProviders, setExternalProviders] = useState<ExternalProviderInterface[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<ExternalProviderInterface | null>(null);
 
   // Get the most recent plan (first one in the list, sorted by date descending)
   const previousPlan = React.useMemo(() => {
@@ -78,9 +83,73 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
     setLessonTree(data || {});
   }, []);
 
+  const loadExternalProviders = useCallback(async () => {
+    try {
+      const providers = await ApiHelper.get("/externalProviders", "LessonsApi");
+      setExternalProviders(providers || []);
+    } catch (error) {
+      console.error("Error loading external providers:", error);
+      setExternalProviders([]);
+    }
+  }, []);
+
+  const loadExternalLessonTree = useCallback(async (provider: ExternalProviderInterface) => {
+    if (!provider?.apiUrl) return;
+    try {
+      const response = await fetch(provider.apiUrl);
+      const data = await response.json();
+      setLessonTree(data || {});
+      // Auto-select defaults for external tree
+      if (data?.programs?.length > 0) {
+        const firstProgram = data.programs[0];
+        setProgramId(firstProgram.id);
+        if (firstProgram.studies?.length > 0) {
+          const firstStudy = firstProgram.studies[0];
+          setStudyId(firstStudy.id);
+          if (firstStudy.lessons?.length > 0) {
+            const firstLesson = firstStudy.lessons[0];
+            setLessonId(firstLesson.id);
+            if (firstLesson.venues?.length > 0) {
+              setVenueId(firstLesson.venues[0].id);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error loading external lesson tree:", error);
+      setLessonTree({});
+    }
+  }, []);
+
+  const handleProviderTypeChange = useCallback((newType: "internal" | "external") => {
+    setProviderType(newType);
+    setSelectedProvider(null);
+    setLessonTree({});
+    setProgramId("");
+    setStudyId("");
+    setLessonId("");
+    setVenueId("");
+    if (newType === "internal") {
+      loadLessonTree();
+    }
+  }, [loadLessonTree]);
+
+  const handleProviderChange = useCallback((providerId: string) => {
+    const provider = externalProviders.find(p => p.id === providerId);
+    setSelectedProvider(provider || null);
+    setProgramId("");
+    setStudyId("");
+    setLessonId("");
+    setVenueId("");
+    if (provider) {
+      loadExternalLessonTree(provider);
+    }
+  }, [externalProviders, loadExternalLessonTree]);
+
   useEffect(() => {
     loadLessonTree();
-  }, [loadLessonTree]);
+    loadExternalProviders();
+  }, [loadLessonTree, loadExternalProviders]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrors([]);
@@ -129,6 +198,25 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
       const formattedDate = DateHelper.prettyDate(scheduledDate);
 
       // Create the plan with the lesson venue association
+      let contentType: string;
+      let contentId: string;
+
+      if (providerType === "external" && selectedProvider) {
+        // External venue - store the full ref as JSON in contentId
+        const externalRef: ExternalVenueRefInterface = {
+          externalProviderId: selectedProvider.id!,
+          programId,
+          studyId,
+          lessonId,
+          venueId
+        };
+        contentType = "externalVenue";
+        contentId = JSON.stringify(externalRef);
+      } else {
+        contentType = "venue";
+        contentId = venueId;
+      }
+
       const newPlan: PlanInterface = {
         ministryId: props.ministryId,
         planTypeId: props.planTypeId,
@@ -136,8 +224,8 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         name: `${formattedDate} - ${displayName}`,
         notes: "",
         serviceOrder: true,
-        contentType: "venue",
-        contentId: venueId,
+        contentType,
+        contentId,
       };
 
       let savedPlan: PlanInterface;
@@ -197,7 +285,40 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
           aria-label="Scheduled date"
         />
 
-        <FormControl fullWidth>
+        {externalProviders.length > 0 && (
+          <Box>
+            <Typography variant="body2" sx={{ mb: 1 }}>{Locale.label("plans.lessonSelector.lessonSource") || "Lesson Source"}</Typography>
+            <ToggleButtonGroup
+              value={providerType}
+              exclusive
+              onChange={(_, value) => value && handleProviderTypeChange(value)}
+              size="small"
+              fullWidth
+            >
+              <ToggleButton value="internal">{Locale.label("plans.lessonSelector.lessonsChurch") || "Lessons.church"}</ToggleButton>
+              <ToggleButton value="external">{Locale.label("plans.lessonSelector.externalProvider") || "External Provider"}</ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+        )}
+
+        {providerType === "external" && (
+          <FormControl fullWidth>
+            <InputLabel>{Locale.label("plans.lessonSelector.provider") || "Provider"}</InputLabel>
+            <Select
+              label={Locale.label("plans.lessonSelector.provider") || "Provider"}
+              value={selectedProvider?.id || ""}
+              onChange={(e) => handleProviderChange(e.target.value)}
+            >
+              {externalProviders.map((provider) => (
+                <MenuItem key={provider.id} value={provider.id}>
+                  {provider.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+
+        <FormControl fullWidth disabled={providerType === "external" && !selectedProvider}>
           <InputLabel>{Locale.label("plans.lessonSelector.program") || "Program"}</InputLabel>
           <Select
             label={Locale.label("plans.lessonSelector.program") || "Program"}

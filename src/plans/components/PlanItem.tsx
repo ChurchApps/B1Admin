@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon, Menu, MenuItem } from "@mui/material";
-import { type PlanItemInterface } from "../../helpers";
+import { type PlanItemInterface, type ExternalVenueRefInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -22,6 +22,7 @@ interface Props {
   readOnly?: boolean;
   startTime?: number;
   associatedVenueId?: string;
+  externalRef?: ExternalVenueRefInterface;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -107,7 +108,12 @@ export const PlanItem = React.memo((props: Props) => {
 
     try {
       // Fetch actions for the associated venue
-      const venueData = await ApiHelper.getAnonymous(`/venues/public/actions/${props.associatedVenueId}`, "LessonsApi");
+      let venueData;
+      if (props.externalRef) {
+        venueData = await ApiHelper.getAnonymous(`/externalProviders/${props.externalRef.externalProviderId}/venue/${props.externalRef.venueId}/actions`, "LessonsApi");
+      } else {
+        venueData = await ApiHelper.getAnonymous(`/venues/public/actions/${props.associatedVenueId}`, "LessonsApi");
+      }
 
       if (venueData?.sections) {
         // Find the section matching this plan item's relatedId
@@ -183,7 +189,7 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} externalRef={props.externalRef} />
           </DraggableWrapper>
         </>
       );
@@ -499,9 +505,10 @@ export const PlanItem = React.memo((props: Props) => {
             setLessonSectionId(null);
             await handleExpandToActions();
           } : undefined}
+          externalRef={props.externalRef}
         />
       )}
-      {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} />}
+      {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} externalRef={props.externalRef} />}
       {addOnId && <AddOnDialog addOnId={addOnId} addOnName={props.planItem.label} onClose={() => setAddOnId(null)} />}
       {showActionSelector && props.associatedVenueId && (
         <ActionSelector
@@ -509,6 +516,7 @@ export const PlanItem = React.memo((props: Props) => {
           onClose={() => setShowActionSelector(false)}
           onSelect={handleActionSelected}
           venueId={props.associatedVenueId}
+          externalRef={props.externalRef}
         />
       )}
       {showAddOnSelector && (

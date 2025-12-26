@@ -1042,6 +1042,20 @@
       "dateRequired": "कृपया एक तिथि चुनें",
       "venueRequired": "कृपया एक स्थान चुनें"
     },
+    "lessonSelector": {
+      "addFromLesson": "संबंधित पाठ से जोड़ें",
+      "addLesson": "पाठ जोड़ें",
+      "associateLesson": "पाठ संबद्ध करें",
+      "externalProvider": "बाहरी प्रदाता",
+      "lesson": "पाठ",
+      "lessonSource": "पाठ स्रोत",
+      "lessonsChurch": "Lessons.church",
+      "program": "कार्यक्रम",
+      "provider": "प्रदाता",
+      "study": "अध्ययन",
+      "usingAssociatedLesson": "संबंधित पाठ का उपयोग कर रहे हैं:",
+      "venue": "स्थान"
+    },
     "planPage": {
       "assign": "टीम असाइनमेंट",
       "assignments": "असाइनमेंट",

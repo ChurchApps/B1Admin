@@ -1163,10 +1163,17 @@
       "saveNotes": "Save Notes"
     },
     "lessonSelector": {
+      "addFromLesson": "Add from Associated Lesson",
+      "addLesson": "Add Lesson",
       "associateLesson": "Associate Lesson",
+      "externalProvider": "External Provider",
       "lesson": "Lesson",
+      "lessonSource": "Lesson Source",
+      "lessonsChurch": "Lessons.church",
       "program": "Program",
+      "provider": "Provider",
       "study": "Study",
+      "usingAssociatedLesson": "Using associated lesson:",
       "venue": "Venue"
     },
     "planItem": {

@@ -1042,6 +1042,20 @@
       "dateRequired": "Vennligst velg en dato",
       "venueRequired": "Vennligst velg et sted"
     },
+    "lessonSelector": {
+      "addFromLesson": "Legg til fra tilknyttet leksjon",
+      "addLesson": "Legg til leksjon",
+      "associateLesson": "Tilknytt leksjon",
+      "externalProvider": "Ekstern leverandør",
+      "lesson": "Leksjon",
+      "lessonSource": "Leksjonskilde",
+      "lessonsChurch": "Lessons.church",
+      "program": "Program",
+      "provider": "Leverandør",
+      "study": "Studie",
+      "usingAssociatedLesson": "Bruker tilknyttet leksjon:",
+      "venue": "Sted"
+    },
     "planPage": {
       "assign": "Teamtildelinger",
       "assignments": "Tildelinger",

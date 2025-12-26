@@ -2,16 +2,21 @@ import React, { useEffect, useState, useRef } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
+import { type ExternalVenueRefInterface } from "../../helpers";
 
 interface Props {
   sectionId: string;
   sectionName?: string;
   onClose: () => void;
   onExpandToActions?: () => void;
+  externalRef?: ExternalVenueRefInterface;
 }
 
 export const LessonDialog: React.FC<Props> = (props) => {
-  const iframeUrl = `${EnvironmentHelper.LessonsUrl}/embed/section/${props.sectionId}`;
+  // Construct URL based on whether this is an external provider section or not
+  const iframeUrl = props.externalRef
+    ? `${EnvironmentHelper.LessonsUrl}/embed/external/${props.externalRef.externalProviderId}/section/${props.sectionId}`
+    : `${EnvironmentHelper.LessonsUrl}/embed/section/${props.sectionId}`;
   const [iframeHeight, setIframeHeight] = useState(window.innerHeight * 0.7);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 

@@ -15,15 +15,17 @@ import {
 } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type LessonActionTreeInterface, type VenueActionResponseInterface } from "./PlanUtils";
+import { type ExternalVenueRefInterface } from "../../helpers";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onSelect: (actionId: string, actionName: string, seconds?: number) => void;
   venueId?: string;
+  externalRef?: ExternalVenueRefInterface;
 }
 
-export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId }) => {
+export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, externalRef }) => {
   const [actionTree, setActionTree] = useState<LessonActionTreeInterface>({});
   const [selectedProgram, setSelectedProgram] = useState<string>("");
   const [selectedStudy, setSelectedStudy] = useState<string>("");
@@ -37,7 +39,12 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     // If venueId is provided, load actions for that venue only
     if (venueId) {
       try {
-        const data = await ApiHelper.getAnonymous("/venues/public/actions/" + venueId, "LessonsApi");
+        let data;
+        if (externalRef) {
+          data = await ApiHelper.getAnonymous(`/externalProviders/${externalRef.externalProviderId}/venue/${externalRef.venueId}/actions`, "LessonsApi");
+        } else {
+          data = await ApiHelper.getAnonymous("/venues/public/actions/" + venueId, "LessonsApi");
+        }
         setVenueActions(data || { sections: [] });
 
         // Auto-select first section and action
@@ -92,7 +99,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       console.error("Error loading action tree:", error);
       setActionTree({});
     }
-  }, [venueId]);
+  }, [venueId, externalRef]);
 
   const getCurrentProgram = useCallback(() => {
     return actionTree?.programs?.find((p: any) => p.id === selectedProgram);

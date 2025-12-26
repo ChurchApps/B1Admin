@@ -1137,10 +1137,17 @@
       "saveNotes": "Notizen speichern"
     },
     "lessonSelector": {
+      "addFromLesson": "Von assoziierter Lektion hinzufügen",
+      "addLesson": "Lektion hinzufügen",
       "associateLesson": "Assoziierte Lektion",
+      "externalProvider": "Externer Anbieter",
       "lesson": "Lektion",
+      "lessonSource": "Lektionsquelle",
+      "lessonsChurch": "Lessons.church",
       "program": "Programm",
+      "provider": "Anbieter",
       "study": "Studie",
+      "usingAssociatedLesson": "Verwendete assoziierte Lektion:",
       "venue": "Veranstaltungsort"
     },
     "planItem": {

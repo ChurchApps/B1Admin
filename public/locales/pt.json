@@ -1137,10 +1137,17 @@
       "saveNotes": "Salvar notas"
     },
     "lessonSelector": {
+      "addFromLesson": "Adicionar da lição associada",
+      "addLesson": "Adicionar lição",
       "associateLesson": "Lição Associada",
+      "externalProvider": "Provedor externo",
       "lesson": "Lição",
+      "lessonSource": "Fonte da lição",
+      "lessonsChurch": "Lessons.church",
       "program": "Programa",
+      "provider": "Provedor",
       "study": "Estudar",
+      "usingAssociatedLesson": "Usando lição associada:",
       "venue": "Local"
     },
     "planItem": {
