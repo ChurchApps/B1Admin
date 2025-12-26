@@ -44,22 +44,32 @@ export const Assignment = (props: Props) => {
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
 
-  // Get the most recent plan (excluding current plan)
+  // Get the most recent plan that is before the current plan's date
   const previousPlan = React.useMemo(() => {
-    if (allPlans.length === 0) return null;
+    if (allPlans.length === 0 || !props.plan?.serviceDate) return null;
+    const currentDate = new Date(props.plan.serviceDate).getTime();
     const sorted = [...allPlans]
-      .filter(p => p.id !== props.plan?.id)
+      .filter(p => {
+        if (p.id === props.plan?.id) return false;
+        const planDate = p.serviceDate ? new Date(p.serviceDate).getTime() : 0;
+        return planDate < currentDate;  // Only include plans before current plan
+      })
       .sort((a, b) => {
         const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
         const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
-        return dateB - dateA;
+        return dateB - dateA;  // Sort descending to get most recent previous plan first
       });
     return sorted[0] || null;
-  }, [allPlans, props.plan?.id]);
+  }, [allPlans, props.plan?.id, props.plan?.serviceDate]);
 
-  const handleCopyClick = (mode: string) => {
+  const handleCopyClick = async (mode: string) => {
     setCopyMenuAnchor(null);
-    handleCopyFromPrevious(mode);
+    if (!previousPlan || !mode) return;
+    await ApiHelper.post("/plans/copy/" + previousPlan.id, {
+      ...props.plan,
+      copyMode: mode
+    }, "DoingApi");
+    loadData();
   };
 
   const getAddPositionActions = () => {
@@ -230,14 +240,6 @@ export const Assignment = (props: Props) => {
     }
   }, [props.plan?.planTypeId, props.plan?.ministryId]);
 
-  const handleCopyFromPrevious = async (copyMode: string) => {
-    if (!previousPlan || !copyMode) return;
-    await ApiHelper.post("/plans/copy/" + previousPlan.id, {
-      ...props.plan,
-      copyMode
-    }, "DoingApi");
-    loadData();
-  };
 
   React.useEffect(() => {
     loadData();

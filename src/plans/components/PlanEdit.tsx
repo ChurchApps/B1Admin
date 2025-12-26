@@ -18,17 +18,22 @@ export const PlanEdit = (props: Props) => {
   const [copyMode, setCopyMode] = React.useState<string>("all"); // "none" | "positions" | "all"
   const [errors, setErrors] = React.useState<string[]>([]);
 
-  // Get the most recent plan (first one in the list, sorted by date descending)
+  // Get the most recent plan that is before the new plan's date
   const previousPlan = React.useMemo(() => {
-    if (props.plans.length === 0) return null;
-    // Plans are typically sorted by date, get the most recent one
-    const sorted = [...props.plans].sort((a, b) => {
-      const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
-      const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
-      return dateB - dateA;
-    });
-    return sorted[0];
-  }, [props.plans]);
+    if (props.plans.length === 0 || !plan.serviceDate) return null;
+    const currentDate = new Date(plan.serviceDate).getTime();
+    const sorted = [...props.plans]
+      .filter(p => {
+        const planDate = p.serviceDate ? new Date(p.serviceDate).getTime() : 0;
+        return planDate < currentDate;  // Only include plans before new plan's date
+      })
+      .sort((a, b) => {
+        const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
+        const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
+        return dateB - dateA;  // Sort descending to get most recent previous plan first
+      });
+    return sorted[0] || null;
+  }, [props.plans, plan.serviceDate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     setErrors([]);

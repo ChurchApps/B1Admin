@@ -32,16 +32,22 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   const [externalProviders, setExternalProviders] = useState<ExternalProviderInterface[]>([]);
   const [selectedProvider, setSelectedProvider] = useState<ExternalProviderInterface | null>(null);
 
-  // Get the most recent plan (first one in the list, sorted by date descending)
+  // Get the most recent plan that is before the new plan's scheduled date
   const previousPlan = React.useMemo(() => {
-    if (!props.plans || props.plans.length === 0) return null;
-    const sorted = [...props.plans].sort((a, b) => {
-      const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
-      const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
-      return dateB - dateA;
-    });
-    return sorted[0];
-  }, [props.plans]);
+    if (!props.plans || props.plans.length === 0 || !scheduledDate) return null;
+    const currentDate = new Date(scheduledDate).getTime();
+    const sorted = [...props.plans]
+      .filter(p => {
+        const planDate = p.serviceDate ? new Date(p.serviceDate).getTime() : 0;
+        return planDate < currentDate;  // Only include plans before new plan's date
+      })
+      .sort((a, b) => {
+        const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
+        const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
+        return dateB - dateA;  // Sort descending to get most recent previous plan first
+      });
+    return sorted[0] || null;
+  }, [props.plans, scheduledDate]);
 
   const getDefault = useCallback((array: Array<{ id: string }> | undefined, currentId: string) => {
     if (!array || array.length === 0) return "";
