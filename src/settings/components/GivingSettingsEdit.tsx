@@ -184,7 +184,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         {getKeys()}
         {getCurrency()}
       </Grid>
-      <FeeOptionsSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} provider={provider} />
+      <FeeOptionsSettingsEdit churchId={props.churchId} saveTrigger={props.saveTrigger} provider={provider} currency={currency} />
     </>
   );
 };

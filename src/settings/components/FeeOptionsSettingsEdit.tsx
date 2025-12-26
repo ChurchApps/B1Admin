@@ -1,12 +1,13 @@
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
 import { type GenericSettingInterface } from "@churchapps/helpers";
-import { Grid, Icon, TextField } from "@mui/material";
+import { Grid, Icon, TextField, Typography } from "@mui/material";
 import React from "react";
 
 interface Props {
   churchId: string;
   saveTrigger: Date | null;
   provider?: string;
+  currency?: string;
 }
 
 export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
@@ -23,21 +24,56 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     hardLimitACH: "5",
     flatRatePayPal: "0.30",
     transFeePayPal: "2.9",
+    symbol: "$",
+    currency: "usd",
   });
+  const [hasLoadedData, setHasLoadedData] = React.useState(false);
+
+  // Stripe currency-specific fees
+  const stripeCurrencyFees = {
+    usd: { percent: 2.9, fixed: 0.3, symbol: "$" },
+    eur: { percent: 2.9, fixed: 0.25, symbol: "€" },
+    gbp: { percent: 2.9, fixed: 0.2, symbol: "£" },
+    cad: { percent: 2.9, fixed: 0.3, symbol: "$" },
+    aud: { percent: 2.9, fixed: 0.3, symbol: "$" },
+    inr: { percent: 2.9, fixed: 3.0, symbol: "₹" },
+    jpy: { percent: 2.9, fixed: 30.0, symbol: "¥" },
+    sgd: { percent: 2.9, fixed: 0.5, symbol: "S$" },
+    hkd: { percent: 2.9, fixed: 2.35, symbol: "元" },
+    sek: { percent: 2.9, fixed: 2.5, symbol: "kr" },
+    nok: { percent: 2.9, fixed: 2.0, symbol: "kr" },
+    dkk: { percent: 2.9, fixed: 1.8, symbol: "kr" },
+    chf: { percent: 2.9, fixed: 0.3, symbol: "CHF" },
+    mxn: { percent: 2.9, fixed: 3.0, symbol: "MXN" },
+    brl: { percent: 3.9, fixed: 0.5, symbol: "R$" },
+  };
 
   const loadData = async () => {
     const o = { ...options };
+    const currentCurrency = (props.currency || "usd").toLowerCase();
     const allSettings: GenericSettingInterface[] = await ApiHelper.get("/settings", "MembershipApi");
     const creditCardFlatRate = allSettings.filter((s) => s.keyName === "flatRateCC");
     if (creditCardFlatRate.length > 0) {
       setFlatRateCC(creditCardFlatRate[0]);
       o.flatRateCC = creditCardFlatRate[0].value;
+    } else {
+      // Use default for current currency if no saved value
+      const currencyFees = stripeCurrencyFees[currentCurrency as keyof typeof stripeCurrencyFees];
+      if (currencyFees) {
+        o.flatRateCC = currencyFees.fixed.toString();
+      }
     }
 
     const creditCardTransactionFee = allSettings.filter((s) => s.keyName === "transFeeCC");
     if (creditCardTransactionFee.length > 0) {
       setTransFeeCC(creditCardTransactionFee[0]);
       o.transFeeCC = creditCardTransactionFee[0].value;
+    } else {
+      // Use default for current currency if no saved value
+      const currencyFees = stripeCurrencyFees[currentCurrency as keyof typeof stripeCurrencyFees];
+      if (currencyFees) {
+        o.transFeeCC = currencyFees.percent.toString();
+      }
     }
 
     const achFlatRate = allSettings.filter((s) => s.keyName === "flatRateACH");
@@ -64,7 +100,9 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
       o.transFeePayPal = paypalTransactionFee[0].value;
     }
 
+    o.currency = currentCurrency;
     setOptions(o);
+    setHasLoadedData(true);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     e.preventDefault();
@@ -124,8 +162,31 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
   }, [props.churchId]); //eslint-disable-line
   React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
 
+  // Update rates when currency changes
+  React.useEffect(() => {
+    if (!hasLoadedData) return;
+    const currentCurrency = (props.currency || "usd").toLowerCase();
+
+    setOptions((prevOptions) => {
+      if (currentCurrency === prevOptions.currency) return prevOptions;
+
+      const currencyFees = stripeCurrencyFees[currentCurrency as keyof typeof stripeCurrencyFees];
+      if (!currencyFees) return prevOptions;
+
+      const o = { ...prevOptions };
+      // Always update to the new currency's defaults when currency changes
+      o.flatRateCC = currencyFees.fixed.toString();
+      o.transFeeCC = currencyFees.percent.toString();
+      o.currency = currentCurrency;
+      o.symbol = currencyFees.symbol;
+      return o;
+    });
+  }, [props.currency, hasLoadedData]); //eslint-disable-line
+
   const showStripeFields = props.provider === "Stripe";
   const showPayPalFields = props.provider === "Paypal";
+  const currentCurrency = (props.currency || "usd").toLowerCase();
+  const showACHFields = currentCurrency === "usd";
 
   return (
     <Grid container spacing={2}>
@@ -141,7 +202,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
               onChange={handleChange}
               value={options.flatRateCC}
               defaultValue=""
-              InputProps={{ startAdornment: <Icon fontSize="small">attach_money</Icon> }}
+              InputProps={{ startAdornment: <Icon><Typography>{options.symbol}</Typography></Icon> }}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -157,32 +218,36 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
               InputProps={{ endAdornment: <Icon fontSize="small">percent</Icon> }}
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <TextField
-              fullWidth
-              margin="dense"
-              type="number"
-              label={Locale.label("settings.feeOptionsSettings.achFlatRate")}
-              name="achFlatRate"
-              onChange={handleChange}
-              value={options.flatRateACH}
-              defaultValue=""
-              InputProps={{ endAdornment: <Icon fontSize="small">percent</Icon> }}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <TextField
-              fullWidth
-              margin="dense"
-              type="number"
-              label={Locale.label("settings.feeOptionsSettings.achHardLimit")}
-              name="achHardLimit"
-              onChange={handleChange}
-              value={options.hardLimitACH}
-              defaultValue=""
-              InputProps={{ startAdornment: <Icon fontSize="small">attach_money</Icon> }}
-            />
-          </Grid>
+          {showACHFields && (
+            <>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  margin="dense"
+                  type="number"
+                  label={Locale.label("settings.feeOptionsSettings.achFlatRate")}
+                  name="achFlatRate"
+                  onChange={handleChange}
+                  value={options.flatRateACH}
+                  defaultValue=""
+                  InputProps={{ endAdornment: <Icon fontSize="small">percent</Icon> }}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  margin="dense"
+                  type="number"
+                  label={Locale.label("settings.feeOptionsSettings.achHardLimit")}
+                  name="achHardLimit"
+                  onChange={handleChange}
+                  value={options.hardLimitACH}
+                  defaultValue=""
+                  InputProps={{ startAdornment: <Icon fontSize="small">attach_money</Icon> }}
+                />
+              </Grid>
+            </>
+          )}
         </>
       )}
       {showPayPalFields && (
