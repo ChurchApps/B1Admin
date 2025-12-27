@@ -188,6 +188,28 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [props.plan, loadData, isExternalVenue, getExternalRef]);
 
+  // Load venue name when there's an associated lesson
+  const loadVenueName = useCallback(async () => {
+    if (!hasAssociatedLesson) {
+      setVenueName("");
+      return;
+    }
+    try {
+      let response;
+      if (isExternalVenue) {
+        const extRef = getExternalRef();
+        if (extRef) {
+          response = await ApiHelper.getAnonymous(`/externalProviders/${extRef.externalProviderId}/venue/${extRef.venueId}/planItems`, "LessonsApi");
+        }
+      } else {
+        response = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
+      }
+      if (response?.venueName) setVenueName(response.venueName);
+    } catch (error) {
+      console.error("Error loading venue name:", error);
+    }
+  }, [hasAssociatedLesson, props.plan?.contentId, isExternalVenue, getExternalRef]);
+
   const loadPreviewLessonItems = useCallback(async () => {
     if (hasAssociatedLesson && planItems.length === 0) {
       try {
@@ -385,6 +407,11 @@ export const ServiceOrder = memo((props: Props) => {
   React.useEffect(() => {
     loadData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load venue name when there's an associated lesson
+  React.useEffect(() => {
+    loadVenueName();
+  }, [loadVenueName]);
 
   // Load preview lesson items when plan has associated lesson but no plan items
   React.useEffect(() => {
