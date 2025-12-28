@@ -1,4 +1,4 @@
-import { type PlanItemInterface } from "../../helpers";
+import { PlanHelper } from "@churchapps/helpers";
 
 // Re-export lesson interfaces from @churchapps/helpers for convenience
 export {
@@ -13,24 +13,6 @@ export {
   type VenueActionResponseInterface,
 } from "@churchapps/helpers";
 
-/**
- * Format seconds as "m:ss" time string
- */
-export const formatTime = (seconds: number): string => {
-  const minutes = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return minutes + ":" + (secs < 10 ? "0" : "") + secs;
-};
-
-/**
- * Calculate total duration of a section by summing children's seconds
- */
-export const getSectionDuration = (section: PlanItemInterface): number => {
-  let totalSeconds = 0;
-  section.children?.forEach((child) => {
-    if (child.seconds) {
-      totalSeconds += child.seconds;
-    }
-  });
-  return totalSeconds;
-};
+// Re-export utility functions from PlanHelper for backwards compatibility
+export const formatTime = PlanHelper.formatTime;
+export const getSectionDuration = PlanHelper.getSectionDuration;
