@@ -1,9 +1,8 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon } from "@mui/icons-material";
-import { type PlanInterface } from "@churchapps/helpers";
+import { type PlanInterface, type PlanItemInterface, type ExternalVenueRefInterface, LessonsContentProvider } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
-import { type PlanItemInterface, type ExternalVenueRefInterface } from "../../helpers";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
 import { DndProvider } from "react-dnd";
@@ -29,6 +28,9 @@ export const ServiceOrder = memo((props: Props) => {
   const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
   const [venueName, setVenueName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
+
+  // Use LessonsContentProvider from helpers
+  const lessonsProvider = useMemo(() => new LessonsContentProvider(), []);
 
   const loadData = useCallback(async () => {
     if (props.plan?.id) {
@@ -73,19 +75,12 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [props.plan, props.onPlanUpdate]);
 
-  // Define hasAssociatedLesson early so it can be used by other functions
-  const hasAssociatedLesson = (props.plan?.contentType === "venue" || props.plan?.contentType === "externalVenue") && props.plan?.contentId;
-  const isExternalVenue = props.plan?.contentType === "externalVenue";
-
-  // Helper to parse external venue ref from plan contentId
+  // Use LessonsContentProvider methods
+  const hasAssociatedLesson = lessonsProvider.hasAssociatedLesson(props.plan);
+  const isExternalVenue = lessonsProvider.isExternalVenue(props.plan);
   const getExternalRef = useCallback((): ExternalVenueRefInterface | null => {
-    if (!isExternalVenue || !props.plan?.contentId) return null;
-    try {
-      return JSON.parse(props.plan.contentId) as ExternalVenueRefInterface;
-    } catch {
-      return null;
-    }
-  }, [isExternalVenue, props.plan?.contentId]);
+    return lessonsProvider.getExternalRef(props.plan);
+  }, [lessonsProvider, props.plan]);
 
   // Determine if we should show preview mode
   const showPreviewMode = hasAssociatedLesson && planItems.length === 0 && previewLessonItems.length > 0;
@@ -125,15 +120,7 @@ export const ServiceOrder = memo((props: Props) => {
     if (!hasAssociatedLesson) return;
 
     try {
-      let response;
-      if (isExternalVenue) {
-        const extRef = getExternalRef();
-        if (extRef) {
-          response = await ApiHelper.getAnonymous(`/externalProviders/${extRef.externalProviderId}/venue/${extRef.venueId}/planItems`, "LessonsApi");
-        }
-      } else {
-        response = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
-      }
+      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
 
       if (response?.items && response.items.length > 0) {
         // Keep top-level headers with their section children, but strip grandchildren (actions)
@@ -152,7 +139,7 @@ export const ServiceOrder = memo((props: Props) => {
     } catch (error) {
       console.error("Error customizing lesson:", error);
     }
-  }, [hasAssociatedLesson, props.plan?.contentId, loadData, isExternalVenue, getExternalRef]);
+  }, [hasAssociatedLesson, lessonsProvider, props.plan, loadData]);
 
   const addHeader = useCallback(async () => {
     // If in preview mode, first customize (import sections only), then add header
@@ -164,18 +151,9 @@ export const ServiceOrder = memo((props: Props) => {
     setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
   }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
 
-  const handleLessonSelect = useCallback(async (venueId: string) => {
+  const handleLessonSelect = useCallback(async () => {
     try {
-      // Load lesson items from the venue
-      let response;
-      if (isExternalVenue) {
-        const extRef = getExternalRef();
-        if (extRef) {
-          response = await ApiHelper.getAnonymous(`/externalProviders/${extRef.externalProviderId}/venue/${extRef.venueId}/planItems`, "LessonsApi");
-        }
-      } else {
-        response = await ApiHelper.getAnonymous(`/venues/public/planItems/${venueId}`, "LessonsApi");
-      }
+      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
 
       if (response?.items && response.items.length > 0) {
         // Immediately save the lesson items as editable plan items
@@ -186,7 +164,7 @@ export const ServiceOrder = memo((props: Props) => {
     } catch (error) {
       console.error("Error importing lesson items:", error);
     }
-  }, [props.plan, loadData, isExternalVenue, getExternalRef]);
+  }, [lessonsProvider, props.plan, loadData]);
 
   // Load venue name when there's an associated lesson
   const loadVenueName = useCallback(async () => {
@@ -195,33 +173,17 @@ export const ServiceOrder = memo((props: Props) => {
       return;
     }
     try {
-      let response;
-      if (isExternalVenue) {
-        const extRef = getExternalRef();
-        if (extRef) {
-          response = await ApiHelper.getAnonymous(`/externalProviders/${extRef.externalProviderId}/venue/${extRef.venueId}/planItems`, "LessonsApi");
-        }
-      } else {
-        response = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
-      }
+      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
       if (response?.venueName) setVenueName(response.venueName);
     } catch (error) {
       console.error("Error loading venue name:", error);
     }
-  }, [hasAssociatedLesson, props.plan?.contentId, isExternalVenue, getExternalRef]);
+  }, [hasAssociatedLesson, lessonsProvider, props.plan]);
 
   const loadPreviewLessonItems = useCallback(async () => {
     if (hasAssociatedLesson && planItems.length === 0) {
       try {
-        let response;
-        if (isExternalVenue) {
-          const extRef = getExternalRef();
-          if (extRef) {
-            response = await ApiHelper.getAnonymous(`/externalProviders/${extRef.externalProviderId}/venue/${extRef.venueId}/planItems`, "LessonsApi");
-          }
-        } else {
-          response = await ApiHelper.getAnonymous(`/venues/public/planItems/${props.plan.contentId}`, "LessonsApi");
-        }
+        const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
         setPreviewLessonItems(response?.items || []);
         if (response?.venueName) setVenueName(response.venueName);
       } catch (error) {
@@ -231,14 +193,14 @@ export const ServiceOrder = memo((props: Props) => {
     } else {
       setPreviewLessonItems([]);
     }
-  }, [hasAssociatedLesson, planItems.length, props.plan?.contentId, isExternalVenue, getExternalRef]);
+  }, [hasAssociatedLesson, planItems.length, lessonsProvider, props.plan]);
 
   const handleAddLesson = useCallback(async () => {
     if (hasAssociatedLesson) {
       // Use the associated venue directly without showing a modal
-      await handleLessonSelect(props.plan.contentId);
+      await handleLessonSelect();
     }
-  }, [hasAssociatedLesson, props.plan?.contentId, handleLessonSelect]);
+  }, [hasAssociatedLesson, handleLessonSelect]);
 
   const editContent = useMemo(
     () => (

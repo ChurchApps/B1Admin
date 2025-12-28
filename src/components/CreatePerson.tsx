@@ -2,7 +2,8 @@
 
 import React from "react";
 import { UserHelper, ApiHelper, Locale } from "../helpers";
-import { Permissions, PersonInterface, HouseholdInterface } from "@churchapps/helpers";
+import { Permissions } from "@churchapps/helpers";
+import type { PersonInterface, HouseholdInterface } from "@churchapps/helpers";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
 import { ErrorMessages } from "@churchapps/apphelper";
 import { useMountedState } from "@churchapps/apphelper";

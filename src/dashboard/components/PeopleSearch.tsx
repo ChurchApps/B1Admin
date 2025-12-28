@@ -5,7 +5,7 @@ import {
 import { Person as PersonIcon, Search as SearchIcon } from "@mui/icons-material";
 import { B1AdminPersonHelper } from "../../helpers";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
-import { type PersonInterface, SearchCondition } from "@churchapps/helpers";
+import type { PersonInterface, SearchCondition } from "@churchapps/helpers";
 import { PeopleSearchResults } from "../../people/components";
 import { useQuery } from "@tanstack/react-query";
 

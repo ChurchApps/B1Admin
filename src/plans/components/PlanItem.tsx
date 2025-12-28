@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon, Menu, MenuItem } from "@mui/material";
-import { type PlanItemInterface, type ExternalVenueRefInterface } from "../../helpers";
+import { type PlanItemInterface, type ExternalVenueRefInterface } from "@churchapps/helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -73,7 +73,7 @@ export const PlanItem = React.memo((props: Props) => {
     setShowActionSelector(false);
     // Create new plan item for the action
     const newPlanItem: PlanItemInterface = {
-      itemType: "action",
+      itemType: "lessonAction",
       planId: props.planItem.planId,
       sort: props.planItem.children?.length + 1 || 1,
       parentId: props.planItem.id,
@@ -89,7 +89,7 @@ export const PlanItem = React.memo((props: Props) => {
     setShowAddOnSelector(false);
     // Create new plan item for the add-on
     const newPlanItem: PlanItemInterface = {
-      itemType: "addOn",
+      itemType: "lessonAddOn",
       planId: props.planItem.planId,
       sort: props.planItem.children?.length + 1 || 1,
       parentId: props.planItem.id,
@@ -127,7 +127,7 @@ export const PlanItem = React.memo((props: Props) => {
             planId: props.planItem.planId,
             parentId: props.planItem.parentId,
             sort: currentSort + index, // Start at current position
-            itemType: "action",
+            itemType: "lessonAction",
             relatedId: action.id,
             label: action.name,
             seconds: action.seconds || 0,
@@ -463,9 +463,9 @@ export const PlanItem = React.memo((props: Props) => {
       case "song":
       case "arrangementKey":
         return getSongRow();
-      case "action":
+      case "lessonAction":
         return getActionRow();
-      case "addOn":
+      case "lessonAddOn":
         return getAddOnRow();
       case "lessonSection":
         return getLessonSectionRow();

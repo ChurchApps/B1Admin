@@ -9,6 +9,10 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
 
+    optimizeDeps: {
+      include: ['@churchapps/helpers']
+    },
+
     build: {
       rollupOptions: {
         output: {

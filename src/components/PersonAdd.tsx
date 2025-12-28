@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "../helpers";
-import { PersonInterface } from "@churchapps/helpers";
+import type { PersonInterface } from "@churchapps/helpers";
 import { TextField, Button, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
 import { SmallButton } from "@churchapps/apphelper";
 import { CreatePerson } from "./CreatePerson";
