@@ -470,6 +470,7 @@ export const PlanItem = React.memo((props: Props) => {
       case "lessonSection":
         return getLessonSectionRow();
       case "item":
+      default:
         return getItemRow();
     }
   };
