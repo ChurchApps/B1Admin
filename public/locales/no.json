@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Kopier fra",
+      "copyAll": "Posisjoner og tilordninger",
+      "copyNothing": "Ingenting",
+      "copyPositions": "Kun posisjoner",
+      "copyPrevious": "Kopier fra Forrige Plan",
       "none": "Ingen",
       "planAdd": "Legg til plan",
       "planEdit": "Rediger plan",
@@ -1029,7 +1033,28 @@
       "createPlan": "Lag plan",
       "newPlan": "Ny plan",
       "noPlans": "Ingen planer funnet",
-      "serviceOrder": "Tjenesteorden"
+      "serviceOrder": "Tjenesteorden",
+      "scheduleLesson": "Planlegg Leksjon"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Planlegg Leksjon",
+      "scheduledDate": "Planlagt Dato",
+      "dateRequired": "Vennligst velg en dato",
+      "venueRequired": "Vennligst velg et sted"
+    },
+    "lessonSelector": {
+      "addFromLesson": "Legg til fra tilknyttet leksjon",
+      "addLesson": "Legg til leksjon",
+      "associateLesson": "Tilknytt leksjon",
+      "externalProvider": "Ekstern leverandør",
+      "lesson": "Leksjon",
+      "lessonSource": "Leksjonskilde",
+      "lessonsChurch": "Lessons.church",
+      "program": "Program",
+      "provider": "Leverandør",
+      "study": "Studie",
+      "usingAssociatedLesson": "Bruker tilknyttet leksjon:",
+      "venue": "Sted"
     },
     "planPage": {
       "assign": "Teamtildelinger",
@@ -1122,6 +1147,7 @@
     "assignment": {
       "addPosition": "Legg til posisjon",
       "autoAssign": "Automatisk tilordning",
+      "copy": "Kopier",
       "saveNotes": "Lagre notater"
     },
     "lessonSelector": {
@@ -1132,18 +1158,33 @@
       "venue": "Sted"
     },
     "planItem": {
+      "addOn": "Tillegg",
+      "expandToActions": "Utvid til handlinger",
       "item": "Punkt",
+      "lessonAction": "Leksjonshandling",
       "song": "Sang"
     },
     "planItemEdit": {
       "description": "Beskrivelse",
       "edit": "Rediger",
+      "editAddOn": "Rediger tillegg",
       "editHeader": "Rediger topptekst",
       "editSong": "Rediger sang",
       "enterSearch": "Skriv inn søkeord",
       "key": "Toneart",
       "minutes": "Minutter",
       "seconds": "Sekunder"
+    },
+    "actionSelector": {
+      "action": "Handling",
+      "fromAssociatedLesson": "Fra tilknyttet leksjon:",
+      "section": "Seksjon",
+      "selectAction": "Velg handling"
+    },
+    "addOnSelector": {
+      "category": "Kategori",
+      "noAddOns": "Ingen tillegg tilgjengelig",
+      "selectAddOn": "Velg tillegg"
     },
     "planTypeEdit": {
       "add": "Legg til",
@@ -1162,8 +1203,18 @@
     },
     "planTypePage": {
       "notFound": "Plantype ikke funnet",
+      "pairTvApp": "Par TV-App",
       "planType": "Plantype",
-      "subtitle": "Konfigurer plantypeinnstillinger"
+      "subtitle": "Konfigurer plantypeinnstillinger",
+      "tvAppDescription": "Vis leksjonsinnholdet ditt på en hvilken som helst TV eller skjerm med vår gratis app",
+      "tvAppTitle": "Vis på TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Last ned Lessons.church TV-appen",
+      "instructions": "Skriv inn den 4-tegns koden som vises på TV-appskjermen:",
+      "pairTitle": "Par enheten din",
+      "success": "Paring vellykket! TV-appen vil nå vise innhold fra denne plantypen.",
+      "title": "Par TV-App"
     },
     "serviceOrder": {
       "addSection": "Legg til seksjon",

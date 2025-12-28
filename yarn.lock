@@ -247,10 +247,10 @@
   dependencies:
     rrule "^2.8.1"
 
-"@churchapps/apphelper@^0.6.0", "@churchapps/apphelper@^0.6.5":
-  version "0.6.5"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.6.5.tgz"
-  integrity sha512-vt25slCqQPSWrrSEEXZZEUoz4gBHlqOshbmNO17GFBYjNSubVqyRZvQhsTa2HDVv8u91t/1ubGnMuDZQu15e4Q==
+"@churchapps/apphelper@^0.6.0", "@churchapps/apphelper@^0.6.5", "@churchapps/apphelper@^0.6.6":
+  version "0.6.6"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.6.6.tgz"
+  integrity sha512-wF6FpYRX9RcvRtM4pOt6zPHYNqDFQiCDBBMFxzL0WShjnoZJ29nUlEC6JvrldMl/wmURxEr0LcO76GA7ijGETA==
   dependencies:
     "@churchapps/helpers" "^1.2.4"
     "@emotion/cache" "^11.14.0"
@@ -278,10 +278,10 @@
     react-to-print "^3.1.1"
     slug "^11.0.0"
 
-"@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.npmjs.org/@churchapps/helpers/-/helpers-1.2.5.tgz"
-  integrity sha512-ZFohh/rZ2rYjyKY9plMi5eborMfqEzAevlEcoGoJlb9cO8DlGtbQpKXEE1oROqyuAbIGz5sOWHEpdwFeR8Jq8A==
+"@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5", "@churchapps/helpers@1.2.9":
+  version "1.2.9"
+  resolved "https://registry.npmjs.org/@churchapps/helpers/-/helpers-1.2.9.tgz"
+  integrity sha512-2hkRcUc2gLWxbEgnCG+X+XJSVqVXgthlCZpp39Hrt/yEEf2rmbRcvAflbjbMggYu6UGTBzUtbqax0+ZgmGI5RQ==
   dependencies:
     dayjs "^1.11.18"
     rrule "^2.8.1"
@@ -2596,9 +2596,9 @@ lexical@^0.33.1, lexical@0.33.1:
   integrity sha512-+kiCS/GshQmCs/meMb8MQT4AMvw3S3Ef0lSCv2Xi6Itvs59OD+NjQWNfYkDteIbKtVE/w0Yiqh56VyGwIb8UcA==
 
 lib0@^0.2.99:
-  version "0.2.114"
-  resolved "https://registry.npmjs.org/lib0/-/lib0-0.2.114.tgz"
-  integrity sha512-gcxmNFzA4hv8UYi8j43uPlQ7CGcyMJ2KQb5kZASw6SnAKAf10hK12i2fjrS3Cl/ugZa5Ui6WwIu1/6MIXiHttQ==
+  version "0.2.116"
+  resolved "https://registry.npmjs.org/lib0/-/lib0-0.2.116.tgz"
+  integrity sha512-4zsosjzmt33rx5XjmFVYUAeLNh+BTeDTiwGdLt4muxiir2btsc60Nal0EvkvDRizg+pnlK1q+BtYi7M+d4eStw==
   dependencies:
     isomorphic.js "^0.2.4"
 
@@ -3769,9 +3769,9 @@ yaml@^1.10.0:
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
 yaml@^2.4.2, yaml@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.npmjs.org/yaml/-/yaml-2.8.1.tgz"
-  integrity sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==
+  version "2.8.2"
+  resolved "https://registry.npmjs.org/yaml/-/yaml-2.8.2.tgz"
+  integrity sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==
 
 yargs-parser@^20.2.2:
   version "20.2.9"
@@ -3792,9 +3792,9 @@ yargs@^16.1.0:
     yargs-parser "^20.2.2"
 
 yjs@>=13.5.22:
-  version "13.6.27"
-  resolved "https://registry.npmjs.org/yjs/-/yjs-13.6.27.tgz"
-  integrity sha512-OIDwaflOaq4wC6YlPBy2L6ceKeKuF7DeTxx+jPzv1FHn9tCZ0ZwSRnUBxD05E3yed46fv/FWJbvR+Ud7x0L7zw==
+  version "13.6.28"
+  resolved "https://registry.npmjs.org/yjs/-/yjs-13.6.28.tgz"
+  integrity sha512-EgnDOXs8+hBVm6mq3/S89Kiwzh5JRbn7w2wXwbrMRyKy/8dOFsLvuIfC+x19ZdtaDc0tA9rQmdZzbqqNHG44wA==
   dependencies:
     lib0 "^0.2.99"
 

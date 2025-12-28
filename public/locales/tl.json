@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Kopyahin mula sa",
+      "copyAll": "Mga Posisyon at Assignments",
+      "copyNothing": "Wala",
+      "copyPositions": "Mga Posisyon Lamang",
+      "copyPrevious": "Kopyahin mula sa Nakaraang Plano",
       "none": "Wala",
       "planAdd": "Magdagdag ng plano",
       "planEdit": "I-edit ang plano",
@@ -1029,7 +1033,28 @@
       "createPlan": "Lumikha ng plano",
       "newPlan": "Bagong plano",
       "noPlans": "Walang nahanap na mga plano",
-      "serviceOrder": "Pagkakasunud-sunod ng Serbisyo"
+      "serviceOrder": "Pagkakasunud-sunod ng Serbisyo",
+      "scheduleLesson": "Mag-iskedyul ng Aralin"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Mag-iskedyul ng Aralin",
+      "scheduledDate": "Naka-iskedyul na Petsa",
+      "dateRequired": "Mangyaring pumili ng petsa",
+      "venueRequired": "Mangyaring pumili ng lugar"
+    },
+    "lessonSelector": {
+      "addFromLesson": "Magdagdag mula sa nakaugnay na aralin",
+      "addLesson": "Magdagdag ng aralin",
+      "associateLesson": "Iugnay ang aralin",
+      "externalProvider": "Panlabas na tagapagbigay",
+      "lesson": "Aralin",
+      "lessonSource": "Pinagmulan ng aralin",
+      "lessonsChurch": "Lessons.church",
+      "program": "Programa",
+      "provider": "Tagapagbigay",
+      "study": "Pag-aaral",
+      "usingAssociatedLesson": "Ginagamit ang nakaugnay na aralin:",
+      "venue": "Lugar"
     },
     "planPage": {
       "assign": "Mga Pagtatalaga ng Koponan",
@@ -1122,6 +1147,7 @@
     "assignment": {
       "addPosition": "Magdagdag ng posisyon",
       "autoAssign": "Auto Assign",
+      "copy": "Kopyahin",
       "saveNotes": "I -save ang Mga Tala"
     },
     "lessonSelector": {
@@ -1132,18 +1158,33 @@
       "venue": "Lugar"
     },
     "planItem": {
+      "addOn": "Add-On",
+      "expandToActions": "Palawakin sa mga aksyon",
       "item": "Item",
+      "lessonAction": "Aksyon ng aralin",
       "song": "Kanta"
     },
     "planItemEdit": {
       "description": "Paglalarawan",
       "edit": "I-edit",
+      "editAddOn": "I-edit ang add-on",
       "editHeader": "I -edit ang header",
       "editSong": "I -edit ang kanta",
       "enterSearch": "Ipasok ang termino sa paghahanap",
       "key": "Key",
       "minutes": "Minuto",
       "seconds": "Mga Segundo"
+    },
+    "actionSelector": {
+      "action": "Aksyon",
+      "fromAssociatedLesson": "Mula sa kaugnay na aralin:",
+      "section": "Seksyon",
+      "selectAction": "Pumili ng aksyon"
+    },
+    "addOnSelector": {
+      "category": "Kategorya",
+      "noAddOns": "Walang available na add-on",
+      "selectAddOn": "Pumili ng add-on"
     },
     "planTypeEdit": {
       "add": "Magdagdag",
@@ -1162,8 +1203,18 @@
     },
     "planTypePage": {
       "notFound": "Hindi natagpuan ang uri ng plano",
+      "pairTvApp": "Ipares ang TV App",
       "planType": "Uri ng plano",
-      "subtitle": "I -configure ang mga setting ng uri ng plano"
+      "subtitle": "I -configure ang mga setting ng uri ng plano",
+      "tvAppDescription": "Ipakita ang nilalaman ng iyong aralin sa anumang TV o display gamit ang aming libreng app",
+      "tvAppTitle": "Ipakita sa TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "I-download ang Lessons.church TV App",
+      "instructions": "Ilagay ang 4-character na code na ipinapakita sa TV app screen:",
+      "pairTitle": "Ipares ang iyong device",
+      "success": "Matagumpay na naipares! Ang TV app ay magpapakita na ngayon ng nilalaman mula sa uri ng planong ito.",
+      "title": "Ipares ang TV App"
     },
     "serviceOrder": {
       "addSection": "Magdagdag ng seksyon",

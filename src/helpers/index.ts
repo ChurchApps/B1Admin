@@ -1,4 +1,5 @@
 export * from "./Interfaces";
+export type { ExternalProviderInterface, ExternalVenueRefInterface } from "./Interfaces";
 
 // AppHelper imports (for person components)
 export {

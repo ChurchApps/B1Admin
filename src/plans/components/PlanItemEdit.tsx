@@ -53,6 +53,7 @@ export const PlanItemEdit = (props: Props) => {
   const getHeaderText = () => {
     if (planItem?.itemType === "header") return Locale.label("plans.planItemEdit.editHeader");
     else if (planItem?.itemType === "arrangementKey") return Locale.label("plans.planItemEdit.editSong");
+    else if (planItem?.itemType === "lessonAddOn") return Locale.label("plans.planItemEdit.editAddOn") || "Edit Add-On";
     return Locale.label("plans.planItemEdit.edit");
   };
 
@@ -155,9 +156,9 @@ export const PlanItemEdit = (props: Props) => {
     );
   };
 
-  const showLabel = planItem?.itemType === "header" || planItem?.itemType === "item" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
-  const showDesc = planItem?.itemType === "item" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
-  const showDuration = planItem?.itemType === "item" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
+  const showLabel = planItem?.itemType === "header" || planItem?.itemType === "item" || planItem?.itemType === "lessonAction" || planItem?.itemType === "lessonSection" || planItem?.itemType === "lessonAddOn" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
+  const showDesc = planItem?.itemType === "item" || planItem?.itemType === "lessonAction" || planItem?.itemType === "lessonSection" || planItem?.itemType === "lessonAddOn" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
+  const showDuration = planItem?.itemType === "item" || planItem?.itemType === "lessonAction" || planItem?.itemType === "lessonSection" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
 
   return (
     <InputBox headerText={getHeaderText()} headerIcon="album" saveFunction={handleSave} cancelFunction={props.onDone} deleteFunction={planItem?.id && handleDelete}>

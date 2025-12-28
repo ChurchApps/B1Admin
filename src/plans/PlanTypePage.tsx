@@ -1,18 +1,18 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Box, Container, Typography } from "@mui/material";
-import { Assignment as AssignmentIcon } from "@mui/icons-material";
-import { Loading, PageHeader, Locale, SmallButton, ApiHelper, UserHelper, Permissions } from "@churchapps/apphelper";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { Assignment as AssignmentIcon, Tv as TvIcon } from "@mui/icons-material";
+import { Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../helpers";
 import { PlanList } from "./components/PlanList";
+import { PlanTypePairDialog } from "./components/PlanTypePairDialog";
 import { Breadcrumbs } from "../components/ui";
 
 export const PlanTypePage = () => {
   const params = useParams();
-  const navigate = useNavigate();
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const [showPairDialog, setShowPairDialog] = useState(false);
 
   const planType = useQuery<PlanTypeInterface>({
     queryKey: [`/planTypes/${params.id}`, "DoingApi"],
@@ -23,14 +23,6 @@ export const PlanTypePage = () => {
     queryKey: [`/groups/${planType.data?.ministryId}`, "MembershipApi"],
     enabled: !!planType.data?.ministryId,
   });
-
-  const handleDeletePlanType = React.useCallback(() => {
-    if (window.confirm(Locale.label("plans.planTypePage.deleteConfirm"))) {
-      ApiHelper.delete("/planTypes/" + planType.data?.id, "DoingApi").then(() => {
-        navigate("/plans/ministries/" + ministry.data?.id);
-      });
-    }
-  }, [planType.data?.id, ministry.data?.id, navigate]);
 
   if (planType.isLoading || ministry.isLoading) return <Loading />;
   
@@ -75,10 +67,35 @@ export const PlanTypePage = () => {
         <PageHeader
           icon={<AssignmentIcon />}
           title={planType.data.name || Locale.label("plans.planTypePage.planType")}
-          subtitle={Locale.label("plans.planTypePage.subtitle")}>
-          {canEdit && <SmallButton color="error" icon="delete" onClick={handleDeletePlanType} />}
+          subtitle={Locale.label("plans.planTypePage.subtitle")}
+        >
+          <Button
+            variant="contained"
+            onClick={() => setShowPairDialog(true)}
+            startIcon={<TvIcon />}
+            size="large"
+            sx={{
+              backgroundColor: "#FFF",
+              color: "primary.main",
+              fontWeight: 600,
+              px: 3,
+              py: 1,
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,0.9)",
+              },
+            }}
+          >
+            {Locale.label("plans.planTypePage.pairTvApp") || "Pair TV App"}
+          </Button>
         </PageHeader>
       </Box>
+
+      {showPairDialog && (
+        <PlanTypePairDialog
+          planTypeId={planType.data.id || ""}
+          onClose={() => setShowPairDialog(false)}
+        />
+      )}
 
       {/* Content */}
       <Box sx={{ p: 3 }}>

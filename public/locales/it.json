@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Copia Da",
+      "copyAll": "Posizioni e Assegnazioni",
+      "copyNothing": "Niente",
+      "copyPositions": "Solo Posizioni",
+      "copyPrevious": "Copia dal Piano Precedente",
       "none": "Nessuno",
       "planAdd": "Aggiungi un Piano",
       "planEdit": "Modifica Piano",
@@ -1029,7 +1033,28 @@
       "createPlan": "Crea piano",
       "newPlan": "Nuovo piano",
       "noPlans": "Nessun piano trovato",
-      "serviceOrder": "Ordine del Servizio"
+      "serviceOrder": "Ordine del Servizio",
+      "scheduleLesson": "Programma Lezione"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Programma Lezione",
+      "scheduledDate": "Data Programmata",
+      "dateRequired": "Seleziona una data",
+      "venueRequired": "Seleziona una sede"
+    },
+    "lessonSelector": {
+      "addFromLesson": "Aggiungi dalla lezione associata",
+      "addLesson": "Aggiungi lezione",
+      "associateLesson": "Associa lezione",
+      "externalProvider": "Fornitore esterno",
+      "lesson": "Lezione",
+      "lessonSource": "Fonte della lezione",
+      "lessonsChurch": "Lessons.church",
+      "program": "Programma",
+      "provider": "Fornitore",
+      "study": "Studio",
+      "usingAssociatedLesson": "Utilizzo della lezione associata:",
+      "venue": "Sede"
     },
     "planPage": {
       "assign": "Assegnazioni di Squadra",
@@ -1122,6 +1147,7 @@
     "assignment": {
       "addPosition": "Aggiungi posizione",
       "autoAssign": "Assegnazione automatica",
+      "copy": "Copia",
       "saveNotes": "Salva note"
     },
     "lessonSelector": {
@@ -1132,18 +1158,33 @@
       "venue": "Luogo"
     },
     "planItem": {
+      "addOn": "Componente aggiuntivo",
+      "expandToActions": "Espandi in azioni",
       "item": "Articolo",
+      "lessonAction": "Azione della lezione",
       "song": "Canzone"
     },
     "planItemEdit": {
       "description": "Descrizione",
       "edit": "Modifica",
+      "editAddOn": "Modifica componente aggiuntivo",
       "editHeader": "Modifica intestazione",
       "editSong": "Modifica canzone",
       "enterSearch": "Inserisci il termine di ricerca",
       "key": "Tonalità",
       "minutes": "Minuti",
       "seconds": "Secondi"
+    },
+    "actionSelector": {
+      "action": "Azione",
+      "fromAssociatedLesson": "Dalla lezione associata:",
+      "section": "Sezione",
+      "selectAction": "Seleziona azione"
+    },
+    "addOnSelector": {
+      "category": "Categoria",
+      "noAddOns": "Nessun componente aggiuntivo disponibile",
+      "selectAddOn": "Seleziona componente aggiuntivo"
     },
     "planTypeEdit": {
       "add": "Aggiungi",
@@ -1162,8 +1203,18 @@
     },
     "planTypePage": {
       "notFound": "Tipo di piano non trovato",
+      "pairTvApp": "Associa App TV",
       "planType": "Tipo di piano",
-      "subtitle": "Configura le impostazioni del tipo di piano"
+      "subtitle": "Configura le impostazioni del tipo di piano",
+      "tvAppDescription": "Mostra i contenuti delle lezioni su qualsiasi TV o display usando la nostra app gratuita",
+      "tvAppTitle": "Mostra su TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Scarica l'App TV Lessons.church",
+      "instructions": "Inserisci il codice a 4 caratteri visualizzato sullo schermo dell'app TV:",
+      "pairTitle": "Associa il tuo dispositivo",
+      "success": "Associato con successo! L'app TV mostrerà ora i contenuti di questo tipo di piano.",
+      "title": "Associa App TV"
     },
     "serviceOrder": {
       "addSection": "Aggiungi sezione",

@@ -1040,6 +1040,10 @@
     },
     "planEdit": {
       "copy": "Copy From",
+      "copyAll": "Positions and Assignments",
+      "copyNothing": "Nothing",
+      "copyPositions": "Positions Only",
+      "copyPrevious": "Copy from Previous Plan",
       "none": "None",
       "planAdd": "Add a Plan",
       "planEdit": "Edit Plan",
@@ -1055,7 +1059,14 @@
       "createPlan": "Create Plan",
       "newPlan": "New Plan",
       "noPlans": "No plans found",
-      "serviceOrder": "Service Order"
+      "serviceOrder": "Service Order",
+      "scheduleLesson": "Schedule Lesson"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Schedule Lesson",
+      "scheduledDate": "Scheduled Date",
+      "dateRequired": "Please select a date",
+      "venueRequired": "Please select a venue"
     },
     "planPage": {
       "assign": "Team Assignments",
@@ -1148,28 +1159,51 @@
     "assignment": {
       "addPosition": "Add Position",
       "autoAssign": "Auto Assign",
+      "copy": "Copy",
       "saveNotes": "Save Notes"
     },
     "lessonSelector": {
+      "addFromLesson": "Add from Associated Lesson",
+      "addLesson": "Add Lesson",
       "associateLesson": "Associate Lesson",
+      "externalProvider": "External Provider",
       "lesson": "Lesson",
+      "lessonSource": "Lesson Source",
+      "lessonsChurch": "Lessons.church",
       "program": "Program",
+      "provider": "Provider",
       "study": "Study",
+      "usingAssociatedLesson": "Using associated lesson:",
       "venue": "Venue"
     },
     "planItem": {
+      "addOn": "Add-On",
+      "expandToActions": "Expand to Actions",
       "item": "Item",
+      "lessonAction": "Lesson Action",
       "song": "Song"
     },
     "planItemEdit": {
       "description": "Description",
       "edit": "Edit",
+      "editAddOn": "Edit Add-On",
       "editHeader": "Edit Header",
       "editSong": "Edit Song",
       "enterSearch": "Enter search term",
       "key": "Key",
       "minutes": "Minutes",
       "seconds": "Seconds"
+    },
+    "actionSelector": {
+      "action": "Action",
+      "fromAssociatedLesson": "From associated lesson:",
+      "section": "Section",
+      "selectAction": "Select Action"
+    },
+    "addOnSelector": {
+      "category": "Category",
+      "noAddOns": "No add-ons available",
+      "selectAddOn": "Select Add-On"
     },
     "planTypeEdit": {
       "add": "Add",
@@ -1188,13 +1222,25 @@
     },
     "planTypePage": {
       "notFound": "Plan type not found",
+      "pairTvApp": "Pair TV App",
       "planType": "Plan Type",
-      "subtitle": "Configure plan type settings"
+      "subtitle": "Configure plan type settings",
+      "tvAppDescription": "Show your lesson content on any TV or display using our free app",
+      "tvAppTitle": "Display on TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Download the Lessons.church TV App",
+      "instructions": "Enter the 4-character code displayed on the TV app screen:",
+      "pairTitle": "Pair Your Device",
+      "success": "Successfully paired! The TV app will now show content from this plan type.",
+      "title": "Pair TV App"
     },
     "serviceOrder": {
       "add": "Add",
       "addLesson": "Add Lesson",
       "addSection": "Add Section",
+      "customizeLesson": "Customize",
+      "lessonPreview": "Lesson Preview",
       "noItems": "No items in service order",
       "orderOfService": "Order of Service",
       "print": "Print"

@@ -41,7 +41,7 @@ export function ZoneBox(props: ZoneBoxProps) {
         />
       </Box>
       <Box sx={{ minHeight: "100px" }}>
-        <div className="page" style={deviceType === "mobile" ? { width: 400, marginLeft: "auto", marginRight: "auto" } : {}}>
+        <div className="page" style={deviceType === "mobile" ? { width: 400, marginLeft: "auto", marginRight: "auto" } : {}} data-testid={`preview-${deviceType}`}>
           {children}
         </div>
       </Box>

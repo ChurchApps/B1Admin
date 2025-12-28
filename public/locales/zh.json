@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "复制自",
+      "copyAll": "职位和分配",
+      "copyNothing": "无",
+      "copyPositions": "仅职位",
+      "copyPrevious": "从上一个计划复制",
       "none": "无",
       "planAdd": "添加计划",
       "planEdit": "编辑计划",
@@ -1029,7 +1033,28 @@
       "createPlan": "创建计划",
       "newPlan": "新计划",
       "noPlans": "没有找到计划",
-      "serviceOrder": "服务顺序"
+      "serviceOrder": "服务顺序",
+      "scheduleLesson": "安排课程"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "安排课程",
+      "scheduledDate": "预定日期",
+      "dateRequired": "请选择日期",
+      "venueRequired": "请选择场地"
+    },
+    "lessonSelector": {
+      "addFromLesson": "从关联课程添加",
+      "addLesson": "添加课程",
+      "associateLesson": "关联课程",
+      "externalProvider": "外部提供商",
+      "lesson": "课程",
+      "lessonSource": "课程来源",
+      "lessonsChurch": "Lessons.church",
+      "program": "课程计划",
+      "provider": "提供商",
+      "study": "学习",
+      "usingAssociatedLesson": "正在使用关联课程:",
+      "venue": "场地"
     },
     "planPage": {
       "assign": "团队分配",
@@ -1122,6 +1147,7 @@
     "assignment": {
       "addPosition": "添加职位",
       "autoAssign": "自动分配",
+      "copy": "复制",
       "saveNotes": "保存笔记"
     },
     "lessonSelector": {
@@ -1132,18 +1158,33 @@
       "venue": "场地"
     },
     "planItem": {
+      "addOn": "附加组件",
+      "expandToActions": "展开为操作",
       "item": "物品",
+      "lessonAction": "课程操作",
       "song": "歌曲"
     },
     "planItemEdit": {
       "description": "描述",
       "edit": "编辑",
+      "editAddOn": "编辑附加组件",
       "editHeader": "编辑标题",
       "editSong": "编辑歌曲",
       "enterSearch": "输入搜索词",
       "key": "调式",
       "minutes": "分钟",
       "seconds": "秒"
+    },
+    "actionSelector": {
+      "action": "操作",
+      "fromAssociatedLesson": "来自关联课程：",
+      "section": "部分",
+      "selectAction": "选择操作"
+    },
+    "addOnSelector": {
+      "category": "类别",
+      "noAddOns": "没有可用的附加组件",
+      "selectAddOn": "选择附加组件"
     },
     "planTypeEdit": {
       "add": "添加",
@@ -1162,8 +1203,18 @@
     },
     "planTypePage": {
       "notFound": "未找到计划类型",
+      "pairTvApp": "配对电视应用",
       "planType": "计划类型",
-      "subtitle": "配置计划类型设置"
+      "subtitle": "配置计划类型设置",
+      "tvAppDescription": "使用我们的免费应用在任何电视或显示器上展示您的课程内容",
+      "tvAppTitle": "在电视上显示"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "下载 Lessons.church 电视应用",
+      "instructions": "输入电视应用屏幕上显示的4位代码：",
+      "pairTitle": "配对您的设备",
+      "success": "配对成功！电视应用现在将显示此计划类型的内容。",
+      "title": "配对电视应用"
     },
     "serviceOrder": {
       "addSection": "添加部分",

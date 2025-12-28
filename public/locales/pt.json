@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Copiar De",
+      "copyAll": "Posições e Atribuições",
+      "copyNothing": "Nada",
+      "copyPositions": "Apenas Posições",
+      "copyPrevious": "Copiar do Plano Anterior",
       "none": "Nenhum",
       "planAdd": "Adicionar um Plano",
       "planEdit": "Editar Plano",
@@ -1029,7 +1033,14 @@
       "createPlan": "Criar plano",
       "newPlan": "Novo Plano",
       "noPlans": "Nenhum plano encontrado",
-      "serviceOrder": "Ordem do Serviço"
+      "serviceOrder": "Ordem do Serviço",
+      "scheduleLesson": "Agendar Lição"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Agendar Lição",
+      "scheduledDate": "Data Agendada",
+      "dateRequired": "Por favor, selecione uma data",
+      "venueRequired": "Por favor, selecione um local"
     },
     "planPage": {
       "assign": "Atribuições de Equipe",
@@ -1122,28 +1133,51 @@
     "assignment": {
       "addPosition": "Adicionar posição",
       "autoAssign": "Atribuição automática",
+      "copy": "Copiar",
       "saveNotes": "Salvar notas"
     },
     "lessonSelector": {
+      "addFromLesson": "Adicionar da lição associada",
+      "addLesson": "Adicionar lição",
       "associateLesson": "Lição Associada",
+      "externalProvider": "Provedor externo",
       "lesson": "Lição",
+      "lessonSource": "Fonte da lição",
+      "lessonsChurch": "Lessons.church",
       "program": "Programa",
+      "provider": "Provedor",
       "study": "Estudar",
+      "usingAssociatedLesson": "Usando lição associada:",
       "venue": "Local"
     },
     "planItem": {
+      "addOn": "Complemento",
+      "expandToActions": "Expandir para ações",
       "item": "Item",
+      "lessonAction": "Ação da lição",
       "song": "Canção"
     },
     "planItemEdit": {
       "description": "Descrição",
       "edit": "Editar",
+      "editAddOn": "Editar complemento",
       "editHeader": "Editar cabeçalho",
       "editSong": "Editar música",
       "enterSearch": "Insira o termo de pesquisa",
       "key": "Tom",
       "minutes": "Minutos",
       "seconds": "Segundos"
+    },
+    "actionSelector": {
+      "action": "Ação",
+      "fromAssociatedLesson": "Da lição associada:",
+      "section": "Seção",
+      "selectAction": "Selecionar ação"
+    },
+    "addOnSelector": {
+      "category": "Categoria",
+      "noAddOns": "Nenhum complemento disponível",
+      "selectAddOn": "Selecionar complemento"
     },
     "planTypeEdit": {
       "add": "Adicionar",
@@ -1162,8 +1196,18 @@
     },
     "planTypePage": {
       "notFound": "Tipo de plano não encontrado",
+      "pairTvApp": "Parear App de TV",
       "planType": "Tipo de plano",
-      "subtitle": "Definir configurações de tipo de plano"
+      "subtitle": "Definir configurações de tipo de plano",
+      "tvAppDescription": "Exiba o conteúdo das suas lições em qualquer TV ou display usando nosso aplicativo gratuito",
+      "tvAppTitle": "Exibir na TV"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Baixar o App de TV Lessons.church",
+      "instructions": "Digite o código de 4 caracteres exibido na tela do aplicativo de TV:",
+      "pairTitle": "Parear seu dispositivo",
+      "success": "Pareado com sucesso! O aplicativo de TV agora exibirá o conteúdo deste tipo de plano.",
+      "title": "Parear App de TV"
     },
     "serviceOrder": {
       "addSection": "Adicionar seção",

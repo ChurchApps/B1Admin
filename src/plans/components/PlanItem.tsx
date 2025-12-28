@@ -1,12 +1,17 @@
 import React from "react";
 import { Icon, Menu, MenuItem } from "@mui/material";
-import { type PlanItemInterface } from "../../helpers";
+import { type PlanItemInterface, type ExternalVenueRefInterface } from "@churchapps/helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
+import { ActionDialog } from "./ActionDialog";
+import { AddOnDialog } from "./AddOnDialog";
+import { ActionSelector } from "./ActionSelector";
+import { AddOnSelector } from "./AddOnSelector";
+import { formatTime, getSectionDuration, type LessonSectionInterface } from "./PlanUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -16,12 +21,18 @@ interface Props {
   onChange?: () => void;
   readOnly?: boolean;
   startTime?: number;
+  associatedVenueId?: string;
+  externalRef?: ExternalVenueRefInterface;
 }
 
 export const PlanItem = React.memo((props: Props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
+  const [actionId, setActionId] = React.useState<string>(null);
+  const [addOnId, setAddOnId] = React.useState<string>(null);
+  const [showActionSelector, setShowActionSelector] = React.useState(false);
+  const [showAddOnSelector, setShowAddOnSelector] = React.useState(false);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -46,6 +57,95 @@ export const PlanItem = React.memo((props: Props) => {
       sort: props.planItem.children?.length + 1 || 1,
       parentId: props.planItem.id,
     });
+  };
+
+  const addLessonAction = () => {
+    handleClose();
+    setShowActionSelector(true);
+  };
+
+  const addAddOn = () => {
+    handleClose();
+    setShowAddOnSelector(true);
+  };
+
+  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number) => {
+    setShowActionSelector(false);
+    // Create new plan item for the action
+    const newPlanItem: PlanItemInterface = {
+      itemType: "lessonAction",
+      planId: props.planItem.planId,
+      sort: props.planItem.children?.length + 1 || 1,
+      parentId: props.planItem.id,
+      relatedId: actionId,
+      label: actionName,
+      seconds: seconds || 0,
+    };
+    await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
+    if (props.onChange) props.onChange();
+  };
+
+  const handleAddOnSelected = async (addOnId: string, addOnName: string, image?: string, seconds?: number) => {
+    setShowAddOnSelector(false);
+    // Create new plan item for the add-on
+    const newPlanItem: PlanItemInterface = {
+      itemType: "lessonAddOn",
+      planId: props.planItem.planId,
+      sort: props.planItem.children?.length + 1 || 1,
+      parentId: props.planItem.id,
+      relatedId: addOnId,
+      label: addOnName,
+      link: image, // Store the image URL in the link field for display
+      seconds: seconds || 0,
+    };
+    await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
+    if (props.onChange) props.onChange();
+  };
+
+  // Expand a lesson section item to replace it with individual action items
+  const handleExpandToActions = async () => {
+    if (!props.planItem.relatedId || !props.associatedVenueId) return;
+
+    try {
+      // Fetch actions for the associated venue
+      let venueData;
+      if (props.externalRef) {
+        venueData = await ApiHelper.getAnonymous(`/externalProviders/${props.externalRef.externalProviderId}/venue/${props.externalRef.venueId}/actions`, "LessonsApi");
+      } else {
+        venueData = await ApiHelper.getAnonymous(`/venues/public/actions/${props.associatedVenueId}`, "LessonsApi");
+      }
+
+      if (venueData?.sections) {
+        // Find the section matching this plan item's relatedId
+        const matchingSection = venueData.sections.find((s: LessonSectionInterface) => s.id === props.planItem.relatedId);
+
+        if (matchingSection?.actions?.length > 0) {
+          const currentSort = props.planItem.sort || 1;
+
+          // Create new plan items for each action, starting at the current item's sort position
+          const actionItems = matchingSection.actions.map((action, index) => ({
+            planId: props.planItem.planId,
+            parentId: props.planItem.parentId,
+            sort: currentSort + index, // Start at current position
+            itemType: "lessonAction",
+            relatedId: action.id,
+            label: action.name,
+            seconds: action.seconds || 0,
+          }));
+
+          // Delete the original section item first
+          await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
+
+          // Create the new action items
+          await ApiHelper.post("/planItems", actionItems, "DoingApi");
+
+          // Refresh the plan - the API will handle re-sorting
+          if (props.onChange) props.onChange();
+        }
+      }
+    } catch (error) {
+      console.error("Error expanding section to actions:", error);
+    }
   };
 
   const handleDrop = (data: any, sort: number) => {
@@ -89,7 +189,7 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} externalRef={props.externalRef} />
           </DraggableWrapper>
         </>
       );
@@ -120,18 +220,8 @@ export const PlanItem = React.memo((props: Props) => {
     return result;
   };
 
-  const getSectionDuration = () => {
-    let totalSeconds = 0;
-    props.planItem.children?.forEach((child) => {
-      if (child.seconds) {
-        totalSeconds += child.seconds;
-      }
-    });
-    return totalSeconds;
-  };
-
   const getHeaderRow = () => {
-    const sectionDuration = getSectionDuration();
+    const sectionDuration = getSectionDuration(props.planItem);
     return (
       <>
         <div className="planItemHeader">
@@ -258,6 +348,114 @@ export const PlanItem = React.memo((props: Props) => {
     </div>
   );
 
+  const getActionRow = () => (
+    <>
+      <div className="planItem">
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
+          {!props.readOnly && (
+            <>
+              <span style={{ width: 24 }} />
+              <button
+                type="button"
+                onClick={() => props.setEditPlanItem(props.planItem)}
+                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                <Icon>edit</Icon>
+              </button>
+            </>
+          )}
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setActionId(props.planItem.relatedId); }}>
+              {props.planItem.label}
+            </a>
+          ) : (
+            props.planItem.label
+          )}
+        </div>
+        {getDescriptionRow()}
+      </div>
+    </>
+  );
+
+  const getLessonSectionRow = () => (
+    <>
+      <div className="planItem">
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
+          {!props.readOnly && (
+            <>
+              <span style={{ width: 24 }} />
+              <button
+                type="button"
+                onClick={() => props.setEditPlanItem(props.planItem)}
+                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                <Icon>edit</Icon>
+              </button>
+            </>
+          )}
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId); }}>
+              {props.planItem.label}
+            </a>
+          ) : (
+            props.planItem.label
+          )}
+        </div>
+        {getDescriptionRow()}
+      </div>
+    </>
+  );
+
+  const getAddOnRow = () => (
+    <>
+      <div className="planItem">
+        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
+          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+            {formatTime(props.planItem.seconds)}
+          </span>
+          {!props.readOnly && (
+            <>
+              <span style={{ width: 24 }} />
+              <button
+                type="button"
+                onClick={() => props.setEditPlanItem(props.planItem)}
+                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                <Icon>edit</Icon>
+              </button>
+            </>
+          )}
+        </span>
+        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        <div>{formatTime(props.startTime || 0)}</div>
+        <div>
+          {props.planItem.relatedId ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setAddOnId(props.planItem.relatedId); }}>
+              {props.planItem.label}
+            </a>
+          ) : (
+            props.planItem.label
+          )}
+        </div>
+        {getDescriptionRow()}
+      </div>
+    </>
+  );
+
   const getPlanItem = () => {
     switch (props.planItem.itemType) {
       case "header":
@@ -265,15 +463,16 @@ export const PlanItem = React.memo((props: Props) => {
       case "song":
       case "arrangementKey":
         return getSongRow();
+      case "lessonAction":
+        return getActionRow();
+      case "lessonAddOn":
+        return getAddOnRow();
+      case "lessonSection":
+        return getLessonSectionRow();
       case "item":
+      default:
         return getItemRow();
     }
-  };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return minutes + ":" + (secs < 10 ? "0" : "") + secs;
   };
 
   return (
@@ -287,10 +486,47 @@ export const PlanItem = React.memo((props: Props) => {
           <MenuItem onClick={addItem}>
             <Icon style={{ marginRight: 10 }}>format_list_bulleted</Icon> {Locale.label("plans.planItem.item")}
           </MenuItem>
+          {props.associatedVenueId && (
+            <MenuItem onClick={addLessonAction}>
+              <Icon style={{ marginRight: 10 }}>menu_book</Icon> {Locale.label("plans.planItem.lessonAction") || "Lesson Action"}
+            </MenuItem>
+          )}
+          <MenuItem onClick={addAddOn}>
+            <Icon style={{ marginRight: 10 }}>extension</Icon> {Locale.label("plans.planItem.addOn") || "Add-On"}
+          </MenuItem>
         </Menu>
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
-      {lessonSectionId && <LessonDialog sectionId={lessonSectionId} sectionName={props.planItem.label} onClose={() => setLessonSectionId(null)} />}
+      {lessonSectionId && (
+        <LessonDialog
+          sectionId={lessonSectionId}
+          sectionName={props.planItem.label}
+          onClose={() => setLessonSectionId(null)}
+          onExpandToActions={props.associatedVenueId && props.planItem.relatedId ? async () => {
+            setLessonSectionId(null);
+            await handleExpandToActions();
+          } : undefined}
+          externalRef={props.externalRef}
+        />
+      )}
+      {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} externalRef={props.externalRef} />}
+      {addOnId && <AddOnDialog addOnId={addOnId} addOnName={props.planItem.label} onClose={() => setAddOnId(null)} />}
+      {showActionSelector && props.associatedVenueId && (
+        <ActionSelector
+          open={showActionSelector}
+          onClose={() => setShowActionSelector(false)}
+          onSelect={handleActionSelected}
+          venueId={props.associatedVenueId}
+          externalRef={props.externalRef}
+        />
+      )}
+      {showAddOnSelector && (
+        <AddOnSelector
+          open={showAddOnSelector}
+          onClose={() => setShowAddOnSelector(false)}
+          onSelect={handleAddOnSelected}
+        />
+      )}
     </>
   );
 });

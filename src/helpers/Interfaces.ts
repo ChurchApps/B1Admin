@@ -123,6 +123,21 @@ export interface VenueInterface {
   sort?: number;
 }
 
+export interface ExternalVenueRefInterface {
+  externalProviderId: string;
+  programId: string;
+  studyId: string;
+  lessonId: string;
+  venueId: string;
+}
+
+export interface ExternalProviderInterface {
+  id?: string;
+  churchId?: string;
+  name?: string;
+  apiUrl?: string;
+}
+
 export interface FileInterface {
   id?: string;
   contentType?: string;

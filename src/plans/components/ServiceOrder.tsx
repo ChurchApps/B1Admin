@@ -1,19 +1,21 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem } from "@mui/material";
-import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
-import { type PlanInterface } from "@churchapps/helpers";
+import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip } from "@mui/material";
+import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon } from "@mui/icons-material";
+import { type PlanInterface, type PlanItemInterface, type ExternalVenueRefInterface, LessonsContentProvider } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
-import { type PlanItemInterface } from "../../helpers";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlanItem } from "./PlanItem";
+import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
+import { getSectionDuration } from "./PlanUtils";
 
 interface Props {
   plan: PlanInterface;
+  onPlanUpdate?: () => void;
 }
 
 export const ServiceOrder = memo((props: Props) => {
@@ -22,8 +24,13 @@ export const ServiceOrder = memo((props: Props) => {
   const [editPlanItem, setEditPlanItem] = React.useState<PlanItemInterface>(null);
   const [showHeaderDrop, setShowHeaderDrop] = React.useState(false);
   const [showItemDrop, setShowItemDrop] = React.useState(false);
-  const [showLessonSelector, setShowLessonSelector] = React.useState(false);
+  const [showAssociateLessonSelector, setShowAssociateLessonSelector] = React.useState(false);
   const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const [venueName, setVenueName] = React.useState<string>("");
+  const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
+
+  // Use LessonsContentProvider from helpers
+  const lessonsProvider = useMemo(() => new LessonsContentProvider(), []);
 
   const loadData = useCallback(async () => {
     if (props.plan?.id) {
@@ -37,26 +44,46 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [props.plan?.id]);
 
-  const addHeader = useCallback(() => {
-    setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
-  }, [props.plan.id, planItems?.length]);
 
-  const handleLessonSelect = useCallback(async (venueId: string) => {
+  const handleAssociateLesson = useCallback(async (venueId: string, selectedVenueName?: string, externalRef?: ExternalVenueRefInterface) => {
     try {
-      setShowLessonSelector(false);
-      // Load lesson items from the venue
-      const venueData = await ApiHelper.get(`/venues/public/planItems/${venueId}`, "LessonsApi");
-
-      if (venueData && venueData.length > 0) {
-        // Immediately save the lesson items as editable plan items
-        await saveHierarchicalItems(venueData);
-        // Reload data to show the new editable items
-        loadData();
+      setShowAssociateLessonSelector(false);
+      // Update the plan with the venue association
+      let updatedPlan;
+      if (externalRef) {
+        // External venue - store the full ref as JSON in contentId
+        updatedPlan = { ...props.plan, contentType: "externalVenue", contentId: JSON.stringify(externalRef) };
+      } else {
+        updatedPlan = { ...props.plan, contentType: "venue", contentId: venueId };
       }
+      await ApiHelper.post("/plans", [updatedPlan], "DoingApi");
+      setVenueName(selectedVenueName || "");
+      if (props.onPlanUpdate) props.onPlanUpdate();
     } catch (error) {
-      console.error("Error importing lesson items:", error);
+      console.error("Error associating lesson:", error);
     }
-  }, [props.plan, loadData]);
+  }, [props.plan, props.onPlanUpdate]);
+
+  const handleDisassociateLesson = useCallback(async () => {
+    try {
+      const updatedPlan = { ...props.plan, contentType: null, contentId: null };
+      await ApiHelper.post("/plans", [updatedPlan], "DoingApi");
+      setVenueName("");
+      if (props.onPlanUpdate) props.onPlanUpdate();
+    } catch (error) {
+      console.error("Error disassociating lesson:", error);
+    }
+  }, [props.plan, props.onPlanUpdate]);
+
+  // Use LessonsContentProvider methods
+  const hasAssociatedLesson = lessonsProvider.hasAssociatedLesson(props.plan);
+  const isExternalVenue = lessonsProvider.isExternalVenue(props.plan);
+  const getExternalRef = useCallback((): ExternalVenueRefInterface | null => {
+    return lessonsProvider.getExternalRef(props.plan);
+  }, [lessonsProvider, props.plan]);
+
+  // Determine if we should show preview mode
+  const showPreviewMode = hasAssociatedLesson && planItems.length === 0 && previewLessonItems.length > 0;
 
   const saveHierarchicalItems = async (items: PlanItemInterface[], parentId?: string): Promise<void> => {
     if (!items || items.length === 0) return;
@@ -88,9 +115,96 @@ export const ServiceOrder = memo((props: Props) => {
     }
   };
 
+  // Import only lesson sections (not actions) as editable plan items
+  const handleCustomizeLesson = useCallback(async () => {
+    if (!hasAssociatedLesson) return;
+
+    try {
+      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
+
+      if (response?.items && response.items.length > 0) {
+        // Keep top-level headers with their section children, but strip grandchildren (actions)
+        const sectionsOnly = response.items.map((item: PlanItemInterface) => ({
+          ...item,
+          // Keep children (sections) but strip their children (actions)
+          children: item.children?.map((section: PlanItemInterface) => ({
+            ...section,
+            children: undefined // Remove actions from sections
+          }))
+        }));
+        await saveHierarchicalItems(sectionsOnly);
+        setPreviewLessonItems([]); // Clear preview
+        loadData();
+      }
+    } catch (error) {
+      console.error("Error customizing lesson:", error);
+    }
+  }, [hasAssociatedLesson, lessonsProvider, props.plan, loadData]);
+
+  const addHeader = useCallback(async () => {
+    // If in preview mode, first customize (import sections only), then add header
+    if (showPreviewMode) {
+      await handleCustomizeLesson();
+      // After customizing, the planItems will be reloaded, so we need to add at the end
+      // The sort will be recalculated after loadData completes
+    }
+    setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
+  }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
+
+  const handleLessonSelect = useCallback(async () => {
+    try {
+      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
+
+      if (response?.items && response.items.length > 0) {
+        // Immediately save the lesson items as editable plan items
+        await saveHierarchicalItems(response.items);
+        // Reload data to show the new editable items
+        loadData();
+      }
+    } catch (error) {
+      console.error("Error importing lesson items:", error);
+    }
+  }, [lessonsProvider, props.plan, loadData]);
+
+  // Load venue name when there's an associated lesson
+  const loadVenueName = useCallback(async () => {
+    if (!hasAssociatedLesson) {
+      setVenueName("");
+      return;
+    }
+    try {
+      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
+      if (response?.venueName) setVenueName(response.venueName);
+    } catch (error) {
+      console.error("Error loading venue name:", error);
+    }
+  }, [hasAssociatedLesson, lessonsProvider, props.plan]);
+
+  const loadPreviewLessonItems = useCallback(async () => {
+    if (hasAssociatedLesson && planItems.length === 0) {
+      try {
+        const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
+        setPreviewLessonItems(response?.items || []);
+        if (response?.venueName) setVenueName(response.venueName);
+      } catch (error) {
+        console.error("Error loading preview lesson items:", error);
+        setPreviewLessonItems([]);
+      }
+    } else {
+      setPreviewLessonItems([]);
+    }
+  }, [hasAssociatedLesson, planItems.length, lessonsProvider, props.plan]);
+
+  const handleAddLesson = useCallback(async () => {
+    if (hasAssociatedLesson) {
+      // Use the associated venue directly without showing a modal
+      await handleLessonSelect();
+    }
+  }, [hasAssociatedLesson, handleLessonSelect]);
+
   const editContent = useMemo(
     () => (
-      <Stack direction="row" spacing={1}>
+      <Stack direction="row" spacing={1} alignItems="center">
         <Button
           onClick={() => window.open(`/plans/print/${props.plan?.id}`, '_blank')}
           variant="outlined"
@@ -105,6 +219,26 @@ export const ServiceOrder = memo((props: Props) => {
         </Button>
         {canEdit && (
           <>
+            {hasAssociatedLesson ? (
+              <Chip
+                icon={<LinkIcon />}
+                label={`Lesson: ${venueName || "Loading..."}`}
+                onDelete={handleDisassociateLesson}
+                deleteIcon={<CloseIcon />}
+                color="primary"
+                variant="outlined"
+              />
+            ) : (
+              <Button
+                variant="outlined"
+                startIcon={<LinkIcon />}
+                size="small"
+                onClick={() => setShowAssociateLessonSelector(true)}
+                sx={{ textTransform: "none" }}
+              >
+                {Locale.label("plans.serviceOrder.associateLesson") || "Associate Lesson"}
+              </Button>
+            )}
             <ButtonGroup variant="contained" size="small">
               <Button
                 startIcon={<AddIcon />}
@@ -116,33 +250,37 @@ export const ServiceOrder = memo((props: Props) => {
                 }}>
                 {Locale.label("plans.serviceOrder.addSection")}
               </Button>
-              <Button
-                onClick={(e) => setAddMenuAnchor(e.currentTarget)}
-                sx={{
-                  borderRadius: "0 8px 8px 0",
-                  minWidth: 32,
-                  px: 0.5,
-                }}>
-                <ArrowDropDownIcon />
-              </Button>
+              {hasAssociatedLesson && (
+                <Button
+                  onClick={(e) => setAddMenuAnchor(e.currentTarget)}
+                  sx={{
+                    borderRadius: "0 8px 8px 0",
+                    minWidth: 32,
+                    px: 0.5,
+                  }}>
+                  <ArrowDropDownIcon />
+                </Button>
+              )}
             </ButtonGroup>
-            <Menu
-              anchorEl={addMenuAnchor}
-              open={Boolean(addMenuAnchor)}
-              onClose={() => setAddMenuAnchor(null)}
-            >
-              <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
-                <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
-              </MenuItem>
-              <MenuItem onClick={() => { setAddMenuAnchor(null); setShowLessonSelector(true); }}>
-                <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addLesson")}
-              </MenuItem>
-            </Menu>
+            {hasAssociatedLesson && (
+              <Menu
+                anchorEl={addMenuAnchor}
+                open={Boolean(addMenuAnchor)}
+                onClose={() => setAddMenuAnchor(null)}
+              >
+                <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
+                  <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
+                </MenuItem>
+                <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddLesson(); }}>
+                  <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addLesson")}
+                </MenuItem>
+              </Menu>
+            )}
           </>
         )}
       </Stack>
     ),
-    [props.plan?.id, addHeader, canEdit, addMenuAnchor]
+    [props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedLesson, venueName, handleDisassociateLesson, handleAddLesson]
   );
 
   const handleDrop = useCallback(
@@ -155,16 +293,6 @@ export const ServiceOrder = memo((props: Props) => {
     },
     [loadData]
   );
-
-  const getSectionDuration = (section: PlanItemInterface) => {
-    let totalSeconds = 0;
-    section.children?.forEach((child) => {
-      if (child.seconds) {
-        totalSeconds += child.seconds;
-      }
-    });
-    return totalSeconds;
-  };
 
   const renderPlanItems = () => {
     const result: JSX.Element[] = [];
@@ -212,6 +340,8 @@ export const ServiceOrder = memo((props: Props) => {
                   loadData();
                 }}
                 startTime={sectionStartTime}
+                associatedVenueId={hasAssociatedLesson ? (isExternalVenue ? getExternalRef()?.venueId : props.plan.contentId) : undefined}
+                externalRef={isExternalVenue ? getExternalRef() : undefined}
               />
             </DraggableWrapper>
           ) : (
@@ -223,6 +353,8 @@ export const ServiceOrder = memo((props: Props) => {
               onChange={() => { }}
               readOnly={true}
               startTime={sectionStartTime}
+              associatedVenueId={hasAssociatedLesson ? (isExternalVenue ? getExternalRef()?.venueId : props.plan.contentId) : undefined}
+              externalRef={isExternalVenue ? getExternalRef() : undefined}
             />
           )}
         </React.Fragment>
@@ -237,6 +369,16 @@ export const ServiceOrder = memo((props: Props) => {
   React.useEffect(() => {
     loadData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load venue name when there's an associated lesson
+  React.useEffect(() => {
+    loadVenueName();
+  }, [loadVenueName]);
+
+  // Load preview lesson items when plan has associated lesson but no plan items
+  React.useEffect(() => {
+    loadPreviewLessonItems();
+  }, [loadPreviewLessonItems]);
 
   return (
     <Box>
@@ -253,9 +395,10 @@ export const ServiceOrder = memo((props: Props) => {
       )}
 
       <LessonSelector
-        open={showLessonSelector}
-        onClose={() => setShowLessonSelector(false)}
-        onSelect={handleLessonSelect}
+        open={showAssociateLessonSelector}
+        onClose={() => setShowAssociateLessonSelector(false)}
+        onSelect={handleAssociateLesson}
+        returnVenueName={true}
       />
 
       <Card
@@ -288,15 +431,23 @@ export const ServiceOrder = memo((props: Props) => {
             }}>
             <DndProvider backend={HTML5Backend}>
               {planItems.length === 0 ? (
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    py: 4,
-                    color: "text.secondary",
-                  }}>
-                  <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "grey.400" }} />
-                  <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
-                </Box>
+                showPreviewMode ? (
+                  <LessonPreview
+                    lessonItems={previewLessonItems}
+                    venueName={venueName}
+                    onCustomize={handleCustomizeLesson}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      textAlign: "center",
+                      py: 4,
+                      color: "text.secondary",
+                    }}>
+                    <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "grey.400" }} />
+                    <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
+                  </Box>
+                )
               ) : (
                 <>
                   {renderPlanItems()}

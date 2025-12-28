@@ -14,9 +14,26 @@ interface Props {
 
 
 export const PlanEdit = (props: Props) => {
-  const [plan, setPlan] = React.useState<PlanInterface>(props.plan);
-  const [copyFromId, setCopyFromId] = React.useState<string>("none");
+  const [plan, setPlan] = React.useState<PlanInterface>({ ...props.plan, serviceOrder: true });
+  const [copyMode, setCopyMode] = React.useState<string>("all"); // "none" | "positions" | "all"
   const [errors, setErrors] = React.useState<string[]>([]);
+
+  // Get the most recent plan that is before the new plan's date
+  const previousPlan = React.useMemo(() => {
+    if (props.plans.length === 0 || !plan.serviceDate) return null;
+    const currentDate = new Date(plan.serviceDate).getTime();
+    const sorted = [...props.plans]
+      .filter(p => {
+        const planDate = p.serviceDate ? new Date(p.serviceDate).getTime() : 0;
+        return planDate < currentDate;  // Only include plans before new plan's date
+      })
+      .sort((a, b) => {
+        const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
+        const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
+        return dateB - dateA;  // Sort descending to get most recent previous plan first
+      });
+    return sorted[0] || null;
+  }, [props.plans, plan.serviceDate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     setErrors([]);
@@ -29,15 +46,12 @@ export const PlanEdit = (props: Props) => {
       case "serviceDate":
         p.serviceDate = new Date(value);
         break;
-      case "copyFrom":
-        setCopyFromId(value);
-        break;
-      case "serviceOrder":
-        p.serviceOrder = value === "true";
-        break;
       case "planTypeId":
         p.planTypeId = value;
         break;
+      case "copyMode":
+        setCopyMode(value);
+        return; // Don't update plan state
     }
     setPlan(p);
   };
@@ -53,10 +67,10 @@ export const PlanEdit = (props: Props) => {
   const savePlanMutation = useMutation({
     mutationFn: async () => {
       const { ApiHelper } = await import("@churchapps/apphelper");
-      if (copyFromId === "none") {
+      if (copyMode === "none" || !previousPlan) {
         return ApiHelper.post("/plans", [plan], "DoingApi");
       } else {
-        return ApiHelper.post("/plans/copy/" + copyFromId, plan, "DoingApi");
+        return ApiHelper.post("/plans/copy/" + previousPlan.id, { ...plan, copyMode }, "DoingApi");
       }
     },
     onSuccess: () => {
@@ -86,18 +100,6 @@ export const PlanEdit = (props: Props) => {
     deletePlanMutation.mutate();
   };
 
-  const getCopyOptions = () => {
-    const options = [];
-    for (let i = 0; i < props.plans.length; i++) {
-      options.push(
-        <MenuItem key={i} value={props.plans[i].id}>
-          {props.plans[i].name}
-        </MenuItem>
-      );
-    }
-    return options;
-  };
-
   return (
     <>
       <ErrorMessages errors={errors} />
@@ -119,20 +121,23 @@ export const PlanEdit = (props: Props) => {
           data-testid="service-date-input"
           aria-label="Service date"
         />
-        <FormControl fullWidth>
-          <InputLabel id="copyFrom">{Locale.label("plans.planEdit.copy")}:</InputLabel>
-          <Select name="copyFrom" labelId="copyFrom" label={Locale.label("plans.planEdit.copy")} value={copyFromId} onChange={handleChange} data-testid="copy-from-select" aria-label="Copy from plan">
-            <MenuItem value="none">{Locale.label("plans.planEdit.none")}</MenuItem>
-            {getCopyOptions()}
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="serviceOrder">{Locale.label("plans.planEdit.servOrder")}:</InputLabel>
-          <Select name="serviceOrder" labelId="serviceOrder" label={Locale.label("plans.planEdit.servOrder")} value={plan.serviceOrder.toString() || "false"} onChange={handleChange}>
-            <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-            <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-          </Select>
-        </FormControl>
+        {!plan.id && previousPlan && (
+          <FormControl fullWidth>
+            <InputLabel id="copyMode">{Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}:</InputLabel>
+            <Select
+              name="copyMode"
+              labelId="copyMode"
+              label={Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}
+              value={copyMode}
+              onChange={handleChange}
+              data-testid="copy-mode-select"
+            >
+              <MenuItem value="none">{Locale.label("plans.planEdit.copyNothing") || "Nothing"}</MenuItem>
+              <MenuItem value="positions">{Locale.label("plans.planEdit.copyPositions") || "Positions Only"}</MenuItem>
+              <MenuItem value="all">{Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}</MenuItem>
+            </Select>
+          </FormControl>
+        )}
       </InputBox>
     </>
   );

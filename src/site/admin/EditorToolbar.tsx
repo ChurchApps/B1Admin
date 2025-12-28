@@ -120,8 +120,9 @@ export function EditorToolbar(props: EditorToolbarProps) {
             exclusive
             onChange={(e, newDeviceType) => { if (newDeviceType !== null) onDeviceTypeChange(newDeviceType); }}
             sx={toggleButtonStyles}
+            data-testid="device-type-toggle"
           >
-            <ToggleButton value="desktop">
+            <ToggleButton value="desktop" data-testid="device-type-desktop">
               <Tooltip title={Locale.label("site.editorToolbar.switchToDesktop")} placement="top">
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                   <Icon fontSize="small">computer</Icon>
@@ -129,7 +130,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
                 </div>
               </Tooltip>
             </ToggleButton>
-            <ToggleButton value="mobile">
+            <ToggleButton value="mobile" data-testid="device-type-mobile">
               <Tooltip title={Locale.label("site.editorToolbar.switchToMobile")} placement="top">
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                   <Icon fontSize="small">smartphone</Icon>

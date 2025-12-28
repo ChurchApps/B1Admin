@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "Копировать из",
+      "copyAll": "Позиции и назначения",
+      "copyNothing": "Ничего",
+      "copyPositions": "Только позиции",
+      "copyPrevious": "Копировать из Предыдущего Плана",
       "none": "Нет",
       "planAdd": "Добавить план",
       "planEdit": "Редактировать план",
@@ -1029,7 +1033,28 @@
       "createPlan": "Создать план",
       "newPlan": "Новый план",
       "noPlans": "Планы не найдены",
-      "serviceOrder": "Порядок служения"
+      "serviceOrder": "Порядок служения",
+      "scheduleLesson": "Запланировать урок"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "Запланировать урок",
+      "scheduledDate": "Запланированная дата",
+      "dateRequired": "Пожалуйста, выберите дату",
+      "venueRequired": "Пожалуйста, выберите место"
+    },
+    "lessonSelector": {
+      "addFromLesson": "Добавить из связанного урока",
+      "addLesson": "Добавить урок",
+      "associateLesson": "Связать урок",
+      "externalProvider": "Внешний провайдер",
+      "lesson": "Урок",
+      "lessonSource": "Источник урока",
+      "lessonsChurch": "Lessons.church",
+      "program": "Программа",
+      "provider": "Провайдер",
+      "study": "Курс",
+      "usingAssociatedLesson": "Используется связанный урок:",
+      "venue": "Место"
     },
     "planPage": {
       "assign": "Назначения команд",
@@ -1122,6 +1147,7 @@
     "assignment": {
       "addPosition": "Добавить позицию",
       "autoAssign": "Автоматическое назначение",
+      "copy": "Копировать",
       "saveNotes": "Сохранить заметки"
     },
     "lessonSelector": {
@@ -1132,18 +1158,33 @@
       "venue": "Место проведения"
     },
     "planItem": {
+      "addOn": "Дополнение",
+      "expandToActions": "Развернуть в действия",
       "item": "Элемент",
+      "lessonAction": "Действие урока",
       "song": "Песня"
     },
     "planItemEdit": {
       "description": "Описание",
       "edit": "Редактировать",
+      "editAddOn": "Редактировать дополнение",
       "editHeader": "Изменить заголовок",
       "editSong": "Редактировать песню",
       "enterSearch": "Введите поисковый запрос",
       "key": "Тональность",
       "minutes": "Минуты",
       "seconds": "Секунды"
+    },
+    "actionSelector": {
+      "action": "Действие",
+      "fromAssociatedLesson": "Из связанного урока:",
+      "section": "Раздел",
+      "selectAction": "Выбрать действие"
+    },
+    "addOnSelector": {
+      "category": "Категория",
+      "noAddOns": "Дополнения недоступны",
+      "selectAddOn": "Выбрать дополнение"
     },
     "planTypeEdit": {
       "add": "Добавить",
@@ -1162,8 +1203,18 @@
     },
     "planTypePage": {
       "notFound": "Тип плана не найден",
+      "pairTvApp": "Подключить ТВ-приложение",
       "planType": "Тип плана",
-      "subtitle": "Настройка параметров типа плана"
+      "subtitle": "Настройка параметров типа плана",
+      "tvAppDescription": "Отображайте содержимое уроков на любом телевизоре или дисплее с помощью нашего бесплатного приложения",
+      "tvAppTitle": "Показать на ТВ"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Скачать ТВ-приложение Lessons.church",
+      "instructions": "Введите 4-значный код, отображаемый на экране ТВ-приложения:",
+      "pairTitle": "Подключить ваше устройство",
+      "success": "Успешно подключено! ТВ-приложение теперь будет показывать содержимое этого типа плана.",
+      "title": "Подключить ТВ-приложение"
     },
     "serviceOrder": {
       "addSection": "Добавить раздел",

@@ -1014,6 +1014,10 @@
     },
     "planEdit": {
       "copy": "복사 출처",
+      "copyAll": "직책 및 배정",
+      "copyNothing": "없음",
+      "copyPositions": "직책만",
+      "copyPrevious": "이전 계획에서 복사",
       "none": "없음",
       "planAdd": "계획 추가",
       "planEdit": "계획 편집",
@@ -1029,7 +1033,28 @@
       "createPlan": "계획 만들기",
       "newPlan": "새로운 계획",
       "noPlans": "계획을 찾을 수 없습니다.",
-      "serviceOrder": "예배 순서"
+      "serviceOrder": "예배 순서",
+      "scheduleLesson": "수업 일정"
+    },
+    "lessonScheduleEdit": {
+      "scheduleLesson": "수업 일정",
+      "scheduledDate": "예정된 날짜",
+      "dateRequired": "날짜를 선택하세요",
+      "venueRequired": "장소를 선택하세요"
+    },
+    "lessonSelector": {
+      "addFromLesson": "연결된 수업에서 추가",
+      "addLesson": "수업 추가",
+      "associateLesson": "수업 연결",
+      "externalProvider": "외부 제공자",
+      "lesson": "수업",
+      "lessonSource": "수업 소스",
+      "lessonsChurch": "Lessons.church",
+      "program": "프로그램",
+      "provider": "제공자",
+      "study": "학습",
+      "usingAssociatedLesson": "연결된 수업 사용 중:",
+      "venue": "장소"
     },
     "planPage": {
       "assign": "팀 할당",
@@ -1122,6 +1147,7 @@
     "assignment": {
       "addPosition": "직책 추가",
       "autoAssign": "자동 할당",
+      "copy": "복사",
       "saveNotes": "메모 저장"
     },
     "lessonSelector": {
@@ -1132,18 +1158,33 @@
       "venue": "장소"
     },
     "planItem": {
+      "addOn": "추가 기능",
+      "expandToActions": "작업으로 확장",
       "item": "목",
+      "lessonAction": "레슨 작업",
       "song": "노래"
     },
     "planItemEdit": {
       "description": "설명",
       "edit": "편집",
+      "editAddOn": "추가 기능 편집",
       "editHeader": "헤더 편집",
       "editSong": "노래 편집",
       "enterSearch": "검색어를 입력하세요",
       "key": "키",
       "minutes": "분",
       "seconds": "초"
+    },
+    "actionSelector": {
+      "action": "작업",
+      "fromAssociatedLesson": "연결된 레슨에서:",
+      "section": "섹션",
+      "selectAction": "작업 선택"
+    },
+    "addOnSelector": {
+      "category": "카테고리",
+      "noAddOns": "사용 가능한 추가 기능 없음",
+      "selectAddOn": "추가 기능 선택"
     },
     "planTypeEdit": {
       "add": "추가",
@@ -1162,8 +1203,18 @@
     },
     "planTypePage": {
       "notFound": "계획 유형을 찾을 수 없습니다.",
+      "pairTvApp": "TV 앱 연결",
       "planType": "계획 유형",
-      "subtitle": "계획 유형 설정 구성"
+      "subtitle": "계획 유형 설정 구성",
+      "tvAppDescription": "무료 앱을 사용하여 TV 또는 디스플레이에 레슨 콘텐츠를 표시하세요",
+      "tvAppTitle": "TV에 표시"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Lessons.church TV 앱 다운로드",
+      "instructions": "TV 앱 화면에 표시된 4자리 코드를 입력하세요:",
+      "pairTitle": "기기 연결",
+      "success": "성공적으로 연결되었습니다! 이제 TV 앱에서 이 계획 유형의 콘텐츠가 표시됩니다.",
+      "title": "TV 앱 연결"
     },
     "serviceOrder": {
       "addSection": "섹션 추가",
