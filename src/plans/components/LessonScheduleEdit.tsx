@@ -159,7 +159,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrors([]);
-    setScheduledDate(new Date(e.target.value));
+    setScheduledDate(DateHelper.toDate(e.target.value));
   };
 
   const handleProgramChange = (e: SelectChangeEvent<string>) => {
