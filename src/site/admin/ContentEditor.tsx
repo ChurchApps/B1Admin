@@ -388,12 +388,14 @@ export function ContentEditor(props: Props) {
     let idx = 0;
     if (props.pageId) {
       const page = container as PageInterface;
-      zones[page?.layout]?.forEach((z: string) => {
-        const sections = ArrayHelper.getAll(page?.sections, "zone", z);
-        const name = z.substring(0, 1).toUpperCase() + z.substring(1, z.length);
-        result.push(getZoneBox(sections, name, z));
-        idx++;
-      });
+      if (page?.layout && zones[page.layout]) {
+        zones[page.layout].forEach((z: string) => {
+          const sections = ArrayHelper.getAll(page?.sections, "zone", z);
+          const name = z.substring(0, 1).toUpperCase() + z.substring(1, z.length);
+          result.push(getZoneBox(sections, name, z));
+          idx++;
+        });
+      }
     } else {
       const block = container as BlockInterface;
       if (block) result.push(getZoneBox((container as BlockInterface)?.sections, "Block Preview", "block"));

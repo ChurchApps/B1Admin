@@ -60,7 +60,7 @@ const GroupsPage = () => {
         ) : (
           <></>
         );
-      const memberCount = g.memberCount === 1 ? Locale.label("groups.groupsPage.pers") : g.memberCount.toString() + Locale.label("groups.groupsPage.spPpl");
+      const memberCount = g.memberCount === 1 ? Locale.label("groups.groupsPage.pers") : (g.memberCount || 0).toString() + Locale.label("groups.groupsPage.spPpl");
       rows.push(
         <TableRow sx={{ whiteSpace: "nowrap" }} key={g.id}>
           <TableCell>{cat}</TableCell>

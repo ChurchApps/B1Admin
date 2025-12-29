@@ -87,7 +87,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         case "displayName":
           result = (
             <Box>
-              <Link to={"/people/" + p.id.toString()} style={{ textDecoration: "none" }}>
+              <Link to={"/people/" + (p.id || "")} style={{ textDecoration: "none" }}>
                 <Typography variant="h6" sx={{ color: "primary.main", "&:hover": { textDecoration: "underline" } }}>
                   {p.name.display}
                 </Typography>
@@ -198,7 +198,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
               <IconButton
                 sx={{ color: "#c84545" }}
                 onClick={() => {
-                  handleDelete(p.id.toString());
+                  if (p.id) handleDelete(p.id.toString());
                 }}
                 data-testid={`delete-person-button-${p.id}`}
                 aria-label={`Delete ${p.name.display}`}>

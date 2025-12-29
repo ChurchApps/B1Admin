@@ -21,7 +21,7 @@ export const Header: React.FC = () => {
     }
 
     if (!formPermission && context?.person?.id) {
-      ApiHelper.get("/memberpermissions/member/" + context.person?.id, "MembershipApi").then((data) => setIsFormMember(data.length));
+      ApiHelper.get("/memberpermissions/member/" + context.person?.id, "MembershipApi").then((data) => setIsFormMember(data?.length > 0));
     }
   }, [formPermission, context?.person?.id]);
 

@@ -368,7 +368,7 @@ export const AttendanceSetup = memo(() => {
           const sortedGroups = filteredGroups.sort(compare);
           if (sortedGroups.length > 0) {
             sortedGroups.forEach((g) => {
-              rows.push(getRow(a.campus, a.service, a.serviceTime, g, g.id.toString()));
+              rows.push(getRow(a.campus, a.service, a.serviceTime, g, g.id?.toString() || ""));
             });
           } else {
             rows.push(getRow(a.campus, a.service, a.serviceTime, undefined, `st-${campusIdx}-${serviceIdx}-${stIdx}`));
@@ -384,7 +384,7 @@ export const AttendanceSetup = memo(() => {
     });
 
     unassignedGroups.forEach((g) => {
-      rows.push(getRow({ name: Locale.label("attendance.attendanceSetup.unassigned") }, undefined, undefined, g, g.id.toString()));
+      rows.push(getRow({ name: Locale.label("attendance.attendanceSetup.unassigned") }, undefined, undefined, g, g.id?.toString() || ""));
     });
     return rows;
   }, [
