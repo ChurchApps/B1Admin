@@ -6,6 +6,7 @@ import { Box, Container } from "@mui/material";
 import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@churchapps/apphelper-website";
 import type { ChurchInterface } from "@churchapps/helpers";
 import { ElementSelection } from "./ElementSelection";
+import { FloatingElementSelection } from "./FloatingElementSelection";
 
 interface Props {
   first?: boolean,
@@ -29,6 +30,77 @@ export const Section: React.FC<Props> = props => {
   const [isHovered, setIsHovered] = useState(false);
 
 
+  // Helper function to find element by ID in the nested structure
+  const findElementById = (elements: ElementInterface[], id: string): ElementInterface | null => {
+    for (const el of elements) {
+      if (el.id === id) return el;
+      if (el.elements && el.elements.length > 0) {
+        const found = findElementById(el.elements, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  // Handle clicks on any element in the section (including nested ones in rows)
+  const handleSectionClick = (event: React.MouseEvent) => {
+    if (!props.onElementClick) return;
+
+    const target = event.target as HTMLElement;
+
+    // Find the closest element wrapper - look for data-element-id attribute or el-{id} pattern
+    let elementId: string | null = null;
+
+    // First, try to find element by data-element-id attribute (our wrapper)
+    const wrapperWithId = target.closest('[data-element-id]') as HTMLElement;
+    if (wrapperWithId) {
+      elementId = wrapperWithId.getAttribute('data-element-id');
+    }
+
+    // If not found, try to find by el-{id} pattern (from RowElement)
+    if (!elementId) {
+      const elDiv = target.closest('[id^="el-"]') as HTMLElement;
+      if (elDiv && elDiv.id.startsWith('el-')) {
+        elementId = elDiv.id.substring(3); // Remove 'el-' prefix
+      }
+    }
+
+    if (elementId) {
+      event.stopPropagation();
+      props.onElementClick(elementId);
+    }
+  };
+
+  // Handle double-clicks on any element in the section (including nested ones in rows)
+  const handleSectionDoubleClick = (event: React.MouseEvent) => {
+    if (!props.onElementDoubleClick) return;
+
+    const target = event.target as HTMLElement;
+    let elementId: string | null = null;
+
+    // First, try to find element by data-element-id attribute (our wrapper)
+    const wrapperWithId = target.closest('[data-element-id]') as HTMLElement;
+    if (wrapperWithId) {
+      elementId = wrapperWithId.getAttribute('data-element-id');
+    }
+
+    // If not found, try to find by el-{id} pattern (from RowElement)
+    if (!elementId) {
+      const elDiv = target.closest('[id^="el-"]') as HTMLElement;
+      if (elDiv && elDiv.id.startsWith('el-')) {
+        elementId = elDiv.id.substring(3); // Remove 'el-' prefix
+      }
+    }
+
+    if (elementId && props.section?.elements) {
+      const element = findElementById(props.section.elements, elementId);
+      if (element) {
+        event.stopPropagation();
+        props.onElementDoubleClick(element);
+      }
+    }
+  };
+
   const getElements = () => {
     const result: React.ReactElement[] = [];
     props.section?.elements?.forEach(e => {
@@ -40,14 +112,7 @@ export const Section: React.FC<Props> = props => {
         result.push(
           <div
             key={e.id}
-            onClick={(event) => {
-              event.stopPropagation();
-              props.onElementClick(e.id);
-            }}
-            onDoubleClick={(event) => {
-              event.stopPropagation();
-              if (props.onElementDoubleClick) props.onElementDoubleClick(e);
-            }}
+            data-element-id={e.id}
           >
             <ElementSelection
               element={e}
@@ -166,7 +231,7 @@ export const Section: React.FC<Props> = props => {
     return (<DroppableArea accept={["element", "elementBlock"]} text="Drop here to add element" onDrop={(data) => handleDrop(data, sort)} updateIsDragging={(dragging) => setIsDragging(dragging)} />);
   };
 
-  const contents = (<Container>
+  const contents = (<Container onClick={handleSectionClick} onDoubleClick={handleSectionDoubleClick}>
     {props.onEdit && getAddElement(0)}
     {getElements()}
   </Container>);
@@ -181,6 +246,43 @@ export const Section: React.FC<Props> = props => {
     let result = "section-" + props.section.answers?.sectionId?.toString();
     if (result==="section-undefined") result = "section-" + props.section.id;
     return result;
+  };
+
+  // Check if the selected element is a nested element (inside a row, not a top-level element)
+  const isNestedElementSelected = () => {
+    if (!props.selectedElementId || !props.section?.elements) return false;
+    // Check if the selected element is a top-level element
+    const isTopLevel = props.section.elements.some(e => e.id === props.selectedElementId);
+    if (isTopLevel) return false;
+    // Check if it exists in the nested structure
+    const found = findElementById(props.section.elements, props.selectedElementId);
+    return !!found;
+  };
+
+  // Get the selected nested element
+  const getSelectedNestedElement = (): ElementInterface | null => {
+    if (!props.selectedElementId || !props.section?.elements) return null;
+    return findElementById(props.section.elements, props.selectedElementId);
+  };
+
+  // Render floating selection for nested elements
+  const renderFloatingSelection = () => {
+    if (!isNestedElementSelected() || !props.onElementDelete || !props.onElementDuplicate || !props.onElementMove) return null;
+
+    const selectedElement = getSelectedNestedElement();
+    if (!selectedElement) return null;
+
+    return (
+      <FloatingElementSelection
+        element={selectedElement}
+        targetSelector={`#el-${props.selectedElementId}`}
+        onEdit={() => props.onEdit(null, selectedElement)}
+        onDelete={() => props.onElementDelete(selectedElement.id)}
+        onDuplicate={() => props.onElementDuplicate(selectedElement.id)}
+        onMoveUp={() => props.onElementMove(selectedElement.id, "up")}
+        onMoveDown={() => props.onElementMove(selectedElement.id, "down")}
+      />
+    );
   };
 
   let result = <></>;
@@ -198,6 +300,7 @@ export const Section: React.FC<Props> = props => {
         <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest('.elementWrapper')) { props.onEdit(props.section, null); } }}>
           {result}
         </DraggableWrapper>
+        {renderFloatingSelection()}
       </div>
     );
   } else return result;
