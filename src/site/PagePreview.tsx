@@ -66,7 +66,7 @@ export const PagePreview: React.FC = () => {
     );
   }
 
-  const previewUrl = EnvironmentHelper.B1Url.replace('{subdomain}', context.userChurch?.church?.subDomain || '') + pageData.url;
+  const previewUrl = EnvironmentHelper.B1Url.replace('{subdomain}', context.userChurch?.church?.subDomain || '') + pageData.url + '?t=' + Date.now();
 
   return (
     <>

@@ -27,23 +27,25 @@ export const FormsPage = () => {
     placeholderData: [],
   });
 
-  const getRows = () => {
+  const getRows = (isArchived: boolean) => {
     const result: JSX.Element[] = [];
-    if (!forms.data?.length) {
+    // Filter forms based on archived status since the API may return all forms
+    const rawData = isArchived ? archivedForms.data : forms.data;
+    const formData = rawData?.filter(form => isArchived ? form.archived === true : !form.archived);
+
+    if (!formData?.length) {
       result.push(
         <TableRow key="0">
-          <TableCell>{Locale.label("forms.formsPage.noCustomMsg")}</TableCell>
+          <TableCell>{isArchived ? Locale.label("forms.formsPage.noArch") : Locale.label("forms.formsPage.noCustomMsg")}</TableCell>
         </TableRow>
       );
       return result;
     }
-
-    const formData = selectedTab === "forms" ? forms.data : archivedForms.data;
     formData.forEach((form: FormInterface) => {
       const canEdit =
         UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || (UserHelper.checkAccess(Permissions.membershipApi.forms.edit) && form.contentType !== "form") || form?.action === "admin";
       const editLink =
-        canEdit && selectedTab === "forms" ? (
+        canEdit && !isArchived ? (
           <SmallButton
             icon="edit"
             text="Edit"
@@ -57,7 +59,7 @@ export const FormsPage = () => {
       const formUrl = EnvironmentHelper.B1Url.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
       const archiveLink =
-        canEdit && selectedTab === "forms" ? (
+        canEdit && !isArchived ? (
           <SmallButton
             icon="delete"
             text="Archive"
@@ -70,7 +72,7 @@ export const FormsPage = () => {
           />
         ) : null;
       const unarchiveLink =
-        canEdit && selectedTab === "archived" ? (
+        canEdit && isArchived ? (
           <SmallButton
             icon="undo"
             text="Restore"
@@ -109,22 +111,13 @@ export const FormsPage = () => {
     });
   };
 
-  const getArchivedRows = () => {
-    const result: JSX.Element[] = [];
-    if (!archivedForms.data?.length) {
-      result.push(
-        <TableRow key="0">
-          <TableCell>{Locale.label("forms.formsPage.noArch")}</TableCell>
-        </TableRow>
-      );
-      return result;
-    }
-    return getRows();
-  };
+  const getArchivedRows = () => getRows(true);
 
-  const getTableHeader = () => {
+  const getTableHeader = (isArchived: boolean) => {
     const rows: JSX.Element[] = [];
-    if (forms.data?.length === 0) {
+    const rawData = isArchived ? archivedForms.data : forms.data;
+    const formData = rawData?.filter(form => isArchived ? form.archived === true : !form.archived);
+    if (!formData?.length) {
       return rows;
     }
     rows.push(
@@ -148,15 +141,16 @@ export const FormsPage = () => {
 
   if (forms.isLoading || archivedForms.isLoading) return <Loading />;
 
-  const renderTable = (rows: JSX.Element[]) => (
+  const renderTable = (rows: JSX.Element[], isArchived: boolean) => (
     <Table>
-      <TableHead>{getTableHeader()}</TableHead>
+      <TableHead>{getTableHeader(isArchived)}</TableHead>
       <TableBody>{rows}</TableBody>
     </Table>
   );
 
-  const formsCount = forms.data?.length || 0;
-  const archivedCount = archivedForms.data?.length || 0;
+  // Filter counts to match actual displayed forms
+  const formsCount = forms.data?.filter(form => !form.archived)?.length || 0;
+  const archivedCount = archivedForms.data?.filter(form => form.archived === true)?.length || 0;
 
   const formsCard = (
     <Card sx={{ mt: getSidebar() ? 2 : 0 }}>
@@ -171,7 +165,7 @@ export const FormsPage = () => {
           </Typography>
         </Stack>
       </Box>
-      <Box sx={{ p: 0 }}>{renderTable(getRows())}</Box>
+      <Box sx={{ p: 0 }}>{renderTable(getRows(false), false)}</Box>
     </Card>
   );
 
@@ -188,7 +182,7 @@ export const FormsPage = () => {
           </Typography>
         </Stack>
       </Box>
-      <Box sx={{ p: 0 }}>{renderTable(getArchivedRows())}</Box>
+      <Box sx={{ p: 0 }}>{renderTable(getArchivedRows(), true)}</Box>
     </Card>
   );
 
@@ -203,7 +197,7 @@ export const FormsPage = () => {
         </>
       )
     },
-    { key: "archived", label: Locale.label("forms.formsPage.archForms"), content: archivedCard, hidden: archivedForms.data?.length === 0 },
+    { key: "archived", label: Locale.label("forms.formsPage.archForms"), content: archivedCard, hidden: archivedCount === 0 },
   ];
 
   return (
