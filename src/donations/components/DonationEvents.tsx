@@ -52,7 +52,7 @@ export const DonationEvents = memo(() => {
 
   const getErrorLogs = useCallback(() => {
     return errorLogs.data?.map((log: any) => {
-      const eventType = log.eventType.replace(".", " ");
+      const eventType = log.eventType?.replace(".", " ") || "";
       return (
         <Accordion key={log.id}>
           <AccordionSummary>
