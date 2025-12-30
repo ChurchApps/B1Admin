@@ -99,11 +99,12 @@ test.describe('Website Management', () => {
       await expect(validatedText).toHaveCount(1);
     });
 
-    test('DOES NOT WORK should verify page preview', async ({ page }) => {
+    test('should verify page preview', async ({ page }) => {
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
       await page.waitForTimeout(5000);
-      const validatedText = page.locator('p').getByText('Octavian Test Text');
+      const iframe = page.frameLocator('iframe');
+      const validatedText = iframe.locator('p').getByText('Octavian Test Text');
       await expect(validatedText).toHaveCount(1);
     });
 

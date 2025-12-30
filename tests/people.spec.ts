@@ -231,21 +231,21 @@ test.describe('People Management', () => {
       await seekEither.click();
     });
 
-    /* test('DOES NOT WORK should add card from people donations tab', async ({ page }) => {
+    // Skipped: Stripe payment fields are in a secure iframe that Playwright cannot access
+    test.skip('should add card from people donations tab', async ({ page }) => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
       await page.waitForTimeout(2000);
-  
+
       const donationBtn = page.locator('button').getByText('Donations');
       await donationBtn.click();
       await page.waitForTimeout(5000);
-  
+
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
       const addCardBtn = page.locator('[aria-labelledby="addBtnGroup"] li').first();
       await addCardBtn.click();
-      // I'm pretty sure security measures prevent these fields from being found
       const cardEntry = page.locator('[name="cardnumber"]');
       await cardEntry.fill('4242424242424242');
       const dateEntry = page.locator('[name="exp-date"]');
@@ -254,10 +254,10 @@ test.describe('People Management', () => {
       await cvcEntry.fill('123');
       const zipEntry = page.locator('[name="postal"]');
       await zipEntry.fill('11111');
-  
+
       const saveBtn = page.locator('Button').getByText('Save');
       await saveBtn.click();
-    }); */
+    });
 
     test('should cancel adding card from people donations tab', async ({ page }) => {
       const firstPerson = page.locator('table tbody tr').first();
@@ -279,21 +279,20 @@ test.describe('People Management', () => {
       await addBtn.click();
     });
 
-    /* test('DOES NOT WORK should add bank account from people donations tab', async ({ page }) => {
-      //fix donations test first ^^^^^
+    // Skipped: Stripe payment fields are in a secure iframe that Playwright cannot access
+    test.skip('should add bank account from people donations tab', async ({ page }) => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-  
+
       const donationBtn = page.locator('button').getByText('Donations');
       await donationBtn.click();
       await page.waitForTimeout(5000);
-  
+
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
       const addBankBtn = page.locator('[aria-labelledby="addBtnGroup"] li').last();
       await addBankBtn.click();
-      //similarly concerned about security preventing site from finding these
       await page.waitForTimeout(5000);
       const nameEntry = page.locator('[name="account-holder-name"]');
       await nameEntry.fill('Octavian');
@@ -301,10 +300,10 @@ test.describe('People Management', () => {
       await routeEntry.fill('110000000');
       const accEntry = page.locator('[name="account-number"]');
       await accEntry.fill('000123456789');
-  
+
       const saveBtn = page.locator('Button').getByText('Save');
       await saveBtn.click();
-    }); */
+    });
 
     test('should cancel adding bank from people donations tab', async ({ page }) => {
       const firstPerson = page.locator('table tbody tr').first();

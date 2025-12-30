@@ -17,6 +17,7 @@ export function Preview(props: Props) {
 
   return (
     <>
+      {props.globalStyle.customCss && <style>{props.globalStyle.customCss}</style>}
       <div style={{ fontFamily: fonts.body }}>
         <div style={{ backgroundColor: palette.light, color: palette.darkAccent, padding: 20, borderRadius: 5 }}>
           <Grid container spacing={3}>
