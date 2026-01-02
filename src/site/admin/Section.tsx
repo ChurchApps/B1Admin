@@ -42,6 +42,28 @@ export const Section: React.FC<Props> = props => {
     return null;
   };
 
+  // Helper to find innermost nested element inside a container element
+  const findInnermostNestedElement = (containerEl: HTMLElement, target: HTMLElement, containerId: string): string | null => {
+    const element = findElementById(props.section?.elements || [], containerId);
+    if (element?.elementType === "row") {
+      // Find innermost el-* element that contains the click target
+      const allElDivs = containerEl.querySelectorAll('[id^="el-"]');
+      let innermostId: string | null = null;
+      for (const nestedEl of allElDivs) {
+        if (nestedEl.contains(target)) {
+          const nestedId = nestedEl.id.substring(3);
+          const nestedElement = findElementById(props.section?.elements || [], nestedId);
+          if (nestedElement && nestedElement.elementType !== "row") {
+            innermostId = nestedId;
+            // Don't break - keep looking for more nested elements (innermost wins)
+          }
+        }
+      }
+      return innermostId;
+    }
+    return null;
+  };
+
   // Handle clicks on any element in the section (including nested ones in rows)
   const handleSectionClick = (event: React.MouseEvent) => {
     if (!props.onElementClick) return;
@@ -51,17 +73,31 @@ export const Section: React.FC<Props> = props => {
     // Find the closest element wrapper - look for data-element-id attribute or el-{id} pattern
     let elementId: string | null = null;
 
-    // First, try to find element by data-element-id attribute (our wrapper)
+    // First, try to find element by data-element-id attribute (our wrapper for top-level elements)
     const wrapperWithId = target.closest('[data-element-id]') as HTMLElement;
     if (wrapperWithId) {
       elementId = wrapperWithId.getAttribute('data-element-id');
+
+      // If the found element is a row, check if there's a nested element inside that should be selected
+      if (elementId) {
+        const nestedId = findInnermostNestedElement(wrapperWithId, target, elementId);
+        if (nestedId) {
+          elementId = nestedId;
+        }
+      }
     }
 
-    // If not found, try to find by el-{id} pattern (from RowElement)
+    // If not found, try to find by el-{id} pattern (used by elements inside rows)
     if (!elementId) {
       const elDiv = target.closest('[id^="el-"]') as HTMLElement;
       if (elDiv && elDiv.id.startsWith('el-')) {
         elementId = elDiv.id.substring(3); // Remove 'el-' prefix
+
+        // If the found element is a row/container, check if there's a nested element inside
+        const nestedId = findInnermostNestedElement(elDiv, target, elementId);
+        if (nestedId) {
+          elementId = nestedId;
+        }
       }
     }
 
@@ -82,6 +118,14 @@ export const Section: React.FC<Props> = props => {
     const wrapperWithId = target.closest('[data-element-id]') as HTMLElement;
     if (wrapperWithId) {
       elementId = wrapperWithId.getAttribute('data-element-id');
+
+      // If the found element is a row, check if there's a nested element inside that should be selected
+      if (elementId) {
+        const nestedId = findInnermostNestedElement(wrapperWithId, target, elementId);
+        if (nestedId) {
+          elementId = nestedId;
+        }
+      }
     }
 
     // If not found, try to find by el-{id} pattern (from RowElement)
@@ -89,6 +133,12 @@ export const Section: React.FC<Props> = props => {
       const elDiv = target.closest('[id^="el-"]') as HTMLElement;
       if (elDiv && elDiv.id.startsWith('el-')) {
         elementId = elDiv.id.substring(3); // Remove 'el-' prefix
+
+        // If the found element is a row/container, check if there's a nested element inside
+        const nestedId = findInnermostNestedElement(elDiv, target, elementId);
+        if (nestedId) {
+          elementId = nestedId;
+        }
       }
     }
 

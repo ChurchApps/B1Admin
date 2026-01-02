@@ -30,18 +30,30 @@ export const FloatingElementSelection: React.FC<Props> = ({
       const targetEl = document.querySelector(targetSelector);
       if (targetEl) {
         const rect = targetEl.getBoundingClientRect();
-        const scrollContainer = document.querySelector('[style*="overflow"]') || document.documentElement;
-        const scrollTop = scrollContainer.scrollTop || window.scrollY;
-        const scrollLeft = scrollContainer.scrollLeft || window.scrollX;
 
-        setPosition({
-          top: rect.top + scrollTop,
-          left: rect.left + scrollLeft,
-          width: rect.width,
-          height: rect.height,
+        // Use viewport-relative position (for position: fixed)
+        const newPosition = {
+          top: Math.round(rect.top),
+          left: Math.round(rect.left),
+          width: Math.round(rect.width),
+          height: Math.round(rect.height),
+        };
+
+        // Only update state if position actually changed to avoid re-render loops
+        setPosition(prev => {
+          const changed = !prev ||
+              prev.top !== newPosition.top ||
+              prev.left !== newPosition.left ||
+              prev.width !== newPosition.width ||
+              prev.height !== newPosition.height;
+
+          if (changed) {
+            return newPosition;
+          }
+          return prev;
         });
       } else {
-        setPosition(null);
+        setPosition(prev => prev === null ? null : null);
       }
 
       rafRef.current = requestAnimationFrame(updatePosition);
@@ -63,7 +75,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
       {/* Selection outline */}
       <Box
         sx={{
-          position: "absolute",
+          position: "fixed",
           top: position.top,
           left: position.left,
           width: position.width,
@@ -78,7 +90,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
       {/* Quick action buttons */}
       <Box
         sx={{
-          position: "absolute",
+          position: "fixed",
           top: position.top - 40,
           left: position.left + position.width - 200,
           display: "flex",
