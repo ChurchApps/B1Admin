@@ -84,18 +84,21 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
+  // Currency selection hidden for now - defaulting to USD
   const getCurrency = () => {
     if (provider !== "Stripe") return null;
-    return (<>
-    <Typography variant="body2" color="textSecondary" component="div">Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here: <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
-    <FormControl fullWidth>
-      <InputLabel>Currency</InputLabel>
-      <Select name="currency" label="Currency" value={currency} onChange={handleChange}>
-        {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
-      </Select>
-    </FormControl>
-    </>)
-  }
+    return (
+      <div style={{ display: "none" }}>
+        <Typography variant="body2" color="textSecondary" component="div">Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here: <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
+        <FormControl fullWidth>
+          <InputLabel>Currency</InputLabel>
+          <Select name="currency" label="Currency" value={currency} onChange={handleChange}>
+            {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
+          </Select>
+        </FormControl>
+      </div>
+    );
+  };
 
   const save = async () => {
     try {
