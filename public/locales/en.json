@@ -552,7 +552,8 @@
       "confirmMsg2": "Are you sure you want to restore this form?",
       "forms": "Forms",
       "noArch": "No archived forms.",
-      "noCustomMsg": "No custom forms have been created yet. They will appear here when added."
+      "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "url": "URL"
     },
     "formSubmissions": {
       "anon": "Anonymous",
