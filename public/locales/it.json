@@ -888,7 +888,8 @@
       "campus": "Campus",
       "service": "Servizio",
       "serviceTime": "Orario del Servizio",
-      "group": "Gruppo"
+      "group": "Gruppo",
+      "customFields": "Campi Personalizzati"
     },
     "personNav": {
       "customForms": "Moduli Personalizzati"

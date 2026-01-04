@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
-import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type CampusInterface, type ServiceInterface, type ServiceTimeInterface } from "@churchapps/helpers";
+import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type CampusInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
 import { ArrayHelper, InputBox, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
 import {
@@ -34,6 +34,7 @@ import {
   Email as EmailIcon,
   Group as GroupIcon,
   EventAvailable as AttendanceIcon,
+  Assignment as CustomFieldIcon,
 } from "@mui/icons-material";
 
 interface Props {
@@ -70,12 +71,15 @@ interface ComplexFilterConfig {
 // Reusable style objects
 const styles = {
   inputCommon: {
-    '& .MuiInputBase-input': { fontSize: '0.875rem', py: 0.75 },
-    '& .MuiSelect-select': { fontSize: '0.875rem', py: 0.75 }
+    '& .MuiInputBase-input': { fontSize: '0.8125rem', py: 0.5, px: 1 },
+    '& .MuiSelect-select': { fontSize: '0.8125rem', py: 0.5, px: 1 },
+    '& .MuiInputBase-root': { minHeight: 32 }
   },
   operatorSelect: {
-    minWidth: 80,
-    fontSize: '0.875rem'
+    minWidth: 70,
+    fontSize: '0.8125rem',
+    '& .MuiSelect-select': { py: 0.5, px: 1 },
+    '& .MuiInputBase-root': { minHeight: 32 }
   },
   menuItem: {
     fontSize: '0.875rem'
@@ -153,6 +157,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const [campuses, setCampuses] = useState<CampusInterface[]>([]);
   const [services, setServices] = useState<ServiceInterface[]>([]);
   const [serviceTimes, setServiceTimes] = useState<ServiceTimeInterface[]>([]);
+  const [customFieldQuestions, setCustomFieldQuestions] = useState<QuestionInterface[]>([]);
   const [loadedCategories, setLoadedCategories] = useState<string[]>([]);
 
 
@@ -260,6 +265,51 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         },
       ],
       activity: [],
+      customFields: customFieldQuestions
+        .filter((q) => q.fieldType !== "Heading" && q.fieldType !== "Payment")
+        .map((q) => {
+          // Map field types to appropriate input types and operators
+          let type: "text" | "select" | "number" | "date" = "text";
+          let operators: string[] = ["contains", "equals", "startsWith", "endsWith"];
+          let options: Array<{ value: string; label: string }> | undefined;
+
+          switch (q.fieldType) {
+            case "Whole Number":
+            case "Decimal":
+              type = "number";
+              operators = ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"];
+              break;
+            case "Date":
+              type = "date";
+              operators = ["equals", "greaterThan", "lessThan"];
+              break;
+            case "Yes/No":
+              type = "select";
+              operators = ["equals"];
+              options = [
+                { value: "Yes", label: Locale.label("common.yes") || "Yes" },
+                { value: "No", label: Locale.label("common.no") || "No" },
+              ];
+              break;
+            case "Multiple Choice":
+            case "Checkbox":
+              type = "select";
+              operators = ["equals", "contains"];
+              options = q.choices?.map((c: any) => ({ value: c.value || c.text, label: c.text })) || [];
+              break;
+            default:
+              // Textbox, Text Area, Email, Phone Number - keep as text
+              break;
+          }
+
+          return {
+            key: `customField_${q.id}`,
+            label: q.title,
+            type,
+            operators,
+            options,
+          };
+        }),
     };
 
     // Add group membership if permissions allow
@@ -294,7 +344,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     return categories;
-  }, [groups]);
+  }, [groups, customFieldQuestions]);
 
   const loadCategoryData = useCallback(async (category: string) => {
     if (loadedCategories.includes(category)) return;
@@ -321,6 +371,17 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         setServiceTimes(serviceTimeData);
         setGroups((prev) => prev.length ? prev : groupData);
       }
+    }
+
+    if (category === "customFields") {
+      const forms = await ApiHelper.get("/forms?contentType=person", "MembershipApi");
+      const personForms = forms.filter((f: any) => f.contentType === "person");
+      const allQuestions: QuestionInterface[] = [];
+      for (const form of personForms) {
+        const questions = await ApiHelper.get("/questions?formId=" + form.id, "MembershipApi");
+        allQuestions.push(...questions);
+      }
+      setCustomFieldQuestions(allQuestions);
     }
 
     setLoadedCategories((prev) => [...prev, category]);
@@ -478,12 +539,82 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           result.push({ field: "id", operator: "in", value: attendeeIds.join(",") });
           break;
         default:
-          result.push(filter);
+          // Handle custom field filters
+          if (filter.field.startsWith("customField_")) {
+            const questionId = filter.field.replace("customField_", "");
+            const question = customFieldQuestions.find(q => q.id === questionId);
+            if (question) {
+              // Fetch all form submissions for this form
+              const formSubmissions: FormSubmissionInterface[] = await ApiHelper.get(
+                `/formsubmissions/formId/${question.formId}/?include=questions,answers`,
+                "MembershipApi"
+              );
+              // Filter submissions where the answer matches the search criteria
+              const matchingPersonIds: string[] = [];
+              const searchValue = filter.value;
+              const isNumericField = question.fieldType === "Whole Number" || question.fieldType === "Decimal";
+              const isDateField = question.fieldType === "Date";
+
+              for (const submission of formSubmissions) {
+                const answer = submission.answers?.find((a: any) => a.questionId === questionId);
+                if (answer?.value) {
+                  let matches = false;
+
+                  if (isNumericField) {
+                    const numAnswer = parseFloat(answer.value);
+                    const numSearch = parseFloat(searchValue);
+                    if (!isNaN(numAnswer) && !isNaN(numSearch)) {
+                      switch (filter.operator) {
+                        case "equals": matches = numAnswer === numSearch; break;
+                        case "greaterThan": matches = numAnswer > numSearch; break;
+                        case "greaterThanEqual": matches = numAnswer >= numSearch; break;
+                        case "lessThan": matches = numAnswer < numSearch; break;
+                        case "lessThanEqual": matches = numAnswer <= numSearch; break;
+                      }
+                    }
+                  } else if (isDateField) {
+                    const dateAnswer = new Date(answer.value);
+                    const dateSearch = new Date(searchValue);
+                    if (!isNaN(dateAnswer.getTime()) && !isNaN(dateSearch.getTime())) {
+                      switch (filter.operator) {
+                        case "equals": matches = dateAnswer.toDateString() === dateSearch.toDateString(); break;
+                        case "greaterThan": matches = dateAnswer > dateSearch; break;
+                        case "lessThan": matches = dateAnswer < dateSearch; break;
+                      }
+                    }
+                  } else {
+                    // String comparison (case-insensitive)
+                    const answerValue = answer.value.toLowerCase();
+                    const searchLower = searchValue.toLowerCase();
+                    switch (filter.operator) {
+                      case "equals": matches = answerValue === searchLower; break;
+                      case "contains": matches = answerValue.includes(searchLower); break;
+                      case "startsWith": matches = answerValue.startsWith(searchLower); break;
+                      case "endsWith": matches = answerValue.endsWith(searchLower); break;
+                      default: matches = answerValue.includes(searchLower);
+                    }
+                  }
+
+                  if (matches && submission.contentId) {
+                    matchingPersonIds.push(submission.contentId);
+                  }
+                }
+              }
+              if (matchingPersonIds.length > 0) {
+                result.push({ field: "id", operator: "in", value: matchingPersonIds.join(",") });
+              } else {
+                // No matches - push impossible condition to return empty results
+                result.push({ field: "id", operator: "equals", value: "no-match" });
+              }
+            }
+          } else {
+            result.push(filter);
+          }
           break;
       }
     }
     return result;
-  }, [activeFilters]);
+  }, [activeFilters, customFieldQuestions]);
 
   const handleAdvancedSearch = useCallback(async () => {
     const postConditions = await convertConditions();
@@ -639,6 +770,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       contact: Locale.label("people.peopleSearch.contact"),
       membership: Locale.label("people.peopleSearch.membership"),
       activity: Locale.label("people.peopleSearch.activity"),
+      customFields: Locale.label("people.peopleSearch.customFields") || "Custom Fields",
     };
     return labels[key] || key;
   };
@@ -650,6 +782,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       contact: <EmailIcon />,
       membership: <GroupIcon />,
       activity: <AttendanceIcon />,
+      customFields: <CustomFieldIcon />,
     };
     return icons[key] || <PersonIcon />;
   };
@@ -710,7 +843,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
         <Box>
           {Object.entries(filterCategories).map(([categoryKey, fields]) => {
-            if (fields.length === 0) return null;
+            // Skip empty categories, except customFields which loads dynamically
+            if (fields.length === 0 && categoryKey !== "customFields") return null;
             const activeCount = getActiveFilterCount(categoryKey);
 
             return (
@@ -742,7 +876,14 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                 </AccordionSummary>
                 <AccordionDetails sx={styles.accordionDetails}>
                   <Stack spacing={0}>
-                    {fields.map((field, index) => (
+                    {fields.length === 0 && categoryKey === "customFields" && (
+                      <Typography variant="body2" color="text.secondary" sx={{ py: 1, px: 0.5 }}>
+                        {loadedCategories.includes("customFields")
+                          ? "No custom fields defined. Create custom fields in Forms to search by them."
+                          : "Loading custom fields..."}
+                      </Typography>
+                    )}
+                    {fields.map((field) => (
                       <Box
                         key={field.key}
                         sx={{
@@ -768,9 +909,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                             </Typography>
                           </Stack>
                           {activeFilters[field.key] && (
-                            <Stack direction="row" spacing={1} sx={{ pl: 4.5, alignItems: "center" }}>
+                            <Stack direction="row" spacing={0.75} sx={{ pl: 3.5, alignItems: "center" }}>
                               {field.type !== "complex" && field.type !== "select" && (
-                                <Box sx={{ width: 100 }}>
+                                <Box sx={{ flexShrink: 0 }}>
                                   {renderOperatorSelect(field)}
                                 </Box>
                               )}

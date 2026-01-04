@@ -888,7 +888,8 @@
       "campus": "Кампус",
       "service": "Служба",
       "serviceTime": "Время службы",
-      "group": "Группа"
+      "group": "Группа",
+      "customFields": "Пользовательские поля"
     },
     "personNav": {
       "customForms": "Пользовательские формы"

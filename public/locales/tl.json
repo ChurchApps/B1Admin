@@ -888,7 +888,8 @@
       "campus": "Kampus",
       "service": "Serbisyo",
       "serviceTime": "Oras ng Serbisyo",
-      "group": "Grupo"
+      "group": "Grupo",
+      "customFields": "Mga Custom na Field"
     },
     "personNav": {
       "customForms": "Mga Custom na Form"

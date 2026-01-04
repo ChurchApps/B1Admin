@@ -915,7 +915,8 @@
       "campus": "Campus",
       "service": "Service",
       "serviceTime": "Service Time",
-      "group": "Group"
+      "group": "Group",
+      "customFields": "Custom Fields"
     },
     "personNav": {
       "customForms": "Custom Forms"

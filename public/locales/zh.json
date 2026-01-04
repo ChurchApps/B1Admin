@@ -888,7 +888,8 @@
       "campus": "校园",
       "service": "服务",
       "serviceTime": "服务时间",
-      "group": "小组"
+      "group": "小组",
+      "customFields": "自定义字段"
     },
     "personNav": {
       "customForms": "自定义表单"

@@ -888,7 +888,8 @@
       "campus": "캠퍼스",
       "service": "서비스",
       "serviceTime": "서비스 시간",
-      "group": "그룹"
+      "group": "그룹",
+      "customFields": "사용자 정의 필드"
     },
     "personNav": {
       "customForms": "사용자 정의 양식"

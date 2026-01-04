@@ -888,7 +888,8 @@
       "campus": "Campus",
       "service": "Tjeneste",
       "serviceTime": "Tjenestehorário",
-      "group": "Gruppe"
+      "group": "Gruppe",
+      "customFields": "Egendefinerte Felt"
     },
     "personNav": {
       "customForms": "Tilpassede skjemaer"

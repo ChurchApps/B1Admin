@@ -888,7 +888,8 @@
       "campus": "Campus",
       "service": "Gottesdienst",
       "serviceTime": "Gottesdienstzeit",
-      "group": "Gruppe"
+      "group": "Gruppe",
+      "customFields": "Benutzerdefinierte Felder"
     },
     "personNav": {
       "customForms": "Benutzerdefinierte Formulare"

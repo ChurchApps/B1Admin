@@ -889,7 +889,8 @@
       "campus": "Campus",
       "service": "Servicio",
       "serviceTime": "Horario de Servicio",
-      "group": "Grupo"
+      "group": "Grupo",
+      "customFields": "Campos Personalizados"
     },
     "personNav": {
       "customForms": "Formularios Personalizados"
