@@ -4,7 +4,6 @@ import {
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
-import { NotificationPreferences } from "./components/NotificationPreferences";
 import { LinkedAccounts } from "./components/LinkedAccounts";
 import { Person as PersonIcon, DarkMode, LightMode } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
@@ -273,7 +272,6 @@ export const ProfilePage = () => {
           </Card>
 
           <LinkedAccounts />
-          <NotificationPreferences />
 
           {/* Theme Preferences Card */}
           <Card>
