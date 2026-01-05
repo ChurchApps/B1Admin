@@ -134,7 +134,7 @@ export const DonationPage: React.FC<Props> = (props) => {
             )}
             {current_year.length > 0 && (
               <MenuItem onClick={handleClose} dense>
-                <Link href={"/donations/print/" + person?.id}>
+                <Link href={"/donations/print/" + person?.id + "?year=" + currentY}>
                   <Button>
                     <Icon>print</Icon> &nbsp; {Locale.label("donation.page.currentYearPrint")}
                   </Button>
@@ -148,7 +148,7 @@ export const DonationPage: React.FC<Props> = (props) => {
             )}
             {last_year.length > 0 && (
               <MenuItem onClick={handleClose} dense>
-                <Link href={"/donations/print/" + person?.id + "?prev=1"}>
+                <Link href={"/donations/print/" + person?.id + "?year=" + lastY}>
                   <Button>
                     <Icon>print</Icon> &nbsp; {Locale.label("donation.page.lastYearPrint")}
                   </Button>
