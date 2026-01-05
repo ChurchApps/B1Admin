@@ -15,7 +15,9 @@ export const Login: React.FC = () => {
 
   const search = new URLSearchParams(window.location.search);
   const defaultRedirect = UserHelper.checkAccess(Permissions.membershipApi.people.view) ? "/people" : "/profile";
-  const returnUrl = search.get("returnUrl") || location.state?.from?.pathname || defaultRedirect;
+  const fromLocation = location.state?.from;
+  const fromUrl = fromLocation ? (fromLocation.pathname + (fromLocation.search || "")) : null;
+  const returnUrl = search.get("returnUrl") || fromUrl || defaultRedirect;
 
   const handleRedirect = (url: string) => {
     navigate(url);
