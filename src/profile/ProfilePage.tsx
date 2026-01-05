@@ -1,5 +1,5 @@
 import {
-  Grid, Icon, TextField, Checkbox, Typography, InputAdornment, IconButton, Box, Card, CardContent, Alert, Stack, FormControlLabel, Switch
+  Grid, Icon, TextField, Typography, InputAdornment, IconButton, Box, Card, CardContent, Alert, Stack, FormControlLabel, Switch
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,6 @@ export const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [optedOut, setOptedOut] = useState<boolean>(false);
   const [errors, setErrors] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
@@ -31,11 +30,6 @@ export const ProfilePage = () => {
     setFirstName(firstName);
     setLastName(lastName);
     setEmail(email);
-
-    if (UserHelper.person) {
-      const { optedOut } = UserHelper.person;
-      setOptedOut(optedOut);
-    }
   }, []);
 
   const sendEventToReactNative = (eventName: string, data?: any) => {
@@ -60,24 +54,12 @@ export const ProfilePage = () => {
         promises.push(ApiHelper.post("/users/updateEmail", { email }, "MembershipApi"));
       }
 
-      promises.push(
-        ApiHelper.post(
-          "/users/updateOptedOut",
-          {
-            personId: UserHelper.person.id,
-            optedOut,
-          },
-          "MembershipApi"
-        )
-      );
-
       await Promise.all(promises);
     },
     onSuccess: () => {
       UserHelper.user.firstName = firstName;
       UserHelper.user.lastName = lastName;
       UserHelper.user.email = email;
-      UserHelper.person.optedOut = optedOut;
       setSaveMessage(Locale.label("profile.profilePage.saveChange"));
       setPassword("");
       setPasswordVerify("");
@@ -120,9 +102,6 @@ export const ProfilePage = () => {
         break;
       case "email":
         setEmail(val);
-        break;
-      case "optedOut":
-        setOptedOut(e.currentTarget.checked);
         break;
       case "password":
         setPassword(val);
@@ -201,64 +180,58 @@ export const ProfilePage = () => {
                   {Locale.label("profile.profilePage.profEdit")}
                 </Typography>
 
-                <Grid container spacing={3}>
-                  <Grid size={{ xs: 12, md: 6 }}>
-                    <Stack spacing={2}>
-                      <TextField fullWidth type="email" name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} disabled={isDemo} />
-                      <TextField
-                        type={showPassword ? "text" : "password"}
-                        fullWidth
-                        name="password"
-                        label={Locale.label("profile.profilePage.passNew")}
-                        value={password}
-                        onChange={handleChange}
-                        disabled={isDemo}
-                        helperText={isDemo ? "Password changes are disabled in demo mode" : Locale.label("profile.profilePage.passwordHelper")}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
-                                {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Stack>
-                  </Grid>
-
-                  <Grid size={{ xs: 12, md: 6 }}>
-                    <Stack spacing={2}>
-                      <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} />
-                      <TextField
-                        type={showPassword ? "text" : "password"}
-                        fullWidth
-                        name="passwordVerify"
-                        label={Locale.label("profile.profilePage.passVer")}
-                        value={passwordVerify}
-                        onChange={handleChange}
-                        disabled={isDemo}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
-                                {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Stack>
-                  </Grid>
-
+                <Grid container spacing={2}>
                   <Grid size={{ xs: 12 }}>
-                    <Stack spacing={2}>
-                      <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} />
-                      <FormControlLabel
-                        control={<Checkbox name="optedOut" checked={optedOut} onChange={handleChange} data-testid="opt-out-checkbox" />}
-                        label={Locale.label("profile.profilePage.noDirect")}
-                      />
-                    </Stack>
+                    <TextField fullWidth type="email" name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} disabled={isDemo} />
+                  </Grid>
+
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} />
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} />
+                  </Grid>
+
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField
+                      type={showPassword ? "text" : "password"}
+                      fullWidth
+                      name="password"
+                      label={Locale.label("profile.profilePage.passNew")}
+                      value={password}
+                      onChange={handleChange}
+                      disabled={isDemo}
+                      helperText={isDemo ? "Password changes are disabled in demo mode" : Locale.label("profile.profilePage.passwordHelper")}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
+                              {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField
+                      type={showPassword ? "text" : "password"}
+                      fullWidth
+                      name="passwordVerify"
+                      label={Locale.label("profile.profilePage.passVer")}
+                      value={passwordVerify}
+                      onChange={handleChange}
+                      disabled={isDemo}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
+                              {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                   </Grid>
                 </Grid>
 

@@ -1280,7 +1280,7 @@
       "passVer": "Verify password",
       "passwordHelper": "Leave blank to keep current password",
       "permWarn": "Careful, these actions are permanent",
-      "profEdit": "Edit Profile",
+      "profEdit": "Edit Account",
       "saveChange": "Changes saved.",
       "valEmail": "Please enter a valid email address.",
       "deleteError": "Failed to delete account",
