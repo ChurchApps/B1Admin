@@ -41,8 +41,9 @@ export const PlanList = memo((props: Props) => {
   }, [plansQuery.data, props.ministry.id, props.planTypeId]);
 
   const addPlan = useCallback(() => {
-    const date = DateHelper.getLastSunday();
-    date.setDate(date.getDate() + 7);
+    const lastSunday = DateHelper.getLastSunday();
+    // Create a new date using local year/month/day to avoid timezone issues
+    const date = new Date(lastSunday.getFullYear(), lastSunday.getMonth(), lastSunday.getDate() + 7, 12, 0, 0);
     const name = DateHelper.prettyDate(date);
     setPlan({
       ministryId: props.ministry.id,

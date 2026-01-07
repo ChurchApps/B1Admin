@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
 import { DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
 import { type PlanInterface } from "../../helpers";
 import { useMutation } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ interface Props {
 export const PlanEdit = (props: Props) => {
   const [plan, setPlan] = React.useState<PlanInterface>({ ...props.plan, serviceOrder: true });
   const [copyMode, setCopyMode] = React.useState<string>("all"); // "none" | "positions" | "all"
+  const [copyServiceOrder, setCopyServiceOrder] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<string[]>([]);
 
   // Get the most recent plan that is before the new plan's date
@@ -67,10 +68,10 @@ export const PlanEdit = (props: Props) => {
   const savePlanMutation = useMutation({
     mutationFn: async () => {
       const { ApiHelper } = await import("@churchapps/apphelper");
-      if (copyMode === "none" || !previousPlan) {
+      if ((copyMode === "none" && !copyServiceOrder) || !previousPlan) {
         return ApiHelper.post("/plans", [plan], "DoingApi");
       } else {
-        return ApiHelper.post("/plans/copy/" + previousPlan.id, { ...plan, copyMode }, "DoingApi");
+        return ApiHelper.post("/plans/copy/" + previousPlan.id, { ...plan, copyMode, copyServiceOrder }, "DoingApi");
       }
     },
     onSuccess: () => {
@@ -122,21 +123,24 @@ export const PlanEdit = (props: Props) => {
           aria-label="Service date"
         />
         {!plan.id && previousPlan && (
-          <FormControl fullWidth>
-            <InputLabel id="copyMode">{Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}:</InputLabel>
-            <Select
-              name="copyMode"
-              labelId="copyMode"
-              label={Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}
-              value={copyMode}
-              onChange={handleChange}
-              data-testid="copy-mode-select"
-            >
-              <MenuItem value="none">{Locale.label("plans.planEdit.copyNothing") || "Nothing"}</MenuItem>
-              <MenuItem value="positions">{Locale.label("plans.planEdit.copyPositions") || "Positions Only"}</MenuItem>
-              <MenuItem value="all">{Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}</MenuItem>
-            </Select>
-          </FormControl>
+          <>
+            <FormControl fullWidth>
+              <InputLabel id="copyMode">{Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}:</InputLabel>
+              <Select
+                name="copyMode"
+                labelId="copyMode"
+                label={Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}
+                value={copyMode}
+                onChange={handleChange}
+                data-testid="copy-mode-select"
+              >
+                <MenuItem value="none">{Locale.label("plans.planEdit.copyNothing") || "Nothing"}</MenuItem>
+                <MenuItem value="positions">{Locale.label("plans.planEdit.copyPositions") || "Positions Only"}</MenuItem>
+                <MenuItem value="all">{Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControlLabel control={<Checkbox checked={copyServiceOrder} onChange={(e) => setCopyServiceOrder(e.target.checked)} />} label={Locale.label("plans.planEdit.copyServiceOrder") || "Copy Order of Service"} />
+          </>
         )}
       </InputBox>
     </>

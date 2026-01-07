@@ -14,9 +14,9 @@ interface Props {
 
 export const LessonScheduleEdit: React.FC<Props> = (props) => {
   const [scheduledDate, setScheduledDate] = useState<Date>(() => {
-    const date = DateHelper.getLastSunday();
-    date.setDate(date.getDate() + 7);
-    return date;
+    const lastSunday = DateHelper.getLastSunday();
+    // Create a new date using local year/month/day to avoid timezone issues
+    return new Date(lastSunday.getFullYear(), lastSunday.getMonth(), lastSunday.getDate() + 7, 12, 0, 0);
   });
   const [errors, setErrors] = useState<string[]>([]);
   const [lessonTree, setLessonTree] = useState<LessonTreeInterface>({});

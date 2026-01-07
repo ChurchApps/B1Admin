@@ -1046,6 +1046,7 @@
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
       "copyPrevious": "Copy from Previous Plan",
+      "copyServiceOrder": "Copy Order of Service",
       "none": "None",
       "planAdd": "Add a Plan",
       "planEdit": "Edit Plan",
@@ -1240,6 +1241,7 @@
     "serviceOrder": {
       "add": "Add",
       "addLesson": "Add Lesson",
+      "associateLesson": "Associate Lesson",
       "addSection": "Add Section",
       "customizeLesson": "Customize",
       "lessonPreview": "Lesson Preview",
