@@ -12,7 +12,7 @@ export class SecondaryMenuHelper {
 
     if (path.startsWith("/people") || path.startsWith("/groups") || path.startsWith("/attendance")) result = this.getPeopleMenu(path);
     else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = this.getSettingsMenu(path, data);
-    else if (path.startsWith("/plans") || path.startsWith("/tasks")) result = this.getServingMenu(path);
+    else if (path.startsWith("/serving")) result = this.getServingMenu(path);
     else if (path.startsWith("/donations")) result = this.getDonationsMenu(path);
     else if (path.startsWith("/site") || path.startsWith("/calendars")) result = this.getSiteMenu(path);
     else if (path.startsWith("/sermons")) result = this.getSermonsMenu(path);
@@ -25,7 +25,7 @@ export class SecondaryMenuHelper {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     menuItems.push({ url: "/groups", label: Locale.label("components.wrapper.groups"), icon: "groups" });
-    if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) menuItems.push({ url: "/plans", label: Locale.label("components.wrapper.teams"), icon: "people" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.teams"), icon: "people" });
     menuItems.push({ url: "/people", label: Locale.label("components.wrapper.ppl"), icon: "person" });
     if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.viewSummary)) menuItems.push({ url: "/attendance", label: Locale.label("components.wrapper.att"), icon: "calendar_month" });
 
@@ -65,14 +65,14 @@ export class SecondaryMenuHelper {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) {
-      menuItems.push({ url: "/plans", label: Locale.label("components.wrapper.plans"), icon: "assignment" });
-      menuItems.push({ url: "/plans/songs", label: Locale.label("components.wrapper.songs"), icon: "music_note" });
+      menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.plans"), icon: "assignment" });
+      menuItems.push({ url: "/serving/songs", label: Locale.label("components.wrapper.songs"), icon: "music_note" });
     }
-    menuItems.push({ url: "/tasks", label: Locale.label("components.wrapper.tasks"), icon: "list_alt" });
+    menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.tasks"), icon: "list_alt" });
 
-    if (path.startsWith("/plans/songs")) label = Locale.label("components.wrapper.songs");
-    else if (path.startsWith("/plans")) label = Locale.label("components.wrapper.plans");
-    else if (path.startsWith("/tasks")) label = Locale.label("components.wrapper.tasks");
+    if (path.startsWith("/serving/songs")) label = Locale.label("components.wrapper.songs");
+    else if (path.startsWith("/serving/tasks")) label = Locale.label("components.wrapper.tasks");
+    else if (path.startsWith("/serving")) label = Locale.label("components.wrapper.plans");
 
     return { menuItems, label };
   };

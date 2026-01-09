@@ -1,14 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { ApiHelper, Locale, PageHeader } from "@churchapps/apphelper";
-import { type PlanInterface, type PlanTypeInterface } from "../helpers";
+import { type PlanInterface, type PlanTypeInterface } from "../../helpers";
 import { type GroupInterface } from "@churchapps/helpers";
-import { Assignment } from "./components/Assignment";
-import { PlanNavigation } from "./components/PlanNavigation";
+import { Assignment } from "../components/Assignment";
+import { PlanNavigation } from "../components/PlanNavigation";
 import { Box, Container, Typography } from "@mui/material";
 import { Assignment as AssignmentIcon } from "@mui/icons-material";
-import { ServiceOrder } from "./components/ServiceOrder";
-import { Breadcrumbs } from "../components/ui";
+import { ServiceOrder } from "../components/ServiceOrder";
+import { Breadcrumbs } from "../../components/ui";
 
 
 
@@ -56,14 +56,10 @@ export const PlanPage = () => {
     );
   }
 
-  const breadcrumbItems = [{ label: Locale.label("components.wrapper.plans") || "Plans", path: "/plans" }];
-
-  if (ministry) {
-    breadcrumbItems.push({ label: ministry.name, path: `/plans/ministries/${ministry.id}` });
-  }
+  const breadcrumbItems = [{ label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving" }];
 
   if (planType) {
-    breadcrumbItems.push({ label: planType.name, path: `/plans/types/${planType.id}` });
+    breadcrumbItems.push({ label: planType.name, path: `/serving/planTypes/${planType.id}` });
   }
 
   breadcrumbItems.push({ label: plan.name || Locale.label("plans.planPage.servicePlan") });

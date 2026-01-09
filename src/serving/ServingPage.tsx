@@ -10,7 +10,7 @@ import { type GroupInterface, type GroupMemberInterface } from "@churchapps/help
 import { EmptyState } from "../components/ui";
 import UserContext from "../UserContext";
 
-export const PlansPage = () => {
+export const ServingPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [selectedMinistryId, setSelectedMinistryId] = React.useState<string | null>(null);
   const context = React.useContext(UserContext);

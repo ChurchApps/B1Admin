@@ -6,7 +6,7 @@ import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpe
 import { ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { NewTask } from "./";
-import UserContext from "../../UserContext";
+import UserContext from "../../../UserContext";
 import { useQuery } from "@tanstack/react-query";
 import {
   Assignment as TaskIcon,
@@ -117,7 +117,7 @@ export const TaskList = memo((props: Props) => {
               <Typography
                 variant="h6"
                 component={Link}
-                to={`/tasks/${task.id}`}
+                to={`/serving/tasks/${task.id}`}
                 sx={{
                   fontWeight: 600,
                   color: "primary.main",

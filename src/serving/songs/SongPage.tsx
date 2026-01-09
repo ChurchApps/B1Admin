@@ -78,7 +78,7 @@ export const SongPage = memo(() => {
   const handleDeleteSong = useCallback(() => {
     if (window.confirm(Locale.label("songs.deleteSong.confirm"))) {
       ApiHelper.delete("/songs/" + song.data?.id, "ContentApi").then(() => {
-        navigate("/plans/songs");
+        navigate("/serving/songs");
       });
     }
   }, [song.data?.id, navigate]);

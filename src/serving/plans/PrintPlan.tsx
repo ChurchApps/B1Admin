@@ -4,7 +4,7 @@ import {
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { type PlanItemInterface } from "../helpers";
+import { type PlanItemInterface } from "../../helpers";
 
 export const PrintPlan = () => {
   const params = useParams();

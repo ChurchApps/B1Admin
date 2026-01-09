@@ -11,7 +11,7 @@ export const TasksPage = () => {
   const navigate = useNavigate();
 
   const handleTabChange = (tab: string) => {
-    if (tab === "automations") navigate("/tasks/automations");
+    if (tab === "automations") navigate("/serving/tasks/automations");
   };
 
   return (

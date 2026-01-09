@@ -5,10 +5,10 @@ import { Assignment as AssignmentIcon, Tv as TvIcon } from "@mui/icons-material"
 import { Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
-import { type PlanTypeInterface } from "../helpers";
-import { PlanList } from "./components/PlanList";
-import { PlanTypePairDialog } from "./components/PlanTypePairDialog";
-import { Breadcrumbs } from "../components/ui";
+import { type PlanTypeInterface } from "../../helpers";
+import { PlanList } from "../components/PlanList";
+import { PlanTypePairDialog } from "../components/PlanTypePairDialog";
+import { Breadcrumbs } from "../../components/ui";
 
 export const PlanTypePage = () => {
   const params = useParams();
@@ -39,7 +39,7 @@ export const PlanTypePage = () => {
   }
 
   const breadcrumbItems = [
-    { label: Locale.label("components.wrapper.plans") || "Plans", path: "/plans" },
+    { label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving" },
     { label: planType.data.name }
   ];
 

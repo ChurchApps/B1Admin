@@ -4,7 +4,7 @@ import {
 import React from "react";
 import { type ActionInterface } from "@churchapps/helpers";
 import { ErrorMessages, ApiHelper, Locale } from "@churchapps/apphelper";
-import { ContentPicker } from "../../components/ContentPicker";
+import { ContentPicker } from "../components/ContentPicker";
 import { Task as TaskIcon, Search as SearchIcon, Save as SaveIcon, Cancel as CancelIcon, Assignment as ActionIcon } from "@mui/icons-material";
 
 interface Props {

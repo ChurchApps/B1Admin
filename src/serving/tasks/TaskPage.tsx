@@ -5,7 +5,7 @@ import {
 } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
 import { ContentPicker } from "./components/ContentPicker";
-import UserContext from "../UserContext";
+import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Assignment as TaskIcon, Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon } from "@mui/icons-material";

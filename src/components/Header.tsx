@@ -32,8 +32,8 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people", icon: "person", label: Locale.label("components.wrapper.ppl") });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("components.wrapper.don"), icon: donationIcon });
 
-    if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) menuItems.push({ url: "/plans", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
-    else menuItems.push({ url: "/tasks", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
+    else menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
 
     // Temporarily hidden
     if (UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) menuItems.push({ url: "/sermons", label: Locale.label("common.sermons"), icon: "live_tv" });
@@ -60,7 +60,7 @@ export const Header: React.FC = () => {
     else if (path.startsWith("/attendance")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/groups")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/donations")) result = Locale.label("components.wrapper.don");
-    else if (path.startsWith("/tasks") || path.startsWith("/plans") || window.location.search.indexOf("tag=") > -1) result = Locale.label("components.wrapper.serving");
+    else if (path.startsWith("/serving") || window.location.search.indexOf("tag=") > -1) result = Locale.label("components.wrapper.serving");
     else if (path.startsWith("/sermons")) result = Locale.label("common.sermons");
     else if (path.startsWith("/calendars") || path.startsWith("/site")) result = Locale.label("common.website");
     else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = Locale.label("components.wrapper.set");
@@ -82,8 +82,8 @@ export const Header: React.FC = () => {
         "/people": "nav-item-people",
         "/groups": "nav-item-groups",
         "/donations": "nav-item-donations",
-        "/plans": "nav-item-plans",
-        "/tasks": "nav-item-tasks",
+        "/serving": "nav-item-serving",
+        "/serving/tasks": "nav-item-tasks",
         "/site": "nav-item-site",
         "/settings": "nav-item-settings",
         "/attendance": "nav-item-attendance",
@@ -91,7 +91,7 @@ export const Header: React.FC = () => {
         "/admin": "nav-item-admin",
         "/donations/batches": "nav-item-batches",
         "/donations/funds": "nav-item-funds",
-        "/plans/songs": "nav-item-songs",
+        "/serving/songs": "nav-item-songs",
         "/profile": "nav-item-profile",
         "/profile/devices": "nav-item-devices",
         // Temporarily hidden

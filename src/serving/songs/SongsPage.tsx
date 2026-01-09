@@ -56,7 +56,7 @@ export const SongsPage = memo(() => {
 
       songs.refetch();
       setShowSearch(false);
-      setRedirect("/plans/songs/" + selectedSong.id);
+      setRedirect("/serving/songs/" + selectedSong.id);
     },
     [songs]
   );
@@ -133,7 +133,7 @@ export const SongsPage = memo(() => {
                     <Typography
                       variant="h6"
                       component={Link}
-                      to={`/plans/songs/${(songDetail as any).songId}`}
+                      to={`/serving/songs/${(songDetail as any).songId}`}
                       sx={{
                         color: "primary.main", textDecoration: "none", fontWeight: 600, fontSize: "1.1rem", "&:hover": { textDecoration: "underline" }, display: "block", mb: 0.5 
                       }}>
@@ -160,7 +160,7 @@ export const SongsPage = memo(() => {
                   {/* Action Button */}
                   <IconButton
                     component={Link}
-                    to={`/plans/songs/${(songDetail as any).songId}`}
+                    to={`/serving/songs/${(songDetail as any).songId}`}
                     sx={{ color: "primary.main", "&:hover": { backgroundColor: "primary.light", color: "primary.dark" } }}
                     aria-label={`Play ${songDetail.title}`}>
                     <PlayIcon />

@@ -230,7 +230,7 @@ export const PlanList = memo((props: Props) => {
                     <Typography
                       variant="h6"
                       component={Link}
-                      to={`/plans/${p.id}`}
+                      to={`/serving/plans/${p.id}`}
                       sx={{
                         fontWeight: 600,
                         color: "primary.main",

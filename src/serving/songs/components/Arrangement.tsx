@@ -67,7 +67,7 @@ export const Arrangement = memo((props: Props) => {
       if (arrangement) {
         props.reload();
       } else {
-        navigate("/plans/songs");
+        navigate("/serving/songs");
       }
     },
     [props.reload, navigate]

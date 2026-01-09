@@ -1,6 +1,6 @@
 import { Assignment as TaskIcon, SettingsSuggest as AutomationsIcon } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
-import { NavigationTabs, type NavigationTab } from "../../components/ui";
+import { NavigationTabs, type NavigationTab } from "../../../components/ui";
 import { Locale } from "@churchapps/apphelper";
 
 interface Props {

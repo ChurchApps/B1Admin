@@ -142,7 +142,7 @@ export const RequestedChanges = (props: Props) => {
 
     await ApiHelper.post("/people", peopleArray, "MembershipApi");
     await ApiHelper.post("/tasks", [task], "DoingApi");
-    navigate("/tasks");
+    navigate("/serving/tasks");
   };
 
   return (

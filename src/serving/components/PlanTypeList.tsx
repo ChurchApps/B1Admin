@@ -102,7 +102,7 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
                   <TableCell>
                     <Typography
                       component={Link}
-                      to={`/plans/types/${planType.id}`}
+                      to={`/serving/planTypes/${planType.id}`}
                       sx={{
                         textDecoration: "none",
                         color: "primary.main",

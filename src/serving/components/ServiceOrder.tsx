@@ -206,7 +206,7 @@ export const ServiceOrder = memo((props: Props) => {
     () => (
       <Stack direction="row" spacing={1} alignItems="center">
         <Button
-          onClick={() => window.open(`/plans/print/${props.plan?.id}`, '_blank')}
+          onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, '_blank')}
           variant="outlined"
           startIcon={<PrintIcon />}
           size="small"

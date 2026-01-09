@@ -94,7 +94,7 @@ export const AutomationsPage = () => {
   };
 
   const handleTabChange = (tab: string) => {
-    if (tab === "tasks") navigate("/tasks");
+    if (tab === "tasks") navigate("/serving/tasks");
   };
 
   return (
