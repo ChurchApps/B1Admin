@@ -40,7 +40,7 @@ export default defineConfig(({ mode }) => {
             groups: ['./src/groups/GroupsPage', './src/groups/GroupPage'],
             donations: ['./src/donations/DonationsPage', './src/donations/DonationBatchPage', './src/donations/DonationBatchesPage', './src/donations/FundPage', './src/donations/FundsPage'],
             forms: ['./src/forms/FormsPage', './src/forms/FormPage'],
-            plans: ['./src/plans/PlansPage', './src/plans/PlanPage', './src/plans/MinistryPage'],
+            plans: ['./src/plans/PlansPage', './src/plans/PlanPage'],
             songs: ['./src/plans/songs/SongsPage', './src/plans/songs/SongPage'],
             tasks: ['./src/tasks/TasksPage', './src/tasks/TaskPage', './src/tasks/automations/AutomationsPage'],
             admin: ['./src/serverAdmin/AdminPage', './src/serverAdmin/ReportPage'],

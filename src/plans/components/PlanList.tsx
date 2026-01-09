@@ -9,7 +9,6 @@ import { type PlanInterface } from "../../helpers";
 import { ArrayHelper, DateHelper, Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
 import { PlanEdit } from "./PlanEdit";
 import { LessonScheduleEdit } from "./LessonScheduleEdit";
-import { MinistryList } from "./MinistryList";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
 
@@ -152,7 +151,6 @@ export const PlanList = memo((props: Props) => {
             </>
           )}
         </Paper>
-        {!props.planTypeId && <MinistryList />}
       </Box>
     );
   }
@@ -301,8 +299,6 @@ export const PlanList = memo((props: Props) => {
           </Card>
         ))}
       </Stack>
-
-      {!props.planTypeId && <MinistryList />}
     </Box>
   );
 });
