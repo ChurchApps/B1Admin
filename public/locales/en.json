@@ -226,7 +226,8 @@
       "serving": "Serving",
       "set": "Settings",
       "songs": "Songs",
-      "tasks": "Tasks"
+      "tasks": "Tasks",
+      "teams": "Teams"
     }
   },
   "createPerson": {
@@ -1084,7 +1085,8 @@
     "plansPage": {
       "selMin": "Select a Ministry",
       "addMinistry": "Add Ministry",
-      "subtitle": "Manage ministries and service plans"
+      "subtitle": "Manage ministries and service plans",
+      "switchMinistry": "Switch Ministry"
     },
     "planValidation": {
       "and": "and",

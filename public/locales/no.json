@@ -226,7 +226,8 @@
       "serving": "Tjeneste",
       "set": "Innstillinger",
       "songs": "Sanger",
-      "tasks": "Oppgaver"
+      "tasks": "Oppgaver",
+      "teams": "Lag"
     }
   },
   "createPerson": {
@@ -1071,7 +1072,8 @@
     "plansPage": {
       "selMin": "Velg et ministrium",
       "addMinistry": "Legg til departementet",
-      "subtitle": "Administrere departementer og tjenesteplaner"
+      "subtitle": "Administrere departementer og tjenesteplaner",
+      "switchMinistry": "Bytt tjeneste"
     },
     "planValidation": {
       "and": "og",

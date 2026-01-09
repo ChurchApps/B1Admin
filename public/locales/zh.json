@@ -226,7 +226,8 @@
       "serving": "服务",
       "set": "设置",
       "songs": "歌曲",
-      "tasks": "任务"
+      "tasks": "任务",
+      "teams": "团队"
     }
   },
   "createPerson": {
@@ -1071,7 +1072,8 @@
     "plansPage": {
       "selMin": "选择一个事工",
       "addMinistry": "添加事工",
-      "subtitle": "管理部门和服务计划"
+      "subtitle": "管理部门和服务计划",
+      "switchMinistry": "切换事工"
     },
     "planValidation": {
       "and": "和",

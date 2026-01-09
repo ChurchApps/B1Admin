@@ -226,7 +226,8 @@
       "serving": "Pagsisilbi",
       "set": "Mga Setting",
       "songs": "Mga Awit",
-      "tasks": "Mga Gawain"
+      "tasks": "Mga Gawain",
+      "teams": "Mga Koponan"
     }
   },
   "createPerson": {
@@ -1071,7 +1072,8 @@
     "plansPage": {
       "selMin": "Piliin ang Ministro",
       "addMinistry": "Magdagdag ng ministeryo",
-      "subtitle": "Pamahalaan ang mga ministro at mga plano sa serbisyo"
+      "subtitle": "Pamahalaan ang mga ministro at mga plano sa serbisyo",
+      "switchMinistry": "Palitan ang Ministro"
     },
     "planValidation": {
       "and": "at",
