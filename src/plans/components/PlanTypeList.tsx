@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Box, Button, Paper, Typography, Card, CardContent, Stack, IconButton 
+  Box, Button, Typography, Stack, IconButton, Paper, Table, TableBody, TableCell, TableRow, TableHead
 } from "@mui/material";
 import { Add as AddIcon, Assignment as AssignmentIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../../helpers";
 import { PlanTypeEdit } from "./PlanTypeEdit";
+import { EmptyState } from "../../components/ui";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -46,104 +47,91 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
 
   const types = planTypes.data || [];
 
-  if (types.length === 0) {
-    return (
-      <Paper
-        sx={{
-          p: 6,
-          textAlign: "center",
-          backgroundColor: "grey.50",
-          border: "1px dashed",
-          borderColor: "grey.300",
-          borderRadius: 2,
-        }}>
-        <AssignmentIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
-        <Typography variant="h6" color="text.secondary" gutterBottom>
-          {Locale.label("plans.planTypeList.noPlanTypes")}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-          {Locale.label("plans.planTypeList.createPlanTypes")}
-        </Typography>
-        {canEdit && (
-          <Button 
-            variant="contained" 
-            startIcon={<AddIcon />} 
-            onClick={handleAdd}
-            sx={{
-              fontSize: "1rem",
-              py: 1.5,
-              px: 3,
-            }}>
-            {Locale.label("plans.planTypeList.createPlanType")}
-          </Button>
-        )}
-      </Paper>
-    );
-  }
-
   return (
-    <Box sx={{ position: "relative" }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-        <Stack direction="row" alignItems="center" spacing={2}>
+    <Box>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Stack direction="row" alignItems="center" spacing={1}>
           <AssignmentIcon sx={{ color: "primary.main" }} />
-          <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
             {Locale.label("plans.planTypeList.planTypes")}
           </Typography>
         </Stack>
-        {canEdit && (
-          <Button 
-            variant="contained" 
-            startIcon={<AddIcon />} 
+        {canEdit && types.length > 0 && (
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
             onClick={handleAdd}
-            size="medium">
+            size="small">
             {Locale.label("plans.planTypeList.addPlanType")}
           </Button>
         )}
       </Stack>
-      
-      <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
-        {types.map((planType) => (
-          <Card
-            key={planType.id}
-            sx={{ 
-              transition: "all 0.2s",
-              "&:hover": {
-                transform: "translateY(-2px)",
-                boxShadow: 3,
-              },
-            }}>
-            <CardContent>
-              <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                <Typography 
-                  variant="h6" 
-                  component={Link} 
-                  to={`/plans/types/${planType.id}`} 
-                  sx={{ 
-                    textDecoration: "none", 
-                    color: "primary.main",
-                    fontWeight: 600,
-                    "&:hover": {
-                      textDecoration: "underline",
-                    }
-                  }}>
-                  {planType.name}
-                </Typography>
-                {canEdit && (
-                  <IconButton 
-                    size="small" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleEdit(planType);
-                    }}
-                    sx={{ ml: 1 }}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
-                )}
-              </Stack>
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
+
+      {types.length === 0 ? (
+        <EmptyState
+          icon={<AssignmentIcon />}
+          title={Locale.label("plans.planTypeList.noPlanTypes")}
+          description={Locale.label("plans.planTypeList.createPlanTypes")}
+          action={
+            canEdit && (
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAdd}>
+                {Locale.label("plans.planTypeList.createPlanType")}
+              </Button>
+            )
+          }
+        />
+      ) : (
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "grey.50" }}>
+                <TableCell sx={{ fontWeight: 600 }}>{Locale.label("common.name")}</TableCell>
+                {canEdit && <TableCell align="right" sx={{ width: 50 }}></TableCell>}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {types.map((planType) => (
+                <TableRow
+                  key={planType.id}
+                  hover
+                  sx={{ "&:last-child td": { border: 0 } }}
+                >
+                  <TableCell>
+                    <Typography
+                      component={Link}
+                      to={`/plans/types/${planType.id}`}
+                      sx={{
+                        textDecoration: "none",
+                        color: "primary.main",
+                        fontWeight: 500,
+                        "&:hover": {
+                          textDecoration: "underline",
+                        }
+                      }}>
+                      {planType.name}
+                    </Typography>
+                  </TableCell>
+                  {canEdit && (
+                    <TableCell align="right">
+                      <IconButton
+                        size="small"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleEdit(planType);
+                        }}>
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      )}
     </Box>
   );
 });

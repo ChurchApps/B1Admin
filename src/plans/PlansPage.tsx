@@ -3,10 +3,11 @@ import { PlanTypeList } from "./components/PlanTypeList";
 import { TeamList } from "./components/TeamList";
 import { GroupAdd } from "../groups/components";
 import { Locale, PageHeader, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Box, Button, Paper, Typography, FormControl, Select, MenuItem } from "@mui/material";
+import { Box, Button, Grid, Tabs, Tab } from "@mui/material";
 import { Assignment as AssignmentIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
+import { EmptyState } from "../components/ui";
 import UserContext from "../UserContext";
 
 export const PlansPage = () => {
@@ -34,6 +35,8 @@ export const PlansPage = () => {
     },
   });
 
+  const selectedMinistry = ministries.data?.find((g) => g.id === selectedMinistryId);
+
   // Auto-select first accessible ministry when data loads
   React.useEffect(() => {
     if (ministries.data && ministries.data.length > 0 && !selectedMinistryId) {
@@ -59,7 +62,6 @@ export const PlansPage = () => {
   if (ministries.isLoading) return <Loading />;
 
   const groups = ministries.data || [];
-  const selectedMinistry = groups.find((g) => g.id === selectedMinistryId);
 
   // Show add ministry form
   if (showAdd) {
@@ -79,28 +81,18 @@ export const PlansPage = () => {
       <>
         <PageHeader icon={<AssignmentIcon />} title={Locale.label("plans.plansPage.selMin")} subtitle={Locale.label("plans.plansPage.subtitle")} />
         <Box sx={{ p: 3 }}>
-          <Paper
-            sx={{
-              p: 6,
-              textAlign: "center",
-              backgroundColor: "grey.50",
-              border: "1px dashed",
-              borderColor: "grey.300",
-              borderRadius: 2,
-            }}>
-            <AssignmentIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
-            <Typography variant="h6" color="text.secondary" gutterBottom>
-              {Locale.label("plans.ministryList.noMinMsg")}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              {Locale.label("plans.ministryList.getStarted")}
-            </Typography>
-            {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-              <Button variant="contained" startIcon={<AddIcon />} onClick={handleShowAdd} sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
-                {Locale.label("plans.plansPage.addMinistry")}
-              </Button>
-            )}
-          </Paper>
+          <EmptyState
+            icon={<AssignmentIcon />}
+            title={Locale.label("plans.ministryList.noMinMsg")}
+            description={Locale.label("plans.ministryList.getStarted")}
+            action={
+              UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
+                <Button variant="contained" startIcon={<AddIcon />} onClick={handleShowAdd} sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
+                  {Locale.label("plans.plansPage.addMinistry")}
+                </Button>
+              )
+            }
+          />
         </Box>
       </>
     );
@@ -109,51 +101,60 @@ export const PlansPage = () => {
   // Has ministries - show selector and content
   return (
     <>
-      <PageHeader icon={<AssignmentIcon />} title={selectedMinistry?.name || Locale.label("plans.plansPage.selMin")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
-        {groups.length > 1 && (
-          <FormControl size="small" sx={{ minWidth: 200 }}>
-            <Select
-              value={selectedMinistryId || ""}
-              onChange={(e) => setSelectedMinistryId(e.target.value)}
-              sx={{
-                color: "#FFF",
-                ".MuiOutlinedInput-notchedOutline": { borderColor: "rgba(255,255,255,0.5)" },
-                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#FFF" },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#FFF" },
-                ".MuiSvgIcon-root": { color: "#FFF" },
-              }}>
-              {groups.map((g) => (
-                <MenuItem key={g.id} value={g.id}>
-                  {g.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+      <PageHeader icon={<AssignmentIcon />} title={Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
+        {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={handleShowAdd}
+            sx={{
+              color: "#FFF",
+              borderColor: "rgba(255,255,255,0.5)",
+              "&:hover": {
+                borderColor: "#FFF",
+                backgroundColor: "rgba(255,255,255,0.1)",
+              },
+            }}>
+            {Locale.label("plans.plansPage.addMinistry")}
+          </Button>
         )}
-        <Button
-          variant="outlined"
-          startIcon={<AddIcon />}
-          onClick={handleShowAdd}
-          sx={{
-            color: "#FFF",
-            borderColor: "rgba(255,255,255,0.5)",
-            "&:hover": {
-              borderColor: "#FFF",
-              backgroundColor: "rgba(255,255,255,0.1)",
-            },
-          }}>
-          {Locale.label("plans.plansPage.addMinistry")}
-        </Button>
       </PageHeader>
+
+      {/* Ministry Tabs */}
+      {groups.length > 1 && (
+        <Box sx={{ borderBottom: 1, borderColor: "divider", backgroundColor: "background.paper" }}>
+          <Tabs
+            value={selectedMinistryId || false}
+            onChange={(_e, value) => setSelectedMinistryId(value)}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+              "& .MuiTab-root": {
+                textTransform: "none",
+                fontSize: "0.95rem",
+                fontWeight: 600,
+                minHeight: 48,
+                px: 3,
+              },
+            }}
+          >
+            {groups.map((g) => (
+              <Tab key={g.id} value={g.id} label={g.name} />
+            ))}
+          </Tabs>
+        </Box>
+      )}
 
       <Box sx={{ p: 3 }}>
         {selectedMinistry && (
-          <>
-            <PlanTypeList ministry={selectedMinistry} />
-            <Box sx={{ mt: 4 }}>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, lg: 6 }}>
+              <PlanTypeList ministry={selectedMinistry} />
+            </Grid>
+            <Grid size={{ xs: 12, lg: 6 }}>
               <TeamList ministry={selectedMinistry} />
-            </Box>
-          </>
+            </Grid>
+          </Grid>
         )}
       </Box>
     </>

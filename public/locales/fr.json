@@ -226,7 +226,8 @@
       "serving": "Service",
       "set": "Paramètres",
       "songs": "Chants",
-      "tasks": "Tâches"
+      "tasks": "Tâches",
+      "teams": "Équipes"
     }
   },
   "createPerson": {
@@ -1057,7 +1058,8 @@
     "plansPage": {
       "selMin": "Sélectionnez un ministère",
       "addMinistry": "Ajouter un ministère",
-      "subtitle": "Gérer les ministères et les plans de services"
+      "subtitle": "Gérer les ministères et les plans de services",
+      "switchMinistry": "Changer de ministère"
     },
     "planValidation": {
       "and": "et",

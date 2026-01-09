@@ -226,7 +226,8 @@
       "serving": "Servicio",
       "set": "Configuraciones",
       "songs": "Canciones",
-      "tasks": "Tareas"
+      "tasks": "Tareas",
+      "teams": "Equipos"
     }
   },
   "createPerson": {
@@ -1058,7 +1059,8 @@
     "plansPage": {
       "selMin": "Seleccione un Ministerio",
       "addMinistry": "Agregar Ministerio",
-      "subtitle": "Gestionar ministerios y planes de servicio."
+      "subtitle": "Gestionar ministerios y planes de servicio.",
+      "switchMinistry": "Cambiar Ministerio"
     },
     "planValidation": {
       "and": "y",

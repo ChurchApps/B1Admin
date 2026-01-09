@@ -2,12 +2,13 @@ import React, { useState, useCallback, memo } from "react";
 import { ApiHelper, UserHelper, Loading, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import {
-  Box, Card, CardContent, Typography, Stack, Button, Paper, Chip, Avatar 
+  Box, Typography, Stack, Button, Paper, Table, TableBody, TableCell, TableRow, TableHead
 } from "@mui/material";
-import { Add as AddIcon, Group as GroupIcon, People as PeopleIcon, PersonAdd as PersonAddIcon } from "@mui/icons-material";
+import { Add as AddIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { GroupAdd } from "../../groups/components";
+import { EmptyState } from "../../components/ui";
 
 interface Props {
   ministry: GroupInterface;
@@ -43,171 +44,99 @@ export const TeamList = memo((props: Props) => {
     return <Loading />;
   }
 
-  if (groups.length === 0) {
-    return (
-      <Box>
-        <Paper
-          sx={{
-            p: 6,
-            textAlign: "center",
-            backgroundColor: "grey.50",
-            border: "1px dashed",
-            borderColor: "grey.300",
-            borderRadius: 2,
-          }}>
-          <PeopleIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            {Locale.label("plans.teamList.noTeam")}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            {Locale.label("plans.teamList.createTeams")}
-          </Typography>
-          {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={handleAddClick}
-              data-testid="add-team-button"
-              sx={{
-                fontSize: "1rem",
-                py: 1.5,
-                px: 3,
-              }}>
-              {Locale.label("plans.teamList.createTeam")}
-            </Button>
-          )}
-        </Paper>
-      </Box>
-    );
-  }
-
   return (
     <Box>
-      <Box sx={{ mb: 3 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <PeopleIcon sx={{ color: "primary.main" }} />
-            <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
-              {Locale.label("plans.teamList.teams")}
-            </Typography>
-          </Stack>
-          {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-            <Button
-              variant="outlined"
-              startIcon={<AddIcon />}
-              onClick={handleAddClick}
-              data-testid="add-team-button"
-              sx={{
-                "&:hover": {
-                  transform: "translateY(-1px)",
-                  boxShadow: 2,
-                },
-              }}>
-              {Locale.label("plans.teamList.newTeam")}
-            </Button>
-          )}
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <PeopleIcon sx={{ color: "primary.main" }} />
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            {Locale.label("plans.teamList.teams")}
+          </Typography>
         </Stack>
-      </Box>
+        {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && groups.length > 0 && (
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleAddClick}
+            size="small"
+            data-testid="add-team-button">
+            {Locale.label("plans.teamList.newTeam")}
+          </Button>
+        )}
+      </Stack>
 
-      <Stack spacing={2}>
-        {groups.map((g) => {
-          const memberCount = g.memberCount || 0;
-          const memberLabel = memberCount === 1 ? `1 ${Locale.label("plans.teamList.member")}` : `${memberCount} ${Locale.label("plans.teamList.members")}`;
+      {groups.length === 0 ? (
+        <EmptyState
+          icon={<PeopleIcon />}
+          title={Locale.label("plans.teamList.noTeam")}
+          description={Locale.label("plans.teamList.createTeams")}
+          action={
+            UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAddClick}
+                data-testid="add-team-button">
+                {Locale.label("plans.teamList.createTeam")}
+              </Button>
+            )
+          }
+        />
+      ) : (
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "grey.50" }}>
+                <TableCell sx={{ fontWeight: 600 }}>{Locale.label("common.name")}</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>{Locale.label("plans.teamList.members")}</TableCell>
+                <TableCell align="right" sx={{ width: 80 }}></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {groups.map((g) => {
+                const memberCount = g.memberCount || 0;
 
-          return (
-            <Card
-              key={g.id}
-              sx={{
-                transition: "all 0.2s ease-in-out",
-                border: "1px solid",
-                borderColor: "grey.200",
-                borderRadius: 2,
-                "&:hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow: 3,
-                  borderColor: "primary.main",
-                },
-              }}>
-              <CardContent sx={{ pb: "16px !important" }}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                  <Stack direction="row" alignItems="center" spacing={2} sx={{ flex: 1, minWidth: 0 }}>
-                    <Avatar
-                      sx={{
-                        bgcolor: "secondary.main",
-                        width: 48,
-                        height: 48,
-                      }}>
-                      <GroupIcon />
-                    </Avatar>
-
-                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                return (
+                  <TableRow
+                    key={g.id}
+                    hover
+                    sx={{ "&:last-child td": { border: 0 } }}
+                  >
+                    <TableCell>
                       <Typography
-                        variant="h6"
                         component={Link}
                         to={`/groups/${g.id}?tag=team`}
                         sx={{
-                          fontWeight: 600,
+                          fontWeight: 500,
                           color: "primary.main",
                           textDecoration: "none",
-                          fontSize: "1.1rem",
                           "&:hover": { textDecoration: "underline" },
-                          display: "block",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
                         }}>
                         {g.name}
                       </Typography>
-
-                      <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
-                        <Chip
-                          icon={<PersonAddIcon />}
-                          label={memberLabel}
-                          variant="outlined"
-                          size="small"
-                          sx={{
-                            color: "text.secondary",
-                            borderColor: "grey.400",
-                            fontSize: "0.75rem",
-                          }}
-                        />
-                        <Chip
-                          label={Locale.label("plans.teamList.team")}
-                          variant="outlined"
-                          size="small"
-                          sx={{
-                            color: "info.main",
-                            borderColor: "info.main",
-                            fontSize: "0.75rem",
-                          }}
-                        />
-                      </Stack>
-                    </Box>
-                  </Stack>
-
-                  <Box sx={{ ml: 2 }}>
-                    <Button
-                      size="small"
-                      component={Link}
-                      to={`/groups/${g.id}?tag=team`}
-                      variant="outlined"
-                      sx={{
-                        color: "primary.main",
-                        borderColor: "primary.main",
-                        "&:hover": {
-                          backgroundColor: "primary.light",
-                          borderColor: "primary.dark",
-                        },
-                      }}>
-                      {Locale.label("plans.teamList.manage")}
-                    </Button>
-                  </Box>
-                </Stack>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </Stack>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" color="text.secondary">
+                        {memberCount}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button
+                        size="small"
+                        component={Link}
+                        to={`/groups/${g.id}?tag=team`}
+                        variant="text"
+                        sx={{ color: "primary.main" }}>
+                        {Locale.label("plans.teamList.manage")}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </Paper>
+      )}
     </Box>
   );
 });

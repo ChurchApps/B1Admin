@@ -40,7 +40,6 @@ export const PlanTypePage = () => {
 
   const breadcrumbItems = [
     { label: Locale.label("components.wrapper.plans") || "Plans", path: "/plans" },
-    { label: ministry.data.name, path: `/plans/ministries/${ministry.data.id}` },
     { label: planType.data.name }
   ];
 
