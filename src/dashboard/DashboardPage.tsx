@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Stack, Container, Grid } from "@mui/material";
 import { Dashboard as DashboardIcon } from "@mui/icons-material";
-import { TaskList } from "../tasks/components/TaskList";
+import { TaskList } from "../serving/tasks/components/TaskList";
 import { PeopleSearch } from "./components";
 import { Groups } from "../people/components";
 import { UserHelper, Locale, PageHeader } from "@churchapps/apphelper";

@@ -126,15 +126,14 @@ export const ServingPage = () => {
           <Tabs
             value={selectedMinistryId || false}
             onChange={(_e, value) => setSelectedMinistryId(value)}
-            variant="scrollable"
-            scrollButtons="auto"
+            variant="fullWidth"
             sx={{
+              minHeight: 48,
               "& .MuiTab-root": {
                 textTransform: "none",
                 fontSize: "0.95rem",
-                fontWeight: 600,
+                fontWeight: 700,
                 minHeight: 48,
-                px: 3,
               },
             }}
           >

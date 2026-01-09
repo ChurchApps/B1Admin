@@ -10,7 +10,7 @@ export class SecondaryMenuHelper {
   static getSecondaryMenu = (path: string, data: any) => {
     let result: { menuItems: MenuItem[]; label: string } = { menuItems: [], label: "" };
 
-    if (path.startsWith("/people") || path.startsWith("/groups") || path.startsWith("/attendance")) result = this.getPeopleMenu(path);
+    if (path.startsWith("/people") || path.startsWith("/groups") || path.startsWith("/attendance")) result = this.getPeopleMenu(path, data.search);
     else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = this.getSettingsMenu(path, data);
     else if (path.startsWith("/serving")) result = this.getServingMenu(path);
     else if (path.startsWith("/donations")) result = this.getDonationsMenu(path);
@@ -21,7 +21,7 @@ export class SecondaryMenuHelper {
     return result;
   };
 
-  static getPeopleMenu = (path: string) => {
+  static getPeopleMenu = (path: string, search?: string) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     menuItems.push({ url: "/groups", label: Locale.label("components.wrapper.groups"), icon: "groups" });
@@ -29,7 +29,8 @@ export class SecondaryMenuHelper {
     menuItems.push({ url: "/people", label: Locale.label("components.wrapper.ppl"), icon: "person" });
     if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.viewSummary)) menuItems.push({ url: "/attendance", label: Locale.label("components.wrapper.att"), icon: "calendar_month" });
 
-    if (path.startsWith("/groups")) label = Locale.label("components.wrapper.groups");
+    if (path.startsWith("/groups") && search?.includes("tag=team")) label = Locale.label("components.wrapper.teams");
+    else if (path.startsWith("/groups")) label = Locale.label("components.wrapper.groups");
     else if (path.startsWith("/people")) label = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/attendance")) label = Locale.label("components.wrapper.att");
 

@@ -67,7 +67,7 @@ export const Header: React.FC = () => {
     return result;
   };
 
-  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission });
+  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search });
 
   const handleNavigate = (url: string) => {
     navigate(url);
