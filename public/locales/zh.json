@@ -1072,6 +1072,7 @@
     "plansPage": {
       "selMin": "选择一个事工",
       "addMinistry": "添加事工",
+      "editMinistry": "编辑事工",
       "subtitle": "管理部门和服务计划",
       "switchMinistry": "切换事工"
     },

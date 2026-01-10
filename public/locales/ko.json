@@ -1072,6 +1072,7 @@
     "plansPage": {
       "selMin": "사역 선택",
       "addMinistry": "사역 추가",
+      "editMinistry": "사역 편집",
       "subtitle": "사역 및 봉사 계획 관리",
       "switchMinistry": "사역 변경"
     },

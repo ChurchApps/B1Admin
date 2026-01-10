@@ -1085,6 +1085,7 @@
     "plansPage": {
       "selMin": "Select a Ministry",
       "addMinistry": "Add Ministry",
+      "editMinistry": "Edit Ministry",
       "subtitle": "Manage ministries and service plans",
       "switchMinistry": "Switch Ministry"
     },

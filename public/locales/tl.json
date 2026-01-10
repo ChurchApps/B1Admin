@@ -1072,6 +1072,7 @@
     "plansPage": {
       "selMin": "Piliin ang Ministro",
       "addMinistry": "Magdagdag ng ministeryo",
+      "editMinistry": "I-edit ang Ministro",
       "subtitle": "Pamahalaan ang mga ministro at mga plano sa serbisyo",
       "switchMinistry": "Palitan ang Ministro"
     },

@@ -1072,6 +1072,7 @@
     "plansPage": {
       "selMin": "Velg et ministrium",
       "addMinistry": "Legg til departementet",
+      "editMinistry": "Rediger tjeneste",
       "subtitle": "Administrere departementer og tjenesteplaner",
       "switchMinistry": "Bytt tjeneste"
     },

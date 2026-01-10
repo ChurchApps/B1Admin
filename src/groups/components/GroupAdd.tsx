@@ -1,8 +1,9 @@
 import { TextField } from "@mui/material";
 import React from "react";
-import { type GroupInterface } from "@churchapps/helpers";
+import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { CategorySelect } from "./CategorySelect";
+import UserContext from "../../UserContext";
 
 interface Props {
   updatedFunction: () => void;
@@ -14,18 +15,29 @@ export const GroupAdd: React.FC<Props> = (props) => {
   const [group, setGroup] = React.useState<GroupInterface>({ categoryName: props.categoryName || "", name: "", tags: props.tags });
   const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const context = React.useContext(UserContext);
 
   const handleCancel = () => {
     props.updatedFunction();
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (validate()) {
       setIsSubmitting(true);
-      ApiHelper.post("/groups", [group], "MembershipApi").finally(() => {
+      try {
+        const result = await ApiHelper.post("/groups", [group], "MembershipApi");
+        // Auto-add creator as member for ministries
+        if (props.tags === "ministry" && result?.[0]?.id && context?.person?.id) {
+          const groupMember: GroupMemberInterface = {
+            groupId: result[0].id,
+            personId: context.person.id
+          };
+          await ApiHelper.post("/groupMembers", [groupMember], "MembershipApi");
+        }
+      } finally {
         setIsSubmitting(false);
         props.updatedFunction();
-      });
+      }
     }
   };
 

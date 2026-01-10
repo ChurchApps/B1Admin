@@ -4,11 +4,12 @@ import { TeamList } from "./components/TeamList";
 import { GroupAdd } from "../groups/components";
 import { Locale, PageHeader, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Box, Button, Grid, Tabs, Tab } from "@mui/material";
-import { Assignment as AssignmentIcon, Add as AddIcon } from "@mui/icons-material";
+import { Assignment as AssignmentIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { EmptyState } from "../components/ui";
 import UserContext from "../UserContext";
+import { Link } from "react-router-dom";
 
 export const ServingPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
@@ -61,7 +62,15 @@ export const ServingPage = () => {
 
   if (ministries.isLoading) return <Loading />;
 
-  const groups = ministries.data || [];
+  // Admins: Ministries where they're a member OR ministries with no members (to prevent orphaning)
+  // Regular users: Ministries where they're a member
+  const isAdmin = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
+  const groups = (ministries.data || []).filter((g) => {
+    const members = ArrayHelper.getAll(groupMembers.data || [], "groupId", g.id);
+    const isMember = ArrayHelper.getOne(members, "personId", context.person?.id) !== null;
+    if (isAdmin) return isMember || members.length === 0;
+    return isMember;
+  });
 
   // Show add ministry form
   if (showAdd) {
@@ -103,20 +112,40 @@ export const ServingPage = () => {
     <>
       <PageHeader icon={<AssignmentIcon />} title={Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
         {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-          <Button
-            variant="outlined"
-            startIcon={<AddIcon />}
-            onClick={handleShowAdd}
-            sx={{
-              color: "#FFF",
-              borderColor: "rgba(255,255,255,0.5)",
-              "&:hover": {
-                borderColor: "#FFF",
-                backgroundColor: "rgba(255,255,255,0.1)",
-              },
-            }}>
-            {Locale.label("plans.plansPage.addMinistry")}
-          </Button>
+          <>
+            {selectedMinistry && (
+              <Button
+                component={Link}
+                to={`/groups/${selectedMinistry.id}?tag=ministry`}
+                variant="outlined"
+                startIcon={<EditIcon />}
+                sx={{
+                  color: "#FFF",
+                  borderColor: "rgba(255,255,255,0.5)",
+                  mr: 1,
+                  "&:hover": {
+                    borderColor: "#FFF",
+                    backgroundColor: "rgba(255,255,255,0.1)",
+                  },
+                }}>
+                {Locale.label("plans.plansPage.editMinistry")}
+              </Button>
+            )}
+            <Button
+              variant="outlined"
+              startIcon={<AddIcon />}
+              onClick={handleShowAdd}
+              sx={{
+                color: "#FFF",
+                borderColor: "rgba(255,255,255,0.5)",
+                "&:hover": {
+                  borderColor: "#FFF",
+                  backgroundColor: "rgba(255,255,255,0.1)",
+                },
+              }}>
+              {Locale.label("plans.plansPage.addMinistry")}
+            </Button>
+          </>
         )}
       </PageHeader>
 

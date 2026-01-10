@@ -1058,6 +1058,7 @@
     "plansPage": {
       "selMin": "Sélectionnez un ministère",
       "addMinistry": "Ajouter un ministère",
+      "editMinistry": "Modifier le ministère",
       "subtitle": "Gérer les ministères et les plans de services",
       "switchMinistry": "Changer de ministère"
     },
