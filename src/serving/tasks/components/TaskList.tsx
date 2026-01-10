@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import {
-  Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Paper, Divider 
+  Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Paper, Divider
 } from "@mui/material";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
@@ -96,10 +96,10 @@ export const TaskList = memo((props: Props) => {
           transition: "all 0.2s ease-in-out",
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "grey.300",
-          backgroundColor: "grey.50",
+          borderColor: "var(--border-main)",
+          backgroundColor: "var(--bg-sub)",
           "&:hover": {
-            backgroundColor: "grey.100",
+            backgroundColor: "action.hover",
             borderColor: "primary.main",
           },
           "&:last-child": { mb: 0 },
@@ -258,7 +258,7 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "grey.200",
+          borderColor: "var(--border-light)",
         }}>
         <CardContent>
           <Loading />
@@ -286,7 +286,7 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "grey.200",
+          borderColor: "var(--border-light)",
         }}>
         <CardContent>
           {/* Header */}
@@ -344,11 +344,11 @@ export const TaskList = memo((props: Props) => {
               sx={{
                 p: 4,
                 textAlign: "center",
-                backgroundColor: "grey.50",
+                backgroundColor: "var(--bg-sub)",
                 border: "1px dashed",
-                borderColor: "grey.300",
+                borderColor: "var(--border-main)",
               }}>
-              <TaskIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
+              <TaskIcon sx={{ fontSize: 48, color: "var(--text-muted)", mb: 2 }} />
               <Typography variant="body1" color="text.secondary">
                 {Locale.label("tasks.taskList.noTasks")}
               </Typography>
