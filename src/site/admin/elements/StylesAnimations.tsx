@@ -8,8 +8,8 @@ interface Props {
   fields: string[],
   styles: InlineStylesInterface,
   animations: AnimationsInterface,
-  onStylesChange: (styles:any) => void;
-  onAnimationsChange: (animations:AnimationsInterface | null) => void;
+  onStylesChange: (styles: any) => void;
+  onAnimationsChange: (animations: AnimationsInterface | null) => void;
 }
 
 export const StylesAnimations: React.FC<Props> = (props) => {
@@ -25,8 +25,8 @@ export const StylesAnimations: React.FC<Props> = (props) => {
     </div>
 */
   return <>
-    <div style={{ backgroundColor: "#f0f0f0", padding: 10, marginBottom: 10 }}>
-      <Accordion expanded={expanded === "styles"} onChange={() => setExpanded((expanded==="styles") ? "" : "styles")}>
+    <div style={{ backgroundColor: "var(--bg-sub)", padding: 10, marginBottom: 10 }}>
+      <Accordion expanded={expanded === "styles"} onChange={() => setExpanded((expanded === "styles") ? "" : "styles")}>
         <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
           <Typography sx={{ width: "33%", flexShrink: 0 }}>Styles</Typography>
           <Typography sx={{ color: "text.secondary" }}>Advanced appearance options.</Typography>

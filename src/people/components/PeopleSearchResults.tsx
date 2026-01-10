@@ -5,7 +5,7 @@ import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import {
-  Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card 
+  Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card
 } from "@mui/material";
 import { Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
@@ -107,8 +107,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
                   sx={{
                     fontSize: "0.75rem",
                     mt: 0.5,
-                    backgroundColor: p.membershipStatus === "Member" ? "#e8f5e9" : p.membershipStatus === "Visitor" ? "#fff3e0" : "#f5f5f5",
-                    color: p.membershipStatus === "Member" ? "#2e7d32" : p.membershipStatus === "Visitor" ? "#e65100" : "#616161",
+                    backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "var(--bg-sub)",
+                    color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "var(--text-muted)",
+                    borderColor: "transparent"
                   }}
                 />
               )}
@@ -184,8 +185,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
               variant="outlined"
               sx={{
                 fontSize: "0.75rem",
-                backgroundColor: p.membershipStatus === "Member" ? "#e8f5e9" : p.membershipStatus === "Visitor" ? "#fff3e0" : "#f5f5f5",
-                color: p.membershipStatus === "Member" ? "#2e7d32" : p.membershipStatus === "Visitor" ? "#e65100" : "#616161",
+                backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "var(--bg-sub)",
+                color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "var(--text-muted)",
+                borderColor: "transparent"
               }}
             />
           );
@@ -334,7 +336,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         <TableRow
           key={p.id}
           sx={{
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
+            "&:hover": { backgroundColor: "rgba(128,128,128,0.1)" },
             cursor: "pointer",
           }}
           onClick={() => navigate(`/people/${p.id}`)}>
@@ -402,11 +404,11 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         id="peopleTable"
         sx={{
           "& .MuiTableCell-root": {
-            borderBottom: "1px solid rgba(224, 224, 224, 1)",
+            borderBottom: "1px solid var(--border-light)",
             py: 2,
           },
           "& .MuiTableHead-root .MuiTableCell-root": {
-            backgroundColor: "#fafafa",
+            backgroundColor: "var(--bg-sub)",
             fontWeight: 600,
           },
         }}>
