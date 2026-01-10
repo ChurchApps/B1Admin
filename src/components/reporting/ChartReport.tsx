@@ -5,6 +5,7 @@ import { Chart } from "react-google-charts";
 import type { ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers";
 import { ReportHelper } from "./ReportHelper";
 import { Locale } from "../../helpers";
+import { useTheme } from "@mui/material";
 
 interface Props {
   reportResult: ReportResultInterface;
@@ -12,6 +13,9 @@ interface Props {
 }
 
 export const ChartReport = (props: Props) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   let rows: any = [];
 
   const getChartData = () => {
@@ -84,6 +88,26 @@ export const ChartReport = (props: Props) => {
     return rows;
   };
 
+  const options = {
+    height: 400,
+    legend: {
+      position: "top",
+      maxLines: 3,
+      textStyle: { color: isDark ? "#e0e0e0" : "#333" }
+    },
+    bar: { groupWidth: "75%" },
+    isStacked: true,
+    backgroundColor: isDark ? "#1e1e1e" : "#ffffff",
+    hAxis: {
+      textStyle: { color: isDark ? "#e0e0e0" : "#333" }
+    },
+    vAxis: {
+      textStyle: { color: isDark ? "#e0e0e0" : "#333" },
+      gridlines: { color: isDark ? "#444" : "#ccc" },
+      baselineColor: isDark ? "#e0e0e0" : "#333"
+    }
+  };
+
   let result = <p>{Locale.label("reporting.noData")}</p>;
   if (props.reportResult.table?.length > 0) {
     result = (
@@ -92,7 +116,7 @@ export const ChartReport = (props: Props) => {
         data={getChartData()}
         width="100%"
         height="400px"
-        options={{ height: 400, legend: { position: "top", maxLines: 3 }, bar: { groupWidth: "75%" }, isStacked: true }}
+        options={options}
       />
     );
   }
