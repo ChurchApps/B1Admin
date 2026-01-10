@@ -85,8 +85,8 @@ export const SongsPage = memo(() => {
 
     if (songs.data.length === 0) {
       return (
-        <Paper sx={{ p: 6, textAlign: "center", backgroundColor: "grey.50", border: "1px dashed", borderColor: "grey.300" }}>
-          <LibraryIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
+        <Paper sx={{ p: 6, textAlign: "center", backgroundColor: "var(--bg-sub)", border: "1px dashed", borderColor: "var(--border-main)" }}>
+          <LibraryIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
             {Locale.label("songs.library.empty.title") || "No Songs Found"}
           </Typography>
@@ -104,8 +104,8 @@ export const SongsPage = memo(() => {
 
     if (filteredSongs && filteredSongs.length === 0) {
       return (
-        <Paper sx={{ p: 4, textAlign: "center", backgroundColor: "grey.50", border: "1px dashed", borderColor: "grey.300" }}>
-          <SearchIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
+        <Paper sx={{ p: 4, textAlign: "center", backgroundColor: "var(--bg-sub)", border: "1px dashed", borderColor: "var(--border-main)" }}>
+          <SearchIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
             {Locale.label("songs.library.noResults") || "No songs match your search criteria."}
           </Typography>
@@ -114,7 +114,7 @@ export const SongsPage = memo(() => {
     }
 
     return (
-      <Box sx={{ "& .MuiCard-root": { borderRadius: 2, border: "1px solid", borderColor: "grey.200" } }}>
+      <Box sx={{ "& .MuiCard-root": { borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" } }}>
         <Stack spacing={2}>
           {filteredSongs?.map((songDetail) => (
             <Card key={songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
@@ -135,14 +135,14 @@ export const SongsPage = memo(() => {
                       component={Link}
                       to={`/serving/songs/${(songDetail as any).songId}`}
                       sx={{
-                        color: "primary.main", textDecoration: "none", fontWeight: 600, fontSize: "1.1rem", "&:hover": { textDecoration: "underline" }, display: "block", mb: 0.5 
+                        color: "primary.main", textDecoration: "none", fontWeight: 600, fontSize: "1.1rem", "&:hover": { textDecoration: "underline" }, display: "block", mb: 0.5
                       }}>
                       {songDetail.title}
                     </Typography>
 
                     <Stack direction="row" spacing={2} flexWrap="wrap" alignItems="center">
                       {songDetail.artist && (
-                        <Chip icon={<ArtistIcon />} label={songDetail.artist} variant="outlined" size="small" sx={{ color: "text.secondary", borderColor: "grey.400", fontSize: "0.75rem" }} />
+                        <Chip icon={<ArtistIcon />} label={songDetail.artist} variant="outlined" size="small" sx={{ color: "text.secondary", borderColor: "var(--border-main)", fontSize: "0.75rem" }} />
                       )}
 
                       {songDetail.seconds && (
@@ -151,7 +151,7 @@ export const SongsPage = memo(() => {
                           label={formatSeconds(songDetail.seconds)}
                           variant="outlined"
                           size="small"
-                          sx={{ color: "text.secondary", borderColor: "grey.400", fontSize: "0.75rem" }}
+                          sx={{ color: "text.secondary", borderColor: "var(--border-main)", fontSize: "0.75rem" }}
                         />
                       )}
                     </Stack>
@@ -201,7 +201,7 @@ export const SongsPage = memo(() => {
 
       <Box sx={{ p: 3 }}>
         {(showSearchField || searchFilter) && songs.data && songs.data.length > 0 && (
-          <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+          <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
             <CardContent sx={{ pb: "16px !important" }}>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                 <SearchIcon sx={{ color: "primary.main", fontSize: 24 }} />
@@ -223,7 +223,7 @@ export const SongsPage = memo(() => {
                   ),
                 }}
                 autoFocus={showSearchField}
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2, backgroundColor: "grey.50", "&:hover": { backgroundColor: "#FFF" }, "&.Mui-focused": { backgroundColor: "#FFF" } } }}
+                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2, backgroundColor: "var(--bg-sub)", "&:hover": { backgroundColor: "var(--bg-card)" }, "&.Mui-focused": { backgroundColor: "var(--bg-card)" } } }}
               />
             </CardContent>
           </Card>

@@ -23,6 +23,7 @@
   --text-muted: #666666;
   --border-main: #dddddd;
   --border-light: #f0f0f0;
+  --bg-plan-header: #e0e0e0;
 }
 
 body.dark-theme {
@@ -34,6 +35,7 @@ body.dark-theme {
   --text-muted: #aaaaaa;
   --border-main: #333333;
   --border-light: #444444;
+  --bg-plan-header: #151515;
 }
 
 body {
@@ -756,7 +758,7 @@ label .description {
 }
 
 .planItemHeader {
-  background-color: #EEE;
+  background-color: var(--bg-plan-header);
   border-bottom: 3px solid var(--c1l2);
   font-weight: bold;
   padding: 5px 5px 5px 10px;
@@ -764,7 +766,7 @@ label .description {
 }
 
 .planItem {
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid var(--border-light);
   padding: 5px 5px 5px 10px;
 }
 

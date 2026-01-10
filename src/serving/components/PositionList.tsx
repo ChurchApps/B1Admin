@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, Table, TableBody, TableCell, TableHead, TableRow, Avatar } from "@mui/material";
+import { Badge, Table, TableBody, TableCell, TableHead, TableRow, Avatar, useTheme } from "@mui/material";
 import {
   type AssignmentInterface,
   type GroupInterface,
@@ -25,9 +25,15 @@ interface Props {
 
 export const PositionList = (props: Props) => {
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
-  const colorList = [
+  const theme = useTheme();
+
+  const lightColors = [
     "#FFF8E7", "#E7F2FA", "#E7F4E7", "#F7E7F4", "#F7F4E7", "#E7F7F4", "#F4E7F7", "#F4F7E7", "#E7F7F7", "#F7E7F7", "#F7F7E7", "#E7E7F7", "#F4F4F7", "#F7F4F4", "#F4F7F4", "#F4F4F4"
   ];
+  const darkColors = [
+    "#3E382A", "#2A353D", "#2A372A", "#3A2A37", "#3A372A", "#2A3A37", "#372A3A", "#373A2A", "#2A3A3A", "#3A2A3A", "#3A3A2A", "#2A2A3A", "#37373A", "#3A3737", "#373A37", "#373737"
+  ];
+  const colorList = theme.palette.mode === "dark" ? darkColors : lightColors;
 
   const getPersonLink = (assignment: AssignmentInterface, position: PositionInterface) => {
     const person = ArrayHelper.getOne(props.people, "id", assignment.personId);

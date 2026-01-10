@@ -30,11 +30,11 @@ export const AutomationsPage = () => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "grey.50",
+            backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "grey.300",
+            borderColor: "var(--border-main)",
           }}>
-          <AutomationsIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
+          <AutomationsIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
             {Locale.label("tasks.automationsPage.noAuto")}
           </Typography>
@@ -52,7 +52,7 @@ export const AutomationsPage = () => {
                 borderRadius: 1,
                 mb: 1,
                 border: "1px solid",
-                borderColor: "grey.200",
+                borderColor: "var(--border-light)",
                 "&:hover": {
                   borderColor: "primary.main",
                   backgroundColor: "action.hover",
@@ -128,7 +128,7 @@ export const AutomationsPage = () => {
               sx={{
                 borderRadius: 2,
                 border: "1px solid",
-                borderColor: "grey.200",
+                borderColor: "var(--border-light)",
               }}>
               <CardContent>
                 {/* Header */}

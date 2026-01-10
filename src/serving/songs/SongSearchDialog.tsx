@@ -1,5 +1,5 @@
 import {
-  Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, IconButton, InputAdornment, Paper 
+  Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, IconButton, InputAdornment, Paper
 } from "@mui/material";
 import { Search as SearchIcon, MusicNote as MusicIcon, Person as ArtistIcon, Close as CloseIcon, Add as AddIcon } from "@mui/icons-material";
 import React, { useEffect, memo, useCallback, useMemo } from "react";
@@ -80,11 +80,11 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "grey.50",
+            backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "grey.300",
+            borderColor: "var(--border-main)",
           }}>
-          <SearchIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
+          <SearchIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
             {Locale.label("songs.search.enterQuery") || "Enter a search term to find songs."}
           </Typography>
@@ -98,11 +98,11 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "grey.50",
+            backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "grey.300",
+            borderColor: "var(--border-main)",
           }}>
-          <MusicIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
+          <MusicIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary" gutterBottom>
             {Locale.label("songs.search.noResults") || "No songs found for your search."}
           </Typography>
@@ -232,7 +232,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                     mt: 3,
                     pt: 2,
                     borderTop: "1px solid",
-                    borderColor: "grey.200",
+                    borderColor: "var(--border-light)",
                   }}>
                   <Button variant="text" startIcon={<AddIcon />} onClick={() => setShowCreate(true)} sx={{ color: "text.secondary" }}>
                     {Locale.label("songs.search.createManually") || "Create Manually"}

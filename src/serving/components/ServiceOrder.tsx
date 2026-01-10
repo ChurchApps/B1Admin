@@ -405,7 +405,7 @@ export const ServiceOrder = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "grey.200",
+          borderColor: "var(--border-light)",
           transition: "all 0.2s ease-in-out",
           "&:hover": { boxShadow: 2 },
         }}>
@@ -425,9 +425,9 @@ export const ServiceOrder = memo((props: Props) => {
               minHeight: 200,
               p: 3,
               border: "1px dashed",
-              borderColor: "grey.300",
+              borderColor: "var(--border-main)",
               borderRadius: 2,
-              backgroundColor: "grey.50",
+              backgroundColor: "var(--bg-sub)",
             }}>
             <DndProvider backend={HTML5Backend}>
               {planItems.length === 0 ? (
@@ -444,7 +444,7 @@ export const ServiceOrder = memo((props: Props) => {
                       py: 4,
                       color: "text.secondary",
                     }}>
-                    <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "grey.400" }} />
+                    <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
                     <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
                   </Box>
                 )
