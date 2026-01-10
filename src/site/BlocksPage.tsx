@@ -1,8 +1,9 @@
-import { JSX, useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
+import type { JSX } from "react";
 import { ApiHelper, Loading, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import type { BlockInterface } from "../helpers";
 import {
-  TableRow, TableCell, Table, TableBody, TableHead, Box, Typography, Stack, Button, Card, Icon 
+  TableRow, TableCell, Table, TableBody, TableHead, Box, Typography, Stack, Button, Card, Icon
 } from "@mui/material";
 import { SmartButton as BlockIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Navigate, Link } from "react-router-dom";
@@ -22,7 +23,7 @@ export const BlocksPage = () => {
 
   const loadData = () => {
     setLoading(true);
-    ApiHelper.get("/blocks", "ContentApi").then((blocksData) => {
+    ApiHelper.get("/blocks", "ContentApi").then((blocksData: any[]) => {
       const filtered = blocksData.filter((block: BlockInterface) => block.blockType !== "footerBlock");
       setBlocks(filtered || []);
       setLoading(false);
@@ -132,7 +133,7 @@ export const BlocksPage = () => {
 
     return (
       <Table sx={{ minWidth: 650 }}>
-        <TableHead sx={{ backgroundColor: "grey.50", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
+        <TableHead sx={{ backgroundColor: "var(--bg-card)", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
           {getTableHeader()}
         </TableHead>
         <TableBody>{getRows()}</TableBody>
@@ -173,7 +174,7 @@ export const BlocksPage = () => {
         )}
 
         {/* Main Table Card */}
-        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
           <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">

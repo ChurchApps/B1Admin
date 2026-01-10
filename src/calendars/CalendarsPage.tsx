@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ApiHelper, UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { Permissions, type CuratedCalendarInterface } from "@churchapps/helpers";
 import { useNavigate } from "react-router-dom";
@@ -47,64 +47,86 @@ export const CalendarsPage = () => {
   };
 
   const getRows = () => calendars.map((calendar) => (
-      <TableRow
-        key={calendar.id}
-        sx={{
-          '&:hover': {
-            backgroundColor: 'action.hover',
-            cursor: 'pointer'
-          },
-          transition: 'background-color 0.2s ease'
-        }}
-        onClick={() => navigate("/calendars/" + calendar.id)}
-      >
-        <TableCell>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Box
-              sx={{
-                backgroundColor: 'primary.main',
-                color: 'white',
-                borderRadius: 1,
-                p: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minWidth: 40,
-                height: 40
-              }}
-            >
-              <CalendarIcon sx={{ fontSize: 20 }} />
-            </Box>
-            <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                {calendar.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {Locale.label("calendars.calendarList.curatedCalendar")}
-              </Typography>
-            </Box>
-          </Stack>
-        </TableCell>
-        <TableCell>
-          <Chip
-            icon={<EventIcon />}
-            label={Locale.label("calendars.calendarList.active")}
-            size="small"
+    <TableRow
+      key={calendar.id}
+      sx={{
+        '&:hover': {
+          backgroundColor: 'action.hover',
+          cursor: 'pointer'
+        },
+        transition: 'background-color 0.2s ease'
+      }}
+      onClick={() => navigate("/calendars/" + calendar.id)}
+    >
+      <TableCell>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Box
             sx={{
-              backgroundColor: '#e8f5e9',
-              color: '#2e7d32',
-              fontWeight: 600
+              backgroundColor: 'primary.main',
+              color: 'white',
+              borderRadius: 1,
+              p: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minWidth: 40,
+              height: 40
             }}
-          />
-        </TableCell>
-        <TableCell align="right">
-          <Stack direction="row" spacing={1} justifyContent="flex-end">
-            <Tooltip title={Locale.label("calendars.calendarList.manageEvents")} arrow>
+          >
+            <CalendarIcon sx={{ fontSize: 20 }} />
+          </Box>
+          <Box>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              {calendar.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {Locale.label("calendars.calendarList.curatedCalendar")}
+            </Typography>
+          </Box>
+        </Stack>
+      </TableCell>
+      <TableCell>
+        <Chip
+          icon={<EventIcon />}
+          label={Locale.label("calendars.calendarList.active")}
+          size="small"
+          sx={{
+            backgroundColor: '#e8f5e9',
+            color: '#2e7d32',
+            fontWeight: 600
+          }}
+        />
+      </TableCell>
+      <TableCell align="right">
+        <Stack direction="row" spacing={1} justifyContent="flex-end">
+          <Tooltip title={Locale.label("calendars.calendarList.manageEvents")} arrow>
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate("/calendars/" + calendar.id);
+              }}
+              sx={{
+                color: 'primary.main',
+                backgroundColor: 'primary.light',
+                '&:hover': {
+                  backgroundColor: 'primary.light',
+                  transform: 'translateY(-1px)'
+                },
+                transition: 'all 0.2s ease'
+              }}
+              data-testid={`manage-calendar-${calendar.id}`}
+            >
+              <EventIcon sx={{ fontSize: 18 }} />
+            </IconButton>
+          </Tooltip>
+          {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+            <Tooltip title={Locale.label("calendars.calendarList.edit")} arrow>
               <IconButton
                 size="small"
                 onClick={(e) => {
                   e.stopPropagation();
-                  navigate("/calendars/" + calendar.id);
+                  setCurrentCalendar(calendar);
                 }}
                 sx={{
                   color: 'primary.main',
@@ -115,37 +137,15 @@ export const CalendarsPage = () => {
                   },
                   transition: 'all 0.2s ease'
                 }}
-                data-testid={`manage-calendar-${calendar.id}`}
+                data-testid={`edit-calendar-${calendar.id}`}
               >
-                <EventIcon sx={{ fontSize: 18 }} />
+                <EditIcon sx={{ fontSize: 18 }} />
               </IconButton>
             </Tooltip>
-            {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-              <Tooltip title={Locale.label("calendars.calendarList.edit")} arrow>
-                <IconButton
-                  size="small"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentCalendar(calendar);
-                  }}
-                  sx={{
-                    color: 'primary.main',
-                    backgroundColor: 'primary.light',
-                    '&:hover': {
-                      backgroundColor: 'primary.light',
-                      transform: 'translateY(-1px)'
-                    },
-                    transition: 'all 0.2s ease'
-                  }}
-                  data-testid={`edit-calendar-${calendar.id}`}
-                >
-                  <EditIcon sx={{ fontSize: 18 }} />
-                </IconButton>
-              </Tooltip>
-            )}
-          </Stack>
-        </TableCell>
-      </TableRow>
+          )}
+        </Stack>
+      </TableCell>
+    </TableRow>
   ));
 
   useEffect(() => {
@@ -159,7 +159,7 @@ export const CalendarsPage = () => {
         title={Locale.label("calendars.calendarList.title")}
         subtitle={
           calendars.length > 0
-            ? Locale.label("calendars.calendarList.subtitleWithCount", calendars.length.toString(), calendars.length === 1 ? Locale.label("calendars.calendarList.calendar") : Locale.label("calendars.calendarList.calendars"))
+            ? Locale.label("calendars.calendarList.subtitleWithCount", `${calendars.length} ${calendars.length === 1 ? Locale.label("calendars.calendarList.calendar") : Locale.label("calendars.calendarList.calendars")}`)
             : Locale.label("calendars.calendarList.subtitleEmpty")
         }
       >
@@ -193,13 +193,13 @@ export const CalendarsPage = () => {
                 sx={{
                   p: 6,
                   textAlign: "center",
-                  backgroundColor: "grey.50",
+                  backgroundColor: "var(--bg-sub)",
                   border: "1px dashed",
-                  borderColor: "grey.300",
+                  borderColor: "var(--border-main)",
                   borderRadius: 2,
                 }}
               >
-                <CalendarIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
+                <CalendarIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
                 <Typography variant="h6" color="text.secondary" gutterBottom>
                   {Locale.label("calendars.calendarList.noCalendars")}
                 </Typography>
@@ -223,11 +223,11 @@ export const CalendarsPage = () => {
                 sx={{
                   borderRadius: 2,
                   border: "1px solid",
-                  borderColor: "grey.200",
+                  borderColor: "var(--border-light)",
                 }}
               >
                 <Table>
-                  <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+                  <TableHead sx={{ backgroundColor: "var(--bg-card)" }}>
                     <TableRow>
                       <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                         {Locale.label("calendars.calendarList.calendar")}
@@ -256,11 +256,11 @@ export const CalendarsPage = () => {
                   sx={{
                     borderRadius: 2,
                     border: "1px solid",
-                    borderColor: "grey.200",
+                    borderColor: "var(--border-light)",
                   }}
                 >
                   <Table>
-                    <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+                    <TableHead sx={{ backgroundColor: "var(--bg-card)" }}>
                       <TableRow>
                         <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                           {Locale.label("calendars.calendarList.calendar")}
@@ -291,7 +291,7 @@ export const CalendarsPage = () => {
         )}
 
         {calendars.length > 0 && !currentCalendar && (
-          <Card sx={{ mt: 3, borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+          <Card sx={{ mt: 3, borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
             <CardContent>
               <Stack direction="row" spacing={2} alignItems="flex-start">
                 <DescriptionIcon sx={{ color: "primary.main", fontSize: 28 }} />
