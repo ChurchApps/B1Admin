@@ -18,7 +18,7 @@
   --bg-main: #e5e8ee;
   --bg-card: #ffffff;
   --bg-header: #ffffff;
-  --bg-sub: #eeeeee;
+  --bg-sub: #fafafa;
   --text-main: #333333;
   --text-muted: #666666;
   --border-main: #dddddd;
@@ -30,7 +30,7 @@ body.dark-theme {
   --bg-main: #121212;
   --bg-card: #1e1e1e;
   --bg-header: #1e1e1e;
-  --bg-sub: #2a2a2a;
+  --bg-sub: #333333;
   --text-main: #e0e0e0;
   --text-muted: #aaaaaa;
   --border-main: #333333;
