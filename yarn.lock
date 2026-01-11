@@ -260,7 +260,8 @@
 
 "@churchapps/helpers@^1.2.19", "@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5":
   version "1.2.19"
-  resolved "file:../Helpers"
+  resolved "https://registry.npmjs.org/@churchapps/helpers/-/helpers-1.2.19.tgz"
+  integrity sha512-gjY4M8E+qiGZBvomklTUSHrED5mWLMTE37Vy1Viy3DXB18kYnUvB/FRwVTXMZKGidt6ljJGn1gPYtzn3t/kJKw==
   dependencies:
     dayjs "^1.11.18"
 
