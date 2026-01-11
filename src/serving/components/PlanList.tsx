@@ -102,13 +102,13 @@ export const PlanList = memo((props: Props) => {
           sx={{
             p: 6,
             textAlign: "center",
-            backgroundColor: "grey.50",
+            backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "grey.300",
+            borderColor: "var(--border-main)",
             borderRadius: 2,
             mb: 3,
           }}>
-          <EventNoteIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
+          <EventNoteIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
             {Locale.label("plans.planList.noPlans")}
           </Typography>
@@ -206,7 +206,7 @@ export const PlanList = memo((props: Props) => {
             sx={{
               transition: "all 0.2s ease-in-out",
               border: "1px solid",
-              borderColor: "grey.200",
+              borderColor: "var(--border-light)",
               borderRadius: 2,
               "&:hover": {
                 transform: "translateY(-2px)",
@@ -254,7 +254,7 @@ export const PlanList = memo((props: Props) => {
                           size="small"
                           sx={{
                             color: "text.secondary",
-                            borderColor: "grey.400",
+                            borderColor: "var(--border-main)",
                             fontSize: "0.75rem",
                           }}
                         />

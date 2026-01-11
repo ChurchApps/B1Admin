@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { FileUpload } from "../../components/FileUpload";
 import {
-  Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress 
+  Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress
 } from "@mui/material";
 import { InputBox, ApiHelper, SmallButton, Locale } from "@churchapps/apphelper";
 import { Folder as FolderIcon, InsertDriveFile as FileIcon } from "@mui/icons-material";
@@ -111,7 +111,7 @@ export function FilesManager() {
               </Typography>
             }>
             <Table sx={{ minWidth: 650 }}>
-              <TableHead sx={{ backgroundColor: "grey.50", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
+              <TableHead sx={{ backgroundColor: "var(--bg-card)", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
                 <TableRow>
                   <TableCell>
                     <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Name</Typography>
@@ -139,7 +139,7 @@ export function FilesManager() {
             {usedSpace < 100000000 && (
               <Box sx={{
                 border: "2px dashed",
-                borderColor: "grey.300",
+                borderColor: "var(--border-main)",
                 borderRadius: 2,
                 p: 3,
                 textAlign: "center",

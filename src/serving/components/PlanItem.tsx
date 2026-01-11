@@ -226,10 +226,10 @@ export const PlanItem = React.memo((props: Props) => {
       <>
         <div className="planItemHeader">
           <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-            {sectionDuration > 0 && <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>}
-          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
-          </span>
+            {sectionDuration > 0 && <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>}
+            <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
+            </span>
             {!props.readOnly && (
               <>
                 <button
@@ -247,7 +247,7 @@ export const PlanItem = React.memo((props: Props) => {
               </>
             )}
           </span>
-          {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+          {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
           <span>{props.planItem.label}</span>
         </div>
         {getChildren()}
@@ -259,8 +259,8 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
-          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
+          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (
@@ -275,7 +275,7 @@ export const PlanItem = React.memo((props: Props) => {
             </>
           )}
         </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
@@ -299,8 +299,8 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
-          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
+          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (
@@ -315,7 +315,7 @@ export const PlanItem = React.memo((props: Props) => {
             </>
           )}
         </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
@@ -352,8 +352,8 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
-          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
+          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (
@@ -368,7 +368,7 @@ export const PlanItem = React.memo((props: Props) => {
             </>
           )}
         </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
@@ -388,8 +388,8 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
-          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
+          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (
@@ -404,7 +404,7 @@ export const PlanItem = React.memo((props: Props) => {
             </>
           )}
         </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
@@ -424,8 +424,8 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "#999" }}>schedule</Icon>
-          <span style={{ color: "#666", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
+          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (
@@ -440,7 +440,7 @@ export const PlanItem = React.memo((props: Props) => {
             </>
           )}
         </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "#777" }}>drag_indicator</Icon>}
+        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (

@@ -165,7 +165,7 @@ export const Playlists = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: 'grey.50',
+              backgroundColor: 'var(--bg-card)',
               '& .MuiTableCell-root': {
                 borderBottom: '2px solid',
                 borderBottomColor: 'divider'
@@ -294,7 +294,7 @@ export const Playlists = () => {
         <Card sx={{
           borderRadius: 2,
           border: '1px solid',
-          borderColor: 'grey.200'
+          borderColor: 'var(--border-light)'
         }}>
           {/* Search Bar - Conditionally Rendered */}
           {showSearch && (
@@ -314,7 +314,7 @@ export const Playlists = () => {
                 }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
-                    backgroundColor: 'grey.50'
+                    backgroundColor: 'var(--bg-card)'
                   }
                 }}
               />

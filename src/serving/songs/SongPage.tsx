@@ -125,8 +125,8 @@ export const SongPage = memo(() => {
                       sx={{
                         borderRadius: 1,
                         "&.Mui-selected": {
-                          backgroundColor: "primary.light",
-                          "&:hover": { backgroundColor: "primary.light" },
+                          backgroundColor: "rgba(21, 101, 192, 0.12)", // Lighter primary color opacity
+                          "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.2)" },
                         },
                         "&:hover": { backgroundColor: "action.hover" },
                       }}>
@@ -201,11 +201,11 @@ export const SongPage = memo(() => {
           sx={{
             p: 6,
             textAlign: "center",
-            backgroundColor: "grey.50",
+            backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "grey.300",
+            borderColor: "var(--border-main)",
           }}>
-          <ArrangementIcon sx={{ fontSize: 64, color: "grey.400", mb: 2 }} />
+          <ArrangementIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
             No Arrangement Selected
           </Typography>

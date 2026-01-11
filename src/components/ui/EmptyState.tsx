@@ -11,7 +11,7 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  icon, title, description, action, variant = "card", colSpan = 5 
+  icon, title, description, action, variant = "card", colSpan = 5
 }) => {
   const content = (
     <Stack spacing={2} alignItems="center">
@@ -41,9 +41,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       sx={{
         p: 6,
         textAlign: "center",
-        backgroundColor: "grey.50",
+        backgroundColor: "var(--bg-sub)",
         border: "1px dashed",
-        borderColor: "grey.300",
+        borderColor: "var(--border-main)",
         borderRadius: 2,
       }}>
       {content}

@@ -218,7 +218,7 @@ export const Keys = memo((props: Props) => {
 
   return (
     <>
-      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
         <CardContent>
           {/* Header */}
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
@@ -273,7 +273,7 @@ export const Keys = memo((props: Props) => {
                     mt: 3,
                     pt: 2,
                     borderTop: "1px solid",
-                    borderColor: "grey.200",
+                    borderColor: "var(--border-light)",
                   }}>
                   <Button
                     id="addBtnGroup"
@@ -296,11 +296,11 @@ export const Keys = memo((props: Props) => {
               sx={{
                 p: 3,
                 textAlign: "center",
-                backgroundColor: "grey.50",
+                backgroundColor: "var(--bg-sub)",
                 border: "1px dashed",
-                borderColor: "grey.300",
+                borderColor: "var(--border-main)",
               }}>
-              <KeyIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
+              <KeyIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
               <Typography variant="body2" color="text.secondary">
                 No keys available. Add a key to get started.
               </Typography>

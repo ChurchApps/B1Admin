@@ -68,7 +68,7 @@ function DraggableElement({ config, draggingCallback, index, showCategoryBadge, 
         ref={dragRef}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        style={{ background: "#fff", border: `1px solid ${isHovered ? catStyle.borderColor : "#e0e0e0"}`, borderRadius: "10px", padding: "14px", cursor: isDragging ? "grabbing" : "grab", opacity: isDragging ? 0.6 : 1, transform: isHovered && !isDragging ? "translateY(-3px)" : "translateY(0)", boxShadow: isHovered && !isDragging ? "0 8px 24px rgba(0,0,0,0.12)" : "0 1px 4px rgba(0,0,0,0.06)", transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)", display: "flex", flexDirection: "column", gap: "8px", minHeight: "90px", position: "relative" }}
+        style={{ background: "var(--bg-card)", border: `1px solid ${isHovered ? catStyle.borderColor : "var(--border-main)"}`, borderRadius: "10px", padding: "14px", cursor: isDragging ? "grabbing" : "grab", opacity: isDragging ? 0.6 : 1, transform: isHovered && !isDragging ? "translateY(-3px)" : "translateY(0)", boxShadow: isHovered && !isDragging ? "0 8px 24px rgba(0,0,0,0.4)" : "0 1px 4px rgba(0,0,0,0.2)", transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)", display: "flex", flexDirection: "column", gap: "8px", minHeight: "90px", position: "relative" }}
       >
         {showCategoryBadge && (
           <div style={{ position: "absolute", top: "8px", right: "8px" }}>
@@ -81,13 +81,13 @@ function DraggableElement({ config, draggingCallback, index, showCategoryBadge, 
             <Icon sx={{ color: catStyle.color, fontSize: "22px" }}>{config.icon}</Icon>
           </div>
           <div style={{ flex: 1, minWidth: 0, paddingRight: showCategoryBadge ? "60px" : "20px" }}>
-            <div style={{ color: "#333", fontSize: "14px", fontWeight: 600, marginBottom: "3px" }}>{config.label}</div>
-            <div style={{ color: "#666", fontSize: "12px", lineHeight: 1.4 }}>{config.description}</div>
+            <div style={{ color: "var(--text-main)", fontSize: "14px", fontWeight: 600, marginBottom: "3px" }}>{config.label}</div>
+            <div style={{ color: "var(--text-muted)", fontSize: "12px", lineHeight: 1.4 }}>{config.description}</div>
           </div>
         </div>
 
         <div style={{ position: "absolute", bottom: "8px", right: "8px", opacity: isHovered ? 0.5 : 0.2, transition: "opacity 0.2s" }}>
-          <Icon sx={{ color: "#666", fontSize: "16px" }}>drag_indicator</Icon>
+          <Icon sx={{ color: "var(--text-muted)", fontSize: "16px" }}>drag_indicator</Icon>
         </div>
       </div>
     </Grow>
@@ -193,20 +193,20 @@ export function ElementAdd(props: Props) {
             <Icon sx={{ color: "#fff", fontSize: 18 }}>close</Icon>
           </Box>
         </Box>
-        <TextField placeholder={Locale.label("site.elementAdd.searchElements")} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} size="small" fullWidth sx={{ mt: 2, "& .MuiOutlinedInput-root": { background: "#fff", borderRadius: "8px", fontSize: "14px", "& fieldset": { border: "none" }, "&.Mui-focused": { boxShadow: "0 4px 12px rgba(0,0,0,0.15)" } } }} InputProps={{ startAdornment: (<InputAdornment position="start"><Icon sx={{ color: "#999", fontSize: 20 }}>search</Icon></InputAdornment>) }} />
+        <TextField placeholder={Locale.label("site.elementAdd.searchElements")} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} size="small" fullWidth sx={{ mt: 2, "& .MuiOutlinedInput-root": { background: "var(--bg-header)", color: "var(--text-main)", borderRadius: "8px", fontSize: "14px", "& fieldset": { border: "none" }, "&.Mui-focused": { boxShadow: "0 4px 12px rgba(0,0,0,0.3)" } } }} InputProps={{ startAdornment: (<InputAdornment position="start"><Icon sx={{ color: "var(--text-muted)", fontSize: 20 }}>search</Icon></InputAdornment>) }} />
       </Box>
 
-      <Box sx={{ borderBottom: "1px solid #e0e0e0", background: "#fafafa", px: 1, flexShrink: 0 }}>
-        <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} variant="scrollable" scrollButtons="auto" sx={{ minHeight: 48, "& .MuiTab-root": { minHeight: 48, textTransform: "none", fontSize: "13px", fontWeight: 500, color: "#666", minWidth: "auto", px: 2, "&.Mui-selected": { color: "#1565C0", fontWeight: 600 } }, "& .MuiTabs-indicator": { height: 3, borderRadius: "3px 3px 0 0", backgroundColor: "#1565C0" } }}>
+      <Box sx={{ borderBottom: "1px solid var(--border-main)", background: "var(--bg-sub)", px: 1, flexShrink: 0 }}>
+        <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} variant="scrollable" scrollButtons="auto" sx={{ minHeight: 48, "& .MuiTab-root": { minHeight: 48, textTransform: "none", fontSize: "13px", fontWeight: 500, color: "var(--text-muted)", minWidth: "auto", px: 2, "&.Mui-selected": { color: "#1565C0", fontWeight: 600 } }, "& .MuiTabs-indicator": { height: 3, borderRadius: "3px 3px 0 0", backgroundColor: "#1565C0" } }}>
           {tabLabels.map((tab, i) => (
             <Tab key={i} label={<Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}><Icon sx={{ fontSize: 18 }}>{tab.icon}</Icon><span>{tab.label}</span></Box>} />
           ))}
         </Tabs>
       </Box>
 
-      <Box sx={{ p: 2.5, overflowY: "auto", background: "#fff", minHeight: 280, flex: 1 }}>
+      <Box sx={{ p: 2.5, overflowY: "auto", background: "var(--bg-card)", minHeight: 280, flex: 1 }}>
         {filteredElements.length === 0 ? (
-          <Box sx={{ textAlign: "center", py: 6, color: "#888" }}>
+          <Box sx={{ textAlign: "center", py: 6, color: "var(--text-muted)" }}>
             <Icon sx={{ fontSize: 48, mb: 2, opacity: 0.4 }}>search_off</Icon>
             <Box sx={{ fontSize: "15px", fontWeight: 500 }}>{Locale.label("site.elementAdd.noElementsFound")}</Box>
             <Box sx={{ fontSize: "13px", mt: 0.5 }}>{Locale.label("site.elementAdd.tryDifferentSearch")}</Box>
@@ -220,9 +220,9 @@ export function ElementAdd(props: Props) {
         )}
       </Box>
 
-      <Box sx={{ px: 2.5, py: 1.5, background: "#fafafa", borderTop: "1px solid #e0e0e0", display: "flex", alignItems: "center", justifyContent: "center", gap: 1, flexShrink: 0 }}>
-        <Icon sx={{ fontSize: 16, color: "#999" }}>info_outline</Icon>
-        <Box sx={{ fontSize: "12px", color: "#666" }}>{Locale.label("site.elementAdd.dragHint")}</Box>
+      <Box sx={{ px: 2.5, py: 1.5, background: "var(--bg-sub)", borderTop: "1px solid var(--border-main)", display: "flex", alignItems: "center", justifyContent: "center", gap: 1, flexShrink: 0 }}>
+        <Icon sx={{ fontSize: 16, color: "var(--text-muted)" }}>info_outline</Icon>
+        <Box sx={{ fontSize: "12px", color: "var(--text-muted)" }}>{Locale.label("site.elementAdd.dragHint")}</Box>
       </Box>
     </Dialog>
   );

@@ -2,7 +2,7 @@ import React, { memo, useCallback, useMemo } from "react";
 import { Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
 import {
-  Box, Card, CardContent, Typography, Stack, Chip, Avatar, IconButton, Paper, List, ListItem, ListItemIcon, ListItemText, Divider 
+  Box, Card, CardContent, Typography, Stack, Chip, Avatar, IconButton, Paper, List, ListItem, ListItemIcon, ListItemText, Divider
 } from "@mui/material";
 import {
   Edit as EditIcon,
@@ -141,7 +141,7 @@ export const SongDetails = memo((props: Props) => {
   if (editMode) return <SongDetailsEdit songDetail={props.songDetail} onCancel={handleCancel} onSave={handleSave} reload={props.reload} />;
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
       <CardContent>
         {/* Header */}
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
@@ -170,12 +170,12 @@ export const SongDetails = memo((props: Props) => {
               sx={{
                 width: 120,
                 height: 120,
-                bgcolor: "grey.100",
+                bgcolor: "var(--bg-sub)",
                 border: "2px solid",
-                borderColor: "grey.300",
+                borderColor: "var(--border-light)",
               }}
               onError={handleImageError}>
-              <AlbumIcon sx={{ fontSize: 48, color: "grey.400" }} />
+              <AlbumIcon sx={{ fontSize: 48, color: "text.secondary" }} />
             </Avatar>
           </Box>
         )}
@@ -217,11 +217,11 @@ export const SongDetails = memo((props: Props) => {
             sx={{
               p: 3,
               textAlign: "center",
-              backgroundColor: "grey.50",
+              backgroundColor: "var(--bg-sub)",
               border: "1px dashed",
-              borderColor: "grey.300",
+              borderColor: "var(--border-main)",
             }}>
-            <AlbumIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
+            <AlbumIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
             <Typography variant="body2" color="text.secondary">
               No additional details available for this song.
             </Typography>

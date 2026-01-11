@@ -28,6 +28,11 @@ export const ThemeContextProvider = ({ children }: Props) => {
 
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, mode);
+    if (mode === "dark") {
+      document.body.classList.add("dark-theme");
+    } else {
+      document.body.classList.remove("dark-theme");
+    }
   }, [mode]);
 
   const toggleTheme = () => {

@@ -198,7 +198,7 @@ export const FundsPage = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: "grey.50",
+              backgroundColor: "var(--bg-card)",
               "& .MuiTableCell-root": {
                 borderBottom: "2px solid",
                 borderBottomColor: "divider",
