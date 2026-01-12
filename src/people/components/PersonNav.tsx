@@ -51,7 +51,7 @@ export const PersonNav: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className="sideNav" style={{ height: "100vh", borderRight: "1px solid #CCC" }}>
+    <div className="sideNav" style={{ height: "100vh", borderRight: "1px solid var(--border-main)" }}>
       <ul>
         {tabs.map((tab) => getItem(tab))}
         <li>

@@ -160,20 +160,20 @@ export const IconPicker: React.FC<Props> = (props) => {
                         justifyContent: 'center',
                         gap: 0.25,
                         border: '1px solid',
-                        borderColor: props.currentIcon === iconName ? '#1976d2' : 'grey.300',
-                        backgroundColor: props.currentIcon === iconName ? 'rgba(25, 118, 210, 0.08)' : '#fff',
+                        borderColor: props.currentIcon === iconName ? 'primary.main' : 'divider',
+                        backgroundColor: props.currentIcon === iconName ? 'action.selected' : 'background.paper',
                         borderRadius: 0.5,
                         cursor: 'pointer',
                         transition: 'all 0.15s',
                         py: 0.5,
                         '&:hover': {
-                          borderColor: '#1976d2',
-                          backgroundColor: 'rgba(25, 118, 210, 0.04)',
+                          borderColor: 'primary.main',
+                          backgroundColor: 'action.hover',
                           transform: 'scale(1.05)'
                         }
                       }}
                     >
-                      <Icon sx={{ fontSize: 22, color: '#1976d2' }}>{iconName}</Icon>
+                      <Icon sx={{ fontSize: 22, color: 'primary.main' }}>{iconName}</Icon>
                       <Typography
                         variant="caption"
                         sx={{

@@ -14,7 +14,7 @@ export const PersonBanner: React.FC = () => {
               height: 100,
               objectFit: "cover",
               borderRadius: "50%",
-              border: "5px solid #FFF",
+              border: "5px solid var(--bg-card)",
               float: "left",
               marginRight: 30,
             }}

@@ -3,7 +3,7 @@ import React from "react";
 
 export const PersonNav: React.FC = () => {
   return (
-    <div className="sideNav" style={{ height: "100vh", borderRight: "1px solid #CCC" }}>
+    <div className="sideNav" style={{ height: "100vh", borderRight: "1px solid var(--border-main)" }}>
       <ul>
         <li key="details" className="active">
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>

@@ -18,21 +18,21 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             margin: "16px 0",
           },
           "& .table th": {
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "var(--bg-sub)",
             padding: "12px 16px",
             textAlign: "left",
             fontWeight: 600,
             fontSize: "0.875rem",
             color: "text.primary",
-            borderBottom: "2px solid #e0e0e0",
+            borderBottom: "2px solid var(--border-main)",
           },
           "& .table td": {
             padding: "12px 16px",
-            borderBottom: "1px solid #e0e0e0",
+            borderBottom: "1px solid var(--border-main)",
             fontSize: "0.95rem",
             color: "text.primary",
           },
-          "& .table tbody tr:hover": { backgroundColor: "#fafafa" },
+          "& .table tbody tr:hover": { backgroundColor: "var(--bg-sub)" },
           "& .table tbody tr:last-child td": { borderBottom: "none" },
           "& .donationAmount": {
             fontWeight: 600,
@@ -48,9 +48,10 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
           },
           "& .totalRow": {
             fontWeight: 600,
-            backgroundColor: "#f0f7ff",
+            backgroundColor: "action.hover",
             "& td": {
-              borderTop: "2px solid #2196f3",
+              borderTop: "2px solid",
+              borderTopColor: "primary.main",
               color: "primary.main",
             },
           },
@@ -64,7 +65,7 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
           "& .filters": {
             marginBottom: "16px",
             padding: "16px",
-            backgroundColor: "#f8f9fa",
+            backgroundColor: "var(--bg-sub)",
             borderRadius: "8px",
             display: "flex",
             gap: "16px",
@@ -79,10 +80,11 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
           },
           "& .filters select": {
             padding: "6px 12px",
-            border: "1px solid #ddd",
+            border: "1px solid var(--border-main)",
             borderRadius: "4px",
             fontSize: "0.875rem",
-            backgroundColor: "white",
+            backgroundColor: "var(--bg-card)",
+            color: "var(--text-main)",
             "&:focus": {
               outline: "none",
               borderColor: "primary.main",
@@ -91,10 +93,11 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
           },
           '& .filters input[type="date"]': {
             padding: "6px 12px",
-            border: "1px solid #ddd",
+            border: "1px solid var(--border-main)",
             borderRadius: "4px",
             fontSize: "0.875rem",
-            backgroundColor: "white",
+            backgroundColor: "var(--bg-card)",
+            color: "var(--text-main)",
             "&:focus": {
               outline: "none",
               borderColor: "primary.main",

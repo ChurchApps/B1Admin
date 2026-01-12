@@ -41,7 +41,7 @@ export class Themes {
 
   static NavBarStyle = {
     "& .selected .MuiListItemButton-root": {
-      backgroundColor: "#555555",
+      backgroundColor: "action.selected",
       borderRadius: 4,
     },
   };

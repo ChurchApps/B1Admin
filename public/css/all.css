@@ -64,7 +64,7 @@ h1 {
 
 
 h1 {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border-main);
   padding-bottom: 10px;
   margin-bottom: 25px;
 }
@@ -80,7 +80,7 @@ h1 {
 
 .note {
   margin-top: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-main);
   display: flex;
   width: 100%;
   padding: 0 10px;
@@ -91,7 +91,7 @@ h1 {
 }
 
 .note .postedBy {
-  color: #999;
+  color: var(--text-muted);
   justify-content: space-between;
   align-items: baseline;
 }
@@ -124,7 +124,7 @@ h1 {
 }
 
 .text-grey {
-  color: #a9a9a9;
+  color: var(--text-muted);
 }
 
 .personPhoto {
@@ -172,7 +172,7 @@ h1 {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid gray;
+  border-bottom: 5px solid var(--text-muted);
   display: inline-block;
 }
 
@@ -181,7 +181,7 @@ h1 {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid gray;
+  border-top: 5px solid var(--text-muted);
   display: inline-block;
 }
 
@@ -191,7 +191,7 @@ h1 {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid black;
+  border-bottom: 5px solid var(--text-main);
   display: inline-block;
 }
 
@@ -200,7 +200,7 @@ h1 {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid black;
+  border-top: 5px solid var(--text-main);
   display: inline-block;
 }
 
@@ -371,7 +371,7 @@ h1 {
 }
 
 #navbar .nav-link {
-  color: #555;
+  color: var(--text-main);
   height: 55px;
   vertical-align: middle;
   line-height: 45px;
@@ -532,11 +532,11 @@ h1 {
 }
 
 .inputBox .content label {
-  color: #999;
+  color: var(--text-muted);
 }
 
 .inputBox .content .dark label {
-  color: #495057;
+  color: var(--text-main);
 }
 
 .inputBox .section {
@@ -618,7 +618,7 @@ h1 {
 }
 
 .addableForm span {
-  color: #999;
+  color: var(--text-muted);
 }
 
 @media (min-width: 1200px) {
@@ -651,7 +651,7 @@ h1 {
 }
 
 .form-control::placeholder {
-  color: #ccc;
+  color: var(--text-muted);
 }
 
 label .description {
@@ -717,7 +717,7 @@ label .description {
 
 
 #fieldsDropdown .dropdown-menu i {
-  color: #ddd;
+  color: var(--text-muted);
 }
 
 #fieldsDropdown .dropdown-menu .checked i {
@@ -777,7 +777,7 @@ label .description {
 
 .planItemDescription {
   font-style: italic;
-  color: #777;
+  color: var(--text-muted);
   padding-left: 22px;
 }
 

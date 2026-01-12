@@ -153,10 +153,10 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.27.1"
 
-"@churchapps/apphelper-donations@^0.6.0", "@churchapps/apphelper-donations@^0.6.11":
-  version "0.6.11"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper-donations/-/apphelper-donations-0.6.11.tgz"
-  integrity sha512-xLGs6+6aNEIlxJ6Vq9ve5rrQbMfEQluBP4Es/rrETIeUfVzOl5fXfHSmcI02ZJb9mVVd9XTk483TKvCssuNERg==
+"@churchapps/apphelper-donations@^0.6.0", "@churchapps/apphelper-donations@^0.6.12":
+  version "0.6.12"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper-donations/-/apphelper-donations-0.6.12.tgz"
+  integrity sha512-MoMpAOp3Ljtcnk5UPrhLxYdR73aLVbfWs5O0TscJL/4F9ht3ZT+g4W6MtCF3IWfKYxGEEvdr4DmO1wk8Cf3UJQ==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"
@@ -260,8 +260,7 @@
 
 "@churchapps/helpers@^1.2.19", "@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5":
   version "1.2.19"
-  resolved "https://registry.npmjs.org/@churchapps/helpers/-/helpers-1.2.19.tgz"
-  integrity sha512-gjY4M8E+qiGZBvomklTUSHrED5mWLMTE37Vy1Viy3DXB18kYnUvB/FRwVTXMZKGidt6ljJGn1gPYtzn3t/kJKw==
+  resolved "file:../Helpers"
   dependencies:
     dayjs "^1.11.18"
 

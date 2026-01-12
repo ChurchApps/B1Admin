@@ -29,7 +29,7 @@ export const Login: React.FC = () => {
   if (!auth) auth = "";
 
   return (
-    <div style={{ marginTop: -50 }}>
+    <div style={{ marginTop: -50, backgroundColor: "var(--bg-main)", minHeight: "100vh" }}>
       {process.env.REACT_APP_STAGE === "demo" && (
         <Alert severity="error" style={{ marginTop: 50 }}>
           <b>Demo:</b> This is the demo environment. All data is erased nightly.
