@@ -44,7 +44,7 @@ test.describe('People Management', () => {
       await firstName.fill('Donald');
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 }).catch(() => { });
-
+      await page.waitForTimeout(2000);
       await page.waitForSelector('table tbody tr', { state: 'visible' });
       const results = page.locator('table tbody tr');
       await expect(results.first()).toBeVisible();
@@ -117,6 +117,7 @@ test.describe('People Management', () => {
 
       const notesBtn = page.locator('button').getByText('Notes');
       await notesBtn.click();
+      await page.waitForTimeout(500);
       const seekNotes = page.locator('textArea').first();
       await seekNotes.fill('Octavian Test Note');
       const sendBtn = page.locator('button').getByText('send');
@@ -380,13 +381,16 @@ test.describe('People Management', () => {
 
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
+      await page.waitForTimeout(500);
       const removeBtn = page.locator('button').getByText('Remove').last();
       await removeBtn.click();
       await page.waitForTimeout(5000);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      await page.waitForTimeout(500);
       await editBtn.click();
       const personRows = page.locator('[id="householdMemberTable"] tr');
+      await page.waitForTimeout(500);
       const rowCount = await personRows.count();
       await expect(rowCount).toBe(2);
     });
@@ -459,9 +463,12 @@ test.describe('People Management', () => {
       await editBtn.click();
       const middleName = page.locator('[name="name.middle"]');
       await middleName.fill('Octavian');
+      await page.waitForTimeout(500);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      await page.waitForTimeout(500);
       await editBtn.click();
+      await page.waitForTimeout(500);
       await expect(middleName).toHaveValue('Octavian');
     });
 

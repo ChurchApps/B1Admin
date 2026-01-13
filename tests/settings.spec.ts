@@ -19,20 +19,22 @@ test.describe('Settings Management', () => {
   }); */
   test.describe('General Settings', () => {
     test('should edit church', async ({ page }) => {
-      //RESET: const settingsHeader = page.locator('h4').getByText('Grace Community Church');
+      const settingsHeader = page.locator('h4').getByText('Grace Community Church');
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
       await editBtn.click();
+      await page.waitForTimeout(500);
       const churchName = page.locator('[name="churchName"]');
-      await churchName.fill('Grace Community Church Lol');
+      await churchName.fill('Gracious Community Church');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const settingHeaderTwo = page.locator('h4').getByText('Grace Community Church Lol');
+      await page.waitForTimeout(2000);
+      const settingHeaderTwo = page.locator('h4').getByText('Gracious Community Church');
       await expect(settingHeaderTwo).toHaveCount(1);
-      // RESET:
-      /* editBtn.click();
+      await page.waitForTimeout(500);
+      editBtn.click();
       churchName.fill('Grace Community Church');
       saveBtn.click();
-      await expect(settingsHeader).toHaveCount(1); */
+      await expect(settingsHeader).toHaveCount(1);
     });
 
     test('should cancel editing church', async ({ page }) => {
@@ -197,6 +199,7 @@ test.describe('Settings Management', () => {
       await thanksMsg.fill('Thanks from Octavian');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      await page.waitForTimeout(500);
       const validatedForm = page.locator('a').getByText('Octavian Test Form');
       await expect(validatedForm).toHaveCount(1);
     });
@@ -217,9 +220,11 @@ test.describe('Settings Management', () => {
       const editBtn = page.locator('button').getByText('edit').first();
       await editBtn.click();
       const formName = page.locator('[name="name"]');
+      await page.waitForTimeout(500);
       await expect(formName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
+      await page.waitForTimeout(500);
       await expect(formName).toHaveCount(0);
     });
 
