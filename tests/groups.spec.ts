@@ -73,6 +73,7 @@ test.describe('Group Management', () => {
       await firstName.fill('Donald');
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 }).catch(() => { });
+      await page.waitForTimeout(500);
 
       const addBtn = page.locator('button').getByText('Add').last();
       await addBtn.click();
@@ -92,6 +93,7 @@ test.describe('Group Management', () => {
       await advBtn.click();
       const firstCheck = page.locator('div input[type="checkbox"]').first();
       await firstCheck.click();
+      await page.waitForTimeout(500);
       const secondCheck = page.locator('div input[type="checkbox"]').nth(1);
       await secondCheck.click();
       const checkTwo = page.locator('span').getByText('2 active:');
@@ -115,11 +117,12 @@ test.describe('Group Management', () => {
 
       const removeBtn = page.locator('button').getByText('person_remove').last();
       await removeBtn.click();
-      const validateRemoval = page.locator('[id="groupMemberTable"]').getByText('Alex User');
+      await page.waitForTimeout(500);
+      const validateRemoval = page.locator('[id="groupMemberTable"]').getByText('Donald Clark');
       await expect(validateRemoval).toHaveCount(0);
     });
 
-    test('UNFINISHED should send a message to group', async ({ page }) => {
+    test('should send a message to group', async ({ page }) => {
       //SENDING VALIDATION- get dad to fix his end
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
@@ -145,6 +148,7 @@ test.describe('Group Management', () => {
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
 
+      await page.waitForTimeout(500);
       const messageBtn = page.locator('button').getByText('edit_square');
       await messageBtn.click();
       const templatesBtn = page.locator('button').getByText('Show Templates');
@@ -212,10 +216,14 @@ test.describe('Group Management', () => {
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
 
+      await page.waitForTimeout(500);
       const sessionsBtn = page.locator('button').getByText('Sessions');
       await sessionsBtn.click();
       const newBtn = page.locator('button').getByText('New').first();
       await newBtn.click();
+      const dateBox = page.locator('[type="date"]');
+      await dateBox.fill('2025-09-01');
+      await page.waitForTimeout(500);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       const sessionCard = page.locator('span').getByText('Active');
@@ -232,6 +240,9 @@ test.describe('Group Management', () => {
       await sessionsBtn.click();
       const newBtn = page.locator('button').getByText('New').first();
       await newBtn.click();
+      const dateBox = page.locator('[type="date"]');
+      await dateBox.fill('2025-10-01');
+      await page.waitForTimeout(500);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       await page.waitForTimeout(2000);
@@ -244,6 +255,7 @@ test.describe('Group Management', () => {
     });
 
     test('should remove person from session', async ({ page }) => {
+      await page.waitForTimeout(500);
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -253,8 +265,12 @@ test.describe('Group Management', () => {
       await sessionsBtn.click();
       const newBtn = page.locator('button').getByText('New').first();
       await newBtn.click();
+      const dateBox = page.locator('[type="date"]');
+      await dateBox.fill('2025-11-01');
+      await page.waitForTimeout(500);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      await page.waitForTimeout(500);
       const viewBtn = page.locator('button').getByText('View').first();
       await viewBtn.click();
       const addBtn = page.locator('button[data-testid="add-member-button"]').first();
@@ -306,12 +322,14 @@ test.describe('Group Management', () => {
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
       //delete
+      await page.waitForTimeout(2000);
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      //return to group homepage
-      const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
+      await page.waitForTimeout(500);
+      //OUTDATED- returns to group homepage, now happens automatically:
+      /* const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
       await menuBtn.click();
       const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
       await peopleHomeBtn.click();
@@ -320,7 +338,7 @@ test.describe('Group Management', () => {
       const groupHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Groups');
       await groupHomeBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups/);
+      await expect(page).toHaveURL(/\/groups/); */
       //check for group still existing
       const deletedGroup = page.locator('table tbody tr a').getByText('Elementary (3-5)');
       const editedDeletedGroup = page.locator('table tbody tr a').getByText('Elementary (2-5)');

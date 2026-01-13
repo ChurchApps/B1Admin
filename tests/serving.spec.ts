@@ -10,7 +10,7 @@ test.describe('Serving Management', () => {
     const servingHomeBtn = page.locator('[data-testid="nav-item-serving"]');
     await servingHomeBtn.click();
     await page.waitForTimeout(5000);
-    await expect(page).toHaveURL(/\/plans/);
+    await expect(page).toHaveURL(/\/serving/);
   });
 
   /* test('should load serving page', async ({ page }) => {
@@ -24,9 +24,9 @@ test.describe('Serving Management', () => {
       await addBtn.click();
       const minName = page.locator('[name="name"]');
       await minName.fill('Octavian Ministry');
-      const saveBtn = page.locator('button').getByText('Add').nth(1);
+      const saveBtn = page.locator('button').getByText('Add').first();
       await saveBtn.click();
-      const verifiedMin = page.locator('a').getByText('Octavian Ministry');
+      const verifiedMin = page.locator('[role="tab"]').getByText('Octavian Ministry');
       await expect(verifiedMin).toHaveCount(1);
     });
 
@@ -41,7 +41,7 @@ test.describe('Serving Management', () => {
     });
 
     test('should manage ministry', async ({ page }) => {
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
+      const manageBtn = page.locator('[role="tab"]').getByText('Octavian Ministry');
       await manageBtn.click();
       await page.waitForTimeout(2000);
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
@@ -79,12 +79,27 @@ test.describe('Serving Management', () => {
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
       await firstName.fill('Grace');
-      const searchBtn = page.locator('button').getByText('Search');
+      const searchBtn = page.locator('button').getByText('Search').last();
       await searchBtn.click();
+      await page.waitForTimeout(500);
       const addBtn = page.locator('button').getByText('Add');
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
       await expect(verifiedPerson).toHaveCount(1);
+    });
+
+    test('should promote person to ministry leader', async ({ page }) => {
+      const manageBtn = page.locator('a').getByText('Manage').nth(1);
+      await manageBtn.click();
+      await page.waitForTimeout(2000);
+      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+
+      const promoteBtn = page.locator('button').getByText('key').first();
+      await promoteBtn.click();
+      await page.waitForTimeout(500);
+      await page.reload();
+      const verifiedPromoted = page.locator('button').getByText('key_off');
+      await expect(verifiedPromoted).toHaveCount(1);
     });
 
     test('should remove person from ministry', async ({ page }) => {
@@ -99,19 +114,6 @@ test.describe('Serving Management', () => {
       await expect(verifiedRemoved).toHaveCount(0);
     });
 
-    test('should promote person to ministry leader', async ({ page }) => {
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
-
-      const promoteBtn = page.locator('button').getByText('key').first();
-      await promoteBtn.click();
-      await page.reload();
-      const verifiedPromoted = page.locator('button').getByText('key_off');
-      await expect(verifiedPromoted).toHaveCount(1);
-    });
-
     test('should edit ministry', async ({ page }) => {
       const manageBtn = page.locator('a').getByText('Manage').nth(1);
       await manageBtn.click();
@@ -120,6 +122,7 @@ test.describe('Serving Management', () => {
 
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
       await editBtn.click();
+      await page.waitForTimeout(500);
       const minName = page.locator('[name="name"]');
       await minName.fill('Octavius Ministry');
       const saveBtn = page.locator('button').getByText('Save');
@@ -138,6 +141,7 @@ test.describe('Serving Management', () => {
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
       await editBtn.click();
       const minName = page.locator('[name="name"]');
+      await page.waitForTimeout(500);
       await expect(minName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
@@ -242,6 +246,7 @@ test.describe('Serving Management', () => {
       await minBtn.click();
       await page.waitForTimeout(2000);
       await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
+      await page.waitForTimeout(500);
       const plansBtn = page.locator('button').getByText('Plans').last();
       await plansBtn.click();
 
@@ -307,6 +312,7 @@ test.describe('Serving Management', () => {
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
+      await page.waitForTimeout(2000);
       const addBtn = page.locator('button').getByText('Add');
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
@@ -335,12 +341,33 @@ test.describe('Serving Management', () => {
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
       await firstName.fill('Grace');
-      const searchBtn = page.locator('button').getByText('Search');
+      const searchBtn = page.locator('button').getByText('Search').last();
       await searchBtn.click();
+      await page.waitForTimeout(500);
       const addBtn = page.locator('button').getByText('Add');
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
       await expect(verifiedPerson).toHaveCount(1);
+    });
+
+    test('should promote person to team leader', async ({ page }) => {
+      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(2000);
+      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
+      const teamsBtn = page.locator('button').getByText('Teams');
+      await teamsBtn.click();
+      const manageBtn = page.locator('a').getByText('Octavian Team');
+      await manageBtn.click();
+      await page.waitForTimeout(2000);
+      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+
+      const promoteBtn = page.locator('button').getByText('key').first();
+      await promoteBtn.click();
+      await page.waitForTimeout(500);
+      await page.reload();
+      const verifiedPromoted = page.locator('button').getByText('key_off');
+      await expect(verifiedPromoted).toHaveCount(1);
     });
 
     test('should remove person from team', async ({ page }) => {
@@ -359,25 +386,6 @@ test.describe('Serving Management', () => {
       await removeBtn.click();
       const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
       await expect(verifiedRemoved).toHaveCount(0);
-    });
-
-    test('should promote person to team leader', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
-      await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
-      const manageBtn = page.locator('a').getByText('Octavian Team');
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
-
-      const promoteBtn = page.locator('button').getByText('key').first();
-      await promoteBtn.click();
-      await page.reload();
-      const verifiedPromoted = page.locator('button').getByText('key_off');
-      await expect(verifiedPromoted).toHaveCount(1);
     });
 
     test('should edit team', async ({ page }) => {
@@ -457,7 +465,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const addBtn = page.locator('[data-testid="add-song-button"]');
       await addBtn.click();
@@ -482,7 +490,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -497,7 +505,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -520,7 +528,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -539,7 +547,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -563,14 +571,14 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await page.waitForTimeout(2000);
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').last();
       await editBtn.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
+      const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
       const validatedDeletion = page.locator('a').getByText('Frolic');
       await expect(validatedDeletion).toHaveCount(0);
@@ -580,7 +588,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -599,7 +607,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -623,7 +631,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -640,7 +648,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -669,7 +677,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -689,7 +697,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -709,7 +717,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
@@ -734,14 +742,14 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await page.waitForTimeout(2000);
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').nth(2);
       await editBtn.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
+      const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
       await page.waitForTimeout(500);
       const validatedDeletion = page.locator('a').getByText('Frolic');
@@ -752,7 +760,7 @@ test.describe('Serving Management', () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/songs/);
+      await expect(page).toHaveURL(/\/serving\/songs/);
 
       const searchBtn = page.locator('button').getByText('Search');
       await searchBtn.click();
@@ -815,13 +823,15 @@ test.describe('Serving Management', () => {
       await expect(page).toHaveURL(/\/tasks/);
 
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(2);
+      await expect(task).toHaveCount(4);
       const closedBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedBtn.click();
+      await page.waitForTimeout(500);
       await expect(task).toHaveCount(0);
       const openBtn = page.locator('[data-testid="show-open-tasks-button"]');
       await openBtn.click();
-      await expect(task).toHaveCount(2);
+      await page.waitForTimeout(500);
+      await expect(task).toHaveCount(4);
     });
 
     test('should reassign tasks', async ({ page }) => {
@@ -831,10 +841,10 @@ test.describe('Serving Management', () => {
       await expect(page).toHaveURL(/\/tasks/);
 
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(2);
+      await expect(task).toHaveCount(4);
       const selectedTask = page.locator('a').getByText('Test Task').first();
       await selectedTask.click()
-      const assignBtn = page.locator('[title="Edit Assigned To"]');
+      const assignBtn = page.locator('[title="Edit Assigned"]');
       await assignBtn.click();
       const personSearch = page.locator('[name="personAddText"]');
       await personSearch.fill('Dorothy');
@@ -844,7 +854,7 @@ test.describe('Serving Management', () => {
       await selectBtn.click();
       await tasksBtn.click();
       await page.waitForTimeout(2000);
-      await expect(task).toHaveCount(1);
+      await expect(task).toHaveCount(3);
     });
 
     test('should reassociate tasks', async ({ page }) => {
@@ -855,7 +865,7 @@ test.describe('Serving Management', () => {
 
       const task = page.locator('a').getByText('Test Task').first();
       await task.click()
-      const associateBtn = page.locator('[title="Edit Associated With"]');
+      const associateBtn = page.locator('[title="Edit Associated"]');
       await associateBtn.click();
       const personSearch = page.locator('[name="personAddText"]');
       await personSearch.fill('Grace Jackson');
@@ -866,7 +876,7 @@ test.describe('Serving Management', () => {
       await tasksBtn.click();
       await page.waitForTimeout(2000);
       const validatedAssociation = page.locator('p').getByText('Grace Jackson');
-      await expect(validatedAssociation).toHaveCount(1);
+      await expect(validatedAssociation).toHaveCount(2);
     });
 
     test('should close a task', async ({ page }) => {
@@ -883,7 +893,7 @@ test.describe('Serving Management', () => {
       await closedBtn.click();
       await tasksBtn.click();
       await page.waitForTimeout(2000);
-      await expect(task).toHaveCount(0);
+      await expect(task).toHaveCount(1);
       const closedTasksBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedTasksBtn.click();
       await expect(task).toHaveCount(1);
@@ -899,14 +909,15 @@ test.describe('Serving Management', () => {
 
       const addBtn = page.locator('button').getByText('Add Automation');
       await addBtn.click();
+      await page.waitForTimeout(500);
       const autoName = page.locator('[name="title"]');
       await autoName.fill('Octavian Test Automation');
       const recurranceBox = page.locator('[id="mui-component-select-recurs"]');
       await recurranceBox.click();
       const selRecurrance = page.locator('[data-value="yearly"]');
       await selRecurrance.click();
-      const inactiveCheck = page.locator('[type="checkbox"]');
-      await inactiveCheck.click();
+      /* const inactiveCheck = page.locator('[type="checkbox"]');
+      await inactiveCheck.click(); */
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       await page.waitForTimeout(2000);

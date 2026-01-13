@@ -18,6 +18,7 @@ test.describe('Dashboard Management', () => {
   }); */
 
   test('should load group from dashboard', async ({ page }) => {
+    await page.waitForTimeout(500);
     const firstGroup = page.locator('h6').first();
     await firstGroup.click();
     await page.waitForTimeout(2000);

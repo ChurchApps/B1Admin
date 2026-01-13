@@ -201,10 +201,10 @@ test.describe('Donations Management', () => {
       await selBatch.click();
       await page.waitForTimeout(500);
 
-      const editBtn = page.locator('button').getByText('Edit').last();
+      const editBtn = page.locator('[data-cy="edit-link-0"]');
       await editBtn.click();
-      await page.waitForTimeout(500);
-      const amount = page.locator('input').nth(2);
+      await page.waitForTimeout(2000);
+      const amount = page.locator('[name="amount"]');
       await amount.fill('30.00');
 
       const saveBtn = page.locator('button').getByText('Save');
@@ -240,11 +240,12 @@ test.describe('Donations Management', () => {
       await selBatch.click();
       await page.waitForTimeout(500);
 
-      const editBtn = page.locator('button').getByText('Edit').last();
+      const editBtn = page.locator('[data-cy="edit-link-0"]');
       await editBtn.click();
+      await page.waitForTimeout(500);
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(2000);
       const validateDeletion = page.locator('table td').getByText('$30.00');
       await expect(validateDeletion).toHaveCount(0);
     });
