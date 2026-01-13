@@ -165,10 +165,10 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.28.5"
 
-"@churchapps/apphelper-donations@^0.6.0", "@churchapps/apphelper-donations@^0.6.13":
-  version "0.6.13"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-donations/-/apphelper-donations-0.6.13.tgz#75ee46f4884cafff4f5dfba8820e3478382b4111"
-  integrity sha512-QmYXEgEdN7TKUezTMrGCt96i/Ug/H7qze21D4G5Q/0gXvbTOLWFyaPvbQUWzBAmiXmu7QlrIFPVP6ymnA+eypA==
+"@churchapps/apphelper-donations@^0.6.0", "@churchapps/apphelper-donations@^0.6.14":
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-donations/-/apphelper-donations-0.6.14.tgz#8ef2a3f30b42259d6b7b1cfdd2aeabaad7ba9c94"
+  integrity sha512-gwCdm3Ypcbd1xCxtgFLq4Sw7sjp3MGv6DL20dpwXCRCyUFkRcYxbMzXy9UDu0TNqbNpwGgvXdGHb8bSDBzn3zQ==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"
@@ -184,10 +184,10 @@
     react-i18next "^15.6.1"
     rrule "^2.8.1"
 
-"@churchapps/apphelper-forms@^0.6.11":
-  version "0.6.11"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-forms/-/apphelper-forms-0.6.11.tgz#33ded7c59c26f9e0cab1dd7b57ec5930fb0ba0fa"
-  integrity sha512-4JdBEjCJtLR1vzg9v2jWlU/usiKiMEdtGljB5Z8W6zN7/zsWXw1fuNAaKJ2IXB71fkYUSiRySS4N8qwluw+hnA==
+"@churchapps/apphelper-forms@^0.6.14":
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-forms/-/apphelper-forms-0.6.14.tgz#5797096fc3e0dc76d2a08486c2308e2f8e02c52f"
+  integrity sha512-WK4OxsmJCBDq6e3DhUA/a3tlYb7dFKPvozFjDCpUYn9kBiHinkaEXQWiA5hS79rOODQBOJcPbEYp5b0QXnXKDg==
   dependencies:
     "@churchapps/apphelper-donations" "^0.6.0"
     "@emotion/react" "^11.14.0"
@@ -197,10 +197,10 @@
     i18next "^25.3.2"
     react-i18next "^15.6.1"
 
-"@churchapps/apphelper-login@^0.6.11":
-  version "0.6.11"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-login/-/apphelper-login-0.6.11.tgz#22022061debbca99d5fdfb8aebdfca1e4ab7a2dd"
-  integrity sha512-pLx+G5/kidFhiEHNDAQL82rDUa3lDCVwgIvE7spmO3IiPzfCcGbCTqDSCtRmVRul5QkrMg4fg5NBkop+HAveDg==
+"@churchapps/apphelper-login@^0.6.14":
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-login/-/apphelper-login-0.6.14.tgz#a2e5d3f4fe45d133a053546609f8bddb463c6046"
+  integrity sha512-0E/Ty2QDNFQatDVO14BC0MvmT71TRXra51za2SFYAxYK60Syf40BwA2ESQMUpzg42SJMiaRaPUwS2SLPaUaeNA==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"
@@ -213,10 +213,10 @@
     react-google-recaptcha "^3.1.0"
     react-i18next "^15.6.1"
 
-"@churchapps/apphelper-markdown@^0.6.11":
-  version "0.6.11"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-markdown/-/apphelper-markdown-0.6.11.tgz#f5aa60c6eb42f22a5a3cabf4ec238bcc5f74b1cc"
-  integrity sha512-8Zox7nmgRKRSWbv9isiSW27ZWEdvOFRQ3wOoqrHlv0VUhl3zs0E4RPo8HmaDopEALkAW57LSf6hY1MThtlNi1Q==
+"@churchapps/apphelper-markdown@^0.6.14":
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-markdown/-/apphelper-markdown-0.6.14.tgz#fea1bcccbc05153e2c5d136981b248d37e71902d"
+  integrity sha512-exONCVz6lSQRz6RRw0FQtYbYlzNHZ5NFfFoAgY/Mmnqu1Qi0Ghx0myHA3ts3nbNL7fDTcCzC/i+fmB4QMzXZHw==
   dependencies:
     "@lexical/code" "^0.33.1"
     "@lexical/html" "^0.33.1"
@@ -232,17 +232,17 @@
     marked "^16.1.2"
     material-symbols "^0.33.0"
 
-"@churchapps/apphelper-website@^0.6.13":
-  version "0.6.13"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-website/-/apphelper-website-0.6.13.tgz#4b83e30a5eb16bacc351ac6b27d040c930208548"
-  integrity sha512-zDaZLq6Uoi4kJZnX3pE+jaIgKy+mrRcuhRJBctMecW3QN174RYfV2WLvXLs5t131ZkHC5t2EkUN5ThFK+MU5rg==
+"@churchapps/apphelper-website@^0.6.14":
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-website/-/apphelper-website-0.6.14.tgz#c0f84c13b56112933fa9edad2f2c15f0f1cc258e"
+  integrity sha512-XQbGrWbDSq6kjDVmzDqQNg//34W7xkjTlX42/PxkburTFi8lRfmeoJlfHp1P95k2Y5AvqY/f7Q0uqBxo7oyJXg==
   dependencies:
     rrule "^2.8.1"
 
-"@churchapps/apphelper@^0.6.13":
-  version "0.6.13"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper/-/apphelper-0.6.13.tgz#2df0210a3cd60f0f3899744d1be5aeb1521fa8fb"
-  integrity sha512-yJYMQUPrFvVx3fmMcXg4vSfZrPJQoARPHepFQLDLLke2JmIBjQIF+8kApxVHihdfaGpCgo9FBueyU5iNlBIX6Q==
+"@churchapps/apphelper@^0.6.14":
+  version "0.6.14"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper/-/apphelper-0.6.14.tgz#72fe6e060772ee67ad2bc377209b8df37a8c3922"
+  integrity sha512-EcDQp1LdoRRiOmdsVQurOMWkl//HNClyxyB2mucdpF960c4Kgd/xR4XPwDOWRGGzzF7VNvrvoslD1OGbn3tFtA==
   dependencies:
     "@churchapps/helpers" "^1.2.4"
     "@emotion/cache" "^11.14.0"
