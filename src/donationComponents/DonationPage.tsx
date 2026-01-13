@@ -42,10 +42,23 @@ export const DonationPage: React.FC<Props> = (props) => {
         return;
       }
 
-      const cards = data[0]?.cards?.data?.map((card: any) => new StripePaymentMethod(card)) || [];
-      const banks = data[0]?.banks?.data?.map((bank: any) => new StripePaymentMethod(bank)) || [];
-      setCustomerId(data[0]?.customer?.id);
-      setPaymentMethods(cards.concat(banks));
+      // Handle both old nested format and new flat array format
+      if (data[0]?.cards?.data || data[0]?.banks?.data) {
+        // Old format with nested cards/banks structure
+        const cards = data[0]?.cards?.data?.map((card: any) => new StripePaymentMethod(card)) || [];
+        const banks = data[0]?.banks?.data?.map((bank: any) => new StripePaymentMethod(bank)) || [];
+        setCustomerId(data[0]?.customer?.id);
+        setPaymentMethods(cards.concat(banks));
+      } else {
+        // New flat array format from normalized API response
+        const methods = data.map((pm: any) => new StripePaymentMethod(pm));
+        // Get customerId from first payment method if available
+        const firstMethod = data[0];
+        if (firstMethod?.customerId) {
+          setCustomerId(firstMethod.customerId);
+        }
+        setPaymentMethods(methods);
+      }
     } catch (error) {
       console.error("Error loading payment methods:", error);
       setPaymentMethods([]);
