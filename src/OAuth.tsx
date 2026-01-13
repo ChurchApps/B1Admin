@@ -37,14 +37,14 @@ export const OAuthPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#EEE", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", backgroundColor: "var(--bg-main)", minHeight: "100vh" }}>
       <div style={{ marginLeft: "auto", marginRight: "auto", paddingTop: 20 }}>
         <Box
           sx={{
             width: 500,
             minHeight: 100,
-            backgroundColor: "#FFF",
-            border: "1px solid #CCC",
+            backgroundColor: "var(--bg-card)",
+            border: "1px solid var(--border-main)",
             borderRadius: "5px",
             padding: "10px",
           }}
@@ -58,7 +58,7 @@ export const OAuthPage: React.FC = () => {
           </Alert>
           <div style={{ marginLeft: 50, marginRight: 50 }}>
             <div style={{ textAlign: "center" }}>
-              <Icon style={{ fontSize: 120, marginTop: 30, color: "#777" }}>lock</Icon>
+              <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--text-muted)" }}>lock</Icon>
               <h2>{clientName || "Loading..."}</h2>
               <p>
                 Would you like to access the following data from <b>{UserHelper.currentUserChurch.church.name}</b> in the above application?
@@ -69,7 +69,7 @@ export const OAuthPage: React.FC = () => {
               <li>Plans</li>
             </ul>
           </div>
-          <div style={{ backgroundColor: "rgb(229, 246, 253)", padding: 10 }}>
+          <div style={{ backgroundColor: "var(--bg-sub)", padding: 10 }}>
             <Grid container spacing={2}>
               <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
                 <Button

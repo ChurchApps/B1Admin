@@ -226,7 +226,8 @@
       "serving": "Pagsisilbi",
       "set": "Mga Setting",
       "songs": "Mga Awit",
-      "tasks": "Mga Gawain"
+      "tasks": "Mga Gawain",
+      "teams": "Mga Koponan"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "Kampus",
       "service": "Serbisyo",
       "serviceTime": "Oras ng Serbisyo",
-      "group": "Grupo"
+      "group": "Grupo",
+      "customFields": "Mga Custom na Field"
     },
     "personNav": {
       "customForms": "Mga Custom na Form"
@@ -1018,6 +1020,7 @@
       "copyNothing": "Wala",
       "copyPositions": "Mga Posisyon Lamang",
       "copyPrevious": "Kopyahin mula sa Nakaraang Plano",
+      "copyServiceOrder": "Kopyahin ang Order of Service",
       "none": "Wala",
       "planAdd": "Magdagdag ng plano",
       "planEdit": "I-edit ang plano",
@@ -1069,7 +1072,9 @@
     "plansPage": {
       "selMin": "Piliin ang Ministro",
       "addMinistry": "Magdagdag ng ministeryo",
-      "subtitle": "Pamahalaan ang mga ministro at mga plano sa serbisyo"
+      "editMinistry": "I-edit ang Ministro",
+      "subtitle": "Pamahalaan ang mga ministro at mga plano sa serbisyo",
+      "switchMinistry": "Palitan ang Ministro"
     },
     "planValidation": {
       "and": "at",
@@ -1258,7 +1263,7 @@
       "passVer": "I-verify ang Password",
       "passwordHelper": "Iwanang blangko upang panatilihin ang kasalukuyang password",
       "permWarn": "Mag-ingat, ang mga aksyon na ito ay permanente",
-      "profEdit": "I-edit ang Profile",
+      "profEdit": "I-edit ang Account",
       "saveChange": "Nai-save ang mga pagbabago.",
       "valEmail": "Mangyaring magpasok ng balidong email address.",
       "deleteError": "Nabigong tanggalin ang account",

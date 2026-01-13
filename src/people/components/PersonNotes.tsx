@@ -15,8 +15,8 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
         "& .note": {
           margin: "16px 0",
           padding: "16px",
-          borderBottom: "1px solid #e0e0e0",
-          backgroundColor: "#fafafa",
+          borderBottom: "1px solid var(--border-main)",
+          backgroundColor: "var(--bg-sub)",
           borderRadius: "8px",
           "&:last-child": { borderBottom: "none" },
         },
@@ -48,14 +48,14 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
         "& .addNote": {
           marginTop: "16px",
           padding: "16px",
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "var(--bg-sub)",
           borderRadius: "8px",
         },
         "& .addNote textarea": {
           width: "100%",
           minHeight: "80px",
           padding: "12px",
-          border: "1px solid #ddd",
+          border: "1px solid var(--border-main)",
           borderRadius: "4px",
           fontSize: "0.95rem",
           fontFamily: "inherit",

@@ -226,7 +226,8 @@
       "serving": "Service",
       "set": "Paramètres",
       "songs": "Chants",
-      "tasks": "Tâches"
+      "tasks": "Tâches",
+      "teams": "Équipes"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "Campus",
       "service": "Service",
       "serviceTime": "Heure de Service",
-      "group": "Groupe"
+      "group": "Groupe",
+      "customFields": "Champs Personnalisés"
     },
     "personNav": {
       "customForms": "Formulaires Personnalisés"
@@ -1018,6 +1020,7 @@
       "copyNothing": "Rien",
       "copyPositions": "Postes uniquement",
       "copyPrevious": "Copier du Plan Précédent",
+      "copyServiceOrder": "Copier l'ordre du culte",
       "none": "Aucun",
       "planAdd": "Ajouter un plan",
       "planEdit": "Modifier le plan",
@@ -1055,7 +1058,9 @@
     "plansPage": {
       "selMin": "Sélectionnez un ministère",
       "addMinistry": "Ajouter un ministère",
-      "subtitle": "Gérer les ministères et les plans de services"
+      "editMinistry": "Modifier le ministère",
+      "subtitle": "Gérer les ministères et les plans de services",
+      "switchMinistry": "Changer de ministère"
     },
     "planValidation": {
       "and": "et",
@@ -1251,7 +1256,7 @@
       "passVer": "Vérifier le mot de passe",
       "passwordHelper": "Laissez vide pour conserver le mot de passe actuel",
       "permWarn": "Attention, ces actions sont permanentes",
-      "profEdit": "Modifier le profil",
+      "profEdit": "Modifier le compte",
       "saveChange": "Modifications sauvegardées.",
       "valEmail": "Veuillez entrer une adresse email valide.",
       "deleteError": "Échec de la suppression du compte",

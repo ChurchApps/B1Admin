@@ -9,10 +9,8 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 export const PrintAllStatementsPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  let currYear = new Date().getFullYear();
-  if (searchParams.get("prev") === "1") {
-    currYear = currYear - 1;
-  }
+  const yearParam = searchParams.get("year");
+  const currYear = yearParam ? parseInt(yearParam, 10) : new Date().getFullYear();
   const context = useContext(UserContext);
 
   // Fetch all donations

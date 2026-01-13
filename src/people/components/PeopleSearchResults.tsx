@@ -5,7 +5,7 @@ import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import {
-  Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card 
+  Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card
 } from "@mui/material";
 import { Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
@@ -48,18 +48,25 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     return <PersonAvatar person={p} size="medium" />;
   }, []);
 
-  const getAnswer = useCallback(
-    (p: PersonInterface, key: string) => {
-      let result = <></>;
-      formSubmissions.forEach((fs) => {
-        if (fs.submittedBy === p.id) {
-          const answer = ArrayHelper.getOne(fs.answers, "questionId", key);
-          if (answer) return (result = <>{answer.value}</>);
+  const getAnswerValue = useCallback(
+    (personId: string, questionId: string): string => {
+      for (const fs of formSubmissions) {
+        if (fs.submittedBy === personId) {
+          const answer = ArrayHelper.getOne(fs.answers, "questionId", questionId);
+          if (answer) return answer.value || "";
         }
-      });
-      return result;
+      }
+      return "";
     },
     [formSubmissions]
+  );
+
+  const getAnswer = useCallback(
+    (p: PersonInterface, key: string) => {
+      const value = getAnswerValue(p.id, key);
+      return value ? <>{value}</> : <></>;
+    },
+    [getAnswerValue]
   );
 
   const handleDelete = useCallback(
@@ -100,8 +107,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
                   sx={{
                     fontSize: "0.75rem",
                     mt: 0.5,
-                    backgroundColor: p.membershipStatus === "Member" ? "#e8f5e9" : p.membershipStatus === "Visitor" ? "#fff3e0" : "#f5f5f5",
-                    color: p.membershipStatus === "Member" ? "#2e7d32" : p.membershipStatus === "Visitor" ? "#e65100" : "#616161",
+                    backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "var(--bg-sub)",
+                    color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "var(--text-muted)",
+                    borderColor: "transparent"
                   }}
                 />
               )}
@@ -177,8 +185,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
               variant="outlined"
               sx={{
                 fontSize: "0.75rem",
-                backgroundColor: p.membershipStatus === "Member" ? "#e8f5e9" : p.membershipStatus === "Visitor" ? "#fff3e0" : "#f5f5f5",
-                color: p.membershipStatus === "Member" ? "#2e7d32" : p.membershipStatus === "Visitor" ? "#e65100" : "#616161",
+                backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "var(--bg-sub)",
+                color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "var(--text-muted)",
+                borderColor: "transparent"
               }}
             />
           );
@@ -252,11 +261,30 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   }, []);
 
   const sortTableByKey = useCallback(
-    (key: string, asc: boolean | null) => {
-      if (asc === null) asc = false;
+    (key: string) => {
+      // Toggle direction if same column, otherwise start descending
+      const asc = currentSortedCol === key ? !sortDirection : false;
       setCurrentSortedCol(key);
-      setSortDirection(!asc); //set sort direction for next time
+      setSortDirection(asc);
+
+      // Check if this is a custom field
+      const isCustomField = optionalColumns.some((c) => c.id === key);
+
       const sortedPeople = [...people].sort(function (a: any, b: any) {
+        // Handle custom field sorting
+        if (isCustomField) {
+          const valA = getAnswerValue(a.id, key);
+          const valB = getAnswerValue(b.id, key);
+          if (!valA && !valB) return 0;
+          if (!valA) return 1;
+          if (!valB) return -1;
+          const upperA = valA.toUpperCase();
+          const upperB = valB.toUpperCase();
+          if (upperA < upperB) return asc ? 1 : -1;
+          if (upperA > upperB) return asc ? -1 : 1;
+          return 0;
+        }
+
         if (a[key] === null) return Infinity; // if value is null push to the end of array
         if (key === "birthDay") {
           //there's no 'birthDay' property in the people object; instead use birthDate to sort
@@ -299,7 +327,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         props.updateSearchResults(sortedPeople);
       }
     },
-    [people, props]
+    [people, props, optionalColumns, getAnswerValue, currentSortedCol, sortDirection]
   );
 
   const rows = useMemo(() => {
@@ -308,7 +336,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         <TableRow
           key={p.id}
           sx={{
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
+            "&:hover": { backgroundColor: "rgba(128,128,128,0.1)" },
             cursor: "pointer",
           }}
           onClick={() => navigate(`/people/${p.id}`)}>
@@ -323,7 +351,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     columns.forEach((c) => {
       if (selectedColumns.indexOf(c.key) > -1) {
         result.push(
-          <th key={c.key} onClick={() => sortTableByKey(c.key, sortDirection)}>
+          <th key={c.key} onClick={() => sortTableByKey(c.key)}>
             <span style={{ float: "left" }}>{c.shortName}</span>
             {c.key !== "photo" && c.key !== "deleteOption" && (
               <div style={{ display: "flex" }}>
@@ -341,8 +369,12 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         const key = c.id;
         if (selectedColumns.indexOf(key) > -1) {
           result.push(
-            <th key={key}>
+            <th key={key} onClick={() => sortTableByKey(key)}>
               <span style={{ float: "left" }}>{c.title}</span>
+              <div style={{ display: "flex" }}>
+                <div style={{ marginTop: "5px" }} className={`${sortDirection && currentSortedCol === key ? "sortAscActive" : "sortAsc"}`}></div>
+                <div style={{ marginTop: "14px" }} className={`${!sortDirection && currentSortedCol === key ? "sortDescActive" : "sortDesc"}`}></div>
+              </div>
             </th>
           );
         }
@@ -372,11 +404,11 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         id="peopleTable"
         sx={{
           "& .MuiTableCell-root": {
-            borderBottom: "1px solid rgba(224, 224, 224, 1)",
+            borderBottom: "1px solid var(--border-light)",
             py: 2,
           },
           "& .MuiTableHead-root .MuiTableCell-root": {
-            backgroundColor: "#fafafa",
+            backgroundColor: "var(--bg-sub)",
             fontWeight: 600,
           },
         }}>

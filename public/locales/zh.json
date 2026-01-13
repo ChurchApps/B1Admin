@@ -226,7 +226,8 @@
       "serving": "服务",
       "set": "设置",
       "songs": "歌曲",
-      "tasks": "任务"
+      "tasks": "任务",
+      "teams": "团队"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "校园",
       "service": "服务",
       "serviceTime": "服务时间",
-      "group": "小组"
+      "group": "小组",
+      "customFields": "自定义字段"
     },
     "personNav": {
       "customForms": "自定义表单"
@@ -1018,6 +1020,7 @@
       "copyNothing": "无",
       "copyPositions": "仅职位",
       "copyPrevious": "从上一个计划复制",
+      "copyServiceOrder": "复制礼拜程序",
       "none": "无",
       "planAdd": "添加计划",
       "planEdit": "编辑计划",
@@ -1069,7 +1072,9 @@
     "plansPage": {
       "selMin": "选择一个事工",
       "addMinistry": "添加事工",
-      "subtitle": "管理部门和服务计划"
+      "editMinistry": "编辑事工",
+      "subtitle": "管理部门和服务计划",
+      "switchMinistry": "切换事工"
     },
     "planValidation": {
       "and": "和",
@@ -1258,7 +1263,7 @@
       "passVer": "验证密码",
       "passwordHelper": "留空以保持当前密码",
       "permWarn": "注意，这些操作是永久性的",
-      "profEdit": "编辑个人资料",
+      "profEdit": "编辑账户",
       "saveChange": "更改已保存。",
       "valEmail": "请输入有效的电子邮件地址。",
       "deleteError": "删除账户失败",

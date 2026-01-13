@@ -5,6 +5,7 @@ export interface PaymentGatewaysInterface {
   publicKey?: string;
   privateKey?: string;
   payFees?: boolean;
+  currency?: string;
 }
 
 export interface SongInterface {

@@ -15,7 +15,9 @@ export const Login: React.FC = () => {
 
   const search = new URLSearchParams(window.location.search);
   const defaultRedirect = UserHelper.checkAccess(Permissions.membershipApi.people.view) ? "/people" : "/profile";
-  const returnUrl = search.get("returnUrl") || location.state?.from?.pathname || defaultRedirect;
+  const fromLocation = location.state?.from;
+  const fromUrl = fromLocation ? (fromLocation.pathname + (fromLocation.search || "")) : null;
+  const returnUrl = search.get("returnUrl") || fromUrl || defaultRedirect;
 
   const handleRedirect = (url: string) => {
     navigate(url);
@@ -27,7 +29,7 @@ export const Login: React.FC = () => {
   if (!auth) auth = "";
 
   return (
-    <div style={{ marginTop: -50 }}>
+    <div style={{ marginTop: -50, backgroundColor: "var(--bg-main)", minHeight: "100vh" }}>
       {process.env.REACT_APP_STAGE === "demo" && (
         <Alert severity="error" style={{ marginTop: 50 }}>
           <b>Demo:</b> This is the demo environment. All data is erased nightly.

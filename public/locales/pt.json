@@ -226,7 +226,8 @@
       "serving": "Serviço",
       "set": "Configurações",
       "songs": "Músicas",
-      "tasks": "Tarefas"
+      "tasks": "Tarefas",
+      "teams": "Equipes"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "Campus",
       "service": "Serviço",
       "serviceTime": "Horário de Serviço",
-      "group": "Grupo"
+      "group": "Grupo",
+      "customFields": "Campos Personalizados"
     },
     "personNav": {
       "customForms": "Formulários Personalizados"
@@ -1018,6 +1020,7 @@
       "copyNothing": "Nada",
       "copyPositions": "Apenas Posições",
       "copyPrevious": "Copiar do Plano Anterior",
+      "copyServiceOrder": "Copiar Ordem do Culto",
       "none": "Nenhum",
       "planAdd": "Adicionar um Plano",
       "planEdit": "Editar Plano",
@@ -1055,7 +1058,9 @@
     "plansPage": {
       "selMin": "Selecione um Ministério",
       "addMinistry": "Adicionar Ministério",
-      "subtitle": "Gerenciar ministérios e planos de serviço"
+      "editMinistry": "Editar Ministério",
+      "subtitle": "Gerenciar ministérios e planos de serviço",
+      "switchMinistry": "Trocar Ministério"
     },
     "planValidation": {
       "and": "e",
@@ -1251,7 +1256,7 @@
       "passVer": "Verificar senha",
       "passwordHelper": "Deixe em branco para manter a senha atual",
       "permWarn": "Cuidado, estas ações são permanentes",
-      "profEdit": "Editar Perfil",
+      "profEdit": "Editar Conta",
       "saveChange": "Alterações salvas.",
       "valEmail": "Por favor, insira um endereço de email válido.",
       "deleteError": "Falha ao excluir conta",

@@ -56,7 +56,7 @@ export const FormsPage = () => {
             ariaLabel={`Edit form ${form.name}`}
           />
         ) : null;
-      const formUrl = EnvironmentHelper.B1Url.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
+      const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
       const archiveLink =
         canEdit && !isArchived ? (
@@ -122,7 +122,9 @@ export const FormsPage = () => {
     }
     rows.push(
       <TableRow key="header">
-        <th colSpan={3}>{Locale.label("common.name")}</th>
+        <TableCell>{Locale.label("common.name")}</TableCell>
+        <TableCell>{Locale.label("forms.formsPage.url")}</TableCell>
+        <TableCell></TableCell>
       </TableRow>
     );
     return rows;

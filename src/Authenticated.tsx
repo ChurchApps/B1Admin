@@ -20,22 +20,21 @@ const FormPage = React.lazy(() => import("./forms/FormPage").then((module) => ({
 const ReportsPage = React.lazy(() => import("./reports/ReportsPage").then((module) => ({ default: module.ReportsPage })));
 const ReportPage = React.lazy(() => import("./reports/ReportPage").then((module) => ({ default: module.ReportPage })));
 const AdminReportPage = React.lazy(() => import("./serverAdmin/ReportPage").then((module) => ({ default: module.ReportPage })));
-const TasksPage = React.lazy(() => import("./tasks/TasksPage").then((module) => ({ default: module.TasksPage })));
-const TaskPage = React.lazy(() => import("./tasks/TaskPage").then((module) => ({ default: module.TaskPage })));
-const AutomationsPage = React.lazy(() => import("./tasks/automations/AutomationsPage").then((module) => ({ default: module.AutomationsPage })));
+const TasksPage = React.lazy(() => import("./serving/tasks/TasksPage").then((module) => ({ default: module.TasksPage })));
+const TaskPage = React.lazy(() => import("./serving/tasks/TaskPage").then((module) => ({ default: module.TaskPage })));
+const AutomationsPage = React.lazy(() => import("./serving/tasks/automations/AutomationsPage").then((module) => ({ default: module.AutomationsPage })));
 const DashboardPage = React.lazy(() => import("./dashboard/DashboardPage").then((module) => ({ default: module.DashboardPage })));
 const AdminPage = React.lazy(() => import("./serverAdmin/AdminPage").then((module) => ({ default: module.AdminPage })));
 const ProfilePage = React.lazy(() => import("./profile/ProfilePage").then((module) => ({ default: module.ProfilePage })));
-const PlansPage = React.lazy(() => import("./plans/PlansPage").then((module) => ({ default: module.PlansPage })));
-const PlanPage = React.lazy(() => import("./plans/PlanPage").then((module) => ({ default: module.PlanPage })));
-const MinistryPage = React.lazy(() => import("./plans/MinistryPage").then((module) => ({ default: module.MinistryPage })));
-const PlanTypePage = React.lazy(() => import("./plans/PlanTypePage").then((module) => ({ default: module.PlanTypePage })));
+const ServingPage = React.lazy(() => import("./serving/ServingPage").then((module) => ({ default: module.ServingPage })));
+const PlanPage = React.lazy(() => import("./serving/plans/PlanPage").then((module) => ({ default: module.PlanPage })));
+const PlanTypePage = React.lazy(() => import("./serving/planTypes/PlanTypePage").then((module) => ({ default: module.PlanTypePage })));
 const DonationBatchesPage = React.lazy(() => import("./donations/DonationBatchesPage").then((module) => ({ default: module.DonationBatchesPage })));
 const StripeImportPage = React.lazy(() => import("./donations/StripeImportPage").then((module) => ({ default: module.StripeImportPage })));
 const FundsPage = React.lazy(() => import("./donations/FundsPage").then((module) => ({ default: module.FundsPage })));
-const SongsPage = React.lazy(() => import("./plans/songs/SongsPage").then((module) => ({ default: module.SongsPage })));
-const SongPage = React.lazy(() => import("./plans/songs/SongPage").then((module) => ({ default: module.SongPage })));
-const PrintPlan = React.lazy(() => import("./plans/PrintPlan").then((module) => ({ default: module.PrintPlan })));
+const SongsPage = React.lazy(() => import("./serving/songs/SongsPage").then((module) => ({ default: module.SongsPage })));
+const SongPage = React.lazy(() => import("./serving/songs/SongPage").then((module) => ({ default: module.SongPage })));
+const PrintPlan = React.lazy(() => import("./serving/plans/PrintPlan").then((module) => ({ default: module.PrintPlan })));
 const DevicesPage = React.lazy(() => import("./profile/DevicesPage").then((module) => ({ default: module.DevicesPage })));
 const PrintDonationPage = React.lazy(() => import("./donations/PrintDonationPage").then((module) => ({ default: module.PrintDonationPage })));
 const PrintAllStatementsPage = React.lazy(() => import("./donations/PrintAllStatementsPage").then((module) => ({ default: module.PrintAllStatementsPage })));
@@ -109,17 +108,16 @@ export const Authenticated: React.FC = () => {
           <Route path="/reports/:keyName" element={<ReportPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings/*" element={<Settings />} />
-          <Route path="/tasks/automations" element={<AutomationsPage />} />
-          <Route path="/tasks/:id" element={<TaskPage />} />
-          <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/serving/tasks/automations" element={<AutomationsPage />} />
+          <Route path="/serving/tasks/:id" element={<TaskPage />} />
+          <Route path="/serving/tasks" element={<TasksPage />} />
           <Route path="/profile/devices" element={<DevicesPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/plans/ministries/:id" element={<MinistryPage />} />
-          <Route path="/plans/types/:id" element={<PlanTypePage />} />
-          <Route path="/plans/:id" element={<PlanPage />} />
-          <Route path="/plans" element={<PlansPage />} />
-          <Route path="/plans/songs" element={<SongsPage />} />
-          <Route path="/plans/songs/:id" element={<SongPage />} />
+          <Route path="/serving/planTypes/:id" element={<PlanTypePage />} />
+          <Route path="/serving/plans/:id" element={<PlanPage />} />
+          <Route path="/serving" element={<ServingPage />} />
+          <Route path="/serving/songs" element={<SongsPage />} />
+          <Route path="/serving/songs/:id" element={<SongPage />} />
           <Route path="/sermons/playlists" element={<PlaylistsPage />} />
           <Route path="/sermons/times" element={<LiveStreamTimesPage />} />
           <Route path="/sermons/bulk" element={<BulkImportPage />} />
@@ -155,7 +153,7 @@ export const Authenticated: React.FC = () => {
           }
         />
         <Route
-          path="/plans/print/:id"
+          path="/serving/plans/print/:id"
           element={
             <Suspense fallback={<LoadingFallback />}>
               <PrintPlan />

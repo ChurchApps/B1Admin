@@ -306,7 +306,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
               {/* Group Selection */}
               {(currentTab as any)?.visibility === "groups" && (
-                <Box sx={{ pl: 2, border: '1px solid #ccc', borderRadius: 1, p: 2 }}>
+                <Box sx={{ pl: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
                   <Typography variant="subtitle2" sx={{ mb: 1 }}>Select Groups:</Typography>
                   <FormGroup>
                     {groups.map(group => (

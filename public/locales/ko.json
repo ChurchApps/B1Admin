@@ -226,7 +226,8 @@
       "serving": "봉사",
       "set": "설정",
       "songs": "노래",
-      "tasks": "작업"
+      "tasks": "작업",
+      "teams": "팀"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "캠퍼스",
       "service": "서비스",
       "serviceTime": "서비스 시간",
-      "group": "그룹"
+      "group": "그룹",
+      "customFields": "사용자 정의 필드"
     },
     "personNav": {
       "customForms": "사용자 정의 양식"
@@ -1018,6 +1020,7 @@
       "copyNothing": "없음",
       "copyPositions": "직책만",
       "copyPrevious": "이전 계획에서 복사",
+      "copyServiceOrder": "예배 순서 복사",
       "none": "없음",
       "planAdd": "계획 추가",
       "planEdit": "계획 편집",
@@ -1069,7 +1072,9 @@
     "plansPage": {
       "selMin": "사역 선택",
       "addMinistry": "사역 추가",
-      "subtitle": "사역 및 봉사 계획 관리"
+      "editMinistry": "사역 편집",
+      "subtitle": "사역 및 봉사 계획 관리",
+      "switchMinistry": "사역 변경"
     },
     "planValidation": {
       "and": "그리고",
@@ -1258,7 +1263,7 @@
       "passVer": "비밀번호 확인",
       "passwordHelper": "현재 비밀번호를 유지하려면 비워 두세요",
       "permWarn": "주의: 이러한 작업은 영구적입니다",
-      "profEdit": "프로필 편집",
+      "profEdit": "계정 편집",
       "saveChange": "변경사항이 저장되었습니다.",
       "valEmail": "유효한 이메일 주소를 입력해주세요.",
       "deleteError": "계정을 삭제하지 못했습니다.",

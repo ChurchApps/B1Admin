@@ -226,7 +226,8 @@
       "serving": "Serving",
       "set": "Settings",
       "songs": "Songs",
-      "tasks": "Tasks"
+      "tasks": "Tasks",
+      "teams": "Teams"
     }
   },
   "createPerson": {
@@ -552,7 +553,8 @@
       "confirmMsg2": "Are you sure you want to restore this form?",
       "forms": "Forms",
       "noArch": "No archived forms.",
-      "noCustomMsg": "No custom forms have been created yet. They will appear here when added."
+      "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "url": "URL"
     },
     "formSubmissions": {
       "anon": "Anonymous",
@@ -914,7 +916,8 @@
       "campus": "Campus",
       "service": "Service",
       "serviceTime": "Service Time",
-      "group": "Group"
+      "group": "Group",
+      "customFields": "Custom Fields"
     },
     "personNav": {
       "customForms": "Custom Forms"
@@ -1044,6 +1047,7 @@
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
       "copyPrevious": "Copy from Previous Plan",
+      "copyServiceOrder": "Copy Order of Service",
       "none": "None",
       "planAdd": "Add a Plan",
       "planEdit": "Edit Plan",
@@ -1081,7 +1085,9 @@
     "plansPage": {
       "selMin": "Select a Ministry",
       "addMinistry": "Add Ministry",
-      "subtitle": "Manage ministries and service plans"
+      "editMinistry": "Edit Ministry",
+      "subtitle": "Manage ministries and service plans",
+      "switchMinistry": "Switch Ministry"
     },
     "planValidation": {
       "and": "and",
@@ -1238,6 +1244,7 @@
     "serviceOrder": {
       "add": "Add",
       "addLesson": "Add Lesson",
+      "associateLesson": "Associate Lesson",
       "addSection": "Add Section",
       "customizeLesson": "Customize",
       "lessonPreview": "Lesson Preview",
@@ -1278,7 +1285,7 @@
       "passVer": "Verify password",
       "passwordHelper": "Leave blank to keep current password",
       "permWarn": "Careful, these actions are permanent",
-      "profEdit": "Edit Profile",
+      "profEdit": "Edit Account",
       "saveChange": "Changes saved.",
       "valEmail": "Please enter a valid email address.",
       "deleteError": "Failed to delete account",

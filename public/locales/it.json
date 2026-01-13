@@ -226,7 +226,8 @@
       "serving": "Servizio",
       "set": "Impostazioni",
       "songs": "Canzoni",
-      "tasks": "Attività"
+      "tasks": "Attività",
+      "teams": "Squadre"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "Campus",
       "service": "Servizio",
       "serviceTime": "Orario del Servizio",
-      "group": "Gruppo"
+      "group": "Gruppo",
+      "customFields": "Campi Personalizzati"
     },
     "personNav": {
       "customForms": "Moduli Personalizzati"
@@ -1018,6 +1020,7 @@
       "copyNothing": "Niente",
       "copyPositions": "Solo Posizioni",
       "copyPrevious": "Copia dal Piano Precedente",
+      "copyServiceOrder": "Copia Ordine del Servizio",
       "none": "Nessuno",
       "planAdd": "Aggiungi un Piano",
       "planEdit": "Modifica Piano",
@@ -1069,7 +1072,9 @@
     "plansPage": {
       "selMin": "Seleziona un Ministero",
       "addMinistry": "Aggiungi Ministero",
-      "subtitle": "Gestire ministeri e piani di servizio"
+      "editMinistry": "Modifica Ministero",
+      "subtitle": "Gestire ministeri e piani di servizio",
+      "switchMinistry": "Cambia Ministero"
     },
     "planValidation": {
       "and": "e",
@@ -1258,7 +1263,7 @@
       "passVer": "Verifica password",
       "passwordHelper": "Lasci vuoto per mantenere la password corrente",
       "permWarn": "Attenzione, queste azioni sono permanenti",
-      "profEdit": "Modifica Profilo",
+      "profEdit": "Modifica Account",
       "saveChange": "Modifiche salvate.",
       "valEmail": "Si prega di inserire un indirizzo email valido.",
       "deleteError": "Impossibile eliminare l'account",

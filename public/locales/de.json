@@ -226,7 +226,8 @@
       "serving": "Dienst",
       "set": "Einstellungen",
       "songs": "Lieder",
-      "tasks": "Aufgaben"
+      "tasks": "Aufgaben",
+      "teams": "Teams"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "Campus",
       "service": "Gottesdienst",
       "serviceTime": "Gottesdienstzeit",
-      "group": "Gruppe"
+      "group": "Gruppe",
+      "customFields": "Benutzerdefinierte Felder"
     },
     "personNav": {
       "customForms": "Benutzerdefinierte Formulare"
@@ -1018,6 +1020,7 @@
       "copyNothing": "Nichts",
       "copyPositions": "Nur Positionen",
       "copyPrevious": "Vom Vorherigen Plan Kopieren",
+      "copyServiceOrder": "Gottesdienstablauf kopieren",
       "none": "Keine",
       "planAdd": "Plan hinzufügen",
       "planEdit": "Plan bearbeiten",
@@ -1055,7 +1058,9 @@
     "plansPage": {
       "selMin": "Wählen Sie ein Ministerium",
       "addMinistry": "Ministerium hinzufügen",
-      "subtitle": "Verwalten Sie Ministerien und Servicepläne"
+      "editMinistry": "Ministerium bearbeiten",
+      "subtitle": "Verwalten Sie Ministerien und Servicepläne",
+      "switchMinistry": "Ministerium wechseln"
     },
     "planValidation": {
       "and": "und",
@@ -1251,7 +1256,7 @@
       "passVer": "Passwort bestätigen",
       "passwordHelper": "Leer lassen, um aktuelles Passwort zu behalten",
       "permWarn": "Vorsicht, diese Aktionen sind dauerhaft",
-      "profEdit": "Profil bearbeiten",
+      "profEdit": "Konto bearbeiten",
       "saveChange": "Änderungen gespeichert.",
       "valEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
       "deleteError": "Konto konnte nicht gelöscht werden",

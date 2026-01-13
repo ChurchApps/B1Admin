@@ -226,7 +226,8 @@
       "serving": "Tjeneste",
       "set": "Innstillinger",
       "songs": "Sanger",
-      "tasks": "Oppgaver"
+      "tasks": "Oppgaver",
+      "teams": "Lag"
     }
   },
   "createPerson": {
@@ -888,7 +889,8 @@
       "campus": "Campus",
       "service": "Tjeneste",
       "serviceTime": "Tjenestehorário",
-      "group": "Gruppe"
+      "group": "Gruppe",
+      "customFields": "Egendefinerte Felt"
     },
     "personNav": {
       "customForms": "Tilpassede skjemaer"
@@ -1018,6 +1020,7 @@
       "copyNothing": "Ingenting",
       "copyPositions": "Kun posisjoner",
       "copyPrevious": "Kopier fra Forrige Plan",
+      "copyServiceOrder": "Kopier gudstjenesteorden",
       "none": "Ingen",
       "planAdd": "Legg til plan",
       "planEdit": "Rediger plan",
@@ -1069,7 +1072,9 @@
     "plansPage": {
       "selMin": "Velg et ministrium",
       "addMinistry": "Legg til departementet",
-      "subtitle": "Administrere departementer og tjenesteplaner"
+      "editMinistry": "Rediger tjeneste",
+      "subtitle": "Administrere departementer og tjenesteplaner",
+      "switchMinistry": "Bytt tjeneste"
     },
     "planValidation": {
       "and": "og",
@@ -1258,7 +1263,7 @@
       "passVer": "Bekreft passord",
       "passwordHelper": "La stå tomt for å beholde gjeldende passord",
       "permWarn": "Forsiktig, disse handlingene er permanente",
-      "profEdit": "Rediger profil",
+      "profEdit": "Rediger konto",
       "saveChange": "Endringer lagret.",
       "valEmail": "Vennligst skriv inn en gyldig e-postadresse.",
       "deleteError": "Kunne ikke slette kontoen",

@@ -242,10 +242,18 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     // Deep clone sections with their elements
     const cloneSections = (sections: SectionInterface[]): SectionInterface[] => {
       if (!sections) return [];
-      return sections.map(section => ({
-        ...section,
-        elements: cloneElements(section.elements || [])
-      }));
+      return sections
+        .filter(section => {
+          // When snapshotting a page, exclude sections that belong to blocks (like footer)
+          // When snapshotting a block, only include sections that belong to this specific block
+          const block = container as BlockInterface;
+          if (block.blockType) return !section.blockId || section.blockId === block.id;
+          else return !section.blockId;
+        })
+        .map(section => ({
+          ...section,
+          elements: cloneElements(section.elements || [])
+        }));
     };
 
     const cloneElements = (elements: ElementInterface[]): ElementInterface[] => {

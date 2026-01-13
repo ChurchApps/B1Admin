@@ -217,28 +217,28 @@ export const Sermons = () => {
     if (isLoading) return <Loading data-testid="sermons-loading" />;
     else {
       return (
-      <Table sx={{ minWidth: 650 }}>
-        <TableHead
-          sx={{
-            backgroundColor: 'grey.50',
-            '& .MuiTableCell-root': {
-              borderBottom: '2px solid',
-              borderBottomColor: 'divider',
-              fontWeight: 600
-            }
-          }}
-        >
-          <TableRow>
-            <TableCell sx={{ width: '25%' }}>{Locale.label("sermons.playlist")}</TableCell>
-            <TableCell sx={{ width: '45%' }}>{Locale.label("sermons.sermon")}</TableCell>
-            <TableCell sx={{ width: '25%' }}>{Locale.label("sermons.publishDate")}</TableCell>
-            <TableCell sx={{ width: '5%' }}></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filteredSermons.length === 0 ? getEmptyState() : getRows()}
-        </TableBody>
-      </Table>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead
+            sx={{
+              backgroundColor: 'var(--bg-card)',
+              '& .MuiTableCell-root': {
+                borderBottom: '2px solid',
+                borderBottomColor: 'divider',
+                fontWeight: 600
+              }
+            }}
+          >
+            <TableRow>
+              <TableCell sx={{ width: '25%' }}>{Locale.label("sermons.playlist")}</TableCell>
+              <TableCell sx={{ width: '45%' }}>{Locale.label("sermons.sermon")}</TableCell>
+              <TableCell sx={{ width: '25%' }}>{Locale.label("sermons.publishDate")}</TableCell>
+              <TableCell sx={{ width: '5%' }}></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredSermons.length === 0 ? getEmptyState() : getRows()}
+          </TableBody>
+        </Table>
       );
     }
   };
@@ -248,60 +248,60 @@ export const Sermons = () => {
   if (currentSermon !== null) return <SermonEdit currentSermon={currentSermon} updatedFunction={handleUpdated} />;
   else {
     return (
-    <>
-      <Box sx={{ mb: 3 }}>
-        <PageHeader
-          icon={<LiveTvIcon />}
-          title={Locale.label("sermons.title")}
-          subtitle={Locale.label("sermons.subtitle")}
-        >
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              flexShrink: 0,
-              justifyContent: { xs: "flex-start", md: "flex-end" },
-              width: { xs: "100%", md: "auto" }
-            }}
+      <>
+        <Box sx={{ mb: 3 }}>
+          <PageHeader
+            icon={<LiveTvIcon />}
+            title={Locale.label("sermons.title")}
+            subtitle={Locale.label("sermons.subtitle")}
           >
-            {getActionButtons()}
-          </Stack>
-        </PageHeader>
-      </Box>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                flexShrink: 0,
+                justifyContent: { xs: "flex-start", md: "flex-end" },
+                width: { xs: "100%", md: "auto" }
+              }}
+            >
+              {getActionButtons()}
+            </Stack>
+          </PageHeader>
+        </Box>
 
-      {/* Content */}
-      <Box sx={{ px: 3 }}>
-        <Card sx={{
-          borderRadius: 2,
-          border: '1px solid',
-          borderColor: 'grey.200'
-        }}>
-          {/* Search Bar */}
-          {sermons.length > 0 && (
-            <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-              <TextField
-                fullWidth
-                placeholder={Locale.label("sermons.searchPlaceholder")}
-                value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{ maxWidth: 400 }}
-              />
-            </Box>
-          )}
+        {/* Content */}
+        <Box sx={{ px: 3 }}>
+          <Card sx={{
+            borderRadius: 2,
+            border: '1px solid',
+            borderColor: 'var(--border-light)'
+          }}>
+            {/* Search Bar */}
+            {sermons.length > 0 && (
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+                <TextField
+                  fullWidth
+                  placeholder={Locale.label("sermons.searchPlaceholder")}
+                  value={searchTerm}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{ maxWidth: 400 }}
+                />
+              </Box>
+            )}
 
-          <CardContent sx={{ p: 0 }}>
-            {getTable()}
-          </CardContent>
-        </Card>
-      </Box>
-    </>
+            <CardContent sx={{ p: 0 }}>
+              {getTable()}
+            </CardContent>
+          </Card>
+        </Box>
+      </>
     );
   }
 };

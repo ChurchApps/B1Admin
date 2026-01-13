@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
 import {
-  ApiHelper, DisplayBox, UserHelper, type RoleMemberInterface, type RoleInterface, Permissions, SmallButton, Locale 
+  ApiHelper, DisplayBox, UserHelper, Permissions, SmallButton, Locale
 } from "@churchapps/apphelper";
-import { Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { type RoleMemberInterface, type RoleInterface } from "@churchapps/helpers";
+import { Alert, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 
 interface Props {
   role: RoleInterface;
@@ -106,12 +107,24 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
     );
   }, [isRoleEveryone]);
 
+  const lastAdminWarning = useMemo(() => {
+    if (props.role.name === "Domain Admins" && roleMembers.length === 1) {
+      return (
+        <Alert severity="info" sx={{ mt: 2 }}>
+          At least one Domain Admin is required. Add another admin before removing this one.
+        </Alert>
+      );
+    }
+    return null;
+  }, [props.role.name, roleMembers.length]);
+
   return (
     <DisplayBox id="roleMembersBox" headerText={Locale.label("settings.roleMembers.mem")} headerIcon="person" editContent={editContent} help="b1Admin/assigning-roles">
       <Table id="roleMemberTable">
         <TableHead>{tableHeader}</TableHead>
         <TableBody>{tableRows}</TableBody>
       </Table>
+      {lastAdminWarning}
     </DisplayBox>
   );
 });

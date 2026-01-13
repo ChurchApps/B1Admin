@@ -226,7 +226,8 @@
       "serving": "Servicio",
       "set": "Configuraciones",
       "songs": "Canciones",
-      "tasks": "Tareas"
+      "tasks": "Tareas",
+      "teams": "Equipos"
     }
   },
   "createPerson": {
@@ -889,7 +890,8 @@
       "campus": "Campus",
       "service": "Servicio",
       "serviceTime": "Horario de Servicio",
-      "group": "Grupo"
+      "group": "Grupo",
+      "customFields": "Campos Personalizados"
     },
     "personNav": {
       "customForms": "Formularios Personalizados"
@@ -1019,6 +1021,7 @@
       "copyNothing": "Nada",
       "copyPositions": "Solo Posiciones",
       "copyPrevious": "Copiar del Plan Anterior",
+      "copyServiceOrder": "Copiar Orden del Servicio",
       "none": "Ninguno",
       "planAdd": "Agregar un Plan",
       "planEdit": "Editar Plan",
@@ -1056,7 +1059,9 @@
     "plansPage": {
       "selMin": "Seleccione un Ministerio",
       "addMinistry": "Agregar Ministerio",
-      "subtitle": "Gestionar ministerios y planes de servicio."
+      "editMinistry": "Editar Ministerio",
+      "subtitle": "Gestionar ministerios y planes de servicio.",
+      "switchMinistry": "Cambiar Ministerio"
     },
     "planValidation": {
       "and": "y",
@@ -1252,7 +1257,7 @@
       "passVer": "Verificar contraseña",
       "passwordHelper": "Deje en blanco para mantener la contraseña actual",
       "permWarn": "Cuidado, estas acciones son permanentes",
-      "profEdit": "Editar Perfil",
+      "profEdit": "Editar Cuenta",
       "saveChange": "Cambios guardados.",
       "valEmail": "Por favor ingrese una dirección de correo electrónico válida.",
       "deleteError": "No se pudo eliminar la cuenta",

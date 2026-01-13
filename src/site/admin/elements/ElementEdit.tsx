@@ -62,7 +62,6 @@ export function ElementEdit(props: Props) {
         break;
     }
     setElement(p);
-    props.onRealtimeChange(p);
   };
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +80,6 @@ export function ElementEdit(props: Props) {
         break;
     }
     setElement(p);
-    props.onRealtimeChange(p);
   };
 
   const handleHtmlChange = (field: string, newValue: string) => {
@@ -92,7 +90,6 @@ export function ElementEdit(props: Props) {
       p.answersJSON = JSON.stringify(parsedData);
       if (p.answersJSON !== element.answersJSON) {
         setElement(p);
-        props.onRealtimeChange(p);
       }
     } catch (error) {
       console.error("ElementEdit handleHtmlChange error:", error);
@@ -682,7 +679,6 @@ export function ElementEdit(props: Props) {
     parsedData[selectPhotoField] = image;
     p.answersJSON = JSON.stringify(parsedData);
     setElement(p);
-    props.onRealtimeChange(p);
     setSelectPhotoField(null);
   };
 

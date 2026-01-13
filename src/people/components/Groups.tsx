@@ -3,7 +3,7 @@ import { UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import {
-  Box, Card, CardContent, Typography, Stack, Chip, Paper, ListItem, ListItemIcon, ListItemText, ListItemButton, Avatar 
+  Box, Card, CardContent, Typography, Stack, Chip, Paper, ListItem, ListItemIcon, ListItemText, ListItemButton, Avatar
 } from "@mui/material";
 import { Group as GroupIcon, Groups as GroupsIcon, SupervisorAccount as LeaderIcon } from "@mui/icons-material";
 
@@ -29,11 +29,11 @@ export const Groups: React.FC<Props> = memo((props) => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "grey.50",
+            backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "grey.300",
+            borderColor: "var(--border-main)",
           }}>
-          <GroupsIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
+          <GroupsIcon sx={{ fontSize: 48, color: "var(--text-muted)", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
             {Locale.label("people.groups.notMemMsg")}
           </Typography>
@@ -47,7 +47,7 @@ export const Groups: React.FC<Props> = memo((props) => {
           "& .MuiCard-root": {
             borderRadius: 2,
             border: "1px solid",
-            borderColor: "grey.200",
+            borderColor: "var(--border-light)",
           },
         }}>
         <Stack spacing={2}>
@@ -117,7 +117,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                                 size="small"
                                 sx={{
                                   color: "text.secondary",
-                                  borderColor: "grey.400",
+                                  borderColor: "var(--border-main)",
                                   fontSize: "0.75rem",
                                 }}
                               />

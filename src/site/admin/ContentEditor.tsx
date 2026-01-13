@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import type { CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme, useMediaQuery, Container, Skeleton } from "@mui/material";
@@ -336,13 +336,26 @@ export function ContentEditor(props: Props) {
     return () => contentEl.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleRealtimeChange = (element: ElementInterface) => {
-    const c = { ...container };
-    c.sections.forEach((s) => {
-      realtimeUpdateElement(element, s.elements);
-    });
-    setContainer(c);
-  };
+  // Debounce timer ref for realtime changes
+  const realtimeDebounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleRealtimeChange = useCallback((element: ElementInterface) => {
+    // Clear any pending debounce
+    if (realtimeDebounceRef.current) {
+      clearTimeout(realtimeDebounceRef.current);
+    }
+    // Debounce the update to prevent flickering on every keystroke
+    realtimeDebounceRef.current = setTimeout(() => {
+      setContainer((prevContainer) => {
+        if (!prevContainer) return prevContainer;
+        const c = { ...prevContainer };
+        c.sections.forEach((s) => {
+          realtimeUpdateElement(element, s.elements);
+        });
+        return c;
+      });
+    }, 150);
+  }, []);
 
   const realtimeUpdateElement = (element: ElementInterface, elements: ElementInterface[]) => {
     for (let i = 0; i < elements.length; i++) {

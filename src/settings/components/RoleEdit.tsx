@@ -77,7 +77,7 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
       headerText={Locale.label("settings.roleEdit.roleEdit")}
       saveFunction={handleSave}
       cancelFunction={handleCancel}
-      deleteFunction={!UniqueIdHelper.isMissing(roleId) ? handleDelete : undefined}>
+      deleteFunction={!UniqueIdHelper.isMissing(roleId) && role.name !== "Domain Admins" ? handleDelete : undefined}>
       <ErrorMessages errors={errors} />
       <TextField
         fullWidth

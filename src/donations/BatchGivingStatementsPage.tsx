@@ -110,7 +110,7 @@ export const BatchGivingStatementsPage = () => {
 
   const handlePrintAll = () => {
     // Navigate to consolidated print view in the same window
-    const url = `/donations/print-all?${selectedYear === currentYear ? "" : "prev=1"}`;
+    const url = `/donations/print-all?year=${selectedYear}`;
     window.location.href = url;
   };
 

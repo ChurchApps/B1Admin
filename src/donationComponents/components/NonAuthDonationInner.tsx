@@ -305,7 +305,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
             <ReCAPTCHA sitekey={props.recaptchaSiteKey} ref={captchaRef} onChange={handleCaptchaChange} />
           </Grid>
         </Grid>
-        <div style={{ padding: 10, border: "1px solid #CCC", borderRadius: 5, marginTop: 10 }}>
+        <div style={{ padding: 10, border: "1px solid var(--border-main)", borderRadius: 5, marginTop: 10 }}>
           <CardElement options={formStyling} />
         </div>
         {donationType === "recurring" && (
