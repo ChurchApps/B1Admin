@@ -137,6 +137,7 @@ export function AddPageModal(props: Props) {
       const sectionCount = outline.sections.length;
 
       // STEP 3: Generate all sections in parallel (uses sonnet model for quality)
+      // Use Promise.allSettled to handle individual failures gracefully
       setAiGenerationStatus(`Generating ${sectionCount} sections...`);
 
       const sectionPromises = outline.sections.map((sectionOutline: any, index: number) =>
@@ -152,18 +153,43 @@ export function AddPageModal(props: Props) {
         }, "AskApi")
       );
 
-      const sectionResponses = await Promise.all(sectionPromises);
+      const sectionResults = await Promise.allSettled(sectionPromises);
 
-      // STEP 4: Assemble the complete page structure
+      // Filter out failed sections and collect successful ones
+      const successfulSections: any[] = [];
+      const failedSectionIndices: number[] = [];
+
+      sectionResults.forEach((result, index) => {
+        if (result.status === "fulfilled" && result.value?.section) {
+          successfulSections.push({
+            ...result.value.section,
+            sort: successfulSections.length // Re-number based on successful sections
+          });
+        } else {
+          failedSectionIndices.push(index + 1); // 1-based for user display
+          console.error(`Section ${index} failed:`, result.status === "rejected" ? result.reason : "No section data");
+        }
+      });
+
+      // If all sections failed, throw an error
+      if (successfulSections.length === 0) {
+        throw new Error("All sections failed to generate. Please try again.");
+      }
+
+      // STEP 4: Assemble the complete page structure with successful sections
       const assembledPage = {
         title: outline.title,
         url: outline.url,
         layout: outline.layout || "headerFooter",
-        sections: sectionResponses.map((response: any, index: number) => ({
-          ...response.section,
-          sort: index
-        }))
+        sections: successfulSections
       };
+
+      // Warn user if some sections failed
+      if (failedSectionIndices.length > 0) {
+        const failedMsg = `Note: ${failedSectionIndices.length} section(s) failed to generate and were skipped.`;
+        console.warn(failedMsg);
+        // We'll continue with what we have
+      }
 
       // STEP 5: Post generated structure to ContentApi
       setAiGenerationStatus("Creating page sections and elements...");
@@ -209,10 +235,10 @@ export function AddPageModal(props: Props) {
         await saveElements(section.elements);
       }
 
-      // STEP 6: Navigate to editor
+      // STEP 6: Navigate to preview
       setAiGenerationStatus("Opening your new page...");
       props.updatedCallback();
-      navigate(`/site/pages/${pageId}`);
+      navigate(`/site/pages/preview/${pageId}`);
 
     } catch (error) {
       setAiErrors([error?.message || "Failed to generate page. Please try again with a different description."]);
