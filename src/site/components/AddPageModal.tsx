@@ -94,7 +94,6 @@ export function AddPageModal(props: Props) {
       // STEP 1: Gather context from ContentApi
       const church = UserHelper.currentUserChurch.church;
       const globalStyles = await ApiHelper.get("/globalStyles", "ContentApi");
-      const blocks = await ApiHelper.get("/blocks", "ContentApi");
 
       const validElementTypes = [
         "text", "textWithPhoto", "card", "faq", "table",
@@ -104,25 +103,23 @@ export function AddPageModal(props: Props) {
         "buttonLink", "whiteSpace", "block"
       ];
 
-      // STEP 2: Build request for AskApi
-      const request = {
+      const churchContext = {
+        churchId: church.id,
+        churchName: church.name,
+        subdomain: church.subDomain,
+        theme: {
+          primaryColor: globalStyles?.palette?.primary,
+          secondaryColor: globalStyles?.palette?.secondary,
+          fonts: globalStyles?.fonts,
+          palette: globalStyles?.palette
+        }
+      };
+
+      // STEP 2: Generate page outline (fast, uses haiku model)
+      setAiGenerationStatus("Planning your page structure...");
+      const outlineRequest = {
         prompt: aiPrompt.trim(),
-        churchContext: {
-          churchId: church.id,
-          churchName: church.name,
-          subdomain: church.subDomain,
-          theme: {
-            primaryColor: globalStyles?.palette?.primary,
-            secondaryColor: globalStyles?.palette?.secondary,
-            fonts: globalStyles?.fonts,
-            palette: globalStyles?.palette
-          }
-        },
-        availableBlocks: blocks?.map((b: any) => ({
-          id: b.id,
-          name: b.name,
-          blockType: b.blockType
-        })) || [],
+        churchContext,
         availableElementTypes: validElementTypes,
         constraints: {
           maxSections: 10,
@@ -130,24 +127,52 @@ export function AddPageModal(props: Props) {
         }
       };
 
-      // STEP 3: Call AskApi to generate page structure (THIS IS THE ONLY AI CALL)
-      // AskApi returns complete page structure as JSON (all AI logic lives there)
-      setAiGenerationStatus("Generating your page with AI (this may take 20-30 seconds)...");
-      const aiResponse = await ApiHelper.post("/website/generatePage", request, "AskApi");
+      const outlineResponse = await ApiHelper.post("/website/generatePageOutline", outlineRequest, "AskApi");
 
-      // STEP 4: Validate response (basic client-side checks)
-      if (!aiResponse?.page || !aiResponse.page.title) {
-        throw new Error("Invalid response from AI service");
+      if (!outlineResponse?.outline?.sections?.length) {
+        throw new Error("Failed to generate page outline");
       }
 
-      // STEP 5: Post generated structure to ContentApi (NO AI HERE, just standard CRUD)
+      const outline = outlineResponse.outline;
+      const sectionCount = outline.sections.length;
+
+      // STEP 3: Generate all sections in parallel (uses sonnet model for quality)
+      setAiGenerationStatus(`Generating ${sectionCount} sections...`);
+
+      const sectionPromises = outline.sections.map((sectionOutline: any, index: number) =>
+        ApiHelper.post("/website/generateSection", {
+          sectionOutline,
+          churchContext,
+          availableElementTypes: validElementTypes,
+          pageContext: {
+            title: outline.title,
+            totalSections: sectionCount,
+            sectionIndex: index
+          }
+        }, "AskApi")
+      );
+
+      const sectionResponses = await Promise.all(sectionPromises);
+
+      // STEP 4: Assemble the complete page structure
+      const assembledPage = {
+        title: outline.title,
+        url: outline.url,
+        layout: outline.layout || "headerFooter",
+        sections: sectionResponses.map((response: any, index: number) => ({
+          ...response.section,
+          sort: index
+        }))
+      };
+
+      // STEP 5: Post generated structure to ContentApi
       setAiGenerationStatus("Creating page sections and elements...");
       const pageToSave = {
-        title: aiResponse.page.title,
+        title: assembledPage.title,
         churchId: church.id,
-        layout: aiResponse.page.layout || "headerFooter",
+        layout: assembledPage.layout,
         url: SlugHelper.slugifyString(
-          "/" + aiResponse.page.title.toLowerCase().replace(/\s+/g, "-"),
+          "/" + assembledPage.title.toLowerCase().replace(/\s+/g, "-"),
           "urlPath"
         )
       };
@@ -157,19 +182,31 @@ export function AddPageModal(props: Props) {
       const pageId = savedPage[0].id;
 
       // Create sections and elements using existing ContentApi endpoints
-      for (const section of aiResponse.page.sections || []) {
+      for (const section of assembledPage.sections || []) {
         section.pageId = pageId;
         section.churchId = church.id;
 
         const savedSection = await ApiHelper.post("/sections", [section], "ContentApi");
         const sectionId = savedSection[0].id;
 
-        // Save elements for this section
-        for (const element of section.elements || []) {
-          element.sectionId = sectionId;
-          element.churchId = church.id;
-          await ApiHelper.post("/elements", [element], "ContentApi");
-        }
+        // Save elements for this section (handle nested elements for rows, boxes, etc.)
+        const saveElements = async (elements: any[], parentId?: string) => {
+          for (const element of elements || []) {
+            element.sectionId = sectionId;
+            element.churchId = church.id;
+            if (parentId) element.parentId = parentId;
+
+            const savedElement = await ApiHelper.post("/elements", [element], "ContentApi");
+            const elementId = savedElement[0].id;
+
+            // Recursively save nested elements (e.g., for rows, boxes, carousels)
+            if (element.elements && element.elements.length > 0) {
+              await saveElements(element.elements, elementId);
+            }
+          }
+        };
+
+        await saveElements(section.elements);
       }
 
       // STEP 6: Navigate to editor
