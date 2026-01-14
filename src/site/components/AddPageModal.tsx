@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ErrorMessages, InputBox, UserHelper, SlugHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { Permissions, type LinkInterface } from "@churchapps/helpers";
-import { Button, Dialog, Grid, Icon, InputLabel, type SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Button, Dialog, Grid, Icon, InputLabel, type SelectChangeEvent, TextField, Typography, CircularProgress, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -27,6 +27,7 @@ export function AddPageModal(props: Props) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [aiPrompt, setAiPrompt] = useState<string>("");
   const [aiErrors, setAiErrors] = useState<string[]>([]);
+  const [aiGenerationStatus, setAiGenerationStatus] = useState<string>("");
 
   const handleCancel = () => props.onDone();
   const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } };
@@ -87,6 +88,7 @@ export function AddPageModal(props: Props) {
 
     setIsSubmitting(true);
     setAiErrors([]);
+    setAiGenerationStatus("Gathering church information...");
 
     try {
       // STEP 1: Gather context from ContentApi
@@ -130,6 +132,7 @@ export function AddPageModal(props: Props) {
 
       // STEP 3: Call AskApi to generate page structure (THIS IS THE ONLY AI CALL)
       // AskApi returns complete page structure as JSON (all AI logic lives there)
+      setAiGenerationStatus("Generating your page with AI (this may take 20-30 seconds)...");
       const aiResponse = await ApiHelper.post("/website/generatePage", request, "AskApi");
 
       // STEP 4: Validate response (basic client-side checks)
@@ -138,6 +141,7 @@ export function AddPageModal(props: Props) {
       }
 
       // STEP 5: Post generated structure to ContentApi (NO AI HERE, just standard CRUD)
+      setAiGenerationStatus("Creating page sections and elements...");
       const pageToSave = {
         title: aiResponse.page.title,
         churchId: church.id,
@@ -169,6 +173,7 @@ export function AddPageModal(props: Props) {
       }
 
       // STEP 6: Navigate to editor
+      setAiGenerationStatus("Opening your new page...");
       props.updatedCallback();
       navigate(`/site/pages/${pageId}`);
 
@@ -176,6 +181,7 @@ export function AddPageModal(props: Props) {
       setAiErrors([error?.message || "Failed to generate page. Please try again with a different description."]);
     } finally {
       setIsSubmitting(false);
+      setAiGenerationStatus("");
     }
   };
 
@@ -254,13 +260,28 @@ export function AddPageModal(props: Props) {
           {getTemplateButton("about", "quiz", "About Us")}
           {getTemplateButton("donate", "volunteer_activism", "Donate")}
           {getTemplateButton("location", "location_on", "Location")}
-          {getTemplateButton("ai", "auto_awesome", "AI Generate")}
+          {getTemplateButton("ai", "auto_awesome", "AI")}
           {(props.mode === "navigation") && getTemplateButton("link", "link", "Link")}
         </Grid>
 
         {pageTemplate === "ai" && (
           <>
             <ErrorMessages errors={aiErrors} />
+            {isSubmitting && aiGenerationStatus && (
+              <Box sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+                p: 2,
+                mb: 2,
+                backgroundColor: "primary.main",
+                color: "#ffffff",
+                borderRadius: 1
+              }}>
+                <CircularProgress size={24} sx={{ color: "#ffffff" }} />
+                <Typography sx={{ color: "#ffffff" }}>{aiGenerationStatus}</Typography>
+              </Box>
+            )}
             <Typography sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
               Describe the page you want to create
             </Typography>
