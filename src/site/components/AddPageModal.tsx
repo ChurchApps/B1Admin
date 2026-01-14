@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ErrorMessages, InputBox, UserHelper, SlugHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { Permissions, type LinkInterface } from "@churchapps/helpers";
-import { Button, Dialog, Grid, Icon, InputLabel, type SelectChangeEvent, TextField } from "@mui/material";
+import { Button, Dialog, Grid, Icon, InputLabel, type SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -25,6 +25,8 @@ export function AddPageModal(props: Props) {
   const [errors, setErrors] = useState([]);
   const [pageTemplate, setPageTemplate] = useState<string>("blank");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [aiPrompt, setAiPrompt] = useState<string>("");
+  const [aiErrors, setAiErrors] = useState<string[]>([]);
 
   const handleCancel = () => props.onDone();
   const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } };
@@ -60,7 +62,10 @@ export function AddPageModal(props: Props) {
 
   const validate = () => {
     const errors = [];
-    if (pageTemplate === "link") {
+    if (pageTemplate === "ai") {
+      // AI mode validation is handled in handleAiGenerate
+      return true;
+    } else if (pageTemplate === "link") {
       if (!link.url || link.url === "") errors.push("Please enter a url.");
     } else {
       if (!page.title || page.title === "") errors.push("Please enter a title.");
@@ -73,8 +78,111 @@ export function AddPageModal(props: Props) {
     return errors.length === 0;
   };
 
+  const handleAiGenerate = async () => {
+    // Validate prompt
+    if (!aiPrompt || aiPrompt.trim().length < 10) {
+      setAiErrors(["Please provide a detailed description (at least 10 characters)."]);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setAiErrors([]);
+
+    try {
+      // STEP 1: Gather context from ContentApi
+      const church = UserHelper.currentUserChurch.church;
+      const globalStyles = await ApiHelper.get("/globalStyles", "ContentApi");
+      const blocks = await ApiHelper.get("/blocks", "ContentApi");
+
+      const validElementTypes = [
+        "text", "textWithPhoto", "card", "faq", "table",
+        "image", "video", "map", "logo", "sermons", "stream",
+        "donation", "donateLink", "form", "calendar", "groupList",
+        "row", "box", "carousel", "rawHTML", "iframe",
+        "buttonLink", "whiteSpace", "block"
+      ];
+
+      // STEP 2: Build request for AskApi
+      const request = {
+        prompt: aiPrompt.trim(),
+        churchContext: {
+          churchId: church.id,
+          churchName: church.name,
+          subdomain: church.subDomain,
+          theme: {
+            primaryColor: globalStyles?.palette?.primary,
+            secondaryColor: globalStyles?.palette?.secondary,
+            fonts: globalStyles?.fonts,
+            palette: globalStyles?.palette
+          }
+        },
+        availableBlocks: blocks?.map((b: any) => ({
+          id: b.id,
+          name: b.name,
+          blockType: b.blockType
+        })) || [],
+        availableElementTypes: validElementTypes,
+        constraints: {
+          maxSections: 10,
+          preferredLayout: "headerFooter"
+        }
+      };
+
+      // STEP 3: Call AskApi to generate page structure (THIS IS THE ONLY AI CALL)
+      // AskApi returns complete page structure as JSON (all AI logic lives there)
+      const aiResponse = await ApiHelper.post("/website/generatePage", request, "AskApi");
+
+      // STEP 4: Validate response (basic client-side checks)
+      if (!aiResponse?.page || !aiResponse.page.title) {
+        throw new Error("Invalid response from AI service");
+      }
+
+      // STEP 5: Post generated structure to ContentApi (NO AI HERE, just standard CRUD)
+      const pageToSave = {
+        title: aiResponse.page.title,
+        churchId: church.id,
+        layout: aiResponse.page.layout || "headerFooter",
+        url: SlugHelper.slugifyString(
+          "/" + aiResponse.page.title.toLowerCase().replace(/\s+/g, "-"),
+          "urlPath"
+        )
+      };
+
+      // Create page record
+      const savedPage = await ApiHelper.post("/pages", [pageToSave], "ContentApi");
+      const pageId = savedPage[0].id;
+
+      // Create sections and elements using existing ContentApi endpoints
+      for (const section of aiResponse.page.sections || []) {
+        section.pageId = pageId;
+        section.churchId = church.id;
+
+        const savedSection = await ApiHelper.post("/sections", [section], "ContentApi");
+        const sectionId = savedSection[0].id;
+
+        // Save elements for this section
+        for (const element of section.elements || []) {
+          element.sectionId = sectionId;
+          element.churchId = church.id;
+          await ApiHelper.post("/elements", [element], "ContentApi");
+        }
+      }
+
+      // STEP 6: Navigate to editor
+      props.updatedCallback();
+      navigate(`/site/pages/${pageId}`);
+
+    } catch (error) {
+      setAiErrors([error?.message || "Failed to generate page. Please try again with a different description."]);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleSave = async () => {
-    if (validate()) {
+    if (pageTemplate === "ai") {
+      handleAiGenerate();
+    } else if (validate()) {
       setIsSubmitting(true);
       try {
         let pageData = null;
@@ -146,20 +254,49 @@ export function AddPageModal(props: Props) {
           {getTemplateButton("about", "quiz", "About Us")}
           {getTemplateButton("donate", "volunteer_activism", "Donate")}
           {getTemplateButton("location", "location_on", "Location")}
+          {getTemplateButton("ai", "auto_awesome", "AI Generate")}
           {(props.mode === "navigation") && getTemplateButton("link", "link", "Link")}
         </Grid>
 
-        <Grid container spacing={2}>
-          {(pageTemplate !== "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-            <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="page-title-input" />
-          </Grid>}
-          {(pageTemplate === "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-            <TextField size="small" fullWidth label="Link Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
-          </Grid>}
-          {(props.mode === "navigation") && <Grid size={6}>
-            <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
-          </Grid>}
-        </Grid>
+        {pageTemplate === "ai" && (
+          <>
+            <ErrorMessages errors={aiErrors} />
+            <Typography sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
+              Describe the page you want to create
+            </Typography>
+            <TextField
+              fullWidth
+              multiline
+              minRows={5}
+              maxRows={8}
+              placeholder="Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button"
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              disabled={isSubmitting}
+              data-testid="ai-prompt-input"
+            />
+            <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
+              Examples:
+              <br />• Create a welcoming homepage with our church name, mission statement, service times, and a donation button
+              <br />• Build a ministries page showing our youth group, worship team, and community outreach with photos
+              <br />• Make a contact page with a map to our location, phone number, email form, and social media links
+            </Typography>
+          </>
+        )}
+
+        {pageTemplate !== "ai" && (
+          <Grid container spacing={2}>
+            {(pageTemplate !== "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
+              <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="page-title-input" />
+            </Grid>}
+            {(pageTemplate === "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
+              <TextField size="small" fullWidth label="Link Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+            </Grid>}
+            {(props.mode === "navigation") && <Grid size={6}>
+              <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+            </Grid>}
+          </Grid>
+        )}
       </InputBox>
 
     </Dialog>
