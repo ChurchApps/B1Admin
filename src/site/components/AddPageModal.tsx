@@ -342,7 +342,7 @@ export function AddPageModal(props: Props) {
                 borderRadius: 1
               }}>
                 <CircularProgress size={24} sx={{ color: "#ffffff" }} />
-                <Typography sx={{ color: "#ffffff" }}>{aiGenerationStatus}</Typography>
+                <Typography sx={{ color: "#ffffff !important" }}>{aiGenerationStatus}</Typography>
               </Box>
             )}
             <Typography sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
