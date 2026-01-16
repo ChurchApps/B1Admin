@@ -323,7 +323,7 @@ export function AddPageModal(props: Props) {
           {getTemplateButton("about", "quiz", "About Us")}
           {getTemplateButton("donate", "volunteer_activism", "Donate")}
           {getTemplateButton("location", "location_on", "Location")}
-          {getTemplateButton("ai", "auto_awesome", "AI")}
+          {/* {getTemplateButton("ai", "auto_awesome", "AI")} */}
           {(props.mode === "navigation") && getTemplateButton("link", "link", "Link")}
         </Grid>
 
