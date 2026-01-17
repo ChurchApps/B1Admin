@@ -132,7 +132,7 @@ export function FormEdit(props: Props) {
       cancelFunction={props.updatedFunction}
       deleteFunction={props.formId ? handleDelete : undefined}>
       <ErrorMessages errors={errors} />
-      <TextField fullWidth={true} label={Locale.label("forms.formEdit.name")} type="text" name="name" value={form.name} onChange={handleChange} data-testid="form-name-input" aria-label="Form name" />
+      <TextField fullWidth={true} label={Locale.label("forms.formEdit.name")} type="text" name="name" value={form.name} onChange={handleChange} placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label="Form name" />
       {!props.formId && (
         <FormControl fullWidth>
           <InputLabel id="associate">{Locale.label("forms.formEdit.associate")}</InputLabel>
@@ -206,7 +206,7 @@ export function FormEdit(props: Props) {
           />
         </>
       )}
-      <TextField fullWidth={true} label={Locale.label("forms.formEdit.thankYouMessage")} type="text" name="thankYouMessage" value={form.thankYouMessage} onChange={handleChange} />
+      <TextField fullWidth={true} label={Locale.label("forms.formEdit.thankYouMessage")} type="text" name="thankYouMessage" value={form.thankYouMessage} onChange={handleChange} placeholder={Locale.label("placeholders.form.thankYouMessage")} />
     </InputBox>
   );
 }

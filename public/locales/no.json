@@ -2463,5 +2463,146 @@
   "support": {
     "discussions": "Diskusjoner",
     "documentation": "Dokumentasjon"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "Erik",
+      "middleName": "Anders",
+      "lastName": "Hansen",
+      "nickName": "Erik",
+      "prefix": "Hr.",
+      "suffix": "Jr.",
+      "email": "erik@eksempel.no",
+      "homePhone": "22 12 34 56",
+      "workPhone": "22 98 76 54",
+      "mobilePhone": "912 34 567",
+      "address1": "Hovedgaten 123",
+      "address2": "Leil. 4B",
+      "city": "Oslo",
+      "state": "Oslo",
+      "zip": "0150"
+    },
+    "household": {
+      "name": "Familien Hansen"
+    },
+    "group": {
+      "name": "Voksen Bibelstudium",
+      "category": "Fellesskap, Bibelstudium, Tjeneste"
+    },
+    "fund": {
+      "name": "Generelt Fond"
+    },
+    "batch": {
+      "name": "Søndagsoffer"
+    },
+    "donation": {
+      "notes": "Månedlig tiende fra familien Hansen"
+    },
+    "church": {
+      "name": "Nådekirken",
+      "subDomain": "naadekirken",
+      "address1": "Hovedveien 456",
+      "address2": "Suite 100",
+      "city": "Bergen",
+      "state": "Vestland",
+      "zip": "5003"
+    },
+    "user": {
+      "firstName": "Erik",
+      "lastName": "Hansen",
+      "email": "erik@eksempel.no"
+    },
+    "role": {
+      "name": "Frivillig"
+    },
+    "form": {
+      "name": "Registreringsskjema",
+      "questionTitle": "Hva er din favorittmat?",
+      "questionDescription": "Hjelp oss med å planlegge arrangementene våre",
+      "questionPlaceholder": "Skriv inn svaret ditt her",
+      "thankYouMessage": "Takk for innsendingen!"
+    },
+    "choices": {
+      "value": "Alternativ A",
+      "text": "Første Alternativ"
+    },
+    "sermon": {
+      "title": "Vandre i Tro",
+      "description": "Serie om å leve ut troen daglig"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "Stor er Din Trofasthet"
+    },
+    "position": {
+      "name": "Hovedvokalist"
+    },
+    "time": {
+      "name": "Øvelse"
+    },
+    "planType": {
+      "name": "Søndagsgudstjeneste"
+    },
+    "planItem": {
+      "label": "Lovsangtid"
+    },
+    "plan": {
+      "notes": "Husk å gjennomgå forrige ukes øvelse"
+    },
+    "task": {
+      "taskName": "Forbered sangtekst-lysbilder"
+    },
+    "serviceTime": {
+      "name": "Morgengudstjeneste"
+    },
+    "service": {
+      "name": "Søndagstilbedelse"
+    },
+    "campus": {
+      "name": "Hovedcampus"
+    },
+    "device": {
+      "name": "Kirkesal Datamaskin"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "Om Oss"
+    },
+    "block": {
+      "name": "Velkomstseksjon"
+    },
+    "addPage": {
+      "title": "Vår Historie",
+      "aiContent": "Lag en side om vår kirkes historie og misjon"
+    },
+    "font": {
+      "url": "https://fonts.eksempel.no/min-font.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "Hva er gudstjenestetidene?",
+      "answer": "Vi har gudstjenester søndag kl. 09 og 11"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"Hva heter du?\", \"answer\": \"Nådekirken\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "Søk etter navn eller e-post"
+    }
   }
 }

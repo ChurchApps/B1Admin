@@ -173,10 +173,10 @@ export function PageLinkEdit(props: Props) {
           <ErrorMessages errors={errors} />
           <Grid container spacing={2} style={{ minWidth: 500 }}>
             {page && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+              <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.title")} />
             </Grid>}
             {link && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+              <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkText")} />
             </Grid>}
             {page && <Grid size={{ xs: 6 }}>
               {!props.embedded && <FormControl fullWidth size="small">
@@ -197,11 +197,11 @@ export function PageLinkEdit(props: Props) {
                     </Stack>
                   </Paper>
                 </div>)
-                : (<TextField size="small" fullWidth label="Url Path" name="url" value={page.url || ""} onChange={handleChange} helperText={Locale.label("site.pageLink.urlHelper")} InputProps={{ endAdornment: (<Button variant="contained" color="primary" size="small" onClick={handleSlugValidation}>{Locale.label("site.pageLink.check")}</Button>) }} />)
+                : (<TextField size="small" fullWidth label="Url Path" name="url" value={page.url || ""} onChange={handleChange} placeholder={Locale.label("placeholders.page.urlPath")} helperText={Locale.label("site.pageLink.urlHelper")} InputProps={{ endAdornment: (<Button variant="contained" color="primary" size="small" onClick={handleSlugValidation}>{Locale.label("site.pageLink.check")}</Button>) }} />)
               }
             </Grid>}
             {!page && link && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label="Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+              <TextField size="small" fullWidth label="Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
             </Grid>}
           </Grid>
         </InputBox>

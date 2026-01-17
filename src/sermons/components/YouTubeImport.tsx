@@ -97,7 +97,7 @@ export const YouTubeImport = (props: Props) => {
     return (<>
       <ErrorMessages errors={errors} />
       <InputBox headerIcon="video_library" headerText={Locale.label("sermons.bulkImport.import")} saveText={isFetching ? Locale.label("sermons.bulkImport.fetching") : Locale.label("sermons.bulkImport.fetch")} saveFunction={handleFetch} cancelFunction={props.handleDone} isSubmitting={isFetching}>
-        <TextField fullWidth label={Locale.label("sermons.bulkImport.youtubeChannelId")} name="channelId" value={channelId} onChange={(e) => { setChannelId(e.target.value); }} placeholder="UCfiDl90gAfZMkgbeCqX1WiA" />
+        <TextField fullWidth label={Locale.label("sermons.bulkImport.youtubeChannelId")} name="channelId" value={channelId} onChange={(e) => { setChannelId(e.target.value); }} placeholder={Locale.label("sermons.bulkImport.youtubeChannelPlaceholder")} />
       </InputBox>
     </>);
   } else {

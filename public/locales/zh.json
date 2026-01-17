@@ -2463,5 +2463,146 @@
   "support": {
     "discussions": "讨论",
     "documentation": "文档"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "明",
+      "middleName": "伟",
+      "lastName": "张",
+      "nickName": "小明",
+      "prefix": "先生",
+      "suffix": "二世",
+      "email": "zhangming@example.cn",
+      "homePhone": "010-12345678",
+      "workPhone": "010-98765432",
+      "mobilePhone": "138-1234-5678",
+      "address1": "主街123号",
+      "address2": "4B单元",
+      "city": "北京",
+      "state": "北京市",
+      "zip": "100000"
+    },
+    "household": {
+      "name": "张氏家庭"
+    },
+    "group": {
+      "name": "成人圣经学习",
+      "category": "团契, 圣经学习, 事工"
+    },
+    "fund": {
+      "name": "一般基金"
+    },
+    "batch": {
+      "name": "主日奉献"
+    },
+    "donation": {
+      "notes": "张家月度什一奉献"
+    },
+    "church": {
+      "name": "恩典教会",
+      "subDomain": "gracechurch",
+      "address1": "主大道456号",
+      "address2": "100室",
+      "city": "上海",
+      "state": "上海市",
+      "zip": "200000"
+    },
+    "user": {
+      "firstName": "明",
+      "lastName": "张",
+      "email": "zhangming@example.cn"
+    },
+    "role": {
+      "name": "志愿者"
+    },
+    "form": {
+      "name": "登记表",
+      "questionTitle": "你最喜欢的食物是什么?",
+      "questionDescription": "帮助我们规划活动",
+      "questionPlaceholder": "在此输入您的答案",
+      "thankYouMessage": "感谢您的提交!"
+    },
+    "choices": {
+      "value": "选项A",
+      "text": "第一选项"
+    },
+    "sermon": {
+      "title": "凭信心行走",
+      "description": "关于每日活出信仰的系列"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "你的信实广大"
+    },
+    "position": {
+      "name": "主领诗歌"
+    },
+    "time": {
+      "name": "排练"
+    },
+    "planType": {
+      "name": "主日崇拜"
+    },
+    "planItem": {
+      "label": "敬拜时间"
+    },
+    "plan": {
+      "notes": "记得复习上周的排练"
+    },
+    "task": {
+      "taskName": "准备歌词幻灯片"
+    },
+    "serviceTime": {
+      "name": "早间崇拜"
+    },
+    "service": {
+      "name": "主日敬拜"
+    },
+    "campus": {
+      "name": "主堂"
+    },
+    "device": {
+      "name": "圣堂电脑"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "关于我们"
+    },
+    "block": {
+      "name": "欢迎区块"
+    },
+    "addPage": {
+      "title": "我们的故事",
+      "aiContent": "创建一个关于我们教会历史和使命的页面"
+    },
+    "font": {
+      "url": "https://fonts.example.cn/my-font.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "崇拜时间是什么时候?",
+      "answer": "我们每周日上午9点和11点举行崇拜"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"你叫什么名字?\", \"answer\": \"恩典教会\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "按姓名或邮箱搜索"
+    }
   }
 }

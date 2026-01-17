@@ -48,7 +48,7 @@ export const DeviceEdit = (props: Props) => {
     <>
       <ErrorMessages errors={errors} />
       <InputBox headerText={Locale.label("profile.devices.editDevice")} headerIcon="tv" saveFunction={handleSave} cancelFunction={props.updatedFunction}>
-        <TextField fullWidth label={Locale.label("profile.deviceEdit.label")} name="label" type="text" value={device?.label} onChange={handleChange} />
+        <TextField fullWidth label={Locale.label("profile.deviceEdit.label")} name="label" type="text" value={device?.label} onChange={handleChange} placeholder={Locale.label("placeholders.device.label")} />
         <DeviceContent device={device} />
       </InputBox>
     </>

@@ -2463,5 +2463,146 @@
   "support": {
     "discussions": "चर्चाएं",
     "documentation": "दस्तावेज़ीकरण"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "राहुल",
+      "middleName": "कुमार",
+      "lastName": "शर्मा",
+      "nickName": "राहु",
+      "prefix": "श्री",
+      "suffix": "जी",
+      "email": "rahul@example.com",
+      "homePhone": "(011) 2345-6789",
+      "workPhone": "(011) 9876-5432",
+      "mobilePhone": "(098) 7654-3210",
+      "address1": "123 मुख्य सड़क",
+      "address2": "फ्लैट 4बी",
+      "city": "नई दिल्ली",
+      "state": "दिल्ली",
+      "zip": "110001"
+    },
+    "household": {
+      "name": "शर्मा परिवार"
+    },
+    "group": {
+      "name": "वयस्क बाइबल अध्ययन",
+      "category": "समुदाय, बाइबल अध्ययन, मंत्रालय"
+    },
+    "fund": {
+      "name": "सामान्य कोष"
+    },
+    "batch": {
+      "name": "रविवार चढ़ावा"
+    },
+    "donation": {
+      "notes": "शर्मा परिवार का मासिक दशमांश"
+    },
+    "church": {
+      "name": "अनुग्रह चर्च",
+      "subDomain": "gracechurch",
+      "address1": "456 मुख्य मार्ग",
+      "address2": "सूट 100",
+      "city": "मुंबई",
+      "state": "महाराष्ट्र",
+      "zip": "400001"
+    },
+    "user": {
+      "firstName": "राहुल",
+      "lastName": "शर्मा",
+      "email": "rahul@example.com"
+    },
+    "role": {
+      "name": "स्वयंसेवक"
+    },
+    "form": {
+      "name": "पंजीकरण फॉर्म",
+      "questionTitle": "आपका पसंदीदा भोजन क्या है?",
+      "questionDescription": "हमारे कार्यक्रमों की योजना में मदद करें",
+      "questionPlaceholder": "अपना उत्तर यहां दर्ज करें",
+      "thankYouMessage": "आपके जवाब के लिए धन्यवाद!"
+    },
+    "choices": {
+      "value": "विकल्प ए",
+      "text": "पहला विकल्प"
+    },
+    "sermon": {
+      "title": "विश्वास में चलना",
+      "description": "दैनिक जीवन में विश्वास जीने पर श्रृंखला"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "तेरी महान विश्वासयोग्यता"
+    },
+    "position": {
+      "name": "मुख्य गायक"
+    },
+    "time": {
+      "name": "अभ्यास"
+    },
+    "planType": {
+      "name": "रविवार सेवा"
+    },
+    "planItem": {
+      "label": "आराधना समय"
+    },
+    "plan": {
+      "notes": "पिछले सप्ताह का अभ्यास देखना न भूलें"
+    },
+    "task": {
+      "taskName": "गीत स्लाइड तैयार करें"
+    },
+    "serviceTime": {
+      "name": "सुबह की सेवा"
+    },
+    "service": {
+      "name": "रविवार आराधना"
+    },
+    "campus": {
+      "name": "मुख्य परिसर"
+    },
+    "device": {
+      "name": "सेंक्चुअरी कंप्यूटर"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "हमारे बारे में"
+    },
+    "block": {
+      "name": "स्वागत अनुभाग"
+    },
+    "addPage": {
+      "title": "हमारी कहानी",
+      "aiContent": "हमारे चर्च के इतिहास और मिशन के बारे में एक पेज बनाएं"
+    },
+    "font": {
+      "url": "https://fonts.example.com/my-font.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "सेवा का समय क्या है?",
+      "answer": "हमारी सेवाएं रविवार को सुबह 9 और 11 बजे हैं"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"आपका नाम क्या है?\", \"answer\": \"अनुग्रह चर्च\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "नाम या ईमेल से खोजें"
+    }
   }
 }

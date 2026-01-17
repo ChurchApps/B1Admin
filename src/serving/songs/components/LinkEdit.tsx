@@ -45,7 +45,7 @@ export const LinkEdit = (props: Props) => {
 
   return (
     <InputBox headerText={Locale.label("songs.link.edit")} headerIcon="link" saveFunction={handleSave} cancelFunction={props.onCancel} deleteFunction={link?.id ? handleDelete : null}>
-      <TextField label={Locale.label("songs.link.url")} name="url" value={link?.url} onChange={handleChange} fullWidth />
+      <TextField label={Locale.label("songs.link.url")} name="url" value={link?.url} onChange={handleChange} fullWidth placeholder={Locale.label("placeholders.song.linkUrl")} />
       <TextField label={Locale.label("songs.link.text")} name="text" value={link?.text} onChange={handleChange} fullWidth placeholder={Locale.label("songs.link.chordChart")} />
     </InputBox>
   );

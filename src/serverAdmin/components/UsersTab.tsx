@@ -79,7 +79,7 @@ export const UsersTab = () => {
           value={searchText}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Search by name or email"
+          placeholder={Locale.label("serverAdmin.adminPage.userSearchPlaceholder")}
           data-testid="user-search-input"
           aria-label="User name or email search"
           InputProps={{

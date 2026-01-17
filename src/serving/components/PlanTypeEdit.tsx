@@ -63,6 +63,7 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
               onChange={(e) => handleChange("name", e.target.value)}
               required
               margin="normal"
+              placeholder={Locale.label("placeholders.planType.name")}
             />
           </InputBox>
         </Box>

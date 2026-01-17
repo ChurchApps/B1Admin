@@ -2463,5 +2463,146 @@
   "support": {
     "discussions": "Mga Talakayan",
     "documentation": "Dokumentasyon"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "Juan",
+      "middleName": "Miguel",
+      "lastName": "Dela Cruz",
+      "nickName": "Johnny",
+      "prefix": "G.",
+      "suffix": "Jr.",
+      "email": "juan@halimbawa.ph",
+      "homePhone": "(02) 1234-5678",
+      "workPhone": "(02) 9876-5432",
+      "mobilePhone": "0917-123-4567",
+      "address1": "123 Pangunahing Kalye",
+      "address2": "Unit 4B",
+      "city": "Maynila",
+      "state": "Metro Manila",
+      "zip": "1000"
+    },
+    "household": {
+      "name": "Pamilyang Dela Cruz"
+    },
+    "group": {
+      "name": "Pag-aaral ng Bibliya para sa mga Adulto",
+      "category": "Komunidad, Pag-aaral ng Bibliya, Ministeryo"
+    },
+    "fund": {
+      "name": "Pangkalahatang Pondo"
+    },
+    "batch": {
+      "name": "Mga Handog ng Linggo"
+    },
+    "donation": {
+      "notes": "Buwanang ikapu ng Pamilyang Dela Cruz"
+    },
+    "church": {
+      "name": "Iglesia ng Biyaya",
+      "subDomain": "gracechurch",
+      "address1": "456 Pangunahing Abenida",
+      "address2": "Suite 100",
+      "city": "Quezon City",
+      "state": "Metro Manila",
+      "zip": "1100"
+    },
+    "user": {
+      "firstName": "Juan",
+      "lastName": "Dela Cruz",
+      "email": "juan@halimbawa.ph"
+    },
+    "role": {
+      "name": "Boluntaryo"
+    },
+    "form": {
+      "name": "Form ng Pagpaparehistro",
+      "questionTitle": "Ano ang paborito mong pagkain?",
+      "questionDescription": "Tulungan kaming magplano ng mga kaganapan",
+      "questionPlaceholder": "Ilagay ang iyong sagot dito",
+      "thankYouMessage": "Salamat sa iyong pagsumite!"
+    },
+    "choices": {
+      "value": "Pagpipilian A",
+      "text": "Unang Pagpipilian"
+    },
+    "sermon": {
+      "title": "Paglalakad sa Pananampalataya",
+      "description": "Serye tungkol sa pamumuhay sa pananampalataya araw-araw"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "Dakila ang Iyong Katapatan"
+    },
+    "position": {
+      "name": "Pangunahing Mang-aawit"
+    },
+    "time": {
+      "name": "Ensayo"
+    },
+    "planType": {
+      "name": "Paglilingkod sa Linggo"
+    },
+    "planItem": {
+      "label": "Oras ng Pagsamba"
+    },
+    "plan": {
+      "notes": "Tandaang repasuhin ang ensayo noong nakaraang linggo"
+    },
+    "task": {
+      "taskName": "Ihanda ang mga slide ng lyrics"
+    },
+    "serviceTime": {
+      "name": "Paglilingkod sa Umaga"
+    },
+    "service": {
+      "name": "Pagsamba sa Linggo"
+    },
+    "campus": {
+      "name": "Pangunahing Campus"
+    },
+    "device": {
+      "name": "Computer ng Santuaryo"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "Tungkol sa Amin"
+    },
+    "block": {
+      "name": "Seksyon ng Pagbati"
+    },
+    "addPage": {
+      "title": "Ang Aming Kuwento",
+      "aiContent": "Gumawa ng pahina tungkol sa kasaysayan at misyon ng aming iglesia"
+    },
+    "font": {
+      "url": "https://fonts.halimbawa.ph/my-font.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "Ano ang mga oras ng paglilingkod?",
+      "answer": "May mga paglilingkod kami tuwing Linggo ng 9am at 11am"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"Ano ang pangalan mo?\", \"answer\": \"Iglesia ng Biyaya\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "Maghanap ayon sa pangalan o email"
+    }
   }
 }

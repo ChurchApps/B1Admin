@@ -74,6 +74,7 @@ export const FundEdit: React.FC<Props> = (props) => {
         value={fund.name}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        placeholder={Locale.label("placeholders.fund.name")}
         data-testid="fund-name-input"
         aria-label="Fund name"
       />

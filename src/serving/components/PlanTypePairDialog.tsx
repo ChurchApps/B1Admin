@@ -106,7 +106,7 @@ export const PlanTypePairDialog: React.FC<Props> = ({ planTypeId, onClose }) => 
                   fontFamily: "monospace"
                 }
               }}
-              placeholder="XXXX"
+              placeholder={Locale.label("placeholders.pairScreen.code")}
               autoFocus
             />
           </Box>

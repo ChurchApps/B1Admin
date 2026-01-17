@@ -3,6 +3,7 @@ import type { SelectChangeEvent } from "@mui/material";
 
 import { ColorPicker } from "../ColorPicker";
 import { HtmlEditor } from "@churchapps/apphelper-markdown";
+import { Locale } from "@churchapps/apphelper";
 
 type Props = {
   parsedData: any;
@@ -19,7 +20,7 @@ export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange }: Props) =
         <MenuItem value="link">Link</MenuItem>
       </Select>
     </FormControl>
-    <TextField fullWidth label="Title" name="title" size="small" value={parsedData.title || ""} onChange={handleChange} />
+    <TextField fullWidth label="Title" name="title" size="small" value={parsedData.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.faq.title")} />
     <Box sx={{ marginTop: 2 }}>
       <HtmlEditor
         value={parsedData.description || ""}

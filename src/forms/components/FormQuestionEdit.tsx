@@ -75,7 +75,7 @@ export function FormQuestionEdit(props: Props) {
         break;
       default:
         result = (
-          <TextField fullWidth label={Locale.label("forms.formQuestionEdit.plcOp")} id="placeholder" type="text" name="placeholder" value={question.placeholder || ""} onChange={handleChange} />
+          <TextField fullWidth label={Locale.label("forms.formQuestionEdit.plcOp")} id="placeholder" type="text" name="placeholder" value={question.placeholder || ""} onChange={handleChange} placeholder={Locale.label("placeholders.form.questionPlaceholder")} />
         );
         break;
     }
@@ -145,6 +145,7 @@ export function FormQuestionEdit(props: Props) {
         name="title"
         value={question.title || ""}
         onChange={handleChange}
+        placeholder={Locale.label("placeholders.form.questionTitle")}
         data-testid="question-title-input"
         aria-label="Question title"
       />
@@ -156,6 +157,7 @@ export function FormQuestionEdit(props: Props) {
         name="description"
         value={question.description || ""}
         onChange={handleChange}
+        placeholder={Locale.label("placeholders.form.questionDescription")}
         data-testid="question-description-input"
         aria-label="Question description"
       />

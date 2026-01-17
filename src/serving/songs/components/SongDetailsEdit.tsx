@@ -50,8 +50,8 @@ export const SongDetailsEdit = (props: Props) => {
 
   return (
     <InputBox headerText={props.songDetail?.title} headerIcon="album" saveFunction={handleSave} cancelFunction={props.onCancel}>
-      <TextField label={Locale.label("songs.details.album")} name="album" value={songDetail?.album} onChange={handleChange} fullWidth size="small" />
-      <TextField label={Locale.label("songs.details.language")} name="language" value={songDetail?.language} onChange={handleChange} fullWidth size="small" />
+      <TextField label={Locale.label("songs.details.album")} name="album" value={songDetail?.album} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.album")} />
+      <TextField label={Locale.label("songs.details.language")} name="language" value={songDetail?.language} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.language")} />
       <TextField
         type="date"
         label={Locale.label("songs.details.releaseDate")}
@@ -61,9 +61,9 @@ export const SongDetailsEdit = (props: Props) => {
         fullWidth
         size="small"
       />
-      <TextField type="number" label={Locale.label("songs.details.bpm")} name="bpm" value={songDetail?.bpm} onChange={handleChange} fullWidth size="small" />
-      <TextField label={Locale.label("songs.details.key")} name="keySignature" value={songDetail?.keySignature} placeholder="C#" onChange={handleChange} fullWidth size="small" />
-      <TextField type="number" label={Locale.label("songs.details.seconds")} name="seconds" value={songDetail?.seconds} onChange={handleChange} fullWidth size="small" />
+      <TextField type="number" label={Locale.label("songs.details.bpm")} name="bpm" value={songDetail?.bpm} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.bpm")} />
+      <TextField label={Locale.label("songs.details.key")} name="keySignature" value={songDetail?.keySignature} placeholder={Locale.label("placeholders.song.keySignature")} onChange={handleChange} fullWidth size="small" />
+      <TextField type="number" label={Locale.label("songs.details.seconds")} name="seconds" value={songDetail?.seconds} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.lengthSeconds")} />
     </InputBox>
   );
 };

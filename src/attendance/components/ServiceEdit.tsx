@@ -118,6 +118,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         type="text"
         value={service.name}
         onChange={handleChange}
+        placeholder={Locale.label("placeholders.service.name")}
         data-testid="service-name-input"
         aria-label="Service name"
       />

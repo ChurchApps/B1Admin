@@ -127,6 +127,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
               value={person.name.first || ""}
               onChange={handleChange}
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit}
+              placeholder={Locale.label("placeholders.person.firstName")}
             />
             <TextField
               margin="dense"
@@ -139,6 +140,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
               value={person.name.last || ""}
               onChange={handleChange}
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit}
+              placeholder={Locale.label("placeholders.person.lastName")}
             />
             <TextField
               margin="dense"
@@ -150,6 +152,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
               value={person.contactInfo.email || ""}
               onChange={handleChange}
               onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit}
+              placeholder={Locale.label("placeholders.person.simpleEmail")}
             />
           </DialogContent>
           <DialogActions>
@@ -187,6 +190,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
             value={person.name.first || ""}
             onChange={handleChange}
             onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit}
+            placeholder={Locale.label("placeholders.person.firstName")}
           />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -202,6 +206,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
             value={person.name.last || ""}
             onChange={handleChange}
             onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit}
+            placeholder={Locale.label("placeholders.person.lastName")}
           />
         </Grid>
         <Grid size={12}>
@@ -216,6 +221,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
             value={person.contactInfo.email || ""}
             onChange={handleChange}
             onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit}
+            placeholder={Locale.label("placeholders.person.simpleEmail")}
           />
         </Grid>
         <Grid size={12}>

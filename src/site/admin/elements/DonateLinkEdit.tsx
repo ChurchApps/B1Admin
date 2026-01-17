@@ -84,7 +84,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
       {/* Link Url */}
       <TextField fullWidth size="small" placeholder={Locale.label("site.donateLink.urlPlaceholder")} helperText={Locale.label("site.donateLink.urlHelper")} label={Locale.label("site.donateLink.urlLabel")} name="url" value={parsedData.url || ""} onChange={handleChange} data-testid="donate-link-url-input" aria-label="Donation page URL" />
       {/* Link Text */}
-      <TextField fullWidth size="small" helperText={Locale.label("site.donateLink.textHelper")} label={Locale.label("site.donateLink.textLabel")} name="text" value={parsedData.text || ""} onChange={handleChange} data-testid="donate-link-text-input" aria-label="Donation link text" />
+      <TextField fullWidth size="small" helperText={Locale.label("site.donateLink.textHelper")} label={Locale.label("site.donateLink.textLabel")} name="text" value={parsedData.text || ""} onChange={handleChange} placeholder={Locale.label("placeholders.element.donateText")} data-testid="donate-link-text-input" aria-label="Donation link text" />
 
       {/* Funds */}
       {!funds || funds.length === 0

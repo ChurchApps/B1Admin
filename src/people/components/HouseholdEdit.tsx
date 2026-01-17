@@ -174,6 +174,7 @@ export function HouseholdEdit(props: Props) {
           value={household?.name}
           onChange={handleChange}
           label={Locale.label("people.householdEdit.houseName")}
+          placeholder={Locale.label("placeholders.household.name")}
           data-testid="household-name-input"
           aria-label="Household name"
         />

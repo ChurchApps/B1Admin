@@ -353,7 +353,7 @@ export function AddPageModal(props: Props) {
               multiline
               minRows={5}
               maxRows={8}
-              placeholder="Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button"
+              placeholder={Locale.label("site.addPage.aiPlaceholder")}
               value={aiPrompt}
               onChange={(e) => setAiPrompt(e.target.value)}
               disabled={isSubmitting}
@@ -371,13 +371,13 @@ export function AddPageModal(props: Props) {
         {pageTemplate !== "ai" && (
           <Grid container spacing={2}>
             {(pageTemplate !== "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-              <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="page-title-input" />
+              <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.title")} data-testid="page-title-input" />
             </Grid>}
             {(pageTemplate === "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-              <TextField size="small" fullWidth label="Link Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+              <TextField size="small" fullWidth label="Link Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkUrl")} />
             </Grid>}
             {(props.mode === "navigation") && <Grid size={6}>
-              <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+              <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkText")} />
             </Grid>}
           </Grid>
         )}

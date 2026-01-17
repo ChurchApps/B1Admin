@@ -1,4 +1,4 @@
-import { ArrayHelper } from "@churchapps/apphelper";
+import { ArrayHelper, Locale } from "@churchapps/apphelper";
 import {
   DialogContent, FormControl, Grid, InputLabel, MenuItem, Pagination, Select, type SelectChangeEvent, TextField, Table, TableBody, TableCell, TableHead, TableRow, Typography, Box 
 } from "@mui/material";
@@ -111,7 +111,7 @@ export function CustomFontModal(props: Props) {
               </FormControl>
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField fullWidth label="Search" name="search" value={search} onChange={handleChange} />
+              <TextField fullWidth label="Search" name="search" value={search} onChange={handleChange} placeholder={Locale.label("placeholders.font.search")} />
             </Grid>
           </Grid>
         </Box>

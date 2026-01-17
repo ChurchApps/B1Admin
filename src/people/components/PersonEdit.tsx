@@ -310,31 +310,31 @@ export const PersonEdit = memo((props: Props) => {
         <Grid size={{ sm: 8 }}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField fullWidth name="name.first" label={Locale.label("person.firstName")} id="first" value={person.name.first || ""} onChange={handleChange} data-testid="first-name-input" aria-label="First name" />
+              <TextField fullWidth name="name.first" label={Locale.label("person.firstName")} id="first" value={person.name.first || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.firstName")} data-testid="first-name-input" aria-label="First name" />
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField fullWidth name="name.middle" label={Locale.label("person.middleName")} id="middle" value={person.name.middle || ""} onChange={handleChange} />
+              <TextField fullWidth name="name.middle" label={Locale.label("person.middleName")} id="middle" value={person.name.middle || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.middleName")} />
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField fullWidth name="name.last" label={Locale.label("person.lastName")} id="last" value={person.name.last || ""} onChange={handleChange} data-testid="last-name-input" aria-label="Last name" />
+              <TextField fullWidth name="name.last" label={Locale.label("person.lastName")} id="last" value={person.name.last || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.lastName")} data-testid="last-name-input" aria-label="Last name" />
             </Grid>
           </Grid>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField fullWidth name="contactInfo.email" label={Locale.label("person.email")} type="email" id="email" value={person.contactInfo.email || ""} onChange={handleChange} data-testid="email-input" aria-label="Email address" />
+              <TextField fullWidth name="contactInfo.email" label={Locale.label("person.email")} type="email" id="email" value={person.contactInfo.email || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.email")} data-testid="email-input" aria-label="Email address" />
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField inputProps={{ maxLength: 20 }} fullWidth name="nametagNotes" label={Locale.label("people.personEdit.nameNote")} id="nametagnotes" value={person.nametagNotes || ""} onChange={handleChange} />
+              <TextField inputProps={{ maxLength: 20 }} fullWidth name="nametagNotes" label={Locale.label("people.personEdit.nameNote")} id="nametagnotes" value={person.nametagNotes || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.nameTag")} />
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField fullWidth name="donorNumber" label={Locale.label("people.personEdit.donorNumber")} id="donorNumber" value={person.donorNumber || ""} onChange={handleChange} data-testid="donor-number-input" aria-label="Donor number" />
+              <TextField fullWidth name="donorNumber" label={Locale.label("people.personEdit.donorNumber")} id="donorNumber" value={person.donorNumber || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.donorNumber")} data-testid="donor-number-input" aria-label="Donor number" />
             </Grid>
           </Grid>
         </Grid>
       </Grid>
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 4 }}>
-          <TextField fullWidth name="name.nick" id="nick" label={Locale.label("person.nickName")} value={person.name.nick || ""} onChange={handleChange} data-testid="nickname-input" aria-label="Nickname" />
+          <TextField fullWidth name="name.nick" id="nick" label={Locale.label("person.nickName")} value={person.name.nick || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.nickname")} data-testid="nickname-input" aria-label="Nickname" />
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
           <FormControl fullWidth>
@@ -384,17 +384,17 @@ export const PersonEdit = memo((props: Props) => {
       <Grid container spacing={3}>
         <Grid size={{ md: 8 }}>
           <div className="section">{Locale.label("person.address")}</div>
-          <TextField name="contactInfo.address1" id="address1" fullWidth label={Locale.label("person.line1")} value={person.contactInfo?.address1 || ""} onChange={handleChange} data-testid="address1-input" aria-label="Address line 1" />
-          <TextField name="contactInfo.address2" id="address2" fullWidth label={Locale.label("person.line2")} value={person.contactInfo?.address2 || ""} onChange={handleChange} data-testid="address2-input" aria-label="Address line 2" />
+          <TextField name="contactInfo.address1" id="address1" fullWidth label={Locale.label("person.line1")} value={person.contactInfo?.address1 || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.address1")} data-testid="address1-input" aria-label="Address line 1" />
+          <TextField name="contactInfo.address2" id="address2" fullWidth label={Locale.label("person.line2")} value={person.contactInfo?.address2 || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.address2")} data-testid="address2-input" aria-label="Address line 2" />
           <Grid container spacing={3}>
             <Grid size={{ xs: 6 }}>
-              <TextField name="contactInfo.city" id="city" fullWidth label={Locale.label("person.city")} value={person.contactInfo?.city || ""} onChange={handleChange} data-testid="city-input" aria-label="City" />
+              <TextField name="contactInfo.city" id="city" fullWidth label={Locale.label("person.city")} value={person.contactInfo?.city || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.city")} data-testid="city-input" aria-label="City" />
             </Grid>
             <Grid size={{ xs: 3 }}>
-              <TextField name="contactInfo.state" id="state" fullWidth label={Locale.label("person.state")} value={person.contactInfo?.state || ""} onChange={handleChange} data-testid="state-input" aria-label="State" />
+              <TextField name="contactInfo.state" id="state" fullWidth label={Locale.label("person.state")} value={person.contactInfo?.state || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.state")} data-testid="state-input" aria-label="State" />
             </Grid>
             <Grid size={{ xs: 3 }}>
-              <TextField name="contactInfo.zip" id="zip" fullWidth label={Locale.label("person.zip")} value={person.contactInfo?.zip || ""} onChange={handleChange} data-testid="zip-input" aria-label="ZIP code" />
+              <TextField name="contactInfo.zip" id="zip" fullWidth label={Locale.label("person.zip")} value={person.contactInfo?.zip || ""} onChange={handleChange} placeholder={Locale.label("placeholders.person.zip")} data-testid="zip-input" aria-label="ZIP code" />
             </Grid>
           </Grid>
         </Grid>
@@ -406,9 +406,9 @@ export const PersonEdit = memo((props: Props) => {
         </Grid>
         <Grid size={{ md: 1 }}>
           <div className="section">{Locale.label("people.personEdit.exten")}</div>
-          <TextField fullWidth name="contactInfo.homePhone" label={Locale.label("people.personEdit.home")} value={person.contactInfo?.homePhone?.split("x")[1] || ""} onChange={handleChangeExtention} InputProps={{ inputProps: { maxLength: 4 } }} />
-          <TextField fullWidth name="contactInfo.workPhone" label={Locale.label("people.personEdit.work")} value={person.contactInfo?.workPhone?.split("x")[1] || ""} onChange={handleChangeExtention} InputProps={{ inputProps: { maxLength: 4 } }} />
-          <TextField fullWidth name="contactInfo.mobilePhone" label={Locale.label("people.personEdit.mobile")} value={person.contactInfo?.mobilePhone?.split("x")[1] || ""} onChange={handleChangeExtention} InputProps={{ inputProps: { maxLength: 4 } }} />
+          <TextField fullWidth name="contactInfo.homePhone" label={Locale.label("people.personEdit.home")} value={person.contactInfo?.homePhone?.split("x")[1] || ""} onChange={handleChangeExtention} InputProps={{ inputProps: { maxLength: 4 } }} placeholder={Locale.label("placeholders.person.phoneExt")} />
+          <TextField fullWidth name="contactInfo.workPhone" label={Locale.label("people.personEdit.work")} value={person.contactInfo?.workPhone?.split("x")[1] || ""} onChange={handleChangeExtention} InputProps={{ inputProps: { maxLength: 4 } }} placeholder={Locale.label("placeholders.person.phoneExt")} />
+          <TextField fullWidth name="contactInfo.mobilePhone" label={Locale.label("people.personEdit.mobile")} value={person.contactInfo?.mobilePhone?.split("x")[1] || ""} onChange={handleChangeExtention} InputProps={{ inputProps: { maxLength: 4 } }} placeholder={Locale.label("placeholders.person.phoneExt")} />
         </Grid>
       </Grid>
       <Grid container spacing={3} sx={{ mt: 2 }}>

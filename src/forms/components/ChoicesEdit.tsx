@@ -80,10 +80,10 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
           {getRows()}
           <TableRow>
             <TableCell>
-              <TextField label={Locale.label("forms.choicesEdit.value")} fullWidth size="small" name="choiceValue" data-cy="value" value={choiceValue} onChange={handleChange} />
+              <TextField label={Locale.label("forms.choicesEdit.value")} fullWidth size="small" name="choiceValue" data-cy="value" value={choiceValue} onChange={handleChange} placeholder={Locale.label("placeholders.choices.value")} />
             </TableCell>
             <TableCell>
-              <TextField label={Locale.label("forms.choicesEdit.txt")} fullWidth size="small" name="choiceText" data-cy="text" value={choiceText} onChange={handleChange} />
+              <TextField label={Locale.label("forms.choicesEdit.txt")} fullWidth size="small" name="choiceText" data-cy="text" value={choiceText} onChange={handleChange} placeholder={Locale.label("placeholders.choices.text")} />
             </TableCell>
             <TableCell>
               <Button id="addQuestionChoiceButton" data-cy="add-button" variant="contained" size="small" onClick={handleAdd}>
