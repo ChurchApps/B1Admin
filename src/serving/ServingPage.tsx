@@ -110,7 +110,7 @@ export const ServingPage = () => {
   // Has ministries - show selector and content
   return (
     <>
-      <PageHeader icon={<AssignmentIcon />} title={Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
+      <PageHeader icon={<AssignmentIcon />} title={selectedMinistry?.name || Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
         {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
           <>
             {selectedMinistry && (
