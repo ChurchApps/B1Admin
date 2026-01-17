@@ -948,7 +948,8 @@
       "persDet": "Personal Details",
       "upAddress": "You updated the address to",
       "valEmail": "Please enter a valid email address.",
-      "work": "Work"
+      "work": "Work",
+      "cannotDeleteSelf": "You cannot delete your own person record."
     },
     "personView": {
       "home": "Home",

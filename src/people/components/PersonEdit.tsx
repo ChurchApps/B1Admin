@@ -146,10 +146,14 @@ export const PersonEdit = memo((props: Props) => {
 
   const handleDelete = useCallback(() => {
     if (!person?.id) return;
+    if (B1AdminPersonHelper.getExpandedPersonObject(person).id === context.person?.id) {
+      alert(Locale.label("people.personEdit.cannotDeleteSelf"));
+      return;
+    }
     if (window.confirm(Locale.label("people.personEdit.confirmMsg"))) {
       ApiHelper.delete("/people/" + person.id.toString(), "MembershipApi").then(() => setRedirect("/people"));
     }
-  }, [person?.id]);
+  }, [person?.id, context.person?.id]);
 
   const validateEmail = useCallback((email: string) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email), []);
 
