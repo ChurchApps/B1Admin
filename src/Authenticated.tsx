@@ -40,6 +40,7 @@ const PrintDonationPage = React.lazy(() => import("./donations/PrintDonationPage
 const PrintAllStatementsPage = React.lazy(() => import("./donations/PrintAllStatementsPage").then((module) => ({ default: module.PrintAllStatementsPage })));
 const BatchGivingStatementsPage = React.lazy(() => import("./donations/BatchGivingStatementsPage").then((module) => ({ default: module.BatchGivingStatementsPage })));
 const OAuthPage = React.lazy(() => import("./OAuth").then((module) => ({ default: module.OAuthPage })));
+const DeviceAuthPage = React.lazy(() => import("./device/DeviceAuthPage").then((module) => ({ default: module.DeviceAuthPage })));
 const SermonsPage = React.lazy(() => import("./sermons/SermonsPage").then((module) => ({ default: module.SermonsPage })));
 const PlaylistsPage = React.lazy(() => import("./sermons/PlaylistsPage").then((module) => ({ default: module.PlaylistsPage })));
 const LiveStreamTimesPage = React.lazy(() => import("./sermons/LiveStreamTimesPage").then((module) => ({ default: module.LiveStreamTimesPage })));
@@ -133,6 +134,14 @@ export const Authenticated: React.FC = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <OAuthPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/device"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <DeviceAuthPage />
             </Suspense>
           }
         />
