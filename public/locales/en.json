@@ -2140,7 +2140,8 @@
     "addPage": {
       "newLink": "New Link",
       "newPage": "New Page",
-      "pageType": "Page Type"
+      "pageType": "Page Type",
+      "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button"
     },
     "appearanceEdit": {
       "logoManagement": "Logo Management"
@@ -2635,11 +2636,6 @@
     },
     "giving": {
       "publicKey": "pk_live_..."
-    }
-  },
-  "site": {
-    "addPage": {
-      "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button"
     }
   },
   "serverAdmin": {
