@@ -1395,7 +1395,8 @@
       "noUsers": "No users found. Please search for a different name or email.",
       "searchResults": "Search Results",
       "userChurches": "Churches",
-      "noUserChurches": "This user has no churches associated with their account."
+      "noUserChurches": "This user has no churches associated with their account.",
+      "userSearchPlaceholder": "Search by name or email"
     },
     "reportPage": {
       "report": "Report",
@@ -1912,7 +1913,9 @@
       "vimeoChannelId": "Vimeo Channel ID",
       "importIntoPlaylist": "Import Into Playlist",
       "autoImportNewVideos": "Auto Import New Videos",
-      "selectPlaylist": "Please select a playlist"
+      "selectPlaylist": "Please select a playlist",
+      "vimeoChannelPlaceholder": "staffpicks",
+      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA"
     },
     "liveStreamTimes": {
       "title": "Live Stream Times",
@@ -2636,17 +2639,6 @@
     },
     "giving": {
       "publicKey": "pk_live_..."
-    }
-  },
-  "serverAdmin": {
-    "adminPage": {
-      "userSearchPlaceholder": "Search by name or email"
-    }
-  },
-  "sermons": {
-    "bulkImport": {
-      "vimeoChannelPlaceholder": "staffpicks",
-      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA"
     }
   }
 }
