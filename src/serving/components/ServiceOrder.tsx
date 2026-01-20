@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon } from "@mui/icons-material";
-import { type PlanInterface, type PlanItemInterface, type ExternalVenueRefInterface, LessonsContentProvider } from "@churchapps/helpers";
+import { type PlanInterface, type PlanItemInterface, type ExternalVenueRefInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { LessonsChurchProvider, type ContentFolder, type InstructionItem } from "@churchapps/content-provider-helper";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
 import { DndProvider } from "react-dnd";
@@ -18,6 +19,28 @@ interface Props {
   onPlanUpdate?: () => void;
 }
 
+// Helper to create a venue folder for the provider
+function createVenueFolder(venueId: string): ContentFolder {
+  return {
+    type: "folder",
+    id: venueId,
+    title: "",
+    providerData: { level: "playlist", venueId }
+  };
+}
+
+// Helper to convert InstructionItem to PlanItemInterface
+function instructionToPlanItem(item: InstructionItem): PlanItemInterface {
+  return {
+    itemType: item.itemType || "item",
+    relatedId: item.relatedId,
+    label: item.label || "",
+    description: item.description,
+    seconds: item.seconds,
+    children: item.children?.map(instructionToPlanItem)
+  };
+}
+
 export const ServiceOrder = memo((props: Props) => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
@@ -29,8 +52,8 @@ export const ServiceOrder = memo((props: Props) => {
   const [venueName, setVenueName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
 
-  // Use LessonsContentProvider from helpers
-  const lessonsProvider = useMemo(() => new LessonsContentProvider(), []);
+  // Use LessonsChurchProvider from ContentProviderHelper
+  const lessonsProvider = useMemo(() => new LessonsChurchProvider(), []);
 
   const loadData = useCallback(async () => {
     if (props.plan?.id) {
@@ -75,12 +98,26 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [props.plan, props.onPlanUpdate]);
 
-  // Use LessonsContentProvider methods
-  const hasAssociatedLesson = lessonsProvider.hasAssociatedLesson(props.plan);
-  const isExternalVenue = lessonsProvider.isExternalVenue(props.plan);
+  // Helper methods for lesson association (inlined from old LessonsContentProvider)
+  const hasAssociatedLesson = (props.plan?.contentType === "venue" || props.plan?.contentType === "externalVenue") && !!props.plan?.contentId;
+  const isExternalVenue = props.plan?.contentType === "externalVenue";
   const getExternalRef = useCallback((): ExternalVenueRefInterface | null => {
-    return lessonsProvider.getExternalRef(props.plan);
-  }, [lessonsProvider, props.plan]);
+    if (!isExternalVenue || !props.plan?.contentId) return null;
+    try {
+      return JSON.parse(props.plan.contentId);
+    } catch {
+      return null;
+    }
+  }, [isExternalVenue, props.plan?.contentId]);
+
+  // Get venue ID for internal venues
+  const getVenueId = useCallback((): string | null => {
+    if (!hasAssociatedLesson) return null;
+    if (isExternalVenue) {
+      return getExternalRef()?.venueId || null;
+    }
+    return props.plan?.contentId || null;
+  }, [hasAssociatedLesson, isExternalVenue, getExternalRef, props.plan?.contentId]);
 
   // Determine if we should show preview mode
   const showPreviewMode = hasAssociatedLesson && planItems.length === 0 && previewLessonItems.length > 0;
@@ -120,11 +157,18 @@ export const ServiceOrder = memo((props: Props) => {
     if (!hasAssociatedLesson) return;
 
     try {
-      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
+      const venueId = getVenueId();
+      if (!venueId) return;
 
-      if (response?.items && response.items.length > 0) {
+      const venueFolder = createVenueFolder(venueId);
+      const instructions = await lessonsProvider.getInstructions(venueFolder);
+
+      if (instructions?.items && instructions.items.length > 0) {
+        // Convert InstructionItems to PlanItemInterface
+        const planItemsFromInstructions = instructions.items.map(instructionToPlanItem);
+
         // Keep top-level headers with their section children, but strip grandchildren (actions)
-        const sectionsOnly = response.items.map((item: PlanItemInterface) => ({
+        const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface) => ({
           ...item,
           // Keep children (sections) but strip their children (actions)
           children: item.children?.map((section: PlanItemInterface) => ({
@@ -139,7 +183,7 @@ export const ServiceOrder = memo((props: Props) => {
     } catch (error) {
       console.error("Error customizing lesson:", error);
     }
-  }, [hasAssociatedLesson, lessonsProvider, props.plan, loadData]);
+  }, [hasAssociatedLesson, getVenueId, lessonsProvider, loadData]);
 
   const addHeader = useCallback(async () => {
     // If in preview mode, first customize (import sections only), then add header
@@ -153,18 +197,23 @@ export const ServiceOrder = memo((props: Props) => {
 
   const handleLessonSelect = useCallback(async () => {
     try {
-      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
+      const venueId = getVenueId();
+      if (!venueId) return;
 
-      if (response?.items && response.items.length > 0) {
-        // Immediately save the lesson items as editable plan items
-        await saveHierarchicalItems(response.items);
+      const venueFolder = createVenueFolder(venueId);
+      const instructions = await lessonsProvider.getInstructions(venueFolder);
+
+      if (instructions?.items && instructions.items.length > 0) {
+        // Convert InstructionItems to PlanItemInterface and save
+        const planItemsFromInstructions = instructions.items.map(instructionToPlanItem);
+        await saveHierarchicalItems(planItemsFromInstructions);
         // Reload data to show the new editable items
         loadData();
       }
     } catch (error) {
       console.error("Error importing lesson items:", error);
     }
-  }, [lessonsProvider, props.plan, loadData]);
+  }, [getVenueId, lessonsProvider, loadData]);
 
   // Load venue name when there's an associated lesson
   const loadVenueName = useCallback(async () => {
@@ -173,19 +222,37 @@ export const ServiceOrder = memo((props: Props) => {
       return;
     }
     try {
-      const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
-      if (response?.venueName) setVenueName(response.venueName);
+      const venueId = getVenueId();
+      if (!venueId) return;
+
+      const venueFolder = createVenueFolder(venueId);
+      const instructions = await lessonsProvider.getInstructions(venueFolder);
+      if (instructions?.venueName) setVenueName(instructions.venueName);
     } catch (error) {
       console.error("Error loading venue name:", error);
     }
-  }, [hasAssociatedLesson, lessonsProvider, props.plan]);
+  }, [hasAssociatedLesson, getVenueId, lessonsProvider]);
 
   const loadPreviewLessonItems = useCallback(async () => {
     if (hasAssociatedLesson && planItems.length === 0) {
       try {
-        const response = await lessonsProvider.fetchVenuePlanItems(props.plan);
-        setPreviewLessonItems(response?.items || []);
-        if (response?.venueName) setVenueName(response.venueName);
+        const venueId = getVenueId();
+        if (!venueId) {
+          setPreviewLessonItems([]);
+          return;
+        }
+
+        const venueFolder = createVenueFolder(venueId);
+        const instructions = await lessonsProvider.getInstructions(venueFolder);
+
+        if (instructions?.items) {
+          // Convert InstructionItems to PlanItemInterface for preview
+          const planItemsFromInstructions = instructions.items.map(instructionToPlanItem);
+          setPreviewLessonItems(planItemsFromInstructions);
+        } else {
+          setPreviewLessonItems([]);
+        }
+        if (instructions?.venueName) setVenueName(instructions.venueName);
       } catch (error) {
         console.error("Error loading preview lesson items:", error);
         setPreviewLessonItems([]);
@@ -193,7 +260,7 @@ export const ServiceOrder = memo((props: Props) => {
     } else {
       setPreviewLessonItems([]);
     }
-  }, [hasAssociatedLesson, planItems.length, lessonsProvider, props.plan]);
+  }, [hasAssociatedLesson, planItems.length, getVenueId, lessonsProvider]);
 
   const handleAddLesson = useCallback(async () => {
     if (hasAssociatedLesson) {

@@ -1,21 +1,27 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import {
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Stack,
   Typography,
   Box,
   ToggleButtonGroup,
   ToggleButton,
+  CircularProgress,
+  IconButton,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+  Breadcrumbs,
+  Link,
 } from "@mui/material";
+import { ArrowBack as ArrowBackIcon, Folder as FolderIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { LessonsChurchProvider, type ContentFolder } from "@churchapps/content-provider-helper";
 import { type ExternalProviderInterface, type ExternalVenueRefInterface } from "../../helpers";
 
 interface Props {
@@ -27,59 +33,157 @@ interface Props {
 }
 
 export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, returnVenueName }) => {
-  const [lessonTree, setLessonTree] = useState<any>({});
-  const [selectedProgram, setSelectedProgram] = useState<string>("");
-  const [selectedStudy, setSelectedStudy] = useState<string>("");
-  const [selectedLesson, setSelectedLesson] = useState<string>("");
-  const [selectedVenue, setSelectedVenue] = useState<string>("");
+  const provider = useMemo(() => new LessonsChurchProvider(), []);
+
+  // Folder navigation stack
+  const [folderStack, setFolderStack] = useState<ContentFolder[]>([]);
+  const [currentItems, setCurrentItems] = useState<ContentFolder[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // Selected venue (final selection)
+  const [selectedVenue, setSelectedVenue] = useState<ContentFolder | null>(null);
+
   const [venueInfo, setVenueInfo] = useState<any>(null);
 
   // External provider state
   const [providerType, setProviderType] = useState<"internal" | "external">("internal");
   const [externalProviders, setExternalProviders] = useState<ExternalProviderInterface[]>([]);
   const [selectedProvider, setSelectedProvider] = useState<ExternalProviderInterface | null>(null);
+  const [externalTree, setExternalTree] = useState<any>(null);
 
-  const loadLessonTree = useCallback(async () => {
-    // If venueId is provided, skip loading the tree
-    if (venueId) {
-      try {
-        const venueData = await ApiHelper.getAnonymous("/venues/public/" + venueId, "LessonsApi");
-        setVenueInfo(venueData);
-      } catch (error) {
-        console.error("Error loading venue info:", error);
+  // Check if a folder is a venue (final level)
+  const isVenueFolder = useCallback((folder: ContentFolder): boolean => {
+    return folder.providerData?.level === "playlist" || !!folder.providerData?.venueId;
+  }, []);
+
+  // Load content for a given folder (or root if null)
+  const loadContent = useCallback(async (folder: ContentFolder | null) => {
+    setLoading(true);
+    try {
+      if (providerType === "external" && externalTree) {
+        // Navigate external tree
+        const items = getExternalFolderContent(folder, externalTree);
+        setCurrentItems(items);
+      } else {
+        // Use provider.browse()
+        const items = await provider.browse(folder);
+        const folders = items.filter((item): item is ContentFolder => item.type === "folder");
+        setCurrentItems(folders);
       }
-      return;
+    } catch (error) {
+      console.error("Error loading content:", error);
+      setCurrentItems([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [provider, providerType, externalTree]);
+
+  // Extract content from external tree based on folder path
+  const getExternalFolderContent = useCallback((folder: ContentFolder | null, tree: any): ContentFolder[] => {
+    if (!tree?.programs) return [];
+
+    // Root level - return programs
+    if (!folder) {
+      return tree.programs.map((p: any) => ({
+        type: "folder" as const,
+        id: p.id,
+        title: p.name,
+        image: p.image,
+        providerData: { level: "studies", programId: p.id }
+      }));
     }
 
-    try {
-      const data = await ApiHelper.getAnonymous("/lessons/public/tree", "LessonsApi");
-      setLessonTree(data || {});
+    const level = folder.providerData?.level;
 
-      // Auto-select defaults
-      if (data?.programs?.length > 0) {
-        const firstProgram = data.programs[0];
-        setSelectedProgram(firstProgram.id);
+    // Program selected - return studies
+    if (level === "studies") {
+      const program = tree.programs.find((p: any) => p.id === folder.id);
+      return (program?.studies || []).map((s: any) => ({
+        type: "folder" as const,
+        id: s.id,
+        title: s.name,
+        image: s.image,
+        providerData: { level: "lessons", studyId: s.id, programId: folder.id }
+      }));
+    }
 
-        if (firstProgram.studies?.length > 0) {
-          const firstStudy = firstProgram.studies[0];
-          setSelectedStudy(firstStudy.id);
+    // Study selected - return lessons
+    if (level === "lessons") {
+      for (const program of tree.programs) {
+        const study = program.studies?.find((s: any) => s.id === folder.id);
+        if (study) {
+          return (study.lessons || []).map((l: any) => ({
+            type: "folder" as const,
+            id: l.id,
+            title: l.name,
+            image: l.image,
+            providerData: { level: "venues", lessonId: l.id, studyId: folder.id, programId: program.id }
+          }));
+        }
+      }
+    }
 
-          if (firstStudy.lessons?.length > 0) {
-            const firstLesson = firstStudy.lessons[0];
-            setSelectedLesson(firstLesson.id);
-
-            if (firstLesson.venues?.length > 0) {
-              setSelectedVenue(firstLesson.venues[0].id);
-            }
+    // Lesson selected - return venues
+    if (level === "venues") {
+      for (const program of tree.programs) {
+        for (const study of program.studies || []) {
+          const lesson = study.lessons?.find((l: any) => l.id === folder.id);
+          if (lesson) {
+            return (lesson.venues || []).map((v: any) => ({
+              type: "folder" as const,
+              id: v.id,
+              title: v.name,
+              providerData: { level: "playlist", venueId: v.id, lessonId: folder.id, studyId: study.id, programId: program.id }
+            }));
           }
         }
       }
-    } catch (error) {
-      console.error("Error loading lesson tree:", error);
-      setLessonTree({});
     }
-  }, [venueId]);
 
+    return [];
+  }, []);
+
+  // Handle folder click - either navigate into it or select it (if venue)
+  const handleFolderClick = useCallback((folder: ContentFolder) => {
+    if (isVenueFolder(folder)) {
+      // This is a venue - select it
+      setSelectedVenue(folder);
+    } else {
+      // Navigate into the folder
+      setSelectedVenue(null);
+      setFolderStack(prev => [...prev, folder]);
+      loadContent(folder);
+    }
+  }, [isVenueFolder, loadContent]);
+
+  // Handle back navigation
+  const handleBack = useCallback(() => {
+    setSelectedVenue(null);
+    if (folderStack.length > 0) {
+      const newStack = [...folderStack];
+      newStack.pop();
+      setFolderStack(newStack);
+      const parentFolder = newStack.length > 0 ? newStack[newStack.length - 1] : null;
+      loadContent(parentFolder);
+    }
+  }, [folderStack, loadContent]);
+
+  // Handle breadcrumb click
+  const handleBreadcrumbClick = useCallback((index: number) => {
+    setSelectedVenue(null);
+    if (index < 0) {
+      // Root clicked
+      setFolderStack([]);
+      loadContent(null);
+    } else {
+      // Navigate to specific level
+      const newStack = folderStack.slice(0, index + 1);
+      setFolderStack(newStack);
+      loadContent(newStack[newStack.length - 1]);
+    }
+  }, [folderStack, loadContent]);
+
+  // Load external providers
   const loadExternalProviders = useCallback(async () => {
     try {
       const providers = await ApiHelper.get("/externalProviders", "LessonsApi");
@@ -90,147 +194,136 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     }
   }, []);
 
-  const loadExternalLessonTree = useCallback(async (provider: ExternalProviderInterface) => {
-    if (!provider?.apiUrl) return;
+  // Load external tree
+  const loadExternalTree = useCallback(async (apiUrl: string) => {
+    setLoading(true);
     try {
-      const response = await fetch(provider.apiUrl);
+      const response = await fetch(apiUrl);
       const data = await response.json();
-      setLessonTree(data || {});
-      autoSelectDefaults(data);
+      setExternalTree(data);
+      // Load root content from tree
+      const items = getExternalFolderContent(null, data);
+      setCurrentItems(items);
     } catch (error) {
-      console.error("Error loading external lesson tree:", error);
-      setLessonTree({});
+      console.error("Error loading external tree:", error);
+      setExternalTree(null);
+      setCurrentItems([]);
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  }, [getExternalFolderContent]);
 
-  const autoSelectDefaults = (data: any) => {
-    if (data?.programs?.length > 0) {
-      const firstProgram = data.programs[0];
-      setSelectedProgram(firstProgram.id);
-      if (firstProgram.studies?.length > 0) {
-        const firstStudy = firstProgram.studies[0];
-        setSelectedStudy(firstStudy.id);
-        if (firstStudy.lessons?.length > 0) {
-          const firstLesson = firstStudy.lessons[0];
-          setSelectedLesson(firstLesson.id);
-          if (firstLesson.venues?.length > 0) {
-            setSelectedVenue(firstLesson.venues[0].id);
-          }
-        }
-      }
-    }
-  };
-
+  // Handle provider type change
   const handleProviderTypeChange = useCallback((newType: "internal" | "external") => {
     setProviderType(newType);
     setSelectedProvider(null);
-    setLessonTree({});
-    setSelectedProgram("");
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
+    setExternalTree(null);
+    setFolderStack([]);
+    setCurrentItems([]);
+    setSelectedVenue(null);
     if (newType === "internal") {
-      loadLessonTree();
+      loadContent(null);
     }
-  }, [loadLessonTree]);
+  }, [loadContent]);
 
+  // Handle external provider change
   const handleProviderChange = useCallback((providerId: string) => {
-    const provider = externalProviders.find(p => p.id === providerId);
-    setSelectedProvider(provider || null);
-    setSelectedProgram("");
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
-    if (provider) {
-      loadExternalLessonTree(provider);
+    const providerData = externalProviders.find(p => p.id === providerId);
+    setSelectedProvider(providerData || null);
+    setFolderStack([]);
+    setCurrentItems([]);
+    setSelectedVenue(null);
+    if (providerData?.apiUrl) {
+      loadExternalTree(providerData.apiUrl);
     }
-  }, [externalProviders, loadExternalLessonTree]);
+  }, [externalProviders, loadExternalTree]);
 
-  const getCurrentProgram = useCallback(() => {
-    return lessonTree?.programs?.find((p: any) => p.id === selectedProgram);
-  }, [lessonTree, selectedProgram]);
+  // Build external venue reference from folder stack
+  const buildExternalRef = useCallback((): ExternalVenueRefInterface | null => {
+    if (!selectedProvider || !selectedVenue) return null;
 
-  const getCurrentStudy = useCallback(() => {
-    const program = getCurrentProgram();
-    return program?.studies?.find((s: any) => s.id === selectedStudy);
-  }, [getCurrentProgram, selectedStudy]);
+    // Get IDs from the folder stack and selected venue
+    let programId = "";
+    let studyId = "";
+    let lessonId = "";
 
-  const getCurrentLesson = useCallback(() => {
-    const study = getCurrentStudy();
-    return study?.lessons?.find((l: any) => l.id === selectedLesson);
-  }, [getCurrentStudy, selectedLesson]);
+    for (const folder of folderStack) {
+      if (folder.providerData?.level === "studies") programId = folder.id;
+      else if (folder.providerData?.level === "lessons") studyId = folder.id;
+      else if (folder.providerData?.level === "venues") lessonId = folder.id;
+    }
 
-  const handleProgramChange = useCallback((programId: string) => {
-    setSelectedProgram(programId);
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
-  }, []);
+    // Also check the venue's providerData for parent IDs
+    if (selectedVenue.providerData) {
+      programId = programId || (selectedVenue.providerData.programId as string) || "";
+      studyId = studyId || (selectedVenue.providerData.studyId as string) || "";
+      lessonId = lessonId || (selectedVenue.providerData.lessonId as string) || "";
+    }
 
-  const handleStudyChange = useCallback((studyId: string) => {
-    setSelectedStudy(studyId);
-    setSelectedLesson("");
-    setSelectedVenue("");
-  }, []);
+    return {
+      externalProviderId: selectedProvider.id!,
+      programId,
+      studyId,
+      lessonId,
+      venueId: selectedVenue.id
+    };
+  }, [selectedProvider, selectedVenue, folderStack]);
 
-  const handleLessonChange = useCallback((lessonId: string) => {
-    setSelectedLesson(lessonId);
-    setSelectedVenue("");
-  }, []);
-
-  const handleVenueChange = useCallback((venueId: string) => {
-    setSelectedVenue(venueId);
-  }, []);
-
+  // Handle final selection
   const handleSelect = useCallback(() => {
     if (venueId) {
-      // Use the pre-associated venue
       onSelect(venueId, venueInfo?.name);
       onClose();
     } else if (selectedVenue) {
-      const currentLessonData = getCurrentLesson();
-      const selectedVenueData = currentLessonData?.venues?.find((v: any) => v.id === selectedVenue);
-      const venueName = returnVenueName ? selectedVenueData?.name : undefined;
+      const venueName = returnVenueName ? selectedVenue.title : undefined;
 
-      if (providerType === "external" && selectedProvider) {
-        // Create external venue reference
-        const externalRef: ExternalVenueRefInterface = {
-          externalProviderId: selectedProvider.id!,
-          programId: selectedProgram,
-          studyId: selectedStudy,
-          lessonId: selectedLesson,
-          venueId: selectedVenue
-        };
-        onSelect(selectedVenue, venueName, externalRef);
+      if (providerType === "external") {
+        const externalRef = buildExternalRef();
+        onSelect(selectedVenue.id, venueName, externalRef || undefined);
       } else {
-        onSelect(selectedVenue, venueName);
+        onSelect(selectedVenue.id, venueName);
       }
       onClose();
     }
-  }, [venueId, venueInfo, selectedVenue, getCurrentLesson, returnVenueName, onSelect, onClose, providerType, selectedProvider, selectedProgram, selectedStudy, selectedLesson]);
+  }, [venueId, venueInfo, selectedVenue, returnVenueName, onSelect, onClose, providerType, buildExternalRef]);
 
+  // Handle dialog close
   const handleClose = useCallback(() => {
-    setSelectedProgram("");
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
+    setFolderStack([]);
+    setCurrentItems([]);
+    setSelectedVenue(null);
     setVenueInfo(null);
     setProviderType("internal");
     setSelectedProvider(null);
-    setLessonTree({});
+    setExternalTree(null);
     onClose();
   }, [onClose]);
 
+  // Load initial content when dialog opens
   useEffect(() => {
     if (open) {
-      loadLessonTree();
+      if (venueId) {
+        // If venueId is provided, just load venue info
+        ApiHelper.getAnonymous("/venues/public/" + venueId, "LessonsApi")
+          .then((data: unknown) => setVenueInfo(data))
+          .catch((error: unknown) => console.error("Error loading venue info:", error));
+      } else {
+        loadContent(null);
+      }
       loadExternalProviders();
     }
-  }, [open, loadLessonTree, loadExternalProviders]);
+  }, [open, venueId, loadContent, loadExternalProviders]);
 
-  const currentProgram = getCurrentProgram();
-  const currentStudy = getCurrentStudy();
-  const currentLesson = getCurrentLesson();
+  // Build breadcrumb items
+  const breadcrumbItems = useMemo(() => {
+    const items: { label: string; onClick?: () => void }[] = [
+      { label: providerType === "external" ? (selectedProvider?.name || "External") : "Lessons.church", onClick: () => handleBreadcrumbClick(-1) }
+    ];
+    folderStack.forEach((folder, index) => {
+      items.push({ label: folder.title, onClick: () => handleBreadcrumbClick(index) });
+    });
+    return items;
+  }, [folderStack, providerType, selectedProvider, handleBreadcrumbClick]);
 
   // If venueId is provided, show simplified view
   if (venueId) {
@@ -258,10 +351,20 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   }
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{Locale.label("plans.lessonSelector.associateLesson")}</DialogTitle>
+    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+      <DialogTitle>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {folderStack.length > 0 && (
+            <IconButton onClick={handleBack} size="small">
+              <ArrowBackIcon />
+            </IconButton>
+          )}
+          <span>{Locale.label("plans.lessonSelector.associateLesson")}</span>
+        </Stack>
+      </DialogTitle>
       <DialogContent>
-        <Stack spacing={3} sx={{ mt: 1 }}>
+        <Stack spacing={2} sx={{ mt: 1 }}>
+          {/* Provider type toggle */}
           {externalProviders.length > 0 && (
             <Box>
               <Typography variant="body2" sx={{ mb: 1 }}>{Locale.label("plans.lessonSelector.lessonSource") || "Lesson Source"}</Typography>
@@ -270,7 +373,6 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                 exclusive
                 onChange={(_, value) => value && handleProviderTypeChange(value)}
                 size="small"
-                fullWidth
               >
                 <ToggleButton value="internal">{Locale.label("plans.lessonSelector.lessonsChurch") || "Lessons.church"}</ToggleButton>
                 <ToggleButton value="external">{Locale.label("plans.lessonSelector.externalProvider") || "External Provider"}</ToggleButton>
@@ -278,84 +380,129 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
             </Box>
           )}
 
+          {/* External provider selector */}
           {providerType === "external" && (
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("plans.lessonSelector.provider") || "Provider"}</InputLabel>
-              <Select
-                value={selectedProvider?.id || ""}
-                onChange={(e) => handleProviderChange(e.target.value)}
-                label={Locale.label("plans.lessonSelector.provider") || "Provider"}
-              >
-                {externalProviders.map((provider) => (
-                  <MenuItem key={provider.id} value={provider.id}>
-                    {provider.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+              {externalProviders.map((providerItem) => (
+                <Button
+                  key={providerItem.id}
+                  variant={selectedProvider?.id === providerItem.id ? "contained" : "outlined"}
+                  onClick={() => handleProviderChange(providerItem.id!)}
+                  size="small"
+                >
+                  {providerItem.name}
+                </Button>
+              ))}
+            </Box>
           )}
 
-          <FormControl fullWidth disabled={providerType === "external" && !selectedProvider}>
-            <InputLabel>{Locale.label("plans.lessonSelector.program")}</InputLabel>
-            <Select
-              value={selectedProgram}
-              onChange={(e) => handleProgramChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.program")}
+          {/* Breadcrumb navigation */}
+          <Breadcrumbs aria-label="breadcrumb">
+            {breadcrumbItems.map((item, index) => (
+              index === breadcrumbItems.length - 1 ? (
+                <Typography key={index} color="text.primary">{item.label}</Typography>
+              ) : (
+                <Link
+                  key={index}
+                  component="button"
+                  variant="body2"
+                  onClick={item.onClick}
+                  underline="hover"
+                  color="inherit"
+                >
+                  {item.label}
+                </Link>
+              )
+            ))}
+          </Breadcrumbs>
+
+          {/* Content grid */}
+          {loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+              <CircularProgress />
+            </Box>
+          ) : currentItems.length === 0 ? (
+            <Box sx={{ textAlign: "center", py: 4 }}>
+              <Typography color="text.secondary">
+                {providerType === "external" && !selectedProvider
+                  ? "Select a provider to browse content"
+                  : "No content available"}
+              </Typography>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+                gap: 2,
+                maxHeight: "400px",
+                overflowY: "auto",
+                p: 1
+              }}
             >
-              {lessonTree?.programs?.map((program: any) => (
-                <MenuItem key={program.id} value={program.id}>
-                  {program.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              {currentItems.map((folder) => {
+                const isVenue = isVenueFolder(folder);
+                const isSelected = selectedVenue?.id === folder.id;
+                return (
+                  <Card
+                    key={folder.id}
+                    sx={{
+                      border: isSelected ? 2 : 1,
+                      borderColor: isSelected ? "primary.main" : "divider",
+                      bgcolor: isSelected ? "action.selected" : "background.paper"
+                    }}
+                  >
+                    <CardActionArea onClick={() => handleFolderClick(folder)}>
+                      {folder.image ? (
+                        <CardMedia
+                          component="img"
+                          height="80"
+                          image={folder.image}
+                          alt={folder.title}
+                          sx={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <Box
+                          sx={{
+                            height: 80,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            bgcolor: isVenue ? "primary.light" : "grey.200"
+                          }}
+                        >
+                          <FolderIcon sx={{ fontSize: 40, color: isVenue ? "primary.contrastText" : "grey.500" }} />
+                        </Box>
+                      )}
+                      <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
+                        <Typography
+                          variant="body2"
+                          noWrap
+                          title={folder.title}
+                          sx={{ fontWeight: isVenue ? 600 : 400 }}
+                        >
+                          {folder.title}
+                        </Typography>
+                        {isVenue && (
+                          <Typography variant="caption" color="primary">
+                            Venue
+                          </Typography>
+                        )}
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                );
+              })}
+            </Box>
+          )}
 
-          <FormControl fullWidth disabled={!selectedProgram}>
-            <InputLabel>{Locale.label("plans.lessonSelector.study")}</InputLabel>
-            <Select
-              value={selectedStudy}
-              onChange={(e) => handleStudyChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.study")}
-            >
-              {currentProgram?.studies?.map((study: any) => (
-                <MenuItem key={study.id} value={study.id}>
-                  {study.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth disabled={!selectedStudy}>
-            <InputLabel>{Locale.label("plans.lessonSelector.lesson")}</InputLabel>
-            <Select
-              value={selectedLesson}
-              onChange={(e) => handleLessonChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.lesson")}
-            >
-              {currentStudy?.lessons?.map((lesson: any) => (
-                <MenuItem key={lesson.id} value={lesson.id}>
-                  {lesson.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth disabled={!selectedLesson}>
-            <InputLabel>{Locale.label("plans.lessonSelector.venue")}</InputLabel>
-            <Select
-              value={selectedVenue}
-              onChange={(e) => handleVenueChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.venue")}
-            >
-              {currentLesson?.venues?.map((venue: any) => (
-                <MenuItem key={venue.id} value={venue.id}>
-                  {venue.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-
+          {/* Selected venue indicator */}
+          {selectedVenue && (
+            <Box sx={{ p: 2, bgcolor: "action.hover", borderRadius: 1 }}>
+              <Typography variant="body2" color="text.secondary">Selected:</Typography>
+              <Typography variant="subtitle1" color="primary">{selectedVenue.title}</Typography>
+            </Box>
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Icon, Menu, MenuItem } from "@mui/material";
 import { type PlanItemInterface, type ExternalVenueRefInterface } from "@churchapps/helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
+import { LessonsChurchProvider, type ContentFolder } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
 import { AddOnDialog } from "./AddOnDialog";
 import { ActionSelector } from "./ActionSelector";
 import { AddOnSelector } from "./AddOnSelector";
-import { formatTime, getSectionDuration, type LessonSectionInterface } from "./PlanUtils";
+import { formatTime, getSectionDuration } from "./PlanUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -25,7 +26,19 @@ interface Props {
   externalRef?: ExternalVenueRefInterface;
 }
 
+// Helper to create a venue folder for the provider
+function createVenueFolder(venueId: string): ContentFolder {
+  return {
+    type: "folder",
+    id: venueId,
+    title: "",
+    providerData: { level: "playlist", venueId }
+  };
+}
+
 export const PlanItem = React.memo((props: Props) => {
+  const provider = useMemo(() => new LessonsChurchProvider(), []);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
@@ -107,41 +120,63 @@ export const PlanItem = React.memo((props: Props) => {
     if (!props.planItem.relatedId || !props.associatedVenueId) return;
 
     try {
-      // Fetch actions for the associated venue
-      let venueData;
+      let actions: { id: string; name: string; seconds?: number }[] = [];
+
       if (props.externalRef) {
-        venueData = await ApiHelper.getAnonymous(`/externalProviders/${props.externalRef.externalProviderId}/venue/${props.externalRef.venueId}/actions`, "LessonsApi");
+        // For external providers, still use the API endpoint
+        const venueData = await ApiHelper.getAnonymous(
+          `/externalProviders/${props.externalRef.externalProviderId}/venue/${props.externalRef.venueId}/actions`,
+          "LessonsApi"
+        );
+        // Find the section matching this plan item's relatedId
+        const matchingSection = venueData?.sections?.find((s: any) => s.id === props.planItem.relatedId);
+        actions = matchingSection?.actions || [];
       } else {
-        venueData = await ApiHelper.getAnonymous(`/venues/public/actions/${props.associatedVenueId}`, "LessonsApi");
+        // Use ContentProviderHelper for internal venues
+        const venueFolder = createVenueFolder(props.associatedVenueId);
+        const instructions = await provider.getExpandedInstructions(venueFolder);
+
+        if (instructions) {
+          // Find the section matching this plan item's relatedId
+          // Instructions structure: items (headers) -> children (sections) -> children (actions)
+          for (const header of instructions.items) {
+            for (const section of header.children || []) {
+              if (section.relatedId === props.planItem.relatedId && section.children) {
+                actions = section.children.map(action => ({
+                  id: action.relatedId || action.id || "",
+                  name: action.label || "",
+                  seconds: action.seconds
+                }));
+                break;
+              }
+            }
+            if (actions.length > 0) break;
+          }
+        }
       }
 
-      if (venueData?.sections) {
-        // Find the section matching this plan item's relatedId
-        const matchingSection = venueData.sections.find((s: LessonSectionInterface) => s.id === props.planItem.relatedId);
+      if (actions.length > 0) {
+        const currentSort = props.planItem.sort || 1;
 
-        if (matchingSection?.actions?.length > 0) {
-          const currentSort = props.planItem.sort || 1;
+        // Create new plan items for each action, starting at the current item's sort position
+        const actionItems = actions.map((action, index) => ({
+          planId: props.planItem.planId,
+          parentId: props.planItem.parentId,
+          sort: currentSort + index,
+          itemType: "lessonAction",
+          relatedId: action.id,
+          label: action.name,
+          seconds: action.seconds || 0,
+        }));
 
-          // Create new plan items for each action, starting at the current item's sort position
-          const actionItems = matchingSection.actions.map((action, index) => ({
-            planId: props.planItem.planId,
-            parentId: props.planItem.parentId,
-            sort: currentSort + index, // Start at current position
-            itemType: "lessonAction",
-            relatedId: action.id,
-            label: action.name,
-            seconds: action.seconds || 0,
-          }));
+        // Delete the original section item first
+        await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
 
-          // Delete the original section item first
-          await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
+        // Create the new action items
+        await ApiHelper.post("/planItems", actionItems, "DoingApi");
 
-          // Create the new action items
-          await ApiHelper.post("/planItems", actionItems, "DoingApi");
-
-          // Refresh the plan - the API will handle re-sorting
-          if (props.onChange) props.onChange();
-        }
+        // Refresh the plan - the API will handle re-sorting
+        if (props.onChange) props.onChange();
       }
     } catch (error) {
       console.error("Error expanding section to actions:", error);
