@@ -163,8 +163,18 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       const newStack = [...folderStack];
       newStack.pop();
       setFolderStack(newStack);
-      const parentFolder = newStack.length > 0 ? newStack[newStack.length - 1] : null;
-      loadContent(parentFolder);
+      if (newStack.length > 0) {
+        loadContent(newStack[newStack.length - 1]);
+      } else {
+        // At root - go to programs level (skip Lessons/Add-Ons tier)
+        const lessonsFolder: ContentFolder = {
+          type: "folder",
+          id: "lessons-root",
+          title: "Lessons",
+          providerData: { level: "programs" }
+        };
+        loadContent(lessonsFolder);
+      }
     }
   }, [folderStack, loadContent]);
 
@@ -172,9 +182,15 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   const handleBreadcrumbClick = useCallback((index: number) => {
     setSelectedVenue(null);
     if (index < 0) {
-      // Root clicked
+      // Root clicked - go to programs level (skip Lessons/Add-Ons tier)
       setFolderStack([]);
-      loadContent(null);
+      const lessonsFolder: ContentFolder = {
+        type: "folder",
+        id: "lessons-root",
+        title: "Lessons",
+        providerData: { level: "programs" }
+      };
+      loadContent(lessonsFolder);
     } else {
       // Navigate to specific level
       const newStack = folderStack.slice(0, index + 1);
@@ -222,7 +238,14 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setCurrentItems([]);
     setSelectedVenue(null);
     if (newType === "internal") {
-      loadContent(null);
+      // Go to programs level (skip Lessons/Add-Ons tier)
+      const lessonsFolder: ContentFolder = {
+        type: "folder",
+        id: "lessons-root",
+        title: "Lessons",
+        providerData: { level: "programs" }
+      };
+      loadContent(lessonsFolder);
     }
   }, [loadContent]);
 
@@ -308,7 +331,14 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
           .then((data: unknown) => setVenueInfo(data))
           .catch((error: unknown) => console.error("Error loading venue info:", error));
       } else {
-        loadContent(null);
+        // Skip Lessons/Add-Ons tier - start directly at programs level
+        const lessonsFolder: ContentFolder = {
+          type: "folder",
+          id: "lessons-root",
+          title: "Lessons",
+          providerData: { level: "programs" }
+        };
+        loadContent(lessonsFolder);
       }
       loadExternalProviders();
     }
@@ -364,8 +394,9 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
-          {/* Provider type toggle */}
-          {externalProviders.length > 0 && (
+          {/* Provider type toggle - hidden for now */}
+          {/* TODO: Re-enable external providers when ready */}
+          {false && externalProviders.length > 0 && (
             <Box>
               <Typography variant="body2" sx={{ mb: 1 }}>{Locale.label("plans.lessonSelector.lessonSource") || "Lesson Source"}</Typography>
               <ToggleButtonGroup
@@ -380,8 +411,8 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
             </Box>
           )}
 
-          {/* External provider selector */}
-          {providerType === "external" && (
+          {/* External provider selector - hidden for now */}
+          {false && providerType === "external" && (
             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               {externalProviders.map((providerItem) => (
                 <Button
