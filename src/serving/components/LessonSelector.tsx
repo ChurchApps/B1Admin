@@ -83,8 +83,13 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
         const items = getExternalFolderContent(folder, externalTree);
         setCurrentItems(items);
       } else {
-        // Use provider.browse()
-        const items = await provider.browse(folder);
+        // Get auth for providers that require it
+        let auth = null;
+        if (provider.requiresAuth() && ministryId) {
+          auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
+        }
+        // Use provider.browse() with auth
+        const items = await provider.browse(folder, auth);
         const folders = items.filter((item): item is ContentFolder => item.type === "folder");
         setCurrentItems(folders);
       }
@@ -94,7 +99,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     } finally {
       setLoading(false);
     }
-  }, [provider, providerType, externalTree]);
+  }, [provider, providerType, externalTree, ministryId, selectedProviderId]);
 
   // Extract content from external tree based on folder path
   const getExternalFolderContent = useCallback((folder: ContentFolder | null, tree: any): ContentFolder[] => {
