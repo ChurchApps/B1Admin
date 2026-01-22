@@ -12,18 +12,32 @@ import {
   Stack,
   Typography,
   Box,
+  Avatar,
+  Chip,
+  IconButton,
+  CircularProgress,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+  Breadcrumbs,
+  Link,
 } from "@mui/material";
+import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { LessonsChurchProvider, type ContentFolder, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type ContentFolder, type Instructions, type InstructionItem, type ContentProvider } from "@churchapps/content-provider-helper";
 import { type LessonActionTreeInterface } from "./PlanUtils";
-import { type ExternalVenueRefInterface } from "../../helpers";
+import { type ExternalVenueRefInterface, type ContentProviderAuthInterface } from "../../helpers";
+import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (actionId: string, actionName: string, seconds?: number) => void;
+  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string) => void;
   venueId?: string;
   externalRef?: ExternalVenueRefInterface;
+  providerId?: string;
+  ministryId?: string;
 }
 
 // Helper to create a venue folder for the provider
@@ -36,8 +50,19 @@ function createVenueFolder(venueId: string): ContentFolder {
   };
 }
 
-export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, externalRef }) => {
-  const provider = useMemo(() => new LessonsChurchProvider(), []);
+export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, externalRef, providerId, ministryId }) => {
+  // Browse mode: "associated" uses the associated lesson, "browse" allows browsing other providers
+  const [browseMode, setBrowseMode] = useState<"associated" | "browse">("associated");
+  const [selectedProviderId, setSelectedProviderId] = useState<string>(providerId || "lessonschurch");
+  const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
+  const [showAllProviders, setShowAllProviders] = useState(false);
+
+  const provider = useMemo<ContentProvider | null>(() => {
+    const pid = browseMode === "associated" ? (providerId || "lessonschurch") : selectedProviderId;
+    return getProvider(pid);
+  }, [providerId, selectedProviderId, browseMode]);
+
+  const availableProviders = useMemo(() => getAvailableProviders(), []);
 
   const [actionTree, setActionTree] = useState<LessonActionTreeInterface>({});
   const [selectedProgram, setSelectedProgram] = useState<string>("");
@@ -51,8 +76,18 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   const [instructions, setInstructions] = useState<Instructions | null>(null);
   const [sections, setSections] = useState<InstructionItem[]>([]);
 
+  // For browse mode - folder navigation
+  const [folderStack, setFolderStack] = useState<ContentFolder[]>([]);
+  const [currentItems, setCurrentItems] = useState<ContentFolder[]>([]);
+  const [browseLoading, setBrowseLoading] = useState(false);
+  const [browseVenueId, setBrowseVenueId] = useState<string | null>(null);
+  const [browseInstructions, setBrowseInstructions] = useState<Instructions | null>(null);
+  const [browseSections, setBrowseSections] = useState<InstructionItem[]>([]);
+  const [browseSelectedSection, setBrowseSelectedSection] = useState<string>("");
+  const [browseSelectedAction, setBrowseSelectedAction] = useState<string>("");
+
   const loadVenueActions = useCallback(async () => {
-    if (!venueId) return;
+    if (!venueId || !provider) return;
 
     try {
       if (externalRef) {
@@ -65,14 +100,14 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
         const instructionItems: InstructionItem[] = (data?.sections || []).map((s: any) => ({
           id: s.id,
           label: s.name,
-          itemType: "lessonSection",
+          itemType: "providerSection",
           relatedId: s.id,
           children: s.actions?.map((a: any) => ({
             id: a.id,
             label: a.name,
             description: a.actionType,
             seconds: a.seconds,
-            itemType: "lessonAction",
+            itemType: "providerPresentation",
             relatedId: a.id
           }))
         }));
@@ -229,31 +264,24 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setSelectedAction(actionId);
   }, []);
 
-  const handleSelect = useCallback(() => {
-    if (selectedAction) {
-      let actionName = "Action";
-      let actionSeconds: number | undefined;
-
-      if (venueId) {
-        // Find action from sections (Instructions format)
-        const section = getCurrentVenueSection();
-        const action = section?.children?.find(a => (a.relatedId || a.id) === selectedAction);
-        actionName = action?.label || "Action";
-        actionSeconds = action?.seconds;
-      } else {
-        // Find action from tree
-        const section = getCurrentSection();
-        const action = section?.actions?.find((a: any) => a.id === selectedAction);
-        actionName = action?.name || "Action";
-        actionSeconds = action?.seconds;
-      }
-
-      onSelect(selectedAction, actionName, actionSeconds);
-      onClose();
+  // Load linked providers for the ministry
+  const loadLinkedProviders = useCallback(async () => {
+    if (!ministryId) {
+      setLinkedProviders([]);
+      return;
     }
-  }, [selectedAction, venueId, getCurrentVenueSection, getCurrentSection, onSelect, onClose]);
+    try {
+      const linked = await ContentProviderAuthHelper.getLinkedProviders(ministryId);
+      setLinkedProviders(linked || []);
+    } catch (error) {
+      console.error("Error loading linked providers:", error);
+      setLinkedProviders([]);
+    }
+  }, [ministryId]);
 
-  const handleClose = useCallback(() => {
+  // Handle content provider selection change (in browse mode)
+  const handleContentProviderChange = useCallback((newProviderId: string) => {
+    setSelectedProviderId(newProviderId);
     setSelectedProgram("");
     setSelectedStudy("");
     setSelectedLesson("");
@@ -262,12 +290,259 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setSelectedAction("");
     setInstructions(null);
     setSections([]);
+    // Reset browse folder state
+    setFolderStack([]);
+    setCurrentItems([]);
+    setBrowseVenueId(null);
+    setBrowseInstructions(null);
+    setBrowseSections([]);
+    setBrowseSelectedSection("");
+    setBrowseSelectedAction("");
+  }, []);
+
+  // Check if a folder is a venue (final level for browsing)
+  const isVenueFolder = useCallback((folder: ContentFolder): boolean => {
+    return folder.providerData?.level === "playlist" || !!folder.providerData?.venueId;
+  }, []);
+
+  // Load content for browse mode
+  const loadBrowseContent = useCallback(async (folder: ContentFolder | null) => {
+    const browseProvider = getProvider(selectedProviderId);
+    if (!browseProvider) {
+      setCurrentItems([]);
+      return;
+    }
+    setBrowseLoading(true);
+    try {
+      const items = await browseProvider.browse(folder);
+      const folders = items.filter((item): item is ContentFolder => item.type === "folder");
+      setCurrentItems(folders);
+    } catch (error) {
+      console.error("Error loading browse content:", error);
+      setCurrentItems([]);
+    } finally {
+      setBrowseLoading(false);
+    }
+  }, [selectedProviderId]);
+
+  // Load actions for a selected venue in browse mode
+  const loadBrowseVenueActions = useCallback(async (venueIdToLoad: string) => {
+    const browseProvider = getProvider(selectedProviderId);
+    if (!browseProvider) return;
+
+    setBrowseLoading(true);
+    try {
+      const venueFolder = createVenueFolder(venueIdToLoad);
+      const result = await browseProvider.getExpandedInstructions(venueFolder);
+
+      if (result) {
+        setBrowseInstructions(result);
+        // Extract sections that have children (actions)
+        const sectionItems = result.items.flatMap(item =>
+          item.children?.filter(child => child.children && child.children.length > 0) || []
+        );
+        setBrowseSections(sectionItems);
+
+        // Auto-select first section and action
+        if (sectionItems.length > 0) {
+          setBrowseSelectedSection(sectionItems[0].relatedId || sectionItems[0].id || "");
+          if (sectionItems[0].children?.length) {
+            setBrowseSelectedAction(sectionItems[0].children[0].relatedId || sectionItems[0].children[0].id || "");
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error loading browse venue actions:", error);
+      setBrowseInstructions(null);
+      setBrowseSections([]);
+    } finally {
+      setBrowseLoading(false);
+    }
+  }, [selectedProviderId]);
+
+  // Handle folder click in browse mode
+  const handleBrowseFolderClick = useCallback((folder: ContentFolder) => {
+    if (isVenueFolder(folder)) {
+      // This is a venue - load its actions
+      setBrowseVenueId(folder.id);
+      setFolderStack([...folderStack, folder]);
+      loadBrowseVenueActions(folder.id);
+    } else {
+      // Navigate into the folder
+      setFolderStack([...folderStack, folder]);
+      loadBrowseContent(folder);
+    }
+  }, [folderStack, isVenueFolder, loadBrowseContent, loadBrowseVenueActions]);
+
+  // Handle back in browse mode
+  const handleBrowseBack = useCallback(() => {
+    if (browseVenueId) {
+      // Go back from venue actions to folder list
+      setBrowseVenueId(null);
+      setBrowseInstructions(null);
+      setBrowseSections([]);
+      setBrowseSelectedSection("");
+      setBrowseSelectedAction("");
+      const newStack = folderStack.slice(0, -1);
+      setFolderStack(newStack);
+      loadBrowseContent(newStack.length > 0 ? newStack[newStack.length - 1] : null);
+    } else if (folderStack.length > 0) {
+      const newStack = folderStack.slice(0, -1);
+      setFolderStack(newStack);
+      loadBrowseContent(newStack.length > 0 ? newStack[newStack.length - 1] : null);
+    }
+  }, [browseVenueId, folderStack, loadBrowseContent]);
+
+  // Handle breadcrumb click in browse mode
+  const handleBrowseBreadcrumbClick = useCallback((index: number) => {
+    // Reset venue state if we're navigating back
+    setBrowseVenueId(null);
+    setBrowseInstructions(null);
+    setBrowseSections([]);
+    setBrowseSelectedSection("");
+    setBrowseSelectedAction("");
+
+    if (index === -1) {
+      // Root
+      setFolderStack([]);
+      loadBrowseContent(null);
+    } else {
+      const newStack = folderStack.slice(0, index + 1);
+      setFolderStack(newStack);
+      loadBrowseContent(newStack[newStack.length - 1]);
+    }
+  }, [folderStack, loadBrowseContent]);
+
+  // Get current browse section
+  const getCurrentBrowseSection = useCallback(() => {
+    return browseSections.find(s => (s.relatedId || s.id) === browseSelectedSection);
+  }, [browseSections, browseSelectedSection]);
+
+  // Switch to browse mode
+  const handleBrowseOther = useCallback(() => {
+    setBrowseMode("browse");
+    setSelectedSection("");
+    setSelectedAction("");
+    setInstructions(null);
+    setSections([]);
+    // Initialize browse folder state
+    setFolderStack([]);
+    setCurrentItems([]);
+    setBrowseVenueId(null);
+    setBrowseInstructions(null);
+    setBrowseSections([]);
+    setBrowseSelectedSection("");
+    setBrowseSelectedAction("");
+  }, []);
+
+  // Go back to associated lesson mode
+  const handleBackToAssociated = useCallback(() => {
+    setBrowseMode("associated");
+    setSelectedProviderId(providerId || "lessonschurch");
+    setSelectedProgram("");
+    setSelectedStudy("");
+    setSelectedLesson("");
+    setSelectedVenue("");
+    setSelectedSection("");
+    setSelectedAction("");
+    setInstructions(null);
+    setSections([]);
+    setShowAllProviders(false);
+    // Reset browse folder state
+    setFolderStack([]);
+    setCurrentItems([]);
+    setBrowseVenueId(null);
+    setBrowseInstructions(null);
+    setBrowseSections([]);
+    setBrowseSelectedSection("");
+    setBrowseSelectedAction("");
+  }, [providerId]);
+
+  const handleSelect = useCallback(() => {
+    if (browseMode === "browse" && browseSelectedAction) {
+      // Browse mode - use browse state
+      const section = getCurrentBrowseSection();
+      const action = section?.children?.find(a => (a.relatedId || a.id) === browseSelectedAction);
+      const actionName = action?.label || "Action";
+      const actionSeconds = action?.seconds;
+      onSelect(browseSelectedAction, actionName, actionSeconds, selectedProviderId);
+      onClose();
+    } else if (selectedAction) {
+      let actionName = "Action";
+      let actionSeconds: number | undefined;
+
+      if (venueId && browseMode === "associated") {
+        // Find action from sections (Instructions format) - associated lesson mode
+        const section = getCurrentVenueSection();
+        const action = section?.children?.find(a => (a.relatedId || a.id) === selectedAction);
+        actionName = action?.label || "Action";
+        actionSeconds = action?.seconds;
+      } else {
+        // Find action from tree - browse mode or no venueId
+        const section = getCurrentSection();
+        const action = section?.actions?.find((a: any) => a.id === selectedAction);
+        actionName = action?.name || "Action";
+        actionSeconds = action?.seconds;
+      }
+
+      // Determine which provider ID to pass
+      const resultProviderId = browseMode === "browse" ? selectedProviderId : (providerId || "lessonschurch");
+      onSelect(selectedAction, actionName, actionSeconds, resultProviderId);
+      onClose();
+    }
+  }, [selectedAction, browseSelectedAction, venueId, browseMode, getCurrentVenueSection, getCurrentSection, getCurrentBrowseSection, onSelect, onClose, providerId, selectedProviderId]);
+
+  const handleClose = useCallback(() => {
+    setBrowseMode("associated");
+    setSelectedProviderId(providerId || "lessonschurch");
+    setSelectedProgram("");
+    setSelectedStudy("");
+    setSelectedLesson("");
+    setSelectedVenue("");
+    setSelectedSection("");
+    setSelectedAction("");
+    setInstructions(null);
+    setSections([]);
+    setShowAllProviders(false);
+    // Reset browse folder state
+    setFolderStack([]);
+    setCurrentItems([]);
+    setBrowseVenueId(null);
+    setBrowseInstructions(null);
+    setBrowseSections([]);
+    setBrowseSelectedSection("");
+    setBrowseSelectedAction("");
     onClose();
-  }, [onClose]);
+  }, [onClose, providerId]);
 
   useEffect(() => {
-    if (open) loadActionTree();
-  }, [open, loadActionTree]);
+    if (open) {
+      loadLinkedProviders();
+      if (browseMode === "associated" || !venueId) {
+        loadActionTree();
+      }
+    }
+  }, [open, loadActionTree, loadLinkedProviders, browseMode, venueId]);
+
+  // Load browse content when switching to browse mode or changing provider
+  useEffect(() => {
+    if (open && browseMode === "browse" && !browseVenueId) {
+      loadBrowseContent(folderStack.length > 0 ? folderStack[folderStack.length - 1] : null);
+    }
+  }, [open, browseMode, selectedProviderId, browseVenueId, folderStack, loadBrowseContent]);
+
+  // Get current provider info
+  const currentProviderInfo = useMemo(() => {
+    const pid = browseMode === "browse" ? selectedProviderId : (providerId || "lessonschurch");
+    return availableProviders.find(p => p.id === pid);
+  }, [availableProviders, selectedProviderId, browseMode, providerId]);
+
+  // Check if current provider is linked
+  const isCurrentProviderLinked = useMemo(() => {
+    const pid = browseMode === "browse" ? selectedProviderId : (providerId || "lessonschurch");
+    if (pid === "lessonschurch") return true;
+    return linkedProviders.some(lp => lp.providerId === pid);
+  }, [linkedProviders, selectedProviderId, browseMode, providerId]);
 
   const currentProgram = getCurrentProgram();
   const currentStudy = getCurrentStudy();
@@ -276,19 +551,39 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   const currentSection = getCurrentSection();
   const currentVenueSection = getCurrentVenueSection();
 
-  // If venueId is provided, show simplified view with just section and action
-  if (venueId) {
+  // Build breadcrumb items for browse mode (must be before conditional returns)
+  const browseBreadcrumbItems = useMemo(() => {
+    const providerName = currentProviderInfo?.name || selectedProviderId;
+    const items: { label: string; onClick?: () => void }[] = [
+      { label: providerName, onClick: () => handleBrowseBreadcrumbClick(-1) }
+    ];
+    folderStack.forEach((folder, index) => {
+      items.push({ label: folder.title, onClick: () => handleBrowseBreadcrumbClick(index) });
+    });
+    return items;
+  }, [folderStack, handleBrowseBreadcrumbClick, currentProviderInfo, selectedProviderId]);
+
+  // Get current browse section for action selection (must be before conditional returns)
+  const currentBrowseSection = getCurrentBrowseSection();
+
+  // If venueId is provided and in associated mode, show simplified view
+  if (venueId && browseMode === "associated") {
     return (
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>{Locale.label("plans.actionSelector.selectAction") || "Select Action"}</DialogTitle>
         <DialogContent>
           <Box sx={{ py: 1 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From associated lesson:"}
-              <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
-                {instructions?.venueName || "Loading..."}
+            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From associated lesson:"}
+                <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
+                  {instructions?.venueName || "Loading..."}
+                </Typography>
               </Typography>
-            </Typography>
+              <Button size="small" onClick={handleBrowseOther}>
+                {Locale.label("plans.lessonSelector.browseOtherProviders") || "Browse Other Providers"}
+              </Button>
+            </Stack>
           </Box>
           <Stack spacing={3}>
             <FormControl fullWidth>
@@ -325,6 +620,225 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
         <DialogActions>
           <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
           <Button onClick={handleSelect} disabled={!selectedAction} variant="contained">
+            {Locale.label("plans.actionSelector.selectAction") || "Select Action"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+
+  // Browse mode - show provider selector and card-based browsing
+  if (venueId && browseMode === "browse") {
+    return (
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogTitle>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            {(folderStack.length > 0 || browseVenueId) ? (
+              <IconButton size="small" onClick={handleBrowseBack}>
+                <ArrowBackIcon />
+              </IconButton>
+            ) : (
+              <IconButton size="small" onClick={handleBackToAssociated}>
+                <ArrowBackIcon />
+              </IconButton>
+            )}
+            <span>{Locale.label("plans.actionSelector.selectAction") || "Select Action"}</span>
+          </Stack>
+        </DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            {/* Content Provider Selector */}
+            <Box>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
+                <Typography variant="body2" color="text.secondary">
+                  {Locale.label("plans.lessonSelector.contentProvider") || "Content Provider"}
+                </Typography>
+                {!showAllProviders && (
+                  <Button size="small" onClick={() => setShowAllProviders(true)}>
+                    {Locale.label("plans.lessonSelector.browseOtherProviders") || "Browse Other Providers"}
+                  </Button>
+                )}
+              </Stack>
+              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                {(showAllProviders ? availableProviders : availableProviders.filter(p =>
+                  p.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === p.id)
+                )).map((providerInfo) => {
+                  const isLinked = providerInfo.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === providerInfo.id);
+                  return (
+                    <Chip
+                      key={providerInfo.id}
+                      avatar={providerInfo.logo ? <Avatar src={providerInfo.logo} /> : undefined}
+                      label={providerInfo.name}
+                      onClick={() => handleContentProviderChange(providerInfo.id)}
+                      color={selectedProviderId === providerInfo.id ? "primary" : "default"}
+                      variant={selectedProviderId === providerInfo.id ? "filled" : "outlined"}
+                      icon={!isLinked ? <LinkOffIcon /> : undefined}
+                      sx={{ opacity: isLinked ? 1 : 0.6 }}
+                    />
+                  );
+                })}
+              </Box>
+              {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth && (
+                <Typography variant="caption" color="warning.main" sx={{ mt: 1, display: "block" }}>
+                  {Locale.label("plans.lessonSelector.providerNotLinked") || "This provider is not linked. Please link it in ministry settings to access content."}
+                </Typography>
+              )}
+            </Box>
+
+            {/* Breadcrumb navigation */}
+            <Breadcrumbs aria-label="breadcrumb">
+              {browseBreadcrumbItems.map((item, index) => (
+                index === browseBreadcrumbItems.length - 1 ? (
+                  <Typography key={index} color="text.primary">{item.label}</Typography>
+                ) : (
+                  <Link
+                    key={index}
+                    component="button"
+                    variant="body2"
+                    onClick={item.onClick}
+                    underline="hover"
+                    color="inherit"
+                  >
+                    {item.label}
+                  </Link>
+                )
+              ))}
+            </Breadcrumbs>
+
+            {/* Content area */}
+            {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth ? (
+              <Box sx={{ textAlign: "center", py: 4 }}>
+                <Typography color="text.secondary">
+                  {Locale.label("plans.lessonSelector.linkProviderFirst") || "Please link this provider in ministry settings to browse content."}
+                </Typography>
+              </Box>
+            ) : browseLoading ? (
+              <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : browseVenueId ? (
+              /* Venue selected - show section/action dropdowns */
+              <Stack spacing={3}>
+                <Box sx={{ py: 1 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From:"}
+                    <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
+                      {browseInstructions?.venueName || "Loading..."}
+                    </Typography>
+                  </Typography>
+                </Box>
+                <FormControl fullWidth>
+                  <InputLabel>{Locale.label("plans.actionSelector.section") || "Section"}</InputLabel>
+                  <Select
+                    value={browseSelectedSection}
+                    onChange={(e) => {
+                      setBrowseSelectedSection(e.target.value);
+                      setBrowseSelectedAction("");
+                    }}
+                    label={Locale.label("plans.actionSelector.section") || "Section"}
+                  >
+                    {browseSections.map((section) => (
+                      <MenuItem key={section.relatedId || section.id} value={section.relatedId || section.id}>
+                        {section.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl fullWidth disabled={!browseSelectedSection}>
+                  <InputLabel>{Locale.label("plans.actionSelector.action") || "Action"}</InputLabel>
+                  <Select
+                    value={browseSelectedAction}
+                    onChange={(e) => setBrowseSelectedAction(e.target.value)}
+                    label={Locale.label("plans.actionSelector.action") || "Action"}
+                  >
+                    {currentBrowseSection?.children?.map((action) => (
+                      <MenuItem key={action.relatedId || action.id} value={action.relatedId || action.id}>
+                        {action.label} ({action.description})
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
+            ) : currentItems.length === 0 ? (
+              <Box sx={{ textAlign: "center", py: 4 }}>
+                <Typography color="text.secondary">No content available</Typography>
+              </Box>
+            ) : (
+              /* Folder browsing - show cards */
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+                  gap: 2,
+                  maxHeight: "400px",
+                  overflowY: "auto",
+                  p: 1
+                }}
+              >
+                {currentItems.map((folder) => {
+                  const isVenue = isVenueFolder(folder);
+                  return (
+                    <Card
+                      key={folder.id}
+                      sx={{
+                        border: 1,
+                        borderColor: "divider",
+                        bgcolor: "background.paper"
+                      }}
+                    >
+                      <CardActionArea onClick={() => handleBrowseFolderClick(folder)}>
+                        {folder.image ? (
+                          <CardMedia
+                            component="img"
+                            height="80"
+                            image={folder.image}
+                            alt={folder.title}
+                            sx={{ objectFit: "cover" }}
+                          />
+                        ) : (
+                          <Box
+                            sx={{
+                              height: 80,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              bgcolor: isVenue ? "primary.light" : "grey.200"
+                            }}
+                          >
+                            {isVenue ? (
+                              <PlayArrowIcon sx={{ fontSize: 40, color: "primary.contrastText" }} />
+                            ) : (
+                              <FolderIcon sx={{ fontSize: 40, color: "grey.500" }} />
+                            )}
+                          </Box>
+                        )}
+                        <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
+                          <Typography
+                            variant="body2"
+                            noWrap
+                            title={folder.title}
+                            sx={{ fontWeight: isVenue ? 600 : 400 }}
+                          >
+                            {folder.title}
+                          </Typography>
+                          {isVenue && (
+                            <Typography variant="caption" color="primary">
+                              Venue
+                            </Typography>
+                          )}
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  );
+                })}
+              </Box>
+            )}
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
+          <Button onClick={handleSelect} disabled={!browseSelectedAction} variant="contained">
             {Locale.label("plans.actionSelector.selectAction") || "Select Action"}
           </Button>
         </DialogActions>

@@ -5,7 +5,7 @@ import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
-import { LessonsChurchProvider, type ContentFolder } from "@churchapps/content-provider-helper";
+import { getProvider, type ContentFolder, type ContentProvider } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
@@ -23,7 +23,9 @@ interface Props {
   readOnly?: boolean;
   startTime?: number;
   associatedVenueId?: string;
+  associatedProviderId?: string;
   externalRef?: ExternalVenueRefInterface;
+  ministryId?: string;
 }
 
 // Helper to create a venue folder for the provider
@@ -37,7 +39,11 @@ function createVenueFolder(venueId: string): ContentFolder {
 }
 
 export const PlanItem = React.memo((props: Props) => {
-  const provider = useMemo(() => new LessonsChurchProvider(), []);
+  // Get the provider dynamically: use item's providerId, fall back to associatedProviderId, then default to lessonschurch
+  const provider: ContentProvider | null = useMemo(() => {
+    const pid = props.planItem.providerId || props.associatedProviderId || "lessonschurch";
+    return getProvider(pid);
+  }, [props.planItem.providerId, props.associatedProviderId]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
@@ -82,27 +88,32 @@ export const PlanItem = React.memo((props: Props) => {
     setShowAddOnSelector(true);
   };
 
-  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number) => {
+  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string) => {
     setShowActionSelector(false);
-    // Create new plan item for the action
+    // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
+    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
+    // Create new plan item for the action/presentation
     const newPlanItem: PlanItemInterface = {
-      itemType: "lessonAction",
+      itemType: "providerPresentation",
       planId: props.planItem.planId,
       sort: props.planItem.children?.length + 1 || 1,
       parentId: props.planItem.id,
       relatedId: actionId,
       label: actionName,
       seconds: seconds || 0,
+      providerId: itemProviderId,
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
   };
 
-  const handleAddOnSelected = async (addOnId: string, addOnName: string, image?: string, seconds?: number) => {
+  const handleAddOnSelected = async (addOnId: string, addOnName: string, image?: string, seconds?: number, selectedProviderId?: string) => {
     setShowAddOnSelector(false);
-    // Create new plan item for the add-on
+    // Use selectedProviderId if provided, otherwise use current provider
+    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
+    // Create new plan item for the add-on/file
     const newPlanItem: PlanItemInterface = {
-      itemType: "lessonAddOn",
+      itemType: "providerFile",
       planId: props.planItem.planId,
       sort: props.planItem.children?.length + 1 || 1,
       parentId: props.planItem.id,
@@ -110,17 +121,19 @@ export const PlanItem = React.memo((props: Props) => {
       label: addOnName,
       link: image, // Store the image URL in the link field for display
       seconds: seconds || 0,
+      providerId: itemProviderId,
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
   };
 
-  // Expand a lesson section item to replace it with individual action items
+  // Expand a section item to replace it with individual action/presentation items
   const handleExpandToActions = async () => {
-    if (!props.planItem.relatedId || !props.associatedVenueId) return;
+    if (!props.planItem.relatedId || !props.associatedVenueId || !provider) return;
 
     try {
       let actions: { id: string; name: string; seconds?: number }[] = [];
+      const itemProviderId = props.planItem.providerId || props.associatedProviderId || "lessonschurch";
 
       if (props.externalRef) {
         // For external providers, still use the API endpoint
@@ -132,7 +145,7 @@ export const PlanItem = React.memo((props: Props) => {
         const matchingSection = venueData?.sections?.find((s: any) => s.id === props.planItem.relatedId);
         actions = matchingSection?.actions || [];
       } else {
-        // Use ContentProviderHelper for internal venues
+        // Use ContentProviderHelper
         const venueFolder = createVenueFolder(props.associatedVenueId);
         const instructions = await provider.getExpandedInstructions(venueFolder);
 
@@ -158,15 +171,16 @@ export const PlanItem = React.memo((props: Props) => {
       if (actions.length > 0) {
         const currentSort = props.planItem.sort || 1;
 
-        // Create new plan items for each action, starting at the current item's sort position
+        // Create new plan items for each action/presentation, starting at the current item's sort position
         const actionItems = actions.map((action, index) => ({
           planId: props.planItem.planId,
           parentId: props.planItem.parentId,
           sort: currentSort + index,
-          itemType: "lessonAction",
+          itemType: "providerPresentation",
           relatedId: action.id,
           label: action.name,
           seconds: action.seconds || 0,
+          providerId: itemProviderId,
         }));
 
         // Delete the original section item first
@@ -224,7 +238,7 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} externalRef={props.externalRef} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} externalRef={props.externalRef} ministryId={props.ministryId} />
           </DraggableWrapper>
         </>
       );
@@ -498,10 +512,14 @@ export const PlanItem = React.memo((props: Props) => {
       case "song":
       case "arrangementKey":
         return getSongRow();
+      // New generic provider types + legacy types for backward compat
+      case "providerPresentation":
       case "lessonAction":
         return getActionRow();
+      case "providerFile":
       case "lessonAddOn":
         return getAddOnRow();
+      case "providerSection":
       case "lessonSection":
         return getLessonSectionRow();
       case "item":
@@ -552,7 +570,9 @@ export const PlanItem = React.memo((props: Props) => {
           onClose={() => setShowActionSelector(false)}
           onSelect={handleActionSelected}
           venueId={props.associatedVenueId}
+          providerId={props.associatedProviderId || "lessonschurch"}
           externalRef={props.externalRef}
+          ministryId={props.ministryId}
         />
       )}
       {showAddOnSelector && (

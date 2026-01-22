@@ -18,22 +18,36 @@ import {
   CardContent,
   Breadcrumbs,
   Link,
+  Avatar,
+  Chip,
 } from "@mui/material";
-import { ArrowBack as ArrowBackIcon, Folder as FolderIcon } from "@mui/icons-material";
+import { ArrowBack as ArrowBackIcon, Folder as FolderIcon, LinkOff as LinkOffIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { LessonsChurchProvider, type ContentFolder } from "@churchapps/content-provider-helper";
-import { type ExternalProviderInterface, type ExternalVenueRefInterface } from "../../helpers";
+import { getProvider, getAvailableProviders, type ContentFolder, type ContentProvider } from "@churchapps/content-provider-helper";
+import { type ExternalProviderInterface, type ExternalVenueRefInterface, type ContentProviderAuthInterface } from "../../helpers";
+import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (venueId: string, venueName?: string, externalRef?: ExternalVenueRefInterface) => void;
+  onSelect: (contentId: string, contentName?: string, externalRef?: ExternalVenueRefInterface, providerId?: string) => void;
   venueId?: string;
   returnVenueName?: boolean;
+  ministryId?: string;
+  defaultProviderId?: string;
 }
 
-export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, returnVenueName }) => {
-  const provider = useMemo(() => new LessonsChurchProvider(), []);
+export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, returnVenueName, ministryId, defaultProviderId }) => {
+  // Provider selection
+  const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "lessonschurch");
+  const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
+  const [showAllProviders, setShowAllProviders] = useState(false);
+
+  const provider = useMemo<ContentProvider | null>(() => {
+    return getProvider(selectedProviderId);
+  }, [selectedProviderId]);
+
+  const availableProviders = useMemo(() => getAvailableProviders(), []);
 
   // Folder navigation stack
   const [folderStack, setFolderStack] = useState<ContentFolder[]>([]);
@@ -58,6 +72,10 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
 
   // Load content for a given folder (or root if null)
   const loadContent = useCallback(async (folder: ContentFolder | null) => {
+    if (!provider) {
+      setCurrentItems([]);
+      return;
+    }
     setLoading(true);
     try {
       if (providerType === "external" && externalTree) {
@@ -199,7 +217,22 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     }
   }, [folderStack, loadContent]);
 
-  // Load external providers
+  // Load linked providers for the ministry
+  const loadLinkedProviders = useCallback(async () => {
+    if (!ministryId) {
+      setLinkedProviders([]);
+      return;
+    }
+    try {
+      const linked = await ContentProviderAuthHelper.getLinkedProviders(ministryId);
+      setLinkedProviders(linked || []);
+    } catch (error) {
+      console.error("Error loading linked providers:", error);
+      setLinkedProviders([]);
+    }
+  }, [ministryId]);
+
+  // Load external providers (legacy)
   const loadExternalProviders = useCallback(async () => {
     try {
       const providers = await ApiHelper.get("/externalProviders", "LessonsApi");
@@ -249,7 +282,16 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     }
   }, [loadContent]);
 
-  // Handle external provider change
+  // Handle content provider selection change
+  const handleContentProviderChange = useCallback((providerId: string) => {
+    setSelectedProviderId(providerId);
+    setFolderStack([]);
+    setCurrentItems([]);
+    setSelectedVenue(null);
+    // Content will reload via useEffect when provider changes
+  }, []);
+
+  // Handle external provider change (legacy)
   const handleProviderChange = useCallback((providerId: string) => {
     const providerData = externalProviders.find(p => p.id === providerId);
     setSelectedProvider(providerData || null);
@@ -295,20 +337,20 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   // Handle final selection
   const handleSelect = useCallback(() => {
     if (venueId) {
-      onSelect(venueId, venueInfo?.name);
+      onSelect(venueId, venueInfo?.name, undefined, selectedProviderId);
       onClose();
     } else if (selectedVenue) {
       const venueName = returnVenueName ? selectedVenue.title : undefined;
 
       if (providerType === "external") {
         const externalRef = buildExternalRef();
-        onSelect(selectedVenue.id, venueName, externalRef || undefined);
+        onSelect(selectedVenue.id, venueName, externalRef || undefined, selectedProviderId);
       } else {
-        onSelect(selectedVenue.id, venueName);
+        onSelect(selectedVenue.id, venueName, undefined, selectedProviderId);
       }
       onClose();
     }
-  }, [venueId, venueInfo, selectedVenue, returnVenueName, onSelect, onClose, providerType, buildExternalRef]);
+  }, [venueId, venueInfo, selectedVenue, returnVenueName, onSelect, onClose, providerType, buildExternalRef, selectedProviderId]);
 
   // Handle dialog close
   const handleClose = useCallback(() => {
@@ -319,8 +361,12 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setProviderType("internal");
     setSelectedProvider(null);
     setExternalTree(null);
+    setShowAllProviders(false);
+    if (defaultProviderId) {
+      setSelectedProviderId(defaultProviderId);
+    }
     onClose();
-  }, [onClose]);
+  }, [onClose, defaultProviderId]);
 
   // Load initial content when dialog opens
   useEffect(() => {
@@ -331,29 +377,44 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
           .then((data: unknown) => setVenueInfo(data))
           .catch((error: unknown) => console.error("Error loading venue info:", error));
       } else {
-        // Skip Lessons/Add-Ons tier - start directly at programs level
-        const lessonsFolder: ContentFolder = {
-          type: "folder",
-          id: "lessons-root",
-          title: "Lessons",
-          providerData: { level: "programs" }
-        };
-        loadContent(lessonsFolder);
+        // Start directly at root level for the provider
+        loadContent(null);
       }
       loadExternalProviders();
+      loadLinkedProviders();
     }
-  }, [open, venueId, loadContent, loadExternalProviders]);
+  }, [open, venueId, loadContent, loadExternalProviders, loadLinkedProviders]);
+
+  // Reload content when provider changes
+  useEffect(() => {
+    if (open && !venueId && provider) {
+      loadContent(null);
+    }
+  }, [open, venueId, provider, selectedProviderId]);
+
+  // Get current provider info
+  const currentProviderInfo = useMemo(() => {
+    return availableProviders.find(p => p.id === selectedProviderId);
+  }, [availableProviders, selectedProviderId]);
+
+  // Check if current provider is linked
+  const isCurrentProviderLinked = useMemo(() => {
+    // Lessons.church doesn't require auth
+    if (selectedProviderId === "lessonschurch") return true;
+    return linkedProviders.some(lp => lp.providerId === selectedProviderId);
+  }, [linkedProviders, selectedProviderId]);
 
   // Build breadcrumb items
   const breadcrumbItems = useMemo(() => {
+    const providerName = currentProviderInfo?.name || selectedProviderId;
     const items: { label: string; onClick?: () => void }[] = [
-      { label: providerType === "external" ? (selectedProvider?.name || "External") : "Lessons.church", onClick: () => handleBreadcrumbClick(-1) }
+      { label: providerType === "external" ? (selectedProvider?.name || "External") : providerName, onClick: () => handleBreadcrumbClick(-1) }
     ];
     folderStack.forEach((folder, index) => {
       items.push({ label: folder.title, onClick: () => handleBreadcrumbClick(index) });
     });
     return items;
-  }, [folderStack, providerType, selectedProvider, handleBreadcrumbClick]);
+  }, [folderStack, providerType, selectedProvider, handleBreadcrumbClick, currentProviderInfo, selectedProviderId]);
 
   // If venueId is provided, show simplified view
   if (venueId) {
@@ -394,7 +455,45 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
-          {/* Provider type toggle - hidden for now */}
+          {/* Content Provider Selector */}
+          <Box>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
+              <Typography variant="body2" color="text.secondary">
+                {Locale.label("plans.lessonSelector.contentProvider") || "Content Provider"}
+              </Typography>
+              {!showAllProviders && (
+                <Button size="small" onClick={() => setShowAllProviders(true)}>
+                  {Locale.label("plans.lessonSelector.browseOtherProviders") || "Browse Other Providers"}
+                </Button>
+              )}
+            </Stack>
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+              {(showAllProviders ? availableProviders : availableProviders.filter(p =>
+                p.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === p.id)
+              )).map((providerInfo) => {
+                const isLinked = providerInfo.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === providerInfo.id);
+                return (
+                  <Chip
+                    key={providerInfo.id}
+                    avatar={providerInfo.logo ? <Avatar src={providerInfo.logo} /> : undefined}
+                    label={providerInfo.name}
+                    onClick={() => handleContentProviderChange(providerInfo.id)}
+                    color={selectedProviderId === providerInfo.id ? "primary" : "default"}
+                    variant={selectedProviderId === providerInfo.id ? "filled" : "outlined"}
+                    icon={!isLinked ? <LinkOffIcon /> : undefined}
+                    sx={{ opacity: isLinked ? 1 : 0.6 }}
+                  />
+                );
+              })}
+            </Box>
+            {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth && (
+              <Typography variant="caption" color="warning.main" sx={{ mt: 1, display: "block" }}>
+                {Locale.label("plans.lessonSelector.providerNotLinked") || "This provider is not linked. Please link it in ministry settings to access content."}
+              </Typography>
+            )}
+          </Box>
+
+          {/* Legacy provider type toggle - hidden for now */}
           {/* TODO: Re-enable external providers when ready */}
           {false && externalProviders.length > 0 && (
             <Box>
@@ -448,7 +547,13 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
           </Breadcrumbs>
 
           {/* Content grid */}
-          {loading ? (
+          {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth ? (
+            <Box sx={{ textAlign: "center", py: 4 }}>
+              <Typography color="text.secondary">
+                {Locale.label("plans.lessonSelector.linkProviderFirst") || "Please link this provider in ministry settings to browse content."}
+              </Typography>
+            </Box>
+          ) : loading ? (
             <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
               <CircularProgress />
             </Box>

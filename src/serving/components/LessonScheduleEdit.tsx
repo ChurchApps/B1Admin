@@ -52,11 +52,12 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
     setScheduledDate(DateHelper.toDate(e.target.value));
   };
 
-  const handleLessonSelect = useCallback((venueId: string, venueName?: string, externalRef?: ExternalVenueRefInterface) => {
+  const handleLessonSelect = useCallback((venueId: string, venueName?: string, externalRef?: ExternalVenueRefInterface, providerId?: string) => {
     setSelectedVenueId(venueId);
     setSelectedVenueName(venueName || "");
     setSelectedExternalRef(externalRef || null);
     setShowLessonSelector(false);
+    // Note: providerId is available here if we need to store it with the plan
   }, []);
 
   const validate = () => {
@@ -194,6 +195,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         onClose={() => setShowLessonSelector(false)}
         onSelect={handleLessonSelect}
         returnVenueName={true}
+        ministryId={props.ministryId}
       />
     </>
   );

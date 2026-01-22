@@ -1,5 +1,6 @@
 export * from "./Interfaces";
-export type { ExternalProviderInterface, ExternalVenueRefInterface } from "./Interfaces";
+export type { ExternalProviderInterface, ExternalVenueRefInterface, ContentProviderAuthInterface } from "./Interfaces";
+export { ContentProviderAuthHelper } from "./ContentProviderAuthHelper";
 
 // AppHelper imports (for person components)
 export {

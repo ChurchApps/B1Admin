@@ -1,6 +1,7 @@
 import React from "react";
 import { PlanTypeList } from "./components/PlanTypeList";
 import { TeamList } from "./components/TeamList";
+import { ContentProviderAuthManager } from "./components/ContentProviderAuthManager";
 import { GroupAdd } from "../groups/components";
 import { Locale, PageHeader, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Box, Button, Grid, Tabs, Tab } from "@mui/material";
@@ -181,6 +182,9 @@ export const ServingPage = () => {
             </Grid>
             <Grid size={{ xs: 12, lg: 6 }}>
               <TeamList ministry={selectedMinistry} />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <ContentProviderAuthManager ministryId={selectedMinistry.id} />
             </Grid>
           </Grid>
         )}

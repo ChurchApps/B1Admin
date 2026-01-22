@@ -64,6 +64,7 @@ export interface PlanItemInterface {
   description?: string;
   seconds?: number;
   link?: string;
+  providerId?: string;
 
   children?: PlanItemInterface[];
 }
@@ -86,6 +87,9 @@ export interface PlanInterface {
   serviceOrder?: boolean;
   contentType?: string;
   contentId?: string;
+  providerId?: string;
+  providerPlanId?: string;
+  providerPlanName?: string;
 }
 
 export interface ProgramInterface {
@@ -137,6 +141,18 @@ export interface ExternalProviderInterface {
   churchId?: string;
   name?: string;
   apiUrl?: string;
+}
+
+export interface ContentProviderAuthInterface {
+  id?: string;
+  churchId?: string;
+  ministryId?: string;
+  providerId?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  tokenType?: string;
+  expiresAt?: Date;
+  scope?: string;
 }
 
 export interface FileInterface {
