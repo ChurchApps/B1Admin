@@ -1209,8 +1209,8 @@
     "planItem": {
       "addOn": "Add-On",
       "expandToActions": "Expand to Actions",
+      "externalItem": "External Item",
       "item": "Item",
-      "lessonAction": "Lesson Action",
       "song": "Song"
     },
     "planItemEdit": {
@@ -1231,7 +1231,8 @@
       "fromAssociatedLesson": "From associated lesson:",
       "noActionsAvailable": "No actions available",
       "section": "Section",
-      "selectAction": "Select Action"
+      "selectAction": "Select Action",
+      "selectExternalItem": "Select External Item"
     },
     "addOnSelector": {
       "category": "Category",

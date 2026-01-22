@@ -576,21 +576,22 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   }, [open, loadActionTree, loadLinkedProviders, browseMode, venueId]);
 
   // Load browse content when switching to browse mode or changing provider
+  // Also load when no venueId (always in browse mode)
   useEffect(() => {
-    if (open && browseMode === "browse" && !browseVenueId) {
+    if (open && (browseMode === "browse" || !venueId) && !browseVenueId) {
       loadBrowseContent(folderStack.length > 0 ? folderStack[folderStack.length - 1] : null);
     }
-  }, [open, browseMode, selectedProviderId, browseVenueId, folderStack, loadBrowseContent]);
+  }, [open, browseMode, selectedProviderId, browseVenueId, folderStack, loadBrowseContent, venueId]);
 
   // Get current provider info
   const currentProviderInfo = useMemo(() => {
-    const pid = browseMode === "browse" ? selectedProviderId : (providerId || "lessonschurch");
+    const pid = (browseMode === "browse" || !venueId) ? selectedProviderId : (providerId || "lessonschurch");
     return availableProviders.find(p => p.id === pid);
-  }, [availableProviders, selectedProviderId, browseMode, providerId]);
+  }, [availableProviders, selectedProviderId, browseMode, providerId, venueId]);
 
   // Check if current provider is linked
   const isCurrentProviderLinked = useMemo(() => {
-    const pid = browseMode === "browse" ? selectedProviderId : (providerId || "lessonschurch");
+    const pid = (browseMode === "browse" || !venueId) ? selectedProviderId : (providerId || "lessonschurch");
     if (pid === "lessonschurch") return true;
     return linkedProviders.some(lp => lp.providerId === pid);
   }, [linkedProviders, selectedProviderId, browseMode, providerId]);
@@ -732,7 +733,8 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   }
 
   // Browse mode - show provider selector and card-based browsing
-  if (venueId && browseMode === "browse") {
+  // Also show this when no venueId is provided (no associated lesson)
+  if (browseMode === "browse" || !venueId) {
     return (
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <DialogTitle>
@@ -741,12 +743,12 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
               <IconButton size="small" onClick={handleBrowseBack}>
                 <ArrowBackIcon />
               </IconButton>
-            ) : (
+            ) : venueId ? (
               <IconButton size="small" onClick={handleBackToAssociated}>
                 <ArrowBackIcon />
               </IconButton>
-            )}
-            <span>{Locale.label("plans.actionSelector.selectAction") || "Select Action"}</span>
+            ) : null}
+            <span>{Locale.label("plans.actionSelector.selectExternalItem") || "Select External Item"}</span>
           </Stack>
         </DialogTitle>
         <DialogContent>

@@ -11,7 +11,6 @@ import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
 import { AddOnDialog } from "./AddOnDialog";
 import { ActionSelector } from "./ActionSelector";
-import { AddOnSelector } from "./AddOnSelector";
 import { formatTime, getSectionDuration } from "./PlanUtils";
 
 interface Props {
@@ -51,7 +50,6 @@ export const PlanItem = React.memo((props: Props) => {
   const [actionId, setActionId] = React.useState<string>(null);
   const [addOnId, setAddOnId] = React.useState<string>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
-  const [showAddOnSelector, setShowAddOnSelector] = React.useState(false);
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -83,11 +81,6 @@ export const PlanItem = React.memo((props: Props) => {
     setShowActionSelector(true);
   };
 
-  const addAddOn = () => {
-    handleClose();
-    setShowAddOnSelector(true);
-  };
-
   const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string) => {
     setShowActionSelector(false);
     // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
@@ -103,26 +96,6 @@ export const PlanItem = React.memo((props: Props) => {
       seconds: seconds || 0,
       providerId: itemProviderId,
       link: itemType === "providerFile" ? image : undefined, // Store image URL for file items
-    };
-    await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
-    if (props.onChange) props.onChange();
-  };
-
-  const handleAddOnSelected = async (addOnId: string, addOnName: string, image?: string, seconds?: number, selectedProviderId?: string) => {
-    setShowAddOnSelector(false);
-    // Use selectedProviderId if provided, otherwise use current provider
-    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
-    // Create new plan item for the add-on/file
-    const newPlanItem: PlanItemInterface = {
-      itemType: "providerFile",
-      planId: props.planItem.planId,
-      sort: props.planItem.children?.length + 1 || 1,
-      parentId: props.planItem.id,
-      relatedId: addOnId,
-      label: addOnName,
-      link: image, // Store the image URL in the link field for display
-      seconds: seconds || 0,
-      providerId: itemProviderId,
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
@@ -540,13 +513,8 @@ export const PlanItem = React.memo((props: Props) => {
           <MenuItem onClick={addItem}>
             <Icon style={{ marginRight: 10 }}>format_list_bulleted</Icon> {Locale.label("plans.planItem.item")}
           </MenuItem>
-          {props.associatedVenueId && (
-            <MenuItem onClick={addLessonAction}>
-              <Icon style={{ marginRight: 10 }}>menu_book</Icon> {Locale.label("plans.planItem.lessonAction") || "Lesson Action"}
-            </MenuItem>
-          )}
-          <MenuItem onClick={addAddOn}>
-            <Icon style={{ marginRight: 10 }}>extension</Icon> {Locale.label("plans.planItem.addOn") || "Add-On"}
+          <MenuItem onClick={addLessonAction}>
+            <Icon style={{ marginRight: 10 }}>menu_book</Icon> {Locale.label("plans.planItem.externalItem") || "External Item"}
           </MenuItem>
         </Menu>
       )}
@@ -565,7 +533,7 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} externalRef={props.externalRef} />}
       {addOnId && <AddOnDialog addOnId={addOnId} addOnName={props.planItem.label} onClose={() => setAddOnId(null)} />}
-      {showActionSelector && props.associatedVenueId && (
+      {showActionSelector && (
         <ActionSelector
           open={showActionSelector}
           onClose={() => setShowActionSelector(false)}
@@ -574,13 +542,6 @@ export const PlanItem = React.memo((props: Props) => {
           providerId={props.associatedProviderId || "lessonschurch"}
           externalRef={props.externalRef}
           ministryId={props.ministryId}
-        />
-      )}
-      {showAddOnSelector && (
-        <AddOnSelector
-          open={showAddOnSelector}
-          onClose={() => setShowAddOnSelector(false)}
-          onSelect={handleAddOnSelected}
         />
       )}
     </>
