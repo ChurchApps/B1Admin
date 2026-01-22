@@ -960,7 +960,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                   const isVenue = isVenueFolder(folder);
                   return (
                     <Card
-                      key={folder.id}
+                      key={`folder-${folder.id}`}
                       sx={{
                         border: 1,
                         borderColor: "divider",
@@ -1015,7 +1015,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                 {/* Files (add-ons) */}
                 {currentFiles.map((file) => (
                   <Card
-                    key={file.id}
+                    key={`file-${file.id}`}
                     sx={{
                       border: 1,
                       borderColor: "divider",
