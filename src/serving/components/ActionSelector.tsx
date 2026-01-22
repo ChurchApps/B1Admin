@@ -33,7 +33,7 @@ import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelp
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string) => void;
+  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string) => void;
   venueId?: string;
   externalRef?: ExternalVenueRefInterface;
   providerId?: string;
@@ -306,9 +306,17 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   }, []);
 
   // Check if a folder is a venue (final level for browsing)
+  // Only treat as venue if the provider supports instructions/expandedInstructions
   const isVenueFolder = useCallback((folder: ContentFolder): boolean => {
+    const browseProvider = getProvider(selectedProviderId);
+    if (!browseProvider) return false;
+
+    const capabilities = browseProvider.getCapabilities();
+    // Only treat as venue if provider supports instructions - otherwise continue browsing
+    if (!capabilities.instructions && !capabilities.expandedInstructions) return false;
+
     return folder.providerData?.level === "playlist" || !!folder.providerData?.venueId;
-  }, []);
+  }, [selectedProviderId]);
 
   // Load content for browse mode
   const loadBrowseContent = useCallback(async (folder: ContentFolder | null) => {
@@ -470,9 +478,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
 
   // Handle adding a file (add-on)
   const handleAddFile = useCallback((file: ContentFile, providerId: string) => {
-    // ContentFile has image and seconds in providerData
     const seconds = file.providerData?.seconds as number | undefined;
-    onSelect(file.id, file.title, seconds, providerId, "providerFile", file.image);
+    const embedUrl = file.embedUrl || file.url;
+    onSelect(file.id, file.title, seconds, providerId, "providerFile", file.image, embedUrl);
     onClose();
   }, [onSelect, onClose]);
 
@@ -783,7 +791,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                   return (
                     <Chip
                       key={providerInfo.id}
-                      avatar={providerInfo.logo ? <Avatar src={providerInfo.logo} /> : undefined}
+                      avatar={providerInfo.logos?.light ? <Avatar src={providerInfo.logos.light} /> : undefined}
                       label={providerInfo.name}
                       onClick={() => handleContentProviderChange(providerInfo.id)}
                       color={selectedProviderId === providerInfo.id ? "primary" : "default"}

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Icon, Menu, MenuItem } from "@mui/material";
-import { type PlanItemInterface, type ExternalVenueRefInterface } from "@churchapps/helpers";
+import { type ExternalVenueRefInterface } from "@churchapps/helpers";
+import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -81,10 +82,11 @@ export const PlanItem = React.memo((props: Props) => {
     setShowActionSelector(true);
   };
 
-  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string) => {
+  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string) => {
     setShowActionSelector(false);
     // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
     const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
+    const linkValue = mediaUrl || (itemType === "providerFile" ? image : undefined);
     // Create new plan item - use provided itemType or default to providerPresentation
     const newPlanItem: PlanItemInterface = {
       itemType: itemType || "providerPresentation",
@@ -95,7 +97,9 @@ export const PlanItem = React.memo((props: Props) => {
       label: actionName,
       seconds: seconds || 0,
       providerId: itemProviderId,
-      link: itemType === "providerFile" ? image : undefined, // Store image URL for file items
+      // Store media URL in link field for direct preview (non-Lessons.church providers)
+      // For file items, use mediaUrl if available, otherwise fall back to image
+      link: linkValue,
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
@@ -531,8 +535,25 @@ export const PlanItem = React.memo((props: Props) => {
           externalRef={props.externalRef}
         />
       )}
-      {actionId && <ActionDialog actionId={actionId} actionName={props.planItem.label} onClose={() => setActionId(null)} externalRef={props.externalRef} />}
-      {addOnId && <AddOnDialog addOnId={addOnId} addOnName={props.planItem.label} onClose={() => setAddOnId(null)} />}
+      {actionId && (
+        <ActionDialog
+          actionId={actionId}
+          actionName={props.planItem.label}
+          onClose={() => setActionId(null)}
+          externalRef={props.externalRef}
+          providerId={props.planItem.providerId || props.associatedProviderId}
+          embedUrl={props.planItem.link}
+        />
+      )}
+      {addOnId && (
+        <AddOnDialog
+          addOnId={addOnId}
+          addOnName={props.planItem.label}
+          onClose={() => setAddOnId(null)}
+          providerId={props.planItem.providerId || props.associatedProviderId}
+          embedUrl={props.planItem.link}
+        />
+      )}
       {showActionSelector && (
         <ActionSelector
           open={showActionSelector}
