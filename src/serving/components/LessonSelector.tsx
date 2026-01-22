@@ -18,7 +18,6 @@ import {
   CardContent,
   Breadcrumbs,
   Link,
-  Avatar,
   Chip,
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, Folder as FolderIcon, LinkOff as LinkOffIcon } from "@mui/icons-material";
@@ -480,7 +479,6 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                 return (
                   <Chip
                     key={providerInfo.id}
-                    avatar={providerInfo.logo ? <Avatar src={providerInfo.logo} /> : undefined}
                     label={providerInfo.name}
                     onClick={() => handleContentProviderChange(providerInfo.id)}
                     color={selectedProviderId === providerInfo.id ? "primary" : "default"}

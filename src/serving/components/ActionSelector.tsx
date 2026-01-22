@@ -12,7 +12,6 @@ import {
   Stack,
   Typography,
   Box,
-  Avatar,
   Chip,
   IconButton,
   CircularProgress,
@@ -791,7 +790,6 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                   return (
                     <Chip
                       key={providerInfo.id}
-                      avatar={providerInfo.logos?.light ? <Avatar src={providerInfo.logos.light} /> : undefined}
                       label={providerInfo.name}
                       onClick={() => handleContentProviderChange(providerInfo.id)}
                       color={selectedProviderId === providerInfo.id ? "primary" : "default"}
