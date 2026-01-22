@@ -23,9 +23,9 @@ import {
   Breadcrumbs,
   Link,
 } from "@mui/material";
-import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon } from "@mui/icons-material";
+import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentFolder, type Instructions, type InstructionItem, type ContentProvider } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type Instructions, type InstructionItem, type ContentProvider } from "@churchapps/content-provider-helper";
 import { type LessonActionTreeInterface } from "./PlanUtils";
 import { type ExternalVenueRefInterface, type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
@@ -33,7 +33,7 @@ import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelp
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string) => void;
+  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string) => void;
   venueId?: string;
   externalRef?: ExternalVenueRefInterface;
   providerId?: string;
@@ -79,12 +79,16 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   // For browse mode - folder navigation
   const [folderStack, setFolderStack] = useState<ContentFolder[]>([]);
   const [currentItems, setCurrentItems] = useState<ContentFolder[]>([]);
+  const [currentFiles, setCurrentFiles] = useState<ContentFile[]>([]);
   const [browseLoading, setBrowseLoading] = useState(false);
   const [browseVenueId, setBrowseVenueId] = useState<string | null>(null);
   const [browseInstructions, setBrowseInstructions] = useState<Instructions | null>(null);
   const [browseSections, setBrowseSections] = useState<InstructionItem[]>([]);
   const [browseSelectedSection, setBrowseSelectedSection] = useState<string>("");
   const [browseSelectedAction, setBrowseSelectedAction] = useState<string>("");
+
+  // Track expanded sections in tree view
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
   const loadVenueActions = useCallback(async () => {
     if (!venueId || !provider) return;
@@ -293,6 +297,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     // Reset browse folder state
     setFolderStack([]);
     setCurrentItems([]);
+    setCurrentFiles([]);
     setBrowseVenueId(null);
     setBrowseInstructions(null);
     setBrowseSections([]);
@@ -310,16 +315,20 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     const browseProvider = getProvider(selectedProviderId);
     if (!browseProvider) {
       setCurrentItems([]);
+      setCurrentFiles([]);
       return;
     }
     setBrowseLoading(true);
     try {
       const items = await browseProvider.browse(folder);
       const folders = items.filter((item): item is ContentFolder => item.type === "folder");
+      const files = items.filter((item): item is ContentFile => item.type === "file");
       setCurrentItems(folders);
+      setCurrentFiles(files);
     } catch (error) {
       console.error("Error loading browse content:", error);
       setCurrentItems([]);
+      setCurrentFiles([]);
     } finally {
       setBrowseLoading(false);
     }
@@ -418,6 +427,45 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     return browseSections.find(s => (s.relatedId || s.id) === browseSelectedSection);
   }, [browseSections, browseSelectedSection]);
 
+  // Toggle section expansion in tree view
+  const toggleSectionExpanded = useCallback((sectionId: string) => {
+    setExpandedSections(prev => {
+      const next = new Set(prev);
+      if (next.has(sectionId)) {
+        next.delete(sectionId);
+      } else {
+        next.add(sectionId);
+      }
+      return next;
+    });
+  }, []);
+
+  // Handle adding a section (all actions in that section)
+  const handleAddSection = useCallback((section: InstructionItem, providerId: string) => {
+    const sectionId = section.relatedId || section.id || "";
+    const sectionName = section.label || "Section";
+    // Calculate total seconds from all actions in this section
+    const totalSeconds = section.children?.reduce((sum, action) => sum + (action.seconds || 0), 0) || 0;
+    onSelect(sectionId, sectionName, totalSeconds, providerId, "providerSection");
+    onClose();
+  }, [onSelect, onClose]);
+
+  // Handle adding an individual action
+  const handleAddAction = useCallback((action: InstructionItem, providerId: string) => {
+    const actionId = action.relatedId || action.id || "";
+    const actionName = action.label || "Action";
+    onSelect(actionId, actionName, action.seconds, providerId, "providerPresentation");
+    onClose();
+  }, [onSelect, onClose]);
+
+  // Handle adding a file (add-on)
+  const handleAddFile = useCallback((file: ContentFile, providerId: string) => {
+    // ContentFile has image and seconds in providerData
+    const seconds = file.providerData?.seconds as number | undefined;
+    onSelect(file.id, file.title, seconds, providerId, "providerFile", file.image);
+    onClose();
+  }, [onSelect, onClose]);
+
   // Switch to browse mode
   const handleBrowseOther = useCallback(() => {
     setBrowseMode("browse");
@@ -428,6 +476,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     // Initialize browse folder state
     setFolderStack([]);
     setCurrentItems([]);
+    setCurrentFiles([]);
     setBrowseVenueId(null);
     setBrowseInstructions(null);
     setBrowseSections([]);
@@ -451,6 +500,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     // Reset browse folder state
     setFolderStack([]);
     setCurrentItems([]);
+    setCurrentFiles([]);
     setBrowseVenueId(null);
     setBrowseInstructions(null);
     setBrowseSections([]);
@@ -507,6 +557,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     // Reset browse folder state
     setFolderStack([]);
     setCurrentItems([]);
+    setCurrentFiles([]);
     setBrowseVenueId(null);
     setBrowseInstructions(null);
     setBrowseSections([]);
@@ -585,43 +636,96 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
               </Button>
             </Stack>
           </Box>
-          <Stack spacing={3}>
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("plans.actionSelector.section") || "Section"}</InputLabel>
-              <Select
-                value={selectedSection}
-                onChange={(e) => handleSectionChange(e.target.value)}
-                label={Locale.label("plans.actionSelector.section") || "Section"}
-              >
-                {sections.map((section) => (
-                  <MenuItem key={section.relatedId || section.id} value={section.relatedId || section.id}>
-                    {section.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth disabled={!selectedSection}>
-              <InputLabel>{Locale.label("plans.actionSelector.action") || "Action"}</InputLabel>
-              <Select
-                value={selectedAction}
-                onChange={(e) => handleActionChange(e.target.value)}
-                label={Locale.label("plans.actionSelector.action") || "Action"}
-              >
-                {currentVenueSection?.children?.map((action) => (
-                  <MenuItem key={action.relatedId || action.id} value={action.relatedId || action.id}>
-                    {action.label} ({action.description})
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Stack>
+          {/* Tree view of sections and actions */}
+          <Box sx={{ maxHeight: "400px", overflowY: "auto" }}>
+            {sections.length === 0 ? (
+              <Typography color="text.secondary" sx={{ textAlign: "center", py: 2 }}>
+                {Locale.label("plans.actionSelector.noActionsAvailable") || "No actions available"}
+              </Typography>
+            ) : (
+              sections.map((section) => {
+                const sectionId = section.relatedId || section.id || "";
+                const isExpanded = expandedSections.has(sectionId);
+                return (
+                  <Box key={sectionId} sx={{ mb: 1 }}>
+                    {/* Section header */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        py: 1,
+                        px: 1,
+                        borderRadius: 1,
+                        bgcolor: "grey.100",
+                        "&:hover": { bgcolor: "grey.200" }
+                      }}
+                    >
+                      <IconButton
+                        size="small"
+                        onClick={() => toggleSectionExpanded(sectionId)}
+                        sx={{ mr: 1 }}
+                      >
+                        {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
+                      </IconButton>
+                      <Typography sx={{ flex: 1, fontWeight: 500 }}>{section.label}</Typography>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        onClick={() => handleAddSection(section, providerId || "lessonschurch")}
+                        sx={{ ml: 1 }}
+                      >
+                        {Locale.label("plans.actionSelector.addSection") || "Add Section"}
+                      </Button>
+                    </Box>
+                    {/* Actions under this section */}
+                    {isExpanded && section.children && (
+                      <Box sx={{ pl: 4 }}>
+                        {section.children.map((action) => {
+                          const actionId = action.relatedId || action.id || "";
+                          return (
+                            <Box
+                              key={actionId}
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                py: 0.75,
+                                px: 1,
+                                borderRadius: 1,
+                                "&:hover": { bgcolor: "action.hover" }
+                              }}
+                            >
+                              <PlayArrowIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
+                              <Box sx={{ flex: 1 }}>
+                                <Typography variant="body2">{action.label}</Typography>
+                                {action.description && (
+                                  <Typography variant="caption" color="text.secondary">
+                                    {action.description}
+                                    {action.seconds ? ` - ${Math.round(action.seconds / 60)}min` : ""}
+                                  </Typography>
+                                )}
+                              </Box>
+                              <IconButton
+                                size="small"
+                                color="primary"
+                                onClick={() => handleAddAction(action, providerId || "lessonschurch")}
+                                title={Locale.label("plans.actionSelector.addAction") || "Add Action"}
+                              >
+                                <AddIcon />
+                              </IconButton>
+                            </Box>
+                          );
+                        })}
+                      </Box>
+                    )}
+                  </Box>
+                );
+              })
+            )}
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
-          <Button onClick={handleSelect} disabled={!selectedAction} variant="contained">
-            {Locale.label("plans.actionSelector.selectAction") || "Select Action"}
-          </Button>
         </DialogActions>
       </Dialog>
     );
@@ -717,9 +821,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                 <CircularProgress />
               </Box>
             ) : browseVenueId ? (
-              /* Venue selected - show section/action dropdowns */
-              <Stack spacing={3}>
-                <Box sx={{ py: 1 }}>
+              /* Venue selected - show tree view of sections and actions */
+              <Box>
+                <Box sx={{ py: 1, mb: 2 }}>
                   <Typography variant="body2" color="text.secondary">
                     {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From:"}
                     <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
@@ -727,45 +831,100 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                     </Typography>
                   </Typography>
                 </Box>
-                <FormControl fullWidth>
-                  <InputLabel>{Locale.label("plans.actionSelector.section") || "Section"}</InputLabel>
-                  <Select
-                    value={browseSelectedSection}
-                    onChange={(e) => {
-                      setBrowseSelectedSection(e.target.value);
-                      setBrowseSelectedAction("");
-                    }}
-                    label={Locale.label("plans.actionSelector.section") || "Section"}
-                  >
-                    {browseSections.map((section) => (
-                      <MenuItem key={section.relatedId || section.id} value={section.relatedId || section.id}>
-                        {section.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth disabled={!browseSelectedSection}>
-                  <InputLabel>{Locale.label("plans.actionSelector.action") || "Action"}</InputLabel>
-                  <Select
-                    value={browseSelectedAction}
-                    onChange={(e) => setBrowseSelectedAction(e.target.value)}
-                    label={Locale.label("plans.actionSelector.action") || "Action"}
-                  >
-                    {currentBrowseSection?.children?.map((action) => (
-                      <MenuItem key={action.relatedId || action.id} value={action.relatedId || action.id}>
-                        {action.label} ({action.description})
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Stack>
-            ) : currentItems.length === 0 ? (
+                {/* Tree view of sections and actions */}
+                <Box sx={{ maxHeight: "350px", overflowY: "auto" }}>
+                  {browseSections.length === 0 ? (
+                    <Typography color="text.secondary" sx={{ textAlign: "center", py: 2 }}>
+                      {Locale.label("plans.actionSelector.noActionsAvailable") || "No actions available"}
+                    </Typography>
+                  ) : (
+                    browseSections.map((section) => {
+                      const sectionId = section.relatedId || section.id || "";
+                      const isExpanded = expandedSections.has(sectionId);
+                      return (
+                        <Box key={sectionId} sx={{ mb: 1 }}>
+                          {/* Section header */}
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              py: 1,
+                              px: 1,
+                              borderRadius: 1,
+                              bgcolor: "grey.100",
+                              "&:hover": { bgcolor: "grey.200" }
+                            }}
+                          >
+                            <IconButton
+                              size="small"
+                              onClick={() => toggleSectionExpanded(sectionId)}
+                              sx={{ mr: 1 }}
+                            >
+                              {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                            <Typography sx={{ flex: 1, fontWeight: 500 }}>{section.label}</Typography>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              startIcon={<AddIcon />}
+                              onClick={() => handleAddSection(section, selectedProviderId)}
+                              sx={{ ml: 1 }}
+                            >
+                              {Locale.label("plans.actionSelector.addSection") || "Add Section"}
+                            </Button>
+                          </Box>
+                          {/* Actions under this section */}
+                          {isExpanded && section.children && (
+                            <Box sx={{ pl: 4 }}>
+                              {section.children.map((action) => {
+                                const actionId = action.relatedId || action.id || "";
+                                return (
+                                  <Box
+                                    key={actionId}
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      py: 0.75,
+                                      px: 1,
+                                      borderRadius: 1,
+                                      "&:hover": { bgcolor: "action.hover" }
+                                    }}
+                                  >
+                                    <PlayArrowIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
+                                    <Box sx={{ flex: 1 }}>
+                                      <Typography variant="body2">{action.label}</Typography>
+                                      {action.description && (
+                                        <Typography variant="caption" color="text.secondary">
+                                          {action.description}
+                                          {action.seconds ? ` - ${Math.round(action.seconds / 60)}min` : ""}
+                                        </Typography>
+                                      )}
+                                    </Box>
+                                    <IconButton
+                                      size="small"
+                                      color="primary"
+                                      onClick={() => handleAddAction(action, selectedProviderId)}
+                                      title={Locale.label("plans.actionSelector.addAction") || "Add Action"}
+                                    >
+                                      <AddIcon />
+                                    </IconButton>
+                                  </Box>
+                                );
+                              })}
+                            </Box>
+                          )}
+                        </Box>
+                      );
+                    })
+                  )}
+                </Box>
+              </Box>
+            ) : currentItems.length === 0 && currentFiles.length === 0 ? (
               <Box sx={{ textAlign: "center", py: 4 }}>
                 <Typography color="text.secondary">No content available</Typography>
               </Box>
             ) : (
-              /* Folder browsing - show cards */
+              /* Folder and file browsing - show cards */
               <Box
                 sx={{
                   display: "grid",
@@ -776,6 +935,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                   p: 1
                 }}
               >
+                {/* Folders */}
                 {currentItems.map((folder) => {
                   const isVenue = isVenueFolder(folder);
                   return (
@@ -832,15 +992,59 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
                     </Card>
                   );
                 })}
+                {/* Files (add-ons) */}
+                {currentFiles.map((file) => (
+                  <Card
+                    key={file.id}
+                    sx={{
+                      border: 1,
+                      borderColor: "divider",
+                      bgcolor: "background.paper"
+                    }}
+                  >
+                    <CardActionArea onClick={() => handleAddFile(file, selectedProviderId)}>
+                      {file.image ? (
+                        <CardMedia
+                          component="img"
+                          height="80"
+                          image={file.image}
+                          alt={file.title}
+                          sx={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <Box
+                          sx={{
+                            height: 80,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            bgcolor: "secondary.light"
+                          }}
+                        >
+                          <AddIcon sx={{ fontSize: 40, color: "secondary.contrastText" }} />
+                        </Box>
+                      )}
+                      <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
+                        <Typography
+                          variant="body2"
+                          noWrap
+                          title={file.title}
+                        >
+                          {file.title}
+                        </Typography>
+                        <Typography variant="caption" color="secondary">
+                          Add-On
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                ))}
               </Box>
             )}
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
-          <Button onClick={handleSelect} disabled={!browseSelectedAction} variant="contained">
-            {Locale.label("plans.actionSelector.selectAction") || "Select Action"}
-          </Button>
         </DialogActions>
       </Dialog>
     );

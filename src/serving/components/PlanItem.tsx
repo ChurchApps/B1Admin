@@ -88,13 +88,13 @@ export const PlanItem = React.memo((props: Props) => {
     setShowAddOnSelector(true);
   };
 
-  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string) => {
+  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string) => {
     setShowActionSelector(false);
     // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
     const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
-    // Create new plan item for the action/presentation
+    // Create new plan item - use provided itemType or default to providerPresentation
     const newPlanItem: PlanItemInterface = {
-      itemType: "providerPresentation",
+      itemType: itemType || "providerPresentation",
       planId: props.planItem.planId,
       sort: props.planItem.children?.length + 1 || 1,
       parentId: props.planItem.id,
@@ -102,6 +102,7 @@ export const PlanItem = React.memo((props: Props) => {
       label: actionName,
       seconds: seconds || 0,
       providerId: itemProviderId,
+      link: itemType === "providerFile" ? image : undefined, // Store image URL for file items
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
