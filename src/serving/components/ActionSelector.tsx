@@ -320,7 +320,12 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     }
     setBrowseLoading(true);
     try {
-      const items = await browseProvider.browse(folder);
+      // Get auth for providers that require it
+      let auth = null;
+      if (ministryId) {
+        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
+      }
+      const items = await browseProvider.browse(folder, auth);
       const folders = items.filter((item): item is ContentFolder => item.type === "folder");
       const files = items.filter((item): item is ContentFile => item.type === "file");
       setCurrentItems(folders);
@@ -332,7 +337,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     } finally {
       setBrowseLoading(false);
     }
-  }, [selectedProviderId]);
+  }, [selectedProviderId, ministryId]);
 
   // Load actions for a selected venue in browse mode
   const loadBrowseVenueActions = useCallback(async (venueIdToLoad: string) => {
@@ -341,8 +346,13 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
 
     setBrowseLoading(true);
     try {
+      // Get auth for providers that require it
+      let auth = null;
+      if (ministryId) {
+        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
+      }
       const venueFolder = createVenueFolder(venueIdToLoad);
-      const result = await browseProvider.getExpandedInstructions(venueFolder);
+      const result = await browseProvider.getExpandedInstructions(venueFolder, auth);
 
       if (result) {
         setBrowseInstructions(result);
@@ -367,7 +377,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     } finally {
       setBrowseLoading(false);
     }
-  }, [selectedProviderId]);
+  }, [selectedProviderId, ministryId]);
 
   // Handle folder click in browse mode
   const handleBrowseFolderClick = useCallback((folder: ContentFolder) => {

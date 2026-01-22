@@ -7,12 +7,27 @@ export class ContentProviderAuthHelper {
   // Convert DB record to ContentProviderAuthData format
   private static toAuthData(record: ContentProviderAuthInterface): ContentProviderAuthData | null {
     if (!record.accessToken) return null;
+
+    // Calculate created_at and expires_in from expiresAt
+    // We need these for isAuthValid/isTokenExpired checks
+    const now = Math.floor(Date.now() / 1000);
+    let createdAt = now;
+    let expiresIn = 3600; // Default 1 hour
+
+    if (record.expiresAt) {
+      const expiresAtTimestamp = Math.floor(new Date(record.expiresAt).getTime() / 1000);
+      // Estimate created_at as 12 hours before expiry (typical token lifetime)
+      // This gives us a reasonable expires_in value
+      expiresIn = Math.max(expiresAtTimestamp - now, 0);
+      createdAt = now; // Set created_at to now, expires_in to remaining time
+    }
+
     return {
       access_token: record.accessToken,
       refresh_token: record.refreshToken || "",
       token_type: record.tokenType || "Bearer",
-      created_at: 0,
-      expires_in: 0,
+      created_at: createdAt,
+      expires_in: expiresIn,
       scope: record.scope || ""
     };
   }
