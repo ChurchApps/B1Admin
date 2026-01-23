@@ -107,7 +107,7 @@ export const PersonBanner = memo((props: Props) => {
                   fontSize: { xs: "1.7rem", sm: "2rem", md: "2.5rem" },
                   lineHeight: 1.1,
                 }}>
-                {person.name.display}
+                {person?.name?.display}
               </Typography>
               {canEdit && (
                 <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>

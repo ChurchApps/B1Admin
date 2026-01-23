@@ -96,7 +96,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             <Box>
               <Link to={"/people/" + (p.id || "")} style={{ textDecoration: "none" }}>
                 <Typography variant="h6" sx={{ color: "primary.main", "&:hover": { textDecoration: "underline" } }}>
-                  {p.name.display}
+                  {p?.name?.display}
                 </Typography>
               </Link>
               {p.membershipStatus && (
@@ -117,33 +117,33 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           );
           break;
         case "lastName":
-          result = <>{p.name.last}</>;
+          result = <>{p?.name?.last}</>;
           break;
         case "firstName":
-          result = <>{p.name.first}</>;
+          result = <>{p?.name?.first}</>;
           break;
         case "middleName":
-          result = <>{p.name.middle}</>;
+          result = <>{p?.name?.middle}</>;
           break;
         case "address":
-          result = <>{p.contactInfo.address1}</>;
+          result = <>{p?.contactInfo?.address1}</>;
           break;
         case "city":
-          result = <>{p.contactInfo.city}</>;
+          result = <>{p?.contactInfo?.city}</>;
           break;
         case "state":
-          result = <>{p.contactInfo.state}</>;
+          result = <>{p?.contactInfo?.state}</>;
           break;
         case "zip":
-          result = <>{p.contactInfo.zip}</>;
+          result = <>{p?.contactInfo?.zip}</>;
           break;
         case "email":
           result = (
             <Stack direction="row" spacing={1} alignItems="center">
-              {p.contactInfo.email && (
+              {p?.contactInfo?.email && (
                 <>
                   <EmailIcon sx={{ fontSize: 16, color: "text.secondary" }} />
-                  <Typography variant="body2">{p.contactInfo.email}</Typography>
+                  <Typography variant="body2">{p?.contactInfo?.email}</Typography>
                 </>
               )}
             </Stack>
@@ -152,10 +152,10 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         case "phone":
           result = (
             <Stack direction="row" spacing={1} alignItems="center">
-              {(p.contactInfo.mobilePhone || p.contactInfo.homePhone || p.contactInfo.workPhone) && (
+              {(p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone) && (
                 <>
                   <PhoneIcon sx={{ fontSize: 16, color: "text.secondary" }} />
-                  <Typography variant="body2">{p.contactInfo.mobilePhone || p.contactInfo.homePhone || p.contactInfo.workPhone}</Typography>
+                  <Typography variant="body2">{p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone}</Typography>
                 </>
               )}
             </Stack>
@@ -203,14 +203,15 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           break;
         case "deleteOption":
           result = (
-            <Tooltip title={`Delete ${p.name.display}`} arrow placement="left-start">
+            <Tooltip title={`Delete ${p?.name?.display}`} arrow placement="left-start">
               <IconButton
                 sx={{ color: "#c84545" }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   if (p.id) handleDelete(p.id.toString());
                 }}
                 data-testid={`delete-person-button-${p.id}`}
-                aria-label={`Delete ${p.name.display}`}>
+                aria-label={`Delete ${p?.name?.display}`}>
                 <Icon>delete</Icon>
               </IconButton>
             </Tooltip>
