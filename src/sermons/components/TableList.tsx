@@ -9,7 +9,7 @@ interface Props {
 export const TableList: React.FC<Props> = ({ rows, isLoading = false }) => {
   if (isLoading) return <Loading />;
   return (
-    <table className="table">
+    <table className="table" style={{ width: "100%" }}>
       <tbody>{rows}</tbody>
     </table>
   );
