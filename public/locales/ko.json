@@ -388,6 +388,7 @@
       "checkNum": "수표 번호",
       "date": "날짜",
       "fund": "기금",
+      "inKind": "현물",
       "lastDig": "마지막 4자리",
       "method": "방법"
     },

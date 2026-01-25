@@ -388,6 +388,7 @@
       "checkNum": "Assegno #",
       "date": "Data",
       "fund": "Fondo",
+      "inKind": "In Natura",
       "lastDig": "Ultime 4 cifre",
       "method": "Metodo"
     },

@@ -388,6 +388,7 @@
       "checkNum": "N° de Chèque",
       "date": "Date",
       "fund": "Fonds",
+      "inKind": "En Nature",
       "lastDig": "Derniers 4 chiffres",
       "method": "Méthode"
     },

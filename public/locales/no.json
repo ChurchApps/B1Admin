@@ -388,6 +388,7 @@
       "checkNum": "Sjekk #",
       "date": "Dato",
       "fund": "Fond",
+      "inKind": "Naturalytelse",
       "lastDig": "Siste 4 sifre",
       "method": "Metode"
     },

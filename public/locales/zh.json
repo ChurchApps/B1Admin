@@ -388,6 +388,7 @@
       "checkNum": "支票 #",
       "date": "日期",
       "fund": "基金",
+      "inKind": "实物捐赠",
       "lastDig": "最后 4 位数字",
       "method": "方法"
     },

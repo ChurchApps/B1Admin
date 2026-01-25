@@ -161,6 +161,7 @@ export const BulkDonationEntry = memo((props: Props) => {
                 <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
                 <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
                 <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
+                <MenuItem value="In-Kind">{Locale.label("donations.donationEdit.inKind")}</MenuItem>
               </Select>
             </FormControl>
             {props.funds?.length > 1 && (

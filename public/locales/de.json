@@ -388,6 +388,7 @@
       "checkNum": "Scheck #",
       "date": "Datum",
       "fund": "Fonds",
+      "inKind": "Sachspende",
       "lastDig": "Letzte 4 Ziffern",
       "method": "Methode"
     },

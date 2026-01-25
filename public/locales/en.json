@@ -420,6 +420,7 @@
       "checkNum": "Check #",
       "date": "Date",
       "fund": "Fund",
+      "inKind": "In-Kind",
       "lastDig": "Last 4 digits",
       "method": "Method"
     },

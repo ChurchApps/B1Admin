@@ -388,6 +388,7 @@
       "checkNum": "Cheque #",
       "date": "Data",
       "fund": "Fundo",
+      "inKind": "Em Espécie",
       "lastDig": "Últimos 4 dígitos",
       "method": "Método"
     },
