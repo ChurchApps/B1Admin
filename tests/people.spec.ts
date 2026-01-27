@@ -82,6 +82,7 @@ test.describe('People Management', () => {
       //search
       const searchInput = page.locator('[id="display-box"] textarea').first();
       await searchInput.fill('Show me married men');
+      page.waitForTimeout(500);
       const searchBtn = page.locator('button').getByText('Search').last();
       await searchBtn.click();
 
@@ -410,12 +411,15 @@ test.describe('People Management', () => {
       await searchInput.fill('Carol');
       const searchBtn = page.locator('button').getByText('Search');
       await searchBtn.click();
+      page.waitForTimeout(500);
       const selBtn = page.locator('button').getByText('Select');
       await selBtn.click();
       const yesBtn = page.locator('button').getByText('Yes');
       await yesBtn.click();
+      page.waitForTimeout(500);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      page.waitForTimeout(500);
       const validatedAddition = page.locator('[id="householdBox"] h5').getByText('Carol Clark');
       await expect(validatedAddition).toHaveCount(1);
     });
