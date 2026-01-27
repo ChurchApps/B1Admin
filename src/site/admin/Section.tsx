@@ -45,7 +45,7 @@ export const Section: React.FC<Props> = props => {
   // Helper to find innermost nested element inside a container element
   const findInnermostNestedElement = (containerEl: HTMLElement, target: HTMLElement, containerId: string): string | null => {
     const element = findElementById(props.section?.elements || [], containerId);
-    if (element?.elementType === "row") {
+    if (element?.elementType === "row" || element?.elementType === "carousel") {
       // Find innermost el-* element that contains the click target
       const allElDivs = containerEl.querySelectorAll('[id^="el-"]');
       let innermostId: string | null = null;
@@ -53,7 +53,7 @@ export const Section: React.FC<Props> = props => {
         if (nestedEl.contains(target)) {
           const nestedId = nestedEl.id.substring(3);
           const nestedElement = findElementById(props.section?.elements || [], nestedId);
-          if (nestedElement && nestedElement.elementType !== "row") {
+          if (nestedElement && nestedElement.elementType !== "row" && nestedElement.elementType !== "carousel") {
             innermostId = nestedId;
             // Don't break - keep looking for more nested elements (innermost wins)
           }

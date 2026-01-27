@@ -50,7 +50,7 @@ export const KeyEdit = (props: Props) => {
       saveFunction={handleSave}
       cancelFunction={props.onCancel}
       deleteFunction={key?.id ? handleDelete : null}>
-      <TextField label={Locale.label("songs.key.signature")} name="keySignature" value={key?.keySignature} onChange={handleChange} fullWidth />
+      <TextField label={Locale.label("songs.key.signature")} name="keySignature" value={key?.keySignature} onChange={handleChange} fullWidth placeholder={Locale.label("placeholders.song.keySignature")} />
       <TextField
         label={Locale.label("songs.key.labelOptional") || "Label (optional)"}
         multiline

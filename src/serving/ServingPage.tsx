@@ -3,7 +3,7 @@ import { PlanTypeList } from "./components/PlanTypeList";
 import { TeamList } from "./components/TeamList";
 import { GroupAdd } from "../groups/components";
 import { Locale, PageHeader, Loading, ArrayHelper, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Box, Button, Grid, Tabs, Tab } from "@mui/material";
+import { Box, Button, Grid, Tabs, Tab, FormControlLabel, Switch } from "@mui/material";
 import { Assignment as AssignmentIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 export const ServingPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [selectedMinistryId, setSelectedMinistryId] = React.useState<string | null>(null);
+  const [showAllMinistries, setShowAllMinistries] = React.useState(false);
   const context = React.useContext(UserContext);
 
   const ministries = useQuery<GroupInterface[]>({
@@ -64,8 +65,10 @@ export const ServingPage = () => {
 
   // Admins: Ministries where they're a member OR ministries with no members (to prevent orphaning)
   // Regular users: Ministries where they're a member
+  // Domain Admins: Can toggle to see all ministries
   const isAdmin = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
   const groups = (ministries.data || []).filter((g) => {
+    if (isAdmin && showAllMinistries) return true;
     const members = ArrayHelper.getAll(groupMembers.data || [], "groupId", g.id);
     const isMember = ArrayHelper.getOne(members, "personId", context.person?.id) !== null;
     if (isAdmin) return isMember || members.length === 0;
@@ -110,7 +113,20 @@ export const ServingPage = () => {
   // Has ministries - show selector and content
   return (
     <>
-      <PageHeader icon={<AssignmentIcon />} title={Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
+      <PageHeader icon={<AssignmentIcon />} title={selectedMinistry?.name || Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
+        {isAdmin && (
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showAllMinistries}
+                onChange={(e) => setShowAllMinistries(e.target.checked)}
+                sx={{ color: "#FFF", "&.Mui-checked": { color: "#FFF" }, "& .MuiSwitch-track": { backgroundColor: "rgba(255,255,255,0.3)" } }}
+              />
+            }
+            label="Show All"
+            sx={{ color: "#FFF", mr: 2 }}
+          />
+        )}
         {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
           <>
             {selectedMinistry && (

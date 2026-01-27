@@ -1,5 +1,5 @@
 import React from "react";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
 import { ComboBox } from "../../components";
 
@@ -9,6 +9,7 @@ interface Props {
   label: string;
   tags?: string;
   testId?: string;
+  placeholder?: string;
 }
 
 export const CategorySelect: React.FC<Props> = (props) => {
@@ -33,6 +34,7 @@ export const CategorySelect: React.FC<Props> = (props) => {
       label={props.label}
       options={categories}
       testId={props.testId}
+      placeholder={props.placeholder || Locale.label("placeholders.group.category")}
     />
   );
 };

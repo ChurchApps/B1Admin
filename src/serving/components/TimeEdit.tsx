@@ -99,6 +99,7 @@ export const TimeEdit = (props: Props) => {
           type="text"
           value={time.displayName}
           onChange={handleChange}
+          placeholder={Locale.label("placeholders.time.displayName")}
           data-testid="time-display-name-input"
           aria-label="Time display name"
         />

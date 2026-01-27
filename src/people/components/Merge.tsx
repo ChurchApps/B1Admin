@@ -5,6 +5,7 @@ import { InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type PersonInterface, type DonationInterface } from "@churchapps/helpers";
 import { useNavigate } from "react-router-dom";
 import { useMountedState } from "@churchapps/apphelper";
+import UserContext from "../../UserContext";
 
 interface Props {
   hideMergeBox: () => void;
@@ -18,6 +19,7 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
   const [mergeInProgress, setMergeInProgress] = React.useState<boolean>(false);
   const navigate = useNavigate();
   const isMounted = useMountedState();
+  const context = React.useContext(UserContext);
 
   const handleSave = () => {
     props.hideMergeBox();
@@ -95,6 +97,10 @@ export const Merge: React.FunctionComponent<Props> = (props) => {
   };
 
   const merge = async (person: PersonInterface, personToRemove: PersonInterface) => {
+    if (personToRemove.id === context?.person?.id) {
+      alert(Locale.label("people.personEdit.cannotDeleteSelf"));
+      return;
+    }
     try {
       setMergeInProgress(true);
       const { id, householdId } = personToRemove;

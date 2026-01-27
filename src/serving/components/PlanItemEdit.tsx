@@ -172,6 +172,7 @@ export const PlanItemEdit = (props: Props) => {
           type="text"
           value={planItem?.label}
           onChange={handleChange}
+          placeholder={Locale.label("placeholders.planItem.label")}
           data-testid="plan-item-name-input"
           aria-label="Plan item name"
         />
@@ -186,6 +187,7 @@ export const PlanItemEdit = (props: Props) => {
           type="text"
           value={planItem?.description}
           onChange={handleChange}
+          placeholder={Locale.label("placeholders.planItem.description")}
           data-testid="plan-item-description-input"
           aria-label="Plan item description"
         />
@@ -200,6 +202,7 @@ export const PlanItemEdit = (props: Props) => {
               type="number"
               value={Math.floor(planItem?.seconds / 60)}
               onChange={handleChange}
+              placeholder="5"
               data-testid="plan-item-minutes-input"
               aria-label="Duration minutes"
             />
@@ -212,6 +215,7 @@ export const PlanItemEdit = (props: Props) => {
               type="number"
               value={planItem?.seconds % 60}
               onChange={handleChange}
+              placeholder="30"
               data-testid="plan-item-seconds-input"
               aria-label="Duration seconds"
             />

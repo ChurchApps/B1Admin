@@ -4,9 +4,9 @@ import {
 } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface } from "@churchapps/helpers";
 import {
-  Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Button, Box 
+  Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Button, Box, Chip
 } from "@mui/material";
-import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, AttachMoney as MoneyIcon, FileDownload as ExportIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
+import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, AttachMoney as MoneyIcon, FileDownload as ExportIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
 
 interface Props {
@@ -139,17 +139,22 @@ export const Donations: React.FC<Props> = (props) => {
         </Button>
       ) : null;
 
+      const isPending = (d as any).status === "pending";
       rows.push(
         <TableRow
           key={i}
           sx={{
             "&:hover": { backgroundColor: "action.hover" },
             transition: "background-color 0.2s ease",
+            opacity: isPending ? 0.8 : 1,
           }}>
           <TableCell>
-            <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="var(--c1l2)" variant="body2">
-              <span style={{ fontWeight: 500, color: "text.primary" }}>{d.id}</span>
-            </IconText>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="var(--c1l2)" variant="body2">
+                <span style={{ fontWeight: 500, color: "text.primary" }}>{d.id}</span>
+              </IconText>
+              {isPending && <Chip icon={<PendingIcon />} label="Pending" size="small" color="warning" variant="outlined" />}
+            </Stack>
           </TableCell>
           <TableCell>
             <IconText icon={<PersonIcon />} iconSize={18} iconColor="text.secondary" variant="body2">
@@ -162,7 +167,7 @@ export const Donations: React.FC<Props> = (props) => {
             </IconText>
           </TableCell>
           <TableCell>
-            <IconText icon={<MoneyIcon />} iconSize={18} iconColor="success.main" variant="body2" color="success.main">
+            <IconText icon={<MoneyIcon />} iconSize={18} iconColor={isPending ? "warning.main" : "success.main"} variant="body2" color={isPending ? "warning.main" : "success.main"}>
               <span style={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrency(d.amount)}</span>
             </IconText>
           </TableCell>

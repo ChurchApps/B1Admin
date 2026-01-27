@@ -63,7 +63,7 @@ export function BlockEdit(props: Props) {
     <>
       <InputBox id="blockDetailsBox" headerText={Locale.label("site.blocks.editBlock")} headerIcon="school" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete} data-testid="edit-block-inputbox">
         <ErrorMessages errors={errors} />
-        <TextField fullWidth label="Name" name="name" value={block.name || ""} onChange={handleChange} onKeyDown={handleKeyDown} data-testid="block-name-input" aria-label="Block name" />
+        <TextField fullWidth label="Name" name="name" value={block.name || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.block.name")} data-testid="block-name-input" aria-label="Block name" />
         <FormControl fullWidth>
           <InputLabel>Block Type</InputLabel>
           <Select fullWidth label="Block Type" name="blockType" value={block.blockType || "elementBlock"} onChange={handleChange} data-testid="block-type-select" aria-label="Select block type">

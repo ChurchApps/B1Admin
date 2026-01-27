@@ -388,6 +388,7 @@
       "checkNum": "Número de Cheque",
       "date": "Fecha",
       "fund": "Fondo",
+      "inKind": "En Especie",
       "lastDig": "Últimos 4 dígitos",
       "method": "Método"
     },
@@ -1883,7 +1884,7 @@
         "home": "Casa"
       },
       "sidebarTabs": {
-        "title": "Pestañas de Barra Lateral",
+        "title": "Pestañas de Contenido",
         "add": "Agregar"
       },
       "serviceEdit": {
@@ -2457,5 +2458,146 @@
   "support": {
     "discussions": "Discusiones",
     "documentation": "Documentación"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "Juan",
+      "middleName": "Miguel",
+      "lastName": "García",
+      "nickName": "Juanito",
+      "prefix": "Sr.",
+      "suffix": "Jr.",
+      "email": "juan@ejemplo.com",
+      "homePhone": "(555) 123-4567",
+      "workPhone": "(555) 987-6543",
+      "mobilePhone": "(555) 456-7890",
+      "address1": "Calle Principal 123",
+      "address2": "Apto 4B",
+      "city": "Ciudad de México",
+      "state": "CDMX",
+      "zip": "06600"
+    },
+    "household": {
+      "name": "Familia García"
+    },
+    "group": {
+      "name": "Estudio Bíblico de Adultos",
+      "category": "Comunidad, Estudio Bíblico, Ministerio"
+    },
+    "fund": {
+      "name": "Fondo General"
+    },
+    "batch": {
+      "name": "Donaciones del Domingo"
+    },
+    "donation": {
+      "notes": "Diezmo mensual de la familia García"
+    },
+    "church": {
+      "name": "Iglesia de la Gracia",
+      "subDomain": "gracialocal",
+      "address1": "Avenida Principal 456",
+      "address2": "Suite 100",
+      "city": "Guadalajara",
+      "state": "Jalisco",
+      "zip": "44100"
+    },
+    "user": {
+      "firstName": "Juan",
+      "lastName": "García",
+      "email": "juan@ejemplo.com"
+    },
+    "role": {
+      "name": "Voluntario"
+    },
+    "form": {
+      "name": "Formulario de Registro",
+      "questionTitle": "¿Cuál es tu comida favorita?",
+      "questionDescription": "Ayúdanos a planificar nuestros eventos",
+      "questionPlaceholder": "Ingresa tu respuesta aquí",
+      "thankYouMessage": "¡Gracias por enviar tu respuesta!"
+    },
+    "choices": {
+      "value": "Opción A",
+      "text": "Primera Opción"
+    },
+    "sermon": {
+      "title": "Caminando en Fe",
+      "description": "Serie sobre vivir nuestra fe diariamente"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "Grande es Tu Fidelidad"
+    },
+    "position": {
+      "name": "Vocalista Principal"
+    },
+    "time": {
+      "name": "Ensayo"
+    },
+    "planType": {
+      "name": "Servicio Dominical"
+    },
+    "planItem": {
+      "label": "Momento de Adoración"
+    },
+    "plan": {
+      "notes": "Recuerden revisar el ensayo de la semana pasada"
+    },
+    "task": {
+      "taskName": "Preparar diapositivas de letras"
+    },
+    "serviceTime": {
+      "name": "Servicio de la Mañana"
+    },
+    "service": {
+      "name": "Adoración del Domingo"
+    },
+    "campus": {
+      "name": "Campus Central"
+    },
+    "device": {
+      "name": "Computador del Santuario"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "Sobre Nosotros"
+    },
+    "block": {
+      "name": "Sección de Bienvenida"
+    },
+    "addPage": {
+      "title": "Nuestra Historia",
+      "aiContent": "Crear una página sobre la historia y misión de nuestra iglesia"
+    },
+    "font": {
+      "url": "https://fuentes.ejemplo.com/mi-fuente.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "¿Cuáles son los horarios de servicio?",
+      "answer": "Tenemos servicios los domingos a las 9am y 11am"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"¿Cuál es tu nombre?\", \"answer\": \"Iglesia de la Gracia\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "Buscar por nombre o correo electrónico"
+    }
   }
 }

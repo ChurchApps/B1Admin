@@ -40,7 +40,7 @@ export const PairScreen = (props: Props) => {
     <>
       <ErrorMessages errors={errors} />
       <InputBox headerText={Locale.label("profile.devices.addScreen")} headerIcon="tv" saveFunction={handleSave} cancelFunction={props.updatedFunction}>
-        <TextField fullWidth label={Locale.label("profile.pairScreen.pairingCode")} id="code" name="code" type="text" value={code} onChange={handleChange} />
+        <TextField fullWidth label={Locale.label("profile.pairScreen.pairingCode")} id="code" name="code" type="text" value={code} onChange={handleChange} placeholder={Locale.label("placeholders.pairScreen.code")} />
       </InputBox>
     </>
   );

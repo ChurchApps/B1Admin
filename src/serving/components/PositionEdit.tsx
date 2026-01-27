@@ -131,8 +131,8 @@ export const PositionEdit = (props: Props) => {
             className="comboBox"
           />
         </FormControl>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={position.name} onChange={handleChange} />
-        <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" name="count" type="number" value={position.count} onChange={handleChange} />
+        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={position.name} onChange={handleChange} placeholder={Locale.label("placeholders.position.name")} />
+        <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" name="count" type="number" value={position.count} onChange={handleChange} placeholder={Locale.label("placeholders.position.count")} />
         <FormControl fullWidth>
           <InputLabel>{Locale.label("plans.positionEdit.volGroup")}</InputLabel>
           <Select name="groupId" label={Locale.label("plans.positionEdit.volGroup")} value={position.groupId} onChange={handleChange}>

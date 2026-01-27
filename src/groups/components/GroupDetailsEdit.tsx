@@ -225,6 +225,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 value={group.name || ""}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
+                placeholder={Locale.label("placeholders.group.name")}
                 data-testid="group-name-input"
                 aria-label="Group name"
               />

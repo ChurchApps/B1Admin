@@ -11,9 +11,24 @@ export const Login: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const context = React.useContext(UserContext);
-  const [cookies] = useCookies(["jwt"]);
+  const [cookies, , removeCookie] = useCookies(["jwt"]);
 
   const search = new URLSearchParams(window.location.search);
+  const forceLogin = search.get("forceLogin") === "1";
+
+  React.useEffect(() => {
+    if (forceLogin) {
+      // Clear JWT cookie to force fresh login
+      removeCookie("jwt", { path: "/" });
+      // Clear user context
+      if (context) {
+        context.setUser(null);
+        context.setUserChurch(null);
+        context.setUserChurches(null);
+      }
+    }
+  }, [forceLogin, context, removeCookie]);
+
   const defaultRedirect = UserHelper.checkAccess(Permissions.membershipApi.people.view) ? "/people" : "/profile";
   const fromLocation = location.state?.from;
   const fromUrl = fromLocation ? (fromLocation.pathname + (fromLocation.search || "")) : null;
@@ -23,7 +38,7 @@ export const Login: React.FC = () => {
     navigate(url);
   };
 
-  let jwt = search.get("jwt") || cookies.jwt;
+  let jwt = forceLogin ? "" : (search.get("jwt") || cookies.jwt);
   let auth = search.get("auth");
   if (!jwt) jwt = "";
   if (!auth) auth = "";

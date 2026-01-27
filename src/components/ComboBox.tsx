@@ -9,6 +9,7 @@ interface Props {
   options: string[];
   testId?: string;
   addNewLabel?: string;
+  placeholder?: string;
 }
 
 export const ComboBox: React.FC<Props> = (props) => {
@@ -37,6 +38,7 @@ export const ComboBox: React.FC<Props> = (props) => {
         label={props.label}
         value={props.value}
         onChange={handleTextChange}
+        placeholder={props.placeholder}
         data-testid={props.testId ? `${props.testId}-input` : undefined}
         aria-label={props.label}
         autoFocus

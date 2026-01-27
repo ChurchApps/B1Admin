@@ -114,6 +114,7 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
         type="text"
         value={serviceTime.name}
         onChange={handleChange}
+        placeholder="8:00 AM"
         data-testid="service-time-name-input"
         aria-label="Service time name"
       />

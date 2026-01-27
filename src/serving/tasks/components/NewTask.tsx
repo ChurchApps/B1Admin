@@ -220,6 +220,7 @@ export const NewTask = (props: Props) => {
                 value={task.title || ""}
                 name="title"
                 onChange={handleChange}
+                placeholder={Locale.label("placeholders.task.title")}
                 data-testid="task-title-input"
                 aria-label="Task title"
                 variant="outlined"
@@ -237,6 +238,7 @@ export const NewTask = (props: Props) => {
             onChange={handleChange}
             multiline
             rows={4}
+            placeholder={Locale.label("placeholders.task.notes")}
             data-testid="task-notes-input"
             aria-label="Task notes"
             variant="outlined"

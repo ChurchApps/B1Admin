@@ -420,6 +420,7 @@
       "checkNum": "Check #",
       "date": "Date",
       "fund": "Fund",
+      "inKind": "In-Kind",
       "lastDig": "Last 4 digits",
       "method": "Method"
     },
@@ -948,7 +949,8 @@
       "persDet": "Personal Details",
       "upAddress": "You updated the address to",
       "valEmail": "Please enter a valid email address.",
-      "work": "Work"
+      "work": "Work",
+      "cannotDeleteSelf": "You cannot delete your own person record."
     },
     "personView": {
       "home": "Home",
@@ -1394,7 +1396,8 @@
       "noUsers": "No users found. Please search for a different name or email.",
       "searchResults": "Search Results",
       "userChurches": "Churches",
-      "noUserChurches": "This user has no churches associated with their account."
+      "noUserChurches": "This user has no churches associated with their account.",
+      "userSearchPlaceholder": "Search by name or email"
     },
     "reportPage": {
       "report": "Report",
@@ -1911,7 +1914,9 @@
       "vimeoChannelId": "Vimeo Channel ID",
       "importIntoPlaylist": "Import Into Playlist",
       "autoImportNewVideos": "Auto Import New Videos",
-      "selectPlaylist": "Please select a playlist"
+      "selectPlaylist": "Please select a playlist",
+      "vimeoChannelPlaceholder": "staffpicks",
+      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA"
     },
     "liveStreamTimes": {
       "title": "Live Stream Times",
@@ -1930,7 +1935,7 @@
         "home": "Home"
       },
       "sidebarTabs": {
-        "title": "Sidebar Tabs",
+        "title": "Content Tabs",
         "add": "Add"
       },
       "serviceEdit": {
@@ -2139,7 +2144,8 @@
     "addPage": {
       "newLink": "New Link",
       "newPage": "New Page",
-      "pageType": "Page Type"
+      "pageType": "Page Type",
+      "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button"
     },
     "appearanceEdit": {
       "logoManagement": "Logo Management"
@@ -2476,5 +2482,164 @@
   "support": {
     "discussions": "Discussions",
     "documentation": "Documentation"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "John",
+      "middleName": "David",
+      "lastName": "Smith",
+      "email": "john.smith@example.com",
+      "nameTag": "Lead Singer",
+      "donorNumber": "DN-12345",
+      "nickname": "Johnny",
+      "address1": "123 Main Street",
+      "address2": "Apt 4B",
+      "city": "Nashville",
+      "state": "TN",
+      "zip": "37201",
+      "phoneExt": "1234",
+      "simpleEmail": "john@example.com"
+    },
+    "household": {
+      "name": "Smith Family"
+    },
+    "group": {
+      "name": "Life Group A",
+      "category": "ABF, Sunday School, Ministry",
+      "meetingLocation": "Johnson Home",
+      "meetingTime": "Tuesdays at 7pm",
+      "slug": "group-name"
+    },
+    "fund": {
+      "name": "General Fund"
+    },
+    "batch": {
+      "name": "Sunday Offering - Jan 5"
+    },
+    "donation": {
+      "checkNumber": "1234",
+      "lastDigits": "4242",
+      "notes": "Add any notes about this donation..."
+    },
+    "church": {
+      "name": "Grace Community Church",
+      "subdomain": "gracechurch",
+      "address1": "123 Main Street",
+      "address2": "Suite 100",
+      "city": "Springfield",
+      "state": "IL",
+      "zip": "62701",
+      "country": "USA"
+    },
+    "user": {
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "john@example.com"
+    },
+    "role": {
+      "name": "Ministry Leader"
+    },
+    "form": {
+      "name": "Contact Form",
+      "thankYouMessage": "Thank you for submitting the form!",
+      "questionTitle": "Your question here",
+      "questionDescription": "Add additional details...",
+      "questionPlaceholder": "Enter your answer..."
+    },
+    "choices": {
+      "value": "option1",
+      "text": "Option 1"
+    },
+    "sermon": {
+      "title": "Sunday Message",
+      "description": "Enter sermon description..."
+    },
+    "duration": {
+      "minutes": "45",
+      "seconds": "30"
+    },
+    "song": {
+      "title": "Amazing Grace",
+      "artist": "John Newton",
+      "album": "Album Name",
+      "language": "English",
+      "bpm": "120",
+      "lengthSeconds": "180",
+      "keySignature": "C#",
+      "arrangementName": "Contemporary Arrangement",
+      "lyrics": "Enter lyrics here...",
+      "linkUrl": "https://example.com/chords"
+    },
+    "position": {
+      "name": "Greeter",
+      "count": "2"
+    },
+    "time": {
+      "displayName": "Sunday Morning"
+    },
+    "planType": {
+      "name": "Sunday Service"
+    },
+    "planItem": {
+      "label": "Opening Song",
+      "description": "Brief description...",
+      "minutes": "5",
+      "seconds": "30"
+    },
+    "plan": {
+      "name": "Sunday Service - Jan 5"
+    },
+    "task": {
+      "title": "Prepare worship slides",
+      "notes": "Add any notes about this task..."
+    },
+    "serviceTime": {
+      "name": "8:00 AM"
+    },
+    "service": {
+      "name": "Sunday Morning Service"
+    },
+    "campus": {
+      "name": "Downtown Campus"
+    },
+    "device": {
+      "label": "Living Room Screen"
+    },
+    "pairScreen": {
+      "code": "ABC123"
+    },
+    "page": {
+      "title": "About Us",
+      "linkText": "Read More",
+      "urlPath": "/about-us",
+      "linkUrl": "https://example.com"
+    },
+    "block": {
+      "name": "Hero Section"
+    },
+    "addPage": {
+      "title": "New Page",
+      "linkUrl": "/new-page",
+      "linkText": "Click here"
+    },
+    "font": {
+      "search": "Search fonts..."
+    },
+    "color": {
+      "hex": "#FF0000"
+    },
+    "faq": {
+      "title": "What is your return policy?"
+    },
+    "element": {
+      "videoId": "dQw4w9WgXcQ",
+      "buttonText": "Click Here",
+      "cardTitle": "Card Title",
+      "imageDescription": "Image description",
+      "donateText": "Donate Now"
+    },
+    "giving": {
+      "publicKey": "pk_live_..."
+    }
   }
 }

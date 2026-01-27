@@ -70,9 +70,9 @@ export const PersonAdd: React.FC<Props> = ({
           ),
         }}
       />
-      {showCreatePersonOnNotFound && hasSearched && searchText && searchResults.length === 0 && (
+      {showCreatePersonOnNotFound && hasSearched && searchText && (
         <Typography sx={{ marginTop: "7px" }}>
-          {Locale.label("person.noRec")}{" "}
+          {searchResults.length === 0 && <>{Locale.label("person.noRec")} </>}
           <button
             type="button"
             onClick={() => setOpen(true)}

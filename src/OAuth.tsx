@@ -37,13 +37,13 @@ export const OAuthPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "var(--bg-main)", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", backgroundColor: "background.default", minHeight: "100vh" }}>
       <div style={{ marginLeft: "auto", marginRight: "auto", paddingTop: 20 }}>
         <Box
           sx={{
             width: 500,
             minHeight: 100,
-            backgroundColor: "var(--bg-card)",
+            backgroundColor: "background.paper",
             border: "1px solid var(--border-main)",
             borderRadius: "5px",
             padding: "10px",
@@ -69,7 +69,7 @@ export const OAuthPage: React.FC = () => {
               <li>Plans</li>
             </ul>
           </div>
-          <div style={{ backgroundColor: "var(--bg-sub)", padding: 10 }}>
+          <Box sx={{ backgroundColor: "action.hover", padding: "10px" }}>
             <Grid container spacing={2}>
               <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
                 <Button
@@ -90,7 +90,7 @@ export const OAuthPage: React.FC = () => {
                 </Button>
               </Grid>
             </Grid>
-          </div>
+          </Box>
         </Box>
       </div>
     </Box>

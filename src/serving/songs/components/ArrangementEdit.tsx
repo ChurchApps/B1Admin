@@ -50,8 +50,8 @@ export const ArrangementEdit = (props: Props) => {
       saveFunction={handleSave}
       cancelFunction={props.onCancel}
       deleteFunction={arrangement?.id ? handleDelete : null}>
-      <TextField label={Locale.label("songs.arrangement.name")} name="name" value={arrangement?.name} onChange={handleChange} fullWidth />
-      <TextField label={Locale.label("songs.arrangement.lyrics")} multiline name="lyrics" value={arrangement?.lyrics} onChange={handleChange} fullWidth />
+      <TextField label={Locale.label("songs.arrangement.name")} name="name" value={arrangement?.name} onChange={handleChange} fullWidth placeholder={Locale.label("placeholders.song.arrangementName")} />
+      <TextField label={Locale.label("songs.arrangement.lyrics")} multiline name="lyrics" value={arrangement?.lyrics} onChange={handleChange} fullWidth placeholder={Locale.label("placeholders.song.lyrics")} />
     </InputBox>
   );
 };

@@ -388,6 +388,7 @@
       "checkNum": "Номер чека",
       "date": "Дата",
       "fund": "Фонд",
+      "inKind": "Натурой",
       "lastDig": "Последние 4 цифры",
       "method": "Метод"
     },
@@ -1889,7 +1890,7 @@
         "home": "Домашний"
       },
       "sidebarTabs": {
-        "title": "Вкладки Боковой Панели",
+        "title": "Вкладки Содержимого",
         "add": "Добавить"
       },
       "serviceEdit": {
@@ -2463,5 +2464,146 @@
   "support": {
     "discussions": "Обсуждения",
     "documentation": "Документация"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "Иван",
+      "middleName": "Петрович",
+      "lastName": "Иванов",
+      "nickName": "Ваня",
+      "prefix": "Г-н",
+      "suffix": "мл.",
+      "email": "ivan@example.ru",
+      "homePhone": "(495) 123-45-67",
+      "workPhone": "(495) 987-65-43",
+      "mobilePhone": "+7 (912) 345-67-89",
+      "address1": "ул. Главная, д. 123",
+      "address2": "кв. 4Б",
+      "city": "Москва",
+      "state": "Московская область",
+      "zip": "101000"
+    },
+    "household": {
+      "name": "Семья Ивановых"
+    },
+    "group": {
+      "name": "Библейское изучение для взрослых",
+      "category": "Сообщество, Библейское изучение, Служение"
+    },
+    "fund": {
+      "name": "Общий фонд"
+    },
+    "batch": {
+      "name": "Воскресные пожертвования"
+    },
+    "donation": {
+      "notes": "Ежемесячная десятина семьи Ивановых"
+    },
+    "church": {
+      "name": "Церковь Благодати",
+      "subDomain": "gracechurch",
+      "address1": "пр. Главный, д. 456",
+      "address2": "офис 100",
+      "city": "Санкт-Петербург",
+      "state": "Ленинградская область",
+      "zip": "190000"
+    },
+    "user": {
+      "firstName": "Иван",
+      "lastName": "Иванов",
+      "email": "ivan@example.ru"
+    },
+    "role": {
+      "name": "Волонтёр"
+    },
+    "form": {
+      "name": "Форма регистрации",
+      "questionTitle": "Какая ваша любимая еда?",
+      "questionDescription": "Помогите нам спланировать мероприятия",
+      "questionPlaceholder": "Введите ваш ответ здесь",
+      "thankYouMessage": "Спасибо за отправку!"
+    },
+    "choices": {
+      "value": "Вариант А",
+      "text": "Первый вариант"
+    },
+    "sermon": {
+      "title": "Ходить в вере",
+      "description": "Серия о ежедневной жизни в вере"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "Велика верность Твоя"
+    },
+    "position": {
+      "name": "Ведущий вокалист"
+    },
+    "time": {
+      "name": "Репетиция"
+    },
+    "planType": {
+      "name": "Воскресное служение"
+    },
+    "planItem": {
+      "label": "Время прославления"
+    },
+    "plan": {
+      "notes": "Не забудьте повторить репетицию прошлой недели"
+    },
+    "task": {
+      "taskName": "Подготовить слайды с текстами"
+    },
+    "serviceTime": {
+      "name": "Утреннее служение"
+    },
+    "service": {
+      "name": "Воскресное богослужение"
+    },
+    "campus": {
+      "name": "Главный кампус"
+    },
+    "device": {
+      "name": "Компьютер в зале"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "О нас"
+    },
+    "block": {
+      "name": "Раздел приветствия"
+    },
+    "addPage": {
+      "title": "Наша история",
+      "aiContent": "Создать страницу об истории и миссии нашей церкви"
+    },
+    "font": {
+      "url": "https://fonts.example.ru/my-font.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "Когда проходят служения?",
+      "answer": "Служения по воскресеньям в 9:00 и 11:00"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"Как вас зовут?\", \"answer\": \"Церковь Благодати\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "Поиск по имени или email"
+    }
   }
 }

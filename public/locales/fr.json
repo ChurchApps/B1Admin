@@ -388,6 +388,7 @@
       "checkNum": "N° de Chèque",
       "date": "Date",
       "fund": "Fonds",
+      "inKind": "En Nature",
       "lastDig": "Derniers 4 chiffres",
       "method": "Méthode"
     },
@@ -1882,7 +1883,7 @@
         "home": "Domicile"
       },
       "sidebarTabs": {
-        "title": "Onglets de la barre latérale",
+        "title": "Onglets de contenu",
         "add": "Ajouter"
       },
       "serviceEdit": {
@@ -2456,5 +2457,146 @@
   "support": {
     "discussions": "Discussions",
     "documentation": "Documentation"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "Pierre",
+      "middleName": "Michel",
+      "lastName": "Dupont",
+      "nickName": "Pierrot",
+      "prefix": "M.",
+      "suffix": "Jr.",
+      "email": "pierre@exemple.fr",
+      "homePhone": "01 23 45 67 89",
+      "workPhone": "01 98 76 54 32",
+      "mobilePhone": "06 12 34 56 78",
+      "address1": "123 Rue Principale",
+      "address2": "Appt 4B",
+      "city": "Paris",
+      "state": "Île-de-France",
+      "zip": "75001"
+    },
+    "household": {
+      "name": "Famille Dupont"
+    },
+    "group": {
+      "name": "Étude Biblique Adultes",
+      "category": "Communauté, Étude Biblique, Ministère"
+    },
+    "fund": {
+      "name": "Fonds Général"
+    },
+    "batch": {
+      "name": "Dons du Dimanche"
+    },
+    "donation": {
+      "notes": "Dîme mensuelle de la famille Dupont"
+    },
+    "church": {
+      "name": "Église de la Grâce",
+      "subDomain": "gracelocale",
+      "address1": "456 Avenue Principale",
+      "address2": "Suite 100",
+      "city": "Lyon",
+      "state": "Auvergne-Rhône-Alpes",
+      "zip": "69001"
+    },
+    "user": {
+      "firstName": "Pierre",
+      "lastName": "Dupont",
+      "email": "pierre@exemple.fr"
+    },
+    "role": {
+      "name": "Bénévole"
+    },
+    "form": {
+      "name": "Formulaire d'Inscription",
+      "questionTitle": "Quel est votre plat préféré ?",
+      "questionDescription": "Aidez-nous à planifier nos événements",
+      "questionPlaceholder": "Entrez votre réponse ici",
+      "thankYouMessage": "Merci pour votre soumission !"
+    },
+    "choices": {
+      "value": "Option A",
+      "text": "Première Option"
+    },
+    "sermon": {
+      "title": "Marcher dans la Foi",
+      "description": "Série sur vivre notre foi au quotidien"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "Grande est Ta Fidélité"
+    },
+    "position": {
+      "name": "Chanteur Principal"
+    },
+    "time": {
+      "name": "Répétition"
+    },
+    "planType": {
+      "name": "Service du Dimanche"
+    },
+    "planItem": {
+      "label": "Moment de Louange"
+    },
+    "plan": {
+      "notes": "N'oubliez pas de revoir la répétition de la semaine dernière"
+    },
+    "task": {
+      "taskName": "Préparer les diapositives de paroles"
+    },
+    "serviceTime": {
+      "name": "Service du Matin"
+    },
+    "service": {
+      "name": "Culte du Dimanche"
+    },
+    "campus": {
+      "name": "Campus Principal"
+    },
+    "device": {
+      "name": "Ordinateur du Sanctuaire"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "À Propos de Nous"
+    },
+    "block": {
+      "name": "Section de Bienvenue"
+    },
+    "addPage": {
+      "title": "Notre Histoire",
+      "aiContent": "Créer une page sur l'histoire et la mission de notre église"
+    },
+    "font": {
+      "url": "https://polices.exemple.fr/ma-police.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "Quels sont les horaires des services ?",
+      "answer": "Nous avons des services le dimanche à 9h et 11h"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"Quel est votre nom ?\", \"answer\": \"Église de la Grâce\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "Rechercher par nom ou email"
+    }
   }
 }

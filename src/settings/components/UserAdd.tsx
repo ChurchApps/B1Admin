@@ -206,12 +206,12 @@ export const UserAdd = (props: Props) => {
   );
   const nameField = (showNameFields || editMode) && (
     <>
-      <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} data-testid="first-name-input" aria-label="First name" />
-      <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} data-testid="last-name-input" aria-label="Last name" />
+      <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} placeholder={Locale.label("placeholders.user.firstName")} data-testid="first-name-input" aria-label="First name" />
+      <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} placeholder={Locale.label("placeholders.user.lastName")} data-testid="last-name-input" aria-label="Last name" />
     </>
   );
   const emailField = (showEmailField || editMode) && (
-    <TextField type="email" fullWidth name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} data-testid="email-input" aria-label="Email address" />
+    <TextField type="email" fullWidth name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} placeholder={Locale.label("placeholders.user.email")} data-testid="email-input" aria-label="Email address" />
   );
 
   return (

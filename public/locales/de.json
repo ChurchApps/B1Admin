@@ -388,6 +388,7 @@
       "checkNum": "Scheck #",
       "date": "Datum",
       "fund": "Fonds",
+      "inKind": "Sachspende",
       "lastDig": "Letzte 4 Ziffern",
       "method": "Methode"
     },
@@ -1882,7 +1883,7 @@
         "home": "Zuhause"
       },
       "sidebarTabs": {
-        "title": "Seitenleisten-Tabs",
+        "title": "Inhalts-Tabs",
         "add": "Hinzufügen"
       },
       "serviceEdit": {
@@ -2456,5 +2457,180 @@
   "support": {
     "discussions": "Diskussionen",
     "documentation": "Dokumentation"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "Johann",
+      "middleName": "David",
+      "lastName": "Schmidt",
+      "email": "johann.schmidt@beispiel.com",
+      "nameTag": "Leiter",
+      "donorNumber": "SP-12345",
+      "nickname": "Hans",
+      "address1": "Hauptstraße 123",
+      "address2": "Whg. 4B",
+      "city": "Berlin",
+      "state": "BE",
+      "zip": "10115",
+      "phoneExt": "1234",
+      "simpleEmail": "johann@beispiel.com"
+    },
+    "household": {
+      "name": "Familie Schmidt"
+    },
+    "group": {
+      "name": "Hauskreis A",
+      "category": "Bibelstunde, Sonntagsschule, Dienst",
+      "meetingLocation": "Haus Müller",
+      "meetingTime": "Dienstags um 19 Uhr",
+      "slug": "gruppenname"
+    },
+    "fund": {
+      "name": "Allgemeiner Fonds"
+    },
+    "batch": {
+      "name": "Sonntagsopfer - 5. Jan"
+    },
+    "donation": {
+      "checkNumber": "1234",
+      "lastDigits": "4242",
+      "notes": "Notizen zu dieser Spende hinzufügen..."
+    },
+    "church": {
+      "name": "Gnadenkirche",
+      "subdomain": "gnadenkirche",
+      "address1": "Hauptstraße 123",
+      "address2": "Gebäude A",
+      "city": "Berlin",
+      "state": "BE",
+      "zip": "10115",
+      "country": "Deutschland"
+    },
+    "user": {
+      "firstName": "Johann",
+      "lastName": "Schmidt",
+      "email": "johann@beispiel.com"
+    },
+    "role": {
+      "name": "Dienstleiter"
+    },
+    "form": {
+      "name": "Kontaktformular",
+      "thankYouMessage": "Danke für Ihre Einreichung!",
+      "questionTitle": "Ihre Frage hier",
+      "questionDescription": "Zusätzliche Details hinzufügen...",
+      "questionPlaceholder": "Geben Sie Ihre Antwort ein..."
+    },
+    "choices": {
+      "value": "option1",
+      "text": "Option 1"
+    },
+    "sermon": {
+      "title": "Sonntagspredigt",
+      "description": "Predigtbeschreibung eingeben..."
+    },
+    "duration": {
+      "minutes": "45",
+      "seconds": "30"
+    },
+    "song": {
+      "title": "Amazing Grace",
+      "artist": "John Newton",
+      "album": "Albumname",
+      "language": "Deutsch",
+      "bpm": "120",
+      "lengthSeconds": "180",
+      "keySignature": "C#",
+      "arrangementName": "Moderne Fassung",
+      "lyrics": "Liedtext hier eingeben...",
+      "linkUrl": "https://beispiel.com/akkorde"
+    },
+    "position": {
+      "name": "Begrüßer",
+      "count": "2"
+    },
+    "time": {
+      "displayName": "Sonntagmorgen"
+    },
+    "planType": {
+      "name": "Sonntagsgottesdienst"
+    },
+    "planItem": {
+      "label": "Eröffnungslied",
+      "description": "Kurze Beschreibung...",
+      "minutes": "5",
+      "seconds": "30"
+    },
+    "plan": {
+      "name": "Sonntagsgottesdienst - 5. Jan"
+    },
+    "task": {
+      "title": "Lobpreisfolien vorbereiten",
+      "notes": "Notizen zu dieser Aufgabe hinzufügen..."
+    },
+    "serviceTime": {
+      "name": "8:00 Uhr"
+    },
+    "service": {
+      "name": "Sonntagmorgengottesdienst"
+    },
+    "campus": {
+      "name": "Hauptstandort"
+    },
+    "device": {
+      "label": "Wohnzimmer-Bildschirm"
+    },
+    "pairScreen": {
+      "code": "ABC123"
+    },
+    "page": {
+      "title": "Über uns",
+      "linkText": "Mehr lesen",
+      "urlPath": "/ueber-uns",
+      "linkUrl": "https://beispiel.com"
+    },
+    "block": {
+      "name": "Hero-Bereich"
+    },
+    "addPage": {
+      "title": "Neue Seite",
+      "linkUrl": "/neue-seite",
+      "linkText": "Hier klicken"
+    },
+    "font": {
+      "search": "Schriften suchen..."
+    },
+    "color": {
+      "hex": "#FF0000"
+    },
+    "faq": {
+      "title": "Wie ist Ihre Rückgaberichtlinie?"
+    },
+    "element": {
+      "videoId": "dQw4w9WgXcQ",
+      "buttonText": "Hier klicken",
+      "cardTitle": "Kartentitel",
+      "imageDescription": "Bildbeschreibung",
+      "donateText": "Jetzt spenden"
+    },
+    "giving": {
+      "publicKey": "pk_live_..."
+    }
+  },
+  "site": {
+    "addPage": {
+      "aiPlaceholder": "Beispiel: Erstellen Sie eine einladende Homepage mit unserem Kirchennamen, Leitbild, Gottesdienstzeiten und einem Spendenbutton"
+    }
+  },
+  "serverAdmin": {
+    "adminPage": {
+      "userSearchPlaceholder": "Nach Name oder E-Mail suchen"
+    }
+  },
+  "sermons": {
+    "bulkImport": {
+      "vimeoChannelPlaceholder": "staffpicks",
+      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA"
+    }
   }
 }

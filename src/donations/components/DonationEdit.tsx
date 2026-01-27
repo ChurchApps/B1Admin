@@ -105,7 +105,8 @@ export const DonationEdit = memo((props: Props) => {
   const methodDetails = useMemo(() => {
     if (donation.method === "Cash") return null;
     const label = donation.method === "Check" ? Locale.label("donations.donationEdit.checkNum") : Locale.label("donations.donationEdit.lastDig");
-    return <TextField fullWidth name="methodDetails" label={label} InputLabelProps={{ shrink: !!donation?.methodDetails }} value={donation.methodDetails || ""} onChange={handleChange} />;
+    const placeholder = donation.method === "Check" ? Locale.label("placeholders.donation.checkNumber") : Locale.label("placeholders.donation.lastDigits");
+    return <TextField fullWidth name="methodDetails" label={label} InputLabelProps={{ shrink: !!donation?.methodDetails }} value={donation.methodDetails || ""} onChange={handleChange} placeholder={placeholder} />;
   }, [donation.method, donation.methodDetails, handleChange]);
 
   const handlePersonAdd = useCallback(
@@ -227,6 +228,7 @@ export const DonationEdit = memo((props: Props) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         multiline
+        placeholder={Locale.label("placeholders.donation.notes")}
         data-testid="donation-notes-input"
         aria-label="Donation notes"
       />

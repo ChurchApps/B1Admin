@@ -388,6 +388,7 @@
       "checkNum": "Assegno #",
       "date": "Data",
       "fund": "Fondo",
+      "inKind": "In Natura",
       "lastDig": "Ultime 4 cifre",
       "method": "Metodo"
     },
@@ -1889,7 +1890,7 @@
         "home": "Casa"
       },
       "sidebarTabs": {
-        "title": "Schede della Barra Laterale",
+        "title": "Schede dei Contenuti",
         "add": "Aggiungi"
       },
       "serviceEdit": {
@@ -2463,5 +2464,146 @@
   "support": {
     "discussions": "Discussioni",
     "documentation": "Documentazione"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "Marco",
+      "middleName": "Antonio",
+      "lastName": "Rossi",
+      "nickName": "Marco",
+      "prefix": "Sig.",
+      "suffix": "Jr.",
+      "email": "marco@esempio.it",
+      "homePhone": "02 1234 5678",
+      "workPhone": "02 9876 5432",
+      "mobilePhone": "333 123 4567",
+      "address1": "Via Principale 123",
+      "address2": "Int. 4B",
+      "city": "Milano",
+      "state": "Lombardia",
+      "zip": "20100"
+    },
+    "household": {
+      "name": "Famiglia Rossi"
+    },
+    "group": {
+      "name": "Studio Biblico Adulti",
+      "category": "Comunità, Studio Biblico, Ministero"
+    },
+    "fund": {
+      "name": "Fondo Generale"
+    },
+    "batch": {
+      "name": "Offerte Domenicali"
+    },
+    "donation": {
+      "notes": "Decima mensile della famiglia Rossi"
+    },
+    "church": {
+      "name": "Chiesa della Grazia",
+      "subDomain": "grazialocale",
+      "address1": "Viale Principale 456",
+      "address2": "Suite 100",
+      "city": "Roma",
+      "state": "Lazio",
+      "zip": "00100"
+    },
+    "user": {
+      "firstName": "Marco",
+      "lastName": "Rossi",
+      "email": "marco@esempio.it"
+    },
+    "role": {
+      "name": "Volontario"
+    },
+    "form": {
+      "name": "Modulo di Registrazione",
+      "questionTitle": "Qual è il tuo cibo preferito?",
+      "questionDescription": "Aiutaci a pianificare i nostri eventi",
+      "questionPlaceholder": "Inserisci la tua risposta qui",
+      "thankYouMessage": "Grazie per la tua risposta!"
+    },
+    "choices": {
+      "value": "Opzione A",
+      "text": "Prima Opzione"
+    },
+    "sermon": {
+      "title": "Camminare nella Fede",
+      "description": "Serie sul vivere la nostra fede quotidianamente"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "Grande è la Tua Fedeltà"
+    },
+    "position": {
+      "name": "Cantante Principale"
+    },
+    "time": {
+      "name": "Prova"
+    },
+    "planType": {
+      "name": "Servizio Domenicale"
+    },
+    "planItem": {
+      "label": "Momento di Lode"
+    },
+    "plan": {
+      "notes": "Ricorda di rivedere la prova della settimana scorsa"
+    },
+    "task": {
+      "taskName": "Preparare le slide dei testi"
+    },
+    "serviceTime": {
+      "name": "Servizio Mattutino"
+    },
+    "service": {
+      "name": "Culto Domenicale"
+    },
+    "campus": {
+      "name": "Campus Principale"
+    },
+    "device": {
+      "name": "Computer del Santuario"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "Chi Siamo"
+    },
+    "block": {
+      "name": "Sezione di Benvenuto"
+    },
+    "addPage": {
+      "title": "La Nostra Storia",
+      "aiContent": "Crea una pagina sulla storia e missione della nostra chiesa"
+    },
+    "font": {
+      "url": "https://fonts.esempio.it/mio-font.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "Quali sono gli orari dei servizi?",
+      "answer": "Abbiamo servizi la domenica alle 9 e alle 11"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"Qual è il tuo nome?\", \"answer\": \"Chiesa della Grazia\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "Cerca per nome o email"
+    }
   }
 }

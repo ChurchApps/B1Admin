@@ -293,13 +293,13 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField fullWidth label={Locale.label("person.firstName")} name="firstName" value={firstName} onChange={handleChange} />
+            <TextField fullWidth label={Locale.label("person.firstName")} name="firstName" value={firstName} onChange={handleChange} placeholder={Locale.label("placeholders.person.firstName")} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField fullWidth label={Locale.label("person.lastName")} name="lastName" value={lastName} onChange={handleChange} />
+            <TextField fullWidth label={Locale.label("person.lastName")} name="lastName" value={lastName} onChange={handleChange} placeholder={Locale.label("placeholders.person.lastName")} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField fullWidth label={Locale.label("person.email")} name="email" value={email} onChange={handleChange} />
+            <TextField fullWidth label={Locale.label("person.email")} name="email" value={email} onChange={handleChange} placeholder={Locale.label("placeholders.person.simpleEmail")} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <ReCAPTCHA sitekey={props.recaptchaSiteKey} ref={captchaRef} onChange={handleCaptchaChange} />

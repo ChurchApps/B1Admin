@@ -388,6 +388,7 @@
       "checkNum": "수표 번호",
       "date": "날짜",
       "fund": "기금",
+      "inKind": "현물",
       "lastDig": "마지막 4자리",
       "method": "방법"
     },
@@ -1889,7 +1890,7 @@
         "home": "집"
       },
       "sidebarTabs": {
-        "title": "사이드바 탭",
+        "title": "콘텐츠 탭",
         "add": "추가"
       },
       "serviceEdit": {
@@ -2463,5 +2464,146 @@
   "support": {
     "discussions": "토론",
     "documentation": "문서"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "민수",
+      "middleName": "준",
+      "lastName": "김",
+      "nickName": "민수",
+      "prefix": "씨",
+      "suffix": "주니어",
+      "email": "minsu@example.com",
+      "homePhone": "02-1234-5678",
+      "workPhone": "02-9876-5432",
+      "mobilePhone": "010-1234-5678",
+      "address1": "서울시 강남구 테헤란로 123",
+      "address2": "4층 B호",
+      "city": "서울",
+      "state": "서울특별시",
+      "zip": "06234"
+    },
+    "household": {
+      "name": "김씨 가족"
+    },
+    "group": {
+      "name": "성인 성경공부",
+      "category": "커뮤니티, 성경공부, 사역"
+    },
+    "fund": {
+      "name": "일반 기금"
+    },
+    "batch": {
+      "name": "주일 헌금"
+    },
+    "donation": {
+      "notes": "김씨 가족 월정 십일조"
+    },
+    "church": {
+      "name": "은혜교회",
+      "subDomain": "gracechurch",
+      "address1": "서울시 강남구 역삼로 456",
+      "address2": "100호",
+      "city": "서울",
+      "state": "서울특별시",
+      "zip": "06241"
+    },
+    "user": {
+      "firstName": "민수",
+      "lastName": "김",
+      "email": "minsu@example.com"
+    },
+    "role": {
+      "name": "봉사자"
+    },
+    "form": {
+      "name": "등록 양식",
+      "questionTitle": "좋아하는 음식이 무엇인가요?",
+      "questionDescription": "행사 계획에 도움을 주세요",
+      "questionPlaceholder": "여기에 답변을 입력하세요",
+      "thankYouMessage": "제출해 주셔서 감사합니다!"
+    },
+    "choices": {
+      "value": "옵션 A",
+      "text": "첫 번째 옵션"
+    },
+    "sermon": {
+      "title": "믿음 안에서 걷기",
+      "description": "일상에서 믿음을 실천하는 시리즈"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "주 신실하심 크도다"
+    },
+    "position": {
+      "name": "리드 보컬"
+    },
+    "time": {
+      "name": "리허설"
+    },
+    "planType": {
+      "name": "주일 예배"
+    },
+    "planItem": {
+      "label": "찬양 시간"
+    },
+    "plan": {
+      "notes": "지난주 리허설을 복습하세요"
+    },
+    "task": {
+      "taskName": "가사 슬라이드 준비"
+    },
+    "serviceTime": {
+      "name": "오전 예배"
+    },
+    "service": {
+      "name": "주일 예배"
+    },
+    "campus": {
+      "name": "본당 캠퍼스"
+    },
+    "device": {
+      "name": "본당 컴퓨터"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "소개"
+    },
+    "block": {
+      "name": "환영 섹션"
+    },
+    "addPage": {
+      "title": "우리의 이야기",
+      "aiContent": "우리 교회의 역사와 사명에 대한 페이지 만들기"
+    },
+    "font": {
+      "url": "https://fonts.example.com/my-font.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "예배 시간이 언제인가요?",
+      "answer": "주일 오전 9시와 11시에 예배가 있습니다"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"이름이 무엇인가요?\", \"answer\": \"은혜교회\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "이름 또는 이메일로 검색"
+    }
   }
 }

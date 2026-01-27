@@ -275,9 +275,9 @@ export const SermonEdit: React.FC<Props> = (props) => {
               </a>
             </Grid>
             <Grid size={{ xs: 9 }}>
-              <TextField fullWidth label={Locale.label("sermons.sermonEdit.title")} name="title" value={currentSermon?.title || ""} onChange={handleChange} data-testid="sermon-title-input" aria-label="Sermon title" />
+              <TextField fullWidth label={Locale.label("sermons.sermonEdit.title")} name="title" value={currentSermon?.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.title")} data-testid="sermon-title-input" aria-label="Sermon title" />
               <Box sx={{ mt: 2 }}>
-                <TextField fullWidth multiline label={Locale.label("sermons.sermonEdit.description")} name="description" value={currentSermon?.description || ""} onChange={handleChange} placeholder={keyPlaceholder} data-testid="sermon-description-input" aria-label="Sermon description" />
+                <TextField fullWidth multiline label={Locale.label("sermons.sermonEdit.description")} name="description" value={currentSermon?.description || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.description")} data-testid="sermon-description-input" aria-label="Sermon description" />
               </Box>
             </Grid>
           </Grid>

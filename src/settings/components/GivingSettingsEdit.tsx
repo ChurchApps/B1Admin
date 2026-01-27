@@ -58,7 +58,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
       return (
         <>
           <Grid size={{ xs: 12, md: 4 }}>
-            <TextField fullWidth name="publicKey" label={publicLabel} value={publicKey} onChange={handleChange} />
+            <TextField fullWidth name="publicKey" label={publicLabel} value={publicKey} onChange={handleChange} placeholder={Locale.label("placeholders.giving.publicKey")} />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <TextField fullWidth name="privateKey" label={privateLabel} value={privateKey} placeholder={Locale.label("settings.giving.secretPlaceholder")} type="password" onChange={handleChange} />

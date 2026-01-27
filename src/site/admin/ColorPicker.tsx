@@ -54,7 +54,7 @@ export function ColorPicker(props: Props) {
       <SliderPicker key="sliderPicker" color={props.color} onChangeComplete={(color) => { if (color.hex !== "#000000") props.updatedCallback(color.hex); }} />
       {getGrayOptions()}
       {getThemeOptions()}
-      <TextField key="backgroundText" fullWidth size="small" label="Color" name="background" value={props.color} onChange={handleChange} data-testid="color-input" aria-label="Enter color value" />
+      <TextField key="backgroundText" fullWidth size="small" label="Color" name="background" value={props.color} onChange={handleChange} placeholder="#FF0000" data-testid="color-input" aria-label="Enter color value" />
     </>
   );
 }

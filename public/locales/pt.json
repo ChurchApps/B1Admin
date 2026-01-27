@@ -388,6 +388,7 @@
       "checkNum": "Cheque #",
       "date": "Data",
       "fund": "Fundo",
+      "inKind": "Em Espécie",
       "lastDig": "Últimos 4 dígitos",
       "method": "Método"
     },
@@ -1882,7 +1883,7 @@
         "home": "Casa"
       },
       "sidebarTabs": {
-        "title": "Abas da Barra Lateral",
+        "title": "Abas de Conteúdo",
         "add": "Adicionar"
       },
       "serviceEdit": {
@@ -2456,5 +2457,146 @@
   "support": {
     "discussions": "Discussões",
     "documentation": "Documentação"
+  },
+  "placeholders": {
+    "person": {
+      "firstName": "João",
+      "middleName": "Carlos",
+      "lastName": "Silva",
+      "nickName": "Joãozinho",
+      "prefix": "Sr.",
+      "suffix": "Jr.",
+      "email": "joao@exemplo.com.br",
+      "homePhone": "(11) 1234-5678",
+      "workPhone": "(11) 9876-5432",
+      "mobilePhone": "(11) 91234-5678",
+      "address1": "Rua Principal 123",
+      "address2": "Apto 4B",
+      "city": "São Paulo",
+      "state": "SP",
+      "zip": "01310-100"
+    },
+    "household": {
+      "name": "Família Silva"
+    },
+    "group": {
+      "name": "Estudo Bíblico Adultos",
+      "category": "Comunidade, Estudo Bíblico, Ministério"
+    },
+    "fund": {
+      "name": "Fundo Geral"
+    },
+    "batch": {
+      "name": "Ofertas de Domingo"
+    },
+    "donation": {
+      "notes": "Dízimo mensal da família Silva"
+    },
+    "church": {
+      "name": "Igreja da Graça",
+      "subDomain": "gracalocal",
+      "address1": "Avenida Principal 456",
+      "address2": "Sala 100",
+      "city": "Rio de Janeiro",
+      "state": "RJ",
+      "zip": "20040-020"
+    },
+    "user": {
+      "firstName": "João",
+      "lastName": "Silva",
+      "email": "joao@exemplo.com.br"
+    },
+    "role": {
+      "name": "Voluntário"
+    },
+    "form": {
+      "name": "Formulário de Cadastro",
+      "questionTitle": "Qual é sua comida favorita?",
+      "questionDescription": "Ajude-nos a planejar nossos eventos",
+      "questionPlaceholder": "Digite sua resposta aqui",
+      "thankYouMessage": "Obrigado pelo envio!"
+    },
+    "choices": {
+      "value": "Opção A",
+      "text": "Primeira Opção"
+    },
+    "sermon": {
+      "title": "Caminhando na Fé",
+      "description": "Série sobre viver nossa fé diariamente"
+    },
+    "duration": {
+      "value": "45"
+    },
+    "song": {
+      "name": "Grande é Tua Fidelidade"
+    },
+    "position": {
+      "name": "Vocalista Principal"
+    },
+    "time": {
+      "name": "Ensaio"
+    },
+    "planType": {
+      "name": "Culto Dominical"
+    },
+    "planItem": {
+      "label": "Momento de Louvor"
+    },
+    "plan": {
+      "notes": "Lembre-se de revisar o ensaio da semana passada"
+    },
+    "task": {
+      "taskName": "Preparar slides de letras"
+    },
+    "serviceTime": {
+      "name": "Culto da Manhã"
+    },
+    "service": {
+      "name": "Culto de Domingo"
+    },
+    "campus": {
+      "name": "Campus Principal"
+    },
+    "device": {
+      "name": "Computador do Santuário"
+    },
+    "pairScreen": {
+      "registrationCode": "ABC123"
+    },
+    "page": {
+      "title": "Sobre Nós"
+    },
+    "block": {
+      "name": "Seção de Boas-vindas"
+    },
+    "addPage": {
+      "title": "Nossa História",
+      "aiContent": "Criar uma página sobre a história e missão da nossa igreja"
+    },
+    "font": {
+      "url": "https://fonts.exemplo.com.br/minha-fonte.woff2"
+    },
+    "color": {
+      "value": "#3B82F6"
+    },
+    "faq": {
+      "title": "Quais são os horários dos cultos?",
+      "answer": "Temos cultos aos domingos às 9h e 11h"
+    },
+    "element": {
+      "answersJSON": "[{\"question\": \"Qual é o seu nome?\", \"answer\": \"Igreja da Graça\"}]"
+    },
+    "giving": {
+      "paymentGatewayKey": "pk_test_abc123xyz"
+    },
+    "vimeo": {
+      "channelId": "123456789"
+    },
+    "youtube": {
+      "channelId": "UCxxxxxxxxxx"
+    },
+    "search": {
+      "searchUsers": "Pesquisar por nome ou email"
+    }
   }
 }

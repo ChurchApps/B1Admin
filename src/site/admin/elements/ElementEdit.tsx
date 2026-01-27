@@ -309,9 +309,9 @@ export function ElementEdit(props: Props) {
         data-testid="photo-alt-input"
         aria-label={Locale.label("site.elements.photoAlternativeText")}
       />
-      <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
       {getTextAlignment("titleAlignment", Locale.label("site.elements.titleAlignment"))}
-      <TextField fullWidth size="small" label={Locale.label("site.elements.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.element.cardTitle")} />
       {getTextAlignment("textAlignment")}
       <Box sx={{ marginTop: 2 }}>
         <HtmlEditor
@@ -374,7 +374,7 @@ export function ElementEdit(props: Props) {
 
   const getIframeFields = () => (
     <>
-      <TextField fullWidth size="small" label={Locale.label("site.elements.source")} name="iframeSrc" value={parsedData.iframeSrc || ""} onChange={handleChange} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.source")} name="iframeSrc" value={parsedData.iframeSrc || ""} onChange={handleChange} placeholder={Locale.label("placeholders.page.linkUrl")} />
       <TextField
         fullWidth
         size="small"
@@ -389,8 +389,8 @@ export function ElementEdit(props: Props) {
 
   const getButtonLink = () => (
     <>
-      <TextField fullWidth size="small" label={Locale.label("site.elements.text")} name="buttonLinkText" value={parsedData.buttonLinkText || ""} onChange={handleChange} />
-      <TextField fullWidth size="small" label={Locale.label("site.elements.url")} name="buttonLinkUrl" value={parsedData.buttonLinkUrl || ""} onChange={handleChange} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.text")} name="buttonLinkText" value={parsedData.buttonLinkText || ""} onChange={handleChange} placeholder={Locale.label("placeholders.element.buttonText")} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.url")} name="buttonLinkUrl" value={parsedData.buttonLinkUrl || ""} onChange={handleChange} placeholder={Locale.label("placeholders.page.linkUrl")} />
       <FormControl fullWidth>
         <InputLabel>{Locale.label("site.elements.variant")}</InputLabel>
         <Select fullWidth size="small" label={Locale.label("site.elements.variant")} name="buttonLinkVariant" value={parsedData.buttonLinkVariant || "contained"} onChange={handleChange}>
@@ -426,7 +426,7 @@ export function ElementEdit(props: Props) {
           <MenuItem value="vimeo">{Locale.label("site.elements.vimeo")}</MenuItem>
         </Select>
       </FormControl>
-      <TextField fullWidth size="small" label={Locale.label("site.elements.id")} name="videoId" value={parsedData.videoId || ""} onChange={handleChange} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.id")} name="videoId" value={parsedData.videoId || ""} onChange={handleChange} placeholder={Locale.label("placeholders.element.videoId")} />
       {(!parsedData.videoType || parsedData.videoType === "youtube") && (
         <Typography fontSize="12px" fontStyle="italic">
           {Locale.label("site.elements.videoUrlYoutube")} <br /> {Locale.label("site.elements.idExample")}
@@ -536,8 +536,8 @@ export function ElementEdit(props: Props) {
       <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button" aria-label={Locale.label("site.elements.selectPhoto")}>
         {Locale.label("site.elements.selectPhoto")}
       </Button>
-      <TextField fullWidth size="small" label={Locale.label("site.elements.photoLabel")} name="photoAlt" value={parsedData.photoAlt || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-      <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.photoLabel")} name="photoAlt" value={parsedData.photoAlt || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.element.imageDescription")} />
+      <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
       <FormGroup sx={{ marginLeft: 0.5 }}>
         <FormControlLabel
           control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.external === "true" ? true : false} />}

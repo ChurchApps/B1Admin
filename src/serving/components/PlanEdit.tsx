@@ -110,7 +110,7 @@ export const PlanEdit = (props: Props) => {
         saveFunction={handleSave}
         cancelFunction={props.updatedFunction}
         deleteFunction={plan.id ? handleDelete : null}>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={plan.name} onChange={handleChange} data-testid="plan-name-input" aria-label="Plan name" />
+        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={plan.name} onChange={handleChange} placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label="Plan name" />
         <TextField
           fullWidth
           label={Locale.label("plans.planEdit.servDate")}
