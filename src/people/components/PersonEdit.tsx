@@ -117,10 +117,10 @@ export const PersonEdit = memo((props: Props) => {
           p.donorNumber = value;
           break;
         case "anniversary":
-          p.anniversary = value ? DateHelper.toDate(value) : null;
+          p.anniversary = value || null;  // Keep as YYYY-MM-DD string
           break;
         case "birthDate":
-          p.birthDate = value ? DateHelper.toDate(value) : null;
+          p.birthDate = value || null;  // Keep as YYYY-MM-DD string
           break;
         case "photo":
           p.photo = value;

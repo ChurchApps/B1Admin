@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const BatchEdit = memo((props: Props) => {
-  const [batch, setBatch] = React.useState<DonationBatchInterface>({ batchDate: new Date(), name: "" });
+  const [batch, setBatch] = React.useState<DonationBatchInterface>({ batchDate: DateHelper.formatHtml5Date(new Date()), name: "" });
 
   const handleCancel = useCallback(() => {
     props.updatedFunction();
@@ -51,8 +51,7 @@ export const BatchEdit = memo((props: Props) => {
           b.name = e.currentTarget.value;
           break;
         case "date":
-          b.batchDate = new Date(e.currentTarget.value + "T00:00:00");
-          if (isNaN(b.batchDate.getTime())) b.batchDate = null;
+          b.batchDate = e.currentTarget.value || null;  // Keep as YYYY-MM-DD string
           break;
       }
       setBatch(b);
@@ -61,10 +60,11 @@ export const BatchEdit = memo((props: Props) => {
   );
 
   const loadData = useCallback(() => {
-    if (UniqueIdHelper.isMissing(props.batchId)) setBatch({ batchDate: new Date(), name: "" });
+    if (UniqueIdHelper.isMissing(props.batchId)) setBatch({ batchDate: DateHelper.formatHtml5Date(new Date()), name: "" });
     else {
       ApiHelper.get("/donationbatches/" + props.batchId, "GivingApi").then((data) => {
-        if (data.batchDate) data.batchDate = new Date(data.batchDate.split("T")[0] + "T00:00:00");
+        // batchDate is now a YYYY-MM-DD string - normalize with formatHtml5Date
+        if (data.batchDate) data.batchDate = DateHelper.formatHtml5Date(data.batchDate);
         setBatch(data);
       });
     }

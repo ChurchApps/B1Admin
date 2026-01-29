@@ -33,7 +33,7 @@ export const DonationEdit = memo((props: Props) => {
           d.notes = value;
           break;
         case "date":
-          d.donationDate = new Date(value);
+          d.donationDate = value;  // Keep as YYYY-MM-DD string
           break;
         case "method":
           d.method = value;
@@ -83,7 +83,7 @@ export const DonationEdit = memo((props: Props) => {
   const loadData = useCallback(() => {
     if (UniqueIdHelper.isMissing(props.donationId)) {
       setDonation({
-        donationDate: new Date(),
+        donationDate: DateHelper.formatHtml5Date(new Date()),  // Initialize as YYYY-MM-DD string
         batchId: props.batchId,
         amount: 0,
         method: "Check",
@@ -98,7 +98,8 @@ export const DonationEdit = memo((props: Props) => {
 
   const populatePerson = useCallback(async (data: DonationInterface) => {
     if (!UniqueIdHelper.isMissing(data.personId)) data.person = await ApiHelper.get("/people/" + data.personId.toString(), "MembershipApi");
-    if (data.donationDate) data.donationDate = new Date(data.donationDate.split("T")[0] + "T00:00:00");
+    // donationDate is now a YYYY-MM-DD string - normalize it with formatHtml5Date
+    if (data.donationDate) data.donationDate = DateHelper.formatHtml5Date(data.donationDate);
     setDonation(data);
   }, []);
 
