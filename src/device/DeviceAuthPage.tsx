@@ -46,6 +46,7 @@ export const DeviceAuthPage: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState(false);
   const [step, setStep] = React.useState<"code" | "confirm">("code");
+  const [autoSubmitted, setAutoSubmitted] = React.useState(false);
 
   // If not authenticated, redirect to login with state for return
   if (!ApiHelper.isAuthenticated) {
@@ -54,20 +55,26 @@ export const DeviceAuthPage: React.FC = () => {
 
   const userChurches = context?.userChurches || [];
 
-  const handleCodeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Auto-submit if code is provided in query string
+  React.useEffect(() => {
+    const codeFromUrl = searchParams.get("code");
+    if (codeFromUrl && codeFromUrl.length >= 6 && !autoSubmitted && step === "code") {
+      setAutoSubmitted(true);
+      submitCode(codeFromUrl.replace(/-/g, "").toUpperCase().slice(0, 6));
+    }
+  }, [searchParams, autoSubmitted, step]);
+
+  const submitCode = async (code: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      // Normalize code (remove hyphens, uppercase)
-      const normalizedCode = userCode.replace(/-/g, "").toUpperCase();
-
-      const result = await ApiHelper.get(`/oauth/device/pending/${normalizedCode}`, "MembershipApi");
+      const result = await ApiHelper.get(`/oauth/device/pending/${code}`, "MembershipApi");
 
       if (result && !result.error) {
         setDeviceInfo(result);
         setStep("confirm");
+        // Auto-select church if only one
         if (userChurches.length === 1) {
           setSelectedChurchId(userChurches[0].church.id);
         }
@@ -79,6 +86,12 @@ export const DeviceAuthPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const normalizedCode = userCode.replace(/-/g, "").toUpperCase();
+    await submitCode(normalizedCode);
   };
 
   const handleApprove = async () => {
@@ -200,21 +213,27 @@ export const DeviceAuthPage: React.FC = () => {
                 </Typography>
               </Alert>
 
-              <FormControl fullWidth sx={{ mb: 2 }}>
-                <InputLabel id="church-select-label">Select Church</InputLabel>
-                <Select
-                  labelId="church-select-label"
-                  value={selectedChurchId}
-                  label="Select Church"
-                  onChange={(e) => setSelectedChurchId(e.target.value)}
-                >
-                  {userChurches.map((uc: LoginUserChurchInterface) => (
-                    <MenuItem key={uc.church.id} value={uc.church.id}>
-                      {uc.church.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              {userChurches.length > 1 ? (
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                  <InputLabel id="church-select-label">Select Church</InputLabel>
+                  <Select
+                    labelId="church-select-label"
+                    value={selectedChurchId}
+                    label="Select Church"
+                    onChange={(e) => setSelectedChurchId(e.target.value)}
+                  >
+                    {userChurches.map((uc: LoginUserChurchInterface) => (
+                      <MenuItem key={uc.church.id} value={uc.church.id}>
+                        {uc.church.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              ) : userChurches.length === 1 && (
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  <strong>Church:</strong> {userChurches[0].church.name}
+                </Typography>
+              )}
 
               <Box sx={{ mb: 2 }}>
                 <Typography variant="body2" fontWeight="bold">
