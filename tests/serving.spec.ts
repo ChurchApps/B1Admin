@@ -40,34 +40,68 @@ test.describe('Serving Management', () => {
       await expect(minName).toHaveCount(0);
     });
 
-    test('should manage ministry', async ({ page }) => {
-      const manageBtn = page.locator('[role="tab"]').getByText('Octavian Ministry');
+    test('should edit ministry', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavian Ministry');
+      await minBtn.click();
+      const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').first();
+      await editBtn.click();
+      await page.waitForTimeout(500);
+
+      const minName = page.locator('[name="name"]');
+      await minName.fill('Octavius Ministry');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedEdit = page.locator('p').getByText('Octavius Ministry');
+      await expect(verifiedEdit).toHaveCount(1);
+    });
+
+    test('should cancel editing ministry', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      await manageBtn.click();
+      await page.waitForTimeout(500);
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').first();
+      await editBtn.click();
+      await page.waitForTimeout(500);
+
+      const minName = page.locator('[name="name"]');
+      await page.waitForTimeout(500);
+      await expect(minName).toHaveCount(1);
+      const cancelBtn = page.locator('button').getByText('Cancel');
+      await cancelBtn.click();
+      await page.waitForTimeout(500);
+      await expect(minName).toHaveCount(0);
     });
 
     test('should add person to ministry', async ({ page }) => {
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const personSearch = page.locator('[name="personAddText"]');
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add');
+      page.waitForTimeout(500);
+      const addBtn = page.locator('button').getByText('Add').last();
       await addBtn.click();
-      const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
+      const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Dorothy Jackson');
       await expect(verifiedPerson).toHaveCount(1);
     });
 
     test('should advanced add person to ministry', async ({ page }) => {
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const advBtn = page.locator('button').getByText('Advanced');
       await advBtn.click();
@@ -84,15 +118,16 @@ test.describe('Serving Management', () => {
       await page.waitForTimeout(500);
       const addBtn = page.locator('button').getByText('Add');
       await addBtn.click();
-      const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
+      const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Grace Jackson');
       await expect(verifiedPerson).toHaveCount(1);
     });
 
     test('should promote person to ministry leader', async ({ page }) => {
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const promoteBtn = page.locator('button').getByText('key').first();
       await promoteBtn.click();
@@ -103,18 +138,19 @@ test.describe('Serving Management', () => {
     });
 
     test('should remove person from ministry', async ({ page }) => {
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
-      const removeBtn = page.locator('button').getByText('person_remove').last();
+      const removeBtn = page.locator('button').getByText('person_remove').first();
       await removeBtn.click();
-      const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
+      const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
       await expect(verifiedRemoved).toHaveCount(0);
     });
 
-    test('should edit ministry', async ({ page }) => {
+    /* test('should edit ministry', async ({ page }) => {
       const manageBtn = page.locator('a').getByText('Manage').nth(1);
       await manageBtn.click();
       await page.waitForTimeout(2000);
@@ -130,68 +166,48 @@ test.describe('Serving Management', () => {
       await page.waitForTimeout(500);
       const verifiedHeader = page.locator('p').getByText('Octavius Ministry');
       await expect(verifiedHeader).toHaveCount(1);
-    });
-
-    test('should cancel editing ministry', async ({ page }) => {
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
-
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
-      await editBtn.click();
-      const minName = page.locator('[name="name"]');
-      await page.waitForTimeout(500);
-      await expect(minName).toHaveCount(1);
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await page.waitForTimeout(500);
-      await expect(minName).toHaveCount(0);
-    });
+    }); */
 
     test('should create plan type', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const addBtn = page.locator('button').getByText('Create Plan Type');
       /* const secondaryAddBtn = page.locator('button').getByText('Add Plan Type');
       const eitherAddBtn = addBtn.or(secondaryAddBtn); */
       await addBtn.click();
       const typeName = page.locator('[type="text"]');
-      await typeName.fill('Octavian Type');
+      await typeName.fill('Octavian Plans');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       await page.waitForTimeout(500);
-      const verifiedType = page.locator('a').getByText('Octavian Type');
+      const verifiedType = page.locator('a').getByText('Octavian Plans');
       await expect(verifiedType).toHaveCount(1);
     });
 
     test('should edit plan type', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
+      await page.waitForTimeout(500);
 
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').last();
       await editBtn.click();
       const typeName = page.locator('[type="text"]');
-      await typeName.fill('Octavius Type');
+      await typeName.fill('Octavius Plans');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       await page.waitForTimeout(500);
-      const verifiedType = page.locator('a').getByText('Octavius Type');
+      const verifiedType = page.locator('a').getByText('Octavius Plans');
       await expect(verifiedType).toHaveCount(1);
     });
 
     test('should cancel editing plan type', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
+      await page.waitForTimeout(500);
 
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').last();
       await editBtn.click();
       const typeName = page.locator('[type="text"]');
       await expect(typeName).toHaveCount(1);
@@ -202,12 +218,13 @@ test.describe('Serving Management', () => {
     });
 
     test('should add service plan', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const plansBtn = page.locator('button').getByText('Plans').last();
-      await plansBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const addBtn = page.locator('[data-testid="add-plan-button"]');
       await addBtn.click();
@@ -223,12 +240,13 @@ test.describe('Serving Management', () => {
     });
 
     test('should edit service plan', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const plansBtn = page.locator('button').getByText('Plans').last();
-      await plansBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const editBtn = page.locator('button').getByText('Edit');
       await editBtn.click();
@@ -242,13 +260,13 @@ test.describe('Serving Management', () => {
     });
 
     test('should cancel editing service plan', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
       await page.waitForTimeout(500);
-      const plansBtn = page.locator('button').getByText('Plans').last();
-      await plansBtn.click();
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const editBtn = page.locator('button').getByText('Edit');
       await editBtn.click();
@@ -261,12 +279,13 @@ test.describe('Serving Management', () => {
     });
 
     test('should delete service plan', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const plansBtn = page.locator('button').getByText('Plans').last();
-      await plansBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const editBtn = page.locator('button').getByText('Edit');
       await editBtn.click();
@@ -277,59 +296,115 @@ test.describe('Serving Management', () => {
       await expect(verifiedPlan).toHaveCount(0);
     });
 
-    test('should add team', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+    test('should add lesson plan', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(500);
+
+      const arrowBtn = page.locator('[d="m7 10 5 5 5-5z"]');
+      await arrowBtn.click();
+      const lessonBtn = page.locator('li').getByText('Schedule Lesson');
+      await lessonBtn.click();
+      await page.waitForTimeout(2500);
+      const date = page.locator('[type="date"]');
+      await date.fill('2025-03-01');
+      await page.waitForTimeout(1000);
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(1000);
+      const verifiedPlan = page.locator('a').getByText('Mar 1, 2025');
+      await expect(verifiedPlan).toHaveCount(1);
+    });
+
+    test('should edit lesson plan', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').last();
+      await editBtn.click();
+      const date = page.locator('[id="name"]');
+      await date.fill('Octavian Lesson');
+      await page.waitForTimeout(500);
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedEdit = page.locator('a').getByText('Octavian Lesson');
+      await expect(verifiedEdit).toHaveCount(1);
+    });
+
+    test('should add team', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
 
       const addBtn = page.locator('[data-testid="add-team-button"]');
       await addBtn.click();
       const teamName = page.locator('[name="name"]');
       await teamName.fill('Octavian Team');
-      const saveBtn = page.locator('button').getByText('Add');
+      const saveBtn = page.locator('button').getByText('Add').last();
       await saveBtn.click();
       await page.waitForTimeout(500);
       const verifiedTeam = page.locator('a').getByText('Octavian Team');
       await expect(verifiedTeam).toHaveCount(1);
     });
 
-    test('should add person to team', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+    test('should edit team', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
-      const manageBtn = page.locator('a').getByText('Octavian Team');
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(500);
+      const teamBtn = page.locator('a').getByText('Octavian Team');
+      await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
+      await editBtn.click();
+
+      const teamName = page.locator('[name="name"]');
+      await teamName.fill('Octavius Team');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedHeader = page.locator('p').getByText('Octavius Team');
+      await expect(verifiedHeader).toHaveCount(1);
+    });
+
+    test('should add person to team', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const teamBtn = page.locator('a').getByText('Octavius Team');
+      await teamBtn.click()
+      await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const personSearch = page.locator('[name="personAddText"]');
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
       await page.waitForTimeout(2000);
-      const addBtn = page.locator('button').getByText('Add');
+      const addBtn = page.locator('button').getByText('Add').last();
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
       await expect(verifiedPerson).toHaveCount(1);
     });
 
     test('should advanced add person to team', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
-      const manageBtn = page.locator('a').getByText('Octavian Team');
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(500);
+      const teamBtn = page.locator('a').getByText('Octavius Team');
+      await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const advBtn = page.locator('button').getByText('Advanced');
       await advBtn.click();
@@ -350,17 +425,397 @@ test.describe('Serving Management', () => {
       await expect(verifiedPerson).toHaveCount(1);
     });
 
-    test('should promote person to team leader', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+    test('should add position to lesson', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
-      const manageBtn = page.locator('a').getByText('Octavian Team');
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+
+      const addBtn = page.locator('[data-testid="add-position-button"]');
+      await addBtn.click();
+      const name = page.locator('[name="name"]');
+      await name.fill('Octavian Assignment');
+      const volunteerGroup = page.locator('[role="combobox"]').last();
+      await volunteerGroup.click();
+      const octaviusTeam = page.locator('li').getByText('Octavius Team');
+      await octaviusTeam.click();
+      const saveBtn = page.locator('button').getByText('Save').last();
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedPosition = page.locator('td button').getByText('Octavian Assignment');
+      await expect(verifiedPosition).toHaveCount(1);
+    });
+
+    test('should edit lesson position', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+
+      const assignment = page.locator('td button').getByText('Octavian Assignment');
+      await assignment.click();
+      const name = page.locator('[name="name"]');
+      await name.fill('Octavius Assignment');
+      const saveBtn = page.locator('button').getByText('Save').last();
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedEdit = page.locator('td button').getByText('Octavius Assignment');
+      await expect(verifiedEdit).toHaveCount(1);
+    });
+
+    test('should assign person to lesson position', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+
+      const assignment = page.locator('td button').getByText('1 Person Needed');
+      await assignment.click();
+      const person = page.locator('td button').getByText('Dorothy Jackson');
+      await person.click();
+      await page.waitForTimeout(500);
+      const verifiedAddition = page.locator('td button').getByText('Dorothy Jackson');
+      await expect(verifiedAddition).toHaveCount(1);
+    });
+
+    test('should add time to lesson', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+
+      const addBtn = page.locator('[data-testid="add-time-button"]');
+      await addBtn.click();
+      const name = page.locator('[name="displayName"]');
+      await name.fill('Octavian Service');
+      const team = page.locator('[type="checkbox"]');
+      await team.click();
+      const saveBtn = page.locator('button').getByText('Save').last();
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedTime = page.locator('td button').getByText('Octavian Service');
+      await expect(verifiedTime).toHaveCount(1);
+    });
+
+    test('should edit lesson time', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+
+      const time = page.locator('td button').getByText('Octavian Service');
+      await time.click();
+      const name = page.locator('[name="displayName"]');
+      await name.fill('Octavius Service');
+      const saveBtn = page.locator('button').getByText('Save').last();
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedEdit = page.locator('td button').getByText('Octavius Service');
+      await expect(verifiedEdit).toHaveCount(1);
+    });
+
+    test('should delete lesson time', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+
+      const time = page.locator('td button').getByText('Octavius Service');
+      await time.click();
+      await page.waitForTimeout(500);
+      const deleteBtn = page.locator('button').getByText('Delete');
+      await deleteBtn.click();
+      await page.waitForTimeout(500);
+      await expect(time).toHaveCount(0);
+    });
+
+    test('should delete lesson position', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+
+      const assignment = page.locator('td button').getByText('Octavius Assignment');
+      await assignment.click();
+      await page.waitForTimeout(500);
+      const deleteBtn = page.locator('button').getByText('Delete');
+      await deleteBtn.click();
+      await page.waitForTimeout(500);
+      await expect(assignment).toHaveCount(0);
+    });
+
+    test('should add section to service order', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const addBtn = page.locator('button').getByText('Add Section');
+      await addBtn.click();
+      const name = page.locator('[id="label"]');
+      await name.fill('Octavian Section');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedSection = page.locator('div span').getByText('Octavian Section');
+      await expect(verifiedSection).toHaveCount(1);
+    });
+
+    test('should edit service order section', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const editBtn = page.locator('button span').getByText('edit').last();
+      await editBtn.click();
+      const name = page.locator('[id="label"]');
+      await name.fill('Octavius Section');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedSection = page.locator('div span').getByText('Octavius Section');
+      await expect(verifiedSection).toHaveCount(1);
+    });
+
+    test('should add song to service order', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const addBtn = page.locator('button span').getByText('add').last();
+      await addBtn.click();
+      const song = page.locator('li').getByText('Song');
+      await song.click();
+      const searchBar = page.locator('[name="searchText"]');
+      await searchBar.fill('Amazing');
+      const searchBtn = page.locator('[data-testid="song-search-button"]');
+      await searchBtn.click();
+      const keySelect = page.locator('button').getByText('Traditional');
+      await keySelect.click();
+      await page.waitForTimeout(500);
+      const verifiedSong = page.locator('div a').getByText('Amazing Grace');
+      await expect(verifiedSong).toHaveCount(1);
+    });
+
+    test('should add item to service order', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const addBtn = page.locator('button span').getByText('add').last();
+      await addBtn.click();
+      const item = page.locator('li').getByText('Item');
+      await item.click();
+      const name = page.locator('[name="label"]');
+      await name.fill('Octavian Item');
+      const minutes = page.locator('[name="minutes"]');
+      await minutes.fill('5');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedItem = page.locator('div').getByText('Octavian Item');
+      await expect(verifiedItem).toHaveCount(1);
+    });
+
+    test('should edit service order item', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const editBtn = page.locator('button span').getByText('edit').last();
+      await editBtn.click();
+      const name = page.locator('[name="label"]');
+      await name.fill('Octavius Item');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedEdit = page.locator('div').getByText('Octavius Item');
+      await expect(verifiedEdit).toHaveCount(1);
+    });
+
+    test('should add lesson action to service order', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const addBtn = page.locator('button span').getByText('add').last();
+      await addBtn.click();
+      const action = page.locator('li').getByText('Lesson Action');
+      await action.click();
+      await page.waitForTimeout(500);
+      const selectBtn = page.locator('button').getByText('Select Action');
+      await selectBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedAction = page.locator('div a').getByText('Test JPEG');
+      await expect(verifiedAction).toHaveCount(1);
+    });
+
+    test('should add add-on to service order', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const addBtn = page.locator('button span').getByText('add').last();
+      await addBtn.click();
+      const addition = page.locator('li').getByText('Add-On');
+      await addition.click();
+      const category = page.locator('[role="combobox"]');
+      await category.click();
+      const scriptureSong = page.locator('li').getByText('scripture song');
+      await scriptureSong.click();
+      const starTrek = page.locator('p').getByText('First Add On');
+      await starTrek.click();
+      const selectBtn = page.locator('button').getByText('Select Add-On');
+      await selectBtn.click()
+      await page.waitForTimeout(500);
+      const verifiedAddition = page.locator('div a').getByText('First Add On');
+      await expect(verifiedAddition).toHaveCount(1);
+    });
+
+    test('should delete add-on from service order', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+      const lesson = page.locator('a').getByText('Octavian Lesson');
+      await lesson.click();
+      await page.waitForTimeout(500);
+      const servOrder = page.locator('[role="tab"]').getByText('Service Order');
+      await servOrder.click();
+      await page.waitForTimeout(500);
+
+      const editBtn = page.locator('button span').getByText('edit').last();
+      await editBtn.click();
+      await page.waitForTimeout(500);
+      const deleteBtn = page.locator('button').getByText('Delete');
+      await deleteBtn.click();
+      await page.waitForTimeout(500);
+      const verifiedDeletion = page.locator('div a').getByText('First Add On');
+      await expect(verifiedDeletion).toHaveCount(0);
+    });
+
+    test('should promote person to team leader', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const teamBtn = page.locator('a').getByText('Octavius Team');
+      await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const promoteBtn = page.locator('button').getByText('key').first();
       await promoteBtn.click();
@@ -371,44 +826,18 @@ test.describe('Serving Management', () => {
     });
 
     test('should remove person from team', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
-      const manageBtn = page.locator('a').getByText('Octavian Team');
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(500);
+      const teamBtn = page.locator('a').getByText('Octavius Team');
+      await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
+      await page.waitForTimeout(500);
 
       const removeBtn = page.locator('button').getByText('person_remove').last();
       await removeBtn.click();
       const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
       await expect(verifiedRemoved).toHaveCount(0);
-    });
-
-    test('should edit team', async ({ page }) => {
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
-      await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
-      const manageBtn = page.locator('a').getByText('Octavian Team');
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
-
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
-      await editBtn.click();
-      const teamName = page.locator('[name="name"]');
-      await teamName.fill('Octavius Team');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      await page.waitForTimeout(500);
-      const verifiedHeader = page.locator('p').getByText('Octavius Team');
-      await expect(verifiedHeader).toHaveCount(1);
     });
 
     test('should delete team', async ({ page }) => {
@@ -418,24 +847,39 @@ test.describe('Serving Management', () => {
         await dialog.accept();
       });
 
-      const minBtn = page.locator('a').getByText('Octavius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/plans\/ministries\/[^/]+/);
-      const teamsBtn = page.locator('button').getByText('Teams');
-      await teamsBtn.click();
-      const manageBtn = page.locator('a').getByText('Octavius Team');
-      await manageBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(500);
+      const teamBtn = page.locator('a').getByText('Octavius Team');
+      await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
-
+      await page.waitForTimeout(500);
       const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
       await editBtn.click();
+
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
       await page.waitForTimeout(500);
       const verifiedRemoved = page.locator('table a').getByText('Octavius Team');
       await expect(verifiedRemoved).toHaveCount(0);
+    });
+
+    test('should delete lesson plan', async ({ page }) => {
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      await page.waitForTimeout(500);
+      const plansBtn = page.locator('a').getByText('Octavius Plans');
+      await plansBtn.click()
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      await page.waitForTimeout(1000);
+
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').last();
+      await editBtn.click();
+      await page.waitForTimeout(500);
+      const deleteBtn = page.locator('[id="delete"]');
+      await deleteBtn.click();
+      const verifiedEdit = page.locator('a').getByText('Octavian Lesson');
+      await expect(verifiedEdit).toHaveCount(0);
     });
 
     test('should delete ministry', async ({ page }) => {
@@ -445,13 +889,15 @@ test.describe('Serving Management', () => {
         await dialog.accept();
       });
 
-      const manageBtn = page.locator('a').getByText('Manage').nth(1);
+      const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
+      await minBtn.click();
+      const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      await page.waitForTimeout(2000);
-      await expect(page).toHaveURL(/\/groups\/[^/]+/);
-
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]');
+      await page.waitForTimeout(500);
+      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').first();
       await editBtn.click();
+      await page.waitForTimeout(500);
+
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
       await page.waitForTimeout(500);

@@ -190,6 +190,7 @@ test.describe('Website Management', () => {
     test('should edit block content', async ({ page }) => {
       const editBtn = page.locator('td a').getByText('Edit').nth(6);
       await editBtn.click();
+      page.waitForTimeout(500);
       const addBtn = page.locator('button').getByText('add');
       await addBtn.click();
       await page.waitForTimeout(500);
