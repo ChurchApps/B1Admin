@@ -1,56 +1,32 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Stack,
-  Typography,
-  Avatar,
-  Alert,
-  Link,
-} from "@mui/material";
-import {
-  Link as LinkIcon,
-  LinkOff as LinkOffIcon,
-  Refresh as RefreshIcon,
-  ContentCopy as ContentCopyIcon,
-  Check as CheckIcon,
-} from "@mui/icons-material";
+import { Box, Button, Card, CardContent, CircularProgress, IconButton, Stack, Typography, Avatar } from "@mui/material";
+import { Link as LinkIcon, LinkOff as LinkOffIcon, Refresh as RefreshIcon, Add as AddIcon } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
 import { Locale } from "@churchapps/apphelper";
-import {
-  getProvider,
-  getAvailableProviders,
-  type ContentProvider,
-  type ContentProviderAuthData,
-  type DeviceAuthorizationResponse,
-} from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type ContentProvider, type DeviceAuthorizationResponse } from "@churchapps/content-provider-helper";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
+import { ProviderSelectorModal } from "./ProviderSelectorModal";
+import { AuthFlowDialog, type AuthStatus } from "./AuthFlowDialog";
 
 interface Props {
   ministryId: string;
   onAuthChange?: () => void;
 }
 
-type AuthStatus = "idle" | "loading" | "device_flow" | "pkce_waiting" | "success" | "error";
-
 export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuthChange }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showProviderSelector, setShowProviderSelector] = useState(false);
 
   // Auth flow state
   const [authProviderId, setAuthProviderId] = useState<string | null>(null);
   const [authStatus, setAuthStatus] = useState<AuthStatus>("idle");
   const [deviceFlowData, setDeviceFlowData] = useState<DeviceAuthorizationResponse | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
 
   // PKCE state
   const [codeVerifier, setCodeVerifier] = useState<string | null>(null);
@@ -58,10 +34,16 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
   const availableProviders = useMemo(() => getAvailableProviders(), []);
 
-  // Get providers that require auth
+  // Get implemented providers
   const authProviders = useMemo(() => {
-    return availableProviders.filter(p => p.requiresAuth && p.implemented);
+    return availableProviders.filter(p => p.implemented);
   }, [availableProviders]);
+
+  // Providers not yet linked (for modal)
+  const unlinkableProviders = useMemo(() => {
+    const linkedIds = new Set(linkedProviders.map(lp => lp.providerId));
+    return authProviders.filter(p => !linkedIds.has(p.id));
+  }, [authProviders, linkedProviders]);
 
   const loadLinkedProviders = useCallback(async () => {
     if (!ministryId) {
@@ -84,11 +66,6 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   useEffect(() => {
     loadLinkedProviders();
   }, [loadLinkedProviders]);
-
-  // Check if a provider is linked
-  const isProviderLinked = useCallback((providerId: string): boolean => {
-    return linkedProviders.some(lp => lp.providerId === providerId);
-  }, [linkedProviders]);
 
   // Get linked auth record for a provider
   const getLinkedAuth = useCallback((providerId: string): ContentProviderAuthInterface | undefined => {
@@ -300,9 +277,38 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   }, [ministryId, loadLinkedProviders, onAuthChange, authStatus]);
 
   // Handle link button click
-  const handleLink = useCallback((providerId: string) => {
+  const handleLink = useCallback(async (providerId: string) => {
+    const providerInfo = availableProviders.find(p => p.id === providerId);
+    if (!providerInfo) return;
+
+    // For providers that don't require auth, just store a record with placeholder values
+    if (!providerInfo.requiresAuth) {
+      setShowProviderSelector(false);
+      try {
+        const now = Math.floor(Date.now() / 1000);
+        console.log("Storing auth for public API provider:", providerId);
+        await ContentProviderAuthHelper.storeAuth(ministryId, providerId, {
+          access_token: "public_api",
+          refresh_token: "",
+          token_type: "none",
+          created_at: now,
+          expires_in: 60 * 60 * 24 * 365 * 10, // 10 years
+          scope: ""
+        });
+        console.log("Auth stored, reloading linked providers");
+        await loadLinkedProviders();
+        console.log("Linked providers reloaded:", linkedProviders);
+        if (onAuthChange) onAuthChange();
+      } catch (error) {
+        console.error("Error linking provider:", error);
+      }
+      return;
+    }
+
     const provider = getProvider(providerId);
     if (!provider) return;
+
+    setShowProviderSelector(false);
 
     // Prefer device flow if supported
     if (provider.supportsDeviceFlow()) {
@@ -310,16 +316,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
     } else {
       startPKCEFlow(providerId);
     }
-  }, [startDeviceFlow, startPKCEFlow]);
-
-  // Copy user code to clipboard
-  const handleCopyCode = useCallback(() => {
-    if (deviceFlowData?.user_code) {
-      navigator.clipboard.writeText(deviceFlowData.user_code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  }, [deviceFlowData]);
+  }, [availableProviders, ministryId, loadLinkedProviders, onAuthChange, startDeviceFlow, startPKCEFlow]);
 
   // Close auth dialog
   const handleCloseDialog = useCallback(() => {
@@ -337,7 +334,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   // Get current provider being authenticated
   const currentProvider = useMemo(() => {
     if (!authProviderId) return null;
-    return availableProviders.find(p => p.id === authProviderId);
+    return availableProviders.find(p => p.id === authProviderId) || null;
   }, [authProviderId, availableProviders]);
 
   if (loading) {
@@ -358,203 +355,103 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        {Locale.label("plans.contentProviderAuth.title") || "Content Provider Accounts"}
-      </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        {Locale.label("plans.contentProviderAuth.description") || "Link your content provider accounts to access their content in your service plans."}
-      </Typography>
-
-      <Stack spacing={2}>
-        {authProviders.map((providerInfo) => {
-          const isLinked = isProviderLinked(providerInfo.id);
-          const linkedAuth = getLinkedAuth(providerInfo.id);
-
-          return (
-            <Card key={providerInfo.id} variant="outlined">
-              <CardContent>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                  <Avatar
-                    src={providerInfo.logo}
-                    alt={providerInfo.name}
-                    sx={{ width: 48, height: 48 }}
-                  >
-                    {providerInfo.name.charAt(0)}
-                  </Avatar>
-
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="subtitle1" fontWeight={600}>
-                      {providerInfo.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {isLinked
-                        ? Locale.label("plans.contentProviderAuth.linked") || "Account linked"
-                        : Locale.label("plans.contentProviderAuth.notLinked") || "Not linked"}
-                    </Typography>
-                    {isLinked && linkedAuth?.expiresAt && (
-                      <Typography variant="caption" color="text.secondary">
-                        {new Date(linkedAuth.expiresAt) > new Date()
-                          ? `Expires: ${new Date(linkedAuth.expiresAt).toLocaleDateString()}`
-                          : "Token expired - please re-link"}
-                      </Typography>
-                    )}
-                  </Box>
-
-                  <Stack direction="row" spacing={1}>
-                    {isLinked ? (
-                      <>
-                        <IconButton
-                          onClick={() => handleLink(providerInfo.id)}
-                          title={Locale.label("plans.contentProviderAuth.refresh") || "Refresh"}
-                          size="small"
-                        >
-                          <RefreshIcon />
-                        </IconButton>
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          size="small"
-                          startIcon={<LinkOffIcon />}
-                          onClick={() => handleUnlink(providerInfo.id)}
-                        >
-                          {Locale.label("plans.contentProviderAuth.unlink") || "Unlink"}
-                        </Button>
-                      </>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        size="small"
-                        startIcon={<LinkIcon />}
-                        onClick={() => handleLink(providerInfo.id)}
-                      >
-                        {Locale.label("plans.contentProviderAuth.link") || "Link Account"}
-                      </Button>
-                    )}
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </Card>
-          );
-        })}
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+        <Typography variant="h6">
+          {Locale.label("plans.contentProviderAuth.title") || "Content Provider Accounts"}
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => setShowProviderSelector(true)}
+        >
+          {Locale.label("plans.contentProviderAuth.linkNew") || "Link New Provider"}
+        </Button>
       </Stack>
 
-      {/* Auth Dialog */}
-      <Dialog
+
+      {linkedProviders.length === 0 ? (
+        <Card variant="outlined" sx={{ p: 4, textAlign: "center" }}>
+          <LinkIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
+          <Typography variant="body2" color="text.secondary">
+            {Locale.label("plans.contentProviderAuth.noLinkedDescription") || "Link a content provider to access their content in your service plans."}
+          </Typography>
+        </Card>
+      ) : (
+        <Stack spacing={2}>
+          {linkedProviders.map((linkedAuth) => {
+            const providerInfo = availableProviders.find(p => p.id === linkedAuth.providerId);
+            if (!providerInfo) return null;
+
+            return (
+              <Card key={linkedAuth.id} variant="outlined">
+                <CardContent>
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <Avatar
+                      src={isDark ? providerInfo.logos?.dark : providerInfo.logos?.light}
+                      alt={providerInfo.name}
+                      sx={{ width: 48, height: 48 }}
+                    >
+                      {providerInfo.name.charAt(0)}
+                    </Avatar>
+
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography variant="subtitle1" fontWeight={600}>
+                        {providerInfo.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {Locale.label("plans.contentProviderAuth.linked") || "Account linked"}
+                      </Typography>
+                      {linkedAuth?.expiresAt && (
+                        <Typography variant="caption" color="text.secondary">
+                          {new Date(linkedAuth.expiresAt) > new Date()
+                            ? `Expires: ${new Date(linkedAuth.expiresAt).toLocaleDateString()}`
+                            : "Token expired - please re-link"}
+                        </Typography>
+                      )}
+                    </Box>
+
+                    <Stack direction="row" spacing={1}>
+                      <IconButton
+                        onClick={() => handleLink(providerInfo.id)}
+                        title={Locale.label("plans.contentProviderAuth.refresh") || "Refresh"}
+                        size="small"
+                      >
+                        <RefreshIcon />
+                      </IconButton>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        startIcon={<LinkOffIcon />}
+                        onClick={() => handleUnlink(providerInfo.id)}
+                      >
+                        {Locale.label("plans.contentProviderAuth.unlink") || "Unlink"}
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </Stack>
+      )}
+
+      <ProviderSelectorModal
+        open={showProviderSelector}
+        onClose={() => setShowProviderSelector(false)}
+        providers={unlinkableProviders}
+        onSelectProvider={handleLink}
+      />
+
+      <AuthFlowDialog
         open={!!authProviderId}
-        onClose={authStatus === "loading" ? undefined : handleCloseDialog}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>
-          <Stack direction="row" alignItems="center" spacing={2}>
-            {currentProvider?.logo && (
-              <Avatar src={currentProvider.logo} sx={{ width: 32, height: 32 }} />
-            )}
-            <span>
-              {Locale.label("plans.contentProviderAuth.linkAccount") || "Link"} {currentProvider?.name}
-            </span>
-          </Stack>
-        </DialogTitle>
-        <DialogContent>
-          {authStatus === "loading" && (
-            <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
-              <CircularProgress />
-            </Box>
-          )}
-
-          {authStatus === "device_flow" && deviceFlowData && (
-            <Stack spacing={3} sx={{ py: 2 }}>
-              <Typography>
-                {Locale.label("plans.contentProviderAuth.deviceFlowInstructions") ||
-                  "To link your account, visit the URL below and enter the code:"}
-              </Typography>
-
-              <Box sx={{ textAlign: "center" }}>
-                <Link
-                  href={deviceFlowData.verification_uri_complete || deviceFlowData.verification_uri}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{ fontSize: "1.1rem" }}
-                >
-                  {deviceFlowData.verification_uri}
-                </Link>
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 1,
-                  p: 2,
-                  bgcolor: "grey.100",
-                  borderRadius: 2,
-                }}
-              >
-                <Typography variant="h4" fontFamily="monospace" fontWeight={700}>
-                  {deviceFlowData.user_code}
-                </Typography>
-                <IconButton onClick={handleCopyCode} size="small">
-                  {copied ? <CheckIcon color="success" /> : <ContentCopyIcon />}
-                </IconButton>
-              </Box>
-
-              <Alert severity="info">
-                {Locale.label("plans.contentProviderAuth.waitingForAuth") ||
-                  "Waiting for you to authorize... This page will update automatically."}
-              </Alert>
-            </Stack>
-          )}
-
-          {authStatus === "pkce_waiting" && (
-            <Stack spacing={3} sx={{ py: 2 }}>
-              <Typography>
-                {Locale.label("plans.contentProviderAuth.pkceInstructions") ||
-                  "Complete the sign-in in the popup window."}
-              </Typography>
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <CircularProgress />
-              </Box>
-              <Alert severity="info">
-                {Locale.label("plans.contentProviderAuth.pkceWaiting") ||
-                  "Waiting for authorization... If the popup doesn't appear, please allow popups for this site."}
-              </Alert>
-            </Stack>
-          )}
-
-          {authStatus === "success" && (
-            <Stack spacing={2} sx={{ py: 2, textAlign: "center" }}>
-              <CheckIcon sx={{ fontSize: 64, color: "success.main", mx: "auto" }} />
-              <Typography variant="h6" color="success.main">
-                {Locale.label("plans.contentProviderAuth.success") || "Account linked successfully!"}
-              </Typography>
-            </Stack>
-          )}
-
-          {authStatus === "error" && (
-            <Stack spacing={2} sx={{ py: 2 }}>
-              <Alert severity="error">
-                {authError || Locale.label("plans.contentProviderAuth.errorGeneric") || "An error occurred during authentication."}
-              </Alert>
-            </Stack>
-          )}
-        </DialogContent>
-        <DialogActions>
-          {authStatus === "error" && (
-            <Button onClick={() => handleLink(authProviderId!)} color="primary">
-              {Locale.label("common.tryAgain") || "Try Again"}
-            </Button>
-          )}
-          <Button
-            onClick={handleCloseDialog}
-            disabled={authStatus === "loading"}
-          >
-            {authStatus === "success"
-              ? Locale.label("common.close") || "Close"
-              : Locale.label("common.cancel") || "Cancel"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        onClose={handleCloseDialog}
+        provider={currentProvider}
+        authStatus={authStatus}
+        deviceFlowData={deviceFlowData}
+        authError={authError}
+        onTryAgain={() => handleLink(authProviderId!)}
+      />
     </Box>
   );
 };
