@@ -34,6 +34,7 @@ function createVenueFolder(venueId: string): ContentFolder {
     type: "folder",
     id: venueId,
     title: "",
+    isLeaf: true,
     providerData: { level: "playlist", venueId }
   };
 }

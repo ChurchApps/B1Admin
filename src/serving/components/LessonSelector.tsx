@@ -64,9 +64,9 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   const [selectedProvider, setSelectedProvider] = useState<ExternalProviderInterface | null>(null);
   const [externalTree, setExternalTree] = useState<any>(null);
 
-  // Check if a folder is a venue (final level)
+  // Check if a folder is the final level (provider sets isLeaf: true)
   const isVenueFolder = useCallback((folder: ContentFolder): boolean => {
-    return folder.providerData?.level === "playlist" || !!folder.providerData?.venueId;
+    return !!folder.isLeaf;
   }, []);
 
   // Load content for a given folder (or root if null)
@@ -88,8 +88,11 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
           auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
         }
         // Use provider.browse() with auth
+        console.log('[LessonSelector.loadContent] calling browse with folder:', folder ? { id: folder.id, title: folder.title, level: folder.providerData?.level, isLeaf: folder.isLeaf } : null);
         const items = await provider.browse(folder, auth);
+        console.log('[LessonSelector.loadContent] browse returned items:', items.map(i => ({ id: i.id, title: i.title, type: i.type, isLeaf: (i as ContentFolder).isLeaf })));
         const folders = items.filter((item): item is ContentFolder => item.type === "folder");
+        console.log('[LessonSelector.loadContent] filtered folders:', folders.length);
         setCurrentItems(folders);
       }
     } catch (error) {
@@ -155,6 +158,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
               type: "folder" as const,
               id: v.id,
               title: v.name,
+              isLeaf: true,
               providerData: { level: "playlist", venueId: v.id, lessonId: folder.id, studyId: study.id, programId: program.id }
             }));
           }
@@ -167,6 +171,8 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
 
   // Handle folder click - either navigate into it or select it (if venue)
   const handleFolderClick = useCallback((folder: ContentFolder) => {
+    console.log('[LessonSelector.handleFolderClick] folder:', { id: folder.id, title: folder.title, level: folder.providerData?.level, isLeaf: folder.isLeaf });
+    console.log('[LessonSelector.handleFolderClick] isVenueFolder:', isVenueFolder(folder));
     if (isVenueFolder(folder)) {
       // This is a venue - select it
       setSelectedVenue(folder);

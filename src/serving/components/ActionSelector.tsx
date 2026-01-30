@@ -45,6 +45,7 @@ function createVenueFolder(venueId: string): ContentFolder {
     type: "folder",
     id: venueId,
     title: "",
+    isLeaf: true,
     providerData: { level: "playlist", venueId }
   };
 }
@@ -314,7 +315,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     // Only treat as venue if provider supports instructions - otherwise continue browsing
     if (!capabilities.instructions && !capabilities.expandedInstructions) return false;
 
-    return folder.providerData?.level === "playlist" || !!folder.providerData?.venueId;
+    return !!folder.isLeaf;
   }, [selectedProviderId]);
 
   // Load content for browse mode

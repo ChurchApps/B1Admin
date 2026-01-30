@@ -270,10 +270,8 @@
     react-to-print "^3.1.1"
     slug "^11.0.0"
 
-"@churchapps/content-provider-helper@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@churchapps/content-provider-helper/-/content-provider-helper-0.0.1.tgz#e376310948aacee3a15053f8ab15a6f59bdf780e"
-  integrity sha512-X/t0uSuiihw9yqSSFAgqwB0PkRcub9vUTMzyF+Rsm3p20NE2tXjgceeZ4Shrd33dS//hQk+G2tfF5rvBnwVU4g==
+"@churchapps/content-provider-helper@file:../ContentProviderHelper":
+  version "0.0.2"
 
 "@churchapps/helpers@^1.2.19", "@churchapps/helpers@^1.2.4":
   version "1.2.22"
