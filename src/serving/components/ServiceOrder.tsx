@@ -32,11 +32,12 @@ function createVenueFolder(venueId: string): ContentFolder {
 
 // Helper to convert InstructionItem to PlanItemInterface
 function instructionToPlanItem(item: InstructionItem, providerId?: string): PlanItemInterface {
-  // Map legacy lesson types to generic provider types
+  // Map lesson types and new short types to generic provider types
   let itemType = item.itemType || "item";
-  if (itemType === "lessonSection") itemType = "providerSection";
-  else if (itemType === "lessonAction") itemType = "providerPresentation";
-  else if (itemType === "lessonAddOn") itemType = "providerFile";
+  if (itemType === "lessonSection" || itemType === "section") itemType = "providerSection";
+  else if (itemType === "lessonAction" || itemType === "action") itemType = "providerPresentation";
+  else if (itemType === "lessonAddOn" || itemType === "addon") itemType = "providerFile";
+  else if (itemType === "file") itemType = "providerFile";
 
   return {
     itemType,
@@ -283,7 +284,10 @@ export const ServiceOrder = memo((props: Props) => {
       if (!contentId) return;
 
       const contentFolder = createVenueFolder(contentId);
+      console.log("DEBUG loadVenueName - contentFolder being passed:", JSON.stringify(contentFolder, null, 2));
       const instructions = await provider.getInstructions(contentFolder);
+      console.log("DEBUG loadVenueName - provider:", provider.id, "contentId:", contentId);
+      console.log("DEBUG loadVenueName - instructions response:", JSON.stringify(instructions, null, 2));
       if (instructions?.venueName) setVenueName(instructions.venueName);
     } catch (error) {
       console.error("Error loading venue name:", error);
@@ -300,7 +304,10 @@ export const ServiceOrder = memo((props: Props) => {
         }
 
         const contentFolder = createVenueFolder(contentId);
+        console.log("DEBUG loadPreviewLessonItems - contentFolder being passed:", JSON.stringify(contentFolder, null, 2));
         const instructions = await provider.getInstructions(contentFolder);
+        console.log("DEBUG loadPreviewLessonItems - provider:", provider.id, "contentId:", contentId);
+        console.log("DEBUG loadPreviewLessonItems - instructions response:", JSON.stringify(instructions, null, 2));
         const currentProviderId = props.plan?.providerId || "lessonschurch";
 
         if (instructions?.items) {
