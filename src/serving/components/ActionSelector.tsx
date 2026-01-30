@@ -311,7 +311,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     const browseProvider = getProvider(selectedProviderId);
     if (!browseProvider) return false;
 
-    const capabilities = browseProvider.getCapabilities();
+    const capabilities = browseProvider.capabilities;
     // Only treat as venue if provider supports instructions - otherwise continue browsing
     if (!capabilities.instructions && !capabilities.expandedInstructions) return false;
 

@@ -84,7 +84,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       } else {
         // Get auth for providers that require it
         let auth = null;
-        if (provider.requiresAuth() && ministryId) {
+        if (provider.requiresAuth && ministryId) {
           auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
         }
         // Use provider.browse() with auth
