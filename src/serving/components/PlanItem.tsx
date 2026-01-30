@@ -564,9 +564,8 @@ export const PlanItem = React.memo((props: Props) => {
           open={showActionSelector}
           onClose={() => setShowActionSelector(false)}
           onSelect={handleActionSelected}
-          venueId={props.associatedVenueId}
+          contentPath={props.associatedVenueId}
           providerId={props.associatedProviderId || "lessonschurch"}
-          externalRef={props.externalRef}
           ministryId={props.ministryId}
         />
       )}
