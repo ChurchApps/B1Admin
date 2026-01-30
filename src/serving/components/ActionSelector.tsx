@@ -37,50 +37,56 @@ interface Props {
 }
 
 // Helper to get instructions from provider based on its capabilities
+// Prefer expandedInstructions for the full nested structure (sections → actions → files)
 async function getProviderInstructions(provider: IProvider, path: string, auth?: any): Promise<Instructions | null> {
   const capabilities = provider.capabilities;
-  if (capabilities.instructions && provider.getInstructions) {
-    return provider.getInstructions(path, auth);
-  }
+  // Prefer expandedInstructions for full hierarchy
   if (capabilities.expandedInstructions && provider.getExpandedInstructions) {
     return provider.getExpandedInstructions(path, auth);
+  }
+  // Fall back to regular instructions
+  if (capabilities.instructions && provider.getInstructions) {
+    return provider.getInstructions(path, auth);
   }
   return null;
 }
 
 // Extract sections from instructions that contain actions
 function extractSections(instructions: Instructions): InstructionItem[] {
-  let sectionItems: InstructionItem[] = [];
+  const sections: InstructionItem[] = [];
 
-  // Structure: items (headers) -> children (sections) -> children (actions)
-  for (const item of instructions.items) {
-    if (item.children) {
-      for (const child of item.children) {
-        if (child.children && child.children.length > 0) {
-          const hasActionChildren = child.children.some(gc =>
-            gc.itemType === 'action' || gc.itemType === 'lessonAction' || gc.itemType === 'providerPresentation' ||
-            !gc.children || gc.children.length === 0 || gc.children.every(c => c.itemType === 'file')
-          );
-          if (hasActionChildren) {
-            sectionItems.push(child);
-          }
+  // Recursively find all items with itemType 'section' or 'lessonSection'
+  function findSections(items: InstructionItem[]) {
+    for (const item of items) {
+      if ((item.itemType === 'section' || item.itemType === 'lessonSection') && item.children && item.children.length > 0) {
+        sections.push(item);
+      }
+      // Continue searching in children
+      if (item.children) {
+        findSections(item.children);
+      }
+    }
+  }
+
+  findSections(instructions.items);
+
+  // If no sections found by itemType, fall back to structure-based detection
+  // Look for items whose children are actions (have 'action' itemType or no grandchildren)
+  if (sections.length === 0) {
+    for (const item of instructions.items) {
+      if (item.children && item.children.length > 0) {
+        const hasActionChildren = item.children.some(c =>
+          c.itemType === 'action' || c.itemType === 'lessonAction' || c.itemType === 'providerPresentation' ||
+          !c.children || c.children.length === 0
+        );
+        if (hasActionChildren) {
+          sections.push(item);
         }
       }
     }
   }
 
-  // Fallback: items themselves as sections
-  if (sectionItems.length === 0) {
-    sectionItems = instructions.items.filter(item =>
-      item.children && item.children.length > 0 &&
-      item.children.some(c =>
-        c.itemType === 'action' || c.itemType === 'lessonAction' || c.itemType === 'providerPresentation' ||
-        !c.children || c.children.length === 0 || c.children.every(gc => gc.itemType === 'file')
-      )
-    );
-  }
-
-  return sectionItems;
+  return sections;
 }
 
 export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, contentPath, providerId, ministryId }) => {
@@ -147,9 +153,14 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
       }
       const result = await getProviderInstructions(provider, path, auth);
 
+      console.log("=== ActionSelector Debug ===");
+      console.log("Raw instructions:", JSON.stringify(result, null, 2));
+
       if (result) {
+        const extractedSections = extractSections(result);
+        console.log("Extracted sections:", JSON.stringify(extractedSections, null, 2));
         setInstructions(result);
-        setSections(extractSections(result));
+        setSections(extractedSections);
       } else {
         setInstructions(null);
         setSections([]);
@@ -363,6 +374,98 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     return items;
   }, [mode, breadcrumbTitles, handleBreadcrumbClick, currentProviderInfo, selectedProviderId]);
 
+  // Render a single instruction item (recursive)
+  const renderInstructionItem = (item: InstructionItem, provId: string, depth: number = 0) => {
+    const itemId = item.relatedId || item.id || "";
+    const hasChildren = item.children && item.children.length > 0;
+    const isExpanded = expandedSections.has(itemId);
+    const isSection = item.itemType === 'section' || item.itemType === 'lessonSection' || item.itemType === 'header';
+
+    console.log(`Rendering item: id=${itemId}, label=${item.label}, itemType=${item.itemType}, depth=${depth}, hasChildren=${hasChildren}, childCount=${item.children?.length || 0}`);
+
+    // Items with children are expandable (sections, headers, or actions with files)
+    if (hasChildren) {
+      return (
+        <Box key={itemId} sx={{ mb: depth === 0 ? 1 : 0.5 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              py: depth === 0 ? 1 : 0.75,
+              px: 1,
+              borderRadius: 1,
+              bgcolor: depth === 0 ? "grey.100" : "transparent",
+              "&:hover": { bgcolor: depth === 0 ? "grey.200" : "action.hover" }
+            }}
+          >
+            <IconButton size="small" onClick={() => toggleSectionExpanded(itemId)} sx={{ mr: 1 }}>
+              {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
+            </IconButton>
+            <Box sx={{ flex: 1 }}>
+              <Typography sx={{ fontWeight: depth === 0 ? 500 : 400 }}>{item.label}</Typography>
+              {item.description && (
+                <Typography variant="caption" color="text.secondary">
+                  {item.description}
+                  {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
+                </Typography>
+              )}
+            </Box>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<AddIcon />}
+              onClick={() => isSection ? handleAddSection(item, provId) : handleAddAction(item, provId)}
+              sx={{ ml: 1 }}
+            >
+              {isSection
+                ? (Locale.label("plans.actionSelector.addSection") || "Add Section")
+                : (Locale.label("plans.actionSelector.addAction") || "Add")}
+            </Button>
+          </Box>
+          {isExpanded && (
+            <Box sx={{ pl: 4 }}>
+              {item.children!.map((child) => renderInstructionItem(child, provId, depth + 1))}
+            </Box>
+          )}
+        </Box>
+      );
+    }
+
+    // Leaf items (no children) - just show with add button
+    return (
+      <Box
+        key={itemId}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          py: 0.75,
+          px: 1,
+          borderRadius: 1,
+          "&:hover": { bgcolor: "action.hover" }
+        }}
+      >
+        <PlayArrowIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="body2">{item.label}</Typography>
+          {item.description && (
+            <Typography variant="caption" color="text.secondary">
+              {item.description}
+              {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
+            </Typography>
+          )}
+        </Box>
+        <IconButton
+          size="small"
+          color="primary"
+          onClick={() => handleAddAction(item, provId)}
+          title={Locale.label("plans.actionSelector.addAction") || "Add Action"}
+        >
+          <AddIcon />
+        </IconButton>
+      </Box>
+    );
+  };
+
   // Render sections tree
   const renderSectionsTree = (sectionList: InstructionItem[], provId: string) => (
     <Box sx={{ maxHeight: "400px", overflowY: "auto" }}>
@@ -371,78 +474,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
           {Locale.label("plans.actionSelector.noActionsAvailable") || "No actions available"}
         </Typography>
       ) : (
-        sectionList.map((section) => {
-          const sectionId = section.relatedId || section.id || "";
-          const isExpanded = expandedSections.has(sectionId);
-          return (
-            <Box key={sectionId} sx={{ mb: 1 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  py: 1,
-                  px: 1,
-                  borderRadius: 1,
-                  bgcolor: "grey.100",
-                  "&:hover": { bgcolor: "grey.200" }
-                }}
-              >
-                <IconButton size="small" onClick={() => toggleSectionExpanded(sectionId)} sx={{ mr: 1 }}>
-                  {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-                </IconButton>
-                <Typography sx={{ flex: 1, fontWeight: 500 }}>{section.label}</Typography>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<AddIcon />}
-                  onClick={() => handleAddSection(section, provId)}
-                  sx={{ ml: 1 }}
-                >
-                  {Locale.label("plans.actionSelector.addSection") || "Add Section"}
-                </Button>
-              </Box>
-              {isExpanded && section.children && (
-                <Box sx={{ pl: 4 }}>
-                  {section.children.map((action) => {
-                    const actionId = action.relatedId || action.id || "";
-                    return (
-                      <Box
-                        key={actionId}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          py: 0.75,
-                          px: 1,
-                          borderRadius: 1,
-                          "&:hover": { bgcolor: "action.hover" }
-                        }}
-                      >
-                        <PlayArrowIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
-                        <Box sx={{ flex: 1 }}>
-                          <Typography variant="body2">{action.label}</Typography>
-                          {action.description && (
-                            <Typography variant="caption" color="text.secondary">
-                              {action.description}
-                              {action.seconds ? ` - ${Math.round(action.seconds / 60)}min` : ""}
-                            </Typography>
-                          )}
-                        </Box>
-                        <IconButton
-                          size="small"
-                          color="primary"
-                          onClick={() => handleAddAction(action, provId)}
-                          title={Locale.label("plans.actionSelector.addAction") || "Add Action"}
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              )}
-            </Box>
-          );
-        })
+        sectionList.map((section) => renderInstructionItem(section, provId, 0))
       )}
     </Box>
   );
