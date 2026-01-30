@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type Instructions, type InstructionItem, type ContentProvider } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
 import { type LessonActionTreeInterface } from "./PlanUtils";
 import { type ExternalVenueRefInterface, type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
@@ -39,15 +39,11 @@ interface Props {
   ministryId?: string;
 }
 
-// Helper to create a venue folder for the provider
-function createVenueFolder(venueId: string): ContentFolder {
-  return {
-    type: "folder",
-    id: venueId,
-    title: "",
-    isLeaf: true,
-    providerData: { level: "playlist", venueId }
-  };
+// Helper to create a venue path for the provider
+function createVenuePath(venueId: string): string {
+  // For venues, we need the full path. Since we only have venueId,
+  // we construct a path that the provider can understand
+  return `/venues/${venueId}`;
 }
 
 export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, externalRef, providerId, ministryId }) => {
@@ -57,7 +53,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
   const [showAllProviders, setShowAllProviders] = useState(false);
 
-  const provider = useMemo<ContentProvider | null>(() => {
+  const provider = useMemo<IProvider | null>(() => {
     const pid = browseMode === "associated" ? (providerId || "lessonschurch") : selectedProviderId;
     return getProvider(pid);
   }, [providerId, selectedProviderId, browseMode]);
@@ -76,8 +72,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   const [instructions, setInstructions] = useState<Instructions | null>(null);
   const [sections, setSections] = useState<InstructionItem[]>([]);
 
-  // For browse mode - folder navigation
-  const [folderStack, setFolderStack] = useState<ContentFolder[]>([]);
+  // For browse mode - path-based navigation
+  const [currentPath, setCurrentPath] = useState<string>("");
+  const [breadcrumbTitles, setBreadcrumbTitles] = useState<string[]>([]);
   const [currentItems, setCurrentItems] = useState<ContentFolder[]>([]);
   const [currentFiles, setCurrentFiles] = useState<ContentFile[]>([]);
   const [browseLoading, setBrowseLoading] = useState(false);
@@ -127,8 +124,8 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
         }
       } else {
         // Use ContentProviderHelper for internal venues
-        const venueFolder = createVenueFolder(venueId);
-        const result = await provider.getExpandedInstructions(venueFolder);
+        const venuePath = createVenuePath(venueId);
+        const result = await provider.getExpandedInstructions(venuePath);
 
         if (result) {
           setInstructions(result);
@@ -294,8 +291,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setSelectedAction("");
     setInstructions(null);
     setSections([]);
-    // Reset browse folder state
-    setFolderStack([]);
+    // Reset browse path state
+    setCurrentPath("");
+    setBreadcrumbTitles([]);
     setCurrentItems([]);
     setCurrentFiles([]);
     setBrowseVenueId(null);
@@ -318,8 +316,8 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     return !!folder.isLeaf;
   }, [selectedProviderId]);
 
-  // Load content for browse mode
-  const loadBrowseContent = useCallback(async (folder: ContentFolder | null) => {
+  // Load content for browse mode using path
+  const loadBrowseContent = useCallback(async (path: string) => {
     const browseProvider = getProvider(selectedProviderId);
     if (!browseProvider) {
       setCurrentItems([]);
@@ -333,7 +331,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       if (ministryId) {
         auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
       }
-      const items = await browseProvider.browse(folder, auth);
+      const items = await browseProvider.browse(path || null, auth);
       const folders = items.filter((item): item is ContentFolder => item.type === "folder");
       const files = items.filter((item): item is ContentFile => item.type === "file");
       setCurrentItems(folders);
@@ -348,7 +346,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   }, [selectedProviderId, ministryId]);
 
   // Load actions for a selected venue in browse mode
-  const loadBrowseVenueActions = useCallback(async (venueIdToLoad: string) => {
+  const loadBrowseVenueActions = useCallback(async (venuePath: string) => {
     const browseProvider = getProvider(selectedProviderId);
     if (!browseProvider) return;
 
@@ -359,8 +357,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       if (ministryId) {
         auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
       }
-      const venueFolder = createVenueFolder(venueIdToLoad);
-      const result = await browseProvider.getExpandedInstructions(venueFolder, auth);
+      const result = await browseProvider.getExpandedInstructions(venuePath, auth);
 
       if (result) {
         setBrowseInstructions(result);
@@ -390,16 +387,18 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   // Handle folder click in browse mode
   const handleBrowseFolderClick = useCallback((folder: ContentFolder) => {
     if (isVenueFolder(folder)) {
-      // This is a venue - load its actions
+      // This is a venue - load its actions using its path
       setBrowseVenueId(folder.id);
-      setFolderStack([...folderStack, folder]);
-      loadBrowseVenueActions(folder.id);
+      setCurrentPath(folder.path);
+      setBreadcrumbTitles(prev => [...prev, folder.title]);
+      loadBrowseVenueActions(folder.path);
     } else {
-      // Navigate into the folder
-      setFolderStack([...folderStack, folder]);
-      loadBrowseContent(folder);
+      // Navigate into the folder using its path
+      setCurrentPath(folder.path);
+      setBreadcrumbTitles(prev => [...prev, folder.title]);
+      loadBrowseContent(folder.path);
     }
-  }, [folderStack, isVenueFolder, loadBrowseContent, loadBrowseVenueActions]);
+  }, [isVenueFolder, loadBrowseContent, loadBrowseVenueActions]);
 
   // Handle back in browse mode
   const handleBrowseBack = useCallback(() => {
@@ -410,15 +409,23 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       setBrowseSections([]);
       setBrowseSelectedSection("");
       setBrowseSelectedAction("");
-      const newStack = folderStack.slice(0, -1);
-      setFolderStack(newStack);
-      loadBrowseContent(newStack.length > 0 ? newStack[newStack.length - 1] : null);
-    } else if (folderStack.length > 0) {
-      const newStack = folderStack.slice(0, -1);
-      setFolderStack(newStack);
-      loadBrowseContent(newStack.length > 0 ? newStack[newStack.length - 1] : null);
+      // Remove last segment from path
+      const segments = currentPath.split("/").filter(Boolean);
+      segments.pop();
+      const newPath = segments.length > 0 ? "/" + segments.join("/") : "";
+      setCurrentPath(newPath);
+      setBreadcrumbTitles(prev => prev.slice(0, -1));
+      loadBrowseContent(newPath);
+    } else if (currentPath) {
+      // Remove last segment from path
+      const segments = currentPath.split("/").filter(Boolean);
+      segments.pop();
+      const newPath = segments.length > 0 ? "/" + segments.join("/") : "";
+      setCurrentPath(newPath);
+      setBreadcrumbTitles(prev => prev.slice(0, -1));
+      loadBrowseContent(newPath);
     }
-  }, [browseVenueId, folderStack, loadBrowseContent]);
+  }, [browseVenueId, currentPath, loadBrowseContent]);
 
   // Handle breadcrumb click in browse mode
   const handleBrowseBreadcrumbClick = useCallback((index: number) => {
@@ -431,14 +438,19 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
 
     if (index === -1) {
       // Root
-      setFolderStack([]);
-      loadBrowseContent(null);
+      setCurrentPath("");
+      setBreadcrumbTitles([]);
+      loadBrowseContent("");
     } else {
-      const newStack = folderStack.slice(0, index + 1);
-      setFolderStack(newStack);
-      loadBrowseContent(newStack[newStack.length - 1]);
+      // Navigate to specific level by rebuilding path from segments
+      const segments = currentPath.split("/").filter(Boolean);
+      const newSegments = segments.slice(0, index + 1);
+      const newPath = "/" + newSegments.join("/");
+      setCurrentPath(newPath);
+      setBreadcrumbTitles(prev => prev.slice(0, index + 1));
+      loadBrowseContent(newPath);
     }
-  }, [folderStack, loadBrowseContent]);
+  }, [currentPath, loadBrowseContent]);
 
   // Get current browse section
   const getCurrentBrowseSection = useCallback(() => {
@@ -491,8 +503,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setSelectedAction("");
     setInstructions(null);
     setSections([]);
-    // Initialize browse folder state
-    setFolderStack([]);
+    // Initialize browse path state
+    setCurrentPath("");
+    setBreadcrumbTitles([]);
     setCurrentItems([]);
     setCurrentFiles([]);
     setBrowseVenueId(null);
@@ -515,8 +528,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setInstructions(null);
     setSections([]);
     setShowAllProviders(false);
-    // Reset browse folder state
-    setFolderStack([]);
+    // Reset browse path state
+    setCurrentPath("");
+    setBreadcrumbTitles([]);
     setCurrentItems([]);
     setCurrentFiles([]);
     setBrowseVenueId(null);
@@ -572,8 +586,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     setInstructions(null);
     setSections([]);
     setShowAllProviders(false);
-    // Reset browse folder state
-    setFolderStack([]);
+    // Reset browse path state
+    setCurrentPath("");
+    setBreadcrumbTitles([]);
     setCurrentItems([]);
     setCurrentFiles([]);
     setBrowseVenueId(null);
@@ -597,9 +612,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
   // Also load when no venueId (always in browse mode)
   useEffect(() => {
     if (open && (browseMode === "browse" || !venueId) && !browseVenueId) {
-      loadBrowseContent(folderStack.length > 0 ? folderStack[folderStack.length - 1] : null);
+      loadBrowseContent(currentPath);
     }
-  }, [open, browseMode, selectedProviderId, browseVenueId, folderStack, loadBrowseContent, venueId]);
+  }, [open, browseMode, selectedProviderId, browseVenueId, currentPath, loadBrowseContent, venueId]);
 
   // Get current provider info
   const currentProviderInfo = useMemo(() => {
@@ -627,11 +642,11 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
     const items: { label: string; onClick?: () => void }[] = [
       { label: providerName, onClick: () => handleBrowseBreadcrumbClick(-1) }
     ];
-    folderStack.forEach((folder, index) => {
-      items.push({ label: folder.title, onClick: () => handleBrowseBreadcrumbClick(index) });
+    breadcrumbTitles.forEach((title, index) => {
+      items.push({ label: title, onClick: () => handleBrowseBreadcrumbClick(index) });
     });
     return items;
-  }, [folderStack, handleBrowseBreadcrumbClick, currentProviderInfo, selectedProviderId]);
+  }, [breadcrumbTitles, handleBrowseBreadcrumbClick, currentProviderInfo, selectedProviderId]);
 
   // Get current browse section for action selection (must be before conditional returns)
   const currentBrowseSection = getCurrentBrowseSection();
@@ -757,7 +772,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, venue
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <DialogTitle>
           <Stack direction="row" alignItems="center" spacing={1}>
-            {(folderStack.length > 0 || browseVenueId) ? (
+            {(currentPath || browseVenueId) ? (
               <IconButton size="small" onClick={handleBrowseBack}>
                 <ArrowBackIcon />
               </IconButton>
