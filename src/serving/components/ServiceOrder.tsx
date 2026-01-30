@@ -35,12 +35,11 @@ async function getProviderInstructions(provider: IProvider, path: string): Promi
 
 // Helper to convert InstructionItem to PlanItemInterface
 function instructionToPlanItem(item: InstructionItem, providerId?: string): PlanItemInterface {
-  // Map lesson types and new short types to generic provider types
+  // Map provider item types to plan item types
   let itemType = item.itemType || "item";
-  if (itemType === "lessonSection" || itemType === "section") itemType = "providerSection";
-  else if (itemType === "lessonAction" || itemType === "action") itemType = "providerPresentation";
-  else if (itemType === "lessonAddOn" || itemType === "addon") itemType = "providerFile";
-  else if (itemType === "file") itemType = "providerFile";
+  if (itemType === "section") itemType = "providerSection";
+  else if (itemType === "action") itemType = "providerPresentation";
+  else if (itemType === "addon" || itemType === "file") itemType = "providerFile";
 
   return {
     itemType,

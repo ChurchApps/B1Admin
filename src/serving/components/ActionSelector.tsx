@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem, type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
@@ -55,10 +55,10 @@ async function getProviderInstructions(provider: IProvider, path: string, auth?:
 function extractSections(instructions: Instructions): InstructionItem[] {
   const sections: InstructionItem[] = [];
 
-  // Recursively find all items with itemType 'section' or 'lessonSection'
+  // Recursively find all items with itemType 'section'
   function findSections(items: InstructionItem[]) {
     for (const item of items) {
-      if ((item.itemType === 'section' || item.itemType === 'lessonSection') && item.children && item.children.length > 0) {
+      if (item.itemType === 'section' && item.children && item.children.length > 0) {
         sections.push(item);
       }
       // Continue searching in children
@@ -76,7 +76,7 @@ function extractSections(instructions: Instructions): InstructionItem[] {
     for (const item of instructions.items) {
       if (item.children && item.children.length > 0) {
         const hasActionChildren = item.children.some(c =>
-          c.itemType === 'action' || c.itemType === 'lessonAction' || c.itemType === 'providerPresentation' ||
+          c.itemType === 'action' || c.itemType === 'providerPresentation' ||
           !c.children || c.children.length === 0
         );
         if (hasActionChildren) {
@@ -148,19 +148,15 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     setLoading(true);
     try {
       let auth = null;
-      if (ministryId) {
+      // Only get auth for providers that require it
+      if (ministryId && provider.requiresAuth) {
         auth = await ContentProviderAuthHelper.getValidAuth(ministryId, provId);
       }
       const result = await getProviderInstructions(provider, path, auth);
 
-      console.log("=== ActionSelector Debug ===");
-      console.log("Raw instructions:", JSON.stringify(result, null, 2));
-
       if (result) {
-        const extractedSections = extractSections(result);
-        console.log("Extracted sections:", JSON.stringify(extractedSections, null, 2));
         setInstructions(result);
-        setSections(extractedSections);
+        setSections(extractSections(result));
       } else {
         setInstructions(null);
         setSections([]);
@@ -186,7 +182,8 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     setLoading(true);
     try {
       let auth = null;
-      if (ministryId) {
+      // Only get auth for providers that require it
+      if (ministryId && provider.requiresAuth) {
         auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
       }
       const items = await provider.browse(path || null, auth);
@@ -276,7 +273,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
   }, [currentPath, loadBrowseContent]);
 
   // Handle provider change
-  const handleProviderChange = useCallback((newProviderId: string) => {
+  const handleProviderChange = useCallback(async (newProviderId: string) => {
     setSelectedProviderId(newProviderId);
     setCurrentPath("");
     setBreadcrumbTitles([]);
@@ -284,7 +281,35 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     setSections([]);
     setCurrentItems([]);
     setCurrentFiles([]);
-  }, []);
+
+    // Explicitly load content for the new provider
+    const provider = getProvider(newProviderId);
+    if (!provider) {
+      console.error("Provider not found:", newProviderId);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      let auth = null;
+      // Only get auth for providers that require it
+      if (ministryId && provider.requiresAuth) {
+        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, newProviderId);
+      }
+      const items = await provider.browse(null, auth);
+      console.log(`Provider ${newProviderId} browse returned:`, items.length, "items");
+      const folders = items.filter((item: ContentItem): item is ContentFolder => item.type === "folder");
+      const files = items.filter((item: ContentItem): item is ContentFile => item.type === "file");
+      setCurrentItems(folders);
+      setCurrentFiles(files);
+    } catch (error) {
+      console.error("Error loading browse content for provider:", newProviderId, error);
+      setCurrentItems([]);
+      setCurrentFiles([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [ministryId]);
 
   // Toggle section expansion
   const toggleSectionExpanded = useCallback((sectionId: string) => {
@@ -379,9 +404,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     const itemId = item.relatedId || item.id || "";
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedSections.has(itemId);
-    const isSection = item.itemType === 'section' || item.itemType === 'lessonSection' || item.itemType === 'header';
-
-    console.log(`Rendering item: id=${itemId}, label=${item.label}, itemType=${item.itemType}, depth=${depth}, hasChildren=${hasChildren}, childCount=${item.children?.length || 0}`);
+    const isSection = item.itemType === 'section' || item.itemType === 'header';
 
     // Items with children are expandable (sections, headers, or actions with files)
     if (hasChildren) {
