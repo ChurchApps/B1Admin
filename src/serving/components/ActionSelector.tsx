@@ -21,13 +21,16 @@ import {
 import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem, type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
+
+// Generate a dot-notation path from indices array (e.g., [0, 2, 1] -> "0.2.1")
+const generatePath = (indices: number[]): string => indices.join('.');
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string) => void;
+  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string, providerContentPath?: string) => void;
   /** Full content path for the associated content (e.g., /lessons/program-1/study-1/lesson-1/venue-1) */
   contentPath?: string;
   /** Provider ID for the associated content */
@@ -325,23 +328,25 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
   }, []);
 
   // Handle adding a section
-  const handleAddSection = useCallback((section: InstructionItem, provId: string) => {
+  const handleAddSection = useCallback((section: InstructionItem, provId: string, pathIndices: number[]) => {
     const sectionId = section.relatedId || section.id || "";
     const sectionName = section.label || "Section";
     const totalSeconds = section.children?.reduce((sum, action) => sum + (action.seconds || 0), 0) || 0;
     // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;
-    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, undefined, path);
+    const contentPathStr = generatePath(pathIndices);
+    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, undefined, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, currentPath, contentPath]);
 
   // Handle adding an action
-  const handleAddAction = useCallback((action: InstructionItem, provId: string) => {
+  const handleAddAction = useCallback((action: InstructionItem, provId: string, pathIndices: number[]) => {
     const actionId = action.relatedId || action.id || "";
     const actionName = action.label || "Action";
     // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, undefined, path);
+    const contentPathStr = generatePath(pathIndices);
+    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, undefined, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, currentPath, contentPath]);
 
@@ -406,7 +411,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
   }, [mode, breadcrumbTitles, handleBreadcrumbClick, currentProviderInfo, selectedProviderId]);
 
   // Render a single instruction item (recursive)
-  const renderInstructionItem = (item: InstructionItem, provId: string, depth: number = 0) => {
+  const renderInstructionItem = (item: InstructionItem, provId: string, depth: number = 0, pathIndices: number[] = []) => {
     const itemId = item.relatedId || item.id || "";
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedSections.has(itemId);
@@ -443,7 +448,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
               size="small"
               variant="outlined"
               startIcon={<AddIcon />}
-              onClick={() => isSection ? handleAddSection(item, provId) : handleAddAction(item, provId)}
+              onClick={() => isSection ? handleAddSection(item, provId, pathIndices) : handleAddAction(item, provId, pathIndices)}
               sx={{ ml: 1 }}
             >
               {isSection
@@ -453,7 +458,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
           </Box>
           {isExpanded && (
             <Box sx={{ pl: 4 }}>
-              {item.children!.map((child) => renderInstructionItem(child, provId, depth + 1))}
+              {item.children!.map((child, childIndex) => renderInstructionItem(child, provId, depth + 1, [...pathIndices, childIndex]))}
             </Box>
           )}
         </Box>
@@ -486,7 +491,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
         <IconButton
           size="small"
           color="primary"
-          onClick={() => handleAddAction(item, provId)}
+          onClick={() => handleAddAction(item, provId, pathIndices)}
           title={Locale.label("plans.actionSelector.addAction") || "Add Action"}
         >
           <AddIcon />
@@ -503,7 +508,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
           {Locale.label("plans.actionSelector.noActionsAvailable") || "No actions available"}
         </Typography>
       ) : (
-        sectionList.map((section) => renderInstructionItem(section, provId, 0))
+        sectionList.map((section, index) => renderInstructionItem(section, provId, 0, [index]))
       )}
     </Box>
   );
@@ -585,7 +590,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
               <CircularProgress />
             </Box>
           ) : (
-            renderSectionsTree(sections, providerId || "lessonschurch")
+            renderSectionsTree(instructions?.items || [], providerId || "lessonschurch")
           )}
         </DialogContent>
         <DialogActions>
@@ -683,7 +688,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
                   </Typography>
                 </Typography>
               </Box>
-              {renderSectionsTree(sections, selectedProviderId)}
+              {renderSectionsTree(instructions?.items || [], selectedProviderId)}
             </Box>
           ) : currentItems.length === 0 && currentFiles.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 4 }}>

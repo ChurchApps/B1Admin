@@ -35,12 +35,15 @@ async function getProviderInstructions(provider: IProvider, path: string): Promi
 }
 
 // Helper to convert InstructionItem to PlanItemInterface
-function instructionToPlanItem(item: InstructionItem, providerId?: string, providerPath?: string): PlanItemInterface {
+function instructionToPlanItem(item: InstructionItem, providerId?: string, providerPath?: string, pathIndices: number[] = []): PlanItemInterface {
   // Map provider item types to plan item types
   let itemType = item.itemType || "item";
   if (itemType === "section") itemType = "providerSection";
   else if (itemType === "action") itemType = "providerPresentation";
   else if (itemType === "addon" || itemType === "file") itemType = "providerFile";
+
+  // Generate dot-notation path from indices (e.g., [0, 2, 1] -> "0.2.1")
+  const contentPath = pathIndices.length > 0 ? pathIndices.join('.') : undefined;
 
   return {
     itemType,
@@ -50,8 +53,8 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
     seconds: item.seconds,
     providerId,
     providerPath,
-    providerContentId: item.relatedId || item.id,
-    children: item.children?.map(child => instructionToPlanItem(child, providerId, providerPath))
+    providerContentPath: contentPath,
+    children: item.children?.map((child, index) => instructionToPlanItem(child, providerId, providerPath, [...pathIndices, index]))
   };
 }
 
@@ -187,7 +190,7 @@ export const ServiceOrder = memo((props: Props) => {
 
       if (instructions?.items && instructions.items.length > 0) {
         // Convert InstructionItems to PlanItemInterface with providerId and providerPath
-        const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId, contentPath));
+        const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
 
         // Keep top-level headers with their section children, but strip grandchildren (actions)
         const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface) => ({
@@ -228,7 +231,7 @@ export const ServiceOrder = memo((props: Props) => {
 
       if (instructions?.items && instructions.items.length > 0) {
         // Convert InstructionItems to PlanItemInterface with providerId, providerPath and save
-        const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId, contentPath));
+        const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
         await saveHierarchicalItems(planItemsFromInstructions);
         // Reload data to show the new editable items
         loadData();
@@ -276,7 +279,7 @@ export const ServiceOrder = memo((props: Props) => {
 
         if (instructions?.items) {
           // Convert InstructionItems to PlanItemInterface for preview with providerId and providerPath
-          const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId, contentPath));
+          const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
           setPreviewLessonItems(planItemsFromInstructions);
         } else {
           setPreviewLessonItems([]);
