@@ -6,7 +6,7 @@ import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
-import { getProvider, type ContentFolder, type ContentProvider } from "@churchapps/content-provider-helper";
+import { getProvider, navigateToPath, type ContentFolder, type ContentProvider, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
@@ -110,6 +110,13 @@ export const PlanItem = React.memo((props: Props) => {
 
   // Expand a section item to replace it with individual action/presentation items
   const handleExpandToActions = async () => {
+    // Check for provider-based expansion (uses providerId, providerPath, providerContentPath)
+    if (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath) {
+      await handleExpandToActionsViaProvider();
+      return;
+    }
+
+    // Legacy path for associatedVenueId (Lessons.church direct integration)
     if (!props.planItem.relatedId || !props.associatedVenueId || !provider) return;
 
     try {
@@ -175,6 +182,51 @@ export const PlanItem = React.memo((props: Props) => {
       }
     } catch (error) {
       console.error("Error expanding section to actions:", error);
+    }
+  };
+
+  // Expand a section via provider fields (providerId, providerPath, providerContentPath)
+  const handleExpandToActionsViaProvider = async () => {
+    const { providerId, providerPath, providerContentPath, planId, parentId, sort } = props.planItem;
+    if (!providerId || !providerPath || !providerContentPath || !props.ministryId) return;
+
+    try {
+      // Fetch expanded instructions via API proxy
+      const instructions: Instructions = await ApiHelper.post(
+        "/providerProxy/getExpandedInstructions",
+        { ministryId: props.ministryId, providerId, path: providerPath },
+        "DoingApi"
+      );
+
+      if (!instructions?.items) return;
+
+      // Navigate to specific section using providerContentPath
+      const section = navigateToPath(instructions, providerContentPath);
+      if (!section?.children || section.children.length === 0) return;
+
+      const currentSort = sort || 1;
+
+      // Create new plan items for each action
+      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
+        planId,
+        parentId,
+        sort: currentSort + index,
+        itemType: "providerPresentation",
+        relatedId: action.relatedId || action.id || "",
+        label: action.label || "",
+        seconds: action.seconds || 0,
+        providerId,
+        providerPath,
+        providerContentPath: `${providerContentPath}.${index}`,
+      }));
+
+      // Delete original section, create new action items
+      await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
+      await ApiHelper.post("/planItems", actionItems, "DoingApi");
+
+      if (props.onChange) props.onChange();
+    } catch (error) {
+      console.error("Error expanding section via provider:", error);
     }
   };
 
@@ -531,16 +583,35 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
       {lessonSectionId && (
-        <LessonDialog
-          sectionId={lessonSectionId}
-          sectionName={props.planItem.label}
-          onClose={() => setLessonSectionId(null)}
-          onExpandToActions={props.associatedVenueId && props.planItem.relatedId ? async () => {
-            setLessonSectionId(null);
-            await handleExpandToActions();
-          } : undefined}
-          externalRef={props.externalRef}
-        />
+        <>
+          {console.log("LessonDialog expand check:", {
+            label: props.planItem.label,
+            itemType: props.planItem.itemType,
+            associatedVenueId: props.associatedVenueId,
+            relatedId: props.planItem.relatedId,
+            providerId: props.planItem.providerId,
+            providerPath: props.planItem.providerPath,
+            providerContentPath: props.planItem.providerContentPath,
+            ministryId: props.ministryId,
+            legacyCondition: !!(props.associatedVenueId && props.planItem.relatedId),
+            providerCondition: !!(props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath),
+          })}
+          <LessonDialog
+            sectionId={lessonSectionId}
+            sectionName={props.planItem.label}
+            onClose={() => setLessonSectionId(null)}
+            onExpandToActions={
+              (props.associatedVenueId && props.planItem.relatedId) ||
+              (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
+                ? async () => {
+                    setLessonSectionId(null);
+                    await handleExpandToActions();
+                  }
+                : undefined
+            }
+            externalRef={props.externalRef}
+          />
+        </>
       )}
       {actionId && (
         <ActionDialog
