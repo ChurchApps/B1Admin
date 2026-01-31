@@ -489,8 +489,8 @@ export const PlanItem = React.memo((props: Props) => {
         {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
-          {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId); }}>
+          {(props.planItem.relatedId || (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)) ? (
+            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId || props.planItem.providerContentPath || props.planItem.id); }}>
               {props.planItem.label}
             </a>
           ) : (
@@ -610,6 +610,8 @@ export const PlanItem = React.memo((props: Props) => {
                 : undefined
             }
             externalRef={props.externalRef}
+            providerId={props.planItem.providerId}
+            embedUrl={props.planItem.link}
           />
         </>
       )}
