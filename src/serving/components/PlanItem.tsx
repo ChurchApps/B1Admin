@@ -83,7 +83,7 @@ export const PlanItem = React.memo((props: Props) => {
     setShowActionSelector(true);
   };
 
-  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string) => {
+  const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string) => {
     setShowActionSelector(false);
     // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
     const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
@@ -98,6 +98,8 @@ export const PlanItem = React.memo((props: Props) => {
       label: actionName,
       seconds: seconds || 0,
       providerId: itemProviderId,
+      providerPath: providerPath,
+      providerContentId: actionId,
       // Store media URL in link field for direct preview (non-Lessons.church providers)
       // For file items, use mediaUrl if available, otherwise fall back to image
       link: linkValue,

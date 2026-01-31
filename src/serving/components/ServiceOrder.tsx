@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon } from "@mui/icons-material";
-import { type PlanInterface, type PlanItemInterface } from "@churchapps/helpers";
+import { type PlanInterface } from "@churchapps/helpers";
+import { type PlanItemInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-provider-helper";
 import { PlanItemEdit } from "./PlanItemEdit";
@@ -34,7 +35,7 @@ async function getProviderInstructions(provider: IProvider, path: string): Promi
 }
 
 // Helper to convert InstructionItem to PlanItemInterface
-function instructionToPlanItem(item: InstructionItem, providerId?: string): PlanItemInterface {
+function instructionToPlanItem(item: InstructionItem, providerId?: string, providerPath?: string): PlanItemInterface {
   // Map provider item types to plan item types
   let itemType = item.itemType || "item";
   if (itemType === "section") itemType = "providerSection";
@@ -48,7 +49,9 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string): Plan
     description: item.description,
     seconds: item.seconds,
     providerId,
-    children: item.children?.map(child => instructionToPlanItem(child, providerId))
+    providerPath,
+    providerContentId: item.relatedId || item.id,
+    children: item.children?.map(child => instructionToPlanItem(child, providerId, providerPath))
   };
 }
 
@@ -183,8 +186,8 @@ export const ServiceOrder = memo((props: Props) => {
       const currentProviderId = props.plan?.providerId || "lessonschurch";
 
       if (instructions?.items && instructions.items.length > 0) {
-        // Convert InstructionItems to PlanItemInterface with providerId
-        const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId));
+        // Convert InstructionItems to PlanItemInterface with providerId and providerPath
+        const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId, contentPath));
 
         // Keep top-level headers with their section children, but strip grandchildren (actions)
         const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface) => ({
@@ -224,8 +227,8 @@ export const ServiceOrder = memo((props: Props) => {
       const currentProviderId = props.plan?.providerId || "lessonschurch";
 
       if (instructions?.items && instructions.items.length > 0) {
-        // Convert InstructionItems to PlanItemInterface with providerId and save
-        const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId));
+        // Convert InstructionItems to PlanItemInterface with providerId, providerPath and save
+        const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId, contentPath));
         await saveHierarchicalItems(planItemsFromInstructions);
         // Reload data to show the new editable items
         loadData();
@@ -272,8 +275,8 @@ export const ServiceOrder = memo((props: Props) => {
         const currentProviderId = props.plan?.providerId || "lessonschurch";
 
         if (instructions?.items) {
-          // Convert InstructionItems to PlanItemInterface for preview with providerId
-          const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId));
+          // Convert InstructionItems to PlanItemInterface for preview with providerId and providerPath
+          const planItemsFromInstructions = instructions.items.map(item => instructionToPlanItem(item, currentProviderId, contentPath));
           setPreviewLessonItems(planItemsFromInstructions);
         } else {
           setPreviewLessonItems([]);

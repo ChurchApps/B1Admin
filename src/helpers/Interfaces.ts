@@ -65,6 +65,8 @@ export interface PlanItemInterface {
   seconds?: number;
   link?: string;
   providerId?: string;
+  providerPath?: string;
+  providerContentId?: string;
 
   children?: PlanItemInterface[];
 }

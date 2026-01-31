@@ -27,7 +27,7 @@ import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelp
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string) => void;
+  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string) => void;
   /** Full content path for the associated content (e.g., /lessons/program-1/study-1/lesson-1/venue-1) */
   contentPath?: string;
   /** Provider ID for the associated content */
@@ -329,25 +329,31 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     const sectionId = section.relatedId || section.id || "";
     const sectionName = section.label || "Section";
     const totalSeconds = section.children?.reduce((sum, action) => sum + (action.seconds || 0), 0) || 0;
-    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection");
+    // Pass providerPath: currentPath for browse mode, contentPath for associated mode
+    const path = mode === "browse" ? currentPath : contentPath;
+    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, undefined, path);
     onClose();
-  }, [onSelect, onClose]);
+  }, [onSelect, onClose, mode, currentPath, contentPath]);
 
   // Handle adding an action
   const handleAddAction = useCallback((action: InstructionItem, provId: string) => {
     const actionId = action.relatedId || action.id || "";
     const actionName = action.label || "Action";
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation");
+    // Pass providerPath: currentPath for browse mode, contentPath for associated mode
+    const path = mode === "browse" ? currentPath : contentPath;
+    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, undefined, path);
     onClose();
-  }, [onSelect, onClose]);
+  }, [onSelect, onClose, mode, currentPath, contentPath]);
 
   // Handle adding a file
   const handleAddFile = useCallback((file: ContentFile, provId: string) => {
     const seconds = file.providerData?.seconds as number | undefined;
     const embedUrl = file.embedUrl || file.url;
-    onSelect(file.id, file.title, seconds, provId, "providerFile", file.image, embedUrl);
+    // Pass providerPath: currentPath for browse mode, contentPath for associated mode
+    const path = mode === "browse" ? currentPath : contentPath;
+    onSelect(file.id, file.title, seconds, provId, "providerFile", file.image, embedUrl, path);
     onClose();
-  }, [onSelect, onClose]);
+  }, [onSelect, onClose, mode, currentPath, contentPath]);
 
   // Switch to browse mode
   const handleBrowseOther = useCallback(() => {
