@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Typography, Button } from "@mui/material";
 import { MenuBook as MenuBookIcon } from "@mui/icons-material";
 import { ApiHelper, DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
-import { type PlanInterface, type ExternalVenueRefInterface } from "../../helpers";
+import { type PlanInterface } from "../../helpers";
 import { LessonSelector } from "./LessonSelector";
 
 interface Props {
@@ -25,7 +25,8 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   // Selected lesson state
   const [selectedVenueId, setSelectedVenueId] = useState<string>("");
   const [selectedVenueName, setSelectedVenueName] = useState<string>("");
-  const [selectedExternalRef, setSelectedExternalRef] = useState<ExternalVenueRefInterface | null>(null);
+  const [selectedContentPath, setSelectedContentPath] = useState<string>("");
+  const [selectedProviderId, setSelectedProviderId] = useState<string>("");
 
   // Lesson selector modal state
   const [showLessonSelector, setShowLessonSelector] = useState(false);
@@ -52,12 +53,12 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
     setScheduledDate(DateHelper.toDate(e.target.value));
   };
 
-  const handleLessonSelect = useCallback((venueId: string, venueName?: string, externalRef?: ExternalVenueRefInterface, providerId?: string) => {
+  const handleLessonSelect = useCallback((venueId: string, venueName?: string, contentPath?: string, providerId?: string) => {
     setSelectedVenueId(venueId);
     setSelectedVenueName(venueName || "");
-    setSelectedExternalRef(externalRef || null);
+    setSelectedContentPath(contentPath || "");
+    setSelectedProviderId(providerId || "lessonschurch");
     setShowLessonSelector(false);
-    // Note: providerId is available here if we need to store it with the plan
   }, []);
 
   const validate = () => {
@@ -71,20 +72,6 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   const handleSave = async () => {
     if (validate()) {
       const formattedDate = DateHelper.prettyDate(scheduledDate);
-
-      // Create the plan with the lesson venue association
-      let contentType: string;
-      let contentId: string;
-
-      if (selectedExternalRef) {
-        // External venue - store the full ref as JSON in contentId
-        contentType = "externalVenue";
-        contentId = JSON.stringify(selectedExternalRef);
-      } else {
-        contentType = "venue";
-        contentId = selectedVenueId;
-      }
-
       const displayName = selectedVenueName || "Lesson";
 
       const newPlan: PlanInterface = {
@@ -94,8 +81,13 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         name: `${formattedDate} - ${displayName}`,
         notes: "",
         serviceOrder: true,
-        contentType,
-        contentId,
+        // New provider system
+        providerId: selectedProviderId,
+        providerPlanId: selectedContentPath || selectedVenueId,
+        providerPlanName: displayName,
+        // Backward compat
+        contentType: "provider",
+        contentId: selectedVenueId,
       };
 
       let savedPlan: PlanInterface;
