@@ -335,7 +335,9 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
-    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, undefined, path, contentPathStr);
+    // Get embedUrl from section if available
+    const embedUrl = section.embedUrl;
+    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, embedUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, currentPath, contentPath]);
 
@@ -346,7 +348,15 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, undefined, path, contentPathStr);
+    // Get embedUrl from action itself or from first child with an embedUrl
+    let embedUrl = action.embedUrl;
+    if (!embedUrl && action.children && action.children.length > 0) {
+      const childWithUrl = action.children.find(child => child.embedUrl);
+      if (childWithUrl) {
+        embedUrl = childWithUrl.embedUrl;
+      }
+    }
+    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, embedUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, currentPath, contentPath]);
 

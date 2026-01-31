@@ -1,8 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 import { type ExternalVenueRefInterface } from "../../helpers";
+import { useProviderContent } from "../hooks/useProviderContent";
+import { ContentRenderer } from "./ContentRenderer";
 
 interface Props {
   sectionId: string;
@@ -13,32 +15,47 @@ interface Props {
   // Provider-based section support
   providerId?: string;
   embedUrl?: string;
+  /** Provider path for fetching content dynamically */
+  providerPath?: string;
+  /** Dot-notation path to specific content item */
+  providerContentPath?: string;
+  /** Ministry ID for auth */
+  ministryId?: string;
 }
 
 export const LessonDialog: React.FC<Props> = (props) => {
-  // Determine how to display content based on available data
-  const isLessonsChurch = !props.providerId || props.providerId === "lessonschurch";
-  const hasEmbedUrl = !!props.embedUrl;
-
-  // Construct URL based on content source
-  let iframeUrl: string | null = null;
-  if (hasEmbedUrl) {
-    iframeUrl = props.embedUrl!;
-  } else if (props.externalRef) {
-    iframeUrl = `${EnvironmentHelper.LessonsUrl}/embed/external/${props.externalRef.externalProviderId}/section/${props.sectionId}`;
-  } else if (isLessonsChurch) {
-    iframeUrl = `${EnvironmentHelper.LessonsUrl}/embed/section/${props.sectionId}`;
-  }
-
-  console.log("LessonDialog render:", { providerId: props.providerId, embedUrl: props.embedUrl, isLessonsChurch, hasEmbedUrl, iframeUrl, hasExpandButton: !!props.onExpandToActions });
-
   const [iframeHeight, setIframeHeight] = useState(window.innerHeight * 0.7);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Build fallback URL for legacy lessons.church items
+  const legacyFallbackUrl = useMemo(() => {
+    // Only use legacy fallback if no embedUrl and no provider path info
+    if (props.embedUrl) return props.embedUrl;
+    if (props.providerPath && props.providerContentPath) return undefined;
+
+    // Legacy fallback for Lessons.church items
+    const isLessonsChurch = !props.providerId || props.providerId === "lessonschurch";
+    if (props.externalRef) {
+      return `${EnvironmentHelper.LessonsUrl}/embed/external/${props.externalRef.externalProviderId}/section/${props.sectionId}`;
+    } else if (isLessonsChurch) {
+      return `${EnvironmentHelper.LessonsUrl}/embed/section/${props.sectionId}`;
+    }
+
+    return undefined;
+  }, [props.embedUrl, props.providerId, props.externalRef, props.sectionId, props.providerPath, props.providerContentPath]);
+
+  // Use the hook to fetch content from provider
+  const { content, loading, error } = useProviderContent({
+    providerId: props.providerId,
+    providerPath: props.providerPath,
+    providerContentPath: props.providerContentPath,
+    ministryId: props.ministryId,
+    fallbackUrl: legacyFallbackUrl,
+    relatedId: props.sectionId
+  });
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === "lessonSectionHeight" && typeof event.data.height === "number") {
-        // Use content height but ensure minimum of 70vh
         const contentHeight = event.data.height + 20;
         const minHeight = window.innerHeight * 0.7;
         setIframeHeight(Math.max(contentHeight, minHeight));
@@ -49,30 +66,30 @@ export const LessonDialog: React.FC<Props> = (props) => {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
+  // If we have no content and no URL, show message with expand option
+  const showExpandMessage = !loading && !error && !content?.url && !content?.description && props.onExpandToActions;
+
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
       <DialogTitle>{props.sectionName || "Lesson Section"}</DialogTitle>
       <DialogContent sx={{ p: 0, overflow: "hidden" }}>
-        {iframeUrl ? (
-          <iframe
-            ref={iframeRef}
-            src={iframeUrl}
-            title="Lesson Content"
-            style={{
-              width: "100%",
-              height: iframeHeight,
-              border: "none",
-              display: "block"
-            }}
-          />
-        ) : (
+        {showExpandMessage ? (
           <Box sx={{ p: 4, textAlign: "center", minHeight: 200, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <Typography variant="h6" gutterBottom>{props.sectionName}</Typography>
             <Typography color="text.secondary">
-              Preview not available for this content provider.
-              {props.onExpandToActions && " Click 'Expand to Actions' to import the individual actions."}
+              This section contains multiple items. Click 'Expand to Actions' to import the individual actions.
             </Typography>
           </Box>
+        ) : (
+          <ContentRenderer
+            url={content?.url}
+            mediaType={content?.mediaType}
+            title={props.sectionName}
+            description={content?.description}
+            loading={loading}
+            error={error || undefined}
+            iframeHeight={iframeHeight}
+          />
         )}
       </DialogContent>
       <DialogActions>

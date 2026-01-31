@@ -583,37 +583,26 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {dialogKeyId && <SongDialog arrangementKeyId={dialogKeyId} onClose={() => setDialogKeyId(null)} />}
       {lessonSectionId && (
-        <>
-          {console.log("LessonDialog expand check:", {
-            label: props.planItem.label,
-            itemType: props.planItem.itemType,
-            associatedVenueId: props.associatedVenueId,
-            relatedId: props.planItem.relatedId,
-            providerId: props.planItem.providerId,
-            providerPath: props.planItem.providerPath,
-            providerContentPath: props.planItem.providerContentPath,
-            ministryId: props.ministryId,
-            legacyCondition: !!(props.associatedVenueId && props.planItem.relatedId),
-            providerCondition: !!(props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath),
-          })}
-          <LessonDialog
-            sectionId={lessonSectionId}
-            sectionName={props.planItem.label}
-            onClose={() => setLessonSectionId(null)}
-            onExpandToActions={
-              (props.associatedVenueId && props.planItem.relatedId) ||
-              (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
-                ? async () => {
-                    setLessonSectionId(null);
-                    await handleExpandToActions();
-                  }
-                : undefined
-            }
-            externalRef={props.externalRef}
-            providerId={props.planItem.providerId}
-            embedUrl={props.planItem.link}
-          />
-        </>
+        <LessonDialog
+          sectionId={lessonSectionId}
+          sectionName={props.planItem.label}
+          onClose={() => setLessonSectionId(null)}
+          onExpandToActions={
+            (props.associatedVenueId && props.planItem.relatedId) ||
+            (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
+              ? async () => {
+                  setLessonSectionId(null);
+                  await handleExpandToActions();
+                }
+              : undefined
+          }
+          externalRef={props.externalRef}
+          providerId={props.planItem.providerId}
+          embedUrl={props.planItem.link}
+          providerPath={props.planItem.providerPath}
+          providerContentPath={props.planItem.providerContentPath}
+          ministryId={props.ministryId}
+        />
       )}
       {actionId && (
         <ActionDialog
@@ -623,6 +612,9 @@ export const PlanItem = React.memo((props: Props) => {
           externalRef={props.externalRef}
           providerId={props.planItem.providerId || props.associatedProviderId}
           embedUrl={props.planItem.link}
+          providerPath={props.planItem.providerPath}
+          providerContentPath={props.planItem.providerContentPath}
+          ministryId={props.ministryId}
         />
       )}
       {addOnId && (
@@ -632,6 +624,9 @@ export const PlanItem = React.memo((props: Props) => {
           onClose={() => setAddOnId(null)}
           providerId={props.planItem.providerId || props.associatedProviderId}
           embedUrl={props.planItem.link}
+          providerPath={props.planItem.providerPath}
+          providerContentPath={props.planItem.providerContentPath}
+          ministryId={props.ministryId}
         />
       )}
       {showActionSelector && (
