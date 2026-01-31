@@ -90,13 +90,22 @@ export const DeviceAuthPage: React.FC = () => {
   };
 
   const handleApprove = async () => {
+    const churchId = UserHelper.currentUserChurch?.church?.id;
+    if (!churchId) {
+      setError("No church selected. Please log in again and select a church.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
+    // Normalize code to match what was sent during verification
+    const normalizedCode = userCode.replace(/-/g, "").toUpperCase();
+
     try {
       const result: ApproveResponse = await ApiHelper.post("/oauth/device/approve", {
-        user_code: userCode,
-        church_id: UserHelper.currentUserChurch.church.id
+        user_code: normalizedCode,
+        church_id: churchId
       }, "MembershipApi");
 
       if (result.success) {
@@ -105,6 +114,7 @@ export const DeviceAuthPage: React.FC = () => {
         setError(result.message || "Failed to authorize device");
       }
     } catch (err) {
+      console.error("Device approval error:", err);
       setError("Authorization failed. Please try again.");
     } finally {
       setLoading(false);
