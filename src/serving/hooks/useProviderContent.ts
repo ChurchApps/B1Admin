@@ -107,15 +107,15 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
         let instructions: Instructions | null = null;
 
         // Try to get instructions from provider directly (client-side)
-        if (provider.capabilities.expandedInstructions && provider.getExpandedInstructions) {
-          instructions = await provider.getExpandedInstructions(providerPath, auth);
+        if (provider.capabilities.instructions && provider.getInstructions) {
+          instructions = await provider.getInstructions(providerPath, auth);
         }
 
         // If client-side fails and we have ministryId, try the API proxy
         if (!instructions && ministryId) {
           try {
             instructions = await ApiHelper.post(
-              "/providerProxy/getExpandedInstructions",
+              "/providerProxy/getInstructions",
               { ministryId, providerId, path: providerPath },
               "DoingApi"
             );

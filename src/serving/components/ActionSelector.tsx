@@ -42,8 +42,8 @@ interface Props {
 // Helper to get instructions from provider based on its capabilities
 async function getProviderInstructions(provider: IProvider, path: string, auth?: any): Promise<Instructions | null> {
   const capabilities = provider.capabilities;
-  if (capabilities.expandedInstructions && provider.getExpandedInstructions) {
-    return provider.getExpandedInstructions(path, auth);
+  if (capabilities.instructions && provider.getInstructions) {
+    return provider.getInstructions(path, auth);
   }
   return null;
 }
@@ -202,7 +202,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     const provider = getProvider(selectedProviderId);
     if (!provider) return false;
     const capabilities = provider.capabilities;
-    if (!capabilities.instructions && !capabilities.expandedInstructions) return false;
+    if (!capabilities.instructions) return false;
     return !!folder.isLeaf;
   }, [selectedProviderId]);
 

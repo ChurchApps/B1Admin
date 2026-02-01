@@ -135,7 +135,7 @@ export const PlanItem = React.memo((props: Props) => {
       } else {
         // Use ContentProviderHelper
         const venueFolder = createVenueFolder(props.associatedVenueId);
-        const instructions = await provider.getExpandedInstructions(venueFolder);
+        const instructions = await provider.getInstructions(venueFolder);
 
         if (instructions) {
           // Find the section matching this plan item's relatedId
@@ -191,9 +191,9 @@ export const PlanItem = React.memo((props: Props) => {
     if (!providerId || !providerPath || !providerContentPath || !props.ministryId) return;
 
     try {
-      // Fetch expanded instructions via API proxy
+      // Fetch instructions via API proxy
       const instructions: Instructions = await ApiHelper.post(
-        "/providerProxy/getExpandedInstructions",
+        "/providerProxy/getInstructions",
         { ministryId: props.ministryId, providerId, path: providerPath },
         "DoingApi"
       );

@@ -24,8 +24,8 @@ interface Props {
 // Helper to get instructions from provider based on its capabilities
 async function getProviderInstructions(provider: IProvider, path: string): Promise<Instructions | null> {
   const capabilities = provider.capabilities;
-  if (capabilities.expandedInstructions && provider.getExpandedInstructions) {
-    return provider.getExpandedInstructions(path);
+  if (capabilities.instructions && provider.getInstructions) {
+    return provider.getInstructions(path);
   }
   return null;
 }
