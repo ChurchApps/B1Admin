@@ -109,8 +109,6 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
         // Try to get instructions from provider directly (client-side)
         if (provider.capabilities.expandedInstructions && provider.getExpandedInstructions) {
           instructions = await provider.getExpandedInstructions(providerPath, auth);
-        } else if (provider.capabilities.instructions && provider.getInstructions) {
-          instructions = await provider.getInstructions(providerPath, auth);
         }
 
         // If client-side fails and we have ministryId, try the API proxy

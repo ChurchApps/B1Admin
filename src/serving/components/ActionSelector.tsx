@@ -40,16 +40,10 @@ interface Props {
 }
 
 // Helper to get instructions from provider based on its capabilities
-// Prefer expandedInstructions for the full nested structure (sections → actions → files)
 async function getProviderInstructions(provider: IProvider, path: string, auth?: any): Promise<Instructions | null> {
   const capabilities = provider.capabilities;
-  // Prefer expandedInstructions for full hierarchy
   if (capabilities.expandedInstructions && provider.getExpandedInstructions) {
     return provider.getExpandedInstructions(path, auth);
-  }
-  // Fall back to regular instructions
-  if (capabilities.instructions && provider.getInstructions) {
-    return provider.getInstructions(path, auth);
   }
   return null;
 }
