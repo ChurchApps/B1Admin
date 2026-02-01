@@ -270,9 +270,10 @@
     react-to-print "^3.1.1"
     slug "^11.0.0"
 
-"@churchapps/content-provider-helper@file:../ContentProviderHelper":
-  version "0.0.3"
-  resolved "file:../ContentProviderHelper"
+"@churchapps/content-provider-helper@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@churchapps/content-provider-helper/-/content-provider-helper-0.0.4.tgz"
+  integrity sha512-X/wEaZOxA5kHLMh1HMHjescttWLyxxNJbMR+d/ScqlpJY1wvLU0jScSqzpkJuKu5O8uIUG1BPg37hhDGuH0FBg==
 
 "@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5", "@churchapps/helpers@file:../Helpers":
   version "1.2.22"
