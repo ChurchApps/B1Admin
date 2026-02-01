@@ -3,11 +3,20 @@ import { getProvider, navigateToPath, type Instructions, type InstructionItem } 
 import { ApiHelper } from "@churchapps/apphelper";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
+export interface ProviderContentChild {
+  id?: string;
+  label?: string;
+  description?: string;
+  seconds?: number;
+  embedUrl?: string;
+}
+
 export interface ProviderContent {
   url?: string;
   mediaType?: "video" | "image" | "text" | "iframe";
   description?: string;
   label?: string;
+  children?: ProviderContentChild[];
 }
 
 export interface UseProviderContentResult {
@@ -154,8 +163,32 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
               description: item.description,
               label: item.label
             });
+          } else if (item.children && item.children.length > 0) {
+            // Item has children (e.g., a section with actions) - return them for display
+            const children: ProviderContentChild[] = item.children.map(child => {
+              // Look for embedUrl on the child itself, or on its first child with an embedUrl
+              let childEmbedUrl = child.embedUrl;
+              if (!childEmbedUrl && child.children && child.children.length > 0) {
+                const grandchildWithUrl = child.children.find(gc => gc.embedUrl);
+                if (grandchildWithUrl) {
+                  childEmbedUrl = grandchildWithUrl.embedUrl;
+                }
+              }
+              return {
+                id: child.relatedId || child.id,
+                label: child.label,
+                description: child.description,
+                seconds: child.seconds,
+                embedUrl: childEmbedUrl
+              };
+            });
+            setContent({
+              description: item.description,
+              label: item.label,
+              children
+            });
           } else {
-            // Item exists but has no embedUrl - show as text content
+            // Item exists but has no embedUrl and no children - show as text content
             setContent({
               description: item.description,
               label: item.label,
