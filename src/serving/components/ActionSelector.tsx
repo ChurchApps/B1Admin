@@ -356,7 +356,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
 
   // Handle adding a file
   const handleAddFile = useCallback((file: ContentFile, provId: string) => {
-    const seconds = file.providerData?.seconds as number | undefined;
+    const seconds = file.seconds;
     const embedUrl = file.embedUrl || file.url;
     // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;

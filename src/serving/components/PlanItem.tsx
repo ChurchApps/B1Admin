@@ -6,7 +6,7 @@ import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
-import { getProvider, navigateToPath, type ContentFolder, type ContentProvider, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { getProvider, navigateToPath, type ContentProvider, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
@@ -28,15 +28,11 @@ interface Props {
   ministryId?: string;
 }
 
-// Helper to create a venue folder for the provider
-function createVenueFolder(venueId: string): ContentFolder {
-  return {
-    type: "folder",
-    id: venueId,
-    title: "",
-    isLeaf: true,
-    providerData: { level: "playlist", venueId }
-  };
+// Helper to create a venue path for the provider
+function createVenuePath(venueId: string): string {
+  // LessonsChurch expects path: /lessons/{programId}/{studyId}/{lessonId}/{venueId}
+  // Use placeholders for unknown segments - the provider extracts venueId from segment 4
+  return `/lessons/_/_/_/${venueId}`;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -134,8 +130,8 @@ export const PlanItem = React.memo((props: Props) => {
         actions = matchingSection?.actions || [];
       } else {
         // Use ContentProviderHelper
-        const venueFolder = createVenueFolder(props.associatedVenueId);
-        const instructions = await provider.getInstructions(venueFolder);
+        const venuePath = createVenuePath(props.associatedVenueId);
+        const instructions = await provider.getInstructions(venuePath);
 
         if (instructions) {
           // Find the section matching this plan item's relatedId
