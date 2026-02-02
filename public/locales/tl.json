@@ -388,6 +388,7 @@
       "checkNum": "Tseke #",
       "date": "Petsa",
       "fund": "Pondo",
+      "inKind": "Sa Anyong Gamit",
       "lastDig": "Huling 4 na numero",
       "method": "Paraan"
     },
@@ -1889,7 +1890,7 @@
         "home": "Bahay"
       },
       "sidebarTabs": {
-        "title": "Mga Tab sa Sidebar",
+        "title": "Mga Tab ng Nilalaman",
         "add": "Magdagdag"
       },
       "serviceEdit": {

@@ -155,7 +155,7 @@ export const BatchGivingStatementsPage = () => {
       const csvContent = csvRows.join("\n");
       const lastName = person?.name?.last || "Unknown";
       const firstName = person?.name?.first || "Unknown";
-      const filename = `${lastName}_${firstName}_${selectedYear}_donations.csv`.replace(/[^a-zA-Z0-9_-]/g, "_");
+      const filename = `${lastName}_${firstName}_${selectedYear}_donations.csv`.replace(/[^a-zA-Z0-9_.-]/g, "_");
 
       zip.file(filename, csvContent);
     });

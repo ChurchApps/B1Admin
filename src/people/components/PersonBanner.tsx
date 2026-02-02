@@ -1,13 +1,13 @@
 import { type PersonInterface, type FormInterface } from "@churchapps/helpers";
-import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar } from "@churchapps/apphelper";
-import { Typography, IconButton, Stack } from "@mui/material";
+import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
+import { Typography, IconButton, Stack, Chip } from "@mui/material";
 import {
   Edit as EditIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
   Home as HomeIcon,
 } from "@mui/icons-material";
-import React, { memo, useMemo } from "react";
+import React, { memo, useMemo, useState, useEffect } from "react";
 import { StatusChip } from "../../components";
 
 interface Props {
@@ -20,6 +20,18 @@ export const PersonBanner = memo((props: Props) => {
   const {
     person, togglePhotoEditor, onEdit
   } = props;
+
+  const [userEmail, setUserEmail] = useState<string>("");
+
+  useEffect(() => {
+    if (person?.id) {
+      ApiHelper.get("/userchurch/personid/" + person.id, "MembershipApi")
+        .then((data: { email: string } | null) => {
+          setUserEmail(data?.email || "");
+        })
+        .catch(() => setUserEmail(""));
+    }
+  }, [person?.id]);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
 
@@ -107,7 +119,7 @@ export const PersonBanner = memo((props: Props) => {
                   fontSize: { xs: "1.7rem", sm: "2rem", md: "2.5rem" },
                   lineHeight: 1.1,
                 }}>
-                {person.name.display}
+                {person?.name?.display}
               </Typography>
               {canEdit && (
                 <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>
@@ -117,6 +129,14 @@ export const PersonBanner = memo((props: Props) => {
             </Stack>
             <Stack direction="row" flexWrap="wrap" gap={1}>
               {membershipStatus}
+              {userEmail && (
+                <Chip
+                  label="Has login"
+                  size="small"
+                  title={userEmail}
+                  sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "#fff" }}
+                />
+              )}
               {quickStats.map((stat) => (
                 <Typography key={`${stat.label}-${stat.value}`} variant="body2" sx={{ color: "#FFF", opacity: 0.9 }}>
                   {stat.value}

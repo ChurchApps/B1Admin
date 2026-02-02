@@ -1,8 +1,8 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useMemo, useState, useEffect } from "react";
 import { AssociatedForms } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
-import { PersonHelper, Loading, DisplayBox, DateHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Grid, Icon, Table, TableBody, TableRow, TableCell } from "@mui/material";
+import { PersonHelper, Loading, DisplayBox, DateHelper, Locale, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
+import { Grid, Icon, Table, TableBody, TableRow, TableCell, Chip } from "@mui/material";
 import { formattedPhoneNumber } from "./PersonEdit";
 
 interface Props {
@@ -13,6 +13,18 @@ interface Props {
 }
 
 export const PersonView = memo(({ person, editFunction, updatedFunction }: Props) => {
+  const [userEmail, setUserEmail] = useState<string>("");
+
+  useEffect(() => {
+    if (person?.id) {
+      ApiHelper.get("/userchurch/personid/" + person.id, "MembershipApi")
+        .then((data: { email: string } | null) => {
+          setUserEmail(data?.email || "");
+        })
+        .catch(() => setUserEmail(""));
+    }
+  }, [person?.id]);
+
   const leftAttributes = useMemo(() => {
     if (!person) return [];
 
@@ -183,7 +195,14 @@ export const PersonView = memo(({ person, editFunction, updatedFunction }: Props
         <Grid size={{ xs: 9 }}>
           <h2>{person?.name.display}</h2>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>{leftAttributes}</Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              {leftAttributes}
+              {userEmail && (
+                <div key="hasLogin">
+                  <Chip label={"Has login: " + userEmail} size="small" color="primary" icon={<Icon>person</Icon>} />
+                </div>
+              )}
+            </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <Table className="contactTable">
                 <TableBody>{contactMethods}</TableBody>
@@ -193,7 +212,7 @@ export const PersonView = memo(({ person, editFunction, updatedFunction }: Props
         </Grid>
       </Grid>
     );
-  }, [person, leftAttributes, contactMethods]);
+  }, [person, leftAttributes, contactMethods, userEmail]);
 
   return (
     <DisplayBox

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { type GroupInterface, type PersonInterface, type SessionInterface } from "@churchapps/helpers";
-import { PersonHelper } from "@churchapps/apphelper";
+import { PersonHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Grid } from "@mui/material";
 import { PersonAddAdvanced } from "../../people/components/PersonAddAdvanced";
 import { GroupSessions } from "./GroupSessions";
@@ -66,7 +66,7 @@ export const GroupSessionsTab = (props: Props) => {
         <Grid size={{ xs: 12, md: 4 }}>
           {addSessionVisible && <SessionAdd key="sessionAdd" group={props.group} updatedFunction={handleSessionAdd} />}
           {editSessionVisible && editingSession && <SessionEdit key="sessionEdit" group={props.group} session={editingSession} updatedFunction={handleSessionUpdated} />}
-          {!addSessionVisible && !editSessionVisible && (
+          {!addSessionVisible && !editSessionVisible && UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit) && (
             <>
               <PersonAddAdvanced getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={addPerson} showCreatePersonOnNotFound />
               <MembersAdd key="membersAdd" group={props.group} addFunction={addPerson} hiddenPeople={hiddenPeople} />

@@ -388,6 +388,7 @@
       "checkNum": "Scheck #",
       "date": "Datum",
       "fund": "Fonds",
+      "inKind": "Sachspende",
       "lastDig": "Letzte 4 Ziffern",
       "method": "Methode"
     },
@@ -1882,7 +1883,7 @@
         "home": "Zuhause"
       },
       "sidebarTabs": {
-        "title": "Seitenleisten-Tabs",
+        "title": "Inhalts-Tabs",
         "add": "Hinzufügen"
       },
       "serviceEdit": {

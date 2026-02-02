@@ -36,6 +36,7 @@ export const DeviceAuthPage: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState(false);
   const [step, setStep] = React.useState<"code" | "confirm">("code");
+  const [autoSubmitted, setAutoSubmitted] = React.useState(false);
 
   // If not authenticated, redirect to login with state for return
   if (!ApiHelper.isAuthenticated) {

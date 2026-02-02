@@ -388,6 +388,7 @@
       "checkNum": "支票 #",
       "date": "日期",
       "fund": "基金",
+      "inKind": "实物捐赠",
       "lastDig": "最后 4 位数字",
       "method": "方法"
     },
@@ -2271,7 +2272,7 @@
         "home": "家庭"
       },
       "sidebarTabs": {
-        "title": "侧边栏标签",
+        "title": "内容标签",
         "add": "添加"
       },
       "serviceEdit": {

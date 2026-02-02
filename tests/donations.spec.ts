@@ -180,6 +180,7 @@ test.describe('Donations Management', () => {
       await notes.fill('Test Donation Notes');
       const amount = page.locator('input').nth(4);
       await amount.fill('20.00');
+      await page.waitForTimeout(500);
       const addBtn = page.locator('[data-testid="add-donation-submit"]');
       await addBtn.click();
 

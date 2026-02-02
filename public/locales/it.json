@@ -388,6 +388,7 @@
       "checkNum": "Assegno #",
       "date": "Data",
       "fund": "Fondo",
+      "inKind": "In Natura",
       "lastDig": "Ultime 4 cifre",
       "method": "Metodo"
     },
@@ -1889,7 +1890,7 @@
         "home": "Casa"
       },
       "sidebarTabs": {
-        "title": "Schede della Barra Laterale",
+        "title": "Schede dei Contenuti",
         "add": "Aggiungi"
       },
       "serviceEdit": {
