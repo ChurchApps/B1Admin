@@ -19,7 +19,7 @@ import {
   Link,
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
-import { Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem, type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
 
 // Generate a dot-notation path from indices array (e.g., [0, 2, 1] -> "0.2.1")
@@ -144,12 +144,15 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
 
     setLoading(true);
     try {
-      let auth = null;
-      // Only get auth for providers that require it
+      let result: Instructions | null = null;
+
+      // For providers that require auth, use the API proxy to avoid CORS issues
       if (ministryId && provider.requiresAuth) {
-        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, provId);
+        result = await ApiHelper.post("/providerProxy/getInstructions", { ministryId, providerId: provId, path }, "DoingApi");
+      } else {
+        // For providers without auth, call directly
+        result = await getProviderInstructions(provider, path, null);
       }
-      const result = await getProviderInstructions(provider, path, auth);
 
       if (result) {
         setInstructions(result);
@@ -178,12 +181,16 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
 
     setLoading(true);
     try {
-      let auth = null;
-      // Only get auth for providers that require it
+      let items: ContentItem[] = [];
+
+      // For providers that require auth, use the API proxy to avoid CORS issues
       if (ministryId && provider.requiresAuth) {
-        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
+        items = await ApiHelper.post("/providerProxy/browse", { ministryId, providerId: selectedProviderId, path: path || null }, "DoingApi");
+      } else {
+        // For providers without auth, call directly
+        items = await provider.browse(path || null, null);
       }
-      const items = await provider.browse(path || null, auth);
+
       const folders = items.filter((item): item is ContentFolder => item.type === "folder");
       const files = items.filter((item): item is ContentFile => item.type === "file");
       setCurrentItems(folders);
@@ -288,13 +295,16 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
 
     setLoading(true);
     try {
-      let auth = null;
-      // Only get auth for providers that require it
+      let items: ContentItem[] = [];
+
+      // For providers that require auth, use the API proxy to avoid CORS issues
       if (ministryId && provider.requiresAuth) {
-        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, newProviderId);
+        items = await ApiHelper.post("/providerProxy/browse", { ministryId, providerId: newProviderId, path: null }, "DoingApi");
+      } else {
+        // For providers without auth, call directly
+        items = await provider.browse(null, null);
       }
-      const items = await provider.browse(null, auth);
-      console.log(`Provider ${newProviderId} browse returned:`, items.length, "items");
+
       const folders = items.filter((item: ContentItem): item is ContentFolder => item.type === "folder");
       const files = items.filter((item: ContentItem): item is ContentFile => item.type === "file");
       setCurrentItems(folders);

@@ -277,7 +277,8 @@
 
 "@churchapps/helpers@^1.2.22", "@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5":
   version "1.2.22"
-  resolved "file:../Helpers"
+  resolved "https://registry.npmjs.org/@churchapps/helpers/-/helpers-1.2.22.tgz"
+  integrity sha512-xhSJiGhJQ3Jtjb68X7xMwQKJxJu5HY/uGqO3xvl8Mxjo4c69SkTuJvEjlvpW1J2G2hwkbUfuudDFcfMI1XjIFA==
   dependencies:
     dayjs "^1.11.18"
 

@@ -19,8 +19,8 @@ import {
   Chip,
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, Folder as FolderIcon, LinkOff as LinkOffIcon } from "@mui/icons-material";
-import { Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentFolder, type IProvider } from "@churchapps/content-provider-helper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { getProvider, getAvailableProviders, type ContentFolder, type ContentItem, type IProvider } from "@churchapps/content-provider-helper";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
@@ -67,13 +67,16 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
     }
     setLoading(true);
     try {
-      // Get auth for providers that require it
-      let auth = null;
+      let items: ContentItem[] = [];
+
+      // For providers that require auth, use the API proxy to avoid CORS issues
       if (provider.requiresAuth && ministryId) {
-        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
+        items = await ApiHelper.post("/providerProxy/browse", { ministryId, providerId: selectedProviderId, path: path || null }, "DoingApi");
+      } else {
+        // For providers without auth, call directly
+        items = await provider.browse(path || null, null);
       }
-      // Use provider.browse() with path
-      const items = await provider.browse(path || null, auth);
+
       const folders = items.filter((item): item is ContentFolder => item.type === "folder");
       setCurrentItems(folders);
     } catch (error) {
