@@ -4,6 +4,7 @@ import UserContext from "./UserContext";
 import { ApiHelper, ErrorMessages } from "@churchapps/apphelper";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Login } from "./Login";
+import { OAuthCallback } from "./oauth/OAuthCallback";
 
 import { Authenticated } from "./Authenticated";
 import { Logout } from "./Logout";
@@ -53,6 +54,7 @@ export const ControlPanel = () => {
         <Route path="/ui" element={<UI />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/oauth/callback" element={<OAuthCallback />} />
         <Route
           path="/*"
           element={

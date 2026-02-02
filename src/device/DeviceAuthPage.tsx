@@ -2,24 +2,14 @@ import React from "react";
 import { useSearchParams, Navigate, useLocation } from "react-router-dom";
 import {
   Box,
-  Card,
-  CardContent,
-  CardHeader,
   TextField,
   Button,
   Alert,
   CircularProgress,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Typography,
-  Container
+  Grid,
+  Icon
 } from "@mui/material";
-import { ApiHelper } from "@churchapps/apphelper";
-import { type LoginUserChurchInterface } from "@churchapps/helpers";
-import UserContext from "../UserContext";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { ApiHelper, UserHelper } from "@churchapps/apphelper";
 
 interface DeviceInfo {
   userCode: string;
@@ -38,10 +28,10 @@ interface ApproveResponse {
 export const DeviceAuthPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const context = React.useContext(UserContext);
-  const [userCode, setUserCode] = React.useState(searchParams.get("code") || "");
+  const initialCode = searchParams.get("code") || "";
+  const [userCode, setUserCode] = React.useState(initialCode);
   const [deviceInfo, setDeviceInfo] = React.useState<DeviceInfo | null>(null);
-  const [selectedChurchId, setSelectedChurchId] = React.useState<string>("");
+  const [clientName, setClientName] = React.useState<string>("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState(false);
@@ -53,31 +43,22 @@ export const DeviceAuthPage: React.FC = () => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  const userChurches = context?.userChurches || [];
+  // Use the already-selected church from login
+  const churchName = UserHelper.currentUserChurch?.church?.name;
 
-  // Auto-submit if code is provided in query string
-  React.useEffect(() => {
-    const codeFromUrl = searchParams.get("code");
-    if (codeFromUrl && codeFromUrl.length >= 6 && !autoSubmitted && step === "code") {
-      setAutoSubmitted(true);
-      submitCode(codeFromUrl.replace(/-/g, "").toUpperCase().slice(0, 6));
-    }
-  }, [searchParams, autoSubmitted, step]);
-
-  const submitCode = async (code: string) => {
+  const verifyCode = async (code: string) => {
     setLoading(true);
     setError(null);
 
     try {
-      const result = await ApiHelper.get(`/oauth/device/pending/${code}`, "MembershipApi");
+      // Normalize code (remove hyphens, uppercase)
+      const normalizedCode = code.replace(/-/g, "").toUpperCase();
+
+      const result = await ApiHelper.get(`/oauth/device/pending/${normalizedCode}`, "MembershipApi");
 
       if (result && !result.error) {
         setDeviceInfo(result);
         setStep("confirm");
-        // Auto-select church if only one
-        if (userChurches.length === 1) {
-          setSelectedChurchId(userChurches[0].church.id);
-        }
       } else {
         setError("Invalid or expired code. Please check and try again.");
       }
@@ -88,25 +69,44 @@ export const DeviceAuthPage: React.FC = () => {
     }
   };
 
+  // Auto-submit code if passed via query string
+  React.useEffect(() => {
+    if (initialCode && initialCode.length >= 6 && !deviceInfo && !loading) {
+      verifyCode(initialCode);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch client name when device info is available
+  React.useEffect(() => {
+    if (deviceInfo?.clientId) {
+      ApiHelper.get(`/oauth/clients/clientId/${deviceInfo.clientId}`, "MembershipApi").then((client: { name?: string }) => {
+        if (client?.name) setClientName(client.name);
+      });
+    }
+  }, [deviceInfo?.clientId]);
+
   const handleCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const normalizedCode = userCode.replace(/-/g, "").toUpperCase();
-    await submitCode(normalizedCode);
+    await verifyCode(userCode);
   };
 
   const handleApprove = async () => {
-    if (!selectedChurchId) {
-      setError("Please select a church");
+    const churchId = UserHelper.currentUserChurch?.church?.id;
+    if (!churchId) {
+      setError("No church selected. Please log in again and select a church.");
       return;
     }
 
     setLoading(true);
     setError(null);
 
+    // Normalize code to match what was sent during verification
+    const normalizedCode = userCode.replace(/-/g, "").toUpperCase();
+
     try {
       const result: ApproveResponse = await ApiHelper.post("/oauth/device/approve", {
-        user_code: userCode,
-        church_id: selectedChurchId
+        user_code: normalizedCode,
+        church_id: churchId
       }, "MembershipApi");
 
       if (result.success) {
@@ -115,6 +115,7 @@ export const DeviceAuthPage: React.FC = () => {
         setError(result.message || "Failed to authorize device");
       }
     } catch (err) {
+      console.error("Device approval error:", err);
       setError("Authorization failed. Please try again.");
     } finally {
       setLoading(false);
@@ -140,40 +141,29 @@ export const DeviceAuthPage: React.FC = () => {
     setError(null);
   };
 
-  if (success) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 5 }}>
-        <Card>
-          <CardContent sx={{ textAlign: "center", py: 5 }}>
-            <CheckCircleIcon sx={{ fontSize: 64, color: "success.main", mb: 2 }} />
-            <Typography variant="h5" gutterBottom>
-              Device Authorized!
-            </Typography>
-            <Typography color="text.secondary">
-              You can now return to your TV. The device will connect automatically.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Container>
-    );
-  }
+  const renderContent = () => {
+    if (success) {
+      return (
+        <>
+          <div style={{ textAlign: "center" }}>
+            <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--success-main, #4caf50)" }}>check_circle</Icon>
+            <h2>Device Authorized!</h2>
+            <p>You can now return to your TV. The device will connect automatically.</p>
+          </div>
+        </>
+      );
+    }
 
-  return (
-    <Container maxWidth="sm" sx={{ py: 5 }}>
-      <Card>
-        <CardHeader title="Authorize Device" />
-        <CardContent>
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-
-          {step === "code" && (
+    if (step === "code") {
+      return (
+        <>
+          <div style={{ textAlign: "center" }}>
+            <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--text-muted)" }}>tv</Icon>
+            <h2>Authorize Device</h2>
+            <p>Enter the code displayed on your TV:</p>
+          </div>
+          <div style={{ marginLeft: 50, marginRight: 50 }}>
             <Box component="form" onSubmit={handleCodeSubmit}>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Enter the code displayed on your TV:
-              </Typography>
               <TextField
                 fullWidth
                 value={userCode}
@@ -191,87 +181,114 @@ export const DeviceAuthPage: React.FC = () => {
                 autoFocus
                 sx={{ mb: 2 }}
               />
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                disabled={loading || userCode.length < 6}
-              >
-                {loading ? <CircularProgress size={24} /> : "Continue"}
-              </Button>
-            </Box>
-          )}
-
-          {step === "confirm" && deviceInfo && (
-            <>
-              <Alert severity="info" sx={{ mb: 2 }}>
-                <Typography variant="body2">
-                  <strong>Authorizing device code:</strong> {deviceInfo.userCode}
-                </Typography>
-                <Typography variant="caption">
-                  Expires in {Math.floor(deviceInfo.expiresIn / 60)} minutes
-                </Typography>
-              </Alert>
-
-              {userChurches.length > 1 ? (
-                <FormControl fullWidth sx={{ mb: 2 }}>
-                  <InputLabel id="church-select-label">Select Church</InputLabel>
-                  <Select
-                    labelId="church-select-label"
-                    value={selectedChurchId}
-                    label="Select Church"
-                    onChange={(e) => setSelectedChurchId(e.target.value)}
-                  >
-                    {userChurches.map((uc: LoginUserChurchInterface) => (
-                      <MenuItem key={uc.church.id} value={uc.church.id}>
-                        {uc.church.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              ) : userChurches.length === 1 && (
-                <Typography variant="body2" sx={{ mb: 2 }}>
-                  <strong>Church:</strong> {userChurches[0].church.name}
-                </Typography>
+              {error && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                  {error}
+                </Alert>
               )}
+            </Box>
+          </div>
+          <Box sx={{ backgroundColor: "action.hover", padding: "10px" }}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleCodeSubmit}
+              disabled={loading || userCode.length < 6}
+            >
+              {loading ? <CircularProgress size={24} /> : "Continue"}
+            </Button>
+          </Box>
+        </>
+      );
+    }
 
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="body2" fontWeight="bold">
-                  Requested Permissions:
-                </Typography>
-                <Box component="ul" sx={{ m: 0, pl: 2 }}>
-                  {deviceInfo.scopes.split(" ").map((scope) => (
-                    <li key={scope}>
-                      <Typography variant="body2">{scope}</Typography>
-                    </li>
-                  ))}
-                </Box>
-              </Box>
-
-              <Box sx={{ display: "flex", gap: 1 }}>
+    if (step === "confirm" && deviceInfo) {
+      return (
+        <>
+          <div style={{ textAlign: "center" }}>
+            <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--text-muted)" }}>lock</Icon>
+            <h2>{clientName || "Loading..."}</h2>
+            <p>
+              Would you like to access the following data from <b>{churchName}</b> in the above application?
+            </p>
+          </div>
+          <div style={{ marginLeft: 50, marginRight: 50 }}>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.9em" }}>
+              Device code: <strong>{deviceInfo.userCode}</strong>
+              <br />
+              <span style={{ fontSize: "0.85em" }}>Expires in {Math.floor(deviceInfo.expiresIn / 60)} minutes</span>
+            </p>
+            <p><strong>Requested Permissions:</strong></p>
+            <ul>
+              {deviceInfo.scopes.split(" ").map((scope) => (
+                <li key={scope}>{scope}</li>
+              ))}
+            </ul>
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+          </div>
+          <Box sx={{ backgroundColor: "action.hover", padding: "10px" }}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
                 <Button
+                  fullWidth
                   variant="contained"
-                  color="success"
-                  sx={{ flex: 1 }}
-                  onClick={handleApprove}
-                  disabled={loading || !selectedChurchId}
-                >
-                  {loading ? <CircularProgress size={24} /> : "Authorize Device"}
-                </Button>
-                <Button
-                  variant="outlined"
                   color="error"
                   onClick={handleDeny}
                   disabled={loading}
                 >
                   Deny
                 </Button>
-              </Box>
-            </>
-          )}
-        </CardContent>
-      </Card>
-    </Container>
+              </Grid>
+              <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={handleApprove}
+                  disabled={loading}
+                >
+                  {loading ? <CircularProgress size={24} /> : "Allow"}
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <Box sx={{ display: "flex", backgroundColor: "background.default", minHeight: "100vh" }}>
+      <div style={{ marginLeft: "auto", marginRight: "auto", paddingTop: 20 }}>
+        <Box
+          sx={{
+            width: 500,
+            minHeight: 100,
+            backgroundColor: "background.paper",
+            border: "1px solid var(--border-main)",
+            borderRadius: "5px",
+            padding: "10px",
+          }}
+          px="16px"
+          mx="auto"
+        >
+          <div style={{ textAlign: "center", margin: 50 }}>
+            <img src={"/images/logo-login.png"} alt="logo" />
+          </div>
+          <Alert severity="info" style={{ fontWeight: "bold" }}>
+            {success ? "DEVICE AUTHORIZED" : "AUTHORIZATION REQUIRED"}
+          </Alert>
+          {renderContent()}
+        </Box>
+      </div>
+    </Box>
   );
 };
 

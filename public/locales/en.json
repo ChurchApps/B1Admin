@@ -204,6 +204,7 @@
     "sermons": "Sermons",
     "title": "Title",
     "top": "Top",
+    "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
     "yes": "Yes"
@@ -1174,21 +1175,47 @@
       "addFromLesson": "Add from Associated Lesson",
       "addLesson": "Add Lesson",
       "associateLesson": "Associate Lesson",
+      "browseOtherProviders": "Browse Other Providers",
+      "contentProvider": "Content Provider",
       "externalProvider": "External Provider",
       "lesson": "Lesson",
       "lessonSource": "Lesson Source",
       "lessonsChurch": "Lessons.church",
+      "linkProviderFirst": "Link this provider first to browse content",
       "program": "Program",
       "provider": "Provider",
+      "providerNotLinked": "Provider Not Linked",
       "study": "Study",
       "usingAssociatedLesson": "Using associated lesson:",
       "venue": "Venue"
     },
+    "contentProviderAuth": {
+      "title": "Content Providers",
+      "description": "Link your accounts to import content from external providers",
+      "noProvidersAvailable": "No content providers available",
+      "linked": "Linked",
+      "notLinked": "Not Linked",
+      "linkNew": "Link New Provider",
+      "noLinked": "No providers linked",
+      "noLinkedDescription": "Link a content provider to access their content in your service plans.",
+      "selectProvider": "Link Content Provider",
+      "refresh": "Refresh",
+      "unlink": "Unlink",
+      "link": "Link",
+      "linkAccount": "Link Account",
+      "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
+      "waitingForAuth": "Waiting for authorization...",
+      "pkceInstructions": "Click the button below to authorize in a popup window:",
+      "pkceWaiting": "Waiting for authorization in popup...",
+      "success": "Successfully linked!",
+      "errorGeneric": "Failed to link provider. Please try again.",
+      "confirmUnlink": "Are you sure you want to unlink this provider?"
+    },
     "planItem": {
       "addOn": "Add-On",
       "expandToActions": "Expand to Actions",
+      "externalItem": "External Item",
       "item": "Item",
-      "lessonAction": "Lesson Action",
       "song": "Song"
     },
     "planItemEdit": {
@@ -1204,9 +1231,13 @@
     },
     "actionSelector": {
       "action": "Action",
+      "addAction": "Add Action",
+      "addSection": "Add Section",
       "fromAssociatedLesson": "From associated lesson:",
+      "noActionsAvailable": "No actions available",
       "section": "Section",
-      "selectAction": "Select Action"
+      "selectAction": "Select Action",
+      "selectExternalItem": "Select External Item"
     },
     "addOnSelector": {
       "category": "Category",

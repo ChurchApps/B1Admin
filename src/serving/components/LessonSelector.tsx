@@ -1,366 +1,383 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import {
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Stack,
   Typography,
   Box,
-  ToggleButtonGroup,
-  ToggleButton,
+  CircularProgress,
+  IconButton,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+  Breadcrumbs,
+  Link,
+  Chip,
 } from "@mui/material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { type ExternalProviderInterface, type ExternalVenueRefInterface } from "../../helpers";
+import { ArrowBack as ArrowBackIcon, Folder as FolderIcon, LinkOff as LinkOffIcon } from "@mui/icons-material";
+import { Locale } from "@churchapps/apphelper";
+import { getProvider, getAvailableProviders, type ContentFolder, type IProvider } from "@churchapps/content-provider-helper";
+import { type ContentProviderAuthInterface } from "../../helpers";
+import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (venueId: string, venueName?: string, externalRef?: ExternalVenueRefInterface) => void;
-  venueId?: string;
+  onSelect: (contentId: string, contentName?: string, contentPath?: string, providerId?: string) => void;
   returnVenueName?: boolean;
+  ministryId?: string;
+  defaultProviderId?: string;
 }
 
-export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, venueId, returnVenueName }) => {
-  const [lessonTree, setLessonTree] = useState<any>({});
-  const [selectedProgram, setSelectedProgram] = useState<string>("");
-  const [selectedStudy, setSelectedStudy] = useState<string>("");
-  const [selectedLesson, setSelectedLesson] = useState<string>("");
-  const [selectedVenue, setSelectedVenue] = useState<string>("");
-  const [venueInfo, setVenueInfo] = useState<any>(null);
+export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, returnVenueName, ministryId, defaultProviderId }) => {
+  // Provider selection
+  const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "lessonschurch");
+  const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
+  const [showAllProviders, setShowAllProviders] = useState(false);
 
-  // External provider state
-  const [providerType, setProviderType] = useState<"internal" | "external">("internal");
-  const [externalProviders, setExternalProviders] = useState<ExternalProviderInterface[]>([]);
-  const [selectedProvider, setSelectedProvider] = useState<ExternalProviderInterface | null>(null);
+  const provider = useMemo<IProvider | null>(() => {
+    return getProvider(selectedProviderId);
+  }, [selectedProviderId]);
 
-  const loadLessonTree = useCallback(async () => {
-    // If venueId is provided, skip loading the tree
-    if (venueId) {
-      try {
-        const venueData = await ApiHelper.getAnonymous("/venues/public/" + venueId, "LessonsApi");
-        setVenueInfo(venueData);
-      } catch (error) {
-        console.error("Error loading venue info:", error);
-      }
+  const availableProviders = useMemo(() => getAvailableProviders(), []);
+
+  // Path-based navigation
+  const [currentPath, setCurrentPath] = useState<string>("");
+  const [breadcrumbTitles, setBreadcrumbTitles] = useState<string[]>([]);
+  const [currentItems, setCurrentItems] = useState<ContentFolder[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // Selected folder (final selection)
+  const [selectedFolder, setSelectedFolder] = useState<ContentFolder | null>(null);
+
+  // Check if a folder is the final level (provider sets isLeaf: true)
+  const isLeafFolder = useCallback((folder: ContentFolder): boolean => {
+    return !!folder.isLeaf;
+  }, []);
+
+  // Load content for a given path (or root if empty)
+  const loadContent = useCallback(async (path: string) => {
+    if (!provider) {
+      setCurrentItems([]);
       return;
     }
-
+    setLoading(true);
     try {
-      const data = await ApiHelper.getAnonymous("/lessons/public/tree", "LessonsApi");
-      setLessonTree(data || {});
-
-      // Auto-select defaults
-      if (data?.programs?.length > 0) {
-        const firstProgram = data.programs[0];
-        setSelectedProgram(firstProgram.id);
-
-        if (firstProgram.studies?.length > 0) {
-          const firstStudy = firstProgram.studies[0];
-          setSelectedStudy(firstStudy.id);
-
-          if (firstStudy.lessons?.length > 0) {
-            const firstLesson = firstStudy.lessons[0];
-            setSelectedLesson(firstLesson.id);
-
-            if (firstLesson.venues?.length > 0) {
-              setSelectedVenue(firstLesson.venues[0].id);
-            }
-          }
-        }
+      // Get auth for providers that require it
+      let auth = null;
+      if (provider.requiresAuth && ministryId) {
+        auth = await ContentProviderAuthHelper.getValidAuth(ministryId, selectedProviderId);
       }
+      // Use provider.browse() with path
+      const items = await provider.browse(path || null, auth);
+      const folders = items.filter((item): item is ContentFolder => item.type === "folder");
+      setCurrentItems(folders);
     } catch (error) {
-      console.error("Error loading lesson tree:", error);
-      setLessonTree({});
+      console.error("Error loading content:", error);
+      setCurrentItems([]);
+    } finally {
+      setLoading(false);
     }
-  }, [venueId]);
+  }, [provider, ministryId, selectedProviderId]);
 
-  const loadExternalProviders = useCallback(async () => {
+  // Handle folder click - either navigate into it or select it (if leaf)
+  const handleFolderClick = useCallback((folder: ContentFolder) => {
+    if (isLeafFolder(folder)) {
+      // This is a leaf folder - select it
+      setSelectedFolder(folder);
+    } else {
+      // Navigate into the folder using its path
+      setSelectedFolder(null);
+      setCurrentPath(folder.path);
+      setBreadcrumbTitles(prev => [...prev, folder.title]);
+      loadContent(folder.path);
+    }
+  }, [isLeafFolder, loadContent]);
+
+  // Handle back navigation
+  const handleBack = useCallback(() => {
+    setSelectedFolder(null);
+    if (currentPath) {
+      // Remove last segment from path
+      const segments = currentPath.split("/").filter(Boolean);
+      segments.pop();
+      const newPath = segments.length > 0 ? "/" + segments.join("/") : "";
+      setCurrentPath(newPath);
+      // Remove last breadcrumb title
+      setBreadcrumbTitles(prev => prev.slice(0, -1));
+      loadContent(newPath);
+    }
+  }, [currentPath, loadContent]);
+
+  // Handle breadcrumb click
+  const handleBreadcrumbClick = useCallback((index: number) => {
+    setSelectedFolder(null);
+    if (index < 0) {
+      // Root clicked - go back to root
+      setCurrentPath("");
+      setBreadcrumbTitles([]);
+      loadContent("");
+    } else {
+      // Navigate to specific level by rebuilding path from segments
+      const segments = currentPath.split("/").filter(Boolean);
+      const newSegments = segments.slice(0, index + 1);
+      const newPath = "/" + newSegments.join("/");
+      setCurrentPath(newPath);
+      setBreadcrumbTitles(prev => prev.slice(0, index + 1));
+      loadContent(newPath);
+    }
+  }, [currentPath, loadContent]);
+
+  // Load linked providers for the ministry
+  const loadLinkedProviders = useCallback(async () => {
+    if (!ministryId) {
+      setLinkedProviders([]);
+      return;
+    }
     try {
-      const providers = await ApiHelper.get("/externalProviders", "LessonsApi");
-      setExternalProviders(providers || []);
+      const linked = await ContentProviderAuthHelper.getLinkedProviders(ministryId);
+      setLinkedProviders(linked || []);
     } catch (error) {
-      console.error("Error loading external providers:", error);
-      setExternalProviders([]);
+      console.error("Error loading linked providers:", error);
+      setLinkedProviders([]);
     }
+  }, [ministryId]);
+
+  // Handle content provider selection change
+  const handleContentProviderChange = useCallback((providerId: string) => {
+    setSelectedProviderId(providerId);
+    setCurrentPath("");
+    setBreadcrumbTitles([]);
+    setCurrentItems([]);
+    setSelectedFolder(null);
+    // Content will reload via useEffect when provider changes
   }, []);
 
-  const loadExternalLessonTree = useCallback(async (provider: ExternalProviderInterface) => {
-    if (!provider?.apiUrl) return;
-    try {
-      const response = await fetch(provider.apiUrl);
-      const data = await response.json();
-      setLessonTree(data || {});
-      autoSelectDefaults(data);
-    } catch (error) {
-      console.error("Error loading external lesson tree:", error);
-      setLessonTree({});
-    }
-  }, []);
-
-  const autoSelectDefaults = (data: any) => {
-    if (data?.programs?.length > 0) {
-      const firstProgram = data.programs[0];
-      setSelectedProgram(firstProgram.id);
-      if (firstProgram.studies?.length > 0) {
-        const firstStudy = firstProgram.studies[0];
-        setSelectedStudy(firstStudy.id);
-        if (firstStudy.lessons?.length > 0) {
-          const firstLesson = firstStudy.lessons[0];
-          setSelectedLesson(firstLesson.id);
-          if (firstLesson.venues?.length > 0) {
-            setSelectedVenue(firstLesson.venues[0].id);
-          }
-        }
-      }
-    }
-  };
-
-  const handleProviderTypeChange = useCallback((newType: "internal" | "external") => {
-    setProviderType(newType);
-    setSelectedProvider(null);
-    setLessonTree({});
-    setSelectedProgram("");
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
-    if (newType === "internal") {
-      loadLessonTree();
-    }
-  }, [loadLessonTree]);
-
-  const handleProviderChange = useCallback((providerId: string) => {
-    const provider = externalProviders.find(p => p.id === providerId);
-    setSelectedProvider(provider || null);
-    setSelectedProgram("");
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
-    if (provider) {
-      loadExternalLessonTree(provider);
-    }
-  }, [externalProviders, loadExternalLessonTree]);
-
-  const getCurrentProgram = useCallback(() => {
-    return lessonTree?.programs?.find((p: any) => p.id === selectedProgram);
-  }, [lessonTree, selectedProgram]);
-
-  const getCurrentStudy = useCallback(() => {
-    const program = getCurrentProgram();
-    return program?.studies?.find((s: any) => s.id === selectedStudy);
-  }, [getCurrentProgram, selectedStudy]);
-
-  const getCurrentLesson = useCallback(() => {
-    const study = getCurrentStudy();
-    return study?.lessons?.find((l: any) => l.id === selectedLesson);
-  }, [getCurrentStudy, selectedLesson]);
-
-  const handleProgramChange = useCallback((programId: string) => {
-    setSelectedProgram(programId);
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
-  }, []);
-
-  const handleStudyChange = useCallback((studyId: string) => {
-    setSelectedStudy(studyId);
-    setSelectedLesson("");
-    setSelectedVenue("");
-  }, []);
-
-  const handleLessonChange = useCallback((lessonId: string) => {
-    setSelectedLesson(lessonId);
-    setSelectedVenue("");
-  }, []);
-
-  const handleVenueChange = useCallback((venueId: string) => {
-    setSelectedVenue(venueId);
-  }, []);
-
+  // Handle final selection
   const handleSelect = useCallback(() => {
-    if (venueId) {
-      // Use the pre-associated venue
-      onSelect(venueId, venueInfo?.name);
-      onClose();
-    } else if (selectedVenue) {
-      const currentLessonData = getCurrentLesson();
-      const selectedVenueData = currentLessonData?.venues?.find((v: any) => v.id === selectedVenue);
-      const venueName = returnVenueName ? selectedVenueData?.name : undefined;
-
-      if (providerType === "external" && selectedProvider) {
-        // Create external venue reference
-        const externalRef: ExternalVenueRefInterface = {
-          externalProviderId: selectedProvider.id!,
-          programId: selectedProgram,
-          studyId: selectedStudy,
-          lessonId: selectedLesson,
-          venueId: selectedVenue
-        };
-        onSelect(selectedVenue, venueName, externalRef);
-      } else {
-        onSelect(selectedVenue, venueName);
-      }
+    if (selectedFolder) {
+      const folderName = returnVenueName ? selectedFolder.title : undefined;
+      onSelect(selectedFolder.id, folderName, selectedFolder.path, selectedProviderId);
       onClose();
     }
-  }, [venueId, venueInfo, selectedVenue, getCurrentLesson, returnVenueName, onSelect, onClose, providerType, selectedProvider, selectedProgram, selectedStudy, selectedLesson]);
+  }, [selectedFolder, returnVenueName, onSelect, onClose, selectedProviderId]);
 
+  // Handle dialog close
   const handleClose = useCallback(() => {
-    setSelectedProgram("");
-    setSelectedStudy("");
-    setSelectedLesson("");
-    setSelectedVenue("");
-    setVenueInfo(null);
-    setProviderType("internal");
-    setSelectedProvider(null);
-    setLessonTree({});
+    setCurrentPath("");
+    setBreadcrumbTitles([]);
+    setCurrentItems([]);
+    setSelectedFolder(null);
+    setShowAllProviders(false);
+    if (defaultProviderId) {
+      setSelectedProviderId(defaultProviderId);
+    }
     onClose();
-  }, [onClose]);
+  }, [onClose, defaultProviderId]);
 
+  // Load initial content when dialog opens
   useEffect(() => {
     if (open) {
-      loadLessonTree();
-      loadExternalProviders();
+      loadContent("");
+      loadLinkedProviders();
     }
-  }, [open, loadLessonTree, loadExternalProviders]);
+  }, [open, loadContent, loadLinkedProviders]);
 
-  const currentProgram = getCurrentProgram();
-  const currentStudy = getCurrentStudy();
-  const currentLesson = getCurrentLesson();
+  // Reload content when provider changes
+  useEffect(() => {
+    if (open && provider) {
+      loadContent("");
+    }
+  }, [open, provider, selectedProviderId]);
 
-  // If venueId is provided, show simplified view
-  if (venueId) {
-    return (
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>{Locale.label("plans.lessonSelector.addFromLesson") || "Add from Associated Lesson"}</DialogTitle>
-        <DialogContent>
-          <Box sx={{ py: 2 }}>
-            <Typography variant="body1">
-              {Locale.label("plans.lessonSelector.usingAssociatedLesson") || "Using associated lesson:"}
-            </Typography>
-            <Typography variant="h6" sx={{ mt: 1, color: "primary.main" }}>
-              {venueInfo?.name || "Loading..."}
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
-          <Button onClick={handleSelect} disabled={!venueInfo} variant="contained">
-            {Locale.label("plans.lessonSelector.addLesson") || "Add Lesson"}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
+  // Get current provider info
+  const currentProviderInfo = useMemo(() => {
+    return availableProviders.find(p => p.id === selectedProviderId);
+  }, [availableProviders, selectedProviderId]);
+
+  // Check if current provider is linked
+  const isCurrentProviderLinked = useMemo(() => {
+    // Lessons.church doesn't require auth
+    if (selectedProviderId === "lessonschurch") return true;
+    return linkedProviders.some(lp => lp.providerId === selectedProviderId);
+  }, [linkedProviders, selectedProviderId]);
+
+  // Build breadcrumb items
+  const breadcrumbItems = useMemo(() => {
+    const providerName = currentProviderInfo?.name || selectedProviderId;
+    const items: { label: string; onClick?: () => void }[] = [
+      { label: providerName, onClick: () => handleBreadcrumbClick(-1) }
+    ];
+    breadcrumbTitles.forEach((title, index) => {
+      items.push({ label: title, onClick: () => handleBreadcrumbClick(index) });
+    });
+    return items;
+  }, [breadcrumbTitles, handleBreadcrumbClick, currentProviderInfo, selectedProviderId]);
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{Locale.label("plans.lessonSelector.associateLesson")}</DialogTitle>
+    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+      <DialogTitle>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {currentPath && (
+            <IconButton onClick={handleBack} size="small">
+              <ArrowBackIcon />
+            </IconButton>
+          )}
+          <span>{Locale.label("plans.lessonSelector.associateLesson")}</span>
+        </Stack>
+      </DialogTitle>
       <DialogContent>
-        <Stack spacing={3} sx={{ mt: 1 }}>
-          {externalProviders.length > 0 && (
-            <Box>
-              <Typography variant="body2" sx={{ mb: 1 }}>{Locale.label("plans.lessonSelector.lessonSource") || "Lesson Source"}</Typography>
-              <ToggleButtonGroup
-                value={providerType}
-                exclusive
-                onChange={(_, value) => value && handleProviderTypeChange(value)}
-                size="small"
-                fullWidth
-              >
-                <ToggleButton value="internal">{Locale.label("plans.lessonSelector.lessonsChurch") || "Lessons.church"}</ToggleButton>
-                <ToggleButton value="external">{Locale.label("plans.lessonSelector.externalProvider") || "External Provider"}</ToggleButton>
-              </ToggleButtonGroup>
+        <Stack spacing={2} sx={{ mt: 1 }}>
+          {/* Content Provider Selector */}
+          <Box>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
+              <Typography variant="body2" color="text.secondary">
+                {Locale.label("plans.lessonSelector.contentProvider") || "Content Provider"}
+              </Typography>
+              {!showAllProviders && (
+                <Button size="small" onClick={() => setShowAllProviders(true)}>
+                  {Locale.label("plans.lessonSelector.browseOtherProviders") || "Browse Other Providers"}
+                </Button>
+              )}
+            </Stack>
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+              {(showAllProviders ? availableProviders : availableProviders.filter(p =>
+                p.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === p.id)
+              )).map((providerInfo) => {
+                const isLinked = providerInfo.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === providerInfo.id);
+                return (
+                  <Chip
+                    key={providerInfo.id}
+                    label={providerInfo.name}
+                    onClick={() => handleContentProviderChange(providerInfo.id)}
+                    color={selectedProviderId === providerInfo.id ? "primary" : "default"}
+                    variant={selectedProviderId === providerInfo.id ? "filled" : "outlined"}
+                    icon={!isLinked ? <LinkOffIcon /> : undefined}
+                    sx={{ opacity: isLinked ? 1 : 0.6 }}
+                  />
+                );
+              })}
+            </Box>
+            {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth && (
+              <Typography variant="caption" color="warning.main" sx={{ mt: 1, display: "block" }}>
+                {Locale.label("plans.lessonSelector.providerNotLinked") || "This provider is not linked. Please link it in ministry settings to access content."}
+              </Typography>
+            )}
+          </Box>
+
+          {/* Breadcrumb navigation */}
+          <Breadcrumbs aria-label="breadcrumb">
+            {breadcrumbItems.map((item, index) => (
+              index === breadcrumbItems.length - 1 ? (
+                <Typography key={index} color="text.primary">{item.label}</Typography>
+              ) : (
+                <Link
+                  key={index}
+                  component="button"
+                  variant="body2"
+                  onClick={item.onClick}
+                  underline="hover"
+                  color="inherit"
+                >
+                  {item.label}
+                </Link>
+              )
+            ))}
+          </Breadcrumbs>
+
+          {/* Content grid */}
+          {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth ? (
+            <Box sx={{ textAlign: "center", py: 4 }}>
+              <Typography color="text.secondary">
+                {Locale.label("plans.lessonSelector.linkProviderFirst") || "Please link this provider in ministry settings to browse content."}
+              </Typography>
+            </Box>
+          ) : loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+              <CircularProgress />
+            </Box>
+          ) : currentItems.length === 0 ? (
+            <Box sx={{ textAlign: "center", py: 4 }}>
+              <Typography color="text.secondary">No content available</Typography>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+                gap: 2,
+                maxHeight: "400px",
+                overflowY: "auto",
+                p: 1
+              }}
+            >
+              {currentItems.map((folder) => {
+                const isLeaf = isLeafFolder(folder);
+                const isSelected = selectedFolder?.id === folder.id;
+                return (
+                  <Card
+                    key={folder.id}
+                    sx={{
+                      border: isSelected ? 2 : 1,
+                      borderColor: isSelected ? "primary.main" : "divider",
+                      bgcolor: isSelected ? "action.selected" : "background.paper"
+                    }}
+                  >
+                    <CardActionArea onClick={() => handleFolderClick(folder)}>
+                      {folder.image ? (
+                        <CardMedia
+                          component="img"
+                          height="80"
+                          image={folder.image}
+                          alt={folder.title}
+                          sx={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <Box
+                          sx={{
+                            height: 80,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            bgcolor: isLeaf ? "primary.light" : "grey.200"
+                          }}
+                        >
+                          <FolderIcon sx={{ fontSize: 40, color: isLeaf ? "primary.contrastText" : "grey.500" }} />
+                        </Box>
+                      )}
+                      <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
+                        <Typography
+                          variant="body2"
+                          noWrap
+                          title={folder.title}
+                          sx={{ fontWeight: isLeaf ? 600 : 400 }}
+                        >
+                          {folder.title}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                );
+              })}
             </Box>
           )}
 
-          {providerType === "external" && (
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("plans.lessonSelector.provider") || "Provider"}</InputLabel>
-              <Select
-                value={selectedProvider?.id || ""}
-                onChange={(e) => handleProviderChange(e.target.value)}
-                label={Locale.label("plans.lessonSelector.provider") || "Provider"}
-              >
-                {externalProviders.map((provider) => (
-                  <MenuItem key={provider.id} value={provider.id}>
-                    {provider.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          {/* Selected folder indicator */}
+          {selectedFolder && (
+            <Box sx={{ p: 2, bgcolor: "action.hover", borderRadius: 1 }}>
+              <Typography variant="body2" color="text.secondary">Selected:</Typography>
+              <Typography variant="subtitle1" color="primary">{selectedFolder.title}</Typography>
+            </Box>
           )}
-
-          <FormControl fullWidth disabled={providerType === "external" && !selectedProvider}>
-            <InputLabel>{Locale.label("plans.lessonSelector.program")}</InputLabel>
-            <Select
-              value={selectedProgram}
-              onChange={(e) => handleProgramChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.program")}
-            >
-              {lessonTree?.programs?.map((program: any) => (
-                <MenuItem key={program.id} value={program.id}>
-                  {program.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth disabled={!selectedProgram}>
-            <InputLabel>{Locale.label("plans.lessonSelector.study")}</InputLabel>
-            <Select
-              value={selectedStudy}
-              onChange={(e) => handleStudyChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.study")}
-            >
-              {currentProgram?.studies?.map((study: any) => (
-                <MenuItem key={study.id} value={study.id}>
-                  {study.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth disabled={!selectedStudy}>
-            <InputLabel>{Locale.label("plans.lessonSelector.lesson")}</InputLabel>
-            <Select
-              value={selectedLesson}
-              onChange={(e) => handleLessonChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.lesson")}
-            >
-              {currentStudy?.lessons?.map((lesson: any) => (
-                <MenuItem key={lesson.id} value={lesson.id}>
-                  {lesson.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth disabled={!selectedLesson}>
-            <InputLabel>{Locale.label("plans.lessonSelector.venue")}</InputLabel>
-            <Select
-              value={selectedVenue}
-              onChange={(e) => handleVenueChange(e.target.value)}
-              label={Locale.label("plans.lessonSelector.venue")}
-            >
-              {currentLesson?.venues?.map((venue: any) => (
-                <MenuItem key={venue.id} value={venue.id}>
-                  {venue.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{Locale.label("common.cancel")}</Button>
-        <Button onClick={handleSelect} disabled={!selectedVenue} variant="contained">
+        <Button onClick={handleSelect} disabled={!selectedFolder} variant="contained">
           {Locale.label("plans.lessonSelector.associateLesson")}
         </Button>
       </DialogActions>
