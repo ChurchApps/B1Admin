@@ -163,7 +163,7 @@ export const Donations: React.FC<Props> = (props) => {
           </TableCell>
           <TableCell>
             <IconText icon={<DateIcon />} iconSize={18} iconColor="text.secondary" variant="body2">
-              {DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00"))}
+              {d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}
             </IconText>
           </TableCell>
           <TableCell>
