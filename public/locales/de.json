@@ -1044,7 +1044,8 @@
       "scheduleLesson": "Lektion planen",
       "scheduledDate": "Geplantes Datum",
       "dateRequired": "Bitte wählen Sie ein Datum",
-      "venueRequired": "Bitte wählen Sie einen Veranstaltungsort"
+      "venueRequired": "Bitte wählen Sie einen Veranstaltungsort",
+      "selectLesson": "Lektion auswählen"
     },
     "planPage": {
       "assign": "Teamzuweisungen",

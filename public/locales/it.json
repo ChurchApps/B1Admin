@@ -1044,7 +1044,8 @@
       "scheduleLesson": "Programma Lezione",
       "scheduledDate": "Data Programmata",
       "dateRequired": "Seleziona una data",
-      "venueRequired": "Seleziona una sede"
+      "venueRequired": "Seleziona una sede",
+      "selectLesson": "Seleziona Lezione"
     },
     "lessonSelector": {
       "addFromLesson": "Aggiungi dalla lezione associata",

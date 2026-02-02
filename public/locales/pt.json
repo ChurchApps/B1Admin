@@ -1044,7 +1044,8 @@
       "scheduleLesson": "Agendar Lição",
       "scheduledDate": "Data Agendada",
       "dateRequired": "Por favor, selecione uma data",
-      "venueRequired": "Por favor, selecione um local"
+      "venueRequired": "Por favor, selecione um local",
+      "selectLesson": "Selecionar Lição"
     },
     "planPage": {
       "assign": "Atribuições de Equipe",

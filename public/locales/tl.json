@@ -1044,7 +1044,8 @@
       "scheduleLesson": "Mag-iskedyul ng Aralin",
       "scheduledDate": "Naka-iskedyul na Petsa",
       "dateRequired": "Mangyaring pumili ng petsa",
-      "venueRequired": "Mangyaring pumili ng lugar"
+      "venueRequired": "Mangyaring pumili ng lugar",
+      "selectLesson": "Pumili ng Aralin"
     },
     "lessonSelector": {
       "addFromLesson": "Magdagdag mula sa nakaugnay na aralin",

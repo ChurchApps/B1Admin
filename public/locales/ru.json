@@ -1044,7 +1044,8 @@
       "scheduleLesson": "Запланировать урок",
       "scheduledDate": "Запланированная дата",
       "dateRequired": "Пожалуйста, выберите дату",
-      "venueRequired": "Пожалуйста, выберите место"
+      "venueRequired": "Пожалуйста, выберите место",
+      "selectLesson": "Выберите урок"
     },
     "lessonSelector": {
       "addFromLesson": "Добавить из связанного урока",

@@ -1073,7 +1073,8 @@
       "scheduleLesson": "Schedule Lesson",
       "scheduledDate": "Scheduled Date",
       "dateRequired": "Please select a date",
-      "venueRequired": "Please select a venue"
+      "venueRequired": "Please select a venue",
+      "selectLesson": "Select Lesson"
     },
     "planPage": {
       "assign": "Team Assignments",

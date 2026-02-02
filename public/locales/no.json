@@ -1044,7 +1044,8 @@
       "scheduleLesson": "Planlegg Leksjon",
       "scheduledDate": "Planlagt Dato",
       "dateRequired": "Vennligst velg en dato",
-      "venueRequired": "Vennligst velg et sted"
+      "venueRequired": "Vennligst velg et sted",
+      "selectLesson": "Velg Leksjon"
     },
     "lessonSelector": {
       "addFromLesson": "Legg til fra tilknyttet leksjon",

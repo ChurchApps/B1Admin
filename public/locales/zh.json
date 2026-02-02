@@ -1044,7 +1044,8 @@
       "scheduleLesson": "安排课程",
       "scheduledDate": "预定日期",
       "dateRequired": "请选择日期",
-      "venueRequired": "请选择场地"
+      "venueRequired": "请选择场地",
+      "selectLesson": "选择课程"
     },
     "lessonSelector": {
       "addFromLesson": "从关联课程添加",

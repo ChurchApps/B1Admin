@@ -1045,7 +1045,8 @@
       "scheduleLesson": "Programar Lección",
       "scheduledDate": "Fecha Programada",
       "dateRequired": "Por favor seleccione una fecha",
-      "venueRequired": "Por favor seleccione un lugar"
+      "venueRequired": "Por favor seleccione un lugar",
+      "selectLesson": "Seleccionar Lección"
     },
     "planPage": {
       "assign": "Asignaciones de Equipo",

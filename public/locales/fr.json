@@ -1044,7 +1044,8 @@
       "scheduleLesson": "Planifier une leçon",
       "scheduledDate": "Date prévue",
       "dateRequired": "Veuillez sélectionner une date",
-      "venueRequired": "Veuillez sélectionner un lieu"
+      "venueRequired": "Veuillez sélectionner un lieu",
+      "selectLesson": "Sélectionner une leçon"
     },
     "planPage": {
       "assign": "Affectations d'Équipe",
