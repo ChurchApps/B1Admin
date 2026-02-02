@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
-import { Box, Button, Card, CardContent, CircularProgress, IconButton, Stack, Typography, Avatar } from "@mui/material";
+import { Box, Button, Card, CardContent, CircularProgress, IconButton, Stack, Typography } from "@mui/material";
 import { Link as LinkIcon, LinkOff as LinkOffIcon, Refresh as RefreshIcon, Add as AddIcon } from "@mui/icons-material";
-import { useTheme } from "@mui/material/styles";
 import { Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentProvider, type DeviceAuthorizationResponse } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type IProvider, type DeviceAuthorizationResponse } from "@churchapps/content-provider-helper";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 import { ProviderSelectorModal } from "./ProviderSelectorModal";
@@ -15,9 +14,6 @@ interface Props {
 }
 
 export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuthChange }) => {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
-
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [showProviderSelector, setShowProviderSelector] = useState(false);
@@ -32,12 +28,10 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   const [codeVerifier, setCodeVerifier] = useState<string | null>(null);
   const [pkceWindow, setPkceWindow] = useState<Window | null>(null);
 
-  const availableProviders = useMemo(() => getAvailableProviders(), []);
+  const availableProviders = useMemo(() => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject"]), []);
 
   // Get implemented providers
-  const authProviders = useMemo(() => {
-    return availableProviders.filter(p => p.implemented);
-  }, [availableProviders]);
+  const authProviders = useMemo(() => availableProviders.filter(p => p.implemented), [availableProviders]);
 
   // Providers not yet linked (for modal)
   const unlinkableProviders = useMemo(() => {
@@ -97,7 +91,12 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
     setDeviceFlowData(null);
 
     try {
-      const deviceResponse = await provider.initiateDeviceFlow();
+      if (!("initiateDeviceFlow" in provider)) {
+        setAuthError("Provider does not support device flow");
+        setAuthStatus("error");
+        return;
+      }
+      const deviceResponse = await (provider as any).initiateDeviceFlow();
       if (!deviceResponse) {
         setAuthError("Failed to start device flow");
         setAuthStatus("error");
@@ -118,13 +117,14 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
   // Poll for device flow token
   const pollDeviceFlowToken = useCallback(async (
-    provider: ContentProvider,
+    provider: IProvider,
     deviceCode: string,
     interval: number
   ) => {
     const poll = async () => {
+      if (!("pollDeviceFlowToken" in provider) || typeof provider.pollDeviceFlowToken !== "function") return;
       try {
-        const result = await provider.pollDeviceFlowToken(deviceCode);
+        const result = await (provider as any).pollDeviceFlowToken(deviceCode);
 
         if (result && "access_token" in result) {
           // Success - we have the token
@@ -180,13 +180,18 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
     setAuthError(null);
 
     try {
+      if (!("generateCodeVerifier" in provider) || !("buildAuthUrl" in provider)) {
+        setAuthError("Provider does not support PKCE authentication");
+        setAuthStatus("error");
+        return;
+      }
       // Generate code verifier
-      const verifier = provider.generateCodeVerifier();
+      const verifier = (provider as any).generateCodeVerifier();
       setCodeVerifier(verifier);
 
       // Build auth URL
       const redirectUri = `${window.location.origin}/oauth/callback`;
-      const authResult = await provider.buildAuthUrl(verifier, redirectUri);
+      const authResult = await (provider as any).buildAuthUrl(verifier, redirectUri);
 
       // Open popup window
       const width = 600;
@@ -225,7 +230,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
           if (event.data.code) {
             try {
               // Exchange code for tokens
-              const tokens = await provider.exchangeCodeForTokens(
+              const tokens = await (provider as any).exchangeCodeForTokens(
                 event.data.code,
                 verifier,
                 redirectUri
@@ -386,13 +391,30 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
               <Card key={linkedAuth.id} variant="outlined">
                 <CardContent>
                   <Stack direction="row" alignItems="center" spacing={2}>
-                    <Avatar
-                      src={isDark ? providerInfo.logos?.dark : providerInfo.logos?.light}
-                      alt={providerInfo.name}
-                      sx={{ width: 48, height: 48 }}
+                    <Box
+                      sx={{
+                        width: 64,
+                        height: 64,
+                        borderRadius: 2,
+                        background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        p: 1,
+                        flexShrink: 0
+                      }}
                     >
-                      {providerInfo.name.charAt(0)}
-                    </Avatar>
+                      <Box
+                        component="img"
+                        src={providerInfo.logos?.dark || providerInfo.logos?.light}
+                        alt={providerInfo.name}
+                        sx={{
+                          maxWidth: "100%",
+                          maxHeight: "100%",
+                          objectFit: "contain"
+                        }}
+                      />
+                    </Box>
 
                     <Box sx={{ flexGrow: 1 }}>
                       <Typography variant="subtitle1" fontWeight={600}>
