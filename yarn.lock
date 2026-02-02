@@ -197,7 +197,7 @@
     i18next "^25.3.2"
     react-i18next "^15.6.1"
 
-"@churchapps/apphelper-login@^0.6.14":
+"@churchapps/apphelper-login@^0.6.15":
   version "0.6.15"
   resolved "https://registry.npmjs.org/@churchapps/apphelper-login/-/apphelper-login-0.6.15.tgz"
   integrity sha512-cE/P89/dsqCyDD7KlVg56o2KPjg8MLgoqAQb8uqMsPR8mKqJi5yHnsSZGp1A+VATjzi04UrSy8NYSahud0mljw==
@@ -239,7 +239,7 @@
   dependencies:
     rrule "^2.8.1"
 
-"@churchapps/apphelper@^0.6.0", "@churchapps/apphelper@^0.6.14", "@churchapps/apphelper@^0.6.5":
+"@churchapps/apphelper@^0.6.0", "@churchapps/apphelper@^0.6.15", "@churchapps/apphelper@^0.6.5":
   version "0.6.15"
   resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.6.15.tgz"
   integrity sha512-59FpDpZHjibOisFEBoYb8LfZT+vpo5w4tpcyLZy8UFvuNTGRmSeoeIPOX/0gsBGa/OP3TZyB0jWiPh1nJc9mBg==
@@ -275,7 +275,7 @@
   resolved "https://registry.npmjs.org/@churchapps/content-provider-helper/-/content-provider-helper-0.0.4.tgz"
   integrity sha512-X/wEaZOxA5kHLMh1HMHjescttWLyxxNJbMR+d/ScqlpJY1wvLU0jScSqzpkJuKu5O8uIUG1BPg37hhDGuH0FBg==
 
-"@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5", "@churchapps/helpers@file:../Helpers":
+"@churchapps/helpers@^1.2.22", "@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5":
   version "1.2.22"
   resolved "file:../Helpers"
   dependencies:
