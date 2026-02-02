@@ -38,23 +38,6 @@ export const ServingPage = () => {
     },
   });
 
-  const selectedMinistry = ministries.data?.find((g) => g.id === selectedMinistryId);
-
-  // Auto-select first accessible ministry when data loads
-  React.useEffect(() => {
-    if (ministries.data && ministries.data.length > 0 && !selectedMinistryId) {
-      const accessibleMinistry = ministries.data.find((g) => {
-        const members = ArrayHelper.getAll(groupMembers.data || [], "groupId", g.id);
-        return members.length === 0 || ArrayHelper.getOne(members, "personId", context.person?.id) !== null || UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
-      });
-      if (accessibleMinistry) {
-        setSelectedMinistryId(accessibleMinistry.id);
-      } else if (ministries.data.length > 0) {
-        setSelectedMinistryId(ministries.data[0].id);
-      }
-    }
-  }, [ministries.data, groupMembers.data, selectedMinistryId, context.person?.id]);
-
   const handleShowAdd = () => setShowAdd(true);
 
   const handleAddUpdated = () => {
@@ -75,6 +58,18 @@ export const ServingPage = () => {
     if (isAdmin) return isMember || members.length === 0;
     return isMember;
   });
+
+  const selectedMinistry = groups.find((g) => g.id === selectedMinistryId);
+
+  // Auto-select first ministry from filtered groups, or reset if current selection is not in filtered list
+  React.useEffect(() => {
+    if (groups.length > 0) {
+      const isCurrentSelectionValid = groups.some(g => g.id === selectedMinistryId);
+      if (!selectedMinistryId || !isCurrentSelectionValid) {
+        setSelectedMinistryId(groups[0].id);
+      }
+    }
+  }, [groups, selectedMinistryId]);
 
   // Show add ministry form
   if (showAdd) {
@@ -200,7 +195,7 @@ export const ServingPage = () => {
               <TeamList ministry={selectedMinistry} />
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <ContentProviderAuthManager ministryId={selectedMinistry.id} />
+              <ContentProviderAuthManager key={selectedMinistry.id} ministryId={selectedMinistry.id} />
             </Grid>
           </Grid>
         )}

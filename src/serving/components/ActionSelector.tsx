@@ -109,7 +109,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
   // Mode: "associated" shows actions from contentPath, "browse" allows navigation
   const [mode, setMode] = useState<"associated" | "browse">(contentPath ? "associated" : "browse");
 
-  const availableProviders = useMemo(() => getAvailableProviders(), []);
+  const availableProviders = useMemo(() => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject"]), []);
 
   const currentProviderInfo = useMemo(() => {
     const pid = mode === "associated" ? (providerId || "lessonschurch") : selectedProviderId;

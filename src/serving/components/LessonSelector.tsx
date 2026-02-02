@@ -43,7 +43,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
     return getProvider(selectedProviderId);
   }, [selectedProviderId]);
 
-  const availableProviders = useMemo(() => getAvailableProviders(), []);
+  const availableProviders = useMemo(() => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject"]), []);
 
   // Path-based navigation
   const [currentPath, setCurrentPath] = useState<string>("");
