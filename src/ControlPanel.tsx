@@ -11,7 +11,6 @@ import { Logout } from "./Logout";
 import { type ErrorLogInterface, type ErrrorAppDataInterface } from "@churchapps/helpers";
 import { AnalyticsHelper } from "./helpers";
 import { UserHelper, ErrorHelper } from "@churchapps/apphelper";
-import { UI } from "./ui/Test";
 import { Pingback } from "./Pingback";
 
 export const ControlPanel = () => {
@@ -51,7 +50,6 @@ export const ControlPanel = () => {
       <ErrorMessages errors={errors} />
       <Routes>
         <Route path="/pingback" element={<Pingback />} />
-        <Route path="/ui" element={<UI />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/login" element={<Login />} />
         <Route path="/oauth/callback" element={<OAuthCallback />} />
