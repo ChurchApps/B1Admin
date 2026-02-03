@@ -27,7 +27,6 @@ interface Props {
 
 export const Section: React.FC<Props> = props => {
   const [isDragging, setIsDragging] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
 
   // Helper function to find element by ID in the nested structure
@@ -198,10 +197,7 @@ export const Section: React.FC<Props> = props => {
     if (props.section.textColor?.startsWith("var(")) result.color = props.section.textColor;
     if (props.onEdit) {
       result.minHeight = 100;
-      result.boxShadow = isHovered
-        ? "0 4px 16px rgba(0, 0, 0, 0.12)"
-        : "0 2px 8px rgba(0, 0, 0, 0.08)";
-      result.transition = "box-shadow 0.2s ease";
+      result.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.08)";
     }
 
     result = { ...result };
@@ -343,10 +339,7 @@ export const Section: React.FC<Props> = props => {
 
   if (props.onEdit) {
     return (
-      <div
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
+      <div>
         <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest('.elementWrapper')) { props.onEdit(props.section, null); } }}>
           {result}
         </DraggableWrapper>
