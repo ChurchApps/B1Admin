@@ -166,9 +166,9 @@
     "@babel/helper-validator-identifier" "^7.28.5"
 
 "@churchapps/apphelper-donations@^0.6.0", "@churchapps/apphelper-donations@^0.6.16":
-  version "0.6.16"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-donations/-/apphelper-donations-0.6.16.tgz#918506a4010ff0fed4e5f67715a59659e4014501"
-  integrity sha512-bZvUAivUduvj514W8KFRUYNRNQ+Cvp9/HEsV1OZYFjD4G90UvUcbo86wK3JJ9b4NegFQZiv93NQBCWwkafOWTA==
+  version "0.6.17"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-donations/-/apphelper-donations-0.6.17.tgz#039498241faefbd1fe5597316663f0a48cd8fee9"
+  integrity sha512-ZbE0IUY3Okspf12KSrG5nQXaMQ/8iEKLcTK2sChkN7J/R7IxbbxSsRjdg1JZRiBmhhbCaIbmaRLS5dnHsbGkVw==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"
@@ -213,10 +213,10 @@
     react-google-recaptcha "^3.1.0"
     react-i18next "^15.6.1"
 
-"@churchapps/apphelper-markdown@^0.6.14":
-  version "0.6.14"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-markdown/-/apphelper-markdown-0.6.14.tgz#fea1bcccbc05153e2c5d136981b248d37e71902d"
-  integrity sha512-exONCVz6lSQRz6RRw0FQtYbYlzNHZ5NFfFoAgY/Mmnqu1Qi0Ghx0myHA3ts3nbNL7fDTcCzC/i+fmB4QMzXZHw==
+"@churchapps/apphelper-markdown@^0.6.15":
+  version "0.6.15"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-markdown/-/apphelper-markdown-0.6.15.tgz#d305c11db9ce2d4576c91288003a4a01ea2eadfe"
+  integrity sha512-jf1jSOQVkZAWJG4YBJhaqxD8mZBkufCMeBxu/V2qqgjnUW7z9VMwn2MKxrHbscgapiMeZREUzu5HtaU9K4iTNw==
   dependencies:
     "@lexical/code" "^0.33.1"
     "@lexical/html" "^0.33.1"
@@ -232,10 +232,10 @@
     marked "^16.1.2"
     material-symbols "^0.33.0"
 
-"@churchapps/apphelper-website@^0.6.15":
-  version "0.6.15"
-  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-website/-/apphelper-website-0.6.15.tgz#e0b7be79139cb562e69b99b1ca83f425de549fb6"
-  integrity sha512-edT6dfbD2uEIA/ynnP7VSNGAKgJzAXkbx2EtgvxdkeOo4lVvc6rNTvA6cPY5tJPoSX9EUDj8p3KFbIds+1bebg==
+"@churchapps/apphelper-website@^0.6.16":
+  version "0.6.16"
+  resolved "https://registry.yarnpkg.com/@churchapps/apphelper-website/-/apphelper-website-0.6.16.tgz#382131e5c8f5f80b8b28e863c1021a5210ecc3bf"
+  integrity sha512-8dH4Se9hgfZu9EAaJNtnLGKJhdWamia0523pIIv04ds+SBZM12fw/+/RyBUXNOcf8xZFJWJ4i8hGVfQSgotLXw==
   dependencies:
     rrule "^2.8.1"
 
@@ -1645,9 +1645,9 @@
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
 "@types/node@^22.14.1":
-  version "22.19.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.19.7.tgz#434094ee1731ae76c16083008590a5835a8c39c1"
-  integrity sha512-MciR4AKGHWl7xwxkBa6xUGxQJ4VBOmPTF7sL+iGzuahOFaO0jHCsuEfS80pan1ef4gWId1oWOweIhrDEYLuaOw==
+  version "22.19.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.19.8.tgz#b0c7812df8a98a001570950f4275f0c10fcad101"
+  integrity sha512-ebO/Yl+EAvVe8DnMfi+iaAyIqYdK0q/q0y0rw82INWEKJOBe6b/P3YWE8NW7oOlF/nXFNrHwhARrN/hdgDkraA==
   dependencies:
     undici-types "~6.21.0"
 
@@ -2195,9 +2195,9 @@ dunder-proto@^1.0.1:
     gopd "^1.2.0"
 
 electron-to-chromium@^1.5.263:
-  version "1.5.283"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.283.tgz#51d492c37c2d845a0dccb113fe594880c8616de8"
-  integrity sha512-3vifjt1HgrGW/h76UEeny+adYApveS9dH2h3p57JYzBSXJIKUJAvtmIytDKjcSCt9xHfrNCFJ7gts6vkhuq++w==
+  version "1.5.286"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.286.tgz#142be1ab5e1cd5044954db0e5898f60a4960384e"
+  integrity sha512-9tfDXhJ4RKFNerfjdCcZfufu49vg620741MNs26a9+bhLThdB+plgMeou98CAaHu/WATj2iHOOHTp1hWtABj2A==
 
 emoji-regex@^10.3.0:
   version "10.6.0"
@@ -2640,9 +2640,9 @@ i18next-http-backend@^3.0.2:
     cross-fetch "4.0.0"
 
 i18next@^25.3.2:
-  version "25.8.0"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-25.8.0.tgz#8b4ac516db016ebba70d2b68f5ba17e6ffcd4935"
-  integrity sha512-urrg4HMFFMQZ2bbKRK7IZ8/CTE7D8H4JRlAwqA2ZwDRFfdd0K/4cdbNNLgfn9mo+I/h9wJu61qJzH7jCFAhUZQ==
+  version "25.8.1"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-25.8.1.tgz#fb5f417bef6280a07efcf51065a3405efab6ffaa"
+  integrity sha512-nFFxhwcRNggIrkv2hx/xMYVMG7Z8iMUA4ZuH4tgcbZiI0bK1jn3kSDIXNWuQDt1xVAu7mb7Qn82TpH7ZAk/okA==
   dependencies:
     "@babel/runtime" "^7.28.4"
 
