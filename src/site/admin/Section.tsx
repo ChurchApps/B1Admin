@@ -180,6 +180,15 @@ export const Section: React.FC<Props> = props => {
       } else {
         result.push(elementComponent);
       }
+
+      // Add drop zone after rows and carousels (since Element.tsx doesn't add them for these types)
+      if (props.onEdit && (e.elementType === "row" || e.elementType === "carousel")) {
+        result.push(
+          <React.Fragment key={`drop-${e.id}`}>
+            {getAddElement((e.sort || 0) + 0.1)}
+          </React.Fragment>
+        );
+      }
     });
     return result;
   };
