@@ -48,6 +48,7 @@ export const Section: React.FC<Props> = props => {
       // Find innermost el-* element that contains the click target
       const allElDivs = containerEl.querySelectorAll('[id^="el-"]');
       let innermostId: string | null = null;
+      let innermostContainerId: string | null = null; // Track nested containers (carousels) as fallback
       for (const nestedEl of allElDivs) {
         if (nestedEl.contains(target)) {
           const nestedId = nestedEl.id.substring(3);
@@ -55,10 +56,14 @@ export const Section: React.FC<Props> = props => {
           if (nestedElement && nestedElement.elementType !== "row" && nestedElement.elementType !== "carousel") {
             innermostId = nestedId;
             // Don't break - keep looking for more nested elements (innermost wins)
+          } else if (nestedElement && nestedElement.elementType === "carousel") {
+            // Track carousels as fallback (allows selecting carousel inside row)
+            innermostContainerId = nestedId;
           }
         }
       }
-      return innermostId;
+      // Prefer non-container elements, but fall back to nested containers (carousel inside row)
+      return innermostId || innermostContainerId;
     }
     return null;
   };
