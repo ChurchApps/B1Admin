@@ -31,7 +31,6 @@ export interface UseProviderContentParams {
   providerContentPath?: string;
   ministryId?: string;
   fallbackUrl?: string;
-  relatedId?: string;
 }
 
 // Helper to detect media type from URL
@@ -55,7 +54,7 @@ function detectMediaType(url: string): "video" | "image" | "iframe" {
 }
 
 export function useProviderContent(params: UseProviderContentParams): UseProviderContentResult {
-  const { providerId, providerPath, providerContentPath, ministryId, fallbackUrl, relatedId } = params;
+  const { providerId, providerPath, providerContentPath, ministryId, fallbackUrl } = params;
   const [content, setContent] = useState<ProviderContent | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -77,8 +76,7 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
 
     // If we don't have provider data, we can't fetch
     if (!providerId || !providerPath || !providerContentPath) {
-      // For lessons.church legacy items, we might still have a relatedId but no providerPath
-      // In that case, we leave content as null and let the dialog handle the fallback
+      // Legacy items without provider data will show "no preview available"
       setContent(null);
       setLoading(false);
       return;
@@ -152,15 +150,6 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
               description: item.description,
               label: item.label
             });
-          } else if (providerId === "lessonschurch" && relatedId) {
-            // Fallback for lessons.church: construct embed URL from relatedId
-            const lessonsEmbedUrl = `https://lessons.church/embed/action/${relatedId}`;
-            setContent({
-              url: lessonsEmbedUrl,
-              mediaType: "iframe",
-              description: item.description,
-              label: item.label
-            });
           } else if (item.children && item.children.length > 0) {
             // Item has children (e.g., a section with actions) - return them for display
             const children: ProviderContentChild[] = item.children.map(child => {
@@ -193,13 +182,6 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
               mediaType: "text"
             });
           }
-        } else if (providerId === "lessonschurch" && relatedId) {
-          // Content path not found but we have a lessons.church relatedId - use embed URL
-          const lessonsEmbedUrl = `https://lessons.church/embed/action/${relatedId}`;
-          setContent({
-            url: lessonsEmbedUrl,
-            mediaType: "iframe"
-          });
         } else {
           setError("Content not found at specified path");
         }
@@ -212,7 +194,7 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
     };
 
     fetchContent();
-  }, [providerId, providerPath, providerContentPath, ministryId, fallbackUrl, relatedId, hasFallback]);
+  }, [providerId, providerPath, providerContentPath, ministryId, fallbackUrl, hasFallback]);
 
   return { content, loading, error };
 }

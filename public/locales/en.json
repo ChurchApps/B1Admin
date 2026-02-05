@@ -1220,6 +1220,8 @@
       "song": "Song"
     },
     "planItemEdit": {
+      "confirmDelete": "Confirm Delete",
+      "confirmDeleteMessage": "Are you sure you want to delete this item?",
       "description": "Description",
       "edit": "Edit",
       "editAddOn": "Edit Add-On",
@@ -1284,6 +1286,7 @@
       "lessonPreview": "Lesson Preview",
       "noItems": "No items in service order",
       "orderOfService": "Order of Service",
+      "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
       "print": "Print"
     }
   },

@@ -57,7 +57,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
     setSelectedVenueId(venueId);
     setSelectedVenueName(venueName || "");
     setSelectedContentPath(contentPath || "");
-    setSelectedProviderId(providerId || "lessonschurch");
+    setSelectedProviderId(providerId || "");
     setShowLessonSelector(false);
   }, []);
 

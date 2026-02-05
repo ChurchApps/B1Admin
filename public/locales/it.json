@@ -1048,18 +1048,11 @@
       "selectLesson": "Seleziona Lezione"
     },
     "lessonSelector": {
-      "addFromLesson": "Aggiungi dalla lezione associata",
-      "addLesson": "Aggiungi lezione",
-      "associateLesson": "Associa lezione",
-      "externalProvider": "Fornitore esterno",
+      "associateLesson": "Lezione associata",
       "lesson": "Lezione",
-      "lessonSource": "Fonte della lezione",
-      "lessonsChurch": "Lessons.church",
       "program": "Programma",
-      "provider": "Fornitore",
       "study": "Studio",
-      "usingAssociatedLesson": "Utilizzo della lezione associata:",
-      "venue": "Sede"
+      "venue": "Luogo"
     },
     "planPage": {
       "assign": "Assegnazioni di Squadra",
@@ -1157,13 +1150,6 @@
       "copy": "Copia",
       "saveNotes": "Salva note"
     },
-    "lessonSelector": {
-      "associateLesson": "Lezione associata",
-      "lesson": "Lezione",
-      "program": "Programma",
-      "study": "Studio",
-      "venue": "Luogo"
-    },
     "planItem": {
       "addOn": "Componente aggiuntivo",
       "expandToActions": "Espandi in azioni",
@@ -1172,6 +1158,8 @@
       "song": "Canzone"
     },
     "planItemEdit": {
+      "confirmDelete": "Conferma eliminazione",
+      "confirmDeleteMessage": "Sei sicuro di voler eliminare questo elemento?",
       "description": "Descrizione",
       "edit": "Modifica",
       "editAddOn": "Modifica componente aggiuntivo",
@@ -1230,6 +1218,7 @@
       "noItems": "Nessun articolo nell'ordine di servizio",
       "orderOfService": "Ordine di servizio",
       "print": "Stampa",
+      "previewBanner": "Questa è un'anteprima della lezione associata. Fai clic su \"Personalizza\" per modificare.",
       "switchLesson": "Cambia lezione"
     }
   },
@@ -2320,80 +2309,6 @@
       "switchToMobile": "Passa alla visualizzazione mobile"
     },
     "elementAdd": {
-      "blocks": "Blocchi",
-      "box": "Scatola",
-      "calendar": "Calendario",
-      "card": "Carta",
-      "carousel": "Giostra",
-      "churchSpecific": "Specifico della Chiesa",
-      "donateLink": "Collegamento per donare",
-      "donation": "Donazione",
-      "dragAndDrop": "Trascina e rilascia sulla pagina",
-      "embedPage": "Incorpora pagina",
-      "expandable": "Espandibile",
-      "form": "Modulo",
-      "groupList": "Elenco dei gruppi",
-      "html": "HTML",
-      "image": "Immagine",
-      "location": "Posizione",
-      "logo": "Logo",
-      "noBlocksFound": "Nessun blocco trovato",
-      "row": "Riga",
-      "section": "Sezione",
-      "simpleElements": "Elementi semplici",
-      "stream": "Flusso",
-      "table": "Tavolo",
-      "text": "Testo",
-      "textWithPhoto": "Testo con foto",
-      "video": "Video"
-    },
-    "appearancePage": {
-      "title": "Stili del sito",
-      "subtitle": "Di seguito è riportata un'anteprima di un sito di esempio con i tuoi colori, caratteri e loghi. Questo non è il contenuto effettivo del tuo sito."
-    },
-    "filesPage": {
-      "title": "File",
-      "subtitle": "Gestisci file e media per il tuo sito web"
-    },
-    "pagePreview": {
-      "title": "Anteprima del sito web",
-      "subtitle": "Anteprima: {title}",
-      "editContent": "Modifica contenuto",
-      "pageSettings": "Impostazioni pagina"
-    },
-    "sectionEdit": {
-      "convertToBlock": "Converti in blocco",
-      "convertTo": "Converti in",
-      "duplicate": "Duplica",
-      "duplicateSection": "Duplica sezione"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Gestione logo"
-    },
-    "cssEdit": {
-      "customCss": "CSS personalizzato",
-      "customHtml": "HTML personalizzato"
-    },
-    "filesManager": {
-      "noFilesYet": "Nessun file caricato ancora",
-      "getStarted": "Inizia caricando il tuo primo file",
-      "files": "File"
-    },
-    "fontEdit": {
-      "fontSelection": "Selezione carattere",
-      "typographyPreview": "Anteprima tipografia",
-      "popularFontCombinations": "Combinazioni di caratteri popolari"
-    },
-    "paletteEdit": {
-      "savePalette": "Salva tavolozza",
-      "colorValues": "Valori colore",
-      "suggestedPalettes": "Tavolozze suggerite",
-      "colorCombinationsPreview": "Anteprima combinazioni colori"
-    },
-    "stylesManager": {
-      "styleSettings": "Impostazioni stile"
-    },
-    "elementAdd": {
       "addElements": "Aggiungi Elementi",
       "advanced": "Avanzato",
       "all": "Tutti",
@@ -2456,6 +2371,52 @@
       "tryDifferentSearch": "Prova un termine di ricerca diverso",
       "untitledBlock": "Blocco senza titolo",
       "video": "Video"
+    },
+    "appearancePage": {
+      "title": "Stili del sito",
+      "subtitle": "Di seguito è riportata un'anteprima di un sito di esempio con i tuoi colori, caratteri e loghi. Questo non è il contenuto effettivo del tuo sito."
+    },
+    "filesPage": {
+      "title": "File",
+      "subtitle": "Gestisci file e media per il tuo sito web"
+    },
+    "pagePreview": {
+      "title": "Anteprima del sito web",
+      "subtitle": "Anteprima: {title}",
+      "editContent": "Modifica contenuto",
+      "pageSettings": "Impostazioni pagina"
+    },
+    "sectionEdit": {
+      "convertToBlock": "Converti in blocco",
+      "convertTo": "Converti in",
+      "duplicate": "Duplica",
+      "duplicateSection": "Duplica sezione"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Gestione logo"
+    },
+    "cssEdit": {
+      "customCss": "CSS personalizzato",
+      "customHtml": "HTML personalizzato"
+    },
+    "filesManager": {
+      "noFilesYet": "Nessun file caricato ancora",
+      "getStarted": "Inizia caricando il tuo primo file",
+      "files": "File"
+    },
+    "fontEdit": {
+      "fontSelection": "Selezione carattere",
+      "typographyPreview": "Anteprima tipografia",
+      "popularFontCombinations": "Combinazioni di caratteri popolari"
+    },
+    "paletteEdit": {
+      "savePalette": "Salva tavolozza",
+      "colorValues": "Valori colore",
+      "suggestedPalettes": "Tavolozze suggerite",
+      "colorCombinationsPreview": "Anteprima combinazioni colori"
+    },
+    "stylesManager": {
+      "styleSettings": "Impostazioni stile"
     }
   },
   "stockPhotos": {

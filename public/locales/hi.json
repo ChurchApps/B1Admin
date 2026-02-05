@@ -1048,18 +1048,11 @@
       "selectLesson": "पाठ चुनें"
     },
     "lessonSelector": {
-      "addFromLesson": "संबंधित पाठ से जोड़ें",
-      "addLesson": "पाठ जोड़ें",
-      "associateLesson": "पाठ संबद्ध करें",
-      "externalProvider": "बाहरी प्रदाता",
+      "associateLesson": "सहयोगी पाठ",
       "lesson": "पाठ",
-      "lessonSource": "पाठ स्रोत",
-      "lessonsChurch": "Lessons.church",
       "program": "कार्यक्रम",
-      "provider": "प्रदाता",
       "study": "अध्ययन",
-      "usingAssociatedLesson": "संबंधित पाठ का उपयोग कर रहे हैं:",
-      "venue": "स्थान"
+      "venue": "कार्यक्रम का स्थान"
     },
     "planPage": {
       "assign": "टीम असाइनमेंट",
@@ -1157,13 +1150,6 @@
       "copy": "कॉपी करें",
       "saveNotes": "नोट्स सहेजें"
     },
-    "lessonSelector": {
-      "associateLesson": "सहयोगी पाठ",
-      "lesson": "पाठ",
-      "program": "कार्यक्रम",
-      "study": "अध्ययन",
-      "venue": "कार्यक्रम का स्थान"
-    },
     "planItem": {
       "addOn": "ऐड-ऑन",
       "expandToActions": "क्रियाओं में विस्तार करें",
@@ -1172,6 +1158,8 @@
       "song": "गाना"
     },
     "planItemEdit": {
+      "confirmDelete": "हटाने की पुष्टि करें",
+      "confirmDeleteMessage": "क्या आप वाकई इस आइटम को हटाना चाहते हैं?",
       "description": "विवरण",
       "edit": "संपादित करें",
       "editAddOn": "ऐड-ऑन संपादित करें",
@@ -1230,6 +1218,7 @@
       "noItems": "सेवा क्रम में कोई आइटम नहीं",
       "orderOfService": "सेवा का क्रम",
       "print": "छाप",
+      "previewBanner": "यह संबंधित पाठ का पूर्वावलोकन है। संपादित करने के लिए \"अनुकूलित करें\" पर क्लिक करें।",
       "switchLesson": "पाठ बदलें"
     }
   },
@@ -2320,80 +2309,6 @@
       "switchToMobile": "मोबाइल व्यू पर स्विच करें"
     },
     "elementAdd": {
-      "blocks": "ब्लाकों",
-      "box": "डिब्बा",
-      "calendar": "कैलेंडर",
-      "card": "कार्ड",
-      "carousel": "हिंडोला",
-      "churchSpecific": "चर्च विशिष्ट",
-      "donateLink": "लिंक दान करें",
-      "donation": "दान",
-      "dragAndDrop": "खींचें और पृष्ठ पर छोड़ें",
-      "embedPage": "पृष्ठ एम्बेड करें",
-      "expandable": "विस्तार",
-      "form": "फॉर्म",
-      "groupList": "समूह सूची",
-      "html": "एचटीएमएल",
-      "image": "छवि",
-      "location": "जगह",
-      "logo": "प्रतीक चिन्ह",
-      "noBlocksFound": "कोई ब्लॉक नहीं मिला",
-      "row": "पंक्ति",
-      "section": "अनुभाग",
-      "simpleElements": "सरल तत्व",
-      "stream": "धारा",
-      "table": "मेज़",
-      "text": "मूलपाठ",
-      "textWithPhoto": "फोटो के साथ पाठ",
-      "video": "वीडियो"
-    },
-    "appearancePage": {
-      "title": "साइट शैलियाँ",
-      "subtitle": "नीचे आपके रंगों, फ़ॉन्ट्स और लोगो के साथ एक नमूना साइट का पूर्वावलोकन है। यह आपकी वास्तविक साइट सामग्री नहीं है।"
-    },
-    "filesPage": {
-      "title": "फ़ाइलें",
-      "subtitle": "अपनी वेबसाइट के लिए फ़ाइलें और मीडिया प्रबंधित करें"
-    },
-    "pagePreview": {
-      "title": "वेबसाइट पूर्वावलोकन",
-      "subtitle": "पूर्वावलोकन: {title}",
-      "editContent": "सामग्री संपादित करें",
-      "pageSettings": "पेज सेटिंग्स"
-    },
-    "sectionEdit": {
-      "convertToBlock": "ब्लॉक में कनवर्ट करें",
-      "convertTo": "में कनवर्ट करें",
-      "duplicate": "डुप्लिकेट",
-      "duplicateSection": "अनुभाग को डुप्लिकेट करें"
-    },
-    "appearanceEdit": {
-      "logoManagement": "लोगो प्रबंधन"
-    },
-    "cssEdit": {
-      "customCss": "कस्टम CSS",
-      "customHtml": "कस्टम HTML"
-    },
-    "filesManager": {
-      "noFilesYet": "अभी तक कोई फ़ाइल अपलोड नहीं की गई",
-      "getStarted": "अपनी पहली फ़ाइल अपलोड करके शुरू करें",
-      "files": "फ़ाइलें"
-    },
-    "fontEdit": {
-      "fontSelection": "फ़ॉन्ट चयन",
-      "typographyPreview": "टाइपोग्राफी पूर्वावलोकन",
-      "popularFontCombinations": "लोकप्रिय फ़ॉन्ट संयोजन"
-    },
-    "paletteEdit": {
-      "savePalette": "पैलेट सहेजें",
-      "colorValues": "रंग मान",
-      "suggestedPalettes": "सुझाए गए पैलेट",
-      "colorCombinationsPreview": "रंग संयोजन पूर्वावलोकन"
-    },
-    "stylesManager": {
-      "styleSettings": "शैली सेटिंग्स"
-    },
-    "elementAdd": {
       "addElements": "तत्व जोड़ें",
       "advanced": "उन्नत",
       "all": "सभी",
@@ -2456,6 +2371,52 @@
       "tryDifferentSearch": "कोई अलग खोज शब्द आज़माएं",
       "untitledBlock": "अनाम ब्लॉक",
       "video": "वीडियो"
+    },
+    "appearancePage": {
+      "title": "साइट शैलियाँ",
+      "subtitle": "नीचे आपके रंगों, फ़ॉन्ट्स और लोगो के साथ एक नमूना साइट का पूर्वावलोकन है। यह आपकी वास्तविक साइट सामग्री नहीं है।"
+    },
+    "filesPage": {
+      "title": "फ़ाइलें",
+      "subtitle": "अपनी वेबसाइट के लिए फ़ाइलें और मीडिया प्रबंधित करें"
+    },
+    "pagePreview": {
+      "title": "वेबसाइट पूर्वावलोकन",
+      "subtitle": "पूर्वावलोकन: {title}",
+      "editContent": "सामग्री संपादित करें",
+      "pageSettings": "पेज सेटिंग्स"
+    },
+    "sectionEdit": {
+      "convertToBlock": "ब्लॉक में कनवर्ट करें",
+      "convertTo": "में कनवर्ट करें",
+      "duplicate": "डुप्लिकेट",
+      "duplicateSection": "अनुभाग को डुप्लिकेट करें"
+    },
+    "appearanceEdit": {
+      "logoManagement": "लोगो प्रबंधन"
+    },
+    "cssEdit": {
+      "customCss": "कस्टम CSS",
+      "customHtml": "कस्टम HTML"
+    },
+    "filesManager": {
+      "noFilesYet": "अभी तक कोई फ़ाइल अपलोड नहीं की गई",
+      "getStarted": "अपनी पहली फ़ाइल अपलोड करके शुरू करें",
+      "files": "फ़ाइलें"
+    },
+    "fontEdit": {
+      "fontSelection": "फ़ॉन्ट चयन",
+      "typographyPreview": "टाइपोग्राफी पूर्वावलोकन",
+      "popularFontCombinations": "लोकप्रिय फ़ॉन्ट संयोजन"
+    },
+    "paletteEdit": {
+      "savePalette": "पैलेट सहेजें",
+      "colorValues": "रंग मान",
+      "suggestedPalettes": "सुझाए गए पैलेट",
+      "colorCombinationsPreview": "रंग संयोजन पूर्वावलोकन"
+    },
+    "stylesManager": {
+      "styleSettings": "शैली सेटिंग्स"
     }
   },
   "stockPhotos": {

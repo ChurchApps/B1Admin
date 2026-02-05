@@ -1048,17 +1048,10 @@
       "selectLesson": "Pumili ng Aralin"
     },
     "lessonSelector": {
-      "addFromLesson": "Magdagdag mula sa nakaugnay na aralin",
-      "addLesson": "Magdagdag ng aralin",
-      "associateLesson": "Iugnay ang aralin",
-      "externalProvider": "Panlabas na tagapagbigay",
+      "associateLesson": "Associate aralin",
       "lesson": "Aralin",
-      "lessonSource": "Pinagmulan ng aralin",
-      "lessonsChurch": "Lessons.church",
       "program": "Programa",
-      "provider": "Tagapagbigay",
-      "study": "Pag-aaral",
-      "usingAssociatedLesson": "Ginagamit ang nakaugnay na aralin:",
+      "study": "Pag -aaral",
       "venue": "Lugar"
     },
     "planPage": {
@@ -1157,13 +1150,6 @@
       "copy": "Kopyahin",
       "saveNotes": "I -save ang Mga Tala"
     },
-    "lessonSelector": {
-      "associateLesson": "Associate aralin",
-      "lesson": "Aralin",
-      "program": "Programa",
-      "study": "Pag -aaral",
-      "venue": "Lugar"
-    },
     "planItem": {
       "addOn": "Add-On",
       "expandToActions": "Palawakin sa mga aksyon",
@@ -1172,6 +1158,8 @@
       "song": "Kanta"
     },
     "planItemEdit": {
+      "confirmDelete": "Kumpirmahin ang pagtanggal",
+      "confirmDeleteMessage": "Sigurado ka bang gusto mong tanggalin ang item na ito?",
       "description": "Paglalarawan",
       "edit": "I-edit",
       "editAddOn": "I-edit ang add-on",
@@ -1230,6 +1218,7 @@
       "noItems": "Walang mga item sa pagkakasunud -sunod ng serbisyo",
       "orderOfService": "Order ng serbisyo",
       "print": "I -print",
+      "previewBanner": "Ito ay isang preview ng nauugnay na aralin. I-click ang \"Ipasadya\" upang i-edit.",
       "switchLesson": "Lumipat ng aralin"
     }
   },
@@ -2320,80 +2309,6 @@
       "switchToMobile": "Lumipat sa mobile view"
     },
     "elementAdd": {
-      "blocks": "Mga bloke",
-      "box": "Kahon",
-      "calendar": "Kalendaryo",
-      "card": "Kard",
-      "carousel": "Carousel",
-      "churchSpecific": "Tukoy sa simbahan",
-      "donateLink": "Mag -donate ng link",
-      "donation": "Donasyon",
-      "dragAndDrop": "I -drag at i -drop papunta sa pahina",
-      "embedPage": "Naka -embed na pahina",
-      "expandable": "Mapapalawak",
-      "form": "Form",
-      "groupList": "Listahan ng pangkat",
-      "html": "Html",
-      "image": "Imahe",
-      "location": "Lokasyon",
-      "logo": "Logo",
-      "noBlocksFound": "Walang nahanap na mga bloke",
-      "row": "Hilera",
-      "section": "Seksyon",
-      "simpleElements": "Simpleng mga elemento",
-      "stream": "Stream",
-      "table": "Mesa",
-      "text": "Teksto",
-      "textWithPhoto": "Teksto na may larawan",
-      "video": "Video"
-    },
-    "appearancePage": {
-      "title": "Mga Istilo ng Site",
-      "subtitle": "Nasa ibaba ang preview ng sample site na may inyong mga kulay, font at logo. Ito ay hindi ang aktwal na nilalaman ng inyong site."
-    },
-    "filesPage": {
-      "title": "Mga File",
-      "subtitle": "Pamahalaan ang mga file at media para sa iyong website"
-    },
-    "pagePreview": {
-      "title": "Preview ng Website",
-      "subtitle": "Preview: {title}",
-      "editContent": "I-edit ang Nilalaman",
-      "pageSettings": "Mga Setting ng Pahina"
-    },
-    "sectionEdit": {
-      "convertToBlock": "I-convert sa Block",
-      "convertTo": "I-convert sa",
-      "duplicate": "Kopyahin",
-      "duplicateSection": "Kopyahin ang Seksyon"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Pamamahala ng Logo"
-    },
-    "cssEdit": {
-      "customCss": "Custom na CSS",
-      "customHtml": "Custom na HTML"
-    },
-    "filesManager": {
-      "noFilesYet": "Walang na-upload na file pa",
-      "getStarted": "Magsimula sa pag-upload ng iyong unang file",
-      "files": "Mga File"
-    },
-    "fontEdit": {
-      "fontSelection": "Pagpili ng Font",
-      "typographyPreview": "Preview ng Typography",
-      "popularFontCombinations": "Mga Sikat na Kombinasyon ng Font"
-    },
-    "paletteEdit": {
-      "savePalette": "I-save ang Palette",
-      "colorValues": "Mga Halaga ng Kulay",
-      "suggestedPalettes": "Mga Iminumungkahing Palette",
-      "colorCombinationsPreview": "Preview ng Kombinasyon ng Kulay"
-    },
-    "stylesManager": {
-      "styleSettings": "Mga Setting ng Istilo"
-    },
-    "elementAdd": {
       "addElements": "Magdagdag ng mga Elemento",
       "advanced": "Advanced",
       "all": "Lahat",
@@ -2456,6 +2371,52 @@
       "tryDifferentSearch": "Subukan ang ibang termino sa paghahanap",
       "untitledBlock": "Block na walang pamagat",
       "video": "Video"
+    },
+    "appearancePage": {
+      "title": "Mga Istilo ng Site",
+      "subtitle": "Nasa ibaba ang preview ng sample site na may inyong mga kulay, font at logo. Ito ay hindi ang aktwal na nilalaman ng inyong site."
+    },
+    "filesPage": {
+      "title": "Mga File",
+      "subtitle": "Pamahalaan ang mga file at media para sa iyong website"
+    },
+    "pagePreview": {
+      "title": "Preview ng Website",
+      "subtitle": "Preview: {title}",
+      "editContent": "I-edit ang Nilalaman",
+      "pageSettings": "Mga Setting ng Pahina"
+    },
+    "sectionEdit": {
+      "convertToBlock": "I-convert sa Block",
+      "convertTo": "I-convert sa",
+      "duplicate": "Kopyahin",
+      "duplicateSection": "Kopyahin ang Seksyon"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Pamamahala ng Logo"
+    },
+    "cssEdit": {
+      "customCss": "Custom na CSS",
+      "customHtml": "Custom na HTML"
+    },
+    "filesManager": {
+      "noFilesYet": "Walang na-upload na file pa",
+      "getStarted": "Magsimula sa pag-upload ng iyong unang file",
+      "files": "Mga File"
+    },
+    "fontEdit": {
+      "fontSelection": "Pagpili ng Font",
+      "typographyPreview": "Preview ng Typography",
+      "popularFontCombinations": "Mga Sikat na Kombinasyon ng Font"
+    },
+    "paletteEdit": {
+      "savePalette": "I-save ang Palette",
+      "colorValues": "Mga Halaga ng Kulay",
+      "suggestedPalettes": "Mga Iminumungkahing Palette",
+      "colorCombinationsPreview": "Preview ng Kombinasyon ng Kulay"
+    },
+    "stylesManager": {
+      "styleSettings": "Mga Setting ng Istilo"
     }
   },
   "stockPhotos": {

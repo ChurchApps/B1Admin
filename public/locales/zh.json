@@ -1048,17 +1048,10 @@
       "selectLesson": "选择课程"
     },
     "lessonSelector": {
-      "addFromLesson": "从关联课程添加",
-      "addLesson": "添加课程",
-      "associateLesson": "关联课程",
-      "externalProvider": "外部提供商",
-      "lesson": "课程",
-      "lessonSource": "课程来源",
-      "lessonsChurch": "Lessons.church",
-      "program": "课程计划",
-      "provider": "提供商",
+      "associateLesson": "副课",
+      "lesson": "课",
+      "program": "程序",
       "study": "学习",
-      "usingAssociatedLesson": "正在使用关联课程:",
       "venue": "场地"
     },
     "planPage": {
@@ -1157,13 +1150,6 @@
       "copy": "复制",
       "saveNotes": "保存笔记"
     },
-    "lessonSelector": {
-      "associateLesson": "副课",
-      "lesson": "课",
-      "program": "程序",
-      "study": "学习",
-      "venue": "场地"
-    },
     "planItem": {
       "addOn": "附加组件",
       "expandToActions": "展开为操作",
@@ -1172,6 +1158,8 @@
       "song": "歌曲"
     },
     "planItemEdit": {
+      "confirmDelete": "确认删除",
+      "confirmDeleteMessage": "您确定要删除此项目吗？",
       "description": "描述",
       "edit": "编辑",
       "editAddOn": "编辑附加组件",
@@ -1230,6 +1218,7 @@
       "noItems": "服务订单中没有项目",
       "orderOfService": "服务顺序",
       "print": "打印",
+      "previewBanner": "这是关联课程的预览。点击\"定制\"进行编辑。",
       "switchLesson": "切换课程"
     }
   },
@@ -2018,80 +2007,6 @@
       "switchToMobile": "切换到移动视图"
     },
     "elementAdd": {
-      "blocks": "积木",
-      "box": "盒子",
-      "calendar": "日历",
-      "card": "卡",
-      "carousel": "轮播",
-      "churchSpecific": "特定教会",
-      "donateLink": "捐赠链接",
-      "donation": "捐款",
-      "dragAndDrop": "拖放到页面上",
-      "embedPage": "嵌入页面",
-      "expandable": "可扩展",
-      "form": "表单",
-      "groupList": "团体名单",
-      "html": "超文本标记语言",
-      "image": "图像",
-      "location": "地点",
-      "logo": "标识",
-      "noBlocksFound": "没有找到块",
-      "row": "排",
-      "section": "部分",
-      "simpleElements": "简单的元素",
-      "stream": "溪流",
-      "table": "桌子",
-      "text": "文本",
-      "textWithPhoto": "文字与照片",
-      "video": "视频"
-    },
-    "appearancePage": {
-      "title": "网站样式",
-      "subtitle": "以下是使用您的颜色、字体和徽标的示例网站预览。这不是您网站的实际内容。"
-    },
-    "filesPage": {
-      "title": "文件",
-      "subtitle": "管理网站的文件和媒体"
-    },
-    "pagePreview": {
-      "title": "网站预览",
-      "subtitle": "预览：{title}",
-      "editContent": "编辑内容",
-      "pageSettings": "页面设置"
-    },
-    "sectionEdit": {
-      "convertToBlock": "转换为块",
-      "convertTo": "转换为",
-      "duplicate": "复制",
-      "duplicateSection": "复制部分"
-    },
-    "appearanceEdit": {
-      "logoManagement": "徽标管理"
-    },
-    "cssEdit": {
-      "customCss": "自定义 CSS",
-      "customHtml": "自定义 HTML"
-    },
-    "filesManager": {
-      "noFilesYet": "尚未上传文件",
-      "getStarted": "开始上传您的第一个文件",
-      "files": "文件"
-    },
-    "fontEdit": {
-      "fontSelection": "字体选择",
-      "typographyPreview": "排版预览",
-      "popularFontCombinations": "流行字体组合"
-    },
-    "paletteEdit": {
-      "savePalette": "保存调色板",
-      "colorValues": "颜色值",
-      "suggestedPalettes": "建议的调色板",
-      "colorCombinationsPreview": "颜色组合预览"
-    },
-    "stylesManager": {
-      "styleSettings": "样式设置"
-    },
-    "elementAdd": {
       "addElements": "添加元素",
       "advanced": "高级",
       "all": "全部",
@@ -2154,6 +2069,52 @@
       "tryDifferentSearch": "尝试不同的搜索词",
       "untitledBlock": "无标题块",
       "video": "视频"
+    },
+    "appearancePage": {
+      "title": "网站样式",
+      "subtitle": "以下是使用您的颜色、字体和徽标的示例网站预览。这不是您网站的实际内容。"
+    },
+    "filesPage": {
+      "title": "文件",
+      "subtitle": "管理网站的文件和媒体"
+    },
+    "pagePreview": {
+      "title": "网站预览",
+      "subtitle": "预览：{title}",
+      "editContent": "编辑内容",
+      "pageSettings": "页面设置"
+    },
+    "sectionEdit": {
+      "convertToBlock": "转换为块",
+      "convertTo": "转换为",
+      "duplicate": "复制",
+      "duplicateSection": "复制部分"
+    },
+    "appearanceEdit": {
+      "logoManagement": "徽标管理"
+    },
+    "cssEdit": {
+      "customCss": "自定义 CSS",
+      "customHtml": "自定义 HTML"
+    },
+    "filesManager": {
+      "noFilesYet": "尚未上传文件",
+      "getStarted": "开始上传您的第一个文件",
+      "files": "文件"
+    },
+    "fontEdit": {
+      "fontSelection": "字体选择",
+      "typographyPreview": "排版预览",
+      "popularFontCombinations": "流行字体组合"
+    },
+    "paletteEdit": {
+      "savePalette": "保存调色板",
+      "colorValues": "颜色值",
+      "suggestedPalettes": "建议的调色板",
+      "colorCombinationsPreview": "颜色组合预览"
+    },
+    "stylesManager": {
+      "styleSettings": "样式设置"
     }
   },
   "sermons": {

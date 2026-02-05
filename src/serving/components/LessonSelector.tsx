@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Button,
   Dialog,
@@ -10,19 +10,15 @@ import {
   Box,
   CircularProgress,
   IconButton,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
   Breadcrumbs,
   Link,
-  Chip,
 } from "@mui/material";
-import { ArrowBack as ArrowBackIcon, Folder as FolderIcon, LinkOff as LinkOffIcon } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentFolder, type ContentItem, type IProvider } from "@churchapps/content-provider-helper";
-import { type ContentProviderAuthInterface } from "../../helpers";
-import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
+import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
+import { ProviderChipSelector } from "./ProviderChipSelector";
+import { BrowseGrid } from "./BrowseGrid";
+import { Locale } from "@churchapps/apphelper";
+import { type ContentFolder } from "@churchapps/content-provider-helper";
+import { useProviderBrowser } from "../hooks/useProviderBrowser";
 
 interface Props {
   open: boolean;
@@ -34,198 +30,63 @@ interface Props {
 }
 
 export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, returnVenueName, ministryId, defaultProviderId }) => {
-  // Provider selection
-  const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "lessonschurch");
-  const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
-  const [showAllProviders, setShowAllProviders] = useState(false);
+  const browser = useProviderBrowser({ ministryId, defaultProviderId });
 
-  const provider = useMemo<IProvider | null>(() => {
-    return getProvider(selectedProviderId);
-  }, [selectedProviderId]);
-
-  const availableProviders = useMemo(() => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject"]), []);
-
-  // Path-based navigation
-  const [currentPath, setCurrentPath] = useState<string>("");
-  const [breadcrumbTitles, setBreadcrumbTitles] = useState<string[]>([]);
-  const [currentItems, setCurrentItems] = useState<ContentFolder[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  // Selected folder (final selection)
+  // Selected folder (final selection) - unique to LessonSelector
   const [selectedFolder, setSelectedFolder] = useState<ContentFolder | null>(null);
-
-  // Check if a folder is the final level (provider sets isLeaf: true)
-  const isLeafFolder = useCallback((folder: ContentFolder): boolean => {
-    return !!folder.isLeaf;
-  }, []);
-
-  // Load content for a given path (or root if empty)
-  const loadContent = useCallback(async (path: string) => {
-    if (!provider) {
-      setCurrentItems([]);
-      return;
-    }
-    setLoading(true);
-    try {
-      let items: ContentItem[] = [];
-
-      // For providers that require auth, use the API proxy to avoid CORS issues
-      if (provider.requiresAuth && ministryId) {
-        items = await ApiHelper.post("/providerProxy/browse", { ministryId, providerId: selectedProviderId, path: path || null }, "DoingApi");
-      } else {
-        // For providers without auth, call directly
-        items = await provider.browse(path || null, null);
-      }
-
-      const folders = items.filter((item): item is ContentFolder => item.type === "folder");
-      setCurrentItems(folders);
-    } catch (error) {
-      console.error("Error loading content:", error);
-      setCurrentItems([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [provider, ministryId, selectedProviderId]);
 
   // Handle folder click - either navigate into it or select it (if leaf)
   const handleFolderClick = useCallback((folder: ContentFolder) => {
-    if (isLeafFolder(folder)) {
-      // This is a leaf folder - select it
+    if (browser.isLeafFolder(folder)) {
       setSelectedFolder(folder);
     } else {
-      // Navigate into the folder using its path
       setSelectedFolder(null);
-      setCurrentPath(folder.path);
-      setBreadcrumbTitles(prev => [...prev, folder.title]);
-      loadContent(folder.path);
+      browser.navigateToFolder(folder);
     }
-  }, [isLeafFolder, loadContent]);
+  }, [browser]);
 
   // Handle back navigation
   const handleBack = useCallback(() => {
     setSelectedFolder(null);
-    if (currentPath) {
-      // Remove last segment from path
-      const segments = currentPath.split("/").filter(Boolean);
-      segments.pop();
-      const newPath = segments.length > 0 ? "/" + segments.join("/") : "";
-      setCurrentPath(newPath);
-      // Remove last breadcrumb title
-      setBreadcrumbTitles(prev => prev.slice(0, -1));
-      loadContent(newPath);
-    }
-  }, [currentPath, loadContent]);
-
-  // Handle breadcrumb click
-  const handleBreadcrumbClick = useCallback((index: number) => {
-    setSelectedFolder(null);
-    if (index < 0) {
-      // Root clicked - go back to root
-      setCurrentPath("");
-      setBreadcrumbTitles([]);
-      loadContent("");
-    } else {
-      // Navigate to specific level by rebuilding path from segments
-      const segments = currentPath.split("/").filter(Boolean);
-      const newSegments = segments.slice(0, index + 1);
-      const newPath = "/" + newSegments.join("/");
-      setCurrentPath(newPath);
-      setBreadcrumbTitles(prev => prev.slice(0, index + 1));
-      loadContent(newPath);
-    }
-  }, [currentPath, loadContent]);
-
-  // Load linked providers for the ministry
-  const loadLinkedProviders = useCallback(async () => {
-    if (!ministryId) {
-      setLinkedProviders([]);
-      return;
-    }
-    try {
-      const linked = await ContentProviderAuthHelper.getLinkedProviders(ministryId);
-      setLinkedProviders(linked || []);
-    } catch (error) {
-      console.error("Error loading linked providers:", error);
-      setLinkedProviders([]);
-    }
-  }, [ministryId]);
-
-  // Handle content provider selection change
-  const handleContentProviderChange = useCallback((providerId: string) => {
-    setSelectedProviderId(providerId);
-    setCurrentPath("");
-    setBreadcrumbTitles([]);
-    setCurrentItems([]);
-    setSelectedFolder(null);
-    // Content will reload via useEffect when provider changes
-  }, []);
+    browser.navigateBack();
+  }, [browser]);
 
   // Handle final selection
   const handleSelect = useCallback(() => {
     if (selectedFolder) {
       const folderName = returnVenueName ? selectedFolder.title : undefined;
-      onSelect(selectedFolder.id, folderName, selectedFolder.path, selectedProviderId);
+      onSelect(selectedFolder.id, folderName, selectedFolder.path, browser.selectedProviderId);
       onClose();
     }
-  }, [selectedFolder, returnVenueName, onSelect, onClose, selectedProviderId]);
+  }, [selectedFolder, returnVenueName, onSelect, onClose, browser.selectedProviderId]);
+
+  // Handle provider change
+  const handleProviderChange = useCallback((providerId: string) => {
+    setSelectedFolder(null);
+    browser.changeProvider(providerId);
+  }, [browser]);
 
   // Handle dialog close
   const handleClose = useCallback(() => {
-    setCurrentPath("");
-    setBreadcrumbTitles([]);
-    setCurrentItems([]);
     setSelectedFolder(null);
-    setShowAllProviders(false);
-    if (defaultProviderId) {
-      setSelectedProviderId(defaultProviderId);
-    }
+    browser.reset();
     onClose();
-  }, [onClose, defaultProviderId]);
+  }, [onClose, browser]);
 
   // Load initial content when dialog opens
-  useEffect(() => {
+  React.useEffect(() => {
     if (open) {
-      loadContent("");
-      loadLinkedProviders();
+      browser.loadContent("");
+      browser.loadLinkedProviders();
     }
-  }, [open, loadContent, loadLinkedProviders]);
-
-  // Reload content when provider changes
-  useEffect(() => {
-    if (open && provider) {
-      loadContent("");
-    }
-  }, [open, provider, selectedProviderId]);
-
-  // Get current provider info
-  const currentProviderInfo = useMemo(() => {
-    return availableProviders.find(p => p.id === selectedProviderId);
-  }, [availableProviders, selectedProviderId]);
-
-  // Check if current provider is linked
-  const isCurrentProviderLinked = useMemo(() => {
-    // Lessons.church doesn't require auth
-    if (selectedProviderId === "lessonschurch") return true;
-    return linkedProviders.some(lp => lp.providerId === selectedProviderId);
-  }, [linkedProviders, selectedProviderId]);
-
-  // Build breadcrumb items
-  const breadcrumbItems = useMemo(() => {
-    const providerName = currentProviderInfo?.name || selectedProviderId;
-    const items: { label: string; onClick?: () => void }[] = [
-      { label: providerName, onClick: () => handleBreadcrumbClick(-1) }
-    ];
-    breadcrumbTitles.forEach((title, index) => {
-      items.push({ label: title, onClick: () => handleBreadcrumbClick(index) });
-    });
-    return items;
-  }, [breadcrumbTitles, handleBreadcrumbClick, currentProviderInfo, selectedProviderId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>
         <Stack direction="row" alignItems="center" spacing={1}>
-          {currentPath && (
+          {browser.currentPath && (
             <IconButton onClick={handleBack} size="small">
               <ArrowBackIcon />
             </IconButton>
@@ -235,57 +96,24 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
-          {/* Content Provider Selector */}
-          <Box>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-              <Typography variant="body2" color="text.secondary">
-                {Locale.label("plans.lessonSelector.contentProvider") || "Content Provider"}
-              </Typography>
-              {!showAllProviders && (
-                <Button size="small" onClick={() => setShowAllProviders(true)}>
-                  {Locale.label("plans.lessonSelector.browseOtherProviders") || "Browse Other Providers"}
-                </Button>
-              )}
-            </Stack>
-            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-              {(showAllProviders ? availableProviders : availableProviders.filter(p =>
-                p.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === p.id)
-              )).map((providerInfo) => {
-                const isLinked = providerInfo.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === providerInfo.id);
-                return (
-                  <Chip
-                    key={providerInfo.id}
-                    label={providerInfo.name}
-                    onClick={() => handleContentProviderChange(providerInfo.id)}
-                    color={selectedProviderId === providerInfo.id ? "primary" : "default"}
-                    variant={selectedProviderId === providerInfo.id ? "filled" : "outlined"}
-                    icon={!isLinked ? <LinkOffIcon /> : undefined}
-                    sx={{ opacity: isLinked ? 1 : 0.6 }}
-                  />
-                );
-              })}
-            </Box>
-            {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth && (
-              <Typography variant="caption" color="warning.main" sx={{ mt: 1, display: "block" }}>
-                {Locale.label("plans.lessonSelector.providerNotLinked") || "This provider is not linked. Please link it in ministry settings to access content."}
-              </Typography>
-            )}
-          </Box>
+          <ProviderChipSelector
+            selectedProviderId={browser.selectedProviderId}
+            onProviderChange={handleProviderChange}
+            availableProviders={browser.availableProviders}
+            linkedProviders={browser.linkedProviders}
+            showAllProviders={browser.showAllProviders}
+            onShowAll={() => browser.setShowAllProviders(true)}
+            isCurrentProviderLinked={browser.isCurrentProviderLinked}
+            currentProviderRequiresAuth={!!browser.currentProviderInfo?.requiresAuth}
+          />
 
           {/* Breadcrumb navigation */}
           <Breadcrumbs aria-label="breadcrumb">
-            {breadcrumbItems.map((item, index) => (
-              index === breadcrumbItems.length - 1 ? (
+            {browser.breadcrumbItems.map((item, index) => (
+              index === browser.breadcrumbItems.length - 1 ? (
                 <Typography key={index} color="text.primary">{item.label}</Typography>
               ) : (
-                <Link
-                  key={index}
-                  component="button"
-                  variant="body2"
-                  onClick={item.onClick}
-                  underline="hover"
-                  color="inherit"
-                >
+                <Link key={index} component="button" variant="body2" onClick={item.onClick} underline="hover" color="inherit">
                   {item.label}
                 </Link>
               )
@@ -293,80 +121,28 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
           </Breadcrumbs>
 
           {/* Content grid */}
-          {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth ? (
+          {!browser.isCurrentProviderLinked && browser.currentProviderInfo?.requiresAuth ? (
             <Box sx={{ textAlign: "center", py: 4 }}>
               <Typography color="text.secondary">
                 {Locale.label("plans.lessonSelector.linkProviderFirst") || "Please link this provider in ministry settings to browse content."}
               </Typography>
             </Box>
-          ) : loading ? (
+          ) : browser.loading ? (
             <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
               <CircularProgress />
             </Box>
-          ) : currentItems.length === 0 ? (
+          ) : browser.currentItems.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 4 }}>
               <Typography color="text.secondary">No content available</Typography>
             </Box>
           ) : (
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
-                gap: 2,
-                maxHeight: "400px",
-                overflowY: "auto",
-                p: 1
-              }}
-            >
-              {currentItems.map((folder) => {
-                const isLeaf = isLeafFolder(folder);
-                const isSelected = selectedFolder?.id === folder.id;
-                return (
-                  <Card
-                    key={folder.id}
-                    sx={{
-                      border: isSelected ? 2 : 1,
-                      borderColor: isSelected ? "primary.main" : "divider",
-                      bgcolor: isSelected ? "action.selected" : "background.paper"
-                    }}
-                  >
-                    <CardActionArea onClick={() => handleFolderClick(folder)}>
-                      {folder.image ? (
-                        <CardMedia
-                          component="img"
-                          height="80"
-                          image={folder.image}
-                          alt={folder.title}
-                          sx={{ objectFit: "cover" }}
-                        />
-                      ) : (
-                        <Box
-                          sx={{
-                            height: 80,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            bgcolor: isLeaf ? "primary.light" : "grey.200"
-                          }}
-                        >
-                          <FolderIcon sx={{ fontSize: 40, color: isLeaf ? "primary.contrastText" : "grey.500" }} />
-                        </Box>
-                      )}
-                      <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
-                        <Typography
-                          variant="body2"
-                          noWrap
-                          title={folder.title}
-                          sx={{ fontWeight: isLeaf ? 600 : 400 }}
-                        >
-                          {folder.title}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                );
-              })}
-            </Box>
+            <BrowseGrid
+              folders={browser.currentItems}
+              selectedProviderId={browser.selectedProviderId}
+              selectedFolderId={selectedFolder?.id}
+              isLeafFolder={browser.isLeafFolder}
+              onFolderClick={handleFolderClick}
+            />
           )}
 
           {/* Selected folder indicator */}

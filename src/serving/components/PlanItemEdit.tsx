@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, FormControl, Grid, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { Button, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, Grid, InputLabel, List, ListItem, ListItemText, OutlinedInput, Stack, TextField } from "@mui/material";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
-import { ApiHelper, ArrayHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -13,6 +13,8 @@ export const PlanItemEdit = (props: Props) => {
   const [searchText, setSearchText] = React.useState("");
   const [songs, setSongs] = React.useState<SongDetailInterface[]>([]);
   const [, setErrors] = React.useState<string[]>([]);
+  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
+  const [searching, setSearching] = React.useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
@@ -67,7 +69,11 @@ export const PlanItemEdit = (props: Props) => {
       setErrors([Locale.label("plans.planItemEdit.enterSearch")]);
       return;
     } else {
-      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data) => setSongs(data));
+      setSearching(true);
+      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data) => {
+        setSongs(data);
+        setSearching(false);
+      });
     }
   };
 
@@ -93,41 +99,36 @@ export const PlanItemEdit = (props: Props) => {
   };
 
   const getSongs = () => {
+    if (searching) return <CircularProgress size={24} sx={{ display: "block", mx: "auto", my: 2 }} />;
     const songDetails: SongDetailInterface[] = [];
     songs.forEach((song) => {
       if (songDetails.findIndex((sd) => sd.id === song.id) === -1) {
         songDetails.push(song);
       }
     });
-    const result: JSX.Element[] = [];
-    songDetails.forEach((sd) => {
-      const keys = ArrayHelper.getAll(songs, "id", sd.id);
-      const links: JSX.Element[] = [];
-      keys.forEach((k) => {
-        links.push(
-          <span style={{ paddingRight: 10 }}>
-            <button
-              type="button"
-              onClick={() => selectSong(k)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-              {k.shortDescription} ({k.arrangementKeySignature})
-            </button>
-          </span>
-        );
-      });
-
-      result.push(
-        <tr>
-          <td>
-            {sd.title} - {sd.artist}
-            <div style={{ paddingLeft: 15 }}>
-              <b>{Locale.label("plans.planItemEdit.key")}:</b> {links}
-            </div>
-          </td>
-        </tr>
-      );
-    });
-    return <table>{result}</table>;
+    return (
+      <List dense>
+        {songDetails.map((sd) => {
+          const keys = ArrayHelper.getAll(songs, "id", sd.id);
+          return (
+            <ListItem key={sd.id} sx={{ flexDirection: "column", alignItems: "flex-start" }}>
+              <ListItemText primary={`${sd.title} - ${sd.artist}`} />
+              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 0.5 }}>
+                {keys.map((k: any) => (
+                  <Chip
+                    key={k.arrangementKeyId}
+                    label={`${k.shortDescription} (${k.arrangementKeySignature})`}
+                    size="small"
+                    clickable
+                    onClick={() => selectSong(k)}
+                  />
+                ))}
+              </Stack>
+            </ListItem>
+          );
+        })}
+      </List>
+    );
   };
 
   const getSongFields = () => {
@@ -161,67 +162,94 @@ export const PlanItemEdit = (props: Props) => {
   const showDuration = planItem?.itemType === "item" || planItem?.itemType === "lessonAction" || planItem?.itemType === "lessonSection" || planItem?.itemType === "action" || planItem?.itemType === "section" || planItem?.itemType === "providerPresentation" || planItem?.itemType === "providerSection" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
 
   return (
-    <InputBox headerText={getHeaderText()} headerIcon="album" saveFunction={handleSave} cancelFunction={props.onDone} deleteFunction={planItem?.id && handleDelete}>
-      {planItem?.itemType === "arrangementKey" && getSongFields()}
-      {showLabel && (
-        <TextField
-          fullWidth
-          label={Locale.label("common.name")}
-          id="label"
-          name="label"
-          type="text"
-          value={planItem?.label}
-          onChange={handleChange}
-          placeholder={Locale.label("placeholders.planItem.label")}
-          data-testid="plan-item-name-input"
-          aria-label="Plan item name"
-        />
-      )}
-      {showDesc && (
-        <TextField
-          multiline
-          fullWidth
-          label={Locale.label("plans.planItemEdit.description")}
-          id="description"
-          name="description"
-          type="text"
-          value={planItem?.description}
-          onChange={handleChange}
-          placeholder={Locale.label("placeholders.planItem.description")}
-          data-testid="plan-item-description-input"
-          aria-label="Plan item description"
-        />
-      )}
-      {showDuration && (
-        <Grid container>
-          <Grid size={{ xs: 6 }}>
+    <Dialog open={true} onClose={props.onDone} maxWidth="sm" fullWidth>
+      <DialogTitle>{getHeaderText()}</DialogTitle>
+      <DialogContent>
+        <Stack spacing={2} sx={{ mt: 1 }}>
+          {planItem?.itemType === "arrangementKey" && getSongFields()}
+          {showLabel && (
             <TextField
               fullWidth
-              label={Locale.label("plans.planItemEdit.minutes")}
-              name="minutes"
-              type="number"
-              value={Math.floor(planItem?.seconds / 60)}
+              label={Locale.label("common.name")}
+              id="label"
+              name="label"
+              type="text"
+              value={planItem?.label}
               onChange={handleChange}
-              placeholder="5"
-              data-testid="plan-item-minutes-input"
-              aria-label="Duration minutes"
+              placeholder={Locale.label("placeholders.planItem.label")}
+              data-testid="plan-item-name-input"
+              aria-label="Plan item name"
             />
-          </Grid>
-          <Grid size={{ xs: 6 }}>
+          )}
+          {showDesc && (
             <TextField
+              multiline
               fullWidth
-              label={Locale.label("plans.planItemEdit.seconds")}
-              name="seconds"
-              type="number"
-              value={planItem?.seconds % 60}
+              label={Locale.label("plans.planItemEdit.description")}
+              id="description"
+              name="description"
+              type="text"
+              value={planItem?.description}
               onChange={handleChange}
-              placeholder="30"
-              data-testid="plan-item-seconds-input"
-              aria-label="Duration seconds"
+              placeholder={Locale.label("placeholders.planItem.description")}
+              data-testid="plan-item-description-input"
+              aria-label="Plan item description"
             />
-          </Grid>
-        </Grid>
-      )}
-    </InputBox>
+          )}
+          {showDuration && (
+            <Grid container>
+              <Grid size={{ xs: 6 }}>
+                <TextField
+                  fullWidth
+                  label={Locale.label("plans.planItemEdit.minutes")}
+                  name="minutes"
+                  type="number"
+                  value={Math.floor(planItem?.seconds / 60)}
+                  onChange={handleChange}
+                  placeholder="5"
+                  data-testid="plan-item-minutes-input"
+                  aria-label="Duration minutes"
+                />
+              </Grid>
+              <Grid size={{ xs: 6 }}>
+                <TextField
+                  fullWidth
+                  label={Locale.label("plans.planItemEdit.seconds")}
+                  name="seconds"
+                  type="number"
+                  value={planItem?.seconds % 60}
+                  onChange={handleChange}
+                  placeholder="30"
+                  data-testid="plan-item-seconds-input"
+                  aria-label="Duration seconds"
+                />
+              </Grid>
+            </Grid>
+          )}
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        {planItem?.id && (
+          <Button onClick={() => setShowDeleteConfirm(true)} color="error" sx={{ mr: "auto" }}>
+            {Locale.label("common.delete") || "Delete"}
+          </Button>
+        )}
+        <Button onClick={props.onDone} variant="outlined">{Locale.label("common.cancel") || "Cancel"}</Button>
+        <Button onClick={handleSave} variant="contained">{Locale.label("common.save") || "Save"}</Button>
+      </DialogActions>
+
+      <Dialog open={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)} maxWidth="xs">
+        <DialogTitle>{Locale.label("plans.planItemEdit.confirmDelete") || "Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {Locale.label("plans.planItemEdit.confirmDeleteMessage") || "Are you sure you want to delete this item?"}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowDeleteConfirm(false)} variant="outlined">{Locale.label("common.cancel") || "Cancel"}</Button>
+          <Button onClick={handleDelete} color="error" variant="contained">{Locale.label("common.delete") || "Delete"}</Button>
+        </DialogActions>
+      </Dialog>
+    </Dialog>
   );
 };

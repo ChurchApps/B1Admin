@@ -1,16 +1,15 @@
-import React, { useMemo } from "react";
-import { Icon, Menu, MenuItem } from "@mui/material";
-import { type ExternalVenueRefInterface } from "@churchapps/helpers";
+import React from "react";
+import { Box, Menu, MenuItem } from "@mui/material";
+import { Add as AddIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
-import { getProvider, navigateToPath, type ContentProvider, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
-import { AddOnDialog } from "./AddOnDialog";
 import { ActionSelector } from "./ActionSelector";
 import { formatTime, getSectionDuration } from "./PlanUtils";
 
@@ -24,29 +23,14 @@ interface Props {
   startTime?: number;
   associatedVenueId?: string;
   associatedProviderId?: string;
-  externalRef?: ExternalVenueRefInterface;
   ministryId?: string;
 }
 
-// Helper to create a venue path for the provider
-function createVenuePath(venueId: string): string {
-  // LessonsChurch expects path: /lessons/{programId}/{studyId}/{lessonId}/{venueId}
-  // Use placeholders for unknown segments - the provider extracts venueId from segment 4
-  return `/lessons/_/_/_/${venueId}`;
-}
-
 export const PlanItem = React.memo((props: Props) => {
-  // Get the provider dynamically: use item's providerId, fall back to associatedProviderId, then default to lessonschurch
-  const provider: ContentProvider | null = useMemo(() => {
-    const pid = props.planItem.providerId || props.associatedProviderId || "lessonschurch";
-    return getProvider(pid);
-  }, [props.planItem.providerId, props.associatedProviderId]);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
   const [actionId, setActionId] = React.useState<string>(null);
-  const [addOnId, setAddOnId] = React.useState<string>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
   const open = Boolean(anchorEl);
 
@@ -82,7 +66,7 @@ export const PlanItem = React.memo((props: Props) => {
   const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string, providerContentPath?: string) => {
     setShowActionSelector(false);
     // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
-    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
+    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId;
     const linkValue = mediaUrl || (itemType === "providerFile" ? image : undefined);
     // Create new plan item - use provided itemType or default to providerPresentation
     const newPlanItem: PlanItemInterface = {
@@ -106,79 +90,20 @@ export const PlanItem = React.memo((props: Props) => {
 
   // Expand a section item to replace it with individual action/presentation items
   const handleExpandToActions = async () => {
-    // Check for provider-based expansion (uses providerId, providerPath, providerContentPath)
+    // Provider-based expansion (uses providerId, providerPath, providerContentPath on the item itself)
     if (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath) {
       await handleExpandToActionsViaProvider();
       return;
     }
 
-    // Legacy path for associatedVenueId (Lessons.church direct integration)
-    if (!props.planItem.relatedId || !props.associatedVenueId || !provider) return;
-
-    try {
-      let actions: { id: string; name: string; seconds?: number }[] = [];
-      const itemProviderId = props.planItem.providerId || props.associatedProviderId || "lessonschurch";
-
-      if (props.externalRef) {
-        // For external providers, still use the API endpoint
-        const venueData = await ApiHelper.getAnonymous(
-          `/externalProviders/${props.externalRef.externalProviderId}/venue/${props.externalRef.venueId}/actions`,
-          "LessonsApi"
-        );
-        // Find the section matching this plan item's relatedId
-        const matchingSection = venueData?.sections?.find((s: any) => s.id === props.planItem.relatedId);
-        actions = matchingSection?.actions || [];
-      } else {
-        // Use ContentProviderHelper
-        const venuePath = createVenuePath(props.associatedVenueId);
-        const instructions = await provider.getInstructions(venuePath);
-
-        if (instructions) {
-          // Find the section matching this plan item's relatedId
-          // Instructions structure: items (headers) -> children (sections) -> children (actions)
-          for (const header of instructions.items) {
-            for (const section of header.children || []) {
-              if (section.relatedId === props.planItem.relatedId && section.children) {
-                actions = section.children.map(action => ({
-                  id: action.relatedId || action.id || "",
-                  name: action.label || "",
-                  seconds: action.seconds
-                }));
-                break;
-              }
-            }
-            if (actions.length > 0) break;
-          }
-        }
-      }
-
-      if (actions.length > 0) {
-        const currentSort = props.planItem.sort || 1;
-
-        // Create new plan items for each action/presentation, starting at the current item's sort position
-        const actionItems = actions.map((action, index) => ({
-          planId: props.planItem.planId,
-          parentId: props.planItem.parentId,
-          sort: currentSort + index,
-          itemType: "providerPresentation",
-          relatedId: action.id,
-          label: action.name,
-          seconds: action.seconds || 0,
-          providerId: itemProviderId,
-        }));
-
-        // Delete the original section item first
-        await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
-
-        // Create the new action items
-        await ApiHelper.post("/planItems", actionItems, "DoingApi");
-
-        // Refresh the plan - the API will handle re-sorting
-        if (props.onChange) props.onChange();
-      }
-    } catch (error) {
-      console.error("Error expanding section to actions:", error);
+    // Fall back to plan-level provider data for legacy items that only have relatedId
+    if (props.associatedProviderId && props.associatedVenueId && props.planItem.relatedId) {
+      await handleExpandToActionsLegacy();
+      return;
     }
+
+    // Cannot expand without provider path data
+    console.warn("Cannot expand section: no providerPath available");
   };
 
   // Expand a section via provider fields (providerId, providerPath, providerContentPath)
@@ -226,6 +151,64 @@ export const PlanItem = React.memo((props: Props) => {
     }
   };
 
+  // Expand a section using plan-level provider data for legacy items (only have relatedId, no per-item provider fields)
+  const handleExpandToActionsLegacy = async () => {
+    const providerId = props.associatedProviderId;
+    const providerPath = props.associatedVenueId;
+    if (!providerId || !providerPath || !props.ministryId) return;
+
+    try {
+      const instructions: Instructions = await ApiHelper.post(
+        "/providerProxy/getInstructions",
+        { ministryId: props.ministryId, providerId, path: providerPath },
+        "DoingApi"
+      );
+
+      if (!instructions?.items) return;
+
+      // Search the instruction tree for a matching relatedId
+      const findSection = (items: InstructionItem[], parentPath: string): { item: InstructionItem; path: string } | null => {
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          const currentPath = parentPath ? `${parentPath}.${i}` : `${i}`;
+          if (item.relatedId === props.planItem.relatedId || item.id === props.planItem.relatedId) {
+            return { item, path: currentPath };
+          }
+          if (item.children) {
+            const found = findSection(item.children, currentPath);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+
+      const found = findSection(instructions.items, "");
+      if (!found || !found.item.children || found.item.children.length === 0) return;
+
+      const section = found.item;
+      const currentSort = props.planItem.sort || 1;
+
+      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
+        planId: props.planItem.planId,
+        parentId: props.planItem.parentId,
+        sort: currentSort + index,
+        itemType: "providerPresentation",
+        relatedId: action.relatedId || action.id || "",
+        label: action.label || "",
+        seconds: action.seconds || 0,
+        providerId,
+        providerPath,
+        providerContentPath: `${found.path}.${index}`,
+      }));
+
+      await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
+      await ApiHelper.post("/planItems", actionItems, "DoingApi");
+      if (props.onChange) props.onChange();
+    } catch (error) {
+      console.error("Error expanding section via legacy association:", error);
+    }
+  };
+
   const handleDrop = (data: any, sort: number) => {
     const pi = data.data as PlanItemInterface;
     pi.sort = sort;
@@ -241,21 +224,22 @@ export const PlanItem = React.memo((props: Props) => {
     props.planItem.children?.forEach((c, index) => {
       const childStartTime = cumulativeTime;
       result.push(
-        <>
+        <React.Fragment key={c.id || `child-${index}`}>
           {props.showItemDrop && (
             <DroppableWrapper
               accept="planItem"
               onDrop={(item) => {
                 handleDrop(item, index + 0.5);
               }}>
-              <div
-                style={{
+              <Box
+                sx={{
                   height: "30px",
-                  border: "2px dashed #1976d2",
-                  borderRadius: "4px",
-                  backgroundColor: "rgba(25, 118, 210, 0.1)",
+                  border: "2px dashed",
+                  borderColor: "primary.main",
+                  borderRadius: 1,
+                  backgroundColor: "primary.light",
                   opacity: 0.3,
-                  marginBottom: "4px",
+                  mb: 0.5,
                 }}
               />
             </DroppableWrapper>
@@ -267,15 +251,15 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} externalRef={props.externalRef} ministryId={props.ministryId} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} />
           </DraggableWrapper>
-        </>
+        </React.Fragment>
       );
       cumulativeTime += c.seconds || 0;
     });
     if (props.showItemDrop) {
       result.push(
-        <>
+        <React.Fragment key="trailing-drop-zone">
           <DroppableWrapper
             accept="planItem"
             onDrop={(item) => {
@@ -292,7 +276,7 @@ export const PlanItem = React.memo((props: Props) => {
               }}
             />
           </DroppableWrapper>
-        </>
+        </React.Fragment>
       );
     }
     return result;
@@ -304,7 +288,7 @@ export const PlanItem = React.memo((props: Props) => {
       <>
         <div className="planItemHeader">
           <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-            {sectionDuration > 0 && <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>}
+            {sectionDuration > 0 && <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />}
             <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
               {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
             </span>
@@ -314,100 +298,24 @@ export const PlanItem = React.memo((props: Props) => {
                   type="button"
                   onClick={(e) => setAnchorEl(e.currentTarget)}
                   style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                  <Icon>add</Icon>
+                  <AddIcon />
                 </button>
                 <button
                   type="button"
                   onClick={() => props.setEditPlanItem(props.planItem)}
                   style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                  <Icon>edit</Icon>
+                  <EditIcon />
                 </button>
               </>
             )}
           </span>
-          {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
+          {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
           <span>{props.planItem.label}</span>
         </div>
         {getChildren()}
       </>
     );
   };
-
-  const getItemRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId); }}>
-              {props.planItem.label}
-            </a>
-          ) : props.planItem.link ? (
-            <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
-              {props.planItem.label}
-            </a>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
-
-  const getSongRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setDialogKeyId(props.planItem.relatedId); }}>
-              {props.planItem.label}
-            </a>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
 
   const getDescriptionRow = () => (
     <div
@@ -426,12 +334,12 @@ export const PlanItem = React.memo((props: Props) => {
     </div>
   );
 
-  const getActionRow = () => (
+  const getGenericRow = (onLabelClick?: () => void) => (
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />
+          <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (
@@ -441,95 +349,28 @@ export const PlanItem = React.memo((props: Props) => {
                 type="button"
                 onClick={() => props.setEditPlanItem(props.planItem)}
                 style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
+                <EditIcon />
               </button>
             </>
           )}
         </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
+        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
+        <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
         <div>
-          {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setActionId(props.planItem.relatedId); }}>
+          {onLabelClick ? (
+            <button type="button" onClick={onLabelClick}
+              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
+              {props.planItem.label}
+            </button>
+          ) : props.planItem.link ? (
+            <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
               {props.planItem.label}
             </a>
           ) : (
             props.planItem.label
           )}
         </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
-
-  const getLessonSectionRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {(props.planItem.relatedId || (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)) ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId || props.planItem.providerContentPath || props.planItem.id); }}>
-              {props.planItem.label}
-            </a>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
-
-  const getAddOnRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setAddOnId(props.planItem.relatedId); }}>
-              {props.planItem.label}
-            </a>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
+        {props.planItem.description && getDescriptionRow()}
       </div>
     </>
   );
@@ -540,24 +381,29 @@ export const PlanItem = React.memo((props: Props) => {
         return getHeaderRow();
       case "song":
       case "arrangementKey":
-        return getSongRow();
-      // New generic provider types + short names + legacy types for backward compat
+        return getGenericRow(props.planItem.relatedId ? () => setDialogKeyId(props.planItem.relatedId) : undefined);
+      // Action types
       case "providerPresentation":
       case "lessonAction":
       case "action":
-        return getActionRow();
+        return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
+      // File/add-on types (legacy items still in database need AddOnDialog for correct embed URLs)
       case "providerFile":
       case "lessonAddOn":
       case "addon":
       case "file":
-        return getAddOnRow();
+        return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
       case "providerSection":
       case "lessonSection":
       case "section":
-        return getLessonSectionRow();
+        return getGenericRow(
+          (props.planItem.relatedId || (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath))
+            ? () => setLessonSectionId(props.planItem.relatedId || props.planItem.providerContentPath || props.planItem.id)
+            : undefined
+        );
       case "item":
       default:
-        return getItemRow();
+        return getGenericRow(props.planItem.relatedId ? () => setLessonSectionId(props.planItem.relatedId) : undefined);
     }
   };
 
@@ -567,13 +413,13 @@ export const PlanItem = React.memo((props: Props) => {
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem onClick={addSong}>
-            <Icon style={{ marginRight: 10 }}>music_note</Icon> {Locale.label("plans.planItem.song")}
+            <MusicNoteIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.song")}
           </MenuItem>
           <MenuItem onClick={addItem}>
-            <Icon style={{ marginRight: 10 }}>format_list_bulleted</Icon> {Locale.label("plans.planItem.item")}
+            <FormatListBulletedIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.item")}
           </MenuItem>
           <MenuItem onClick={addLessonAction}>
-            <Icon style={{ marginRight: 10 }}>menu_book</Icon> {Locale.label("plans.planItem.externalItem") || "External Item"}
+            <MenuBookIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.externalItem") || "External Item"}
           </MenuItem>
         </Menu>
       )}
@@ -592,7 +438,6 @@ export const PlanItem = React.memo((props: Props) => {
                 }
               : undefined
           }
-          externalRef={props.externalRef}
           providerId={props.planItem.providerId}
           embedUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
@@ -602,22 +447,9 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {actionId && (
         <ActionDialog
-          actionId={actionId}
-          actionName={props.planItem.label}
+          contentId={actionId}
+          contentName={props.planItem.label}
           onClose={() => setActionId(null)}
-          externalRef={props.externalRef}
-          providerId={props.planItem.providerId || props.associatedProviderId}
-          embedUrl={props.planItem.link}
-          providerPath={props.planItem.providerPath}
-          providerContentPath={props.planItem.providerContentPath}
-          ministryId={props.ministryId}
-        />
-      )}
-      {addOnId && (
-        <AddOnDialog
-          addOnId={addOnId}
-          addOnName={props.planItem.label}
-          onClose={() => setAddOnId(null)}
           providerId={props.planItem.providerId || props.associatedProviderId}
           embedUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
@@ -631,7 +463,7 @@ export const PlanItem = React.memo((props: Props) => {
           onClose={() => setShowActionSelector(false)}
           onSelect={handleActionSelected}
           contentPath={props.associatedVenueId}
-          providerId={props.associatedProviderId || "lessonschurch"}
+          providerId={props.associatedProviderId}
           ministryId={props.ministryId}
         />
       )}

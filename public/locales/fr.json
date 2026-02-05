@@ -1165,6 +1165,8 @@
       "song": "Chanson"
     },
     "planItemEdit": {
+      "confirmDelete": "Confirmer la suppression",
+      "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer cet élément ?",
       "description": "Description",
       "edit": "Modifier",
       "editAddOn": "Modifier l'extension",
@@ -1223,6 +1225,7 @@
       "noItems": "Aucun article dans la commande de service",
       "orderOfService": "Ordre de service",
       "print": "Imprimer",
+      "previewBanner": "Ceci est un aperçu de la leçon associée. Cliquez sur \"Personnaliser\" pour modifier.",
       "switchLesson": "Changer de leçon"
     }
   },
@@ -2313,80 +2316,6 @@
       "switchToMobile": "Passer à la vue mobile"
     },
     "elementAdd": {
-      "blocks": "Blocs",
-      "box": "Boîte",
-      "calendar": "Calendrier",
-      "card": "Carte",
-      "carousel": "Carrousel",
-      "churchSpecific": "Spécifique à l'Église",
-      "donateLink": "Faire un don Lien",
-      "donation": "Donation",
-      "dragAndDrop": "Glisser et déposer sur la page",
-      "embedPage": "Intégrer la page",
-      "expandable": "Extensible",
-      "form": "Formulaire",
-      "groupList": "Liste des groupes",
-      "html": "HTML",
-      "image": "Image",
-      "location": "Emplacement",
-      "logo": "Logo",
-      "noBlocksFound": "Aucun bloc trouvé",
-      "row": "Rangée",
-      "section": "Section",
-      "simpleElements": "Éléments simples",
-      "stream": "Flux",
-      "table": "Tableau",
-      "text": "Texte",
-      "textWithPhoto": "Texte avec photo",
-      "video": "Vidéo"
-    },
-    "appearancePage": {
-      "title": "Styles du site",
-      "subtitle": "Voici un aperçu d'un site exemple avec vos couleurs, polices et logos. Ce n'est pas le contenu réel de votre site."
-    },
-    "filesPage": {
-      "title": "Fichiers",
-      "subtitle": "Gérer les fichiers et médias de votre site web"
-    },
-    "pagePreview": {
-      "title": "Aperçu du site web",
-      "subtitle": "Aperçu: {title}",
-      "editContent": "Modifier le contenu",
-      "pageSettings": "Paramètres de la page"
-    },
-    "sectionEdit": {
-      "convertToBlock": "Convertir en bloc",
-      "convertTo": "Convertir en",
-      "duplicate": "Dupliquer",
-      "duplicateSection": "Dupliquer la section"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Gestion du logo"
-    },
-    "cssEdit": {
-      "customCss": "CSS personnalisé",
-      "customHtml": "HTML personnalisé"
-    },
-    "filesManager": {
-      "noFilesYet": "Aucun fichier téléchargé pour le moment",
-      "getStarted": "Commencez par télécharger votre premier fichier",
-      "files": "Fichiers"
-    },
-    "fontEdit": {
-      "fontSelection": "Sélection de police",
-      "typographyPreview": "Aperçu de la typographie",
-      "popularFontCombinations": "Combinaisons de polices populaires"
-    },
-    "paletteEdit": {
-      "savePalette": "Enregistrer la palette",
-      "colorValues": "Valeurs de couleur",
-      "suggestedPalettes": "Palettes suggérées",
-      "colorCombinationsPreview": "Aperçu des combinaisons de couleurs"
-    },
-    "stylesManager": {
-      "styleSettings": "Paramètres de style"
-    },
-    "elementAdd": {
       "addElements": "Ajouter des Éléments",
       "advanced": "Avancé",
       "all": "Tous",
@@ -2449,6 +2378,52 @@
       "tryDifferentSearch": "Essayez un autre terme de recherche",
       "untitledBlock": "Bloc sans titre",
       "video": "Vidéo"
+    },
+    "appearancePage": {
+      "title": "Styles du site",
+      "subtitle": "Voici un aperçu d'un site exemple avec vos couleurs, polices et logos. Ce n'est pas le contenu réel de votre site."
+    },
+    "filesPage": {
+      "title": "Fichiers",
+      "subtitle": "Gérer les fichiers et médias de votre site web"
+    },
+    "pagePreview": {
+      "title": "Aperçu du site web",
+      "subtitle": "Aperçu: {title}",
+      "editContent": "Modifier le contenu",
+      "pageSettings": "Paramètres de la page"
+    },
+    "sectionEdit": {
+      "convertToBlock": "Convertir en bloc",
+      "convertTo": "Convertir en",
+      "duplicate": "Dupliquer",
+      "duplicateSection": "Dupliquer la section"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Gestion du logo"
+    },
+    "cssEdit": {
+      "customCss": "CSS personnalisé",
+      "customHtml": "HTML personnalisé"
+    },
+    "filesManager": {
+      "noFilesYet": "Aucun fichier téléchargé pour le moment",
+      "getStarted": "Commencez par télécharger votre premier fichier",
+      "files": "Fichiers"
+    },
+    "fontEdit": {
+      "fontSelection": "Sélection de police",
+      "typographyPreview": "Aperçu de la typographie",
+      "popularFontCombinations": "Combinaisons de polices populaires"
+    },
+    "paletteEdit": {
+      "savePalette": "Enregistrer la palette",
+      "colorValues": "Valeurs de couleur",
+      "suggestedPalettes": "Palettes suggérées",
+      "colorCombinationsPreview": "Aperçu des combinaisons de couleurs"
+    },
+    "stylesManager": {
+      "styleSettings": "Paramètres de style"
     }
   },
   "stockPhotos": {

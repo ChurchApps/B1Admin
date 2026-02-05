@@ -1048,18 +1048,11 @@
       "selectLesson": "Выберите урок"
     },
     "lessonSelector": {
-      "addFromLesson": "Добавить из связанного урока",
-      "addLesson": "Добавить урок",
-      "associateLesson": "Связать урок",
-      "externalProvider": "Внешний провайдер",
+      "associateLesson": "Ассоциированный урок",
       "lesson": "Урок",
-      "lessonSource": "Источник урока",
-      "lessonsChurch": "Lessons.church",
       "program": "Программа",
-      "provider": "Провайдер",
-      "study": "Курс",
-      "usingAssociatedLesson": "Используется связанный урок:",
-      "venue": "Место"
+      "study": "Изучать",
+      "venue": "Место проведения"
     },
     "planPage": {
       "assign": "Назначения команд",
@@ -1157,13 +1150,6 @@
       "copy": "Копировать",
       "saveNotes": "Сохранить заметки"
     },
-    "lessonSelector": {
-      "associateLesson": "Ассоциированный урок",
-      "lesson": "Урок",
-      "program": "Программа",
-      "study": "Изучать",
-      "venue": "Место проведения"
-    },
     "planItem": {
       "addOn": "Дополнение",
       "expandToActions": "Развернуть в действия",
@@ -1172,6 +1158,8 @@
       "song": "Песня"
     },
     "planItemEdit": {
+      "confirmDelete": "Подтвердить удаление",
+      "confirmDeleteMessage": "Вы уверены, что хотите удалить этот элемент?",
       "description": "Описание",
       "edit": "Редактировать",
       "editAddOn": "Редактировать дополнение",
@@ -1230,6 +1218,7 @@
       "noItems": "В заказе на обслуживание нет позиций",
       "orderOfService": "Порядок обслуживания",
       "print": "Распечатать",
+      "previewBanner": "Это предварительный просмотр связанного урока. Нажмите \"Настроить\", чтобы изменить.",
       "switchLesson": "Урок переключения"
     }
   },
@@ -2320,80 +2309,6 @@
       "switchToMobile": "Переключиться на мобильный вид"
     },
     "elementAdd": {
-      "blocks": "Блоки",
-      "box": "Коробка",
-      "calendar": "Календарь",
-      "card": "Карта",
-      "carousel": "Карусель",
-      "churchSpecific": "Конкретно для церкви",
-      "donateLink": "Ссылка для пожертвования",
-      "donation": "Пожертвование",
-      "dragAndDrop": "Перетащите на страницу",
-      "embedPage": "Встроить страницу",
-      "expandable": "Расширяемый",
-      "form": "Форма",
-      "groupList": "Список групп",
-      "html": "HTML",
-      "image": "Изображение",
-      "location": "Расположение",
-      "logo": "Логотип",
-      "noBlocksFound": "Блоки не найдены",
-      "row": "Ряд",
-      "section": "Раздел",
-      "simpleElements": "Простые элементы",
-      "stream": "Транслировать",
-      "table": "Стол",
-      "text": "Текст",
-      "textWithPhoto": "Текст с фото",
-      "video": "Видео"
-    },
-    "appearancePage": {
-      "title": "Стили сайта",
-      "subtitle": "Ниже представлен предварительный просмотр примера сайта с вашими цветами, шрифтами и логотипами. Это не фактическое содержимое вашего сайта."
-    },
-    "filesPage": {
-      "title": "Файлы",
-      "subtitle": "Управление файлами и медиа для вашего сайта"
-    },
-    "pagePreview": {
-      "title": "Предварительный просмотр сайта",
-      "subtitle": "Предварительный просмотр: {title}",
-      "editContent": "Редактировать контент",
-      "pageSettings": "Настройки страницы"
-    },
-    "sectionEdit": {
-      "convertToBlock": "Преобразовать в блок",
-      "convertTo": "Преобразовать в",
-      "duplicate": "Дублировать",
-      "duplicateSection": "Дублировать секцию"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Управление логотипом"
-    },
-    "cssEdit": {
-      "customCss": "Пользовательский CSS",
-      "customHtml": "Пользовательский HTML"
-    },
-    "filesManager": {
-      "noFilesYet": "Файлы еще не загружены",
-      "getStarted": "Начните с загрузки первого файла",
-      "files": "Файлы"
-    },
-    "fontEdit": {
-      "fontSelection": "Выбор шрифта",
-      "typographyPreview": "Предварительный просмотр типографики",
-      "popularFontCombinations": "Популярные комбинации шрифтов"
-    },
-    "paletteEdit": {
-      "savePalette": "Сохранить палитру",
-      "colorValues": "Значения цвета",
-      "suggestedPalettes": "Предлагаемые палитры",
-      "colorCombinationsPreview": "Предварительный просмотр цветовых комбинаций"
-    },
-    "stylesManager": {
-      "styleSettings": "Настройки стиля"
-    },
-    "elementAdd": {
       "addElements": "Добавить Элементы",
       "advanced": "Расширенный",
       "all": "Все",
@@ -2456,6 +2371,52 @@
       "tryDifferentSearch": "Попробуйте другой поисковый запрос",
       "untitledBlock": "Блок без названия",
       "video": "Видео"
+    },
+    "appearancePage": {
+      "title": "Стили сайта",
+      "subtitle": "Ниже представлен предварительный просмотр примера сайта с вашими цветами, шрифтами и логотипами. Это не фактическое содержимое вашего сайта."
+    },
+    "filesPage": {
+      "title": "Файлы",
+      "subtitle": "Управление файлами и медиа для вашего сайта"
+    },
+    "pagePreview": {
+      "title": "Предварительный просмотр сайта",
+      "subtitle": "Предварительный просмотр: {title}",
+      "editContent": "Редактировать контент",
+      "pageSettings": "Настройки страницы"
+    },
+    "sectionEdit": {
+      "convertToBlock": "Преобразовать в блок",
+      "convertTo": "Преобразовать в",
+      "duplicate": "Дублировать",
+      "duplicateSection": "Дублировать секцию"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Управление логотипом"
+    },
+    "cssEdit": {
+      "customCss": "Пользовательский CSS",
+      "customHtml": "Пользовательский HTML"
+    },
+    "filesManager": {
+      "noFilesYet": "Файлы еще не загружены",
+      "getStarted": "Начните с загрузки первого файла",
+      "files": "Файлы"
+    },
+    "fontEdit": {
+      "fontSelection": "Выбор шрифта",
+      "typographyPreview": "Предварительный просмотр типографики",
+      "popularFontCombinations": "Популярные комбинации шрифтов"
+    },
+    "paletteEdit": {
+      "savePalette": "Сохранить палитру",
+      "colorValues": "Значения цвета",
+      "suggestedPalettes": "Предлагаемые палитры",
+      "colorCombinationsPreview": "Предварительный просмотр цветовых комбинаций"
+    },
+    "stylesManager": {
+      "styleSettings": "Настройки стиля"
     }
   },
   "stockPhotos": {

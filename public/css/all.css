@@ -786,6 +786,14 @@ label .description {
   margin-bottom: 0px;
 }
 
+.planItem .dragHandle, .planItemHeader .dragHandle {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.planItem:hover .dragHandle, .planItemHeader:hover .dragHandle {
+  opacity: 1;
+}
+
 
 .chordPro H3 {
   margin-bottom: 0px;
