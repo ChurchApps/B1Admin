@@ -341,9 +341,10 @@ export const PlanItem = React.memo((props: Props) => {
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId); }}>
+            <button type="button" onClick={() => setLessonSectionId(props.planItem.relatedId)}
+              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
               {props.planItem.label}
-            </a>
+            </button>
           ) : props.planItem.link ? (
             <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
               {props.planItem.label}
@@ -381,9 +382,10 @@ export const PlanItem = React.memo((props: Props) => {
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setDialogKeyId(props.planItem.relatedId); }}>
+            <button type="button" onClick={() => setDialogKeyId(props.planItem.relatedId)}
+              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
               {props.planItem.label}
-            </a>
+            </button>
           ) : (
             props.planItem.label
           )}
@@ -434,9 +436,10 @@ export const PlanItem = React.memo((props: Props) => {
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setActionId(props.planItem.relatedId); }}>
+            <button type="button" onClick={() => setActionId(props.planItem.relatedId)}
+              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
               {props.planItem.label}
-            </a>
+            </button>
           ) : (
             props.planItem.label
           )}
@@ -470,9 +473,10 @@ export const PlanItem = React.memo((props: Props) => {
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {(props.planItem.relatedId || (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)) ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setLessonSectionId(props.planItem.relatedId || props.planItem.providerContentPath || props.planItem.id); }}>
+            <button type="button" onClick={() => setLessonSectionId(props.planItem.relatedId || props.planItem.providerContentPath || props.planItem.id)}
+              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
               {props.planItem.label}
-            </a>
+            </button>
           ) : (
             props.planItem.label
           )}
@@ -506,9 +510,10 @@ export const PlanItem = React.memo((props: Props) => {
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
           {props.planItem.relatedId ? (
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setAddOnId(props.planItem.relatedId); }}>
+            <button type="button" onClick={() => setAddOnId(props.planItem.relatedId)}
+              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
               {props.planItem.label}
-            </a>
+            </button>
           ) : (
             props.planItem.label
           )}
