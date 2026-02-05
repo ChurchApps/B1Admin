@@ -91,9 +91,15 @@ export const PlanItem = React.memo((props: Props) => {
 
   // Expand a section item to replace it with individual action/presentation items
   const handleExpandToActions = async () => {
-    // Provider-based expansion (uses providerId, providerPath, providerContentPath)
+    // Provider-based expansion (uses providerId, providerPath, providerContentPath on the item itself)
     if (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath) {
       await handleExpandToActionsViaProvider();
+      return;
+    }
+
+    // Fall back to plan-level provider data for legacy items that only have relatedId
+    if (props.associatedProviderId && props.associatedVenueId && props.planItem.relatedId) {
+      await handleExpandToActionsLegacy();
       return;
     }
 
@@ -143,6 +149,64 @@ export const PlanItem = React.memo((props: Props) => {
       if (props.onChange) props.onChange();
     } catch (error) {
       console.error("Error expanding section via provider:", error);
+    }
+  };
+
+  // Expand a section using plan-level provider data for legacy items (only have relatedId, no per-item provider fields)
+  const handleExpandToActionsLegacy = async () => {
+    const providerId = props.associatedProviderId;
+    const providerPath = props.associatedVenueId;
+    if (!providerId || !providerPath || !props.ministryId) return;
+
+    try {
+      const instructions: Instructions = await ApiHelper.post(
+        "/providerProxy/getInstructions",
+        { ministryId: props.ministryId, providerId, path: providerPath },
+        "DoingApi"
+      );
+
+      if (!instructions?.items) return;
+
+      // Search the instruction tree for a matching relatedId
+      const findSection = (items: InstructionItem[], parentPath: string): { item: InstructionItem; path: string } | null => {
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          const currentPath = parentPath ? `${parentPath}.${i}` : `${i}`;
+          if (item.relatedId === props.planItem.relatedId || item.id === props.planItem.relatedId) {
+            return { item, path: currentPath };
+          }
+          if (item.children) {
+            const found = findSection(item.children, currentPath);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+
+      const found = findSection(instructions.items, "");
+      if (!found || !found.item.children || found.item.children.length === 0) return;
+
+      const section = found.item;
+      const currentSort = props.planItem.sort || 1;
+
+      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
+        planId: props.planItem.planId,
+        parentId: props.planItem.parentId,
+        sort: currentSort + index,
+        itemType: "providerPresentation",
+        relatedId: action.relatedId || action.id || "",
+        label: action.label || "",
+        seconds: action.seconds || 0,
+        providerId,
+        providerPath,
+        providerContentPath: `${found.path}.${index}`,
+      }));
+
+      await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
+      await ApiHelper.post("/planItems", actionItems, "DoingApi");
+      if (props.onChange) props.onChange();
+    } catch (error) {
+      console.error("Error expanding section via legacy association:", error);
     }
   };
 
