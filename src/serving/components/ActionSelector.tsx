@@ -11,82 +11,20 @@ import {
   Chip,
   IconButton,
   CircularProgress,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
   Breadcrumbs,
   Link,
 } from "@mui/material";
-import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon, Folder as FolderIcon, PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
+import { ArrowBack as ArrowBackIcon, LinkOff as LinkOffIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem, type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 
-// Generate a dot-notation path from indices array (e.g., [0, 2, 1] -> "0.2.1")
-const generatePath = (indices: number[]): string => indices.join('.');
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
+import { generatePath, getProviderInstructions, type ActionSelectorProps } from "./ActionSelectorHelpers";
+import { InstructionTree } from "./InstructionTree";
+import { BrowseGrid } from "./BrowseGrid";
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-  onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string, providerContentPath?: string) => void;
-  /** Full content path for the associated content (e.g., /lessons/program-1/study-1/lesson-1/venue-1) */
-  contentPath?: string;
-  /** Provider ID for the associated content */
-  providerId?: string;
-  /** Ministry ID for auth */
-  ministryId?: string;
-}
-
-// Helper to get instructions from provider based on its capabilities
-async function getProviderInstructions(provider: IProvider, path: string, auth?: any): Promise<Instructions | null> {
-  const capabilities = provider.capabilities;
-  if (capabilities.instructions && provider.getInstructions) {
-    return provider.getInstructions(path, auth);
-  }
-  return null;
-}
-
-// Extract sections from instructions that contain actions
-function extractSections(instructions: Instructions): InstructionItem[] {
-  const sections: InstructionItem[] = [];
-
-  // Recursively find all items with itemType 'section'
-  function findSections(items: InstructionItem[]) {
-    for (const item of items) {
-      if (item.itemType === 'section' && item.children && item.children.length > 0) {
-        sections.push(item);
-      }
-      // Continue searching in children
-      if (item.children) {
-        findSections(item.children);
-      }
-    }
-  }
-
-  findSections(instructions.items);
-
-  // If no sections found by itemType, fall back to structure-based detection
-  // Look for items whose children are actions (have 'action' itemType or no grandchildren)
-  if (sections.length === 0) {
-    for (const item of instructions.items) {
-      if (item.children && item.children.length > 0) {
-        const hasActionChildren = item.children.some(c =>
-          c.itemType === 'action' || c.itemType === 'providerPresentation' ||
-          !c.children || c.children.length === 0
-        );
-        if (hasActionChildren) {
-          sections.push(item);
-        }
-      }
-    }
-  }
-
-  return sections;
-}
-
-export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, contentPath, providerId, ministryId }) => {
+export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, onSelect, contentPath, providerId, ministryId }) => {
   // Provider state
   const [selectedProviderId, setSelectedProviderId] = useState<string>(providerId || "lessonschurch");
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
@@ -103,7 +41,6 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
 
   // Instructions state (when viewing a venue/leaf)
   const [instructions, setInstructions] = useState<Instructions | null>(null);
-  const [sections, setSections] = useState<InstructionItem[]>([]);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
   // Mode: "associated" shows actions from contentPath, "browse" allows navigation
@@ -156,15 +93,15 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
 
       if (result) {
         setInstructions(result);
-        setSections(extractSections(result));
+
       } else {
         setInstructions(null);
-        setSections([]);
+  
       }
     } catch (error) {
       console.error("Error loading instructions:", error);
       setInstructions(null);
-      setSections([]);
+
     } finally {
       setLoading(false);
     }
@@ -225,7 +162,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
       setCurrentPath(folder.path);
       setBreadcrumbTitles(prev => [...prev, folder.title]);
       setInstructions(null);
-      setSections([]);
+
       loadBrowseContent(folder.path);
     }
   }, [isLeafFolder, loadBrowseContent, loadInstructions, selectedProviderId]);
@@ -235,7 +172,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     if (instructions) {
       // Go back from instructions to folder list
       setInstructions(null);
-      setSections([]);
+
       const segments = currentPath.split("/").filter(Boolean);
       segments.pop();
       const newPath = segments.length > 0 ? "/" + segments.join("/") : "";
@@ -260,7 +197,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
   // Handle breadcrumb click
   const handleBreadcrumbClick = useCallback((index: number) => {
     setInstructions(null);
-    setSections([]);
+
 
     if (index === -1) {
       setCurrentPath("");
@@ -282,7 +219,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     setCurrentPath("");
     setBreadcrumbTitles([]);
     setInstructions(null);
-    setSections([]);
+
     setCurrentItems([]);
     setCurrentFiles([]);
 
@@ -336,10 +273,8 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     const sectionId = section.relatedId || section.id || "";
     const sectionName = section.label || "Section";
     const totalSeconds = section.children?.reduce((sum, action) => sum + (action.seconds || 0), 0) || 0;
-    // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
-    // Get embedUrl from section if available
     const embedUrl = section.embedUrl;
     onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, embedUrl, path, contentPathStr);
     onClose();
@@ -349,10 +284,8 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
   const handleAddAction = useCallback((action: InstructionItem, provId: string, pathIndices: number[]) => {
     const actionId = action.relatedId || action.id || "";
     const actionName = action.label || "Action";
-    // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
-    // Get embedUrl from action itself or from first child with an embedUrl
     let embedUrl = action.embedUrl;
     if (!embedUrl && action.children && action.children.length > 0) {
       const childWithUrl = action.children.find(child => child.embedUrl);
@@ -365,12 +298,12 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
   }, [onSelect, onClose, mode, currentPath, contentPath]);
 
   // Handle adding a file
-  const handleAddFile = useCallback((file: ContentFile, provId: string) => {
+  const handleAddFile = useCallback((file: ContentFile, provId: string, pathIndices?: number[]) => {
     const seconds = file.seconds;
     const embedUrl = file.embedUrl || file.url;
-    // Pass providerPath: currentPath for browse mode, contentPath for associated mode
     const path = mode === "browse" ? currentPath : contentPath;
-    onSelect(file.id, file.title, seconds, provId, "providerFile", file.image, embedUrl, path);
+    const contentPathStr = pathIndices ? generatePath(pathIndices) : undefined;
+    onSelect(file.id, file.title, seconds, provId, "providerFile", file.image, embedUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, currentPath, contentPath]);
 
@@ -380,7 +313,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     setCurrentPath("");
     setBreadcrumbTitles([]);
     setInstructions(null);
-    setSections([]);
+
   }, []);
 
   // Reset state on close
@@ -390,7 +323,7 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     setCurrentPath("");
     setBreadcrumbTitles([]);
     setInstructions(null);
-    setSections([]);
+
     setCurrentItems([]);
     setCurrentFiles([]);
     setShowAllProviders(false);
@@ -424,162 +357,6 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
     return items;
   }, [mode, breadcrumbTitles, handleBreadcrumbClick, currentProviderInfo, selectedProviderId]);
 
-  // Render a single instruction item (recursive)
-  const renderInstructionItem = (item: InstructionItem, provId: string, depth: number = 0, pathIndices: number[] = []) => {
-    const itemId = item.relatedId || item.id || "";
-    const hasChildren = item.children && item.children.length > 0;
-    const isExpanded = expandedSections.has(itemId);
-    const isSection = item.itemType === 'section' || item.itemType === 'header';
-
-    // Items with children are expandable (sections, headers, or actions with files)
-    if (hasChildren) {
-      return (
-        <Box key={itemId} sx={{ mb: depth === 0 ? 1 : 0.5 }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              py: depth === 0 ? 1 : 0.75,
-              px: 1,
-              borderRadius: 1,
-              bgcolor: depth === 0 ? "grey.100" : "transparent",
-              "&:hover": { bgcolor: depth === 0 ? "grey.200" : "action.hover" }
-            }}
-          >
-            <IconButton size="small" onClick={() => toggleSectionExpanded(itemId)} sx={{ mr: 1 }}>
-              {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-            </IconButton>
-            <Box sx={{ flex: 1 }}>
-              <Typography sx={{ fontWeight: depth === 0 ? 500 : 400 }}>{item.label}</Typography>
-              {item.description && (
-                <Typography variant="caption" color="text.secondary">
-                  {item.description}
-                  {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
-                </Typography>
-              )}
-            </Box>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<AddIcon />}
-              onClick={() => isSection ? handleAddSection(item, provId, pathIndices) : handleAddAction(item, provId, pathIndices)}
-              sx={{ ml: 1 }}
-            >
-              {isSection
-                ? (Locale.label("plans.actionSelector.addSection") || "Add Section")
-                : (Locale.label("plans.actionSelector.addAction") || "Add")}
-            </Button>
-          </Box>
-          {isExpanded && (
-            <Box sx={{ pl: 4 }}>
-              {item.children!.map((child, childIndex) => renderInstructionItem(child, provId, depth + 1, [...pathIndices, childIndex]))}
-            </Box>
-          )}
-        </Box>
-      );
-    }
-
-    // Leaf items (no children) - just show with add button
-    return (
-      <Box
-        key={itemId}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          py: 0.75,
-          px: 1,
-          borderRadius: 1,
-          "&:hover": { bgcolor: "action.hover" }
-        }}
-      >
-        <PlayArrowIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="body2">{item.label}</Typography>
-          {item.description && (
-            <Typography variant="caption" color="text.secondary">
-              {item.description}
-              {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
-            </Typography>
-          )}
-        </Box>
-        <IconButton
-          size="small"
-          color="primary"
-          onClick={() => handleAddAction(item, provId, pathIndices)}
-          title={Locale.label("plans.actionSelector.addAction") || "Add Action"}
-        >
-          <AddIcon />
-        </IconButton>
-      </Box>
-    );
-  };
-
-  // Render sections tree
-  const renderSectionsTree = (sectionList: InstructionItem[], provId: string) => (
-    <Box sx={{ maxHeight: "400px", overflowY: "auto" }}>
-      {sectionList.length === 0 ? (
-        <Typography color="text.secondary" sx={{ textAlign: "center", py: 2 }}>
-          {Locale.label("plans.actionSelector.noActionsAvailable") || "No actions available"}
-        </Typography>
-      ) : (
-        sectionList.map((section, index) => renderInstructionItem(section, provId, 0, [index]))
-      )}
-    </Box>
-  );
-
-  // Render folder/file grid
-  const renderBrowseGrid = () => (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
-        gap: 2,
-        maxHeight: "400px",
-        overflowY: "auto",
-        p: 1
-      }}
-    >
-      {currentItems.map((folder) => {
-        const isLeaf = isLeafFolder(folder);
-        return (
-          <Card key={`folder-${folder.id}`} sx={{ border: 1, borderColor: "divider" }}>
-            <CardActionArea onClick={() => handleFolderClick(folder)}>
-              {folder.image ? (
-                <CardMedia component="img" height="80" image={folder.image} alt={folder.title} sx={{ objectFit: "cover" }} />
-              ) : (
-                <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: isLeaf ? "primary.light" : "grey.200" }}>
-                  {isLeaf ? <PlayArrowIcon sx={{ fontSize: 40, color: "primary.contrastText" }} /> : <FolderIcon sx={{ fontSize: 40, color: "grey.500" }} />}
-                </Box>
-              )}
-              <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
-                <Typography variant="body2" noWrap title={folder.title} sx={{ fontWeight: isLeaf ? 600 : 400 }}>
-                  {folder.title}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        );
-      })}
-      {currentFiles.map((file) => (
-        <Card key={`file-${file.id}`} sx={{ border: 1, borderColor: "divider" }}>
-          <CardActionArea onClick={() => handleAddFile(file, selectedProviderId)}>
-            {file.image ? (
-              <CardMedia component="img" height="80" image={file.image} alt={file.title} sx={{ objectFit: "cover" }} />
-            ) : (
-              <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "secondary.light" }}>
-                <AddIcon sx={{ fontSize: 40, color: "secondary.contrastText" }} />
-              </Box>
-            )}
-            <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
-              <Typography variant="body2" noWrap title={file.title}>{file.title}</Typography>
-              <Typography variant="caption" color="secondary">Add-On</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      ))}
-    </Box>
-  );
-
   // Associated mode - show instructions from contentPath
   if (mode === "associated" && contentPath) {
     return (
@@ -604,7 +381,14 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
               <CircularProgress />
             </Box>
           ) : (
-            renderSectionsTree(instructions?.items || [], providerId || "lessonschurch")
+            <InstructionTree
+              items={instructions?.items || []}
+              providerId={providerId || "lessonschurch"}
+              expandedSections={expandedSections}
+              onToggleExpanded={toggleSectionExpanded}
+              onAddSection={handleAddSection}
+              onAddAction={handleAddAction}
+            />
           )}
         </DialogContent>
         <DialogActions>
@@ -702,14 +486,28 @@ export const ActionSelector: React.FC<Props> = ({ open, onClose, onSelect, conte
                   </Typography>
                 </Typography>
               </Box>
-              {renderSectionsTree(instructions?.items || [], selectedProviderId)}
+              <InstructionTree
+                items={instructions?.items || []}
+                providerId={selectedProviderId}
+                expandedSections={expandedSections}
+                onToggleExpanded={toggleSectionExpanded}
+                onAddSection={handleAddSection}
+                onAddAction={handleAddAction}
+              />
             </Box>
           ) : currentItems.length === 0 && currentFiles.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 4 }}>
               <Typography color="text.secondary">No content available</Typography>
             </Box>
           ) : (
-            renderBrowseGrid()
+            <BrowseGrid
+              folders={currentItems}
+              files={currentFiles}
+              selectedProviderId={selectedProviderId}
+              isLeafFolder={isLeafFolder}
+              onFolderClick={handleFolderClick}
+              onFileClick={handleAddFile}
+            />
           )}
         </Stack>
       </DialogContent>
