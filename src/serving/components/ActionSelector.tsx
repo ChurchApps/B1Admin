@@ -132,7 +132,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     const embedUrl = file.embedUrl || file.url;
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = pathIndices ? generatePath(pathIndices) : undefined;
-    onSelect(file.id, file.title, file.seconds, provId, "providerFile", file.image, embedUrl, path, contentPathStr);
+    onSelect(file.id, file.title, file.seconds, provId, "providerFile", file.thumbnail, embedUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
 
