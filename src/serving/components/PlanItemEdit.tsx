@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, FormControl, Grid, InputLabel, OutlinedInput, TextField, Stack } from "@mui/material";
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, Grid, InputLabel, OutlinedInput, TextField, Stack } from "@mui/material";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 
@@ -13,6 +13,7 @@ export const PlanItemEdit = (props: Props) => {
   const [searchText, setSearchText] = React.useState("");
   const [songs, setSongs] = React.useState<SongDetailInterface[]>([]);
   const [, setErrors] = React.useState<string[]>([]);
+  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
@@ -229,13 +230,26 @@ export const PlanItemEdit = (props: Props) => {
       </DialogContent>
       <DialogActions>
         {planItem?.id && (
-          <Button onClick={handleDelete} color="error" sx={{ mr: "auto" }}>
+          <Button onClick={() => setShowDeleteConfirm(true)} color="error" sx={{ mr: "auto" }}>
             {Locale.label("common.delete") || "Delete"}
           </Button>
         )}
         <Button onClick={props.onDone} variant="outlined">{Locale.label("common.cancel") || "Cancel"}</Button>
         <Button onClick={handleSave} variant="contained">{Locale.label("common.save") || "Save"}</Button>
       </DialogActions>
+
+      <Dialog open={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)} maxWidth="xs">
+        <DialogTitle>{Locale.label("plans.planItemEdit.confirmDelete") || "Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {Locale.label("plans.planItemEdit.confirmDeleteMessage") || "Are you sure you want to delete this item?"}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowDeleteConfirm(false)} variant="outlined">{Locale.label("common.cancel") || "Cancel"}</Button>
+          <Button onClick={handleDelete} color="error" variant="contained">{Locale.label("common.delete") || "Delete"}</Button>
+        </DialogActions>
+      </Dialog>
     </Dialog>
   );
 };

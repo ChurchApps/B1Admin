@@ -1220,6 +1220,8 @@
       "song": "Song"
     },
     "planItemEdit": {
+      "confirmDelete": "Confirm Delete",
+      "confirmDeleteMessage": "Are you sure you want to delete this item?",
       "description": "Description",
       "edit": "Edit",
       "editAddOn": "Edit Add-On",

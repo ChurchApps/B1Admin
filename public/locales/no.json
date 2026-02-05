@@ -1048,17 +1048,10 @@
       "selectLesson": "Velg Leksjon"
     },
     "lessonSelector": {
-      "addFromLesson": "Legg til fra tilknyttet leksjon",
-      "addLesson": "Legg til leksjon",
-      "associateLesson": "Tilknytt leksjon",
-      "externalProvider": "Ekstern leverandør",
-      "lesson": "Leksjon",
-      "lessonSource": "Leksjonskilde",
-      "lessonsChurch": "Lessons.church",
+      "associateLesson": "Associate Leksjon",
+      "lesson": "Lekse",
       "program": "Program",
-      "provider": "Leverandør",
-      "study": "Studie",
-      "usingAssociatedLesson": "Bruker tilknyttet leksjon:",
+      "study": "Studere",
       "venue": "Sted"
     },
     "planPage": {
@@ -1157,13 +1150,6 @@
       "copy": "Kopier",
       "saveNotes": "Lagre notater"
     },
-    "lessonSelector": {
-      "associateLesson": "Associate Leksjon",
-      "lesson": "Lekse",
-      "program": "Program",
-      "study": "Studere",
-      "venue": "Sted"
-    },
     "planItem": {
       "addOn": "Tillegg",
       "expandToActions": "Utvid til handlinger",
@@ -1172,6 +1158,8 @@
       "song": "Sang"
     },
     "planItemEdit": {
+      "confirmDelete": "Bekreft sletting",
+      "confirmDeleteMessage": "Er du sikker på at du vil slette dette elementet?",
       "description": "Beskrivelse",
       "edit": "Rediger",
       "editAddOn": "Rediger tillegg",
@@ -2320,80 +2308,6 @@
       "switchToMobile": "Bytt til mobilvisning"
     },
     "elementAdd": {
-      "blocks": "Blokker",
-      "box": "Eske",
-      "calendar": "Kalender",
-      "card": "Kort",
-      "carousel": "Karusell",
-      "churchSpecific": "Kirkespesifikk",
-      "donateLink": "Doner lenke",
-      "donation": "Donasjon",
-      "dragAndDrop": "Dra og slipp på siden",
-      "embedPage": "Bygg inn side",
-      "expandable": "Utvidbar",
-      "form": "Skjema",
-      "groupList": "Gruppeliste",
-      "html": "HTML",
-      "image": "Bilde",
-      "location": "Sted",
-      "logo": "Logo",
-      "noBlocksFound": "Ingen blokker funnet",
-      "row": "Rad",
-      "section": "Del",
-      "simpleElements": "Enkle elementer",
-      "stream": "Strøm",
-      "table": "Bord",
-      "text": "Tekst",
-      "textWithPhoto": "Tekst med bilde",
-      "video": "Video"
-    },
-    "appearancePage": {
-      "title": "Nettstedstiler",
-      "subtitle": "Nedenfor er en forhåndsvisning av et eksempelside med dine farger, skrifter og logoer. Dette er ikke ditt faktiske nettstedinnhold."
-    },
-    "filesPage": {
-      "title": "Filer",
-      "subtitle": "Administrer filer og medier for nettstedet ditt"
-    },
-    "pagePreview": {
-      "title": "Nettstedsforhåndsvisning",
-      "subtitle": "Forhåndsvisning: {title}",
-      "editContent": "Rediger innhold",
-      "pageSettings": "Sideinnstillinger"
-    },
-    "sectionEdit": {
-      "convertToBlock": "Konverter til blokk",
-      "convertTo": "Konverter til",
-      "duplicate": "Dupliser",
-      "duplicateSection": "Dupliser seksjon"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Logoadministrasjon"
-    },
-    "cssEdit": {
-      "customCss": "Tilpasset CSS",
-      "customHtml": "Tilpasset HTML"
-    },
-    "filesManager": {
-      "noFilesYet": "Ingen filer lastet opp ennå",
-      "getStarted": "Kom i gang ved å laste opp din første fil",
-      "files": "Filer"
-    },
-    "fontEdit": {
-      "fontSelection": "Skriftvalg",
-      "typographyPreview": "Typografiforhåndsvisning",
-      "popularFontCombinations": "Populære skriftkombinasjoner"
-    },
-    "paletteEdit": {
-      "savePalette": "Lagre palett",
-      "colorValues": "Fargeverdier",
-      "suggestedPalettes": "Foreslåtte paletter",
-      "colorCombinationsPreview": "Fargekombinasjonsforhåndsvisning"
-    },
-    "stylesManager": {
-      "styleSettings": "Stilinnstillinger"
-    },
-    "elementAdd": {
       "addElements": "Legg til Elementer",
       "advanced": "Avansert",
       "all": "Alle",
@@ -2456,6 +2370,52 @@
       "tryDifferentSearch": "Prøv et annet søkeord",
       "untitledBlock": "Navnløs blokk",
       "video": "Video"
+    },
+    "appearancePage": {
+      "title": "Nettstedstiler",
+      "subtitle": "Nedenfor er en forhåndsvisning av et eksempelside med dine farger, skrifter og logoer. Dette er ikke ditt faktiske nettstedinnhold."
+    },
+    "filesPage": {
+      "title": "Filer",
+      "subtitle": "Administrer filer og medier for nettstedet ditt"
+    },
+    "pagePreview": {
+      "title": "Nettstedsforhåndsvisning",
+      "subtitle": "Forhåndsvisning: {title}",
+      "editContent": "Rediger innhold",
+      "pageSettings": "Sideinnstillinger"
+    },
+    "sectionEdit": {
+      "convertToBlock": "Konverter til blokk",
+      "convertTo": "Konverter til",
+      "duplicate": "Dupliser",
+      "duplicateSection": "Dupliser seksjon"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Logoadministrasjon"
+    },
+    "cssEdit": {
+      "customCss": "Tilpasset CSS",
+      "customHtml": "Tilpasset HTML"
+    },
+    "filesManager": {
+      "noFilesYet": "Ingen filer lastet opp ennå",
+      "getStarted": "Kom i gang ved å laste opp din første fil",
+      "files": "Filer"
+    },
+    "fontEdit": {
+      "fontSelection": "Skriftvalg",
+      "typographyPreview": "Typografiforhåndsvisning",
+      "popularFontCombinations": "Populære skriftkombinasjoner"
+    },
+    "paletteEdit": {
+      "savePalette": "Lagre palett",
+      "colorValues": "Fargeverdier",
+      "suggestedPalettes": "Foreslåtte paletter",
+      "colorCombinationsPreview": "Fargekombinasjonsforhåndsvisning"
+    },
+    "stylesManager": {
+      "styleSettings": "Stilinnstillinger"
     }
   },
   "stockPhotos": {

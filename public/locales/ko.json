@@ -1048,17 +1048,10 @@
       "selectLesson": "수업 선택"
     },
     "lessonSelector": {
-      "addFromLesson": "연결된 수업에서 추가",
-      "addLesson": "수업 추가",
-      "associateLesson": "수업 연결",
-      "externalProvider": "외부 제공자",
+      "associateLesson": "준강습",
       "lesson": "수업",
-      "lessonSource": "수업 소스",
-      "lessonsChurch": "Lessons.church",
       "program": "프로그램",
-      "provider": "제공자",
-      "study": "학습",
-      "usingAssociatedLesson": "연결된 수업 사용 중:",
+      "study": "공부하다",
       "venue": "장소"
     },
     "planPage": {
@@ -1157,13 +1150,6 @@
       "copy": "복사",
       "saveNotes": "메모 저장"
     },
-    "lessonSelector": {
-      "associateLesson": "준강습",
-      "lesson": "수업",
-      "program": "프로그램",
-      "study": "공부하다",
-      "venue": "장소"
-    },
     "planItem": {
       "addOn": "추가 기능",
       "expandToActions": "작업으로 확장",
@@ -1172,6 +1158,8 @@
       "song": "노래"
     },
     "planItemEdit": {
+      "confirmDelete": "삭제 확인",
+      "confirmDeleteMessage": "이 항목을 삭제하시겠습니까?",
       "description": "설명",
       "edit": "편집",
       "editAddOn": "추가 기능 편집",
@@ -2320,80 +2308,6 @@
       "switchToMobile": "모바일 보기로 전환"
     },
     "elementAdd": {
-      "blocks": "블록",
-      "box": "상자",
-      "calendar": "달력",
-      "card": "카드",
-      "carousel": "회전목마",
-      "churchSpecific": "특정 교회",
-      "donateLink": "링크 기부",
-      "donation": "기부",
-      "dragAndDrop": "페이지에 드래그 앤 드롭",
-      "embedPage": "페이지 삽입",
-      "expandable": "확장 가능",
-      "form": "양식",
-      "groupList": "그룹 목록",
-      "html": "HTML",
-      "image": "영상",
-      "location": "위치",
-      "logo": "심벌 마크",
-      "noBlocksFound": "블록을 찾을 수 없습니다.",
-      "row": "열",
-      "section": "부분",
-      "simpleElements": "단순한 요소",
-      "stream": "개울",
-      "table": "테이블",
-      "text": "텍스트",
-      "textWithPhoto": "사진이 포함된 텍스트",
-      "video": "동영상"
-    },
-    "appearancePage": {
-      "title": "사이트 스타일",
-      "subtitle": "아래는 색상, 글꼴 및 로고가 적용된 샘플 사이트 미리보기입니다. 실제 사이트 콘텐츠가 아닙니다."
-    },
-    "filesPage": {
-      "title": "파일",
-      "subtitle": "웹사이트용 파일 및 미디어 관리"
-    },
-    "pagePreview": {
-      "title": "웹사이트 미리보기",
-      "subtitle": "미리보기: {title}",
-      "editContent": "콘텐츠 편집",
-      "pageSettings": "페이지 설정"
-    },
-    "sectionEdit": {
-      "convertToBlock": "블록으로 변환",
-      "convertTo": "변환",
-      "duplicate": "복제",
-      "duplicateSection": "섹션 복제"
-    },
-    "appearanceEdit": {
-      "logoManagement": "로고 관리"
-    },
-    "cssEdit": {
-      "customCss": "사용자 정의 CSS",
-      "customHtml": "사용자 정의 HTML"
-    },
-    "filesManager": {
-      "noFilesYet": "아직 업로드된 파일이 없습니다",
-      "getStarted": "첫 번째 파일을 업로드하여 시작하세요",
-      "files": "파일"
-    },
-    "fontEdit": {
-      "fontSelection": "글꼴 선택",
-      "typographyPreview": "타이포그래피 미리보기",
-      "popularFontCombinations": "인기 있는 글꼴 조합"
-    },
-    "paletteEdit": {
-      "savePalette": "팔레트 저장",
-      "colorValues": "색상 값",
-      "suggestedPalettes": "제안된 팔레트",
-      "colorCombinationsPreview": "색상 조합 미리보기"
-    },
-    "stylesManager": {
-      "styleSettings": "스타일 설정"
-    },
-    "elementAdd": {
       "addElements": "요소 추가",
       "advanced": "고급",
       "all": "전체",
@@ -2456,6 +2370,52 @@
       "tryDifferentSearch": "다른 검색어를 시도해 보세요",
       "untitledBlock": "제목 없는 블록",
       "video": "비디오"
+    },
+    "appearancePage": {
+      "title": "사이트 스타일",
+      "subtitle": "아래는 색상, 글꼴 및 로고가 적용된 샘플 사이트 미리보기입니다. 실제 사이트 콘텐츠가 아닙니다."
+    },
+    "filesPage": {
+      "title": "파일",
+      "subtitle": "웹사이트용 파일 및 미디어 관리"
+    },
+    "pagePreview": {
+      "title": "웹사이트 미리보기",
+      "subtitle": "미리보기: {title}",
+      "editContent": "콘텐츠 편집",
+      "pageSettings": "페이지 설정"
+    },
+    "sectionEdit": {
+      "convertToBlock": "블록으로 변환",
+      "convertTo": "변환",
+      "duplicate": "복제",
+      "duplicateSection": "섹션 복제"
+    },
+    "appearanceEdit": {
+      "logoManagement": "로고 관리"
+    },
+    "cssEdit": {
+      "customCss": "사용자 정의 CSS",
+      "customHtml": "사용자 정의 HTML"
+    },
+    "filesManager": {
+      "noFilesYet": "아직 업로드된 파일이 없습니다",
+      "getStarted": "첫 번째 파일을 업로드하여 시작하세요",
+      "files": "파일"
+    },
+    "fontEdit": {
+      "fontSelection": "글꼴 선택",
+      "typographyPreview": "타이포그래피 미리보기",
+      "popularFontCombinations": "인기 있는 글꼴 조합"
+    },
+    "paletteEdit": {
+      "savePalette": "팔레트 저장",
+      "colorValues": "색상 값",
+      "suggestedPalettes": "제안된 팔레트",
+      "colorCombinationsPreview": "색상 조합 미리보기"
+    },
+    "stylesManager": {
+      "styleSettings": "스타일 설정"
     }
   },
   "stockPhotos": {

@@ -1165,6 +1165,8 @@
       "song": "Canção"
     },
     "planItemEdit": {
+      "confirmDelete": "Confirmar exclusão",
+      "confirmDeleteMessage": "Tem certeza de que deseja excluir este item?",
       "description": "Descrição",
       "edit": "Editar",
       "editAddOn": "Editar complemento",
@@ -2313,80 +2315,6 @@
       "switchToMobile": "Mudar para visualização móvel"
     },
     "elementAdd": {
-      "blocks": "Blocos",
-      "box": "Caixa",
-      "calendar": "Calendário",
-      "card": "Cartão",
-      "carousel": "Carrossel",
-      "churchSpecific": "Específico da Igreja",
-      "donateLink": "Link para doar",
-      "donation": "Doação",
-      "dragAndDrop": "Arraste e solte na página",
-      "embedPage": "Incorporar página",
-      "expandable": "Expansível",
-      "form": "Formulário",
-      "groupList": "Lista de grupos",
-      "html": "HTML",
-      "image": "Imagem",
-      "location": "Localização",
-      "logo": "Logotipo",
-      "noBlocksFound": "Nenhum bloco encontrado",
-      "row": "Linha",
-      "section": "Seção",
-      "simpleElements": "Elementos Simples",
-      "stream": "Fluxo",
-      "table": "Mesa",
-      "text": "Texto",
-      "textWithPhoto": "Texto com foto",
-      "video": "Vídeo"
-    },
-    "appearancePage": {
-      "title": "Estilos do site",
-      "subtitle": "Abaixo está uma prévia de um site de exemplo com suas cores, fontes e logotipos. Este não é o conteúdo real do seu site."
-    },
-    "filesPage": {
-      "title": "Arquivos",
-      "subtitle": "Gerenciar arquivos e mídia para seu site"
-    },
-    "pagePreview": {
-      "title": "Visualização do site",
-      "subtitle": "Visualização: {title}",
-      "editContent": "Editar conteúdo",
-      "pageSettings": "Configurações da página"
-    },
-    "sectionEdit": {
-      "convertToBlock": "Converter para bloco",
-      "convertTo": "Converter para",
-      "duplicate": "Duplicar",
-      "duplicateSection": "Duplicar seção"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Gerenciamento de logotipo"
-    },
-    "cssEdit": {
-      "customCss": "CSS personalizado",
-      "customHtml": "HTML personalizado"
-    },
-    "filesManager": {
-      "noFilesYet": "Nenhum arquivo enviado ainda",
-      "getStarted": "Comece enviando seu primeiro arquivo",
-      "files": "Arquivos"
-    },
-    "fontEdit": {
-      "fontSelection": "Seleção de fonte",
-      "typographyPreview": "Visualização de tipografia",
-      "popularFontCombinations": "Combinações de fontes populares"
-    },
-    "paletteEdit": {
-      "savePalette": "Salvar paleta",
-      "colorValues": "Valores de cor",
-      "suggestedPalettes": "Paletas sugeridas",
-      "colorCombinationsPreview": "Visualização de combinações de cores"
-    },
-    "stylesManager": {
-      "styleSettings": "Configurações de estilo"
-    },
-    "elementAdd": {
       "addElements": "Adicionar Elementos",
       "advanced": "Avançado",
       "all": "Todos",
@@ -2449,6 +2377,52 @@
       "tryDifferentSearch": "Tente um termo de pesquisa diferente",
       "untitledBlock": "Bloco sem título",
       "video": "Vídeo"
+    },
+    "appearancePage": {
+      "title": "Estilos do site",
+      "subtitle": "Abaixo está uma prévia de um site de exemplo com suas cores, fontes e logotipos. Este não é o conteúdo real do seu site."
+    },
+    "filesPage": {
+      "title": "Arquivos",
+      "subtitle": "Gerenciar arquivos e mídia para seu site"
+    },
+    "pagePreview": {
+      "title": "Visualização do site",
+      "subtitle": "Visualização: {title}",
+      "editContent": "Editar conteúdo",
+      "pageSettings": "Configurações da página"
+    },
+    "sectionEdit": {
+      "convertToBlock": "Converter para bloco",
+      "convertTo": "Converter para",
+      "duplicate": "Duplicar",
+      "duplicateSection": "Duplicar seção"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Gerenciamento de logotipo"
+    },
+    "cssEdit": {
+      "customCss": "CSS personalizado",
+      "customHtml": "HTML personalizado"
+    },
+    "filesManager": {
+      "noFilesYet": "Nenhum arquivo enviado ainda",
+      "getStarted": "Comece enviando seu primeiro arquivo",
+      "files": "Arquivos"
+    },
+    "fontEdit": {
+      "fontSelection": "Seleção de fonte",
+      "typographyPreview": "Visualização de tipografia",
+      "popularFontCombinations": "Combinações de fontes populares"
+    },
+    "paletteEdit": {
+      "savePalette": "Salvar paleta",
+      "colorValues": "Valores de cor",
+      "suggestedPalettes": "Paletas sugeridas",
+      "colorCombinationsPreview": "Visualização de combinações de cores"
+    },
+    "stylesManager": {
+      "styleSettings": "Configurações de estilo"
     }
   },
   "stockPhotos": {

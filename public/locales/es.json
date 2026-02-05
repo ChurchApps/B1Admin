@@ -1166,6 +1166,8 @@
       "song": "Canción"
     },
     "planItemEdit": {
+      "confirmDelete": "Confirmar eliminación",
+      "confirmDeleteMessage": "¿Está seguro de que desea eliminar este elemento?",
       "description": "Descripción",
       "edit": "Editar",
       "editAddOn": "Editar complemento",
@@ -2314,80 +2316,6 @@
       "switchToMobile": "Cambiar a vista móvil"
     },
     "elementAdd": {
-      "blocks": "Bloques",
-      "box": "Caja",
-      "calendar": "Calendario",
-      "card": "Tarjeta",
-      "carousel": "Carrusel",
-      "churchSpecific": "Específico de la iglesia",
-      "donateLink": "Enlace de donación",
-      "donation": "Donación",
-      "dragAndDrop": "Arrastrar y soltar en la página",
-      "embedPage": "Insertar página",
-      "expandable": "Ampliable",
-      "form": "Formulario",
-      "groupList": "Lista de grupos",
-      "html": "HTML",
-      "image": "Imagen",
-      "location": "Ubicación",
-      "logo": "Logo",
-      "noBlocksFound": "No se encontraron bloques",
-      "row": "Fila",
-      "section": "Sección",
-      "simpleElements": "Elementos simples",
-      "stream": "Arroyo",
-      "table": "Mesa",
-      "text": "Texto",
-      "textWithPhoto": "Texto con foto",
-      "video": "Video"
-    },
-    "appearancePage": {
-      "title": "Estilos del sitio",
-      "subtitle": "A continuación se muestra una vista previa de un sitio de muestra con sus colores, fuentes y logotipos. Este no es el contenido real de su sitio."
-    },
-    "filesPage": {
-      "title": "Archivos",
-      "subtitle": "Gestionar archivos y medios para su sitio web"
-    },
-    "pagePreview": {
-      "title": "Vista previa del sitio web",
-      "subtitle": "Vista previa: {title}",
-      "editContent": "Editar contenido",
-      "pageSettings": "Configuración de página"
-    },
-    "sectionEdit": {
-      "convertToBlock": "Convertir a bloque",
-      "convertTo": "Convertir a",
-      "duplicate": "Duplicar",
-      "duplicateSection": "Duplicar sección"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Gestión de logotipos"
-    },
-    "cssEdit": {
-      "customCss": "CSS personalizado",
-      "customHtml": "HTML personalizado"
-    },
-    "filesManager": {
-      "noFilesYet": "Aún no se han subido archivos",
-      "getStarted": "Comience subiendo su primer archivo",
-      "files": "Archivos"
-    },
-    "fontEdit": {
-      "fontSelection": "Selección de fuente",
-      "typographyPreview": "Vista previa de tipografía",
-      "popularFontCombinations": "Combinaciones de fuentes populares"
-    },
-    "paletteEdit": {
-      "savePalette": "Guardar paleta",
-      "colorValues": "Valores de color",
-      "suggestedPalettes": "Paletas sugeridas",
-      "colorCombinationsPreview": "Vista previa de combinaciones de colores"
-    },
-    "stylesManager": {
-      "styleSettings": "Configuración de estilos"
-    },
-    "elementAdd": {
       "addElements": "Agregar Elementos",
       "advanced": "Avanzado",
       "all": "Todos",
@@ -2450,6 +2378,52 @@
       "tryDifferentSearch": "Intenta con un término diferente",
       "untitledBlock": "Bloque sin título",
       "video": "Video"
+    },
+    "appearancePage": {
+      "title": "Estilos del sitio",
+      "subtitle": "A continuación se muestra una vista previa de un sitio de muestra con sus colores, fuentes y logotipos. Este no es el contenido real de su sitio."
+    },
+    "filesPage": {
+      "title": "Archivos",
+      "subtitle": "Gestionar archivos y medios para su sitio web"
+    },
+    "pagePreview": {
+      "title": "Vista previa del sitio web",
+      "subtitle": "Vista previa: {title}",
+      "editContent": "Editar contenido",
+      "pageSettings": "Configuración de página"
+    },
+    "sectionEdit": {
+      "convertToBlock": "Convertir a bloque",
+      "convertTo": "Convertir a",
+      "duplicate": "Duplicar",
+      "duplicateSection": "Duplicar sección"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Gestión de logotipos"
+    },
+    "cssEdit": {
+      "customCss": "CSS personalizado",
+      "customHtml": "HTML personalizado"
+    },
+    "filesManager": {
+      "noFilesYet": "Aún no se han subido archivos",
+      "getStarted": "Comience subiendo su primer archivo",
+      "files": "Archivos"
+    },
+    "fontEdit": {
+      "fontSelection": "Selección de fuente",
+      "typographyPreview": "Vista previa de tipografía",
+      "popularFontCombinations": "Combinaciones de fuentes populares"
+    },
+    "paletteEdit": {
+      "savePalette": "Guardar paleta",
+      "colorValues": "Valores de color",
+      "suggestedPalettes": "Paletas sugeridas",
+      "colorCombinationsPreview": "Vista previa de combinaciones de colores"
+    },
+    "stylesManager": {
+      "styleSettings": "Configuración de estilos"
     }
   },
   "stockPhotos": {
