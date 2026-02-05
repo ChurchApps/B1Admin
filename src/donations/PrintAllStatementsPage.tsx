@@ -483,6 +483,9 @@ export const PrintAllStatementsPage = () => {
                   <strong>Note:</strong> This statement summarizes contributions made to {context.userChurch?.church?.name} during the calendar year {currYear}.
                   Please retain this document for your tax records. For questions regarding this statement, please contact the church office.
                 </p>
+                <p style={{ fontSize: "10px", marginTop: "4px" }}>
+                  No goods or services were provided by {context.userChurch?.church?.name} for this donation. {context.userChurch?.church?.name} is a non-profit organization.
+                </p>
               </div>
             </div>
           </div>
