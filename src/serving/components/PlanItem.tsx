@@ -439,7 +439,7 @@ export const PlanItem = React.memo((props: Props) => {
               : undefined
           }
           providerId={props.planItem.providerId}
-          embedUrl={props.planItem.link}
+          downloadUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
           providerContentPath={props.planItem.providerContentPath}
           ministryId={props.ministryId}
@@ -451,7 +451,7 @@ export const PlanItem = React.memo((props: Props) => {
           contentName={props.planItem.label}
           onClose={() => setActionId(null)}
           providerId={props.planItem.providerId || props.associatedProviderId}
-          embedUrl={props.planItem.link}
+          downloadUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
           providerContentPath={props.planItem.providerContentPath}
           ministryId={props.ministryId}

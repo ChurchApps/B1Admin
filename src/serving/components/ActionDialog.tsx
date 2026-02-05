@@ -8,8 +8,8 @@ interface Props {
   contentName?: string;
   onClose: () => void;
   providerId?: string;
-  /** Embed URL from provider - either iframe URL or direct media URL */
-  embedUrl?: string;
+  /** Download URL from provider - either iframe URL or direct media URL */
+  downloadUrl?: string;
   /** Provider path for fetching content dynamically */
   providerPath?: string;
   /** Dot-notation path to specific content item */
@@ -27,7 +27,7 @@ export const ActionDialog: React.FC<Props> = (props) => {
     providerPath: props.providerPath,
     providerContentPath: props.providerContentPath,
     ministryId: props.ministryId,
-    fallbackUrl: props.embedUrl
+    fallbackUrl: props.downloadUrl
   });
 
   useEffect(() => {

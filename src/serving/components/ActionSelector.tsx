@@ -107,8 +107,8 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     const totalSeconds = section.children?.reduce((sum, action) => sum + (action.seconds || 0), 0) || 0;
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
-    const embedUrl = section.embedUrl;
-    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, embedUrl, path, contentPathStr);
+    const downloadUrl = section.downloadUrl;
+    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, downloadUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
 
@@ -118,21 +118,21 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     const actionName = action.label || "Action";
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
-    let embedUrl = action.embedUrl;
-    if (!embedUrl && action.children && action.children.length > 0) {
-      const childWithUrl = action.children.find(child => child.embedUrl);
-      if (childWithUrl) embedUrl = childWithUrl.embedUrl;
+    let downloadUrl = action.downloadUrl;
+    if (!downloadUrl && action.children && action.children.length > 0) {
+      const childWithUrl = action.children.find(child => child.downloadUrl);
+      if (childWithUrl) downloadUrl = childWithUrl.downloadUrl;
     }
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, embedUrl, path, contentPathStr);
+    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, downloadUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
 
   // Handle adding a file
   const handleAddFile = useCallback((file: ContentFile, provId: string, pathIndices?: number[]) => {
-    const embedUrl = file.embedUrl || file.url;
+    const downloadUrl = file.downloadUrl || file.url;
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = pathIndices ? generatePath(pathIndices) : undefined;
-    onSelect(file.id, file.title, file.seconds, provId, "providerFile", file.thumbnail, embedUrl, path, contentPathStr);
+    onSelect(file.id, file.title, file.seconds, provId, "providerFile", file.thumbnail, downloadUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
 
