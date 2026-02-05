@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Menu, MenuItem } from "@mui/material";
+import { Box, Icon, Menu, MenuItem } from "@mui/material";
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
@@ -230,14 +230,15 @@ export const PlanItem = React.memo((props: Props) => {
               onDrop={(item) => {
                 handleDrop(item, index + 0.5);
               }}>
-              <div
-                style={{
+              <Box
+                sx={{
                   height: "30px",
-                  border: "2px dashed #1976d2",
-                  borderRadius: "4px",
-                  backgroundColor: "rgba(25, 118, 210, 0.1)",
+                  border: "2px dashed",
+                  borderColor: "primary.main",
+                  borderRadius: 1,
+                  backgroundColor: "primary.light",
                   opacity: 0.3,
-                  marginBottom: "4px",
+                  mb: 0.5,
                 }}
               />
             </DroppableWrapper>
