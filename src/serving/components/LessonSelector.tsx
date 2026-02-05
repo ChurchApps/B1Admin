@@ -16,9 +16,9 @@ import {
   CardContent,
   Breadcrumbs,
   Link,
-  Chip,
 } from "@mui/material";
-import { ArrowBack as ArrowBackIcon, Folder as FolderIcon, LinkOff as LinkOffIcon } from "@mui/icons-material";
+import { ArrowBack as ArrowBackIcon, Folder as FolderIcon } from "@mui/icons-material";
+import { ProviderChipSelector } from "./ProviderChipSelector";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { getProvider, getAvailableProviders, type ContentFolder, type ContentItem, type IProvider } from "@churchapps/content-provider-helper";
 import { type ContentProviderAuthInterface } from "../../helpers";
@@ -244,41 +244,16 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1 }}>
           {/* Content Provider Selector */}
-          <Box>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-              <Typography variant="body2" color="text.secondary">
-                {Locale.label("plans.lessonSelector.contentProvider") || "Content Provider"}
-              </Typography>
-              {!showAllProviders && (
-                <Button size="small" onClick={() => setShowAllProviders(true)}>
-                  {Locale.label("plans.lessonSelector.browseOtherProviders") || "Browse Other Providers"}
-                </Button>
-              )}
-            </Stack>
-            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-              {(showAllProviders ? availableProviders : availableProviders.filter(p =>
-                !p.requiresAuth || linkedProviders.some(lp => lp.providerId === p.id)
-              )).map((providerInfo) => {
-                const isLinked = !providerInfo.requiresAuth || linkedProviders.some(lp => lp.providerId === providerInfo.id);
-                return (
-                  <Chip
-                    key={providerInfo.id}
-                    label={providerInfo.name}
-                    onClick={() => handleContentProviderChange(providerInfo.id)}
-                    color={selectedProviderId === providerInfo.id ? "primary" : "default"}
-                    variant={selectedProviderId === providerInfo.id ? "filled" : "outlined"}
-                    icon={!isLinked ? <LinkOffIcon /> : undefined}
-                    sx={{ opacity: isLinked ? 1 : 0.6 }}
-                  />
-                );
-              })}
-            </Box>
-            {!isCurrentProviderLinked && currentProviderInfo?.requiresAuth && (
-              <Typography variant="caption" color="warning.main" sx={{ mt: 1, display: "block" }}>
-                {Locale.label("plans.lessonSelector.providerNotLinked") || "This provider is not linked. Please link it in ministry settings to access content."}
-              </Typography>
-            )}
-          </Box>
+          <ProviderChipSelector
+            selectedProviderId={selectedProviderId}
+            onProviderChange={handleContentProviderChange}
+            availableProviders={availableProviders}
+            linkedProviders={linkedProviders}
+            showAllProviders={showAllProviders}
+            onShowAll={() => setShowAllProviders(true)}
+            isCurrentProviderLinked={isCurrentProviderLinked}
+            currentProviderRequiresAuth={!!currentProviderInfo?.requiresAuth}
+          />
 
           {/* Breadcrumb navigation */}
           <Breadcrumbs aria-label="breadcrumb">

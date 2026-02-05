@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Icon, Menu, MenuItem } from "@mui/material";
+import { Box, Menu, MenuItem } from "@mui/material";
+import { Add as AddIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
@@ -287,7 +288,7 @@ export const PlanItem = React.memo((props: Props) => {
       <>
         <div className="planItemHeader">
           <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-            {sectionDuration > 0 && <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>}
+            {sectionDuration > 0 && <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />}
             <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
               {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
             </span>
@@ -297,18 +298,18 @@ export const PlanItem = React.memo((props: Props) => {
                   type="button"
                   onClick={(e) => setAnchorEl(e.currentTarget)}
                   style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                  <Icon>add</Icon>
+                  <AddIcon />
                 </button>
                 <button
                   type="button"
                   onClick={() => props.setEditPlanItem(props.planItem)}
                   style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                  <Icon>edit</Icon>
+                  <EditIcon />
                 </button>
               </>
             )}
           </span>
-          {!props.readOnly && <Icon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
+          {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
           <span>{props.planItem.label}</span>
         </div>
         {getChildren()}
@@ -337,7 +338,7 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
+          <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />
           <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
@@ -348,12 +349,12 @@ export const PlanItem = React.memo((props: Props) => {
                 type="button"
                 onClick={() => props.setEditPlanItem(props.planItem)}
                 style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
+                <EditIcon />
               </button>
             </>
           )}
         </span>
-        {!props.readOnly && <Icon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
+        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
         <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
         <div>
           {onLabelClick ? (
@@ -412,13 +413,13 @@ export const PlanItem = React.memo((props: Props) => {
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem onClick={addSong}>
-            <Icon style={{ marginRight: 10 }}>music_note</Icon> {Locale.label("plans.planItem.song")}
+            <MusicNoteIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.song")}
           </MenuItem>
           <MenuItem onClick={addItem}>
-            <Icon style={{ marginRight: 10 }}>format_list_bulleted</Icon> {Locale.label("plans.planItem.item")}
+            <FormatListBulletedIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.item")}
           </MenuItem>
           <MenuItem onClick={addLessonAction}>
-            <Icon style={{ marginRight: 10 }}>menu_book</Icon> {Locale.label("plans.planItem.externalItem") || "External Item"}
+            <MenuBookIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.externalItem") || "External Item"}
           </MenuItem>
         </Menu>
       )}
