@@ -65,18 +65,13 @@ export const ServiceOrder = memo((props: Props) => {
   const [venueName, setVenueName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
 
-  // Get the provider dynamically based on plan's providerId (or fall back to lessonschurch for backward compat)
+  // Get the provider dynamically based on plan's providerId
   const provider: IProvider | null = useMemo(() => {
-    // New provider system
     if (props.plan?.providerId) {
       return getProvider(props.plan.providerId);
     }
-    // Backward compatibility: if using old contentType/contentId system, assume lessonschurch
-    if (props.plan?.contentType === "venue" || props.plan?.contentType === "externalVenue") {
-      return getProvider("lessonschurch");
-    }
     return null;
-  }, [props.plan?.providerId, props.plan?.contentType]);
+  }, [props.plan?.providerId]);
 
   const loadData = useCallback(async () => {
     if (props.plan?.id) {
@@ -97,7 +92,7 @@ export const ServiceOrder = memo((props: Props) => {
       // Update the plan with the content association using path-based system
       const updatedPlan = {
         ...props.plan,
-        providerId: providerId || "lessonschurch",
+        providerId: providerId,
         providerPlanId: contentPath || contentId, // Store path for provider method calls
         providerPlanName: selectedVenueName || "",
         // Backward compat
@@ -182,7 +177,7 @@ export const ServiceOrder = memo((props: Props) => {
       if (!contentPath) return;
 
       const instructions = await getProviderInstructions(provider, contentPath);
-      const currentProviderId = props.plan?.providerId || "lessonschurch";
+      const currentProviderId = props.plan?.providerId;
 
       if (instructions?.items && instructions.items.length > 0) {
         // Convert InstructionItems to PlanItemInterface with providerId and providerPath
@@ -223,7 +218,7 @@ export const ServiceOrder = memo((props: Props) => {
       if (!contentPath) return;
 
       const instructions = await getProviderInstructions(provider, contentPath);
-      const currentProviderId = props.plan?.providerId || "lessonschurch";
+      const currentProviderId = props.plan?.providerId;
 
       if (instructions?.items && instructions.items.length > 0) {
         // Convert InstructionItems to PlanItemInterface with providerId, providerPath and save
@@ -255,7 +250,7 @@ export const ServiceOrder = memo((props: Props) => {
       if (!contentPath) return;
 
       const instructions = await getProviderInstructions(provider, contentPath);
-      if (instructions?.venueName) setVenueName(instructions.venueName);
+      if (instructions?.name) setVenueName(instructions.name);
     } catch (error) {
       console.error("Error loading venue name:", error);
     }
@@ -271,7 +266,7 @@ export const ServiceOrder = memo((props: Props) => {
         }
 
         const instructions = await getProviderInstructions(provider, contentPath);
-        const currentProviderId = props.plan?.providerId || "lessonschurch";
+        const currentProviderId = props.plan?.providerId;
 
         if (instructions?.items) {
           // Convert InstructionItems to PlanItemInterface for preview with providerId and providerPath
@@ -280,7 +275,7 @@ export const ServiceOrder = memo((props: Props) => {
         } else {
           setPreviewLessonItems([]);
         }
-        if (instructions?.venueName) setVenueName(instructions.venueName);
+        if (instructions?.name) setVenueName(instructions.name);
       } catch (error) {
         console.error("Error loading preview lesson items:", error);
         setPreviewLessonItems([]);
@@ -436,7 +431,7 @@ export const ServiceOrder = memo((props: Props) => {
                 }}
                 startTime={sectionStartTime}
                 associatedVenueId={hasAssociatedContent ? getContentPath() : undefined}
-                associatedProviderId={props.plan?.providerId || (hasAssociatedContent ? "lessonschurch" : undefined)}
+                associatedProviderId={props.plan?.providerId}
                 ministryId={props.plan?.ministryId}
               />
             </DraggableWrapper>
@@ -450,7 +445,7 @@ export const ServiceOrder = memo((props: Props) => {
               readOnly={true}
               startTime={sectionStartTime}
               associatedVenueId={hasAssociatedContent ? getContentPath() : undefined}
-              associatedProviderId={props.plan?.providerId || (hasAssociatedContent ? "lessonschurch" : undefined)}
+              associatedProviderId={props.plan?.providerId}
               ministryId={props.plan?.ministryId}
             />
           )}

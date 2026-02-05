@@ -35,15 +35,23 @@ interface Props {
 
 export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, returnVenueName, ministryId, defaultProviderId }) => {
   // Provider selection
-  const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "lessonschurch");
+  const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "");
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
   const [showAllProviders, setShowAllProviders] = useState(false);
 
-  const provider = useMemo<IProvider | null>(() => {
-    return getProvider(selectedProviderId);
-  }, [selectedProviderId]);
-
   const availableProviders = useMemo(() => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject"]), []);
+
+  // Auto-select first implemented provider if none is set
+  React.useEffect(() => {
+    if (!selectedProviderId && availableProviders.length > 0) {
+      const firstImplemented = availableProviders.find(p => p.implemented);
+      if (firstImplemented) setSelectedProviderId(firstImplemented.id);
+    }
+  }, [selectedProviderId, availableProviders]);
+
+  const provider = useMemo<IProvider | null>(() => {
+    return selectedProviderId ? getProvider(selectedProviderId) : null;
+  }, [selectedProviderId]);
 
   // Path-based navigation
   const [currentPath, setCurrentPath] = useState<string>("");
@@ -204,10 +212,10 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
 
   // Check if current provider is linked
   const isCurrentProviderLinked = useMemo(() => {
-    // Lessons.church doesn't require auth
-    if (selectedProviderId === "lessonschurch") return true;
+    const info = availableProviders.find(p => p.id === selectedProviderId);
+    if (info && !info.requiresAuth) return true;
     return linkedProviders.some(lp => lp.providerId === selectedProviderId);
-  }, [linkedProviders, selectedProviderId]);
+  }, [linkedProviders, selectedProviderId, availableProviders]);
 
   // Build breadcrumb items
   const breadcrumbItems = useMemo(() => {
@@ -249,9 +257,9 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
             </Stack>
             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               {(showAllProviders ? availableProviders : availableProviders.filter(p =>
-                p.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === p.id)
+                !p.requiresAuth || linkedProviders.some(lp => lp.providerId === p.id)
               )).map((providerInfo) => {
-                const isLinked = providerInfo.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === providerInfo.id);
+                const isLinked = !providerInfo.requiresAuth || linkedProviders.some(lp => lp.providerId === providerInfo.id);
                 return (
                   <Chip
                     key={providerInfo.id}

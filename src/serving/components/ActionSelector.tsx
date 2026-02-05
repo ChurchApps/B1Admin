@@ -26,7 +26,7 @@ import { BrowseGrid } from "./BrowseGrid";
 
 export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, onSelect, contentPath, providerId, ministryId }) => {
   // Provider state
-  const [selectedProviderId, setSelectedProviderId] = useState<string>(providerId || "lessonschurch");
+  const [selectedProviderId, setSelectedProviderId] = useState<string>(providerId || "");
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
   const [showAllProviders, setShowAllProviders] = useState(false);
 
@@ -49,15 +49,16 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
   const availableProviders = useMemo(() => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject"]), []);
 
   const currentProviderInfo = useMemo(() => {
-    const pid = mode === "associated" ? (providerId || "lessonschurch") : selectedProviderId;
+    const pid = mode === "associated" ? (providerId || selectedProviderId) : selectedProviderId;
     return availableProviders.find(p => p.id === pid);
   }, [availableProviders, selectedProviderId, mode, providerId]);
 
   const isCurrentProviderLinked = useMemo(() => {
-    const pid = mode === "associated" ? (providerId || "lessonschurch") : selectedProviderId;
-    if (pid === "lessonschurch") return true;
+    const pid = mode === "associated" ? (providerId || selectedProviderId) : selectedProviderId;
+    const info = availableProviders.find(p => p.id === pid);
+    if (info && !info.requiresAuth) return true;
     return linkedProviders.some(lp => lp.providerId === pid);
-  }, [linkedProviders, selectedProviderId, mode, providerId]);
+  }, [linkedProviders, selectedProviderId, mode, providerId, availableProviders]);
 
   // Load linked providers
   const loadLinkedProviders = useCallback(async () => {
@@ -190,7 +191,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     } else if (mode === "browse" && contentPath) {
       // Go back to associated mode
       setMode("associated");
-      setSelectedProviderId(providerId || "lessonschurch");
+      setSelectedProviderId(providerId || "");
     }
   }, [instructions, currentPath, mode, contentPath, providerId, loadBrowseContent]);
 
@@ -319,7 +320,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
   // Reset state on close
   const handleClose = useCallback(() => {
     setMode(contentPath ? "associated" : "browse");
-    setSelectedProviderId(providerId || "lessonschurch");
+    setSelectedProviderId(providerId || "");
     setCurrentPath("");
     setBreadcrumbTitles([]);
     setInstructions(null);
@@ -338,7 +339,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     loadLinkedProviders();
 
     if (mode === "associated" && contentPath) {
-      loadInstructions(contentPath, providerId || "lessonschurch");
+      loadInstructions(contentPath, providerId || "");
     } else if (mode === "browse") {
       loadBrowseContent(currentPath);
     }
@@ -368,7 +369,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
               <Typography variant="body2" color="text.secondary">
                 {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From associated lesson:"}
                 <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
-                  {instructions?.venueName || "Loading..."}
+                  {instructions?.name || "Loading..."}
                 </Typography>
               </Typography>
               <Button size="small" onClick={handleBrowseOther}>
@@ -383,7 +384,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
           ) : (
             <InstructionTree
               items={instructions?.items || []}
-              providerId={providerId || "lessonschurch"}
+              providerId={providerId || ""}
               expandedSections={expandedSections}
               onToggleExpanded={toggleSectionExpanded}
               onAddSection={handleAddSection}
@@ -427,9 +428,9 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
             </Stack>
             <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               {(showAllProviders ? availableProviders : availableProviders.filter(p =>
-                p.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === p.id)
+                !p.requiresAuth || linkedProviders.some(lp => lp.providerId === p.id)
               )).map((providerInfo) => {
-                const isLinked = providerInfo.id === "lessonschurch" || linkedProviders.some(lp => lp.providerId === providerInfo.id);
+                const isLinked = !providerInfo.requiresAuth || linkedProviders.some(lp => lp.providerId === providerInfo.id);
                 return (
                   <Chip
                     key={providerInfo.id}
@@ -482,7 +483,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
                 <Typography variant="body2" color="text.secondary">
                   {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From:"}
                   <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
-                    {instructions.venueName || "Content"}
+                    {instructions.name || "Content"}
                   </Typography>
                 </Typography>
               </Box>

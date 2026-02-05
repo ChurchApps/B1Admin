@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 import { useProviderContent } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
 
@@ -22,33 +21,18 @@ interface Props {
 export const AddOnDialog: React.FC<Props> = (props) => {
   const [iframeHeight, setIframeHeight] = useState(window.innerHeight * 0.7);
 
-  // Build fallback URL for legacy lessons.church items
-  const legacyFallbackUrl = useMemo(() => {
-    // Only use legacy fallback if no embedUrl and no provider path info
-    if (props.embedUrl) return props.embedUrl;
-    if (props.providerPath && props.providerContentPath) return undefined;
-
-    // Legacy fallback for Lessons.church items
-    if (!props.providerId || props.providerId === "lessonschurch") {
-      return `${EnvironmentHelper.LessonsUrl}/embed/addon/${props.addOnId}`;
-    }
-
-    return undefined;
-  }, [props.embedUrl, props.providerId, props.addOnId, props.providerPath, props.providerContentPath]);
-
   // Use the hook to fetch content from provider
   const { content, loading, error } = useProviderContent({
     providerId: props.providerId,
     providerPath: props.providerPath,
     providerContentPath: props.providerContentPath,
     ministryId: props.ministryId,
-    fallbackUrl: legacyFallbackUrl,
-    relatedId: props.addOnId
+    fallbackUrl: props.embedUrl
   });
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === "lessonAddOnHeight" && typeof event.data.height === "number") {
+      if (typeof event.data?.height === "number") {
         const contentHeight = event.data.height + 20;
         const minHeight = window.innerHeight * 0.7;
         setIframeHeight(Math.max(contentHeight, minHeight));

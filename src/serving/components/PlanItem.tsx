@@ -1,12 +1,11 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Icon, Menu, MenuItem } from "@mui/material";
-import { type ExternalVenueRefInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
-import { getProvider, navigateToPath, type ContentProvider, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
@@ -24,24 +23,10 @@ interface Props {
   startTime?: number;
   associatedVenueId?: string;
   associatedProviderId?: string;
-  externalRef?: ExternalVenueRefInterface;
   ministryId?: string;
 }
 
-// Helper to create a venue path for the provider
-function createVenuePath(venueId: string): string {
-  // LessonsChurch expects path: /lessons/{programId}/{studyId}/{lessonId}/{venueId}
-  // Use placeholders for unknown segments - the provider extracts venueId from segment 4
-  return `/lessons/_/_/_/${venueId}`;
-}
-
 export const PlanItem = React.memo((props: Props) => {
-  // Get the provider dynamically: use item's providerId, fall back to associatedProviderId, then default to lessonschurch
-  const provider: ContentProvider | null = useMemo(() => {
-    const pid = props.planItem.providerId || props.associatedProviderId || "lessonschurch";
-    return getProvider(pid);
-  }, [props.planItem.providerId, props.associatedProviderId]);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
@@ -82,7 +67,7 @@ export const PlanItem = React.memo((props: Props) => {
   const handleActionSelected = async (actionId: string, actionName: string, seconds?: number, selectedProviderId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string, providerContentPath?: string) => {
     setShowActionSelector(false);
     // Use selectedProviderId if provided (from browse other providers), otherwise use current provider
-    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId || "lessonschurch";
+    const itemProviderId = selectedProviderId || props.planItem.providerId || props.associatedProviderId;
     const linkValue = mediaUrl || (itemType === "providerFile" ? image : undefined);
     // Create new plan item - use provided itemType or default to providerPresentation
     const newPlanItem: PlanItemInterface = {
@@ -106,79 +91,14 @@ export const PlanItem = React.memo((props: Props) => {
 
   // Expand a section item to replace it with individual action/presentation items
   const handleExpandToActions = async () => {
-    // Check for provider-based expansion (uses providerId, providerPath, providerContentPath)
+    // Provider-based expansion (uses providerId, providerPath, providerContentPath)
     if (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath) {
       await handleExpandToActionsViaProvider();
       return;
     }
 
-    // Legacy path for associatedVenueId (Lessons.church direct integration)
-    if (!props.planItem.relatedId || !props.associatedVenueId || !provider) return;
-
-    try {
-      let actions: { id: string; name: string; seconds?: number }[] = [];
-      const itemProviderId = props.planItem.providerId || props.associatedProviderId || "lessonschurch";
-
-      if (props.externalRef) {
-        // For external providers, still use the API endpoint
-        const venueData = await ApiHelper.getAnonymous(
-          `/externalProviders/${props.externalRef.externalProviderId}/venue/${props.externalRef.venueId}/actions`,
-          "LessonsApi"
-        );
-        // Find the section matching this plan item's relatedId
-        const matchingSection = venueData?.sections?.find((s: any) => s.id === props.planItem.relatedId);
-        actions = matchingSection?.actions || [];
-      } else {
-        // Use ContentProviderHelper
-        const venuePath = createVenuePath(props.associatedVenueId);
-        const instructions = await provider.getInstructions(venuePath);
-
-        if (instructions) {
-          // Find the section matching this plan item's relatedId
-          // Instructions structure: items (headers) -> children (sections) -> children (actions)
-          for (const header of instructions.items) {
-            for (const section of header.children || []) {
-              if (section.relatedId === props.planItem.relatedId && section.children) {
-                actions = section.children.map(action => ({
-                  id: action.relatedId || action.id || "",
-                  name: action.label || "",
-                  seconds: action.seconds
-                }));
-                break;
-              }
-            }
-            if (actions.length > 0) break;
-          }
-        }
-      }
-
-      if (actions.length > 0) {
-        const currentSort = props.planItem.sort || 1;
-
-        // Create new plan items for each action/presentation, starting at the current item's sort position
-        const actionItems = actions.map((action, index) => ({
-          planId: props.planItem.planId,
-          parentId: props.planItem.parentId,
-          sort: currentSort + index,
-          itemType: "providerPresentation",
-          relatedId: action.id,
-          label: action.name,
-          seconds: action.seconds || 0,
-          providerId: itemProviderId,
-        }));
-
-        // Delete the original section item first
-        await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
-
-        // Create the new action items
-        await ApiHelper.post("/planItems", actionItems, "DoingApi");
-
-        // Refresh the plan - the API will handle re-sorting
-        if (props.onChange) props.onChange();
-      }
-    } catch (error) {
-      console.error("Error expanding section to actions:", error);
-    }
+    // Cannot expand without provider path data
+    console.warn("Cannot expand section: no providerPath available");
   };
 
   // Expand a section via provider fields (providerId, providerPath, providerContentPath)
@@ -267,7 +187,7 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} externalRef={props.externalRef} ministryId={props.ministryId} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} />
           </DraggableWrapper>
         </>
       );
@@ -593,7 +513,6 @@ export const PlanItem = React.memo((props: Props) => {
                 }
               : undefined
           }
-          externalRef={props.externalRef}
           providerId={props.planItem.providerId}
           embedUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
@@ -606,7 +525,6 @@ export const PlanItem = React.memo((props: Props) => {
           actionId={actionId}
           actionName={props.planItem.label}
           onClose={() => setActionId(null)}
-          externalRef={props.externalRef}
           providerId={props.planItem.providerId || props.associatedProviderId}
           embedUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
@@ -632,7 +550,7 @@ export const PlanItem = React.memo((props: Props) => {
           onClose={() => setShowActionSelector(false)}
           onSelect={handleActionSelected}
           contentPath={props.associatedVenueId}
-          providerId={props.associatedProviderId || "lessonschurch"}
+          providerId={props.associatedProviderId}
           ministryId={props.ministryId}
         />
       )}

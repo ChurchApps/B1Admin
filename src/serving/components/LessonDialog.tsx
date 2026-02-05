@@ -1,9 +1,7 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from "@mui/material";
 import { PlayArrow as PlayArrowIcon, Schedule as ScheduleIcon, ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
-import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
-import { type ExternalVenueRefInterface } from "../../helpers";
 import { useProviderContent, type ProviderContentChild } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
 
@@ -38,7 +36,6 @@ interface Props {
   sectionName?: string;
   onClose: () => void;
   onExpandToActions?: () => void;
-  externalRef?: ExternalVenueRefInterface;
   // Provider-based section support
   providerId?: string;
   embedUrl?: string;
@@ -54,36 +51,18 @@ export const LessonDialog: React.FC<Props> = (props) => {
   const [iframeHeight, setIframeHeight] = useState(window.innerHeight * 0.7);
   const [selectedChild, setSelectedChild] = useState<ProviderContentChild | null>(null);
 
-  // Build fallback URL for legacy lessons.church items
-  const legacyFallbackUrl = useMemo(() => {
-    // Only use legacy fallback if no embedUrl and no provider path info
-    if (props.embedUrl) return props.embedUrl;
-    if (props.providerPath && props.providerContentPath) return undefined;
-
-    // Legacy fallback for Lessons.church items
-    const isLessonsChurch = !props.providerId || props.providerId === "lessonschurch";
-    if (props.externalRef) {
-      return `${EnvironmentHelper.LessonsUrl}/embed/external/${props.externalRef.externalProviderId}/section/${props.sectionId}`;
-    } else if (isLessonsChurch) {
-      return `${EnvironmentHelper.LessonsUrl}/embed/section/${props.sectionId}`;
-    }
-
-    return undefined;
-  }, [props.embedUrl, props.providerId, props.externalRef, props.sectionId, props.providerPath, props.providerContentPath]);
-
   // Use the hook to fetch content from provider
   const { content, loading, error } = useProviderContent({
     providerId: props.providerId,
     providerPath: props.providerPath,
     providerContentPath: props.providerContentPath,
     ministryId: props.ministryId,
-    fallbackUrl: legacyFallbackUrl,
-    relatedId: props.sectionId
+    fallbackUrl: props.embedUrl
   });
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === "lessonSectionHeight" && typeof event.data.height === "number") {
+      if (typeof event.data?.height === "number") {
         const contentHeight = event.data.height + 20;
         const minHeight = window.innerHeight * 0.7;
         setIframeHeight(Math.max(contentHeight, minHeight));
@@ -119,15 +98,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
 
     // If a child is selected, show its content
     if (selectedChild) {
-      let childUrl = selectedChild.embedUrl;
-
-      // If no embedUrl but we have an id and it's lessons.church, construct the embed URL
-      if (!childUrl && selectedChild.id) {
-        const isLessonsChurch = !props.providerId || props.providerId === "lessonschurch";
-        if (isLessonsChurch) {
-          childUrl = `${EnvironmentHelper.LessonsUrl}/embed/action/${selectedChild.id}`;
-        }
-      }
+      const childUrl = selectedChild.embedUrl;
 
       if (childUrl) {
         return (
