@@ -1286,6 +1286,7 @@
       "lessonPreview": "Lesson Preview",
       "noItems": "No items in service order",
       "orderOfService": "Order of Service",
+      "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
       "print": "Print"
     }
   },

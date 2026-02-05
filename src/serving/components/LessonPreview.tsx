@@ -104,6 +104,13 @@ export const LessonPreview = memo((props: Props) => {
         </Button>
       </Box>
 
+      {/* Preview explanation banner */}
+      <Box sx={{ textAlign: "center", py: 1, px: 2, bgcolor: "info.light", borderRadius: 1, mb: 1 }}>
+        <Typography variant="body2" color="info.contrastText">
+          This is a preview of the associated lesson. Click &quot;Customize&quot; to edit.
+        </Typography>
+      </Box>
+
       {/* Grayed out preview content */}
       <Box
         sx={{

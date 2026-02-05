@@ -224,7 +224,7 @@ export const PlanItem = React.memo((props: Props) => {
     props.planItem.children?.forEach((c, index) => {
       const childStartTime = cumulativeTime;
       result.push(
-        <>
+        <React.Fragment key={c.id || `child-${index}`}>
           {props.showItemDrop && (
             <DroppableWrapper
               accept="planItem"
@@ -253,13 +253,13 @@ export const PlanItem = React.memo((props: Props) => {
             }}>
             <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} />
           </DraggableWrapper>
-        </>
+        </React.Fragment>
       );
       cumulativeTime += c.seconds || 0;
     });
     if (props.showItemDrop) {
       result.push(
-        <>
+        <React.Fragment key="trailing-drop-zone">
           <DroppableWrapper
             accept="planItem"
             onDrop={(item) => {
@@ -276,7 +276,7 @@ export const PlanItem = React.memo((props: Props) => {
               }}
             />
           </DroppableWrapper>
-        </>
+        </React.Fragment>
       );
     }
     return result;

@@ -94,7 +94,7 @@ export const SongDialog: React.FC<Props> = (props) => {
   }, [arrangementKey, songDetail]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="xl">
+    <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
       <DialogTitle>{songDetail?.title || "Song Details"}</DialogTitle>
       <DialogContent>
         <Grid container spacing={3}>

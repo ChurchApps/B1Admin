@@ -5,14 +5,15 @@ import { type ContentFolder, type ContentFile } from "@churchapps/content-provid
 
 interface BrowseGridProps {
   folders: ContentFolder[];
-  files: ContentFile[];
+  files?: ContentFile[];
   selectedProviderId: string;
+  selectedFolderId?: string;
   isLeafFolder: (folder: ContentFolder) => boolean;
   onFolderClick: (folder: ContentFolder) => void;
-  onFileClick: (file: ContentFile, provId: string, pathIndices?: number[]) => void;
+  onFileClick?: (file: ContentFile, provId: string, pathIndices?: number[]) => void;
 }
 
-export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files, selectedProviderId, isLeafFolder, onFolderClick, onFileClick }) => (
+export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files = [], selectedProviderId, selectedFolderId, isLeafFolder, onFolderClick, onFileClick }) => (
   <Box
     sx={{
       display: "grid",
@@ -25,8 +26,9 @@ export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files, selected
   >
     {folders.map((folder) => {
       const isLeaf = isLeafFolder(folder);
+      const isSelected = selectedFolderId === folder.id;
       return (
-        <Card key={`folder-${folder.id}`} sx={{ border: 1, borderColor: "divider" }}>
+        <Card key={`folder-${folder.id}`} sx={{ border: isSelected ? 2 : 1, borderColor: isSelected ? "primary.main" : "divider", bgcolor: isSelected ? "action.selected" : "background.paper" }}>
           <CardActionArea onClick={() => onFolderClick(folder)}>
             {folder.image ? (
               <CardMedia component="img" height="80" image={folder.image} alt={folder.title} sx={{ objectFit: "cover" }} />
@@ -46,7 +48,7 @@ export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files, selected
     })}
     {files.map((file, fileIndex) => (
       <Card key={`file-${file.id}`} sx={{ border: 1, borderColor: "divider" }}>
-        <CardActionArea onClick={() => onFileClick(file, selectedProviderId, [0, fileIndex])}>
+        <CardActionArea onClick={() => onFileClick?.(file, selectedProviderId, [0, fileIndex])}>
           {file.image ? (
             <CardMedia component="img" height="80" image={file.image} alt={file.title} sx={{ objectFit: "cover" }} />
           ) : (
