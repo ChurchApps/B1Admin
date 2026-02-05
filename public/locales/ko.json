@@ -1218,6 +1218,7 @@
       "noItems": "서비스 주문에 항목이 없습니다.",
       "orderOfService": "서비스 순서",
       "print": "인쇄",
+      "previewBanner": "이것은 연결된 수업의 미리보기입니다. 편집하려면 \"사용자 정의\"를 클릭하세요.",
       "switchLesson": "레슨 전환"
     }
   },

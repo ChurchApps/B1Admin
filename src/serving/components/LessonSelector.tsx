@@ -79,7 +79,8 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
       browser.loadContent("");
       browser.loadLinkedProviders();
     }
-  }, [open, browser.loadContent, browser.loadLinkedProviders]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>

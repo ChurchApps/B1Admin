@@ -1225,6 +1225,7 @@
       "noItems": "Keine Artikel im Serviceauftrag",
       "orderOfService": "Dienstordnung",
       "print": "Drucken",
+      "previewBanner": "Dies ist eine Vorschau der zugehörigen Lektion. Klicken Sie auf \"Anpassen\", um sie zu bearbeiten.",
       "switchLesson": "Lektion wechseln"
     }
   },

@@ -1225,6 +1225,7 @@
       "noItems": "Aucun article dans la commande de service",
       "orderOfService": "Ordre de service",
       "print": "Imprimer",
+      "previewBanner": "Ceci est un aperçu de la leçon associée. Cliquez sur \"Personnaliser\" pour modifier.",
       "switchLesson": "Changer de leçon"
     }
   },

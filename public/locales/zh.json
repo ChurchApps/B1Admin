@@ -1218,6 +1218,7 @@
       "noItems": "服务订单中没有项目",
       "orderOfService": "服务顺序",
       "print": "打印",
+      "previewBanner": "这是关联课程的预览。点击\"定制\"进行编辑。",
       "switchLesson": "切换课程"
     }
   },

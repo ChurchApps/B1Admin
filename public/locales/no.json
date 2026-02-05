@@ -1218,6 +1218,7 @@
       "noItems": "Ingen varer i serviceordre",
       "orderOfService": "Serviceordre",
       "print": "Trykk",
+      "previewBanner": "Dette er en forhåndsvisning av den tilknyttede leksjonen. Klikk \"Tilpass\" for å redigere.",
       "switchLesson": "Bytt leksjon"
     }
   },

@@ -16,7 +16,7 @@ import {
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ProviderChipSelector } from "./ProviderChipSelector";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { getProvider, type ContentFolder, type ContentFile, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { getProvider, type ContentFile, type ContentFolder, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { generatePath, getProviderInstructions, type ActionSelectorProps } from "./ActionSelectorHelpers";
 import { InstructionTree } from "./InstructionTree";
 import { BrowseGrid } from "./BrowseGrid";
@@ -58,9 +58,16 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     }
   }, [ministryId, browser.setLoading]);
 
+  // Check if folder is a leaf with instruction capabilities
+  const isLeafWithInstructions = useCallback((folder: ContentFolder): boolean => {
+    const provider = getProvider(browser.selectedProviderId);
+    if (!provider?.capabilities?.instructions) return false;
+    return !!folder.isLeaf;
+  }, [browser.selectedProviderId]);
+
   // Handle folder click — leaf loads instructions, otherwise navigate
   const handleFolderClick = useCallback((folder: ContentFolder) => {
-    if (browser.isLeafFolder(folder)) {
+    if (isLeafWithInstructions(folder)) {
       browser.setCurrentPath(folder.path);
       browser.setBreadcrumbTitles(prev => [...prev, folder.title]);
       loadInstructions(folder.path, browser.selectedProviderId);
@@ -68,7 +75,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
       setInstructions(null);
       browser.navigateToFolder(folder);
     }
-  }, [browser.isLeafFolder, browser.setCurrentPath, browser.setBreadcrumbTitles, browser.selectedProviderId, browser.navigateToFolder, loadInstructions]);
+  }, [isLeafWithInstructions, browser.setCurrentPath, browser.setBreadcrumbTitles, browser.selectedProviderId, browser.navigateToFolder, loadInstructions]);
 
   // Handle back navigation
   const handleBack = useCallback(() => {
@@ -154,16 +161,17 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     onClose();
   }, [onClose, contentPath, providerId, browser.reset, browser.setSelectedProviderId]);
 
-  // Load data on open
+  // Load data on open or mode change
   useEffect(() => {
     if (!open) return;
     browser.loadLinkedProviders();
     if (mode === "associated" && contentPath) {
       loadInstructions(contentPath, providerId || "");
     } else if (mode === "browse") {
-      browser.loadContent(browser.currentPath);
+      browser.loadContent("");
     }
-  }, [open, mode, contentPath, providerId, browser.currentPath, browser.loadLinkedProviders, browser.loadContent, loadInstructions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, mode]);
 
   // Breadcrumb items — wraps hook breadcrumbs to also clear instructions on click
   const breadcrumbItems = useMemo(() => {
@@ -295,7 +303,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
               folders={browser.currentItems}
               files={browser.currentFiles}
               selectedProviderId={browser.selectedProviderId}
-              isLeafFolder={browser.isLeafFolder}
+              isLeafFolder={isLeafWithInstructions}
               onFolderClick={handleFolderClick}
               onFileClick={handleAddFile}
             />

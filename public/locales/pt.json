@@ -1225,6 +1225,7 @@
       "noItems": "Nenhum item na ordem de serviço",
       "orderOfService": "Ordem de serviço",
       "print": "Imprimir",
+      "previewBanner": "Esta é uma pré-visualização da lição associada. Clique em \"Personalizar\" para editar.",
       "switchLesson": "Mudar de lição"
     }
   },
