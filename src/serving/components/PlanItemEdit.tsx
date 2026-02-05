@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, Grid, InputLabel, OutlinedInput, TextField, Stack } from "@mui/material";
+import { Button, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, Grid, InputLabel, List, ListItem, ListItemText, OutlinedInput, Stack, TextField } from "@mui/material";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 
@@ -14,6 +14,7 @@ export const PlanItemEdit = (props: Props) => {
   const [songs, setSongs] = React.useState<SongDetailInterface[]>([]);
   const [, setErrors] = React.useState<string[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
+  const [searching, setSearching] = React.useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
@@ -68,7 +69,11 @@ export const PlanItemEdit = (props: Props) => {
       setErrors([Locale.label("plans.planItemEdit.enterSearch")]);
       return;
     } else {
-      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data) => setSongs(data));
+      setSearching(true);
+      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data) => {
+        setSongs(data);
+        setSearching(false);
+      });
     }
   };
 
@@ -94,41 +99,36 @@ export const PlanItemEdit = (props: Props) => {
   };
 
   const getSongs = () => {
+    if (searching) return <CircularProgress size={24} sx={{ display: "block", mx: "auto", my: 2 }} />;
     const songDetails: SongDetailInterface[] = [];
     songs.forEach((song) => {
       if (songDetails.findIndex((sd) => sd.id === song.id) === -1) {
         songDetails.push(song);
       }
     });
-    const result: JSX.Element[] = [];
-    songDetails.forEach((sd) => {
-      const keys = ArrayHelper.getAll(songs, "id", sd.id);
-      const links: JSX.Element[] = [];
-      keys.forEach((k) => {
-        links.push(
-          <span style={{ paddingRight: 10 }}>
-            <button
-              type="button"
-              onClick={() => selectSong(k)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-              {k.shortDescription} ({k.arrangementKeySignature})
-            </button>
-          </span>
-        );
-      });
-
-      result.push(
-        <tr>
-          <td>
-            {sd.title} - {sd.artist}
-            <div style={{ paddingLeft: 15 }}>
-              <b>{Locale.label("plans.planItemEdit.key")}:</b> {links}
-            </div>
-          </td>
-        </tr>
-      );
-    });
-    return <table>{result}</table>;
+    return (
+      <List dense>
+        {songDetails.map((sd) => {
+          const keys = ArrayHelper.getAll(songs, "id", sd.id);
+          return (
+            <ListItem key={sd.id} sx={{ flexDirection: "column", alignItems: "flex-start" }}>
+              <ListItemText primary={`${sd.title} - ${sd.artist}`} />
+              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 0.5 }}>
+                {keys.map((k: any) => (
+                  <Chip
+                    key={k.arrangementKeyId}
+                    label={`${k.shortDescription} (${k.arrangementKeySignature})`}
+                    size="small"
+                    clickable
+                    onClick={() => selectSong(k)}
+                  />
+                ))}
+              </Stack>
+            </ListItem>
+          );
+        })}
+      </List>
+    );
   };
 
   const getSongFields = () => {
