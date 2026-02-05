@@ -36,7 +36,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
   let itemType = item.itemType || "item";
   if (itemType === "section") itemType = "providerSection";
   else if (itemType === "action") itemType = "providerPresentation";
-  else if (itemType === "addon" || itemType === "file") itemType = "providerFile";
+  else if (itemType === "file") itemType = "providerFile";
 
   // Generate dot-notation path from indices (e.g., [0, 2, 1] -> "0.2.1")
   const contentPath = pathIndices.length > 0 ? pathIndices.join('.') : undefined;

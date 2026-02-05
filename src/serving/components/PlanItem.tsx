@@ -541,11 +541,12 @@ export const PlanItem = React.memo((props: Props) => {
       case "song":
       case "arrangementKey":
         return getSongRow();
-      // New generic provider types + short names + legacy types for backward compat
+      // Action types
       case "providerPresentation":
       case "lessonAction":
       case "action":
         return getActionRow();
+      // File/add-on types (legacy items still in database need AddOnDialog for correct embed URLs)
       case "providerFile":
       case "lessonAddOn":
       case "addon":
