@@ -4,8 +4,8 @@ import { useProviderContent } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
 
 interface Props {
-  actionId: string;
-  actionName?: string;
+  contentId: string;
+  contentName?: string;
   onClose: () => void;
   providerId?: string;
   /** Embed URL from provider - either iframe URL or direct media URL */
@@ -45,12 +45,12 @@ export const ActionDialog: React.FC<Props> = (props) => {
 
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
-      <DialogTitle>{props.actionName || "Action"}</DialogTitle>
+      <DialogTitle>{props.contentName || "Action"}</DialogTitle>
       <DialogContent sx={{ p: 0, overflow: "hidden" }}>
         <ContentRenderer
           url={content?.url}
           mediaType={content?.mediaType}
-          title={props.actionName}
+          title={props.contentName}
           description={content?.description}
           loading={loading}
           error={error || undefined}

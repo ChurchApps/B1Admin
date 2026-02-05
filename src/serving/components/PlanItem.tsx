@@ -9,7 +9,6 @@ import { navigateToPath, type Instructions, type InstructionItem } from "@church
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
-import { AddOnDialog } from "./AddOnDialog";
 import { ActionSelector } from "./ActionSelector";
 import { formatTime, getSectionDuration } from "./PlanUtils";
 
@@ -31,7 +30,6 @@ export const PlanItem = React.memo((props: Props) => {
   const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
   const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
   const [actionId, setActionId] = React.useState<string>(null);
-  const [addOnId, setAddOnId] = React.useState<string>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
   const open = Boolean(anchorEl);
 
@@ -392,7 +390,7 @@ export const PlanItem = React.memo((props: Props) => {
       case "lessonAddOn":
       case "addon":
       case "file":
-        return getGenericRow(props.planItem.relatedId ? () => setAddOnId(props.planItem.relatedId) : undefined);
+        return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
       case "providerSection":
       case "lessonSection":
       case "section":
@@ -447,21 +445,9 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {actionId && (
         <ActionDialog
-          actionId={actionId}
-          actionName={props.planItem.label}
+          contentId={actionId}
+          contentName={props.planItem.label}
           onClose={() => setActionId(null)}
-          providerId={props.planItem.providerId || props.associatedProviderId}
-          embedUrl={props.planItem.link}
-          providerPath={props.planItem.providerPath}
-          providerContentPath={props.planItem.providerContentPath}
-          ministryId={props.ministryId}
-        />
-      )}
-      {addOnId && (
-        <AddOnDialog
-          addOnId={addOnId}
-          addOnName={props.planItem.label}
-          onClose={() => setAddOnId(null)}
           providerId={props.planItem.providerId || props.associatedProviderId}
           embedUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
