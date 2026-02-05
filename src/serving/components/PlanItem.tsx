@@ -337,7 +337,7 @@ export const PlanItem = React.memo((props: Props) => {
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
           <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (
@@ -353,7 +353,7 @@ export const PlanItem = React.memo((props: Props) => {
           )}
         </span>
         {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
+        <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
         <div>
           {onLabelClick ? (
             <button type="button" onClick={onLabelClick}
