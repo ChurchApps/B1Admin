@@ -317,84 +317,6 @@ export const PlanItem = React.memo((props: Props) => {
     );
   };
 
-  const getItemRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {props.planItem.relatedId ? (
-            <button type="button" onClick={() => setLessonSectionId(props.planItem.relatedId)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
-              {props.planItem.label}
-            </button>
-          ) : props.planItem.link ? (
-            <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
-              {props.planItem.label}
-            </a>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
-
-  const getSongRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {props.planItem.relatedId ? (
-            <button type="button" onClick={() => setDialogKeyId(props.planItem.relatedId)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
-              {props.planItem.label}
-            </button>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
-
   const getDescriptionRow = () => (
     <div
       className="planItemDescription"
@@ -412,7 +334,7 @@ export const PlanItem = React.memo((props: Props) => {
     </div>
   );
 
-  const getActionRow = () => (
+  const getGenericRow = (onLabelClick?: () => void) => (
     <>
       <div className="planItem">
         <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
@@ -435,90 +357,20 @@ export const PlanItem = React.memo((props: Props) => {
         {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div>{formatTime(props.startTime || 0)}</div>
         <div>
-          {props.planItem.relatedId ? (
-            <button type="button" onClick={() => setActionId(props.planItem.relatedId)}
+          {onLabelClick ? (
+            <button type="button" onClick={onLabelClick}
               style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
               {props.planItem.label}
             </button>
+          ) : props.planItem.link ? (
+            <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
+              {props.planItem.label}
+            </a>
           ) : (
             props.planItem.label
           )}
         </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
-
-  const getLessonSectionRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {(props.planItem.relatedId || (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)) ? (
-            <button type="button" onClick={() => setLessonSectionId(props.planItem.relatedId || props.planItem.providerContentPath || props.planItem.id)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
-              {props.planItem.label}
-            </button>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
-      </div>
-    </>
-  );
-
-  const getAddOnRow = () => (
-    <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <Icon style={{ fontSize: 16, color: "var(--text-muted)" }}>schedule</Icon>
-          <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <Icon>edit</Icon>
-              </button>
-            </>
-          )}
-        </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
-        <div>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {props.planItem.relatedId ? (
-            <button type="button" onClick={() => setAddOnId(props.planItem.relatedId)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
-              {props.planItem.label}
-            </button>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {getDescriptionRow()}
+        {props.planItem.description && getDescriptionRow()}
       </div>
     </>
   );
@@ -529,25 +381,29 @@ export const PlanItem = React.memo((props: Props) => {
         return getHeaderRow();
       case "song":
       case "arrangementKey":
-        return getSongRow();
+        return getGenericRow(props.planItem.relatedId ? () => setDialogKeyId(props.planItem.relatedId) : undefined);
       // Action types
       case "providerPresentation":
       case "lessonAction":
       case "action":
-        return getActionRow();
+        return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
       // File/add-on types (legacy items still in database need AddOnDialog for correct embed URLs)
       case "providerFile":
       case "lessonAddOn":
       case "addon":
       case "file":
-        return getAddOnRow();
+        return getGenericRow(props.planItem.relatedId ? () => setAddOnId(props.planItem.relatedId) : undefined);
       case "providerSection":
       case "lessonSection":
       case "section":
-        return getLessonSectionRow();
+        return getGenericRow(
+          (props.planItem.relatedId || (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath))
+            ? () => setLessonSectionId(props.planItem.relatedId || props.planItem.providerContentPath || props.planItem.id)
+            : undefined
+        );
       case "item":
       default:
-        return getItemRow();
+        return getGenericRow(props.planItem.relatedId ? () => setLessonSectionId(props.planItem.relatedId) : undefined);
     }
   };
 
