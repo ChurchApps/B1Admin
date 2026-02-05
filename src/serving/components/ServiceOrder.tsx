@@ -475,15 +475,13 @@ export const ServiceOrder = memo((props: Props) => {
   return (
     <Box>
       {editPlanItem && canEdit && (
-        <Box sx={{ mb: 3 }}>
-          <PlanItemEdit
-            planItem={editPlanItem}
-            onDone={() => {
-              setEditPlanItem(null);
-              loadData();
-            }}
-          />
-        </Box>
+        <PlanItemEdit
+          planItem={editPlanItem}
+          onDone={() => {
+            setEditPlanItem(null);
+            loadData();
+          }}
+        />
       )}
 
       <LessonSelector
