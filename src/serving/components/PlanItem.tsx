@@ -308,7 +308,7 @@ export const PlanItem = React.memo((props: Props) => {
               </>
             )}
           </span>
-          {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
+          {!props.readOnly && <Icon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
           <span>{props.planItem.label}</span>
         </div>
         {getChildren()}
@@ -353,7 +353,7 @@ export const PlanItem = React.memo((props: Props) => {
             </>
           )}
         </span>
-        {!props.readOnly && <Icon style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
+        {!props.readOnly && <Icon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }}>drag_indicator</Icon>}
         <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
         <div>
           {onLabelClick ? (
