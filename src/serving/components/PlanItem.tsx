@@ -309,11 +309,7 @@ export const PlanItem = React.memo((props: Props) => {
           </div>
           {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)" }} />}
           <span style={{ flex: 1 }}>{props.planItem.label}</span>
-          <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            {sectionDuration > 0 && <ScheduleIcon style={{ fontSize: 18, color: "var(--text-muted)" }} />}
-            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
-              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
-            </span>
+          <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 12 }}>
             {!props.readOnly && (
               <>
                 <button
@@ -332,6 +328,10 @@ export const PlanItem = React.memo((props: Props) => {
                 </button>
               </>
             )}
+            <ScheduleIcon style={{ fontSize: 18, color: "var(--text-muted)", visibility: sectionDuration > 0 ? "visible" : "hidden" }} />
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
+              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
+            </span>
           </span>
         </div>
         {getChildren()}
@@ -413,22 +413,19 @@ export const PlanItem = React.memo((props: Props) => {
           {props.planItem.description && getDescriptionRow()}
         </div>
         <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 12 }}>
-          <ScheduleIcon style={{ fontSize: 18, color: "var(--text-muted)" }} />
-          <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
+          {!props.readOnly && (
+            <button
+              type="button"
+              className="actionButton rowControl"
+              onClick={(e) => { e.stopPropagation(); props.setEditPlanItem(props.planItem); }}
+              style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
+              <EditIcon />
+            </button>
+          )}
+          <ScheduleIcon style={{ fontSize: 18, color: props.planItem.seconds === 0 ? "#d32f2f" : "var(--text-muted)" }} />
+          <span title="Duration" style={{ color: props.planItem.seconds === 0 ? "#d32f2f" : "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                className="actionButton rowControl"
-                onClick={(e) => { e.stopPropagation(); props.setEditPlanItem(props.planItem); }}
-                style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
-                <EditIcon />
-              </button>
-            </>
-          )}
         </span>
       </div>
     </>
