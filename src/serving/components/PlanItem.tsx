@@ -309,9 +309,9 @@ export const PlanItem = React.memo((props: Props) => {
           </div>
           {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)" }} />}
           <span style={{ flex: 1 }}>{props.planItem.label}</span>
-          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            {sectionDuration > 0 && <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />}
-            <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            {sectionDuration > 0 && <ScheduleIcon style={{ fontSize: 18, color: "var(--text-muted)" }} />}
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
               {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
             </span>
             {!props.readOnly && (
@@ -345,11 +345,8 @@ export const PlanItem = React.memo((props: Props) => {
       style={{
         clear: "both",
         width: "100%",
-        paddingTop: "8px",
-        paddingBottom: "8px",
-        paddingLeft: "22px",
-        fontStyle: "italic",
-        color: "#777"
+        paddingTop: "4px",
+        fontSize: "0.9rem"
       }}
     >
       <MarkdownPreviewLight value={props.planItem.description || ""} />
@@ -415,9 +412,9 @@ export const PlanItem = React.memo((props: Props) => {
           <div>{props.planItem.label}</div>
           {props.planItem.description && getDescriptionRow()}
         </div>
-        <span style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0, marginLeft: 8 }}>
-          <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />
-          <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 12 }}>
+          <ScheduleIcon style={{ fontSize: 18, color: "var(--text-muted)" }} />
+          <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
           {!props.readOnly && (

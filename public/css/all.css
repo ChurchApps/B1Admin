@@ -760,20 +760,23 @@ label .description {
 .planItemHeader {
   background-color: var(--bg-plan-header);
   border-bottom: 3px solid var(--c1l2);
-  font-weight: bold;
-  padding: 5px 5px 5px 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 8px 10px 0;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .planItem {
   border-bottom: 1px solid var(--border-light);
-  padding: 5px 5px 5px 0;
+  padding: 10px 8px 10px 0;
+  font-size: 0.95rem;
 }
 
 .planItemDescription {
   font-style: italic;
   color: var(--text-muted);
-  padding-left: 22px;
+  line-height: 1.4;
 }
 
 .planItemDescription p:first-child {
@@ -828,17 +831,17 @@ label .description {
   justify-content: flex-end;
   padding-right: 20px;
   align-self: stretch;
-  margin: -5px 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  margin: -10px 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
   background: var(--border-light);
   border-right: 1px solid var(--border-main);
 }
 
 .timeRailLabel {
   font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--text-muted);
   text-align: right;
   width: 100%;
