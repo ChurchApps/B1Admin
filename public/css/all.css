@@ -760,25 +760,23 @@ label .description {
 .planItemHeader {
   background-color: var(--bg-plan-header);
   border-bottom: 3px solid var(--c1l2);
-  font-weight: bold;
-  padding: 5px 5px 5px 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 8px 10px 0;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .planItem {
   border-bottom: 1px solid var(--border-light);
-  padding: 5px 5px 5px 10px;
-}
-
-.planItem>div:first-of-type:not([style*="clear"]) {
-  float: left;
-  width: 100px
+  padding: 10px 8px 10px 0;
+  font-size: 0.95rem;
 }
 
 .planItemDescription {
   font-style: italic;
   color: var(--text-muted);
-  padding-left: 22px;
+  line-height: 1.4;
 }
 
 .planItemDescription p:first-child {
@@ -786,14 +784,98 @@ label .description {
   margin-bottom: 0px;
 }
 
-.planItem .dragHandle, .planItemHeader .dragHandle {
+.planItem .dragHandle, .planItemHeader .dragHandle,
+.planItem .actionButton, .planItemHeader .actionButton {
   opacity: 0;
   transition: opacity 0.15s;
 }
-.planItem:hover .dragHandle, .planItemHeader:hover .dragHandle {
+.planItem:hover .dragHandle, .planItemHeader:hover .dragHandle,
+.planItem:hover .actionButton, .planItemHeader:hover .actionButton {
   opacity: 1;
 }
 
+/* Clickable row hover */
+.clickableRow {
+  transition: background-color 0.15s;
+}
+.clickableRow:hover {
+  background-color: rgba(25, 118, 210, 0.08);
+}
+
+/* Drag handle cursor */
+.dragHandle {
+  cursor: grab;
+}
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+/* Row controls (drag handle, edit/add buttons) hover */
+.rowControl, .actionButton {
+  background: transparent;
+  border-radius: 4px;
+  padding: 2px;
+  transition: background-color 0.15s, opacity 0.15s;
+}
+.rowControl:hover, .actionButton:hover {
+  background-color: rgba(25, 118, 210, 0.15);
+}
+
+/* Time Rail */
+.timeRailCell {
+  width: 72px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 20px;
+  align-self: stretch;
+  margin: -10px 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: var(--border-light);
+  border-right: 1px solid var(--border-main);
+}
+
+.timeRailLabel {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: right;
+  width: 100%;
+  padding-right: 4px;
+}
+
+.timeRailDot {
+  position: absolute;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-main);
+  border: 2px solid var(--border-light);
+  z-index: 1;
+}
+
+.timeRailLine {
+  position: absolute;
+  right: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-main);
+}
+
+.planItemHeader .timeRailCell {
+  margin-bottom: -8px;
+  padding-bottom: 8px;
+}
+
+.planItemHeader .timeRailDot {
+  background: var(--c1l2);
+}
 
 .chordPro H3 {
   margin-bottom: 0px;

@@ -8,7 +8,7 @@ export interface ProviderContentChild {
   label?: string;
   description?: string;
   seconds?: number;
-  embedUrl?: string;
+  downloadUrl?: string;
 }
 
 export interface ProviderContent {
@@ -132,33 +132,33 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
         const item = navigateToPath(instructions, providerContentPath);
 
         if (item) {
-          // Look for embedUrl on the item itself, or on the first child with an embedUrl
-          let embedUrl = item.embedUrl;
+          // Look for downloadUrl on the item itself, or on the first child with a downloadUrl
+          let downloadUrl = item.downloadUrl;
 
-          // If item doesn't have embedUrl, check children (actions often have file children with the actual URL)
-          if (!embedUrl && item.children && item.children.length > 0) {
-            const childWithUrl = item.children.find(child => child.embedUrl);
+          // If item doesn't have downloadUrl, check children (actions often have file children with the actual URL)
+          if (!downloadUrl && item.children && item.children.length > 0) {
+            const childWithUrl = item.children.find(child => child.downloadUrl);
             if (childWithUrl) {
-              embedUrl = childWithUrl.embedUrl;
+              downloadUrl = childWithUrl.downloadUrl;
             }
           }
 
-          if (embedUrl) {
+          if (downloadUrl) {
             setContent({
-              url: embedUrl,
-              mediaType: detectMediaType(embedUrl),
+              url: downloadUrl,
+              mediaType: detectMediaType(downloadUrl),
               description: item.description,
               label: item.label
             });
           } else if (item.children && item.children.length > 0) {
             // Item has children (e.g., a section with actions) - return them for display
             const children: ProviderContentChild[] = item.children.map(child => {
-              // Look for embedUrl on the child itself, or on its first child with an embedUrl
-              let childEmbedUrl = child.embedUrl;
-              if (!childEmbedUrl && child.children && child.children.length > 0) {
-                const grandchildWithUrl = child.children.find(gc => gc.embedUrl);
+              // Look for downloadUrl on the child itself, or on its first child with a downloadUrl
+              let childDownloadUrl = child.downloadUrl;
+              if (!childDownloadUrl && child.children && child.children.length > 0) {
+                const grandchildWithUrl = child.children.find(gc => gc.downloadUrl);
                 if (grandchildWithUrl) {
-                  childEmbedUrl = grandchildWithUrl.embedUrl;
+                  childDownloadUrl = grandchildWithUrl.downloadUrl;
                 }
               }
               return {
@@ -166,7 +166,7 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
                 label: child.label,
                 description: child.description,
                 seconds: child.seconds,
-                embedUrl: childEmbedUrl
+                downloadUrl: childDownloadUrl
               };
             });
             setContent({
@@ -175,7 +175,7 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
               children
             });
           } else {
-            // Item exists but has no embedUrl and no children - show as text content
+            // Item exists but has no downloadUrl and no children - show as text content
             setContent({
               description: item.description,
               label: item.label,

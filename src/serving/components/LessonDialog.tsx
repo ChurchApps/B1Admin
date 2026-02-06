@@ -38,7 +38,7 @@ interface Props {
   onExpandToActions?: () => void;
   // Provider-based section support
   providerId?: string;
-  embedUrl?: string;
+  downloadUrl?: string;
   /** Provider path for fetching content dynamically */
   providerPath?: string;
   /** Dot-notation path to specific content item */
@@ -57,7 +57,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
     providerPath: props.providerPath,
     providerContentPath: props.providerContentPath,
     ministryId: props.ministryId,
-    fallbackUrl: props.embedUrl
+    fallbackUrl: props.downloadUrl
   });
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
 
     // If a child is selected, show its content
     if (selectedChild) {
-      const childUrl = selectedChild.embedUrl;
+      const childUrl = selectedChild.downloadUrl;
 
       if (childUrl) {
         return (

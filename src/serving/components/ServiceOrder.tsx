@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip } from "@mui/material";
-import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon } from "@mui/icons-material";
+import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
 import { type PlanInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
@@ -13,7 +13,7 @@ import { PlanItem } from "./PlanItem";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
-import { getSectionDuration } from "./PlanUtils";
+import { getSectionDuration, formatTime } from "./PlanUtils";
 
 interface Props {
   plan: PlanInterface;
@@ -30,6 +30,18 @@ async function getProviderInstructions(provider: IProvider, path: string): Promi
   return null;
 }
 
+// Helper to find thumbnail recursively in instruction tree
+function findThumbnailRecursive(item: InstructionItem): string | undefined {
+  if (item.thumbnail) return item.thumbnail;
+  if (item.children) {
+    for (const child of item.children) {
+      const found = findThumbnailRecursive(child);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
 // Helper to convert InstructionItem to PlanItemInterface
 function instructionToPlanItem(item: InstructionItem, providerId?: string, providerPath?: string, pathIndices: number[] = []): PlanItemInterface {
   // Map provider item types to plan item types
@@ -41,6 +53,9 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
   // Generate dot-notation path from indices (e.g., [0, 2, 1] -> "0.2.1")
   const contentPath = pathIndices.length > 0 ? pathIndices.join('.') : undefined;
 
+  // Get thumbnail, searching recursively through children if needed
+  const thumbnail = findThumbnailRecursive(item);
+
   return {
     itemType,
     relatedId: item.relatedId,
@@ -50,6 +65,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
     providerId,
     providerPath,
     providerContentPath: contentPath,
+    thumbnailUrl: thumbnail,
     children: item.children?.map((child, index) => instructionToPlanItem(child, providerId, providerPath, [...pathIndices, index]))
   };
 }
@@ -72,6 +88,11 @@ export const ServiceOrder = memo((props: Props) => {
     }
     return null;
   }, [props.plan?.providerId]);
+
+  // Calculate total plan duration
+  const totalDuration = useMemo(() => {
+    return planItems.reduce((total, item) => total + getSectionDuration(item), 0);
+  }, [planItems]);
 
   const loadData = useCallback(async () => {
     if (props.plan?.id) {
@@ -298,36 +319,52 @@ export const ServiceOrder = memo((props: Props) => {
         <Button
           onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, '_blank')}
           variant="outlined"
-          startIcon={<PrintIcon />}
           size="small"
+          title={Locale.label("plans.serviceOrder.print")}
           sx={{
-            textTransform: "none",
+            minWidth: 40,
             borderRadius: 2,
-            fontWeight: 600,
           }}>
-          {Locale.label("plans.serviceOrder.print")}
+          <PrintIcon sx={{ fontSize: 20 }} />
         </Button>
         {canEdit && (
           <>
             {hasAssociatedContent ? (
               <Chip
-                icon={<LinkIcon />}
-                label={`${provider?.name || "Content"}: ${venueName || "Loading..."}`}
+                icon={<MenuBookIcon sx={{ fontSize: 18 }} />}
+                label={venueName || "Loading..."}
                 onDelete={handleDisassociateLesson}
-                deleteIcon={<CloseIcon />}
-                color="primary"
+                deleteIcon={<CloseIcon sx={{ fontSize: 16 }} />}
+                size="small"
+                sx={{
+                  backgroundColor: "rgba(25, 118, 210, 0.08)",
+                  borderColor: "primary.main",
+                  "& .MuiChip-label": { fontWeight: 500 },
+                  "& .MuiChip-deleteIcon": {
+                    color: "text.secondary",
+                    "&:hover": { color: "error.main" }
+                  }
+                }}
                 variant="outlined"
               />
             ) : (
-              <Button
-                variant="outlined"
-                startIcon={<LinkIcon />}
-                size="small"
+              <Chip
+                icon={<LinkIcon sx={{ fontSize: 18 }} />}
+                label={Locale.label("plans.serviceOrder.associateLesson") || "Link Lesson"}
                 onClick={() => setShowAssociateLessonSelector(true)}
-                sx={{ textTransform: "none" }}
-              >
-                {Locale.label("plans.serviceOrder.associateLesson") || "Associate Lesson"}
-              </Button>
+                size="small"
+                sx={{
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  borderColor: "divider",
+                  cursor: "pointer",
+                  "& .MuiChip-label": { fontWeight: 500 },
+                  "&:hover": {
+                    backgroundColor: "rgba(25, 118, 210, 0.08)",
+                    borderColor: "primary.main"
+                  }
+                }}
+                variant="outlined"
+              />
             )}
             <ButtonGroup variant="contained" size="small">
               <Button
@@ -370,7 +407,7 @@ export const ServiceOrder = memo((props: Props) => {
         )}
       </Stack>
     ),
-    [props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedLesson, venueName, handleDisassociateLesson, handleAddLesson]
+    [props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedLesson, hasAssociatedContent, provider?.name, venueName, handleDisassociateLesson, handleAddLesson]
   );
 
   const handleDrop = useCallback(
@@ -503,25 +540,27 @@ export const ServiceOrder = memo((props: Props) => {
         }}>
         <CardContent>
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <AlbumIcon sx={{ color: "primary.main", fontSize: 28 }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                {Locale.label("plans.serviceOrder.orderOfService")}
-              </Typography>
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <AlbumIcon sx={{ color: "primary.main", fontSize: 28 }} />
+                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                  {Locale.label("plans.serviceOrder.orderOfService")}
+                </Typography>
+              </Stack>
+              {totalDuration > 0 && (
+                <Chip
+                  icon={<ScheduleIcon sx={{ fontSize: 18 }} />}
+                  label={formatTime(totalDuration)}
+                  size="small"
+                  variant="outlined"
+                  sx={{ fontWeight: 500 }}
+                />
+              )}
             </Stack>
             {editContent}
           </Stack>
 
-          <Box
-            sx={{
-              minHeight: 200,
-              p: 3,
-              border: "1px dashed",
-              borderColor: "var(--border-main)",
-              borderRadius: 2,
-              backgroundColor: "var(--bg-sub)",
-            }}>
-            <DndProvider backend={HTML5Backend}>
+          <DndProvider backend={HTML5Backend}>
               {planItems.length === 0 ? (
                 showPreviewMode ? (
                   <LessonPreview
@@ -565,7 +604,6 @@ export const ServiceOrder = memo((props: Props) => {
                 </>
               )}
             </DndProvider>
-          </Box>
         </CardContent>
       </Card>
     </Box>

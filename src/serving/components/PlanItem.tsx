@@ -8,6 +8,18 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
+
+// Helper to find thumbnail recursively in instruction tree
+function findThumbnailRecursive(item: InstructionItem): string | undefined {
+  if (item.thumbnail) return item.thumbnail;
+  if (item.children) {
+    for (const child of item.children) {
+      const found = findThumbnailRecursive(child);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
@@ -83,6 +95,7 @@ export const PlanItem = React.memo((props: Props) => {
       // Store media URL in link field for direct preview (non-Lessons.church providers)
       // For file items, use mediaUrl if available, otherwise fall back to image
       link: linkValue,
+      thumbnailUrl: image,
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
@@ -139,6 +152,7 @@ export const PlanItem = React.memo((props: Props) => {
         providerId,
         providerPath,
         providerContentPath: `${providerContentPath}.${index}`,
+        thumbnailUrl: findThumbnailRecursive(action),
       }));
 
       // Delete original section, create new action items
@@ -199,6 +213,7 @@ export const PlanItem = React.memo((props: Props) => {
         providerId,
         providerPath,
         providerContentPath: `${found.path}.${index}`,
+        thumbnailUrl: findThumbnailRecursive(action),
       }));
 
       await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
@@ -286,31 +301,38 @@ export const PlanItem = React.memo((props: Props) => {
     const sectionDuration = getSectionDuration(props.planItem);
     return (
       <>
-        <div className="planItemHeader">
-          <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-            {sectionDuration > 0 && <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />}
-            <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
-              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
-            </span>
+        <div className="planItemHeader" style={{ display: "flex", alignItems: "center" }}>
+          <div className="timeRailCell">
+            <span className="timeRailLabel">{formatTime(props.startTime || 0)}</span>
+            <span className="timeRailDot" />
+            <span className="timeRailLine" />
+          </div>
+          {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)" }} />}
+          <span style={{ flex: 1 }}>{props.planItem.label}</span>
+          <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 12 }}>
             {!props.readOnly && (
               <>
                 <button
                   type="button"
+                  className="actionButton"
                   onClick={(e) => setAnchorEl(e.currentTarget)}
-                  style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                  style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
                   <AddIcon />
                 </button>
                 <button
                   type="button"
+                  className="actionButton"
                   onClick={() => props.setEditPlanItem(props.planItem)}
-                  style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                  style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
                   <EditIcon />
                 </button>
               </>
             )}
+            <ScheduleIcon style={{ fontSize: 18, color: "var(--text-muted)", visibility: sectionDuration > 0 ? "visible" : "hidden" }} />
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
+              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
+            </span>
           </span>
-          {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
-          <span>{props.planItem.label}</span>
         </div>
         {getChildren()}
       </>
@@ -323,54 +345,88 @@ export const PlanItem = React.memo((props: Props) => {
       style={{
         clear: "both",
         width: "100%",
-        paddingTop: "8px",
-        paddingBottom: "8px",
-        paddingLeft: "22px",
-        fontStyle: "italic",
-        color: "#777"
+        paddingTop: "4px",
+        fontSize: "0.9rem"
       }}
     >
       <MarkdownPreviewLight value={props.planItem.description || ""} />
     </div>
   );
 
+  const getItemIcon = () => {
+    const iconStyle = { fontSize: 32, color: "var(--text-muted)" };
+    switch (props.planItem.itemType) {
+      case "song":
+      case "arrangementKey":
+        return <MusicNoteIcon style={iconStyle} />;
+      case "providerSection":
+      case "lessonSection":
+      case "section":
+      case "providerPresentation":
+      case "lessonAction":
+      case "action":
+      case "providerFile":
+      case "lessonAddOn":
+      case "addon":
+      case "file":
+        return <MenuBookIcon style={iconStyle} />;
+      case "item":
+      default:
+        return <FormatListBulletedIcon style={iconStyle} />;
+    }
+  };
+
   const getGenericRow = (onLabelClick?: () => void) => (
     <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
-          <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />
-          <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
+      <div
+        className={`planItem${onLabelClick ? " clickableRow" : ""}`}
+        style={{ display: "flex", alignItems: "center", cursor: onLabelClick ? "pointer" : "default" }}
+        onClick={onLabelClick}
+      >
+        <div className="timeRailCell">
+          <span className="timeRailLabel">{formatTime(props.startTime || 0)}</span>
+          <span className="timeRailDot" />
+          <span className="timeRailLine" />
+        </div>
+        {!props.readOnly && (
+          <DragIndicatorIcon
+            className="dragHandle rowControl"
+            style={{ color: "var(--text-muted)", flexShrink: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        )}
+        <div style={{ width: 80, height: 45, marginRight: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {props.planItem.thumbnailUrl ? (
+            <img
+              src={props.planItem.thumbnailUrl}
+              alt=""
+              style={{ width: 80, height: 45, objectFit: "cover", borderRadius: 8 }}
+              onError={(e) => { e.currentTarget.style.display = "none"; e.currentTarget.nextElementSibling && ((e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex"); }}
+            />
+          ) : null}
+          <span style={{ display: props.planItem.thumbnailUrl ? "none" : "flex", alignItems: "center", justifyContent: "center", width: 80, height: 45, backgroundColor: "#e0e0e0", borderRadius: 8 }}>
+            {getItemIcon()}
+          </span>
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div>{props.planItem.label}</div>
+          {props.planItem.description && getDescriptionRow()}
+        </div>
+        <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 12 }}>
+          {!props.readOnly && (
+            <button
+              type="button"
+              className="actionButton rowControl"
+              onClick={(e) => { e.stopPropagation(); props.setEditPlanItem(props.planItem); }}
+              style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
+              <EditIcon />
+            </button>
+          )}
+          <ScheduleIcon style={{ fontSize: 18, color: props.planItem.seconds === 0 ? "#d32f2f" : "var(--text-muted)" }} />
+          <span title="Duration" style={{ color: props.planItem.seconds === 0 ? "#d32f2f" : "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
           </span>
-          {!props.readOnly && (
-            <>
-              <span style={{ width: 24 }} />
-              <button
-                type="button"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
-                <EditIcon />
-              </button>
-            </>
-          )}
         </span>
-        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
-        <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {onLabelClick ? (
-            <button type="button" onClick={onLabelClick}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
-              {props.planItem.label}
-            </button>
-          ) : props.planItem.link ? (
-            <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
-              {props.planItem.label}
-            </a>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {props.planItem.description && getDescriptionRow()}
       </div>
     </>
   );
@@ -439,7 +495,7 @@ export const PlanItem = React.memo((props: Props) => {
               : undefined
           }
           providerId={props.planItem.providerId}
-          embedUrl={props.planItem.link}
+          downloadUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
           providerContentPath={props.planItem.providerContentPath}
           ministryId={props.ministryId}
@@ -451,7 +507,7 @@ export const PlanItem = React.memo((props: Props) => {
           contentName={props.planItem.label}
           onClose={() => setActionId(null)}
           providerId={props.planItem.providerId || props.associatedProviderId}
-          embedUrl={props.planItem.link}
+          downloadUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
           providerContentPath={props.planItem.providerContentPath}
           ministryId={props.ministryId}

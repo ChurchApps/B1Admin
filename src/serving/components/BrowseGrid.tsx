@@ -30,8 +30,8 @@ export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files = [], sel
       return (
         <Card key={`folder-${folder.id}`} sx={{ border: isSelected ? 2 : 1, borderColor: isSelected ? "primary.main" : "divider", bgcolor: isSelected ? "action.selected" : "background.paper" }}>
           <CardActionArea onClick={() => onFolderClick(folder)}>
-            {folder.image ? (
-              <CardMedia component="img" height="80" image={folder.image} alt={folder.title} sx={{ objectFit: "cover" }} />
+            {folder.thumbnail ? (
+              <CardMedia component="img" height="80" image={folder.thumbnail} alt={folder.title} sx={{ objectFit: "cover" }} />
             ) : (
               <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: isLeaf ? "primary.light" : "grey.200" }}>
                 {isLeaf ? <PlayArrowIcon sx={{ fontSize: 40, color: "primary.contrastText" }} /> : <FolderIcon sx={{ fontSize: 40, color: "grey.500" }} />}
@@ -49,8 +49,8 @@ export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files = [], sel
     {files.map((file, fileIndex) => (
       <Card key={`file-${file.id}`} sx={{ border: 1, borderColor: "divider" }}>
         <CardActionArea onClick={() => onFileClick?.(file, selectedProviderId, [0, fileIndex])}>
-          {file.image ? (
-            <CardMedia component="img" height="80" image={file.image} alt={file.title} sx={{ objectFit: "cover" }} />
+          {file.thumbnail ? (
+            <CardMedia component="img" height="80" image={file.thumbnail} alt={file.title} sx={{ objectFit: "cover" }} />
           ) : (
             <Box sx={{ height: 80, display: "flex", alignItems: "center", justifyContent: "center", bgcolor: "secondary.light" }}>
               <AddIcon sx={{ fontSize: 40, color: "secondary.contrastText" }} />
