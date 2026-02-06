@@ -129,19 +129,26 @@ export const PlanItem = React.memo((props: Props) => {
       const currentSort = sort || 1;
 
       // Create new plan items for each action
-      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
-        planId,
-        parentId,
-        sort: currentSort + index,
-        itemType: "providerPresentation",
-        relatedId: action.relatedId || action.id || "",
-        label: action.label || "",
-        seconds: action.seconds || 0,
-        providerId,
-        providerPath,
-        providerContentPath: `${providerContentPath}.${index}`,
-        thumbnailUrl: action.thumbnail,
-      }));
+      const actionItems = section.children.map((action: InstructionItem, index: number) => {
+        let thumbnail = action.thumbnail;
+        if (!thumbnail && action.children && action.children.length > 0) {
+          const childWithThumbnail = action.children.find((child: InstructionItem) => child.thumbnail);
+          if (childWithThumbnail) thumbnail = childWithThumbnail.thumbnail;
+        }
+        return {
+          planId,
+          parentId,
+          sort: currentSort + index,
+          itemType: "providerPresentation",
+          relatedId: action.relatedId || action.id || "",
+          label: action.label || "",
+          seconds: action.seconds || 0,
+          providerId,
+          providerPath,
+          providerContentPath: `${providerContentPath}.${index}`,
+          thumbnailUrl: thumbnail,
+        };
+      });
 
       // Delete original section, create new action items
       await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
@@ -190,19 +197,26 @@ export const PlanItem = React.memo((props: Props) => {
       const section = found.item;
       const currentSort = props.planItem.sort || 1;
 
-      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
-        planId: props.planItem.planId,
-        parentId: props.planItem.parentId,
-        sort: currentSort + index,
-        itemType: "providerPresentation",
-        relatedId: action.relatedId || action.id || "",
-        label: action.label || "",
-        seconds: action.seconds || 0,
-        providerId,
-        providerPath,
-        providerContentPath: `${found.path}.${index}`,
-        thumbnailUrl: action.thumbnail,
-      }));
+      const actionItems = section.children.map((action: InstructionItem, index: number) => {
+        let thumbnail = action.thumbnail;
+        if (!thumbnail && action.children && action.children.length > 0) {
+          const childWithThumbnail = action.children.find((child: InstructionItem) => child.thumbnail);
+          if (childWithThumbnail) thumbnail = childWithThumbnail.thumbnail;
+        }
+        return {
+          planId: props.planItem.planId,
+          parentId: props.planItem.parentId,
+          sort: currentSort + index,
+          itemType: "providerPresentation",
+          relatedId: action.relatedId || action.id || "",
+          label: action.label || "",
+          seconds: action.seconds || 0,
+          providerId,
+          providerPath,
+          providerContentPath: `${found.path}.${index}`,
+          thumbnailUrl: thumbnail,
+        };
+      });
 
       await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
       await ApiHelper.post("/planItems", actionItems, "DoingApi");

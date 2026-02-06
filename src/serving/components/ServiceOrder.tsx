@@ -30,6 +30,18 @@ async function getProviderInstructions(provider: IProvider, path: string): Promi
   return null;
 }
 
+// Helper to find thumbnail recursively in instruction tree
+function findThumbnailRecursive(item: InstructionItem): string | undefined {
+  if (item.thumbnail) return item.thumbnail;
+  if (item.children) {
+    for (const child of item.children) {
+      const found = findThumbnailRecursive(child);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
 // Helper to convert InstructionItem to PlanItemInterface
 function instructionToPlanItem(item: InstructionItem, providerId?: string, providerPath?: string, pathIndices: number[] = []): PlanItemInterface {
   // Map provider item types to plan item types
@@ -41,6 +53,9 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
   // Generate dot-notation path from indices (e.g., [0, 2, 1] -> "0.2.1")
   const contentPath = pathIndices.length > 0 ? pathIndices.join('.') : undefined;
 
+  // Get thumbnail, searching recursively through children if needed
+  const thumbnail = findThumbnailRecursive(item);
+
   return {
     itemType,
     relatedId: item.relatedId,
@@ -50,7 +65,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
     providerId,
     providerPath,
     providerContentPath: contentPath,
-    thumbnailUrl: item.thumbnail,
+    thumbnailUrl: thumbnail,
     children: item.children?.map((child, index) => instructionToPlanItem(child, providerId, providerPath, [...pathIndices, index]))
   };
 }
