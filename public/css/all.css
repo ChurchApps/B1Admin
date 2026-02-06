@@ -761,18 +761,13 @@ label .description {
   background-color: var(--bg-plan-header);
   border-bottom: 3px solid var(--c1l2);
   font-weight: bold;
-  padding: 5px 5px 5px 10px;
+  padding: 5px 5px 5px 0;
   text-transform: uppercase;
 }
 
 .planItem {
   border-bottom: 1px solid var(--border-light);
-  padding: 5px 5px 5px 10px;
-}
-
-.planItem>div:first-of-type:not([style*="clear"]) {
-  float: left;
-  width: 100px
+  padding: 5px 5px 5px 0;
 }
 
 .planItemDescription {
@@ -794,6 +789,61 @@ label .description {
   opacity: 1;
 }
 
+/* Time Rail */
+.timeRailCell {
+  width: 72px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 20px;
+  align-self: stretch;
+  margin: -5px 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: var(--border-light);
+  border-right: 1px solid var(--border-main);
+}
+
+.timeRailLabel {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: right;
+  width: 100%;
+  padding-right: 4px;
+}
+
+.timeRailDot {
+  position: absolute;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-main);
+  border: 2px solid var(--border-light);
+  z-index: 1;
+}
+
+.timeRailLine {
+  position: absolute;
+  right: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-main);
+}
+
+.planItemHeader .timeRailCell {
+  margin-bottom: -8px;
+  padding-bottom: 8px;
+}
+
+.planItemHeader .timeRailDot {
+  background: var(--c1l2);
+}
 
 .chordPro H3 {
   margin-bottom: 0px;

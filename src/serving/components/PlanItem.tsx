@@ -301,8 +301,15 @@ export const PlanItem = React.memo((props: Props) => {
     const sectionDuration = getSectionDuration(props.planItem);
     return (
       <>
-        <div className="planItemHeader">
-          <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+        <div className="planItemHeader" style={{ display: "flex", alignItems: "center" }}>
+          <div className="timeRailCell">
+            <span className="timeRailLabel">{formatTime(props.startTime || 0)}</span>
+            <span className="timeRailDot" />
+            <span className="timeRailLine" />
+          </div>
+          {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)" }} />}
+          <span style={{ flex: 1 }}>{props.planItem.label}</span>
+          <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
             {sectionDuration > 0 && <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />}
             <span style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
               {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
@@ -324,8 +331,6 @@ export const PlanItem = React.memo((props: Props) => {
               </>
             )}
           </span>
-          {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
-          <span>{props.planItem.label}</span>
         </div>
         {getChildren()}
       </>
@@ -374,8 +379,13 @@ export const PlanItem = React.memo((props: Props) => {
 
   const getGenericRow = (onLabelClick?: () => void) => (
     <>
-      <div className="planItem" style={{ display: "flex", alignItems: "flex-start" }}>
-        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)", marginTop: 8, flexShrink: 0 }} />}
+      <div className="planItem" style={{ display: "flex", alignItems: "center" }}>
+        <div className="timeRailCell">
+          <span className="timeRailLabel">{formatTime(props.startTime || 0)}</span>
+          <span className="timeRailDot" />
+          <span className="timeRailLine" />
+        </div>
+        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)", flexShrink: 0 }} />}
         <div style={{ width: 80, height: 45, marginRight: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
           {props.planItem.thumbnailUrl ? (
             <img
@@ -390,7 +400,6 @@ export const PlanItem = React.memo((props: Props) => {
           </span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
           <div>
             {onLabelClick ? (
               <button type="button" onClick={onLabelClick}
