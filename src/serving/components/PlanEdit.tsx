@@ -45,7 +45,7 @@ export const PlanEdit = (props: Props) => {
         p.name = value;
         break;
       case "serviceDate":
-        p.serviceDate = new Date(value);
+        p.serviceDate = DateHelper.toDate(value);
         break;
       case "planTypeId":
         p.planTypeId = value;
