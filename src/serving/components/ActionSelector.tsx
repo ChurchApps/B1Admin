@@ -123,7 +123,12 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
       const childWithUrl = action.children.find(child => child.downloadUrl);
       if (childWithUrl) downloadUrl = childWithUrl.downloadUrl;
     }
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", action.thumbnail, downloadUrl, path, contentPathStr);
+    let thumbnail = action.thumbnail;
+    if (!thumbnail && action.children && action.children.length > 0) {
+      const childWithThumbnail = action.children.find((child: InstructionItem) => child.thumbnail);
+      if (childWithThumbnail) thumbnail = childWithThumbnail.thumbnail;
+    }
+    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", thumbnail, downloadUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
 

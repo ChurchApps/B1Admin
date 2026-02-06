@@ -24,9 +24,28 @@ const InstructionItemRow: React.FC<{
   onAddAction: (action: InstructionItem, provId: string, pathIndices: number[]) => void;
 }> = ({ item, providerId, depth, pathIndices, expandedSections, onToggleExpanded, onAddSection, onAddAction }) => {
   const itemId = item.relatedId || item.id || "";
-  const hasChildren = item.children && item.children.length > 0;
+  // Filter out file type items - we only show sections and actions
+  const visibleChildren = item.children?.filter(child => child.itemType !== 'file') || [];
+  const hasChildren = visibleChildren.length > 0;
   const isExpanded = expandedSections.has(itemId);
   const isSection = item.itemType === 'section' || item.itemType === 'header';
+
+  // Get thumbnail from item or first file child (only for actions, not sections)
+  const fileChild = item.children?.find(child => child.itemType === 'file');
+  const thumbnail = !isSection
+    ? (item.thumbnail || fileChild?.thumbnail)
+    : undefined;
+
+  console.log("InstructionItemRow", {
+    label: item.label,
+    itemType: item.itemType,
+    isSection,
+    itemThumbnail: item.thumbnail,
+    fileChildThumbnail: fileChild?.thumbnail,
+    resolvedThumbnail: thumbnail,
+    childrenCount: item.children?.length,
+    childTypes: item.children?.map(c => c.itemType)
+  });
 
   // Items with children are expandable (sections, headers, or actions with files)
   if (hasChildren) {
@@ -46,6 +65,14 @@ const InstructionItemRow: React.FC<{
           <IconButton size="small" onClick={() => onToggleExpanded(itemId)} sx={{ mr: 1 }}>
             {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
           </IconButton>
+          {thumbnail && (
+            <Box
+              component="img"
+              src={thumbnail}
+              alt=""
+              sx={{ width: 40, height: 30, objectFit: "cover", borderRadius: 0.5, mr: 1.5 }}
+            />
+          )}
           <Box sx={{ flex: 1 }}>
             <Typography sx={{ fontWeight: depth === 0 ? 500 : 400 }}>{item.label}</Typography>
             {item.description && (
@@ -69,7 +96,7 @@ const InstructionItemRow: React.FC<{
         </Box>
         {isExpanded && (
           <Box sx={{ pl: 4 }}>
-            {item.children!.map((child, childIndex) => (
+            {visibleChildren.map((child, childIndex) => (
               <InstructionItemRow
                 key={child.relatedId || child.id || childIndex}
                 item={child}
@@ -101,7 +128,16 @@ const InstructionItemRow: React.FC<{
         "&:hover": { bgcolor: "action.hover" }
       }}
     >
-      <PlayArrowIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
+      {thumbnail ? (
+        <Box
+          component="img"
+          src={thumbnail}
+          alt=""
+          sx={{ width: 40, height: 30, objectFit: "cover", borderRadius: 0.5, mr: 1.5 }}
+        />
+      ) : (
+        <PlayArrowIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
+      )}
       <Box sx={{ flex: 1 }}>
         <Typography variant="body2">{item.label}</Typography>
         {item.description && (
