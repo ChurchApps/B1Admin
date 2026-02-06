@@ -14,6 +14,7 @@ import { PlanItem } from "./PlanItem";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
+import { DroppableScroll } from "../../site/admin/DroppableScroll";
 import { getSectionDuration, formatTime } from "./PlanUtils";
 
 interface Props {
@@ -561,6 +562,16 @@ export const ServiceOrder = memo((props: Props) => {
           </Stack>
 
           <DndProvider backend={HTML5Backend}>
+              {(showHeaderDrop || showItemDrop) && (
+                <>
+                  <div style={{ position: "fixed", bottom: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
+                    <DroppableScroll direction="down" text="Scroll Down" acceptTypes={["planItemHeader", "planItem"]} />
+                  </div>
+                  <div style={{ position: "fixed", top: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
+                    <DroppableScroll direction="up" text="Scroll Up" acceptTypes={["planItemHeader", "planItem"]} />
+                  </div>
+                </>
+              )}
               {planItems.length === 0 ? (
                 showPreviewMode ? (
                   <LessonPreview
