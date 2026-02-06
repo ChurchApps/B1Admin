@@ -560,16 +560,7 @@ export const ServiceOrder = memo((props: Props) => {
             {editContent}
           </Stack>
 
-          <Box
-            sx={{
-              minHeight: 200,
-              p: 3,
-              border: "1px dashed",
-              borderColor: "var(--border-main)",
-              borderRadius: 2,
-              backgroundColor: "var(--bg-sub)",
-            }}>
-            <DndProvider backend={HTML5Backend}>
+          <DndProvider backend={HTML5Backend}>
               {planItems.length === 0 ? (
                 showPreviewMode ? (
                   <LessonPreview
@@ -613,7 +604,6 @@ export const ServiceOrder = memo((props: Props) => {
                 </>
               )}
             </DndProvider>
-          </Box>
         </CardContent>
       </Card>
     </Box>
