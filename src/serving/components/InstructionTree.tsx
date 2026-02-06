@@ -36,17 +36,6 @@ const InstructionItemRow: React.FC<{
     ? (item.thumbnail || fileChild?.thumbnail)
     : undefined;
 
-  console.log("InstructionItemRow", {
-    label: item.label,
-    itemType: item.itemType,
-    isSection,
-    itemThumbnail: item.thumbnail,
-    fileChildThumbnail: fileChild?.thumbnail,
-    resolvedThumbnail: thumbnail,
-    childrenCount: item.children?.length,
-    childTypes: item.children?.map(c => c.itemType)
-  });
-
   // Items with children are expandable (sections, headers, or actions with files)
   if (hasChildren) {
     return (

@@ -8,6 +8,18 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
+
+// Helper to find thumbnail recursively in instruction tree
+function findThumbnailRecursive(item: InstructionItem): string | undefined {
+  if (item.thumbnail) return item.thumbnail;
+  if (item.children) {
+    for (const child of item.children) {
+      const found = findThumbnailRecursive(child);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
 import { LessonDialog } from "./LessonDialog";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
@@ -129,26 +141,19 @@ export const PlanItem = React.memo((props: Props) => {
       const currentSort = sort || 1;
 
       // Create new plan items for each action
-      const actionItems = section.children.map((action: InstructionItem, index: number) => {
-        let thumbnail = action.thumbnail;
-        if (!thumbnail && action.children && action.children.length > 0) {
-          const childWithThumbnail = action.children.find((child: InstructionItem) => child.thumbnail);
-          if (childWithThumbnail) thumbnail = childWithThumbnail.thumbnail;
-        }
-        return {
-          planId,
-          parentId,
-          sort: currentSort + index,
-          itemType: "providerPresentation",
-          relatedId: action.relatedId || action.id || "",
-          label: action.label || "",
-          seconds: action.seconds || 0,
-          providerId,
-          providerPath,
-          providerContentPath: `${providerContentPath}.${index}`,
-          thumbnailUrl: thumbnail,
-        };
-      });
+      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
+        planId,
+        parentId,
+        sort: currentSort + index,
+        itemType: "providerPresentation",
+        relatedId: action.relatedId || action.id || "",
+        label: action.label || "",
+        seconds: action.seconds || 0,
+        providerId,
+        providerPath,
+        providerContentPath: `${providerContentPath}.${index}`,
+        thumbnailUrl: findThumbnailRecursive(action),
+      }));
 
       // Delete original section, create new action items
       await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
@@ -197,26 +202,19 @@ export const PlanItem = React.memo((props: Props) => {
       const section = found.item;
       const currentSort = props.planItem.sort || 1;
 
-      const actionItems = section.children.map((action: InstructionItem, index: number) => {
-        let thumbnail = action.thumbnail;
-        if (!thumbnail && action.children && action.children.length > 0) {
-          const childWithThumbnail = action.children.find((child: InstructionItem) => child.thumbnail);
-          if (childWithThumbnail) thumbnail = childWithThumbnail.thumbnail;
-        }
-        return {
-          planId: props.planItem.planId,
-          parentId: props.planItem.parentId,
-          sort: currentSort + index,
-          itemType: "providerPresentation",
-          relatedId: action.relatedId || action.id || "",
-          label: action.label || "",
-          seconds: action.seconds || 0,
-          providerId,
-          providerPath,
-          providerContentPath: `${found.path}.${index}`,
-          thumbnailUrl: thumbnail,
-        };
-      });
+      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
+        planId: props.planItem.planId,
+        parentId: props.planItem.parentId,
+        sort: currentSort + index,
+        itemType: "providerPresentation",
+        relatedId: action.relatedId || action.id || "",
+        label: action.label || "",
+        seconds: action.seconds || 0,
+        providerId,
+        providerPath,
+        providerContentPath: `${found.path}.${index}`,
+        thumbnailUrl: findThumbnailRecursive(action),
+      }));
 
       await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
       await ApiHelper.post("/planItems", actionItems, "DoingApi");
@@ -378,12 +376,12 @@ export const PlanItem = React.memo((props: Props) => {
     <>
       <div className="planItem" style={{ display: "flex", alignItems: "flex-start" }}>
         {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)", marginTop: 8, flexShrink: 0 }} />}
-        <div style={{ width: 40, height: 40, marginRight: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 80, height: 45, marginRight: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
           {props.planItem.thumbnailUrl ? (
             <img
               src={props.planItem.thumbnailUrl}
               alt=""
-              style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 4 }}
+              style={{ width: 80, height: 45, objectFit: "cover", borderRadius: 4 }}
               onError={(e) => { e.currentTarget.style.display = "none"; e.currentTarget.nextElementSibling && ((e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex"); }}
             />
           ) : null}
