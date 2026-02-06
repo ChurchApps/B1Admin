@@ -1,8 +1,9 @@
 import React, { memo } from "react";
-import { Box, Button, Typography, Icon, Stack } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../helpers";
-import { formatTime, getSectionDuration } from "./PlanUtils";
+import { getSectionDuration } from "./PlanUtils";
+import { PlanItem } from "./PlanItem";
 
 interface Props {
   lessonItems: PlanItemInterface[];
@@ -11,69 +12,28 @@ interface Props {
 }
 
 export const LessonPreview = memo((props: Props) => {
-  const renderPreviewItem = (item: PlanItemInterface, isChild: boolean = false) => {
-    if (item.itemType === "header") {
-      const sectionDuration = getSectionDuration(item);
-      return (
-        <Box key={item.id} sx={{ mb: 2 }}>
-          <Box
-            className="planItemHeader"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              p: 1,
-              backgroundColor: "grey.100",
-              borderRadius: 1,
-            }}
-          >
-            <Typography sx={{ fontWeight: 600 }}>{item.label}</Typography>
-            {sectionDuration > 0 && (
-              <Stack direction="row" alignItems="center" spacing={0.5}>
-                <Icon sx={{ fontSize: 16, color: "grey.500" }}>schedule</Icon>
-                <Typography variant="body2" sx={{ color: "grey.600" }}>
-                  {formatTime(sectionDuration)}
-                </Typography>
-              </Stack>
-            )}
-          </Box>
-          {item.children?.map((child) => renderPreviewItem(child, true))}
-        </Box>
-      );
-    }
+  const renderPreviewItems = () => {
+    const result: JSX.Element[] = [];
+    let cumulativeTime = 0;
 
-    return (
-      <Box
-        key={item.id}
-        className="planItem"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          p: 1,
-          pl: isChild ? 3 : 1,
-          borderBottom: "1px solid",
-          borderColor: "grey.200",
-        }}
-      >
-        <Box>
-          <Typography variant="body2">{item.label}</Typography>
-          {item.description && (
-            <Typography variant="caption" sx={{ color: "grey.600", fontStyle: "italic" }}>
-              {item.description}
-            </Typography>
-          )}
-        </Box>
-        {item.seconds > 0 && (
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Icon sx={{ fontSize: 16, color: "grey.500" }}>schedule</Icon>
-            <Typography variant="body2" sx={{ color: "grey.600" }}>
-              {formatTime(item.seconds)}
-            </Typography>
-          </Stack>
-        )}
-      </Box>
-    );
+    props.lessonItems.forEach((item, index) => {
+      const startTime = cumulativeTime;
+      result.push(
+        <PlanItem
+          key={item.id || `preview-${index}`}
+          planItem={item}
+          setEditPlanItem={null}
+          showItemDrop={false}
+          onDragChange={() => {}}
+          onChange={() => {}}
+          readOnly={true}
+          startTime={startTime}
+        />
+      );
+      cumulativeTime += getSectionDuration(item);
+    });
+
+    return result;
   };
 
   return (
@@ -119,7 +79,7 @@ export const LessonPreview = memo((props: Props) => {
           filter: "grayscale(0.3)",
         }}
       >
-        {props.lessonItems.map((item) => renderPreviewItem(item))}
+        {renderPreviewItems()}
       </Box>
     </Box>
   );
