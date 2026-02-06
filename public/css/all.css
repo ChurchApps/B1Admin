@@ -791,6 +791,33 @@ label .description {
   opacity: 1;
 }
 
+/* Clickable row hover */
+.clickableRow {
+  transition: background-color 0.15s;
+}
+.clickableRow:hover {
+  background-color: rgba(25, 118, 210, 0.08);
+}
+
+/* Drag handle cursor */
+.dragHandle {
+  cursor: grab;
+}
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+/* Row controls (drag handle, edit/add buttons) hover */
+.rowControl, .actionButton {
+  background: transparent;
+  border-radius: 4px;
+  padding: 2px;
+  transition: background-color 0.15s, opacity 0.15s;
+}
+.rowControl:hover, .actionButton:hover {
+  background-color: rgba(25, 118, 210, 0.15);
+}
+
 /* Time Rail */
 .timeRailCell {
   width: 72px;

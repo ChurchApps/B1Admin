@@ -320,14 +320,14 @@ export const PlanItem = React.memo((props: Props) => {
                   type="button"
                   className="actionButton"
                   onClick={(e) => setAnchorEl(e.currentTarget)}
-                  style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                  style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
                   <AddIcon />
                 </button>
                 <button
                   type="button"
                   className="actionButton"
                   onClick={() => props.setEditPlanItem(props.planItem)}
-                  style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                  style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
                   <EditIcon />
                 </button>
               </>
@@ -381,13 +381,23 @@ export const PlanItem = React.memo((props: Props) => {
 
   const getGenericRow = (onLabelClick?: () => void) => (
     <>
-      <div className="planItem" style={{ display: "flex", alignItems: "center" }}>
+      <div
+        className={`planItem${onLabelClick ? " clickableRow" : ""}`}
+        style={{ display: "flex", alignItems: "center", cursor: onLabelClick ? "pointer" : "default" }}
+        onClick={onLabelClick}
+      >
         <div className="timeRailCell">
           <span className="timeRailLabel">{formatTime(props.startTime || 0)}</span>
           <span className="timeRailDot" />
           <span className="timeRailLine" />
         </div>
-        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)", flexShrink: 0 }} />}
+        {!props.readOnly && (
+          <DragIndicatorIcon
+            className="dragHandle rowControl"
+            style={{ color: "var(--text-muted)", flexShrink: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        )}
         <div style={{ width: 80, height: 45, marginRight: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
           {props.planItem.thumbnailUrl ? (
             <img
@@ -402,20 +412,7 @@ export const PlanItem = React.memo((props: Props) => {
           </span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div>
-            {onLabelClick ? (
-              <button type="button" onClick={onLabelClick}
-                style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
-                {props.planItem.label}
-              </button>
-            ) : props.planItem.link ? (
-              <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
-                {props.planItem.label}
-              </a>
-            ) : (
-              props.planItem.label
-            )}
-          </div>
+          <div>{props.planItem.label}</div>
           {props.planItem.description && getDescriptionRow()}
         </div>
         <span style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0, marginLeft: 8 }}>
@@ -428,9 +425,9 @@ export const PlanItem = React.memo((props: Props) => {
               <span style={{ width: 24 }} />
               <button
                 type="button"
-                className="actionButton"
-                onClick={() => props.setEditPlanItem(props.planItem)}
-                style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
+                className="actionButton rowControl"
+                onClick={(e) => { e.stopPropagation(); props.setEditPlanItem(props.planItem); }}
+                style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
                 <EditIcon />
               </button>
             </>
