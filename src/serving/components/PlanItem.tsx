@@ -318,12 +318,14 @@ export const PlanItem = React.memo((props: Props) => {
               <>
                 <button
                   type="button"
+                  className="actionButton"
                   onClick={(e) => setAnchorEl(e.currentTarget)}
                   style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
                   <AddIcon />
                 </button>
                 <button
                   type="button"
+                  className="actionButton"
                   onClick={() => props.setEditPlanItem(props.planItem)}
                   style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
                   <EditIcon />
@@ -391,11 +393,11 @@ export const PlanItem = React.memo((props: Props) => {
             <img
               src={props.planItem.thumbnailUrl}
               alt=""
-              style={{ width: 80, height: 45, objectFit: "cover", borderRadius: 4 }}
+              style={{ width: 80, height: 45, objectFit: "cover", borderRadius: 8 }}
               onError={(e) => { e.currentTarget.style.display = "none"; e.currentTarget.nextElementSibling && ((e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex"); }}
             />
           ) : null}
-          <span style={{ display: props.planItem.thumbnailUrl ? "none" : "flex", alignItems: "center", justifyContent: "center" }}>
+          <span style={{ display: props.planItem.thumbnailUrl ? "none" : "flex", alignItems: "center", justifyContent: "center", width: 80, height: 45, backgroundColor: "#e0e0e0", borderRadius: 8 }}>
             {getItemIcon()}
           </span>
         </div>
@@ -426,6 +428,7 @@ export const PlanItem = React.memo((props: Props) => {
               <span style={{ width: 24 }} />
               <button
                 type="button"
+                className="actionButton"
                 onClick={() => props.setEditPlanItem(props.planItem)}
                 style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "#1976d2" }}>
                 <EditIcon />

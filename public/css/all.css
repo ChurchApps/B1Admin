@@ -781,11 +781,13 @@ label .description {
   margin-bottom: 0px;
 }
 
-.planItem .dragHandle, .planItemHeader .dragHandle {
+.planItem .dragHandle, .planItemHeader .dragHandle,
+.planItem .actionButton, .planItemHeader .actionButton {
   opacity: 0;
   transition: opacity 0.15s;
 }
-.planItem:hover .dragHandle, .planItemHeader:hover .dragHandle {
+.planItem:hover .dragHandle, .planItemHeader:hover .dragHandle,
+.planItem:hover .actionButton, .planItemHeader:hover .actionButton {
   opacity: 1;
 }
 
