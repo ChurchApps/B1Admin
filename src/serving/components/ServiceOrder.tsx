@@ -50,6 +50,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
     providerId,
     providerPath,
     providerContentPath: contentPath,
+    thumbnailUrl: item.thumbnail,
     children: item.children?.map((child, index) => instructionToPlanItem(child, providerId, providerPath, [...pathIndices, index]))
   };
 }

@@ -108,7 +108,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
     const downloadUrl = section.downloadUrl;
-    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", undefined, downloadUrl, path, contentPathStr);
+    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", section.thumbnail, downloadUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
 
@@ -123,7 +123,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
       const childWithUrl = action.children.find(child => child.downloadUrl);
       if (childWithUrl) downloadUrl = childWithUrl.downloadUrl;
     }
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", undefined, downloadUrl, path, contentPathStr);
+    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", action.thumbnail, downloadUrl, path, contentPathStr);
     onClose();
   }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
 

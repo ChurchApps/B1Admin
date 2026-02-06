@@ -83,6 +83,7 @@ export const PlanItem = React.memo((props: Props) => {
       // Store media URL in link field for direct preview (non-Lessons.church providers)
       // For file items, use mediaUrl if available, otherwise fall back to image
       link: linkValue,
+      thumbnailUrl: image,
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
@@ -139,6 +140,7 @@ export const PlanItem = React.memo((props: Props) => {
         providerId,
         providerPath,
         providerContentPath: `${providerContentPath}.${index}`,
+        thumbnailUrl: action.thumbnail,
       }));
 
       // Delete original section, create new action items
@@ -199,6 +201,7 @@ export const PlanItem = React.memo((props: Props) => {
         providerId,
         providerPath,
         providerContentPath: `${found.path}.${index}`,
+        thumbnailUrl: action.thumbnail,
       }));
 
       await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
@@ -334,10 +337,65 @@ export const PlanItem = React.memo((props: Props) => {
     </div>
   );
 
+  const getItemIcon = () => {
+    const iconStyle = { fontSize: 32, color: "var(--text-muted)" };
+    switch (props.planItem.itemType) {
+      case "song":
+      case "arrangementKey":
+        return <MusicNoteIcon style={iconStyle} />;
+      case "providerSection":
+      case "lessonSection":
+      case "section":
+      case "providerPresentation":
+      case "lessonAction":
+      case "action":
+      case "providerFile":
+      case "lessonAddOn":
+      case "addon":
+      case "file":
+        return <MenuBookIcon style={iconStyle} />;
+      case "item":
+      default:
+        return <FormatListBulletedIcon style={iconStyle} />;
+    }
+  };
+
   const getGenericRow = (onLabelClick?: () => void) => (
     <>
-      <div className="planItem">
-        <span style={{ float: "right", display: "flex", alignItems: "center", gap: 4 }}>
+      <div className="planItem" style={{ display: "flex", alignItems: "flex-start" }}>
+        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)", marginTop: 8, flexShrink: 0 }} />}
+        <div style={{ width: 40, height: 40, marginRight: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {props.planItem.thumbnailUrl ? (
+            <img
+              src={props.planItem.thumbnailUrl}
+              alt=""
+              style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 4 }}
+              onError={(e) => { e.currentTarget.style.display = "none"; e.currentTarget.nextElementSibling && ((e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex"); }}
+            />
+          ) : null}
+          <span style={{ display: props.planItem.thumbnailUrl ? "none" : "flex", alignItems: "center", justifyContent: "center" }}>
+            {getItemIcon()}
+          </span>
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
+          <div>
+            {onLabelClick ? (
+              <button type="button" onClick={onLabelClick}
+                style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
+                {props.planItem.label}
+              </button>
+            ) : props.planItem.link ? (
+              <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
+                {props.planItem.label}
+              </a>
+            ) : (
+              props.planItem.label
+            )}
+          </div>
+          {props.planItem.description && getDescriptionRow()}
+        </div>
+        <span style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0, marginLeft: 8 }}>
           <ScheduleIcon style={{ fontSize: 16, color: "var(--text-muted)" }} />
           <span title="Duration" style={{ color: "var(--text-muted)", fontSize: "0.9em", minWidth: 40, textAlign: "right" }}>
             {formatTime(props.planItem.seconds)}
@@ -354,23 +412,6 @@ export const PlanItem = React.memo((props: Props) => {
             </>
           )}
         </span>
-        {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ float: "left", color: "var(--text-muted)" }} />}
-        <div title="Start time" style={{ color: "var(--text-muted)", fontSize: "0.85em" }}>{formatTime(props.startTime || 0)}</div>
-        <div>
-          {onLabelClick ? (
-            <button type="button" onClick={onLabelClick}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", font: "inherit" }}>
-              {props.planItem.label}
-            </button>
-          ) : props.planItem.link ? (
-            <a href={props.planItem.link} target="_blank" rel="noopener noreferrer">
-              {props.planItem.label}
-            </a>
-          ) : (
-            props.planItem.label
-          )}
-        </div>
-        {props.planItem.description && getDescriptionRow()}
       </div>
     </>
   );

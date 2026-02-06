@@ -90,6 +90,7 @@ export const PlanItemEdit = (props: Props) => {
       label: song.title,
       description: song.artist + " - " + (song as any).shortDescription + " (" + (song as any).arrangementKeySignature + ")",
       seconds: song.seconds,
+      thumbnailUrl: song.thumbnail,
     };
     setPlanItem(pi);
     setSongs([]);
