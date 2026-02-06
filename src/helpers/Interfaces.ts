@@ -28,6 +28,10 @@ export interface SongDetailInterface {
   seconds: number;
   meter?: string;
   tones?: string;
+  // Properties from song search results
+  arrangementKeyId?: string;
+  shortDescription?: string;
+  arrangementKeySignature?: string;
 }
 
 export interface SongDetailLinkInterface {

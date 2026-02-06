@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip } from "@mui/material";
+import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
 import { type PlanInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
@@ -16,6 +16,7 @@ import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { DroppableScroll } from "../../site/admin/DroppableScroll";
 import { getSectionDuration, formatTime } from "./PlanUtils";
+import { findThumbnailRecursive } from "./planItemUtils";
 
 interface Props {
   plan: PlanInterface;
@@ -30,18 +31,6 @@ async function getProviderInstructions(provider: IProvider, path: string): Promi
     return provider.getInstructions(path);
   }
   return null;
-}
-
-// Helper to find thumbnail recursively in instruction tree
-function findThumbnailRecursive(item: InstructionItem): string | undefined {
-  if (item.thumbnail) return item.thumbnail;
-  if (item.children) {
-    for (const child of item.children) {
-      const found = findThumbnailRecursive(child);
-      if (found) return found;
-    }
-  }
-  return undefined;
 }
 
 // Helper to convert InstructionItem to PlanItemInterface
@@ -75,7 +64,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
 export const ServiceOrder = memo((props: Props) => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
-  const [editPlanItem, setEditPlanItem] = React.useState<PlanItemInterface>(null);
+  const [editPlanItem, setEditPlanItem] = React.useState<PlanItemInterface | null>(null);
   const [showHeaderDrop, setShowHeaderDrop] = React.useState(false);
   const [showItemDrop, setShowItemDrop] = React.useState(false);
   const [showAssociateLessonSelector, setShowAssociateLessonSelector] = React.useState(false);
@@ -83,6 +72,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
   const [venueName, setVenueName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   // Get the provider dynamically based on plan's providerId
   const provider: IProvider | null = useMemo(() => {
@@ -104,6 +94,7 @@ export const ServiceOrder = memo((props: Props) => {
         setPlanItems(data || []);
       } catch (error) {
         console.error("Error loading plan items:", error);
+        setErrorMessage(Locale.label("plans.serviceOrder.loadError") || "Failed to load plan items");
         setPlanItems([]);
       }
     }
@@ -128,6 +119,7 @@ export const ServiceOrder = memo((props: Props) => {
       if (props.onPlanUpdate) props.onPlanUpdate();
     } catch (error) {
       console.error("Error associating lesson:", error);
+      setErrorMessage(Locale.label("plans.serviceOrder.associateError") || "Failed to associate lesson");
     }
   }, [props.plan, props.onPlanUpdate]);
 
@@ -146,6 +138,7 @@ export const ServiceOrder = memo((props: Props) => {
       if (props.onPlanUpdate) props.onPlanUpdate();
     } catch (error) {
       console.error("Error disassociating lesson:", error);
+      setErrorMessage(Locale.label("plans.serviceOrder.disassociateError") || "Failed to unlink lesson");
     }
   }, [props.plan, props.onPlanUpdate]);
 
@@ -311,6 +304,7 @@ export const ServiceOrder = memo((props: Props) => {
           variant="outlined"
           size="small"
           title={Locale.label("plans.serviceOrder.print")}
+          aria-label={Locale.label("plans.serviceOrder.print") || "Print plan"}
           sx={{
             minWidth: 40,
             borderRadius: 2,
@@ -389,7 +383,7 @@ export const ServiceOrder = memo((props: Props) => {
                   <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
                 </MenuItem>
                 <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddLesson(); }}>
-                  <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addLesson")}
+                  <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addFromLesson") || "Add from Lesson"}
                 </MenuItem>
               </Menu>
             )}
@@ -487,7 +481,7 @@ export const ServiceOrder = memo((props: Props) => {
 
   React.useEffect(() => {
     loadData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loadData]);
 
   // Load venue name when there's an associated lesson
   React.useEffect(() => {
@@ -617,6 +611,16 @@ export const ServiceOrder = memo((props: Props) => {
             </DndProvider>
         </CardContent>
       </Card>
+      <Snackbar
+        open={!!errorMessage}
+        autoHideDuration={6000}
+        onClose={() => setErrorMessage(null)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="error" onClose={() => setErrorMessage(null)}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 });

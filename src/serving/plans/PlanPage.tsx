@@ -14,12 +14,12 @@ import { Breadcrumbs } from "../../components/ui";
 
 export const PlanPage = () => {
   const params = useParams();
-  const [plan, setPlan] = React.useState<PlanInterface>(null);
-  const [ministry, setMinistry] = React.useState<GroupInterface>(null);
-  const [planType, setPlanType] = React.useState<PlanTypeInterface>(null);
+  const [plan, setPlan] = React.useState<PlanInterface | null>(null);
+  const [ministry, setMinistry] = React.useState<GroupInterface | null>(null);
+  const [planType, setPlanType] = React.useState<PlanTypeInterface | null>(null);
   const [selectedTab, setSelectedTab] = React.useState("assignments");
 
-  const loadData = async () => {
+  const loadData = React.useCallback(async () => {
     const planData = await ApiHelper.get("/plans/" + params.id, "DoingApi");
     setPlan(planData);
 
@@ -32,11 +32,11 @@ export const PlanPage = () => {
       const planTypeData = await ApiHelper.get("/planTypes/" + planData.planTypeId, "DoingApi");
       setPlanType(planTypeData);
     }
-  };
+  }, [params.id]);
 
   React.useEffect(() => {
     loadData();
-  }, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loadData]);
 
   const getCurrentTab = () => {
     if (selectedTab === "assignments") return <Assignment plan={plan} />;
