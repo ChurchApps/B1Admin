@@ -1176,6 +1176,11 @@
       "section": "Seksjon",
       "selectAction": "Velg handling"
     },
+    "lessonHeaderSelector": {
+      "title": "Legg til leksjonsinnhold",
+      "description": "Velg en overskrift eller seksjon å legge til i planen din. Underelementene vil bli lagt til som planelementer.",
+      "noContent": "Ingen leksjonsinnhold tilgjengelig"
+    },
     "addOnSelector": {
       "category": "Kategori",
       "noAddOns": "Ingen tillegg tilgjengelig",

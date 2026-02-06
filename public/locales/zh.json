@@ -1176,6 +1176,11 @@
       "section": "部分",
       "selectAction": "选择操作"
     },
+    "lessonHeaderSelector": {
+      "title": "添加课程内容",
+      "description": "选择要添加到计划中的标题或部分。其子项将作为计划项添加。",
+      "noContent": "没有可用的课程内容"
+    },
     "addOnSelector": {
       "category": "类别",
       "noAddOns": "没有可用的附加组件",

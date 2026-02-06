@@ -1183,6 +1183,11 @@
       "section": "Seção",
       "selectAction": "Selecionar ação"
     },
+    "lessonHeaderSelector": {
+      "title": "Adicionar conteúdo da lição",
+      "description": "Selecione um cabeçalho ou seção para adicionar ao seu plano. Seus elementos filhos serão adicionados como itens do plano.",
+      "noContent": "Nenhum conteúdo de lição disponível"
+    },
     "addOnSelector": {
       "category": "Categoria",
       "noAddOns": "Nenhum complemento disponível",

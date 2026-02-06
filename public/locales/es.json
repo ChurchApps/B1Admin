@@ -1184,6 +1184,11 @@
       "section": "Sección",
       "selectAction": "Seleccionar acción"
     },
+    "lessonHeaderSelector": {
+      "title": "Agregar contenido de lección",
+      "description": "Seleccione un encabezado o sección para agregar a su plan. Sus elementos secundarios se agregarán como elementos del plan.",
+      "noContent": "No hay contenido de lección disponible"
+    },
     "addOnSelector": {
       "category": "Categoría",
       "noAddOns": "No hay complementos disponibles",

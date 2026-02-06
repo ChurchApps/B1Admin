@@ -7,6 +7,7 @@ import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelpe
 import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-provider-helper";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
+import { LessonHeaderSelector } from "./LessonHeaderSelector";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlanItem } from "./PlanItem";
@@ -77,6 +78,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [showHeaderDrop, setShowHeaderDrop] = React.useState(false);
   const [showItemDrop, setShowItemDrop] = React.useState(false);
   const [showAssociateLessonSelector, setShowAssociateLessonSelector] = React.useState(false);
+  const [showLessonHeaderSelector, setShowLessonHeaderSelector] = React.useState(false);
   const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
   const [venueName, setVenueName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
@@ -232,27 +234,6 @@ export const ServiceOrder = memo((props: Props) => {
     setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
   }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
 
-  const handleLessonSelect = useCallback(async () => {
-    if (!provider) return;
-    try {
-      const contentPath = getContentPath();
-      if (!contentPath) return;
-
-      const instructions = await getProviderInstructions(provider, contentPath);
-      const currentProviderId = props.plan?.providerId;
-
-      if (instructions?.items && instructions.items.length > 0) {
-        // Convert InstructionItems to PlanItemInterface with providerId, providerPath and save
-        const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
-        await saveHierarchicalItems(planItemsFromInstructions);
-        // Reload data to show the new editable items
-        loadData();
-      }
-    } catch (error) {
-      console.error("Error importing lesson items:", error);
-    }
-  }, [getContentPath, provider, props.plan?.providerId, loadData]);
-
   // Load content/venue name when there's an associated content
   const loadVenueName = useCallback(async () => {
     if (!hasAssociatedContent) {
@@ -306,12 +287,20 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [hasAssociatedContent, planItems.length, getContentPath, provider, props.plan?.providerId]);
 
-  const handleAddLesson = useCallback(async () => {
+  const handleAddLesson = useCallback(() => {
     if (hasAssociatedLesson) {
-      // Use the associated venue directly without showing a modal
-      await handleLessonSelect();
+      // Show the LessonHeaderSelector dialog to let user choose what to add
+      setShowLessonHeaderSelector(true);
     }
-  }, [hasAssociatedLesson, handleLessonSelect]);
+  }, [hasAssociatedLesson]);
+
+  // Handle selection from LessonHeaderSelector
+  const handleLessonHeaderSelect = useCallback(async (items: PlanItemInterface[]) => {
+    if (items.length > 0) {
+      await saveHierarchicalItems(items);
+      loadData();
+    }
+  }, [loadData]);
 
   const editContent = useMemo(
     () => (
@@ -529,6 +518,17 @@ export const ServiceOrder = memo((props: Props) => {
         ministryId={props.plan?.ministryId}
         defaultProviderId={props.plan?.providerId}
       />
+
+      {hasAssociatedLesson && (
+        <LessonHeaderSelector
+          open={showLessonHeaderSelector}
+          onClose={() => setShowLessonHeaderSelector(false)}
+          onSelect={handleLessonHeaderSelect}
+          providerId={props.plan?.providerId || ""}
+          providerPath={getContentPath() || ""}
+          ministryId={props.plan?.ministryId}
+        />
+      )}
 
       <Card
         sx={{

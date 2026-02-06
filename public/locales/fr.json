@@ -1183,6 +1183,11 @@
       "section": "Section",
       "selectAction": "Sélectionner une action"
     },
+    "lessonHeaderSelector": {
+      "title": "Ajouter du contenu de leçon",
+      "description": "Sélectionnez un en-tête ou une section à ajouter à votre plan. Ses éléments enfants seront ajoutés comme éléments du plan.",
+      "noContent": "Aucun contenu de leçon disponible"
+    },
     "addOnSelector": {
       "category": "Catégorie",
       "noAddOns": "Aucune extension disponible",

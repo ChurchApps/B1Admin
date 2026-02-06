@@ -1176,6 +1176,11 @@
       "section": "섹션",
       "selectAction": "작업 선택"
     },
+    "lessonHeaderSelector": {
+      "title": "레슨 콘텐츠 추가",
+      "description": "플랜에 추가할 헤더 또는 섹션을 선택하세요. 하위 항목이 플랜 항목으로 추가됩니다.",
+      "noContent": "사용 가능한 레슨 콘텐츠가 없습니다"
+    },
     "addOnSelector": {
       "category": "카테고리",
       "noAddOns": "사용 가능한 추가 기능 없음",

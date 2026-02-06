@@ -218,6 +218,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
               onToggleExpanded={toggleSectionExpanded}
               onAddSection={handleAddSection}
               onAddAction={handleAddAction}
+              excludeHeaders={true}
             />
           )}
         </DialogContent>
@@ -297,6 +298,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
                 onToggleExpanded={toggleSectionExpanded}
                 onAddSection={handleAddSection}
                 onAddAction={handleAddAction}
+                excludeHeaders={true}
               />
             </Box>
           ) : browser.currentItems.length === 0 && browser.currentFiles.length === 0 ? (

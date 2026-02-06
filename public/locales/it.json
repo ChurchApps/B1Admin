@@ -1176,6 +1176,11 @@
       "section": "Sezione",
       "selectAction": "Seleziona azione"
     },
+    "lessonHeaderSelector": {
+      "title": "Aggiungi contenuto della lezione",
+      "description": "Seleziona un'intestazione o una sezione da aggiungere al tuo piano. I suoi elementi figlio verranno aggiunti come elementi del piano.",
+      "noContent": "Nessun contenuto della lezione disponibile"
+    },
     "addOnSelector": {
       "category": "Categoria",
       "noAddOns": "Nessun componente aggiuntivo disponibile",
