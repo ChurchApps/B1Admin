@@ -135,15 +135,19 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
           // Look for downloadUrl on the item itself, or on the first child with a downloadUrl
           let downloadUrl = item.downloadUrl;
 
+          // For sections, we want to show the children list, not find a URL to display
+          const isSection = item.itemType === "section";
+
           // If item doesn't have downloadUrl, check children (actions often have file children with the actual URL)
-          if (!downloadUrl && item.children && item.children.length > 0) {
+          // But skip this for sections - they should show children as a list
+          if (!isSection && !downloadUrl && item.children && item.children.length > 0) {
             const childWithUrl = item.children.find(child => child.downloadUrl);
             if (childWithUrl) {
               downloadUrl = childWithUrl.downloadUrl;
             }
           }
 
-          if (downloadUrl) {
+          if (downloadUrl && !isSection) {
             setContent({
               url: downloadUrl,
               mediaType: detectMediaType(downloadUrl),
