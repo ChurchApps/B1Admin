@@ -282,11 +282,9 @@ export const ServiceOrder = memo((props: Props) => {
   }, [hasAssociatedContent, planItems.length, getContentPath, provider, props.plan?.providerId]);
 
   const handleAddLesson = useCallback(() => {
-    if (hasAssociatedLesson) {
-      // Show the LessonHeaderSelector dialog to let user choose what to add
-      setShowLessonHeaderSelector(true);
-    }
-  }, [hasAssociatedLesson]);
+    // Always show the LessonHeaderSelector - it now supports provider browsing
+    setShowLessonHeaderSelector(true);
+  }, []);
 
   // Handle selection from LessonHeaderSelector
   const handleLessonHeaderSelect = useCallback(async (items: PlanItemInterface[]) => {
@@ -361,32 +359,28 @@ export const ServiceOrder = memo((props: Props) => {
                 }}>
                 {Locale.label("plans.serviceOrder.addSection")}
               </Button>
-              {hasAssociatedLesson && (
-                <Button
-                  onClick={(e) => setAddMenuAnchor(e.currentTarget)}
-                  sx={{
-                    borderRadius: "0 8px 8px 0",
-                    minWidth: 32,
-                    px: 0.5,
-                  }}>
-                  <ArrowDropDownIcon />
-                </Button>
-              )}
+              <Button
+                onClick={(e) => setAddMenuAnchor(e.currentTarget)}
+                sx={{
+                  borderRadius: "0 8px 8px 0",
+                  minWidth: 32,
+                  px: 0.5,
+                }}>
+                <ArrowDropDownIcon />
+              </Button>
             </ButtonGroup>
-            {hasAssociatedLesson && (
-              <Menu
-                anchorEl={addMenuAnchor}
-                open={Boolean(addMenuAnchor)}
-                onClose={() => setAddMenuAnchor(null)}
-              >
-                <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
-                  <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
-                </MenuItem>
-                <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddLesson(); }}>
-                  <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addFromLesson") || "Add from Lesson"}
-                </MenuItem>
-              </Menu>
-            )}
+            <Menu
+              anchorEl={addMenuAnchor}
+              open={Boolean(addMenuAnchor)}
+              onClose={() => setAddMenuAnchor(null)}
+            >
+              <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
+                <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
+              </MenuItem>
+              <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddLesson(); }}>
+                <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addFromLesson") || "Add from Lesson"}
+              </MenuItem>
+            </Menu>
           </>
         )}
       </Stack>
@@ -514,16 +508,14 @@ export const ServiceOrder = memo((props: Props) => {
         defaultProviderId={props.plan?.providerId}
       />
 
-      {hasAssociatedLesson && (
-        <LessonHeaderSelector
-          open={showLessonHeaderSelector}
-          onClose={() => setShowLessonHeaderSelector(false)}
-          onSelect={handleLessonHeaderSelect}
-          providerId={props.plan?.providerId || ""}
-          providerPath={getContentPath() || ""}
-          ministryId={props.plan?.ministryId}
-        />
-      )}
+      <LessonHeaderSelector
+        open={showLessonHeaderSelector}
+        onClose={() => setShowLessonHeaderSelector(false)}
+        onSelect={handleLessonHeaderSelect}
+        providerId={props.plan?.providerId}
+        providerPath={getContentPath() || undefined}
+        ministryId={props.plan?.ministryId}
+      />
 
       <Card
         sx={{
