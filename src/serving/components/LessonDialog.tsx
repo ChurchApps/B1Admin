@@ -106,12 +106,10 @@ export const LessonDialog: React.FC<Props> = (props) => {
         );
       } else {
         return (
-          <Box sx={{ p: 4 }}>
-            <Typography variant="h6" gutterBottom>{selectedChild.label}</Typography>
-            {selectedChild.description && (
+          <Box sx={{ p: 3 }}>
+            {selectedChild.description ? (
               <MarkdownPreviewLight value={selectedChild.description} />
-            )}
-            {!selectedChild.description && (
+            ) : (
               <Typography color="text.secondary" sx={{ textAlign: "center" }}>No preview available for this item.</Typography>
             )}
           </Box>
