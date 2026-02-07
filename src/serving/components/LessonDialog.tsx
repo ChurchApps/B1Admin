@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from "@mui/material";
 import { PlayArrow as PlayArrowIcon, Schedule as ScheduleIcon, ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { useProviderContent, type ProviderContentChild } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
 
@@ -112,13 +113,13 @@ export const LessonDialog: React.FC<Props> = (props) => {
         );
       } else {
         return (
-          <Box sx={{ p: 4, textAlign: "center" }}>
+          <Box sx={{ p: 4 }}>
             <Typography variant="h6" gutterBottom>{selectedChild.label}</Typography>
             {selectedChild.description && (
-              <Typography color="text.secondary">{selectedChild.description}</Typography>
+              <MarkdownPreviewLight value={selectedChild.description} />
             )}
             {!selectedChild.description && (
-              <Typography color="text.secondary">No preview available for this item.</Typography>
+              <Typography color="text.secondary" sx={{ textAlign: "center" }}>No preview available for this item.</Typography>
             )}
           </Box>
         );
@@ -143,9 +144,9 @@ export const LessonDialog: React.FC<Props> = (props) => {
       return (
         <Box sx={{ p: 2 }}>
           {content.description && (
-            <Typography color="text.secondary" sx={{ mb: 2 }}>
-              {content.description}
-            </Typography>
+            <Box sx={{ mb: 2 }}>
+              <MarkdownPreviewLight value={content.description} />
+            </Box>
           )}
           <List>
             {content.children!.map((child, index) => (
