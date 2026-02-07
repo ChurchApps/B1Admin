@@ -160,6 +160,23 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
     });
   }, []);
 
+  // Auto-expand when there's only one item at a level
+  useEffect(() => {
+    if (instructions?.items) {
+      const autoExpandIds = new Set<string>();
+      const findSingleChildItems = (items: InstructionItem[]) => {
+        if (items.length === 1) {
+          const item = items[0];
+          const itemId = item.relatedId || item.id;
+          if (itemId) autoExpandIds.add(itemId);
+          if (item.children) findSingleChildItems(item.children);
+        }
+      };
+      findSingleChildItems(instructions.items);
+      setExpandedSections(autoExpandIds);
+    }
+  }, [instructions]);
+
   // Handle selecting a header - convert to planItemHeader with sections as children
   const handleAddSection = useCallback(
     (section: InstructionItem, provId: string, pathIndices: number[]) => {
