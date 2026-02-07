@@ -249,8 +249,10 @@ export const PlanItem = React.memo((props: Props) => {
           sectionName={props.planItem.label}
           onClose={() => setLessonSectionId(null)}
           onExpandToActions={
-            (props.associatedVenueId && props.planItem.relatedId) ||
-            (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
+            !props.readOnly && (
+              (props.associatedVenueId && props.planItem.relatedId) ||
+              (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
+            )
               ? async () => {
                   setLessonSectionId(null);
                   await handleExpandToActions();

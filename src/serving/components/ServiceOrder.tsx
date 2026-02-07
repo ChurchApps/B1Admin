@@ -564,6 +564,9 @@ export const ServiceOrder = memo((props: Props) => {
                     lessonItems={previewLessonItems}
                     venueName={venueName}
                     onCustomize={handleCustomizeLesson}
+                    associatedProviderId={props.plan?.providerId}
+                    associatedVenueId={getContentPath() || undefined}
+                    ministryId={props.plan?.ministryId}
                   />
                 ) : (
                   <Box

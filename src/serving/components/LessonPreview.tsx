@@ -9,6 +9,9 @@ interface Props {
   lessonItems: PlanItemInterface[];
   venueName: string;
   onCustomize: () => void;
+  associatedProviderId?: string;
+  associatedVenueId?: string;
+  ministryId?: string;
 }
 
 export const LessonPreview = memo((props: Props) => {
@@ -28,6 +31,9 @@ export const LessonPreview = memo((props: Props) => {
           onChange={() => {}}
           readOnly={true}
           startTime={startTime}
+          associatedProviderId={props.associatedProviderId}
+          associatedVenueId={props.associatedVenueId}
+          ministryId={props.ministryId}
         />
       );
       cumulativeTime += getSectionDuration(item);
@@ -74,8 +80,7 @@ export const LessonPreview = memo((props: Props) => {
       {/* Grayed out preview content */}
       <Box
         sx={{
-          opacity: 0.5,
-          pointerEvents: "none",
+          opacity: 0.7,
           filter: "grayscale(0.3)",
         }}
       >
