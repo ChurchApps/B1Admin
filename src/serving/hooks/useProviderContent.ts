@@ -9,6 +9,7 @@ export interface ProviderContentChild {
   description?: string;
   seconds?: number;
   downloadUrl?: string;
+  thumbnailUrl?: string;
 }
 
 export interface ProviderContent {
@@ -159,10 +160,12 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
             const children: ProviderContentChild[] = item.children.map(child => {
               // Look for downloadUrl on the child itself, or on its first child with a downloadUrl
               let childDownloadUrl = child.downloadUrl;
+              let childThumbnail = child.thumbnail;
               if (!childDownloadUrl && child.children && child.children.length > 0) {
                 const grandchildWithUrl = child.children.find(gc => gc.downloadUrl);
                 if (grandchildWithUrl) {
                   childDownloadUrl = grandchildWithUrl.downloadUrl;
+                  childThumbnail = childThumbnail || grandchildWithUrl.thumbnail;
                 }
               }
               return {
@@ -170,7 +173,8 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
                 label: child.label,
                 description: child.content,
                 seconds: child.seconds,
-                downloadUrl: childDownloadUrl
+                downloadUrl: childDownloadUrl,
+                thumbnailUrl: childThumbnail
               };
             });
             setContent({
