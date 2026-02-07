@@ -4,7 +4,6 @@ import { useProviderContent } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
 
 interface Props {
-  contentId: string;
   contentName?: string;
   onClose: () => void;
   providerId?: string;

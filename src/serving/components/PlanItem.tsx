@@ -266,7 +266,6 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {actionId && (
         <ActionDialog
-          contentId={actionId}
           contentName={props.planItem.label}
           onClose={() => setActionId(null)}
           providerId={props.planItem.providerId || props.associatedProviderId}
