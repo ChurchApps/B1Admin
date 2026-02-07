@@ -71,15 +71,9 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
     if (description || mediaType === "text") {
       return (
         <Box sx={{ p: 3 }}>
-          {title && (
-            <Typography variant="h6" gutterBottom>
-              {title}
-            </Typography>
-          )}
-          {description && (
+          {description ? (
             <MarkdownPreviewLight value={description} />
-          )}
-          {!description && !title && (
+          ) : (
             <Typography color="text.secondary" sx={{ textAlign: "center" }}>
               No content to display.
             </Typography>
@@ -150,11 +144,6 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
     case "text":
       return (
         <Box sx={{ p: 3 }}>
-          {title && (
-            <Typography variant="h6" gutterBottom>
-              {title}
-            </Typography>
-          )}
           {description ? (
             <MarkdownPreviewLight value={description} />
           ) : (

@@ -147,7 +147,7 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
             setContent({
               url: downloadUrl,
               mediaType: detectMediaType(downloadUrl),
-              description: item.description,
+              description: item.content,
               label: item.label
             });
           } else if (item.children && item.children.length > 0) {
@@ -164,20 +164,20 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
               return {
                 id: child.relatedId || child.id,
                 label: child.label,
-                description: child.description,
+                description: child.content,
                 seconds: child.seconds,
                 downloadUrl: childDownloadUrl
               };
             });
             setContent({
-              description: item.description,
+              description: item.content,
               label: item.label,
               children
             });
           } else {
             // Item exists but has no downloadUrl and no children - show as text content
             setContent({
-              description: item.description,
+              description: item.content,
               label: item.label,
               mediaType: "text"
             });
