@@ -113,7 +113,7 @@ export const PlanItemRow: React.FC<Props> = ({
             textAlign: "right"
           }}
         >
-          {formatTime(planItem.seconds)}
+          {formatTime(planItem.seconds ?? 0)}
         </Box>
       </Box>
     </Box>

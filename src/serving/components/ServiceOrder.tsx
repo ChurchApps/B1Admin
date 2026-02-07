@@ -52,7 +52,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
     relatedId: item.relatedId,
     label: item.label || "",
     description: item.description,
-    seconds: item.seconds,
+    seconds: item.seconds ?? 0,
     providerId,
     providerPath,
     providerContentPath: contentPath,
