@@ -10,7 +10,7 @@
     "@churchapps/apphelper-login": "file:../AppHelper/packages/login",
     "@churchapps/apphelper-markdown": "file:../AppHelper/packages/apphelper-markdown",
     "@churchapps/apphelper-website": "file:../AppHelper/packages/apphelper-website",
-    "@churchapps/content-provider-helper": "file:../ContentProviderHelper",
+    "@churchapps/content-provider-helper": "0.1.0",
     "@churchapps/helpers": "file:../Helpers",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
