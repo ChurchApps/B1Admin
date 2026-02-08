@@ -1,29 +1,17 @@
 import React from "react";
 import { Box, Menu, MenuItem } from "@mui/material";
-import { Add as AddIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
+import { FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
-import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
 import { SongDialog } from "./SongDialog";
-
-// Helper to find thumbnail recursively in instruction tree
-function findThumbnailRecursive(item: InstructionItem): string | undefined {
-  if (item.thumbnail) return item.thumbnail;
-  if (item.children) {
-    for (const child of item.children) {
-      const found = findThumbnailRecursive(child);
-      if (found) return found;
-    }
-  }
-  return undefined;
-}
 import { LessonDialog } from "./LessonDialog";
+import { getNextChildSort } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
-import { formatTime, getSectionDuration } from "./PlanUtils";
+import { PlanItemHeader, PlanItemRow } from "./planItem/index";
+import { usePlanItemExpand } from "./planItem/usePlanItemExpand";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -39,12 +27,21 @@ interface Props {
 }
 
 export const PlanItem = React.memo((props: Props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [dialogKeyId, setDialogKeyId] = React.useState<string>(null);
-  const [lessonSectionId, setLessonSectionId] = React.useState<string>(null);
-  const [actionId, setActionId] = React.useState<string>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const [dialogKeyId, setDialogKeyId] = React.useState<string | null>(null);
+  const [lessonSectionId, setLessonSectionId] = React.useState<string | null>(null);
+  const [actionId, setActionId] = React.useState<string | null>(null);
   const [showActionSelector, setShowActionSelector] = React.useState(false);
   const open = Boolean(anchorEl);
+
+  // Use the expand hook for section expansion functionality
+  const { handleExpandToActions } = usePlanItemExpand({
+    planItem: props.planItem,
+    associatedProviderId: props.associatedProviderId,
+    associatedVenueId: props.associatedVenueId,
+    ministryId: props.ministryId,
+    onChange: props.onChange,
+  });
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -55,7 +52,7 @@ export const PlanItem = React.memo((props: Props) => {
     props.setEditPlanItem({
       itemType: "arrangementKey",
       planId: props.planItem.planId,
-      sort: props.planItem.children?.length + 1 || 1,
+      sort: getNextChildSort(props.planItem.children),
       parentId: props.planItem.id,
     });
   };
@@ -65,7 +62,7 @@ export const PlanItem = React.memo((props: Props) => {
     props.setEditPlanItem({
       itemType: "item",
       planId: props.planItem.planId,
-      sort: props.planItem.children?.length + 1 || 1,
+      sort: getNextChildSort(props.planItem.children),
       parentId: props.planItem.id,
     });
   };
@@ -84,7 +81,7 @@ export const PlanItem = React.memo((props: Props) => {
     const newPlanItem: PlanItemInterface = {
       itemType: itemType || "providerPresentation",
       planId: props.planItem.planId,
-      sort: props.planItem.children?.length + 1 || 1,
+      sort: getNextChildSort(props.planItem.children),
       parentId: props.planItem.id,
       relatedId: actionId,
       label: actionName,
@@ -99,129 +96,6 @@ export const PlanItem = React.memo((props: Props) => {
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
-  };
-
-  // Expand a section item to replace it with individual action/presentation items
-  const handleExpandToActions = async () => {
-    // Provider-based expansion (uses providerId, providerPath, providerContentPath on the item itself)
-    if (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath) {
-      await handleExpandToActionsViaProvider();
-      return;
-    }
-
-    // Fall back to plan-level provider data for legacy items that only have relatedId
-    if (props.associatedProviderId && props.associatedVenueId && props.planItem.relatedId) {
-      await handleExpandToActionsLegacy();
-      return;
-    }
-
-    // Cannot expand without provider path data
-    console.warn("Cannot expand section: no providerPath available");
-  };
-
-  // Expand a section via provider fields (providerId, providerPath, providerContentPath)
-  const handleExpandToActionsViaProvider = async () => {
-    const { providerId, providerPath, providerContentPath, planId, parentId, sort } = props.planItem;
-    if (!providerId || !providerPath || !providerContentPath || !props.ministryId) return;
-
-    try {
-      // Fetch instructions via API proxy
-      const instructions: Instructions = await ApiHelper.post(
-        "/providerProxy/getInstructions",
-        { ministryId: props.ministryId, providerId, path: providerPath },
-        "DoingApi"
-      );
-
-      if (!instructions?.items) return;
-
-      // Navigate to specific section using providerContentPath
-      const section = navigateToPath(instructions, providerContentPath);
-      if (!section?.children || section.children.length === 0) return;
-
-      const currentSort = sort || 1;
-
-      // Create new plan items for each action
-      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
-        planId,
-        parentId,
-        sort: currentSort + index,
-        itemType: "providerPresentation",
-        relatedId: action.relatedId || action.id || "",
-        label: action.label || "",
-        seconds: action.seconds || 0,
-        providerId,
-        providerPath,
-        providerContentPath: `${providerContentPath}.${index}`,
-        thumbnailUrl: findThumbnailRecursive(action),
-      }));
-
-      // Delete original section, create new action items
-      await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
-      await ApiHelper.post("/planItems", actionItems, "DoingApi");
-
-      if (props.onChange) props.onChange();
-    } catch (error) {
-      console.error("Error expanding section via provider:", error);
-    }
-  };
-
-  // Expand a section using plan-level provider data for legacy items (only have relatedId, no per-item provider fields)
-  const handleExpandToActionsLegacy = async () => {
-    const providerId = props.associatedProviderId;
-    const providerPath = props.associatedVenueId;
-    if (!providerId || !providerPath || !props.ministryId) return;
-
-    try {
-      const instructions: Instructions = await ApiHelper.post(
-        "/providerProxy/getInstructions",
-        { ministryId: props.ministryId, providerId, path: providerPath },
-        "DoingApi"
-      );
-
-      if (!instructions?.items) return;
-
-      // Search the instruction tree for a matching relatedId
-      const findSection = (items: InstructionItem[], parentPath: string): { item: InstructionItem; path: string } | null => {
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i];
-          const currentPath = parentPath ? `${parentPath}.${i}` : `${i}`;
-          if (item.relatedId === props.planItem.relatedId || item.id === props.planItem.relatedId) {
-            return { item, path: currentPath };
-          }
-          if (item.children) {
-            const found = findSection(item.children, currentPath);
-            if (found) return found;
-          }
-        }
-        return null;
-      };
-
-      const found = findSection(instructions.items, "");
-      if (!found || !found.item.children || found.item.children.length === 0) return;
-
-      const section = found.item;
-      const currentSort = props.planItem.sort || 1;
-
-      const actionItems = section.children.map((action: InstructionItem, index: number) => ({
-        planId: props.planItem.planId,
-        parentId: props.planItem.parentId,
-        sort: currentSort + index,
-        itemType: "providerPresentation",
-        relatedId: action.relatedId || action.id || "",
-        label: action.label || "",
-        seconds: action.seconds || 0,
-        providerId,
-        providerPath,
-        providerContentPath: `${found.path}.${index}`,
-        thumbnailUrl: findThumbnailRecursive(action),
-      }));
-
-      await ApiHelper.delete(`/planItems/${props.planItem.id}`, "DoingApi");
-      await ApiHelper.post("/planItems", actionItems, "DoingApi");
-      if (props.onChange) props.onChange();
-    } catch (error) {
-      console.error("Error expanding section via legacy association:", error);
-    }
   };
 
   const handleDrop = (data: any, sort: number) => {
@@ -278,16 +152,17 @@ export const PlanItem = React.memo((props: Props) => {
           <DroppableWrapper
             accept="planItem"
             onDrop={(item) => {
-              handleDrop(item, props.planItem.children?.length + 1);
+              handleDrop(item, getNextChildSort(props.planItem.children));
             }}>
-            <div
-              style={{
-                height: "30px",
-                border: "2px dashed #1976d2",
-                borderRadius: "4px",
-                backgroundColor: "rgba(25, 118, 210, 0.1)",
+            <Box
+              sx={{
+                height: 30,
+                border: "2px dashed",
+                borderColor: "primary.main",
+                borderRadius: 1,
+                backgroundColor: "primary.light",
                 opacity: 0.3,
-                marginBottom: "4px",
+                mb: 0.5,
               }}
             />
           </DroppableWrapper>
@@ -297,138 +172,26 @@ export const PlanItem = React.memo((props: Props) => {
     return result;
   };
 
-  const getHeaderRow = () => {
-    const sectionDuration = getSectionDuration(props.planItem);
-    return (
-      <>
-        <div className="planItemHeader" style={{ display: "flex", alignItems: "center" }}>
-          <div className="timeRailCell">
-            <span className="timeRailLabel">{formatTime(props.startTime || 0)}</span>
-            <span className="timeRailDot" />
-            <span className="timeRailLine" />
-          </div>
-          {!props.readOnly && <DragIndicatorIcon className="dragHandle" style={{ color: "var(--text-muted)" }} />}
-          <span style={{ flex: 1 }}>{props.planItem.label}</span>
-          <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 12 }}>
-            {!props.readOnly && (
-              <>
-                <button
-                  type="button"
-                  className="actionButton"
-                  onClick={(e) => setAnchorEl(e.currentTarget)}
-                  style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
-                  <AddIcon />
-                </button>
-                <button
-                  type="button"
-                  className="actionButton"
-                  onClick={() => props.setEditPlanItem(props.planItem)}
-                  style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
-                  <EditIcon />
-                </button>
-              </>
-            )}
-            <ScheduleIcon style={{ fontSize: 18, color: "var(--text-muted)", visibility: sectionDuration > 0 ? "visible" : "hidden" }} />
-            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
-              {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
-            </span>
-          </span>
-        </div>
-        {getChildren()}
-      </>
-    );
-  };
-
-  const getDescriptionRow = () => (
-    <div
-      className="planItemDescription"
-      style={{
-        clear: "both",
-        width: "100%",
-        paddingTop: "4px",
-        fontSize: "0.9rem"
-      }}
+  const getHeaderRow = () => (
+    <PlanItemHeader
+      planItem={props.planItem}
+      startTime={props.startTime}
+      readOnly={props.readOnly}
+      onAddClick={(e) => setAnchorEl(e.currentTarget)}
+      onEditClick={() => props.setEditPlanItem(props.planItem)}
     >
-      <MarkdownPreviewLight value={props.planItem.description || ""} />
-    </div>
+      {getChildren()}
+    </PlanItemHeader>
   );
 
-  const getItemIcon = () => {
-    const iconStyle = { fontSize: 32, color: "var(--text-muted)" };
-    switch (props.planItem.itemType) {
-      case "song":
-      case "arrangementKey":
-        return <MusicNoteIcon style={iconStyle} />;
-      case "providerSection":
-      case "lessonSection":
-      case "section":
-      case "providerPresentation":
-      case "lessonAction":
-      case "action":
-      case "providerFile":
-      case "lessonAddOn":
-      case "addon":
-      case "file":
-        return <MenuBookIcon style={iconStyle} />;
-      case "item":
-      default:
-        return <FormatListBulletedIcon style={iconStyle} />;
-    }
-  };
-
   const getGenericRow = (onLabelClick?: () => void) => (
-    <>
-      <div
-        className={`planItem${onLabelClick ? " clickableRow" : ""}`}
-        style={{ display: "flex", alignItems: "center", cursor: onLabelClick ? "pointer" : "default" }}
-        onClick={onLabelClick}
-      >
-        <div className="timeRailCell">
-          <span className="timeRailLabel">{formatTime(props.startTime || 0)}</span>
-          <span className="timeRailDot" />
-          <span className="timeRailLine" />
-        </div>
-        {!props.readOnly && (
-          <DragIndicatorIcon
-            className="dragHandle rowControl"
-            style={{ color: "var(--text-muted)", flexShrink: 0 }}
-            onClick={(e) => e.stopPropagation()}
-          />
-        )}
-        <div style={{ width: 80, height: 45, marginRight: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {props.planItem.thumbnailUrl ? (
-            <img
-              src={props.planItem.thumbnailUrl}
-              alt=""
-              style={{ width: 80, height: 45, objectFit: "cover", borderRadius: 8 }}
-              onError={(e) => { e.currentTarget.style.display = "none"; e.currentTarget.nextElementSibling && ((e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex"); }}
-            />
-          ) : null}
-          <span style={{ display: props.planItem.thumbnailUrl ? "none" : "flex", alignItems: "center", justifyContent: "center", width: 80, height: 45, backgroundColor: "#e0e0e0", borderRadius: 8 }}>
-            {getItemIcon()}
-          </span>
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div>{props.planItem.label}</div>
-          {props.planItem.description && getDescriptionRow()}
-        </div>
-        <span style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 12 }}>
-          {!props.readOnly && (
-            <button
-              type="button"
-              className="actionButton rowControl"
-              onClick={(e) => { e.stopPropagation(); props.setEditPlanItem(props.planItem); }}
-              style={{ border: 0, cursor: "pointer", color: "#1976d2" }}>
-              <EditIcon />
-            </button>
-          )}
-          <ScheduleIcon style={{ fontSize: 18, color: props.planItem.seconds === 0 ? "#d32f2f" : "var(--text-muted)" }} />
-          <span title="Duration" style={{ color: props.planItem.seconds === 0 ? "#d32f2f" : "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
-            {formatTime(props.planItem.seconds)}
-          </span>
-        </span>
-      </div>
-    </>
+    <PlanItemRow
+      planItem={props.planItem}
+      startTime={props.startTime}
+      readOnly={props.readOnly}
+      onLabelClick={onLabelClick}
+      onEditClick={() => props.setEditPlanItem(props.planItem)}
+    />
   );
 
   const getPlanItem = () => {
@@ -469,13 +232,13 @@ export const PlanItem = React.memo((props: Props) => {
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem onClick={addSong}>
-            <MusicNoteIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.song")}
+            <MusicNoteIcon sx={{ mr: 1.25 }} /> {Locale.label("plans.planItem.song")}
           </MenuItem>
           <MenuItem onClick={addItem}>
-            <FormatListBulletedIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.item")}
+            <FormatListBulletedIcon sx={{ mr: 1.25 }} /> {Locale.label("plans.planItem.item")}
           </MenuItem>
           <MenuItem onClick={addLessonAction}>
-            <MenuBookIcon style={{ marginRight: 10 }} /> {Locale.label("plans.planItem.externalItem") || "External Item"}
+            <MenuBookIcon sx={{ mr: 1.25 }} /> {Locale.label("plans.planItem.externalItem") || "External Item"}
           </MenuItem>
         </Menu>
       )}
@@ -486,8 +249,10 @@ export const PlanItem = React.memo((props: Props) => {
           sectionName={props.planItem.label}
           onClose={() => setLessonSectionId(null)}
           onExpandToActions={
-            (props.associatedVenueId && props.planItem.relatedId) ||
-            (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
+            !props.readOnly && (
+              (props.associatedVenueId && props.planItem.relatedId) ||
+              (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
+            )
               ? async () => {
                   setLessonSectionId(null);
                   await handleExpandToActions();
@@ -503,7 +268,6 @@ export const PlanItem = React.memo((props: Props) => {
       )}
       {actionId && (
         <ActionDialog
-          contentId={actionId}
           contentName={props.planItem.label}
           onClose={() => setActionId(null)}
           providerId={props.planItem.providerId || props.associatedProviderId}

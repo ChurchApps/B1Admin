@@ -27,7 +27,7 @@ export const SongDetailsEdit = (props: Props) => {
         sd.language = e.target.value;
         break;
       case "releaseDate":
-        sd.releaseDate = new Date(e.target.value);
+        sd.releaseDate = DateHelper.toDate(e.target.value);
         break;
       case "bpm":
         sd.bpm = parseInt(e.target.value);

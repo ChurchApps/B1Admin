@@ -8,22 +8,23 @@ type Props = {
   direction: "up" | "down",
   text?: string
   dndDeps?: any
-
+  acceptTypes?: string[]
 };
 
 export function DroppableScroll(props: Props) {
   const intervalIdRef = React.useRef<number | null>(null);
   const stepsRef = React.useRef<number>(0);
 
+  const defaultTypes = ["section", "sectionBlock", "element", "elementBlock"];
   const [{ isOver, canDrop, item }, drop] = useDrop(
     () => ({
-      accept: ["section", "sectionBlock", "element", "elementBlock"],
+      accept: props.acceptTypes || defaultTypes,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
         item: monitor.getDropResult()
       }),
-    }), [props?.dndDeps]
+    }), [props?.dndDeps, props.acceptTypes]
   );
 
   const scrollUp = () => {

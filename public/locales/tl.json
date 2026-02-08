@@ -1176,6 +1176,11 @@
       "section": "Seksyon",
       "selectAction": "Pumili ng aksyon"
     },
+    "lessonHeaderSelector": {
+      "title": "Magdagdag ng nilalaman ng aralin",
+      "description": "Pumili ng header o seksyon upang idagdag sa iyong plano. Ang mga child item nito ay idadagdag bilang mga item ng plano.",
+      "noContent": "Walang available na nilalaman ng aralin"
+    },
     "addOnSelector": {
       "category": "Kategorya",
       "noAddOns": "Walang available na add-on",

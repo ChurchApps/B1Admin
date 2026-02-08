@@ -5,38 +5,94 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Stack,
-  Typography,
   Box,
-  IconButton,
   CircularProgress,
+  Typography,
+  Stack,
+  IconButton,
   Breadcrumbs,
   Link,
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
-import { ProviderChipSelector } from "./ProviderChipSelector";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { getProvider, type ContentFile, type ContentFolder, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
-import { generatePath, getProviderInstructions, type ActionSelectorProps } from "./ActionSelectorHelpers";
+import { getProvider, type Instructions, type InstructionItem, type ContentFolder } from "@churchapps/content-provider-helper";
+import { getProviderInstructions } from "./ActionSelectorHelpers";
 import { InstructionTree } from "./InstructionTree";
 import { BrowseGrid } from "./BrowseGrid";
+import { ProviderChipSelector } from "./ProviderChipSelector";
 import { useProviderBrowser } from "../hooks/useProviderBrowser";
+import { type PlanItemInterface } from "../../helpers";
 
-export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, onSelect, contentPath, providerId, ministryId }) => {
+interface LessonHeaderSelectorProps {
+  open: boolean;
+  onClose: () => void;
+  onSelect: (items: PlanItemInterface[]) => void;
+  providerId?: string;
+  providerPath?: string;
+  ministryId?: string;
+}
+
+// Helper to find thumbnail recursively in instruction tree
+function findThumbnailRecursive(item: InstructionItem): string | undefined {
+  if (item.thumbnail) return item.thumbnail;
+  if (item.children) {
+    for (const child of item.children) {
+      const found = findThumbnailRecursive(child);
+      if (found) return found;
+    }
+  }
+  return undefined;
+}
+
+// Generate dot-notation path from indices
+function generatePath(indices: number[]): string {
+  return indices.join(".");
+}
+
+// Convert InstructionItem to PlanItemInterface
+function instructionToPlanItem(
+  item: InstructionItem,
+  itemType: string,
+  providerId: string,
+  providerPath: string,
+  pathIndices: number[]
+): PlanItemInterface {
+  return {
+    itemType,
+    relatedId: item.relatedId || item.id,
+    label: item.label || "",
+    description: item.description,
+    seconds: item.seconds,
+    providerId,
+    providerPath,
+    providerContentPath: generatePath(pathIndices),
+    thumbnailUrl: findThumbnailRecursive(item),
+  };
+}
+
+export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
+  open,
+  onClose,
+  onSelect,
+  providerId,
+  providerPath,
+  ministryId,
+}) => {
   const browser = useProviderBrowser({
     ministryId,
     defaultProviderId: providerId || "",
-    includeFiles: true,
   });
 
-  // Instructions state (when viewing a venue/leaf) — unique to ActionSelector
   const [instructions, setInstructions] = useState<Instructions | null>(null);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
-  // Mode: "associated" shows actions from contentPath, "browse" allows navigation
-  const [mode, setMode] = useState<"associated" | "browse">(contentPath ? "associated" : "browse");
+  // Mode: "associated" shows from providerPath, "browse" allows navigation
+  const hasAssociatedLesson = !!(providerId && providerPath);
+  const [mode, setMode] = useState<"associated" | "browse">(
+    hasAssociatedLesson ? "associated" : "browse"
+  );
 
-  // Load instructions for a content path
+  // Load instructions from provider
   const loadInstructions = useCallback(async (path: string, provId: string) => {
     const provider = getProvider(provId);
     if (!provider) return;
@@ -45,7 +101,11 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     try {
       let result: Instructions | null = null;
       if (ministryId && provider.requiresAuth) {
-        result = await ApiHelper.post("/providerProxy/getInstructions", { ministryId, providerId: provId, path }, "DoingApi");
+        result = await ApiHelper.post(
+          "/providerProxy/getInstructions",
+          { ministryId, providerId: provId, path },
+          "DoingApi"
+        );
       } else {
         result = await getProviderInstructions(provider, path, null);
       }
@@ -84,15 +144,15 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
       browser.navigateBack();
     } else if (browser.currentPath) {
       browser.navigateBack();
-    } else if (mode === "browse" && contentPath) {
+    } else if (mode === "browse" && hasAssociatedLesson) {
       setMode("associated");
       browser.setSelectedProviderId(providerId || "");
     }
-  }, [instructions, browser.currentPath, browser.navigateBack, browser.setSelectedProviderId, mode, contentPath, providerId]);
+  }, [instructions, browser.currentPath, browser.navigateBack, browser.setSelectedProviderId, mode, hasAssociatedLesson, providerId]);
 
   // Toggle section expansion
   const toggleSectionExpanded = useCallback((sectionId: string) => {
-    setExpandedSections(prev => {
+    setExpandedSections((prev) => {
       const next = new Set(prev);
       if (next.has(sectionId)) next.delete(sectionId);
       else next.add(sectionId);
@@ -100,46 +160,87 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     });
   }, []);
 
-  // Handle adding a section
-  const handleAddSection = useCallback((section: InstructionItem, provId: string, pathIndices: number[]) => {
-    const sectionId = section.relatedId || section.id || "";
-    const sectionName = section.label || "Section";
-    const totalSeconds = section.children?.reduce((sum, action) => sum + (action.seconds || 0), 0) || 0;
-    const path = mode === "browse" ? browser.currentPath : contentPath;
-    const contentPathStr = generatePath(pathIndices);
-    const downloadUrl = section.downloadUrl;
-    onSelect(sectionId, sectionName, totalSeconds, provId, "providerSection", section.thumbnail, downloadUrl, path, contentPathStr);
-    onClose();
-  }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
-
-  // Handle adding an action
-  const handleAddAction = useCallback((action: InstructionItem, provId: string, pathIndices: number[]) => {
-    const actionId = action.relatedId || action.id || "";
-    const actionName = action.label || "Action";
-    const path = mode === "browse" ? browser.currentPath : contentPath;
-    const contentPathStr = generatePath(pathIndices);
-    let downloadUrl = action.downloadUrl;
-    if (!downloadUrl && action.children && action.children.length > 0) {
-      const childWithUrl = action.children.find(child => child.downloadUrl);
-      if (childWithUrl) downloadUrl = childWithUrl.downloadUrl;
+  // Auto-expand when there's only one item at a level
+  useEffect(() => {
+    if (instructions?.items) {
+      const autoExpandIds = new Set<string>();
+      const findSingleChildItems = (items: InstructionItem[]) => {
+        if (items.length === 1) {
+          const item = items[0];
+          const itemId = item.relatedId || item.id;
+          if (itemId) autoExpandIds.add(itemId);
+          if (item.children) findSingleChildItems(item.children);
+        }
+      };
+      findSingleChildItems(instructions.items);
+      setExpandedSections(autoExpandIds);
     }
-    let thumbnail = action.thumbnail;
-    if (!thumbnail && action.children && action.children.length > 0) {
-      const childWithThumbnail = action.children.find((child: InstructionItem) => child.thumbnail);
-      if (childWithThumbnail) thumbnail = childWithThumbnail.thumbnail;
-    }
-    onSelect(actionId, actionName, action.seconds, provId, "providerPresentation", thumbnail, downloadUrl, path, contentPathStr);
-    onClose();
-  }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
+  }, [instructions]);
 
-  // Handle adding a file
-  const handleAddFile = useCallback((file: ContentFile, provId: string, pathIndices?: number[]) => {
-    const downloadUrl = file.downloadUrl || file.url;
-    const path = mode === "browse" ? browser.currentPath : contentPath;
-    const contentPathStr = pathIndices ? generatePath(pathIndices) : undefined;
-    onSelect(file.id, file.title, file.seconds, provId, "providerFile", file.thumbnail, downloadUrl, path, contentPathStr);
-    onClose();
-  }, [onSelect, onClose, mode, browser.currentPath, contentPath]);
+  // Handle selecting a header - convert to planItemHeader with sections as children
+  const handleAddSection = useCallback(
+    (section: InstructionItem, provId: string, pathIndices: number[]) => {
+      const isHeader = section.itemType === "header";
+      const currentProviderPath = mode === "browse" ? browser.currentPath : providerPath;
+
+      // Create the header plan item
+      const headerItem: PlanItemInterface = {
+        itemType: "header",
+        relatedId: section.relatedId || section.id,
+        label: section.label || "",
+        description: section.description,
+        providerId: provId,
+        providerPath: currentProviderPath,
+        providerContentPath: generatePath(pathIndices),
+        thumbnailUrl: findThumbnailRecursive(section),
+        children: [],
+      };
+
+      // Add children based on whether this is a header or section
+      if (isHeader) {
+        // Header selected: children are sections (become providerSection items)
+        section.children?.forEach((child, childIndex) => {
+          if (child.itemType === "section" || child.itemType !== "action") {
+            headerItem.children!.push(
+              instructionToPlanItem(
+                child,
+                "providerSection",
+                provId,
+                currentProviderPath || "",
+                [...pathIndices, childIndex]
+              )
+            );
+          }
+        });
+      } else {
+        // Section selected: children are actions (become providerPresentation items)
+        section.children?.forEach((child, childIndex) => {
+          if (child.itemType === "action" || child.itemType !== "section") {
+            // Skip file type items
+            if (child.itemType === "file") return;
+            headerItem.children!.push(
+              instructionToPlanItem(
+                child,
+                "providerPresentation",
+                provId,
+                currentProviderPath || "",
+                [...pathIndices, childIndex]
+              )
+            );
+          }
+        });
+      }
+
+      onSelect([headerItem]);
+      onClose();
+    },
+    [onSelect, onClose, providerPath, mode, browser.currentPath]
+  );
+
+  // For this dialog, we don't allow adding individual actions
+  const handleAddAction = useCallback(() => {
+    // No-op - actions are excluded
+  }, []);
 
   // Handle provider change — clear instructions + delegate to hook
   const handleProviderChange = useCallback((newProviderId: string) => {
@@ -158,20 +259,20 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
 
   // Reset state on close
   const handleClose = useCallback(() => {
-    setMode(contentPath ? "associated" : "browse");
+    setMode(hasAssociatedLesson ? "associated" : "browse");
     setInstructions(null);
     setExpandedSections(new Set());
     browser.reset();
     if (providerId) browser.setSelectedProviderId(providerId);
     onClose();
-  }, [onClose, contentPath, providerId, browser.reset, browser.setSelectedProviderId]);
+  }, [onClose, hasAssociatedLesson, providerId, browser.reset, browser.setSelectedProviderId]);
 
   // Load data on open or mode change
   useEffect(() => {
     if (!open) return;
     browser.loadLinkedProviders();
-    if (mode === "associated" && contentPath) {
-      loadInstructions(contentPath, providerId || "");
+    if (mode === "associated" && providerPath && providerId) {
+      loadInstructions(providerPath, providerId);
     } else if (mode === "browse") {
       browser.loadContent("");
     }
@@ -187,19 +288,19 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     }));
   }, [mode, browser.breadcrumbItems]);
 
-  // Associated mode — show instructions from contentPath
-  if (mode === "associated" && contentPath) {
+  // Associated mode — show instructions from providerPath
+  if (mode === "associated" && hasAssociatedLesson) {
     return (
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>{Locale.label("plans.actionSelector.selectAction") || "Select Action"}</DialogTitle>
+        <DialogTitle>
+          {Locale.label("plans.lessonHeaderSelector.title") || "Add Lesson Content"}
+        </DialogTitle>
         <DialogContent>
           <Box sx={{ py: 1 }}>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
               <Typography variant="body2" color="text.secondary">
-                {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From associated lesson:"}
-                <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
-                  {instructions?.name || "Loading..."}
-                </Typography>
+                {Locale.label("plans.lessonHeaderSelector.description") ||
+                  "Select a header or section to add to your plan."}
               </Typography>
               <Button size="small" onClick={handleBrowseOther}>
                 {Locale.label("plans.lessonSelector.browseOtherProviders") || "Browse Other Providers"}
@@ -210,16 +311,23 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
             <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
               <CircularProgress />
             </Box>
-          ) : (
+          ) : instructions?.items && instructions.items.length > 0 ? (
             <InstructionTree
-              items={instructions?.items || []}
+              items={instructions.items}
               providerId={providerId || ""}
               expandedSections={expandedSections}
               onToggleExpanded={toggleSectionExpanded}
               onAddSection={handleAddSection}
               onAddAction={handleAddAction}
-              excludeHeaders={true}
+              excludeActions={true}
             />
+          ) : (
+            <Box sx={{ textAlign: "center", py: 4 }}>
+              <Typography color="text.secondary">
+                {Locale.label("plans.lessonHeaderSelector.noContent") ||
+                  "No lesson content available"}
+              </Typography>
+            </Box>
           )}
         </DialogContent>
         <DialogActions>
@@ -234,12 +342,12 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle>
         <Stack direction="row" alignItems="center" spacing={1}>
-          {(browser.currentPath || (contentPath && mode === "browse")) && (
+          {(browser.currentPath || (hasAssociatedLesson && mode === "browse")) && (
             <IconButton size="small" onClick={handleBack}>
               <ArrowBackIcon />
             </IconButton>
           )}
-          <span>{Locale.label("plans.actionSelector.selectExternalItem") || "Select External Item"}</span>
+          <span>{Locale.label("plans.lessonHeaderSelector.selectContent") || "Select Lesson Content"}</span>
         </Stack>
       </DialogTitle>
       <DialogContent>
@@ -285,34 +393,34 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
             <Box>
               <Box sx={{ py: 1, mb: 2 }}>
                 <Typography variant="body2" color="text.secondary">
-                  {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From:"}
+                  {Locale.label("plans.lessonHeaderSelector.description") || "Select a header or section to add:"}
                   <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
                     {instructions.name || "Content"}
                   </Typography>
                 </Typography>
               </Box>
               <InstructionTree
-                items={instructions?.items || []}
+                items={instructions.items || []}
                 providerId={browser.selectedProviderId}
                 expandedSections={expandedSections}
                 onToggleExpanded={toggleSectionExpanded}
                 onAddSection={handleAddSection}
                 onAddAction={handleAddAction}
-                excludeHeaders={true}
+                excludeActions={true}
               />
             </Box>
-          ) : browser.currentItems.length === 0 && browser.currentFiles.length === 0 ? (
+          ) : browser.currentItems.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 4 }}>
-              <Typography color="text.secondary">No content available</Typography>
+              <Typography color="text.secondary">
+                {Locale.label("plans.lessonHeaderSelector.noContent") || "No content available"}
+              </Typography>
             </Box>
           ) : (
             <BrowseGrid
               folders={browser.currentItems}
-              files={browser.currentFiles}
               selectedProviderId={browser.selectedProviderId}
               isLeafFolder={isLeafWithInstructions}
               onFolderClick={handleFolderClick}
-              onFileClick={handleAddFile}
             />
           )}
         </Stack>

@@ -9,6 +9,7 @@ export interface ProviderContentChild {
   description?: string;
   seconds?: number;
   downloadUrl?: string;
+  thumbnailUrl?: string;
 }
 
 export interface ProviderContent {
@@ -135,19 +136,23 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
           // Look for downloadUrl on the item itself, or on the first child with a downloadUrl
           let downloadUrl = item.downloadUrl;
 
+          // For sections, we want to show the children list, not find a URL to display
+          const isSection = item.itemType === "section";
+
           // If item doesn't have downloadUrl, check children (actions often have file children with the actual URL)
-          if (!downloadUrl && item.children && item.children.length > 0) {
+          // But skip this for sections - they should show children as a list
+          if (!isSection && !downloadUrl && item.children && item.children.length > 0) {
             const childWithUrl = item.children.find(child => child.downloadUrl);
             if (childWithUrl) {
               downloadUrl = childWithUrl.downloadUrl;
             }
           }
 
-          if (downloadUrl) {
+          if (downloadUrl && !isSection) {
             setContent({
               url: downloadUrl,
               mediaType: detectMediaType(downloadUrl),
-              description: item.description,
+              description: item.content,
               label: item.label
             });
           } else if (item.children && item.children.length > 0) {
@@ -155,29 +160,32 @@ export function useProviderContent(params: UseProviderContentParams): UseProvide
             const children: ProviderContentChild[] = item.children.map(child => {
               // Look for downloadUrl on the child itself, or on its first child with a downloadUrl
               let childDownloadUrl = child.downloadUrl;
+              let childThumbnail = child.thumbnail;
               if (!childDownloadUrl && child.children && child.children.length > 0) {
                 const grandchildWithUrl = child.children.find(gc => gc.downloadUrl);
                 if (grandchildWithUrl) {
                   childDownloadUrl = grandchildWithUrl.downloadUrl;
+                  childThumbnail = childThumbnail || grandchildWithUrl.thumbnail;
                 }
               }
               return {
                 id: child.relatedId || child.id,
                 label: child.label,
-                description: child.description,
+                description: child.content,
                 seconds: child.seconds,
-                downloadUrl: childDownloadUrl
+                downloadUrl: childDownloadUrl,
+                thumbnailUrl: childThumbnail
               };
             });
             setContent({
-              description: item.description,
+              description: item.content,
               label: item.label,
               children
             });
           } else {
             // Item exists but has no downloadUrl and no children - show as text content
             setContent({
-              description: item.description,
+              description: item.content,
               label: item.label,
               mediaType: "text"
             });

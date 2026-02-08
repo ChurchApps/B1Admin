@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, List, ListItem, ListItemText, ListItemIcon, Divider, IconButton } from "@mui/material";
-import { PlayArrow as PlayArrowIcon, Schedule as ScheduleIcon, ArrowBack as ArrowBackIcon } from "@mui/icons-material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, Divider, IconButton } from "@mui/material";
+import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { useProviderContent, type ProviderContentChild } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
-
-// Helper to format seconds as MM:SS
-function formatDuration(seconds?: number): string {
-  if (!seconds) return "";
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
-}
+import { ContentItemRow } from "./planItem/ContentItemRow";
 
 // Helper to detect media type from URL
 function detectMediaType(url: string): "video" | "image" | "iframe" {
@@ -112,13 +106,11 @@ export const LessonDialog: React.FC<Props> = (props) => {
         );
       } else {
         return (
-          <Box sx={{ p: 4, textAlign: "center" }}>
-            <Typography variant="h6" gutterBottom>{selectedChild.label}</Typography>
-            {selectedChild.description && (
-              <Typography color="text.secondary">{selectedChild.description}</Typography>
-            )}
-            {!selectedChild.description && (
-              <Typography color="text.secondary">No preview available for this item.</Typography>
+          <Box sx={{ p: 3 }}>
+            {selectedChild.description ? (
+              <MarkdownPreviewLight value={selectedChild.description} />
+            ) : (
+              <Typography color="text.secondary" sx={{ textAlign: "center" }}>No preview available for this item.</Typography>
             )}
           </Box>
         );
@@ -143,44 +135,27 @@ export const LessonDialog: React.FC<Props> = (props) => {
       return (
         <Box sx={{ p: 2 }}>
           {content.description && (
-            <Typography color="text.secondary" sx={{ mb: 2 }}>
-              {content.description}
-            </Typography>
+            <Box sx={{ mb: 2 }}>
+              <MarkdownPreviewLight value={content.description} />
+            </Box>
           )}
-          <List>
+          <Box>
             {content.children!.map((child, index) => (
               <React.Fragment key={child.id || index}>
                 {index > 0 && <Divider />}
-                <ListItem
-                  component="div"
-                  onClick={() => handleChildClick(child)}
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": { bgcolor: "action.hover" },
-                    borderRadius: 1
+                <ContentItemRow
+                  item={{
+                    id: child.id,
+                    label: child.label,
+                    seconds: child.seconds,
+                    thumbnailUrl: child.thumbnailUrl,
+                    itemType: "action"
                   }}
-                >
-                  <ListItemIcon>
-                    <PlayArrowIcon color="primary" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={child.label}
-                    secondary={
-                      <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        {child.description && <span>{child.description}</span>}
-                        {child.seconds && (
-                          <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 0.5, color: "text.secondary" }}>
-                            <ScheduleIcon sx={{ fontSize: 14 }} />
-                            {formatDuration(child.seconds)}
-                          </Box>
-                        )}
-                      </Box>
-                    }
-                  />
-                </ListItem>
+                  onClick={() => handleChildClick(child)}
+                />
               </React.Fragment>
             ))}
-          </List>
+          </Box>
         </Box>
       );
     }

@@ -1242,6 +1242,11 @@
       "selectAction": "Select Action",
       "selectExternalItem": "Select External Item"
     },
+    "lessonHeaderSelector": {
+      "title": "Add Lesson Content",
+      "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
+      "noContent": "No lesson content available"
+    },
     "addOnSelector": {
       "category": "Category",
       "noAddOns": "No add-ons available",

@@ -802,12 +802,19 @@ label .description {
   background-color: rgba(25, 118, 210, 0.08);
 }
 
-/* Drag handle cursor */
+/* Drag handle cursor and hover effects */
 .dragHandle {
   cursor: grab;
+  border-radius: 4px;
+  transition: background-color 0.15s, color 0.15s;
+}
+.dragHandle:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+  color: #1976d2 !important;
 }
 .dragHandle:active {
   cursor: grabbing;
+  background-color: rgba(25, 118, 210, 0.2);
 }
 
 /* Row controls (drag handle, edit/add buttons) hover */

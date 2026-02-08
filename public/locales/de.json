@@ -1183,6 +1183,11 @@
       "section": "Abschnitt",
       "selectAction": "Aktion auswählen"
     },
+    "lessonHeaderSelector": {
+      "title": "Lektionsinhalt hinzufügen",
+      "description": "Wählen Sie eine Überschrift oder einen Abschnitt aus, um ihn Ihrem Plan hinzuzufügen. Die untergeordneten Elemente werden als Planelemente hinzugefügt.",
+      "noContent": "Kein Lektionsinhalt verfügbar"
+    },
     "addOnSelector": {
       "category": "Kategorie",
       "noAddOns": "Keine Erweiterungen verfügbar",

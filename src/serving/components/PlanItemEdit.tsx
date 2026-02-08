@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, Grid, InputLabel, List, ListItem, ListItemText, OutlinedInput, Stack, TextField } from "@mui/material";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { shouldShowLabel, shouldShowDescription, shouldShowDuration } from "./planItemUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -9,12 +10,14 @@ interface Props {
 }
 
 export const PlanItemEdit = (props: Props) => {
-  const [planItem, setPlanItem] = React.useState<PlanItemInterface>(null);
+  const [planItem, setPlanItem] = React.useState<PlanItemInterface | null>(null);
   const [searchText, setSearchText] = React.useState("");
   const [songs, setSongs] = React.useState<SongDetailInterface[]>([]);
   const [, setErrors] = React.useState<string[]>([]);
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   const [searching, setSearching] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
@@ -38,19 +41,23 @@ export const PlanItemEdit = (props: Props) => {
     setPlanItem(pi);
   };
 
-  const loadData = async () => {
+  const loadData = React.useCallback(() => {
     setPlanItem(props.planItem);
-  };
+  }, [props.planItem]);
 
-  const handleSave = () => {
-    ApiHelper.post("/planItems", [planItem], "DoingApi").then(() => {
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await ApiHelper.post("/planItems", [planItem], "DoingApi");
       props.onDone();
-    });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   React.useEffect(() => {
     loadData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loadData]);
 
   const getHeaderText = () => {
     if (planItem?.itemType === "header") return Locale.label("plans.planItemEdit.editHeader");
@@ -77,18 +84,22 @@ export const PlanItemEdit = (props: Props) => {
     }
   };
 
-  const handleDelete = () => {
-    ApiHelper.delete("/planItems/" + planItem.id, "DoingApi").then(() => {
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await ApiHelper.delete("/planItems/" + planItem.id, "DoingApi");
       props.onDone();
-    });
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const selectSong = (song: SongDetailInterface) => {
     const pi = {
       ...planItem,
-      relatedId: (song as any).arrangementKeyId,
+      relatedId: song.arrangementKeyId,
       label: song.title,
-      description: song.artist + " - " + (song as any).shortDescription + " (" + (song as any).arrangementKeySignature + ")",
+      description: `${song.artist} - ${song.shortDescription || ""} (${song.arrangementKeySignature || ""})`,
       seconds: song.seconds,
       thumbnailUrl: song.thumbnail,
     };
@@ -158,9 +169,9 @@ export const PlanItemEdit = (props: Props) => {
     );
   };
 
-  const showLabel = planItem?.itemType === "header" || planItem?.itemType === "item" || planItem?.itemType === "lessonAction" || planItem?.itemType === "lessonSection" || planItem?.itemType === "lessonAddOn" || planItem?.itemType === "action" || planItem?.itemType === "section" || planItem?.itemType === "addon" || planItem?.itemType === "providerPresentation" || planItem?.itemType === "providerSection" || planItem?.itemType === "providerFile" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
-  const showDesc = planItem?.itemType === "item" || planItem?.itemType === "lessonAction" || planItem?.itemType === "lessonSection" || planItem?.itemType === "lessonAddOn" || planItem?.itemType === "action" || planItem?.itemType === "section" || planItem?.itemType === "addon" || planItem?.itemType === "providerPresentation" || planItem?.itemType === "providerSection" || planItem?.itemType === "providerFile" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
-  const showDuration = planItem?.itemType === "item" || planItem?.itemType === "lessonAction" || planItem?.itemType === "lessonSection" || planItem?.itemType === "action" || planItem?.itemType === "section" || planItem?.itemType === "providerPresentation" || planItem?.itemType === "providerSection" || (planItem?.itemType === "arrangementKey" && planItem?.relatedId);
+  const showLabel = shouldShowLabel(planItem?.itemType, !!planItem?.relatedId);
+  const showDesc = shouldShowDescription(planItem?.itemType, !!planItem?.relatedId);
+  const showDuration = shouldShowDuration(planItem?.itemType, !!planItem?.relatedId);
 
   return (
     <Dialog open={true} onClose={props.onDone} maxWidth="sm" fullWidth>
@@ -231,12 +242,14 @@ export const PlanItemEdit = (props: Props) => {
       </DialogContent>
       <DialogActions>
         {planItem?.id && (
-          <Button onClick={() => setShowDeleteConfirm(true)} color="error" sx={{ mr: "auto" }}>
+          <Button onClick={() => setShowDeleteConfirm(true)} color="error" sx={{ mr: "auto" }} disabled={isSaving}>
             {Locale.label("common.delete") || "Delete"}
           </Button>
         )}
-        <Button onClick={props.onDone} variant="outlined">{Locale.label("common.cancel") || "Cancel"}</Button>
-        <Button onClick={handleSave} variant="contained">{Locale.label("common.save") || "Save"}</Button>
+        <Button onClick={props.onDone} variant="outlined" disabled={isSaving}>{Locale.label("common.cancel") || "Cancel"}</Button>
+        <Button onClick={handleSave} variant="contained" disabled={isSaving} startIcon={isSaving ? <CircularProgress size={16} /> : null}>
+          {Locale.label("common.save") || "Save"}
+        </Button>
       </DialogActions>
 
       <Dialog open={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)} maxWidth="xs">
@@ -247,8 +260,10 @@ export const PlanItemEdit = (props: Props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowDeleteConfirm(false)} variant="outlined">{Locale.label("common.cancel") || "Cancel"}</Button>
-          <Button onClick={handleDelete} color="error" variant="contained">{Locale.label("common.delete") || "Delete"}</Button>
+          <Button onClick={() => setShowDeleteConfirm(false)} variant="outlined" disabled={isDeleting}>{Locale.label("common.cancel") || "Cancel"}</Button>
+          <Button onClick={handleDelete} color="error" variant="contained" disabled={isDeleting} startIcon={isDeleting ? <CircularProgress size={16} /> : null}>
+            {Locale.label("common.delete") || "Delete"}
+          </Button>
         </DialogActions>
       </Dialog>
     </Dialog>
