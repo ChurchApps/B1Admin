@@ -3,6 +3,7 @@
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import type { Stripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
 import { DonationForm, RecurringDonations, PaymentMethods } from "@churchapps/apphelper-donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
@@ -248,15 +249,17 @@ export const DonationPage: React.FC<Props> = (props) => {
     else {
       return (
         <>
-          <DonationForm
-            person={person}
-            customerId={customerId}
-            paymentMethods={paymentMethods}
-            stripePromise={stripePromise}
-            donationSuccess={handleDataUpdate}
-            church={props?.church}
-            churchLogo={props?.churchLogo}
-          />
+          <Elements stripe={stripePromise}>
+            <DonationForm
+              person={person}
+              customerId={customerId}
+              paymentMethods={paymentMethods}
+              stripePromise={stripePromise}
+              donationSuccess={handleDataUpdate}
+              church={props?.church}
+              churchLogo={props?.churchLogo}
+            />
+          </Elements>
           <DisplayBox headerIcon="payments" headerText={Locale.label("donation.donationPage.donations")} editContent={getEditContent()}>
             {getTable()}
           </DisplayBox>
