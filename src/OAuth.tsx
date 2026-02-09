@@ -20,6 +20,10 @@ export const OAuthPage: React.FC = () => {
     }
   }, [clientId]);
 
+  if (!UserHelper.currentUserChurch) {
+    return <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}><Alert severity="info">Loading church data...</Alert></Box>;
+  }
+
   const handleAllow = async () => {
     try {
       const response = await ApiHelper.post("/oauth/authorize", { client_id: clientId, redirect_uri: redirectUri, response_type: responseType, scope: scope, state: state }, "MembershipApi");
