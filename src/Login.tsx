@@ -15,9 +15,11 @@ export const Login: React.FC = () => {
 
   const search = new URLSearchParams(window.location.search);
   const forceLogin = search.get("forceLogin") === "1";
+  const forceLoginCleared = React.useRef(false);
 
   React.useEffect(() => {
-    if (forceLogin) {
+    if (forceLogin && !forceLoginCleared.current) {
+      forceLoginCleared.current = true;
       // Clear JWT cookie to force fresh login
       removeCookie("jwt", { path: "/" });
       // Clear user context
