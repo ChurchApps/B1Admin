@@ -1,23 +1,29 @@
 {
   "attendance": {
     "attendancePage": {
-      "addCampus": "Ajouter Campus",
-      "addService": "Ajouter Service",
-      "addServiceTime": "Ajouter Heure de Service",
       "att": "Présence",
       "campus": "Campus",
+      "campuses": "Campus",
       "category": "Catégorie",
       "group": "Groupe",
       "groupAttMsg": "La présence de groupe apparaîtra une fois que des sessions auront été ajoutées à un groupe et que des personnes auront assisté à ces sessions.",
       "groups": "Groupes",
-      "service": "Service",
-      "time": "Temps",
-      "campuses": "Campus",
       "scheduled": "Programmé",
+      "service": "Service",
       "services": "Services",
       "subtitle": "Suivre la participation aux services et aux groupes",
+      "time": "Temps",
       "totalGroups": "Total des groupes",
       "unscheduled": "Non programmé"
+    },
+    "attendanceSetup": {
+      "addService": "Ajouter Service",
+      "addServiceTime": "Ajouter Heure de Service",
+      "newCampus": "Nouveau campus",
+      "newService": "Nouveau service",
+      "newServiceTime": "Nouveau temps de service",
+      "setupMessage": "Configurez les campus, les services et les horaires de service pour commencer à suivre la fréquentation.",
+      "unassigned": "Non attribué"
     },
     "campusEdit": {
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce campus ?",
@@ -45,27 +51,24 @@
       }
     },
     "tabs": {
-      "setup": "Configuration",
       "attTrend": "Tendance de Présence",
       "groupAtt": "Présence de Groupe",
-      "noImplement": "Non Implémenté"
-    },
-    "attendanceSetup": {
-      "addService": "Ajouter Service",
-      "addServiceTime": "Ajouter Heure de Service",
-      "newCampus": "Nouveau campus",
-      "newService": "Nouveau service",
-      "newServiceTime": "Nouveau temps de service",
-      "setupMessage": "Configurez les campus, les services et les horaires de service pour commencer à suivre la fréquentation.",
-      "unassigned": "Non attribué"
+      "setup": "Configuration"
     }
   },
   "calendars": {
+    "calendar": {
+      "add": "Ajouter",
+      "copiedToClipboard": "Copié dans le presse-papiers",
+      "copyIcsLink": "Copier le lien ICS",
+      "downloadIcsFile": "Télécharger le fichier ICS",
+      "subscribe": "S'abonner",
+      "subscribeTitle": "Abonnez-vous au calendrier"
+    },
     "calendarEdit": {
-      "calendarName": "Nom du Calendrier",
-      "namePlaceholder": "Entrez un nom pour ce calendrier",
       "calendarDetails": "Détails du calendrier",
       "calendarDetailsDesc": "Configurez les paramètres de votre calendrier",
+      "calendarName": "Nom du Calendrier",
       "calendarNameAria": "Nom du Calendrier",
       "cancel": "Annuler",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce calendrier ?",
@@ -74,19 +77,26 @@
       "delete": "Supprimer",
       "deleting": "Suppression...",
       "editCalendar": "Modifier le calendrier",
+      "namePlaceholder": "Entrez un nom pour ce calendrier",
       "nameRequired": "Le nom du calendrier est obligatoire",
       "save": "Enregistrer",
       "saving": "Enregistrement...",
       "unauthorizedCreate": "Non autorisé à créer des calendriers",
       "unauthorizedDelete": "Non autorisé à supprimer des agendas"
     },
+    "calendarEvent": {
+      "cancel": "Annuler",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet événement ?",
+      "delete": "Supprimer",
+      "noGroups": "Aucun groupe trouvé."
+    },
     "calendarList": {
-      "active": "Actif",
       "aboutParagraph1": "Les calendriers vous permettent d'organiser et d'afficher des événements pour votre église.",
       "aboutParagraph2": "Vous pouvez créer plusieurs calendriers à des fins différentes, comme les services de culte, les événements pour les jeunes et la sensibilisation communautaire.",
       "aboutParagraph3": "Partagez vos calendriers avec les membres via les flux ICS ou intégrez-les sur votre site Web.",
       "aboutTitle": "À propos des calendriers",
       "actions": "Actions",
+      "active": "Actif",
       "addCalendar": "Ajouter un calendrier",
       "calendar": "Calendrier",
       "calendars": "Calendriers",
@@ -98,86 +108,43 @@
       "noCalendars": "Aucun calendrier trouvé",
       "status": "Statut",
       "subtitleEmpty": "Commencez par créer votre premier calendrier",
+      "subtitleWithCount": "[NEEDS TRANSLATION] Subtitle With Count",
       "title": "Calendriers"
     },
     "calendarPage": {
-      "confirmRemoveGroup": "Êtes-vous sûr de vouloir retirer ce groupe du calendrier ?",
       "actions": "Actions",
       "addEventsHint": "Ajouter des événements en sélectionnant des groupes",
       "calendar": "Calendrier",
       "calendarEvents": "Événements du calendrier",
+      "confirmRemoveGroup": "Êtes-vous sûr de vouloir retirer ce groupe du calendrier ?",
       "groupName": "Nom du groupe",
       "groupsInCalendar": "Groupes dans le calendrier",
       "noGroupsAdded": "Aucun groupe ajouté pour l'instant",
       "removeGroup": "Supprimer le groupe",
+      "removeGroupAria": "[NEEDS TRANSLATION] Remove Group Aria",
       "subtitle": "Gérer les événements et les groupes du calendrier"
     },
-    "calendarEvent": {
-      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet événement ?",
-      "noGroups": "Aucun groupe trouvé.",
-      "cancel": "Annuler",
-      "delete": "Supprimer"
-    },
     "editEvent": {
-      "selectGroup": "Sélectionner un Groupe",
       "addAllEvents": "Ajouter tous les événements du groupe",
-      "addSpecificEvents": "Ajouter des événements spécifiques",
       "addGroup": "Ajouter un groupe",
+      "addSpecificEvents": "Ajouter des événements spécifiques",
       "cancel": "Annuler",
       "clickToAdd": "Cliquez pour ajouter",
       "noEventsFound": "Aucun événement trouvé",
-      "save": "Enregistrer"
-    },
-    "calendar": {
-      "add": "Ajouter",
-      "copiedToClipboard": "Copié dans le presse-papiers",
-      "copyIcsLink": "Copier le lien ICS",
-      "downloadIcsFile": "Télécharger le fichier ICS",
-      "subscribe": "S'abonner",
-      "subscribeTitle": "Abonnez-vous au calendrier"
+      "save": "Enregistrer",
+      "selectGroup": "Sélectionner un Groupe"
     }
   },
   "common": {
     "add": "Ajouter",
     "amount": "Montant",
+    "back": "[NEEDS TRANSLATION] Back",
     "bottom": "Bas",
     "cancel": "Annuler",
     "center": "Centre",
     "change": "Changer",
     "changePhoto": "Changer la Photo",
     "close": "Fermer",
-    "custom": "Personnalisé",
-    "delete": "Supprimer",
-    "done": "Terminé",
-    "duplicate": "Dupliquer",
-    "edit": "Modifier",
-    "help": "Aide",
-    "iconPicker": {
-      "searchLabel": "Rechercher des Icônes",
-      "searchPlaceholder": "Tapez pour rechercher (ex: personne, maison, église)...",
-      "title": "Sélectionnez l'icône",
-      "noResults": "Aucune icône trouvée correspondant à \"{{searchText}}\"",
-      "tryDifferent": "Essayez un autre terme de recherche",
-      "showingMatching": "Affichage de {{count}} icônes correspondant à \"{{searchText}}\"",
-      "showingDefault": "Affichage de {{count}} icônes couramment utilisées. Utilisez la recherche pour en savoir plus."
-    },
-    "left": "Gauche",
-    "name": "Nom",
-    "no": "Non",
-    "notes": "Notes",
-    "person": "Personne",
-    "pleaseWait": "Veuillez patienter...",
-    "remove": "Retirer",
-    "right": "Droite",
-    "save": "Enregistrer",
-    "search": "Recherche",
-    "searching": "Recherche en cours...",
-    "sermons": "Sermons",
-    "title": "Titre",
-    "top": "Haut",
-    "update": "Mettre à jour",
-    "website": "Site Web",
-    "yes": "Oui",
     "comboBox": {
       "addNew": "Ajouter un nouveau..."
     },
@@ -189,24 +156,56 @@
         "validEmail": "Veuillez entrer une adresse email valide."
       }
     },
+    "custom": "Personnalisé",
+    "delete": "Supprimer",
+    "done": "Terminé",
+    "duplicate": "Dupliquer",
+    "edit": "Modifier",
     "errorBoundary": {
-      "title": "Oups ! Une erreur s'est produite",
       "message": "Quelque chose s'est mal passé. Veuillez réessayer ou contacter l'assistance si le problème persiste.",
-      "retry": "Réessayer"
+      "retry": "Réessayer",
+      "title": "Oups ! Une erreur s'est produite"
     },
     "formSubmission": {
-      "noData": "Aucune donnée disponible",
       "edit": "Modifier",
+      "noData": "Aucune donnée disponible",
       "noQuestions": "Aucune question trouvée"
     },
+    "help": "Aide",
+    "iconPicker": {
+      "noResults": "Aucune icône trouvée correspondant à \"{{searchText}}\"",
+      "searchLabel": "Rechercher des Icônes",
+      "searchPlaceholder": "Tapez pour rechercher (ex: personne, maison, église)...",
+      "showingDefault": "Affichage de {{count}} icônes couramment utilisées. Utilisez la recherche pour en savoir plus.",
+      "showingMatching": "Affichage de {{count}} icônes correspondant à \"{{searchText}}\"",
+      "title": "Sélectionnez l'icône",
+      "tryDifferent": "Essayez un autre terme de recherche"
+    },
+    "left": "Gauche",
+    "name": "Nom",
+    "no": "Non",
+    "notes": "Notes",
+    "person": "Personne",
+    "remove": "Retirer",
     "reportFilter": {
       "title": "Filtrer le rapport"
     },
     "reportFilterField": {
       "any": "N'importe"
     },
+    "right": "Droite",
+    "save": "Enregistrer",
     "saveChanges": "Enregistrer les modifications",
-    "saving": "Enregistrement..."
+    "saving": "Enregistrement...",
+    "search": "Recherche",
+    "searching": "Recherche en cours...",
+    "sermons": "Sermons",
+    "title": "Titre",
+    "top": "Haut",
+    "tryAgain": "[NEEDS TRANSLATION] Try Again",
+    "update": "Mettre à jour",
+    "website": "Site Web",
+    "yes": "Oui"
   },
   "components": {
     "footer": {
@@ -242,15 +241,36 @@
       "subtitle": "Bienvenue sur votre tableau de bord de gestion d'église. Recherchez des personnes, consultez vos groupes et gérez vos tâches ouvertes."
     },
     "myGroups": "Mes Groupes",
-    "people": "Personnes",
     "peopleSearch": {
       "display": "Affichage",
       "photo": "Photo",
       "ppl": "Personnes"
-    },
-    "tasks": "Tâches"
+    }
   },
   "donation": {
+    "donationForm": {
+      "annually": "Annuellement",
+      "biWeekly": "Bimensuel",
+      "cover": "Couvrir les Frais de Transaction",
+      "fees": "Frais",
+      "frequencyLabel": "Fréquence",
+      "funds": "Fonds",
+      "make": "Faire un Don",
+      "makeRecurring": "Faire de ceci un don récurrent",
+      "monthly": "Mensuel",
+      "quarterly": "Trimestriel",
+      "startDate": "Date de Début",
+      "thankYou": "Merci pour votre don !",
+      "totalAmount": "Montant total",
+      "validate": {
+        "amount": "Veuillez entrer un montant de don.",
+        "email": "L'email est requis.",
+        "firstName": "Le prénom est requis.",
+        "lastName": "Le nom de famille est requis.",
+        "validEmail": "Veuillez entrer une adresse email valide."
+      },
+      "weekly": "Hebdomadaire"
+    },
     "donationPage": {
       "donations": "Dons"
     },
@@ -260,112 +280,14 @@
     "page": {
       "amount": "Montant",
       "batch": "Lot",
-      "date": "Date",
-      "fund": "Fonds",
-      "method": "Méthode",
-      "willAppear": "Les dons apparaîtront ici une fois qu'ils auront été effectués.",
       "currentYearCsv": "CSV de l'année en cours",
       "currentYearPrint": "Impression de l’année en cours",
-      "lastYearCsv": "CSV de l'année dernière",
-      "lastYearPrint": "Impression de l’année dernière"
-    },
-    "bankForm": {
-      "accountNumber": "Numéro de Compte",
-      "added": "Le compte bancaire a été ajouté avec succès.",
-      "company": "Entreprise",
-      "firstDeposit": "Montant du Premier Dépôt",
-      "individual": "Individuel",
-      "name": "Nom du Titulaire du Compte",
-      "needVerified": "Ce compte bancaire doit être vérifié avant de pouvoir être utilisé.",
-      "routingNumber": "Numéro de Routage",
-      "secondDeposit": "Montant du Second Dépôt",
-      "twoDeposits": "Deux petits dépôts ont été effectués sur votre compte. Veuillez entrer les montants ci-dessous pour vérifier.",
-      "updated": "Le compte bancaire a été mis à jour avec succès.",
-      "verified": "Ce compte bancaire a été vérifié et peut être utilisé pour les dons.",
-      "validate": {
-        "accountNumber": "Le numéro de compte est requis.",
-        "holderName": "Le nom du titulaire du compte est requis."
-      }
-    },
-    "cardForm": {
-      "addNew": "Ajouter une Nouvelle Carte",
-      "added": "La carte de crédit a été ajoutée avec succès.",
-      "expirationMonth": "Mois d'Expiration",
-      "expirationYear": "Année d'Expiration",
-      "updated": "La carte de crédit a été mise à jour avec succès."
-    },
-    "common": {
-      "cancel": "Annuler",
-      "error": "Une erreur s'est produite lors du traitement de votre demande."
-    },
-    "donationForm": {
-      "annually": "Annuellement",
-      "biWeekly": "Bimensuel",
-      "cancelled": "Le don récurrent a été annulé.",
-      "confirmDelete": "Êtes-vous sûr de vouloir annuler ce don récurrent ?",
-      "cover": "Couvrir les Frais de Transaction",
-      "donate": "Faire un Don",
-      "editRecurring": "Modifier le Don Récurrent",
-      "fees": "Frais",
-      "frequency": "Fréquence",
-      "frequencyLabel": "Fréquence",
-      "fund": "Fonds",
-      "funds": "Fonds",
-      "make": "Faire un Don",
-      "makeRecurring": "Faire de ceci un don récurrent",
-      "method": "Méthode de Paiement",
-      "monthly": "Mensuel",
-      "notes": "Notes",
-      "preview": "Aperçu du Don",
-      "quarterly": "Trimestriel",
-      "recurringUpdated": "Le don récurrent a été mis à jour.",
-      "startDate": "Date de Début",
-      "thankYou": "Merci pour votre don !",
-      "tooLow": "Le montant du don est trop bas.",
-      "total": "Total",
-      "weekly": "Hebdomadaire",
-      "validate": {
-        "amount": "Veuillez entrer un montant de don.",
-        "email": "L'email est requis.",
-        "firstName": "Le prénom est requis.",
-        "lastName": "Le nom de famille est requis.",
-        "validEmail": "Veuillez entrer une adresse email valide."
-      },
-      "totalAmount": "Montant total"
-    },
-    "fundDonations": {
-      "addMore": "Ajouter un Autre Fonds",
-      "amount": "Montant",
-      "fund": "Fonds"
-    },
-    "paymentMethods": {
-      "addBank": "Ajouter un Compte Bancaire",
-      "addCard": "Ajouter une Carte de Crédit",
-      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette méthode de paiement ?",
-      "deleted": "La méthode de paiement a été supprimée.",
-      "noMethod": "Veuillez sélectionner une méthode de paiement.",
-      "verify": "Vérifier"
-    },
-    "preview": {
       "date": "Date",
-      "donate": "Finaliser le Don",
-      "every": "Chaque",
-      "fee": "Frais de Transaction",
-      "funds": "Fonds",
-      "method": "Méthode de Paiement",
-      "startingOn": "Commençant le",
-      "total": "Total",
-      "type": "Type",
-      "weekly": "semaine"
-    },
-    "recurring": {
-      "amount": "Montant",
-      "every": "Chaque",
-      "interval": "Intervalle",
-      "notFound": "Aucun don récurrent trouvé.",
-      "noSubscriptions": "Aucun don récurrent trouvé.",
-      "paymentMethod": "Méthode de Paiement",
-      "startDate": "Date de Début"
+      "fund": "Fonds",
+      "lastYearCsv": "CSV de l'année dernière",
+      "lastYearPrint": "Impression de l’année dernière",
+      "method": "Méthode",
+      "willAppear": "Les dons apparaîtront ici une fois qu'ils auront été effectués."
     }
   },
   "donations": {
@@ -374,11 +296,38 @@
       "date": "Date",
       "opName": "Nom (optionnel)"
     },
+    "batchStatements": {
+      "csvDescription": "[NEEDS TRANSLATION] Download a ZIP file containing individual CSV files for each donor with their detailed donation records",
+      "csvDownload": "[NEEDS TRANSLATION] Individual CSV Files",
+      "downloadOptions": "[NEEDS TRANSLATION] Download Options",
+      "downloadZip": "[NEEDS TRANSLATION] Download ZIP ({count} files)",
+      "noDonations": "[NEEDS TRANSLATION] No donations found for {year}. Please select a different year.",
+      "printAllInfo": "[NEEDS TRANSLATION] This will open a single document with all {count} statements. Each statement will be on a separate page.",
+      "printAllStatements": "[NEEDS TRANSLATION] Print All {count} Statements",
+      "printDescription": "[NEEDS TRANSLATION] Generate a consolidated document with all giving statements for printing",
+      "printStatements": "[NEEDS TRANSLATION] Printable Statements",
+      "selectYear": "[NEEDS TRANSLATION] Select Year",
+      "subtitle": "[NEEDS TRANSLATION] Download giving statements for all donors",
+      "summary": "[NEEDS TRANSLATION] Summary",
+      "title": "[NEEDS TRANSLATION] Batch Giving Statements",
+      "totalAmount": "[NEEDS TRANSLATION] Total Amount:",
+      "totalDonations": "[NEEDS TRANSLATION] Total Donations:",
+      "totalDonors": "[NEEDS TRANSLATION] Total Donors:",
+      "year": "[NEEDS TRANSLATION] Year",
+      "zipInfo": "[NEEDS TRANSLATION] This will download a ZIP file containing {count} individual CSV files, one for each donor."
+    },
     "bulkEntry": {
       "addDonation": "Ajouter un Don",
-      "optionalFields": "Champs Optionnels",
       "pressEnter": "Appuyez sur Entrée pour enregistrer et ajouter un autre don",
       "selectPerson": "Sélectionner une Personne ou Anonyme"
+    },
+    "donationBatchPage": {
+      "batchDate": "Date du lot:",
+      "subtitle": "Gérer les dons de ce lot",
+      "title": "Lot de dons"
+    },
+    "donationBatchesPage": {
+      "subtitle": "Gérer les lots de dons et suivre les enregistrements"
     },
     "donationEdit": {
       "anon": "Anonyme",
@@ -402,13 +351,14 @@
     "donations": {
       "amt": "Montant",
       "anon": "Anonyme",
+      "batches": "Lots",
       "date": "Date",
       "don": "Dons",
-      "summary": "Résumé",
-      "batches": "Lots",
-      "funds": "Fonds",
       "errMsg": "Aucun fonds trouvé. Veuillez créer un fonds avant de faire un don",
+      "funds": "Fonds",
       "noDonMsg": "Aucun don n'a été suivi. Une fois les dons saisis, ils apparaîtront ici.",
+      "statements": "[NEEDS TRANSLATION] Giving Statements",
+      "summary": "Résumé",
       "tableIdent": "Id",
       "total": "Total"
     },
@@ -417,6 +367,7 @@
       "date": "Date",
       "don": "Dons",
       "noBatch": "Aucun lot trouvé.",
+      "subtitle": "[NEEDS TRANSLATION] View donation summaries and analyze giving trends",
       "total": "Total"
     },
     "fundEdit": {
@@ -425,6 +376,9 @@
       "taxDeductible": "Déductible des Impôts",
       "trackDonations": "Suit les dons.",
       "trackNonDonations": "Suit les transactions non-don comme les inscriptions au camp, les t-shirts, les billets d'événement, etc."
+    },
+    "fundPage": {
+      "subtitle": "Suivre les dons et contributions à ce fonds"
     },
     "funds": {
       "fund": "Fonds",
@@ -440,18 +394,8 @@
       "don": "Dons",
       "donFilt": "Filtre de don",
       "donor": "Donateur",
-      "noDon": "Aucun don pour la plage de dates sélectionnée"
-    },
-    "donationBatchesPage": {
-      "subtitle": "Gérer les lots de dons et suivre les enregistrements"
-    },
-    "fundPage": {
-      "subtitle": "Suivre les dons et contributions à ce fonds"
-    },
-    "donationBatchPage": {
-      "title": "Lot de dons",
-      "subtitle": "Gérer les dons de ce lot",
-      "batchDate": "Date du lot:"
+      "noDon": "Aucun don pour la plage de dates sélectionnée",
+      "subtitle": "[NEEDS TRANSLATION] Manage donation funds and track giving categories"
     }
   },
   "forms": {
@@ -497,6 +441,9 @@
       "perm": "Permission",
       "view": "Visualisation uniquement"
     },
+    "formPage": {
+      "subtitleConfig": "Configuration du formulaire et soumissions"
+    },
     "formQuestionEdit": {
       "amt": "Montant",
       "ansReq": "Exiger une réponse pour cette question",
@@ -519,15 +466,6 @@
       "wholeNum": "Nombre entier",
       "yesNo": "Oui/Non"
     },
-    "formsPage": {
-      "addForm": "Ajouter un Formulaire",
-      "archForms": "Formulaires archivés",
-      "confirmMsg1": "Êtes-vous sûr de vouloir archiver ce formulaire ?",
-      "confirmMsg2": "Êtes-vous sûr de vouloir restaurer ce formulaire ?",
-      "forms": "Formulaires",
-      "noArch": "Aucun formulaire archivé.",
-      "noCustomMsg": "Aucun formulaire personnalisé n'a encore été créé. Ils apparaîtront ici lorsqu'ils seront ajoutés."
-    },
     "formSubmissions": {
       "anon": "Anonyme",
       "subBy": "Soumis par",
@@ -536,26 +474,23 @@
       "subRes": "Résultats de soumission du formulaire",
       "subSum": "Résumé de soumission du formulaire"
     },
+    "formsPage": {
+      "addForm": "Ajouter un Formulaire",
+      "archForms": "Formulaires archivés",
+      "confirmMsg1": "Êtes-vous sûr de vouloir archiver ce formulaire ?",
+      "confirmMsg2": "Êtes-vous sûr de vouloir restaurer ce formulaire ?",
+      "forms": "Formulaires",
+      "noArch": "Aucun formulaire archivé.",
+      "noCustomMsg": "Aucun formulaire personnalisé n'a encore été créé. Ils apparaîtront ici lorsqu'ils seront ajoutés.",
+      "subtitleManage": "[NEEDS TRANSLATION] Create and manage custom forms",
+      "url": "[NEEDS TRANSLATION] URL"
+    },
     "tabs": {
       "formMem": "Membres du formulaire",
       "formSub": "Soumissions de formulaires",
       "questions": "Questions",
       "unAuth": "Non autorisé"
-    },
-    "formPage": {
-      "subtitleConfig": "Configuration du formulaire et soumissions"
     }
-  },
-  "formSubmissionEdit": {
-    "confirmDelete": "Êtes-vous sûr de vouloir supprimer définitivement cette soumission de formulaire ?",
-    "editForm": "Modifier la Soumission de Formulaire",
-    "isRequired": "est requis",
-    "submit": "Soumettre"
-  },
-  "gallery": {
-    "aspectRatio": "Rapport d'Aspect",
-    "confirmDelete": "Êtes-vous sûr de vouloir supprimer définitivement cette image ?",
-    "freeForm": "Forme Libre"
   },
   "groups": {
     "groupAdd": {
@@ -569,7 +504,6 @@
       "team": "Équipe"
     },
     "groupBanner": {
-      "team": "Équipe",
       "associatedServices": "Services associés",
       "labels": "Étiquettes",
       "meetingInfo": "Informations sur la réunion",
@@ -577,47 +511,45 @@
       "parentPickup": "Ramassage des parents",
       "printNametag": "Imprimer l'Étiquette",
       "settings": "Paramètres",
+      "team": "Équipe",
       "trackAttendance": "Suivi de la présence"
     },
     "groupDetails": {
-      "attTrack": "Suivi de la présence :",
-      "cat": "Catégorie",
-      "groupDet": "Détails du groupe",
-      "locationPlaceholder": "Maison Johnson",
-      "meetingLocation": "Lieu de Rencontre",
-      "meetingTime": "Heure de Rencontre",
-      "meetingTimePlaceholder": "Mardis à 19h",
-      "parPick": "Ramassage des parents :",
-      "prinName": "Imprimer l'Étiquette :",
-      "slugPlaceholder": "nom-du-groupe",
       "about": "À propos",
       "attendanceSettings": "Paramètres de présence",
       "labels": "Étiquettes",
+      "locationPlaceholder": "Maison Johnson",
       "meetingInfo": "Informations sur la réunion",
+      "meetingLocation": "Lieu de Rencontre",
+      "meetingTime": "Heure de Rencontre",
+      "meetingTimePlaceholder": "Mardis à 19h",
       "noPhoto": "Aucune photo disponible",
       "parentPickup": "Ramassage des parents",
       "printNametag": "Imprimer l'Étiquette",
+      "slugPlaceholder": "nom-du-groupe",
       "trackAttendance": "Suivi de la présence"
     },
     "groupDetailsEdit": {
+      "addPhoto": "Ajouter une photo",
       "attTrack": "Suivi de la présence",
+      "attendance": "Présence",
       "catName": "Nom de la catégorie",
       "catNameMsg": "Veuillez entrer un nom de catégorie.",
+      "clickToAddPhoto": "Cliquez pour ajouter une photo",
       "confirmMsg": "Êtes-vous sûr de vouloir supprimer définitivement ce groupe ?",
       "groupDesc": "Description du groupe",
       "groupDet": "Détails du groupe",
-      "groupImg": "Photo du groupe",
       "groupName": "Nom du groupe",
       "groupNameMsg": "Veuillez entrer un nom de groupe.",
       "meetingLocation": "Lieu de Rencontre",
       "meetingTime": "Heure de Rencontre",
       "parPick": "Ramassage des parents",
       "prinName": "Imprimer l'Étiquette",
-      "selImg": "Sélectionner une photo",
-      "slug": "Slug (nom de clé utilisé pour les urls)",
-      "addPhoto": "Ajouter une photo",
-      "attendance": "Présence",
-      "clickToAddPhoto": "Cliquez pour ajouter une photo"
+      "slug": "Slug (nom de clé utilisé pour les urls)"
+    },
+    "groupLabelsEdit": {
+      "addNewLabel": "Ajouter une nouvelle étiquette",
+      "labels": "Étiquettes"
     },
     "groupMembers": {
       "groupMem": "Membres du groupe",
@@ -626,40 +558,44 @@
       "sendMemMsg": "Envoyer un message aux membres",
       "showTemplates": "Afficher les Modèles",
       "templates": {
-        "templates": "Modèles",
         "none": "Aucun",
+        "templates": "Modèles",
         "welcome_volunteers": {
           "heading": "Bienvenue Bénévoles",
           "message": "Bienvenue ! Merci d'être bénévole.\n\nVeuillez télécharger l'application B1.Church et vous connecter pour gérer votre emploi du temps. https://support.churchapps.org/b1/download"
         }
       }
     },
+    "groupNavigation": {
+      "members": "Membres",
+      "sessions": "Sessions"
+    },
     "groupPage": {
       "addPpl": "Ajouter une personne"
     },
     "groupSessions": {
       "addSesMsg": "Veuillez ajouter une nouvelle session pour continuer.",
+      "allYears": "Toutes les années",
       "attFor": "Présence pour",
       "new": "Nouveau",
-      "noSesMsg": "Il n'y a pas de sessions.",
-      "sessions": "Sessions",
-      "allYears": "Toutes les années",
       "noAttendance": "Aucun enregistrement de présence trouvé",
+      "noSesMsg": "Il n'y a pas de sessions.",
       "noSessionsFound": "Aucune séance trouvée",
       "selectSession": "Sélectionnez une séance",
       "session": "Session",
+      "sessions": "Sessions",
       "tryAdjusting": "Essayez d'ajuster votre recherche"
     },
     "groupsPage": {
+      "addGroup": "Ajouter un groupe",
       "cat": "Catégorie",
+      "categories": "Catégories",
       "groups": "Groupes",
       "labels": "Étiquettes",
       "noGroupMsg": "Aucun groupe trouvé. Veuillez créer un groupe.",
       "pers": "1 personne",
       "ppl": "Personnes",
       "spPpl": " personnes",
-      "addGroup": "Ajouter un groupe",
-      "categories": "Catégories",
       "subtitle": {
         "create": "Commencez par créer votre premier groupe",
         "manage": "Organisez et gérez vos groupes religieux"
@@ -697,52 +633,8 @@
     },
     "tabs": {
       "mem": "Membres",
-      "noImplement": "Non Implémenté",
       "ses": "Sessions"
-    },
-    "groupLabelsEdit": {
-      "addNewLabel": "Ajouter une nouvelle étiquette",
-      "labels": "Étiquettes"
-    },
-    "groupNavigation": {
-      "members": "Membres",
-      "sessions": "Sessions"
     }
-  },
-  "login": {
-    "email": "Email",
-    "expiredLink": "Ce lien a expiré. Veuillez en demander un nouveau.",
-    "forgot": "Mot de Passe Oublié ?",
-    "goLogin": "Aller à la Connexion",
-    "login": "Connexion",
-    "password": "Mot de Passe",
-    "register": "S'inscrire",
-    "registerThankYou": "Merci de vous être inscrit !",
-    "requestLink": "Demander un Lien de Réinitialisation",
-    "reset": "Réinitialiser",
-    "resetInstructions": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
-    "resetPassword": "Réinitialiser le Mot de Passe",
-    "resetSent": "Lien de réinitialisation du mot de passe envoyé ! Vérifiez votre email.",
-    "setPassword": "Définir le Mot de Passe",
-    "signIn": "Se Connecter",
-    "signInTitle": "Connectez-vous à votre compte",
-    "validate": {
-      "email": "Veuillez entrer une adresse email valide.",
-      "firstName": "Le prénom est requis.",
-      "invalid": "Email ou mot de passe invalide.",
-      "lastName": "Le nom de famille est requis.",
-      "password": "Le mot de passe est requis.",
-      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères.",
-      "passwordMatch": "Les mots de passe ne correspondent pas.",
-      "selectingChurch": "Veuillez sélectionner une église."
-    },
-    "verifyPassword": "Vérifier le Mot de Passe",
-    "welcomeBack": "Bon retour !",
-    "welcomeName": "Bienvenue"
-  },
-  "markdownEditor": {
-    "content": "Contenu",
-    "markdownGuide": "Guide Markdown"
   },
   "month": {
     "apr": "Avril",
@@ -807,7 +699,6 @@
       "valuePlaceholder": "Valeur"
     },
     "groups": {
-      "groups": "Groupes",
       "notMemMsg": "N'est actuellement membre d'aucun groupe."
     },
     "household": {
@@ -829,18 +720,18 @@
       "mergeRec": "Fusionner les enregistrements"
     },
     "mergeModal": {
-      "mergeQuestion": "Fusionner",
-      "with": "avec",
-      "fieldCon": "Veuillez résoudre les conflits de champs :",
-      "merge": "Fusion...",
       "cancel": "Annuler",
       "confirm": "Confirmer",
-      "selMsg": "Veuillez sélectionner une valeur pour tous les champs",
       "contactInfo": "Infos de Contact",
+      "fieldCon": "Veuillez résoudre les conflits de champs :",
       "householdId": "ID du Ménage",
       "id": "ID",
+      "merge": "Fusion...",
+      "mergeQuestion": "Fusionner",
       "name": "Nom",
-      "profile": "Profil"
+      "profile": "Profil",
+      "selMsg": "Veuillez sélectionner une valeur pour tous les champs",
+      "with": "avec"
     },
     "peopleColumns": {
       "appFilt": "Appliquer les filtres",
@@ -850,61 +741,52 @@
       "stand": "Standard"
     },
     "peoplePage": {
+      "addPerson": "[NEEDS TRANSLATION] Add Person",
       "bDay": "Anniversaire",
       "bDayNo": "Anniversaire (sans année)",
-      "delete": "Supprimer",
       "deleteOp": "Option de suppression",
       "first": "Prénom",
       "last": "Nom",
       "middle": "Deuxième prénom",
       "nameNote": "Notes sur le nom",
       "photo": "Photo",
-      "ppl": "Personnes",
       "primEmail": "Email principal",
       "primPhone": "Téléphone principal",
-      "searchPpl": "Rechercher des personnes",
-      "recentPpl": "Personnes Récemment Ajoutées"
+      "recentPpl": "Personnes Récemment Ajoutées",
+      "searchPpl": "Rechercher des personnes"
     },
     "peopleSearch": {
-      "addCon": "Ajouter une condition",
+      "active": "actif:",
+      "activity": "Activité",
       "adv": "Avancé",
       "advSearch": "Recherche avancée",
-      "allPeeps": "Toutes les personnes où :",
-      "for": "pour",
-      "madeTo": "fait à",
-      "notIn": "Pas dans",
-      "placeholder": "Rechercher par nom...",
-      "simp": "Simple",
-      "simpSearch": "Recherche de Personnes",
-      "active": "actif:",
-      "clearAll": "Tout effacer",
-      "checkBoxes": "Cochez les cases pour activer les filtres",
-      "configure": "Configurer",
-      "names": "Noms",
-      "demographics": "Démographie",
-      "contact": "Informations de Contact",
-      "membership": "Adhésion et Groupes",
-      "activity": "Activité",
-      "type": "Type",
-      "fund": "Fonds",
       "campus": "Campus",
+      "checkBoxes": "Cochez les cases pour activer les filtres",
+      "clearAll": "Tout effacer",
+      "configure": "Configurer",
+      "contact": "Informations de Contact",
+      "customFields": "Champs Personnalisés",
+      "demographics": "Démographie",
+      "fund": "Fonds",
+      "group": "Groupe",
+      "membership": "Adhésion et Groupes",
+      "names": "Noms",
+      "placeholder": "Rechercher par nom...",
       "service": "Service",
       "serviceTime": "Heure de Service",
-      "group": "Groupe",
-      "customFields": "Champs Personnalisés"
-    },
-    "personNav": {
-      "customForms": "Formulaires Personnalisés"
+      "simp": "Simple",
+      "simpSearch": "Recherche de Personnes",
+      "type": "Type"
     },
     "peopleSearchResults": {
       "noResMsg": "Aucun résultat trouvé. Veuillez rechercher un autre nom ou ajouter une nouvelle personne"
     },
     "personAttendance": {
-      "att": "Présence",
       "noAttMsg": "Aucun enregistrement de présence. La présence apparaîtra une fois qu'elle aura été suivie pour une session de groupe."
     },
     "personEdit": {
       "applyQuestion": "Souhaitez-vous appliquer cela à l'ensemble de",
+      "cannotDeleteSelf": "[NEEDS TRANSLATION] You cannot delete your own person record.",
       "confirmMsg": "Êtes-vous sûr de vouloir supprimer définitivement cet enregistrement de personne ?",
       "donorNumber": "Numéro de Donateur",
       "exten": "Extension",
@@ -918,11 +800,18 @@
       "merge": "Fusionner",
       "mobile": "Mobile",
       "nameNote": "Notes sur le nom",
-      "nickName": "Surnom",
       "persDet": "Détails personnels",
       "upAddress": "Vous avez mis à jour l'adresse à",
       "valEmail": "Veuillez entrer une adresse email valide.",
       "work": "Travail"
+    },
+    "personForm": {
+      "addForm": "Ajouter un Formulaire",
+      "form": "Formulaire",
+      "noFormMsg": "Aucune soumission de formulaire trouvée pour cette personne"
+    },
+    "personNav": {
+      "customForms": "Formulaires Personnalisés"
     },
     "personView": {
       "home": "Domicile",
@@ -938,11 +827,6 @@
     },
     "updateHouseHold": {
       "update": "Mettre à jour l'adresse"
-    },
-    "personForm": {
-      "addForm": "Ajouter un Formulaire",
-      "form": "Formulaire",
-      "noFormMsg": "Aucune soumission de formulaire trouvée pour cette personne"
     }
   },
   "person": {
@@ -966,11 +850,9 @@
     "maritalStatus": "État civil",
     "married": "Marié",
     "member": "Membre",
-    "membership": "Adhésion",
     "membershipStatus": "Statut d'adhésion",
     "membershp": "Adhésion",
     "middleName": "Deuxième prénom",
-    "name": "Nom",
     "nickName": "Surnom",
     "noRec": "Aucun enregistrement trouvé",
     "person": "Personne",
@@ -985,183 +867,237 @@
     "unspecified": "Non spécifié",
     "visitor": "Visiteur",
     "widowed": "Veuf",
-    "years": "Années",
     "zip": "Code postal"
   },
+  "placeholders": {
+    "addPage": {
+      "linkText": "[NEEDS TRANSLATION] Click here",
+      "linkUrl": "[NEEDS TRANSLATION] /new-page",
+      "title": "Notre Histoire"
+    },
+    "batch": {
+      "name": "Dons du Dimanche"
+    },
+    "block": {
+      "name": "Section de Bienvenue"
+    },
+    "campus": {
+      "name": "Campus Principal"
+    },
+    "choices": {
+      "text": "Première Option",
+      "value": "Option A"
+    },
+    "church": {
+      "address1": "456 Avenue Principale",
+      "address2": "Suite 100",
+      "city": "Lyon",
+      "country": "[NEEDS TRANSLATION] USA",
+      "name": "Église de la Grâce",
+      "state": "Auvergne-Rhône-Alpes",
+      "subdomain": "[NEEDS TRANSLATION] gracechurch",
+      "zip": "69001"
+    },
+    "device": {
+      "label": "[NEEDS TRANSLATION] Living Room Screen"
+    },
+    "donation": {
+      "checkNumber": "[NEEDS TRANSLATION] 1234",
+      "lastDigits": "[NEEDS TRANSLATION] 4242",
+      "notes": "Dîme mensuelle de la famille Dupont"
+    },
+    "element": {
+      "buttonText": "[NEEDS TRANSLATION] Click Here",
+      "cardTitle": "[NEEDS TRANSLATION] Card Title",
+      "donateText": "[NEEDS TRANSLATION] Donate Now",
+      "imageDescription": "[NEEDS TRANSLATION] Image description",
+      "videoId": "[NEEDS TRANSLATION] dQw4w9WgXcQ"
+    },
+    "faq": {
+      "title": "Quels sont les horaires des services ?"
+    },
+    "font": {
+      "search": "[NEEDS TRANSLATION] Search fonts..."
+    },
+    "form": {
+      "name": "Formulaire d'Inscription",
+      "questionDescription": "Aidez-nous à planifier nos événements",
+      "questionPlaceholder": "Entrez votre réponse ici",
+      "questionTitle": "Quel est votre plat préféré ?",
+      "thankYouMessage": "Merci pour votre soumission !"
+    },
+    "fund": {
+      "name": "Fonds Général"
+    },
+    "giving": {
+      "publicKey": "[NEEDS TRANSLATION] pk_live_..."
+    },
+    "group": {
+      "category": "Communauté, Étude Biblique, Ministère",
+      "name": "Étude Biblique Adultes"
+    },
+    "household": {
+      "name": "Famille Dupont"
+    },
+    "page": {
+      "linkText": "[NEEDS TRANSLATION] Read More",
+      "linkUrl": "[NEEDS TRANSLATION] https://example.com",
+      "title": "À Propos de Nous",
+      "urlPath": "[NEEDS TRANSLATION] /about-us"
+    },
+    "pairScreen": {
+      "code": "[NEEDS TRANSLATION] ABC123"
+    },
+    "person": {
+      "address1": "123 Rue Principale",
+      "address2": "Appt 4B",
+      "city": "Paris",
+      "donorNumber": "[NEEDS TRANSLATION] DN-12345",
+      "email": "pierre@exemple.fr",
+      "firstName": "Pierre",
+      "lastName": "Dupont",
+      "middleName": "Michel",
+      "nameTag": "[NEEDS TRANSLATION] Lead Singer",
+      "nickname": "[NEEDS TRANSLATION] Johnny",
+      "phoneExt": "[NEEDS TRANSLATION] 1234",
+      "simpleEmail": "[NEEDS TRANSLATION] john@example.com",
+      "state": "Île-de-France",
+      "zip": "75001"
+    },
+    "plan": {
+      "name": "[NEEDS TRANSLATION] Sunday Service - Jan 5"
+    },
+    "planItem": {
+      "description": "[NEEDS TRANSLATION] Brief description...",
+      "label": "Moment de Louange"
+    },
+    "planType": {
+      "name": "Service du Dimanche"
+    },
+    "position": {
+      "count": "[NEEDS TRANSLATION] 2",
+      "name": "Chanteur Principal"
+    },
+    "role": {
+      "name": "Bénévole"
+    },
+    "sermon": {
+      "description": "Série sur vivre notre foi au quotidien",
+      "title": "Marcher dans la Foi"
+    },
+    "service": {
+      "name": "Culte du Dimanche"
+    },
+    "song": {
+      "album": "[NEEDS TRANSLATION] Album Name",
+      "arrangementName": "[NEEDS TRANSLATION] Contemporary Arrangement",
+      "artist": "[NEEDS TRANSLATION] John Newton",
+      "bpm": "[NEEDS TRANSLATION] 120",
+      "keySignature": "[NEEDS TRANSLATION] C#",
+      "language": "[NEEDS TRANSLATION] English",
+      "lengthSeconds": "[NEEDS TRANSLATION] 180",
+      "linkUrl": "[NEEDS TRANSLATION] https://example.com/chords",
+      "lyrics": "[NEEDS TRANSLATION] Enter lyrics here...",
+      "title": "[NEEDS TRANSLATION] Amazing Grace"
+    },
+    "task": {
+      "notes": "[NEEDS TRANSLATION] Add any notes about this task...",
+      "title": "[NEEDS TRANSLATION] Prepare worship slides"
+    },
+    "time": {
+      "displayName": "[NEEDS TRANSLATION] Sunday Morning"
+    },
+    "user": {
+      "email": "pierre@exemple.fr",
+      "firstName": "Pierre",
+      "lastName": "Dupont"
+    }
+  },
   "plans": {
+    "actionSelector": {
+      "addAction": "[NEEDS TRANSLATION] Add Action",
+      "addSection": "[NEEDS TRANSLATION] Add Section",
+      "fromAssociatedLesson": "De la leçon associée:",
+      "noActionsAvailable": "[NEEDS TRANSLATION] No actions available",
+      "selectAction": "Sélectionner une action",
+      "selectExternalItem": "[NEEDS TRANSLATION] Select External Item"
+    },
+    "assignment": {
+      "addPosition": "Ajouter un poste",
+      "autoAssign": "Attribution automatique",
+      "saveNotes": "Enregistrer les notes"
+    },
     "assignmentEdit": {
       "assignPos": "Attribuer un poste",
       "done": "Terminé",
       "editAssign": "Modifier l'affectation",
       "noMem": "Aucun membre du groupe trouvé."
     },
-    "planType": {
-      "details": "Détails du Type de Plan"
+    "contentProviderAuth": {
+      "deviceFlowInstructions": "[NEEDS TRANSLATION] Visit the URL below and enter the code to authorize:",
+      "errorGeneric": "[NEEDS TRANSLATION] Failed to link provider. Please try again.",
+      "link": "[NEEDS TRANSLATION] Link",
+      "linkAccount": "[NEEDS TRANSLATION] Link Account",
+      "linkNew": "[NEEDS TRANSLATION] Link New Provider",
+      "linked": "[NEEDS TRANSLATION] Linked",
+      "noLinkedDescription": "[NEEDS TRANSLATION] Link a content provider to access their content in your service plans.",
+      "noProvidersAvailable": "[NEEDS TRANSLATION] No content providers available",
+      "pkceInstructions": "[NEEDS TRANSLATION] Click the button below to authorize in a popup window:",
+      "pkceWaiting": "[NEEDS TRANSLATION] Waiting for authorization in popup...",
+      "refresh": "[NEEDS TRANSLATION] Refresh",
+      "selectProvider": "[NEEDS TRANSLATION] Link Content Provider",
+      "success": "[NEEDS TRANSLATION] Successfully linked!",
+      "title": "[NEEDS TRANSLATION] Content Providers",
+      "unlink": "[NEEDS TRANSLATION] Unlink",
+      "waitingForAuth": "[NEEDS TRANSLATION] Waiting for authorization..."
     },
-    "songs": {
-      "links": "Liens"
+    "lessonHeaderSelector": {
+      "description": "Sélectionnez un en-tête ou une section à ajouter à votre plan. Ses éléments enfants seront ajoutés comme éléments du plan.",
+      "noContent": "Aucun contenu de leçon disponible",
+      "selectContent": "[NEEDS TRANSLATION] Select Content",
+      "title": "Ajouter du contenu de leçon"
+    },
+    "lessonScheduleEdit": {
+      "dateRequired": "Veuillez sélectionner une date",
+      "scheduleLesson": "Planifier une leçon",
+      "scheduledDate": "Date prévue",
+      "selectLesson": "Sélectionner une leçon",
+      "venueRequired": "Veuillez sélectionner un lieu"
+    },
+    "lessonSelector": {
+      "associateLesson": "Leçon associée",
+      "browseOtherProviders": "[NEEDS TRANSLATION] Browse Other Providers",
+      "contentProvider": "[NEEDS TRANSLATION] Content Provider",
+      "lesson": "Leçon",
+      "linkProviderFirst": "[NEEDS TRANSLATION] Link this provider first to browse content",
+      "providerNotLinked": "[NEEDS TRANSLATION] Provider Not Linked"
     },
     "ministryList": {
-      "mins": "Ministères",
-      "noMinMsg": "Aucun ministère trouvé. Veuillez créer un ministère.",
       "getStarted": "Commencez par créer votre premier ministère",
-      "manage": "Gérer",
-      "member": "membre",
-      "members": "membres"
+      "noMinMsg": "Aucun ministère trouvé. Veuillez créer un ministère."
     },
     "ministryPage": {
-      "planTypes": "Types de Plans",
-      "plans": "Plans",
-      "teams": "Équipes",
       "subtitle": "Organiser les équipes ministérielles et les plans de services"
     },
     "planEdit": {
-      "copy": "Copier de",
       "copyAll": "Postes et Affectations",
       "copyNothing": "Rien",
       "copyPositions": "Postes uniquement",
       "copyPrevious": "Copier du Plan Précédent",
       "copyServiceOrder": "Copier l'ordre du culte",
-      "none": "Aucun",
       "planAdd": "Ajouter un plan",
       "planEdit": "Modifier le plan",
       "planReq": "Le nom du plan est requis.",
       "servDate": "Date de service",
-      "servReq": "La date de service est requise.",
-      "servOrder": "Inclure l'ordre de service ?"
-    },
-    "planList": {
-      "noPlan": "Aucun plan n'a encore été ajouté.",
-      "plans": "Plans",
-      "createFirst": "Créer un premier plan",
-      "createPlan": "Créer un plan",
-      "newPlan": "Nouveau forfait",
-      "noPlans": "Aucun plan trouvé",
-      "serviceOrder": "Ordre du Service",
-      "scheduleLesson": "Planifier une leçon"
-    },
-    "lessonScheduleEdit": {
-      "scheduleLesson": "Planifier une leçon",
-      "scheduledDate": "Date prévue",
-      "dateRequired": "Veuillez sélectionner une date",
-      "venueRequired": "Veuillez sélectionner un lieu",
-      "selectLesson": "Sélectionner une leçon"
-    },
-    "planPage": {
-      "assign": "Affectations d'Équipe",
-      "assignments": "Affectations",
-      "band": "Groupe",
-      "noteSave": "Note enregistrée",
-      "serviceOrder": "Ordre du Service",
-      "servicePlan": "Plan de Service",
-      "loadingPlan": "Plan de chargement...",
-      "subtitle": "Planifiez et programmez votre service"
-    },
-    "plansPage": {
-      "selMin": "Sélectionnez un ministère",
-      "addMinistry": "Ajouter un ministère",
-      "editMinistry": "Modifier le ministère",
-      "subtitle": "Gérer les ministères et les plans de services",
-      "switchMinistry": "Changer de ministère"
-    },
-    "planValidation": {
-      "and": "et",
-      "between": "entre",
-      "blockCon": "Conflit de date d'indisponibilité de",
-      "cons": "Conflits",
-      "during": "pendant",
-      "more": "plus",
-      "needed": "nécessaire.",
-      "notify": "Notifier",
-      "person": "personne",
-      "ppl": "personnes",
-      "timeCon": "Conflit de temps entre",
-      "timeCon2": "Conflit de temps à",
-      "to": "à",
-      "val": "Validation",
-      "valPlan": "Le plan est valide.",
-      "vol": "bénévole(s)",
-      "volNotif": "Tous les bénévoles ont été notifiés.",
-      "volReq": "Demandes de bénévoles : ",
-      "pleaseConfirm": "Veuillez vous connecter et confirmer."
-    },
-    "positionEdit": {
-      "catName": "Nom de la catégorie",
-      "catNameReq": "Le nom de la catégorie est requis.",
-      "nameReq": "Le nom est requis",
-      "posAdd": "Ajouter un poste",
-      "posEdit": "Modifier le poste",
-      "volCount": "Nombre de bénévoles",
-      "volGroup": "Groupe de bénévoles"
-    },
-    "positionList": {
-      "load": "Chargement...",
-      "persNeed": "1 personne nécessaire",
-      "pos": "Poste",
-      "ppl": "Personnes",
-      "pplNeed": " personnes nécessaires",
-      "team": "Équipe"
-    },
-    "teamList": {
-      "noTeam": "Aucune équipe trouvée. Veuillez créer une équipe.",
-      "teams": "Équipes",
-      "createTeam": "Créer une équipe",
-      "createTeams": "Créer des équipes",
-      "manage": "Gérer",
-      "member": "membre",
-      "members": "membres",
-      "newTeam": "Nouvelle équipe",
-      "team": "Équipe"
-    },
-    "timeEdit": {
-      "disName": "Nom d'affichage",
-      "disNameReq": "Le nom d'affichage est requis.",
-      "endReq": "L'heure de fin est requise",
-      "startReq": "L'heure de début est requise",
-      "teamReq": "Veuillez Sélectionner l'Équipe(s).",
-      "teamNeed": "Équipes nécessaires",
-      "timeAdd": "Ajouter une heure",
-      "timeEdit": "Modifier l'heure",
-      "timeEnd": "Heure de fin",
-      "timeStart": "Heure de début",
-      "followGuide": "Suivez le guide ci-dessous pour configurer les horaires de service",
-      "tip": "Conseil"
-    },
-    "timeList": {
-      "noTime": "Aucune heure n'a encore été ajoutée",
-      "sunServ": "Service du dimanche",
-      "times": "Heures"
-    },
-    "printPlan": {
-      "serviceOrder": "ORDRE DU SERVICE",
-      "time": "Heure",
-      "length": "Durée"
-    },
-    "assignment": {
-      "addPosition": "Ajouter un poste",
-      "autoAssign": "Attribution automatique",
-      "copy": "Copier",
-      "saveNotes": "Enregistrer les notes"
-    },
-    "lessonSelector": {
-      "addFromLesson": "Ajouter depuis la leçon associée",
-      "addLesson": "Ajouter une leçon",
-      "associateLesson": "Leçon associée",
-      "externalProvider": "Fournisseur externe",
-      "lesson": "Leçon",
-      "lessonSource": "Source de la leçon",
-      "lessonsChurch": "Lessons.church",
-      "program": "Programme",
-      "provider": "Fournisseur",
-      "study": "Étude",
-      "usingAssociatedLesson": "Utilisation de la leçon associée:",
-      "venue": "Lieu"
+      "servReq": "La date de service est requise."
     },
     "planItem": {
-      "addOn": "Extension",
+      "addItem": "[NEEDS TRANSLATION] Add Item",
+      "editItem": "[NEEDS TRANSLATION] Edit Item",
+      "editSection": "[NEEDS TRANSLATION] Edit Section",
       "expandToActions": "Développer en actions",
+      "externalItem": "[NEEDS TRANSLATION] External Item",
       "item": "Article",
-      "lessonAction": "Action de leçon",
       "song": "Chanson"
     },
     "planItemEdit": {
@@ -1173,25 +1109,30 @@
       "editHeader": "Modifier l'en-tête",
       "editSong": "Modifier la chanson",
       "enterSearch": "Entrez le terme de recherche",
-      "key": "Tonalité",
       "minutes": "Minutes",
       "seconds": "Secondes"
     },
-    "actionSelector": {
-      "action": "Action",
-      "fromAssociatedLesson": "De la leçon associée:",
-      "section": "Section",
-      "selectAction": "Sélectionner une action"
+    "planList": {
+      "createFirst": "Créer un premier plan",
+      "createPlan": "Créer un plan",
+      "newPlan": "Nouveau forfait",
+      "noPlans": "Aucun plan trouvé",
+      "plans": "Plans",
+      "scheduleLesson": "Planifier une leçon",
+      "serviceOrder": "Ordre du Service"
     },
-    "lessonHeaderSelector": {
-      "title": "Ajouter du contenu de leçon",
-      "description": "Sélectionnez un en-tête ou une section à ajouter à votre plan. Ses éléments enfants seront ajoutés comme éléments du plan.",
-      "noContent": "Aucun contenu de leçon disponible"
+    "planPage": {
+      "assign": "Affectations d'Équipe",
+      "assignments": "Affectations",
+      "band": "Groupe",
+      "loadingPlan": "Plan de chargement...",
+      "noteSave": "Note enregistrée",
+      "serviceOrder": "Ordre du Service",
+      "servicePlan": "Plan de Service",
+      "subtitle": "Planifiez et programmez votre service"
     },
-    "addOnSelector": {
-      "category": "Catégorie",
-      "noAddOns": "Aucune extension disponible",
-      "selectAddOn": "Sélectionner une extension"
+    "planType": {
+      "details": "Détails du Type de Plan"
     },
     "planTypeEdit": {
       "add": "Ajouter",
@@ -1213,8 +1154,7 @@
       "pairTvApp": "Associer l'App TV",
       "planType": "Type de régime",
       "subtitle": "Configurer les paramètres du type de forfait",
-      "tvAppDescription": "Affichez le contenu de vos leçons sur n'importe quel téléviseur ou écran avec notre application gratuite",
-      "tvAppTitle": "Afficher sur la TV"
+      "tvAppDescription": "Affichez le contenu de vos leçons sur n'importe quel téléviseur ou écran avec notre application gratuite"
     },
     "planTypePairDialog": {
       "downloadTitle": "Télécharger l'App TV Lessons.church",
@@ -1223,63 +1163,117 @@
       "success": "Associé avec succès! L'application TV affichera maintenant le contenu de ce type de plan.",
       "title": "Associer l'App TV"
     },
+    "planValidation": {
+      "and": "et",
+      "between": "entre",
+      "blockCon": "Conflit de date d'indisponibilité de",
+      "cons": "Conflits",
+      "during": "pendant",
+      "more": "plus",
+      "needed": "nécessaire.",
+      "notify": "Notifier",
+      "person": "personne",
+      "pleaseConfirm": "Veuillez vous connecter et confirmer.",
+      "ppl": "personnes",
+      "timeCon": "Conflit de temps entre",
+      "timeCon2": "Conflit de temps à",
+      "to": "à",
+      "val": "Validation",
+      "valPlan": "Le plan est valide.",
+      "vol": "bénévole(s)",
+      "volNotif": "Tous les bénévoles ont été notifiés.",
+      "volReq": "Demandes de bénévoles : "
+    },
+    "plansPage": {
+      "addMinistry": "Ajouter un ministère",
+      "editMinistry": "Modifier le ministère",
+      "selMin": "Sélectionnez un ministère",
+      "subtitle": "Gérer les ministères et les plans de services"
+    },
+    "positionEdit": {
+      "catName": "Nom de la catégorie",
+      "catNameReq": "Le nom de la catégorie est requis.",
+      "nameReq": "Le nom est requis",
+      "posAdd": "Ajouter un poste",
+      "posEdit": "Modifier le poste",
+      "volCount": "Nombre de bénévoles",
+      "volGroup": "Groupe de bénévoles"
+    },
+    "positionList": {
+      "load": "Chargement...",
+      "persNeed": "1 personne nécessaire",
+      "pos": "Poste",
+      "ppl": "Personnes",
+      "pplNeed": " personnes nécessaires",
+      "team": "Équipe"
+    },
+    "printPlan": {
+      "length": "Durée",
+      "serviceOrder": "ORDRE DU SERVICE",
+      "time": "Heure"
+    },
     "serviceOrder": {
+      "addFromLesson": "[NEEDS TRANSLATION] Add From Lesson",
       "addSection": "Ajouter une section",
+      "associateError": "[NEEDS TRANSLATION] Associate Error",
       "associateLesson": "Leçon associée",
-      "customize": "Personnaliser",
+      "customizeLesson": "[NEEDS TRANSLATION] Customize",
+      "disassociateError": "[NEEDS TRANSLATION] Disassociate Error",
+      "lessonPreview": "[NEEDS TRANSLATION] Lesson Preview",
+      "loadError": "[NEEDS TRANSLATION] Load Error",
       "noItems": "Aucun article dans la commande de service",
       "orderOfService": "Ordre de service",
-      "print": "Imprimer",
       "previewBanner": "Ceci est un aperçu de la leçon associée. Cliquez sur \"Personnaliser\" pour modifier.",
-      "switchLesson": "Changer de leçon"
+      "print": "Imprimer"
+    },
+    "songs": {
+      "links": "Liens"
+    },
+    "teamList": {
+      "createTeam": "Créer une équipe",
+      "createTeams": "Créer des équipes",
+      "manage": "Gérer",
+      "members": "membres",
+      "newTeam": "Nouvelle équipe",
+      "noTeam": "Aucune équipe trouvée. Veuillez créer une équipe.",
+      "teams": "Équipes"
+    },
+    "timeEdit": {
+      "disName": "Nom d'affichage",
+      "disNameReq": "Le nom d'affichage est requis.",
+      "endReq": "L'heure de fin est requise",
+      "followGuide": "Suivez le guide ci-dessous pour configurer les horaires de service",
+      "startReq": "L'heure de début est requise",
+      "teamNeed": "Équipes nécessaires",
+      "teamReq": "Veuillez Sélectionner l'Équipe(s).",
+      "timeAdd": "Ajouter une heure",
+      "timeEdit": "Modifier l'heure",
+      "timeEnd": "Heure de fin",
+      "timeStart": "Heure de début",
+      "tip": "Conseil"
+    },
+    "timeList": {
+      "noTime": "Aucune heure n'a encore été ajoutée",
+      "sunServ": "Service du dimanche",
+      "times": "Heures"
     }
   },
   "profile": {
-    "devices": {
-      "addScreen": "Ajouter un Écran",
-      "editDevice": "Modifier l'Appareil",
-      "title": "Appareils",
-      "device": "Appareil",
-      "label": "Étiquette",
-      "lastActiveDate": "Dernière date d'activité",
-      "registrationDate": "Date d'inscription"
-    },
-    "profilePage": {
-      "accDel": "Suppression du compte",
-      "confirmMsg": "Êtes-vous sûr de vouloir supprimer définitivement votre compte ?",
-      "daily": "Quotidien",
-      "delAcc": "Supprimer mon compte",
-      "emailMsg": "Veuillez entrer une adresse email.",
-      "firstMsg": "Veuillez entrer le prénom",
-      "freqEmail": "Fréquence des emails",
-      "indiv": "En temps réel",
-      "lastMsg": "Veuillez entrer le nom de famille",
-      "linkedAccounts": "Comptes Liés",
-      "never": "Jamais",
-      "noDirect": "Me masquer de l'annuaire des membres",
-      "notifMsg": "Choisissez comment vous souhaitez recevoir des mises à jour sur les messages privés, les conversations, les formulaires et autres notifications.",
-      "notifPref": "Préférences de notification",
-      "notifPush": "Autoriser les notifications push",
-      "passLong": "Veuillez entrer un mot de passe d'au moins 8 caractères.",
-      "passMatch": "Les mots de passe ne correspondent pas.",
-      "passNew": "Nouveau mot de passe",
-      "passVer": "Vérifier le mot de passe",
-      "passwordHelper": "Laissez vide pour conserver le mot de passe actuel",
-      "permWarn": "Attention, ces actions sont permanentes",
-      "profEdit": "Modifier le compte",
-      "saveChange": "Modifications sauvegardées.",
-      "valEmail": "Veuillez entrer une adresse email valide.",
-      "deleteError": "Échec de la suppression du compte",
-      "saveChanges": "Enregistrer les modifications",
-      "saveError": "Échec de l'enregistrement des modifications",
-      "subtitle": "Gérez votre profil et vos préférences"
-    },
     "deviceContent": {
       "associatedContent": "Contenu associé"
     },
     "deviceEdit": {
       "label": "Étiquette",
       "labelRequired": "L'étiquette est obligatoire"
+    },
+    "devices": {
+      "addScreen": "Ajouter un Écran",
+      "device": "Appareil",
+      "editDevice": "Modifier l'Appareil",
+      "label": "Étiquette",
+      "lastActiveDate": "Dernière date d'activité",
+      "registrationDate": "Date d'inscription",
+      "title": "Appareils"
     },
     "linkedAccounts": {
       "link": "Lien",
@@ -1290,7 +1284,40 @@
       "codeRequired": "Le code d'appariement est requis",
       "invalidCode": "Code de couplage invalide",
       "pairingCode": "Code d'appariement"
+    },
+    "profilePage": {
+      "accDel": "Suppression du compte",
+      "confirmMsg": "Êtes-vous sûr de vouloir supprimer définitivement votre compte ?",
+      "delAcc": "Supprimer mon compte",
+      "deleteError": "Échec de la suppression du compte",
+      "emailMsg": "Veuillez entrer une adresse email.",
+      "firstMsg": "Veuillez entrer le prénom",
+      "lastMsg": "Veuillez entrer le nom de famille",
+      "linkedAccounts": "Comptes Liés",
+      "noDirect": "Me masquer de l'annuaire des membres",
+      "passLong": "Veuillez entrer un mot de passe d'au moins 8 caractères.",
+      "passMatch": "Les mots de passe ne correspondent pas.",
+      "passNew": "Nouveau mot de passe",
+      "passVer": "Vérifier le mot de passe",
+      "passwordHelper": "Laissez vide pour conserver le mot de passe actuel",
+      "permWarn": "Attention, ces actions sont permanentes",
+      "profEdit": "Modifier le compte",
+      "saveChange": "Modifications sauvegardées.",
+      "saveChanges": "Enregistrer les modifications",
+      "saveError": "Échec de l'enregistrement des modifications",
+      "subtitle": "Gérez votre profil et vos préférences",
+      "valEmail": "Veuillez entrer une adresse email valide."
     }
+  },
+  "reporting": {
+    "detailed": "Détaillé",
+    "downloadOptions": "Options de Téléchargement",
+    "noData": "Aucune donnée disponible",
+    "runReport": "Exécuter le Rapport",
+    "sampleTemplate": "Modèle d'Exemple",
+    "summary": "Résumé",
+    "toDateBeforeFromDate": "La date de fin ne peut pas être antérieure à la date de début",
+    "useFilter": "Utiliser le Filtre"
   },
   "reports": {
     "reportPage": {
@@ -1298,89 +1325,282 @@
     },
     "reportsPage": {
       "attTrend": "Tendance de Présence",
-      "bDays": "Anniversaires",
-      "dailyGroupAtt": "Présence quotidienne de groupe",
-      "donSum": "Résumé des dons",
-      "groupAtt": "Présence de Groupe",
-      "reports": "Rapports",
       "attTrendDesc": "Afficher les tendances de fréquentation au fil du temps",
+      "bDays": "Anniversaires",
       "bDaysDesc": "Afficher les anniversaires à venir",
+      "dailyGroupAtt": "Présence quotidienne de groupe",
       "dailyGroupAttDesc": "Afficher la participation quotidienne du groupe",
+      "donSum": "Résumé des dons",
       "donSumDesc": "Afficher le résumé des dons",
+      "groupAtt": "Présence de Groupe",
       "groupAttDesc": "Afficher la participation du groupe",
       "helpText": "Sélectionnez un rapport pour afficher des informations détaillées",
+      "reports": "Rapports",
       "subtitle": "Consultez et téléchargez les rapports de l'église"
     }
   },
-  "reporting": {
-    "detailed": "Détaillé",
-    "downloadOptions": "Options de Téléchargement",
-    "fromDate": "Date De",
-    "noData": "Aucune donnée disponible",
-    "runReport": "Exécuter le Rapport",
-    "sampleTemplate": "Modèle d'Exemple",
-    "summary": "Résumé",
-    "toDate": "Date À",
-    "toDateBeforeFromDate": "La date de fin ne peut pas être antérieure à la date de début",
-    "useFilter": "Utiliser le Filtre"
-  },
-  "selectChurch": {
-    "address1": "Adresse Ligne 1",
-    "address2": "Adresse Ligne 2",
-    "another": "Ou rechercher une autre église",
-    "city": "Ville",
-    "confirmRegister": "Confirmer l'Inscription",
-    "country": "Pays",
-    "name": "Nom de l'Église",
-    "noMatches": "Aucune correspondance trouvée",
-    "register": "Enregistrer une Nouvelle Église",
-    "selectChurch": "Sélectionner une Église",
-    "state": "État/Province",
-    "validate": {
-      "address": "L'adresse est requise.",
-      "city": "La ville est requise.",
-      "country": "Le pays est requis.",
-      "name": "Le nom de l'église est requis.",
-      "state": "L'état est requis.",
-      "zip": "Le code postal est requis."
+  "sermons": {
+    "addFirstSermon": "Ajouter le Premier Sermon",
+    "addPermanentLiveUrl": "Ajouter une URL en direct permanente",
+    "addSermon": "Ajouter un Sermon",
+    "adjustSearchTerms": "Essayez d'ajuster vos termes de recherche",
+    "bulkImport": {
+      "autoImportNewVideos": "Importer automatiquement les nouvelles vidéos",
+      "backToSelection": "Retour à la Sélection",
+      "chooseSource": "Choisir la source d'importation",
+      "fetch": "Récupérer",
+      "fetching": "Récupération en cours...",
+      "import": "Importer",
+      "importFromVimeo": "Importer depuis Vimeo",
+      "importFromYouTube": "Importer depuis YouTube",
+      "importIntoPlaylist": "Importer dans la Liste de Lecture",
+      "selectPlaylist": "Sélectionner une Liste de Lecture",
+      "subtitle": "Importer des vidéos à partir de plateformes externes en masse",
+      "title": "Importation en masse",
+      "vimeo": "Vimeo",
+      "vimeoChannelId": "ID de Chaîne Vimeo",
+      "vimeoChannelPlaceholder": "[NEEDS TRANSLATION] staffpicks",
+      "vimeoDescription": "Importer des vidéos de votre compte Vimeo ou vitrines",
+      "youtube": "YouTube",
+      "youtubeChannelId": "ID de Chaîne YouTube",
+      "youtubeChannelPlaceholder": "[NEEDS TRANSLATION] UCfiDl90gAfZMkgbeCqX1WiA",
+      "youtubeDescription": "Importer des vidéos de votre chaîne YouTube ou listes de lecture"
     },
-    "zip": "Code Postal"
+    "duration": {
+      "minutes": "Minutes",
+      "seconds": "Secondes"
+    },
+    "getStarted": "Commencez par ajouter votre premier sermon",
+    "liveStreamTimes": {
+      "externalLinks": {
+        "customizeAppearance": "Personnaliser l'Apparence",
+        "editUsers": "Modifier les Utilisateurs",
+        "title": "Ressources Externes",
+        "viewYourStream": "Voir Votre Diffusion"
+      },
+      "linkEdit": {
+        "cancel": "Annuler",
+        "configureSettings": "Configurer les paramètres du lien de navigation",
+        "createNewLink": "Créer un Nouveau Lien",
+        "delete": "Supprimer",
+        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce lien de navigation ? Cette action ne peut pas être annulée.",
+        "deleteLink": "Supprimer le Lien",
+        "deleteNestedLinksFirst": "Ce lien a des sous-liens imbriqués. Veuillez les supprimer d'abord.",
+        "deleting": "Suppression...",
+        "displayText": "Texte d'Affichage",
+        "displayTextPlaceholder": "Entrez le texte à afficher dans la navigation",
+        "editNavigationLink": "Modifier le Lien de Navigation",
+        "errors": {
+          "deleteFailed": "Échec de la suppression du lien. Veuillez réessayer.",
+          "deleteNestedFirst": "Supprimez d'abord les liens imbriqués",
+          "saveFailed": "Échec de l'enregistrement du lien. Veuillez réessayer.",
+          "textRequired": "Veuillez entrer un texte valide",
+          "unauthorized": "Non autorisé à créer des liens",
+          "unauthorizedDelete": "Non autorisé à supprimer des liens",
+          "urlRequired": "Veuillez entrer le lien"
+        },
+        "linkDetails": "Détails du Lien",
+        "linkUrl": "URL du Lien",
+        "linkUrlPlaceholder": "https://example.com ou /page-interne",
+        "menuOrganization": "Organisation du Menu",
+        "optionalSubmenuMessage": "Optionnellement, organisez ce lien sous un sous-menu existant :",
+        "saveLink": "Enregistrer le Lien",
+        "saving": "Enregistrement...",
+        "submenuMessage": "Ce lien sera placé sous le sous-menu :"
+      },
+      "navigationLinks": {
+        "add": "Ajouter",
+        "home": "Domicile",
+        "title": "Liens de navigation"
+      },
+      "serviceEdit": {
+        "addNewService": "Ajouter un Nouveau Service",
+        "auto": "Automatique",
+        "basicInformation": "Informations de Base",
+        "chatSettings": "Paramètres du Chat",
+        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce service ?",
+        "editService": "Modifier le Service",
+        "enableChatMinutesAfter": "Activer le Chat - Minutes Après",
+        "enableChatMinutesBefore": "Activer le Chat - Minutes Avant",
+        "errorsCorrectionTitle": "Veuillez corriger les erreurs suivantes :",
+        "latestSermon": "Dernier Sermon",
+        "no": "Non",
+        "oneTime": "Une seule fois",
+        "recursWeekly": "Se Répète Chaque Semaine",
+        "sermon": "Sermon",
+        "serviceName": "Nom du Service",
+        "serviceNamePlaceholder": "ex., Service du Dimanche Matin",
+        "serviceNameRequired": "Le nom du service est requis",
+        "serviceTime": "Heure du Service",
+        "serviceTimeRequired": "L'heure du service est requise",
+        "startVideoEarly": "Démarrer la Vidéo Tôt",
+        "startVideoEarlyHelp": "Optionnel : Pour les vidéos de compte à rebours ou le contenu avant le service",
+        "videoSettings": "Paramètres Vidéo",
+        "weekly": "Hebdomadaire",
+        "yes": "Oui"
+      },
+      "services": "Services",
+      "servicesTab": {
+        "addService": "Ajouter un Service",
+        "title": "Services",
+        "weekly": "Hebdomadaire"
+      },
+      "settings": "Paramètres",
+      "sidebarTabs": {
+        "add": "Ajouter",
+        "title": "Onglets de contenu"
+      },
+      "subtitle": "Configurer vos horaires de service récurrents",
+      "tabEdit": {
+        "cancel": "Annuler",
+        "chat": "Chat",
+        "configureSettings": "Configurer les paramètres de l'onglet de la barre latérale de diffusion",
+        "createNewTab": "Créer un Nouvel Onglet",
+        "delete": "Supprimer",
+        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet onglet ? Cette action ne peut pas être annulée.",
+        "deleteTab": "Supprimer l'Onglet",
+        "deleting": "Suppression...",
+        "editTab": "Modifier l'Onglet",
+        "errors": {
+          "deleteFailed": "Échec de la suppression de l'onglet. Veuillez réessayer.",
+          "saveFailed": "Échec de l'enregistrement de l'onglet. Veuillez réessayer.",
+          "textRequired": "Veuillez entrer un texte valide",
+          "urlRequired": "Entrez une URL valide"
+        },
+        "externalUrl": "URL Externe",
+        "externalUrlPlaceholder": "https://example.com",
+        "icon": "Icône",
+        "linkConfiguration": "Configuration du Lien",
+        "linkType": "Type de Lien",
+        "linkTypeHelp": {
+          "chat": "Fonctionnalité de chat intégrée",
+          "none": "Sélectionnez un type de lien pour configurer le comportement de l'onglet",
+          "prayer": "Fonction de demande de prière intégrée",
+          "url": "L'URL externe s'ouvrira dans un nouvel onglet"
+        },
+        "prayer": "Prière",
+        "saveTab": "Enregistrer l'Onglet",
+        "saving": "Enregistrement...",
+        "tabDisplay": "Affichage de l'Onglet",
+        "tabText": "Texte de l'Onglet",
+        "tabTextPlaceholder": "Entrez le texte d'affichage de l'onglet"
+      },
+      "title": "Horaires de diffusion en direct"
+    },
+    "noPlaylist": "Aucune liste de lecture",
+    "noSermonsFound": "Aucun sermon trouvé",
+    "noSermonsYet": "Pas encore de sermons",
+    "notScheduled": "Non planifié",
+    "playlist": "Liste de lecture",
+    "playlists": {
+      "actions": "Actions",
+      "addPlaylist": "Ajouter une Liste de lecture",
+      "adjustSearchTerms": "Essayez d'ajuster vos termes de recherche",
+      "createFirstPlaylist": "Créer la Première Liste de lecture",
+      "editPlaylist": "Modifier la liste de lecture",
+      "getStarted": "Commencez par créer votre première liste de lecture",
+      "noPlaylistsFound": "Aucune liste de lecture trouvée",
+      "noPlaylistsMatch": "Aucune liste de lecture ne correspond à votre recherche",
+      "playlistEdit": {
+        "addThumbnail": "Ajouter une miniature",
+        "basicInformation": "Informations de base",
+        "changeThumbnail": "Changer la miniature",
+        "createNew": "Créer une Nouvelle Liste de lecture",
+        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette liste de lecture ?",
+        "describePlaylist": "Décrivez cette liste de lecture...",
+        "description": "Description",
+        "editPlaylist": "Modifier la Liste de lecture",
+        "enterTitle": "Entrez le titre de la liste de lecture...",
+        "newPlaylist": "Nouvelle Liste de lecture",
+        "playlistTitle": "Titre de la liste de lecture",
+        "publishDate": "Date de publication",
+        "publishHelp": "Quand cette liste de lecture devrait-elle être disponible pour les téléspectateurs ?",
+        "publishingSchedule": "Publication et Calendrier",
+        "recommendedSize": "Taille recommandée : 1280x720 pixels (format 16:9)",
+        "thumbnailImage": "Image miniature",
+        "unauthorized": "Non autorisé à créer des listes de lecture",
+        "unauthorizedDelete": "Non autorisé à supprimer des listes de lecture"
+      },
+      "search": "Rechercher",
+      "searchPlaceholder": "Rechercher des listes de lecture...",
+      "subtitle": "Gérer les listes de lecture vidéo et organiser votre contenu",
+      "title": "Listes de lecture"
+    },
+    "publishDate": "Date de publication",
+    "searchPlaceholder": "Rechercher des sermons par titre ou liste de lecture...",
+    "sermon": "Sermon",
+    "sermonEdit": {
+      "add": "ajouter",
+      "addToAnotherPlaylist": "Ajouter à une autre liste de lecture",
+      "channelIdPlaceholder": "Ceci n'est pas l'URL de votre chaîne - Voir le lien d'aide ci-dessus",
+      "currentLiveService": "Service en direct actuel",
+      "currentYouTubeLiveStream": "Diffusion en direct YouTube actuelle",
+      "customEmbedUrl": "URL d'intégration personnalisée",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce sermon ?",
+      "description": "Description",
+      "editPermanentLiveUrl": "Modifier l'URL en direct permanente",
+      "editSermon": "Modifier le Sermon",
+      "facebook": "Facebook",
+      "fetch": "Récupérer",
+      "getYourChannelId": "Obtenir votre ID de chaîne",
+      "newSermon": "Nouveau Sermon",
+      "none": "Aucun",
+      "sermonEmbedUrl": "URL d'intégration du sermon",
+      "sermonId": "ID du sermon",
+      "title": "Titre",
+      "totalSermonDuration": "Durée totale du sermon",
+      "unauthorized": "Non autorisé à créer des sermons",
+      "unauthorizedDelete": "Non autorisé à supprimer des sermons",
+      "videoProvider": "Fournisseur vidéo",
+      "vimeo": "Vimeo",
+      "vimeoId": "ID Vimeo",
+      "youtube": "YouTube",
+      "youtubeChannelId": "ID de chaîne YouTube",
+      "youtubeId": "ID YouTube"
+    },
+    "subtitle": "Gérer votre bibliothèque de sermons et diffusions en direct",
+    "title": "Sermons"
   },
   "serverAdmin": {
     "adminPage": {
-      "abb": "Abréviations",
       "act": "Actif",
       "arch": "Archivé",
       "church": "Église",
-      "churches": "Églises",
       "churchName": "Nom de l'église",
-      "look": "Recherches",
+      "churches": "Églises",
+      "location": "Emplacement",
       "noChurch": "Aucune église trouvée. Veuillez rechercher un autre nom.",
+      "noUserChurches": "[NEEDS TRANSLATION] This user has no churches associated with their account.",
+      "noUsers": "[NEEDS TRANSLATION] No users found. Please search for a different name or email.",
       "noteFour": "Le logiciel comparable est ProPresenter. Il coûte 399 $ pour une licence de site. J'ai supposé que l'église moyenne installe le logiciel sur 3 ordinateurs et j'ai divisé nos installations totales par 3 pour obtenir le nombre d'églises. J'ai également supposé que les églises mettront à jour vers une nouvelle version tous les 5 ans en moyenne. Donc 399 $ / 5 ans / 3 ordinateurs = 26,60 $ de coût annuel par ordinateur. Si nous pouvons quantifier ces hypothèses, nous devrions mettre à jour ce nombre.",
       "noteOne": "Le logiciel comparable est Breeze. Ils facturent 72 $/mois ou 864 $/an.",
-      "notes": "Notes",
       "noteThree": "Le contenu comparable est Orange. Ils facturent 1023 $/an pour les églises avec 26-50 téléspectateurs pour 252 Basic.",
       "noteTwo": "Le logiciel comparable est SubSplash. Ils commencent à 99 $/mois ou 1200 $/an. Cela n'inclut pas la part qu'ils prennent sur les dons.",
+      "notes": "Notes",
       "regist": "Enregistré",
+      "searchResults": "[NEEDS TRANSLATION] Search Results",
       "servAdmin": "Admin Serveur",
-      "usageTrends": "Tendances d'Utilisation",
-      "valueNotes": "Notes sur la façon dont les valeurs sont calculées",
-      "location": "Emplacement",
       "subtitle": "Gérer les paramètres et les églises à l'échelle du serveur",
-      "translationLookups": "Recherches de traduction"
+      "translationLookups": "Recherches de traduction",
+      "usageTrends": "Tendances d'Utilisation",
+      "userChurches": "[NEEDS TRANSLATION] Churches",
+      "userSearch": "[NEEDS TRANSLATION] Search by Name or Email",
+      "userSearchPlaceholder": "[NEEDS TRANSLATION] Search by name or email",
+      "users": "[NEEDS TRANSLATION] Users",
+      "valueNotes": "Notes sur la façon dont les valeurs sont calculées"
     },
     "reportPage": {
-      "report": "Rapport",
       "adminOnly": "Administrateur uniquement",
+      "report": "Rapport",
       "serverAdmin": "Admin Serveur"
     },
     "translation": {
-      "title": "Recherches de Traduction de la Bible",
       "abbreviations": "Abréviations",
       "endDate": "Date de fin",
       "lookups": "Recherches",
       "search": "Recherche",
-      "startDate": "Date de Début"
+      "startDate": "Date de Début",
+      "title": "Recherches de Traduction de la Bible"
     }
   },
   "settings": {
@@ -1389,30 +1609,73 @@
       "tabNameHelper": "Choisissez un nom descriptif pour votre onglet",
       "urlHelper": "Entrez l'URL complète (ex: https://example.com)"
     },
+    "appEdit": {
+      "addTab": "Ajouter un onglet",
+      "bible": "Bible",
+      "changeImage": "[NEEDS TRANSLATION] Change Image",
+      "checkin": "Enregistrement",
+      "deleteTab": "Supprimer l'Onglet",
+      "donation": "Donation",
+      "donationLanding": "Atterrissage des dons",
+      "editTab": "Modifier l'Onglet",
+      "externalUrl": "URL Externe",
+      "internalPage": "Page interne",
+      "lessons": "Leçons",
+      "liveStream": "Diffusion en direct",
+      "memberDirectory": "Répertoire des membres",
+      "myGroups": "Mes Groupes",
+      "page": "Page",
+      "saveTab": "Enregistrer l'Onglet",
+      "saving": "Enregistrement...",
+      "selectImage": "[NEEDS TRANSLATION] Select Image",
+      "tabName": "Nom de l'onglet",
+      "tabType": "Type d'onglet",
+      "url": "URL",
+      "verseOfDay": "Verset du jour"
+    },
+    "appTabs": {
+      "editTab": "Modifier l'Onglet",
+      "moveDown": "Descendre",
+      "moveUp": "Monter",
+      "noTabs": "Aucun onglet configuré",
+      "noTabsDesc": "Ajoutez des onglets pour personnaliser la navigation de votre application",
+      "title": "Onglets d'application",
+      "untitled": "Sans titre"
+    },
     "associatePerson": {
       "change": "Changer"
     },
     "church": {
       "subdomainHelper": "L'adresse web unique de votre église"
     },
-    "churchSettings": {
-      "churchSet": "Paramètres de l'église",
-      "subdom": "Sous-domaine"
-    },
     "churchSettingsEdit": {
       "address1": "Adresse Ligne 1",
       "address2": "Adresse Ligne 2",
-      "churchName": "Nom de l'église",
-      "noNameMsg": "Le nom de l'église ne peut pas être vide.",
-      "noSubMsg": "Le sous-domaine ne peut pas être vide.",
-      "subdom": "Sous-domaine",
-      "general": "Général",
       "churchInfo": "Informations sur l'Église",
-      "churchSettings": "Paramètres de l'Église",
       "churchInfoSubtitle": "Nom, adresse et sous-domaine",
+      "churchName": "Nom de l'église",
+      "churchSettings": "Paramètres de l'Église",
+      "domainsSubtitle": "Configuration de domaine personnalisé",
+      "general": "Général",
       "generalSubtitle": "Contact de support, répertoire et visibilité",
       "givingSubtitle": "Passerelle de paiement et options de frais",
-      "domainsSubtitle": "Configuration de domaine personnalisé"
+      "noNameMsg": "Le nom de l'église ne peut pas être vide.",
+      "noSubMsg": "Le sous-domaine ne peut pas être vide.",
+      "subdom": "Sous-domaine"
+    },
+    "directoryApprovalSettingsEdit": {
+      "directoryApprovalGroup": "Groupe d'approbation du répertoire",
+      "forceMsg": "Ce groupe traitera toutes les mises à jour du répertoire des membres. Les modifications ne seront appliquées qu'après leur approbation.",
+      "groups": "Groupes",
+      "noGroups": "Aucun groupe disponible",
+      "none": "Aucun"
+    },
+    "directoryVisibility": {
+      "everyone": "[NEEDS TRANSLATION] Everyone (Including Visitors)",
+      "label": "[NEEDS TRANSLATION] Show in Directory",
+      "members": "[NEEDS TRANSLATION] Members & Staff",
+      "regularAttendees": "[NEEDS TRANSLATION] Regular Attendees & Above",
+      "staff": "[NEEDS TRANSLATION] Staff Only"
     },
     "domain": {
       "domainPlaceholder": "votresite.com",
@@ -1420,28 +1683,19 @@
       "errorInvalid": "Format invalide. Entrez uniquement le domaine (ex., votresite.com ou sub.votresite.org). N'incluez pas http://, chemins ou barres obliques."
     },
     "domainSettingsEdit": {
-      "act": "Action",
-      "delete": "Supprimer",
-      "domain": "Domaine",
-      "domains": "Domaines",
       "domMsg": "Vous pouvez faire répondre votre site Web B1 pour tout domaine personnalisé que vous souhaitez. Entrez ici le nom de domaine associé et ajoutez ensuite l'enregistrement suivant à votre DNS :",
       "domMsg2": "Si votre fournisseur DNS ne vous permet pas d'ajouter un enregistrement CNAME, vous pouvez alternativement utiliser un enregistrement A :",
       "domMsg3": "Si vous recevez des erreurs SSL après avoir ajouté l'entrée DNS. Cliquez ici pour ",
+      "domMsg4": ". Cela peut prendre jusqu'à 5 minutes.",
       "domMsgConnect": "connecter",
-      "domMsg4": ". Cela peut prendre jusqu'à 5 minutes."
-    },
-    "directoryApprovalSettingsEdit": {
-      "directoryApprovalGroup": "Groupe d'approbation du répertoire",
-      "forceMsg": "Ce groupe traitera toutes les mises à jour du répertoire des membres. Les modifications ne seront appliquées qu'après leur approbation.",
-      "groups": "Groupes",
-      "none": "Aucun",
-      "noGroups": "Aucun groupe disponible"
+      "domain": "Domaine",
+      "domains": "Domaines"
     },
     "feeOptionsSettings": {
-      "creditCardFlatRate": "Tarif fixe [ Carte de crédit ]",
-      "creditCardTransactionFee": "Frais de transaction [ Carte de crédit ]",
       "achFlatRate": "Tarif fixe [ ACH ]",
       "achHardLimit": "Limite stricte [ ACH ]",
+      "creditCardFlatRate": "Tarif fixe [ Carte de crédit ]",
+      "creditCardTransactionFee": "Frais de transaction [ Carte de crédit ]",
       "paypalFlatRate": "Tarif fixe [ PayPal ]",
       "paypalTransactionFee": "Frais de transaction [ PayPal ]"
     },
@@ -1450,57 +1704,44 @@
     },
     "givingSettingsEdit": {
       "apiCredentials": "Identifiants API",
+      "clientId": "ID Client",
+      "clientSecret": "Secret Client",
       "developersApiKeys": "Développeurs → Clés API",
       "forceMsg": "Force automatiquement les utilisateurs à couvrir les frais de transaction",
       "giving": "Don",
       "none": "Aucun",
+      "paypal": "PayPal",
       "paypalCreateApp": "créez une application pour obtenir votre ID Client et Secret.",
       "paypalDeveloper": "Développeur PayPal",
       "paypalGoTo": "Allez sur",
       "paypalLogin": "connectez-vous, puis sous",
       "prov": "Fournisseur",
       "pubKey": "Clé publique",
+      "saveError": "Échec de l'enregistrement des paramètres de don",
       "secKey": "Clé secrète",
+      "stripe": "Stripe",
       "stripeCopyKeys": "pour copier vos clés Publishable et Secret (test et live).",
       "stripeDashboard": "Tableau de bord Stripe",
       "stripeGoTo": "et allez sur",
-      "stripe": "Stripe",
       "stripeVisit": "Visitez",
-      "paypal": "PayPal",
-      "clientId": "ID Client",
-      "clientSecret": "Secret Client",
-      "transFee": "Frais de transaction",
-      "saveError": "Échec de l'enregistrement des paramètres de don"
+      "transFee": "Frais de transaction"
+    },
+    "imageEditor": {
+      "crop": "Recadrer",
+      "upload": "Télécharger"
     },
     "manageChurch": {
       "editSettings": "Modifier les paramètres",
       "imEx": "Importer/Exporter",
-      "manage": "Gérer",
-      "tools": "Outils",
       "mobileApps": "Applications mobiles",
       "noData": "Aucune donnée sur l'église disponible",
       "subtitle": "Configurer les paramètres et préférences de l'église",
       "title": "Gérer l'église"
     },
-    "supportContactSettingsEdit": {
-      "supportContact": "Contact de support",
-      "forceMsg": "Ce lien sera utilisé par les utilisateurs pour contacter l'église",
-      "link": "Lien",
-      "linkHelperText": "Il doit s'agir soit de l'email de l'église, soit d'un lien vers le formulaire de contact de l'église"
-    },
-    "visibilityPrefSettingsEdit": {
-      "visibilityPreference": "Préférence de visibilité",
-      "forceMsg": "Ceci définit la valeur par défaut pour les personnes qui n'ont pas encore configuré leurs paramètres",
-      "address": "Adresse",
-      "phoneNum": "Numéro de téléphone",
-      "email": "Email",
-      "everyone": "Tout le monde",
-      "members": "Membres",
-      "groups": "Groupes uniquement"
-    },
-    "imageEditor": {
-      "crop": "Recadrer",
-      "upload": "Télécharger"
+    "mobileAppSettings": {
+      "addTab": "Ajouter un onglet",
+      "subtitle": "Configurer les paramètres de l'application mobile",
+      "title": "Paramètres de l'application mobile"
     },
     "preview": {
       "preview": "Aperçu"
@@ -1513,7 +1754,6 @@
     },
     "roleMembers": {
       "confirmMsg": "Êtes-vous sûr de vouloir supprimer cet utilisateur de",
-      "delete": "Supprimer",
       "mem": "Membres",
       "roleAppMsg": "Ce rôle s'applique à tous les membres de l'église."
     },
@@ -1542,6 +1782,12 @@
       "roleCreate": "Souhaitez-vous créer un nouveau rôle de ",
       "roles": "Rôles"
     },
+    "supportContactSettingsEdit": {
+      "forceMsg": "Ce lien sera utilisé par les utilisateurs pour contacter l'église",
+      "link": "Lien",
+      "linkHelperText": "Il doit s'agir soit de l'email de l'église, soit d'un lien vers le formulaire de contact de l'église",
+      "supportContact": "Contact de support"
+    },
     "userAdd": {
       "addTo": "Ajouter à ",
       "createNew": "Créer un nouvel utilisateur",
@@ -1553,533 +1799,20 @@
       "valEmail": "Veuillez entrer un email valide",
       "valEmailMsg": "Entrez un email valide"
     },
-    "appEdit": {
-      "addTab": "Ajouter un onglet",
-      "bible": "Bible",
-      "checkin": "Enregistrement",
-      "deleteTab": "Supprimer l'Onglet",
-      "donation": "Donation",
-      "donationLanding": "Atterrissage des dons",
-      "editTab": "Modifier l'Onglet",
-      "externalUrl": "URL Externe",
-      "internalPage": "Page interne",
-      "lessons": "Leçons",
-      "liveStream": "Diffusion en direct",
-      "memberDirectory": "Répertoire des membres",
-      "myGroups": "Mes Groupes",
-      "page": "Page",
-      "saveTab": "Enregistrer l'Onglet",
-      "saving": "Enregistrement...",
-      "tabName": "Nom de l'onglet",
-      "tabType": "Type d'onglet",
-      "url": "URL",
-      "verseOfDay": "Verset du jour"
-    },
-    "appTabs": {
-      "editTab": "Modifier l'Onglet",
-      "moveDown": "Descendre",
-      "moveUp": "Monter",
-      "noTabs": "Aucun onglet configuré",
-      "noTabsDesc": "Ajoutez des onglets pour personnaliser la navigation de votre application",
-      "title": "Onglets d'application",
-      "untitled": "Sans titre"
-    },
-    "mobileAppSettings": {
-      "addTab": "Ajouter un onglet",
-      "subtitle": "Configurer les paramètres de l'application mobile",
-      "title": "Paramètres de l'application mobile"
-    }
-  },
-  "tasks": {
-    "actionEdit": {
-      "actType": "Type d'action",
-      "assignTo": "Attribuer à",
-      "editAct": "Modifier l'action",
-      "taskAssign": "Attribuer une tâche",
-      "taskNote": "Note de tâche",
-      "taskTitle": "Titre de la tâche",
-      "actTypeHelp": "Sélectionnez le type d'action à effectuer"
-    },
-    "selectGroup": {
-      "group": "Groupe",
-      "sel": "Sélectionner",
-      "noResults": "Aucun groupe trouvé correspondant à votre recherche",
-      "searchPrompt": "Rechercher un groupe à sélectionner"
-    },
-    "automationDetails": {
-      "acts": "Actions",
-      "auto": "Détails de l'automatisation",
-      "rep": "Se répète",
-      "task": "Tâche",
-      "active": "Actif",
-      "addAct": "Ajouter une action",
-      "inactive": "Inactif",
-      "noAct": "Aucune action configurée",
-      "recurs": "Récurrent"
-    },
-    "automationEdit": {
-      "autoEdit": "Modifier l'automatisation",
-      "monthly": "Mensuel",
-      "never": "Jamais",
-      "rep": "Répéter",
-      "yearly": "Annuel",
-      "active": "Actif",
-      "inactive": "Inactif",
-      "recurHelp": "Définir la fréquence à laquelle cette automatisation doit s'exécuter"
-    },
-    "automationsPage": {
-      "auto": "Tâches automatisées",
-      "manageAuto": "Gérer les tâches automatisées",
-      "active": "Actif",
-      "addAuto": "Ajouter une automatisation",
-      "inactive": "Inactif",
-      "noAuto": "Aucune automatisation configurée",
-      "recurs": "Récurrent",
-      "subtitle": "Automatisez les tâches en fonction des conditions"
-    },
-    "conditionAttendance": {
-      "anywhere": "N'importe où",
-      "campus": "Campus",
-      "eventType": "Type d'événement",
-      "group": "Groupe",
-      "hasAtt": "a assisté",
-      "hasNoAtt": "n'a pas assisté",
-      "op": "Opérateur",
-      "serv": "Service",
-      "servTime": "Heure de service"
-    },
-    "conditionDate": {
-      "absolute": "Absolu",
-      "curMonth": "Mois en cours",
-      "dateFull": "Date complète",
-      "datePart": "Partie de la date",
-      "dayOf": "Jour de",
-      "fri": "Vendredi",
-      "mon": "Lundi",
-      "month": "Mois",
-      "monthDay": "Jour du mois",
-      "nextMonth": "Mois prochain",
-      "op": "Opérateur",
-      "prevMonth": "Mois précédent",
-      "relative": "Relatif",
-      "sat": "Samedi",
-      "sun": "Dimanche",
-      "thurs": "Jeudi",
-      "tues": "Mardi",
-      "wed": "Mercredi",
-      "weekDay": "Jour de la semaine",
-      "yearsE": "Années écoulées"
-    },
-    "conditionDetails": {
-      "addCon": "Ajouter une condition",
-      "addConj": "Ajouter une conjonction",
-      "all": "Tous",
-      "any": "N'importe quel",
-      "con": "Conditions :",
-      "trueCon": "de ces conditions sont vraies",
-      "addCondition": "Ajouter une condition",
-      "and": "ET",
-      "noCond": "Aucune condition ajoutée",
-      "or": "OU"
-    },
-    "conditionEdit": {
-      "conEdit": "Modifier la condition",
-      "confirmMsg": "Êtes-vous sûr de vouloir supprimer cette condition ?",
-      "conInfo": "Infos de contact",
-      "conType": "Type de condition",
-      "gen": "Général",
-      "persAtt": "Attributs personnels",
-      "today": "Date d'aujourd'hui",
-      "conDetails": "Détails de l'état"
-    },
-    "conditionSelect": {
-      "is": "est",
-      "isNot": "n'est pas",
-      "op": "Opérateur"
-    },
-    "conditionText": {
-      "op": "Opérateur",
-      "contains": "contient",
-      "startW": "commence par",
-      "endW": "se termine par"
-    },
-    "conjunctionEdit": {
-      "and": "ET - Toutes les conditions sont vraies",
-      "conjEdit": "Modifier la conjonction",
-      "conjType": "Type de conjonction",
-      "or": "OU - N'importe quelle condition est vraie"
-    },
-    "contentPicker": {
-      "group": "Groupe",
-      "pers": "Personne",
-      "sel": "Sélectionner",
-      "selPers": "Sélectionner une personne ou un groupe"
-    },
-    "newTask": {
-      "assignPers": "Veuillez attribuer cette tâche à une personne.",
-      "assignTo": "Attribuer à",
-      "associatePers": "Veuillez associer cette tâche à une personne.",
-      "associateW": "Associer avec",
-      "taskNew": "Nouvelle tâche",
-      "titleTask": "Veuillez entrer un titre pour cette tâche.",
-      "newAssign": "Nouvelle mission",
-      "saving": "Enregistrement..."
-    },
-    "taskList": {
-      "assignGroup": "Attribué à mes groupes",
-      "assignMe": "Attribué à moi",
-      "reqMe": "Demandé par moi",
-      "tasks": "Tâches",
-      "addTask": "Ajouter une tâche",
-      "assignedTo": "Attribué à",
-      "associatedWith": "Associé à",
-      "noTasks": "Aucune tâche trouvée",
-      "notSpecified": "Non spécifié",
-      "unassigned": "Non attribué"
-    },
-    "taskPage": {
-      "ago": "il y a",
-      "assignTo": "Attribué à",
-      "associateW": "Associé avec",
-      "by": "par",
-      "change": "Changer",
-      "closed": "Fermé",
-      "createdBy": "Créé par",
-      "dateCreated": "Date de création",
-      "open": "Ouvert",
-      "opened": "Ouvert",
-      "stat": "Statut",
-      "taskDet": "Détails de la tâche",
-      "assign": "Attribuer",
-      "assigned": "Attribué",
-      "associate": "Associé",
-      "associated": "Associé",
-      "created": "Créé",
-      "editAssigned": "Modifier attribué",
-      "editAssoc": "Modifier associé",
-      "notSpec": "Non spécifié",
-      "unassigned": "Non attribué"
-    },
-    "tasksPage": {
-      "auto": "Automatisations",
-      "showClosed": "Afficher les fermés",
-      "showOpen": "Afficher les ouverts",
-      "tasks": "Tâches",
-      "subtitle": "Gérer les tâches et les automatisations"
-    },
-    "requestedChanges": {
-      "requestedChanges": "Modifications demandées",
-      "apply": "Appliquer",
-      "field": "Champ",
-      "value": "Valeur",
-      "applied": "Modifications appliquées",
-      "newProfile": "Nouveau profil"
-    }
-  },
-  "sermons": {
-    "title": "Sermons",
-    "subtitle": "Gérer votre bibliothèque de sermons et diffusions en direct",
-    "addSermon": "Ajouter un Sermon",
-    "addPermanentLiveUrl": "Ajouter une URL en direct permanente",
-    "searchPlaceholder": "Rechercher des sermons par titre ou liste de lecture...",
-    "noSermonsFound": "Aucun sermon trouvé",
-    "noSermonsYet": "Pas encore de sermons",
-    "adjustSearchTerms": "Essayez d'ajuster vos termes de recherche",
-    "getStarted": "Commencez par ajouter votre premier sermon",
-    "addFirstSermon": "Ajouter le Premier Sermon",
-    "playlist": "Liste de lecture",
-    "sermon": "Sermon",
-    "publishDate": "Date de publication",
-    "notScheduled": "Non planifié",
-    "noPlaylist": "Aucune liste de lecture",
-    "edit": "Modifier",
-    "sermonEdit": {
-      "editSermon": "Modifier le Sermon",
-      "editPermanentLiveUrl": "Modifier l'URL en direct permanente",
-      "videoProvider": "Fournisseur vidéo",
-      "currentYouTubeLiveStream": "Diffusion en direct YouTube actuelle",
-      "youtube": "YouTube",
-      "vimeo": "Vimeo",
-      "facebook": "Facebook",
-      "customEmbedUrl": "URL d'intégration personnalisée",
-      "sermonEmbedUrl": "URL d'intégration du sermon",
-      "youtubeChannelId": "ID de chaîne YouTube",
-      "getYourChannelId": "Obtenir votre ID de chaîne",
-      "youtubeId": "ID YouTube",
-      "vimeoId": "ID Vimeo",
-      "sermonId": "ID du sermon",
-      "fetch": "Récupérer",
-      "totalSermonDuration": "Durée totale du sermon",
-      "title": "Titre",
-      "description": "Description",
-      "addToAnotherPlaylist": "Ajouter à une autre liste de lecture",
-      "add": "ajouter",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce sermon ?",
-      "unauthorized": "Non autorisé à créer des sermons",
-      "unauthorizedDelete": "Non autorisé à supprimer des sermons",
-      "newSermon": "Nouveau Sermon",
-      "currentLiveService": "Service en direct actuel",
-      "channelIdPlaceholder": "Ceci n'est pas l'URL de votre chaîne - Voir le lien d'aide ci-dessus",
-      "none": "Aucun"
-    },
-    "playlists": {
-      "title": "Listes de lecture",
-      "subtitle": "Gérer les listes de lecture vidéo et organiser votre contenu",
-      "addPlaylist": "Ajouter une Liste de lecture",
-      "createFirstPlaylist": "Créer la Première Liste de lecture",
-      "search": "Rechercher",
-      "searchPlaceholder": "Rechercher des listes de lecture...",
-      "noPlaylistsFound": "Aucune liste de lecture trouvée",
-      "noPlaylistsMatch": "Aucune liste de lecture ne correspond à votre recherche",
-      "adjustSearchTerms": "Essayez d'ajuster vos termes de recherche",
-      "getStarted": "Commencez par créer votre première liste de lecture",
-      "editPlaylist": "Modifier la liste de lecture",
-      "actions": "Actions",
-      "playlistEdit": {
-        "createNew": "Créer une Nouvelle Liste de lecture",
-        "editPlaylist": "Modifier la Liste de lecture",
-        "basicInformation": "Informations de base",
-        "playlistTitle": "Titre de la liste de lecture",
-        "enterTitle": "Entrez le titre de la liste de lecture...",
-        "description": "Description",
-        "describePlaylist": "Décrivez cette liste de lecture...",
-        "publishingSchedule": "Publication et Calendrier",
-        "publishDate": "Date de publication",
-        "publishHelp": "Quand cette liste de lecture devrait-elle être disponible pour les téléspectateurs ?",
-        "thumbnailImage": "Image miniature",
-        "changeThumbnail": "Changer la miniature",
-        "addThumbnail": "Ajouter une miniature",
-        "recommendedSize": "Taille recommandée : 1280x720 pixels (format 16:9)",
-        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette liste de lecture ?",
-        "unauthorized": "Non autorisé à créer des listes de lecture",
-        "unauthorizedDelete": "Non autorisé à supprimer des listes de lecture",
-        "newPlaylist": "Nouvelle Liste de lecture"
-      }
-    },
-    "bulkImport": {
-      "title": "Importation en masse",
-      "subtitle": "Importer des vidéos à partir de plateformes externes en masse",
-      "chooseSource": "Choisir la source d'importation",
-      "youtube": "YouTube",
-      "youtubeDescription": "Importer des vidéos de votre chaîne YouTube ou listes de lecture",
-      "importFromYouTube": "Importer depuis YouTube",
-      "vimeo": "Vimeo",
-      "vimeoDescription": "Importer des vidéos de votre compte Vimeo ou vitrines",
-      "importFromVimeo": "Importer depuis Vimeo",
-      "backToSelection": "Retour à la Sélection",
-      "import": "Importer",
-      "fetch": "Récupérer",
-      "fetching": "Récupération en cours...",
-      "youtubeChannelId": "ID de Chaîne YouTube",
-      "vimeoChannelId": "ID de Chaîne Vimeo",
-      "importIntoPlaylist": "Importer dans la Liste de Lecture",
-      "autoImportNewVideos": "Importer automatiquement les nouvelles vidéos",
-      "selectPlaylist": "Sélectionner une Liste de Lecture"
-    },
-    "liveStreamTimes": {
-      "title": "Horaires de diffusion en direct",
-      "subtitle": "Configurer vos horaires de service récurrents",
-      "services": "Services",
-      "settings": "Paramètres",
-      "servicesTab": {
-        "title": "Services",
-        "addService": "Ajouter un Service",
-        "weekly": "Hebdomadaire",
-        "edit": "Modifier"
-      },
-      "navigationLinks": {
-        "title": "Liens de navigation",
-        "add": "Ajouter",
-        "home": "Domicile"
-      },
-      "sidebarTabs": {
-        "title": "Onglets de contenu",
-        "add": "Ajouter"
-      },
-      "serviceEdit": {
-        "addNewService": "Ajouter un Nouveau Service",
-        "editService": "Modifier le Service",
-        "basicInformation": "Informations de Base",
-        "serviceName": "Nom du Service",
-        "serviceNamePlaceholder": "ex., Service du Dimanche Matin",
-        "serviceTime": "Heure du Service",
-        "recursWeekly": "Se Répète Chaque Semaine",
-        "no": "Non",
-        "yes": "Oui",
-        "oneTime": "Une seule fois",
-        "weekly": "Hebdomadaire",
-        "chatSettings": "Paramètres du Chat",
-        "enableChatMinutesBefore": "Activer le Chat - Minutes Avant",
-        "enableChatMinutesAfter": "Activer le Chat - Minutes Après",
-        "videoSettings": "Paramètres Vidéo",
-        "startVideoEarly": "Démarrer la Vidéo Tôt",
-        "startVideoEarlyHelp": "Optionnel : Pour les vidéos de compte à rebours ou le contenu avant le service",
-        "sermon": "Sermon",
-        "latestSermon": "Dernier Sermon",
-        "auto": "Automatique",
-        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce service ?",
-        "errorsCorrectionTitle": "Veuillez corriger les erreurs suivantes :",
-        "serviceNameRequired": "Le nom du service est requis",
-        "serviceTimeRequired": "L'heure du service est requise"
-      },
-      "linkEdit": {
-        "editNavigationLink": "Modifier le Lien de Navigation",
-        "createNewLink": "Créer un Nouveau Lien",
-        "configureSettings": "Configurer les paramètres du lien de navigation",
-        "linkDetails": "Détails du Lien",
-        "displayText": "Texte d'Affichage",
-        "displayTextPlaceholder": "Entrez le texte à afficher dans la navigation",
-        "linkUrl": "URL du Lien",
-        "linkUrlPlaceholder": "https://example.com ou /page-interne",
-        "menuOrganization": "Organisation du Menu",
-        "submenuMessage": "Ce lien sera placé sous le sous-menu :",
-        "optionalSubmenuMessage": "Optionnellement, organisez ce lien sous un sous-menu existant :",
-        "delete": "Supprimer",
-        "cancel": "Annuler",
-        "saveLink": "Enregistrer le Lien",
-        "saving": "Enregistrement...",
-        "deleteLink": "Supprimer le Lien",
-        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce lien de navigation ? Cette action ne peut pas être annulée.",
-        "deleteNestedLinksFirst": "Ce lien a des sous-liens imbriqués. Veuillez les supprimer d'abord.",
-        "deleting": "Suppression...",
-        "errors": {
-          "textRequired": "Veuillez entrer un texte valide",
-          "urlRequired": "Veuillez entrer le lien",
-          "unauthorized": "Non autorisé à créer des liens",
-          "unauthorizedDelete": "Non autorisé à supprimer des liens",
-          "deleteNestedFirst": "Supprimez d'abord les liens imbriqués",
-          "saveFailed": "Échec de l'enregistrement du lien. Veuillez réessayer.",
-          "deleteFailed": "Échec de la suppression du lien. Veuillez réessayer."
-        }
-      },
-      "tabEdit": {
-        "editTab": "Modifier l'Onglet",
-        "createNewTab": "Créer un Nouvel Onglet",
-        "configureSettings": "Configurer les paramètres de l'onglet de la barre latérale de diffusion",
-        "tabDisplay": "Affichage de l'Onglet",
-        "tabText": "Texte de l'Onglet",
-        "tabTextPlaceholder": "Entrez le texte d'affichage de l'onglet",
-        "icon": "Icône",
-        "linkConfiguration": "Configuration du Lien",
-        "linkType": "Type de Lien",
-        "externalUrl": "URL Externe",
-        "externalUrlPlaceholder": "https://example.com",
-        "chat": "Chat",
-        "prayer": "Prière",
-        "linkTypeHelp": {
-          "url": "L'URL externe s'ouvrira dans un nouvel onglet",
-          "chat": "Fonctionnalité de chat intégrée",
-          "prayer": "Fonction de demande de prière intégrée",
-          "none": "Sélectionnez un type de lien pour configurer le comportement de l'onglet"
-        },
-        "delete": "Supprimer",
-        "cancel": "Annuler",
-        "saveTab": "Enregistrer l'Onglet",
-        "saving": "Enregistrement...",
-        "deleteTab": "Supprimer l'Onglet",
-        "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet onglet ? Cette action ne peut pas être annulée.",
-        "deleting": "Suppression...",
-        "errors": {
-          "textRequired": "Veuillez entrer un texte valide",
-          "urlRequired": "Entrez une URL valide",
-          "saveFailed": "Échec de l'enregistrement de l'onglet. Veuillez réessayer.",
-          "deleteFailed": "Échec de la suppression de l'onglet. Veuillez réessayer."
-        }
-      },
-      "externalLinks": {
-        "title": "Ressources Externes",
-        "customizeAppearance": "Personnaliser l'Apparence",
-        "editUsers": "Modifier les Utilisateurs",
-        "viewYourStream": "Voir Votre Diffusion"
-      }
-    },
-    "duration": {
-      "minutes": "Minutes",
-      "seconds": "Secondes"
-    }
-  },
-  "songs": {
-    "title": "Chants",
-    "addSong": "Ajouter un Chant",
-    "arrangement": {
-      "title": "Arrangement",
-      "enterLyrics": "Entrer les paroles manuellement ou importer depuis PraiseCharts",
-      "edit": "Modifier l'arrangement",
-      "name": "Nom de l'arrangement",
-      "lyrics": "Paroles",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet arrangement ?"
-    },
-    "create": {
-      "title": "Créer un chant",
-      "songTitle": "Titre du chant",
-      "artist": "Artiste"
-    },
-    "key": {
-      "edit": "Modifier la tonalité",
-      "signature": "Tonalité",
-      "label": "Étiquette",
-      "labelOptional": "Étiquette (facultatif)",
-      "default": "Par défaut",
-      "defaultLabel": "Tonalité de Jean",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette tonalité ?"
-    },
-    "keys": {
-      "title": "Tonalités",
-      "add": "Ajouter",
-      "import": "Importer",
-      "importPrompt": "Voulez-vous importer les paroles texte depuis PraiseCharts ?",
-      "addFiles": "Ajouter des fichiers",
-      "importFromPraiseCharts": "Importer des fichiers depuis PraiseCharts",
-      "addExternalLink": "Ajouter un lien externe"
-    },
-    "link": {
-      "edit": "Modifier le lien",
-      "url": "Url",
-      "text": "Texte",
-      "chordChart": "Grille d'accords",
-      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce lien ?"
-    },
-    "details": {
-      "artist": "Artiste",
-      "releaseDate": "Date de sortie",
-      "album": "Album",
-      "language": "Langue",
-      "bpm": "BPM",
-      "keySignature": "Tonalité",
-      "keys": "Tonalités",
-      "meter": "Mètre",
-      "length": "Durée",
-      "key": "Tonalité",
-      "seconds": "Secondes"
-    },
-    "library": {
-      "empty": {
-        "title": "Aucun Chant Trouvé",
-        "message": "Commencez par ajouter votre premier chant à la bibliothèque.",
-        "action": "Ajouter le Premier Chant"
-      },
-      "noResults": "Aucun chant ne correspond à vos critères de recherche."
-    },
-    "search": {
-      "placeholder": "Rechercher des chants par titre ou artiste...",
-      "enterQuery": "Entrez un terme de recherche pour trouver des chants.",
-      "noResults": "Aucun chant trouvé pour votre recherche.",
-      "createManually": "Créer Manuellement",
-      "title": "Rechercher un Chant",
-      "inputLabel": "Titre ou Artiste",
-      "inputPlaceholder": "Entrez le titre du chant ou le nom de l'artiste..."
-    },
-    "songPage": {
-      "loading": "Chargement...",
-      "subtitle": "Gérer les détails et les arrangements des chansons"
-    },
-    "songsPage": {
-      "songs": "Chants",
-      "subtitle": "Gérez votre bibliothèque musicale"
+    "visibilityPrefSettingsEdit": {
+      "address": "Adresse",
+      "email": "Email",
+      "everyone": "Tout le monde",
+      "forceMsg": "Ceci définit la valeur par défaut pour les personnes qui n'ont pas encore configuré leurs paramètres",
+      "groups": "Groupes uniquement",
+      "members": "Membres",
+      "phoneNum": "Numéro de téléphone",
+      "visibilityPreference": "Préférence de visibilité"
     }
   },
   "site": {
     "addPage": {
+      "aiPlaceholder": "[NEEDS TRANSLATION] Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
       "newLink": "Nouveau Lien",
       "newPage": "Nouvelle Page",
       "pageType": "Type de Page"
@@ -2094,36 +1827,132 @@
       "none": "Aucun",
       "normal": "Normal",
       "onShowAnimation": "Animation à l'Affichage",
+      "onShowSpeed": "Vitesse d'affichage",
       "pulse": "Pulsation",
       "shrink": "Rétrécir",
       "slideDown": "Glisser vers le Bas",
       "slideLeft": "Glisser vers la Gauche",
       "slideRight": "Glisser vers la Droite",
       "slideUp": "Glisser vers le Haut",
-      "slow": "Lent",
-      "onShowSpeed": "Vitesse d'affichage"
+      "slow": "Lent"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Gestion du logo"
+    },
+    "appearancePage": {
+      "subtitle": "Voici un aperçu d'un site exemple avec vos couleurs, polices et logos. Ce n'est pas le contenu réel de votre site.",
+      "title": "Styles du site"
     },
     "blocks": {
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer définitivement ce bloc ?",
       "editBlock": "Modifier le Bloc"
     },
+    "blocksPage": {
+      "actions": "Actions",
+      "addBlock": "Ajouter un bloc",
+      "block": "bloc",
+      "blocks": "Blocs",
+      "createFirstBlock": "Créer le premier bloc",
+      "elements": "Élément(s)",
+      "getStarted": "Commencez par créer votre premier bloc réutilisable",
+      "noBlocksFound": "Aucun bloc trouvé",
+      "reusableBlocks": "Blocs réutilisables",
+      "sections": "Section(s)",
+      "subtitle": "Créez et gérez des blocs de contenu réutilisables pour votre site Web",
+      "totalBlocks": "Total des blocs",
+      "type": "Type"
+    },
+    "cssEdit": {
+      "customCss": "CSS personnalisé",
+      "customHtml": "HTML personnalisé"
+    },
     "donateLink": {
       "add": "Ajouter",
-      "amountPlaceholder": "10",
-      "maxAmountsAlert": "Vous ne pouvez ajouter que cinq montants de don.",
-      "noFunds": "Aucun Fonds",
-      "textHelper": "Ex: (Donnez maintenant), (Oui, je vais aider !), (Donnez 10$ au Camp Jeunesse), etc..",
-      "textLabel": "Texte",
-      "urlHelper": "Astuce: vous devez lier la page du constructeur de site web qui contient l'élément de don.",
-      "urlLabel": "Url",
-      "urlPlaceholder": "/don",
       "addAmount": "Ajouter le montant du don",
       "amount": "Montant",
+      "amountPlaceholder": "10",
       "donationAmount": "Montant du don",
       "donationAmounts": "Montants des dons",
       "donationAmountsHelper": "Vous pouvez suggérer des montants de don comme 5 $, 10 $, 20 $, etc.",
       "funds": "Fonds",
-      "selectFund": "Sélectionnez le fonds de don"
+      "maxAmountsAlert": "Vous ne pouvez ajouter que cinq montants de don.",
+      "noFunds": "Aucun Fonds",
+      "selectFund": "Sélectionnez le fonds de don",
+      "textHelper": "Ex: (Donnez maintenant), (Oui, je vais aider !), (Donnez 10$ au Camp Jeunesse), etc..",
+      "textLabel": "Texte",
+      "urlHelper": "Astuce: vous devez lier la page du constructeur de site web qui contient l'élément de don.",
+      "urlLabel": "Url",
+      "urlPlaceholder": "/don"
+    },
+    "editorToolbar": {
+      "addContent": "Ajouter du contenu",
+      "block": "Bloc",
+      "desktop": "Bureau",
+      "mobile": "Mobile",
+      "page": "Page",
+      "switchToDesktop": "Passer à la vue Bureau",
+      "switchToMobile": "Passer à la vue mobile"
+    },
+    "elementAdd": {
+      "addElements": "Ajouter des Éléments",
+      "advanced": "Avancé",
+      "all": "Tous",
+      "blocks": "Blocs",
+      "box": "Boîte",
+      "calendar": "Calendrier",
+      "card": "Carte",
+      "carousel": "Carrousel",
+      "church": "Église",
+      "content": "Contenu",
+      "descBox": "Conteneur flexible",
+      "descCalendar": "Vue calendrier des événements",
+      "descCard": "Carte de contenu avec image",
+      "descCarousel": "Galerie de contenu défilante",
+      "descDonateLink": "Bouton lien de don",
+      "descDonation": "Formulaire de don",
+      "descEmbedPage": "Intégrer une page externe",
+      "descExpandable": "Section FAQ extensible",
+      "descForm": "Constructeur de formulaires personnalisé",
+      "descGroupList": "Répertoire des groupes",
+      "descHtml": "Code HTML personnalisé",
+      "descImage": "Image avec légende",
+      "descLocation": "Carte interactive",
+      "descLogo": "Logo/marque de l'église",
+      "descReusableElement": "Bloc d'élément réutilisable",
+      "descReusableSection": "Section réutilisable",
+      "descRow": "Disposition en colonnes horizontales",
+      "descSection": "Conteneur pour regrouper le contenu",
+      "descSermons": "Galerie vidéo des sermons",
+      "descStream": "Intégrer un flux en direct",
+      "descTable": "Disposition de tableau de données",
+      "descText": "Contenu texte enrichi",
+      "descTextWithPhoto": "Texte avec image latérale",
+      "descVideo": "Intégrer ou télécharger une vidéo",
+      "donateLink": "Lien de Don",
+      "donation": "Don",
+      "dragAndDrop": "Glisser-déposer sur la page",
+      "dragHint": "Faites glisser les éléments sur la page pour les ajouter",
+      "embedPage": "Intégrer Page",
+      "expandable": "Extensible",
+      "form": "Formulaire",
+      "groupList": "Liste des Groupes",
+      "html": "HTML",
+      "image": "Image",
+      "layout": "Disposition",
+      "location": "Emplacement",
+      "logo": "Logo",
+      "media": "Médias",
+      "noElementsFound": "Aucun élément trouvé",
+      "row": "Ligne",
+      "searchElements": "Rechercher des éléments...",
+      "section": "Section",
+      "stream": "Flux",
+      "table": "Tableau",
+      "text": "Texte",
+      "textWithPhoto": "Texte avec Photo",
+      "tryDifferentSearch": "Essayez un autre terme de recherche",
+      "untitledBlock": "Bloc sans titre",
+      "video": "Vidéo"
     },
     "elements": {
       "address": "Adresse",
@@ -2208,6 +2037,20 @@
       "upload": "Télécharger",
       "uploadFiles": "Télécharger des Fichiers"
     },
+    "filesManager": {
+      "files": "Fichiers",
+      "getStarted": "Commencez par télécharger votre premier fichier",
+      "noFilesYet": "Aucun fichier téléchargé pour le moment"
+    },
+    "filesPage": {
+      "subtitle": "Gérer les fichiers et médias de votre site web",
+      "title": "Fichiers"
+    },
+    "fontEdit": {
+      "fontSelection": "Sélection de police",
+      "popularFontCombinations": "Combinaisons de polices populaires",
+      "typographyPreview": "Aperçu de la typographie"
+    },
     "navLink": {
       "addLink": "Ajouter un Lien",
       "linkSettings": "Paramètres du Lien"
@@ -2220,15 +2063,21 @@
       "pageSettings": "Paramètres de la Page",
       "urlHelper": "ex: /inscription-campeur  (**Assurez-vous de vérifier avant d'enregistrer)"
     },
+    "pagePreview": {
+      "editContent": "Modifier le contenu",
+      "pageSettings": "Paramètres de la page",
+      "subtitle": "Aperçu: {title}",
+      "title": "Aperçu du site web"
+    },
     "pages": {
       "convert": "Convertir"
     },
     "pagesPage": {
-      "confirmConvert": "Souhaitez-vous convertir cette page générée automatiquement en page personnalisée ?",
       "actions": "Actions",
       "addFirstPage": "Ajouter la première page",
       "addPage": "Ajouter une page",
       "autoGenerated": "Généré automatiquement",
+      "confirmConvert": "Souhaitez-vous convertir cette page générée automatiquement en page personnalisée ?",
       "customPages": "Pages personnalisées",
       "description": "Vous trouverez ci-dessous une liste de pages personnalisées et générées automatiquement. Vous pouvez ajouter de nouvelles pages, modifier des pages existantes ou convertir des pages générées automatiquement en pages personnalisées.",
       "desktopOnly": "L'éditeur de page n'est disponible qu'en mode bureau",
@@ -2246,6 +2095,12 @@
       "totalPages": "Nombre total de pages",
       "websitePages": "Pages du site Web"
     },
+    "paletteEdit": {
+      "colorCombinationsPreview": "Aperçu des combinaisons de couleurs",
+      "colorValues": "Valeurs de couleur",
+      "savePalette": "Enregistrer la palette",
+      "suggestedPalettes": "Palettes suggérées"
+    },
     "pickColors": {
       "headingColor": "Couleur du Titre",
       "linkColor": "Couleur du Lien",
@@ -2253,9 +2108,9 @@
       "textColor": "Couleur du Texte"
     },
     "row": {
-      "columnsHelper": "Les nombres représentent des douzièmes de page.",
       "addColumn": "Ajouter une colonne",
       "columnsError": "Les colonnes doivent totaliser 12",
+      "columnsHelper": "Les nombres représentent des douzièmes de page.",
       "commonOptions": "Options communes",
       "halves": "Moitiés",
       "hideMobileOrder": "Masquer la commande mobile",
@@ -2288,297 +2143,282 @@
       "confirmDuplicate": "Êtes-vous sûr de vouloir faire une copie de cette section et de tout son contenu ?",
       "editSection": "Modifier la Section"
     },
+    "sectionEdit": {
+      "convertTo": "Convertir en",
+      "convertToBlock": "Convertir en bloc",
+      "duplicate": "Dupliquer",
+      "duplicateSection": "Dupliquer la section"
+    },
     "style": {
       "editStyle": "Modifier le Style"
     },
     "styleEdit": {
       "property": "Propriété"
     },
-    "templates": {
-      "viewSermons": "Voir les Sermons"
-    },
-    "blocksPage": {
-      "actions": "Actions",
-      "addBlock": "Ajouter un bloc",
-      "block": "bloc",
-      "blocks": "Blocs",
-      "createFirstBlock": "Créer le premier bloc",
-      "elements": "Élément(s)",
-      "getStarted": "Commencez par créer votre premier bloc réutilisable",
-      "noBlocksFound": "Aucun bloc trouvé",
-      "reusableBlocks": "Blocs réutilisables",
-      "sections": "Section(s)",
-      "subtitle": "Créez et gérez des blocs de contenu réutilisables pour votre site Web",
-      "totalBlocks": "Total des blocs",
-      "type": "Type"
-    },
-    "editorToolbar": {
-      "addContent": "Ajouter du contenu",
-      "block": "Bloc",
-      "desktop": "Bureau",
-      "mobile": "Mobile",
-      "page": "Page",
-      "switchToDesktop": "Passer à la vue Bureau",
-      "switchToMobile": "Passer à la vue mobile"
-    },
-    "elementAdd": {
-      "addElements": "Ajouter des Éléments",
-      "advanced": "Avancé",
-      "all": "Tous",
-      "blocks": "Blocs",
-      "box": "Boîte",
-      "calendar": "Calendrier",
-      "card": "Carte",
-      "carousel": "Carrousel",
-      "church": "Église",
-      "churchSpecific": "Spécifique à l'Église",
-      "content": "Contenu",
-      "descCalendar": "Vue calendrier des événements",
-      "descCard": "Carte de contenu avec image",
-      "descCarousel": "Galerie de contenu défilante",
-      "descBox": "Conteneur flexible",
-      "descDonateLink": "Bouton lien de don",
-      "descDonation": "Formulaire de don",
-      "descEmbedPage": "Intégrer une page externe",
-      "descExpandable": "Section FAQ extensible",
-      "descForm": "Constructeur de formulaires personnalisé",
-      "descGroupList": "Répertoire des groupes",
-      "descHtml": "Code HTML personnalisé",
-      "descImage": "Image avec légende",
-      "descLocation": "Carte interactive",
-      "descLogo": "Logo/marque de l'église",
-      "descReusableElement": "Bloc d'élément réutilisable",
-      "descReusableSection": "Section réutilisable",
-      "descRow": "Disposition en colonnes horizontales",
-      "descSection": "Conteneur pour regrouper le contenu",
-      "descSermons": "Galerie vidéo des sermons",
-      "descStream": "Intégrer un flux en direct",
-      "descTable": "Disposition de tableau de données",
-      "descText": "Contenu texte enrichi",
-      "descTextWithPhoto": "Texte avec image latérale",
-      "descVideo": "Intégrer ou télécharger une vidéo",
-      "donateLink": "Lien de Don",
-      "donation": "Don",
-      "dragAndDrop": "Glisser-déposer sur la page",
-      "dragHint": "Faites glisser les éléments sur la page pour les ajouter",
-      "embedPage": "Intégrer Page",
-      "expandable": "Extensible",
-      "form": "Formulaire",
-      "groupList": "Liste des Groupes",
-      "html": "HTML",
-      "image": "Image",
-      "layout": "Disposition",
-      "location": "Emplacement",
-      "logo": "Logo",
-      "media": "Médias",
-      "noBlocksFound": "Aucun bloc trouvé",
-      "noElementsFound": "Aucun élément trouvé",
-      "row": "Ligne",
-      "searchElements": "Rechercher des éléments...",
-      "section": "Section",
-      "simpleElements": "Éléments Simples",
-      "stream": "Flux",
-      "table": "Tableau",
-      "text": "Texte",
-      "textWithPhoto": "Texte avec Photo",
-      "tryDifferentSearch": "Essayez un autre terme de recherche",
-      "untitledBlock": "Bloc sans titre",
-      "video": "Vidéo"
-    },
-    "appearancePage": {
-      "title": "Styles du site",
-      "subtitle": "Voici un aperçu d'un site exemple avec vos couleurs, polices et logos. Ce n'est pas le contenu réel de votre site."
-    },
-    "filesPage": {
-      "title": "Fichiers",
-      "subtitle": "Gérer les fichiers et médias de votre site web"
-    },
-    "pagePreview": {
-      "title": "Aperçu du site web",
-      "subtitle": "Aperçu: {title}",
-      "editContent": "Modifier le contenu",
-      "pageSettings": "Paramètres de la page"
-    },
-    "sectionEdit": {
-      "convertToBlock": "Convertir en bloc",
-      "convertTo": "Convertir en",
-      "duplicate": "Dupliquer",
-      "duplicateSection": "Dupliquer la section"
-    },
-    "appearanceEdit": {
-      "logoManagement": "Gestion du logo"
-    },
-    "cssEdit": {
-      "customCss": "CSS personnalisé",
-      "customHtml": "HTML personnalisé"
-    },
-    "filesManager": {
-      "noFilesYet": "Aucun fichier téléchargé pour le moment",
-      "getStarted": "Commencez par télécharger votre premier fichier",
-      "files": "Fichiers"
-    },
-    "fontEdit": {
-      "fontSelection": "Sélection de police",
-      "typographyPreview": "Aperçu de la typographie",
-      "popularFontCombinations": "Combinaisons de polices populaires"
-    },
-    "paletteEdit": {
-      "savePalette": "Enregistrer la palette",
-      "colorValues": "Valeurs de couleur",
-      "suggestedPalettes": "Palettes suggérées",
-      "colorCombinationsPreview": "Aperçu des combinaisons de couleurs"
-    },
     "stylesManager": {
       "styleSettings": "Paramètres de style"
+    },
+    "templates": {
+      "viewSermons": "Voir les Sermons"
     }
   },
-  "stockPhotos": {
-    "photoBy": "Photo par",
-    "providedBy": "Photos de stock fournies par"
-  },
-  "support": {
-    "discussions": "Discussions",
-    "documentation": "Documentation"
-  },
-  "placeholders": {
-    "person": {
-      "firstName": "Pierre",
-      "middleName": "Michel",
-      "lastName": "Dupont",
-      "nickName": "Pierrot",
-      "prefix": "M.",
-      "suffix": "Jr.",
-      "email": "pierre@exemple.fr",
-      "homePhone": "01 23 45 67 89",
-      "workPhone": "01 98 76 54 32",
-      "mobilePhone": "06 12 34 56 78",
-      "address1": "123 Rue Principale",
-      "address2": "Appt 4B",
-      "city": "Paris",
-      "state": "Île-de-France",
-      "zip": "75001"
+  "songs": {
+    "addSong": "Ajouter un Chant",
+    "arrangement": {
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet arrangement ?",
+      "edit": "Modifier l'arrangement",
+      "enterLyrics": "Entrer les paroles manuellement ou importer depuis PraiseCharts",
+      "lyrics": "Paroles",
+      "name": "Nom de l'arrangement",
+      "title": "Arrangement"
     },
-    "household": {
-      "name": "Famille Dupont"
+    "create": {
+      "artist": "Artiste",
+      "songTitle": "Titre du chant",
+      "title": "Créer un chant"
     },
-    "group": {
-      "name": "Étude Biblique Adultes",
-      "category": "Communauté, Étude Biblique, Ministère"
+    "deleteSong": {
+      "confirm": "[NEEDS TRANSLATION] Confirm"
     },
-    "fund": {
-      "name": "Fonds Général"
+    "details": {
+      "album": "Album",
+      "artist": "Artiste",
+      "bpm": "BPM",
+      "key": "Tonalité",
+      "keySignature": "Tonalité",
+      "keys": "Tonalités",
+      "language": "Langue",
+      "length": "Durée",
+      "meter": "Mètre",
+      "releaseDate": "Date de sortie",
+      "seconds": "Secondes"
     },
-    "batch": {
-      "name": "Dons du Dimanche"
+    "key": {
+      "default": "Par défaut",
+      "defaultLabel": "Tonalité de Jean",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette tonalité ?",
+      "edit": "Modifier la tonalité",
+      "labelOptional": "Étiquette (facultatif)",
+      "signature": "Tonalité"
     },
-    "donation": {
-      "notes": "Dîme mensuelle de la famille Dupont"
+    "keys": {
+      "add": "Ajouter",
+      "addExternalLink": "Ajouter un lien externe",
+      "addFiles": "Ajouter des fichiers",
+      "import": "Importer",
+      "importFromPraiseCharts": "Importer des fichiers depuis PraiseCharts",
+      "importPrompt": "Voulez-vous importer les paroles texte depuis PraiseCharts ?",
+      "title": "Tonalités"
     },
-    "church": {
-      "name": "Église de la Grâce",
-      "subDomain": "gracelocale",
-      "address1": "456 Avenue Principale",
-      "address2": "Suite 100",
-      "city": "Lyon",
-      "state": "Auvergne-Rhône-Alpes",
-      "zip": "69001"
+    "library": {
+      "empty": {
+        "action": "Ajouter le Premier Chant",
+        "message": "Commencez par ajouter votre premier chant à la bibliothèque.",
+        "title": "Aucun Chant Trouvé"
+      },
+      "noResults": "Aucun chant ne correspond à vos critères de recherche."
     },
-    "user": {
-      "firstName": "Pierre",
-      "lastName": "Dupont",
-      "email": "pierre@exemple.fr"
-    },
-    "role": {
-      "name": "Bénévole"
-    },
-    "form": {
-      "name": "Formulaire d'Inscription",
-      "questionTitle": "Quel est votre plat préféré ?",
-      "questionDescription": "Aidez-nous à planifier nos événements",
-      "questionPlaceholder": "Entrez votre réponse ici",
-      "thankYouMessage": "Merci pour votre soumission !"
-    },
-    "choices": {
-      "value": "Option A",
-      "text": "Première Option"
-    },
-    "sermon": {
-      "title": "Marcher dans la Foi",
-      "description": "Série sur vivre notre foi au quotidien"
-    },
-    "duration": {
-      "value": "45"
-    },
-    "song": {
-      "name": "Grande est Ta Fidélité"
-    },
-    "position": {
-      "name": "Chanteur Principal"
-    },
-    "time": {
-      "name": "Répétition"
-    },
-    "planType": {
-      "name": "Service du Dimanche"
-    },
-    "planItem": {
-      "label": "Moment de Louange"
-    },
-    "plan": {
-      "notes": "N'oubliez pas de revoir la répétition de la semaine dernière"
-    },
-    "task": {
-      "taskName": "Préparer les diapositives de paroles"
-    },
-    "serviceTime": {
-      "name": "Service du Matin"
-    },
-    "service": {
-      "name": "Culte du Dimanche"
-    },
-    "campus": {
-      "name": "Campus Principal"
-    },
-    "device": {
-      "name": "Ordinateur du Sanctuaire"
-    },
-    "pairScreen": {
-      "registrationCode": "ABC123"
-    },
-    "page": {
-      "title": "À Propos de Nous"
-    },
-    "block": {
-      "name": "Section de Bienvenue"
-    },
-    "addPage": {
-      "title": "Notre Histoire",
-      "aiContent": "Créer une page sur l'histoire et la mission de notre église"
-    },
-    "font": {
-      "url": "https://polices.exemple.fr/ma-police.woff2"
-    },
-    "color": {
-      "value": "#3B82F6"
-    },
-    "faq": {
-      "title": "Quels sont les horaires des services ?",
-      "answer": "Nous avons des services le dimanche à 9h et 11h"
-    },
-    "element": {
-      "answersJSON": "[{\"question\": \"Quel est votre nom ?\", \"answer\": \"Église de la Grâce\"}]"
-    },
-    "giving": {
-      "paymentGatewayKey": "pk_test_abc123xyz"
-    },
-    "vimeo": {
-      "channelId": "123456789"
-    },
-    "youtube": {
-      "channelId": "UCxxxxxxxxxx"
+    "link": {
+      "chordChart": "Grille d'accords",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce lien ?",
+      "edit": "Modifier le lien",
+      "text": "Texte",
+      "url": "Url"
     },
     "search": {
-      "searchUsers": "Rechercher par nom ou email"
+      "createManually": "Créer Manuellement",
+      "enterQuery": "Entrez un terme de recherche pour trouver des chants.",
+      "inputLabel": "Titre ou Artiste",
+      "inputPlaceholder": "Entrez le titre du chant ou le nom de l'artiste...",
+      "noResults": "Aucun chant trouvé pour votre recherche.",
+      "placeholder": "Rechercher des chants par titre ou artiste...",
+      "title": "Rechercher un Chant"
+    },
+    "songPage": {
+      "loading": "Chargement...",
+      "subtitle": "Gérer les détails et les arrangements des chansons"
+    },
+    "songsPage": {
+      "songs": "Chants",
+      "subtitle": "Gérez votre bibliothèque musicale"
+    },
+    "title": "Chants"
+  },
+  "tasks": {
+    "actionEdit": {
+      "actType": "Type d'action",
+      "actTypeHelp": "Sélectionnez le type d'action à effectuer",
+      "assignTo": "Attribuer à",
+      "editAct": "Modifier l'action",
+      "taskAssign": "Attribuer une tâche",
+      "taskNote": "Note de tâche",
+      "taskTitle": "Titre de la tâche"
+    },
+    "automationDetails": {
+      "active": "Actif",
+      "acts": "Actions",
+      "addAct": "Ajouter une action",
+      "auto": "Détails de l'automatisation",
+      "inactive": "Inactif",
+      "noAct": "Aucune action configurée",
+      "recurs": "Récurrent"
+    },
+    "automationEdit": {
+      "active": "Actif",
+      "autoEdit": "Modifier l'automatisation",
+      "inactive": "Inactif",
+      "monthly": "Mensuel",
+      "never": "Jamais",
+      "recurHelp": "Définir la fréquence à laquelle cette automatisation doit s'exécuter",
+      "rep": "Répéter",
+      "weekly": "[NEEDS TRANSLATION] Weekly",
+      "yearly": "Annuel"
+    },
+    "automationsPage": {
+      "active": "Actif",
+      "addAuto": "Ajouter une automatisation",
+      "auto": "Tâches automatisées",
+      "inactive": "Inactif",
+      "manageAuto": "Gérer les tâches automatisées",
+      "noAuto": "Aucune automatisation configurée",
+      "recurs": "Récurrent",
+      "subtitle": "Automatisez les tâches en fonction des conditions"
+    },
+    "conditionAttendance": {
+      "anywhere": "N'importe où",
+      "campus": "Campus",
+      "eventType": "Type d'événement",
+      "group": "Groupe",
+      "hasAtt": "a assisté",
+      "hasNoAtt": "n'a pas assisté",
+      "op": "Opérateur",
+      "serv": "Service",
+      "servTime": "Heure de service"
+    },
+    "conditionDate": {
+      "absolute": "Absolu",
+      "curMonth": "Mois en cours",
+      "dateFull": "Date complète",
+      "datePart": "Partie de la date",
+      "dayOf": "Jour de",
+      "fri": "Vendredi",
+      "mon": "Lundi",
+      "month": "Mois",
+      "monthDay": "Jour du mois",
+      "nextMonth": "Mois prochain",
+      "op": "Opérateur",
+      "prevMonth": "Mois précédent",
+      "relative": "Relatif",
+      "sat": "Samedi",
+      "sun": "Dimanche",
+      "thurs": "Jeudi",
+      "tues": "Mardi",
+      "wed": "Mercredi",
+      "weekDay": "Jour de la semaine",
+      "yearsE": "Années écoulées"
+    },
+    "conditionDetails": {
+      "addCon": "Ajouter une condition",
+      "addCondition": "Ajouter une condition",
+      "addConj": "Ajouter une conjonction",
+      "all": "Tous",
+      "and": "ET",
+      "any": "N'importe quel",
+      "con": "Conditions :",
+      "noCond": "Aucune condition ajoutée",
+      "or": "OU",
+      "trueCon": "de ces conditions sont vraies"
+    },
+    "conditionEdit": {
+      "conDetails": "Détails de l'état",
+      "conEdit": "Modifier la condition",
+      "conInfo": "Infos de contact",
+      "conType": "Type de condition",
+      "confirmMsg": "Êtes-vous sûr de vouloir supprimer cette condition ?",
+      "gen": "Général",
+      "persAtt": "Attributs personnels",
+      "today": "Date d'aujourd'hui"
+    },
+    "conditionSelect": {
+      "is": "est",
+      "isNot": "n'est pas",
+      "op": "Opérateur"
+    },
+    "conditionText": {
+      "contains": "contient",
+      "endW": "se termine par",
+      "op": "Opérateur",
+      "startW": "commence par"
+    },
+    "conjunctionEdit": {
+      "and": "ET - Toutes les conditions sont vraies",
+      "conjEdit": "Modifier la conjonction",
+      "conjType": "Type de conjonction",
+      "or": "OU - N'importe quelle condition est vraie"
+    },
+    "contentPicker": {
+      "group": "Groupe",
+      "pers": "Personne",
+      "sel": "Sélectionner",
+      "selPers": "Sélectionner une personne ou un groupe"
+    },
+    "newTask": {
+      "assignPers": "Veuillez attribuer cette tâche à une personne.",
+      "assignTo": "Attribuer à",
+      "associatePers": "Veuillez associer cette tâche à une personne.",
+      "associateW": "Associer avec",
+      "newAssign": "Nouvelle mission",
+      "saving": "Enregistrement...",
+      "taskNew": "Nouvelle tâche",
+      "titleTask": "Veuillez entrer un titre pour cette tâche."
+    },
+    "requestedChanges": {
+      "applied": "Modifications appliquées",
+      "apply": "Appliquer",
+      "field": "Champ",
+      "newProfile": "Nouveau profil",
+      "requestedChanges": "Modifications demandées",
+      "value": "Valeur"
+    },
+    "selectGroup": {
+      "group": "Groupe",
+      "noResults": "Aucun groupe trouvé correspondant à votre recherche",
+      "searchPrompt": "Rechercher un groupe à sélectionner"
+    },
+    "taskList": {
+      "addTask": "Ajouter une tâche",
+      "assignGroup": "Attribué à mes groupes",
+      "assignMe": "Attribué à moi",
+      "assignedTo": "Attribué à",
+      "associatedWith": "Associé à",
+      "noTasks": "Aucune tâche trouvée",
+      "notSpecified": "Non spécifié",
+      "reqMe": "Demandé par moi",
+      "tasks": "Tâches",
+      "unassigned": "Non attribué"
+    },
+    "taskPage": {
+      "ago": "il y a",
+      "assign": "Attribuer",
+      "assigned": "Attribué",
+      "associate": "Associé",
+      "associated": "Associé",
+      "by": "par",
+      "closed": "Fermé",
+      "created": "Créé",
+      "editAssigned": "Modifier attribué",
+      "editAssoc": "Modifier associé",
+      "notSpec": "Non spécifié",
+      "open": "Ouvert",
+      "opened": "Ouvert",
+      "unassigned": "Non attribué"
+    },
+    "tasksPage": {
+      "auto": "Automatisations",
+      "showClosed": "Afficher les fermés",
+      "showOpen": "Afficher les ouverts",
+      "subtitle": "Gérer les tâches et les automatisations",
+      "tasks": "Tâches"
     }
   }
 }

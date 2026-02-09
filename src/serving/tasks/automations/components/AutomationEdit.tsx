@@ -126,6 +126,7 @@ export const AutomationEdit = (props: Props) => {
                 <MenuItem value="never">{Locale.label("tasks.automationEdit.never")}</MenuItem>
                 <MenuItem value="yearly">{Locale.label("tasks.automationEdit.yearly")}</MenuItem>
                 <MenuItem value="monthly">{Locale.label("tasks.automationEdit.monthly")}</MenuItem>
+                <MenuItem value="weekly">{Locale.label("tasks.automationEdit.weekly")}</MenuItem>
               </Select>
               <FormHelperText>{Locale.label("tasks.automationEdit.recurHelp")}</FormHelperText>
             </FormControl>

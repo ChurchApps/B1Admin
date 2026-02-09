@@ -1,23 +1,29 @@
 {
   "attendance": {
     "attendancePage": {
-      "addCampus": "캠퍼스 추가",
-      "addService": "서비스 추가",
-      "addServiceTime": "서비스 시간 추가",
       "att": "출석",
       "campus": "캠퍼스",
+      "campuses": "캠퍼스",
       "category": "범주",
       "group": "그룹",
       "groupAttMsg": "세션이 그룹에 추가되고 사람들이 해당 세션에 참석하면 그룹 출석이 표시됩니다.",
       "groups": "그룹",
-      "service": "서비스",
-      "time": "시간",
-      "campuses": "캠퍼스",
       "scheduled": "예정됨",
+      "service": "서비스",
       "services": "예배",
       "subtitle": "서비스 및 그룹 출석 추적",
+      "time": "시간",
       "totalGroups": "총 그룹",
       "unscheduled": "예정되지 않은"
+    },
+    "attendanceSetup": {
+      "addService": "서비스 추가",
+      "addServiceTime": "서비스 시간 추가",
+      "newCampus": "뉴캠퍼스",
+      "newService": "새로운 서비스",
+      "newServiceTime": "새로운 서비스 시간",
+      "setupMessage": "출석 추적을 시작하려면 캠퍼스, 서비스 및 서비스 시간을 설정하세요.",
+      "unassigned": "할당되지 않음"
     },
     "campusEdit": {
       "confirmDelete": "이 캠퍼스를 삭제하시겠습니까?",
@@ -45,27 +51,24 @@
       }
     },
     "tabs": {
-      "setup": "설정",
       "attTrend": "출석 추세",
       "groupAtt": "그룹 출석",
-      "noImplement": "구현되지 않음"
-    },
-    "attendanceSetup": {
-      "addService": "서비스 추가",
-      "addServiceTime": "서비스 시간 추가",
-      "newCampus": "뉴캠퍼스",
-      "newService": "새로운 서비스",
-      "newServiceTime": "새로운 서비스 시간",
-      "setupMessage": "출석 추적을 시작하려면 캠퍼스, 서비스 및 서비스 시간을 설정하세요.",
-      "unassigned": "할당되지 않음"
+      "setup": "설정"
     }
   },
   "calendars": {
+    "calendar": {
+      "add": "추가",
+      "copiedToClipboard": "클립보드에 복사됨",
+      "copyIcsLink": "ICS 링크 복사",
+      "downloadIcsFile": "ICS 파일 다운로드",
+      "subscribe": "구독하다",
+      "subscribeTitle": "캘린더 구독"
+    },
     "calendarEdit": {
-      "calendarName": "캘린더 이름",
-      "namePlaceholder": "이 캘린더의 이름을 입력하세요",
       "calendarDetails": "달력 세부정보",
       "calendarDetailsDesc": "캘린더 설정 구성",
+      "calendarName": "캘린더 이름",
       "calendarNameAria": "캘린더 이름",
       "cancel": "취소",
       "confirmDelete": "이 캘린더를 삭제하시겠습니까?",
@@ -74,19 +77,26 @@
       "delete": "삭제",
       "deleting": "삭제 중...",
       "editCalendar": "달력 편집",
+      "namePlaceholder": "이 캘린더의 이름을 입력하세요",
       "nameRequired": "캘린더 이름은 필수 항목입니다.",
       "save": "저장",
       "saving": "저장 중...",
       "unauthorizedCreate": "캘린더를 만들 수 있는 권한이 없습니다.",
       "unauthorizedDelete": "캘린더 삭제 권한이 없습니다."
     },
+    "calendarEvent": {
+      "cancel": "취소",
+      "confirmDelete": "이 이벤트를 삭제하시겠습니까?",
+      "delete": "삭제",
+      "noGroups": "그룹을 찾을 수 없습니다."
+    },
     "calendarList": {
-      "active": "활성",
       "aboutParagraph1": "달력을 사용하면 교회의 행사를 정리하고 표시할 수 있습니다.",
       "aboutParagraph2": "예배, 청소년 행사, 지역 사회 봉사 활동 등 다양한 목적으로 여러 달력을 만들 수 있습니다.",
       "aboutParagraph3": "ICS 피드를 통해 회원과 캘린더를 공유하거나 웹사이트에 삽입하세요.",
       "aboutTitle": "캘린더 정보",
       "actions": "작업",
+      "active": "활성",
       "addCalendar": "캘린더 추가",
       "calendar": "달력",
       "calendars": "달력",
@@ -98,86 +108,43 @@
       "noCalendars": "캘린더를 찾을 수 없습니다.",
       "status": "상태",
       "subtitleEmpty": "첫 번째 캘린더를 만들어 시작해 보세요.",
+      "subtitleWithCount": "[NEEDS TRANSLATION] Subtitle With Count",
       "title": "달력"
     },
     "calendarPage": {
-      "confirmRemoveGroup": "캘린더에서 이 그룹을 제거하시겠습니까?",
       "actions": "작업",
       "addEventsHint": "그룹을 선택하여 이벤트 추가",
       "calendar": "달력",
       "calendarEvents": "캘린더 이벤트",
+      "confirmRemoveGroup": "캘린더에서 이 그룹을 제거하시겠습니까?",
       "groupName": "그룹 이름",
       "groupsInCalendar": "캘린더의 그룹",
       "noGroupsAdded": "아직 추가된 그룹이 없습니다.",
       "removeGroup": "그룹 제거",
+      "removeGroupAria": "[NEEDS TRANSLATION] Remove Group Aria",
       "subtitle": "캘린더 이벤트 및 그룹 관리"
     },
-    "calendarEvent": {
-      "confirmDelete": "이 이벤트를 삭제하시겠습니까?",
-      "noGroups": "그룹을 찾을 수 없습니다.",
-      "cancel": "취소",
-      "delete": "삭제"
-    },
     "editEvent": {
-      "selectGroup": "그룹 선택",
       "addAllEvents": "그룹의 모든 이벤트 추가",
-      "addSpecificEvents": "특정 이벤트 추가",
       "addGroup": "그룹 추가",
+      "addSpecificEvents": "특정 이벤트 추가",
       "cancel": "취소",
       "clickToAdd": "추가하려면 클릭하세요.",
       "noEventsFound": "이벤트를 찾을 수 없습니다.",
-      "save": "저장"
-    },
-    "calendar": {
-      "add": "추가",
-      "copiedToClipboard": "클립보드에 복사됨",
-      "copyIcsLink": "ICS 링크 복사",
-      "downloadIcsFile": "ICS 파일 다운로드",
-      "subscribe": "구독하다",
-      "subscribeTitle": "캘린더 구독"
+      "save": "저장",
+      "selectGroup": "그룹 선택"
     }
   },
   "common": {
     "add": "추가",
     "amount": "금액",
+    "back": "[NEEDS TRANSLATION] Back",
     "bottom": "하단",
     "cancel": "취소",
     "center": "중앙",
     "change": "변경",
     "changePhoto": "사진 변경",
     "close": "닫기",
-    "custom": "사용자 정의",
-    "delete": "삭제",
-    "done": "완료",
-    "duplicate": "복제",
-    "edit": "편집",
-    "help": "도움말",
-    "iconPicker": {
-      "searchLabel": "아이콘 검색",
-      "searchPlaceholder": "검색어 입력 (예: 사람, 집, 교회)...",
-      "title": "아이콘 선택",
-      "noResults": "\"{{searchText}}\"과(와) 일치하는 아이콘이 없습니다.",
-      "tryDifferent": "다른 검색어를 사용해 보세요.",
-      "showingMatching": "\"{{searchText}}\"과(와) 일치하는 {{count}} 아이콘 표시 중",
-      "showingDefault": "일반적으로 사용되는 {{count}} 아이콘을 표시합니다. 더 많은 정보를 찾으려면 검색을 사용하세요."
-    },
-    "left": "왼쪽",
-    "name": "이름",
-    "no": "아니요",
-    "notes": "노트",
-    "person": "사람",
-    "pleaseWait": "기다려 주세요...",
-    "remove": "제거",
-    "right": "오른쪽",
-    "save": "저장",
-    "search": "검색",
-    "searching": "검색 중...",
-    "sermons": "설교",
-    "title": "제목",
-    "top": "상단",
-    "update": "업데이트",
-    "website": "웹사이트",
-    "yes": "예",
     "comboBox": {
       "addNew": "새로 추가..."
     },
@@ -189,24 +156,56 @@
         "validEmail": "유효한 이메일 주소를 입력해주세요."
       }
     },
+    "custom": "사용자 정의",
+    "delete": "삭제",
+    "done": "완료",
+    "duplicate": "복제",
+    "edit": "편집",
     "errorBoundary": {
-      "title": "이런! 오류가 발생했습니다",
       "message": "문제가 발생했습니다. 문제가 지속되면 다시 시도하거나 지원팀에 문의하세요.",
-      "retry": "다시 해 보다"
+      "retry": "다시 해 보다",
+      "title": "이런! 오류가 발생했습니다"
     },
     "formSubmission": {
-      "noData": "사용 가능한 데이터 없음",
       "edit": "편집",
+      "noData": "사용 가능한 데이터 없음",
       "noQuestions": "질문이 없습니다."
     },
+    "help": "도움말",
+    "iconPicker": {
+      "noResults": "\"{{searchText}}\"과(와) 일치하는 아이콘이 없습니다.",
+      "searchLabel": "아이콘 검색",
+      "searchPlaceholder": "검색어 입력 (예: 사람, 집, 교회)...",
+      "showingDefault": "일반적으로 사용되는 {{count}} 아이콘을 표시합니다. 더 많은 정보를 찾으려면 검색을 사용하세요.",
+      "showingMatching": "\"{{searchText}}\"과(와) 일치하는 {{count}} 아이콘 표시 중",
+      "title": "아이콘 선택",
+      "tryDifferent": "다른 검색어를 사용해 보세요."
+    },
+    "left": "왼쪽",
+    "name": "이름",
+    "no": "아니요",
+    "notes": "노트",
+    "person": "사람",
+    "remove": "제거",
     "reportFilter": {
       "title": "필터 보고서"
     },
     "reportFilterField": {
       "any": "모든"
     },
+    "right": "오른쪽",
+    "save": "저장",
     "saveChanges": "변경사항 저장",
-    "saving": "저장 중..."
+    "saving": "저장 중...",
+    "search": "검색",
+    "searching": "검색 중...",
+    "sermons": "설교",
+    "title": "제목",
+    "top": "상단",
+    "tryAgain": "[NEEDS TRANSLATION] Try Again",
+    "update": "업데이트",
+    "website": "웹사이트",
+    "yes": "예"
   },
   "components": {
     "footer": {
@@ -242,15 +241,36 @@
       "subtitle": "교회 관리 대시보드에 오신 것을 환영합니다. 사람들을 검색하고, 그룹을 보고, 열린 작업을 관리하세요."
     },
     "myGroups": "내 그룹",
-    "people": "사람들",
     "peopleSearch": {
       "display": "표시",
       "photo": "사진",
       "ppl": "사람들"
-    },
-    "tasks": "작업"
+    }
   },
   "donation": {
+    "donationForm": {
+      "annually": "연간",
+      "biWeekly": "격주",
+      "cover": "거래 수수료 부담",
+      "fees": "수수료",
+      "frequencyLabel": "빈도",
+      "funds": "기금",
+      "make": "기부하기",
+      "makeRecurring": "정기 기부로 설정",
+      "monthly": "월간",
+      "quarterly": "분기별",
+      "startDate": "시작 날짜",
+      "thankYou": "기부해 주셔서 감사합니다!",
+      "totalAmount": "총액",
+      "validate": {
+        "amount": "기부 금액을 입력해주세요.",
+        "email": "이메일이 필요합니다.",
+        "firstName": "이름이 필요합니다.",
+        "lastName": "성이 필요합니다.",
+        "validEmail": "유효한 이메일 주소를 입력해주세요."
+      },
+      "weekly": "주간"
+    },
     "donationPage": {
       "donations": "기부"
     },
@@ -260,112 +280,14 @@
     "page": {
       "amount": "금액",
       "batch": "배치",
-      "date": "날짜",
-      "fund": "기금",
-      "method": "방법",
-      "willAppear": "기부가 이루어지면 여기에 표시됩니다.",
       "currentYearCsv": "현재 연도 CSV",
       "currentYearPrint": "올해 인쇄",
-      "lastYearCsv": "작년 CSV",
-      "lastYearPrint": "작년 인쇄"
-    },
-    "bankForm": {
-      "accountNumber": "계좌번호",
-      "added": "은행 계좌가 성공적으로 추가되었습니다.",
-      "company": "회사",
-      "firstDeposit": "첫 번째 입금 금액",
-      "individual": "개인",
-      "name": "계좌 소유자 이름",
-      "needVerified": "이 은행 계좌는 사용하기 전에 확인이 필요합니다.",
-      "routingNumber": "라우팅 번호",
-      "secondDeposit": "두 번째 입금 금액",
-      "twoDeposits": "귀하의 계좌에 두 개의 소액 입금이 이루어졌습니다. 확인하려면 아래 금액을 입력해주세요.",
-      "updated": "은행 계좌가 성공적으로 업데이트되었습니다.",
-      "verified": "이 은행 계좌는 확인되었으며 기부에 사용할 수 있습니다.",
-      "validate": {
-        "accountNumber": "계좌번호가 필요합니다.",
-        "holderName": "계좌 소유자 이름이 필요합니다."
-      }
-    },
-    "cardForm": {
-      "addNew": "새 카드 추가",
-      "added": "신용카드가 성공적으로 추가되었습니다.",
-      "expirationMonth": "유효기간 월",
-      "expirationYear": "유효기간 년",
-      "updated": "신용카드가 성공적으로 업데이트되었습니다."
-    },
-    "common": {
-      "cancel": "취소",
-      "error": "요청 처리 중 오류가 발생했습니다."
-    },
-    "donationForm": {
-      "annually": "연간",
-      "biWeekly": "격주",
-      "cancelled": "정기 기부가 취소되었습니다.",
-      "confirmDelete": "이 정기 기부를 취소하시겠습니까?",
-      "cover": "거래 수수료 부담",
-      "donate": "기부",
-      "editRecurring": "정기 기부 편집",
-      "fees": "수수료",
-      "frequency": "빈도",
-      "frequencyLabel": "빈도",
-      "fund": "기금",
-      "funds": "기금",
-      "make": "기부하기",
-      "makeRecurring": "정기 기부로 설정",
-      "method": "결제 방법",
-      "monthly": "월간",
-      "notes": "노트",
-      "preview": "기부 미리보기",
-      "quarterly": "분기별",
-      "recurringUpdated": "정기 기부가 업데이트되었습니다.",
-      "startDate": "시작 날짜",
-      "thankYou": "기부해 주셔서 감사합니다!",
-      "tooLow": "기부 금액이 너무 낮습니다.",
-      "total": "총액",
-      "weekly": "주간",
-      "validate": {
-        "amount": "기부 금액을 입력해주세요.",
-        "email": "이메일이 필요합니다.",
-        "firstName": "이름이 필요합니다.",
-        "lastName": "성이 필요합니다.",
-        "validEmail": "유효한 이메일 주소를 입력해주세요."
-      },
-      "totalAmount": "총액"
-    },
-    "fundDonations": {
-      "addMore": "다른 기금 추가",
-      "amount": "금액",
-      "fund": "기금"
-    },
-    "paymentMethods": {
-      "addBank": "은행 계좌 추가",
-      "addCard": "신용카드 추가",
-      "confirmDelete": "이 결제 방법을 삭제하시겠습니까?",
-      "deleted": "결제 방법이 삭제되었습니다.",
-      "noMethod": "결제 방법을 선택해주세요.",
-      "verify": "확인"
-    },
-    "preview": {
       "date": "날짜",
-      "donate": "기부 완료",
-      "every": "매",
-      "fee": "거래 수수료",
-      "funds": "기금",
-      "method": "결제 방법",
-      "startingOn": "시작일",
-      "total": "총액",
-      "type": "유형",
-      "weekly": "주"
-    },
-    "recurring": {
-      "amount": "금액",
-      "every": "매",
-      "interval": "간격",
-      "notFound": "정기 기부를 찾을 수 없습니다.",
-      "noSubscriptions": "정기 기부를 찾을 수 없습니다.",
-      "paymentMethod": "결제 방법",
-      "startDate": "시작 날짜"
+      "fund": "기금",
+      "lastYearCsv": "작년 CSV",
+      "lastYearPrint": "작년 인쇄",
+      "method": "방법",
+      "willAppear": "기부가 이루어지면 여기에 표시됩니다."
     }
   },
   "donations": {
@@ -374,11 +296,38 @@
       "date": "날짜",
       "opName": "이름 (선택 사항)"
     },
+    "batchStatements": {
+      "csvDescription": "[NEEDS TRANSLATION] Download a ZIP file containing individual CSV files for each donor with their detailed donation records",
+      "csvDownload": "[NEEDS TRANSLATION] Individual CSV Files",
+      "downloadOptions": "[NEEDS TRANSLATION] Download Options",
+      "downloadZip": "[NEEDS TRANSLATION] Download ZIP ({count} files)",
+      "noDonations": "[NEEDS TRANSLATION] No donations found for {year}. Please select a different year.",
+      "printAllInfo": "[NEEDS TRANSLATION] This will open a single document with all {count} statements. Each statement will be on a separate page.",
+      "printAllStatements": "[NEEDS TRANSLATION] Print All {count} Statements",
+      "printDescription": "[NEEDS TRANSLATION] Generate a consolidated document with all giving statements for printing",
+      "printStatements": "[NEEDS TRANSLATION] Printable Statements",
+      "selectYear": "[NEEDS TRANSLATION] Select Year",
+      "subtitle": "[NEEDS TRANSLATION] Download giving statements for all donors",
+      "summary": "[NEEDS TRANSLATION] Summary",
+      "title": "[NEEDS TRANSLATION] Batch Giving Statements",
+      "totalAmount": "[NEEDS TRANSLATION] Total Amount:",
+      "totalDonations": "[NEEDS TRANSLATION] Total Donations:",
+      "totalDonors": "[NEEDS TRANSLATION] Total Donors:",
+      "year": "[NEEDS TRANSLATION] Year",
+      "zipInfo": "[NEEDS TRANSLATION] This will download a ZIP file containing {count} individual CSV files, one for each donor."
+    },
     "bulkEntry": {
       "addDonation": "기부 추가",
-      "optionalFields": "선택 필드",
       "pressEnter": "Enter를 눌러 저장하고 다른 기부를 추가하세요",
       "selectPerson": "사람 선택 또는 익명"
+    },
+    "donationBatchPage": {
+      "batchDate": "배치 날짜:",
+      "subtitle": "이 배치의 기부 관리",
+      "title": "기부 배치"
+    },
+    "donationBatchesPage": {
+      "subtitle": "기부 배치 관리 및 기록 추적"
     },
     "donationEdit": {
       "anon": "익명",
@@ -402,13 +351,14 @@
     "donations": {
       "amt": "금액",
       "anon": "익명",
+      "batches": "배치",
       "date": "날짜",
       "don": "기부",
-      "summary": "요약",
-      "batches": "배치",
-      "funds": "기금",
       "errMsg": "기금을 찾을 수 없습니다. 기부하기 전에 기금을 생성해주세요",
+      "funds": "기금",
       "noDonMsg": "추적된 기부가 없습니다. 기부가 입력되면 여기에 표시됩니다.",
+      "statements": "[NEEDS TRANSLATION] Giving Statements",
+      "summary": "요약",
       "tableIdent": "ID",
       "total": "총액"
     },
@@ -417,6 +367,7 @@
       "date": "날짜",
       "don": "기부",
       "noBatch": "배치를 찾을 수 없습니다.",
+      "subtitle": "[NEEDS TRANSLATION] View donation summaries and analyze giving trends",
       "total": "총액"
     },
     "fundEdit": {
@@ -425,6 +376,9 @@
       "taxDeductible": "세금 공제 가능",
       "trackDonations": "기부를 추적합니다.",
       "trackNonDonations": "캠프 등록, 티셔츠, 이벤트 티켓 등 비기부 거래를 추적합니다."
+    },
+    "fundPage": {
+      "subtitle": "이 기금에 대한 기부 및 기여 추적"
     },
     "funds": {
       "fund": "기금",
@@ -440,18 +394,8 @@
       "don": "기부",
       "donFilt": "기부 필터",
       "donor": "기부자",
-      "noDon": "선택한 날짜 범위에 대한 기부가 없습니다"
-    },
-    "donationBatchesPage": {
-      "subtitle": "기부 배치 관리 및 기록 추적"
-    },
-    "fundPage": {
-      "subtitle": "이 기금에 대한 기부 및 기여 추적"
-    },
-    "donationBatchPage": {
-      "title": "기부 배치",
-      "subtitle": "이 배치의 기부 관리",
-      "batchDate": "배치 날짜:"
+      "noDon": "선택한 날짜 범위에 대한 기부가 없습니다",
+      "subtitle": "[NEEDS TRANSLATION] Manage donation funds and track giving categories"
     }
   },
   "forms": {
@@ -497,6 +441,9 @@
       "perm": "권한",
       "view": "보기 전용"
     },
+    "formPage": {
+      "subtitleConfig": "양식 구성 및 제출"
+    },
     "formQuestionEdit": {
       "amt": "금액",
       "ansReq": "이 질문에 대한 답변 필요",
@@ -519,15 +466,6 @@
       "wholeNum": "정수",
       "yesNo": "예/아니요"
     },
-    "formsPage": {
-      "addForm": "양식 추가",
-      "archForms": "보관된 양식",
-      "confirmMsg1": "이 양식을 보관하시겠습니까?",
-      "confirmMsg2": "이 양식을 복원하시겠습니까?",
-      "forms": "양식",
-      "noArch": "보관된 양식이 없습니다.",
-      "noCustomMsg": "아직 생성된 맞춤 양식이 없습니다. 추가되면 여기에 나타납니다."
-    },
     "formSubmissions": {
       "anon": "익명",
       "subBy": "제출자",
@@ -536,26 +474,23 @@
       "subRes": "양식 제출 결과",
       "subSum": "양식 제출 요약"
     },
+    "formsPage": {
+      "addForm": "양식 추가",
+      "archForms": "보관된 양식",
+      "confirmMsg1": "이 양식을 보관하시겠습니까?",
+      "confirmMsg2": "이 양식을 복원하시겠습니까?",
+      "forms": "양식",
+      "noArch": "보관된 양식이 없습니다.",
+      "noCustomMsg": "아직 생성된 맞춤 양식이 없습니다. 추가되면 여기에 나타납니다.",
+      "subtitleManage": "[NEEDS TRANSLATION] Create and manage custom forms",
+      "url": "[NEEDS TRANSLATION] URL"
+    },
     "tabs": {
       "formMem": "양식 멤버",
       "formSub": "양식 제출",
       "questions": "질문",
       "unAuth": "승인되지 않음"
-    },
-    "formPage": {
-      "subtitleConfig": "양식 구성 및 제출"
     }
-  },
-  "formSubmissionEdit": {
-    "confirmDelete": "이 양식 제출을 영구적으로 삭제하시겠습니까?",
-    "editForm": "양식 제출 편집",
-    "isRequired": "은(는) 필수 항목입니다",
-    "submit": "제출"
-  },
-  "gallery": {
-    "aspectRatio": "가로세로 비율",
-    "confirmDelete": "이 이미지를 영구적으로 삭제하시겠습니까?",
-    "freeForm": "자유 형식"
   },
   "groups": {
     "groupAdd": {
@@ -569,7 +504,6 @@
       "team": "팀"
     },
     "groupBanner": {
-      "team": "팀",
       "associatedServices": "관련 서비스",
       "labels": "레이블",
       "meetingInfo": "회의정보",
@@ -577,47 +511,45 @@
       "parentPickup": "부모 픽업",
       "printNametag": "이름표 인쇄",
       "settings": "설정",
+      "team": "팀",
       "trackAttendance": "출석 추적"
     },
     "groupDetails": {
-      "attTrack": "출석 추적:",
-      "cat": "범주",
-      "groupDet": "그룹 세부사항",
-      "locationPlaceholder": "Johnson 가정",
-      "meetingLocation": "모임 장소",
-      "meetingTime": "모임 시간",
-      "meetingTimePlaceholder": "화요일 오후 7시",
-      "parPick": "부모 픽업:",
-      "prinName": "이름표 인쇄:",
-      "slugPlaceholder": "group-name",
       "about": "에 대한",
       "attendanceSettings": "출석 설정",
       "labels": "레이블",
+      "locationPlaceholder": "Johnson 가정",
       "meetingInfo": "회의정보",
+      "meetingLocation": "모임 장소",
+      "meetingTime": "모임 시간",
+      "meetingTimePlaceholder": "화요일 오후 7시",
       "noPhoto": "사진이 없습니다",
       "parentPickup": "부모 픽업",
       "printNametag": "이름표 인쇄",
+      "slugPlaceholder": "group-name",
       "trackAttendance": "출석 추적"
     },
     "groupDetailsEdit": {
+      "addPhoto": "사진 추가",
       "attTrack": "출석 추적",
+      "attendance": "출석",
       "catName": "범주 이름",
       "catNameMsg": "범주 이름을 입력해주세요.",
+      "clickToAddPhoto": "사진을 추가하려면 클릭하세요.",
       "confirmMsg": "이 그룹을 영구적으로 삭제하시겠습니까?",
       "groupDesc": "그룹 설명",
       "groupDet": "그룹 세부사항",
-      "groupImg": "그룹 사진",
       "groupName": "그룹 이름",
       "groupNameMsg": "그룹 이름을 입력해주세요.",
       "meetingLocation": "모임 장소",
       "meetingTime": "모임 시간",
       "parPick": "부모 픽업",
       "prinName": "이름표 인쇄",
-      "selImg": "사진 선택",
-      "slug": "슬러그 (URL에 사용되는 키 이름)",
-      "addPhoto": "사진 추가",
-      "attendance": "출석",
-      "clickToAddPhoto": "사진을 추가하려면 클릭하세요."
+      "slug": "슬러그 (URL에 사용되는 키 이름)"
+    },
+    "groupLabelsEdit": {
+      "addNewLabel": "새 라벨 추가",
+      "labels": "레이블"
     },
     "groupMembers": {
       "groupMem": "그룹 멤버",
@@ -626,40 +558,44 @@
       "sendMemMsg": "멤버에게 메시지 보내기",
       "showTemplates": "템플릿 표시",
       "templates": {
-        "templates": "템플릿",
         "none": "없음",
+        "templates": "템플릿",
         "welcome_volunteers": {
           "heading": "자원봉사자 환영",
           "message": "환영합니다. 자원봉사해 주셔서 감사합니다.\n\nB1.Church 앱을 다운로드하고 로그인하여 일정을 관리하세요. https://support.churchapps.org/b1/download"
         }
       }
     },
+    "groupNavigation": {
+      "members": "멤버",
+      "sessions": "세션"
+    },
     "groupPage": {
       "addPpl": "사람 추가"
     },
     "groupSessions": {
       "addSesMsg": "계속하려면 새 세션을 추가해주세요.",
+      "allYears": "모든 연도",
       "attFor": "출석 대상",
       "new": "새로운",
-      "noSesMsg": "세션이 없습니다.",
-      "sessions": "세션",
-      "allYears": "모든 연도",
       "noAttendance": "출석 기록을 찾을 수 없습니다.",
+      "noSesMsg": "세션이 없습니다.",
       "noSessionsFound": "세션을 찾을 수 없습니다.",
       "selectSession": "세션 선택",
       "session": "세션",
+      "sessions": "세션",
       "tryAdjusting": "검색을 조정해 보세요"
     },
     "groupsPage": {
+      "addGroup": "그룹 추가",
       "cat": "범주",
+      "categories": "카테고리",
       "groups": "그룹",
       "labels": "레이블",
       "noGroupMsg": "그룹을 찾을 수 없습니다. 그룹을 생성해주세요.",
       "pers": "1명",
       "ppl": "사람들",
       "spPpl": " 명",
-      "addGroup": "그룹 추가",
-      "categories": "카테고리",
       "subtitle": {
         "create": "첫 번째 그룹을 만들어 시작해 보세요.",
         "manage": "교회 그룹을 조직하고 관리하세요"
@@ -697,52 +633,8 @@
     },
     "tabs": {
       "mem": "멤버",
-      "noImplement": "구현되지 않음",
       "ses": "세션"
-    },
-    "groupLabelsEdit": {
-      "addNewLabel": "새 라벨 추가",
-      "labels": "레이블"
-    },
-    "groupNavigation": {
-      "members": "멤버",
-      "sessions": "세션"
     }
-  },
-  "login": {
-    "email": "이메일",
-    "expiredLink": "이 링크는 만료되었습니다. 새 링크를 요청해주세요.",
-    "forgot": "비밀번호를 잊으셨나요?",
-    "goLogin": "로그인으로 이동",
-    "login": "로그인",
-    "password": "비밀번호",
-    "register": "등록",
-    "registerThankYou": "등록해 주셔서 감사합니다!",
-    "requestLink": "재설정 링크 요청",
-    "reset": "재설정",
-    "resetInstructions": "이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.",
-    "resetPassword": "비밀번호 재설정",
-    "resetSent": "비밀번호 재설정 링크가 전송되었습니다! 이메일을 확인하세요.",
-    "setPassword": "비밀번호 설정",
-    "signIn": "로그인",
-    "signInTitle": "계정에 로그인",
-    "validate": {
-      "email": "유효한 이메일 주소를 입력해주세요.",
-      "firstName": "이름이 필요합니다.",
-      "invalid": "유효하지 않은 이메일 또는 비밀번호입니다.",
-      "lastName": "성이 필요합니다.",
-      "password": "비밀번호가 필요합니다.",
-      "passwordLength": "비밀번호는 최소 8자 이상이어야 합니다.",
-      "passwordMatch": "비밀번호가 일치하지 않습니다.",
-      "selectingChurch": "교회를 선택해주세요."
-    },
-    "verifyPassword": "비밀번호 확인",
-    "welcomeBack": "다시 오신 것을 환영합니다!",
-    "welcomeName": "환영합니다"
-  },
-  "markdownEditor": {
-    "content": "내용",
-    "markdownGuide": "마크다운 가이드"
   },
   "month": {
     "apr": "4월",
@@ -807,7 +699,6 @@
       "valuePlaceholder": "값"
     },
     "groups": {
-      "groups": "그룹",
       "notMemMsg": "현재 어떤 그룹에도 소속되지 않음."
     },
     "household": {
@@ -829,18 +720,18 @@
       "mergeRec": "레코드 병합"
     },
     "mergeModal": {
-      "mergeQuestion": "병합",
-      "with": "와(과)",
-      "fieldCon": "필드 충돌을 해결해주세요:",
-      "merge": "병합 중...",
       "cancel": "취소",
       "confirm": "확인",
-      "selMsg": "모든 필드에 대한 값을 선택해주세요",
       "contactInfo": "연락처 정보",
+      "fieldCon": "필드 충돌을 해결해주세요:",
       "householdId": "가구 ID",
       "id": "ID",
+      "merge": "병합 중...",
+      "mergeQuestion": "병합",
       "name": "이름",
-      "profile": "프로필"
+      "profile": "프로필",
+      "selMsg": "모든 필드에 대한 값을 선택해주세요",
+      "with": "와(과)"
     },
     "peopleColumns": {
       "appFilt": "필터 적용",
@@ -850,61 +741,52 @@
       "stand": "표준"
     },
     "peoplePage": {
+      "addPerson": "[NEEDS TRANSLATION] Add Person",
       "bDay": "생일",
       "bDayNo": "생일 (년도 없음)",
-      "delete": "삭제",
       "deleteOp": "삭제 옵션",
       "first": "이름",
       "last": "성",
       "middle": "중간 이름",
       "nameNote": "이름표 메모",
       "photo": "사진",
-      "ppl": "사람들",
       "primEmail": "기본 이메일",
       "primPhone": "기본 전화",
-      "searchPpl": "사람 검색",
-      "recentPpl": "최근 추가된 사람"
+      "recentPpl": "최근 추가된 사람",
+      "searchPpl": "사람 검색"
     },
     "peopleSearch": {
-      "addCon": "조건 추가",
+      "active": "활성:",
+      "activity": "활동",
       "adv": "고급",
       "advSearch": "고급 검색",
-      "allPeeps": "모든 사람:",
-      "for": "대상",
-      "madeTo": "에 대한",
-      "notIn": "포함되지 않음",
-      "placeholder": "이름으로 검색...",
-      "simp": "단순",
-      "simpSearch": "인물 검색",
-      "active": "활성:",
-      "clearAll": "모두 지우기",
-      "checkBoxes": "필터를 활성화하려면 확인란을 선택하세요",
-      "configure": "구성",
-      "names": "이름",
-      "demographics": "인구 통계",
-      "contact": "연락처 정보",
-      "membership": "회원 및 그룹",
-      "activity": "활동",
-      "type": "유형",
-      "fund": "기금",
       "campus": "캠퍼스",
+      "checkBoxes": "필터를 활성화하려면 확인란을 선택하세요",
+      "clearAll": "모두 지우기",
+      "configure": "구성",
+      "contact": "연락처 정보",
+      "customFields": "사용자 정의 필드",
+      "demographics": "인구 통계",
+      "fund": "기금",
+      "group": "그룹",
+      "membership": "회원 및 그룹",
+      "names": "이름",
+      "placeholder": "이름으로 검색...",
       "service": "서비스",
       "serviceTime": "서비스 시간",
-      "group": "그룹",
-      "customFields": "사용자 정의 필드"
-    },
-    "personNav": {
-      "customForms": "사용자 정의 양식"
+      "simp": "단순",
+      "simpSearch": "인물 검색",
+      "type": "유형"
     },
     "peopleSearchResults": {
       "noResMsg": "검색 결과가 없습니다. 다른 이름으로 검색하거나 새 사람을 추가해주세요"
     },
     "personAttendance": {
-      "att": "출석",
       "noAttMsg": "출석 기록이 없습니다. 그룹 세션에 대한 출석이 추적되면 여기에 표시됩니다."
     },
     "personEdit": {
       "applyQuestion": "전체에 적용하시겠습니까",
+      "cannotDeleteSelf": "[NEEDS TRANSLATION] You cannot delete your own person record.",
       "confirmMsg": "이 개인 기록을 영구적으로 삭제하시겠습니까?",
       "donorNumber": "기부자 번호",
       "exten": "내선",
@@ -918,11 +800,18 @@
       "merge": "병합",
       "mobile": "휴대폰",
       "nameNote": "이름표 메모",
-      "nickName": "별명",
       "persDet": "개인 정보",
       "upAddress": "다음으로 주소를 업데이트했습니다",
       "valEmail": "유효한 이메일 주소를 입력해주세요.",
       "work": "직장"
+    },
+    "personForm": {
+      "addForm": "양식 추가",
+      "form": "양식",
+      "noFormMsg": "이 사람에 대한 양식 제출을 찾을 수 없습니다"
+    },
+    "personNav": {
+      "customForms": "사용자 정의 양식"
     },
     "personView": {
       "home": "집",
@@ -938,11 +827,6 @@
     },
     "updateHouseHold": {
       "update": "주소 업데이트"
-    },
-    "personForm": {
-      "addForm": "양식 추가",
-      "form": "양식",
-      "noFormMsg": "이 사람에 대한 양식 제출을 찾을 수 없습니다"
     }
   },
   "person": {
@@ -966,11 +850,9 @@
     "maritalStatus": "결혼 상태",
     "married": "기혼",
     "member": "회원",
-    "membership": "회원 자격",
     "membershipStatus": "회원 상태",
     "membershp": "회원 자격",
     "middleName": "중간 이름",
-    "name": "이름",
     "nickName": "별명",
     "noRec": "레코드를 찾을 수 없습니다",
     "person": "사람",
@@ -985,176 +867,237 @@
     "unspecified": "지정되지 않음",
     "visitor": "방문자",
     "widowed": "사별",
-    "years": "년",
     "zip": "우편번호"
   },
+  "placeholders": {
+    "addPage": {
+      "linkText": "[NEEDS TRANSLATION] Click here",
+      "linkUrl": "[NEEDS TRANSLATION] /new-page",
+      "title": "우리의 이야기"
+    },
+    "batch": {
+      "name": "주일 헌금"
+    },
+    "block": {
+      "name": "환영 섹션"
+    },
+    "campus": {
+      "name": "본당 캠퍼스"
+    },
+    "choices": {
+      "text": "첫 번째 옵션",
+      "value": "옵션 A"
+    },
+    "church": {
+      "address1": "서울시 강남구 역삼로 456",
+      "address2": "100호",
+      "city": "서울",
+      "country": "[NEEDS TRANSLATION] USA",
+      "name": "은혜교회",
+      "state": "서울특별시",
+      "subdomain": "[NEEDS TRANSLATION] gracechurch",
+      "zip": "06241"
+    },
+    "device": {
+      "label": "[NEEDS TRANSLATION] Living Room Screen"
+    },
+    "donation": {
+      "checkNumber": "[NEEDS TRANSLATION] 1234",
+      "lastDigits": "[NEEDS TRANSLATION] 4242",
+      "notes": "김씨 가족 월정 십일조"
+    },
+    "element": {
+      "buttonText": "[NEEDS TRANSLATION] Click Here",
+      "cardTitle": "[NEEDS TRANSLATION] Card Title",
+      "donateText": "[NEEDS TRANSLATION] Donate Now",
+      "imageDescription": "[NEEDS TRANSLATION] Image description",
+      "videoId": "[NEEDS TRANSLATION] dQw4w9WgXcQ"
+    },
+    "faq": {
+      "title": "예배 시간이 언제인가요?"
+    },
+    "font": {
+      "search": "[NEEDS TRANSLATION] Search fonts..."
+    },
+    "form": {
+      "name": "등록 양식",
+      "questionDescription": "행사 계획에 도움을 주세요",
+      "questionPlaceholder": "여기에 답변을 입력하세요",
+      "questionTitle": "좋아하는 음식이 무엇인가요?",
+      "thankYouMessage": "제출해 주셔서 감사합니다!"
+    },
+    "fund": {
+      "name": "일반 기금"
+    },
+    "giving": {
+      "publicKey": "[NEEDS TRANSLATION] pk_live_..."
+    },
+    "group": {
+      "category": "커뮤니티, 성경공부, 사역",
+      "name": "성인 성경공부"
+    },
+    "household": {
+      "name": "김씨 가족"
+    },
+    "page": {
+      "linkText": "[NEEDS TRANSLATION] Read More",
+      "linkUrl": "[NEEDS TRANSLATION] https://example.com",
+      "title": "소개",
+      "urlPath": "[NEEDS TRANSLATION] /about-us"
+    },
+    "pairScreen": {
+      "code": "[NEEDS TRANSLATION] ABC123"
+    },
+    "person": {
+      "address1": "서울시 강남구 테헤란로 123",
+      "address2": "4층 B호",
+      "city": "서울",
+      "donorNumber": "[NEEDS TRANSLATION] DN-12345",
+      "email": "minsu@example.com",
+      "firstName": "민수",
+      "lastName": "김",
+      "middleName": "준",
+      "nameTag": "[NEEDS TRANSLATION] Lead Singer",
+      "nickname": "[NEEDS TRANSLATION] Johnny",
+      "phoneExt": "[NEEDS TRANSLATION] 1234",
+      "simpleEmail": "[NEEDS TRANSLATION] john@example.com",
+      "state": "서울특별시",
+      "zip": "06234"
+    },
+    "plan": {
+      "name": "[NEEDS TRANSLATION] Sunday Service - Jan 5"
+    },
+    "planItem": {
+      "description": "[NEEDS TRANSLATION] Brief description...",
+      "label": "찬양 시간"
+    },
+    "planType": {
+      "name": "주일 예배"
+    },
+    "position": {
+      "count": "[NEEDS TRANSLATION] 2",
+      "name": "리드 보컬"
+    },
+    "role": {
+      "name": "봉사자"
+    },
+    "sermon": {
+      "description": "일상에서 믿음을 실천하는 시리즈",
+      "title": "믿음 안에서 걷기"
+    },
+    "service": {
+      "name": "주일 예배"
+    },
+    "song": {
+      "album": "[NEEDS TRANSLATION] Album Name",
+      "arrangementName": "[NEEDS TRANSLATION] Contemporary Arrangement",
+      "artist": "[NEEDS TRANSLATION] John Newton",
+      "bpm": "[NEEDS TRANSLATION] 120",
+      "keySignature": "[NEEDS TRANSLATION] C#",
+      "language": "[NEEDS TRANSLATION] English",
+      "lengthSeconds": "[NEEDS TRANSLATION] 180",
+      "linkUrl": "[NEEDS TRANSLATION] https://example.com/chords",
+      "lyrics": "[NEEDS TRANSLATION] Enter lyrics here...",
+      "title": "[NEEDS TRANSLATION] Amazing Grace"
+    },
+    "task": {
+      "notes": "[NEEDS TRANSLATION] Add any notes about this task...",
+      "title": "[NEEDS TRANSLATION] Prepare worship slides"
+    },
+    "time": {
+      "displayName": "[NEEDS TRANSLATION] Sunday Morning"
+    },
+    "user": {
+      "email": "minsu@example.com",
+      "firstName": "민수",
+      "lastName": "김"
+    }
+  },
   "plans": {
+    "actionSelector": {
+      "addAction": "[NEEDS TRANSLATION] Add Action",
+      "addSection": "[NEEDS TRANSLATION] Add Section",
+      "fromAssociatedLesson": "연결된 레슨에서:",
+      "noActionsAvailable": "[NEEDS TRANSLATION] No actions available",
+      "selectAction": "작업 선택",
+      "selectExternalItem": "[NEEDS TRANSLATION] Select External Item"
+    },
+    "assignment": {
+      "addPosition": "직책 추가",
+      "autoAssign": "자동 할당",
+      "saveNotes": "메모 저장"
+    },
     "assignmentEdit": {
       "assignPos": "직책 할당",
       "done": "완료",
       "editAssign": "할당 편집",
       "noMem": "그룹 멤버를 찾을 수 없습니다."
     },
-    "planType": {
-      "details": "계획 유형 세부사항"
+    "contentProviderAuth": {
+      "deviceFlowInstructions": "[NEEDS TRANSLATION] Visit the URL below and enter the code to authorize:",
+      "errorGeneric": "[NEEDS TRANSLATION] Failed to link provider. Please try again.",
+      "link": "[NEEDS TRANSLATION] Link",
+      "linkAccount": "[NEEDS TRANSLATION] Link Account",
+      "linkNew": "[NEEDS TRANSLATION] Link New Provider",
+      "linked": "[NEEDS TRANSLATION] Linked",
+      "noLinkedDescription": "[NEEDS TRANSLATION] Link a content provider to access their content in your service plans.",
+      "noProvidersAvailable": "[NEEDS TRANSLATION] No content providers available",
+      "pkceInstructions": "[NEEDS TRANSLATION] Click the button below to authorize in a popup window:",
+      "pkceWaiting": "[NEEDS TRANSLATION] Waiting for authorization in popup...",
+      "refresh": "[NEEDS TRANSLATION] Refresh",
+      "selectProvider": "[NEEDS TRANSLATION] Link Content Provider",
+      "success": "[NEEDS TRANSLATION] Successfully linked!",
+      "title": "[NEEDS TRANSLATION] Content Providers",
+      "unlink": "[NEEDS TRANSLATION] Unlink",
+      "waitingForAuth": "[NEEDS TRANSLATION] Waiting for authorization..."
     },
-    "songs": {
-      "links": "링크"
+    "lessonHeaderSelector": {
+      "description": "플랜에 추가할 헤더 또는 섹션을 선택하세요. 하위 항목이 플랜 항목으로 추가됩니다.",
+      "noContent": "사용 가능한 레슨 콘텐츠가 없습니다",
+      "selectContent": "[NEEDS TRANSLATION] Select Content",
+      "title": "레슨 콘텐츠 추가"
+    },
+    "lessonScheduleEdit": {
+      "dateRequired": "날짜를 선택하세요",
+      "scheduleLesson": "수업 일정",
+      "scheduledDate": "예정된 날짜",
+      "selectLesson": "수업 선택",
+      "venueRequired": "장소를 선택하세요"
+    },
+    "lessonSelector": {
+      "associateLesson": "준강습",
+      "browseOtherProviders": "[NEEDS TRANSLATION] Browse Other Providers",
+      "contentProvider": "[NEEDS TRANSLATION] Content Provider",
+      "lesson": "수업",
+      "linkProviderFirst": "[NEEDS TRANSLATION] Link this provider first to browse content",
+      "providerNotLinked": "[NEEDS TRANSLATION] Provider Not Linked"
     },
     "ministryList": {
-      "mins": "사역",
-      "noMinMsg": "사역을 찾을 수 없습니다. 사역을 생성해주세요.",
       "getStarted": "첫 번째 사역을 만들어 시작해 보세요.",
-      "manage": "관리",
-      "member": "회원",
-      "members": "회원"
+      "noMinMsg": "사역을 찾을 수 없습니다. 사역을 생성해주세요."
     },
     "ministryPage": {
-      "planTypes": "계획 유형",
-      "plans": "계획",
-      "teams": "팀",
       "subtitle": "사역팀과 봉사계획을 조직하라"
     },
     "planEdit": {
-      "copy": "복사 출처",
       "copyAll": "직책 및 배정",
       "copyNothing": "없음",
       "copyPositions": "직책만",
       "copyPrevious": "이전 계획에서 복사",
       "copyServiceOrder": "예배 순서 복사",
-      "none": "없음",
       "planAdd": "계획 추가",
       "planEdit": "계획 편집",
       "planReq": "계획 이름이 필요합니다.",
       "servDate": "예배 날짜",
-      "servReq": "예배 날짜가 필요합니다.",
-      "servOrder": "예배 순서를 포함하시겠습니까?"
-    },
-    "planList": {
-      "noPlan": "아직 추가된 계획이 없습니다.",
-      "plans": "계획",
-      "createFirst": "첫 번째 계획 만들기",
-      "createPlan": "계획 만들기",
-      "newPlan": "새로운 계획",
-      "noPlans": "계획을 찾을 수 없습니다.",
-      "serviceOrder": "예배 순서",
-      "scheduleLesson": "수업 일정"
-    },
-    "lessonScheduleEdit": {
-      "scheduleLesson": "수업 일정",
-      "scheduledDate": "예정된 날짜",
-      "dateRequired": "날짜를 선택하세요",
-      "venueRequired": "장소를 선택하세요",
-      "selectLesson": "수업 선택"
-    },
-    "lessonSelector": {
-      "associateLesson": "준강습",
-      "lesson": "수업",
-      "program": "프로그램",
-      "study": "공부하다",
-      "venue": "장소"
-    },
-    "planPage": {
-      "assign": "팀 할당",
-      "assignments": "할당",
-      "band": "밴드",
-      "noteSave": "메모 저장됨",
-      "serviceOrder": "예배 순서",
-      "servicePlan": "예배 계획",
-      "loadingPlan": "계획 로드 중...",
-      "subtitle": "서비스 계획 및 예약"
-    },
-    "plansPage": {
-      "selMin": "사역 선택",
-      "addMinistry": "사역 추가",
-      "editMinistry": "사역 편집",
-      "subtitle": "사역 및 봉사 계획 관리",
-      "switchMinistry": "사역 변경"
-    },
-    "planValidation": {
-      "and": "그리고",
-      "between": "사이",
-      "blockCon": "차단 날짜 충돌:",
-      "cons": "충돌",
-      "during": "기간 중",
-      "more": "더 보기",
-      "needed": "필요함.",
-      "notify": "알림",
-      "person": "사람",
-      "ppl": "사람들",
-      "timeCon": "시간 충돌:",
-      "timeCon2": "시간 충돌:",
-      "to": "까지",
-      "val": "확인",
-      "valPlan": "계획이 유효합니다.",
-      "vol": "자원봉사자",
-      "volNotif": "모든 자원봉사자에게 알림이 전송되었습니다.",
-      "volReq": "자원봉사자 요청: ",
-      "pleaseConfirm": "로그인하고 확인해주세요."
-    },
-    "positionEdit": {
-      "catName": "범주 이름",
-      "catNameReq": "범주 이름이 필요합니다.",
-      "nameReq": "이름이 필요합니다",
-      "posAdd": "직책 추가",
-      "posEdit": "직책 편집",
-      "volCount": "자원봉사자 수",
-      "volGroup": "자원봉사 그룹"
-    },
-    "positionList": {
-      "load": "로딩 중...",
-      "persNeed": "1명 필요",
-      "pos": "직책",
-      "ppl": "사람들",
-      "pplNeed": " 명 필요",
-      "team": "팀"
-    },
-    "teamList": {
-      "noTeam": "팀을 찾을 수 없습니다. 팀을 생성해주세요.",
-      "teams": "팀",
-      "createTeam": "팀 만들기",
-      "createTeams": "팀 만들기",
-      "manage": "관리",
-      "member": "회원",
-      "members": "회원",
-      "newTeam": "새로운 팀",
-      "team": "팀"
-    },
-    "timeEdit": {
-      "disName": "표시 이름",
-      "disNameReq": "표시 이름이 필요합니다.",
-      "endReq": "종료 시간이 필요합니다",
-      "startReq": "시작 시간이 필요합니다",
-      "teamReq": "팀을 선택해주세요.",
-      "teamNeed": "필요한 팀",
-      "timeAdd": "시간 추가",
-      "timeEdit": "시간 편집",
-      "timeEnd": "종료 시간",
-      "timeStart": "시작 시간",
-      "followGuide": "서비스 시간을 설정하려면 아래 가이드를 따르세요.",
-      "tip": "팁"
-    },
-    "timeList": {
-      "noTime": "아직 추가된 시간이 없습니다",
-      "sunServ": "주일 예배",
-      "times": "시간"
-    },
-    "printPlan": {
-      "serviceOrder": "예배 순서",
-      "time": "시간",
-      "length": "길이"
-    },
-    "assignment": {
-      "addPosition": "직책 추가",
-      "autoAssign": "자동 할당",
-      "copy": "복사",
-      "saveNotes": "메모 저장"
+      "servReq": "예배 날짜가 필요합니다."
     },
     "planItem": {
-      "addOn": "추가 기능",
+      "addItem": "[NEEDS TRANSLATION] Add Item",
+      "editItem": "[NEEDS TRANSLATION] Edit Item",
+      "editSection": "[NEEDS TRANSLATION] Edit Section",
       "expandToActions": "작업으로 확장",
+      "externalItem": "[NEEDS TRANSLATION] External Item",
       "item": "목",
-      "lessonAction": "레슨 작업",
       "song": "노래"
     },
     "planItemEdit": {
@@ -1166,25 +1109,30 @@
       "editHeader": "헤더 편집",
       "editSong": "노래 편집",
       "enterSearch": "검색어를 입력하세요",
-      "key": "키",
       "minutes": "분",
       "seconds": "초"
     },
-    "actionSelector": {
-      "action": "작업",
-      "fromAssociatedLesson": "연결된 레슨에서:",
-      "section": "섹션",
-      "selectAction": "작업 선택"
+    "planList": {
+      "createFirst": "첫 번째 계획 만들기",
+      "createPlan": "계획 만들기",
+      "newPlan": "새로운 계획",
+      "noPlans": "계획을 찾을 수 없습니다.",
+      "plans": "계획",
+      "scheduleLesson": "수업 일정",
+      "serviceOrder": "예배 순서"
     },
-    "lessonHeaderSelector": {
-      "title": "레슨 콘텐츠 추가",
-      "description": "플랜에 추가할 헤더 또는 섹션을 선택하세요. 하위 항목이 플랜 항목으로 추가됩니다.",
-      "noContent": "사용 가능한 레슨 콘텐츠가 없습니다"
+    "planPage": {
+      "assign": "팀 할당",
+      "assignments": "할당",
+      "band": "밴드",
+      "loadingPlan": "계획 로드 중...",
+      "noteSave": "메모 저장됨",
+      "serviceOrder": "예배 순서",
+      "servicePlan": "예배 계획",
+      "subtitle": "서비스 계획 및 예약"
     },
-    "addOnSelector": {
-      "category": "카테고리",
-      "noAddOns": "사용 가능한 추가 기능 없음",
-      "selectAddOn": "추가 기능 선택"
+    "planType": {
+      "details": "계획 유형 세부사항"
     },
     "planTypeEdit": {
       "add": "추가",
@@ -1206,8 +1154,7 @@
       "pairTvApp": "TV 앱 연결",
       "planType": "계획 유형",
       "subtitle": "계획 유형 설정 구성",
-      "tvAppDescription": "무료 앱을 사용하여 TV 또는 디스플레이에 레슨 콘텐츠를 표시하세요",
-      "tvAppTitle": "TV에 표시"
+      "tvAppDescription": "무료 앱을 사용하여 TV 또는 디스플레이에 레슨 콘텐츠를 표시하세요"
     },
     "planTypePairDialog": {
       "downloadTitle": "Lessons.church TV 앱 다운로드",
@@ -1216,63 +1163,117 @@
       "success": "성공적으로 연결되었습니다! 이제 TV 앱에서 이 계획 유형의 콘텐츠가 표시됩니다.",
       "title": "TV 앱 연결"
     },
+    "planValidation": {
+      "and": "그리고",
+      "between": "사이",
+      "blockCon": "차단 날짜 충돌:",
+      "cons": "충돌",
+      "during": "기간 중",
+      "more": "더 보기",
+      "needed": "필요함.",
+      "notify": "알림",
+      "person": "사람",
+      "pleaseConfirm": "로그인하고 확인해주세요.",
+      "ppl": "사람들",
+      "timeCon": "시간 충돌:",
+      "timeCon2": "시간 충돌:",
+      "to": "까지",
+      "val": "확인",
+      "valPlan": "계획이 유효합니다.",
+      "vol": "자원봉사자",
+      "volNotif": "모든 자원봉사자에게 알림이 전송되었습니다.",
+      "volReq": "자원봉사자 요청: "
+    },
+    "plansPage": {
+      "addMinistry": "사역 추가",
+      "editMinistry": "사역 편집",
+      "selMin": "사역 선택",
+      "subtitle": "사역 및 봉사 계획 관리"
+    },
+    "positionEdit": {
+      "catName": "범주 이름",
+      "catNameReq": "범주 이름이 필요합니다.",
+      "nameReq": "이름이 필요합니다",
+      "posAdd": "직책 추가",
+      "posEdit": "직책 편집",
+      "volCount": "자원봉사자 수",
+      "volGroup": "자원봉사 그룹"
+    },
+    "positionList": {
+      "load": "로딩 중...",
+      "persNeed": "1명 필요",
+      "pos": "직책",
+      "ppl": "사람들",
+      "pplNeed": " 명 필요",
+      "team": "팀"
+    },
+    "printPlan": {
+      "length": "길이",
+      "serviceOrder": "예배 순서",
+      "time": "시간"
+    },
     "serviceOrder": {
+      "addFromLesson": "[NEEDS TRANSLATION] Add From Lesson",
       "addSection": "섹션 추가",
+      "associateError": "[NEEDS TRANSLATION] Associate Error",
       "associateLesson": "준강습",
-      "customize": "사용자 정의",
+      "customizeLesson": "[NEEDS TRANSLATION] Customize",
+      "disassociateError": "[NEEDS TRANSLATION] Disassociate Error",
+      "lessonPreview": "[NEEDS TRANSLATION] Lesson Preview",
+      "loadError": "[NEEDS TRANSLATION] Load Error",
       "noItems": "서비스 주문에 항목이 없습니다.",
       "orderOfService": "서비스 순서",
-      "print": "인쇄",
       "previewBanner": "이것은 연결된 수업의 미리보기입니다. 편집하려면 \"사용자 정의\"를 클릭하세요.",
-      "switchLesson": "레슨 전환"
+      "print": "인쇄"
+    },
+    "songs": {
+      "links": "링크"
+    },
+    "teamList": {
+      "createTeam": "팀 만들기",
+      "createTeams": "팀 만들기",
+      "manage": "관리",
+      "members": "회원",
+      "newTeam": "새로운 팀",
+      "noTeam": "팀을 찾을 수 없습니다. 팀을 생성해주세요.",
+      "teams": "팀"
+    },
+    "timeEdit": {
+      "disName": "표시 이름",
+      "disNameReq": "표시 이름이 필요합니다.",
+      "endReq": "종료 시간이 필요합니다",
+      "followGuide": "서비스 시간을 설정하려면 아래 가이드를 따르세요.",
+      "startReq": "시작 시간이 필요합니다",
+      "teamNeed": "필요한 팀",
+      "teamReq": "팀을 선택해주세요.",
+      "timeAdd": "시간 추가",
+      "timeEdit": "시간 편집",
+      "timeEnd": "종료 시간",
+      "timeStart": "시작 시간",
+      "tip": "팁"
+    },
+    "timeList": {
+      "noTime": "아직 추가된 시간이 없습니다",
+      "sunServ": "주일 예배",
+      "times": "시간"
     }
   },
   "profile": {
-    "devices": {
-      "addScreen": "화면 추가",
-      "editDevice": "기기 편집",
-      "title": "기기",
-      "device": "장치",
-      "label": "레이블",
-      "lastActiveDate": "마지막 활성 날짜",
-      "registrationDate": "등록일"
-    },
-    "profilePage": {
-      "accDel": "계정 삭제",
-      "confirmMsg": "계정을 영구적으로 삭제하시겠습니까?",
-      "daily": "매일",
-      "delAcc": "내 계정 삭제",
-      "emailMsg": "이메일 주소를 입력해주세요.",
-      "firstMsg": "이름을 입력해주세요",
-      "freqEmail": "이메일 빈도",
-      "indiv": "실시간",
-      "lastMsg": "성을 입력해주세요",
-      "linkedAccounts": "연결된 계정",
-      "never": "사용 안 함",
-      "noDirect": "회원 명부에서 숨기기",
-      "notifMsg": "비공개 메시지, 대화, 양식 및 기타 알림에 대한 업데이트를 받을 방법을 선택하세요.",
-      "notifPref": "알림 환경설정",
-      "notifPush": "푸시 알림 허용",
-      "passLong": "비밀번호는 최소 8자 이상이어야 합니다.",
-      "passMatch": "비밀번호가 일치하지 않습니다.",
-      "passNew": "새 비밀번호",
-      "passVer": "비밀번호 확인",
-      "passwordHelper": "현재 비밀번호를 유지하려면 비워 두세요",
-      "permWarn": "주의: 이러한 작업은 영구적입니다",
-      "profEdit": "계정 편집",
-      "saveChange": "변경사항이 저장되었습니다.",
-      "valEmail": "유효한 이메일 주소를 입력해주세요.",
-      "deleteError": "계정을 삭제하지 못했습니다.",
-      "saveChanges": "변경 사항 저장",
-      "saveError": "변경사항을 저장하지 못했습니다.",
-      "subtitle": "프로필 및 기본 설정 관리"
-    },
     "deviceContent": {
       "associatedContent": "관련 콘텐츠"
     },
     "deviceEdit": {
       "label": "레이블",
       "labelRequired": "라벨은 필수 항목입니다."
+    },
+    "devices": {
+      "addScreen": "화면 추가",
+      "device": "장치",
+      "editDevice": "기기 편집",
+      "label": "레이블",
+      "lastActiveDate": "마지막 활성 날짜",
+      "registrationDate": "등록일",
+      "title": "기기"
     },
     "linkedAccounts": {
       "link": "링크",
@@ -1283,7 +1284,40 @@
       "codeRequired": "페어링 코드가 필요합니다",
       "invalidCode": "잘못된 페어링 코드",
       "pairingCode": "페어링 코드"
+    },
+    "profilePage": {
+      "accDel": "계정 삭제",
+      "confirmMsg": "계정을 영구적으로 삭제하시겠습니까?",
+      "delAcc": "내 계정 삭제",
+      "deleteError": "계정을 삭제하지 못했습니다.",
+      "emailMsg": "이메일 주소를 입력해주세요.",
+      "firstMsg": "이름을 입력해주세요",
+      "lastMsg": "성을 입력해주세요",
+      "linkedAccounts": "연결된 계정",
+      "noDirect": "회원 명부에서 숨기기",
+      "passLong": "비밀번호는 최소 8자 이상이어야 합니다.",
+      "passMatch": "비밀번호가 일치하지 않습니다.",
+      "passNew": "새 비밀번호",
+      "passVer": "비밀번호 확인",
+      "passwordHelper": "현재 비밀번호를 유지하려면 비워 두세요",
+      "permWarn": "주의: 이러한 작업은 영구적입니다",
+      "profEdit": "계정 편집",
+      "saveChange": "변경사항이 저장되었습니다.",
+      "saveChanges": "변경 사항 저장",
+      "saveError": "변경사항을 저장하지 못했습니다.",
+      "subtitle": "프로필 및 기본 설정 관리",
+      "valEmail": "유효한 이메일 주소를 입력해주세요."
     }
+  },
+  "reporting": {
+    "detailed": "상세",
+    "downloadOptions": "다운로드 옵션",
+    "noData": "사용 가능한 데이터 없음",
+    "runReport": "보고서 실행",
+    "sampleTemplate": "샘플 템플릿",
+    "summary": "요약",
+    "toDateBeforeFromDate": "종료 날짜는 시작 날짜보다 이전일 수 없습니다",
+    "useFilter": "필터 사용"
   },
   "reports": {
     "reportPage": {
@@ -1291,89 +1325,282 @@
     },
     "reportsPage": {
       "attTrend": "출석 추세",
-      "bDays": "생일",
-      "dailyGroupAtt": "일일 그룹 출석",
-      "donSum": "기부 요약",
-      "groupAtt": "그룹 출석",
-      "reports": "보고서",
       "attTrendDesc": "시간 경과에 따른 출석 추세 보기",
+      "bDays": "생일",
       "bDaysDesc": "다가오는 생일 보기",
+      "dailyGroupAtt": "일일 그룹 출석",
       "dailyGroupAttDesc": "일일 그룹 출석 보기",
+      "donSum": "기부 요약",
       "donSumDesc": "기부 요약 보기",
+      "groupAtt": "그룹 출석",
       "groupAttDesc": "그룹 출석 보기",
       "helpText": "자세한 정보를 보려면 보고서를 선택하세요.",
+      "reports": "보고서",
       "subtitle": "교회 보고서 보기 및 다운로드"
     }
   },
-  "reporting": {
-    "detailed": "상세",
-    "downloadOptions": "다운로드 옵션",
-    "fromDate": "시작 날짜",
-    "noData": "사용 가능한 데이터 없음",
-    "runReport": "보고서 실행",
-    "sampleTemplate": "샘플 템플릿",
-    "summary": "요약",
-    "toDate": "종료 날짜",
-    "toDateBeforeFromDate": "종료 날짜는 시작 날짜보다 이전일 수 없습니다",
-    "useFilter": "필터 사용"
-  },
-  "selectChurch": {
-    "address1": "주소 1",
-    "address2": "주소 2",
-    "another": "또는 다른 교회 검색",
-    "city": "도시",
-    "confirmRegister": "등록 확인",
-    "country": "국가",
-    "name": "교회 이름",
-    "noMatches": "일치하는 항목을 찾을 수 없습니다",
-    "register": "새 교회 등록",
-    "selectChurch": "교회 선택",
-    "state": "주/도",
-    "validate": {
-      "address": "주소가 필요합니다.",
-      "city": "도시가 필요합니다.",
-      "country": "국가가 필요합니다.",
-      "name": "교회 이름이 필요합니다.",
-      "state": "주가 필요합니다.",
-      "zip": "우편번호가 필요합니다."
+  "sermons": {
+    "addFirstSermon": "첫 번째 설교 추가",
+    "addPermanentLiveUrl": "영구 라이브 URL 추가",
+    "addSermon": "설교 추가",
+    "adjustSearchTerms": "검색어를 조정해 보세요",
+    "bulkImport": {
+      "autoImportNewVideos": "새 비디오 자동 가져오기",
+      "backToSelection": "선택으로 돌아가기",
+      "chooseSource": "가져오기 소스 선택",
+      "fetch": "가져오기",
+      "fetching": "가져오는 중...",
+      "import": "가져오기",
+      "importFromVimeo": "Vimeo에서 가져오기",
+      "importFromYouTube": "YouTube에서 가져오기",
+      "importIntoPlaylist": "재생목록으로 가져오기",
+      "selectPlaylist": "재생목록을 선택하세요",
+      "subtitle": "외부 플랫폼에서 비디오를 대량으로 가져오기",
+      "title": "대량 가져오기",
+      "vimeo": "Vimeo",
+      "vimeoChannelId": "Vimeo 채널 ID",
+      "vimeoChannelPlaceholder": "[NEEDS TRANSLATION] staffpicks",
+      "vimeoDescription": "Vimeo 계정 또는 쇼케이스에서 비디오 가져오기",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube 채널 ID",
+      "youtubeChannelPlaceholder": "[NEEDS TRANSLATION] UCfiDl90gAfZMkgbeCqX1WiA",
+      "youtubeDescription": "YouTube 채널 또는 재생목록에서 비디오 가져오기"
     },
-    "zip": "우편번호"
+    "duration": {
+      "minutes": "분",
+      "seconds": "초"
+    },
+    "getStarted": "첫 번째 설교를 추가하여 시작하세요",
+    "liveStreamTimes": {
+      "externalLinks": {
+        "customizeAppearance": "외관 사용자 지정",
+        "editUsers": "사용자 편집",
+        "title": "외부 리소스",
+        "viewYourStream": "스트림 보기"
+      },
+      "linkEdit": {
+        "cancel": "취소",
+        "configureSettings": "탐색 링크 설정 구성",
+        "createNewLink": "새 링크 만들기",
+        "delete": "삭제",
+        "deleteConfirm": "이 탐색 링크를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+        "deleteLink": "링크 삭제",
+        "deleteNestedLinksFirst": "이 링크에는 중첩된 하위 링크가 있습니다. 먼저 해당 항목을 삭제하세요.",
+        "deleting": "삭제 중...",
+        "displayText": "표시 텍스트",
+        "displayTextPlaceholder": "탐색에 표시할 텍스트 입력",
+        "editNavigationLink": "탐색 링크 편집",
+        "errors": {
+          "deleteFailed": "링크 삭제에 실패했습니다. 다시 시도하세요.",
+          "deleteNestedFirst": "중첩된 링크를 먼저 삭제하세요",
+          "saveFailed": "링크 저장에 실패했습니다. 다시 시도하세요.",
+          "textRequired": "유효한 텍스트를 입력하세요",
+          "unauthorized": "링크를 만들 권한이 없습니다",
+          "unauthorizedDelete": "링크를 삭제할 권한이 없습니다",
+          "urlRequired": "링크를 입력하세요"
+        },
+        "linkDetails": "링크 세부정보",
+        "linkUrl": "링크 URL",
+        "linkUrlPlaceholder": "https://example.com 또는 /internal-page",
+        "menuOrganization": "메뉴 구성",
+        "optionalSubmenuMessage": "선택사항: 기존 하위 메뉴 아래에 이 링크를 구성하세요:",
+        "saveLink": "링크 저장",
+        "saving": "저장 중...",
+        "submenuMessage": "이 링크는 하위 메뉴 아래에 배치됩니다:"
+      },
+      "navigationLinks": {
+        "add": "추가",
+        "home": "집",
+        "title": "탐색 링크"
+      },
+      "serviceEdit": {
+        "addNewService": "새 예배 추가",
+        "auto": "자동",
+        "basicInformation": "기본 정보",
+        "chatSettings": "채팅 설정",
+        "deleteConfirm": "이 예배를 삭제하시겠습니까?",
+        "editService": "예배 편집",
+        "enableChatMinutesAfter": "채팅 활성화 - 종료 후 분",
+        "enableChatMinutesBefore": "채팅 활성화 - 시작 전 분",
+        "errorsCorrectionTitle": "다음 오류를 수정해주세요:",
+        "latestSermon": "최신 설교",
+        "no": "아니요",
+        "oneTime": "일회성",
+        "recursWeekly": "매주 반복",
+        "sermon": "설교",
+        "serviceName": "예배 이름",
+        "serviceNamePlaceholder": "예: 주일 오전 예배",
+        "serviceNameRequired": "예배 이름은 필수 항목입니다",
+        "serviceTime": "예배 시간",
+        "serviceTimeRequired": "예배 시간은 필수 항목입니다",
+        "startVideoEarly": "비디오 조기 시작",
+        "startVideoEarlyHelp": "선택사항: 카운트다운 비디오 또는 예배 전 콘텐츠용",
+        "videoSettings": "비디오 설정",
+        "weekly": "주간",
+        "yes": "예"
+      },
+      "services": "예배",
+      "servicesTab": {
+        "addService": "예배 추가",
+        "title": "예배",
+        "weekly": "주간"
+      },
+      "settings": "설정",
+      "sidebarTabs": {
+        "add": "추가",
+        "title": "콘텐츠 탭"
+      },
+      "subtitle": "반복되는 예배 시간 구성",
+      "tabEdit": {
+        "cancel": "취소",
+        "chat": "채팅",
+        "configureSettings": "스트리밍 사이드바 탭 설정 구성",
+        "createNewTab": "새 탭 만들기",
+        "delete": "삭제",
+        "deleteConfirm": "이 탭을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+        "deleteTab": "탭 삭제",
+        "deleting": "삭제 중...",
+        "editTab": "탭 편집",
+        "errors": {
+          "deleteFailed": "탭 삭제에 실패했습니다. 다시 시도하세요.",
+          "saveFailed": "탭 저장에 실패했습니다. 다시 시도하세요.",
+          "textRequired": "유효한 텍스트를 입력하세요",
+          "urlRequired": "유효한 URL을 입력하세요"
+        },
+        "externalUrl": "외부 URL",
+        "externalUrlPlaceholder": "https://example.com",
+        "icon": "아이콘",
+        "linkConfiguration": "링크 구성",
+        "linkType": "링크 유형",
+        "linkTypeHelp": {
+          "chat": "내장 채팅 기능",
+          "none": "탭 동작을 구성하려면 링크 유형을 선택하세요",
+          "prayer": "내장 기도 요청 기능",
+          "url": "외부 URL은 새 탭에서 열립니다"
+        },
+        "prayer": "기도",
+        "saveTab": "탭 저장",
+        "saving": "저장 중...",
+        "tabDisplay": "탭 표시",
+        "tabText": "탭 텍스트",
+        "tabTextPlaceholder": "탭 표시 텍스트 입력"
+      },
+      "title": "라이브 스트림 시간"
+    },
+    "noPlaylist": "재생목록 없음",
+    "noSermonsFound": "설교를 찾을 수 없습니다",
+    "noSermonsYet": "아직 설교가 없습니다",
+    "notScheduled": "예약되지 않음",
+    "playlist": "재생목록",
+    "playlists": {
+      "actions": "작업",
+      "addPlaylist": "재생목록 추가",
+      "adjustSearchTerms": "검색어를 조정해 보세요",
+      "createFirstPlaylist": "첫 번째 재생목록 만들기",
+      "editPlaylist": "재생목록 편집",
+      "getStarted": "첫 번째 재생목록을 만들어 시작하세요",
+      "noPlaylistsFound": "재생목록을 찾을 수 없습니다",
+      "noPlaylistsMatch": "검색과 일치하는 재생목록이 없습니다",
+      "playlistEdit": {
+        "addThumbnail": "썸네일 추가",
+        "basicInformation": "기본 정보",
+        "changeThumbnail": "썸네일 변경",
+        "createNew": "새 재생목록 만들기",
+        "deleteConfirm": "이 재생목록을 삭제하시겠습니까?",
+        "describePlaylist": "이 재생목록을 설명하세요...",
+        "description": "설명",
+        "editPlaylist": "재생목록 편집",
+        "enterTitle": "재생목록 제목 입력...",
+        "newPlaylist": "새 재생목록",
+        "playlistTitle": "재생목록 제목",
+        "publishDate": "게시 날짜",
+        "publishHelp": "이 재생목록은 언제 시청자에게 공개되어야 합니까?",
+        "publishingSchedule": "게시 및 일정",
+        "recommendedSize": "권장 크기: 1280x720 픽셀 (16:9 비율)",
+        "thumbnailImage": "썸네일 이미지",
+        "unauthorized": "재생목록을 만들 권한이 없습니다",
+        "unauthorizedDelete": "재생목록을 삭제할 권한이 없습니다"
+      },
+      "search": "검색",
+      "searchPlaceholder": "재생목록 검색...",
+      "subtitle": "비디오 재생목록을 관리하고 콘텐츠를 정리하세요",
+      "title": "재생목록"
+    },
+    "publishDate": "게시 날짜",
+    "searchPlaceholder": "제목 또는 재생목록으로 설교 검색...",
+    "sermon": "설교",
+    "sermonEdit": {
+      "add": "추가",
+      "addToAnotherPlaylist": "다른 재생목록에 추가",
+      "channelIdPlaceholder": "이것은 채널 URL이 아닙니다 - 위의 도움말 링크를 참조하세요",
+      "currentLiveService": "현재 라이브 예배",
+      "currentYouTubeLiveStream": "현재 YouTube 라이브 스트림",
+      "customEmbedUrl": "맞춤 삽입 URL",
+      "deleteConfirm": "이 설교를 삭제하시겠습니까?",
+      "description": "설명",
+      "editPermanentLiveUrl": "영구 라이브 URL 편집",
+      "editSermon": "설교 편집",
+      "facebook": "Facebook",
+      "fetch": "가져오기",
+      "getYourChannelId": "채널 ID 가져오기",
+      "newSermon": "새 설교",
+      "none": "없음",
+      "sermonEmbedUrl": "설교 삽입 URL",
+      "sermonId": "설교 ID",
+      "title": "제목",
+      "totalSermonDuration": "전체 설교 시간",
+      "unauthorized": "설교를 만들 권한이 없습니다",
+      "unauthorizedDelete": "설교를 삭제할 권한이 없습니다",
+      "videoProvider": "비디오 제공자",
+      "vimeo": "Vimeo",
+      "vimeoId": "Vimeo ID",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube 채널 ID",
+      "youtubeId": "YouTube ID"
+    },
+    "subtitle": "설교 라이브러리 및 라이브 스트리밍 관리",
+    "title": "설교"
   },
   "serverAdmin": {
     "adminPage": {
-      "abb": "약어",
       "act": "활성",
       "arch": "보관됨",
       "church": "교회",
-      "churches": "교회",
       "churchName": "교회 이름",
-      "look": "조회",
+      "churches": "교회",
+      "location": "위치",
       "noChurch": "교회를 찾을 수 없습니다. 다른 이름으로 검색해주세요.",
+      "noUserChurches": "[NEEDS TRANSLATION] This user has no churches associated with their account.",
+      "noUsers": "[NEEDS TRANSLATION] No users found. Please search for a different name or email.",
       "noteFour": "비교 가능한 소프트웨어는 ProPresenter입니다. 사이트 라이센스 비용은 $399입니다. 평균적으로 교회가 3대의 컴퓨터에 소프트웨어를 설치한다고 가정하고 전체 설치 수를 3으로 나누어 교회 수를 계산했습니다. 또한 교회가 평균 5년마다 새 버전으로 업그레이드한다고 가정했습니다. 따라서 $399 / 5년 / 3대 컴퓨터 = 컴퓨터당 연간 $26.60입니다. 이러한 가정을 수량화할 수 있다면 이 수치를 업데이트해야 합니다.",
       "noteOne": "비교 가능한 소프트웨어는 Breeze입니다. 월 $72 또는 연간 $864를 청구합니다.",
-      "notes": "메모",
       "noteThree": "비교 가능한 콘텐츠는 Orange입니다. 252 Basic의 경우 시청자가 26-50명인 교회에 연간 $1023을 청구합니다.",
       "noteTwo": "비교 가능한 소프트웨어는 SubSplash입니다. 월 $99 또는 연간 $1200부터 시작합니다. 여기에는 기부에 대한 수수료가 포함되지 않습니다.",
+      "notes": "메모",
       "regist": "등록됨",
+      "searchResults": "[NEEDS TRANSLATION] Search Results",
       "servAdmin": "서버 관리자",
-      "usageTrends": "사용 추세",
-      "valueNotes": "값 계산 방법에 대한 메모",
-      "location": "위치",
       "subtitle": "서버 전체 설정 및 교회 관리",
-      "translationLookups": "번역 조회"
+      "translationLookups": "번역 조회",
+      "usageTrends": "사용 추세",
+      "userChurches": "[NEEDS TRANSLATION] Churches",
+      "userSearch": "[NEEDS TRANSLATION] Search by Name or Email",
+      "userSearchPlaceholder": "[NEEDS TRANSLATION] Search by name or email",
+      "users": "[NEEDS TRANSLATION] Users",
+      "valueNotes": "값 계산 방법에 대한 메모"
     },
     "reportPage": {
-      "report": "보고서",
       "adminOnly": "관리자 전용",
+      "report": "보고서",
       "serverAdmin": "서버 관리자"
     },
     "translation": {
-      "title": "성경 번역 조회",
       "abbreviations": "약어",
       "endDate": "종료 날짜",
       "lookups": "조회",
       "search": "검색",
-      "startDate": "시작 날짜"
+      "startDate": "시작 날짜",
+      "title": "성경 번역 조회"
     }
   },
   "settings": {
@@ -1382,30 +1609,73 @@
       "tabNameHelper": "탭의 설명적인 이름을 선택하세요",
       "urlHelper": "전체 URL 입력 (예: https://example.com)"
     },
+    "appEdit": {
+      "addTab": "탭 추가",
+      "bible": "성경",
+      "changeImage": "[NEEDS TRANSLATION] Change Image",
+      "checkin": "체크인",
+      "deleteTab": "탭 삭제",
+      "donation": "기부",
+      "donationLanding": "기부착륙",
+      "editTab": "탭 편집",
+      "externalUrl": "외부 URL",
+      "internalPage": "내부 페이지",
+      "lessons": "수업",
+      "liveStream": "라이브 스트림",
+      "memberDirectory": "회원 명부",
+      "myGroups": "내 그룹",
+      "page": "페이지",
+      "saveTab": "탭 저장",
+      "saving": "저장 중...",
+      "selectImage": "[NEEDS TRANSLATION] Select Image",
+      "tabName": "탭 이름",
+      "tabType": "탭 유형",
+      "url": "URL",
+      "verseOfDay": "오늘의 말씀"
+    },
+    "appTabs": {
+      "editTab": "탭 편집",
+      "moveDown": "아래로 이동",
+      "moveUp": "위로 이동",
+      "noTabs": "구성된 탭이 없습니다.",
+      "noTabsDesc": "앱 탐색을 맞춤설정하려면 탭을 추가하세요.",
+      "title": "앱 탭",
+      "untitled": "제목 없음"
+    },
     "associatePerson": {
       "change": "변경"
     },
     "church": {
       "subdomainHelper": "교회의 고유한 웹 주소"
     },
-    "churchSettings": {
-      "churchSet": "교회 설정",
-      "subdom": "서브도메인"
-    },
     "churchSettingsEdit": {
       "address1": "주소 1",
       "address2": "주소 2",
-      "churchName": "교회 이름",
-      "noNameMsg": "교회 이름은 비워둘 수 없습니다.",
-      "noSubMsg": "서브도메인은 비워둘 수 없습니다.",
-      "subdom": "서브도메인",
-      "general": "일반",
       "churchInfo": "교회 정보",
-      "churchSettings": "교회 설정",
       "churchInfoSubtitle": "이름, 주소 및 서브도메인",
+      "churchName": "교회 이름",
+      "churchSettings": "교회 설정",
+      "domainsSubtitle": "사용자 정의 도메인 구성",
+      "general": "일반",
       "generalSubtitle": "지원 연락처, 디렉토리 및 가시성",
       "givingSubtitle": "결제 게이트웨이 및 수수료 옵션",
-      "domainsSubtitle": "사용자 정의 도메인 구성"
+      "noNameMsg": "교회 이름은 비워둘 수 없습니다.",
+      "noSubMsg": "서브도메인은 비워둘 수 없습니다.",
+      "subdom": "서브도메인"
+    },
+    "directoryApprovalSettingsEdit": {
+      "directoryApprovalGroup": "디렉터리 승인 그룹",
+      "forceMsg": "이 그룹은 모든 회원 디렉터리 업데이트를 처리합니다. 승인 후에만 변경 사항이 적용됩니다.",
+      "groups": "그룹",
+      "noGroups": "사용 가능한 그룹 없음",
+      "none": "없음"
+    },
+    "directoryVisibility": {
+      "everyone": "[NEEDS TRANSLATION] Everyone (Including Visitors)",
+      "label": "[NEEDS TRANSLATION] Show in Directory",
+      "members": "[NEEDS TRANSLATION] Members & Staff",
+      "regularAttendees": "[NEEDS TRANSLATION] Regular Attendees & Above",
+      "staff": "[NEEDS TRANSLATION] Staff Only"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
@@ -1413,28 +1683,19 @@
       "errorInvalid": "잘못된 형식입니다. 도메인만 입력하세요 (예: yoursite.com 또는 sub.yoursite.org). http://, 경로 또는 슬래시를 포함하지 마세요."
     },
     "domainSettingsEdit": {
-      "act": "작업",
-      "delete": "삭제",
-      "domain": "도메인",
-      "domains": "도메인",
       "domMsg": "원하는 사용자 정의 도메인에 대해 B1 웹사이트가 응답하도록 설정할 수 있습니다. 여기에 연결된 도메인 이름을 입력하고 DNS에 다음 레코드를 추가하세요:",
       "domMsg2": "DNS 공급자가 CNAME 레코드 추가를 허용하지 않는 경우 A 레코드를 대신 사용할 수 있습니다:",
       "domMsg3": "DNS 항목을 추가한 후 SSL 오류가 발생하면 여기를 클릭하여 ",
+      "domMsg4": "하세요. 최대 5분이 소요될 수 있습니다.",
       "domMsgConnect": "연결",
-      "domMsg4": "하세요. 최대 5분이 소요될 수 있습니다."
-    },
-    "directoryApprovalSettingsEdit": {
-      "directoryApprovalGroup": "디렉터리 승인 그룹",
-      "forceMsg": "이 그룹은 모든 회원 디렉터리 업데이트를 처리합니다. 승인 후에만 변경 사항이 적용됩니다.",
-      "groups": "그룹",
-      "none": "없음",
-      "noGroups": "사용 가능한 그룹 없음"
+      "domain": "도메인",
+      "domains": "도메인"
     },
     "feeOptionsSettings": {
-      "creditCardFlatRate": "정액 요금 [ 신용카드 ]",
-      "creditCardTransactionFee": "거래 수수료 [ 신용카드 ]",
       "achFlatRate": "정액 요금 [ ACH ]",
       "achHardLimit": "엄격한 한도 [ ACH ]",
+      "creditCardFlatRate": "정액 요금 [ 신용카드 ]",
+      "creditCardTransactionFee": "거래 수수료 [ 신용카드 ]",
       "paypalFlatRate": "정액 요금 [ PayPal ]",
       "paypalTransactionFee": "거래 수수료 [ PayPal ]"
     },
@@ -1443,57 +1704,44 @@
     },
     "givingSettingsEdit": {
       "apiCredentials": "API 자격 증명",
+      "clientId": "클라이언트 ID",
+      "clientSecret": "클라이언트 비밀키",
       "developersApiKeys": "개발자 → API 키",
       "forceMsg": "사용자가 거래 수수료를 자동으로 부담하도록 강제합니다",
       "giving": "기부",
       "none": "없음",
+      "paypal": "PayPal",
       "paypalCreateApp": "클라이언트 ID와 비밀키를 얻으려면 앱을 만드세요.",
       "paypalDeveloper": "PayPal 개발자",
       "paypalGoTo": "이동",
       "paypalLogin": "로그인한 다음",
       "prov": "제공자",
       "pubKey": "공개 키",
+      "saveError": "제공 설정을 저장하지 못했습니다.",
       "secKey": "비밀 키",
+      "stripe": "Stripe",
       "stripeCopyKeys": "게시 가능 키와 비밀 키(테스트 및 라이브)를 복사하세요.",
       "stripeDashboard": "Stripe 대시보드",
       "stripeGoTo": "그리고 이동",
-      "stripe": "Stripe",
       "stripeVisit": "방문",
-      "paypal": "PayPal",
-      "clientId": "클라이언트 ID",
-      "clientSecret": "클라이언트 비밀키",
-      "transFee": "거래 수수료",
-      "saveError": "제공 설정을 저장하지 못했습니다."
+      "transFee": "거래 수수료"
+    },
+    "imageEditor": {
+      "crop": "자르기",
+      "upload": "업로드"
     },
     "manageChurch": {
       "editSettings": "설정 편집",
       "imEx": "가져오기/내보내기",
-      "manage": "관리",
-      "tools": "도구",
       "mobileApps": "모바일 앱",
       "noData": "사용 가능한 교회 데이터가 없습니다.",
       "subtitle": "교회 설정 및 기본 설정 구성",
       "title": "교회 관리"
     },
-    "supportContactSettingsEdit": {
-      "supportContact": "지원 연락처",
-      "forceMsg": "이 링크는 사용자가 교회에 연락하는 데 사용됩니다",
-      "link": "링크",
-      "linkHelperText": "교회 이메일이거나 교회 연락처 양식에 대한 링크여야 합니다"
-    },
-    "visibilityPrefSettingsEdit": {
-      "visibilityPreference": "가시성 기본 설정",
-      "forceMsg": "아직 설정을 구성하지 않은 사람들을 위한 기본값을 설정합니다",
-      "address": "주소",
-      "phoneNum": "전화번호",
-      "email": "이메일",
-      "everyone": "모든 사람",
-      "members": "회원",
-      "groups": "그룹만"
-    },
-    "imageEditor": {
-      "crop": "자르기",
-      "upload": "업로드"
+    "mobileAppSettings": {
+      "addTab": "탭 추가",
+      "subtitle": "모바일 앱 설정 구성",
+      "title": "모바일 앱 설정"
     },
     "preview": {
       "preview": "미리보기"
@@ -1506,7 +1754,6 @@
     },
     "roleMembers": {
       "confirmMsg": "정말로 이 사용자를 삭제하시겠습니까",
-      "delete": "삭제",
       "mem": "멤버",
       "roleAppMsg": "이 역할은 교회의 모든 멤버에게 적용됩니다."
     },
@@ -1535,6 +1782,12 @@
       "roleCreate": "다음의 새 역할을 만드시겠습니까 ",
       "roles": "역할"
     },
+    "supportContactSettingsEdit": {
+      "forceMsg": "이 링크는 사용자가 교회에 연락하는 데 사용됩니다",
+      "link": "링크",
+      "linkHelperText": "교회 이메일이거나 교회 연락처 양식에 대한 링크여야 합니다",
+      "supportContact": "지원 연락처"
+    },
     "userAdd": {
       "addTo": "다음에 추가 ",
       "createNew": "새 사용자 생성",
@@ -1546,533 +1799,20 @@
       "valEmail": "유효한 이메일을 입력해주세요",
       "valEmailMsg": "유효한 이메일을 입력하세요"
     },
-    "appEdit": {
-      "addTab": "탭 추가",
-      "bible": "성경",
-      "checkin": "체크인",
-      "deleteTab": "탭 삭제",
-      "donation": "기부",
-      "donationLanding": "기부착륙",
-      "editTab": "탭 편집",
-      "externalUrl": "외부 URL",
-      "internalPage": "내부 페이지",
-      "lessons": "수업",
-      "liveStream": "라이브 스트림",
-      "memberDirectory": "회원 명부",
-      "myGroups": "내 그룹",
-      "page": "페이지",
-      "saveTab": "탭 저장",
-      "saving": "저장 중...",
-      "tabName": "탭 이름",
-      "tabType": "탭 유형",
-      "url": "URL",
-      "verseOfDay": "오늘의 말씀"
-    },
-    "appTabs": {
-      "editTab": "탭 편집",
-      "moveDown": "아래로 이동",
-      "moveUp": "위로 이동",
-      "noTabs": "구성된 탭이 없습니다.",
-      "noTabsDesc": "앱 탐색을 맞춤설정하려면 탭을 추가하세요.",
-      "title": "앱 탭",
-      "untitled": "제목 없음"
-    },
-    "mobileAppSettings": {
-      "addTab": "탭 추가",
-      "subtitle": "모바일 앱 설정 구성",
-      "title": "모바일 앱 설정"
-    }
-  },
-  "tasks": {
-    "actionEdit": {
-      "actType": "작업 유형",
-      "assignTo": "할당 대상",
-      "editAct": "작업 편집",
-      "taskAssign": "작업 할당",
-      "taskNote": "작업 메모",
-      "taskTitle": "작업 제목",
-      "actTypeHelp": "수행할 작업 유형을 선택하세요."
-    },
-    "selectGroup": {
-      "noResults": "검색과 일치하는 그룹을 찾을 수 없습니다",
-      "searchPrompt": "선택할 그룹 검색",
-      "group": "그룹",
-      "sel": "선택"
-    },
-    "automationDetails": {
-      "acts": "작업",
-      "auto": "자동화 세부사항",
-      "rep": "반복",
-      "task": "작업",
-      "active": "활성",
-      "addAct": "액션 추가",
-      "inactive": "비활성",
-      "noAct": "구성된 작업이 없습니다.",
-      "recurs": "재발"
-    },
-    "automationEdit": {
-      "autoEdit": "자동화 편집",
-      "monthly": "월간",
-      "never": "사용 안 함",
-      "rep": "반복",
-      "yearly": "연간",
-      "active": "활성",
-      "inactive": "비활성",
-      "recurHelp": "이 자동화를 얼마나 자주 실행해야 하는지 설정하세요."
-    },
-    "automationsPage": {
-      "auto": "자동화된 작업",
-      "manageAuto": "자동화된 작업 관리",
-      "active": "활성",
-      "addAuto": "자동화 추가",
-      "inactive": "비활성",
-      "noAuto": "구성된 자동화가 없습니다.",
-      "recurs": "재발",
-      "subtitle": "조건에 따라 작업 자동화"
-    },
-    "conditionAttendance": {
-      "anywhere": "어디에서나",
-      "campus": "캠퍼스",
-      "eventType": "이벤트 유형",
-      "group": "그룹",
-      "hasAtt": "참석함",
-      "hasNoAtt": "참석하지 않음",
-      "op": "연산자",
-      "serv": "서비스",
-      "servTime": "서비스 시간"
-    },
-    "conditionDate": {
-      "absolute": "절대값",
-      "curMonth": "이번 달",
-      "dateFull": "전체 날짜",
-      "datePart": "날짜 부분",
-      "dayOf": "일",
-      "fri": "금요일",
-      "mon": "월요일",
-      "month": "월",
-      "monthDay": "월의 일",
-      "nextMonth": "다음 달",
-      "op": "연산자",
-      "prevMonth": "지난 달",
-      "relative": "상대값",
-      "sat": "토요일",
-      "sun": "일요일",
-      "thurs": "목요일",
-      "tues": "화요일",
-      "wed": "수요일",
-      "weekDay": "요일",
-      "yearsE": "경과 연수"
-    },
-    "conditionDetails": {
-      "addCon": "조건 추가",
-      "addConj": "접속사 추가",
-      "all": "모두",
-      "any": "일부",
-      "con": "조건:",
-      "trueCon": "이 조건 중",
-      "addCondition": "조건 추가",
-      "and": "그리고",
-      "noCond": "추가된 조건 없음",
-      "or": "또는"
-    },
-    "conditionEdit": {
-      "conEdit": "조건 편집",
-      "confirmMsg": "이 조건을 삭제하시겠습니까?",
-      "conInfo": "연락처 정보",
-      "conType": "조건 유형",
-      "gen": "일반",
-      "persAtt": "개인 속성",
-      "today": "오늘 날짜",
-      "conDetails": "조건 세부정보"
-    },
-    "conditionSelect": {
-      "is": "임",
-      "isNot": "아님",
-      "op": "연산자"
-    },
-    "conditionText": {
-      "op": "연산자",
-      "contains": "포함",
-      "startW": "로 시작",
-      "endW": "로 끝남"
-    },
-    "conjunctionEdit": {
-      "and": "AND - 모든 조건이 참",
-      "conjEdit": "접속사 편집",
-      "conjType": "접속사 유형",
-      "or": "OR - 조건 중 하나가 참"
-    },
-    "contentPicker": {
-      "group": "그룹",
-      "pers": "사람",
-      "sel": "선택",
-      "selPers": "사람 또는 그룹 선택"
-    },
-    "newTask": {
-      "assignPers": "이 작업을 사람에게 할당해주세요.",
-      "assignTo": "할당 대상",
-      "associatePers": "이 작업을 사람과 연결해주세요.",
-      "associateW": "연결 대상",
-      "taskNew": "새 작업",
-      "titleTask": "이 작업의 제목을 입력해주세요.",
-      "newAssign": "새로운 과제",
-      "saving": "저장 중..."
-    },
-    "taskList": {
-      "assignGroup": "내 그룹에 할당됨",
-      "assignMe": "나에게 할당됨",
-      "reqMe": "내가 요청함",
-      "tasks": "작업",
-      "addTask": "작업 추가",
-      "assignedTo": "할당 대상",
-      "associatedWith": "관련됨",
-      "noTasks": "작업을 찾을 수 없습니다.",
-      "notSpecified": "지정되지 않음",
-      "unassigned": "할당되지 않음"
-    },
-    "taskPage": {
-      "ago": "전",
-      "assignTo": "할당 대상",
-      "associateW": "연결 대상",
-      "by": "작성자",
-      "change": "변경",
-      "closed": "닫힘",
-      "createdBy": "작성자",
-      "dateCreated": "생성 날짜",
-      "open": "열림",
-      "opened": "열림",
-      "stat": "상태",
-      "taskDet": "작업 세부사항",
-      "assign": "양수인",
-      "assigned": "할당된",
-      "associate": "연관짓다",
-      "associated": "관련된",
-      "created": "생성됨",
-      "editAssigned": "할당된 항목 편집",
-      "editAssoc": "관련 편집",
-      "notSpec": "지정되지 않음",
-      "unassigned": "할당되지 않음"
-    },
-    "tasksPage": {
-      "auto": "자동화",
-      "showClosed": "닫힌 항목 표시",
-      "showOpen": "열린 항목 표시",
-      "tasks": "작업",
-      "subtitle": "작업 및 자동화 관리"
-    },
-    "requestedChanges": {
-      "requestedChanges": "요청된 변경 사항",
-      "apply": "적용",
-      "field": "필드",
-      "value": "값",
-      "applied": "변경사항이 적용되었습니다.",
-      "newProfile": "새 프로필"
-    }
-  },
-  "sermons": {
-    "title": "설교",
-    "subtitle": "설교 라이브러리 및 라이브 스트리밍 관리",
-    "addSermon": "설교 추가",
-    "addPermanentLiveUrl": "영구 라이브 URL 추가",
-    "searchPlaceholder": "제목 또는 재생목록으로 설교 검색...",
-    "noSermonsFound": "설교를 찾을 수 없습니다",
-    "noSermonsYet": "아직 설교가 없습니다",
-    "adjustSearchTerms": "검색어를 조정해 보세요",
-    "getStarted": "첫 번째 설교를 추가하여 시작하세요",
-    "addFirstSermon": "첫 번째 설교 추가",
-    "playlist": "재생목록",
-    "sermon": "설교",
-    "publishDate": "게시 날짜",
-    "notScheduled": "예약되지 않음",
-    "noPlaylist": "재생목록 없음",
-    "edit": "편집",
-    "sermonEdit": {
-      "editSermon": "설교 편집",
-      "editPermanentLiveUrl": "영구 라이브 URL 편집",
-      "videoProvider": "비디오 제공자",
-      "currentYouTubeLiveStream": "현재 YouTube 라이브 스트림",
-      "youtube": "YouTube",
-      "vimeo": "Vimeo",
-      "facebook": "Facebook",
-      "customEmbedUrl": "맞춤 삽입 URL",
-      "sermonEmbedUrl": "설교 삽입 URL",
-      "youtubeChannelId": "YouTube 채널 ID",
-      "getYourChannelId": "채널 ID 가져오기",
-      "youtubeId": "YouTube ID",
-      "vimeoId": "Vimeo ID",
-      "sermonId": "설교 ID",
-      "fetch": "가져오기",
-      "totalSermonDuration": "전체 설교 시간",
-      "title": "제목",
-      "description": "설명",
-      "addToAnotherPlaylist": "다른 재생목록에 추가",
-      "add": "추가",
-      "deleteConfirm": "이 설교를 삭제하시겠습니까?",
-      "unauthorized": "설교를 만들 권한이 없습니다",
-      "unauthorizedDelete": "설교를 삭제할 권한이 없습니다",
-      "newSermon": "새 설교",
-      "currentLiveService": "현재 라이브 예배",
-      "channelIdPlaceholder": "이것은 채널 URL이 아닙니다 - 위의 도움말 링크를 참조하세요",
-      "none": "없음"
-    },
-    "playlists": {
-      "title": "재생목록",
-      "subtitle": "비디오 재생목록을 관리하고 콘텐츠를 정리하세요",
-      "addPlaylist": "재생목록 추가",
-      "createFirstPlaylist": "첫 번째 재생목록 만들기",
-      "search": "검색",
-      "searchPlaceholder": "재생목록 검색...",
-      "noPlaylistsFound": "재생목록을 찾을 수 없습니다",
-      "noPlaylistsMatch": "검색과 일치하는 재생목록이 없습니다",
-      "adjustSearchTerms": "검색어를 조정해 보세요",
-      "getStarted": "첫 번째 재생목록을 만들어 시작하세요",
-      "editPlaylist": "재생목록 편집",
-      "actions": "작업",
-      "playlistEdit": {
-        "createNew": "새 재생목록 만들기",
-        "editPlaylist": "재생목록 편집",
-        "basicInformation": "기본 정보",
-        "playlistTitle": "재생목록 제목",
-        "enterTitle": "재생목록 제목 입력...",
-        "description": "설명",
-        "describePlaylist": "이 재생목록을 설명하세요...",
-        "publishingSchedule": "게시 및 일정",
-        "publishDate": "게시 날짜",
-        "publishHelp": "이 재생목록은 언제 시청자에게 공개되어야 합니까?",
-        "thumbnailImage": "썸네일 이미지",
-        "changeThumbnail": "썸네일 변경",
-        "addThumbnail": "썸네일 추가",
-        "recommendedSize": "권장 크기: 1280x720 픽셀 (16:9 비율)",
-        "deleteConfirm": "이 재생목록을 삭제하시겠습니까?",
-        "unauthorized": "재생목록을 만들 권한이 없습니다",
-        "unauthorizedDelete": "재생목록을 삭제할 권한이 없습니다",
-        "newPlaylist": "새 재생목록"
-      }
-    },
-    "bulkImport": {
-      "title": "대량 가져오기",
-      "subtitle": "외부 플랫폼에서 비디오를 대량으로 가져오기",
-      "chooseSource": "가져오기 소스 선택",
-      "youtube": "YouTube",
-      "youtubeDescription": "YouTube 채널 또는 재생목록에서 비디오 가져오기",
-      "importFromYouTube": "YouTube에서 가져오기",
-      "vimeo": "Vimeo",
-      "vimeoDescription": "Vimeo 계정 또는 쇼케이스에서 비디오 가져오기",
-      "importFromVimeo": "Vimeo에서 가져오기",
-      "backToSelection": "선택으로 돌아가기",
-      "import": "가져오기",
-      "fetch": "가져오기",
-      "fetching": "가져오는 중...",
-      "youtubeChannelId": "YouTube 채널 ID",
-      "vimeoChannelId": "Vimeo 채널 ID",
-      "importIntoPlaylist": "재생목록으로 가져오기",
-      "autoImportNewVideos": "새 비디오 자동 가져오기",
-      "selectPlaylist": "재생목록을 선택하세요"
-    },
-    "liveStreamTimes": {
-      "title": "라이브 스트림 시간",
-      "subtitle": "반복되는 예배 시간 구성",
-      "services": "예배",
-      "settings": "설정",
-      "servicesTab": {
-        "title": "예배",
-        "addService": "예배 추가",
-        "weekly": "주간",
-        "edit": "편집"
-      },
-      "navigationLinks": {
-        "title": "탐색 링크",
-        "add": "추가",
-        "home": "집"
-      },
-      "sidebarTabs": {
-        "title": "콘텐츠 탭",
-        "add": "추가"
-      },
-      "serviceEdit": {
-        "addNewService": "새 예배 추가",
-        "editService": "예배 편집",
-        "basicInformation": "기본 정보",
-        "serviceName": "예배 이름",
-        "serviceNamePlaceholder": "예: 주일 오전 예배",
-        "serviceTime": "예배 시간",
-        "recursWeekly": "매주 반복",
-        "no": "아니요",
-        "yes": "예",
-        "oneTime": "일회성",
-        "weekly": "주간",
-        "chatSettings": "채팅 설정",
-        "enableChatMinutesBefore": "채팅 활성화 - 시작 전 분",
-        "enableChatMinutesAfter": "채팅 활성화 - 종료 후 분",
-        "videoSettings": "비디오 설정",
-        "startVideoEarly": "비디오 조기 시작",
-        "startVideoEarlyHelp": "선택사항: 카운트다운 비디오 또는 예배 전 콘텐츠용",
-        "sermon": "설교",
-        "latestSermon": "최신 설교",
-        "auto": "자동",
-        "deleteConfirm": "이 예배를 삭제하시겠습니까?",
-        "errorsCorrectionTitle": "다음 오류를 수정해주세요:",
-        "serviceNameRequired": "예배 이름은 필수 항목입니다",
-        "serviceTimeRequired": "예배 시간은 필수 항목입니다"
-      },
-      "linkEdit": {
-        "editNavigationLink": "탐색 링크 편집",
-        "createNewLink": "새 링크 만들기",
-        "configureSettings": "탐색 링크 설정 구성",
-        "linkDetails": "링크 세부정보",
-        "displayText": "표시 텍스트",
-        "displayTextPlaceholder": "탐색에 표시할 텍스트 입력",
-        "linkUrl": "링크 URL",
-        "linkUrlPlaceholder": "https://example.com 또는 /internal-page",
-        "menuOrganization": "메뉴 구성",
-        "submenuMessage": "이 링크는 하위 메뉴 아래에 배치됩니다:",
-        "optionalSubmenuMessage": "선택사항: 기존 하위 메뉴 아래에 이 링크를 구성하세요:",
-        "delete": "삭제",
-        "cancel": "취소",
-        "saveLink": "링크 저장",
-        "saving": "저장 중...",
-        "deleteLink": "링크 삭제",
-        "deleteConfirm": "이 탐색 링크를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
-        "deleteNestedLinksFirst": "이 링크에는 중첩된 하위 링크가 있습니다. 먼저 해당 항목을 삭제하세요.",
-        "deleting": "삭제 중...",
-        "errors": {
-          "textRequired": "유효한 텍스트를 입력하세요",
-          "urlRequired": "링크를 입력하세요",
-          "unauthorized": "링크를 만들 권한이 없습니다",
-          "unauthorizedDelete": "링크를 삭제할 권한이 없습니다",
-          "deleteNestedFirst": "중첩된 링크를 먼저 삭제하세요",
-          "saveFailed": "링크 저장에 실패했습니다. 다시 시도하세요.",
-          "deleteFailed": "링크 삭제에 실패했습니다. 다시 시도하세요."
-        }
-      },
-      "tabEdit": {
-        "editTab": "탭 편집",
-        "createNewTab": "새 탭 만들기",
-        "configureSettings": "스트리밍 사이드바 탭 설정 구성",
-        "tabDisplay": "탭 표시",
-        "tabText": "탭 텍스트",
-        "tabTextPlaceholder": "탭 표시 텍스트 입력",
-        "icon": "아이콘",
-        "linkConfiguration": "링크 구성",
-        "linkType": "링크 유형",
-        "externalUrl": "외부 URL",
-        "externalUrlPlaceholder": "https://example.com",
-        "chat": "채팅",
-        "prayer": "기도",
-        "linkTypeHelp": {
-          "url": "외부 URL은 새 탭에서 열립니다",
-          "chat": "내장 채팅 기능",
-          "prayer": "내장 기도 요청 기능",
-          "none": "탭 동작을 구성하려면 링크 유형을 선택하세요"
-        },
-        "delete": "삭제",
-        "cancel": "취소",
-        "saveTab": "탭 저장",
-        "saving": "저장 중...",
-        "deleteTab": "탭 삭제",
-        "deleteConfirm": "이 탭을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
-        "deleting": "삭제 중...",
-        "errors": {
-          "textRequired": "유효한 텍스트를 입력하세요",
-          "urlRequired": "유효한 URL을 입력하세요",
-          "saveFailed": "탭 저장에 실패했습니다. 다시 시도하세요.",
-          "deleteFailed": "탭 삭제에 실패했습니다. 다시 시도하세요."
-        }
-      },
-      "externalLinks": {
-        "title": "외부 리소스",
-        "customizeAppearance": "외관 사용자 지정",
-        "editUsers": "사용자 편집",
-        "viewYourStream": "스트림 보기"
-      }
-    },
-    "duration": {
-      "minutes": "분",
-      "seconds": "초"
-    }
-  },
-  "songs": {
-    "title": "노래",
-    "addSong": "노래 추가",
-    "arrangement": {
-      "title": "편곡",
-      "enterLyrics": "가사를 수동으로 입력하거나 PraiseCharts에서 가져오기",
-      "edit": "편곡 편집",
-      "name": "편곡 이름",
-      "lyrics": "가사",
-      "deleteConfirm": "이 편곡을 삭제하시겠습니까?"
-    },
-    "create": {
-      "title": "노래 만들기",
-      "songTitle": "노래 제목",
-      "artist": "아티스트"
-    },
-    "key": {
-      "edit": "키 편집",
-      "signature": "조표",
-      "label": "레이블",
-      "labelOptional": "레이블 (선택사항)",
-      "default": "기본값",
-      "defaultLabel": "John의 키",
-      "deleteConfirm": "이 키를 삭제하시겠습니까?"
-    },
-    "keys": {
-      "title": "키",
-      "add": "추가",
-      "import": "가져오기",
-      "importPrompt": "PraiseCharts에서 텍스트 가사를 가져오시겠습니까?",
-      "addFiles": "파일 추가",
-      "importFromPraiseCharts": "PraiseCharts에서 파일 가져오기",
-      "addExternalLink": "외부 링크 추가"
-    },
-    "link": {
-      "edit": "링크 편집",
-      "url": "URL",
-      "text": "텍스트",
-      "chordChart": "코드 차트",
-      "deleteConfirm": "이 링크를 삭제하시겠습니까?"
-    },
-    "details": {
-      "artist": "아티스트",
-      "releaseDate": "발매일",
-      "album": "앨범",
-      "language": "언어",
-      "bpm": "BPM",
-      "keySignature": "조표",
-      "keys": "키",
-      "meter": "박자",
-      "length": "길이",
-      "key": "키",
-      "seconds": "초"
-    },
-    "library": {
-      "empty": {
-        "title": "노래를 찾을 수 없음",
-        "message": "라이브러리에 첫 번째 노래를 추가하여 시작하세요.",
-        "action": "첫 번째 노래 추가"
-      },
-      "noResults": "검색 기준과 일치하는 노래가 없습니다."
-    },
-    "search": {
-      "placeholder": "제목이나 아티스트로 노래 검색...",
-      "enterQuery": "노래를 찾으려면 검색어를 입력하세요.",
-      "noResults": "검색에 대한 노래를 찾을 수 없습니다.",
-      "createManually": "수동으로 만들기",
-      "title": "노래 검색",
-      "inputLabel": "제목 또는 아티스트",
-      "inputPlaceholder": "노래 제목 또는 아티스트 이름 입력..."
-    },
-    "songPage": {
-      "loading": "로딩 중...",
-      "subtitle": "노래 세부정보 및 편곡 관리"
-    },
-    "songsPage": {
-      "songs": "노래",
-      "subtitle": "음악 라이브러리 관리"
+    "visibilityPrefSettingsEdit": {
+      "address": "주소",
+      "email": "이메일",
+      "everyone": "모든 사람",
+      "forceMsg": "아직 설정을 구성하지 않은 사람들을 위한 기본값을 설정합니다",
+      "groups": "그룹만",
+      "members": "회원",
+      "phoneNum": "전화번호",
+      "visibilityPreference": "가시성 기본 설정"
     }
   },
   "site": {
     "addPage": {
+      "aiPlaceholder": "[NEEDS TRANSLATION] Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
       "newLink": "새 링크",
       "newPage": "새 페이지",
       "pageType": "페이지 유형"
@@ -2087,36 +1827,132 @@
       "none": "없음",
       "normal": "보통",
       "onShowAnimation": "표시 시 애니메이션",
+      "onShowSpeed": "쇼 속도에",
       "pulse": "펄스",
       "shrink": "축소",
       "slideDown": "아래로 슬라이드",
       "slideLeft": "왼쪽으로 슬라이드",
       "slideRight": "오른쪽으로 슬라이드",
       "slideUp": "위로 슬라이드",
-      "slow": "느림",
-      "onShowSpeed": "쇼 속도에"
+      "slow": "느림"
+    },
+    "appearanceEdit": {
+      "logoManagement": "로고 관리"
+    },
+    "appearancePage": {
+      "subtitle": "아래는 색상, 글꼴 및 로고가 적용된 샘플 사이트 미리보기입니다. 실제 사이트 콘텐츠가 아닙니다.",
+      "title": "사이트 스타일"
     },
     "blocks": {
       "confirmDelete": "이 블록을 영구적으로 삭제하시겠습니까?",
       "editBlock": "블록 편집"
     },
+    "blocksPage": {
+      "actions": "작업",
+      "addBlock": "블록 추가",
+      "block": "차단하다",
+      "blocks": "블록",
+      "createFirstBlock": "첫 번째 블록 생성",
+      "elements": "강요)",
+      "getStarted": "첫 번째 재사용 가능한 블록을 만들어 시작해 보세요.",
+      "noBlocksFound": "블록을 찾을 수 없습니다.",
+      "reusableBlocks": "재사용 가능한 블록",
+      "sections": "섹션",
+      "subtitle": "웹사이트에 재사용 가능한 콘텐츠 블록 생성 및 관리",
+      "totalBlocks": "총 블록",
+      "type": "유형"
+    },
+    "cssEdit": {
+      "customCss": "사용자 정의 CSS",
+      "customHtml": "사용자 정의 HTML"
+    },
     "donateLink": {
       "add": "추가",
-      "amountPlaceholder": "10",
-      "maxAmountsAlert": "최대 5개의 기부 금액만 추가할 수 있습니다.",
-      "noFunds": "기금 없음",
-      "textHelper": "예: (지금 기부), (네, 도와드릴게요!), (청소년 캠프에 $10 기부), 등..",
-      "textLabel": "텍스트",
-      "urlHelper": "팁: 기부 요소가 있는 웹사이트 빌더의 페이지를 링크해야 합니다.",
-      "urlLabel": "URL",
-      "urlPlaceholder": "/donate",
       "addAmount": "기부금액 추가",
       "amount": "금액",
+      "amountPlaceholder": "10",
       "donationAmount": "기부금액",
       "donationAmounts": "기부금액",
       "donationAmountsHelper": "$5, $10, $20 등과 같은 기부 금액을 제안할 수 있습니다.",
       "funds": "기금",
-      "selectFund": "기부금 선택"
+      "maxAmountsAlert": "최대 5개의 기부 금액만 추가할 수 있습니다.",
+      "noFunds": "기금 없음",
+      "selectFund": "기부금 선택",
+      "textHelper": "예: (지금 기부), (네, 도와드릴게요!), (청소년 캠프에 $10 기부), 등..",
+      "textLabel": "텍스트",
+      "urlHelper": "팁: 기부 요소가 있는 웹사이트 빌더의 페이지를 링크해야 합니다.",
+      "urlLabel": "URL",
+      "urlPlaceholder": "/donate"
+    },
+    "editorToolbar": {
+      "addContent": "콘텐츠 추가",
+      "block": "차단하다",
+      "desktop": "데스크탑",
+      "mobile": "휴대폰",
+      "page": "페이지",
+      "switchToDesktop": "데스크톱 보기로 전환",
+      "switchToMobile": "모바일 보기로 전환"
+    },
+    "elementAdd": {
+      "addElements": "요소 추가",
+      "advanced": "고급",
+      "all": "전체",
+      "blocks": "블록",
+      "box": "박스",
+      "calendar": "캘린더",
+      "card": "카드",
+      "carousel": "캐러셀",
+      "church": "교회",
+      "content": "콘텐츠",
+      "descBox": "유연한 컨테이너 박스",
+      "descCalendar": "이벤트 캘린더 보기",
+      "descCard": "이미지가 있는 콘텐츠 카드",
+      "descCarousel": "슬라이딩 콘텐츠 갤러리",
+      "descDonateLink": "기부 링크 버튼",
+      "descDonation": "기부 양식",
+      "descEmbedPage": "외부 페이지 삽입",
+      "descExpandable": "확장 가능한 FAQ 섹션",
+      "descForm": "사용자 정의 양식 빌더",
+      "descGroupList": "그룹 디렉토리",
+      "descHtml": "사용자 정의 HTML 코드",
+      "descImage": "캡션이 있는 이미지",
+      "descLocation": "인터랙티브 지도",
+      "descLogo": "교회 로고/브랜딩",
+      "descReusableElement": "재사용 가능한 요소 블록",
+      "descReusableSection": "재사용 가능한 섹션",
+      "descRow": "수평 열 레이아웃",
+      "descSection": "콘텐츠 그룹화를 위한 컨테이너",
+      "descSermons": "설교 비디오 갤러리",
+      "descStream": "라이브 스트림 삽입",
+      "descTable": "데이터 테이블 레이아웃",
+      "descText": "서식 있는 텍스트 콘텐츠",
+      "descTextWithPhoto": "측면 이미지가 있는 텍스트",
+      "descVideo": "비디오 삽입 또는 업로드",
+      "donateLink": "기부 링크",
+      "donation": "기부",
+      "dragAndDrop": "페이지에 드래그 앤 드롭",
+      "dragHint": "요소를 페이지로 드래그하여 추가하세요",
+      "embedPage": "페이지 삽입",
+      "expandable": "확장 가능",
+      "form": "양식",
+      "groupList": "그룹 목록",
+      "html": "HTML",
+      "image": "이미지",
+      "layout": "레이아웃",
+      "location": "위치",
+      "logo": "로고",
+      "media": "미디어",
+      "noElementsFound": "요소를 찾을 수 없습니다",
+      "row": "행",
+      "searchElements": "요소 검색...",
+      "section": "섹션",
+      "stream": "스트림",
+      "table": "테이블",
+      "text": "텍스트",
+      "textWithPhoto": "사진이 있는 텍스트",
+      "tryDifferentSearch": "다른 검색어를 시도해 보세요",
+      "untitledBlock": "제목 없는 블록",
+      "video": "비디오"
     },
     "elements": {
       "address": "주소",
@@ -2201,6 +2037,20 @@
       "upload": "업로드",
       "uploadFiles": "파일 업로드"
     },
+    "filesManager": {
+      "files": "파일",
+      "getStarted": "첫 번째 파일을 업로드하여 시작하세요",
+      "noFilesYet": "아직 업로드된 파일이 없습니다"
+    },
+    "filesPage": {
+      "subtitle": "웹사이트용 파일 및 미디어 관리",
+      "title": "파일"
+    },
+    "fontEdit": {
+      "fontSelection": "글꼴 선택",
+      "popularFontCombinations": "인기 있는 글꼴 조합",
+      "typographyPreview": "타이포그래피 미리보기"
+    },
     "navLink": {
       "addLink": "링크 추가",
       "linkSettings": "링크 설정"
@@ -2213,15 +2063,21 @@
       "pageSettings": "페이지 설정",
       "urlHelper": "예: /camper-registration  (**저장하기 전에 확인하세요)"
     },
+    "pagePreview": {
+      "editContent": "콘텐츠 편집",
+      "pageSettings": "페이지 설정",
+      "subtitle": "미리보기: {title}",
+      "title": "웹사이트 미리보기"
+    },
     "pages": {
       "convert": "변환"
     },
     "pagesPage": {
-      "confirmConvert": "이 자동 생성 페이지를 사용자 정의 페이지로 변환하시겠습니까?",
       "actions": "작업",
       "addFirstPage": "첫 페이지 추가",
       "addPage": "페이지 추가",
       "autoGenerated": "자동 생성",
+      "confirmConvert": "이 자동 생성 페이지를 사용자 정의 페이지로 변환하시겠습니까?",
       "customPages": "사용자 정의 페이지",
       "description": "다음은 사용자 정의 및 자동 생성 페이지 목록입니다. 새 페이지를 추가하거나, 기존 페이지를 편집하거나, 자동 생성된 페이지를 사용자 정의 페이지로 변환할 수 있습니다.",
       "desktopOnly": "페이지 편집기는 데스크톱 모드에서만 사용할 수 있습니다.",
@@ -2239,6 +2095,12 @@
       "totalPages": "총 페이지",
       "websitePages": "웹사이트 페이지"
     },
+    "paletteEdit": {
+      "colorCombinationsPreview": "색상 조합 미리보기",
+      "colorValues": "색상 값",
+      "savePalette": "팔레트 저장",
+      "suggestedPalettes": "제안된 팔레트"
+    },
     "pickColors": {
       "headingColor": "제목 색상",
       "linkColor": "링크 색상",
@@ -2246,9 +2108,9 @@
       "textColor": "텍스트 색상"
     },
     "row": {
-      "columnsHelper": "숫자는 페이지의 12분의 1을 나타냅니다.",
       "addColumn": "열 추가",
       "columnsError": "열의 합은 최대 12개여야 합니다.",
+      "columnsHelper": "숫자는 페이지의 12분의 1을 나타냅니다.",
       "commonOptions": "공통 옵션",
       "halves": "반쪽",
       "hideMobileOrder": "모바일 주문 숨기기",
@@ -2281,297 +2143,282 @@
       "confirmDuplicate": "이 섹션과 모든 콘텐츠의 복사본을 만드시겠습니까?",
       "editSection": "섹션 편집"
     },
+    "sectionEdit": {
+      "convertTo": "변환",
+      "convertToBlock": "블록으로 변환",
+      "duplicate": "복제",
+      "duplicateSection": "섹션 복제"
+    },
     "style": {
       "editStyle": "스타일 편집"
     },
     "styleEdit": {
       "property": "속성"
     },
-    "templates": {
-      "viewSermons": "설교 보기"
-    },
-    "blocksPage": {
-      "actions": "작업",
-      "addBlock": "블록 추가",
-      "block": "차단하다",
-      "blocks": "블록",
-      "createFirstBlock": "첫 번째 블록 생성",
-      "elements": "강요)",
-      "getStarted": "첫 번째 재사용 가능한 블록을 만들어 시작해 보세요.",
-      "noBlocksFound": "블록을 찾을 수 없습니다.",
-      "reusableBlocks": "재사용 가능한 블록",
-      "sections": "섹션",
-      "subtitle": "웹사이트에 재사용 가능한 콘텐츠 블록 생성 및 관리",
-      "totalBlocks": "총 블록",
-      "type": "유형"
-    },
-    "editorToolbar": {
-      "addContent": "콘텐츠 추가",
-      "block": "차단하다",
-      "desktop": "데스크탑",
-      "mobile": "휴대폰",
-      "page": "페이지",
-      "switchToDesktop": "데스크톱 보기로 전환",
-      "switchToMobile": "모바일 보기로 전환"
-    },
-    "elementAdd": {
-      "addElements": "요소 추가",
-      "advanced": "고급",
-      "all": "전체",
-      "blocks": "블록",
-      "box": "박스",
-      "calendar": "캘린더",
-      "card": "카드",
-      "carousel": "캐러셀",
-      "church": "교회",
-      "churchSpecific": "교회 전용",
-      "content": "콘텐츠",
-      "descCalendar": "이벤트 캘린더 보기",
-      "descCard": "이미지가 있는 콘텐츠 카드",
-      "descCarousel": "슬라이딩 콘텐츠 갤러리",
-      "descBox": "유연한 컨테이너 박스",
-      "descDonateLink": "기부 링크 버튼",
-      "descDonation": "기부 양식",
-      "descEmbedPage": "외부 페이지 삽입",
-      "descExpandable": "확장 가능한 FAQ 섹션",
-      "descForm": "사용자 정의 양식 빌더",
-      "descGroupList": "그룹 디렉토리",
-      "descHtml": "사용자 정의 HTML 코드",
-      "descImage": "캡션이 있는 이미지",
-      "descLocation": "인터랙티브 지도",
-      "descLogo": "교회 로고/브랜딩",
-      "descReusableElement": "재사용 가능한 요소 블록",
-      "descReusableSection": "재사용 가능한 섹션",
-      "descRow": "수평 열 레이아웃",
-      "descSection": "콘텐츠 그룹화를 위한 컨테이너",
-      "descSermons": "설교 비디오 갤러리",
-      "descStream": "라이브 스트림 삽입",
-      "descTable": "데이터 테이블 레이아웃",
-      "descText": "서식 있는 텍스트 콘텐츠",
-      "descTextWithPhoto": "측면 이미지가 있는 텍스트",
-      "descVideo": "비디오 삽입 또는 업로드",
-      "donateLink": "기부 링크",
-      "donation": "기부",
-      "dragAndDrop": "페이지에 드래그 앤 드롭",
-      "dragHint": "요소를 페이지로 드래그하여 추가하세요",
-      "embedPage": "페이지 삽입",
-      "expandable": "확장 가능",
-      "form": "양식",
-      "groupList": "그룹 목록",
-      "html": "HTML",
-      "image": "이미지",
-      "layout": "레이아웃",
-      "location": "위치",
-      "logo": "로고",
-      "media": "미디어",
-      "noBlocksFound": "블록을 찾을 수 없습니다",
-      "noElementsFound": "요소를 찾을 수 없습니다",
-      "row": "행",
-      "searchElements": "요소 검색...",
-      "section": "섹션",
-      "simpleElements": "간단한 요소",
-      "stream": "스트림",
-      "table": "테이블",
-      "text": "텍스트",
-      "textWithPhoto": "사진이 있는 텍스트",
-      "tryDifferentSearch": "다른 검색어를 시도해 보세요",
-      "untitledBlock": "제목 없는 블록",
-      "video": "비디오"
-    },
-    "appearancePage": {
-      "title": "사이트 스타일",
-      "subtitle": "아래는 색상, 글꼴 및 로고가 적용된 샘플 사이트 미리보기입니다. 실제 사이트 콘텐츠가 아닙니다."
-    },
-    "filesPage": {
-      "title": "파일",
-      "subtitle": "웹사이트용 파일 및 미디어 관리"
-    },
-    "pagePreview": {
-      "title": "웹사이트 미리보기",
-      "subtitle": "미리보기: {title}",
-      "editContent": "콘텐츠 편집",
-      "pageSettings": "페이지 설정"
-    },
-    "sectionEdit": {
-      "convertToBlock": "블록으로 변환",
-      "convertTo": "변환",
-      "duplicate": "복제",
-      "duplicateSection": "섹션 복제"
-    },
-    "appearanceEdit": {
-      "logoManagement": "로고 관리"
-    },
-    "cssEdit": {
-      "customCss": "사용자 정의 CSS",
-      "customHtml": "사용자 정의 HTML"
-    },
-    "filesManager": {
-      "noFilesYet": "아직 업로드된 파일이 없습니다",
-      "getStarted": "첫 번째 파일을 업로드하여 시작하세요",
-      "files": "파일"
-    },
-    "fontEdit": {
-      "fontSelection": "글꼴 선택",
-      "typographyPreview": "타이포그래피 미리보기",
-      "popularFontCombinations": "인기 있는 글꼴 조합"
-    },
-    "paletteEdit": {
-      "savePalette": "팔레트 저장",
-      "colorValues": "색상 값",
-      "suggestedPalettes": "제안된 팔레트",
-      "colorCombinationsPreview": "색상 조합 미리보기"
-    },
     "stylesManager": {
       "styleSettings": "스타일 설정"
+    },
+    "templates": {
+      "viewSermons": "설교 보기"
     }
   },
-  "stockPhotos": {
-    "photoBy": "사진 제공:",
-    "providedBy": "스톡 사진 제공:"
-  },
-  "support": {
-    "discussions": "토론",
-    "documentation": "문서"
-  },
-  "placeholders": {
-    "person": {
-      "firstName": "민수",
-      "middleName": "준",
-      "lastName": "김",
-      "nickName": "민수",
-      "prefix": "씨",
-      "suffix": "주니어",
-      "email": "minsu@example.com",
-      "homePhone": "02-1234-5678",
-      "workPhone": "02-9876-5432",
-      "mobilePhone": "010-1234-5678",
-      "address1": "서울시 강남구 테헤란로 123",
-      "address2": "4층 B호",
-      "city": "서울",
-      "state": "서울특별시",
-      "zip": "06234"
+  "songs": {
+    "addSong": "노래 추가",
+    "arrangement": {
+      "deleteConfirm": "이 편곡을 삭제하시겠습니까?",
+      "edit": "편곡 편집",
+      "enterLyrics": "가사를 수동으로 입력하거나 PraiseCharts에서 가져오기",
+      "lyrics": "가사",
+      "name": "편곡 이름",
+      "title": "편곡"
     },
-    "household": {
-      "name": "김씨 가족"
+    "create": {
+      "artist": "아티스트",
+      "songTitle": "노래 제목",
+      "title": "노래 만들기"
     },
-    "group": {
-      "name": "성인 성경공부",
-      "category": "커뮤니티, 성경공부, 사역"
+    "deleteSong": {
+      "confirm": "[NEEDS TRANSLATION] Confirm"
     },
-    "fund": {
-      "name": "일반 기금"
+    "details": {
+      "album": "앨범",
+      "artist": "아티스트",
+      "bpm": "BPM",
+      "key": "키",
+      "keySignature": "조표",
+      "keys": "키",
+      "language": "언어",
+      "length": "길이",
+      "meter": "박자",
+      "releaseDate": "발매일",
+      "seconds": "초"
     },
-    "batch": {
-      "name": "주일 헌금"
+    "key": {
+      "default": "기본값",
+      "defaultLabel": "John의 키",
+      "deleteConfirm": "이 키를 삭제하시겠습니까?",
+      "edit": "키 편집",
+      "labelOptional": "레이블 (선택사항)",
+      "signature": "조표"
     },
-    "donation": {
-      "notes": "김씨 가족 월정 십일조"
+    "keys": {
+      "add": "추가",
+      "addExternalLink": "외부 링크 추가",
+      "addFiles": "파일 추가",
+      "import": "가져오기",
+      "importFromPraiseCharts": "PraiseCharts에서 파일 가져오기",
+      "importPrompt": "PraiseCharts에서 텍스트 가사를 가져오시겠습니까?",
+      "title": "키"
     },
-    "church": {
-      "name": "은혜교회",
-      "subDomain": "gracechurch",
-      "address1": "서울시 강남구 역삼로 456",
-      "address2": "100호",
-      "city": "서울",
-      "state": "서울특별시",
-      "zip": "06241"
+    "library": {
+      "empty": {
+        "action": "첫 번째 노래 추가",
+        "message": "라이브러리에 첫 번째 노래를 추가하여 시작하세요.",
+        "title": "노래를 찾을 수 없음"
+      },
+      "noResults": "검색 기준과 일치하는 노래가 없습니다."
     },
-    "user": {
-      "firstName": "민수",
-      "lastName": "김",
-      "email": "minsu@example.com"
-    },
-    "role": {
-      "name": "봉사자"
-    },
-    "form": {
-      "name": "등록 양식",
-      "questionTitle": "좋아하는 음식이 무엇인가요?",
-      "questionDescription": "행사 계획에 도움을 주세요",
-      "questionPlaceholder": "여기에 답변을 입력하세요",
-      "thankYouMessage": "제출해 주셔서 감사합니다!"
-    },
-    "choices": {
-      "value": "옵션 A",
-      "text": "첫 번째 옵션"
-    },
-    "sermon": {
-      "title": "믿음 안에서 걷기",
-      "description": "일상에서 믿음을 실천하는 시리즈"
-    },
-    "duration": {
-      "value": "45"
-    },
-    "song": {
-      "name": "주 신실하심 크도다"
-    },
-    "position": {
-      "name": "리드 보컬"
-    },
-    "time": {
-      "name": "리허설"
-    },
-    "planType": {
-      "name": "주일 예배"
-    },
-    "planItem": {
-      "label": "찬양 시간"
-    },
-    "plan": {
-      "notes": "지난주 리허설을 복습하세요"
-    },
-    "task": {
-      "taskName": "가사 슬라이드 준비"
-    },
-    "serviceTime": {
-      "name": "오전 예배"
-    },
-    "service": {
-      "name": "주일 예배"
-    },
-    "campus": {
-      "name": "본당 캠퍼스"
-    },
-    "device": {
-      "name": "본당 컴퓨터"
-    },
-    "pairScreen": {
-      "registrationCode": "ABC123"
-    },
-    "page": {
-      "title": "소개"
-    },
-    "block": {
-      "name": "환영 섹션"
-    },
-    "addPage": {
-      "title": "우리의 이야기",
-      "aiContent": "우리 교회의 역사와 사명에 대한 페이지 만들기"
-    },
-    "font": {
-      "url": "https://fonts.example.com/my-font.woff2"
-    },
-    "color": {
-      "value": "#3B82F6"
-    },
-    "faq": {
-      "title": "예배 시간이 언제인가요?",
-      "answer": "주일 오전 9시와 11시에 예배가 있습니다"
-    },
-    "element": {
-      "answersJSON": "[{\"question\": \"이름이 무엇인가요?\", \"answer\": \"은혜교회\"}]"
-    },
-    "giving": {
-      "paymentGatewayKey": "pk_test_abc123xyz"
-    },
-    "vimeo": {
-      "channelId": "123456789"
-    },
-    "youtube": {
-      "channelId": "UCxxxxxxxxxx"
+    "link": {
+      "chordChart": "코드 차트",
+      "deleteConfirm": "이 링크를 삭제하시겠습니까?",
+      "edit": "링크 편집",
+      "text": "텍스트",
+      "url": "URL"
     },
     "search": {
-      "searchUsers": "이름 또는 이메일로 검색"
+      "createManually": "수동으로 만들기",
+      "enterQuery": "노래를 찾으려면 검색어를 입력하세요.",
+      "inputLabel": "제목 또는 아티스트",
+      "inputPlaceholder": "노래 제목 또는 아티스트 이름 입력...",
+      "noResults": "검색에 대한 노래를 찾을 수 없습니다.",
+      "placeholder": "제목이나 아티스트로 노래 검색...",
+      "title": "노래 검색"
+    },
+    "songPage": {
+      "loading": "로딩 중...",
+      "subtitle": "노래 세부정보 및 편곡 관리"
+    },
+    "songsPage": {
+      "songs": "노래",
+      "subtitle": "음악 라이브러리 관리"
+    },
+    "title": "노래"
+  },
+  "tasks": {
+    "actionEdit": {
+      "actType": "작업 유형",
+      "actTypeHelp": "수행할 작업 유형을 선택하세요.",
+      "assignTo": "할당 대상",
+      "editAct": "작업 편집",
+      "taskAssign": "작업 할당",
+      "taskNote": "작업 메모",
+      "taskTitle": "작업 제목"
+    },
+    "automationDetails": {
+      "active": "활성",
+      "acts": "작업",
+      "addAct": "액션 추가",
+      "auto": "자동화 세부사항",
+      "inactive": "비활성",
+      "noAct": "구성된 작업이 없습니다.",
+      "recurs": "재발"
+    },
+    "automationEdit": {
+      "active": "활성",
+      "autoEdit": "자동화 편집",
+      "inactive": "비활성",
+      "monthly": "월간",
+      "never": "사용 안 함",
+      "recurHelp": "이 자동화를 얼마나 자주 실행해야 하는지 설정하세요.",
+      "rep": "반복",
+      "weekly": "[NEEDS TRANSLATION] Weekly",
+      "yearly": "연간"
+    },
+    "automationsPage": {
+      "active": "활성",
+      "addAuto": "자동화 추가",
+      "auto": "자동화된 작업",
+      "inactive": "비활성",
+      "manageAuto": "자동화된 작업 관리",
+      "noAuto": "구성된 자동화가 없습니다.",
+      "recurs": "재발",
+      "subtitle": "조건에 따라 작업 자동화"
+    },
+    "conditionAttendance": {
+      "anywhere": "어디에서나",
+      "campus": "캠퍼스",
+      "eventType": "이벤트 유형",
+      "group": "그룹",
+      "hasAtt": "참석함",
+      "hasNoAtt": "참석하지 않음",
+      "op": "연산자",
+      "serv": "서비스",
+      "servTime": "서비스 시간"
+    },
+    "conditionDate": {
+      "absolute": "절대값",
+      "curMonth": "이번 달",
+      "dateFull": "전체 날짜",
+      "datePart": "날짜 부분",
+      "dayOf": "일",
+      "fri": "금요일",
+      "mon": "월요일",
+      "month": "월",
+      "monthDay": "월의 일",
+      "nextMonth": "다음 달",
+      "op": "연산자",
+      "prevMonth": "지난 달",
+      "relative": "상대값",
+      "sat": "토요일",
+      "sun": "일요일",
+      "thurs": "목요일",
+      "tues": "화요일",
+      "wed": "수요일",
+      "weekDay": "요일",
+      "yearsE": "경과 연수"
+    },
+    "conditionDetails": {
+      "addCon": "조건 추가",
+      "addCondition": "조건 추가",
+      "addConj": "접속사 추가",
+      "all": "모두",
+      "and": "그리고",
+      "any": "일부",
+      "con": "조건:",
+      "noCond": "추가된 조건 없음",
+      "or": "또는",
+      "trueCon": "이 조건 중"
+    },
+    "conditionEdit": {
+      "conDetails": "조건 세부정보",
+      "conEdit": "조건 편집",
+      "conInfo": "연락처 정보",
+      "conType": "조건 유형",
+      "confirmMsg": "이 조건을 삭제하시겠습니까?",
+      "gen": "일반",
+      "persAtt": "개인 속성",
+      "today": "오늘 날짜"
+    },
+    "conditionSelect": {
+      "is": "임",
+      "isNot": "아님",
+      "op": "연산자"
+    },
+    "conditionText": {
+      "contains": "포함",
+      "endW": "로 끝남",
+      "op": "연산자",
+      "startW": "로 시작"
+    },
+    "conjunctionEdit": {
+      "and": "AND - 모든 조건이 참",
+      "conjEdit": "접속사 편집",
+      "conjType": "접속사 유형",
+      "or": "OR - 조건 중 하나가 참"
+    },
+    "contentPicker": {
+      "group": "그룹",
+      "pers": "사람",
+      "sel": "선택",
+      "selPers": "사람 또는 그룹 선택"
+    },
+    "newTask": {
+      "assignPers": "이 작업을 사람에게 할당해주세요.",
+      "assignTo": "할당 대상",
+      "associatePers": "이 작업을 사람과 연결해주세요.",
+      "associateW": "연결 대상",
+      "newAssign": "새로운 과제",
+      "saving": "저장 중...",
+      "taskNew": "새 작업",
+      "titleTask": "이 작업의 제목을 입력해주세요."
+    },
+    "requestedChanges": {
+      "applied": "변경사항이 적용되었습니다.",
+      "apply": "적용",
+      "field": "필드",
+      "newProfile": "새 프로필",
+      "requestedChanges": "요청된 변경 사항",
+      "value": "값"
+    },
+    "selectGroup": {
+      "group": "그룹",
+      "noResults": "검색과 일치하는 그룹을 찾을 수 없습니다",
+      "searchPrompt": "선택할 그룹 검색"
+    },
+    "taskList": {
+      "addTask": "작업 추가",
+      "assignGroup": "내 그룹에 할당됨",
+      "assignMe": "나에게 할당됨",
+      "assignedTo": "할당 대상",
+      "associatedWith": "관련됨",
+      "noTasks": "작업을 찾을 수 없습니다.",
+      "notSpecified": "지정되지 않음",
+      "reqMe": "내가 요청함",
+      "tasks": "작업",
+      "unassigned": "할당되지 않음"
+    },
+    "taskPage": {
+      "ago": "전",
+      "assign": "양수인",
+      "assigned": "할당된",
+      "associate": "연관짓다",
+      "associated": "관련된",
+      "by": "작성자",
+      "closed": "닫힘",
+      "created": "생성됨",
+      "editAssigned": "할당된 항목 편집",
+      "editAssoc": "관련 편집",
+      "notSpec": "지정되지 않음",
+      "open": "열림",
+      "opened": "열림",
+      "unassigned": "할당되지 않음"
+    },
+    "tasksPage": {
+      "auto": "자동화",
+      "showClosed": "닫힌 항목 표시",
+      "showOpen": "열린 항목 표시",
+      "subtitle": "작업 및 자동화 관리",
+      "tasks": "작업"
     }
   }
 }
