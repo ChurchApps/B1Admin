@@ -1466,6 +1466,7 @@
       "saveError": "无法保存给予设置"
     },
     "manageChurch": {
+      "editSettings": "编辑设置",
       "imEx": "导入/导出",
       "manage": "管理",
       "tools": "工具",

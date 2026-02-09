@@ -1466,6 +1466,7 @@
       "saveError": "Nabigong makatipid ng mga setting ng pagbibigay"
     },
     "manageChurch": {
+      "editSettings": "I-edit ang mga setting",
       "imEx": "I-import/I-export",
       "manage": "Pamahalaan",
       "tools": "Mga Tool",

@@ -1466,6 +1466,7 @@
       "saveError": "Kunne ikke lagre gi-innstillingene"
     },
     "manageChurch": {
+      "editSettings": "Rediger innstillinger",
       "imEx": "Importer/eksporter",
       "manage": "Administrer",
       "tools": "Verktøy",

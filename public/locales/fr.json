@@ -1473,6 +1473,7 @@
       "saveError": "Échec de l'enregistrement des paramètres de don"
     },
     "manageChurch": {
+      "editSettings": "Modifier les paramètres",
       "imEx": "Importer/Exporter",
       "manage": "Gérer",
       "tools": "Outils",

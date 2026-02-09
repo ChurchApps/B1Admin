@@ -1473,6 +1473,7 @@
       "saveError": "Falha ao salvar as configurações"
     },
     "manageChurch": {
+      "editSettings": "Editar configurações",
       "imEx": "Importar/Exportar",
       "manage": "Gerenciar",
       "tools": "Ferramentas",

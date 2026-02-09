@@ -1543,6 +1543,7 @@
       "saveError": "Failed to save giving settings"
     },
     "manageChurch": {
+      "editSettings": "Edit Settings",
       "imEx": "Import/Export",
       "manage": "Manage",
       "tools": "Tools",

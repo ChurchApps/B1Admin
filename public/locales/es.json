@@ -1474,6 +1474,7 @@
       "saveError": "No se pudo guardar la configuración de donación"
     },
     "manageChurch": {
+      "editSettings": "Editar configuración",
       "imEx": "Importar/Exportar",
       "manage": "Administrar",
       "tools": "Herramientas",

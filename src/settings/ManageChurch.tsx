@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
-import { Box, Stack, Button, IconButton } from "@mui/material";
+import { Box, Stack, Button } from "@mui/material";
 import { Settings as SettingsIcon, Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
 import { MobileAppSettingsPage } from "./MobileAppSettingsPage";
@@ -61,18 +61,21 @@ export const ManageChurch = () => {
       <PageHeader icon={<SettingsIcon />} title={church.data?.name || Locale.label("settings.manageChurch.title")} subtitle={church.data?.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}>
         <Stack direction="row" spacing={1}>
           {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-            <IconButton
-              size="small"
+            <Button
+              variant="outlined"
+              startIcon={<EditIcon />}
               onClick={() => setShowChurchSettings(true)}
               sx={{
-                color: "rgba(255,255,255,0.8)",
+                color: "#FFF",
+                backgroundColor: "transparent",
+                borderColor: "#FFF",
                 "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.2)",
                   color: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)",
                 },
               }}>
-              <EditIcon />
-            </IconButton>
+              {Locale.label("settings.manageChurch.editSettings")}
+            </Button>
           )}
           <Button
             variant={selectedTab === "mobileApps" ? "contained" : "outlined"}

@@ -1466,6 +1466,7 @@
       "saveError": "Impossibile salvare le impostazioni delle donazioni"
     },
     "manageChurch": {
+      "editSettings": "Modifica impostazioni",
       "imEx": "Importa/Esporta",
       "manage": "Gestisci",
       "tools": "Strumenti",
