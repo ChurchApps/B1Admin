@@ -108,7 +108,7 @@
       "noCalendars": "Keine Kalender gefunden",
       "status": "Status",
       "subtitleEmpty": "Beginnen Sie mit der Erstellung Ihres ersten Kalenders",
-      "subtitleWithCount": "[NEEDS TRANSLATION] Subtitle With Count",
+      "subtitleWithCount": "Untertitel mit Anzahl",
       "title": "Kalender"
     },
     "calendarPage": {
@@ -121,7 +121,7 @@
       "groupsInCalendar": "Gruppen im Kalender",
       "noGroupsAdded": "Noch keine Gruppen hinzugefügt",
       "removeGroup": "Gruppe entfernen",
-      "removeGroupAria": "[NEEDS TRANSLATION] Remove Group Aria",
+      "removeGroupAria": "Gruppe entfernen Aria",
       "subtitle": "Verwalten Sie Kalenderereignisse und Gruppen"
     },
     "editEvent": {
@@ -138,7 +138,7 @@
   "common": {
     "add": "Hinzufügen",
     "amount": "Betrag",
-    "back": "[NEEDS TRANSLATION] Back",
+    "back": "Zurück",
     "bottom": "Unten",
     "cancel": "Abbrechen",
     "center": "Mitte",
@@ -202,7 +202,7 @@
     "sermons": "Predigten",
     "title": "Titel",
     "top": "Oben",
-    "tryAgain": "[NEEDS TRANSLATION] Try Again",
+    "tryAgain": "Erneut versuchen",
     "update": "Aktualisieren",
     "website": "Website",
     "yes": "Ja"
@@ -297,23 +297,23 @@
       "opName": "Name (optional)"
     },
     "batchStatements": {
-      "csvDescription": "[NEEDS TRANSLATION] Download a ZIP file containing individual CSV files for each donor with their detailed donation records",
-      "csvDownload": "[NEEDS TRANSLATION] Individual CSV Files",
-      "downloadOptions": "[NEEDS TRANSLATION] Download Options",
-      "downloadZip": "[NEEDS TRANSLATION] Download ZIP ({count} files)",
-      "noDonations": "[NEEDS TRANSLATION] No donations found for {year}. Please select a different year.",
-      "printAllInfo": "[NEEDS TRANSLATION] This will open a single document with all {count} statements. Each statement will be on a separate page.",
-      "printAllStatements": "[NEEDS TRANSLATION] Print All {count} Statements",
-      "printDescription": "[NEEDS TRANSLATION] Generate a consolidated document with all giving statements for printing",
-      "printStatements": "[NEEDS TRANSLATION] Printable Statements",
-      "selectYear": "[NEEDS TRANSLATION] Select Year",
-      "subtitle": "[NEEDS TRANSLATION] Download giving statements for all donors",
-      "summary": "[NEEDS TRANSLATION] Summary",
-      "title": "[NEEDS TRANSLATION] Batch Giving Statements",
-      "totalAmount": "[NEEDS TRANSLATION] Total Amount:",
-      "totalDonations": "[NEEDS TRANSLATION] Total Donations:",
-      "totalDonors": "[NEEDS TRANSLATION] Total Donors:",
-      "year": "[NEEDS TRANSLATION] Year",
+      "csvDescription": "Laden Sie eine ZIP-Datei herunter, die individuelle CSV-Dateien für jeden Spender mit detaillierten Spendenaufzeichnungen enthält",
+      "csvDownload": "Einzelne CSV-Dateien",
+      "downloadOptions": "Download-Optionen",
+      "downloadZip": "ZIP herunterladen ({count} Dateien)",
+      "noDonations": "Keine Spenden für {year} gefunden. Bitte wählen Sie ein anderes Jahr.",
+      "printAllInfo": "Dies öffnet ein einzelnes Dokument mit allen {count} Bescheinigungen. Jede Bescheinigung wird auf einer separaten Seite angezeigt.",
+      "printAllStatements": "Alle {count} Bescheinigungen drucken",
+      "printDescription": "Erstellen Sie ein konsolidiertes Dokument mit allen Spendenbescheinigungen zum Drucken",
+      "printStatements": "Druckbare Bescheinigungen",
+      "selectYear": "Jahr auswählen",
+      "subtitle": "Spendenbescheinigungen für alle Spender herunterladen",
+      "summary": "Zusammenfassung",
+      "title": "Sammel-Spendenbescheinigungen",
+      "totalAmount": "Gesamtbetrag:",
+      "totalDonations": "Gesamtspenden:",
+      "totalDonors": "Gesamtzahl der Spender:",
+      "year": "Jahr",
       "zipInfo": "[NEEDS TRANSLATION] This will download a ZIP file containing {count} individual CSV files, one for each donor."
     },
     "bulkEntry": {
