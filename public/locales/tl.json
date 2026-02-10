@@ -108,7 +108,7 @@
       "noCalendars": "Walang nahanap na kalendaryo",
       "status": "Katayuan",
       "subtitleEmpty": "Magsimula sa pamamagitan ng paglikha ng iyong unang kalendaryo",
-      "subtitleWithCount": "[NEEDS TRANSLATION] Subtitle With Count",
+      "subtitleWithCount": "Subtitle na may bilang",
       "title": "Kalendaryo"
     },
     "calendarPage": {
@@ -121,7 +121,7 @@
       "groupsInCalendar": "Mga pangkat sa kalendaryo",
       "noGroupsAdded": "Wala pang mga pangkat na idinagdag",
       "removeGroup": "Alisin ang pangkat",
-      "removeGroupAria": "[NEEDS TRANSLATION] Remove Group Aria",
+      "removeGroupAria": "Alisin ang grupo Aria",
       "subtitle": "Pamahalaan ang mga kaganapan sa kalendaryo at pangkat"
     },
     "editEvent": {
@@ -138,7 +138,7 @@
   "common": {
     "add": "Magdagdag",
     "amount": "Halaga",
-    "back": "[NEEDS TRANSLATION] Back",
+    "back": "Bumalik",
     "bottom": "Ibaba",
     "cancel": "Kanselahin",
     "center": "Gitna",
@@ -202,7 +202,7 @@
     "sermons": "Mga Sermon",
     "title": "Pamagat",
     "top": "Itaas",
-    "tryAgain": "[NEEDS TRANSLATION] Try Again",
+    "tryAgain": "Subukan muli",
     "update": "I-update",
     "website": "Website",
     "yes": "Oo"
@@ -297,24 +297,24 @@
       "opName": "Pangalan (opsyonal)"
     },
     "batchStatements": {
-      "csvDescription": "[NEEDS TRANSLATION] Download a ZIP file containing individual CSV files for each donor with their detailed donation records",
-      "csvDownload": "[NEEDS TRANSLATION] Individual CSV Files",
-      "downloadOptions": "[NEEDS TRANSLATION] Download Options",
-      "downloadZip": "[NEEDS TRANSLATION] Download ZIP ({count} files)",
-      "noDonations": "[NEEDS TRANSLATION] No donations found for {year}. Please select a different year.",
-      "printAllInfo": "[NEEDS TRANSLATION] This will open a single document with all {count} statements. Each statement will be on a separate page.",
-      "printAllStatements": "[NEEDS TRANSLATION] Print All {count} Statements",
-      "printDescription": "[NEEDS TRANSLATION] Generate a consolidated document with all giving statements for printing",
-      "printStatements": "[NEEDS TRANSLATION] Printable Statements",
-      "selectYear": "[NEEDS TRANSLATION] Select Year",
-      "subtitle": "[NEEDS TRANSLATION] Download giving statements for all donors",
-      "summary": "[NEEDS TRANSLATION] Summary",
-      "title": "[NEEDS TRANSLATION] Batch Giving Statements",
-      "totalAmount": "[NEEDS TRANSLATION] Total Amount:",
-      "totalDonations": "[NEEDS TRANSLATION] Total Donations:",
-      "totalDonors": "[NEEDS TRANSLATION] Total Donors:",
-      "year": "[NEEDS TRANSLATION] Year",
-      "zipInfo": "[NEEDS TRANSLATION] This will download a ZIP file containing {count} individual CSV files, one for each donor."
+      "csvDescription": "Mag-download ng ZIP file na naglalaman ng mga indibidwal na CSV file para sa bawat donor na may detalyadong rekord ng donasyon",
+      "csvDownload": "Mga indibidwal na CSV file",
+      "downloadOptions": "Mga opsyon sa pag-download",
+      "downloadZip": "I-download ang ZIP ({count} file)",
+      "noDonations": "Walang nahanap na donasyon para sa {year}. Mangyaring pumili ng ibang taon.",
+      "printAllInfo": "Magbubukas ito ng isang dokumento na may lahat ng {count} na pahayag. Ang bawat pahayag ay nasa hiwalay na pahina.",
+      "printAllStatements": "I-print lahat ng {count} pahayag",
+      "printDescription": "Gumawa ng consolidated na dokumento na may lahat ng pahayag ng donasyon para sa pag-print",
+      "printStatements": "Mga napi-print na pahayag",
+      "selectYear": "Pumili ng taon",
+      "subtitle": "I-download ang mga pahayag ng donasyon para sa lahat ng donor",
+      "summary": "Buod",
+      "title": "Batch na Pahayag ng Donasyon",
+      "totalAmount": "Kabuuang halaga:",
+      "totalDonations": "Kabuuang donasyon:",
+      "totalDonors": "Kabuuang donor:",
+      "year": "Taon",
+      "zipInfo": "Magda-download ito ng ZIP file na naglalaman ng {count} indibidwal na CSV file, isa para sa bawat donor."
     },
     "bulkEntry": {
       "addDonation": "Magdagdag ng Donasyon",
@@ -357,7 +357,7 @@
       "errMsg": "Walang natagpuang pondo. Mangyaring gumawa ng pondo bago magbigay ng donasyon",
       "funds": "Mga Pondo",
       "noDonMsg": "Walang mga donasyon na naitala. Kapag ang mga donasyon ay naipasok, lalabas ang mga ito dito.",
-      "statements": "[NEEDS TRANSLATION] Giving Statements",
+      "statements": "Mga pahayag ng donasyon",
       "summary": "Buod",
       "tableIdent": "Id",
       "total": "Kabuuan"
@@ -367,7 +367,7 @@
       "date": "Petsa",
       "don": "Donasyon",
       "noBatch": "Walang natagpuang batch.",
-      "subtitle": "[NEEDS TRANSLATION] View donation summaries and analyze giving trends",
+      "subtitle": "Tingnan ang mga buod ng donasyon at suriin ang mga uso ng pagbibigay",
       "total": "Kabuuan"
     },
     "fundEdit": {
@@ -395,7 +395,7 @@
       "donFilt": "Filter ng Donasyon",
       "donor": "Donador",
       "noDon": "Walang mga donasyon para sa napiling hanay ng petsa",
-      "subtitle": "[NEEDS TRANSLATION] Manage donation funds and track giving categories"
+      "subtitle": "Pamahalaan ang mga pondo ng donasyon at subaybayan ang mga kategorya ng pagbibigay"
     }
   },
   "forms": {
@@ -482,8 +482,8 @@
       "forms": "Mga Form",
       "noArch": "Walang na-archive na mga form.",
       "noCustomMsg": "Walang mga custom na form na nagawa pa. Lalabas ang mga ito dito kapag idinagdag.",
-      "subtitleManage": "[NEEDS TRANSLATION] Create and manage custom forms",
-      "url": "[NEEDS TRANSLATION] URL"
+      "subtitleManage": "Gumawa at pamahalaan ang mga custom na form",
+      "url": "URL"
     },
     "tabs": {
       "formMem": "Mga Miyembro ng Form",
@@ -741,7 +741,7 @@
       "stand": "Karaniwan"
     },
     "peoplePage": {
-      "addPerson": "[NEEDS TRANSLATION] Add Person",
+      "addPerson": "Magdagdag ng tao",
       "bDay": "Kaarawan",
       "bDayNo": "Kaarawan (Walang Taon)",
       "deleteOp": "Pagpipilian sa Pagtanggal",
@@ -786,7 +786,7 @@
     },
     "personEdit": {
       "applyQuestion": "Nais mo bang ilapat ito sa buong",
-      "cannotDeleteSelf": "[NEEDS TRANSLATION] You cannot delete your own person record.",
+      "cannotDeleteSelf": "Hindi mo maaaring burahin ang iyong sariling talaan ng tao.",
       "confirmMsg": "Sigurado ka bang nais mong permanenteng tanggalin ang rekord ng tao na ito?",
       "donorNumber": "Numero ng Donador",
       "exten": "Extension",
@@ -871,8 +871,8 @@
   },
   "placeholders": {
     "addPage": {
-      "linkText": "[NEEDS TRANSLATION] Click here",
-      "linkUrl": "[NEEDS TRANSLATION] /new-page",
+      "linkText": "Click here",
+      "linkUrl": "/new-page",
       "title": "Ang Aming Kuwento"
     },
     "batch": {
@@ -892,32 +892,32 @@
       "address1": "456 Pangunahing Abenida",
       "address2": "Suite 100",
       "city": "Quezon City",
-      "country": "[NEEDS TRANSLATION] USA",
+      "country": "USA",
       "name": "Iglesia ng Biyaya",
       "state": "Metro Manila",
-      "subdomain": "[NEEDS TRANSLATION] gracechurch",
+      "subdomain": "gracechurch",
       "zip": "1100"
     },
     "device": {
-      "label": "[NEEDS TRANSLATION] Living Room Screen"
+      "label": "Living Room Screen"
     },
     "donation": {
-      "checkNumber": "[NEEDS TRANSLATION] 1234",
-      "lastDigits": "[NEEDS TRANSLATION] 4242",
+      "checkNumber": "1234",
+      "lastDigits": "4242",
       "notes": "Buwanang ikapu ng Pamilyang Dela Cruz"
     },
     "element": {
-      "buttonText": "[NEEDS TRANSLATION] Click Here",
-      "cardTitle": "[NEEDS TRANSLATION] Card Title",
-      "donateText": "[NEEDS TRANSLATION] Donate Now",
-      "imageDescription": "[NEEDS TRANSLATION] Image description",
-      "videoId": "[NEEDS TRANSLATION] dQw4w9WgXcQ"
+      "buttonText": "Click Here",
+      "cardTitle": "Card Title",
+      "donateText": "Donate Now",
+      "imageDescription": "Image description",
+      "videoId": "dQw4w9WgXcQ"
     },
     "faq": {
       "title": "Ano ang mga oras ng paglilingkod?"
     },
     "font": {
-      "search": "[NEEDS TRANSLATION] Search fonts..."
+      "search": "Search fonts..."
     },
     "form": {
       "name": "Form ng Pagpaparehistro",
@@ -930,7 +930,7 @@
       "name": "Pangkalahatang Pondo"
     },
     "giving": {
-      "publicKey": "[NEEDS TRANSLATION] pk_live_..."
+      "publicKey": "pk_live_..."
     },
     "group": {
       "category": "Komunidad, Pag-aaral ng Bibliya, Ministeryo",
@@ -940,42 +940,42 @@
       "name": "Pamilyang Dela Cruz"
     },
     "page": {
-      "linkText": "[NEEDS TRANSLATION] Read More",
-      "linkUrl": "[NEEDS TRANSLATION] https://example.com",
+      "linkText": "Read More",
+      "linkUrl": "https://example.com",
       "title": "Tungkol sa Amin",
-      "urlPath": "[NEEDS TRANSLATION] /about-us"
+      "urlPath": "/about-us"
     },
     "pairScreen": {
-      "code": "[NEEDS TRANSLATION] ABC123"
+      "code": "ABC123"
     },
     "person": {
       "address1": "123 Pangunahing Kalye",
       "address2": "Unit 4B",
       "city": "Maynila",
-      "donorNumber": "[NEEDS TRANSLATION] DN-12345",
+      "donorNumber": "DN-12345",
       "email": "juan@halimbawa.ph",
       "firstName": "Juan",
       "lastName": "Dela Cruz",
       "middleName": "Miguel",
-      "nameTag": "[NEEDS TRANSLATION] Lead Singer",
-      "nickname": "[NEEDS TRANSLATION] Johnny",
-      "phoneExt": "[NEEDS TRANSLATION] 1234",
-      "simpleEmail": "[NEEDS TRANSLATION] john@example.com",
+      "nameTag": "Lead Singer",
+      "nickname": "Johnny",
+      "phoneExt": "1234",
+      "simpleEmail": "john@example.com",
       "state": "Metro Manila",
       "zip": "1000"
     },
     "plan": {
-      "name": "[NEEDS TRANSLATION] Sunday Service - Jan 5"
+      "name": "Sunday Service - Jan 5"
     },
     "planItem": {
-      "description": "[NEEDS TRANSLATION] Brief description...",
+      "description": "Brief description...",
       "label": "Oras ng Pagsamba"
     },
     "planType": {
       "name": "Paglilingkod sa Linggo"
     },
     "position": {
-      "count": "[NEEDS TRANSLATION] 2",
+      "count": "2",
       "name": "Pangunahing Mang-aawit"
     },
     "role": {
@@ -989,23 +989,23 @@
       "name": "Pagsamba sa Linggo"
     },
     "song": {
-      "album": "[NEEDS TRANSLATION] Album Name",
-      "arrangementName": "[NEEDS TRANSLATION] Contemporary Arrangement",
-      "artist": "[NEEDS TRANSLATION] John Newton",
-      "bpm": "[NEEDS TRANSLATION] 120",
-      "keySignature": "[NEEDS TRANSLATION] C#",
-      "language": "[NEEDS TRANSLATION] English",
-      "lengthSeconds": "[NEEDS TRANSLATION] 180",
-      "linkUrl": "[NEEDS TRANSLATION] https://example.com/chords",
-      "lyrics": "[NEEDS TRANSLATION] Enter lyrics here...",
-      "title": "[NEEDS TRANSLATION] Amazing Grace"
+      "album": "Album Name",
+      "arrangementName": "Contemporary Arrangement",
+      "artist": "John Newton",
+      "bpm": "120",
+      "keySignature": "C#",
+      "language": "English",
+      "lengthSeconds": "180",
+      "linkUrl": "https://example.com/chords",
+      "lyrics": "Enter lyrics here...",
+      "title": "Amazing Grace"
     },
     "task": {
-      "notes": "[NEEDS TRANSLATION] Add any notes about this task...",
-      "title": "[NEEDS TRANSLATION] Prepare worship slides"
+      "notes": "Add any notes about this task...",
+      "title": "Prepare worship slides"
     },
     "time": {
-      "displayName": "[NEEDS TRANSLATION] Sunday Morning"
+      "displayName": "Sunday Morning"
     },
     "user": {
       "email": "juan@halimbawa.ph",
@@ -1015,12 +1015,12 @@
   },
   "plans": {
     "actionSelector": {
-      "addAction": "[NEEDS TRANSLATION] Add Action",
-      "addSection": "[NEEDS TRANSLATION] Add Section",
+      "addAction": "Magdagdag ng aksyon",
+      "addSection": "Magdagdag ng seksyon",
       "fromAssociatedLesson": "Mula sa kaugnay na aralin:",
-      "noActionsAvailable": "[NEEDS TRANSLATION] No actions available",
+      "noActionsAvailable": "Walang mga aksyon na magagamit",
       "selectAction": "Pumili ng aksyon",
-      "selectExternalItem": "[NEEDS TRANSLATION] Select External Item"
+      "selectExternalItem": "Pumili ng panlabas na item"
     },
     "assignment": {
       "addPosition": "Magdagdag ng posisyon",
@@ -1034,27 +1034,27 @@
       "noMem": "Walang natagpuang miyembro ng grupo."
     },
     "contentProviderAuth": {
-      "deviceFlowInstructions": "[NEEDS TRANSLATION] Visit the URL below and enter the code to authorize:",
-      "errorGeneric": "[NEEDS TRANSLATION] Failed to link provider. Please try again.",
-      "link": "[NEEDS TRANSLATION] Link",
-      "linkAccount": "[NEEDS TRANSLATION] Link Account",
-      "linkNew": "[NEEDS TRANSLATION] Link New Provider",
-      "linked": "[NEEDS TRANSLATION] Linked",
-      "noLinkedDescription": "[NEEDS TRANSLATION] Link a content provider to access their content in your service plans.",
-      "noProvidersAvailable": "[NEEDS TRANSLATION] No content providers available",
-      "pkceInstructions": "[NEEDS TRANSLATION] Click the button below to authorize in a popup window:",
-      "pkceWaiting": "[NEEDS TRANSLATION] Waiting for authorization in popup...",
-      "refresh": "[NEEDS TRANSLATION] Refresh",
-      "selectProvider": "[NEEDS TRANSLATION] Link Content Provider",
-      "success": "[NEEDS TRANSLATION] Successfully linked!",
-      "title": "[NEEDS TRANSLATION] Content Providers",
-      "unlink": "[NEEDS TRANSLATION] Unlink",
-      "waitingForAuth": "[NEEDS TRANSLATION] Waiting for authorization..."
+      "deviceFlowInstructions": "Bisitahin ang URL sa ibaba at ilagay ang code para mag-authorize:",
+      "errorGeneric": "Nabigo ang pag-link ng provider. Pakisubukan muli.",
+      "link": "I-link",
+      "linkAccount": "I-link ang account",
+      "linkNew": "Mag-link ng bagong provider",
+      "linked": "Naka-link",
+      "noLinkedDescription": "Mag-link ng content provider para ma-access ang kanilang content sa iyong mga service plan.",
+      "noProvidersAvailable": "Walang mga content provider na magagamit",
+      "pkceInstructions": "I-click ang button sa ibaba para mag-authorize sa popup window:",
+      "pkceWaiting": "Naghihintay ng authorization sa popup...",
+      "refresh": "I-refresh",
+      "selectProvider": "Mag-link ng Content Provider",
+      "success": "Matagumpay na na-link!",
+      "title": "Mga Content Provider",
+      "unlink": "I-unlink",
+      "waitingForAuth": "Naghihintay ng authorization..."
     },
     "lessonHeaderSelector": {
       "description": "Pumili ng header o seksyon upang idagdag sa iyong plano. Ang mga child item nito ay idadagdag bilang mga item ng plano.",
       "noContent": "Walang available na nilalaman ng aralin",
-      "selectContent": "[NEEDS TRANSLATION] Select Content",
+      "selectContent": "Pumili ng Content",
       "title": "Magdagdag ng nilalaman ng aralin"
     },
     "lessonScheduleEdit": {
@@ -1066,11 +1066,11 @@
     },
     "lessonSelector": {
       "associateLesson": "Associate aralin",
-      "browseOtherProviders": "[NEEDS TRANSLATION] Browse Other Providers",
-      "contentProvider": "[NEEDS TRANSLATION] Content Provider",
+      "browseOtherProviders": "Mag-browse ng ibang Provider",
+      "contentProvider": "Content Provider",
       "lesson": "Aralin",
-      "linkProviderFirst": "[NEEDS TRANSLATION] Link this provider first to browse content",
-      "providerNotLinked": "[NEEDS TRANSLATION] Provider Not Linked"
+      "linkProviderFirst": "I-link muna ang provider na ito para mag-browse ng content",
+      "providerNotLinked": "Hindi naka-link ang Provider"
     },
     "ministryList": {
       "getStarted": "Magsimula sa pamamagitan ng paglikha ng iyong unang ministeryo",
@@ -1092,11 +1092,11 @@
       "servReq": "Kinakailangan ang petsa ng serbisyo."
     },
     "planItem": {
-      "addItem": "[NEEDS TRANSLATION] Add Item",
-      "editItem": "[NEEDS TRANSLATION] Edit Item",
-      "editSection": "[NEEDS TRANSLATION] Edit Section",
+      "addItem": "Magdagdag ng item",
+      "editItem": "I-edit ang item",
+      "editSection": "I-edit ang seksyon",
       "expandToActions": "Palawakin sa mga aksyon",
-      "externalItem": "[NEEDS TRANSLATION] External Item",
+      "externalItem": "Panlabas na item",
       "item": "Item",
       "song": "Kanta"
     },
@@ -1213,14 +1213,14 @@
       "time": "Oras"
     },
     "serviceOrder": {
-      "addFromLesson": "[NEEDS TRANSLATION] Add From Lesson",
+      "addFromLesson": "Magdagdag mula sa Aralin",
       "addSection": "Magdagdag ng seksyon",
-      "associateError": "[NEEDS TRANSLATION] Associate Error",
+      "associateError": "Error sa pag-associate",
       "associateLesson": "Associate aralin",
-      "customizeLesson": "[NEEDS TRANSLATION] Customize",
-      "disassociateError": "[NEEDS TRANSLATION] Disassociate Error",
-      "lessonPreview": "[NEEDS TRANSLATION] Lesson Preview",
-      "loadError": "[NEEDS TRANSLATION] Load Error",
+      "customizeLesson": "I-customize",
+      "disassociateError": "Error sa pag-disassociate",
+      "lessonPreview": "Preview ng Aralin",
+      "loadError": "Error sa pag-load",
       "noItems": "Walang mga item sa pagkakasunud -sunod ng serbisyo",
       "orderOfService": "Order ng serbisyo",
       "previewBanner": "Ito ay isang preview ng nauugnay na aralin. I-click ang \"Ipasadya\" upang i-edit.",
@@ -1359,11 +1359,11 @@
       "title": "Bulk Import",
       "vimeo": "Vimeo",
       "vimeoChannelId": "Vimeo Channel ID",
-      "vimeoChannelPlaceholder": "[NEEDS TRANSLATION] staffpicks",
+      "vimeoChannelPlaceholder": "staffpicks",
       "vimeoDescription": "Mag-import ng mga video mula sa iyong Vimeo account o showcases",
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube Channel ID",
-      "youtubeChannelPlaceholder": "[NEEDS TRANSLATION] UCfiDl90gAfZMkgbeCqX1WiA",
+      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
       "youtubeDescription": "Mag-import ng mga video mula sa iyong YouTube channel o playlists"
     },
     "duration": {
@@ -1570,23 +1570,23 @@
       "churches": "Mga Simbahan",
       "location": "Lokasyon",
       "noChurch": "Walang natagpuang simbahan. Mangyaring maghanap ng ibang pangalan.",
-      "noUserChurches": "[NEEDS TRANSLATION] This user has no churches associated with their account.",
-      "noUsers": "[NEEDS TRANSLATION] No users found. Please search for a different name or email.",
+      "noUserChurches": "Ang user na ito ay walang mga simbahang nauugnay sa kanilang account.",
+      "noUsers": "Walang nahanap na user. Mangyaring maghanap ng ibang pangalan o email.",
       "noteFour": "Ang maihahambing na software ay ProPresenter. Nagkakahalaga ito ng $399 para sa isang lisensya ng site. Inakala kong ang karaniwang simbahan ay nag-i-install ng software sa 3 computer at hinati ko ang kabuuang pag-install sa 3 upang makuha ang bilang ng mga simbahan. Inakala ko rin na mag-a-update ang mga simbahan sa isang bagong bersyon bawat 5 taon sa average. Kaya't $399 / 5 taon / 3 computer = $26.60 taunang gastos bawat computer. Kung maisasakatuparan natin ang mga palagay na ito, dapat nating i-update ang numerong ito.",
       "noteOne": "Ang maihahambing na software ay Breeze. Sila ay naniningil ng $72/buwan o $864/taon.",
       "noteThree": "Ang maihahambing na nilalaman ay Orange. Sila ay naniningil ng $1023/taon para sa mga simbahan na may 26-50 na manonood para sa 252 Basic.",
       "noteTwo": "Ang maihahambing na software ay SubSplash. Nagsisimula sila sa $99/buwan o $1200/taon. Hindi kasama dito ang bahagi na kinukuha nila mula sa mga donasyon.",
       "notes": "Mga Tala",
       "regist": "Nakarehistro",
-      "searchResults": "[NEEDS TRANSLATION] Search Results",
+      "searchResults": "Mga resulta ng paghahanap",
       "servAdmin": "Admin ng Server",
       "subtitle": "Pamahalaan ang mga setting ng server at mga simbahan",
       "translationLookups": "Mga lookup ng pagsasalin",
       "usageTrends": "Mga Uso sa Paggamit",
-      "userChurches": "[NEEDS TRANSLATION] Churches",
-      "userSearch": "[NEEDS TRANSLATION] Search by Name or Email",
-      "userSearchPlaceholder": "[NEEDS TRANSLATION] Search by name or email",
-      "users": "[NEEDS TRANSLATION] Users",
+      "userChurches": "Mga Simbahan",
+      "userSearch": "Maghanap ayon sa Pangalan o Email",
+      "userSearchPlaceholder": "Maghanap ayon sa pangalan o email",
+      "users": "Mga User",
       "valueNotes": "Mga Tala sa Paano Kinakalkula ang mga Halaga"
     },
     "reportPage": {
@@ -1612,7 +1612,7 @@
     "appEdit": {
       "addTab": "Magdagdag ng tab",
       "bible": "Bibliya",
-      "changeImage": "[NEEDS TRANSLATION] Change Image",
+      "changeImage": "Palitan ang larawan",
       "checkin": "Check-in",
       "deleteTab": "Tanggalin ang Tab",
       "donation": "Donasyon",
@@ -1627,7 +1627,7 @@
       "page": "Pahina",
       "saveTab": "I-save ang Tab",
       "saving": "Nag-se-save...",
-      "selectImage": "[NEEDS TRANSLATION] Select Image",
+      "selectImage": "Pumili ng larawan",
       "tabName": "Pangalan ng tab",
       "tabType": "Uri ng tab",
       "url": "URL",
@@ -1671,11 +1671,11 @@
       "none": "Wala"
     },
     "directoryVisibility": {
-      "everyone": "[NEEDS TRANSLATION] Everyone (Including Visitors)",
-      "label": "[NEEDS TRANSLATION] Show in Directory",
-      "members": "[NEEDS TRANSLATION] Members & Staff",
-      "regularAttendees": "[NEEDS TRANSLATION] Regular Attendees & Above",
-      "staff": "[NEEDS TRANSLATION] Staff Only"
+      "everyone": "Lahat (kasama ang mga bisita)",
+      "label": "Ipakita sa Direktoryo",
+      "members": "Mga Miyembro at Staff",
+      "regularAttendees": "Mga Regular na Dumadalo at Pataas",
+      "staff": "Staff Lamang"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
@@ -1812,7 +1812,7 @@
   },
   "site": {
     "addPage": {
-      "aiPlaceholder": "[NEEDS TRANSLATION] Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
+      "aiPlaceholder": "Halimbawa: Gumawa ng nakakaengganyo na homepage na may pangalan ng simbahan, mission statement, oras ng serbisyo, at button para sa donasyon",
       "newLink": "Bagong Link",
       "newPage": "Bagong Pahina",
       "pageType": "Uri ng Pahina"
@@ -2178,7 +2178,7 @@
       "title": "Gumawa ng awit"
     },
     "deleteSong": {
-      "confirm": "[NEEDS TRANSLATION] Confirm"
+      "confirm": "Kumpirmahin"
     },
     "details": {
       "album": "Album",
@@ -2271,7 +2271,7 @@
       "never": "Kailanman",
       "recurHelp": "Itakda kung gaano kadalas dapat tumakbo ang automation na ito",
       "rep": "Ulitin",
-      "weekly": "[NEEDS TRANSLATION] Weekly",
+      "weekly": "Lingguhan",
       "yearly": "Taun-taon"
     },
     "automationsPage": {
