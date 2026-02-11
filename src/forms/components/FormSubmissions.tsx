@@ -4,19 +4,17 @@ import {
   type FormSubmissionInterface,
   type MemberPermissionInterface,
   type PersonInterface,
-  type QuestionInterface,
+  type QuestionInterface
 } from "@churchapps/helpers";
 import {
   DateHelper,
   DisplayBox,
   ExportLink,
   Locale,
-  Loading,
+  Loading
 } from "@churchapps/apphelper";
 import { useReactToPrint } from "react-to-print";
-import {
-  Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack
-} from "@mui/material";
+import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 interface Props {
@@ -31,7 +29,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   const yesNoDefault = useMemo(
     () => [
       { value: "Yes", text: Locale.label("common.yes") },
-      { value: "No", text: Locale.label("common.no") },
+      { value: "No", text: Locale.label("common.no") }
     ],
     []
   );
@@ -97,12 +95,12 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
 
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people", "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const formSubmissions = useQuery<any[]>({
     queryKey: ["/formsubmissions/formId/" + props.formId, "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   // Process data when both queries are loaded
@@ -230,7 +228,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           key={i}
           sx={{
             "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease",
+            transition: "background-color 0.2s ease"
           }}>
           <TableCell key="personName">
             {personId ? (
@@ -239,7 +237,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
                 style={{
                   textDecoration: "none",
                   color: "var(--c1l2)",
-                  fontWeight: 500,
+                  fontWeight: 500
                 }}>
                 {personName}
               </a>
@@ -296,8 +294,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
                 backgroundColor: "grey.50",
                 "& .MuiTableCell-root": {
                   borderBottom: "2px solid",
-                  borderBottomColor: "divider",
-                },
+                  borderBottomColor: "divider"
+                }
               }}>
               <TableRow key="header">{tableHeader}</TableRow>
             </TableHead>

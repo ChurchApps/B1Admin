@@ -3,9 +3,7 @@ import { FormEdit, EnvironmentHelper } from "./components";
 import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import {
-  Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card
-} from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
 import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon } from "@mui/icons-material";
 import { SmallButton } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
@@ -19,12 +17,12 @@ export const FormsPage = () => {
 
   const forms = useQuery<FormInterface[]>({
     queryKey: ["/forms", "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const archivedForms = useQuery<FormInterface[]>({
     queryKey: ["/forms/archived", "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const getRows = (isArchived: boolean) => {
@@ -199,7 +197,7 @@ export const FormsPage = () => {
         </>
       )
     },
-    { key: "archived", label: Locale.label("forms.formsPage.archForms"), content: archivedCard, hidden: archivedCount === 0 },
+    { key: "archived", label: Locale.label("forms.formsPage.archForms"), content: archivedCard, hidden: archivedCount === 0 }
   ];
 
   return (
@@ -215,7 +213,7 @@ export const FormsPage = () => {
             sx={{
               backgroundColor: "#FFF",
               color: "var(--c1l2)",
-              "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" },
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
             }}
             data-testid="add-form-button">
             {Locale.label("forms.formsPage.addForm") || "Add Form"}

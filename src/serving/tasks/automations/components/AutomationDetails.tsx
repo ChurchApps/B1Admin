@@ -7,9 +7,7 @@ import { AutomationEdit } from "./AutomationEdit";
 import { ConditionDetails } from "./ConditionDetails";
 import { ConjunctionEdit } from "./ConjunctionEdit";
 import { ConditionEdit } from "./ConditionEdit";
-import {
-  Card, CardContent, Typography, Stack, Box, Button, IconButton, Divider, List, ListItem, Chip 
-} from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Button, IconButton, Divider, List, ListItem, Chip } from "@mui/material";
 import {
   SettingsSuggest as AutomationsIcon,
   Edit as EditIcon,
@@ -18,7 +16,7 @@ import {
   Person as PersonIcon,
   Repeat as RepeatIcon,
   CheckCircle as ActiveIcon,
-  PauseCircle as InactiveIcon,
+  PauseCircle as InactiveIcon
 } from "@mui/icons-material";
 
 interface Props {
@@ -72,7 +70,7 @@ export const AutomationDetails = (props: Props) => {
                   borderColor: "grey.200",
                   borderRadius: 1,
                   mb: 1,
-                  "&:last-child": { mb: 0 },
+                  "&:last-child": { mb: 0 }
                 }}>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ flex: 1 }}>
                   <TaskIcon sx={{ color: "primary.main", fontSize: 20 }} />
@@ -100,7 +98,7 @@ export const AutomationDetails = (props: Props) => {
     );
   };
 
-  React.useEffect(init, [props.automation]); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(init, [props.automation]);
 
   if (editDetails) {
     return (
@@ -159,7 +157,7 @@ export const AutomationDetails = (props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "grey.200",
+          borderColor: "grey.200"
         }}>
         <CardContent>
           <Stack spacing={3}>

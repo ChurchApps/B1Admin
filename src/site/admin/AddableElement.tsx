@@ -1,6 +1,6 @@
 import { Grid, Icon } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDrag } from 'react-dnd';
+import { useDrag } from "react-dnd";
 
 type Props = {
   dndType: string;
@@ -20,11 +20,11 @@ export function AddableElement(props: Props) {
       const result = {
         type: props.dndType,
         item: { elementType: props.elementType, blockId: props.blockId },
-        collect: (monitor:any) => ({ isDragging: !!monitor.isDragging() }),
+        collect: (monitor:any) => ({ isDragging: !!monitor.isDragging() })
       };
       return result;
     },
-    [],
+    []
   );
 
   useEffect(() => {

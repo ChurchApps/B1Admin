@@ -1,7 +1,5 @@
 import { ApiHelper, DateHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import {
-  Button, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField
-} from "@mui/material";
+import { Button, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import React from "react";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 
@@ -18,12 +16,8 @@ export const TranslationTab = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const value = e.target.value;
     switch (e.target.name) {
-      case "start":
-        setStartDate(new Date(value));
-        break;
-      case "end":
-        setEndDate(new Date(value));
-        break;
+      case "start": setStartDate(new Date(value)); break;
+      case "end": setEndDate(new Date(value)); break;
     }
   };
 

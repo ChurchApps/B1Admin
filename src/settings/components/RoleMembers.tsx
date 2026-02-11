@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import {
-  ApiHelper, DisplayBox, UserHelper, Permissions, SmallButton, Locale
-} from "@churchapps/apphelper";
+import { ApiHelper, DisplayBox, UserHelper, Permissions, SmallButton, Locale } from "@churchapps/apphelper";
 import { type RoleMemberInterface, type RoleInterface } from "@churchapps/helpers";
 import { Alert, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 

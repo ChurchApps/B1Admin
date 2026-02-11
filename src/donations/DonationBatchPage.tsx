@@ -1,10 +1,10 @@
 import React from "react";
 import { DonationEdit, Donations, BatchEdit, BulkDonationEntry } from "./components";
-import { UserHelper, Permissions, DateHelper, CurrencyHelper, PageHeader, Locale } from "@churchapps/apphelper";
+import { UserHelper, Permissions, DateHelper, PageHeader, Locale } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundInterface, type DonationInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Card, Stack, Button, Typography, Icon } from "@mui/material";
+import { Box, Card, Stack, Button, Typography } from "@mui/material";
 import { VolunteerActivism as DonationIcon, Receipt as ReceiptIcon, AttachMoney as MoneyIcon, Edit as EditIcon } from "@mui/icons-material";
 
 export const DonationBatchPage = () => {
@@ -17,12 +17,12 @@ export const DonationBatchPage = () => {
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const donations = useQuery<DonationInterface[]>({
     queryKey: ["/donations?batchId=" + params.id, "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const showEditDonation = (id: string) => {
@@ -49,7 +49,7 @@ export const DonationBatchPage = () => {
 
   const [stats, setStats] = React.useState({
     totalDonations: 0,
-    totalAmount: 0,
+    totalAmount: 0
   });
 
   React.useEffect(() => {
@@ -59,7 +59,7 @@ export const DonationBatchPage = () => {
 
       setStats({
         totalDonations,
-        totalAmount,
+        totalAmount
       });
     }
   }, [donations.data]);
@@ -118,7 +118,7 @@ export const DonationBatchPage = () => {
                 borderColor: "rgba(255,255,255,0.5)",
                 "&:hover": {
                   borderColor: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)",
+                  backgroundColor: "rgba(255,255,255,0.1)"
                 },
                 position: { md: "relative" },
                 ml: { md: "auto" },

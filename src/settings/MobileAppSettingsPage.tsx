@@ -51,11 +51,11 @@ export const MobileAppSettingsPage = () => {
           startIcon={<AddIcon />}
           onClick={handleAddTab}
           sx={{
-            color: '#FFF',
-            borderColor: 'rgba(255,255,255,0.5)',
-            '&:hover': {
-              borderColor: '#FFF',
-              backgroundColor: 'rgba(255,255,255,0.1)'
+            color: "#FFF",
+            borderColor: "rgba(255,255,255,0.5)",
+            "&:hover": {
+              borderColor: "#FFF",
+              backgroundColor: "rgba(255,255,255,0.1)"
             }
           }}
         >

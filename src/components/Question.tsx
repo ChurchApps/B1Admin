@@ -24,7 +24,7 @@ export const Question: React.FC<Props> = memo((props) => {
           sx={{
             fontWeight: 600,
             color: "primary.main",
-            mb: 1,
+            mb: 1
           }}>
           {q.title}
         </Typography>
@@ -77,7 +77,7 @@ export const Question: React.FC<Props> = memo((props) => {
         backgroundColor: "grey.50",
         borderRadius: 1,
         border: "1px solid",
-        borderColor: "grey.200",
+        borderColor: "grey.200"
       }}>
       <Typography
         variant="subtitle2"
@@ -85,7 +85,7 @@ export const Question: React.FC<Props> = memo((props) => {
           fontWeight: 600,
           color: "text.primary",
           mb: 0.5,
-          fontSize: "0.875rem",
+          fontSize: "0.875rem"
         }}>
         {q.title}
       </Typography>
@@ -98,7 +98,7 @@ export const Question: React.FC<Props> = memo((props) => {
           size="small"
           sx={{
             fontWeight: 500,
-            fontSize: "0.75rem",
+            fontSize: "0.75rem"
           }}
         />
       ) : (
@@ -107,7 +107,7 @@ export const Question: React.FC<Props> = memo((props) => {
           sx={{
             color: "text.secondary",
             fontWeight: 400,
-            wordBreak: "break-word",
+            wordBreak: "break-word"
           }}>
           {displayValue}
         </Typography>

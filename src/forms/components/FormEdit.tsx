@@ -30,7 +30,7 @@ export function FormEdit(props: Props) {
 
   const formQuery = useQuery<FormInterface>({
     queryKey: ["/forms/" + props.formId, "MembershipApi"],
-    enabled: !!props.formId,
+    enabled: !!props.formId
   });
 
   React.useEffect(() => {
@@ -55,7 +55,7 @@ export function FormEdit(props: Props) {
         queryClient.invalidateQueries({ queryKey: ["/forms/" + props.formId, "MembershipApi"] });
       }
       props.updatedFunction();
-    },
+    }
   });
 
   const deleteFormMutation = useMutation({
@@ -64,7 +64,7 @@ export function FormEdit(props: Props) {
       queryClient.invalidateQueries({ queryKey: ["/forms", "MembershipApi"] });
       queryClient.invalidateQueries({ queryKey: ["/forms/archived", "MembershipApi"] });
       props.updatedFunction();
-    },
+    }
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
@@ -72,24 +72,12 @@ export function FormEdit(props: Props) {
     const f = { ...form } as FormInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "name":
-        f.name = value;
-        break;
-      case "contentType":
-        f.contentType = value;
-        break;
-      case "restricted":
-        f.restricted = value === "true";
-        break;
-      case "accessStartTime":
-        f.accessStartTime = showDates ? DateHelper.toDate(value) : null;
-        break;
-      case "accessEndTime":
-        f.accessEndTime = showDates ? DateHelper.toDate(value) : null;
-        break;
-      case "thankYouMessage":
-        f.thankYouMessage = value;
-        break;
+      case "name": f.name = value; break;
+      case "contentType": f.contentType = value; break;
+      case "restricted": f.restricted = value === "true"; break;
+      case "accessStartTime": f.accessStartTime = showDates ? DateHelper.toDate(value) : null; break;
+      case "accessEndTime": f.accessEndTime = showDates ? DateHelper.toDate(value) : null; break;
+      case "thankYouMessage": f.thankYouMessage = value; break;
     }
     setForm(f);
   };

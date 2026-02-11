@@ -25,7 +25,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     flatRatePayPal: "0.30",
     transFeePayPal: "2.9",
     symbol: "$",
-    currency: "usd",
+    currency: "usd"
   });
   const [hasLoadedData, setHasLoadedData] = React.useState(false);
 
@@ -45,7 +45,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     dkk: { percent: 2.9, fixed: 1.8, symbol: "kr" },
     chf: { percent: 2.9, fixed: 0.3, symbol: "CHF" },
     mxn: { percent: 2.9, fixed: 3.0, symbol: "MXN" },
-    brl: { percent: 3.9, fixed: 0.5, symbol: "R$" },
+    brl: { percent: 3.9, fixed: 0.5, symbol: "R$" }
   };
 
   const loadData = async () => {
@@ -109,24 +109,12 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     const o = { ...options };
     const value = e.target.value;
     switch (e.target.name) {
-      case "creditCardFlatRate":
-        o.flatRateCC = value;
-        break;
-      case "creditCardTransactionFee":
-        o.transFeeCC = value;
-        break;
-      case "achFlatRate":
-        o.flatRateACH = value;
-        break;
-      case "achHardLimit":
-        o.hardLimitACH = value;
-        break;
-      case "paypalFlatRate":
-        o.flatRatePayPal = value;
-        break;
-      case "paypalTransactionFee":
-        o.transFeePayPal = value;
-        break;
+      case "creditCardFlatRate": o.flatRateCC = value; break;
+      case "creditCardTransactionFee": o.transFeeCC = value; break;
+      case "achFlatRate": o.flatRateACH = value; break;
+      case "achHardLimit": o.hardLimitACH = value; break;
+      case "paypalFlatRate": o.flatRatePayPal = value; break;
+      case "paypalTransactionFee": o.transFeePayPal = value; break;
     }
     setOptions(o);
   };
@@ -159,8 +147,8 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
-  }, [props.churchId]); //eslint-disable-line
-  React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
+  }, [props.churchId]);
+  React.useEffect(checkSave, [props.saveTrigger]);
 
   // Update rates when currency changes
   React.useEffect(() => {
@@ -181,7 +169,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
       o.symbol = currencyFees.symbol;
       return o;
     });
-  }, [props.currency, hasLoadedData]); //eslint-disable-line
+  }, [props.currency, hasLoadedData]);
 
   const showStripeFields = props.provider === "Stripe";
   const showPayPalFields = props.provider === "Paypal";

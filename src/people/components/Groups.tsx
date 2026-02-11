@@ -2,9 +2,7 @@ import React, { memo, useMemo } from "react";
 import { UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import {
-  Box, Card, CardContent, Typography, Stack, Chip, Paper, ListItem, ListItemIcon, ListItemText, ListItemButton, Avatar
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, Chip, Paper, ListItem, ListItemIcon, ListItemText, ListItemButton, Avatar } from "@mui/material";
 import { Group as GroupIcon, Groups as GroupsIcon, SupervisorAccount as LeaderIcon } from "@mui/icons-material";
 
 interface Props {
@@ -17,7 +15,7 @@ export const Groups: React.FC<Props> = memo((props) => {
   const groupMembers = useQuery({
     queryKey: ["/groupmembers?personId=" + props.personId, "MembershipApi"],
     enabled: !UniqueIdHelper.isMissing(props.personId),
-    placeholderData: [],
+    placeholderData: []
   });
 
   const recordsContent = useMemo(() => {
@@ -31,7 +29,7 @@ export const Groups: React.FC<Props> = memo((props) => {
             textAlign: "center",
             backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "var(--border-main)",
+            borderColor: "var(--border-main)"
           }}>
           <GroupsIcon sx={{ fontSize: 48, color: "var(--text-muted)", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
@@ -47,8 +45,8 @@ export const Groups: React.FC<Props> = memo((props) => {
           "& .MuiCard-root": {
             borderRadius: 2,
             border: "1px solid",
-            borderColor: "var(--border-light)",
-          },
+            borderColor: "var(--border-light)"
+          }
         }}>
         <Stack spacing={2}>
           {groupMembers.data.map((gm) => (
@@ -58,8 +56,8 @@ export const Groups: React.FC<Props> = memo((props) => {
                 transition: "all 0.2s ease-in-out",
                 "&:hover": {
                   transform: "translateY(-1px)",
-                  boxShadow: 2,
-                },
+                  boxShadow: 2
+                }
               }}>
               <CardContent sx={{ pb: "16px !important" }}>
                 <ListItem sx={{ px: 0, py: 0 }}>
@@ -70,7 +68,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                       px: 0,
                       py: 1,
                       borderRadius: 1,
-                      "&:hover": { backgroundColor: "action.hover" },
+                      "&:hover": { backgroundColor: "action.hover" }
                     }}>
                     <ListItemIcon sx={{ minWidth: 56 }}>
                       {gm.group?.photoUrl ? (
@@ -79,7 +77,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                           sx={{
                             width: 40,
                             height: 40,
-                            bgcolor: "primary.light",
+                            bgcolor: "primary.light"
                           }}>
                           <GroupIcon sx={{ color: "primary.main" }} />
                         </Avatar>
@@ -88,7 +86,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                           sx={{
                             width: 40,
                             height: 40,
-                            bgcolor: "primary.light",
+                            bgcolor: "primary.light"
                           }}>
                           <GroupIcon sx={{ color: "primary.main" }} />
                         </Avatar>
@@ -101,7 +99,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                           sx={{
                             fontWeight: 600,
                             color: "primary.main",
-                            fontSize: "1rem",
+                            fontSize: "1rem"
                           }}>
                           {gm.group?.name || "Unknown Group"}
                         </Typography>
@@ -118,7 +116,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                                 sx={{
                                   color: "text.secondary",
                                   borderColor: "var(--border-main)",
-                                  fontSize: "0.75rem",
+                                  fontSize: "0.75rem"
                                 }}
                               />
                             )}
@@ -132,7 +130,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                                 color="secondary"
                                 sx={{
                                   fontSize: "0.75rem",
-                                  fontWeight: 600,
+                                  fontWeight: 600
                                 }}
                               />
                             )}
@@ -140,8 +138,8 @@ export const Groups: React.FC<Props> = memo((props) => {
                         </Box>
                       }
                       slotProps={{
-                        primary: { component: 'div' },
-                        secondary: { component: 'div' }
+                        primary: { component: "div" },
+                        secondary: { component: "div" }
                       }}
                     />
                   </ListItemButton>

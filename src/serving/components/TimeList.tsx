@@ -3,7 +3,7 @@ import { Icon, IconButton } from "@mui/material";
 import {
   type PlanInterface,
   type PositionInterface,
-  type TimeInterface,
+  type TimeInterface
 } from "@churchapps/helpers";
 import {
   ArrayHelper,
@@ -11,7 +11,7 @@ import {
   DisplayBox,
   Locale,
   UserHelper,
-  Permissions,
+  Permissions
 } from "@churchapps/apphelper";
 import { TimeEdit } from "./TimeEdit";
 
@@ -38,7 +38,7 @@ export const TimeList = (props: Props) => {
       planId: props.plan.id,
       displayName: Locale.label("plans.timeList.sunServ"),
       startTime,
-      endTime,
+      endTime
     });
   };
 

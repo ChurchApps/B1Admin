@@ -1,20 +1,18 @@
-import {
-  Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, type SelectChangeEvent 
-} from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, type SelectChangeEvent } from "@mui/material";
 import React from "react";
 import {
   type SearchCondition,
   type GroupInterface,
   type CampusInterface,
   type ServiceInterface,
-  type ServiceTimeInterface,
+  type ServiceTimeInterface
 } from "@churchapps/helpers";
 import {
   ApiHelper,
   Permissions,
   Loading,
   DateHelper,
-  Locale,
+  Locale
 } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 
@@ -58,12 +56,12 @@ export function EditCondition(props: Props) {
         if (Array.isArray(parsed)) {
           newObj = [
             { value: parsed[0].value, text: parsed[0].text },
-            { from: e.target.value, to: parsed[1]?.to },
+            { from: e.target.value, to: parsed[1]?.to }
           ];
         } else {
           newObj = [
             { value: parsed.value, text: parsed.text },
-            { from: e.target.value, to: parsed.to },
+            { from: e.target.value, to: parsed.to }
           ];
         }
         c.value = JSON.stringify(newObj);
@@ -74,12 +72,12 @@ export function EditCondition(props: Props) {
         if (Array.isArray(parsedObj)) {
           obj = [
             { value: parsedObj[0].value, text: parsedObj[0].text },
-            { from: parsedObj[1]?.from, to: e.target.value },
+            { from: parsedObj[1]?.from, to: e.target.value }
           ];
         } else {
           obj = [
             { value: parsedObj.value, text: parsedObj.text },
-            { from: parsedObj?.from, to: e.target.value },
+            { from: parsedObj?.from, to: e.target.value }
           ];
         }
         c.value = JSON.stringify(obj);
@@ -106,7 +104,7 @@ export function EditCondition(props: Props) {
             {Locale.label("person.unspecified")}
           </MenuItem>,
           <MenuItem value="Male">{Locale.label("person.male")}</MenuItem>,
-          <MenuItem value="Female">{Locale.label("person.female")}</MenuItem>,
+          <MenuItem value="Female">{Locale.label("person.female")}</MenuItem>
         ];
         setDefaultValue("Unspecified");
         result = getValueSelect(options);
@@ -119,7 +117,7 @@ export function EditCondition(props: Props) {
           <MenuItem value="Single">{Locale.label("person.single")}</MenuItem>,
           <MenuItem value="Married">{Locale.label("person.married")}</MenuItem>,
           <MenuItem value="Divorced">{Locale.label("person.divorced")}</MenuItem>,
-          <MenuItem value="Widowed">{Locale.label("person.widowed")}</MenuItem>,
+          <MenuItem value="Widowed">{Locale.label("person.widowed")}</MenuItem>
         ];
         setDefaultValue("Unknown");
         result = getValueSelect(options);
@@ -136,7 +134,7 @@ export function EditCondition(props: Props) {
           <MenuItem value="Staff">{Locale.label("person.staff")}</MenuItem>,
           <MenuItem key="Inactive" value="Inactive">
             {Locale.label("person.inactive")}
-          </MenuItem>,
+          </MenuItem>
         ];
         setDefaultValue("Visitor");
         result = getValueSelect(options);
@@ -190,7 +188,7 @@ export function EditCondition(props: Props) {
           </MenuItem>,
           <MenuItem key="December" value="12">
             {Locale.label("month.dec")}
-          </MenuItem>,
+          </MenuItem>
         ];
         setDefaultValue("1");
         result = getValueSelect(options);
@@ -225,7 +223,7 @@ export function EditCondition(props: Props) {
           );
           defaultDonationValue = JSON.stringify([
             { value: "any", text: "Any" },
-            { from: DateHelper.formatHtml5Date(new Date()), to: DateHelper.formatHtml5Date(new Date()) },
+            { from: DateHelper.formatHtml5Date(new Date()), to: DateHelper.formatHtml5Date(new Date()) }
           ]);
         } else {
           loadedOptions.forEach((o, i) => {
@@ -385,7 +383,7 @@ export function EditCondition(props: Props) {
         setLoadedOptions(optionsArray);
       }
     }
-  }, [condition?.field.toString()]); //eslint-disable-line
+  }, [condition?.field.toString()]);
 
   const getValueSelect = (options: JSX.Element[]) => {
     const parsedValue = (condition.field === "memberAttendance" || condition.field === "memberDonations") && condition.value !== "" && JSON.parse(condition.value);
@@ -411,7 +409,7 @@ export function EditCondition(props: Props) {
           </MenuItem>,
           <MenuItem key="/gender-notEquals" value="notEquals">
             !=
-          </MenuItem>,
+          </MenuItem>
         ];
         break;
       case "groupMember":
@@ -426,7 +424,7 @@ export function EditCondition(props: Props) {
           </MenuItem>,
           <MenuItem key="/notIn" value="notIn">
             {Locale.label("people.editCondition.notMem")}
-          </MenuItem>,
+          </MenuItem>
         ];
         break;
       case "memberDonations":
@@ -441,7 +439,7 @@ export function EditCondition(props: Props) {
           </MenuItem>,
           <MenuItem key="/donatedTo" value="donatedTo">
             {Locale.label("people.editCondition.donTo")}
-          </MenuItem>,
+          </MenuItem>
         ];
         break;
       case "memberAttendance":
@@ -471,7 +469,7 @@ export function EditCondition(props: Props) {
           </MenuItem>,
           <MenuItem key="/attendedGroup" value="attendedGroup">
             {Locale.label("people.editCondition.attGroup")}
-          </MenuItem>,
+          </MenuItem>
         ];
         break;
       default:
@@ -502,7 +500,7 @@ export function EditCondition(props: Props) {
           </MenuItem>,
           <MenuItem key="/notEquals" value="notEquals">
             !=
-          </MenuItem>,
+          </MenuItem>
         ];
         break;
     }

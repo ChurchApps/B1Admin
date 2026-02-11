@@ -16,13 +16,12 @@ function getOgImage(img: any) {
     img.onload = function () {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-      let dataURL;
       canvas.width = 1200;
       canvas.height = 630;
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 15, 15);
-      dataURL = canvas.toDataURL();
+      const dataURL = canvas.toDataURL();
       resolve(dataURL.toString());
     };
   });
@@ -47,7 +46,7 @@ function resizeImage(file: File, width: number, height: number) {
         (uri: any) => { resolve(uri.toString()); },
         "base64",
         width,
-        height,
+        height
       );
     } catch (err) {
       console.error("Error in resizing file");
@@ -157,9 +156,7 @@ export function AppearanceEdit(props: Props) {
 
     return (
       <Card sx={{ border: "1px solid", borderColor: "grey.200", borderRadius: 2, overflow: "hidden", height: "100%" }}>
-        <Box sx={{
-          backgroundColor: backgroundColor, minHeight: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" 
-        }}>
+        <Box sx={{ backgroundColor: backgroundColor, minHeight: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
           {hasLogo
             ? (<img src={logoImage.value} alt={title} style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }} />)
             : (<Stack alignItems="center" spacing={1} sx={{ color: alpha("#000", 0.4) }}>
@@ -197,9 +194,7 @@ export function AppearanceEdit(props: Props) {
       <Box sx={{ backgroundColor: "var(--c1l2)", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{
-              backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" 
-            }}>
+            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <ImageIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
@@ -214,9 +209,7 @@ export function AppearanceEdit(props: Props) {
         </Stack>
       </Box>
 
-      <Box sx={{
-        p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" 
-      }}>
+      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <CardWithHeader title={Locale.label("site.appearanceEdit.logoManagement")} icon={<ImageIcon />}>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Upload your logos for different contexts. All images should have transparent backgrounds for best results.</Typography>
 

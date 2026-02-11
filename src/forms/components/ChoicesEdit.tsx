@@ -1,9 +1,7 @@
 import React from "react";
 import { type QuestionInterface } from "@churchapps/helpers";
 import { Locale } from "@churchapps/apphelper";
-import {
-  Table, TableBody, TableRow, TableCell, TableHead, FormLabel, TextField, Button 
-} from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, FormLabel, TextField, Button } from "@mui/material";
 
 interface Props {
   question: QuestionInterface;
@@ -16,12 +14,8 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     switch (e.target.name) {
-      case "choiceValue":
-        setChoiceValue(e.target.value);
-        break;
-      case "choiceText":
-        setChoiceText(e.target.value);
-        break;
+      case "choiceValue": setChoiceValue(e.target.value); break;
+      case "choiceText": setChoiceText(e.target.value); break;
     }
   };
 

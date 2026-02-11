@@ -30,18 +30,10 @@ export const PositionEdit = (props: Props) => {
     const p = { ...position } as PositionInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "categoryName":
-        p.categoryName = value;
-        break;
-      case "name":
-        p.name = value;
-        break;
-      case "count":
-        p.count = parseInt(value);
-        break;
-      case "groupId":
-        p.groupId = value;
-        break;
+      case "categoryName": p.categoryName = value; break;
+      case "name": p.name = value; break;
+      case "count": p.count = parseInt(value); break;
+      case "groupId": p.groupId = value; break;
     }
     setPosition(p);
   };
@@ -116,7 +108,7 @@ export const PositionEdit = (props: Props) => {
               top: -8,
               left: 10,
               backgroundColor: "#FFF",
-              zIndex: 999,
+              zIndex: 999
             }}>
             {Locale.label("plans.positionEdit.catName")}
           </div>

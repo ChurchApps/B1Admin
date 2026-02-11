@@ -11,7 +11,7 @@ import {
   Stack,
   IconButton,
   Breadcrumbs,
-  Link,
+  Link
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -66,7 +66,7 @@ function instructionToPlanItem(
     providerId,
     providerPath,
     providerContentPath: generatePath(pathIndices),
-    thumbnailUrl: findThumbnailRecursive(item),
+    thumbnailUrl: findThumbnailRecursive(item)
   };
 }
 
@@ -76,11 +76,11 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
   onSelect,
   providerId,
   providerPath,
-  ministryId,
+  ministryId
 }) => {
   const browser = useProviderBrowser({
     ministryId,
-    defaultProviderId: providerId || "",
+    defaultProviderId: providerId || ""
   });
 
   const [instructions, setInstructions] = useState<Instructions | null>(null);
@@ -193,7 +193,7 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
         providerPath: currentProviderPath,
         providerContentPath: generatePath(pathIndices),
         thumbnailUrl: findThumbnailRecursive(section),
-        children: [],
+        children: []
       };
 
       // Add children based on whether this is a header or section
@@ -276,7 +276,7 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
     } else if (mode === "browse") {
       browser.loadContent("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [open, mode]);
 
   // Breadcrumb items — wraps hook breadcrumbs to also clear instructions on click
@@ -284,7 +284,7 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
     if (mode === "associated") return [];
     return browser.breadcrumbItems.map(item => ({
       ...item,
-      onClick: item.onClick ? () => { setInstructions(null); setExpandedSections(new Set()); item.onClick!(); } : undefined,
+      onClick: item.onClick ? () => { setInstructions(null); setExpandedSections(new Set()); item.onClick!(); } : undefined
     }));
   }, [mode, browser.breadcrumbItems]);
 

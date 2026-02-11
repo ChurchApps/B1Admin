@@ -76,32 +76,32 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
           {(tab as any)?.photo ? (
             <Box
               sx={{
-                borderRadius: '8px',
-                overflow: 'hidden',
+                borderRadius: "8px",
+                overflow: "hidden",
                 width: 71,
                 height: 40,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
               }}
             >
               <img
                 src={(tab as any).photo}
                 alt={tab.text || "Tab icon"}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </Box>
           ) : (
             <Box
               sx={{
-                backgroundColor: 'primary.main',
-                borderRadius: '8px',
+                backgroundColor: "primary.main",
+                borderRadius: "8px",
                 width: 71,
                 height: 40,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white'
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "white"
               }}
             >
               <Icon sx={{ fontSize: 20 }}>{tab.icon}</Icon>
@@ -117,18 +117,18 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
               <Chip
                 label={getVisibilityLabel((tab as any).visibility)}
                 size="small"
-                sx={{ fontSize: '0.7rem', height: 20 }}
+                sx={{ fontSize: "0.7rem", height: 20 }}
               />
             </Stack>
           }
           secondary={
             <Typography variant="body2" color="text.secondary">
-              {tab.linkType === 'url' ? tab.url : tab.linkType}
+              {tab.linkType === "url" ? tab.url : tab.linkType}
             </Typography>
           }
           slotProps={{
-            primary: { component: 'div' },
-            secondary: { component: 'div' }
+            primary: { component: "div" },
+            secondary: { component: "div" }
           }}
         />
         <ListItemSecondaryAction>
@@ -139,7 +139,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
                   size="small"
                   onClick={() => moveUp(index)}
                   disabled={index === 0}
-                  sx={{ color: 'text.secondary' }}
+                  sx={{ color: "text.secondary" }}
                 >
                   <ArrowUpIcon fontSize="small" />
                 </IconButton>
@@ -151,7 +151,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
                   size="small"
                   onClick={() => moveDown(index)}
                   disabled={index === tabs.length - 1}
-                  sx={{ color: 'text.secondary' }}
+                  sx={{ color: "text.secondary" }}
                 >
                   <ArrowDownIcon fontSize="small" />
                 </IconButton>
@@ -161,7 +161,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
               <IconButton
                 size="small"
                 onClick={() => handleEdit(tab)}
-                sx={{ color: 'primary.main' }}
+                sx={{ color: "primary.main" }}
               >
                 <EditIcon fontSize="small" />
               </IconButton>

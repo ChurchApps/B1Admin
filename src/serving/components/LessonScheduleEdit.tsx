@@ -87,7 +87,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         providerPlanName: displayName,
         // Backward compat
         contentType: "provider",
-        contentId: selectedVenueId,
+        contentId: selectedVenueId
       };
 
       let savedPlan: PlanInterface;

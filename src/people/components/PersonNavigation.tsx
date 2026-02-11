@@ -6,7 +6,7 @@ import {
   CalendarMonth as AttendanceIcon,
   Notes as NotesIcon,
   Assignment as FormIcon,
-  Person as PersonIcon,
+  Person as PersonIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 import { NavigationTabs, type NavigationTab, type NavigationDropdown } from "../../components/ui";
@@ -26,7 +26,7 @@ export const PersonNavigation = memo((props: Props) => {
     { value: "notes", label: "Notes", icon: <NotesIcon /> },
     { value: "groups", label: "Groups", icon: <GroupIcon /> },
     { value: "attendance", label: "Attendance", icon: <AttendanceIcon /> },
-    { value: "donations", label: "Donations", icon: <DonationIcon /> },
+    { value: "donations", label: "Donations", icon: <DonationIcon /> }
   ], []);
 
   const dropdown: NavigationDropdown<FormInterface> | undefined = useMemo(() => {
@@ -43,7 +43,7 @@ export const PersonNavigation = memo((props: Props) => {
           <Typography variant="body2">{form.name}</Typography>
         </Stack>
       ),
-      onItemSelect: onFormSelect || (() => {}),
+      onItemSelect: onFormSelect || (() => {})
     };
   }, [allForms, onFormSelect]);
 

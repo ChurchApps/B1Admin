@@ -32,7 +32,7 @@ export const Tabs: React.FC<Props> = (props) => {
         key: "members",
         label: Locale.label("groups.tabs.mem"),
         content: <GroupMembers group={props.group} addedPerson={props.addedPerson} addedCallback={props.addedCallback} />,
-        hidden: !canViewMembers,
+        hidden: !canViewMembers
       },
       {
         key: "sessions",
@@ -46,8 +46,8 @@ export const Tabs: React.FC<Props> = (props) => {
             addedCallback={props.addedCallback}
           />
         ),
-        hidden: !canViewSessions,
-      },
+        hidden: !canViewSessions
+      }
     ];
   }, [props.group, props.addedPerson, props.addedSession, props.addedCallback, props.sidebarVisibilityFunction]);
 

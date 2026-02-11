@@ -18,15 +18,9 @@ export const TimeEdit = (props: Props) => {
     const t = { ...time } as TimeInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "displayName":
-        t.displayName = value;
-        break;
-      case "startTime":
-        t.startTime = new Date(value);
-        break;
-      case "endTime":
-        t.endTime = new Date(value);
-        break;
+      case "displayName": t.displayName = value; break;
+      case "startTime": t.startTime = new Date(value); break;
+      case "endTime": t.endTime = new Date(value); break;
     }
     setTime(t);
   };

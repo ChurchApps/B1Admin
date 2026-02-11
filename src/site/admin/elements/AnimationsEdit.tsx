@@ -31,7 +31,7 @@ export const AnimationsEdit: React.FC<Props> = (props) => {
         a.onShow = val;
         if (val && !a.onShowSpeed) a.onShowSpeed = "normal";
         break;
-      case "onShowSpeed": a.onShowSpeed=val; break;
+      case "onShowSpeed": a.onShowSpeed = val; break;
     }
     setAnimations(a);
   };

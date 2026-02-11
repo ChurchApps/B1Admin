@@ -4,9 +4,7 @@ import { B1AdminPersonHelper } from ".";
 import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
-import {
-  Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card
-} from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card } from "@mui/material";
 import { Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
@@ -88,9 +86,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     (p: PersonInterface, key: string) => {
       let result = <></>;
       switch (key) {
-        case "photo":
-          result = getPhotoJSX(p);
-          break;
+        case "photo": result = getPhotoJSX(p); break;
         case "displayName":
           result = (
             <Box>
@@ -116,27 +112,13 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             </Box>
           );
           break;
-        case "lastName":
-          result = <>{p?.name?.last}</>;
-          break;
-        case "firstName":
-          result = <>{p?.name?.first}</>;
-          break;
-        case "middleName":
-          result = <>{p?.name?.middle}</>;
-          break;
-        case "address":
-          result = <>{p?.contactInfo?.address1}</>;
-          break;
-        case "city":
-          result = <>{p?.contactInfo?.city}</>;
-          break;
-        case "state":
-          result = <>{p?.contactInfo?.state}</>;
-          break;
-        case "zip":
-          result = <>{p?.contactInfo?.zip}</>;
-          break;
+        case "lastName": result = <>{p?.name?.last}</>; break;
+        case "firstName": result = <>{p?.name?.first}</>; break;
+        case "middleName": result = <>{p?.name?.middle}</>; break;
+        case "address": result = <>{p?.contactInfo?.address1}</>; break;
+        case "city": result = <>{p?.contactInfo?.city}</>; break;
+        case "state": result = <>{p?.contactInfo?.state}</>; break;
+        case "zip": result = <>{p?.contactInfo?.zip}</>; break;
         case "email":
           result = (
             <Stack direction="row" spacing={1} alignItems="center">
@@ -161,12 +143,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             </Stack>
           );
           break;
-        case "birthDate":
-          result = <>{p.birthDate === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.birthDate)}</>;
-          break;
-        case "birthDay":
-          result = <>{B1AdminPersonHelper.getBirthDay(p)}</>;
-          break;
+        case "birthDate": result = <>{p.birthDate === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.birthDate)}</>; break;
+        case "birthDay": result = <>{B1AdminPersonHelper.getBirthDay(p)}</>; break;
         case "age":
           result = (
             <Typography variant="body2" color="text.secondary">
@@ -174,9 +152,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             </Typography>
           );
           break;
-        case "gender":
-          result = <>{p.gender}</>;
-          break;
+        case "gender": result = <>{p.gender}</>; break;
         case "membershipStatus":
           result = (
             <Chip
@@ -192,15 +168,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             />
           );
           break;
-        case "maritalStatus":
-          result = <>{p.maritalStatus}</>;
-          break;
-        case "anniversary":
-          result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.anniversary)}</>;
-          break;
-        case "nametagNotes":
-          result = <>{p.nametagNotes}</>;
-          break;
+        case "maritalStatus": result = <>{p.maritalStatus}</>; break;
+        case "anniversary": result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.anniversary)}</>; break;
+        case "nametagNotes": result = <>{p.nametagNotes}</>; break;
         case "deleteOption":
           result = (
             <Tooltip title={`Delete ${p?.name?.display}`} arrow placement="left-start">
@@ -217,9 +187,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             </Tooltip>
           );
           break;
-        case key:
-          result = getAnswer(p, key);
-          break;
+        case key: result = getAnswer(p, key); break;
       }
 
       return result;
@@ -338,7 +306,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           key={p.id}
           sx={{
             "&:hover": { backgroundColor: "rgba(128,128,128,0.1)" },
-            cursor: "pointer",
+            cursor: "pointer"
           }}
           onClick={() => navigate(`/people/${p.id}`)}>
           {getColumns(p)}
@@ -406,12 +374,12 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         sx={{
           "& .MuiTableCell-root": {
             borderBottom: "1px solid var(--border-light)",
-            py: 2,
+            py: 2
           },
           "& .MuiTableHead-root .MuiTableCell-root": {
             backgroundColor: "var(--bg-sub)",
-            fontWeight: 600,
-          },
+            fontWeight: 600
+          }
         }}>
         {headers}
         <TableBody>{rows}</TableBody>

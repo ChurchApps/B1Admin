@@ -98,9 +98,7 @@ export const ChartReport = (props: Props) => {
     bar: { groupWidth: "75%" },
     isStacked: true,
     backgroundColor: isDark ? "#1e1e1e" : "#ffffff",
-    hAxis: {
-      textStyle: { color: isDark ? "#e0e0e0" : "#333" }
-    },
+    hAxis: { textStyle: { color: isDark ? "#e0e0e0" : "#333" } },
     vAxis: {
       textStyle: { color: isDark ? "#e0e0e0" : "#333" },
       gridlines: { color: isDark ? "#444" : "#ccc" },

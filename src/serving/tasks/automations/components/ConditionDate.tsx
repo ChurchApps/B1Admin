@@ -1,6 +1,4 @@
-import {
-  FormControl, InputLabel, ListSubheader, MenuItem, Select, TextField, type SelectChangeEvent, Stack 
-} from "@mui/material";
+import { FormControl, InputLabel, ListSubheader, MenuItem, Select, TextField, type SelectChangeEvent, Stack } from "@mui/material";
 import React from "react";
 import { type ConditionInterface, Locale } from "@churchapps/apphelper";
 import { ConditionHelper } from "../../../../helpers";
@@ -22,18 +20,14 @@ export const ConditionDate = (props: Props) => {
     props.onChange(c);
   };
 
-  React.useEffect(init, [props.condition.field]); //eslint-disable-line
+  React.useEffect(init, [props.condition.field]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     const c = { ...props.condition };
     const val = e.target.value;
     switch (e.target.name) {
-      case "value":
-        c.value = val;
-        break;
-      case "operator":
-        c.operator = val;
-        break;
+      case "value": c.value = val; break;
+      case "operator": c.operator = val; break;
       case "datePart":
         c.fieldData = JSON.stringify({ datePart: val });
         if (val === "dayOfWeek" || val === "month" || val === "dayOfMonth" || val === "years") c.value = "1";
@@ -106,8 +100,8 @@ export const ConditionDate = (props: Props) => {
             backgroundColor: "grey.100",
             fontWeight: 600,
             color: "text.primary",
-            lineHeight: "36px",
-          },
+            lineHeight: "36px"
+          }
         }}>
         <ListSubheader>{Locale.label("tasks.conditionDate.absolute")}</ListSubheader>
         <MenuItem value="1">{Locale.label("month.jan")}</MenuItem>
@@ -133,16 +127,10 @@ export const ConditionDate = (props: Props) => {
   const getField = () => {
     let result = getDateField();
     switch (fieldData?.datePart) {
-      case "dayOfWeek":
-        result = getDayOfWeek();
-        break;
-      case "month":
-        result = getMonth();
-        break;
+      case "dayOfWeek": result = getDayOfWeek(); break;
+      case "month": result = getMonth(); break;
       case "dayOfMonth":
-      case "years":
-        result = getNumberField();
-        break;
+      case "years": result = getNumberField(); break;
     }
 
     return result;

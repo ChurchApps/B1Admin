@@ -13,12 +13,8 @@ export const CreateSongDetail: React.FC<Props> = (props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const sd = { ...songDetail };
     switch (e.target.name) {
-      case "title":
-        sd.title = e.target.value;
-        break;
-      case "artist":
-        sd.artist = e.target.value;
-        break;
+      case "title": sd.title = e.target.value; break;
+      case "artist": sd.artist = e.target.value; break;
     }
     setSongDetail(sd);
   };

@@ -1,9 +1,7 @@
 import React from "react";
 import { type PersonInterface } from "@churchapps/helpers";
 import { Locale, PersonAvatar } from "@churchapps/apphelper";
-import {
-  Table, TableBody, TableRow, TableCell, Icon, TextField, Button, Box 
-} from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, Icon, TextField, Button, Box } from "@mui/material";
 
 interface Props {
   handleSearch: (text: string) => void;
@@ -55,7 +53,7 @@ export const Search: React.FC<Props> = (props) => {
     setRows(tableRows);
   };
 
-  React.useEffect(createRows, [props.searchResults, props.buttonText]); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(createRows, [props.searchResults, props.buttonText]);
 
   return (
     <>
@@ -73,7 +71,7 @@ export const Search: React.FC<Props> = (props) => {
             <Button variant="contained" id="searchButton" data-cy="search-button" onClick={() => props.handleSearch(searchText)} data-testid="search-button" aria-label="Search">
               {Locale.label("common.search")}
             </Button>
-          ),
+          )
         }}
       />
       <Table size="small" id="searchResults">

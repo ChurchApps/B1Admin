@@ -65,32 +65,48 @@ export const ITEM_TYPES = {
     ACTION: "action",
     ADDON: "addon",
     SONG: "song",
-    FILE: "file",
+    FILE: "file"
   }
 } as const;
 
 // Types that should show label field in edit dialog
 const LABEL_TYPES = new Set([
-  "header", "item",
-  "lessonAction", "lessonSection", "lessonAddOn",
-  "action", "section", "addon",
-  "providerPresentation", "providerSection", "providerFile"
+  "header",
+  "item",
+  "lessonAction",
+  "lessonSection",
+  "lessonAddOn",
+  "action",
+  "section",
+  "addon",
+  "providerPresentation",
+  "providerSection",
+  "providerFile"
 ]);
 
 // Types that should show description field in edit dialog
 const DESC_TYPES = new Set([
   "item",
-  "lessonAction", "lessonSection", "lessonAddOn",
-  "action", "section", "addon",
-  "providerPresentation", "providerSection", "providerFile"
+  "lessonAction",
+  "lessonSection",
+  "lessonAddOn",
+  "action",
+  "section",
+  "addon",
+  "providerPresentation",
+  "providerSection",
+  "providerFile"
 ]);
 
 // Types that should show duration field in edit dialog
 const DURATION_TYPES = new Set([
   "item",
-  "lessonAction", "lessonSection",
-  "action", "section",
-  "providerPresentation", "providerSection"
+  "lessonAction",
+  "lessonSection",
+  "action",
+  "section",
+  "providerPresentation",
+  "providerSection"
 ]);
 
 /**

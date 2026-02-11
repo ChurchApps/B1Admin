@@ -46,9 +46,7 @@ export const GroupAdd: React.FC<Props> = (props) => {
     const g = { ...group } as GroupInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "name":
-        g.name = value;
-        break;
+      case "name": g.name = value; break;
     }
     setGroup(g);
   };

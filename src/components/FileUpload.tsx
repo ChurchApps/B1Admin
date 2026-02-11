@@ -70,7 +70,7 @@ export function FileUpload(props: Props) {
       headers: { "Content-Type": "multipart/form-data" },
       onUploadProgress: (data: any) => {
         setUploadProgress(Math.round((100 * data.loaded) / data.total));
-      },
+      }
     };
 
     return axios.post(presigned.url, formData, axiosConfig);
@@ -81,7 +81,7 @@ export function FileUpload(props: Props) {
       if (uploadedFile.size > 0) handleSave();
       else props.saveCallback(file);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [props.pendingSave]);
 
   const getFileLink = () => {

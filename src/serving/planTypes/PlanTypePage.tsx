@@ -16,16 +16,16 @@ export const PlanTypePage = () => {
 
   const planType = useQuery<PlanTypeInterface>({
     queryKey: [`/planTypes/${params.id}`, "DoingApi"],
-    enabled: !!params.id,
+    enabled: !!params.id
   });
 
   const ministry = useQuery<GroupInterface>({
     queryKey: [`/groups/${planType.data?.ministryId}`, "MembershipApi"],
-    enabled: !!planType.data?.ministryId,
+    enabled: !!planType.data?.ministryId
   });
 
   if (planType.isLoading || ministry.isLoading) return <Loading />;
-  
+
   if (!planType.data || !ministry.data) {
     return (
       <Container maxWidth="lg" sx={{ py: 3 }}>
@@ -48,13 +48,13 @@ export const PlanTypePage = () => {
       <Box sx={{
         backgroundColor: "var(--c1l2)",
         color: "#FFF",
-        position: 'relative',
-        left: '50%',
-        right: '50%',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
-        width: '100vw',
-        '--c1l2': '#568BDA',
+        position: "relative",
+        left: "50%",
+        right: "50%",
+        marginLeft: "-50vw",
+        marginRight: "-50vw",
+        width: "100vw",
+        "--c1l2": "#568BDA",
         paddingX: { xs: 2, sm: 3, md: 4 },
         paddingTop: 1.5,
         paddingBottom: 0.5,
@@ -62,7 +62,7 @@ export const PlanTypePage = () => {
       }}>
         <Breadcrumbs items={breadcrumbItems} showHome={true} />
       </Box>
-      <Box sx={{ marginTop: '-1.5rem' }}>
+      <Box sx={{ marginTop: "-1.5rem" }}>
         <PageHeader
           icon={<AssignmentIcon />}
           title={planType.data.name || Locale.label("plans.planTypePage.planType")}
@@ -79,9 +79,7 @@ export const PlanTypePage = () => {
               fontWeight: 600,
               px: 3,
               py: 1,
-              "&:hover": {
-                backgroundColor: "rgba(255,255,255,0.9)",
-              },
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
             }}
           >
             {Locale.label("plans.planTypePage.pairTvApp") || "Pair TV App"}

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Button, Grid, type SelectChangeEvent, Box, Typography, Card, CardContent, Stack, alpha 
-} from "@mui/material";
+import { Button, Grid, type SelectChangeEvent, Box, Typography, Card, CardContent, Stack, alpha } from "@mui/material";
 import { TextFields as TextFieldsIcon, Visibility as VisibilityIcon, FormatSize as FormatSizeIcon, Style as StyleIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
@@ -67,9 +65,7 @@ export function FontEdit(props: Props) {
             <CardContent sx={{ p: 1.5 }}>
               <Stack spacing={1}>
                 {fontList.map(body => (
-                  <Box key={`${heading}-${body}`} onClick={() => setFonts({ body, heading })} sx={{
-                    p: 1.5, borderRadius: 1, cursor: "pointer", border: "1px solid", borderColor: "transparent", transition: "all 0.2s ease-in-out", "&:hover": { backgroundColor: "action.hover", borderColor: "primary.main", transform: "translateY(-1px)" } 
-                  }}>
+                  <Box key={`${heading}-${body}`} onClick={() => setFonts({ body, heading })} sx={{ p: 1.5, borderRadius: 1, cursor: "pointer", border: "1px solid", borderColor: "transparent", transition: "all 0.2s ease-in-out", "&:hover": { backgroundColor: "action.hover", borderColor: "primary.main", transform: "translateY(-1px)" } }}>
                     <Typography variant="body2" sx={{ fontFamily: body, color: "text.primary", fontSize: "0.875rem" }}>{heading} heading with {body} body</Typography>
                   </Box>
                 ))}
@@ -94,9 +90,7 @@ export function FontEdit(props: Props) {
       <Box sx={{ backgroundColor: "var(--c1l2)", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{
-              backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" 
-            }}>
+            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <TextFieldsIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
@@ -111,9 +105,7 @@ export function FontEdit(props: Props) {
         </Stack>
       </Box>
 
-      <Box sx={{
-        p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" 
-      }}>
+      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <CardWithHeader title={Locale.label("site.fontEdit.fontSelection")} icon={<StyleIcon />}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 6 }}>

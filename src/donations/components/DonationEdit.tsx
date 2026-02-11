@@ -29,18 +29,10 @@ export const DonationEdit = memo((props: Props) => {
       const d = { ...donation } as DonationInterface;
       const value = e.target.value;
       switch (e.target.name) {
-        case "notes":
-          d.notes = value;
-          break;
-        case "date":
-          d.donationDate = value;  // Keep as YYYY-MM-DD string
-          break;
-        case "method":
-          d.method = value;
-          break;
-        case "methodDetails":
-          d.methodDetails = value;
-          break;
+        case "notes": d.notes = value; break;
+        case "date": d.donationDate = value; break;
+        case "method": d.method = value; break;
+        case "methodDetails": d.methodDetails = value; break;
       }
       setDonation(d);
     },
@@ -62,7 +54,7 @@ export const DonationEdit = memo((props: Props) => {
   const handleSave = useCallback(() => {
     const donationToSave = {
       ...donation,
-      donationDate: donation.donationDate ? DateHelper.formatHtml5Date(donation.donationDate) : null,
+      donationDate: donation.donationDate ? DateHelper.formatHtml5Date(donation.donationDate) : null
     };
     ApiHelper.post("/donations", [donationToSave], "GivingApi").then((data) => {
       const id = data[0].id;
@@ -86,7 +78,7 @@ export const DonationEdit = memo((props: Props) => {
         donationDate: DateHelper.formatHtml5Date(new Date()),  // Initialize as YYYY-MM-DD string
         batchId: props.batchId,
         amount: 0,
-        method: "Check",
+        method: "Check"
       });
       const fd: FundDonationInterface = { amount: 0, fundId: props.funds[0]?.id };
       setFundDonations([fd]);

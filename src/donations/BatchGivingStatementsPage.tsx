@@ -22,19 +22,19 @@ export const BatchGivingStatementsPage = () => {
   // Fetch all donations
   const allDonations = useQuery<DonationInterface[]>({
     queryKey: ["/donations", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   // Fetch all fund donations
   const allFundDonations = useQuery<FundDonationInterface[]>({
     queryKey: ["/fundDonations", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   // Fetch all funds
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   // Filter donations by selected year
@@ -63,14 +63,13 @@ export const BatchGivingStatementsPage = () => {
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people/ids?ids=" + personIds.join(","), "MembershipApi"],
     placeholderData: [],
-    enabled: personIds.length > 0,
+    enabled: personIds.length > 0
   });
 
   // Filter fund donations for selected year
   const yearFundDonations = useMemo(() => {
     return allFundDonations.data?.filter((fundDonation) =>
-      yearDonations.some((donation) => donation.id === fundDonation.donationId)
-    ) || [];
+      yearDonations.some((donation) => donation.id === fundDonation.donationId)) || [];
   }, [allFundDonations.data, yearDonations]);
 
   // Prepare CSV data
@@ -81,8 +80,7 @@ export const BatchGivingStatementsPage = () => {
       const person = people.data?.find((p) => p.id === personId);
       const personDonations = yearDonations.filter((d) => d.personId === personId);
       const personFundDonations = yearFundDonations.filter((fd) =>
-        personDonations.some((d) => d.id === fd.donationId)
-      );
+        personDonations.some((d) => d.id === fd.donationId));
 
       // Calculate total for this person
       let totalAmount = 0;
@@ -101,7 +99,7 @@ export const BatchGivingStatementsPage = () => {
         zip: person?.contactInfo?.zip || "",
         year: selectedYear,
         totalAmount: totalAmount,
-        donationCount: personDonations.length,
+        donationCount: personDonations.length
       });
     });
 

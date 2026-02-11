@@ -1,7 +1,5 @@
 import React, { useCallback, memo } from "react";
-import {
-  Box, Card, CardContent, Typography, Stack, Paper, Chip, Avatar, Button, ButtonGroup, Menu, MenuItem
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, Paper, Chip, Avatar, Button, ButtonGroup, Menu, MenuItem } from "@mui/material";
 import { Add as AddIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, ArrowDropDown as ArrowDropDownIcon, MenuBook as MenuBookIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
@@ -27,7 +25,7 @@ export const PlanList = memo((props: Props) => {
 
   const plansQuery = useQuery<PlanInterface[]>({
     queryKey: props.planTypeId ? [`/plans/types/${props.planTypeId}`, "DoingApi"] : ["/plans", "DoingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const plans = React.useMemo(() => {
@@ -50,7 +48,7 @@ export const PlanList = memo((props: Props) => {
       serviceDate: date,
       name,
       notes: "",
-      serviceOrder: true,
+      serviceOrder: true
     });
   }, [props.ministry.id, props.planTypeId]);
 
@@ -106,7 +104,7 @@ export const PlanList = memo((props: Props) => {
             border: "1px dashed",
             borderColor: "var(--border-main)",
             borderRadius: 2,
-            mb: 3,
+            mb: 3
           }}>
           <EventNoteIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
@@ -125,7 +123,7 @@ export const PlanList = memo((props: Props) => {
                   sx={{
                     fontSize: "1rem",
                     py: 1.5,
-                    px: 3,
+                    px: 3
                   }}>
                   {Locale.label("plans.planList.createPlan")}
                 </Button>
@@ -211,8 +209,8 @@ export const PlanList = memo((props: Props) => {
               "&:hover": {
                 transform: "translateY(-2px)",
                 boxShadow: 3,
-                borderColor: "primary.main",
-              },
+                borderColor: "primary.main"
+              }
             }}>
             <CardContent sx={{ pb: "16px !important" }}>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -221,7 +219,7 @@ export const PlanList = memo((props: Props) => {
                     sx={{
                       bgcolor: "primary.main",
                       width: 48,
-                      height: 48,
+                      height: 48
                     }}>
                     <CalendarIcon />
                   </Avatar>
@@ -240,7 +238,7 @@ export const PlanList = memo((props: Props) => {
                         display: "block",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
+                        whiteSpace: "nowrap"
                       }}>
                       {p.name}
                     </Typography>
@@ -255,7 +253,7 @@ export const PlanList = memo((props: Props) => {
                           sx={{
                             color: "text.secondary",
                             borderColor: "var(--border-main)",
-                            fontSize: "0.75rem",
+                            fontSize: "0.75rem"
                           }}
                         />
                       )}
@@ -267,7 +265,7 @@ export const PlanList = memo((props: Props) => {
                           sx={{
                             color: "success.main",
                             borderColor: "success.main",
-                            fontSize: "0.75rem",
+                            fontSize: "0.75rem"
                           }}
                         />
                       )}
@@ -287,8 +285,8 @@ export const PlanList = memo((props: Props) => {
                         borderColor: "primary.main",
                         "&:hover": {
                           backgroundColor: "primary.light",
-                          borderColor: "primary.dark",
-                        },
+                          borderColor: "primary.dark"
+                        }
                       }}>
                       {Locale.label("common.edit")}
                     </Button>

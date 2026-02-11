@@ -70,7 +70,7 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
             position: "absolute",
             top: 0,
             right: 0,
-            zIndex: 1,
+            zIndex: 1
           }}>
           <Tooltip title={Locale.label("common.formSubmission.edit")}>
             <IconButton
@@ -80,8 +80,8 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
                 color: "primary.main",
                 "&:hover": {
                   backgroundColor: "primary.light",
-                  color: "primary.contrastText",
-                },
+                  color: "primary.contrastText"
+                }
               }}
               data-testid="edit-form-submission-button"
               aria-label={Locale.label("common.formSubmission.edit")}>

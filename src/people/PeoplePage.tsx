@@ -19,7 +19,7 @@ export const PeoplePage = memo(() => {
 
   const recentPeople = useQuery<PersonInterface[]>({
     queryKey: ["/people/recent", "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const refetch = useCallback(() => {
@@ -46,7 +46,7 @@ export const PeoplePage = memo(() => {
     { key: "maritalStatus", label: Locale.label("person.maritalStatus"), shortName: Locale.label("person.married") },
     { key: "anniversary", label: Locale.label("person.anniversary"), shortName: Locale.label("person.anniversary") },
     { key: "nametagNotes", label: Locale.label("people.peoplePage.nameNote"), shortName: Locale.label("common.notes") },
-    { key: "deleteOption", label: Locale.label("people.peoplePage.deleteOp"), shortName: Locale.label("common.delete") },
+    { key: "deleteOption", label: Locale.label("people.peoplePage.deleteOp"), shortName: Locale.label("common.delete") }
   ];
 
   const handleToggleColumn = (key: string) => {
@@ -100,10 +100,10 @@ export const PeoplePage = memo(() => {
             cursor: "pointer",
             "&:hover": {
               color: "#FFF",
-              transform: "scale(1.1)",
+              transform: "scale(1.1)"
             },
             transition: "all 0.2s ease",
-            mr: 2,
+            mr: 2
           }}
           onClick={() => {
             const searchPanel = document.getElementById("peopleSearch");
@@ -127,8 +127,8 @@ export const PeoplePage = memo(() => {
               borderColor: "rgba(255,255,255,0.5)",
               "&:hover": {
                 borderColor: "#FFF",
-                backgroundColor: "rgba(255,255,255,0.1)",
-              },
+                backgroundColor: "rgba(255,255,255,0.1)"
+              }
             }}
             startIcon={<PersonAddIcon />}
             onClick={() => {

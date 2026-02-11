@@ -3,7 +3,6 @@ import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { LinkOff as LinkOffIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { type ContentProviderAuthInterface } from "../../helpers";
-import { type IProvider } from "@churchapps/content-provider-helper";
 
 interface ProviderInfo {
   id: string;
@@ -37,8 +36,7 @@ export const ProviderChipSelector: React.FC<Props> = (props) => (
     </Stack>
     <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
       {(props.showAllProviders ? props.availableProviders : props.availableProviders.filter(p =>
-        !p.requiresAuth || props.linkedProviders.some(lp => lp.providerId === p.id)
-      )).map((providerInfo) => {
+        !p.requiresAuth || props.linkedProviders.some(lp => lp.providerId === p.id))).map((providerInfo) => {
         const isLinked = !providerInfo.requiresAuth || props.linkedProviders.some(lp => lp.providerId === providerInfo.id);
         return (
           <Chip

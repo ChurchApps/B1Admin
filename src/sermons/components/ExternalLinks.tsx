@@ -15,7 +15,7 @@ export const ExternalLinks: React.FC<Props> = (props) => {
     return [
       <tr key="appearance"><td><Link to="/settings/branding" style={{ display: "flex", alignItems: "center" }}><Icon sx={{ marginRight: "5px" }}>edit</Icon>{Locale.label("sermons.liveStreamTimes.externalLinks.customizeAppearance")}</Link></td></tr>,
       <tr key="users"><td><Link to={`/settings`} style={{ display: "flex", alignItems: "center" }}><Icon sx={{ marginRight: "5px" }}>edit</Icon>{Locale.label("sermons.liveStreamTimes.externalLinks.editUsers")}</Link></td></tr>,
-      <tr key="stream"><td><a href={streamUrl} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center" }}><Icon sx={{ marginRight: "5px" }}>live_tv</Icon>{Locale.label("sermons.liveStreamTimes.externalLinks.viewYourStream")}</a></td></tr>,
+      <tr key="stream"><td><a href={streamUrl} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center" }}><Icon sx={{ marginRight: "5px" }}>live_tv</Icon>{Locale.label("sermons.liveStreamTimes.externalLinks.viewYourStream")}</a></td></tr>
     ];
   };
 

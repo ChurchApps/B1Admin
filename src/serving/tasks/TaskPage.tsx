@@ -1,8 +1,6 @@
 import React, { useContext, useCallback } from "react";
 import { Menu, MenuItem, Box, Stack, Button } from "@mui/material";
-import {
-  ApiHelper, type TaskInterface, Notes, DateHelper, type ConversationInterface, Locale, Loading, PageHeader 
-} from "@churchapps/apphelper";
+import { ApiHelper, type TaskInterface, Notes, DateHelper, type ConversationInterface, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
@@ -19,7 +17,7 @@ export const TaskPage = () => {
 
   const task = useQuery<TaskInterface>({
     queryKey: ["/tasks/" + params.id, "DoingApi"],
-    enabled: !!params.id,
+    enabled: !!params.id
   });
 
   const updateTaskMutation = useMutation({
@@ -30,7 +28,7 @@ export const TaskPage = () => {
       task.refetch();
       queryClient.invalidateQueries({ queryKey: ["/tasks", "DoingApi"] });
       queryClient.invalidateQueries({ queryKey: ["/tasks/closed", "DoingApi"] });
-    },
+    }
   });
 
   const handleContentPicked = useCallback(
@@ -81,7 +79,7 @@ export const TaskPage = () => {
       contentType: "task",
       contentId: task.data.id,
       title: "Task #" + task.data.id + " Notes",
-      visibility: "hidden",
+      visibility: "hidden"
     };
     const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
     const t = { ...task.data };
@@ -110,10 +108,10 @@ export const TaskPage = () => {
                 borderColor: task.data.status === "Open" ? "#f57c00" : "#4caf50",
                 "&:hover": {
                   backgroundColor: task.data.status === "Open" ? "#ef6c00" : "rgba(76, 175, 80, 0.2)",
-                  borderColor: task.data.status === "Open" ? "#ef6c00" : "#4caf50",
+                  borderColor: task.data.status === "Open" ? "#ef6c00" : "#4caf50"
                 },
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {task.data.status}
             </Button>
@@ -128,8 +126,8 @@ export const TaskPage = () => {
                 minWidth: "auto",
                 "&:hover": {
                   borderColor: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                },
+                  backgroundColor: "rgba(255,255,255,0.1)"
+                }
               }}
               title={Locale.label("tasks.taskPage.editAssigned")}>
               {Locale.label("tasks.taskPage.assign")}
@@ -145,8 +143,8 @@ export const TaskPage = () => {
                 minWidth: "auto",
                 "&:hover": {
                   borderColor: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                },
+                  backgroundColor: "rgba(255,255,255,0.1)"
+                }
               }}
               title={Locale.label("tasks.taskPage.editAssoc")}>
               {Locale.label("tasks.taskPage.associate")}

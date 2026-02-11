@@ -1,8 +1,6 @@
 import { type GenericSettingInterface, type VisibilityPreferenceInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
-import {
-  Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography, type SelectChangeEvent
-} from "@mui/material";
+import { Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography, type SelectChangeEvent } from "@mui/material";
 import React, { useState } from "react";
 
 interface Props {
@@ -44,15 +42,9 @@ export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
     const p = { ...pref } as VisibilityPreferenceInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "address":
-        p.address = value;
-        break;
-      case "phoneNumber":
-        p.phoneNumber = value;
-        break;
-      case "email":
-        p.email = value;
-        break;
+      case "address": p.address = value; break;
+      case "phoneNumber": p.phoneNumber = value; break;
+      case "email": p.email = value; break;
     }
     setPref(p);
   };
@@ -76,8 +68,8 @@ export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
-  }, [props.churchId]); //eslint-disable-line
-  React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
+  }, [props.churchId]);
+  React.useEffect(checkSave, [props.saveTrigger]);
 
   return (
     <Box sx={{ mb: 0 }}>

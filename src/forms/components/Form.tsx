@@ -2,9 +2,7 @@ import React from "react";
 import { FormQuestionEdit } from ".";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps/apphelper";
-import {
-  Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card 
-} from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
 
 interface Props {
   id: string;
@@ -34,7 +32,7 @@ export const Form: React.FC<Props> = (props) => {
   const moveUp = (e: React.MouseEvent) => {
     e.preventDefault();
     const button = e.currentTarget as HTMLButtonElement;
-    const row = button.closest('tr') as HTMLElement;
+    const row = button.closest("tr") as HTMLElement;
     const idx = parseInt(row.getAttribute("data-index"));
     const tmpQuestions = [...questions];
     const question = tmpQuestions.splice(idx, 1)[0];
@@ -45,7 +43,7 @@ export const Form: React.FC<Props> = (props) => {
   const moveDown = (e: React.MouseEvent) => {
     e.preventDefault();
     const button = e.currentTarget as HTMLButtonElement;
-    const row = button.closest('tr') as HTMLElement;
+    const row = button.closest("tr") as HTMLElement;
     const idx = parseInt(row.getAttribute("data-index"));
     const tmpQuestions = [...questions];
     const question = tmpQuestions.splice(idx, 1)[0];
@@ -93,15 +91,13 @@ export const Form: React.FC<Props> = (props) => {
           data-index={i}
           sx={{
             "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease",
+            transition: "background-color 0.2s ease"
           }}>
           <TableCell>
             <button
               type="button"
               onClick={handleClick}
-              style={{
-                background: "none", border: 0, padding: 0, color: "var(--c1l2)", cursor: "pointer", fontWeight: 500 
-              }}>
+              style={{ background: "none", border: 0, padding: 0, color: "var(--c1l2)", cursor: "pointer", fontWeight: 500 }}>
               {questions[i].title}
             </button>
           </TableCell>
@@ -159,7 +155,7 @@ export const Form: React.FC<Props> = (props) => {
     return result;
   };
 
-  React.useEffect(loadData, []); //eslint-disable-line
+  React.useEffect(loadData, []);
 
   if (!formPermission) return <></>;
   else {
@@ -172,8 +168,8 @@ export const Form: React.FC<Props> = (props) => {
               backgroundColor: "grey.50",
               "& .MuiTableCell-root": {
                 borderBottom: "2px solid",
-                borderBottomColor: "divider",
-              },
+                borderBottomColor: "divider"
+              }
             }}>
             {getTableHeader()}
           </TableHead>

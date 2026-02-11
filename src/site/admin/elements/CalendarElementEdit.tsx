@@ -18,7 +18,7 @@ export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
       else ApiHelper.get("/curatedCalendars", "ContentApi").then((data: any) => setCalendars(data));
     };
 
-    parsedData.calendarType && apiCalls();
+    if (parsedData.calendarType) apiCalls();
   };
 
   useEffect(() => { loadCalendars(); }, [parsedData?.calendarType]);

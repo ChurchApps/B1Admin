@@ -1,8 +1,6 @@
 import React from "react";
 import { Locale, PageHeader } from "@churchapps/apphelper";
-import {
-  Box, Card, CardContent, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Container, Paper 
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Container, Paper } from "@mui/material";
 import { Summarize as SummarizeIcon, CakeOutlined as BirthdayIcon, TrendingUp as TrendIcon, Groups as GroupsIcon, Today as DailyIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
@@ -12,32 +10,32 @@ export const ReportsPage = () => {
       path: "/reports/birthdays",
       label: Locale.label("reports.reportsPage.bDays"),
       icon: <BirthdayIcon />,
-      description: Locale.label("reports.reportsPage.bDaysDesc"),
+      description: Locale.label("reports.reportsPage.bDaysDesc")
     },
     {
       path: "/reports/attendanceTrend",
       label: Locale.label("reports.reportsPage.attTrend"),
       icon: <TrendIcon />,
-      description: Locale.label("reports.reportsPage.attTrendDesc"),
+      description: Locale.label("reports.reportsPage.attTrendDesc")
     },
     {
       path: "/reports/groupAttendance",
       label: Locale.label("reports.reportsPage.groupAtt"),
       icon: <GroupsIcon />,
-      description: Locale.label("reports.reportsPage.groupAttDesc"),
+      description: Locale.label("reports.reportsPage.groupAttDesc")
     },
     {
       path: "/reports/dailyGroupAttendance",
       label: Locale.label("reports.reportsPage.dailyGroupAtt"),
       icon: <DailyIcon />,
-      description: Locale.label("reports.reportsPage.dailyGroupAttDesc"),
+      description: Locale.label("reports.reportsPage.dailyGroupAttDesc")
     },
     {
       path: "/reports/donationSummary",
       label: Locale.label("reports.reportsPage.donSum"),
       icon: <DonationIcon />,
-      description: Locale.label("reports.reportsPage.donSumDesc"),
-    },
+      description: Locale.label("reports.reportsPage.donSumDesc")
+    }
   ];
 
   return (
@@ -56,7 +54,7 @@ export const ReportsPage = () => {
             sx={{
               borderRadius: 2,
               border: "1px solid",
-              borderColor: "divider",
+              borderColor: "divider"
             }}>
             <CardContent sx={{ p: 0 }}>
               <List sx={{ p: 0 }}>
@@ -75,15 +73,15 @@ export const ReportsPage = () => {
                             transform: "translateX(4px)",
                             "& .MuiListItemIcon-root": {
                               color: "primary.main",
-                              transform: "scale(1.1)",
-                            },
-                          },
+                              transform: "scale(1.1)"
+                            }
+                          }
                         }}>
                         <ListItemIcon
                           sx={{
                             minWidth: 48,
                             color: "text.secondary",
-                            transition: "all 0.2s ease-in-out",
+                            transition: "all 0.2s ease-in-out"
                           }}>
                           {item.icon}
                         </ListItemIcon>
@@ -93,7 +91,7 @@ export const ReportsPage = () => {
                               variant="subtitle1"
                               sx={{
                                 fontWeight: 500,
-                                color: "text.primary",
+                                color: "text.primary"
                               }}>
                               {item.label}
                             </Typography>
@@ -104,8 +102,8 @@ export const ReportsPage = () => {
                             </Typography>
                           }
                           slotProps={{
-                            primary: { component: 'div' },
-                            secondary: { component: 'div' }
+                            primary: { component: "div" },
+                            secondary: { component: "div" }
                           }}
                         />
                       </ListItemButton>
@@ -115,7 +113,7 @@ export const ReportsPage = () => {
                         sx={{
                           height: 1,
                           backgroundColor: "divider",
-                          mx: 3,
+                          mx: 3
                         }}
                       />
                     )}
@@ -133,7 +131,7 @@ export const ReportsPage = () => {
               backgroundColor: "grey.50",
               border: "1px solid",
               borderColor: "divider",
-              borderRadius: 2,
+              borderRadius: 2
             }}>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
               {Locale.label("reports.reportsPage.helpText")}

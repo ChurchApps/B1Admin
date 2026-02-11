@@ -2,7 +2,7 @@ import React, { useState, memo, useMemo, useCallback } from "react";
 import {
   type GroupInterface,
   type GroupMemberInterface,
-  type PersonInterface,
+  type PersonInterface
 } from "@churchapps/helpers";
 import {
   ApiHelper,
@@ -13,13 +13,11 @@ import {
   Loading,
   ArrayHelper,
   Locale,
-  PersonAvatar,
+  PersonAvatar
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import {
-  Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField 
-} from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { Send as SendIcon } from "@mui/icons-material";
 import { SmallButton } from "@churchapps/apphelper";
 
@@ -39,7 +37,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: [`/groupmembers?groupId=${props.group?.id}`, "MembershipApi"],
     placeholderData: [],
-    enabled: !!props.group?.id,
+    enabled: !!props.group?.id
   });
 
   const handleRemove = useCallback(
@@ -169,12 +167,8 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     let newMessage = "";
     if (templateType !== "") {
       switch (templateType) {
-        case "welcome_volunteers":
-          newMessage = Locale.label("groups.groupMembers.templates.welcome_volunteers.message");
-          break;
-        default:
-          newMessage = "";
-          break;
+        case "welcome_volunteers": newMessage = Locale.label("groups.groupMembers.templates.welcome_volunteers.message"); break;
+        default: newMessage = ""; break;
       }
     }
     setMessage(newMessage);
@@ -204,7 +198,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       peopleIds: ids,
       contentType: "groupMessage",
       contentId: props.group.id,
-      message: `Message from ${UserHelper.person.name.first}: ${message}`,
+      message: `Message from ${UserHelper.person.name.first}: ${message}`
     };
     await ApiHelper.post("/notifications/create", data, "MessagingApi");
   };
@@ -253,9 +247,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             <button
               type="button"
               onClick={() => setShowTemplates(!showTemplates)}
-              style={{
-                paddingLeft: "5px", background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" 
-              }}>
+              style={{ paddingLeft: "5px", background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
               {Locale.label("groups.groupMembers.showTemplates")}
             </button>
           )}
@@ -276,7 +268,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
               display: "flex",
               justifyContent: "end",
               alignItems: "center",
-              marginTop: "15px",
+              marginTop: "15px"
             }}>
             <Button
               size="small"

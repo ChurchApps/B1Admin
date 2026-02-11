@@ -78,11 +78,9 @@ export function PeopleSearch(props: Props) {
             data-testid="people-search-input"
             variant="outlined"
             size="small"
-            InputProps={{
-              startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />
-            }}
+            InputProps={{ startAdornment: <SearchIcon sx={{ mr: 1, color: "text.secondary" }} /> }}
           />
-          <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+          <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>
             Type to search instantly
           </Typography>
         </Box>
@@ -93,17 +91,15 @@ export function PeopleSearch(props: Props) {
             variant="body2"
             onClick={toggleAdvanced}
             sx={{
-              color: 'primary.main',
-              cursor: 'pointer',
+              color: "primary.main",
+              cursor: "pointer",
               fontWeight: 500,
-              display: 'inline-flex',
-              alignItems: 'center',
-              '&:hover': {
-                textDecoration: 'underline',
-              }
+              display: "inline-flex",
+              alignItems: "center",
+              "&:hover": { textDecoration: "underline" }
             }}
           >
-            {showAdvanced ? '▼' : '▶'} {Locale.label("people.peopleSearch.adv")}
+            {showAdvanced ? "▼" : "▶"} {Locale.label("people.peopleSearch.adv")}
           </Typography>
         </Box>
 

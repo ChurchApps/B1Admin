@@ -15,7 +15,7 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
           "& .table": {
             width: "100%",
             borderCollapse: "collapse",
-            margin: "16px 0",
+            margin: "16px 0"
           },
           "& .table th": {
             backgroundColor: "var(--bg-sub)",
@@ -24,27 +24,27 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             fontWeight: 600,
             fontSize: "0.875rem",
             color: "text.primary",
-            borderBottom: "2px solid var(--border-main)",
+            borderBottom: "2px solid var(--border-main)"
           },
           "& .table td": {
             padding: "12px 16px",
             borderBottom: "1px solid var(--border-main)",
             fontSize: "0.95rem",
-            color: "text.primary",
+            color: "text.primary"
           },
           "& .table tbody tr:hover": { backgroundColor: "var(--bg-sub)" },
           "& .table tbody tr:last-child td": { borderBottom: "none" },
           "& .donationAmount": {
             fontWeight: 600,
-            color: "primary.main",
+            color: "primary.main"
           },
           "& .donationDate": {
             color: "text.secondary",
-            fontSize: "0.875rem",
+            fontSize: "0.875rem"
           },
           "& .donationFund": {
             color: "text.primary",
-            fontWeight: 500,
+            fontWeight: 500
           },
           "& .totalRow": {
             fontWeight: 600,
@@ -52,15 +52,15 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             "& td": {
               borderTop: "2px solid",
               borderTopColor: "primary.main",
-              color: "primary.main",
-            },
+              color: "primary.main"
+            }
           },
           "& .noData": {
             textAlign: "center",
             padding: "32px 16px",
             color: "text.secondary",
             fontSize: "0.95rem",
-            fontStyle: "italic",
+            fontStyle: "italic"
           },
           "& .filters": {
             marginBottom: "16px",
@@ -70,13 +70,13 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             display: "flex",
             gap: "16px",
             alignItems: "center",
-            flexWrap: "wrap",
+            flexWrap: "wrap"
           },
           "& .filters label": {
             fontSize: "0.875rem",
             fontWeight: 500,
             color: "text.primary",
-            marginRight: "8px",
+            marginRight: "8px"
           },
           "& .filters select": {
             padding: "6px 12px",
@@ -88,8 +88,8 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             "&:focus": {
               outline: "none",
               borderColor: "primary.main",
-              boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)",
-            },
+              boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)"
+            }
           },
           '& .filters input[type="date"]': {
             padding: "6px 12px",
@@ -101,10 +101,10 @@ export const PersonDonations: React.FC<Props> = memo((props) => {
             "&:focus": {
               outline: "none",
               borderColor: "primary.main",
-              boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)",
-            },
-          },
-        },
+              boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)"
+            }
+          }
+        }
       }}>
       <div className="donationPage">
         <DonationPage personId={props.personId} church={UserHelper.currentUserChurch?.church} />

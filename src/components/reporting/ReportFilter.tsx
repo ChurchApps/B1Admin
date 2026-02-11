@@ -56,15 +56,9 @@ export const ReportFilter = (props: Props) => {
 
   const updateChildIds = (report: ReportInterface, parameter: ParameterInterface, permittedChildIds: string[]) => {
     switch (parameter.sourceKey) {
-      case "campus":
-        setRequiredParentIds(report, "service", permittedChildIds);
-        break;
-      case "service":
-        setRequiredParentIds(report, "serviceTime", permittedChildIds);
-        break;
-      case "serviceTime":
-        setRequiredParentIds(report, "group", permittedChildIds);
-        break;
+      case "campus": setRequiredParentIds(report, "service", permittedChildIds); break;
+      case "service": setRequiredParentIds(report, "serviceTime", permittedChildIds); break;
+      case "serviceTime": setRequiredParentIds(report, "group", permittedChildIds); break;
     }
   };
 

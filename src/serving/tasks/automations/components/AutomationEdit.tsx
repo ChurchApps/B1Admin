@@ -13,7 +13,7 @@ import {
   Button,
   FormHelperText,
   Switch,
-  FormControlLabel,
+  FormControlLabel
 } from "@mui/material";
 import React from "react";
 import { ErrorMessages, type AutomationInterface, ApiHelper, Locale } from "@churchapps/apphelper";
@@ -59,12 +59,8 @@ export const AutomationEdit = (props: Props) => {
     const val = e.target.value;
     const a = { ...automation };
     switch (e.target.name) {
-      case "title":
-        a.title = val;
-        break;
-      case "recurs":
-        a.recurs = val;
-        break;
+      case "title": a.title = val; break;
+      case "recurs": a.recurs = val; break;
     }
     setAutomation(a);
   };
@@ -82,7 +78,7 @@ export const AutomationEdit = (props: Props) => {
         border: "1px solid",
         borderColor: "grey.200",
         transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 },
+        "&:hover": { boxShadow: 2 }
       }}>
       <CardContent>
         <Stack spacing={3}>
@@ -152,7 +148,7 @@ export const AutomationEdit = (props: Props) => {
                 sx={{
                   borderRadius: 2,
                   textTransform: "none",
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}>
                 {Locale.label("common.delete")}
               </Button>
@@ -164,7 +160,7 @@ export const AutomationEdit = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {Locale.label("common.cancel")}
             </Button>
@@ -175,7 +171,7 @@ export const AutomationEdit = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {Locale.label("common.save")}
             </Button>

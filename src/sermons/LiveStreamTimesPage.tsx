@@ -24,23 +24,20 @@ export const LiveStreamTimesPage = memo(() => {
 
   const getCurrentTab = () => {
     switch (selectedTab) {
-      case "services":
-        return <Services />;
-      case "settings":
-        return (
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Tabs />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Button variant="contained" startIcon={<LiveTvIcon />} href={streamUrl} target="_blank" rel="noopener noreferrer">
-                {Locale.label("sermons.liveStreamTimes.externalLinks.viewYourStream")}
-              </Button>
-            </Grid>
+      case "services": return <Services />;
+      case "settings": return (
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Tabs />
           </Grid>
-        );
-      default:
-        return <Services />;
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Button variant="contained" startIcon={<LiveTvIcon />} href={streamUrl} target="_blank" rel="noopener noreferrer">
+              {Locale.label("sermons.liveStreamTimes.externalLinks.viewYourStream")}
+            </Button>
+          </Grid>
+        </Grid>
+      );
+      default: return <Services />;
     }
   };
 

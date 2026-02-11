@@ -201,8 +201,8 @@ export const ServiceEdit: React.FC<Props> = (props) => {
           {/* Basic Information Section */}
           <Box>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <VideoCallIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: 'primary.main' }}>
+              <VideoCallIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6" sx={{ color: "primary.main" }}>
                 {Locale.label("sermons.liveStreamTimes.serviceEdit.basicInformation")}
               </Typography>
             </Stack>
@@ -220,9 +220,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <VideoCallIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
+                      <VideoCallIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                     </InputAdornment>
-                  ),
+                  )
                 }}
               />
 
@@ -241,9 +241,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <ScheduleIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
+                          <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                         </InputAdornment>
-                      ),
+                      )
                     }}
                   />
                 </Grid>
@@ -257,20 +257,20 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                       onChange={handleChange}
                       startAdornment={
                         <InputAdornment position="start">
-                          <AccessTimeIcon sx={{ fontSize: 18, color: 'text.secondary', mr: 1 }} />
+                          <AccessTimeIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />
                         </InputAdornment>
                       }
                     >
                       <MenuItem value="false">
                         <Stack direction="row" spacing={1} alignItems="center">
                           <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.no")}</Typography>
-                          <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")} size="small" sx={{ backgroundColor: '#fff3e0', color: '#f57c00' }} />
+                          <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")} size="small" sx={{ backgroundColor: "#fff3e0", color: "#f57c00" }} />
                         </Stack>
                       </MenuItem>
                       <MenuItem value="true">
                         <Stack direction="row" spacing={1} alignItems="center">
                           <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.yes")}</Typography>
-                          <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")} size="small" sx={{ backgroundColor: '#e8f5e9', color: '#2e7d32' }} />
+                          <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")} size="small" sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }} />
                         </Stack>
                       </MenuItem>
                     </Select>
@@ -285,8 +285,8 @@ export const ServiceEdit: React.FC<Props> = (props) => {
           {/* Chat Settings Section */}
           <Box>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <ChatIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: 'primary.main' }}>
+              <ChatIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6" sx={{ color: "primary.main" }}>
                 {Locale.label("sermons.liveStreamTimes.serviceEdit.chatSettings")}
               </Typography>
             </Stack>
@@ -304,7 +304,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     inputProps: { min: 0, step: 1 },
                     startAdornment: (
                       <InputAdornment position="start">
-                        <ChatIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
+                        <ChatIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                       </InputAdornment>
                     ),
                     endAdornment: (
@@ -312,7 +312,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                         <Chip
                           label={chatAndPrayerStartTime ? DateHelper.prettyTime(new Date(chatAndPrayerStartTime)) : "Time"}
                           size="small"
-                          sx={{ backgroundColor: 'rgba(25, 118, 210, 0.08)', color: 'primary.main' }}
+                          sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
                         />
                       </InputAdornment>
                     )
@@ -331,7 +331,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     inputProps: { min: 0, step: 1 },
                     startAdornment: (
                       <InputAdornment position="start">
-                        <ChatIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
+                        <ChatIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                       </InputAdornment>
                     ),
                     endAdornment: (
@@ -339,7 +339,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                         <Chip
                           label={chatAndPrayerEndTime ? DateHelper.prettyTime(new Date(chatAndPrayerEndTime)) : "Time"}
                           size="small"
-                          sx={{ backgroundColor: 'rgba(25, 118, 210, 0.08)', color: 'primary.main' }}
+                          sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
                         />
                       </InputAdornment>
                     )
@@ -354,8 +354,8 @@ export const ServiceEdit: React.FC<Props> = (props) => {
           {/* Video Settings Section */}
           <Box>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <PlayCircleIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: 'primary.main' }}>
+              <PlayCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6" sx={{ color: "primary.main" }}>
                 {Locale.label("sermons.liveStreamTimes.serviceEdit.videoSettings")}
               </Typography>
             </Stack>
@@ -374,7 +374,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     inputProps: { min: 0, step: 1 },
                     startAdornment: (
                       <InputAdornment position="start">
-                        <PlayCircleIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
+                        <PlayCircleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                       </InputAdornment>
                     ),
                     endAdornment: (
@@ -382,7 +382,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                         <Chip
                           label={earlyStartTime ? DateHelper.prettyTime(new Date(earlyStartTime)) : "Time"}
                           size="small"
-                          sx={{ backgroundColor: 'rgba(25, 118, 210, 0.08)', color: 'primary.main' }}
+                          sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
                         />
                       </InputAdornment>
                     )
@@ -399,14 +399,14 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     onChange={handleChange}
                     startAdornment={
                       <InputAdornment position="start">
-                        <MenuBookIcon sx={{ fontSize: 18, color: 'text.secondary', mr: 1 }} />
+                        <MenuBookIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />
                       </InputAdornment>
                     }
                   >
                     <MenuItem value="latest">
                       <Stack direction="row" spacing={1} alignItems="center">
                         <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.latestSermon")}</Typography>
-                        <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.auto")} size="small" sx={{ backgroundColor: '#e8f5e9', color: '#2e7d32' }} />
+                        <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.auto")} size="small" sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }} />
                       </Stack>
                     </MenuItem>
                     {getSermons()}

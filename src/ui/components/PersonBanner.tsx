@@ -16,7 +16,7 @@ export const PersonBanner: React.FC = () => {
               borderRadius: "50%",
               border: "5px solid var(--bg-card)",
               float: "left",
-              marginRight: 30,
+              marginRight: 30
             }}
           />
         </Grid>
@@ -27,7 +27,7 @@ export const PersonBanner: React.FC = () => {
               fontSize: 30,
               fontWeight: "normal",
               marginBottom: 0,
-              lineHeight: 1,
+              lineHeight: 1
             }}>
             Jeremy Zongker
           </h1>

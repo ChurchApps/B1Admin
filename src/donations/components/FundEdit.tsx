@@ -41,14 +41,9 @@ export const FundEdit: React.FC<Props> = (props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = { ...fund };
     switch (e.target.name) {
-      case "fundName":
-        f.name = e.target.value;
-        break;
-      case "taxDeductible":
-        f.taxDeductible = e.target.checked;
-        break;
-      default:
-        break;
+      case "fundName": f.name = e.target.value; break;
+      case "taxDeductible": f.taxDeductible = e.target.checked; break;
+      default: break;
     }
     setFund(f);
   };

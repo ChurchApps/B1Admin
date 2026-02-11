@@ -2,9 +2,7 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface } from "../../../helpers";
 import { type LinkInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import {
-  Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, IconButton, Paper, Chip
-} from "@mui/material";
+import { Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, IconButton, Paper, Chip } from "@mui/material";
 import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon } from "@mui/icons-material";
 import { PraiseChartsProducts } from "./PraiseChartsProducts";
 import { KeyEdit } from "./KeyEdit";
@@ -42,7 +40,7 @@ export const Keys = memo((props: Props) => {
         setEditKey({
           arrangementId: props.arrangement.id,
           keySignature: "C",
-          shortDescription: Locale.label("songs.key.default") || "Default",
+          shortDescription: Locale.label("songs.key.default") || "Default"
         });
       } else {
         const k = ArrayHelper.getOne(keys, "id", newValue);
@@ -122,14 +120,14 @@ export const Keys = memo((props: Props) => {
                 onClick={() => download(p)}
                 sx={{
                   borderRadius: 1,
-                  "&:hover": { backgroundColor: "action.hover" },
+                  "&:hover": { backgroundColor: "action.hover" }
                 }}>
                 <DownloadIcon sx={{ mr: 1, fontSize: 18, color: "primary.main" }} />
                 <ListItemText
                   primary={p.name}
                   primaryTypographyProps={{
                     variant: "body2",
-                    fontWeight: 500,
+                    fontWeight: 500
                   }}
                 />
               </ListItemButton>
@@ -165,14 +163,14 @@ export const Keys = memo((props: Props) => {
                   sx={{
                     borderRadius: 1,
                     flex: 1,
-                    "&:hover": { backgroundColor: "action.hover" },
+                    "&:hover": { backgroundColor: "action.hover" }
                   }}>
                   <LinkIcon sx={{ mr: 1, fontSize: 18, color: "secondary.main" }} />
                   <ListItemText
                     primary={l.text}
                     primaryTypographyProps={{
                       variant: "body2",
-                      fontWeight: 500,
+                      fontWeight: 500
                     }}
                   />
                 </ListItemButton>
@@ -233,7 +231,7 @@ export const Keys = memo((props: Props) => {
                 onClick={() => setEditKey(selectedKey)}
                 sx={{
                   color: "primary.main",
-                  "&:hover": { backgroundColor: "primary.light" },
+                  "&:hover": { backgroundColor: "primary.light" }
                 }}
                 aria-label="Edit selected key">
                 <EditIcon />
@@ -273,7 +271,7 @@ export const Keys = memo((props: Props) => {
                     mt: 3,
                     pt: 2,
                     borderTop: "1px solid",
-                    borderColor: "var(--border-light)",
+                    borderColor: "var(--border-light)"
                   }}>
                   <Button
                     id="addBtnGroup"
@@ -284,7 +282,7 @@ export const Keys = memo((props: Props) => {
                       borderStyle: "dashed",
                       color: "primary.main",
                       borderColor: "primary.main",
-                      "&:hover": { backgroundColor: "primary.light" },
+                      "&:hover": { backgroundColor: "primary.light" }
                     }}>
                     {Locale.label("songs.keys.addFiles") || "Add Files"}
                   </Button>
@@ -298,7 +296,7 @@ export const Keys = memo((props: Props) => {
                 textAlign: "center",
                 backgroundColor: "var(--bg-sub)",
                 border: "1px dashed",
-                borderColor: "var(--border-main)",
+                borderColor: "var(--border-main)"
               }}>
               <KeyIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
               <Typography variant="body2" color="text.secondary">
@@ -327,7 +325,7 @@ export const Keys = memo((props: Props) => {
               linkType: "url",
               sort: 1,
               linkData: "",
-              icon: "",
+              icon: ""
             });
           }}>
           <LinkIcon sx={{ mr: 2, color: "secondary.main" }} />

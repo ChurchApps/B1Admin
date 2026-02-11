@@ -48,7 +48,7 @@ export const ReportOutput = (props: Props) => {
           state: person?.contactInfo?.state || "",
           zip: person?.contactInfo?.zip || "",
           totalDonation: d.totalAmount,
-          ...funds,
+          ...funds
         };
         result.push(obj);
       });
@@ -61,7 +61,7 @@ export const ReportOutput = (props: Props) => {
       const obj = {
         firstName: "Anonymous",
         totalDonation: anonDonations.totalAmount,
-        ...funds,
+        ...funds
       };
       result.push(obj);
     }

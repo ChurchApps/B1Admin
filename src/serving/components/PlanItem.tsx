@@ -40,7 +40,7 @@ export const PlanItem = React.memo((props: Props) => {
     associatedProviderId: props.associatedProviderId,
     associatedVenueId: props.associatedVenueId,
     ministryId: props.ministryId,
-    onChange: props.onChange,
+    onChange: props.onChange
   });
 
   const handleClose = () => {
@@ -53,7 +53,7 @@ export const PlanItem = React.memo((props: Props) => {
       itemType: "arrangementKey",
       planId: props.planItem.planId,
       sort: getNextChildSort(props.planItem.children),
-      parentId: props.planItem.id,
+      parentId: props.planItem.id
     });
   };
 
@@ -63,7 +63,7 @@ export const PlanItem = React.memo((props: Props) => {
       itemType: "item",
       planId: props.planItem.planId,
       sort: getNextChildSort(props.planItem.children),
-      parentId: props.planItem.id,
+      parentId: props.planItem.id
     });
   };
 
@@ -92,7 +92,7 @@ export const PlanItem = React.memo((props: Props) => {
       // Store media URL in link field for direct preview (non-Lessons.church providers)
       // For file items, use mediaUrl if available, otherwise fall back to image
       link: linkValue,
-      thumbnailUrl: image,
+      thumbnailUrl: image
     };
     await ApiHelper.post("/planItems", [newPlanItem], "DoingApi");
     if (props.onChange) props.onChange();
@@ -128,7 +128,7 @@ export const PlanItem = React.memo((props: Props) => {
                   borderRadius: 1,
                   backgroundColor: "primary.light",
                   opacity: 0.3,
-                  mb: 0.5,
+                  mb: 0.5
                 }}
               />
             </DroppableWrapper>
@@ -162,7 +162,7 @@ export const PlanItem = React.memo((props: Props) => {
                 borderRadius: 1,
                 backgroundColor: "primary.light",
                 opacity: 0.3,
-                mb: 0.5,
+                mb: 0.5
               }}
             />
           </DroppableWrapper>
@@ -196,22 +196,18 @@ export const PlanItem = React.memo((props: Props) => {
 
   const getPlanItem = () => {
     switch (props.planItem.itemType) {
-      case "header":
-        return getHeaderRow();
+      case "header": return getHeaderRow();
       case "song":
-      case "arrangementKey":
-        return getGenericRow(props.planItem.relatedId ? () => setDialogKeyId(props.planItem.relatedId) : undefined);
+      case "arrangementKey": return getGenericRow(props.planItem.relatedId ? () => setDialogKeyId(props.planItem.relatedId) : undefined);
       // Action types
       case "providerPresentation":
       case "lessonAction":
-      case "action":
-        return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
+      case "action": return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
       // File/add-on types (legacy items still in database need AddOnDialog for correct embed URLs)
       case "providerFile":
       case "lessonAddOn":
       case "addon":
-      case "file":
-        return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
+      case "file": return getGenericRow(props.planItem.relatedId ? () => setActionId(props.planItem.relatedId) : undefined);
       case "providerSection":
       case "lessonSection":
       case "section":
@@ -221,8 +217,7 @@ export const PlanItem = React.memo((props: Props) => {
             : undefined
         );
       case "item":
-      default:
-        return getGenericRow(props.planItem.relatedId ? () => setLessonSectionId(props.planItem.relatedId) : undefined);
+      default: return getGenericRow(props.planItem.relatedId ? () => setLessonSectionId(props.planItem.relatedId) : undefined);
     }
   };
 
@@ -254,9 +249,9 @@ export const PlanItem = React.memo((props: Props) => {
               (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
             )
               ? async () => {
-                  setLessonSectionId(null);
-                  await handleExpandToActions();
-                }
+                setLessonSectionId(null);
+                await handleExpandToActions();
+              }
               : undefined
           }
           providerId={props.planItem.providerId}

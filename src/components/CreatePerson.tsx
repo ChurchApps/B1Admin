@@ -35,15 +35,9 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
     const p = { ...person } as PersonInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "first":
-        p.name.first = value;
-        break;
-      case "last":
-        p.name.last = value;
-        break;
-      case "email":
-        p.contactInfo.email = value;
-        break;
+      case "first": p.name.first = value; break;
+      case "last": p.name.last = value; break;
+      case "email": p.contactInfo.email = value; break;
     }
     setPerson(p);
   };

@@ -56,16 +56,16 @@ export const PersonForm: React.FC<Props> = memo((props) => {
         "& .MuiCard-root": {
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "grey.200",
-        },
+          borderColor: "grey.200"
+        }
       }}>
       <Card
         sx={{
           transition: "all 0.2s ease-in-out",
           "&:hover": {
             transform: "translateY(-1px)",
-            boxShadow: 2,
-          },
+            boxShadow: 2
+          }
         }}>
         <CardContent sx={{ pb: "16px !important" }}>
           <FormSubmission formSubmissionId={submission.id} editFunction={handleEdit} />
@@ -79,7 +79,7 @@ export const PersonForm: React.FC<Props> = memo((props) => {
         textAlign: "center",
         backgroundColor: "grey.50",
         border: "1px dashed",
-        borderColor: "grey.300",
+        borderColor: "grey.300"
       }}>
       <DescriptionIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
       <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
@@ -93,8 +93,8 @@ export const PersonForm: React.FC<Props> = memo((props) => {
           transition: "all 0.2s ease-in-out",
           "&:hover": {
             transform: "translateY(-1px)",
-            boxShadow: 2,
-          },
+            boxShadow: 2
+          }
         }}
         data-testid="add-form-button"
         aria-label={`Add ${props.form?.name || "form"} submission`}>

@@ -11,7 +11,7 @@ export const Funds: React.FC = memo(() => {
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const handleFundUpdated = useCallback(() => {

@@ -12,14 +12,11 @@ import {
   Card,
   Box,
   Stack,
-  TableHead,
-  Paper,
-  CardContent,
-  TableContainer
+  TableHead
 } from "@mui/material";
 import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
-import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface, Permissions } from "@churchapps/helpers";
+import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
 import { CuratedCalendar } from "./components/CuratedCalendar";
 
 export const CalendarPage = () => {
@@ -77,9 +74,7 @@ export const CalendarPage = () => {
             aria-label={Locale.label("calendars.calendarPage.removeGroupAria", g.name)}
             sx={{
               color: "error.main",
-              "&:hover": {
-                backgroundColor: "error.light",
-              },
+              "&:hover": { backgroundColor: "error.light" }
             }}
           >
             <DeleteIcon fontSize="small" />
@@ -110,7 +105,7 @@ export const CalendarPage = () => {
               sx={{
                 borderRadius: 2,
                 border: "1px solid",
-                borderColor: "grey.200",
+                borderColor: "grey.200"
               }}
             >
               <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
@@ -139,7 +134,7 @@ export const CalendarPage = () => {
               sx={{
                 borderRadius: 2,
                 border: "1px solid",
-                borderColor: "grey.200",
+                borderColor: "grey.200"
               }}
             >
               <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>

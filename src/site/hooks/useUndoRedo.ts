@@ -82,12 +82,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
           // Convert server history to local format (newest first from server, we need oldest first for undo stack)
           const entries: HistoryEntry[] = serverHistory
             .reverse() // Server returns newest first, we want oldest first
-            .map((h: any) => ({
-              id: h.id,
-              snapshot: JSON.parse(h.snapshotJSON),
-              description: h.description,
-              timestamp: new Date(h.createdDate).getTime()
-            }));
+            .map((h: any) => ({ id: h.id, snapshot: JSON.parse(h.snapshotJSON), description: h.description, timestamp: new Date(h.createdDate).getTime() }));
           setUndoStack(entries);
         }
       } catch (err) {
@@ -115,11 +110,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
   // Server-side restore function using snapshot directly (fallback when no ID)
   const restoreBySnapshot = async (snapshot: ContainerSnapshot): Promise<boolean> => {
     try {
-      const result = await ApiHelper.post("/pageHistory/restoreSnapshot", {
-        pageId: pageIdRef.current,
-        blockId: blockIdRef.current,
-        snapshot
-      }, "ContentApi");
+      const result = await ApiHelper.post("/pageHistory/restoreSnapshot", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshot }, "ContentApi");
       return result.success === true;
     } catch (err) {
       console.error("Failed to restore snapshot on server:", err);
@@ -250,23 +241,15 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
           if (block.blockType) return !section.blockId || section.blockId === block.id;
           else return !section.blockId;
         })
-        .map(section => ({
-          ...section,
-          elements: cloneElements(section.elements || [])
-        }));
+        .map(section => ({ ...section, elements: cloneElements(section.elements || []) }));
     };
 
     const cloneElements = (elements: ElementInterface[]): ElementInterface[] => {
       if (!elements) return [];
-      return elements.map(element => ({
-        ...element,
-        elements: cloneElements(element.elements || [])
-      }));
+      return elements.map(element => ({ ...element, elements: cloneElements(element.elements || []) }));
     };
 
-    return {
-      sections: cloneSections(container?.sections || [])
-    };
+    return { sections: cloneSections(container?.sections || []) };
   };
 
   const saveSnapshot = useCallback((container: PageInterface | BlockInterface, description: string) => {
@@ -280,28 +263,18 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     lastSaveRef.current = now;
 
     const snapshot = createSnapshot(container);
-    const entry: HistoryEntry = {
-      snapshot,
-      description,
-      timestamp: now
-    };
+    const entry: HistoryEntry = { snapshot, description, timestamp: now };
 
     // Save to API and get the ID
     if (pageIdRef.current || blockIdRef.current) {
-      ApiHelper.post("/pageHistory", {
-        pageId: pageIdRef.current,
-        blockId: blockIdRef.current,
-        snapshotJSON: JSON.stringify(snapshot),
-        description
-      }, "ContentApi").then((result) => {
+      ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result) => {
         // Update entry with the server ID
         setUndoStack(prev => {
           // Find and update the entry we just added
           const newStack = prev.map(e =>
             e.timestamp === entry.timestamp && e.description === entry.description
               ? { ...e, id: result.id }
-              : e
-          );
+              : e);
           return newStack;
         });
       }).catch(err => {
@@ -329,16 +302,8 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
 
   // Get full history (undo stack + redo stack in reverse)
   const getFullHistory = (): HistoryEntryInfo[] => {
-    const undoHistory = undoStack.map(entry => ({
-      id: entry.id,
-      description: entry.description,
-      timestamp: entry.timestamp
-    }));
-    const redoHistory = [...redoStack].reverse().map(entry => ({
-      id: entry.id,
-      description: entry.description,
-      timestamp: entry.timestamp
-    }));
+    const undoHistory = undoStack.map(entry => ({ id: entry.id, description: entry.description, timestamp: entry.timestamp }));
+    const redoHistory = [...redoStack].reverse().map(entry => ({ id: entry.id, description: entry.description, timestamp: entry.timestamp }));
     return [...undoHistory, ...redoHistory];
   };
 

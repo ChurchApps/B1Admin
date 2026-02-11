@@ -50,7 +50,7 @@ export const OAuthPage: React.FC = () => {
             backgroundColor: "background.paper",
             border: "1px solid var(--border-main)",
             borderRadius: "5px",
-            padding: "10px",
+            padding: "10px"
           }}
           px="16px"
           mx="auto">

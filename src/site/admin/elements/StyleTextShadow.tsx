@@ -22,10 +22,10 @@ export const StyleTextShadow: React.FC<Props> = (props) => {
     let tempColor = color;
 
     switch (e.target.name) {
-      case "offsetX": setOffsetX(parseInt(e.target.value)); tempOffsetX=parseInt(e.target.value); break;
-      case "offsetY": setOffsetY(parseInt(e.target.value)); tempOffsetY=parseInt(e.target.value); break;
-      case "blurRadius": setBlurRadius(parseInt(e.target.value)); tempBlurRadius=parseInt(e.target.value); break;
-      case "color": setColor(e.target.value); tempColor=e.target.value; break;
+      case "offsetX": setOffsetX(parseInt(e.target.value)); tempOffsetX = parseInt(e.target.value); break;
+      case "offsetY": setOffsetY(parseInt(e.target.value)); tempOffsetY = parseInt(e.target.value); break;
+      case "blurRadius": setBlurRadius(parseInt(e.target.value)); tempBlurRadius = parseInt(e.target.value); break;
+      case "color": setColor(e.target.value); tempColor = e.target.value; break;
     }
     let newString = `${tempOffsetX}px ${tempOffsetY}px ${tempBlurRadius}px ${tempColor}`;
     if (tempBlurRadius === 0) newString = "";

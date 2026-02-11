@@ -2,7 +2,7 @@
 
 import { Box } from "@mui/material";
 import React, { CSSProperties } from "react";
-import { useDrop } from 'react-dnd';
+import { useDrop } from "react-dnd";
 
 type Props = {
   direction: "up" | "down",
@@ -23,7 +23,7 @@ export function DroppableScroll(props: Props) {
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
         item: monitor.getDropResult()
-      }),
+      })
     }), [props?.dndDeps, props.acceptTypes]
   );
 
@@ -32,7 +32,7 @@ export function DroppableScroll(props: Props) {
     const acceleration = Math.min(10 + stepsRef.current * 2, 100);
     const newY = window.scrollY - acceleration;
     if (newY < 0 && intervalIdRef.current) clearInterval(intervalIdRef.current);
-    else window.scrollTo({ top: newY, behavior: 'auto' });
+    else window.scrollTo({ top: newY, behavior: "auto" });
     if (stepsRef.current > 100) handleMouseOut();
   };
 
@@ -40,7 +40,7 @@ export function DroppableScroll(props: Props) {
     stepsRef.current++;
     const acceleration = Math.min(10 + stepsRef.current * 2, 100);
     const newY = window.scrollY + acceleration;
-    window.scrollTo({ top: newY, behavior: 'auto' });
+    window.scrollTo({ top: newY, behavior: "auto" });
     if (stepsRef.current > 100) handleMouseOut();
   };
 
@@ -79,15 +79,15 @@ export function DroppableScroll(props: Props) {
 
   if (canDrop) {
     return (
-    <div style={{ position: "relative" }}>
-      <div style={droppableStyle}>
-        <div style={{ textAlign: "center", color: "#FFFFFF", width: "100%" }} ref={drop as any}>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "4px" }} onDragEnter={handleMouseOver} onDragLeave={handleMouseOut} onDrop={handleMouseOut}>
-            <span>{props.text}</span>
-          </Box>
+      <div style={{ position: "relative" }}>
+        <div style={droppableStyle}>
+          <div style={{ textAlign: "center", color: "#FFFFFF", width: "100%" }} ref={drop as any}>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "4px" }} onDragEnter={handleMouseOver} onDragLeave={handleMouseOut} onDrop={handleMouseOut}>
+              <span>{props.text}</span>
+            </Box>
+          </div>
         </div>
       </div>
-    </div>
     );
   } else return <></>;
 }

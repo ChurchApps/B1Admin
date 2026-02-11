@@ -19,12 +19,8 @@ export const LinkEdit = (props: Props) => {
     const l = { ...link };
 
     switch (e.target.name) {
-      case "url":
-        l.url = e.target.value;
-        break;
-      case "text":
-        l.text = e.target.value;
-        break;
+      case "url": l.url = e.target.value; break;
+      case "text": l.text = e.target.value; break;
     }
     setLink(l);
   };

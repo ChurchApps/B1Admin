@@ -15,7 +15,7 @@ const getStatusColors = (status: string, variant: "standard" | "header") => {
       backgroundColor: "rgba(255,255,255,0.2)",
       color: "#FFF",
       fontSize: "0.75rem",
-      height: 20,
+      height: 20
     };
   }
 
@@ -26,26 +26,26 @@ const getStatusColors = (status: string, variant: "standard" | "header") => {
       return {
         backgroundColor: "#e8f5e9",
         color: "#2e7d32",
-        fontWeight: 600,
+        fontWeight: 600
       };
     case "visitor":
     case "pending":
       return {
         backgroundColor: "#fff3e0",
         color: "#f57c00",
-        fontWeight: 600,
+        fontWeight: 600
       };
     case "staff":
       return {
         backgroundColor: "#e3f2fd",
         color: "#1565c0",
-        fontWeight: 600,
+        fontWeight: 600
       };
     default:
       return {
         color: "text.secondary",
         borderColor: "grey.400",
-        fontSize: "0.75rem",
+        fontSize: "0.75rem"
       };
   }
 };

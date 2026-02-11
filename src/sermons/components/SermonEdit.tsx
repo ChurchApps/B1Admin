@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  Grid, InputLabel, MenuItem, Select, TextField, FormControl, Button, Box, type SelectChangeEvent
-} from "@mui/material";
+import { Grid, InputLabel, MenuItem, Select, TextField, FormControl, Button, Box, type SelectChangeEvent } from "@mui/material";
 import { Loading, Locale } from "@churchapps/apphelper";
 import { InputBox } from "@churchapps/apphelper";
 import { ErrorMessages } from "@churchapps/apphelper";
@@ -218,89 +216,89 @@ export const SermonEdit: React.FC<Props> = (props) => {
   if (isLoading) return <Loading data-testid="sermon-edit-loading" />;
   else {
     return (
-    <>
-      {showImageEditor && <ImageEditor aspectRatio={16 / 9} outputWidth={640} outputHeight={360} photoUrl={currentSermon?.thumbnail || ""} onCancel={() => setShowImageEditor(false)} onUpdate={handlePhotoUpdated} />}
-      <InputBox headerIcon="calendar_month" headerText={(currentSermon?.permanentUrl) ? Locale.label("sermons.sermonEdit.editPermanentLiveUrl") : Locale.label("sermons.sermonEdit.editSermon")} saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={checkDelete()} help="b1Admin/streaming/sermons" data-testid="sermon-edit-box">
-        <ErrorMessages errors={errors} data-testid="sermon-errors" />
-        <>
-          {!currentSermon?.permanentUrl && (
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("sermons.playlist")}</InputLabel>
-              <Select label={Locale.label("sermons.playlist")} name="playlistId" value={currentSermon?.playlistId || ""} onChange={handleChange} data-testid="sermon-playlist-select" aria-label="Select playlist">
-                <MenuItem value="">{Locale.label("sermons.sermonEdit.none")}</MenuItem>
-                {getPlaylists()}
-              </Select>
-            </FormControl>
-          )}
-
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>{Locale.label("sermons.sermonEdit.videoProvider")}</InputLabel>
-                <Select label={Locale.label("sermons.sermonEdit.videoProvider")} name="videoType" value={currentSermon?.videoType || ""} onChange={handleChange} data-testid="video-provider-select" aria-label="Select video provider">
-                  {currentSermon?.permanentUrl && (<MenuItem value="youtube_channel">{Locale.label("sermons.sermonEdit.currentYouTubeLiveStream")}</MenuItem>)}
-                  <MenuItem value="youtube">{Locale.label("sermons.sermonEdit.youtube")}</MenuItem>
-                  <MenuItem value="vimeo">{Locale.label("sermons.sermonEdit.vimeo")}</MenuItem>
-                  <MenuItem value="facebook">{Locale.label("sermons.sermonEdit.facebook")}</MenuItem>
-                  <MenuItem value="custom">{Locale.label("sermons.sermonEdit.customEmbedUrl")}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 6 }}>
-              <TextField fullWidth label={keyLabel} name="videoData" value={currentSermon?.videoData || ""} onChange={handleChange} placeholder={keyPlaceholder}
-                InputProps={{ endAdornment: endAdornment }}
-                data-testid="video-data-input"
-                aria-label="Video ID or URL"
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={3}>
+      <>
+        {showImageEditor && <ImageEditor aspectRatio={16 / 9} outputWidth={640} outputHeight={360} photoUrl={currentSermon?.thumbnail || ""} onCancel={() => setShowImageEditor(false)} onUpdate={handlePhotoUpdated} />}
+        <InputBox headerIcon="calendar_month" headerText={(currentSermon?.permanentUrl) ? Locale.label("sermons.sermonEdit.editPermanentLiveUrl") : Locale.label("sermons.sermonEdit.editSermon")} saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={checkDelete()} help="b1Admin/streaming/sermons" data-testid="sermon-edit-box">
+          <ErrorMessages errors={errors} data-testid="sermon-errors" />
+          <>
             {!currentSermon?.permanentUrl && (
-              <Grid size={{ xs: 6 }}>
-                <label style={{ width: "100%" }}>{Locale.label("sermons.publishDate")}</label>
-                <TextField fullWidth type="date" name="publishDate" value={(currentSermon?.publishDate) ? DateHelper.formatHtml5Date(DateHelper.toDate(currentSermon?.publishDate)) : ""} onChange={handleChange} placeholder={keyPlaceholder} data-testid="publish-date-input" aria-label="Publish date" />
-              </Grid>
-            )}
-            <Grid size={{ xs: 6 }}>
-              <label style={{ width: "100%" }}>{Locale.label("sermons.sermonEdit.totalSermonDuration")}</label>
-              <Duration totalSeconds={currentSermon?.duration || 0} updatedFunction={totalSeconds => { const s = { ...currentSermon }; s.duration = totalSeconds; setCurrentSermon(s); }} />
-            </Grid>
-
-          </Grid>
-
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 3 }}>
-              <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowImageEditor(true); }} data-testid="edit-thumbnail-link" aria-label="Edit sermon thumbnail">
-                <img src={currentSermon?.thumbnail || "/images/no-image.png"} className="img-fluid" style={{ marginTop: 20 }} alt="Sermon thumbnail" data-testid="sermon-thumbnail"></img>
-              </a>
-            </Grid>
-            <Grid size={{ xs: 9 }}>
-              <TextField fullWidth label={Locale.label("sermons.sermonEdit.title")} name="title" value={currentSermon?.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.title")} data-testid="sermon-title-input" aria-label="Sermon title" />
-              <Box sx={{ mt: 2 }}>
-                <TextField fullWidth multiline label={Locale.label("sermons.sermonEdit.description")} name="description" value={currentSermon?.description || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.description")} data-testid="sermon-description-input" aria-label="Sermon description" />
-              </Box>
-            </Grid>
-          </Grid>
-
-          {/* add to another playlist */}
-          <div style={{ marginTop: 15 }}>
-            <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowOption(!showOption); }} data-testid="add-to-playlist-link" aria-label="Add sermon to another playlist">{Locale.label("sermons.sermonEdit.addToAnotherPlaylist")}</a>
-            {showOption && (
               <FormControl fullWidth>
                 <InputLabel>{Locale.label("sermons.playlist")}</InputLabel>
-                <Select label={Locale.label("sermons.playlist")} name="additionalPlaylistId" value={additionalPlaylistId} onChange={(e) => { e.preventDefault(); setAdditionalPlaylistId(e.target.value); }}
-                  endAdornment={<Button variant="contained" size="small" disabled={!additionalPlaylistId || additionalPlaylistId === ""} onClick={handleAdd} data-testid="add-to-playlist-button" aria-label="Add to selected playlist">{Locale.label("sermons.sermonEdit.add")}</Button>}
-                  data-testid="additional-playlist-select"
-                  aria-label="Select additional playlist"
-                >
-                  {getAdditionalPlaylists()}
+                <Select label={Locale.label("sermons.playlist")} name="playlistId" value={currentSermon?.playlistId || ""} onChange={handleChange} data-testid="sermon-playlist-select" aria-label="Select playlist">
+                  <MenuItem value="">{Locale.label("sermons.sermonEdit.none")}</MenuItem>
+                  {getPlaylists()}
                 </Select>
               </FormControl>
             )}
-          </div>
-        </>
-      </InputBox>
-    </>
+
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>{Locale.label("sermons.sermonEdit.videoProvider")}</InputLabel>
+                  <Select label={Locale.label("sermons.sermonEdit.videoProvider")} name="videoType" value={currentSermon?.videoType || ""} onChange={handleChange} data-testid="video-provider-select" aria-label="Select video provider">
+                    {currentSermon?.permanentUrl && (<MenuItem value="youtube_channel">{Locale.label("sermons.sermonEdit.currentYouTubeLiveStream")}</MenuItem>)}
+                    <MenuItem value="youtube">{Locale.label("sermons.sermonEdit.youtube")}</MenuItem>
+                    <MenuItem value="vimeo">{Locale.label("sermons.sermonEdit.vimeo")}</MenuItem>
+                    <MenuItem value="facebook">{Locale.label("sermons.sermonEdit.facebook")}</MenuItem>
+                    <MenuItem value="custom">{Locale.label("sermons.sermonEdit.customEmbedUrl")}</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 6 }}>
+                <TextField fullWidth label={keyLabel} name="videoData" value={currentSermon?.videoData || ""} onChange={handleChange} placeholder={keyPlaceholder}
+                  InputProps={{ endAdornment: endAdornment }}
+                  data-testid="video-data-input"
+                  aria-label="Video ID or URL"
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={3}>
+              {!currentSermon?.permanentUrl && (
+                <Grid size={{ xs: 6 }}>
+                  <label style={{ width: "100%" }}>{Locale.label("sermons.publishDate")}</label>
+                  <TextField fullWidth type="date" name="publishDate" value={(currentSermon?.publishDate) ? DateHelper.formatHtml5Date(DateHelper.toDate(currentSermon?.publishDate)) : ""} onChange={handleChange} placeholder={keyPlaceholder} data-testid="publish-date-input" aria-label="Publish date" />
+                </Grid>
+              )}
+              <Grid size={{ xs: 6 }}>
+                <label style={{ width: "100%" }}>{Locale.label("sermons.sermonEdit.totalSermonDuration")}</label>
+                <Duration totalSeconds={currentSermon?.duration || 0} updatedFunction={totalSeconds => { const s = { ...currentSermon }; s.duration = totalSeconds; setCurrentSermon(s); }} />
+              </Grid>
+
+            </Grid>
+
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 3 }}>
+                <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowImageEditor(true); }} data-testid="edit-thumbnail-link" aria-label="Edit sermon thumbnail">
+                  <img src={currentSermon?.thumbnail || "/images/no-image.png"} className="img-fluid" style={{ marginTop: 20 }} alt="Sermon thumbnail" data-testid="sermon-thumbnail"></img>
+                </a>
+              </Grid>
+              <Grid size={{ xs: 9 }}>
+                <TextField fullWidth label={Locale.label("sermons.sermonEdit.title")} name="title" value={currentSermon?.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.title")} data-testid="sermon-title-input" aria-label="Sermon title" />
+                <Box sx={{ mt: 2 }}>
+                  <TextField fullWidth multiline label={Locale.label("sermons.sermonEdit.description")} name="description" value={currentSermon?.description || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.description")} data-testid="sermon-description-input" aria-label="Sermon description" />
+                </Box>
+              </Grid>
+            </Grid>
+
+            {/* add to another playlist */}
+            <div style={{ marginTop: 15 }}>
+              <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowOption(!showOption); }} data-testid="add-to-playlist-link" aria-label="Add sermon to another playlist">{Locale.label("sermons.sermonEdit.addToAnotherPlaylist")}</a>
+              {showOption && (
+                <FormControl fullWidth>
+                  <InputLabel>{Locale.label("sermons.playlist")}</InputLabel>
+                  <Select label={Locale.label("sermons.playlist")} name="additionalPlaylistId" value={additionalPlaylistId} onChange={(e) => { e.preventDefault(); setAdditionalPlaylistId(e.target.value); }}
+                    endAdornment={<Button variant="contained" size="small" disabled={!additionalPlaylistId || additionalPlaylistId === ""} onClick={handleAdd} data-testid="add-to-playlist-button" aria-label="Add to selected playlist">{Locale.label("sermons.sermonEdit.add")}</Button>}
+                    data-testid="additional-playlist-select"
+                    aria-label="Select additional playlist"
+                  >
+                    {getAdditionalPlaylists()}
+                  </Select>
+                </FormControl>
+              )}
+            </div>
+          </>
+        </InputBox>
+      </>
     );
   }
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumbs as MuiBreadcrumbs, Link, Typography, Stack } from "@mui/material";
+import { Breadcrumbs as MuiBreadcrumbs, Link, Typography } from "@mui/material";
 import { NavigateNext as NavigateNextIcon, Home as HomeIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true
       sx={{
         color: "rgba(255,255,255,0.9)",
         fontSize: "0.875rem",
-        "& .MuiBreadcrumbs-separator": { mx: 0.5 },
+        "& .MuiBreadcrumbs-separator": { mx: 0.5 }
       }}
     >
       {showHome && (
@@ -45,7 +45,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true
             border: "none",
             background: "none",
             padding: 0,
-            font: "inherit",
+            font: "inherit"
           }}
         >
           <HomeIcon sx={{ fontSize: 18, mr: 0.5 }} />
@@ -64,7 +64,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true
                 fontSize: "0.875rem",
                 fontWeight: 500,
                 display: "flex",
-                alignItems: "center",
+                alignItems: "center"
               }}
             >
               {item.icon && <span style={{ display: "flex", marginRight: 4 }}>{item.icon}</span>}
@@ -89,7 +89,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true
               background: "none",
               padding: 0,
               font: "inherit",
-              fontSize: "0.875rem",
+              fontSize: "0.875rem"
             }}
           >
             {item.icon && <span style={{ display: "flex", marginRight: 4 }}>{item.icon}</span>}

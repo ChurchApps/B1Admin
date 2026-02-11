@@ -8,7 +8,7 @@ import {
   Group as GroupIcon,
   CheckCircle as CheckIcon,
   Cancel as CancelIcon,
-  Event as CalendarIcon,
+  Event as CalendarIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 
@@ -19,9 +19,7 @@ interface Props {
 }
 
 export const GroupBanner = memo((props: Props) => {
-  const {
-    group, onEdit, editMode
-  } = props;
+  const { group, onEdit, editMode } = props;
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
@@ -47,7 +45,7 @@ export const GroupBanner = memo((props: Props) => {
             backgroundColor: "#e3f2fd",
             color: "#1565c0",
             fontWeight: 600,
-            fontSize: "0.875rem",
+            fontSize: "0.875rem"
           }}
         />
       );
@@ -61,7 +59,7 @@ export const GroupBanner = memo((props: Props) => {
             backgroundColor: "#f3e5f5",
             color: "#6a1b9a",
             fontWeight: 600,
-            fontSize: "0.875rem",
+            fontSize: "0.875rem"
           }}
         />
       );
@@ -76,14 +74,14 @@ export const GroupBanner = memo((props: Props) => {
     if (isStandard && group.meetingTime) {
       stats.push({
         icon: <ScheduleIcon sx={{ color: "#fff", fontSize: 16, mr: 0.5 }} />,
-        value: group.meetingTime,
+        value: group.meetingTime
       });
     }
 
     if (group.meetingLocation) {
       stats.push({
         icon: <LocationIcon sx={{ color: "#fff", fontSize: 16, mr: 0.5 }} />,
-        value: group.meetingLocation,
+        value: group.meetingLocation
       });
     }
 
@@ -98,7 +96,7 @@ export const GroupBanner = memo((props: Props) => {
       info.push({
         icon: group.trackAttendance ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.trackAttendance"),
-        value: group.trackAttendance ? Locale.label("common.yes") : Locale.label("common.no"),
+        value: group.trackAttendance ? Locale.label("common.yes") : Locale.label("common.no")
       });
     }
 
@@ -106,7 +104,7 @@ export const GroupBanner = memo((props: Props) => {
       info.push({
         icon: group.printNametag ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.printNametag"),
-        value: group.printNametag ? Locale.label("common.yes") : Locale.label("common.no"),
+        value: group.printNametag ? Locale.label("common.yes") : Locale.label("common.no")
       });
     }
 
@@ -114,7 +112,7 @@ export const GroupBanner = memo((props: Props) => {
       info.push({
         icon: group.parentPickup ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.parentPickup"),
-        value: group.parentPickup ? Locale.label("common.yes") : Locale.label("common.no"),
+        value: group.parentPickup ? Locale.label("common.yes") : Locale.label("common.no")
       });
     }
 
@@ -140,7 +138,7 @@ export const GroupBanner = memo((props: Props) => {
               backgroundColor: group.photoUrl ? "transparent" : "rgba(255,255,255,0.1)",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "center"
             }}>
             {group.photoUrl ? (
               <img
@@ -149,7 +147,7 @@ export const GroupBanner = memo((props: Props) => {
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover",
+                  objectFit: "cover"
                 }}
               />
             ) : (
@@ -169,7 +167,7 @@ export const GroupBanner = memo((props: Props) => {
                     mb: 0,
                     wordBreak: "break-word",
                     fontSize: { xs: "1.75rem", md: "2.125rem" },
-                    lineHeight: 1.1,
+                    lineHeight: 1.1
                   }}>
                   {group.name}
                 </Typography>
@@ -195,7 +193,7 @@ export const GroupBanner = memo((props: Props) => {
                       fontWeight: 600,
                       mb: 1,
                       textTransform: "uppercase",
-                      letterSpacing: "0.5px",
+                      letterSpacing: "0.5px"
                     }}>
                     {Locale.label("groups.groupBanner.meetingInfo")}
                   </Typography>
@@ -207,7 +205,7 @@ export const GroupBanner = memo((props: Props) => {
                       variant="body2"
                       sx={{
                         color: "#FFF",
-                        fontSize: { xs: "0.875rem", md: "1rem" },
+                        fontSize: { xs: "0.875rem", md: "1rem" }
                       }}>
                       {stat.value}
                     </Typography>
@@ -227,7 +225,7 @@ export const GroupBanner = memo((props: Props) => {
                         fontWeight: 600,
                         mb: 1,
                         textTransform: "uppercase",
-                        letterSpacing: "0.5px",
+                        letterSpacing: "0.5px"
                       }}>
                       {Locale.label("groups.groupBanner.settings")}
                     </Typography>
@@ -241,7 +239,7 @@ export const GroupBanner = memo((props: Props) => {
                               color: "rgba(255,255,255,0.9)",
                               fontSize: { xs: "0.75rem", md: "0.875rem" },
                               fontWeight: 500,
-                              whiteSpace: "nowrap",
+                              whiteSpace: "nowrap"
                             }}>
                             {info.label}
                           </Typography>
@@ -268,7 +266,7 @@ export const GroupBanner = memo((props: Props) => {
                           fontWeight: 600,
                           mb: 1,
                           textTransform: "uppercase",
-                          letterSpacing: "0.5px",
+                          letterSpacing: "0.5px"
                         }}>
                         {Locale.label("groups.groupBanner.labels")}
                       </Typography>
@@ -282,7 +280,7 @@ export const GroupBanner = memo((props: Props) => {
                               backgroundColor: "rgba(255,255,255,0.2)",
                               color: "#FFF",
                               fontSize: "0.75rem",
-                              height: 20,
+                              height: 20
                             }}
                           />
                         ))}
@@ -294,7 +292,7 @@ export const GroupBanner = memo((props: Props) => {
                               backgroundColor: "rgba(255,255,255,0.1)",
                               color: "rgba(255,255,255,0.7)",
                               fontSize: "0.75rem",
-                              height: 20,
+                              height: 20
                             }}
                           />
                         )}
@@ -319,7 +317,7 @@ export const GroupBanner = memo((props: Props) => {
                 fontWeight: 600,
                 mb: 1,
                 textTransform: "uppercase",
-                letterSpacing: "0.5px",
+                letterSpacing: "0.5px"
               }}>
               {Locale.label("groups.groupBanner.associatedServices")}
             </Typography>
@@ -335,7 +333,7 @@ export const GroupBanner = memo((props: Props) => {
                     color: "#FFF",
                     fontSize: "0.875rem",
                     height: 24,
-                    "& .MuiChip-icon": { color: "#FFF" },
+                    "& .MuiChip-icon": { color: "#FFF" }
                   }}
                 />
               ))}
@@ -352,7 +350,7 @@ export const GroupBanner = memo((props: Props) => {
                 color: "rgba(255,255,255,0.9)",
                 fontSize: { xs: "0.875rem", md: "0.95rem" },
                 lineHeight: 1.4,
-                fontStyle: "italic",
+                fontStyle: "italic"
               }}>
               {group.about.replace(/[#*_`]/g, "")}
             </Typography>

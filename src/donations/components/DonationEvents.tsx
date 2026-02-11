@@ -9,7 +9,7 @@ export const DonationEvents = memo(() => {
 
   const errorLogs = useQuery<any[]>({
     queryKey: ["/eventLog/type/failed", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const personIds = useMemo(() => {
@@ -20,7 +20,7 @@ export const DonationEvents = memo(() => {
   const people = useQuery({
     queryKey: ["/people/ids?ids=" + personIds, "MembershipApi"],
     placeholderData: [],
-    enabled: !!personIds,
+    enabled: !!personIds
   });
 
   const unresolvedErrorCount = useMemo(() => {

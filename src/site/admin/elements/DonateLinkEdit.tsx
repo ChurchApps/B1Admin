@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
-import {
-  Button, Chip, FormControl, Icon, InputAdornment, InputLabel, MenuItem, Select, TextField, Typography 
-} from "@mui/material";
+import { Button, Chip, FormControl, Icon, InputAdornment, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 
 type Props = {

@@ -84,14 +84,14 @@ export const SongDialog: React.FC<Props> = (props) => {
 
   useEffect(() => {
     loadData();
-  }, [props.arrangementKeyId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.arrangementKeyId]);
 
   useEffect(() => {
     if (songDetail && arrangementKey) {
       loadPraiseCharts();
       loadLinks();
     }
-  }, [arrangementKey, songDetail]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [arrangementKey, songDetail]);
 
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">

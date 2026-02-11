@@ -15,7 +15,7 @@ export const ChurchSettingsTab = () => {
     ApiHelper.get("/churches/" + churchId + "?include=permissions", "MembershipApi").then((data) => setChurch(data));
   };
 
-  React.useEffect(loadData, [UserHelper.currentUserChurch.church.id]); //eslint-disable-line
+  React.useEffect(loadData, [UserHelper.currentUserChurch.church.id]);
 
   if (redirectUrl !== "") return <Navigate to={redirectUrl}></Navigate>;
   else {

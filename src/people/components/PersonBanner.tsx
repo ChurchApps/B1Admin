@@ -1,11 +1,11 @@
-import { type PersonInterface, type FormInterface } from "@churchapps/helpers";
+import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
 import { Typography, IconButton, Stack, Chip } from "@mui/material";
 import {
   Edit as EditIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
-  Home as HomeIcon,
+  Home as HomeIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo, useState, useEffect } from "react";
 import { StatusChip } from "../../components";
@@ -17,9 +17,7 @@ interface Props {
 }
 
 export const PersonBanner = memo((props: Props) => {
-  const {
-    person, togglePhotoEditor, onEdit
-  } = props;
+  const { person, togglePhotoEditor, onEdit } = props;
 
   const [userEmail, setUserEmail] = useState<string>("");
 
@@ -72,7 +70,7 @@ export const PersonBanner = memo((props: Props) => {
       info.push({
         icon: <EmailIcon sx={{ color: "#fff", fontSize: 16 }} />,
         value: person.contactInfo.email,
-        action: () => (window.location.href = `mailto:${person.contactInfo.email}`),
+        action: () => (window.location.href = `mailto:${person.contactInfo.email}`)
       });
     }
 
@@ -80,7 +78,7 @@ export const PersonBanner = memo((props: Props) => {
     if (phone) {
       info.push({
         icon: <PhoneIcon sx={{ color: "#fff", fontSize: 16 }} />,
-        value: phone,
+        value: phone
       });
     }
 
@@ -91,7 +89,7 @@ export const PersonBanner = memo((props: Props) => {
 
       info.push({
         icon: <HomeIcon sx={{ color: "#fff", fontSize: 16 }} />,
-        value: addressParts.join(", "),
+        value: addressParts.join(", ")
       });
     }
 
@@ -117,7 +115,7 @@ export const PersonBanner = memo((props: Props) => {
                   mb: 0,
                   wordBreak: "break-word",
                   fontSize: { xs: "1.7rem", sm: "2rem", md: "2.5rem" },
-                  lineHeight: 1.1,
+                  lineHeight: 1.1
                 }}>
                 {person?.name?.display}
               </Typography>
@@ -158,7 +156,7 @@ export const PersonBanner = memo((props: Props) => {
                   cursor: info.action ? "pointer" : "default",
                   "&:hover": info.action ? { textDecoration: "underline" } : {},
                   wordBreak: "break-word",
-                  fontSize: { xs: "0.875rem", md: "1rem" },
+                  fontSize: { xs: "0.875rem", md: "1rem" }
                 }}
                 onClick={info.action}>
                 {info.value}

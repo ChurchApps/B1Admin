@@ -42,24 +42,18 @@ export function EditorToolbar(props: EditorToolbarProps) {
       border: "1px solid rgba(0, 0, 0, 0.23)",
       backgroundColor: "#f5f5f5",
       color: "#666",
-      "&:hover": {
-        backgroundColor: "#e0e0e0"
-      },
+      "&:hover": { backgroundColor: "#e0e0e0" },
       "&.Mui-selected": {
         backgroundColor: "#1976d2",
         color: "#FFF",
         border: "1px solid #1976d2",
-        "&:hover": {
-          backgroundColor: "#1565c0"
-        }
+        "&:hover": { backgroundColor: "#1565c0" }
       }
     }
   };
 
   return (
-    <div style={{
-      backgroundColor: "#FFF", width: "100%", zIndex: 1200, boxShadow: "0 2px 12px rgba(0, 0, 0, 0.15)", borderBottom: "1px solid rgba(0, 0, 0, 0.12)" 
-    }}>
+    <div style={{ backgroundColor: "#FFF", width: "100%", zIndex: 1200, boxShadow: "0 2px 12px rgba(0, 0, 0, 0.15)", borderBottom: "1px solid rgba(0, 0, 0, 0.12)" }}>
       <Grid container spacing={0} sx={{ margin: 0, padding: 2 }}>
         <Grid size={{ xs: 4 }} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <SmallButton icon={"done"} text={Locale.label("common.done")} onClick={onDone} data-testid="content-editor-done-button" />

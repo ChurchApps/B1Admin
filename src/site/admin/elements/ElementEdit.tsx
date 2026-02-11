@@ -50,12 +50,8 @@ export function ElementEdit(props: Props) {
     const p = { ...element };
     const val = e.target.value;
     switch (e.target.name) {
-      case "elementType":
-        p.elementType = val;
-        break;
-      case "answersJSON":
-        p.answersJSON = val;
-        break;
+      case "elementType": p.elementType = val; break;
+      case "answersJSON": p.answersJSON = val; break;
       default:
         parsedData[e.target.name] = val;
         p.answersJSON = JSON.stringify(parsedData);
@@ -68,12 +64,8 @@ export function ElementEdit(props: Props) {
     const p = { ...element };
     const val: any = e.target.checked.toString();
     switch (e.target.name) {
-      case "elementType":
-        p.elementType = val;
-        break;
-      case "answersJSON":
-        p.answersJSON = val;
-        break;
+      case "elementType": p.elementType = val; break;
+      case "answersJSON": p.answersJSON = val; break;
       default:
         parsedData[e.target.name] = val;
         p.answersJSON = JSON.stringify(parsedData);
@@ -204,7 +196,9 @@ export function ElementEdit(props: Props) {
         updatedCallback={selectColors}
         globalStyles={props.globalStyles}
       />
-      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"])}
+      {getAppearanceFields([
+        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
+      ])}
     </>
   );
 
@@ -282,7 +276,9 @@ export function ElementEdit(props: Props) {
           style={{ maxHeight: 200, overflowY: "scroll" }}
         />
       </Box>
-      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"])}
+      {getAppearanceFields([
+        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
+      ])}
     </>
   );
 
@@ -322,14 +318,18 @@ export function ElementEdit(props: Props) {
           style={{ maxHeight: 200, overflowY: "scroll" }}
         />
       </Box>
-      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"])}
+      {getAppearanceFields([
+        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
+      ])}
     </>
   );
 
   const getLogoFields = () => (
     <>
       <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-      {getAppearanceFields(["border", "background", "height", "min", "max", "margin", "padding", "width"])}
+      {getAppearanceFields([
+        "border", "background", "height", "min", "max", "margin", "padding", "width"
+      ])}
     </>
   );
 
@@ -367,7 +367,9 @@ export function ElementEdit(props: Props) {
           </Select>
         </FormControl>
         {blockField}
-        {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"])}
+        {getAppearanceFields([
+          "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
+        ])}
       </>
     );
   };
@@ -413,7 +415,9 @@ export function ElementEdit(props: Props) {
         <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.external === "true" ? true : false} />} name="external" label={Locale.label("site.elements.openInNewTab")} />
         <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.fullWidth === "true" ? true : false} />} name="fullWidth" label={Locale.label("site.elements.fullWidth")} />
       </FormGroup>
-      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"])}
+      {getAppearanceFields([
+        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
+      ])}
     </>
   );
 
@@ -437,7 +441,9 @@ export function ElementEdit(props: Props) {
           {Locale.label("site.elements.videoUrlVimeo")} <br /> {Locale.label("site.elements.idExampleVimeo")}
         </Typography>
       )}
-      {getAppearanceFields(["border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"])}
+      {getAppearanceFields([
+        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
+      ])}
     </>
   );
 
@@ -575,7 +581,9 @@ export function ElementEdit(props: Props) {
         result = (
           <>
             <RowEdit parsedData={parsedData} onRealtimeChange={handleRowChange} setErrors={setInnerErrors} />
-            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+            {getAppearanceFields([
+              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
+            ])}
           </>
         );
         break;
@@ -583,28 +591,18 @@ export function ElementEdit(props: Props) {
         result = (
           <>
             <TableEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />
-            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+            {getAppearanceFields([
+              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
+            ])}
           </>
         );
         break;
-      case "box":
-        result = getBoxFields();
-        break;
-      case "text":
-        result = getTextFields();
-        break;
-      case "textWithPhoto":
-        result = getTextWithPhotoFields();
-        break;
-      case "card":
-        result = getCardFields();
-        break;
-      case "logo":
-        result = getLogoFields();
-        break;
-      case "donation":
-        result = <></>;
-        break;
+      case "box": result = getBoxFields(); break;
+      case "text": result = getTextFields(); break;
+      case "textWithPhoto": result = getTextWithPhotoFields(); break;
+      case "card": result = getCardFields(); break;
+      case "logo": result = getLogoFields(); break;
+      case "donation": result = <></>; break;
       case "donateLink":
         result = (
           <>
@@ -613,26 +611,18 @@ export function ElementEdit(props: Props) {
           </>
         );
         break;
-      case "stream":
-        result = getStreamFields();
-        break;
-      case "iframe":
-        result = getIframeFields();
-        break;
-      case "buttonLink":
-        result = getButtonLink();
-        break;
-      case "video":
-        result = getVideoFields();
-        break;
-      case "rawHTML":
-        result = getRawHTML();
-        break;
+      case "stream": result = getStreamFields(); break;
+      case "iframe": result = getIframeFields(); break;
+      case "buttonLink": result = getButtonLink(); break;
+      case "video": result = getVideoFields(); break;
+      case "rawHTML": result = getRawHTML(); break;
       case "form":
         result = (
           <>
             <FormEdit parsedData={parsedData} handleChange={handleChange} />
-            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+            {getAppearanceFields([
+              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
+            ])}
           </>
         );
         break;
@@ -640,36 +630,28 @@ export function ElementEdit(props: Props) {
         result = (
           <>
             <FaqEdit parsedData={parsedData} handleChange={handleChange} handleHtmlChange={handleHtmlChange} />
-            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+            {getAppearanceFields([
+              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
+            ])}
           </>
         );
         break;
-      case "map":
-        result = getMapFields();
-        break;
-      case "sermons":
-        result = <></>;
-        break;
-      case "carousel":
-        result = getCarouselFields();
-        break;
-      case "image":
-        result = getImageFields();
-        break;
-      case "whiteSpace":
-        result = getWhiteSpaceFields();
-        break;
+      case "map": result = getMapFields(); break;
+      case "sermons": result = <></>; break;
+      case "carousel": result = getCarouselFields(); break;
+      case "image": result = getImageFields(); break;
+      case "whiteSpace": result = getWhiteSpaceFields(); break;
       case "calendar":
         result = (
           <>
             <CalendarElementEdit parsedData={parsedData} handleChange={handleChange} />
-            {getAppearanceFields(["border", "background", "color", "font", "height", "line", "margin", "padding", "width"])}
+            {getAppearanceFields([
+              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
+            ])}
           </>
         );
         break;
-      case "groupList":
-        result = getGroupListFields();
-        break;
+      case "groupList": result = getGroupListFields(); break;
     }
     return result;
   };

@@ -47,13 +47,13 @@ export const StyleEdit: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    if (name===props.style.name) setValue(props.style.value.replace("px", ""));
+    if (name === props.style.name) setValue(props.style.value.replace("px", ""));
     else setValue(props.fieldOptions.find((o: any) => o.key === name).default);
   }, [name]);
 
   const handleSave = () => {
     let storedValue = value;
-    if (field.type==="px") storedValue = value + "px";
+    if (field.type === "px") storedValue = value + "px";
     props.onSave(props.style.platform, name, storedValue);
   };
 

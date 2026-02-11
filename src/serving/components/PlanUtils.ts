@@ -10,7 +10,7 @@ export {
   type LessonProgramInterface,
   type LessonTreeInterface,
   type LessonActionTreeInterface,
-  type VenueActionResponseInterface,
+  type VenueActionResponseInterface
 } from "@churchapps/helpers";
 
 // Re-export utility functions from PlanHelper for backwards compatibility

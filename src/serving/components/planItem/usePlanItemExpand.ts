@@ -57,7 +57,7 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       providerId,
       providerPath,
       providerContentPath: `${pathPrefix}.${index}`,
-      thumbnailUrl: findThumbnailRecursive(action),
+      thumbnailUrl: findThumbnailRecursive(action)
     }));
   }, [planItem.planId, planItem.parentId]);
 
@@ -162,6 +162,6 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
   return {
     isExpanding,
     canExpand,
-    handleExpandToActions,
+    handleExpandToActions
   };
 }

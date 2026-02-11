@@ -21,9 +21,7 @@ interface Props {
   autoSearch?: boolean;
 }
 
-export const PersonAdd: React.FC<Props> = ({
-  addFunction, getPhotoUrl, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false, onCreate, inputRef, autoSearch = false
-}) => {
+export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false, onCreate, inputRef, autoSearch = false }) => {
   const [searchResults, setSearchResults] = useState<PersonInterface[]>([]);
   const [searchText, setSearchText] = useState("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
@@ -92,9 +90,7 @@ export const PersonAdd: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => handleAdd(sr)}
-            style={{
-              background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", textDecoration: "underline", textAlign: "left"
-            }}>
+            style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", textDecoration: "underline", textAlign: "left" }}>
             {sr.name.display}
           </button>
           {includeEmail && (
@@ -127,7 +123,7 @@ export const PersonAdd: React.FC<Props> = ({
             <Button variant="contained" id="searchButton" data-testid="search-button" onClick={handleSearch}>
               {Locale.label("common.search")}
             </Button>
-          ),
+          )
         }}
       />
       {showCreatePersonOnNotFound && hasSearched && searchText && searchResults.length === 0 && (

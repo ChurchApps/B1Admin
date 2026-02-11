@@ -44,9 +44,7 @@ export function CalendarEdit(props: Props) {
     const b = { ...calendar };
     const val = e.target.value;
     switch (e.target.name) {
-      case "name":
-        b.name = val;
-        break;
+      case "name": b.name = val; break;
     }
     setCalendar(b);
   };
@@ -103,15 +101,15 @@ export function CalendarEdit(props: Props) {
   return (
     <Card sx={{
       borderRadius: 2,
-      border: '1px solid',
-      borderColor: 'grey.200',
-      height: 'fit-content'
+      border: "1px solid",
+      borderColor: "grey.200",
+      height: "fit-content"
     }}>
       <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
-            <CalendarIcon sx={{ color: 'primary.main' }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
+            <CalendarIcon sx={{ color: "primary.main" }} />
+            <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
               {isNew ? Locale.label("calendars.calendarEdit.createCalendar") : Locale.label("calendars.calendarEdit.editCalendar")}
             </Typography>
           </Stack>
@@ -119,8 +117,8 @@ export function CalendarEdit(props: Props) {
             size="small"
             onClick={handleCancel}
             sx={{
-              backgroundColor: 'rgba(0,0,0,0.04)',
-              '&:hover': { backgroundColor: 'rgba(0,0,0,0.08)' }
+              backgroundColor: "rgba(0,0,0,0.04)",
+              "&:hover": { backgroundColor: "rgba(0,0,0,0.08)" }
             }}
           >
             <CloseIcon sx={{ fontSize: 18 }} />
@@ -144,7 +142,7 @@ export function CalendarEdit(props: Props) {
             fullWidth
             label={Locale.label("calendars.calendarEdit.calendarName")}
             name="name"
-            value={calendar.name || ''}
+            value={calendar.name || ""}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             data-testid="calendar-name-input"
@@ -170,7 +168,7 @@ export function CalendarEdit(props: Props) {
               onClick={handleCancel}
               disabled={saving || deleting}
               sx={{
-                textTransform: 'none',
+                textTransform: "none",
                 borderRadius: 2
               }}
             >
@@ -185,7 +183,7 @@ export function CalendarEdit(props: Props) {
                 disabled={saving || deleting}
                 startIcon={deleting ? undefined : <DeleteIcon />}
                 sx={{
-                  textTransform: 'none',
+                  textTransform: "none",
                   borderRadius: 2
                 }}
                 data-testid="delete-calendar-button"
@@ -200,7 +198,7 @@ export function CalendarEdit(props: Props) {
               disabled={saving || deleting || !calendar.name?.trim()}
               startIcon={saving ? undefined : <SaveIcon />}
               sx={{
-                textTransform: 'none',
+                textTransform: "none",
                 borderRadius: 2,
                 fontWeight: 600
               }}

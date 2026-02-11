@@ -20,24 +20,12 @@ export const SongDetailsEdit = (props: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const sd = { ...songDetail };
     switch (e.target.name) {
-      case "album":
-        sd.album = e.target.value;
-        break;
-      case "language":
-        sd.language = e.target.value;
-        break;
-      case "releaseDate":
-        sd.releaseDate = DateHelper.toDate(e.target.value);
-        break;
-      case "bpm":
-        sd.bpm = parseInt(e.target.value);
-        break;
-      case "keySignature":
-        sd.keySignature = e.target.value;
-        break;
-      case "seconds":
-        sd.seconds = parseInt(e.target.value);
-        break;
+      case "album": sd.album = e.target.value; break;
+      case "language": sd.language = e.target.value; break;
+      case "releaseDate": sd.releaseDate = DateHelper.toDate(e.target.value); break;
+      case "bpm": sd.bpm = parseInt(e.target.value); break;
+      case "keySignature": sd.keySignature = e.target.value; break;
+      case "seconds": sd.seconds = parseInt(e.target.value); break;
     }
     setSongDetail(sd);
   };

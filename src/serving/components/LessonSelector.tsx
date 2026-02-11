@@ -11,7 +11,7 @@ import {
   CircularProgress,
   IconButton,
   Breadcrumbs,
-  Link,
+  Link
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ProviderChipSelector } from "./ProviderChipSelector";
@@ -79,7 +79,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
       browser.loadContent("");
       browser.loadLinkedProviders();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [open]);
 
   return (

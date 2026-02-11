@@ -2,9 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import type { JSX } from "react";
 import { ApiHelper, Loading, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import type { BlockInterface } from "../helpers";
-import {
-  TableRow, TableCell, Table, TableBody, TableHead, Box, Typography, Stack, Button, Card, Icon
-} from "@mui/material";
+import { TableRow, TableCell, Table, TableBody, TableHead, Box, Typography, Stack, Button, Card, Icon } from "@mui/material";
 import { SmartButton as BlockIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Navigate, Link } from "react-router-dom";
 import { BlockEdit } from "./components";

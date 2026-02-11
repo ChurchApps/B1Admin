@@ -18,9 +18,9 @@ export const BatchEdit = memo((props: Props) => {
   const handleSave = useCallback(() => {
     const batchToSave = {
       ...batch,
-      batchDate: batch.batchDate ? DateHelper.formatHtml5Date(batch.batchDate) : null,
+      batchDate: batch.batchDate ? DateHelper.formatHtml5Date(batch.batchDate) : null
     };
-    
+
     if (batch.id) batchToSave.id = batch.id;
     return ApiHelper.post("/donationbatches", [batchToSave], "GivingApi").then(() => props.updatedFunction());
   }, [batch, props.updatedFunction]);
@@ -47,12 +47,8 @@ export const BatchEdit = memo((props: Props) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const b = { ...batch } as DonationBatchInterface;
       switch (e.currentTarget.name) {
-        case "name":
-          b.name = e.currentTarget.value;
-          break;
-        case "date":
-          b.batchDate = e.currentTarget.value || null;  // Keep as YYYY-MM-DD string
-          break;
+        case "name": b.name = e.currentTarget.value; break;
+        case "date": b.batchDate = e.currentTarget.value || null; break;
       }
       setBatch(b);
     },

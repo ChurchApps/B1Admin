@@ -41,7 +41,7 @@ export function DraggableWrapper(props: Props) {
   return (
     <div
       ref={drag}
-      style={{ opacity, transition: "opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)", cursor: isDragging ? 'grabbing' : 'grab' }}
+      style={{ opacity, transition: "opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)", cursor: isDragging ? "grabbing" : "grab" }}
       className="dragButton"
       onDoubleClick={onDoubleClick}
       data-testid="draggable-wrapper"

@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  Box, Button, Typography, Stack, IconButton, Paper, Table, TableBody, TableCell, TableRow, TableHead
-} from "@mui/material";
+import { Box, Button, Typography, Stack, IconButton, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
 import { Add as AddIcon, Assignment as AssignmentIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
@@ -23,7 +21,7 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
   const planTypes = useQuery<PlanTypeInterface[]>({
     queryKey: [`/planTypes/ministryId/${ministry.id}`, "DoingApi"],
     enabled: !!ministry.id,
-    placeholderData: [],
+    placeholderData: []
   });
 
   const handleAdd = React.useCallback(() => {
@@ -107,9 +105,7 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
                         textDecoration: "none",
                         color: "primary.main",
                         fontWeight: 500,
-                        "&:hover": {
-                          textDecoration: "underline",
-                        }
+                        "&:hover": { textDecoration: "underline" }
                       }}>
                       {planType.name}
                     </Typography>

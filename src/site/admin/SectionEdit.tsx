@@ -2,9 +2,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import type { AnimationsInterface, BlockInterface, GlobalStyleInterface, SectionInterface } from "../../helpers";
-import {
-  Button, Dialog, FormControl, Icon, InputLabel, MenuItem, Select, TextField 
-} from "@mui/material";
+import { Button, Dialog, FormControl, Icon, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { PickColors } from "./elements/PickColors";
 import { StylesAnimations } from "./elements/StylesAnimations";
 
@@ -108,14 +106,14 @@ export function SectionEdit(props: Props) {
   const handleStyleChange = (styles: { name: string, value: string }[]) => {
     const p = { ...section };
     p.styles = styles;
-    p.stylesJSON = styles && Object.keys(styles).length>0 ? JSON.stringify(styles) : null;
+    p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : null;
     setSection(p);
   };
 
   const handleAnimationChange = (animations: AnimationsInterface) => {
     const p = { ...section };
     p.animations = animations;
-    p.animationsJSON = animations && Object.keys(animations).length>0 ? JSON.stringify(animations) : null;
+    p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : null;
     setSection(p);
   };
 
@@ -143,23 +141,23 @@ export function SectionEdit(props: Props) {
   if (!section) return <></>;
   else {
     return (
-    <Dialog open={true} onClose={handleCancel} fullWidth maxWidth="md">
-      <InputBox
-        id="sectionDetailsBox"
-        headerText={Locale.label("site.section.editSection")}
-        headerIcon="school"
-        saveFunction={handleSave}
-        cancelFunction={handleCancel}
-        deleteFunction={handleDelete}
-        data-testid="edit-section-inputbox"
-        headerActionContent={props.section.id && (<><Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button><Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button></>)}
-      >
-        <div id="dialogFormContent">
-          {(section?.targetBlockId) ? getBlockFields() : getStandardFields()}
-        </div>
-      </InputBox>
+      <Dialog open={true} onClose={handleCancel} fullWidth maxWidth="md">
+        <InputBox
+          id="sectionDetailsBox"
+          headerText={Locale.label("site.section.editSection")}
+          headerIcon="school"
+          saveFunction={handleSave}
+          cancelFunction={handleCancel}
+          deleteFunction={handleDelete}
+          data-testid="edit-section-inputbox"
+          headerActionContent={props.section.id && (<><Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button><Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button></>)}
+        >
+          <div id="dialogFormContent">
+            {(section?.targetBlockId) ? getBlockFields() : getStandardFields()}
+          </div>
+        </InputBox>
 
-    </Dialog>
+      </Dialog>
     );
   }
 }

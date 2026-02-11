@@ -78,9 +78,9 @@ export const Section: React.FC<Props> = props => {
     let elementId: string | null = null;
 
     // First, try to find element by data-element-id attribute (our wrapper for top-level elements)
-    const wrapperWithId = target.closest('[data-element-id]') as HTMLElement;
+    const wrapperWithId = target.closest("[data-element-id]") as HTMLElement;
     if (wrapperWithId) {
-      elementId = wrapperWithId.getAttribute('data-element-id');
+      elementId = wrapperWithId.getAttribute("data-element-id");
 
       // If the found element is a row, check if there's a nested element inside that should be selected
       if (elementId) {
@@ -94,7 +94,7 @@ export const Section: React.FC<Props> = props => {
     // If not found, try to find by el-{id} pattern (used by elements inside rows)
     if (!elementId) {
       const elDiv = target.closest('[id^="el-"]') as HTMLElement;
-      if (elDiv && elDiv.id.startsWith('el-')) {
+      if (elDiv && elDiv.id.startsWith("el-")) {
         elementId = elDiv.id.substring(3); // Remove 'el-' prefix
 
         // If the found element is a row/container, check if there's a nested element inside
@@ -119,9 +119,9 @@ export const Section: React.FC<Props> = props => {
     let elementId: string | null = null;
 
     // First, try to find element by data-element-id attribute (our wrapper)
-    const wrapperWithId = target.closest('[data-element-id]') as HTMLElement;
+    const wrapperWithId = target.closest("[data-element-id]") as HTMLElement;
     if (wrapperWithId) {
-      elementId = wrapperWithId.getAttribute('data-element-id');
+      elementId = wrapperWithId.getAttribute("data-element-id");
 
       // If the found element is a row, check if there's a nested element inside that should be selected
       if (elementId) {
@@ -135,7 +135,7 @@ export const Section: React.FC<Props> = props => {
     // If not found, try to find by el-{id} pattern (from RowElement)
     if (!elementId) {
       const elDiv = target.closest('[id^="el-"]') as HTMLElement;
-      if (elDiv && elDiv.id.startsWith('el-')) {
+      if (elDiv && elDiv.id.startsWith("el-")) {
         elementId = elDiv.id.substring(3); // Remove 'el-' prefix
 
         // If the found element is a row/container, check if there's a nested element inside
@@ -202,9 +202,7 @@ export const Section: React.FC<Props> = props => {
 
     let result: CSSProperties = {};
     if (props.section.background.indexOf("/") > -1) {
-      result = {
-        backgroundImage: "url('" + props.section.background + "')"
-      };
+      result = { backgroundImage: "url('" + props.section.background + "')" };
     } else {
       result = { background: props.section.background };
     }
@@ -304,7 +302,7 @@ export const Section: React.FC<Props> = props => {
 
   const getId = () => {
     let result = "section-" + props.section.answers?.sectionId?.toString();
-    if (result==="section-undefined") result = "section-" + props.section.id;
+    if (result === "section-undefined") result = "section-" + props.section.id;
     return result;
   };
 
@@ -354,7 +352,7 @@ export const Section: React.FC<Props> = props => {
   if (props.onEdit) {
     return (
       <div>
-        <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest('.elementWrapper')) { props.onEdit(props.section, null); } }}>
+        <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest(".elementWrapper")) { props.onEdit(props.section, null); } }}>
           {result}
         </DraggableWrapper>
         {renderFloatingSelection()}

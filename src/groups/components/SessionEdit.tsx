@@ -1,8 +1,6 @@
 import React from "react";
 import { type GroupInterface, type GroupServiceTimeInterface, type SessionInterface } from "@churchapps/helpers";
-import {
-  ApiHelper, InputBox, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading 
-} from "@churchapps/apphelper";
+import { ApiHelper, InputBox, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
 import { TextField, FormControl, Select, InputLabel, MenuItem, type SelectChangeEvent } from "@mui/material";
 
 interface Props {

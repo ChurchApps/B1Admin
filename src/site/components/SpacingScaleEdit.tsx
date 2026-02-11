@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Grid, TextField, Box, Typography, Stack, Button, alpha
-} from "@mui/material";
+import { Grid, TextField, Box, Typography, Stack, Button, alpha } from "@mui/material";
 import { SpaceBar as SpaceBarIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
@@ -30,14 +28,7 @@ export function SpacingScaleEdit(props: Props) {
       setSpacing(JSON.parse(props.globalStyle.spacing));
     } else {
       // Set default values
-      setSpacing({
-        xs: 4,
-        sm: 8,
-        md: 16,
-        lg: 24,
-        xl: 32,
-        xxl: 48
-      });
+      setSpacing({ xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 });
     }
   }, [props.globalStyle]);
 
@@ -79,9 +70,7 @@ export function SpacingScaleEdit(props: Props) {
       <Box sx={{ backgroundColor: "var(--c1l2)", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{
-              backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center"
-            }}>
+            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <SpaceBarIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
@@ -96,9 +85,7 @@ export function SpacingScaleEdit(props: Props) {
         </Stack>
       </Box>
 
-      <Box sx={{
-        p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none"
-      }}>
+      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <CardWithHeader title="Spacing Values" icon={<SpaceBarIcon />}>
           <Grid container spacing={3}>
             {spacingItems.map((item) => (
@@ -112,9 +99,7 @@ export function SpacingScaleEdit(props: Props) {
                   onChange={handleChange}
                   inputProps={{ min: 0, max: 200, step: 4 }}
                   data-testid={`spacing-${item.key}-input`}
-                  InputProps={{
-                    endAdornment: <Typography variant="body2" color="text.secondary">px</Typography>
-                  }}
+                  InputProps={{ endAdornment: <Typography variant="body2" color="text.secondary">px</Typography> }}
                 />
                 <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
                   {item.description}

@@ -20,7 +20,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
   onDelete,
   onDuplicate,
   onMoveUp,
-  onMoveDown,
+  onMoveDown
 }) => {
   const [position, setPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
   const rafRef = useRef<number>();
@@ -36,7 +36,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
           top: Math.round(rect.top),
           left: Math.round(rect.left),
           width: Math.round(rect.width),
-          height: Math.round(rect.height),
+          height: Math.round(rect.height)
         };
 
         // Only update state if position actually changed to avoid re-render loops
@@ -83,7 +83,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
           outline: "2px solid #2196f3",
           outlineOffset: "2px",
           pointerEvents: "none",
-          zIndex: 1001,
+          zIndex: 1001
         }}
       />
 
@@ -99,7 +99,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
           borderRadius: 1,
           boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
           padding: 0.5,
-          zIndex: 1002,
+          zIndex: 1002
         }}
       >
         <Tooltip title="Edit">

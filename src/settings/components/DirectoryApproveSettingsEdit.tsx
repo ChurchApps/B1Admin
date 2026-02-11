@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography
-} from "@mui/material";
+import { Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography } from "@mui/material";
 import { type GenericSettingInterface, type GroupInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
 
@@ -60,7 +58,7 @@ export const DirectoryApproveSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
-  React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
+  React.useEffect(checkSave, [props.saveTrigger]);
 
   return (
     <Box sx={{ mb: 2.5, pb: 2.5, borderBottom: "1px solid", borderColor: "divider" }}>

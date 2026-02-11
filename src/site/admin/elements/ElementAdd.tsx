@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Dialog, Icon, InputAdornment, TextField, Tabs, Tab, Box, Fade, Grow, Chip } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { BlockInterface } from "../../../helpers";
-import { useDrag } from 'react-dnd';
+import { useDrag } from "react-dnd";
 
 type Props = {
   includeBlocks: boolean
@@ -37,7 +37,7 @@ const getCategoryStyles = (): Record<CategoryType, CategoryInfo> => ({
   content: { label: Locale.label("site.elementAdd.content"), color: "#2e7d32", bgColor: "rgba(46, 125, 50, 0.08)", borderColor: "rgba(46, 125, 50, 0.3)", icon: "text_fields" },
   media: { label: Locale.label("site.elementAdd.media"), color: "#ed6c02", bgColor: "rgba(237, 108, 2, 0.08)", borderColor: "rgba(237, 108, 2, 0.3)", icon: "perm_media" },
   church: { label: Locale.label("site.elementAdd.church"), color: "#7b1fa2", bgColor: "rgba(123, 31, 162, 0.08)", borderColor: "rgba(123, 31, 162, 0.3)", icon: "church" },
-  advanced: { label: Locale.label("site.elementAdd.advanced"), color: "#455a64", bgColor: "rgba(69, 90, 100, 0.08)", borderColor: "rgba(69, 90, 100, 0.3)", icon: "code" },
+  advanced: { label: Locale.label("site.elementAdd.advanced"), color: "#455a64", bgColor: "rgba(69, 90, 100, 0.08)", borderColor: "rgba(69, 90, 100, 0.3)", icon: "code" }
 });
 
 // Draggable element card component
@@ -49,9 +49,9 @@ function DraggableElement({ config, draggingCallback, index, showCategoryBadge, 
     () => ({
       type: config.dndType,
       item: { elementType: config.type, blockId: config.blockId },
-      collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
+      collect: (monitor) => ({ isDragging: !!monitor.isDragging() })
     }),
-    [config],
+    [config]
   );
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function DraggableElement({ config, draggingCallback, index, showCategoryBadge, 
   const catStyle = categoryStyles[config.category] || categoryStyles.advanced;
 
   return (
-    <Grow in={true} style={{ transformOrigin: '0 0 0' }} timeout={100 + index * 20}>
+    <Grow in={true} style={{ transformOrigin: "0 0 0" }} timeout={100 + index * 20}>
       <div
         ref={dragRef}
         onMouseEnter={() => setIsHovered(true)}
@@ -136,7 +136,7 @@ export function ElementAdd(props: Props) {
       { type: "calendar", dndType: "element", icon: "event", label: Locale.label("site.elementAdd.calendar"), description: Locale.label("site.elementAdd.descCalendar"), category: "church" },
       { type: "groupList", dndType: "element", icon: "groups", label: Locale.label("site.elementAdd.groupList"), description: Locale.label("site.elementAdd.descGroupList"), category: "church" },
       { type: "rawHTML", dndType: "element", icon: "code", label: Locale.label("site.elementAdd.html"), description: Locale.label("site.elementAdd.descHtml"), category: "advanced" },
-      { type: "iframe", dndType: "element", icon: "web", label: Locale.label("site.elementAdd.embedPage"), description: Locale.label("site.elementAdd.descEmbedPage"), category: "advanced" },
+      { type: "iframe", dndType: "element", icon: "web", label: Locale.label("site.elementAdd.embedPage"), description: Locale.label("site.elementAdd.descEmbedPage"), category: "advanced" }
     );
 
     return elements;
@@ -170,7 +170,7 @@ export function ElementAdd(props: Props) {
     { label: Locale.label("site.elementAdd.content"), icon: "text_fields" },
     { label: Locale.label("site.elementAdd.media"), icon: "perm_media" },
     { label: Locale.label("site.elementAdd.church"), icon: "church" },
-    { label: Locale.label("site.elementAdd.advanced"), icon: "code" },
+    { label: Locale.label("site.elementAdd.advanced"), icon: "code" }
   ];
 
   if (showBlocks) tabLabels.push({ label: Locale.label("site.elementAdd.blocks"), icon: "widgets" });

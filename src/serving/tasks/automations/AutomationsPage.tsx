@@ -1,6 +1,4 @@
-import {
-  Grid, Typography, Card, CardContent, Stack, Box, Button, Paper, List, ListItem, ListItemButton, ListItemIcon, ListItemText
-} from "@mui/material";
+import { Grid, Typography, Card, CardContent, Stack, Box, Button, Paper, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import React from "react";
 import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { type AutomationInterface } from "@churchapps/helpers";
@@ -18,7 +16,7 @@ export const AutomationsPage = () => {
 
   const automations = useQuery<AutomationInterface[]>({
     queryKey: ["/automations", "DoingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const getAutomationsList = () => {
@@ -32,7 +30,7 @@ export const AutomationsPage = () => {
             textAlign: "center",
             backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "var(--border-main)",
+            borderColor: "var(--border-main)"
           }}>
           <AutomationsIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
@@ -55,8 +53,8 @@ export const AutomationsPage = () => {
                 borderColor: "var(--border-light)",
                 "&:hover": {
                   borderColor: "primary.main",
-                  backgroundColor: "action.hover",
-                },
+                  backgroundColor: "action.hover"
+                }
               }}>
               <ListItemIcon>{automation.active ? <ActiveIcon sx={{ color: "success.main" }} /> : <InactiveIcon sx={{ color: "grey.400" }} />}</ListItemIcon>
               <ListItemText
@@ -71,8 +69,8 @@ export const AutomationsPage = () => {
                   </Typography>
                 }
                 slotProps={{
-                  primary: { component: 'div' },
-                  secondary: { component: 'div' }
+                  primary: { component: "div" },
+                  secondary: { component: "div" }
                 }}
               />
             </ListItemButton>
@@ -112,8 +110,8 @@ export const AutomationsPage = () => {
             borderColor: "rgba(255,255,255,0.5)",
             "&:hover": {
               borderColor: "#FFF",
-              backgroundColor: "rgba(255,255,255,0.1)",
-            },
+              backgroundColor: "rgba(255,255,255,0.1)"
+            }
           }}>
           {Locale.label("tasks.automationsPage.addAuto")}
         </Button>
@@ -128,7 +126,7 @@ export const AutomationsPage = () => {
               sx={{
                 borderRadius: 2,
                 border: "1px solid",
-                borderColor: "var(--border-light)",
+                borderColor: "var(--border-light)"
               }}>
               <CardContent>
                 {/* Header */}

@@ -2,21 +2,19 @@ import React, { memo, useCallback, useMemo } from "react";
 
 import { CampusEdit, ServiceEdit, ServiceTimeEdit } from "./";
 import { Link } from "react-router-dom";
-import {
-  Icon, Table, TableBody, TableCell, TableRow, TableHead, IconButton, Menu, MenuItem, Paper, Box, Typography, Button, Stack
-} from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, IconButton, Paper, Box, Typography, Button, Stack } from "@mui/material";
 import {
   type AttendanceInterface,
   type CampusInterface,
   type ServiceInterface,
   type ServiceTimeInterface,
   type GroupServiceTimeInterface,
-  type GroupInterface,
+  type GroupInterface
 } from "@churchapps/helpers";
 import {
   ArrayHelper,
   Loading,
-  Locale,
+  Locale
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 
@@ -27,17 +25,17 @@ export const AttendanceSetup = memo(() => {
 
   const attendance = useQuery<AttendanceInterface[]>({
     queryKey: ["/attendancerecords/tree", "AttendanceApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const groupServiceTimes = useQuery<GroupServiceTimeInterface[]>({
     queryKey: ["/groupservicetimes", "AttendanceApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const groups = useQuery<GroupInterface[]>({
     queryKey: ["/groups", "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
 
@@ -142,7 +140,7 @@ export const AttendanceSetup = memo(() => {
         <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.time")}</TableCell>
         <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.category")}</TableCell>
         <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.group")}</TableCell>
-      </TableRow>,
+      </TableRow>
     ];
   }, [attendance.data.length]);
 
@@ -192,7 +190,7 @@ export const AttendanceSetup = memo(() => {
                 fontWeight: 600,
                 minWidth: "auto",
                 p: 0,
-                fontSize: "0.95rem",
+                fontSize: "0.95rem"
               }}>
               {campus.name}
             </Button>
@@ -214,7 +212,7 @@ export const AttendanceSetup = memo(() => {
                 textTransform: "none",
                 fontWeight: 500,
                 minWidth: "auto",
-                p: 0,
+                p: 0
               }}>
               {service.name}
             </Button>
@@ -237,7 +235,7 @@ export const AttendanceSetup = memo(() => {
                 fontWeight: 400,
                 minWidth: "auto",
                 p: 0,
-                fontSize: "0.9rem",
+                fontSize: "0.9rem"
               }}>
               {serviceTime.name}
             </Button>
@@ -268,7 +266,7 @@ export const AttendanceSetup = memo(() => {
                 textDecoration: "none",
                 color: "var(--c1)", // Using css var for link for now, or could use direct style
                 fontWeight: 400,
-                fontSize: "0.85rem",
+                fontSize: "0.85rem"
               }}>
               {group.name}
             </Link>
@@ -278,9 +276,7 @@ export const AttendanceSetup = memo(() => {
       const result = (
         <TableRow
           key={key}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-          }}>
+          sx={{ "&:hover": { backgroundColor: "action.hover" } }}>
           <TableCell sx={{ py: 0.5, border: 0 }}>{campusHtml}</TableCell>
           <TableCell sx={{ py: 0.5, border: 0 }}>{serviceHtml}</TableCell>
           <TableCell sx={{ py: 0.5, border: 0 }}>{serviceTimeHtml}</TableCell>
@@ -309,7 +305,7 @@ export const AttendanceSetup = memo(() => {
               textTransform: "none",
               fontSize: "0.85rem",
               pl: 2,
-              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" },
+              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" }
             }}>
             {Locale.label("attendance.attendanceSetup.addService")}
           </Button>
@@ -334,7 +330,7 @@ export const AttendanceSetup = memo(() => {
               textTransform: "none",
               fontSize: "0.8rem",
               pl: 4,
-              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" },
+              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" }
             }}>
             {Locale.label("attendance.attendanceSetup.addServiceTime")}
           </Button>
@@ -400,7 +396,7 @@ export const AttendanceSetup = memo(() => {
           overflowX: "auto",
           borderRadius: 0,
           boxShadow: "none",
-          border: "1px solid var(--border-main)",
+          border: "1px solid var(--border-main)"
         }}>
         <Table size="medium">
           <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>{tableHeader}</TableHead>

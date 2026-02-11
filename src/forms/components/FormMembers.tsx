@@ -1,8 +1,6 @@
 import React, { useState, memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import {
-  Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch, Tooltip, IconButton 
-} from "@mui/material";
+import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch, Tooltip, IconButton } from "@mui/material";
 import { Info } from "@mui/icons-material";
 import { PersonAdd } from "../../components";
 import { type PersonInterface, type MemberPermissionInterface } from "@churchapps/helpers";
@@ -32,7 +30,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         contentType: "form",
         contentId: props.formId,
         action: "view",
-        personName: p.name.display,
+        personName: p.name.display
       };
       ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then((result) => {
         const fm = [...formMembers];
@@ -113,9 +111,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
               <button
                 type="button"
                 onClick={() => handleRemoveMember(fm.memberId)}
-                style={{
-                  display: "flex", alignItems: "center", color: "#dc3545", background: "none", border: 0, padding: 0, cursor: "pointer" 
-                }}>
+                style={{ display: "flex", alignItems: "center", color: "#dc3545", background: "none", border: 0, padding: 0, cursor: "pointer" }}>
                 <Icon sx={{ marginRight: "5px" }}>person_remove</Icon> {Locale.label("common.remove")}
               </button>
             }

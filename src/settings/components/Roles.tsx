@@ -1,11 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import {
-  DisplayBox, UserHelper, ApiHelper, Permissions, type ChurchInterface, type RoleInterface, type RolePermissionInterface, Locale 
-} from "@churchapps/apphelper";
-import {
-  Divider, Icon, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow 
-} from "@mui/material";
+import { DisplayBox, UserHelper, ApiHelper, Permissions, type ChurchInterface, type RoleInterface, type RolePermissionInterface, Locale } from "@churchapps/apphelper";
+import { Divider, Icon, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { SmallButton } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 
@@ -22,7 +18,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
   const roles = useQuery<RoleInterface[]>({
     queryKey: [`/roles/church/${church?.id}`, "MembershipApi"],
     enabled: !!church?.id && selectedRoleId === "notset",
-    placeholderData: [],
+    placeholderData: []
   });
 
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -44,8 +40,8 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
           Permissions.givingApi.donations.edit,
           Permissions.givingApi.donations.view,
           Permissions.givingApi.donations.viewSummary,
-          Permissions.givingApi.settings.edit,
-        ],
+          Permissions.givingApi.settings.edit
+        ]
       },
       {
         name: Locale.label("settings.roles.churchStaff"),
@@ -60,19 +56,19 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
           Permissions.membershipApi.forms.admin,
           Permissions.attendanceApi.attendance.edit,
           Permissions.attendanceApi.attendance.view,
-          Permissions.attendanceApi.services.edit,
-        ],
+          Permissions.attendanceApi.services.edit
+        ]
       },
       {
         name: Locale.label("settings.roles.contAdmin"),
         description: Locale.label("settings.roles.contAdminDesc"),
-        permissions: [Permissions.contentApi.chat.host, Permissions.contentApi.content.edit, Permissions.contentApi.streamingServices.edit],
+        permissions: [Permissions.contentApi.chat.host, Permissions.contentApi.content.edit, Permissions.contentApi.streamingServices.edit]
       },
       {
         name: Locale.label("settings.roles.lesAdmin"),
         description: Locale.label("settings.roles.lesAdminDesc") + "Lessons.church.",
-        permissions: [{ api: "LessonsApi", contentType: "Schedules", permission: "Edit" }],
-      },
+        permissions: [{ api: "LessonsApi", contentType: "Schedules", permission: "Edit" }]
+      }
     ],
     []
   );
@@ -89,7 +85,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
             roleId: r.id,
             apiName: p.api,
             contentType: p.contentType,
-            action: p.action,
+            action: p.action
           });
         });
         await ApiHelper.post("/rolepermissions/", perms, "MembershipApi");

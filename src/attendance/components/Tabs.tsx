@@ -11,14 +11,14 @@ export const Tabs: React.FC = () => {
       key: "attendance",
       label: Locale.label("attendance.tabs.attTrend"),
       content: <ReportWithFilter keyName="attendanceTrend" autoRun={true} />,
-      hidden: !canView,
+      hidden: !canView
     },
     {
       key: "groups",
       label: Locale.label("attendance.tabs.groupAtt"),
       content: <ReportWithFilter keyName="groupAttendance" autoRun={true} />,
-      hidden: !canView,
-    },
+      hidden: !canView
+    }
   ];
 
   return (

@@ -1,9 +1,7 @@
 import React from "react";
 import { ApiHelper, DateHelper, UserHelper, CurrencyHelper, Loading, PageHeader } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/apphelper";
-import {
-  Box, Typography, Card, Stack, Button, TextField, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert
-} from "@mui/material";
+import { Box, Typography, Card, Stack, Button, TextField, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
 import { CloudDownload as ImportIcon, Search as PreviewIcon, CheckCircle, Error as ErrorIcon, Info, SkipNext } from "@mui/icons-material";
 
 interface StripeEventResult {
@@ -86,18 +84,12 @@ export const StripeImportPage = () => {
 
   const getStatusChip = (status: StripeEventResult["status"]) => {
     switch (status) {
-      case "new":
-        return <Chip icon={<Info />} label="New" color="info" size="small" />;
-      case "already_imported":
-        return <Chip icon={<CheckCircle />} label="Already Imported" color="default" size="small" />;
-      case "imported":
-        return <Chip icon={<CheckCircle />} label="Imported" color="success" size="small" />;
-      case "skipped":
-        return <Chip icon={<SkipNext />} label="Skipped" color="warning" size="small" />;
-      case "error":
-        return <Chip icon={<ErrorIcon />} label="Error" color="error" size="small" />;
-      default:
-        return null;
+      case "new": return <Chip icon={<Info />} label="New" color="info" size="small" />;
+      case "already_imported": return <Chip icon={<CheckCircle />} label="Already Imported" color="default" size="small" />;
+      case "imported": return <Chip icon={<CheckCircle />} label="Imported" color="success" size="small" />;
+      case "skipped": return <Chip icon={<SkipNext />} label="Skipped" color="warning" size="small" />;
+      case "error": return <Chip icon={<ErrorIcon />} label="Error" color="error" size="small" />;
+      default: return null;
     }
   };
 
@@ -273,8 +265,8 @@ export const StripeImportPage = () => {
                     backgroundColor: "grey.50",
                     "& .MuiTableCell-root": {
                       borderBottom: "2px solid",
-                      borderBottomColor: "divider",
-                    },
+                      borderBottomColor: "divider"
+                    }
                   }}
                 >
                   <TableRow>

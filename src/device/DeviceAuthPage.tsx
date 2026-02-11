@@ -74,7 +74,7 @@ export const DeviceAuthPage: React.FC = () => {
     if (initialCode && initialCode.length >= 6 && !deviceInfo && !loading) {
       verifyCode(initialCode);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // Fetch client name when device info is available
   React.useEffect(() => {
@@ -274,7 +274,7 @@ export const DeviceAuthPage: React.FC = () => {
             backgroundColor: "background.paper",
             border: "1px solid var(--border-main)",
             borderRadius: "5px",
-            padding: "10px",
+            padding: "10px"
           }}
           px="16px"
           mx="auto"

@@ -10,7 +10,7 @@ type Props = {
 
 export function RowMobileOrder(props: Props) {
   const mobileOrder: number[] = [];
-  props.parsedData.columns?.split(",").forEach((c: string, idx:number) => mobileOrder.push(idx+1));
+  props.parsedData.columns?.split(",").forEach((c: string, idx:number) => mobileOrder.push(idx + 1));
   props.parsedData.mobileOrder?.split(",").forEach((c: string, idx:number) => mobileOrder[idx] = parseInt(c));
 
   const updateMobileOrders = () => {
@@ -31,7 +31,7 @@ export function RowMobileOrder(props: Props) {
       const index = idx;
       const order = (mobileOrder.length > idx) ? mobileOrder[idx] || idx + 1 : idx + 1;
       result.push(<TableRow key={idx}>
-        <TableCell>{idx+1}</TableCell>
+        <TableCell>{idx + 1}</TableCell>
         <TableCell>
           <Select name="width" fullWidth size="small" value={order} onChange={(e) => handleColumnChange(e, index)} data-testid={`mobile-order-select-${index}`} aria-label={`Select mobile order for column ${index + 1}`}>
             <MenuItem value="1" data-testid="mobile-order-1" aria-label="Order 1">1</MenuItem>

@@ -5,9 +5,7 @@ import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Card, Stack, Button
-} from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Card, Stack, Button } from "@mui/material";
 import { VolunteerActivism as DonationIcon, Add as AddIcon, FileDownload as ExportIcon, CalendarMonth as DateIcon } from "@mui/icons-material";
 
 export const DonationBatchesPage = () => {
@@ -17,7 +15,7 @@ export const DonationBatchesPage = () => {
 
   const batches = useQuery<DonationBatchInterface[]>({
     queryKey: ["/donationbatches", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const batchUpdated = () => {
@@ -35,7 +33,7 @@ export const DonationBatchesPage = () => {
   const [stats, setStats] = React.useState({
     totalBatches: 0,
     totalDonations: 0,
-    totalAmount: 0,
+    totalAmount: 0
   });
 
   React.useEffect(() => {
@@ -47,7 +45,7 @@ export const DonationBatchesPage = () => {
       setStats({
         totalBatches,
         totalDonations,
-        totalAmount,
+        totalAmount
       });
     }
   }, [batches.data]);
@@ -134,7 +132,7 @@ export const DonationBatchesPage = () => {
           style={{
             textDecoration: "none",
             color: "var(--c1l2)",
-            fontWeight: 500,
+            fontWeight: 500
           }}>
           {b.name}
         </Link>
@@ -151,7 +149,7 @@ export const DonationBatchesPage = () => {
           key={i}
           sx={{
             "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease",
+            transition: "background-color 0.2s ease"
           }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -198,7 +196,7 @@ export const DonationBatchesPage = () => {
           sx={{
             fontWeight: 600,
             cursor: "pointer",
-            "&:hover": { backgroundColor: "action.hover" },
+            "&:hover": { backgroundColor: "action.hover" }
           }}
           onClick={() => sortTable("name", sortDirection)}>
           <Stack direction="row" spacing={1} alignItems="center">
@@ -212,7 +210,7 @@ export const DonationBatchesPage = () => {
           sx={{
             fontWeight: 600,
             cursor: "pointer",
-            "&:hover": { backgroundColor: "action.hover" },
+            "&:hover": { backgroundColor: "action.hover" }
           }}
           onClick={() => sortTable("batchDate", sortDirection)}>
           <Stack direction="row" spacing={1} alignItems="center">
@@ -252,8 +250,8 @@ export const DonationBatchesPage = () => {
               backgroundColor: "var(--bg-card)",
               "& .MuiTableCell-root": {
                 borderBottom: "2px solid",
-                borderBottomColor: "divider",
-              },
+                borderBottomColor: "divider"
+              }
             }}>
             {getTableHeader()}
           </TableHead>
@@ -321,7 +319,7 @@ export const DonationBatchesPage = () => {
                 borderColor: "rgba(255,255,255,0.5)",
                 "&:hover": {
                   borderColor: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)",
+                  backgroundColor: "rgba(255,255,255,0.1)"
                 },
                 position: { md: "relative" },
                 ml: { md: "auto" },

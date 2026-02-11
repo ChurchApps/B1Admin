@@ -1,10 +1,6 @@
-import {
-  Grid, TextField, Card, CardContent, Typography, Stack, Box, Button, InputAdornment 
-} from "@mui/material";
+import { Grid, TextField, Card, CardContent, Typography, Stack, Box, Button, InputAdornment } from "@mui/material";
 import React from "react";
-import {
-  ApiHelper, ArrayHelper, type ConversationInterface, ErrorMessages, Locale, type MessageInterface, type TaskInterface, UserHelper 
-} from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, type ConversationInterface, ErrorMessages, Locale, type MessageInterface, type TaskInterface, UserHelper } from "@churchapps/apphelper";
 import { ContentPicker } from "./ContentPicker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Assignment as TaskIcon, Search as SearchIcon, Cancel as CancelIcon, Save as SaveIcon } from "@mui/icons-material";
@@ -25,7 +21,7 @@ export const NewTask = (props: Props) => {
     dateCreated: new Date(),
     associatedWithType: "person",
     associatedWithId: UserHelper.person?.id,
-    associatedWithLabel: UserHelper.person?.name?.display,
+    associatedWithLabel: UserHelper.person?.name?.display
   };
   const [task, setTask] = React.useState<TaskInterface>(initialData);
   const [message, setMessage] = React.useState<MessageInterface>({});
@@ -43,7 +39,7 @@ export const NewTask = (props: Props) => {
           contentType: "task",
           contentId: createdTask.id,
           title: "Task #" + createdTask.id + " Notes",
-          visibility: "hidden",
+          visibility: "hidden"
         };
         const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
 
@@ -64,7 +60,7 @@ export const NewTask = (props: Props) => {
       queryClient.invalidateQueries({ queryKey: ["/tasks/closed", "DoingApi"] });
       queryClient.invalidateQueries({ queryKey: ["/tasks/loadForGroups", "DoingApi"] });
       props.onSave();
-    },
+    }
   });
 
   const validate = () => {
@@ -83,7 +79,7 @@ export const NewTask = (props: Props) => {
       peopleIds: [id],
       contentType: "task",
       contentId: task.id,
-      message: `${Locale.label("tasks.newTask.newAssign")}: ${task.title}`,
+      message: `${Locale.label("tasks.newTask.newAssign")}: ${task.title}`
     };
 
     if (type === "group") {
@@ -148,7 +144,7 @@ export const NewTask = (props: Props) => {
         border: "1px solid",
         borderColor: "grey.200",
         transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 },
+        "&:hover": { boxShadow: 2 }
       }}>
       <CardContent>
         <Stack spacing={3}>
@@ -178,7 +174,7 @@ export const NewTask = (props: Props) => {
                       <SearchIcon sx={{ color: "action.active" }} />
                     </InputAdornment>
                   ),
-                  sx: { "& .MuiInputBase-input": { cursor: "pointer" } },
+                  sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
                 }}
                 onFocus={(e) => {
                   e.target.blur();
@@ -201,7 +197,7 @@ export const NewTask = (props: Props) => {
                       <SearchIcon sx={{ color: "action.active" }} />
                     </InputAdornment>
                   ),
-                  sx: { "& .MuiInputBase-input": { cursor: "pointer" } },
+                  sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
                 }}
                 onFocus={(e) => {
                   e.target.blur();
@@ -254,7 +250,7 @@ export const NewTask = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {Locale.label("common.cancel")}
             </Button>
@@ -266,7 +262,7 @@ export const NewTask = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {createTaskMutation.isPending ? Locale.label("tasks.newTask.saving") : Locale.label("common.save")}
             </Button>

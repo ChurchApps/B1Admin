@@ -1,13 +1,9 @@
 import React from "react";
 import { UpdateHouseHold } from "./modals/UpdateHouseHold";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
-import {
-  InputBox, PersonHelper, ApiHelper, ErrorMessages, Locale, PersonAvatar 
-} from "@churchapps/apphelper";
+import { InputBox, PersonHelper, ApiHelper, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { PersonAdd } from "../../components";
-import {
-  Table, TableBody, TableCell, TableRow, TextField, FormControl, Select, MenuItem, InputLabel, type SelectChangeEvent 
-} from "@mui/material";
+import { Table, TableBody, TableCell, TableRow, TextField, FormControl, Select, MenuItem, InputLabel, type SelectChangeEvent } from "@mui/material";
 import { SmallButton } from "@churchapps/apphelper";
 
 interface Props {
@@ -38,9 +34,7 @@ export function HouseholdEdit(props: Props) {
     const h = { ...household } as HouseholdInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "name":
-        h.name = value;
-        break;
+      case "name": h.name = value; break;
     }
     setHousehold(h);
   };

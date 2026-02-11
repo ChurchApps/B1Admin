@@ -1,6 +1,4 @@
-import {
-  Grid, Icon, TextField, Typography, InputAdornment, IconButton, Box, Card, CardContent, Alert, Stack, FormControlLabel, Switch
-} from "@mui/material";
+import { Grid, Icon, TextField, Typography, InputAdornment, IconButton, Box, Card, CardContent, Alert, Stack, FormControlLabel, Switch } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
@@ -68,7 +66,7 @@ export const ProfilePage = () => {
     onError: (error) => {
       console.error("Error saving profile:", error);
       setSaveMessage(Locale.label("profile.profilePage.saveError"));
-    },
+    }
   });
 
   const deleteAccountMutation = useMutation({
@@ -76,7 +74,7 @@ export const ProfilePage = () => {
     onSuccess: () => {
       sendEventToReactNative("profile_deleted");
       navigate("/logout", { replace: true });
-    },
+    }
   });
 
   const handleSave = () => {
@@ -94,21 +92,11 @@ export const ProfilePage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.currentTarget.value;
     switch (e.currentTarget.name) {
-      case "firstName":
-        setFirstName(val);
-        break;
-      case "lastName":
-        setLastName(val);
-        break;
-      case "email":
-        setEmail(val);
-        break;
-      case "password":
-        setPassword(val);
-        break;
-      case "passwordVerify":
-        setPasswordVerify(val);
-        break;
+      case "firstName": setFirstName(val); break;
+      case "lastName": setLastName(val); break;
+      case "email": setEmail(val); break;
+      case "password": setPassword(val); break;
+      case "passwordVerify": setPasswordVerify(val); break;
     }
   };
 
@@ -121,7 +109,7 @@ export const ProfilePage = () => {
       { condition: email === "", message: Locale.label("profile.profilePage.emailMsg") },
       { condition: email !== "" && !validateEmail(email), message: Locale.label("profile.profilePage.valEmail") },
       { condition: password !== passwordVerify, message: Locale.label("profile.profilePage.passMatch") },
-      { condition: password !== "" && password.length < 8, message: Locale.label("profile.profilePage.passLong") },
+      { condition: password !== "" && password.length < 8, message: Locale.label("profile.profilePage.passLong") }
     ];
 
     const errors = validationRules.filter((rule) => rule.condition).map((rule) => rule.message);
@@ -209,7 +197,7 @@ export const ProfilePage = () => {
                               {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
                             </IconButton>
                           </InputAdornment>
-                        ),
+                        )
                       }}
                     />
                   </Grid>
@@ -229,7 +217,7 @@ export const ProfilePage = () => {
                               {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
                             </IconButton>
                           </InputAdornment>
-                        ),
+                        )
                       }}
                     />
                   </Grid>

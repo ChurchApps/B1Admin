@@ -17,7 +17,7 @@ import {
   Radio,
   Stack,
   Button,
-  Alert,
+  Alert
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -95,8 +95,8 @@ export function EditCalendarEventModal(props: Props) {
     return {
       style: {
         backgroundColor,
-        borderColor,
-      },
+        borderColor
+      }
     };
   };
 

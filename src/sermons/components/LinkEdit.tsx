@@ -124,7 +124,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
         PaperProps={{
           sx: {
             borderRadius: 2,
-            minHeight: '400px'
+            minHeight: "400px"
           }
         }}
       >
@@ -137,28 +137,28 @@ export const LinkEdit: React.FC<Props> = (props) => {
             <Stack direction="row" alignItems="center" spacing={2}>
               <Box
                 sx={{
-                  backgroundColor: 'rgba(255,255,255,0.2)',
-                  borderRadius: '12px',
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  borderRadius: "12px",
                   p: 1.5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
                 }}
               >
-                <LinkIcon sx={{ fontSize: 24, color: '#FFF' }} />
+                <LinkIcon sx={{ fontSize: 24, color: "#FFF" }} />
               </Box>
               <Box>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
                   {currentLink?.id ? Locale.label("sermons.liveStreamTimes.linkEdit.editNavigationLink") : Locale.label("sermons.liveStreamTimes.linkEdit.createNewLink")}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)' }}>
+                <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>
                   {Locale.label("sermons.liveStreamTimes.linkEdit.configureSettings")}
                 </Typography>
               </Box>
             </Stack>
             <IconButton
               onClick={() => props.updatedFunction()}
-              sx={{ color: '#FFF' }}
+              sx={{ color: "#FFF" }}
               size="small"
             >
               <CloseIcon />
@@ -171,11 +171,11 @@ export const LinkEdit: React.FC<Props> = (props) => {
 
           <Stack spacing={3} sx={{ mt: 2 }}>
             {/* Link Details Section */}
-            <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'grey.200' }}>
+            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: '#1976d2', fontSize: 18 }}>edit</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#1976d2' }}>
+                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>edit</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
                     {Locale.label("sermons.liveStreamTimes.linkEdit.linkDetails")}
                   </Typography>
                 </Stack>
@@ -211,11 +211,11 @@ export const LinkEdit: React.FC<Props> = (props) => {
 
             {/* Submenu Configuration Section */}
             {filteredGroupLinks?.length > 0 && (
-              <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'grey.200' }}>
+              <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
                 <CardContent>
                   <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                    <Icon sx={{ color: '#1976d2', fontSize: 18 }}>account_tree</Icon>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: '#1976d2' }}>
+                    <Icon sx={{ color: "#1976d2", fontSize: 18 }}>account_tree</Icon>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
                       {Locale.label("sermons.liveStreamTimes.linkEdit.menuOrganization")}
                     </Typography>
                   </Stack>
@@ -225,17 +225,17 @@ export const LinkEdit: React.FC<Props> = (props) => {
                       {subName && toggleSubName === true
                         ? (
                           <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                            <Icon sx={{ fontSize: 16, color: 'success.main' }}>check_circle</Icon>
+                            <Icon sx={{ fontSize: 16, color: "success.main" }}>check_circle</Icon>
                             <Typography variant="body2" color="success.main">
-                            {Locale.label("sermons.liveStreamTimes.linkEdit.submenuMessage")} <strong>{subName}</strong>
+                              {Locale.label("sermons.liveStreamTimes.linkEdit.submenuMessage")} <strong>{subName}</strong>
                             </Typography>
                           </Stack>
                         )
                         : (
                           <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                            <Icon sx={{ fontSize: 16, color: 'text.secondary' }}>info</Icon>
+                            <Icon sx={{ fontSize: 16, color: "text.secondary" }}>info</Icon>
                             <Typography variant="body2" color="text.secondary">
-                            {Locale.label("sermons.liveStreamTimes.linkEdit.optionalSubmenuMessage")}
+                              {Locale.label("sermons.liveStreamTimes.linkEdit.optionalSubmenuMessage")}
                             </Typography>
                           </Stack>
                         )}
@@ -263,14 +263,12 @@ export const LinkEdit: React.FC<Props> = (props) => {
                             aria-label={`Set as submenu under ${link.text}`}
                             sx={{
                               borderRadius: 1,
-                              textTransform: 'none',
+                              textTransform: "none",
                               fontWeight: 500,
-                              '&.Mui-selected': {
-                                backgroundColor: '#1976d2',
-                                color: '#FFF',
-                                '&:hover': {
-                                  backgroundColor: '#1565c0'
-                                }
+                              "&.Mui-selected": {
+                                backgroundColor: "#1976d2",
+                                color: "#FFF",
+                                "&:hover": { backgroundColor: "#1565c0" }
                               }
                             }}
                           >
@@ -289,8 +287,8 @@ export const LinkEdit: React.FC<Props> = (props) => {
           </Stack>
         </DialogContent>
 
-        <DialogActions sx={{ p: 3, backgroundColor: 'grey.50' }}>
-          <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+        <DialogActions sx={{ p: 3, backgroundColor: "grey.50" }}>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
             {currentLink?.id && (
               <Button
                 variant="outlined"
@@ -299,7 +297,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}
                 sx={{
-                  textTransform: 'none',
+                  textTransform: "none",
                   fontWeight: 500
                 }}
               >
@@ -312,7 +310,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
               onClick={() => props.updatedFunction()}
               disabled={isLoading}
               sx={{
-                textTransform: 'none',
+                textTransform: "none",
                 fontWeight: 500
               }}
             >
@@ -324,7 +322,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
               onClick={handleSave}
               disabled={isLoading}
               sx={{
-                textTransform: 'none',
+                textTransform: "none",
                 fontWeight: 600,
                 minWidth: 100
               }}
@@ -339,7 +337,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <DialogTitle>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Icon sx={{ color: 'error.main' }}>warning</Icon>
+            <Icon sx={{ color: "error.main" }}>warning</Icon>
             <Typography variant="h6">{Locale.label("sermons.liveStreamTimes.linkEdit.deleteLink")}</Typography>
           </Stack>
         </DialogTitle>
@@ -348,9 +346,9 @@ export const LinkEdit: React.FC<Props> = (props) => {
             {Locale.label("sermons.liveStreamTimes.linkEdit.deleteConfirm")}
           </Typography>
           {links?.some(link => link.parentId === currentLink.id) && (
-            <Box sx={{ mt: 2, p: 2, backgroundColor: 'warning.light', borderRadius: 1 }}>
+            <Box sx={{ mt: 2, p: 2, backgroundColor: "warning.light", borderRadius: 1 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <Icon sx={{ color: 'warning.main' }}>info</Icon>
+                <Icon sx={{ color: "warning.main" }}>info</Icon>
                 <Typography variant="body2" color="warning.dark">
                   {Locale.label("sermons.liveStreamTimes.linkEdit.deleteNestedLinksFirst")}
                 </Typography>
@@ -362,7 +360,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
           <Button
             onClick={() => setDeleteDialogOpen(false)}
             disabled={isLoading}
-            sx={{ textTransform: 'none' }}
+            sx={{ textTransform: "none" }}
           >
             {Locale.label("sermons.liveStreamTimes.linkEdit.cancel")}
           </Button>
@@ -371,7 +369,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
             color="error"
             variant="contained"
             disabled={isLoading}
-            sx={{ textTransform: 'none' }}
+            sx={{ textTransform: "none" }}
           >
             {isLoading ? Locale.label("sermons.liveStreamTimes.linkEdit.deleting") : Locale.label("sermons.liveStreamTimes.linkEdit.delete")}
           </Button>

@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Switch, Typography, Tooltip, IconButton, type SelectChangeEvent
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Switch, Typography, Tooltip, IconButton, type SelectChangeEvent } from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
 import { ApiHelper, ErrorMessages, Locale, UniqueIdHelper } from "@churchapps/apphelper";
 import { type PaymentGatewaysInterface } from "../../helpers";
@@ -30,18 +28,10 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     e.preventDefault();
     switch (e.target.name) {
-      case "provider":
-        setProvider(e.target.value);
-        break;
-      case "publicKey":
-        setPublicKey(e.target.value);
-        break;
-      case "privateKey":
-        setPrivateKey(e.target.value);
-        break;
-      case "currency":
-        setCurrency(e.target.value);
-        break;
+      case "provider": setProvider(e.target.value); break;
+      case "publicKey": setPublicKey(e.target.value); break;
+      case "privateKey": setPrivateKey(e.target.value); break;
+      case "currency": setCurrency(e.target.value); break;
     }
   };
 
@@ -153,7 +143,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
-  React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
+  React.useEffect(checkSave, [props.saveTrigger]);
 
   return (
     <>

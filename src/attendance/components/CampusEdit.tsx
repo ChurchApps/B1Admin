@@ -18,9 +18,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
     const c = { ...campus } as CampusInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "name":
-        c.name = value;
-        break;
+      case "name": c.name = value; break;
     }
     setCampus(c);
   };

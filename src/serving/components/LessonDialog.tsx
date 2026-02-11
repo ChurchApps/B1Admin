@@ -10,8 +10,8 @@ import { ContentItemRow } from "./planItem/ContentItemRow";
 // Helper to detect media type from URL
 function detectMediaType(url: string): "video" | "image" | "iframe" {
   const lowerUrl = url.toLowerCase();
-  const videoExtensions = ['.mp4', '.webm', '.ogg', '.m3u8', '.mov', '.avi'];
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
+  const videoExtensions = [".mp4", ".webm", ".ogg", ".m3u8", ".mov", ".avi"];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp"];
 
   if (videoExtensions.some(ext => lowerUrl.includes(ext))) {
     return "video";
@@ -19,7 +19,7 @@ function detectMediaType(url: string): "video" | "image" | "iframe" {
   if (imageExtensions.some(ext => lowerUrl.includes(ext))) {
     return "image";
   }
-  if (lowerUrl.includes('/embed/')) {
+  if (lowerUrl.includes("/embed/")) {
     return "iframe";
   }
   return "image";

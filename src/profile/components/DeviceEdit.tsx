@@ -22,9 +22,7 @@ export const DeviceEdit = (props: Props) => {
     const value = e.target.value;
     const d = { ...device };
     switch (e.target.name) {
-      case "label":
-        d.label = value;
-        break;
+      case "label": d.label = value; break;
     }
     setDevice(d);
   };

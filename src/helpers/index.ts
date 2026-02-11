@@ -3,9 +3,7 @@ export type { ExternalProviderInterface, ExternalVenueRefInterface, ContentProvi
 export { ContentProviderAuthHelper } from "./ContentProviderAuthHelper";
 
 // AppHelper imports (for person components)
-export {
-  ApiHelper, ArrayHelper, CurrencyHelper, DateHelper, PersonHelper, UniqueIdHelper, ErrorHelper, CommonEnvironmentHelper, Locale, UserHelper 
-} from "@churchapps/apphelper";
+export { ApiHelper, ArrayHelper, CurrencyHelper, DateHelper, PersonHelper, UniqueIdHelper, ErrorHelper, CommonEnvironmentHelper, Locale, UserHelper } from "@churchapps/apphelper";
 
 // Donation helper from donations package
 export { DonationHelper } from "@churchapps/apphelper-donations";

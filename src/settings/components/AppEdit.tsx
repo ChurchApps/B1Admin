@@ -177,7 +177,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
               startIcon={<CancelIcon />}
               onClick={updatedFunction}
               size="small"
-              sx={{ textTransform: 'none' }}
+              sx={{ textTransform: "none" }}
             >
               {Locale.label("common.cancel")}
             </Button>
@@ -188,7 +188,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
               startIcon={<SaveIcon />}
               onClick={handleSave}
               size="small"
-              sx={{ textTransform: 'none' }}
+              sx={{ textTransform: "none" }}
             >
               {Locale.label("settings.appEdit.saveTab")}
             </LoadingButton>
@@ -210,7 +210,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                     <IconButton
                       onClick={() => setIsModalOpen(true)}
                       data-testid="icon-dropdown-button"
-                      sx={{ color: 'primary.main' }}
+                      sx={{ color: "primary.main" }}
                     >
                       <Icon>{currentTab?.icon}</Icon>
                     </IconButton>
@@ -239,7 +239,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                 <Button
                   variant="outlined"
                   onClick={() => setShowPhotoGallery(true)}
-                  sx={{ textTransform: 'none' }}
+                  sx={{ textTransform: "none" }}
                 >
                   {(currentTab as any)?.photo ? Locale.label("settings.appEdit.changeImage") : Locale.label("settings.appEdit.selectImage")}
                 </Button>
@@ -306,7 +306,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
               {/* Group Selection */}
               {(currentTab as any)?.visibility === "groups" && (
-                <Box sx={{ pl: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1, p: 2 }}>
+                <Box sx={{ pl: 2, border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2 }}>
                   <Typography variant="subtitle2" sx={{ mb: 1 }}>Select Groups:</Typography>
                   <FormGroup>
                     {groups.map(group => (
@@ -332,14 +332,14 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
               {!UniqueIdHelper.isMissing(currentTab?.id) && (
                 <>
                   <Divider sx={{ mt: 2 }} />
-                  <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ textAlign: "center" }}>
                     <Button
                       variant="outlined"
                       color="error"
                       startIcon={<DeleteIcon />}
                       onClick={handleDelete}
                       size="small"
-                      sx={{ textTransform: 'none' }}
+                      sx={{ textTransform: "none" }}
                     >
                       {Locale.label("settings.appEdit.deleteTab")}
                     </Button>

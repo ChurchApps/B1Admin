@@ -1,7 +1,7 @@
-import { getProvider, type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
+import { type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
 
 // Generate a dot-notation path from indices array (e.g., [0, 2, 1] -> "0.2.1")
-export const generatePath = (indices: number[]): string => indices.join('.');
+export const generatePath = (indices: number[]): string => indices.join(".");
 
 // Helper to get instructions from provider based on its capabilities
 export async function getProviderInstructions(provider: IProvider, path: string, auth?: any): Promise<Instructions | null> {
@@ -19,7 +19,7 @@ export function extractSections(instructions: Instructions): InstructionItem[] {
   // Recursively find all items with itemType 'section'
   function findSections(items: InstructionItem[]) {
     for (const item of items) {
-      if (item.itemType === 'section' && item.children && item.children.length > 0) {
+      if (item.itemType === "section" && item.children && item.children.length > 0) {
         sections.push(item);
       }
       // Continue searching in children
@@ -37,9 +37,8 @@ export function extractSections(instructions: Instructions): InstructionItem[] {
     for (const item of instructions.items) {
       if (item.children && item.children.length > 0) {
         const hasActionChildren = item.children.some(c =>
-          c.itemType === 'action' || c.itemType === 'providerPresentation' ||
-          !c.children || c.children.length === 0
-        );
+          c.itemType === "action" || c.itemType === "providerPresentation" ||
+          !c.children || c.children.length === 0);
         if (hasActionChildren) {
           sections.push(item);
         }

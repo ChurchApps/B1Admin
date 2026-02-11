@@ -86,18 +86,18 @@ export function NavLinkEdit(props: Props) {
   if (!link) return <></>;
   else {
     return (
-    <Dialog
-      open={true}
-      onClose={props.onDone}
-      style={{ minWidth: 800 }}
-      sx={{ zIndex: 2000 }}
-    >
-      <InputBox id="pageDetailsBox" headerText={link?.id ? Locale.label("site.navLink.linkSettings") : Locale.label("site.navLink.addLink")} headerIcon="article" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete}>
-        <ErrorMessages errors={errors} />
-        <Autocomplete disablePortal limitTags={3} freeSolo options={getPageOptions()} onChange={handleUrlChange} onInputChange={handleUrlChange} sx={{ width: 300 }} ListboxProps={{ style: { maxHeight: 150 } }} value={link.url} renderInput={(params) => <TextField {...params} size="small" fullWidth label="Url" name="linkUrl" onKeyDown={handleKeyDown} />} />
-        <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
-      </InputBox>
-    </Dialog>
+      <Dialog
+        open={true}
+        onClose={props.onDone}
+        style={{ minWidth: 800 }}
+        sx={{ zIndex: 2000 }}
+      >
+        <InputBox id="pageDetailsBox" headerText={link?.id ? Locale.label("site.navLink.linkSettings") : Locale.label("site.navLink.addLink")} headerIcon="article" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete}>
+          <ErrorMessages errors={errors} />
+          <Autocomplete disablePortal limitTags={3} freeSolo options={getPageOptions()} onChange={handleUrlChange} onInputChange={handleUrlChange} sx={{ width: 300 }} ListboxProps={{ style: { maxHeight: 150 } }} value={link.url} renderInput={(params) => <TextField {...params} size="small" fullWidth label="Url" name="linkUrl" onKeyDown={handleKeyDown} />} />
+          <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+        </InputBox>
+      </Dialog>
     );
   }
 }

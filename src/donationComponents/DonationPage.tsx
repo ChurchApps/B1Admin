@@ -9,9 +9,7 @@ import { DonationForm, RecurringDonations, PaymentMethods } from "@churchapps/ap
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
 import type { DonationInterface, PersonInterface, StripePaymentMethod, ChurchInterface } from "@churchapps/helpers";
 // import { Link } from "react-router-dom"
-import {
-  Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Link, Menu, MenuItem 
-} from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Link, Menu, MenuItem } from "@mui/material";
 
 interface Props {
   personId: string;
@@ -84,7 +82,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     setStripe(loadStripe(gatewayData[0].publicKey));
     await Promise.all([
       // loadPersonData(),
-      loadPaymentMethods(),
+      loadPaymentMethods()
     ]);
   };
 
@@ -124,7 +122,7 @@ export const DonationPage: React.FC<Props> = (props) => {
       { label: "donationDate", key: "donationDate" },
       { label: "fundName", key: "fund.name" },
       { label: "method", key: "method" },
-      { label: "methodDetails", key: "methodDetails" },
+      { label: "methodDetails", key: "methodDetails" }
     ];
 
     if (current_year.length > 0 || last_year.length > 0) {
@@ -230,7 +228,7 @@ export const DonationPage: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     loadData();
-  }, [props.personId]); //eslint-disable-line
+  }, [props.personId]);
 
   const getTable = () => {
     if (!donations) return <Loading />;

@@ -1,6 +1,4 @@
-import {
-  FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow 
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { RowMobileSizes } from "./RowMobileSizes";

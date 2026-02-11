@@ -11,7 +11,7 @@ import {
   ErrorMessages,
   type UserInterface,
   type UserChurchInterface,
-  Locale,
+  Locale
 } from "@churchapps/apphelper";
 import { AssociatePerson } from "./";
 import { TextField } from "@mui/material";
@@ -124,7 +124,7 @@ export const UserAdd = (props: Props) => {
       householdId: households[0].id,
       name: { first: firstName, last: lastName },
       userId,
-      contactInfo: { email },
+      contactInfo: { email }
     };
     const person: PersonInterface[] = await ApiHelper.post("/people", [personRecord], "MembershipApi");
 
@@ -135,14 +135,9 @@ export const UserAdd = (props: Props) => {
     setErrors([]);
     const val = e.currentTarget.value;
     switch (e.currentTarget.name) {
-      case "email":
-        setEmail(val);
-        break;
-      case "firstName":
-        setFirstName(val);
-        break;
-      case "lastName":
-        setLastName(val);
+      case "email": setEmail(val); break;
+      case "firstName": setFirstName(val); break;
+      case "lastName": setLastName(val);
     }
   };
 

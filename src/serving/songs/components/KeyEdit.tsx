@@ -19,12 +19,8 @@ export const KeyEdit = (props: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const k = { ...key };
     switch (e.target.name) {
-      case "keySignature":
-        k.keySignature = e.target.value;
-        break;
-      case "shortDescription":
-        k.shortDescription = e.target.value;
-        break;
+      case "keySignature": k.keySignature = e.target.value; break;
+      case "shortDescription": k.shortDescription = e.target.value; break;
     }
     setKey(k);
   };

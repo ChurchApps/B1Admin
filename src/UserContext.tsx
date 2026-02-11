@@ -23,7 +23,7 @@ export const UserProvider = ({ children }: Props) => {
         userChurches,
         setUserChurches,
         person,
-        setPerson,
+        setPerson
       }}>
       {children}{" "}
     </UserContext.Provider>

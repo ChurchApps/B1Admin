@@ -1,8 +1,6 @@
 import React from "react";
 import { Locale } from "@churchapps/apphelper";
-import {
-  Grid, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Card, CardContent 
-} from "@mui/material";
+import { Grid, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Card, CardContent } from "@mui/material";
 import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, Settings as AdminIcon, PersonSearch as UserIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
@@ -15,16 +13,11 @@ export const AdminPage = () => {
 
   const getCurrentTab = () => {
     switch (selectedTab) {
-      case "churches":
-        return <ChurchesTab key="churches" />;
-      case "users":
-        return <UsersTab key="users" />;
-      case "usage":
-        return <UsageTrendsTab key="usage" />;
-      case "translation":
-        return <TranslationTab key="translation" />;
-      default:
-        return <div></div>;
+      case "churches": return <ChurchesTab key="churches" />;
+      case "users": return <UsersTab key="users" />;
+      case "usage": return <UsageTrendsTab key="usage" />;
+      case "translation": return <TranslationTab key="translation" />;
+      default: return <div></div>;
     }
   };
 
@@ -32,23 +25,23 @@ export const AdminPage = () => {
     {
       key: "churches",
       icon: <ChurchIcon />,
-      label: Locale.label("serverAdmin.adminPage.churches"),
+      label: Locale.label("serverAdmin.adminPage.churches")
     },
     {
       key: "users",
       icon: <UserIcon />,
-      label: Locale.label("serverAdmin.adminPage.users"),
+      label: Locale.label("serverAdmin.adminPage.users")
     },
     {
       key: "usage",
       icon: <UsageIcon />,
-      label: Locale.label("serverAdmin.adminPage.usageTrends"),
+      label: Locale.label("serverAdmin.adminPage.usageTrends")
     },
     {
       key: "translation",
       icon: <TranslationIcon />,
-      label: Locale.label("serverAdmin.adminPage.translationLookups"),
-    },
+      label: Locale.label("serverAdmin.adminPage.translationLookups")
+    }
   ];
 
   return (
@@ -71,8 +64,8 @@ export const AdminPage = () => {
                             backgroundColor: "primary.main",
                             color: "primary.contrastText",
                             "&:hover": { backgroundColor: "primary.dark" },
-                            "& .MuiListItemIcon-root": { color: "primary.contrastText" },
-                          },
+                            "& .MuiListItemIcon-root": { color: "primary.contrastText" }
+                          }
                         }}>
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />

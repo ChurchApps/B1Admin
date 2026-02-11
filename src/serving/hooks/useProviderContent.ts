@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { getProvider, navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { getProvider, navigateToPath, type Instructions } from "@churchapps/content-provider-helper";
 import { ApiHelper } from "@churchapps/apphelper";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 
@@ -37,8 +37,8 @@ export interface UseProviderContentParams {
 // Helper to detect media type from URL
 function detectMediaType(url: string): "video" | "image" | "iframe" {
   const lowerUrl = url.toLowerCase();
-  const videoExtensions = ['.mp4', '.webm', '.ogg', '.m3u8', '.mov', '.avi'];
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
+  const videoExtensions = [".mp4", ".webm", ".ogg", ".m3u8", ".mov", ".avi"];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp"];
 
   if (videoExtensions.some(ext => lowerUrl.includes(ext))) {
     return "video";
@@ -47,7 +47,7 @@ function detectMediaType(url: string): "video" | "image" | "iframe" {
     return "image";
   }
   // If URL contains /embed/, treat as iframe
-  if (lowerUrl.includes('/embed/')) {
+  if (lowerUrl.includes("/embed/")) {
     return "iframe";
   }
   // Default to image for unknown types

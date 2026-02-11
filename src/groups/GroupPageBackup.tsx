@@ -26,7 +26,7 @@ export const GroupPage = () => {
     setAddSessionVisible(false);
   };
 
-  React.useEffect(loadData, []); //eslint-disable-line
+  React.useEffect(loadData, []);
 
   const handleSidebarVisibility = (name: string, visible: boolean) => {
     if (name === "addPerson") setAddPersonVisible(visible);

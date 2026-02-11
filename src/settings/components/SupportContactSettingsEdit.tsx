@@ -33,7 +33,7 @@ export const SupportContactSettingsEdit: React.FC<Props> = (props) => {
   useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
-  useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
+  useEffect(checkSave, [props.saveTrigger]);
 
   return (
     <Box sx={{ mb: 2.5, pb: 2.5, borderBottom: "1px solid", borderColor: "divider", "&:last-child": { borderBottom: "none", mb: 0, pb: 0 } }}>

@@ -15,7 +15,7 @@ export const GroupPage = () => {
 
   const group = useQuery<GroupInterface>({
     queryKey: [`/groups/${params.id}`, "MembershipApi"],
-    placeholderData: {} as GroupInterface,
+    placeholderData: {} as GroupInterface
   });
 
   React.useEffect(() => {
@@ -27,15 +27,9 @@ export const GroupPage = () => {
   const getCurrentTab = () => {
     let currentTab = null;
     switch (selectedTab) {
-      case "members":
-        currentTab = <GroupMembersTab key="members" group={group.data} />;
-        break;
-      case "sessions":
-        currentTab = <GroupSessionsTab key="sessions" group={group.data} />;
-        break;
-      default:
-        currentTab = <GroupMembersTab key="members" group={group.data} />;
-        break;
+      case "members": currentTab = <GroupMembersTab key="members" group={group.data} />; break;
+      case "sessions": currentTab = <GroupSessionsTab key="sessions" group={group.data} />; break;
+      default: currentTab = <GroupMembersTab key="members" group={group.data} />; break;
     }
     return currentTab;
   };

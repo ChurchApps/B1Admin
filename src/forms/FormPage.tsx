@@ -13,13 +13,13 @@ export const FormPage = () => {
 
   const form = useQuery<FormInterface>({
     queryKey: ["/forms/" + params.id, "MembershipApi"],
-    placeholderData: {} as FormInterface,
+    placeholderData: {} as FormInterface
   });
 
   const memberPermission = useQuery<MemberPermissionInterface>({
     queryKey: ["/memberpermissions/form/" + params.id + "/my", "MembershipApi"],
     enabled: form.data?.contentType === "form",
-    placeholderData: {} as MemberPermissionInterface,
+    placeholderData: {} as MemberPermissionInterface
   });
 
   // Get available tabs based on permissions
@@ -66,7 +66,7 @@ export const FormPage = () => {
         <Box
           sx={{
             "& > *:first-of-type": { mb: 2 }, // Add margin bottom to edit components that appear above
-            "& > *:not(:first-of-type)": { mt: 0 }, // Ensure no extra margin for main content
+            "& > *:not(:first-of-type)": { mt: 0 } // Ensure no extra margin for main content
           }}>
           <Tabs form={form.data} memberPermission={memberPermission.data} selectedTab={selectedTab} onTabChange={setSelectedTab} />
         </Box>

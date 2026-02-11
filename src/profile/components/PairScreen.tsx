@@ -14,9 +14,7 @@ export const PairScreen = (props: Props) => {
     setErrors([]);
     const value = e.target.value;
     switch (e.target.name) {
-      case "code":
-        setCode(value);
-        break;
+      case "code": setCode(value); break;
     }
   };
 

@@ -10,8 +10,8 @@ interface Props {
 export const Wrapper: React.FC<Props> = (props) => {
   const params = new URLSearchParams(window.location.search);
 
-  const showHeader = params.get("hideHeader") !== 'true';
-  
+  const showHeader = params.get("hideHeader") !== "true";
+
   return (
     <>
       {showHeader && <Header />}

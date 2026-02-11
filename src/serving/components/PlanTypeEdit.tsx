@@ -19,15 +19,15 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
 
     try {
       const isNew = !current.id;
-      const result = isNew 
+      const result = isNew
         ? await ApiHelper.post("/planTypes", [current], "DoingApi")
         : await ApiHelper.post("/planTypes", [current], "DoingApi");
-      
+
       onClose();
     } catch (error: any) {
       setErrors([error.message || Locale.label("plans.planTypeEdit.errorSaving")]);
     }
-    
+
     setLoading(false);
   };
 
@@ -52,7 +52,7 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
       <DialogContent>
         <Box sx={{ pt: 1 }}>
           <ErrorMessages errors={errors} />
-          
+
           <InputBox
             headerIcon="assignment"
             headerText={Locale.label("plans.planType.details")}>

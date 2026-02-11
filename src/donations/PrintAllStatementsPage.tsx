@@ -1,4 +1,4 @@
-import { ArrayHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
+import { CurrencyHelper, DateHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -16,19 +16,19 @@ export const PrintAllStatementsPage = () => {
   // Fetch all donations
   const allDonations = useQuery<DonationInterface[]>({
     queryKey: ["/donations", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   // Fetch all fund donations
   const allFundDonations = useQuery<FundDonationInterface[]>({
     queryKey: ["/fundDonations", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   // Fetch all funds
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   // Filter donations by selected year
@@ -57,14 +57,13 @@ export const PrintAllStatementsPage = () => {
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people/ids?ids=" + personIds.join(","), "MembershipApi"],
     placeholderData: [],
-    enabled: personIds.length > 0,
+    enabled: personIds.length > 0
   });
 
   // Filter fund donations for selected year
   const yearFundDonations = useMemo(() => {
     return allFundDonations.data?.filter((fundDonation) =>
-      yearDonations.some((donation) => donation.id === fundDonation.donationId)
-    ) || [];
+      yearDonations.some((donation) => donation.id === fundDonation.donationId)) || [];
   }, [allFundDonations.data, yearDonations]);
 
   const isLoading = allDonations.isLoading || allFundDonations.isLoading || funds.isLoading || (personIds.length > 0 && people.isLoading);
@@ -127,7 +126,7 @@ export const PrintAllStatementsPage = () => {
           date: donation.donationDate,
           method: donation.method,
           fund: fund?.name,
-          amount: fd.amount || 0,
+          amount: fd.amount || 0
         });
       }
     });

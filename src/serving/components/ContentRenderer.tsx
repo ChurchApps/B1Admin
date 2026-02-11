@@ -15,19 +15,19 @@ interface ContentRendererProps {
 
 // Helper to detect if a URL is a video
 function isVideoUrl(url: string): boolean {
-  const videoExtensions = ['.mp4', '.webm', '.ogg', '.m3u8', '.mov', '.avi'];
+  const videoExtensions = [".mp4", ".webm", ".ogg", ".m3u8", ".mov", ".avi"];
   const lowerUrl = url.toLowerCase();
   return videoExtensions.some(ext => lowerUrl.includes(ext));
 }
 
 // Helper to detect if a URL is an iframe embed URL
 function isIframeUrl(url: string): boolean {
-  return url.includes('/embed/');
+  return url.includes("/embed/");
 }
 
 // Helper to detect if URL is an image
 function isImageUrl(url: string): boolean {
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp"];
   const lowerUrl = url.toLowerCase();
   return imageExtensions.some(ext => lowerUrl.includes(ext));
 }

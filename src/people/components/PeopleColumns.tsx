@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import {
-  Grid, FormControlLabel, Checkbox, Dialog, DialogTitle, DialogActions, Button, DialogContent, Tabs, Tab, Box 
-} from "@mui/material";
+import { Grid, FormControlLabel, Checkbox, Dialog, DialogTitle, DialogActions, Button, DialogContent, Tabs, Tab, Box } from "@mui/material";
 import { SmallButton, ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
@@ -94,8 +92,7 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
             {optionalColumns.length > 0 ? <>{optionalItems}</> : <div>{Locale.label("people.peopleColumns.noFilt")}</div>}
           </Grid>
         );
-      default:
-        return null;
+      default: return null;
     }
   }, [tabValue, standardItems, optionalItems, optionalColumns.length]);
 

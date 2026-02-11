@@ -3,9 +3,7 @@ import { GroupDetailsEdit, ServiceTimes } from ".";
 import { type GroupInterface } from "@churchapps/helpers";
 import { Loading, Locale, ImageEditor } from "@churchapps/apphelper";
 import { MarkdownPreview } from "@churchapps/apphelper-markdown";
-import {
-  Chip, Grid, Box, Typography, Stack, Card, CardContent, Divider 
-} from "@mui/material";
+import { Chip, Grid, Box, Typography, Stack, Card, CardContent, Divider } from "@mui/material";
 import { LocationOn as LocationIcon, Schedule as ScheduleIcon, Category as CategoryIcon, Label as LabelIcon, Group as GroupIcon } from "@mui/icons-material";
 
 interface Props {
@@ -56,7 +54,7 @@ export const GroupDetails = memo((props: Props) => {
     () => ({
       trackAttendance: group?.trackAttendance?.toString().replace("false", Locale.label("common.no")).replace("true", Locale.label("common.yes")) || "",
       parentPickup: group?.parentPickup?.toString().replace("false", Locale.label("common.no")).replace("true", Locale.label("common.yes")) || "",
-      printNametag: group?.printNametag?.toString().replace("false", Locale.label("common.no")).replace("true", Locale.label("common.yes")) || "",
+      printNametag: group?.printNametag?.toString().replace("false", Locale.label("common.no")).replace("true", Locale.label("common.yes")) || ""
     }),
     [group?.trackAttendance, group?.parentPickup, group?.printNametag]
   );
@@ -85,7 +83,7 @@ export const GroupDetails = memo((props: Props) => {
                     justifyContent: "center",
                     border: "1px solid",
                     borderColor: "grey.300",
-                    position: "relative",
+                    position: "relative"
                   }}>
                   {group.photoUrl ? (
                     <img
@@ -94,7 +92,7 @@ export const GroupDetails = memo((props: Props) => {
                       style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "cover",
+                        objectFit: "cover"
                       }}
                     />
                   ) : (

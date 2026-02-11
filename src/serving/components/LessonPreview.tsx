@@ -50,7 +50,7 @@ export const LessonPreview = memo((props: Props) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 2,
+          mb: 2
         }}
       >
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
@@ -63,7 +63,7 @@ export const LessonPreview = memo((props: Props) => {
           onClick={props.onCustomize}
           sx={{
             textTransform: "none",
-            fontWeight: 600,
+            fontWeight: 600
           }}
         >
           {Locale.label("plans.serviceOrder.customizeLesson") || "Customize"}
@@ -81,7 +81,7 @@ export const LessonPreview = memo((props: Props) => {
       <Box
         sx={{
           opacity: 0.7,
-          filter: "grayscale(0.3)",
+          filter: "grayscale(0.3)"
         }}
       >
         {renderPreviewItems()}

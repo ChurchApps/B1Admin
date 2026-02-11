@@ -31,8 +31,8 @@ const createMdTheme = (mode: PaletteMode) =>
       InputBox: { headerText: mode === "light" ? "#333333" : "#e0e0e0" },
       background: {
         default: mode === "light" ? "#e5e8ee" : "#121212",
-        paper: mode === "light" ? "#ffffff" : "#1e1e1e",
-      },
+        paper: mode === "light" ? "#ffffff" : "#1e1e1e"
+      }
     },
     components: {
       MuiCssBaseline: {
@@ -40,9 +40,9 @@ const createMdTheme = (mode: PaletteMode) =>
           // Dark mode styles for the banner/subnav area from apphelper
           "#banner": mode === "dark" ? {
             backgroundColor: "#1e1e1e !important",
-            borderBottom: "1px solid #333",
-          } : {},
-        },
+            borderBottom: "1px solid #333"
+          } : {}
+        }
       },
       MuiTextField: {
         defaultProps: { margin: "normal" },
@@ -50,47 +50,45 @@ const createMdTheme = (mode: PaletteMode) =>
           root: {
             marginTop: 16,
             marginBottom: 8,
-            "& .MuiOutlinedInput-root": {
-              "&:hover fieldset": { borderColor: mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)" },
-            },
-          },
-        },
+            "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)" } }
+          }
+        }
       },
       MuiFormControl: {
         defaultProps: { margin: "normal" },
         styleOverrides: {
           root: {
             marginTop: 16,
-            marginBottom: 8,
-          },
-        },
+            marginBottom: 8
+          }
+        }
       },
       MuiButton: { styleOverrides: { root: { textTransform: "none" } } },
       MuiCard: {
         styleOverrides: {
           root: {
             borderRadius: 8,
-            boxShadow: mode === "light" ? "0 2px 8px rgba(0,0,0,0.1)" : "0 2px 8px rgba(0,0,0,0.4)",
-          },
-        },
-      },
+            boxShadow: mode === "light" ? "0 2px 8px rgba(0,0,0,0.1)" : "0 2px 8px rgba(0,0,0,0.4)"
+          }
+        }
+      }
     },
     typography: {
       fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
       h1: {
         fontSize: "2rem",
-        fontWeight: 500,
+        fontWeight: 500
       },
       h2: {
         fontSize: "1.75rem",
-        fontWeight: 500,
+        fontWeight: 500
       },
       h3: {
         fontSize: "1.5rem",
-        fontWeight: 500,
-      },
+        fontWeight: 500
+      }
     },
-    shape: { borderRadius: 8 },
+    shape: { borderRadius: 8 }
   });
 
 const ThemedApp: React.FC = () => {
@@ -129,7 +127,7 @@ const App: React.FC = () => (
             gtag('config', '${EnvironmentHelper.Common.GoogleAnalyticsTag}', {
               page_path: window.location.pathname,
             });
-          `,
+          `
           }}
         />
       </>

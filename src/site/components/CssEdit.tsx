@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  TextField, Box, Typography, Stack, Button, Alert, Accordion, AccordionSummary, AccordionDetails 
-} from "@mui/material";
+import { TextField, Box, Typography, Stack, Button, Alert, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { Code as CodeIcon, Info as InfoIcon, Warning as WarningIcon, ExpandMore as ExpandMoreIcon, Terminal as TerminalIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
@@ -49,19 +47,19 @@ export function CssEdit(props: Props) {
 
 a:hover {
   text-decoration: underline;
-}` 
+}`
     },
     {
       title: "Custom button styling", code: `.custom-button {
   background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
   border-radius: 8px;
   padding: 12px 24px;
-}` 
+}`
     },
     {
       title: "Hide elements", code: `.element-to-hide {
   display: none !important;
-}` 
+}`
     }
   ];
 
@@ -74,7 +72,7 @@ a:hover {
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'GA_MEASUREMENT_ID');
-</script>` 
+</script>`
     },
     {
       title: "Custom HTML", code: `<script>
@@ -82,7 +80,7 @@ a:hover {
   function customFunction() {
     console.log('Custom function executed');
   }
-</script>` 
+</script>`
     }
   ];
 
@@ -91,9 +89,7 @@ a:hover {
       <Box sx={{ backgroundColor: "var(--c1l2)", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{
-              backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" 
-            }}>
+            <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <CodeIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
@@ -108,9 +104,7 @@ a:hover {
         </Stack>
       </Box>
 
-      <Box sx={{
-        p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" 
-      }}>
+      <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <Alert severity="warning" icon={<WarningIcon />} sx={{ mb: 3 }}>
           <Typography variant="body2"><strong>Advanced Feature:</strong> Custom CSS and JavaScript can affect your site's functionality. Please test changes thoroughly and ensure you have a backup of your current settings.</Typography>
         </Alert>

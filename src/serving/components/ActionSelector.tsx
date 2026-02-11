@@ -11,7 +11,7 @@ import {
   IconButton,
   CircularProgress,
   Breadcrumbs,
-  Link,
+  Link
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ProviderChipSelector } from "./ProviderChipSelector";
@@ -26,7 +26,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
   const browser = useProviderBrowser({
     ministryId,
     defaultProviderId: providerId || "",
-    includeFiles: true,
+    includeFiles: true
   });
 
   // Instructions state (when viewing a venue/leaf) — unique to ActionSelector
@@ -175,7 +175,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     } else if (mode === "browse") {
       browser.loadContent("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [open, mode]);
 
   // Breadcrumb items — wraps hook breadcrumbs to also clear instructions on click
@@ -183,7 +183,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
     if (mode === "associated") return [];
     return browser.breadcrumbItems.map(item => ({
       ...item,
-      onClick: item.onClick ? () => { setInstructions(null); setExpandedSections(new Set()); item.onClick!(); } : undefined,
+      onClick: item.onClick ? () => { setInstructions(null); setExpandedSections(new Set()); item.onClick!(); } : undefined
     }));
   }, [mode, browser.breadcrumbItems]);
 

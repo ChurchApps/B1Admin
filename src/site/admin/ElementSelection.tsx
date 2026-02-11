@@ -25,7 +25,7 @@ export const ElementSelection: React.FC<Props> = ({
   onMoveUp,
   onMoveDown,
   onUpdate,
-  children,
+  children
 }) => {
   return (
     <Box
@@ -33,7 +33,7 @@ export const ElementSelection: React.FC<Props> = ({
         position: "relative",
         outline: isSelected ? "2px solid #2196f3" : "none",
         outlineOffset: "2px",
-        transition: "outline 0.2s ease",
+        transition: "outline 0.2s ease"
       }}
     >
       {children}
@@ -54,7 +54,7 @@ export const ElementSelection: React.FC<Props> = ({
               borderRadius: 1,
               boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
               padding: 0.5,
-              zIndex: 1002,
+              zIndex: 1002
             }}
           >
             <Tooltip title="Edit">

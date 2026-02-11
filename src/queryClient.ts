@@ -8,7 +8,7 @@ export const queryClient = new QueryClient({
       queryFn: async ({ queryKey }) => {
         const [path, apiListType] = queryKey;
         return ApiHelper.get(path as string, apiListType as ApiListType);
-      },
-    },
-  },
+      }
+    }
+  }
 });

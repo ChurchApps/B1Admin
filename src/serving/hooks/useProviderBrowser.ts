@@ -154,9 +154,7 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
   // Build breadcrumb items
   const breadcrumbItems = useMemo(() => {
     const providerName = currentProviderInfo?.name || selectedProviderId;
-    const items: { label: string; onClick?: () => void }[] = [
-      { label: providerName, onClick: () => navigateToBreadcrumb(-1) }
-    ];
+    const items: { label: string; onClick?: () => void }[] = [{ label: providerName, onClick: () => navigateToBreadcrumb(-1) }];
     breadcrumbTitles.forEach((title, index) => {
       items.push({ label: title, onClick: () => navigateToBreadcrumb(index) });
     });
@@ -207,6 +205,6 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
     navigateToBreadcrumb,
     changeProvider,
     reset,
-    isLeafFolder,
+    isLeafFolder
   };
 }

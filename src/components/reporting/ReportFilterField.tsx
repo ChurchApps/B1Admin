@@ -19,12 +19,8 @@ export const ReportFilterField = (props: Props) => {
 
   const init = async () => {
     switch (props.parameter.sourceKey) {
-      case "provided":
-        setRawData(props.parameter.options);
-        break;
-      case "month":
-        setRawData(getMonths());
-        break;
+      case "provided": setRawData(props.parameter.options); break;
+      case "month": setRawData(getMonths()); break;
       case "campus":
         ApiHelper.get("/campuses", "AttendanceApi").then((data) => {
           data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
@@ -95,7 +91,7 @@ export const ReportFilterField = (props: Props) => {
       Locale.label("month.september"),
       Locale.label("month.october"),
       Locale.label("month.november"),
-      Locale.label("month.december"),
+      Locale.label("month.december")
     ];
 
     const result = [];
@@ -140,13 +136,9 @@ export const ReportFilterField = (props: Props) => {
         case "campus":
         case "service":
         case "serviceTime":
-        case "group":
-          options = getIdName();
-          break;
+        case "group": options = getIdName(); break;
         case "month":
-        case "provided":
-          options = rawData;
-          break;
+        case "provided": options = rawData; break;
       }
     }
 
@@ -165,7 +157,7 @@ export const ReportFilterField = (props: Props) => {
 
   React.useEffect(() => {
     init();
-  }, [props.parameter.keyName, isMounted]); //eslint-disable-line
+  }, [props.parameter.keyName, isMounted]);
 
   let result = <></>;
   switch (props.parameter.source) {

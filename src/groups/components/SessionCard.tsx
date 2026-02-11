@@ -13,9 +13,7 @@ interface Props {
   canEdit: boolean;
 }
 
-export const SessionCard: React.FC<Props> = ({
-  session, attendanceCount, isSelected, onView, onEdit, canEdit 
-}) => {
+export const SessionCard: React.FC<Props> = ({ session, attendanceCount, isSelected, onView, onEdit, canEdit }) => {
   const getAttendanceIcon = (count: number) => {
     if (count >= 10) return "🟢";
     if (count >= 5) return "🟡";
@@ -52,9 +50,9 @@ export const SessionCard: React.FC<Props> = ({
         boxShadow: isSelected ? 3 : 1,
         "&:hover": {
           boxShadow: 3,
-          transform: "translateY(-2px)",
+          transform: "translateY(-2px)"
         },
-        transition: "all 0.2s ease-in-out",
+        transition: "all 0.2s ease-in-out"
       }}
       onClick={() => onView(session)}>
       <CardContent>

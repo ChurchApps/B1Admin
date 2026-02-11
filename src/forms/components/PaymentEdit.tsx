@@ -17,12 +17,8 @@ export const PaymentEdit: React.FC<Props> = (props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     e.preventDefault();
     switch (e.target.name) {
-      case "fundId":
-        setFundId(e.target.value);
-        break;
-      case "amount":
-        setAmount(Number(e.target.value));
-        break;
+      case "fundId": setFundId(e.target.value); break;
+      case "amount": setAmount(Number(e.target.value)); break;
     }
     const q = { ...props.question };
     if (e.target.name === "fundId") {
@@ -48,7 +44,7 @@ export const PaymentEdit: React.FC<Props> = (props) => {
         props.updatedFunction(q);
       }
     });
-  }, [fundId, props.question, props.updatedFunction]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fundId, props.question, props.updatedFunction]);
 
   const getFundOptions = () =>
     funds.map((fund: FundInterface) => (

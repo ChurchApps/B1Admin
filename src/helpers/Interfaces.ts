@@ -295,7 +295,7 @@ export const allStyleOptions: StyleOption[] = [
     default: "solid",
     options: [
       "none", "solid", "dotted", "dashed", "double", "groove", "ridge", "inset", "outset"
-    ] 
+    ]
   },
   { label: "Border Width", key: "border-width", type: "px", default: "1" },
   { label: "Background Color", key: "background-color", type: "color", default: "#FF0000" },

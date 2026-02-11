@@ -29,31 +29,17 @@ export function PickColors(props: Props) {
     e.preventDefault();
     const val = e.target.value;
     switch (e.target.name) {
-      case "background":
-        props.updatedCallback(val, props.textColor, props.headingColor, props.linkColor);
-        break;
+      case "background": props.updatedCallback(val, props.textColor, props.headingColor, props.linkColor); break;
       case "backgroundType":
         switch (val) {
-          case "image":
-            props.updatedCallback("https://content.churchapps.org/stockPhotos/4/bible.png", props.textColor, props.headingColor, props.linkColor);
-            break;
-          case "youtube":
-            props.updatedCallback("youtube:3iXYciBTQ0c", props.textColor, props.headingColor, props.linkColor);
-            break;
-          default:
-            props.updatedCallback("#000000", props.textColor, props.headingColor, props.linkColor);
-            break;
+          case "image": props.updatedCallback("https://content.churchapps.org/stockPhotos/4/bible.png", props.textColor, props.headingColor, props.linkColor); break;
+          case "youtube": props.updatedCallback("youtube:3iXYciBTQ0c", props.textColor, props.headingColor, props.linkColor); break;
+          default: props.updatedCallback("#000000", props.textColor, props.headingColor, props.linkColor); break;
         }
         break;
-      case "textColor":
-        props.updatedCallback(props.background, val, props.headingColor, props.linkColor);
-        break;
-      case "headingColor":
-        props.updatedCallback(props.background, props.textColor, val, props.linkColor);
-        break;
-      case "youtubeId":
-        props.updatedCallback("youtube:" + val, props.textColor, props.headingColor, props.linkColor);
-        break;
+      case "textColor": props.updatedCallback(props.background, val, props.headingColor, props.linkColor); break;
+      case "headingColor": props.updatedCallback(props.background, props.textColor, val, props.linkColor); break;
+      case "youtubeId": props.updatedCallback("youtube:" + val, props.textColor, props.headingColor, props.linkColor); break;
     }
   };
 
@@ -72,18 +58,10 @@ export function PickColors(props: Props) {
 
   const updateField = (field: "background" | "textColor" | "headingColor" | "linkColor", value: string) => {
     switch (field) {
-      case "background":
-        props.updatedCallback(value, props.textColor, props.headingColor, props.linkColor);
-        break;
-      case "textColor":
-        props.updatedCallback(props.background, value, props.headingColor, props.linkColor);
-        break;
-      case "headingColor":
-        props.updatedCallback(props.background, props.textColor, value, props.linkColor);
-        break;
-      case "linkColor":
-        props.updatedCallback(props.background, props.textColor, props.headingColor, value);
-        break;
+      case "background": props.updatedCallback(value, props.textColor, props.headingColor, props.linkColor); break;
+      case "textColor": props.updatedCallback(props.background, value, props.headingColor, props.linkColor); break;
+      case "headingColor": props.updatedCallback(props.background, props.textColor, value, props.linkColor); break;
+      case "linkColor": props.updatedCallback(props.background, props.textColor, props.headingColor, value); break;
     }
   };
 
@@ -129,7 +107,7 @@ export function PickColors(props: Props) {
           <MenuItem value="image">Image</MenuItem>
           <MenuItem value="youtube">Youtube Video</MenuItem>
         </Select>
-      </FormControl>,
+      </FormControl>
     ];
 
     if (backgroundType === "color") {
@@ -208,16 +186,10 @@ export function PickColors(props: Props) {
     let name = "accent";
     switch (background) {
       case "light":
-      case "lightAccent":
-        name = text === "darkAccent" ? "accent" : "darkAccent";
-        break;
-      case "accent":
-        name = text === "lightAccent" ? "darkAccent" : "lightAccent";
-        break;
+      case "lightAccent": name = text === "darkAccent" ? "accent" : "darkAccent"; break;
+      case "accent": name = text === "lightAccent" ? "darkAccent" : "lightAccent"; break;
       case "darkAccent":
-      case "dark":
-        name = text === "lightAccent" ? "accent" : "lightAccent";
-        break;
+      case "dark": name = text === "lightAccent" ? "accent" : "lightAccent"; break;
     }
     return name;
   };
@@ -258,7 +230,7 @@ export function PickColors(props: Props) {
               border: "1px solid " + t,
               borderRadius: 5,
               padding: 5,
-              marginBottom: 3,
+              marginBottom: 3
             }}>
             Sample Text - <span style={{ color: l }}>Sample Link</span>
           </a>
@@ -303,12 +275,8 @@ export function PickColors(props: Props) {
 
   let currentTab = null;
   switch (tabValue) {
-    case "suggested":
-      currentTab = getSuggestedColors();
-      break;
-    case "custom":
-      currentTab = getManualColors();
-      break;
+    case "suggested": currentTab = getSuggestedColors(); break;
+    case "custom": currentTab = getManualColors(); break;
   }
 
   return (
@@ -322,7 +290,7 @@ export function PickColors(props: Props) {
           border: "1px solid " + props.textColor,
           borderRadius: 5,
           padding: 5,
-          marginBottom: 10,
+          marginBottom: 10
         }}>
         Sample Text
       </div>

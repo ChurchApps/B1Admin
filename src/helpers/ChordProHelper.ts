@@ -21,7 +21,7 @@ export class ChordProHelper {
     "A#": 10,
     Bb: 10,
     B: 11,
-    Cb: 11,
+    Cb: 11
   };
 
   // Array to convert semitone numbers back to note names (using sharps here)
@@ -110,9 +110,7 @@ export class ChordProHelper {
           l = this.replaceChords(l);
           result.push('<div class="line">' + l + "</div>");
           break;
-        case "empty":
-          result.push("<br/>");
-          break;
+        case "empty": result.push("<br/>"); break;
       }
     });
     return result.join("\n");

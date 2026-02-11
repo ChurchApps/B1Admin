@@ -30,8 +30,8 @@ export function StylesManager() {
             lightAccent: "#DDDDDD",
             accent: "#0000DD",
             darkAccent: "#9999DD",
-            dark: "#000000",
-          }),
+            dark: "#000000"
+          })
         });
       }
     });

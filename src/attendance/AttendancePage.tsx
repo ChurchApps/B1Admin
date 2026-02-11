@@ -1,12 +1,9 @@
 import React from "react";
-import {
-  Grid, Icon, Box, Card, CardContent, Container, Stack, Typography
-} from "@mui/material";
+import { Grid, Icon, Box, Card, CardContent, Container, Stack, Typography } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Group as GroupIcon } from "@mui/icons-material";
-import { Locale, UserHelper, ApiHelper, PageHeader } from "@churchapps/apphelper";
+import { Locale, ApiHelper, PageHeader } from "@churchapps/apphelper";
 import { AttendanceSetup } from "./components/AttendanceSetup";
 import { AttendanceNavigation } from "./components/AttendanceNavigation";
-import { Permissions } from "@churchapps/apphelper";
 import { ReportWithFilter } from "../components/reporting";
 
 export const AttendancePage = () => {
@@ -16,21 +13,15 @@ export const AttendancePage = () => {
     serviceTimes: 0,
     scheduledGroups: 0,
     unscheduledGroups: 0,
-    totalGroups: 0,
+    totalGroups: 0
   });
 
   const getCurrentTab = () => {
     let currentTab = null;
     switch (selectedTab) {
-      case "setup":
-        currentTab = <AttendanceSetup />;
-        break;
-      case "attendance":
-        currentTab = <ReportWithFilter keyName="attendanceTrend" autoRun={true} />;
-        break;
-      case "groups":
-        currentTab = <ReportWithFilter keyName="groupAttendance" autoRun={true} />;
-        break;
+      case "setup": currentTab = <AttendanceSetup />; break;
+      case "attendance": currentTab = <ReportWithFilter keyName="attendanceTrend" autoRun={true} />; break;
+      case "groups": currentTab = <ReportWithFilter keyName="groupAttendance" autoRun={true} />; break;
     }
     return currentTab;
   };
@@ -40,7 +31,7 @@ export const AttendancePage = () => {
       const [attendanceData, groupsData, groupServiceTimes] = await Promise.all([
         ApiHelper.get("/attendancerecords/tree", "AttendanceApi"),
         ApiHelper.get("/groups", "MembershipApi"),
-        ApiHelper.get("/groupservicetimes", "AttendanceApi"),
+        ApiHelper.get("/groupservicetimes", "AttendanceApi")
       ]);
 
       const campuses = new Set();
@@ -61,7 +52,7 @@ export const AttendancePage = () => {
         serviceTimes,
         scheduledGroups,
         unscheduledGroups,
-        totalGroups: groupsData.length,
+        totalGroups: groupsData.length
       });
     } catch (error) {
       console.error("Error loading stats:", error);

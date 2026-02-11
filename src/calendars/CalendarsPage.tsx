@@ -50,11 +50,11 @@ export const CalendarsPage = () => {
     <TableRow
       key={calendar.id}
       sx={{
-        '&:hover': {
-          backgroundColor: 'action.hover',
-          cursor: 'pointer'
+        "&:hover": {
+          backgroundColor: "action.hover",
+          cursor: "pointer"
         },
-        transition: 'background-color 0.2s ease'
+        transition: "background-color 0.2s ease"
       }}
       onClick={() => navigate("/calendars/" + calendar.id)}
     >
@@ -62,13 +62,13 @@ export const CalendarsPage = () => {
         <Stack direction="row" spacing={2} alignItems="center">
           <Box
             sx={{
-              backgroundColor: 'primary.main',
-              color: 'white',
+              backgroundColor: "primary.main",
+              color: "white",
               borderRadius: 1,
               p: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               minWidth: 40,
               height: 40
             }}
@@ -91,8 +91,8 @@ export const CalendarsPage = () => {
           label={Locale.label("calendars.calendarList.active")}
           size="small"
           sx={{
-            backgroundColor: '#e8f5e9',
-            color: '#2e7d32',
+            backgroundColor: "#e8f5e9",
+            color: "#2e7d32",
             fontWeight: 600
           }}
         />
@@ -107,13 +107,13 @@ export const CalendarsPage = () => {
                 navigate("/calendars/" + calendar.id);
               }}
               sx={{
-                color: 'primary.main',
-                backgroundColor: 'primary.light',
-                '&:hover': {
-                  backgroundColor: 'primary.light',
-                  transform: 'translateY(-1px)'
+                color: "primary.main",
+                backgroundColor: "primary.light",
+                "&:hover": {
+                  backgroundColor: "primary.light",
+                  transform: "translateY(-1px)"
                 },
-                transition: 'all 0.2s ease'
+                transition: "all 0.2s ease"
               }}
               data-testid={`manage-calendar-${calendar.id}`}
             >
@@ -129,13 +129,13 @@ export const CalendarsPage = () => {
                   setCurrentCalendar(calendar);
                 }}
                 sx={{
-                  color: 'primary.main',
-                  backgroundColor: 'primary.light',
-                  '&:hover': {
-                    backgroundColor: 'primary.light',
-                    transform: 'translateY(-1px)'
+                  color: "primary.main",
+                  backgroundColor: "primary.light",
+                  "&:hover": {
+                    backgroundColor: "primary.light",
+                    transform: "translateY(-1px)"
                   },
-                  transition: 'all 0.2s ease'
+                  transition: "all 0.2s ease"
                 }}
                 data-testid={`edit-calendar-${calendar.id}`}
               >
@@ -173,8 +173,8 @@ export const CalendarsPage = () => {
               borderColor: "rgba(255,255,255,0.5)",
               "&:hover": {
                 borderColor: "#FFF",
-                backgroundColor: "rgba(255,255,255,0.1)",
-              },
+                backgroundColor: "rgba(255,255,255,0.1)"
+              }
             }}
             data-testid="add-calendar"
           >
@@ -196,7 +196,7 @@ export const CalendarsPage = () => {
                   backgroundColor: "var(--bg-sub)",
                   border: "1px dashed",
                   borderColor: "var(--border-main)",
-                  borderRadius: 2,
+                  borderRadius: 2
                 }}
               >
                 <CalendarIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
@@ -223,7 +223,7 @@ export const CalendarsPage = () => {
                 sx={{
                   borderRadius: 2,
                   border: "1px solid",
-                  borderColor: "var(--border-light)",
+                  borderColor: "var(--border-light)"
                 }}
               >
                 <Table>
@@ -256,7 +256,7 @@ export const CalendarsPage = () => {
                   sx={{
                     borderRadius: 2,
                     border: "1px solid",
-                    borderColor: "var(--border-light)",
+                    borderColor: "var(--border-light)"
                   }}
                 >
                   <Table>

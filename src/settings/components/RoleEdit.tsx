@@ -15,7 +15,7 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
 
   const roleQuery = useQuery<RoleInterface>({
     queryKey: [`/roles/${roleId}`, "MembershipApi"],
-    enabled: !UniqueIdHelper.isMissing(roleId),
+    enabled: !UniqueIdHelper.isMissing(roleId)
   });
 
   React.useEffect(() => {
@@ -45,7 +45,7 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
 
     const r = {
       ...role,
-      name: role.name.trim(),
+      name: role.name.trim()
     };
     ApiHelper.post("/roles", [r], "MembershipApi").then(() => updatedFunction());
   }, [role, updatedFunction]);

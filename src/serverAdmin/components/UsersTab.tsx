@@ -3,7 +3,7 @@ import { ApiHelper, DisplayBox, UserHelper, ArrayHelper, Locale } from "@churcha
 import { Navigate } from "react-router-dom";
 import { TextField, Button, Box, Typography, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import UserContext from "../../UserContext";
-import { type ChurchInterface, type UserChurchInterface } from "@churchapps/helpers";
+import { type UserChurchInterface } from "@churchapps/helpers";
 
 interface UserSearchResult {
   id: string;
@@ -93,7 +93,7 @@ export const UsersTab = () => {
               >
                 {Locale.label("common.search")}
               </Button>
-            ),
+            )
           }}
         />
         <br />

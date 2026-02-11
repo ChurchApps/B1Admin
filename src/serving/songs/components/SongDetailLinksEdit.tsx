@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type SongDetailLinkInterface } from "../../../helpers";
-import {
-  FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, type SelectChangeEvent, Stack, Typography, Box, IconButton 
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, type SelectChangeEvent, Stack, Typography, Box, IconButton } from "@mui/material";
 import { Link as LinkIcon, Done as DoneIcon, Add as AddIcon } from "@mui/icons-material";
 
 interface Props {
@@ -18,12 +16,8 @@ export const SongDetailLinksEdit = (props: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     const l = { ...editLink };
     switch (e.target.name) {
-      case "serviceKey":
-        l.serviceKey = e.target.value;
-        break;
-      case "service":
-        l.service = e.target.value;
-        break;
+      case "serviceKey": l.serviceKey = e.target.value; break;
+      case "service": l.service = e.target.value; break;
     }
     setEditLink(l);
   };
@@ -37,32 +31,18 @@ export const SongDetailLinksEdit = (props: Props) => {
   };
   useEffect(() => {
     loadData();
-  }, [props.songDetailId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.songDetailId]);
 
   const getPlaceholder = (link: SongDetailLinkInterface) => {
     let result = "";
     switch (link.service) {
-      case "Apple":
-        result = "10-000-reasons-bless-the-lord-10th-anniversary-feat/1618341399";
-        break;
-      case "CCLI":
-        result = "6016351";
-        break;
-      case "Genius":
-        result = "Matt-redman-10000-reasons-bless-the-lord-lyrics";
-        break;
-      case "Hymnary":
-        result = "https://hymnary.org/text/" + link.serviceKey;
-        break;
-      case "MusicBrainz":
-        result = "https://musicbrainz.org/recording/" + link.serviceKey;
-        break;
-      case "Spotify":
-        result = "2I9pjIezpupeJfVM1r9ZIm";
-        break;
-      case "YouTube":
-        result = "XtwIT8JjddM";
-        break;
+      case "Apple": result = "10-000-reasons-bless-the-lord-10th-anniversary-feat/1618341399"; break;
+      case "CCLI": result = "6016351"; break;
+      case "Genius": result = "Matt-redman-10000-reasons-bless-the-lord-lyrics"; break;
+      case "Hymnary": result = "https://hymnary.org/text/" + link.serviceKey; break;
+      case "MusicBrainz": result = "https://musicbrainz.org/recording/" + link.serviceKey; break;
+      case "Spotify": result = "2I9pjIezpupeJfVM1r9ZIm"; break;
+      case "YouTube": result = "XtwIT8JjddM"; break;
     }
     return result;
   };
@@ -70,27 +50,13 @@ export const SongDetailLinksEdit = (props: Props) => {
   const determineUrl = (link: SongDetailLinkInterface) => {
     let result = "";
     switch (link.service) {
-      case "Apple":
-        result = "https://music.apple.com/us/album/" + link.serviceKey;
-        break;
-      case "CCLI":
-        result = "https://songselect.ccli.com/Songs/" + link.serviceKey;
-        break;
-      case "Genius":
-        result = "https://genius.com/" + link.serviceKey;
-        break;
-      case "Hymnary":
-        result = "https://hymnary.org/text/" + link.serviceKey;
-        break;
-      case "MusicBrainz":
-        result = "https://musicbrainz.org/recording/" + link.serviceKey;
-        break;
-      case "Spotify":
-        result = "https://open.spotify.com/track/" + link.serviceKey;
-        break;
-      case "YouTube":
-        result = "https://www.youtube.com/watch?v=" + link.serviceKey;
-        break;
+      case "Apple": result = "https://music.apple.com/us/album/" + link.serviceKey; break;
+      case "CCLI": result = "https://songselect.ccli.com/Songs/" + link.serviceKey; break;
+      case "Genius": result = "https://genius.com/" + link.serviceKey; break;
+      case "Hymnary": result = "https://hymnary.org/text/" + link.serviceKey; break;
+      case "MusicBrainz": result = "https://musicbrainz.org/recording/" + link.serviceKey; break;
+      case "Spotify": result = "https://open.spotify.com/track/" + link.serviceKey; break;
+      case "YouTube": result = "https://www.youtube.com/watch?v=" + link.serviceKey; break;
     }
     return result;
   };
@@ -172,7 +138,7 @@ export const SongDetailLinksEdit = (props: Props) => {
               size="small"
               sx={{
                 color: "primary.main",
-                "&:hover": { backgroundColor: "primary.light" },
+                "&:hover": { backgroundColor: "primary.light" }
               }}>
               <AddIcon fontSize="small" />
             </IconButton>
@@ -181,7 +147,7 @@ export const SongDetailLinksEdit = (props: Props) => {
               size="small"
               sx={{
                 color: "success.main",
-                "&:hover": { backgroundColor: "success.light" },
+                "&:hover": { backgroundColor: "success.light" }
               }}>
               <DoneIcon fontSize="small" />
             </IconButton>

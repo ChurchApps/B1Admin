@@ -8,15 +8,7 @@ interface Props {
   onUpdate: (element: ElementInterface) => void;
 }
 
-const SPACING_TOKENS: Record<string, number> = {
-  "0": 0,
-  "xs": 4,
-  "sm": 8,
-  "md": 16,
-  "lg": 24,
-  "xl": 32,
-  "xxl": 48,
-};
+const SPACING_TOKENS: Record<string, number> = { "0": 0, "xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 32, "xxl": 48 };
 
 const snapToToken = (px: number): string => {
   let closest = "0";
@@ -167,46 +159,18 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
       zIndex: 1000,
       opacity: isHovered ? 1 : 0.6,
       transition: "opacity 0.2s",
-      borderRadius: "2px",
+      borderRadius: "2px"
     };
 
     switch (side) {
       case "top":
-        return {
-          ...base,
-          top: isMargin ? -16 : -8,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "40px",
-          height: `${baseSize}px`
-        };
+        return { ...base, top: isMargin ? -16 : -8, left: "50%", transform: "translateX(-50%)", width: "40px", height: `${baseSize}px` };
       case "bottom":
-        return {
-          ...base,
-          bottom: isMargin ? -16 : -8,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "40px",
-          height: `${baseSize}px`
-        };
+        return { ...base, bottom: isMargin ? -16 : -8, left: "50%", transform: "translateX(-50%)", width: "40px", height: `${baseSize}px` };
       case "left":
-        return {
-          ...base,
-          left: isMargin ? -16 : -8,
-          top: "50%",
-          transform: "translateY(-50%)",
-          width: `${baseSize}px`,
-          height: "40px"
-        };
+        return { ...base, left: isMargin ? -16 : -8, top: "50%", transform: "translateY(-50%)", width: `${baseSize}px`, height: "40px" };
       case "right":
-        return {
-          ...base,
-          right: isMargin ? -16 : -8,
-          top: "50%",
-          transform: "translateY(-50%)",
-          width: `${baseSize}px`,
-          height: "40px"
-        };
+        return { ...base, right: isMargin ? -16 : -8, top: "50%", transform: "translateY(-50%)", width: `${baseSize}px`, height: "40px" };
     }
   };
 
@@ -220,7 +184,7 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
       fontSize: "12px",
       whiteSpace: "nowrap",
       pointerEvents: "none",
-      zIndex: 1001,
+      zIndex: 1001
     };
 
     switch (side) {
@@ -271,9 +235,7 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
         right: 0,
         bottom: 0,
         pointerEvents: "none",
-        "& > div": {
-          pointerEvents: "auto",
-        },
+        "& > div": { pointerEvents: "auto" }
       }}
     >
       {/* Margin handles */}

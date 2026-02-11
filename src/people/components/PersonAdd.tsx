@@ -19,9 +19,7 @@ interface Props {
   showCreatePersonOnNotFound?: boolean;
 }
 
-export const PersonAdd: React.FC<Props> = ({
-  addFunction, getPhotoUrl, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false 
-}) => {
+export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchClicked, filterList = [], includeEmail = false, actionLabel, showCreatePersonOnNotFound = false }) => {
   const [searchResults, setSearchResults] = useState<PersonInterface[]>([]);
   const [searchText, setSearchText] = useState("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
@@ -67,7 +65,7 @@ export const PersonAdd: React.FC<Props> = ({
             <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch} data-testid="person-add-search-button" aria-label="Search for person">
               {Locale.label("common.search")}
             </Button>
-          ),
+          )
         }}
       />
       {showCreatePersonOnNotFound && hasSearched && searchText && (
@@ -95,7 +93,7 @@ export const PersonAdd: React.FC<Props> = ({
                   last: "",
                   middle: "",
                   nick: "",
-                  display: "",
+                  display: ""
                 },
                 contactInfo: {
                   address1: "",
@@ -106,13 +104,13 @@ export const PersonAdd: React.FC<Props> = ({
                   email: "",
                   homePhone: "",
                   workPhone: "",
-                  mobilePhone: "",
+                  mobilePhone: ""
                 },
                 membershipStatus: "",
                 gender: "",
                 birthDate: null,
                 maritalStatus: "",
-                nametagNotes: "",
+                nametagNotes: ""
               }}
               updatedFunction={() => {
                 setOpen(false);

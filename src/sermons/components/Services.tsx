@@ -22,7 +22,7 @@ export const Services: React.FC = () => {
       onClick={handleAdd}
       data-testid="add-service-button"
       sx={{
-        textTransform: 'none',
+        textTransform: "none",
         fontWeight: 600
       }}
     >
@@ -45,9 +45,7 @@ export const Services: React.FC = () => {
     const defaultDate = getNextSunday();
     defaultDate.setTime(defaultDate.getTime() + (9 * 60 * 60 * 1000));
 
-    const link: StreamingServiceInterface = {
-      churchId: UserHelper.currentUserChurch.church.id, serviceTime: defaultDate, chatBefore: 600, chatAfter: 600, duration: 3600, earlyStart: 600, provider: "youtube_live", providerKey: "", recurring: false, timezoneOffset: tz, videoUrl: "", label: "Sunday Morning", sermonId: "latest" 
-    };
+    const link: StreamingServiceInterface = { churchId: UserHelper.currentUserChurch.church.id, serviceTime: defaultDate, chatBefore: 600, chatAfter: 600, duration: 3600, earlyStart: 600, provider: "youtube_live", providerKey: "", recurring: false, timezoneOffset: tz, videoUrl: "", label: "Sunday Morning", sermonId: "latest" };
     setCurrentService(link);
     loadData();
   };
@@ -65,7 +63,7 @@ export const Services: React.FC = () => {
         <tr key={service.id}>
           <td>
             <Stack direction="row" spacing={1} alignItems="center">
-              <VideoCallIcon sx={{ fontSize: 18, color: 'primary.main' }} />
+              <VideoCallIcon sx={{ fontSize: 18, color: "primary.main" }} />
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 {service.label}
               </Typography>
@@ -73,7 +71,7 @@ export const Services: React.FC = () => {
                 <Chip
                   label={Locale.label("sermons.liveStreamTimes.servicesTab.weekly")}
                   size="small"
-                  sx={{ backgroundColor: '#e8f5e9', color: '#2e7d32' }}
+                  sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }}
                 />
               )}
             </Stack>
@@ -89,9 +87,9 @@ export const Services: React.FC = () => {
               variant="outlined"
               onClick={() => setCurrentService(service)}
               sx={{
-                minWidth: 'auto',
+                minWidth: "auto",
                 borderRadius: 2,
-                textTransform: 'none'
+                textTransform: "none"
               }}
             >
               <Icon sx={{ fontSize: 18 }}>edit</Icon>
@@ -110,9 +108,9 @@ export const Services: React.FC = () => {
   if (currentService !== null) return <ServiceEdit currentService={currentService} updatedFunction={handleUpdated} />;
   else {
     return (
-    <DisplayBox headerIcon="calendar_month" headerText={Locale.label("sermons.liveStreamTimes.servicesTab.title")} editContent={getEditContent()} id="servicesBox" data-testid="services-display-box">
-      {getTable()}
-    </DisplayBox>
+      <DisplayBox headerIcon="calendar_month" headerText={Locale.label("sermons.liveStreamTimes.servicesTab.title")} editContent={getEditContent()} id="servicesBox" data-testid="services-display-box">
+        {getTable()}
+      </DisplayBox>
     );
   }
 

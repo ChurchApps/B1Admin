@@ -5,9 +5,7 @@ import { ArrayHelper } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
-import {
-  Box, Button, Card, CardContent, Icon, IconButton, InputAdornment, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography
-} from "@mui/material";
+import { Box, Button, Card, CardContent, Icon, IconButton, InputAdornment, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 import { Add as AddIcon, CalendarMonth as CalendarIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import React from "react";
 import { SermonEdit } from "./SermonEdit";
@@ -50,11 +48,11 @@ export const Sermons = () => {
         onClick={handleMenuClick}
         data-testid="add-sermon-button"
         sx={{
-          color: '#FFF',
-          borderColor: 'rgba(255,255,255,0.5)',
-          '&:hover': {
-            borderColor: '#FFF',
-            backgroundColor: 'rgba(255,255,255,0.1)'
+          color: "#FFF",
+          borderColor: "rgba(255,255,255,0.5)",
+          "&:hover": {
+            borderColor: "#FFF",
+            backgroundColor: "rgba(255,255,255,0.1)"
           }
         }}
       >
@@ -65,12 +63,12 @@ export const Sermons = () => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right"
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right"
         }}
       >
         <MenuItem onClick={handleAddSermon}>
@@ -81,7 +79,7 @@ export const Sermons = () => {
         </MenuItem>
         <MenuItem onClick={handleAddPermanentLiveUrl}>
           <Stack direction="row" spacing={1} alignItems="center">
-            <LiveTvIcon fontSize="small" sx={{ color: 'error.main' }} />
+            <LiveTvIcon fontSize="small" sx={{ color: "error.main" }} />
             <Typography>{Locale.label("sermons.addPermanentLiveUrl")}</Typography>
           </Stack>
         </MenuItem>
@@ -115,9 +113,7 @@ export const Sermons = () => {
   };
 
   const handleAdd = (permanentUrl: boolean) => {
-    const v: SermonInterface = {
-      churchId: UserHelper.currentUserChurch.church.id, duration: 5400, videoType: "youtube", videoData: "", title: Locale.label("sermons.sermonEdit.newSermon"), permanentUrl
-    };
+    const v: SermonInterface = { churchId: UserHelper.currentUserChurch.church.id, duration: 5400, videoType: "youtube", videoData: "", title: Locale.label("sermons.sermonEdit.newSermon"), permanentUrl };
     if (permanentUrl) {
       v.videoType = "youtube_channel";
       v.videoData = Locale.label("sermons.sermonEdit.channelIdPlaceholder");
@@ -144,13 +140,13 @@ export const Sermons = () => {
         <TableRow
           key={video.id}
           sx={{
-            '&:hover': { backgroundColor: 'action.hover' },
-            transition: 'background-color 0.2s ease'
+            "&:hover": { backgroundColor: "action.hover" },
+            transition: "background-color 0.2s ease"
           }}
         >
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <PlaylistIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+              <PlaylistIcon sx={{ fontSize: 16, color: "text.secondary" }} />
               <Typography variant="body2">
                 {getPlaylistTitle(video.playlistId) || Locale.label("sermons.noPlaylist")}
               </Typography>
@@ -163,7 +159,7 @@ export const Sermons = () => {
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <CalendarIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+              <CalendarIcon sx={{ fontSize: 16, color: "text.secondary" }} />
               <Typography variant="body2" color="text.secondary">
                 {(video.publishDate) ? DateHelper.prettyDate(DateHelper.toDate(video.publishDate)) : Locale.label("sermons.notScheduled")}
               </Typography>
@@ -176,7 +172,7 @@ export const Sermons = () => {
                 onClick={() => { setCurrentSermon(video); }}
                 data-testid={`edit-sermon-${video.id}`}
                 aria-label={`Edit ${video.title}`}
-                sx={{ color: 'primary.main' }}
+                sx={{ color: "primary.main" }}
               >
                 <Icon>edit</Icon>
               </IconButton>
@@ -190,9 +186,9 @@ export const Sermons = () => {
 
   const getEmptyState = () => (
     <TableRow>
-      <TableCell colSpan={4} sx={{ textAlign: 'center', py: 8 }}>
+      <TableCell colSpan={4} sx={{ textAlign: "center", py: 8 }}>
         <Stack spacing={2} alignItems="center">
-          <LiveTvIcon sx={{ fontSize: 64, color: 'text.secondary' }} />
+          <LiveTvIcon sx={{ fontSize: 64, color: "text.secondary" }} />
           <Typography variant="h6" color="text.secondary">
             {searchTerm ? Locale.label("sermons.noSermonsFound") : Locale.label("sermons.noSermonsYet")}
           </Typography>
@@ -220,19 +216,19 @@ export const Sermons = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: 'var(--bg-card)',
-              '& .MuiTableCell-root': {
-                borderBottom: '2px solid',
-                borderBottomColor: 'divider',
+              backgroundColor: "var(--bg-card)",
+              "& .MuiTableCell-root": {
+                borderBottom: "2px solid",
+                borderBottomColor: "divider",
                 fontWeight: 600
               }
             }}
           >
             <TableRow>
-              <TableCell sx={{ width: '25%' }}>{Locale.label("sermons.playlist")}</TableCell>
-              <TableCell sx={{ width: '45%' }}>{Locale.label("sermons.sermon")}</TableCell>
-              <TableCell sx={{ width: '25%' }}>{Locale.label("sermons.publishDate")}</TableCell>
-              <TableCell sx={{ width: '5%' }}></TableCell>
+              <TableCell sx={{ width: "25%" }}>{Locale.label("sermons.playlist")}</TableCell>
+              <TableCell sx={{ width: "45%" }}>{Locale.label("sermons.sermon")}</TableCell>
+              <TableCell sx={{ width: "25%" }}>{Locale.label("sermons.publishDate")}</TableCell>
+              <TableCell sx={{ width: "5%" }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -273,12 +269,12 @@ export const Sermons = () => {
         <Box sx={{ px: 3 }}>
           <Card sx={{
             borderRadius: 2,
-            border: '1px solid',
-            borderColor: 'var(--border-light)'
+            border: "1px solid",
+            borderColor: "var(--border-light)"
           }}>
             {/* Search Bar */}
             {sermons.length > 0 && (
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
                 <TextField
                   fullWidth
                   placeholder={Locale.label("sermons.searchPlaceholder")}
@@ -289,7 +285,7 @@ export const Sermons = () => {
                       <InputAdornment position="start">
                         <SearchIcon />
                       </InputAdornment>
-                    ),
+                    )
                   }}
                   sx={{ maxWidth: 400 }}
                 />

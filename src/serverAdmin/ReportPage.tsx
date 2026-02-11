@@ -37,8 +37,8 @@ export const ReportPage = () => {
           {
             href: "/admin",
             text: Locale.label("serverAdmin.reportPage.serverAdmin"),
-            icon: <BackIcon />,
-          },
+            icon: <BackIcon />
+          }
         ]}
         bgColor="error.main">
         <Chip
@@ -49,7 +49,7 @@ export const ReportPage = () => {
             fontWeight: 600,
             fontSize: "0.75rem",
             backgroundColor: "#FFF",
-            color: "error.main",
+            color: "error.main"
           }}
         />
       </PageHeader>
@@ -63,7 +63,7 @@ export const ReportPage = () => {
               borderRadius: 2,
               border: "1px solid",
               borderColor: "divider",
-              minHeight: 400,
+              minHeight: 400
             }}>
             <CardContent sx={{ p: 0 }}>
               {loading ? (

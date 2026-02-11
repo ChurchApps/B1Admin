@@ -1,7 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import {
-  Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Paper, Divider
-} from "@mui/material";
+import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Paper, Divider } from "@mui/material";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
@@ -19,7 +17,7 @@ import {
   AssignmentInd as AssignedIcon,
   AssignmentTurnedIn as CreatedIcon,
   CheckBoxOutlined as OpenTasksIcon,
-  CheckBox as ClosedTasksIcon,
+  CheckBox as ClosedTasksIcon
 } from "@mui/icons-material";
 
 interface Props {
@@ -35,13 +33,13 @@ export const TaskList = memo((props: Props) => {
   // React Query hooks for data fetching
   const tasks = useQuery<TaskInterface[]>({
     queryKey: props.status === Locale.label("tasks.taskPage.closed") ? ["/tasks/closed", "DoingApi"] : ["/tasks", "DoingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: ["/groupmembers?personId=" + UserHelper.person?.id, "MembershipApi"],
     enabled: !!UserHelper.person?.id,
-    placeholderData: [],
+    placeholderData: []
   });
 
   const groupIds = useMemo(() => {
@@ -59,7 +57,7 @@ export const TaskList = memo((props: Props) => {
       if (groupIds.length === 0) return [];
       const { ApiHelper } = await import("@churchapps/apphelper");
       return ApiHelper.post("/tasks/loadForGroups", { groupIds, status: props.status }, "DoingApi");
-    },
+    }
   });
 
   const editContent = (
@@ -73,7 +71,7 @@ export const TaskList = memo((props: Props) => {
       sx={{
         borderRadius: 2,
         textTransform: "none",
-        fontWeight: 600,
+        fontWeight: 600
       }}>
       {Locale.label("tasks.taskList.addTask")}
     </Button>
@@ -100,9 +98,9 @@ export const TaskList = memo((props: Props) => {
           backgroundColor: "var(--bg-sub)",
           "&:hover": {
             backgroundColor: "action.hover",
-            borderColor: "primary.main",
+            borderColor: "primary.main"
           },
-          "&:last-child": { mb: 0 },
+          "&:last-child": { mb: 0 }
         }}>
         <Stack spacing={2}>
           {/* Task Header */}
@@ -111,7 +109,7 @@ export const TaskList = memo((props: Props) => {
               display: "flex",
               alignItems: "flex-start",
               justifyContent: "space-between",
-              gap: 2,
+              gap: 2
             }}>
             <Box sx={{ flex: 1, minWidth: 0 }}>
               <Typography
@@ -124,7 +122,7 @@ export const TaskList = memo((props: Props) => {
                   textDecoration: "none",
                   fontSize: "1.1rem",
                   wordBreak: "break-word",
-                  "&:hover": { textDecoration: "underline" },
+                  "&:hover": { textDecoration: "underline" }
                 }}>
                 {task.title}
               </Typography>
@@ -146,7 +144,7 @@ export const TaskList = memo((props: Props) => {
                 backgroundColor: task.status === "Open" ? "warning.light" : "success.light",
                 color: task.status === "Open" ? "warning.dark" : "success.dark",
                 fontWeight: 600,
-                flexShrink: 0,
+                flexShrink: 0
               }}
             />
           </Box>
@@ -258,7 +256,7 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "var(--border-light)",
+          borderColor: "var(--border-light)"
         }}>
         <CardContent>
           <Loading />
@@ -286,7 +284,7 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "var(--border-light)",
+          borderColor: "var(--border-light)"
         }}>
         <CardContent>
           {/* Header */}
@@ -309,7 +307,7 @@ export const TaskList = memo((props: Props) => {
                     aria-label="Show closed tasks"
                     sx={{
                       textTransform: "none",
-                      fontWeight: 600,
+                      fontWeight: 600
                     }}>
                     {Locale.label("tasks.tasksPage.showClosed")}
                   </Button>
@@ -323,7 +321,7 @@ export const TaskList = memo((props: Props) => {
                     aria-label="Show open tasks"
                     sx={{
                       textTransform: "none",
-                      fontWeight: 600,
+                      fontWeight: 600
                     }}>
                     {Locale.label("tasks.tasksPage.showOpen")}
                   </Button>
@@ -346,7 +344,7 @@ export const TaskList = memo((props: Props) => {
                 textAlign: "center",
                 backgroundColor: "var(--bg-sub)",
                 border: "1px dashed",
-                borderColor: "var(--border-main)",
+                borderColor: "var(--border-main)"
               }}>
               <TaskIcon sx={{ fontSize: 48, color: "var(--text-muted)", mb: 2 }} />
               <Typography variant="body1" color="text.secondary">

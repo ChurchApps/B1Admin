@@ -1,9 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, DateHelper, Locale, type PersonInterface, type TaskInterface } from "@churchapps/apphelper";
-import {
-  Table, TableBody, TableCell, TableHead, TableRow, Card, CardContent, Typography, Stack, Box, Button, Paper, Avatar 
-} from "@mui/material";
+import { Table, TableBody, TableCell, TableHead, TableRow, Card, CardContent, Typography, Stack, Box, Button, Paper, Avatar } from "@mui/material";
 import {
   AssignmentReturn as ChangesIcon,
   CheckCircle as ApplyIcon,
@@ -12,7 +10,7 @@ import {
   Phone as PhoneIcon,
   Home as AddressIcon,
   Cake as BirthdayIcon,
-  FamilyRestroom as FamilyIcon,
+  FamilyRestroom as FamilyIcon
 } from "@mui/icons-material";
 
 interface Props {
@@ -47,7 +45,7 @@ export const RequestedChanges = (props: Props) => {
               width: 60,
               height: 60,
               border: "2px solid",
-              borderColor: "primary.main",
+              borderColor: "primary.main"
             }}
             alt={Locale.label("tasks.requestedChanges.newProfile")}
           />
@@ -58,7 +56,7 @@ export const RequestedChanges = (props: Props) => {
           key={i}
           sx={{
             "&:hover": { backgroundColor: "action.hover" },
-            "& td": { py: 2 },
+            "& td": { py: 2 }
           }}>
           <TableCell>
             <Stack direction="row" alignItems="center" spacing={1}>
@@ -88,51 +86,25 @@ export const RequestedChanges = (props: Props) => {
     requestedChanges.forEach((change) => {
       const value = change.value;
       switch (change.field) {
-        case "name.first":
-          p.name.first = value;
-          break;
-        case "name.middle":
-          p.name.middle = value;
-          break;
-        case "name.last":
-          p.name.last = value;
-          break;
+        case "name.first": p.name.first = value; break;
+        case "name.middle": p.name.middle = value; break;
+        case "name.last": p.name.last = value; break;
         case "photo": {
           p.photo = value;
           const getTime = value.split("?dt=")[1];
           p.photoUpdated = new Date(+getTime);
           break;
         }
-        case "birthDate":
-          p.birthDate = DateHelper.toDate(value);
-          break;
-        case "contactInfo.email":
-          p.contactInfo.email = value;
-          break;
-        case "contactInfo.address1":
-          p.contactInfo.address1 = value;
-          break;
-        case "contactInfo.address2":
-          p.contactInfo.address2 = value;
-          break;
-        case "contactInfo.city":
-          p.contactInfo.city = value;
-          break;
-        case "contactInfo.state":
-          p.contactInfo.state = value;
-          break;
-        case "contactInfo.zip":
-          p.contactInfo.zip = value;
-          break;
-        case "contactInfo.homePhone":
-          p.contactInfo.homePhone = value;
-          break;
-        case "contactInfo.mobilePhone":
-          p.contactInfo.mobilePhone = value;
-          break;
-        case "contactInfo.workPhone":
-          p.contactInfo.workPhone = value;
-          break;
+        case "birthDate": p.birthDate = DateHelper.toDate(value); break;
+        case "contactInfo.email": p.contactInfo.email = value; break;
+        case "contactInfo.address1": p.contactInfo.address1 = value; break;
+        case "contactInfo.address2": p.contactInfo.address2 = value; break;
+        case "contactInfo.city": p.contactInfo.city = value; break;
+        case "contactInfo.state": p.contactInfo.state = value; break;
+        case "contactInfo.zip": p.contactInfo.zip = value; break;
+        case "contactInfo.homePhone": p.contactInfo.homePhone = value; break;
+        case "contactInfo.mobilePhone": p.contactInfo.mobilePhone = value; break;
+        case "contactInfo.workPhone": p.contactInfo.workPhone = value; break;
         case "familyMember": {
           const newPerson: PersonInterface = { name: { first: value, last: p.name.last }, contactInfo: {}, householdId: p.householdId };
           peopleArray.push(newPerson);
@@ -153,7 +125,7 @@ export const RequestedChanges = (props: Props) => {
         borderColor: "grey.200",
         mb: 3,
         transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 },
+        "&:hover": { boxShadow: 2 }
       }}>
       <CardContent>
         <Stack spacing={3}>
@@ -173,7 +145,7 @@ export const RequestedChanges = (props: Props) => {
                 sx={{
                   borderRadius: 2,
                   textTransform: "none",
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}>
                 {Locale.label("tasks.requestedChanges.apply")}
               </Button>
@@ -185,7 +157,7 @@ export const RequestedChanges = (props: Props) => {
             sx={{
               overflow: "hidden",
               border: "1px solid",
-              borderColor: "grey.200",
+              borderColor: "grey.200"
             }}>
             <Table>
               <TableHead>
@@ -204,7 +176,7 @@ export const RequestedChanges = (props: Props) => {
                 p: 2,
                 backgroundColor: "success.light",
                 borderRadius: 1,
-                textAlign: "center",
+                textAlign: "center"
               }}>
               <Typography variant="body2" sx={{ color: "success.dark", fontWeight: 600 }}>
                 {Locale.label("tasks.requestedChanges.applied")}

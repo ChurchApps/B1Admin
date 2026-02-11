@@ -71,7 +71,7 @@ export const AssignmentEdit = (props: Props) => {
 
   useEffect(() => {
     loadData();
-  }, [props.position?.groupId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.position?.groupId]);
 
   return (
     <>

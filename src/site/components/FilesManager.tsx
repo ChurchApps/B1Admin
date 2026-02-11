@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { FileUpload } from "../../components/FileUpload";
-import {
-  Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress
-} from "@mui/material";
+import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
 import { InputBox, ApiHelper, SmallButton, Locale } from "@churchapps/apphelper";
 import { Folder as FolderIcon, InsertDriveFile as FileIcon } from "@mui/icons-material";
 import { CardWithHeader, EmptyState } from "../../components/ui";

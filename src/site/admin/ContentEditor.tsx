@@ -91,7 +91,7 @@ export function ContentEditor(props: Props) {
   const zones: any = {
     cleanCentered: ["main"],
     embed: ["main"],
-    headerFooter: ["main"],
+    headerFooter: ["main"]
   };
 
   const churchSettings = props.config?.appearance || context?.userChurch?.settings || {};
@@ -175,7 +175,7 @@ export function ContentEditor(props: Props) {
         pageId: props.pageId,
         blockId: props.blockId,
         targetBlockId: data.blockId,
-        zone: zone,
+        zone: zone
       };
       if (sec.zone === "siteFooter") sec.pageId = null;
       setEditSection(sec);
@@ -192,7 +192,7 @@ export function ContentEditor(props: Props) {
     result.push(getAddSection(0, zone));
     const sections = zone === "block" ? container?.sections : ArrayHelper.getAll(container?.sections, "zone", zone);
     sections?.forEach((section) => {
-      if (section.targetBlockId)
+      if (section.targetBlockId) {
         result.push(
           <SectionBlock
             key={section.id}
@@ -204,7 +204,7 @@ export function ContentEditor(props: Props) {
             }}
           />
         );
-      else
+      } else {
         result.push(
           <Section
             key={section.id}
@@ -227,6 +227,7 @@ export function ContentEditor(props: Props) {
             onElementUpdate={handleRealtimeChange}
           />
         );
+      }
       result.push(getAddSection(section.sort + 0.1, zone));
     });
 
@@ -298,7 +299,7 @@ export function ContentEditor(props: Props) {
 
   const handleClickOutside = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (!target.closest('.elementWrapper') && !target.closest('.MuiDialog-root')) {
+    if (!target.closest(".elementWrapper") && !target.closest(".MuiDialog-root")) {
       setSelectedElementId(null);
     }
   };
@@ -372,20 +373,18 @@ export function ContentEditor(props: Props) {
   const getTheme = () => {
     if (deviceType === "mobile") {
       return createTheme({
-        breakpoints: {
-          values: { xs: 0, sm: 2000, md: 3000, lg: 4000, xl: 5000 },
-        },
+        breakpoints: { values: { xs: 0, sm: 2000, md: 3000, lg: 4000, xl: 5000 } },
         components: {
           MuiTextField: { defaultProps: { margin: "normal" } },
-          MuiFormControl: { defaultProps: { margin: "normal" } },
-        },
+          MuiFormControl: { defaultProps: { margin: "normal" } }
+        }
       });
     } else {
       return createTheme({
         components: {
           MuiTextField: { defaultProps: { margin: "normal" } },
-          MuiFormControl: { defaultProps: { margin: "normal" } },
-        },
+          MuiFormControl: { defaultProps: { margin: "normal" } }
+        }
       });
     }
   };
@@ -542,7 +541,7 @@ export function ContentEditor(props: Props) {
                     transform: "translateX(-50%)",
                     zIndex: 1000,
                     width: "min(600px, 80%)",
-                    maxWidth: "600px",
+                    maxWidth: "600px"
                   }}>
                   <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
                 </div>
@@ -554,7 +553,7 @@ export function ContentEditor(props: Props) {
                     transform: "translateX(-50%)",
                     zIndex: 1000,
                     width: "min(600px, 80%)",
-                    maxWidth: "600px",
+                    maxWidth: "600px"
                   }}>
                   <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
                 </div>

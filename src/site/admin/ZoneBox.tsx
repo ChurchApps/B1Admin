@@ -23,7 +23,7 @@ export function ZoneBox(props: ZoneBoxProps) {
           top: 1,
           zIndex: 99,
           backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)"
         }}>
         <Chip
           label={`Zone: ${keyName}`}
@@ -36,7 +36,7 @@ export function ZoneBox(props: ZoneBoxProps) {
             fontSize: "0.75rem",
             letterSpacing: "0.5px",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
-            "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.95)" },
+            "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.95)" }
           }}
         />
       </Box>

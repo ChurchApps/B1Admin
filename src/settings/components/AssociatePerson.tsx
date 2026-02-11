@@ -13,9 +13,7 @@ interface Props {
   showChangeOption?: boolean;
 }
 
-export const AssociatePerson = ({
-  person, handleAssociatePerson, searchStatus, filterList, onChangeClick = () => {}, showChangeOption = true 
-}: Props) => {
+export const AssociatePerson = ({ person, handleAssociatePerson, searchStatus, filterList, onChangeClick = () => {}, showChangeOption = true }: Props) => {
   const [showSearchPerson, setShowSearchPerson] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 

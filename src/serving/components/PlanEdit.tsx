@@ -41,15 +41,9 @@ export const PlanEdit = (props: Props) => {
     const p = { ...plan } as PlanInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "name":
-        p.name = value;
-        break;
-      case "serviceDate":
-        p.serviceDate = DateHelper.toDate(value);
-        break;
-      case "planTypeId":
-        p.planTypeId = value;
-        break;
+      case "name": p.name = value; break;
+      case "serviceDate": p.serviceDate = DateHelper.toDate(value); break;
+      case "planTypeId": p.planTypeId = value; break;
       case "copyMode":
         setCopyMode(value);
         return; // Don't update plan state
@@ -77,7 +71,7 @@ export const PlanEdit = (props: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/plans", "DoingApi"] });
       props.updatedFunction();
-    },
+    }
   });
 
   const deletePlanMutation = useMutation({
@@ -88,7 +82,7 @@ export const PlanEdit = (props: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/plans", "DoingApi"] });
       props.updatedFunction();
-    },
+    }
   });
 
   const handleSave = () => {

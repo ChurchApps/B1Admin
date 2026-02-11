@@ -1,7 +1,5 @@
 import { useState } from "react";
-import {
-  Box, TextField, MenuItem, Typography, Stack, Divider, InputAdornment
-} from "@mui/material";
+import { Box, TextField, MenuItem, Typography, Stack, Divider, InputAdornment } from "@mui/material";
 import {
   Palette as PaletteIcon,
   SpaceBar as SpaceBarIcon,
@@ -82,12 +80,7 @@ export function TokenPicker(props: TokenPickerProps) {
     ]
   };
 
-  const allTokenGroups: Record<string, TokenGroup> = {
-    colors: colorTokens,
-    spacing: spacingTokens,
-    typography: typographyTokens,
-    borderRadius: borderRadiusTokens
-  };
+  const allTokenGroups: Record<string, TokenGroup> = { colors: colorTokens, spacing: spacingTokens, typography: typographyTokens, borderRadius: borderRadiusTokens };
 
   const activeGroups = tokenTypes.map(type => allTokenGroups[type]).filter(Boolean);
 
@@ -149,11 +142,7 @@ export function TokenPicker(props: TokenPickerProps) {
         open,
         onOpen: () => setOpen(true),
         onClose: () => setOpen(false),
-        MenuProps: {
-          PaperProps: {
-            sx: { maxHeight: 400 }
-          }
-        }
+        MenuProps: { PaperProps: { sx: { maxHeight: 400 } } }
       }}
       InputProps={{
         startAdornment: preview && isColorToken ? (

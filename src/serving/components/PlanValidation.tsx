@@ -13,7 +13,7 @@ import {
   type PositionInterface,
   type TimeInterface,
   UserHelper,
-  Permissions,
+  Permissions
 } from "@churchapps/apphelper";
 
 interface Props {
@@ -139,7 +139,7 @@ export const PlanValidation = (props: Props) => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    fontStyle: "italic",
+                    fontStyle: "italic"
                   }}>
                   {plan.name} {Locale.label("plans.planValidation.cons")}
                 </b>
@@ -218,12 +218,12 @@ export const PlanValidation = (props: Props) => {
     if (externalPositions?.length > 0 && externalAssignments?.length > 0) {
       validate();
     }
-  }, [externalPositions, externalAssignments]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [externalPositions, externalAssignments]);
 
   useEffect(() => {
     getAll();
     validate();
-  }, [props.assignments, props.positions, props.people]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.assignments, props.positions, props.people]);
 
   const getErrorList = () => {
     if (errors.length === 0) return <p>{Locale.label("plans.planValidation.valPlan")}</p>;
@@ -252,7 +252,7 @@ export const PlanValidation = (props: Props) => {
         contentType: "assignment",
         contentId: props.plan.id,
         message: Locale.label("plans.planValidation.volReq") + props.plan.name + " - " + position.name + "." + Locale.label("plans.planValidation.pleaseConfirm"),
-        link: CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/my/plans/" + props.plan.id,
+        link: CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/my/plans/" + props.plan.id
       };
       promises.push(ApiHelper.post("/notifications/create", data, "MessagingApi"));
     });
@@ -262,7 +262,7 @@ export const PlanValidation = (props: Props) => {
 
   const getNotificationLink = () => {
     if (!canEdit) return null;
-    
+
     const pending = getPendingNotifications();
 
     if (pending.length === 0) return <p>{Locale.label("plans.planValidation.volNotif")}</p>;

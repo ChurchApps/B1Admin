@@ -1,6 +1,4 @@
-import {
-  MenuItem, Select, type SelectChangeEvent, Card, CardContent, Typography, Stack, Box, Button, FormControl, InputLabel 
-} from "@mui/material";
+import { MenuItem, Select, type SelectChangeEvent, Card, CardContent, Typography, Stack, Box, Button, FormControl, InputLabel } from "@mui/material";
 import React from "react";
 import { ErrorMessages, type ConjunctionInterface, ApiHelper, Locale } from "@churchapps/apphelper";
 import { Merge as ConjunctionIcon, Save as SaveIcon, Cancel as CancelIcon } from "@mui/icons-material";
@@ -39,9 +37,7 @@ export const ConjunctionEdit = (props: Props) => {
     const val = e.target.value;
     const c = { ...conjunction };
     switch (e.target.name) {
-      case "groupType":
-        c.groupType = val;
-        break;
+      case "groupType": c.groupType = val; break;
     }
     setConjunction(c);
   };
@@ -54,7 +50,7 @@ export const ConjunctionEdit = (props: Props) => {
         border: "1px solid",
         borderColor: "grey.200",
         transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 },
+        "&:hover": { boxShadow: 2 }
       }}>
       <CardContent>
         <Stack spacing={3}>
@@ -95,7 +91,7 @@ export const ConjunctionEdit = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {Locale.label("common.cancel")}
             </Button>
@@ -106,7 +102,7 @@ export const ConjunctionEdit = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {Locale.label("common.save")}
             </Button>

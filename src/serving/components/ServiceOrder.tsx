@@ -42,7 +42,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
   else if (itemType === "file") itemType = "providerFile";
 
   // Generate dot-notation path from indices (e.g., [0, 2, 1] -> "0.2.1")
-  const contentPath = pathIndices.length > 0 ? pathIndices.join('.') : undefined;
+  const contentPath = pathIndices.length > 0 ? pathIndices.join(".") : undefined;
 
   // Get thumbnail, searching recursively through children if needed
   const thumbnail = findThumbnailRecursive(item);
@@ -298,14 +298,14 @@ export const ServiceOrder = memo((props: Props) => {
     () => (
       <Stack direction="row" spacing={1} alignItems="center">
         <Button
-          onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, '_blank')}
+          onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, "_blank")}
           variant="outlined"
           size="small"
           title={Locale.label("plans.serviceOrder.print")}
           aria-label={Locale.label("plans.serviceOrder.print") || "Print plan"}
           sx={{
             minWidth: 40,
-            borderRadius: 2,
+            borderRadius: 2
           }}>
           <PrintIcon sx={{ fontSize: 20 }} />
         </Button>
@@ -355,7 +355,7 @@ export const ServiceOrder = memo((props: Props) => {
                 sx={{
                   textTransform: "none",
                   borderRadius: "8px 0 0 8px",
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}>
                 {Locale.label("plans.serviceOrder.addSection")}
               </Button>
@@ -364,7 +364,7 @@ export const ServiceOrder = memo((props: Props) => {
                 sx={{
                   borderRadius: "0 8px 8px 0",
                   minWidth: 32,
-                  px: 0.5,
+                  px: 0.5
                 }}>
                 <ArrowDropDownIcon />
               </Button>
@@ -385,7 +385,9 @@ export const ServiceOrder = memo((props: Props) => {
         )}
       </Stack>
     ),
-    [props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedLesson, hasAssociatedContent, provider?.name, venueName, handleDisassociateLesson, handleAddLesson]
+    [
+      props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedLesson, hasAssociatedContent, provider?.name, venueName, handleDisassociateLesson, handleAddLesson
+    ]
   );
 
   const handleDrop = useCallback(
@@ -422,7 +424,7 @@ export const ServiceOrder = memo((props: Props) => {
                   borderRadius: 1,
                   backgroundColor: "primary.light",
                   opacity: 0.3,
-                  mb: 1,
+                  mb: 1
                 }}
               />
             </DroppableWrapper>
@@ -523,7 +525,7 @@ export const ServiceOrder = memo((props: Props) => {
           border: "1px solid",
           borderColor: "var(--border-light)",
           transition: "all 0.2s ease-in-out",
-          "&:hover": { boxShadow: 2 },
+          "&:hover": { boxShadow: 2 }
         }}>
         <CardContent>
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
@@ -548,62 +550,62 @@ export const ServiceOrder = memo((props: Props) => {
           </Stack>
 
           <DndProvider backend={HTML5Backend}>
-              {(showHeaderDrop || showItemDrop) && (
-                <>
-                  <div style={{ position: "fixed", bottom: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
-                    <DroppableScroll direction="down" text="Scroll Down" acceptTypes={["planItemHeader", "planItem"]} />
-                  </div>
-                  <div style={{ position: "fixed", top: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
-                    <DroppableScroll direction="up" text="Scroll Up" acceptTypes={["planItemHeader", "planItem"]} />
-                  </div>
-                </>
-              )}
-              {planItems.length === 0 ? (
-                showPreviewMode ? (
-                  <LessonPreview
-                    lessonItems={previewLessonItems}
-                    venueName={venueName}
-                    onCustomize={handleCustomizeLesson}
-                    associatedProviderId={props.plan?.providerId}
-                    associatedVenueId={getContentPath() || undefined}
-                    ministryId={props.plan?.ministryId}
-                  />
-                ) : (
-                  <Box
-                    sx={{
-                      textAlign: "center",
-                      py: 4,
-                      color: "text.secondary",
-                    }}>
-                    <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
-                    <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
-                  </Box>
-                )
+            {(showHeaderDrop || showItemDrop) && (
+              <>
+                <div style={{ position: "fixed", bottom: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
+                  <DroppableScroll direction="down" text="Scroll Down" acceptTypes={["planItemHeader", "planItem"]} />
+                </div>
+                <div style={{ position: "fixed", top: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
+                  <DroppableScroll direction="up" text="Scroll Up" acceptTypes={["planItemHeader", "planItem"]} />
+                </div>
+              </>
+            )}
+            {planItems.length === 0 ? (
+              showPreviewMode ? (
+                <LessonPreview
+                  lessonItems={previewLessonItems}
+                  venueName={venueName}
+                  onCustomize={handleCustomizeLesson}
+                  associatedProviderId={props.plan?.providerId}
+                  associatedVenueId={getContentPath() || undefined}
+                  ministryId={props.plan?.ministryId}
+                />
               ) : (
-                <>
-                  {renderPlanItems()}
-                  {showHeaderDrop && (
-                    <DroppableWrapper
-                      accept="planItemHeader"
-                      onDrop={(item) => {
-                        handleDrop(item, planItems?.length + 1);
-                      }}>
-                      <Box
-                        sx={{
-                          height: 40,
-                          border: "2px dashed",
-                          borderColor: "primary.main",
-                          borderRadius: 1,
-                          backgroundColor: "primary.light",
-                          opacity: 0.3,
-                          mb: 1,
-                        }}
-                      />
-                    </DroppableWrapper>
-                  )}
-                </>
-              )}
-            </DndProvider>
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    py: 4,
+                    color: "text.secondary"
+                  }}>
+                  <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
+                  <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
+                </Box>
+              )
+            ) : (
+              <>
+                {renderPlanItems()}
+                {showHeaderDrop && (
+                  <DroppableWrapper
+                    accept="planItemHeader"
+                    onDrop={(item) => {
+                      handleDrop(item, planItems?.length + 1);
+                    }}>
+                    <Box
+                      sx={{
+                        height: 40,
+                        border: "2px dashed",
+                        borderColor: "primary.main",
+                        borderRadius: 1,
+                        backgroundColor: "primary.light",
+                        opacity: 0.3,
+                        mb: 1
+                      }}
+                    />
+                  </DroppableWrapper>
+                )}
+              </>
+            )}
+          </DndProvider>
         </CardContent>
       </Card>
       <Snackbar

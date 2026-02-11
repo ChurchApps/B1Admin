@@ -88,11 +88,9 @@ export const Playlists = () => {
     <TableRow
       key={playlist.id}
       sx={{
-        '&:hover': { backgroundColor: 'action.hover' },
-        transition: 'background-color 0.2s ease',
-        '&:last-child td': {
-          borderBottom: 0
-        }
+        "&:hover": { backgroundColor: "action.hover" },
+        transition: "background-color 0.2s ease",
+        "&:last-child td": { borderBottom: 0 }
       }}
     >
       <TableCell>
@@ -111,13 +109,13 @@ export const Playlists = () => {
             size="small"
             onClick={() => setCurrentPlaylist(playlist)}
             sx={{
-              color: 'primary.main',
-              '&:hover': {
-                backgroundColor: 'primary.main',
-                color: 'white',
-                transform: 'scale(1.05)'
+              color: "primary.main",
+              "&:hover": {
+                backgroundColor: "primary.main",
+                color: "white",
+                transform: "scale(1.05)"
               },
-              transition: 'all 0.2s ease-in-out'
+              transition: "all 0.2s ease-in-out"
             }}
           >
             <EditIcon />
@@ -132,9 +130,9 @@ export const Playlists = () => {
 
     return (
       <TableRow>
-        <TableCell colSpan={2} sx={{ textAlign: 'center', py: 6, borderBottom: 0 }}>
+        <TableCell colSpan={2} sx={{ textAlign: "center", py: 6, borderBottom: 0 }}>
           <Stack spacing={2} alignItems="center">
-            <VideoLibraryIcon sx={{ fontSize: 48, color: 'text.secondary' }} />
+            <VideoLibraryIcon sx={{ fontSize: 48, color: "text.secondary" }} />
             <Typography variant="h6" color="text.secondary">
               {isSearching ? Locale.label("sermons.playlists.noPlaylistsMatch") : Locale.label("sermons.playlists.noPlaylistsFound")}
             </Typography>
@@ -165,10 +163,10 @@ export const Playlists = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: 'var(--bg-card)',
-              '& .MuiTableCell-root': {
-                borderBottom: '2px solid',
-                borderBottomColor: 'divider'
+              backgroundColor: "var(--bg-card)",
+              "& .MuiTableCell-root": {
+                borderBottom: "2px solid",
+                borderBottomColor: "divider"
               }
             }}
           >
@@ -257,12 +255,12 @@ export const Playlists = () => {
               startIcon={<SearchIcon />}
               onClick={() => setShowSearch(!showSearch)}
               sx={{
-                color: '#FFF',
-                borderColor: showSearch ? '#FFF' : 'rgba(255,255,255,0.5)',
-                backgroundColor: showSearch ? 'rgba(255,255,255,0.1)' : 'transparent',
-                '&:hover': {
-                  borderColor: '#FFF',
-                  backgroundColor: 'rgba(255,255,255,0.1)'
+                color: "#FFF",
+                borderColor: showSearch ? "#FFF" : "rgba(255,255,255,0.5)",
+                backgroundColor: showSearch ? "rgba(255,255,255,0.1)" : "transparent",
+                "&:hover": {
+                  borderColor: "#FFF",
+                  backgroundColor: "rgba(255,255,255,0.1)"
                 }
               }}
             >
@@ -274,11 +272,11 @@ export const Playlists = () => {
               onClick={handleAdd}
               data-testid="add-playlist-button"
               sx={{
-                color: '#FFF',
-                borderColor: 'rgba(255,255,255,0.5)',
-                '&:hover': {
-                  borderColor: '#FFF',
-                  backgroundColor: 'rgba(255,255,255,0.1)'
+                color: "#FFF",
+                borderColor: "rgba(255,255,255,0.5)",
+                "&:hover": {
+                  borderColor: "#FFF",
+                  backgroundColor: "rgba(255,255,255,0.1)"
                 }
               }}
             >
@@ -293,12 +291,12 @@ export const Playlists = () => {
         {imageEditor}
         <Card sx={{
           borderRadius: 2,
-          border: '1px solid',
-          borderColor: 'var(--border-light)'
+          border: "1px solid",
+          borderColor: "var(--border-light)"
         }}>
           {/* Search Bar - Conditionally Rendered */}
           {showSearch && (
-            <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+            <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -309,14 +307,10 @@ export const Playlists = () => {
                 autoFocus
                 InputProps={{
                   startAdornment: (
-                    <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />
+                    <SearchIcon sx={{ color: "text.secondary", mr: 1 }} />
                   )
                 }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    backgroundColor: 'var(--bg-card)'
-                  }
-                }}
+                sx={{ "& .MuiOutlinedInput-root": { backgroundColor: "var(--bg-card)" } }}
               />
             </Box>
           )}

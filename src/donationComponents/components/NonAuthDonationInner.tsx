@@ -7,9 +7,7 @@ import { ErrorMessages, InputBox } from "@churchapps/apphelper";
 import { FundDonations } from "@churchapps/apphelper-donations";
 import { ApiHelper, DateHelper, CurrencyHelper, Locale, DonationHelper } from "../../helpers";
 import type { FundDonationInterface, FundInterface, PersonInterface, StripeDonationInterface, StripePaymentMethod, UserInterface, ChurchInterface } from "@churchapps/helpers";
-import {
-  Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, FormGroup, FormControlLabel, Checkbox, Typography 
-} from "@mui/material";
+import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, FormGroup, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import type { PaperProps } from "@mui/material/Paper";
 
 interface Props {
@@ -138,8 +136,8 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       person: {
         id: person?.id,
         email: person?.contactInfo?.email,
-        name: person?.name?.display,
-      },
+        name: person?.name?.display
+      }
     };
 
     if (donationType === "recurring") {
@@ -156,7 +154,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       name: church.name,
       subDomain: church.subDomain,
       churchURL: typeof window !== "undefined" && window.location.origin,
-      logo: props?.churchLogo,
+      logo: props?.churchLogo
     };
 
     let results;
@@ -190,21 +188,11 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const val = e.currentTarget.value;
     switch (e.currentTarget.name) {
-      case "firstName":
-        setFirstName(val);
-        break;
-      case "lastName":
-        setLastName(val);
-        break;
-      case "email":
-        setEmail(val);
-        break;
-      case "startDate":
-        setStartDate(val);
-        break;
-      case "interval":
-        setInterval(val);
-        break;
+      case "firstName": setFirstName(val); break;
+      case "lastName": setLastName(val); break;
+      case "email": setEmail(val); break;
+      case "startDate": setStartDate(val); break;
+      case "interval": setInterval(val); break;
     }
   };
 
@@ -254,7 +242,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     }
   };
 
-  React.useEffect(init, []); //eslint-disable-line
+  React.useEffect(init, []);
 
   // React.useEffect(() => { gateway && gateway.payFees === true && handleAutoPayFee() }, [fundDonations]);
 

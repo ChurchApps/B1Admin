@@ -86,7 +86,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => { setCurrentPlaylist(props.currentPlaylist); }, [props.currentPlaylist]);
-  React.useEffect(handlePhotoUpdated, [props.updatedPhoto, currentPlaylist]); //eslint-disable-line
+  React.useEffect(handlePhotoUpdated, [props.updatedPhoto, currentPlaylist]);
 
   return (
     <>
@@ -105,8 +105,8 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
           {/* Basic Information Section */}
           <Grid size={12}>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <TitleIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: 'primary.main' }}>
+              <TitleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6" sx={{ color: "primary.main" }}>
                 {Locale.label("sermons.playlists.playlistEdit.basicInformation")}
               </Typography>
             </Stack>
@@ -140,7 +140,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                   placeholder={Locale.label("sermons.playlists.playlistEdit.describePlaylist")}
                   InputProps={{
                     startAdornment: (
-                      <DescriptionIcon sx={{ color: 'text.secondary', mr: 1, mt: 1 }} />
+                      <DescriptionIcon sx={{ color: "text.secondary", mr: 1, mt: 1 }} />
                     )
                   }}
                 />
@@ -153,8 +153,8 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
             <Divider sx={{ my: 2 }} />
 
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <CalendarIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: 'primary.main' }}>
+              <CalendarIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6" sx={{ color: "primary.main" }}>
                 {Locale.label("sermons.playlists.playlistEdit.publishingSchedule")}
               </Typography>
             </Stack>
@@ -178,8 +178,8 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
             <Divider sx={{ my: 2 }} />
 
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <PhotoCameraIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: 'primary.main' }}>
+              <PhotoCameraIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6" sx={{ color: "primary.main" }}>
                 {Locale.label("sermons.playlists.playlistEdit.thumbnailImage")}
               </Typography>
             </Stack>
@@ -187,11 +187,11 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
             <Card
               sx={{
                 borderRadius: 2,
-                border: '1px solid',
-                borderColor: 'grey.200',
-                transition: 'all 0.2s ease-in-out',
-                '&:hover': {
-                  borderColor: 'primary.main',
+                border: "1px solid",
+                borderColor: "grey.200",
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  borderColor: "primary.main",
                   boxShadow: 2
                 }
               }}
@@ -200,26 +200,26 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                 <Stack spacing={2}>
                   <Box
                     sx={{
-                      position: 'relative',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      position: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                       minHeight: 200,
-                      backgroundColor: 'grey.50',
+                      backgroundColor: "grey.50",
                       borderRadius: 1,
-                      border: '2px dashed',
-                      borderColor: 'grey.300',
-                      overflow: 'hidden'
+                      border: "2px dashed",
+                      borderColor: "grey.300",
+                      overflow: "hidden"
                     }}
                   >
                     <img
                       src={currentPlaylist?.thumbnail || "/images/no-image.png"}
                       alt="Playlist thumbnail"
                       style={{
-                        maxWidth: '100%',
-                        maxHeight: '200px',
-                        objectFit: 'contain',
-                        borderRadius: '4px'
+                        maxWidth: "100%",
+                        maxHeight: "200px",
+                        objectFit: "contain",
+                        borderRadius: "4px"
                       }}
                     />
                   </Box>
@@ -232,19 +232,19 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                       props.showPhotoEditor("playlist", currentPlaylist?.thumbnail || "");
                     }}
                     sx={{
-                      textTransform: 'none',
-                      borderColor: 'primary.main',
-                      color: 'primary.main',
-                      '&:hover': {
-                        backgroundColor: 'primary.main',
-                        color: 'white'
+                      textTransform: "none",
+                      borderColor: "primary.main",
+                      color: "primary.main",
+                      "&:hover": {
+                        backgroundColor: "primary.main",
+                        color: "white"
                       }
                     }}
                   >
                     {currentPlaylist?.thumbnail ? Locale.label("sermons.playlists.playlistEdit.changeThumbnail") : Locale.label("sermons.playlists.playlistEdit.addThumbnail")}
                   </Button>
 
-                  <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center' }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ textAlign: "center" }}>
                     {Locale.label("sermons.playlists.playlistEdit.recommendedSize")}
                   </Typography>
                 </Stack>

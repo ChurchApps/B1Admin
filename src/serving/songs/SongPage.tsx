@@ -3,9 +3,7 @@ import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale, Sm
 import { useParams, useNavigate } from "react-router-dom";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, Paper, IconButton
-} from "@mui/material";
+import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, Paper, IconButton } from "@mui/material";
 import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Arrangement } from "./components/Arrangement";
 import { SongSearchDialog } from "./SongSearchDialog";
@@ -24,13 +22,13 @@ export const SongPage = memo(() => {
 
   const song = useQuery<SongInterface>({
     queryKey: ["/songs/" + params.id, "ContentApi"],
-    enabled: !!params.id,
+    enabled: !!params.id
   });
 
   const arrangements = useQuery<ArrangementInterface[]>({
     queryKey: ["/arrangements/song/" + params.id, "ContentApi"],
     placeholderData: [],
-    enabled: !!params.id,
+    enabled: !!params.id
   });
 
   const songDetailId = useMemo(() => {
@@ -42,7 +40,7 @@ export const SongPage = memo(() => {
 
   const songDetail = useQuery<SongDetailInterface>({
     queryKey: ["/songDetails/" + songDetailId, "ContentApi"],
-    enabled: !!songDetailId,
+    enabled: !!songDetailId
   });
 
   // Set selected arrangement when arrangements load
@@ -90,7 +88,7 @@ export const SongPage = memo(() => {
         songId: song.data.id,
         songDetailId: songDetail.id,
         name: songDetail.artist,
-        lyrics: "",
+        lyrics: ""
       };
       await ApiHelper.post("/arrangements", [a], "ContentApi");
       if (songDetail.keySignature) {
@@ -126,9 +124,9 @@ export const SongPage = memo(() => {
                         borderRadius: 1,
                         "&.Mui-selected": {
                           backgroundColor: "rgba(21, 101, 192, 0.12)", // Lighter primary color opacity
-                          "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.2)" },
+                          "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.2)" }
                         },
-                        "&:hover": { backgroundColor: "action.hover" },
+                        "&:hover": { backgroundColor: "action.hover" }
                       }}>
                       <ListItemIcon sx={{ minWidth: 36 }}>
                         <ArrangementIcon sx={{ color: selectedArrangement?.id === arrangement.id ? "primary.main" : "text.secondary" }} />
@@ -138,8 +136,8 @@ export const SongPage = memo(() => {
                         primaryTypographyProps={{
                           sx: {
                             fontWeight: selectedArrangement?.id === arrangement.id ? 600 : 400,
-                            color: selectedArrangement?.id === arrangement.id ? "primary.main" : "text.primary",
-                          },
+                            color: selectedArrangement?.id === arrangement.id ? "primary.main" : "text.primary"
+                          }
                         }}
                       />
                     </ListItemButton>
@@ -163,8 +161,8 @@ export const SongPage = memo(() => {
                   "&:hover": {
                     borderColor: "primary.main",
                     color: "primary.main",
-                    backgroundColor: "primary.light",
-                  },
+                    backgroundColor: "primary.light"
+                  }
                 }}>
                 Add Arrangement
               </Button>
@@ -203,7 +201,7 @@ export const SongPage = memo(() => {
             textAlign: "center",
             backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "var(--border-main)",
+            borderColor: "var(--border-main)"
           }}>
           <ArrangementIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
@@ -229,8 +227,8 @@ export const SongPage = memo(() => {
               color: "rgba(255,255,255,0.8)",
               "&:hover": {
                 color: "#FFF",
-                backgroundColor: "rgba(255,255,255,0.1)",
-              },
+                backgroundColor: "rgba(255,255,255,0.1)"
+              }
             }}
             size="small">
             <EditIcon fontSize="small" />
@@ -247,8 +245,8 @@ export const SongPage = memo(() => {
               borderColor: "rgba(255,255,255,0.5)",
               "&:hover": {
                 borderColor: "#FFF",
-                backgroundColor: "rgba(255,255,255,0.1)",
-              },
+                backgroundColor: "rgba(255,255,255,0.1)"
+              }
             }}>
             Add Arrangement
           </Button>

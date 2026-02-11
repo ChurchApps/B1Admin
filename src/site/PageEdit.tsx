@@ -21,7 +21,7 @@ export const PageEdit: React.FC = () => {
     await ApiHelper.get("/pages/" + UserHelper.currentUserChurch.church.id + "/tree?id=" + id, "ContentApi");
 
   const handleDone = (url?: string) => {
-    if (url && url !== '') navigate(url);
+    if (url && url !== "") navigate(url);
     else navigate("/site/pages/preview/" + id);
   };
 

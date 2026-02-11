@@ -1,9 +1,7 @@
 import React, { useState, useCallback, memo } from "react";
 import { ApiHelper, UserHelper, Loading, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import {
-  Box, Typography, Stack, Button, Paper, Table, TableBody, TableCell, TableRow, TableHead
-} from "@mui/material";
+import { Box, Typography, Stack, Button, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
 import { Add as AddIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
@@ -110,7 +108,7 @@ export const TeamList = memo((props: Props) => {
                           fontWeight: 500,
                           color: "primary.main",
                           textDecoration: "none",
-                          "&:hover": { textDecoration: "underline" },
+                          "&:hover": { textDecoration: "underline" }
                         }}>
                         {g.name}
                       </Typography>

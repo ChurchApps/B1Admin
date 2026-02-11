@@ -2,9 +2,7 @@ import React from "react";
 import { CategorySelect, ServiceTimesEdit } from ".";
 import { ApiHelper, InputBox, ErrorMessages, Locale, GalleryModal } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
-import {
-  Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography, type SelectChangeEvent
-} from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography, type SelectChangeEvent } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState } from "@churchapps/apphelper";
@@ -37,27 +35,13 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     e.preventDefault();
     const g = { ...group };
     switch (e.target.name) {
-      case "name":
-        g.name = e.target.value;
-        break;
-      case "meetingTime":
-        g.meetingTime = e.target.value;
-        break;
-      case "meetingLocation":
-        g.meetingLocation = e.target.value;
-        break;
-      case "trackAttendance":
-        g.trackAttendance = e.target.value === "true";
-        break;
-      case "parentPickup":
-        g.parentPickup = e.target.value === "true";
-        break;
-      case "printNametag":
-        g.printNametag = e.target.value === "true";
-        break;
-      case "slug":
-        g.slug = e.target.value;
-        break;
+      case "name": g.name = e.target.value; break;
+      case "meetingTime": g.meetingTime = e.target.value; break;
+      case "meetingLocation": g.meetingLocation = e.target.value; break;
+      case "trackAttendance": g.trackAttendance = e.target.value === "true"; break;
+      case "parentPickup": g.parentPickup = e.target.value === "true"; break;
+      case "printNametag": g.printNametag = e.target.value === "true"; break;
+      case "slug": g.slug = e.target.value; break;
     }
     setGroup(g);
   };
@@ -130,7 +114,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
               color: "#FFF",
               padding: 10,
               marginTop: 20,
-              marginBottom: 20,
+              marginBottom: 20
             }}>
             <b>{Locale.label("groups.groupDetailsEdit.attendance")}</b>
           </div>
@@ -294,7 +278,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                         border: "1px solid",
                         borderColor: "grey.300",
                         cursor: "pointer",
-                        "&:hover": { borderColor: "primary.main" },
+                        "&:hover": { borderColor: "primary.main" }
                       }}
                       onClick={(e) => {
                         e.preventDefault();
@@ -307,7 +291,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                           style={{
                             width: "100%",
                             height: "100%",
-                            objectFit: "cover",
+                            objectFit: "cover"
                           }}
                         />
                       ) : (

@@ -13,7 +13,7 @@ export const ReportPage = memo(() => {
   const report = useQuery<ReportInterface>({
     queryKey: ["/reports/" + params.keyName, "ReportingApi"],
     placeholderData: null,
-    enabled: !!params.keyName,
+    enabled: !!params.keyName
   });
 
   return (
@@ -26,8 +26,8 @@ export const ReportPage = memo(() => {
           {
             href: "/reports",
             text: Locale.label("reports.reportsPage.reports"),
-            icon: <BackIcon />,
-          },
+            icon: <BackIcon />
+          }
         ]}
       />
 
@@ -40,7 +40,7 @@ export const ReportPage = memo(() => {
               borderRadius: 2,
               border: "1px solid",
               borderColor: "divider",
-              minHeight: 400,
+              minHeight: 400
             }}>
             <CardContent sx={{ p: 0 }}>
               {report.isLoading ? (

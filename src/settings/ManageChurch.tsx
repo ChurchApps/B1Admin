@@ -18,7 +18,7 @@ export const ManageChurch = () => {
 
   const church = useQuery<ChurchInterface>({
     queryKey: [`/churches/${churchId}?include=permissions`, "MembershipApi"],
-    enabled: !!churchId,
+    enabled: !!churchId
   });
 
   const checkAccess = useCallback(() => {
@@ -30,12 +30,9 @@ export const ManageChurch = () => {
   const getCurrentTab = useCallback(() => {
     if (church.data) {
       switch (selectedTab) {
-        case "roles":
-          return <RolesTab church={church.data} />;
-        case "mobileApps":
-          return <MobileAppSettingsPage />;
-        default:
-          return <div></div>;
+        case "roles": return <RolesTab church={church.data} />;
+        case "mobileApps": return <MobileAppSettingsPage />;
+        default: return <div></div>;
       }
     }
     return <div></div>;
@@ -71,8 +68,8 @@ export const ManageChurch = () => {
                 borderColor: "#FFF",
                 "&:hover": {
                   backgroundColor: "rgba(255,255,255,0.2)",
-                  color: "#FFF",
-                },
+                  color: "#FFF"
+                }
               }}>
               {Locale.label("settings.manageChurch.editSettings")}
             </Button>
@@ -87,8 +84,8 @@ export const ManageChurch = () => {
               borderColor: "#FFF",
               "&:hover": {
                 backgroundColor: selectedTab === "mobileApps" ? "#FFF" : "rgba(255,255,255,0.2)",
-                color: selectedTab === "mobileApps" ? "primary.main" : "#FFF",
-              },
+                color: selectedTab === "mobileApps" ? "primary.main" : "#FFF"
+              }
             }}>
             {Locale.label("settings.manageChurch.mobileApps")}
           </Button>
@@ -102,8 +99,8 @@ export const ManageChurch = () => {
               borderColor: "#FFF",
               "&:hover": {
                 backgroundColor: selectedTab === "roles" ? "#FFF" : "rgba(255,255,255,0.2)",
-                color: selectedTab === "roles" ? "primary.main" : "#FFF",
-              },
+                color: selectedTab === "roles" ? "primary.main" : "#FFF"
+              }
             }}>
             {Locale.label("settings.roles.roles")}
           </Button>
@@ -119,8 +116,8 @@ export const ManageChurch = () => {
               borderColor: "#FFF",
               "&:hover": {
                 backgroundColor: "rgba(255,255,255,0.2)",
-                color: "#FFF",
-              },
+                color: "#FFF"
+              }
             }}>
             {Locale.label("settings.manageChurch.imEx")}
           </Button>

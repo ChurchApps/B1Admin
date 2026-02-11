@@ -4,8 +4,8 @@ import {
   Container, AppBar, Stack, Box, IconButton, Drawer, Toolbar, List, ListItem,
   ListItemButton, ListItemText, Collapse
 } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AppearanceHelper, ArrayHelper } from "@churchapps/apphelper";
@@ -117,8 +117,8 @@ export function WebsiteHeader(props: Props) {
       }
     };
 
-    document.addEventListener('scroll', handleScroll);
-    return () => { document.removeEventListener('scroll', handleScroll); };
+    document.addEventListener("scroll", handleScroll);
+    return () => { document.removeEventListener("scroll", handleScroll); };
   }, [props.overlayContent]);
 
   const getLinkClass = () => {
@@ -148,9 +148,7 @@ export function WebsiteHeader(props: Props) {
     <Link
       key={item.id}
       to={item.url || ""}
-      style={{
-        paddingLeft: 15, paddingRight: 15, paddingBottom: 8, fontSize: 14, textDecoration: 'none', color: 'inherit'
-      }}
+      style={{ paddingLeft: 15, paddingRight: 15, paddingBottom: 8, fontSize: 14, textDecoration: "none", color: "inherit" }}
     >
       {item.text}
     </Link>
@@ -180,7 +178,7 @@ export function WebsiteHeader(props: Props) {
               </IconButton>
               <Drawer open={open} onClose={toggleDrawer} anchor="right">
                 <Toolbar disableGutters><IconButton onClick={toggleDrawer}><ChevronRightIcon /></IconButton></Toolbar>
-                <Box sx={{ width: { xs: '100vw', sm: '50vw' } }}>
+                <Box sx={{ width: { xs: "100vw", sm: "50vw" } }}>
                   {getListMenu()}
                 </Box>
               </Drawer>

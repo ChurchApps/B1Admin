@@ -1,7 +1,5 @@
 import React, { useCallback } from "react";
-import {
-  Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem
-} from "@mui/material";
+import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem } from "@mui/material";
 import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import {
   type AssignmentInterface,
@@ -10,14 +8,14 @@ import {
   type PersonInterface,
   type PlanInterface,
   type PositionInterface,
-  type TimeInterface,
+  type TimeInterface
 } from "@churchapps/helpers";
 import {
   ApiHelper,
   ArrayHelper,
   Locale,
   UserHelper,
-  Permissions,
+  Permissions
 } from "@churchapps/apphelper";
 import { PositionEdit } from "./PositionEdit";
 import { PositionList } from "./PositionList";
@@ -88,7 +86,7 @@ export const Assignment = (props: Props) => {
             sx={{
               textTransform: "none",
               borderRadius: 2,
-              fontWeight: 600,
+              fontWeight: 600
             }}>
             {Locale.label("plans.planEdit.copyPrevious") || "Copy from Previous"}
           </Button>
@@ -112,7 +110,7 @@ export const Assignment = (props: Props) => {
                 categoryName: "Band",
                 name: "",
                 planId: props.plan?.id,
-                count: 1,
+                count: 1
               });
             }}
             data-testid="add-position-button"
@@ -120,7 +118,7 @@ export const Assignment = (props: Props) => {
             sx={{
               textTransform: "none",
               borderRadius: 2,
-              fontWeight: 600,
+              fontWeight: 600
             }}>
             {Locale.label("plans.assignment.addPosition")}
           </Button>
@@ -140,7 +138,7 @@ export const Assignment = (props: Props) => {
           sx={{
             textTransform: "none",
             borderRadius: 2,
-            fontWeight: 600,
+            fontWeight: 600
           }}>
           {Locale.label("plans.assignment.autoAssign")}
         </Button>
@@ -152,7 +150,7 @@ export const Assignment = (props: Props) => {
               categoryName: positions?.length > 0 ? positions[0].categoryName : "Band",
               name: "",
               planId: props.plan?.id,
-              count: 1,
+              count: 1
             });
           }}
           data-testid="add-position-button"
@@ -160,7 +158,7 @@ export const Assignment = (props: Props) => {
           sx={{
             textTransform: "none",
             borderRadius: 2,
-            fontWeight: 600,
+            fontWeight: 600
           }}>
           {Locale.label("plans.assignment.addPosition")}
         </Button>
@@ -257,7 +255,7 @@ export const Assignment = (props: Props) => {
             border: "1px solid",
             borderColor: "var(--border-light)",
             transition: "all 0.2s ease-in-out",
-            "&:hover": { boxShadow: 2 },
+            "&:hover": { boxShadow: 2 }
           }}>
           <CardContent>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
@@ -280,7 +278,7 @@ export const Assignment = (props: Props) => {
             border: "1px solid",
             borderColor: "var(--border-light)",
             transition: "all 0.2s ease-in-out",
-            "&:hover": { boxShadow: 2 },
+            "&:hover": { boxShadow: 2 }
           }}>
           <CardContent>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
@@ -299,7 +297,7 @@ export const Assignment = (props: Props) => {
                   sx={{
                     textTransform: "none",
                     borderRadius: 2,
-                    fontWeight: 600,
+                    fontWeight: 600
                   }}>
                   {Locale.label("plans.assignment.saveNotes")}
                 </Button>
@@ -323,8 +321,8 @@ export const Assignment = (props: Props) => {
                   borderRadius: 2,
                   backgroundColor: canEdit ? "var(--bg-sub)" : "var(--bg-main)",
                   "&:hover": { backgroundColor: canEdit ? "var(--bg-card)" : "var(--bg-main)" },
-                  "&.Mui-focused": { backgroundColor: canEdit ? "var(--bg-card)" : "var(--bg-main)" },
-                },
+                  "&.Mui-focused": { backgroundColor: canEdit ? "var(--bg-card)" : "var(--bg-main)" }
+                }
               }}
             />
           </CardContent>

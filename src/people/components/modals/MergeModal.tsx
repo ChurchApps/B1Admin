@@ -2,9 +2,7 @@ import React from "react";
 import { type PersonInterface, type ContactInfoInterface, type NameInterface } from "@churchapps/helpers";
 import { Locale } from "@churchapps/apphelper";
 import { EnvironmentHelper } from "../../../helpers";
-import {
-  Dialog, Button, Container, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem 
-} from "@mui/material";
+import { Dialog, Button, Container, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 interface Props {
   show: boolean;
@@ -25,21 +23,16 @@ const SpecialKeys = {
   CONTACT_INFO: "contactInfo",
   HOUSEHOLD_ID: "householdId",
   ID: "id",
-  NAME: "name",
+  NAME: "name"
 } as const;
 
 const getDisplayValue = (key: string) => {
   switch (key) {
-    case SpecialKeys.CONTACT_INFO:
-      return Locale.label("people.mergeModal.contactInfo");
-    case SpecialKeys.HOUSEHOLD_ID:
-      return Locale.label("people.mergeModal.householdId");
-    case SpecialKeys.ID:
-      return Locale.label("people.mergeModal.id");
-    case SpecialKeys.NAME:
-      return Locale.label("people.mergeModal.name");
-    default:
-      return key;
+    case SpecialKeys.CONTACT_INFO: return Locale.label("people.mergeModal.contactInfo");
+    case SpecialKeys.HOUSEHOLD_ID: return Locale.label("people.mergeModal.householdId");
+    case SpecialKeys.ID: return Locale.label("people.mergeModal.id");
+    case SpecialKeys.NAME: return Locale.label("people.mergeModal.name");
+    default: return key;
   }
 };
 
@@ -70,7 +63,7 @@ export const MergeModal: React.FC<Props> = (props) => {
       newConflicts.push({
         value: subKey || key,
         options: [value1, value2],
-        selected: "",
+        selected: ""
       });
     };
 
@@ -103,12 +96,8 @@ export const MergeModal: React.FC<Props> = (props) => {
             });
           }
           break;
-        case SpecialKeys.HOUSEHOLD_ID:
-          aggregate.householdId = value1;
-          break;
-        case SpecialKeys.ID:
-          aggregate.id = value1;
-          break;
+        case SpecialKeys.HOUSEHOLD_ID: aggregate.householdId = value1; break;
+        case SpecialKeys.ID: aggregate.id = value1; break;
         default:
           const check = primitiveCompare(value1, value2);
           determine(check, key, value1, value2);
@@ -153,20 +142,20 @@ export const MergeModal: React.FC<Props> = (props) => {
       if (contactkeys.some((c) => c === e.value)) {
         person.contactInfo = {
           ...person.contactInfo,
-          [e.value]: e.selected,
+          [e.value]: e.selected
         };
         return;
       }
       if (nameKeys.some((n) => n === e.value)) {
         person.name = {
           ...person.name,
-          [e.value]: e.selected,
+          [e.value]: e.selected
         };
         return;
       }
       person = {
         ...person,
-        [e.value]: e.selected,
+        [e.value]: e.selected
       };
     });
     setAggregatePerson(person);

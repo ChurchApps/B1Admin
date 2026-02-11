@@ -1,6 +1,4 @@
-import {
-  Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, IconButton, InputAdornment, Paper
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, IconButton, InputAdornment, Paper } from "@mui/material";
 import { Search as SearchIcon, MusicNote as MusicIcon, Person as ArtistIcon, Close as CloseIcon, Add as AddIcon } from "@mui/icons-material";
 import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
@@ -21,7 +19,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
 
   useEffect(() => {
     if (props.searchText) handleSearch();
-  }, [props.searchText]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.searchText]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -82,7 +80,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
             textAlign: "center",
             backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "var(--border-main)",
+            borderColor: "var(--border-main)"
           }}>
           <SearchIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
@@ -100,7 +98,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
             textAlign: "center",
             backgroundColor: "var(--bg-sub)",
             border: "1px dashed",
-            borderColor: "var(--border-main)",
+            borderColor: "var(--border-main)"
           }}>
           <MusicIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary" gutterBottom>
@@ -123,8 +121,8 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
               transition: "all 0.2s ease-in-out",
               "&:hover": {
                 transform: "translateY(-1px)",
-                boxShadow: 2,
-              },
+                boxShadow: 2
+              }
             }}
             onClick={() => handleSongClick(songDetail)}>
             <CardContent sx={{ py: 2 }}>
@@ -134,7 +132,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                   sx={{
                     width: 60,
                     height: 60,
-                    bgcolor: "primary.light",
+                    bgcolor: "primary.light"
                   }}
                   onError={handleImageError}>
                   <MusicIcon sx={{ fontSize: 28, color: "primary.main" }} />
@@ -147,7 +145,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                       fontWeight: 600,
                       fontSize: "1rem",
                       mb: 0.5,
-                      color: "primary.main",
+                      color: "primary.main"
                     }}>
                     {songDetail.title}
                   </Typography>
@@ -165,7 +163,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                 <IconButton
                   sx={{
                     color: "primary.main",
-                    "&:hover": { backgroundColor: "primary.light" },
+                    "&:hover": { backgroundColor: "primary.light" }
                   }}
                   aria-label={`Select ${songDetail.title}`}>
                   <AddIcon />
@@ -215,7 +213,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                     {Locale.label("common.search") || "Search"}
                   </Button>
                 </InputAdornment>
-              ),
+              )
             }}
             sx={{ mb: 2 }}
           />
@@ -232,7 +230,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                     mt: 3,
                     pt: 2,
                     borderTop: "1px solid",
-                    borderColor: "var(--border-light)",
+                    borderColor: "var(--border-light)"
                   }}>
                   <Button variant="text" startIcon={<AddIcon />} onClick={() => setShowCreate(true)} sx={{ color: "text.secondary" }}>
                     {Locale.label("songs.search.createManually") || "Create Manually"}

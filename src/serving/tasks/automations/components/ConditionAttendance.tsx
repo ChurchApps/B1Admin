@@ -22,18 +22,14 @@ export const ConditionAttendance = (props: Props) => {
     props.onChange(c);
   };
 
-  React.useEffect(init, [props.condition.field]); //eslint-disable-line
+  React.useEffect(init, [props.condition.field]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     const c = { ...props.condition };
     const val = e.target.value;
     switch (e.target.name) {
-      case "value":
-        c.value = val;
-        break;
-      case "operator":
-        c.operator = val;
-        break;
+      case "value": c.value = val; break;
+      case "operator": c.operator = val; break;
     }
     props.onChange(c);
   };
@@ -41,12 +37,8 @@ export const ConditionAttendance = (props: Props) => {
   const handleFieldDataChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     const val = e.target.value;
     switch (e.target.name) {
-      case "eventType":
-        fieldData.eventType = val;
-        break;
-      case "campusId":
-        fieldData.campusId = val;
-        break;
+      case "eventType": fieldData.eventType = val; break;
+      case "campusId": fieldData.campusId = val; break;
     }
     const c = { ...props.condition };
     c.fieldData = JSON.stringify(fieldData);

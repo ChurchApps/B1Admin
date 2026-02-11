@@ -157,7 +157,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (props.churchId) loadData();
   }, [props.churchId]);
-  React.useEffect(checkSave, [props.saveTrigger]); //eslint-disable-line
+  React.useEffect(checkSave, [props.saveTrigger]);
 
   return (
     <Box>

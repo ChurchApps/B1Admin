@@ -38,13 +38,9 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
     border: "1px solid",
     borderColor: "divider",
     "&:before": { display: "none" },
-    "&.Mui-expanded": {
-      margin: "0 0 12px 0",
-    },
+    "&.Mui-expanded": { margin: "0 0 12px 0" },
     transition: "all 0.2s ease-in-out",
-    "&:hover": {
-      borderColor: "primary.light",
-    },
+    "&:hover": { borderColor: "primary.light" }
   };
 
   const accordionSummaryStyles = {
@@ -53,12 +49,12 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
     "&.Mui-expanded": {
       minHeight: 64,
       borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
+      borderBottomRightRadius: 0
     },
     "& .MuiAccordionSummary-content": {
       alignItems: "center",
-      gap: 2,
-    },
+      gap: 2
+    }
   };
 
   const handleSave = async () => {
@@ -95,30 +91,14 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
     const { name, value } = e.target;
 
     switch (name) {
-      case "churchName":
-        c.name = value;
-        break;
-      case "address1":
-        c.address1 = value;
-        break;
-      case "address2":
-        c.address2 = value;
-        break;
-      case "city":
-        c.city = value;
-        break;
-      case "state":
-        c.state = value;
-        break;
-      case "zip":
-        c.zip = value;
-        break;
-      case "country":
-        c.country = value;
-        break;
-      case "subDomain":
-        c.subDomain = value;
-        break;
+      case "churchName": c.name = value; break;
+      case "address1": c.address1 = value; break;
+      case "address2": c.address2 = value; break;
+      case "city": c.city = value; break;
+      case "state": c.state = value; break;
+      case "zip": c.zip = value; break;
+      case "country": c.country = value; break;
+      case "subDomain": c.subDomain = value; break;
     }
     setChurch(c);
   };

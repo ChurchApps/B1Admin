@@ -96,11 +96,30 @@ export function AddPageModal(props: Props) {
       const globalStyles = await ApiHelper.get("/globalStyles", "ContentApi");
 
       const validElementTypes = [
-        "text", "textWithPhoto", "card", "faq", "table",
-        "image", "video", "map", "logo", "sermons", "stream",
-        "donation", "donateLink", "form", "calendar", "groupList",
-        "row", "box", "carousel", "rawHTML", "iframe",
-        "buttonLink", "whiteSpace", "block"
+        "text",
+        "textWithPhoto",
+        "card",
+        "faq",
+        "table",
+        "image",
+        "video",
+        "map",
+        "logo",
+        "sermons",
+        "stream",
+        "donation",
+        "donateLink",
+        "form",
+        "calendar",
+        "groupList",
+        "row",
+        "box",
+        "carousel",
+        "rawHTML",
+        "iframe",
+        "buttonLink",
+        "whiteSpace",
+        "block"
       ];
 
       const churchContext = {
@@ -150,8 +169,7 @@ export function AddPageModal(props: Props) {
             totalSections: sectionCount,
             sectionIndex: index
           }
-        }, "AskApi")
-      );
+        }, "AskApi"));
 
       const sectionResults = await Promise.allSettled(sectionPromises);
 
@@ -310,80 +328,80 @@ export function AddPageModal(props: Props) {
   else {
     return (
 
-    <Dialog open={true} onClose={props.onDone} className="dialogForm">
-      <InputBox id="dialogForm" headerText={(pageTemplate === "link") ? Locale.label("site.addPage.newLink") : Locale.label("site.addPage.newPage")} headerIcon="article" saveFunction={handleSave} cancelFunction={handleCancel} data-testid="add-page-modal" isSubmitting={isSubmitting}>
-        <ErrorMessages errors={errors} />
+      <Dialog open={true} onClose={props.onDone} className="dialogForm">
+        <InputBox id="dialogForm" headerText={(pageTemplate === "link") ? Locale.label("site.addPage.newLink") : Locale.label("site.addPage.newPage")} headerIcon="article" saveFunction={handleSave} cancelFunction={handleCancel} data-testid="add-page-modal" isSubmitting={isSubmitting}>
+          <ErrorMessages errors={errors} />
 
-        <InputLabel>{Locale.label("site.addPage.pageType")}</InputLabel>
+          <InputLabel>{Locale.label("site.addPage.pageType")}</InputLabel>
 
 
-        <Grid container spacing={2}>
-          {getTemplateButton("blank", "article", "Blank")}
-          {getTemplateButton("sermons", "subscriptions", Locale.label("common.sermons"))}
-          {getTemplateButton("about", "quiz", "About Us")}
-          {getTemplateButton("donate", "volunteer_activism", "Donate")}
-          {getTemplateButton("location", "location_on", "Location")}
-          {/* {getTemplateButton("ai", "auto_awesome", "AI")} */}
-          {(props.mode === "navigation") && getTemplateButton("link", "link", "Link")}
-        </Grid>
-
-        {pageTemplate === "ai" && (
-          <>
-            <ErrorMessages errors={aiErrors} />
-            {isSubmitting && aiGenerationStatus && (
-              <Box sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-                p: 2,
-                mb: 2,
-                backgroundColor: "primary.main",
-                color: "#ffffff",
-                borderRadius: 1
-              }}>
-                <CircularProgress size={24} sx={{ color: "#ffffff" }} />
-                <Typography sx={{ color: "#ffffff !important" }}>{aiGenerationStatus}</Typography>
-              </Box>
-            )}
-            <Typography sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
-              Describe the page you want to create
-            </Typography>
-            <TextField
-              fullWidth
-              multiline
-              minRows={5}
-              maxRows={8}
-              placeholder={Locale.label("site.addPage.aiPlaceholder")}
-              value={aiPrompt}
-              onChange={(e) => setAiPrompt(e.target.value)}
-              disabled={isSubmitting}
-              data-testid="ai-prompt-input"
-            />
-            <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
-              Examples:
-              <br />• Create a welcoming homepage with our church name, mission statement, service times, and a donation button
-              <br />• Build a ministries page showing our youth group, worship team, and community outreach with photos
-              <br />• Make a contact page with a map to our location, phone number, email form, and social media links
-            </Typography>
-          </>
-        )}
-
-        {pageTemplate !== "ai" && (
           <Grid container spacing={2}>
-            {(pageTemplate !== "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-              <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.title")} data-testid="page-title-input" />
-            </Grid>}
-            {(pageTemplate === "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-              <TextField size="small" fullWidth label="Link Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkUrl")} />
-            </Grid>}
-            {(props.mode === "navigation") && <Grid size={6}>
-              <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkText")} />
-            </Grid>}
+            {getTemplateButton("blank", "article", "Blank")}
+            {getTemplateButton("sermons", "subscriptions", Locale.label("common.sermons"))}
+            {getTemplateButton("about", "quiz", "About Us")}
+            {getTemplateButton("donate", "volunteer_activism", "Donate")}
+            {getTemplateButton("location", "location_on", "Location")}
+            {/* {getTemplateButton("ai", "auto_awesome", "AI")} */}
+            {(props.mode === "navigation") && getTemplateButton("link", "link", "Link")}
           </Grid>
-        )}
-      </InputBox>
 
-    </Dialog>
+          {pageTemplate === "ai" && (
+            <>
+              <ErrorMessages errors={aiErrors} />
+              {isSubmitting && aiGenerationStatus && (
+                <Box sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  p: 2,
+                  mb: 2,
+                  backgroundColor: "primary.main",
+                  color: "#ffffff",
+                  borderRadius: 1
+                }}>
+                  <CircularProgress size={24} sx={{ color: "#ffffff" }} />
+                  <Typography sx={{ color: "#ffffff !important" }}>{aiGenerationStatus}</Typography>
+                </Box>
+              )}
+              <Typography sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
+              Describe the page you want to create
+              </Typography>
+              <TextField
+                fullWidth
+                multiline
+                minRows={5}
+                maxRows={8}
+                placeholder={Locale.label("site.addPage.aiPlaceholder")}
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                disabled={isSubmitting}
+                data-testid="ai-prompt-input"
+              />
+              <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
+              Examples:
+                <br />• Create a welcoming homepage with our church name, mission statement, service times, and a donation button
+                <br />• Build a ministries page showing our youth group, worship team, and community outreach with photos
+                <br />• Make a contact page with a map to our location, phone number, email form, and social media links
+              </Typography>
+            </>
+          )}
+
+          {pageTemplate !== "ai" && (
+            <Grid container spacing={2}>
+              {(pageTemplate !== "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
+                <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.title")} data-testid="page-title-input" />
+              </Grid>}
+              {(pageTemplate === "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
+                <TextField size="small" fullWidth label="Link Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkUrl")} />
+              </Grid>}
+              {(props.mode === "navigation") && <Grid size={6}>
+                <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkText")} />
+              </Grid>}
+            </Grid>
+          )}
+        </InputBox>
+
+      </Dialog>
     );
   }
 }

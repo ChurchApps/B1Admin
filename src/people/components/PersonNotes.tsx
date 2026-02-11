@@ -18,7 +18,7 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           borderBottom: "1px solid var(--border-main)",
           backgroundColor: "var(--bg-sub)",
           borderRadius: "8px",
-          "&:last-child": { borderBottom: "none" },
+          "&:last-child": { borderBottom: "none" }
         },
         "& .note .postedBy": {
           color: "text.secondary",
@@ -26,30 +26,30 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           marginBottom: "8px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "space-between"
         },
         "& .note .postedBy img": {
           width: "40px",
           height: "40px",
           borderRadius: "50%",
           marginRight: "12px",
-          objectFit: "cover",
+          objectFit: "cover"
         },
         "& .note-contents": {
           fontSize: "0.95rem",
           lineHeight: 1.5,
-          color: "text.primary",
+          color: "text.primary"
         },
         "& .note-contents p": {
           margin: "0 0 8px 0",
           "&:first-of-type": { marginTop: 0 },
-          "&:last-child": { marginBottom: 0 },
+          "&:last-child": { marginBottom: 0 }
         },
         "& .addNote": {
           marginTop: "16px",
           padding: "16px",
           backgroundColor: "var(--bg-sub)",
-          borderRadius: "8px",
+          borderRadius: "8px"
         },
         "& .addNote textarea": {
           width: "100%",
@@ -63,8 +63,8 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           "&:focus": {
             outline: "none",
             borderColor: "primary.main",
-            boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)",
-          },
+            boxShadow: "0 0 0 2px rgba(21, 101, 192, 0.1)"
+          }
         },
         "& .btn": {
           backgroundColor: "primary.main",
@@ -75,8 +75,8 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           fontSize: "0.875rem",
           cursor: "pointer",
           marginTop: "8px",
-          "&:hover": { backgroundColor: "primary.dark" },
-        },
+          "&:hover": { backgroundColor: "primary.dark" }
+        }
       }}>
       <Notes context={props.context} conversationId={props.conversationId} createConversation={props.createConversation} />
     </Box>

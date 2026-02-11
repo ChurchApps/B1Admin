@@ -22,7 +22,7 @@ export const OldArrangements = (props: Props) => {
 
   React.useEffect(() => {
     if (props.song) loadData();
-  }, [props.song?.id]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.song?.id]);
 
   const getArrangements = () => {
     const result: JSX.Element[] = [];

@@ -69,7 +69,7 @@ export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }
                       bgcolor: isCurrentState ? "action.selected" : "transparent",
                       opacity: isFutureState ? 0.5 : 1,
                       borderLeft: isCurrentState ? "3px solid" : "3px solid transparent",
-                      borderLeftColor: isCurrentState ? "primary.main" : "transparent",
+                      borderLeftColor: isCurrentState ? "primary.main" : "transparent"
                     }}
                   >
                     <ListItemText

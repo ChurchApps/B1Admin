@@ -19,18 +19,14 @@ export const ConditionText = (props: Props) => {
     props.onChange(c);
   };
 
-  React.useEffect(init, [props.condition.field]); //eslint-disable-line
+  React.useEffect(init, [props.condition.field]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     const c = { ...props.condition };
     const val = e.target.value;
     switch (e.target.name) {
-      case "value":
-        c.value = val;
-        break;
-      case "operator":
-        c.operator = val;
-        break;
+      case "value": c.value = val; break;
+      case "operator": c.operator = val; break;
     }
     c.label = ConditionHelper.getLabel(c);
     props.onChange(c);

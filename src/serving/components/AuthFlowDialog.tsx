@@ -88,7 +88,7 @@ export const AuthFlowDialog: React.FC<Props> = ({
                 gap: 1,
                 p: 2,
                 bgcolor: "grey.100",
-                borderRadius: 2,
+                borderRadius: 2
               }}
             >
               <Typography variant="h4" fontFamily="monospace" fontWeight={700}>

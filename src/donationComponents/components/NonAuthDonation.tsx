@@ -27,7 +27,7 @@ export const NonAuthDonation: React.FC<Props> = ({ mainContainerCssProps, showHe
     });
   };
 
-  React.useEffect(init, []); //eslint-disable-line
+  React.useEffect(init, []);
 
   return (
     <>

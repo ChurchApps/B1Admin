@@ -21,7 +21,7 @@ export const BlockEditPage: React.FC = () => {
     await ApiHelper.get("/blocks/" + UserHelper.currentUserChurch.church.id + "/tree/" + id, "ContentApi");
 
   const handleDone = (url?: string) => {
-    if (url && url !== '') navigate(url);
+    if (url && url !== "") navigate(url);
     else navigate("/site/blocks");
   };
 

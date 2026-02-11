@@ -1,4 +1,4 @@
-import { Tabs, Tab, Menu, MenuItem, Stack, Typography, useTheme } from "@mui/material";
+import { Tabs, Tab, Menu, MenuItem, Stack, useTheme } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import React, { memo, useState } from "react";
 
@@ -59,8 +59,8 @@ export const NavigationTabs = memo((props: Props) => {
             minHeight: 48,
             textTransform: "none",
             fontSize: "0.95rem",
-            fontWeight: 700,
-          },
+            fontWeight: 700
+          }
         }}>
         {tabs.map((tab) => (
           <Tab
@@ -99,8 +99,8 @@ export const NavigationTabs = memo((props: Props) => {
             sx: {
               minWidth: 200,
               maxHeight: 300,
-              mt: 0.5,
-            },
+              mt: 0.5
+            }
           }}>
           {dropdown.items?.map((item: any, index) => (
             <MenuItem
@@ -109,7 +109,7 @@ export const NavigationTabs = memo((props: Props) => {
               sx={{
                 py: 1.5,
                 px: 2,
-                "&:hover": { backgroundColor: "action.hover" },
+                "&:hover": { backgroundColor: "action.hover" }
               }}>
               {dropdown.renderItem(item)}
             </MenuItem>

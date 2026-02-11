@@ -45,9 +45,7 @@ export const Links: React.FC<Props> = (props) => {
   const saveChanges = () => { ApiHelper.post("/links", links, "ContentApi").then(loadData); };
 
   const handleAdd = () => {
-    const link: LinkInterface = {
-      churchId: UserHelper.currentUserChurch.church.id, sort: links.length, text: Locale.label("sermons.liveStreamTimes.navigationLinks.home"), url: "/", linkType: "url", linkData: "", category: cat, icon: "" 
-    };
+    const link: LinkInterface = { churchId: UserHelper.currentUserChurch.church.id, sort: links.length, text: Locale.label("sermons.liveStreamTimes.navigationLinks.home"), url: "/", linkType: "url", linkData: "", category: cat, icon: "" };
     setCurrentLink(link);
   };
 
@@ -145,15 +143,15 @@ export const Links: React.FC<Props> = (props) => {
   const getTable = (structuredLinks: LinkInterface[]) => (
     <TableList rows={getLinks(structuredLinks)} isLoading={isLoading} />
   );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   React.useEffect(() => { loadData(); }, [props?.refresh]);
 
   if (currentLink !== null) return <LinkEdit links={links} currentLink={currentLink} updatedFunction={handleUpdated} />;
   else {
     return (
-    <DisplayBox headerIcon="link" headerText={Locale.label("sermons.liveStreamTimes.navigationLinks.title")} editContent={getEditContent()} data-testid="navigation-links-display-box">
-      {structuredLinks && getTable(structuredLinks)}
-    </DisplayBox>
+      <DisplayBox headerIcon="link" headerText={Locale.label("sermons.liveStreamTimes.navigationLinks.title")} editContent={getEditContent()} data-testid="navigation-links-display-box">
+        {structuredLinks && getTable(structuredLinks)}
+      </DisplayBox>
     );
   }
 };

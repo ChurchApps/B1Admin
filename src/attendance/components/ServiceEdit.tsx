@@ -21,12 +21,8 @@ export const ServiceEdit: React.FC<Props> = (props) => {
     const s = { ...service } as ServiceInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "name":
-        s.name = value;
-        break;
-      case "campus":
-        s.campusId = value;
-        break;
+      case "name": s.name = value; break;
+      case "campus": s.campusId = value; break;
     }
     setService(s);
   };

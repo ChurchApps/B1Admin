@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { ApiHelper, type GroupInterface, Locale } from "@churchapps/apphelper";
-import {
-  TextField, Button, Table, TableBody, TableRow, TableCell, InputAdornment, Paper, Typography, Stack, IconButton, TableContainer 
-} from "@mui/material";
+import { TextField, Button, Table, TableBody, TableRow, TableCell, InputAdornment, Paper, Typography, Stack, IconButton, TableContainer } from "@mui/material";
 import { Search as SearchIcon, Group as GroupIcon, Check as CheckIcon } from "@mui/icons-material";
 
 interface Props {
@@ -55,9 +53,9 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
         sx={{
           "&:hover": {
             backgroundColor: "action.hover",
-            cursor: "pointer",
+            cursor: "pointer"
           },
-          "&:last-child td": { border: 0 },
+          "&:last-child td": { border: 0 }
         }}
         onClick={() => handleAdd(sr)}>
         <TableCell>
@@ -107,12 +105,12 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
                 sx={{
                   borderRadius: 2,
                   textTransform: "none",
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}>
                 {Locale.label("common.search")}
               </Button>
             </InputAdornment>
-          ),
+          )
         }}
         sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
       />
@@ -123,7 +121,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
           sx={{
             maxHeight: 300,
             border: "1px solid",
-            borderColor: "grey.200",
+            borderColor: "grey.200"
           }}>
           <Table size="small" stickyHeader>
             <TableBody>{rows}</TableBody>
@@ -137,7 +135,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
               textAlign: "center",
               backgroundColor: "grey.50",
               border: "1px dashed",
-              borderColor: "grey.300",
+              borderColor: "grey.300"
             }}>
             <GroupIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
             <Typography variant="body2" color="text.secondary">

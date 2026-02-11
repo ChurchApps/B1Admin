@@ -88,11 +88,7 @@ export const IconPicker: React.FC<Props> = (props) => {
       onClose={props.onClose}
       maxWidth="md"
       fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 2
-        }
-      }}
+      PaperProps={{ sx: { borderRadius: 2 } }}
     >
       <DialogTitle sx={{
         backgroundColor: "#1976d2",
@@ -103,16 +99,16 @@ export const IconPicker: React.FC<Props> = (props) => {
           <Stack direction="row" alignItems="center" spacing={1.5}>
             <Box
               sx={{
-                backgroundColor: 'rgba(255,255,255,0.2)',
-                borderRadius: '8px',
+                backgroundColor: "rgba(255,255,255,0.2)",
+                borderRadius: "8px",
                 p: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
               }}
             >
-              <Icon sx={{ fontSize: 20, color: '#FFF' }}>
-                {props.currentIcon || 'insert_emoticon'}
+              <Icon sx={{ fontSize: 20, color: "#FFF" }}>
+                {props.currentIcon || "insert_emoticon"}
               </Icon>
             </Box>
             <Box>
@@ -123,7 +119,7 @@ export const IconPicker: React.FC<Props> = (props) => {
           </Stack>
           <IconButton
             onClick={props.onClose}
-            sx={{ color: '#FFF' }}
+            sx={{ color: "#FFF" }}
             size="small"
           >
             <CloseIcon />
@@ -145,7 +141,7 @@ export const IconPicker: React.FC<Props> = (props) => {
           />
 
           {/* Icon Grid */}
-          <Box sx={{ minHeight: '300px' }}>
+          <Box sx={{ minHeight: "300px" }}>
             {paginatedIcons.length > 0 ? (
               <Grid container spacing={0.75}>
                 {paginatedIcons.map((iconName) => (
@@ -153,38 +149,38 @@ export const IconPicker: React.FC<Props> = (props) => {
                     <Box
                       onClick={() => handleIconClick(iconName)}
                       sx={{
-                        aspectRatio: '1',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        aspectRatio: "1",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
                         gap: 0.25,
-                        border: '1px solid',
-                        borderColor: props.currentIcon === iconName ? 'primary.main' : 'divider',
-                        backgroundColor: props.currentIcon === iconName ? 'action.selected' : 'background.paper',
+                        border: "1px solid",
+                        borderColor: props.currentIcon === iconName ? "primary.main" : "divider",
+                        backgroundColor: props.currentIcon === iconName ? "action.selected" : "background.paper",
                         borderRadius: 0.5,
-                        cursor: 'pointer',
-                        transition: 'all 0.15s',
+                        cursor: "pointer",
+                        transition: "all 0.15s",
                         py: 0.5,
-                        '&:hover': {
-                          borderColor: 'primary.main',
-                          backgroundColor: 'action.hover',
-                          transform: 'scale(1.05)'
+                        "&:hover": {
+                          borderColor: "primary.main",
+                          backgroundColor: "action.hover",
+                          transform: "scale(1.05)"
                         }
                       }}
                     >
-                      <Icon sx={{ fontSize: 22, color: 'primary.main' }}>{iconName}</Icon>
+                      <Icon sx={{ fontSize: 22, color: "primary.main" }}>{iconName}</Icon>
                       <Typography
                         variant="caption"
                         sx={{
-                          fontSize: '0.6rem',
-                          color: 'text.secondary',
-                          textAlign: 'center',
-                          wordBreak: 'break-word',
+                          fontSize: "0.6rem",
+                          color: "text.secondary",
+                          textAlign: "center",
+                          wordBreak: "break-word",
                           px: 0.25,
                           lineHeight: 1.1,
-                          maxHeight: '2.2em',
-                          overflow: 'hidden'
+                          maxHeight: "2.2em",
+                          overflow: "hidden"
                         }}
                       >
                         {iconName}
@@ -196,15 +192,15 @@ export const IconPicker: React.FC<Props> = (props) => {
             ) : (
               <Box
                 sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: '300px',
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "300px",
                   gap: 1.5
                 }}
               >
-                <Icon sx={{ fontSize: 40, color: 'text.secondary' }}>search_off</Icon>
+                <Icon sx={{ fontSize: 40, color: "text.secondary" }}>search_off</Icon>
                 <Typography variant="body2" color="text.secondary">
                   {Locale.label("common.iconPicker.noResults", { searchText })}
                 </Typography>
@@ -217,7 +213,7 @@ export const IconPicker: React.FC<Props> = (props) => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1 }}>
+            <Box sx={{ display: "flex", justifyContent: "center", pt: 1 }}>
               <Pagination
                 count={totalPages}
                 page={page}
@@ -230,8 +226,8 @@ export const IconPicker: React.FC<Props> = (props) => {
           {/* Helper Text */}
           <Box sx={{ pt: 0.5 }}>
             <Stack direction="row" spacing={0.5} alignItems="center">
-              <Icon sx={{ fontSize: 14, color: 'text.secondary' }}>info</Icon>
-              <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+              <Icon sx={{ fontSize: 14, color: "text.secondary" }}>info</Icon>
+              <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.7rem" }}>
                 {searchText
                   ? Locale.label("common.iconPicker.showingMatching", { count: filteredIcons.length, searchText })
                   : Locale.label("common.iconPicker.showingDefault", { count: defaultIcons.length })

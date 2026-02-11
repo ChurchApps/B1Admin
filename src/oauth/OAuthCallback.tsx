@@ -35,7 +35,7 @@ export const OAuthCallback: React.FC = () => {
           providerId,
           code,
           error,
-          error_description: errorDescription,
+          error_description: errorDescription
         },
         window.location.origin
       );
@@ -58,7 +58,7 @@ export const OAuthCallback: React.FC = () => {
         alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
-        gap: 2,
+        gap: 2
       }}
     >
       <CircularProgress />

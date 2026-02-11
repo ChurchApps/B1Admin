@@ -19,12 +19,8 @@ export const ArrangementEdit = (props: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const a = { ...arrangement };
     switch (e.target.name) {
-      case "name":
-        a.name = e.target.value;
-        break;
-      case "lyrics":
-        a.lyrics = e.target.value;
-        break;
+      case "name": a.name = e.target.value; break;
+      case "lyrics": a.lyrics = e.target.value; break;
     }
     setArrangement(a);
   };

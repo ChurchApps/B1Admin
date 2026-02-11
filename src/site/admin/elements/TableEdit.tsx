@@ -3,9 +3,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
 import { HtmlEditor } from "@churchapps/apphelper-markdown";
 import { Locale } from "@churchapps/apphelper";
-import {
-  Button, FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableRow, TextField 
-} from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableRow, TextField } from "@mui/material";
 import React from "react";
 
 type Props = {
@@ -16,7 +14,7 @@ type Props = {
 export function TableEdit(props: Props) {
   const contents:string[][] = props.parsedData.contents || [["", ""], ["", ""], ["", ""], ["", ""]];
   const rows = contents.length;
-  const cols = (contents.length>0) ? contents[0].length : 0;
+  const cols = (contents.length > 0) ? contents[0].length : 0;
   const markdown = props.parsedData.markdown || false;
   const [editCellIdx, setEditCellIdx] = React.useState<number[]>(null);
 

@@ -1,12 +1,8 @@
 import React from "react";
-import {
-  ApiHelper, DateHelper, UserHelper, ExportLink, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader 
-} from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, UserHelper, ExportLink, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
-import {
-  Table, TableBody, TableRow, TableCell, TableHead, TextField, Box, Typography, Card, Stack, Button, Icon
-} from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, TextField, Box, Typography, Card, Stack, Button } from "@mui/material";
 import {
   VolunteerActivism as FundIcon,
   FileDownload as ExportIcon,
@@ -14,7 +10,7 @@ import {
   CalendarMonth as DateIcon,
   Person as PersonIcon,
   Receipt as ReceiptIcon,
-  AttachMoney as MoneyIcon,
+  AttachMoney as MoneyIcon
 } from "@mui/icons-material";
 
 export const FundPage = () => {
@@ -30,7 +26,7 @@ export const FundPage = () => {
   const [stats, setStats] = React.useState({
     totalDonations: 0,
     totalAmount: 0,
-    uniqueDonors: 0,
+    uniqueDonors: 0
   });
 
   const loadData = () => {
@@ -65,7 +61,7 @@ export const FundPage = () => {
         setStats({
           totalDonations,
           totalAmount,
-          uniqueDonors,
+          uniqueDonors
         });
       }
     );
@@ -73,12 +69,8 @@ export const FundPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.name) {
-      case "startDate":
-        setStartDate(new Date(e.target.value));
-        break;
-      case "endDate":
-        setEndDate(new Date(e.target.value));
-        break;
+      case "startDate": setStartDate(new Date(e.target.value)); break;
+      case "endDate": setEndDate(new Date(e.target.value)); break;
     }
   };
 
@@ -123,7 +115,7 @@ export const FundPage = () => {
               style={{
                 textDecoration: "none",
                 color: "var(--c1l2)",
-                fontWeight: 500,
+                fontWeight: 500
               }}>
               {people[fd.donation.personId] || Locale.label("donations.fundsPage.anon")}
             </Link>
@@ -136,7 +128,7 @@ export const FundPage = () => {
           key={i}
           sx={{
             "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease",
+            transition: "background-color 0.2s ease"
           }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -153,7 +145,7 @@ export const FundPage = () => {
                 style={{
                   textDecoration: "none",
                   color: "var(--c1l2)",
-                  fontWeight: 500,
+                  fontWeight: 500
                 }}>
                 {fd.donation.batchId}
               </Link>
@@ -208,7 +200,7 @@ export const FundPage = () => {
     return rows;
   };
 
-  React.useEffect(loadData, [params.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadData, [params.id]);
 
   const getTable = () => {
     if (!fundDonations) return <Loading />;
@@ -219,8 +211,8 @@ export const FundPage = () => {
             backgroundColor: "grey.50",
             "& .MuiTableCell-root": {
               borderBottom: "2px solid",
-              borderBottomColor: "divider",
-            },
+              borderBottomColor: "divider"
+            }
           }}>
           {getTableHeader()}
         </TableHead>

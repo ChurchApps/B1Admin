@@ -43,15 +43,17 @@ export class ContentProviderAuthHelper {
 
   static async storeAuth(ministryId: string, providerId: string, auth: ContentProviderAuthData): Promise<void> {
     const expiresAt = new Date((auth.created_at + auth.expires_in) * 1000);
-    await ApiHelper.post("/contentProviderAuths", [{
-      ministryId,
-      providerId,
-      accessToken: auth.access_token,
-      refreshToken: auth.refresh_token,
-      tokenType: auth.token_type,
-      expiresAt,
-      scope: auth.scope
-    }], "DoingApi");
+    await ApiHelper.post("/contentProviderAuths", [
+      {
+        ministryId,
+        providerId,
+        accessToken: auth.access_token,
+        refreshToken: auth.refresh_token,
+        tokenType: auth.token_type,
+        expiresAt,
+        scope: auth.scope
+      }
+    ], "DoingApi");
   }
 
   static async removeAuth(authId: string): Promise<void> {

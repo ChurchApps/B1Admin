@@ -27,7 +27,7 @@ export const RoleCheck: React.FC<Props> = (props) => {
         roleId: props.roleId,
         apiName: props.apiName,
         contentType: props.contentType,
-        action: props.action,
+        action: props.action
       };
       ApiHelper.post("/rolepermissions/", [rp], "MembershipApi").then((data) => {
         rp.id = data[0];
@@ -39,7 +39,7 @@ export const RoleCheck: React.FC<Props> = (props) => {
     }
   };
 
-  React.useEffect(init, [props.rolePermissions]); //eslint-disable-line
+  React.useEffect(init, [props.rolePermissions]);
 
   return (
     <FormGroup>

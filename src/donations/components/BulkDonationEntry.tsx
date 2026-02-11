@@ -1,6 +1,4 @@
-import {
-  FormControl, InputLabel, MenuItem, Select, TextField, Box, Card, CardContent, Typography, Button, type SelectChangeEvent
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Card, CardContent, Typography, Button, type SelectChangeEvent } from "@mui/material";
 import React, { memo, useCallback, useRef, useEffect } from "react";
 import { PersonAdd } from "../../components";
 import { ApiHelper, DateHelper, PersonHelper, Locale } from "@churchapps/apphelper";
@@ -25,7 +23,7 @@ export const BulkDonationEntry = memo((props: Props) => {
     date: props.batchDate || new Date(),
     method: "Check" as string,
     fundId: props.funds?.[0]?.id || "",
-    notes: "",
+    notes: ""
   });
 
   const handlePersonAdd = useCallback((p: PersonInterface) => {
@@ -59,7 +57,7 @@ export const BulkDonationEntry = memo((props: Props) => {
       donationDate: DateHelper.formatHtml5Date(defaultValues.date),
       method: defaultValues.method,
       methodDetails: methodDetails || undefined,
-      notes: defaultValues.notes || undefined,
+      notes: defaultValues.notes || undefined
     };
 
     const savedDonations = await ApiHelper.post("/donations", [donation], "GivingApi");
@@ -68,7 +66,7 @@ export const BulkDonationEntry = memo((props: Props) => {
     const fundDonation: FundDonationInterface = {
       donationId,
       fundId: defaultValues.fundId,
-      amount: parseFloat(amount),
+      amount: parseFloat(amount)
     };
 
     await ApiHelper.post("/funddonations", [fundDonation], "GivingApi");
@@ -131,9 +129,7 @@ export const BulkDonationEntry = memo((props: Props) => {
           <button
             type="button"
             onClick={() => setShowPersonSearch(true)}
-            style={{
-              background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", textDecoration: "underline"
-            }}>
+            style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", textDecoration: "underline" }}>
             {Locale.label("common.change")}
           </button>
         </Box>

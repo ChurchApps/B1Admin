@@ -30,17 +30,17 @@ const InstructionItemRow: React.FC<{
   // Filter out file type items - we only show sections and actions
   // When excludeActions is true, also filter out action items
   const visibleChildren = item.children?.filter(child => {
-    if (child.itemType === 'file') return false;
-    if (excludeActions && (child.itemType === 'action' || child.itemType === 'providerPresentation')) return false;
+    if (child.itemType === "file") return false;
+    if (excludeActions && (child.itemType === "action" || child.itemType === "providerPresentation")) return false;
     return true;
   }) || [];
   const hasChildren = visibleChildren.length > 0;
   const isExpanded = expandedSections.has(itemId);
-  const isSection = item.itemType === 'section' || item.itemType === 'header';
-  const isAction = item.itemType === 'action' || item.itemType === 'providerPresentation';
+  const isSection = item.itemType === "section" || item.itemType === "header";
+  const isAction = item.itemType === "action" || item.itemType === "providerPresentation";
 
   // Get thumbnail from item or first file child (only for actions, not sections)
-  const fileChild = item.children?.find(child => child.itemType === 'file');
+  const fileChild = item.children?.find(child => child.itemType === "file");
   const thumbnail = !isSection
     ? (item.thumbnail || fileChild?.thumbnail)
     : undefined;
@@ -205,7 +205,7 @@ export const InstructionTree: React.FC<InstructionTreeProps> = ({ items, provide
 
   if (excludeHeaders) {
     items.forEach((item, index) => {
-      if (item.itemType === 'header') {
+      if (item.itemType === "header") {
         // Skip the header, but add its children with adjusted path indices
         item.children?.forEach((child, childIndex) => {
           itemsToRender.push({ item: child, pathIndices: [index, childIndex] });

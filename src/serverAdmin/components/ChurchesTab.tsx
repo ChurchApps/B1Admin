@@ -79,9 +79,7 @@ export const ChurchesTab = () => {
   const getManageAccessLink = (church: ChurchInterface) => {
     let result: JSX.Element = null;
     result = (
-      <button type="button" data-churchid={church.id} onClick={handleEditAccess} style={{
-        marginRight: 40, background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" 
-      }}>
+      <button type="button" data-churchid={church.id} onClick={handleEditAccess} style={{ marginRight: 40, background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
         {church.name}
       </button>
     );
@@ -112,7 +110,7 @@ export const ChurchesTab = () => {
     }
   };
 
-  React.useEffect(loadData, []); // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadData, []);
 
   if (redirectUrl !== "") return <Navigate to={redirectUrl}></Navigate>;
   else {
@@ -134,7 +132,7 @@ export const ChurchesTab = () => {
                 <Button variant="contained" id="searchButton" data-cy="search-button" disableElevation onClick={loadData} data-testid="search-churches-button" aria-label="Search churches">
                   {Locale.label("common.search")}
                 </Button>
-              ),
+              )
             }}
           />
           <br />

@@ -66,7 +66,7 @@ export const PraiseChartsProducts = (props: Props) => {
 
   useEffect(() => {
     loadData();
-  }, [props.praiseChartsId, props.keySignature]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.praiseChartsId, props.keySignature]);
 
   const download = async (product: any) => {
     PraiseChartsHelper.download(product.sku, product.file_name, "");

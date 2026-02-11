@@ -25,18 +25,10 @@ export const PlanItemEdit = (props: Props) => {
     if (isNaN(pi.seconds)) pi.seconds = 0;
     const value = e.target.value;
     switch (e.target.name) {
-      case "label":
-        pi.label = value;
-        break;
-      case "description":
-        pi.description = value;
-        break;
-      case "minutes":
-        pi.seconds = parseInt(value) * 60 + (pi.seconds % 60);
-        break;
-      case "seconds":
-        pi.seconds = Math.floor(pi.seconds / 60) * 60 + parseInt(value);
-        break;
+      case "label": pi.label = value; break;
+      case "description": pi.description = value; break;
+      case "minutes": pi.seconds = parseInt(value) * 60 + (pi.seconds % 60); break;
+      case "seconds": pi.seconds = Math.floor(pi.seconds / 60) * 60 + parseInt(value); break;
     }
     setPlanItem(pi);
   };
@@ -101,7 +93,7 @@ export const PlanItemEdit = (props: Props) => {
       label: song.title,
       description: `${song.artist} - ${song.shortDescription || ""} (${song.arrangementKeySignature || ""})`,
       seconds: song.seconds,
-      thumbnailUrl: song.thumbnail,
+      thumbnailUrl: song.thumbnail
     };
     setPlanItem(pi);
     setSongs([]);

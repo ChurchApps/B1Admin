@@ -2,9 +2,7 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type SongDetailInterface } from "../../../helpers";
 import { ChordProHelper } from "../../../helpers/ChordProHelper";
 import { ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import {
-  Card, CardContent, Typography, Stack, IconButton, Box, Alert, Button
-} from "@mui/material";
+import { Card, CardContent, Typography, Stack, IconButton, Box, Alert, Button } from "@mui/material";
 import { Edit as EditIcon, QueueMusic as ArrangementIcon } from "@mui/icons-material";
 import { Keys } from "./Keys";
 import { ArrangementEdit } from "./ArrangementEdit";
@@ -51,7 +49,7 @@ export const Arrangement = memo((props: Props) => {
       const line = lines[i].trim();
       if (nextLineIsTitle) newLines.push(`[${line}]`);
       else newLines.push(line);
-      nextLineIsTitle = line === ""
+      nextLineIsTitle = line === "";
     }
     a.lyrics = newLines.join("\n").replaceAll("[]", "").trim();
 
@@ -89,7 +87,7 @@ export const Arrangement = memo((props: Props) => {
                 onClick={() => setEdit(true)}
                 sx={{
                   color: "primary.main",
-                  "&:hover": { backgroundColor: "primary.light" },
+                  "&:hover": { backgroundColor: "primary.light" }
                 }}
                 aria-label="Edit arrangement">
                 <EditIcon />
@@ -130,8 +128,8 @@ export const Arrangement = memo((props: Props) => {
               lineHeight: 1.6,
               "& pre": {
                 margin: 0,
-                whiteSpace: "pre-wrap",
-              },
+                whiteSpace: "pre-wrap"
+              }
             }}
             dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(props.arrangement?.lyrics || Locale.label("songs.arrangement.enterLyrics") || "Enter lyrics...", 0) }}
           />

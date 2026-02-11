@@ -23,7 +23,7 @@ import {
   DialogContent,
   DialogActions,
   Paper,
-  alpha,
+  alpha
 } from "@mui/material";
 import {
   ExpandMore as ExpandMoreIcon,
@@ -34,7 +34,7 @@ import {
   Email as EmailIcon,
   Group as GroupIcon,
   EventAvailable as AttendanceIcon,
-  Assignment as CustomFieldIcon,
+  Assignment as CustomFieldIcon
 } from "@mui/icons-material";
 
 interface Props {
@@ -71,19 +71,17 @@ interface ComplexFilterConfig {
 // Reusable style objects
 const styles = {
   inputCommon: {
-    '& .MuiInputBase-input': { fontSize: '0.8125rem', py: 0.5, px: 1 },
-    '& .MuiSelect-select': { fontSize: '0.8125rem', py: 0.5, px: 1 },
-    '& .MuiInputBase-root': { minHeight: 32 }
+    "& .MuiInputBase-input": { fontSize: "0.8125rem", py: 0.5, px: 1 },
+    "& .MuiSelect-select": { fontSize: "0.8125rem", py: 0.5, px: 1 },
+    "& .MuiInputBase-root": { minHeight: 32 }
   },
   operatorSelect: {
     minWidth: 70,
-    fontSize: '0.8125rem',
-    '& .MuiSelect-select': { py: 0.5, px: 1 },
-    '& .MuiInputBase-root': { minHeight: 32 }
+    fontSize: "0.8125rem",
+    "& .MuiSelect-select": { py: 0.5, px: 1 },
+    "& .MuiInputBase-root": { minHeight: 32 }
   },
-  menuItem: {
-    fontSize: '0.875rem'
-  },
+  menuItem: { fontSize: "0.875rem" },
   activeFiltersPaper: {
     p: 1.5,
     mb: 2,
@@ -92,30 +90,30 @@ const styles = {
   },
   filterChip: {
     height: 24,
-    fontSize: '0.75rem'
+    fontSize: "0.75rem"
   },
   categoryChip: {
     height: 20,
     minWidth: 20,
-    '& .MuiChip-label': { px: 0.75, fontSize: '0.7rem', fontWeight: 600 }
+    "& .MuiChip-label": { px: 0.75, fontSize: "0.7rem", fontWeight: 600 }
   },
   accordion: {
     mb: 1,
-    '&:before': { display: 'none' },
-    borderRadius: '4px !important',
-    overflow: 'hidden',
-    border: '1px solid',
-    borderColor: 'divider',
+    "&:before": { display: "none" },
+    borderRadius: "4px !important",
+    overflow: "hidden",
+    border: "1px solid",
+    borderColor: "divider"
   },
   accordionSummary: {
     bgcolor: (theme: any) => alpha(theme.palette.primary.main, 0.02),
     minHeight: 42,
-    '&.Mui-expanded': {
+    "&.Mui-expanded": {
       minHeight: 42,
       borderBottom: 1,
-      borderColor: 'divider',
+      borderColor: "divider"
     },
-    py: 0,
+    py: 0
   },
   accordionDetails: {
     p: 1,
@@ -124,22 +122,18 @@ const styles = {
   filterRow: {
     py: 0.75,
     px: 0.5,
-    borderRadius: 0.5,
+    borderRadius: 0.5
   },
-  filterRowActive: (theme: any) => ({
-    bgcolor: alpha(theme.palette.primary.main, 0.03)
-  }),
-  checkbox: {
-    p: 0.5
-  },
+  filterRowActive: (theme: any) => ({ bgcolor: alpha(theme.palette.primary.main, 0.03) }),
+  checkbox: { p: 0.5 },
   filterLabel: {
-    fontSize: '0.8125rem',
-    flex: 1,
+    fontSize: "0.8125rem",
+    flex: 1
   },
   complexButton: {
     textTransform: "none",
     justifyContent: "flex-start",
-    fontSize: '0.8125rem',
+    fontSize: "0.8125rem",
     py: 0.5
   }
 };
@@ -169,7 +163,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         { key: "middleName", label: Locale.label("person.middleName"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] },
         { key: "nickName", label: Locale.label("person.nickName"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] },
         { key: "prefix", label: Locale.label("person.prefix"), type: "text", operators: ["contains", "equals"] },
-        { key: "suffix", label: Locale.label("person.suffix"), type: "text", operators: ["contains", "equals"] },
+        { key: "suffix", label: Locale.label("person.suffix"), type: "text", operators: ["contains", "equals"] }
       ],
       demographics: [
         {
@@ -180,8 +174,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           options: [
             { value: "Unspecified", label: Locale.label("person.unspecified") },
             { value: "Male", label: Locale.label("person.male") },
-            { value: "Female", label: Locale.label("person.female") },
-          ],
+            { value: "Female", label: Locale.label("person.female") }
+          ]
         },
         { key: "age", label: Locale.label("person.age"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] },
         { key: "birthDate", label: Locale.label("person.birthDate"), type: "date", operators: ["equals", "greaterThan", "lessThan"] },
@@ -202,8 +196,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             { value: "9", label: Locale.label("month.sep") },
             { value: "10", label: Locale.label("month.oct") },
             { value: "11", label: Locale.label("month.nov") },
-            { value: "12", label: Locale.label("month.dec") },
-          ],
+            { value: "12", label: Locale.label("month.dec") }
+          ]
         },
         {
           key: "maritalStatus",
@@ -215,8 +209,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             { value: "Single", label: Locale.label("person.single") },
             { value: "Married", label: Locale.label("person.married") },
             { value: "Divorced", label: Locale.label("person.divorced") },
-            { value: "Widowed", label: Locale.label("person.widowed") },
-          ],
+            { value: "Widowed", label: Locale.label("person.widowed") }
+          ]
         },
         { key: "anniversary", label: Locale.label("person.anniversary"), type: "date", operators: ["equals", "greaterThan", "lessThan"] },
         {
@@ -236,10 +230,10 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             { value: "9", label: Locale.label("month.sep") },
             { value: "10", label: Locale.label("month.oct") },
             { value: "11", label: Locale.label("month.nov") },
-            { value: "12", label: Locale.label("month.dec") },
-          ],
+            { value: "12", label: Locale.label("month.dec") }
+          ]
         },
-        { key: "yearsMarried", label: Locale.label("people.editCondition.marYears"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] },
+        { key: "yearsMarried", label: Locale.label("people.editCondition.marYears"), type: "number", operators: ["equals", "greaterThan", "greaterThanEqual", "lessThan", "lessThanEqual"] }
       ],
       contact: [
         { key: "email", label: Locale.label("person.email"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] },
@@ -247,7 +241,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         { key: "address", label: Locale.label("person.address"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] },
         { key: "city", label: Locale.label("person.city"), type: "text", operators: ["contains", "equals", "startsWith", "endsWith"] },
         { key: "state", label: Locale.label("person.state"), type: "text", operators: ["contains", "equals"] },
-        { key: "zip", label: Locale.label("person.zip"), type: "text", operators: ["contains", "equals", "startsWith"] },
+        { key: "zip", label: Locale.label("person.zip"), type: "text", operators: ["contains", "equals", "startsWith"] }
       ],
       membership: [
         {
@@ -260,9 +254,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             { value: "Regular Attendee", label: Locale.label("person.regularAttendee") },
             { value: "Member", label: Locale.label("person.member") },
             { value: "Staff", label: Locale.label("person.staff") },
-            { value: "Inactive", label: Locale.label("person.inactive") },
-          ],
-        },
+            { value: "Inactive", label: Locale.label("person.inactive") }
+          ]
+        }
       ],
       activity: [],
       customFields: customFieldQuestions
@@ -288,7 +282,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               operators = ["equals"];
               options = [
                 { value: "Yes", label: Locale.label("common.yes") || "Yes" },
-                { value: "No", label: Locale.label("common.no") || "No" },
+                { value: "No", label: Locale.label("common.no") || "No" }
               ];
               break;
             case "Multiple Choice":
@@ -307,9 +301,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             label: q.title,
             type,
             operators,
-            options,
+            options
           };
-        }),
+        })
     };
 
     // Add group membership if permissions allow
@@ -319,7 +313,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         label: Locale.label("people.editCondition.groupMem"),
         type: "select",
         operators: ["in", "notIn"],
-        options: groups.map((g) => ({ value: g.id, label: g.name })),
+        options: groups.map((g) => ({ value: g.id, label: g.name }))
       });
     }
 
@@ -329,7 +323,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         key: "memberDonations",
         label: Locale.label("people.editCondition.memDon"),
         type: "complex",
-        operators: ["donatedToAny", "donatedTo"],
+        operators: ["donatedToAny", "donatedTo"]
       });
     }
 
@@ -339,7 +333,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         key: "memberAttendance",
         label: Locale.label("people.editCondition.memAtt"),
         type: "complex",
-        operators: ["attendedAny", "attendedCampus", "attendedService", "attendedServiceTime", "attendedGroup"],
+        operators: ["attendedAny", "attendedCampus", "attendedService", "attendedServiceTime", "attendedGroup"]
       });
     }
 
@@ -364,7 +358,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           ApiHelper.get("/campuses", "AttendanceApi"),
           ApiHelper.get("/services", "AttendanceApi"),
           ApiHelper.get("/serviceTimes", "AttendanceApi"),
-          ApiHelper.get("/groups", "MembershipApi"),
+          ApiHelper.get("/groups", "MembershipApi")
         ]);
         setCampuses(campusData);
         setServices(serviceData);
@@ -413,7 +407,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             entityValue: "any",
             entityText: "Any",
             fromDate: DateHelper.formatHtml5Date(new Date()),
-            toDate: DateHelper.formatHtml5Date(new Date()),
+            toDate: DateHelper.formatHtml5Date(new Date())
           });
           setComplexFilterDialog({ open: true, field });
           return;
@@ -421,7 +415,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         filters[field] = {
           field,
           operator: fieldConfig.operators?.[0] || "equals",
-          value: fieldConfig.type === "select" ? fieldConfig.options?.[0]?.value || "" : "",
+          value: fieldConfig.type === "select" ? fieldConfig.options?.[0]?.value || "" : ""
         };
       }
     }
@@ -475,20 +469,20 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         filters[complexFilterDialog.field] = {
           field: "memberDonations",
           operator: "donatedToAny",
-          value: JSON.stringify([{ value: "any", text: "Any" }, { from: complexConfig.fromDate, to: complexConfig.toDate }]),
+          value: JSON.stringify([{ value: "any", text: "Any" }, { from: complexConfig.fromDate, to: complexConfig.toDate }])
         };
       } else {
         filters[complexFilterDialog.field] = {
           field: "memberDonations",
           operator: "donatedTo",
-          value: JSON.stringify([{ value: complexConfig.entityValue, text: complexConfig.entityText }, { from: complexConfig.fromDate, to: complexConfig.toDate }]),
+          value: JSON.stringify([{ value: complexConfig.entityValue, text: complexConfig.entityText }, { from: complexConfig.fromDate, to: complexConfig.toDate }])
         };
       }
     } else if (complexConfig.type === "attendance") {
       filters[complexFilterDialog.field] = {
         field: "memberAttendance",
         operator: complexConfig.operator,
-        value: JSON.stringify([{ value: complexConfig.entityValue, text: complexConfig.entityText }, { from: complexConfig.fromDate, to: complexConfig.toDate }]),
+        value: JSON.stringify([{ value: complexConfig.entityValue, text: complexConfig.entityText }, { from: complexConfig.fromDate, to: complexConfig.toDate }])
       };
     }
 
@@ -667,7 +661,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       lessThan: "<",
       lessThanEqual: "≤",
       in: Locale.label("people.editCondition.isMem"),
-      notIn: Locale.label("people.editCondition.notMem"),
+      notIn: Locale.label("people.editCondition.notMem")
     };
 
     return (
@@ -750,7 +744,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                 entityValue: parsed[0]?.value || "any",
                 entityText: parsed[0]?.text || "Any",
                 fromDate: parsed[1]?.from || DateHelper.formatHtml5Date(new Date()),
-                toDate: parsed[1]?.to || DateHelper.formatHtml5Date(new Date()),
+                toDate: parsed[1]?.to || DateHelper.formatHtml5Date(new Date())
               });
             } catch (e) {
               // ignore
@@ -770,7 +764,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       contact: Locale.label("people.peopleSearch.contact"),
       membership: Locale.label("people.peopleSearch.membership"),
       activity: Locale.label("people.peopleSearch.activity"),
-      customFields: Locale.label("people.peopleSearch.customFields") || "Custom Fields",
+      customFields: Locale.label("people.peopleSearch.customFields") || "Custom Fields"
     };
     return labels[key] || key;
   };
@@ -782,7 +776,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       contact: <EmailIcon />,
       membership: <GroupIcon />,
       activity: <AttendanceIcon />,
-      customFields: <CustomFieldIcon />,
+      customFields: <CustomFieldIcon />
     };
     return icons[key] || <PersonIcon />;
   };
@@ -803,132 +797,132 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const renderContent = () => (
     <>
 
-        {/* Active Filters Summary */}
-        {Object.keys(activeFilters).length > 0 && (
-          <Paper elevation={0} sx={styles.activeFiltersPaper}>
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
-              <Typography variant="caption" color="primary" sx={{ fontWeight: 600, mr: 0.5 }}>
-                {Object.keys(activeFilters).length} {Locale.label("people.peopleSearch.active")}
-              </Typography>
-              {Object.entries(activeFilters).map(([key, filter]) => {
-                const fieldConfig = Object.values(filterCategories).flat().find((f) => f.key === key);
-                return (
-                  <Chip
-                    key={key}
-                    label={fieldConfig?.label}
-                    onDelete={() => removeFilter(key)}
-                    deleteIcon={<CloseIcon />}
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                    sx={styles.filterChip}
-                  />
-                );
-              })}
-              <Chip
-                label={Locale.label("people.peopleSearch.clearAll")}
-                onClick={clearAllFilters}
-                size="small"
-                variant="outlined"
-                color="default"
-                sx={styles.filterChip}
-              />
-            </Stack>
-          </Paper>
-        )}
+      {/* Active Filters Summary */}
+      {Object.keys(activeFilters).length > 0 && (
+        <Paper elevation={0} sx={styles.activeFiltersPaper}>
+          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
+            <Typography variant="caption" color="primary" sx={{ fontWeight: 600, mr: 0.5 }}>
+              {Object.keys(activeFilters).length} {Locale.label("people.peopleSearch.active")}
+            </Typography>
+            {Object.entries(activeFilters).map(([key, filter]) => {
+              const fieldConfig = Object.values(filterCategories).flat().find((f) => f.key === key);
+              return (
+                <Chip
+                  key={key}
+                  label={fieldConfig?.label}
+                  onDelete={() => removeFilter(key)}
+                  deleteIcon={<CloseIcon />}
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  sx={styles.filterChip}
+                />
+              );
+            })}
+            <Chip
+              label={Locale.label("people.peopleSearch.clearAll")}
+              onClick={clearAllFilters}
+              size="small"
+              variant="outlined"
+              color="default"
+              sx={styles.filterChip}
+            />
+          </Stack>
+        </Paper>
+      )}
 
-        <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
-          {Locale.label("people.peopleSearch.checkBoxes")}
-        </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: "block" }}>
+        {Locale.label("people.peopleSearch.checkBoxes")}
+      </Typography>
 
-        <Box>
-          {Object.entries(filterCategories).map(([categoryKey, fields]) => {
-            // Skip empty categories, except customFields which loads dynamically
-            if (fields.length === 0 && categoryKey !== "customFields") return null;
-            const activeCount = getActiveFilterCount(categoryKey);
+      <Box>
+        {Object.entries(filterCategories).map(([categoryKey, fields]) => {
+          // Skip empty categories, except customFields which loads dynamically
+          if (fields.length === 0 && categoryKey !== "customFields") return null;
+          const activeCount = getActiveFilterCount(categoryKey);
 
-            return (
-              <Accordion
-                key={categoryKey}
-                expanded={expandedCategories.includes(categoryKey)}
-                onChange={handleCategoryExpand(categoryKey)}
-                sx={styles.accordion}
-                disableGutters
+          return (
+            <Accordion
+              key={categoryKey}
+              expanded={expandedCategories.includes(categoryKey)}
+              onChange={handleCategoryExpand(categoryKey)}
+              sx={styles.accordion}
+              disableGutters
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={styles.accordionSummary}
               >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  sx={styles.accordionSummary}
-                >
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
-                    <Box sx={{ color: 'primary.main', display: 'flex', alignItems: 'center', fontSize: 18 }}>
-                      {getCategoryIcon(categoryKey)}
-                    </Box>
-                    <Typography sx={{ flexGrow: 1, fontWeight: 500, fontSize: '0.875rem' }}>{getCategoryLabel(categoryKey)}</Typography>
-                    {activeCount > 0 && (
-                      <Chip
-                        label={activeCount}
-                        size="small"
-                        color="primary"
-                        sx={styles.categoryChip}
-                      />
-                    )}
-                  </Stack>
-                </AccordionSummary>
-                <AccordionDetails sx={styles.accordionDetails}>
-                  <Stack spacing={0}>
-                    {fields.length === 0 && categoryKey === "customFields" && (
-                      <Typography variant="body2" color="text.secondary" sx={{ py: 1, px: 0.5 }}>
-                        {loadedCategories.includes("customFields")
-                          ? "No custom fields defined. Create custom fields in Forms to search by them."
-                          : "Loading custom fields..."}
-                      </Typography>
-                    )}
-                    {fields.map((field) => (
-                      <Box
-                        key={field.key}
-                        sx={{
-                          ...styles.filterRow,
-                          ...(activeFilters[field.key] && styles.filterRowActive)
-                        }}
-                      >
-                        <Stack spacing={0.5}>
-                          <Stack direction="row" spacing={0.75} alignItems="center">
-                            <Checkbox
-                              checked={!!activeFilters[field.key]}
-                              onChange={() => toggleFilter(field.key)}
-                              size="small"
-                              sx={styles.checkbox}
-                            />
-                            <Typography
-                              sx={{
-                                ...styles.filterLabel,
-                                color: activeFilters[field.key] ? "text.primary" : "text.secondary",
-                                fontWeight: activeFilters[field.key] ? 500 : 400,
-                              }}>
-                              {field.label}
-                            </Typography>
-                          </Stack>
-                          {activeFilters[field.key] && (
-                            <Stack direction="row" spacing={0.75} sx={{ pl: 3.5, alignItems: "center" }}>
-                              {field.type !== "complex" && field.type !== "select" && (
-                                <Box sx={{ flexShrink: 0 }}>
-                                  {renderOperatorSelect(field)}
-                                </Box>
-                              )}
-                              <Box sx={{ flex: 1, minWidth: 0 }}>
-                                {field.type === "complex" ? renderComplexFilterButton(field) : renderValueInput(field)}
-                              </Box>
-                            </Stack>
-                          )}
+                <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
+                  <Box sx={{ color: "primary.main", display: "flex", alignItems: "center", fontSize: 18 }}>
+                    {getCategoryIcon(categoryKey)}
+                  </Box>
+                  <Typography sx={{ flexGrow: 1, fontWeight: 500, fontSize: "0.875rem" }}>{getCategoryLabel(categoryKey)}</Typography>
+                  {activeCount > 0 && (
+                    <Chip
+                      label={activeCount}
+                      size="small"
+                      color="primary"
+                      sx={styles.categoryChip}
+                    />
+                  )}
+                </Stack>
+              </AccordionSummary>
+              <AccordionDetails sx={styles.accordionDetails}>
+                <Stack spacing={0}>
+                  {fields.length === 0 && categoryKey === "customFields" && (
+                    <Typography variant="body2" color="text.secondary" sx={{ py: 1, px: 0.5 }}>
+                      {loadedCategories.includes("customFields")
+                        ? "No custom fields defined. Create custom fields in Forms to search by them."
+                        : "Loading custom fields..."}
+                    </Typography>
+                  )}
+                  {fields.map((field) => (
+                    <Box
+                      key={field.key}
+                      sx={{
+                        ...styles.filterRow,
+                        ...(activeFilters[field.key] && styles.filterRowActive)
+                      }}
+                    >
+                      <Stack spacing={0.5}>
+                        <Stack direction="row" spacing={0.75} alignItems="center">
+                          <Checkbox
+                            checked={!!activeFilters[field.key]}
+                            onChange={() => toggleFilter(field.key)}
+                            size="small"
+                            sx={styles.checkbox}
+                          />
+                          <Typography
+                            sx={{
+                              ...styles.filterLabel,
+                              color: activeFilters[field.key] ? "text.primary" : "text.secondary",
+                              fontWeight: activeFilters[field.key] ? 500 : 400
+                            }}>
+                            {field.label}
+                          </Typography>
                         </Stack>
-                      </Box>
-                    ))}
-                  </Stack>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
-        </Box>
+                        {activeFilters[field.key] && (
+                          <Stack direction="row" spacing={0.75} sx={{ pl: 3.5, alignItems: "center" }}>
+                            {field.type !== "complex" && field.type !== "select" && (
+                              <Box sx={{ flexShrink: 0 }}>
+                                {renderOperatorSelect(field)}
+                              </Box>
+                            )}
+                            <Box sx={{ flex: 1, minWidth: 0 }}>
+                              {field.type === "complex" ? renderComplexFilterButton(field) : renderValueInput(field)}
+                            </Box>
+                          </Stack>
+                        )}
+                      </Stack>
+                    </Box>
+                  ))}
+                </Stack>
+              </AccordionDetails>
+            </Accordion>
+          );
+        })}
+      </Box>
     </>
   );
 
@@ -937,42 +931,42 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       <>
         {renderContent()}
         {/* Complex Filter Dialog */}
-      <Dialog open={complexFilterDialog.open} onClose={() => setComplexFilterDialog({ open: false, field: null })} maxWidth="sm" fullWidth>
-        <DialogTitle>
-          {complexFilterDialog.field === "memberDonations" ? Locale.label("people.editCondition.memDon") : Locale.label("people.editCondition.memAtt")}
-        </DialogTitle>
-        <DialogContent>
-          <Stack spacing={2} sx={{ mt: 1 }}>
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("people.peopleSearch.type")}</InputLabel>
-              <Select
-                value={complexConfig?.operator || ""}
-                label={Locale.label("people.peopleSearch.type")}
-                onChange={(e) => {
-                  const newConfig = complexConfig || {
-                    type: complexFilterDialog.field === "memberDonations" ? "donation" : "attendance",
-                    operator: e.target.value,
-                    entityValue: "any",
-                    entityText: "Any",
-                    fromDate: DateHelper.formatHtml5Date(new Date()),
-                    toDate: DateHelper.formatHtml5Date(new Date()),
-                  };
-                  setComplexConfig({ ...newConfig, operator: e.target.value });
-                }}>
-                {complexFilterDialog.field === "memberDonations" ? [
-                  <MenuItem key="donatedToAny" value="donatedToAny">{Locale.label("people.editCondition.hasDon")}</MenuItem>,
-                  <MenuItem key="donatedTo" value="donatedTo">{Locale.label("people.editCondition.donTo")}</MenuItem>
-                ] : [
-                  <MenuItem key="attendedAny" value="attendedAny">{Locale.label("people.editCondition.attGen")}</MenuItem>,
-                  <MenuItem key="attendedCampus" value="attendedCampus">{Locale.label("people.editCondition.attCamp")}</MenuItem>,
-                  <MenuItem key="attendedService" value="attendedService">{Locale.label("people.editCondition.attServ")}</MenuItem>,
-                  <MenuItem key="attendedServiceTime" value="attendedServiceTime">{Locale.label("people.editCondition.attServTime")}</MenuItem>,
-                  <MenuItem key="attendedGroup" value="attendedGroup">{Locale.label("people.editCondition.attGroup")}</MenuItem>
-                ]}
-              </Select>
-            </FormControl>
+        <Dialog open={complexFilterDialog.open} onClose={() => setComplexFilterDialog({ open: false, field: null })} maxWidth="sm" fullWidth>
+          <DialogTitle>
+            {complexFilterDialog.field === "memberDonations" ? Locale.label("people.editCondition.memDon") : Locale.label("people.editCondition.memAtt")}
+          </DialogTitle>
+          <DialogContent>
+            <Stack spacing={2} sx={{ mt: 1 }}>
+              <FormControl fullWidth>
+                <InputLabel>{Locale.label("people.peopleSearch.type")}</InputLabel>
+                <Select
+                  value={complexConfig?.operator || ""}
+                  label={Locale.label("people.peopleSearch.type")}
+                  onChange={(e) => {
+                    const newConfig = complexConfig || {
+                      type: complexFilterDialog.field === "memberDonations" ? "donation" : "attendance",
+                      operator: e.target.value,
+                      entityValue: "any",
+                      entityText: "Any",
+                      fromDate: DateHelper.formatHtml5Date(new Date()),
+                      toDate: DateHelper.formatHtml5Date(new Date())
+                    };
+                    setComplexConfig({ ...newConfig, operator: e.target.value });
+                  }}>
+                  {complexFilterDialog.field === "memberDonations" ? [
+                    <MenuItem key="donatedToAny" value="donatedToAny">{Locale.label("people.editCondition.hasDon")}</MenuItem>,
+                    <MenuItem key="donatedTo" value="donatedTo">{Locale.label("people.editCondition.donTo")}</MenuItem>
+                  ] : [
+                    <MenuItem key="attendedAny" value="attendedAny">{Locale.label("people.editCondition.attGen")}</MenuItem>,
+                    <MenuItem key="attendedCampus" value="attendedCampus">{Locale.label("people.editCondition.attCamp")}</MenuItem>,
+                    <MenuItem key="attendedService" value="attendedService">{Locale.label("people.editCondition.attServ")}</MenuItem>,
+                    <MenuItem key="attendedServiceTime" value="attendedServiceTime">{Locale.label("people.editCondition.attServTime")}</MenuItem>,
+                    <MenuItem key="attendedGroup" value="attendedGroup">{Locale.label("people.editCondition.attGroup")}</MenuItem>
+                  ]}
+                </Select>
+              </FormControl>
 
-            {complexConfig?.operator &&
+              {complexConfig?.operator &&
               complexConfig.operator !== "donatedToAny" &&
               complexConfig.operator !== "attendedAny" && (
                 <FormControl fullWidth>
@@ -1018,64 +1012,64 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                     }}>
                     {complexFilterDialog.field === "memberDonations"
                       ? funds.map((f) => (
-                          <MenuItem key={f.id} value={f.id}>
-                            {f.name}
-                          </MenuItem>
+                        <MenuItem key={f.id} value={f.id}>
+                          {f.name}
+                        </MenuItem>
                       ))
                       : complexConfig.operator === "attendedCampus"
                         ? campuses.map((c) => (
-                            <MenuItem key={c.id} value={c.id}>
-                              {c.name}
-                            </MenuItem>
+                          <MenuItem key={c.id} value={c.id}>
+                            {c.name}
+                          </MenuItem>
                         ))
                         : complexConfig.operator === "attendedService"
                           ? services.map((s) => (
-                              <MenuItem key={s.id} value={s.id}>
-                                {s.campus.name} - {s.name}
-                              </MenuItem>
+                            <MenuItem key={s.id} value={s.id}>
+                              {s.campus.name} - {s.name}
+                            </MenuItem>
                           ))
                           : complexConfig.operator === "attendedServiceTime"
                             ? serviceTimes.map((st) => (
-                                <MenuItem key={st.id} value={st.id}>
-                                  {st.longName}
-                                </MenuItem>
+                              <MenuItem key={st.id} value={st.id}>
+                                {st.longName}
+                              </MenuItem>
                             ))
                             : groups.map((g) => (
-                                <MenuItem key={g.id} value={g.id}>
-                                  {g.name}
-                                </MenuItem>
+                              <MenuItem key={g.id} value={g.id}>
+                                {g.name}
+                              </MenuItem>
                             ))}
                   </Select>
                 </FormControl>
-            )}
+              )}
 
-            <Stack direction="row" spacing={2}>
-              <TextField
-                fullWidth
-                label={Locale.label("people.editCondition.from")}
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                value={complexConfig?.fromDate || ""}
-                onChange={(e) => setComplexConfig({ ...complexConfig!, fromDate: e.target.value })}
-              />
-              <TextField
-                fullWidth
-                label={Locale.label("people.editCondition.to")}
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                value={complexConfig?.toDate || ""}
-                onChange={(e) => setComplexConfig({ ...complexConfig!, toDate: e.target.value })}
-              />
+              <Stack direction="row" spacing={2}>
+                <TextField
+                  fullWidth
+                  label={Locale.label("people.editCondition.from")}
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  value={complexConfig?.fromDate || ""}
+                  onChange={(e) => setComplexConfig({ ...complexConfig!, fromDate: e.target.value })}
+                />
+                <TextField
+                  fullWidth
+                  label={Locale.label("people.editCondition.to")}
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  value={complexConfig?.toDate || ""}
+                  onChange={(e) => setComplexConfig({ ...complexConfig!, toDate: e.target.value })}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setComplexFilterDialog({ open: false, field: null })}>{Locale.label("common.cancel")}</Button>
-          <Button onClick={handleComplexFilterSave} variant="contained">
-            {Locale.label("common.save")}
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setComplexFilterDialog({ open: false, field: null })}>{Locale.label("common.cancel")}</Button>
+            <Button onClick={handleComplexFilterSave} variant="contained">
+              {Locale.label("common.save")}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </>
     );
   }
@@ -1119,7 +1113,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                     entityValue: "any",
                     entityText: "Any",
                     fromDate: DateHelper.formatHtml5Date(new Date()),
-                    toDate: DateHelper.formatHtml5Date(new Date()),
+                    toDate: DateHelper.formatHtml5Date(new Date())
                   };
                   setComplexConfig({ ...newConfig, operator: e.target.value });
                 }}>
@@ -1139,9 +1133,22 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             {complexConfig?.operator &&
               complexConfig.operator !== "donatedToAny" &&
               complexConfig.operator !== "attendedAny" && (
-                <FormControl fullWidth>
-                  <InputLabel>
-                    {complexFilterDialog.field === "memberDonations"
+              <FormControl fullWidth>
+                <InputLabel>
+                  {complexFilterDialog.field === "memberDonations"
+                    ? Locale.label("people.peopleSearch.fund")
+                    : complexConfig.operator === "attendedCampus"
+                      ? Locale.label("people.peopleSearch.campus")
+                      : complexConfig.operator === "attendedService"
+                        ? Locale.label("people.peopleSearch.service")
+                        : complexConfig.operator === "attendedServiceTime"
+                          ? Locale.label("people.peopleSearch.serviceTime")
+                          : Locale.label("people.peopleSearch.group")}
+                </InputLabel>
+                <Select
+                  value={complexConfig?.entityValue || ""}
+                  label={
+                    complexFilterDialog.field === "memberDonations"
                       ? Locale.label("people.peopleSearch.fund")
                       : complexConfig.operator === "attendedCampus"
                         ? Locale.label("people.peopleSearch.campus")
@@ -1149,68 +1156,55 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                           ? Locale.label("people.peopleSearch.service")
                           : complexConfig.operator === "attendedServiceTime"
                             ? Locale.label("people.peopleSearch.serviceTime")
-                            : Locale.label("people.peopleSearch.group")}
-                  </InputLabel>
-                  <Select
-                    value={complexConfig?.entityValue || ""}
-                    label={
-                      complexFilterDialog.field === "memberDonations"
-                        ? Locale.label("people.peopleSearch.fund")
-                        : complexConfig.operator === "attendedCampus"
-                          ? Locale.label("people.peopleSearch.campus")
-                          : complexConfig.operator === "attendedService"
-                            ? Locale.label("people.peopleSearch.service")
-                            : complexConfig.operator === "attendedServiceTime"
-                              ? Locale.label("people.peopleSearch.serviceTime")
-                              : Locale.label("people.peopleSearch.group")
+                            : Locale.label("people.peopleSearch.group")
+                  }
+                  onChange={(e) => {
+                    let text = "";
+                    if (complexFilterDialog.field === "memberDonations") {
+                      text = funds.find((f) => f.id === e.target.value)?.name || "";
+                    } else if (complexConfig.operator === "attendedCampus") {
+                      text = campuses.find((c) => c.id === e.target.value)?.name || "";
+                    } else if (complexConfig.operator === "attendedService") {
+                      const service = services.find((s) => s.id === e.target.value);
+                      text = service ? `${service.campus.name} - ${service.name}` : "";
+                    } else if (complexConfig.operator === "attendedServiceTime") {
+                      text = serviceTimes.find((st) => st.id === e.target.value)?.longName || "";
+                    } else {
+                      text = groups.find((g) => g.id === e.target.value)?.name || "";
                     }
-                    onChange={(e) => {
-                      let text = "";
-                      if (complexFilterDialog.field === "memberDonations") {
-                        text = funds.find((f) => f.id === e.target.value)?.name || "";
-                      } else if (complexConfig.operator === "attendedCampus") {
-                        text = campuses.find((c) => c.id === e.target.value)?.name || "";
-                      } else if (complexConfig.operator === "attendedService") {
-                        const service = services.find((s) => s.id === e.target.value);
-                        text = service ? `${service.campus.name} - ${service.name}` : "";
-                      } else if (complexConfig.operator === "attendedServiceTime") {
-                        text = serviceTimes.find((st) => st.id === e.target.value)?.longName || "";
-                      } else {
-                        text = groups.find((g) => g.id === e.target.value)?.name || "";
-                      }
-                      setComplexConfig({ ...complexConfig, entityValue: e.target.value, entityText: text });
-                    }}>
-                    {complexFilterDialog.field === "memberDonations"
-                      ? funds.map((f) => (
-                          <MenuItem key={f.id} value={f.id}>
-                            {f.name}
-                          </MenuItem>
+                    setComplexConfig({ ...complexConfig, entityValue: e.target.value, entityText: text });
+                  }}>
+                  {complexFilterDialog.field === "memberDonations"
+                    ? funds.map((f) => (
+                      <MenuItem key={f.id} value={f.id}>
+                        {f.name}
+                      </MenuItem>
+                    ))
+                    : complexConfig.operator === "attendedCampus"
+                      ? campuses.map((c) => (
+                        <MenuItem key={c.id} value={c.id}>
+                          {c.name}
+                        </MenuItem>
                       ))
-                      : complexConfig.operator === "attendedCampus"
-                        ? campuses.map((c) => (
-                            <MenuItem key={c.id} value={c.id}>
-                              {c.name}
-                            </MenuItem>
+                      : complexConfig.operator === "attendedService"
+                        ? services.map((s) => (
+                          <MenuItem key={s.id} value={s.id}>
+                            {s.campus.name} - {s.name}
+                          </MenuItem>
                         ))
-                        : complexConfig.operator === "attendedService"
-                          ? services.map((s) => (
-                              <MenuItem key={s.id} value={s.id}>
-                                {s.campus.name} - {s.name}
-                              </MenuItem>
+                        : complexConfig.operator === "attendedServiceTime"
+                          ? serviceTimes.map((st) => (
+                            <MenuItem key={st.id} value={st.id}>
+                              {st.longName}
+                            </MenuItem>
                           ))
-                          : complexConfig.operator === "attendedServiceTime"
-                            ? serviceTimes.map((st) => (
-                                <MenuItem key={st.id} value={st.id}>
-                                  {st.longName}
-                                </MenuItem>
-                            ))
-                            : groups.map((g) => (
-                                <MenuItem key={g.id} value={g.id}>
-                                  {g.name}
-                                </MenuItem>
-                            ))}
-                  </Select>
-                </FormControl>
+                          : groups.map((g) => (
+                            <MenuItem key={g.id} value={g.id}>
+                              {g.name}
+                            </MenuItem>
+                          ))}
+                </Select>
+              </FormControl>
             )}
 
             <Stack direction="row" spacing={2}>

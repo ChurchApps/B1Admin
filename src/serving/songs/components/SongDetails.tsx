@@ -1,9 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
-import {
-  Box, Card, CardContent, Typography, Stack, Chip, Avatar, IconButton, Paper, List, ListItem, ListItemIcon, ListItemText, Divider
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, IconButton, Paper, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
 import {
   Edit as EditIcon,
   Album as AlbumIcon,
@@ -13,7 +11,7 @@ import {
   Speed as BpmIcon,
   Language as LanguageIcon,
   DateRange as DateIcon,
-  Timer as TimerIcon,
+  Timer as TimerIcon
 } from "@mui/icons-material";
 import { SongDetailsEdit } from "./SongDetailsEdit";
 import { SongDetailLinks } from "./SongDetailLinks";
@@ -45,7 +43,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <ArtistIcon />,
         label: Locale.label("songs.details.artist") || "Artist",
         value: props.songDetail.artist,
-        color: "primary.main",
+        color: "primary.main"
       });
     }
 
@@ -54,7 +52,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <AlbumIcon />,
         label: Locale.label("songs.details.album") || "Album",
         value: props.songDetail.album,
-        color: "secondary.main",
+        color: "secondary.main"
       });
     }
 
@@ -64,7 +62,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <DateIcon />,
         label: Locale.label("songs.details.releaseDate") || "Release Date",
         value: d.toLocaleDateString(),
-        color: "info.main",
+        color: "info.main"
       });
     }
 
@@ -73,7 +71,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <LanguageIcon />,
         label: Locale.label("songs.details.language") || "Language",
         value: props.songDetail.language,
-        color: "success.main",
+        color: "success.main"
       });
     }
 
@@ -82,7 +80,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <BpmIcon />,
         label: Locale.label("songs.details.bpm") || "BPM",
         value: props.songDetail.bpm.toString(),
-        color: "warning.main",
+        color: "warning.main"
       });
     }
 
@@ -91,7 +89,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <KeyIcon />,
         label: Locale.label("songs.details.keySignature") || "Key Signature",
         value: props.songDetail.keySignature,
-        color: "primary.main",
+        color: "primary.main"
       });
     }
 
@@ -100,7 +98,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <KeyIcon />,
         label: Locale.label("songs.details.keys") || "Keys",
         value: props.songDetail.tones,
-        color: "secondary.main",
+        color: "secondary.main"
       });
     }
 
@@ -109,7 +107,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <TimeIcon />,
         label: Locale.label("songs.details.meter") || "Meter",
         value: props.songDetail.meter,
-        color: "info.main",
+        color: "info.main"
       });
     }
 
@@ -118,7 +116,7 @@ export const SongDetails = memo((props: Props) => {
         icon: <TimerIcon />,
         label: Locale.label("songs.details.length") || "Length",
         value: formatSeconds(props.songDetail.seconds),
-        color: "success.main",
+        color: "success.main"
       });
     }
 
@@ -155,7 +153,7 @@ export const SongDetails = memo((props: Props) => {
             onClick={handleEdit}
             sx={{
               color: "primary.main",
-              "&:hover": { backgroundColor: "primary.light" },
+              "&:hover": { backgroundColor: "primary.light" }
             }}
             aria-label="Edit song details">
             <EditIcon />
@@ -172,7 +170,7 @@ export const SongDetails = memo((props: Props) => {
                 height: 120,
                 bgcolor: "var(--bg-sub)",
                 border: "2px solid",
-                borderColor: "var(--border-light)",
+                borderColor: "var(--border-light)"
               }}
               onError={handleImageError}>
               <AlbumIcon sx={{ fontSize: 48, color: "text.secondary" }} />
@@ -200,12 +198,12 @@ export const SongDetails = memo((props: Props) => {
                           sx={{
                             borderColor: item.color,
                             color: item.color,
-                            fontWeight: 500,
+                            fontWeight: 500
                           }}
                         />
                       </Stack>
                     }
-                    slotProps={{ primary: { component: 'div' } }}
+                    slotProps={{ primary: { component: "div" } }}
                   />
                 </ListItem>
                 {index < songDetailItems.length - 1 && <Divider />}
@@ -219,7 +217,7 @@ export const SongDetails = memo((props: Props) => {
               textAlign: "center",
               backgroundColor: "var(--bg-sub)",
               border: "1px dashed",
-              borderColor: "var(--border-main)",
+              borderColor: "var(--border-main)"
             }}>
             <AlbumIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
             <Typography variant="body2" color="text.secondary">

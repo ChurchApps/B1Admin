@@ -122,7 +122,7 @@ export const TabEdit: React.FC<Props> = (props) => {
         PaperProps={{
           sx: {
             borderRadius: 2,
-            minHeight: '400px'
+            minHeight: "400px"
           }
         }}
       >
@@ -135,28 +135,28 @@ export const TabEdit: React.FC<Props> = (props) => {
             <Stack direction="row" alignItems="center" spacing={2}>
               <Box
                 sx={{
-                  backgroundColor: 'rgba(255,255,255,0.2)',
-                  borderRadius: '12px',
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  borderRadius: "12px",
                   p: 1.5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
                 }}
               >
-                <Icon sx={{ fontSize: 24, color: '#FFF' }}>folder</Icon>
+                <Icon sx={{ fontSize: 24, color: "#FFF" }}>folder</Icon>
               </Box>
               <Box>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
                   {currentTab?.id ? Locale.label("sermons.liveStreamTimes.tabEdit.editTab") : Locale.label("sermons.liveStreamTimes.tabEdit.createNewTab")}
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.9)' }}>
+                <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>
                   {Locale.label("sermons.liveStreamTimes.tabEdit.configureSettings")}
                 </Typography>
               </Box>
             </Stack>
             <IconButton
               onClick={() => props.updatedFunction()}
-              sx={{ color: '#FFF' }}
+              sx={{ color: "#FFF" }}
               size="small"
             >
               <CloseIcon />
@@ -169,11 +169,11 @@ export const TabEdit: React.FC<Props> = (props) => {
 
           <Stack spacing={3} sx={{ mt: 2 }}>
             {/* Tab Display Section */}
-            <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'grey.200' }}>
+            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: '#1976d2', fontSize: 18 }}>visibility</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#1976d2' }}>
+                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>visibility</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
                     {Locale.label("sermons.liveStreamTimes.tabEdit.tabDisplay")}
                   </Typography>
                 </Stack>
@@ -193,7 +193,7 @@ export const TabEdit: React.FC<Props> = (props) => {
                     />
                   </Box>
                   <Box>
-                    <Typography variant="caption" sx={{ color: 'text.secondary', mb: 1, display: 'block' }}>
+                    <Typography variant="caption" sx={{ color: "text.secondary", mb: 1, display: "block" }}>
                       {Locale.label("sermons.liveStreamTimes.tabEdit.icon")}
                     </Typography>
                     <Box
@@ -202,21 +202,21 @@ export const TabEdit: React.FC<Props> = (props) => {
                         minWidth: 60,
                         height: 40,
                         borderRadius: 1,
-                        border: '1px solid',
-                        borderColor: 'grey.400',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#1976d2',
-                        backgroundColor: '#fff',
-                        cursor: 'pointer',
-                        '&:hover': {
-                          borderColor: '#1976d2',
-                          backgroundColor: '#f5f5f5'
+                        border: "1px solid",
+                        borderColor: "grey.400",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#1976d2",
+                        backgroundColor: "#fff",
+                        cursor: "pointer",
+                        "&:hover": {
+                          borderColor: "#1976d2",
+                          backgroundColor: "#f5f5f5"
                         }
                       }}
                     >
-                      <Icon>{currentTab?.icon || 'link'}</Icon>
+                      <Icon>{currentTab?.icon || "link"}</Icon>
                     </Box>
                   </Box>
                 </Stack>
@@ -224,11 +224,11 @@ export const TabEdit: React.FC<Props> = (props) => {
             </Card>
 
             {/* Link Configuration Section */}
-            <Card sx={{ borderRadius: 2, border: '1px solid', borderColor: 'grey.200' }}>
+            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: '#1976d2', fontSize: 18 }}>settings</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#1976d2' }}>
+                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>settings</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
                     {Locale.label("sermons.liveStreamTimes.tabEdit.linkConfiguration")}
                   </Typography>
                 </Stack>
@@ -269,7 +269,7 @@ export const TabEdit: React.FC<Props> = (props) => {
                   {/* Link Type Helper */}
                   <Box sx={{ mt: 1 }}>
                     <Stack direction="row" spacing={1} alignItems="center">
-                      <Icon sx={{ fontSize: 16, color: 'text.secondary' }}>info</Icon>
+                      <Icon sx={{ fontSize: 16, color: "text.secondary" }}>info</Icon>
                       <Typography variant="caption" color="text.secondary">
                         {currentTab?.linkType === "url" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.url")}
                         {currentTab?.linkType === "chat" && Locale.label("sermons.liveStreamTimes.tabEdit.linkTypeHelp.chat")}
@@ -284,8 +284,8 @@ export const TabEdit: React.FC<Props> = (props) => {
           </Stack>
         </DialogContent>
 
-        <DialogActions sx={{ p: 3, backgroundColor: 'grey.50' }}>
-          <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+        <DialogActions sx={{ p: 3, backgroundColor: "grey.50" }}>
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
             {currentTab?.id && (
               <Button
                 variant="outlined"
@@ -294,7 +294,7 @@ export const TabEdit: React.FC<Props> = (props) => {
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}
                 sx={{
-                  textTransform: 'none',
+                  textTransform: "none",
                   fontWeight: 500
                 }}
               >
@@ -307,7 +307,7 @@ export const TabEdit: React.FC<Props> = (props) => {
               onClick={() => props.updatedFunction()}
               disabled={isLoading}
               sx={{
-                textTransform: 'none',
+                textTransform: "none",
                 fontWeight: 500
               }}
             >
@@ -319,7 +319,7 @@ export const TabEdit: React.FC<Props> = (props) => {
               onClick={handleSave}
               disabled={isLoading}
               sx={{
-                textTransform: 'none',
+                textTransform: "none",
                 fontWeight: 600,
                 minWidth: 100
               }}
@@ -334,7 +334,7 @@ export const TabEdit: React.FC<Props> = (props) => {
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <DialogTitle>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Icon sx={{ color: 'error.main' }}>warning</Icon>
+            <Icon sx={{ color: "error.main" }}>warning</Icon>
             <Typography variant="h6">{Locale.label("sermons.liveStreamTimes.tabEdit.deleteTab")}</Typography>
           </Stack>
         </DialogTitle>
@@ -347,7 +347,7 @@ export const TabEdit: React.FC<Props> = (props) => {
           <Button
             onClick={() => setDeleteDialogOpen(false)}
             disabled={isLoading}
-            sx={{ textTransform: 'none' }}
+            sx={{ textTransform: "none" }}
           >
             {Locale.label("sermons.liveStreamTimes.tabEdit.cancel")}
           </Button>
@@ -356,7 +356,7 @@ export const TabEdit: React.FC<Props> = (props) => {
             color="error"
             variant="contained"
             disabled={isLoading}
-            sx={{ textTransform: 'none' }}
+            sx={{ textTransform: "none" }}
           >
             {isLoading ? Locale.label("sermons.liveStreamTimes.tabEdit.deleting") : Locale.label("sermons.liveStreamTimes.tabEdit.delete")}
           </Button>

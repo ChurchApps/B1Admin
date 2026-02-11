@@ -15,22 +15,22 @@ export const PrintDonationPage = () => {
 
   const person = useQuery<PersonInterface>({
     queryKey: ["/people/" + params.personId, "MembershipApi"],
-    placeholderData: undefined,
+    placeholderData: undefined
   });
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const allDonations = useQuery<DonationInterface[]>({
     queryKey: ["/donations?personId=" + params.personId, "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const allFundDonations = useQuery<FundDonationInterface[]>({
     queryKey: ["/fundDonations?personId=" + params.personId, "GivingApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const donations = useMemo(() => {

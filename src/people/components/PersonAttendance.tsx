@@ -3,9 +3,7 @@ import { type AttendanceRecordInterface, type GroupInterface } from "@churchapps
 import { ArrayHelper, DateHelper, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import {
-  Box, Card, CardContent, Typography, Stack, Chip, Divider, Paper, List, ListItem
-} from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, Chip, Divider, Paper, List, ListItem } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Church as ChurchIcon, Schedule as ScheduleIcon, Group as GroupIcon, EventAvailable as EventIcon } from "@mui/icons-material";
 
 interface Props {
@@ -17,12 +15,12 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
   const attendanceRecords = useQuery<AttendanceRecordInterface[]>({
     queryKey: ["/attendancerecords?personId=" + props.personId, "AttendanceApi"],
     enabled: !UniqueIdHelper.isMissing(props.personId),
-    placeholderData: [],
+    placeholderData: []
   });
 
   const groups = useQuery<GroupInterface[]>({
     queryKey: ["/groups", "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const attendanceCards = useMemo(() => {
@@ -37,7 +35,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             textAlign: "center",
             backgroundColor: "grey.50",
             border: "1px dashed",
-            borderColor: "grey.300",
+            borderColor: "grey.300"
           }}>
           <EventIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
@@ -70,9 +68,9 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             transition: "all 0.2s ease-in-out",
             "&:hover": {
               transform: "translateY(-1px)",
-              boxShadow: 2,
+              boxShadow: 2
             },
-            "&:last-child": { mb: 0 },
+            "&:last-child": { mb: 0 }
           }}>
           <CardContent sx={{ pb: "16px !important" }}>
             <Stack spacing={2}>
@@ -84,7 +82,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                     weekday: "long",
                     year: "numeric",
                     month: "long",
-                    day: "numeric",
+                    day: "numeric"
                   })}
                 </Typography>
               </Box>
@@ -104,8 +102,8 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                         py: 1,
                         "&:not(:last-child)": {
                           borderBottom: "1px solid",
-                          borderColor: "grey.100",
-                        },
+                          borderColor: "grey.100"
+                        }
                       }}>
                       <Box sx={{ width: "100%" }}>
                         <Stack direction="row" spacing={2} flexWrap="wrap">
@@ -119,7 +117,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                               sx={{
                                 color: "text.primary",
                                 borderColor: "primary.main",
-                                "& .MuiChip-icon": { color: "primary.main" },
+                                "& .MuiChip-icon": { color: "primary.main" }
                               }}
                             />
                           )}
@@ -134,7 +132,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                               sx={{
                                 color: "text.primary",
                                 borderColor: "secondary.main",
-                                "& .MuiChip-icon": { color: "secondary.main" },
+                                "& .MuiChip-icon": { color: "secondary.main" }
                               }}
                             />
                           )}
@@ -149,7 +147,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                               sx={{
                                 color: "text.primary",
                                 borderColor: "info.main",
-                                "& .MuiChip-icon": { color: "info.main" },
+                                "& .MuiChip-icon": { color: "info.main" }
                               }}
                             />
                           )}
@@ -164,7 +162,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                                   style={{
                                     textDecoration: "none",
                                     color: "inherit",
-                                    fontSize: "inherit",
+                                    fontSize: "inherit"
                                   }}>
                                   {group.name}
                                 </Link>
@@ -178,8 +176,8 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                                 "& .MuiChip-icon": { color: "success.main" },
                                 "&:hover": {
                                   backgroundColor: "success.light",
-                                  borderColor: "success.dark",
-                                },
+                                  borderColor: "success.dark"
+                                }
                               }}
                             />
                           )}
@@ -203,12 +201,12 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
           "& .MuiCard-root": {
             borderRadius: 2,
             border: "1px solid",
-            borderColor: "grey.200",
+            borderColor: "grey.200"
           },
           "& .MuiChip-root": {
             fontWeight: 500,
-            fontSize: "0.875rem",
-          },
+            fontSize: "0.875rem"
+          }
         }}>
         {attendanceCards}
       </Box>

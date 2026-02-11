@@ -20,7 +20,7 @@ export const ServingPage = () => {
 
   const ministries = useQuery<GroupInterface[]>({
     queryKey: ["/groups/tag/ministry", "MembershipApi"],
-    placeholderData: [],
+    placeholderData: []
   });
 
   const groupIds = React.useMemo(() => {
@@ -35,7 +35,7 @@ export const ServingPage = () => {
       if (groupIds.length === 0) return [];
       const { ApiHelper } = await import("@churchapps/apphelper");
       return ApiHelper.get(`/groupMembers?groupIds=${groupIds}`, "MembershipApi");
-    },
+    }
   });
 
   const handleShowAdd = () => setShowAdd(true);
@@ -137,8 +137,8 @@ export const ServingPage = () => {
                   mr: 1,
                   "&:hover": {
                     borderColor: "#FFF",
-                    backgroundColor: "rgba(255,255,255,0.1)",
-                  },
+                    backgroundColor: "rgba(255,255,255,0.1)"
+                  }
                 }}>
                 {Locale.label("plans.plansPage.editMinistry")}
               </Button>
@@ -152,8 +152,8 @@ export const ServingPage = () => {
                 borderColor: "rgba(255,255,255,0.5)",
                 "&:hover": {
                   borderColor: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                },
+                  backgroundColor: "rgba(255,255,255,0.1)"
+                }
               }}>
               {Locale.label("plans.plansPage.addMinistry")}
             </Button>
@@ -174,8 +174,8 @@ export const ServingPage = () => {
                 textTransform: "none",
                 fontSize: "0.95rem",
                 fontWeight: 700,
-                minHeight: 48,
-              },
+                minHeight: 48
+              }
             }}
           >
             {groups.map((g) => (

@@ -1,6 +1,4 @@
-import {
-  Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent 
-} from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
 import React, { useState } from "react";
 import { ChoicesEdit } from ".";
 import { type QuestionInterface } from "@churchapps/helpers";
@@ -20,7 +18,7 @@ export function FormQuestionEdit(props: Props) {
     placeholder: "",
     required: false,
     description: "",
-    choices: null,
+    choices: null
   } as QuestionInterface);
   const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -40,18 +38,10 @@ export function FormQuestionEdit(props: Props) {
     const q = { ...question } as QuestionInterface;
     const value = e.target.value;
     switch (e.target.name) {
-      case "fieldType":
-        q.fieldType = value;
-        break;
-      case "title":
-        q.title = value;
-        break;
-      case "description":
-        q.description = value;
-        break;
-      case "placeholder":
-        q.placeholder = value;
-        break;
+      case "fieldType": q.fieldType = value; break;
+      case "title": q.title = value; break;
+      case "description": q.description = value; break;
+      case "placeholder": q.placeholder = value; break;
     }
     setQuestion(q);
   };
@@ -107,7 +97,7 @@ export function FormQuestionEdit(props: Props) {
     }
   }
 
-  React.useEffect(loadData, [props.questionId || props.formId]); //eslint-disable-line
+  React.useEffect(loadData, [props.questionId || props.formId]);
 
   return (
     <InputBox

@@ -1,6 +1,4 @@
-import {
-  MenuItem, Select, TextField, type SelectChangeEvent, Card, CardContent, Typography, Stack, Box, Button, FormControl, InputLabel, InputAdornment, FormHelperText 
-} from "@mui/material";
+import { MenuItem, Select, TextField, type SelectChangeEvent, Card, CardContent, Typography, Stack, Box, Button, FormControl, InputLabel, InputAdornment, FormHelperText } from "@mui/material";
 import React from "react";
 import { type ActionInterface } from "@churchapps/helpers";
 import { ErrorMessages, ApiHelper, Locale } from "@churchapps/apphelper";
@@ -47,9 +45,7 @@ export const ActionEdit = (props: Props) => {
     const val = e.target.value;
     const a = { ...action };
     switch (e.target.name) {
-      case "actionType":
-        a.actionType = val;
-        break;
+      case "actionType": a.actionType = val; break;
     }
     setAction(a);
   };
@@ -58,12 +54,8 @@ export const ActionEdit = (props: Props) => {
     const val = e.target.value;
     const d = { ...taskDetails };
     switch (e.target.name) {
-      case "title":
-        d.title = val;
-        break;
-      case "note":
-        d.note = val;
-        break;
+      case "title": d.title = val; break;
+      case "note": d.note = val; break;
     }
     setTaskDetails(d);
     updateActionData(d);
@@ -101,7 +93,7 @@ export const ActionEdit = (props: Props) => {
         border: "1px solid",
         borderColor: "grey.200",
         transition: "all 0.2s ease-in-out",
-        "&:hover": { boxShadow: 2 },
+        "&:hover": { boxShadow: 2 }
       }}>
       <CardContent>
         <Stack spacing={3}>
@@ -145,7 +137,7 @@ export const ActionEdit = (props: Props) => {
                     <SearchIcon sx={{ color: "action.active" }} />
                   </InputAdornment>
                 ),
-                sx: { "& .MuiInputBase-input": { cursor: "pointer" } },
+                sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
               }}
               onFocus={(e) => {
                 e.target.blur();
@@ -193,7 +185,7 @@ export const ActionEdit = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {Locale.label("common.cancel")}
             </Button>
@@ -204,7 +196,7 @@ export const ActionEdit = (props: Props) => {
               sx={{
                 borderRadius: 2,
                 textTransform: "none",
-                fontWeight: 600,
+                fontWeight: 600
               }}>
               {Locale.label("common.save")}
             </Button>

@@ -3,11 +3,9 @@ import { ErrorMessages, InputBox, ApiHelper, UserHelper, SlugHelper, Locale } fr
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface } from "@churchapps/helpers";
 import type { PageInterface } from "../../helpers/Interfaces";
-import {
-  Button, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography 
-} from "@mui/material";
+import { Button, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
 type Props = {
   page: PageInterface;
@@ -37,9 +35,7 @@ export function PageLinkEdit(props: Props) {
     const p = { ...page } as PageInterface;
     const val = e.target.value;
     switch (e.target.name) {
-      case "title":
-        p.title = val;
-        break;
+      case "title": p.title = val; break;
       case "url":
         p.url = val.toLowerCase();
         if (link) {
@@ -48,9 +44,7 @@ export function PageLinkEdit(props: Props) {
           setLink(l);
         }
         break;
-      case "layout":
-        p.layout = val;
-        break;
+      case "layout": p.layout = val; break;
     }
     setPage(p);
   };
@@ -60,12 +54,8 @@ export function PageLinkEdit(props: Props) {
     const l = { ...link } as LinkInterface;
     const val = e.target.value;
     switch (e.target.name) {
-      case "linkText":
-        l.text = val;
-        break;
-      case "linkUrl":
-        l.url = val;
-        break;
+      case "linkText": l.text = val; break;
+      case "linkUrl": l.url = val; break;
     }
     setLink(l);
   };

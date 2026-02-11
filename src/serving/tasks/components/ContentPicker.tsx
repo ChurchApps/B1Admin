@@ -32,7 +32,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
         <Box sx={{ pt: 2 }}>
           <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} actionLabel={Locale.label("tasks.contentPicker.sel")} />
         </Box>
-      ),
+      )
     },
     {
       key: "group",
@@ -45,8 +45,8 @@ export const ContentPicker: React.FC<Props> = (props) => {
         <Box sx={{ pt: 2 }}>
           <SelectGroup addFunction={handleGroupAdd} />
         </Box>
-      ),
-    },
+      )
+    }
   ];
 
   return (
@@ -56,7 +56,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          pb: 2,
+          pb: 2
         }}>
         {Locale.label("tasks.contentPicker.selPers")}
       </DialogTitle>
@@ -74,7 +74,7 @@ export const ContentPicker: React.FC<Props> = (props) => {
           sx={{
             borderRadius: 2,
             textTransform: "none",
-            fontWeight: 600,
+            fontWeight: 600
           }}>
           {Locale.label("common.close")}
         </Button>

@@ -20,9 +20,7 @@ export const Tabs: React.FC = () => {
   const saveChanges = () => { ApiHelper.post("/links", tabs, "ContentApi").then(loadData); };
 
   const handleAdd = () => {
-    const tab: LinkInterface = {
-      churchId: UserHelper.currentUserChurch.church.id, sort: tabs.length, text: "", url: "", icon: "link", linkData: "", linkType: "url", category: "streamingTab" 
-    };
+    const tab: LinkInterface = { churchId: UserHelper.currentUserChurch.church.id, sort: tabs.length, text: "", url: "", icon: "link", linkData: "", linkType: "url", category: "streamingTab" };
     setCurrentTab(tab);
   };
 
@@ -70,9 +68,9 @@ export const Tabs: React.FC = () => {
   if (currentTab !== null) return <TabEdit currentTab={currentTab} updatedFunction={handleUpdated} />;
   else {
     return (
-    <DisplayBox headerIcon="folder" headerText={Locale.label("sermons.liveStreamTimes.sidebarTabs.title")} editContent={getEditContent()}>
-      {getTable()}
-    </DisplayBox>
+      <DisplayBox headerIcon="folder" headerText={Locale.label("sermons.liveStreamTimes.sidebarTabs.title")} editContent={getEditContent()}>
+        {getTable()}
+      </DisplayBox>
 
     );
   }

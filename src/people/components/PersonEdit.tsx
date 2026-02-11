@@ -2,14 +2,10 @@ import React, { useState, memo, useCallback, useMemo } from "react";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { B1AdminPersonHelper, UpdateHouseHold } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
-import {
-  PersonHelper, DateHelper, InputBox, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar 
-} from "@churchapps/apphelper";
+import { PersonHelper, DateHelper, InputBox, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
 import UserContext from "../../UserContext";
-import {
-  Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, type SelectChangeEvent, FormControlLabel, Checkbox 
-} from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, type SelectChangeEvent, FormControlLabel, Checkbox } from "@mui/material";
 
 interface Props {
   id?: string;
@@ -43,7 +39,7 @@ export const PersonEdit = memo((props: Props) => {
       last: "",
       middle: "",
       nick: "",
-      display: "",
+      display: ""
     },
     contactInfo: {
       address1: "",
@@ -54,14 +50,14 @@ export const PersonEdit = memo((props: Props) => {
       email: "",
       homePhone: "",
       workPhone: "",
-      mobilePhone: "",
+      mobilePhone: ""
     },
     membershipStatus: "",
     gender: "",
     birthDate: null,
     maritalStatus: "",
     nametagNotes: "",
-    optedOut: false,
+    optedOut: false
   });
 
   //const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } }
@@ -71,63 +67,25 @@ export const PersonEdit = memo((props: Props) => {
       const p = { ...person } as PersonInterface;
       const value = e.target.value;
       switch (e.target.name) {
-        case "name.first":
-          p.name.first = value;
-          break;
-        case "name.middle":
-          p.name.middle = value;
-          break;
-        case "name.last":
-          p.name.last = value;
-          break;
-        case "name.nick":
-          p.name.nick = value;
-          break;
-        case "contactInfo.email":
-          p.contactInfo.email = value;
-          break;
-        case "contactInfo.address1":
-          p.contactInfo.address1 = value;
-          break;
-        case "contactInfo.address2":
-          p.contactInfo.address2 = value;
-          break;
-        case "contactInfo.city":
-          p.contactInfo.city = value;
-          break;
-        case "contactInfo.state":
-          p.contactInfo.state = value;
-          break;
-        case "contactInfo.zip":
-          p.contactInfo.zip = value;
-          break;
-        case "membershipStatus":
-          p.membershipStatus = value;
-          break;
-        case "gender":
-          p.gender = value;
-          break;
-        case "maritalStatus":
-          p.maritalStatus = value;
-          break;
-        case "nametagNotes":
-          p.nametagNotes = value;
-          break;
-        case "donorNumber":
-          p.donorNumber = value;
-          break;
-        case "anniversary":
-          p.anniversary = value || null;  // Keep as YYYY-MM-DD string
-          break;
-        case "birthDate":
-          p.birthDate = value || null;  // Keep as YYYY-MM-DD string
-          break;
-        case "photo":
-          p.photo = value;
-          break;
-        case "optedOut":
-          p.optedOut = (e.target as HTMLInputElement).checked;
-          break;
+        case "name.first": p.name.first = value; break;
+        case "name.middle": p.name.middle = value; break;
+        case "name.last": p.name.last = value; break;
+        case "name.nick": p.name.nick = value; break;
+        case "contactInfo.email": p.contactInfo.email = value; break;
+        case "contactInfo.address1": p.contactInfo.address1 = value; break;
+        case "contactInfo.address2": p.contactInfo.address2 = value; break;
+        case "contactInfo.city": p.contactInfo.city = value; break;
+        case "contactInfo.state": p.contactInfo.state = value; break;
+        case "contactInfo.zip": p.contactInfo.zip = value; break;
+        case "membershipStatus": p.membershipStatus = value; break;
+        case "gender": p.gender = value; break;
+        case "maritalStatus": p.maritalStatus = value; break;
+        case "nametagNotes": p.nametagNotes = value; break;
+        case "donorNumber": p.donorNumber = value; break;
+        case "anniversary": p.anniversary = value || null; break;
+        case "birthDate": p.birthDate = value || null; break;
+        case "photo": p.photo = value; break;
+        case "optedOut": p.optedOut = (e.target as HTMLInputElement).checked; break;
       }
       setPerson(p);
     },
@@ -277,7 +235,7 @@ export const PersonEdit = memo((props: Props) => {
   const ariaDesc = useMemo(
     () => ({
       "aria-describedby": "errorMsg",
-      "aria-labelledby": "tel-label errorMsg",
+      "aria-labelledby": "tel-label errorMsg"
     }),
     []
   );

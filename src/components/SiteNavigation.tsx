@@ -96,8 +96,7 @@ export const SiteNavigation: React.FC<Props> = (props) => {
 
   const structuredLinks = React.useMemo(() =>
     props.links && getNestedChildren(props.links, undefined),
-    [props.links]
-  );
+  [props.links]);
 
   // Memoize styles for each nesting level
   const styleCache = React.useRef<Map<number, React.CSSProperties>>(new Map());

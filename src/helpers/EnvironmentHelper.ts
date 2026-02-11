@@ -11,15 +11,9 @@ export class EnvironmentHelper {
     const stage = process.env.REACT_APP_STAGE;
 
     switch (stage) {
-      case "staging":
-        EnvironmentHelper.initStaging();
-        break;
-      case "prod":
-        EnvironmentHelper.initProd();
-        break;
-      default:
-        EnvironmentHelper.initDev();
-        break;
+      case "staging": EnvironmentHelper.initStaging(); break;
+      case "prod": EnvironmentHelper.initProd(); break;
+      default: EnvironmentHelper.initDev(); break;
     }
     EnvironmentHelper.Common.init(stage);
 
@@ -29,19 +23,19 @@ export class EnvironmentHelper {
         keyName: "ReportingApi",
         url: EnvironmentHelper.Common.ReportingApi,
         jwt: "",
-        permissions: [],
+        permissions: []
       },
       {
         keyName: "LessonsApi",
         url: EnvironmentHelper.LessonsApi,
         jwt: "",
-        permissions: [],
+        permissions: []
       },
       {
         keyName: "AskApi",
         url: EnvironmentHelper.Common.AskApi,
         jwt: "",
-        permissions: [],
+        permissions: []
       }
     );
 

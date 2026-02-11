@@ -1,6 +1,4 @@
-import {
-  Menu, MenuItem, Box, Typography, Stack, Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Chip 
-} from "@mui/material";
+import { Menu, MenuItem, Box, Typography, Stack, Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Chip } from "@mui/material";
 import React from "react";
 import { type AutomationInterface, type ConditionInterface, type ConjunctionInterface, Locale } from "@churchapps/apphelper";
 import { ArrayHelper } from "@churchapps/apphelper";
@@ -74,7 +72,7 @@ export const ConditionDetails = (props: Props) => {
             pl: level * 3,
             py: 1,
             borderRadius: 1,
-            "&:hover": { backgroundColor: "action.hover" },
+            "&:hover": { backgroundColor: "action.hover" }
           }}>
           <ListItemIcon sx={{ minWidth: 36 }}>
             <ConditionIcon sx={{ fontSize: 20, color: "success.main" }} />
@@ -106,7 +104,7 @@ export const ConditionDetails = (props: Props) => {
               borderRadius: 1,
               backgroundColor: "grey.50",
               mb: 1,
-              "&:hover": { backgroundColor: "grey.100" },
+              "&:hover": { backgroundColor: "grey.100" }
             }}>
             <ListItemIcon sx={{ minWidth: 36 }}>
               <ConjunctionIcon sx={{ fontSize: 20, color: "primary.main" }} />
@@ -122,7 +120,7 @@ export const ConditionDetails = (props: Props) => {
                   </Typography>
                 </Stack>
               }
-              slotProps={{ primary: { component: 'div' } }}
+              slotProps={{ primary: { component: "div" } }}
             />
             <Stack direction="row" spacing={0.5}>
               <IconButton

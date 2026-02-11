@@ -93,7 +93,7 @@ export const Header: React.FC = () => {
         "/donations/funds": "nav-item-funds",
         "/serving/songs": "nav-item-songs",
         "/profile": "nav-item-profile",
-        "/profile/devices": "nav-item-devices",
+        "/profile/devices": "nav-item-devices"
         // Temporarily hidden
         // "/sermons": "nav-item-sermons",
         // "/calendars": "nav-item-calendars",
@@ -125,7 +125,7 @@ export const Header: React.FC = () => {
             funds: "nav-item-funds",
             songs: "nav-item-songs",
             profile: "nav-item-profile",
-            devices: "nav-item-devices",
+            devices: "nav-item-devices"
             // Temporarily hidden
             // sermons: "nav-item-sermons",
             // calendars: "nav-item-calendars",

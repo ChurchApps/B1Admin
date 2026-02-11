@@ -8,11 +8,9 @@ import {
   Permissions,
   Loading,
   SmallButton,
-  Locale,
+  Locale
 } from "@churchapps/apphelper";
-import {
-  Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, Avatar, Box, Typography, Paper, Pagination, Chip 
-} from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, Avatar, Box, Typography, Paper, Pagination, Chip } from "@mui/material";
 import { SessionCard } from "./SessionCard";
 
 interface Props {
@@ -26,9 +24,7 @@ interface Props {
 }
 
 export const GroupSessions: React.FC<Props> = memo((props) => {
-  const {
-    group, sidebarVisibilityFunction, addedSession, addedPerson, addedCallback, setHiddenPeople, onSessionEdit 
-  } = props;
+  const { group, sidebarVisibilityFunction, addedSession, addedPerson, addedCallback, setHiddenPeople, onSessionEdit } = props;
   const [visitSessions, setVisitSessions] = React.useState<VisitSessionInterface[]>([]);
   const [people, setPeople] = React.useState<PersonInterface[]>([]);
   const [sessions, setSessions] = React.useState<SessionInterface[]>([]);
@@ -372,7 +368,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
     { label: "personName", key: "personName" },
     { label: "status", key: "status" },
     { label: "personId", key: "personId" },
-    { label: "visitId", key: "visitId" },
+    { label: "visitId", key: "visitId" }
   ];
 
   const getAddButton = () => {

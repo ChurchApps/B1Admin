@@ -1,6 +1,4 @@
-import {
-  ApiHelper, ArrayHelper, type AssignmentInterface, DateHelper, type PersonInterface, type PlanInterface, type PositionInterface, Locale 
-} from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, type AssignmentInterface, DateHelper, type PersonInterface, type PlanInterface, type PositionInterface, Locale } from "@churchapps/apphelper";
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -49,7 +47,7 @@ export const PrintPlan = () => {
 
   useEffect(() => {
     loadData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const getPositionCategories = () => {
     const cats: string[] = [];
@@ -115,7 +113,7 @@ export const PrintPlan = () => {
       padding: "20px",
       backgroundColor: "#FFF",
       color: "#000",
-      minHeight: "100vh",
+      minHeight: "100vh"
     },
     header: { fontWeight: "bold", textAlign: "center", padding: 5 },
     inverseHeader: {
@@ -123,10 +121,10 @@ export const PrintPlan = () => {
       color: "#FFF",
       textAlign: "center",
       padding: 5,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     divider: { borderBottom: "20px solid #000" },
-    tableCell: { verticalAlign: "top", padding: 5, textAlign: "left" },
+    tableCell: { verticalAlign: "top", padding: 5, textAlign: "left" }
   };
 
   return (

@@ -12,9 +12,7 @@ type Props = {
 };
 
 export function DroppableWrapper(props: Props) {
-  const {
-    accept, onDrop, dndDeps, updateIsDragging, hideWhenInactive, children
-  } = props;
+  const { accept, onDrop, dndDeps, updateIsDragging, hideWhenInactive, children } = props;
 
   const [isDragging, setIsDragging] = React.useState(false);
 
@@ -35,7 +33,7 @@ export function DroppableWrapper(props: Props) {
         const acceptTypes = Array.isArray(accept) ? accept : [accept];
         const matchesType = itemType ? acceptTypes.includes(itemType as string) : false;
         return { isOver, canDrop: matchesType };
-      },
+      }
     }),
     [accept, onDrop, dndDeps]
   );

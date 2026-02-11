@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import type { SelectChangeEvent } from "@mui/material";
-import type { GlobalStyleInterface } from '../../helpers/Interfaces';
-import { TextField } from '@mui/material';
-import { SliderPicker } from 'react-color';
+import type { GlobalStyleInterface } from "../../helpers/Interfaces";
+import { TextField } from "@mui/material";
+import { SliderPicker } from "react-color";
 
 type Props = {
   color:string;
