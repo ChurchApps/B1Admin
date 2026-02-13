@@ -3,7 +3,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import type { GlobalStyleInterface } from "../../../helpers";
 import { GalleryModal, Locale } from "@churchapps/apphelper";
 import { FormControl, InputLabel, Select, MenuItem, TextField, Tabs, Tab, Button, Grid } from "@mui/material";
-import { SliderPicker } from "react-color";
+import { HexColorPicker } from "react-colorful";
 
 type Props = {
   background: string;
@@ -112,11 +112,11 @@ export function PickColors(props: Props) {
 
     if (backgroundType === "color") {
       result.push(
-        <SliderPicker
-          key="sliderPicker"
+        <HexColorPicker
+          key="colorPicker"
           color={props.background}
-          onChangeComplete={(color) => {
-            if (color.hex !== "#000000") props.updatedCallback(color.hex, props.textColor, props.headingColor, props.linkColor);
+          onChange={(color) => {
+            if (color !== "#000000") props.updatedCallback(color, props.textColor, props.headingColor, props.linkColor);
           }}
         />
       );

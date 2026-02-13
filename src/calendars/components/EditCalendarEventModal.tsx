@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import moment from "moment";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import dayjs from "dayjs";
+import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
   Dialog,
@@ -39,7 +39,7 @@ export function EditCalendarEventModal(props: Props) {
   const [groupEvents, setGroupEvents] = useState<EventInterface[]>([]);
   const [eventIdsList, setEventIdsList] = useState<string[]>([]);
 
-  const localizer = momentLocalizer(moment);
+  const localizer = dayjsLocalizer(dayjs);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down(396));

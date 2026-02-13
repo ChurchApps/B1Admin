@@ -2,7 +2,7 @@ import React from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { TextField } from "@mui/material";
-import { SliderPicker } from "react-color";
+import { HexColorPicker } from "react-colorful";
 
 type Props = {
   color:string;
@@ -51,7 +51,7 @@ export function ColorPicker(props: Props) {
 
   return (
     <>
-      <SliderPicker key="sliderPicker" color={props.color} onChangeComplete={(color) => { if (color.hex !== "#000000") props.updatedCallback(color.hex); }} />
+      <HexColorPicker key="colorPicker" color={props.color} onChange={(color) => { if (color !== "#000000") props.updatedCallback(color); }} />
       {getGrayOptions()}
       {getThemeOptions()}
       <TextField key="backgroundText" fullWidth size="small" label="Color" name="background" value={props.color} onChange={handleChange} placeholder="#FF0000" data-testid="color-input" aria-label="Enter color value" />

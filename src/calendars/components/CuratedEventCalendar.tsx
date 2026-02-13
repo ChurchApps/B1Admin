@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import moment from "moment";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import dayjs from "dayjs";
+import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import { Button, Icon, Snackbar, Stack, Menu, MenuItem } from "@mui/material";
 import { EventNote as EventNoteIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import { EventHelper, UserHelper, Locale } from "@churchapps/apphelper";
@@ -25,7 +25,7 @@ export function CuratedEventCalendar(props: Props) {
   const [showCopy, setShowCopy] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const localizer = momentLocalizer(moment);
+  const localizer = dayjsLocalizer(dayjs);
 
   const getIcsUrl = () => {
     const contentApi = EnvironmentHelper.Common.ContentApi;
