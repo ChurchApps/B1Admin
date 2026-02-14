@@ -65,7 +65,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
   }, [props.role, loadPermissions]);
 
   return (
-    <DisplayBox id="rolePermissionsBox" headerText={Locale.label("settings.rolePermissions.permEdit")} headerIcon="lock" help="b1Admin/assigning-roles">
+    <DisplayBox id="rolePermissionsBox" headerText={Locale.label("settings.rolePermissions.permEdit")} headerIcon="lock" help="docs/b1-admin/settings/roles-permissions">
       <div>{getSections()}</div>
     </DisplayBox>
   );

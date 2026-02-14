@@ -96,7 +96,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
         saveFunction={handleSave}
         cancelFunction={handleCancel}
         deleteFunction={checkDelete()}
-        help="b1Admin/streaming/playlists"
+        help="docs/b1-admin/sermons/playlists"
         data-testid="edit-playlist-inputbox"
       >
         <ErrorMessages errors={errors} />

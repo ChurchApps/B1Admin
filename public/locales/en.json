@@ -562,7 +562,7 @@
         "templates": "Templates",
         "welcome_volunteers": {
           "heading": "Welcome Volunteers",
-          "message": "Welcome Thank you for volunteering.\n\nPlease download the B1.Church app and login to manage your schedule. https://support.churchapps.org/b1/download"
+          "message": "Welcome Thank you for volunteering.\n\nPlease download the B1.Church app and login to manage your schedule. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

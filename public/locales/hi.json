@@ -562,7 +562,7 @@
         "templates": "टेम्पलेट्स",
         "welcome_volunteers": {
           "heading": "स्वयंसेवकों का स्वागत है",
-          "message": "स्वागत है! स्वयंसेवा के लिए धन्यवाद।\n\nकृपया B1.Church ऐप डाउनलोड करें और अपने शेड्यूल को प्रबंधित करने के लिए लॉगिन करें। https://support.churchapps.org/b1/download"
+          "message": "स्वागत है! स्वयंसेवा के लिए धन्यवाद।\n\nकृपया B1.Church ऐप डाउनलोड करें और अपने शेड्यूल को प्रबंधित करने के लिए लॉगिन करें। https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

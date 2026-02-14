@@ -562,7 +562,7 @@
         "templates": "Vorlagen",
         "welcome_volunteers": {
           "heading": "Willkommen Freiwillige",
-          "message": "Willkommen Vielen Dank für Ihre Freiwilligenarbeit.\n\nBitte laden Sie die B1.Church-App herunter und melden Sie sich an, um Ihren Zeitplan zu verwalten. https://support.churchapps.org/b1/download"
+          "message": "Willkommen Vielen Dank für Ihre Freiwilligenarbeit.\n\nBitte laden Sie die B1.Church-App herunter und melden Sie sich an, um Ihren Zeitplan zu verwalten. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

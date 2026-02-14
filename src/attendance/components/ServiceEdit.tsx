@@ -91,7 +91,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
       headerText={service.name}
       headerIcon="calendar_month"
       isSubmitting={isSubmitting}
-      help="b1Admin/attendance">
+      help="docs/b1-admin/attendance/">
       <ErrorMessages errors={errors} />
       <FormControl fullWidth>
         <InputLabel id="campus">{Locale.label("attendance.serviceEdit.campus")}</InputLabel>

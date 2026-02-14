@@ -83,7 +83,7 @@ export const Funds: React.FC = memo(() => {
 
   if (editFund === null) {
     return (
-      <DisplayBox id="fundsBox" headerIcon="volunteer_activism" data-cy="funds-box" headerText={Locale.label("donations.funds.fund")} editContent={editSection} help="b1Admin/giving">
+      <DisplayBox id="fundsBox" headerIcon="volunteer_activism" data-cy="funds-box" headerText={Locale.label("donations.funds.fund")} editContent={editSection} help="docs/b1-admin/donations/">
         {tableContent}
       </DisplayBox>
     );

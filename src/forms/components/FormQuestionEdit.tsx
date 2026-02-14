@@ -108,7 +108,7 @@ export function FormQuestionEdit(props: Props) {
       cancelFunction={props.updatedFunction}
       isSubmitting={isSubmitting}
       deleteFunction={!UniqueIdHelper.isMissing(question.id) ? handleDelete : undefined}
-      help="b1Admin/forms">
+      help="docs/b1-admin/forms/">
       <ErrorMessages errors={errors} />
       <FormControl fullWidth>
         <InputLabel id="provider">{Locale.label("forms.formQuestionEdit.prov")}</InputLabel>

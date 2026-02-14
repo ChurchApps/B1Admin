@@ -562,7 +562,7 @@
         "templates": "Modelos",
         "welcome_volunteers": {
           "heading": "Bem-vindos Voluntários",
-          "message": "Bem-vindo Obrigado por se voluntariar.\n\nPor favor, baixe o aplicativo B1.Church e faça login para gerenciar sua agenda. https://support.churchapps.org/b1/download"
+          "message": "Bem-vindo Obrigado por se voluntariar.\n\nPor favor, baixe o aplicativo B1.Church e faça login para gerenciar sua agenda. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

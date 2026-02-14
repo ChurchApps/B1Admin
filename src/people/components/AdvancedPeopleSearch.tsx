@@ -1090,7 +1090,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         saveFunction={handleAdvancedSearch}
         saveText={Locale.label("people.advancedSearch.search")}
         isSubmitting={Object.keys(activeFilters).length < 1}
-        help="b1Admin/advanced-search">
+        help="docs/b1-admin/people/searching-people">
         {renderContent()}
       </InputBox>
 

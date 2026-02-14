@@ -562,7 +562,7 @@
         "templates": "模板",
         "welcome_volunteers": {
           "heading": "欢迎志愿者",
-          "message": "欢迎 感谢您志愿服务。\n\n请下载 B1.Church 应用并登录以管理您的日程安排。https://support.churchapps.org/b1/download"
+          "message": "欢迎 感谢您志愿服务。\n\n请下载 B1.Church 应用并登录以管理您的日程安排。https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

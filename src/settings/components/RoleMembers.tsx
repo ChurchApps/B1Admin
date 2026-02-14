@@ -117,7 +117,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
   }, [props.role.name, roleMembers.length]);
 
   return (
-    <DisplayBox id="roleMembersBox" headerText={Locale.label("settings.roleMembers.mem")} headerIcon="person" editContent={editContent} help="b1Admin/assigning-roles">
+    <DisplayBox id="roleMembersBox" headerText={Locale.label("settings.roleMembers.mem")} headerIcon="person" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
       <Table id="roleMemberTable">
         <TableHead>{tableHeader}</TableHead>
         <TableBody>{tableRows}</TableBody>

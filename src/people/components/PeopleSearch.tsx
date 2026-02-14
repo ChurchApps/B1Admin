@@ -62,7 +62,7 @@ export function PeopleSearch(props: Props) {
       id="peopleSearch"
       headerIcon="person"
       headerText={Locale.label("people.peopleSearch.simpSearch")}
-      help="b1Admin/advanced-search"
+      help="docs/b1-admin/people/searching-people"
     >
       <Stack spacing={2}>
         {/* Quick Search */}

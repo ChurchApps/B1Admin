@@ -107,7 +107,7 @@ export const PersonForm: React.FC<Props> = memo((props) => {
     <DisplayBox
       headerText={props.form?.name || Locale.label("people.personForm.form") || "Form"}
       headerIcon="description"
-      help="b1Admin/forms"
+      help="docs/b1-admin/forms/"
       ariaLabel={`${props.form?.name || "form"} submission details`}>
       {content}
     </DisplayBox>

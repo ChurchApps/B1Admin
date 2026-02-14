@@ -194,7 +194,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
 
   switch (currentSermon?.videoType) {
     case "youtube_channel":
-      keyLabel = <>{Locale.label("sermons.sermonEdit.youtubeChannelId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}><a target="blank" rel="noreferrer noopener" href="https://support.churchapps.org/b1/admin/youtube-channel-id.html">{Locale.label("sermons.sermonEdit.getYourChannelId")}</a></span></>;
+      keyLabel = <>{Locale.label("sermons.sermonEdit.youtubeChannelId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}><a target="blank" rel="noreferrer noopener" href="https://support.churchapps.org/docs/b1-admin/sermons/live-streaming">{Locale.label("sermons.sermonEdit.getYourChannelId")}</a></span></>;
       keyPlaceholder = "UCfiDl90gAfZMkgbeCqX1Wi0 - This is not your channel url";
       break;
     case "youtube":
@@ -218,7 +218,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     return (
       <>
         {showImageEditor && <ImageEditor aspectRatio={16 / 9} outputWidth={640} outputHeight={360} photoUrl={currentSermon?.thumbnail || ""} onCancel={() => setShowImageEditor(false)} onUpdate={handlePhotoUpdated} />}
-        <InputBox headerIcon="calendar_month" headerText={(currentSermon?.permanentUrl) ? Locale.label("sermons.sermonEdit.editPermanentLiveUrl") : Locale.label("sermons.sermonEdit.editSermon")} saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={checkDelete()} help="b1Admin/streaming/sermons" data-testid="sermon-edit-box">
+        <InputBox headerIcon="calendar_month" headerText={(currentSermon?.permanentUrl) ? Locale.label("sermons.sermonEdit.editPermanentLiveUrl") : Locale.label("sermons.sermonEdit.editSermon")} saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={checkDelete()} help="docs/b1-admin/sermons/" data-testid="sermon-edit-box">
           <ErrorMessages errors={errors} data-testid="sermon-errors" />
           <>
             {!currentSermon?.permanentUrl && (

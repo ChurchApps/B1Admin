@@ -224,7 +224,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   };
 
   return (
-    <DisplayBox id="groupMembersBox" data-cy="group-members-tab" headerText={Locale.label("groups.groupMembers.groupMem")} headerIcon="group" editContent={getEditContent()} help="b1Admin/groups">
+    <DisplayBox id="groupMembersBox" data-cy="group-members-tab" headerText={Locale.label("groups.groupMembers.groupMem")} headerIcon="group" editContent={getEditContent()} help="docs/b1-admin/groups/">
       {show === true && (
         <div style={{ marginTop: "18px", marginBottom: "18px" }}>
           {showTemplates === true ? (

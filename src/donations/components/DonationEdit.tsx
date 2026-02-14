@@ -178,7 +178,7 @@ export const DonationEdit = memo((props: Props) => {
       cancelFunction={handleCancel}
       deleteFunction={getDeleteFunction()}
       saveFunction={handleSave}
-      help="b1Admin/donations">
+      help="docs/b1-admin/donations/">
       <Box>
         <label>{Locale.label("common.person")}</label>
         {personSection}

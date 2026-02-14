@@ -76,7 +76,7 @@ export const BatchEdit = memo((props: Props) => {
       cancelFunction={handleCancel}
       deleteFunction={getDeleteFunction()}
       saveFunction={handleSave}
-      help="b1Admin/manual-input">
+      help="docs/b1-admin/donations/recording-donations">
       <TextField fullWidth name="name" data-cy="batch-name" label={Locale.label("donations.batchEdit.opName")} value={batch.name} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.batch.name")} />
       <TextField
         fullWidth

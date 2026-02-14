@@ -562,7 +562,7 @@
         "templates": "템플릿",
         "welcome_volunteers": {
           "heading": "자원봉사자 환영",
-          "message": "환영합니다. 자원봉사해 주셔서 감사합니다.\n\nB1.Church 앱을 다운로드하고 로그인하여 일정을 관리하세요. https://support.churchapps.org/b1/download"
+          "message": "환영합니다. 자원봉사해 주셔서 감사합니다.\n\nB1.Church 앱을 다운로드하고 로그인하여 일정을 관리하세요. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

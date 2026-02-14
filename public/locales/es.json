@@ -562,7 +562,7 @@
         "templates": "Plantillas",
         "welcome_volunteers": {
           "heading": "Bienvenidos Voluntarios",
-          "message": "Bienvenido Gracias por ser voluntario.\n\nPor favor descargue la aplicación B1.Church e inicie sesión para administrar su horario. https://support.churchapps.org/b1/download"
+          "message": "Bienvenido Gracias por ser voluntario.\n\nPor favor descargue la aplicación B1.Church e inicie sesión para administrar su horario. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

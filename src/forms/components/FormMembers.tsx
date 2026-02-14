@@ -164,7 +164,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: 8 }}>
-        <DisplayBox headerText={Locale.label("forms.formMembers.formMem")} headerIcon="group" help="b1Admin/forms">
+        <DisplayBox headerText={Locale.label("forms.formMembers.formMem")} headerIcon="group" help="docs/b1-admin/forms/">
           {getTable()}
         </DisplayBox>
       </Grid>

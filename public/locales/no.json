@@ -562,7 +562,7 @@
         "templates": "Maler",
         "welcome_volunteers": {
           "heading": "Velkommen frivillige",
-          "message": "Velkommen! Takk for at du er frivillig.\n\nVennligst last ned B1.Church-appen og logg inn for å administrere timeplanen din. https://support.churchapps.org/b1/download"
+          "message": "Velkommen! Takk for at du er frivillig.\n\nVennligst last ned B1.Church-appen og logg inn for å administrere timeplanen din. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

@@ -60,7 +60,7 @@ export const FundEdit: React.FC<Props> = (props) => {
       cancelFunction={handleCancel}
       saveFunction={handleSave}
       deleteFunction={fund.id === "" ? undefined : handleDelete}
-      help="b1Admin/giving">
+      help="docs/b1-admin/donations/">
       <ErrorMessages errors={errors} />
       <TextField
         fullWidth

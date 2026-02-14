@@ -562,7 +562,7 @@
         "templates": "Шаблоны",
         "welcome_volunteers": {
           "heading": "Добро пожаловать волонтеры",
-          "message": "Добро пожаловать! Спасибо за вашу волонтерскую работу.\n\nПожалуйста, загрузите приложение B1.Church и войдите в систему для управления вашим расписанием. https://support.churchapps.org/b1/download"
+          "message": "Добро пожаловать! Спасибо за вашу волонтерскую работу.\n\nПожалуйста, загрузите приложение B1.Church и войдите в систему для управления вашим расписанием. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },

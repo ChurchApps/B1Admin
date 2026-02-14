@@ -562,7 +562,7 @@
         "templates": "Modèles",
         "welcome_volunteers": {
           "heading": "Bienvenue Bénévoles",
-          "message": "Bienvenue ! Merci d'être bénévole.\n\nVeuillez télécharger l'application B1.Church et vous connecter pour gérer votre emploi du temps. https://support.churchapps.org/b1/download"
+          "message": "Bienvenue ! Merci d'être bénévole.\n\nVeuillez télécharger l'application B1.Church et vous connecter pour gérer votre emploi du temps. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
       }
     },
