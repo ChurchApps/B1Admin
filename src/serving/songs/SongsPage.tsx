@@ -41,14 +41,12 @@ export const SongsPage = memo(() => {
           lyrics: ""
         };
         const arrangements = await ApiHelper.post("/arrangements", [a], "ContentApi");
-        if (songDetail.keySignature) {
-          const key: ArrangementKeyInterface = {
-            arrangementId: arrangements[0].id,
-            keySignature: songDetail.keySignature,
-            shortDescription: "Default"
-          };
-          await ApiHelper.post("/arrangementKeys", [key], "ContentApi");
-        }
+        const key: ArrangementKeyInterface = {
+          arrangementId: arrangements[0].id,
+          keySignature: songDetail.keySignature || "",
+          shortDescription: "Default"
+        };
+        await ApiHelper.post("/arrangementKeys", [key], "ContentApi");
         selectedSong = songs[0];
       }
 

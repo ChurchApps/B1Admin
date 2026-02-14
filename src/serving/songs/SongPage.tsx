@@ -90,11 +90,9 @@ export const SongPage = memo(() => {
         name: songDetail.artist,
         lyrics: ""
       };
-      await ApiHelper.post("/arrangements", [a], "ContentApi");
-      if (songDetail.keySignature) {
-        const key: ArrangementKeyInterface = { arrangementId: a.id, keySignature: songDetail.keySignature, shortDescription: "Default" };
-        await ApiHelper.post("/arrangementKeys", [key], "ContentApi");
-      }
+      const arrangements = await ApiHelper.post("/arrangements", [a], "ContentApi");
+      const key: ArrangementKeyInterface = { arrangementId: arrangements[0].id, keySignature: songDetail.keySignature || "", shortDescription: "Default" };
+      await ApiHelper.post("/arrangementKeys", [key], "ContentApi");
       refetch();
       setShowSearch(false);
     },
