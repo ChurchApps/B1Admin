@@ -275,10 +275,10 @@
   resolved "https://registry.npmjs.org/@churchapps/content-provider-helper/-/content-provider-helper-0.1.0.tgz"
   integrity sha512-vpKUaouMX7hYNLB3Px6CRSuuXngH1Hv3fl/6OcXishHFP7/ZoryAuehW8wHVivC49PJgt/k6hLYbMFDzweeL0A==
 
-"@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5", "@churchapps/helpers@1.2.23":
-  version "1.2.23"
-  resolved "https://registry.npmjs.org/@churchapps/helpers/-/helpers-1.2.23.tgz"
-  integrity sha512-2AImZRmH364S5AQHO97aXudDl+MTYj5mRFx0/lkyTsBP3k70KhH9yZA4sMEo8sVi0tvw9wHD8dIZlhJYLSWKEg==
+"@churchapps/helpers@^1.2.4", "@churchapps/helpers@^1.2.5", "@churchapps/helpers@1.2.25":
+  version "1.2.25"
+  resolved "https://registry.npmjs.org/@churchapps/helpers/-/helpers-1.2.25.tgz"
+  integrity sha512-Y9FXOHdwrDDHVnrkwN0kpaVcq/g3Gq350UcepOa5GTCDHk0qcrkgcnICGngt879hSGuFFkgaPBMf+rfuYntItg==
   dependencies:
     dayjs "^1.11.18"
 
