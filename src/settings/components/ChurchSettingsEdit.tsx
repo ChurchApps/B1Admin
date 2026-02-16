@@ -252,7 +252,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
       )}
 
       {/* Texting Settings Accordion */}
-      {UserHelper.checkAccess(Permissions.messagingApi.texting.edit) && (
+      {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
         <Accordion
           expanded={expanded === "texting"}
           onChange={handleAccordionChange("texting")}

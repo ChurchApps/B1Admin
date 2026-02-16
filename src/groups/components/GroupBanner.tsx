@@ -27,7 +27,7 @@ export const GroupBanner = memo((props: Props) => {
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
-  const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.edit), []);
+  const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
 
   React.useEffect(() => {
     if (canText) {

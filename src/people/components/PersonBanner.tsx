@@ -25,7 +25,7 @@ export const PersonBanner = memo((props: Props) => {
   const [showTextDialog, setShowTextDialog] = useState(false);
   const [hasTextingProvider, setHasTextingProvider] = useState(false);
 
-  const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.edit), []);
+  const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
 
   useEffect(() => {
     if (person?.id) {
