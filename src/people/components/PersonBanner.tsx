@@ -109,7 +109,7 @@ export const PersonBanner = memo((props: Props) => {
     }
 
     return info;
-  }, [person]);
+  }, [person, canText, hasTextingProvider]);
 
   if (!person) return null;
 

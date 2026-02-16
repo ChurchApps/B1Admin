@@ -186,18 +186,20 @@ export const GroupBanner = memo((props: Props) => {
                 </Typography>
                 {groupType}
               </Stack>
-              {canText && hasTextingProvider && (
-                <Tooltip title="Text this group">
-                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
-                    <SmsIcon fontSize="small" />
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                {canText && hasTextingProvider && (
+                  <Tooltip title="Text this group">
+                    <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
+                      <SmsIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {canEdit && (
+                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>
+                    <EditIcon fontSize="small" />
                   </IconButton>
-                </Tooltip>
-              )}
-              {canEdit && (
-                <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              )}
+                )}
+              </Stack>
             </Stack>
 
             {/* Row 2: Three Columns */}
