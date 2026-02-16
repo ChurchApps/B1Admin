@@ -7,8 +7,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BusinessIcon from "@mui/icons-material/Business";
 import TuneIcon from "@mui/icons-material/Tune";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
+import SmsIcon from "@mui/icons-material/Sms";
 import LanguageIcon from "@mui/icons-material/Language";
 import { DomainSettingsEdit } from "./DomainSettingsEdit";
+import { TextingSettingsEdit } from "./TextingSettingsEdit";
 import { DirectoryApproveSettingsEdit } from "./DirectoryApproveSettingsEdit";
 import { SupportContactSettingsEdit } from "./SupportContactSettingsEdit";
 import { VisbilityPrefSettingsEdit } from "./VisibilityPrefSettingsEdit";
@@ -106,6 +108,11 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   const handleGivingError = (givingErrors: string[]) => {
     childErrorsRef.current = givingErrors;
     setErrors(givingErrors);
+  };
+
+  const handleTextingError = (textingErrors: string[]) => {
+    childErrorsRef.current = textingErrors;
+    setErrors(textingErrors);
   };
 
   const giveSection = () => {
@@ -240,6 +247,27 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
           </AccordionSummary>
           <AccordionDetails sx={{ pt: 2 }}>
             {giveSection()}
+          </AccordionDetails>
+        </Accordion>
+      )}
+
+      {/* Texting Settings Accordion */}
+      {UserHelper.checkAccess(Permissions.messagingApi.texting.edit) && (
+        <Accordion
+          expanded={expanded === "texting"}
+          onChange={handleAccordionChange("texting")}
+          sx={accordionStyles}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
+            <SettingsSectionHeader
+              icon={<SmsIcon />}
+              color="warning"
+              title="Texting"
+              subtitle="Configure SMS texting provider"
+            />
+          </AccordionSummary>
+          <AccordionDetails sx={{ pt: 2 }}>
+            <TextingSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} onError={handleTextingError} />
           </AccordionDetails>
         </Accordion>
       )}

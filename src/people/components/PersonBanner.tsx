@@ -1,14 +1,16 @@
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
-import { Typography, IconButton, Stack, Chip } from "@mui/material";
+import { Typography, IconButton, Stack, Chip, Tooltip } from "@mui/material";
 import {
   Edit as EditIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Sms as SmsIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo, useState, useEffect } from "react";
 import { StatusChip } from "../../components";
+import { SendTextDialog } from "../../groups/components/SendTextDialog";
 
 interface Props {
   person: PersonInterface;
@@ -20,6 +22,10 @@ export const PersonBanner = memo((props: Props) => {
   const { person, togglePhotoEditor, onEdit } = props;
 
   const [userEmail, setUserEmail] = useState<string>("");
+  const [showTextDialog, setShowTextDialog] = useState(false);
+  const [hasTextingProvider, setHasTextingProvider] = useState(false);
+
+  const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.edit), []);
 
   useEffect(() => {
     if (person?.id) {
@@ -30,6 +36,14 @@ export const PersonBanner = memo((props: Props) => {
         .catch(() => setUserEmail(""));
     }
   }, [person?.id]);
+
+  useEffect(() => {
+    if (canText) {
+      ApiHelper.get("/texting/providers", "MessagingApi")
+        .then((data: any[]) => setHasTextingProvider(data?.length > 0))
+        .catch(() => setHasTextingProvider(false));
+    }
+  }, [canText]);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.people.edit), []);
 
@@ -78,7 +92,8 @@ export const PersonBanner = memo((props: Props) => {
     if (phone) {
       info.push({
         icon: <PhoneIcon sx={{ color: "#fff", fontSize: 16 }} />,
-        value: phone
+        value: phone,
+        showTextButton: !!person.contactInfo.mobilePhone && canText && hasTextingProvider
       });
     }
 
@@ -146,7 +161,7 @@ export const PersonBanner = memo((props: Props) => {
 
         {/* Column 2: Contact Info */}
         <Stack spacing={0.5} sx={{ position: { xs: "static", lg: "absolute" }, left: { lg: "50%" }, top: { lg: "50%" }, transform: { lg: "translateY(-50%)" }, minWidth: 0 }}>
-          {contactInfo.map((info) => (
+          {contactInfo.map((info: any) => (
             <Stack key={info.value} direction="row" spacing={1} alignItems="center" sx={{ minWidth: 0 }}>
               {info.icon}
               <Typography
@@ -161,10 +176,25 @@ export const PersonBanner = memo((props: Props) => {
                 onClick={info.action}>
                 {info.value}
               </Typography>
+              {info.showTextButton && (
+                <Tooltip title="Send text message">
+                  <IconButton size="small" sx={{ color: "#FFF", p: 0.25 }} onClick={() => setShowTextDialog(true)}>
+                    <SmsIcon sx={{ fontSize: 14 }} />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
           ))}
         </Stack>
       </Stack>
+      {showTextDialog && person?.contactInfo?.mobilePhone && (
+        <SendTextDialog
+          personId={person.id}
+          personName={person.name?.display}
+          phoneNumber={person.contactInfo.mobilePhone}
+          onClose={() => setShowTextDialog(false)}
+        />
+      )}
     </div>
   );
 });

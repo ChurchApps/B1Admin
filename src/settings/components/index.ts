@@ -14,3 +14,4 @@ export { Roles } from "./Roles";
 export { RolesTab } from "./RolesTab";
 export { AppTabs } from "./AppTabs";
 export { AppEdit } from "./AppEdit";
+export { TextingSettingsEdit } from "./TextingSettingsEdit";

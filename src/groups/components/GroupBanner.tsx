@@ -1,6 +1,6 @@
 import { type GroupInterface, type GroupServiceTimeInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
-import { Typography, Chip, IconButton, Stack, Box } from "@mui/material";
+import { Typography, Chip, IconButton, Stack, Box, Tooltip } from "@mui/material";
 import {
   Edit as EditIcon,
   Schedule as ScheduleIcon,
@@ -8,9 +8,11 @@ import {
   Group as GroupIcon,
   CheckCircle as CheckIcon,
   Cancel as CancelIcon,
-  Event as CalendarIcon
+  Event as CalendarIcon,
+  Sms as SmsIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
+import { SendTextDialog } from "./SendTextDialog";
 
 interface Props {
   group: GroupInterface;
@@ -21,8 +23,19 @@ interface Props {
 export const GroupBanner = memo((props: Props) => {
   const { group, onEdit, editMode } = props;
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
+  const [showTextDialog, setShowTextDialog] = React.useState(false);
+  const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
+  const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.edit), []);
+
+  React.useEffect(() => {
+    if (canText) {
+      ApiHelper.get("/texting/providers", "MessagingApi")
+        .then((data: any[]) => setHasTextingProvider(data?.length > 0))
+        .catch(() => setHasTextingProvider(false));
+    }
+  }, [canText]);
 
   React.useEffect(() => {
     if (group?.id) {
@@ -173,6 +186,13 @@ export const GroupBanner = memo((props: Props) => {
                 </Typography>
                 {groupType}
               </Stack>
+              {canText && hasTextingProvider && (
+                <Tooltip title="Text this group">
+                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
+                    <SmsIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
               {canEdit && (
                 <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>
                   <EditIcon fontSize="small" />
@@ -357,6 +377,13 @@ export const GroupBanner = memo((props: Props) => {
           </Box>
         )}
       </Stack>
+      {showTextDialog && (
+        <SendTextDialog
+          groupId={group?.id}
+          groupName={group?.name}
+          onClose={() => setShowTextDialog(false)}
+        />
+      )}
     </div>
   );
 });
