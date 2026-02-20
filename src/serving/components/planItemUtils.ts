@@ -1,4 +1,4 @@
-import { type InstructionItem } from "@churchapps/content-provider-helper";
+import { type InstructionItem } from "@churchapps/content-providers";
 import { type PlanItemInterface } from "../../helpers";
 
 /**

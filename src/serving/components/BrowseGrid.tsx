@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Box, Card, CardActionArea, CardMedia, CardContent } from "@mui/material";
 import { Folder as FolderIcon, PlayArrow as PlayArrowIcon, Add as AddIcon } from "@mui/icons-material";
-import { type ContentFolder, type ContentFile } from "@churchapps/content-provider-helper";
+import { type ContentFolder, type ContentFile } from "@churchapps/content-providers";
 
 interface BrowseGridProps {
   folders: ContentFolder[];

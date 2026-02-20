@@ -3,7 +3,7 @@ import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogTitle, T
 import { Link as LinkIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { Locale } from "@churchapps/apphelper";
-import { type ProviderInfo } from "@churchapps/content-provider-helper";
+import { type ProviderInfo } from "@churchapps/content-providers";
 
 interface Props {
   open: boolean;

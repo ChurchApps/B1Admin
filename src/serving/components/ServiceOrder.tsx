@@ -4,7 +4,7 @@ import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as Men
 import { type PlanInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
-import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-provider-helper";
+import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-providers";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
 import { LessonHeaderSelector } from "./LessonHeaderSelector";

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Typography, Box, IconButton } from "@mui/material";
 import { PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
-import { type InstructionItem } from "@churchapps/content-provider-helper";
+import { type InstructionItem } from "@churchapps/content-providers";
 
 interface InstructionTreeProps {
   items: InstructionItem[];

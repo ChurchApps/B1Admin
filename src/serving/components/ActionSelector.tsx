@@ -16,7 +16,7 @@ import {
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ProviderChipSelector } from "./ProviderChipSelector";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { getProvider, type ContentFile, type ContentFolder, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { getProvider, type ContentFile, type ContentFolder, type Instructions, type InstructionItem } from "@churchapps/content-providers";
 import { generatePath, getProviderInstructions, type ActionSelectorProps } from "./ActionSelectorHelpers";
 import { InstructionTree } from "./InstructionTree";
 import { BrowseGrid } from "./BrowseGrid";

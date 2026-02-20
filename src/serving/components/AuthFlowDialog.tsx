@@ -3,7 +3,7 @@ import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, Di
 import { ContentCopy as ContentCopyIcon, Check as CheckIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { Locale } from "@churchapps/apphelper";
-import { type ProviderInfo, type DeviceAuthorizationResponse } from "@churchapps/content-provider-helper";
+import { type ProviderInfo, type DeviceAuthorizationResponse } from "@churchapps/content-providers";
 
 export type AuthStatus = "idle" | "loading" | "device_flow" | "pkce_waiting" | "success" | "error";
 

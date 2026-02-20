@@ -1,6 +1,6 @@
-import { getProvider } from "@churchapps/content-provider-helper";
+import { getProvider } from "@churchapps/content-providers";
 import { ApiHelper } from "@churchapps/apphelper";
-import type { ContentProviderAuthData } from "@churchapps/content-provider-helper";
+import type { ContentProviderAuthData } from "@churchapps/content-providers";
 import type { ContentProviderAuthInterface } from "./Interfaces";
 
 export class ContentProviderAuthHelper {

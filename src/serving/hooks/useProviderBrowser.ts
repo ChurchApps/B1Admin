@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { ApiHelper } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem } from "@churchapps/content-providers";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 

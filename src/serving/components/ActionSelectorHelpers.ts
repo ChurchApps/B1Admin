@@ -1,4 +1,4 @@
-import { type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-provider-helper";
+import { type Instructions, type InstructionItem, type IProvider } from "@churchapps/content-providers";
 
 // Generate a dot-notation path from indices array (e.g., [0, 2, 1] -> "0.2.1")
 export const generatePath = (indices: number[]): string => indices.join(".");

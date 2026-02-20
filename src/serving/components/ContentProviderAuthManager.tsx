@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Box, Button, Card, CardContent, CircularProgress, IconButton, Stack, Typography } from "@mui/material";
 import { Link as LinkIcon, LinkOff as LinkOffIcon, Refresh as RefreshIcon, Add as AddIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
-import { getProvider, getAvailableProviders, type IProvider, type DeviceAuthorizationResponse } from "@churchapps/content-provider-helper";
+import { getProvider, getAvailableProviders, type IProvider, type DeviceAuthorizationResponse } from "@churchapps/content-providers";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
 import { ProviderSelectorModal } from "./ProviderSelectorModal";

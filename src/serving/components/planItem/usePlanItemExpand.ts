@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { ApiHelper } from "@churchapps/apphelper";
-import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-provider-helper";
+import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-providers";
 import { type PlanItemInterface } from "../../../helpers";
 import { findThumbnailRecursive } from "../planItemUtils";
 

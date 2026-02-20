@@ -17,7 +17,7 @@ import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ProviderChipSelector } from "./ProviderChipSelector";
 import { BrowseGrid } from "./BrowseGrid";
 import { Locale } from "@churchapps/apphelper";
-import { type ContentFolder } from "@churchapps/content-provider-helper";
+import { type ContentFolder } from "@churchapps/content-providers";
 import { useProviderBrowser } from "../hooks/useProviderBrowser";
 
 interface Props {
