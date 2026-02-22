@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from "react";
-import { Box, Card, CardContent, Typography, Stack, Paper, Chip, Avatar, Button, ButtonGroup, Menu, MenuItem } from "@mui/material";
-import { Add as AddIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, ArrowDropDown as ArrowDropDownIcon, MenuBook as MenuBookIcon } from "@mui/icons-material";
+import { Box, Card, CardContent, Typography, Stack, Paper, Chip, Avatar, Button } from "@mui/material";
+import { Add as AddIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanInterface } from "../../helpers";
@@ -20,7 +20,6 @@ interface Props {
 export const PlanList = memo((props: Props) => {
   const [plan, setPlan] = React.useState<PlanInterface>(null);
   const [showLessonSchedule, setShowLessonSchedule] = React.useState(false);
-  const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
 
   const plansQuery = useQuery<PlanInterface[]>({
@@ -64,14 +63,8 @@ export const PlanList = memo((props: Props) => {
   }, [plansQuery, props.planTypeId]);
 
   const handleScheduleLesson = useCallback(() => {
-    setAddMenuAnchor(null);
     setShowLessonSchedule(true);
   }, []);
-
-  const handleAddPlanFromMenu = useCallback(() => {
-    setAddMenuAnchor(null);
-    addPlan();
-  }, [addPlan]);
 
   if (showLessonSchedule && canEdit) {
     return (
@@ -114,39 +107,33 @@ export const PlanList = memo((props: Props) => {
             {Locale.label("plans.planList.createFirst")}
           </Typography>
           {canEdit && (
-            <>
-              <ButtonGroup variant="contained" size="large">
-                <Button
-                  startIcon={<AddIcon />}
-                  onClick={addPlan}
-                  data-testid="add-plan-button"
-                  sx={{
-                    fontSize: "1rem",
-                    py: 1.5,
-                    px: 3
-                  }}>
-                  {Locale.label("plans.planList.createPlan")}
-                </Button>
-                <Button
-                  onClick={(e) => setAddMenuAnchor(e.currentTarget)}
-                  sx={{ px: 1 }}
-                >
-                  <ArrowDropDownIcon />
-                </Button>
-              </ButtonGroup>
-              <Menu
-                anchorEl={addMenuAnchor}
-                open={Boolean(addMenuAnchor)}
-                onClose={() => setAddMenuAnchor(null)}
-              >
-                <MenuItem onClick={handleAddPlanFromMenu}>
-                  <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.planList.createPlan")}
-                </MenuItem>
-                <MenuItem onClick={handleScheduleLesson}>
-                  <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
-                </MenuItem>
-              </Menu>
-            </>
+            <Stack direction="row" spacing={2} justifyContent="center">
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<AddIcon />}
+                onClick={addPlan}
+                data-testid="add-plan-button"
+                sx={{
+                  fontSize: "1rem",
+                  py: 1.5,
+                  px: 3
+                }}>
+                {Locale.label("plans.planList.createPlan")}
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<MenuBookIcon />}
+                onClick={handleScheduleLesson}
+                sx={{
+                  fontSize: "1rem",
+                  py: 1.5,
+                  px: 3
+                }}>
+                {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
+              </Button>
+            </Stack>
           )}
         </Paper>
       </Box>
@@ -164,35 +151,23 @@ export const PlanList = memo((props: Props) => {
             </Typography>
           </Stack>
           {canEdit && (
-            <>
-              <ButtonGroup variant="contained" size="medium">
-                <Button
-                  startIcon={<AddIcon />}
-                  onClick={addPlan}
-                  data-testid="add-plan-button">
-                  {Locale.label("plans.planList.newPlan")}
-                </Button>
-                <Button
-                  size="small"
-                  onClick={(e) => setAddMenuAnchor(e.currentTarget)}
-                  sx={{ px: 0.5 }}
-                >
-                  <ArrowDropDownIcon />
-                </Button>
-              </ButtonGroup>
-              <Menu
-                anchorEl={addMenuAnchor}
-                open={Boolean(addMenuAnchor)}
-                onClose={() => setAddMenuAnchor(null)}
-              >
-                <MenuItem onClick={handleAddPlanFromMenu}>
-                  <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.planList.newPlan")}
-                </MenuItem>
-                <MenuItem onClick={handleScheduleLesson}>
-                  <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
-                </MenuItem>
-              </Menu>
-            </>
+            <Stack direction="row" spacing={1}>
+              <Button
+                variant="contained"
+                size="medium"
+                startIcon={<AddIcon />}
+                onClick={addPlan}
+                data-testid="add-plan-button">
+                {Locale.label("plans.planList.newPlan")}
+              </Button>
+              <Button
+                variant="contained"
+                size="medium"
+                startIcon={<MenuBookIcon />}
+                onClick={handleScheduleLesson}>
+                {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
+              </Button>
+            </Stack>
           )}
         </Stack>
       </Box>
