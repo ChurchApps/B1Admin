@@ -108,7 +108,6 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
             <Select name="provider" label="Provider" value={provider || ""} onChange={handleChange}>
               <MenuItem value="">None</MenuItem>
               <MenuItem value="Clearstream">Clearstream</MenuItem>
-              <MenuItem value="TextInChurch">Text In Church</MenuItem>
             </Select>
           </FormControl>
         </Grid>
