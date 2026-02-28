@@ -44,6 +44,7 @@ export const PlanEdit = (props: Props) => {
       case "name": p.name = value; break;
       case "serviceDate": p.serviceDate = DateHelper.toDate(value); break;
       case "planTypeId": p.planTypeId = value; break;
+      case "signupDeadlineHours": p.signupDeadlineHours = value ? parseInt(value) : undefined; break;
       case "copyMode":
         setCopyMode(value);
         return; // Don't update plan state
@@ -134,6 +135,12 @@ export const PlanEdit = (props: Props) => {
               </Select>
             </FormControl>
             <FormControlLabel control={<Checkbox checked={copyServiceOrder} onChange={(e) => setCopyServiceOrder(e.target.checked)} />} label={Locale.label("plans.planEdit.copyServiceOrder") || "Copy Order of Service"} />
+          </>
+        )}
+        {plan.id && (
+          <>
+            <TextField fullWidth label="Signup Deadline (hours before service)" id="signupDeadlineHours" name="signupDeadlineHours" type="number" value={plan.signupDeadlineHours || ""} onChange={handleChange} helperText="Leave blank for no deadline" />
+            <FormControlLabel control={<Checkbox checked={plan.showVolunteerNames !== false} onChange={(e) => setPlan({ ...plan, showVolunteerNames: e.target.checked })} />} label="Show volunteer names on signup page" />
           </>
         )}
       </InputBox>

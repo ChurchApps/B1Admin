@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
 import { type GroupInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
 import ReactSelect from "react-select";
@@ -34,6 +34,7 @@ export const PositionEdit = (props: Props) => {
       case "name": p.name = value; break;
       case "count": p.count = parseInt(value); break;
       case "groupId": p.groupId = value; break;
+      case "description": p.description = value; break;
     }
     setPosition(p);
   };
@@ -131,6 +132,11 @@ export const PositionEdit = (props: Props) => {
             {getGroupOptions()}
           </Select>
         </FormControl>
+        <FormControlLabel
+          control={<Checkbox checked={position.allowSelfSignup || false} onChange={(e) => setPosition({ ...position, allowSelfSignup: e.target.checked })} />}
+          label="Allow Self-Signup"
+        />
+        <TextField fullWidth label="Description" id="description" name="description" type="text" multiline rows={2} value={position.description || ""} onChange={handleChange} helperText="Shown to volunteers when browsing signup opportunities" />
       </InputBox>
     </>
   );

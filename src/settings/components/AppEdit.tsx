@@ -266,6 +266,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                   <MenuItem value="directory">{Locale.label("settings.appEdit.memberDirectory")}</MenuItem>
                   <MenuItem value="groups">{Locale.label("settings.appEdit.myGroups")}</MenuItem>
                   <MenuItem value="lessons">{Locale.label("settings.appEdit.lessons")}</MenuItem>
+                  <MenuItem value="volunteer">Volunteer Opportunities</MenuItem>
                   <MenuItem value="url">{Locale.label("settings.appEdit.externalUrl")}</MenuItem>
                   <MenuItem value="page">{Locale.label("settings.appEdit.internalPage")}</MenuItem>
                 </Select>

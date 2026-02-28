@@ -11,7 +11,7 @@
     "@churchapps/apphelper-markdown": "0.6.15",
     "@churchapps/apphelper-website": "0.6.17",
     "@churchapps/content-providers": "0.1.0",
-    "@churchapps/helpers": "1.2.27",
+    "@churchapps/helpers": "1.2.28",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@react-google-maps/api": "^2.20.0",

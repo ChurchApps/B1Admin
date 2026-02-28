@@ -97,6 +97,8 @@ export interface PlanInterface {
   providerId?: string;
   providerPlanId?: string;
   providerPlanName?: string;
+  signupDeadlineHours?: number;
+  showVolunteerNames?: boolean;
 }
 
 export interface ProgramInterface {

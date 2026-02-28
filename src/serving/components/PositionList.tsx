@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, Table, TableBody, TableCell, TableHead, TableRow, Avatar, useTheme } from "@mui/material";
+import { Badge, Chip, Table, TableBody, TableCell, TableHead, TableRow, Avatar, useTheme } from "@mui/material";
 import {
   type AssignmentInterface,
   type GroupInterface,
@@ -120,6 +120,7 @@ export const PositionList = (props: Props) => {
               {group && <span style={{ color: "#999", marginLeft: "8px" }}>({group.name})</span>}
             </span>
           )}
+          {position.allowSelfSignup && <Chip label={assignments.length + "/" + position.count + " signup"} size="small" color="info" variant="outlined" sx={{ ml: 1, fontSize: "0.6875rem" }} />}
         </TableCell>
         <TableCell style={{ paddingTop: hasPeople ? 2 : 10, paddingBottom: hasPeople ? 2 : 10, verticalAlign: "top" }}>{getPeopleLinks(position)}</TableCell>
       </TableRow>
