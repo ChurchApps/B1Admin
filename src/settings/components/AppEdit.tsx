@@ -149,7 +149,9 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
         pages.forEach(page => {
           options.push(<MenuItem value={page.id} key={page.id}>{page.title}</MenuItem>);
         });
-        if (currentTab.linkData === "") currentTab.linkData = pages[0]?.url;
+        if (currentTab.linkData === "") {
+          setCurrentTab(prev => ({ ...prev, linkData: pages[0]?.id || "" }));
+        }
       }
       return (
         <FormControl fullWidth>

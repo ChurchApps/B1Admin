@@ -143,7 +143,7 @@ export const PlanList = memo((props: Props) => {
   return (
     <Box sx={{ position: "relative" }}>
       <Box sx={{ mb: 3 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: 2 }}>
           <Stack direction="row" alignItems="center" spacing={2}>
             <AssignmentIcon sx={{ color: "primary.main" }} />
             <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
@@ -188,13 +188,14 @@ export const PlanList = memo((props: Props) => {
               }
             }}>
             <CardContent sx={{ pb: "16px !important" }}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Stack direction="row" alignItems="flex-start" justifyContent="space-between" flexWrap="wrap" useFlexGap spacing={1}>
                 <Stack direction="row" alignItems="center" spacing={2} sx={{ flex: 1, minWidth: 0 }}>
                   <Avatar
                     sx={{
                       bgcolor: "primary.main",
                       width: 48,
-                      height: 48
+                      height: 48,
+                      flexShrink: 0
                     }}>
                     <CalendarIcon />
                   </Avatar>
@@ -218,7 +219,7 @@ export const PlanList = memo((props: Props) => {
                       {p.name}
                     </Typography>
 
-                    <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 1 }}>
+                    <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
                       {p.serviceDate && (
                         <Chip
                           icon={<CalendarIcon />}
@@ -249,7 +250,7 @@ export const PlanList = memo((props: Props) => {
                 </Stack>
 
                 {canEdit && (
-                  <Box sx={{ ml: 2 }}>
+                  <Box sx={{ flexShrink: 0 }}>
                     <Button
                       size="small"
                       startIcon={<EditIcon />}
@@ -258,6 +259,7 @@ export const PlanList = memo((props: Props) => {
                       sx={{
                         color: "primary.main",
                         borderColor: "primary.main",
+                        whiteSpace: "nowrap",
                         "&:hover": {
                           backgroundColor: "primary.light",
                           borderColor: "primary.dark"

@@ -20,7 +20,7 @@ export const BulkDonationEntry = memo((props: Props) => {
   const amountInputRef = useRef<HTMLInputElement>(null);
 
   const [defaultValues, setDefaultValues] = React.useState({
-    date: props.batchDate || new Date(),
+    date: DateHelper.formatHtml5Date(props.batchDate || new Date()),
     method: "Check" as string,
     fundId: props.funds?.[0]?.id || "",
     notes: ""
@@ -54,7 +54,7 @@ export const BulkDonationEntry = memo((props: Props) => {
       batchId: props.batchId,
       personId: selectedPerson?.id || "",
       amount: parseFloat(amount),
-      donationDate: DateHelper.formatHtml5Date(defaultValues.date),
+      donationDate: defaultValues.date,
       method: defaultValues.method,
       methodDetails: methodDetails || undefined,
       notes: defaultValues.notes || undefined
@@ -140,8 +140,8 @@ export const BulkDonationEntry = memo((props: Props) => {
               fullWidth
               label={Locale.label("donations.donationEdit.date")}
               type="date"
-              value={DateHelper.formatHtml5Date(defaultValues.date) || ""}
-              onChange={(e) => handleDefaultChange("date", new Date(e.target.value))}
+              value={defaultValues.date}
+              onChange={(e) => handleDefaultChange("date", e.target.value)}
               onKeyDown={handleKeyDown}
               size="small"
               data-testid="bulk-donation-date"
