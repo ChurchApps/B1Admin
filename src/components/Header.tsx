@@ -62,7 +62,7 @@ export const Header: React.FC = () => {
     else if (path.startsWith("/donations")) result = Locale.label("components.wrapper.don");
     else if (path.startsWith("/serving") || window.location.search.indexOf("tag=") > -1) result = Locale.label("components.wrapper.serving");
     else if (path.startsWith("/sermons")) result = Locale.label("common.sermons");
-    else if (path.startsWith("/calendars") || path.startsWith("/site")) result = Locale.label("common.website");
+    else if (path.startsWith("/calendars") || path.startsWith("/site") || path.startsWith("/registrations")) result = Locale.label("common.website");
     else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = Locale.label("components.wrapper.set");
     return result;
   };
