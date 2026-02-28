@@ -13,4 +13,5 @@ export { ServiceTimesEdit } from "./ServiceTimesEdit";
 export { SessionAdd } from "./SessionAdd";
 export { SessionCard } from "./SessionCard";
 export { SendTextDialog } from "./SendTextDialog";
+export { SendEmailDialog } from "./SendEmailDialog";
 export { Tabs } from "./Tabs";

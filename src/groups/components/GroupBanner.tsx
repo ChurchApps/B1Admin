@@ -9,10 +9,12 @@ import {
   CheckCircle as CheckIcon,
   Cancel as CancelIcon,
   Event as CalendarIcon,
-  Sms as SmsIcon
+  Sms as SmsIcon,
+  Email as EmailIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 import { SendTextDialog } from "./SendTextDialog";
+import { SendEmailDialog } from "./SendEmailDialog";
 
 interface Props {
   group: GroupInterface;
@@ -24,6 +26,7 @@ export const GroupBanner = memo((props: Props) => {
   const { group, onEdit, editMode } = props;
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
+  const [showEmailDialog, setShowEmailDialog] = React.useState(false);
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
@@ -187,6 +190,11 @@ export const GroupBanner = memo((props: Props) => {
                 {groupType}
               </Stack>
               <Stack direction="row" spacing={0.5} alignItems="center">
+                <Tooltip title="Email this group">
+                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowEmailDialog(true)}>
+                    <EmailIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
                 {canText && hasTextingProvider && (
                   <Tooltip title="Text this group">
                     <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
@@ -384,6 +392,13 @@ export const GroupBanner = memo((props: Props) => {
           groupId={group?.id}
           groupName={group?.name}
           onClose={() => setShowTextDialog(false)}
+        />
+      )}
+      {showEmailDialog && (
+        <SendEmailDialog
+          groupId={group?.id}
+          groupName={group?.name}
+          onClose={() => setShowEmailDialog(false)}
         />
       )}
     </div>
