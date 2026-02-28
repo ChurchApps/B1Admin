@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Box, Stack, Button } from "@mui/material";
-import { Settings as SettingsIcon, Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon } from "@mui/icons-material";
+import { Settings as SettingsIcon, Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon, History as HistoryIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
 import { MobileAppSettingsPage } from "./MobileAppSettingsPage";
 import { useQuery } from "@tanstack/react-query";
 
 export const ManageChurch = () => {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = React.useState("roles");
   const [showChurchSettings, setShowChurchSettings] = React.useState(false);
   const [redirectUrl, setRedirectUrl] = useState<string>("");
@@ -104,6 +105,23 @@ export const ManageChurch = () => {
             }}>
             {Locale.label("settings.roles.roles")}
           </Button>
+          {UserHelper.checkAccess(Permissions.membershipApi.server.admin) && (
+            <Button
+              variant="outlined"
+              startIcon={<HistoryIcon />}
+              onClick={() => navigate("/settings/audit-log")}
+              sx={{
+                color: "#FFF",
+                backgroundColor: "transparent",
+                borderColor: "#FFF",
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  color: "#FFF"
+                }
+              }}>
+              Audit Log
+            </Button>
+          )}
           <Button
             variant="outlined"
             startIcon={<PlayArrowIcon />}
