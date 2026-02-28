@@ -8,6 +8,7 @@ import { useReactToPrint } from "react-to-print";
 import { TableReport } from "./TableReport";
 import { ChartReport } from "./ChartReport";
 import { TreeReport } from "./TreeReport";
+import { GivingKpiCards, type GivingKpis } from "./GivingKpiCards";
 import { Button, Icon, Menu, MenuItem } from "@mui/material";
 import { useMountedState } from "@churchapps/apphelper";
 
@@ -22,6 +23,7 @@ export const ReportOutput = (props: Props) => {
   const [customHeaders, setCustomHeaders] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [downloadData, setDownloadData] = React.useState<ReportResultInterface>(null);
+  const [kpis, setKpis] = React.useState<GivingKpis>(null);
   const open = Boolean(anchorEl);
   const contentRef = useRef<HTMLDivElement>(null);
   const isMounted = useMountedState();
@@ -107,6 +109,14 @@ export const ReportOutput = (props: Props) => {
           setDownloadData(data);
         });
       }
+
+      if (props.keyName.startsWith("donationDashboard")) {
+        const kpiParams = queryParams.filter((p) => !p.startsWith("churchId="));
+        const kpiUrl = "/donations/kpis?" + kpiParams.join("&");
+        ApiHelper.get(kpiUrl, "GivingApi").then((data: GivingKpis) => {
+          if (isMounted()) setKpis(data);
+        });
+      }
     }
   };
 
@@ -184,8 +194,8 @@ export const ReportOutput = (props: Props) => {
     const result: React.ReactElement[] = [];
     reportResult.outputs.forEach((o) => {
       if (o.outputType === "table") result.push(<TableReport key={o.outputType} reportResult={reportResult} output={o} />);
-      if (o.outputType === "tree") result.push(<TreeReport key={o.outputType} reportResult={reportResult} output={o} />);
-      else if (o.outputType === "barChart") result.push(<ChartReport key={o.outputType} reportResult={reportResult} output={o} />);
+      else if (o.outputType === "tree") result.push(<TreeReport key={o.outputType} reportResult={reportResult} output={o} />);
+      else if (o.outputType === "barChart" || o.outputType === "lineChart") result.push(<ChartReport key={o.outputType} reportResult={reportResult} output={o} />);
     });
 
     return result;
@@ -201,9 +211,12 @@ export const ReportOutput = (props: Props) => {
     } else if (!reportResult) return <Loading />;
     else {
       return (
-        <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
-          {getOutputs()}
-        </DisplayBox>
+        <>
+          {kpis && <GivingKpiCards kpis={kpis} />}
+          <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
+            {getOutputs()}
+          </DisplayBox>
+        </>
       );
     }
   };

@@ -370,6 +370,17 @@
       "subtitle": "View donation summaries and analyze giving trends",
       "total": "Total"
     },
+    "kpi": {
+      "totalGiving": "Total Giving",
+      "avgGift": "Average Gift",
+      "donorCount": "Unique Donors",
+      "donationCount": "Total Donations"
+    },
+    "period": {
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    },
     "fundEdit": {
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",

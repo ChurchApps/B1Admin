@@ -58,6 +58,14 @@ export const ReportFilterField = (props: Props) => {
           }
         });
         break;
+      case "fund":
+        ApiHelper.get("/funds", "GivingApi").then((data) => {
+          data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
+          if (isMounted()) {
+            setRawData(data);
+          }
+        });
+        break;
     }
     setDefaultValue();
   };
@@ -136,7 +144,8 @@ export const ReportFilterField = (props: Props) => {
         case "campus":
         case "service":
         case "serviceTime":
-        case "group": options = getIdName(); break;
+        case "group":
+        case "fund": options = getIdName(); break;
         case "month":
         case "provided": options = rawData; break;
       }

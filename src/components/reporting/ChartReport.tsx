@@ -106,11 +106,13 @@ export const ChartReport = (props: Props) => {
     }
   };
 
+  const chartType = props.output.outputType === "lineChart" ? "LineChart" : "ColumnChart";
+
   let result = <p>{Locale.label("reporting.noData")}</p>;
   if (props.reportResult.table?.length > 0) {
     result = (
       <Chart
-        chartType="ColumnChart"
+        chartType={chartType}
         data={getChartData()}
         width="100%"
         height="400px"

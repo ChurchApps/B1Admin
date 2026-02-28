@@ -22,6 +22,7 @@ export const ReportWithFilter = (props: Props) => {
   const loadData = () => {
     setReportToRun(null);
     setReport(null);
+    setHasAutoRun(false);
     ApiHelper.get("/reports/" + props.keyName, "ReportingApi").then((data) => {
       if (isMounted()) {
         setReport(data);

@@ -3,7 +3,7 @@ import { UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { VolunteerActivism as DonationIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
-import { ReportWithFilter } from "../components/reporting/ReportWithFilter";
+import { GivingDashboard } from "./GivingDashboard";
 
 export const DonationsPage = memo(() => {
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
@@ -14,7 +14,7 @@ export const DonationsPage = memo(() => {
 
       {/* Main Content */}
       <Box sx={{ p: 3 }}>
-        <ReportWithFilter keyName="donationSummary" autoRun={true} />
+        <GivingDashboard />
       </Box>
     </>
   );
