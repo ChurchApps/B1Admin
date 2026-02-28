@@ -1,7 +1,16 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, MenuItem, Select, Typography, CircularProgress, Alert } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, MenuItem, Select, Typography, CircularProgress, Alert, TextField, Box, Chip, Stack } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper } from "@churchapps/apphelper";
+import { HtmlEditor } from "@churchapps/apphelper-markdown";
+
+const MERGE_FIELDS = [
+  { key: "{{firstName}}", label: "First Name" },
+  { key: "{{lastName}}", label: "Last Name" },
+  { key: "{{displayName}}", label: "Display Name" },
+  { key: "{{email}}", label: "Email" },
+  { key: "{{churchName}}", label: "Church Name" },
+];
 
 interface EmailTemplateOption {
   id: string;
@@ -33,6 +42,8 @@ interface Props {
 export const SendEmailDialog: React.FC<Props> = (props) => {
   const [templates, setTemplates] = React.useState<EmailTemplateOption[]>([]);
   const [selectedTemplateId, setSelectedTemplateId] = React.useState("");
+  const [subject, setSubject] = React.useState("");
+  const [htmlContent, setHtmlContent] = React.useState("");
   const [sending, setSending] = React.useState(false);
   const [result, setResult] = React.useState<SendResult | null>(null);
   const [error, setError] = React.useState("");
@@ -59,12 +70,26 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       .finally(() => setLoadingPreview(false));
   }, [props.groupId]);
 
+  const handleTemplateSelect = async (templateId: string) => {
+    setSelectedTemplateId(templateId);
+    if (!templateId) return;
+    try {
+      const fullTemplate = await ApiHelper.get("/messaging/emailTemplates/" + templateId, "MessagingApi");
+      setSubject(fullTemplate.subject || "");
+      setHtmlContent(fullTemplate.htmlContent || "");
+    } catch {
+      const t = templates.find(t => t.id === templateId);
+      if (t) setSubject(t.subject || "");
+    }
+  };
+
   const handleSend = async () => {
-    if (!selectedTemplateId) return;
+    if (!subject.trim() || !htmlContent.trim()) return;
     setSending(true);
     setError("");
     try {
-      const resp = await ApiHelper.post("/messaging/emailTemplates/send", { templateId: selectedTemplateId, groupId: props.groupId }, "MessagingApi");
+      const payload: any = { groupId: props.groupId, subject, htmlContent };
+      const resp = await ApiHelper.post("/messaging/emailTemplates/send", payload, "MessagingApi");
       if (resp.error) {
         setError(resp.error);
       } else {
@@ -106,11 +131,10 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     );
   };
 
-  const selectedTemplate = templates.find(t => t.id === selectedTemplateId);
-  const canSend = !sending && !!selectedTemplateId && (!preview || preview.eligibleCount > 0);
+  const canSend = !sending && subject.trim().length > 0 && htmlContent.trim().length > 0 && (!preview || preview.eligibleCount > 0);
 
   return (
-    <Dialog open={true} onClose={props.onClose} maxWidth="sm" fullWidth>
+    <Dialog open={true} onClose={props.onClose} maxWidth="md" fullWidth>
       <DialogTitle>Email Group: {props.groupName}</DialogTitle>
       <DialogContent>
         {result ? renderResult() : (
@@ -118,36 +142,71 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
             {renderPreview()}
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
-            {loadingTemplates ? (
-              <Typography variant="body2" color="textSecondary">Loading templates...</Typography>
-            ) : templates.length === 0 ? (
-              <Alert severity="warning">
-                No email templates found. <a href="/email-templates">Create one first</a>.
-              </Alert>
-            ) : (
-              <>
-                <FormControl fullWidth sx={{ mt: 1 }}>
-                  <InputLabel>Email Template</InputLabel>
-                  <Select
-                    label="Email Template"
-                    value={selectedTemplateId}
-                    onChange={(e: SelectChangeEvent) => setSelectedTemplateId(e.target.value)}
-                    disabled={sending}
-                  >
-                    {templates.map((t) => (
-                      <MenuItem key={t.id} value={t.id}>
-                        {t.name} {t.category ? `(${t.category})` : ""}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                {selectedTemplate && (
-                  <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: "block" }}>
-                    Subject: {selectedTemplate.subject}
-                  </Typography>
+            {/* Optional template selector + manage link */}
+            {!loadingTemplates && (
+              <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
+                {templates.length > 0 && (
+                  <FormControl sx={{ flex: 1 }}>
+                    <InputLabel>Load Template (optional)</InputLabel>
+                    <Select
+                      label="Load Template (optional)"
+                      value={selectedTemplateId}
+                      onChange={(e: SelectChangeEvent) => handleTemplateSelect(e.target.value)}
+                      disabled={sending}
+                    >
+                      <MenuItem value=""><em>None</em></MenuItem>
+                      {templates.map((t) => (
+                        <MenuItem key={t.id} value={t.id}>
+                          {t.name} {t.category ? `(${t.category})` : ""}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 )}
-              </>
+                <a href="/email-templates" style={{ whiteSpace: "nowrap" }}>Manage Templates</a>
+              </Box>
             )}
+
+            {/* Subject with merge fields */}
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
+                Insert merge field into subject:
+              </Typography>
+              <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
+                {MERGE_FIELDS.map(f => (
+                  <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => setSubject(prev => prev + f.key)} sx={{ cursor: "pointer" }} />
+                ))}
+              </Stack>
+            </Box>
+            <TextField
+              fullWidth
+              label="Subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              disabled={sending}
+              placeholder="e.g. Hello {{firstName}}, update from {{churchName}}"
+              sx={{ mb: 2 }}
+            />
+
+            {/* Body with merge fields */}
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
+                Insert merge field into body:
+              </Typography>
+              <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
+                {MERGE_FIELDS.map(f => (
+                  <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => setHtmlContent(prev => prev + f.key)} sx={{ cursor: "pointer" }} />
+                ))}
+              </Stack>
+            </Box>
+            <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1 }}>
+              <HtmlEditor
+                value={htmlContent}
+                onChange={(val) => setHtmlContent(val)}
+                style={{ minHeight: 200 }}
+                placeholder="Compose your email here..."
+              />
+            </Box>
           </>
         )}
       </DialogContent>
