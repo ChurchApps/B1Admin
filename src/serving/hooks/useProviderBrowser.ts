@@ -59,23 +59,22 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
     }
   }, [ministryId]);
 
+  // Browse content at a given path and return all items (without setting state)
+  const browseRaw = useCallback(async (path: string, provId: string): Promise<ContentItem[]> => {
+    const provider = getProvider(provId);
+    if (!provider) return [];
+    if (ministryId && provider.requiresAuth) {
+      return await ApiHelper.post("/providerProxy/browse", { ministryId, providerId: provId, path: path || null }, "DoingApi");
+    }
+    return await provider.browse(path || null, null);
+  }, [ministryId]);
+
   // Load browse content for a given path
   const loadContent = useCallback(async (path: string, provId?: string) => {
     const pid = provId || selectedProviderId;
-    const provider = getProvider(pid);
-    if (!provider) {
-      setCurrentItems([]);
-      if (includeFiles) setCurrentFiles([]);
-      return;
-    }
     setLoading(true);
     try {
-      let items: ContentItem[] = [];
-      if (ministryId && provider.requiresAuth) {
-        items = await ApiHelper.post("/providerProxy/browse", { ministryId, providerId: pid, path: path || null }, "DoingApi");
-      } else {
-        items = await provider.browse(path || null, null);
-      }
+      const items = await browseRaw(path, pid);
       const folders = items.filter((item): item is ContentFolder => item.type === "folder");
       setCurrentItems(folders);
       if (includeFiles) {
@@ -89,7 +88,55 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
     } finally {
       setLoading(false);
     }
-  }, [selectedProviderId, ministryId, includeFiles]);
+  }, [selectedProviderId, includeFiles, browseRaw]);
+
+  // Navigate directly to a deep path, resolving breadcrumb titles along the way.
+  // Returns the folders loaded at the target path.
+  const navigateToPath = useCallback(async (targetPath: string, provId?: string): Promise<ContentFolder[]> => {
+    const pid = provId || selectedProviderId;
+    if (pid !== selectedProviderId) setSelectedProviderId(pid);
+
+    const segments = targetPath.replace(/^\//, "").split("/").filter(Boolean);
+    if (segments.length === 0) {
+      setCurrentPath("");
+      setBreadcrumbTitles([]);
+      setCurrentItems([]);
+      return [];
+    }
+
+    setLoading(true);
+    try {
+      // Build breadcrumb titles by loading each intermediate level in parallel
+      const titlePromises = segments.map((seg, i) => {
+        const parentPath = i === 0 ? "" : "/" + segments.slice(0, i).join("/");
+        return browseRaw(parentPath, pid).then(items => {
+          const folders = items.filter((item): item is ContentFolder => item.type === "folder");
+          const match = folders.find(f => {
+            const fSegs = f.path.replace(/^\//, "").split("/").filter(Boolean);
+            return fSegs[fSegs.length - 1] === seg;
+          });
+          return match?.title || seg;
+        }).catch(() => seg);
+      });
+
+      const titles = await Promise.all(titlePromises);
+
+      // Load the target path content
+      const targetItems = await browseRaw(targetPath, pid);
+      const targetFolders = targetItems.filter((item): item is ContentFolder => item.type === "folder");
+
+      setCurrentPath(targetPath);
+      setBreadcrumbTitles(titles);
+      setCurrentItems(targetFolders);
+      return targetFolders;
+    } catch (error) {
+      console.error("Error navigating to path:", error);
+      setCurrentItems([]);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedProviderId, browseRaw]);
 
   // Navigate into a folder (non-leaf)
   const navigateToFolder = useCallback((folder: ContentFolder) => {
@@ -203,6 +250,7 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
     navigateToFolder,
     navigateBack,
     navigateToBreadcrumb,
+    navigateToPath,
     changeProvider,
     reset,
     isLeafFolder

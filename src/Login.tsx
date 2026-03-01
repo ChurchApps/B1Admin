@@ -5,6 +5,7 @@ import { UserHelper, Permissions } from "@churchapps/apphelper";
 import UserContext from "./UserContext";
 import { LoginPage } from "@churchapps/apphelper-login";
 import { Alert } from "@mui/material";
+import { LoginHeroPanel } from "./components/LoginHeroPanel";
 
 export const Login: React.FC = () => {
   const [errors] = React.useState<string[]>([]);
@@ -46,29 +47,33 @@ export const Login: React.FC = () => {
   if (!auth) auth = "";
 
   return (
-    <div style={{ marginTop: -50, backgroundColor: "var(--bg-main)", minHeight: "100vh" }}>
-      {process.env.REACT_APP_STAGE === "demo" && (
-        <Alert severity="error" style={{ marginTop: 50 }}>
-          <b>Demo:</b> This is the demo environment. All data is erased nightly.
-          <br />
-          You can log into a test church of "Grace Community Church"
-          <br />
-          Use the email "<b>demo@b1.church</b>" and password "<b>password</b>".
-        </Alert>
-      )}
-      <LoginPage
-        auth={auth}
-        context={context}
-        jwt={jwt}
-        appName="B1Admin"
-        appUrl={window.location.href}
-        callbackErrors={errors}
-        returnUrl={returnUrl}
-        handleRedirect={handleRedirect}
-        defaultEmail={process.env.REACT_APP_STAGE === "demo" ? "demo@b1.church" : undefined}
-        defaultPassword={process.env.REACT_APP_STAGE === "demo" ? "password" : undefined}
-        showFooter={true}
-      />
+    <div className="split-login-page" style={{ display: "flex", minHeight: "100vh" }}>
+      <LoginHeroPanel />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {process.env.REACT_APP_STAGE === "demo" && (
+          <Alert severity="error" style={{ margin: "16px 16px 0" }}>
+            <b>Demo:</b> This is the demo environment. All data is erased nightly.
+            <br />
+            You can log into a test church of "Grace Community Church"
+            <br />
+            Use the email "<b>demo@b1.church</b>" and password "<b>password</b>".
+          </Alert>
+        )}
+        <LoginPage
+          auth={auth}
+          context={context}
+          jwt={jwt}
+          appName="B1Admin"
+          appUrl={window.location.href}
+          callbackErrors={errors}
+          returnUrl={returnUrl}
+          handleRedirect={handleRedirect}
+          defaultEmail={process.env.REACT_APP_STAGE === "demo" ? "demo@b1.church" : undefined}
+          defaultPassword={process.env.REACT_APP_STAGE === "demo" ? "password" : undefined}
+          showFooter={true}
+          containerStyle={{ minHeight: "auto", flex: 1 }}
+        />
+      </div>
     </div>
   );
 };

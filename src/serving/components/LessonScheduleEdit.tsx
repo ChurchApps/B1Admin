@@ -188,6 +188,9 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
         onSelect={handleLessonSelect}
         returnVenueName={true}
         ministryId={props.ministryId}
+        initialNavigationPath={previousPlan?.providerPlanId}
+        initialProviderId={previousPlan?.providerId}
+        previousVenueName={previousPlan?.providerPlanName}
       />
     </>
   );

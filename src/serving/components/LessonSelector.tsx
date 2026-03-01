@@ -27,13 +27,21 @@ interface Props {
   returnVenueName?: boolean;
   ministryId?: string;
   defaultProviderId?: string;
+  /** Full path from the previous plan's providerPlanId (e.g. /lessons/prog/study/lesson/venue) */
+  initialNavigationPath?: string;
+  /** Provider ID from the previous plan */
+  initialProviderId?: string;
+  /** Venue name from the previous plan to auto-select in the next lesson */
+  previousVenueName?: string;
 }
 
-export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, returnVenueName, ministryId, defaultProviderId }) => {
+export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, returnVenueName, ministryId, defaultProviderId, initialNavigationPath, initialProviderId, previousVenueName }) => {
   const browser = useProviderBrowser({ ministryId, defaultProviderId });
 
   // Selected folder (final selection) - unique to LessonSelector
   const [selectedFolder, setSelectedFolder] = useState<ContentFolder | null>(null);
+  // When set, auto-select the first leaf folder matching this name
+  const [autoSelectVenueName, setAutoSelectVenueName] = useState<string | null>(null);
 
   // Handle folder click - either navigate into it or select it (if leaf)
   const handleFolderClick = useCallback((folder: ContentFolder) => {
@@ -69,17 +77,62 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
   // Handle dialog close
   const handleClose = useCallback(() => {
     setSelectedFolder(null);
+    setAutoSelectVenueName(null);
     browser.reset();
     onClose();
   }, [onClose, browser]);
 
-  // Load initial content when dialog opens
+  // Auto-select venue by name when items update after navigating into the next lesson
   React.useEffect(() => {
-    if (open) {
-      browser.loadContent("");
-      browser.loadLinkedProviders();
+    if (autoSelectVenueName && browser.currentItems.length > 0) {
+      const match = browser.currentItems.find(
+        f => browser.isLeafFolder(f) && f.title === autoSelectVenueName
+      );
+      if (match) {
+        setSelectedFolder(match);
+        setAutoSelectVenueName(null);
+      }
     }
+  }, [browser.currentItems, autoSelectVenueName, browser.isLeafFolder]);
 
+  // Load initial content when dialog opens, with auto-navigation for next lesson
+  React.useEffect(() => {
+    if (!open) return;
+    browser.loadLinkedProviders();
+
+    const autoNavigate = async () => {
+      if (initialNavigationPath && initialProviderId) {
+        // Parse the previous venue path: /lessons/{programId}/{studyId}/{lessonId}/{venueId}
+        const segments = initialNavigationPath.replace(/^\//, "").split("/").filter(Boolean);
+
+        if (segments.length >= 4) {
+          // Navigate to the study level to see all lessons
+          const studyLevelPath = "/" + segments.slice(0, 3).join("/");
+          const previousLessonId = segments[3]; // lessonId
+
+          const lessons = await browser.navigateToPath(studyLevelPath, initialProviderId);
+
+          // Find the previous lesson's index
+          const prevIndex = lessons.findIndex(f => {
+            const fSegs = f.path.replace(/^\//, "").split("/").filter(Boolean);
+            return fSegs[fSegs.length - 1] === previousLessonId;
+          });
+
+          if (prevIndex >= 0 && prevIndex < lessons.length - 1) {
+            // Navigate into the NEXT lesson to show its venues
+            const nextLesson = lessons[prevIndex + 1];
+            if (previousVenueName) setAutoSelectVenueName(previousVenueName);
+            browser.navigateToFolder(nextLesson);
+          }
+          // If at the last lesson, we stay at the study level showing all lessons
+          return;
+        }
+      }
+      // Fallback: load from root
+      browser.loadContent("");
+    };
+
+    autoNavigate();
   }, [open]);
 
   return (

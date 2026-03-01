@@ -1130,7 +1130,22 @@
       "noPlans": "No plans found",
       "plans": "Plans",
       "scheduleLesson": "Schedule Lesson",
+      "bulkSchedule": "Bulk Schedule",
       "serviceOrder": "Service Order"
+    },
+    "bulkLessonSchedule": {
+      "title": "Bulk Schedule Lessons",
+      "startingLesson": "Starting Lesson",
+      "startDate": "Start Date",
+      "interval": "Interval",
+      "weekly": "Weekly",
+      "biWeekly": "Bi-Weekly",
+      "date": "Date",
+      "lesson": "Lesson",
+      "venue": "Venue",
+      "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
+      "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
+      "lessonsToSchedule": "lessons to schedule"
     },
     "planPage": {
       "assign": "Team Assignments",
