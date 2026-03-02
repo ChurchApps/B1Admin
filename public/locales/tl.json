@@ -212,6 +212,14 @@
       "phone": "Telepono",
       "rights": "Lahat ng karapatan ay nakalaan."
     },
+    "loginHeroPanel": {
+      "featureDonations": "Mga donasyon at pagsubaybay sa pananalapi",
+      "featurePeople": "Pamamahala ng tao at sambahayan",
+      "featurePlanning": "Pagpaplano ng serbisyo at iskedyul",
+      "featureWebsite": "Website builder at pamamahala ng nilalaman",
+      "subtitle": "Pamahalaan ang iyong kongregasyon, magplano ng mga serbisyo, subaybayan ang attendance, at pangasiwaan ang mga donasyon — lahat sa iisang lugar.",
+      "title": "Simpleng pamamahala ng simbahan"
+    },
     "wrapper": {
       "att": "Pagdalo",
       "dash": "Dashboard",
@@ -396,6 +404,17 @@
       "donor": "Donador",
       "noDon": "Walang mga donasyon para sa napiling hanay ng petsa",
       "subtitle": "Pamahalaan ang mga pondo ng donasyon at subaybayan ang mga kategorya ng pagbibigay"
+    },
+    "kpi": {
+      "avgGift": "Average na handog",
+      "donationCount": "Kabuuang donasyon",
+      "donorCount": "Natatanging donor",
+      "totalGiving": "Kabuuang handog"
+    },
+    "period": {
+      "monthly": "Buwanan",
+      "quarterly": "Quarterly",
+      "weekly": "Lingguhan"
     }
   },
   "forms": {
@@ -1033,6 +1052,20 @@
       "editAssign": "I-edit ang Pagtatalaga",
       "noMem": "Walang natagpuang miyembro ng grupo."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "Tuwing dalawang linggo",
+      "date": "Petsa",
+      "interval": "Pagitan",
+      "lesson": "Aralin",
+      "lessonsToSchedule": "mga aralin na iiskedyul",
+      "noPreviousLesson": "Walang nahanap na nakaraang aralin. Mag-iskedyul muna ng kahit isang aralin.",
+      "noRemainingLessons": "Wala nang natitirang aralin sa seryeng ito. Nakumpleto mo na lahat!",
+      "startDate": "Petsa ng simula",
+      "startingLesson": "Panimulang aralin",
+      "title": "Mag-iskedyul ng mga aralin nang maramihan",
+      "venue": "Lugar",
+      "weekly": "Lingguhan"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "Bisitahin ang URL sa ibaba at ilagay ang code para mag-authorize:",
       "errorGeneric": "Nabigo ang pag-link ng provider. Pakisubukan muli.",
@@ -1113,6 +1146,7 @@
       "seconds": "Mga Segundo"
     },
     "planList": {
+      "bulkSchedule": "Maramihang iskedyul",
       "createFirst": "Lumikha ng unang plano",
       "createPlan": "Lumikha ng plano",
       "newPlan": "Bagong plano",

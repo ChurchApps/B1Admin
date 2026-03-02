@@ -212,6 +212,14 @@
       "phone": "Téléphone",
       "rights": "Tous droits réservés."
     },
+    "loginHeroPanel": {
+      "featureDonations": "Dons et suivi financier",
+      "featurePeople": "Gestion des personnes et des foyers",
+      "featurePlanning": "Planification des services et des horaires",
+      "featureWebsite": "Créateur de site web et gestion de contenu",
+      "subtitle": "Gérez votre congrégation, planifiez les services, suivez la présence et gérez les dons, le tout en un seul endroit.",
+      "title": "Gestion d’église simplifiée"
+    },
     "wrapper": {
       "att": "Présence",
       "dash": "Tableau de bord",
@@ -396,6 +404,17 @@
       "donor": "Donateur",
       "noDon": "Aucun don pour la plage de dates sélectionnée",
       "subtitle": "Gérer les fonds de dons et suivre les catégories de dons"
+    },
+    "kpi": {
+      "avgGift": "Don moyen",
+      "donationCount": "Total des dons",
+      "donorCount": "Donateurs uniques",
+      "totalGiving": "Total des dons"
+    },
+    "period": {
+      "monthly": "Mensuel",
+      "quarterly": "Trimestriel",
+      "weekly": "Hebdomadaire"
     }
   },
   "forms": {
@@ -1033,6 +1052,20 @@
       "editAssign": "Modifier l'affectation",
       "noMem": "Aucun membre du groupe trouvé."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "Bihebdomadaire",
+      "date": "Date",
+      "interval": "Intervalle",
+      "lesson": "Leçon",
+      "lessonsToSchedule": "leçons à planifier",
+      "noPreviousLesson": "Aucune leçon précédente trouvée. Planifiez au moins une leçon d’abord.",
+      "noRemainingLessons": "Aucune leçon restante dans cette série. Vous les avez toutes terminées !",
+      "startDate": "Date de début",
+      "startingLesson": "Leçon de départ",
+      "title": "Planifier les leçons en masse",
+      "venue": "Lieu",
+      "weekly": "Hebdomadaire"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "Visitez l'URL ci-dessous et entrez le code pour autoriser :",
       "errorGeneric": "Échec de la liaison du fournisseur. Veuillez réessayer.",
@@ -1113,6 +1146,7 @@
       "seconds": "Secondes"
     },
     "planList": {
+      "bulkSchedule": "Planification en masse",
       "createFirst": "Créer un premier plan",
       "createPlan": "Créer un plan",
       "newPlan": "Nouveau forfait",

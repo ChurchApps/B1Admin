@@ -212,6 +212,14 @@
       "phone": "Telefono",
       "rights": "Tutti i diritti riservati."
     },
+    "loginHeroPanel": {
+      "featureDonations": "Donazioni e monitoraggio finanziario",
+      "featurePeople": "Gestione persone e famiglie",
+      "featurePlanning": "Pianificazione servizi e programmazione",
+      "featureWebsite": "Costruttore di siti web e gestione contenuti",
+      "subtitle": "Gestisci la tua congregazione, pianifica i servizi, monitora le presenze e gestisci le donazioni, tutto in un unico posto.",
+      "title": "Gestione della chiesa semplificata"
+    },
     "wrapper": {
       "att": "Partecipazione",
       "dash": "Dashboard",
@@ -396,6 +404,17 @@
       "donor": "Donatore",
       "noDon": "Nessuna donazione per l'intervallo di date selezionato",
       "subtitle": "Gestisci i fondi delle donazioni e monitora le categorie delle donazioni"
+    },
+    "kpi": {
+      "avgGift": "Offerta media",
+      "donationCount": "Totale donazioni",
+      "donorCount": "Donatori unici",
+      "totalGiving": "Totale offerte"
+    },
+    "period": {
+      "monthly": "Mensile",
+      "quarterly": "Trimestrale",
+      "weekly": "Settimanale"
     }
   },
   "forms": {
@@ -1033,6 +1052,20 @@
       "editAssign": "Modifica Assegnazione",
       "noMem": "Nessun membro del gruppo trovato."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "Bisettimanale",
+      "date": "Data",
+      "interval": "Intervallo",
+      "lesson": "Lezione",
+      "lessonsToSchedule": "lezioni da pianificare",
+      "noPreviousLesson": "Nessuna lezione precedente trovata. Pianifica almeno una lezione prima.",
+      "noRemainingLessons": "Nessuna lezione rimanente in questa serie. Le hai completate tutte!",
+      "startDate": "Data di inizio",
+      "startingLesson": "Lezione iniziale",
+      "title": "Pianifica lezioni in massa",
+      "venue": "Luogo",
+      "weekly": "Settimanale"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "Visita l'URL qui sotto e inserisci il codice per autorizzare:",
       "errorGeneric": "Collegamento del provider non riuscito. Riprova.",
@@ -1113,6 +1146,7 @@
       "seconds": "Secondi"
     },
     "planList": {
+      "bulkSchedule": "Pianificazione di massa",
       "createFirst": "Crea il primo piano",
       "createPlan": "Crea piano",
       "newPlan": "Nuovo piano",

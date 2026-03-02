@@ -212,6 +212,14 @@
       "phone": "Phone",
       "rights": "All rights reserved."
     },
+    "loginHeroPanel": {
+      "featureDonations": "Donations & financial tracking",
+      "featurePeople": "People & household management",
+      "featurePlanning": "Service planning & scheduling",
+      "featureWebsite": "Website builder & content management",
+      "subtitle": "Manage your congregation, plan services, track attendance, and handle donations — all in one place.",
+      "title": "Church Management Made Simple"
+    },
     "wrapper": {
       "att": "Attendance",
       "dash": "Dashboard",
@@ -370,17 +378,6 @@
       "subtitle": "View donation summaries and analyze giving trends",
       "total": "Total"
     },
-    "kpi": {
-      "totalGiving": "Total Giving",
-      "avgGift": "Average Gift",
-      "donorCount": "Unique Donors",
-      "donationCount": "Total Donations"
-    },
-    "period": {
-      "weekly": "Weekly",
-      "monthly": "Monthly",
-      "quarterly": "Quarterly"
-    },
     "fundEdit": {
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
@@ -407,6 +404,17 @@
       "donor": "Donor",
       "noDon": "No donations for selected date range",
       "subtitle": "Manage donation funds and track giving categories"
+    },
+    "kpi": {
+      "avgGift": "Average Gift",
+      "donationCount": "Total Donations",
+      "donorCount": "Unique Donors",
+      "totalGiving": "Total Giving"
+    },
+    "period": {
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "weekly": "Weekly"
     }
   },
   "forms": {
@@ -1044,6 +1052,20 @@
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "Bi-Weekly",
+      "date": "Date",
+      "interval": "Interval",
+      "lesson": "Lesson",
+      "lessonsToSchedule": "lessons to schedule",
+      "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
+      "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
+      "startDate": "Start Date",
+      "startingLesson": "Starting Lesson",
+      "title": "Bulk Schedule Lessons",
+      "venue": "Venue",
+      "weekly": "Weekly"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
       "errorGeneric": "Failed to link provider. Please try again.",
@@ -1124,28 +1146,14 @@
       "seconds": "Seconds"
     },
     "planList": {
+      "bulkSchedule": "Bulk Schedule",
       "createFirst": "Create First Plan",
       "createPlan": "Create Plan",
       "newPlan": "New Plan",
       "noPlans": "No plans found",
       "plans": "Plans",
       "scheduleLesson": "Schedule Lesson",
-      "bulkSchedule": "Bulk Schedule",
       "serviceOrder": "Service Order"
-    },
-    "bulkLessonSchedule": {
-      "title": "Bulk Schedule Lessons",
-      "startingLesson": "Starting Lesson",
-      "startDate": "Start Date",
-      "interval": "Interval",
-      "weekly": "Weekly",
-      "biWeekly": "Bi-Weekly",
-      "date": "Date",
-      "lesson": "Lesson",
-      "venue": "Venue",
-      "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
-      "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
-      "lessonsToSchedule": "lessons to schedule"
     },
     "planPage": {
       "assign": "Team Assignments",

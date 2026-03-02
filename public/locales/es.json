@@ -212,6 +212,14 @@
       "phone": "Teléfono",
       "rights": "Todos los derechos reservados."
     },
+    "loginHeroPanel": {
+      "featureDonations": "Donaciones y seguimiento financiero",
+      "featurePeople": "Gestión de personas y hogares",
+      "featurePlanning": "Planificación de servicios y horarios",
+      "featureWebsite": "Constructor de sitios web y gestión de contenido",
+      "subtitle": "Administre su congregación, planifique servicios, registre asistencia y gestione donaciones, todo en un solo lugar.",
+      "title": "Gestión eclesiástica simplificada"
+    },
     "wrapper": {
       "att": "Asistencia",
       "dash": "Panel",
@@ -396,6 +404,17 @@
       "donor": "Donante",
       "noDon": "No hay donaciones para el rango de fechas seleccionado",
       "subtitle": "Administrar fondos de donaciones y rastrear categorías de donaciones"
+    },
+    "kpi": {
+      "avgGift": "Ofrenda promedio",
+      "donationCount": "Total de donaciones",
+      "donorCount": "Donantes únicos",
+      "totalGiving": "Total de ofrendas"
+    },
+    "period": {
+      "monthly": "Mensual",
+      "quarterly": "Trimestral",
+      "weekly": "Semanal"
     }
   },
   "forms": {
@@ -1033,6 +1052,20 @@
       "editAssign": "Editar Asignación",
       "noMem": "No se encontraron miembros del grupo."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "Quincenal",
+      "date": "Fecha",
+      "interval": "Intervalo",
+      "lesson": "Lección",
+      "lessonsToSchedule": "lecciones por programar",
+      "noPreviousLesson": "No se encontró una lección anterior. Programe al menos una lección primero.",
+      "noRemainingLessons": "No quedan lecciones en esta serie. ¡Las ha completado todas!",
+      "startDate": "Fecha de inicio",
+      "startingLesson": "Lección inicial",
+      "title": "Programar lecciones en masa",
+      "venue": "Lugar",
+      "weekly": "Semanal"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "Visite la URL a continuación e ingrese el código para autorizar:",
       "errorGeneric": "Error al vincular el proveedor. Por favor, inténtelo de nuevo.",
@@ -1113,6 +1146,7 @@
       "seconds": "Segundos"
     },
     "planList": {
+      "bulkSchedule": "Programación masiva",
       "createFirst": "Crear primer plan",
       "createPlan": "Crear plano",
       "newPlan": "Nuevo Plan",

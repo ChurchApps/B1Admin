@@ -212,6 +212,14 @@
       "phone": "Telefon",
       "rights": "Alle Rechte vorbehalten."
     },
+    "loginHeroPanel": {
+      "featureDonations": "Spenden und Finanzverfolgung",
+      "featurePeople": "Personen- und Haushaltsverwaltung",
+      "featurePlanning": "Gottesdienstplanung und Terminplanung",
+      "featureWebsite": "Website-Builder und Inhaltsverwaltung",
+      "subtitle": "Verwalten Sie Ihre Gemeinde, planen Sie Gottesdienste, erfassen Sie Anwesenheit und verwalten Sie Spenden – alles an einem Ort.",
+      "title": "Gemeindeverwaltung leicht gemacht"
+    },
     "wrapper": {
       "att": "Anwesenheit",
       "dash": "Dashboard",
@@ -396,6 +404,17 @@
       "donor": "Spender",
       "noDon": "Keine Spenden für den ausgewählten Datumsbereich",
       "subtitle": "Spendenfonds verwalten und Spendenkategorien verfolgen"
+    },
+    "kpi": {
+      "avgGift": "Durchschnittliche Spende",
+      "donationCount": "Gesamtanzahl Spenden",
+      "donorCount": "Einzelne Spender",
+      "totalGiving": "Gesamtspenden"
+    },
+    "period": {
+      "monthly": "Monatlich",
+      "quarterly": "Vierteljährlich",
+      "weekly": "Wöchentlich"
     }
   },
   "forms": {
@@ -1033,6 +1052,20 @@
       "editAssign": "Zuweisung bearbeiten",
       "noMem": "Keine Gruppenmitglieder gefunden."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "Zweiwöchentlich",
+      "date": "Datum",
+      "interval": "Intervall",
+      "lesson": "Lektion",
+      "lessonsToSchedule": "zu planende Lektionen",
+      "noPreviousLesson": "Keine vorherige Lektion gefunden. Planen Sie zuerst mindestens eine Lektion.",
+      "noRemainingLessons": "Keine verbleibenden Lektionen in dieser Reihe. Sie haben alle abgeschlossen!",
+      "startDate": "Startdatum",
+      "startingLesson": "Startlektion",
+      "title": "Lektionen in Masse planen",
+      "venue": "Veranstaltungsort",
+      "weekly": "Wöchentlich"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "Besuchen Sie die URL unten und geben Sie den Code zur Autorisierung ein:",
       "errorGeneric": "Anbieter konnte nicht verknüpft werden. Bitte versuchen Sie es erneut.",
@@ -1113,6 +1146,7 @@
       "seconds": "Sekunden"
     },
     "planList": {
+      "bulkSchedule": "Massenplanung",
       "createFirst": "Erstellen Sie den ersten Plan",
       "createPlan": "Plan erstellen",
       "newPlan": "Neuer Plan",

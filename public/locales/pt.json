@@ -212,6 +212,14 @@
       "phone": "Telefone",
       "rights": "Todos os direitos reservados."
     },
+    "loginHeroPanel": {
+      "featureDonations": "Doações e acompanhamento financeiro",
+      "featurePeople": "Gestão de pessoas e famílias",
+      "featurePlanning": "Planejamento de cultos e agenda",
+      "featureWebsite": "Construtor de site e gestão de conteúdo",
+      "subtitle": "Gerencie sua congregação, planeje cultos, acompanhe presença e administre doações — tudo em um só lugar.",
+      "title": "Gestão de igreja simplificada"
+    },
     "wrapper": {
       "att": "Presença",
       "dash": "Painel",
@@ -396,6 +404,17 @@
       "donor": "Doador",
       "noDon": "Nenhuma doação para o intervalo de datas selecionado",
       "subtitle": "Gerencie fundos de doações e acompanhe categorias de doações"
+    },
+    "kpi": {
+      "avgGift": "Oferta média",
+      "donationCount": "Total de doações",
+      "donorCount": "Doadores únicos",
+      "totalGiving": "Total de ofertas"
+    },
+    "period": {
+      "monthly": "Mensal",
+      "quarterly": "Trimestral",
+      "weekly": "Semanal"
     }
   },
   "forms": {
@@ -1033,6 +1052,20 @@
       "editAssign": "Editar Atribuição",
       "noMem": "Nenhum membro do grupo encontrado."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "Quinzenal",
+      "date": "Data",
+      "interval": "Intervalo",
+      "lesson": "Lição",
+      "lessonsToSchedule": "lições para agendar",
+      "noPreviousLesson": "Nenhuma lição anterior encontrada. Agende pelo menos uma lição primeiro.",
+      "noRemainingLessons": "Não há lições restantes nesta série. Você completou todas!",
+      "startDate": "Data de início",
+      "startingLesson": "Lição inicial",
+      "title": "Agendar lições em massa",
+      "venue": "Local",
+      "weekly": "Semanal"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "Visite a URL abaixo e insira o código para autorizar:",
       "errorGeneric": "Falha ao vincular provedor. Por favor, tente novamente.",
@@ -1113,6 +1146,7 @@
       "seconds": "Segundos"
     },
     "planList": {
+      "bulkSchedule": "Agendamento em massa",
       "createFirst": "Crie o primeiro plano",
       "createPlan": "Criar plano",
       "newPlan": "Novo Plano",

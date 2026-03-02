@@ -212,6 +212,14 @@
       "phone": "전화",
       "rights": "모든 권리 보유."
     },
+    "loginHeroPanel": {
+      "featureDonations": "헌금 및 재정 추적",
+      "featurePeople": "인원 및 가구 관리",
+      "featurePlanning": "예배 계획 및 일정 관리",
+      "featureWebsite": "웹사이트 빌더 및 콘텐츠 관리",
+      "subtitle": "교인을 관리하고, 예배를 계획하고, 출석을 추적하고, 헌금을 관리하세요 — 모두 한 곳에서.",
+      "title": "간편한 교회 관리"
+    },
     "wrapper": {
       "att": "출석",
       "dash": "대시보드",
@@ -396,6 +404,17 @@
       "donor": "기부자",
       "noDon": "선택한 날짜 범위에 대한 기부가 없습니다",
       "subtitle": "기부 기금 관리 및 기부 범주 추적"
+    },
+    "kpi": {
+      "avgGift": "평균 헌금",
+      "donationCount": "총 헌금 건수",
+      "donorCount": "고유 기부자",
+      "totalGiving": "총 헌금"
+    },
+    "period": {
+      "monthly": "월간",
+      "quarterly": "분기",
+      "weekly": "주간"
     }
   },
   "forms": {
@@ -1033,6 +1052,20 @@
       "editAssign": "할당 편집",
       "noMem": "그룹 멤버를 찾을 수 없습니다."
     },
+    "bulkLessonSchedule": {
+      "biWeekly": "격주",
+      "date": "날짜",
+      "interval": "간격",
+      "lesson": "과정",
+      "lessonsToSchedule": "예약할 과정",
+      "noPreviousLesson": "이전 과정을 찾을 수 없습니다. 먼저 최소 한 개의 과정을 예약하세요.",
+      "noRemainingLessons": "이 시리즈에 남은 과정이 없습니다. 모두 완료했습니다!",
+      "startDate": "시작일",
+      "startingLesson": "시작 과정",
+      "title": "과정 일괄 일정 관리",
+      "venue": "장소",
+      "weekly": "주간"
+    },
     "contentProviderAuth": {
       "deviceFlowInstructions": "아래 URL을 방문하여 인증 코드를 입력하세요:",
       "errorGeneric": "공급자 연결에 실패했습니다. 다시 시도해 주세요.",
@@ -1113,6 +1146,7 @@
       "seconds": "초"
     },
     "planList": {
+      "bulkSchedule": "일괄 일정",
       "createFirst": "첫 번째 계획 만들기",
       "createPlan": "계획 만들기",
       "newPlan": "새로운 계획",
