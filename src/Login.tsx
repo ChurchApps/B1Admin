@@ -49,7 +49,7 @@ export const Login: React.FC = () => {
   return (
     <div className="split-login-page" style={{ display: "flex", minHeight: "100vh" }}>
       <LoginHeroPanel />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", backgroundColor: "white" }}>
         {process.env.REACT_APP_STAGE === "demo" && (
           <Alert severity="error" style={{ margin: "16px 16px 0" }}>
             <b>Demo:</b> This is the demo environment. All data is erased nightly.
