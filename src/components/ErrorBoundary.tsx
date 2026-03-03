@@ -19,7 +19,7 @@ interface ErrorInfo {
   resetError: () => void;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
+
 const DefaultErrorFallback: React.FC<ErrorInfo> = ({ error, resetError }) => (
   <Box sx={{ p: 3 }}>
     <Alert severity="error">

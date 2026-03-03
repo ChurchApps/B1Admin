@@ -34,7 +34,7 @@ const CATEGORIES = [
   { value: "donation", label: "Donations" },
   { value: "group", label: "Groups" },
   { value: "form", label: "Forms" },
-  { value: "settings", label: "Settings" },
+  { value: "settings", label: "Settings" }
 ];
 
 const formatDate = (dateStr: string) => {

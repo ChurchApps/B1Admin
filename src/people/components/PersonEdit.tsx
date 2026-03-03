@@ -15,7 +15,7 @@ interface Props {
   showMergeSearch: () => void;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
+
 export function formattedPhoneNumber(value: string) {
   if (!value) return "";
   value = value.split("x")[0];

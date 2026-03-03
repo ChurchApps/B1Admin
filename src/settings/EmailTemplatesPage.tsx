@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, Stack, Button, Typography, Chip } from "@mui/material";
 import { Email as EmailIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, Locale, Loading, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, Loading, PageHeader, UserHelper } from "@churchapps/apphelper";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
 
 export interface EmailTemplateInterface {

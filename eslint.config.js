@@ -1,23 +1,29 @@
 import js from "@eslint/js";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
 import unusedImports from "eslint-plugin-unused-imports";
 
-export default tseslint.config([
+export default [
   { ignores: ["node_modules/", "dist/", "build/", ".next/", "coverage/", "*.config.js"] },
   {
     files: ["**/*.{ts,tsx,js,jsx}"],
-    extends: [js.configs.recommended, tseslint.configs.recommended, reactHooks.configs["recommended-latest"], reactRefresh.configs.vite],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parser: tseslint.parser,
     },
     plugins: {
+      "@typescript-eslint": tseslint.plugin,
       "unused-imports": unusedImports,
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
     },
     rules: {
+      ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.reduce((acc, cfg) => ({ ...acc, ...(cfg.rules || {}) }), {}),
+
       // --- Code quality ---
       "prefer-const": "error",
       "@typescript-eslint/no-explicit-any": "off",
@@ -83,4 +89,4 @@ export default tseslint.config([
       "react-hooks/exhaustive-deps": "off",
     },
   },
-]);
+];

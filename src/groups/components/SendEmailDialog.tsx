@@ -9,7 +9,7 @@ const MERGE_FIELDS = [
   { key: "{{lastName}}", label: "Last Name" },
   { key: "{{displayName}}", label: "Display Name" },
   { key: "{{email}}", label: "Email" },
-  { key: "{{churchName}}", label: "Church Name" },
+  { key: "{{churchName}}", label: "Church Name" }
 ];
 
 interface EmailTemplateOption {

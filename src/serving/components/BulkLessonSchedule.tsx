@@ -142,7 +142,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
     };
 
     loadSeries();
-  }, [selectedContentPath, selectedProviderId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedContentPath, selectedProviderId]);
 
   // Recalculate dates when startDate or interval changes
   useEffect(() => {
@@ -153,7 +153,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
         return { ...entry, date };
       }));
     }
-  }, [startDate, intervalDays]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [startDate, intervalDays]);
 
   const toggleEntry = (index: number) => {
     setEntries(prev => prev.map((e, i) => i === index ? { ...e, included: !e.included } : e));
