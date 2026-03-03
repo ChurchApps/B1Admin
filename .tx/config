@@ -1,0 +1,8 @@
+[main]
+host = https://app.transifex.com
+
+[o:church-apps:p:b1admin:r:b1admin]
+source_file   = public/locales/en.json
+file_filter   = public/locales/<lang>.json
+type          = KEYVALUEJSON
+source_lang   = en
