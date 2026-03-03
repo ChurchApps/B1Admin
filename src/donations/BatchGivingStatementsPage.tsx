@@ -16,6 +16,7 @@ import JSZip from "jszip";
 export const BatchGivingStatementsPage = () => {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
+  const [currency, setCurrency] = useState<string>("usd");
 
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
 
@@ -186,6 +187,12 @@ export const BatchGivingStatementsPage = () => {
   // Generate year options (current year and previous 5 years)
   const yearOptions = Array.from({ length: 6 }, (_, i) => currentYear - i);
 
+  React.useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      setCurrency(result);
+    });
+  }, []);
+
   return (
     <>
       <PageHeader
@@ -254,7 +261,7 @@ export const BatchGivingStatementsPage = () => {
                         {Locale.label("donations.batchStatements.totalAmount") || "Total Amount:"}
                       </Typography>
                       <Typography variant="body1" fontWeight="bold" color="primary">
-                        {CurrencyHelper.formatCurrency(totalAmount)}
+                        {CurrencyHelper.formatCurrencyWithLocale(totalAmount, currency)}
                       </Typography>
                     </Box>
                   </Stack>

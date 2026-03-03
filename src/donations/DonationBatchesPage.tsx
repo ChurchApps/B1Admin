@@ -12,6 +12,7 @@ export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
   const [sortDirection, setSortDirection] = React.useState<boolean | null>(null);
   const [currentSortedCol, setCurrentSortedCol] = React.useState<string>("");
+  const [currency, setCurrency] = React.useState<string>("usd");
 
   const batches = useQuery<DonationBatchInterface[]>({
     queryKey: ["/donationbatches", "GivingApi"],
@@ -173,7 +174,7 @@ export const DonationBatchesPage = () => {
           </TableCell>
           <TableCell>
             <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrency(b.totalAmount)}
+              {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount, currency)}
             </Typography>
           </TableCell>
           <TableCell>{editLink}</TableCell>
@@ -261,6 +262,12 @@ export const DonationBatchesPage = () => {
     }
   };
 
+  React.useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      setCurrency(result);
+    })
+  }, []);
+
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
 
   return (
@@ -304,8 +311,8 @@ export const DonationBatchesPage = () => {
               </Stack>
               <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <Icon sx={{ color: "#FFF", fontSize: 24 }}>attach_money</Icon>
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalAmount.toLocaleString("en-US", { style: "decimal", minimumFractionDigits: 0, maximumFractionDigits: 0 })}</Typography>
+                  {/* <Icon sx={{ color: "#FFF", fontSize: 24 }}>attach_money</Icon> */}
+                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</Typography>
                 </Stack>
                 <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Total Amount</Typography>
               </Stack>

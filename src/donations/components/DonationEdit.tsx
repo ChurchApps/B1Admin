@@ -10,6 +10,7 @@ interface Props {
   batchId: string;
   funds: FundInterface[];
   updatedFunction: () => void;
+  currency?: string;
 }
 
 export const DonationEdit = memo((props: Props) => {
@@ -56,7 +57,7 @@ export const DonationEdit = memo((props: Props) => {
       ...donation,
       donationDate: donation.donationDate ? DateHelper.formatHtml5Date(donation.donationDate) : null
     };
-    ApiHelper.post("/donations", [donationToSave], "GivingApi").then((data) => {
+    ApiHelper.post("/donations", [donationToSave], "GivingApi").then((data: any) => {
       const id = data[0].id;
       const promises = [];
       const fDonations = [...fundDonations];
@@ -83,8 +84,8 @@ export const DonationEdit = memo((props: Props) => {
       const fd: FundDonationInterface = { amount: 0, fundId: props.funds[0]?.id };
       setFundDonations([fd]);
     } else {
-      ApiHelper.get("/donations/" + props.donationId, "GivingApi").then((data) => populatePerson(data));
-      ApiHelper.get("/funddonations?donationId=" + props.donationId, "GivingApi").then((data) => setFundDonations(data));
+      ApiHelper.get("/donations/" + props.donationId, "GivingApi").then((data: any) => populatePerson(data));
+      ApiHelper.get("/funddonations?donationId=" + props.donationId, "GivingApi").then((data: any) => setFundDonations(data));
     }
   }, [props.donationId, props.batchId, props.funds]);
 
@@ -173,7 +174,7 @@ export const DonationEdit = memo((props: Props) => {
   return (
     <InputBox
       id="donationBox"
-      headerIcon="attach_money"
+      // headerIcon="attach_money"
       headerText={Locale.label("common.edit")}
       cancelFunction={handleCancel}
       deleteFunction={getDeleteFunction()}
@@ -211,7 +212,7 @@ export const DonationEdit = memo((props: Props) => {
         </Select>
       </FormControl>
       {methodDetails}
-      <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} />
+      <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} currency={props?.currency} />
       <TextField
         fullWidth
         label={Locale.label("common.notes")}
