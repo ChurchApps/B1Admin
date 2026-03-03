@@ -1,0 +1,1 @@
+export { BezChatWidget } from "./BezChatWidget";

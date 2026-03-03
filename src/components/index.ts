@@ -13,6 +13,7 @@ export { Question } from "./Question";
 export { Search } from "./Search";
 export { StateOptions } from "./StateOptions";
 export { Wrapper } from "./Wrapper";
+export { DocChatWidget } from "./docChat";
 
 // Person Management Components (moved from AppHelper)
 export { PersonAdd } from "./PersonAdd";
