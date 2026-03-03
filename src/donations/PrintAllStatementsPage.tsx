@@ -1,6 +1,6 @@
 import { CurrencyHelper, DateHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
@@ -12,6 +12,7 @@ export const PrintAllStatementsPage = () => {
   const yearParam = searchParams.get("year");
   const currYear = yearParam ? parseInt(yearParam, 10) : new Date().getFullYear();
   const context = useContext(UserContext);
+  const [currency, setCurrency] = useState<string>("usd");
 
   // Fetch all donations
   const allDonations = useQuery<DonationInterface[]>({
@@ -142,6 +143,12 @@ export const PrintAllStatementsPage = () => {
       </Box>
     );
   }
+
+  useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      setCurrency(result);
+    })
+  }, []);
 
   return (
     <>
@@ -420,7 +427,7 @@ export const PrintAllStatementsPage = () => {
                   <div className="summary-column">
                     <p className="section-label">Total Contributions</p>
                     <div className="total-box">
-                      <div className="total-amount">{CurrencyHelper.formatCurrency(totalContributions)}</div>
+                      <div className="total-amount">{CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency)}</div>
                     </div>
                   </div>
 
@@ -437,7 +444,7 @@ export const PrintAllStatementsPage = () => {
                         {fundTotals.map((ft, idx) => (
                           <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
                             <td className="table-cell">{ft.fund}</td>
-                            <td className="table-cell align-right">{CurrencyHelper.formatCurrency(ft.total)}</td>
+                            <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(ft.total, currency)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -465,13 +472,13 @@ export const PrintAllStatementsPage = () => {
                         </td>
                         <td className="table-cell">{detail.method}</td>
                         <td className="table-cell">{detail.fund}</td>
-                        <td className="table-cell align-right">{CurrencyHelper.formatCurrency(detail.amount)}</td>
+                        <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(detail.amount, currency)}</td>
                       </tr>
                     ))}
                     <tr className="table-footer-row">
                       <td colSpan={2} className="table-footer-cell"></td>
                       <td className="table-footer-cell" style={{ textAlign: "right" }}>Total Contributions:</td>
-                      <td className="table-footer-cell" style={{ textAlign: "right" }}>{CurrencyHelper.formatCurrency(totalContributions)}</td>
+                      <td className="table-footer-cell" style={{ textAlign: "right" }}>{CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency)}</td>
                     </tr>
                   </tbody>
                 </table>

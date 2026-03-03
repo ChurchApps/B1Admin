@@ -9,9 +9,10 @@ interface Props {
   batch: DonationBatchInterface;
   funds: FundInterface[];
   editFunction: (id: string) => void;
+  currency?: string
 }
 
-export const Donations: React.FC<Props> = (props) => {
+export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const { batch, funds, editFunction } = props;
   const [donations, setDonations] = React.useState<DonationInterface[]>(null);
 
@@ -30,7 +31,7 @@ export const Donations: React.FC<Props> = (props) => {
   }, []);
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/donations?batchId=" + batch?.id, "GivingApi").then((data) => populatePeople(data));
+    ApiHelper.get("/donations?batchId=" + batch?.id, "GivingApi").then((data: any) => populatePeople(data));
   }, [batch, populatePeople]);
 
   const getHeaderActions = React.useCallback(() => {
@@ -163,8 +164,8 @@ export const Donations: React.FC<Props> = (props) => {
             </IconText>
           </TableCell>
           <TableCell>
-            <IconText icon={<MoneyIcon />} iconSize={18} iconColor={isPending ? "warning.main" : "success.main"} variant="body2" color={isPending ? "warning.main" : "success.main"}>
-              <span style={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrency(d.amount)}</span>
+            <IconText icon={<></>} iconSize={18} iconColor={isPending ? "warning.main" : "success.main"} variant="body2" color={isPending ? "warning.main" : "success.main"}>
+              <span style={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(d.amount, currency)}</span>
             </IconText>
           </TableCell>
           {canEdit && <TableCell>{editButton}</TableCell>}
@@ -187,9 +188,9 @@ export const Donations: React.FC<Props> = (props) => {
         <TableCell></TableCell>
         <TableCell>
           <Stack direction="row" spacing={1} alignItems="center">
-            <MoneyIcon sx={{ color: "success.main", fontSize: 20 }} />
+            {/* <MoneyIcon sx={{ color: "success.main", fontSize: 20 }} /> */}
             <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrency(donationsTotal)}
+              {CurrencyHelper.formatCurrencyWithLocale(donationsTotal, currency)}
             </Typography>
           </Stack>
         </TableCell>

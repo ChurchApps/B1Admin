@@ -1,6 +1,6 @@
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
 import { type GenericSettingInterface } from "@churchapps/helpers";
-import { Grid, Icon, TextField, Typography } from "@mui/material";
+import { Grid, Icon, InputAdornment, TextField } from "@mui/material";
 import React from "react";
 
 interface Props {
@@ -34,18 +34,18 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     usd: { percent: 2.9, fixed: 0.3, symbol: "$" },
     eur: { percent: 2.9, fixed: 0.25, symbol: "€" },
     gbp: { percent: 2.9, fixed: 0.2, symbol: "£" },
-    cad: { percent: 2.9, fixed: 0.3, symbol: "$" },
-    aud: { percent: 2.9, fixed: 0.3, symbol: "$" },
+    cad: { percent: 2.9, fixed: 0.3, symbol: "C$" },
+    aud: { percent: 2.9, fixed: 0.3, symbol: "A$" },
     inr: { percent: 2.9, fixed: 3.0, symbol: "₹" },
     jpy: { percent: 2.9, fixed: 30.0, symbol: "¥" },
     sgd: { percent: 2.9, fixed: 0.5, symbol: "S$" },
     hkd: { percent: 2.9, fixed: 2.35, symbol: "元" },
-    sek: { percent: 2.9, fixed: 2.5, symbol: "kr" },
-    nok: { percent: 2.9, fixed: 2.0, symbol: "kr" },
-    dkk: { percent: 2.9, fixed: 1.8, symbol: "kr" },
+    sek: { percent: 2.9, fixed: 2.5, symbol: "SEK" },
+    nok: { percent: 2.9, fixed: 2.0, symbol: "NOK" },
+    dkk: { percent: 2.9, fixed: 1.8, symbol: "DKK" },
     chf: { percent: 2.9, fixed: 0.3, symbol: "CHF" },
     mxn: { percent: 2.9, fixed: 3.0, symbol: "MXN" },
-    brl: { percent: 3.9, fixed: 0.5, symbol: "R$" }
+    brl: { percent: 3.9, fixed: 0.5, symbol: "R$" },
   };
 
   const loadData = async () => {
@@ -190,7 +190,11 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
               onChange={handleChange}
               value={options.flatRateCC}
               defaultValue=""
-              InputProps={{ startAdornment: <Icon><Typography>{options.symbol}</Typography></Icon> }}
+              slotProps={{
+                input: {
+                  startAdornment: <InputAdornment position="start">{options.symbol}</InputAdornment>
+                }
+              }}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
