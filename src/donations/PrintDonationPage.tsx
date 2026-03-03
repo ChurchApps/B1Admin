@@ -1,11 +1,12 @@
 import { ArrayHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 
 export const PrintDonationPage = () => {
+  const [currency, setCurrency] = useState<string>("usd");
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
@@ -55,6 +56,12 @@ export const PrintDonationPage = () => {
     }
   }, [person.data, funds.data, donations, fundDonations, navigate]);
 
+  useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      setCurrency(result);
+    });
+  }, []);
+
   const getDate = () => {
     const date = DateHelper.prettyDate(new Date());
     const time = DateHelper.prettyTime(new Date());
@@ -70,7 +77,7 @@ export const PrintDonationPage = () => {
         result += d.amount;
       }
     });
-    return CurrencyHelper.formatCurrency(result);
+    return CurrencyHelper.formatCurrencyWithLocale(result, currency);
   };
 
   const getFundArray = () => {
@@ -102,7 +109,7 @@ export const PrintDonationPage = () => {
       tableValues.push(
         <tr key={index} className={index % 2 === 0 ? "table-row-even" : "table-row-odd"}>
           <td className="table-cell">{tv.fund}</td>
-          <td className="table-cell align-right">{CurrencyHelper.formatCurrency(tv.total)}</td>
+          <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(tv.total, currency)}</td>
         </tr>
       );
     });
@@ -122,7 +129,7 @@ export const PrintDonationPage = () => {
             </td>
             <td className="table-cell">{donation?.method}</td>
             <td className="table-cell">{fund?.name}</td>
-            <td className="table-cell align-right">{CurrencyHelper.formatCurrency(fd.amount)}</td>
+            <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(fd.amount, currency)}</td>
           </tr>
         );
       }

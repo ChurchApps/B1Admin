@@ -27,6 +27,7 @@ export const DonationPage: React.FC<Props> = (props) => {
   const [message, setMessage] = React.useState<string>(null);
   const [appName, setAppName] = React.useState<string>("");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [currency, setCurrency] = React.useState<string>("usd");
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
@@ -201,7 +202,7 @@ export const DonationPage: React.FC<Props> = (props) => {
             {d.method} - {d.methodDetails}
           </TableCell>
           <TableCell>{d.fund.name}</TableCell>
-          <TableCell>{CurrencyHelper.formatCurrency(d.fund.amount)}</TableCell>
+          <TableCell>{CurrencyHelper.formatCurrencyWithLocale(d.fund.amount, currency)}</TableCell>
         </TableRow>
       );
     }
@@ -229,6 +230,12 @@ export const DonationPage: React.FC<Props> = (props) => {
   React.useEffect(() => {
     loadData();
   }, [props.personId]);
+
+  React.useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      setCurrency(result);
+    });
+  }, []);
 
   const getTable = () => {
     if (!donations) return <Loading />;
