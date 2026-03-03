@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, TextField, IconButton, Typography, CircularProgress, AppBar, Toolbar } from "@mui/material";
+import { Box, TextField, IconButton, Typography, Paper, AppBar, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import { ApiHelper } from "@churchapps/apphelper";
 import { DocChatMessage } from "./DocChatMessage";
 
@@ -18,11 +19,20 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [statusText, setStatusText] = React.useState("Searching documentation...");
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isLoading]);
+
+  React.useEffect(() => {
+    if (isLoading) {
+      setStatusText("Searching documentation...");
+      const timer = setTimeout(() => setStatusText("Composing answer..."), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
 
   const handleSend = async () => {
     const question = input.trim();
@@ -76,8 +86,25 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
           <DocChatMessage key={index} message={msg} />
         ))}
         {isLoading && (
-          <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-            <CircularProgress size={24} />
+          <Box sx={{ mb: 1.5 }}>
+            <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 1 }}>
+              <SmartToyIcon sx={{ mt: 1, color: "primary.main", fontSize: 20 }} />
+              <Paper elevation={1} sx={{ p: 1.5, backgroundColor: "background.paper" }}>
+                <Box sx={{ display: "flex", gap: 0.5, alignItems: "center", height: 20 }}>
+                  {[0, 1, 2].map((i) => (
+                    <Box key={i} sx={{
+                      width: 8, height: 8, borderRadius: "50%", backgroundColor: "text.secondary",
+                      animation: "docChatBounce 1.4s infinite ease-in-out",
+                      animationDelay: `${i * 0.16}s`,
+                      "@keyframes docChatBounce": { "0%, 80%, 100%": { transform: "scale(0.6)", opacity: 0.4 }, "40%": { transform: "scale(1)", opacity: 1 } }
+                    }} />
+                  ))}
+                </Box>
+              </Paper>
+            </Box>
+            <Typography variant="caption" color="text.secondary" sx={{ ml: 4.5, mt: 0.5, display: "block" }}>
+              {statusText}
+            </Typography>
           </Box>
         )}
         <div ref={messagesEndRef} />
