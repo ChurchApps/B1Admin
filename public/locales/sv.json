@@ -1,0 +1,2458 @@
+{
+  "attendance": {
+    "attendancePage": {
+      "att": "Närvaro",
+      "campus": "Campus",
+      "campuses": "Campus",
+      "category": "Kategori",
+      "group": "Grupp",
+      "groupAttMsg": "Gruppnärvaro visas när sessioner har lagts till i en grupp och personer har deltagit i dessa sessioner.",
+      "groups": "Grupper",
+      "scheduled": "Schemalagd",
+      "service": "Gudstjänst",
+      "services": "Gudstjänster",
+      "subtitle": "Följ närvaro för gudstjänster och grupper",
+      "time": "Tid",
+      "totalGroups": "Totalt antal grupper",
+      "unscheduled": "Ej schemalagd"
+    },
+    "attendanceSetup": {
+      "addService": "Lägg till gudstjänst",
+      "addServiceTime": "Lägg till gudstjänsttid",
+      "newCampus": "Nytt campus",
+      "newService": "Ny gudstjänst",
+      "newServiceTime": "Ny gudstjänsttid",
+      "setupMessage": "Konfigurera campus, gudstjänster och gudstjänsttider för att börja spåra närvaro.",
+      "unassigned": "Ej tilldelad"
+    },
+    "campusEdit": {
+      "confirmDelete": "Är du säker på att du vill ta bort detta campus?",
+      "name": "Campusnamn",
+      "validate": {
+        "name": "Campusnamn krävs."
+      }
+    },
+    "serviceEdit": {
+      "campus": "Campus",
+      "confirmDelete": "Är du säker på att du vill ta bort denna gudstjänst permanent?",
+      "name": "Gudstjänstnamn",
+      "validate": {
+        "campus": "Vänligen välj ett campus.",
+        "name": "Gudstjänstnamn krävs."
+      }
+    },
+    "serviceTimeEdit": {
+      "confirmDelete": "Är du säker på att du vill ta bort denna gudstjänsttid permanent?",
+      "name": "Gudstjänsttid",
+      "service": "Gudstjänst",
+      "validate": {
+        "name": "Namn på gudstjänsttid krävs.",
+        "service": "Vänligen välj en gudstjänst."
+      }
+    },
+    "tabs": {
+      "attTrend": "Närvarotrend",
+      "groupAtt": "Gruppnärvaro",
+      "setup": "Inställningar"
+    }
+  },
+  "calendars": {
+    "calendar": {
+      "add": "Lägg till",
+      "copiedToClipboard": "Kopierat till urklipp",
+      "copyIcsLink": "Kopiera ICS-länk",
+      "downloadIcsFile": "Ladda ner ICS-fil",
+      "subscribe": "Prenumerera",
+      "subscribeTitle": "Prenumerera på kalender"
+    },
+    "calendarEdit": {
+      "calendarDetails": "Kalenderdetaljer",
+      "calendarDetailsDesc": "Konfigurera dina kalenderinställningar",
+      "calendarName": "Kalendernamn",
+      "calendarNameAria": "Kalendernamn",
+      "cancel": "Avbryt",
+      "confirmDelete": "Är du säker på att du vill ta bort denna kalender?",
+      "create": "Skapa",
+      "createCalendar": "Skapa kalender",
+      "delete": "Ta bort",
+      "deleting": "Tar bort...",
+      "editCalendar": "Redigera kalender",
+      "namePlaceholder": "Ange ett namn för denna kalender",
+      "nameRequired": "Kalendernamn krävs",
+      "save": "Spara",
+      "saving": "Sparar...",
+      "unauthorizedCreate": "Ej behörig att skapa kalendrar",
+      "unauthorizedDelete": "Ej behörig att ta bort kalendrar"
+    },
+    "calendarEvent": {
+      "cancel": "Avbryt",
+      "confirmDelete": "Är du säker på att du vill ta bort denna händelse?",
+      "delete": "Ta bort",
+      "noGroups": "Inga grupper hittades."
+    },
+    "calendarList": {
+      "aboutParagraph1": "Kalendrar låter dig organisera och visa evenemang för din kyrka.",
+      "aboutParagraph2": "Du kan skapa flera kalendrar för olika ändamål som gudstjänster, ungdomsevenemang och samhällsengagemang.",
+      "aboutParagraph3": "Dela dina kalendrar med medlemmar via ICS-flöden eller bädda in dem på din webbplats.",
+      "aboutTitle": "Om kalendrar",
+      "actions": "Åtgärder",
+      "active": "Aktiv",
+      "addCalendar": "Lägg till kalender",
+      "calendar": "Kalender",
+      "calendars": "Kalendrar",
+      "createCalendar": "Skapa kalender",
+      "createFirstCalendar": "Skapa första kalendern",
+      "curatedCalendar": "Kurerad kalender",
+      "edit": "Redigera",
+      "manageEvents": "Hantera evenemang",
+      "noCalendars": "Inga kalendrar hittades",
+      "status": "Status",
+      "subtitleEmpty": "Kom igång genom att skapa din första kalender",
+      "subtitleWithCount": "Underrubrik med antal",
+      "title": "Kalendrar"
+    },
+    "calendarPage": {
+      "actions": "Åtgärder",
+      "addEventsHint": "Lägg till händelser genom att välja grupper",
+      "calendar": "Kalender",
+      "calendarEvents": "Kalenderhändelser",
+      "confirmRemoveGroup": "Är du säker på att du vill ta bort denna grupp från kalendern?",
+      "groupName": "Gruppnamn",
+      "groupsInCalendar": "Grupper i kalendern",
+      "noGroupsAdded": "Inga grupper tillagda ännu",
+      "removeGroup": "Ta bort grupp",
+      "removeGroupAria": "Ta bort grupp Aria",
+      "subtitle": "Hantera kalenderhändelser och grupper"
+    },
+    "editEvent": {
+      "addAllEvents": "Lägg till alla händelser i gruppen",
+      "addGroup": "Lägg till grupp",
+      "addSpecificEvents": "Lägg till specifika händelser",
+      "cancel": "Avbryt",
+      "clickToAdd": "Klicka för att lägga till",
+      "noEventsFound": "Inga evenemang hittades",
+      "save": "Spara",
+      "selectGroup": "Välj en grupp"
+    }
+  },
+  "common": {
+    "add": "Lägg till",
+    "amount": "Belopp",
+    "back": "Tillbaka",
+    "bottom": "Nederkant",
+    "cancel": "Avbryt",
+    "center": "Mitten",
+    "change": "Ändra",
+    "changePhoto": "Ändra foto",
+    "close": "Stäng",
+    "comboBox": {
+      "addNew": "Lägg till ny..."
+    },
+    "createPerson": {
+      "confirmDuplicate": "{{existingName}} finns redan med e-postadressen {{existingEmail}}. Är du säker på att du vill lägga till {{firstName}} {{lastName}}?",
+      "validate": {
+        "firstName": "Vänligen ange ett förnamn.",
+        "lastName": "Vänligen ange ett efternamn.",
+        "validEmail": "Vänligen ange en giltig e-postadress."
+      }
+    },
+    "custom": "Anpassad",
+    "delete": "Ta bort",
+    "done": "Klar",
+    "duplicate": "Duplicera",
+    "edit": "Redigera",
+    "errorBoundary": {
+      "message": "Något gick fel. Försök igen eller kontakta support om problemet kvarstår.",
+      "retry": "Försök igen",
+      "title": "Hoppsan! Ett fel uppstod"
+    },
+    "formSubmission": {
+      "edit": "Redigera",
+      "noData": "Ingen data tillgänglig",
+      "noQuestions": "Inga frågor hittades"
+    },
+    "help": "Hjälp",
+    "iconPicker": {
+      "noResults": "Inga ikoner hittades som matchar \"{{searchText}}\"",
+      "searchLabel": "Sök ikoner",
+      "searchPlaceholder": "Skriv för att söka (t.ex. person, hem, kyrka)...",
+      "showingDefault": "Visar {{count}} vanligt använda ikoner. Använd sökning för att hitta fler.",
+      "showingMatching": "Visar {{count}} ikoner som matchar \"{{searchText}}\"",
+      "title": "Välj ikon",
+      "tryDifferent": "Prova ett annat sökord"
+    },
+    "left": "Vänster",
+    "name": "Namn",
+    "no": "Nej",
+    "notes": "Anteckningar",
+    "person": "Person",
+    "remove": "Ta bort",
+    "reportFilter": {
+      "title": "Filtrera rapport"
+    },
+    "reportFilterField": {
+      "any": "Valfri"
+    },
+    "right": "Höger",
+    "save": "Spara",
+    "saveChanges": "Spara ändringar",
+    "saving": "Sparar...",
+    "search": "Sök",
+    "searching": "Söker...",
+    "sermons": "Predikningar",
+    "title": "Titel",
+    "top": "Överkant",
+    "tryAgain": "Försök igen",
+    "update": "Uppdatera",
+    "website": "Webbplats",
+    "yes": "Ja"
+  },
+  "components": {
+    "footer": {
+      "phone": "Telefon",
+      "rights": "Alla rättigheter förbehållna."
+    },
+    "loginHeroPanel": {
+      "featureDonations": "Gåvor och ekonomisk uppföljning",
+      "featurePeople": "Person- och hushållshantering",
+      "featurePlanning": "Gudstjänstplanering och schemaläggning",
+      "featureWebsite": "Webbplatsbyggare och innehållshantering",
+      "subtitle": "Hantera din församling, planera gudstjänster, spåra närvaro och hantera gåvor — allt på ett ställe.",
+      "title": "Enkel kyrkoförvaltning"
+    },
+    "wrapper": {
+      "att": "Närvaro",
+      "dash": "Översikt",
+      "don": "Gåvor",
+      "form": "Formulär",
+      "forms": "Formulär",
+      "groups": "Grupper",
+      "plans": "Planer",
+      "ppl": "Personer",
+      "servAdmin": "Serveradmin",
+      "serving": "Tjänstgöring",
+      "set": "Inställningar",
+      "songs": "Sånger",
+      "tasks": "Uppgifter",
+      "teams": "Team"
+    }
+  },
+  "createPerson": {
+    "addNewPerson": "Lägg till ny person",
+    "email": "E-post",
+    "firstName": "Förnamn",
+    "lastName": "Efternamn"
+  },
+  "dashboard": {
+    "dashboardPage": {
+      "dash": "Översikt",
+      "subtitle": "Välkommen till din kyrkoförvaltningsöversikt. Sök efter personer, visa dina grupper och hantera dina öppna uppgifter."
+    },
+    "myGroups": "Mina grupper",
+    "peopleSearch": {
+      "display": "Visa",
+      "photo": "Foto",
+      "ppl": "Personer"
+    }
+  },
+  "donation": {
+    "donationForm": {
+      "annually": "Årligen",
+      "biWeekly": "Varannan vecka",
+      "cover": "Täck transaktionsavgifter",
+      "fees": "Avgifter",
+      "frequencyLabel": "Frekvens",
+      "funds": "Fonder",
+      "make": "Ge en gåva",
+      "makeRecurring": "Gör detta till en återkommande gåva",
+      "monthly": "Månadsvis",
+      "quarterly": "Kvartalsvis",
+      "startDate": "Startdatum",
+      "thankYou": "Tack för din gåva!",
+      "totalAmount": "Totalt belopp",
+      "validate": {
+        "amount": "Vänligen ange ett gåvobelopp.",
+        "email": "E-post krävs.",
+        "firstName": "Förnamn krävs.",
+        "lastName": "Efternamn krävs.",
+        "validEmail": "Vänligen ange en giltig e-postadress."
+      },
+      "weekly": "Veckovis"
+    },
+    "donationPage": {
+      "donations": "Gåvor"
+    },
+    "nonAuthDonation": {
+      "donate": "Ge"
+    },
+    "page": {
+      "amount": "Belopp",
+      "batch": "Batch",
+      "currentYearCsv": "Innevarande år CSV",
+      "currentYearPrint": "Innevarande år utskrift",
+      "date": "Datum",
+      "fund": "Fond",
+      "lastYearCsv": "Föregående år CSV",
+      "lastYearPrint": "Föregående år utskrift",
+      "method": "Metod",
+      "willAppear": "Gåvor visas här när de har registrerats."
+    }
+  },
+  "donations": {
+    "batchEdit": {
+      "confirmMsg": "Är du säker på att du vill ta bort denna batch och alla gåvor i den permanent?",
+      "date": "Datum",
+      "opName": "Namn (valfritt)"
+    },
+    "batchStatements": {
+      "csvDescription": "Ladda ner en ZIP-fil med individuella CSV-filer för varje givare med deras detaljerade gåvouppgifter",
+      "csvDownload": "Individuella CSV-filer",
+      "downloadOptions": "Nedladdningsalternativ",
+      "downloadZip": "Ladda ner ZIP ({count} filer)",
+      "noDonations": "Inga gåvor hittades för {year}. Vänligen välj ett annat år.",
+      "printAllInfo": "Detta öppnar ett enda dokument med alla {count} utdrag. Varje utdrag kommer att vara på en separat sida.",
+      "printAllStatements": "Skriv ut alla {count} utdrag",
+      "printDescription": "Generera ett samlat dokument med alla givoutdrag för utskrift",
+      "printStatements": "Utskrivbara utdrag",
+      "selectYear": "Välj år",
+      "subtitle": "Ladda ner givoutdrag för alla givare",
+      "summary": "Sammanfattning",
+      "title": "Batchgivoutdrag",
+      "totalAmount": "Totalt belopp:",
+      "totalDonations": "Totalt antal gåvor:",
+      "totalDonors": "Totalt antal givare:",
+      "year": "År",
+      "zipInfo": "Detta laddar ner en ZIP-fil med {count} individuella CSV-filer, en för varje givare."
+    },
+    "bulkEntry": {
+      "addDonation": "Lägg till gåva",
+      "pressEnter": "Tryck Enter för att spara och lägga till ytterligare en gåva",
+      "selectPerson": "Välj person eller anonym"
+    },
+    "donationBatchPage": {
+      "batchDate": "Batchdatum:",
+      "subtitle": "Hantera gåvor i denna batch",
+      "title": "Gåvobatch"
+    },
+    "donationBatchesPage": {
+      "subtitle": "Hantera gåvobatcher och spåra givoposter"
+    },
+    "donationEdit": {
+      "anon": "Anonym",
+      "card": "Kort",
+      "cash": "Kontant",
+      "check": "Check",
+      "checkNum": "Checknr",
+      "date": "Datum",
+      "fund": "Fond",
+      "inKind": "Naturaprestation",
+      "lastDig": "Sista 4 siffror",
+      "method": "Metod"
+    },
+    "donationEvents": {
+      "event": "Händelse: ",
+      "failed": "Misslyckade gåvor - ",
+      "mark": "Markera som ",
+      "msg": "Meddelande: ",
+      "unres": " olösta"
+    },
+    "donations": {
+      "amt": "Belopp",
+      "anon": "Anonym",
+      "batches": "Batcher",
+      "date": "Datum",
+      "don": "Gåvor",
+      "errMsg": "Ingen fond hittades. Vänligen skapa en fond innan du registrerar en gåva",
+      "funds": "Fonder",
+      "noDonMsg": "Inga gåvor har registrerats. När gåvor läggs in visas de här.",
+      "statements": "Givoutdrag",
+      "summary": "Sammanfattning",
+      "tableIdent": "Id",
+      "total": "Totalt"
+    },
+    "donationsPage": {
+      "batch": "Batch",
+      "date": "Datum",
+      "don": "Gåvor",
+      "noBatch": "Inga batcher hittades.",
+      "subtitle": "Visa gåvosammanfattningar och analysera givotrender",
+      "total": "Totalt"
+    },
+    "fundEdit": {
+      "confirmMsg": "Är du säker på att du vill ta bort denna fond och alla gåvor i den permanent?",
+      "errBlank": "Ange ett fondnamn",
+      "taxDeductible": "Avdragsgill",
+      "trackDonations": "Spårar gåvor.",
+      "trackNonDonations": "Spårar icke-gåvotransaktioner som lägerregistreringar, t-shirts, evenemangsbiljetter, etc."
+    },
+    "fundPage": {
+      "subtitle": "Spåra gåvor och bidrag till denna fond"
+    },
+    "funds": {
+      "fund": "Fonder",
+      "noFund": "Inga fonder hittades."
+    },
+    "fundsPage": {
+      "amt": "Belopp",
+      "anon": "Anonym",
+      "batch": "Batch",
+      "date": "Datum",
+      "dateEnd": "Slutdatum",
+      "dateStart": "Startdatum",
+      "don": "Gåvor",
+      "donFilt": "Gåvofilter",
+      "donor": "Givare",
+      "noDon": "Inga gåvor för valt datumintervall",
+      "subtitle": "Hantera gåvofonder och spåra givokategorier"
+    },
+    "kpi": {
+      "avgGift": "Genomsnittlig gåva",
+      "donationCount": "Totalt antal gåvor",
+      "donorCount": "Unika givare",
+      "totalGiving": "Totalt givande"
+    },
+    "period": {
+      "monthly": "Månadsvis",
+      "quarterly": "Kvartalsvis",
+      "weekly": "Veckovis"
+    }
+  },
+  "forms": {
+    "choicesEdit": {
+      "act": "Åtgärd",
+      "choices": "Alternativ",
+      "txt": "Text",
+      "value": "Värde"
+    },
+    "form": {
+      "act": "Åtgärd",
+      "noCustomMsg": "Inga anpassade frågor har skapats ännu. Frågor kommer att listas här.",
+      "question": "Fråga",
+      "questions": "Frågor",
+      "req": "Obligatorisk",
+      "type": "Typ"
+    },
+    "formEdit": {
+      "access": "Formuläråtkomst",
+      "alone": "Fristående",
+      "associate": "Koppla till",
+      "available": "Ange tillgänglighetsperiod för formulär",
+      "availableEnd": "Slutdatum för tillgänglighet",
+      "availableStart": "Startdatum för tillgänglighet",
+      "confirmMsg": "Är du säker på att du vill ta bort detta formulär permanent?",
+      "editForm": "Redigera formulär",
+      "endReqMsg": "Slutdatum krävs.",
+      "name": "Formulärnamn",
+      "nameReqMsg": "Formulärnamn krävs.",
+      "ppl": "Personer",
+      "public": "Offentlig",
+      "restrict": "Begränsad",
+      "startReqMsg": "Startdatum krävs.",
+      "thankYouMessage": "Tackmeddelande"
+    },
+    "formMembers": {
+      "act": "Åtgärd",
+      "addPpl": "Lägg till person",
+      "admin": "Admin",
+      "emailNotif": "E-postavisering",
+      "emailNotifMsg": "Varje gång formuläret skickas in får du en avisering via e-post.",
+      "formMem": "Formulärmedlemmar",
+      "perm": "Behörighet",
+      "view": "Endast visa"
+    },
+    "formPage": {
+      "subtitleConfig": "Formulärkonfiguration och inlämningar"
+    },
+    "formQuestionEdit": {
+      "amt": "Belopp",
+      "ansReq": "Kräv ett svar på denna fråga",
+      "checkBox": "Kryssruta",
+      "confirmMsg": "Är du säker på att du vill ta bort denna fråga permanent?",
+      "date": "Datum",
+      "decNum": "Decimal",
+      "desc": "Beskrivning",
+      "fieldReq": "Fälttyp krävs.",
+      "fund": "Fond",
+      "multiChoice": "Flerval",
+      "payment": "Betalning",
+      "phoneNum": "Telefonnummer",
+      "plcOp": "Platshållare (valfritt)",
+      "prov": "Leverantör",
+      "questionEdit": "Redigera fråga",
+      "questionReq": "Fråga krävs.",
+      "textArea": "Textyta",
+      "textBox": "Textruta",
+      "wholeNum": "Heltal",
+      "yesNo": "Ja/Nej"
+    },
+    "formSubmissions": {
+      "anon": "Anonym",
+      "subBy": "Inskickad av",
+      "subDate": "Inlämningsdatum",
+      "subFor": "Inskickad för",
+      "subRes": "Resultat av formulärinlämning",
+      "subSum": "Sammanfattning av formulärinlämning"
+    },
+    "formsPage": {
+      "addForm": "Lägg till formulär",
+      "archForms": "Arkiverade formulär",
+      "confirmMsg1": "Är du säker på att du vill arkivera detta formulär?",
+      "confirmMsg2": "Är du säker på att du vill återställa detta formulär?",
+      "forms": "Formulär",
+      "noArch": "Inga arkiverade formulär.",
+      "noCustomMsg": "Inga anpassade formulär har skapats ännu. De visas här när de läggs till.",
+      "subtitleManage": "Skapa och hantera anpassade formulär",
+      "url": "URL"
+    },
+    "tabs": {
+      "formMem": "Formulärmedlemmar",
+      "formSub": "Formulärinlämningar",
+      "questions": "Frågor",
+      "unAuth": "Ej behörig"
+    }
+  },
+  "groups": {
+    "groupAdd": {
+      "add": "Lägg till",
+      "catName": "Kategorinamn",
+      "catReq": "Kategorinamn krävs.",
+      "group": "Grupp",
+      "groupReq": "Gruppnamn krävs.",
+      "ministry": "Tjänsteområde",
+      "new": "Ny ",
+      "team": "Team"
+    },
+    "groupBanner": {
+      "associatedServices": "Kopplade gudstjänster",
+      "labels": "Etiketter",
+      "meetingInfo": "Mötesinformation",
+      "moreLabels": "Fler etiketter",
+      "parentPickup": "Föräldrahämtning",
+      "printNametag": "Skriv ut namnskylt",
+      "settings": "Inställningar",
+      "team": "Team",
+      "trackAttendance": "Spåra närvaro"
+    },
+    "groupDetails": {
+      "about": "Om",
+      "attendanceSettings": "Närvaroinställningar",
+      "labels": "Etiketter",
+      "locationPlaceholder": "Johnsons hem",
+      "meetingInfo": "Mötesinformation",
+      "meetingLocation": "Mötesplats",
+      "meetingTime": "Mötestid",
+      "meetingTimePlaceholder": "Tisdagar kl 19:00",
+      "noPhoto": "Inget foto tillgängligt",
+      "parentPickup": "Föräldrahämtning",
+      "printNametag": "Skriv ut namnskylt",
+      "slugPlaceholder": "grupp-namn",
+      "trackAttendance": "Spåra närvaro"
+    },
+    "groupDetailsEdit": {
+      "addPhoto": "Lägg till foto",
+      "attTrack": "Spåra närvaro",
+      "attendance": "Närvaro",
+      "catName": "Kategorinamn",
+      "catNameMsg": "Vänligen ange ett kategorinamn.",
+      "clickToAddPhoto": "Klicka för att lägga till foto",
+      "confirmMsg": "Är du säker på att du vill ta bort denna grupp permanent?",
+      "groupDesc": "Gruppbeskrivning",
+      "groupDet": "Gruppdetaljer",
+      "groupName": "Gruppnamn",
+      "groupNameMsg": "Vänligen ange ett gruppnamn.",
+      "meetingLocation": "Mötesplats",
+      "meetingTime": "Mötestid",
+      "parPick": "Föräldrahämtning",
+      "prinName": "Skriv ut namnskylt",
+      "slug": "Slug (nyckelnamn som används i webbadresser)"
+    },
+    "groupLabelsEdit": {
+      "addNewLabel": "Lägg till ny etikett",
+      "labels": "Etiketter"
+    },
+    "groupMembers": {
+      "groupMem": "Gruppmedlemmar",
+      "noMem": "Inga gruppmedlemmar hittades.",
+      "send": "Skicka",
+      "sendMemMsg": "Skicka ett meddelande till medlemmar",
+      "showTemplates": "Visa mallar",
+      "templates": {
+        "none": "Ingen",
+        "templates": "Mallar",
+        "welcome_volunteers": {
+          "heading": "Välkommen volontärer",
+          "message": "Välkommen! Tack för att du ställer upp som volontär.\n\nVänligen ladda ner B1.Church-appen och logga in för att hantera ditt schema. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
+        }
+      }
+    },
+    "groupNavigation": {
+      "members": "Medlemmar",
+      "sessions": "Sessioner"
+    },
+    "groupPage": {
+      "addPpl": "Lägg till person"
+    },
+    "groupSessions": {
+      "addSesMsg": "Vänligen lägg till en ny session för att fortsätta.",
+      "allYears": "Alla år",
+      "attFor": "Närvaro för",
+      "new": "Ny",
+      "noAttendance": "Inga närvaroposter hittades",
+      "noSesMsg": "Det finns inga sessioner.",
+      "noSessionsFound": "Inga sessioner hittades",
+      "selectSession": "Välj session",
+      "session": "Session",
+      "sessions": "Sessioner",
+      "tryAdjusting": "Försök justera din sökning"
+    },
+    "groupsPage": {
+      "addGroup": "Lägg till grupp",
+      "cat": "Kategori",
+      "categories": "Kategorier",
+      "groups": "Grupper",
+      "labels": "Etiketter",
+      "noGroupMsg": "Inga grupper hittades. Vänligen skapa en grupp.",
+      "pers": "1 person",
+      "ppl": "Personer",
+      "spPpl": " personer",
+      "subtitle": {
+        "create": "Kom igång genom att skapa din första grupp",
+        "manage": "Organisera och hantera dina kyrkgrupper"
+      },
+      "totalGroups": "Totalt antal grupper",
+      "totalMembers": "Totalt antal medlemmar"
+    },
+    "membersAdd": {
+      "availableMem": "Tillgängliga gruppmedlemmar",
+      "noMem": "Inga gruppmedlemmar tillgängliga."
+    },
+    "serviceTimes": {
+      "services": "Gudstjänst(er):"
+    },
+    "serviceTimesEdit": {
+      "srvTimeAdd": "Lägg till gudstjänsttid",
+      "srvTimeOp": "Gudstjänsttider (valfritt)"
+    },
+    "sessionAdd": {
+      "invDate": "Ogiltigt datum",
+      "sesAdd": "Lägg till en session",
+      "sesDate": "Sessionsdatum",
+      "srvTime": "Gudstjänsttid"
+    },
+    "sessionCard": {
+      "active": "Aktiv",
+      "edit": "Redigera",
+      "people": "personer",
+      "person": "person",
+      "view": "Visa"
+    },
+    "sessionEdit": {
+      "deleteConfirm": "Är du säker på att du vill ta bort denna session permanent?",
+      "sesEdit": "Redigera session"
+    },
+    "tabs": {
+      "mem": "Medlemmar",
+      "ses": "Sessioner"
+    }
+  },
+  "month": {
+    "apr": "Apr",
+    "april": "April",
+    "aug": "Aug",
+    "august": "Augusti",
+    "dec": "Dec",
+    "december": "December",
+    "feb": "Feb",
+    "february": "Februari",
+    "jan": "Jan",
+    "january": "Januari",
+    "july": "Juli",
+    "june": "Juni",
+    "mar": "Mar",
+    "march": "Mars",
+    "may": "Maj",
+    "nov": "Nov",
+    "november": "November",
+    "oct": "Okt",
+    "october": "Oktober",
+    "sep": "Sep",
+    "september": "September"
+  },
+  "people": {
+    "advancedSearch": {
+      "enterValuePlaceholder": "Ange värde...",
+      "search": "Sök",
+      "valuePlaceholder": "Värde"
+    },
+    "aiSearch": {
+      "placeholder": "Visa mig män över 30 med födelsedag i juli",
+      "title": "AI-sökning"
+    },
+    "editCondition": {
+      "act": "Aktivitet",
+      "anniMonth": "Bröllopsmånad",
+      "any": "Valfri",
+      "attCamp": "har deltagit (campus)",
+      "attGen": "har deltagit (generellt)",
+      "attGroup": "har deltagit (grupp)",
+      "attServ": "har deltagit (gudstjänst)",
+      "attServTime": "har deltagit (gudstjänsttid)",
+      "bMonth": "Födelsemånad",
+      "contains": "innehåller",
+      "donTo": "har gett till",
+      "endW": "slutar med",
+      "field": "Fält",
+      "from": "Från",
+      "groupMem": "Gruppmedlem",
+      "hasDon": "har gett (generellt)",
+      "isMem": "är medlem i",
+      "marYears": "År gifta",
+      "memAtt": "Medlemsnärvaro",
+      "memDon": "Medlemsgåvor",
+      "notMem": "är inte medlem i",
+      "operator": "Operator",
+      "saveCon": "Spara villkor",
+      "startW": "börjar med",
+      "to": "Till",
+      "value": "Värde",
+      "valuePlaceholder": "Värde"
+    },
+    "groups": {
+      "notMemMsg": "Inte för närvarande medlem i några grupper."
+    },
+    "household": {
+      "house": " Hushåll"
+    },
+    "householdEdit": {
+      "addMatch": "adress att matcha",
+      "blankMsg": "Vänligen ange ett hushållsnamn.",
+      "child": "Barn",
+      "head": "Huvudperson",
+      "house": " Hushåll",
+      "houseName": "Hushållsnamn",
+      "other": "Övrigt",
+      "spouse": "Make/maka",
+      "updQuestion": "Vill du uppdatera"
+    },
+    "merge": {
+      "merge": "sammanfoga",
+      "mergeRec": "Sammanfoga poster"
+    },
+    "mergeModal": {
+      "cancel": "Avbryt",
+      "confirm": "Bekräfta",
+      "contactInfo": "Kontaktinfo",
+      "fieldCon": "Vänligen lös fältkonflikter:",
+      "householdId": "Hushålls-ID",
+      "id": "ID",
+      "merge": "Sammanfogar...",
+      "mergeQuestion": "Sammanfoga",
+      "name": "Namn",
+      "profile": "Profil",
+      "selMsg": "Vänligen välj ett värde för alla fält",
+      "with": "med"
+    },
+    "peopleColumns": {
+      "appFilt": "Tillämpa filter",
+      "cust": "Anpassad",
+      "filt": "Filter",
+      "noFilt": "Inga filter tillgängliga.",
+      "stand": "Standard"
+    },
+    "peoplePage": {
+      "addPerson": "Lägg till person",
+      "bDay": "Födelsedag",
+      "bDayNo": "Födelsedag (utan år)",
+      "deleteOp": "Radera alternativ",
+      "first": "Förnamn",
+      "last": "Efternamn",
+      "middle": "Mellannamn",
+      "nameNote": "Namnskyltanteckningar",
+      "photo": "Foto",
+      "primEmail": "Primär e-post",
+      "primPhone": "Primärt telefonnummer",
+      "recentPpl": "Nyligen tillagda personer",
+      "searchPpl": "Sök personer"
+    },
+    "peopleSearch": {
+      "active": "aktiv:",
+      "activity": "Aktivitet",
+      "adv": "Avancerad",
+      "advSearch": "Avancerad sökning",
+      "campus": "Campus",
+      "checkBoxes": "Markera rutor för att aktivera filter",
+      "clearAll": "Rensa alla",
+      "configure": "Konfigurera",
+      "contact": "Kontaktinformation",
+      "customFields": "Anpassade fält",
+      "demographics": "Demografi",
+      "fund": "Fond",
+      "group": "Grupp",
+      "membership": "Medlemskap och grupper",
+      "names": "Namn",
+      "placeholder": "Sök efter namn...",
+      "service": "Gudstjänst",
+      "serviceTime": "Gudstjänsttid",
+      "simp": "Enkel",
+      "simpSearch": "Personsökning",
+      "type": "Typ"
+    },
+    "peopleSearchResults": {
+      "noResMsg": "Inga resultat hittades. Vänligen sök efter ett annat namn eller lägg till en ny person"
+    },
+    "personAttendance": {
+      "noAttMsg": "Inga närvaroposter. Närvaro visas när närvaro har spårats för en gruppsession."
+    },
+    "personEdit": {
+      "applyQuestion": "Vill du tillämpa det på hela",
+      "cannotDeleteSelf": "Du kan inte ta bort din egen personpost.",
+      "confirmMsg": "Är du säker på att du vill ta bort denna personpost permanent?",
+      "donorNumber": "Givarnummer",
+      "exten": "Anknytning",
+      "family": "familjen",
+      "firstReq": "Förnamn krävs",
+      "for": "för",
+      "home": "Hem",
+      "invalForm": "Ogiltigt formulär",
+      "lastReq": "Efternamn krävs",
+      "maritalStatus": "Civilstånd",
+      "merge": "Sammanfoga",
+      "mobile": "Mobil",
+      "nameNote": "Namnskyltanteckningar",
+      "persDet": "Personuppgifter",
+      "upAddress": "Du uppdaterade adressen till",
+      "valEmail": "Vänligen ange en giltig e-postadress.",
+      "work": "Arbete"
+    },
+    "personForm": {
+      "addForm": "Lägg till formulär",
+      "form": "Formulär",
+      "noFormMsg": "Ingen formulärinlämning hittades för denna person"
+    },
+    "personNav": {
+      "customForms": "Anpassade formulär"
+    },
+    "personView": {
+      "home": "Hem",
+      "memShip": "Medlemskap:",
+      "mobile": "Mobil",
+      "persDet": "Personuppgifter",
+      "work": "Arbete"
+    },
+    "tabs": {
+      "att": "Närvaro",
+      "don": "Gåvor",
+      "noImplement": "Ej implementerad"
+    },
+    "updateHouseHold": {
+      "update": "Uppdatera adress"
+    }
+  },
+  "person": {
+    "address": "Adress",
+    "age": "Ålder",
+    "anniversary": "Bröllopsdag",
+    "birthDate": "Födelsedatum",
+    "city": "Stad",
+    "country": "Land",
+    "displayName": "Visningsnamn",
+    "divorced": "Skild",
+    "email": "E-post",
+    "female": "Kvinna",
+    "firstName": "Förnamn",
+    "gender": "Kön",
+    "inactive": "Inaktiv",
+    "lastName": "Efternamn",
+    "line1": "Rad 1",
+    "line2": "Rad 2",
+    "male": "Man",
+    "maritalStatus": "Civilstånd",
+    "married": "Gift",
+    "member": "Medlem",
+    "membershipStatus": "Medlemsstatus",
+    "membershp": "Medlemskap",
+    "middleName": "Mellannamn",
+    "nickName": "Smeknamn",
+    "noRec": "Inga poster hittades",
+    "person": "Person",
+    "phone": "Telefon",
+    "prefix": "Prefix",
+    "regularAttendee": "Regelbunden deltagare",
+    "single": "Ogift",
+    "staff": "Personal",
+    "state": "Län/region",
+    "suffix": "Suffix",
+    "unknown": "Okänd",
+    "unspecified": "Ej angiven",
+    "visitor": "Besökare",
+    "widowed": "Änka/änkling",
+    "zip": "Postnummer"
+  },
+  "placeholders": {
+    "addPage": {
+      "linkText": "Klicka här",
+      "linkUrl": "/new-page",
+      "title": "Ny sida"
+    },
+    "batch": {
+      "name": "Söndagskollekt - 5 jan"
+    },
+    "block": {
+      "name": "Hjältesektion"
+    },
+    "campus": {
+      "name": "Centrum campus"
+    },
+    "choices": {
+      "text": "Alternativ 1",
+      "value": "option1"
+    },
+    "church": {
+      "address1": "Kyrkogatan 123",
+      "address2": "Våning 1",
+      "city": "Stockholm",
+      "country": "Sverige",
+      "name": "Nådens församling",
+      "state": "AB",
+      "subdomain": "nadensforsamling",
+      "zip": "11122"
+    },
+    "device": {
+      "label": "Vardagsrumsskärm"
+    },
+    "donation": {
+      "checkNumber": "1234",
+      "lastDigits": "4242",
+      "notes": "Lägg till eventuella anteckningar om denna gåva..."
+    },
+    "element": {
+      "buttonText": "Klicka här",
+      "cardTitle": "Korttitel",
+      "donateText": "Ge nu",
+      "imageDescription": "Bildbeskrivning",
+      "videoId": "dQw4w9WgXcQ"
+    },
+    "faq": {
+      "title": "Vad är er returpolicy?"
+    },
+    "font": {
+      "search": "Sök typsnitt..."
+    },
+    "form": {
+      "name": "Kontaktformulär",
+      "questionDescription": "Lägg till ytterligare detaljer...",
+      "questionPlaceholder": "Ange ditt svar...",
+      "questionTitle": "Din fråga här",
+      "thankYouMessage": "Tack för att du skickade in formuläret!"
+    },
+    "fund": {
+      "name": "Allmän fond"
+    },
+    "giving": {
+      "publicKey": "pk_live_..."
+    },
+    "group": {
+      "category": "Bibelstudiegrupp, Söndagsskola, Tjänsteområde",
+      "name": "Livsgrupp A"
+    },
+    "household": {
+      "name": "Familjen Svensson"
+    },
+    "page": {
+      "linkText": "Läs mer",
+      "linkUrl": "https://example.com",
+      "title": "Om oss",
+      "urlPath": "/om-oss"
+    },
+    "pairScreen": {
+      "code": "ABC123"
+    },
+    "person": {
+      "address1": "Kyrkogatan 123",
+      "address2": "Lgh 4B",
+      "city": "Stockholm",
+      "donorNumber": "DN-12345",
+      "email": "johan.svensson@example.com",
+      "firstName": "Johan",
+      "lastName": "Svensson",
+      "middleName": "David",
+      "nameTag": "Huvudsångare",
+      "nickname": "Jansen",
+      "phoneExt": "1234",
+      "simpleEmail": "johan@example.com",
+      "state": "AB",
+      "zip": "11122"
+    },
+    "plan": {
+      "name": "Söndagsgudstjänst - 5 jan"
+    },
+    "planItem": {
+      "description": "Kort beskrivning...",
+      "label": "Öppningssång"
+    },
+    "planType": {
+      "name": "Söndagsgudstjänst"
+    },
+    "position": {
+      "count": "2",
+      "name": "Välkomnare"
+    },
+    "role": {
+      "name": "Tjänsteområdesledare"
+    },
+    "sermon": {
+      "description": "Ange predikanbeskrivning...",
+      "title": "Söndagsbudskapet"
+    },
+    "service": {
+      "name": "Söndagsmorgongudstjänst"
+    },
+    "song": {
+      "album": "Albumnamn",
+      "arrangementName": "Nutida arrangemang",
+      "artist": "John Newton",
+      "bpm": "120",
+      "keySignature": "C#",
+      "language": "Svenska",
+      "lengthSeconds": "180",
+      "linkUrl": "https://example.com/chords",
+      "lyrics": "Ange sångtext här...",
+      "title": "Amazing Grace"
+    },
+    "task": {
+      "notes": "Lägg till eventuella anteckningar om denna uppgift...",
+      "title": "Förbered gudstjänstpresentationer"
+    },
+    "time": {
+      "displayName": "Söndagsmorgon"
+    },
+    "user": {
+      "email": "johan@example.com",
+      "firstName": "Johan",
+      "lastName": "Svensson"
+    }
+  },
+  "plans": {
+    "actionSelector": {
+      "addAction": "Lägg till åtgärd",
+      "addSection": "Lägg till sektion",
+      "fromAssociatedLesson": "Från kopplad lektion:",
+      "noActionsAvailable": "Inga åtgärder tillgängliga",
+      "selectAction": "Välj åtgärd",
+      "selectExternalItem": "Välj externt objekt"
+    },
+    "assignment": {
+      "addPosition": "Lägg till position",
+      "autoAssign": "Automatisk tilldelning",
+      "saveNotes": "Spara anteckningar"
+    },
+    "assignmentEdit": {
+      "assignPos": "Tilldela position",
+      "done": "Klar",
+      "editAssign": "Redigera tilldelning",
+      "noMem": "Inga gruppmedlemmar hittades."
+    },
+    "bulkLessonSchedule": {
+      "biWeekly": "Varannan vecka",
+      "date": "Datum",
+      "interval": "Intervall",
+      "lesson": "Lektion",
+      "lessonsToSchedule": "lektioner att schemalägga",
+      "noPreviousLesson": "Ingen tidigare lektion hittades att fortsätta från. Schemalägg minst en lektion först.",
+      "noRemainingLessons": "Inga återstående lektioner i denna serie. Du har slutfört alla!",
+      "startDate": "Startdatum",
+      "startingLesson": "Startlektion",
+      "title": "Masschemalägga lektioner",
+      "venue": "Lokal",
+      "weekly": "Veckovis"
+    },
+    "contentProviderAuth": {
+      "deviceFlowInstructions": "Besök URL:en nedan och ange koden för att auktorisera:",
+      "errorGeneric": "Kunde inte länka leverantör. Försök igen.",
+      "link": "Länka",
+      "linkAccount": "Länka konto",
+      "linkNew": "Länka ny leverantör",
+      "linked": "Länkad",
+      "noLinkedDescription": "Länka en innehållsleverantör för att komma åt deras innehåll i dina gudstjänstplaner.",
+      "noProvidersAvailable": "Inga innehållsleverantörer tillgängliga",
+      "pkceInstructions": "Klicka på knappen nedan för att auktorisera i ett popup-fönster:",
+      "pkceWaiting": "Väntar på auktorisering i popup...",
+      "refresh": "Uppdatera",
+      "selectProvider": "Länka innehållsleverantör",
+      "success": "Länkningen lyckades!",
+      "title": "Innehållsleverantörer",
+      "unlink": "Ta bort länk",
+      "waitingForAuth": "Väntar på auktorisering..."
+    },
+    "lessonHeaderSelector": {
+      "description": "Välj en rubrik eller sektion att lägga till i din plan. Dess underobjekt läggs till som planobjekt.",
+      "noContent": "Inget lektionsinnehåll tillgängligt",
+      "selectContent": "Välj innehåll",
+      "title": "Lägg till lektionsinnehåll"
+    },
+    "lessonScheduleEdit": {
+      "dateRequired": "Vänligen välj ett datum",
+      "scheduleLesson": "Schemalägg lektion",
+      "scheduledDate": "Schemalagt datum",
+      "selectLesson": "Välj lektion",
+      "venueRequired": "Vänligen välj en lokal"
+    },
+    "lessonSelector": {
+      "associateLesson": "Koppla lektion",
+      "browseOtherProviders": "Bläddra bland andra leverantörer",
+      "contentProvider": "Innehållsleverantör",
+      "lesson": "Lektion",
+      "linkProviderFirst": "Länka denna leverantör först för att bläddra i innehåll",
+      "providerNotLinked": "Leverantör ej länkad"
+    },
+    "ministryList": {
+      "getStarted": "Kom igång genom att skapa ditt första tjänsteområde",
+      "noMinMsg": "Inga tjänsteområden hittades. Vänligen skapa ett tjänsteområde."
+    },
+    "ministryPage": {
+      "subtitle": "Organisera tjänsteområdesteam och gudstjänstplaner"
+    },
+    "planEdit": {
+      "copyAll": "Positioner och tilldelningar",
+      "copyNothing": "Ingenting",
+      "copyPositions": "Endast positioner",
+      "copyPrevious": "Kopiera från föregående plan",
+      "copyServiceOrder": "Kopiera gudstjänstordning",
+      "planAdd": "Lägg till en plan",
+      "planEdit": "Redigera plan",
+      "planReq": "Plannamn krävs.",
+      "servDate": "Gudstjänstdatum",
+      "servReq": "Gudstjänstdatum krävs."
+    },
+    "planItem": {
+      "addItem": "Lägg till objekt",
+      "editItem": "Redigera objekt",
+      "editSection": "Redigera sektion",
+      "expandToActions": "Expandera till åtgärder",
+      "externalItem": "Externt objekt",
+      "item": "Objekt",
+      "song": "Sång"
+    },
+    "planItemEdit": {
+      "confirmDelete": "Bekräfta borttagning",
+      "confirmDeleteMessage": "Är du säker på att du vill ta bort detta objekt?",
+      "description": "Beskrivning",
+      "edit": "Redigera",
+      "editAddOn": "Redigera tillägg",
+      "editHeader": "Redigera rubrik",
+      "editSong": "Redigera sång",
+      "enterSearch": "Ange sökterm",
+      "minutes": "Minuter",
+      "seconds": "Sekunder"
+    },
+    "planList": {
+      "bulkSchedule": "Masschemalägga",
+      "createFirst": "Skapa första planen",
+      "createPlan": "Skapa plan",
+      "newPlan": "Ny plan",
+      "noPlans": "Inga planer hittades",
+      "plans": "Planer",
+      "scheduleLesson": "Schemalägg lektion",
+      "serviceOrder": "Gudstjänstordning"
+    },
+    "planPage": {
+      "assign": "Teamtilldelningar",
+      "assignments": "Tilldelningar",
+      "band": "Band",
+      "loadingPlan": "Laddar plan...",
+      "noteSave": "Anteckning sparad",
+      "serviceOrder": "Gudstjänstordning",
+      "servicePlan": "Gudstjänstplan",
+      "subtitle": "Planera och schemalägg din gudstjänst"
+    },
+    "planType": {
+      "details": "Plantypdetaljer"
+    },
+    "planTypeEdit": {
+      "add": "Lägg till",
+      "edit": "Redigera",
+      "errorSaving": "Fel vid sparande av plantyp",
+      "nameRequired": "Plantypsnamn krävs",
+      "planType": "Plantyp",
+      "planTypeName": "Plantypsnamn"
+    },
+    "planTypeList": {
+      "addPlanType": "Lägg till plantyp",
+      "createPlanType": "Skapa plantyp",
+      "createPlanTypes": "Skapa plantyper",
+      "noPlanTypes": "Inga plantyper hittades",
+      "planTypes": "Plantyper"
+    },
+    "planTypePage": {
+      "notFound": "Plantyp hittades inte",
+      "pairTvApp": "Koppla TV-app",
+      "planType": "Plantyp",
+      "subtitle": "Konfigurera inställningar för plantyp",
+      "tvAppDescription": "Visa ditt lektionsinnehåll på vilken TV eller skärm som helst med vår gratisapp"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Ladda ner Lessons.church TV-appen",
+      "instructions": "Ange den 4-teckens kod som visas på TV-appskärmen:",
+      "pairTitle": "Koppla din enhet",
+      "success": "Koppling lyckades! TV-appen visar nu innehåll från denna plantyp.",
+      "title": "Koppla TV-app"
+    },
+    "planValidation": {
+      "and": "och",
+      "between": "mellan",
+      "blockCon": "Blockdatumkonflikt av",
+      "cons": "Konflikter",
+      "during": "under",
+      "more": "fler",
+      "needed": "behövs.",
+      "notify": "Avisera",
+      "person": "person",
+      "pleaseConfirm": "Vänligen logga in och bekräfta.",
+      "ppl": "personer",
+      "timeCon": "Tidskonflikt mellan",
+      "timeCon2": "Tidskonflikt vid",
+      "to": "till",
+      "val": "Validering",
+      "valPlan": "Planen är giltig.",
+      "vol": "volontär(er)",
+      "volNotif": "Alla volontärer aviserade.",
+      "volReq": "Volontärförfrågningar: "
+    },
+    "plansPage": {
+      "addMinistry": "Lägg till tjänsteområde",
+      "editMinistry": "Redigera tjänsteområde",
+      "selMin": "Välj ett tjänsteområde",
+      "subtitle": "Hantera tjänsteområden och gudstjänstplaner"
+    },
+    "positionEdit": {
+      "catName": "Kategorinamn",
+      "catNameReq": "Kategorinamn krävs.",
+      "nameReq": "Namn krävs",
+      "posAdd": "Lägg till en position",
+      "posEdit": "Redigera position",
+      "volCount": "Antal volontärer",
+      "volGroup": "Volontärgrupp"
+    },
+    "positionList": {
+      "load": "Laddar...",
+      "persNeed": "1 person behövs",
+      "pos": "Position",
+      "ppl": "Personer",
+      "pplNeed": " personer behövs",
+      "team": "Team"
+    },
+    "printPlan": {
+      "length": "Längd",
+      "serviceOrder": "GUDSTJÄNSTORDNING",
+      "time": "Tid"
+    },
+    "serviceOrder": {
+      "addFromLesson": "Lägg till från lektion",
+      "addSection": "Lägg till sektion",
+      "associateError": "Kopplingsfel",
+      "associateLesson": "Koppla lektion",
+      "customizeLesson": "Anpassa",
+      "disassociateError": "Avkopplingsfel",
+      "lessonPreview": "Förhandsvisa lektion",
+      "loadError": "Laddningsfel",
+      "noItems": "Inga objekt i gudstjänstordningen",
+      "orderOfService": "Gudstjänstordning",
+      "previewBanner": "Detta är en förhandsgranskning av den kopplade lektionen. Klicka på \"Anpassa\" för att redigera.",
+      "print": "Skriv ut"
+    },
+    "songs": {
+      "links": "Länkar"
+    },
+    "teamList": {
+      "createTeam": "Skapa team",
+      "createTeams": "Skapa team",
+      "manage": "Hantera",
+      "members": "medlemmar",
+      "newTeam": "Nytt team",
+      "noTeam": "Inga team hittades. Vänligen skapa ett team.",
+      "teams": "Team"
+    },
+    "timeEdit": {
+      "disName": "Visningsnamn",
+      "disNameReq": "Visningsnamn krävs.",
+      "endReq": "Sluttid krävs",
+      "followGuide": "Följ guiden nedan för att ställa in gudstjänsttider",
+      "startReq": "Starttid krävs",
+      "teamNeed": "Nödvändiga team",
+      "teamReq": "Vänligen välj team.",
+      "timeAdd": "Lägg till en tid",
+      "timeEdit": "Redigera tid",
+      "timeEnd": "Sluttid",
+      "timeStart": "Starttid",
+      "tip": "Tips"
+    },
+    "timeList": {
+      "noTime": "Inga tider har lagts till ännu",
+      "sunServ": "Söndagsgudstjänst",
+      "times": "Tider"
+    }
+  },
+  "profile": {
+    "deviceContent": {
+      "associatedContent": "Kopplat innehåll"
+    },
+    "deviceEdit": {
+      "label": "Etikett",
+      "labelRequired": "Etikett krävs"
+    },
+    "devices": {
+      "addScreen": "Lägg till skärm",
+      "device": "Enhet",
+      "editDevice": "Redigera enhet",
+      "label": "Etikett",
+      "lastActiveDate": "Senast aktiv datum",
+      "registrationDate": "Registreringsdatum",
+      "title": "Enheter"
+    },
+    "linkedAccounts": {
+      "link": "Länka",
+      "signUp": "Registrera dig",
+      "unlink": "Ta bort länk"
+    },
+    "pairScreen": {
+      "codeRequired": "Kopplningskod krävs",
+      "invalidCode": "Ogiltig kopplingskod",
+      "pairingCode": "Kopplingskod"
+    },
+    "profilePage": {
+      "accDel": "Kontoborttagning",
+      "confirmMsg": "Är du säker på att du vill ta bort ditt konto permanent?",
+      "delAcc": "Ta bort mitt konto",
+      "deleteError": "Kunde inte ta bort kontot",
+      "emailMsg": "Vänligen ange en e-postadress.",
+      "firstMsg": "Vänligen ange förnamn",
+      "lastMsg": "Vänligen ange efternamn",
+      "linkedAccounts": "Länkade konton",
+      "noDirect": "Dölj mig från medlemskatalogen",
+      "passLong": "Vänligen ange ett lösenord som är minst 8 tecken långt.",
+      "passMatch": "Lösenorden matchar inte.",
+      "passNew": "Nytt lösenord",
+      "passVer": "Bekräfta lösenord",
+      "passwordHelper": "Lämna tomt för att behålla nuvarande lösenord",
+      "permWarn": "Var försiktig, dessa åtgärder är permanenta",
+      "profEdit": "Redigera konto",
+      "saveChange": "Ändringar sparade.",
+      "saveChanges": "Spara ändringar",
+      "saveError": "Kunde inte spara ändringar",
+      "subtitle": "Hantera din profil och inställningar",
+      "valEmail": "Vänligen ange en giltig e-postadress."
+    }
+  },
+  "reporting": {
+    "detailed": "Detaljerad",
+    "downloadOptions": "Nedladdningsalternativ",
+    "noData": "Ingen data tillgänglig",
+    "runReport": "Kör rapport",
+    "sampleTemplate": "Exempelmall",
+    "summary": "Sammanfattning",
+    "toDateBeforeFromDate": "Slutdatum kan inte vara före startdatum",
+    "useFilter": "Använd filter"
+  },
+  "reports": {
+    "reportPage": {
+      "report": "Rapport"
+    },
+    "reportsPage": {
+      "attTrend": "Närvarotrend",
+      "attTrendDesc": "Visa närvarotrender över tid",
+      "bDays": "Födelsedagar",
+      "bDaysDesc": "Visa kommande födelsedagar",
+      "dailyGroupAtt": "Daglig gruppnärvaro",
+      "dailyGroupAttDesc": "Visa daglig gruppnärvaro",
+      "donSum": "Gåvosammanfattning",
+      "donSumDesc": "Visa gåvosammanfattning",
+      "groupAtt": "Gruppnärvaro",
+      "groupAttDesc": "Visa gruppnärvaro",
+      "helpText": "Välj en rapport för att visa detaljerad information",
+      "reports": "Rapporter",
+      "subtitle": "Visa och ladda ner kyrkrapporter"
+    }
+  },
+  "sermons": {
+    "addFirstSermon": "Lägg till första predikan",
+    "addPermanentLiveUrl": "Lägg till permanent live-URL",
+    "addSermon": "Lägg till predikan",
+    "adjustSearchTerms": "Försök justera dina söktermer",
+    "bulkImport": {
+      "autoImportNewVideos": "Importera nya videor automatiskt",
+      "backToSelection": "Tillbaka till urval",
+      "chooseSource": "Välj importkälla",
+      "fetch": "Hämta",
+      "fetching": "Hämtar...",
+      "import": "Importera",
+      "importFromVimeo": "Importera från Vimeo",
+      "importFromYouTube": "Importera från YouTube",
+      "importIntoPlaylist": "Importera till spellista",
+      "selectPlaylist": "Vänligen välj en spellista",
+      "subtitle": "Massimportera videor från externa plattformar",
+      "title": "Massimport",
+      "vimeo": "Vimeo",
+      "vimeoChannelId": "Vimeo kanal-ID",
+      "vimeoChannelPlaceholder": "staffpicks",
+      "vimeoDescription": "Importera videor från ditt Vimeo-konto eller showcases",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube kanal-ID",
+      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
+      "youtubeDescription": "Importera videor från din YouTube-kanal eller spellistor"
+    },
+    "duration": {
+      "minutes": "Minuter",
+      "seconds": "Sekunder"
+    },
+    "getStarted": "Kom igång genom att lägga till din första predikan",
+    "liveStreamTimes": {
+      "externalLinks": {
+        "customizeAppearance": "Anpassa utseende",
+        "editUsers": "Redigera användare",
+        "title": "Externa resurser",
+        "viewYourStream": "Visa din ström"
+      },
+      "linkEdit": {
+        "cancel": "Avbryt",
+        "configureSettings": "Konfigurera inställningar för navigeringslänk",
+        "createNewLink": "Skapa ny länk",
+        "delete": "Ta bort",
+        "deleteConfirm": "Är du säker på att du vill ta bort denna navigeringslänk? Denna åtgärd kan inte ångras.",
+        "deleteLink": "Ta bort länk",
+        "deleteNestedLinksFirst": "Denna länk har kapslade underlänkar. Vänligen ta bort dem först.",
+        "deleting": "Tar bort...",
+        "displayText": "Visningstext",
+        "displayTextPlaceholder": "Ange text att visa i navigeringen",
+        "editNavigationLink": "Redigera navigeringslänk",
+        "errors": {
+          "deleteFailed": "Kunde inte ta bort länk. Försök igen.",
+          "deleteNestedFirst": "Ta bort kapslade länkar först",
+          "saveFailed": "Kunde inte spara länk. Försök igen.",
+          "textRequired": "Vänligen ange giltig text",
+          "unauthorized": "Ej behörig att skapa länkar",
+          "unauthorizedDelete": "Ej behörig att ta bort länkar",
+          "urlRequired": "Vänligen ange länk"
+        },
+        "linkDetails": "Länkdetaljer",
+        "linkUrl": "Länk-URL",
+        "linkUrlPlaceholder": "https://example.com eller /intern-sida",
+        "menuOrganization": "Menyorganisering",
+        "optionalSubmenuMessage": "Organisera valfritt denna länk under en befintlig undermeny:",
+        "saveLink": "Spara länk",
+        "saving": "Sparar...",
+        "submenuMessage": "Denna länk placeras under undermeny:"
+      },
+      "navigationLinks": {
+        "add": "Lägg till",
+        "home": "Hem",
+        "title": "Navigeringslänkar"
+      },
+      "serviceEdit": {
+        "addNewService": "Lägg till ny gudstjänst",
+        "auto": "Auto",
+        "basicInformation": "Grundläggande information",
+        "chatSettings": "Chattinställningar",
+        "deleteConfirm": "Är du säker på att du vill ta bort denna gudstjänst?",
+        "editService": "Redigera gudstjänst",
+        "enableChatMinutesAfter": "Aktivera chatt - minuter efter",
+        "enableChatMinutesBefore": "Aktivera chatt - minuter före",
+        "errorsCorrectionTitle": "Vänligen korrigera följande fel:",
+        "latestSermon": "Senaste predikan",
+        "no": "Nej",
+        "oneTime": "Engångs",
+        "recursWeekly": "Återkommer veckovis",
+        "sermon": "Predikan",
+        "serviceName": "Gudstjänstnamn",
+        "serviceNamePlaceholder": "t.ex. Söndagsmorgongudstjänst",
+        "serviceNameRequired": "Gudstjänstnamn krävs",
+        "serviceTime": "Gudstjänsttid",
+        "serviceTimeRequired": "Gudstjänsttid krävs",
+        "startVideoEarly": "Starta video tidigt",
+        "startVideoEarlyHelp": "Valfritt: För nedräkningsvideor eller innehåll före gudstjänsten",
+        "videoSettings": "Videoinställningar",
+        "weekly": "Veckovis",
+        "yes": "Ja"
+      },
+      "services": "Gudstjänster",
+      "servicesTab": {
+        "addService": "Lägg till gudstjänst",
+        "title": "Gudstjänster",
+        "weekly": "Veckovis"
+      },
+      "settings": "Inställningar",
+      "sidebarTabs": {
+        "add": "Lägg till",
+        "title": "Innehållsflikar"
+      },
+      "subtitle": "Konfigurera dina återkommande gudstjänsttider",
+      "tabEdit": {
+        "cancel": "Avbryt",
+        "chat": "Chatt",
+        "configureSettings": "Konfigurera inställningar för strömmingssidofält",
+        "createNewTab": "Skapa ny flik",
+        "delete": "Ta bort",
+        "deleteConfirm": "Är du säker på att du vill ta bort denna flik? Denna åtgärd kan inte ångras.",
+        "deleteTab": "Ta bort flik",
+        "deleting": "Tar bort...",
+        "editTab": "Redigera flik",
+        "errors": {
+          "deleteFailed": "Kunde inte ta bort flik. Försök igen.",
+          "saveFailed": "Kunde inte spara flik. Försök igen.",
+          "textRequired": "Vänligen ange giltig text",
+          "urlRequired": "Ange en giltig URL"
+        },
+        "externalUrl": "Extern URL",
+        "externalUrlPlaceholder": "https://example.com",
+        "icon": "Ikon",
+        "linkConfiguration": "Länkkonfiguration",
+        "linkType": "Länktyp",
+        "linkTypeHelp": {
+          "chat": "Inbyggd chattfunktion",
+          "none": "Välj en länktyp för att konfigurera flikens beteende",
+          "prayer": "Inbyggd bönebegäranfunktion",
+          "url": "Extern URL öppnas i en ny flik"
+        },
+        "prayer": "Bön",
+        "saveTab": "Spara flik",
+        "saving": "Sparar...",
+        "tabDisplay": "Flikvisning",
+        "tabText": "Fliktext",
+        "tabTextPlaceholder": "Ange flikvisningstext"
+      },
+      "title": "Direktsändningstider"
+    },
+    "noPlaylist": "Ingen spellista",
+    "noSermonsFound": "Inga predikningar hittades",
+    "noSermonsYet": "Inga predikningar ännu",
+    "notScheduled": "Ej schemalagd",
+    "playlist": "Spellista",
+    "playlists": {
+      "actions": "Åtgärder",
+      "addPlaylist": "Lägg till spellista",
+      "adjustSearchTerms": "Försök justera dina söktermer",
+      "createFirstPlaylist": "Skapa första spellistan",
+      "editPlaylist": "Redigera spellista",
+      "getStarted": "Kom igång genom att skapa din första spellista",
+      "noPlaylistsFound": "Inga spellistor hittades",
+      "noPlaylistsMatch": "Inga spellistor matchar din sökning",
+      "playlistEdit": {
+        "addThumbnail": "Lägg till miniatyr",
+        "basicInformation": "Grundläggande information",
+        "changeThumbnail": "Ändra miniatyr",
+        "createNew": "Skapa ny spellista",
+        "deleteConfirm": "Är du säker på att du vill ta bort denna spellista?",
+        "describePlaylist": "Beskriv denna spellista...",
+        "description": "Beskrivning",
+        "editPlaylist": "Redigera spellista",
+        "enterTitle": "Ange spellisttitel...",
+        "newPlaylist": "Ny spellista",
+        "playlistTitle": "Spellistatitel",
+        "publishDate": "Publiceringsdatum",
+        "publishHelp": "När ska denna spellista vara tillgänglig för tittare?",
+        "publishingSchedule": "Publicering och schema",
+        "recommendedSize": "Rekommenderad storlek: 1280x720 pixlar (16:9 bildförhållande)",
+        "thumbnailImage": "Miniatyrbild",
+        "unauthorized": "Ej behörig att skapa spellistor",
+        "unauthorizedDelete": "Ej behörig att ta bort spellistor"
+      },
+      "search": "Sök",
+      "searchPlaceholder": "Sök spellistor...",
+      "subtitle": "Hantera videospellistor och organisera ditt innehåll",
+      "title": "Spellistor"
+    },
+    "publishDate": "Publiceringsdatum",
+    "searchPlaceholder": "Sök predikningar efter titel eller spellista...",
+    "sermon": "Predikan",
+    "sermonEdit": {
+      "add": "lägg till",
+      "addToAnotherPlaylist": "Lägg till i en annan spellista",
+      "channelIdPlaceholder": "Detta är inte din kanal-URL - Se hjälplänken ovan",
+      "currentLiveService": "Nuvarande direktsänd gudstjänst",
+      "currentYouTubeLiveStream": "Nuvarande YouTube-direktsändning",
+      "customEmbedUrl": "Anpassad inbäddnings-URL",
+      "deleteConfirm": "Är du säker på att du vill ta bort denna predikan?",
+      "description": "Beskrivning",
+      "editPermanentLiveUrl": "Redigera permanent live-URL",
+      "editSermon": "Redigera predikan",
+      "facebook": "Facebook",
+      "fetch": "Hämta",
+      "getYourChannelId": "Hämta ditt kanal-ID",
+      "newSermon": "Ny predikan",
+      "none": "Ingen",
+      "sermonEmbedUrl": "Predikans inbäddnings-URL",
+      "sermonId": "Predikan-ID",
+      "title": "Titel",
+      "totalSermonDuration": "Total predikanlängd",
+      "unauthorized": "Ej behörig att skapa predikningar",
+      "unauthorizedDelete": "Ej behörig att ta bort predikningar",
+      "videoProvider": "Videoleverantör",
+      "vimeo": "Vimeo",
+      "vimeoId": "Vimeo-ID",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube kanal-ID",
+      "youtubeId": "YouTube-ID"
+    },
+    "subtitle": "Hantera ditt predikobibliotek och direktsändningar",
+    "title": "Predikningar"
+  },
+  "serverAdmin": {
+    "adminPage": {
+      "act": "Aktiv",
+      "arch": "Arkiverad",
+      "church": "Kyrka",
+      "churchName": "Kyrknamn",
+      "churches": "Kyrkor",
+      "location": "Plats",
+      "noChurch": "Inga kyrkor hittades. Vänligen sök efter ett annat namn.",
+      "noUserChurches": "Denna användare har inga kyrkor kopplade till sitt konto.",
+      "noUsers": "Inga användare hittades. Vänligen sök efter ett annat namn eller e-post.",
+      "noteFour": "Jämförbar programvara är ProPresenter. Den kostar $399 för en platslicens. Jag antog att en genomsnittlig kyrka installerar programvaran på 3 datorer och dividerade vårt totala antal installationer med 3 för att få antalet kyrkor. Jag antog också att kyrkor uppgraderar till en nyare version i genomsnitt vart 5:e år. Alltså $399 / 5 år / 3 datorer = $26,60 årlig kostnad per dator. Om vi kan verifiera dessa antaganden bör vi uppdatera detta tal.",
+      "noteOne": "Jämförbar programvara är Breeze. De tar $72/månad eller $864/år.",
+      "noteThree": "Jämförbart innehåll är Orange. De tar $1023/år för kyrkor med 26-50 tittare för 252 Basic.",
+      "noteTwo": "Jämförbar programvara är SubSplash. De börjar på $99/månad eller $1200/år. Detta inkluderar inte deras andel av gåvor.",
+      "notes": "Anteckningar",
+      "regist": "Registrerad",
+      "searchResults": "Sökresultat",
+      "servAdmin": "Serveradmin",
+      "subtitle": "Hantera serveromfattande inställningar och kyrkor",
+      "translationLookups": "Översättningsuppslag",
+      "usageTrends": "Användningstrender",
+      "userChurches": "Kyrkor",
+      "userSearch": "Sök efter namn eller e-post",
+      "userSearchPlaceholder": "Sök efter namn eller e-post",
+      "users": "Användare",
+      "valueNotes": "Anteckningar om hur värden beräknas"
+    },
+    "reportPage": {
+      "adminOnly": "Endast admin",
+      "report": "Rapport",
+      "serverAdmin": "Serveradmin"
+    },
+    "translation": {
+      "abbreviations": "Förkortningar",
+      "endDate": "Slutdatum",
+      "lookups": "Uppslag",
+      "search": "Sök",
+      "startDate": "Startdatum",
+      "title": "Bibelöversättningsuppslag"
+    }
+  },
+  "settings": {
+    "app": {
+      "confirmDeleteTab": "Är du säker på att du vill ta bort denna flik?",
+      "tabNameHelper": "Välj ett beskrivande namn för din flik",
+      "urlHelper": "Ange den fullständiga URL:en (t.ex. https://example.com)"
+    },
+    "appEdit": {
+      "addTab": "Lägg till flik",
+      "bible": "Bibeln",
+      "changeImage": "Byt bild",
+      "checkin": "Incheckning",
+      "deleteTab": "Ta bort flik",
+      "donation": "Gåva",
+      "donationLanding": "Gåva-landningssida",
+      "editTab": "Redigera flik",
+      "externalUrl": "Extern URL",
+      "internalPage": "Intern sida",
+      "lessons": "Lektioner",
+      "liveStream": "Direktsändning",
+      "memberDirectory": "Medlemskatalog",
+      "myGroups": "Mina grupper",
+      "page": "Sida",
+      "saveTab": "Spara flik",
+      "saving": "Sparar...",
+      "selectImage": "Välj bild",
+      "tabName": "Fliknamn",
+      "tabType": "Fliktyp",
+      "url": "URL",
+      "verseOfDay": "Dagens bibelvers"
+    },
+    "appTabs": {
+      "editTab": "Redigera flik",
+      "moveDown": "Flytta ner",
+      "moveUp": "Flytta upp",
+      "noTabs": "Inga flikar konfigurerade",
+      "noTabsDesc": "Lägg till flikar för att anpassa din appnavigering",
+      "title": "Appflikar",
+      "untitled": "Namnlös"
+    },
+    "associatePerson": {
+      "change": "Ändra"
+    },
+    "church": {
+      "subdomainHelper": "Din kyrkas unika webbadress"
+    },
+    "churchSettingsEdit": {
+      "address1": "Adressrad 1",
+      "address2": "Adressrad 2",
+      "churchInfo": "Kyrkoinformation",
+      "churchInfoSubtitle": "Namn, adress och underdomän",
+      "churchName": "Kyrknamn",
+      "churchSettings": "Kyrkinställningar",
+      "domainsSubtitle": "Konfiguration av anpassad domän",
+      "general": "Allmänt",
+      "generalSubtitle": "Supportkontakt, katalog och synlighet",
+      "givingSubtitle": "Betalningsgateway och avgiftsalternativ",
+      "noNameMsg": "Kyrknamn kan inte vara tomt.",
+      "noSubMsg": "Underdomän kan inte vara tom.",
+      "subdom": "Underdomän"
+    },
+    "directoryApprovalSettingsEdit": {
+      "directoryApprovalGroup": "Kataloggranskningsgrupp",
+      "forceMsg": "Denna grupp hanterar alla uppdateringar av medlemskatalogen. Först efter deras godkännande tillämpas ändringarna.",
+      "groups": "Grupper",
+      "noGroups": "Inga grupper tillgängliga",
+      "none": "Ingen"
+    },
+    "directoryVisibility": {
+      "everyone": "Alla (inklusive besökare)",
+      "label": "Visa i katalogen",
+      "members": "Medlemmar och personal",
+      "regularAttendees": "Regelbundna deltagare och uppåt",
+      "staff": "Endast personal"
+    },
+    "domain": {
+      "domainPlaceholder": "dinwebbplats.se",
+      "doneAlert": "Klart. Klicka bara på denna länk en gång.",
+      "errorInvalid": "Ogiltigt format. Ange enbart domän (t.ex. dinwebbplats.se eller sub.dinwebbplats.org). Inkludera inte http://, sökvägar eller avslutande snedstreck."
+    },
+    "domainSettingsEdit": {
+      "domMsg": "Du kan låta din B1-webbplats svara på vilken anpassad domän du vill. Ange det associerade domännamnet här och lägg sedan till följande post i din DNS:",
+      "domMsg2": "Om din DNS-leverantör inte tillåter CNAME-poster kan du alternativt använda en A-post:",
+      "domMsg3": "Om du får SSL-fel efter att ha lagt till DNS-posten, klicka här för att ",
+      "domMsg4": ". Det kan ta upp till 5 minuter.",
+      "domMsgConnect": "ansluta",
+      "domain": "Domän",
+      "domains": "Domäner"
+    },
+    "feeOptionsSettings": {
+      "achFlatRate": "Fast avgift [ACH]",
+      "achHardLimit": "Hård gräns [ACH]",
+      "creditCardFlatRate": "Fast avgift [kreditkort]",
+      "creditCardTransactionFee": "Transaktionsavgift [kreditkort]",
+      "paypalFlatRate": "Fast avgift [PayPal]",
+      "paypalTransactionFee": "Transaktionsavgift [PayPal]"
+    },
+    "giving": {
+      "secretPlaceholder": "********"
+    },
+    "givingSettingsEdit": {
+      "apiCredentials": "API-uppgifter",
+      "clientId": "Klient-ID",
+      "clientSecret": "Klienthemlighet",
+      "developersApiKeys": "Developers → API keys",
+      "forceMsg": "Tvingar automatiskt användare att täcka transaktionsavgifterna",
+      "giving": "Givande",
+      "none": "Ingen",
+      "paypal": "PayPal",
+      "paypalCreateApp": "skapa en app för att få ditt Client ID och Secret.",
+      "paypalDeveloper": "PayPal Developer",
+      "paypalGoTo": "Gå till",
+      "paypalLogin": "logga in, sedan under",
+      "prov": "Leverantör",
+      "pubKey": "Publik nyckel",
+      "saveError": "Kunde inte spara givoinställningar",
+      "secKey": "Hemlig nyckel",
+      "stripe": "Stripe",
+      "stripeCopyKeys": "för att kopiera dina Publishable och Secret keys (test och live).",
+      "stripeDashboard": "Stripe Dashboard",
+      "stripeGoTo": "och gå till",
+      "stripeVisit": "Besök",
+      "transFee": "Transaktionsavgift"
+    },
+    "imageEditor": {
+      "crop": "Beskär",
+      "upload": "Ladda upp"
+    },
+    "manageChurch": {
+      "editSettings": "Redigera inställningar",
+      "imEx": "Import/Export",
+      "mobileApps": "Mobilappar",
+      "noData": "Ingen kyrkdata tillgänglig",
+      "subtitle": "Konfigurera kyrkinställningar och preferenser",
+      "title": "Hantera kyrka"
+    },
+    "mobileAppSettings": {
+      "addTab": "Lägg till flik",
+      "subtitle": "Konfigurera mobilappinställningar",
+      "title": "Mobilappinställningar"
+    },
+    "preview": {
+      "preview": "Förhandsgranskning"
+    },
+    "roleEdit": {
+      "confirmMsg": "Är du säker på att du vill ta bort denna roll permanent?",
+      "roleEdit": "Redigera roll",
+      "roleName": "Rollnamn",
+      "valMsg": "Vänligen ange ett giltigt rollnamn."
+    },
+    "roleMembers": {
+      "confirmMsg": "Är du säker på att du vill ta bort denna användare från",
+      "mem": "Medlemmar",
+      "roleAppMsg": "Denna roll gäller för alla medlemmar i kyrkan."
+    },
+    "rolePage": {
+      "noEditMsg": "Behörigheter kan inte redigeras för rollen Domänadministratörer. Domänadministratörer har full åtkomst.",
+      "permEdit": "Redigera behörigheter",
+      "roleEdit": "Redigera roll:"
+    },
+    "rolePermissions": {
+      "permEdit": "Redigera behörigheter"
+    },
+    "roles": {
+      "acc": "Ekonomi",
+      "accDesc": "Har åtkomst att visa och hantera gåvor.",
+      "canEdit": "Kan redigera de flesta data i ",
+      "churchDesc": " inklusive personer, grupper, närvaro och formulär.",
+      "churchStaff": "Kyrkopersonal",
+      "contAdmin": "Innehållsadmin",
+      "contAdminDesc": "Kan redigera webbplatsinnehåll, mobilinnehåll och predikningar.",
+      "custAdd": "Lägg till anpassad roll",
+      "everyone": "Alla",
+      "itMsg": "? Den ",
+      "lesAdmin": "Lektionsadmin",
+      "lesAdminDesc": "Kan ställa in klassrum och schemalägga lektioner på ",
+      "role": "Roll",
+      "roleCreate": "Vill du skapa en ny roll med namnet ",
+      "roles": "Roller"
+    },
+    "supportContactSettingsEdit": {
+      "forceMsg": "Denna länk kommer att användas av användare för att kontakta kyrkan",
+      "link": "Länk",
+      "linkHelperText": "Det måste vara antingen kyrkans e-post eller en länk till kyrkans kontaktformulär",
+      "supportContact": "Supportkontakt"
+    },
+    "userAdd": {
+      "addTo": "Lägg till i ",
+      "createNew": "Skapa ny användare",
+      "errAnother": "Kan inte spara. En annan användare finns redan för denna e-postadress.",
+      "errDiff": "Användarkontot för denna e-post är kopplat till en annan person.",
+      "firstMsg": "Vänligen ange förnamn",
+      "lastMsg": "Vänligen ange efternamn",
+      "noAcc": "Har du inget användarkonto?",
+      "valEmail": "Vänligen ange en giltig e-postadress",
+      "valEmailMsg": "Ange en giltig e-postadress"
+    },
+    "visibilityPrefSettingsEdit": {
+      "address": "Adress",
+      "email": "E-post",
+      "everyone": "Alla",
+      "forceMsg": "Detta anger standardvärdet för personer som ännu inte har konfigurerat sina inställningar",
+      "groups": "Endast grupper",
+      "members": "Medlemmar",
+      "phoneNum": "Telefonnummer",
+      "visibilityPreference": "Synlighetsinställning"
+    }
+  },
+  "site": {
+    "addPage": {
+      "aiPlaceholder": "Exempel: Skapa en välkomnande startsida med vårt kyrknamn, uppdragsbeskrivning, gudstjänsttider och en gåvoknapp",
+      "newLink": "Ny länk",
+      "newPage": "Ny sida",
+      "pageType": "Sidtyp"
+    },
+    "animations": {
+      "colorize": "Färglägg",
+      "editAnimations": "Redigera animationer",
+      "fadeIn": "Tona in",
+      "fast": "Snabb",
+      "focus": "Fokus",
+      "grow": "Väx",
+      "none": "Ingen",
+      "normal": "Normal",
+      "onShowAnimation": "Animation vid visning",
+      "onShowSpeed": "Hastighet vid visning",
+      "pulse": "Pulsera",
+      "shrink": "Krympa",
+      "slideDown": "Glid ner",
+      "slideLeft": "Glid vänster",
+      "slideRight": "Glid höger",
+      "slideUp": "Glid upp",
+      "slow": "Långsam"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Logotyphantering"
+    },
+    "appearancePage": {
+      "subtitle": "Nedan visas en förhandsgranskning av en exempelwebbplats med dina färger, typsnitt och logotyper. Detta är inte ditt faktiska webbplatsinnehåll.",
+      "title": "Webbplatsstilar"
+    },
+    "blocks": {
+      "confirmDelete": "Är du säker på att du vill ta bort detta block permanent?",
+      "editBlock": "Redigera block"
+    },
+    "blocksPage": {
+      "actions": "Åtgärder",
+      "addBlock": "Lägg till block",
+      "block": "block",
+      "blocks": "Block",
+      "createFirstBlock": "Skapa första blocket",
+      "elements": "Element",
+      "getStarted": "Kom igång genom att skapa ditt första återanvändbara block",
+      "noBlocksFound": "Inga block hittades",
+      "reusableBlocks": "Återanvändbara block",
+      "sections": "Sektion(er)",
+      "subtitle": "Skapa och hantera återanvändbara innehållsblock för din webbplats",
+      "totalBlocks": "Totalt antal block",
+      "type": "Typ"
+    },
+    "cssEdit": {
+      "customCss": "Anpassad CSS",
+      "customHtml": "Anpassad HTML"
+    },
+    "donateLink": {
+      "add": "Lägg till",
+      "addAmount": "Lägg till belopp",
+      "amount": "Belopp",
+      "amountPlaceholder": "Beloppplatshållare",
+      "donationAmount": "Gåvobelopp",
+      "donationAmounts": "Gåvobelopp",
+      "donationAmountsHelper": "Du kan föreslå gåvobelopp som 50 kr, 100 kr, 200 kr, etc.",
+      "funds": "Fonder",
+      "maxAmountsAlert": "Du kan bara lägga till fem gåvobelopp.",
+      "noFunds": "Inga fonder",
+      "selectFund": "Välj gåvofond",
+      "textHelper": "Ex: (Ge nu), (Ja, jag vill hjälpa!), (Ge 100 kr till ungdomslägret), etc.",
+      "textLabel": "Text",
+      "urlHelper": "Tips: du måste länka till sidan från webbplatsbyggaren som har gåvoelementet.",
+      "urlLabel": "URL",
+      "urlPlaceholder": "/ge"
+    },
+    "editorToolbar": {
+      "addContent": "Lägg till innehåll",
+      "block": "Block",
+      "desktop": "Dator",
+      "mobile": "Mobil",
+      "page": "Sida",
+      "switchToDesktop": "Byt till datorvy",
+      "switchToMobile": "Byt till mobilvy"
+    },
+    "elementAdd": {
+      "addElements": "Lägg till element",
+      "advanced": "Avancerad",
+      "all": "Alla",
+      "blocks": "Block",
+      "box": "Ruta",
+      "calendar": "Kalender",
+      "card": "Kort",
+      "carousel": "Karusell",
+      "church": "Kyrka",
+      "content": "Innehåll",
+      "descBox": "Flexibel containerruta",
+      "descCalendar": "Kalendervy för evenemang",
+      "descCard": "Innehållskort med bild",
+      "descCarousel": "Glidande innehållsgalleri",
+      "descDonateLink": "Gåvolänkknapp",
+      "descDonation": "Gåvoformulär",
+      "descEmbedPage": "Bädda in extern sida",
+      "descExpandable": "Expanderbar frågor och svar-sektion",
+      "descForm": "Anpassat formulärbygge",
+      "descGroupList": "Gruppkatalog",
+      "descHtml": "Anpassad HTML-kod",
+      "descImage": "Bild med bildtext",
+      "descLocation": "Interaktiv karta",
+      "descLogo": "Kyrkans logotyp/varumärke",
+      "descReusableElement": "Återanvändbart elementblock",
+      "descReusableSection": "Återanvändbar sektion",
+      "descRow": "Horisontell kolumnlayout",
+      "descSection": "Behållare för att gruppera innehåll",
+      "descSermons": "Predikovideogalleri",
+      "descStream": "Inbäddad direktsändning",
+      "descTable": "Datatabelllayout",
+      "descText": "Riktext-innehåll",
+      "descTextWithPhoto": "Text med sidobild",
+      "descVideo": "Videoinbäddning eller uppladdning",
+      "donateLink": "Gåvolänk",
+      "donation": "Gåva",
+      "dragAndDrop": "Dra och släpp på sidan",
+      "dragHint": "Dra element till sidan för att lägga till dem",
+      "embedPage": "Bädda in sida",
+      "expandable": "Expanderbar",
+      "form": "Formulär",
+      "groupList": "Grupplista",
+      "html": "HTML",
+      "image": "Bild",
+      "layout": "Layout",
+      "location": "Plats",
+      "logo": "Logotyp",
+      "media": "Media",
+      "noElementsFound": "Inga element hittades",
+      "row": "Rad",
+      "searchElements": "Sök element",
+      "section": "Sektion",
+      "stream": "Ström",
+      "table": "Tabell",
+      "text": "Text",
+      "textWithPhoto": "Text med foto",
+      "tryDifferentSearch": "Prova ett annat sökord",
+      "untitledBlock": "Namnlöst block",
+      "video": "Video"
+    },
+    "elements": {
+      "address": "Adress",
+      "addressHelper": "ex: Stadshuset, Stockholm",
+      "alignCenter": "Mitten",
+      "alignLeft": "Vänster",
+      "alignRight": "Höger",
+      "animationOptions": "Animation",
+      "answersJSON": "Svar JSON",
+      "answersJSONData": "JSON-dataformat för formulärsvar",
+      "autoplay": "Automatisk uppspelning",
+      "block": "Block",
+      "categoriesHelper": "ex: Smågrupper, Söndagsskola",
+      "color": "Färg",
+      "confirmDelete": "Är du säker på att du vill ta bort detta element permanent?",
+      "confirmDuplicate": "Är du säker på att du vill göra en kopia av detta element och alla dess underordnade?",
+      "contained": "Begränsad",
+      "doNotResizeImage": "Ändra inte bildstorlek",
+      "editElement": "Redigera element",
+      "error": "Fel",
+      "fade": "Tona",
+      "fullWidth": "Fullbredd",
+      "heightPlaceholder": "1000",
+      "heightPx": "Höjd (px)",
+      "hide": "Dölj",
+      "htmlContent": "HTML-innehåll",
+      "id": "ID",
+      "idExample": "ex: dQw4w9WgXcQ",
+      "idExampleVimeo": "ex: 76979871",
+      "imageAlignment": "Bildjustering",
+      "imageDescribingTopic": "Bild som beskriver ämnet",
+      "info": "Info",
+      "javascriptExcludeTag": "JavaScript (exkludera script-tagg)",
+      "label": "Etikett",
+      "linkUrlOptional": "Länk-URL (valfritt)",
+      "loadingEditor": "Laddar redigerare...",
+      "mode": "Läge",
+      "nameHelper": "ex: Första baptistkyrkan",
+      "nextServiceTime": "Nästa gudstjänsttid",
+      "offlineContent": "Offlineinnehåll",
+      "openInNewTab": "Öppna i ny flik",
+      "openLinkInNewTab": "Öppna länk i ny flik",
+      "outlined": "Konturerad",
+      "photoAlternativeText": "Alternativ text för foto",
+      "photoLabel": "Fotoetikett",
+      "photoPosition": "Fotoposition",
+      "positionPhotoBottom": "Nederkant",
+      "positionPhotoLeft": "Vänster",
+      "positionPhotoRight": "Höger",
+      "positionPhotoTop": "Överkant",
+      "primary": "Primär",
+      "roundedCorners": "Rundade hörn",
+      "secondary": "Sekundär",
+      "selectPhoto": "Välj foto",
+      "selectPhotoPosition": "Välj fotoposition",
+      "slide": "Bild",
+      "slides": "Bilder",
+      "slidesIntervalSeconds": "Bildintervall (sekunder)",
+      "source": "Källa",
+      "success": "Lyckades",
+      "text": "Text",
+      "textAlignment": "Textjustering",
+      "title": "Titel",
+      "titleAlignment": "Titeljustering",
+      "translucent": "Genomskinlig",
+      "type": "Typ",
+      "url": "URL",
+      "variant": "Variant",
+      "videoAndInteraction": "Video och interaktion",
+      "videoOnly": "Enbart video",
+      "videoUrlVimeo": "Hitta ID:t i video-URL:en: vimeo.com/[id]",
+      "videoUrlYoutube": "Hitta ID:t i video-URL:en: youtube.com/watch?v=[id]",
+      "vimeo": "Vimeo",
+      "warning": "Varning",
+      "youtube": "YouTube",
+      "zoomLevel": "Zoomnivå",
+      "zoomLevelExample": "10 är ett bra standardvärde. Högre värde ger mer inzoomning."
+    },
+    "files": {
+      "confirmDelete": "Är du säker på att du vill ta bort",
+      "storageInfo": "100 MB lagringsutrymme tillhandahålls gratis för att lagra PDF-filer och andra dokument som vanligtvis behövs för kyrkowebbplatser. Vi föreslår att du använder Google Drive eller Dropbox för att lagra filer om ytterligare utrymme behövs.",
+      "upload": "Ladda upp",
+      "uploadFiles": "Ladda upp filer"
+    },
+    "filesManager": {
+      "files": "Filer",
+      "getStarted": "Kom igång genom att ladda upp din första fil",
+      "noFilesYet": "Inga filer uppladdade ännu"
+    },
+    "filesPage": {
+      "subtitle": "Hantera filer och media för din webbplats",
+      "title": "Filer"
+    },
+    "fontEdit": {
+      "fontSelection": "Typsnittsval",
+      "popularFontCombinations": "Populära typsnittskombinationer",
+      "typographyPreview": "Förhandsgranskning av typografi"
+    },
+    "navLink": {
+      "addLink": "Lägg till länk",
+      "linkSettings": "Länkinställningar"
+    },
+    "pageLink": {
+      "check": "Kontrollera",
+      "confirmDelete": "Är du säker på att du vill ta bort denna sida permanent?",
+      "confirmDuplicate": "Är du säker på att du vill göra en kopia av denna sida och allt dess innehåll?",
+      "linkSettings": "Länkinställningar",
+      "pageSettings": "Sidinställningar",
+      "urlHelper": "ex: /lagerregistrering (**Se till att kontrollera innan du sparar)"
+    },
+    "pagePreview": {
+      "editContent": "Redigera innehåll",
+      "pageSettings": "Sidinställningar",
+      "subtitle": "Förhandsvisar: {title}",
+      "title": "Webbplatsförhandsgranskning"
+    },
+    "pages": {
+      "convert": "Konvertera"
+    },
+    "pagesPage": {
+      "actions": "Åtgärder",
+      "addFirstPage": "Lägg till första sidan",
+      "addPage": "Lägg till sida",
+      "autoGenerated": "Autogenererad",
+      "confirmConvert": "Vill du konvertera denna autogenererade sida till en anpassad sida?",
+      "customPages": "Anpassade sidor",
+      "description": "Nedan finns en lista med anpassade och autogenererade sidor. Du kan lägga till nya sidor, redigera befintliga eller konvertera autogenererade sidor till anpassade sidor.",
+      "desktopOnly": "Sidredigeraren är bara tillgänglig i datorläge",
+      "generated": "Genererad",
+      "getStarted": "Kom igång genom att lägga till din första sida.",
+      "mainNavigation": "Huvudnavigering",
+      "noPagesFound": "Inga sidor hittades",
+      "pages": "Sidor",
+      "path": "Sökväg",
+      "previewPage": "Förhandsvisa sida",
+      "showLogin": "Visa inloggning",
+      "showLoginTooltip": "Visa inloggningsknapp i navigeringsfältet",
+      "subtitle": "Hantera webbplatsens sidor, innehåll och navigering",
+      "toggleLoginVisibility": "Växla synlighet för inloggningsknapp",
+      "totalPages": "Totalt antal sidor",
+      "websitePages": "Webbplatssidor"
+    },
+    "paletteEdit": {
+      "colorCombinationsPreview": "Förhandsgranskning av färgkombinationer",
+      "colorValues": "Färgvärden",
+      "savePalette": "Spara palett",
+      "suggestedPalettes": "Föreslagna paletter"
+    },
+    "pickColors": {
+      "headingColor": "Rubrikfärg",
+      "linkColor": "Länkfärg",
+      "opacityHelper": "Opaciteten för svart gradientlager ovanpå bilden. Maxvärde: 1",
+      "textColor": "Textfärg"
+    },
+    "row": {
+      "addColumn": "Lägg till kolumn",
+      "columnsError": "Kolumner måste summera till 12",
+      "columnsHelper": "Siffror representerar tolftedelar av sidan.",
+      "commonOptions": "Vanliga alternativ",
+      "halves": "Halva",
+      "hideMobileOrder": "Dölj mobilordning",
+      "hideMobileSizes": "Dölj mobilstorlekar",
+      "preview": "Förhandsgranskning",
+      "previewHelper": "Siffror representerar tolftedelar av sidan",
+      "quarters": "Fjärdedelar",
+      "remove": "Ta bort",
+      "showMobileOrder": "Visa mobilordning",
+      "showMobileSizes": "Visa mobilstorlekar",
+      "size1": "1 - 1/12",
+      "size10": "10 - 5/6",
+      "size11": "11 - 11/12",
+      "size12": "12 - Hel",
+      "size2": "2 - 1/6",
+      "size3": "3 - 1/4",
+      "size4": "4 - 1/3",
+      "size5": "5 - 5/12",
+      "size6": "6 - 1/2",
+      "size7": "7 - 7/12",
+      "size8": "8 - 2/3",
+      "size9": "9 - 3/4",
+      "thirds": "Tredjedelar",
+      "totalInvalid": "Totalt: {total}/12",
+      "totalValid": "Totalt: 12/12",
+      "width": "Bredd"
+    },
+    "section": {
+      "confirmDelete": "Är du säker på att du vill ta bort denna sektion permanent?",
+      "confirmDuplicate": "Är du säker på att du vill göra en kopia av denna sektion och allt dess innehåll?",
+      "editSection": "Redigera sektion"
+    },
+    "sectionEdit": {
+      "convertTo": "Konvertera till",
+      "convertToBlock": "Konvertera till block",
+      "duplicate": "Duplicera",
+      "duplicateSection": "Duplicera sektion"
+    },
+    "style": {
+      "editStyle": "Redigera stil"
+    },
+    "styleEdit": {
+      "property": "Egenskap"
+    },
+    "stylesManager": {
+      "styleSettings": "Stilinställningar"
+    },
+    "templates": {
+      "viewSermons": "Visa predikningar"
+    }
+  },
+  "songs": {
+    "addSong": "Lägg till sång",
+    "arrangement": {
+      "deleteConfirm": "Är du säker på att du vill ta bort detta arrangemang?",
+      "edit": "Redigera arrangemang",
+      "enterLyrics": "Ange sångtext manuellt eller importera från PraiseCharts",
+      "lyrics": "Sångtext",
+      "name": "Arrangemangsnamn",
+      "title": "Arrangemang"
+    },
+    "create": {
+      "artist": "Artist",
+      "songTitle": "Sångtitel",
+      "title": "Skapa sång"
+    },
+    "deleteSong": {
+      "confirm": "Bekräfta"
+    },
+    "details": {
+      "album": "Album",
+      "artist": "Artist",
+      "bpm": "BPM",
+      "key": "Tonart",
+      "keySignature": "Tonart",
+      "keys": "Tonarter",
+      "language": "Språk",
+      "length": "Längd",
+      "meter": "Taktart",
+      "releaseDate": "Utgivningsdatum",
+      "seconds": "Sekunder"
+    },
+    "key": {
+      "default": "Standard",
+      "defaultLabel": "Johans tonart",
+      "deleteConfirm": "Är du säker på att du vill ta bort denna tonart?",
+      "edit": "Redigera tonart",
+      "labelOptional": "Etikett (valfritt)",
+      "signature": "Tonart"
+    },
+    "keys": {
+      "add": "Lägg till",
+      "addExternalLink": "Lägg till extern länk",
+      "addFiles": "Lägg till filer",
+      "import": "Importera",
+      "importFromPraiseCharts": "Importera filer från PraiseCharts",
+      "importPrompt": "Vill du importera textsångtexterna från PraiseCharts?",
+      "title": "Tonarter"
+    },
+    "library": {
+      "empty": {
+        "action": "Lägg till första sången",
+        "message": "Kom igång genom att lägga till din första sång i biblioteket.",
+        "title": "Inga sånger hittades"
+      },
+      "noResults": "Inga sånger matchar dina sökkriterier."
+    },
+    "link": {
+      "chordChart": "Ackordschema",
+      "deleteConfirm": "Är du säker på att du vill ta bort denna länk?",
+      "edit": "Redigera länk",
+      "text": "Text",
+      "url": "URL"
+    },
+    "search": {
+      "createManually": "Skapa manuellt",
+      "enterQuery": "Ange ett sökord för att hitta sånger.",
+      "inputLabel": "Titel eller artist",
+      "inputPlaceholder": "Ange sångtitel eller artistnamn...",
+      "noResults": "Inga sånger hittades för din sökning.",
+      "placeholder": "Sök sånger efter titel eller artist...",
+      "title": "Sök efter en sång"
+    },
+    "songPage": {
+      "loading": "Laddar...",
+      "subtitle": "Hantera sångdetaljer och arrangemang"
+    },
+    "songsPage": {
+      "songs": "Sånger",
+      "subtitle": "Hantera ditt musikbibliotek"
+    },
+    "title": "Sånger"
+  },
+  "tasks": {
+    "actionEdit": {
+      "actType": "Åtgärdstyp",
+      "actTypeHelp": "Välj vilken typ av åtgärd som ska utföras",
+      "assignTo": "Tilldela till",
+      "editAct": "Redigera åtgärd",
+      "taskAssign": "Tilldela en uppgift",
+      "taskNote": "Uppgiftsanteckning",
+      "taskTitle": "Uppgiftstitel"
+    },
+    "automationDetails": {
+      "active": "Aktiv",
+      "acts": "Åtgärder",
+      "addAct": "Lägg till åtgärd",
+      "auto": "Automatiseringsdetaljer",
+      "inactive": "Inaktiv",
+      "noAct": "Inga åtgärder konfigurerade",
+      "recurs": "Återkommer"
+    },
+    "automationEdit": {
+      "active": "Aktiv",
+      "autoEdit": "Redigera automatisering",
+      "inactive": "Inaktiv",
+      "monthly": "Månadsvis",
+      "never": "Aldrig",
+      "recurHelp": "Ange hur ofta denna automatisering ska köras",
+      "rep": "Upprepa",
+      "weekly": "Veckovis",
+      "yearly": "Årligen"
+    },
+    "automationsPage": {
+      "active": "Aktiv",
+      "addAuto": "Lägg till automatisering",
+      "auto": "Automatiserade uppgifter",
+      "inactive": "Inaktiv",
+      "manageAuto": "Hantera automatiserade uppgifter",
+      "noAuto": "Inga automatiseringar konfigurerade",
+      "recurs": "Återkommer",
+      "subtitle": "Automatisera uppgifter baserat på villkor"
+    },
+    "conditionAttendance": {
+      "anywhere": "Var som helst",
+      "campus": "Campus",
+      "eventType": "Händelsetyp",
+      "group": "Grupp",
+      "hasAtt": "har deltagit",
+      "hasNoAtt": "har inte deltagit",
+      "op": "Operator",
+      "serv": "Gudstjänst",
+      "servTime": "Gudstjänsttid"
+    },
+    "conditionDate": {
+      "absolute": "Absolut",
+      "curMonth": "Innevarande månad",
+      "dateFull": "Fullständigt datum",
+      "datePart": "Datumdel",
+      "dayOf": "Dag för",
+      "fri": "Fredag",
+      "mon": "Måndag",
+      "month": "Månad",
+      "monthDay": "Dag i månaden",
+      "nextMonth": "Nästa månad",
+      "op": "Operator",
+      "prevMonth": "Föregående månad",
+      "relative": "Relativ",
+      "sat": "Lördag",
+      "sun": "Söndag",
+      "thurs": "Torsdag",
+      "tues": "Tisdag",
+      "wed": "Onsdag",
+      "weekDay": "Veckodag",
+      "yearsE": "Förflutna år"
+    },
+    "conditionDetails": {
+      "addCon": "Lägg till villkor",
+      "addCondition": "Lägg till villkor",
+      "addConj": "Lägg till konjunktion",
+      "all": "Alla",
+      "and": "OCH",
+      "any": "Valfri",
+      "con": "Villkor:",
+      "noCond": "Inga villkor tillagda",
+      "or": "ELLER",
+      "trueCon": "av dessa villkor är sanna"
+    },
+    "conditionEdit": {
+      "conDetails": "Villkorsdetaljer",
+      "conEdit": "Redigera villkor",
+      "conInfo": "Kontaktinfo",
+      "conType": "Villkorstyp",
+      "confirmMsg": "Är du säker på att du vill ta bort detta villkor?",
+      "gen": "Allmänt",
+      "persAtt": "Personliga attribut",
+      "today": "Dagens datum"
+    },
+    "conditionSelect": {
+      "is": "är",
+      "isNot": "är inte",
+      "op": "Operator"
+    },
+    "conditionText": {
+      "contains": "innehåller",
+      "endW": "slutar med",
+      "op": "Operator",
+      "startW": "börjar med"
+    },
+    "conjunctionEdit": {
+      "and": "OCH - Alla villkor är sanna",
+      "conjEdit": "Redigera konjunktion",
+      "conjType": "Konjunktionstyp",
+      "or": "ELLER - Något av villkoren är sant"
+    },
+    "contentPicker": {
+      "group": "Grupp",
+      "pers": "Person",
+      "sel": "Välj",
+      "selPers": "Välj en person eller grupp"
+    },
+    "newTask": {
+      "assignPers": "Vänligen tilldela denna uppgift till en person.",
+      "assignTo": "Tilldela till",
+      "associatePers": "Vänligen koppla denna uppgift till en person.",
+      "associateW": "Koppla till",
+      "newAssign": "Ny tilldelning",
+      "saving": "Sparar...",
+      "taskNew": "Ny uppgift",
+      "titleTask": "Vänligen ange en titel för denna uppgift."
+    },
+    "requestedChanges": {
+      "applied": "Ändringar tillämpade",
+      "apply": "Tillämpa",
+      "field": "Fält",
+      "newProfile": "Ny profil",
+      "requestedChanges": "Begärda ändringar",
+      "value": "Värde"
+    },
+    "selectGroup": {
+      "group": "Grupp",
+      "noResults": "Inga grupper hittades som matchar din sökning",
+      "searchPrompt": "Sök efter en grupp att välja"
+    },
+    "taskList": {
+      "addTask": "Lägg till uppgift",
+      "assignGroup": "Tilldelade till mina grupper",
+      "assignMe": "Tilldelade till mig",
+      "assignedTo": "Tilldelad till",
+      "associatedWith": "Kopplad till",
+      "noTasks": "Inga uppgifter hittades",
+      "notSpecified": "Ej angiven",
+      "reqMe": "Begärda av mig",
+      "tasks": "Uppgifter",
+      "unassigned": "Ej tilldelad"
+    },
+    "taskPage": {
+      "ago": "sedan",
+      "assign": "Tilldela",
+      "assigned": "Tilldelad",
+      "associate": "Koppla",
+      "associated": "Kopplad",
+      "by": "av",
+      "closed": "Stängd",
+      "created": "Skapad",
+      "editAssigned": "Redigera tilldelad",
+      "editAssoc": "Redigera kopplad",
+      "notSpec": "Ej angiven",
+      "open": "Öppen",
+      "opened": "Öppnad",
+      "unassigned": "Ej tilldelad"
+    },
+    "tasksPage": {
+      "auto": "Automatiseringar",
+      "showClosed": "Visa stängda",
+      "showOpen": "Visa öppna",
+      "subtitle": "Hantera uppgifter och automatiseringar",
+      "tasks": "Uppgifter"
+    }
+  }
+}

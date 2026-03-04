@@ -5,6 +5,7 @@ import { Locale, ApiHelper, PageHeader } from "@churchapps/apphelper";
 import { AttendanceSetup } from "./components/AttendanceSetup";
 import { AttendanceNavigation } from "./components/AttendanceNavigation";
 import { ReportWithFilter } from "../components/reporting";
+import { CheckinThemeEdit } from "./components/CheckinThemeEdit";
 
 export const AttendancePage = () => {
   const [selectedTab, setSelectedTab] = React.useState("setup");
@@ -22,6 +23,7 @@ export const AttendancePage = () => {
       case "setup": currentTab = <AttendanceSetup />; break;
       case "attendance": currentTab = <ReportWithFilter keyName="attendanceTrend" autoRun={true} />; break;
       case "groups": currentTab = <ReportWithFilter keyName="groupAttendance" autoRun={true} />; break;
+      case "kiosk": currentTab = <CheckinThemeEdit />; break;
     }
     return currentTab;
   };
