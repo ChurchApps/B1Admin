@@ -32,7 +32,7 @@ export const Login: React.FC = () => {
     }
   }, [forceLogin, context, removeCookie]);
 
-  const defaultRedirect = UserHelper.checkAccess(Permissions.membershipApi.people.view) ? "/people" : "/profile";
+  const defaultRedirect = UserHelper.checkAccess(Permissions.membershipApi.people.view) ? "/people" : "/";
   const fromLocation = location.state?.from;
   const fromUrl = fromLocation ? (fromLocation.pathname + (fromLocation.search || "")) : null;
   const returnUrl = search.get("returnUrl") || fromUrl || defaultRedirect;
