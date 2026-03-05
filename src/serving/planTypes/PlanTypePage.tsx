@@ -43,29 +43,24 @@ export const PlanTypePage = () => {
 
   return (
     <>
-      <Box sx={{
-        backgroundColor: "var(--c1l2)",
-        color: "#FFF",
-        position: "relative",
-        left: "50%",
-        right: "50%",
-        marginLeft: "-50vw",
-        marginRight: "-50vw",
-        width: "100vw",
-        "--c1l2": "#568BDA",
-        paddingX: { xs: 2, sm: 3, md: 4 },
-        paddingTop: 1.5,
-        paddingBottom: 0.5,
-        zIndex: 1
-      }}>
-        <Breadcrumbs items={breadcrumbItems} showHome={true} />
-      </Box>
-      <Box sx={{ marginTop: "-1.5rem" }}>
+      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "3.5rem !important" } }}>
         <PageHeader
           icon={<AssignmentIcon />}
           title={planType.data.name || Locale.label("plans.planTypePage.planType")}
           subtitle={Locale.label("plans.planTypePage.subtitle")}
         />
+        <Box sx={{
+          position: "absolute",
+          top: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "100vw",
+          zIndex: 2,
+          paddingX: { xs: 2, sm: 3, md: 4 },
+          paddingTop: 1.5,
+        }}>
+          <Breadcrumbs items={breadcrumbItems} showHome={true} />
+        </Box>
       </Box>
 
       {/* Content */}
