@@ -121,7 +121,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
       ApiHelper.delete("/links/" + currentTab.id, "ContentApi").then(() => {
         setCurrentTab(null);
         updatedFunction();
-      });
+      }).catch((error) => console.error("Error deleting tab:", error));
     }
   };
 
