@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiHelper, DisplayBox, SmallButton } from "@churchapps/apphelper";
 
-import { Accordion, AccordionDetails, AccordionSummary, Stack } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Icon, Stack } from "@mui/material";
 import { type SongDetailInterface, type SongInterface } from "../../../helpers";
 import { ArrangementEdit } from "./ArrangementEdit";
 import { OldArrangement } from "./OldArrangement";
@@ -36,14 +36,19 @@ export const OldArrangements = (props: Props) => {
             <AccordionSummary>
               {arrangement.name}
               <span style={{ marginLeft: "auto" }}>
-                <SmallButton
+                <Button
+                  size="small"
+                  variant="outlined"
+                  startIcon={<Icon>edit</Icon>}
                   onClick={() => {
                     setEditArrangement(arrangement);
                   }}
-                  icon="edit"
                   data-testid={`edit-arrangement-button-${arrangement.id}`}
-                  ariaLabel={`Edit arrangement ${arrangement.name}`}
-                />
+                  aria-label={`Edit arrangement ${arrangement.name}`}
+                  sx={{ minWidth: "auto" }}
+                >
+                  Edit
+                </Button>
               </span>
             </AccordionSummary>
             <AccordionDetails>
@@ -68,14 +73,19 @@ export const OldArrangements = (props: Props) => {
         ariaLabel="Add arrangement"
       />
       {arrangements?.length === 1 && (
-        <SmallButton
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<Icon>edit</Icon>}
           onClick={() => {
             setEditArrangement(arrangements[0]);
           }}
-          icon="edit"
           data-testid="edit-single-arrangement-button"
-          ariaLabel="Edit arrangement"
-        />
+          aria-label="Edit arrangement"
+          sx={{ minWidth: "auto" }}
+        >
+          Edit
+        </Button>
       )}
     </Stack>
   );

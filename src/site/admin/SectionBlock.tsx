@@ -1,5 +1,5 @@
 import React from "react";
-import { SmallButton } from "@churchapps/apphelper";
+import { Button, Icon } from "@mui/material";
 import type { ElementInterface, SectionInterface } from "../../helpers";
 import { DraggableIcon } from "./DraggableIcon";
 import { Section } from "./Section";
@@ -26,7 +26,7 @@ export const SectionBlock: React.FC<Props> = props => {
                 <td><DraggableIcon dndType="section" elementType="section" data={props.section} /></td>
                 <td>
                   <div className="sectionEditButton">
-                    <SmallButton icon="edit" onClick={() => props.onEdit(props.section, null)} />
+                    <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => props.onEdit(props.section, null)} sx={{ minWidth: "auto" }}>Edit</Button>
                   </div>
                 </td>
               </tr>

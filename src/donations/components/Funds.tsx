@@ -3,7 +3,7 @@ import { DisplayBox, UserHelper, Loading, Permissions, SmallButton, Locale } fro
 import { type FundInterface } from "@churchapps/helpers";
 import { FundEdit } from ".";
 import { Link } from "react-router-dom";
-import { Icon, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Button, Icon, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 export const Funds: React.FC = memo(() => {
@@ -34,13 +34,10 @@ export const Funds: React.FC = memo(() => {
   }, []);
 
   const handleEdit = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      const anchor = e.currentTarget as HTMLAnchorElement;
-      const idx = parseInt(anchor.getAttribute("data-index"));
-      setEditFund(funds.data[idx]);
+    (fund: FundInterface) => {
+      setEditFund(fund);
     },
-    [funds.data]
+    []
   );
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
@@ -59,9 +56,9 @@ export const Funds: React.FC = memo(() => {
     for (let i = 0; i < funds.data.length; i++) {
       const f = funds.data[i];
       const editLink = canEdit ? (
-        <button type="button" data-cy={`edit-${i}`} onClick={handleEdit} data-index={i} style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }}>
-          <Icon>edit</Icon>
-        </button>
+        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} data-cy={`edit-${i}`} onClick={() => handleEdit(f)} sx={{ minWidth: "auto" }}>
+          Edit
+        </Button>
       ) : null;
       const viewLink = canViewIndividual ? <Link to={"/donations/funds/" + f.id}>{f.name}</Link> : <>{f.name}</>;
       result.push(

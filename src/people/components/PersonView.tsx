@@ -2,7 +2,7 @@ import React, { memo, useMemo, useState, useEffect } from "react";
 import { AssociatedForms } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, DisplayBox, DateHelper, Locale, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
-import { Grid, Icon, Table, TableBody, TableRow, TableCell, Chip } from "@mui/material";
+import { Button, Grid, Icon, Table, TableBody, TableRow, TableCell, Chip } from "@mui/material";
 import { formattedPhoneNumber } from "./PersonEdit";
 
 interface Props {
@@ -217,7 +217,7 @@ export const PersonView = memo(({ person, editFunction, updatedFunction }: Props
   return (
     <DisplayBox
       headerText={Locale.label("people.personView.persDet")}
-      editFunction={editFunction}
+      editContent={editFunction ? <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={editFunction} sx={{ minWidth: "auto" }}>Edit</Button> : undefined}
       footerContent={<AssociatedForms contentType="person" contentId={person?.id} formSubmissions={person?.formSubmissions} updatedFunction={updatedFunction} />}>
       {personFields}
     </DisplayBox>

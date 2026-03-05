@@ -3,7 +3,7 @@ import { DisplayBox } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
-import { Icon } from "@mui/material";
+import { Button, Icon } from "@mui/material";
 import React from "react";
 import { TabEdit } from "./TabEdit";
 import { ensureSequentialSort, moveItemDown, moveItemUp } from "../../helpers/SortHelper";
@@ -52,7 +52,7 @@ export const Tabs: React.FC = () => {
           <td style={{ textAlign: "right" }}>
             {upLink}
             {downLink}
-            <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setCurrentTab(tab); }}><Icon>edit</Icon></a>
+            <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentTab(tab)} sx={{ minWidth: "auto" }}>Edit</Button>
           </td>
         </tr>
       );

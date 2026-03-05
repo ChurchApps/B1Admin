@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { ApiHelper, DisplayBox, UserHelper, Permissions, SmallButton, Locale } from "@churchapps/apphelper";
 import { type RoleMemberInterface, type RoleInterface } from "@churchapps/helpers";
-import { Alert, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Alert, Button, Icon, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 
 interface Props {
   role: RoleInterface;
@@ -66,15 +66,19 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
         />
       ) : null;
       const editLink = canEdit ? (
-        <SmallButton
-          icon="edit"
-          toolTip={Locale.label("common.edit")}
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<Icon>edit</Icon>}
           onClick={() => {
             props.setSelectedRoleMember(rm.userId);
           }}
           data-testid={`edit-role-member-button-${rm.id}`}
-          ariaLabel={`Edit role member ${rm.user?.firstName} ${rm.user?.lastName}`}
-        />
+          aria-label={`Edit role member ${rm.user?.firstName} ${rm.user?.lastName}`}
+          sx={{ minWidth: "auto" }}
+        >
+          Edit
+        </Button>
       ) : null;
 
       const { firstName, lastName } = rm.user;

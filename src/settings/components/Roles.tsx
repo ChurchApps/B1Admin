@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { DisplayBox, UserHelper, ApiHelper, Permissions, type ChurchInterface, type RoleInterface, type RolePermissionInterface, Locale } from "@churchapps/apphelper";
-import { Divider, Icon, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, Divider, Icon, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { SmallButton } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 
@@ -161,15 +161,19 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
 
     sortedRoles.forEach((role) => {
       const editLink = canEdit ? (
-        <SmallButton
-          icon="edit"
-          toolTip={Locale.label("common.edit")}
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<Icon>edit</Icon>}
           onClick={() => {
             selectRoleId(role.id);
           }}
           data-testid="edit-role-button"
-          ariaLabel="Edit role"
-        />
+          aria-label="Edit role"
+          sx={{ minWidth: "auto" }}
+        >
+          Edit
+        </Button>
       ) : null;
       result.push(
         <TableRow key={role.id}>

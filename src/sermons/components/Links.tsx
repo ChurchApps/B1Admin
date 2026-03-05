@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@mui/material";
+import { Button, Icon } from "@mui/material";
 import { LinkEdit } from "./LinkEdit";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
@@ -89,7 +89,7 @@ export const Links: React.FC<Props> = (props) => {
                       <td style={{ textAlign: "right" }}>
                         {upLink}
                         {downLink}
-                        <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setCurrentLink(link); }}><Icon>edit</Icon></a>
+                        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>Edit</Button>
                       </td>
                     </tr>
                     <>
@@ -105,7 +105,7 @@ export const Links: React.FC<Props> = (props) => {
                     <td style={{ textAlign: "right" }}>
                       {upLink}
                       {downLink}
-                      <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setCurrentLink(link); }}><Icon>edit</Icon></a>
+                      <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>Edit</Button>
                     </td>
                   </tr>
                 )}
@@ -129,7 +129,7 @@ export const Links: React.FC<Props> = (props) => {
             <td style={{ textAlign: "right" }}>
               {upLink}
               {downLink}
-              <a href="about:blank" onClick={(e: React.MouseEvent) => { e.preventDefault(); setCurrentLink(link); }}><Icon>edit</Icon></a>
+              <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>Edit</Button>
             </td>
           </tr>
           {link.children && <RecursiveLinks childrenLinks={link.children} nestedLevel={0} />}

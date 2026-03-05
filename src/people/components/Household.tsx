@@ -3,7 +3,7 @@ import { HouseholdEdit } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
 import { DisplayBox, ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, PersonHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Chip } from "@mui/material";
+import { Button, Icon, Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Chip } from "@mui/material";
 import { Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
@@ -33,7 +33,9 @@ export const Household: React.FC<Props> = memo((props) => {
       ApiHelper.get("/people/household/" + household.id, "MembershipApi").then((data) => setMembers(data));
     }
   };
-  const getEditFunction = () => (UserHelper.checkAccess(Permissions.membershipApi.people.edit) ? handleEdit : undefined);
+  const getEditContent = () => (UserHelper.checkAccess(Permissions.membershipApi.people.edit)
+    ? <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={handleEdit} aria-label="editHousehold" sx={{ minWidth: "auto" }}>Edit</Button>
+    : undefined);
   React.useEffect(loadData, [props.person]);
   React.useEffect(() => {
     setPhoto(PersonHelper.getPhotoUrl(props.person));
@@ -133,7 +135,7 @@ export const Household: React.FC<Props> = memo((props) => {
 
   if (mode === "display") {
     return (
-      <DisplayBox id="householdBox" headerIcon="group" headerText={(household?.name || "") + Locale.label("people.household.house")} editFunction={getEditFunction()} ariaLabel="editHousehold">
+      <DisplayBox id="householdBox" headerIcon="group" headerText={(household?.name || "") + Locale.label("people.household.house")} editContent={getEditContent()}>
         {getTable()}
       </DisplayBox>
     );

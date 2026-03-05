@@ -5,7 +5,7 @@ import { ArrayHelper } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
-import { Box, Button, Card, CardContent, Icon, IconButton, InputAdornment, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Icon, InputAdornment, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Add as AddIcon, CalendarMonth as CalendarIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import React from "react";
 import { SermonEdit } from "./SermonEdit";
@@ -166,17 +166,17 @@ export const Sermons = () => {
             </Stack>
           </TableCell>
           <TableCell align="right">
-            <Tooltip title={Locale.label("common.edit")}>
-              <IconButton
-                size="small"
-                onClick={() => { setCurrentSermon(video); }}
-                data-testid={`edit-sermon-${video.id}`}
-                aria-label={`Edit ${video.title}`}
-                sx={{ color: "primary.main" }}
-              >
-                <Icon>edit</Icon>
-              </IconButton>
-            </Tooltip>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<Icon>edit</Icon>}
+              onClick={() => { setCurrentSermon(video); }}
+              data-testid={`edit-sermon-${video.id}`}
+              aria-label={`Edit ${video.title}`}
+              sx={{ minWidth: "auto" }}
+            >
+              Edit
+            </Button>
           </TableCell>
         </TableRow>
       );
