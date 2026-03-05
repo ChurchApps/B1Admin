@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Box, Button, Stack, Typography, Paper } from "@mui/material";
-import { Edit as EditIcon, Settings as SettingsIcon, Web as WebIcon } from "@mui/icons-material";
+import { Edit as EditIcon, Settings as SettingsIcon } from "@mui/icons-material";
 import { ApiHelper, PageHeader, Locale } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { EnvironmentHelper } from "../helpers/EnvironmentHelper";
@@ -70,7 +70,7 @@ export const PagePreview: React.FC = () => {
 
   return (
     <>
-      <PageHeader icon={<WebIcon />} title={Locale.label("site.pagePreview.title")} subtitle={Locale.label("site.pagePreview.subtitle").replace("{title}", pageData.title)}>
+      <PageHeader title={Locale.label("site.pagePreview.title")} subtitle={Locale.label("site.pagePreview.subtitle").replace("{title}", pageData.title)}>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: { xs: "100%", sm: "auto" } }}>
           <Button variant="outlined" startIcon={<EditIcon />} onClick={handleEditContent} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", textTransform: "none", fontWeight: 600, "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("site.pagePreview.editContent")}</Button>
           <Button variant="outlined" startIcon={<SettingsIcon />} onClick={() => setShowSettings(true)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", textTransform: "none", fontWeight: 600, "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("site.pagePreview.pageSettings")}</Button>

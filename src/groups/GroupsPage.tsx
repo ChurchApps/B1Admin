@@ -3,7 +3,7 @@ import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, ExportLink, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, IconButton, Toolbar, Stack, Typography, Icon } from "@mui/material";
-import { Groups as GroupsIcon, Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon } from "@mui/icons-material";
+import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 
@@ -120,7 +120,6 @@ const GroupsPage = () => {
   return (
     <>
       <PageHeader
-        icon={<GroupsIcon />}
         title={Locale.label("groups.groupsPage.groups")}
         subtitle={groups.length > 0 ? Locale.label("groups.groupsPage.subtitle.manage").replace("{count}", groups.length.toString()) : Locale.label("groups.groupsPage.subtitle.create")}
       >

@@ -13,7 +13,7 @@ export const BulkImportPage = memo(() => {
   return (
     <>
       <Box sx={{ mb: 3 }}>
-        <PageHeader icon={<CloudUploadIcon />} title={Locale.label("sermons.bulkImport.title")} subtitle={Locale.label("sermons.bulkImport.subtitle")}>
+        <PageHeader title={Locale.label("sermons.bulkImport.title")} subtitle={Locale.label("sermons.bulkImport.subtitle")}>
           {importType && (
             <Button
               variant="outlined"

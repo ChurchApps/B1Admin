@@ -61,7 +61,7 @@ export const EmailTemplatesPage: React.FC = () => {
 
   return (
     <>
-      <PageHeader icon={<EmailIcon />} title="Email Templates" subtitle="Create and manage reusable email templates">
+      <PageHeader title="Email Templates" subtitle="Create and manage reusable email templates">
         <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew} sx={{ color: "#FFF", backgroundColor: "rgba(255,255,255,0.2)", borderColor: "#FFF", "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" } }}>
           New Template
         </Button>

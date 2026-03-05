@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { Box } from "@mui/material";
-import { Style as StyleIcon } from "@mui/icons-material";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
 import { StylesManager } from "./components";
@@ -19,7 +18,6 @@ export const AppearancePage = () => {
   return (
     <>
       <PageHeader
-        icon={<StyleIcon />}
         title={Locale.label("site.appearancePage.title")}
         subtitle={Locale.label("site.appearancePage.subtitle")}
       />

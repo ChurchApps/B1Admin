@@ -1,7 +1,7 @@
 import React from "react";
 import { Locale, PageHeader } from "@churchapps/apphelper";
 import { Box, Card, CardContent, Typography, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Container, Paper } from "@mui/material";
-import { Summarize as SummarizeIcon, CakeOutlined as BirthdayIcon, TrendingUp as TrendIcon, Groups as GroupsIcon, Today as DailyIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
+import { CakeOutlined as BirthdayIcon, TrendingUp as TrendIcon, Groups as GroupsIcon, Today as DailyIcon, VolunteerActivism as DonationIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 export const ReportsPage = () => {
@@ -41,7 +41,6 @@ export const ReportsPage = () => {
   return (
     <>
       <PageHeader
-        icon={<SummarizeIcon />}
         title={Locale.label("reports.reportsPage.reports")}
         subtitle={Locale.label("reports.reportsPage.subtitle")}
       />

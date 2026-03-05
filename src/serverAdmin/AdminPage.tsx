@@ -46,7 +46,7 @@ export const AdminPage = () => {
 
   return (
     <>
-      <PageHeader icon={<AdminIcon />} title={Locale.label("serverAdmin.adminPage.servAdmin")} subtitle={Locale.label("serverAdmin.adminPage.subtitle")} />
+      <PageHeader title={Locale.label("serverAdmin.adminPage.servAdmin")} subtitle={Locale.label("serverAdmin.adminPage.subtitle")} />
 
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>

@@ -183,7 +183,6 @@ export const StripeImportPage = () => {
   return (
     <>
       <PageHeader
-        icon={<ImportIcon />}
         title="Import Stripe Transactions"
         subtitle="Import missing transactions from Stripe that weren't captured by webhooks"
       />

@@ -273,7 +273,6 @@ export const DonationBatchesPage = () => {
   return (
     <>
       <PageHeader
-        icon={<DonationIcon />}
         title={Locale.label("donations.donations.batches")}
         subtitle={Locale.label("donations.donationBatchesPage.subtitle")}
       >

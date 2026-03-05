@@ -6,8 +6,7 @@ import {
 } from "@mui/material";
 import {
   DownloadOutlined as DownloadIcon,
-  PrintOutlined as PrintIcon,
-  VolunteerActivism as DonationIcon
+  PrintOutlined as PrintIcon
 } from "@mui/icons-material";
 import { PageHeader, Locale, CurrencyHelper, UserHelper, Permissions, ArrayHelper } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type PersonInterface, type FundInterface } from "@churchapps/helpers";
@@ -196,7 +195,6 @@ export const BatchGivingStatementsPage = () => {
   return (
     <>
       <PageHeader
-        icon={<DonationIcon />}
         title={Locale.label("donations.batchStatements.title") || "Batch Giving Statements"}
         subtitle={Locale.label("donations.batchStatements.subtitle") || "Download giving statements for all donors"}
       />

@@ -4,7 +4,7 @@ import { type FormInterface, type MemberPermissionInterface } from "@churchapps/
 import { UserHelper, Permissions, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
 import { Box } from "@mui/material";
-import { Description as DescriptionIcon } from "@mui/icons-material";
+
 import { useQuery } from "@tanstack/react-query";
 
 export const FormPage = () => {
@@ -58,7 +58,7 @@ export const FormPage = () => {
 
   return form.data?.id ? (
     <>
-      <PageHeader icon={<DescriptionIcon />} title={form.data.name} subtitle={Locale.label("forms.formPage.subtitleConfig")} />
+      <PageHeader title={form.data.name} subtitle={Locale.label("forms.formPage.subtitleConfig")} />
       <FormNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} form={form.data} memberPermission={memberPermission.data} />
 
       {/* Tab Content */}

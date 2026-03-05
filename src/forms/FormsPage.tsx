@@ -202,7 +202,7 @@ export const FormsPage = () => {
 
   return (
     <>
-      <PageHeader icon={<DescriptionIcon />} title={Locale.label("forms.formsPage.forms")} subtitle={Locale.label("forms.formsPage.subtitleManage")}>
+      <PageHeader title={Locale.label("forms.formsPage.forms")} subtitle={Locale.label("forms.formsPage.subtitleManage")}>
         {formPermission && selectedTab !== "archived" && (
           <Button
             variant="contained"

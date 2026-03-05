@@ -217,7 +217,7 @@ export const SongPage = memo(() => {
 
   return (
     <>
-      <PageHeader icon={<MusicIcon />} title={songDetail.data?.title || song.data?.name || Locale.label("songs.songPage.loading")} subtitle={Locale.label("songs.songPage.subtitle")}>
+      <PageHeader title={songDetail.data?.title || song.data?.name || Locale.label("songs.songPage.loading")} subtitle={Locale.label("songs.songPage.subtitle")}>
         {canEdit && (
           <IconButton
             onClick={() => setEditSongDetails(true)}

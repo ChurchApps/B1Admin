@@ -245,7 +245,6 @@ export const Playlists = () => {
     <>
       <Box sx={{ mb: 3 }}>
         <PageHeader
-          icon={<VideoLibraryIcon />}
           title={Locale.label("sermons.playlists.title")}
           subtitle={Locale.label("sermons.playlists.subtitle")}
         >

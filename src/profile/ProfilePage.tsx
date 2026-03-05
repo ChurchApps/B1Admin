@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { LinkedAccounts } from "./components/LinkedAccounts";
-import { Person as PersonIcon, DarkMode, LightMode } from "@mui/icons-material";
+import { DarkMode, LightMode } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { LoadingButton } from "../components";
 import { useMutation } from "@tanstack/react-query";
@@ -127,7 +127,7 @@ export const ProfilePage = () => {
   if (isDemo) {
     return (
       <>
-        <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
+        <PageHeader title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
         <Box sx={{ p: 3 }}>
           <Alert severity="info">Profile editing is disabled in demo mode.</Alert>
         </Box>
@@ -137,7 +137,7 @@ export const ProfilePage = () => {
 
   return (
     <>
-      <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
+      <PageHeader title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
 
       <Box sx={{ p: 3 }}>
         <Stack spacing={3}>

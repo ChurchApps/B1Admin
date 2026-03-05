@@ -247,7 +247,6 @@ export const Sermons = () => {
       <>
         <Box sx={{ mb: 3 }}>
           <PageHeader
-            icon={<LiveTvIcon />}
             title={Locale.label("sermons.title")}
             subtitle={Locale.label("sermons.subtitle")}
           >

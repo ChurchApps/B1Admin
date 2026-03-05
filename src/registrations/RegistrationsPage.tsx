@@ -69,7 +69,7 @@ export const RegistrationsPage = () => {
 
   return (
     <>
-      <PageHeader icon={<RegIcon />} title="Event Registrations" subtitle="Manage event registration settings and view registrants" />
+      <PageHeader title="Event Registrations" subtitle="Manage event registration settings and view registrants" />
       <Box sx={{ p: 3 }}>
         <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
           <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>

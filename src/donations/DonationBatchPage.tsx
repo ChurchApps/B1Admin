@@ -5,7 +5,7 @@ import { type DonationBatchInterface, type FundInterface, type DonationInterface
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, Card, Stack, Button, Typography } from "@mui/material";
-import { VolunteerActivism as DonationIcon, Receipt as ReceiptIcon, AttachMoney as MoneyIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Receipt as ReceiptIcon, AttachMoney as MoneyIcon, Edit as EditIcon } from "@mui/icons-material";
 
 export const DonationBatchPage = () => {
   const params = useParams();
@@ -76,7 +76,6 @@ export const DonationBatchPage = () => {
   return (
     <>
       <PageHeader
-        icon={<DonationIcon />}
         title={batch.data?.name || Locale.label("donations.donationBatchPage.title")}
         subtitle={batch.data?.batchDate ? `${Locale.label("donations.donationBatchPage.batchDate")} ${DateHelper.prettyDate(new Date(batch.data.batchDate.split("T")[0] + "T00:00:00"))}` : Locale.label("donations.donationBatchPage.subtitle")}
       >

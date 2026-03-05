@@ -3,7 +3,6 @@ import { Locale, PageHeader } from "@churchapps/apphelper";
 import { TaskList } from "./components/TaskList";
 import { TasksNavigation } from "./components/TasksNavigation";
 import { Box } from "@mui/material";
-import { Assignment as TaskIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 export const TasksPage = () => {
@@ -16,7 +15,7 @@ export const TasksPage = () => {
 
   return (
     <>
-      <PageHeader icon={<TaskIcon />} title={Locale.label("tasks.tasksPage.tasks")} subtitle={Locale.label("tasks.tasksPage.subtitle")} />
+      <PageHeader title={Locale.label("tasks.tasksPage.tasks")} subtitle={Locale.label("tasks.tasksPage.subtitle")} />
       <TasksNavigation selectedTab="tasks" onTabChange={handleTabChange} />
 
       {/* Task List */}

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Box, Button } from "@mui/material";
-import { PhoneIphone as PhoneIcon, Add as AddIcon } from "@mui/icons-material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
 import type { LinkInterface } from "@churchapps/helpers";
@@ -42,7 +42,6 @@ export const MobileAppSettingsPage = () => {
   return (
     <>
       <PageHeader
-        icon={<PhoneIcon />}
         title={Locale.label("settings.mobileAppSettings.title")}
         subtitle={Locale.label("settings.mobileAppSettings.subtitle")}
       >

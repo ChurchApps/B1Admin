@@ -93,7 +93,6 @@ export const CalendarPage = () => {
   return (
     <>
       <PageHeader
-        icon={<CalendarIcon />}
         title={currentCalendar?.name || Locale.label("calendars.calendarPage.calendar")}
         subtitle={Locale.label("calendars.calendarPage.subtitle")}
       />

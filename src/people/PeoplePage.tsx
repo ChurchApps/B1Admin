@@ -82,7 +82,6 @@ export const PeoplePage = memo(() => {
   return (
     <>
       <PageHeader
-        icon={<PeopleIcon />}
         title={Locale.label("people.peoplePage.searchPpl")}
         subtitle={
           searchResults

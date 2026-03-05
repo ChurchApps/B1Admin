@@ -145,7 +145,6 @@ export const BlocksPage = () => {
     return (
       <>
         <PageHeader
-          icon={<BlockIcon />}
           title={Locale.label("site.blocksPage.reusableBlocks")}
           subtitle={Locale.label("site.blocksPage.subtitle")}
         />
@@ -158,7 +157,7 @@ export const BlocksPage = () => {
 
   return (
     <>
-      <PageHeader icon={<BlockIcon />} title={Locale.label("site.blocksPage.reusableBlocks")} subtitle={Locale.label("site.blocksPage.subtitle")} statistics={[{ icon: <BlockIcon />, value: stats.totalBlocks.toString(), label: Locale.label("site.blocksPage.totalBlocks") }]}>
+      <PageHeader title={Locale.label("site.blocksPage.reusableBlocks")} subtitle={Locale.label("site.blocksPage.subtitle")} statistics={[{ icon: <BlockIcon />, value: stats.totalBlocks.toString(), label: Locale.label("site.blocksPage.totalBlocks") }]}>
         <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setEditBlock({ blockType: "elementBlock" })} data-testid="add-block-button" sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("site.blocksPage.addBlock")}</Button>
       </PageHeader>
 

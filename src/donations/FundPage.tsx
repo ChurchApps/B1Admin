@@ -233,7 +233,6 @@ export const FundPage = () => {
   return (
     <>
       <PageHeader
-        icon={<FundIcon />}
         title={`${fund.name} ${Locale.label("donations.fundsPage.don")}`}
         subtitle={Locale.label("donations.fundPage.subtitle")}
       >

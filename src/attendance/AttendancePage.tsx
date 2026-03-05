@@ -68,7 +68,6 @@ export const AttendancePage = () => {
   return (
     <>
       <PageHeader
-        icon={<CalendarIcon />}
         title={Locale.label("attendance.attendancePage.att")}
         subtitle={Locale.label("attendance.attendancePage.subtitle")}
       >

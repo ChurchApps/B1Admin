@@ -238,7 +238,6 @@ export const PagesPage = () => {
         />
       )}
       <PageHeader
-        icon={<ArticleIcon />}
         title={Locale.label("site.pagesPage.websitePages")}
         subtitle={Locale.label("site.pagesPage.subtitle")}
         statistics={[

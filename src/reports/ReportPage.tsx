@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { useParams } from "react-router-dom";
 import { Locale, PageHeader } from "@churchapps/apphelper";
 import { Box, Container, Card, CardContent, Skeleton } from "@mui/material";
-import { Summarize as SummarizeIcon, ArrowBack as BackIcon } from "@mui/icons-material";
+import { ArrowBack as BackIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { ReportWithFilter } from "../components/reporting/ReportWithFilter";
 import { type ReportInterface } from "@churchapps/helpers";
@@ -19,7 +19,6 @@ export const ReportPage = memo(() => {
   return (
     <>
       <PageHeader
-        icon={<SummarizeIcon />}
         title={report.isLoading ? <Skeleton width={300} /> : report.data?.displayName || Locale.label("reports.reportPage.report")}
         subtitle={!report.isLoading && report.data?.description ? report.data.description : undefined}
         breadcrumbs={[

@@ -2,7 +2,6 @@ import React, { memo } from "react";
 import { UserHelper, Permissions, PageHeader, Locale, CommonEnvironmentHelper } from "@churchapps/apphelper";
 import { Box, Button, Grid } from "@mui/material";
 import {
-  Schedule as ScheduleIcon,
   PlayArrow as PlayArrowIcon,
   Settings as SettingsIcon,
   LiveTv as LiveTvIcon
@@ -43,7 +42,7 @@ export const LiveStreamTimesPage = memo(() => {
 
   return (
     <>
-      <PageHeader icon={<ScheduleIcon />} title={Locale.label("sermons.liveStreamTimes.title")} subtitle={Locale.label("sermons.liveStreamTimes.subtitle")} />
+      <PageHeader title={Locale.label("sermons.liveStreamTimes.title")} subtitle={Locale.label("sermons.liveStreamTimes.subtitle")} />
       <NavigationTabs selectedTab={selectedTab} onTabChange={setSelectedTab} tabs={tabs} />
       <Box sx={{ p: 3 }}>
         {getCurrentTab()}

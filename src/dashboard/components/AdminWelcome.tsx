@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { Image, Language, VolunteerActivism, MusicNote, Person, Groups, LiveTv, Lock } from "@mui/icons-material";
 import { ApiHelper } from "@churchapps/apphelper";
-import { WelcomeHeader } from "./WelcomeHeader";
+import { PageHeader } from "@churchapps/apphelper";
 import { FeatureCard } from "./FeatureCard";
 import { QuickSetupModal, type WizardType } from "./QuickSetupModal";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +35,7 @@ export const AdminWelcome: React.FC = () => {
 
   return (
     <>
-      <WelcomeHeader
+      <PageHeader
         title="Welcome to B1.church!"
         subtitle="Let's get your church set up. Here are some things you'll likely want to do first."
       />

@@ -4,7 +4,7 @@ import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination,
   TextField, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography
 } from "@mui/material";
-import { History as HistoryIcon, FileDownload as ExportIcon, Search as SearchIcon } from "@mui/icons-material";
+import { FileDownload as ExportIcon, Search as SearchIcon } from "@mui/icons-material";
 
 interface AuditLog {
   id: string;
@@ -126,7 +126,7 @@ export const AuditLogPage: React.FC = () => {
 
   return (
     <>
-      <PageHeader icon={<HistoryIcon />} title="Audit Log" subtitle="Track changes and activity across your church" />
+      <PageHeader title="Audit Log" subtitle="Track changes and activity across your church" />
 
       <Box sx={{ p: 3 }}>
         <Card sx={{ mb: 3, p: 2 }}>

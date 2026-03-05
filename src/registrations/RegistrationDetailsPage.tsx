@@ -124,7 +124,7 @@ export const RegistrationDetailsPage = () => {
 
   return (
     <>
-      <PageHeader icon={<RegIcon />} title={event.title || "Event Registrations"} subtitle="Manage registrations for this event" />
+      <PageHeader title={event.title || "Event Registrations"} subtitle="Manage registrations for this event" />
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 8 }}>

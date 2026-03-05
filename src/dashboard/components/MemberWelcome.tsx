@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { CameraAlt, Groups, VolunteerActivism, Event, PhoneIphone, Person } from "@mui/icons-material";
 import { UserHelper, Permissions } from "@churchapps/apphelper";
-import { WelcomeHeader } from "./WelcomeHeader";
+import { PageHeader } from "@churchapps/apphelper";
 import { FeatureCard } from "./FeatureCard";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 
@@ -13,7 +13,7 @@ export const MemberWelcome: React.FC = () => {
 
   return (
     <>
-      <WelcomeHeader
+      <PageHeader
         title={`Welcome to ${churchName}!`}
         subtitle="Here are some things you can do to get connected."
       />

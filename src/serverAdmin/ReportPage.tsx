@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { ApiHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { Box, Container, Card, CardContent, Skeleton, Chip } from "@mui/material";
-import { AdminPanelSettings as AdminIcon, ArrowBack as BackIcon } from "@mui/icons-material";
+import { ArrowBack as BackIcon } from "@mui/icons-material";
 import { ReportWithFilter } from "../components/reporting/ReportWithFilter";
 import { type ReportInterface } from "@churchapps/helpers";
 
@@ -30,7 +30,6 @@ export const ReportPage = () => {
   return (
     <>
       <PageHeader
-        icon={<AdminIcon />}
         title={loading ? <Skeleton width={300} /> : report?.displayName || Locale.label("serverAdmin.reportPage.report")}
         subtitle={!loading && report?.description ? report.description : undefined}
         breadcrumbs={[

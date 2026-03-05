@@ -97,7 +97,7 @@ export const AutomationsPage = () => {
 
   return (
     <>
-      <PageHeader icon={<AutomationsIcon />} title={Locale.label("tasks.automationsPage.manageAuto")} subtitle={Locale.label("tasks.automationsPage.subtitle")}>
+      <PageHeader title={Locale.label("tasks.automationsPage.manageAuto")} subtitle={Locale.label("tasks.automationsPage.subtitle")}>
         <Button
           variant="outlined"
           startIcon={<AddIcon />}

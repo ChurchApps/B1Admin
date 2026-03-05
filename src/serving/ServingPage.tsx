@@ -75,7 +75,7 @@ export const ServingPage = () => {
   if (showAdd) {
     return (
       <>
-        <PageHeader icon={<AssignmentIcon />} title={Locale.label("plans.plansPage.addMinistry")} subtitle={Locale.label("plans.plansPage.subtitle")} />
+        <PageHeader title={Locale.label("plans.plansPage.addMinistry")} subtitle={Locale.label("plans.plansPage.subtitle")} />
         <Box sx={{ p: 3 }}>
           <GroupAdd updatedFunction={handleAddUpdated} tags="ministry" categoryName="Ministry" />
         </Box>
@@ -87,7 +87,7 @@ export const ServingPage = () => {
   if (groups.length === 0) {
     return (
       <>
-        <PageHeader icon={<AssignmentIcon />} title={Locale.label("plans.plansPage.selMin")} subtitle={Locale.label("plans.plansPage.subtitle")} />
+        <PageHeader title={Locale.label("plans.plansPage.selMin")} subtitle={Locale.label("plans.plansPage.subtitle")} />
         <Box sx={{ p: 3 }}>
           <EmptyState
             icon={<AssignmentIcon />}
@@ -109,7 +109,7 @@ export const ServingPage = () => {
   // Has ministries - show selector and content
   return (
     <>
-      <PageHeader icon={<AssignmentIcon />} title={selectedMinistry?.name || Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
+      <PageHeader title={selectedMinistry?.name || Locale.label("components.wrapper.serving")} subtitle={Locale.label("plans.ministryPage.subtitle")}>
         {isAdmin && (
           <FormControlLabel
             control={

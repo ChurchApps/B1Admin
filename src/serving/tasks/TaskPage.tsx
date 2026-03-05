@@ -6,7 +6,7 @@ import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Assignment as TaskIcon, Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon } from "@mui/icons-material";
+import { Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon } from "@mui/icons-material";
 
 export const TaskPage = () => {
   const params = useParams();
@@ -94,7 +94,6 @@ export const TaskPage = () => {
     return (
       <>
         <PageHeader
-          icon={<TaskIcon />}
           title={`#${task.data.taskNumber} - ${task.data?.title}`}
           subtitle={`${Locale.label("tasks.taskPage.created")} ${DateHelper.getDisplayDuration(DateHelper.toDate(task.data?.dateCreated))} ${Locale.label("tasks.taskPage.ago")} ${Locale.label("tasks.taskPage.by")} ${task.data.createdByLabel} • ${Locale.label("tasks.taskPage.associated")}: ${task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")} • ${Locale.label("tasks.taskPage.assigned")}: ${task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}`}>
           <Stack direction="row" spacing={1}>

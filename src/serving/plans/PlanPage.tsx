@@ -6,11 +6,8 @@ import { type GroupInterface } from "@churchapps/helpers";
 import { Assignment } from "../components/Assignment";
 import { PlanNavigation } from "../components/PlanNavigation";
 import { Box, Container, Typography } from "@mui/material";
-import { Assignment as AssignmentIcon } from "@mui/icons-material";
 import { ServiceOrder } from "../components/ServiceOrder";
 import { Breadcrumbs } from "../../components/ui";
-
-
 
 export const PlanPage = () => {
   const params = useParams();
@@ -67,7 +64,7 @@ export const PlanPage = () => {
   return (
     <>
       <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "3.5rem !important" } }}>
-        <PageHeader icon={<AssignmentIcon />} title={plan.name || Locale.label("plans.planPage.servicePlan")} subtitle={Locale.label("plans.planPage.subtitle")} />
+        <PageHeader title={plan.name || Locale.label("plans.planPage.servicePlan")} subtitle={Locale.label("plans.planPage.subtitle")} />
         <Box sx={{
           position: "absolute",
           top: 0,

@@ -3,7 +3,7 @@ import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Box, Stack, Button } from "@mui/material";
-import { Settings as SettingsIcon, Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon, History as HistoryIcon } from "@mui/icons-material";
+import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon, History as HistoryIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
 import { MobileAppSettingsPage } from "./MobileAppSettingsPage";
 import { useQuery } from "@tanstack/react-query";
@@ -56,7 +56,7 @@ export const ManageChurch = () => {
 
   return (
     <>
-      <PageHeader icon={<SettingsIcon />} title={church.data?.name || Locale.label("settings.manageChurch.title")} subtitle={church.data?.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}>
+      <PageHeader title={church.data?.name || Locale.label("settings.manageChurch.title")} subtitle={church.data?.subDomain ? `${church.data.subDomain}.b1.church` : Locale.label("settings.manageChurch.subtitle")}>
         <Stack direction="row" spacing={1}>
           {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
             <Button

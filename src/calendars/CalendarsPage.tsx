@@ -155,7 +155,6 @@ export const CalendarsPage = () => {
   return (
     <>
       <PageHeader
-        icon={<CalendarIcon />}
         title={Locale.label("calendars.calendarList.title")}
         subtitle={
           calendars.length > 0
