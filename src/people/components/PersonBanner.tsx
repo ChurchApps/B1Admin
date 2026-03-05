@@ -1,6 +1,6 @@
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
-import { Typography, IconButton, Stack, Chip, Tooltip } from "@mui/material";
+import { Typography, IconButton, Stack, Chip, Tooltip, Box } from "@mui/material";
 import {
   Edit as EditIcon,
   Phone as PhoneIcon,
@@ -114,8 +114,42 @@ export const PersonBanner = memo((props: Props) => {
   if (!person) return null;
 
   return (
-    <div style={{ backgroundColor: "var(--c1l2)", color: "#FFF", padding: "24px", position: "relative" }}>
-      <Stack direction={{ xs: "column", lg: "row" }} spacing={{ xs: 2, md: 4 }} alignItems={{ xs: "flex-start", md: "center" }} sx={{ width: "100%" }}>
+    <Box sx={{
+      background: "linear-gradient(135deg, var(--c1d3, #0D3B6E) 0%, var(--c1, #1565C0) 40%, var(--c1l2, #568BDA) 100%)",
+      color: "#FFF",
+      position: "relative",
+      left: "50%",
+      right: "50%",
+      marginLeft: "-50vw",
+      marginRight: "-50vw",
+      width: "100vw",
+      overflow: "hidden",
+      paddingX: { xs: 2, sm: 3, md: 4 },
+      paddingY: 3,
+      "&::before": {
+        content: "''",
+        position: "absolute",
+        top: -100,
+        right: -100,
+        width: 400,
+        height: 400,
+        borderRadius: "50%",
+        background: "rgba(255,255,255,0.05)",
+        pointerEvents: "none",
+      },
+      "&::after": {
+        content: "''",
+        position: "absolute",
+        bottom: -80,
+        left: -80,
+        width: 300,
+        height: 300,
+        borderRadius: "50%",
+        background: "rgba(255,255,255,0.04)",
+        pointerEvents: "none",
+      },
+    }}>
+      <Stack direction={{ xs: "column", lg: "row" }} spacing={{ xs: 2, md: 4 }} alignItems={{ xs: "flex-start", md: "center" }} sx={{ width: "100%", position: "relative", zIndex: 1 }}>
         {/* Column 1: Avatar + Name + Status */}
         <Stack direction="row" spacing={2} alignItems="center" sx={{ flexShrink: 0 }}>
           <div style={{ border: "3px solid #FFF", borderRadius: "50%" }}>
@@ -195,6 +229,6 @@ export const PersonBanner = memo((props: Props) => {
           onClose={() => setShowTextDialog(false)}
         />
       )}
-    </div>
+    </Box>
   );
 });

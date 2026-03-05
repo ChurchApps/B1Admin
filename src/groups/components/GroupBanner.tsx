@@ -138,8 +138,42 @@ export const GroupBanner = memo((props: Props) => {
   if (!group) return null;
 
   return (
-    <div style={{ backgroundColor: "var(--c1l2)", color: "#FFF", padding: "20px" }}>
-      <Stack spacing={2} sx={{ width: "100%" }}>
+    <Box sx={{
+      background: "linear-gradient(135deg, var(--c1d3, #0D3B6E) 0%, var(--c1, #1565C0) 40%, var(--c1l2, #568BDA) 100%)",
+      color: "#FFF",
+      position: "relative",
+      left: "50%",
+      right: "50%",
+      marginLeft: "-50vw",
+      marginRight: "-50vw",
+      width: "100vw",
+      overflow: "hidden",
+      paddingX: { xs: 2, sm: 3, md: 4 },
+      paddingY: 3,
+      "&::before": {
+        content: "''",
+        position: "absolute",
+        top: -100,
+        right: -100,
+        width: 400,
+        height: 400,
+        borderRadius: "50%",
+        background: "rgba(255,255,255,0.05)",
+        pointerEvents: "none",
+      },
+      "&::after": {
+        content: "''",
+        position: "absolute",
+        bottom: -80,
+        left: -80,
+        width: 300,
+        height: 300,
+        borderRadius: "50%",
+        background: "rgba(255,255,255,0.04)",
+        pointerEvents: "none",
+      },
+    }}>
+      <Stack spacing={2} sx={{ width: "100%", position: "relative", zIndex: 1 }}>
         {/* Main Layout: Photo on left, Content on right */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 3, md: 4 }} alignItems={{ xs: "center", md: "flex-start" }} sx={{ width: "100%" }}>
           {/* Left: Photo */}
@@ -401,6 +435,6 @@ export const GroupBanner = memo((props: Props) => {
           onClose={() => setShowEmailDialog(false)}
         />
       )}
-    </div>
+    </Box>
   );
 });
