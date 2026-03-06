@@ -1,14 +1,17 @@
 import React from "react";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { Image, Language, VolunteerActivism, MusicNote, Person, Groups, LiveTv, Lock } from "@mui/icons-material";
-import { ApiHelper } from "@churchapps/apphelper";
+import { Image, Language, VolunteerActivism, MusicNote, Person, Groups, LiveTv, Lock, CameraAlt } from "@mui/icons-material";
+import { ApiHelper, UserHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
 import { FeatureCard } from "./FeatureCard";
 import { QuickSetupModal, type WizardType } from "./QuickSetupModal";
+import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 import { useNavigate } from "react-router-dom";
 
 export const AdminWelcome: React.FC = () => {
   const navigate = useNavigate();
+  const subDomain = UserHelper.currentUserChurch?.church?.subDomain || "";
+  const b1Url = EnvironmentHelper.B1Url.replace("{subdomain}", subDomain);
   const [wizardType, setWizardType] = React.useState<WizardType | null>(null);
   const [hasTeams, setHasTeams] = React.useState<boolean | null>(null);
   const [hasPages, setHasPages] = React.useState<boolean | null>(null);
@@ -46,13 +49,13 @@ export const AdminWelcome: React.FC = () => {
           </Typography>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Image fontSize="large" />} title="Add Your Church Logo" description="Upload your logo and update your church's contact information so everything looks right from day one." linkUrl="/site/appearance" />
+              <FeatureCard icon={<Image fontSize="large" />} title="Add Your Church Logo" description="Upload your logo and update your church's contact information so everything looks right from day one." linkUrl="/site/appearance#logo" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FeatureCard icon={<Language fontSize="large" />} title="Create Your First Webpage" description="Build a public website for your church where visitors can learn about you and find service times." onClick={() => handleCardClick("webpage", hasPages, "/site/pages")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<VolunteerActivism fontSize="large" />} title="Set Up Online Giving" description="Connect your Stripe account so your congregation can give online through your website and app." linkUrl="/settings" />
+              <FeatureCard icon={<VolunteerActivism fontSize="large" />} title="Set Up Online Giving" description="Connect your Stripe account so your congregation can give online through your website and app." linkUrl="/settings#giving" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <FeatureCard icon={<MusicNote fontSize="large" />} title="Set Up FreeShow Backups" description="If you use FreeShow for presentations, connect it to B1.church to back up your songs and service plans." onClick={() => handleCardClick("freeshow", hasTeams, "/serving")} />
@@ -67,7 +70,10 @@ export const AdminWelcome: React.FC = () => {
               <FeatureCard icon={<LiveTv fontSize="large" />} title="Upload a Sermon" description="Share your sermons online so members and visitors can watch or listen anytime." linkUrl="/sermons" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Lock fontSize="large" />} title="Invite Team Members" description="Add staff and volunteers as admins so they can help manage people, groups, and content." linkUrl="/settings" />
+              <FeatureCard icon={<Lock fontSize="large" />} title="Invite Team Members" description="Add staff and volunteers as admins so they can help manage people, groups, and content." linkUrl="/settings#roles" />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+              <FeatureCard icon={<CameraAlt fontSize="large" />} title="Set Your Avatar" description="Upload a profile photo so your team and congregation can recognize you." linkUrl={b1Url + "/my/community?id=" + UserHelper.person?.id + "#edit"} external />
             </Grid>
           </Grid>
         </Box>

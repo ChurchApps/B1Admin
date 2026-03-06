@@ -1,17 +1,24 @@
 import React, { useState, useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { Box, Stack, Button } from "@mui/material";
 import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon, History as HistoryIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
 import { MobileAppSettingsPage } from "./MobileAppSettingsPage";
 import { useQuery } from "@tanstack/react-query";
 
+const SETTINGS_SECTIONS = ["church-info", "general", "giving", "texting", "domains"];
+
 export const ManageChurch = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const hash = location.hash?.replace("#", "");
+  const isSettingsHash = SETTINGS_SECTIONS.includes(hash);
+
   const [selectedTab, setSelectedTab] = React.useState("roles");
-  const [showChurchSettings, setShowChurchSettings] = React.useState(false);
+  const [showChurchSettings, setShowChurchSettings] = React.useState(isSettingsHash);
+  const [initialSection, setInitialSection] = useState<string | undefined>(isSettingsHash ? hash : undefined);
   const [redirectUrl, setRedirectUrl] = useState<string>("");
 
   const jwt = ApiHelper.getConfig("MembershipApi").jwt;
@@ -41,6 +48,7 @@ export const ManageChurch = () => {
 
   const handleUpdated = useCallback(() => {
     setShowChurchSettings(false);
+    setInitialSection(undefined);
     church.refetch();
   }, [church]);
 
@@ -145,7 +153,7 @@ export const ManageChurch = () => {
       {/* Church Settings Modal/Component */}
       {showChurchSettings && (
         <Box sx={{ p: 2 }}>
-          <ChurchSettingsEdit church={church.data} updatedFunction={handleUpdated} />
+          <ChurchSettingsEdit church={church.data} updatedFunction={handleUpdated} initialSection={initialSection} />
         </Box>
       )}
 

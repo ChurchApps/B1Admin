@@ -5,15 +5,17 @@ import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface, BlockInterface, GenericSettingInterface } from "../../helpers/Interfaces";
 import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit, SpacingScaleEdit } from "./";
 import UserContext from "../../UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CardWithHeader } from "../../components/ui";
 import React from "react";
 
 export function StylesManager() {
   const context = useContext(UserContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const hash = location.hash?.replace("#", "");
   const [globalStyle, setGlobalStyle] = useState<GlobalStyleInterface>(null);
-  const [section, setSection] = useState<string>("");
+  const [section, setSection] = useState<string>(["palette", "fonts", "typography", "spacing", "css", "logo"].includes(hash) ? hash : "");
   const [churchSettings, setChurchSettings] = useState<any>(null);
   const [currentSettings, setCurrentSettings] = useState<GenericSettingInterface[]>([]);
 

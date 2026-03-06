@@ -20,6 +20,7 @@ import { SettingsSectionHeader } from "./SettingsSectionHeader";
 interface Props {
   church: ChurchInterface;
   updatedFunction: () => void;
+  initialSection?: string;
 }
 
 export const ChurchSettingsEdit: React.FC<Props> = (props) => {
@@ -27,7 +28,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   const [errors, setErrors] = React.useState([]);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
   const childErrorsRef = React.useRef<string[]>([]);
-  const [expanded, setExpanded] = React.useState<string | false>("church-info");
+  const [expanded, setExpanded] = React.useState<string | false>(props.initialSection || "church-info");
 
   const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
