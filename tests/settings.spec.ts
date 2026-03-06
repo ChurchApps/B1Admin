@@ -10,15 +10,16 @@ test.describe('Settings Management', () => {
     const settingsHomeBtn = page.locator('[data-testid="nav-item-settings"]');
     await settingsHomeBtn.click();
     await expect(page).toHaveURL(/\/settings/);
-    await page.waitForLoadState('networkidle');
+    // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
+    await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
   });
 
   test.describe('General Settings', () => {
     test('should edit church', async ({ page }) => {
       const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
       await editSettingsBtn.dispatchEvent('click');
-      await page.waitForLoadState('networkidle');
       const churchName = page.locator('[name="churchName"]');
+      await expect(churchName).toBeVisible({ timeout: 10000 });
       const originalName = await churchName.inputValue();
       await churchName.fill('Gracious Community Church');
       const saveBtn = page.locator('button').getByText('Save');
@@ -26,7 +27,7 @@ test.describe('Settings Management', () => {
       await page.waitForTimeout(500);
       // Revert the name back
       await editSettingsBtn.dispatchEvent('click');
-      await page.waitForLoadState('networkidle');
+      await expect(churchName).toBeVisible({ timeout: 10000 });
       await churchName.fill(originalName || 'Grace Community Church');
       await saveBtn.click();
       await page.waitForTimeout(200);
@@ -35,9 +36,8 @@ test.describe('Settings Management', () => {
     test('should cancel editing church', async ({ page }) => {
       const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
       await editSettingsBtn.dispatchEvent('click');
-      await page.waitForLoadState('networkidle');
       const churchName = page.locator('[name="churchName"]');
-      await expect(churchName).toBeVisible();
+      await expect(churchName).toBeVisible({ timeout: 10000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
       await expect(churchName).toHaveCount(0);
@@ -114,7 +114,7 @@ test.describe('Settings Management', () => {
       // Use dispatchEvent to bypass pointer-event interception from overlapping header elements
       const mobileTab = page.locator('[id="secondaryMenu"]').getByText('Mobile Apps');
       await mobileTab.dispatchEvent('click');
-      await page.waitForLoadState('networkidle');
+      await expect(page.locator('button').getByText('Add Tab')).toBeVisible({ timeout: 10000 });
     });
 
     test('should create mobile app tab', async ({ page }) => {
@@ -171,10 +171,27 @@ test.describe('Settings Management', () => {
     test.beforeEach(async ({ page }) => {
       const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
       await formTab.dispatchEvent('click');
-      await page.waitForLoadState('networkidle');
+      await expect(page.locator('[data-testid="add-form-button"]')).toBeVisible({ timeout: 10000 });
     });
 
     test('should create form', async ({ page }) => {
+      // Pre-cleanup: delete any leftover test forms from previous runs (local dev only).
+      // In CI the DB is always fresh so this loop exits immediately.
+      while (true) {
+        // Find a row containing an Octav-named form link and click Edit within that row
+        const octavRow = page.locator('tr').filter({
+          has: page.locator('a, td').filter({ hasText: /^Octav/ })
+        }).first();
+        if (await octavRow.count() === 0) break;
+        const editBtn = octavRow.getByRole('button', { name: /Edit/ });
+        if (!await editBtn.isVisible().catch(() => false)) break;
+        await editBtn.click();
+        await page.waitForTimeout(200);
+        page.once('dialog', d => d.accept());
+        await page.locator('button').getByText('Delete').first().click();
+        await page.waitForTimeout(500);
+      }
+
       const addBtn = page.locator('[data-testid="add-form-button"]');
       await addBtn.dispatchEvent('click');
       const formName = page.locator('[name="name"]');
@@ -221,10 +238,12 @@ test.describe('Settings Management', () => {
     });
 
     test('should add form questions', async ({ page }) => {
-      const form = page.locator('a').getByText('Octavius Test Form');
+      const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
 
+      // Wait for the async memberPermission query to resolve before proceeding
       const addBtn = page.locator('button').getByText('Add Question');
+      await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const selectBox = page.locator('[role="combobox"]').first();
       await selectBox.click();
@@ -247,14 +266,16 @@ test.describe('Settings Management', () => {
       await saveBtn.click();
 
       const validatedAddition = page.locator('td button').getByText('I support playwright testing. True or False?');
-      await expect(validatedAddition).toHaveCount(1);
+      await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit form questions', async ({ page }) => {
-      const form = page.locator('a').getByText('Octavius Test Form');
+      const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
 
+      // Wait for questions to load (depends on async memberPermission query)
       const question = page.locator('td button').getByText('I support playwright testing. True or False?');
+      await expect(question).toBeVisible({ timeout: 10000 });
       await question.click();
       await page.waitForTimeout(200);
       const title = page.locator('[id="title"]');
@@ -267,10 +288,12 @@ test.describe('Settings Management', () => {
     });
 
     test('should cancel editing form questions', async ({ page }) => {
-      const form = page.locator('a').getByText('Octavius Test Form');
+      const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
 
+      // Wait for questions to load (depends on async memberPermission query)
       const question = page.locator('td button').getByText('True or False? I support playwright testing.');
+      await expect(question).toBeVisible({ timeout: 10000 });
       await question.click();
       await page.waitForTimeout(200);
       const title = page.locator('[id="title"]');
@@ -285,7 +308,7 @@ test.describe('Settings Management', () => {
     test.skip('should delete form questions', async ({ page }) => {
       page.on('dialog', dialog => dialog.accept());
 
-      const form = page.locator('a').getByText('Octavius Test Form');
+      const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
       await page.waitForLoadState('networkidle');
 
@@ -300,9 +323,11 @@ test.describe('Settings Management', () => {
     });
 
     test('should add form members', async ({ page }) => {
-      const form = page.locator('a').getByText('Octavius Test Form');
+      const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
+      // Wait for async memberPermission query to resolve before Form Members tab appears
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
+      await expect(membersTab).toBeVisible({ timeout: 10000 });
       await membersTab.click();
 
       const personSearch = page.locator('[name="personAddText"]');
@@ -317,9 +342,11 @@ test.describe('Settings Management', () => {
     });
 
     test('should remove form members', async ({ page }) => {
-      const form = page.locator('a').getByText('Octavius Test Form');
+      const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
+      // Wait for async memberPermission query to resolve before Form Members tab appears
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
+      await expect(membersTab).toBeVisible({ timeout: 10000 });
       await membersTab.click();
 
       const removeBtn = page.locator('button').getByText('Remove').last();
