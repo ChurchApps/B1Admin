@@ -42,7 +42,7 @@ export const PlanTypePage = () => {
 
   return (
     <>
-      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "3.5rem !important" } }}>
+      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "5.5rem !important" } }}>
         <PageHeader
           title={planType.data.name || Locale.label("plans.planTypePage.planType")}
           subtitle={Locale.label("plans.planTypePage.subtitle")}
@@ -54,10 +54,11 @@ export const PlanTypePage = () => {
           transform: "translateX(-50%)",
           width: "100vw",
           zIndex: 2,
-          paddingX: { xs: 2, sm: 3, md: 4 },
           paddingTop: 1.5,
         }}>
-          <Breadcrumbs items={breadcrumbItems} showHome={true} />
+          <Container maxWidth="xl">
+            <Breadcrumbs items={breadcrumbItems} showHome={true} />
+          </Container>
         </Box>
       </Box>
 

@@ -110,11 +110,9 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   };
 
   const onSelect = useCallback((iconName: string) => {
-    const t = { ...currentTab };
-    t.icon = iconName;
-    setCurrentTab(t);
+    setCurrentTab(prev => ({ ...prev, icon: iconName }));
     setIsModalOpen(false);
-  }, [currentTab]);
+  }, []);
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("settings.app.confirmDeleteTab"))) {
@@ -132,31 +130,36 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
     setShowPhotoGallery(false);
   };
 
-  const loadPages = () => {
+  const loadPages = useCallback(() => {
     ApiHelper.get("/pages", "ContentApi").then((_pages: PageInterface[]) => {
-      const filteredPages: PageInterface[] = [];
-      _pages.forEach(p => { if (p.url.startsWith("/member")) filteredPages.push(p); });
-      setPages(filteredPages || []);
+      setPages(_pages || []);
     });
-  };
+  }, []);
+
+  useEffect(() => {
+    if (currentTab?.linkType === "page" && pages === null) {
+      loadPages();
+    }
+  }, [currentTab?.linkType, pages, loadPages]);
+
+  useEffect(() => {
+    if (currentTab?.linkType === "page" && pages && pages.length > 0 && currentTab.linkData === "") {
+      setCurrentTab(prev => ({ ...prev, linkData: pages[0]?.id || "" }));
+    }
+  }, [currentTab?.linkType, currentTab?.linkData, pages]);
 
   const getPage = () => {
     if (currentTab?.linkType === "page") {
-      let options: React.ReactElement[] = [];
-      if (pages === null) loadPages();
-      else {
-        options = [];
+      const options: React.ReactElement[] = [];
+      if (pages) {
         pages.forEach(page => {
           options.push(<MenuItem value={page.id} key={page.id}>{page.title}</MenuItem>);
         });
-        if (currentTab.linkData === "") {
-          setCurrentTab(prev => ({ ...prev, linkData: pages[0]?.id || "" }));
-        }
       }
       return (
         <FormControl fullWidth>
           <InputLabel id="page">{Locale.label("settings.appEdit.page")}</InputLabel>
-          <Select labelId="page" label={Locale.label("settings.appEdit.page")} name="page" value={currentTab?.linkData} onChange={handleChange} data-testid="page-select">
+          <Select labelId="page" label={Locale.label("settings.appEdit.page")} name="page" value={currentTab?.linkData || ""} onChange={handleChange} data-testid="page-select">
             {options}
           </Select>
         </FormControl>

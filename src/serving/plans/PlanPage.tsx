@@ -63,7 +63,7 @@ export const PlanPage = () => {
 
   return (
     <>
-      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "3.5rem !important" } }}>
+      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "5.5rem !important" } }}>
         <PageHeader title={plan.name || Locale.label("plans.planPage.servicePlan")} subtitle={Locale.label("plans.planPage.subtitle")} />
         <Box sx={{
           position: "absolute",
@@ -72,10 +72,11 @@ export const PlanPage = () => {
           transform: "translateX(-50%)",
           width: "100vw",
           zIndex: 2,
-          paddingX: { xs: 2, sm: 3, md: 4 },
           paddingTop: 1.5,
         }}>
-          <Breadcrumbs items={breadcrumbItems} showHome={true} />
+          <Container maxWidth="xl">
+            <Breadcrumbs items={breadcrumbItems} showHome={true} />
+          </Container>
         </Box>
       </Box>
       <PlanNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} plan={plan} />

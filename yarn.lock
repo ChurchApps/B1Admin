@@ -197,10 +197,10 @@
     i18next "^25.3.2"
     react-i18next "^15.6.1"
 
-"@churchapps/apphelper-login@0.6.17":
-  version "0.6.17"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper-login/-/apphelper-login-0.6.17.tgz"
-  integrity sha512-oG9CbHwLkbycOnChRrHZ66PlMxHpCBsXSEsaykxdzxORM1YcC6/fl85YZGlcgZ/EgzRtCn09Np7/jaGbbDPRfw==
+"@churchapps/apphelper-login@0.6.18":
+  version "0.6.18"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper-login/-/apphelper-login-0.6.18.tgz"
+  integrity sha512-Y19UbUA9is9/Z7XjpzLzqRdDa96u9/P7Ky3Ok9RPW67Xc34wEIDKlYUt289Rs97l96+Yfc+MzO74ukJy1ooVrg==
   dependencies:
     "@mui/icons-material" "^7.3.1"
     "@mui/material" "^7.3.1"
