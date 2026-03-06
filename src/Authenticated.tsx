@@ -24,6 +24,7 @@ const TasksPage = React.lazy(() => import("./serving/tasks/TasksPage").then((mod
 const TaskPage = React.lazy(() => import("./serving/tasks/TaskPage").then((module) => ({ default: module.TaskPage })));
 const AutomationsPage = React.lazy(() => import("./serving/tasks/automations/AutomationsPage").then((module) => ({ default: module.AutomationsPage })));
 const DashboardPage = React.lazy(() => import("./dashboard/DashboardPage").then((module) => ({ default: module.DashboardPage })));
+const QuickActionsPage = React.lazy(() => import("./dashboard/QuickActionsPage").then((module) => ({ default: module.QuickActionsPage })));
 const AdminPage = React.lazy(() => import("./serverAdmin/AdminPage").then((module) => ({ default: module.AdminPage })));
 const ProfilePage = React.lazy(() => import("./profile/ProfilePage").then((module) => ({ default: module.ProfilePage })));
 const ServingPage = React.lazy(() => import("./serving/ServingPage").then((module) => ({ default: module.ServingPage })));
@@ -132,7 +133,8 @@ export const Authenticated: React.FC = () => {
           <Route path="/calendars/:id" element={<CalendarPage />} />
           <Route path="/calendars" element={<CalendarsPage />} />
           <Route path="/site/*" element={<Site />} />
-          <Route path="/" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/" element={<QuickActionsPage />} />
         </Route>
 
         <Route

@@ -64,6 +64,7 @@ export const Header: React.FC = () => {
     else if (path.startsWith("/sermons")) result = Locale.label("common.sermons");
     else if (path.startsWith("/calendars") || path.startsWith("/site") || path.startsWith("/registrations")) result = Locale.label("common.website");
     else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = Locale.label("components.wrapper.set");
+    else if (path.startsWith("/dashboard")) result = Locale.label("dashboard.dashboardPage.dash");
     return result;
   };
 
@@ -78,7 +79,8 @@ export const Header: React.FC = () => {
     const addTestIds = () => {
       // Map URLs to test IDs
       const urlToTestId: Record<string, string> = {
-        "/": "nav-item-dashboard",
+        "/": "nav-item-quick-actions",
+        "/dashboard": "nav-item-dashboard",
         "/people": "nav-item-people",
         "/groups": "nav-item-groups",
         "/donations": "nav-item-donations",
