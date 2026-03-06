@@ -9,7 +9,6 @@ test.describe('Website Management', () => {
     await menuBtn.click();
     const websiteHomeBtn = page.locator('[data-testid="nav-item-website"]');
     await websiteHomeBtn.click();
-    await page.waitForTimeout(5000);
     await expect(page).toHaveURL(/\/site\/pages/);
   });
 
@@ -73,7 +72,7 @@ test.describe('Website Management', () => {
       await contentBtn.click();
       const addBtn = page.locator('button').getByText('add');
       await addBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const section = page.locator('div').getByText('Section').nth(2);
       const dropzone = page.locator('div [data-testid="droppable-area"]').first();
       await section.hover();
@@ -85,7 +84,7 @@ test.describe('Website Management', () => {
       await saveBtn.click();
       //add text to confirm
       await addBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const text = page.locator('div').getByText('Text').nth(1);
       const secondaryDropzone = page.locator('div [data-testid="droppable-area"]').nth(1);
       await text.hover();
@@ -96,7 +95,7 @@ test.describe('Website Management', () => {
       const textbox = page.locator('[role="textbox"]');
       await textbox.fill('Octavian Test Text');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedText = page.locator('p').getByText('Octavian Test Text');
       await expect(validatedText).toHaveCount(1);
     });
@@ -117,10 +116,10 @@ test.describe('Website Management', () => {
       const contentBtn = page.locator('button').getByText('Edit Content');
       await contentBtn.click();
       await expect(page).toHaveURL(/\/site\/pages\/[^/]+/);
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await doneBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/);
     });
 
@@ -137,12 +136,12 @@ test.describe('Website Management', () => {
       await settingsBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
 
       /* OUTDATED- navigates back to website home, now happens automatically:
       const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
       await menuBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const websiteHomeBtn = page.locator('[data-testid="nav-item-website"]');
       await websiteHomeBtn.click();
       await page.waitForTimeout(5000);
@@ -158,7 +157,6 @@ test.describe('Website Management', () => {
     test.beforeEach(async ({ page }) => {
       const blocksHomeBtn = page.locator('a').getByText('Blocks').first();
       await blocksHomeBtn.click();
-      await page.waitForTimeout(2000);
       await expect(page).toHaveURL(/\/site\/blocks/);
     });
 
@@ -191,10 +189,10 @@ test.describe('Website Management', () => {
     test('should edit block content', async ({ page }) => {
       const editBtn = page.locator('td a').getByText('Edit').nth(6);
       await editBtn.click();
-      page.waitForTimeout(500);
+      page.waitForTimeout(200);
       const addBtn = page.locator('button').getByText('add');
       await addBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const section = page.locator('div').getByText('Section').nth(2);
       const dropzone = page.locator('div [data-testid="droppable-area"]').first();
       await section.hover();
@@ -206,7 +204,7 @@ test.describe('Website Management', () => {
       await saveBtn.click();
       //add text to confirm
       await addBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const text = page.locator('div').getByText('Text').nth(1);
       const secondaryDropzone = page.locator('div [data-testid="droppable-area"]').nth(1);
       await text.hover();
@@ -217,7 +215,7 @@ test.describe('Website Management', () => {
       const textbox = page.locator('[role="textbox"]');
       await textbox.fill('Octavian Test Text');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedText = page.locator('p').getByText('Octavian Test Text');
       await expect(validatedText).toHaveCount(1);
     });
@@ -248,7 +246,6 @@ test.describe('Website Management', () => {
     test.beforeEach(async ({ page }) => {
       const appearanceHomeBtn = page.locator('a').getByText('Appearance').first();
       await appearanceHomeBtn.click();
-      await page.waitForTimeout(2000);
       await expect(page).toHaveURL(/\/site\/appearance/);
     });
 
@@ -259,7 +256,7 @@ test.describe('Website Management', () => {
       await palettePreset.click();
       const saveBtn = page.locator('[data-testid="save-palette-button"]');
       await saveBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const validatedChange = page.locator('[data-testid="preview-plan-visit-button"]');
       await expect(validatedChange).toHaveCSS('background-color', 'rgb(255, 100, 10)');
     });
@@ -271,7 +268,7 @@ test.describe('Website Management', () => {
       await expect(palettePreset).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await expect(palettePreset).toHaveCount(0);
     });
 
@@ -280,12 +277,12 @@ test.describe('Website Management', () => {
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await headerFontSelect.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const headerFont = page.locator('td').getByText('Montserrat').first();
       await headerFont.click();
       const saveBtn = page.locator('[data-testid="save-fonts-button"]');
       await saveBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const validatedChange = page.locator('h1').getByText('Welcome to Grace Community Church');
       await expect(validatedChange).toHaveCSS('font-family', 'Montserrat');
     });
@@ -297,7 +294,7 @@ test.describe('Website Management', () => {
       await expect(headerFontSelect).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await expect(headerFontSelect).toHaveCount(0);
     });
 
@@ -308,7 +305,7 @@ test.describe('Website Management', () => {
       await cssBox.fill('h1 {\ncolor: #7FFF00\n}');
       const saveBtn = page.locator('button').getByText('Save Changes');
       await saveBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const validatedChange = page.locator('h1').getByText("Welcome to Grace Community Church");
       await expect(validatedChange).toHaveCSS('color', 'rgb(127, 255, 0)');
     });
@@ -320,14 +317,14 @@ test.describe('Website Management', () => {
       await expect(cssBox).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await expect(cssBox).toHaveCount(0);
     });
 
     test('should add footer', async ({ page }) => {
       const footerSettings = page.locator('h6').getByText('Site Footer');
       await footerSettings.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/);
     });
 
@@ -337,7 +334,6 @@ test.describe('Website Management', () => {
     test.beforeEach(async ({ page }) => {
       const filesHomeBtn = page.locator('a').getByText('Files').first();
       await filesHomeBtn.click();
-      await page.waitForTimeout(2000);
       await expect(page).toHaveURL(/\/site\/files/);
     });
 
@@ -347,7 +343,7 @@ test.describe('Website Management', () => {
       await chooseFileBtn.setInputFiles('public/images/logo.png');
       const uploadBtn = page.locator('button').getByText('Upload');
       await uploadBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const validatedUpload = page.locator('td').getByText('Logo.png');
       await expect(validatedUpload).toHaveCount(1);
     });
@@ -372,7 +368,6 @@ test.describe('Website Management', () => {
     test.beforeEach(async ({ page }) => {
       const calendarHomeBtn = page.locator('a').getByText('Calendar').first();
       await calendarHomeBtn.click();
-      await page.waitForTimeout(2000);
       await expect(page).toHaveURL(/\/calendars/);
     });
 
@@ -398,7 +393,7 @@ test.describe('Website Management', () => {
       await groupSelect.click();
       const saveBtn = page.locator('[data-testid="calendar-edit-save-button"]');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedGroup = page.locator('td').getByText('Adult Bible Class');
       await expect(validatedGroup).toHaveCount(1);
       const agendaBtn = page.locator('button').getByText('Agenda');

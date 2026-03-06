@@ -9,7 +9,6 @@ test.describe('Dashboard Management', () => {
     await menuBtn.click();
     const dashboardHomeBtn = page.locator('[data-testid="nav-item-dashboard"]');
     await dashboardHomeBtn.click();
-    await page.waitForTimeout(5000);
   });
 
   /* test('should load dashboard', async ({ page }) => {
@@ -18,10 +17,10 @@ test.describe('Dashboard Management', () => {
   }); */
 
   test('should load group from dashboard', async ({ page }) => {
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(200);
     const firstGroup = page.locator('h6').first();
     await firstGroup.click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(200);
     await expect(page).toHaveURL(/\/groups\/GRP\d+/);
   });
 
@@ -30,10 +29,10 @@ test.describe('Dashboard Management', () => {
     await searchBox.fill('Dorothy Jackson');
     const searchBtn = page.locator('[data-testid="dashboard-search-button"]');
     await searchBtn.click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(200);
     const results = page.locator('h6').getByText('Dorothy Jackson');
     await results.click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(200);
     await expect(page).toHaveURL(/\/people\/PER\d+/);
     const validatedName = page.locator('p').getByText('Dorothy Jackson');
     await expect(validatedName).toHaveCount(1);
@@ -56,7 +55,7 @@ test.describe('Dashboard Management', () => {
     await taskNotes.fill('Octavian Testing (Playwright)');
     const saveBtn = page.locator('button').getByText('Save');
     await saveBtn.click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(200);
     const validatedTask = page.locator('a').getByText('Test Task');
     await expect(validatedTask).toHaveCount(2);
   });
@@ -64,7 +63,7 @@ test.describe('Dashboard Management', () => {
   test('should load task from dashboard', async ({ page }) => {
     const task = page.locator('a').getByText('Test Task').first();
     await task.click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(200);
     await expect(page).toHaveURL(/\/tasks\/[^/]+/);
   });
 
@@ -75,7 +74,7 @@ test.describe('Dashboard Management', () => {
     await expect(assignInput).toHaveCount(1);
     const cancelBtn = page.locator('button').getByText('Cancel');
     await cancelBtn.click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(200);
     await expect(assignInput).toHaveCount(0);
   });
 
