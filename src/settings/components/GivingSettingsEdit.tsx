@@ -157,7 +157,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
             <Select name="provider" label={Locale.label("settings.givingSettingsEdit.prov")} value={provider || ""} onChange={handleChange}>
               <MenuItem value="">{Locale.label("settings.givingSettingsEdit.none")}</MenuItem>
               <MenuItem value="Stripe">{Locale.label("settings.givingSettingsEdit.stripe")}</MenuItem>
-              <MenuItem value="Paypal">{Locale.label("settings.givingSettingsEdit.paypal")}</MenuItem>
+              {/* <MenuItem value="Paypal">{Locale.label("settings.givingSettingsEdit.paypal")}</MenuItem> */}
             </Select>
           </FormControl>
         </Grid>

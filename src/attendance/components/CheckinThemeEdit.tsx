@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, Switch, FormControlLabel, Typography, Button, IconButton, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, InputBox, ImageEditor } from "@churchapps/apphelper";
-import { GenericSettingInterface } from "@churchapps/helpers";
+import type { GenericSettingInterface } from "@churchapps/helpers";
 
 interface CheckinThemeColors {
   primary: string;
