@@ -9,7 +9,6 @@ test.describe('Sermons Management', () => {
     await menuBtn.click();
     const sermonsHomeBtn = page.locator('[data-testid="nav-item-sermons"]');
     await sermonsHomeBtn.click();
-    await page.waitForTimeout(5000);
     await expect(page).toHaveURL(/\/sermons/);
   });
 
@@ -76,7 +75,7 @@ test.describe('Sermons Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedDeletion = page.locator('Octavius Test Sermon');
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -126,7 +125,7 @@ test.describe('Sermons Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedDeletion = page.locator('Octavius Test Live URL');
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -191,7 +190,7 @@ test.describe('Sermons Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedDeletion = page.locator('Octavius Test Playlist');
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -247,7 +246,7 @@ test.describe('Sermons Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedDeletion = page.locator('Octavius Test Service');
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -267,7 +266,7 @@ test.describe('Sermons Management', () => {
       const validatedLink = page.locator('a').getByText('Harder Better Faster Stronger Test');
       await expect(validatedLink).toHaveCount(1);
       await validatedLink.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       await expect(page).toHaveURL('https://www.youtube.com/watch?v=yydNF8tuVmU');
     });
 
@@ -275,10 +274,10 @@ test.describe('Sermons Management', () => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('a span').getByText('edit').first();
       await editBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const name = page.locator('[name="text"]');
       await name.fill('Harker Betker Fasker Stronker Test');
       const link = page.locator('[name="url"]');
@@ -293,7 +292,7 @@ test.describe('Sermons Management', () => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('a span').getByText('edit').first();
       await editBtn.click();
       const name = page.locator('[name="text"]');
@@ -307,14 +306,14 @@ test.describe('Sermons Management', () => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('a span').getByText('edit').first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
       const conDeleteBtn = page.locator('button').getByText('Delete').last();
       await conDeleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedDeletion = page.locator('a').getByText('Harker Betker Fasker Stronker Test');
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -334,7 +333,7 @@ test.describe('Sermons Management', () => {
       const validatedTab = page.locator('a').getByText('Harder Better Faster Stronger Test');
       await expect(validatedTab).toHaveCount(1);
       await validatedTab.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       await expect(page).toHaveURL('https://www.youtube.com/watch?v=yydNF8tuVmU');
     });
 
@@ -342,7 +341,7 @@ test.describe('Sermons Management', () => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('a span').getByText('edit').first();
       await editBtn.click();
       const name = page.locator('[name="text"]');
@@ -359,7 +358,7 @@ test.describe('Sermons Management', () => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('a span').getByText('edit').first();
       await editBtn.click();
       const name = page.locator('[name="text"]');
@@ -373,14 +372,14 @@ test.describe('Sermons Management', () => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
 
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('a span').getByText('edit').first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
       const conDeleteBtn = page.locator('button').getByText('Delete').last();
       await conDeleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedDeletion = page.locator('a').getByText('Harker Betker Fasker Stronker Test');
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -388,7 +387,7 @@ test.describe('Sermons Management', () => {
     test('should customize appearance', async ({ page }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const customBtn = page.locator('a').getByText('Customize Appearance');
       await customBtn.click();
@@ -398,7 +397,7 @@ test.describe('Sermons Management', () => {
     test('should edit users', async ({ page }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const editBtn = page.locator('a').getByText('Edit Users');
       await editBtn.click();
@@ -408,11 +407,11 @@ test.describe('Sermons Management', () => {
     test('should view your stream', async ({ page, context }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const viewBtn = page.locator('a').getByText('View Your Stream');
       await viewBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
 
       const [newPage] = await Promise.all([
         context.waitForEvent('page'),

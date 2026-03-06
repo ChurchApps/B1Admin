@@ -44,7 +44,7 @@ test.describe('People Management', () => {
       await firstName.fill('Donald');
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 }).catch(() => { });
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await page.waitForSelector('table tbody tr', { state: 'visible' });
       const results = page.locator('table tbody tr');
       await expect(results.first()).toBeVisible();
@@ -82,12 +82,12 @@ test.describe('People Management', () => {
       //search
       const searchInput = page.locator('[id="display-box"] textarea').first();
       await searchInput.fill('Show me married men');
-      page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const searchBtn = page.locator('button').getByText('Search').last();
       await searchBtn.click();
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 }).catch(() => { });
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       await page.waitForSelector('table tbody tr', { state: 'visible' });
       const results = page.locator('table tbody tr');
       await expect(results.first()).toBeVisible();
@@ -118,12 +118,12 @@ test.describe('People Management', () => {
 
       const notesBtn = page.locator('button').getByText('Notes');
       await notesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const seekNotes = page.locator('textArea').first();
       await seekNotes.fill('Octavian Test Note');
       const sendBtn = page.locator('button').getByText('send');
       await sendBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedNote = page.locator('p').getByText('Octavian Test Note');
       await expect(validatedNote).toHaveCount(1);
     });
@@ -137,12 +137,12 @@ test.describe('People Management', () => {
       await notesBtn.click();
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const seekNotes = page.locator('textArea').first();
       await seekNotes.fill('Octavius Test Note');
       const sendBtn = page.locator('button').getByText('send');
       await sendBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedEdit = page.locator('p').getByText('Octavius Test Note');
       await expect(validatedEdit).toHaveCount(1);
     });
@@ -158,7 +158,7 @@ test.describe('People Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedDeletion = page.locator('p').getByText('Testing Note');
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -170,7 +170,7 @@ test.describe('People Management', () => {
 
       const groupsBtn = page.locator('button').getByText('Groups');
       await groupsBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       const seekText = page.locator('p').getByText('Not currently a member of any groups.');
       const seekGroup = page.locator('li').first();
       const seekEither = seekText.or(seekGroup);
@@ -184,7 +184,7 @@ test.describe('People Management', () => {
 
       const groupsBtn = page.locator('button').getByText('Groups');
       await groupsBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       const seekGroup = page.locator('li').first();
       await seekGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -195,10 +195,10 @@ test.describe('People Management', () => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const attBtn = page.locator('button').getByText('Attendance');
       await attBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       const seekText = page.locator('p').getByText('No attendance records.');
       const seekDate = page.locator('li').first();
       const seekEither = seekText.or(seekDate);
@@ -209,10 +209,10 @@ test.describe('People Management', () => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const attBtn = page.locator('button').getByText('Attendance');
       await attBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       const seekGroup = page.locator('li div').last();
       await seekGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -223,10 +223,10 @@ test.describe('People Management', () => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const donationBtn = page.locator('button').getByText('Donations');
       await donationBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       const seekText = page.locator('td').getByText('Donations will appear once a donation has been entered.');
       const seekDate = page.locator('li').first();
       const seekEither = seekText.or(seekDate);
@@ -238,11 +238,11 @@ test.describe('People Management', () => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
 
       const donationBtn = page.locator('button').getByText('Donations');
       await donationBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
 
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
@@ -265,11 +265,11 @@ test.describe('People Management', () => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const donationBtn = page.locator('button').getByText('Donations');
       await donationBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
 
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
@@ -289,13 +289,13 @@ test.describe('People Management', () => {
 
       const donationBtn = page.locator('button').getByText('Donations');
       await donationBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
 
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
       const addBankBtn = page.locator('[aria-labelledby="addBtnGroup"] li').last();
       await addBankBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       const nameEntry = page.locator('[name="account-holder-name"]');
       await nameEntry.fill('Octavian');
       const routeEntry = page.locator('[name="routing-number"]');
@@ -311,11 +311,11 @@ test.describe('People Management', () => {
       const firstPerson = page.locator('table tbody tr').first();
       await firstPerson.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const donationBtn = page.locator('button').getByText('Donations');
       await donationBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
 
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
@@ -340,10 +340,10 @@ test.describe('People Management', () => {
       const addBtn = page.locator('[type="submit"]');
       await addBtn.click();
 
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const peopleBtn = page.locator('[id="secondaryMenu"]').getByText('People');
       await peopleBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const searchInput = page.locator('input[name="searchText"]');
       await searchInput.fill('Octavian');
 
@@ -355,7 +355,7 @@ test.describe('People Management', () => {
       //validate person
       const firstPerson = page.locator('td').getByText('Octavian');
       await firstPerson.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await expect(page).toHaveURL(/\/people\/[^/]+/);
     });
 
@@ -382,16 +382,16 @@ test.describe('People Management', () => {
 
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const removeBtn = page.locator('button').getByText('Remove').last();
       await removeBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await editBtn.click();
       const personRows = page.locator('[id="householdMemberTable"] tr');
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const rowCount = await personRows.count();
       await expect(rowCount).toBe(2);
     });
@@ -411,15 +411,15 @@ test.describe('People Management', () => {
       await searchInput.fill('Carol');
       const searchBtn = page.locator('button').getByText('Search');
       await searchBtn.click();
-      page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const selBtn = page.locator('button').getByText('Select');
       await selBtn.click();
       const yesBtn = page.locator('button').getByText('Yes');
       await yesBtn.click();
-      page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const validatedAddition = page.locator('[id="householdBox"] h5').getByText('Carol Clark');
       await expect(validatedAddition).toHaveCount(1);
     });
@@ -437,7 +437,7 @@ test.describe('People Management', () => {
       await addBtn.click();
       const closeBtn = page.locator('button').getByText('close');
       await closeBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
       await expect(closeBtn).toHaveCount(0);
     });
 
@@ -467,12 +467,12 @@ test.describe('People Management', () => {
       await editBtn.click();
       const middleName = page.locator('[name="name.middle"]');
       await middleName.fill('Octavian');
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await editBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await expect(middleName).toHaveValue('Octavian');
     });
 
@@ -512,7 +512,7 @@ test.describe('People Management', () => {
       await mergePplBtn.click();
       const confirmBtn = page.locator('button').getByText('Confirm');
       await confirmBtn.click();
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(1000);
 
       const validatedMerge = page.locator('table tbody tr').getByText('Robert Moore');
       await expect(validatedMerge).toHaveCount(0);
@@ -536,7 +536,7 @@ test.describe('People Management', () => {
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
 
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       await expect(page).toHaveURL(/\/people/);
       const searchInput = page.locator('input[name="searchText"]');
       await searchInput.fill('Carol');
