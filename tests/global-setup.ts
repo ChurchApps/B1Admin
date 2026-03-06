@@ -19,7 +19,13 @@ async function globalSetup(config: FullConfig) {
 
   // Login flow
   await page.goto(baseURL + "/");
-  await page.waitForLoadState("networkidle");
+
+  const churchDialog = page.locator("text=Select a Church");
+  const navButton = page.locator("#primaryNavButton");
+  const emailInput = page.locator('input[type="email"]');
+
+  // Wait for login form (don't use networkidle — WebSocket keeps it open)
+  await emailInput.waitFor({ state: "visible", timeout: 15000 });
 
   await page.fill('input[type="email"]', "demo@b1.church");
   await page.fill('input[type="password"]', "password");
@@ -27,11 +33,9 @@ async function globalSetup(config: FullConfig) {
 
   // After login, either "Select a Church" dialog appears (multiple churches)
   // or the app auto-selects via lastChurchId cookie and redirects directly.
-  const churchDialog = page.locator("text=Select a Church");
-  const navButton = page.locator("#primaryNavButton");
   const result = await Promise.race([
-    churchDialog.waitFor({ state: "visible", timeout: 15000 }).then(() => "dialog" as const),
     navButton.waitFor({ state: "visible", timeout: 15000 }).then(() => "nav" as const),
+    churchDialog.waitFor({ state: "visible", timeout: 15000 }).then(() => "dialog" as const),
   ]);
 
   if (result === "dialog") {
