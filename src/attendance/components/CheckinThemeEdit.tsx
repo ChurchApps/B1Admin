@@ -4,17 +4,6 @@ import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-mat
 import { ApiHelper, InputBox, ImageEditor } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
-interface CheckinThemeColors {
-  primary: string;
-  primaryContrast: string;
-  secondary: string;
-  secondaryContrast: string;
-  headerBackground: string;
-  subheaderBackground: string;
-  buttonBackground: string;
-  buttonText: string;
-}
-
 interface IdleSlide {
   imageUrl: string;
   durationSeconds: number;
@@ -27,31 +16,18 @@ interface IdleScreenConfig {
   slides: IdleSlide[];
 }
 
-interface CheckinThemeConfig {
-  colors: CheckinThemeColors;
+interface CheckinSettingsConfig {
   backgroundImage: string;
   idleScreen: IdleScreenConfig;
 }
 
-const DEFAULT_COLORS: CheckinThemeColors = {
-  primary: "#1565C0",
-  primaryContrast: "#FFFFFF",
-  secondary: "#568BDA",
-  secondaryContrast: "#FFFFFF",
-  headerBackground: "#1565C0",
-  subheaderBackground: "#568BDA",
-  buttonBackground: "#1565C0",
-  buttonText: "#FFFFFF"
-};
-
-const DEFAULT_THEME: CheckinThemeConfig = {
-  colors: DEFAULT_COLORS,
+const DEFAULT_SETTINGS: CheckinSettingsConfig = {
   backgroundImage: "",
   idleScreen: { enabled: false, timeoutSeconds: 120, slides: [] }
 };
 
 export const CheckinThemeEdit: React.FC = () => {
-  const [themeConfig, setThemeConfig] = React.useState<CheckinThemeConfig>({ ...DEFAULT_THEME });
+  const [config, setConfig] = React.useState<CheckinSettingsConfig>({ ...DEFAULT_SETTINGS });
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [editingImage, setEditingImage] = React.useState<string | null>(null);
@@ -60,18 +36,30 @@ export const CheckinThemeEdit: React.FC = () => {
   const loadData = React.useCallback(async () => {
     try {
       const allSettings: GenericSettingInterface[] = await ApiHelper.get("/settings", "MembershipApi");
-      const themeSetting = allSettings.find(s => s.keyName === "checkinTheme");
+      // Try new key first, fall back to legacy checkinTheme
+      let themeSetting = allSettings.find(s => s.keyName === "checkinSettings");
+      if (!themeSetting) {
+        const legacy = allSettings.find(s => s.keyName === "checkinTheme");
+        if (legacy?.value) {
+          const parsed = JSON.parse(legacy.value);
+          setSetting(null);
+          setConfig({
+            backgroundImage: parsed.backgroundImage || "",
+            idleScreen: { ...DEFAULT_SETTINGS.idleScreen, ...(parsed.idleScreen || {}) }
+          });
+          return;
+        }
+      }
       if (themeSetting?.value) {
         setSetting(themeSetting);
         const parsed = JSON.parse(themeSetting.value);
-        setThemeConfig({
-          colors: { ...DEFAULT_COLORS, ...(parsed.colors || {}) },
+        setConfig({
           backgroundImage: parsed.backgroundImage || "",
-          idleScreen: { ...DEFAULT_THEME.idleScreen, ...(parsed.idleScreen || {}) }
+          idleScreen: { ...DEFAULT_SETTINGS.idleScreen, ...(parsed.idleScreen || {}) }
         });
       }
     } catch (error) {
-      console.error("Error loading checkin theme:", error);
+      console.error("Error loading checkin settings:", error);
     }
   }, []);
 
@@ -80,42 +68,36 @@ export const CheckinThemeEdit: React.FC = () => {
   const handleSave = async () => {
     setIsSubmitting(true);
     try {
-      const s: GenericSettingInterface = setting || { keyName: "checkinTheme", public: 1 };
-      s.value = JSON.stringify(themeConfig);
+      const s: GenericSettingInterface = setting || { keyName: "checkinSettings", public: 1 };
+      s.value = JSON.stringify(config);
       await ApiHelper.post("/settings", [s], "MembershipApi");
-      // Reload to get the saved setting with ID
       await loadData();
     } catch (error) {
-      console.error("Error saving checkin theme:", error);
+      console.error("Error saving checkin settings:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const updateColor = (key: keyof CheckinThemeColors, value: string) => {
-    setThemeConfig(prev => ({ ...prev, colors: { ...prev.colors, [key]: value } }));
-  };
-
   const handleBackgroundImageUpdate = async (dataUrl: string) => {
     if (!dataUrl) { setEditingImage(null); return; }
-    // Save image as separate setting so API converts base64 to S3 URL
-    const imgSetting: GenericSettingInterface = { keyName: "checkinTheme_bg", value: dataUrl, public: 1 };
+    const imgSetting: GenericSettingInterface = { keyName: "checkinSettings_bg", value: dataUrl, public: 1 };
     const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
-    const result = saved?.checkinTheme_bg || saved?.find?.((s: any) => s.keyName === "checkinTheme_bg");
+    const result = saved?.checkinSettings_bg || saved?.find?.((s: any) => s.keyName === "checkinSettings_bg");
     if (result?.value) {
-      setThemeConfig(prev => ({ ...prev, backgroundImage: result.value }));
+      setConfig(prev => ({ ...prev, backgroundImage: result.value }));
     }
     setEditingImage(null);
   };
 
   const handleSlideImageUpdate = async (dataUrl: string) => {
     if (!dataUrl) { setEditingImage(null); return; }
-    const slideKey = "checkinTheme_slide_" + editingSlideIndex;
+    const slideKey = "checkinSettings_slide_" + editingSlideIndex;
     const imgSetting: GenericSettingInterface = { keyName: slideKey, value: dataUrl, public: 1 };
     const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
     const result = saved?.[slideKey] || saved?.find?.((s: any) => s.keyName === slideKey);
     if (result?.value) {
-      setThemeConfig(prev => {
+      setConfig(prev => {
         const slides = [...prev.idleScreen.slides];
         if (editingSlideIndex < slides.length) {
           slides[editingSlideIndex] = { ...slides[editingSlideIndex], imageUrl: result.value };
@@ -129,70 +111,42 @@ export const CheckinThemeEdit: React.FC = () => {
   };
 
   const addSlide = () => {
-    setEditingSlideIndex(themeConfig.idleScreen.slides.length);
+    setEditingSlideIndex(config.idleScreen.slides.length);
     setEditingImage("slide");
   };
 
   const removeSlide = (index: number) => {
-    setThemeConfig(prev => {
+    setConfig(prev => {
       const slides = prev.idleScreen.slides.filter((_, i) => i !== index);
       return { ...prev, idleScreen: { ...prev.idleScreen, slides } };
     });
   };
 
   const updateSlideDuration = (index: number, duration: number) => {
-    setThemeConfig(prev => {
+    setConfig(prev => {
       const slides = [...prev.idleScreen.slides];
       slides[index] = { ...slides[index], durationSeconds: duration };
       return { ...prev, idleScreen: { ...prev.idleScreen, slides } };
     });
   };
 
-  const colorField = (label: string, key: keyof CheckinThemeColors) => (
-    <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 1.5 }}>
-      <TextField
-        type="color"
-        label={label}
-        value={themeConfig.colors[key]}
-        onChange={e => updateColor(key, e.target.value)}
-        sx={{ width: 120 }}
-        size="small"
-      />
-      <Box sx={{ width: 60, height: 32, borderRadius: 1, backgroundColor: themeConfig.colors[key], border: "1px solid #ccc" }} />
-      <Typography variant="body2" color="text.secondary">{themeConfig.colors[key]}</Typography>
-    </Stack>
-  );
-
   if (editingImage === "background") {
-    return <ImageEditor aspectRatio={16 / 9} photoUrl={themeConfig.backgroundImage} onCancel={() => setEditingImage(null)} onUpdate={handleBackgroundImageUpdate} outputWidth={1920} outputHeight={1080} />;
+    return <ImageEditor aspectRatio={16 / 9} photoUrl={config.backgroundImage} onCancel={() => setEditingImage(null)} onUpdate={handleBackgroundImageUpdate} outputWidth={1920} outputHeight={1080} />;
   }
 
   if (editingImage === "slide") {
-    const currentUrl = editingSlideIndex < themeConfig.idleScreen.slides.length ? themeConfig.idleScreen.slides[editingSlideIndex]?.imageUrl : "";
+    const currentUrl = editingSlideIndex < config.idleScreen.slides.length ? config.idleScreen.slides[editingSlideIndex]?.imageUrl : "";
     return <ImageEditor aspectRatio={16 / 9} photoUrl={currentUrl || ""} onCancel={() => setEditingImage(null)} onUpdate={handleSlideImageUpdate} outputWidth={1920} outputHeight={1080} />;
   }
 
   return (
-    <InputBox headerText="Kiosk Theme" headerIcon="palette" saveFunction={handleSave} isSubmitting={isSubmitting}>
-      {/* Colors Section */}
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="subtitle1" fontWeight={600}>Colors</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {colorField("Primary", "primary")}
-          {colorField("Primary Contrast", "primaryContrast")}
-          {colorField("Secondary", "secondary")}
-          {colorField("Secondary Contrast", "secondaryContrast")}
-          {colorField("Header Background", "headerBackground")}
-          {colorField("Subheader Background", "subheaderBackground")}
-          {colorField("Button Background", "buttonBackground")}
-          {colorField("Button Text", "buttonText")}
-        </AccordionDetails>
-      </Accordion>
+    <InputBox headerText="Kiosk Settings" headerIcon="settings" saveFunction={handleSave} isSubmitting={isSubmitting}>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        Kiosk colors are managed in Settings &gt; App Theme. Configure background images and idle screen behavior below.
+      </Typography>
 
       {/* Background Image Section */}
-      <Accordion>
+      <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <Typography variant="subtitle1" fontWeight={600}>Background Image</Typography>
         </AccordionSummary>
@@ -200,17 +154,17 @@ export const CheckinThemeEdit: React.FC = () => {
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             Optional background image for the lookup/welcome screen. Recommended: 1920x1080.
           </Typography>
-          {themeConfig.backgroundImage && (
+          {config.backgroundImage && (
             <Box sx={{ mb: 2 }}>
-              <img src={themeConfig.backgroundImage} alt="Background" style={{ maxWidth: 300, maxHeight: 170, borderRadius: 8, border: "1px solid #ccc" }} />
+              <img src={config.backgroundImage} alt="Background" style={{ maxWidth: 300, maxHeight: 170, borderRadius: 8, border: "1px solid #ccc" }} />
             </Box>
           )}
           <Stack direction="row" spacing={2}>
             <Button variant="outlined" onClick={() => setEditingImage("background")}>
-              {themeConfig.backgroundImage ? "Change Image" : "Upload Image"}
+              {config.backgroundImage ? "Change Image" : "Upload Image"}
             </Button>
-            {themeConfig.backgroundImage && (
-              <Button variant="outlined" color="error" onClick={() => setThemeConfig(prev => ({ ...prev, backgroundImage: "" }))}>
+            {config.backgroundImage && (
+              <Button variant="outlined" color="error" onClick={() => setConfig(prev => ({ ...prev, backgroundImage: "" }))}>
                 Remove
               </Button>
             )}
@@ -227,8 +181,8 @@ export const CheckinThemeEdit: React.FC = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={themeConfig.idleScreen.enabled}
-                onChange={e => setThemeConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, enabled: e.target.checked } }))}
+                checked={config.idleScreen.enabled}
+                onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, enabled: e.target.checked } }))}
               />
             }
             label="Enable idle screen"
@@ -236,15 +190,15 @@ export const CheckinThemeEdit: React.FC = () => {
           <TextField
             type="number"
             label="Timeout (seconds)"
-            value={themeConfig.idleScreen.timeoutSeconds}
-            onChange={e => setThemeConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, timeoutSeconds: parseInt(e.target.value) || 120 } }))}
+            value={config.idleScreen.timeoutSeconds}
+            onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, timeoutSeconds: parseInt(e.target.value) || 120 } }))}
             size="small"
             sx={{ mt: 2, mb: 3, width: 200 }}
             slotProps={{ htmlInput: { min: 10 } }}
           />
 
           <Typography variant="subtitle2" sx={{ mb: 1 }}>Slides</Typography>
-          {themeConfig.idleScreen.slides.map((slide, index) => (
+          {config.idleScreen.slides.map((slide, index) => (
             <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: "1px solid #e0e0e0", borderRadius: 2 }}>
               {slide.imageUrl && (
                 <img src={slide.imageUrl} alt={`Slide ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: 4 }} />

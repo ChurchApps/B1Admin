@@ -3,8 +3,9 @@ import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { Box, Stack, Button } from "@mui/material";
-import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon, History as HistoryIcon } from "@mui/icons-material";
+import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, PhoneIphone as PhoneIphoneIcon, History as HistoryIcon, Palette as PaletteIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
+import { AppThemeEdit } from "./components/AppThemeEdit";
 import { MobileAppSettingsPage } from "./MobileAppSettingsPage";
 import { useQuery } from "@tanstack/react-query";
 
@@ -40,6 +41,7 @@ export const ManageChurch = () => {
       switch (selectedTab) {
         case "roles": return <RolesTab church={church.data} />;
         case "mobileApps": return <MobileAppSettingsPage />;
+        case "appTheme": return <AppThemeEdit />;
         default: return <div></div>;
       }
     }
@@ -97,6 +99,21 @@ export const ManageChurch = () => {
               }
             }}>
             {Locale.label("settings.manageChurch.mobileApps")}
+          </Button>
+          <Button
+            variant={selectedTab === "appTheme" ? "contained" : "outlined"}
+            startIcon={<PaletteIcon />}
+            onClick={() => setSelectedTab("appTheme")}
+            sx={{
+              color: selectedTab === "appTheme" ? "primary.main" : "#FFF",
+              backgroundColor: selectedTab === "appTheme" ? "#FFF" : "transparent",
+              borderColor: "#FFF",
+              "&:hover": {
+                backgroundColor: selectedTab === "appTheme" ? "#FFF" : "rgba(255,255,255,0.2)",
+                color: selectedTab === "appTheme" ? "primary.main" : "#FFF"
+              }
+            }}>
+            App Theme
           </Button>
           <Button
             variant={selectedTab === "roles" ? "contained" : "outlined"}
@@ -158,7 +175,7 @@ export const ManageChurch = () => {
       )}
 
       {/* Tab Content - hidden when editing church settings */}
-      {!showChurchSettings && (selectedTab === "roles" || selectedTab === "mobileApps") && <Box sx={{ p: 2 }}>{getCurrentTab()}</Box>}
+      {!showChurchSettings && (selectedTab === "roles" || selectedTab === "mobileApps" || selectedTab === "appTheme") && <Box sx={{ p: 2 }}>{getCurrentTab()}</Box>}
     </>
   );
 };

@@ -184,7 +184,7 @@ export function PaletteEdit(props: Props) {
             </Box>
             <Box>
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>Color Palette</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>Customize your site's color scheme</Typography>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Settings &gt; App Theme.</Typography>
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
