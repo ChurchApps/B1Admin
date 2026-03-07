@@ -21,7 +21,7 @@ async function globalSetup(config: FullConfig) {
   await page.goto(baseURL + "/");
 
   const churchDialog = page.locator("text=Select a Church");
-  const navButton = page.locator("#primaryNavButton");
+  const navButton = page.locator("#site-header");
   const emailInput = page.locator('input[type="email"]');
 
   // Wait for login form (don't use networkidle — WebSocket keeps it open)
@@ -45,7 +45,7 @@ async function globalSetup(config: FullConfig) {
       .or(page.locator('[role="dialog"] h3:has-text("Gracious Community Church")').first());
     await graceChurch.click({ timeout: 10000 });
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 10000 });
-    await page.waitForSelector("#primaryNavButton", { state: "visible" });
+    await page.waitForSelector("#site-header", { state: "visible" });
   }
   // If result === "nav", we're already on the dashboard
 

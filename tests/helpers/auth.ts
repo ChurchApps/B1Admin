@@ -4,7 +4,7 @@ export async function login(page: Page) {
   await page.goto("/");
 
   const emailInput = page.locator('input[type="email"]');
-  const navButton = page.locator("#primaryNavButton");
+  const navButton = page.locator("#site-header");
   const churchDialog = page.locator("text=Select a Church");
 
   // Race navButton (already authenticated via storageState) against emailInput
