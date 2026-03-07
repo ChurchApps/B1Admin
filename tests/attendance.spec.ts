@@ -9,11 +9,9 @@ test.describe('Attendance Management', () => {
     await menuBtn.click();
     const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
     await peopleHomeBtn.click();
-    await page.waitForTimeout(5000);
     await expect(page).toHaveURL(/\/people/);
     const attHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Attendance');
     await attHomeBtn.click();
-    await page.waitForTimeout(2000);
     await expect(page).toHaveURL(/\/attendance/);
   });
 
@@ -31,7 +29,7 @@ test.describe('Attendance Management', () => {
       await campusName.fill('Octavian Test Campus');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const verifiedName = page.locator('button').getByText('Octavian Test Campus');
       await expect(verifiedName).toHaveCount(1);
     });
@@ -53,7 +51,7 @@ test.describe('Attendance Management', () => {
       await campusName.fill('Octavius Test Campus');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const verifiedName = page.locator('button').getByText('Octavius Test Campus');
       await expect(verifiedName).toHaveCount(1);
     });
@@ -94,7 +92,7 @@ test.describe('Attendance Management', () => {
       await servName.fill('Octavius Test Service');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const verifiedServ = page.locator('button').getByText('Octavius Test Service');
       await expect(verifiedServ).toHaveCount(1);
     });
@@ -106,7 +104,7 @@ test.describe('Attendance Management', () => {
       await expect(campusSelect).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await expect(campusSelect).toHaveCount(0);
     });
 
@@ -136,7 +134,7 @@ test.describe('Attendance Management', () => {
       await timeName.fill('Octavius Test Time');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const verifiedTime = page.locator('button').getByText('Octavius Test Time');
       await expect(verifiedTime).toHaveCount(1);
     });
@@ -148,7 +146,7 @@ test.describe('Attendance Management', () => {
       await expect(servSelect).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await expect(servSelect).toHaveCount(0);
     });
 
@@ -163,7 +161,7 @@ test.describe('Attendance Management', () => {
       await time.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await expect(time).toHaveCount(0);
     });
 
@@ -178,7 +176,7 @@ test.describe('Attendance Management', () => {
       await serv.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await expect(serv).toHaveCount(0);
     });
 
@@ -212,7 +210,7 @@ test.describe('Attendance Management', () => {
     test('should filter attendance trends', async ({ page }) => {
       const trendTab = page.locator('button[role="tab"]').getByText('Attendance Trend');
       await trendTab.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const campusName = page.locator('[id="mui-component-select-campusId"]');
       await campusName.click();
@@ -232,7 +230,7 @@ test.describe('Attendance Management', () => {
       await groupSel.click();
       const runBtn = page.locator('button').getByText('Run Report');
       await runBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const resultsTableRows = page.locator('[id="reportsBox"] table tr');
       expect(resultsTableRows).toHaveCount(36);
@@ -242,7 +240,7 @@ test.describe('Attendance Management', () => {
       // completed as I can, correcting reports display info is up to father. Data does not load in.
       const trendTab = page.locator('button[role="tab"]').getByText('Group Attendance');
       await trendTab.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const campusName = page.locator('[id="mui-component-select-campusId"]');
       await campusName.click();
@@ -256,7 +254,7 @@ test.describe('Attendance Management', () => {
       await weekBox.fill('2024-03-03');
       const runBtn = page.locator('button').getByText('Run Report');
       await runBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const report = page.locator('td').getByText('10:30 AM Service');
       await report.click();
     });

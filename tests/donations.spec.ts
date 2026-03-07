@@ -9,7 +9,6 @@ test.describe('Donations Management', () => {
     await menuBtn.click();
     const donationHomeBtn = page.locator('[data-testid="nav-item-donations"]');
     await donationHomeBtn.click();
-    await page.waitForTimeout(5000);
     await expect(page).toHaveURL(/\/donations/);
   });
 
@@ -43,7 +42,7 @@ test.describe('Donations Management', () => {
     test('should create fund', async ({ page }) => {
       const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds');
       await fundsBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const addBtn = page.locator('[data-testid="add-fund-button"]');
       await addBtn.click();
       const fundName = page.locator('[name="fundName"]');
@@ -52,7 +51,7 @@ test.describe('Donations Management', () => {
       await taxCheck.click();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const verifyFund = page.locator('a').getByText('Octavian Fund');
       await expect(verifyFund).toHaveCount(1);
@@ -63,7 +62,7 @@ test.describe('Donations Management', () => {
     test('should edit fund', async ({ page }) => {
       const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds');
       await fundsBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('[data-cy="edit-5"]');
       await editBtn.click();
       const fundName = page.locator('[name="fundName"]');
@@ -72,7 +71,7 @@ test.describe('Donations Management', () => {
       await taxCheck.click();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const verifyFund = page.locator('a').getByText('Octavius Fund');
       await expect(verifyFund).toHaveCount(1);
@@ -83,14 +82,14 @@ test.describe('Donations Management', () => {
     test('should cancel editing fund', async ({ page }) => {
       const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds');
       await fundsBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('[data-cy="edit-5"]');
       await editBtn.click();
       const fundName = page.locator('[name="fundName"]');
       await expect(fundName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await expect(fundName).toHaveCount(0);
     });
   });
@@ -99,7 +98,7 @@ test.describe('Donations Management', () => {
     test('should create batch', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const addBtn = page.locator('[data-testid="add-batch-button"]');
       await addBtn.click();
@@ -109,7 +108,7 @@ test.describe('Donations Management', () => {
       await date.fill('2025-10-10');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const verifyBatch = page.locator('a').getByText('October 10, 2025 Batch');
       await expect(verifyBatch).toHaveCount(1);
@@ -120,19 +119,19 @@ test.describe('Donations Management', () => {
     test('should edit batch', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const editBtn = page.locator('[data-cy="edit-0"]');
       await editBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const batchName = page.locator('[name="name"]');
       await batchName.fill('October 1, 2025 Batch');
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const date = page.locator('[name="date"]');
       await date.fill('2025-10-01');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const verifyBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await expect(verifyBatch).toHaveCount(1);
@@ -143,7 +142,7 @@ test.describe('Donations Management', () => {
     test('should cancel editing batch', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const editBtn = page.locator('[data-cy="edit-0"]');
       await editBtn.click();
@@ -151,18 +150,18 @@ test.describe('Donations Management', () => {
       await expect(batchName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       await expect(batchName).toHaveCount(0);
     });
 
     test('should add donation to batch', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const anon = page.locator('button').getByText('Anonymous');
       await anon.click();
@@ -180,11 +179,11 @@ test.describe('Donations Management', () => {
       await notes.fill('Test Donation Notes');
       const amount = page.locator('input').nth(4);
       await amount.fill('20.00');
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const addBtn = page.locator('[data-testid="add-donation-submit"]');
       await addBtn.click();
 
-      await page.waitForTimeout(1000);
+      await page.waitForTimeout(300);
       const validateName = page.locator('table td').getByText('Anonymous');
       await expect(validateName).toHaveCount(1);
       const validateDate = page.locator('table td').getByText('May 2, 2025');
@@ -196,15 +195,15 @@ test.describe('Donations Management', () => {
     test('should edit a batch donation', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const editBtn = page.locator('[data-cy="edit-link-0"]');
       await editBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const amount = page.locator('[name="amount"]');
       await amount.fill('30.00');
 
@@ -217,11 +216,11 @@ test.describe('Donations Management', () => {
     test('should cancel editing a batch donation', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const editBtn = page.locator('button').getByText('Edit').last();
       await editBtn.click();
@@ -235,18 +234,18 @@ test.describe('Donations Management', () => {
     test('should delete a batch donation', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const editBtn = page.locator('[data-cy="edit-link-0"]');
       await editBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(200);
       const validateDeletion = page.locator('table td').getByText('$30.00');
       await expect(validateDeletion).toHaveCount(0);
     });
@@ -254,11 +253,11 @@ test.describe('Donations Management', () => {
     test('should go back to person select on donation entry', async ({ page }) => {
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const selBatch = page.locator('a').getByText('October 1, 2025 Batch');
       await selBatch.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const anon = page.locator('button').getByText('Anonymous');
       await anon.click();
@@ -276,14 +275,14 @@ test.describe('Donations Management', () => {
 
       const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
       await batchesBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
 
       const editBtn = page.locator('[data-cy="edit-0"]');
       await editBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const deleteBtn = page.locator('[id="delete"]');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const verifyBatch = page.locator('a').getByText('October 10, 2025 Batch');
       await expect(verifyBatch).toHaveCount(0);
     });
@@ -297,7 +296,7 @@ test.describe('Donations Management', () => {
 
       const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds');
       await fundsBtn.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(200);
       const editBtn = page.locator('[data-cy="edit-5"]');
       await editBtn.click();
       const deleteBtn = page.locator('[id="delete"]');
