@@ -1,6 +1,6 @@
 import React from "react";
 import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
-import { type QuestionInterface } from "@churchapps/helpers";
+import { CurrencyHelper, type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 
@@ -13,6 +13,7 @@ export const PaymentEdit: React.FC<Props> = (props) => {
   const [funds, setFunds] = React.useState([]);
   const [fundId, setFundId] = React.useState(props.question.choices?.find((c: any) => c.text === "FundId")?.value || "");
   const [amount, setAmount] = React.useState(props.question.choices?.find((c: any) => c.text === "Amount")?.value || 0);
+  const [currency, setCurrency] = React.useState<string>("usd");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     e.preventDefault();
@@ -46,6 +47,12 @@ export const PaymentEdit: React.FC<Props> = (props) => {
     });
   }, [fundId, props.question, props.updatedFunction]);
 
+  React.useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      setCurrency(result);
+    })
+  }, []);
+
   const getFundOptions = () =>
     funds.map((fund: FundInterface) => (
       <MenuItem key={fund.id} value={fund.id}>
@@ -68,7 +75,11 @@ export const PaymentEdit: React.FC<Props> = (props) => {
         type="number"
         value={amount}
         onChange={handleChange}
-        InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+        slotProps={{
+          input: {
+            startAdornment: <InputAdornment position="start">{CurrencyHelper.getCurrencySymbol(currency)}</InputAdornment>
+          }
+        }}
       />
     </>
   );
