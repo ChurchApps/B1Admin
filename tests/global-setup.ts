@@ -20,34 +20,33 @@ async function globalSetup(config: FullConfig) {
   // Login flow
   await page.goto(baseURL + "/");
 
-  const churchDialog = page.locator("text=Select a Church");
-  const navButton = page.locator("#site-header");
   const emailInput = page.locator('input[type="email"]');
 
-  // Wait for login form (don't use networkidle — WebSocket keeps it open)
+  // Wait for login form
   await emailInput.waitFor({ state: "visible", timeout: 15000 });
 
   await page.fill('input[type="email"]', "demo@b1.church");
   await page.fill('input[type="password"]', "password");
   await page.click('button[type="submit"]');
 
-  // After login, either "Select a Church" dialog appears (multiple churches)
-  // or the app auto-selects via lastChurchId cookie and redirects directly.
-  const result = await Promise.race([
-    navButton.waitFor({ state: "visible", timeout: 15000 }).then(() => "nav" as const),
-    churchDialog.waitFor({ state: "visible", timeout: 15000 }).then(() => "dialog" as const),
-  ]);
+  // Wait for login form to disappear (navigated away from login page)
+  await emailInput.waitFor({ state: "hidden", timeout: 15000 });
 
-  if (result === "dialog") {
+  // Handle optional church selection dialog (only appears with multiple churches)
+  const churchDialog = page.locator('[role="dialog"]').filter({ hasText: "Select a Church" });
+  const dialogVisible = await churchDialog
+    .waitFor({ state: "visible", timeout: 3000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (dialogVisible) {
     const graceChurch = page
       .locator('[role="dialog"] h3:has-text("Grace Community Church")')
       .first()
       .or(page.locator('[role="dialog"] h3:has-text("Gracious Community Church")').first());
     await graceChurch.click({ timeout: 10000 });
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 10000 });
-    await page.waitForSelector("#site-header", { state: "visible" });
   }
-  // If result === "nav", we're already on the dashboard
 
   // Save authenticated state
   await context.storageState({ path: STORAGE_STATE_PATH });

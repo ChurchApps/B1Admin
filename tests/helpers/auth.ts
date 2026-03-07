@@ -4,37 +4,37 @@ export async function login(page: Page) {
   await page.goto("/");
 
   const emailInput = page.locator('input[type="email"]');
-  const navButton = page.locator("#site-header");
-  const churchDialog = page.locator("text=Select a Church");
 
-  // Race navButton (already authenticated via storageState) against emailInput
-  // (login form visible). Avoids false-positive isLoginPage checks caused by
-  // React briefly rendering the login form before reading the stored JWT.
-  const initial = await Promise.race([
-    navButton.waitFor({ state: "visible", timeout: 10000 }).then(() => "nav" as const),
-    emailInput.waitFor({ state: "visible", timeout: 10000 }).then(() => "login" as const),
-  ]);
+  // Check if login form is visible. If not, we're already authenticated.
+  const needsLogin = await emailInput
+    .waitFor({ state: "visible", timeout: 8000 })
+    .then(() => true)
+    .catch(() => false);
 
-  if (initial === "nav") return;
+  if (!needsLogin) return;
 
-  // Full login flow (storageState missing/expired or fresh context)
+  // Full login flow
   await emailInput.fill("demo@b1.church");
   await page.fill('input[type="password"]', "password");
   await page.click('button[type="submit"]');
 
-  // After submit: app either shows church selection dialog or goes straight to dashboard.
-  const result = await Promise.race([
-    navButton.waitFor({ state: "visible", timeout: 15000 }).then(() => "nav" as const),
-    churchDialog.waitFor({ state: "visible", timeout: 15000 }).then(() => "dialog" as const),
-  ]);
+  // After submit: wait for login form to disappear (navigated away from /login).
+  // Handles both direct-to-dashboard (single church) and church-selection dialog cases.
+  await emailInput.waitFor({ state: "hidden", timeout: 15000 });
 
-  if (result === "dialog") {
+  // Handle optional church selection dialog (only appears with multiple churches)
+  const churchDialog = page.locator('[role="dialog"]').filter({ hasText: "Select a Church" });
+  const dialogVisible = await churchDialog
+    .waitFor({ state: "visible", timeout: 3000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (dialogVisible) {
     const graceChurch = page
       .locator('[role="dialog"] h3:has-text("Grace Community Church")')
       .first()
       .or(page.locator('[role="dialog"] h3:has-text("Gracious Community Church")').first());
     await graceChurch.click({ timeout: 10000 });
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 10000 });
-    await navButton.waitFor({ state: "visible", timeout: 10000 });
   }
 }
