@@ -29,23 +29,24 @@ async function globalSetup(config: FullConfig) {
   await page.fill('input[type="password"]', "password");
   await page.click('button[type="submit"]');
 
-  // Wait for login form to disappear (navigated away from login page)
-  await emailInput.waitFor({ state: "hidden", timeout: 15000 });
-
-  // Handle optional church selection dialog (only appears with multiple churches)
+  // After submit, the login form stays mounted while the church selection dialog is shown.
+  // SelectChurchModal always appears on a fresh session (no lastChurchId cookie).
+  // Wait for either: church selection dialog OR navigation away from /login.
   const churchDialog = page.locator('[role="dialog"]').filter({ hasText: "Select a Church" });
-  const dialogVisible = await churchDialog
-    .waitFor({ state: "visible", timeout: 3000 })
-    .then(() => true)
-    .catch(() => false);
+  await Promise.race([
+    churchDialog.waitFor({ state: "visible", timeout: 15000 }).catch(() => {}),
+    page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 }).catch(() => {}),
+  ]);
 
+  // Handle church selection dialog if present
+  const dialogVisible = await churchDialog.isVisible().catch(() => false);
   if (dialogVisible) {
     const graceChurch = page
       .locator('[role="dialog"] h3:has-text("Grace Community Church")')
       .first()
       .or(page.locator('[role="dialog"] h3:has-text("Gracious Community Church")').first());
     await graceChurch.click({ timeout: 10000 });
-    await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 10000 });
+    await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 });
   }
 
   // Save authenticated state
