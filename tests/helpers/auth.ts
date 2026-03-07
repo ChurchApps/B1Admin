@@ -4,16 +4,20 @@ export async function login(page: Page) {
   await page.goto("/");
 
   const emailInput = page.locator('input[type="email"]');
-  const navButton = page.locator('#primaryNavButton');
 
-  // Race: if already authenticated, navButton appears; if not, emailInput appears.
-  // This avoids waiting the full 8s timeout when already logged in via storageState.
-  const state = await Promise.race([
-    navButton.waitFor({ state: "visible", timeout: 12000 }).then(() => "authenticated"),
-    emailInput.waitFor({ state: "visible", timeout: 12000 }).then(() => "login"),
-  ]).catch(() => "login");
+  // Wait for the app to settle: either shows login form (needs login)
+  // or dashboard (already authenticated). Use 20s for slow CI cold-start.
+  const needsLogin = await emailInput
+    .waitFor({ state: "visible", timeout: 20000 })
+    .then(() => true)
+    .catch(() => false);
 
-  if (state === "authenticated") return;
+  if (!needsLogin) {
+    // Already authenticated. Explicitly wait for nav to be ready so
+    // the caller can immediately click #primaryNavButton without timing out.
+    await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 20000 });
+    return;
+  }
 
   // Full login flow
   await emailInput.fill("demo@b1.church");
@@ -39,4 +43,7 @@ export async function login(page: Page) {
     await graceChurch.click({ timeout: 10000 });
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 });
   }
+
+  // After login, wait for nav to be ready before returning
+  await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 20000 });
 }
