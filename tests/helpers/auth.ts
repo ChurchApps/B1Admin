@@ -4,14 +4,16 @@ export async function login(page: Page) {
   await page.goto("/");
 
   const emailInput = page.locator('input[type="email"]');
+  const navButton = page.locator('#primaryNavButton');
 
-  // Check if login form is visible. If not, we're already authenticated.
-  const needsLogin = await emailInput
-    .waitFor({ state: "visible", timeout: 8000 })
-    .then(() => true)
-    .catch(() => false);
+  // Race: if already authenticated, navButton appears; if not, emailInput appears.
+  // This avoids waiting the full 8s timeout when already logged in via storageState.
+  const state = await Promise.race([
+    navButton.waitFor({ state: "visible", timeout: 12000 }).then(() => "authenticated"),
+    emailInput.waitFor({ state: "visible", timeout: 12000 }).then(() => "login"),
+  ]).catch(() => "login");
 
-  if (!needsLogin) return;
+  if (state === "authenticated") return;
 
   // Full login flow
   await emailInput.fill("demo@b1.church");
