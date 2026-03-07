@@ -5,17 +5,17 @@ export async function login(page: Page) {
 
   const emailInput = page.locator('input[type="email"]');
 
-  // Wait for the app to settle: either shows login form (needs login)
-  // or dashboard (already authenticated). Use 20s for slow CI cold-start.
+  // With storageState, the app goes straight to dashboard — emailInput never appears.
+  // Use a short 5s timeout: if emailInput doesn't show within 5s, we're authenticated.
+  // On unauthenticated pages, the login form renders quickly and we catch it in time.
   const needsLogin = await emailInput
-    .waitFor({ state: "visible", timeout: 20000 })
+    .waitFor({ state: "visible", timeout: 5000 })
     .then(() => true)
     .catch(() => false);
 
   if (!needsLogin) {
-    // Already authenticated. Explicitly wait for nav to be ready so
-    // the caller can immediately click #primaryNavButton without timing out.
-    await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 20000 });
+    // Already authenticated. Wait up to 30s for nav to be ready (cold-start CI can be slow).
+    await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 30000 });
     return;
   }
 
@@ -45,5 +45,5 @@ export async function login(page: Page) {
   }
 
   // After login, wait for nav to be ready before returning
-  await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 20000 });
+  await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 30000 });
 }
