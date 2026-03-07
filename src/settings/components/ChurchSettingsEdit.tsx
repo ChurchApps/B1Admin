@@ -11,10 +11,7 @@ import SmsIcon from "@mui/icons-material/Sms";
 import LanguageIcon from "@mui/icons-material/Language";
 import { DomainSettingsEdit } from "./DomainSettingsEdit";
 import { TextingSettingsEdit } from "./TextingSettingsEdit";
-import { DirectoryApproveSettingsEdit } from "./DirectoryApproveSettingsEdit";
 import { SupportContactSettingsEdit } from "./SupportContactSettingsEdit";
-import { VisbilityPrefSettingsEdit } from "./VisibilityPrefSettingsEdit";
-import { GuestRegistrationSettingsEdit } from "./GuestRegistrationSettingsEdit";
 import { SettingsSectionHeader } from "./SettingsSectionHeader";
 
 interface Props {
@@ -227,9 +224,6 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
         </AccordionSummary>
         <AccordionDetails sx={{ pt: 1 }}>
           <SupportContactSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-          <DirectoryApproveSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-          <VisbilityPrefSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-          <GuestRegistrationSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
         </AccordionDetails>
       </Accordion>
 

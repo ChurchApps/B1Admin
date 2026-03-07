@@ -205,6 +205,11 @@
     "tryAgain": "Erneut versuchen",
     "update": "Aktualisieren",
     "website": "Website",
+    "mobile": "Mobil",
+    "navigation": "Navigation",
+    "appTheme": "App-Design",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn",
     "yes": "Ja"
   },
   "components": {
@@ -1842,6 +1847,30 @@
       "members": "Mitglieder",
       "phoneNum": "Telefonnummer",
       "visibilityPreference": "Sichtbarkeitseinstellung"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "Diese Farben werden von der mobilen App, dem Mitgliederportal und dem Check-in-Kiosk verwendet. Lassen Sie die Standardwerte oder passen Sie sie an Ihr Branding an.",
+      "resetDefaults": "Auf Standardwerte zurücksetzen",
+      "lightMode": "Heller Modus",
+      "darkMode": "Dunkler Modus"
+    },
+    "appThemePage": {
+      "title": "App-Design",
+      "subtitle": "Passen Sie die Farben an, die von der mobilen App, dem Mitgliederportal und dem Check-in-Kiosk verwendet werden"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "Einstellungen für die B1 Mobile App konfigurieren"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "Einstellungen für die B1 CheckIn Kiosk-App konfigurieren",
+      "qrGuestRegistration": "QR-Gastregistrierung",
+      "qrTooltip": "Zeigen Sie einen QR-Code am Check-in-Kiosk an, damit sich Gäste selbst auf ihrem Telefon registrieren können",
+      "enabled": "Aktiviert — QR-Code wird am Kiosk angezeigt",
+      "disabled": "Deaktiviert"
     }
   },
   "site": {

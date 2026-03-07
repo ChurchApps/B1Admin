@@ -51,6 +51,7 @@ const CalendarPage = React.lazy(() => import("./calendars/CalendarPage").then((m
 const RegistrationsPage = React.lazy(() => import("./registrations/RegistrationsPage").then((module) => ({ default: module.RegistrationsPage })));
 const RegistrationDetailsPage = React.lazy(() => import("./registrations/RegistrationDetailsPage").then((module) => ({ default: module.RegistrationDetailsPage })));
 const Site = React.lazy(() => import("./site").then((module) => ({ default: module.Site })));
+const Mobile = React.lazy(() => import("./mobile").then((module) => ({ default: module.Mobile })));
 const EmailTemplatesPage = React.lazy(() => import("./settings/EmailTemplatesPage").then((module) => ({ default: module.EmailTemplatesPage })));
 
 // Loading component for Suspense fallback
@@ -133,6 +134,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/calendars/:id" element={<CalendarPage />} />
           <Route path="/calendars" element={<CalendarsPage />} />
           <Route path="/site/*" element={<Site />} />
+          <Route path="/mobile/*" element={<Mobile />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/" element={<QuickActionsPage />} />
         </Route>

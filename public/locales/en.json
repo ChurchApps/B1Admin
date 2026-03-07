@@ -205,7 +205,12 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes"
+    "yes": "Yes",
+    "mobile": "Mobile",
+    "navigation": "Navigation",
+    "appTheme": "App Theme",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn"
   },
   "components": {
     "footer": {
@@ -1842,6 +1847,30 @@
       "members": "Members",
       "phoneNum": "Phone Number",
       "visibilityPreference": "Visibility Preference"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.",
+      "resetDefaults": "Reset to Defaults",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode"
+    },
+    "appThemePage": {
+      "title": "App Theme",
+      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "Configure settings for the B1 Mobile app"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
+      "qrGuestRegistration": "QR Guest Registration",
+      "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "enabled": "Enabled — QR code will appear on kiosk",
+      "disabled": "Disabled"
     }
   },
   "site": {

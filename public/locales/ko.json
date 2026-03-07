@@ -205,6 +205,11 @@
     "tryAgain": "다시 시도",
     "update": "업데이트",
     "website": "웹사이트",
+    "mobile": "모바일",
+    "navigation": "탐색",
+    "appTheme": "앱 테마",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn",
     "yes": "예"
   },
   "components": {
@@ -1842,6 +1847,30 @@
       "members": "회원",
       "phoneNum": "전화번호",
       "visibilityPreference": "가시성 기본 설정"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "이 색상은 모바일 앱, 회원 포털 및 체크인 키오스크에서 사용됩니다. 기본값으로 두거나 브랜드에 맞게 사용자 지정하세요.",
+      "resetDefaults": "기본값으로 재설정",
+      "lightMode": "라이트 모드",
+      "darkMode": "다크 모드"
+    },
+    "appThemePage": {
+      "title": "앱 테마",
+      "subtitle": "모바일 앱, 회원 포털 및 체크인 키오스크에서 사용하는 색상을 사용자 지정하세요"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "B1 Mobile 앱 설정 구성"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "B1 CheckIn 키오스크 앱 설정 구성",
+      "qrGuestRegistration": "QR 방문자 등록",
+      "qrTooltip": "체크인 키오스크에 QR 코드를 표시하여 방문자가 휴대폰으로 직접 등록할 수 있도록 합니다",
+      "enabled": "활성화됨 — QR 코드가 키오스크에 표시됩니다",
+      "disabled": "비활성화됨"
     }
   },
   "site": {

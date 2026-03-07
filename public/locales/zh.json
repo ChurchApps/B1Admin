@@ -205,6 +205,11 @@
     "tryAgain": "重试",
     "update": "更新",
     "website": "网站",
+    "mobile": "移动端",
+    "navigation": "导航",
+    "appTheme": "应用主题",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn",
     "yes": "是"
   },
   "components": {
@@ -1842,6 +1847,30 @@
       "members": "成员",
       "phoneNum": "电话号码",
       "visibilityPreference": "可见性偏好"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "这些颜色用于移动应用、会员门户和签到自助终端。保留默认值或自定义以匹配您的品牌。",
+      "resetDefaults": "恢复默认值",
+      "lightMode": "浅色模式",
+      "darkMode": "深色模式"
+    },
+    "appThemePage": {
+      "title": "应用主题",
+      "subtitle": "自定义移动应用、会员门户和签到自助终端使用的颜色"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "配置 B1 Mobile 应用的设置"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "配置 B1 CheckIn 自助终端应用的设置",
+      "qrGuestRegistration": "访客二维码注册",
+      "qrTooltip": "在签到自助终端上显示二维码，以便访客可以通过手机自行注册",
+      "enabled": "已启用 — 二维码将显示在自助终端上",
+      "disabled": "已禁用"
     }
   },
   "site": {

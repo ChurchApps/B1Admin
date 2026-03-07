@@ -205,6 +205,11 @@
     "tryAgain": "Tentar novamente",
     "update": "Atualizar",
     "website": "Site",
+    "mobile": "Celular",
+    "navigation": "Navegação",
+    "appTheme": "Tema do Aplicativo",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn",
     "yes": "Sim"
   },
   "components": {
@@ -1842,6 +1847,30 @@
       "members": "Membros",
       "phoneNum": "Número de Telefone",
       "visibilityPreference": "Preferência de Visibilidade"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "Essas cores são usadas pelo aplicativo móvel, portal do membro e quiosque de check-in. Deixe como padrão ou personalize para combinar com sua marca.",
+      "resetDefaults": "Restaurar Padrões",
+      "lightMode": "Modo Claro",
+      "darkMode": "Modo Escuro"
+    },
+    "appThemePage": {
+      "title": "Tema do Aplicativo",
+      "subtitle": "Personalize as cores usadas pelo aplicativo móvel, portal do membro e quiosque de check-in"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "Configure as definições do aplicativo B1 Mobile"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "Configure as definições do aplicativo de quiosque B1 CheckIn",
+      "qrGuestRegistration": "Registro de Visitantes por QR",
+      "qrTooltip": "Exibir um código QR no quiosque de check-in para que os visitantes possam se registrar pelo celular",
+      "enabled": "Ativado — O código QR aparecerá no quiosque",
+      "disabled": "Desativado"
     }
   },
   "site": {

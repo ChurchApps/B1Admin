@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, Grid, Typography, Box, Stack, Button, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { ApiHelper, InputBox } from "@churchapps/apphelper";
+import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
 export interface AppThemeModeColors {
@@ -141,15 +141,15 @@ export const AppThemeEdit: React.FC = () => {
   );
 
   return (
-    <InputBox headerText="App Theme" headerIcon="palette" saveFunction={handleSave} isSubmitting={isSubmitting}>
+    <InputBox headerText={Locale.label("common.appTheme")} headerIcon="palette" saveFunction={handleSave} isSubmitting={isSubmitting}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.
+        {Locale.label("mobile.appThemeEdit.description")}
       </Typography>
       <Box sx={{ mb: 2 }}>
-        <Button variant="outlined" size="small" onClick={handleReset}>Reset to Defaults</Button>
+        <Button variant="outlined" size="small" onClick={handleReset}>{Locale.label("mobile.appThemeEdit.resetDefaults")}</Button>
       </Box>
-      {modeSection("light", "Light Mode")}
-      {modeSection("dark", "Dark Mode")}
+      {modeSection("light", Locale.label("mobile.appThemeEdit.lightMode"))}
+      {modeSection("dark", Locale.label("mobile.appThemeEdit.darkMode"))}
     </InputBox>
   );
 };

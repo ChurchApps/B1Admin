@@ -205,6 +205,11 @@
     "tryAgain": "पुनः प्रयास करें",
     "update": "अपडेट करें",
     "website": "वेबसाइट",
+    "mobile": "मोबाइल",
+    "navigation": "नेविगेशन",
+    "appTheme": "ऐप थीम",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn",
     "yes": "हाँ"
   },
   "components": {
@@ -1842,6 +1847,30 @@
       "members": "सदस्य",
       "phoneNum": "फोन नंबर",
       "visibilityPreference": "दृश्यता प्राथमिकता"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "ये रंग मोबाइल ऐप, सदस्य पोर्टल और चेक-इन कियोस्क द्वारा उपयोग किए जाते हैं। डिफ़ॉल्ट के रूप में छोड़ दें या अपनी ब्रांडिंग से मिलान करने के लिए अनुकूलित करें।",
+      "resetDefaults": "डिफ़ॉल्ट पर रीसेट करें",
+      "lightMode": "लाइट मोड",
+      "darkMode": "डार्क मोड"
+    },
+    "appThemePage": {
+      "title": "ऐप थीम",
+      "subtitle": "मोबाइल ऐप, सदस्य पोर्टल और चेक-इन कियोस्क द्वारा उपयोग किए जाने वाले रंगों को अनुकूलित करें"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "B1 Mobile ऐप के लिए सेटिंग्स कॉन्फ़िगर करें"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "B1 CheckIn कियोस्क ऐप के लिए सेटिंग्स कॉन्फ़िगर करें",
+      "qrGuestRegistration": "QR अतिथि पंजीकरण",
+      "qrTooltip": "चेक-इन कियोस्क पर एक QR कोड प्रदर्शित करें ताकि अतिथि अपने फोन पर स्वयं पंजीकरण कर सकें",
+      "enabled": "सक्षम — QR कोड कियोस्क पर दिखाई देगा",
+      "disabled": "अक्षम"
     }
   },
   "site": {

@@ -205,6 +205,11 @@
     "tryAgain": "Subukan muli",
     "update": "I-update",
     "website": "Website",
+    "mobile": "Mobile",
+    "navigation": "Nabigasyon",
+    "appTheme": "Tema ng App",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn",
     "yes": "Oo"
   },
   "components": {
@@ -1842,6 +1847,30 @@
       "members": "Mga Miyembro",
       "phoneNum": "Numero ng telepono",
       "visibilityPreference": "Kagustuhan sa pagiging visible"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "Ang mga kulay na ito ay ginagamit ng mobile app, member portal, at check-in kiosk. Iwanan bilang default o i-customize upang tumugma sa iyong branding.",
+      "resetDefaults": "I-reset sa Default",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode"
+    },
+    "appThemePage": {
+      "title": "Tema ng App",
+      "subtitle": "I-customize ang mga kulay na ginagamit ng mobile app, member portal, at check-in kiosk"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "I-configure ang mga setting para sa B1 Mobile app"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "I-configure ang mga setting para sa B1 CheckIn kiosk app",
+      "qrGuestRegistration": "QR Pagpaparehistro ng Bisita",
+      "qrTooltip": "Magpakita ng QR code sa check-in kiosk para makapag-rehistro ang mga bisita sa kanilang telepono",
+      "enabled": "Naka-enable — Lalabas ang QR code sa kiosk",
+      "disabled": "Naka-disable"
     }
   },
   "site": {

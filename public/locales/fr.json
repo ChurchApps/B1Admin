@@ -205,6 +205,11 @@
     "tryAgain": "Réessayer",
     "update": "Mettre à jour",
     "website": "Site Web",
+    "mobile": "Mobile",
+    "navigation": "Navigation",
+    "appTheme": "Thème de l'application",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn",
     "yes": "Oui"
   },
   "components": {
@@ -1842,6 +1847,30 @@
       "members": "Membres",
       "phoneNum": "Numéro de téléphone",
       "visibilityPreference": "Préférence de visibilité"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "Ces couleurs sont utilisées par l'application mobile, le portail des membres et le kiosque d'enregistrement. Laissez les valeurs par défaut ou personnalisez-les pour correspondre à votre image de marque.",
+      "resetDefaults": "Réinitialiser les valeurs par défaut",
+      "lightMode": "Mode clair",
+      "darkMode": "Mode sombre"
+    },
+    "appThemePage": {
+      "title": "Thème de l'application",
+      "subtitle": "Personnalisez les couleurs utilisées par l'application mobile, le portail des membres et le kiosque d'enregistrement"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "Configurer les paramètres de l'application B1 Mobile"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "Configurer les paramètres de l'application kiosque B1 CheckIn",
+      "qrGuestRegistration": "Inscription des invités par QR",
+      "qrTooltip": "Afficher un code QR sur le kiosque d'enregistrement pour que les invités puissent s'inscrire eux-mêmes sur leur téléphone",
+      "enabled": "Activé — Le code QR apparaîtra sur le kiosque",
+      "disabled": "Désactivé"
     }
   },
   "site": {

@@ -11,6 +11,7 @@ export class SecondaryMenuHelper {
     let result: { menuItems: MenuItem[]; label: string } = { menuItems: [], label: "" };
 
     if (path.startsWith("/people") || path.startsWith("/groups") || path.startsWith("/attendance")) result = this.getPeopleMenu(path, data.search);
+    else if (path.startsWith("/mobile")) result = this.getMobileMenu(path);
     else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = this.getSettingsMenu(path, data);
     else if (path.startsWith("/serving")) result = this.getServingMenu(path);
     else if (path.startsWith("/donations")) result = this.getDonationsMenu(path);
@@ -41,14 +42,28 @@ export class SecondaryMenuHelper {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
-    if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/settings/mobile", label: "Mobile Apps", icon: "phone_iphone" });
     if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) menuItems.push({ url: "/admin", label: Locale.label("components.wrapper.servAdmin"), icon: "admin_panel_settings" });
     if (data.formPermission) menuItems.push({ url: "/forms", label: Locale.label("components.wrapper.forms"), icon: "description" });
 
-    if (path.startsWith("/settings/mobile")) label = "Mobile Apps";
-    else if (path.startsWith("/settings")) label = Locale.label("components.wrapper.set");
+    if (path.startsWith("/settings")) label = Locale.label("components.wrapper.set");
     else if (path.startsWith("/admin")) label = Locale.label("components.wrapper.servAdmin");
     else if (path.startsWith("/forms")) label = Locale.label("components.wrapper.forms");
+
+    return { menuItems, label };
+  };
+
+  static getMobileMenu = (path: string) => {
+    const menuItems: MenuItem[] = [];
+    let label: string = Locale.label("common.mobile");
+    menuItems.push({ url: "/mobile/navigation", label: Locale.label("common.navigation"), icon: "menu" });
+    menuItems.push({ url: "/mobile/theme", label: Locale.label("common.appTheme"), icon: "palette" });
+    menuItems.push({ url: "/mobile/b1-mobile", label: Locale.label("common.b1Mobile"), icon: "phone_android" });
+    menuItems.push({ url: "/mobile/checkin", label: Locale.label("common.b1CheckIn"), icon: "qr_code" });
+
+    if (path.startsWith("/mobile/theme")) label = Locale.label("common.appTheme");
+    else if (path.startsWith("/mobile/b1-mobile")) label = Locale.label("common.b1Mobile");
+    else if (path.startsWith("/mobile/checkin")) label = Locale.label("common.b1CheckIn");
+    else if (path.startsWith("/mobile")) label = Locale.label("common.navigation");
 
     return { menuItems, label };
   };
