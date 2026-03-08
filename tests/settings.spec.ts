@@ -111,6 +111,13 @@ test.describe('Settings Management', () => {
 
   test.describe('Mobile Settings', () => {
     test.beforeEach(async ({ page }) => {
+      // Debug: dump secondary menu items visible in the browser
+      const menuText = await page.locator('[id="secondaryMenu"]').textContent().catch(() => 'NOT_FOUND');
+      const menuItems = await page.locator('[id="secondaryMenu"] a, [id="secondaryMenu"] button, [id="secondaryMenu"] [role="menuitem"]')
+        .allTextContents().catch(() => []);
+      const url = page.url();
+      console.log(`DEBUG Mobile beforeEach: url=${url} menuText="${menuText}" menuItems=${JSON.stringify(menuItems)}`);
+
       // Use dispatchEvent to bypass pointer-event interception from overlapping header elements
       const mobileTab = page.locator('[id="secondaryMenu"]').getByText('Mobile Apps');
       await mobileTab.dispatchEvent('click');
@@ -238,6 +245,15 @@ test.describe('Settings Management', () => {
     });
 
     test('should add form questions', async ({ page }) => {
+      // Capture console errors and API failures
+      const consoleErrors: string[] = [];
+      const apiFailures: string[] = [];
+      page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
+      page.on('response', resp => {
+        if (resp.status() >= 400 && resp.url().includes('/questions'))
+          apiFailures.push(`${resp.status()} ${resp.url()}`);
+      });
+
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
 
@@ -264,6 +280,9 @@ test.describe('Settings Management', () => {
       await addOpBtn.click();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      // Debug: wait a moment and check for errors
+      await page.waitForTimeout(2000);
+      console.log(`DEBUG form-questions: consoleErrors=${JSON.stringify(consoleErrors)} apiFailures=${JSON.stringify(apiFailures)}`);
 
       const validatedAddition = page.locator('td button').getByText('I support playwright testing. True or False?');
       await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
