@@ -113,9 +113,10 @@ test.describe('Settings Management', () => {
     test.beforeEach(async ({ page }) => {
       // "Mobile" is a primary nav item (not in settings secondary menu),
       // gated by ContentApi content.edit permission. Navigate via the primary nav.
+      // NavItem renders <a href="about:blank"> with data-testid="nav-item-mobile".
       const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
       await menuBtn.click();
-      const mobileLink = page.locator('a[href="/mobile"]');
+      const mobileLink = page.locator('[data-testid="nav-item-mobile"]');
       await expect(mobileLink).toBeVisible({ timeout: 10000 });
       await mobileLink.click();
       await expect(page).toHaveURL(/\/mobile/);
