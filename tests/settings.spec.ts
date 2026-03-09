@@ -374,7 +374,9 @@ test.describe('Settings Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = page.getByRole('button', { name: 'Edit' }).first();
+      // Target the test form specifically, not the first Edit button
+      const octavRow = page.locator('tr').filter({ hasText: 'Octavius Test Form' });
+      const editBtn = octavRow.getByRole('button', { name: 'Edit' });
       await editBtn.click();
       await page.waitForTimeout(200);
       const deleteBtn = page.locator('button').getByText('Delete').first();
