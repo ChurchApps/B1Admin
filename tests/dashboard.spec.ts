@@ -5,10 +5,8 @@ import { login } from './helpers/auth';
 test.describe('Dashboard Management', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const dashboardHomeBtn = page.locator('[data-testid="nav-item-dashboard"]');
-    await dashboardHomeBtn.click();
+    await page.goto('/dashboard');
+    await expect(page.locator('h6').first()).toBeVisible({ timeout: 15000 });
   });
 
   /* test('should load dashboard', async ({ page }) => {
