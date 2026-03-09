@@ -4,44 +4,10 @@ import { login } from './helpers/auth';
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Settings Management', () => {
   test.beforeEach(async ({ page }) => {
-    // CI diagnostic: intercept the login API call to verify the response includes ContentApi
-    let loginResponseApis: string[] = [];
-    if (process.env.CI) {
-      page.on('response', async (resp) => {
-        if (resp.url().includes('/users/login') && resp.status() === 200) {
-          try {
-            const body = await resp.json();
-            loginResponseApis = body?.userChurches?.[0]?.apis?.map((a: any) => a.keyName) || [];
-            console.log('CI_DIAG login response apis:', JSON.stringify(loginResponseApis));
-          } catch {}
-        }
-      });
-    }
-
     await login(page);
-
-    // CI diagnostic: after login, check what nav items are in the DOM
-    if (process.env.CI) {
-      const navState = await page.evaluate(() => {
-        const items = document.querySelectorAll('[data-testid^="nav-item-"]');
-        return Array.from(items).map(el => ({
-          testid: el.getAttribute('data-testid'),
-          text: el.textContent?.trim()
-        }));
-      });
-      console.log('CI_DIAG nav items after login:', JSON.stringify(navState));
-      console.log('CI_DIAG current URL:', page.url());
-    }
 
     const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
     await menuBtn.click();
-
-    // CI diagnostic: dump visible primary menu items after clicking expand
-    if (process.env.CI) {
-      await page.waitForTimeout(500);
-      const menuItems = await page.locator('[data-testid^="nav-item-"]').allTextContents().catch(() => []);
-      console.log('CI_DIAG primary menu items after expand:', JSON.stringify(menuItems));
-    }
 
     const settingsHomeBtn = page.locator('[data-testid="nav-item-settings"]');
     await settingsHomeBtn.click();
