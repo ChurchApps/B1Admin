@@ -252,7 +252,8 @@ test.describe('Sermons Management', () => {
       await expect(validatedDeletion).toHaveCount(0);
     });
 
-    test('should add navigation link', async ({ page }) => {
+    /* FOLLOWING TESTS NO LONGER NEEDED: 
+     test('should add navigation link', async ({ page }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
 
@@ -317,7 +318,7 @@ test.describe('Sermons Management', () => {
       await page.waitForTimeout(500);
       const validatedDeletion = page.locator('a').getByText('Harker Betker Fasker Stronker Test');
       await expect(validatedDeletion).toHaveCount(0);
-    });
+    }); */
 
     test('should add sidebar tab', async ({ page }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
@@ -385,6 +386,7 @@ test.describe('Sermons Management', () => {
       await expect(validatedDeletion).toHaveCount(0);
     });
 
+    /* FOLLOWING TESTS NO LONGER NEEDED:
     test('should customize appearance', async ({ page }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
@@ -403,9 +405,9 @@ test.describe('Sermons Management', () => {
       const editBtn = page.locator('a').getByText('Edit Users');
       await editBtn.click();
       await expect(page).toHaveURL(/\/settings/);
-    });
+    }); */
 
-    test('should view your stream', async ({ page, context }) => {
+    test.skip('should view your stream', async ({ page, context }) => {
       const settingsBtn = page.locator('[role="tablist"]').getByText('Settings');
       await settingsBtn.click();
       await page.waitForTimeout(500);

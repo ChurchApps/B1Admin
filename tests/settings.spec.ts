@@ -205,7 +205,7 @@ test.describe('Settings Management', () => {
     });
 
     test('should edit form', async ({ page }) => {
-      const editBtn = page.locator('button').getByText('edit');
+      const editBtn = page.locator('button').getByText('edit').last();
       await editBtn.click();
       await page.waitForTimeout(2000);
       const formName = page.locator('[name="name"]');
@@ -341,7 +341,7 @@ test.describe('Settings Management', () => {
         expect(dialog.message()).toContain('Are you sure');
         await dialog.accept();
       });
-
+      await page.waitForTimeout(500);
       const editBtn = page.locator('button').getByText('edit');
       await editBtn.click();
       await page.waitForTimeout(2000);

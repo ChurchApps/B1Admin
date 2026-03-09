@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 
 export async function login(page: Page) {
   await page.goto("/");
-  await page.waitForLoadState("networkidle");
+  // await page.waitForLoadState("networkidle");
 
   await page.fill('input[type="email"]', "demo@b1.church");
   await page.fill('input[type="password"]', "password");

@@ -173,6 +173,7 @@ test.describe('Website Management', () => {
       await typeSelect.click();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      await page.waitForTimeout(500);
       const validatedBlock = page.locator('td').getByText('Octavian Test Block');
       await expect(validatedBlock).toHaveCount(1);
     });
@@ -427,7 +428,7 @@ test.describe('Website Management', () => {
 
       const editBtn = page.locator('[aria-label="Manage Events"]').last();
       await editBtn.click();
-      const removeBtn = page.locator('[aria-label="Adult Bible Class"]');
+      const removeBtn = page.locator('[d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zM19 4h-3.5l-1-1h-5l-1 1H5v2h14z"]').first();
       await removeBtn.click();
       const validatedDeletion = page.locator('td').getByText('Adult Bible Class');
       await expect(validatedDeletion).toHaveCount(0);
