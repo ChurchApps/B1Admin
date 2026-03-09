@@ -222,7 +222,9 @@ test.describe('Settings Management', () => {
     });
 
     test('should edit form', async ({ page }) => {
-      const editBtn = page.getByRole('button', { name: 'Edit' }).first();
+      // Target the form we created, not the first Edit button (which may be a seed form)
+      const octavianRow = page.locator('tr').filter({ hasText: 'Octavian Test Form' });
+      const editBtn = octavianRow.getByRole('button', { name: 'Edit' });
       await editBtn.click();
       await page.waitForTimeout(200);
       const formName = page.locator('[name="name"]');
@@ -234,7 +236,9 @@ test.describe('Settings Management', () => {
     });
 
     test('should cancel editing form', async ({ page }) => {
-      const editBtn = page.getByRole('button', { name: 'Edit' }).first();
+      // Target the form we created/edited, not the first Edit button
+      const octavRow = page.locator('tr').filter({ hasText: 'Octavius Test Form' });
+      const editBtn = octavRow.getByRole('button', { name: 'Edit' });
       await editBtn.click();
       const formName = page.locator('[name="name"]');
       await page.waitForTimeout(200);
