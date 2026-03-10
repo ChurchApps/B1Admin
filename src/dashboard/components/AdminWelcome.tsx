@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { Image, Language, VolunteerActivism, MusicNote, Person, Groups, LiveTv, Lock, CameraAlt } from "@mui/icons-material";
+import { Image, Language, VolunteerActivism, MusicNote, Person, Groups, LiveTv, Lock, CameraAlt, SmartDisplay } from "@mui/icons-material";
 import { ApiHelper, UserHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
 import { FeatureCard } from "./FeatureCard";
@@ -16,11 +16,13 @@ export const AdminWelcome: React.FC = () => {
   const [hasTeams, setHasTeams] = React.useState<boolean | null>(null);
   const [hasPages, setHasPages] = React.useState<boolean | null>(null);
   const [hasGroups, setHasGroups] = React.useState<boolean | null>(null);
+  const [hasPlanTypes, setHasPlanTypes] = React.useState<boolean | null>(null);
 
   React.useEffect(() => {
     ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => setHasTeams(data?.length > 0)).catch(() => setHasTeams(false));
     ApiHelper.get("/pages", "ContentApi").then((data) => setHasPages(data?.length > 0)).catch(() => setHasPages(false));
     ApiHelper.get("/groups/tag/standard", "MembershipApi").then((data) => setHasGroups(data?.length > 0)).catch(() => setHasGroups(false));
+    ApiHelper.get("/planTypes", "DoingApi").then((data) => setHasPlanTypes(data?.length > 0)).catch(() => setHasPlanTypes(false));
   }, []);
 
   const handleCardClick = (wizardKey: WizardType, existsAlready: boolean | null, fallbackUrl: string) => {
@@ -47,33 +49,49 @@ export const AdminWelcome: React.FC = () => {
           <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Click any card below to get started. You can always find these in the menu later.
           </Typography>
-          <Grid container spacing={3}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Your Church</Typography>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Image fontSize="large" />} title="Add Your Church Logo" description="Upload your logo and update your church's contact information so everything looks right from day one." linkUrl="/site/appearance#logo" />
+              <FeatureCard icon={<Image fontSize="small" />} title="Add Your Church Logo" description="Upload your logo and update your church's contact information." linkUrl="/site/appearance#logo" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Language fontSize="large" />} title="Create Your First Webpage" description="Build a public website for your church where visitors can learn about you and find service times." onClick={() => handleCardClick("webpage", hasPages, "/site/pages")} />
+              <FeatureCard icon={<Language fontSize="small" />} title="Create Your First Webpage" description="Build a public website where visitors can learn about you." onClick={() => handleCardClick("webpage", hasPages, "/site/pages")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<VolunteerActivism fontSize="large" />} title="Set Up Online Giving" description="Connect your Stripe account so your congregation can give online through your website and app." linkUrl="/settings#giving" />
+              <FeatureCard icon={<VolunteerActivism fontSize="small" />} title="Set Up Online Giving" description="Connect Stripe so your congregation can give online." linkUrl="/settings#giving" />
+            </Grid>
+          </Grid>
+
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Serving & Content</Typography>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+              <FeatureCard icon={<MusicNote fontSize="small" />} title="Set Up FreeShow Backups" description="Connect FreeShow to back up your songs and service plans." onClick={() => handleCardClick("freeshow", hasTeams, "/serving")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<MusicNote fontSize="large" />} title="Set Up FreeShow Backups" description="If you use FreeShow for presentations, connect it to B1.church to back up your songs and service plans." onClick={() => handleCardClick("freeshow", hasTeams, "/serving")} />
+              <FeatureCard icon={<SmartDisplay fontSize="small" />} title="Set Up Your FreePlay Classroom" description="Create a ministry and classroom for FreePlay lessons on your TV." onClick={() => handleCardClick("freeplay", hasPlanTypes, "/serving")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Person fontSize="large" />} title="Add Your Congregation" description="Import or manually add the people in your church so you can track attendance, groups, and giving." linkUrl="/people" />
+              <FeatureCard icon={<LiveTv fontSize="small" />} title="Upload a Sermon" description="Share your sermons online so people can watch anytime." linkUrl="/sermons" />
+            </Grid>
+          </Grid>
+
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>People & Groups</Typography>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+              <FeatureCard icon={<Person fontSize="small" />} title="Add Your Congregation" description="Import or add your people to track attendance, groups, and giving." linkUrl="/people" />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Groups fontSize="large" />} title="Create Your First Group" description="Set up small groups, classes, or serving teams so people can connect and get involved." onClick={() => handleCardClick("group", hasGroups, "/groups")} />
+              <FeatureCard icon={<Groups fontSize="small" />} title="Create Your First Group" description="Set up small groups, classes, or serving teams." onClick={() => handleCardClick("group", hasGroups, "/groups")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<LiveTv fontSize="large" />} title="Upload a Sermon" description="Share your sermons online so members and visitors can watch or listen anytime." linkUrl="/sermons" />
+              <FeatureCard icon={<Lock fontSize="small" />} title="Invite Team Members" description="Add staff and volunteers as admins to help manage things." linkUrl="/settings#roles" />
             </Grid>
+          </Grid>
+
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Your Profile</Typography>
+          <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Lock fontSize="large" />} title="Invite Team Members" description="Add staff and volunteers as admins so they can help manage people, groups, and content." linkUrl="/settings#roles" />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<CameraAlt fontSize="large" />} title="Set Your Avatar" description="Upload a profile photo so your team and congregation can recognize you." linkUrl={b1Url + "/my/community?id=" + UserHelper.person?.id + "#edit"} external />
+              <FeatureCard icon={<CameraAlt fontSize="small" />} title="Set Your Avatar" description="Upload a profile photo so your team can recognize you." linkUrl={b1Url + "/my/community?id=" + UserHelper.person?.id + "#edit"} external />
             </Grid>
           </Grid>
         </Box>

@@ -4,7 +4,7 @@ import { ApiHelper } from "@churchapps/apphelper";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import UserContext from "../../UserContext";
 
-export type WizardType = "freeshow" | "webpage" | "group";
+export type WizardType = "freeshow" | "freeplay" | "webpage" | "group";
 
 interface Props {
   wizardType: WizardType;
@@ -17,6 +17,10 @@ const wizardConfig: Record<WizardType, { title: string; description: string }> =
   freeshow: {
     title: "Set Up FreeShow Backups",
     description: "To back up your FreeShow data, we need to create a ministry and a team. You'll then be redirected to add team members."
+  },
+  freeplay: {
+    title: "Set Up Your FreePlay Classroom",
+    description: "To get started with FreePlay, we need to create a ministry and a classroom. You'll then be redirected to pair a content provider."
   },
   webpage: {
     title: "Create Your First Webpage",
@@ -40,6 +44,9 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
   // Webpage field
   const [pageTitle, setPageTitle] = React.useState("Home");
 
+  // FreePlay fields
+  const [classroomName, setClassroomName] = React.useState("");
+
   // Group field
   const [groupName, setGroupName] = React.useState("");
 
@@ -52,6 +59,9 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
       switch (wizardType) {
         case "freeshow":
           await handleFreeshowSetup();
+          break;
+        case "freeplay":
+          await handleFreeplaySetup();
           break;
         case "webpage":
           await handleWebpageSetup();
@@ -97,6 +107,30 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
     onComplete(`/groups/${teamResult[0].id}`);
   };
 
+  const handleFreeplaySetup = async () => {
+    if (!ministryName.trim() || !classroomName.trim()) {
+      setError("Please enter both a ministry name and a classroom name.");
+      return;
+    }
+
+    // Create ministry
+    const ministry: GroupInterface = { name: ministryName.trim(), tags: "ministry", categoryName: "Ministry" };
+    const ministryResult = await ApiHelper.post("/groups", [ministry], "MembershipApi");
+    const ministryId = ministryResult[0].id;
+
+    // Auto-add creator as ministry member
+    if (context?.person?.id) {
+      const member: GroupMemberInterface = { groupId: ministryId, personId: context.person.id };
+      await ApiHelper.post("/groupMembers", [member], "MembershipApi");
+    }
+
+    // Create planType (classroom) under ministry
+    const planType = { name: classroomName.trim(), ministryId };
+    await ApiHelper.post("/planTypes", [planType], "DoingApi");
+
+    onComplete("/serving");
+  };
+
   const handleWebpageSetup = async () => {
     if (!pageTitle.trim()) {
       setError("Please enter a page title.");
@@ -135,6 +169,13 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
           <Stack spacing={2}>
             <TextField label="Ministry Name" value={ministryName} onChange={(e) => setMinistryName(e.target.value)} fullWidth autoFocus />
             <TextField label="Team Name" value={teamName} onChange={(e) => setTeamName(e.target.value)} fullWidth />
+          </Stack>
+        )}
+
+        {wizardType === "freeplay" && (
+          <Stack spacing={2}>
+            <TextField label="Ministry Name" value={ministryName} onChange={(e) => setMinistryName(e.target.value)} fullWidth autoFocus />
+            <TextField label="Classroom Name" value={classroomName} onChange={(e) => setClassroomName(e.target.value)} fullWidth />
           </Stack>
         )}
 

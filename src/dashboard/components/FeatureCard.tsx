@@ -26,12 +26,14 @@ export const FeatureCard: React.FC<Props> = ({ icon, title, description, linkUrl
 
   return (
     <Card variant="outlined" sx={{ height: "100%" }}>
-      <CardActionArea onClick={handleClick} sx={{ p: 3, height: "100%", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-start" }}>
-        <Box sx={{ color: "var(--c1)", mb: 2, display: "flex", alignItems: "center", justifyContent: "center", width: 48, height: 48, borderRadius: 2, backgroundColor: "rgba(var(--c1-rgb, 0,0,0), 0.08)" }}>
+      <CardActionArea onClick={handleClick} sx={{ p: 2, height: "100%", display: "flex", alignItems: "flex-start" }}>
+        <Box sx={{ color: "var(--c1)", mr: 2, display: "flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: 1.5, backgroundColor: "rgba(var(--c1-rgb, 0,0,0), 0.08)", flexShrink: 0 }}>
           {icon}
         </Box>
-        <Typography variant="h6" sx={{ mb: 0.5 }}>{title}</Typography>
-        <Typography variant="body2" color="text.secondary">{description}</Typography>
+        <Box>
+          <Typography variant="subtitle2" sx={{ fontWeight: 600, lineHeight: 1.3 }}>{title}</Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.4 }}>{description}</Typography>
+        </Box>
       </CardActionArea>
     </Card>
   );
