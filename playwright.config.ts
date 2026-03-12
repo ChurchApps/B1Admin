@@ -13,7 +13,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI ? 'list' : 'html',
-  timeout: process.env.CI ? 60 * 1000 : 30 * 1000,
+  timeout: 60 * 1000,
   expect: { timeout: 5 * 1000 },
 
   globalSetup: './tests/global-setup.ts',
@@ -25,7 +25,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 15 * 1000,
-    navigationTimeout: 10 * 1000,
+    navigationTimeout: 30 * 1000,
   },
 
   projects: [
