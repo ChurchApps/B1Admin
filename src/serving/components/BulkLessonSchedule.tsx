@@ -175,12 +175,12 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
           ministryId: props.ministryId,
           planTypeId: props.planTypeId,
           serviceDate: entry.date,
-          name: `${formattedDate} - ${entry.venue!.title}`,
+          name: `${formattedDate} - ${entry.lesson.title}`,
           notes: "",
           serviceOrder: true,
           providerId: selectedProviderId,
           providerPlanId: entry.venue!.path,
-          providerPlanName: entry.venue!.title,
+          providerPlanName: entry.lesson.title,
           contentType: "provider",
           contentId: entry.venue!.id
         };

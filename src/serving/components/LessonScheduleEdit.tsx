@@ -25,6 +25,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   // Selected lesson state
   const [selectedVenueId, setSelectedVenueId] = useState<string>("");
   const [selectedVenueName, setSelectedVenueName] = useState<string>("");
+  const [selectedLessonName, setSelectedLessonName] = useState<string>("");
   const [selectedContentPath, setSelectedContentPath] = useState<string>("");
   const [selectedProviderId, setSelectedProviderId] = useState<string>("");
 
@@ -53,9 +54,10 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
     setScheduledDate(DateHelper.toDate(e.target.value));
   };
 
-  const handleLessonSelect = useCallback((venueId: string, venueName?: string, contentPath?: string, providerId?: string) => {
+  const handleLessonSelect = useCallback((venueId: string, venueName?: string, contentPath?: string, providerId?: string, lessonName?: string) => {
     setSelectedVenueId(venueId);
     setSelectedVenueName(venueName || "");
+    setSelectedLessonName(lessonName || "");
     setSelectedContentPath(contentPath || "");
     setSelectedProviderId(providerId || "");
     setShowLessonSelector(false);
@@ -72,7 +74,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   const handleSave = async () => {
     if (validate()) {
       const formattedDate = DateHelper.prettyDate(scheduledDate);
-      const displayName = selectedVenueName || "Lesson";
+      const displayName = selectedLessonName || selectedVenueName || "Lesson";
 
       const newPlan: PlanInterface = {
         ministryId: props.ministryId,

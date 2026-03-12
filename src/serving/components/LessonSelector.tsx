@@ -23,7 +23,7 @@ import { useProviderBrowser } from "../hooks/useProviderBrowser";
 interface Props {
   open: boolean;
   onClose: () => void;
-  onSelect: (contentId: string, contentName?: string, contentPath?: string, providerId?: string) => void;
+  onSelect: (contentId: string, contentName?: string, contentPath?: string, providerId?: string, lessonName?: string) => void;
   returnVenueName?: boolean;
   ministryId?: string;
   defaultProviderId?: string;
@@ -63,10 +63,11 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
   const handleSelect = useCallback(() => {
     if (selectedFolder) {
       const folderName = returnVenueName ? selectedFolder.title : undefined;
-      onSelect(selectedFolder.id, folderName, selectedFolder.path, browser.selectedProviderId);
+      const lessonName = browser.breadcrumbItems.length > 0 ? browser.breadcrumbItems[browser.breadcrumbItems.length - 1].label : undefined;
+      onSelect(selectedFolder.id, folderName, selectedFolder.path, browser.selectedProviderId, lessonName);
       onClose();
     }
-  }, [selectedFolder, returnVenueName, onSelect, onClose, browser.selectedProviderId]);
+  }, [selectedFolder, returnVenueName, onSelect, onClose, browser.selectedProviderId, browser.breadcrumbItems]);
 
   // Handle provider change
   const handleProviderChange = useCallback((providerId: string) => {

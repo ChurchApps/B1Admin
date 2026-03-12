@@ -18,17 +18,25 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
     setErrors([]);
 
     try {
-      const isNew = !current.id;
-      const result = isNew
-        ? await ApiHelper.post("/planTypes", [current], "DoingApi")
-        : await ApiHelper.post("/planTypes", [current], "DoingApi");
-
+      await ApiHelper.post("/planTypes", [current], "DoingApi");
       onClose();
     } catch (error: any) {
       setErrors([error.message || Locale.label("plans.planTypeEdit.errorSaving")]);
     }
 
     setLoading(false);
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm(Locale.label("plans.planTypeEdit.confirmDelete") || "Are you sure you want to delete this plan type?")) return;
+    setLoading(true);
+    try {
+      await ApiHelper.delete("/planTypes/" + current.id, "DoingApi");
+      onClose();
+    } catch (error: any) {
+      setErrors([error.message || Locale.label("plans.planTypeEdit.errorDeleting")]);
+      setLoading(false);
+    }
   };
 
   const handleChange = (field: keyof PlanTypeInterface, value: string) => {
@@ -69,6 +77,11 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
         </Box>
       </DialogContent>
       <DialogActions>
+        {current.id && (
+          <Button onClick={handleDelete} disabled={loading} color="error" sx={{ mr: "auto" }}>
+            {Locale.label("common.delete")}
+          </Button>
+        )}
         <Button onClick={onClose} disabled={loading}>
           {Locale.label("common.cancel")}
         </Button>
