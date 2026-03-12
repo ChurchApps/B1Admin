@@ -218,7 +218,7 @@ export function AddPageModal(props: Props) {
         url: SlugHelper.slugifyString(
           "/" + assembledPage.title.toLowerCase().replace(/\s+/g, "-"),
           "urlPath"
-        )
+        ) || "/untitled"
       };
 
       // Create page record
@@ -278,6 +278,7 @@ export function AddPageModal(props: Props) {
           const p = { ...page };
           const slugString = link?.text || page.title || "new-page";
           p.url = props.requestedSlug || SlugHelper.slugifyString("/" + slugString.toLowerCase().replace(" ", "-"), "urlPath");
+          if (!p.url) p.url = "/untitled";
 
           pageData = await ApiHelper.post("/pages", [p], "ContentApi").then((data: any) => {
             setPage(data[0]);

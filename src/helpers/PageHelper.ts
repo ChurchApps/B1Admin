@@ -6,8 +6,10 @@ export class PageHelper {
 
   static sortLevel(items: PageLink[]) {
     return items.sort((a, b) => {
-      if (a.url < b.url) return -1;
-      if (a.url > b.url) return 1;
+      const aUrl = a.url || "";
+      const bUrl = b.url || "";
+      if (aUrl < bUrl) return -1;
+      if (aUrl > bUrl) return 1;
       return 0;
     });
   }
@@ -19,8 +21,9 @@ export class PageHelper {
 
     const groupPage = result.find((p) => p.url === "/groups");
     customPages.forEach((p: any) => {
-      const page: PageLink = { pageId: p.id, title: p.title, url: p.url, custom: true };
-      if (p.url.indexOf("/groups") === -1) {
+      const url = p.url || "";
+      const page: PageLink = { pageId: p.id, title: p.title, url: url, custom: true };
+      if (url.indexOf("/groups") === -1) {
         const existing = result.find((r) => r.url === p.url);
         if (existing) { existing.title = p.title; existing.custom = true; existing.pageId = p.id; } else result.push(page);
       } else {

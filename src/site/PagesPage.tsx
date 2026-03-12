@@ -56,7 +56,7 @@ export const PagesPage = () => {
     const result: React.ReactElement[] = [];
     items.forEach((item) => {
       result.push(
-        <TableRow key={item.url} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
+        <TableRow key={item.url || item.pageId || item.title} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
           <TableCell sx={{ width: 120 }}>
             {item.custom ? (
               <Button
