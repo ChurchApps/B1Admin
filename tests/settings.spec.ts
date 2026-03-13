@@ -58,10 +58,7 @@ test.describe('Settings Management', () => {
       await expect(validatedRole).toHaveCount(1);
     });
 
-    // KNOWN BUG: /users/loadOrCreate returns 400 — person search results don't populate
-    // name.first/name.last fields, so the API receives undefined firstName/lastName.
-    // This is an upstream ChurchApps API bug (person search serialization), not a test issue.
-    test.skip('should add person to role', async ({ page }) => {
+    test('should add person to role', async ({ page }) => {
       const role = page.locator('a').getByText('Octavian Test Role');
       await role.click();
       const addBtn = page.locator('[data-testid="add-role-member-button"]');
@@ -320,31 +317,26 @@ test.describe('Settings Management', () => {
       await expect(title).toHaveCount(0);
     });
 
-    // KNOWN BUG: API returns 500 on question delete - "Incorrect integer value: 'd1' for column 'sort'"
-    // This is a ChurchApps upstream API bug, not a test issue
-    test.skip('should delete form questions', async ({ page }) => {
+    test('should delete form questions', async ({ page }) => {
       page.on('dialog', dialog => dialog.accept());
 
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
       await page.waitForLoadState('networkidle');
 
-      const question = page.locator('td button').getByText('True or False? I support playwright testing.');
-      await expect(question).toBeVisible();
+      const question = page.locator('td button').getByText('True or False? I support playwright testing.').first();
+      await expect(question).toBeVisible({ timeout: 10000 });
       await question.click();
-      await page.waitForTimeout(200);
       const deleteBtn = page.locator('button').getByText('Delete');
+      const responsePromise = page.waitForResponse(resp => resp.url().includes('/questions') && resp.request().method() === 'DELETE');
       await deleteBtn.evaluate(el => (el as HTMLElement).click());
-      await page.waitForTimeout(500);
-      await expect(question).toHaveCount(0);
+      await responsePromise;
+      await expect(question).toHaveCount(0, { timeout: 10000 });
     });
 
-    // Form Members tab requires forms.admin permission (not related to restricted flag)
-    // Test user does not have this permission; tab never renders
-    test.skip('should add form members', async ({ page }) => {
+    test('should add form members', async ({ page }) => {
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
-      // Wait for async memberPermission query to resolve before Form Members tab appears
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
       await expect(membersTab).toBeVisible({ timeout: 10000 });
       await membersTab.click();
@@ -357,14 +349,12 @@ test.describe('Settings Management', () => {
       await addBtn.click();
 
       const validatedAddition = page.locator('td a').getByText('Dorothy Jackson');
-      await expect(validatedAddition).toHaveCount(1);
+      await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
     });
 
-    // Form Members tab requires forms.admin permission (not related to restricted flag)
-    test.skip('should remove form members', async ({ page }) => {
+    test('should remove form members', async ({ page }) => {
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
-      // Wait for async memberPermission query to resolve before Form Members tab appears
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
       await expect(membersTab).toBeVisible({ timeout: 10000 });
       await membersTab.click();
@@ -372,7 +362,7 @@ test.describe('Settings Management', () => {
       const removeBtn = page.locator('button').getByText('Remove').last();
       await removeBtn.click();
       const validatedDeletion = page.locator('td a').getByText('Dorothy Jackson');
-      await expect(validatedDeletion).toHaveCount(0);
+      await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should delete form', async ({ page }) => {
