@@ -187,7 +187,7 @@ test.describe('Settings Management', () => {
     test('should create form', async ({ page }) => {
       // Pre-cleanup: delete any leftover test forms from previous runs (local dev only).
       // In CI the DB is always fresh so this loop exits immediately.
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 10; i++) {
         const octavRows = page.locator('tr').filter({
           has: page.locator('a, td').filter({ hasText: /^Octav/ })
         });
@@ -368,7 +368,7 @@ test.describe('Settings Management', () => {
 
     test('should delete form', async ({ page }) => {
       // Delete all Octavius Test Form entries (handles duplicates from previous runs)
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 10; i++) {
         const octavRow = page.locator('tr').filter({ hasText: 'Octavius Test Form' }).first();
         if (await octavRow.count() === 0) break;
         const editBtn = octavRow.getByRole('button', { name: 'Edit' });
