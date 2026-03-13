@@ -64,12 +64,13 @@ test.describe('Settings Management', () => {
       const addBtn = page.locator('[data-testid="add-role-member-button"]');
       await addBtn.click();
       const searchBox = page.locator('[name="personAddText"]');
-      await searchBox.fill('John Smith');
+      await searchBox.fill('Jennifer Williams');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
-      const validatedPerson = page.locator('td').getByText('John Smith');
+      // Person has email → auto-saves and closes dialog. Wait for member to appear in table.
+      const validatedPerson = page.locator('td').getByText('Jennifer Williams');
       await expect(validatedPerson).toHaveCount(1, { timeout: 15000 });
     });
 
@@ -77,6 +78,7 @@ test.describe('Settings Management', () => {
       const editBtn = page.locator('[data-testid="edit-role-button"]').last();
       await editBtn.click();
       const roleName = page.locator('[name="roleName"]');
+      await expect(roleName).toHaveValue('Octavian Test Role', { timeout: 10000 });
       await roleName.fill('Octavius Test Role');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
@@ -141,6 +143,7 @@ test.describe('Settings Management', () => {
       const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').last();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
+      await expect(tabName).toHaveValue('Octavian Test Tab', { timeout: 10000 });
       await tabName.fill('Octavius Test Tab')
       const saveBtn = page.locator('button').getByText('Save Tab');
       await saveBtn.click();
@@ -193,7 +196,8 @@ test.describe('Settings Management', () => {
         const editBtn = octavRows.first().getByRole('button', { name: /Edit/ });
         if (!await editBtn.isVisible().catch(() => false)) break;
         await editBtn.click();
-        await page.waitForTimeout(200);
+        // Wait for form data to load before clicking delete
+        await expect(page.locator('[name="name"]')).toBeVisible({ timeout: 5000 });
         page.once('dialog', d => d.accept());
         await page.locator('button').getByText('Delete').first().click();
         // Wait for the total count of matching rows to decrease
@@ -216,9 +220,8 @@ test.describe('Settings Management', () => {
       await thanksMsg.fill('Thanks from Octavian');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(200);
       const validatedForm = page.locator('a').getByText('Octavian Test Form').first();
-      await expect(validatedForm).toBeVisible();
+      await expect(validatedForm).toBeVisible({ timeout: 10000 });
     });
 
     test('should edit form', async ({ page }) => {
@@ -226,8 +229,9 @@ test.describe('Settings Management', () => {
       const octavianRow = page.locator('tr').filter({ hasText: 'Octavian Test Form' }).first();
       const editBtn = octavianRow.getByRole('button', { name: 'Edit' });
       await editBtn.click();
-      await page.waitForTimeout(200);
+      // Wait for API form data to load before editing (prevents contentType reset to default "person")
       const formName = page.locator('[name="name"]');
+      await expect(formName).toHaveValue('Octavian Test Form', { timeout: 10000 });
       await formName.fill('Octavius Test Form');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
@@ -241,12 +245,10 @@ test.describe('Settings Management', () => {
       const editBtn = octavRow.getByRole('button', { name: 'Edit' });
       await editBtn.click();
       const formName = page.locator('[name="name"]');
-      await page.waitForTimeout(200);
-      await expect(formName).toHaveCount(1);
+      await expect(formName).toHaveValue('Octavius Test Form', { timeout: 10000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(200);
-      await expect(formName).toHaveCount(0);
+      await expect(formName).toHaveCount(0, { timeout: 5000 });
     });
 
     test('should add form questions', async ({ page }) => {
@@ -309,9 +311,8 @@ test.describe('Settings Management', () => {
       const question = page.locator('td button').getByText('True or False? I support playwright testing.').first();
       await expect(question).toBeVisible({ timeout: 10000 });
       await question.click();
-      await page.waitForTimeout(200);
       const title = page.locator('[id="title"]');
-      await expect(title).toHaveCount(1);
+      await expect(title).toHaveValue('True or False? I support playwright testing.', { timeout: 5000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
       await expect(title).toHaveCount(0);
@@ -373,7 +374,9 @@ test.describe('Settings Management', () => {
         const editBtn = octavRow.getByRole('button', { name: 'Edit' });
         if (!await editBtn.isVisible().catch(() => false)) break;
         await editBtn.click();
-        await page.waitForTimeout(200);
+        // Wait for form data to load before clicking delete
+        const formName = page.locator('[name="name"]');
+        await expect(formName).toBeVisible({ timeout: 5000 });
         page.once('dialog', d => d.accept());
         await page.locator('button').getByText('Delete').first().click();
         await expect(octavRow).toHaveCount(0, { timeout: 5000 }).catch(() => {});
