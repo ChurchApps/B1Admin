@@ -49,6 +49,7 @@ export const NewTask = (props: Props) => {
 
         const taskMessage = { ...taskData.message };
         taskMessage.conversationId = updatedTask.conversationId;
+        taskMessage.displayName = UserHelper.person?.name?.display || "";
         await ApiHelper.post("/messages", [taskMessage], "MessagingApi");
       }
 
