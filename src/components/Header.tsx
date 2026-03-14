@@ -97,10 +97,10 @@ export const Header: React.FC = () => {
         "/donations/funds": "nav-item-funds",
         "/serving/songs": "nav-item-songs",
         "/profile": "nav-item-profile",
-        "/profile/devices": "nav-item-devices"
-        // Temporarily hidden
-        // "/sermons": "nav-item-sermons",
-        // "/calendars": "nav-item-calendars",
+        "/profile/devices": "nav-item-devices",
+        "/mobile": "nav-item-mobile",
+        "/site/pages": "nav-item-website",
+        "/sermons": "nav-item-sermons",
       };
 
       // Find all navigation links
@@ -129,10 +129,10 @@ export const Header: React.FC = () => {
             funds: "nav-item-funds",
             songs: "nav-item-songs",
             profile: "nav-item-profile",
-            devices: "nav-item-devices"
-            // Temporarily hidden
-            // sermons: "nav-item-sermons",
-            // calendars: "nav-item-calendars",
+            devices: "nav-item-devices",
+            mobile: "nav-item-mobile",
+            website: "nav-item-website",
+            sermons: "nav-item-sermons",
           };
 
           for (const [key, testId] of Object.entries(textToTestId)) {

@@ -9,18 +9,11 @@ test.describe('Attendance Management', () => {
     await menuBtn.click();
     const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
     await peopleHomeBtn.click();
-    await page.waitForTimeout(5000);
     await expect(page).toHaveURL(/\/people/);
     const attHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Attendance');
     await attHomeBtn.click();
-    await page.waitForTimeout(2000);
     await expect(page).toHaveURL(/\/attendance/);
   });
-
-  /* test('should load attendance page', async ({ page }) => {
-    const attendanceHeader = page.locator('h4').getByText('Attendance');
-    await attendanceHeader.click();
-  }); */
 
   test.describe('Setup', () => {
 
@@ -31,9 +24,8 @@ test.describe('Attendance Management', () => {
       await campusName.fill('Octavian Test Campus');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
       const verifiedName = page.locator('button').getByText('Octavian Test Campus');
-      await expect(verifiedName).toHaveCount(1);
+      await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel adding campus', async ({ page }) => {
@@ -43,7 +35,7 @@ test.describe('Attendance Management', () => {
       await expect(campusName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await expect(campusName).toHaveCount(0);
+      await expect(campusName).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should edit campus', async ({ page }) => {
@@ -53,9 +45,8 @@ test.describe('Attendance Management', () => {
       await campusName.fill('Octavius Test Campus');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
       const verifiedName = page.locator('button').getByText('Octavius Test Campus');
-      await expect(verifiedName).toHaveCount(1);
+      await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel editing campus', async ({ page }) => {
@@ -65,22 +56,23 @@ test.describe('Attendance Management', () => {
       await expect(campusName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await expect(campusName).toHaveCount(0);
+      await expect(campusName).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should add service', async ({ page }) => {
-      const addServBtn = page.locator('button').getByText('Add Service').nth(3);
+      const addServBtn = page.locator('button').getByText('Add Service').last();
       await addServBtn.click();
       const campusSelect = page.locator('div[role="combobox"]');
       await campusSelect.click();
       const selCampus = page.locator('li').getByText('Octavius Test Campus');
+      await expect(selCampus).toBeVisible({ timeout: 10000 });
       await selCampus.click();
       const servName = page.locator('input[id="name"]');
       await servName.fill('Octavian Test Service');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       const verifiedServ = page.locator('button').getByText('Octavian Test Service');
-      await expect(verifiedServ).toHaveCount(1);
+      await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit service', async ({ page }) => {
@@ -89,25 +81,24 @@ test.describe('Attendance Management', () => {
       const campusSelect = page.locator('div[role="combobox"]');
       await campusSelect.click();
       const selCampus = page.locator('li').getByText('Octavius Test Campus');
+      await expect(selCampus).toBeVisible({ timeout: 10000 });
       await selCampus.click();
       const servName = page.locator('input[id="name"]');
       await servName.fill('Octavius Test Service');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
       const verifiedServ = page.locator('button').getByText('Octavius Test Service');
-      await expect(verifiedServ).toHaveCount(1);
+      await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel editing service', async ({ page }) => {
       const serv = page.locator('button').getByText('Sunday Evening Service');
       await serv.click();
       const campusSelect = page.locator('div[role="combobox"]');
-      await expect(campusSelect).toHaveCount(1);
+      await expect(campusSelect).toHaveCount(1, { timeout: 10000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(500);
-      await expect(campusSelect).toHaveCount(0);
+      await expect(campusSelect).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should add service time', async ({ page }) => {
@@ -116,13 +107,14 @@ test.describe('Attendance Management', () => {
       const servSelect = page.locator('div[role="combobox"]');
       await servSelect.click();
       const selServ = page.locator('li').getByText('Octavius Test Service');
+      await expect(selServ).toBeVisible({ timeout: 10000 });
       await selServ.click();
       const timeName = page.locator('input[id="name"]');
       await timeName.fill('Octavian Test Time');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       const verifiedTime = page.locator('button').getByText('Octavian Test Time');
-      await expect(verifiedTime).toHaveCount(1);
+      await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit service time', async ({ page }) => {
@@ -131,25 +123,24 @@ test.describe('Attendance Management', () => {
       const servSelect = page.locator('div[role="combobox"]');
       await servSelect.click();
       const selServ = page.locator('li').getByText('Octavius Test Service');
+      await expect(selServ).toBeVisible({ timeout: 10000 });
       await selServ.click();
       const timeName = page.locator('input[id="name"]');
       await timeName.fill('Octavius Test Time');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
       const verifiedTime = page.locator('button').getByText('Octavius Test Time');
-      await expect(verifiedTime).toHaveCount(1);
+      await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel editing service time', async ({ page }) => {
       const serv = page.locator('button').getByText('6:00 PM Service');
       await serv.click();
       const servSelect = page.locator('div[role="combobox"]');
-      await expect(servSelect).toHaveCount(1);
+      await expect(servSelect).toHaveCount(1, { timeout: 10000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await page.waitForTimeout(500);
-      await expect(servSelect).toHaveCount(0);
+      await expect(servSelect).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should delete service time', async ({ page }) => {
@@ -163,8 +154,7 @@ test.describe('Attendance Management', () => {
       await time.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
-      await expect(time).toHaveCount(0);
+      await expect(time).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should delete service', async ({ page }) => {
@@ -178,8 +168,7 @@ test.describe('Attendance Management', () => {
       await serv.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await page.waitForTimeout(500);
-      await expect(serv).toHaveCount(0);
+      await expect(serv).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should delete campus', async ({ page }) => {
@@ -193,7 +182,7 @@ test.describe('Attendance Management', () => {
       await originName.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      await expect(originName).toHaveCount(0);
+      await expect(originName).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should view group from attendance homepage', async ({ page }) => {
@@ -212,9 +201,9 @@ test.describe('Attendance Management', () => {
     test('should filter attendance trends', async ({ page }) => {
       const trendTab = page.locator('button[role="tab"]').getByText('Attendance Trend');
       await trendTab.click();
-      await page.waitForTimeout(500);
 
       const campusName = page.locator('[id="mui-component-select-campusId"]');
+      await expect(campusName).toBeVisible({ timeout: 10000 });
       await campusName.click();
       const campusSel = page.locator('li').getByText('Main Campus');
       await campusSel.click();
@@ -232,19 +221,18 @@ test.describe('Attendance Management', () => {
       await groupSel.click();
       const runBtn = page.locator('button').getByText('Run Report');
       await runBtn.click();
-      await page.waitForTimeout(500);
 
       const resultsTableRows = page.locator('[id="reportsBox"] table tr');
-      expect(resultsTableRows).toHaveCount(36);
+      await expect(resultsTableRows).toHaveCount(36, { timeout: 10000 });
     });
 
     test('UPDATE should display group attendance', async ({ page }) => {
       // completed as I can, correcting reports display info is up to father. Data does not load in.
       const trendTab = page.locator('button[role="tab"]').getByText('Group Attendance');
       await trendTab.click();
-      await page.waitForTimeout(500);
 
       const campusName = page.locator('[id="mui-component-select-campusId"]');
+      await expect(campusName).toBeVisible({ timeout: 10000 });
       await campusName.click();
       const campusSel = page.locator('li').getByText('Main Campus');
       await campusSel.click();
@@ -256,8 +244,8 @@ test.describe('Attendance Management', () => {
       await weekBox.fill('2024-03-03');
       const runBtn = page.locator('button').getByText('Run Report');
       await runBtn.click();
-      await page.waitForTimeout(500);
       const report = page.locator('td').getByText('10:30 AM Service');
+      await expect(report).toBeVisible({ timeout: 10000 });
       await report.click();
     });
   });
