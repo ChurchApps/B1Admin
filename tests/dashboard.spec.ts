@@ -15,11 +15,10 @@ test.describe('Dashboard Management', () => {
   }); */
 
   test('should load group from dashboard', async ({ page }) => {
-    await page.waitForTimeout(200);
     const firstGroup = page.locator('h6').first();
+    await expect(firstGroup).toBeVisible({ timeout: 10000 });
     await firstGroup.click();
-    await page.waitForTimeout(200);
-    await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+    await expect(page).toHaveURL(/\/groups\/GRP\d+/, { timeout: 10000 });
   });
 
   test('should search people from dashboard', async ({ page }) => {
@@ -27,11 +26,10 @@ test.describe('Dashboard Management', () => {
     await searchBox.fill('Dorothy Jackson');
     const searchBtn = page.locator('[data-testid="dashboard-search-button"]');
     await searchBtn.click();
-    await page.waitForTimeout(200);
     const results = page.locator('h6').getByText('Dorothy Jackson');
+    await expect(results).toBeVisible({ timeout: 10000 });
     await results.click();
-    await page.waitForTimeout(200);
-    await expect(page).toHaveURL(/\/people\/PER\d+/);
+    await expect(page).toHaveURL(/\/people\/PER\d+/, { timeout: 10000 });
     const validatedName = page.locator('p').getByText('Dorothy Jackson');
     await expect(validatedName).toHaveCount(1);
   });
@@ -39,6 +37,7 @@ test.describe('Dashboard Management', () => {
   test('should add task from dashboard', async ({ page }) => {
     const addBtn = page.locator('[data-testid="add-task-button"]');
     await addBtn.click();
+    // nth(2) targets the assignee input in the task form
     const assignInput = page.locator('input').nth(2);
     await assignInput.click();
     const personSearch = page.locator('[name="personAddText"]');
@@ -53,27 +52,24 @@ test.describe('Dashboard Management', () => {
     await taskNotes.fill('Octavian Testing (Playwright)');
     const saveBtn = page.locator('button').getByText('Save');
     await saveBtn.click();
-    await page.waitForTimeout(200);
     const validatedTask = page.locator('a').getByText('Test Task');
-    await expect(validatedTask).toHaveCount(2);
+    await expect(validatedTask).toHaveCount(2, { timeout: 10000 });
   });
 
   test('should load task from dashboard', async ({ page }) => {
     const task = page.locator('a').getByText('Test Task').first();
     await task.click();
-    await page.waitForTimeout(200);
-    await expect(page).toHaveURL(/\/tasks\/[^/]+/);
+    await expect(page).toHaveURL(/\/tasks\/[^/]+/, { timeout: 10000 });
   });
 
   test('should cancel adding task from dashboard', async ({ page }) => {
     const addBtn = page.locator('[data-testid="add-task-button"]');
     await addBtn.click();
     const assignInput = page.locator('input').nth(2);
-    await expect(assignInput).toHaveCount(1);
+    await expect(assignInput).toBeVisible({ timeout: 10000 });
     const cancelBtn = page.locator('button').getByText('Cancel');
     await cancelBtn.click();
-    await page.waitForTimeout(200);
-    await expect(assignInput).toHaveCount(0);
+    await expect(assignInput).toHaveCount(0, { timeout: 10000 });
   });
 
 });
