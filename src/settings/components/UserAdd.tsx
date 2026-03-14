@@ -15,6 +15,7 @@ import {
 } from "@churchapps/apphelper";
 import { AssociatePerson } from "./";
 import { TextField } from "@mui/material";
+import { SendInviteDialog } from "../../components";
 
 interface Props {
   role: RoleInterface;
@@ -37,6 +38,19 @@ export const UserAdd = (props: Props) => {
   const [showNameFields, setShowNameFields] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [showInviteDialog, setShowInviteDialog] = useState<boolean>(false);
+  const [inviteEmail, setInviteEmail] = useState<string>("");
+  const [invitePersonName, setInvitePersonName] = useState<string>("");
+
+  const showInviteOrFinish = (emailAddr: string, personName: string, isNewUser: boolean) => {
+    if (isNewUser || !emailAddr) {
+      props.updatedFunction();
+    } else {
+      setInviteEmail(emailAddr);
+      setInvitePersonName(personName);
+      setShowInviteDialog(true);
+    }
+  };
 
   const saveExistingUser = async () => {
     if (validate()) {
@@ -48,7 +62,7 @@ export const UserAdd = (props: Props) => {
         person.name.first = firstName;
         person.name.last = lastName;
         await ApiHelper.post("/people", [person], "MembershipApi");
-        props.updatedFunction();
+        showInviteOrFinish(email, firstName, false);
       } catch {
         setErrors([Locale.label("settings.userAdd.errAnother")]);
       }
@@ -60,7 +74,7 @@ export const UserAdd = (props: Props) => {
       const user = await createUserAndToGroup(firstName, lastName, email);
       const person = await createPerson(user.id);
       await linkUserAndPerson(user.id, person.id);
-      props.updatedFunction();
+      showInviteOrFinish(email, firstName, user.isNewUser === true);
     }
   };
 
@@ -85,7 +99,7 @@ export const UserAdd = (props: Props) => {
       setErrors([Locale.label("settings.userAdd.errDiff")]);
     }
 
-    props.updatedFunction();
+    showInviteOrFinish(userEmail, first, user.isNewUser === true);
   };
 
   const handleSave = async () => {
@@ -107,9 +121,9 @@ export const UserAdd = (props: Props) => {
     await ApiHelper.post(`/userchurch?userId=${userId}`, { personId }, "MembershipApi");
   };
 
-  const createUserAndToGroup = async (firstName: string, lastName: string, userEmail: string) => {
+  const createUserAndToGroup = async (firstName: string, lastName: string, userEmail: string): Promise<UserInterface & { isNewUser?: boolean }> => {
     const userPayload: LoadCreateUserRequestInterface = { firstName, lastName, userEmail };
-    const user: UserInterface = await ApiHelper.post("/users/loadOrCreate", userPayload, "MembershipApi");
+    const user: UserInterface & { isNewUser?: boolean } = await ApiHelper.post("/users/loadOrCreate", userPayload, "MembershipApi");
     const roleMember: RoleMemberInterface = { userId: user.id, roleId: props.role.id, churchId: UserHelper.currentUserChurch.church.id };
     await ApiHelper.post("/rolemembers/", [roleMember], "MembershipApi");
 
@@ -157,7 +171,7 @@ export const UserAdd = (props: Props) => {
         setErrors([Locale.label("settings.userAdd.errDiff")]);
         return;
       }
-      props.updatedFunction();
+      showInviteOrFinish(userEmail, first, user.isNewUser === true);
     }
   };
 
@@ -225,6 +239,15 @@ export const UserAdd = (props: Props) => {
       {nameField}
       {emailField}
       {message}
+      {showInviteDialog && (
+        <SendInviteDialog
+          open={showInviteDialog}
+          personName={invitePersonName}
+          personEmail={inviteEmail}
+          contextName={props.role.name}
+          onClose={() => { setShowInviteDialog(false); props.updatedFunction(); }}
+        />
+      )}
     </InputBox>
   );
 };

@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { Send as SendIcon } from "@mui/icons-material";
 import { SmallButton } from "@churchapps/apphelper";
+import { SendInviteDialog } from "../../components";
 
 interface Props {
   group: GroupInterface;
@@ -33,6 +34,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [count, setCount] = useState<number>(0);
+  const [showInviteDialog, setShowInviteDialog] = useState<boolean>(false);
 
   const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: [`/groupmembers?groupId=${props.group?.id}`, "MembershipApi"],
@@ -68,13 +70,16 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     [groupMembers.data]
   );
 
-  const handleAdd = useCallback(() => {
+  const handleAdd = useCallback(async () => {
     if (getMemberByPersonId(props.addedPerson.id) === null) {
       const gm = { groupId: props.group.id, personId: props.addedPerson.id, person: props.addedPerson } as GroupMemberInterface;
-      ApiHelper.post("/groupmembers", [gm], "MembershipApi").then(() => {
-        groupMembers.refetch();
-      });
-      props.addedCallback();
+      await ApiHelper.post("/groupmembers", [gm], "MembershipApi");
+      groupMembers.refetch();
+      if (props.addedPerson.contactInfo?.email) {
+        setShowInviteDialog(true);
+      } else {
+        props.addedCallback();
+      }
     }
   }, [props, getMemberByPersonId, groupMembers]);
 
@@ -287,6 +292,15 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
         </div>
       )}
       {getTable()}
+      {showInviteDialog && props.addedPerson && (
+        <SendInviteDialog
+          open={showInviteDialog}
+          personName={props.addedPerson.name?.display || `${props.addedPerson.name?.first || ""} ${props.addedPerson.name?.last || ""}`.trim()}
+          personEmail={props.addedPerson.contactInfo.email}
+          contextName={props.group.name}
+          onClose={() => { setShowInviteDialog(false); props.addedCallback(); }}
+        />
+      )}
     </DisplayBox>
   );
 });

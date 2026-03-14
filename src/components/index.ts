@@ -18,6 +18,7 @@ export { DocChatWidget } from "./docChat";
 // Person Management Components (moved from AppHelper)
 export { PersonAdd } from "./PersonAdd";
 export { CreatePerson } from "./CreatePerson";
+export { SendInviteDialog } from "./SendInviteDialog";
 
 // UI Components
 export * from "./ui";
