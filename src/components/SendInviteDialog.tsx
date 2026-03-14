@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, CircularProgress, Alert } from "@mui/material";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper } from "@churchapps/apphelper";
 
 interface Props {
   open: boolean;
@@ -22,7 +22,8 @@ export const SendInviteDialog: React.FC<Props> = (props) => {
       await ApiHelper.post("/users/sendInviteEmail", {
         email: props.personEmail,
         personName: props.personName,
-        contextName: props.contextName
+        contextName: props.contextName,
+        churchName: UserHelper.currentUserChurch?.church?.name || ""
       }, "MembershipApi");
       setSent(true);
       setTimeout(() => props.onClose(), 1500);

@@ -1,4 +1,4 @@
-import React, { useState, memo, useMemo, useCallback } from "react";
+import React, { useState, memo, useMemo, useCallback, useRef } from "react";
 import {
   type GroupInterface,
   type GroupMemberInterface,
@@ -70,8 +70,12 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     [groupMembers.data]
   );
 
+  const addedPersonIdRef = useRef<string>(null);
+
   const handleAdd = useCallback(async () => {
+    if (addedPersonIdRef.current === props.addedPerson.id) return;
     if (getMemberByPersonId(props.addedPerson.id) === null) {
+      addedPersonIdRef.current = props.addedPerson.id;
       const gm = { groupId: props.group.id, personId: props.addedPerson.id, person: props.addedPerson } as GroupMemberInterface;
       await ApiHelper.post("/groupmembers", [gm], "MembershipApi");
       groupMembers.refetch();

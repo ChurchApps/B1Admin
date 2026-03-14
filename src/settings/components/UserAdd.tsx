@@ -42,8 +42,8 @@ export const UserAdd = (props: Props) => {
   const [inviteEmail, setInviteEmail] = useState<string>("");
   const [invitePersonName, setInvitePersonName] = useState<string>("");
 
-  const showInviteOrFinish = (emailAddr: string, personName: string, isNewUser: boolean) => {
-    if (isNewUser || !emailAddr) {
+  const showInviteOrFinish = (emailAddr: string, personName: string) => {
+    if (!emailAddr) {
       props.updatedFunction();
     } else {
       setInviteEmail(emailAddr);
@@ -62,7 +62,7 @@ export const UserAdd = (props: Props) => {
         person.name.first = firstName;
         person.name.last = lastName;
         await ApiHelper.post("/people", [person], "MembershipApi");
-        showInviteOrFinish(email, firstName, false);
+        showInviteOrFinish(email, firstName);
       } catch {
         setErrors([Locale.label("settings.userAdd.errAnother")]);
       }
@@ -74,7 +74,7 @@ export const UserAdd = (props: Props) => {
       const user = await createUserAndToGroup(firstName, lastName, email);
       const person = await createPerson(user.id);
       await linkUserAndPerson(user.id, person.id);
-      showInviteOrFinish(email, firstName, user.isNewUser === true);
+      showInviteOrFinish(email, firstName);
     }
   };
 
@@ -99,7 +99,7 @@ export const UserAdd = (props: Props) => {
       setErrors([Locale.label("settings.userAdd.errDiff")]);
     }
 
-    showInviteOrFinish(userEmail, first, user.isNewUser === true);
+    showInviteOrFinish(userEmail, first);
   };
 
   const handleSave = async () => {
@@ -171,7 +171,7 @@ export const UserAdd = (props: Props) => {
         setErrors([Locale.label("settings.userAdd.errDiff")]);
         return;
       }
-      showInviteOrFinish(userEmail, first, user.isNewUser === true);
+      showInviteOrFinish(userEmail, first);
     }
   };
 
