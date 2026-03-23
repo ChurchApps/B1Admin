@@ -12,6 +12,7 @@ export const Header: React.FC = () => {
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
   const [donationError, setDonationError] = React.useState<boolean>(false);
   const [isFormMember, setIsFormMember] = React.useState<boolean>(false);
+  const [isMinistryMember, setIsMinistryMember] = React.useState<boolean>(false);
 
   useEffect(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) {
@@ -23,6 +24,10 @@ export const Header: React.FC = () => {
     if (!formPermission && context?.person?.id) {
       ApiHelper.get("/memberpermissions/member/" + context.person?.id, "MembershipApi").then((data) => setIsFormMember(data?.length > 0));
     }
+
+    if (!UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) {
+      ApiHelper.get("/groups/my/ministry", "MembershipApi").then((data) => setIsMinistryMember(data?.length > 0));
+    }
   }, [formPermission, context?.person?.id]);
 
   const primaryMenu = useMemo(() => {
@@ -32,7 +37,8 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people", icon: "person", label: Locale.label("components.wrapper.ppl") });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("components.wrapper.don"), icon: donationIcon });
 
-    if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
+    const canViewPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || isMinistryMember;
+    if (canViewPlans) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
     else menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
 
     // Temporarily hidden
@@ -44,7 +50,7 @@ export const Header: React.FC = () => {
     else if (formPermission || isFormMember) menuItems.push({ url: "/forms", label: Locale.label("components.wrapper.set"), icon: "settings" });
     // if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) tabs.push(<NavItem key="/admin" url="/admin" label={Locale.label("components.wrapper.servAdmin")} icon="admin_panel_settings" selected={selectedTab === "admin"} />);
     return menuItems;
-  }, [donationError, formPermission, isFormMember]);
+  }, [donationError, formPermission, isFormMember, isMinistryMember]);
   /*
   const getSecondaryMenu = () => {
     const menuItems:{ url: string, label: string }[] = []
@@ -70,7 +76,7 @@ export const Header: React.FC = () => {
     return result;
   };
 
-  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search });
+  const secondaryMenu = SecondaryMenuHelper.getSecondaryMenu(window.location.pathname, { formPermission, search: window.location.search, isMinistryMember });
 
   const handleNavigate = (url: string) => {
     navigate(url);

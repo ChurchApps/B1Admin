@@ -17,9 +17,10 @@ export const ServingPage = () => {
   const [selectedMinistryId, setSelectedMinistryId] = React.useState<string | null>(null);
   const [showAllMinistries, setShowAllMinistries] = React.useState(false);
   const context = React.useContext(UserContext);
-
+  const isAdmin = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
+  
   const ministries = useQuery<GroupInterface[]>({
-    queryKey: ["/groups/tag/ministry", "MembershipApi"],
+    queryKey: isAdmin ? ["/groups/tag/ministry", "MembershipApi"] : ["/groups/my/ministry", "MembershipApi"],
     placeholderData: []
   });
 
@@ -27,9 +28,10 @@ export const ServingPage = () => {
     return ministries.data && ministries.data.length > 0 ? ArrayHelper.getIds(ministries.data, "id") : [];
   }, [ministries.data]);
 
+  // Only admins need group members (for membership filtering and Show All toggle)
   const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: ["/groupMembers", "MembershipApi", groupIds],
-    enabled: groupIds.length > 0,
+    enabled: isAdmin && groupIds.length > 0,
     placeholderData: [],
     queryFn: async () => {
       if (groupIds.length === 0) return [];
@@ -47,17 +49,14 @@ export const ServingPage = () => {
 
   if (ministries.isLoading) return <Loading />;
 
-  // Admins: Ministries where they're a member OR ministries with no members (to prevent orphaning)
-  // Regular users: Ministries where they're a member
-  // Domain Admins: Can toggle to see all ministries
-  const isAdmin = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
-  const groups = (ministries.data || []).filter((g) => {
-    if (isAdmin && showAllMinistries) return true;
-    const members = ArrayHelper.getAll(groupMembers.data || [], "groupId", g.id);
-    const isMember = ArrayHelper.getOne(members, "personId", context.person?.id) !== null;
-    if (isAdmin) return isMember || members.length === 0;
-    return isMember;
-  });
+  const groups = isAdmin
+    ? (ministries.data || []).filter((g) => {
+      if (showAllMinistries) return true;
+      const members = ArrayHelper.getAll(groupMembers.data || [], "groupId", g.id);
+      const isMember = ArrayHelper.getOne(members, "personId", context.person?.id) !== null;
+      return isMember || members.length === 0;
+    })
+    : (ministries.data || []);
 
   const selectedMinistry = groups.find((g) => g.id === selectedMinistryId);
 
