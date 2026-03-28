@@ -1384,7 +1384,6 @@
     "addSermon": "添加讲道",
     "adjustSearchTerms": "尝试调整您的搜索词",
     "bulkImport": {
-      "autoImportNewVideos": "自动导入新视频",
       "backToSelection": "返回选择",
       "chooseSource": "选择导入来源",
       "fetch": "获取",

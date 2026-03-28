@@ -1384,7 +1384,6 @@
     "addSermon": "Добавить Проповедь",
     "adjustSearchTerms": "Попробуйте изменить условия поиска",
     "bulkImport": {
-      "autoImportNewVideos": "Автоматически Импортировать Новые Видео",
       "backToSelection": "Вернуться к Выбору",
       "chooseSource": "Выберите Источник Импорта",
       "fetch": "Получить",

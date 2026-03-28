@@ -1384,7 +1384,6 @@
     "addSermon": "उपदेश जोड़ें",
     "adjustSearchTerms": "अपने खोज शब्दों को समायोजित करने का प्रयास करें",
     "bulkImport": {
-      "autoImportNewVideos": "नए वीडियो स्वचालित रूप से आयात करें",
       "backToSelection": "चयन पर वापस जाएं",
       "chooseSource": "आयात स्रोत चुनें",
       "fetch": "प्राप्त करें",

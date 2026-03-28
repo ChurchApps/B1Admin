@@ -1384,7 +1384,6 @@
     "addSermon": "설교 추가",
     "adjustSearchTerms": "검색어를 조정해 보세요",
     "bulkImport": {
-      "autoImportNewVideos": "새 비디오 자동 가져오기",
       "backToSelection": "선택으로 돌아가기",
       "chooseSource": "가져오기 소스 선택",
       "fetch": "가져오기",

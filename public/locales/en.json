@@ -1384,7 +1384,6 @@
     "addSermon": "Add Sermon",
     "adjustSearchTerms": "Try adjusting your search terms",
     "bulkImport": {
-      "autoImportNewVideos": "Auto Import New Videos",
       "backToSelection": "Back to Selection",
       "chooseSource": "Choose Import Source",
       "fetch": "Fetch",

@@ -1384,7 +1384,6 @@
     "addSermon": "Magdagdag ng Sermon",
     "adjustSearchTerms": "Subukang ayusin ang iyong mga terminong panghanap",
     "bulkImport": {
-      "autoImportNewVideos": "Awtomatikong Mag-import ng Mga Bagong Video",
       "backToSelection": "Bumalik sa Pagpili",
       "chooseSource": "Pumili ng Pinagmulan ng Import",
       "fetch": "Kunin",

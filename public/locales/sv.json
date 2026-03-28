@@ -1384,7 +1384,6 @@
     "addSermon": "Lägg till predikan",
     "adjustSearchTerms": "Försök justera dina söktermer",
     "bulkImport": {
-      "autoImportNewVideos": "Importera nya videor automatiskt",
       "backToSelection": "Tillbaka till urval",
       "chooseSource": "Välj importkälla",
       "fetch": "Hämta",

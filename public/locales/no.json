@@ -1384,7 +1384,6 @@
     "addSermon": "Legg til preken",
     "adjustSearchTerms": "Prøv å justere søkeordene dine",
     "bulkImport": {
-      "autoImportNewVideos": "Importer nye videoer automatisk",
       "backToSelection": "Tilbake til valg",
       "chooseSource": "Velg importkilde",
       "fetch": "Hent",

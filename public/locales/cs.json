@@ -1384,7 +1384,6 @@
     "addSermon": "Přidat kázání",
     "adjustSearchTerms": "Zkuste upravit hledané výrazy",
     "bulkImport": {
-      "autoImportNewVideos": "Automaticky importovat nová videa",
       "backToSelection": "Zpět na výběr",
       "chooseSource": "Zvolte zdroj importu",
       "fetch": "Načíst",
