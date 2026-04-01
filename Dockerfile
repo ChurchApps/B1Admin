@@ -1,22 +1,10 @@
-# pull official base image
-FROM node:12-alpine
-
-# set working directory
+FROM node:20-slim AS builder
 WORKDIR /app
-
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-# install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-
-# add app
-COPY . ./
-
-# start app
-CMD ["npm", "start"]
-
-# expose port
-EXPOSE 3101
+COPY package*.json ./
+RUN npm install --legacy-peer-deps
+COPY . .
+RUN npm run build
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
