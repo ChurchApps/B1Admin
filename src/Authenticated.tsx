@@ -28,6 +28,7 @@ const QuickActionsPage = React.lazy(() => import("./dashboard/QuickActionsPage")
 const AdminPage = React.lazy(() => import("./serverAdmin/AdminPage").then((module) => ({ default: module.AdminPage })));
 const ProfilePage = React.lazy(() => import("./profile/ProfilePage").then((module) => ({ default: module.ProfilePage })));
 const ServingPage = React.lazy(() => import("./serving/ServingPage").then((module) => ({ default: module.ServingPage })));
+const ServingOverviewPage = React.lazy(() => import("./serving/ServingOverviewPage").then((module) => ({ default: module.ServingOverviewPage })));
 const PlanPage = React.lazy(() => import("./serving/plans/PlanPage").then((module) => ({ default: module.PlanPage })));
 const PlanTypePage = React.lazy(() => import("./serving/planTypes/PlanTypePage").then((module) => ({ default: module.PlanTypePage })));
 const DonationBatchesPage = React.lazy(() => import("./donations/DonationBatchesPage").then((module) => ({ default: module.DonationBatchesPage })));
@@ -120,6 +121,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/serving/tasks" element={<TasksPage />} />
           <Route path="/profile/devices" element={<DevicesPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/serving/overview" element={<ServingOverviewPage />} />
           <Route path="/serving/planTypes/:id" element={<PlanTypePage />} />
           <Route path="/serving/plans/:id" element={<PlanPage />} />
           <Route path="/serving" element={<ServingPage />} />
