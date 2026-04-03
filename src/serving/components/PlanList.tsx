@@ -1,6 +1,6 @@
 import React, { useCallback, memo } from "react";
-import { Box, Card, CardContent, Typography, Stack, Paper, Chip, Avatar, Button, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
-import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
+import { Box, Card, CardContent, Typography, Stack, Paper, Chip, Avatar, Button, Menu, MenuItem, ListItemIcon, ListItemText, FormControlLabel, Switch } from "@mui/material";
+import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanInterface } from "../../helpers";
@@ -20,6 +20,7 @@ interface Props {
 
 export const PlanList = memo((props: Props) => {
   const [plan, setPlan] = React.useState<PlanInterface>(null);
+  const [showPast, setShowPast] = React.useState(false);
   const [showLessonSchedule, setShowLessonSchedule] = React.useState(false);
   const [showBulkSchedule, setShowBulkSchedule] = React.useState(false);
   const [lessonMenuAnchor, setLessonMenuAnchor] = React.useState<null | HTMLElement>(null);
@@ -31,13 +32,26 @@ export const PlanList = memo((props: Props) => {
   });
 
   const plans = React.useMemo(() => {
+    let result: PlanInterface[];
     // When planTypeId is provided, the API already returns filtered data
     if (props.planTypeId) {
-      return plansQuery.data || [];
+      result = plansQuery.data || [];
+    } else {
+      // When no planTypeId, filter by ministry only
+      result = ArrayHelper.getAll(plansQuery.data || [], "ministryId", props.ministry.id);
     }
-    // When no planTypeId, filter by ministry only
-    return ArrayHelper.getAll(plansQuery.data || [], "ministryId", props.ministry.id);
-  }, [plansQuery.data, props.ministry.id, props.planTypeId]);
+    if (!showPast) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      result = result.filter(p => {
+        if (!p.serviceDate) return true;
+        const d = new Date(p.serviceDate);
+        d.setHours(0, 0, 0, 0);
+        return d >= today;
+      });
+    }
+    return result;
+  }, [plansQuery.data, props.ministry.id, props.planTypeId, showPast]);
 
   const addPlan = useCallback(() => {
     const lastSunday = DateHelper.getLastSunday();
@@ -103,7 +117,9 @@ export const PlanList = memo((props: Props) => {
     return <Loading />;
   }
 
-  if (plans.length === 0) {
+  const hasPastPlans = !showPast && plans.length === 0 && (plansQuery.data || []).length > 0;
+
+  if (plans.length === 0 && !hasPastPlans) {
     return (
       <Box>
         <Paper
@@ -182,6 +198,11 @@ export const PlanList = memo((props: Props) => {
             <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
               {Locale.label("plans.planList.plans")}
             </Typography>
+            <FormControlLabel
+              control={<Switch size="small" checked={showPast} onChange={(e) => setShowPast(e.target.checked)} />}
+              label={<Stack direction="row" alignItems="center" spacing={0.5}><HistoryIcon fontSize="small" /><Typography variant="body2">Show Past</Typography></Stack>}
+              sx={{ ml: 2 }}
+            />
           </Stack>
           {canEdit && (
             <Stack direction="row" spacing={1}>
@@ -205,6 +226,27 @@ export const PlanList = memo((props: Props) => {
           )}
         </Stack>
       </Box>
+
+      {hasPastPlans && (
+        <Paper
+          sx={{
+            p: 4,
+            textAlign: "center",
+            backgroundColor: "var(--bg-sub)",
+            border: "1px dashed",
+            borderColor: "var(--border-main)",
+            borderRadius: 2,
+            mb: 3
+          }}>
+          <EventNoteIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            No Upcoming Plans
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            There are no plans scheduled for today or later. Use the "Show Past" toggle above to view past plans.
+          </Typography>
+        </Paper>
+      )}
 
       <Stack spacing={2} sx={{ mb: 4 }}>
         {plans.map((p) => (

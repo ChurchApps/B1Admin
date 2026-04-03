@@ -1,8 +1,8 @@
 import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, ExportLink, Loading, PageHeader, type PersonInterface } from "@churchapps/apphelper";
-import { Box, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { type GroupInterface } from "@churchapps/helpers";
+import { useSearchParams } from "react-router-dom";
 
 interface OverviewRow {
   serviceDate: string;
@@ -37,23 +37,21 @@ const getDefaultDates = () => {
 };
 
 export const ServingOverviewPage = () => {
+  const [searchParams] = useSearchParams();
   const defaults = getDefaultDates();
   const [startDate, setStartDate] = React.useState(defaults.startDate);
   const [endDate, setEndDate] = React.useState(defaults.endDate);
-  const [ministryId, setMinistryId] = React.useState<string>("");
-
-  const ministries = useQuery<GroupInterface[]>({
-    queryKey: ["/groups/tag/ministry", "MembershipApi"],
-    placeholderData: []
-  });
+  const ministryId = searchParams.get("ministryId") || "";
+  const planTypeId = searchParams.get("planTypeId") || "";
 
   const overviewData = useQuery<OverviewRow[]>({
-    queryKey: ["/plans/overview", "DoingApi", startDate, endDate, ministryId],
+    queryKey: ["/plans/overview", "DoingApi", startDate, endDate, ministryId, planTypeId],
     enabled: !!startDate && !!endDate,
     placeholderData: [],
     queryFn: async () => {
       let url = `/plans/overview?startDate=${startDate}&endDate=${endDate}`;
       if (ministryId) url += `&ministryId=${ministryId}`;
+      if (planTypeId) url += `&planTypeId=${planTypeId}`;
       return ApiHelper.get(url, "DoingApi");
     }
   });
@@ -138,15 +136,6 @@ export const ServingOverviewPage = () => {
         <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap", alignItems: "center" }}>
           <TextField label="Start Date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} slotProps={{ inputLabel: { shrink: true } }} size="small" />
           <TextField label="End Date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} slotProps={{ inputLabel: { shrink: true } }} size="small" />
-          <FormControl size="small" sx={{ minWidth: 200 }}>
-            <InputLabel>Ministry</InputLabel>
-            <Select value={ministryId} label="Ministry" onChange={(e) => setMinistryId(e.target.value)}>
-              <MenuItem value="">All Ministries</MenuItem>
-              {(ministries.data || []).map(m => (
-                <MenuItem key={m.id} value={m.id}>{m.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <ExportLink data={csvData} customHeaders={csvHeaders} filename="serving-overview.csv" text="Export CSV" />
         </Box>
 
@@ -154,7 +143,7 @@ export const ServingOverviewPage = () => {
         {rows.length === 0 ? (
           <Box sx={{ textAlign: "center", py: 4, color: "text.secondary" }}>No serving data found for the selected date range.</Box>
         ) : (
-          <TableContainer component={Paper} sx={{ maxHeight: "70vh" }}>
+          <TableContainer component={Paper} sx={{ maxHeight: "70vh", overflowX: "auto" }}>
             <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>

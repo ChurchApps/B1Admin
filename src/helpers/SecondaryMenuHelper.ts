@@ -83,13 +83,11 @@ export class SecondaryMenuHelper {
     const canViewPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || data?.isMinistryMember;
     if (canViewPlans) {
       menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.plans"), icon: "assignment" });
-      menuItems.push({ url: "/serving/overview", label: "Overview", icon: "grid_on" });
       menuItems.push({ url: "/serving/songs", label: Locale.label("components.wrapper.songs"), icon: "music_note" });
     }
     menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.tasks"), icon: "list_alt" });
 
-    if (path.startsWith("/serving/overview")) label = "Overview";
-    else if (path.startsWith("/serving/songs")) label = Locale.label("components.wrapper.songs");
+    if (path.startsWith("/serving/songs")) label = Locale.label("components.wrapper.songs");
     else if (path.startsWith("/serving/tasks")) label = Locale.label("components.wrapper.tasks");
     else if (path.startsWith("/serving")) label = Locale.label("components.wrapper.plans");
 
