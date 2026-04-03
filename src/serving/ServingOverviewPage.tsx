@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, ExportLink, Loading, PageHeader, type PersonInterface } from "@churchapps/apphelper";
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField } from "@mui/material";
+import { Box, Card, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
@@ -43,6 +43,11 @@ export const ServingOverviewPage = () => {
   const [endDate, setEndDate] = React.useState(defaults.endDate);
   const ministryId = searchParams.get("ministryId") || "";
   const planTypeId = searchParams.get("planTypeId") || "";
+
+  const planType = useQuery<{ id: string; name: string }>({
+    queryKey: [`/planTypes/${planTypeId}`, "DoingApi"],
+    enabled: !!planTypeId
+  });
 
   const overviewData = useQuery<OverviewRow[]>({
     queryKey: ["/plans/overview", "DoingApi", startDate, endDate, ministryId, planTypeId],
@@ -130,24 +135,27 @@ export const ServingOverviewPage = () => {
 
   return (
     <>
-      <PageHeader title="Serving Overview" subtitle="Positions by date with assigned volunteers" />
+      <PageHeader title={planType.data?.name ? `${planType.data.name} Overview` : "Serving Overview"} subtitle="Positions by date with assigned volunteers" />
       <Box sx={{ p: 3 }}>
         {/* Filters */}
-        <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap", alignItems: "center" }}>
-          <TextField label="Start Date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} slotProps={{ inputLabel: { shrink: true } }} size="small" />
-          <TextField label="End Date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} slotProps={{ inputLabel: { shrink: true } }} size="small" />
-          <ExportLink data={csvData} customHeaders={csvHeaders} filename="serving-overview.csv" text="Export CSV" />
-        </Box>
+        <Card sx={{ mb: 3, p: 2 }}>
+          <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
+            <TextField label="Start Date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+            <TextField label="End Date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
+            <ExportLink data={csvData} customHeaders={csvHeaders} filename="serving-overview.csv" text="Export CSV" />
+          </Stack>
+        </Card>
 
         {/* Grid Table */}
         {rows.length === 0 ? (
           <Box sx={{ textAlign: "center", py: 4, color: "text.secondary" }}>No serving data found for the selected date range.</Box>
         ) : (
-          <TableContainer component={Paper} sx={{ maxHeight: "70vh", overflowX: "auto" }}>
-            <Table stickyHeader size="small">
-              <TableHead>
+          <Card>
+          <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto" }}>
+            <Table size="small">
+              <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 700, position: "sticky", left: 0, zIndex: 3, backgroundColor: "background.paper", minWidth: 200 }}>Position</TableCell>
+                  <TableCell sx={{ fontWeight: 700, position: "sticky", left: 0, zIndex: 3, backgroundColor: "var(--bg-sub)", minWidth: 200 }}>Position</TableCell>
                   {dates.map(d => (
                     <TableCell key={d} sx={{ fontWeight: 700, textAlign: "center", whiteSpace: "nowrap" }}>{formatShortDate(d)}</TableCell>
                   ))}
@@ -181,6 +189,7 @@ export const ServingOverviewPage = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          </Card>
         )}
       </Box>
     </>
