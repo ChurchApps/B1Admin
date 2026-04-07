@@ -239,7 +239,7 @@ export function ContentEditor(props: Props) {
 
   const handleSectionEdit = (s: SectionInterface, e: ElementInterface) => {
     if (s) {
-      if (s.targetBlockId) navigate(`/site/blocks/${s.targetBlockId}`);
+      if (s.targetBlockId && s.sections?.length > 0) navigate(`/site/blocks/${s.targetBlockId}`);
       else setEditSection(s);
     } else if (e) setEditElement(e);
   };
