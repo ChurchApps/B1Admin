@@ -1,7 +1,8 @@
 import React from "react";
 import { Box, Button, Icon, Stack, Switch, Tooltip, Typography } from "@mui/material";
-import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
+import { PermissionDenied } from "../components";
 
 export const CheckInPage: React.FC = () => {
   const [enabled, setEnabled] = React.useState(false);
@@ -21,6 +22,8 @@ export const CheckInPage: React.FC = () => {
   }, [churchId]);
 
   React.useEffect(() => { loadData(); }, [loadData]);
+
+  if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
 
   const handleSave = async () => {
     setSaving(true);

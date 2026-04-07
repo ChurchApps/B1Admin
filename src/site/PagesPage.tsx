@@ -12,7 +12,7 @@ import {
   Transform as TransformIcon,
   Visibility as VisibilityIcon
 } from "@mui/icons-material";
-import { ApiHelper, ErrorMessages, PageHeader, SmallButton, UserHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, PageHeader, SmallButton, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useNavigate } from "react-router-dom";
 import { AddPageModal, NavLinkEdit } from "./components";
@@ -22,6 +22,7 @@ import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
+import { PermissionDenied } from "../components";
 
 export const PagesPage = () => {
   const theme = useTheme();
@@ -206,6 +207,8 @@ export const PagesPage = () => {
 
   const pageStats = getPageStats();
   const checked = showLogin?.value === "true" ? true : false;
+
+  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   if (windowWidth < 882) {
     return <ErrorMessages errors={[Locale.label("site.pagesPage.desktopOnly")]} />;

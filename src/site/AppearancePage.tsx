@@ -1,19 +1,11 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Box } from "@mui/material";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
-import { Navigate } from "react-router-dom";
 import { StylesManager } from "./components";
+import { PermissionDenied } from "../components";
 
 export const AppearancePage = () => {
-  const [redirectUrl, setRedirectUrl] = React.useState<string>("");
-
-  const checkAccess = useCallback(() => {
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) setRedirectUrl("/");
-  }, []);
-
-  React.useEffect(checkAccess, [checkAccess]);
-
-  if (redirectUrl !== "") return <Navigate to={redirectUrl}></Navigate>;
+  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   return (
     <>
@@ -22,9 +14,7 @@ export const AppearancePage = () => {
         subtitle={Locale.label("site.appearancePage.subtitle")}
       />
       <Box sx={{ p: 3 }}>
-        {UserHelper.currentUserChurch && UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-          <StylesManager />
-        )}
+        {UserHelper.currentUserChurch && <StylesManager />}
       </Box>
     </>
   );

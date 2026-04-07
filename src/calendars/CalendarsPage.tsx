@@ -29,6 +29,7 @@ import {
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { CalendarEdit } from "./components";
+import { PermissionDenied } from "../components";
 
 export const CalendarsPage = () => {
   const [calendars, setCalendars] = useState<CuratedCalendarInterface[]>([]);
@@ -151,6 +152,8 @@ export const CalendarsPage = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   return (
     <>

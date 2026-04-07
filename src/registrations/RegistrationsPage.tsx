@@ -14,8 +14,9 @@ import {
   LinearProgress
 } from "@mui/material";
 import { HowToReg as RegIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, Loading, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
+import { PermissionDenied } from "../components";
 
 export const RegistrationsPage = () => {
   const navigate = useNavigate();
@@ -41,6 +42,8 @@ export const RegistrationsPage = () => {
   };
 
   useEffect(() => { loadData(); }, []);
+
+  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   const getCapacityDisplay = (event: EventInterface) => {
     const count = counts[event.id] || 0;

@@ -1,7 +1,8 @@
 import React from "react";
 import { Box, Button, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tooltip, Typography } from "@mui/material";
-import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import type { GenericSettingInterface, GroupInterface, VisibilityPreferenceInterface } from "@churchapps/helpers";
+import { PermissionDenied } from "../components";
 
 export const B1MobilePage: React.FC = () => {
   const [groups, setGroups] = React.useState<GroupInterface[]>(null);
@@ -48,6 +49,8 @@ export const B1MobilePage: React.FC = () => {
   }, [churchId]);
 
   React.useEffect(() => { loadData(); }, [loadData]);
+
+  if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
 
   const handlePrefChange = (name: string, value: string) => {
     setPref(prev => ({ ...prev, [name]: value }));
