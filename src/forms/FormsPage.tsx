@@ -7,6 +7,7 @@ import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography
 import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon } from "@mui/icons-material";
 import { SmallButton } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
+import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import { SmartTabs } from "../components/ui";
 
@@ -139,6 +140,7 @@ export const FormsPage = () => {
     if (selectedTab === "forms") return <FormEdit formId={selectedFormId} updatedFunction={handleUpdate}></FormEdit>;
   };
 
+  if (!formPermission) return <PermissionDenied permissions={[Permissions.membershipApi.forms.admin, Permissions.membershipApi.forms.edit]} />;
   if (forms.isLoading || archivedForms.isLoading) return <Loading />;
 
   const renderTable = (rows: JSX.Element[], isArchived: boolean) => (

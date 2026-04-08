@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { PermissionDenied } from "../components";
 import { Box, Stack, Button } from "@mui/material";
 import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, History as HistoryIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
@@ -18,7 +19,6 @@ export const ManageChurch = () => {
   const [selectedTab, setSelectedTab] = React.useState("roles");
   const [showChurchSettings, setShowChurchSettings] = React.useState(isSettingsHash);
   const [initialSection, setInitialSection] = useState<string | undefined>(isSettingsHash ? hash : undefined);
-  const [redirectUrl, setRedirectUrl] = useState<string>("");
 
   const jwt = ApiHelper.getConfig("MembershipApi").jwt;
   const churchId = UserHelper.currentUserChurch.church.id;
@@ -28,11 +28,7 @@ export const ManageChurch = () => {
     enabled: !!churchId
   });
 
-  const checkAccess = useCallback(() => {
-    if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) {
-      setRedirectUrl("/");
-    }
-  }, []);
+  const hasAccess = UserHelper.checkAccess(Permissions.membershipApi.settings.edit);
 
   const getCurrentTab = useCallback(() => {
     if (church.data) {
@@ -50,9 +46,7 @@ export const ManageChurch = () => {
     church.refetch();
   }, [church]);
 
-  React.useEffect(checkAccess, [checkAccess]);
-
-  if (redirectUrl !== "") return <Navigate to={redirectUrl}></Navigate>;
+  if (!hasAccess) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
   if (church.isLoading) return <Loading />;
   if (!church.data) return <div>{Locale.label("settings.manageChurch.noData")}</div>;
 

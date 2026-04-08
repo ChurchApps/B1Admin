@@ -1,6 +1,6 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Stack, Typography, Alert } from "@mui/material";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import UserContext from "../../UserContext";
 
@@ -78,6 +78,10 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
   };
 
   const handleFreeshowSetup = async () => {
+    if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit)) {
+      setError("You don't have permission to perform this action. Required: MembershipApi - Groups - Edit");
+      return;
+    }
     if (!ministryName.trim() || !teamName.trim()) {
       setError("Please enter both a ministry name and a team name.");
       return;
@@ -108,6 +112,10 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
   };
 
   const handleFreeplaySetup = async () => {
+    if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit) || !UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) {
+      setError("You don't have permission to perform this action. Required: MembershipApi - Groups - Edit, MembershipApi - Plans - Edit");
+      return;
+    }
     if (!ministryName.trim() || !classroomName.trim()) {
       setError("Please enter both a ministry name and a classroom name.");
       return;
@@ -132,6 +140,10 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
   };
 
   const handleWebpageSetup = async () => {
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
+      setError("You don't have permission to perform this action. Required: ContentApi - Content - Edit");
+      return;
+    }
     if (!pageTitle.trim()) {
       setError("Please enter a page title.");
       return;
@@ -145,6 +157,10 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
   };
 
   const handleGroupSetup = async () => {
+    if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit)) {
+      setError("You don't have permission to perform this action. Required: MembershipApi - Groups - Edit");
+      return;
+    }
     if (!groupName.trim()) {
       setError("Please enter a group name.");
       return;

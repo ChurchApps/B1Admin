@@ -199,7 +199,9 @@ export function ContentEditor(props: Props) {
             section={section}
             churchSettings={churchSettings}
             onEdit={handleSectionEdit}
-            onDelete={handleSectionDelete}
+            onDelete={() => {
+              loadDataInternal("After deleting section");
+            }}
             onMove={() => {
               loadDataInternal("After moving section");
             }}
@@ -243,20 +245,6 @@ export function ContentEditor(props: Props) {
       if (s.targetBlockId) navigate(`/site/blocks/${s.targetBlockId}`);
       else setEditSection(s);
     } else if (e) setEditElement(e);
-  };
-
-  const handleSectionDelete = async (s: SectionInterface) => {
-    if (!s?.id) return;
-    if (window.confirm("Remove this block from the page?")) {
-      if (container) saveSnapshot(container, "Before removing section block");
-      try {
-        await ApiHelper.delete(`/sections/${s.id}`, "ContentApi");
-        loadDataInternal("After removing section block");
-      } catch (err) {
-        console.error("Failed to remove section block:", err);
-        window.alert("Unable to remove this block from the page. Please try again.");
-      }
-    }
   };
 
   const handleElementClick = (elementId: string) => {
