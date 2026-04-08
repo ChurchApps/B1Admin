@@ -199,6 +199,9 @@ export function ContentEditor(props: Props) {
             section={section}
             churchSettings={churchSettings}
             onEdit={handleSectionEdit}
+            onDelete={() => {
+              loadDataInternal("After deleting section");
+            }}
             onMove={() => {
               loadDataInternal("After moving section");
             }}
@@ -239,7 +242,7 @@ export function ContentEditor(props: Props) {
 
   const handleSectionEdit = (s: SectionInterface, e: ElementInterface) => {
     if (s) {
-      if (s.targetBlockId && s.sections?.length > 0) navigate(`/site/blocks/${s.targetBlockId}`);
+      if (s.targetBlockId) navigate(`/site/blocks/${s.targetBlockId}`);
       else setEditSection(s);
     } else if (e) setEditElement(e);
   };
