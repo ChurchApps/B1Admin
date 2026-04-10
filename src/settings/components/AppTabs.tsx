@@ -34,7 +34,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
   const [tabs, setTabs] = useState<LinkInterface[]>([]);
 
   const loadData = () => {
-    ApiHelper.get("/links?category=b1Tab", "ContentApi").then((data: any) => setTabs(data));
+    ApiHelper.get("/links?category=b1Tab", "ContentApi").then((data: any) => setTabs(data)).catch(() => { setTabs([]); });
   };
 
   const saveChanges = () => {
