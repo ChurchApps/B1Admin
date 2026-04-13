@@ -555,6 +555,11 @@ export function ElementEdit(props: Props) {
           name="noResize"
           label={Locale.label("site.elements.doNotResizeImage")}
         />
+        <FormControlLabel
+          control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.enableLightbox === "true" ? true : false} disabled={!!parsedData.url} />}
+          name="enableLightbox"
+          label="Enable Lightbox"
+        />
       </FormGroup>
       <FormControl fullWidth sx={{ marginTop: 2 }}>
         <InputLabel>{Locale.label("site.elements.imageAlignment")}</InputLabel>

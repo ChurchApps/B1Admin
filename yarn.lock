@@ -208,10 +208,10 @@
     marked "^16.1.2"
     material-symbols "^0.33.0"
 
-"@churchapps/apphelper-website@0.6.19":
-  version "0.6.19"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper-website/-/apphelper-website-0.6.19.tgz"
-  integrity sha512-HIjfMZAzIeBENCTucZCOLdpxoOIw+LkwWzxgkZLGWfMowT0dBiOz62DY+q0N52FD22p4AZ3A5NBJLiklBRV5LQ==
+"@churchapps/apphelper-website@0.6.21":
+  version "0.6.21"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper-website/-/apphelper-website-0.6.21.tgz"
+  integrity sha512-4UAODV9jnZ46m9mskzEtU38raxyfns7Sl3glMlnp/qz67DxvlvAxKynCMGXEdsgrsY0yX8IkR9s2pFXaIo57hA==
   dependencies:
     rrule "^2.8.1"
 
