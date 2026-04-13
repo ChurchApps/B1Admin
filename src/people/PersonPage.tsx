@@ -1,5 +1,5 @@
 import React, { useContext, useState, useCallback, useMemo } from "react";
-import { Groups, PersonAttendance, PersonNotes, PersonDonations } from "./components";
+import { Groups, PersonAttendance, PersonNotes, PersonDonations, GdprActions } from "./components";
 import { type PersonInterface, type ConversationInterface, type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
@@ -146,7 +146,12 @@ export const PersonPage = () => {
           setSelectedTab("form");
         }}
       />
-      <div style={{ padding: "24px" }}>{getCurrentTab()}</div>
+      <div style={{ padding: "24px" }}>
+        {getCurrentTab()}
+        {selectedTab === "details" && person?.id && (
+          <GdprActions personId={person.id} personName={person.name?.display || "this person"} onAnonymized={refetch} />
+        )}
+      </div>
     </>
   );
 };
