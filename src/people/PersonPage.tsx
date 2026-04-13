@@ -148,7 +148,7 @@ export const PersonPage = () => {
       />
       <div style={{ padding: "24px" }}>
         {getCurrentTab()}
-        {selectedTab === "details" && person?.id && (
+        {selectedTab === "details" && editMode === "edit" && person?.id && (
           <GdprActions personId={person.id} personName={person.name?.display || "this person"} onAnonymized={refetch} />
         )}
       </div>

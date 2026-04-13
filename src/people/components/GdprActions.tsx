@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField, Typography } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ApiHelper } from "@churchapps/apphelper";
 
 interface Props {
@@ -45,9 +46,11 @@ export const GdprActions: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Card sx={{ mt: 3 }}>
-        <CardContent>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>Data Management</Typography>
+      <Accordion defaultExpanded={false} sx={{ mt: 3 }} variant="outlined">
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="subtitle2" color="text.secondary">Data Management</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             Export or anonymize this person&apos;s data for GDPR compliance.
           </Typography>
@@ -59,8 +62,8 @@ export const GdprActions: React.FC<Props> = (props) => {
               Anonymize
             </Button>
           </Stack>
-        </CardContent>
-      </Card>
+        </AccordionDetails>
+      </Accordion>
 
       <Dialog open={anonymizeOpen} onClose={() => { if (!anonymizing) setAnonymizeOpen(false); }}>
         <DialogTitle>Anonymize {props.personName}?</DialogTitle>
