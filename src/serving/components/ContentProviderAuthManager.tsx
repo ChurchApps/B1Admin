@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Box, Button, Card, CardContent, CircularProgress, IconButton, Stack, Typography } from "@mui/material";
 import { Link as LinkIcon, LinkOff as LinkOffIcon, Refresh as RefreshIcon, Add as AddIcon } from "@mui/icons-material";
-import { Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { getProvider, getAvailableProviders, type IProvider, type DeviceAuthorizationResponse } from "@churchapps/content-providers";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
@@ -31,7 +31,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   const [pkceWindow, setPkceWindow] = useState<Window | null>(null);
 
   const availableProviders = useMemo(() => {
-    const providers = getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject"]);
+    const providers = getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject", "dropbox", "jesusfilm"]);
     console.log("[ContentProviderAuthManager] availableProviders:", providers);
     return providers;
   }, []);
@@ -201,15 +201,24 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
         setAuthStatus("error");
         return;
       }
-      // Generate code verifier
+
+      // Step 1: Create a relay session on the API
+      const relayData = await ApiHelper.post("/oauth/relay/sessions", { provider: providerId }, "MembershipApi");
+      if (!relayData?.sessionCode || !relayData?.redirectUri) {
+        setAuthError("Failed to create authorization session. Please try again.");
+        setAuthStatus("error");
+        return;
+      }
+
+      const { sessionCode, redirectUri, expiresIn } = relayData;
+
+      // Step 2: Generate code verifier and build auth URL using relay redirect
       const verifier = (provider as any).generateCodeVerifier();
       setCodeVerifier(verifier);
 
-      // Build auth URL
-      const redirectUri = `${window.location.origin}/oauth/callback`;
-      const authResult = await (provider as any).buildAuthUrl(verifier, redirectUri);
+      const authResult = await (provider as any).buildAuthUrl(verifier, redirectUri, sessionCode);
 
-      // Open popup window
+      // Step 3: Open popup window
       const width = 600;
       const height = 700;
       const left = window.screenX + (window.outerWidth - width) / 2;
@@ -230,72 +239,69 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
       setPkceWindow(popup);
       setAuthStatus("pkce_waiting");
 
-      // Listen for the callback
-      const handleMessage = async (event: MessageEvent) => {
-        if (event.origin !== window.location.origin) return;
+      // Step 4: Poll the relay for the auth code
+      const expiresAt = Date.now() + (expiresIn || 300) * 1000;
 
-        if (event.data?.type === "oauth_callback" && event.data?.providerId === providerId) {
-          window.removeEventListener("message", handleMessage);
+      const poll = async () => {
+        if (popup.closed) {
+          setAuthStatus("idle");
+          setAuthProviderId(null);
+          return;
+        }
 
-          if (event.data.error) {
-            setAuthError(event.data.error_description || event.data.error);
-            setAuthStatus("error");
+        if (Date.now() >= expiresAt) {
+          popup.close();
+          setAuthError("Authorization session expired. Please try again.");
+          setAuthStatus("error");
+          return;
+        }
+
+        try {
+          const result = await ApiHelper.getAnonymous(`/oauth/relay/sessions/${sessionCode}`, "MembershipApi");
+
+          if (result?.status === "completed" && result?.authCode) {
+            popup.close();
+
+            // Exchange code for tokens
+            const tokens = await (provider as any).exchangeCodeForTokens(
+              result.authCode,
+              verifier,
+              redirectUri
+            );
+
+            if (tokens) {
+              await ContentProviderAuthHelper.storeAuth(ministryId, providerId, tokens);
+              setAuthStatus("success");
+              await loadLinkedProviders();
+              if (onAuthChange) onAuthChange();
+
+              setTimeout(() => {
+                setAuthProviderId(null);
+                setAuthStatus("idle");
+                setCodeVerifier(null);
+              }, 2000);
+            } else {
+              setAuthError("Failed to exchange code for tokens");
+              setAuthStatus("error");
+            }
             return;
           }
 
-          if (event.data.code) {
-            try {
-              // Exchange code for tokens
-              const tokens = await (provider as any).exchangeCodeForTokens(
-                event.data.code,
-                verifier,
-                redirectUri
-              );
-
-              if (tokens) {
-                await ContentProviderAuthHelper.storeAuth(ministryId, providerId, tokens);
-                setAuthStatus("success");
-                await loadLinkedProviders();
-                if (onAuthChange) onAuthChange();
-
-                // Auto-close after success
-                setTimeout(() => {
-                  setAuthProviderId(null);
-                  setAuthStatus("idle");
-                  setCodeVerifier(null);
-                }, 2000);
-              } else {
-                setAuthError("Failed to exchange code for tokens");
-                setAuthStatus("error");
-              }
-            } catch (error) {
-              console.error("Error exchanging code:", error);
-              setAuthError("Failed to complete authentication");
-              setAuthStatus("error");
-            }
-          }
+          // Still pending — poll again
+          setTimeout(poll, 3000);
+        } catch (error) {
+          console.error("Polling error:", error);
+          setTimeout(poll, 5000);
         }
       };
 
-      window.addEventListener("message", handleMessage);
-
-      // Check if popup is closed
-      const checkClosed = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(checkClosed);
-          window.removeEventListener("message", handleMessage);
-          if (authStatus === "pkce_waiting") {
-            setAuthStatus("idle");
-            setAuthProviderId(null);
-          }
-        }
-      }, 500);
+      setTimeout(poll, 3000);
     } catch (error) {
       console.error("Error starting PKCE flow:", error);
       setAuthError("Failed to start authentication");
       setAuthStatus("error");
     }
-  }, [ministryId, loadLinkedProviders, onAuthChange, authStatus]);
+  }, [ministryId, loadLinkedProviders, onAuthChange]);
 
   // Handle link button click
   const handleLink = useCallback(async (providerId: string) => {

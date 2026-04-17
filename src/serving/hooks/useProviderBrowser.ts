@@ -15,7 +15,7 @@ interface UseProviderBrowserOptions {
 }
 
 export function useProviderBrowser(options: UseProviderBrowserOptions) {
-  const { ministryId, defaultProviderId, providerFilter = ["lessonschurch", "signpresenter", "bibleproject"], includeFiles = false, autoLoad = true } = options;
+  const { ministryId, defaultProviderId, providerFilter = ["lessonschurch", "signpresenter", "bibleproject", "dropbox", "jesusfilm"], includeFiles = false, autoLoad = true } = options;
 
   // Provider state
   const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "");
@@ -63,7 +63,7 @@ export function useProviderBrowser(options: UseProviderBrowserOptions) {
   const browseRaw = useCallback(async (path: string, provId: string): Promise<ContentItem[]> => {
     const provider = getProvider(provId);
     if (!provider) return [];
-    if (ministryId && provider.requiresAuth) {
+    if (ministryId) {
       return await ApiHelper.post("/providerProxy/browse", { ministryId, providerId: provId, path: path || null }, "DoingApi");
     }
     return await provider.browse(path || null, null);
