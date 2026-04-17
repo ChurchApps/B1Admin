@@ -69,7 +69,8 @@
     "sourcemap-codec": "^1.4.8",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.35.0",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-pwa": "^1.2.0"
   },
   "scripts": {
     "start": "vite",
@@ -82,15 +83,15 @@
     "test:report": "playwright show-report",
     "lint": "eslint --fix src/",
     "predeploy-demo": "export REACT_APP_STAGE=demo && npm run postinstall && npm run build",
-    "exec-deploy-demo": "aws s3 sync dist/ s3://demo-chums-app",
+    "exec-deploy-demo": "aws s3 sync dist/ s3://demo-chums-app --exclude \"sw.js\" --exclude \"registerSW.js\" --exclude \"manifest.webmanifest\" && aws s3 cp dist/sw.js s3://demo-chums-app/sw.js --cache-control no-cache && aws s3 cp dist/registerSW.js s3://demo-chums-app/registerSW.js --cache-control no-cache && aws s3 cp dist/manifest.webmanifest s3://demo-chums-app/manifest.webmanifest --cache-control no-cache",
     "postdeploy-demo": "aws cloudfront create-invalidation --distribution-id E2OZ4STEUZXHZZ --paths \"/*\"",
     "deploy-demo": "npm run predeploy-demo && npm run exec-deploy-demo && npm run postdeploy-demo",
     "predeploy-staging": "export REACT_APP_STAGE=staging && npm run postinstall && npm run build",
-    "exec-deploy-staging": "aws s3 sync dist/ s3://staging-chums-app",
+    "exec-deploy-staging": "aws s3 sync dist/ s3://staging-chums-app --exclude \"sw.js\" --exclude \"registerSW.js\" --exclude \"manifest.webmanifest\" && aws s3 cp dist/sw.js s3://staging-chums-app/sw.js --cache-control no-cache && aws s3 cp dist/registerSW.js s3://staging-chums-app/registerSW.js --cache-control no-cache && aws s3 cp dist/manifest.webmanifest s3://staging-chums-app/manifest.webmanifest --cache-control no-cache",
     "postdeploy-staging": "aws cloudfront create-invalidation --distribution-id E2OZ4STEUZXHZZ --paths \"/*\"",
     "deploy-staging": "npm run predeploy-staging && npm run exec-deploy-staging && npm run postdeploy-staging",
     "predeploy-prod": "export REACT_APP_STAGE=prod && npm run postinstall && npm run build",
-    "exec-deploy-prod": "aws s3 sync dist/ s3://chums-app",
+    "exec-deploy-prod": "aws s3 sync dist/ s3://chums-app --exclude \"sw.js\" --exclude \"registerSW.js\" --exclude \"manifest.webmanifest\" && aws s3 cp dist/sw.js s3://chums-app/sw.js --cache-control no-cache && aws s3 cp dist/registerSW.js s3://chums-app/registerSW.js --cache-control no-cache && aws s3 cp dist/manifest.webmanifest s3://chums-app/manifest.webmanifest --cache-control no-cache",
     "postdeploy-prod": "aws cloudfront create-invalidation --distribution-id E2OZ4STEUZXHZZ --paths \"/*\"",
     "deploy-prod": "npm run predeploy-prod && npm run exec-deploy-prod && npm run postdeploy-prod",
     "postinstall": "copyfiles -a -f node_modules/@churchapps/apphelper/public/locales/** public/apphelper/locales && copyfiles -a -f node_modules/@churchapps/apphelper/public/css/** public/apphelper/css"
