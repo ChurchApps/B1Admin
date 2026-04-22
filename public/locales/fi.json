@@ -1,0 +1,2486 @@
+{
+  "attendance": {
+    "attendancePage": {
+      "att": "Osallistuminen",
+      "campus": "Kampus",
+      "campuses": "Kampukset",
+      "category": "Kategoria",
+      "group": "Ryhmä",
+      "groupAttMsg": "Group attendance will show up once sessions have been added to a group and people have attended those sessions.",
+      "groups": "Ryhmät",
+      "scheduled": "Scheduled",
+      "service": "Palvelu",
+      "services": "Palvelut",
+      "subtitle": "Seuraa osallistumista palveluihin ja ryhmiin",
+      "time": "Time",
+      "totalGroups": "Ryhmät yhteensä",
+      "unscheduled": "Unscheduled"
+    },
+    "attendanceSetup": {
+      "addService": "Lisää palvelu",
+      "addServiceTime": "Lisää palvelun aika",
+      "newCampus": "Uusi kampus",
+      "newService": "Uusi palvelu",
+      "newServiceTime": "Uusi palvelun aika",
+      "setupMessage": "Set up campuses, services, and service times to begin tracking attendance.",
+      "unassigned": "Määrittämätön"
+    },
+    "campusEdit": {
+      "confirmDelete": "Are you sure you want to delete this campus?",
+      "name": "Campus Name",
+      "validate": {
+        "name": "Campus Name is required."
+      }
+    },
+    "serviceEdit": {
+      "campus": "Kampus",
+      "confirmDelete": "Are you sure you wish to permanently delete this service?",
+      "name": "Service Name",
+      "validate": {
+        "campus": "Valitse kampus.",
+        "name": "Service name is required."
+      }
+    },
+    "serviceTimeEdit": {
+      "confirmDelete": "Are you sure you wish to permanently delete this service time?",
+      "name": "Palvelun aika",
+      "service": "Palvelu",
+      "validate": {
+        "name": "Service time name is required.",
+        "service": "Valitse palvelu."
+      }
+    },
+    "tabs": {
+      "attTrend": "Osallistumisen trendi",
+      "groupAtt": "Ryhmän osallistuminen",
+      "setup": "Setup"
+    }
+  },
+  "calendars": {
+    "calendar": {
+      "add": "Lisää",
+      "copiedToClipboard": "Kopioitu leikepöydälle",
+      "copyIcsLink": "Kopioi ICS-linkki",
+      "downloadIcsFile": "Lataa ICS-tiedosto",
+      "subscribe": "Tilaa",
+      "subscribeTitle": "Tilaa kalenteri"
+    },
+    "calendarEdit": {
+      "calendarDetails": "Calendar Details",
+      "calendarDetailsDesc": "Configure your calendar settings",
+      "calendarName": "Calendar Name",
+      "calendarNameAria": "Calendar Name",
+      "cancel": "Peruuta",
+      "confirmDelete": "Are you sure you wish to delete this calendar?",
+      "create": "Luo",
+      "createCalendar": "Luo kalenteri",
+      "delete": "Poista",
+      "deleting": "Poistetaan...",
+      "editCalendar": "Muokkaa kalenteria",
+      "namePlaceholder": "Enter a name for this calendar",
+      "nameRequired": "Calendar name is required",
+      "save": "Tallenna",
+      "saving": "Tallennetaan...",
+      "unauthorizedCreate": "Ei oikeutettu luomaan kalentereita",
+      "unauthorizedDelete": "Ei oikeutettu poistamaan kalentereita"
+    },
+    "calendarEvent": {
+      "cancel": "Peruuta",
+      "confirmDelete": "Are you sure you wish to delete this event?",
+      "delete": "Poista",
+      "noGroups": "Ryhmiä ei löytynyt."
+    },
+    "calendarList": {
+      "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
+      "aboutParagraph2": "You can create multiple calendars for different purposes like worship services, youth events, and community outreach.",
+      "aboutParagraph3": "Share your calendars with members through ICS feeds or embed them on your website.",
+      "aboutTitle": "About Calendars",
+      "actions": "Actions",
+      "active": "Active",
+      "addCalendar": "Add Calendar",
+      "calendar": "Calendar",
+      "calendars": "Kalenterit",
+      "createCalendar": "Luo kalenteri",
+      "createFirstCalendar": "Luo ensimmäinen kalenteri",
+      "curatedCalendar": "Curated Calendar",
+      "edit": "Muokkaa",
+      "manageEvents": "Hallitse tapahtumia",
+      "noCalendars": "Kalentereita ei löytynyt",
+      "status": "Tila",
+      "subtitleEmpty": "Aloita luomalla ensimmäinen kalenteri",
+      "subtitleWithCount": "Alaotsikko laskurilla",
+      "title": "Kalenterit"
+    },
+    "calendarPage": {
+      "actions": "Actions",
+      "addEventsHint": "Add events by selecting groups",
+      "calendar": "Calendar",
+      "calendarEvents": "Calendar Events",
+      "confirmRemoveGroup": "Are you sure you wish to remove this group from the calendar?",
+      "groupName": "Ryhmän nimi",
+      "groupsInCalendar": "Ryhmät kalenterissa",
+      "noGroupsAdded": "Ryhmiä ei ole vielä lisätty",
+      "removeGroup": "Poista ryhmä",
+      "removeGroupAria": "Remove Group Aria",
+      "subtitle": "Hallitse kalenteri-tapahtumia ja ryhmiä"
+    },
+    "editEvent": {
+      "addAllEvents": "Add all the events of the group",
+      "addGroup": "Add Group",
+      "addSpecificEvents": "Add specific events",
+      "cancel": "Peruuta",
+      "clickToAdd": "Click to add",
+      "noEventsFound": "No events found",
+      "save": "Tallenna",
+      "selectGroup": "Valitse ryhmä"
+    }
+  },
+  "common": {
+    "add": "Lisää",
+    "amount": "Summa",
+    "back": "Takaisin",
+    "bottom": "Pohja",
+    "cancel": "Peruuta",
+    "center": "Keskellä",
+    "change": "Muuta",
+    "changePhoto": "Vaihda valokuva",
+    "close": "Sulje",
+    "comboBox": {
+      "addNew": "Lisää uusi..."
+    },
+    "createPerson": {
+      "confirmDuplicate": "{{existingName}} already exists with an email of {{existingEmail}}. Are you sure you wish to add {{firstName}} {{lastName}}?",
+      "validate": {
+        "firstName": "Kirjoita etunimi.",
+        "lastName": "Kirjoita sukunimi.",
+        "validEmail": "Kirjoita kelvollinen sähköpostiosoite."
+      }
+    },
+    "custom": "Mukautettu",
+    "delete": "Poista",
+    "done": "Valmis",
+    "duplicate": "Monistaa",
+    "edit": "Muokkaa",
+    "errorBoundary": {
+      "message": "Something went wrong. Please try again or contact support if the problem persists.",
+      "retry": "Yritä uudelleen",
+      "title": "Hups! Tapahtui virhe"
+    },
+    "formSubmission": {
+      "edit": "Muokkaa",
+      "noData": "Tietoja ei ole saatavilla",
+      "noQuestions": "Kysymyksiä ei löytynyt"
+    },
+    "help": "Apu",
+    "iconPicker": {
+      "noResults": "No icons found matching \"{{searchText}}\"",
+      "searchLabel": "Etsi kuvakkeita",
+      "searchPlaceholder": "Type to search (e.g., person, home, church)...",
+      "showingDefault": "Showing {{count}} commonly used icons. Use search to find more.",
+      "showingMatching": "Showing {{count}} icons matching \"{{searchText}}\"",
+      "title": "Valitse kuvake",
+      "tryDifferent": "Try a different search term"
+    },
+    "left": "Vasemmalle",
+    "name": "Nimi",
+    "no": "Ei",
+    "notes": "Muistiinpanot",
+    "person": "Person",
+    "remove": "Poista",
+    "reportFilter": {
+      "title": "Suodata raportti"
+    },
+    "reportFilterField": {
+      "any": "Mikä tahansa"
+    },
+    "right": "Oikea",
+    "save": "Tallenna",
+    "saveChanges": "Tallenna muutokset",
+    "saving": "Tallennetaan...",
+    "search": "Etsi",
+    "searching": "Haetaan...",
+    "sermons": "Saarnaat",
+    "title": "Otsikko",
+    "top": "Yläosa",
+    "tryAgain": "Yritä uudelleen",
+    "update": "Päivitä",
+    "website": "Verkkosivusto",
+    "yes": "Kyllä",
+    "mobile": "Matkapuhelin",
+    "navigation": "Navigointi",
+    "appTheme": "Sovelluksen teema",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn"
+  },
+  "components": {
+    "footer": {
+      "phone": "Puhelin",
+      "rights": "Kaikki oikeudet pidätetään."
+    },
+    "loginHeroPanel": {
+      "featureDonations": "Lahjoitukset ja rahoituksen seuranta",
+      "featurePeople": "Ihmisten ja kotitalouksien hallinta",
+      "featurePlanning": "Palvelun suunnittelu ja ajoitus",
+      "featureWebsite": "Verkkosivuston rakentaja ja sisällönhallinta",
+      "subtitle": "Manage your congregation, plan services, track attendance, and handle donations — all in one place.",
+      "title": "Seurakunnan hallinta yksinkertaisesti"
+    },
+    "wrapper": {
+      "att": "Osallistuminen",
+      "dash": "Kojelauta",
+      "don": "Lahjoitukset",
+      "form": "Lomake",
+      "forms": "Lomakkeet",
+      "groups": "Ryhmät",
+      "plans": "Suunnitelmat",
+      "ppl": "Ihmiset",
+      "servAdmin": "Palvelimen ylläpitäjä",
+      "serving": "Serving",
+      "set": "Asetukset",
+      "songs": "Songs",
+      "tasks": "Tehtävät",
+      "teams": "Joukkueet"
+    }
+  },
+  "createPerson": {
+    "addNewPerson": "Lisää uusi henkilö",
+    "email": "Sähköposti",
+    "firstName": "Etunimi",
+    "lastName": "Sukunimi"
+  },
+  "dashboard": {
+    "dashboardPage": {
+      "dash": "Kojelauta",
+      "subtitle": "Tervetuloa seurakuntasi hallintakojelautaan. Etsi ihmisiä, katso ryhmiäsi ja hallitse avoimia tehtäviäsi."
+    },
+    "myGroups": "Omat ryhmät",
+    "peopleSearch": {
+      "display": "Näyttö",
+      "photo": "Valokuva",
+      "ppl": "Ihmiset"
+    }
+  },
+  "donation": {
+    "donationForm": {
+      "annually": "Vuosittain",
+      "biWeekly": "Kahden viikon välein",
+      "cover": "Peittää tapahtumapalkkiot",
+      "fees": "Palkkiot",
+      "frequencyLabel": "Taajuus",
+      "funds": "Rahastot",
+      "make": "Lahjoita",
+      "makeRecurring": "Tee tästä toistuva lahjoitus",
+      "monthly": "Kuukausittain",
+      "quarterly": "Neljännesvuosittain",
+      "startDate": "Alkamispäivä",
+      "thankYou": "Kiitos lahjoituksestasi!",
+      "totalAmount": "Kokonaissumma",
+      "validate": {
+        "amount": "Please enter a donation amount.",
+        "email": "Email is required.",
+        "firstName": "First name is required.",
+        "lastName": "Last name is required.",
+        "validEmail": "Kirjoita kelvollinen sähköpostiosoite."
+      },
+      "weekly": "Viikottain"
+    },
+    "donationPage": {
+      "donations": "Lahjoitukset"
+    },
+    "nonAuthDonation": {
+      "donate": "Lahjoita"
+    },
+    "page": {
+      "amount": "Summa",
+      "batch": "Erä",
+      "currentYearCsv": "Kuluvan vuoden CSV",
+      "currentYearPrint": "Kuluvan vuoden tulostus",
+      "date": "Päivämäärä",
+      "fund": "Rahasto",
+      "lastYearCsv": "Viime vuoden CSV",
+      "lastYearPrint": "Viime vuoden tulostus",
+      "method": "Menetelmä",
+      "willAppear": "Donations will appear here once they have been made."
+    }
+  },
+  "donations": {
+    "batchEdit": {
+      "confirmMsg": "Are you sure you wish to permanently delete this batch and all donations within it?",
+      "date": "Päivämäärä",
+      "opName": "Nimi (valinnainen)"
+    },
+    "batchStatements": {
+      "csvDescription": "Download a ZIP file containing individual CSV files for each donor with their detailed donation records",
+      "csvDownload": "Individual CSV Files",
+      "downloadOptions": "Latausvalinnat",
+      "downloadZip": "Download ZIP ({count} files)",
+      "noDonations": "No donations found for {year}. Please select a different year.",
+      "printAllInfo": "This will open a single document with all {count} statements. Each statement will be on a separate page.",
+      "printAllStatements": "Tulosta kaikki {count} lausuntoa",
+      "printDescription": "Generate a consolidated document with all giving statements for printing",
+      "printStatements": "Tulostettavat lausunnot",
+      "selectYear": "Valitse vuosi",
+      "subtitle": "Download giving statements for all donors",
+      "summary": "Yhteenveto",
+      "title": "Batch Giving Statements",
+      "totalAmount": "Kokonaissumma:",
+      "totalDonations": "Lahjoitukset yhteensä:",
+      "totalDonors": "Lahjoittajia yhteensä:",
+      "year": "Vuosi",
+      "zipInfo": "This will download a ZIP file containing {count} individual CSV files, one for each donor."
+    },
+    "bulkEntry": {
+      "addDonation": "Add Donation",
+      "pressEnter": "Paina Enter tallentaaksesi ja lisätäksesi toisen lahjoituksen",
+      "selectPerson": "Select Person or Anonymous"
+    },
+    "donationBatchPage": {
+      "batchDate": "Erän päivämäärä:",
+      "subtitle": "Hallitse lahjoituksia tässä erässä",
+      "title": "Lahjoituserä"
+    },
+    "donationBatchesPage": {
+      "subtitle": "Manage donation batches and track giving records"
+    },
+    "donationEdit": {
+      "anon": "Anonymous",
+      "card": "Kortti",
+      "cash": "Käteinen",
+      "check": "Shekki",
+      "checkNum": "Shekki nro",
+      "date": "Päivämäärä",
+      "fund": "Rahasto",
+      "inKind": "Luontoissuoritus",
+      "lastDig": "Viimeiset 4 numeroa",
+      "method": "Menetelmä"
+    },
+    "donationEvents": {
+      "event": "Event: ",
+      "failed": "Failed Donations - ",
+      "mark": "Mark as ",
+      "msg": "Message: ",
+      "unres": " unresolved"
+    },
+    "donations": {
+      "amt": "Summa",
+      "anon": "Anonymous",
+      "batches": "Batches",
+      "date": "Päivämäärä",
+      "don": "Lahjoitukset",
+      "errMsg": "No fund found. Please create a fund before making a donation",
+      "funds": "Rahastot",
+      "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "statements": "Lahjoituspäätelmät",
+      "summary": "Yhteenveto",
+      "tableIdent": "Id",
+      "total": "Kokonaisarvo"
+    },
+    "donationsPage": {
+      "batch": "Erä",
+      "date": "Päivämäärä",
+      "don": "Lahjoitukset",
+      "noBatch": "No batches found.",
+      "subtitle": "View donation summaries and analyze giving trends",
+      "total": "Kokonaisarvo"
+    },
+    "fundEdit": {
+      "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
+      "errBlank": "Kirjoita rahaston nimi",
+      "taxDeductible": "Verovähennyskelpoinen",
+      "trackDonations": "Seurantaa lahjoituksia.",
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+    },
+    "fundPage": {
+      "subtitle": "Track donations and contributions to this fund"
+    },
+    "funds": {
+      "fund": "Rahastot",
+      "noFund": "No funds found."
+    },
+    "fundsPage": {
+      "amt": "Summa",
+      "anon": "Anonymous",
+      "batch": "Erä",
+      "date": "Päivämäärä",
+      "dateEnd": "Päättymispäivä",
+      "dateStart": "Alkamispäivä",
+      "don": "Lahjoitukset",
+      "donFilt": "Donation Filter",
+      "donor": "Donor",
+      "noDon": "No donations for selected date range",
+      "subtitle": "Manage donation funds and track giving categories"
+    },
+    "kpi": {
+      "avgGift": "Average Gift",
+      "donationCount": "Lahjoitukset yhteensä",
+      "donorCount": "Unique Donors",
+      "totalGiving": "Total Giving"
+    },
+    "period": {
+      "monthly": "Kuukausittain",
+      "quarterly": "Neljännesvuosittain",
+      "weekly": "Viikottain"
+    }
+  },
+  "forms": {
+    "choicesEdit": {
+      "act": "Action",
+      "choices": "Choices",
+      "txt": "Teksti",
+      "value": "Value"
+    },
+    "form": {
+      "act": "Action",
+      "noCustomMsg": "No custom questions have been created yet. Questions will be listed here.",
+      "question": "Kysymys",
+      "questions": "Kysymykset",
+      "req": "Vaaditaan",
+      "type": "Tyyppi"
+    },
+    "formEdit": {
+      "access": "Lomakkeen käyttöoikeus",
+      "alone": "Stand Alone",
+      "associate": "Associate With",
+      "available": "Set Form Availability Timeframe",
+      "availableEnd": "Availability End Date",
+      "availableStart": "Availability Start Date",
+      "confirmMsg": "Are you sure you wish to permanently delete this form?",
+      "editForm": "Muokkaa lomaketta",
+      "endReqMsg": "End date is required.",
+      "name": "Lomakkeen nimi",
+      "nameReqMsg": "Form name is required.",
+      "ppl": "Ihmiset",
+      "public": "Julkinen",
+      "restrict": "Rajoitettu",
+      "startReqMsg": "Start date is required.",
+      "thankYouMessage": "Kiitos-viesti"
+    },
+    "formMembers": {
+      "act": "Action",
+      "addPpl": "Lisää henkilö",
+      "admin": "Ylläpitäjä",
+      "emailNotif": "Sähköposteilmoitus",
+      "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
+      "formMem": "Lomakkeen jäsenet",
+      "perm": "Lupa",
+      "view": "Vain katselua"
+    },
+    "formPage": {
+      "subtitleConfig": "Form configuration and submissions"
+    },
+    "formQuestionEdit": {
+      "amt": "Summa",
+      "ansReq": "Require an answer for this question",
+      "checkBox": "Checkbox",
+      "confirmMsg": "Are you sure you wish to permanently delete this question?",
+      "date": "Päivämäärä",
+      "decNum": "Decimal",
+      "desc": "Kuvaus",
+      "fieldReq": "Field type is required.",
+      "fund": "Rahasto",
+      "multiChoice": "Multiple Choice",
+      "payment": "Payment",
+      "phoneNum": "Phone Number",
+      "plcOp": "Paikannitin (valinnainen)",
+      "prov": "Provider",
+      "questionEdit": "Muokkaa kysymystä",
+      "questionReq": "Question is required.",
+      "textArea": "Text Area",
+      "textBox": "Textbox",
+      "wholeNum": "Whole Number",
+      "yesNo": "Yes/No"
+    },
+    "formSubmissions": {
+      "anon": "Anonymous",
+      "subBy": "Lähettänyt",
+      "subDate": "Submission Date",
+      "subFor": "Lähetetty kohteelle",
+      "subRes": "Form Submission Results",
+      "subSum": "Form Submission Summary"
+    },
+    "formsPage": {
+      "addForm": "Add Form",
+      "archForms": "Archived Forms",
+      "confirmMsg1": "Are you sure you want to archive this form?",
+      "confirmMsg2": "Are you sure you want to restore this form?",
+      "forms": "Lomakkeet",
+      "noArch": "No archived forms.",
+      "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "subtitleManage": "Luo ja hallitse mukautettuja lomakkeita",
+      "url": "URL"
+    },
+    "tabs": {
+      "formMem": "Lomakkeen jäsenet",
+      "formSub": "Lomakkeen lähettämiset",
+      "questions": "Kysymykset",
+      "unAuth": "Ei valtuutettu"
+    }
+  },
+  "groups": {
+    "groupAdd": {
+      "add": "Lisää",
+      "catName": "Category Name",
+      "catReq": "Category name is required.",
+      "group": "Ryhmä",
+      "groupReq": "Group name is required.",
+      "ministry": "Ministry",
+      "new": "New ",
+      "team": "Joukkue"
+    },
+    "groupBanner": {
+      "associatedServices": "Liittyvät palvelut",
+      "labels": "Otsikot",
+      "meetingInfo": "Meeting Information",
+      "moreLabels": "Lisää otsikkoja",
+      "parentPickup": "Vanhemman noutaminen",
+      "printNametag": "Tulosta nimilappu",
+      "settings": "Asetukset",
+      "team": "Joukkue",
+      "trackAttendance": "Seuraa osallistumista"
+    },
+    "groupDetails": {
+      "about": "About",
+      "attendanceSettings": "Attendance Settings",
+      "labels": "Otsikot",
+      "locationPlaceholder": "Johnson Home",
+      "meetingInfo": "Meeting Information",
+      "meetingLocation": "Meeting Location",
+      "meetingTime": "Meeting Time",
+      "meetingTimePlaceholder": "Tuesdays at 7pm",
+      "noPhoto": "No photo available",
+      "parentPickup": "Vanhemman noutaminen",
+      "printNametag": "Tulosta nimilappu",
+      "slugPlaceholder": "group-name",
+      "trackAttendance": "Seuraa osallistumista"
+    },
+    "groupDetailsEdit": {
+      "addPhoto": "Add Photo",
+      "attTrack": "Seuraa osallistumista",
+      "attendance": "Osallistuminen",
+      "catName": "Category Name",
+      "catNameMsg": "Please enter a category name.",
+      "clickToAddPhoto": "Click to add photo",
+      "confirmMsg": "Are you sure you wish to permanently delete this group?",
+      "groupDesc": "Ryhmän kuvaus",
+      "groupDet": "Ryhmän tiedot",
+      "groupName": "Ryhmän nimi",
+      "groupNameMsg": "Please enter a group name.",
+      "meetingLocation": "Meeting Location",
+      "meetingTime": "Meeting Time",
+      "parPick": "Vanhemman noutaminen",
+      "prinName": "Tulosta nimilappu",
+      "slug": "Slug (avain käytetään URL-osoitteissa)"
+    },
+    "groupLabelsEdit": {
+      "addNewLabel": "Add New Label",
+      "labels": "Otsikot"
+    },
+    "groupMembers": {
+      "groupMem": "Ryhmän jäsenet",
+      "noMem": "No group members found.",
+      "send": "Lähetä",
+      "sendMemMsg": "Lähetä viesti jäsenille",
+      "showTemplates": "Näytä mallit",
+      "templates": {
+        "none": "None",
+        "templates": "Templates",
+        "welcome_volunteers": {
+          "heading": "Welcome Volunteers",
+          "message": "Welcome Thank you for volunteering.\n\nPlease download the B1.Church app and login to manage your schedule. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
+        }
+      }
+    },
+    "groupNavigation": {
+      "members": "Jäsenet",
+      "sessions": "Istunnot"
+    },
+    "groupPage": {
+      "addPpl": "Lisää henkilö"
+    },
+    "groupSessions": {
+      "addSesMsg": "Please add a new session to continue.",
+      "allYears": "Kaikki vuodet",
+      "attFor": "Attendance for",
+      "new": "Uusi",
+      "noAttendance": "No attendance records found",
+      "noSesMsg": "There are no sessions.",
+      "noSessionsFound": "No sessions found",
+      "selectSession": "Select Session",
+      "session": "Session",
+      "sessions": "Istunnot",
+      "tryAdjusting": "Try adjusting your search"
+    },
+    "groupsPage": {
+      "addGroup": "Add Group",
+      "cat": "Kategoria",
+      "categories": "Categories",
+      "groups": "Ryhmät",
+      "labels": "Otsikot",
+      "noGroupMsg": "No groups found. Please create a group.",
+      "pers": "1 person",
+      "ppl": "Ihmiset",
+      "spPpl": " people",
+      "subtitle": {
+        "create": "Aloita luomalla ensimmäinen ryhmä",
+        "manage": "Organize and manage your church groups"
+      },
+      "totalGroups": "Ryhmät yhteensä",
+      "totalMembers": "Jäsenet yhteensä"
+    },
+    "membersAdd": {
+      "availableMem": "Saatavilla olevat ryhmän jäsenet",
+      "noMem": "No group members available."
+    },
+    "serviceTimes": {
+      "services": "Palvelu(t):"
+    },
+    "serviceTimesEdit": {
+      "srvTimeAdd": "Lisää palvelun aika",
+      "srvTimeOp": "Service Times (optional)"
+    },
+    "sessionAdd": {
+      "invDate": "Virheellinen päivämäärä",
+      "sesAdd": "Add a Session",
+      "sesDate": "Session Date",
+      "srvTime": "Palvelun aika"
+    },
+    "sessionCard": {
+      "active": "Active",
+      "edit": "Muokkaa",
+      "people": "people",
+      "person": "person",
+      "view": "View"
+    },
+    "sessionEdit": {
+      "deleteConfirm": "Are you sure you wish to permanently delete this session?",
+      "sesEdit": "Edit Session"
+    },
+    "tabs": {
+      "mem": "Jäsenet",
+      "ses": "Istunnot"
+    }
+  },
+  "month": {
+    "apr": "Huhtikuu",
+    "april": "Huhtikuu",
+    "aug": "Elokuu",
+    "august": "Elokuu",
+    "dec": "Joulukuu",
+    "december": "Joulukuu",
+    "feb": "Helmikuu",
+    "february": "Helmikuu",
+    "jan": "Tammikuu",
+    "january": "Tammikuu",
+    "july": "Heinäkuu",
+    "june": "Kesäkuu",
+    "mar": "Maaliskuu",
+    "march": "Maaliskuu",
+    "may": "Toukokuu",
+    "nov": "Marraskuu",
+    "november": "Marraskuu",
+    "oct": "Lokakuu",
+    "october": "Lokakuu",
+    "sep": "Syyskuu",
+    "september": "Syyskuu"
+  },
+  "people": {
+    "advancedSearch": {
+      "enterValuePlaceholder": "Kirjoita arvo...",
+      "search": "Etsi",
+      "valuePlaceholder": "Value"
+    },
+    "aiSearch": {
+      "placeholder": "Show me men over 30 with birthdays in July",
+      "title": "AI Search"
+    },
+    "editCondition": {
+      "act": "Activity",
+      "anniMonth": "Anniversary Month",
+      "any": "Mikä tahansa",
+      "attCamp": "has attended (campus)",
+      "attGen": "has attended (in general)",
+      "attGroup": "has attended (group)",
+      "attServ": "has attended (service)",
+      "attServTime": "has attended (service time)",
+      "bMonth": "Birth Month",
+      "contains": "contains",
+      "donTo": "has donated to",
+      "endW": "ends with",
+      "field": "Kenttä",
+      "from": "Lähettäjä",
+      "groupMem": "Ryhmän jäsen",
+      "hasDon": "has donated (in general)",
+      "isMem": "is member of",
+      "marYears": "Vuosia naimisissa",
+      "memAtt": "Member Attendance",
+      "memDon": "Member Donations",
+      "notMem": "is not member of",
+      "operator": "Operator",
+      "saveCon": "Save Condition",
+      "startW": "starts with",
+      "to": "Vastaanottaja",
+      "value": "Value",
+      "valuePlaceholder": "Value"
+    },
+    "groups": {
+      "notMemMsg": "Ei tällä hetkellä minkään ryhmän jäsen."
+    },
+    "household": {
+      "house": " Household"
+    },
+    "householdEdit": {
+      "addMatch": "address to match",
+      "blankMsg": "Please provide a household name.",
+      "child": "Child",
+      "head": "Head",
+      "house": " Household",
+      "houseName": "Kotitalouden nimi",
+      "other": "Other",
+      "spouse": "Puoliso",
+      "updQuestion": "Would you like to update"
+    },
+    "merge": {
+      "merge": "merge",
+      "mergeRec": "Yhdistä tieteet"
+    },
+    "mergeModal": {
+      "cancel": "Peruuta",
+      "confirm": "Vahvista",
+      "contactInfo": "Yhteystiedot",
+      "fieldCon": "Please resolve field conflicts:",
+      "householdId": "Kotitalouden tunnus",
+      "id": "ID",
+      "merge": "Merging...",
+      "mergeQuestion": "Yhdistä",
+      "name": "Nimi",
+      "profile": "Profile",
+      "selMsg": "Please select a value for all fields",
+      "with": "with"
+    },
+    "peopleColumns": {
+      "appFilt": "Apply Filters",
+      "cust": "Mukautettu",
+      "filt": "Filters",
+      "noFilt": "Suodattimia ei ole saatavilla.",
+      "stand": "Standard"
+    },
+    "peoplePage": {
+      "addPerson": "Lisää henkilö",
+      "bDay": "Syntymäpäivä",
+      "bDayNo": "Syntymäpäivä (ilman vuotta)",
+      "deleteOp": "Poista vaihtoehto",
+      "first": "Ensimmäinen",
+      "last": "Viimeinen",
+      "middle": "Keskimmäinen",
+      "nameNote": "Nimilapun muistiinpanot",
+      "photo": "Valokuva",
+      "primEmail": "Ensisijainen sähköposti",
+      "primPhone": "Ensisijainen puhelinnumero",
+      "recentPpl": "Äskettäin lisätyt henkilöt",
+      "searchPpl": "Etsi ihmisiä"
+    },
+    "peopleSearch": {
+      "active": "active:",
+      "activity": "Activity",
+      "adv": "Advanced",
+      "advSearch": "Advanced Search",
+      "campus": "Kampus",
+      "checkBoxes": "Check boxes to enable filters",
+      "clearAll": "Poista kaikki",
+      "configure": "Määritä",
+      "contact": "Yhteystiedot",
+      "customFields": "Mukautetut kentät",
+      "demographics": "Väestötiedot",
+      "fund": "Rahasto",
+      "group": "Ryhmä",
+      "membership": "Jäsenyys ja ryhmät",
+      "names": "Names",
+      "placeholder": "Etsi nimen perusteella...",
+      "service": "Palvelu",
+      "serviceTime": "Palvelun aika",
+      "simp": "Simple",
+      "simpSearch": "People Search",
+      "type": "Tyyppi"
+    },
+    "peopleSearchResults": {
+      "noResMsg": "No results found.  Please search for a different name or add a new person"
+    },
+    "personAttendance": {
+      "noAttMsg": "No attendance records. Attendance will appear once attendance has been tracked for a group session."
+    },
+    "personEdit": {
+      "applyQuestion": "Would you like to apply that to the entire",
+      "cannotDeleteSelf": "You cannot delete your own person record.",
+      "confirmMsg": "Are you sure you wish to permanently delete this person record?",
+      "donorNumber": "Lahjoittajan numero",
+      "exten": "Tunniste",
+      "family": "family",
+      "firstReq": "First name is required",
+      "for": "for",
+      "home": "Koti",
+      "invalForm": "Inval Form",
+      "lastReq": "Last name is required",
+      "maritalStatus": "Siviilisääty",
+      "merge": "Yhdistä",
+      "mobile": "Matkapuhelin",
+      "nameNote": "Nimilapun muistiinpanot",
+      "persDet": "Henkilökohtaiset tiedot",
+      "upAddress": "You updated the address to",
+      "valEmail": "Kirjoita kelvollinen sähköpostiosoite.",
+      "work": "Työ"
+    },
+    "personForm": {
+      "addForm": "Add Form",
+      "form": "Lomake",
+      "noFormMsg": "Tälle henkilölle ei löytynyt lomakteen lähettämistä"
+    },
+    "personNav": {
+      "customForms": "Custom Forms"
+    },
+    "personView": {
+      "home": "Koti",
+      "memShip": "Membership:",
+      "mobile": "Matkapuhelin",
+      "persDet": "Henkilökohtaiset tiedot",
+      "work": "Työ"
+    },
+    "tabs": {
+      "att": "Osallistuminen",
+      "don": "Lahjoitukset",
+      "noImplement": "Not Implemented"
+    },
+    "updateHouseHold": {
+      "update": "Päivitä osoite"
+    }
+  },
+  "person": {
+    "address": "Osoite",
+    "age": "Ikä",
+    "anniversary": "Vuosipäivä",
+    "birthDate": "Syntymäpäivä",
+    "city": "Kaupunki",
+    "country": "Maa",
+    "displayName": "Näyttönimi",
+    "divorced": "Eronnut",
+    "email": "Sähköposti",
+    "female": "Nainen",
+    "firstName": "Etunimi",
+    "gender": "Sukupuoli",
+    "inactive": "Passiivinen",
+    "lastName": "Sukunimi",
+    "line1": "Rivi 1",
+    "line2": "Rivi 2",
+    "male": "Mies",
+    "maritalStatus": "Siviilisääty",
+    "married": "Naimisissa",
+    "member": "Jäsen",
+    "membershipStatus": "Jäsenyyden tila",
+    "membershp": "Jäsenyys",
+    "middleName": "Toinen nimi",
+    "nickName": "Lempinimi",
+    "noRec": "Tietueita ei löytynyt",
+    "person": "Person",
+    "phone": "Puhelin",
+    "prefix": "Etuliite",
+    "regularAttendee": "Regular Attendee",
+    "single": "Naimaton",
+    "staff": "Henkilökunta",
+    "state": "Osavaltio/Provinssi",
+    "suffix": "Jälkiliite",
+    "unknown": "Tuntematon",
+    "unspecified": "Määrittämätön",
+    "visitor": "Vierailija",
+    "widowed": "Leski",
+    "zip": "Postinumero"
+  },
+  "placeholders": {
+    "addPage": {
+      "linkText": "Click here",
+      "linkUrl": "/new-page",
+      "title": "New Page"
+    },
+    "batch": {
+      "name": "Sunday Offering - Jan 5"
+    },
+    "block": {
+      "name": "Hero Section"
+    },
+    "campus": {
+      "name": "Downtown Campus"
+    },
+    "choices": {
+      "text": "Option 1",
+      "value": "option1"
+    },
+    "church": {
+      "address1": "123 Main Street",
+      "address2": "Suite 100",
+      "city": "Springfield",
+      "country": "USA",
+      "name": "Grace Community Church",
+      "state": "IL",
+      "subdomain": "gracechurch",
+      "zip": "62701"
+    },
+    "device": {
+      "label": "Living Room Screen"
+    },
+    "donation": {
+      "checkNumber": "1234",
+      "lastDigits": "4242",
+      "notes": "Add any notes about this donation..."
+    },
+    "element": {
+      "buttonText": "Click Here",
+      "cardTitle": "Card Title",
+      "donateText": "Donate Now",
+      "imageDescription": "Image description",
+      "videoId": "dQw4w9WgXcQ"
+    },
+    "faq": {
+      "title": "What is your return policy?"
+    },
+    "font": {
+      "search": "Search fonts..."
+    },
+    "form": {
+      "name": "Contact Form",
+      "questionDescription": "Add additional details...",
+      "questionPlaceholder": "Enter your answer...",
+      "questionTitle": "Your question here",
+      "thankYouMessage": "Kiitos lomakkeen lähettämisestä!"
+    },
+    "fund": {
+      "name": "Yleinen rahasto"
+    },
+    "giving": {
+      "publicKey": "pk_live_..."
+    },
+    "group": {
+      "category": "ABF, Sunday School, Ministry",
+      "name": "Life Group A"
+    },
+    "household": {
+      "name": "Smith Family"
+    },
+    "page": {
+      "linkText": "Read More",
+      "linkUrl": "https://example.com",
+      "title": "About Us",
+      "urlPath": "/about-us"
+    },
+    "pairScreen": {
+      "code": "ABC123"
+    },
+    "person": {
+      "address1": "123 Main Street",
+      "address2": "Apt 4B",
+      "city": "Nashville",
+      "donorNumber": "DN-12345",
+      "email": "john.smith@example.com",
+      "firstName": "John",
+      "lastName": "Smith",
+      "middleName": "David",
+      "nameTag": "Lead Singer",
+      "nickname": "Johnny",
+      "phoneExt": "1234",
+      "simpleEmail": "john@example.com",
+      "state": "TN",
+      "zip": "37201"
+    },
+    "plan": {
+      "name": "Sunday Service - Jan 5"
+    },
+    "planItem": {
+      "description": "Brief description...",
+      "label": "Opening Song"
+    },
+    "planType": {
+      "name": "Sunday Service"
+    },
+    "position": {
+      "count": "2",
+      "name": "Greeter"
+    },
+    "role": {
+      "name": "Ministry Leader"
+    },
+    "sermon": {
+      "description": "Enter sermon description...",
+      "title": "Sunday Message"
+    },
+    "service": {
+      "name": "Sunday Morning Service"
+    },
+    "song": {
+      "album": "Album Name",
+      "arrangementName": "Contemporary Arrangement",
+      "artist": "John Newton",
+      "bpm": "120",
+      "keySignature": "C#",
+      "language": "English",
+      "lengthSeconds": "180",
+      "linkUrl": "https://example.com/chords",
+      "lyrics": "Enter lyrics here...",
+      "title": "Amazing Grace"
+    },
+    "task": {
+      "notes": "Add any notes about this task...",
+      "title": "Prepare worship slides"
+    },
+    "time": {
+      "displayName": "Sunday Morning"
+    },
+    "user": {
+      "email": "john@example.com",
+      "firstName": "John",
+      "lastName": "Smith"
+    }
+  },
+  "plans": {
+    "actionSelector": {
+      "addAction": "Add Action",
+      "addSection": "Add Section",
+      "fromAssociatedLesson": "From associated lesson:",
+      "noActionsAvailable": "No actions available",
+      "selectAction": "Select Action",
+      "selectExternalItem": "Select External Item"
+    },
+    "assignment": {
+      "addPosition": "Add Position",
+      "autoAssign": "Auto Assign",
+      "saveNotes": "Save Notes"
+    },
+    "assignmentEdit": {
+      "assignPos": "Assign Position",
+      "done": "Valmis",
+      "editAssign": "Edit Assignment",
+      "noMem": "No group members found."
+    },
+    "bulkLessonSchedule": {
+      "biWeekly": "Kahden viikon välein",
+      "date": "Päivämäärä",
+      "interval": "Interval",
+      "lesson": "Lesson",
+      "lessonsToSchedule": "lessons to schedule",
+      "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
+      "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
+      "startDate": "Alkamispäivä",
+      "startingLesson": "Starting Lesson",
+      "title": "Bulk Schedule Lessons",
+      "venue": "Venue",
+      "weekly": "Viikottain"
+    },
+    "contentProviderAuth": {
+      "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
+      "errorGeneric": "Failed to link provider. Please try again.",
+      "link": "Link",
+      "linkAccount": "Link Account",
+      "linkNew": "Link New Provider",
+      "linked": "Linked",
+      "noLinkedDescription": "Link a content provider to access their content in your service plans.",
+      "noProvidersAvailable": "No content providers available",
+      "pkceInstructions": "Click the button below to authorize in a popup window:",
+      "pkceWaiting": "Waiting for authorization in popup...",
+      "refresh": "Refresh",
+      "selectProvider": "Link Content Provider",
+      "success": "Successfully linked!",
+      "title": "Content Providers",
+      "unlink": "Unlink",
+      "waitingForAuth": "Waiting for authorization..."
+    },
+    "lessonHeaderSelector": {
+      "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
+      "noContent": "No lesson content available",
+      "selectContent": "Select Content",
+      "title": "Add Lesson Content"
+    },
+    "lessonScheduleEdit": {
+      "dateRequired": "Please select a date",
+      "scheduleLesson": "Schedule Lesson",
+      "scheduledDate": "Scheduled Date",
+      "selectLesson": "Select Lesson",
+      "venueRequired": "Please select a venue"
+    },
+    "lessonSelector": {
+      "associateLesson": "Associate Lesson",
+      "browseOtherProviders": "Browse Other Providers",
+      "contentProvider": "Content Provider",
+      "lesson": "Lesson",
+      "linkProviderFirst": "Link this provider first to browse content",
+      "providerNotLinked": "Provider Not Linked"
+    },
+    "ministryList": {
+      "getStarted": "Get started by creating your first ministry",
+      "noMinMsg": "No ministries found. Please create a ministry."
+    },
+    "ministryPage": {
+      "subtitle": "Organize ministry teams and service plans"
+    },
+    "planEdit": {
+      "copyAll": "Positions and Assignments",
+      "copyNothing": "Nothing",
+      "copyPositions": "Positions Only",
+      "copyPrevious": "Copy from Previous Plan",
+      "copyServiceOrder": "Copy Order of Service",
+      "planAdd": "Add a Plan",
+      "planEdit": "Edit Plan",
+      "planReq": "Plan name is required.",
+      "servDate": "Service Date",
+      "servReq": "Service date is required."
+    },
+    "planItem": {
+      "addItem": "Add Item",
+      "editItem": "Edit Item",
+      "editSection": "Edit Section",
+      "expandToActions": "Expand to Actions",
+      "externalItem": "External Item",
+      "item": "Item",
+      "song": "Song"
+    },
+    "planItemEdit": {
+      "confirmDelete": "Confirm Delete",
+      "confirmDeleteMessage": "Are you sure you want to delete this item?",
+      "description": "Kuvaus",
+      "edit": "Muokkaa",
+      "editAddOn": "Edit Add-On",
+      "editHeader": "Edit Header",
+      "editSong": "Edit Song",
+      "enterSearch": "Enter search term",
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    },
+    "planList": {
+      "bulkSchedule": "Bulk Schedule",
+      "createFirst": "Create First Plan",
+      "createPlan": "Create Plan",
+      "newPlan": "New Plan",
+      "noPlans": "No plans found",
+      "plans": "Suunnitelmat",
+      "scheduleLesson": "Schedule Lesson",
+      "serviceOrder": "Service Order"
+    },
+    "planPage": {
+      "assign": "Team Assignments",
+      "assignments": "Assignments",
+      "band": "Band",
+      "loadingPlan": "Loading plan...",
+      "noteSave": "Note saved",
+      "serviceOrder": "Service Order",
+      "servicePlan": "Service Plan",
+      "subtitle": "Plan and schedule your service"
+    },
+    "planType": {
+      "details": "Plan Type Details"
+    },
+    "planTypeEdit": {
+      "add": "Lisää",
+      "edit": "Muokkaa",
+      "errorSaving": "Error saving plan type",
+      "nameRequired": "Plan type name is required",
+      "planType": "Plan Type",
+      "planTypeName": "Plan Type Name"
+    },
+    "planTypeList": {
+      "addPlanType": "Add Plan Type",
+      "createPlanType": "Create Plan Type",
+      "createPlanTypes": "Create Plan Types",
+      "noPlanTypes": "No plan types found",
+      "planTypes": "Plan Types"
+    },
+    "planTypePage": {
+      "notFound": "Plan type not found",
+      "pairTvApp": "Pair TV App",
+      "planType": "Plan Type",
+      "subtitle": "Configure plan type settings",
+      "tvAppDescription": "Show your lesson content on any TV or display using our free app"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Download the Lessons.church TV App",
+      "instructions": "Enter the 4-character code displayed on the TV app screen:",
+      "pairTitle": "Pair Your Device",
+      "success": "Successfully paired! The TV app will now show content from this plan type.",
+      "title": "Pair TV App"
+    },
+    "planValidation": {
+      "and": "and",
+      "between": "between",
+      "blockCon": "Blockout date conflict of",
+      "cons": "Conflicts",
+      "during": "during",
+      "more": "more",
+      "needed": "needed.",
+      "notify": "Notify",
+      "person": "person",
+      "pleaseConfirm": "Please log in and confirm.",
+      "ppl": "people",
+      "timeCon": "Time conflict between",
+      "timeCon2": "Time conflict at",
+      "to": "to",
+      "val": "Validation",
+      "valPlan": "Plan is valid.",
+      "vol": "volunteer(s)",
+      "volNotif": "All volunteers notified.",
+      "volReq": "Volunteer Requests: "
+    },
+    "plansPage": {
+      "addMinistry": "Add Ministry",
+      "editMinistry": "Edit Ministry",
+      "selMin": "Select a Ministry",
+      "subtitle": "Manage ministries and service plans"
+    },
+    "positionEdit": {
+      "catName": "Category Name",
+      "catNameReq": "Category Name is required.",
+      "nameReq": "Name is required",
+      "posAdd": "Add a Position",
+      "posEdit": "Edit Position",
+      "volCount": "Volunteer Count",
+      "volGroup": "Volunteer Group"
+    },
+    "positionList": {
+      "load": "Loading...",
+      "persNeed": "1 Person Needed",
+      "pos": "Position",
+      "ppl": "Ihmiset",
+      "pplNeed": " People Needed",
+      "team": "Joukkue"
+    },
+    "printPlan": {
+      "length": "Length",
+      "serviceOrder": "SERVICE ORDER",
+      "time": "Time"
+    },
+    "serviceOrder": {
+      "addFromLesson": "Add From Lesson",
+      "addSection": "Add Section",
+      "associateError": "Associate Error",
+      "associateLesson": "Associate Lesson",
+      "customizeLesson": "Customize",
+      "disassociateError": "Disassociate Error",
+      "lessonPreview": "Lesson Preview",
+      "loadError": "Load Error",
+      "noItems": "No items in service order",
+      "orderOfService": "Order of Service",
+      "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
+      "print": "Tulosta"
+    },
+    "songs": {
+      "links": "Links"
+    },
+    "teamList": {
+      "createTeam": "Create Team",
+      "createTeams": "Create Teams",
+      "manage": "Hallita",
+      "members": "members",
+      "newTeam": "New Team",
+      "noTeam": "No teams found. Please create a team.",
+      "teams": "Joukkueet"
+    },
+    "timeEdit": {
+      "disName": "Näyttönimi",
+      "disNameReq": "Display name is required.",
+      "endReq": "End time is required",
+      "followGuide": "Follow the guide below to set up service times",
+      "startReq": "Start time is required",
+      "teamNeed": "Needed Teams",
+      "teamReq": "Please Select Team(s).",
+      "timeAdd": "Add a Time",
+      "timeEdit": "Edit Time",
+      "timeEnd": "End Time",
+      "timeStart": "Start Time",
+      "tip": "Tip"
+    },
+    "timeList": {
+      "noTime": "No times have been added yet",
+      "sunServ": "Sunday Service",
+      "times": "Times"
+    }
+  },
+  "profile": {
+    "deviceContent": {
+      "associatedContent": "Associated Content"
+    },
+    "deviceEdit": {
+      "label": "Label",
+      "labelRequired": "Label is required"
+    },
+    "devices": {
+      "addScreen": "Add Screen",
+      "device": "Device",
+      "editDevice": "Edit Device",
+      "label": "Label",
+      "lastActiveDate": "Last Active Date",
+      "registrationDate": "Registration Date",
+      "title": "Devices"
+    },
+    "linkedAccounts": {
+      "link": "Link",
+      "signUp": "Sign Up",
+      "unlink": "Unlink"
+    },
+    "pairScreen": {
+      "codeRequired": "Pairing code is required",
+      "invalidCode": "Invalid pairing code",
+      "pairingCode": "Pairing Code"
+    },
+    "profilePage": {
+      "accDel": "Account Deletion",
+      "confirmMsg": "Are you sure you wish to permanently delete your account?",
+      "delAcc": "Delete my account",
+      "deleteError": "Failed to delete account",
+      "emailMsg": "Please enter an email address.",
+      "firstMsg": "Please enter firstname",
+      "lastMsg": "Please enter lastname",
+      "linkedAccounts": "Linked Accounts",
+      "noDirect": "Hide me from the member directory",
+      "passLong": "Please enter a password that is at least 8 characters long.",
+      "passMatch": "Passwords do not match.",
+      "passNew": "New password",
+      "passVer": "Verify password",
+      "passwordHelper": "Leave blank to keep current password",
+      "permWarn": "Careful, these actions are permanent",
+      "profEdit": "Edit Account",
+      "saveChange": "Changes saved.",
+      "saveChanges": "Tallenna muutokset",
+      "saveError": "Failed to save changes",
+      "subtitle": "Manage your profile and preferences",
+      "valEmail": "Kirjoita kelvollinen sähköpostiosoite."
+    }
+  },
+  "reporting": {
+    "detailed": "Detailed",
+    "downloadOptions": "Latausvalinnat",
+    "noData": "Tietoja ei ole saatavilla",
+    "runReport": "Run Report",
+    "sampleTemplate": "Sample Template",
+    "summary": "Yhteenveto",
+    "toDateBeforeFromDate": "End date cannot be before start date",
+    "useFilter": "Use Filter"
+  },
+  "reports": {
+    "reportPage": {
+      "report": "Report"
+    },
+    "reportsPage": {
+      "attTrend": "Osallistumisen trendi",
+      "attTrendDesc": "View attendance trends over time",
+      "bDays": "Birthdays",
+      "bDaysDesc": "View upcoming birthdays",
+      "dailyGroupAtt": "Daily Group Attendance",
+      "dailyGroupAttDesc": "View daily group attendance",
+      "donSum": "Donation Summary",
+      "donSumDesc": "View donation summary",
+      "groupAtt": "Ryhmän osallistuminen",
+      "groupAttDesc": "View group attendance",
+      "helpText": "Select a report to view detailed information",
+      "reports": "Reports",
+      "subtitle": "View and download church reports"
+    }
+  },
+  "sermons": {
+    "addFirstSermon": "Add First Sermon",
+    "addPermanentLiveUrl": "Add Permanent Live URL",
+    "addSermon": "Add Sermon",
+    "adjustSearchTerms": "Try adjusting your search terms",
+    "bulkImport": {
+      "backToSelection": "Back to Selection",
+      "chooseSource": "Choose Import Source",
+      "fetch": "Fetch",
+      "fetching": "Fetching...",
+      "import": "Import",
+      "importFromVimeo": "Import from Vimeo",
+      "importFromYouTube": "Import from YouTube",
+      "importIntoPlaylist": "Import Into Playlist",
+      "selectPlaylist": "Please select a playlist",
+      "subtitle": "Import videos from external platforms in bulk",
+      "title": "Bulk Import",
+      "vimeo": "Vimeo",
+      "vimeoChannelId": "Vimeo Channel ID",
+      "vimeoChannelPlaceholder": "staffpicks",
+      "vimeoDescription": "Import videos from your Vimeo account or showcases",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube Channel ID",
+      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
+      "youtubeDescription": "Import videos from your YouTube channel or playlists"
+    },
+    "duration": {
+      "minutes": "Minutes",
+      "seconds": "Seconds"
+    },
+    "getStarted": "Get started by adding your first sermon",
+    "liveStreamTimes": {
+      "externalLinks": {
+        "customizeAppearance": "Customize Appearance",
+        "editUsers": "Edit Users",
+        "title": "External Resources",
+        "viewYourStream": "View Your Stream"
+      },
+      "linkEdit": {
+        "cancel": "Peruuta",
+        "configureSettings": "Configure navigation link settings",
+        "createNewLink": "Create New Link",
+        "delete": "Poista",
+        "deleteConfirm": "Are you sure you want to delete this navigation link? This action cannot be undone.",
+        "deleteLink": "Delete Link",
+        "deleteNestedLinksFirst": "This link has nested sublinks. Please delete those first.",
+        "deleting": "Poistetaan...",
+        "displayText": "Display Text",
+        "displayTextPlaceholder": "Enter text to display in navigation",
+        "editNavigationLink": "Edit Navigation Link",
+        "errors": {
+          "deleteFailed": "Failed to delete link. Please try again.",
+          "deleteNestedFirst": "Delete nested links first",
+          "saveFailed": "Failed to save link. Please try again.",
+          "textRequired": "Please enter valid text",
+          "unauthorized": "Unauthorized to create links",
+          "unauthorizedDelete": "Unauthorized to delete links",
+          "urlRequired": "Please enter link"
+        },
+        "linkDetails": "Link Details",
+        "linkUrl": "Link URL",
+        "linkUrlPlaceholder": "https://example.com or /internal-page",
+        "menuOrganization": "Menu Organization",
+        "optionalSubmenuMessage": "Optionally organize this link under an existing submenu:",
+        "saveLink": "Save Link",
+        "saving": "Tallennetaan...",
+        "submenuMessage": "This link will be placed under submenu:"
+      },
+      "navigationLinks": {
+        "add": "Lisää",
+        "home": "Koti",
+        "title": "Navigation Links"
+      },
+      "serviceEdit": {
+        "addNewService": "Add New Service",
+        "auto": "Auto",
+        "basicInformation": "Basic Information",
+        "chatSettings": "Chat Settings",
+        "deleteConfirm": "Are you sure you wish to delete this service?",
+        "editService": "Edit Service",
+        "enableChatMinutesAfter": "Enable Chat - Minutes After",
+        "enableChatMinutesBefore": "Enable Chat - Minutes Before",
+        "errorsCorrectionTitle": "Please correct the following errors:",
+        "latestSermon": "Latest Sermon",
+        "no": "Ei",
+        "oneTime": "One-time",
+        "recursWeekly": "Recurs Weekly",
+        "sermon": "Sermon",
+        "serviceName": "Service Name",
+        "serviceNamePlaceholder": "e.g., Sunday Morning Service",
+        "serviceNameRequired": "Service name is required",
+        "serviceTime": "Palvelun aika",
+        "serviceTimeRequired": "Service time is required",
+        "startVideoEarly": "Start Video Early",
+        "startVideoEarlyHelp": "Optional: For countdown videos or pre-service content",
+        "videoSettings": "Video Settings",
+        "weekly": "Viikottain",
+        "yes": "Kyllä"
+      },
+      "services": "Palvelut",
+      "servicesTab": {
+        "addService": "Lisää palvelu",
+        "title": "Palvelut",
+        "weekly": "Viikottain"
+      },
+      "settings": "Asetukset",
+      "sidebarTabs": {
+        "add": "Lisää",
+        "title": "Content Tabs"
+      },
+      "subtitle": "Configure your recurring service times",
+      "tabEdit": {
+        "cancel": "Peruuta",
+        "chat": "Chat",
+        "configureSettings": "Configure streaming sidebar tab settings",
+        "createNewTab": "Create New Tab",
+        "delete": "Poista",
+        "deleteConfirm": "Are you sure you want to delete this tab? This action cannot be undone.",
+        "deleteTab": "Delete Tab",
+        "deleting": "Poistetaan...",
+        "editTab": "Edit Tab",
+        "errors": {
+          "deleteFailed": "Failed to delete tab. Please try again.",
+          "saveFailed": "Failed to save tab. Please try again.",
+          "textRequired": "Please enter valid text",
+          "urlRequired": "Enter a valid URL"
+        },
+        "externalUrl": "External URL",
+        "externalUrlPlaceholder": "https://example.com",
+        "icon": "Icon",
+        "linkConfiguration": "Link Configuration",
+        "linkType": "Link Type",
+        "linkTypeHelp": {
+          "chat": "Built-in chat functionality",
+          "none": "Select a link type to configure the tab behavior",
+          "prayer": "Built-in prayer request feature",
+          "url": "External URL will open in a new tab"
+        },
+        "prayer": "Prayer",
+        "saveTab": "Save Tab",
+        "saving": "Tallennetaan...",
+        "tabDisplay": "Tab Display",
+        "tabText": "Tab Text",
+        "tabTextPlaceholder": "Enter tab display text"
+      },
+      "title": "Live Stream Times"
+    },
+    "noPlaylist": "No Playlist",
+    "noSermonsFound": "No sermons found",
+    "noSermonsYet": "No sermons yet",
+    "notScheduled": "Not scheduled",
+    "playlist": "Playlist",
+    "playlists": {
+      "actions": "Actions",
+      "addPlaylist": "Add Playlist",
+      "adjustSearchTerms": "Try adjusting your search terms",
+      "createFirstPlaylist": "Create First Playlist",
+      "editPlaylist": "Edit playlist",
+      "getStarted": "Get started by creating your first playlist",
+      "noPlaylistsFound": "No playlists found",
+      "noPlaylistsMatch": "No playlists match your search",
+      "playlistEdit": {
+        "addThumbnail": "Add Thumbnail",
+        "basicInformation": "Basic Information",
+        "changeThumbnail": "Change Thumbnail",
+        "createNew": "Create New Playlist",
+        "deleteConfirm": "Are you sure you wish to delete this playlist?",
+        "describePlaylist": "Describe this playlist...",
+        "description": "Kuvaus",
+        "editPlaylist": "Edit Playlist",
+        "enterTitle": "Enter playlist title...",
+        "newPlaylist": "New Playlist",
+        "playlistTitle": "Playlist Title",
+        "publishDate": "Publish Date",
+        "publishHelp": "When should this playlist be available to viewers?",
+        "publishingSchedule": "Publishing & Schedule",
+        "recommendedSize": "Recommended size: 1280x720 pixels (16:9 aspect ratio)",
+        "thumbnailImage": "Thumbnail Image",
+        "unauthorized": "Unauthorized to create playlists",
+        "unauthorizedDelete": "Unauthorized to delete playlists"
+      },
+      "search": "Etsi",
+      "searchPlaceholder": "Search playlists...",
+      "subtitle": "Manage video playlists and organize your content",
+      "title": "Playlists"
+    },
+    "publishDate": "Publish Date",
+    "searchPlaceholder": "Search sermons by title or playlist...",
+    "sermon": "Sermon",
+    "sermonEdit": {
+      "add": "add",
+      "addToAnotherPlaylist": "Add to another playlist",
+      "channelIdPlaceholder": "This is not your channel url - See help link above",
+      "currentLiveService": "Current Live Service",
+      "currentYouTubeLiveStream": "Current YouTube Live Stream",
+      "customEmbedUrl": "Custom Embed Url",
+      "deleteConfirm": "Are you sure you wish to delete this sermon?",
+      "description": "Kuvaus",
+      "editPermanentLiveUrl": "Edit Permanent Live Url",
+      "editSermon": "Edit Sermon",
+      "facebook": "Facebook",
+      "fetch": "Fetch",
+      "getYourChannelId": "Get Your Channel Id",
+      "newSermon": "New Sermon",
+      "none": "None",
+      "sermonEmbedUrl": "Sermon Embed Url",
+      "sermonId": "Sermon ID",
+      "title": "Otsikko",
+      "totalSermonDuration": "Total Sermon Duration",
+      "unauthorized": "Unauthorized to create sermons",
+      "unauthorizedDelete": "Unauthorized to delete sermons",
+      "videoProvider": "Video Provider",
+      "vimeo": "Vimeo",
+      "vimeoId": "Vimeo ID",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube Channel ID",
+      "youtubeId": "YouTube ID"
+    },
+    "subtitle": "Manage your sermon library and live streams",
+    "title": "Saarnaat"
+  },
+  "serverAdmin": {
+    "adminPage": {
+      "act": "Active",
+      "arch": "Archived",
+      "church": "Church",
+      "churchName": "Church Name",
+      "churches": "Churches",
+      "location": "Location",
+      "noChurch": "No churches found.  Please search for a different name.",
+      "noUserChurches": "This user has no churches associated with their account.",
+      "noUsers": "No users found. Please search for a different name or email.",
+      "noteFour": "Comparable software is ProPresenter.  It's $399 for a site license.  I made assumptions that the average church installs the software on 3 computers and divided our total installs by 3 to get the number of churches.  I also made the assumption that churches will upgrade to a newer version every 5 years on average.  So $399 / 5 years / 3 computers = $26.60 annual cost per computer.  If we can quantify these assumptions we should update this number.",
+      "noteOne": "Comparable software is Breeze.  They charge $72/mo or $864/year.",
+      "noteThree": "Comparable content is Orange.  They charge $1023/year for churches with 26-50 viewers for 252 Basic.",
+      "noteTwo": "Comparable software is SubSplash.  They start at $99/mo or $1200/year.  This does not include the cut they take on donations.",
+      "notes": "Muistiinpanot",
+      "regist": "Registered",
+      "searchResults": "Search Results",
+      "servAdmin": "Palvelimen ylläpitäjä",
+      "subtitle": "Manage server-wide settings and churches",
+      "translationLookups": "Translation Lookups",
+      "usageTrends": "Usage Trends",
+      "userChurches": "Churches",
+      "userSearch": "Search by Name or Email",
+      "userSearchPlaceholder": "Search by name or email",
+      "users": "Users",
+      "valueNotes": "Notes on How Values are Calculated"
+    },
+    "reportPage": {
+      "adminOnly": "Admin Only",
+      "report": "Report",
+      "serverAdmin": "Palvelimen ylläpitäjä"
+    },
+    "translation": {
+      "abbreviations": "Abbreviations",
+      "endDate": "Päättymispäivä",
+      "lookups": "Lookups",
+      "search": "Etsi",
+      "startDate": "Alkamispäivä",
+      "title": "Bible Translation Lookups"
+    }
+  },
+  "settings": {
+    "app": {
+      "confirmDeleteTab": "Are you sure you wish to delete this tab?",
+      "tabNameHelper": "Choose a descriptive name for your tab",
+      "urlHelper": "Enter the full URL (e.g., https://example.com)"
+    },
+    "appEdit": {
+      "addTab": "Add Tab",
+      "bible": "Bible",
+      "changeImage": "Change Image",
+      "checkin": "Check-in",
+      "deleteTab": "Delete Tab",
+      "donation": "Donation",
+      "donationLanding": "Donation Landing",
+      "editTab": "Edit Tab",
+      "externalUrl": "External URL",
+      "internalPage": "Internal Page",
+      "lessons": "Lessons",
+      "liveStream": "Live Stream",
+      "memberDirectory": "Member Directory",
+      "myGroups": "Omat ryhmät",
+      "page": "Page",
+      "saveTab": "Save Tab",
+      "saving": "Tallennetaan...",
+      "selectImage": "Select Image",
+      "tabName": "Tab Name",
+      "tabType": "Tab Type",
+      "url": "URL",
+      "verseOfDay": "Verse of the Day"
+    },
+    "appTabs": {
+      "editTab": "Edit Tab",
+      "moveDown": "Move Down",
+      "moveUp": "Move Up",
+      "noTabs": "No tabs configured",
+      "noTabsDesc": "Add tabs to customize your app navigation",
+      "title": "App Tabs",
+      "untitled": "Untitled"
+    },
+    "associatePerson": {
+      "change": "Muuta"
+    },
+    "church": {
+      "subdomainHelper": "Your church's unique web address"
+    },
+    "churchSettingsEdit": {
+      "address1": "Address Line 1",
+      "address2": "Address Line 2",
+      "churchInfo": "Church Information",
+      "churchInfoSubtitle": "Name, address, and subdomain",
+      "churchName": "Church Name",
+      "churchSettings": "Church Settings",
+      "domainsSubtitle": "Custom domain configuration",
+      "general": "General",
+      "generalSubtitle": "Support contact, directory, and visibility",
+      "givingSubtitle": "Payment gateway and fee options",
+      "noNameMsg": "Church name cannot be blank.",
+      "noSubMsg": "Subdomain cannot be blank.",
+      "subdom": "Subdomain"
+    },
+    "directoryApprovalSettingsEdit": {
+      "directoryApprovalGroup": "Directory Approval Group",
+      "forceMsg": "This group will handle all the member directory updates. Only after their approval, changes will be applied.",
+      "groups": "Ryhmät",
+      "noGroups": "No Groups available",
+      "none": "None"
+    },
+    "directoryVisibility": {
+      "everyone": "Everyone (Including Visitors)",
+      "label": "Show in Directory",
+      "members": "Members & Staff",
+      "regularAttendees": "Regular Attendees & Above",
+      "staff": "Staff Only"
+    },
+    "domain": {
+      "domainPlaceholder": "yoursite.com",
+      "doneAlert": "Done.  Please only click this link once.",
+      "errorInvalid": "Invalid format. Enter domain only (e.g., yoursite.com or sub.yoursite.org). Do not include http://, paths, or trailing slashes."
+    },
+    "domainSettingsEdit": {
+      "domMsg": "You can make your B1 website answer for any custom domain you wish.  Enter the associated domain name here and then add the following record to your DNS:",
+      "domMsg2": "If your DNS provider will not allow you to add a CNAME record you can alternatively use an A record:",
+      "domMsg3": "If you receive SSL errors after adding the DNS entry.  Click here to ",
+      "domMsg4": ".  It can take up to 5 minutes.",
+      "domMsgConnect": "connect",
+      "domain": "Domain",
+      "domains": "Domains"
+    },
+    "feeOptionsSettings": {
+      "achFlatRate": "Flat Rate [ ACH ]",
+      "achHardLimit": "Hard limit [ ACH ]",
+      "creditCardFlatRate": "Flat Rate [ Credit Card ]",
+      "creditCardTransactionFee": "Transaction Fee [ Credit Card ]",
+      "paypalFlatRate": "Flat Rate [ PayPal ]",
+      "paypalTransactionFee": "Transaction Fee [ PayPal ]"
+    },
+    "giving": {
+      "secretPlaceholder": "********"
+    },
+    "givingSettingsEdit": {
+      "apiCredentials": "API Credentials",
+      "clientId": "Client ID",
+      "clientSecret": "Client Secret",
+      "developersApiKeys": "Developers → API keys",
+      "forceMsg": "Automatically forces users to cover the transaction fees",
+      "giving": "Giving",
+      "none": "None",
+      "paypal": "PayPal",
+      "paypalCreateApp": "create an app to get your Client ID and Secret.",
+      "paypalDeveloper": "PayPal Developer",
+      "paypalGoTo": "Go to",
+      "paypalLogin": "log in, then under",
+      "prov": "Provider",
+      "pubKey": "Public Key",
+      "saveError": "Failed to save giving settings",
+      "secKey": "Secret Key",
+      "stripe": "Stripe",
+      "stripeCopyKeys": "to copy your Publishable and Secret keys (test & live).",
+      "stripeDashboard": "Stripe Dashboard",
+      "stripeGoTo": "and go to",
+      "stripeVisit": "Visit",
+      "transFee": "Transaction Fee"
+    },
+    "imageEditor": {
+      "crop": "Crop",
+      "upload": "Upload"
+    },
+    "manageChurch": {
+      "editSettings": "Edit Settings",
+      "imEx": "Import/Export",
+      "mobileApps": "Mobile Apps",
+      "noData": "No church data available",
+      "subtitle": "Configure church settings and preferences",
+      "title": "Manage Church"
+    },
+    "mobileAppSettings": {
+      "addTab": "Add Tab",
+      "subtitle": "Configure mobile app settings",
+      "title": "Mobile App Settings"
+    },
+    "preview": {
+      "preview": "Preview"
+    },
+    "roleEdit": {
+      "confirmMsg": "Are you sure you wish to permanently delete this role?",
+      "roleEdit": "Edit Role",
+      "roleName": "Role Name",
+      "valMsg": "Please enter a valid role name."
+    },
+    "roleMembers": {
+      "confirmMsg": "Are you sure you wish to delete this user from",
+      "mem": "Jäsenet",
+      "roleAppMsg": "This role applies to all the members of the church."
+    },
+    "rolePage": {
+      "noEditMsg": "Permissions cannot be edited for the Domain Admins role.  Domain Admins have full access.",
+      "permEdit": "Edit Permissions",
+      "roleEdit": "Edit Role:"
+    },
+    "rolePermissions": {
+      "permEdit": "Edit Permissions"
+    },
+    "roles": {
+      "acc": "Accounting",
+      "accDesc": "Has access to view and manage donations.",
+      "canEdit": "Can edit most data in ",
+      "churchDesc": " including people, groups, attendance and forms.",
+      "churchStaff": "Church Staff",
+      "contAdmin": "Content Admin",
+      "contAdminDesc": "Can edit website content, mobile content and sermons.",
+      "custAdd": "Add Custom Role",
+      "everyone": "Everyone",
+      "itMsg": "? It ",
+      "lesAdmin": "Lessons Admin",
+      "lesAdminDesc": "Can set up classrooms and schedule lessons on ",
+      "role": "Role",
+      "roleCreate": "Do you wish to create a new role of ",
+      "roles": "Roles"
+    },
+    "supportContactSettingsEdit": {
+      "forceMsg": "This link will be used by users to contact the church",
+      "link": "Link",
+      "linkHelperText": "It must be either church's email or a link to the church's contact form",
+      "supportContact": "Support Contact"
+    },
+    "userAdd": {
+      "addTo": "Add To ",
+      "createNew": "Create New User",
+      "errAnother": "Cannot save. Another user already exists for this email address.",
+      "errDiff": "The user account for this email is associated with a different person.",
+      "firstMsg": "Please enter firstname",
+      "lastMsg": "Please enter lastname",
+      "noAcc": "Don't have a user account?",
+      "valEmail": "Please enter a valid Email",
+      "valEmailMsg": "Enter a valid Email"
+    },
+    "visibilityPrefSettingsEdit": {
+      "address": "Osoite",
+      "email": "Sähköposti",
+      "everyone": "Everyone",
+      "forceMsg": "This will set the default value for people who have not configured their settings yet",
+      "groups": "Groups Only",
+      "members": "Jäsenet",
+      "phoneNum": "Phone Number",
+      "visibilityPreference": "Visibility Preference"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.",
+      "resetDefaults": "Reset to Defaults",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode"
+    },
+    "appThemePage": {
+      "title": "Sovelluksen teema",
+      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "Configure settings for the B1 Mobile app"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
+      "qrGuestRegistration": "QR Guest Registration",
+      "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "enabled": "Enabled — QR code will appear on kiosk",
+      "disabled": "Disabled"
+    }
+  },
+  "site": {
+    "addPage": {
+      "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
+      "newLink": "New Link",
+      "newPage": "New Page",
+      "pageType": "Page Type"
+    },
+    "animations": {
+      "colorize": "Colorize",
+      "editAnimations": "Edit Animations",
+      "fadeIn": "Fade In",
+      "fast": "Fast",
+      "focus": "Focus",
+      "grow": "Grow",
+      "none": "None",
+      "normal": "Normal",
+      "onShowAnimation": "On Show Animation",
+      "onShowSpeed": "On Show Speed",
+      "pulse": "Pulse",
+      "shrink": "Shrink",
+      "slideDown": "Slide Down",
+      "slideLeft": "Slide Left",
+      "slideRight": "Slide Right",
+      "slideUp": "Slide Up",
+      "slow": "Slow"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Logo Management"
+    },
+    "appearancePage": {
+      "subtitle": "Below is a preview of a sample site with your colors, fonts and logos. This is not your actual site content.",
+      "title": "Site Styles"
+    },
+    "blocks": {
+      "confirmDelete": "Are you sure you wish to permanently delete this block?",
+      "editBlock": "Edit Block"
+    },
+    "blocksPage": {
+      "actions": "Actions",
+      "addBlock": "Add Block",
+      "block": "block",
+      "blocks": "Blocks",
+      "createFirstBlock": "Create First Block",
+      "elements": "Element(s)",
+      "getStarted": "Get started by creating your first reusable block",
+      "noBlocksFound": "No blocks found",
+      "reusableBlocks": "Reusable Blocks",
+      "sections": "Section(s)",
+      "subtitle": "Create and manage reusable content blocks for your website",
+      "totalBlocks": "Total Blocks",
+      "type": "Tyyppi"
+    },
+    "cssEdit": {
+      "customCss": "Custom CSS",
+      "customHtml": "Custom HTML"
+    },
+    "donateLink": {
+      "add": "Lisää",
+      "addAmount": "Add Amount",
+      "amount": "Summa",
+      "amountPlaceholder": "Amount Placeholder",
+      "donationAmount": "Donation Amount",
+      "donationAmounts": "Donation Amounts",
+      "donationAmountsHelper": "You can suggest some donation amounts like $5, $10, $20, etc..",
+      "funds": "Rahastot",
+      "maxAmountsAlert": "You are only allowed to add five donation amounts.",
+      "noFunds": "No Funds",
+      "selectFund": "Select donation fund",
+      "textHelper": "Ex: (Donate now), (Yes, I will help!), (Donate $10 to Youth Camp), etc..",
+      "textLabel": "Teksti",
+      "urlHelper": "Tip: you must link the page from the website builder that has the donation element.",
+      "urlLabel": "Url",
+      "urlPlaceholder": "/donate"
+    },
+    "editorToolbar": {
+      "addContent": "Add Content",
+      "block": "Block",
+      "desktop": "Desktop",
+      "mobile": "Matkapuhelin",
+      "page": "Page",
+      "switchToDesktop": "Switch to Desktop View",
+      "switchToMobile": "Switch to Mobile View"
+    },
+    "elementAdd": {
+      "addElements": "Add Elements",
+      "advanced": "Advanced",
+      "all": "All",
+      "blocks": "Blocks",
+      "box": "Box",
+      "calendar": "Calendar",
+      "card": "Kortti",
+      "carousel": "Carousel",
+      "church": "Church",
+      "content": "Content",
+      "descBox": "Flexible container box",
+      "descCalendar": "Event calendar view",
+      "descCard": "Content card with image",
+      "descCarousel": "Sliding content gallery",
+      "descDonateLink": "Donation link button",
+      "descDonation": "Donation form",
+      "descEmbedPage": "Embed external page",
+      "descExpandable": "Expandable Q&A section",
+      "descForm": "Custom form builder",
+      "descGroupList": "Group directory",
+      "descHtml": "Custom HTML code",
+      "descImage": "Image with caption",
+      "descLocation": "Interactive map",
+      "descLogo": "Church logo/branding",
+      "descReusableElement": "Reusable element block",
+      "descReusableSection": "Reusable section",
+      "descRow": "Horizontal column layout",
+      "descSection": "Container for grouping content",
+      "descSermons": "Sermon video gallery",
+      "descStream": "Live stream embed",
+      "descTable": "Data table layout",
+      "descText": "Rich text content",
+      "descTextWithPhoto": "Text with side image",
+      "descVideo": "Video embed or upload",
+      "donateLink": "Donate Link",
+      "donation": "Donation",
+      "dragAndDrop": "Drag and drop onto page",
+      "dragHint": "Drag elements onto the page to add them",
+      "embedPage": "Embed Page",
+      "expandable": "Expandable",
+      "form": "Lomake",
+      "groupList": "Group List",
+      "html": "HTML",
+      "image": "Image",
+      "layout": "Layout",
+      "location": "Location",
+      "logo": "Logo",
+      "media": "Media",
+      "noElementsFound": "No elements found",
+      "row": "Row",
+      "searchElements": "Search Elements",
+      "section": "Section",
+      "stream": "Stream",
+      "table": "Table",
+      "text": "Teksti",
+      "textWithPhoto": "Text with Photo",
+      "tryDifferentSearch": "Try a different search term",
+      "untitledBlock": "Untitled Block",
+      "video": "Video"
+    },
+    "elements": {
+      "address": "Osoite",
+      "addressHelper": "ex: City Hall, New York, NY",
+      "alignCenter": "Keskellä",
+      "alignLeft": "Vasemmalle",
+      "alignRight": "Oikea",
+      "animationOptions": "Animation",
+      "answersJSON": "Answers JSON",
+      "answersJSONData": "JSON data format for form answers",
+      "autoplay": "Autoplay",
+      "block": "Block",
+      "categoriesHelper": "ex: Small Groups, Sunday School",
+      "color": "Color",
+      "confirmDelete": "Are you sure you wish to permanently delete this element?",
+      "confirmDuplicate": "Are you sure you wish to make a copy of this element and all of it's children?",
+      "contained": "Contained",
+      "doNotResizeImage": "Do not resize image",
+      "editElement": "Edit Element",
+      "error": "Error",
+      "fade": "Fade",
+      "fullWidth": "Full Width",
+      "heightPlaceholder": "1000",
+      "heightPx": "Height (px)",
+      "hide": "Hide",
+      "htmlContent": "HTML Content",
+      "id": "ID",
+      "idExample": "ex: dQw4w9WgXcQ",
+      "idExampleVimeo": "ex: 76979871",
+      "imageAlignment": "Image Alignment",
+      "imageDescribingTopic": "Image describing the topic",
+      "info": "Info",
+      "javascriptExcludeTag": "JavaScript (exclude script tag)",
+      "label": "Label",
+      "linkUrlOptional": "Link URL (optional)",
+      "loadingEditor": "Loading editor...",
+      "mode": "Mode",
+      "nameHelper": "ex: First Baptist Church",
+      "nextServiceTime": "Next Service Time",
+      "offlineContent": "Offline Content",
+      "openInNewTab": "Open in new tab",
+      "openLinkInNewTab": "Open link in new tab",
+      "outlined": "Outlined",
+      "photoAlternativeText": "Photo alternative text",
+      "photoLabel": "Photo Label",
+      "photoPosition": "Photo Position",
+      "positionPhotoBottom": "Pohja",
+      "positionPhotoLeft": "Vasemmalle",
+      "positionPhotoRight": "Oikea",
+      "positionPhotoTop": "Yläosa",
+      "primary": "Primary",
+      "roundedCorners": "Rounded Corners",
+      "secondary": "Secondary",
+      "selectPhoto": "Select Photo",
+      "selectPhotoPosition": "Select photo position",
+      "slide": "Slide",
+      "slides": "Slides",
+      "slidesIntervalSeconds": "Slide Interval (seconds)",
+      "source": "Source",
+      "success": "Success",
+      "text": "Teksti",
+      "textAlignment": "Text Alignment",
+      "title": "Otsikko",
+      "titleAlignment": "Title Alignment",
+      "translucent": "Translucent",
+      "type": "Tyyppi",
+      "url": "URL",
+      "variant": "Variant",
+      "videoAndInteraction": "Video and Interaction",
+      "videoOnly": "Video Only",
+      "videoUrlVimeo": "Find the ID in the video URL: vimeo.com/[id]",
+      "videoUrlYoutube": "Find the ID in the video URL: youtube.com/watch?v=[id]",
+      "vimeo": "Vimeo",
+      "warning": "Warning",
+      "youtube": "YouTube",
+      "zoomLevel": "Zoom Level",
+      "zoomLevelExample": "10 is a good default. Higher is more zoomed in."
+    },
+    "files": {
+      "confirmDelete": "Are you sure you wish to delete",
+      "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
+      "upload": "Upload",
+      "uploadFiles": "Upload Files"
+    },
+    "filesManager": {
+      "files": "Files",
+      "getStarted": "Get started by uploading your first file",
+      "noFilesYet": "No files uploaded yet"
+    },
+    "filesPage": {
+      "subtitle": "Manage files and media for your website",
+      "title": "Files"
+    },
+    "fontEdit": {
+      "fontSelection": "Font Selection",
+      "popularFontCombinations": "Popular Font Combinations",
+      "typographyPreview": "Typography Preview"
+    },
+    "navLink": {
+      "addLink": "Add Link",
+      "linkSettings": "Link Settings"
+    },
+    "pageLink": {
+      "check": "Shekki",
+      "confirmDelete": "Are you sure you wish to permanently delete this page?",
+      "confirmDuplicate": "Are you sure you wish to make a copy of this page and all of it's contents?",
+      "linkSettings": "Link Settings",
+      "pageSettings": "Page Settings",
+      "urlHelper": "ex: /camper-registration  (**Make sure to check before saving)"
+    },
+    "pagePreview": {
+      "editContent": "Edit Content",
+      "pageSettings": "Page Settings",
+      "subtitle": "Previewing: {title}",
+      "title": "Website Preview"
+    },
+    "pages": {
+      "convert": "Convert"
+    },
+    "pagesPage": {
+      "actions": "Actions",
+      "addFirstPage": "Add First Page",
+      "addPage": "Add Page",
+      "autoGenerated": "Auto-generated",
+      "confirmConvert": "Would you like to convert this auto-generated page to a custom page?",
+      "customPages": "Custom Pages",
+      "description": "Below is a list of custom and auto-generated pages. You can add new pages, edit existing ones, or convert auto-generated pages to custom pages.",
+      "desktopOnly": "Page editor is only available in desktop mode",
+      "generated": "Generated",
+      "getStarted": "Get started by adding your first page.",
+      "mainNavigation": "Main Navigation",
+      "noPagesFound": "No pages found",
+      "pages": "Pages",
+      "path": "Path",
+      "previewPage": "Preview page",
+      "showLogin": "Show Login",
+      "showLoginTooltip": "Show login button in the navigation bar",
+      "subtitle": "Manage your website pages, content, and navigation",
+      "toggleLoginVisibility": "Toggle login button visibility",
+      "totalPages": "Total Pages",
+      "websitePages": "Website Pages"
+    },
+    "paletteEdit": {
+      "colorCombinationsPreview": "Color Combinations Preview",
+      "colorValues": "Color Values",
+      "savePalette": "Save Palette",
+      "suggestedPalettes": "Suggested Palettes"
+    },
+    "pickColors": {
+      "headingColor": "Heading Color",
+      "linkColor": "Link Color",
+      "opacityHelper": "The opacity of black gradient layer on top of the image. Max value: 1",
+      "textColor": "Text Color"
+    },
+    "row": {
+      "addColumn": "Add Column",
+      "columnsError": "Columns must add up to 12",
+      "columnsHelper": "Numbers represent twelfths of page.",
+      "commonOptions": "Common Options",
+      "halves": "Halves",
+      "hideMobileOrder": "Hide Mobile Order",
+      "hideMobileSizes": "Hide Mobile Sizes",
+      "preview": "Preview",
+      "previewHelper": "Numbers represent twelfths of page",
+      "quarters": "Quarters",
+      "remove": "Poista",
+      "showMobileOrder": "Show Mobile Order",
+      "showMobileSizes": "Show Mobile Sizes",
+      "size1": "1 - 1/12th",
+      "size10": "10 - 5/6ths",
+      "size11": "11 - 11/12ths",
+      "size12": "12 - Full",
+      "size2": "2 - 1/6th",
+      "size3": "3 - 1/4th",
+      "size4": "4 - 1/3rd",
+      "size5": "5 - 5/12ths",
+      "size6": "6 - 1/2",
+      "size7": "7 - 7/12ths",
+      "size8": "8 - 2/3rds",
+      "size9": "9 - 3/4ths",
+      "thirds": "Thirds",
+      "totalInvalid": "Total: {total}/12",
+      "totalValid": "Total: 12/12",
+      "width": "Width"
+    },
+    "section": {
+      "confirmDelete": "Are you sure you wish to permanently delete this section?",
+      "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "editSection": "Edit Section"
+    },
+    "sectionEdit": {
+      "convertTo": "Convert To",
+      "convertToBlock": "Convert To Block",
+      "duplicate": "Monistaa",
+      "duplicateSection": "Duplicate Section"
+    },
+    "style": {
+      "editStyle": "Edit Style"
+    },
+    "styleEdit": {
+      "property": "Property"
+    },
+    "stylesManager": {
+      "styleSettings": "Style Settings"
+    },
+    "templates": {
+      "viewSermons": "View Sermons"
+    }
+  },
+  "songs": {
+    "addSong": "Add Song",
+    "arrangement": {
+      "deleteConfirm": "Are you sure you want to delete this arrangement?",
+      "edit": "Edit Arrangement",
+      "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
+      "lyrics": "Lyrics",
+      "name": "Arrangement Name",
+      "title": "Arrangement"
+    },
+    "create": {
+      "artist": "Artist",
+      "songTitle": "Song Title",
+      "title": "Create Song"
+    },
+    "deleteSong": {
+      "confirm": "Vahvista"
+    },
+    "details": {
+      "album": "Album",
+      "artist": "Artist",
+      "bpm": "BPM",
+      "key": "Key",
+      "keySignature": "Key Signature",
+      "keys": "Keys",
+      "language": "Language",
+      "length": "Length",
+      "meter": "Meter",
+      "releaseDate": "Release Date",
+      "seconds": "Seconds"
+    },
+    "key": {
+      "default": "Default",
+      "defaultLabel": "John's Key",
+      "deleteConfirm": "Are you sure you want to delete this key?",
+      "edit": "Edit Key",
+      "labelOptional": "Label (optional)",
+      "signature": "Key Signature"
+    },
+    "keys": {
+      "add": "Lisää",
+      "addExternalLink": "Add external link",
+      "addFiles": "Add Files",
+      "import": "Import",
+      "importFromPraiseCharts": "Import files from PraiseCharts",
+      "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
+      "title": "Keys"
+    },
+    "library": {
+      "empty": {
+        "action": "Add First Song",
+        "message": "Get started by adding your first song to the library.",
+        "title": "No Songs Found"
+      },
+      "noResults": "No songs match your search criteria."
+    },
+    "link": {
+      "chordChart": "Chord Chart",
+      "deleteConfirm": "Are you sure you want to delete this link?",
+      "edit": "Edit Link",
+      "text": "Teksti",
+      "url": "Url"
+    },
+    "search": {
+      "createManually": "Create Manually",
+      "enterQuery": "Enter a search term to find songs.",
+      "inputLabel": "Title or Artist",
+      "inputPlaceholder": "Enter song title or artist name...",
+      "noResults": "No songs found for your search.",
+      "placeholder": "Search songs by title or artist...",
+      "title": "Search for a Song"
+    },
+    "songPage": {
+      "loading": "Loading...",
+      "subtitle": "Manage song details and arrangements"
+    },
+    "songsPage": {
+      "songs": "Songs",
+      "subtitle": "Manage your music library"
+    },
+    "title": "Songs"
+  },
+  "tasks": {
+    "actionEdit": {
+      "actType": "Action Type",
+      "actTypeHelp": "Select the type of action to perform",
+      "assignTo": "Assign to",
+      "editAct": "Action Edit",
+      "taskAssign": "Assign a Task",
+      "taskNote": "Task Note",
+      "taskTitle": "Task Title"
+    },
+    "automationDetails": {
+      "active": "Active",
+      "acts": "Actions",
+      "addAct": "Add Action",
+      "auto": "Automation Details",
+      "inactive": "Passiivinen",
+      "noAct": "No actions configured",
+      "recurs": "Recurs"
+    },
+    "automationEdit": {
+      "active": "Active",
+      "autoEdit": "Edit Automation",
+      "inactive": "Passiivinen",
+      "monthly": "Kuukausittain",
+      "never": "Never",
+      "recurHelp": "Set how often this automation should run",
+      "rep": "Repeat",
+      "weekly": "Viikottain",
+      "yearly": "Yearly"
+    },
+    "automationsPage": {
+      "active": "Active",
+      "addAuto": "Add Automation",
+      "auto": "Automated Tasks",
+      "inactive": "Passiivinen",
+      "manageAuto": "Managed Automated Tasks",
+      "noAuto": "No automations configured",
+      "recurs": "Recurs",
+      "subtitle": "Automate tasks based on conditions"
+    },
+    "conditionAttendance": {
+      "anywhere": "Anywhere",
+      "campus": "Kampus",
+      "eventType": "Event Type",
+      "group": "Ryhmä",
+      "hasAtt": "has attended",
+      "hasNoAtt": "has not attended",
+      "op": "Operator",
+      "serv": "Palvelu",
+      "servTime": "Palvelun aika"
+    },
+    "conditionDate": {
+      "absolute": "Absolute",
+      "curMonth": "Current Month",
+      "dateFull": "Full Date",
+      "datePart": "Date Part",
+      "dayOf": "Day of",
+      "fri": "Friday",
+      "mon": "Maanantai",
+      "month": "Month",
+      "monthDay": "Day of Month",
+      "nextMonth": "Next Month",
+      "op": "Operator",
+      "prevMonth": "Previous Month",
+      "relative": "Relative",
+      "sat": "Saturday",
+      "sun": "Sunday",
+      "thurs": "Thursday",
+      "tues": "Tiistai",
+      "wed": "Keskiviikko",
+      "weekDay": "Day of Week",
+      "yearsE": "Years Elapsed"
+    },
+    "conditionDetails": {
+      "addCon": "Add Condition",
+      "addCondition": "Add Condition",
+      "addConj": "Add Conjunction",
+      "all": "All",
+      "and": "AND",
+      "any": "Mikä tahansa",
+      "con": "Conditions:",
+      "noCond": "No conditions added",
+      "or": "OR",
+      "trueCon": "of these conditions are true"
+    },
+    "conditionEdit": {
+      "conDetails": "Condition Details",
+      "conEdit": "Edit Condition",
+      "conInfo": "Yhteystiedot",
+      "conType": "Condition Type",
+      "confirmMsg": "Are you sure you want to delete this condition?",
+      "gen": "General",
+      "persAtt": "Personal Attributes",
+      "today": "Today's Date"
+    },
+    "conditionSelect": {
+      "is": "is",
+      "isNot": "is not",
+      "op": "Operator"
+    },
+    "conditionText": {
+      "contains": "contains",
+      "endW": "ends with",
+      "op": "Operator",
+      "startW": "starts with"
+    },
+    "conjunctionEdit": {
+      "and": "AND - All of the conditions are true",
+      "conjEdit": "Edit Conjunction",
+      "conjType": "Conjunction Type",
+      "or": "OR - Any of the conditions are true"
+    },
+    "contentPicker": {
+      "group": "Ryhmä",
+      "pers": "Person",
+      "sel": "Select",
+      "selPers": "Select a Person or Group"
+    },
+    "newTask": {
+      "assignPers": "Please assign this task to a person.",
+      "assignTo": "Assign to",
+      "associatePers": "Please associate this task with a person.",
+      "associateW": "Associate with",
+      "newAssign": "New Assignment",
+      "saving": "Tallennetaan...",
+      "taskNew": "New Task",
+      "titleTask": "Please enter a title for this task."
+    },
+    "requestedChanges": {
+      "applied": "Changes applied",
+      "apply": "Apply",
+      "field": "Kenttä",
+      "newProfile": "New Profile",
+      "requestedChanges": "Requested Changes",
+      "value": "Value"
+    },
+    "selectGroup": {
+      "group": "Ryhmä",
+      "noResults": "No groups found matching your search",
+      "searchPrompt": "Search for a group to select"
+    },
+    "taskList": {
+      "addTask": "Add Task",
+      "assignGroup": "Assigned to My Groups",
+      "assignMe": "Assigned to Me",
+      "assignedTo": "Assigned to",
+      "associatedWith": "Associated with",
+      "noTasks": "No tasks found",
+      "notSpecified": "Not specified",
+      "reqMe": "Requested by Me",
+      "tasks": "Tehtävät",
+      "unassigned": "Määrittämätön"
+    },
+    "taskPage": {
+      "ago": "ago",
+      "assign": "Assign",
+      "assigned": "Assigned",
+      "associate": "Associate",
+      "associated": "Associated",
+      "by": "by",
+      "closed": "Closed",
+      "created": "Created",
+      "editAssigned": "Edit Assigned",
+      "editAssoc": "Edit Associated",
+      "notSpec": "Not specified",
+      "open": "Open",
+      "opened": "Opened",
+      "unassigned": "Määrittämätön"
+    },
+    "tasksPage": {
+      "auto": "Automations",
+      "showClosed": "Show Closed",
+      "showOpen": "Show Open",
+      "subtitle": "Manage tasks and automations",
+      "tasks": "Tehtävät"
+    }
+  }
+}
