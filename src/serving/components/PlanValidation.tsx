@@ -252,7 +252,7 @@ export const PlanValidation = (props: Props) => {
         contentType: "assignment",
         contentId: props.plan.id,
         message: Locale.label("plans.planValidation.volReq") + props.plan.name + " - " + position.name + "." + Locale.label("plans.planValidation.pleaseConfirm"),
-        link: CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/my/plans/" + props.plan.id
+        link: CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/mobile/plans/" + props.plan.id
       };
       promises.push(ApiHelper.post("/notifications/create", data, "MessagingApi"));
     });

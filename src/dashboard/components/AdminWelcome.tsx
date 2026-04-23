@@ -91,7 +91,7 @@ export const AdminWelcome: React.FC = () => {
           <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Your Profile</Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<CameraAlt fontSize="small" />} title="Set Your Avatar" description="Upload a profile photo so your team can recognize you." linkUrl={b1Url + "/my/community?id=" + UserHelper.person?.id + "#edit"} external />
+              <FeatureCard icon={<CameraAlt fontSize="small" />} title="Set Your Avatar" description="Upload a profile photo so your team can recognize you." linkUrl={b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit"} external />
             </Grid>
           </Grid>
         </Box>
