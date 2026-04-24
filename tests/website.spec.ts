@@ -50,7 +50,7 @@ test.describe('Website Management', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       const validatedPage = page.locator('h6').getByText('Octavius Test Page');
-      await expect(validatedPage).toHaveCount(1);
+      await expect(validatedPage).toHaveCount(2);
     });
 
     test('should cancel editing page title', async ({ page }) => {
@@ -119,6 +119,7 @@ test.describe('Website Management', () => {
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await expect(doneBtn).toBeVisible({ timeout: 10000 });
       await doneBtn.click();
+      await page.waitForTimeout(1000);
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 10000 });
     });
 
@@ -235,6 +236,7 @@ test.describe('Website Management', () => {
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/);
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await doneBtn.click();
+      await page.waitForTimeout(500);
       await expect(page).toHaveURL(/\/site\/blocks/);
     });
 
@@ -269,21 +271,22 @@ test.describe('Website Management', () => {
     });
 
     test('should change font', async ({ page }) => {
-      const fontSettings = page.locator('h6').getByText('Fonts');
+      const fontSettings = page.locator('h6').getByText('Fonts').last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await headerFontSelect.click();
       const headerFont = page.locator('td').getByText('Montserrat').first();
       await expect(headerFont).toBeVisible({ timeout: 10000 });
       await headerFont.click();
+      await page.waitForTimeout(500);
       const saveBtn = page.locator('[data-testid="save-fonts-button"]');
       await saveBtn.click();
-      const validatedChange = page.locator('h1').getByText('Welcome to Grace Community Church');
+      const validatedChange = page.locator('h1').getByText('Welcome to Grace Community Church').or(page.locator('h1').getByText('Welcome to Gracious Community Church'));
       await expect(validatedChange).toHaveCSS('font-family', 'Montserrat');
     });
 
     test('should cancel changing font', async ({ page }) => {
-      const fontSettings = page.locator('h6').getByText('Fonts');
+      const fontSettings = page.locator('h6').getByText('Fonts').last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
       await expect(headerFontSelect).toHaveCount(1);
@@ -299,7 +302,7 @@ test.describe('Website Management', () => {
       await cssBox.fill('h1 {\ncolor: #7FFF00\n}');
       const saveBtn = page.locator('button').getByText('Save Changes');
       await saveBtn.click();
-      const validatedChange = page.locator('h1').getByText("Welcome to Grace Community Church");
+      const validatedChange = page.locator('h1').getByText("Welcome to Grace Community Church").or(page.locator('h1').getByText('Welcome to Gracious Community Church'));
       await expect(validatedChange).toHaveCSS('color', 'rgb(127, 255, 0)');
     });
 

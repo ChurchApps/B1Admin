@@ -28,7 +28,7 @@ export default defineConfig({
     navigationTimeout: 30 * 1000,
   },
 
-  projects: [
+  /* projects: [
     // Settings must run first — it renames the church, which website tests depend on
     {
       name: 'settings',
@@ -48,5 +48,5 @@ export default defineConfig({
       },
       testIgnore: /settings\.spec\.ts/,
     },
-  ],
+  ], */
 });

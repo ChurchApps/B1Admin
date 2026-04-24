@@ -17,6 +17,7 @@ test.describe('Dashboard Management', () => {
   test('should load group from dashboard', async ({ page }) => {
     const firstGroup = page.locator('h6').first();
     await expect(firstGroup).toBeVisible({ timeout: 10000 });
+    await page.waitForTimeout(500);
     await firstGroup.click();
     await expect(page).toHaveURL(/\/groups\/GRP\d+/, { timeout: 10000 });
   });
@@ -52,6 +53,7 @@ test.describe('Dashboard Management', () => {
     await taskNotes.fill('Octavian Testing (Playwright)');
     const saveBtn = page.locator('button').getByText('Save');
     await saveBtn.click();
+    await page.waitForTimeout(500);
     const validatedTask = page.locator('a').getByText('Test Task');
     await expect(validatedTask).toHaveCount(2, { timeout: 10000 });
   });
