@@ -375,14 +375,25 @@ export function ContentEditor(props: Props) {
     realtimeDebounceRef.current = setTimeout(() => {
       setContainer((prevContainer) => {
         if (!prevContainer) return prevContainer;
-        const c = { ...prevContainer };
-        c.sections.forEach((s) => {
-          realtimeUpdateElement(element, s.elements);
-        });
-        return c;
+        return {
+          ...prevContainer,
+          sections: prevContainer.sections.map((s) => ({
+            ...s,
+            elements: replaceElementImmutable(s.elements, element)
+          }))
+        };
       });
     }, 150);
   }, []);
+
+  const replaceElementImmutable = (elements: ElementInterface[], target: ElementInterface): ElementInterface[] =>
+    elements.map((el) => {
+      if (el.id === target.id) return target;
+      if (el.elements && el.elements.length > 0) {
+        return { ...el, elements: replaceElementImmutable(el.elements, target) };
+      }
+      return el;
+    });
 
   const realtimeUpdateElement = (element: ElementInterface, elements: ElementInterface[]) => {
     for (let i = 0; i < elements.length; i++) {
