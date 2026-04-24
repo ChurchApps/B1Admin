@@ -94,6 +94,7 @@ export function ElementEdit(props: Props) {
     p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : null;
 
     setElement(p);
+    props.onRealtimeChange(p);
   };
 
   const handleAnimationChange = (animations: AnimationsInterface) => {
@@ -102,6 +103,7 @@ export function ElementEdit(props: Props) {
     p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : null;
 
     setElement(p);
+    props.onRealtimeChange(p);
   };
 
   const handleSave = () => {
@@ -673,6 +675,7 @@ export function ElementEdit(props: Props) {
     const e = { ...element };
     e.answersJSON = JSON.stringify(parsedData);
     setElement(e);
+    props.onRealtimeChange(e);
   };
 
   useEffect(() => {
