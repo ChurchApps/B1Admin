@@ -375,12 +375,16 @@ test.describe('Settings Management', () => {
         const editBtn = octavRow.getByRole('button', { name: 'Edit' });
         if (!await editBtn.isVisible().catch(() => false)) break;
         await editBtn.click();
-        // Wait for form data to load before clicking delete
+        // Wait for form data to load before clicking delete (the form name
+        // field shows up once the edit InputBox has fetched the form).
         const formName = page.locator('[name="name"]');
-        await expect(formName).toBeVisible({ timeout: 5000 });
+        await expect(formName).toHaveValue('Octavius Test Form', { timeout: 10000 });
         page.once('dialog', d => d.accept());
-        await page.locator('button').getByText('Delete').first().click();
-        await expect(octavRow).toHaveCount(0, { timeout: 5000 }).catch(() => { });
+        // InputBox renders its delete action as <button id="delete"> — this is
+        // unique while the form edit panel is open, unlike getByText('Delete')
+        // which can race with other buttons that transiently render the word.
+        await page.locator('button#delete').click();
+        await expect(octavRow).toHaveCount(0, { timeout: 10000 }).catch(() => { });
       }
       const validatedDeletion = page.locator('a').getByText('Octavius Test Form');
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });

@@ -64,7 +64,7 @@ export default defineConfig({
       // Files run in parallel across workers. Tests within a file stay sequential —
       // most existing specs chain create→edit→delete and break under fullyParallel:true.
       name: 'chromium',
-      dependencies: ['settings'],
+      dependencies: process.env.SKIP_SETTINGS_DEP ? [] : ['settings'],
       use: {
         ...devices['Desktop Chrome'],
         headless: true,

@@ -103,6 +103,12 @@ export const PersonPage = () => {
 
   const getCurrentTab = () => {
     let currentTab = null;
+    // Tabs other than details need a loaded person; the query can flush to
+    // null during refetches/navigation, so guard against crashing child
+    // components that dereference person.id unconditionally.
+    if (selectedTab !== "details" && !person?.id) {
+      return <div key="loading" />;
+    }
     switch (selectedTab) {
       case "details":
         currentTab = (
