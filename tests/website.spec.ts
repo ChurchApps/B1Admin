@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
+import { trashIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Website Management', () => {
@@ -416,7 +417,7 @@ test.describe('Website Management', () => {
 
       const editBtn = page.locator('[aria-label="Manage Events"]').last();
       await editBtn.click();
-      const removeBtn = page.locator('button').filter({ has: page.locator('[d*="M6 19c0"]') }).first();
+      const removeBtn = trashIconButton(page).first();
       await removeBtn.click();
       const validatedDeletion = page.locator('td').getByText('Adult Bible Class');
       await expect(validatedDeletion).toHaveCount(0);

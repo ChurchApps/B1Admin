@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
+import { editIconButton, addIconButton, checkIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Serving Management - Songs & Tasks', () => {
@@ -82,7 +83,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).last();
+      const editBtn = editIconButton(page).last();
       await editBtn.click();
       const textInput = page.locator('[name="text"]');
       await textInput.fill('Frolic');
@@ -100,7 +101,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).last();
+      const editBtn = editIconButton(page).last();
       await editBtn.click();
       const textInput = page.locator('[name="text"]');
       await expect(textInput).toHaveCount(1);
@@ -123,7 +124,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).last();
+      const editBtn = editIconButton(page).last();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
@@ -139,7 +140,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).last();
+      const editBtn = editIconButton(page).last();
       await editBtn.click();
       const label = page.locator('textarea').first();
       await label.fill('Octavian Key');
@@ -157,7 +158,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).last();
+      const editBtn = editIconButton(page).last();
       await editBtn.click();
       const label = page.locator('textarea').first();
       await expect(label).toHaveCount(1);
@@ -180,7 +181,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).last();
+      const editBtn = editIconButton(page).last();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
@@ -196,9 +197,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).nth(1);
+      const editBtn = editIconButton(page).nth(1);
       await editBtn.click();
-      const addBtn = page.locator('button').filter({ has: page.locator('[d*="M19 13h-6"]') }).nth(2);
+      const addBtn = addIconButton(page).nth(2);
       await addBtn.click();
       const serviceBox = page.locator('[role="combobox"]');
       await serviceBox.click();
@@ -208,7 +209,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await link.fill('https://www.youtube.com/watch?v=6MYAGyZlBY0');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const checkBtn = page.locator('button').filter({ has: page.locator('[d*="M9 16.2"]') });
+      const checkBtn = checkIconButton(page);
       await checkBtn.click();
 
       const validatedAddition = page.locator('a img');
@@ -224,9 +225,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).nth(1);
+      const editBtn = editIconButton(page).nth(1);
       await editBtn.click();
-      const addBtn = page.locator('button').filter({ has: page.locator('[d*="M19 13h-6"]') }).nth(2);
+      const addBtn = addIconButton(page).nth(2);
       await addBtn.click();
       const serviceBox = page.locator('[role="combobox"]');
       await expect(serviceBox).toHaveCount(1);
@@ -243,7 +244,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).nth(2);
+      const editBtn = editIconButton(page).nth(2);
       await editBtn.click();
       const lyricBox = page.locator('[name="lyrics"]');
       await lyricBox.fill('No Lyrics');
@@ -262,7 +263,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).nth(2);
+      const editBtn = editIconButton(page).nth(2);
       await editBtn.click();
       const lyricBox = page.locator('[name="lyrics"]');
       await expect(lyricBox).toHaveCount(1);
@@ -285,7 +286,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).nth(2);
+      const editBtn = editIconButton(page).nth(2);
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
@@ -523,7 +524,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const auto = page.locator('h6').getByText('Octavian Test Automation');
       await auto.click();
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).nth(1);
+      const editBtn = editIconButton(page).nth(1);
       await editBtn.click();
       const taskName = page.locator('[name="title"]');
       await taskName.fill('Octavius Test Task');
@@ -553,7 +554,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
 
-      const addConBtn = page.locator('button').filter({ has: page.locator('[d*="M19 13h-6"]') }).last();
+      const addConBtn = addIconButton(page).last();
       await expect(addConBtn).toBeVisible({ timeout: 10000 });
       await addConBtn.click();
       const addCon = page.locator('li').getByText('Add Condition');
@@ -580,7 +581,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const auto = page.locator('h6').getByText('Octavian Test Automation');
       await auto.click();
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const autoName = page.locator('[name="title"]');
       await autoName.fill('Octavius Test Automation');
@@ -601,7 +602,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const auto = page.locator('h6').getByText('Octavius Test Automation');
       await auto.click();
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const autoName = page.locator('[name="title"]');
       await expect(autoName).toHaveCount(1);
@@ -620,7 +621,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const auto = page.locator('h6').getByText('Octavius Test Automation');
       await auto.click();
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') }).first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
+import { editIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Sermons Management', () => {
@@ -156,7 +157,7 @@ test.describe('Sermons Management', () => {
     });
 
     test('should edit playlist', async ({ page }) => {
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const name = page.locator('[name="title"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -177,7 +178,7 @@ test.describe('Sermons Management', () => {
     });
 
     test('should cancel editing playlist', async ({ page }) => {
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const name = page.locator('[name="title"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -193,7 +194,7 @@ test.describe('Sermons Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = page.locator('[d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"]').first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
 import { navigateToPeople } from './helpers/navigation';
+import { editIconButton, closeIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian/Octavius entered anywhere, it is a result of these tests.
 test.describe('People Management', () => {
@@ -69,7 +70,7 @@ test.describe('People Management', () => {
       await secondCheck.click();
       const checkTwo = page.locator('span').getByText('2 active:');
       await expect(checkTwo).toHaveCount(1);
-      const deleteLast = page.locator('[d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"]').last();
+      const deleteLast = closeIconButton(page).last();
       await deleteLast.click();
       const checkOne = page.locator('span').getByText('1 active:');
       await expect(checkOne).toHaveCount(1);
@@ -444,7 +445,7 @@ test.describe('People Management', () => {
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/people\/PER\d+/);
 
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await editBtn.click();
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
@@ -459,7 +460,7 @@ test.describe('People Management', () => {
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/people\/PER\d+/);
 
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await editBtn.click();
       const middleName = page.locator('[name="name.middle"]');
       await expect(middleName).toBeVisible({ timeout: 10000 });
@@ -480,7 +481,7 @@ test.describe('People Management', () => {
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/people\/PER\d+/);
 
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await editBtn.click();
       const mergeBtn = page.locator('button').getByText('merge');
       await mergeBtn.click();
@@ -497,7 +498,7 @@ test.describe('People Management', () => {
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/people\/PER\d+/);
 
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await editBtn.click();
       const mergeBtn = page.locator('button').getByText('merge');
       await mergeBtn.click();
@@ -527,7 +528,7 @@ test.describe('People Management', () => {
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/people\/PER\d+/);
 
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();

@@ -1,16 +1,20 @@
 import { chromium, type FullConfig } from "@playwright/test";
 import path from "path";
 import { fileURLToPath } from "url";
+// @ts-expect-error - plain ESM JS module, no .d.ts
+import { verifyEnv } from "./setup/verify-env.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STORAGE_STATE_PATH = path.join(__dirname, ".auth-state.json");
 
 /**
- * Global setup: log in once as demo@b1.church and save the browser
- * storage state (cookies + localStorage) so every test worker can
- * reuse it instead of logging in again.
+ * Global setup: verify Api is in demo mode, then log in once as demo@b1.church
+ * and save the browser storage state (cookies + localStorage) so every test
+ * worker can reuse it instead of logging in again.
  */
 async function globalSetup(config: FullConfig) {
+  await verifyEnv({ fullCheck: true });
+
   const baseURL = config.projects[0].use.baseURL || process.env.BASE_URL || "http://localhost:3101";
 
   const browser = await chromium.launch();

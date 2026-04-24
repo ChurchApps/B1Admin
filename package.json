@@ -76,6 +76,7 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "pretest": "node tests/setup/pretest.mjs",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",

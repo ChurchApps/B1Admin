@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
+import { editIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Settings Management', () => {
@@ -140,7 +141,7 @@ test.describe('Settings Management', () => {
     });
 
     test('should edit mobile app tab', async ({ page }) => {
-      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
       await expect(tabName).toHaveValue('Octavian Test Tab', { timeout: 10000 });
@@ -152,7 +153,7 @@ test.describe('Settings Management', () => {
     });
 
     test('should cancel edit mobile app tab', async ({ page }) => {
-      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
       await expect(tabName).toHaveCount(1);
@@ -168,7 +169,7 @@ test.describe('Settings Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').first();
+      const editBtn = editIconButton(page).first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
