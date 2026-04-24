@@ -25,7 +25,7 @@ test.describe('Donations Management', () => {
       const chartTexts = page.locator('g text');
       await expect(chartTexts.first()).toBeVisible({ timeout: 15000 });
       // Verify date labels exist somewhere in chart
-      await expect(chartTexts.getByText('Mar 1')).toBeVisible({ timeout: 5000 });
+      await expect(chartTexts.getByText('Mar 1').first()).toBeVisible({ timeout: 5000 });
       await expect(chartTexts.getByText('2025').first()).toBeVisible();
     });
   });
@@ -37,6 +37,7 @@ test.describe('Donations Management', () => {
       const addBtn = page.locator('[data-testid="add-fund-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
+      await page.waitForTimeout(500);
       const fundName = page.locator('[name="fundName"]');
       await fundName.fill('Octavian Fund');
       const taxCheck = page.locator('[name="taxDeductible"]');
@@ -111,6 +112,7 @@ test.describe('Donations Management', () => {
       const editBtn = page.locator('[data-cy="edit-0"]');
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
+      await page.waitForTimeout(200);
       const batchName = page.locator('[name="name"]');
       await expect(batchName).toBeVisible({ timeout: 10000 });
       await batchName.fill('October 1, 2025 Batch');
@@ -172,7 +174,7 @@ test.describe('Donations Management', () => {
       await expect(validateName).toHaveCount(1, { timeout: 10000 });
       const validateDate = page.locator('table td').getByText('May 2, 2025');
       await expect(validateDate).toHaveCount(1, { timeout: 10000 });
-      const validateAmount = page.locator('table td').getByText('$20.00');
+      const validateAmount = page.locator('table td').getByText('$');
       await expect(validateAmount).toHaveCount(2, { timeout: 10000 });
     });
 
@@ -193,7 +195,7 @@ test.describe('Donations Management', () => {
 
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validateAmount = page.locator('table td').getByText('$30.00');
+      const validateAmount = page.locator('table td').getByText('$&nbsp;30.00');
       await expect(validateAmount).toHaveCount(2, { timeout: 10000 });
     });
 

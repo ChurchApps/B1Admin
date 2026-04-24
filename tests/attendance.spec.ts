@@ -186,13 +186,13 @@ test.describe('Attendance Management', () => {
     });
 
     test('should view group from attendance homepage', async ({ page }) => {
-      const groupBtn = page.locator('a').getByText('Preschool (3-5)').first();
+      const groupBtn = page.locator('a').getByText('Worship').first();
       await groupBtn.click();
 
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
 
-      const groupHeader = page.locator('p').getByText('Preschool (3-5)').first();
+      const groupHeader = page.locator('p').getByText('Worship').first();
       await groupHeader.click();
     });
   });

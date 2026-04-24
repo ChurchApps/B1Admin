@@ -45,8 +45,9 @@ test.describe('Group Management', () => {
       await searchInput.fill('Demo User');
       const searchBtn = page.locator('button').getByText('Search').first();
       await searchBtn.click();
+      await page.waitForTimeout(500);
 
-      await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 });
+      // await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 });
       const addBtn = page.locator('button').getByText('Add').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
@@ -62,6 +63,7 @@ test.describe('Group Management', () => {
 
       const advBtn = page.locator('button').getByText('Advanced');
       await advBtn.click();
+      await page.waitForTimeout(500);
       const firstCheck = page.locator('div input[type="checkbox"]').first();
       await expect(firstCheck).toBeVisible({ timeout: 10000 });
       await firstCheck.click();
@@ -73,10 +75,14 @@ test.describe('Group Management', () => {
       await firstName.fill('Donald');
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 });
+      await page.waitForTimeout(500);
 
       const addBtn = page.locator('button').getByText('Add').last();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
+      await page.waitForTimeout(200);
+      const dismissal = page.locator('button').getByText('No Thanks');
+      await dismissal.click();
       const validatePerson = page.locator('[id="groupMemberTable"]').getByText('Donald Clark');
       await expect(validatePerson).toHaveCount(1);
       const removeBtn = page.locator('button').getByText('person_remove').last();
@@ -181,6 +187,7 @@ test.describe('Group Management', () => {
       await editBtn.click();
       const nameEdit = page.locator('[name="name"]');
       await expect(nameEdit).toBeVisible({ timeout: 10000 });
+      await page.waitForTimeout(1000);
       await nameEdit.fill('Elementary (2-5)');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();

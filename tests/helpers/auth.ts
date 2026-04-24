@@ -29,8 +29,8 @@ export async function login(page: Page) {
   // Wait for either: church selection dialog OR navigation away from /login.
   const churchDialog = page.locator('[role="dialog"]').filter({ hasText: "Select a Church" });
   await Promise.race([
-    churchDialog.waitFor({ state: "visible", timeout: 15000 }).catch(() => {}),
-    page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 }).catch(() => {}),
+    churchDialog.waitFor({ state: "visible", timeout: 15000 }).catch(() => { }),
+    page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 }).catch(() => { }),
   ]);
 
   // Handle church selection dialog if present

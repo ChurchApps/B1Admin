@@ -140,7 +140,7 @@ test.describe('Settings Management', () => {
     });
 
     test('should edit mobile app tab', async ({ page }) => {
-      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').last();
+      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').first();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
       await expect(tabName).toHaveValue('Octavian Test Tab', { timeout: 10000 });
@@ -152,7 +152,7 @@ test.describe('Settings Management', () => {
     });
 
     test('should cancel edit mobile app tab', async ({ page }) => {
-      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').last();
+      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').first();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
       await expect(tabName).toHaveCount(1);
@@ -168,7 +168,7 @@ test.describe('Settings Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').last();
+      const editBtn = page.locator('svg:has(path[d*="M3 17.25"])').first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
@@ -201,7 +201,7 @@ test.describe('Settings Management', () => {
         page.once('dialog', d => d.accept());
         await page.locator('button').getByText('Delete').first().click();
         // Wait for the total count of matching rows to decrease
-        await expect(octavRows).toHaveCount(count - 1, { timeout: 5000 }).catch(() => {});
+        await expect(octavRows).toHaveCount(count - 1, { timeout: 5000 }).catch(() => { });
       }
 
       const addBtn = page.locator('[data-testid="add-form-button"]');
@@ -379,7 +379,7 @@ test.describe('Settings Management', () => {
         await expect(formName).toBeVisible({ timeout: 5000 });
         page.once('dialog', d => d.accept());
         await page.locator('button').getByText('Delete').first().click();
-        await expect(octavRow).toHaveCount(0, { timeout: 5000 }).catch(() => {});
+        await expect(octavRow).toHaveCount(0, { timeout: 5000 }).catch(() => { });
       }
       const validatedDeletion = page.locator('a').getByText('Octavius Test Form');
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
