@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
-test.describe('Donations Management', () => {
+// Entire file is one chain: create fund -> create batch -> add donation referencing fund -> delete donation -> delete batch -> delete fund.
+test.describe.serial('Donations Management', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
     const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
@@ -37,8 +38,8 @@ test.describe('Donations Management', () => {
       const addBtn = page.locator('[data-testid="add-fund-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      await page.waitForTimeout(500);
       const fundName = page.locator('[name="fundName"]');
+      await expect(fundName).toBeVisible({ timeout: 10000 });
       await fundName.fill('Octavian Fund');
       const taxCheck = page.locator('[name="taxDeductible"]');
       await taxCheck.click();
@@ -112,7 +113,6 @@ test.describe('Donations Management', () => {
       const editBtn = page.locator('[data-cy="edit-0"]');
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      await page.waitForTimeout(200);
       const batchName = page.locator('[name="name"]');
       await expect(batchName).toBeVisible({ timeout: 10000 });
       await batchName.fill('October 1, 2025 Batch');

@@ -19,7 +19,7 @@ test.describe('Website Management', () => {
   }); */
 
 
-  test.describe('Pages', () => {
+  test.describe.serial('Pages', () => {
     test('should add page', async ({ page }) => {
       const addBtn = page.locator('[data-testid="add-page-button"]');
       await addBtn.click();
@@ -120,7 +120,6 @@ test.describe('Website Management', () => {
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await expect(doneBtn).toBeVisible({ timeout: 10000 });
       await doneBtn.click();
-      await page.waitForTimeout(1000);
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 10000 });
     });
 
@@ -153,7 +152,7 @@ test.describe('Website Management', () => {
 
   });
 
-  test.describe('Blocks', () => {
+  test.describe.serial('Blocks', () => {
     test.beforeEach(async ({ page }) => {
       const blocksHomeBtn = page.locator('a').getByText('Blocks').first();
       await blocksHomeBtn.click();
@@ -237,13 +236,12 @@ test.describe('Website Management', () => {
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/);
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');
       await doneBtn.click();
-      await page.waitForTimeout(500);
-      await expect(page).toHaveURL(/\/site\/blocks/);
+      await expect(page).toHaveURL(/\/site\/blocks/, { timeout: 10000 });
     });
 
   });
 
-  test.describe('Appearance', () => {
+  test.describe.serial('Appearance', () => {
     test.beforeEach(async ({ page }) => {
       const appearanceHomeBtn = page.locator('a').getByText('Appearance').first();
       await appearanceHomeBtn.click();
@@ -279,7 +277,6 @@ test.describe('Website Management', () => {
       const headerFont = page.locator('td').getByText('Montserrat').first();
       await expect(headerFont).toBeVisible({ timeout: 10000 });
       await headerFont.click();
-      await page.waitForTimeout(500);
       const saveBtn = page.locator('[data-testid="save-fonts-button"]');
       await saveBtn.click();
       const validatedChange = page.locator('h1').getByText('Welcome to Grace Community Church').or(page.locator('h1').getByText('Welcome to Gracious Community Church'));
@@ -325,7 +322,7 @@ test.describe('Website Management', () => {
 
   });
 
-  test.describe('Files', () => {
+  test.describe.serial('Files', () => {
     test.beforeEach(async ({ page }) => {
       const filesHomeBtn = page.locator('a').getByText('Files').first();
       await filesHomeBtn.click();
@@ -358,7 +355,7 @@ test.describe('Website Management', () => {
 
   });
 
-  test.describe('Calendar', () => {
+  test.describe.serial('Calendar', () => {
     test.beforeEach(async ({ page }) => {
       const calendarHomeBtn = page.locator('a').getByText('Calendar').first();
       await calendarHomeBtn.click();

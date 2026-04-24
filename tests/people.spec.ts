@@ -107,65 +107,70 @@ test.describe('People Management', () => {
       await expect(seekNotes).toBeVisible({ timeout: 10000 });
     });
 
-    test('should add a note from people notes tab', async ({ page }) => {
-      // Donald Clark has no seeded notes and is reliably in the "25 most recent"
-      // landing list, so openPersonRow can find him without a search.
-      await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const notesBtn = page.locator('button').getByText('Notes');
-      await notesBtn.click();
-      const seekNotes = page.locator('[name="noteText"]');
-      await expect(seekNotes).toBeVisible({ timeout: 10000 });
-      await seekNotes.fill('Octavian Test Note');
-      const sendBtn = page.locator('button').getByText('send');
-      await sendBtn.click();
-      const validatedNote = page.locator('p').getByText('Octavian Test Note');
-      await expect(validatedNote.first()).toBeVisible({ timeout: 15000 });
-    });
+    // Notes tests each seed their own note on Donald and target it via `.last()`.
+    // With fullyParallel, concurrent runs would race on the "last note" locator —
+    // keep them serial so each test owns the most recent note when it acts.
+    test.describe.serial('Donald notes lifecycle', () => {
+      test('should add a note from people notes tab', async ({ page }) => {
+        // Donald Clark has no seeded notes and is reliably in the "25 most recent"
+        // landing list, so openPersonRow can find him without a search.
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const notesBtn = page.locator('button').getByText('Notes');
+        await notesBtn.click();
+        const seekNotes = page.locator('[name="noteText"]');
+        await expect(seekNotes).toBeVisible({ timeout: 10000 });
+        await seekNotes.fill('Octavian Test Note');
+        const sendBtn = page.locator('button').getByText('send');
+        await sendBtn.click();
+        const validatedNote = page.locator('p').getByText('Octavian Test Note');
+        await expect(validatedNote.first()).toBeVisible({ timeout: 15000 });
+      });
 
-    test('should edit a note from people notes tab', async ({ page }) => {
-      await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const notesBtn = page.locator('button').getByText('Notes');
-      await notesBtn.click();
-      // Add a note first so the edit affordance definitely exists for this person.
-      const seekNotes = page.locator('[name="noteText"]');
-      await expect(seekNotes).toBeVisible({ timeout: 10000 });
-      await seekNotes.fill('Octavian Pre-edit Note');
-      await page.locator('button').getByText('send').click();
-      await expect(page.locator('p').getByText('Octavian Pre-edit Note').first()).toBeVisible({ timeout: 15000 });
+      test('should edit a note from people notes tab', async ({ page }) => {
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const notesBtn = page.locator('button').getByText('Notes');
+        await notesBtn.click();
+        // Add a note first so the edit affordance definitely exists for this person.
+        const seekNotes = page.locator('[name="noteText"]');
+        await expect(seekNotes).toBeVisible({ timeout: 10000 });
+        await seekNotes.fill('Octavian Pre-edit Note');
+        await page.locator('button').getByText('send').click();
+        await expect(page.locator('p').getByText('Octavian Pre-edit Note').first()).toBeVisible({ timeout: 15000 });
 
-      const editBtn = page.locator('button[aria-label="editNote"]').filter({ has: page.locator('text=edit') });
-      // Edit the note we just added (last in the list).
-      await editBtn.last().click();
-      // AddNote fetches the message content asynchronously and then calls
-      // setMessage — wait for the form to show the original content before
-      // replacing it, otherwise the fill gets overwritten by the response.
-      await expect(seekNotes).toHaveValue('Octavian Pre-edit Note', { timeout: 10000 });
-      await seekNotes.fill('Octavius Test Note');
-      await page.locator('button').getByText('send').click();
-      const validatedEdit = page.locator('p').getByText('Octavius Test Note');
-      await expect(validatedEdit.first()).toBeVisible({ timeout: 15000 });
-    });
+        const editBtn = page.locator('button[aria-label="editNote"]').filter({ has: page.locator('text=edit') });
+        // Edit the note we just added (last in the list).
+        await editBtn.last().click();
+        // AddNote fetches the message content asynchronously and then calls
+        // setMessage — wait for the form to show the original content before
+        // replacing it, otherwise the fill gets overwritten by the response.
+        await expect(seekNotes).toHaveValue('Octavian Pre-edit Note', { timeout: 10000 });
+        await seekNotes.fill('Octavius Test Note');
+        await page.locator('button').getByText('send').click();
+        const validatedEdit = page.locator('p').getByText('Octavius Test Note');
+        await expect(validatedEdit.first()).toBeVisible({ timeout: 15000 });
+      });
 
-    test('should delete a note from people notes tab', async ({ page }) => {
-      await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const notesBtn = page.locator('button').getByText('Notes');
-      await notesBtn.click();
-      // Seed a note to guarantee a delete target.
-      const seekNotes = page.locator('[name="noteText"]');
-      await expect(seekNotes).toBeVisible({ timeout: 10000 });
-      await seekNotes.fill('Octavian Delete Target');
-      await page.locator('button').getByText('send').click();
-      const target = page.locator('p').getByText('Octavian Delete Target');
-      await expect(target.first()).toBeVisible({ timeout: 15000 });
+      test('should delete a note from people notes tab', async ({ page }) => {
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const notesBtn = page.locator('button').getByText('Notes');
+        await notesBtn.click();
+        // Seed a note to guarantee a delete target.
+        const seekNotes = page.locator('[name="noteText"]');
+        await expect(seekNotes).toBeVisible({ timeout: 10000 });
+        await seekNotes.fill('Octavian Delete Target');
+        await page.locator('button').getByText('send').click();
+        const target = page.locator('p').getByText('Octavian Delete Target');
+        await expect(target.first()).toBeVisible({ timeout: 15000 });
 
-      // Click edit on the note we just added (last in the list).
-      await page.locator('button[aria-label="editNote"]').last().click();
-      // Wait for edit mode to load this note's content before clicking delete.
-      await expect(seekNotes).toHaveValue('Octavian Delete Target', { timeout: 10000 });
-      // In edit mode, an extra IconButton with material-icon text "delete" appears.
-      const deleteBtn = page.locator('button').getByText('delete', { exact: true });
-      await deleteBtn.click();
-      await expect(target).toHaveCount(0, { timeout: 15000 });
+        // Click edit on the note we just added (last in the list).
+        await page.locator('button[aria-label="editNote"]').last().click();
+        // Wait for edit mode to load this note's content before clicking delete.
+        await expect(seekNotes).toHaveValue('Octavian Delete Target', { timeout: 10000 });
+        // In edit mode, an extra IconButton with material-icon text "delete" appears.
+        const deleteBtn = page.locator('button').getByText('delete', { exact: true });
+        await deleteBtn.click();
+        await expect(target).toHaveCount(0, { timeout: 15000 });
+      });
     });
 
     test('should open groups tab', async ({ page }) => {
@@ -321,43 +326,47 @@ test.describe('People Management', () => {
       await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
     });
 
-    test('should remove person from household', async ({ page }) => {
-      await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = page.locator('button').getByText('edit').first();
-      await editBtn.click();
-      const removeBtn = page.locator('button').getByText('Remove').last();
-      await expect(removeBtn).toBeVisible({ timeout: 10000 });
-      await removeBtn.click();
-      const saveBtn = page.locator('button').getByText('Save');
-      await expect(saveBtn).toBeVisible({ timeout: 10000 });
-      await saveBtn.click();
-      await expect(editBtn).toBeVisible({ timeout: 10000 });
-      await editBtn.click();
-      const personRows = page.locator('[id="householdMemberTable"] tr');
-      await expect(personRows).toHaveCount(2, { timeout: 10000 });
-    });
+    // Remove then add the same household member — the row-count assertion after
+    // removal depends on remove running before add puts Carol back.
+    test.describe.serial('Donald household membership', () => {
+      test('should remove person from household', async ({ page }) => {
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const editBtn = page.locator('button').getByText('edit').first();
+        await editBtn.click();
+        const removeBtn = page.locator('button').getByText('Remove').last();
+        await expect(removeBtn).toBeVisible({ timeout: 10000 });
+        await removeBtn.click();
+        const saveBtn = page.locator('button').getByText('Save');
+        await expect(saveBtn).toBeVisible({ timeout: 10000 });
+        await saveBtn.click();
+        await expect(editBtn).toBeVisible({ timeout: 10000 });
+        await editBtn.click();
+        const personRows = page.locator('[id="householdMemberTable"] tr');
+        await expect(personRows).toHaveCount(2, { timeout: 10000 });
+      });
 
-    test('should add person to household', async ({ page }) => {
-      await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = page.locator('button').getByText('edit').first();
-      await editBtn.click();
-      const addBtn = page.locator('button').getByText('Add');
-      await addBtn.click();
-      await page.locator('input[name="personAddText"]').fill('Carol');
-      await page.locator('button').getByText('Search').click();
-      const selBtn = page.locator('button').getByText('Select');
-      await expect(selBtn).toBeVisible({ timeout: 10000 });
-      await selBtn.click();
-      // Confirmation dialog when adding a person who is already in another household.
-      const yesBtn = page.locator('button').getByText('Yes');
-      if (await yesBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
-        await yesBtn.click();
-      }
-      const saveBtn = page.locator('button').getByText('Save');
-      await expect(saveBtn).toBeVisible({ timeout: 10000 });
-      await saveBtn.click();
-      const validatedAddition = page.locator('[id="householdBox"] h5').getByText('Carol Clark');
-      await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
+      test('should add person to household', async ({ page }) => {
+        await openPersonRow(page, SEED_PEOPLE.DONALD);
+        const editBtn = page.locator('button').getByText('edit').first();
+        await editBtn.click();
+        const addBtn = page.locator('button').getByText('Add');
+        await addBtn.click();
+        await page.locator('input[name="personAddText"]').fill('Carol');
+        await page.locator('button').getByText('Search').click();
+        const selBtn = page.locator('button').getByText('Select');
+        await expect(selBtn).toBeVisible({ timeout: 10000 });
+        await selBtn.click();
+        // Confirmation dialog when adding a person who is already in another household.
+        const yesBtn = page.locator('button').getByText('Yes');
+        if (await yesBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await yesBtn.click();
+        }
+        const saveBtn = page.locator('button').getByText('Save');
+        await expect(saveBtn).toBeVisible({ timeout: 10000 });
+        await saveBtn.click();
+        const validatedAddition = page.locator('[id="householdBox"] h5').getByText('Carol Clark');
+        await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
+      });
     });
 
     test('should cancel adding person to household', async ({ page }) => {

@@ -2,7 +2,11 @@ import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
-test.describe('Serving Management - Lessons', () => {
+// Entire file is one chain around a single "Octavian Lesson" created in Lesson Plans
+// and finally deleted in Cleanup. Every sub-describe pivots on that lesson.
+// NOTE: this spec also depends on "Octavius Ministry" / "Octavius Plans" created in
+// serving-plans.spec.ts. Those are cross-file deps unrelated to this refactor.
+test.describe.serial('Serving Management - Lessons', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
     const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');

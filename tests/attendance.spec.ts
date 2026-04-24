@@ -15,7 +15,9 @@ test.describe('Attendance Management', () => {
     await expect(page).toHaveURL(/\/attendance/);
   });
 
-  test.describe('Setup', () => {
+  // Setup tests form a single chain: campus -> service -> service time -> cleanup.
+  // Each level references the previous (services pick a campus, times pick a service).
+  test.describe.serial('Setup', () => {
 
     test('should add campus', async ({ page }) => {
       const addBtn = page.locator('[data-testid="add-campus-button"]');

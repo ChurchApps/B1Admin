@@ -13,7 +13,7 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,
-  workers: undefined,
+  workers: process.env.CI ? 2 : '75%',
   reporter: 'list',
   timeout: 60 * 1000,
   expect: { timeout: 5 * 1000 },
@@ -26,8 +26,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 15 * 1000,
-    navigationTimeout: 30 * 1000,
+    actionTimeout: 10 * 1000,
+    navigationTimeout: 15 * 1000,
   },
 
   // Note: serving-lessons.spec also exercises LessonsApi (port 8090).
@@ -61,16 +61,16 @@ export default defineConfig({
       fullyParallel: false,
     },
     {
-      // Files run in parallel across workers. Tests within a file stay sequential —
-      // most existing specs chain create→edit→delete and break under fullyParallel:true.
+      // Files run in parallel across workers. Chains of dependent tests
+      // (create→edit→delete of the same entity) are wrapped in test.describe.serial(...)
+      // within each spec; everything else can interleave.
       name: 'chromium',
-      dependencies: process.env.SKIP_SETTINGS_DEP ? [] : ['settings'],
       use: {
         ...devices['Desktop Chrome'],
         headless: true,
       },
       testIgnore: /settings\.spec\.ts/,
-      fullyParallel: false,
+      fullyParallel: true,
     },
   ],
 });

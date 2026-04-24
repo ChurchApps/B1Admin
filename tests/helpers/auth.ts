@@ -14,8 +14,8 @@ export async function login(page: Page) {
     .catch(() => false);
 
   if (!needsLogin) {
-    // Already authenticated. Wait up to 30s for nav to be ready (cold-start CI can be slow).
-    await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 30000 });
+    // Already authenticated via cached storageState — nav renders in under a second.
+    await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 10000 });
     return;
   }
 

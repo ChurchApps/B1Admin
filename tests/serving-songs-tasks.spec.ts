@@ -13,7 +13,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
     await expect(page).toHaveURL(/\/serving/);
   });
 
-  test.describe('Songs', () => {
+  test.describe.serial('Songs', () => {
     test('should add a song', async ({ page }) => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
@@ -309,7 +309,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
     });
   });
 
-  test.describe('Tasks', () => {
+  test.describe.serial('Tasks', () => {
     test('should add a task', async ({ page }) => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();

@@ -18,7 +18,7 @@ test.describe('Sermons Management', () => {
     await sermonsHeader.click();
   }); */
 
-  test.describe('Sermons Home', () => {
+  test.describe.serial('Sermons Home', () => {
 
     test('should add sermon', async ({ page }) => {
       const addBtn = page.locator('[data-testid="add-sermon-button"]');
@@ -139,7 +139,7 @@ test.describe('Sermons Management', () => {
 
   });
 
-  test.describe('Playlists', () => {
+  test.describe.serial('Playlists', () => {
     test.beforeEach(async ({ page }) => {
       const playlistHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Playlists');
       await playlistHomeBtn.click();
@@ -204,7 +204,7 @@ test.describe('Sermons Management', () => {
 
   });
 
-  test.describe('Live Stream Times', () => {
+  test.describe.serial('Live Stream Times', () => {
     test.beforeEach(async ({ page }) => {
       const streamHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Live Stream Times');
       await streamHomeBtn.click();
@@ -213,14 +213,13 @@ test.describe('Sermons Management', () => {
     test('should add service', async ({ page }) => {
       const addBtn = page.locator('[data-testid="add-service-button"]');
       await addBtn.click();
-      await page.waitForTimeout(500);
       const name = page.locator('[name="serviceLabel"]');
+      await expect(name).toBeVisible({ timeout: 10000 });
       await name.fill('Octavian Test Service');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
       const validatedService = page.locator('p').getByText('Octavian Test Service');
-      await expect(validatedService).toHaveCount(1);
+      await expect(validatedService).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit service', async ({ page }) => {

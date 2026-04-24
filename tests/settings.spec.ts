@@ -17,7 +17,7 @@ test.describe('Settings Management', () => {
     await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
   });
 
-  test.describe('General Settings', () => {
+  test.describe.serial('General Settings', () => {
     test('should edit church', async ({ page }) => {
       const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
       await editSettingsBtn.dispatchEvent('click');
@@ -27,13 +27,14 @@ test.describe('Settings Management', () => {
       await churchName.fill('Gracious Community Church');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await page.waitForTimeout(500);
+      // Wait for the edit modal to close before re-opening it.
+      await expect(churchName).toHaveCount(0, { timeout: 10000 });
       // Revert the name back
       await editSettingsBtn.dispatchEvent('click');
       await expect(churchName).toBeVisible({ timeout: 10000 });
       await churchName.fill(originalName || 'Grace Community Church');
       await saveBtn.click();
-      await page.waitForTimeout(200);
+      await expect(churchName).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should cancel editing church', async ({ page }) => {
@@ -113,7 +114,7 @@ test.describe('Settings Management', () => {
     });
   });
 
-  test.describe('Mobile Settings', () => {
+  test.describe.serial('Mobile Settings', () => {
     test.beforeEach(async ({ page }) => {
       // "Mobile" is a primary nav item (not in settings secondary menu),
       // gated by ContentApi content.edit permission. Navigate via the primary nav.
@@ -178,7 +179,7 @@ test.describe('Settings Management', () => {
     });
   });
 
-  test.describe('Form Settings', () => {
+  test.describe.serial('Form Settings', () => {
     test.beforeEach(async ({ page }) => {
       const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
       await formTab.dispatchEvent('click');
@@ -324,7 +325,6 @@ test.describe('Settings Management', () => {
 
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
-      await page.waitForLoadState('networkidle');
 
       const question = page.locator('td button').getByText('True or False? I support playwright testing.').first();
       await expect(question).toBeVisible({ timeout: 10000 });
