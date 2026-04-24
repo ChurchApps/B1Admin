@@ -5,7 +5,7 @@ import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card } from "@mui/material";
-import { Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
+import { Email as EmailIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
   people: PersonInterface[];
@@ -315,20 +315,58 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     );
   }, [people, getColumns, navigate]);
 
+  const getSortArrows = useCallback(
+    (isActive: boolean) => (
+      <Box
+        component="span"
+        sx={{
+          display: "inline-flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          ml: 0.5,
+          flexShrink: 0,
+          lineHeight: 0,
+          color: isActive ? "var(--text-main)" : "var(--text-muted)"
+        }}>
+        <KeyboardArrowUpIcon
+          sx={{
+            fontSize: 16,
+            mb: "-6px",
+            opacity: isActive && sortDirection ? 1 : 0.45
+          }}
+        />
+        <KeyboardArrowDownIcon
+          sx={{
+            fontSize: 16,
+            opacity: isActive && !sortDirection ? 1 : 0.45
+          }}
+        />
+      </Box>
+    ),
+    [sortDirection]
+  );
+
   const headers = useMemo(() => {
     const result: JSX.Element[] = [];
     columns.forEach((c) => {
       if (selectedColumns.indexOf(c.key) > -1) {
+        const isSortable = c.key !== "photo" && c.key !== "deleteOption";
+        const isActive = currentSortedCol === c.key;
         result.push(
-          <th key={c.key} onClick={() => sortTableByKey(c.key)}>
-            <span style={{ float: "left" }}>{c.shortName}</span>
-            {c.key !== "photo" && c.key !== "deleteOption" && (
-              <div style={{ display: "flex" }}>
-                <div style={{ marginTop: "5px" }} className={`${sortDirection && currentSortedCol === c.key ? "sortAscActive" : "sortAsc"}`}></div>
-                <div style={{ marginTop: "14px" }} className={`${!sortDirection && currentSortedCol === c.key ? "sortDescActive" : "sortDesc"}`}></div>
-              </div>
-            )}
-          </th>
+          <TableCell
+            key={c.key}
+            onClick={isSortable ? () => sortTableByKey(c.key) : undefined}
+            sx={{
+              whiteSpace: "nowrap",
+              minWidth: c.key === "photo" ? 88 : 160,
+              cursor: isSortable ? "pointer" : "default"
+            }}>
+            <Box component="span" sx={{ display: "inline-flex", alignItems: "center", verticalAlign: "middle" }}>
+              <Box component="span">{c.shortName}</Box>
+              {isSortable && getSortArrows(isActive)}
+            </Box>
+          </TableCell>
         );
       }
     });
@@ -337,14 +375,21 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       optionalColumns.forEach((c) => {
         const key = c.id;
         if (selectedColumns.indexOf(key) > -1) {
+          const isActive = currentSortedCol === key;
           result.push(
-            <th key={key} onClick={() => sortTableByKey(key)}>
-              <span style={{ float: "left" }}>{c.title}</span>
-              <div style={{ display: "flex" }}>
-                <div style={{ marginTop: "5px" }} className={`${sortDirection && currentSortedCol === key ? "sortAscActive" : "sortAsc"}`}></div>
-                <div style={{ marginTop: "14px" }} className={`${!sortDirection && currentSortedCol === key ? "sortDescActive" : "sortDesc"}`}></div>
-              </div>
-            </th>
+            <TableCell
+              key={key}
+              onClick={() => sortTableByKey(key)}
+              sx={{
+                whiteSpace: "nowrap",
+                minWidth: 160,
+                cursor: "pointer"
+              }}>
+              <Box component="span" sx={{ display: "inline-flex", alignItems: "center", verticalAlign: "middle" }}>
+                <Box component="span">{c.title}</Box>
+                {getSortArrows(isActive)}
+              </Box>
+            </TableCell>
           );
         }
       });
@@ -355,7 +400,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         <TableRow>{result}</TableRow>
       </TableHead>
     );
-  }, [columns, selectedColumns, optionalColumns, sortDirection, currentSortedCol, sortTableByKey]);
+  }, [columns, selectedColumns, optionalColumns, currentSortedCol, sortTableByKey, getSortArrows]);
 
   const getResults = () => {
     if (people.length === 0) {
@@ -369,21 +414,39 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     }
 
     return (
-      <Table
-        id="peopleTable"
+      <Box
         sx={{
-          "& .MuiTableCell-root": {
-            borderBottom: "1px solid var(--border-light)",
-            py: 2
-          },
-          "& .MuiTableHead-root .MuiTableCell-root": {
-            backgroundColor: "var(--bg-sub)",
-            fontWeight: 600
-          }
+          width: "100%",
+          overflowX: "auto",
+          overflowY: "hidden",
+          WebkitOverflowScrolling: "touch"
         }}>
-        {headers}
-        <TableBody>{rows}</TableBody>
-      </Table>
+        <Table
+          id="peopleTable"
+          sx={{
+            width: "max-content",
+            minWidth: "100%",
+            tableLayout: "auto",
+            "& .MuiTableCell-root": {
+              borderBottom: "1px solid var(--border-light)",
+              py: 2,
+              px: 2,
+              verticalAlign: "top",
+              whiteSpace: "nowrap"
+            },
+            "& .MuiTableHead-root .MuiTableCell-root": {
+              backgroundColor: "var(--bg-sub)",
+              fontWeight: 600,
+              color: "var(--text-main)",
+              "&:hover": { color: "var(--text-main)" },
+              "&:active": { color: "var(--text-main)" },
+              "& span": { color: "inherit" }
+            }
+          }}>
+          {headers}
+          <TableBody>{rows}</TableBody>
+        </Table>
+      </Box>
     );
   };
 

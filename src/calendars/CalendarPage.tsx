@@ -15,8 +15,9 @@ import {
   TableHead
 } from "@mui/material";
 import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon } from "@mui/icons-material";
-import { ApiHelper, UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Loading, PageHeader, Locale, Permissions } from "@churchapps/apphelper";
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
+import { PermissionDenied } from "../components";
 import { CuratedCalendar } from "./components/CuratedCalendar";
 
 export const CalendarPage = () => {
@@ -65,22 +66,24 @@ export const CalendarPage = () => {
           {g.name}
         </Typography>
       </TableCell>
-      <TableCell align="right">
-        <Tooltip title={Locale.label("calendars.calendarPage.removeGroup")} arrow>
-          <IconButton
-            size="small"
-            onClick={() => handleGroupDelete(g.id)}
-            data-testid={`remove-group-${g.id}-button`}
-            aria-label={Locale.label("calendars.calendarPage.removeGroupAria", g.name)}
-            sx={{
-              color: "error.main",
-              "&:hover": { backgroundColor: "error.light" }
-            }}
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </TableCell>
+      {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+        <TableCell align="right">
+          <Tooltip title={Locale.label("calendars.calendarPage.removeGroup")} arrow>
+            <IconButton
+              size="small"
+              onClick={() => handleGroupDelete(g.id)}
+              data-testid={`remove-group-${g.id}-button`}
+              aria-label={Locale.label("calendars.calendarPage.removeGroupAria", g.name)}
+              sx={{
+                color: "error.main",
+                "&:hover": { backgroundColor: "error.light" }
+              }}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      )}
     </TableRow>
   ));
 
@@ -89,6 +92,7 @@ export const CalendarPage = () => {
   }, [curatedCalendarId]);
 
   if (!curatedCalendarId) return null;
+  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   return (
     <>

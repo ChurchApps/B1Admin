@@ -55,10 +55,12 @@ export class SecondaryMenuHelper {
   static getMobileMenu = (path: string) => {
     const menuItems: MenuItem[] = [];
     let label: string = Locale.label("common.mobile");
-    menuItems.push({ url: "/mobile/navigation", label: Locale.label("common.navigation"), icon: "menu" });
-    menuItems.push({ url: "/mobile/theme", label: Locale.label("common.appTheme"), icon: "palette" });
-    menuItems.push({ url: "/mobile/b1-mobile", label: Locale.label("common.b1Mobile"), icon: "phone_android" });
-    menuItems.push({ url: "/mobile/checkin", label: Locale.label("common.b1CheckIn"), icon: "qr_code" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) {
+      menuItems.push({ url: "/mobile/navigation", label: Locale.label("common.navigation"), icon: "menu" });
+      menuItems.push({ url: "/mobile/theme", label: Locale.label("common.appTheme"), icon: "palette" });
+      menuItems.push({ url: "/mobile/b1-mobile", label: Locale.label("common.b1Mobile"), icon: "phone_android" });
+      menuItems.push({ url: "/mobile/checkin", label: Locale.label("common.b1CheckIn"), icon: "qr_code" });
+    }
 
     if (path.startsWith("/mobile/theme")) label = Locale.label("common.appTheme");
     else if (path.startsWith("/mobile/b1-mobile")) label = Locale.label("common.b1Mobile");
@@ -127,12 +129,14 @@ export class SecondaryMenuHelper {
     const menuItems: MenuItem[] = [];
     let label: string = "Website";
 
-    menuItems.push({ url: "/site/pages", label: "Pages", icon: "article" });
-    menuItems.push({ url: "/site/blocks", label: "Blocks", icon: "widgets" });
-    menuItems.push({ url: "/site/appearance", label: "Appearance", icon: "palette" });
-    menuItems.push({ url: "/site/files", label: "Files", icon: "folder_open" });
-    menuItems.push({ url: "/calendars", label: "Calendars", icon: "calendar_month" });
-    menuItems.push({ url: "/registrations", label: "Registrations", icon: "how_to_reg" });
+    if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
+      menuItems.push({ url: "/site/pages", label: "Pages", icon: "article" });
+      menuItems.push({ url: "/site/blocks", label: "Blocks", icon: "widgets" });
+      menuItems.push({ url: "/site/appearance", label: "Appearance", icon: "palette" });
+      menuItems.push({ url: "/site/files", label: "Files", icon: "folder_open" });
+      menuItems.push({ url: "/calendars", label: "Calendars", icon: "calendar_month" });
+      menuItems.push({ url: "/registrations", label: "Registrations", icon: "how_to_reg" });
+    }
 
     if (path.startsWith("/registrations")) label = "Registrations";
     else if (path.startsWith("/site/pages")) label = "Pages";
@@ -148,10 +152,12 @@ export class SecondaryMenuHelper {
   static getSermonsMenu = (path: string) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
-    menuItems.push({ url: "/sermons", label: "Sermons", icon: "live_tv" });
-    menuItems.push({ url: "/sermons/playlists", label: "Playlists", icon: "video_library" });
-    menuItems.push({ url: "/sermons/times", label: "Live Stream Times", icon: "schedule" });
-    menuItems.push({ url: "/sermons/bulk", label: "Bulk Import", icon: "cloud_upload" });
+    if (UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) {
+      menuItems.push({ url: "/sermons", label: "Sermons", icon: "live_tv" });
+      menuItems.push({ url: "/sermons/playlists", label: "Playlists", icon: "video_library" });
+      menuItems.push({ url: "/sermons/times", label: "Live Stream Times", icon: "schedule" });
+      menuItems.push({ url: "/sermons/bulk", label: "Bulk Import", icon: "cloud_upload" });
+    }
 
     if (path.startsWith("/sermons/bulk")) label = "Bulk Import";
     else if (path.startsWith("/sermons/times")) label = "Live Stream Times";

@@ -386,7 +386,7 @@ export const GroupBanner = memo((props: Props) => {
               {Locale.label("groups.groupBanner.associatedServices")}
             </Typography>
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {groupServiceTimes.map((gst, idx) => (
+              {groupServiceTimes.filter(gst => gst.serviceTime).map((gst, idx) => (
                 <Chip
                   key={`servicetime-${gst.serviceTime.name}-${idx}`}
                   icon={<CalendarIcon sx={{ fontSize: 14 }} />}

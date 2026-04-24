@@ -36,10 +36,12 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const [count, setCount] = useState<number>(0);
   const [showInviteDialog, setShowInviteDialog] = useState<boolean>(false);
 
+  const canView = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view), []);
+
   const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: [`/groupmembers?groupId=${props.group?.id}`, "MembershipApi"],
     placeholderData: [],
-    enabled: !!props.group?.id
+    enabled: !!props.group?.id && canView
   });
 
   const handleRemove = useCallback(

@@ -1,0 +1,2486 @@
+{
+  "attendance": {
+    "attendancePage": {
+      "att": "Aanwezigheid",
+      "campus": "Locatie",
+      "campuses": "Locaties",
+      "category": "Categorie",
+      "group": "Groep",
+      "groupAttMsg": "Groepsaanwezigheid wordt weergegeven zodra sessies aan een groep zijn toegevoegd en mensen deze sessies hebben bijgewoond.",
+      "groups": "Groepen",
+      "scheduled": "Gepland",
+      "service": "Dienst",
+      "services": "Diensten",
+      "subtitle": "Volg aanwezigheid voor diensten en groepen",
+      "time": "Tijd",
+      "totalGroups": "Totaal aantal groepen",
+      "unscheduled": "Ongepland"
+    },
+    "attendanceSetup": {
+      "addService": "Dienst toevoegen",
+      "addServiceTime": "Diensttijd toevoegen",
+      "newCampus": "Nieuwe locatie",
+      "newService": "Nieuwe dienst",
+      "newServiceTime": "Nieuwe diensttijd",
+      "setupMessage": "Stel locaties, diensten en diensttijden in om aanwezigheid te gaan volgen.",
+      "unassigned": "Niet toegewezen"
+    },
+    "campusEdit": {
+      "confirmDelete": "Weet u zeker dat u deze locatie wilt verwijderen?",
+      "name": "Locatienaam",
+      "validate": {
+        "name": "Locatienaam is verplicht."
+      }
+    },
+    "serviceEdit": {
+      "campus": "Locatie",
+      "confirmDelete": "Weet u zeker dat u deze dienst permanent wilt verwijderen?",
+      "name": "Naam van dienst",
+      "validate": {
+        "campus": "Selecteer een locatie.",
+        "name": "Naam van dienst is verplicht."
+      }
+    },
+    "serviceTimeEdit": {
+      "confirmDelete": "Weet u zeker dat u deze diensttijd permanent wilt verwijderen?",
+      "name": "Diensttijd",
+      "service": "Dienst",
+      "validate": {
+        "name": "Naam van diensttijd is verplicht.",
+        "service": "Selecteer een dienst."
+      }
+    },
+    "tabs": {
+      "attTrend": "Aanwezigheidstrend",
+      "groupAtt": "Groepsaanwezigheid",
+      "setup": "Instellingen"
+    }
+  },
+  "calendars": {
+    "calendar": {
+      "add": "Toevoegen",
+      "copiedToClipboard": "Gekopieerd naar klembord",
+      "copyIcsLink": "ICS-link kopiëren",
+      "downloadIcsFile": "ICS-bestand downloaden",
+      "subscribe": "Abonneren",
+      "subscribeTitle": "Abonneren op kalender"
+    },
+    "calendarEdit": {
+      "calendarDetails": "Kalendergegevens",
+      "calendarDetailsDesc": "Configureer uw kalenderinstellingen",
+      "calendarName": "Kalendernaam",
+      "calendarNameAria": "Kalendernaam",
+      "cancel": "Annuleren",
+      "confirmDelete": "Weet u zeker dat u deze kalender wilt verwijderen?",
+      "create": "Aanmaken",
+      "createCalendar": "Kalender aanmaken",
+      "delete": "Verwijderen",
+      "deleting": "Verwijderen...",
+      "editCalendar": "Kalender bewerken",
+      "namePlaceholder": "Voer een naam in voor deze kalender",
+      "nameRequired": "Kalendernaam is verplicht",
+      "save": "Opslaan",
+      "saving": "Opslaan...",
+      "unauthorizedCreate": "Niet gemachtigd om kalenders aan te maken",
+      "unauthorizedDelete": "Niet gemachtigd om kalenders te verwijderen"
+    },
+    "calendarEvent": {
+      "cancel": "Annuleren",
+      "confirmDelete": "Weet u zeker dat u dit evenement wilt verwijderen?",
+      "delete": "Verwijderen",
+      "noGroups": "Geen groepen gevonden."
+    },
+    "calendarList": {
+      "aboutParagraph1": "Met kalenders kunt u evenementen voor uw kerk organiseren en weergeven.",
+      "aboutParagraph2": "U kunt meerdere kalenders maken voor verschillende doeleinden, zoals erediensten, jeugdactiviteiten en outreach.",
+      "aboutParagraph3": "Deel uw kalenders met leden via ICS-feeds of sluit ze in op uw website.",
+      "aboutTitle": "Over kalenders",
+      "actions": "Acties",
+      "active": "Actief",
+      "addCalendar": "Kalender toevoegen",
+      "calendar": "Kalender",
+      "calendars": "Kalenders",
+      "createCalendar": "Kalender aanmaken",
+      "createFirstCalendar": "Eerste kalender aanmaken",
+      "curatedCalendar": "Samengestelde kalender",
+      "edit": "Bewerken",
+      "manageEvents": "Evenementen beheren",
+      "noCalendars": "Geen kalenders gevonden",
+      "status": "Status",
+      "subtitleEmpty": "Begin met het aanmaken van uw eerste kalender",
+      "subtitleWithCount": "Ondertitel met telling",
+      "title": "Kalenders"
+    },
+    "calendarPage": {
+      "actions": "Acties",
+      "addEventsHint": "Voeg evenementen toe door groepen te selecteren",
+      "calendar": "Kalender",
+      "calendarEvents": "Kalenderevenementen",
+      "confirmRemoveGroup": "Weet u zeker dat u deze groep uit de kalender wilt verwijderen?",
+      "groupName": "Groepsnaam",
+      "groupsInCalendar": "Groepen in kalender",
+      "noGroupsAdded": "Nog geen groepen toegevoegd",
+      "removeGroup": "Groep verwijderen",
+      "removeGroupAria": "Groep verwijderen",
+      "subtitle": "Beheer kalenderevenementen en -groepen"
+    },
+    "editEvent": {
+      "addAllEvents": "Voeg alle evenementen van de groep toe",
+      "addGroup": "Groep toevoegen",
+      "addSpecificEvents": "Voeg specifieke evenementen toe",
+      "cancel": "Annuleren",
+      "clickToAdd": "Klik om toe te voegen",
+      "noEventsFound": "Geen evenementen gevonden",
+      "save": "Opslaan",
+      "selectGroup": "Selecteer een groep"
+    }
+  },
+  "common": {
+    "add": "Toevoegen",
+    "amount": "Bedrag",
+    "back": "Terug",
+    "bottom": "Onder",
+    "cancel": "Annuleren",
+    "center": "Midden",
+    "change": "Wijzigen",
+    "changePhoto": "Foto wijzigen",
+    "close": "Sluiten",
+    "comboBox": {
+      "addNew": "Nieuw toevoegen..."
+    },
+    "createPerson": {
+      "confirmDuplicate": "{{existingName}} bestaat al met een e-mailadres van {{existingEmail}}. Weet u zeker dat u {{firstName}} {{lastName}} wilt toevoegen?",
+      "validate": {
+        "firstName": "Voer een voornaam in.",
+        "lastName": "Voer een achternaam in.",
+        "validEmail": "Voer een geldig e-mailadres in."
+      }
+    },
+    "custom": "Aangepast",
+    "delete": "Verwijderen",
+    "done": "Klaar",
+    "duplicate": "Dupliceren",
+    "edit": "Bewerken",
+    "errorBoundary": {
+      "message": "Er is iets misgegaan. Probeer het opnieuw of neem contact op met support als het probleem aanhoudt.",
+      "retry": "Opnieuw proberen",
+      "title": "Oeps! Er is een fout opgetreden"
+    },
+    "formSubmission": {
+      "edit": "Bewerken",
+      "noData": "Geen gegevens beschikbaar",
+      "noQuestions": "Geen vragen gevonden"
+    },
+    "help": "Help",
+    "iconPicker": {
+      "noResults": "Geen pictogrammen gevonden die overeenkomen met \"{{searchText}}\"",
+      "searchLabel": "Pictogrammen zoeken",
+      "searchPlaceholder": "Typ om te zoeken (bijv. persoon, huis, kerk)...",
+      "showingDefault": "Toont {{count}} veelgebruikte pictogrammen. Gebruik zoeken om meer te vinden.",
+      "showingMatching": "Toont {{count}} pictogrammen die overeenkomen met \"{{searchText}}\"",
+      "title": "Pictogram selecteren",
+      "tryDifferent": "Probeer een andere zoekterm"
+    },
+    "left": "Links",
+    "name": "Naam",
+    "no": "Nee",
+    "notes": "Notities",
+    "person": "Persoon",
+    "remove": "Verwijderen",
+    "reportFilter": {
+      "title": "Rapport filteren"
+    },
+    "reportFilterField": {
+      "any": "Elk"
+    },
+    "right": "Rechts",
+    "save": "Opslaan",
+    "saveChanges": "Wijzigingen opslaan",
+    "saving": "Opslaan...",
+    "search": "Zoeken",
+    "searching": "Zoeken...",
+    "sermons": "Preken",
+    "title": "Titel",
+    "top": "Boven",
+    "tryAgain": "Opnieuw proberen",
+    "update": "Bijwerken",
+    "website": "Website",
+    "yes": "Ja",
+    "mobile": "Mobiel",
+    "navigation": "Navigatie",
+    "appTheme": "App-thema",
+    "b1Mobile": "B1 Mobile",
+    "b1CheckIn": "B1 CheckIn"
+  },
+  "components": {
+    "footer": {
+      "phone": "Telefoon",
+      "rights": "Alle rechten voorbehouden."
+    },
+    "loginHeroPanel": {
+      "featureDonations": "Donaties en financieel beheer",
+      "featurePeople": "Leden- en gezinsbeheer",
+      "featurePlanning": "Diensten plannen en roosteren",
+      "featureWebsite": "Websitebouwer en contentbeheer",
+      "subtitle": "Beheer uw gemeente, plan diensten, volg aanwezigheid en verwerk donaties — alles op één plek.",
+      "title": "Kerkbeheer eenvoudig gemaakt"
+    },
+    "wrapper": {
+      "att": "Aanwezigheid",
+      "dash": "Dashboard",
+      "don": "Donaties",
+      "form": "Formulier",
+      "forms": "Formulieren",
+      "groups": "Groepen",
+      "plans": "Plannen",
+      "ppl": "Mensen",
+      "servAdmin": "Serverbeheer",
+      "serving": "Bediening",
+      "set": "Instellingen",
+      "songs": "Liederen",
+      "tasks": "Taken",
+      "teams": "Teams"
+    }
+  },
+  "createPerson": {
+    "addNewPerson": "Nieuwe persoon toevoegen",
+    "email": "E-mail",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam"
+  },
+  "dashboard": {
+    "dashboardPage": {
+      "dash": "Dashboard",
+      "subtitle": "Welkom op uw kerkbeheer-dashboard. Zoek naar mensen, bekijk uw groepen en beheer uw openstaande taken."
+    },
+    "myGroups": "Mijn groepen",
+    "peopleSearch": {
+      "display": "Weergave",
+      "photo": "Foto",
+      "ppl": "Mensen"
+    }
+  },
+  "donation": {
+    "donationForm": {
+      "annually": "Jaarlijks",
+      "biWeekly": "Tweewekelijks",
+      "cover": "Transactiekosten dekken",
+      "fees": "Kosten",
+      "frequencyLabel": "Frequentie",
+      "funds": "Fondsen",
+      "make": "Een donatie doen",
+      "makeRecurring": "Maak dit een terugkerende donatie",
+      "monthly": "Maandelijks",
+      "quarterly": "Per kwartaal",
+      "startDate": "Startdatum",
+      "thankYou": "Bedankt voor uw donatie!",
+      "totalAmount": "Totaalbedrag",
+      "validate": {
+        "amount": "Voer een donatiebedrag in.",
+        "email": "E-mail is verplicht.",
+        "firstName": "Voornaam is verplicht.",
+        "lastName": "Achternaam is verplicht.",
+        "validEmail": "Voer een geldig e-mailadres in."
+      },
+      "weekly": "Wekelijks"
+    },
+    "donationPage": {
+      "donations": "Donaties"
+    },
+    "nonAuthDonation": {
+      "donate": "Doneren"
+    },
+    "page": {
+      "amount": "Bedrag",
+      "batch": "Batch",
+      "currentYearCsv": "CSV huidig jaar",
+      "currentYearPrint": "Afdrukken huidig jaar",
+      "date": "Datum",
+      "fund": "Fonds",
+      "lastYearCsv": "CSV vorig jaar",
+      "lastYearPrint": "Afdrukken vorig jaar",
+      "method": "Methode",
+      "willAppear": "Donaties verschijnen hier zodra ze zijn gedaan."
+    }
+  },
+  "donations": {
+    "batchEdit": {
+      "confirmMsg": "Weet u zeker dat u deze batch en alle bijbehorende donaties permanent wilt verwijderen?",
+      "date": "Datum",
+      "opName": "Naam (optioneel)"
+    },
+    "batchStatements": {
+      "csvDescription": "Download een ZIP-bestand met individuele CSV-bestanden voor elke donor met hun gedetailleerde donatiegegevens",
+      "csvDownload": "Individuele CSV-bestanden",
+      "downloadOptions": "Downloadopties",
+      "downloadZip": "ZIP downloaden ({count} bestanden)",
+      "noDonations": "Geen donaties gevonden voor {year}. Selecteer een ander jaar.",
+      "printAllInfo": "Hiermee wordt één document geopend met alle {count} overzichten. Elk overzicht staat op een aparte pagina.",
+      "printAllStatements": "Alle {count} overzichten afdrukken",
+      "printDescription": "Genereer een samengevoegd document met alle giftenoverzichten om af te drukken",
+      "printStatements": "Afdrukbare overzichten",
+      "selectYear": "Selecteer jaar",
+      "subtitle": "Download giftenoverzichten voor alle donors",
+      "summary": "Samenvatting",
+      "title": "Batch giftenoverzichten",
+      "totalAmount": "Totaalbedrag:",
+      "totalDonations": "Totaal aantal donaties:",
+      "totalDonors": "Totaal aantal donors:",
+      "year": "Jaar",
+      "zipInfo": "Hiermee wordt een ZIP-bestand gedownload met {count} individuele CSV-bestanden, één voor elke donor."
+    },
+    "bulkEntry": {
+      "addDonation": "Donatie toevoegen",
+      "pressEnter": "Druk op Enter om op te slaan en nog een donatie toe te voegen",
+      "selectPerson": "Selecteer persoon of anoniem"
+    },
+    "donationBatchPage": {
+      "batchDate": "Batchdatum:",
+      "subtitle": "Beheer donaties in deze batch",
+      "title": "Donatiebatch"
+    },
+    "donationBatchesPage": {
+      "subtitle": "Beheer donatiebatches en volg giftenregistraties"
+    },
+    "donationEdit": {
+      "anon": "Anoniem",
+      "card": "Kaart",
+      "cash": "Contant",
+      "check": "Cheque",
+      "checkNum": "Cheque #",
+      "date": "Datum",
+      "fund": "Fonds",
+      "inKind": "In natura",
+      "lastDig": "Laatste 4 cijfers",
+      "method": "Methode"
+    },
+    "donationEvents": {
+      "event": "Evenement: ",
+      "failed": "Mislukte donaties - ",
+      "mark": "Markeren als ",
+      "msg": "Bericht: ",
+      "unres": " niet opgelost"
+    },
+    "donations": {
+      "amt": "Bedrag",
+      "anon": "Anoniem",
+      "batches": "Batches",
+      "date": "Datum",
+      "don": "Donaties",
+      "errMsg": "Geen fonds gevonden. Maak eerst een fonds aan voordat u een donatie doet",
+      "funds": "Fondsen",
+      "noDonMsg": "Er zijn geen donaties bijgehouden. Zodra donaties worden ingevoerd, verschijnen ze hier.",
+      "statements": "Giftenoverzichten",
+      "summary": "Samenvatting",
+      "tableIdent": "Id",
+      "total": "Totaal"
+    },
+    "donationsPage": {
+      "batch": "Batch",
+      "date": "Datum",
+      "don": "Donaties",
+      "noBatch": "Geen batches gevonden.",
+      "subtitle": "Bekijk donatiesamenvattingen en analyseer giftentrends",
+      "total": "Totaal"
+    },
+    "fundEdit": {
+      "confirmMsg": "Weet u zeker dat u dit fonds en alle bijbehorende donaties permanent wilt verwijderen?",
+      "errBlank": "Voer een fondsnaam in",
+      "taxDeductible": "Fiscaal aftrekbaar",
+      "trackDonations": "Volgt donaties.",
+      "trackNonDonations": "Volgt niet-donatietransacties zoals kampinschrijvingen, T-shirts, evenemententickets, enz."
+    },
+    "fundPage": {
+      "subtitle": "Volg donaties en bijdragen aan dit fonds"
+    },
+    "funds": {
+      "fund": "Fondsen",
+      "noFund": "Geen fondsen gevonden."
+    },
+    "fundsPage": {
+      "amt": "Bedrag",
+      "anon": "Anoniem",
+      "batch": "Batch",
+      "date": "Datum",
+      "dateEnd": "Einddatum",
+      "dateStart": "Startdatum",
+      "don": "Donaties",
+      "donFilt": "Donatiefilter",
+      "donor": "Donor",
+      "noDon": "Geen donaties voor geselecteerde datumbereik",
+      "subtitle": "Beheer donatiefondsen en volg giftencategorieën"
+    },
+    "kpi": {
+      "avgGift": "Gemiddelde gift",
+      "donationCount": "Totaal aantal donaties",
+      "donorCount": "Unieke donors",
+      "totalGiving": "Totale giften"
+    },
+    "period": {
+      "monthly": "Maandelijks",
+      "quarterly": "Per kwartaal",
+      "weekly": "Wekelijks"
+    }
+  },
+  "forms": {
+    "choicesEdit": {
+      "act": "Actie",
+      "choices": "Keuzes",
+      "txt": "Tekst",
+      "value": "Waarde"
+    },
+    "form": {
+      "act": "Actie",
+      "noCustomMsg": "Er zijn nog geen aangepaste vragen gemaakt. Vragen worden hier weergegeven.",
+      "question": "Vraag",
+      "questions": "Vragen",
+      "req": "Verplicht",
+      "type": "Type"
+    },
+    "formEdit": {
+      "access": "Formuliertoegang",
+      "alone": "Zelfstandig",
+      "associate": "Koppelen aan",
+      "available": "Stel beschikbaarheidsperiode voor formulier in",
+      "availableEnd": "Einddatum beschikbaarheid",
+      "availableStart": "Startdatum beschikbaarheid",
+      "confirmMsg": "Weet u zeker dat u dit formulier permanent wilt verwijderen?",
+      "editForm": "Formulier bewerken",
+      "endReqMsg": "Einddatum is verplicht.",
+      "name": "Naam van formulier",
+      "nameReqMsg": "Naam van formulier is verplicht.",
+      "ppl": "Mensen",
+      "public": "Openbaar",
+      "restrict": "Beperkt",
+      "startReqMsg": "Startdatum is verplicht.",
+      "thankYouMessage": "Bedankbericht"
+    },
+    "formMembers": {
+      "act": "Actie",
+      "addPpl": "Persoon toevoegen",
+      "admin": "Beheerder",
+      "emailNotif": "E-mailmelding",
+      "emailNotifMsg": "Wanneer het formulier wordt ingediend, krijgt u een melding per e-mail.",
+      "formMem": "Formulierleden",
+      "perm": "Machtiging",
+      "view": "Alleen weergeven"
+    },
+    "formPage": {
+      "subtitleConfig": "Formulierconfiguratie en inzendingen"
+    },
+    "formQuestionEdit": {
+      "amt": "Bedrag",
+      "ansReq": "Vereis een antwoord voor deze vraag",
+      "checkBox": "Selectievakje",
+      "confirmMsg": "Weet u zeker dat u deze vraag permanent wilt verwijderen?",
+      "date": "Datum",
+      "decNum": "Decimaal",
+      "desc": "Beschrijving",
+      "fieldReq": "Veldtype is verplicht.",
+      "fund": "Fonds",
+      "multiChoice": "Meerkeuze",
+      "payment": "Betaling",
+      "phoneNum": "Telefoonnummer",
+      "plcOp": "Tijdelijke aanduiding (optioneel)",
+      "prov": "Provider",
+      "questionEdit": "Vraag bewerken",
+      "questionReq": "Vraag is verplicht.",
+      "textArea": "Tekstgebied",
+      "textBox": "Tekstvak",
+      "wholeNum": "Geheel getal",
+      "yesNo": "Ja/Nee"
+    },
+    "formSubmissions": {
+      "anon": "Anoniem",
+      "subBy": "Ingediend door",
+      "subDate": "Indieningsdatum",
+      "subFor": "Ingediend voor",
+      "subRes": "Resultaten van formulierinzending",
+      "subSum": "Samenvatting van formulierinzending"
+    },
+    "formsPage": {
+      "addForm": "Formulier toevoegen",
+      "archForms": "Gearchiveerde formulieren",
+      "confirmMsg1": "Weet u zeker dat u dit formulier wilt archiveren?",
+      "confirmMsg2": "Weet u zeker dat u dit formulier wilt herstellen?",
+      "forms": "Formulieren",
+      "noArch": "Geen gearchiveerde formulieren.",
+      "noCustomMsg": "Er zijn nog geen aangepaste formulieren gemaakt. Ze verschijnen hier wanneer ze worden toegevoegd.",
+      "subtitleManage": "Maak en beheer aangepaste formulieren",
+      "url": "URL"
+    },
+    "tabs": {
+      "formMem": "Formulierleden",
+      "formSub": "Formulierinzendingen",
+      "questions": "Vragen",
+      "unAuth": "Niet gemachtigd"
+    }
+  },
+  "groups": {
+    "groupAdd": {
+      "add": "Toevoegen",
+      "catName": "Categorienaam",
+      "catReq": "Categorienaam is verplicht.",
+      "group": "Groep",
+      "groupReq": "Groepsnaam is verplicht.",
+      "ministry": "Bediening",
+      "new": "Nieuw ",
+      "team": "Team"
+    },
+    "groupBanner": {
+      "associatedServices": "Gekoppelde diensten",
+      "labels": "Labels",
+      "meetingInfo": "Vergaderinformatie",
+      "moreLabels": "Meer labels",
+      "parentPickup": "Ophalen door ouders",
+      "printNametag": "Naamplaatje afdrukken",
+      "settings": "Instellingen",
+      "team": "Team",
+      "trackAttendance": "Aanwezigheid bijhouden"
+    },
+    "groupDetails": {
+      "about": "Over",
+      "attendanceSettings": "Aanwezigheidsinstellingen",
+      "labels": "Labels",
+      "locationPlaceholder": "Huis van Jansen",
+      "meetingInfo": "Vergaderinformatie",
+      "meetingLocation": "Vergaderlocatie",
+      "meetingTime": "Vergadertijd",
+      "meetingTimePlaceholder": "Dinsdagen om 19:00",
+      "noPhoto": "Geen foto beschikbaar",
+      "parentPickup": "Ophalen door ouders",
+      "printNametag": "Naamplaatje afdrukken",
+      "slugPlaceholder": "groepsnaam",
+      "trackAttendance": "Aanwezigheid bijhouden"
+    },
+    "groupDetailsEdit": {
+      "addPhoto": "Foto toevoegen",
+      "attTrack": "Aanwezigheid bijhouden",
+      "attendance": "Aanwezigheid",
+      "catName": "Categorienaam",
+      "catNameMsg": "Voer een categorienaam in.",
+      "clickToAddPhoto": "Klik om foto toe te voegen",
+      "confirmMsg": "Weet u zeker dat u deze groep permanent wilt verwijderen?",
+      "groupDesc": "Groepsbeschrijving",
+      "groupDet": "Groepsgegevens",
+      "groupName": "Groepsnaam",
+      "groupNameMsg": "Voer een groepsnaam in.",
+      "meetingLocation": "Vergaderlocatie",
+      "meetingTime": "Vergadertijd",
+      "parPick": "Ophalen door ouders",
+      "prinName": "Naamplaatje afdrukken",
+      "slug": "Slug (sleutelnaam gebruikt voor URL's)"
+    },
+    "groupLabelsEdit": {
+      "addNewLabel": "Nieuw label toevoegen",
+      "labels": "Labels"
+    },
+    "groupMembers": {
+      "groupMem": "Groepsleden",
+      "noMem": "Geen groepsleden gevonden.",
+      "send": "Verzenden",
+      "sendMemMsg": "Stuur een bericht naar leden",
+      "showTemplates": "Sjablonen weergeven",
+      "templates": {
+        "none": "Geen",
+        "templates": "Sjablonen",
+        "welcome_volunteers": {
+          "heading": "Welkom vrijwilligers",
+          "message": "Welkom en bedankt voor uw vrijwilligerswerk.\n\nDownload de B1.Church-app en log in om uw rooster te beheren. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
+        }
+      }
+    },
+    "groupNavigation": {
+      "members": "Leden",
+      "sessions": "Sessies"
+    },
+    "groupPage": {
+      "addPpl": "Persoon toevoegen"
+    },
+    "groupSessions": {
+      "addSesMsg": "Voeg een nieuwe sessie toe om door te gaan.",
+      "allYears": "Alle jaren",
+      "attFor": "Aanwezigheid voor",
+      "new": "Nieuw",
+      "noAttendance": "Geen aanwezigheidsrecords gevonden",
+      "noSesMsg": "Er zijn geen sessies.",
+      "noSessionsFound": "Geen sessies gevonden",
+      "selectSession": "Selecteer sessie",
+      "session": "Sessie",
+      "sessions": "Sessies",
+      "tryAdjusting": "Probeer uw zoekopdracht aan te passen"
+    },
+    "groupsPage": {
+      "addGroup": "Groep toevoegen",
+      "cat": "Categorie",
+      "categories": "Categorieën",
+      "groups": "Groepen",
+      "labels": "Labels",
+      "noGroupMsg": "Geen groepen gevonden. Maak een groep aan.",
+      "pers": "1 persoon",
+      "ppl": "Mensen",
+      "spPpl": " mensen",
+      "subtitle": {
+        "create": "Begin met het aanmaken van uw eerste groep",
+        "manage": "Organiseer en beheer uw kerkgroepen"
+      },
+      "totalGroups": "Totaal aantal groepen",
+      "totalMembers": "Totaal aantal leden"
+    },
+    "membersAdd": {
+      "availableMem": "Beschikbare groepsleden",
+      "noMem": "Geen groepsleden beschikbaar."
+    },
+    "serviceTimes": {
+      "services": "Dienst(en):"
+    },
+    "serviceTimesEdit": {
+      "srvTimeAdd": "Diensttijd toevoegen",
+      "srvTimeOp": "Diensttijden (optioneel)"
+    },
+    "sessionAdd": {
+      "invDate": "Ongeldige datum",
+      "sesAdd": "Sessie toevoegen",
+      "sesDate": "Sessiedatum",
+      "srvTime": "Diensttijd"
+    },
+    "sessionCard": {
+      "active": "Actief",
+      "edit": "Bewerken",
+      "people": "mensen",
+      "person": "persoon",
+      "view": "Weergeven"
+    },
+    "sessionEdit": {
+      "deleteConfirm": "Weet u zeker dat u deze sessie permanent wilt verwijderen?",
+      "sesEdit": "Sessie bewerken"
+    },
+    "tabs": {
+      "mem": "Leden",
+      "ses": "Sessies"
+    }
+  },
+  "month": {
+    "apr": "April",
+    "april": "April",
+    "aug": "Augustus",
+    "august": "Augustus",
+    "dec": "December",
+    "december": "December",
+    "feb": "Februari",
+    "february": "Februari",
+    "jan": "Januari",
+    "january": "Januari",
+    "july": "Juli",
+    "june": "Juni",
+    "mar": "Maart",
+    "march": "Maart",
+    "may": "Mei",
+    "nov": "November",
+    "november": "November",
+    "oct": "Oktober",
+    "october": "Oktober",
+    "sep": "September",
+    "september": "September"
+  },
+  "people": {
+    "advancedSearch": {
+      "enterValuePlaceholder": "Voer waarde in...",
+      "search": "Zoeken",
+      "valuePlaceholder": "Waarde"
+    },
+    "aiSearch": {
+      "placeholder": "Toon mij mannen boven de 30 met verjaardagen in juli",
+      "title": "AI-zoekopdracht"
+    },
+    "editCondition": {
+      "act": "Activiteit",
+      "anniMonth": "Jubileummaand",
+      "any": "Elk",
+      "attCamp": "heeft bijgewoond (locatie)",
+      "attGen": "heeft bijgewoond (algemeen)",
+      "attGroup": "heeft bijgewoond (groep)",
+      "attServ": "heeft bijgewoond (dienst)",
+      "attServTime": "heeft bijgewoond (diensttijd)",
+      "bMonth": "Geboortemaand",
+      "contains": "bevat",
+      "donTo": "heeft gedoneerd aan",
+      "endW": "eindigt met",
+      "field": "Veld",
+      "from": "Van",
+      "groupMem": "Groepslid",
+      "hasDon": "heeft gedoneerd (algemeen)",
+      "isMem": "is lid van",
+      "marYears": "Jaren getrouwd",
+      "memAtt": "Aanwezigheid leden",
+      "memDon": "Donaties leden",
+      "notMem": "is geen lid van",
+      "operator": "Operator",
+      "saveCon": "Voorwaarde opslaan",
+      "startW": "begint met",
+      "to": "Tot",
+      "value": "Waarde",
+      "valuePlaceholder": "Waarde"
+    },
+    "groups": {
+      "notMemMsg": "Momenteel geen lid van een groep."
+    },
+    "household": {
+      "house": " Huishouden"
+    },
+    "householdEdit": {
+      "addMatch": "adres om overeen te komen",
+      "blankMsg": "Voer een huishoudnaam in.",
+      "child": "Kind",
+      "head": "Hoofd",
+      "house": " Huishouden",
+      "houseName": "Huishoudnaam",
+      "other": "Overig",
+      "spouse": "Echtgenoot/Echtgenote",
+      "updQuestion": "Wilt u bijwerken"
+    },
+    "merge": {
+      "merge": "samenvoegen",
+      "mergeRec": "Records samenvoegen"
+    },
+    "mergeModal": {
+      "cancel": "Annuleren",
+      "confirm": "Bevestigen",
+      "contactInfo": "Contactgegevens",
+      "fieldCon": "Los veldconflicten op:",
+      "householdId": "Huishoud-ID",
+      "id": "ID",
+      "merge": "Samenvoegen...",
+      "mergeQuestion": "Samenvoegen",
+      "name": "Naam",
+      "profile": "Profiel",
+      "selMsg": "Selecteer een waarde voor alle velden",
+      "with": "met"
+    },
+    "peopleColumns": {
+      "appFilt": "Filters toepassen",
+      "cust": "Aangepast",
+      "filt": "Filters",
+      "noFilt": "Geen filters beschikbaar.",
+      "stand": "Standaard"
+    },
+    "peoplePage": {
+      "addPerson": "Persoon toevoegen",
+      "bDay": "Verjaardag",
+      "bDayNo": "Verjaardag (zonder jaar)",
+      "deleteOp": "Verwijderoptie",
+      "first": "Voornaam",
+      "last": "Achternaam",
+      "middle": "Tweede voornaam",
+      "nameNote": "Notities naamplaatje",
+      "photo": "Foto",
+      "primEmail": "Primaire e-mail",
+      "primPhone": "Primair telefoonnummer",
+      "recentPpl": "Onlangs toegevoegde mensen",
+      "searchPpl": "Mensen zoeken"
+    },
+    "peopleSearch": {
+      "active": "actief:",
+      "activity": "Activiteit",
+      "adv": "Geavanceerd",
+      "advSearch": "Geavanceerd zoeken",
+      "campus": "Locatie",
+      "checkBoxes": "Vink de vakjes aan om filters in te schakelen",
+      "clearAll": "Alles wissen",
+      "configure": "Configureren",
+      "contact": "Contactgegevens",
+      "customFields": "Aangepaste velden",
+      "demographics": "Demografie",
+      "fund": "Fonds",
+      "group": "Groep",
+      "membership": "Lidmaatschap en groepen",
+      "names": "Namen",
+      "placeholder": "Zoek op naam...",
+      "service": "Dienst",
+      "serviceTime": "Diensttijd",
+      "simp": "Eenvoudig",
+      "simpSearch": "Mensen zoeken",
+      "type": "Type"
+    },
+    "peopleSearchResults": {
+      "noResMsg": "Geen resultaten gevonden. Zoek op een andere naam of voeg een nieuwe persoon toe"
+    },
+    "personAttendance": {
+      "noAttMsg": "Geen aanwezigheidsrecords. Aanwezigheid verschijnt zodra deze is bijgehouden voor een groepssessie."
+    },
+    "personEdit": {
+      "applyQuestion": "Wilt u dit toepassen op het hele",
+      "cannotDeleteSelf": "U kunt uw eigen persoonsrecord niet verwijderen.",
+      "confirmMsg": "Weet u zeker dat u dit persoonsrecord permanent wilt verwijderen?",
+      "donorNumber": "Donornummer",
+      "exten": "Toestel",
+      "family": "gezin",
+      "firstReq": "Voornaam is verplicht",
+      "for": "voor",
+      "home": "Thuis",
+      "invalForm": "Ongeldig formulier",
+      "lastReq": "Achternaam is verplicht",
+      "maritalStatus": "Burgerlijke staat",
+      "merge": "Samenvoegen",
+      "mobile": "Mobiel",
+      "nameNote": "Notities naamplaatje",
+      "persDet": "Persoonlijke gegevens",
+      "upAddress": "U heeft het adres bijgewerkt naar",
+      "valEmail": "Voer een geldig e-mailadres in.",
+      "work": "Werk"
+    },
+    "personForm": {
+      "addForm": "Formulier toevoegen",
+      "form": "Formulier",
+      "noFormMsg": "Geen formulierinzending gevonden voor deze persoon"
+    },
+    "personNav": {
+      "customForms": "Aangepaste formulieren"
+    },
+    "personView": {
+      "home": "Thuis",
+      "memShip": "Lidmaatschap:",
+      "mobile": "Mobiel",
+      "persDet": "Persoonlijke gegevens",
+      "work": "Werk"
+    },
+    "tabs": {
+      "att": "Aanwezigheid",
+      "don": "Donaties",
+      "noImplement": "Niet geïmplementeerd"
+    },
+    "updateHouseHold": {
+      "update": "Adres bijwerken"
+    }
+  },
+  "person": {
+    "address": "Adres",
+    "age": "Leeftijd",
+    "anniversary": "Jubileum",
+    "birthDate": "Geboortedatum",
+    "city": "Stad",
+    "country": "Land",
+    "displayName": "Weergavenaam",
+    "divorced": "Gescheiden",
+    "email": "E-mail",
+    "female": "Vrouw",
+    "firstName": "Voornaam",
+    "gender": "Geslacht",
+    "inactive": "Inactief",
+    "lastName": "Achternaam",
+    "line1": "Regel 1",
+    "line2": "Regel 2",
+    "male": "Man",
+    "maritalStatus": "Burgerlijke staat",
+    "married": "Getrouwd",
+    "member": "Lid",
+    "membershipStatus": "Lidmaatschapsstatus",
+    "membershp": "Lidmaatschap",
+    "middleName": "Tweede voornaam",
+    "nickName": "Bijnaam",
+    "noRec": "Geen records gevonden",
+    "person": "Persoon",
+    "phone": "Telefoon",
+    "prefix": "Voorvoegsel",
+    "regularAttendee": "Regelmatige bezoeker",
+    "single": "Ongehuwd",
+    "staff": "Medewerker",
+    "state": "Provincie",
+    "suffix": "Achtervoegsel",
+    "unknown": "Onbekend",
+    "unspecified": "Niet gespecificeerd",
+    "visitor": "Bezoeker",
+    "widowed": "Weduwe/Weduwnaar",
+    "zip": "Postcode"
+  },
+  "placeholders": {
+    "addPage": {
+      "linkText": "Klik hier",
+      "linkUrl": "/nieuwe-pagina",
+      "title": "Nieuwe pagina"
+    },
+    "batch": {
+      "name": "Zondagscollecte - 5 jan"
+    },
+    "block": {
+      "name": "Herosectie"
+    },
+    "campus": {
+      "name": "Locatie centrum"
+    },
+    "choices": {
+      "text": "Optie 1",
+      "value": "optie1"
+    },
+    "church": {
+      "address1": "Hoofdstraat 123",
+      "address2": "Suite 100",
+      "city": "Amsterdam",
+      "country": "Nederland",
+      "name": "Gemeente Genadekerk",
+      "state": "Noord-Holland",
+      "subdomain": "genadekerk",
+      "zip": "1012 AB"
+    },
+    "device": {
+      "label": "Scherm woonkamer"
+    },
+    "donation": {
+      "checkNumber": "1234",
+      "lastDigits": "4242",
+      "notes": "Voeg notities over deze donatie toe..."
+    },
+    "element": {
+      "buttonText": "Klik hier",
+      "cardTitle": "Kaarttitel",
+      "donateText": "Nu doneren",
+      "imageDescription": "Beeldbeschrijving",
+      "videoId": "dQw4w9WgXcQ"
+    },
+    "faq": {
+      "title": "Wat is uw retourbeleid?"
+    },
+    "font": {
+      "search": "Lettertypen zoeken..."
+    },
+    "form": {
+      "name": "Contactformulier",
+      "questionDescription": "Voeg aanvullende details toe...",
+      "questionPlaceholder": "Voer uw antwoord in...",
+      "questionTitle": "Uw vraag hier",
+      "thankYouMessage": "Bedankt voor het indienen van het formulier!"
+    },
+    "fund": {
+      "name": "Algemeen fonds"
+    },
+    "giving": {
+      "publicKey": "pk_live_..."
+    },
+    "group": {
+      "category": "Bijbelstudie, Zondagsschool, Bediening",
+      "name": "Kleine groep A"
+    },
+    "household": {
+      "name": "Familie Jansen"
+    },
+    "page": {
+      "linkText": "Lees meer",
+      "linkUrl": "https://voorbeeld.nl",
+      "title": "Over ons",
+      "urlPath": "/over-ons"
+    },
+    "pairScreen": {
+      "code": "ABC123"
+    },
+    "person": {
+      "address1": "Hoofdstraat 123",
+      "address2": "App. 4B",
+      "city": "Amsterdam",
+      "donorNumber": "DN-12345",
+      "email": "jan.jansen@voorbeeld.nl",
+      "firstName": "Jan",
+      "lastName": "Jansen",
+      "middleName": "Pieter",
+      "nameTag": "Hoofdzanger",
+      "nickname": "Jantje",
+      "phoneExt": "1234",
+      "simpleEmail": "jan@voorbeeld.nl",
+      "state": "Noord-Holland",
+      "zip": "1012 AB"
+    },
+    "plan": {
+      "name": "Zondagsdienst - 5 jan"
+    },
+    "planItem": {
+      "description": "Korte beschrijving...",
+      "label": "Openingslied"
+    },
+    "planType": {
+      "name": "Zondagsdienst"
+    },
+    "position": {
+      "count": "2",
+      "name": "Welkomsdienst"
+    },
+    "role": {
+      "name": "Bedieningsleider"
+    },
+    "sermon": {
+      "description": "Voer prekenbeschrijving in...",
+      "title": "Zondagsboodschap"
+    },
+    "service": {
+      "name": "Zondagochtenddienst"
+    },
+    "song": {
+      "album": "Albumnaam",
+      "arrangementName": "Hedendaagse bewerking",
+      "artist": "John Newton",
+      "bpm": "120",
+      "keySignature": "C#",
+      "language": "Nederlands",
+      "lengthSeconds": "180",
+      "linkUrl": "https://voorbeeld.nl/akkoorden",
+      "lyrics": "Voer tekst hier in...",
+      "title": "Amazing Grace"
+    },
+    "task": {
+      "notes": "Voeg notities over deze taak toe...",
+      "title": "Aanbiddingsslides voorbereiden"
+    },
+    "time": {
+      "displayName": "Zondagochtend"
+    },
+    "user": {
+      "email": "jan@voorbeeld.nl",
+      "firstName": "Jan",
+      "lastName": "Jansen"
+    }
+  },
+  "plans": {
+    "actionSelector": {
+      "addAction": "Actie toevoegen",
+      "addSection": "Sectie toevoegen",
+      "fromAssociatedLesson": "Van gekoppelde les:",
+      "noActionsAvailable": "Geen acties beschikbaar",
+      "selectAction": "Actie selecteren",
+      "selectExternalItem": "Extern item selecteren"
+    },
+    "assignment": {
+      "addPosition": "Positie toevoegen",
+      "autoAssign": "Automatisch toewijzen",
+      "saveNotes": "Notities opslaan"
+    },
+    "assignmentEdit": {
+      "assignPos": "Positie toewijzen",
+      "done": "Klaar",
+      "editAssign": "Toewijzing bewerken",
+      "noMem": "Geen groepsleden gevonden."
+    },
+    "bulkLessonSchedule": {
+      "biWeekly": "Tweewekelijks",
+      "date": "Datum",
+      "interval": "Interval",
+      "lesson": "Les",
+      "lessonsToSchedule": "te plannen lessen",
+      "noPreviousLesson": "Geen eerdere les gevonden om mee door te gaan. Plan eerst ten minste één les.",
+      "noRemainingLessons": "Geen resterende lessen in deze serie. U heeft ze allemaal voltooid!",
+      "startDate": "Startdatum",
+      "startingLesson": "Beginles",
+      "title": "Bulk lessen plannen",
+      "venue": "Locatie",
+      "weekly": "Wekelijks"
+    },
+    "contentProviderAuth": {
+      "deviceFlowInstructions": "Bezoek de onderstaande URL en voer de code in om autorisatie te verlenen:",
+      "errorGeneric": "Provider koppelen mislukt. Probeer opnieuw.",
+      "link": "Koppelen",
+      "linkAccount": "Account koppelen",
+      "linkNew": "Nieuwe provider koppelen",
+      "linked": "Gekoppeld",
+      "noLinkedDescription": "Koppel een contentprovider om toegang te krijgen tot hun inhoud in uw dienstplannen.",
+      "noProvidersAvailable": "Geen contentproviders beschikbaar",
+      "pkceInstructions": "Klik op de knop hieronder om te autoriseren in een pop-upvenster:",
+      "pkceWaiting": "Wachten op autorisatie in pop-up...",
+      "refresh": "Vernieuwen",
+      "selectProvider": "Contentprovider koppelen",
+      "success": "Succesvol gekoppeld!",
+      "title": "Contentproviders",
+      "unlink": "Ontkoppelen",
+      "waitingForAuth": "Wachten op autorisatie..."
+    },
+    "lessonHeaderSelector": {
+      "description": "Selecteer een kop of sectie om aan uw plan toe te voegen. De onderliggende items worden toegevoegd als planitems.",
+      "noContent": "Geen lesinhoud beschikbaar",
+      "selectContent": "Inhoud selecteren",
+      "title": "Lesinhoud toevoegen"
+    },
+    "lessonScheduleEdit": {
+      "dateRequired": "Selecteer een datum",
+      "scheduleLesson": "Les plannen",
+      "scheduledDate": "Geplande datum",
+      "selectLesson": "Les selecteren",
+      "venueRequired": "Selecteer een locatie"
+    },
+    "lessonSelector": {
+      "associateLesson": "Les koppelen",
+      "browseOtherProviders": "Andere providers bekijken",
+      "contentProvider": "Contentprovider",
+      "lesson": "Les",
+      "linkProviderFirst": "Koppel deze provider eerst om inhoud te bekijken",
+      "providerNotLinked": "Provider niet gekoppeld"
+    },
+    "ministryList": {
+      "getStarted": "Begin met het aanmaken van uw eerste bediening",
+      "noMinMsg": "Geen bedieningen gevonden. Maak een bediening aan."
+    },
+    "ministryPage": {
+      "subtitle": "Organiseer bedieningsteams en dienstplannen"
+    },
+    "planEdit": {
+      "copyAll": "Posities en toewijzingen",
+      "copyNothing": "Niets",
+      "copyPositions": "Alleen posities",
+      "copyPrevious": "Kopiëren van vorig plan",
+      "copyServiceOrder": "Dienstorde kopiëren",
+      "planAdd": "Plan toevoegen",
+      "planEdit": "Plan bewerken",
+      "planReq": "Plannaam is verplicht.",
+      "servDate": "Dienstdatum",
+      "servReq": "Dienstdatum is verplicht."
+    },
+    "planItem": {
+      "addItem": "Item toevoegen",
+      "editItem": "Item bewerken",
+      "editSection": "Sectie bewerken",
+      "expandToActions": "Uitvouwen naar acties",
+      "externalItem": "Extern item",
+      "item": "Item",
+      "song": "Lied"
+    },
+    "planItemEdit": {
+      "confirmDelete": "Verwijderen bevestigen",
+      "confirmDeleteMessage": "Weet u zeker dat u dit item wilt verwijderen?",
+      "description": "Beschrijving",
+      "edit": "Bewerken",
+      "editAddOn": "Add-on bewerken",
+      "editHeader": "Kop bewerken",
+      "editSong": "Lied bewerken",
+      "enterSearch": "Voer zoekterm in",
+      "minutes": "Minuten",
+      "seconds": "Seconden"
+    },
+    "planList": {
+      "bulkSchedule": "Bulkplanning",
+      "createFirst": "Eerste plan aanmaken",
+      "createPlan": "Plan aanmaken",
+      "newPlan": "Nieuw plan",
+      "noPlans": "Geen plannen gevonden",
+      "plans": "Plannen",
+      "scheduleLesson": "Les plannen",
+      "serviceOrder": "Dienstorde"
+    },
+    "planPage": {
+      "assign": "Teamtoewijzingen",
+      "assignments": "Toewijzingen",
+      "band": "Band",
+      "loadingPlan": "Plan laden...",
+      "noteSave": "Notitie opgeslagen",
+      "serviceOrder": "Dienstorde",
+      "servicePlan": "Dienstplan",
+      "subtitle": "Plan en rooster uw dienst"
+    },
+    "planType": {
+      "details": "Gegevens plantype"
+    },
+    "planTypeEdit": {
+      "add": "Toevoegen",
+      "edit": "Bewerken",
+      "errorSaving": "Fout bij opslaan plantype",
+      "nameRequired": "Naam plantype is verplicht",
+      "planType": "Plantype",
+      "planTypeName": "Naam plantype"
+    },
+    "planTypeList": {
+      "addPlanType": "Plantype toevoegen",
+      "createPlanType": "Plantype aanmaken",
+      "createPlanTypes": "Plantypen aanmaken",
+      "noPlanTypes": "Geen plantypen gevonden",
+      "planTypes": "Plantypen"
+    },
+    "planTypePage": {
+      "notFound": "Plantype niet gevonden",
+      "pairTvApp": "TV-app koppelen",
+      "planType": "Plantype",
+      "subtitle": "Configureer plantype-instellingen",
+      "tvAppDescription": "Toon uw lesinhoud op elke TV of scherm met onze gratis app"
+    },
+    "planTypePairDialog": {
+      "downloadTitle": "Download de Lessons.church TV-app",
+      "instructions": "Voer de 4-tekens code in die op het scherm van de TV-app wordt weergegeven:",
+      "pairTitle": "Uw apparaat koppelen",
+      "success": "Succesvol gekoppeld! De TV-app toont nu inhoud van dit plantype.",
+      "title": "TV-app koppelen"
+    },
+    "planValidation": {
+      "and": "en",
+      "between": "tussen",
+      "blockCon": "Blokkeringsdatumconflict van",
+      "cons": "Conflicten",
+      "during": "tijdens",
+      "more": "meer",
+      "needed": "nodig.",
+      "notify": "Melden",
+      "person": "persoon",
+      "pleaseConfirm": "Log in en bevestig.",
+      "ppl": "mensen",
+      "timeCon": "Tijdconflict tussen",
+      "timeCon2": "Tijdconflict om",
+      "to": "naar",
+      "val": "Validatie",
+      "valPlan": "Plan is geldig.",
+      "vol": "vrijwilliger(s)",
+      "volNotif": "Alle vrijwilligers zijn op de hoogte gebracht.",
+      "volReq": "Vrijwilligersverzoeken: "
+    },
+    "plansPage": {
+      "addMinistry": "Bediening toevoegen",
+      "editMinistry": "Bediening bewerken",
+      "selMin": "Selecteer een bediening",
+      "subtitle": "Beheer bedieningen en dienstplannen"
+    },
+    "positionEdit": {
+      "catName": "Categorienaam",
+      "catNameReq": "Categorienaam is verplicht.",
+      "nameReq": "Naam is verplicht",
+      "posAdd": "Positie toevoegen",
+      "posEdit": "Positie bewerken",
+      "volCount": "Aantal vrijwilligers",
+      "volGroup": "Vrijwilligersgroep"
+    },
+    "positionList": {
+      "load": "Laden...",
+      "persNeed": "1 persoon nodig",
+      "pos": "Positie",
+      "ppl": "Mensen",
+      "pplNeed": " mensen nodig",
+      "team": "Team"
+    },
+    "printPlan": {
+      "length": "Lengte",
+      "serviceOrder": "DIENSTORDE",
+      "time": "Tijd"
+    },
+    "serviceOrder": {
+      "addFromLesson": "Toevoegen uit les",
+      "addSection": "Sectie toevoegen",
+      "associateError": "Koppelfout",
+      "associateLesson": "Les koppelen",
+      "customizeLesson": "Aanpassen",
+      "disassociateError": "Ontkoppelfout",
+      "lessonPreview": "Lesvoorbeeld",
+      "loadError": "Laadfout",
+      "noItems": "Geen items in dienstorde",
+      "orderOfService": "Orde van dienst",
+      "previewBanner": "Dit is een voorbeeld van de gekoppelde les. Klik op \"Aanpassen\" om te bewerken.",
+      "print": "Afdrukken"
+    },
+    "songs": {
+      "links": "Links"
+    },
+    "teamList": {
+      "createTeam": "Team aanmaken",
+      "createTeams": "Teams aanmaken",
+      "manage": "Beheren",
+      "members": "leden",
+      "newTeam": "Nieuw team",
+      "noTeam": "Geen teams gevonden. Maak een team aan.",
+      "teams": "Teams"
+    },
+    "timeEdit": {
+      "disName": "Weergavenaam",
+      "disNameReq": "Weergavenaam is verplicht.",
+      "endReq": "Eindtijd is verplicht",
+      "followGuide": "Volg de onderstaande handleiding om diensttijden in te stellen",
+      "startReq": "Starttijd is verplicht",
+      "teamNeed": "Benodigde teams",
+      "teamReq": "Selecteer team(s).",
+      "timeAdd": "Tijd toevoegen",
+      "timeEdit": "Tijd bewerken",
+      "timeEnd": "Eindtijd",
+      "timeStart": "Starttijd",
+      "tip": "Tip"
+    },
+    "timeList": {
+      "noTime": "Er zijn nog geen tijden toegevoegd",
+      "sunServ": "Zondagsdienst",
+      "times": "Tijden"
+    }
+  },
+  "profile": {
+    "deviceContent": {
+      "associatedContent": "Gekoppelde inhoud"
+    },
+    "deviceEdit": {
+      "label": "Label",
+      "labelRequired": "Label is verplicht"
+    },
+    "devices": {
+      "addScreen": "Scherm toevoegen",
+      "device": "Apparaat",
+      "editDevice": "Apparaat bewerken",
+      "label": "Label",
+      "lastActiveDate": "Laatst actieve datum",
+      "registrationDate": "Registratiedatum",
+      "title": "Apparaten"
+    },
+    "linkedAccounts": {
+      "link": "Koppelen",
+      "signUp": "Aanmelden",
+      "unlink": "Ontkoppelen"
+    },
+    "pairScreen": {
+      "codeRequired": "Koppelingscode is verplicht",
+      "invalidCode": "Ongeldige koppelingscode",
+      "pairingCode": "Koppelingscode"
+    },
+    "profilePage": {
+      "accDel": "Account verwijderen",
+      "confirmMsg": "Weet u zeker dat u uw account permanent wilt verwijderen?",
+      "delAcc": "Mijn account verwijderen",
+      "deleteError": "Account verwijderen mislukt",
+      "emailMsg": "Voer een e-mailadres in.",
+      "firstMsg": "Voer voornaam in",
+      "lastMsg": "Voer achternaam in",
+      "linkedAccounts": "Gekoppelde accounts",
+      "noDirect": "Verberg mij in het ledenregister",
+      "passLong": "Voer een wachtwoord in van ten minste 8 tekens.",
+      "passMatch": "Wachtwoorden komen niet overeen.",
+      "passNew": "Nieuw wachtwoord",
+      "passVer": "Wachtwoord bevestigen",
+      "passwordHelper": "Laat leeg om huidig wachtwoord te behouden",
+      "permWarn": "Wees voorzichtig, deze acties zijn permanent",
+      "profEdit": "Account bewerken",
+      "saveChange": "Wijzigingen opgeslagen.",
+      "saveChanges": "Wijzigingen opslaan",
+      "saveError": "Wijzigingen opslaan mislukt",
+      "subtitle": "Beheer uw profiel en voorkeuren",
+      "valEmail": "Voer een geldig e-mailadres in."
+    }
+  },
+  "reporting": {
+    "detailed": "Gedetailleerd",
+    "downloadOptions": "Downloadopties",
+    "noData": "Geen gegevens beschikbaar",
+    "runReport": "Rapport uitvoeren",
+    "sampleTemplate": "Voorbeeldsjabloon",
+    "summary": "Samenvatting",
+    "toDateBeforeFromDate": "Einddatum kan niet voor startdatum liggen",
+    "useFilter": "Filter gebruiken"
+  },
+  "reports": {
+    "reportPage": {
+      "report": "Rapport"
+    },
+    "reportsPage": {
+      "attTrend": "Aanwezigheidstrend",
+      "attTrendDesc": "Bekijk aanwezigheidstrends in de tijd",
+      "bDays": "Verjaardagen",
+      "bDaysDesc": "Bekijk aankomende verjaardagen",
+      "dailyGroupAtt": "Dagelijkse groepsaanwezigheid",
+      "dailyGroupAttDesc": "Bekijk dagelijkse groepsaanwezigheid",
+      "donSum": "Donatiesamenvatting",
+      "donSumDesc": "Bekijk donatiesamenvatting",
+      "groupAtt": "Groepsaanwezigheid",
+      "groupAttDesc": "Bekijk groepsaanwezigheid",
+      "helpText": "Selecteer een rapport om gedetailleerde informatie te bekijken",
+      "reports": "Rapporten",
+      "subtitle": "Bekijk en download kerkrapporten"
+    }
+  },
+  "sermons": {
+    "addFirstSermon": "Eerste preek toevoegen",
+    "addPermanentLiveUrl": "Permanente live-URL toevoegen",
+    "addSermon": "Preek toevoegen",
+    "adjustSearchTerms": "Probeer uw zoektermen aan te passen",
+    "bulkImport": {
+      "backToSelection": "Terug naar selectie",
+      "chooseSource": "Importbron kiezen",
+      "fetch": "Ophalen",
+      "fetching": "Ophalen...",
+      "import": "Importeren",
+      "importFromVimeo": "Importeren vanuit Vimeo",
+      "importFromYouTube": "Importeren vanuit YouTube",
+      "importIntoPlaylist": "Importeren in afspeellijst",
+      "selectPlaylist": "Selecteer een afspeellijst",
+      "subtitle": "Importeer video's van externe platforms in bulk",
+      "title": "Bulkimport",
+      "vimeo": "Vimeo",
+      "vimeoChannelId": "Vimeo kanaal-ID",
+      "vimeoChannelPlaceholder": "staffpicks",
+      "vimeoDescription": "Importeer video's van uw Vimeo-account of showcases",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube kanaal-ID",
+      "youtubeChannelPlaceholder": "UCfiDl90gAfZMkgbeCqX1WiA",
+      "youtubeDescription": "Importeer video's van uw YouTube-kanaal of afspeellijsten"
+    },
+    "duration": {
+      "minutes": "Minuten",
+      "seconds": "Seconden"
+    },
+    "getStarted": "Begin met het toevoegen van uw eerste preek",
+    "liveStreamTimes": {
+      "externalLinks": {
+        "customizeAppearance": "Uiterlijk aanpassen",
+        "editUsers": "Gebruikers bewerken",
+        "title": "Externe bronnen",
+        "viewYourStream": "Uw stream bekijken"
+      },
+      "linkEdit": {
+        "cancel": "Annuleren",
+        "configureSettings": "Configureer navigatielinkinstellingen",
+        "createNewLink": "Nieuwe link aanmaken",
+        "delete": "Verwijderen",
+        "deleteConfirm": "Weet u zeker dat u deze navigatielink wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
+        "deleteLink": "Link verwijderen",
+        "deleteNestedLinksFirst": "Deze link heeft geneste sublinks. Verwijder die eerst.",
+        "deleting": "Verwijderen...",
+        "displayText": "Weergavetekst",
+        "displayTextPlaceholder": "Voer tekst in om in navigatie weer te geven",
+        "editNavigationLink": "Navigatielink bewerken",
+        "errors": {
+          "deleteFailed": "Link verwijderen mislukt. Probeer opnieuw.",
+          "deleteNestedFirst": "Verwijder eerst de geneste links",
+          "saveFailed": "Link opslaan mislukt. Probeer opnieuw.",
+          "textRequired": "Voer geldige tekst in",
+          "unauthorized": "Niet gemachtigd om links te maken",
+          "unauthorizedDelete": "Niet gemachtigd om links te verwijderen",
+          "urlRequired": "Voer een link in"
+        },
+        "linkDetails": "Linkgegevens",
+        "linkUrl": "Link-URL",
+        "linkUrlPlaceholder": "https://voorbeeld.nl of /interne-pagina",
+        "menuOrganization": "Menu-organisatie",
+        "optionalSubmenuMessage": "Organiseer deze link optioneel onder een bestaand submenu:",
+        "saveLink": "Link opslaan",
+        "saving": "Opslaan...",
+        "submenuMessage": "Deze link wordt onder submenu geplaatst:"
+      },
+      "navigationLinks": {
+        "add": "Toevoegen",
+        "home": "Home",
+        "title": "Navigatielinks"
+      },
+      "serviceEdit": {
+        "addNewService": "Nieuwe dienst toevoegen",
+        "auto": "Automatisch",
+        "basicInformation": "Basisinformatie",
+        "chatSettings": "Chatinstellingen",
+        "deleteConfirm": "Weet u zeker dat u deze dienst wilt verwijderen?",
+        "editService": "Dienst bewerken",
+        "enableChatMinutesAfter": "Chat inschakelen - Minuten na",
+        "enableChatMinutesBefore": "Chat inschakelen - Minuten voor",
+        "errorsCorrectionTitle": "Corrigeer de volgende fouten:",
+        "latestSermon": "Laatste preek",
+        "no": "Nee",
+        "oneTime": "Eenmalig",
+        "recursWeekly": "Keert wekelijks terug",
+        "sermon": "Preek",
+        "serviceName": "Dienstnaam",
+        "serviceNamePlaceholder": "bijv. zondagochtenddienst",
+        "serviceNameRequired": "Dienstnaam is verplicht",
+        "serviceTime": "Diensttijd",
+        "serviceTimeRequired": "Diensttijd is verplicht",
+        "startVideoEarly": "Video eerder starten",
+        "startVideoEarlyHelp": "Optioneel: voor aftelvideo's of pre-dienstinhoud",
+        "videoSettings": "Video-instellingen",
+        "weekly": "Wekelijks",
+        "yes": "Ja"
+      },
+      "services": "Diensten",
+      "servicesTab": {
+        "addService": "Dienst toevoegen",
+        "title": "Diensten",
+        "weekly": "Wekelijks"
+      },
+      "settings": "Instellingen",
+      "sidebarTabs": {
+        "add": "Toevoegen",
+        "title": "Inhoudstabbladen"
+      },
+      "subtitle": "Configureer uw terugkerende diensttijden",
+      "tabEdit": {
+        "cancel": "Annuleren",
+        "chat": "Chat",
+        "configureSettings": "Configureer instellingen van streaming-zijbalktabblad",
+        "createNewTab": "Nieuw tabblad aanmaken",
+        "delete": "Verwijderen",
+        "deleteConfirm": "Weet u zeker dat u dit tabblad wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
+        "deleteTab": "Tabblad verwijderen",
+        "deleting": "Verwijderen...",
+        "editTab": "Tabblad bewerken",
+        "errors": {
+          "deleteFailed": "Tabblad verwijderen mislukt. Probeer opnieuw.",
+          "saveFailed": "Tabblad opslaan mislukt. Probeer opnieuw.",
+          "textRequired": "Voer geldige tekst in",
+          "urlRequired": "Voer een geldige URL in"
+        },
+        "externalUrl": "Externe URL",
+        "externalUrlPlaceholder": "https://voorbeeld.nl",
+        "icon": "Pictogram",
+        "linkConfiguration": "Linkconfiguratie",
+        "linkType": "Linktype",
+        "linkTypeHelp": {
+          "chat": "Ingebouwde chatfunctionaliteit",
+          "none": "Selecteer een linktype om het tabbladgedrag te configureren",
+          "prayer": "Ingebouwde gebedsverzoekfunctie",
+          "url": "Externe URL wordt geopend in een nieuw tabblad"
+        },
+        "prayer": "Gebed",
+        "saveTab": "Tabblad opslaan",
+        "saving": "Opslaan...",
+        "tabDisplay": "Tabbladweergave",
+        "tabText": "Tabbladtekst",
+        "tabTextPlaceholder": "Voer tabbladtekst in"
+      },
+      "title": "Livestream-tijden"
+    },
+    "noPlaylist": "Geen afspeellijst",
+    "noSermonsFound": "Geen preken gevonden",
+    "noSermonsYet": "Nog geen preken",
+    "notScheduled": "Niet gepland",
+    "playlist": "Afspeellijst",
+    "playlists": {
+      "actions": "Acties",
+      "addPlaylist": "Afspeellijst toevoegen",
+      "adjustSearchTerms": "Probeer uw zoektermen aan te passen",
+      "createFirstPlaylist": "Eerste afspeellijst aanmaken",
+      "editPlaylist": "Afspeellijst bewerken",
+      "getStarted": "Begin met het aanmaken van uw eerste afspeellijst",
+      "noPlaylistsFound": "Geen afspeellijsten gevonden",
+      "noPlaylistsMatch": "Geen afspeellijsten komen overeen met uw zoekopdracht",
+      "playlistEdit": {
+        "addThumbnail": "Miniatuur toevoegen",
+        "basicInformation": "Basisinformatie",
+        "changeThumbnail": "Miniatuur wijzigen",
+        "createNew": "Nieuwe afspeellijst aanmaken",
+        "deleteConfirm": "Weet u zeker dat u deze afspeellijst wilt verwijderen?",
+        "describePlaylist": "Beschrijf deze afspeellijst...",
+        "description": "Beschrijving",
+        "editPlaylist": "Afspeellijst bewerken",
+        "enterTitle": "Voer afspeellijsttitel in...",
+        "newPlaylist": "Nieuwe afspeellijst",
+        "playlistTitle": "Afspeellijsttitel",
+        "publishDate": "Publicatiedatum",
+        "publishHelp": "Wanneer moet deze afspeellijst beschikbaar zijn voor kijkers?",
+        "publishingSchedule": "Publicatie en planning",
+        "recommendedSize": "Aanbevolen grootte: 1280x720 pixels (beeldverhouding 16:9)",
+        "thumbnailImage": "Miniatuurafbeelding",
+        "unauthorized": "Niet gemachtigd om afspeellijsten aan te maken",
+        "unauthorizedDelete": "Niet gemachtigd om afspeellijsten te verwijderen"
+      },
+      "search": "Zoeken",
+      "searchPlaceholder": "Afspeellijsten zoeken...",
+      "subtitle": "Beheer video-afspeellijsten en organiseer uw inhoud",
+      "title": "Afspeellijsten"
+    },
+    "publishDate": "Publicatiedatum",
+    "searchPlaceholder": "Preken zoeken op titel of afspeellijst...",
+    "sermon": "Preek",
+    "sermonEdit": {
+      "add": "toevoegen",
+      "addToAnotherPlaylist": "Toevoegen aan een andere afspeellijst",
+      "channelIdPlaceholder": "Dit is niet uw kanaal-URL - zie helplink hierboven",
+      "currentLiveService": "Huidige live-dienst",
+      "currentYouTubeLiveStream": "Huidige YouTube live-stream",
+      "customEmbedUrl": "Aangepaste insluit-URL",
+      "deleteConfirm": "Weet u zeker dat u deze preek wilt verwijderen?",
+      "description": "Beschrijving",
+      "editPermanentLiveUrl": "Permanente live-URL bewerken",
+      "editSermon": "Preek bewerken",
+      "facebook": "Facebook",
+      "fetch": "Ophalen",
+      "getYourChannelId": "Uw kanaal-ID ophalen",
+      "newSermon": "Nieuwe preek",
+      "none": "Geen",
+      "sermonEmbedUrl": "Insluit-URL preek",
+      "sermonId": "Preek-ID",
+      "title": "Titel",
+      "totalSermonDuration": "Totale prekenduur",
+      "unauthorized": "Niet gemachtigd om preken aan te maken",
+      "unauthorizedDelete": "Niet gemachtigd om preken te verwijderen",
+      "videoProvider": "Videoprovider",
+      "vimeo": "Vimeo",
+      "vimeoId": "Vimeo-ID",
+      "youtube": "YouTube",
+      "youtubeChannelId": "YouTube kanaal-ID",
+      "youtubeId": "YouTube-ID"
+    },
+    "subtitle": "Beheer uw prekenbibliotheek en livestreams",
+    "title": "Preken"
+  },
+  "serverAdmin": {
+    "adminPage": {
+      "act": "Actief",
+      "arch": "Gearchiveerd",
+      "church": "Kerk",
+      "churchName": "Kerknaam",
+      "churches": "Kerken",
+      "location": "Locatie",
+      "noChurch": "Geen kerken gevonden. Zoek op een andere naam.",
+      "noUserChurches": "Deze gebruiker heeft geen kerken gekoppeld aan zijn account.",
+      "noUsers": "Geen gebruikers gevonden. Zoek op een andere naam of e-mail.",
+      "noteFour": "Vergelijkbare software is ProPresenter. Het kost $399 voor een sitelicentie. Ik ging ervan uit dat de gemiddelde kerk de software op 3 computers installeert en deelde onze totale installaties door 3 om het aantal kerken te krijgen. Ik ging er ook van uit dat kerken gemiddeld om de 5 jaar upgraden naar een nieuwere versie. Dus $399 / 5 jaar / 3 computers = $26,60 jaarlijkse kosten per computer. Als we deze aannames kunnen kwantificeren, moeten we dit aantal bijwerken.",
+      "noteOne": "Vergelijkbare software is Breeze. Zij rekenen $72/maand of $864/jaar.",
+      "noteThree": "Vergelijkbare inhoud is Orange. Zij rekenen $1023/jaar voor kerken met 26-50 kijkers voor 252 Basic.",
+      "noteTwo": "Vergelijkbare software is SubSplash. Ze beginnen bij $99/maand of $1200/jaar. Dit is exclusief het deel dat ze van donaties nemen.",
+      "notes": "Notities",
+      "regist": "Geregistreerd",
+      "searchResults": "Zoekresultaten",
+      "servAdmin": "Serverbeheer",
+      "subtitle": "Beheer serverbrede instellingen en kerken",
+      "translationLookups": "Vertalingzoekopdrachten",
+      "usageTrends": "Gebruikstrends",
+      "userChurches": "Kerken",
+      "userSearch": "Zoeken op naam of e-mail",
+      "userSearchPlaceholder": "Zoeken op naam of e-mail",
+      "users": "Gebruikers",
+      "valueNotes": "Notities over hoe waarden worden berekend"
+    },
+    "reportPage": {
+      "adminOnly": "Alleen beheerder",
+      "report": "Rapport",
+      "serverAdmin": "Serverbeheer"
+    },
+    "translation": {
+      "abbreviations": "Afkortingen",
+      "endDate": "Einddatum",
+      "lookups": "Zoekopdrachten",
+      "search": "Zoeken",
+      "startDate": "Startdatum",
+      "title": "Bijbelvertalingzoekopdrachten"
+    }
+  },
+  "settings": {
+    "app": {
+      "confirmDeleteTab": "Weet u zeker dat u dit tabblad wilt verwijderen?",
+      "tabNameHelper": "Kies een beschrijvende naam voor uw tabblad",
+      "urlHelper": "Voer de volledige URL in (bijv. https://voorbeeld.nl)"
+    },
+    "appEdit": {
+      "addTab": "Tabblad toevoegen",
+      "bible": "Bijbel",
+      "changeImage": "Afbeelding wijzigen",
+      "checkin": "Inchecken",
+      "deleteTab": "Tabblad verwijderen",
+      "donation": "Donatie",
+      "donationLanding": "Donatie-startpagina",
+      "editTab": "Tabblad bewerken",
+      "externalUrl": "Externe URL",
+      "internalPage": "Interne pagina",
+      "lessons": "Lessen",
+      "liveStream": "Livestream",
+      "memberDirectory": "Ledenregister",
+      "myGroups": "Mijn groepen",
+      "page": "Pagina",
+      "saveTab": "Tabblad opslaan",
+      "saving": "Opslaan...",
+      "selectImage": "Afbeelding selecteren",
+      "tabName": "Tabbladnaam",
+      "tabType": "Tabbladtype",
+      "url": "URL",
+      "verseOfDay": "Vers van de dag"
+    },
+    "appTabs": {
+      "editTab": "Tabblad bewerken",
+      "moveDown": "Omlaag verplaatsen",
+      "moveUp": "Omhoog verplaatsen",
+      "noTabs": "Geen tabbladen geconfigureerd",
+      "noTabsDesc": "Voeg tabbladen toe om uw app-navigatie aan te passen",
+      "title": "App-tabbladen",
+      "untitled": "Naamloos"
+    },
+    "associatePerson": {
+      "change": "Wijzigen"
+    },
+    "church": {
+      "subdomainHelper": "Het unieke webadres van uw kerk"
+    },
+    "churchSettingsEdit": {
+      "address1": "Adresregel 1",
+      "address2": "Adresregel 2",
+      "churchInfo": "Kerkinformatie",
+      "churchInfoSubtitle": "Naam, adres en subdomein",
+      "churchName": "Kerknaam",
+      "churchSettings": "Kerkinstellingen",
+      "domainsSubtitle": "Aangepaste domeinconfiguratie",
+      "general": "Algemeen",
+      "generalSubtitle": "Contactpersoon, register en zichtbaarheid",
+      "givingSubtitle": "Betaalgateway en kostenopties",
+      "noNameMsg": "Kerknaam mag niet leeg zijn.",
+      "noSubMsg": "Subdomein mag niet leeg zijn.",
+      "subdom": "Subdomein"
+    },
+    "directoryApprovalSettingsEdit": {
+      "directoryApprovalGroup": "Goedkeuringsgroep register",
+      "forceMsg": "Deze groep beheert alle wijzigingen in het ledenregister. Wijzigingen worden pas toegepast na hun goedkeuring.",
+      "groups": "Groepen",
+      "noGroups": "Geen groepen beschikbaar",
+      "none": "Geen"
+    },
+    "directoryVisibility": {
+      "everyone": "Iedereen (inclusief bezoekers)",
+      "label": "In register weergeven",
+      "members": "Leden en medewerkers",
+      "regularAttendees": "Regelmatige bezoekers en hoger",
+      "staff": "Alleen medewerkers"
+    },
+    "domain": {
+      "domainPlaceholder": "uwsite.nl",
+      "doneAlert": "Klaar. Klik slechts eenmaal op deze link.",
+      "errorInvalid": "Ongeldig formaat. Voer alleen domein in (bijv. uwsite.nl of sub.uwsite.org). Neem geen http://, paden of slashes aan het einde op."
+    },
+    "domainSettingsEdit": {
+      "domMsg": "U kunt uw B1-website laten reageren op elk gewenst aangepast domein. Voer de bijbehorende domeinnaam in en voeg de volgende record toe aan uw DNS:",
+      "domMsg2": "Als uw DNS-provider u geen CNAME-record laat toevoegen, kunt u in plaats daarvan een A-record gebruiken:",
+      "domMsg3": "Als u SSL-fouten ontvangt na het toevoegen van de DNS-invoer. Klik hier om ",
+      "domMsg4": ". Het kan tot 5 minuten duren.",
+      "domMsgConnect": "verbinden",
+      "domain": "Domein",
+      "domains": "Domeinen"
+    },
+    "feeOptionsSettings": {
+      "achFlatRate": "Vast tarief [ ACH ]",
+      "achHardLimit": "Hard limiet [ ACH ]",
+      "creditCardFlatRate": "Vast tarief [ Creditcard ]",
+      "creditCardTransactionFee": "Transactiekosten [ Creditcard ]",
+      "paypalFlatRate": "Vast tarief [ PayPal ]",
+      "paypalTransactionFee": "Transactiekosten [ PayPal ]"
+    },
+    "giving": {
+      "secretPlaceholder": "********"
+    },
+    "givingSettingsEdit": {
+      "apiCredentials": "API-inloggegevens",
+      "clientId": "Client-ID",
+      "clientSecret": "Client-geheim",
+      "developersApiKeys": "Ontwikkelaars → API-sleutels",
+      "forceMsg": "Dwingt gebruikers automatisch om transactiekosten te dekken",
+      "giving": "Geven",
+      "none": "Geen",
+      "paypal": "PayPal",
+      "paypalCreateApp": "maak een app aan om uw Client-ID en geheim te krijgen.",
+      "paypalDeveloper": "PayPal-ontwikkelaar",
+      "paypalGoTo": "Ga naar",
+      "paypalLogin": "log in en onder",
+      "prov": "Provider",
+      "pubKey": "Openbare sleutel",
+      "saveError": "Donatie-instellingen opslaan mislukt",
+      "secKey": "Geheime sleutel",
+      "stripe": "Stripe",
+      "stripeCopyKeys": "om uw Publishable en Secret-sleutels (test en live) te kopiëren.",
+      "stripeDashboard": "Stripe-dashboard",
+      "stripeGoTo": "en ga naar",
+      "stripeVisit": "Bezoek",
+      "transFee": "Transactiekosten"
+    },
+    "imageEditor": {
+      "crop": "Bijsnijden",
+      "upload": "Uploaden"
+    },
+    "manageChurch": {
+      "editSettings": "Instellingen bewerken",
+      "imEx": "Importeren/Exporteren",
+      "mobileApps": "Mobiele apps",
+      "noData": "Geen kerkgegevens beschikbaar",
+      "subtitle": "Configureer kerkinstellingen en voorkeuren",
+      "title": "Kerk beheren"
+    },
+    "mobileAppSettings": {
+      "addTab": "Tabblad toevoegen",
+      "subtitle": "Configureer instellingen voor mobiele app",
+      "title": "Instellingen mobiele app"
+    },
+    "preview": {
+      "preview": "Voorbeeld"
+    },
+    "roleEdit": {
+      "confirmMsg": "Weet u zeker dat u deze rol permanent wilt verwijderen?",
+      "roleEdit": "Rol bewerken",
+      "roleName": "Rolnaam",
+      "valMsg": "Voer een geldige rolnaam in."
+    },
+    "roleMembers": {
+      "confirmMsg": "Weet u zeker dat u deze gebruiker wilt verwijderen uit",
+      "mem": "Leden",
+      "roleAppMsg": "Deze rol is van toepassing op alle leden van de kerk."
+    },
+    "rolePage": {
+      "noEditMsg": "Machtigingen kunnen niet worden bewerkt voor de rol Domeinbeheerders. Domeinbeheerders hebben volledige toegang.",
+      "permEdit": "Machtigingen bewerken",
+      "roleEdit": "Rol bewerken:"
+    },
+    "rolePermissions": {
+      "permEdit": "Machtigingen bewerken"
+    },
+    "roles": {
+      "acc": "Boekhouding",
+      "accDesc": "Heeft toegang tot het bekijken en beheren van donaties.",
+      "canEdit": "Kan de meeste gegevens bewerken in ",
+      "churchDesc": " inclusief mensen, groepen, aanwezigheid en formulieren.",
+      "churchStaff": "Kerkmedewerkers",
+      "contAdmin": "Contentbeheerder",
+      "contAdminDesc": "Kan website-inhoud, mobiele inhoud en preken bewerken.",
+      "custAdd": "Aangepaste rol toevoegen",
+      "everyone": "Iedereen",
+      "itMsg": "? Het ",
+      "lesAdmin": "Lessenbeheerder",
+      "lesAdminDesc": "Kan klaslokalen instellen en lessen plannen op ",
+      "role": "Rol",
+      "roleCreate": "Wilt u een nieuwe rol aanmaken van ",
+      "roles": "Rollen"
+    },
+    "supportContactSettingsEdit": {
+      "forceMsg": "Deze link wordt door gebruikers gebruikt om contact op te nemen met de kerk",
+      "link": "Link",
+      "linkHelperText": "Het moet het e-mailadres van de kerk of een link naar het contactformulier van de kerk zijn",
+      "supportContact": "Contactpersoon ondersteuning"
+    },
+    "userAdd": {
+      "addTo": "Toevoegen aan ",
+      "createNew": "Nieuwe gebruiker aanmaken",
+      "errAnother": "Kan niet opslaan. Er bestaat al een andere gebruiker voor dit e-mailadres.",
+      "errDiff": "Het gebruikersaccount voor deze e-mail is gekoppeld aan een andere persoon.",
+      "firstMsg": "Voer voornaam in",
+      "lastMsg": "Voer achternaam in",
+      "noAcc": "Heeft u geen gebruikersaccount?",
+      "valEmail": "Voer een geldig e-mailadres in",
+      "valEmailMsg": "Voer een geldig e-mailadres in"
+    },
+    "visibilityPrefSettingsEdit": {
+      "address": "Adres",
+      "email": "E-mail",
+      "everyone": "Iedereen",
+      "forceMsg": "Dit stelt de standaardwaarde in voor mensen die hun instellingen nog niet hebben geconfigureerd",
+      "groups": "Alleen groepen",
+      "members": "Leden",
+      "phoneNum": "Telefoonnummer",
+      "visibilityPreference": "Zichtbaarheidsvoorkeur"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "description": "Deze kleuren worden gebruikt door de mobiele app, ledenportaal en incheckkiosk. Laat als standaard of pas aan uw huisstijl aan.",
+      "resetDefaults": "Terugzetten naar standaard",
+      "lightMode": "Lichte modus",
+      "darkMode": "Donkere modus"
+    },
+    "appThemePage": {
+      "title": "App-thema",
+      "subtitle": "Pas de kleuren aan die worden gebruikt door de mobiele app, ledenportaal en incheckkiosk"
+    },
+    "b1MobilePage": {
+      "title": "B1 Mobile",
+      "subtitle": "Configureer instellingen voor de B1 Mobile-app"
+    },
+    "checkInPage": {
+      "title": "B1 CheckIn",
+      "subtitle": "Configureer instellingen voor de B1 CheckIn kioskapp",
+      "qrGuestRegistration": "QR-gastregistratie",
+      "qrTooltip": "Toon een QR-code op de incheckkiosk zodat gasten zich kunnen zelfregistreren op hun telefoon",
+      "enabled": "Ingeschakeld — QR-code verschijnt op kiosk",
+      "disabled": "Uitgeschakeld"
+    }
+  },
+  "site": {
+    "addPage": {
+      "aiPlaceholder": "Voorbeeld: Maak een welkomstpagina met onze kerknaam, missie, diensttijden en een donatieknop",
+      "newLink": "Nieuwe link",
+      "newPage": "Nieuwe pagina",
+      "pageType": "Paginatype"
+    },
+    "animations": {
+      "colorize": "Inkleuren",
+      "editAnimations": "Animaties bewerken",
+      "fadeIn": "Vervagen",
+      "fast": "Snel",
+      "focus": "Focus",
+      "grow": "Groeien",
+      "none": "Geen",
+      "normal": "Normaal",
+      "onShowAnimation": "Animatie bij weergave",
+      "onShowSpeed": "Snelheid bij weergave",
+      "pulse": "Pulseren",
+      "shrink": "Krimpen",
+      "slideDown": "Naar beneden schuiven",
+      "slideLeft": "Naar links schuiven",
+      "slideRight": "Naar rechts schuiven",
+      "slideUp": "Omhoog schuiven",
+      "slow": "Langzaam"
+    },
+    "appearanceEdit": {
+      "logoManagement": "Logobeheer"
+    },
+    "appearancePage": {
+      "subtitle": "Hieronder is een voorbeeld van een voorbeeldsite met uw kleuren, lettertypen en logo's. Dit is niet uw daadwerkelijke site-inhoud.",
+      "title": "Sitestijlen"
+    },
+    "blocks": {
+      "confirmDelete": "Weet u zeker dat u dit blok permanent wilt verwijderen?",
+      "editBlock": "Blok bewerken"
+    },
+    "blocksPage": {
+      "actions": "Acties",
+      "addBlock": "Blok toevoegen",
+      "block": "blok",
+      "blocks": "Blokken",
+      "createFirstBlock": "Eerste blok aanmaken",
+      "elements": "Element(en)",
+      "getStarted": "Begin met het aanmaken van uw eerste herbruikbare blok",
+      "noBlocksFound": "Geen blokken gevonden",
+      "reusableBlocks": "Herbruikbare blokken",
+      "sections": "Sectie(s)",
+      "subtitle": "Maak en beheer herbruikbare inhoudsblokken voor uw website",
+      "totalBlocks": "Totaal aantal blokken",
+      "type": "Type"
+    },
+    "cssEdit": {
+      "customCss": "Aangepaste CSS",
+      "customHtml": "Aangepaste HTML"
+    },
+    "donateLink": {
+      "add": "Toevoegen",
+      "addAmount": "Bedrag toevoegen",
+      "amount": "Bedrag",
+      "amountPlaceholder": "Tijdelijke bedragaanduiding",
+      "donationAmount": "Donatiebedrag",
+      "donationAmounts": "Donatiebedragen",
+      "donationAmountsHelper": "U kunt enkele donatiebedragen voorstellen zoals $5, $10, $20, enz.",
+      "funds": "Fondsen",
+      "maxAmountsAlert": "U mag maximaal vijf donatiebedragen toevoegen.",
+      "noFunds": "Geen fondsen",
+      "selectFund": "Selecteer donatiefonds",
+      "textHelper": "Bijv.: (Doneer nu), (Ja, ik help!), (Doneer $10 aan jeugdkamp), enz.",
+      "textLabel": "Tekst",
+      "urlHelper": "Tip: u moet linken naar de pagina van de websitebouwer die het donatie-element bevat.",
+      "urlLabel": "Url",
+      "urlPlaceholder": "/doneren"
+    },
+    "editorToolbar": {
+      "addContent": "Inhoud toevoegen",
+      "block": "Blok",
+      "desktop": "Desktop",
+      "mobile": "Mobiel",
+      "page": "Pagina",
+      "switchToDesktop": "Overschakelen naar desktopweergave",
+      "switchToMobile": "Overschakelen naar mobiele weergave"
+    },
+    "elementAdd": {
+      "addElements": "Elementen toevoegen",
+      "advanced": "Geavanceerd",
+      "all": "Alles",
+      "blocks": "Blokken",
+      "box": "Vak",
+      "calendar": "Kalender",
+      "card": "Kaart",
+      "carousel": "Carrousel",
+      "church": "Kerk",
+      "content": "Inhoud",
+      "descBox": "Flexibele containerbox",
+      "descCalendar": "Kalenderweergave evenementen",
+      "descCard": "Inhoudskaart met afbeelding",
+      "descCarousel": "Schuivende inhoudsgalerij",
+      "descDonateLink": "Donatie-linkknop",
+      "descDonation": "Donatieformulier",
+      "descEmbedPage": "Externe pagina insluiten",
+      "descExpandable": "Uitklapbare Q&A-sectie",
+      "descForm": "Aangepaste formulierbouwer",
+      "descGroupList": "Groepsregister",
+      "descHtml": "Aangepaste HTML-code",
+      "descImage": "Afbeelding met bijschrift",
+      "descLocation": "Interactieve kaart",
+      "descLogo": "Kerklogo/huisstijl",
+      "descReusableElement": "Herbruikbaar elementblok",
+      "descReusableSection": "Herbruikbare sectie",
+      "descRow": "Horizontale kolomindeling",
+      "descSection": "Container voor inhoudsgroepering",
+      "descSermons": "Videopreekgalerij",
+      "descStream": "Livestream insluiten",
+      "descTable": "Gegevenstabelindeling",
+      "descText": "Rijke tekstinhoud",
+      "descTextWithPhoto": "Tekst met zijafbeelding",
+      "descVideo": "Video insluiten of uploaden",
+      "donateLink": "Donatielink",
+      "donation": "Donatie",
+      "dragAndDrop": "Slepen en neerzetten op pagina",
+      "dragHint": "Sleep elementen op de pagina om ze toe te voegen",
+      "embedPage": "Pagina insluiten",
+      "expandable": "Uitklapbaar",
+      "form": "Formulier",
+      "groupList": "Groepslijst",
+      "html": "HTML",
+      "image": "Afbeelding",
+      "layout": "Indeling",
+      "location": "Locatie",
+      "logo": "Logo",
+      "media": "Media",
+      "noElementsFound": "Geen elementen gevonden",
+      "row": "Rij",
+      "searchElements": "Elementen zoeken",
+      "section": "Sectie",
+      "stream": "Stream",
+      "table": "Tabel",
+      "text": "Tekst",
+      "textWithPhoto": "Tekst met foto",
+      "tryDifferentSearch": "Probeer een andere zoekterm",
+      "untitledBlock": "Naamloos blok",
+      "video": "Video"
+    },
+    "elements": {
+      "address": "Adres",
+      "addressHelper": "bijv.: Stadhuis, Amsterdam",
+      "alignCenter": "Midden",
+      "alignLeft": "Links",
+      "alignRight": "Rechts",
+      "animationOptions": "Animatie",
+      "answersJSON": "Antwoorden JSON",
+      "answersJSONData": "JSON-gegevensformaat voor formulierantwoorden",
+      "autoplay": "Automatisch afspelen",
+      "block": "Blok",
+      "categoriesHelper": "bijv.: Kleine groepen, Zondagsschool",
+      "color": "Kleur",
+      "confirmDelete": "Weet u zeker dat u dit element permanent wilt verwijderen?",
+      "confirmDuplicate": "Weet u zeker dat u een kopie wilt maken van dit element en al zijn onderliggende items?",
+      "contained": "Ingesloten",
+      "doNotResizeImage": "Afbeelding niet vergroten/verkleinen",
+      "editElement": "Element bewerken",
+      "error": "Fout",
+      "fade": "Vervagen",
+      "fullWidth": "Volledige breedte",
+      "heightPlaceholder": "1000",
+      "heightPx": "Hoogte (px)",
+      "hide": "Verbergen",
+      "htmlContent": "HTML-inhoud",
+      "id": "ID",
+      "idExample": "bijv.: dQw4w9WgXcQ",
+      "idExampleVimeo": "bijv.: 76979871",
+      "imageAlignment": "Uitlijning afbeelding",
+      "imageDescribingTopic": "Afbeelding die het onderwerp beschrijft",
+      "info": "Info",
+      "javascriptExcludeTag": "JavaScript (exclusief script-tag)",
+      "label": "Label",
+      "linkUrlOptional": "Link-URL (optioneel)",
+      "loadingEditor": "Editor laden...",
+      "mode": "Modus",
+      "nameHelper": "bijv.: Eerste Baptistenkerk",
+      "nextServiceTime": "Volgende diensttijd",
+      "offlineContent": "Offline inhoud",
+      "openInNewTab": "Openen in nieuw tabblad",
+      "openLinkInNewTab": "Link openen in nieuw tabblad",
+      "outlined": "Omlijnd",
+      "photoAlternativeText": "Alternatieve tekst foto",
+      "photoLabel": "Fotolabel",
+      "photoPosition": "Fotopositie",
+      "positionPhotoBottom": "Onder",
+      "positionPhotoLeft": "Links",
+      "positionPhotoRight": "Rechts",
+      "positionPhotoTop": "Boven",
+      "primary": "Primair",
+      "roundedCorners": "Afgeronde hoeken",
+      "secondary": "Secundair",
+      "selectPhoto": "Foto selecteren",
+      "selectPhotoPosition": "Selecteer fotopositie",
+      "slide": "Slide",
+      "slides": "Slides",
+      "slidesIntervalSeconds": "Slide-interval (seconden)",
+      "source": "Bron",
+      "success": "Succes",
+      "text": "Tekst",
+      "textAlignment": "Tekstuitlijning",
+      "title": "Titel",
+      "titleAlignment": "Titeluitlijning",
+      "translucent": "Doorschijnend",
+      "type": "Type",
+      "url": "URL",
+      "variant": "Variant",
+      "videoAndInteraction": "Video en interactie",
+      "videoOnly": "Alleen video",
+      "videoUrlVimeo": "Vind de ID in de video-URL: vimeo.com/[id]",
+      "videoUrlYoutube": "Vind de ID in de video-URL: youtube.com/watch?v=[id]",
+      "vimeo": "Vimeo",
+      "warning": "Waarschuwing",
+      "youtube": "YouTube",
+      "zoomLevel": "Zoomniveau",
+      "zoomLevelExample": "10 is een goede standaard. Hoger is meer ingezoomd."
+    },
+    "files": {
+      "confirmDelete": "Weet u zeker dat u wilt verwijderen",
+      "storageInfo": "Er is 100 MB opslagruimte gratis beschikbaar voor het opslaan van PDF's en andere documenten die vaak nodig zijn voor kerkwebsites. We raden aan om Google Drive of Dropbox te gebruiken om bestanden op te slaan als er extra ruimte nodig is.",
+      "upload": "Uploaden",
+      "uploadFiles": "Bestanden uploaden"
+    },
+    "filesManager": {
+      "files": "Bestanden",
+      "getStarted": "Begin met het uploaden van uw eerste bestand",
+      "noFilesYet": "Nog geen bestanden geüpload"
+    },
+    "filesPage": {
+      "subtitle": "Beheer bestanden en media voor uw website",
+      "title": "Bestanden"
+    },
+    "fontEdit": {
+      "fontSelection": "Lettertypeselectie",
+      "popularFontCombinations": "Populaire lettertypecombinaties",
+      "typographyPreview": "Typografievoorbeeld"
+    },
+    "navLink": {
+      "addLink": "Link toevoegen",
+      "linkSettings": "Linkinstellingen"
+    },
+    "pageLink": {
+      "check": "Controleren",
+      "confirmDelete": "Weet u zeker dat u deze pagina permanent wilt verwijderen?",
+      "confirmDuplicate": "Weet u zeker dat u een kopie wilt maken van deze pagina en al zijn inhoud?",
+      "linkSettings": "Linkinstellingen",
+      "pageSettings": "Pagina-instellingen",
+      "urlHelper": "bijv.: /kampinschrijving  (**Zorg ervoor dat u controleert voordat u opslaat)"
+    },
+    "pagePreview": {
+      "editContent": "Inhoud bewerken",
+      "pageSettings": "Pagina-instellingen",
+      "subtitle": "Voorbeeld: {title}",
+      "title": "Websitevoorbeeld"
+    },
+    "pages": {
+      "convert": "Converteren"
+    },
+    "pagesPage": {
+      "actions": "Acties",
+      "addFirstPage": "Eerste pagina toevoegen",
+      "addPage": "Pagina toevoegen",
+      "autoGenerated": "Automatisch gegenereerd",
+      "confirmConvert": "Wilt u deze automatisch gegenereerde pagina converteren naar een aangepaste pagina?",
+      "customPages": "Aangepaste pagina's",
+      "description": "Hieronder staat een lijst met aangepaste en automatisch gegenereerde pagina's. U kunt nieuwe pagina's toevoegen, bestaande bewerken of automatisch gegenereerde pagina's converteren naar aangepaste pagina's.",
+      "desktopOnly": "Pagina-editor is alleen beschikbaar in desktopmodus",
+      "generated": "Gegenereerd",
+      "getStarted": "Begin met het toevoegen van uw eerste pagina.",
+      "mainNavigation": "Hoofdnavigatie",
+      "noPagesFound": "Geen pagina's gevonden",
+      "pages": "Pagina's",
+      "path": "Pad",
+      "previewPage": "Pagina voorbeeld",
+      "showLogin": "Login tonen",
+      "showLoginTooltip": "Toon loginknop in de navigatiebalk",
+      "subtitle": "Beheer de pagina's, inhoud en navigatie van uw website",
+      "toggleLoginVisibility": "Zichtbaarheid loginknop omschakelen",
+      "totalPages": "Totaal aantal pagina's",
+      "websitePages": "Websitepagina's"
+    },
+    "paletteEdit": {
+      "colorCombinationsPreview": "Voorbeeld kleurencombinaties",
+      "colorValues": "Kleurwaarden",
+      "savePalette": "Palet opslaan",
+      "suggestedPalettes": "Voorgestelde paletten"
+    },
+    "pickColors": {
+      "headingColor": "Kopkleur",
+      "linkColor": "Linkkleur",
+      "opacityHelper": "De dekking van de zwarte verloopover op de afbeelding. Maximale waarde: 1",
+      "textColor": "Tekstkleur"
+    },
+    "row": {
+      "addColumn": "Kolom toevoegen",
+      "columnsError": "Kolommen moeten opgeteld 12 zijn",
+      "columnsHelper": "Getallen vertegenwoordigen twaalfden van pagina.",
+      "commonOptions": "Gemeenschappelijke opties",
+      "halves": "Helften",
+      "hideMobileOrder": "Mobiele volgorde verbergen",
+      "hideMobileSizes": "Mobiele maten verbergen",
+      "preview": "Voorbeeld",
+      "previewHelper": "Getallen vertegenwoordigen twaalfden van pagina",
+      "quarters": "Kwarten",
+      "remove": "Verwijderen",
+      "showMobileOrder": "Mobiele volgorde tonen",
+      "showMobileSizes": "Mobiele maten tonen",
+      "size1": "1 - 1/12de",
+      "size10": "10 - 5/6de",
+      "size11": "11 - 11/12de",
+      "size12": "12 - Volledig",
+      "size2": "2 - 1/6de",
+      "size3": "3 - 1/4de",
+      "size4": "4 - 1/3de",
+      "size5": "5 - 5/12de",
+      "size6": "6 - 1/2",
+      "size7": "7 - 7/12de",
+      "size8": "8 - 2/3de",
+      "size9": "9 - 3/4de",
+      "thirds": "Derden",
+      "totalInvalid": "Totaal: {total}/12",
+      "totalValid": "Totaal: 12/12",
+      "width": "Breedte"
+    },
+    "section": {
+      "confirmDelete": "Weet u zeker dat u deze sectie permanent wilt verwijderen?",
+      "confirmDuplicate": "Weet u zeker dat u een kopie wilt maken van deze sectie en al zijn inhoud?",
+      "editSection": "Sectie bewerken"
+    },
+    "sectionEdit": {
+      "convertTo": "Converteren naar",
+      "convertToBlock": "Converteren naar blok",
+      "duplicate": "Dupliceren",
+      "duplicateSection": "Sectie dupliceren"
+    },
+    "style": {
+      "editStyle": "Stijl bewerken"
+    },
+    "styleEdit": {
+      "property": "Eigenschap"
+    },
+    "stylesManager": {
+      "styleSettings": "Stijlinstellingen"
+    },
+    "templates": {
+      "viewSermons": "Preken bekijken"
+    }
+  },
+  "songs": {
+    "addSong": "Lied toevoegen",
+    "arrangement": {
+      "deleteConfirm": "Weet u zeker dat u deze bewerking wilt verwijderen?",
+      "edit": "Bewerking bewerken",
+      "enterLyrics": "Voer handmatig tekst in of importeer vanuit PraiseCharts",
+      "lyrics": "Tekst",
+      "name": "Naam bewerking",
+      "title": "Bewerking"
+    },
+    "create": {
+      "artist": "Artiest",
+      "songTitle": "Liedtitel",
+      "title": "Lied maken"
+    },
+    "deleteSong": {
+      "confirm": "Bevestigen"
+    },
+    "details": {
+      "album": "Album",
+      "artist": "Artiest",
+      "bpm": "BPM",
+      "key": "Toonsoort",
+      "keySignature": "Voortekening",
+      "keys": "Toonsoorten",
+      "language": "Taal",
+      "length": "Lengte",
+      "meter": "Maatsoort",
+      "releaseDate": "Uitgavedatum",
+      "seconds": "Seconden"
+    },
+    "key": {
+      "default": "Standaard",
+      "defaultLabel": "Jans toonsoort",
+      "deleteConfirm": "Weet u zeker dat u deze toonsoort wilt verwijderen?",
+      "edit": "Toonsoort bewerken",
+      "labelOptional": "Label (optioneel)",
+      "signature": "Voortekening"
+    },
+    "keys": {
+      "add": "Toevoegen",
+      "addExternalLink": "Externe link toevoegen",
+      "addFiles": "Bestanden toevoegen",
+      "import": "Importeren",
+      "importFromPraiseCharts": "Bestanden importeren vanuit PraiseCharts",
+      "importPrompt": "Wilt u de tekst van PraiseCharts importeren?",
+      "title": "Toonsoorten"
+    },
+    "library": {
+      "empty": {
+        "action": "Eerste lied toevoegen",
+        "message": "Begin met het toevoegen van uw eerste lied aan de bibliotheek.",
+        "title": "Geen liederen gevonden"
+      },
+      "noResults": "Geen liederen komen overeen met uw zoekcriteria."
+    },
+    "link": {
+      "chordChart": "Akkoordenschema",
+      "deleteConfirm": "Weet u zeker dat u deze link wilt verwijderen?",
+      "edit": "Link bewerken",
+      "text": "Tekst",
+      "url": "Url"
+    },
+    "search": {
+      "createManually": "Handmatig aanmaken",
+      "enterQuery": "Voer een zoekterm in om liederen te vinden.",
+      "inputLabel": "Titel of artiest",
+      "inputPlaceholder": "Voer liedtitel of artiestennaam in...",
+      "noResults": "Geen liederen gevonden voor uw zoekopdracht.",
+      "placeholder": "Liederen zoeken op titel of artiest...",
+      "title": "Zoek een lied"
+    },
+    "songPage": {
+      "loading": "Laden...",
+      "subtitle": "Beheer lieddetails en bewerkingen"
+    },
+    "songsPage": {
+      "songs": "Liederen",
+      "subtitle": "Beheer uw muziekbibliotheek"
+    },
+    "title": "Liederen"
+  },
+  "tasks": {
+    "actionEdit": {
+      "actType": "Actietype",
+      "actTypeHelp": "Selecteer het type actie dat u wilt uitvoeren",
+      "assignTo": "Toewijzen aan",
+      "editAct": "Actie bewerken",
+      "taskAssign": "Een taak toewijzen",
+      "taskNote": "Taaknotitie",
+      "taskTitle": "Taaktitel"
+    },
+    "automationDetails": {
+      "active": "Actief",
+      "acts": "Acties",
+      "addAct": "Actie toevoegen",
+      "auto": "Automatiseringsgegevens",
+      "inactive": "Inactief",
+      "noAct": "Geen acties geconfigureerd",
+      "recurs": "Herhaalt"
+    },
+    "automationEdit": {
+      "active": "Actief",
+      "autoEdit": "Automatisering bewerken",
+      "inactive": "Inactief",
+      "monthly": "Maandelijks",
+      "never": "Nooit",
+      "recurHelp": "Stel in hoe vaak deze automatisering moet worden uitgevoerd",
+      "rep": "Herhalen",
+      "weekly": "Wekelijks",
+      "yearly": "Jaarlijks"
+    },
+    "automationsPage": {
+      "active": "Actief",
+      "addAuto": "Automatisering toevoegen",
+      "auto": "Geautomatiseerde taken",
+      "inactive": "Inactief",
+      "manageAuto": "Beheerde geautomatiseerde taken",
+      "noAuto": "Geen automatiseringen geconfigureerd",
+      "recurs": "Herhaalt",
+      "subtitle": "Automatiseer taken op basis van voorwaarden"
+    },
+    "conditionAttendance": {
+      "anywhere": "Overal",
+      "campus": "Locatie",
+      "eventType": "Evenementtype",
+      "group": "Groep",
+      "hasAtt": "heeft bijgewoond",
+      "hasNoAtt": "heeft niet bijgewoond",
+      "op": "Operator",
+      "serv": "Dienst",
+      "servTime": "Diensttijd"
+    },
+    "conditionDate": {
+      "absolute": "Absoluut",
+      "curMonth": "Huidige maand",
+      "dateFull": "Volledige datum",
+      "datePart": "Datumdeel",
+      "dayOf": "Dag van",
+      "fri": "Vrijdag",
+      "mon": "Maandag",
+      "month": "Maand",
+      "monthDay": "Dag van maand",
+      "nextMonth": "Volgende maand",
+      "op": "Operator",
+      "prevMonth": "Vorige maand",
+      "relative": "Relatief",
+      "sat": "Zaterdag",
+      "sun": "Zondag",
+      "thurs": "Donderdag",
+      "tues": "Dinsdag",
+      "wed": "Woensdag",
+      "weekDay": "Dag van de week",
+      "yearsE": "Verstreken jaren"
+    },
+    "conditionDetails": {
+      "addCon": "Voorwaarde toevoegen",
+      "addCondition": "Voorwaarde toevoegen",
+      "addConj": "Voegwoord toevoegen",
+      "all": "Alle",
+      "and": "EN",
+      "any": "Elk",
+      "con": "Voorwaarden:",
+      "noCond": "Geen voorwaarden toegevoegd",
+      "or": "OF",
+      "trueCon": "van deze voorwaarden zijn waar"
+    },
+    "conditionEdit": {
+      "conDetails": "Voorwaardegegevens",
+      "conEdit": "Voorwaarde bewerken",
+      "conInfo": "Contactgegevens",
+      "conType": "Voorwaardetype",
+      "confirmMsg": "Weet u zeker dat u deze voorwaarde wilt verwijderen?",
+      "gen": "Algemeen",
+      "persAtt": "Persoonlijke kenmerken",
+      "today": "Datum van vandaag"
+    },
+    "conditionSelect": {
+      "is": "is",
+      "isNot": "is niet",
+      "op": "Operator"
+    },
+    "conditionText": {
+      "contains": "bevat",
+      "endW": "eindigt met",
+      "op": "Operator",
+      "startW": "begint met"
+    },
+    "conjunctionEdit": {
+      "and": "EN - Alle voorwaarden zijn waar",
+      "conjEdit": "Voegwoord bewerken",
+      "conjType": "Voegwoordtype",
+      "or": "OF - Een van de voorwaarden is waar"
+    },
+    "contentPicker": {
+      "group": "Groep",
+      "pers": "Persoon",
+      "sel": "Selecteer",
+      "selPers": "Selecteer een persoon of groep"
+    },
+    "newTask": {
+      "assignPers": "Wijs deze taak toe aan een persoon.",
+      "assignTo": "Toewijzen aan",
+      "associatePers": "Koppel deze taak aan een persoon.",
+      "associateW": "Koppelen aan",
+      "newAssign": "Nieuwe toewijzing",
+      "saving": "Opslaan...",
+      "taskNew": "Nieuwe taak",
+      "titleTask": "Voer een titel in voor deze taak."
+    },
+    "requestedChanges": {
+      "applied": "Wijzigingen toegepast",
+      "apply": "Toepassen",
+      "field": "Veld",
+      "newProfile": "Nieuw profiel",
+      "requestedChanges": "Aangevraagde wijzigingen",
+      "value": "Waarde"
+    },
+    "selectGroup": {
+      "group": "Groep",
+      "noResults": "Geen groepen gevonden die overeenkomen met uw zoekopdracht",
+      "searchPrompt": "Zoek een groep om te selecteren"
+    },
+    "taskList": {
+      "addTask": "Taak toevoegen",
+      "assignGroup": "Toegewezen aan mijn groepen",
+      "assignMe": "Toegewezen aan mij",
+      "assignedTo": "Toegewezen aan",
+      "associatedWith": "Gekoppeld aan",
+      "noTasks": "Geen taken gevonden",
+      "notSpecified": "Niet gespecificeerd",
+      "reqMe": "Aangevraagd door mij",
+      "tasks": "Taken",
+      "unassigned": "Niet toegewezen"
+    },
+    "taskPage": {
+      "ago": "geleden",
+      "assign": "Toewijzen",
+      "assigned": "Toegewezen",
+      "associate": "Koppelen",
+      "associated": "Gekoppeld",
+      "by": "door",
+      "closed": "Gesloten",
+      "created": "Aangemaakt",
+      "editAssigned": "Toegewezen bewerken",
+      "editAssoc": "Gekoppelde bewerken",
+      "notSpec": "Niet gespecificeerd",
+      "open": "Open",
+      "opened": "Geopend",
+      "unassigned": "Niet toegewezen"
+    },
+    "tasksPage": {
+      "auto": "Automatiseringen",
+      "showClosed": "Gesloten tonen",
+      "showOpen": "Open tonen",
+      "subtitle": "Beheer taken en automatiseringen",
+      "tasks": "Taken"
+    }
+  }
+}

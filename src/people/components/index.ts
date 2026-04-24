@@ -15,3 +15,4 @@ export { PersonNotes } from "./PersonNotes";
 export { PersonView } from "./PersonView";
 export { UpdateHouseHold } from "./modals/UpdateHouseHold";
 export { MergeModal } from "./modals/MergeModal";
+export { GdprActions } from "./GdprActions";

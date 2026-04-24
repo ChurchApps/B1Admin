@@ -1,19 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { Box, Button } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
-import { Navigate } from "react-router-dom";
 import type { LinkInterface } from "@churchapps/helpers";
 import { AppTabs, AppEdit } from "./components";
+import { PermissionDenied } from "../components";
 
 export const MobileAppSettingsPage = () => {
   const [selectedTab, setSelectedTab] = useState<LinkInterface>(null);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [redirectUrl, setRedirectUrl] = useState<string>("");
-
-  const checkAccess = useCallback(() => {
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) setRedirectUrl("/");
-  }, []);
 
   const handleAddTab = () => {
     const newTab: LinkInterface = {
@@ -35,9 +30,7 @@ export const MobileAppSettingsPage = () => {
     setRefreshKey(Math.random());
   };
 
-  React.useEffect(checkAccess, [checkAccess]);
-
-  if (redirectUrl !== "") return <Navigate to={redirectUrl}></Navigate>;
+  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   return (
     <>
@@ -72,7 +65,7 @@ export const MobileAppSettingsPage = () => {
           </Box>
         )}
 
-        {UserHelper.currentUserChurch && UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+        {UserHelper.currentUserChurch && (
           <AppTabs
             onSelected={(tab: LinkInterface) => setSelectedTab(tab)}
             refreshKey={refreshKey}

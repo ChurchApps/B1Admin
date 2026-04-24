@@ -24,7 +24,7 @@ export const MemberWelcome: React.FC = () => {
           </Typography>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<CameraAlt fontSize="large" />} title="Add Your Photo" description="Upload a profile photo so people at church can recognize you and put a face to your name." linkUrl={b1Url + "/my/community?id=" + UserHelper.person?.id + "#edit"} external />
+              <FeatureCard icon={<CameraAlt fontSize="large" />} title="Add Your Photo" description="Upload a profile photo so people at church can recognize you and put a face to your name." linkUrl={b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit"} external />
             </Grid>
             {UserHelper.checkAccess(Permissions.membershipApi.people.view) && (
               <Grid size={{ xs: 12, sm: 6, md: 4 }}>

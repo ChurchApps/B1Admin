@@ -94,6 +94,7 @@ export function ElementEdit(props: Props) {
     p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : null;
 
     setElement(p);
+    props.onRealtimeChange(p);
   };
 
   const handleAnimationChange = (animations: AnimationsInterface) => {
@@ -102,6 +103,7 @@ export function ElementEdit(props: Props) {
     p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : null;
 
     setElement(p);
+    props.onRealtimeChange(p);
   };
 
   const handleSave = () => {
@@ -555,6 +557,11 @@ export function ElementEdit(props: Props) {
           name="noResize"
           label={Locale.label("site.elements.doNotResizeImage")}
         />
+        <FormControlLabel
+          control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.enableLightbox === "true" ? true : false} disabled={!!parsedData.url} />}
+          name="enableLightbox"
+          label="Enable Lightbox"
+        />
       </FormGroup>
       <FormControl fullWidth sx={{ marginTop: 2 }}>
         <InputLabel>{Locale.label("site.elements.imageAlignment")}</InputLabel>
@@ -667,7 +674,33 @@ export function ElementEdit(props: Props) {
   const handleRowChange = (parsedData: any) => {
     const e = { ...element };
     e.answersJSON = JSON.stringify(parsedData);
+    if (element?.elementType === "row" && typeof parsedData.columns === "string") {
+      const sizes: number[] = parsedData.columns.split(",").map((s: string) => parseInt(s, 10)).filter((n: number) => !isNaN(n));
+      const existing = element.elements || [];
+      e.elements = sizes.map((size, idx) => {
+        const src = existing[idx];
+        if (src) {
+          const srcAnswers = src.answers || (src.answersJSON ? JSON.parse(src.answersJSON) : {});
+          const newAnswers = { ...srcAnswers, size };
+          return { ...src, answers: newAnswers, answersJSON: JSON.stringify(newAnswers), sort: idx + 1 };
+        }
+        const newAnswers = { size };
+        return {
+          id: `__preview_col_${idx}`,
+          elementType: "column",
+          parentId: element.id,
+          sectionId: element.sectionId,
+          blockId: element.blockId,
+          sort: idx + 1,
+          answers: newAnswers,
+          answersJSON: JSON.stringify(newAnswers),
+          elements: []
+        } as ElementInterface;
+      });
+    }
+
     setElement(e);
+    props.onRealtimeChange(e);
   };
 
   useEffect(() => {

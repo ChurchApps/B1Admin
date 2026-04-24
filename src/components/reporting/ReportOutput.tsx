@@ -86,10 +86,10 @@ export const ReportOutput = (props: Props) => {
       setDetailedPersonSummary(null);
       const queryParams: string[] = [];
       props.report.parameters.forEach((p) => {
-        if (p.value) queryParams.push(p.keyName + "=" + p.value);
+        if (p.value && p.value.trim() !== "") queryParams.push(p.keyName + "=" + encodeURIComponent(p.value));
       });
       let url = "/reports/" + props.report.keyName + "/run";
-      if (queryParams) url += "?" + queryParams.join("&");
+      if (queryParams.length > 0) url += "?" + queryParams.join("&");
 
       ApiHelper.get(url, "ReportingApi").then((data: ReportResultInterface) => {
         if (isMounted()) {

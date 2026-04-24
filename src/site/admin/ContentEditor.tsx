@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import type { CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
-import { ThemeProvider, createTheme, useMediaQuery, Container, Skeleton } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skeleton } from "@mui/material";
 import { useWindowWidth } from "@react-hook/window-size";
 import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface } from "../../helpers/Interfaces";
 import { ApiHelper, ArrayHelper, UserHelper } from "../../helpers";
@@ -24,6 +24,15 @@ import { ZoneBox } from "./ZoneBox";
 import { EmptyState } from "./EmptyState";
 import { useUndoRedo } from "../hooks/useUndoRedo";
 import { HistoryPanel } from "./HistoryPanel";
+import { useThemeMode } from "../../ThemeContext";
+
+const lightEditorTheme = createTheme({
+  palette: { mode: "light", background: { default: "#e5e8ee", paper: "#ffffff" } },
+  components: {
+    MuiTextField: { defaultProps: { margin: "normal" } },
+    MuiFormControl: { defaultProps: { margin: "normal" } }
+  }
+});
 
 interface ConfigInterface {
   globalStyles?: GlobalStyleInterface;
@@ -80,6 +89,20 @@ export function ContentEditor(props: Props) {
       window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
     }
   };
+
+  // Force light mode while editor is mounted so preview matches the public website
+  const { mode } = useThemeMode();
+  useEffect(() => {
+    const wasInDarkMode = document.body.classList.contains("dark-theme");
+    if (wasInDarkMode) {
+      document.body.classList.remove("dark-theme");
+    }
+    return () => {
+      if (wasInDarkMode) {
+        document.body.classList.add("dark-theme");
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [showAdd, setShowAdd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -199,6 +222,9 @@ export function ContentEditor(props: Props) {
             section={section}
             churchSettings={churchSettings}
             onEdit={handleSectionEdit}
+            onDelete={() => {
+              loadDataInternal("After deleting section");
+            }}
             onMove={() => {
               loadDataInternal("After moving section");
             }}
@@ -349,14 +375,25 @@ export function ContentEditor(props: Props) {
     realtimeDebounceRef.current = setTimeout(() => {
       setContainer((prevContainer) => {
         if (!prevContainer) return prevContainer;
-        const c = { ...prevContainer };
-        c.sections.forEach((s) => {
-          realtimeUpdateElement(element, s.elements);
-        });
-        return c;
+        return {
+          ...prevContainer,
+          sections: prevContainer.sections.map((s) => ({
+            ...s,
+            elements: replaceElementImmutable(s.elements, element)
+          }))
+        };
       });
     }, 150);
   }, []);
+
+  const replaceElementImmutable = (elements: ElementInterface[], target: ElementInterface): ElementInterface[] =>
+    elements.map((el) => {
+      if (el.id === target.id) return target;
+      if (el.elements && el.elements.length > 0) {
+        return { ...el, elements: replaceElementImmutable(el.elements, target) };
+      }
+      return el;
+    });
 
   const realtimeUpdateElement = (element: ElementInterface, elements: ElementInterface[]) => {
     for (let i = 0; i < elements.length; i++) {
@@ -371,22 +408,20 @@ export function ContentEditor(props: Props) {
   };
 
   const getTheme = () => {
+    const base = {
+      palette: { mode: "light" as const },
+      components: {
+        MuiTextField: { defaultProps: { margin: "normal" } },
+        MuiFormControl: { defaultProps: { margin: "normal" } }
+      }
+    };
     if (deviceType === "mobile") {
       return createTheme({
-        breakpoints: { values: { xs: 0, sm: 2000, md: 3000, lg: 4000, xl: 5000 } },
-        components: {
-          MuiTextField: { defaultProps: { margin: "normal" } },
-          MuiFormControl: { defaultProps: { margin: "normal" } }
-        }
-      });
-    } else {
-      return createTheme({
-        components: {
-          MuiTextField: { defaultProps: { margin: "normal" } },
-          MuiFormControl: { defaultProps: { margin: "normal" } }
-        }
+        ...base,
+        breakpoints: { values: { xs: 0, sm: 2000, md: 3000, lg: 4000, xl: 5000 } }
       });
     }
+    return createTheme(base);
   };
 
   const getZoneBox = (sections: SectionInterface[], name: string, keyName: string) => (
@@ -417,7 +452,8 @@ export function ContentEditor(props: Props) {
 
   if (!container) {
     return (
-      <>
+      <ThemeProvider theme={lightEditorTheme}>
+        <CssBaseline />
         <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
         <EditorToolbar
           onDone={handleDone}
@@ -447,12 +483,14 @@ export function ContentEditor(props: Props) {
           <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: 2 }} animation="wave" />
           <Skeleton variant="rectangular" height={200} sx={{ mb: 2, borderRadius: 2 }} animation="wave" />
         </Container>
-      </>
+      </ThemeProvider>
     );
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden" }}>
+    <ThemeProvider theme={lightEditorTheme}>
+    <CssBaseline />
+    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "#e5e8ee" }}>
       <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
       <style>{css}</style>
 
@@ -565,5 +603,6 @@ export function ContentEditor(props: Props) {
         </DndProvider>
       </div>
     </div>
+    </ThemeProvider>
   );
 }

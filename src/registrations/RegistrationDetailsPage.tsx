@@ -23,8 +23,9 @@ import {
   Delete as DeleteIcon,
   Download as DownloadIcon
 } from "@mui/icons-material";
-import { ApiHelper, Loading, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, Loading, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type EventInterface, type RegistrationInterface } from "@churchapps/helpers";
+import { PermissionDenied } from "../components";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 
 export const RegistrationDetailsPage = () => {
@@ -105,18 +106,23 @@ export const RegistrationDetailsPage = () => {
       <TableCell>{getStatusChip(reg.status)}</TableCell>
       <TableCell>{reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString() : ""}</TableCell>
       <TableCell align="right">
-        {reg.status !== "cancelled" && (
-          <Tooltip title="Cancel Registration" arrow>
-            <IconButton size="small" onClick={() => handleCancel(reg.id)} color="warning"><CancelIcon fontSize="small" /></IconButton>
-          </Tooltip>
+        {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+          <>
+            {reg.status !== "cancelled" && (
+              <Tooltip title="Cancel Registration" arrow>
+                <IconButton size="small" onClick={() => handleCancel(reg.id)} color="warning"><CancelIcon fontSize="small" /></IconButton>
+              </Tooltip>
+            )}
+            <Tooltip title="Delete" arrow>
+              <IconButton size="small" onClick={() => handleDelete(reg.id)} color="error"><DeleteIcon fontSize="small" /></IconButton>
+            </Tooltip>
+          </>
         )}
-        <Tooltip title="Delete" arrow>
-          <IconButton size="small" onClick={() => handleDelete(reg.id)} color="error"><DeleteIcon fontSize="small" /></IconButton>
-        </Tooltip>
       </TableCell>
     </TableRow>
   ));
 
+  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
   if (loading) return <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>;
   if (!event) return <Typography>Event not found</Typography>;
 

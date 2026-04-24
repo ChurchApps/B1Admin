@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { ApiHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { PermissionDenied } from "../components";
 import { Box, Container, Card, CardContent, Skeleton, Chip } from "@mui/material";
 import { ArrowBack as BackIcon } from "@mui/icons-material";
 import { ReportWithFilter } from "../components/reporting/ReportWithFilter";
@@ -26,6 +27,8 @@ export const ReportPage = () => {
   }, [params.keyName]);
 
   React.useEffect(loadData, [loadData]);
+
+  if (!UserHelper.checkAccess(Permissions.membershipApi.server.admin)) return <PermissionDenied permissions={[Permissions.membershipApi.server.admin]} />;
 
   return (
     <>
