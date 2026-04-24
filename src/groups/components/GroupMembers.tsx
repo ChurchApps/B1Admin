@@ -55,8 +55,10 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
   const handleToggleLeader = useCallback(
     (member: GroupMemberInterface) => {
-      member.leader = !member.leader;
-      ApiHelper.post("/groupmembers", [member], "MembershipApi").then(() => {
+      // Don't mutate the cached object — React Query's structural sharing
+      // would then see the refetched data as unchanged and skip the re-render.
+      const updated = { ...member, leader: !member.leader };
+      ApiHelper.post("/groupmembers", [updated], "MembershipApi").then(() => {
         groupMembers.refetch();
       });
     },

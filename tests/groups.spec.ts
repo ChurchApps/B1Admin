@@ -97,18 +97,22 @@ test.describe.serial('Group Management', () => {
 
       const advBtn = page.locator('button').getByText('Advanced');
       await advBtn.click();
-      const firstCheck = page.locator('div input[type="checkbox"]').first();
-      await expect(firstCheck).toBeVisible({ timeout: 10000 });
-      await firstCheck.click();
-      const secondCheck = page.locator('div input[type="checkbox"]').nth(1);
-      await secondCheck.click();
+      const advancedSearchBox = page.locator('#advancedSearch');
+      await expect(advancedSearchBox).toBeVisible({ timeout: 10000 });
+      const filterCheckboxes = advancedSearchBox.locator('input[type="checkbox"]');
+      await filterCheckboxes.first().click();
+      await filterCheckboxes.nth(1).click();
       const checkTwo = page.locator('span').getByText('2 active:');
       await expect(checkTwo).toHaveCount(1);
-      const deleteLast = closeIconButton(page).last();
-      await deleteLast.click();
+      // Active-filter chips render their delete icon as a span inside the chip
+      // (MUI Chip deleteIcon), not a <button>. Scope to the active filters
+      // paper to avoid matching chat-panel close buttons elsewhere on the page.
+      const activeFiltersPaper = page.locator('.MuiPaper-root').filter({ has: checkTwo });
+      const chipDeleteIcons = activeFiltersPaper.locator('.MuiChip-deleteIcon');
+      await chipDeleteIcons.last().click();
       const checkOne = page.locator('span').getByText('1 active:');
       await expect(checkOne).toHaveCount(1);
-      await secondCheck.click();
+      await filterCheckboxes.nth(1).click();
       await expect(checkTwo).toHaveCount(1);
       const clearAll = page.locator('span').getByText("Clear All");
       await clearAll.click();
@@ -125,6 +129,53 @@ test.describe.serial('Group Management', () => {
       await removeBtn.click();
       const validateRemoval = page.locator('[id="groupMemberTable"]').getByText('Donald Clark');
       await expect(validateRemoval).toHaveCount(0, { timeout: 10000 });
+    });
+
+    test('should toggle member leader status', async ({ page }) => {
+      // Documented step: "Use the green key icon to designate group leaders".
+      // Promote a non-leader, verify the row re-renders as a leader, then revert.
+      const firstGroup = page.locator('table tbody tr a').first();
+      await firstGroup.click();
+      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+
+      const memberTable = page.locator('#groupMemberTable');
+      const promoteButtons = memberTable.locator('button[data-testid^="promote-leader-button-"]');
+      const demoteButtons = memberTable.locator('button[data-testid^="remove-leader-button-"]');
+      await expect(promoteButtons.first()).toBeVisible({ timeout: 10000 });
+      const initialPromoteCount = await promoteButtons.count();
+      const initialDemoteCount = await demoteButtons.count();
+
+      const promoteResp = page.waitForResponse((r) => r.url().includes('/groupmembers') && r.request().method() === 'POST');
+      const promoteRefetch = page.waitForResponse((r) => r.url().includes('/groupmembers?groupId=') && r.request().method() === 'GET');
+      await promoteButtons.first().click();
+      await promoteResp;
+      await promoteRefetch;
+      await expect(demoteButtons).toHaveCount(initialDemoteCount + 1, { timeout: 10000 });
+      await expect(promoteButtons).toHaveCount(initialPromoteCount - 1, { timeout: 10000 });
+
+      // Revert so the seed group's leader composition is unchanged for later tests.
+      const demoteResp = page.waitForResponse((r) => r.url().includes('/groupmembers') && r.request().method() === 'POST');
+      const demoteRefetch = page.waitForResponse((r) => r.url().includes('/groupmembers?groupId=') && r.request().method() === 'GET');
+      await demoteButtons.last().click();
+      await demoteResp;
+      await demoteRefetch;
+      await expect(demoteButtons).toHaveCount(initialDemoteCount, { timeout: 10000 });
+      await expect(promoteButtons).toHaveCount(initialPromoteCount, { timeout: 10000 });
+    });
+
+    test('should expose member export link', async ({ page }) => {
+      // Documented step: "To export your group data, click the download icon".
+      // Verify the export link is rendered on the Members tab; full download
+      // capture is out of scope for this unit (CSV is generated client-side).
+      const firstGroup = page.locator('table tbody tr a').first();
+      await firstGroup.click();
+      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+
+      const exportLink = page.locator('#groupMembersBox a[download]');
+      await expect(exportLink).toHaveCount(1);
+      await expect(exportLink).toHaveAttribute('download', 'groupmembers.csv');
     });
 
     test('should send a message to group', async ({ page }) => {
@@ -248,13 +299,14 @@ test.describe.serial('Group Management', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
-      const viewBtn = page.locator('button').getByText('View').first();
-      await expect(viewBtn).toBeVisible({ timeout: 10000 });
-      await viewBtn.click();
+      // New sessions UI: most recent past session auto-selects on save —
+      // SessionAttendance panel renders "Attendance for ..." once selected.
+      const attendanceHeader = page.locator('[data-cy="session-present-msg"]');
+      await expect(attendanceHeader).toBeVisible({ timeout: 10000 });
       const addBtn = page.locator('button[data-testid="add-member-button"]').first();
       await addBtn.click();
-      const addedPerson = page.locator('[id="groupMemberTable"] td a');
-      await expect(addedPerson).toHaveCount(1);
+      const addedPerson = page.locator('[id="groupMemberTable"] td a.personName');
+      await expect(addedPerson).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should remove person from session', async ({ page }) => {
@@ -272,14 +324,15 @@ test.describe.serial('Group Management', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
-      const viewBtn = page.locator('button').getByText('View').first();
-      await expect(viewBtn).toBeVisible({ timeout: 10000 });
-      await viewBtn.click();
+      const attendanceHeader = page.locator('[data-cy="session-present-msg"]');
+      await expect(attendanceHeader).toBeVisible({ timeout: 10000 });
       const addBtn = page.locator('button[data-testid="add-member-button"]').first();
       await addBtn.click();
-      const addedPerson = page.locator('[id="groupMemberTable"] td a');
-      await expect(addedPerson).toHaveCount(1);
-      const removeBtn = page.locator('button').getByText('Remove').first();
+      const addedPerson = page.locator('[id="groupMemberTable"] td a.personName');
+      await expect(addedPerson).toHaveCount(1, { timeout: 10000 });
+      // Session attendance row's remove control is an icon-only IconButton
+      // with data-testid="remove-session-visitor-button-<id>".
+      const removeBtn = page.locator('button[data-testid^="remove-session-visitor-button-"]').first();
       await removeBtn.click();
       await expect(addedPerson).toHaveCount(0, { timeout: 10000 });
     });
@@ -292,6 +345,19 @@ test.describe.serial('Group Management', () => {
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
       await expect(nameInput).toHaveCount(0);
+    });
+
+    test('should expose groups list export link', async ({ page }) => {
+      // Documented: groups list page has a download icon to export all groups.
+      const exportLink = page.locator('a[download="groups.csv"]');
+      await expect(exportLink).toHaveCount(1);
+    });
+
+    test('should organize groups by category', async ({ page }) => {
+      // Documented step: "All your church groups are organized by categories".
+      // The seed includes a "Children" category — verify it shows on the list.
+      const categoryCell = page.locator('table tbody tr').filter({ hasText: 'Children' }).first();
+      await expect(categoryCell).toBeVisible({ timeout: 10000 });
     });
 
     test('should add group', async ({ page }) => {
