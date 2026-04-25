@@ -2,7 +2,7 @@ import { settingsTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
-test.describe('Settings Management', () => {
+test.describe.serial('Settings Management', () => {
   test.beforeEach(async ({ page }) => {
     // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
     await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });

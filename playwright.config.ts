@@ -52,15 +52,6 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'settings',
-      use: {
-        ...devices['Desktop Chrome'],
-        headless: true,
-      },
-      testMatch: /settings\.spec\.ts/,
-      fullyParallel: false,
-    },
-    {
       // Files run in parallel across workers. Chains of dependent tests
       // (create→edit→delete of the same entity) are wrapped in test.describe.serial(...)
       // within each spec; everything else can interleave.
@@ -69,7 +60,6 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         headless: true,
       },
-      testIgnore: /settings\.spec\.ts/,
       fullyParallel: true,
     },
   ],

@@ -56,10 +56,12 @@ test.describe('Dashboard Management', () => {
     await expect(page.getByText('No people found matching your search criteria.')).toBeVisible({ timeout: 10000 });
   });
 
-  test.describe.serial('Test Task lifecycle', () => {
+  test.describe.serial('Dashboard Task lifecycle', () => {
     test('should add task from dashboard', async ({ page }) => {
-      // Initially the Tasks card shows the empty state.
-      await expect(page.getByText('No tasks found')).toBeVisible({ timeout: 10000 });
+      // Note: this spec runs in parallel with serving-songs-tasks.spec, which also
+      // creates a task assigned to Demo User. We use a distinct name here so the
+      // two specs don't collide on count assertions. We also can't assert on the
+      // "No tasks found" empty state for the same reason.
 
       const addBtn = page.locator('[data-testid="add-task-button"]');
       await addBtn.click();
@@ -78,7 +80,7 @@ test.describe('Dashboard Management', () => {
       await selectBtn.first().click();
 
       const taskName = page.locator('[name="title"]');
-      await taskName.fill('Test Task');
+      await taskName.fill('Dashboard Task');
       const taskNotes = page.locator('[name="note"]');
       await taskNotes.fill('Octavian Testing (Playwright)');
 
@@ -88,12 +90,12 @@ test.describe('Dashboard Management', () => {
 
       // After save, the task should appear under both "Assigned to me" and
       // "Created by me" sections of the dashboard TaskList → 2 link copies.
-      const validatedTask = page.locator('a').getByText('Test Task');
+      const validatedTask = page.locator('a').getByText('Dashboard Task');
       await expect(validatedTask).toHaveCount(2, { timeout: 15000 });
     });
 
     test('should load task from dashboard', async ({ page }) => {
-      const task = page.locator('a').getByText('Test Task').first();
+      const task = page.locator('a').getByText('Dashboard Task').first();
       await expect(task).toBeVisible({ timeout: 10000 });
       await task.click();
       await expect(page).toHaveURL(/\/tasks\/[^/]+/, { timeout: 10000 });
