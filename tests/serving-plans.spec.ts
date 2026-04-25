@@ -1,5 +1,4 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { servingTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
@@ -7,14 +6,6 @@ import { editIconButton } from './helpers/fixtures';
 // add plan types/teams under it -> tear down in reverse. Every test pivots on
 // the shared Octavius Ministry tab.
 test.describe.serial('Serving Management - Plans', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const servingHomeBtn = page.locator('[data-testid="nav-item-serving"]');
-    await servingHomeBtn.click();
-    await expect(page).toHaveURL(/\/serving/);
-  });
 
   test.describe('Ministry CRUD', () => {
     test('should add ministry', async ({ page }) => {

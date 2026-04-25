@@ -1,24 +1,10 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { peopleTest as test, expect } from './helpers/test-fixtures';
 import { navigateToPeople } from './helpers/navigation';
 import { editIconButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian/Octavius entered anywhere, it is a result of these tests.
 
-// People is the largest spec in the project (29 tests). With the default
-// `chromium` project's fullyParallel: true and workers: '75%', a 24-core
-// machine launches 18 browser contexts that all hit Vite for /people at
-// once, overwhelming the dev server (page.goto times out before content
-// renders). Force this file to one worker so each test waits its turn
-// instead of racing against module compilation.
-test.describe.configure({ mode: 'serial' });
-
 test.describe('People Management', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    await navigateToPeople(page);
-    await expect(page).toHaveURL(/\/people/);
-  });
 
   test.describe('Individuals', () => {
     test('should view person details', async ({ page }) => {

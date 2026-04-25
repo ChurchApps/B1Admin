@@ -1,10 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { loggedInTest as test, expect } from './helpers/test-fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Dashboard Management', () => {
   test.beforeEach(async ({ page }) => {
-    await login(page);
     await page.goto('/dashboard');
     // Wait for the main page header to confirm dashboard rendered.
     await expect(page.locator('h1, h2, h3').getByText('Dashboard').first()).toBeVisible({ timeout: 15000 });

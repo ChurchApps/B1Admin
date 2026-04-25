@@ -1,5 +1,4 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { loggedInTest as test, expect } from './helpers/test-fixtures';
 import { navigateTo } from './helpers/navigation';
 
 // Coverage for donation-report.md steps 29-35 (Giving Statements + Stripe Import).
@@ -10,10 +9,6 @@ import { navigateTo } from './helpers/navigation';
 // Demo seed data (Api/tools/dbScripts/giving/demo.sql) places all donations in 2025,
 // so tests that need to see donors must explicitly switch the year picker to 2025.
 test.describe('Donation Statements and Stripe Import', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-  });
-
   test.describe('Giving Statements page', () => {
     test.beforeEach(async ({ page }) => {
       await navigateTo(page, 'statements');

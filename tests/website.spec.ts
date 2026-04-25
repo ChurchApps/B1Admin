@@ -1,17 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { siteTest as test, expect } from './helpers/test-fixtures';
 import { trashIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Website Management', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const websiteHomeBtn = page.locator('[data-testid="nav-item-website"]');
-    await websiteHomeBtn.click();
-    await expect(page).toHaveURL(/\/site\/pages/);
-  });
 
   /* test('should load website home', async ({ page }) => {
     const websiteHeader = page.locator('h4').getByText('Website Pages');
@@ -101,16 +92,6 @@ test.describe('Website Management', () => {
       await expect(validatedText).toHaveCount(1);
     });
 
-    /* DOESN'T WORK due to not using staging
-    test('should verify page preview', async ({ page }) => {
-      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
-      await editBtn.click();
-      await page.waitForTimeout(5000);
-      const iframe = page.frameLocator('iframe');
-      const validatedText = iframe.locator('p').getByText('Octavian Test Text');
-      await expect(validatedText).toHaveCount(1);
-    }); */
-
     test('should verify done button functionality', async ({ page }) => {
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
@@ -154,15 +135,6 @@ test.describe('Website Management', () => {
       await settingsBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-
-      /* OUTDATED- navigates back to website home, now happens automatically:
-      const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-      await menuBtn.click();
-      await page.waitForTimeout(200);
-      const websiteHomeBtn = page.locator('[data-testid="nav-item-website"]');
-      await websiteHomeBtn.click();
-      await page.waitForTimeout(5000);
-      await expect(page).toHaveURL(/\/site\/pages/); */
 
       const validatedDeletion = page.locator('td').getByText('Octavius Test Page');
       await expect(validatedDeletion).toHaveCount(0);

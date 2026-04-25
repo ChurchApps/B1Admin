@@ -1,17 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { servingTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton, addIconButton, checkIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Serving Management - Songs & Tasks', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const servingHomeBtn = page.locator('[data-testid="nav-item-serving"]');
-    await servingHomeBtn.click();
-    await expect(page).toHaveURL(/\/serving/);
-  });
 
   test.describe.serial('Songs', () => {
     test('should add a song', async ({ page }) => {

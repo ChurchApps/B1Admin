@@ -1,23 +1,10 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { groupsTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton, closeIconButton } from './helpers/fixtures';
 
 // Cross-describe chain: Groups 'edit group details' renames first group to
 // 'Elementary (2-5)' which Sessions 'delete group' then deletes. Many tests
 // also mutate the same "first group" row, so the whole file runs serially.
 test.describe.serial('Group Management', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
-    await peopleHomeBtn.click();
-    await expect(page).toHaveURL(/\/people/);
-    const groupHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Groups');
-    await groupHomeBtn.click();
-    await expect(page).toHaveURL(/\/groups/);
-  });
-
   test.describe('Groups', () => {
     test('should view group details', async ({ page }) => {
       const firstGroup = page.locator('table tbody tr a').first();
@@ -394,17 +381,6 @@ test.describe.serial('Group Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      //OUTDATED- returns to group homepage, now happens automatically:
-      /* const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-      await menuBtn.click();
-      const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
-      await peopleHomeBtn.click();
-      await page.waitForTimeout(5000);
-      await expect(page).toHaveURL(/\/people/);
-      const groupHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Groups');
-      await groupHomeBtn.click();
-      await page.waitForTimeout(200);
-      await expect(page).toHaveURL(/\/groups/); */
       //check for group still existing
       const deletedGroup = page.locator('table tbody tr a').getByText('Elementary (3-5)');
       const editedDeletedGroup = page.locator('table tbody tr a').getByText('Elementary (2-5)');

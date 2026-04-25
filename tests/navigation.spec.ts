@@ -1,5 +1,4 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { loggedInTest as test, expect } from './helpers/test-fixtures';
 import { navigateTo, openPrimaryNav } from './helpers/navigation';
 
 // Smoke coverage: every primary nav item opens its section, and every secondary
@@ -14,10 +13,6 @@ import { navigateTo, openPrimaryNav } from './helpers/navigation';
 // Server Admin is gated on Permissions.membershipApi.server.admin and is not
 // available to the demo user, so it is not exercised here.
 test.describe('Primary Navigation', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-  });
-
   test('opens Dashboard', async ({ page }) => {
     await navigateTo(page, 'dashboard');
     await expect(page).toHaveURL(/\/dashboard|\/$/);
@@ -66,10 +61,6 @@ test.describe('Primary Navigation', () => {
 });
 
 test.describe('Secondary Navigation', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-  });
-
   test('opens Groups via People', async ({ page }) => {
     await navigateTo(page, 'groups');
     await expect(page).toHaveURL(/\/groups/);

@@ -53,6 +53,12 @@ async function globalSetup(config: FullConfig) {
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 });
   }
 
+  // Warm up routes that parallel workers will stampede on first run. Vite's
+  // dev server compiles routes on-demand; without this, ~18 workers hitting
+  // /people simultaneously can time out the page.goto call before the bundle
+  // is ready. One hit here primes the dev server's module cache.
+  await page.goto(baseURL + "/people").catch(() => {});
+
   // Save authenticated state
   await context.storageState({ path: STORAGE_STATE_PATH });
   await browser.close();

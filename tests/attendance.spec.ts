@@ -1,13 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
-import { navigateToAttendance } from './helpers/navigation';
+import { attendanceTest as test, expect } from './helpers/test-fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Attendance Management', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    await navigateToAttendance(page);
-  });
 
   // Setup tests form a single chain: campus -> service -> service time -> cleanup.
   // Each level references the previous (services pick a campus, times pick a service).

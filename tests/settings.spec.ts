@@ -1,18 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { settingsTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Settings Management', () => {
   test.beforeEach(async ({ page }) => {
-    await login(page);
-
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-
-    const settingsHomeBtn = page.locator('[data-testid="nav-item-settings"]');
-    await settingsHomeBtn.click();
-    await expect(page).toHaveURL(/\/settings/);
     // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
     await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
   });

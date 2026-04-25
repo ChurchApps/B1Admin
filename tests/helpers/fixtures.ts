@@ -36,47 +36,27 @@ export async function openPersonRow(page: Page, name: SeedPersonName | string) {
   await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
 }
 
-// MUI icon-only button helpers. Behavior-preserving factoring of the SVG-path
-// selectors previously inlined in specs. Matches ONLY buttons whose SVG path
-// matches the specific MUI icon — does NOT broaden to text-labeled buttons
-// (e.g. "Edit Settings"), which would change `.nth()` indexing.
-//
-// If MUI changes an icon path, update the helper once rather than every spec.
-//
-// `data-testid` is added as a secondary match — MUI sets it on icon SVGs
-// ("EditIcon", "CloseIcon", etc.), and it's restrictive enough not to match
-// text-labeled buttons.
+// MUI icon-only button helpers. Matches buttons whose icon SVG carries the
+// canonical MUI `data-testid` (auto-injected by `@mui/icons-material`). Does
+// NOT broaden to text-labeled buttons (e.g. "Edit Settings"), which would
+// change `.nth()` indexing in callers.
 
 export function editIconButton(page: Page) {
-  return page
-    .locator('button:has(svg[data-testid="EditIcon"])')
-    .or(page.locator('button:has(svg path[d*="M3 17.25"])'));
+  return page.locator('button:has(svg[data-testid="EditIcon"])');
 }
 
 export function closeIconButton(page: Page) {
-  return page
-    .locator('button:has(svg[data-testid="CloseIcon"])')
-    .or(
-      page.locator(
-        'button:has(svg path[d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"])'
-      )
-    );
+  return page.locator('button:has(svg[data-testid="CloseIcon"])');
 }
 
 export function addIconButton(page: Page) {
-  return page
-    .locator('button:has(svg[data-testid="AddIcon"])')
-    .or(page.locator('button:has(svg path[d*="M19 13h-6"])'));
+  return page.locator('button:has(svg[data-testid="AddIcon"])');
 }
 
 export function checkIconButton(page: Page) {
-  return page
-    .locator('button:has(svg[data-testid="CheckIcon"])')
-    .or(page.locator('button:has(svg path[d*="M9 16.2"])'));
+  return page.locator('button:has(svg[data-testid="CheckIcon"])');
 }
 
 export function trashIconButton(page: Page) {
-  return page
-    .locator('button:has(svg[data-testid="DeleteIcon"])')
-    .or(page.locator('button:has(svg path[d*="M6 19c0"])'));
+  return page.locator('button:has(svg[data-testid="DeleteIcon"])');
 }

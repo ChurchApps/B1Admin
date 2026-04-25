@@ -1,6 +1,6 @@
-import { test, expect, type Page } from '@playwright/test';
-import { login } from './helpers/auth';
-import { navigateTo } from './helpers/navigation';
+import { type Page } from '@playwright/test';
+import { donationsTest as test, expect } from './helpers/test-fixtures';
+import { fillFundForm } from './helpers/donations';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 // donations.spec.ts:
@@ -42,24 +42,14 @@ async function openBatchesTab(page: Page) {
 // Entire describe.serial chain — create fund → create batch → add/edit/delete donation →
 // delete batch → delete fund. Each step relies on entities created earlier.
 test.describe.serial('Donations Management', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    await navigateTo(page, 'donations');
-  });
-
   test.describe('Funds', () => {
     test('should create fund', async ({ page }) => {
       await openFundsTab(page);
       const addBtn = page.locator('[data-testid="add-fund-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      const fundName = page.locator('[name="fundName"]');
-      await expect(fundName).toBeVisible({ timeout: 10000 });
-      await fundName.fill(TEST_FUND_INITIAL);
       // Toggle off — saves as Non-Deductible so we can verify edit later flips it back.
-      const taxCheck = page.locator('[name="taxDeductible"]');
-      await taxCheck.click();
-      await page.locator('button').getByText('Save').click();
+      await fillFundForm(page, { name: TEST_FUND_INITIAL, toggleTaxDeductible: true });
 
       await expect(page.locator('a').getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(1, { timeout: 10000 });
       // After this, exactly one Non-Deductible row should exist (the Octavian Fund).
@@ -74,14 +64,8 @@ test.describe.serial('Donations Management', () => {
       const editBtn = fundRowEditButton(page, TEST_FUND_INITIAL);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-
-      const fundName = page.locator('[name="fundName"]');
-      await expect(fundName).toBeVisible({ timeout: 10000 });
-      await fundName.fill(TEST_FUND_RENAMED);
       // Toggle taxDeductible: Octavian was non-deductible → Octavius becomes deductible.
-      const taxCheck = page.locator('[name="taxDeductible"]');
-      await taxCheck.click();
-      await page.locator('button').getByText('Save').click();
+      await fillFundForm(page, { name: TEST_FUND_RENAMED, toggleTaxDeductible: true });
 
       await expect(page.locator('a').getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator('a').getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(0, { timeout: 10000 });
@@ -334,11 +318,6 @@ test.describe.serial('Donations Management', () => {
 
 // Read-only summary + fund-detail tests run in parallel — no mutation, no chain.
 test.describe('Donations summary and fund detail (read-only)', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    await navigateTo(page, 'donations');
-  });
-
   test('summary period toggle switches between Weekly / Monthly / Quarterly reports', async ({ page }) => {
     // donation-report.md step 28: "Donations Summary page shows visual reports
     // with options to view different report formats."

@@ -1,6 +1,4 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
-import { navigateToGroups } from './helpers/navigation';
+import { groupsTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton } from './helpers/fixtures';
 
 // Coverage scope: checkin.md steps 19-23 — configuring a group for kids check-in.
@@ -12,12 +10,6 @@ import { editIconButton } from './helpers/fixtures';
 // configured as: trackAttendance=Yes, parentPickup=No, printNametag=Yes,
 // and assigned to the 9:00 AM and 10:30 AM service times.
 test.describe('Check-in: group configuration', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    await navigateToGroups(page);
-    await expect(page).toHaveURL(/\/groups/);
-  });
-
   // Step 19: "Click on the group you just created to configure it for check-in."
   test('opens a seeded group detail page from the list', async ({ page }) => {
     await page.getByRole('link', { name: 'Sunday Morning Service', exact: true }).click();

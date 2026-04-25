@@ -1,19 +1,10 @@
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
+import { servingTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton } from './helpers/fixtures';
 
 // "Lessonius" names are private to this spec so it runs independently of
 // serving-plans.spec.ts (which owns the "Octavius" namespace). Setup creates
 // them, Cleanup removes them — no cross-file state dependency.
 test.describe.serial('Serving Management - Lessons', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const servingHomeBtn = page.locator('[data-testid="nav-item-serving"]');
-    await servingHomeBtn.click();
-    await expect(page).toHaveURL(/\/serving/);
-  });
 
   test.describe('Setup', () => {
     test('should create Lessonius Ministry, Plans, and Team', async ({ page }) => {
