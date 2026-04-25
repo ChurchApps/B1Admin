@@ -429,5 +429,52 @@ test.describe('Sermons Management', () => {
       await expect(newPage).toHaveURL(/vercel.com\/[^/]+/);
     });
 
+    test('should show settings tab with sidebar tabs section and view stream link', async ({ page }) => {
+      const settingsBtn = page.locator('[role="tab"]').getByText('Settings');
+      await settingsBtn.click();
+      // Tabs section header (Content Tabs) and Add small-button render in Settings tab
+      await expect(page.locator('[data-testid="small-button-add"]')).toBeVisible({ timeout: 10000 });
+      // External "View Your Stream" button is rendered in the Settings tab
+      await expect(page.getByRole('link', { name: 'View Your Stream' })).toBeVisible();
+    });
+
+  });
+
+  test.describe.serial('Bulk Import', () => {
+    test.beforeEach(async ({ page }) => {
+      const bulkImportBtn = page.locator('[id="secondaryMenu"]').getByText('Bulk Import');
+      await bulkImportBtn.click();
+      await expect(page).toHaveURL(/\/sermons\/bulk/, { timeout: 10000 });
+    });
+
+    test('should show YouTube and Vimeo source cards', async ({ page }) => {
+      await expect(page.locator('[data-testid="import-youtube-button"]')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('[data-testid="import-vimeo-button"]')).toBeVisible();
+    });
+
+    test('should open YouTube import form when YouTube card is selected', async ({ page }) => {
+      await page.locator('[data-testid="import-youtube-button"]').click();
+      const channelInput = page.locator('[name="channelId"]');
+      await expect(channelInput).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('button').getByText('Fetch')).toBeVisible();
+    });
+
+    test('should return to source selection via Back to Selection', async ({ page }) => {
+      await page.locator('[data-testid="import-youtube-button"]').click();
+      await expect(page.locator('[name="channelId"]')).toBeVisible({ timeout: 10000 });
+
+      const backBtn = page.locator('button').getByText('Back to Selection');
+      await backBtn.click();
+
+      await expect(page.locator('[data-testid="import-youtube-button"]')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('[data-testid="import-vimeo-button"]')).toBeVisible();
+    });
+
+    test('should open Vimeo import form when Vimeo card is selected', async ({ page }) => {
+      await page.locator('[data-testid="import-vimeo-button"]').click();
+      const channelInput = page.locator('[name="channelId"]');
+      await expect(channelInput).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('button').getByText('Fetch')).toBeVisible();
+    });
   });
 });
