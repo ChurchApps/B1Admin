@@ -1,5 +1,8 @@
+import type { Page } from '@playwright/test';
 import { loggedInTest as test, expect } from './helpers/test-fixtures';
 import { navigateToCalendars } from './helpers/navigation';
+import { login } from './helpers/auth';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // Curated Calendar admin coverage (Website → Calendars).
 // Group-level event editing lives in B1App (the public site), not B1Admin —
@@ -70,7 +73,19 @@ test.describe('Curated Calendars page', () => {
 });
 
 test.describe.serial('Curated calendar lifecycle', () => {
-  test('creates a curated calendar', async ({ page }) => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test('creates a curated calendar', async () => {
     await openCalendarsPage(page);
     const tlBtn = page.locator('[data-testid="add-calendar"]');
     const emptyBtn = page.locator('[data-testid="empty-state-add-calendar"]');
@@ -86,7 +101,7 @@ test.describe.serial('Curated calendar lifecycle', () => {
     await expect(row).toBeVisible({ timeout: 15000 });
   });
 
-  test('navigates to the calendar detail page when row is clicked', async ({ page }) => {
+  test('navigates to the calendar detail page when row is clicked', async () => {
     await openCalendarsPage(page);
     const row = await findCalendarRow(page, DISPOSABLE_CALENDAR);
     await row.click();
@@ -96,7 +111,7 @@ test.describe.serial('Curated calendar lifecycle', () => {
     await expect(page.locator('text=Groups in Calendar').first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('detail page renders an empty state when no groups have been added', async ({ page }) => {
+  test('detail page renders an empty state when no groups have been added', async () => {
     await openCalendarsPage(page);
     const row = await findCalendarRow(page, DISPOSABLE_CALENDAR);
     await row.click();
@@ -106,7 +121,7 @@ test.describe.serial('Curated calendar lifecycle', () => {
       .toBeVisible({ timeout: 10000 });
   });
 
-  test('opens the edit drawer and renames the calendar', async ({ page }) => {
+  test('opens the edit drawer and renames the calendar', async () => {
     await openCalendarsPage(page);
     const row = await findCalendarRow(page, DISPOSABLE_CALENDAR);
     await row.locator('[data-testid^="edit-calendar-"]').first().click();
@@ -126,7 +141,7 @@ test.describe.serial('Curated calendar lifecycle', () => {
       .toBeVisible({ timeout: 15000 });
   });
 
-  test('deletes the curated calendar via the edit drawer', async ({ page }) => {
+  test('deletes the curated calendar via the edit drawer', async () => {
     await openCalendarsPage(page);
     const row = await findCalendarRow(page, DISPOSABLE_CALENDAR);
     await row.locator('[data-testid^="edit-calendar-"]').first().click();

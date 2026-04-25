@@ -1,13 +1,29 @@
+import type { Page } from '@playwright/test';
 import { servingTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton } from './helpers/fixtures';
+import { login } from './helpers/auth';
+import { navigateToServing } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // "Lessonius" names are private to this spec so it runs independently of
 // serving-plans.spec.ts (which owns the "Octavius" namespace). Setup creates
 // them, Cleanup removes them — no cross-file state dependency.
 test.describe.serial('Serving Management - Lessons', () => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+    await navigateToServing(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
 
   test.describe('Setup', () => {
-    test('should create Lessonius Ministry, Plans, and Team', async ({ page }) => {
+    test('should create Lessonius Ministry, Plans, and Team', async () => {
       const addMinistry = page.locator('button').getByText('Add Ministry');
       await addMinistry.click();
       await page.locator('[name="name"]').fill('Lessonius Ministry');
@@ -51,7 +67,7 @@ test.describe.serial('Serving Management - Lessons', () => {
     // LessonsApi (port 8090) to pick a lesson, which isn't part of the local
     // dev webServer. The downstream tests (Positions/Times/Service Order)
     // operate on a plan regardless of whether it was created as a lesson plan.
-    test('should add lesson plan', async ({ page }) => {
+    test('should add lesson plan', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -73,7 +89,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedPlan).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit lesson plan', async ({ page }) => {
+    test('should edit lesson plan', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -95,7 +111,7 @@ test.describe.serial('Serving Management - Lessons', () => {
   });
 
   test.describe('Positions', () => {
-    test('should add position to lesson', async ({ page }) => {
+    test('should add position to lesson', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -121,7 +137,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedPosition).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit lesson position', async ({ page }) => {
+    test('should edit lesson position', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -143,7 +159,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should assign person to lesson position', async ({ page }) => {
+    test('should assign person to lesson position', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -169,7 +185,7 @@ test.describe.serial('Serving Management - Lessons', () => {
   });
 
   test.describe('Times', () => {
-    test('should add time to lesson', async ({ page }) => {
+    test('should add time to lesson', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -193,7 +209,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit lesson time', async ({ page }) => {
+    test('should edit lesson time', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -215,7 +231,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should delete lesson time', async ({ page }) => {
+    test('should delete lesson time', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -237,7 +253,7 @@ test.describe.serial('Serving Management - Lessons', () => {
   });
 
   test.describe('Service Order', () => {
-    test('should add section to service order', async ({ page }) => {
+    test('should add section to service order', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -262,7 +278,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedSection).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit service order section', async ({ page }) => {
+    test('should edit service order section', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -287,7 +303,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedSection).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should add song to service order', async ({ page }) => {
+    test('should add song to service order', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -319,7 +335,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedSong).toBeVisible({ timeout: 10000 });
     });
 
-    test('should add item to service order', async ({ page }) => {
+    test('should add item to service order', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -349,7 +365,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedItem).toBeVisible({ timeout: 10000 });
     });
 
-    test('should edit service order item', async ({ page }) => {
+    test('should edit service order item', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -377,7 +393,7 @@ test.describe.serial('Serving Management - Lessons', () => {
     // "Lesson Action" and "Add-On" pick items from the lessons.church content
     // library (LessonsApi on port 8090), which is not part of the local
     // webServer stack. Skip these when LessonsApi isn't available.
-    test.skip('should add lesson action to service order', async ({ page }) => {
+    test.skip('should add lesson action to service order', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -404,7 +420,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedAction).toHaveCount(1, { timeout: 10000 });
     });
 
-    test.skip('should add add-on to service order', async ({ page }) => {
+    test.skip('should add add-on to service order', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -436,7 +452,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedAddition).toHaveCount(1, { timeout: 10000 });
     });
 
-    test.skip('should delete add-on from service order', async ({ page }) => {
+    test.skip('should delete add-on from service order', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -462,7 +478,7 @@ test.describe.serial('Serving Management - Lessons', () => {
   });
 
   test.describe('Cleanup', () => {
-    test('should delete lesson position', async ({ page }) => {
+    test('should delete lesson position', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -482,7 +498,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(assignment).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete lesson plan', async ({ page }) => {
+    test('should delete lesson plan', async () => {
       const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Lessonius Plans');
@@ -500,7 +516,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(verifiedEdit).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete Lessonius Ministry', async ({ page }) => {
+    test('should delete Lessonius Ministry', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         await dialog.accept();

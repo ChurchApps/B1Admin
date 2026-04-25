@@ -1,5 +1,8 @@
+import type { Page } from '@playwright/test';
 import { loggedInTest as test, expect } from './helpers/test-fixtures';
 import { navigateToServing } from './helpers/navigation';
+import { login } from './helpers/auth';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // Coverage for ChurchAppsSupport/b1Admin/automations.md.
 // The doc itself is sparse (video link only); tests anchor on documented behavior:
@@ -69,7 +72,19 @@ test.describe('Automations page', () => {
 });
 
 test.describe.serial('Automation lifecycle', () => {
-  test('creates a new automation with weekly recurrence', async ({ page }) => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test('creates a new automation with weekly recurrence', async () => {
     await openAutomationsPage(page);
     await clickAddAutomation(page);
     await page.locator('[data-testid="automation-title-input"] input').fill(DISPOSABLE_AUTOMATION);
@@ -82,7 +97,7 @@ test.describe.serial('Automation lifecycle', () => {
     await findAutomationRow(page, DISPOSABLE_AUTOMATION);
   });
 
-  test('opens AutomationDetails when the automation list item is clicked', async ({ page }) => {
+  test('opens AutomationDetails when the automation list item is clicked', async () => {
     await openAutomationsPage(page);
     const row = await findAutomationRow(page, DISPOSABLE_AUTOMATION);
     await row.click();
@@ -92,7 +107,7 @@ test.describe.serial('Automation lifecycle', () => {
     await expect(page.getByText(/recurs.*weekly/i).first()).toBeVisible();
   });
 
-  test('toggles the automation Active state via the edit drawer', async ({ page }) => {
+  test('toggles the automation Active state via the edit drawer', async () => {
     await openAutomationsPage(page);
     const initialRow = await findAutomationRow(page, DISPOSABLE_AUTOMATION);
     await initialRow.click();
@@ -110,7 +125,7 @@ test.describe.serial('Automation lifecycle', () => {
     await expect(refreshedRow).toContainText(/Inactive/i, { timeout: 10000 });
   });
 
-  test('deletes the automation', async ({ page }) => {
+  test('deletes the automation', async () => {
     await openAutomationsPage(page);
     const row = await findAutomationRow(page, DISPOSABLE_AUTOMATION);
     await row.click();

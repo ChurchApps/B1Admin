@@ -1,5 +1,8 @@
+import type { Page } from '@playwright/test';
 import { settingsTest as test, expect } from './helpers/test-fixtures';
 import { navigateToForms } from './helpers/navigation';
+import { login } from './helpers/auth';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // Coverage for ChurchAppsSupport/b1Admin/forms.md.
 // Forms live under Settings → Forms. Two contentTypes:
@@ -68,7 +71,19 @@ test.describe('Forms page', () => {
 });
 
 test.describe.serial('People-associated form lifecycle', () => {
-  test('creates a People-associated form', async ({ page }) => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test('creates a People-associated form', async () => {
     await openFormsPage(page);
     await clickAddForm(page);
     await page.locator('[data-testid="form-name-input"] input').fill(DISPOSABLE_PERSON_FORM);
@@ -83,7 +98,7 @@ test.describe.serial('People-associated form lifecycle', () => {
     await expect(urlCell).toHaveText('');
   });
 
-  test('opens the form and shows the Add Question button', async ({ page }) => {
+  test('opens the form and shows the Add Question button', async () => {
     await openFormsPage(page);
     await page.locator('table tbody tr').filter({ hasText: DISPOSABLE_PERSON_FORM }).first()
       .locator('a', { hasText: DISPOSABLE_PERSON_FORM }).click();
@@ -91,7 +106,7 @@ test.describe.serial('People-associated form lifecycle', () => {
     await expect(page.locator('button[aria-label="addQuestion"]')).toBeVisible({ timeout: 10000 });
   });
 
-  test('adds a required Email question', async ({ page }) => {
+  test('adds a required Email question', async () => {
     await openFormsPage(page);
     await page.locator('table tbody tr').filter({ hasText: DISPOSABLE_PERSON_FORM }).first()
       .locator('a', { hasText: DISPOSABLE_PERSON_FORM }).click();
@@ -116,7 +131,7 @@ test.describe.serial('People-associated form lifecycle', () => {
     await expect(qRow).toContainText(/Yes/);
   });
 
-  test('archives, restores, and deletes the form', async ({ page }) => {
+  test('archives, restores, and deletes the form', async () => {
     // Archive
     await openFormsPage(page);
     const row = page.locator('table tbody tr').filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
@@ -154,7 +169,19 @@ test.describe.serial('People-associated form lifecycle', () => {
 });
 
 test.describe.serial('Stand Alone form lifecycle', () => {
-  test('creates a Stand Alone form with availability dates', async ({ page }) => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test('creates a Stand Alone form with availability dates', async () => {
     await openFormsPage(page);
     await clickAddForm(page);
     await page.locator('[data-testid="form-name-input"] input').fill(DISPOSABLE_STANDALONE_FORM);
@@ -179,7 +206,7 @@ test.describe.serial('Stand Alone form lifecycle', () => {
     await expect(row.locator('td a').filter({ hasText: /\/forms\// }).first()).toBeVisible();
   });
 
-  test('deletes the stand alone form', async ({ page }) => {
+  test('deletes the stand alone form', async () => {
     await openFormsPage(page);
     const row = page.locator('table tbody tr').filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
     await row.locator('[data-testid^="edit-form-button-"]').first().click();

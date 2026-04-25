@@ -1,5 +1,9 @@
+import type { Page } from '@playwright/test';
 import { siteTest as test, expect } from './helpers/test-fixtures';
 import { trashIconButton } from './helpers/fixtures';
+import { login } from './helpers/auth';
+import { navigateToSite } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Website Management', () => {
@@ -11,7 +15,20 @@ test.describe('Website Management', () => {
 
 
   test.describe.serial('Pages', () => {
-    test('should add page', async ({ page }) => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToSite(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test('should add page', async () => {
       const addBtn = page.locator('[data-testid="add-page-button"]');
       await addBtn.click();
       const name = page.locator('[name="title"]');
@@ -22,7 +39,7 @@ test.describe('Website Management', () => {
       await expect(validatedPage).toHaveCount(1);
     });
 
-    test('should cancel adding page', async ({ page }) => {
+    test('should cancel adding page', async () => {
       const addBtn = page.locator('[data-testid="add-page-button"]');
       await addBtn.click();
       const name = page.locator('[name="title"]');
@@ -32,7 +49,7 @@ test.describe('Website Management', () => {
       await expect(name).toHaveCount(0);
     });
 
-    test('should edit page title', async ({ page }) => {
+    test('should edit page title', async () => {
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
       const settingsBtn = page.locator('button').getByText('Page Settings');
@@ -45,7 +62,7 @@ test.describe('Website Management', () => {
       await expect(validatedPage).toHaveCount(2);
     });
 
-    test('should cancel editing page title', async ({ page }) => {
+    test('should cancel editing page title', async () => {
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
       const settingsBtn = page.locator('button').getByText('Page Settings');
@@ -57,7 +74,7 @@ test.describe('Website Management', () => {
       await expect(name).toHaveCount(0);
     });
 
-    test('should edit page content', async ({ page }) => {
+    test('should edit page content', async () => {
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
       const contentBtn = page.locator('button').getByText('Edit Content');
@@ -92,7 +109,7 @@ test.describe('Website Management', () => {
       await expect(validatedText).toHaveCount(1);
     });
 
-    test('should verify done button functionality', async ({ page }) => {
+    test('should verify done button functionality', async () => {
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
       const contentBtn = page.locator('button').getByText('Edit Content');
@@ -104,7 +121,7 @@ test.describe('Website Management', () => {
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 10000 });
     });
 
-    test('should cancel deleting page', async ({ page }) => {
+    test('should cancel deleting page', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         await dialog.dismiss();
@@ -122,7 +139,7 @@ test.describe('Website Management', () => {
       await expect(stillExists.first()).toBeVisible();
     });
 
-    test('should delete page', async ({ page }) => {
+    test('should delete page', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -143,13 +160,26 @@ test.describe('Website Management', () => {
   });
 
   test.describe.serial('Blocks', () => {
-    test.beforeEach(async ({ page }) => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToSite(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test.beforeEach(async () => {
       const blocksHomeBtn = page.locator('a').getByText('Blocks').first();
       await blocksHomeBtn.click();
       await expect(page).toHaveURL(/\/site\/blocks/);
     });
 
-    test('should add block', async ({ page }) => {
+    test('should add block', async () => {
       const addBtn = page.locator('[data-testid="add-block-button"]');
       await addBtn.click();
       const name = page.locator('[name="name"]');
@@ -165,7 +195,7 @@ test.describe('Website Management', () => {
       await expect(validatedBlock).toHaveCount(1);
     });
 
-    test('should cancel adding block', async ({ page }) => {
+    test('should cancel adding block', async () => {
       const addBtn = page.locator('[data-testid="add-block-button"]');
       await addBtn.click();
       const name = page.locator('[name="name"]');
@@ -175,7 +205,7 @@ test.describe('Website Management', () => {
       await expect(name).toHaveCount(0);
     });
 
-    test('should edit block content', async ({ page }) => {
+    test('should edit block content', async () => {
       const editBtn = page.locator('td a').getByText('Edit').last();
       await editBtn.click();
       const addBtn = page.locator('button').getByText('add');
@@ -222,7 +252,7 @@ test.describe('Website Management', () => {
       await expect(mobileBox).toHaveCount(1);
     });*/
 
-    test('should rename block', async ({ page }) => {
+    test('should rename block', async () => {
       const renameBtn = page.locator('[data-testid^="rename-block-"]').last();
       await renameBtn.click();
       const nameInput = page.locator('[data-testid="block-name-input"] input');
@@ -234,7 +264,7 @@ test.describe('Website Management', () => {
       await expect(renamed).toHaveCount(1);
     });
 
-    test('should verify done btn functionality', async ({ page }) => {
+    test('should verify done btn functionality', async () => {
       const editBtn = page.locator('td a').getByText('Edit').last();
       await editBtn.click();
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/);
@@ -246,13 +276,26 @@ test.describe('Website Management', () => {
   });
 
   test.describe.serial('Appearance', () => {
-    test.beforeEach(async ({ page }) => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToSite(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test.beforeEach(async () => {
       const appearanceHomeBtn = page.locator('a').getByText('Appearance').first();
       await appearanceHomeBtn.click();
       await expect(page).toHaveURL(/\/site\/appearance/);
     });
 
-    test('should change color palette', async ({ page }) => {
+    test('should change color palette', async () => {
       const colorSettings = page.locator('h6').getByText('Color Palette');
       await colorSettings.click();
       const palettePreset = page.locator('span').getByText('Palette 16');
@@ -263,7 +306,7 @@ test.describe('Website Management', () => {
       await expect(validatedChange).toHaveCSS('background-color', 'rgb(255, 100, 10)');
     });
 
-    test('should cancel changing color palette', async ({ page }) => {
+    test('should cancel changing color palette', async () => {
       const colorSettings = page.locator('h6').getByText('Color Palette');
       await colorSettings.click();
       const palettePreset = page.locator('span').getByText('Palette 16');
@@ -273,7 +316,7 @@ test.describe('Website Management', () => {
       await expect(palettePreset).toHaveCount(0);
     });
 
-    test('should change font', async ({ page }) => {
+    test('should change font', async () => {
       const fontSettings = page.locator('h6').getByText('Fonts').last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
@@ -287,7 +330,7 @@ test.describe('Website Management', () => {
       await expect(validatedChange).toHaveCSS('font-family', 'Montserrat');
     });
 
-    test('should cancel changing font', async ({ page }) => {
+    test('should cancel changing font', async () => {
       const fontSettings = page.locator('h6').getByText('Fonts').last();
       await fontSettings.click();
       const headerFontSelect = page.locator('[data-testid="heading-font-button"]');
@@ -297,7 +340,7 @@ test.describe('Website Management', () => {
       await expect(headerFontSelect).toHaveCount(0);
     });
 
-    test('should add custom CSS', async ({ page }) => {
+    test('should add custom CSS', async () => {
       const stylesheetSettings = page.locator('h6').getByText('CSS & Javascript');
       await stylesheetSettings.click();
       // Scope to the named CSS field — page-level `textarea` also matches the
@@ -310,7 +353,7 @@ test.describe('Website Management', () => {
       await expect(validatedChange).toHaveCSS('color', 'rgb(127, 255, 0)');
     });
 
-    test('should cancel adding custom CSS', async ({ page }) => {
+    test('should cancel adding custom CSS', async () => {
       const stylesheetSettings = page.locator('h6').getByText('CSS & Javascript');
       await stylesheetSettings.click();
       const cssBox = page.locator('textarea[name="css"]');
@@ -320,7 +363,7 @@ test.describe('Website Management', () => {
       await expect(cssBox).toHaveCount(0);
     });
 
-    test('should open and cancel typography scale', async ({ page }) => {
+    test('should open and cancel typography scale', async () => {
       const typographyOption = page.locator('[data-testid="style-option-typography"]');
       await typographyOption.click();
       const baseSize = page.locator('[data-testid="base-size-input"]');
@@ -330,7 +373,7 @@ test.describe('Website Management', () => {
       await expect(baseSize).toHaveCount(0);
     });
 
-    test('should open and cancel spacing scale', async ({ page }) => {
+    test('should open and cancel spacing scale', async () => {
       const spacingOption = page.locator('[data-testid="style-option-spacing"]');
       await spacingOption.click();
       const xsInput = page.locator('[data-testid="spacing-xs-input"]');
@@ -340,7 +383,7 @@ test.describe('Website Management', () => {
       await expect(xsInput).toHaveCount(0);
     });
 
-    test('should open and cancel logo settings', async ({ page }) => {
+    test('should open and cancel logo settings', async () => {
       const logoOption = page.locator('[data-testid="style-option-logo"]');
       await logoOption.click();
       const saveLogoBtn = page.locator('[data-testid="save-appearance-button"]');
@@ -350,7 +393,7 @@ test.describe('Website Management', () => {
       await expect(saveLogoBtn).toHaveCount(0);
     });
 
-    test('should add footer', async ({ page }) => {
+    test('should add footer', async () => {
       const footerSettings = page.locator('h6').getByText('Site Footer');
       await footerSettings.click();
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/, { timeout: 10000 });
@@ -359,13 +402,26 @@ test.describe('Website Management', () => {
   });
 
   test.describe.serial('Files', () => {
-    test.beforeEach(async ({ page }) => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToSite(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test.beforeEach(async () => {
       const filesHomeBtn = page.locator('a').getByText('Files').first();
       await filesHomeBtn.click();
       await expect(page).toHaveURL(/\/site\/files/);
     });
 
-    test('should upload file', async ({ page }) => {
+    test('should upload file', async () => {
       const chooseFileBtn = page.locator('[id="fileUpload"]');
       await chooseFileBtn.click();
       await chooseFileBtn.setInputFiles('public/images/logo.png');
@@ -376,7 +432,7 @@ test.describe('Website Management', () => {
       await expect(validatedUpload).toHaveCount(1);
     });
 
-    test('should remove file', async ({ page }) => {
+    test('should remove file', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -392,13 +448,26 @@ test.describe('Website Management', () => {
   });
 
   test.describe.serial('Calendar', () => {
-    test.beforeEach(async ({ page }) => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToSite(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test.beforeEach(async () => {
       const calendarHomeBtn = page.locator('a').getByText('Calendar').first();
       await calendarHomeBtn.click();
       await expect(page).toHaveURL(/\/calendars/);
     });
 
-    test('should add calendar', async ({ page }) => {
+    test('should add calendar', async () => {
       const addBtn = page.locator('[data-testid="add-calendar"]');
       await addBtn.click();
       const name = page.locator('[name="name"]');
@@ -409,7 +478,7 @@ test.describe('Website Management', () => {
       await expect(validatedCalendar).toHaveCount(1);
     });
 
-    test('should add group events to calendar', async ({ page }) => {
+    test('should add group events to calendar', async () => {
       const editBtn = page.locator('[aria-label="Manage Events"]').last();
       await editBtn.click();
       const addBtn = page.locator('[data-testid="calendar-add-event-button"]');
@@ -429,7 +498,7 @@ test.describe('Website Management', () => {
       await expect(validatedEvents).toHaveCount(1);
     });
 
-    test('should cancel adding group events to calendar', async ({ page }) => {
+    test('should cancel adding group events to calendar', async () => {
       const editBtn = page.locator('[aria-label="Manage Events"]').last();
       await editBtn.click();
       const addBtn = page.locator('[data-testid="calendar-add-event-button"]');
@@ -441,7 +510,7 @@ test.describe('Website Management', () => {
       await expect(groupSelectBox).toHaveCount(0);
     });
 
-    test('should remove group events from calendar', async ({ page }) => {
+    test('should remove group events from calendar', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -456,7 +525,7 @@ test.describe('Website Management', () => {
       await expect(validatedDeletion).toHaveCount(0);
     });
 
-    test('should edit calendar', async ({ page }) => {
+    test('should edit calendar', async () => {
       const editBtn = page.locator('[aria-label="Edit"]').last();
       await editBtn.click();
       const name = page.locator('[name="name"]');
@@ -467,7 +536,7 @@ test.describe('Website Management', () => {
       await expect(validatedChange).toHaveCount(1);
     });
 
-    test('should cancel editing calendar', async ({ page }) => {
+    test('should cancel editing calendar', async () => {
       const editBtn = page.locator('[aria-label="Edit"]').last();
       await editBtn.click();
       const name = page.locator('[name="name"]');
@@ -477,7 +546,7 @@ test.describe('Website Management', () => {
       await expect(name).toHaveCount(0);
     });
 
-    test('should delete calendar', async ({ page }) => {
+    test('should delete calendar', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');

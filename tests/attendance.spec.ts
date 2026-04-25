@@ -1,13 +1,32 @@
+import type { Page } from '@playwright/test';
 import { attendanceTest as test, expect } from './helpers/test-fixtures';
+import { login } from './helpers/auth';
+import { navigateToAttendance } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Attendance Management', () => {
 
   // Setup tests form a single chain: campus -> service -> service time -> cleanup.
   // Each level references the previous (services pick a campus, times pick a service).
+  // The chain shares a single page across all tests — login + navigation run once
+  // in beforeAll instead of per-test, since each step already leaves the UI in a
+  // known state for the next step.
   test.describe.serial('Setup', () => {
+    let page: Page;
 
-    test('should add campus', async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToAttendance(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test('should add campus', async () => {
       const addBtn = page.locator('[data-testid="add-campus-button"]');
       await addBtn.click();
       const campusName = page.locator('input[id="name"]');
@@ -18,7 +37,7 @@ test.describe('Attendance Management', () => {
       await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel adding campus', async ({ page }) => {
+    test('should cancel adding campus', async () => {
       const addBtn = page.locator('[data-testid="add-campus-button"]');
       await addBtn.click();
       const campusName = page.locator('input[id="name"]');
@@ -28,7 +47,7 @@ test.describe('Attendance Management', () => {
       await expect(campusName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should edit campus', async ({ page }) => {
+    test('should edit campus', async () => {
       const originName = page.locator('button').getByText('Octavian Test Campus');
       await originName.click();
       const campusName = page.locator('input[id="name"]');
@@ -39,7 +58,7 @@ test.describe('Attendance Management', () => {
       await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing campus', async ({ page }) => {
+    test('should cancel editing campus', async () => {
       const originName = page.locator('button').getByText('Octavius Test Campus');
       await originName.click();
       const campusName = page.locator('input[id="name"]');
@@ -49,7 +68,7 @@ test.describe('Attendance Management', () => {
       await expect(campusName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add service', async ({ page }) => {
+    test('should add service', async () => {
       const addServBtn = page.locator('button').getByText('Add Service').last();
       await addServBtn.click();
       const campusSelect = page.locator('div[role="combobox"]');
@@ -65,7 +84,7 @@ test.describe('Attendance Management', () => {
       await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit service', async ({ page }) => {
+    test('should edit service', async () => {
       const serv = page.locator('button').getByText('Octavian Test Service');
       await serv.click();
       const campusSelect = page.locator('div[role="combobox"]');
@@ -81,7 +100,7 @@ test.describe('Attendance Management', () => {
       await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing service', async ({ page }) => {
+    test('should cancel editing service', async () => {
       const serv = page.locator('button').getByText('Sunday Evening Service');
       await serv.click();
       const campusSelect = page.locator('div[role="combobox"]');
@@ -91,7 +110,7 @@ test.describe('Attendance Management', () => {
       await expect(campusSelect).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add service time', async ({ page }) => {
+    test('should add service time', async () => {
       const addServTimeBtn = page.locator('button').getByText('Add Service Time').first();
       await addServTimeBtn.click();
       const servSelect = page.locator('div[role="combobox"]');
@@ -107,7 +126,7 @@ test.describe('Attendance Management', () => {
       await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit service time', async ({ page }) => {
+    test('should edit service time', async () => {
       const time = page.locator('button').getByText('Octavian Test Time');
       await time.click();
       const servSelect = page.locator('div[role="combobox"]');
@@ -123,7 +142,7 @@ test.describe('Attendance Management', () => {
       await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing service time', async ({ page }) => {
+    test('should cancel editing service time', async () => {
       const serv = page.locator('button').getByText('6:00 PM Service');
       await serv.click();
       const servSelect = page.locator('div[role="combobox"]');
@@ -133,7 +152,7 @@ test.describe('Attendance Management', () => {
       await expect(servSelect).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete service time', async ({ page }) => {
+    test('should delete service time', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -147,7 +166,7 @@ test.describe('Attendance Management', () => {
       await expect(time).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete service', async ({ page }) => {
+    test('should delete service', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -161,7 +180,7 @@ test.describe('Attendance Management', () => {
       await expect(serv).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete campus', async ({ page }) => {
+    test('should delete campus', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');

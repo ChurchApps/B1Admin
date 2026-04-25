@@ -1,6 +1,9 @@
 import { type Page } from '@playwright/test';
 import { donationsTest as test, expect } from './helpers/test-fixtures';
 import { fillFundForm } from './helpers/donations';
+import { login } from './helpers/auth';
+import { navigateToDonations } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 // donations.spec.ts:
@@ -42,8 +45,21 @@ async function openBatchesTab(page: Page) {
 // Entire describe.serial chain — create fund → create batch → add/edit/delete donation →
 // delete batch → delete fund. Each step relies on entities created earlier.
 test.describe.serial('Donations Management', () => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+    await navigateToDonations(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
   test.describe('Funds', () => {
-    test('should create fund', async ({ page }) => {
+    test('should create fund', async () => {
       await openFundsTab(page);
       const addBtn = page.locator('[data-testid="add-fund-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
@@ -56,7 +72,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('p').getByText('Non-Deductible')).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit fund', async ({ page }) => {
+    test('should edit fund', async () => {
       await openFundsTab(page);
 
       // Target the Octavian Fund row specifically — alphabetical sort puts other
@@ -73,7 +89,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('p').getByText('Non-Deductible')).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should cancel editing fund', async ({ page }) => {
+    test('should cancel editing fund', async () => {
       await openFundsTab(page);
       const editBtn = fundRowEditButton(page, TEST_FUND_RENAMED);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -86,7 +102,7 @@ test.describe.serial('Donations Management', () => {
   });
 
   test.describe('Batches', () => {
-    test('should create batch', async ({ page }) => {
+    test('should create batch', async () => {
       await openBatchesTab(page);
 
       const addBtn = page.locator('[data-testid="add-batch-button"]');
@@ -100,7 +116,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('p').getByText('Oct 10, 2025')).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit batch', async ({ page }) => {
+    test('should edit batch', async () => {
       await openBatchesTab(page);
 
       // Find the row for the just-created batch and click its edit button.
@@ -121,7 +137,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('p').getByText('Oct 1, 2025')).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing batch', async ({ page }) => {
+    test('should cancel editing batch', async () => {
       await openBatchesTab(page);
 
       const editBtn = page
@@ -136,7 +152,7 @@ test.describe.serial('Donations Management', () => {
       await expect(batchName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add donation to batch', async ({ page }) => {
+    test('should add donation to batch', async () => {
       await openBatchesTab(page);
 
       await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
@@ -174,7 +190,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('table td').getByText('$')).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should edit a batch donation', async ({ page }) => {
+    test('should edit a batch donation', async () => {
       await openBatchesTab(page);
       await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
@@ -197,7 +213,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('table td').filter({ hasText: /30\.00/ })).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should split a donation across multiple funds', async ({ page }) => {
+    test('should split a donation across multiple funds', async () => {
       // donation-report.md step 26 / manual-input.md steps 10-13: a donation can
       // be allocated across multiple funds; the total automatically calculates
       // from the sum of the fund allocations.
@@ -230,7 +246,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('table td').filter({ hasText: /35\.00/ })).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should cancel editing a batch donation', async ({ page }) => {
+    test('should cancel editing a batch donation', async () => {
       await openBatchesTab(page);
       await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
@@ -244,7 +260,7 @@ test.describe.serial('Donations Management', () => {
       await expect(amount).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete a batch donation', async ({ page }) => {
+    test('should delete a batch donation', async () => {
       await openBatchesTab(page);
       await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
@@ -260,7 +276,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('table td').getByText('Anonymous')).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should go back to person select on donation entry', async ({ page }) => {
+    test('should go back to person select on donation entry', async () => {
       await openBatchesTab(page);
       await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
@@ -276,7 +292,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('button').getByText('Anonymous')).toBeVisible({ timeout: 10000 });
     });
 
-    test('should delete batch', async ({ page }) => {
+    test('should delete batch', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -297,7 +313,7 @@ test.describe.serial('Donations Management', () => {
       await expect(page.locator('a').getByText(TEST_BATCH_RENAMED)).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete fund', async ({ page }) => {
+    test('should delete fund', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');

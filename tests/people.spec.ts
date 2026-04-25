@@ -1,6 +1,9 @@
+import type { Page } from '@playwright/test';
 import { peopleTest as test, expect } from './helpers/test-fixtures';
 import { navigateToPeople } from './helpers/navigation';
 import { editIconButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
+import { login } from './helpers/auth';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian/Octavius entered anywhere, it is a result of these tests.
 
@@ -106,7 +109,20 @@ test.describe('People Management', () => {
     // With fullyParallel, concurrent runs would race on the "last note" locator —
     // keep them serial so each test owns the most recent note when it acts.
     test.describe.serial('Donald notes lifecycle', () => {
-      test('should add a note from people notes tab', async ({ page }) => {
+      let page: Page;
+
+      test.beforeAll(async ({ browser }) => {
+        const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+        page = await context.newPage();
+        await login(page);
+        await navigateToPeople(page);
+      });
+
+      test.afterAll(async () => {
+        await page?.context().close();
+      });
+
+      test('should add a note from people notes tab', async () => {
         // Donald Clark has no seeded notes and is reliably in the "25 most recent"
         // landing list, so openPersonRow can find him without a search.
         await openPersonRow(page, SEED_PEOPLE.DONALD);
@@ -121,7 +137,7 @@ test.describe('People Management', () => {
         await expect(validatedNote.first()).toBeVisible({ timeout: 15000 });
       });
 
-      test('should edit a note from people notes tab', async ({ page }) => {
+      test('should edit a note from people notes tab', async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
         const notesBtn = page.locator('button').getByText('Notes');
         await notesBtn.click();
@@ -145,7 +161,7 @@ test.describe('People Management', () => {
         await expect(validatedEdit.first()).toBeVisible({ timeout: 15000 });
       });
 
-      test('should delete a note from people notes tab', async ({ page }) => {
+      test('should delete a note from people notes tab', async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
         const notesBtn = page.locator('button').getByText('Notes');
         await notesBtn.click();
@@ -324,7 +340,20 @@ test.describe('People Management', () => {
     // Remove then add the same household member — the row-count assertion after
     // removal depends on remove running before add puts Carol back.
     test.describe.serial('Donald household membership', () => {
-      test('should remove person from household', async ({ page }) => {
+      let page: Page;
+
+      test.beforeAll(async ({ browser }) => {
+        const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+        page = await context.newPage();
+        await login(page);
+        await navigateToPeople(page);
+      });
+
+      test.afterAll(async () => {
+        await page?.context().close();
+      });
+
+      test('should remove person from household', async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
         const editBtn = page.locator('button').getByText('edit').first();
         await editBtn.click();
@@ -340,7 +369,7 @@ test.describe('People Management', () => {
         await expect(personRows).toHaveCount(2, { timeout: 10000 });
       });
 
-      test('should add person to household', async ({ page }) => {
+      test('should add person to household', async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
         const editBtn = page.locator('button').getByText('edit').first();
         await editBtn.click();

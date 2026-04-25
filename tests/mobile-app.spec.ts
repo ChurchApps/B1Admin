@@ -1,5 +1,8 @@
+import type { Page } from '@playwright/test';
 import { loggedInTest as test, expect } from './helpers/test-fixtures';
 import { navigateToMobile } from './helpers/navigation';
+import { login } from './helpers/auth';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // Coverage for ChurchAppsSupport/b1Admin/mobile-admin.md (Tabs tutorial).
 // Mobile App Settings lives at /mobile/navigation. Source files:
@@ -107,7 +110,19 @@ test.describe('Mobile App Settings page', () => {
 });
 
 test.describe.serial('Mobile tab lifecycle', () => {
-  test('creates a new External URL tab', async ({ page }) => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test('creates a new External URL tab', async () => {
     await openMobileSettings(page);
     await openAddTabDrawer(page);
     await page.locator('input[name="text"]').fill(DISPOSABLE_TAB);
@@ -118,7 +133,7 @@ test.describe.serial('Mobile tab lifecycle', () => {
     await findTabRow(page, DISPOSABLE_TAB);
   });
 
-  test('opens the existing tab in the edit drawer with delete affordance', async ({ page }) => {
+  test('opens the existing tab in the edit drawer with delete affordance', async () => {
     await openMobileSettings(page);
     const row = await findTabRow(page, DISPOSABLE_TAB);
     // Edit button has the Tooltip title "Edit Tab" — clickable IconButton.
@@ -128,7 +143,7 @@ test.describe.serial('Mobile tab lifecycle', () => {
     await expect(page.getByRole('button', { name: /Delete Tab/i })).toBeVisible();
   });
 
-  test('deletes the disposable tab', async ({ page }) => {
+  test('deletes the disposable tab', async () => {
     await openMobileSettings(page);
     const row = await findTabRow(page, DISPOSABLE_TAB);
     await row.getByRole('button', { name: /Edit Tab/i }).click();

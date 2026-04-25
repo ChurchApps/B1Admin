@@ -1,15 +1,32 @@
+import type { Page } from '@playwright/test';
 import { settingsTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton } from './helpers/fixtures';
+import { login } from './helpers/auth';
+import { navigateToSettings } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe.serial('Settings Management', () => {
-  test.beforeEach(async ({ page }) => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+    await navigateToSettings(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test.beforeEach(async () => {
     // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
     await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
   });
 
   test.describe.serial('General Settings', () => {
-    test('should edit church', async ({ page }) => {
+    test('should edit church', async () => {
       const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
       await editSettingsBtn.dispatchEvent('click');
       const churchName = page.locator('[name="churchName"]');
@@ -28,7 +45,7 @@ test.describe.serial('Settings Management', () => {
       await expect(churchName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should cancel editing church', async ({ page }) => {
+    test('should cancel editing church', async () => {
       const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
       await editSettingsBtn.dispatchEvent('click');
       const churchName = page.locator('[name="churchName"]');
@@ -38,7 +55,7 @@ test.describe.serial('Settings Management', () => {
       await expect(churchName).toHaveCount(0);
     });
 
-    test('should create role', async ({ page }) => {
+    test('should create role', async () => {
       const addBtn = page.locator('[data-testid="add-role-button"]');
       await addBtn.click();
       const custom = page.locator('li').getByText('Add Custom Role');
@@ -51,7 +68,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedRole).toHaveCount(1);
     });
 
-    test('should add person to role', async ({ page }) => {
+    test('should add person to role', async () => {
       const role = page.locator('a').getByText('Octavian Test Role');
       await role.click();
       const addBtn = page.locator('[data-testid="add-role-member-button"]');
@@ -67,7 +84,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedPerson).toHaveCount(1, { timeout: 15000 });
     });
 
-    test('should edit role', async ({ page }) => {
+    test('should edit role', async () => {
       const editBtn = page.locator('[data-testid="edit-role-button"]').last();
       await editBtn.click();
       const roleName = page.locator('[name="roleName"]');
@@ -79,7 +96,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedRole).toHaveCount(1);
     });
 
-    test('should cancel editing role', async ({ page }) => {
+    test('should cancel editing role', async () => {
       const editBtn = page.locator('[data-testid="edit-role-button"]').last();
       await editBtn.click();
       const roleName = page.locator('[name="roleName"]');
@@ -89,7 +106,7 @@ test.describe.serial('Settings Management', () => {
       await expect(roleName).toHaveCount(0);
     });
 
-    test('should delete role', async ({ page }) => {
+    test('should delete role', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -106,7 +123,7 @@ test.describe.serial('Settings Management', () => {
   });
 
   test.describe.serial('Mobile Settings', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async () => {
       // "Mobile" is a primary nav item (not in settings secondary menu),
       // gated by ContentApi content.edit permission. Navigate via the primary nav.
       // NavItem renders <a href="about:blank"> with data-testid="nav-item-mobile".
@@ -119,7 +136,7 @@ test.describe.serial('Settings Management', () => {
       await expect(page.locator('button').getByText('Add Tab')).toBeVisible({ timeout: 10000 });
     });
 
-    test('should create mobile app tab', async ({ page }) => {
+    test('should create mobile app tab', async () => {
       const addBtn = page.locator('button').getByText('Add Tab');
       await addBtn.dispatchEvent('click');
       const tabName = page.locator('[name="text"]');
@@ -132,7 +149,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedTab).toHaveCount(1);
     });
 
-    test('should edit mobile app tab', async ({ page }) => {
+    test('should edit mobile app tab', async () => {
       const editBtn = editIconButton(page).first();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
@@ -144,7 +161,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedTab).toHaveCount(1);
     });
 
-    test('should cancel edit mobile app tab', async ({ page }) => {
+    test('should cancel edit mobile app tab', async () => {
       const editBtn = editIconButton(page).first();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
@@ -154,7 +171,7 @@ test.describe.serial('Settings Management', () => {
       await expect(tabName).toHaveCount(0);
     });
 
-    test('should delete mobile app tab', async ({ page }) => {
+    test('should delete mobile app tab', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -171,13 +188,13 @@ test.describe.serial('Settings Management', () => {
   });
 
   test.describe.serial('Form Settings', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async () => {
       const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
       await formTab.dispatchEvent('click');
       await expect(page.locator('[data-testid="add-form-button"]')).toBeVisible({ timeout: 10000 });
     });
 
-    test('should create form', async ({ page }) => {
+    test('should create form', async () => {
       // Pre-cleanup: delete any leftover test forms from previous runs (local dev only).
       // In CI the DB is always fresh so this loop exits immediately.
       for (let i = 0; i < 10; i++) {
@@ -217,7 +234,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedForm).toBeVisible({ timeout: 10000 });
     });
 
-    test('should edit form', async ({ page }) => {
+    test('should edit form', async () => {
       // Target the form we created, not the first Edit button (which may be a seed form)
       const octavianRow = page.locator('tr').filter({ hasText: 'Octavian Test Form' }).first();
       const editBtn = octavianRow.getByRole('button', { name: 'Edit' });
@@ -232,7 +249,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedForm).toBeVisible();
     });
 
-    test('should cancel editing form', async ({ page }) => {
+    test('should cancel editing form', async () => {
       // Target the form we created/edited, not the first Edit button
       const octavRow = page.locator('tr').filter({ hasText: 'Octavius Test Form' }).first();
       const editBtn = octavRow.getByRole('button', { name: 'Edit' });
@@ -244,7 +261,7 @@ test.describe.serial('Settings Management', () => {
       await expect(formName).toHaveCount(0, { timeout: 5000 });
     });
 
-    test('should add form questions', async ({ page }) => {
+    test('should add form questions', async () => {
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
 
@@ -276,7 +293,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit form questions', async ({ page }) => {
+    test('should edit form questions', async () => {
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
 
@@ -296,7 +313,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedEdit).toBeVisible({ timeout: 10000 });
     });
 
-    test('should cancel editing form questions', async ({ page }) => {
+    test('should cancel editing form questions', async () => {
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
 
@@ -311,7 +328,7 @@ test.describe.serial('Settings Management', () => {
       await expect(title).toHaveCount(0);
     });
 
-    test('should delete form questions', async ({ page }) => {
+    test('should delete form questions', async () => {
       page.once('dialog', dialog => dialog.accept());
 
       const form = page.locator('a').getByText('Octavius Test Form').first();
@@ -329,7 +346,7 @@ test.describe.serial('Settings Management', () => {
       await expect(question).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add form members', async ({ page }) => {
+    test('should add form members', async () => {
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
@@ -347,7 +364,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should remove form members', async ({ page }) => {
+    test('should remove form members', async () => {
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
@@ -360,7 +377,7 @@ test.describe.serial('Settings Management', () => {
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete form', async ({ page }) => {
+    test('should delete form', async () => {
       // Delete all Octavius Test Form entries (handles duplicates from previous runs)
       for (let i = 0; i < 10; i++) {
         const octavRow = page.locator('tr').filter({ hasText: 'Octavius Test Form' }).first();
@@ -386,7 +403,7 @@ test.describe.serial('Settings Management', () => {
 
   // Edge-case extensions: extra surface checks per .notes/B1Admin-test-coverage-gaps.md §3.
   test.describe('General Settings — extras', () => {
-    test('Edit Settings drawer exposes the Church Info name field', async ({ page }) => {
+    test('Edit Settings drawer exposes the Church Info name field', async () => {
       // settingsTest fixture lands on /settings/ (ManageChurch). Header has Edit Settings.
       const editBtn = page.locator('button').getByText('Edit Settings').first();
       await editBtn.click();
@@ -395,7 +412,7 @@ test.describe.serial('Settings Management', () => {
       await expect(page.getByLabel('Subdomain').first()).toBeVisible();
     });
 
-    test('Roles tab is the default selection on the Settings page', async ({ page }) => {
+    test('Roles tab is the default selection on the Settings page', async () => {
       // The Roles button uses variant="contained" when selected — anchor on its label.
       const rolesButton = page.getByRole('button', { name: /^Roles$/ }).first();
       await expect(rolesButton).toBeVisible({ timeout: 10000 });

@@ -1,11 +1,28 @@
+import type { Page } from '@playwright/test';
 import { servingTest as test, expect } from './helpers/test-fixtures';
 import { editIconButton, addIconButton, checkIconButton } from './helpers/fixtures';
+import { login } from './helpers/auth';
+import { navigateToServing } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Serving Management - Songs & Tasks', () => {
 
   test.describe.serial('Songs', () => {
-    test('should add a song', async ({ page }) => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToServing(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test('should add a song', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -31,7 +48,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedSong).toBeVisible({ timeout: 10000 });
     });
 
-    test('should add song key', async ({ page }) => {
+    test('should add song key', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -51,7 +68,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(allTabs).toHaveCount(3, { timeout: 10000 });
     });
 
-    test('should add link from song key menu', async ({ page }) => {
+    test('should add link from song key menu', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -73,7 +90,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedLink).toHaveCount(1);
     });
 
-    test('should edit link from song key menu', async ({ page }) => {
+    test('should edit link from song key menu', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -96,7 +113,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedLink).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing link from song key menu', async ({ page }) => {
+    test('should cancel editing link from song key menu', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -115,7 +132,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(textInput).toHaveCount(0);
     });
 
-    test('should delete link from song key menu', async ({ page }) => {
+    test('should delete link from song key menu', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -137,7 +154,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should edit song key', async ({ page }) => {
+    test('should edit song key', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -159,7 +176,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing song key', async ({ page }) => {
+    test('should cancel editing song key', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -176,7 +193,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(keySignature).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete key', async ({ page }) => {
+    test('should delete key', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -200,7 +217,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add external link', async ({ page }) => {
+    test('should add external link', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -226,7 +243,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(page.getByRole('cell', { name: 'YouTube' })).toBeVisible({ timeout: 10000 });
     });
 
-    test('should cancel adding external link', async ({ page }) => {
+    test('should cancel adding external link', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -245,7 +262,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(serviceBox).toHaveCount(0);
     });
 
-    test('should add lyrics', async ({ page }) => {
+    test('should add lyrics', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -264,7 +281,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedLyrics).toHaveCount(1);
     });
 
-    test('should cancel editing lyrics', async ({ page }) => {
+    test('should cancel editing lyrics', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -281,7 +298,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(lyricBox).toHaveCount(0);
     });
 
-    test('should delete arrangement', async ({ page }) => {
+    test('should delete arrangement', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -303,7 +320,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedDeletion).toHaveCount(0);
     });
 
-    test('should search for songs', async ({ page }) => {
+    test('should search for songs', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
@@ -319,7 +336,20 @@ test.describe('Serving Management - Songs & Tasks', () => {
   });
 
   test.describe.serial('Tasks', () => {
-    test('should add a task', async ({ page }) => {
+    let page: Page;
+
+    test.beforeAll(async ({ browser }) => {
+      const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+      page = await context.newPage();
+      await login(page);
+      await navigateToServing(page);
+    });
+
+    test.afterAll(async () => {
+      await page?.context().close();
+    });
+
+    test('should add a task', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -344,7 +374,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedTask).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should cancel adding a task', async ({ page }) => {
+    test('should cancel adding a task', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -358,7 +388,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(assignInput).toHaveCount(0);
     });
 
-    test('should toggle show closed tasks', async ({ page }) => {
+    test('should toggle show closed tasks', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -375,7 +405,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(task).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should reassign tasks', async ({ page }) => {
+    test('should reassign tasks', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -398,7 +428,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should reassociate tasks', async ({ page }) => {
+    test('should reassociate tasks', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -420,7 +450,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedAssociation).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should close a task', async ({ page }) => {
+    test('should close a task', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -440,7 +470,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should add an automation', async ({ page }) => {
+    test('should add an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -464,7 +494,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedAuto).toHaveCount(1);
     });
 
-    test('should cancel adding an automation', async ({ page }) => {
+    test('should cancel adding an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -481,7 +511,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(autoName).toHaveCount(0);
     });
 
-    test('should add task to an automation', async ({ page }) => {
+    test('should add task to an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -512,7 +542,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedTask).toHaveCount(1);
     });
 
-    test('should cancel adding task to an automation', async ({ page }) => {
+    test('should cancel adding task to an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -531,7 +561,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(assignBox).toHaveCount(0);
     });
 
-    test('should edit task on automation', async ({ page }) => {
+    test('should edit task on automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -552,7 +582,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedTask).toHaveCount(1);
     });
 
-    test('should add condition to an automation', async ({ page }) => {
+    test('should add condition to an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -588,7 +618,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedCon).toHaveCount(1);
     });
 
-    test('should edit an automation', async ({ page }) => {
+    test('should edit an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -609,7 +639,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedAuto).toHaveCount(1);
     });
 
-    test('should cancel editing an automation', async ({ page }) => {
+    test('should cancel editing an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
@@ -628,7 +658,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(autoName).toHaveCount(0);
     });
 
-    test('should delete an automation', async ({ page }) => {
+    test('should delete an automation', async () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
