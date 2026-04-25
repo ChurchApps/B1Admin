@@ -418,3 +418,23 @@ test.describe.serial('Serving Management - Plans', () => {
     });
   });
 });
+
+// Edge-case extensions: Plans page navigation surface (independent of Octavius chain).
+test.describe('Plans page navigation', () => {
+  test('Add Ministry button is visible on the Serving Plans page', async ({ page }) => {
+    await expect(page.locator('button').getByText('Add Ministry').first()).toBeVisible({ timeout: 15000 });
+  });
+
+  test('Plans subnavigation reveals secondary entries (Songs, Tasks)', async ({ page }) => {
+    // SecondaryMenu surfaces entries based on the active primary section.
+    await expect(page.locator('[id="secondaryMenu"]').getByText('Songs').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[id="secondaryMenu"]').getByText('Tasks').first()).toBeVisible({ timeout: 15000 });
+  });
+
+  test('Tasks secondary item navigates to /serving/tasks', async ({ page }) => {
+    await page.locator('[id="secondaryMenu"]').getByText('Tasks').first().click();
+    await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/serving\/tasks/);
+  });
+});
+

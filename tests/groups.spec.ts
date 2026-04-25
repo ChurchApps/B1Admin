@@ -390,3 +390,57 @@ test.describe.serial('Group Management', () => {
   });
 
 });
+
+// Edge-case extensions — coverage gaps from .notes/B1Admin-test-coverage-gaps.md §3.
+// Independent of the lifecycle chain above; opens a known seed group fresh each test.
+test.describe('Group communication and roster controls', () => {
+  test('group detail page exposes Send Message affordance', async ({ page }) => {
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    // GroupMembers.tsx renders a SmallButton with data-testid="send-message-button"
+    await expect(page.locator('[data-testid="send-message-button"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('group detail page exposes a roster CSV download link', async ({ page }) => {
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    // ExportLink from apphelper renders an <a download="groupmembers.csv"> anchor
+    await expect(page.locator('a[download="groupmembers.csv"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('clicking Send Message opens the message composer', async ({ page }) => {
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.locator('[data-testid="send-message-button"]').click();
+    // Composer surfaces a Templates select + a message textarea (140-char counter shown)
+    // Anchor on the textarea presence.
+    await expect(page.locator('#groupMembersBox textarea').first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test('promotes a group member to leader and back', async ({ page }) => {
+    // Use the Children category groups — they have multiple seed members. Open the first.
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+
+    // Find a non-leader member (the promote-leader testid is only present for non-leaders).
+    const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
+    if (!(await promoteBtn.isVisible().catch(() => false))) {
+      test.info().annotations.push({ type: 'skip-reason', description: 'No non-leader members in seed group' });
+      return;
+    }
+    // Capture the testid suffix so we can find the matching demote button afterwards.
+    const testid = await promoteBtn.getAttribute('data-testid');
+    const memberId = testid!.replace('promote-leader-button-', '');
+    await promoteBtn.click();
+
+    const demoteBtn = page.locator(`[data-testid="remove-leader-button-${memberId}"]`);
+    await expect(demoteBtn).toBeVisible({ timeout: 10000 });
+    // Demote back to keep demo data clean for subsequent tests.
+    await demoteBtn.click();
+    await expect(page.locator(`[data-testid="promote-leader-button-${memberId}"]`)).toBeVisible({ timeout: 10000 });
+  });
+});

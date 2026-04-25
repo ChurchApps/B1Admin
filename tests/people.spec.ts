@@ -490,4 +490,34 @@ test.describe('People Management', () => {
       await expect(results).toHaveCount(0);
     });
   });
+
+  // Edge-case extensions: targeted gaps from .notes/B1Admin-test-coverage-gaps.md §3 (people).
+  test.describe('People — edge-case affordances', () => {
+    test('person profile exposes a top-level Edit button for contact info', async ({ page }) => {
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      // PersonPage renders an EditIcon button in the header for people with edit permission.
+      await expect(editIconButton(page).first()).toBeVisible({ timeout: 10000 });
+    });
+
+    test('search with no matches renders an empty results state', async ({ page }) => {
+      const searchInput = page.locator('input[name="searchText"]');
+      await searchInput.fill('Zzzzz Nonexistent Surname');
+      await page.waitForResponse(
+        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        { timeout: 10000 }
+      );
+      // Result table should have zero rows (or render an explicit no-match state).
+      await expect(page.locator('table tbody tr').filter({ hasText: 'Zzzzz' })).toHaveCount(0);
+    });
+
+    test('person attendance tab is accessible and shows visit history container', async ({ page }) => {
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      const attBtn = page.locator('button').getByText('Attendance');
+      await attBtn.click();
+      // The container renders either a list (with visits) or an empty-state paragraph.
+      const list = page.locator('ul li').first();
+      const empty = page.locator('p').getByText(/No attendance/i);
+      await expect(list.or(empty)).toBeVisible({ timeout: 10000 });
+    });
+  });
 });

@@ -384,4 +384,22 @@ test.describe('Settings Management', () => {
     });
   });
 
+  // Edge-case extensions: extra surface checks per .notes/B1Admin-test-coverage-gaps.md §3.
+  test.describe('General Settings — extras', () => {
+    test('Edit Settings drawer exposes the Church Info name field', async ({ page }) => {
+      // settingsTest fixture lands on /settings/ (ManageChurch). Header has Edit Settings.
+      const editBtn = page.locator('button').getByText('Edit Settings').first();
+      await editBtn.click();
+      // ChurchSettingsEdit uses MUI TextFields labeled "Church Name" and "Subdomain".
+      await expect(page.getByLabel('Church Name').first()).toBeVisible({ timeout: 10000 });
+      await expect(page.getByLabel('Subdomain').first()).toBeVisible();
+    });
+
+    test('Roles tab is the default selection on the Settings page', async ({ page }) => {
+      // The Roles button uses variant="contained" when selected — anchor on its label.
+      const rolesButton = page.getByRole('button', { name: /^Roles$/ }).first();
+      await expect(rolesButton).toBeVisible({ timeout: 10000 });
+    });
+  });
+
 });

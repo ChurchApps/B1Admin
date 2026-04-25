@@ -646,4 +646,21 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
+
+  // Edge-case extensions: navigation surface from .notes/B1Admin-test-coverage-gaps.md §3.
+  test.describe('Songs and Tasks navigation extras', () => {
+    test('Songs page exposes Add Song affordance', async ({ page }) => {
+      const songsLink = page.locator('[id="secondaryMenu"]').getByText('Songs').first();
+      await songsLink.click();
+      await page.waitForURL(/\/serving\/songs/, { timeout: 10000 });
+      await expect(page.locator('button').getByText(/Add Song/i).first()).toBeVisible({ timeout: 10000 });
+    });
+
+    test('Tasks page exposes the Tasks/Automations tab navigation', async ({ page }) => {
+      const tasksLink = page.locator('[id="secondaryMenu"]').getByText('Tasks').first();
+      await tasksLink.click();
+      await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
+      await expect(page.locator('button[role="tab"]').getByText('Automations')).toBeVisible({ timeout: 10000 });
+    });
+  });
 });

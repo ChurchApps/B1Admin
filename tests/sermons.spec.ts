@@ -314,4 +314,64 @@ test.describe('Sermons Management', () => {
       await expect(page.locator('button').getByText('Fetch')).toBeVisible();
     });
   });
+
+  // Edge-case extensions: provider validation + live-stream config gaps from
+  // .notes/B1Admin-test-coverage-gaps.md §3 (sermons row).
+  test.describe.serial('Sermon edit — video provider details', () => {
+    test('opens a fresh sermon and exposes the video provider dropdown', async ({ page }) => {
+      const addBtn = page.locator('[data-testid="add-sermon-button"]');
+      await addBtn.click();
+      const openSermonOption = page.locator('li').getByText('Add Sermon');
+      if (await openSermonOption.isVisible().catch(() => false)) {
+        await openSermonOption.click();
+      }
+      await expect(page.locator('[data-testid="video-provider-select"]')).toBeVisible({ timeout: 10000 });
+    });
+
+    test('video provider dropdown exposes YouTube / Vimeo / Facebook / Custom', async ({ page }) => {
+      // The drawer is still open from the previous test (serial chain). If the runtime
+      // reset between tests, re-open it.
+      let providerSel = page.locator('[data-testid="video-provider-select"]');
+      if (!(await providerSel.isVisible().catch(() => false))) {
+        await page.locator('[data-testid="add-sermon-button"]').click();
+        const openSermonOption = page.locator('li').getByText('Add Sermon');
+        if (await openSermonOption.isVisible().catch(() => false)) await openSermonOption.click();
+        providerSel = page.locator('[data-testid="video-provider-select"]');
+      }
+      await providerSel.click();
+      for (const option of ['YouTube', 'Vimeo', 'Facebook']) {
+        await expect(page.locator('li[role="option"]', { hasText: new RegExp(`^${option}\\b`) })).toBeVisible({ timeout: 10000 });
+      }
+      // Custom is also expected per docs (steps mention multiple providers).
+      await expect(page.locator('li[role="option"]', { hasText: /Custom/i })).toBeVisible();
+      await page.keyboard.press('Escape');
+    });
+
+    test('switching provider to Vimeo updates the video ID input label', async ({ page }) => {
+      let providerSel = page.locator('[data-testid="video-provider-select"]');
+      if (!(await providerSel.isVisible().catch(() => false))) {
+        await page.locator('[data-testid="add-sermon-button"]').click();
+        const openSermonOption = page.locator('li').getByText('Add Sermon');
+        if (await openSermonOption.isVisible().catch(() => false)) await openSermonOption.click();
+        providerSel = page.locator('[data-testid="video-provider-select"]');
+      }
+      await providerSel.click();
+      await page.locator('li[role="option"]', { hasText: /^Vimeo/ }).click();
+      // The video-data field's label switches to "Vimeo ID" plus a fetch button surfaces.
+      await expect(page.locator('[data-testid="fetch-vimeo-button"]')).toBeVisible({ timeout: 10000 });
+      // Cancel out so we don't pollute later tests.
+      await page.locator('button').getByText('Cancel').first().click().catch(() => { });
+    });
+
+    test('publish date input is present on a new sermon', async ({ page }) => {
+      const addBtn = page.locator('[data-testid="add-sermon-button"]');
+      await addBtn.click();
+      const openSermonOption = page.locator('li').getByText('Add Sermon');
+      if (await openSermonOption.isVisible().catch(() => false)) {
+        await openSermonOption.click();
+      }
+      await expect(page.locator('[data-testid="publish-date-input"]')).toBeVisible({ timeout: 10000 });
+      await page.locator('button').getByText('Cancel').first().click().catch(() => { });
+    });
+  });
 });

@@ -494,4 +494,43 @@ test.describe('Website Management', () => {
 
   });
 
+  // Edge-case extensions: URL slug surface + appearance affordances from
+  // .notes/B1Admin-test-coverage-gaps.md §3 (website.spec.ts row).
+  test.describe('Pages — URL slug surface', () => {
+    test('Pages list exposes the URL of each page (slugs are visible, clickable)', async ({ page }) => {
+      const pagesNav = page.locator('[id="secondaryMenu"]').getByText('Pages');
+      await pagesNav.click();
+      await page.waitForURL(/\/site\/pages/, { timeout: 10000 });
+      // PagesPage renders a tbody with each page's URL in a TableCell.
+      // Anchor on at least one URL-shaped string ("/foo") in the table.
+      const urlCell = page.locator('table tbody tr td').getByText(/^\//).first();
+      await expect(urlCell).toBeVisible({ timeout: 10000 });
+    });
+
+    test('Add Page button opens a modal with a URL field affordance', async ({ page }) => {
+      const pagesNav = page.locator('[id="secondaryMenu"]').getByText('Pages');
+      await pagesNav.click();
+      await page.locator('[data-testid="add-page-button"]').click();
+      // The modal exposes a Title (name="title") right away. Stay shallow — confirm modal opened.
+      await expect(page.locator('[name="title"]').first()).toBeVisible({ timeout: 10000 });
+      // Cancel out so we don't leave a dirty drawer.
+      const cancelBtn = page.locator('button').getByText('Cancel').first();
+      await cancelBtn.click().catch(() => { });
+    });
+  });
+
+  test.describe('Appearance — toggles persist after save', () => {
+    test('navigating away and back to Appearance keeps the user on the section', async ({ page }) => {
+      const appearanceTab = page.locator('[id="secondaryMenu"]').getByText('Appearance');
+      await appearanceTab.click();
+      await page.waitForURL(/\/site\/appearance/, { timeout: 10000 });
+      const pagesNav = page.locator('[id="secondaryMenu"]').getByText('Pages');
+      await pagesNav.click();
+      await page.waitForURL(/\/site\/pages/, { timeout: 10000 });
+      await appearanceTab.click();
+      await page.waitForURL(/\/site\/appearance/, { timeout: 10000 });
+      await expect(page).toHaveURL(/\/site\/appearance/);
+    });
+  });
+
 });

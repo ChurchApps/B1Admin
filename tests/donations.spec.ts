@@ -386,3 +386,38 @@ test.describe('Donations summary and fund detail (read-only)', () => {
     await expect(page.locator('table tbody tr a').first()).toBeVisible();
   });
 });
+
+// Edge-case extensions: gaps from .notes/B1Admin-test-coverage-gaps.md §3 (donations).
+test.describe('Donations — navigation and listing extras', () => {
+  test('Donations primary page exposes Funds, Batches, Statements secondary nav', async ({ page }) => {
+    await expect(page.locator('[id="secondaryMenu"]').getByText('Funds').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[id="secondaryMenu"]').getByText('Batches').first()).toBeVisible();
+    await expect(page.locator('[id="secondaryMenu"]').getByText('Giving Statements').first()).toBeVisible();
+  });
+
+  test('Funds list page shows the seed General Fund', async ({ page }) => {
+    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds').first();
+    await fundsBtn.click();
+    await page.waitForURL(/\/donations\/funds/, { timeout: 10000 });
+    await expect(page.locator('a').getByText('General Fund', { exact: true })).toBeVisible({ timeout: 10000 });
+  });
+
+  test('Batches list page exposes Add Batch and Stripe import affordances', async ({ page }) => {
+    const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches').first();
+    await batchesBtn.click();
+    await page.waitForURL(/\/donations\/batches/, { timeout: 10000 });
+    // Either an "Add" button or "+" icon button on the batches page.
+    const addBtn = page.locator('button').getByText(/Add/).first();
+    await expect(addBtn).toBeVisible({ timeout: 10000 });
+    // Stripe import link is shown on Batches page (see donation-statements.spec for the navigation).
+    await expect(page.locator('a').filter({ hasText: /Import missing Stripe transactions/i }).first())
+      .toBeVisible({ timeout: 10000 });
+  });
+
+  test('Donation Summary autorun loads default report on landing', async ({ page }) => {
+    // No navigation needed — donationsTest fixture lands on /donations which auto-runs the report.
+    await expect(page.getByRole('heading', { name: 'Filter Report' })).toBeVisible({ timeout: 15000 });
+    // Period toggle: Weekly is the default selection.
+    await expect(page.getByRole('button', { name: 'Weekly' })).toHaveAttribute('aria-pressed', 'true');
+  });
+});
