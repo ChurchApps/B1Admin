@@ -10,7 +10,7 @@ import { STORAGE_STATE_PATH } from './global-setup';
 //   - src/settings/components/AppTabs.tsx     (tab list w/ Edit/Move/Up/Down)
 //   - src/settings/components/AppEdit.tsx     (create/edit/delete drawer)
 
-const DISPOSABLE_TAB = 'Octavian Test Tab';
+const DISPOSABLE_TAB = 'Zacchaeus Test Tab';
 
 async function openMobileSettings(page: import('@playwright/test').Page) {
   await navigateToMobile(page);

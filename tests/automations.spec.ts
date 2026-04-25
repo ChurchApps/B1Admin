@@ -9,7 +9,7 @@ import { STORAGE_STATE_PATH } from './global-setup';
 // trigger conditions + actions, recurring options, active/inactive toggle.
 // Source: src/serving/tasks/automations/{AutomationsPage, components/AutomationEdit, components/AutomationDetails}.tsx
 
-const DISPOSABLE_AUTOMATION = 'Octavian Test Automation';
+const DISPOSABLE_AUTOMATION = 'Zacchaeus Test Automation';
 
 async function openAutomationsPage(page: import('@playwright/test').Page) {
   await navigateToServing(page);

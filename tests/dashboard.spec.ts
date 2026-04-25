@@ -1,6 +1,6 @@
 import { loggedInTest as test, expect } from './helpers/test-fixtures';
 
-// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe('Dashboard Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/dashboard');
@@ -50,7 +50,7 @@ test.describe('Dashboard Management', () => {
 
   test('should show empty state when no people match search', async ({ page }) => {
     const searchBox = page.locator('#searchText');
-    await searchBox.fill('Octavian-NoSuchPerson');
+    await searchBox.fill('Zacchaeus-NoSuchPerson');
     const searchBtn = page.locator('[data-testid="dashboard-search-button"]');
     await searchBtn.click();
     await expect(page.getByText('No people found matching your search criteria.')).toBeVisible({ timeout: 10000 });
@@ -82,7 +82,7 @@ test.describe('Dashboard Management', () => {
       const taskName = page.locator('[name="title"]');
       await taskName.fill('Dashboard Task');
       const taskNotes = page.locator('[name="note"]');
-      await taskNotes.fill('Octavian Testing (Playwright)');
+      await taskNotes.fill('Zacchaeus Testing (Playwright)');
 
       const saveBtn = page.locator('button').getByText('Save');
       await expect(saveBtn).toBeVisible();

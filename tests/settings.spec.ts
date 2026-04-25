@@ -5,7 +5,7 @@ import { login } from './helpers/auth';
 import { navigateToSettings } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe.serial('Settings Management', () => {
   let page: Page;
 
@@ -61,15 +61,15 @@ test.describe.serial('Settings Management', () => {
       const custom = page.locator('li').getByText('Add Custom Role');
       await custom.click();
       const roleName = page.locator('[name="roleName"]');
-      await roleName.fill('Octavian Test Role');
+      await roleName.fill('Zacchaeus Test Role');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedRole = page.locator('a').getByText('Octavian Test Role');
+      const validatedRole = page.locator('a').getByText('Zacchaeus Test Role');
       await expect(validatedRole).toHaveCount(1);
     });
 
     test('should add person to role', async () => {
-      const role = page.locator('a').getByText('Octavian Test Role');
+      const role = page.locator('a').getByText('Zacchaeus Test Role');
       await role.click();
       const addBtn = page.locator('[data-testid="add-role-member-button"]');
       await addBtn.click();
@@ -88,11 +88,11 @@ test.describe.serial('Settings Management', () => {
       const editBtn = page.locator('[data-testid="edit-role-button"]').last();
       await editBtn.click();
       const roleName = page.locator('[name="roleName"]');
-      await expect(roleName).toHaveValue('Octavian Test Role', { timeout: 10000 });
-      await roleName.fill('Octavius Test Role');
+      await expect(roleName).toHaveValue('Zacchaeus Test Role', { timeout: 10000 });
+      await roleName.fill('Zebedee Test Role');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedRole = page.locator('a').getByText('Octavius Test Role');
+      const validatedRole = page.locator('a').getByText('Zebedee Test Role');
       await expect(validatedRole).toHaveCount(1);
     });
 
@@ -117,7 +117,7 @@ test.describe.serial('Settings Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      const validatedDeletion = page.locator('a').getByText('Octavius Test Role');
+      const validatedDeletion = page.locator('a').getByText('Zebedee Test Role');
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
@@ -140,12 +140,12 @@ test.describe.serial('Settings Management', () => {
       const addBtn = page.locator('button').getByText('Add Tab');
       await addBtn.dispatchEvent('click');
       const tabName = page.locator('[name="text"]');
-      await tabName.fill('Octavian Test Tab')
+      await tabName.fill('Zacchaeus Test Tab')
       const url = page.locator('[name="url"]');
       await url.fill('https://pony.town/');
       const saveBtn = page.locator('button').getByText('Save Tab');
       await saveBtn.click();
-      const validatedTab = page.locator('h6').getByText('Octavian Test Tab');
+      const validatedTab = page.locator('h6').getByText('Zacchaeus Test Tab');
       await expect(validatedTab).toHaveCount(1);
     });
 
@@ -153,11 +153,11 @@ test.describe.serial('Settings Management', () => {
       const editBtn = editIconButton(page).first();
       await editBtn.click();
       const tabName = page.locator('[name="text"]');
-      await expect(tabName).toHaveValue('Octavian Test Tab', { timeout: 10000 });
-      await tabName.fill('Octavius Test Tab')
+      await expect(tabName).toHaveValue('Zacchaeus Test Tab', { timeout: 10000 });
+      await tabName.fill('Zebedee Test Tab')
       const saveBtn = page.locator('button').getByText('Save Tab');
       await saveBtn.click();
-      const validatedTab = page.locator('h6').getByText('Octavius Test Tab');
+      const validatedTab = page.locator('h6').getByText('Zebedee Test Tab');
       await expect(validatedTab).toHaveCount(1);
     });
 
@@ -182,7 +182,7 @@ test.describe.serial('Settings Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      const validatedDeletion = page.locator('h6').getByText('Octavius Test Tab');
+      const validatedDeletion = page.locator('h6').getByText('Zebedee Test Tab');
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
@@ -217,7 +217,7 @@ test.describe.serial('Settings Management', () => {
       const addBtn = page.locator('[data-testid="add-form-button"]');
       await addBtn.dispatchEvent('click');
       const formName = page.locator('[name="name"]');
-      await formName.fill('Octavian Test Form');
+      await formName.fill('Zacchaeus Test Form');
       const association = page.locator('[id="mui-component-select-contentType"]');
       await association.click();
       const selAssociation = page.locator('li').getByText('Stand Alone');
@@ -227,42 +227,42 @@ test.describe.serial('Settings Management', () => {
       const selRestriction = page.locator('li').getByText('Restricted');
       await selRestriction.click();
       const thanksMsg = page.locator('[name="thankYouMessage"]');
-      await thanksMsg.fill('Thanks from Octavian');
+      await thanksMsg.fill('Thanks from Zacchaeus');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedForm = page.locator('a').getByText('Octavian Test Form').first();
+      const validatedForm = page.locator('a').getByText('Zacchaeus Test Form').first();
       await expect(validatedForm).toBeVisible({ timeout: 10000 });
     });
 
     test('should edit form', async () => {
       // Target the form we created, not the first Edit button (which may be a seed form)
-      const octavianRow = page.locator('tr').filter({ hasText: 'Octavian Test Form' }).first();
-      const editBtn = octavianRow.getByRole('button', { name: 'Edit' });
+      const zacchaeusRow = page.locator('tr').filter({ hasText: 'Zacchaeus Test Form' }).first();
+      const editBtn = zacchaeusRow.getByRole('button', { name: 'Edit' });
       await editBtn.click();
       // Wait for API form data to load before editing (prevents contentType reset to default "person")
       const formName = page.locator('[name="name"]');
-      await expect(formName).toHaveValue('Octavian Test Form', { timeout: 10000 });
-      await formName.fill('Octavius Test Form');
+      await expect(formName).toHaveValue('Zacchaeus Test Form', { timeout: 10000 });
+      await formName.fill('Zebedee Test Form');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedForm = page.locator('a').getByText('Octavius Test Form').first();
+      const validatedForm = page.locator('a').getByText('Zebedee Test Form').first();
       await expect(validatedForm).toBeVisible();
     });
 
     test('should cancel editing form', async () => {
       // Target the form we created/edited, not the first Edit button
-      const octavRow = page.locator('tr').filter({ hasText: 'Octavius Test Form' }).first();
+      const octavRow = page.locator('tr').filter({ hasText: 'Zebedee Test Form' }).first();
       const editBtn = octavRow.getByRole('button', { name: 'Edit' });
       await editBtn.click();
       const formName = page.locator('[name="name"]');
-      await expect(formName).toHaveValue('Octavius Test Form', { timeout: 10000 });
+      await expect(formName).toHaveValue('Zebedee Test Form', { timeout: 10000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
       await expect(formName).toHaveCount(0, { timeout: 5000 });
     });
 
     test('should add form questions', async () => {
-      const form = page.locator('a').getByText('Octavius Test Form').first();
+      const form = page.locator('a').getByText('Zebedee Test Form').first();
       await form.click();
 
       // Wait for the async memberPermission query to resolve before proceeding
@@ -294,7 +294,7 @@ test.describe.serial('Settings Management', () => {
     });
 
     test('should edit form questions', async () => {
-      const form = page.locator('a').getByText('Octavius Test Form').first();
+      const form = page.locator('a').getByText('Zebedee Test Form').first();
       await form.click();
 
       // Wait for questions to load (depends on async memberPermission query)
@@ -314,7 +314,7 @@ test.describe.serial('Settings Management', () => {
     });
 
     test('should cancel editing form questions', async () => {
-      const form = page.locator('a').getByText('Octavius Test Form').first();
+      const form = page.locator('a').getByText('Zebedee Test Form').first();
       await form.click();
 
       // Wait for questions to load (depends on async memberPermission query)
@@ -331,7 +331,7 @@ test.describe.serial('Settings Management', () => {
     test('should delete form questions', async () => {
       page.once('dialog', dialog => dialog.accept());
 
-      const form = page.locator('a').getByText('Octavius Test Form').first();
+      const form = page.locator('a').getByText('Zebedee Test Form').first();
       await form.click();
 
       const question = page.locator('td button').getByText('True or False? I support playwright testing.').first();
@@ -347,7 +347,7 @@ test.describe.serial('Settings Management', () => {
     });
 
     test('should add form members', async () => {
-      const form = page.locator('a').getByText('Octavius Test Form').first();
+      const form = page.locator('a').getByText('Zebedee Test Form').first();
       await form.click();
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
       await expect(membersTab).toBeVisible({ timeout: 10000 });
@@ -365,7 +365,7 @@ test.describe.serial('Settings Management', () => {
     });
 
     test('should remove form members', async () => {
-      const form = page.locator('a').getByText('Octavius Test Form').first();
+      const form = page.locator('a').getByText('Zebedee Test Form').first();
       await form.click();
       const membersTab = page.locator('[role="tab"]').getByText('Form Members');
       await expect(membersTab).toBeVisible({ timeout: 10000 });
@@ -378,9 +378,9 @@ test.describe.serial('Settings Management', () => {
     });
 
     test('should delete form', async () => {
-      // Delete all Octavius Test Form entries (handles duplicates from previous runs)
+      // Delete all Zebedee Test Form entries (handles duplicates from previous runs)
       for (let i = 0; i < 10; i++) {
-        const octavRow = page.locator('tr').filter({ hasText: 'Octavius Test Form' }).first();
+        const octavRow = page.locator('tr').filter({ hasText: 'Zebedee Test Form' }).first();
         if (await octavRow.count() === 0) break;
         const editBtn = octavRow.getByRole('button', { name: 'Edit' });
         if (!await editBtn.isVisible().catch(() => false)) break;
@@ -388,7 +388,7 @@ test.describe.serial('Settings Management', () => {
         // Wait for form data to load before clicking delete (the form name
         // field shows up once the edit InputBox has fetched the form).
         const formName = page.locator('[name="name"]');
-        await expect(formName).toHaveValue('Octavius Test Form', { timeout: 10000 });
+        await expect(formName).toHaveValue('Zebedee Test Form', { timeout: 10000 });
         page.once('dialog', d => d.accept());
         // InputBox renders its delete action as <button id="delete"> — this is
         // unique while the form edit panel is open, unlike getByText('Delete')
@@ -396,7 +396,7 @@ test.describe.serial('Settings Management', () => {
         await page.locator('button#delete').click();
         await expect(octavRow).toHaveCount(0, { timeout: 10000 }).catch(() => { });
       }
-      const validatedDeletion = page.locator('a').getByText('Octavius Test Form');
+      const validatedDeletion = page.locator('a').getByText('Zebedee Test Form');
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
   });

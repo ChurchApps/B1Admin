@@ -4,7 +4,7 @@ import { login } from './helpers/auth';
 import { navigateToAttendance } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe('Attendance Management', () => {
 
   // Setup tests form a single chain: campus -> service -> service time -> cleanup.
@@ -30,10 +30,10 @@ test.describe('Attendance Management', () => {
       const addBtn = page.locator('[data-testid="add-campus-button"]');
       await addBtn.click();
       const campusName = page.locator('input[id="name"]');
-      await campusName.fill('Octavian Test Campus');
+      await campusName.fill('Zacchaeus Test Campus');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedName = page.locator('button').getByText('Octavian Test Campus');
+      const verifiedName = page.locator('button').getByText('Zacchaeus Test Campus');
       await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
     });
 
@@ -48,18 +48,18 @@ test.describe('Attendance Management', () => {
     });
 
     test('should edit campus', async () => {
-      const originName = page.locator('button').getByText('Octavian Test Campus');
+      const originName = page.locator('button').getByText('Zacchaeus Test Campus');
       await originName.click();
       const campusName = page.locator('input[id="name"]');
-      await campusName.fill('Octavius Test Campus');
+      await campusName.fill('Zebedee Test Campus');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedName = page.locator('button').getByText('Octavius Test Campus');
+      const verifiedName = page.locator('button').getByText('Zebedee Test Campus');
       await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel editing campus', async () => {
-      const originName = page.locator('button').getByText('Octavius Test Campus');
+      const originName = page.locator('button').getByText('Zebedee Test Campus');
       await originName.click();
       const campusName = page.locator('input[id="name"]');
       await expect(campusName).toHaveCount(1);
@@ -73,30 +73,30 @@ test.describe('Attendance Management', () => {
       await addServBtn.click();
       const campusSelect = page.locator('div[role="combobox"]');
       await campusSelect.click();
-      const selCampus = page.locator('li').getByText('Octavius Test Campus');
+      const selCampus = page.locator('li').getByText('Zebedee Test Campus');
       await expect(selCampus).toBeVisible({ timeout: 10000 });
       await selCampus.click();
       const servName = page.locator('input[id="name"]');
-      await servName.fill('Octavian Test Service');
+      await servName.fill('Zacchaeus Test Service');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedServ = page.locator('button').getByText('Octavian Test Service');
+      const verifiedServ = page.locator('button').getByText('Zacchaeus Test Service');
       await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit service', async () => {
-      const serv = page.locator('button').getByText('Octavian Test Service');
+      const serv = page.locator('button').getByText('Zacchaeus Test Service');
       await serv.click();
       const campusSelect = page.locator('div[role="combobox"]');
       await campusSelect.click();
-      const selCampus = page.locator('li').getByText('Octavius Test Campus');
+      const selCampus = page.locator('li').getByText('Zebedee Test Campus');
       await expect(selCampus).toBeVisible({ timeout: 10000 });
       await selCampus.click();
       const servName = page.locator('input[id="name"]');
-      await servName.fill('Octavius Test Service');
+      await servName.fill('Zebedee Test Service');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedServ = page.locator('button').getByText('Octavius Test Service');
+      const verifiedServ = page.locator('button').getByText('Zebedee Test Service');
       await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
     });
 
@@ -115,30 +115,30 @@ test.describe('Attendance Management', () => {
       await addServTimeBtn.click();
       const servSelect = page.locator('div[role="combobox"]');
       await servSelect.click();
-      const selServ = page.locator('li').getByText('Octavius Test Service');
+      const selServ = page.locator('li').getByText('Zebedee Test Service');
       await expect(selServ).toBeVisible({ timeout: 10000 });
       await selServ.click();
       const timeName = page.locator('input[id="name"]');
-      await timeName.fill('Octavian Test Time');
+      await timeName.fill('Zacchaeus Test Time');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedTime = page.locator('button').getByText('Octavian Test Time');
+      const verifiedTime = page.locator('button').getByText('Zacchaeus Test Time');
       await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit service time', async () => {
-      const time = page.locator('button').getByText('Octavian Test Time');
+      const time = page.locator('button').getByText('Zacchaeus Test Time');
       await time.click();
       const servSelect = page.locator('div[role="combobox"]');
       await servSelect.click();
-      const selServ = page.locator('li').getByText('Octavius Test Service');
+      const selServ = page.locator('li').getByText('Zebedee Test Service');
       await expect(selServ).toBeVisible({ timeout: 10000 });
       await selServ.click();
       const timeName = page.locator('input[id="name"]');
-      await timeName.fill('Octavius Test Time');
+      await timeName.fill('Zebedee Test Time');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedTime = page.locator('button').getByText('Octavius Test Time');
+      const verifiedTime = page.locator('button').getByText('Zebedee Test Time');
       await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
@@ -159,7 +159,7 @@ test.describe('Attendance Management', () => {
         await dialog.accept();
       });
 
-      const time = page.locator('button').getByText('Octavius Test Time');
+      const time = page.locator('button').getByText('Zebedee Test Time');
       await time.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
@@ -173,7 +173,7 @@ test.describe('Attendance Management', () => {
         await dialog.accept();
       });
 
-      const serv = page.locator('button').getByText('Octavius Test Service');
+      const serv = page.locator('button').getByText('Zebedee Test Service');
       await serv.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
@@ -187,7 +187,7 @@ test.describe('Attendance Management', () => {
         await dialog.accept();
       });
 
-      const originName = page.locator('button').getByText('Octavius Test Campus');
+      const originName = page.locator('button').getByText('Zebedee Test Campus');
       await originName.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();

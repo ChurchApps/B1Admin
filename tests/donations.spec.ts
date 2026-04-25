@@ -5,7 +5,7 @@ import { login } from './helpers/auth';
 import { navigateToDonations } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 // donations.spec.ts:
 //   Donations Management (serial) — covers Funds + Batches + Donation entry workflows from
 //   donation-report.md / manual-input.md (steps 3-27): create fund, edit fund, create batch,
@@ -15,8 +15,8 @@ import { STORAGE_STATE_PATH } from './global-setup';
 //   Fund detail page — clicking a fund opens donation history with date filters
 //   (donation-report.md steps 13-14).
 
-const TEST_FUND_INITIAL = 'Octavian Fund';
-const TEST_FUND_RENAMED = 'Octavius Fund';
+const TEST_FUND_INITIAL = 'Zacchaeus Fund';
+const TEST_FUND_RENAMED = 'Zebedee Fund';
 const TEST_BATCH_INITIAL = 'October 10, 2025 Batch';
 const TEST_BATCH_RENAMED = 'October 1, 2025 Batch';
 
@@ -68,24 +68,24 @@ test.describe.serial('Donations Management', () => {
       await fillFundForm(page, { name: TEST_FUND_INITIAL, toggleTaxDeductible: true });
 
       await expect(page.locator('a').getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(1, { timeout: 10000 });
-      // After this, exactly one Non-Deductible row should exist (the Octavian Fund).
+      // After this, exactly one Non-Deductible row should exist (the Zacchaeus Fund).
       await expect(page.locator('p').getByText('Non-Deductible')).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit fund', async () => {
       await openFundsTab(page);
 
-      // Target the Octavian Fund row specifically — alphabetical sort puts other
+      // Target the Zacchaeus Fund row specifically — alphabetical sort puts other
       // funds after it (e.g. Youth Ministry), so .last() is unreliable.
       const editBtn = fundRowEditButton(page, TEST_FUND_INITIAL);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      // Toggle taxDeductible: Octavian was non-deductible → Octavius becomes deductible.
+      // Toggle taxDeductible: Zacchaeus was non-deductible → Zebedee becomes deductible.
       await fillFundForm(page, { name: TEST_FUND_RENAMED, toggleTaxDeductible: true });
 
       await expect(page.locator('a').getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator('a').getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(0, { timeout: 10000 });
-      // Octavius is now deductible, so no fund in the list should be Non-Deductible.
+      // Zebedee is now deductible, so no fund in the list should be Non-Deductible.
       await expect(page.locator('p').getByText('Non-Deductible')).toHaveCount(0, { timeout: 10000 });
     });
 

@@ -5,8 +5,8 @@ import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// "Lessonius" names are private to this spec so it runs independently of
-// serving-plans.spec.ts (which owns the "Octavius" namespace). Setup creates
+// "Apollos" names are private to this spec so it runs independently of
+// serving-plans.spec.ts (which owns the "Zebedee" namespace). Setup creates
 // them, Cleanup removes them — no cross-file state dependency.
 test.describe.serial('Serving Management - Lessons', () => {
   let page: Page;
@@ -23,28 +23,28 @@ test.describe.serial('Serving Management - Lessons', () => {
   });
 
   test.describe('Setup', () => {
-    test('should create Lessonius Ministry, Plans, and Team', async () => {
+    test('should create Apollos Ministry, Plans, and Team', async () => {
       const addMinistry = page.locator('button').getByText('Add Ministry');
       await addMinistry.click();
-      await page.locator('[name="name"]').fill('Lessonius Ministry');
+      await page.locator('[name="name"]').fill('Apollos Ministry');
       await page.locator('button').getByText('Add').first().click();
-      const verifiedMin = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const verifiedMin = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await expect(verifiedMin).toHaveCount(1, { timeout: 10000 });
 
       await verifiedMin.click();
       const createPlanType = page.locator('button').getByText('Create Plan Type');
       await expect(createPlanType).toBeVisible({ timeout: 10000 });
       await createPlanType.click();
-      await page.locator('[type="text"]').fill('Lessonius Plans');
+      await page.locator('[type="text"]').fill('Apollos Plans');
       await page.locator('button').getByText('Save').click();
-      await expect(page.locator('a').getByText('Lessonius Plans')).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator('a').getByText('Apollos Plans')).toHaveCount(1, { timeout: 10000 });
 
       const addTeamBtn = page.locator('[data-testid="add-team-button"]');
       await expect(addTeamBtn).toBeVisible({ timeout: 10000 });
       await addTeamBtn.click();
-      await page.locator('[name="name"]').fill('Lessonius Team');
+      await page.locator('[name="name"]').fill('Apollos Team');
       await page.locator('button').getByText('Add').last().click();
-      const teamLink = page.locator('a').getByText('Lessonius Team');
+      const teamLink = page.locator('a').getByText('Apollos Team');
       await expect(teamLink).toHaveCount(1, { timeout: 10000 });
 
       // Add Dorothy Jackson to the team so the position-assignment test has a
@@ -68,9 +68,9 @@ test.describe.serial('Serving Management - Lessons', () => {
     // dev webServer. The downstream tests (Positions/Times/Service Order)
     // operate on a plan regardless of whether it was created as a lesson plan.
     test('should add lesson plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
@@ -90,9 +90,9 @@ test.describe.serial('Serving Management - Lessons', () => {
     });
 
     test('should edit lesson plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
@@ -102,23 +102,23 @@ test.describe.serial('Serving Management - Lessons', () => {
       await editBtn.click();
       const date = page.locator('[id="name"]');
       await expect(date).toBeVisible({ timeout: 10000 });
-      await date.fill('Octavian Lesson');
+      await date.fill('Zacchaeus Lesson');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedEdit = page.locator('a').getByText('Octavian Lesson');
+      const verifiedEdit = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
     });
   });
 
   test.describe('Positions', () => {
     test('should add position to lesson', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
@@ -126,47 +126,47 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const name = page.locator('[name="name"]');
-      await name.fill('Octavian Assignment');
+      await name.fill('Zacchaeus Assignment');
       const volunteerGroup = page.locator('[role="combobox"]').last();
       await volunteerGroup.click();
-      const octaviusTeam = page.locator('li').getByText('Lessonius Team');
-      await octaviusTeam.click();
+      const zebedeeTeam = page.locator('li').getByText('Apollos Team');
+      await zebedeeTeam.click();
       const saveBtn = page.locator('button').getByText('Save').last();
       await saveBtn.click();
-      const verifiedPosition = page.locator('td button').getByText('Octavian Assignment');
+      const verifiedPosition = page.locator('td button').getByText('Zacchaeus Assignment');
       await expect(verifiedPosition).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit lesson position', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
-      const assignment = page.locator('td button').getByText('Octavian Assignment');
+      const assignment = page.locator('td button').getByText('Zacchaeus Assignment');
       await expect(assignment).toBeVisible({ timeout: 10000 });
       await assignment.click();
       const name = page.locator('[name="name"]');
-      await name.fill('Octavius Assignment');
+      await name.fill('Zebedee Assignment');
       const saveBtn = page.locator('button').getByText('Save').last();
       await saveBtn.click();
-      const verifiedEdit = page.locator('td button').getByText('Octavius Assignment');
+      const verifiedEdit = page.locator('td button').getByText('Zebedee Assignment');
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should assign person to lesson position', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
@@ -186,13 +186,13 @@ test.describe.serial('Serving Management - Lessons', () => {
 
   test.describe('Times', () => {
     test('should add time to lesson', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
@@ -200,49 +200,49 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const name = page.locator('[name="displayName"]');
-      await name.fill('Octavian Service');
+      await name.fill('Zacchaeus Service');
       const team = page.locator('[type="checkbox"]');
       await team.click();
       const saveBtn = page.locator('button').getByText('Save').last();
       await saveBtn.click();
-      const verifiedTime = page.locator('td button').getByText('Octavian Service');
+      const verifiedTime = page.locator('td button').getByText('Zacchaeus Service');
       await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit lesson time', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
-      const time = page.locator('td button').getByText('Octavian Service');
+      const time = page.locator('td button').getByText('Zacchaeus Service');
       await expect(time).toBeVisible({ timeout: 10000 });
       await time.click();
       const name = page.locator('[name="displayName"]');
-      await name.fill('Octavius Service');
+      await name.fill('Zebedee Service');
       const saveBtn = page.locator('button').getByText('Save').last();
       await saveBtn.click();
-      const verifiedEdit = page.locator('td button').getByText('Octavius Service');
+      const verifiedEdit = page.locator('td button').getByText('Zebedee Service');
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should delete lesson time', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
-      const time = page.locator('td button').getByText('Octavius Service');
+      const time = page.locator('td button').getByText('Zebedee Service');
       await expect(time).toBeVisible({ timeout: 10000 });
       await time.click();
       const deleteBtn = page.locator('button').getByText('Delete');
@@ -254,13 +254,13 @@ test.describe.serial('Serving Management - Lessons', () => {
 
   test.describe('Service Order', () => {
     test('should add section to service order', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -271,21 +271,21 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const name = page.locator('[id="label"]');
-      await name.fill('Octavian Section');
+      await name.fill('Zacchaeus Section');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedSection = page.locator('div span').getByText('Octavian Section');
+      const verifiedSection = page.locator('div span').getByText('Zacchaeus Section');
       await expect(verifiedSection).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should edit service order section', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -296,21 +296,21 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const name = page.locator('[id="label"]');
-      await name.fill('Octavius Section');
+      await name.fill('Zebedee Section');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedSection = page.locator('div span').getByText('Octavius Section');
+      const verifiedSection = page.locator('div span').getByText('Zebedee Section');
       await expect(verifiedSection).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should add song to service order', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -336,13 +336,13 @@ test.describe.serial('Serving Management - Lessons', () => {
     });
 
     test('should add item to service order', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -356,23 +356,23 @@ test.describe.serial('Serving Management - Lessons', () => {
       const item = page.getByRole('menuitem', { name: 'Item', exact: true });
       await item.click();
       const name = page.locator('[name="label"]');
-      await name.fill('Octavian Item');
+      await name.fill('Zacchaeus Item');
       const minutes = page.locator('[name="minutes"]');
       await minutes.fill('5');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedItem = page.getByText('Octavian Item').first();
+      const verifiedItem = page.getByText('Zacchaeus Item').first();
       await expect(verifiedItem).toBeVisible({ timeout: 10000 });
     });
 
     test('should edit service order item', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -383,10 +383,10 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const name = page.locator('[name="label"]');
-      await name.fill('Octavius Item');
+      await name.fill('Zebedee Item');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedEdit = page.locator('div').getByText('Octavius Item');
+      const verifiedEdit = page.locator('div').getByText('Zebedee Item');
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
@@ -394,13 +394,13 @@ test.describe.serial('Serving Management - Lessons', () => {
     // library (LessonsApi on port 8090), which is not part of the local
     // webServer stack. Skip these when LessonsApi isn't available.
     test.skip('should add lesson action to service order', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -421,13 +421,13 @@ test.describe.serial('Serving Management - Lessons', () => {
     });
 
     test.skip('should add add-on to service order', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -453,13 +453,13 @@ test.describe.serial('Serving Management - Lessons', () => {
     });
 
     test.skip('should delete add-on from service order', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
       const servOrder = page.locator('[role="tab"]').getByText('Service Order');
@@ -479,17 +479,17 @@ test.describe.serial('Serving Management - Lessons', () => {
 
   test.describe('Cleanup', () => {
     test('should delete lesson position', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
-      const lesson = page.locator('a').getByText('Octavian Lesson');
+      const lesson = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
 
-      const assignment = page.locator('td button').getByText('Octavius Assignment');
+      const assignment = page.locator('td button').getByText('Zebedee Assignment');
       await expect(assignment).toBeVisible({ timeout: 10000 });
       await assignment.click();
       const deleteBtn = page.locator('button').getByText('Delete');
@@ -499,9 +499,9 @@ test.describe.serial('Serving Management - Lessons', () => {
     });
 
     test('should delete lesson plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Lessonius Plans');
+      const plansBtn = page.locator('a').getByText('Apollos Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
@@ -512,17 +512,17 @@ test.describe.serial('Serving Management - Lessons', () => {
       const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      const verifiedEdit = page.locator('a').getByText('Octavian Lesson');
+      const verifiedEdit = page.locator('a').getByText('Zacchaeus Lesson');
       await expect(verifiedEdit).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete Lessonius Ministry', async () => {
+    test('should delete Apollos Ministry', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         await dialog.accept();
       });
 
-      const minBtn = page.locator('[role="tab"]').getByText('Lessonius Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Apollos Ministry');
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
@@ -532,7 +532,7 @@ test.describe.serial('Serving Management - Lessons', () => {
       const deleteBtn = page.locator('button').getByText('Delete');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      const verifiedRemoved = page.locator('table a').getByText('Lessonius Ministry');
+      const verifiedRemoved = page.locator('table a').getByText('Apollos Ministry');
       await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
     });
   });

@@ -382,10 +382,10 @@ test.describe.serial('Group Management', () => {
       const categoryInput = page.locator('input').first();
       await categoryInput.fill('Test Category');
       const nameInput = page.locator('[name="name"]');
-      await nameInput.fill('Octavian Test Group');
+      await nameInput.fill('Zacchaeus Test Group');
       const saveBtn = page.locator('button').getByText('Add').last();
       await saveBtn.click();
-      const validateGroup = page.locator('table tbody tr a').getByText('Octavian Test Group');
+      const validateGroup = page.locator('table tbody tr a').getByText('Zacchaeus Test Group');
       await expect(validateGroup).toHaveCount(1);
     });
 

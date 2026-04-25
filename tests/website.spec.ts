@@ -5,7 +5,7 @@ import { login } from './helpers/auth';
 import { navigateToSite } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe('Website Management', () => {
 
   /* test('should load website home', async ({ page }) => {
@@ -32,10 +32,10 @@ test.describe('Website Management', () => {
       const addBtn = page.locator('[data-testid="add-page-button"]');
       await addBtn.click();
       const name = page.locator('[name="title"]');
-      await name.fill('Octavian Test Page');
+      await name.fill('Zacchaeus Test Page');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedPage = page.locator('td').getByText('Octavian Test Page');
+      const validatedPage = page.locator('td').getByText('Zacchaeus Test Page');
       await expect(validatedPage).toHaveCount(1);
     });
 
@@ -55,10 +55,10 @@ test.describe('Website Management', () => {
       const settingsBtn = page.locator('button').getByText('Page Settings');
       await settingsBtn.click();
       const name = page.locator('[name="title"]');
-      await name.fill('Octavius Test Page');
+      await name.fill('Zebedee Test Page');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedPage = page.locator('h6').getByText('Octavius Test Page');
+      const validatedPage = page.locator('h6').getByText('Zebedee Test Page');
       await expect(validatedPage).toHaveCount(2);
     });
 
@@ -102,9 +102,9 @@ test.describe('Website Management', () => {
       await secondaryDropzone.hover();
       await page.mouse.up();
       const textbox = page.locator('[role="textbox"]');
-      await textbox.fill('Octavian Test Text');
+      await textbox.fill('Zacchaeus Test Text');
       await saveBtn.click();
-      const validatedText = page.locator('p').getByText('Octavian Test Text');
+      const validatedText = page.locator('p').getByText('Zacchaeus Test Text');
       await expect(validatedText).toBeVisible({ timeout: 10000 });
       await expect(validatedText).toHaveCount(1);
     });
@@ -135,7 +135,7 @@ test.describe('Website Management', () => {
       await deleteBtn.click();
       // After dismiss, we should still be on the page editor with the renamed page intact.
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/);
-      const stillExists = page.locator('h6').getByText('Octavius Test Page');
+      const stillExists = page.locator('h6').getByText('Zebedee Test Page');
       await expect(stillExists.first()).toBeVisible();
     });
 
@@ -153,7 +153,7 @@ test.describe('Website Management', () => {
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
 
-      const validatedDeletion = page.locator('td').getByText('Octavius Test Page');
+      const validatedDeletion = page.locator('td').getByText('Zebedee Test Page');
       await expect(validatedDeletion).toHaveCount(0);
     });
 
@@ -183,14 +183,14 @@ test.describe('Website Management', () => {
       const addBtn = page.locator('[data-testid="add-block-button"]');
       await addBtn.click();
       const name = page.locator('[name="name"]');
-      await name.fill('Octavian Test Block');
+      await name.fill('Zacchaeus Test Block');
       const typeSelectBox = page.locator('[role="combobox"]');
       await typeSelectBox.click();
       const typeSelect = page.locator('[data-testid="block-type-section"]');
       await typeSelect.click();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedBlock = page.locator('td').getByText('Octavian Test Block');
+      const validatedBlock = page.locator('td').getByText('Zacchaeus Test Block');
       await expect(validatedBlock).toBeVisible({ timeout: 10000 });
       await expect(validatedBlock).toHaveCount(1);
     });
@@ -234,9 +234,9 @@ test.describe('Website Management', () => {
       await secondaryDropzone.hover({ force: true });
       await page.mouse.up();
       const textbox = page.locator('[role="textbox"]');
-      await textbox.fill('Octavian Test Text');
+      await textbox.fill('Zacchaeus Test Text');
       await saveBtn.click();
-      const validatedText = page.locator('p').getByText('Octavian Test Text');
+      const validatedText = page.locator('p').getByText('Zacchaeus Test Text');
       await expect(validatedText).toBeVisible({ timeout: 10000 });
       await expect(validatedText).toHaveCount(1);
     });
@@ -256,10 +256,10 @@ test.describe('Website Management', () => {
       const renameBtn = page.locator('[data-testid^="rename-block-"]').last();
       await renameBtn.click();
       const nameInput = page.locator('[data-testid="block-name-input"] input');
-      await nameInput.fill('Octavian Renamed Block');
+      await nameInput.fill('Zacchaeus Renamed Block');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const renamed = page.locator('td').getByText('Octavian Renamed Block');
+      const renamed = page.locator('td').getByText('Zacchaeus Renamed Block');
       await expect(renamed).toBeVisible({ timeout: 10000 });
       await expect(renamed).toHaveCount(1);
     });
@@ -471,10 +471,10 @@ test.describe('Website Management', () => {
       const addBtn = page.locator('[data-testid="add-calendar"]');
       await addBtn.click();
       const name = page.locator('[name="name"]');
-      await name.fill('Octavian Test Calendar');
+      await name.fill('Zacchaeus Test Calendar');
       const saveBtn = page.locator('[data-testid="save-calendar-button"]');
       await saveBtn.click();
-      const validatedCalendar = page.locator('h6').getByText('Octavian Test Calendar');
+      const validatedCalendar = page.locator('h6').getByText('Zacchaeus Test Calendar');
       await expect(validatedCalendar).toHaveCount(1);
     });
 
@@ -529,10 +529,10 @@ test.describe('Website Management', () => {
       const editBtn = page.locator('[aria-label="Edit"]').last();
       await editBtn.click();
       const name = page.locator('[name="name"]');
-      await name.fill('Octavius Test Calendar');
+      await name.fill('Zebedee Test Calendar');
       const saveBtn = page.locator('[data-testid="save-calendar-button"]');
       await saveBtn.click();
-      const validatedChange = page.locator('h6').getByText('Octavius Test Calendar');
+      const validatedChange = page.locator('h6').getByText('Zebedee Test Calendar');
       await expect(validatedChange).toHaveCount(1);
     });
 
@@ -557,7 +557,7 @@ test.describe('Website Management', () => {
       await editBtn.click();
       const deleteBtn = page.locator('[data-testid="delete-calendar-button"]');
       await deleteBtn.click();
-      const validatedDeletion = page.locator('h6').getByText('Octavius Test Calendar');
+      const validatedDeletion = page.locator('h6').getByText('Zebedee Test Calendar');
       await expect(validatedDeletion).toHaveCount(0);
     });
 

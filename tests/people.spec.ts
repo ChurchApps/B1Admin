@@ -5,7 +5,7 @@ import { editIconButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './h
 import { login } from './helpers/auth';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian/Octavius entered anywhere, it is a result of these tests.
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus/Zebedee entered anywhere, it is a result of these tests.
 
 test.describe('People Management', () => {
 
@@ -130,10 +130,10 @@ test.describe('People Management', () => {
         await notesBtn.click();
         const seekNotes = page.locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
-        await seekNotes.fill('Octavian Test Note');
+        await seekNotes.fill('Zacchaeus Test Note');
         const sendBtn = page.locator('button').getByText('send');
         await sendBtn.click();
-        const validatedNote = page.locator('p').getByText('Octavian Test Note');
+        const validatedNote = page.locator('p').getByText('Zacchaeus Test Note');
         await expect(validatedNote.first()).toBeVisible({ timeout: 15000 });
       });
 
@@ -144,9 +144,9 @@ test.describe('People Management', () => {
         // Add a note first so the edit affordance definitely exists for this person.
         const seekNotes = page.locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
-        await seekNotes.fill('Octavian Pre-edit Note');
+        await seekNotes.fill('Zacchaeus Pre-edit Note');
         await page.locator('button').getByText('send').click();
-        await expect(page.locator('p').getByText('Octavian Pre-edit Note').first()).toBeVisible({ timeout: 15000 });
+        await expect(page.locator('p').getByText('Zacchaeus Pre-edit Note').first()).toBeVisible({ timeout: 15000 });
 
         const editBtn = page.locator('button[aria-label="editNote"]').filter({ has: page.locator('text=edit') });
         // Edit the note we just added (last in the list).
@@ -154,10 +154,10 @@ test.describe('People Management', () => {
         // AddNote fetches the message content asynchronously and then calls
         // setMessage — wait for the form to show the original content before
         // replacing it, otherwise the fill gets overwritten by the response.
-        await expect(seekNotes).toHaveValue('Octavian Pre-edit Note', { timeout: 10000 });
-        await seekNotes.fill('Octavius Test Note');
+        await expect(seekNotes).toHaveValue('Zacchaeus Pre-edit Note', { timeout: 10000 });
+        await seekNotes.fill('Zebedee Test Note');
         await page.locator('button').getByText('send').click();
-        const validatedEdit = page.locator('p').getByText('Octavius Test Note');
+        const validatedEdit = page.locator('p').getByText('Zebedee Test Note');
         await expect(validatedEdit.first()).toBeVisible({ timeout: 15000 });
       });
 
@@ -168,15 +168,15 @@ test.describe('People Management', () => {
         // Seed a note to guarantee a delete target.
         const seekNotes = page.locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
-        await seekNotes.fill('Octavian Delete Target');
+        await seekNotes.fill('Zacchaeus Delete Target');
         await page.locator('button').getByText('send').click();
-        const target = page.locator('p').getByText('Octavian Delete Target');
+        const target = page.locator('p').getByText('Zacchaeus Delete Target');
         await expect(target.first()).toBeVisible({ timeout: 15000 });
 
         // Click edit on the note we just added (last in the list).
         await page.locator('button[aria-label="editNote"]').last().click();
         // Wait for edit mode to load this note's content before clicking delete.
-        await expect(seekNotes).toHaveValue('Octavian Delete Target', { timeout: 10000 });
+        await expect(seekNotes).toHaveValue('Zacchaeus Delete Target', { timeout: 10000 });
         // In edit mode, an extra IconButton with material-icon text "delete" appears.
         const deleteBtn = page.locator('button').getByText('delete', { exact: true });
         await deleteBtn.click();
@@ -277,7 +277,7 @@ test.describe('People Management', () => {
       await addBtn.click();
       const addBankBtn = page.locator('[aria-labelledby="addBtnGroup"] li').last();
       await addBankBtn.click();
-      await page.locator('[name="account-holder-name"]').fill('Octavian');
+      await page.locator('[name="account-holder-name"]').fill('Zacchaeus');
       await page.locator('[name="routing-number"]').fill('110000000');
       await page.locator('[name="account-number"]').fill('000123456789');
       await page.locator('Button').getByText('Save').click();
@@ -319,13 +319,13 @@ test.describe('People Management', () => {
 
   test.describe('Main Functions', () => {
     test('should add people', async ({ page }) => {
-      await page.locator('[name="first"]').fill('Octavian');
+      await page.locator('[name="first"]').fill('Zacchaeus');
       await page.locator('[name="last"]').fill('Tester');
-      await page.locator('[name="email"]').fill('octaviantester@gmail.com');
+      await page.locator('[name="email"]').fill('zacchaeustester@gmail.com');
       await page.locator('[type="submit"]').click();
 
       await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
-      await expect(page.locator('p').getByText('Octavian').first()).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('p').getByText('Zacchaeus').first()).toBeVisible({ timeout: 10000 });
     });
 
     test('should cancel editing person household', async ({ page }) => {
@@ -419,12 +419,12 @@ test.describe('People Management', () => {
       await editBtn.first().click();
       const middleName = page.locator('[name="name.middle"]');
       await expect(middleName).toBeVisible({ timeout: 10000 });
-      await middleName.fill('Octavian');
+      await middleName.fill('Zacchaeus');
       await page.locator('button').getByText('Save').click();
       await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
       await editBtn.first().click();
       await expect(middleName).toBeVisible({ timeout: 10000 });
-      await expect(middleName).toHaveValue('Octavian');
+      await expect(middleName).toHaveValue('Zacchaeus');
     });
 
     test('should cancel merging person details', async ({ page }) => {
@@ -498,7 +498,7 @@ test.describe('People Management', () => {
       });
 
       // Create a disposable person first so the delete target is deterministic.
-      await page.locator('[name="first"]').fill('Octavian');
+      await page.locator('[name="first"]').fill('Zacchaeus');
       await page.locator('[name="last"]').fill('Disposable');
       await page.locator('[name="email"]').fill('disposable@example.com');
       await page.locator('[type="submit"]').click();
@@ -510,12 +510,12 @@ test.describe('People Management', () => {
 
       await page.waitForURL(/\/people(\?|$)/, { timeout: 10000 });
       const searchInput = page.locator('input[name="searchText"]');
-      await searchInput.fill('Octavian Disposable');
+      await searchInput.fill('Zacchaeus Disposable');
       await page.waitForResponse(
         (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
         { timeout: 10000 }
       );
-      const results = page.locator('table tbody tr').filter({ hasText: 'Octavian Disposable' });
+      const results = page.locator('table tbody tr').filter({ hasText: 'Zacchaeus Disposable' });
       await expect(results).toHaveCount(0);
     });
   });

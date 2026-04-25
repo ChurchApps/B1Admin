@@ -10,7 +10,7 @@ import { STORAGE_STATE_PATH } from './global-setup';
 // calendars (CuratedCalendar = aggregation of group events for public display)
 // and managing which groups feed into them.
 
-const DISPOSABLE_CALENDAR = 'Octavian Test Curated Calendar';
+const DISPOSABLE_CALENDAR = 'Zacchaeus Test Curated Calendar';
 
 async function openCalendarsPage(page: import('@playwright/test').Page) {
   await navigateToCalendars(page);

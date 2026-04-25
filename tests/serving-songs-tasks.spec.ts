@@ -5,7 +5,7 @@ import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe('Serving Management - Songs & Tasks', () => {
 
   test.describe.serial('Songs', () => {
@@ -169,10 +169,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await editBtn.click();
       const label = page.locator('[name="shortDescription"]');
       await expect(label).toBeVisible({ timeout: 10000 });
-      await label.fill('Octavian Key');
+      await label.fill('Zacchaeus Key');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedEdit = page.locator('[role="tab"]').filter({ hasText: 'Octavian Key' });
+      const validatedEdit = page.locator('[role="tab"]').filter({ hasText: 'Zacchaeus Key' });
       await expect(validatedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
@@ -207,13 +207,13 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic');
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
-      // Click the "Octavian Key" tab so it becomes selected, then delete it.
-      await page.locator('[role="tab"]').filter({ hasText: 'Octavian Key' }).click();
+      // Click the "Zacchaeus Key" tab so it becomes selected, then delete it.
+      await page.locator('[role="tab"]').filter({ hasText: 'Zacchaeus Key' }).click();
       const editBtn = page.getByRole('button', { name: 'Edit selected key' });
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
-      const validatedDeletion = page.locator('[role="tab"]').filter({ hasText: 'Octavian Key' });
+      const validatedDeletion = page.locator('[role="tab"]').filter({ hasText: 'Zacchaeus Key' });
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
 
@@ -367,7 +367,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const taskName = page.locator('[name="title"]');
       await taskName.fill('Test Task');
       const taskNotes = page.locator('[name="note"]');
-      await taskNotes.fill('Octavian Testing (Playwright)');
+      await taskNotes.fill('Zacchaeus Testing (Playwright)');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       const validatedTask = page.locator('a').getByText('Test Task');
@@ -482,14 +482,14 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await addBtn.click();
       const autoName = page.locator('[name="title"]');
       await expect(autoName).toBeVisible({ timeout: 10000 });
-      await autoName.fill('Octavian Test Automation');
+      await autoName.fill('Zacchaeus Test Automation');
       const recurranceBox = page.locator('[id="mui-component-select-recurs"]');
       await recurranceBox.click();
       const selRecurrance = page.locator('[data-value="yearly"]');
       await selRecurrance.click();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedAuto = page.locator('h6').getByText('Octavian Test Automation');
+      const validatedAuto = page.locator('h6').getByText('Zacchaeus Test Automation');
       await expect(validatedAuto).toBeVisible({ timeout: 10000 });
       await expect(validatedAuto).toHaveCount(1);
     });
@@ -519,7 +519,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
-      const auto = page.locator('h6').getByText('Octavian Test Automation');
+      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
       await auto.click();
       const addBtn = page.locator('button').getByText('Add Action');
       await addBtn.click();
@@ -532,12 +532,12 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
       const taskName = page.locator('[name="title"]');
-      await taskName.fill('Octavian Test Task');
+      await taskName.fill('Zacchaeus Test Task');
       const taskNotes = page.locator('[name="note"]');
-      await taskNotes.fill('Octavian Testing (Playwright)');
+      await taskNotes.fill('Zacchaeus Testing (Playwright)');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedTask = page.locator('p').getByText('Octavian Test Task');
+      const validatedTask = page.locator('p').getByText('Zacchaeus Test Task');
       await expect(validatedTask).toBeVisible({ timeout: 10000 });
       await expect(validatedTask).toHaveCount(1);
     });
@@ -550,7 +550,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
-      const auto = page.locator('h6').getByText('Octavian Test Automation');
+      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
       await auto.click();
       const addBtn = page.locator('button').getByText('Add Action');
       await addBtn.click();
@@ -569,15 +569,15 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
-      const auto = page.locator('h6').getByText('Octavian Test Automation');
+      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
       await auto.click();
       const editBtn = editIconButton(page).nth(1);
       await editBtn.click();
       const taskName = page.locator('[name="title"]');
-      await taskName.fill('Octavius Test Task');
+      await taskName.fill('Zebedee Test Task');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedTask = page.locator('p').getByText('Octavius Test Task');
+      const validatedTask = page.locator('p').getByText('Zebedee Test Task');
       await expect(validatedTask).toBeVisible({ timeout: 10000 });
       await expect(validatedTask).toHaveCount(1);
     });
@@ -590,7 +590,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
-      const auto = page.locator('h6').getByText('Octavian Test Automation');
+      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
       await auto.click();
       const addBtn = page.locator('button').getByText('Add Condition');
       await addBtn.click();
@@ -626,15 +626,15 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
-      const auto = page.locator('h6').getByText('Octavian Test Automation');
+      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
       await auto.click();
       const editBtn = editIconButton(page).first();
       await editBtn.click();
       const autoName = page.locator('[name="title"]');
-      await autoName.fill('Octavius Test Automation');
+      await autoName.fill('Zebedee Test Automation');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedAuto = page.locator('h6').getByText('Octavius Test Automation');
+      const validatedAuto = page.locator('h6').getByText('Zebedee Test Automation');
       await expect(validatedAuto).toBeVisible({ timeout: 10000 });
       await expect(validatedAuto).toHaveCount(1);
     });
@@ -647,7 +647,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
-      const auto = page.locator('h6').getByText('Octavius Test Automation');
+      const auto = page.locator('h6').getByText('Zebedee Test Automation');
       await auto.click();
       const editBtn = editIconButton(page).first();
       await editBtn.click();
@@ -666,13 +666,13 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
-      const auto = page.locator('h6').getByText('Octavius Test Automation');
+      const auto = page.locator('h6').getByText('Zebedee Test Automation');
       await auto.click();
       const editBtn = editIconButton(page).first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      const validatedDeletion = page.locator('h6').getByText('Octavius Test Automation');
+      const validatedDeletion = page.locator('h6').getByText('Zebedee Test Automation');
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
