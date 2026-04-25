@@ -21,21 +21,23 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const addBtn = page.locator('[data-testid="add-song-button"]');
       await addBtn.click();
-      const songSearch = page.locator('input');
+      const songSearch = page.locator('[data-testid="song-search-dialog-input"] input');
       await songSearch.fill('Frolic');
       const searchBtn = page.locator('[data-testid="song-search-dialog-button"]');
       await searchBtn.click();
       const createBtn = page.locator('button').getByText('Create Manually');
+      await expect(createBtn).toBeVisible({ timeout: 15000 });
       await createBtn.click();
       const songName = page.locator('[name="title"]');
+      await expect(songName).toBeVisible({ timeout: 10000 });
       await songName.fill('Frolic');
       const artistName = page.locator('[name="artist"]');
       await artistName.fill('Luciano Michelini');
-      const saveBtn = page.locator('button').getByText('Save');
+      const saveBtn = page.locator('[role="dialog"] button').getByText('Save', { exact: true });
       await saveBtn.click();
-      const validatedSong = page.locator('h4').getByText('Frolic');
+      await page.waitForURL(/\/serving\/songs\/[^/]+/, { timeout: 20000 });
+      const validatedSong = page.getByRole('heading', { name: 'Frolic' });
       await expect(validatedSong).toBeVisible({ timeout: 10000 });
-      await expect(validatedSong).toHaveCount(1);
     });
 
     test('should add song key', async ({ page }) => {
@@ -45,12 +47,17 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const addKeyBtn = page.locator('[role="tab"]');
-      await addKeyBtn.click();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      // Song was created with a default key, so the Keys tablist already has
+      // ["Default", "Add"]. Click "Add" to open the new-key form.
+      const allTabs = page.locator('[role="tab"]');
+      await expect(allTabs).toHaveCount(2, { timeout: 10000 });
+      const addKeyTab = page.getByRole('tab', { name: /Add/ });
+      await addKeyTab.click();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      await expect(addKeyBtn).toHaveCount(2);
+      // After save: two real keys (Default + the new one) plus the "Add" tab = 3.
+      await expect(allTabs).toHaveCount(3, { timeout: 10000 });
     });
 
     test('should add link from song key menu', async ({ page }) => {
@@ -60,7 +67,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
       const addLinkBtn = page.locator('li').getByText('Add External Link');
@@ -82,15 +89,20 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).last();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      // Target the Edit button inside the list item for the YouTube link, not
+      // the outermost edit icon (which now opens the Arrangement editor after
+      // the Keys redesign).
+      const linkRow = page.locator('li').filter({ hasText: 'Frolic on YouTube' });
+      const editBtn = linkRow.locator('button').first();
       await editBtn.click();
       const textInput = page.locator('[name="text"]');
+      await expect(textInput).toBeVisible({ timeout: 10000 });
       await textInput.fill('Frolic');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedLink = page.locator('a').getByText('Frolic');
-      await expect(validatedLink).toHaveCount(1);
+      const validatedLink = page.locator('a').getByText('Frolic', { exact: true });
+      await expect(validatedLink).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel editing link from song key menu', async ({ page }) => {
@@ -100,9 +112,11 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).last();
-      await editBtn.click();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      // The link was renamed to "Frolic" in the previous test; target its row
+      // specifically via the YouTube URL, which is stable across renames.
+      const linkRow = page.locator('li').filter({ has: page.locator('a[href*="youtu.be"]') });
+      await linkRow.locator('button').first().click();
       const textInput = page.locator('[name="text"]');
       await expect(textInput).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
@@ -123,13 +137,13 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).last();
-      await editBtn.click();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      const linkRow = page.locator('li').filter({ has: page.locator('a[href*="youtu.be"]') });
+      await linkRow.locator('button').first().click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
-      const validatedDeletion = page.locator('a').getByText('Frolic');
-      await expect(validatedDeletion).toHaveCount(0);
+      const validatedDeletion = page.locator('a[href*="youtu.be"]');
+      await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should edit song key', async ({ page }) => {
@@ -139,15 +153,19 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).last();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      // Target the "Edit selected key" button directly. editIconButton().last()
+      // is fragile here because the page has multiple EditIcon buttons (header,
+      // External Links, Arrangement, Keys) and DOM order changed.
+      const editBtn = page.getByRole('button', { name: 'Edit selected key' });
       await editBtn.click();
-      const label = page.locator('textarea').first();
+      const label = page.locator('[name="shortDescription"]');
+      await expect(label).toBeVisible({ timeout: 10000 });
       await label.fill('Octavian Key');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const validatedEdit = page.locator('[role="tab"]').getByText('Octavian Key');
-      await expect(validatedEdit).toHaveCount(1);
+      const validatedEdit = page.locator('[role="tab"]').filter({ hasText: 'Octavian Key' });
+      await expect(validatedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel editing song key', async ({ page }) => {
@@ -157,14 +175,14 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).last();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      const editBtn = page.getByRole('button', { name: 'Edit selected key' });
       await editBtn.click();
-      const label = page.locator('textarea').first();
-      await expect(label).toHaveCount(1);
+      const keySignature = page.locator('[name="keySignature"]');
+      await expect(keySignature).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await expect(label).toHaveCount(0);
+      await expect(keySignature).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should delete key', async ({ page }) => {
@@ -180,13 +198,15 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).last();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      // Click the "Octavian Key" tab so it becomes selected, then delete it.
+      await page.locator('[role="tab"]').filter({ hasText: 'Octavian Key' }).click();
+      const editBtn = page.getByRole('button', { name: 'Edit selected key' });
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
-      const validatedDeletion = page.locator('[role="tab"]').getByText('Octavian Key');
-      await expect(validatedDeletion).toHaveCount(0);
+      const validatedDeletion = page.locator('[role="tab"]').filter({ hasText: 'Octavian Key' });
+      await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should add external link', async ({ page }) => {
@@ -196,25 +216,23 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).nth(1);
-      await editBtn.click();
-      const addBtn = addIconButton(page).nth(2);
-      await addBtn.click();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      // Click the edit pencil next to the External Links heading to open
+      // SongDetailLinksEdit, then click the Add (+) icon it renders.
+      const extHeading = page.getByRole('heading', { name: 'External Links' });
+      const extContainer = extHeading.locator('xpath=ancestor::div[1]/..');
+      await extContainer.locator('button:has(svg[data-testid="EditIcon"])').first().click();
+      await extContainer.locator('button:has(svg[data-testid="AddIcon"])').first().click();
       const serviceBox = page.locator('[role="combobox"]');
+      await expect(serviceBox).toBeVisible({ timeout: 10000 });
       await serviceBox.click();
       const selService = page.locator('li').getByText('YouTube');
       await selService.click();
       const link = page.locator('[name="serviceKey"]');
-      await link.fill('https://www.youtube.com/watch?v=6MYAGyZlBY0');
+      await link.fill('6MYAGyZlBY0');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const checkBtn = checkIconButton(page);
-      await checkBtn.click();
-
-      const validatedAddition = page.locator('a img');
-      await expect(validatedAddition).toBeVisible({ timeout: 10000 });
-      await expect(validatedAddition).toHaveCount(1);
+      await expect(page.getByRole('cell', { name: 'YouTube' })).toBeVisible({ timeout: 10000 });
     });
 
     test('should cancel adding external link', async ({ page }) => {
@@ -224,11 +242,11 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
-      const editBtn = editIconButton(page).nth(1);
-      await editBtn.click();
-      const addBtn = addIconButton(page).nth(2);
-      await addBtn.click();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+      const extHeading = page.getByRole('heading', { name: 'External Links' });
+      const extContainer = extHeading.locator('xpath=ancestor::div[1]/..');
+      await extContainer.locator('button:has(svg[data-testid="EditIcon"])').first().click();
+      await extContainer.locator('button:has(svg[data-testid="AddIcon"])').first().click();
       const serviceBox = page.locator('[role="combobox"]');
       await expect(serviceBox).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
@@ -243,7 +261,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const editBtn = editIconButton(page).nth(2);
       await editBtn.click();
       const lyricBox = page.locator('[name="lyrics"]');
@@ -262,7 +280,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const editBtn = editIconButton(page).nth(2);
       await editBtn.click();
       const lyricBox = page.locator('[name="lyrics"]');
@@ -285,7 +303,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const song = page.locator('a').getByText('Frolic');
       await song.click();
-      await expect(page.locator('h4').getByText('Frolic')).toBeVisible({ timeout: 10000 });
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const editBtn = editIconButton(page).nth(2);
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
@@ -354,14 +372,16 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
 
+      // After "should add a task" creates one task assigned to Demo User, it appears
+      // in both "Assigned to Me" and "Created by Me" sections -> 2 links.
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(4);
+      await expect(task).toHaveCount(2);
       const closedBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedBtn.click();
       await expect(task).toHaveCount(0, { timeout: 10000 });
       const openBtn = page.locator('[data-testid="show-open-tasks-button"]');
       await openBtn.click();
-      await expect(task).toHaveCount(4, { timeout: 10000 });
+      await expect(task).toHaveCount(2, { timeout: 10000 });
     });
 
     test('should reassign tasks', async ({ page }) => {
@@ -370,7 +390,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
 
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(4);
+      await expect(task).toHaveCount(2);
       const selectedTask = page.locator('a').getByText('Test Task').first();
       await selectedTask.click()
       const assignBtn = page.locator('[title="Edit Assigned"]');
@@ -382,7 +402,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
       await tasksBtn.click();
-      await expect(task).toHaveCount(3, { timeout: 10000 });
+      // After reassignment, task is no longer in "Assigned to Me" but still in
+      // "Created by Me" -> 1 link remaining.
+      await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should reassociate tasks', async ({ page }) => {
@@ -401,8 +423,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
       await tasksBtn.click();
+      // After reassociation, the single remaining list entry shows
+      // "Grace Jackson" as the Associated-With label.
       const validatedAssociation = page.locator('p').getByText('Grace Jackson');
-      await expect(validatedAssociation).toHaveCount(2, { timeout: 10000 });
+      await expect(validatedAssociation).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should close a task', async ({ page }) => {
@@ -417,10 +441,12 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const closedBtn = page.locator('li').getByText('Closed');
       await closedBtn.click();
       await tasksBtn.click();
-      await expect(task).toHaveCount(1, { timeout: 10000 });
+      // Task is now closed -> invisible on the default "Open" filter.
+      await expect(task).toHaveCount(0, { timeout: 10000 });
       const closedTasksBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedTasksBtn.click();
-      await expect(task).toHaveCount(1);
+      // After switching to "Closed" filter, the task reappears in "Created by Me".
+      await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should add an automation', async ({ page }) => {

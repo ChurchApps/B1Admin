@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
+import { editIconButton } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 // Entire file is one chain: create Octavian Ministry -> rename to Octavius ->
@@ -42,7 +43,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      const editBtn = page.locator('button span').getByText('edit').first();
+      const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -60,7 +61,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      const editBtn = page.locator('button span').getByText('edit').first();
+      const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -163,7 +164,7 @@ test.describe.serial('Serving Management - Plans', () => {
       const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
 
-      const editBtn = page.locator('button span').getByText('edit').last();
+      const editBtn = editIconButton(page).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const typeName = page.locator('[type="text"]');
@@ -178,7 +179,7 @@ test.describe.serial('Serving Management - Plans', () => {
       const minBtn = page.locator('[role="tab"]').getByText('Octavius Ministry');
       await minBtn.click();
 
-      const editBtn = page.locator('button span').getByText('edit').last();
+      const editBtn = editIconButton(page).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const typeName = page.locator('[type="text"]');
@@ -200,12 +201,12 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const planName = page.locator('[name="name"]');
-      await planName.fill('Mar 10, 2025');
+      await planName.fill('Mar 10, 2030');
       const date = page.locator('[id="serviceDate"]');
-      await date.fill('2025-03-01');
+      await date.fill('2030-03-01');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedPlan = page.locator('a').getByText('Mar 10, 2025');
+      const verifiedPlan = page.locator('a').getByText('Mar 10, 2030');
       await expect(verifiedPlan).toHaveCount(1, { timeout: 10000 });
     });
 
@@ -221,10 +222,10 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const planName = page.locator('[name="name"]');
-      await planName.fill('Mar 1, 2025');
+      await planName.fill('Mar 1, 2030');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      const verifiedPlan = page.locator('a').getByText('Mar 1, 2025');
+      const verifiedPlan = page.locator('a').getByText('Mar 1, 2030');
       await expect(verifiedPlan).toHaveCount(1, { timeout: 10000 });
     });
 
@@ -259,7 +260,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      const verifiedPlan = page.locator('a').getByText('Mar 1, 2025');
+      const verifiedPlan = page.locator('a').getByText('Mar 1, 2030');
       await expect(verifiedPlan).toHaveCount(0, { timeout: 10000 });
     });
   });
@@ -287,7 +288,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
       await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
-      const editBtn = page.locator('button span').getByText('edit');
+      const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -391,7 +392,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
       await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
-      const editBtn = page.locator('button span').getByText('edit');
+      const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
@@ -414,7 +415,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
-      const editBtn = page.locator('button span').getByText('edit').first();
+      const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 

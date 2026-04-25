@@ -2,16 +2,25 @@ import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
 import { navigateTo, openPrimaryNav } from './helpers/navigation';
 
-// Smoke coverage for intro.md: every primary nav item opens its section, and the
-// common secondary items (reachable via their parent primary section) open too.
+// Smoke coverage: every primary nav item opens its section, and every secondary
+// item (reachable via its parent primary section) opens too. Mirrors the routes
+// defined in helpers/navigation.ts so any addition there gets a smoke test here.
 //
 // Primary nav items for the demo user (from Header.tsx primaryMenu):
 //   Dashboard, People, Donations, Serving, Sermons, Website, Mobile, Settings.
-// Groups/Attendance/Forms/Calendars/Registrations are secondary items — the
-// navigateTo() helper opens their parent first, then clicks the secondaryMenu link.
+// Tasks is intentionally a SECONDARY item under Serving for users with plans
+// access (the demo user); the primary "Tasks" entry only renders for users
+// without plans access.
+// Server Admin is gated on Permissions.membershipApi.server.admin and is not
+// available to the demo user, so it is not exercised here.
 test.describe('Primary Navigation', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
+  });
+
+  test('opens Dashboard', async ({ page }) => {
+    await navigateTo(page, 'dashboard');
+    await expect(page).toHaveURL(/\/dashboard|\/$/);
   });
 
   test('opens People', async ({ page }) => {
@@ -89,6 +98,31 @@ test.describe('Secondary Navigation', () => {
   test('opens Songs via Serving', async ({ page }) => {
     await navigateTo(page, 'songs');
     await expect(page).toHaveURL(/\/serving\/songs/);
+  });
+
+  test('opens Tasks via Serving', async ({ page }) => {
+    await navigateTo(page, 'tasks');
+    await expect(page).toHaveURL(/\/serving\/tasks/);
+  });
+
+  test('opens Pages via Website', async ({ page }) => {
+    await navigateTo(page, 'pages');
+    await expect(page).toHaveURL(/\/site\/pages/);
+  });
+
+  test('opens Blocks via Website', async ({ page }) => {
+    await navigateTo(page, 'blocks');
+    await expect(page).toHaveURL(/\/site\/blocks/);
+  });
+
+  test('opens Appearance via Website', async ({ page }) => {
+    await navigateTo(page, 'appearance');
+    await expect(page).toHaveURL(/\/site\/appearance/);
+  });
+
+  test('opens Files via Website', async ({ page }) => {
+    await navigateTo(page, 'files');
+    await expect(page).toHaveURL(/\/site\/files/);
   });
 
   test('opens Batches via Donations', async ({ page }) => {

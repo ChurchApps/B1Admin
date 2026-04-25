@@ -2,12 +2,14 @@ import type { Page } from "@playwright/test";
 
 // Primary nav items: rendered in the top-level drawer opened via #primaryNavButton.
 // Each maps to a data-testid=nav-item-<key> injected by Header.tsx useEffect.
+// NOTE: "tasks" is intentionally NOT a primary item — for the demo user (who has
+// plans access), Header.tsx renders /serving as primary and Tasks shows up as a
+// secondary item under Serving. See SECONDARY_ROUTES below.
 type PrimarySection =
   | "dashboard"
   | "people"
   | "donations"
   | "serving"
-  | "tasks"
   | "sermons"
   | "website"
   | "mobile"
@@ -20,6 +22,7 @@ type SecondarySection =
   | "attendance"
   | "forms"
   | "songs"
+  | "tasks"
   | "pages"
   | "blocks"
   | "appearance"
@@ -40,7 +43,6 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   people: /\/people/,
   donations: /\/donations(?!\/)/,
   serving: /\/serving(?!\/)/,
-  tasks: /\/serving\/tasks|\/tasks/,
   sermons: /\/sermons(?!\/)/,
   website: /\/site\/pages/,
   mobile: /\/mobile/,
@@ -57,6 +59,7 @@ const SECONDARY_ROUTES: Record<
   attendance: { parent: "people", label: "Attendance", url: /\/attendance/ },
   forms: { parent: "settings", label: "Forms", url: /\/forms/ },
   songs: { parent: "serving", label: "Songs", url: /\/serving\/songs/ },
+  tasks: { parent: "serving", label: "Tasks", url: /\/serving\/tasks/ },
   pages: { parent: "website", label: "Pages", url: /\/site\/pages/ },
   blocks: { parent: "website", label: "Blocks", url: /\/site\/blocks/ },
   appearance: { parent: "website", label: "Appearance", url: /\/site\/appearance/ },

@@ -4,6 +4,15 @@ import { navigateToPeople } from './helpers/navigation';
 import { editIconButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian/Octavius entered anywhere, it is a result of these tests.
+
+// People is the largest spec in the project (29 tests). With the default
+// `chromium` project's fullyParallel: true and workers: '75%', a 24-core
+// machine launches 18 browser contexts that all hit Vite for /people at
+// once, overwhelming the dev server (page.goto times out before content
+// renders). Force this file to one worker so each test waits its turn
+// instead of racing against module compilation.
+test.describe.configure({ mode: 'serial' });
+
 test.describe('People Management', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
@@ -421,11 +430,38 @@ test.describe('People Management', () => {
       const mergeBtn = page.locator('button').getByText('merge');
       await mergeBtn.click();
       const mergeSearch = page.locator('[name="personAddText"]');
+      // Search by full name — "Robert Moore" disambiguates from Robert Johnson
+      // and other Roberts that exist in the seed data.
       await mergeSearch.fill('Robert Moore');
-      await page.locator('button').getByText('Search').click();
-      const mergePplBtn = page.locator('[data-testid="select-person-button"]');
-      await mergePplBtn.click();
-      await page.locator('button').getByText('Confirm').click();
+      const searchResponse = page.waitForResponse(
+        (response) => response.url().includes('/people/search') && response.status() === 200,
+        { timeout: 10000 }
+      );
+      // Merge box renders its own Search button inside InputBox; scope to the merge box.
+      await page.locator('#mergeBox').getByRole('button', { name: 'Search' }).click();
+      await searchResponse;
+      // The Search component renders one select-person-button per result row.
+      // Anchor on the household member we expect to merge.
+      const robertRow = page.locator('#searchResults tr').filter({ hasText: 'Robert Moore' }).first();
+      await expect(robertRow).toBeVisible({ timeout: 10000 });
+      await robertRow.locator('[data-testid="select-person-button"]').click();
+      // MergeModal renders inside data-cy="merge-modal"; the Confirm button has
+      // data-cy="confirm-merge". Wait for the modal to mount before clicking.
+      const confirmBtn = page.locator('[data-cy="confirm-merge"]');
+      await expect(confirmBtn).toBeVisible({ timeout: 10000 });
+      // Listen for the /people DELETE that removes the merged-out person, plus
+      // the internal navigate("/people") fired by Merge.tsx after Promise.all
+      // resolves. Both must complete before we re-search.
+      const deleteResponse = page.waitForResponse(
+        (response) => response.url().match(/\/people\/PER\d+/) !== null
+          && response.request().method() === 'DELETE'
+          && response.status() === 200,
+        { timeout: 15000 }
+      );
+      const navAfterMerge = page.waitForURL(/\/people(\?|$)/, { timeout: 15000 });
+      await confirmBtn.click();
+      await deleteResponse;
+      await navAfterMerge;
 
       // After merge, one of the two should no longer show in search results.
       await navigateToPeople(page);

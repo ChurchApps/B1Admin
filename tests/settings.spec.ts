@@ -321,7 +321,7 @@ test.describe('Settings Management', () => {
     });
 
     test('should delete form questions', async ({ page }) => {
-      page.on('dialog', dialog => dialog.accept());
+      page.once('dialog', dialog => dialog.accept());
 
       const form = page.locator('a').getByText('Octavius Test Form').first();
       await form.click();
@@ -329,10 +329,12 @@ test.describe('Settings Management', () => {
       const question = page.locator('td button').getByText('True or False? I support playwright testing.').first();
       await expect(question).toBeVisible({ timeout: 10000 });
       await question.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
-      const responsePromise = page.waitForResponse(resp => resp.url().includes('/questions') && resp.request().method() === 'DELETE');
-      await deleteBtn.evaluate(el => (el as HTMLElement).click());
-      await responsePromise;
+      // InputBox renders its delete action as <button id="delete"> — unique while
+      // the question edit panel is open, unlike getByText('Delete') which can race
+      // with other transient buttons that briefly render the word.
+      const deleteBtn = page.locator('button#delete');
+      await expect(deleteBtn).toBeVisible({ timeout: 5000 });
+      await deleteBtn.click();
       await expect(question).toHaveCount(0, { timeout: 10000 });
     });
 
