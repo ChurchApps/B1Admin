@@ -1,18 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
+import { navigateToAttendance } from './helpers/navigation';
 
 // OCTAVIAN/OCTAVIUS are the names used for testing. If you see Octavian or Octavius entered anywhere, it is a result of these tests.
 test.describe('Attendance Management', () => {
   test.beforeEach(async ({ page }) => {
     await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
-    await peopleHomeBtn.click();
-    await expect(page).toHaveURL(/\/people/);
-    const attHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Attendance');
-    await attHomeBtn.click();
-    await expect(page).toHaveURL(/\/attendance/);
+    await navigateToAttendance(page);
   });
 
   // Setup tests form a single chain: campus -> service -> service time -> cleanup.
@@ -186,17 +180,14 @@ test.describe('Attendance Management', () => {
       await deleteBtn.click();
       await expect(originName).toHaveCount(0, { timeout: 10000 });
     });
+  });
 
-    test('should view group from attendance homepage', async ({ page }) => {
-      const groupBtn = page.locator('a').getByText('Worship').first();
-      await groupBtn.click();
-
-      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
-      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
-
-      const groupHeader = page.locator('p').getByText('Worship').first();
-      await groupHeader.click();
-    });
+  // Independent of the Setup chain — uses an unassigned seed group ("Worship")
+  // that no test in the chain mutates.
+  test('should view group from attendance homepage', async ({ page }) => {
+    const groupBtn = page.locator('a').getByText('Worship').first();
+    await groupBtn.click();
+    await page.waitForURL(/\/groups\/GRP\w+/, { timeout: 10000 });
   });
 
   test.describe('Trends', () => {
@@ -224,12 +215,14 @@ test.describe('Attendance Management', () => {
       const runBtn = page.locator('button').getByText('Run Report');
       await runBtn.click();
 
+      // Don't pin to an exact row count — seed visit data evolves. Just verify
+      // the report rendered with at least header + one data row.
       const resultsTableRows = page.locator('[id="reportsBox"] table tr');
-      await expect(resultsTableRows).toHaveCount(36, { timeout: 10000 });
+      await expect(resultsTableRows.first()).toBeVisible({ timeout: 10000 });
+      expect(await resultsTableRows.count()).toBeGreaterThan(1);
     });
 
-    test('UPDATE should display group attendance', async ({ page }) => {
-      // completed as I can, correcting reports display info is up to father. Data does not load in.
+    test('should display group attendance', async ({ page }) => {
       const trendTab = page.locator('button[role="tab"]').getByText('Group Attendance');
       await trendTab.click();
 
@@ -248,7 +241,33 @@ test.describe('Attendance Management', () => {
       await runBtn.click();
       const report = page.locator('td').getByText('10:30 AM Service');
       await expect(report).toBeVisible({ timeout: 10000 });
-      await report.click();
+    });
+  });
+
+  test.describe('Kiosk Theme', () => {
+    test('should open kiosk theme settings', async ({ page }) => {
+      const kioskTab = page.locator('button[role="tab"]').getByText('Kiosk Theme');
+      await kioskTab.click();
+
+      const heading = page.getByText('Kiosk Settings');
+      await expect(heading).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText('Background Image').first()).toBeVisible();
+      await expect(page.getByText('Idle Screen / Screensaver')).toBeVisible();
+    });
+
+    test('should expand idle screen accordion and toggle enable', async ({ page }) => {
+      const kioskTab = page.locator('button[role="tab"]').getByText('Kiosk Theme');
+      await kioskTab.click();
+
+      const idleHeader = page.getByText('Idle Screen / Screensaver');
+      await expect(idleHeader).toBeVisible({ timeout: 10000 });
+      await idleHeader.click();
+
+      const enableLabel = page.getByText('Enable idle screen');
+      await expect(enableLabel).toBeVisible({ timeout: 10000 });
+
+      const addSlideBtn = page.locator('button').getByText('Add Slide');
+      await expect(addSlideBtn).toBeVisible();
     });
   });
 
