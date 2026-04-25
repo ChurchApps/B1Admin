@@ -123,6 +123,24 @@ test.describe('Website Management', () => {
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 10000 });
     });
 
+    test('should cancel deleting page', async ({ page }) => {
+      page.once('dialog', async dialog => {
+        expect(dialog.type()).toBe('confirm');
+        await dialog.dismiss();
+      });
+
+      const editBtn = page.locator('[data-testid="edit-page-button"]').last();
+      await editBtn.click();
+      const settingsBtn = page.locator('button').getByText('Page Settings');
+      await settingsBtn.click();
+      const deleteBtn = page.locator('button').getByText('Delete');
+      await deleteBtn.click();
+      // After dismiss, we should still be on the page editor with the renamed page intact.
+      await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/);
+      const stillExists = page.locator('h6').getByText('Octavius Test Page');
+      await expect(stillExists.first()).toBeVisible();
+    });
+
     test('should delete page', async ({ page }) => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
@@ -197,7 +215,9 @@ test.describe('Website Management', () => {
       await section.hover();
       await page.mouse.down();
       await page.mouse.move(-10, -10);
-      await dropzone.hover();
+      // Empty blocks render a zero-sized dropzone covered by the preview-desktop
+      // wrapper; force the hover so the drop completes despite the overlay.
+      await dropzone.hover({ force: true });
       await page.mouse.up();
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
@@ -209,7 +229,7 @@ test.describe('Website Management', () => {
       await text.hover();
       await page.mouse.down();
       await page.mouse.move(-10, -10);
-      await secondaryDropzone.hover();
+      await secondaryDropzone.hover({ force: true });
       await page.mouse.up();
       const textbox = page.locator('[role="textbox"]');
       await textbox.fill('Octavian Test Text');
@@ -229,6 +249,18 @@ test.describe('Website Management', () => {
       const mobileBox = page.locator('div [class="MuiContainer-root MuiContainer-maxWidthLg css-lnoso8-MuiContainer-root"]');
       await expect(mobileBox).toHaveCount(1);
     });*/
+
+    test('should rename block', async ({ page }) => {
+      const renameBtn = page.locator('[data-testid^="rename-block-"]').last();
+      await renameBtn.click();
+      const nameInput = page.locator('[data-testid="block-name-input"] input');
+      await nameInput.fill('Octavian Renamed Block');
+      const saveBtn = page.locator('button').getByText('Save');
+      await saveBtn.click();
+      const renamed = page.locator('td').getByText('Octavian Renamed Block');
+      await expect(renamed).toBeVisible({ timeout: 10000 });
+      await expect(renamed).toHaveCount(1);
+    });
 
     test('should verify done btn functionality', async ({ page }) => {
       const editBtn = page.locator('td a').getByText('Edit').last();
@@ -296,7 +328,9 @@ test.describe('Website Management', () => {
     test('should add custom CSS', async ({ page }) => {
       const stylesheetSettings = page.locator('h6').getByText('CSS & Javascript');
       await stylesheetSettings.click();
-      const cssBox = page.locator('textarea').first();
+      // Scope to the named CSS field — page-level `textarea` also matches the
+      // SuperBee chat widget's hidden textarea, which never unmounts.
+      const cssBox = page.locator('textarea[name="css"]');
       await cssBox.fill('h1 {\ncolor: #7FFF00\n}');
       const saveBtn = page.locator('button').getByText('Save Changes');
       await saveBtn.click();
@@ -307,11 +341,41 @@ test.describe('Website Management', () => {
     test('should cancel adding custom CSS', async ({ page }) => {
       const stylesheetSettings = page.locator('h6').getByText('CSS & Javascript');
       await stylesheetSettings.click();
-      const cssBox = page.locator('textarea').first();
+      const cssBox = page.locator('textarea[name="css"]');
       await expect(cssBox).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
       await expect(cssBox).toHaveCount(0);
+    });
+
+    test('should open and cancel typography scale', async ({ page }) => {
+      const typographyOption = page.locator('[data-testid="style-option-typography"]');
+      await typographyOption.click();
+      const baseSize = page.locator('[data-testid="base-size-input"]');
+      await expect(baseSize).toBeVisible({ timeout: 10000 });
+      const cancelBtn = page.locator('button').getByText('Cancel');
+      await cancelBtn.click();
+      await expect(baseSize).toHaveCount(0);
+    });
+
+    test('should open and cancel spacing scale', async ({ page }) => {
+      const spacingOption = page.locator('[data-testid="style-option-spacing"]');
+      await spacingOption.click();
+      const xsInput = page.locator('[data-testid="spacing-xs-input"]');
+      await expect(xsInput).toBeVisible({ timeout: 10000 });
+      const cancelBtn = page.locator('button').getByText('Cancel');
+      await cancelBtn.click();
+      await expect(xsInput).toHaveCount(0);
+    });
+
+    test('should open and cancel logo settings', async ({ page }) => {
+      const logoOption = page.locator('[data-testid="style-option-logo"]');
+      await logoOption.click();
+      const saveLogoBtn = page.locator('[data-testid="save-appearance-button"]');
+      await expect(saveLogoBtn).toBeVisible({ timeout: 10000 });
+      const cancelBtn = page.locator('button').getByText('Cancel');
+      await cancelBtn.click();
+      await expect(saveLogoBtn).toHaveCount(0);
     });
 
     test('should add footer', async ({ page }) => {
