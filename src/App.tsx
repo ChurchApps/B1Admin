@@ -5,7 +5,7 @@ import { UserProvider } from "./UserContext";
 import { ThemeContextProvider, useThemeMode } from "./ThemeContext";
 import { CookiesProvider } from "react-cookie";
 import { createTheme, CssBaseline, ThemeProvider, type PaletteMode } from "@mui/material";
-import "@churchapps/apphelper-markdown/dist/components/markdownEditor/editor.css";
+import "@churchapps/apphelper/dist/markdown/components/markdownEditor/editor.css";
 //TODO export the css from apphelper
 import { EnvironmentHelper } from "./helpers";
 import { QueryClientProvider } from "@tanstack/react-query";

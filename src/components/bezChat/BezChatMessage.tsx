@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
-import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 
 interface Props {
   message: { role: "user" | "assistant"; content: string };

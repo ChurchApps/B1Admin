@@ -1,5 +1,5 @@
 import { CommonEnvironmentHelper, ApiHelper, Locale } from "@churchapps/apphelper";
-import { EnvironmentHelper as WebsiteEnvironmentHelper } from "@churchapps/apphelper-website";
+import { EnvironmentHelper as WebsiteEnvironmentHelper } from "@churchapps/apphelper/website";
 
 export class EnvironmentHelper {
   private static LessonsApi = "";

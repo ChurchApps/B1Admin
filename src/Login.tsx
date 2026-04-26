@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { UserHelper, Permissions } from "@churchapps/apphelper";
 import UserContext from "./UserContext";
-import { LoginPage } from "@churchapps/apphelper-login";
+import { LoginPage } from "@churchapps/apphelper/login";
 import { Alert } from "@mui/material";
 import { LoginHeroPanel } from "./components/LoginHeroPanel";
 

@@ -28,6 +28,15 @@ test.describe('Website Management', () => {
       await page?.context().close();
     });
 
+    // Several tests in this chain click "edit-page-button" which navigates to
+    // the page preview view. Re-enter /site/pages before each test so the
+    // pages list (and its edit affordances) is in the DOM.
+    test.beforeEach(async () => {
+      if (!/\/site\/pages(\?|$)/.test(page.url())) {
+        await navigateToSite(page);
+      }
+    });
+
     test('should add page', async () => {
       const addBtn = page.locator('[data-testid="add-page-button"]');
       await addBtn.click();

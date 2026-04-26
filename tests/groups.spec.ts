@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { groupsTest as test, expect } from './helpers/test-fixtures';
-import { editIconButton, closeIconButton } from './helpers/fixtures';
+import { dismissSendInviteIfPresent, editIconButton, closeIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToGroups } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
@@ -62,9 +62,14 @@ test.describe.serial('Group Management', () => {
       const searchBtn = page.locator('button').getByText('Search').first();
       await searchBtn.click();
 
-      const addBtn = page.locator('button').getByText('Add').first();
+      // Pick the Add button on the search result row (aria-label includes the
+      // person name) — not the "Add a New Person" link button at the top of
+      // the panel, which would open a creation dialog.
+      const addBtn = page.locator('button[aria-label^="Add person "]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
+      // Demo User has an email, so SendInviteDialog opens — dismiss it.
+      await dismissSendInviteIfPresent(page);
       const validatedPerson = page.locator('[data-testid="display-box-content"] td').getByText('Demo User');
       await expect(validatedPerson).toHaveCount(1);
     });
@@ -92,9 +97,9 @@ test.describe.serial('Group Management', () => {
       const addBtn = page.locator('button').getByText('Add').last();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      const dismissal = page.locator('button').getByText('No Thanks');
-      await expect(dismissal).toBeVisible({ timeout: 10000 });
-      await dismissal.click();
+      // Donald has an email → SendInviteDialog opens. Use the helper so the
+      // test still passes if a future build skips the dialog.
+      await dismissSendInviteIfPresent(page);
       const validatePerson = page.locator('[id="groupMemberTable"]').getByText('Donald Clark');
       await expect(validatePerson).toHaveCount(1);
       const removeBtn = page.locator('button').getByText('person_remove').last();

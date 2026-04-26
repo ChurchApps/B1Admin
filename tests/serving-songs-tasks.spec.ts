@@ -53,7 +53,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       // Song was created with a default key, so the Keys tablist already has
@@ -73,7 +75,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const addBtn = page.locator('[id="addBtnGroup"]');
@@ -95,7 +99,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Exact match — the songs page renders a "Play Frolic" link too, which
+      // would make a substring locator strict-mode-violate.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       // Target the Edit button inside the list item for the YouTube link, not
@@ -118,7 +124,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       // The link was renamed to "Frolic" in the previous test; target its row
@@ -143,7 +151,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const linkRow = page.locator('li').filter({ has: page.locator('a[href*="youtu.be"]') });
@@ -159,7 +169,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       // Target the "Edit selected key" button directly. editIconButton().last()
@@ -181,7 +193,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const editBtn = page.getByRole('button', { name: 'Edit selected key' });
@@ -204,7 +218,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       // Click the "Zacchaeus Key" tab so it becomes selected, then delete it.
@@ -222,7 +238,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       // Click the edit pencil next to the External Links heading to open
@@ -248,7 +266,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const extHeading = page.getByRole('heading', { name: 'External Links' });
@@ -267,7 +287,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const editBtn = editIconButton(page).nth(2);
@@ -286,7 +308,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const editBtn = editIconButton(page).nth(2);
@@ -309,7 +333,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs/, { timeout: 10000 });
 
-      const song = page.locator('a').getByText('Frolic');
+      // Songs page renders both "Frolic" (link to song) and "Play Frolic"
+      // (player link). Use exact match to avoid strict-mode violation.
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       const editBtn = editIconButton(page).nth(2);
@@ -594,7 +620,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await auto.click();
       const addBtn = page.locator('button').getByText('Add Condition');
       await addBtn.click();
-      const typeBox = page.locator('[id="mui-component-select-groupType"]')
+      // MUI v7 stopped emitting `id="mui-component-select-<name>"` on Select
+      // wrappers. Anchor on the data-testid that ConjunctionEdit puts on the
+      // Select component instead.
+      const typeBox = page.locator('[data-testid="conjunction-type-select"]');
       await typeBox.click();
       const selType = page.locator('[data-value="or"]');
       await selType.click();

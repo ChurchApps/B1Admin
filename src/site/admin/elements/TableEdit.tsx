@@ -1,7 +1,7 @@
 
 import type { SelectChangeEvent } from "@mui/material";
-import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
-import { HtmlEditor } from "@churchapps/apphelper-markdown";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
+import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import { Locale } from "@churchapps/apphelper";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableRow, TextField } from "@mui/material";
 import React from "react";

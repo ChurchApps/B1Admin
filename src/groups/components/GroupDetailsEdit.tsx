@@ -6,7 +6,7 @@ import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextFie
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState } from "@churchapps/apphelper";
-import { MarkdownEditor } from "@churchapps/apphelper-markdown";
+import { MarkdownEditor } from "@churchapps/apphelper/markdown";
 import { GroupLabelsEdit } from "./GroupLabelsEdit";
 
 interface Props {

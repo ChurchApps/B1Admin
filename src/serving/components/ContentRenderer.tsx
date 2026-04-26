@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
-import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 
 interface ContentRendererProps {
   url?: string;

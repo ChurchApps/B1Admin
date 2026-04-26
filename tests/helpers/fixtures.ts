@@ -60,3 +60,14 @@ export function checkIconButton(page: Page) {
 export function trashIconButton(page: Page) {
   return page.locator('button:has(svg[data-testid="DeleteIcon"])');
 }
+
+// SendInviteDialog appears whenever a person with an email is added to a
+// group, team, or role. Most demo people have emails, so any add-person flow
+// must dismiss this dialog before the test continues.
+export async function dismissSendInviteIfPresent(page: Page) {
+  const noThanks = page.locator('div[role="dialog"]:has-text("Send Invite Email") button:has-text("No Thanks")');
+  if (await noThanks.isVisible({ timeout: 2000 }).catch(() => false)) {
+    await noThanks.click();
+    await noThanks.waitFor({ state: "hidden", timeout: 5000 }).catch(() => { });
+  }
+}

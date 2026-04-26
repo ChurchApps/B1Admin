@@ -4,12 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@churchapps/apphelper": "0.6.25",
-    "@churchapps/apphelper-donations": "0.6.22",
-    "@churchapps/apphelper-forms": "0.6.16",
-    "@churchapps/apphelper-login": "0.6.23",
-    "@churchapps/apphelper-markdown": "0.6.18",
-    "@churchapps/apphelper-website": "0.6.22",
+    "@churchapps/apphelper": "0.7.0",
     "@churchapps/content-providers": "0.1.12",
     "@churchapps/helpers": "1.2.32",
     "@mui/icons-material": "^7.1.2",
@@ -97,7 +92,7 @@
     "exec-deploy-prod": "aws s3 sync dist/ s3://chums-app --exclude \"sw.js\" --exclude \"registerSW.js\" --exclude \"manifest.webmanifest\" && aws s3 cp dist/sw.js s3://chums-app/sw.js --cache-control no-cache && aws s3 cp dist/registerSW.js s3://chums-app/registerSW.js --cache-control no-cache && aws s3 cp dist/manifest.webmanifest s3://chums-app/manifest.webmanifest --cache-control no-cache",
     "postdeploy-prod": "aws cloudfront create-invalidation --distribution-id E2OZ4STEUZXHZZ --paths \"/*\"",
     "deploy-prod": "npm run predeploy-prod && npm run exec-deploy-prod && npm run postdeploy-prod",
-    "postinstall": "copyfiles -a -f node_modules/@churchapps/apphelper/public/locales/** public/apphelper/locales && copyfiles -a -f node_modules/@churchapps/apphelper/public/css/** public/apphelper/css"
+    "postinstall": "copyfiles -a -f node_modules/@churchapps/apphelper/dist/public/locales/** public/apphelper/locales && copyfiles -a -f node_modules/@churchapps/apphelper/dist/public/css/** public/apphelper/css"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js}": [

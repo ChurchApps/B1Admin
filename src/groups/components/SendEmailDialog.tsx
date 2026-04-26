@@ -2,7 +2,7 @@ import React from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, MenuItem, Select, Typography, CircularProgress, Alert, TextField, Box, Chip, Stack } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper } from "@churchapps/apphelper";
-import { HtmlEditor } from "@churchapps/apphelper-markdown";
+import { HtmlEditor } from "@churchapps/apphelper/markdown";
 
 const MERGE_FIELDS = [
   { key: "{{firstName}}", label: "First Name" },

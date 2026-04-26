@@ -13,7 +13,10 @@ export default defineConfig({
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,
-  workers: process.env.CI ? 2 : '75%',
+  // Vite dev compiles routes on first hit; running too many workers in
+  // parallel overloads the dev server and the API DB, causing timeouts on
+  // pages that compile slowly. Cap at 4 locally to mirror B1App.
+  workers: process.env.CI ? 2 : 4,
   reporter: 'list',
   timeout: 60 * 1000,
   expect: { timeout: 5 * 1000 },

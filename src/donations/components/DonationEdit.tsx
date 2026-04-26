@@ -2,7 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select, TextField, Box, type SelectC
 import React, { memo, useCallback, useMemo } from "react";
 import { PersonAdd } from "../../components";
 import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale, InputBox } from "@churchapps/apphelper";
-import { FundDonations } from "@churchapps/apphelper-donations";
+import { FundDonations } from "@churchapps/apphelper/donations";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 
 interface Props {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, Divider, IconButton } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
-import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { useProviderContent, type ProviderContentChild } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
 import { ContentItemRow } from "./planItem/ContentItemRow";

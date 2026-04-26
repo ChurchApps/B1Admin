@@ -5,7 +5,7 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Chec
 import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, GalleryModal, Locale } from "@churchapps/apphelper";
 import React from "react";
 
-const HtmlEditorLazy = lazy(() => import("@churchapps/apphelper-markdown").then((mod) => ({ default: mod.HtmlEditor })));
+const HtmlEditorLazy = lazy(() => import("@churchapps/apphelper/markdown").then((mod) => ({ default: mod.HtmlEditor })));
 
 const HtmlEditor = (props: any) => (
   <Suspense fallback={<div>{Locale.label("site.elements.loadingEditor")}</div>}>

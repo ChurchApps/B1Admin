@@ -2,7 +2,7 @@ import { TextField, Box, FormControl, InputLabel, MenuItem, Select } from "@mui/
 import type { SelectChangeEvent } from "@mui/material";
 
 import { ColorPicker } from "../ColorPicker";
-import { HtmlEditor } from "@churchapps/apphelper-markdown";
+import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import { Locale } from "@churchapps/apphelper";
 
 type Props = {

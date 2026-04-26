@@ -1,9 +1,9 @@
 import React, { CSSProperties, useState } from "react";
 import type { ElementInterface, SectionInterface } from "../../helpers";
 import { ApiHelper } from "../../helpers";
-import { StyleHelper } from "@churchapps/apphelper-website";
+import { StyleHelper } from "@churchapps/apphelper/website";
 import { Box, Container } from "@mui/material";
-import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@churchapps/apphelper-website";
+import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@churchapps/apphelper/website";
 import type { ChurchInterface } from "@churchapps/helpers";
 import { ElementSelection } from "./ElementSelection";
 import { FloatingElementSelection } from "./FloatingElementSelection";

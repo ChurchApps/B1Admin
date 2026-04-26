@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { Schedule as ScheduleIcon } from "@mui/icons-material";
-import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { formatTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
 

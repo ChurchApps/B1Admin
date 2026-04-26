@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
-import { MarkdownPreviewLight } from "@churchapps/apphelper-markdown";
+import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";

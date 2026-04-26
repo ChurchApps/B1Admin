@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, FormControl, InputLabel, MenuItem, Select, Box, Chip, Stack, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, InputBox, ErrorMessages, UserHelper } from "@churchapps/apphelper";
-import { HtmlEditor } from "@churchapps/apphelper-markdown";
+import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import type { EmailTemplateInterface } from "../EmailTemplatesPage";
 
 const MERGE_FIELDS = [

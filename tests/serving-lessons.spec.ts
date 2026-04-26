@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { servingTest as test, expect } from './helpers/test-fixtures';
-import { editIconButton } from './helpers/fixtures';
+import { dismissSendInviteIfPresent, editIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
@@ -58,6 +58,9 @@ test.describe.serial('Serving Management - Lessons', () => {
       const addPerson = page.locator('button').getByText('Add').last();
       await expect(addPerson).toBeVisible({ timeout: 10000 });
       await addPerson.click();
+      // Dorothy has an email, so the SendInviteDialog opens — dismiss it before
+      // the next test in the chain runs.
+      await dismissSendInviteIfPresent(page);
       await expect(page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson')).toHaveCount(1, { timeout: 10000 });
     });
   });

@@ -24,6 +24,13 @@ test.describe.serial('Serving Management - Plans', () => {
   });
 
   test.describe('Ministry CRUD', () => {
+    // Several tests in this chain click "Edit Ministry" which navigates to
+    // /groups/<id>?tag=ministry (no [role="tab"] list). Re-enter /serving
+    // before each test so the ministry tab list is in the DOM.
+    test.beforeEach(async () => {
+      await navigateToServing(page);
+    });
+
     test('should add ministry', async () => {
       const addBtn = page.locator('button').getByText('Add Ministry');
       await addBtn.click();

@@ -144,7 +144,14 @@ test.describe('People Management', () => {
         // Add a note first so the edit affordance definitely exists for this person.
         const seekNotes = page.locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
+        // AddNote runs a useEffect on mount that resets `message` to empty
+        // *after* the conversation is loaded — wait for the prior note to
+        // render (proxy for "conversation load done") and a short tick so the
+        // reset has fired before we fill.
+        await expect(page.locator('p').getByText('Zacchaeus Test Note').first()).toBeVisible({ timeout: 10000 });
+        await page.waitForTimeout(500);
         await seekNotes.fill('Zacchaeus Pre-edit Note');
+        await expect(seekNotes).toHaveValue('Zacchaeus Pre-edit Note', { timeout: 5000 });
         await page.locator('button').getByText('send').click();
         await expect(page.locator('p').getByText('Zacchaeus Pre-edit Note').first()).toBeVisible({ timeout: 15000 });
 
@@ -373,7 +380,10 @@ test.describe('People Management', () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
         const editBtn = page.locator('button').getByText('edit').first();
         await editBtn.click();
-        const addBtn = page.locator('button').getByText('Add');
+        // Scope the Add click to the household member table — there are other
+        // "Add" buttons elsewhere on the person detail page (Forms, Donations).
+        const addBtn = page.locator('[id="householdMemberTable"] button').getByText('Add').first();
+        await expect(addBtn).toBeVisible({ timeout: 10000 });
         await addBtn.click();
         await page.locator('input[name="personAddText"]').fill('Carol');
         await page.locator('button').getByText('Search').click();

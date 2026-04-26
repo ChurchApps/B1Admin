@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { settingsTest as test, expect } from './helpers/test-fixtures';
-import { editIconButton } from './helpers/fixtures';
+import { dismissSendInviteIfPresent, editIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToSettings } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
@@ -79,9 +79,13 @@ test.describe.serial('Settings Management', () => {
       await searchBtn.click();
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
-      // Person has email → auto-saves and closes dialog. Wait for member to appear in table.
-      const validatedPerson = page.locator('td').getByText('Jennifer Williams');
-      await expect(validatedPerson).toHaveCount(1, { timeout: 15000 });
+      // Person has email → auto-saves and opens SendInviteDialog. Dismiss it
+      // before asserting on the Members table (which is the target column).
+      await dismissSendInviteIfPresent(page);
+      const validatedPerson = page.locator('table tbody tr').filter({ hasText: 'Jennifer Williams' }).first();
+      await expect(validatedPerson).toBeVisible({ timeout: 15000 });
+      // Return to the roles list so subsequent tests find [data-testid="edit-role-button"].
+      await navigateToSettings(page);
     });
 
     test('should edit role', async () => {
