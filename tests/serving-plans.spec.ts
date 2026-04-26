@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { servingTest as test, expect } from './helpers/test-fixtures';
-import { editIconButton } from './helpers/fixtures';
+import { editIconButton, dismissSendInviteIfPresent } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
@@ -23,13 +23,18 @@ test.describe.serial('Serving Management - Plans', () => {
     await page?.context().close();
   });
 
-  test.describe('Ministry CRUD', () => {
-    // Several tests in this chain click "Edit Ministry" which navigates to
-    // /groups/<id>?tag=ministry (no [role="tab"] list). Re-enter /serving
-    // before each test so the ministry tab list is in the DOM.
-    test.beforeEach(async () => {
+  // All tests pivot on the Zebedee Ministry tab on /serving (root). Edit
+  // Ministry / Edit Plan Type flows navigate off /serving (to /groups or
+  // /serving/planTypes), so re-enter /serving before each test. Also dismiss
+  // any leftover SendInviteDialog (e.g. from adding Dorothy with an email).
+  test.beforeEach(async () => {
+    await dismissSendInviteIfPresent(page, 500);
+    if (!/\/serving(?!\/)/.test(page.url())) {
       await navigateToServing(page);
-    });
+    }
+  });
+
+  test.describe('Ministry CRUD', () => {
 
     test('should add ministry', async () => {
       const addBtn = page.locator('button').getByText('Add Ministry');

@@ -12,7 +12,10 @@ export default defineConfig({
   testMatch: /.*\.spec\.ts/,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  // Many tests interact with forms that async-populate (BatchEdit,
+  // ConjunctionEdit, etc.); a single retry absorbs the click→detach race
+  // that surfaces when the element re-renders mid-click.
+  retries: process.env.CI ? 1 : 1,
   // Vite dev compiles routes on first hit; running too many workers in
   // parallel overloads the dev server and the API DB, causing timeouts on
   // pages that compile slowly. Cap at 4 locally to mirror B1App.

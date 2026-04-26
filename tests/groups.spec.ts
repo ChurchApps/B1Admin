@@ -24,7 +24,25 @@ test.describe.serial('Group Management', () => {
 
   // Each test in the chain re-clicks into a group detail page; reset to the
   // /groups list before every test so first-group selectors land correctly.
+  // Dismiss any leftover modal/overlay — SendInviteDialog after add-person,
+  // the Messages overlay after "should send a message", or the user-menu
+  // dropdown — they intercept pointer events on the primary nav.
   test.beforeEach(async () => {
+    await dismissSendInviteIfPresent(page, 500);
+    // Close any open MuiModal (Popover, Menu, or Dialog). The user-menu
+    // dropdown uses an `MuiBackdrop-invisible` backdrop that still intercepts
+    // clicks, so we explicitly target it. Press Escape (and click off-screen
+    // as a fallback) to dismiss.
+    const modal = page.locator('.MuiModal-root .MuiBackdrop-root').first();
+    if (await modal.isVisible({ timeout: 200 }).catch(() => false)) {
+      await page.keyboard.press('Escape');
+      await modal.waitFor({ state: 'hidden', timeout: 2000 }).catch(() => { });
+      // If Escape didn't close it, click the backdrop directly.
+      if (await modal.isVisible({ timeout: 100 }).catch(() => false)) {
+        await modal.click({ force: true }).catch(() => { });
+        await modal.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => { });
+      }
+    }
     if (!/\/groups$|\/groups\?/.test(page.url())) {
       await navigateToGroups(page);
     }
@@ -102,6 +120,9 @@ test.describe.serial('Group Management', () => {
       await dismissSendInviteIfPresent(page);
       const validatePerson = page.locator('[id="groupMemberTable"]').getByText('Donald Clark');
       await expect(validatePerson).toHaveCount(1);
+      // Belt-and-suspenders: dialog can re-appear on slow API responses;
+      // dismiss again before the remove click that the dialog would block.
+      await dismissSendInviteIfPresent(page, 500);
       const removeBtn = page.locator('button').getByText('person_remove').last();
       await removeBtn.click();
     });

@@ -122,6 +122,15 @@ test.describe('People Management', () => {
         await page?.context().close();
       });
 
+      // Each test starts by re-opening Donald, but openPersonRow expects the
+      // /people list view. The previous test in the chain leaves us on
+      // Donald's detail page — navigate back to the list first.
+      test.beforeEach(async () => {
+        if (!/\/people\/?$/.test(new URL(page.url()).pathname)) {
+          await navigateToPeople(page);
+        }
+      });
+
       test('should add a note from people notes tab', async () => {
         // Donald Clark has no seeded notes and is reliably in the "25 most recent"
         // landing list, so openPersonRow can find him without a search.
@@ -358,6 +367,13 @@ test.describe('People Management', () => {
 
       test.afterAll(async () => {
         await page?.context().close();
+      });
+
+      // openPersonRow expects /people; previous test ended on Donald's detail.
+      test.beforeEach(async () => {
+        if (!/\/people\/?$/.test(new URL(page.url()).pathname)) {
+          await navigateToPeople(page);
+        }
       });
 
       test('should remove person from household', async () => {

@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { servingTest as test, expect } from './helpers/test-fixtures';
-import { dismissSendInviteIfPresent, editIconButton } from './helpers/fixtures';
+import { dismissSendInviteIfPresent, editIconButton, recoverFromViteError } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
@@ -20,6 +20,24 @@ test.describe.serial('Serving Management - Lessons', () => {
 
   test.afterAll(async () => {
     await page?.context().close();
+  });
+
+  // Setup ends on the Apollos Team page (in /groups). Subsequent tests reach
+  // for the "Apollos Ministry" tab on /serving, so navigate back if needed.
+  // Also dismiss any lingering SendInviteDialog from the team-add flow.
+  test.beforeEach(async () => {
+    await dismissSendInviteIfPresent(page, 500);
+    // Recover from Vite's "Failed to fetch dynamically imported module" error
+    // boundary (stale chunk after HMR) by reloading.
+    const viteError = page.locator('text=Failed to fetch dynamically imported module');
+    if (await viteError.isVisible({ timeout: 200 }).catch(() => false)) {
+      await page.reload();
+    }
+    // The "Apollos Ministry" tab list lives on /serving (root) only — sub-
+    // routes like /serving/planTypes/<id> don't render it.
+    if (!/^\/serving\/?$/.test(new URL(page.url()).pathname)) {
+      await navigateToServing(page);
+    }
   });
 
   test.describe('Setup', () => {
@@ -122,10 +140,21 @@ test.describe.serial('Serving Management - Lessons', () => {
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
       const lesson = page.locator('a').getByText('Zacchaeus Lesson');
+      // Vite occasionally serves a stale PlanPage chunk on this transition;
+      // race the success state against the error boundary.
+      await recoverFromViteError(page, lesson);
       await expect(lesson).toBeVisible({ timeout: 10000 });
       await lesson.click();
-
       const addBtn = page.locator('[data-testid="add-position-button"]');
+      // The lesson detail page lazy-loads PlanPage.tsx; on a stale chunk
+      // (frequent on the second pass through this route), Vite renders the
+      // error boundary. Retry the click+recover cycle until addBtn appears.
+      for (let i = 0; i < 3; i++) {
+        await recoverFromViteError(page, addBtn);
+        if (await addBtn.isVisible({ timeout: 1000 }).catch(() => false)) break;
+        await page.reload();
+        await page.waitForLoadState("domcontentloaded").catch(() => { });
+      }
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const name = page.locator('[name="name"]');

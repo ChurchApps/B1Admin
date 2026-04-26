@@ -156,7 +156,7 @@ test.describe.serial('People-associated form lifecycle', () => {
     const activeRow = page.locator('table tbody tr').filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
     await expect(activeRow).toBeVisible({ timeout: 10000 });
 
-    // Delete via the FormEdit drawer
+    // Delete via the FormEdit drawer.
     await activeRow.locator('[data-testid^="edit-form-button-"]').first().click();
     await page.locator('#formBox').waitFor({ state: 'visible', timeout: 10000 });
     page.once('dialog', async d => { await d.accept(); });

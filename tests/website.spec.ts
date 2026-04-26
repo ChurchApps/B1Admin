@@ -30,8 +30,15 @@ test.describe('Website Management', () => {
 
     // Several tests in this chain click "edit-page-button" which navigates to
     // the page preview view. Re-enter /site/pages before each test so the
-    // pages list (and its edit affordances) is in the DOM.
+    // pages list (and its edit affordances) is in the DOM. Close any open
+    // Page Settings dialog first — "should cancel deleting page" leaves it
+    // open, and the dialog blocks pointer events on the primary nav.
     test.beforeEach(async () => {
+      const settingsDialog = page.locator('div[role="dialog"]:has-text("Page Settings")');
+      if (await settingsDialog.isVisible({ timeout: 200 }).catch(() => false)) {
+        await settingsDialog.locator('button:has-text("Cancel")').click();
+        await settingsDialog.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => { });
+      }
       if (!/\/site\/pages(\?|$)/.test(page.url())) {
         await navigateToSite(page);
       }

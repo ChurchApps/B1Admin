@@ -20,12 +20,17 @@ test.describe.serial('Settings Management', () => {
     await page?.context().close();
   });
 
-  test.beforeEach(async () => {
-    // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
-    await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
-  });
-
   test.describe.serial('General Settings', () => {
+    test.beforeEach(async () => {
+      // Mobile/Form sub-describes leave the page off /settings; navigate back
+      // before each General Settings test so add-role-button is in the DOM.
+      if (!/\/settings(\?|$|\/$)/.test(page.url())) {
+        await navigateToSettings(page);
+      }
+      // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
+      await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
+    });
+
     test('should edit church', async () => {
       const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
       await editSettingsBtn.dispatchEvent('click');
@@ -193,6 +198,11 @@ test.describe.serial('Settings Management', () => {
 
   test.describe.serial('Form Settings', () => {
     test.beforeEach(async () => {
+      // Mobile Settings tests leave us on /mobile, where the Form secondary
+      // menu doesn't exist — re-enter /settings before clicking the tab.
+      if (!/\/settings(\?|$|\/$)/.test(page.url())) {
+        await navigateToSettings(page);
+      }
       const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
       await formTab.dispatchEvent('click');
       await expect(page.locator('[data-testid="add-form-button"]')).toBeVisible({ timeout: 10000 });
@@ -407,6 +417,12 @@ test.describe.serial('Settings Management', () => {
 
   // Edge-case extensions: extra surface checks per .notes/B1Admin-test-coverage-gaps.md §3.
   test.describe('General Settings — extras', () => {
+    test.beforeEach(async () => {
+      // Form/Mobile Settings tests leave us on a sub-tab (or /mobile) — return
+      // to the General Settings root so Edit Settings / Roles are in the DOM.
+      await navigateToSettings(page);
+    });
+
     test('Edit Settings drawer exposes the Church Info name field', async () => {
       // settingsTest fixture lands on /settings/ (ManageChurch). Header has Edit Settings.
       const editBtn = page.locator('button').getByText('Edit Settings').first();

@@ -61,13 +61,48 @@ export function trashIconButton(page: Page) {
   return page.locator('button:has(svg[data-testid="DeleteIcon"])');
 }
 
+// Recover from Vite's stale-chunk error boundary: when an HMR update or
+// route transition can't fetch a previously-cached chunk, the app renders
+// "Failed to fetch dynamically imported module" with a Retry button.
+// Click Retry first (forces the app's own retry path); fall back to a hard
+// reload, which re-fetches the chunk manifest. Loop up to 4 times.
+export async function recoverFromViteError(page: import("@playwright/test").Page, successLocator?: import("@playwright/test").Locator) {
+  const viteError = page.locator('text=Failed to fetch dynamically imported module');
+  const retryBtn = page.getByRole('button', { name: 'Retry' });
+  for (let i = 0; i < 4; i++) {
+    if (successLocator) {
+      const result = await Promise.race([
+        viteError.waitFor({ state: "visible", timeout: 8000 }).then(() => "error" as const).catch(() => null),
+        successLocator.waitFor({ state: "visible", timeout: 8000 }).then(() => "success" as const).catch(() => null),
+      ]);
+      if (result === "success") return;
+      if (result !== "error") return;
+    } else {
+      if (!(await viteError.isVisible({ timeout: 500 }).catch(() => false))) return;
+    }
+    // Try the in-app Retry button first; if that fails twice, hard-reload.
+    if (i < 2 && (await retryBtn.isVisible({ timeout: 200 }).catch(() => false))) {
+      await retryBtn.click().catch(() => { });
+    } else {
+      await page.reload();
+    }
+    await page.waitForLoadState("domcontentloaded").catch(() => { });
+  }
+}
+
 // SendInviteDialog appears whenever a person with an email is added to a
 // group, team, or role. Most demo people have emails, so any add-person flow
-// must dismiss this dialog before the test continues.
-export async function dismissSendInviteIfPresent(page: Page) {
-  const noThanks = page.locator('div[role="dialog"]:has-text("Send Invite Email") button:has-text("No Thanks")');
-  if (await noThanks.isVisible({ timeout: 2000 }).catch(() => false)) {
-    await noThanks.click();
-    await noThanks.waitFor({ state: "hidden", timeout: 5000 }).catch(() => { });
+// must dismiss this dialog before the test continues. The dialog is opened by
+// the API response (POST /groupMembers etc.), which can take >2s on a cold
+// dev server — wait the full timeout before giving up. Loop in case the
+// dialog reappears (some flows re-trigger it on subsequent renders).
+export async function dismissSendInviteIfPresent(page: Page, timeout = 8000) {
+  const dialog = page.locator('div[role="dialog"]:has-text("Send Invite Email")');
+  if (!(await dialog.isVisible({ timeout }).catch(() => false))) return;
+  for (let i = 0; i < 3; i++) {
+    if (!(await dialog.isVisible({ timeout: 100 }).catch(() => false))) return;
+    const noThanks = dialog.locator('button:has-text("No Thanks")');
+    await noThanks.click({ force: true }).catch(() => { });
+    await dialog.waitFor({ state: "hidden", timeout: 5000 }).catch(() => { });
   }
 }

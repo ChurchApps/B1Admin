@@ -22,12 +22,14 @@ const TEST_BATCH_RENAMED = 'October 1, 2025 Batch';
 
 // Find a fund row's edit button by the fund's display name. The funds list is
 // alphabetically sorted, so .last() / .nth(N) is brittle; this helper anchors on
-// the row text instead.
+// the row text instead. Use getByRole rather than [data-cy^="edit-"] — the
+// MUI Button wraps an inner span, and clicking via the data-cy selector can
+// resolve to the wrapper element so the React onClick handler doesn't fire.
 function fundRowEditButton(page: Page, name: string) {
   return page
     .locator('tr')
     .filter({ has: page.locator('a').getByText(name, { exact: true }) })
-    .locator('[data-cy^="edit-"]');
+    .getByRole('button', { name: /Edit/ });
 }
 
 async function openFundsTab(page: Page) {
@@ -96,6 +98,9 @@ test.describe.serial('Donations Management', () => {
       await editBtn.click();
       const fundName = page.locator('[name="fundName"]');
       await expect(fundName).toBeVisible({ timeout: 10000 });
+      // FundEdit re-renders after the API populates the fund — wait for the
+      // value to land before clicking Cancel, otherwise the button detaches.
+      await expect(fundName).toHaveValue(TEST_FUND_RENAMED, { timeout: 10000 });
       await page.locator('button').getByText('Cancel').click();
       await expect(fundName).toHaveCount(0, { timeout: 10000 });
     });
@@ -120,15 +125,20 @@ test.describe.serial('Donations Management', () => {
       await openBatchesTab(page);
 
       // Find the row for the just-created batch and click its edit button.
-      const editBtn = page
-        .locator('tr')
-        .filter({ has: page.locator('a').getByText(TEST_BATCH_INITIAL) })
-        .locator('[data-cy^="edit-"]');
+      // The Button renders an inner Icon; clicking the Icon makes
+      // e.currentTarget on the React handler still resolve to the Button,
+      // but data-id only lives on the Button itself — pierce to the button
+      // element directly via getByRole so the click target is unambiguous.
+      const row = page.locator('tr').filter({ has: page.locator('a').getByText(TEST_BATCH_INITIAL) });
+      const editBtn = row.getByRole('button', { name: /Edit/ });
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
       const batchName = page.locator('[name="name"]');
-      await expect(batchName).toBeVisible({ timeout: 10000 });
+      // BatchEdit renders empty, then async-populates from /donationbatches.
+      // Clicking fill mid-load detaches the input. Wait until the value is
+      // non-empty before filling.
+      await expect(batchName).not.toHaveValue('', { timeout: 10000 });
       await batchName.fill(TEST_BATCH_RENAMED);
       await page.locator('[name="date"]').fill('2025-10-01');
       await page.locator('button').getByText('Save').click();
@@ -140,14 +150,15 @@ test.describe.serial('Donations Management', () => {
     test('should cancel editing batch', async () => {
       await openBatchesTab(page);
 
-      const editBtn = page
-        .locator('tr')
-        .filter({ has: page.locator('a').getByText(TEST_BATCH_RENAMED) })
-        .locator('[data-cy^="edit-"]');
+      const row = page.locator('tr').filter({ has: page.locator('a').getByText(TEST_BATCH_RENAMED) });
+      const editBtn = row.getByRole('button', { name: /Edit/ });
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const batchName = page.locator('[name="name"]');
       await expect(batchName).toBeVisible({ timeout: 10000 });
+      // Wait for the API to populate the form before clicking Cancel — the
+      // form re-renders when data lands and detaches the Cancel button.
+      await expect(batchName).not.toHaveValue('', { timeout: 10000 });
       await page.locator('button').getByText('Cancel').click();
       await expect(batchName).toHaveCount(0, { timeout: 10000 });
     });

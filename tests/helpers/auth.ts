@@ -1,6 +1,36 @@
 import type { Page } from "@playwright/test";
 
+// Hide the fixed-position SuperBee chat widget (and any other configured chat
+// widget) before the page renders. The bee covers the bottom-right corner and
+// intercepts clicks on the last row's Edit/Archive buttons in short lists
+// (forms, settings, etc.). addInitScript runs on every navigation, so the
+// rule survives client-side route changes.
+const HIDE_CHAT_CSS = `
+  div[aria-label="Open SuperBee chat"],
+  div[aria-label="Open Bez chat"],
+  div[aria-label="Open Doc chat"] { display: none !important; }
+`;
+
+async function hideChatWidgets(page: Page) {
+  await page.addInitScript((css) => {
+    const inject = () => {
+      if (document.head && !document.getElementById("__test-hide-chat__")) {
+        const style = document.createElement("style");
+        style.id = "__test-hide-chat__";
+        style.textContent = css;
+        document.head.appendChild(style);
+      }
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", inject);
+    } else {
+      inject();
+    }
+  }, HIDE_CHAT_CSS);
+}
+
 export async function login(page: Page) {
+  await hideChatWidgets(page);
   await page.goto("/");
 
   const emailInput = page.locator('input[type="email"]');
