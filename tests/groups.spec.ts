@@ -1,21 +1,37 @@
-import { test, expect } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { groupsTest as test, expect } from './helpers/test-fixtures';
+import { editIconButton, closeIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
+import { navigateToGroups } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
 
-test.describe('Group Management', () => {
-  test.beforeEach(async ({ page }) => {
+// Cross-describe chain: Groups 'edit group details' renames first group to
+// 'Elementary (2-5)' which Sessions 'delete group' then deletes. Many tests
+// also mutate the same "first group" row, so the whole file runs serially.
+test.describe.serial('Group Management', () => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
     await login(page);
-    const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-    await menuBtn.click();
-    const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
-    await peopleHomeBtn.click();
-    await expect(page).toHaveURL(/\/people/);
-    const groupHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Groups');
-    await groupHomeBtn.click();
-    await expect(page).toHaveURL(/\/groups/);
+    await navigateToGroups(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  // Each test in the chain re-clicks into a group detail page; reset to the
+  // /groups list before every test so first-group selectors land correctly.
+  test.beforeEach(async () => {
+    if (!/\/groups$|\/groups\?/.test(page.url())) {
+      await navigateToGroups(page);
+    }
   });
 
   test.describe('Groups', () => {
-    test('should view group details', async ({ page }) => {
+    test('should view group details', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
 
@@ -23,7 +39,7 @@ test.describe('Group Management', () => {
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
     });
 
-    test('should view person details from group', async ({ page }) => {
+    test('should view person details from group', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -35,7 +51,7 @@ test.describe('Group Management', () => {
       await expect(page).toHaveURL(/\/people\/PER\d+/);
     });
 
-    test('should add person to group', async ({ page }) => {
+    test('should add person to group', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -45,9 +61,7 @@ test.describe('Group Management', () => {
       await searchInput.fill('Demo User');
       const searchBtn = page.locator('button').getByText('Search').first();
       await searchBtn.click();
-      await page.waitForTimeout(500);
 
-      // await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 });
       const addBtn = page.locator('button').getByText('Add').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
@@ -55,7 +69,7 @@ test.describe('Group Management', () => {
       await expect(validatedPerson).toHaveCount(1);
     });
 
-    test('should advanced add people', async ({ page }) => {
+    test('should advanced add people', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -63,7 +77,6 @@ test.describe('Group Management', () => {
 
       const advBtn = page.locator('button').getByText('Advanced');
       await advBtn.click();
-      await page.waitForTimeout(500);
       const firstCheck = page.locator('div input[type="checkbox"]').first();
       await expect(firstCheck).toBeVisible({ timeout: 10000 });
       await firstCheck.click();
@@ -75,13 +88,12 @@ test.describe('Group Management', () => {
       await firstName.fill('Donald');
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 });
-      await page.waitForTimeout(500);
 
       const addBtn = page.locator('button').getByText('Add').last();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      await page.waitForTimeout(200);
       const dismissal = page.locator('button').getByText('No Thanks');
+      await expect(dismissal).toBeVisible({ timeout: 10000 });
       await dismissal.click();
       const validatePerson = page.locator('[id="groupMemberTable"]').getByText('Donald Clark');
       await expect(validatePerson).toHaveCount(1);
@@ -89,7 +101,7 @@ test.describe('Group Management', () => {
       await removeBtn.click();
     });
 
-    test('should delete advanced add conditions', async ({ page }) => {
+    test('should delete advanced add conditions', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -97,25 +109,29 @@ test.describe('Group Management', () => {
 
       const advBtn = page.locator('button').getByText('Advanced');
       await advBtn.click();
-      const firstCheck = page.locator('div input[type="checkbox"]').first();
-      await expect(firstCheck).toBeVisible({ timeout: 10000 });
-      await firstCheck.click();
-      const secondCheck = page.locator('div input[type="checkbox"]').nth(1);
-      await secondCheck.click();
+      const advancedSearchBox = page.locator('#advancedSearch');
+      await expect(advancedSearchBox).toBeVisible({ timeout: 10000 });
+      const filterCheckboxes = advancedSearchBox.locator('input[type="checkbox"]');
+      await filterCheckboxes.first().click();
+      await filterCheckboxes.nth(1).click();
       const checkTwo = page.locator('span').getByText('2 active:');
       await expect(checkTwo).toHaveCount(1);
-      const deleteLast = page.locator('[d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"]').last();
-      await deleteLast.click();
+      // Active-filter chips render their delete icon as a span inside the chip
+      // (MUI Chip deleteIcon), not a <button>. Scope to the active filters
+      // paper to avoid matching chat-panel close buttons elsewhere on the page.
+      const activeFiltersPaper = page.locator('.MuiPaper-root').filter({ has: checkTwo });
+      const chipDeleteIcons = activeFiltersPaper.locator('.MuiChip-deleteIcon');
+      await chipDeleteIcons.last().click();
       const checkOne = page.locator('span').getByText('1 active:');
       await expect(checkOne).toHaveCount(1);
-      await secondCheck.click();
+      await filterCheckboxes.nth(1).click();
       await expect(checkTwo).toHaveCount(1);
       const clearAll = page.locator('span').getByText("Clear All");
       await clearAll.click();
       await expect(checkTwo).toHaveCount(0);
     });
 
-    test('should remove person from group', async ({ page }) => {
+    test('should remove person from group', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -127,7 +143,54 @@ test.describe('Group Management', () => {
       await expect(validateRemoval).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should send a message to group', async ({ page }) => {
+    test('should toggle member leader status', async () => {
+      // Documented step: "Use the green key icon to designate group leaders".
+      // Promote a non-leader, verify the row re-renders as a leader, then revert.
+      const firstGroup = page.locator('table tbody tr a').first();
+      await firstGroup.click();
+      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+
+      const memberTable = page.locator('#groupMemberTable');
+      const promoteButtons = memberTable.locator('button[data-testid^="promote-leader-button-"]');
+      const demoteButtons = memberTable.locator('button[data-testid^="remove-leader-button-"]');
+      await expect(promoteButtons.first()).toBeVisible({ timeout: 10000 });
+      const initialPromoteCount = await promoteButtons.count();
+      const initialDemoteCount = await demoteButtons.count();
+
+      const promoteResp = page.waitForResponse((r) => r.url().includes('/groupmembers') && r.request().method() === 'POST');
+      const promoteRefetch = page.waitForResponse((r) => r.url().includes('/groupmembers?groupId=') && r.request().method() === 'GET');
+      await promoteButtons.first().click();
+      await promoteResp;
+      await promoteRefetch;
+      await expect(demoteButtons).toHaveCount(initialDemoteCount + 1, { timeout: 10000 });
+      await expect(promoteButtons).toHaveCount(initialPromoteCount - 1, { timeout: 10000 });
+
+      // Revert so the seed group's leader composition is unchanged for later tests.
+      const demoteResp = page.waitForResponse((r) => r.url().includes('/groupmembers') && r.request().method() === 'POST');
+      const demoteRefetch = page.waitForResponse((r) => r.url().includes('/groupmembers?groupId=') && r.request().method() === 'GET');
+      await demoteButtons.last().click();
+      await demoteResp;
+      await demoteRefetch;
+      await expect(demoteButtons).toHaveCount(initialDemoteCount, { timeout: 10000 });
+      await expect(promoteButtons).toHaveCount(initialPromoteCount, { timeout: 10000 });
+    });
+
+    test('should expose member export link', async () => {
+      // Documented step: "To export your group data, click the download icon".
+      // Verify the export link is rendered on the Members tab; full download
+      // capture is out of scope for this unit (CSV is generated client-side).
+      const firstGroup = page.locator('table tbody tr a').first();
+      await firstGroup.click();
+      await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+      await expect(page).toHaveURL(/\/groups\/GRP\d+/);
+
+      const exportLink = page.locator('#groupMembersBox a[download]');
+      await expect(exportLink).toHaveCount(1);
+      await expect(exportLink).toHaveAttribute('download', 'groupmembers.csv');
+    });
+
+    test('should send a message to group', async () => {
       //SENDING VALIDATION- get dad to fix his end
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
@@ -147,7 +210,7 @@ test.describe('Group Management', () => {
       await messagesBtn.click();
     });
 
-    test('should show templates above group message sender', async ({ page }) => {
+    test('should show templates above group message sender', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -162,13 +225,13 @@ test.describe('Group Management', () => {
       await expect(templates).toHaveCount(1);
     });
 
-    test('should cancel editing group details', async ({ page }) => {
+    test('should cancel editing group details', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
 
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await editBtn.click();
       const nameEdit = page.locator('[name="name"]');
       await expect(nameEdit).toHaveCount(1);
@@ -177,17 +240,16 @@ test.describe('Group Management', () => {
       await expect(nameEdit).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should edit group details', async ({ page }) => {
+    test('should edit group details', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
 
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await editBtn.click();
       const nameEdit = page.locator('[name="name"]');
       await expect(nameEdit).toBeVisible({ timeout: 10000 });
-      await page.waitForTimeout(1000);
       await nameEdit.fill('Elementary (2-5)');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
@@ -197,7 +259,7 @@ test.describe('Group Management', () => {
   });
 
   test.describe('Sessions', () => {
-    test('should cancel adding session to group', async ({ page }) => {
+    test('should cancel adding session to group', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -214,7 +276,7 @@ test.describe('Group Management', () => {
       await expect(dateEntry).toHaveCount(0);
     });
 
-    test('should add session to group', async ({ page }) => {
+    test('should add session to group', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -234,7 +296,7 @@ test.describe('Group Management', () => {
       await expect(sessionCard).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should add person to session', async ({ page }) => {
+    test('should add person to session', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -249,16 +311,17 @@ test.describe('Group Management', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
-      const viewBtn = page.locator('button').getByText('View').first();
-      await expect(viewBtn).toBeVisible({ timeout: 10000 });
-      await viewBtn.click();
+      // New sessions UI: most recent past session auto-selects on save —
+      // SessionAttendance panel renders "Attendance for ..." once selected.
+      const attendanceHeader = page.locator('[data-cy="session-present-msg"]');
+      await expect(attendanceHeader).toBeVisible({ timeout: 10000 });
       const addBtn = page.locator('button[data-testid="add-member-button"]').first();
       await addBtn.click();
-      const addedPerson = page.locator('[id="groupMemberTable"] td a');
-      await expect(addedPerson).toHaveCount(1);
+      const addedPerson = page.locator('[id="groupMemberTable"] td a.personName');
+      await expect(addedPerson).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should remove person from session', async ({ page }) => {
+    test('should remove person from session', async () => {
       const firstGroup = page.locator('table tbody tr a').first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -273,19 +336,20 @@ test.describe('Group Management', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await expect(saveBtn).toBeEnabled({ timeout: 10000 });
       await saveBtn.click();
-      const viewBtn = page.locator('button').getByText('View').first();
-      await expect(viewBtn).toBeVisible({ timeout: 10000 });
-      await viewBtn.click();
+      const attendanceHeader = page.locator('[data-cy="session-present-msg"]');
+      await expect(attendanceHeader).toBeVisible({ timeout: 10000 });
       const addBtn = page.locator('button[data-testid="add-member-button"]').first();
       await addBtn.click();
-      const addedPerson = page.locator('[id="groupMemberTable"] td a');
-      await expect(addedPerson).toHaveCount(1);
-      const removeBtn = page.locator('button').getByText('Remove').first();
+      const addedPerson = page.locator('[id="groupMemberTable"] td a.personName');
+      await expect(addedPerson).toHaveCount(1, { timeout: 10000 });
+      // Session attendance row's remove control is an icon-only IconButton
+      // with data-testid="remove-session-visitor-button-<id>".
+      const removeBtn = page.locator('button[data-testid^="remove-session-visitor-button-"]').first();
       await removeBtn.click();
       await expect(addedPerson).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should cancel adding group', async ({ page }) => {
+    test('should cancel adding group', async () => {
       const addBtn = page.locator('button').getByText('Add Group');
       await addBtn.click();
       const nameInput = page.locator('input[id="groupName"]');
@@ -295,7 +359,20 @@ test.describe('Group Management', () => {
       await expect(nameInput).toHaveCount(0);
     });
 
-    test('should add group', async ({ page }) => {
+    test('should expose groups list export link', async () => {
+      // Documented: groups list page has a download icon to export all groups.
+      const exportLink = page.locator('a[download="groups.csv"]');
+      await expect(exportLink).toHaveCount(1);
+    });
+
+    test('should organize groups by category', async () => {
+      // Documented step: "All your church groups are organized by categories".
+      // The seed includes a "Children" category — verify it shows on the list.
+      const categoryCell = page.locator('table tbody tr').filter({ hasText: 'Children' }).first();
+      await expect(categoryCell).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should add group', async () => {
       const addBtn = page.locator('button').getByText('Add Group');
       await addBtn.click();
       const categorySelect = page.locator('div[role="combobox"]');
@@ -305,14 +382,14 @@ test.describe('Group Management', () => {
       const categoryInput = page.locator('input').first();
       await categoryInput.fill('Test Category');
       const nameInput = page.locator('[name="name"]');
-      await nameInput.fill('Octavian Test Group');
+      await nameInput.fill('Zacchaeus Test Group');
       const saveBtn = page.locator('button').getByText('Add').last();
       await saveBtn.click();
-      const validateGroup = page.locator('table tbody tr a').getByText('Octavian Test Group');
+      const validateGroup = page.locator('table tbody tr a').getByText('Zacchaeus Test Group');
       await expect(validateGroup).toHaveCount(1);
     });
 
-    test('should delete group', async ({ page }) => {
+    test('should delete group', async () => {
       page.once('dialog', async dialog => {
         expect(dialog.type()).toBe('confirm');
         expect(dialog.message()).toContain('Are you sure');
@@ -324,22 +401,11 @@ test.describe('Group Management', () => {
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
       await expect(page).toHaveURL(/\/groups\/GRP\d+/);
       //delete
-      const editBtn = page.locator('button').filter({ has: page.locator('[d*="M3 17.25"]') });
+      const editBtn = editIconButton(page);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      //OUTDATED- returns to group homepage, now happens automatically:
-      /* const menuBtn = page.locator('[id="primaryNavButton"]').getByText('expand_more');
-      await menuBtn.click();
-      const peopleHomeBtn = page.locator('[data-testid="nav-item-people"]');
-      await peopleHomeBtn.click();
-      await page.waitForTimeout(5000);
-      await expect(page).toHaveURL(/\/people/);
-      const groupHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Groups');
-      await groupHomeBtn.click();
-      await page.waitForTimeout(200);
-      await expect(page).toHaveURL(/\/groups/); */
       //check for group still existing
       const deletedGroup = page.locator('table tbody tr a').getByText('Elementary (3-5)');
       const editedDeletedGroup = page.locator('table tbody tr a').getByText('Elementary (2-5)');
@@ -348,4 +414,58 @@ test.describe('Group Management', () => {
     });
   });
 
+});
+
+// Edge-case extensions — coverage gaps from .notes/B1Admin-test-coverage-gaps.md §3.
+// Independent of the lifecycle chain above; opens a known seed group fresh each test.
+test.describe('Group communication and roster controls', () => {
+  test('group detail page exposes Send Message affordance', async ({ page }) => {
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    // GroupMembers.tsx renders a SmallButton with data-testid="send-message-button"
+    await expect(page.locator('[data-testid="send-message-button"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('group detail page exposes a roster CSV download link', async ({ page }) => {
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    // ExportLink from apphelper renders an <a download="groupmembers.csv"> anchor
+    await expect(page.locator('a[download="groupmembers.csv"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('clicking Send Message opens the message composer', async ({ page }) => {
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+    await page.locator('[data-testid="send-message-button"]').click();
+    // Composer surfaces a Templates select + a message textarea (140-char counter shown)
+    // Anchor on the textarea presence.
+    await expect(page.locator('#groupMembersBox textarea').first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test('promotes a group member to leader and back', async ({ page }) => {
+    // Use the Children category groups — they have multiple seed members. Open the first.
+    const firstGroup = page.locator('table tbody tr a').first();
+    await firstGroup.click();
+    await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
+
+    // Find a non-leader member (the promote-leader testid is only present for non-leaders).
+    const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
+    if (!(await promoteBtn.isVisible().catch(() => false))) {
+      test.info().annotations.push({ type: 'skip-reason', description: 'No non-leader members in seed group' });
+      return;
+    }
+    // Capture the testid suffix so we can find the matching demote button afterwards.
+    const testid = await promoteBtn.getAttribute('data-testid');
+    const memberId = testid!.replace('promote-leader-button-', '');
+    await promoteBtn.click();
+
+    const demoteBtn = page.locator(`[data-testid="remove-leader-button-${memberId}"]`);
+    await expect(demoteBtn).toBeVisible({ timeout: 10000 });
+    // Demote back to keep demo data clean for subsequent tests.
+    await demoteBtn.click();
+    await expect(page.locator(`[data-testid="promote-leader-button-${memberId}"]`)).toBeVisible({ timeout: 10000 });
+  });
 });

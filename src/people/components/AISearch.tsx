@@ -25,7 +25,8 @@ export const AISearch = (props: Props) => {
 
       props.updateSearchResults(response?.map((p: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(p)));
     } catch (error) {
-      setErrors([error as string]);
+      const message = error instanceof Error ? error.message : String(error);
+      setErrors([message]);
     } finally {
       setIsLoading(false);
       setText("");

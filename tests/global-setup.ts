@@ -1,16 +1,20 @@
 import { chromium, type FullConfig } from "@playwright/test";
 import path from "path";
 import { fileURLToPath } from "url";
+// @ts-expect-error - plain ESM JS module, no .d.ts
+import { verifyEnv } from "./setup/verify-env.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const STORAGE_STATE_PATH = path.join(__dirname, ".auth-state.json");
 
 /**
- * Global setup: log in once as demo@b1.church and save the browser
- * storage state (cookies + localStorage) so every test worker can
- * reuse it instead of logging in again.
+ * Global setup: verify Api is in demo mode, then log in once as demo@b1.church
+ * and save the browser storage state (cookies + localStorage) so every test
+ * worker can reuse it instead of logging in again.
  */
 async function globalSetup(config: FullConfig) {
+  await verifyEnv({ fullCheck: true });
+
   const baseURL = config.projects[0].use.baseURL || process.env.BASE_URL || "http://localhost:3101";
 
   const browser = await chromium.launch();
@@ -48,6 +52,12 @@ async function globalSetup(config: FullConfig) {
     await graceChurch.click({ timeout: 10000 });
     await page.waitForURL((url) => !url.pathname.includes("/login"), { timeout: 15000 });
   }
+
+  // Warm up routes that parallel workers will stampede on first run. Vite's
+  // dev server compiles routes on-demand; without this, ~18 workers hitting
+  // /people simultaneously can time out the page.goto call before the bundle
+  // is ready. One hit here primes the dev server's module cache.
+  await page.goto(baseURL + "/people").catch(() => {});
 
   // Save authenticated state
   await context.storageState({ path: STORAGE_STATE_PATH });

@@ -4,20 +4,19 @@ export async function login(page: Page) {
   await page.goto("/");
 
   const emailInput = page.locator('input[type="email"]');
+  const navButton = page.locator("#primaryNavButton");
 
-  // With storageState, the app goes straight to dashboard — emailInput never appears.
-  // Use a short 5s timeout: if emailInput doesn't show within 5s, we're authenticated.
-  // On unauthenticated pages, the login form renders quickly and we catch it in time.
-  const needsLogin = await emailInput
-    .waitFor({ state: "visible", timeout: 5000 })
-    .then(() => true)
-    .catch(() => false);
+  // Race the two terminal states. With cached storageState the dashboard
+  // renders the nav button in <1s; without it the login form's email input
+  // renders in <1s. Whichever appears first tells us what to do — far faster
+  // than waiting out a fixed timeout on one of them.
+  const winner = await Promise.race([
+    navButton.waitFor({ state: "visible", timeout: 15000 }).then(() => "authenticated" as const).catch(() => null),
+    emailInput.waitFor({ state: "visible", timeout: 15000 }).then(() => "login" as const).catch(() => null),
+  ]);
 
-  if (!needsLogin) {
-    // Already authenticated. Wait up to 30s for nav to be ready (cold-start CI can be slow).
-    await page.locator("#primaryNavButton").waitFor({ state: "visible", timeout: 30000 });
-    return;
-  }
+  if (winner === "authenticated") return;
+  if (winner === null) throw new Error("Neither login form nor authenticated nav appeared within 15s");
 
   // Full login flow
   await emailInput.fill("demo@b1.church");
