@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@churchapps/apphelper": "0.7.0",
+    "@churchapps/apphelper": "0.7.1",
     "@churchapps/content-providers": "0.1.12",
-    "@churchapps/helpers": "1.2.32",
+    "@churchapps/helpers": "1.3.0",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@react-google-maps/api": "^2.20.0",

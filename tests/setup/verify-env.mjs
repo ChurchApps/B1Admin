@@ -79,7 +79,7 @@ async function checkDbConnections() {
   if (missing.length > 0) {
     refuse([
       `Api is missing database connections for: ${missing.join(", ")}.`,
-      "Check the *_CONNECTION_STRING env vars in Api/.env.",
+      "Check API_DATABASE_URL in Api/.env.",
     ]);
   }
 }
