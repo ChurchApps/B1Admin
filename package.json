@@ -42,6 +42,7 @@
     "react-select": "^5.8.1",
     "react-select-material-ui": "^9.3.1",
     "react-to-print": "^3.1.0",
+    "serve": "^14.2.4",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
@@ -75,6 +76,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "serve": "serve -s dist -l ${PORT:-3101}",
     "preview": "vite preview",
     "pretest": "node tests/setup/pretest.mjs",
     "test": "playwright test",
