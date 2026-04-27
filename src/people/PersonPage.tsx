@@ -75,7 +75,7 @@ export const PersonPage = () => {
     return p;
   }, [params.id, personData.data]);
 
-  const allForms = formsData.data;
+  const allForms = useMemo(() => (formsData.data || []).filter((formData) => formData.contentType === "person"), [formsData.data]);
 
   const handleCreateConversation = async () => {
     const conv: ConversationInterface = {
