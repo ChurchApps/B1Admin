@@ -47,26 +47,38 @@ export function DroppableWrapper(props: Props) {
     if (updateIsDragging) updateIsDragging(isDragging);
   }, [isDragging, updateIsDragging]);
 
-  // If hideWhenInactive is true and nothing is being dragged, don't render anything
-  if (hideWhenInactive && !canDrop) {
-    return <></>;
-  }
-
-  // Always set base styles for proper dimensions
+  // Reserve identical box geometry in both states so that flipping canDrop
+  // mid-drag never reflows the page. A reflow shifts the drag source out
+  // from under the user's mouse and breaks the drag — see the equivalent
+  // fix in @churchapps/apphelper's DroppableArea. We use longhand border
+  // properties exclusively because React errors when a shorthand `border`
+  // and longhand `borderColor`/`borderStyle` are set on the same element
+  // across renders ("Updating a style property during rerender ... when a
+  // conflicting property is set").
   const baseStyle: CSSProperties = {
     display: "block",
-    width: "100%"
+    width: "100%",
+    boxSizing: "border-box",
+    borderWidth: "2px",
+    borderStyle: "solid",
+    borderColor: "transparent",
+    borderRadius: "4px"
   };
 
-  // Add visual feedback when canDrop
+  // hideWhenInactive: hide the contents when no compatible drag is active,
+  // but keep the wrapper laid out so its surrounding row doesn't resize
+  // when the drag begins. Use opacity, not visibility, so the wrapper still
+  // participates in pointer hit-testing.
+  const hidden = hideWhenInactive && !canDrop;
+
   const dropZoneStyle: CSSProperties = canDrop ? {
     ...baseStyle,
     zIndex: 1,
     backgroundColor: isOver ? "rgba(25, 118, 210, 0.15)" : "rgba(25, 118, 210, 0.08)",
-    border: isOver ? "2px dashed rgba(25, 118, 210, 0.8)" : "2px dashed rgba(25, 118, 210, 0.3)",
-    borderRadius: "4px",
-    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
-  } : baseStyle;
+    borderStyle: "dashed",
+    borderColor: isOver ? "rgba(25, 118, 210, 0.8)" : "rgba(25, 118, 210, 0.3)",
+    transition: "background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
+  } : { ...baseStyle, ...(hidden ? { opacity: 0 } : {}) };
 
   return (
     <div ref={drop as any} style={dropZoneStyle} data-testid="droppable-wrapper" aria-label="Drop zone">
