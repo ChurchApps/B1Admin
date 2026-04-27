@@ -30,13 +30,14 @@ export const PersonNavigation = memo((props: Props) => {
   ], []);
 
   const dropdown: NavigationDropdown<FormInterface> | undefined = useMemo(() => {
-    if (!allForms || allForms.length === 0) return undefined;
+    const personForms = (allForms || []).filter((form) => form.contentType === "person");
+    if (personForms.length === 0) return undefined;
 
     return {
       value: "forms",
       label: "Forms",
       icon: <FormIcon />,
-      items: allForms,
+      items: personForms,
       renderItem: (form: FormInterface) => (
         <Stack direction="row" spacing={1} alignItems="center">
           <FormIcon sx={{ color: "text.secondary", fontSize: 20 }} />
