@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   personId: string;
@@ -48,47 +48,45 @@ export const GdprActions: React.FC<Props> = (props) => {
     <>
       <Accordion defaultExpanded={false} sx={{ mt: 3 }} variant="outlined">
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="subtitle2" color="text.secondary">Data Management</Typography>
+          <Typography variant="subtitle2" color="text.secondary">{Locale.label("people.gdprActions.dataManagement")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Export or anonymize this person&apos;s data for GDPR compliance.
+            {Locale.label("people.gdprActions.description")}
           </Typography>
           <Stack direction="row" spacing={2}>
             <Button variant="outlined" size="small" onClick={handleExport} disabled={exporting}>
-              {exporting ? "Exporting..." : "Export Data"}
+              {exporting ? Locale.label("people.gdprActions.exporting") : Locale.label("people.gdprActions.exportData")}
             </Button>
             <Button variant="outlined" size="small" color="error" onClick={() => setAnonymizeOpen(true)}>
-              Anonymize
+              {Locale.label("people.gdprActions.anonymize")}
             </Button>
           </Stack>
         </AccordionDetails>
       </Accordion>
 
       <Dialog open={anonymizeOpen} onClose={() => { if (!anonymizing) setAnonymizeOpen(false); }}>
-        <DialogTitle>Anonymize {props.personName}?</DialogTitle>
+        <DialogTitle>{Locale.label("people.gdprActions.anonymizeTitle").replace("{personName}", props.personName)}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
-            This will replace all personal information with generic values and remove the person
-            from groups, forms, and messaging. Donation amounts and attendance dates will be
-            preserved for reporting but unlinked from this person. This cannot be undone.
+            {Locale.label("people.gdprActions.anonymizeDescription")}
           </DialogContentText>
           <DialogContentText sx={{ mb: 2, fontWeight: 600 }}>
-            Type &quot;ANONYMIZE&quot; to confirm:
+            {Locale.label("people.gdprActions.anonymizeConfirmType")}
           </DialogContentText>
           <TextField
             fullWidth
             size="small"
             value={confirmText}
             onChange={(e) => setConfirmText(e.target.value)}
-            placeholder="ANONYMIZE"
+            placeholder={Locale.label("people.gdprActions.anonymizePlaceholder")}
             disabled={anonymizing}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAnonymizeOpen(false)} disabled={anonymizing}>Cancel</Button>
           <Button onClick={handleAnonymize} color="error" disabled={confirmText !== "ANONYMIZE" || anonymizing}>
-            {anonymizing ? "Anonymizing..." : "Anonymize"}
+            {anonymizing ? Locale.label("people.gdprActions.anonymizing") : Locale.label("people.gdprActions.anonymize")}
           </Button>
         </DialogActions>
       </Dialog>

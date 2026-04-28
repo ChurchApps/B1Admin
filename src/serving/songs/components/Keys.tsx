@@ -112,7 +112,7 @@ export const Keys = memo((props: Props) => {
     return (
       <Box sx={{ mt: 2 }}>
         <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
-          Available Downloads
+          {Locale.label("songs.keys.availableDownloads")}
         </Typography>
         <List sx={{ p: 0 }}>
           {products.map((p, i) => (
@@ -145,7 +145,7 @@ export const Keys = memo((props: Props) => {
     return (
       <Box sx={{ mt: 2 }}>
         <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
-          External Links
+          {Locale.label("songs.keys.externalLinks")}
         </Typography>
         <List sx={{ p: 0 }}>
           {links.map((l) => (
@@ -234,7 +234,7 @@ export const Keys = memo((props: Props) => {
                   color: "primary.main",
                   "&:hover": { backgroundColor: "primary.light" }
                 }}
-                aria-label="Edit selected key">
+                aria-label={Locale.label("songs.keys.editSelectedKeyAria")}>
                 <EditIcon />
               </IconButton>
             )}
@@ -242,7 +242,7 @@ export const Keys = memo((props: Props) => {
 
           {/* Tabs */}
           <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
-            <Tabs value={selectedKey?.id || ""} onChange={handleTabChange} variant="scrollable" scrollButtons="auto" aria-label="Keys tabs">
+            <Tabs value={selectedKey?.id || ""} onChange={handleTabChange} variant="scrollable" scrollButtons="auto" aria-label={Locale.label("songs.keys.keysTabsAria")}>
               {tabsComponent}
               {canEdit && (
                 <Tab
@@ -291,7 +291,7 @@ export const Keys = memo((props: Props) => {
               )}
             </Box>
           ) : (
-            <EmptyState icon={<KeyIcon />} title="No keys available. Add a key to get started." />
+            <EmptyState icon={<KeyIcon />} title={Locale.label("songs.keys.noKeysAvailable")} />
           )}
         </CardContent>
       </Card>

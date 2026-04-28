@@ -78,7 +78,7 @@ export const PeopleSearch = () => {
             <InputLabel htmlFor="searchText">{Locale.label("common.name")}</InputLabel>
             <OutlinedInput
               id="searchText"
-              aria-label="searchBox"
+              aria-label={Locale.label("dashboard.peopleSearch.ariaSearchBox")}
               name="searchText"
               type="text"
               label={Locale.label("common.name")}
@@ -91,7 +91,7 @@ export const PeopleSearch = () => {
                   variant="contained"
                   onClick={handleSubmit}
                   data-testid="dashboard-search-button"
-                  aria-label="Search people"
+                  aria-label={Locale.label("dashboard.peopleSearch.ariaSearch")}
                   disabled={searchResults.isLoading || !searchText.trim()}
                   startIcon={<SearchIcon />}
                   sx={{
@@ -129,7 +129,7 @@ export const PeopleSearch = () => {
               py: 3,
               color: "text.secondary"
             }}>
-            <Typography variant="body2">No people found matching your search criteria.</Typography>
+            <Typography variant="body2">{Locale.label("dashboard.peopleSearch.noResults")}</Typography>
           </Box>
         )}
       </CardContent>

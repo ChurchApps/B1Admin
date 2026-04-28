@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { LinearProgress, Typography, Box } from "@mui/material";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { FileInterface } from "../helpers/Interfaces";
 
 type Props = {
@@ -91,7 +91,7 @@ export function FileUpload(props: Props) {
 
   return (
     <>
-      <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>File</Typography>
+      <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>{Locale.label("components.fileUpload.file")}</Typography>
       {getFileLink()}
       <input id="fileUpload" type="file" onChange={handleChange} style={{ width: "100%" }} />
     </>

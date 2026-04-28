@@ -173,7 +173,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         case "nametagNotes": result = <>{p.nametagNotes}</>; break;
         case "deleteOption":
           result = (
-            <Tooltip title={`Delete ${p?.name?.display}`} arrow placement="left-start">
+            <Tooltip title={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)} arrow placement="left-start">
               <IconButton
                 sx={{ color: "#c84545" }}
                 onClick={(e) => {
@@ -181,7 +181,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
                   if (p.id) handleDelete(p.id.toString());
                 }}
                 data-testid={`delete-person-button-${p.id}`}
-                aria-label={`Delete ${p?.name?.display}`}>
+                aria-label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)}>
                 <Icon>delete</Icon>
               </IconButton>
             </Tooltip>

@@ -81,7 +81,7 @@ export function PeopleSearch(props: Props) {
             InputProps={{ startAdornment: <SearchIcon sx={{ mr: 1, color: "text.secondary" }} /> }}
           />
           <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: "block" }}>
-            Type to search instantly
+            {Locale.label("people.peopleSearch.typeToSearch")}
           </Typography>
         </Box>
 

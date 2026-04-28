@@ -6,6 +6,7 @@ import {
   TextFields as TextFieldsIcon,
   BorderStyle as BorderStyleIcon
 } from "@mui/icons-material";
+import { Locale } from "@churchapps/apphelper";
 
 interface TokenPickerProps {
   value?: string;
@@ -22,61 +23,61 @@ interface TokenGroup {
 }
 
 export function TokenPicker(props: TokenPickerProps) {
-  const { value = "", onChange, tokenTypes = ["colors", "spacing", "typography", "borderRadius"], label = "Design Token", fullWidth = true } = props;
+  const { value = "", onChange, tokenTypes = ["colors", "spacing", "typography", "borderRadius"], label = Locale.label("site.tokenPicker.designToken"), fullWidth = true } = props;
   const [open, setOpen] = useState(false);
 
   const colorTokens = {
-    label: "Colors",
+    label: Locale.label("site.tokenPicker.colors"),
     icon: <PaletteIcon sx={{ fontSize: 18 }} />,
     tokens: [
-      { value: "var(--light)", label: "Light", preview: "#FFFFFF" },
-      { value: "var(--light-accent)", label: "Light Accent", preview: "#DDDDDD" },
-      { value: "var(--accent)", label: "Accent", preview: "#0000DD" },
-      { value: "var(--dark-accent)", label: "Dark Accent", preview: "#9999DD" },
-      { value: "var(--dark)", label: "Dark", preview: "#000000" },
-      { value: "var(--primary)", label: "Primary", preview: "#1976d2" },
-      { value: "var(--secondary)", label: "Secondary", preview: "#dc004e" },
-      { value: "var(--success)", label: "Success", preview: "#2e7d32" },
-      { value: "var(--warning)", label: "Warning", preview: "#ed6c02" },
-      { value: "var(--error)", label: "Error", preview: "#d32f2f" }
+      { value: "var(--light)", label: Locale.label("site.tokenPicker.tokenLight"), preview: "#FFFFFF" },
+      { value: "var(--light-accent)", label: Locale.label("site.tokenPicker.lightAccent"), preview: "#DDDDDD" },
+      { value: "var(--accent)", label: Locale.label("site.tokenPicker.accent"), preview: "#0000DD" },
+      { value: "var(--dark-accent)", label: Locale.label("site.tokenPicker.darkAccent"), preview: "#9999DD" },
+      { value: "var(--dark)", label: Locale.label("site.tokenPicker.dark"), preview: "#000000" },
+      { value: "var(--primary)", label: Locale.label("site.tokenPicker.primary"), preview: "#1976d2" },
+      { value: "var(--secondary)", label: Locale.label("site.tokenPicker.secondary"), preview: "#dc004e" },
+      { value: "var(--success)", label: Locale.label("site.tokenPicker.success"), preview: "#2e7d32" },
+      { value: "var(--warning)", label: Locale.label("site.tokenPicker.warning"), preview: "#ed6c02" },
+      { value: "var(--error)", label: Locale.label("site.tokenPicker.error"), preview: "#d32f2f" }
     ]
   };
 
   const spacingTokens = {
-    label: "Spacing",
+    label: Locale.label("site.tokenPicker.spacing"),
     icon: <SpaceBarIcon sx={{ fontSize: 18 }} />,
     tokens: [
-      { value: "var(--spacing-xs)", label: "Extra Small (4px)", preview: "4px" },
-      { value: "var(--spacing-sm)", label: "Small (8px)", preview: "8px" },
-      { value: "var(--spacing-md)", label: "Medium (16px)", preview: "16px" },
-      { value: "var(--spacing-lg)", label: "Large (24px)", preview: "24px" },
-      { value: "var(--spacing-xl)", label: "Extra Large (32px)", preview: "32px" },
-      { value: "var(--spacing-xxl)", label: "2X Large (48px)", preview: "48px" }
+      { value: "var(--spacing-xs)", label: Locale.label("site.tokenPicker.extraSmall"), preview: "4px" },
+      { value: "var(--spacing-sm)", label: Locale.label("site.tokenPicker.small"), preview: "8px" },
+      { value: "var(--spacing-md)", label: Locale.label("site.tokenPicker.medium"), preview: "16px" },
+      { value: "var(--spacing-lg)", label: Locale.label("site.tokenPicker.large"), preview: "24px" },
+      { value: "var(--spacing-xl)", label: Locale.label("site.tokenPicker.extraLarge"), preview: "32px" },
+      { value: "var(--spacing-xxl)", label: Locale.label("site.tokenPicker.twoXLarge"), preview: "48px" }
     ]
   };
 
   const typographyTokens = {
-    label: "Typography",
+    label: Locale.label("site.tokenPicker.typography"),
     icon: <TextFieldsIcon sx={{ fontSize: 18 }} />,
     tokens: [
-      { value: "var(--font-heading)", label: "Heading Font" },
-      { value: "var(--font-body)", label: "Body Font" },
-      { value: "var(--font-size-base)", label: "Base Size" },
-      { value: "var(--font-size-sm)", label: "Small Size" },
-      { value: "var(--font-size-lg)", label: "Large Size" },
-      { value: "var(--line-height)", label: "Line Height" }
+      { value: "var(--font-heading)", label: Locale.label("site.tokenPicker.headingFont") },
+      { value: "var(--font-body)", label: Locale.label("site.tokenPicker.bodyFont") },
+      { value: "var(--font-size-base)", label: Locale.label("site.tokenPicker.baseSize") },
+      { value: "var(--font-size-sm)", label: Locale.label("site.tokenPicker.smallSize") },
+      { value: "var(--font-size-lg)", label: Locale.label("site.tokenPicker.largeSize") },
+      { value: "var(--line-height)", label: Locale.label("site.tokenPicker.lineHeight") }
     ]
   };
 
   const borderRadiusTokens = {
-    label: "Border Radius",
+    label: Locale.label("site.tokenPicker.borderRadius"),
     icon: <BorderStyleIcon sx={{ fontSize: 18 }} />,
     tokens: [
-      { value: "var(--radius-none)", label: "None (0px)", preview: "0px" },
-      { value: "var(--radius-sm)", label: "Small (4px)", preview: "4px" },
-      { value: "var(--radius-md)", label: "Medium (8px)", preview: "8px" },
-      { value: "var(--radius-lg)", label: "Large (16px)", preview: "16px" },
-      { value: "var(--radius-full)", label: "Full (9999px)", preview: "9999px" }
+      { value: "var(--radius-none)", label: Locale.label("site.tokenPicker.noneRadius"), preview: "0px" },
+      { value: "var(--radius-sm)", label: Locale.label("site.tokenPicker.smallRadius"), preview: "4px" },
+      { value: "var(--radius-md)", label: Locale.label("site.tokenPicker.mediumRadius"), preview: "8px" },
+      { value: "var(--radius-lg)", label: Locale.label("site.tokenPicker.largeRadius"), preview: "16px" },
+      { value: "var(--radius-full)", label: Locale.label("site.tokenPicker.full"), preview: "9999px" }
     ]
   };
 
@@ -117,7 +118,7 @@ export function TokenPicker(props: TokenPickerProps) {
       const token = group.tokens.find(t => t.value === value);
       if (token) return token.label;
     }
-    return value || "Select a token";
+    return value || Locale.label("site.tokenPicker.selectToken");
   };
 
   const getCurrentPreview = () => {

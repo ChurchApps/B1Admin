@@ -84,7 +84,7 @@ export const PersonForm: React.FC<Props> = memo((props) => {
           startIcon={<AddIcon />}
           sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}
           data-testid="add-form-button"
-          aria-label={`Add ${props.form?.name || "form"} submission`}>
+          aria-label={Locale.label("people.personForm.addFormAria").replace("{name}", props.form?.name || "form")}>
           {Locale.label("people.personForm.addForm") || "Add Form"}
         </Button>
       )}

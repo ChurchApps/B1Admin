@@ -3,6 +3,7 @@ import React from "react";
 import { type ArrangementInterface } from "../../../helpers";
 import { ChordProHelper } from "../../../helpers/ChordProHelper";
 import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 
 interface Props {
   arrangement: ArrangementInterface;
@@ -37,8 +38,8 @@ export const OldArrangement = (props: Props) => {
       else {
         return (
           <FormControl fullWidth>
-            <InputLabel id="keySignature">Key</InputLabel>
-            <Select name="keySignature" labelId="keySignature" label="Key" value={keyOffset.toString()} onChange={handleChange}>
+            <InputLabel id="keySignature">{Locale.label("songs.oldArrangement.key")}</InputLabel>
+            <Select name="keySignature" labelId="keySignature" label={Locale.label("songs.oldArrangement.key")} value={keyOffset.toString()} onChange={handleChange}>
               {getKeyOptions(originalIndex)}
             </Select>
           </FormControl>

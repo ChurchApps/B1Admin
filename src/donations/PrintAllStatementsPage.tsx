@@ -1,4 +1,4 @@
-import { CurrencyHelper, DateHelper } from "@churchapps/apphelper";
+import { CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -139,7 +139,7 @@ export const PrintAllStatementsPage = () => {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" flexDirection="column" gap={2}>
         <CircularProgress />
-        <Typography>Loading statements...</Typography>
+        <Typography>{Locale.label("donations.printAllStatementsPage.loadingStatements")}</Typography>
       </Box>
     );
   }
@@ -385,16 +385,16 @@ export const PrintAllStatementsPage = () => {
               <div className="header-bar"></div>
 
               <div className="title-section">
-                <h1 className="page-title">{currYear} Annual Giving Statement</h1>
-                <p className="subtitle">Period: January 1 - December 31, {currYear}</p>
-                <p className="meta-text">Issued: {getDate()}</p>
+                <h1 className="page-title">{Locale.label("donations.printAllStatementsPage.annualStatementTitle").replace("{year}", currYear.toString())}</h1>
+                <p className="subtitle">{Locale.label("donations.printAllStatementsPage.period").replace("{year}", currYear.toString())}</p>
+                <p className="meta-text">{Locale.label("donations.printAllStatementsPage.issued")} {getDate()}</p>
               </div>
 
               <div className="gradient-divider"></div>
 
               <div className="info-section">
                 <div className="info-column">
-                  <h2 className="section-label">Donor Information</h2>
+                  <h2 className="section-label">{Locale.label("donations.printAllStatementsPage.donorInformation")}</h2>
                   <div className="info-card">
                     <p className="info-name">{person.name?.display}</p>
                     {person.contactInfo?.address1 && <p className="info-detail">{person.contactInfo.address1}</p>}
@@ -405,7 +405,7 @@ export const PrintAllStatementsPage = () => {
                 </div>
 
                 <div className="info-column">
-                  <h2 className="section-label">Organization</h2>
+                  <h2 className="section-label">{Locale.label("donations.printAllStatementsPage.organization")}</h2>
                   <div className="info-card">
                     <p className="info-name">{context.userChurch?.church?.name}</p>
                     {context.userChurch?.church?.address1 && <p className="info-detail">{context.userChurch.church.address1}</p>}
@@ -422,21 +422,21 @@ export const PrintAllStatementsPage = () => {
               </div>
 
               <div className="section-container">
-                <h2 className="section-title">Statement Summary</h2>
+                <h2 className="section-title">{Locale.label("donations.printAllStatementsPage.statementSummary")}</h2>
                 <div className="summary-grid">
                   <div className="summary-column">
-                    <p className="section-label">Total Contributions</p>
+                    <p className="section-label">{Locale.label("donations.printAllStatementsPage.totalContributions")}</p>
                     <div className="total-box">
                       <div className="total-amount">{CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency)}</div>
                     </div>
                   </div>
 
                   <div className="summary-column">
-                    <p className="section-label">Fund Breakdown</p>
+                    <p className="section-label">{Locale.label("donations.printAllStatementsPage.fundBreakdown")}</p>
                     <table className="data-table">
                       <thead className="table-header">
                         <tr>
-                          <th>Fund</th>
+                          <th>{Locale.label("donations.printAllStatementsPage.fund")}</th>
                           <th className="align-right">Amount</th>
                         </tr>
                       </thead>
@@ -454,13 +454,13 @@ export const PrintAllStatementsPage = () => {
               </div>
 
               <div className="section-container">
-                <h2 className="section-title">Contribution Details</h2>
+                <h2 className="section-title">{Locale.label("donations.printAllStatementsPage.contributionDetails")}</h2>
                 <table className="data-table">
                   <thead className="table-header">
                     <tr>
                       <th>Date</th>
                       <th>Method</th>
-                      <th>Fund</th>
+                      <th>{Locale.label("donations.printAllStatementsPage.fund")}</th>
                       <th className="align-right">Amount</th>
                     </tr>
                   </thead>
@@ -477,7 +477,7 @@ export const PrintAllStatementsPage = () => {
                     ))}
                     <tr className="table-footer-row">
                       <td colSpan={2} className="table-footer-cell"></td>
-                      <td className="table-footer-cell" style={{ textAlign: "right" }}>Total Contributions:</td>
+                      <td className="table-footer-cell" style={{ textAlign: "right" }}>{Locale.label("donations.printAllStatementsPage.totalContributionsLabel")}</td>
                       <td className="table-footer-cell" style={{ textAlign: "right" }}>{CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency)}</td>
                     </tr>
                   </tbody>
@@ -486,11 +486,12 @@ export const PrintAllStatementsPage = () => {
 
               <div className="footer-note">
                 <p>
-                  <strong>Note:</strong> This statement summarizes contributions made to {context.userChurch?.church?.name} during the calendar year {currYear}.
-                  Please retain this document for your tax records. For questions regarding this statement, please contact the church office.
+                  <strong>{Locale.label("donations.printAllStatementsPage.noteLabel")}</strong> {Locale.label("donations.printAllStatementsPage.noteText")
+                    .replace("{churchName}", context.userChurch?.church?.name || "")
+                    .replace("{year}", currYear.toString())}
                 </p>
                 <p style={{ fontSize: "10px", marginTop: "4px" }}>
-                  No goods or services were provided by {context.userChurch?.church?.name} in return for these contributions. The only benefit received was an intangible religious benefit. {context.userChurch?.church?.name} is a non-profit organization.
+                  {Locale.label("donations.printAllStatementsPage.disclaimer").split("{churchName}").join(context.userChurch?.church?.name || "")}
                 </p>
               </div>
             </div>

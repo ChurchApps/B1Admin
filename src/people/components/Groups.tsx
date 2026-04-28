@@ -88,7 +88,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                             color: "primary.main",
                             fontSize: "1rem"
                           }}>
-                          {gm.group?.name || "Unknown Group"}
+                          {gm.group?.name || Locale.label("people.groups.unknownGroup")}
                         </Typography>
                       }
                       secondary={
@@ -111,7 +111,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                             {gm.leader && (
                               <Chip
                                 icon={<LeaderIcon />}
-                                label="Leader"
+                                label={Locale.label("people.groups.leader")}
                                 variant="filled"
                                 size="small"
                                 color="secondary"

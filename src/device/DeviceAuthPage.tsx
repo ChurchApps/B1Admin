@@ -10,7 +10,7 @@ import {
   Icon,
   Typography
 } from "@mui/material";
-import { ApiHelper, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 
 interface DeviceInfo {
   userCode: string;
@@ -61,10 +61,10 @@ export const DeviceAuthPage: React.FC = () => {
         setDeviceInfo(result);
         setStep("confirm");
       } else {
-        setError("Invalid or expired code. Please check and try again.");
+        setError(Locale.label("device.deviceAuthPage.invalidCode"));
       }
     } catch (err) {
-      setError("Failed to verify code. Please try again.");
+      setError(Locale.label("device.deviceAuthPage.verifyFailed"));
     } finally {
       setLoading(false);
     }
@@ -94,7 +94,7 @@ export const DeviceAuthPage: React.FC = () => {
   const handleApprove = async () => {
     const churchId = UserHelper.currentUserChurch?.church?.id;
     if (!churchId) {
-      setError("No church selected. Please log in again and select a church.");
+      setError(Locale.label("device.deviceAuthPage.noChurchSelected"));
       return;
     }
 
@@ -113,11 +113,11 @@ export const DeviceAuthPage: React.FC = () => {
       if (result.success) {
         setSuccess(true);
       } else {
-        setError(result.message || "Failed to authorize device");
+        setError(result.message || Locale.label("device.deviceAuthPage.failedAuthorize"));
       }
     } catch (err) {
       console.error("Device approval error:", err);
-      setError("Authorization failed. Please try again.");
+      setError(Locale.label("device.deviceAuthPage.authorizationFailed"));
     } finally {
       setLoading(false);
     }
@@ -127,7 +127,7 @@ export const DeviceAuthPage: React.FC = () => {
     setLoading(true);
     try {
       await ApiHelper.post("/oauth/device/deny", { user_code: userCode }, "MembershipApi");
-      setError("Device authorization denied");
+      setError(Locale.label("device.deviceAuthPage.denied"));
       setStep("code");
       setDeviceInfo(null);
       setUserCode("");
@@ -148,8 +148,8 @@ export const DeviceAuthPage: React.FC = () => {
         <>
           <div style={{ textAlign: "center" }}>
             <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--success-main, #4caf50)" }}>check_circle</Icon>
-            <h2>Device Authorized!</h2>
-            <p>You can now return to your TV. The device will connect automatically.</p>
+            <h2>{Locale.label("device.deviceAuthPage.deviceAuthorizedHeading")}</h2>
+            <p>{Locale.label("device.deviceAuthPage.deviceAuthorizedMessage")}</p>
           </div>
         </>
       );
@@ -160,8 +160,8 @@ export const DeviceAuthPage: React.FC = () => {
         <>
           <div style={{ textAlign: "center" }}>
             <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>tv</Icon>
-            <h2>Authorize Device</h2>
-            <p>Enter the code displayed on your TV:</p>
+            <h2>{Locale.label("device.deviceAuthPage.title")}</h2>
+            <p>{Locale.label("device.deviceAuthPage.enterCodePrompt")}</p>
           </div>
           <div style={{ marginLeft: 50, marginRight: 50 }}>
             <Box component="form" onSubmit={handleCodeSubmit}>
@@ -169,7 +169,7 @@ export const DeviceAuthPage: React.FC = () => {
                 fullWidth
                 value={userCode}
                 onChange={handleCodeChange}
-                placeholder="XXXXXX"
+                placeholder={Locale.label("device.deviceAuthPage.codePlaceholder")}
                 inputProps={{
                   maxLength: 6,
                   style: {
@@ -197,7 +197,7 @@ export const DeviceAuthPage: React.FC = () => {
               onClick={handleCodeSubmit}
               disabled={loading || userCode.length < 6}
             >
-              {loading ? <CircularProgress size={24} /> : "Continue"}
+              {loading ? <CircularProgress size={24} /> : Locale.label("device.deviceAuthPage.continue")}
             </Button>
           </Box>
         </>
@@ -209,18 +209,18 @@ export const DeviceAuthPage: React.FC = () => {
         <>
           <div style={{ textAlign: "center" }}>
             <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
-            <h2>{clientName || "Loading..."}</h2>
+            <h2>{clientName || Locale.label("device.deviceAuthPage.loading")}</h2>
             <p>
-              Would you like to access the following data from <b>{churchName}</b> in the above application?
+              <span dangerouslySetInnerHTML={{ __html: Locale.label("device.deviceAuthPage.confirmPrompt").replace("{churchName}", "<b>" + (churchName || "") + "</b>") }} />
             </p>
           </div>
           <div style={{ marginLeft: 50, marginRight: 50 }}>
             <Typography component="p" sx={{ color: "text.secondary", fontSize: "0.9em" }}>
-              Device code: <strong>{deviceInfo.userCode}</strong>
+              {Locale.label("device.deviceAuthPage.deviceCodeLabel")} <strong>{deviceInfo.userCode}</strong>
               <br />
-              <span style={{ fontSize: "0.85em" }}>Expires in {Math.floor(deviceInfo.expiresIn / 60)} minutes</span>
+              <span style={{ fontSize: "0.85em" }}>{Locale.label("device.deviceAuthPage.expiresInMinutes").replace("{minutes}", Math.floor(deviceInfo.expiresIn / 60).toString())}</span>
             </Typography>
-            <p><strong>Requested Permissions:</strong></p>
+            <p><strong>{Locale.label("device.deviceAuthPage.requestedPermissions")}</strong></p>
             <ul>
               {deviceInfo.scopes.split(" ").map((scope) => (
                 <li key={scope}>{scope}</li>
@@ -242,7 +242,7 @@ export const DeviceAuthPage: React.FC = () => {
                   onClick={handleDeny}
                   disabled={loading}
                 >
-                  Deny
+                  {Locale.label("device.deviceAuthPage.deny")}
                 </Button>
               </Grid>
               <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
@@ -253,7 +253,7 @@ export const DeviceAuthPage: React.FC = () => {
                   onClick={handleApprove}
                   disabled={loading}
                 >
-                  {loading ? <CircularProgress size={24} /> : "Allow"}
+                  {loading ? <CircularProgress size={24} /> : Locale.label("device.deviceAuthPage.allow")}
                 </Button>
               </Grid>
             </Grid>
@@ -282,10 +282,10 @@ export const DeviceAuthPage: React.FC = () => {
           mx="auto"
         >
           <div style={{ textAlign: "center", margin: 50 }}>
-            <img src={"/images/logo-login.png"} alt="logo" />
+            <img src={"/images/logo-login.png"} alt={Locale.label("device.deviceAuthPage.altLogo")} />
           </div>
           <Alert severity="info" style={{ fontWeight: "bold" }}>
-            {success ? "DEVICE AUTHORIZED" : "AUTHORIZATION REQUIRED"}
+            {success ? Locale.label("device.deviceAuthPage.deviceAuthorizedAlert") : Locale.label("device.deviceAuthPage.authorizationRequired")}
           </Alert>
           {renderContent()}
         </Box>

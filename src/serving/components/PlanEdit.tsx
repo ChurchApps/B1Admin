@@ -105,7 +105,7 @@ export const PlanEdit = (props: Props) => {
         saveFunction={handleSave}
         cancelFunction={props.updatedFunction}
         deleteFunction={plan.id ? handleDelete : null}>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={plan.name} onChange={handleChange} placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label="Plan name" />
+        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={plan.name} onChange={handleChange} placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label={Locale.label("plans.planEdit.planNameAria")} />
         <TextField
           fullWidth
           label={Locale.label("plans.planEdit.servDate")}
@@ -115,7 +115,7 @@ export const PlanEdit = (props: Props) => {
           value={DateHelper.formatHtml5Date(plan.serviceDate)}
           onChange={handleChange}
           data-testid="service-date-input"
-          aria-label="Service date"
+          aria-label={Locale.label("plans.planEdit.serviceDateAria")}
         />
         {!plan.id && previousPlan && (
           <>
@@ -139,8 +139,8 @@ export const PlanEdit = (props: Props) => {
         )}
         {plan.id && (
           <>
-            <TextField fullWidth label="Signup Deadline (hours before service)" id="signupDeadlineHours" name="signupDeadlineHours" type="number" value={plan.signupDeadlineHours || ""} onChange={handleChange} helperText="Leave blank for no deadline" />
-            <FormControlLabel control={<Checkbox checked={plan.showVolunteerNames !== false} onChange={(e) => setPlan({ ...plan, showVolunteerNames: e.target.checked })} />} label="Show volunteer names on signup page" />
+            <TextField fullWidth label={Locale.label("plans.planEdit.signupDeadline")} id="signupDeadlineHours" name="signupDeadlineHours" type="number" value={plan.signupDeadlineHours || ""} onChange={handleChange} helperText={Locale.label("plans.planEdit.signupDeadlineHelper")} />
+            <FormControlLabel control={<Checkbox checked={plan.showVolunteerNames !== false} onChange={(e) => setPlan({ ...plan, showVolunteerNames: e.target.checked })} />} label={Locale.label("plans.planEdit.showVolunteerNames")} />
           </>
         )}
       </InputBox>

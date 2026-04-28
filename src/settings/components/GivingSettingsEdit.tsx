@@ -39,10 +39,10 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     if (provider === "") return null;
     else {
       const publicLabel = provider === "Paypal"
-        ? Locale.label("settings.givingSettingsEdit.clientId") || "Client ID"
+        ? Locale.label("settings.givingSettingsEdit.clientId")
         : Locale.label("settings.givingSettingsEdit.pubKey");
       const privateLabel = provider === "Paypal"
-        ? Locale.label("settings.givingSettingsEdit.clientSecret") || "Client Secret"
+        ? Locale.label("settings.givingSettingsEdit.clientSecret")
         : Locale.label("settings.givingSettingsEdit.secKey");
 
       return (
@@ -57,7 +57,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
             <Stack direction="row" alignItems="center">
               <Typography>{Locale.label("settings.givingSettingsEdit.transFee")}</Typography>
               <Tooltip title={Locale.label("settings.givingSettingsEdit.forceMsg")} arrow>
-                <IconButton data-testid="force-ssl-help-button" aria-label="Force SSL help">
+                <IconButton data-testid="force-ssl-help-button" aria-label={Locale.label("settings.givingSettingsEdit.forceSslHelpAria")}>
                   <HelpIcon />
                 </IconButton>
               </Tooltip>
@@ -79,10 +79,10 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     if (provider !== "Stripe") return null;
     return (
       <div style={{ display: "none" }}>
-        <Typography variant="body2" color="textSecondary" component="div">Make sure this currency is also enabled in your Stripe Dashboard. Enable currency here: <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
+        <Typography variant="body2" color="textSecondary" component="div">{Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
         <FormControl fullWidth>
-          <InputLabel>Currency</InputLabel>
-          <Select name="currency" label="Currency" value={currency} onChange={handleChange}>
+          <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
+          <Select name="currency" label={Locale.label("settings.givingSettingsEdit.currency")} value={currency} onChange={handleChange}>
             {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
           </Select>
         </FormControl>

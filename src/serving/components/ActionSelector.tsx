@@ -103,7 +103,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
   // Handle adding a section
   const handleAddSection = useCallback((section: InstructionItem, provId: string, pathIndices: number[]) => {
     const sectionId = section.relatedId || section.id || "";
-    const sectionName = section.label || "Section";
+    const sectionName = section.label || Locale.label("plans.actionSelector.fallbackSection");
     const totalSeconds = section.children?.reduce((sum, action) => sum + (action.seconds || 0), 0) || 0;
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
@@ -115,7 +115,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
   // Handle adding an action
   const handleAddAction = useCallback((action: InstructionItem, provId: string, pathIndices: number[]) => {
     const actionId = action.relatedId || action.id || "";
-    const actionName = action.label || "Action";
+    const actionName = action.label || Locale.label("plans.actionSelector.fallbackAction");
     const path = mode === "browse" ? browser.currentPath : contentPath;
     const contentPathStr = generatePath(pathIndices);
     let downloadUrl = action.downloadUrl;
@@ -198,7 +198,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
               <Typography variant="body2" color="text.secondary">
                 {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From associated lesson:"}
                 <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
-                  {instructions?.name || "Loading..."}
+                  {instructions?.name || Locale.label("plans.actionSelector.fallbackLoading")}
                 </Typography>
               </Typography>
               <Button size="small" onClick={handleBrowseOther}>
@@ -287,7 +287,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
                 <Typography variant="body2" color="text.secondary">
                   {Locale.label("plans.actionSelector.fromAssociatedLesson") || "From:"}
                   <Typography component="span" sx={{ fontWeight: 600, ml: 1, color: "primary.main" }}>
-                    {instructions.name || "Content"}
+                    {instructions.name || Locale.label("plans.actionSelector.fallbackContent")}
                   </Typography>
                 </Typography>
               </Box>
@@ -303,7 +303,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
             </Box>
           ) : browser.currentItems.length === 0 && browser.currentFiles.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 4 }}>
-              <Typography color="text.secondary">No content available</Typography>
+              <Typography color="text.secondary">{Locale.label("plans.actionSelector.noContent")}</Typography>
             </Box>
           ) : (
             <BrowseGrid

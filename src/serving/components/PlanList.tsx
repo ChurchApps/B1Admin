@@ -170,7 +170,7 @@ export const PlanList = memo((props: Props) => {
             </Typography>
             <FormControlLabel
               control={<Switch size="small" checked={showPast} onChange={(e) => setShowPast(e.target.checked)} />}
-              label={<Stack direction="row" alignItems="center" spacing={0.5}><HistoryIcon fontSize="small" /><Typography variant="body2">Show Past</Typography></Stack>}
+              label={<Stack direction="row" alignItems="center" spacing={0.5}><HistoryIcon fontSize="small" /><Typography variant="body2">{Locale.label("plans.planList.showPast")}</Typography></Stack>}
               sx={{ ml: 2 }}
             />
           </Stack>
@@ -201,8 +201,8 @@ export const PlanList = memo((props: Props) => {
         <Box sx={{ mb: 3 }}>
           <EmptyState
             icon={<EventNoteIcon />}
-            title="No Upcoming Plans"
-            description={'There are no plans scheduled for today or later. Use the "Show Past" toggle above to view past plans.'}
+            title={Locale.label("plans.planList.noUpcomingPlans")}
+            description={Locale.label("plans.planList.noUpcomingPlansDescription")}
           />
         </Box>
       )}

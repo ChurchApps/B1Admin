@@ -3,7 +3,7 @@ import { Box, TextField, IconButton, Typography, Paper, AppBar, Toolbar } from "
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { DocChatMessage } from "./DocChatMessage";
 
 interface ChatMessage {
@@ -19,7 +19,7 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
-  const [statusText, setStatusText] = React.useState("Searching documentation...");
+  const [statusText, setStatusText] = React.useState(Locale.label("components.docChat.searching"));
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -28,8 +28,8 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
 
   React.useEffect(() => {
     if (isLoading) {
-      setStatusText("Searching documentation...");
-      const timer = setTimeout(() => setStatusText("Composing answer..."), 2000);
+      setStatusText(Locale.label("components.docChat.searching"));
+      const timer = setTimeout(() => setStatusText(Locale.label("components.docChat.composing")), 2000);
       return () => clearTimeout(timer);
     }
   }, [isLoading]);
@@ -46,9 +46,9 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
 
     try {
       const response = await ApiHelper.post("/docChat/ask", { question, conversationHistory: messages }, "AskApi");
-      setMessages([...updatedMessages, { role: "assistant", content: response.answer || "I'm sorry, I couldn't find an answer." }]);
+      setMessages([...updatedMessages, { role: "assistant", content: response.answer || Locale.label("components.docChat.errorAnswer") }]);
     } catch {
-      setMessages([...updatedMessages, { role: "assistant", content: "Something went wrong. Please try again." }]);
+      setMessages([...updatedMessages, { role: "assistant", content: Locale.label("components.docChat.errorGeneric") }]);
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +65,7 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <AppBar position="static" color="primary" elevation={0}>
         <Toolbar variant="dense">
-          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem" }}>Help Assistant</Typography>
+          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem" }}>{Locale.label("components.docChat.title")}</Typography>
           <IconButton color="inherit" onClick={onClose} edge="end"><CloseIcon /></IconButton>
         </Toolbar>
       </AppBar>
@@ -73,13 +73,13 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
       <Box sx={{ flexGrow: 1, overflow: "auto", p: 2 }}>
         {messages.length === 0 && (
           <Typography color="text.secondary" sx={{ textAlign: "center", mt: 4 }}>
-            Ask any question about B1 Admin. For example:
+            {Locale.label("components.docChat.intro")}
             <br /><br />
-            "How do I set up online giving?"
+            {Locale.label("components.docChat.sampleGiving")}
             <br />
-            "How do I import members from a CSV?"
+            {Locale.label("components.docChat.sampleCsv")}
             <br />
-            "How do I create a new group?"
+            {Locale.label("components.docChat.sampleGroup")}
           </Typography>
         )}
         {messages.map((msg, index) => (
@@ -118,7 +118,7 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
           <TextField
             fullWidth
             size="small"
-            placeholder="Ask a question..."
+            placeholder={Locale.label("components.docChat.placeholderInput")}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}

@@ -210,7 +210,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 onKeyDown={handleKeyDown}
                 placeholder={Locale.label("placeholders.group.name")}
                 data-testid="group-name-input"
-                aria-label="Group name"
+                aria-label={Locale.label("groups.groupDetailsEdit.groupNameAria")}
               />
             </Grid>
           </Grid>
@@ -227,7 +227,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                   onChange={handleChange}
                   onKeyDown={handleKeyDown}
                   data-testid="meeting-time-input"
-                  aria-label="Meeting time"
+                  aria-label={Locale.label("groups.groupDetailsEdit.meetingTimeAria")}
                 />
               </Grid>
             )}
@@ -242,7 +242,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 data-testid="meeting-location-input"
-                aria-label="Meeting location"
+                aria-label={Locale.label("groups.groupDetailsEdit.meetingLocationAria")}
               />
             </Grid>
           </Grid>
@@ -256,7 +256,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                     style={{ maxHeight: 200, overflowY: "scroll" }}
                     placeholder={Locale.label("groups.groupDetailsEdit.groupDesc")}
                     data-testid="group-description-editor"
-                    ariaLabel="Group description"
+                    ariaLabel={Locale.label("groups.groupDetailsEdit.groupDescriptionAria")}
                   />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -286,7 +286,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                       {group.photoUrl ? (
                         <img
                           src={group.photoUrl}
-                          alt="group"
+                          alt={Locale.label("groups.groupDetailsEdit.groupPhotoAlt")}
                           style={{
                             width: "100%",
                             height: "100%",
@@ -309,7 +309,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                         toggleGalleryModal(true);
                       }}
                       data-testid="change-photo-button"
-                      aria-label="Change group photo"
+                      aria-label={Locale.label("groups.groupDetailsEdit.changePhotoAria")}
                       size="small">
                       {group.photoUrl ? Locale.label("common.changePhoto") : Locale.label("groups.groupDetailsEdit.addPhoto")}
                     </Button>
@@ -327,7 +327,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                     onKeyDown={handleKeyDown}
                     placeholder={Locale.label("groups.groupDetails.slugPlaceholder")}
                     data-testid="group-slug-input"
-                    aria-label="Group slug"
+                    aria-label={Locale.label("groups.groupDetailsEdit.groupSlugAria")}
                   />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>

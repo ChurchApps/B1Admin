@@ -101,7 +101,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
           )}
         </TableCell>
         <TableCell>
-          <Button size="small" variant="contained" color="success" startIcon={<PersonIcon />} aria-label="addPerson" onClick={() => handleAdd(sr)} data-testid={`add-person-${sr.id}`}>{actionLabel || "Select"}</Button>
+          <Button size="small" variant="contained" color="success" startIcon={<PersonIcon />} aria-label="addPerson" onClick={() => handleAdd(sr)} data-testid={`add-person-${sr.id}`}>{actionLabel || Locale.label("components.personAdd.select")}</Button>
         </TableCell>
       </TableRow>
     );

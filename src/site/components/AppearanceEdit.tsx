@@ -161,7 +161,7 @@ export function AppearanceEdit(props: Props) {
             ? (<img src={logoImage.value} alt={title} style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }} />)
             : (<Stack alignItems="center" spacing={1} sx={{ color: alpha("#000", 0.4) }}>
               <ImageIcon sx={{ fontSize: 48 }} />
-              <Typography variant="body2">No image</Typography>
+              <Typography variant="body2">{Locale.label("site.appearanceEdit.noImage")}</Typography>
             </Stack>)
           }
         </Box>
@@ -169,7 +169,7 @@ export function AppearanceEdit(props: Props) {
           <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>{title}</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontSize: "0.875rem" }}>{description}</Typography>
           <Button variant="outlined" startIcon={hasLogo ? <EditIcon /> : <CloudUploadIcon />} onClick={() => { setEditLogo(true); setCurrentEditLogo(name); }} fullWidth sx={{ textTransform: "none" }} data-testid={`${name}-button`}>
-            {hasLogo ? "Edit" : "Upload"} {title}
+            {hasLogo ? Locale.label("site.appearanceEdit.edit") : Locale.label("site.appearanceEdit.upload")} {title}
           </Button>
         </CardContent>
       </Card>
@@ -198,8 +198,8 @@ export function AppearanceEdit(props: Props) {
               <ImageIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>Logo & Branding</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>Upload and manage your organization's logos and branding assets</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.appearanceEdit.branding")}</Typography>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.appearanceEdit.brandingDescription")}</Typography>
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
@@ -211,22 +211,22 @@ export function AppearanceEdit(props: Props) {
 
       <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
         <CardWithHeader title={Locale.label("site.appearanceEdit.logoManagement")} icon={<ImageIcon />}>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Upload your logos for different contexts. All images should have transparent backgrounds for best results.</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>{Locale.label("site.appearanceEdit.logoUploadDescription")}</Typography>
 
           <Stack spacing={3}>
             <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>Main Logos</Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.appearanceEdit.mainLogos")}</Typography>
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
-                {getLogoDisplay("logoLight", "#F5F5F5", "Light Background Logo", "Horizontal logo for light backgrounds. Ideal size: 1280×320px")}
-                {getLogoDisplay("logoDark", "#333333", "Dark Background Logo", "Horizontal logo for dark backgrounds. Ideal size: 1280×320px")}
+                {getLogoDisplay("logoLight", "#F5F5F5", Locale.label("site.appearanceEdit.logoLight"), Locale.label("site.appearanceEdit.logoLightDesc"))}
+                {getLogoDisplay("logoDark", "#333333", Locale.label("site.appearanceEdit.logoDark"), Locale.label("site.appearanceEdit.logoDarkDesc"))}
               </Box>
             </Box>
 
             <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>SEO & Browser Assets</Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.appearanceEdit.seoAssets")}</Typography>
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
-                {getLogoDisplay("ogImage", "#1976d2", "Social Media Image", "Used for social sharing and SEO. Ideal size: 1200×630px")}
-                {getLogoDisplay("favicon_400x400", "#bbdefb", "Favicon", "Square icon for browser tabs. Ideal size: 400×400px")}
+                {getLogoDisplay("ogImage", "#1976d2", Locale.label("site.appearanceEdit.ogImage"), Locale.label("site.appearanceEdit.ogImageDesc"))}
+                {getLogoDisplay("favicon_400x400", "#bbdefb", Locale.label("site.appearanceEdit.favicon"), Locale.label("site.appearanceEdit.faviconDesc"))}
               </Box>
             </Box>
           </Stack>

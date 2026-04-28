@@ -208,19 +208,19 @@ export const UserAdd = (props: Props) => {
   const message = !showNameFields && !editMode && hasSearched && (
     <span>
       {Locale.label("settings.userAdd.noAcc")}{" "}
-      <button type="button" onClick={CreateNewUser} data-testid="create-new-user-link" aria-label="Create new user" style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+      <button type="button" onClick={CreateNewUser} data-testid="create-new-user-link" aria-label={Locale.label("settings.userAdd.createNewUserAria")} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
         {Locale.label("settings.userAdd.createNew")}
       </button>
     </span>
   );
   const nameField = (showNameFields || editMode) && (
     <>
-      <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} placeholder={Locale.label("placeholders.user.firstName")} data-testid="first-name-input" aria-label="First name" />
-      <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} placeholder={Locale.label("placeholders.user.lastName")} data-testid="last-name-input" aria-label="Last name" />
+      <TextField fullWidth name="firstName" label={Locale.label("person.firstName")} value={firstName} onChange={handleChange} placeholder={Locale.label("placeholders.user.firstName")} data-testid="first-name-input" aria-label={Locale.label("settings.userAdd.firstNameAria")} />
+      <TextField fullWidth name="lastName" label={Locale.label("person.lastName")} value={lastName} onChange={handleChange} placeholder={Locale.label("placeholders.user.lastName")} data-testid="last-name-input" aria-label={Locale.label("settings.userAdd.lastNameAria")} />
     </>
   );
   const emailField = (showEmailField || editMode) && (
-    <TextField type="email" fullWidth name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} placeholder={Locale.label("placeholders.user.email")} data-testid="email-input" aria-label="Email address" />
+    <TextField type="email" fullWidth name="email" label={Locale.label("person.email")} value={email} onChange={handleChange} placeholder={Locale.label("placeholders.user.email")} data-testid="email-input" aria-label={Locale.label("settings.userAdd.emailAddressAria")} />
   );
 
   return (

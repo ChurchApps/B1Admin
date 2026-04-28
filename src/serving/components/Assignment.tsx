@@ -312,8 +312,8 @@ export const Assignment = (props: Props) => {
                 setPlan({ ...plan, notes: e.target.value });
               } : undefined}
               data-testid="plan-notes-input"
-              aria-label="Plan notes"
-              placeholder={canEdit ? "Add notes for this service plan..." : "Plan notes (read-only)"}
+              aria-label={Locale.label("plans.assignment.planNotesAria")}
+              placeholder={canEdit ? Locale.label("plans.assignment.notesPlaceholder") : Locale.label("plans.assignment.notesPlaceholderReadOnly")}
               variant="outlined"
               disabled={!canEdit}
               sx={{

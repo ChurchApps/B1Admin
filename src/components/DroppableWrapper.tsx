@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
 import React, { useEffect } from "react";
 import { useDrop } from "react-dnd";
+import { Locale } from "@churchapps/apphelper";
 
 type Props = {
   children?: React.ReactNode;
@@ -81,7 +82,7 @@ export function DroppableWrapper(props: Props) {
   } : { ...baseStyle, ...(hidden ? { opacity: 0 } : {}) };
 
   return (
-    <div ref={drop as any} style={dropZoneStyle} data-testid="droppable-wrapper" aria-label="Drop zone">
+    <div ref={drop as any} style={dropZoneStyle} data-testid="droppable-wrapper" aria-label={Locale.label("components.droppableWrapper.ariaLabel")}>
       {children}
     </div>
   );

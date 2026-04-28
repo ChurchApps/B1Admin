@@ -74,7 +74,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   const handleSave = async () => {
     if (validate()) {
       const formattedDate = DateHelper.prettyDate(scheduledDate);
-      const displayName = selectedLessonName || selectedVenueName || "Lesson";
+      const displayName = selectedLessonName || selectedVenueName || Locale.label("plans.lessonScheduleEdit.fallbackLesson");
 
       const newPlan: PlanInterface = {
         ministryId: props.ministryId,
@@ -122,7 +122,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
           value={DateHelper.formatHtml5Date(scheduledDate)}
           onChange={handleDateChange}
           data-testid="scheduled-date-input"
-          aria-label="Scheduled date"
+          aria-label={Locale.label("plans.lessonScheduleEdit.scheduledDateAria")}
         />
 
         {/* Lesson Selection */}

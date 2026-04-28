@@ -284,8 +284,8 @@ export const PagesPage = () => {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
               <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
               <div style={{ flexShrink: 0, marginLeft: 8 }}>
-                <Tooltip title="Add navigation link">
-                  <IconButton size="small" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" aria-label="Add navigation link"><AddIcon fontSize="small" /></IconButton>
+                <Tooltip title={Locale.label("site.pagesPage.addNavigationLink")}>
+                  <IconButton size="small" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" aria-label={Locale.label("site.pagesPage.addNavigationLink")}><AddIcon fontSize="small" /></IconButton>
                 </Tooltip>
               </div>
             </div>

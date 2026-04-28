@@ -70,7 +70,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
         onChange={handleChange}
         placeholder={Locale.label("placeholders.campus.name")}
         data-testid="campus-name-input"
-        aria-label="Campus name"
+        aria-label={Locale.label("attendance.campusEdit.nameAria")}
       />
     </InputBox>
   );

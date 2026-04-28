@@ -22,8 +22,8 @@ export const Funds: React.FC = memo(() => {
   const editSection = useMemo(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.edit)) {
       return (
-        <Tooltip title="Add fund">
-          <IconButton size="small" onClick={() => setEditFund({ id: "", name: "", taxDeductible: true })} data-testid="add-fund-button" aria-label="Add fund"><AddIcon fontSize="small" /></IconButton>
+        <Tooltip title={Locale.label("donations.funds.addFund")}>
+          <IconButton size="small" onClick={() => setEditFund({ id: "", name: "", taxDeductible: true })} data-testid="add-fund-button" aria-label={Locale.label("donations.funds.addFund")}><AddIcon fontSize="small" /></IconButton>
         </Tooltip>
       );
     } else return null;

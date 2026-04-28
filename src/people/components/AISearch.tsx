@@ -48,13 +48,13 @@ export const AISearch = (props: Props) => {
         }}
       />
       <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
-        Examples:
+        {Locale.label("people.aiSearch.examples")}
         <br />
-        - Show me men over 30 with birthdays in July.
-        <br />- Show me women who are married.
+        {Locale.label("people.aiSearch.exampleMen")}
+        <br />{Locale.label("people.aiSearch.exampleWomen")}
       </Typography>
       <Button fullWidth variant="contained" onClick={handleSearch} disabled={isLoading || !text || text === ""}>
-        {isLoading ? "Searching..." : "Search"}
+        {isLoading ? Locale.label("people.aiSearch.searching") : Locale.label("people.aiSearch.search")}
       </Button>
     </DisplayBox>
   );

@@ -172,10 +172,10 @@ export const Sermons = () => {
               startIcon={<Icon>edit</Icon>}
               onClick={() => { setCurrentSermon(video); }}
               data-testid={`edit-sermon-${video.id}`}
-              aria-label={`Edit ${video.title}`}
+              aria-label={Locale.label("sermons.editSermonAria").replace("{title}", video.title)}
               sx={{ minWidth: "auto" }}
             >
-              Edit
+              {Locale.label("sermons.edit")}
             </Button>
           </TableCell>
         </TableRow>

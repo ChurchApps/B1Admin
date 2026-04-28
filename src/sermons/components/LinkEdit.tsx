@@ -189,7 +189,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
                     value={currentLink?.text || ""}
                     onChange={handleChange}
                     data-testid="link-text-input"
-                    aria-label="Link display text"
+                    aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.linkDisplayTextAria")}
                     placeholder={Locale.label("sermons.liveStreamTimes.linkEdit.displayTextPlaceholder")}
                     size="small"
                   />
@@ -201,7 +201,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
                     value={currentLink?.url || ""}
                     onChange={handleChange}
                     data-testid="link-url-input"
-                    aria-label="Link URL"
+                    aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrlAria")}
                     placeholder={Locale.label("sermons.liveStreamTimes.linkEdit.linkUrlPlaceholder")}
                     size="small"
                   />
@@ -260,7 +260,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
                             color="primary"
                             onClick={() => setToggleSubName(!toggleSubName)}
                             data-testid={`submenu-toggle-${link.id}`}
-                            aria-label={`Set as submenu under ${link.text}`}
+                            aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.submenuUnderAria").replace("{text}", link.text)}
                             sx={{
                               borderRadius: 1,
                               textTransform: "none",

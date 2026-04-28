@@ -81,7 +81,7 @@ export function FontEdit(props: Props) {
     if (showFont) return <CustomFontModal onClose={() => { setShowFont(""); }} updateValue={(val) => { setShowFont(""); updateFont(val); }} />;
   };
 
-  if (!fonts) return "Fonts null";
+  if (!fonts) return Locale.label("site.fontEdit.fontsNull");
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
@@ -94,13 +94,13 @@ export function FontEdit(props: Props) {
               <TextFieldsIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>Typography Settings</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>Select and customize your site's fonts</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.fontEdit.headerTitle")}</Typography>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.fontEdit.headerSubtitle")}</Typography>
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
             <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText="Saving..." variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-fonts-button">Save Fonts</LoadingButton>
+            <LoadingButton loading={isSubmitting} loadingText={Locale.label("site.fontEdit.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-fonts-button">{Locale.label("site.fontEdit.saveFonts")}</LoadingButton>
           </Stack>
         </Stack>
       </Box>
@@ -110,15 +110,15 @@ export function FontEdit(props: Props) {
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 6 }}>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}>Heading Font</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Used for titles, headings, and emphasis text</Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}>{Locale.label("site.fontEdit.headingFont")}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("site.fontEdit.headingFontDesc")}</Typography>
                 <Button variant="outlined" onClick={() => setShowFont("heading")} data-testid="heading-font-button" startIcon={<FormatSizeIcon />} sx={{ fontFamily: fonts?.heading || "Roboto", textTransform: "none", justifyContent: "flex-start", minHeight: 48, px: 2 }} fullWidth>{fonts?.heading || "Roboto"}</Button>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}>Body Font</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Used for paragraphs, descriptions, and body text</Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}>{Locale.label("site.fontEdit.bodyFont")}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("site.fontEdit.bodyFontDesc")}</Typography>
                 <Button variant="outlined" onClick={() => setShowFont("body")} data-testid="body-font-button" startIcon={<TextFieldsIcon />} sx={{ fontFamily: fonts?.body || "Roboto", textTransform: "none", justifyContent: "flex-start", minHeight: 48, px: 2 }} fullWidth>{fonts?.body || "Roboto"}</Button>
               </Box>
             </Grid>
@@ -128,17 +128,17 @@ export function FontEdit(props: Props) {
         <Box sx={{ mt: 3 }}>
           <CardWithHeader title={Locale.label("site.fontEdit.typographyPreview")} icon={<VisibilityIcon />}>
             <Box sx={{ p: 3, backgroundColor: alpha("#f5f5f5", 0.3), borderRadius: 2 }}>
-              <Typography variant="h4" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "primary.main" }}>Main Heading Preview</Typography>
-              <Typography variant="body1" sx={{ fontFamily: fonts?.body || "Roboto", mb: 3, lineHeight: 1.6, color: "text.primary" }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.</Typography>
-              <Typography variant="h6" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "text.primary" }}>Secondary Heading</Typography>
-              <Typography variant="body1" sx={{ fontFamily: fonts?.body || "Roboto", lineHeight: 1.6, color: "text.primary" }}>Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.</Typography>
+              <Typography variant="h4" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.fontEdit.mainHeadingPreview")}</Typography>
+              <Typography variant="body1" sx={{ fontFamily: fonts?.body || "Roboto", mb: 3, lineHeight: 1.6, color: "text.primary" }}>{Locale.label("site.fontEdit.previewBody")}</Typography>
+              <Typography variant="h6" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "text.primary" }}>{Locale.label("site.fontEdit.secondaryHeading")}</Typography>
+              <Typography variant="body1" sx={{ fontFamily: fonts?.body || "Roboto", lineHeight: 1.6, color: "text.primary" }}>{Locale.label("site.fontEdit.previewBody2")}</Typography>
             </Box>
           </CardWithHeader>
         </Box>
 
         <Box sx={{ mt: 3 }}>
           <CardWithHeader title={Locale.label("site.fontEdit.popularFontCombinations")} icon={<StyleIcon />}>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Click any combination to apply it instantly</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>{Locale.label("site.fontEdit.applyCombination")}</Typography>
             {getPairings()}
           </CardWithHeader>
         </Box>

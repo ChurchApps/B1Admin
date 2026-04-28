@@ -310,7 +310,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <Chip
-                          label={chatAndPrayerStartTime ? DateHelper.prettyTime(new Date(chatAndPrayerStartTime)) : "Time"}
+                          label={chatAndPrayerStartTime ? DateHelper.prettyTime(new Date(chatAndPrayerStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
                           size="small"
                           sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
                         />
@@ -337,7 +337,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <Chip
-                          label={chatAndPrayerEndTime ? DateHelper.prettyTime(new Date(chatAndPrayerEndTime)) : "Time"}
+                          label={chatAndPrayerEndTime ? DateHelper.prettyTime(new Date(chatAndPrayerEndTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
                           size="small"
                           sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
                         />
@@ -380,7 +380,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <Chip
-                          label={earlyStartTime ? DateHelper.prettyTime(new Date(earlyStartTime)) : "Time"}
+                          label={earlyStartTime ? DateHelper.prettyTime(new Date(earlyStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
                           size="small"
                           sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
                         />

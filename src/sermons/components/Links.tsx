@@ -89,7 +89,7 @@ export const Links: React.FC<Props> = (props) => {
                       <td style={{ textAlign: "right" }}>
                         {upLink}
                         {downLink}
-                        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>Edit</Button>
+                        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.navigationLinks.edit")}</Button>
                       </td>
                     </tr>
                     <>
@@ -105,7 +105,7 @@ export const Links: React.FC<Props> = (props) => {
                     <td style={{ textAlign: "right" }}>
                       {upLink}
                       {downLink}
-                      <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>Edit</Button>
+                      <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.navigationLinks.edit")}</Button>
                     </td>
                   </tr>
                 )}
@@ -129,7 +129,7 @@ export const Links: React.FC<Props> = (props) => {
             <td style={{ textAlign: "right" }}>
               {upLink}
               {downLink}
-              <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>Edit</Button>
+              <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.navigationLinks.edit")}</Button>
             </td>
           </tr>
           {link.children && <RecursiveLinks childrenLinks={link.children} nestedLevel={0} />}

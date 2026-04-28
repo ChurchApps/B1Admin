@@ -1,6 +1,6 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Stack, Typography, Alert } from "@mui/material";
-import { ApiHelper, UserHelper, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import UserContext from "../../UserContext";
 
@@ -13,24 +13,24 @@ interface Props {
   onComplete: (redirectUrl: string) => void;
 }
 
-const wizardConfig: Record<WizardType, { title: string; description: string }> = {
+const getWizardConfig = (): Record<WizardType, { title: string; description: string }> => ({
   freeshow: {
-    title: "Set Up FreeShow Backups",
-    description: "To back up your FreeShow data, we need to create a ministry and a team. You'll then be redirected to add team members."
+    title: Locale.label("dashboard.quickSetupModal.freeShowTitle"),
+    description: Locale.label("dashboard.quickSetupModal.freeShowDescription")
   },
   freeplay: {
-    title: "Set Up Your FreePlay Classroom",
-    description: "To get started with FreePlay, we need to create a ministry and a classroom. You'll then be redirected to pair a content provider."
+    title: Locale.label("dashboard.quickSetupModal.freePlayTitle"),
+    description: Locale.label("dashboard.quickSetupModal.freePlayDescription")
   },
   webpage: {
-    title: "Create Your First Webpage",
-    description: "Enter a title for your first page. You'll be redirected to the page editor to add content."
+    title: Locale.label("dashboard.quickSetupModal.webpageTitle"),
+    description: Locale.label("dashboard.quickSetupModal.webpageDescription")
   },
   group: {
-    title: "Create Your First Group",
-    description: "Enter a name for your group. You'll be redirected to the group page to configure it and add members."
+    title: Locale.label("dashboard.quickSetupModal.groupTitle"),
+    description: Locale.label("dashboard.quickSetupModal.groupDescription")
   }
-};
+});
 
 export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, onComplete }) => {
   const context = React.useContext(UserContext);
@@ -50,7 +50,7 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
   // Group field
   const [groupName, setGroupName] = React.useState("");
 
-  const config = wizardConfig[wizardType];
+  const config = getWizardConfig()[wizardType];
 
   const handleSubmit = async () => {
     setError("");
@@ -71,7 +71,7 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
           break;
       }
     } catch (e: any) {
-      setError(e.message || "Something went wrong. Please try again.");
+      setError(e.message || Locale.label("dashboard.quickSetupModal.errorGeneric"));
     } finally {
       setIsSubmitting(false);
     }
@@ -79,11 +79,11 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
 
   const handleFreeshowSetup = async () => {
     if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit)) {
-      setError("You don't have permission to perform this action. Required: MembershipApi - Groups - Edit");
+      setError(Locale.label("dashboard.quickSetupModal.errorPermGroups"));
       return;
     }
     if (!ministryName.trim() || !teamName.trim()) {
-      setError("Please enter both a ministry name and a team name.");
+      setError(Locale.label("dashboard.quickSetupModal.errorBothMinistryTeam"));
       return;
     }
 
@@ -113,11 +113,11 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
 
   const handleFreeplaySetup = async () => {
     if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit) || !UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) {
-      setError("You don't have permission to perform this action. Required: MembershipApi - Groups - Edit, MembershipApi - Plans - Edit");
+      setError(Locale.label("dashboard.quickSetupModal.errorPermFreePlay"));
       return;
     }
     if (!ministryName.trim() || !classroomName.trim()) {
-      setError("Please enter both a ministry name and a classroom name.");
+      setError(Locale.label("dashboard.quickSetupModal.errorBothMinistryClassroom"));
       return;
     }
 
@@ -141,11 +141,11 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
 
   const handleWebpageSetup = async () => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
-      setError("You don't have permission to perform this action. Required: ContentApi - Content - Edit");
+      setError(Locale.label("dashboard.quickSetupModal.errorPermPages"));
       return;
     }
     if (!pageTitle.trim()) {
-      setError("Please enter a page title.");
+      setError(Locale.label("dashboard.quickSetupModal.errorPageTitle"));
       return;
     }
 
@@ -158,11 +158,11 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
 
   const handleGroupSetup = async () => {
     if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit)) {
-      setError("You don't have permission to perform this action. Required: MembershipApi - Groups - Edit");
+      setError(Locale.label("dashboard.quickSetupModal.errorPermGroups"));
       return;
     }
     if (!groupName.trim()) {
-      setError("Please enter a group name.");
+      setError(Locale.label("dashboard.quickSetupModal.errorGroupName"));
       return;
     }
 
@@ -183,30 +183,30 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
 
         {wizardType === "freeshow" && (
           <Stack spacing={2}>
-            <TextField label="Ministry Name" value={ministryName} onChange={(e) => setMinistryName(e.target.value)} fullWidth autoFocus />
-            <TextField label="Team Name" value={teamName} onChange={(e) => setTeamName(e.target.value)} fullWidth />
+            <TextField label={Locale.label("dashboard.quickSetupModal.ministryName")} value={ministryName} onChange={(e) => setMinistryName(e.target.value)} fullWidth autoFocus />
+            <TextField label={Locale.label("dashboard.quickSetupModal.teamName")} value={teamName} onChange={(e) => setTeamName(e.target.value)} fullWidth />
           </Stack>
         )}
 
         {wizardType === "freeplay" && (
           <Stack spacing={2}>
-            <TextField label="Ministry Name" value={ministryName} onChange={(e) => setMinistryName(e.target.value)} fullWidth autoFocus />
-            <TextField label="Classroom Name" value={classroomName} onChange={(e) => setClassroomName(e.target.value)} fullWidth />
+            <TextField label={Locale.label("dashboard.quickSetupModal.ministryName")} value={ministryName} onChange={(e) => setMinistryName(e.target.value)} fullWidth autoFocus />
+            <TextField label={Locale.label("dashboard.quickSetupModal.classroomName")} value={classroomName} onChange={(e) => setClassroomName(e.target.value)} fullWidth />
           </Stack>
         )}
 
         {wizardType === "webpage" && (
-          <TextField label="Page Title" value={pageTitle} onChange={(e) => setPageTitle(e.target.value)} fullWidth autoFocus />
+          <TextField label={Locale.label("dashboard.quickSetupModal.pageTitle")} value={pageTitle} onChange={(e) => setPageTitle(e.target.value)} fullWidth autoFocus />
         )}
 
         {wizardType === "group" && (
-          <TextField label="Group Name" value={groupName} onChange={(e) => setGroupName(e.target.value)} fullWidth autoFocus />
+          <TextField label={Locale.label("dashboard.quickSetupModal.groupName")} value={groupName} onChange={(e) => setGroupName(e.target.value)} fullWidth autoFocus />
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{Locale.label("common.cancel")}</Button>
         <Button onClick={handleSubmit} variant="contained" disabled={isSubmitting}>
-          {isSubmitting ? "Creating..." : "Create & Continue"}
+          {isSubmitting ? Locale.label("dashboard.quickSetupModal.creating") : Locale.label("dashboard.quickSetupModal.createContinue")}
         </Button>
       </DialogActions>
     </Dialog>

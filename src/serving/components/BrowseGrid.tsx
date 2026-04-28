@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Box, Card, CardActionArea, CardMedia, CardContent } from "@mui/material";
 import { Folder as FolderIcon, PlayArrow as PlayArrowIcon, Add as AddIcon } from "@mui/icons-material";
+import { Locale } from "@churchapps/apphelper";
 import { type ContentFolder, type ContentFile } from "@churchapps/content-providers";
 
 interface BrowseGridProps {
@@ -58,7 +59,7 @@ export const BrowseGrid: React.FC<BrowseGridProps> = ({ folders, files = [], sel
           )}
           <CardContent sx={{ p: 1, "&:last-child": { pb: 1 } }}>
             <Typography variant="body2" noWrap title={file.title}>{file.title}</Typography>
-            <Typography variant="caption" color="secondary">Add-On</Typography>
+            <Typography variant="caption" color="secondary">{Locale.label("plans.browseGrid.addOn")}</Typography>
           </CardContent>
         </CardActionArea>
       </Card>

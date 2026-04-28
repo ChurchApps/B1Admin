@@ -112,8 +112,8 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
 
   return (
     <>
-      <Tooltip title="Select columns">
-        <IconButton size="small" onClick={handleClick} data-testid="columns-button" aria-label="Select columns"><ViewColumnIcon fontSize="small" /></IconButton>
+      <Tooltip title={Locale.label("people.peopleColumns.selectColumns")}>
+        <IconButton size="small" onClick={handleClick} data-testid="columns-button" aria-label={Locale.label("people.peopleColumns.selectColumns")}><ViewColumnIcon fontSize="small" /></IconButton>
       </Tooltip>
       <Dialog id="fieldsMenu" open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogTitle>{Locale.label("people.peopleColumns.filt")}</DialogTitle>

@@ -48,7 +48,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
     }
     for (let i = 0; i < filtered.length; i++) {
       const gm = filtered[i];
-      const personName = gm.person?.name?.display || "Unknown";
+      const personName = gm.person?.name?.display || Locale.label("groups.membersAdd.unknown");
       rows.push(
         <TableRow key={gm.personId}>
           <TableCell>
@@ -58,7 +58,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
             <Link to={"/people/" + gm.personId}>{personName}</Link>
           </TableCell>
           <TableCell>
-            <Button size="small" variant="contained" color="success" startIcon={<PersonAddIcon />} onClick={() => addMember(gm)} data-testid="add-member-button" aria-label="Add member to group">{Locale.label("common.add")}</Button>
+            <Button size="small" variant="contained" color="success" startIcon={<PersonAddIcon />} onClick={() => addMember(gm)} data-testid="add-member-button" aria-label={Locale.label("groups.membersAdd.addMemberAria")}>{Locale.label("common.add")}</Button>
           </TableCell>
         </TableRow>
       );

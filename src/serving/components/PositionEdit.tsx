@@ -134,9 +134,9 @@ export const PositionEdit = (props: Props) => {
         </FormControl>
         <FormControlLabel
           control={<Checkbox checked={position.allowSelfSignup || false} onChange={(e) => setPosition({ ...position, allowSelfSignup: e.target.checked })} />}
-          label="Allow Self-Signup"
+          label={Locale.label("plans.positionEdit.allowSelfSignup")}
         />
-        <TextField fullWidth label="Description" id="description" name="description" type="text" multiline rows={2} value={position.description || ""} onChange={handleChange} helperText="Shown to volunteers when browsing signup opportunities" />
+        <TextField fullWidth label={Locale.label("plans.positionEdit.description")} id="description" name="description" type="text" multiline rows={2} value={position.description || ""} onChange={handleChange} helperText={Locale.label("plans.positionEdit.descriptionHelper")} />
       </InputBox>
     </>
   );

@@ -128,7 +128,7 @@ export function HouseholdEdit(props: Props) {
         </FormControl>
       </TableCell>
       <TableCell>
-        <Button size="small" variant="outlined" color="error" startIcon={<PersonRemoveIcon />} onClick={() => handleRemove(index)} data-testid="remove-household-member-button" aria-label="Remove household member">{Locale.label("common.remove")}</Button>
+        <Button size="small" variant="outlined" color="error" startIcon={<PersonRemoveIcon />} onClick={() => handleRemove(index)} data-testid="remove-household-member-button" aria-label={Locale.label("people.householdEdit.removeMemberAria")}>{Locale.label("common.remove")}</Button>
       </TableCell>
     </TableRow>
   ));
@@ -143,9 +143,9 @@ export function HouseholdEdit(props: Props) {
   const personAdd = showAdd ? (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-        <h3>Add Household Member</h3>
+        <h3>{Locale.label("people.householdEdit.addMember")}</h3>
         <Tooltip title="Cancel">
-          <IconButton size="small" onClick={() => setShowAdd(false)} aria-label="Cancel add member"><CloseIcon fontSize="small" /></IconButton>
+          <IconButton size="small" onClick={() => setShowAdd(false)} aria-label={Locale.label("people.householdEdit.cancelAddMember")}><CloseIcon fontSize="small" /></IconButton>
         </Tooltip>
       </div>
       <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} person={props.currentPerson} showCreatePersonOnNotFound={true} />
@@ -172,7 +172,7 @@ export function HouseholdEdit(props: Props) {
           label={Locale.label("people.householdEdit.houseName")}
           placeholder={Locale.label("placeholders.household.name")}
           data-testid="household-name-input"
-          aria-label="Household name"
+          aria-label={Locale.label("people.householdEdit.householdNameAria")}
         />
         <Table size="small" id="householdMemberTable">
           <TableBody>
@@ -181,7 +181,7 @@ export function HouseholdEdit(props: Props) {
               <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell>
-                <Button size="small" variant="contained" startIcon={<PersonAddIcon />} onClick={() => setShowAdd(true)} data-testid="add-household-member-button" aria-label="Add household member">{Locale.label("common.add")}</Button>
+                <Button size="small" variant="contained" startIcon={<PersonAddIcon />} onClick={() => setShowAdd(true)} data-testid="add-household-member-button" aria-label={Locale.label("people.householdEdit.addMemberAria")}>{Locale.label("common.add")}</Button>
               </TableCell>
             </TableRow>
           </TableBody>

@@ -140,7 +140,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         <th>
           {Locale.label("forms.formMembers.emailNotif")}
           <Tooltip title={Locale.label("forms.formMembers.emailNotifMsg")} arrow>
-            <IconButton data-testid="email-notification-info-button" aria-label="Email notification information">
+            <IconButton data-testid="email-notification-info-button" aria-label={Locale.label("forms.formMembers.emailNotifInfoAria")}>
               <Info fontSize="small" color="primary" />
             </IconButton>
           </Tooltip>

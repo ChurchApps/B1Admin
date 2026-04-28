@@ -23,7 +23,7 @@ import {
   Delete as DeleteIcon,
   Download as DownloadIcon
 } from "@mui/icons-material";
-import { ApiHelper, Loading, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type EventInterface, type RegistrationInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
@@ -52,23 +52,23 @@ export const RegistrationDetailsPage = () => {
   useEffect(() => { loadData(); }, [eventId]);
 
   const handleCancel = async (regId: string) => {
-    if (!confirm("Cancel this registration?")) return;
+    if (!confirm(Locale.label("registrations.registrationDetailsPage.cancelConfirm"))) return;
     await ApiHelper.post("/registrations/" + regId + "/cancel", {}, "ContentApi");
     loadData();
   };
 
   const handleDelete = async (regId: string) => {
-    if (!confirm("Permanently delete this registration?")) return;
+    if (!confirm(Locale.label("registrations.registrationDetailsPage.deleteConfirm"))) return;
     await ApiHelper.delete("/registrations/" + regId, "ContentApi");
     loadData();
   };
 
   const handleExportCSV = () => {
-    const rows = [["Name", "Members", "Status", "Date"]];
+    const rows = [[Locale.label("registrations.registrationDetailsPage.csvName"), Locale.label("registrations.registrationDetailsPage.csvMembers"), Locale.label("registrations.registrationDetailsPage.csvStatus"), Locale.label("registrations.registrationDetailsPage.csvDate")]];
     registrations.forEach((reg) => {
       const members = reg.members?.map((m) => `${m.firstName} ${m.lastName}`).join("; ") || "";
       rows.push([
-        reg.personId || "Guest",
+        reg.personId || Locale.label("registrations.registrationDetailsPage.guest"),
         members,
         reg.status || "",
         reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString() : ""
@@ -99,7 +99,7 @@ export const RegistrationDetailsPage = () => {
       <TableCell>
         {reg.members && reg.members.length > 0
           ? reg.members.map((m) => `${m.firstName} ${m.lastName}`).join(", ")
-          : reg.personId || "Unknown"
+          : reg.personId || Locale.label("registrations.registrationDetailsPage.unknown")
         }
       </TableCell>
       <TableCell>{reg.members?.length || 0}</TableCell>
@@ -109,11 +109,11 @@ export const RegistrationDetailsPage = () => {
         {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
           <>
             {reg.status !== "cancelled" && (
-              <Tooltip title="Cancel Registration" arrow>
+              <Tooltip title={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} arrow>
                 <IconButton size="small" onClick={() => handleCancel(reg.id)} color="warning"><CancelIcon fontSize="small" /></IconButton>
               </Tooltip>
             )}
-            <Tooltip title="Delete" arrow>
+            <Tooltip title={Locale.label("registrations.registrationDetailsPage.delete")} arrow>
               <IconButton size="small" onClick={() => handleDelete(reg.id)} color="error"><DeleteIcon fontSize="small" /></IconButton>
             </Tooltip>
           </>
@@ -124,13 +124,13 @@ export const RegistrationDetailsPage = () => {
 
   if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
   if (loading) return <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>;
-  if (!event) return <Typography>Event not found</Typography>;
+  if (!event) return <Typography>{Locale.label("registrations.registrationDetailsPage.eventNotFound")}</Typography>;
 
   const capacityPct = event.capacity ? Math.min((count / event.capacity) * 100, 100) : 0;
 
   return (
     <>
-      <PageHeader title={event.title || "Event Registrations"} subtitle="Manage registrations for this event" />
+      <PageHeader title={event.title || Locale.label("registrations.registrationDetailsPage.eventRegistrations")} subtitle={Locale.label("registrations.registrationDetailsPage.subtitle")} />
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 8 }}>
@@ -140,10 +140,10 @@ export const RegistrationDetailsPage = () => {
                   <Stack direction="row" spacing={1} alignItems="center">
                     <RegIcon sx={{ color: "primary.main" }} />
                     <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                      Registrations ({count}{event.capacity ? ` / ${event.capacity}` : ""})
+                      {Locale.label("registrations.registrationDetailsPage.registrations")} ({count}{event.capacity ? ` / ${event.capacity}` : ""})
                     </Typography>
                   </Stack>
-                  <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>Export CSV</Button>
+                  <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
                 </Stack>
                 {event.capacity && (
                   <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mt: 1 }} />
@@ -151,17 +151,17 @@ export const RegistrationDetailsPage = () => {
               </Box>
               {registrations.length === 0 ? (
                 <Box sx={{ p: 3, textAlign: "center" }}>
-                  <Typography variant="body2" color="text.secondary">No registrations yet.</Typography>
+                  <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
                 </Box>
               ) : (
                 <Table size="small">
                   <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
                     <TableRow>
-                      <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>Members</TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
-                      <TableCell sx={{ fontWeight: 600 }} align="right">Actions</TableCell>
+                      <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.name")}</TableCell>
+                      <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.members")}</TableCell>
+                      <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.status")}</TableCell>
+                      <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.date")}</TableCell>
+                      <TableCell sx={{ fontWeight: 600 }} align="right">{Locale.label("registrations.registrationDetailsPage.actions")}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>{getRows()}</TableBody>

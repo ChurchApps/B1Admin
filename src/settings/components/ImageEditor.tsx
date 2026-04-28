@@ -33,7 +33,7 @@ export const ImageEditor: React.FC<Props> = (props) => {
   const getHeaderButton = () => (
     <div>
       <input type="file" onChange={handleUpload} id="fileUpload" accept="image/*" style={{ display: "none" }} />
-      <Button size="small" variant="contained" startIcon={<UploadIcon />} onClick={() => document.getElementById("fileUpload").click()} data-testid="upload-image-button" aria-label="Upload image">{Locale.label("settings.imageEditor.upload")}</Button>
+      <Button size="small" variant="contained" startIcon={<UploadIcon />} onClick={() => document.getElementById("fileUpload").click()} data-testid="upload-image-button" aria-label={Locale.label("settings.imageEditor.uploadImageAria")}>{Locale.label("settings.imageEditor.upload")}</Button>
     </div>
   );
 

@@ -147,7 +147,7 @@ export const SongDetails = memo((props: Props) => {
           <Stack direction="row" spacing={2} alignItems="center">
             <AlbumIcon sx={{ color: "primary.main", fontSize: 28 }} />
             <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
-              {props.songDetail?.title || "Song Details"}
+              {props.songDetail?.title || Locale.label("songs.songDetails.fallbackTitle")}
             </Typography>
           </Stack>
           <IconButton
@@ -156,7 +156,7 @@ export const SongDetails = memo((props: Props) => {
               color: "primary.main",
               "&:hover": { backgroundColor: "primary.light" }
             }}
-            aria-label="Edit song details">
+            aria-label={Locale.label("songs.songDetails.editSongDetailsAria")}>
             <EditIcon />
           </IconButton>
         </Stack>
@@ -212,7 +212,7 @@ export const SongDetails = memo((props: Props) => {
             ))}
           </List>
         ) : (
-          <EmptyState icon={<AlbumIcon />} title="No additional details available for this song." />
+          <EmptyState icon={<AlbumIcon />} title={Locale.label("songs.songDetails.noDetails")} />
         )}
 
         {/* Links Section */}

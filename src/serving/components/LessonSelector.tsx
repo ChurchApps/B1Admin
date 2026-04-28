@@ -186,7 +186,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
           {browser.currentItems.length > 0 && (
             <TextField
               size="small"
-              placeholder="Search..."
+              placeholder={Locale.label("plans.lessonSelector.searchPlaceholder")}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" /></InputAdornment> }}
@@ -206,7 +206,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
             </Box>
           ) : browser.currentItems.length === 0 ? (
             <Box sx={{ textAlign: "center", py: 4 }}>
-              <Typography color="text.secondary">No content available</Typography>
+              <Typography color="text.secondary">{Locale.label("plans.lessonSelector.noContent")}</Typography>
             </Box>
           ) : (
             <BrowseGrid
@@ -221,7 +221,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
           {/* Selected folder indicator */}
           {selectedFolder && (
             <Box sx={{ p: 2, bgcolor: "action.hover", borderRadius: 1 }}>
-              <Typography variant="body2" color="text.secondary">Selected:</Typography>
+              <Typography variant="body2" color="text.secondary">{Locale.label("plans.lessonSelector.selectedPrefix")}</Typography>
               <Typography variant="subtitle1" color="primary">{selectedFolder.title}</Typography>
             </Box>
           )}

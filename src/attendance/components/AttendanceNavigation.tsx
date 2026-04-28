@@ -20,7 +20,7 @@ export const AttendanceNavigation = memo((props: Props) => {
     if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.view)) {
       tabsList.push({ value: "groups", label: Locale.label("attendance.tabs.groupAtt"), icon: <GroupIcon /> });
     }
-    tabsList.push({ value: "kiosk", label: "Kiosk Theme", icon: <TabletIcon /> });
+    tabsList.push({ value: "kiosk", label: Locale.label("attendance.attendanceNavigation.kioskTheme"), icon: <TabletIcon /> });
     return tabsList;
   }, []);
 

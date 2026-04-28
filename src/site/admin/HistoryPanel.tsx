@@ -1,6 +1,7 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, List, ListItem, ListItemButton, ListItemText, IconButton, Typography, Box } from "@mui/material";
 import { Icon } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 
 interface HistoryEntry {
   description: string;
@@ -29,7 +30,7 @@ export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span>Edit History</span>
+        <span>{Locale.label("site.historyPanel.title")}</span>
         <IconButton onClick={onClose} size="small">
           <Icon>close</Icon>
         </IconButton>
@@ -37,7 +38,7 @@ export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }
       <DialogContent dividers>
         {history.length === 0 ? (
           <Typography color="text.secondary" sx={{ textAlign: "center", py: 4 }}>
-            No history available yet. Make some changes to start tracking history.
+            {Locale.label("site.historyPanel.noHistory")}
           </Typography>
         ) : (
           <List dense>
@@ -55,7 +56,7 @@ export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }
                         edge="end"
                         onClick={() => handleRestore(index)}
                         size="small"
-                        title="Restore to this point"
+                        title={Locale.label("site.historyPanel.restoreToPoint")}
                       >
                         <Icon fontSize="small">restore</Icon>
                       </IconButton>
@@ -81,7 +82,7 @@ export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }
                           <span>{entry.description}</span>
                           {isCurrentState && (
                             <Typography variant="caption" color="primary" sx={{ ml: 1 }}>
-                              (current)
+                              {Locale.label("site.historyPanel.current")}
                             </Typography>
                           )}
                         </Box>

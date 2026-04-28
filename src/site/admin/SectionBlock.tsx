@@ -37,11 +37,11 @@ export const SectionBlock: React.FC<Props> = props => {
                 <td><DraggableIcon dndType="section" elementType="section" data={props.section} /></td>
                 <td>
                   <div className="sectionEditButton">
-                    <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => props.onEdit(props.section, null)} sx={{ minWidth: "auto" }}>Edit</Button>
+                    <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => props.onEdit(props.section, null)} sx={{ minWidth: "auto" }}>{Locale.label("site.sectionBlock.edit")}</Button>
                   </div>
                 </td>
                 <td>
-                  <Tooltip title="Delete section">
+                  <Tooltip title={Locale.label("site.sectionBlock.deleteSection")}>
                     <IconButton size="small" onClick={handleDelete} sx={{ color: "error.main", ml: 0.5 }}>
                       <Icon>delete</Icon>
                     </IconButton>

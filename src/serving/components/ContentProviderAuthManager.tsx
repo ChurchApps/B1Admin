@@ -108,13 +108,13 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
     try {
       if (!("initiateDeviceFlow" in provider)) {
-        setAuthError("Provider does not support device flow");
+        setAuthError(Locale.label("plans.contentProviderAuth.deviceFlowUnsupported"));
         setAuthStatus("error");
         return;
       }
       const deviceResponse = await (provider as any).initiateDeviceFlow();
       if (!deviceResponse) {
-        setAuthError("Failed to start device flow");
+        setAuthError(Locale.label("plans.contentProviderAuth.deviceFlowFailed"));
         setAuthStatus("error");
         return;
       }
@@ -126,7 +126,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
       pollDeviceFlowToken(provider, deviceResponse.device_code, deviceResponse.interval || 5);
     } catch (error) {
       console.error("Error starting device flow:", error);
-      setAuthError("Failed to start authentication");
+      setAuthError(Locale.label("plans.contentProviderAuth.startAuthFailed"));
       setAuthStatus("error");
     }
   }, []);
@@ -173,11 +173,11 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
         }
 
         // Null result - expired or failed
-        setAuthError("Authentication expired or failed");
+        setAuthError(Locale.label("plans.contentProviderAuth.authExpired"));
         setAuthStatus("error");
       } catch (error) {
         console.error("Error polling device flow:", error);
-        setAuthError("Authentication failed");
+        setAuthError(Locale.label("plans.contentProviderAuth.authFailed"));
         setAuthStatus("error");
       }
     };
@@ -197,7 +197,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
     try {
       if (!("generateCodeVerifier" in provider) || !("buildAuthUrl" in provider)) {
-        setAuthError("Provider does not support PKCE authentication");
+        setAuthError(Locale.label("plans.contentProviderAuth.pkceUnsupported"));
         setAuthStatus("error");
         return;
       }
@@ -205,7 +205,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
       // Step 1: Create a relay session on the API
       const relayData = await ApiHelper.post("/oauth/relay/sessions", { provider: providerId }, "MembershipApi");
       if (!relayData?.sessionCode || !relayData?.redirectUri) {
-        setAuthError("Failed to create authorization session. Please try again.");
+        setAuthError(Locale.label("plans.contentProviderAuth.sessionFailed"));
         setAuthStatus("error");
         return;
       }
@@ -231,7 +231,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
       );
 
       if (!popup) {
-        setAuthError("Failed to open popup. Please allow popups for this site.");
+        setAuthError(Locale.label("plans.contentProviderAuth.popupBlocked"));
         setAuthStatus("error");
         return;
       }
@@ -251,7 +251,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
         if (Date.now() >= expiresAt) {
           popup.close();
-          setAuthError("Authorization session expired. Please try again.");
+          setAuthError(Locale.label("plans.contentProviderAuth.sessionExpired"));
           setAuthStatus("error");
           return;
         }
@@ -281,7 +281,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
                 setCodeVerifier(null);
               }, 2000);
             } else {
-              setAuthError("Failed to exchange code for tokens");
+              setAuthError(Locale.label("plans.contentProviderAuth.tokenExchangeFailed"));
               setAuthStatus("error");
             }
             return;
@@ -298,7 +298,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
       setTimeout(poll, 3000);
     } catch (error) {
       console.error("Error starting PKCE flow:", error);
-      setAuthError("Failed to start authentication");
+      setAuthError(Locale.label("plans.contentProviderAuth.startAuthFailed"));
       setAuthStatus("error");
     }
   }, [ministryId, loadLinkedProviders, onAuthChange]);
@@ -452,8 +452,8 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
                       {linkedAuth?.expiresAt && (
                         <Typography variant="caption" color="text.secondary">
                           {new Date(linkedAuth.expiresAt) > new Date()
-                            ? `Expires: ${new Date(linkedAuth.expiresAt).toLocaleDateString()}`
-                            : "Token expired - please re-link"}
+                            ? `${Locale.label("plans.contentProviderAuth.expiresPrefix")} ${new Date(linkedAuth.expiresAt).toLocaleDateString()}`
+                            : Locale.label("plans.contentProviderAuth.tokenExpired")}
                         </Typography>
                       )}
                     </Box>

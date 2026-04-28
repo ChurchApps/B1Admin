@@ -1,5 +1,5 @@
 import React, { useEffect, memo, useMemo } from "react";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../../helpers";
 import { Stack, Box, Card, CardContent, Typography, Avatar, Button, IconButton } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
@@ -120,7 +120,7 @@ export const SongDetailLinks = memo((props: Props) => {
         <Stack direction="row" spacing={1} alignItems="center">
           <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
           <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-            External Links
+            {Locale.label("songs.songDetailLinks.externalLinks")}
           </Typography>
         </Stack>
         {props.onEdit && (
@@ -139,10 +139,10 @@ export const SongDetailLinks = memo((props: Props) => {
       {!allLinks || allLinks.length === 0 ? (
         <EmptyState
           icon={<LinkIcon />}
-          title="No external links added yet"
+          title={Locale.label("songs.songDetailLinks.noLinksYet")}
           action={props.onEdit && (
             <Button variant="contained" startIcon={<AddIcon />} onClick={props.onEdit} size="small">
-              Add First Link
+              {Locale.label("songs.songDetailLinks.addFirstLink")}
             </Button>
           )}
         />

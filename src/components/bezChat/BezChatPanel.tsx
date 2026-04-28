@@ -2,7 +2,7 @@ import React from "react";
 import { Box, TextField, IconButton, Typography, CircularProgress, AppBar, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { BezChatMessage } from "./BezChatMessage";
 
 interface ChatMessage {
@@ -36,9 +36,9 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
 
     try {
       const response = await ApiHelper.post("/docChat/ask", { question, conversationHistory: messages, mode: "bez" }, "AskApi");
-      setMessages([...updatedMessages, { role: "assistant", content: response.answer || "I'm sorry, I couldn't find an answer." }]);
+      setMessages([...updatedMessages, { role: "assistant", content: response.answer || Locale.label("components.bezChat.errorAnswer") }]);
     } catch {
-      setMessages([...updatedMessages, { role: "assistant", content: "Something went wrong. Please try again." }]);
+      setMessages([...updatedMessages, { role: "assistant", content: Locale.label("components.bezChat.errorGeneric") }]);
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +61,7 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
             alt="Bez"
             sx={{ width: 28, height: 28, borderRadius: "50%", mr: 1 }}
           />
-          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem", color: "#fff" }}>Ask Bez</Typography>
+          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem", color: "#fff" }}>{Locale.label("components.bezChat.title")}</Typography>
           <IconButton sx={{ color: "#fff" }} onClick={onClose} edge="end"><CloseIcon /></IconButton>
         </Toolbar>
       </AppBar>
@@ -76,13 +76,13 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
               sx={{ width: 80, height: 80, borderRadius: "50%", mb: 2 }}
             />
             <Typography color="text.secondary">
-              Hi, I'm Bez! I can help you navigate B1 Admin. Try asking me:
+              {Locale.label("components.bezChat.intro")}
               <br /><br />
-              "How do I set up online giving?"
+              {Locale.label("components.bezChat.sampleGiving")}
               <br />
-              "How do I import members from a CSV?"
+              {Locale.label("components.bezChat.sampleCsv")}
               <br />
-              "How do I create a new group?"
+              {Locale.label("components.bezChat.sampleGroup")}
             </Typography>
           </Box>
         )}
@@ -102,7 +102,7 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
           <TextField
             fullWidth
             size="small"
-            placeholder="Ask Bez a question..."
+            placeholder={Locale.label("components.bezChat.placeholderInput")}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}

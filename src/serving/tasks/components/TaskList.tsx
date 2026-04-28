@@ -68,7 +68,7 @@ export const TaskList = memo((props: Props) => {
       startIcon={<AddIcon />}
       onClick={() => setShowAdd(true)}
       data-testid="add-task-button"
-      aria-label="Add task"
+      aria-label={Locale.label("tasks.taskList.addTaskAria")}
       sx={{
         borderRadius: 2,
         textTransform: "none",
@@ -305,7 +305,7 @@ export const TaskList = memo((props: Props) => {
                     startIcon={<ClosedTasksIcon />}
                     onClick={() => props.onStatusChange("Closed")}
                     data-testid="show-closed-tasks-button"
-                    aria-label="Show closed tasks"
+                    aria-label={Locale.label("tasks.taskList.showClosedTasksAria")}
                     sx={{
                       textTransform: "none",
                       fontWeight: 600
@@ -319,7 +319,7 @@ export const TaskList = memo((props: Props) => {
                     startIcon={<OpenTasksIcon />}
                     onClick={() => props.onStatusChange("Open")}
                     data-testid="show-open-tasks-button"
-                    aria-label="Show open tasks"
+                    aria-label={Locale.label("tasks.taskList.showOpenTasksAria")}
                     sx={{
                       textTransform: "none",
                       fontWeight: 600

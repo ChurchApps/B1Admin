@@ -100,7 +100,7 @@ export const ManageChurch = () => {
                   color: "#FFF"
                 }
               }}>
-              Audit Log
+              {Locale.label("settings.manageChurch.auditLog")}
             </Button>
           )}
           <Button

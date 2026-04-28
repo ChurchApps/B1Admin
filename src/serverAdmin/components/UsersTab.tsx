@@ -81,7 +81,7 @@ export const UsersTab = () => {
           onKeyDown={handleKeyDown}
           placeholder={Locale.label("serverAdmin.adminPage.userSearchPlaceholder")}
           data-testid="user-search-input"
-          aria-label="User name or email search"
+          aria-label={Locale.label("serverAdmin.usersTab.userNameOrEmailSearchAria")}
           InputProps={{
             endAdornment: (
               <Button
@@ -89,7 +89,7 @@ export const UsersTab = () => {
                 disableElevation
                 onClick={loadData}
                 data-testid="search-users-button"
-                aria-label="Search users"
+                aria-label={Locale.label("serverAdmin.usersTab.searchUsersAria")}
               >
                 {Locale.label("common.search")}
               </Button>

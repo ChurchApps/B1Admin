@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Drawer, useMediaQuery, useTheme } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 import { SuperBeeChatPanel } from "./SuperBeeChatPanel";
 
 export const SuperBeeChatWidget: React.FC = () => {
@@ -26,7 +27,7 @@ export const SuperBeeChatWidget: React.FC = () => {
             transition: "transform 0.2s ease",
             "&:hover": { transform: "scale(1.08)" }
           }}
-          aria-label="Open SuperBee chat"
+          aria-label={Locale.label("components.superBeeChat.ariaOpen")}
         >
           <Box
             component="img"

@@ -57,7 +57,7 @@ export const PositionList = (props: Props) => {
           </Badge>
         );
       }
-      const personName = person?.name?.display || "Unknown";
+      const personName = person?.name?.display || Locale.label("person.unknown");
       if (canEdit) {
         return (
           <button
@@ -120,7 +120,7 @@ export const PositionList = (props: Props) => {
               {group && <span style={{ color: "#999", marginLeft: "8px" }}>({group.name})</span>}
             </span>
           )}
-          {position.allowSelfSignup && <Chip label={assignments.length + "/" + position.count + " signup"} size="small" color="info" variant="outlined" sx={{ ml: 1, fontSize: "0.6875rem" }} />}
+          {position.allowSelfSignup && <Chip label={assignments.length + "/" + position.count + " " + Locale.label("plans.positionList.signupSuffix")} size="small" color="info" variant="outlined" sx={{ ml: 1, fontSize: "0.6875rem" }} />}
         </TableCell>
         <TableCell style={{ paddingTop: hasPeople ? 2 : 10, paddingBottom: hasPeople ? 2 : 10, verticalAlign: "top" }}>{getPeopleLinks(position)}</TableCell>
       </TableRow>

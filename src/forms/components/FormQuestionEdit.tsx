@@ -137,7 +137,7 @@ export function FormQuestionEdit(props: Props) {
         onChange={handleChange}
         placeholder={Locale.label("placeholders.form.questionTitle")}
         data-testid="question-title-input"
-        aria-label="Question title"
+        aria-label={Locale.label("forms.formQuestionEdit.questionTitleAria")}
       />
       <TextField
         fullWidth
@@ -149,13 +149,13 @@ export function FormQuestionEdit(props: Props) {
         onChange={handleChange}
         placeholder={Locale.label("placeholders.form.questionDescription")}
         data-testid="question-description-input"
-        aria-label="Question description"
+        aria-label={Locale.label("forms.formQuestionEdit.questionDescriptionAria")}
       />
 
       {getChoices(question.fieldType)}
       {question.fieldType !== "Payment" && (
         <FormControlLabel
-          control={<Checkbox data-testid="question-required-checkbox" aria-label="Question required" />}
+          control={<Checkbox data-testid="question-required-checkbox" aria-label={Locale.label("forms.formQuestionEdit.questionRequiredAria")} />}
           label={Locale.label("forms.formQuestionEdit.ansReq")}
           name="required"
           checked={!!question.required}

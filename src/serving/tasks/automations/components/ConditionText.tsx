@@ -43,7 +43,7 @@ export const ConditionText = (props: Props) => {
         name="value"
         onChange={handleChange}
         data-testid="condition-value-input"
-        aria-label="Condition value"
+        aria-label={Locale.label("tasks.conditionText.conditionValueAria")}
         variant="outlined"
         sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
       />
@@ -60,7 +60,7 @@ export const ConditionText = (props: Props) => {
           name="operator"
           onChange={handleChange}
           data-testid="condition-operator-select"
-          aria-label="Condition operator">
+          aria-label={Locale.label("tasks.conditionText.conditionOperatorAria")}>
           <MenuItem value="=">=</MenuItem>
           <MenuItem value="contains">{Locale.label("tasks.conditionText.contains")}</MenuItem>
           <MenuItem value="startsWith">{Locale.label("tasks.conditionText.startW")}</MenuItem>

@@ -38,7 +38,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     if (funds.length === 0 || !donations) return null;
     return (
       <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={donations} filename="donations.csv">
-        Export
+        {Locale.label("donations.donations.export")}
       </Button>
     );
   }, [funds.length, donations]);
@@ -132,7 +132,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       const d = donations[i];
       const editButton = canEdit ? (
         <Button size="small" variant="outlined" startIcon={<EditIcon />} data-cy={`edit-link-${i}`} data-id={d.id} onClick={showEditDonation} sx={{ minWidth: "auto" }}>
-          Edit
+          {Locale.label("donations.donations.edit")}
         </Button>
       ) : null;
 
@@ -150,7 +150,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
               <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.light" variant="body2">
                 <span style={{ fontWeight: 500, color: "text.primary" }}>{d.id}</span>
               </IconText>
-              {isPending && <Chip icon={<PendingIcon />} label="Pending" size="small" color="warning" variant="outlined" />}
+              {isPending && <Chip icon={<PendingIcon />} label={Locale.label("donations.donations.pending")} size="small" color="warning" variant="outlined" />}
             </Stack>
           </TableCell>
           <TableCell>

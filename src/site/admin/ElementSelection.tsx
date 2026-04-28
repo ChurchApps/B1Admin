@@ -70,13 +70,13 @@ export const ElementSelection: React.FC<Props> = ({
               </IconButton>
             </Tooltip>
 
-            <Tooltip title={Locale.label("site.elementSelection.moveUp", "Move up")} placement="top">
+            <Tooltip title={Locale.label("site.elementSelection.moveUp")} placement="top">
               <IconButton size="small" onClick={onMoveUp} sx={actionButtonSx}>
                 <ArrowUpward sx={{ fontSize: 14 }} />
               </IconButton>
             </Tooltip>
 
-            <Tooltip title={Locale.label("site.elementSelection.moveDown", "Move down")} placement="top">
+            <Tooltip title={Locale.label("site.elementSelection.moveDown")} placement="top">
               <IconButton size="small" onClick={onMoveDown} sx={actionButtonSx}>
                 <ArrowDownward sx={{ fontSize: 14 }} />
               </IconButton>

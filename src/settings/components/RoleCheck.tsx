@@ -1,5 +1,5 @@
 import React from "react";
-import { ApiHelper, type RolePermissionInterface } from "@churchapps/apphelper";
+import { ApiHelper, type RolePermissionInterface, Locale } from "@churchapps/apphelper";
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 
 interface Props {
@@ -45,7 +45,7 @@ export const RoleCheck: React.FC<Props> = (props) => {
     <FormGroup>
       <FormControlLabel
         control={
-          <Checkbox checked={rolePermission !== null} onChange={handleChange} data-testid={`role-permission-checkbox-${props.contentType}-${props.action}`} aria-label={`Permission ${props.label}`} />
+          <Checkbox checked={rolePermission !== null} onChange={handleChange} data-testid={`role-permission-checkbox-${props.contentType}-${props.action}`} aria-label={Locale.label("settings.roleCheck.permissionAria").replace("{label}", props.label)} />
         }
         label={props.label}
       />

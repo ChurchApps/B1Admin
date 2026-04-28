@@ -82,7 +82,7 @@ export function SectionEdit(props: Props) {
 
   const getStandardFields = () => (<>
     <ErrorMessages errors={errors} />
-    <TextField fullWidth size="small" label="ID" name="sectionId" value={parsedData.sectionId || ""} onChange={handleChange} />
+    <TextField fullWidth size="small" label={Locale.label("site.sectionEdit.id")} name="sectionId" value={parsedData.sectionId || ""} onChange={handleChange} />
     <PickColors background={section?.background} backgroundOpacity={parsedData?.backgroundOpacity} textColor={section?.textColor} headingColor={section?.headingColor} linkColor={section?.linkColor} updatedCallback={selectColors} globalStyles={props.globalStyles} onChange={handleChange} />
     {getAppearanceFields([
       "border", "color", "font", "height", "line", "margin", "padding", "width"
@@ -96,8 +96,8 @@ export function SectionEdit(props: Props) {
     });
     return (<>
       <FormControl fullWidth>
-        <InputLabel>Block</InputLabel>
-        <Select fullWidth label="Block" name="targetBlockId" value={section.targetBlockId || ""} onChange={handleChange}>
+        <InputLabel>{Locale.label("site.sectionEdit.block")}</InputLabel>
+        <Select fullWidth label={Locale.label("site.sectionEdit.block")} name="targetBlockId" value={section.targetBlockId || ""} onChange={handleChange}>
           {options}
         </Select>
       </FormControl>
@@ -129,7 +129,7 @@ export function SectionEdit(props: Props) {
 
   const handleConvertToBlock = (e: React.MouseEvent) => {
     e.preventDefault();
-    const name = window.prompt("Are you sure you wish to copy this section and all of it's contents to a block?", "Block Name");
+    const name = window.prompt(Locale.label("site.sectionEdit.convertToBlockPrompt"), Locale.label("site.sectionEdit.blockNamePromptDefault"));
     if (name !== null) {
       ApiHelper.post(`/sections/duplicate/${props.section.id}?convertToBlock=${name.toString()}`, {}, "ContentApi").then((data: any) => {
         props.updatedCallback(data);

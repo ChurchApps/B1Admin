@@ -206,7 +206,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
             <Stack spacing={2} alignItems="center">
               <Icon sx={{ fontSize: 48, color: "text.secondary" }}>assignment</Icon>
               <Typography variant="body1" color="text.secondary">
-                No form submissions found
+                {Locale.label("forms.formSubmissions.noSubmissions")}
               </Typography>
             </Stack>
           </TableCell>
@@ -258,7 +258,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         <ExportLink data={summaryCsv} spaceAfter={true} filename={formName} />
         <button
           type="button"
-          aria-label="print-summary"
+          aria-label={Locale.label("forms.formSubmissions.printSummaryAria")}
           onClick={handleSummaryPrint}
           style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "inherit" }}>
           <Icon>print</Icon>

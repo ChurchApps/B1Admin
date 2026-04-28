@@ -86,11 +86,11 @@ export const PeoplePage = memo(() => {
         subtitle={
           searchResults
             ? isSearchPerformed
-              ? `Found ${searchResults.length} people`
-              : `Showing ${searchResults.length} most recent people`
+              ? Locale.label("people.peoplePage.peopleFound").replace("{count}", searchResults.length.toString())
+              : Locale.label("people.peoplePage.showingRecent").replace("{count}", searchResults.length.toString())
             : recentPeople.isLoading
-              ? "Loading people..."
-              : "No people found"
+              ? Locale.label("people.peoplePage.loading")
+              : Locale.label("people.peoplePage.noPeopleFound")
         }>
         <SearchIcon
           sx={{
@@ -176,12 +176,12 @@ export const PeoplePage = memo(() => {
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Stack direction="row" spacing={1} alignItems="center">
                     <PeopleIcon />
-                    <Typography variant="h6">{isSearchPerformed ? "Search Results" : Locale.label("people.peoplePage.recentPpl")}</Typography>
+                    <Typography variant="h6">{isSearchPerformed ? Locale.label("people.peoplePage.searchResults") : Locale.label("people.peoplePage.recentPpl")}</Typography>
                   </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
                     {searchResults && (
                       <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={searchResults} filename="people.csv" sx={{ mr: 1 }}>
-                        Export
+                        {Locale.label("people.peoplePage.export")}
                       </Button>
                     )}
                     <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />

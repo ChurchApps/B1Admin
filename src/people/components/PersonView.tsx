@@ -199,7 +199,7 @@ export const PersonView = memo(({ person, editFunction, updatedFunction }: Props
               {leftAttributes}
               {userEmail && (
                 <div key="hasLogin">
-                  <Chip label={"Has login: " + userEmail} size="small" color="primary" icon={<Icon>person</Icon>} />
+                  <Chip label={Locale.label("people.personView.hasLoginLabel").replace("{email}", userEmail)} size="small" color="primary" icon={<Icon>person</Icon>} />
                 </div>
               )}
             </Grid>
@@ -217,7 +217,7 @@ export const PersonView = memo(({ person, editFunction, updatedFunction }: Props
   return (
     <DisplayBox
       headerText={Locale.label("people.personView.persDet")}
-      editContent={editFunction ? <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={editFunction} sx={{ minWidth: "auto" }}>Edit</Button> : undefined}
+      editContent={editFunction ? <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={editFunction} sx={{ minWidth: "auto" }}>{Locale.label("people.personView.edit")}</Button> : undefined}
       footerContent={<AssociatedForms contentType="person" contentId={person?.id} formSubmissions={person?.formSubmissions} updatedFunction={updatedFunction} />}>
       {personFields}
     </DisplayBox>

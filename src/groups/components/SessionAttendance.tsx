@@ -72,7 +72,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
           color="error"
           onClick={() => handleRemove(vs)}
           data-testid={`remove-session-visitor-button-${vs.id}`}
-          aria-label={`Remove ${person?.name?.display || "visitor"} from session`}>
+          aria-label={Locale.label("groups.sessionAttendance.removeVisitorAria").replace("{name}", person?.name?.display || Locale.label("groups.sessionAttendance.visitor"))}>
           <Icon fontSize="small">person_remove</Icon>
         </IconButton>
       ) : (

@@ -108,7 +108,7 @@ export const SongPage = memo(() => {
             <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
               <MusicIcon sx={{ color: "primary.main" }} />
               <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                Arrangements
+                {Locale.label("songs.oldArrangements.arrangements")}
               </Typography>
             </Stack>
 
@@ -163,7 +163,7 @@ export const SongPage = memo(() => {
                     backgroundColor: "primary.light"
                   }
                 }}>
-                Add Arrangement
+                {Locale.label("songs.songPage.addArrangement")}
               </Button>
             )}
           </CardContent>
@@ -196,8 +196,8 @@ export const SongPage = memo(() => {
       return (
         <EmptyState
           icon={<ArrangementIcon />}
-          title="No Arrangement Selected"
-          description="Select an arrangement from the sidebar to get started."
+          title={Locale.label("songs.songPage.noArrangementSelected")}
+          description={Locale.label("songs.songPage.noArrangementDescription")}
         />
       );
     }
@@ -224,7 +224,7 @@ export const SongPage = memo(() => {
         )}
         {canEdit && (
           <Tooltip title={Locale.label("common.delete")}>
-            <IconButton size="small" color="error" onClick={handleDeleteSong} aria-label="Delete song"><DeleteIcon fontSize="small" /></IconButton>
+            <IconButton size="small" color="error" onClick={handleDeleteSong} aria-label={Locale.label("songs.songPage.deleteSongAria")}><DeleteIcon fontSize="small" /></IconButton>
           </Tooltip>
         )}
         {canEdit && (
@@ -240,7 +240,7 @@ export const SongPage = memo(() => {
                 backgroundColor: "rgba(255,255,255,0.1)"
               }
             }}>
-            Add Arrangement
+            {Locale.label("songs.songPage.addArrangement")}
           </Button>
         )}
       </PageHeader>

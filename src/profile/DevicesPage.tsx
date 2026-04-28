@@ -33,8 +33,8 @@ export const DevicesPage = () => {
   React.useEffect(loadData, []);
 
   const editContent = (
-    <Tooltip title="Add device">
-      <IconButton size="small" onClick={() => setShowAdd(true)} data-testid="add-device-button" aria-label="Add device"><AddIcon fontSize="small" /></IconButton>
+    <Tooltip title={Locale.label("profile.devicesPage.addDevice")}>
+      <IconButton size="small" onClick={() => setShowAdd(true)} data-testid="add-device-button" aria-label={Locale.label("profile.devicesPage.addDevice")}><AddIcon fontSize="small" /></IconButton>
     </Tooltip>
   );
 

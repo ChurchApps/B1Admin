@@ -56,7 +56,7 @@ export const TimeEdit = (props: Props) => {
       const checked = teamList.includes(c);
       result.push(
         <div>
-          <Checkbox key={c} name="team" checked={checked} onChange={handleTeamCheck} value={c} data-testid={`team-checkbox-${c.toLowerCase().replace(/\s+/g, "-")}`} aria-label={`Team ${c}`} />
+          <Checkbox key={c} name="team" checked={checked} onChange={handleTeamCheck} value={c} data-testid={`team-checkbox-${c.toLowerCase().replace(/\s+/g, "-")}`} aria-label={`${Locale.label("plans.timeEdit.teamPrefix")} ${c}`} />
           <label>{c}</label>
         </div>
       );
@@ -95,7 +95,7 @@ export const TimeEdit = (props: Props) => {
           onChange={handleChange}
           placeholder={Locale.label("placeholders.time.displayName")}
           data-testid="time-display-name-input"
-          aria-label="Time display name"
+          aria-label={Locale.label("plans.timeEdit.timeDisplayNameAria")}
         />
         <TextField
           fullWidth
@@ -106,7 +106,7 @@ export const TimeEdit = (props: Props) => {
           value={DateHelper.formatHtml5DateTime(time.startTime)}
           onChange={handleChange}
           data-testid="time-start-input"
-          aria-label="Start time"
+          aria-label={Locale.label("plans.timeEdit.startTimeAria")}
         />
         <TextField
           fullWidth
@@ -117,7 +117,7 @@ export const TimeEdit = (props: Props) => {
           value={DateHelper.formatHtml5DateTime(time.endTime)}
           onChange={handleChange}
           data-testid="time-end-input"
-          aria-label="End time"
+          aria-label={Locale.label("plans.timeEdit.endTimeAria")}
         />
         <div style={{ marginTop: 10 }}>
           <b>{Locale.label("plans.timeEdit.teamNeed")}</b>

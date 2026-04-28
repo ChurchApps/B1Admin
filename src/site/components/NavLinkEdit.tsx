@@ -42,8 +42,8 @@ export function NavLinkEdit(props: Props) {
 
   const validate = () => {
     const errors = [];
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push("Unauthorized to create pages");
-    if (!link?.text || link?.text === "" || link?.text?.trim().length === 0) errors.push("Please enter link text");
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.navLinkEdit.unauthorizedCreate"));
+    if (!link?.text || link?.text === "" || link?.text?.trim().length === 0) errors.push(Locale.label("site.navLinkEdit.errLinkText"));
     setErrors(errors);
     return errors.length === 0;
   };
@@ -62,7 +62,7 @@ export function NavLinkEdit(props: Props) {
 
   const handleDelete = () => {
     const errors = [];
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push("Unauthorized to delete pages");
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.navLinkEdit.unauthorizedDelete"));
 
     if (errors.length > 0) {
       setErrors(errors);
@@ -94,8 +94,8 @@ export function NavLinkEdit(props: Props) {
       >
         <InputBox id="pageDetailsBox" headerText={link?.id ? Locale.label("site.navLink.linkSettings") : Locale.label("site.navLink.addLink")} headerIcon="article" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete}>
           <ErrorMessages errors={errors} />
-          <Autocomplete disablePortal limitTags={3} freeSolo options={getPageOptions()} onChange={handleUrlChange} onInputChange={handleUrlChange} sx={{ width: 300 }} ListboxProps={{ style: { maxHeight: 150 } }} value={link.url} renderInput={(params) => <TextField {...params} size="small" fullWidth label="Url" name="linkUrl" onKeyDown={handleKeyDown} />} />
-          <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
+          <Autocomplete disablePortal limitTags={3} freeSolo options={getPageOptions()} onChange={handleUrlChange} onInputChange={handleUrlChange} sx={{ width: 300 }} ListboxProps={{ style: { maxHeight: 150 } }} value={link.url} renderInput={(params) => <TextField {...params} size="small" fullWidth label={Locale.label("site.navLinkEdit.url")} name="linkUrl" onKeyDown={handleKeyDown} />} />
+          <TextField size="small" fullWidth label={Locale.label("site.navLinkEdit.linkText")} name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} />
         </InputBox>
       </Dialog>
     );

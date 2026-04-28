@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 
 interface ContentRendererProps {
@@ -59,7 +60,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
           {error}
         </Typography>
         <Typography color="text.secondary" variant="body2">
-          Unable to load preview. The content may require authentication or is temporarily unavailable.
+          {Locale.label("plans.contentRenderer.unableToLoad")}
         </Typography>
       </Box>
     );
@@ -75,7 +76,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
             <MarkdownPreviewLight value={description} />
           ) : (
             <Typography color="text.secondary" sx={{ textAlign: "center" }}>
-              No content to display.
+              {Locale.label("plans.contentRenderer.noContent")}
             </Typography>
           )}
         </Box>
@@ -85,7 +86,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
     return (
       <Box sx={{ p: 4, textAlign: "center" }}>
         <Typography color="text.secondary">
-          Preview not available for this content.
+          {Locale.label("plans.contentRenderer.previewUnavailable")}
         </Typography>
       </Box>
     );
@@ -117,7 +118,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
             style={{ maxWidth: "100%", maxHeight: "70vh" }}
             src={url}
           >
-            Your browser does not support the video tag.
+            {Locale.label("plans.contentRenderer.videoUnsupported")}
           </video>
         </Box>
       );
@@ -126,7 +127,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
       return (
         <iframe
           src={url}
-          title={title || "Content Preview"}
+          title={title || Locale.label("plans.contentRenderer.fallbackTitle")}
           style={{
             width: "100%",
             height: iframeHeight,
@@ -148,7 +149,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
             <MarkdownPreviewLight value={description} />
           ) : (
             <Typography color="text.secondary" sx={{ textAlign: "center" }}>
-              No text content to display.
+              {Locale.label("plans.contentRenderer.noTextContent")}
             </Typography>
           )}
         </Box>
@@ -160,7 +161,7 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
         <Box sx={{ width: "100%", display: "flex", justifyContent: "center", p: 2 }}>
           <img
             src={url}
-            alt={title || "Preview"}
+            alt={title || Locale.label("plans.contentRenderer.fallbackPreview")}
             style={{ maxWidth: "100%", maxHeight: "70vh", objectFit: "contain" }}
           />
         </Box>

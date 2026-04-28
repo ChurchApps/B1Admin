@@ -224,13 +224,13 @@ export const GroupBanner = memo((props: Props) => {
                 {groupType}
               </Stack>
               <Stack direction="row" spacing={0.5} alignItems="center">
-                <Tooltip title="Email this group">
+                <Tooltip title={Locale.label("groups.groupBanner.emailTooltip")}>
                   <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowEmailDialog(true)}>
                     <EmailIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
                 {canText && hasTextingProvider && (
-                  <Tooltip title="Text this group">
+                  <Tooltip title={Locale.label("groups.groupBanner.textTooltip")}>
                     <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
                       <SmsIcon fontSize="small" />
                     </IconButton>

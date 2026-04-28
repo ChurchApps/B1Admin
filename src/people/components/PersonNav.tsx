@@ -56,7 +56,7 @@ export const PersonNav: React.FC<Props> = (props) => {
         {tabs.map((tab) => getItem(tab))}
         <li>
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>
-            <Icon>people</Icon> Groups
+            <Icon>people</Icon> {Locale.label("people.personNav.groups")}
           </Button>
         </li>
       </ul>
@@ -64,7 +64,7 @@ export const PersonNav: React.FC<Props> = (props) => {
       <div className="subhead">{Locale.label("people.personNav.customForms")}</div>
       <ul>
         <li>
-          <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>Discipleship</Button>
+          <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>{Locale.label("people.personNav.discipleship")}</Button>
         </li>
       </ul>
     </Box>

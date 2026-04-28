@@ -118,7 +118,7 @@ export const ServingPage = () => {
                 sx={{ color: "#FFF", "&.Mui-checked": { color: "#FFF" }, "& .MuiSwitch-track": { backgroundColor: "rgba(255,255,255,0.3)" } }}
               />
             }
-            label="Show All"
+            label={Locale.label("plans.servingPage.showAll")}
             sx={{ color: "#FFF", mr: 2 }}
           />
         )}

@@ -142,7 +142,7 @@ export const PlanItemEdit = (props: Props) => {
           <InputLabel htmlFor="searchText">{Locale.label("common.search")}</InputLabel>
           <OutlinedInput
             id="searchText"
-            aria-label="searchBox"
+            aria-label={Locale.label("plans.planItemEdit.searchBoxAria")}
             name="searchText"
             type="text"
             label={Locale.label("common.name")}
@@ -150,7 +150,7 @@ export const PlanItemEdit = (props: Props) => {
             onChange={handleSearchChange}
             data-testid="song-search-input"
             endAdornment={
-              <Button variant="contained" onClick={handleSearch} data-testid="song-search-button" aria-label="Search songs">
+              <Button variant="contained" onClick={handleSearch} data-testid="song-search-button" aria-label={Locale.label("plans.planItemEdit.searchSongsAria")}>
                 {Locale.label("common.search")}
               </Button>
             }
@@ -182,7 +182,7 @@ export const PlanItemEdit = (props: Props) => {
               onChange={handleChange}
               placeholder={Locale.label("placeholders.planItem.label")}
               data-testid="plan-item-name-input"
-              aria-label="Plan item name"
+              aria-label={Locale.label("plans.planItemEdit.planItemNameAria")}
             />
           )}
           {showDesc && (
@@ -197,7 +197,7 @@ export const PlanItemEdit = (props: Props) => {
               onChange={handleChange}
               placeholder={Locale.label("placeholders.planItem.description")}
               data-testid="plan-item-description-input"
-              aria-label="Plan item description"
+              aria-label={Locale.label("plans.planItemEdit.planItemDescriptionAria")}
             />
           )}
           {showDuration && (
@@ -212,7 +212,7 @@ export const PlanItemEdit = (props: Props) => {
                   onChange={handleChange}
                   placeholder="5"
                   data-testid="plan-item-minutes-input"
-                  aria-label="Duration minutes"
+                  aria-label={Locale.label("plans.planItemEdit.durationMinutesAria")}
                 />
               </Grid>
               <Grid size={{ xs: 6 }}>
@@ -225,7 +225,7 @@ export const PlanItemEdit = (props: Props) => {
                   onChange={handleChange}
                   placeholder="30"
                   data-testid="plan-item-seconds-input"
-                  aria-label="Duration seconds"
+                  aria-label={Locale.label("plans.planItemEdit.durationSecondsAria")}
                 />
               </Grid>
             </Grid>

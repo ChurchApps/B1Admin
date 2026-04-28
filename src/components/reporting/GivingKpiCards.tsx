@@ -26,10 +26,10 @@ export const GivingKpiCards = (props: Props) => {
   const { kpis } = props;
 
   const cards = [
-    { label: Locale.label("donations.kpi.totalGiving") || "Total Giving", value: formatCurrency(kpis.totalGiving) },
-    { label: Locale.label("donations.kpi.avgGift") || "Average Gift", value: formatCurrency(kpis.avgGift) },
-    { label: Locale.label("donations.kpi.donorCount") || "Unique Donors", value: formatNumber(kpis.donorCount) },
-    { label: Locale.label("donations.kpi.donationCount") || "Total Donations", value: formatNumber(kpis.donationCount) }
+    { label: Locale.label("reporting.givingKpiCards.totalGiving"), value: formatCurrency(kpis.totalGiving) },
+    { label: Locale.label("reporting.givingKpiCards.avgGift"), value: formatCurrency(kpis.avgGift) },
+    { label: Locale.label("reporting.givingKpiCards.donorCount"), value: formatNumber(kpis.donorCount) },
+    { label: Locale.label("reporting.givingKpiCards.donationCount"), value: formatNumber(kpis.donationCount) }
   ];
 
   return (

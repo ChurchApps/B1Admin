@@ -26,7 +26,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
 
   const editContent = useMemo(() => {
     if (isRoleEveryone) return null;
-    return <Button size="small" variant="contained" startIcon={<AddIcon />} onClick={handleAdd} data-testid="add-role-member-button" aria-label="Add role member">{Locale.label("common.add")}</Button>;
+    return <Button size="small" variant="contained" startIcon={<AddIcon />} onClick={handleAdd} data-testid="add-role-member-button" aria-label={Locale.label("settings.roleMembers.addRoleMemberAria")}>{Locale.label("common.add")}</Button>;
   }, [isRoleEveryone, handleAdd]);
 
   const handleRemove = useCallback(
@@ -56,7 +56,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
       const rm = roleMembers[i];
       const removeLink = canDelete ? (
         <Tooltip title={Locale.label("common.delete")}>
-          <IconButton size="small" color="error" onClick={() => handleRemove(rm)} data-testid={`remove-role-member-button-${rm.id}`} aria-label={`Remove role member ${rm.user?.firstName} ${rm.user?.lastName}`}><DeleteIcon fontSize="small" /></IconButton>
+          <IconButton size="small" color="error" onClick={() => handleRemove(rm)} data-testid={`remove-role-member-button-${rm.id}`} aria-label={Locale.label("settings.roleMembers.removeRoleMemberAria").replace("{firstName}", rm.user?.firstName).replace("{lastName}", rm.user?.lastName)}><DeleteIcon fontSize="small" /></IconButton>
         </Tooltip>
       ) : null;
       const editLink = canEdit ? (
@@ -68,10 +68,10 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
             props.setSelectedRoleMember(rm.userId);
           }}
           data-testid={`edit-role-member-button-${rm.id}`}
-          aria-label={`Edit role member ${rm.user?.firstName} ${rm.user?.lastName}`}
+          aria-label={Locale.label("settings.roleMembers.editRoleMemberAria").replace("{firstName}", rm.user?.firstName).replace("{lastName}", rm.user?.lastName)}
           sx={{ minWidth: "auto" }}
         >
-          Edit
+          {Locale.label("common.edit")}
         </Button>
       ) : null;
 
@@ -107,7 +107,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
     if (props.role.name === "Domain Admins" && roleMembers.length === 1) {
       return (
         <Alert severity="info" sx={{ mt: 2 }}>
-          At least one Domain Admin is required. Add another admin before removing this one.
+          {Locale.label("settings.roleMembers.lastAdminWarning")}
         </Alert>
       );
     }

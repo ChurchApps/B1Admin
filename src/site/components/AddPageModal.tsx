@@ -67,14 +67,14 @@ export function AddPageModal(props: Props) {
       // AI mode validation is handled in handleAiGenerate
       return true;
     } else if (pageTemplate === "link") {
-      if (!link.url || link.url === "") errors.push("Please enter a url.");
+      if (!link.url || link.url === "") errors.push(Locale.label("site.addPageModal.errLinkUrl"));
     } else {
-      if (!page.title || page.title === "") errors.push("Please enter a title.");
+      if (!page.title || page.title === "") errors.push(Locale.label("site.addPageModal.errTitle"));
     }
     if (props.mode === "navigation") {
-      if (!link.text || link.text === "") errors.push("Please enter link text.");
+      if (!link.text || link.text === "") errors.push(Locale.label("site.addPageModal.errLinkText"));
     }
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push("Unauthorized to create pages");
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.addPageModal.unauthorizedCreate"));
     setErrors(errors);
     return errors.length === 0;
   };
@@ -82,13 +82,13 @@ export function AddPageModal(props: Props) {
   const handleAiGenerate = async () => {
     // Validate prompt
     if (!aiPrompt || aiPrompt.trim().length < 10) {
-      setAiErrors(["Please provide a detailed description (at least 10 characters)."]);
+      setAiErrors([Locale.label("site.addPageModal.errAiPromptTooShort")]);
       return;
     }
 
     setIsSubmitting(true);
     setAiErrors([]);
-    setAiGenerationStatus("Gathering church information...");
+    setAiGenerationStatus(Locale.label("site.addPageModal.statusGatheringInfo"));
 
     try {
       // STEP 1: Gather context from ContentApi
@@ -135,7 +135,7 @@ export function AddPageModal(props: Props) {
       };
 
       // STEP 2: Generate page outline (fast, uses haiku model)
-      setAiGenerationStatus("Planning your page structure...");
+      setAiGenerationStatus(Locale.label("site.addPageModal.statusPlanning"));
       const outlineRequest = {
         prompt: aiPrompt.trim(),
         churchContext,
@@ -149,7 +149,7 @@ export function AddPageModal(props: Props) {
       const outlineResponse = await ApiHelper.post("/website/generatePageOutline", outlineRequest, "AskApi");
 
       if (!outlineResponse?.outline?.sections?.length) {
-        throw new Error("Failed to generate page outline");
+        throw new Error(Locale.label("site.addPageModal.errOutlineFailed"));
       }
 
       const outline = outlineResponse.outline;
@@ -157,7 +157,7 @@ export function AddPageModal(props: Props) {
 
       // STEP 3: Generate all sections in parallel (uses sonnet model for quality)
       // Use Promise.allSettled to handle individual failures gracefully
-      setAiGenerationStatus(`Generating ${sectionCount} sections...`);
+      setAiGenerationStatus(Locale.label("site.addPageModal.statusGenerating").replace("{count}", sectionCount.toString()));
 
       const sectionPromises = outline.sections.map((sectionOutline: any, index: number) =>
         ApiHelper.post("/website/generateSection", {
@@ -191,7 +191,7 @@ export function AddPageModal(props: Props) {
 
       // If all sections failed, throw an error
       if (successfulSections.length === 0) {
-        throw new Error("All sections failed to generate. Please try again.");
+        throw new Error(Locale.label("site.addPageModal.errAllSectionsFailed"));
       }
 
       // STEP 4: Assemble the complete page structure with successful sections
@@ -210,7 +210,7 @@ export function AddPageModal(props: Props) {
       }
 
       // STEP 5: Post generated structure to ContentApi
-      setAiGenerationStatus("Creating page sections and elements...");
+      setAiGenerationStatus(Locale.label("site.addPageModal.statusCreatingSections"));
       const pageToSave = {
         title: assembledPage.title,
         churchId: church.id,
@@ -254,12 +254,12 @@ export function AddPageModal(props: Props) {
       }
 
       // STEP 6: Navigate to preview
-      setAiGenerationStatus("Opening your new page...");
+      setAiGenerationStatus(Locale.label("site.addPageModal.statusOpening"));
       props.updatedCallback();
       navigate(`/site/pages/preview/${pageId}`);
 
     } catch (error) {
-      setAiErrors([error?.message || "Failed to generate page. Please try again with a different description."]);
+      setAiErrors([error?.message || Locale.label("site.addPageModal.errFailedGenerate")]);
     } finally {
       setIsSubmitting(false);
       setAiGenerationStatus("");
@@ -305,9 +305,9 @@ export function AddPageModal(props: Props) {
     const churchName = UserHelper.currentUserChurch.church.name || "";
     switch (template) {
       case "sermons": p.title = Locale.label("site.templates.viewSermons"); l.text = Locale.label("common.sermons"); break;
-      case "about": p.title = "About " + churchName; l.text = "About Us"; break;
-      case "donate": p.title = "Support " + churchName; l.text = "Donate"; break;
-      case "location": p.title = "Directions to " + churchName; l.text = "Location"; break;
+      case "about": p.title = "About " + churchName; l.text = Locale.label("site.addPageModal.aboutUs"); break;
+      case "donate": p.title = "Support " + churchName; l.text = Locale.label("site.addPageModal.donate"); break;
+      case "location": p.title = "Directions to " + churchName; l.text = Locale.label("site.addPageModal.location"); break;
     }
     setPage(p);
     setLink(l);
@@ -337,13 +337,13 @@ export function AddPageModal(props: Props) {
 
 
           <Grid container spacing={2}>
-            {getTemplateButton("blank", "article", "Blank")}
+            {getTemplateButton("blank", "article", Locale.label("site.addPageModal.blank"))}
             {getTemplateButton("sermons", "subscriptions", Locale.label("common.sermons"))}
-            {getTemplateButton("about", "quiz", "About Us")}
-            {getTemplateButton("donate", "volunteer_activism", "Donate")}
-            {getTemplateButton("location", "location_on", "Location")}
+            {getTemplateButton("about", "quiz", Locale.label("site.addPageModal.aboutUs"))}
+            {getTemplateButton("donate", "volunteer_activism", Locale.label("site.addPageModal.donate"))}
+            {getTemplateButton("location", "location_on", Locale.label("site.addPageModal.location"))}
             {/* {getTemplateButton("ai", "auto_awesome", "AI")} */}
-            {(props.mode === "navigation") && getTemplateButton("link", "link", "Link")}
+            {(props.mode === "navigation") && getTemplateButton("link", "link", Locale.label("site.addPageModal.linkType"))}
           </Grid>
 
           {pageTemplate === "ai" && (
@@ -365,7 +365,7 @@ export function AddPageModal(props: Props) {
                 </Box>
               )}
               <Typography sx={{ mt: 2, mb: 1, fontWeight: 500 }}>
-              Describe the page you want to create
+                {Locale.label("site.addPageModal.describe")}
               </Typography>
               <TextField
                 fullWidth
@@ -379,10 +379,10 @@ export function AddPageModal(props: Props) {
                 data-testid="ai-prompt-input"
               />
               <Typography sx={{ fontSize: "12px", fontStyle: "italic", my: 1 }}>
-              Examples:
-                <br />• Create a welcoming homepage with our church name, mission statement, service times, and a donation button
-                <br />• Build a ministries page showing our youth group, worship team, and community outreach with photos
-                <br />• Make a contact page with a map to our location, phone number, email form, and social media links
+                {Locale.label("site.addPageModal.examples")}
+                <br />• {Locale.label("site.addPageModal.exampleHomepage")}
+                <br />• {Locale.label("site.addPageModal.exampleMinistries")}
+                <br />• {Locale.label("site.addPageModal.exampleContact")}
               </Typography>
             </>
           )}
@@ -390,13 +390,13 @@ export function AddPageModal(props: Props) {
           {pageTemplate !== "ai" && (
             <Grid container spacing={2}>
               {(pageTemplate !== "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-                <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.title")} data-testid="page-title-input" />
+                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.pageTitle")} name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.title")} data-testid="page-title-input" />
               </Grid>}
               {(pageTemplate === "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-                <TextField size="small" fullWidth label="Link Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkUrl")} />
+                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.linkUrl")} name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkUrl")} />
               </Grid>}
               {(props.mode === "navigation") && <Grid size={6}>
-                <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkText")} />
+                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.linkText")} name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkText")} />
               </Grid>}
             </Grid>
           )}

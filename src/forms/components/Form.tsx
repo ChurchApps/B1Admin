@@ -73,7 +73,7 @@ export const Form: React.FC<Props> = (props) => {
         i === 0 ? (
           <span style={{ display: "inline-block", width: 20 }} />
         ) : (
-          <Button size="small" onClick={moveUp} sx={{ minWidth: "auto", p: 0.5, mr: 0.5 }} aria-label="moveUp">
+          <Button size="small" onClick={moveUp} sx={{ minWidth: "auto", p: 0.5, mr: 0.5 }} aria-label={Locale.label("forms.form.moveUpAria")}>
             <Icon sx={{ fontSize: 18 }}>arrow_upward</Icon>
           </Button>
         );
@@ -81,7 +81,7 @@ export const Form: React.FC<Props> = (props) => {
         i === questions.length - 1 ? (
           <></>
         ) : (
-          <Button size="small" onClick={moveDown} sx={{ minWidth: "auto", p: 0.5 }} aria-label="moveDown">
+          <Button size="small" onClick={moveDown} sx={{ minWidth: "auto", p: 0.5 }} aria-label={Locale.label("forms.form.moveDownAria")}>
             <Icon sx={{ fontSize: 18 }}>arrow_downward</Icon>
           </Button>
         );
@@ -200,8 +200,8 @@ export const Form: React.FC<Props> = (props) => {
                     setEditQuestionId("");
                   }}
                   size="small"
-                  aria-label="addQuestion">
-                  Add Question
+                  aria-label={Locale.label("forms.form.addQuestionAria")}>
+                  {Locale.label("forms.form.addQuestion")}
                 </Button>
               )}
             </Stack>

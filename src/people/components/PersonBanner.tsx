@@ -1,5 +1,5 @@
 import { type PersonInterface } from "@churchapps/helpers";
-import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
+import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper, Locale } from "@churchapps/apphelper";
 import { Typography, IconButton, Stack, Chip, Tooltip, Box } from "@mui/material";
 import {
   Edit as EditIcon,
@@ -58,11 +58,11 @@ export const PersonBanner = memo((props: Props) => {
 
     if (person.birthDate) {
       const age = PersonHelper.getAge(person.birthDate);
-      stats.push({ label: "Age", value: `${age}` });
+      stats.push({ label: Locale.label("people.personBanner.age"), value: `${age}` });
     }
 
     if (person.gender && person.gender !== "Unspecified") {
-      stats.push({ label: "Gender", value: person.gender });
+      stats.push({ label: Locale.label("people.personBanner.gender"), value: person.gender });
     }
 
     if (person.maritalStatus && person.maritalStatus !== "Single") {
@@ -70,7 +70,7 @@ export const PersonBanner = memo((props: Props) => {
       if (person.anniversary) {
         value += ` (${DateHelper.getShortDate(DateHelper.toDate(person.anniversary))})`;
       }
-      stats.push({ label: "Marital Status", value });
+      stats.push({ label: Locale.label("people.personBanner.maritalStatus"), value });
     }
 
     return stats;
@@ -178,7 +178,7 @@ export const PersonBanner = memo((props: Props) => {
               {membershipStatus}
               {userEmail && (
                 <Chip
-                  label="Has login"
+                  label={Locale.label("people.personBanner.hasLogin")}
                   size="small"
                   title={userEmail}
                   sx={{ backgroundColor: "rgba(255,255,255,0.2)", color: "#fff" }}
@@ -211,7 +211,7 @@ export const PersonBanner = memo((props: Props) => {
                 {info.value}
               </Typography>
               {info.showTextButton && (
-                <Tooltip title="Send text message">
+                <Tooltip title={Locale.label("people.personBanner.sendTextMessage")}>
                   <IconButton size="small" sx={{ color: "#FFF", p: 0.25 }} onClick={() => setShowTextDialog(true)}>
                     <SmsIcon sx={{ fontSize: 14 }} />
                   </IconButton>

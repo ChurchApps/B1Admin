@@ -35,13 +35,10 @@ export function EmptyState({ onAddClick }: EmptyStateProps) {
           <Icon sx={{ fontSize: "2rem", color: "#9ca3af" }}>dashboard_customize</Icon>
         </Box>
         <Typography variant="h6" component="h2" sx={{ fontWeight: 600, color: "#111827", mb: 1 }}>
-          {Locale.label("site.emptyState.title", "This page is empty")}
+          {Locale.label("site.emptyState.title")}
         </Typography>
         <Typography variant="body2" sx={{ color: "#6b7280", maxWidth: 420, mb: 3, lineHeight: 1.5 }}>
-          {Locale.label(
-            "site.emptyState.description",
-            "Add a section to start building your page. You can rearrange and customize sections any time."
-          )}
+          {Locale.label("site.emptyState.description")}
         </Typography>
         {onAddClick && (
           <Button
@@ -52,7 +49,7 @@ export function EmptyState({ onAddClick }: EmptyStateProps) {
             startIcon={<Icon>add</Icon>}
             sx={{ textTransform: "none", fontWeight: 600 }}
           >
-            {Locale.label("site.emptyState.addFirstSection", "Add your first section")}
+            {Locale.label("site.emptyState.addFirstSection")}
           </Button>
         )}
       </Box>

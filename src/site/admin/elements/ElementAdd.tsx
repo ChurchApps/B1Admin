@@ -166,7 +166,7 @@ export function ElementAdd(props: Props) {
   type TabDef = { key: TabKey; label: string };
   const tabs: TabDef[] = [
     { key: "all", label: Locale.label("site.elementAdd.all") },
-    { key: "common", label: Locale.label("site.elementAdd.common", "Common") },
+    { key: "common", label: Locale.label("site.elementAdd.common") },
     { key: "media", label: Locale.label("site.elementAdd.media") },
     { key: "church", label: Locale.label("site.elementAdd.church") },
     { key: "advanced", label: Locale.label("site.elementAdd.advanced") }

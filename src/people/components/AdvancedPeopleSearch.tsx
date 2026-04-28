@@ -281,8 +281,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               type = "select";
               operators = ["equals"];
               options = [
-                { value: "Yes", label: Locale.label("common.yes") || "Yes" },
-                { value: "No", label: Locale.label("common.no") || "No" }
+                { value: "Yes", label: Locale.label("common.yes") },
+                { value: "No", label: Locale.label("common.no") }
               ];
               break;
             case "Multiple Choice":
@@ -764,7 +764,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       contact: Locale.label("people.peopleSearch.contact"),
       membership: Locale.label("people.peopleSearch.membership"),
       activity: Locale.label("people.peopleSearch.activity"),
-      customFields: Locale.label("people.peopleSearch.customFields") || "Custom Fields"
+      customFields: Locale.label("people.peopleSearch.customFields")
     };
     return labels[key] || key;
   };
@@ -873,8 +873,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                   {fields.length === 0 && categoryKey === "customFields" && (
                     <Typography variant="body2" color="text.secondary" sx={{ py: 1, px: 0.5 }}>
                       {loadedCategories.includes("customFields")
-                        ? "No custom fields defined. Create custom fields in Forms to search by them."
-                        : "Loading custom fields..."}
+                        ? Locale.label("people.advancedPeopleSearch.noCustomFields")
+                        : Locale.label("people.advancedPeopleSearch.loadingCustomFields")}
                     </Typography>
                   )}
                   {fields.map((field) => (

@@ -237,7 +237,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                         objectFit: "cover",
                         borderRadius: 4
                       }}
-                      alt="Tab icon"
+                      alt={Locale.label("settings.appEdit.tabIconAlt")}
                     />
                   </Box>
                 )}
@@ -269,7 +269,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                   <MenuItem value="directory">{Locale.label("settings.appEdit.memberDirectory")}</MenuItem>
                   <MenuItem value="groups">{Locale.label("settings.appEdit.myGroups")}</MenuItem>
                   <MenuItem value="lessons">{Locale.label("settings.appEdit.lessons")}</MenuItem>
-                  <MenuItem value="volunteer">Volunteer Opportunities</MenuItem>
+                  <MenuItem value="volunteer">{Locale.label("settings.appEdit.volunteerOpportunities")}</MenuItem>
                   <MenuItem value="url">{Locale.label("settings.appEdit.externalUrl")}</MenuItem>
                   <MenuItem value="page">{Locale.label("settings.appEdit.internalPage")}</MenuItem>
                 </Select>
@@ -293,27 +293,27 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
               {/* Visibility */}
               <FormControl fullWidth>
-                <InputLabel id="visibility">Visibility</InputLabel>
+                <InputLabel id="visibility">{Locale.label("settings.appEdit.visibility")}</InputLabel>
                 <Select
                   labelId="visibility"
-                  label="Visibility"
+                  label={Locale.label("settings.appEdit.visibility")}
                   name="visibility"
                   value={(currentTab as any)?.visibility || "everyone"}
                   onChange={handleChange}
                 >
-                  <MenuItem value="everyone">Everyone (including anonymous)</MenuItem>
-                  <MenuItem value="visitors">Logged-in Users</MenuItem>
-                  <MenuItem value="members">Members & Staff</MenuItem>
-                  <MenuItem value="staff">Staff Only</MenuItem>
-                  <MenuItem value="team">Team Members (serving teams)</MenuItem>
-                  <MenuItem value="groups">Specific Groups...</MenuItem>
+                  <MenuItem value="everyone">{Locale.label("settings.appEdit.everyone")}</MenuItem>
+                  <MenuItem value="visitors">{Locale.label("settings.appEdit.loggedInUsers")}</MenuItem>
+                  <MenuItem value="members">{Locale.label("settings.appEdit.membersStaff")}</MenuItem>
+                  <MenuItem value="staff">{Locale.label("settings.appEdit.staffOnly")}</MenuItem>
+                  <MenuItem value="team">{Locale.label("settings.appEdit.team")}</MenuItem>
+                  <MenuItem value="groups">{Locale.label("settings.appEdit.groups")}</MenuItem>
                 </Select>
               </FormControl>
 
               {/* Group Selection */}
               {(currentTab as any)?.visibility === "groups" && (
                 <Box sx={{ pl: 2, border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2 }}>
-                  <Typography variant="subtitle2" sx={{ mb: 1 }}>Select Groups:</Typography>
+                  <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.appEdit.selectGroups")}</Typography>
                   <FormGroup>
                     {groups.map(group => (
                       <FormControlLabel
@@ -329,7 +329,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                     ))}
                   </FormGroup>
                   {groups.length === 0 && (
-                    <Typography variant="body2" color="text.secondary">No groups found</Typography>
+                    <Typography variant="body2" color="text.secondary">{Locale.label("settings.appEdit.noGroupsFound")}</Typography>
                   )}
                 </Box>
               )}

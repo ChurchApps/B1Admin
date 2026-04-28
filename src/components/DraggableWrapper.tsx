@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDrag } from "react-dnd";
+import { Locale } from "@churchapps/apphelper";
 
 type Props = {
   children?: React.ReactNode;
@@ -45,7 +46,7 @@ export function DraggableWrapper(props: Props) {
       className="dragButton"
       onDoubleClick={onDoubleClick}
       data-testid="draggable-wrapper"
-      aria-label="Draggable item"
+      aria-label={Locale.label("components.draggableWrapper.ariaLabel")}
     >
       {children}
     </div>

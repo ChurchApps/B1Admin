@@ -293,21 +293,21 @@ export const DonationBatchesPage = () => {
                   <DonationIcon sx={{ color: "#FFF", fontSize: 24 }} />
                   <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalBatches}</Typography>
                 </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Batches</Typography>
+                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.donationBatchesPage.batches")}</Typography>
               </Stack>
               <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Icon sx={{ color: "#FFF", fontSize: 24 }}>receipt</Icon>
                   <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalDonations}</Typography>
                 </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Donations</Typography>
+                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.donationBatchesPage.donations")}</Typography>
               </Stack>
               <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
                 <Stack direction="row" spacing={1} alignItems="center">
                   {/* <Icon sx={{ color: "#FFF", fontSize: 24 }}>attach_money</Icon> */}
                   <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</Typography>
                 </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Total Amount</Typography>
+                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.donationBatchesPage.totalAmount")}</Typography>
               </Stack>
             </Stack>
           )}
@@ -330,7 +330,7 @@ export const DonationBatchesPage = () => {
                 setEditBatchId("");
               }}
               data-testid="add-batch-button">
-              Add Batch
+              {Locale.label("donations.donationBatchesPage.addBatch")}
             </Button>
           )}
         </Stack>
@@ -352,7 +352,7 @@ export const DonationBatchesPage = () => {
               <Stack direction="row" spacing={1} alignItems="center">
                 {batches.data && (
                   <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={batches.data} filename="donationbatches.csv" sx={{ mr: 1 }}>
-                    Export
+                    {Locale.label("donations.donationBatchesPage.export")}
                   </Button>
                 )}
               </Stack>
@@ -370,7 +370,7 @@ export const DonationBatchesPage = () => {
         {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
           <Box sx={{ mt: 4, textAlign: "center" }}>
             <Link to="/donations/stripe-import" style={{ color: "#999", fontSize: "0.85rem", textDecoration: "none" }}>
-              Import missing Stripe transactions
+              {Locale.label("donations.donationBatchesPage.stripeImportLink")}
             </Link>
           </Box>
         )}

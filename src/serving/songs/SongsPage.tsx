@@ -168,7 +168,7 @@ export const SongsPage = memo(() => {
           startIcon={<SearchIcon />}
           onClick={() => setShowSearchField(!showSearchField)}
           sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
-          Search
+          {Locale.label("songs.songsPage.search")}
         </Button>
         {canEdit && (
           <Button
@@ -176,7 +176,7 @@ export const SongsPage = memo(() => {
             variant="outlined"
             startIcon={<AddIcon />}
             data-testid="add-song-button"
-            aria-label="Add song"
+            aria-label={Locale.label("songs.songsPage.addSongAria")}
             sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
             {Locale.label("songs.addSong") || "Add Song"}
           </Button>
@@ -190,7 +190,7 @@ export const SongsPage = memo(() => {
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                 <SearchIcon sx={{ color: "primary.main", fontSize: 24 }} />
                 <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                  Search Songs
+                  {Locale.label("songs.songsPage.searchSongs")}
                 </Typography>
               </Stack>
               <TextField

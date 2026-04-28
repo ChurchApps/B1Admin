@@ -76,7 +76,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
               handleAdd(sr);
             }}
             data-testid={`select-group-button-${sr.id}`}
-            aria-label="Select group">
+            aria-label={Locale.label("tasks.selectGroup.selectGroupAria")}>
             <CheckIcon />
           </IconButton>
         </TableCell>

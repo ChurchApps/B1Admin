@@ -1,4 +1,4 @@
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { GroupInterface } from "@churchapps/helpers";
 import type { PageLink } from "./Interfaces";
 
@@ -50,14 +50,14 @@ export class PageHelper {
 
   static getTemplatePages = async () => {
     const templatePages: PageLink[] = [
-      { title: "Bible", url: "/bible", custom: false },
-      { title: "Donate", url: "/donate", custom: false },
-      { title: "Sermons", url: "/sermons", custom: false },
-      { title: "Stream", url: "/stream", custom: false },
-      { title: "Verse of the Day", url: "/votd", custom: false }
+      { title: Locale.label("helpers.pageHelper.bible"), url: "/bible", custom: false },
+      { title: Locale.label("helpers.pageHelper.donate"), url: "/donate", custom: false },
+      { title: Locale.label("helpers.pageHelper.sermons"), url: "/sermons", custom: false },
+      { title: Locale.label("helpers.pageHelper.stream"), url: "/stream", custom: false },
+      { title: Locale.label("helpers.pageHelper.verseOfTheDay"), url: "/votd", custom: false }
     ];
 
-    const groupPage: PageLink = { title: "Groups", url: "/groups", custom: false, children: [] };
+    const groupPage: PageLink = { title: Locale.label("helpers.pageHelper.groups"), url: "/groups", custom: false, children: [] };
     const groups: GroupInterface[] = await ApiHelper.get("/groups", "MembershipApi");
 
     const labels: string[] = [];

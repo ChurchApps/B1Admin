@@ -87,7 +87,7 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
             >
               <img
                 src={(tab as any).photo}
-                alt={tab.text || "Tab icon"}
+                alt={tab.text || Locale.label("settings.appEdit.tabIconAlt")}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </Box>

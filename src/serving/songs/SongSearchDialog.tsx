@@ -180,7 +180,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             data-testid="song-search-dialog-input"
-            aria-label="Song title or artist"
+            aria-label={Locale.label("songs.songSearchDialog.songTitleOrArtistAria")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -189,7 +189,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <Button variant="contained" onClick={handleSearch} disabled={!searchText.trim() || isSearching} data-testid="song-search-dialog-button" aria-label="Search songs">
+                  <Button variant="contained" onClick={handleSearch} disabled={!searchText.trim() || isSearching} data-testid="song-search-dialog-button" aria-label={Locale.label("songs.songSearchDialog.searchSongsAria")}>
                     {Locale.label("common.search") || "Search"}
                   </Button>
                 </InputAdornment>
@@ -231,12 +231,12 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
       <DialogActions sx={{ px: 3, pb: 3 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: "100%" }}>
           <Typography variant="caption" color="text.secondary">
-            Powered by:{" "}
+            {Locale.label("songs.songSearchDialog.poweredBy")}{" "}
             <a href="https://www.praisecharts.com/?XID=churchapps" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>
               PraiseCharts
             </a>
           </Typography>
-          <Button variant="outlined" onClick={props.onClose} data-testid="song-search-dialog-close" aria-label="Close dialog">
+          <Button variant="outlined" onClick={props.onClose} data-testid="song-search-dialog-close" aria-label={Locale.label("songs.songSearchDialog.closeDialogAria")}>
             {Locale.label("common.close") || "Close"}
           </Button>
         </Stack>

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { TextField, FormControl, InputLabel, MenuItem, Select, Box, Chip, Stack, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
-import { ApiHelper, InputBox, ErrorMessages, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, InputBox, ErrorMessages, UserHelper, Locale } from "@churchapps/apphelper";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import type { EmailTemplateInterface } from "../EmailTemplatesPage";
 
-const MERGE_FIELDS = [
-  { key: "{{firstName}}", label: "First Name" },
-  { key: "{{lastName}}", label: "Last Name" },
-  { key: "{{displayName}}", label: "Display Name" },
-  { key: "{{email}}", label: "Email" },
-  { key: "{{churchName}}", label: "Church Name" }
+const getMergeFields = () => [
+  { key: "{{firstName}}", label: Locale.label("settings.emailTemplateEdit.mergeFirstName") },
+  { key: "{{lastName}}", label: Locale.label("settings.emailTemplateEdit.mergeLastName") },
+  { key: "{{displayName}}", label: Locale.label("settings.emailTemplateEdit.mergeDisplayName") },
+  { key: "{{email}}", label: Locale.label("settings.emailTemplateEdit.mergeEmail") },
+  { key: "{{churchName}}", label: Locale.label("settings.emailTemplateEdit.mergeChurchName") }
 ];
 
 const CATEGORIES = ["General", "Events", "Groups", "Giving", "Welcome"];
@@ -32,9 +32,9 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
 
   const validate = () => {
     const errs: string[] = [];
-    if (!name.trim()) errs.push("Name is required.");
-    if (!subject.trim()) errs.push("Subject is required.");
-    if (!htmlContent.trim()) errs.push("Body content is required.");
+    if (!name.trim()) errs.push(Locale.label("settings.emailTemplateEdit.nameRequired"));
+    if (!subject.trim()) errs.push(Locale.label("settings.emailTemplateEdit.subjectRequired"));
+    if (!htmlContent.trim()) errs.push(Locale.label("settings.emailTemplateEdit.bodyRequired"));
     setErrors(errs);
     return errs.length === 0;
   };
@@ -65,7 +65,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
   };
 
   const getPreviewHtml = () => {
-    const churchName = UserHelper.currentUserChurch?.church?.name || "Your Church";
+    const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("settings.emailTemplateEdit.yourChurch");
     let preview = htmlContent;
     preview = preview.replace(/\{\{firstName\}\}/g, "John");
     preview = preview.replace(/\{\{lastName\}\}/g, "Smith");
@@ -76,7 +76,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
   };
 
   const getPreviewSubject = () => {
-    const churchName = UserHelper.currentUserChurch?.church?.name || "Your Church";
+    const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("settings.emailTemplateEdit.yourChurch");
     let preview = subject;
     preview = preview.replace(/\{\{firstName\}\}/g, "John");
     preview = preview.replace(/\{\{lastName\}\}/g, "Smith");
@@ -88,31 +88,31 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
 
   return (
     <>
-      <InputBox headerIcon="email" headerText={template.id ? "Edit Template" : "New Template"} saveFunction={handleSave} cancelFunction={onCancel} deleteFunction={onDelete}>
+      <InputBox headerIcon="email" headerText={template.id ? Locale.label("settings.emailTemplateEdit.editTemplate") : Locale.label("settings.emailTemplateEdit.newTemplate")} saveFunction={handleSave} cancelFunction={onCancel} deleteFunction={onDelete}>
         <ErrorMessages errors={errors} />
-        <TextField fullWidth label="Template Name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Welcome Email, Event Reminder" />
+        <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.templateName")} value={name} onChange={(e) => setName(e.target.value)} placeholder={Locale.label("settings.emailTemplateEdit.templateNamePlaceholder")} />
         <FormControl fullWidth>
-          <InputLabel>Category</InputLabel>
-          <Select label="Category" value={category} onChange={(e: SelectChangeEvent) => setCategory(e.target.value)}>
+          <InputLabel>{Locale.label("settings.emailTemplateEdit.category")}</InputLabel>
+          <Select label={Locale.label("settings.emailTemplateEdit.category")} value={category} onChange={(e: SelectChangeEvent) => setCategory(e.target.value)}>
             {CATEGORIES.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
           </Select>
         </FormControl>
 
         <Box sx={{ mt: 2 }}>
-          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>Insert merge field into subject:</Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>{Locale.label("settings.emailTemplateEdit.insertMergeSubject")}</Typography>
           <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
-            {MERGE_FIELDS.map(f => (
+            {getMergeFields().map(f => (
               <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => insertMergeField(f.key)} sx={{ cursor: "pointer" }} />
             ))}
           </Stack>
         </Box>
 
-        <TextField fullWidth label="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="e.g. Hello {{firstName}}, welcome to {{churchName}}" />
+        <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.subject")} value={subject} onChange={(e) => setSubject(e.target.value)} placeholder={Locale.label("settings.emailTemplateEdit.subjectPlaceholder")} />
 
         <Box sx={{ mt: 2 }}>
-          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>Insert merge field into body:</Typography>
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>{Locale.label("settings.emailTemplateEdit.insertMergeBody")}</Typography>
           <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
-            {MERGE_FIELDS.map(f => (
+            {getMergeFields().map(f => (
               <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => insertMergeFieldInBody(f.key)} sx={{ cursor: "pointer" }} />
             ))}
           </Stack>
@@ -123,30 +123,30 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
             value={htmlContent}
             onChange={(val) => setHtmlContent(val)}
             style={{ minHeight: 200 }}
-            placeholder="Compose your email template here..."
+            placeholder={Locale.label("settings.emailTemplateEdit.composePlaceholder")}
           />
         </Box>
 
         <Box sx={{ mt: 2, textAlign: "right" }}>
-          <Button variant="outlined" size="small" onClick={() => setShowPreview(true)}>Preview</Button>
+          <Button variant="outlined" size="small" onClick={() => setShowPreview(true)}>{Locale.label("settings.emailTemplateEdit.preview")}</Button>
         </Box>
       </InputBox>
 
       <Dialog open={showPreview} onClose={() => setShowPreview(false)} maxWidth="md" fullWidth>
-        <DialogTitle>Email Preview</DialogTitle>
+        <DialogTitle>{Locale.label("settings.emailTemplateEdit.emailPreview")}</DialogTitle>
         <DialogContent>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>Subject:</Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewSubject")}</Typography>
           <Typography variant="body1" sx={{ mb: 2, fontWeight: 600 }}>{getPreviewSubject()}</Typography>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>Body:</Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewBody")}</Typography>
           <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "#fafafa" }}>
             <div dangerouslySetInnerHTML={{ __html: getPreviewHtml() }} />
           </Box>
           <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-            Sample data shown: John Smith, john@example.com
+            {Locale.label("settings.emailTemplateEdit.previewSampleData")}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowPreview(false)}>Close</Button>
+          <Button onClick={() => setShowPreview(false)}>{Locale.label("settings.emailTemplateEdit.close")}</Button>
         </DialogActions>
       </Dialog>
     </>

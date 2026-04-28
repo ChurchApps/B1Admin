@@ -86,7 +86,7 @@ export function StylesManager() {
     const existing = await ApiHelper.get("/blocks/blockType/footerBlock", "ContentApi");
     if (existing.length > 0) navigate("/site/blocks/" + existing[0].id);
     else {
-      const block: BlockInterface = { name: "Site Footer", blockType: "footerBlock" };
+      const block: BlockInterface = { name: Locale.label("site.stylesManager.siteFooterName"), blockType: "footerBlock" };
       ApiHelper.post("/blocks", [block], "ContentApi").then((data: any) => {
         navigate("/site/blocks/" + data[0].id);
       });
@@ -97,50 +97,50 @@ export function StylesManager() {
     {
       id: "palette",
       icon: <PaletteIcon />,
-      title: "Color Palette",
-      description: "Customize your site's color scheme",
+      title: Locale.label("site.stylesManager.color"),
+      description: Locale.label("site.stylesManager.colorDesc"),
       action: () => setSection("palette")
     },
     {
       id: "fonts",
       icon: <TextFieldsIcon />,
-      title: "Fonts",
-      description: "Select and customize typography",
+      title: Locale.label("site.stylesManager.fonts"),
+      description: Locale.label("site.stylesManager.fontsDesc"),
       action: () => setSection("fonts")
     },
     {
       id: "typography",
       icon: <FormatSizeIcon />,
-      title: "Typography Scale",
-      description: "Configure font sizes and spacing",
+      title: Locale.label("site.stylesManager.typography"),
+      description: Locale.label("site.stylesManager.typographyDesc"),
       action: () => setSection("typography")
     },
     {
       id: "spacing",
       icon: <SpaceBarIcon />,
-      title: "Spacing Scale",
-      description: "Define consistent spacing values",
+      title: Locale.label("site.stylesManager.spacing"),
+      description: Locale.label("site.stylesManager.spacingDesc"),
       action: () => setSection("spacing")
     },
     {
       id: "css",
       icon: <CodeIcon />,
-      title: "CSS & Javascript",
-      description: "Add custom styles and scripts",
+      title: Locale.label("site.stylesManager.css"),
+      description: Locale.label("site.stylesManager.cssDesc"),
       action: () => setSection("css")
     },
     {
       id: "logo",
       icon: <ImageIcon />,
-      title: "Logo",
-      description: "Upload and manage your logo",
+      title: Locale.label("site.stylesManager.logo"),
+      description: Locale.label("site.stylesManager.logoDesc"),
       action: () => setSection("logo")
     },
     {
       id: "footer",
       icon: <SmartButtonIcon />,
-      title: "Site Footer",
-      description: "Customize your site footer",
+      title: Locale.label("site.stylesManager.footer"),
+      description: Locale.label("site.stylesManager.footerDesc"),
       action: getFooter
     }
   ];
@@ -157,9 +157,9 @@ export function StylesManager() {
           {section === "logo" && <AppearanceEdit settings={currentSettings} updatedFunction={() => { setSection(""); loadData(); }} />}
           {section === "" && (
             churchSettings
-              ? (<Preview globalStyle={globalStyle} churchSettings={churchSettings} churchName={UserHelper.currentUserChurch?.church?.name || "Your Church"} />)
+              ? (<Preview globalStyle={globalStyle} churchSettings={churchSettings} churchName={UserHelper.currentUserChurch?.church?.name || Locale.label("site.stylesManager.yourChurch")} />)
               : (<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 400 }}>
-                <Typography color="text.secondary">Loading preview...</Typography>
+                <Typography color="text.secondary">{Locale.label("site.stylesManager.loadingPreview")}</Typography>
               </Box>)
           )}
         </Grid>

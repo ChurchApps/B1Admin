@@ -121,7 +121,7 @@ export const AttendanceSetup = memo(() => {
   const editLinks = useMemo(
     () => (
       <IconButton
-        aria-label="Add campus"
+        aria-label={Locale.label("attendance.attendanceSetup.addCampusAria")}
         data-cy="add-campus-button"
         onClick={handleAddCampus}
         data-testid="add-campus-button">

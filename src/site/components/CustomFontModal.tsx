@@ -68,15 +68,15 @@ export function CustomFontModal(props: Props) {
         <Table sx={{ minWidth: 650, minHeight: 400 }}>
           <TableHead sx={{ backgroundColor: "grey.50", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
             <TableRow>
-              <TableCell><Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Name</Typography></TableCell>
-              <TableCell><Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Sample</Typography></TableCell>
+              <TableCell><Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.customFontModal.name")}</Typography></TableCell>
+              <TableCell><Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.customFontModal.sample")}</Typography></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {pageResults.map((f, index) => (
               <TableRow key={index} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease", cursor: "pointer" }} onClick={() => props.updateValue(f.family)}>
                 <TableCell><Typography variant="body2" sx={{ color: "primary.main", fontWeight: 500 }}>{f.family}</Typography></TableCell>
-                <TableCell><Typography variant="body2" sx={{ fontFamily: f.family, color: "text.secondary" }}>The quick brown fox jumps over the lazy dog.</Typography></TableCell>
+                <TableCell><Typography variant="body2" sx={{ fontFamily: f.family, color: "text.secondary" }}>{Locale.label("site.customFontModal.sampleText")}</Typography></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -90,26 +90,26 @@ export function CustomFontModal(props: Props) {
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="md" scroll="body" PaperProps={{ sx: { borderRadius: 2, minHeight: "70vh" } }}>
       <DialogTitle sx={{ backgroundColor: "primary.light", color: "primary.contrastText", borderRadius: "8px 8px 0 0" }}>
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>Select a Font</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>{Locale.label("site.customFontModal.selectFont")}</Typography>
       </DialogTitle>
       <DialogContent sx={{ p: 3 }}>
         <Box sx={{ mb: 3 }}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 8 }}>
               <FormControl fullWidth>
-                <InputLabel>Category Filter</InputLabel>
-                <Select fullWidth label="Category Filter" name="category" value={category} onChange={handleChange}>
-                  <MenuItem value="">All</MenuItem>
-                  <MenuItem value="serif">Serif</MenuItem>
-                  <MenuItem value="sans-serif">Sans Serif</MenuItem>
-                  <MenuItem value="display">Display</MenuItem>
-                  <MenuItem value="handwriting">Handwriting</MenuItem>
-                  <MenuItem value="monospace">Monospace</MenuItem>
+                <InputLabel>{Locale.label("site.customFontModal.categoryFilter")}</InputLabel>
+                <Select fullWidth label={Locale.label("site.customFontModal.categoryFilter")} name="category" value={category} onChange={handleChange}>
+                  <MenuItem value="">{Locale.label("site.customFontModal.all")}</MenuItem>
+                  <MenuItem value="serif">{Locale.label("site.customFontModal.serif")}</MenuItem>
+                  <MenuItem value="sans-serif">{Locale.label("site.customFontModal.sansSerif")}</MenuItem>
+                  <MenuItem value="display">{Locale.label("site.customFontModal.display")}</MenuItem>
+                  <MenuItem value="handwriting">{Locale.label("site.customFontModal.handwriting")}</MenuItem>
+                  <MenuItem value="monospace">{Locale.label("site.customFontModal.monospace")}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField fullWidth label="Search" name="search" value={search} onChange={handleChange} placeholder={Locale.label("placeholders.font.search")} />
+              <TextField fullWidth label={Locale.label("site.customFontModal.search")} name="search" value={search} onChange={handleChange} placeholder={Locale.label("placeholders.font.search")} />
             </Grid>
           </Grid>
         </Box>

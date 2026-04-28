@@ -1,6 +1,7 @@
 import React, { CSSProperties, useState } from "react";
 import type { ElementInterface, SectionInterface } from "../../helpers";
 import { ApiHelper } from "../../helpers";
+import { Locale } from "@churchapps/apphelper";
 import { StyleHelper } from "@churchapps/apphelper/website";
 import { Box, Container } from "@mui/material";
 import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@churchapps/apphelper/website";
@@ -297,7 +298,7 @@ export const Section: React.FC<Props> = props => {
 
   const getAddElement = (s: number) => {
     const sort = s;
-    return (<DroppableArea accept={["element", "elementBlock"]} text="Drop here to add element" onDrop={(data) => handleDrop(data, sort)} updateIsDragging={(dragging) => setIsDragging(dragging)} />);
+    return (<DroppableArea accept={["element", "elementBlock"]} text={Locale.label("site.contentEditor.dropToAddElement")} onDrop={(data) => handleDrop(data, sort)} updateIsDragging={(dragging) => setIsDragging(dragging)} />);
   };
 
   const contents = (<Container onClick={handleSectionClick} onDoubleClick={handleSectionDoubleClick}>

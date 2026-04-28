@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ApiHelper, CurrencyHelper } from "@churchapps/apphelper";
+import { ApiHelper, CurrencyHelper, Locale } from "@churchapps/apphelper";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Icon } from "@mui/material";
 import { PraiseChartsHelper } from "../../../helpers/PraiseChartsHelper";
 import { Link } from "react-router-dom";
@@ -110,7 +110,7 @@ export const PraiseChartsProducts = (props: Props) => {
               e.preventDefault();
               purchase(product.sku);
             }}>
-            Free
+            {Locale.label("songs.praiseChartsProducts.free")}
           </Button>
         );
       } else {
@@ -175,18 +175,18 @@ export const PraiseChartsProducts = (props: Props) => {
 
   return (
     <Dialog open={true} fullWidth={true} maxWidth="lg">
-      <DialogTitle>Add Products from PraiseCharts</DialogTitle>
+      <DialogTitle>{Locale.label("songs.praiseChartsProducts.title")}</DialogTitle>
       <DialogContent>
         {products.map((product: any) => getProductRow(product, 0))}
         {!hasAccount && (
           <p>
-            You do not have a linked PraiseCharts account. Go to your <Link to="/profile">profile</Link> to link an account.{" "}
+            {Locale.label("songs.praiseChartsProducts.linkAccountPrefix")} <Link to="/profile">{Locale.label("songs.praiseChartsProducts.profile")}</Link> {Locale.label("songs.praiseChartsProducts.linkAccountSuffix")}{" "}
           </p>
         )}
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onHide} data-cy="cancel-merge">
-          Close
+          {Locale.label("songs.praiseChartsProducts.close")}
         </Button>
       </DialogActions>
     </Dialog>

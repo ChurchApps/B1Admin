@@ -108,8 +108,8 @@ export const SongDetailLinksEdit = (props: Props) => {
         saveFunction={handleSave}
         deleteFunction={editLink.id ? handleDelete : null}>
         <FormControl fullWidth size="small">
-          <InputLabel>Service</InputLabel>
-          <Select size="small" name="service" label="Service" value={editLink.service} onChange={handleChange}>
+          <InputLabel>{Locale.label("songs.songDetailLinksEdit.service")}</InputLabel>
+          <Select size="small" name="service" label={Locale.label("songs.songDetailLinksEdit.service")} value={editLink.service} onChange={handleChange}>
             <MenuItem value="Apple">Apple</MenuItem>
             <MenuItem value="CCLI">CCLI</MenuItem>
             <MenuItem value="Genius">Genius</MenuItem>
@@ -119,7 +119,7 @@ export const SongDetailLinksEdit = (props: Props) => {
             <MenuItem value="YouTube">YouTube</MenuItem>
           </Select>
         </FormControl>
-        <TextField size="small" name="serviceKey" placeholder={getPlaceholder(editLink)} fullWidth label="Id" value={editLink.serviceKey} onChange={handleChange} />
+        <TextField size="small" name="serviceKey" placeholder={getPlaceholder(editLink)} fullWidth label={Locale.label("songs.songDetailLinksEdit.id")} value={editLink.serviceKey} onChange={handleChange} />
       </InputBox>
     );
   } else {
@@ -129,7 +129,7 @@ export const SongDetailLinksEdit = (props: Props) => {
           <Stack direction="row" spacing={1} alignItems="center">
             <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
             <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-              External Links
+              {Locale.label("songs.songDetailLinksEdit.externalLinks")}
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1}>
@@ -157,8 +157,8 @@ export const SongDetailLinksEdit = (props: Props) => {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell>Service</TableCell>
-              <TableCell>Key</TableCell>
+              <TableCell>{Locale.label("songs.songDetailLinksEdit.service")}</TableCell>
+              <TableCell>{Locale.label("songs.songDetailLinksEdit.key")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{songDetailLinks?.map((sd) => getRow(sd))}</TableBody>

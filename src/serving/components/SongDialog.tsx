@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import type { ArrangementInterface, ArrangementKeyInterface, SongDetailInterface } from "../../helpers/Interfaces";
 import { SongDetails } from "./SongDetails";
@@ -95,13 +95,13 @@ export const SongDialog: React.FC<Props> = (props) => {
 
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
-      <DialogTitle>{songDetail?.title || "Song Details"}</DialogTitle>
+      <DialogTitle>{songDetail?.title || Locale.label("plans.songDialog.fallbackTitle")}</DialogTitle>
       <DialogContent>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 9 }}>
             {(products?.length > 0 || links.length > 0) && (
               <>
-                <h3>Files</h3>
+                <h3>{Locale.label("plans.songDialog.files")}</h3>
                 {listProducts()}
                 {listLinks()}
               </>
@@ -109,7 +109,7 @@ export const SongDialog: React.FC<Props> = (props) => {
 
             {arrangement?.lyrics && (
               <>
-                <h3>Lyrics</h3>
+                <h3>{Locale.label("plans.songDialog.lyrics")}</h3>
                 <div className="chordPro" dangerouslySetInnerHTML={{ __html: ChordProHelper.formatLyrics(arrangement?.lyrics, 0) }} />
               </>
             )}
@@ -120,7 +120,7 @@ export const SongDialog: React.FC<Props> = (props) => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={props.onClose}>Close</Button>
+        <Button variant="outlined" onClick={props.onClose}>{Locale.label("plans.songDialog.close")}</Button>
       </DialogActions>
     </Dialog>
   );

@@ -71,10 +71,10 @@ export const FundEdit: React.FC<Props> = (props) => {
         onKeyDown={handleKeyDown}
         placeholder={Locale.label("placeholders.fund.name")}
         data-testid="fund-name-input"
-        aria-label="Fund name"
+        aria-label={Locale.label("donations.fundEdit.ariaFundName")}
       />
       <FormControlLabel
-        control={<Checkbox sx={{ marginLeft: "5px" }} checked={fund.taxDeductible} onChange={handleChange} name="taxDeductible" data-testid="tax-deductible-checkbox" aria-label="Tax deductible" />}
+        control={<Checkbox sx={{ marginLeft: "5px" }} checked={fund.taxDeductible} onChange={handleChange} name="taxDeductible" data-testid="tax-deductible-checkbox" aria-label={Locale.label("donations.fundEdit.ariaTaxDeductible")} />}
         label={Locale.label("donations.fundEdit.taxDeductible")}
       />
       <Typography sx={{ fontStyle: "italic", fontSize: "12px", marginLeft: "5px" }}>

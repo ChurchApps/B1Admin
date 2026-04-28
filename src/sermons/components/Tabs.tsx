@@ -53,7 +53,7 @@ export const Tabs: React.FC = () => {
           <td style={{ textAlign: "right" }}>
             {upLink}
             {downLink}
-            <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentTab(tab)} sx={{ minWidth: "auto" }}>Edit</Button>
+            <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentTab(tab)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.sidebarTabs.edit")}</Button>
           </td>
         </tr>
       );

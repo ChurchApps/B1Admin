@@ -3,6 +3,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { TextField } from "@mui/material";
 import { HexColorPicker } from "react-colorful";
+import { Locale } from "@churchapps/apphelper";
 
 type Props = {
   color:string;
@@ -54,7 +55,7 @@ export function ColorPicker(props: Props) {
       <HexColorPicker key="colorPicker" color={props.color} onChange={(color) => { if (color !== "#000000") props.updatedCallback(color); }} />
       {getGrayOptions()}
       {getThemeOptions()}
-      <TextField key="backgroundText" fullWidth size="small" label="Color" name="background" value={props.color} onChange={handleChange} placeholder="#FF0000" data-testid="color-input" aria-label="Enter color value" />
+      <TextField key="backgroundText" fullWidth size="small" label={Locale.label("site.colorPicker.color")} name="background" value={props.color} onChange={handleChange} placeholder={Locale.label("site.colorPicker.placeholder")} data-testid="color-input" aria-label="Enter color value" />
     </>
   );
 }

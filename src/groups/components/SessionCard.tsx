@@ -26,17 +26,17 @@ export const SessionCard: React.FC<Props> = ({ session, attendanceCount, isSelec
       return session.displayName;
     }
 
-    if (!session.sessionDate) return "No Date";
+    if (!session.sessionDate) return Locale.label("groups.sessionCard.noDate");
 
     try {
       const date = new Date(session.sessionDate);
       if (isNaN(date.getTime())) {
-        return "Invalid Date";
+        return Locale.label("groups.sessionCard.invalidDate");
       }
       return DateHelper.formatDate(date);
     } catch (error) {
       console.error("Date formatting error:", error, "for date:", session.sessionDate);
-      return "Invalid Date";
+      return Locale.label("groups.sessionCard.invalidDate");
     }
   };
 

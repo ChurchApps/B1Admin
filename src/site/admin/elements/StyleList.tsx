@@ -3,6 +3,7 @@ import { allStyleOptions } from "../../../helpers";
 import React from "react";
 import { StyleEdit } from "./StyleEdit";
 import { Grid } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 
 interface Props {
   fields: string[];
@@ -21,9 +22,9 @@ export const StyleList: React.FC<Props> = (props) => {
 
   const getCurrentStyles = () => {
     const result: React.ReactElement[] = [];
-    result.push(getPlatformStyles("all", "All"));
-    result.push(getPlatformStyles("desktop", "Desktop Only"));
-    result.push(getPlatformStyles("mobile", "Mobile Only"));
+    result.push(getPlatformStyles("all", Locale.label("site.styleEdit.all")));
+    result.push(getPlatformStyles("desktop", Locale.label("site.styleEdit.desktopOnly")));
+    result.push(getPlatformStyles("mobile", Locale.label("site.styleEdit.mobileOnly")));
     return result;
   };
 
@@ -59,7 +60,7 @@ export const StyleList: React.FC<Props> = (props) => {
           e.preventDefault();
           setEditStyle({ platform: platformKey, name: "", value: "" });
         }}>
-        Add a style
+        {Locale.label("site.styleEdit.addStyle")}
       </a>
     );
     return (
@@ -89,9 +90,9 @@ export const StyleList: React.FC<Props> = (props) => {
     return (
       <>
         <hr />
-        <p style={{ color: "#999999", fontSize: 12 }}>Use these fields to customize the style of a single element. For sitewide changes use the site appearance editor.</p>
+        <p style={{ color: "#999999", fontSize: 12 }}>{Locale.label("site.styleEdit.stylesHelper")}</p>
         <div>
-          <b>Platform:</b>
+          <b>{Locale.label("site.styleEdit.platform")}</b>
         </div>
         <Grid container spacing={2}>
           {getCurrentStyles()}

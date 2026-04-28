@@ -106,25 +106,25 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
     for (let i = 0; i < groupMembers.data.length; i++) {
       const gm = groupMembers.data[i];
-      const personName = gm.person?.name?.display || "Unknown";
+      const personName = gm.person?.name?.display || Locale.label("groups.groupMembers.unknown");
       const editLinks = [];
       if (canEdit) {
         if (gm.leader) {
           editLinks.push(
-            <Tooltip key={`leader-${gm.id}`} title="Remove Leader Access">
-              <IconButton size="small" color="error" onClick={() => handleToggleLeader(gm)} data-testid={`remove-leader-button-${gm.id}`} aria-label={`Remove leader access for ${personName}`}><KeyOffIcon fontSize="small" /></IconButton>
+            <Tooltip key={`leader-${gm.id}`} title={Locale.label("groups.groupMembers.removeLeaderAccess")}>
+              <IconButton size="small" color="error" onClick={() => handleToggleLeader(gm)} data-testid={`remove-leader-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.removeLeaderAccessAria").replace("{name}", personName)}><KeyOffIcon fontSize="small" /></IconButton>
             </Tooltip>
           );
         } else {
           editLinks.push(
-            <Tooltip key={`leader-${gm.id}`} title="Promote to Leader">
-              <IconButton size="small" color="success" onClick={() => handleToggleLeader(gm)} data-testid={`promote-leader-button-${gm.id}`} aria-label={`Promote ${personName} to leader`}><KeyIcon fontSize="small" /></IconButton>
+            <Tooltip key={`leader-${gm.id}`} title={Locale.label("groups.groupMembers.promoteToLeader")}>
+              <IconButton size="small" color="success" onClick={() => handleToggleLeader(gm)} data-testid={`promote-leader-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.promoteToLeaderAria").replace("{name}", personName)}><KeyIcon fontSize="small" /></IconButton>
             </Tooltip>
           );
         }
         editLinks.push(
-          <Tooltip key={`remove-${gm.id}`} title="Remove">
-            <IconButton size="small" color="error" onClick={() => handleRemove(gm)} data-testid={`remove-member-button-${gm.id}`} aria-label={`Remove ${personName} from group`}><PersonRemoveIcon fontSize="small" /></IconButton>
+          <Tooltip key={`remove-${gm.id}`} title={Locale.label("common.remove")}>
+            <IconButton size="small" color="error" onClick={() => handleRemove(gm)} data-testid={`remove-member-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.removeFromGroupAria").replace("{name}", personName)}><PersonRemoveIcon fontSize="small" /></IconButton>
           </Tooltip>
         );
       }
@@ -175,7 +175,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     <>
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
         <Tooltip title={Locale.label("groups.groupMembers.sendMemMsg")}>
-          <IconButton size="small" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" aria-label="Send message to members"><EditNoteIcon fontSize="small" /></IconButton>
+          <IconButton size="small" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" aria-label={Locale.label("groups.groupMembers.sendMessageAria")}><EditNoteIcon fontSize="small" /></IconButton>
         </Tooltip>
       )}
       <ExportLink data={groupMembers.data} spaceAfter={true} filename="groupmembers.csv" />
