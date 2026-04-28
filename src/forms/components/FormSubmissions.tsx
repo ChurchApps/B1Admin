@@ -232,15 +232,9 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           }}>
           <TableCell key="personName">
             {personId ? (
-              <a
-                href={"/people/" + personId}
-                style={{
-                  textDecoration: "none",
-                  color: "var(--c1l2)",
-                  fontWeight: 500
-                }}>
+              <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
                 {personName}
-              </a>
+              </Typography>
             ) : (
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 {personName}

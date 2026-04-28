@@ -114,9 +114,9 @@ export const PersonBanner = memo((props: Props) => {
   if (!person) return null;
 
   return (
-    <Box sx={{
-      background: "linear-gradient(135deg, var(--c1d3, #0D3B6E) 0%, var(--c1, #1565C0) 40%, var(--c1l2, #568BDA) 100%)",
-      color: "#FFF",
+    <Box sx={(theme) => ({
+      background: `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 40%, ${theme.palette.primary.light} 100%)`,
+      color: theme.palette.primary.contrastText,
       position: "relative",
       left: "50%",
       right: "50%",
@@ -148,7 +148,7 @@ export const PersonBanner = memo((props: Props) => {
         background: "rgba(255,255,255,0.04)",
         pointerEvents: "none"
       }
-    }}>
+    })}>
       <Stack direction={{ xs: "column", lg: "row" }} spacing={{ xs: 2, md: 4 }} alignItems={{ xs: "flex-start", md: "center" }} sx={{ width: "100%", position: "relative", zIndex: 1 }}>
         {/* Column 1: Avatar + Name + Status */}
         <Stack direction="row" spacing={2} alignItems="center" sx={{ flexShrink: 0 }}>

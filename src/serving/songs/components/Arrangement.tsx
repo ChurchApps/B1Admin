@@ -73,7 +73,7 @@ export const Arrangement = memo((props: Props) => {
 
   const arrangementCard = useMemo(
     () => (
-      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
+      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
         <CardContent>
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
             <Stack direction="row" spacing={2} alignItems="center">
@@ -116,10 +116,10 @@ export const Arrangement = memo((props: Props) => {
           <Box
             className="chordPro"
             sx={{
-              backgroundColor: "var(--bg-sub)",
-              color: "var(--text-main)",
+              backgroundColor: "background.subtle",
+              color: "text.primary",
               border: "1px solid",
-              borderColor: "var(--border-light)",
+              borderColor: "divider",
               borderRadius: 1,
               p: 2,
               minHeight: 200,

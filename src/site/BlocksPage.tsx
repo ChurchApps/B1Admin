@@ -128,7 +128,7 @@ export const BlocksPage = () => {
 
     return (
       <Table sx={{ minWidth: 650 }}>
-        <TableHead sx={{ backgroundColor: "var(--bg-card)", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
+        <TableHead sx={{ backgroundColor: "background.paper", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
           {getTableHeader()}
         </TableHead>
         <TableBody>{getRows()}</TableBody>
@@ -168,7 +168,7 @@ export const BlocksPage = () => {
         )}
 
         {/* Main Table Card */}
-        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
+        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
           <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">

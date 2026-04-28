@@ -28,9 +28,9 @@ export const AutomationsPage = () => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "var(--bg-sub)",
+            backgroundColor: "background.subtle",
             border: "1px dashed",
-            borderColor: "var(--border-main)"
+            borderColor: "divider"
           }}>
           <AutomationsIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
@@ -50,7 +50,7 @@ export const AutomationsPage = () => {
                 borderRadius: 1,
                 mb: 1,
                 border: "1px solid",
-                borderColor: "var(--border-light)",
+                borderColor: "divider",
                 "&:hover": {
                   borderColor: "primary.main",
                   backgroundColor: "action.hover"
@@ -126,7 +126,7 @@ export const AutomationsPage = () => {
               sx={{
                 borderRadius: 2,
                 border: "1px solid",
-                borderColor: "var(--border-light)"
+                borderColor: "divider"
               }}>
               <CardContent>
                 {/* Header */}

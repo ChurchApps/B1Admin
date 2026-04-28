@@ -216,7 +216,7 @@ export const Keys = memo((props: Props) => {
 
   return (
     <>
-      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
+      <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
         <CardContent>
           {/* Header */}
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
@@ -271,7 +271,7 @@ export const Keys = memo((props: Props) => {
                     mt: 3,
                     pt: 2,
                     borderTop: "1px solid",
-                    borderColor: "var(--border-light)"
+                    borderColor: "divider"
                   }}>
                   <Button
                     id="addBtnGroup"
@@ -294,9 +294,9 @@ export const Keys = memo((props: Props) => {
               sx={{
                 p: 3,
                 textAlign: "center",
-                backgroundColor: "var(--bg-sub)",
+                backgroundColor: "background.subtle",
                 border: "1px dashed",
-                borderColor: "var(--border-main)"
+                borderColor: "divider"
               }}>
               <KeyIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
               <Typography variant="body2" color="text.secondary">

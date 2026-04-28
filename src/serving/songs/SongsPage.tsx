@@ -81,7 +81,7 @@ export const SongsPage = memo(() => {
 
     if (songs.data.length === 0) {
       return (
-        <Paper sx={{ p: 6, textAlign: "center", backgroundColor: "var(--bg-sub)", border: "1px dashed", borderColor: "var(--border-main)" }}>
+        <Paper sx={{ p: 6, textAlign: "center", backgroundColor: "background.subtle", border: "1px dashed", borderColor: "divider" }}>
           <LibraryIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>
             {Locale.label("songs.library.empty.title") || "No Songs Found"}
@@ -100,7 +100,7 @@ export const SongsPage = memo(() => {
 
     if (filteredSongs && filteredSongs.length === 0) {
       return (
-        <Paper sx={{ p: 4, textAlign: "center", backgroundColor: "var(--bg-sub)", border: "1px dashed", borderColor: "var(--border-main)" }}>
+        <Paper sx={{ p: 4, textAlign: "center", backgroundColor: "background.subtle", border: "1px dashed", borderColor: "divider" }}>
           <SearchIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
             {Locale.label("songs.library.noResults") || "No songs match your search criteria."}
@@ -110,7 +110,7 @@ export const SongsPage = memo(() => {
     }
 
     return (
-      <Box sx={{ "& .MuiCard-root": { borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" } }}>
+      <Box sx={{ "& .MuiCard-root": { borderRadius: 2, border: "1px solid", borderColor: "divider" } }}>
         <Stack spacing={2}>
           {filteredSongs?.map((songDetail) => (
             <Card key={songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
@@ -136,7 +136,7 @@ export const SongsPage = memo(() => {
 
                     <Stack direction="row" spacing={2} flexWrap="wrap" alignItems="center">
                       {songDetail.artist && (
-                        <Chip icon={<ArtistIcon />} label={songDetail.artist} variant="outlined" size="small" sx={{ color: "text.secondary", borderColor: "var(--border-main)", fontSize: "0.75rem" }} />
+                        <Chip icon={<ArtistIcon />} label={songDetail.artist} variant="outlined" size="small" sx={{ color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" }} />
                       )}
 
                       {songDetail.seconds && (
@@ -145,7 +145,7 @@ export const SongsPage = memo(() => {
                           label={formatSeconds(songDetail.seconds)}
                           variant="outlined"
                           size="small"
-                          sx={{ color: "text.secondary", borderColor: "var(--border-main)", fontSize: "0.75rem" }}
+                          sx={{ color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" }}
                         />
                       )}
                     </Stack>
@@ -195,7 +195,7 @@ export const SongsPage = memo(() => {
 
       <Box sx={{ p: 3 }}>
         {(showSearchField || searchFilter) && songs.data && songs.data.length > 0 && (
-          <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
+          <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
             <CardContent sx={{ pb: "16px !important" }}>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                 <SearchIcon sx={{ color: "primary.main", fontSize: 24 }} />
@@ -217,7 +217,7 @@ export const SongsPage = memo(() => {
                   )
                 }}
                 autoFocus={showSearchField}
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2, backgroundColor: "var(--bg-sub)", "&:hover": { backgroundColor: "var(--bg-card)" }, "&.Mui-focused": { backgroundColor: "var(--bg-card)" } } }}
+                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2, backgroundColor: "background.subtle", "&:hover": { backgroundColor: "background.paper" }, "&.Mui-focused": { backgroundColor: "background.paper" } } }}
               />
             </CardContent>
           </Card>

@@ -147,7 +147,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="var(--c1l2)" variant="body2">
+              <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.light" variant="body2">
                 <span style={{ fontWeight: 500, color: "text.primary" }}>{d.id}</span>
               </IconText>
               {isPending && <Chip icon={<PendingIcon />} label="Pending" size="small" color="warning" variant="outlined" />}
@@ -178,7 +178,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       <TableRow key="total" sx={{ borderTop: 2, backgroundColor: "grey.50" }}>
         <TableCell sx={{ fontWeight: "bold", fontSize: 15 }}>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "var(--c1l2)", fontSize: 20 }}>calculate</Icon>
+            <Icon sx={{ color: "primary.light", fontSize: 20 }}>calculate</Icon>
             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
               {Locale.label("donations.donations.total")}
             </Typography>

@@ -195,9 +195,9 @@ export const CalendarsPage = () => {
                 sx={{
                   p: 6,
                   textAlign: "center",
-                  backgroundColor: "var(--bg-sub)",
+                  backgroundColor: "background.subtle",
                   border: "1px dashed",
-                  borderColor: "var(--border-main)",
+                  borderColor: "divider",
                   borderRadius: 2
                 }}
               >
@@ -225,11 +225,11 @@ export const CalendarsPage = () => {
                 sx={{
                   borderRadius: 2,
                   border: "1px solid",
-                  borderColor: "var(--border-light)"
+                  borderColor: "divider"
                 }}
               >
                 <Table>
-                  <TableHead sx={{ backgroundColor: "var(--bg-card)" }}>
+                  <TableHead sx={{ backgroundColor: "background.paper" }}>
                     <TableRow>
                       <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                         {Locale.label("calendars.calendarList.calendar")}
@@ -258,11 +258,11 @@ export const CalendarsPage = () => {
                   sx={{
                     borderRadius: 2,
                     border: "1px solid",
-                    borderColor: "var(--border-light)"
+                    borderColor: "divider"
                   }}
                 >
                   <Table>
-                    <TableHead sx={{ backgroundColor: "var(--bg-card)" }}>
+                    <TableHead sx={{ backgroundColor: "background.paper" }}>
                       <TableRow>
                         <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                           {Locale.label("calendars.calendarList.calendar")}
@@ -293,7 +293,7 @@ export const CalendarsPage = () => {
         )}
 
         {calendars.length > 0 && !currentCalendar && (
-          <Card sx={{ mt: 3, borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
+          <Card sx={{ mt: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
             <CardContent>
               <Stack direction="row" spacing={2} alignItems="flex-start">
                 <DescriptionIcon sx={{ color: "primary.main", fontSize: 28 }} />

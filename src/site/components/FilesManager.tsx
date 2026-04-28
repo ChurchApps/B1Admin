@@ -109,7 +109,7 @@ export function FilesManager() {
               </Typography>
             }>
             <Table sx={{ minWidth: 650 }}>
-              <TableHead sx={{ backgroundColor: "var(--bg-card)", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
+              <TableHead sx={{ backgroundColor: "background.paper", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
                 <TableRow>
                   <TableCell>
                     <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Name</Typography>
@@ -137,7 +137,7 @@ export function FilesManager() {
             {usedSpace < 100000000 && (
               <Box sx={{
                 border: "2px dashed",
-                borderColor: "var(--border-main)",
+                borderColor: "divider",
                 borderRadius: 2,
                 p: 3,
                 textAlign: "center",

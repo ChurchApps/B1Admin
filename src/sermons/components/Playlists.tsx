@@ -163,7 +163,7 @@ export const Playlists = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "background.paper",
               "& .MuiTableCell-root": {
                 borderBottom: "2px solid",
                 borderBottomColor: "divider"
@@ -291,7 +291,7 @@ export const Playlists = () => {
         <Card sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "var(--border-light)"
+          borderColor: "divider"
         }}>
           {/* Search Bar - Conditionally Rendered */}
           {showSearch && (
@@ -309,7 +309,7 @@ export const Playlists = () => {
                     <SearchIcon sx={{ color: "text.secondary", mr: 1 }} />
                   )
                 }}
-                sx={{ "& .MuiOutlinedInput-root": { backgroundColor: "var(--bg-card)" } }}
+                sx={{ "& .MuiOutlinedInput-root": { backgroundColor: "background.paper" } }}
               />
             </Box>
           )}

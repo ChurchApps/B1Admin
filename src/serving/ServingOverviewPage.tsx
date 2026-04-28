@@ -153,9 +153,9 @@ export const ServingOverviewPage = () => {
           <Card>
             <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto" }}>
               <Table size="small">
-                <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
+                <TableHead sx={{ backgroundColor: "background.subtle" }}>
                   <TableRow>
-                    <TableCell sx={{ fontWeight: 700, position: "sticky", left: 0, zIndex: 3, backgroundColor: "var(--bg-sub)", minWidth: 200 }}>Position</TableCell>
+                    <TableCell sx={{ fontWeight: 700, position: "sticky", left: 0, zIndex: 3, backgroundColor: "background.subtle", minWidth: 200 }}>Position</TableCell>
                     {dates.map(d => (
                       <TableCell key={d} sx={{ fontWeight: 700, textAlign: "center", whiteSpace: "nowrap" }}>{formatShortDate(d)}</TableCell>
                     ))}

@@ -7,7 +7,7 @@ import { ErrorMessages, InputBox } from "@churchapps/apphelper";
 import { FundDonations } from "@churchapps/apphelper/donations";
 import { ApiHelper, DateHelper, CurrencyHelper, Locale, DonationHelper } from "../../helpers";
 import type { FundDonationInterface, FundInterface, PersonInterface, StripeDonationInterface, StripePaymentMethod, UserInterface, ChurchInterface } from "@churchapps/helpers";
-import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, FormGroup, FormControlLabel, Checkbox, Typography } from "@mui/material";
+import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, FormGroup, FormControlLabel, Checkbox, Typography, Box } from "@mui/material";
 import type { PaperProps } from "@mui/material/Paper";
 
 interface Props {
@@ -293,9 +293,9 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
             <ReCAPTCHA sitekey={props.recaptchaSiteKey} ref={captchaRef} onChange={handleCaptchaChange} />
           </Grid>
         </Grid>
-        <div style={{ padding: 10, border: "1px solid var(--border-main)", borderRadius: 5, marginTop: 10 }}>
+        <Box sx={{ p: "10px", border: "1px solid", borderColor: "divider", borderRadius: "5px", mt: "10px" }}>
           <CardElement options={formStyling} />
-        </div>
+        </Box>
         {donationType === "recurring" && (
           <Grid container spacing={3} style={{ marginTop: 0 }}>
             <Grid size={{ xs: 12, md: 6 }}>

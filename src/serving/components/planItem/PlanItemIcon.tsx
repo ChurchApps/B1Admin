@@ -5,7 +5,7 @@ interface Props {
   itemType?: string;
 }
 
-const iconSx = { fontSize: 32, color: "var(--text-muted)" };
+const iconSx = { fontSize: 32, color: "text.secondary" };
 
 /**
  * Renders the appropriate icon based on plan item type.

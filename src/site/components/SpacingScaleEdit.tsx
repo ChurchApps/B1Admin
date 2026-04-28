@@ -67,7 +67,7 @@ export function SpacingScaleEdit(props: Props) {
 
   return (
     <Box sx={{ maxWidth: 1200 }}>
-      <Box sx={{ backgroundColor: "var(--c1l2)", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
+      <Box sx={{ backgroundColor: "primary.light", color: "#FFF", p: 3, borderRadius: "12px 12px 0 0", mb: 0 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" spacing={2} alignItems="center">
             <Box sx={{ backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "8px", p: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -80,7 +80,7 @@ export function SpacingScaleEdit(props: Props) {
           </Stack>
           <Stack direction="row" spacing={1}>
             <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "var(--c1l2)", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-spacing-button">Save Spacing</LoadingButton>
+            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-spacing-button">Save Spacing</LoadingButton>
           </Stack>
         </Stack>
       </Box>

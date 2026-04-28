@@ -97,15 +97,9 @@ export const FundsPage = () => {
       ) : null;
 
       const fundLink = canViewFund ? (
-        <Link
-          to={"/donations/funds/" + f.id}
-          style={{
-            textDecoration: "none",
-            color: "var(--c1l2)",
-            fontWeight: 500
-          }}>
+        <Typography component={Link} to={"/donations/funds/" + f.id} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
           {f.name}
-        </Link>
+        </Typography>
       ) : (
         <Typography variant="body2" sx={{ fontWeight: 500 }}>
           {f.name}
@@ -121,7 +115,7 @@ export const FundsPage = () => {
           }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <FundIcon sx={{ color: "var(--c1l2)", fontSize: 20 }} />
+              <FundIcon sx={{ color: "primary.light", fontSize: 20 }} />
               {fundLink}
             </Stack>
           </TableCell>
@@ -196,7 +190,7 @@ export const FundsPage = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "background.paper",
               "& .MuiTableCell-root": {
                 borderBottom: "2px solid",
                 borderBottomColor: "divider"

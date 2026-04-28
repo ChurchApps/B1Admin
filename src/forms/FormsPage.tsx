@@ -214,7 +214,7 @@ export const FormsPage = () => {
             }}
             sx={{
               backgroundColor: "#FFF",
-              color: "var(--c1l2)",
+              color: "primary.light",
               "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
             }}
             data-testid="add-form-button">

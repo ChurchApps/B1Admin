@@ -139,7 +139,7 @@ export const SongDetails = memo((props: Props) => {
   if (editMode) return <SongDetailsEdit songDetail={props.songDetail} onCancel={handleCancel} onSave={handleSave} reload={props.reload} />;
 
   return (
-    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "var(--border-light)" }}>
+    <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
       <CardContent>
         {/* Header */}
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
@@ -168,9 +168,9 @@ export const SongDetails = memo((props: Props) => {
               sx={{
                 width: 120,
                 height: 120,
-                bgcolor: "var(--bg-sub)",
+                bgcolor: "background.subtle",
                 border: "2px solid",
-                borderColor: "var(--border-light)"
+                borderColor: "divider"
               }}
               onError={handleImageError}>
               <AlbumIcon sx={{ fontSize: 48, color: "text.secondary" }} />
@@ -215,9 +215,9 @@ export const SongDetails = memo((props: Props) => {
             sx={{
               p: 3,
               textAlign: "center",
-              backgroundColor: "var(--bg-sub)",
+              backgroundColor: "background.subtle",
               border: "1px dashed",
-              borderColor: "var(--border-main)"
+              borderColor: "divider"
             }}>
             <AlbumIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
             <Typography variant="body2" color="text.secondary">

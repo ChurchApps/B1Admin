@@ -108,16 +108,15 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     else {
       return (
         <>
-          <div
-            style={{
-              backgroundColor: "var(--c1l2)",
-              color: "#FFF",
-              padding: 10,
-              marginTop: 20,
-              marginBottom: 20
+          <Box
+            sx={{
+              backgroundColor: "primary.light",
+              color: "primary.contrastText",
+              p: 1.25,
+              my: 2.5
             }}>
             <b>{Locale.label("groups.groupDetailsEdit.attendance")}</b>
-          </div>
+          </Box>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth>

@@ -89,7 +89,7 @@ export function CustomFontModal(props: Props) {
 
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="md" scroll="body" PaperProps={{ sx: { borderRadius: 2, minHeight: "70vh" } }}>
-      <DialogTitle sx={{ backgroundColor: "var(--c1l2)", color: "#FFF", borderRadius: "8px 8px 0 0" }}>
+      <DialogTitle sx={{ backgroundColor: "primary.light", color: "primary.contrastText", borderRadius: "8px 8px 0 0" }}>
         <Typography variant="h6" sx={{ fontWeight: 600 }}>Select a Font</Typography>
       </DialogTitle>
       <DialogContent sx={{ p: 3 }}>

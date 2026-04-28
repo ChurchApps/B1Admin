@@ -253,7 +253,7 @@ export const Assignment = (props: Props) => {
             mb: 3,
             borderRadius: 2,
             border: "1px solid",
-            borderColor: "var(--border-light)",
+            borderColor: "divider",
             transition: "all 0.2s ease-in-out",
             "&:hover": { boxShadow: 2 }
           }}>
@@ -276,7 +276,7 @@ export const Assignment = (props: Props) => {
           sx={{
             borderRadius: 2,
             border: "1px solid",
-            borderColor: "var(--border-light)",
+            borderColor: "divider",
             transition: "all 0.2s ease-in-out",
             "&:hover": { boxShadow: 2 }
           }}>
@@ -319,9 +319,9 @@ export const Assignment = (props: Props) => {
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 2,
-                  backgroundColor: canEdit ? "var(--bg-sub)" : "var(--bg-main)",
-                  "&:hover": { backgroundColor: canEdit ? "var(--bg-card)" : "var(--bg-main)" },
-                  "&.Mui-focused": { backgroundColor: canEdit ? "var(--bg-card)" : "var(--bg-main)" }
+                  backgroundColor: canEdit ? "background.subtle" : "background.default",
+                  "&:hover": { backgroundColor: canEdit ? "background.paper" : "background.default" },
+                  "&.Mui-focused": { backgroundColor: canEdit ? "background.paper" : "background.default" }
                 }
               }}
             />

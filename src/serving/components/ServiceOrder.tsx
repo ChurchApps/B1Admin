@@ -523,7 +523,7 @@ export const ServiceOrder = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "var(--border-light)",
+          borderColor: "divider",
           transition: "all 0.2s ease-in-out",
           "&:hover": { boxShadow: 2 }
         }}>

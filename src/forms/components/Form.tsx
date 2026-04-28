@@ -94,12 +94,13 @@ export const Form: React.FC<Props> = (props) => {
             transition: "background-color 0.2s ease"
           }}>
           <TableCell>
-            <button
+            <Box
+              component="button"
               type="button"
               onClick={handleClick}
-              style={{ background: "none", border: 0, padding: 0, color: "var(--c1l2)", cursor: "pointer", fontWeight: 500 }}>
+              sx={{ background: "none", border: 0, p: 0, color: "primary.light", cursor: "pointer", fontWeight: 500 }}>
               {questions[i].title}
-            </button>
+            </Box>
           </TableCell>
           <TableCell>
             <Typography variant="body2">{questions[i].fieldType}</Typography>

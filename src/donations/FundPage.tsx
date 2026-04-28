@@ -109,16 +109,10 @@ export const FundPage = () => {
       ) : (
         <TableCell>
           <Stack direction="row" spacing={1} alignItems="center">
-            <PersonIcon sx={{ color: "var(--c1l2)", fontSize: 18 }} />
-            <Link
-              to={"/people/" + fd.donation?.personId}
-              style={{
-                textDecoration: "none",
-                color: "var(--c1l2)",
-                fontWeight: 500
-              }}>
+            <PersonIcon sx={{ color: "primary.light", fontSize: 18 }} />
+            <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
               {people[fd.donation.personId] || Locale.label("donations.fundsPage.anon")}
-            </Link>
+            </Typography>
           </Stack>
         </TableCell>
       );
@@ -138,17 +132,10 @@ export const FundPage = () => {
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <ReceiptIcon sx={{ color: "var(--c1l2)", fontSize: 18 }} />
-              <Link
-                data-cy={`batchId-${fd.donation.batchId}-${i}`}
-                to={"/donations/" + fd.donation.batchId}
-                style={{
-                  textDecoration: "none",
-                  color: "var(--c1l2)",
-                  fontWeight: 500
-                }}>
+              <ReceiptIcon sx={{ color: "primary.light", fontSize: 18 }} />
+              <Typography component={Link} data-cy={`batchId-${fd.donation.batchId}-${i}`} to={"/donations/" + fd.donation.batchId} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
                 {fd.donation.batchId}
-              </Link>
+              </Typography>
             </Stack>
           </TableCell>
           {personCol}

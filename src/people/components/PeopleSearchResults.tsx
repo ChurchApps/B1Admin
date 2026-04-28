@@ -103,8 +103,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
                   sx={{
                     fontSize: "0.75rem",
                     mt: 0.5,
-                    backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "var(--bg-sub)",
-                    color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "var(--text-muted)",
+                    backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "background.subtle",
+                    color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "text.secondary",
                     borderColor: "transparent"
                   }}
                 />
@@ -161,8 +161,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
               variant="outlined"
               sx={{
                 fontSize: "0.75rem",
-                backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "var(--bg-sub)",
-                color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "var(--text-muted)",
+                backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "background.subtle",
+                color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "text.secondary",
                 borderColor: "transparent"
               }}
             />
@@ -327,7 +327,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           ml: 0.5,
           flexShrink: 0,
           lineHeight: 0,
-          color: isActive ? "var(--text-main)" : "var(--text-muted)"
+          color: isActive ? "text.primary" : "text.secondary"
         }}>
         <KeyboardArrowUpIcon
           sx={{
@@ -428,18 +428,19 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             minWidth: "100%",
             tableLayout: "auto",
             "& .MuiTableCell-root": {
-              borderBottom: "1px solid var(--border-light)",
+              borderBottom: "1px solid",
+              borderBottomColor: "divider",
               py: 2,
               px: 2,
               verticalAlign: "top",
               whiteSpace: "nowrap"
             },
             "& .MuiTableHead-root .MuiTableCell-root": {
-              backgroundColor: "var(--bg-sub)",
+              backgroundColor: "background.subtle",
               fontWeight: 600,
-              color: "var(--text-main)",
-              "&:hover": { color: "var(--text-main)" },
-              "&:active": { color: "var(--text-main)" },
+              color: "text.primary",
+              "&:hover": { color: "text.primary" },
+              "&:active": { color: "text.primary" },
               "& span": { color: "inherit" }
             }
           }}>

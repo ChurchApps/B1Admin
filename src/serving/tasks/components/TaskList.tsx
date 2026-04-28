@@ -94,8 +94,8 @@ export const TaskList = memo((props: Props) => {
           transition: "all 0.2s ease-in-out",
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "var(--border-main)",
-          backgroundColor: "var(--bg-sub)",
+          borderColor: "divider",
+          backgroundColor: "background.subtle",
           "&:hover": {
             backgroundColor: "action.hover",
             borderColor: "primary.main"
@@ -256,7 +256,7 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "var(--border-light)"
+          borderColor: "divider"
         }}>
         <CardContent>
           <Loading />
@@ -284,7 +284,7 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "var(--border-light)"
+          borderColor: "divider"
         }}>
         <CardContent>
           {/* Header */}
@@ -342,11 +342,11 @@ export const TaskList = memo((props: Props) => {
               sx={{
                 p: 4,
                 textAlign: "center",
-                backgroundColor: "var(--bg-sub)",
+                backgroundColor: "background.subtle",
                 border: "1px dashed",
-                borderColor: "var(--border-main)"
+                borderColor: "divider"
               }}>
-              <TaskIcon sx={{ fontSize: 48, color: "var(--text-muted)", mb: 2 }} />
+              <TaskIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
               <Typography variant="body1" color="text.secondary">
                 {Locale.label("tasks.taskList.noTasks")}
               </Typography>

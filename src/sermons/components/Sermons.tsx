@@ -216,7 +216,7 @@ export const Sermons = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "background.paper",
               "& .MuiTableCell-root": {
                 borderBottom: "2px solid",
                 borderBottomColor: "divider",
@@ -269,7 +269,7 @@ export const Sermons = () => {
           <Card sx={{
             borderRadius: 2,
             border: "1px solid",
-            borderColor: "var(--border-light)"
+            borderColor: "divider"
           }}>
             {/* Search Bar */}
             {sermons.length > 0 && (

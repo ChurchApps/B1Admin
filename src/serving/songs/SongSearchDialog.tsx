@@ -78,9 +78,9 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "var(--bg-sub)",
+            backgroundColor: "background.subtle",
             border: "1px dashed",
-            borderColor: "var(--border-main)"
+            borderColor: "divider"
           }}>
           <SearchIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
@@ -96,9 +96,9 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "var(--bg-sub)",
+            backgroundColor: "background.subtle",
             border: "1px dashed",
-            borderColor: "var(--border-main)"
+            borderColor: "divider"
           }}>
           <MusicIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary" gutterBottom>
@@ -230,7 +230,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                     mt: 3,
                     pt: 2,
                     borderTop: "1px solid",
-                    borderColor: "var(--border-light)"
+                    borderColor: "divider"
                   }}>
                   <Button variant="text" startIcon={<AddIcon />} onClick={() => setShowCreate(true)} sx={{ color: "text.secondary" }}>
                     {Locale.label("songs.search.createManually") || "Create Manually"}

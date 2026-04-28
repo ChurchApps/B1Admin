@@ -39,9 +39,9 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description
       sx={{
         p: 6,
         textAlign: "center",
-        backgroundColor: "var(--bg-sub)",
+        backgroundColor: "background.subtle",
         border: "1px dashed",
-        borderColor: "var(--border-main)",
+        borderColor: "divider",
         borderRadius: 2
       }}>
       {content}

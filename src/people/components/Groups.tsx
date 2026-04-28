@@ -27,11 +27,11 @@ export const Groups: React.FC<Props> = memo((props) => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "var(--bg-sub)",
+            backgroundColor: "background.subtle",
             border: "1px dashed",
-            borderColor: "var(--border-main)"
+            borderColor: "divider"
           }}>
-          <GroupsIcon sx={{ fontSize: 48, color: "var(--text-muted)", mb: 2 }} />
+          <GroupsIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
           <Typography variant="body1" color="text.secondary">
             {Locale.label("people.groups.notMemMsg")}
           </Typography>
@@ -45,7 +45,7 @@ export const Groups: React.FC<Props> = memo((props) => {
           "& .MuiCard-root": {
             borderRadius: 2,
             border: "1px solid",
-            borderColor: "var(--border-light)"
+            borderColor: "divider"
           }
         }}>
         <Stack spacing={2}>
@@ -115,7 +115,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                                 size="small"
                                 sx={{
                                   color: "text.secondary",
-                                  borderColor: "var(--border-main)",
+                                  borderColor: "divider",
                                   fontSize: "0.75rem"
                                 }}
                               />

@@ -35,7 +35,7 @@ export const PlanItemHeader: React.FC<Props> = ({
           <span className="timeRailDot" />
           <span className="timeRailLine" />
         </div>
-        {!readOnly && <DragIndicatorIcon className="dragHandle" sx={{ color: "var(--text-muted)" }} />}
+        {!readOnly && <DragIndicatorIcon className="dragHandle" sx={{ color: "text.secondary" }} />}
         <Box component="span" sx={{ flex: 1 }}>{planItem.label}</Box>
         <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
           {!readOnly && (
@@ -60,8 +60,8 @@ export const PlanItemHeader: React.FC<Props> = ({
               </Box>
             </>
           )}
-          <ScheduleIcon sx={{ fontSize: 18, color: "var(--text-muted)", visibility: sectionDuration > 0 ? "visible" : "hidden" }} />
-          <Box component="span" sx={{ color: "var(--text-muted)", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
+          <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary", visibility: sectionDuration > 0 ? "visible" : "hidden" }} />
+          <Box component="span" sx={{ color: "text.secondary", fontSize: "0.85rem", minWidth: 44, textAlign: "right" }}>
             {sectionDuration > 0 ? formatTime(sectionDuration) : ""}
           </Box>
         </Box>

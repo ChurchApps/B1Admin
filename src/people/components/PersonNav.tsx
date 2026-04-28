@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Button } from "@mui/material";
+import { Icon, Button, Box } from "@mui/material";
 import { type PersonInterface } from "@churchapps/helpers";
 import { Permissions, UserHelper, Locale } from "@churchapps/apphelper";
 interface Props {
@@ -51,7 +51,7 @@ export const PersonNav: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className="sideNav" style={{ height: "100vh", borderRight: "1px solid var(--border-main)" }}>
+    <Box className="sideNav" sx={{ height: "100vh", borderRight: 1, borderColor: "divider" }}>
       <ul>
         {tabs.map((tab) => getItem(tab))}
         <li>
@@ -67,6 +67,6 @@ export const PersonNav: React.FC<Props> = (props) => {
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>Discipleship</Button>
         </li>
       </ul>
-    </div>
+    </Box>
   );
 };

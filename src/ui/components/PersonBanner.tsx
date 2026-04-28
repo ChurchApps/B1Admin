@@ -1,22 +1,24 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Box } from "@mui/material";
 import React from "react";
 
 export const PersonBanner: React.FC = () => {
   return (
-    <div style={{ backgroundColor: "var(--c1l2)", color: "#FFF", padding: "12px 24px" }}>
+    <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", px: 3, py: 1.5 }}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 1 }} sx={{ display: "flex", justifyContent: { xs: "center", sm: "flex-start" } }}>
-          <img
+          <Box
+            component="img"
             src="https://content.churchapps.org/Hchi650pfrH/membership/people/rNW0TQFFJ00.png?dt=1654567191000"
             alt="Jeremy Zongker"
-            style={{
+            sx={{
               width: 100,
               height: 100,
               objectFit: "cover",
               borderRadius: "50%",
-              border: "5px solid var(--bg-card)",
+              border: 5,
+              borderColor: "background.paper",
               float: "left",
-              marginRight: 30
+              mr: 3.75
             }}
           />
         </Grid>
@@ -39,6 +41,6 @@ export const PersonBanner: React.FC = () => {
           </Button>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };

@@ -22,17 +22,28 @@ declare module "@mui/material/styles" {
       headerText?: string;
     };
   }
+  interface TypeBackground {
+    subtle: string;
+  }
 }
 
 const createMdTheme = (mode: PaletteMode) =>
   createTheme({
     palette: {
       mode,
+      primary: {
+        main: "#1565C0",
+        light: "#568BDA",
+        dark: "#0E3D86",
+        contrastText: "#FFFFFF"
+      },
       InputBox: { headerText: mode === "light" ? "#333333" : "#e0e0e0" },
       background: {
         default: mode === "light" ? "#e5e8ee" : "#121212",
-        paper: mode === "light" ? "#ffffff" : "#1e1e1e"
-      }
+        paper: mode === "light" ? "#ffffff" : "#1e1e1e",
+        subtle: mode === "light" ? "#fafafa" : "#333333"
+      },
+      divider: mode === "light" ? "#dddddd" : "#333333"
     },
     components: {
       MuiCssBaseline: {

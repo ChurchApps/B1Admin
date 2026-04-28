@@ -197,9 +197,9 @@ export const SongPage = memo(() => {
           sx={{
             p: 6,
             textAlign: "center",
-            backgroundColor: "var(--bg-sub)",
+            backgroundColor: "background.subtle",
             border: "1px dashed",
-            borderColor: "var(--border-main)"
+            borderColor: "divider"
           }}>
           <ArrangementIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
           <Typography variant="h6" color="text.secondary" gutterBottom>

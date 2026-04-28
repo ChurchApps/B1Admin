@@ -39,7 +39,7 @@ export const PlanItemRow: React.FC<Props> = ({
       {!readOnly && (
         <DragIndicatorIcon
           className="dragHandle rowControl"
-          sx={{ color: "var(--text-muted)", flexShrink: 0 }}
+          sx={{ color: "text.secondary", flexShrink: 0 }}
           onClick={(e) => e.stopPropagation()}
         />
       )}
@@ -102,12 +102,12 @@ export const PlanItemRow: React.FC<Props> = ({
             <EditIcon />
           </Box>
         )}
-        <ScheduleIcon sx={{ fontSize: 18, color: planItem.seconds === 0 ? "error.main" : "var(--text-muted)" }} />
+        <ScheduleIcon sx={{ fontSize: 18, color: planItem.seconds === 0 ? "error.main" : "text.secondary" }} />
         <Box
           component="span"
           title="Duration"
           sx={{
-            color: planItem.seconds === 0 ? "error.main" : "var(--text-muted)",
+            color: planItem.seconds === 0 ? "error.main" : "text.secondary",
             fontSize: "0.85rem",
             minWidth: 44,
             textAlign: "right"

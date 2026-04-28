@@ -2,7 +2,7 @@ import type { AnimationsInterface, InlineStylesInterface } from "../../../helper
 import React from "react";
 import { StyleList } from "./StyleList";
 import { AnimationsEdit } from "./AnimationsEdit";
-import { Accordion, AccordionSummary, Typography, AccordionDetails, Icon } from "@mui/material";
+import { Accordion, AccordionSummary, Typography, AccordionDetails, Icon, Box } from "@mui/material";
 
 interface Props {
   fields: string[],
@@ -25,7 +25,7 @@ export const StylesAnimations: React.FC<Props> = (props) => {
     </div>
 */
   return <>
-    <div style={{ backgroundColor: "var(--bg-sub)", padding: 10, marginBottom: 10 }}>
+    <Box sx={{ backgroundColor: "background.subtle", padding: "10px", marginBottom: "10px" }}>
       <Accordion expanded={expanded === "styles"} onChange={() => setExpanded((expanded === "styles") ? "" : "styles")}>
         <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
           <Typography sx={{ width: "33%", flexShrink: 0 }}>Styles</Typography>
@@ -46,7 +46,7 @@ export const StylesAnimations: React.FC<Props> = (props) => {
         </AccordionDetails>
       </Accordion>
 
-    </div>
+    </Box>
   </>;
 
 };

@@ -128,15 +128,9 @@ export const DonationBatchesPage = () => {
       ) : null;
 
       const batchLink = canViewBatch ? (
-        <Link
-          to={"/donations/batches/" + b.id}
-          style={{
-            textDecoration: "none",
-            color: "var(--c1l2)",
-            fontWeight: 500
-          }}>
+        <Typography component={Link} to={"/donations/batches/" + b.id} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
           {b.name}
-        </Link>
+        </Typography>
       ) : (
         <Typography variant="body2" sx={{ fontWeight: 500 }}>
           {b.name}
@@ -154,7 +148,7 @@ export const DonationBatchesPage = () => {
           }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <DonationIcon sx={{ color: "var(--c1l2)", fontSize: 20 }} />
+              <DonationIcon sx={{ color: "primary.light", fontSize: 20 }} />
               {batchLink}
             </Stack>
           </TableCell>
@@ -248,7 +242,7 @@ export const DonationBatchesPage = () => {
         <Table sx={{ minWidth: 650 }}>
           <TableHead
             sx={{
-              backgroundColor: "var(--bg-card)",
+              backgroundColor: "background.paper",
               "& .MuiTableCell-root": {
                 borderBottom: "2px solid",
                 borderBottomColor: "divider"

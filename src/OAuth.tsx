@@ -48,7 +48,8 @@ export const OAuthPage: React.FC = () => {
             width: 500,
             minHeight: 100,
             backgroundColor: "background.paper",
-            border: "1px solid var(--border-main)",
+            border: "1px solid",
+            borderColor: "divider",
             borderRadius: "5px",
             padding: "10px"
           }}
@@ -62,7 +63,7 @@ export const OAuthPage: React.FC = () => {
           </Alert>
           <div style={{ marginLeft: 50, marginRight: 50 }}>
             <div style={{ textAlign: "center" }}>
-              <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--text-muted)" }}>lock</Icon>
+              <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
               <h2>{clientName || "Loading..."}</h2>
               <p>
                 Would you like to access the following data from <b>{UserHelper.currentUserChurch.church.name}</b> in the above application?

@@ -135,11 +135,11 @@ export const AttendanceSetup = memo(() => {
     if (attendance.data.length === 0) return [];
     return [
       <TableRow key="header">
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.campus")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.service")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.time")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.category")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("attendance.attendancePage.group")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.attendancePage.campus")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.attendancePage.service")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.attendancePage.time")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.attendancePage.category")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.attendancePage.group")}</TableCell>
       </TableRow>
     ];
   }, [attendance.data.length]);
@@ -179,7 +179,7 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "var(--text-muted)", fontSize: 20 }}>church</Icon>
+            <Icon sx={{ color: "text.secondary", fontSize: 20 }}>church</Icon>
             <Button
               variant="text"
               size="small"
@@ -247,8 +247,8 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 6 }}>
-            <Icon sx={{ color: "var(--text-muted)", fontSize: 14 }}>folder</Icon>
-            <Typography variant="body2" sx={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+            <Icon sx={{ color: "text.secondary", fontSize: 14 }}>folder</Icon>
+            <Typography variant="body2" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
               {group.categoryName}
             </Typography>
           </Stack>
@@ -260,16 +260,9 @@ export const AttendanceSetup = memo(() => {
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 8 }}>
             <Icon sx={{ color: "#ddd", fontSize: 12 }}>circle</Icon>
-            <Link
-              to={"/groups/" + group.id}
-              style={{
-                textDecoration: "none",
-                color: "var(--c1)", // Using css var for link for now, or could use direct style
-                fontWeight: 400,
-                fontSize: "0.85rem"
-              }}>
+            <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 400, fontSize: "0.85rem" }}>
               {group.name}
-            </Link>
+            </Typography>
           </Stack>
         );
 
@@ -301,7 +294,7 @@ export const AttendanceSetup = memo(() => {
             startIcon={<Icon sx={{ fontSize: 16 }}>add</Icon>}
             onClick={() => selectService({ id: "", campusId: campus.id, name: "" })}
             sx={{
-              color: "var(--text-muted)",
+              color: "text.secondary",
               textTransform: "none",
               fontSize: "0.85rem",
               pl: 2,
@@ -326,7 +319,7 @@ export const AttendanceSetup = memo(() => {
             startIcon={<Icon sx={{ fontSize: 14 }}>add</Icon>}
             onClick={() => selectServiceTime({ id: "", serviceId: service.id, name: "" })}
             sx={{
-              color: "var(--text-muted)",
+              color: "text.secondary",
               textTransform: "none",
               fontSize: "0.8rem",
               pl: 4,
@@ -396,10 +389,11 @@ export const AttendanceSetup = memo(() => {
           overflowX: "auto",
           borderRadius: 0,
           boxShadow: "none",
-          border: "1px solid var(--border-main)"
+          border: "1px solid",
+          borderColor: "divider"
         }}>
         <Table size="medium">
-          <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>{tableHeader}</TableHead>
+          <TableHead sx={{ backgroundColor: "background.subtle" }}>{tableHeader}</TableHead>
           <TableBody sx={{ whiteSpace: "nowrap" }}>{getRows()}</TableBody>
         </Table>
       </Paper>
@@ -413,7 +407,7 @@ export const AttendanceSetup = memo(() => {
       <ServiceTimeEdit serviceTime={selectedServiceTime} updatedFunction={handleUpdated} />
 
       {/* Modern Header Section */}
-      <Box sx={{ p: 3, borderBottom: "1px solid var(--border-main)" }}>
+      <Box sx={{ p: 3, borderBottom: "1px solid", borderBottomColor: "divider" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
           <Stack direction="row" spacing={2} alignItems="center">
             <Icon sx={{ color: "primary.main", fontSize: 28 }}>group</Icon>

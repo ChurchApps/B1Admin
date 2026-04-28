@@ -7,7 +7,8 @@ import {
   Alert,
   CircularProgress,
   Grid,
-  Icon
+  Icon,
+  Typography
 } from "@mui/material";
 import { ApiHelper, UserHelper } from "@churchapps/apphelper";
 
@@ -158,7 +159,7 @@ export const DeviceAuthPage: React.FC = () => {
       return (
         <>
           <div style={{ textAlign: "center" }}>
-            <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--text-muted)" }}>tv</Icon>
+            <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>tv</Icon>
             <h2>Authorize Device</h2>
             <p>Enter the code displayed on your TV:</p>
           </div>
@@ -207,18 +208,18 @@ export const DeviceAuthPage: React.FC = () => {
       return (
         <>
           <div style={{ textAlign: "center" }}>
-            <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--text-muted)" }}>lock</Icon>
+            <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
             <h2>{clientName || "Loading..."}</h2>
             <p>
               Would you like to access the following data from <b>{churchName}</b> in the above application?
             </p>
           </div>
           <div style={{ marginLeft: 50, marginRight: 50 }}>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.9em" }}>
+            <Typography component="p" sx={{ color: "text.secondary", fontSize: "0.9em" }}>
               Device code: <strong>{deviceInfo.userCode}</strong>
               <br />
               <span style={{ fontSize: "0.85em" }}>Expires in {Math.floor(deviceInfo.expiresIn / 60)} minutes</span>
-            </p>
+            </Typography>
             <p><strong>Requested Permissions:</strong></p>
             <ul>
               {deviceInfo.scopes.split(" ").map((scope) => (
@@ -272,7 +273,8 @@ export const DeviceAuthPage: React.FC = () => {
             width: 500,
             minHeight: 100,
             backgroundColor: "background.paper",
-            border: "1px solid var(--border-main)",
+            border: "1px solid",
+            borderColor: "divider",
             borderRadius: "5px",
             padding: "10px"
           }}

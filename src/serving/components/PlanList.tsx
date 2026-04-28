@@ -126,9 +126,9 @@ export const PlanList = memo((props: Props) => {
           sx={{
             p: 6,
             textAlign: "center",
-            backgroundColor: "var(--bg-sub)",
+            backgroundColor: "background.subtle",
             border: "1px dashed",
-            borderColor: "var(--border-main)",
+            borderColor: "divider",
             borderRadius: 2,
             mb: 3
           }}>
@@ -232,9 +232,9 @@ export const PlanList = memo((props: Props) => {
           sx={{
             p: 4,
             textAlign: "center",
-            backgroundColor: "var(--bg-sub)",
+            backgroundColor: "background.subtle",
             border: "1px dashed",
-            borderColor: "var(--border-main)",
+            borderColor: "divider",
             borderRadius: 2,
             mb: 3
           }}>
@@ -255,7 +255,7 @@ export const PlanList = memo((props: Props) => {
             sx={{
               transition: "all 0.2s ease-in-out",
               border: "1px solid",
-              borderColor: "var(--border-light)",
+              borderColor: "divider",
               borderRadius: 2,
               "&:hover": {
                 transform: "translateY(-2px)",
@@ -304,7 +304,7 @@ export const PlanList = memo((props: Props) => {
                           size="small"
                           sx={{
                             color: "text.secondary",
-                            borderColor: "var(--border-main)",
+                            borderColor: "divider",
                             fontSize: "0.75rem"
                           }}
                         />

@@ -138,9 +138,9 @@ export const GroupBanner = memo((props: Props) => {
   if (!group) return null;
 
   return (
-    <Box sx={{
-      background: "linear-gradient(135deg, var(--c1d3, #0D3B6E) 0%, var(--c1, #1565C0) 40%, var(--c1l2, #568BDA) 100%)",
-      color: "#FFF",
+    <Box sx={(theme) => ({
+      background: `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 40%, ${theme.palette.primary.light} 100%)`,
+      color: theme.palette.primary.contrastText,
       position: "relative",
       left: "50%",
       right: "50%",
@@ -172,7 +172,7 @@ export const GroupBanner = memo((props: Props) => {
         background: "rgba(255,255,255,0.04)",
         pointerEvents: "none"
       }
-    }}>
+    })}>
       <Stack spacing={2} sx={{ width: "100%", position: "relative", zIndex: 1 }}>
         {/* Main Layout: Photo on left, Content on right */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={{ xs: 3, md: 4 }} alignItems={{ xs: "center", md: "flex-start" }} sx={{ width: "100%" }}>

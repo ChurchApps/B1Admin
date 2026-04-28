@@ -85,10 +85,10 @@ const GroupsPage = () => {
     if (groups.length === 0) return rows;
     rows.push(
       <TableRow sx={{ textAlign: "left" }} key="header">
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("groups.groupsPage.cat")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("common.name")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("groups.groupsPage.labels")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "var(--text-muted)" }}>{Locale.label("groups.groupsPage.ppl")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.cat")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("common.name")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.labels")}</TableCell>
+        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.ppl")}</TableCell>
       </TableRow>
     );
     return rows;
@@ -109,7 +109,7 @@ const GroupsPage = () => {
             </Toolbar>
           )}
           <Table>
-            <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>{getTableHeader()}</TableHead>
+            <TableHead sx={{ backgroundColor: "background.subtle" }}>{getTableHeader()}</TableHead>
             <TableBody>{getRows()}</TableBody>
           </Table>
         </Paper>
