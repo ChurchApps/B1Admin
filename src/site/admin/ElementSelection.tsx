@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { Edit, Delete, ContentCopy, ArrowUpward, ArrowDownward } from "@mui/icons-material";
+import { Delete, ContentCopy, ArrowUpward, ArrowDownward } from "@mui/icons-material";
+import { Locale } from "@churchapps/apphelper";
 import type { ElementInterface } from "../../helpers";
 import { SpacingHandles } from "./SpacingHandles";
 
@@ -16,10 +17,15 @@ interface Props {
   children: React.ReactNode;
 }
 
+const actionButtonSx = {
+  padding: "3px",
+  color: "#4b5563",
+  "&:hover": { backgroundColor: "#f3f4f6" }
+};
+
 export const ElementSelection: React.FC<Props> = ({
   element,
   isSelected,
-  onEdit,
   onDelete,
   onDuplicate,
   onMoveUp,
@@ -31,9 +37,9 @@ export const ElementSelection: React.FC<Props> = ({
     <Box
       sx={{
         position: "relative",
-        outline: isSelected ? "2px solid #2196f3" : "none",
-        outlineOffset: "2px",
-        transition: "outline 0.2s ease"
+        outline: isSelected ? "1.5px solid #1976d2" : "none",
+        outlineOffset: "1px",
+        transition: "outline 0.15s ease"
       }}
     >
       {children}
@@ -42,52 +48,51 @@ export const ElementSelection: React.FC<Props> = ({
         <>
           <SpacingHandles element={element} onUpdate={onUpdate} />
 
-          {/* Quick action buttons */}
           <Box
             sx={{
               position: "absolute",
-              top: -40,
+              top: -28,
               right: 0,
               display: "flex",
-              gap: 0.5,
-              backgroundColor: "white",
-              borderRadius: 1,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-              padding: 0.5,
-              zIndex: 1002
+              gap: 0,
+              backgroundColor: "rgba(255, 255, 255, 0.96)",
+              borderRadius: "4px",
+              border: "1px solid #e5e7eb",
+              padding: "1px",
+              zIndex: 1002,
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)"
             }}
           >
-            <Tooltip title="Edit">
-              <IconButton size="small" onClick={onEdit} sx={{ padding: "4px" }}>
-                <Edit fontSize="small" />
+            <Tooltip title={Locale.label("common.duplicate")} placement="top">
+              <IconButton size="small" onClick={onDuplicate} sx={actionButtonSx}>
+                <ContentCopy sx={{ fontSize: 14 }} />
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Duplicate">
-              <IconButton size="small" onClick={onDuplicate} sx={{ padding: "4px" }}>
-                <ContentCopy fontSize="small" />
+            <Tooltip title={Locale.label("site.elementSelection.moveUp", "Move up")} placement="top">
+              <IconButton size="small" onClick={onMoveUp} sx={actionButtonSx}>
+                <ArrowUpward sx={{ fontSize: 14 }} />
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Move Up">
-              <IconButton size="small" onClick={onMoveUp} sx={{ padding: "4px" }}>
-                <ArrowUpward fontSize="small" />
+            <Tooltip title={Locale.label("site.elementSelection.moveDown", "Move down")} placement="top">
+              <IconButton size="small" onClick={onMoveDown} sx={actionButtonSx}>
+                <ArrowDownward sx={{ fontSize: 14 }} />
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Move Down">
-              <IconButton size="small" onClick={onMoveDown} sx={{ padding: "4px" }}>
-                <ArrowDownward fontSize="small" />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Delete">
+            <Tooltip title={Locale.label("common.delete")} placement="top">
               <IconButton
                 size="small"
                 onClick={onDelete}
-                sx={{ padding: "4px", color: "error.main" }}
+                sx={{
+                  ...actionButtonSx,
+                  color: "#dc2626",
+                  "&:hover": { backgroundColor: "#fef2f2", color: "#b91c1c" }
+                }}
               >
-                <Delete fontSize="small" />
+                <Delete sx={{ fontSize: 14 }} />
               </IconButton>
             </Tooltip>
           </Box>

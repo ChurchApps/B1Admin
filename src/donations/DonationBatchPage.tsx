@@ -5,7 +5,7 @@ import { type DonationBatchInterface, type FundInterface, type DonationInterface
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, Card, Stack, Button, Typography } from "@mui/material";
-import { Receipt as ReceiptIcon, AttachMoney as MoneyIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Receipt as ReceiptIcon, Edit as EditIcon } from "@mui/icons-material";
 
 export const DonationBatchPage = () => {
   const params = useParams();
@@ -68,7 +68,7 @@ export const DonationBatchPage = () => {
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
       setCurrency(result);
-    })
+    });
   }, []);
 
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.view)) return <></>;

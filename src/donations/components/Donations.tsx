@@ -2,7 +2,7 @@ import React from "react";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, ExportLink, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Button, Box, Chip } from "@mui/material";
-import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, AttachMoney as MoneyIcon, FileDownload as ExportIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
+import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, FileDownload as ExportIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
 
 interface Props {

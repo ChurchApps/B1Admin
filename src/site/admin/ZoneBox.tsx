@@ -1,4 +1,4 @@
-import { Chip, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import type { SectionInterface } from "../../helpers/Interfaces";
 
@@ -7,39 +7,39 @@ interface ZoneBoxProps {
   name: string;
   keyName: string;
   deviceType: string;
+  showZoneLabel?: boolean;
   children: React.ReactNode;
 }
 
 export function ZoneBox(props: ZoneBoxProps) {
-  const { keyName, deviceType, children } = props;
+  const { keyName, name, deviceType, showZoneLabel, children } = props;
   const theme = useTheme();
 
   return (
     <Box sx={{ minHeight: "100px", position: "relative" }}>
-      <Box
-        sx={{
-          position: "absolute",
-          right: 2,
-          top: 1,
-          zIndex: 99,
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)"
-        }}>
-        <Chip
-          label={`Zone: ${keyName}`}
-          size="small"
+      {showZoneLabel && (
+        <Box
           sx={{
-            backgroundColor: "rgba(25, 118, 210, 0.9)",
-            color: "#ffffff",
-            border: "1px solid rgba(25, 118, 210, 1)",
-            fontWeight: 600,
-            fontSize: "0.75rem",
-            letterSpacing: "0.5px",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
-            "&:hover": { backgroundColor: "rgba(21, 101, 192, 0.95)" }
+            position: "absolute",
+            right: 8,
+            top: 6,
+            zIndex: 99,
+            px: 1,
+            py: 0.25,
+            borderRadius: "4px",
+            backgroundColor: "rgba(243, 244, 246, 0.85)",
+            color: "#6b7280",
+            fontWeight: 500,
+            fontSize: "0.7rem",
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)"
           }}
-        />
-      </Box>
+        >
+          {name || keyName}
+        </Box>
+      )}
       <Box sx={{ minHeight: "100px" }}>
         <div className="page" style={deviceType === "mobile" ? { width: 400, marginLeft: "auto", marginRight: "auto" } : {}} data-testid={`preview-${deviceType}`}>
           {children}

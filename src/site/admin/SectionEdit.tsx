@@ -10,6 +10,7 @@ type Props = {
   section: SectionInterface;
   updatedCallback: (section: SectionInterface) => void;
   globalStyles: GlobalStyleInterface;
+  inPanel?: boolean;
 };
 
 export function SectionEdit(props: Props) {
@@ -139,25 +140,29 @@ export function SectionEdit(props: Props) {
   const getAppearanceFields = (fields:string[]) => <StylesAnimations fields={fields} styles={parsedStyles} animations={parsedAnimations} onStylesChange={handleStyleChange} onAnimationsChange={handleAnimationChange} />;
 
   if (!section) return <></>;
-  else {
-    return (
-      <Dialog open={true} onClose={handleCancel} fullWidth maxWidth="md">
-        <InputBox
-          id="sectionDetailsBox"
-          headerText={Locale.label("site.section.editSection")}
-          headerIcon="school"
-          saveFunction={handleSave}
-          cancelFunction={handleCancel}
-          deleteFunction={handleDelete}
-          data-testid="edit-section-inputbox"
-          headerActionContent={props.section.id && (<><Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button><Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button></>)}
-        >
-          <div id="dialogFormContent">
-            {(section?.targetBlockId) ? getBlockFields() : getStandardFields()}
-          </div>
-        </InputBox>
 
-      </Dialog>
-    );
-  }
+  const formContent = (
+    <InputBox
+      id="sectionDetailsBox"
+      headerText={Locale.label("site.section.editSection")}
+      headerIcon="school"
+      saveFunction={handleSave}
+      cancelFunction={handleCancel}
+      deleteFunction={handleDelete}
+      data-testid="edit-section-inputbox"
+      headerActionContent={props.section.id && (<><Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button><Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button></>)}
+    >
+      <div id="dialogFormContent">
+        {(section?.targetBlockId) ? getBlockFields() : getStandardFields()}
+      </div>
+    </InputBox>
+  );
+
+  if (props.inPanel) return formContent;
+
+  return (
+    <Dialog open={true} onClose={handleCancel} fullWidth maxWidth="md">
+      {formContent}
+    </Dialog>
+  );
 }

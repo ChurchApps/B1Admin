@@ -9,8 +9,7 @@ import {
   FilterAlt as FilterIcon,
   CalendarMonth as DateIcon,
   Person as PersonIcon,
-  Receipt as ReceiptIcon,
-  AttachMoney as MoneyIcon
+  Receipt as ReceiptIcon
 } from "@mui/icons-material";
 
 export const FundPage = () => {
@@ -266,8 +265,8 @@ export const FundPage = () => {
             </Stack>
             <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
               <Stack direction="row" spacing={1} alignItems="center">
-              {/* <MoneyIcon sx={{ color: "#FFF", fontSize: 24 }} /> */}
-              <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</Typography>
+                {/* <MoneyIcon sx={{ color: "#FFF", fontSize: 24 }} /> */}
+                <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</Typography>
               </Stack>
               <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Total Amount</Typography>
             </Stack>

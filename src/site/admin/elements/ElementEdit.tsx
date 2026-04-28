@@ -26,6 +26,7 @@ type Props = {
   globalStyles: GlobalStyleInterface;
   updatedCallback: (element: ElementInterface) => void;
   onRealtimeChange: (element: ElementInterface) => void;
+  inPanel?: boolean;
 };
 
 export function ElementEdit(props: Props) {
@@ -763,8 +764,8 @@ export function ElementEdit(props: Props) {
 
   if (!element) return <></>;
 
-  return (
-    <Dialog open={true} onClose={handleCancel} fullWidth maxWidth="md" id="elementEditDialog">
+  const formContent = (
+    <>
       <InputBox
         id="dialogForm"
         headerText={Locale.label("site.elements.editElement")}
@@ -783,6 +784,14 @@ export function ElementEdit(props: Props) {
         <div id="dialogFormContent">{element?.elementType === "block" ? getBlockFields() : getStandardFields()}</div>
       </InputBox>
       {selectPhotoField && <GalleryModal onClose={() => setSelectPhotoField(null)} onSelect={handlePhotoSelected} aspectRatio={0} />}
+    </>
+  );
+
+  if (props.inPanel) return formContent;
+
+  return (
+    <Dialog open={true} onClose={handleCancel} fullWidth maxWidth="md" id="elementEditDialog">
+      {formContent}
     </Dialog>
   );
 }

@@ -64,7 +64,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
 
     CurrencyHelper.loadCurrency().then((result) => {
       setCurrency(result);
-    })
+    });
   }, []);
 
   return (
@@ -124,7 +124,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
         onChange={handleChange}
         data-testid="donate-amount-input"
         aria-label={Locale.label("site.donateLink.donationAmount")}
-        slotProps={{ 
+        slotProps={{
           input: {
             startAdornment: <InputAdornment position="start">{CurrencyHelper.getCurrencySymbol(currency)}</InputAdornment>,
             endAdornment: <Button size="small" variant="contained" onClick={handleAmountAdd} disabled={!amountValue || amountValue === 0} data-testid="add-amount-button" aria-label={Locale.label("site.donateLink.addAmount")}>{Locale.label("site.donateLink.add")}</Button>,

@@ -65,7 +65,7 @@ export const PlanTypePage = () => {
           transform: "translateX(-50%)",
           width: "100vw",
           zIndex: 2,
-          paddingTop: 1.5,
+          paddingTop: 1.5
         }}>
           <Container maxWidth="xl">
             <Breadcrumbs items={breadcrumbItems} showHome={true} />

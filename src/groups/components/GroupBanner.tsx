@@ -159,7 +159,7 @@ export const GroupBanner = memo((props: Props) => {
         height: 400,
         borderRadius: "50%",
         background: "rgba(255,255,255,0.05)",
-        pointerEvents: "none",
+        pointerEvents: "none"
       },
       "&::after": {
         content: "''",
@@ -170,8 +170,8 @@ export const GroupBanner = memo((props: Props) => {
         height: 300,
         borderRadius: "50%",
         background: "rgba(255,255,255,0.04)",
-        pointerEvents: "none",
-      },
+        pointerEvents: "none"
+      }
     }}>
       <Stack spacing={2} sx={{ width: "100%", position: "relative", zIndex: 1 }}>
         {/* Main Layout: Photo on left, Content on right */}

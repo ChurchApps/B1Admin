@@ -1,29 +1,60 @@
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box, Button, Icon, Typography } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 
+interface EmptyStateProps {
+  onAddClick?: () => void;
+}
 
-export function EmptyState() {
+export function EmptyState({ onAddClick }: EmptyStateProps) {
   return (
     <Container key="empty">
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "400px", textAlign: "center", py: 6, px: 3 }}>
-        <Box sx={{ width: 80, height: 80, borderRadius: "50%", backgroundColor: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", mb: 3 }}>
-          <span className="material-icons" style={{ fontSize: "3rem", color: "#9e9e9e" }}>
-            dashboard_customize
-          </span>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "320px",
+          textAlign: "center",
+          py: 6,
+          px: 3
+        }}
+      >
+        <Box
+          sx={{
+            width: 56,
+            height: 56,
+            borderRadius: "50%",
+            backgroundColor: "#f3f4f6",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            mb: 2.5
+          }}
+        >
+          <Icon sx={{ fontSize: "2rem", color: "#9ca3af" }}>dashboard_customize</Icon>
         </Box>
-        <Typography variant="h5" component="h2" sx={{ fontWeight: 600, color: "#424242", mb: 1.5 }}>
-          No sections yet
+        <Typography variant="h6" component="h2" sx={{ fontWeight: 600, color: "#111827", mb: 1 }}>
+          {Locale.label("site.emptyState.title", "This page is empty")}
         </Typography>
-        <Typography variant="body1" sx={{ color: "#757575", maxWidth: "500px", mb: 3, lineHeight: 1.6 }}>
-          Get started by adding your first section. Drag a section or block from the sidebar, or drop it into the area above to begin building your content.
+        <Typography variant="body2" sx={{ color: "#6b7280", maxWidth: 420, mb: 3, lineHeight: 1.5 }}>
+          {Locale.label(
+            "site.emptyState.description",
+            "Add a section to start building your page. You can rearrange and customize sections any time."
+          )}
         </Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, px: 3, py: 1.5, backgroundColor: "#f8f9fa", borderRadius: 1, border: "1px dashed #e0e0e0" }}>
-          <span className="material-icons" style={{ fontSize: "1.25rem", color: "#616161" }}>
-            add_circle_outline
-          </span>
-          <Typography variant="body2" sx={{ color: "#616161", fontWeight: 500 }}>
-            Click the + button in the toolbar to add content
-          </Typography>
-        </Box>
+        {onAddClick && (
+          <Button
+            variant="contained"
+            color="primary"
+            disableElevation
+            onClick={onAddClick}
+            startIcon={<Icon>add</Icon>}
+            sx={{ textTransform: "none", fontWeight: 600 }}
+          >
+            {Locale.label("site.emptyState.addFirstSection", "Add your first section")}
+          </Button>
+        )}
       </Box>
     </Container>
   );
