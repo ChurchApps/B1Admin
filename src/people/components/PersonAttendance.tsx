@@ -3,8 +3,9 @@ import { type AttendanceRecordInterface, type GroupInterface } from "@churchapps
 import { ArrayHelper, DateHelper, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Box, Card, CardContent, Typography, Stack, Chip, Divider, Paper, List, ListItem } from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, Chip, Divider, List, ListItem } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Church as ChurchIcon, Schedule as ScheduleIcon, Group as GroupIcon, EventAvailable as EventIcon } from "@mui/icons-material";
+import { EmptyState } from "../../components/ui/EmptyState";
 
 interface Props {
   personId: string;
@@ -28,21 +29,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
     const records = attendanceRecords.data;
 
     if (records.length === 0) {
-      return (
-        <Paper
-          sx={{
-            p: 4,
-            textAlign: "center",
-            backgroundColor: "grey.50",
-            border: "1px dashed",
-            borderColor: "grey.300"
-          }}>
-          <EventIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
-          <Typography variant="body1" color="text.secondary">
-            {Locale.label("people.personAttendance.noAttMsg")}
-          </Typography>
-        </Paper>
-      );
+      return <EmptyState icon={<EventIcon />} title={Locale.label("people.personAttendance.noAttMsg")} />;
     }
 
     // Group records by date for better visual organization

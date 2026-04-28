@@ -3,9 +3,10 @@ import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale, Sm
 import { useParams, useNavigate } from "react-router-dom";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, Paper, IconButton } from "@mui/material";
+import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, IconButton } from "@mui/material";
 import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Arrangement } from "./components/Arrangement";
+import { EmptyState } from "../../components/ui/EmptyState";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { SongDetailsEdit } from "./components/SongDetailsEdit";
 import { SongDetailLinks } from "./components/SongDetailLinks";
@@ -193,22 +194,11 @@ export const SongPage = memo(() => {
   const currentContent = useMemo(() => {
     if (!selectedArrangement) {
       return (
-        <Paper
-          sx={{
-            p: 6,
-            textAlign: "center",
-            backgroundColor: "background.subtle",
-            border: "1px dashed",
-            borderColor: "divider"
-          }}>
-          <ArrangementIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            No Arrangement Selected
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Select an arrangement from the sidebar to get started.
-          </Typography>
-        </Paper>
+        <EmptyState
+          icon={<ArrangementIcon />}
+          title="No Arrangement Selected"
+          description="Select an arrangement from the sidebar to get started."
+        />
       );
     }
 

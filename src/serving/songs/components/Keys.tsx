@@ -2,12 +2,13 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface } from "../../../helpers";
 import { type LinkInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, IconButton, Paper, Chip } from "@mui/material";
+import { Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, IconButton, Chip } from "@mui/material";
 import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon } from "@mui/icons-material";
 import { PraiseChartsProducts } from "./PraiseChartsProducts";
 import { KeyEdit } from "./KeyEdit";
 import { PraiseChartsHelper } from "../../../helpers/PraiseChartsHelper";
 import { LinkEdit } from "./LinkEdit";
+import { EmptyState } from "../../../components/ui/EmptyState";
 
 interface Props {
   arrangement: ArrangementInterface;
@@ -290,19 +291,7 @@ export const Keys = memo((props: Props) => {
               )}
             </Box>
           ) : (
-            <Paper
-              sx={{
-                p: 3,
-                textAlign: "center",
-                backgroundColor: "background.subtle",
-                border: "1px dashed",
-                borderColor: "divider"
-              }}>
-              <KeyIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
-              <Typography variant="body2" color="text.secondary">
-                No keys available. Add a key to get started.
-              </Typography>
-            </Paper>
+            <EmptyState icon={<KeyIcon />} title="No keys available. Add a key to get started." />
           )}
         </CardContent>
       </Card>

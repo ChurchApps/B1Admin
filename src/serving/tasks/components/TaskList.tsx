@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Paper, Divider } from "@mui/material";
+import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Divider } from "@mui/material";
+import { EmptyState } from "../../../components/ui/EmptyState";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
@@ -338,19 +339,7 @@ export const TaskList = memo((props: Props) => {
               {getCreatedByMe()}
             </Stack>
           ) : (
-            <Paper
-              sx={{
-                p: 4,
-                textAlign: "center",
-                backgroundColor: "background.subtle",
-                border: "1px dashed",
-                borderColor: "divider"
-              }}>
-              <TaskIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-              <Typography variant="body1" color="text.secondary">
-                {Locale.label("tasks.taskList.noTasks")}
-              </Typography>
-            </Paper>
+            <EmptyState icon={<TaskIcon />} title={Locale.label("tasks.taskList.noTasks")} />
           )}
         </CardContent>
       </Card>

@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
-import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, IconButton, Paper, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, IconButton, List, ListItem, ListItemIcon, ListItemText, Divider } from "@mui/material";
+import { EmptyState } from "../../../components/ui/EmptyState";
 import {
   Edit as EditIcon,
   Album as AlbumIcon,
@@ -211,19 +212,7 @@ export const SongDetails = memo((props: Props) => {
             ))}
           </List>
         ) : (
-          <Paper
-            sx={{
-              p: 3,
-              textAlign: "center",
-              backgroundColor: "background.subtle",
-              border: "1px dashed",
-              borderColor: "divider"
-            }}>
-            <AlbumIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
-            <Typography variant="body2" color="text.secondary">
-              No additional details available for this song.
-            </Typography>
-          </Paper>
+          <EmptyState icon={<AlbumIcon />} title="No additional details available for this song." />
         )}
 
         {/* Links Section */}

@@ -1,7 +1,8 @@
 import React, { useEffect, memo, useMemo } from "react";
 import { ApiHelper } from "@churchapps/apphelper";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../../helpers";
-import { Stack, Box, Card, CardContent, Typography, Avatar, Paper, Button, IconButton } from "@mui/material";
+import { Stack, Box, Card, CardContent, Typography, Avatar, Button, IconButton } from "@mui/material";
+import { EmptyState } from "../../../components/ui/EmptyState";
 import { Link as LinkIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 
 interface Props {
@@ -136,24 +137,15 @@ export const SongDetailLinks = memo((props: Props) => {
       </Stack>
 
       {!allLinks || allLinks.length === 0 ? (
-        <Paper
-          sx={{
-            p: 3,
-            textAlign: "center",
-            backgroundColor: "grey.50",
-            border: "1px dashed",
-            borderColor: "grey.300"
-          }}>
-          <LinkIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            No external links added yet
-          </Typography>
-          {props.onEdit && (
+        <EmptyState
+          icon={<LinkIcon />}
+          title="No external links added yet"
+          action={props.onEdit && (
             <Button variant="contained" startIcon={<AddIcon />} onClick={props.onEdit} size="small">
               Add First Link
             </Button>
           )}
-        </Paper>
+        />
       ) : (
         <Stack
           direction="row"

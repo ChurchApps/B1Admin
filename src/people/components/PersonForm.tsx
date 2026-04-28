@@ -1,9 +1,10 @@
 import React, { useState, memo } from "react";
 import { FormSubmission } from "./";
-import { Button, Box, Card, CardContent, Typography, Paper } from "@mui/material";
+import { Button, Box, Card, CardContent } from "@mui/material";
 import { Description as DescriptionIcon, Add as AddIcon } from "@mui/icons-material";
 import { type FormSubmissionInterface, type FormInterface } from "@churchapps/helpers";
 import { FormSubmissionEdit, DisplayBox, Locale } from "@churchapps/apphelper";
+import { EmptyState } from "../../components/ui/EmptyState";
 
 interface Props {
   contentType: string;
@@ -73,34 +74,21 @@ export const PersonForm: React.FC<Props> = memo((props) => {
       </Card>
     </Box>
   ) : (
-    <Paper
-      sx={{
-        p: 4,
-        textAlign: "center",
-        backgroundColor: "grey.50",
-        border: "1px dashed",
-        borderColor: "grey.300"
-      }}>
-      <DescriptionIcon sx={{ fontSize: 48, color: "grey.400", mb: 2 }} />
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-        {Locale.label("people.personForm.noFormMsg") || "No form submission found for this person"}
-      </Typography>
-      <Button
-        variant="contained"
-        onClick={handleAdd}
-        startIcon={<AddIcon />}
-        sx={{
-          transition: "all 0.2s ease-in-out",
-          "&:hover": {
-            transform: "translateY(-1px)",
-            boxShadow: 2
-          }
-        }}
-        data-testid="add-form-button"
-        aria-label={`Add ${props.form?.name || "form"} submission`}>
-        {Locale.label("people.personForm.addForm") || "Add Form"}
-      </Button>
-    </Paper>
+    <EmptyState
+      icon={<DescriptionIcon />}
+      title={Locale.label("people.personForm.noFormMsg") || "No form submission found for this person"}
+      action={(
+        <Button
+          variant="contained"
+          onClick={handleAdd}
+          startIcon={<AddIcon />}
+          sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}
+          data-testid="add-form-button"
+          aria-label={`Add ${props.form?.name || "form"} submission`}>
+          {Locale.label("people.personForm.addForm") || "Add Form"}
+        </Button>
+      )}
+    />
   );
 
   return (
