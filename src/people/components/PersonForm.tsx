@@ -67,7 +67,7 @@ export const PersonForm: React.FC<Props> = memo((props) => {
             boxShadow: 2
           }
         }}>
-        <CardContent sx={{ pb: "16px !important" }}>
+        <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
           <FormSubmission formSubmissionId={submission.id} editFunction={handleEdit} />
         </CardContent>
       </Card>

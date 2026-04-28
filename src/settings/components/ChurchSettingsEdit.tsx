@@ -34,7 +34,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   // Shared accordion styles for a warm, approachable look
   const accordionStyles = {
     mb: 1.5,
-    borderRadius: "12px !important",
+    "&&": { borderRadius: "12px" },
     boxShadow: "none",
     border: "1px solid",
     borderColor: "divider",

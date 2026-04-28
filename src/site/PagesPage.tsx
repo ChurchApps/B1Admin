@@ -268,7 +268,7 @@ export const PagesPage = () => {
                 <Stack direction="row" alignItems="center" spacing={0.5}>
                   <Typography sx={{ fontSize: "13.5px", fontStyle: "italic" }}>{Locale.label("site.pagesPage.showLogin")}</Typography>
                   <Tooltip title={Locale.label("site.pagesPage.showLoginTooltip")} arrow>
-                    <Icon color="primary" sx={{ fontSize: "18px !important", cursor: "pointer" }}>
+                    <Icon color="primary" sx={{ fontSize: 18, cursor: "pointer" }}>
                       info
                     </Icon>
                   </Tooltip>

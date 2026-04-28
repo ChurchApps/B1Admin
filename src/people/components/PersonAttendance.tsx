@@ -72,7 +72,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
             },
             "&:last-child": { mb: 0 }
           }}>
-          <CardContent sx={{ pb: "16px !important" }}>
+          <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
             <Stack spacing={2}>
               {/* Date Header */}
               <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>

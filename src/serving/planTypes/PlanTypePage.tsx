@@ -43,7 +43,7 @@ export const PlanTypePage = () => {
 
   return (
     <>
-      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "5.5rem !important" } }}>
+      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "5.5rem" } }}>
         <PageHeader
           title={planType.data.name || Locale.label("plans.planTypePage.planType")}
           subtitle={Locale.label("plans.planTypePage.subtitle")}

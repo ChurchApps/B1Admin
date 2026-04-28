@@ -114,7 +114,7 @@ export const SongsPage = memo(() => {
         <Stack spacing={2}>
           {filteredSongs?.map((songDetail) => (
             <Card key={songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
-              <CardContent sx={{ pb: "16px !important" }}>
+              <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
                 <Stack direction="row" spacing={2} alignItems="center">
                   {/* Thumbnail/Avatar */}
                   <Avatar
@@ -196,7 +196,7 @@ export const SongsPage = memo(() => {
       <Box sx={{ p: 3 }}>
         {(showSearchField || searchFilter) && songs.data && songs.data.length > 0 && (
           <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-            <CardContent sx={{ pb: "16px !important" }}>
+            <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                 <SearchIcon sx={{ color: "primary.main", fontSize: 24 }} />
                 <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>

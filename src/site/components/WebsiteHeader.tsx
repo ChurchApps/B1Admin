@@ -48,7 +48,7 @@ const RecursiveListMenu = ({ links, handleClose }: { links?: LinkInterface[]; ha
         <Box key={item.id}>
           {item?.children ? (
             <Box>
-              <ListItem disablePadding secondaryAction={<IconButton sx={{ color: "black !important" }} onClick={() => handleClick(item.id!)}>{openStates[item.id!] ? <ExpandLessIcon /> : <ExpandMoreIcon />}</IconButton>}>
+              <ListItem disablePadding secondaryAction={<IconButton sx={{ color: "black" }} onClick={() => handleClick(item.id!)}>{openStates[item.id!] ? <ExpandLessIcon /> : <ExpandMoreIcon />}</IconButton>}>
                 <ListItemButton component={Link} to={item.url || ""} onClick={handleClose} sx={{ pl: 2 }}>
                   <ListItemText primary={item.text} />
                 </ListItemButton>
@@ -81,7 +81,7 @@ const CascadingListMenu = ({ link, handleClose }: { link: LinkInterface; handleC
     <>
       {link?.children ? (
         <>
-          <ListItem disablePadding secondaryAction={<IconButton sx={{ color: "black !important" }} onClick={handleClick}>{open ? <ExpandLessIcon /> : <ExpandMoreIcon />}</IconButton>}>
+          <ListItem disablePadding secondaryAction={<IconButton sx={{ color: "black" }} onClick={handleClick}>{open ? <ExpandLessIcon /> : <ExpandMoreIcon />}</IconButton>}>
             <ListItemButton component={Link} to={link.url || ""} onClick={handleClose}>
               <ListItemText primary={link.text} />
             </ListItemButton>

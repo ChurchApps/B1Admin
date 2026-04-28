@@ -59,7 +59,7 @@ export const Groups: React.FC<Props> = memo((props) => {
                   boxShadow: 2
                 }
               }}>
-              <CardContent sx={{ pb: "16px !important" }}>
+              <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
                 <ListItem sx={{ px: 0, py: 0 }}>
                   <ListItemButton
                     component={Link}

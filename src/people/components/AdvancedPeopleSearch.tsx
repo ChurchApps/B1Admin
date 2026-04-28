@@ -100,7 +100,7 @@ const styles = {
   accordion: {
     mb: 1,
     "&:before": { display: "none" },
-    borderRadius: "4px !important",
+    "&&": { borderRadius: "4px" },
     overflow: "hidden",
     border: "1px solid",
     borderColor: "divider"

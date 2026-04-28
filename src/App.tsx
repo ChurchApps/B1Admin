@@ -48,11 +48,10 @@ const createMdTheme = (mode: PaletteMode) =>
     components: {
       MuiCssBaseline: {
         styleOverrides: {
-          // Dark mode styles for the banner/subnav area from apphelper
-          "#banner": mode === "dark" ? {
-            backgroundColor: "#1e1e1e !important",
+          "body.dark-theme #banner": {
+            backgroundColor: "#1e1e1e",
             borderBottom: "1px solid #333"
-          } : {}
+          }
         }
       },
       MuiTextField: {

@@ -263,7 +263,7 @@ export const PlanList = memo((props: Props) => {
                 borderColor: "primary.main"
               }
             }}>
-            <CardContent sx={{ pb: "16px !important" }}>
+            <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
               <Stack direction="row" alignItems="flex-start" justifyContent="space-between" flexWrap="wrap" useFlexGap spacing={1}>
                 <Stack direction="row" alignItems="center" spacing={2} sx={{ flex: 1, minWidth: 0 }}>
                   <Avatar
