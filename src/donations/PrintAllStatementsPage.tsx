@@ -147,7 +147,7 @@ export const PrintAllStatementsPage = () => {
   useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
       setCurrency(result);
-    })
+    });
   }, []);
 
   return (

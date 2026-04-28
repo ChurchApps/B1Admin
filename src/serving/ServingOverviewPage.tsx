@@ -151,44 +151,44 @@ export const ServingOverviewPage = () => {
           <Box sx={{ textAlign: "center", py: 4, color: "text.secondary" }}>No serving data found for the selected date range.</Box>
         ) : (
           <Card>
-          <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto" }}>
-            <Table size="small">
-              <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 700, position: "sticky", left: 0, zIndex: 3, backgroundColor: "var(--bg-sub)", minWidth: 200 }}>Position</TableCell>
-                  {dates.map(d => (
-                    <TableCell key={d} sx={{ fontWeight: 700, textAlign: "center", whiteSpace: "nowrap" }}>{formatShortDate(d)}</TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map(row => (
-                  <TableRow key={row.position}>
-                    <TableCell sx={{ fontWeight: 600, position: "sticky", left: 0, backgroundColor: "background.paper", zIndex: 1 }}>{row.position}</TableCell>
-                    {dates.map(d => {
-                      const assigned = row.cells[d] || [];
-                      const isActive = row.activeDates.has(d);
-                      const isGap = isActive && assigned.length === 0;
-                      return (
-                        <TableCell
-                          key={d}
-                          sx={{
-                            textAlign: "center",
-                            backgroundColor: isGap ? "error.light" : undefined,
-                            color: isGap ? "error.contrastText" : undefined,
-                            whiteSpace: "nowrap",
-                            fontSize: "0.8rem"
-                          }}
-                        >
-                          {isActive ? (assigned.map(id => getDisplayName(id)).join(", ") || "\u2014") : ""}
-                        </TableCell>
-                      );
-                    })}
+            <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto" }}>
+              <Table size="small">
+                <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 700, position: "sticky", left: 0, zIndex: 3, backgroundColor: "var(--bg-sub)", minWidth: 200 }}>Position</TableCell>
+                    {dates.map(d => (
+                      <TableCell key={d} sx={{ fontWeight: 700, textAlign: "center", whiteSpace: "nowrap" }}>{formatShortDate(d)}</TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {rows.map(row => (
+                    <TableRow key={row.position}>
+                      <TableCell sx={{ fontWeight: 600, position: "sticky", left: 0, backgroundColor: "background.paper", zIndex: 1 }}>{row.position}</TableCell>
+                      {dates.map(d => {
+                        const assigned = row.cells[d] || [];
+                        const isActive = row.activeDates.has(d);
+                        const isGap = isActive && assigned.length === 0;
+                        return (
+                          <TableCell
+                            key={d}
+                            sx={{
+                              textAlign: "center",
+                              backgroundColor: isGap ? "error.light" : undefined,
+                              color: isGap ? "error.contrastText" : undefined,
+                              whiteSpace: "nowrap",
+                              fontSize: "0.8rem"
+                            }}
+                          >
+                            {isActive ? (assigned.map(id => getDisplayName(id)).join(", ") || "\u2014") : ""}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Card>
         )}
       </Box>

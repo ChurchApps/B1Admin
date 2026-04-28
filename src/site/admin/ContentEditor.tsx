@@ -22,6 +22,8 @@ import { EditorToolbar } from "./EditorToolbar";
 import { HelpDialog } from "./HelpDialog";
 import { ZoneBox } from "./ZoneBox";
 import { EmptyState } from "./EmptyState";
+import { ConfirmDialog } from "./ConfirmDialog";
+import { Locale } from "@churchapps/apphelper";
 import { useUndoRedo } from "../hooks/useUndoRedo";
 import { HistoryPanel } from "./HistoryPanel";
 import { useThemeMode } from "../../ThemeContext";
@@ -68,6 +70,11 @@ export function ContentEditor(props: Props) {
     blockId: props.blockId
   });
   const [showHistory, setShowHistory] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (history && history.length > 1) setLastSavedAt(Date.now());
+  }, [history?.length]);
 
   const handleUndo = async () => {
     const snapshot = await undo();
@@ -102,10 +109,11 @@ export function ContentEditor(props: Props) {
         document.body.classList.add("dark-theme");
       }
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const [showAdd, setShowAdd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [pendingDeleteElementId, setPendingDeleteElementId] = useState<string | null>(null);
   const css = StyleHelper.getCss(container?.sections || []);
 
   let elementOnlyMode = false;
@@ -258,7 +266,7 @@ export function ContentEditor(props: Props) {
     });
 
     if (!sections || sections.length === 0) {
-      result.push(<EmptyState key="empty" />);
+      result.push(<EmptyState key="empty" onAddClick={() => setShowAdd(true)} />);
     }
     return result;
   };
@@ -280,13 +288,18 @@ export function ContentEditor(props: Props) {
   };
 
   const handleElementDelete = (elementId: string) => {
-    if (window.confirm("Are you sure you want to delete this element?")) {
-      if (container) saveSnapshot(container, "Before deleting element");
-      ApiHelper.delete(`/elements/${elementId}`, "ContentApi").then(() => {
-        setSelectedElementId(null);
-        loadDataInternal("After deleting element");
-      });
-    }
+    setPendingDeleteElementId(elementId);
+  };
+
+  const confirmElementDelete = () => {
+    const elementId = pendingDeleteElementId;
+    if (!elementId) return;
+    if (container) saveSnapshot(container, "Before deleting element");
+    ApiHelper.delete(`/elements/${elementId}`, "ContentApi").then(() => {
+      setSelectedElementId(null);
+      setPendingDeleteElementId(null);
+      loadDataInternal("After deleting element");
+    });
   };
 
   const handleElementDuplicate = (elementId: string) => {
@@ -424,8 +437,8 @@ export function ContentEditor(props: Props) {
     return createTheme(base);
   };
 
-  const getZoneBox = (sections: SectionInterface[], name: string, keyName: string) => (
-    <ZoneBox key={crypto.randomUUID()} sections={sections} name={name} keyName={keyName} deviceType={deviceType}>
+  const getZoneBox = (sections: SectionInterface[], name: string, keyName: string, showZoneLabel: boolean) => (
+    <ZoneBox key={crypto.randomUUID()} sections={sections} name={name} keyName={keyName} deviceType={deviceType} showZoneLabel={showZoneLabel}>
       {getSections(keyName)}
     </ZoneBox>
   );
@@ -436,16 +449,18 @@ export function ContentEditor(props: Props) {
     if (props.pageId) {
       const page = container as PageInterface;
       if (page?.layout && zones[page.layout]) {
-        zones[page.layout].forEach((z: string) => {
+        const layoutZones: string[] = zones[page.layout];
+        const showZoneLabel = layoutZones.length > 1;
+        layoutZones.forEach((z: string) => {
           const sections = ArrayHelper.getAll(page?.sections, "zone", z);
           const name = z.substring(0, 1).toUpperCase() + z.substring(1, z.length);
-          result.push(getZoneBox(sections, name, z));
+          result.push(getZoneBox(sections, name, z, showZoneLabel));
           idx++;
         });
       }
     } else {
       const block = container as BlockInterface;
-      if (block) result.push(getZoneBox((container as BlockInterface)?.sections, "Block Preview", "block"));
+      if (block) result.push(getZoneBox((container as BlockInterface)?.sections, "Block Preview", "block", false));
     }
     return <>{result}</>;
   };
@@ -470,6 +485,7 @@ export function ContentEditor(props: Props) {
           onUndo={handleUndo}
           onRedo={handleRedo}
           onShowHistory={() => setShowHistory(true)}
+          lastSavedAt={lastSavedAt}
         />
         <HistoryPanel
           open={showHistory}
@@ -489,120 +505,133 @@ export function ContentEditor(props: Props) {
 
   return (
     <ThemeProvider theme={lightEditorTheme}>
-    <CssBaseline />
-    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "#e5e8ee" }}>
-      <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
-      <style>{css}</style>
+      <CssBaseline />
+      <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "#e5e8ee" }}>
+        <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
+        <style>{css}</style>
 
-      <EditorToolbar
-        onDone={handleDone}
-        container={container}
-        isPageMode={!!props.pageId}
-        showHelp={showHelp}
-        onToggleHelp={() => setShowHelp(!showHelp)}
-        showAdd={showAdd}
-        onToggleAdd={() => setShowAdd(!showAdd)}
-        deviceType={deviceType}
-        onDeviceTypeChange={setDeviceType}
-        canUndo={canUndo}
-        canRedo={canRedo}
-        onUndo={handleUndo}
-        onRedo={handleRedo}
-        onShowHistory={() => setShowHistory(true)}
-      />
-      <HistoryPanel
-        open={showHistory}
-        onClose={() => setShowHistory(false)}
-        history={history}
-        currentIndex={currentHistoryIndex}
-        onRestore={handleHistoryRestore}
-      />
+        <EditorToolbar
+          onDone={handleDone}
+          container={container}
+          isPageMode={!!props.pageId}
+          showHelp={showHelp}
+          onToggleHelp={() => setShowHelp(!showHelp)}
+          showAdd={showAdd}
+          onToggleAdd={() => setShowAdd(!showAdd)}
+          deviceType={deviceType}
+          onDeviceTypeChange={setDeviceType}
+          canUndo={canUndo}
+          canRedo={canRedo}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+          onShowHistory={() => setShowHistory(true)}
+        />
+        <HistoryPanel
+          open={showHistory}
+          onClose={() => setShowHistory(false)}
+          history={history}
+          currentIndex={currentHistoryIndex}
+          onRestore={handleHistoryRestore}
+        />
 
-      <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }} onClick={handleClickOutside}>
-        <DndProvider backend={HTML5Backend}>
-          <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
-          {showAdd && (
-            <ElementAdd
-              includeBlocks={!elementOnlyMode}
-              includeSection={!elementOnlyMode}
-              updateCallback={() => {
-                setShowAdd(false);
-              }}
-              draggingCallback={() => setShowAdd(false)}
-            />
+        <ConfirmDialog
+          open={!!pendingDeleteElementId}
+          title={Locale.label("site.elements.deleteElementTitle", "Delete element?")}
+          message={Locale.label(
+            "site.elements.deleteElementBody",
+            "This element will be removed from the page. You can undo this with Ctrl+Z."
           )}
-          {editElement && (
-            <ElementEdit
-              element={editElement}
-              updatedCallback={(updatedElement) => {
-                setEditElement(null);
-                if (updatedElement) {
-                  const isNewElement = !editElement.id;
-                  if (isNewElement) loadDataInternal("After adding element");
-                  else {
-                    const c = { ...container };
-                    c.sections.forEach((s) => {
-                      realtimeUpdateElement(updatedElement, s.elements);
-                    });
-                    setContainer(c);
-                    // Save snapshot after editing element
-                    saveSnapshot(c, "After editing element");
+          confirmLabel={Locale.label("common.delete", "Delete")}
+          destructive
+          onConfirm={confirmElementDelete}
+          onCancel={() => setPendingDeleteElementId(null)}
+        />
+
+        <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }} onClick={handleClickOutside}>
+          <DndProvider backend={HTML5Backend}>
+            <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
+            {showAdd && (
+              <ElementAdd
+                includeBlocks={!elementOnlyMode}
+                includeSection={!elementOnlyMode}
+                updateCallback={() => {
+                  setShowAdd(false);
+                }}
+                draggingCallback={() => setShowAdd(false)}
+              />
+            )}
+            {editElement && (
+              <ElementEdit
+                element={editElement}
+                updatedCallback={(updatedElement) => {
+                  setEditElement(null);
+                  if (updatedElement) {
+                    const isNewElement = !editElement.id;
+                    if (isNewElement) loadDataInternal("After adding element");
+                    else {
+                      const c = { ...container };
+                      c.sections.forEach((s) => {
+                        realtimeUpdateElement(updatedElement, s.elements);
+                      });
+                      setContainer(c);
+                      // Save snapshot after editing element
+                      saveSnapshot(c, "After editing element");
+                    }
+                  } else {
+                    loadDataInternal();
                   }
-                } else {
-                  loadDataInternal();
-                }
-              }}
-              onRealtimeChange={handleRealtimeChange}
-              globalStyles={props.config?.globalStyles}
-            />
-          )}
-          {editSection && (
-            <SectionEdit
-              section={editSection}
-              updatedCallback={() => {
-                const isNewSection = !editSection.id;
-                setEditSection(null);
-                loadDataInternal(isNewSection ? "After adding section" : "After editing section");
-              }}
-              globalStyles={props.config?.globalStyles}
-            />
-          )}
-
-          <div style={{ marginTop: 0, paddingTop: 0 }}>
-            {scrollTop > 150 && (
-              <>
-                <div
-                  style={{
-                    position: "fixed",
-                    bottom: "30px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 1000,
-                    width: "min(600px, 80%)",
-                    maxWidth: "600px"
-                  }}>
-                  <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
-                </div>
-                <div
-                  style={{
-                    position: "fixed",
-                    top: "120px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 1000,
-                    width: "min(600px, 80%)",
-                    maxWidth: "600px"
-                  }}>
-                  <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
-                </div>
-              </>
+                }}
+                onRealtimeChange={handleRealtimeChange}
+                globalStyles={props.config?.globalStyles}
+              />
+            )}
+            {editSection && (
+              <SectionEdit
+                section={editSection}
+                updatedCallback={() => {
+                  const isNewSection = !editSection.id;
+                  setEditSection(null);
+                  loadDataInternal(isNewSection ? "After adding section" : "After editing section");
+                }}
+                globalStyles={props.config?.globalStyles}
+              />
             )}
 
-            <ThemeProvider theme={getTheme()}>{getZoneBoxes()}</ThemeProvider>
-          </div>
-        </DndProvider>
+            <div style={{ marginTop: 0, paddingTop: 0 }}>
+              {scrollTop > 150 && (
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      bottom: "30px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      zIndex: 1000,
+                      width: "min(600px, 80%)",
+                      maxWidth: "600px"
+                    }}>
+                    <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
+                  </div>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "120px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      zIndex: 1000,
+                      width: "min(600px, 80%)",
+                      maxWidth: "600px"
+                    }}>
+                    <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
+                  </div>
+                </>
+              )}
+
+              <ThemeProvider theme={getTheme()}>{getZoneBoxes()}</ThemeProvider>
+            </div>
+          </DndProvider>
+        </div>
       </div>
-    </div>
     </ThemeProvider>
   );
 }

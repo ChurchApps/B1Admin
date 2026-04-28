@@ -18,7 +18,7 @@ export const ServingPage = () => {
   const [showAllMinistries, setShowAllMinistries] = React.useState(false);
   const context = React.useContext(UserContext);
   const isAdmin = UserHelper.checkAccess(Permissions.membershipApi.roles.edit);
-  
+
   const ministries = useQuery<GroupInterface[]>({
     queryKey: isAdmin ? ["/groups/tag/ministry", "MembershipApi"] : ["/groups/my/ministry", "MembershipApi"],
     placeholderData: []

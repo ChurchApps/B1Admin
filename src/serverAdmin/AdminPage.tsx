@@ -2,7 +2,7 @@ import React from "react";
 import { Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { Grid, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Card, CardContent } from "@mui/material";
-import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, Settings as AdminIcon, PersonSearch as UserIcon } from "@mui/icons-material";
+import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, PersonSearch as UserIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
 import { ChurchesTab } from "./components/ChurchesTab";

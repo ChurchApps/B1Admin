@@ -37,7 +37,7 @@ export const CheckinThemeEdit: React.FC = () => {
     try {
       const allSettings: GenericSettingInterface[] = await ApiHelper.get("/settings", "MembershipApi");
       // Try new key first, fall back to legacy checkinTheme
-      let themeSetting = allSettings.find(s => s.keyName === "checkinSettings");
+      const themeSetting = allSettings.find(s => s.keyName === "checkinSettings");
       if (!themeSetting) {
         const legacy = allSettings.find(s => s.keyName === "checkinTheme");
         if (legacy?.value) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Dialog, Icon, InputAdornment, TextField, Tabs, Tab, Box, Fade, Grow, Chip } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Icon, IconButton, InputAdornment, TextField, Tabs, Tab, Box, Fade } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { BlockInterface } from "../../../helpers";
 import { useDrag } from "react-dnd";
@@ -24,24 +24,8 @@ interface ElementConfig {
   blockId?: string;
 }
 
-interface CategoryInfo {
-  label: string;
-  color: string;
-  bgColor: string;
-  borderColor: string;
-  icon: string;
-}
-
-const getCategoryStyles = (): Record<CategoryType, CategoryInfo> => ({
-  layout: { label: Locale.label("site.elementAdd.layout"), color: "#1565C0", bgColor: "rgba(21, 101, 192, 0.08)", borderColor: "rgba(21, 101, 192, 0.3)", icon: "view_quilt" },
-  content: { label: Locale.label("site.elementAdd.content"), color: "#2e7d32", bgColor: "rgba(46, 125, 50, 0.08)", borderColor: "rgba(46, 125, 50, 0.3)", icon: "text_fields" },
-  media: { label: Locale.label("site.elementAdd.media"), color: "#ed6c02", bgColor: "rgba(237, 108, 2, 0.08)", borderColor: "rgba(237, 108, 2, 0.3)", icon: "perm_media" },
-  church: { label: Locale.label("site.elementAdd.church"), color: "#7b1fa2", bgColor: "rgba(123, 31, 162, 0.08)", borderColor: "rgba(123, 31, 162, 0.3)", icon: "church" },
-  advanced: { label: Locale.label("site.elementAdd.advanced"), color: "#455a64", bgColor: "rgba(69, 90, 100, 0.08)", borderColor: "rgba(69, 90, 100, 0.3)", icon: "code" }
-});
-
 // Draggable element card component
-function DraggableElement({ config, draggingCallback, index, showCategoryBadge, categoryStyles }: { config: ElementConfig; draggingCallback: () => void; index: number; showCategoryBadge?: boolean; categoryStyles: Record<CategoryType, CategoryInfo>; }) {
+function DraggableElement({ config, draggingCallback, index }: { config: ElementConfig; draggingCallback: () => void; index: number; }) {
   const dragRef = React.useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -60,48 +44,65 @@ function DraggableElement({ config, draggingCallback, index, showCategoryBadge, 
 
   drag(dragRef);
 
-  const catStyle = categoryStyles[config.category] || categoryStyles.advanced;
-
   return (
-    <Grow in={true} style={{ transformOrigin: "0 0 0" }} timeout={100 + index * 20}>
-      <div
-        ref={dragRef}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ background: "var(--bg-card)", border: `1px solid ${isHovered ? catStyle.borderColor : "var(--border-main)"}`, borderRadius: "10px", padding: "14px", cursor: isDragging ? "grabbing" : "grab", opacity: isDragging ? 0.6 : 1, transform: isHovered && !isDragging ? "translateY(-3px)" : "translateY(0)", boxShadow: isHovered && !isDragging ? "0 8px 24px rgba(0,0,0,0.4)" : "0 1px 4px rgba(0,0,0,0.2)", transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)", display: "flex", flexDirection: "column", gap: "8px", minHeight: "90px", position: "relative" }}
+    <div
+      ref={dragRef}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        background: "#fff",
+        border: `1px solid ${isHovered ? "#1976d2" : "#e5e7eb"}`,
+        borderRadius: "8px",
+        padding: "12px",
+        cursor: isDragging ? "grabbing" : "grab",
+        opacity: isDragging ? 0.6 : 1,
+        boxShadow: isHovered && !isDragging ? "0 2px 8px rgba(0,0,0,0.06)" : "none",
+        transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        minHeight: "56px"
+      }}
+      title={config.description}
+      tabIndex={index}
+    >
+      <Box
+        sx={{
+          width: 36,
+          height: 36,
+          borderRadius: "6px",
+          background: "#f3f4f6",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0
+        }}
       >
-        {showCategoryBadge && (
-          <div style={{ position: "absolute", top: "8px", right: "8px" }}>
-            <Chip size="small" label={catStyle.label} sx={{ height: "20px", fontSize: "10px", fontWeight: 600, backgroundColor: catStyle.bgColor, color: catStyle.color, border: `1px solid ${catStyle.borderColor}`, "& .MuiChip-label": { px: 1 } }} />
-          </div>
+        <Icon sx={{ color: "#374151", fontSize: 20 }}>{config.icon}</Icon>
+      </Box>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Box sx={{ color: "#111827", fontSize: "0.875rem", fontWeight: 600, lineHeight: 1.2 }}>
+          {config.label}
+        </Box>
+        {isHovered && (
+          <Box sx={{ color: "#6b7280", fontSize: "0.75rem", lineHeight: 1.3, mt: 0.25 }}>
+            {config.description}
+          </Box>
         )}
-
-        <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-          <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: catStyle.bgColor, border: `1px solid ${catStyle.borderColor}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <Icon sx={{ color: catStyle.color, fontSize: "22px" }}>{config.icon}</Icon>
-          </div>
-          <div style={{ flex: 1, minWidth: 0, paddingRight: showCategoryBadge ? "60px" : "20px" }}>
-            <div style={{ color: "var(--text-main)", fontSize: "14px", fontWeight: 600, marginBottom: "3px" }}>{config.label}</div>
-            <div style={{ color: "var(--text-muted)", fontSize: "12px", lineHeight: 1.4 }}>{config.description}</div>
-          </div>
-        </div>
-
-        <div style={{ position: "absolute", bottom: "8px", right: "8px", opacity: isHovered ? 0.5 : 0.2, transition: "opacity 0.2s" }}>
-          <Icon sx={{ color: "var(--text-muted)", fontSize: "16px" }}>drag_indicator</Icon>
-        </div>
-      </div>
-    </Grow>
+      </Box>
+      <Icon sx={{ color: "#d1d5db", fontSize: 16, flexShrink: 0 }}>drag_indicator</Icon>
+    </div>
   );
 }
 
+type TabKey = "all" | "common" | "media" | "church" | "advanced" | "blocks";
 
 export function ElementAdd(props: Props) {
   const [blocks, setBlocks] = useState<BlockInterface[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState<TabKey>("all");
 
   const showBlocks = props.includeBlocks && blocks.length > 0;
-  const categoryStyles = useMemo(() => getCategoryStyles(), []);
 
   const loadData = () => { ApiHelper.get("/blocks", "ContentApi").then((b: BlockInterface[]) => setBlocks(b)); };
 
@@ -149,12 +150,11 @@ export function ElementAdd(props: Props) {
   const filteredElements = useMemo(() => {
     let elements = [...allElements];
 
-    if (activeTab === 1) elements = elements.filter(e => e.category === "layout");
-    else if (activeTab === 2) elements = elements.filter(e => e.category === "content");
-    else if (activeTab === 3) elements = elements.filter(e => e.category === "media");
-    else if (activeTab === 4) elements = elements.filter(e => e.category === "church");
-    else if (activeTab === 5) elements = elements.filter(e => e.category === "advanced");
-    else if (activeTab === 6 && showBlocks) return blockElements;
+    if (activeTab === "common") elements = elements.filter(e => e.category === "layout" || e.category === "content");
+    else if (activeTab === "media") elements = elements.filter(e => e.category === "media");
+    else if (activeTab === "church") elements = elements.filter(e => e.category === "church");
+    else if (activeTab === "advanced") elements = elements.filter(e => e.category === "advanced");
+    else if (activeTab === "blocks" && showBlocks) return blockElements;
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -164,66 +164,104 @@ export function ElementAdd(props: Props) {
     return elements;
   }, [allElements, blockElements, activeTab, searchQuery, showBlocks]);
 
-  const tabLabels = [
-    { label: Locale.label("site.elementAdd.all"), icon: "apps" },
-    { label: Locale.label("site.elementAdd.layout"), icon: "view_quilt" },
-    { label: Locale.label("site.elementAdd.content"), icon: "text_fields" },
-    { label: Locale.label("site.elementAdd.media"), icon: "perm_media" },
-    { label: Locale.label("site.elementAdd.church"), icon: "church" },
-    { label: Locale.label("site.elementAdd.advanced"), icon: "code" }
+  type TabDef = { key: TabKey; label: string };
+  const tabs: TabDef[] = [
+    { key: "all", label: Locale.label("site.elementAdd.all") },
+    { key: "common", label: Locale.label("site.elementAdd.common", "Common") },
+    { key: "media", label: Locale.label("site.elementAdd.media") },
+    { key: "church", label: Locale.label("site.elementAdd.church") },
+    { key: "advanced", label: Locale.label("site.elementAdd.advanced") }
   ];
-
-  if (showBlocks) tabLabels.push({ label: Locale.label("site.elementAdd.blocks"), icon: "widgets" });
+  if (showBlocks) tabs.push({ key: "blocks", label: Locale.label("site.elementAdd.blocks") });
 
   return (
-    <Dialog open={true} onClose={props.updateCallback} fullWidth maxWidth="md" PaperProps={{ sx: { borderRadius: "12px", overflow: "hidden", maxHeight: "85vh", display: "flex", flexDirection: "column" } }} TransitionComponent={Fade} transitionDuration={200}>
-      <Box sx={{ background: "linear-gradient(135deg, #1565C0 0%, #1976d2 100%)", px: 3, pt: 2.5, pb: 2, position: "relative", overflow: "hidden", flexShrink: 0 }}>
-        <Box sx={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.1)", pointerEvents: "none" }} />
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", position: "relative", zIndex: 1 }}>
-          <Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 0.5 }}>
-              <Box sx={{ width: 36, height: 36, borderRadius: "8px", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Icon sx={{ color: "#fff", fontSize: 22 }}>add_box</Icon>
-              </Box>
-              <Box sx={{ color: "#fff", fontSize: "20px", fontWeight: 600 }}>{Locale.label("site.elementAdd.addElements")}</Box>
-            </Box>
-            <Box sx={{ color: "rgba(255,255,255,0.8)", fontSize: "13px", pl: "48px" }}>{Locale.label("site.elementAdd.dragAndDrop")}</Box>
-          </Box>
-          <Box onClick={props.updateCallback} sx={{ width: 32, height: 32, borderRadius: "8px", background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.2s", "&:hover": { background: "rgba(255,255,255,0.25)" } }}>
-            <Icon sx={{ color: "#fff", fontSize: 18 }}>close</Icon>
-          </Box>
+    <Dialog
+      open={true}
+      onClose={props.updateCallback}
+      fullWidth
+      maxWidth="md"
+      PaperProps={{ sx: { borderRadius: "10px", maxHeight: "80vh", display: "flex", flexDirection: "column" } }}
+      TransitionComponent={Fade}
+      transitionDuration={150}
+    >
+      <DialogTitle sx={{ p: 2.5, pb: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb" }}>
+        <Box sx={{ fontSize: "1.05rem", fontWeight: 600, color: "#111827" }}>
+          {Locale.label("site.elementAdd.addElements")}
         </Box>
-        <TextField placeholder={Locale.label("site.elementAdd.searchElements")} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} size="small" fullWidth sx={{ mt: 2, "& .MuiOutlinedInput-root": { background: "var(--bg-header)", color: "var(--text-main)", borderRadius: "8px", fontSize: "14px", "& fieldset": { border: "none" }, "&.Mui-focused": { boxShadow: "0 4px 12px rgba(0,0,0,0.3)" } } }} InputProps={{ startAdornment: (<InputAdornment position="start"><Icon sx={{ color: "var(--text-muted)", fontSize: 20 }}>search</Icon></InputAdornment>) }} />
+        <IconButton size="small" onClick={props.updateCallback} aria-label="close">
+          <Icon fontSize="small">close</Icon>
+        </IconButton>
+      </DialogTitle>
+
+      <Box sx={{ px: 2.5, pt: 1.5, pb: 1, flexShrink: 0 }}>
+        <TextField
+          autoFocus
+          placeholder={Locale.label("site.elementAdd.searchElements")}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          size="small"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Icon sx={{ color: "#9ca3af", fontSize: 20 }}>search</Icon>
+              </InputAdornment>
+            )
+          }}
+        />
       </Box>
 
-      <Box sx={{ borderBottom: "1px solid var(--border-main)", background: "var(--bg-sub)", px: 1, flexShrink: 0 }}>
-        <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)} variant="scrollable" scrollButtons="auto" sx={{ minHeight: 48, "& .MuiTab-root": { minHeight: 48, textTransform: "none", fontSize: "13px", fontWeight: 500, color: "var(--text-muted)", minWidth: "auto", px: 2, "&.Mui-selected": { color: "#1565C0", fontWeight: 600 } }, "& .MuiTabs-indicator": { height: 3, borderRadius: "3px 3px 0 0", backgroundColor: "#1565C0" } }}>
-          {tabLabels.map((tab, i) => (
-            <Tab key={i} label={<Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}><Icon sx={{ fontSize: 18 }}>{tab.icon}</Icon><span>{tab.label}</span></Box>} />
+      <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1.5, flexShrink: 0 }}>
+        <Tabs
+          value={activeTab}
+          onChange={(_, v) => setActiveTab(v)}
+          variant="scrollable"
+          scrollButtons="auto"
+          sx={{
+            minHeight: 40,
+            "& .MuiTab-root": {
+              minHeight: 40,
+              textTransform: "none",
+              fontSize: "0.8125rem",
+              fontWeight: 500,
+              color: "#6b7280",
+              minWidth: "auto",
+              px: 1.75,
+              "&.Mui-selected": { color: "#1d4ed8", fontWeight: 600 }
+            },
+            "& .MuiTabs-indicator": { height: 2, backgroundColor: "#1d4ed8" }
+          }}
+        >
+          {tabs.map((tab) => (
+            <Tab key={tab.key} value={tab.key} label={tab.label} />
           ))}
         </Tabs>
       </Box>
 
-      <Box sx={{ p: 2.5, overflowY: "auto", background: "var(--bg-card)", minHeight: 280, flex: 1 }}>
+      <DialogContent sx={{ p: 2, overflowY: "auto", background: "#f9fafb", flex: 1 }}>
         {filteredElements.length === 0 ? (
-          <Box sx={{ textAlign: "center", py: 6, color: "var(--text-muted)" }}>
-            <Icon sx={{ fontSize: 48, mb: 2, opacity: 0.4 }}>search_off</Icon>
-            <Box sx={{ fontSize: "15px", fontWeight: 500 }}>{Locale.label("site.elementAdd.noElementsFound")}</Box>
-            <Box sx={{ fontSize: "13px", mt: 0.5 }}>{Locale.label("site.elementAdd.tryDifferentSearch")}</Box>
+          <Box sx={{ textAlign: "center", py: 6, color: "#6b7280" }}>
+            <Icon sx={{ fontSize: 40, mb: 1.5, opacity: 0.5 }}>search_off</Icon>
+            <Box sx={{ fontSize: "0.9rem", fontWeight: 500 }}>
+              {Locale.label("site.elementAdd.noElementsFound")}
+            </Box>
+            <Box sx={{ fontSize: "0.8rem", mt: 0.5 }}>
+              {Locale.label("site.elementAdd.tryDifferentSearch")}
+            </Box>
           </Box>
         ) : (
-          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 2 }}>
+          <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 1.25 }}>
             {filteredElements.map((config, index) => (
-              <DraggableElement key={`${config.type}-${config.blockId || index}`} config={config} draggingCallback={props.draggingCallback} index={index} showCategoryBadge={activeTab === 0} categoryStyles={categoryStyles} />
+              <DraggableElement
+                key={`${config.type}-${config.blockId || index}`}
+                config={config}
+                draggingCallback={props.draggingCallback}
+                index={index}
+              />
             ))}
           </Box>
         )}
-      </Box>
-
-      <Box sx={{ px: 2.5, py: 1.5, background: "var(--bg-sub)", borderTop: "1px solid var(--border-main)", display: "flex", alignItems: "center", justifyContent: "center", gap: 1, flexShrink: 0 }}>
-        <Icon sx={{ fontSize: 16, color: "var(--text-muted)" }}>info_outline</Icon>
-        <Box sx={{ fontSize: "12px", color: "var(--text-muted)" }}>{Locale.label("site.elementAdd.dragHint")}</Box>
-      </Box>
+      </DialogContent>
     </Dialog>
   );
 }

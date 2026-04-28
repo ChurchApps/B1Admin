@@ -50,7 +50,7 @@ export const PaymentEdit: React.FC<Props> = (props) => {
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
       setCurrency(result);
-    })
+    });
   }, []);
 
   const getFundOptions = () =>
@@ -75,11 +75,7 @@ export const PaymentEdit: React.FC<Props> = (props) => {
         type="number"
         value={amount}
         onChange={handleChange}
-        slotProps={{
-          input: {
-            startAdornment: <InputAdornment position="start">{CurrencyHelper.getCurrencySymbol(currency)}</InputAdornment>
-          }
-        }}
+        slotProps={{ input: { startAdornment: <InputAdornment position="start">{CurrencyHelper.getCurrencySymbol(currency)}</InputAdornment> } }}
       />
     </>
   );

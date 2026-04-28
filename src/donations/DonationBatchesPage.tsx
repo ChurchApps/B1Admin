@@ -265,7 +265,7 @@ export const DonationBatchesPage = () => {
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
       setCurrency(result);
-    })
+    });
   }, []);
 
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;

@@ -106,7 +106,7 @@ export const Header: React.FC = () => {
         "/profile/devices": "nav-item-devices",
         "/mobile": "nav-item-mobile",
         "/site/pages": "nav-item-website",
-        "/sermons": "nav-item-sermons",
+        "/sermons": "nav-item-sermons"
       };
 
       // Find all navigation links
@@ -138,7 +138,7 @@ export const Header: React.FC = () => {
             devices: "nav-item-devices",
             mobile: "nav-item-mobile",
             website: "nav-item-website",
-            sermons: "nav-item-sermons",
+            sermons: "nav-item-sermons"
           };
 
           for (const [key, testId] of Object.entries(textToTestId)) {

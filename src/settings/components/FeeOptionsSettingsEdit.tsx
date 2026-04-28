@@ -45,7 +45,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     dkk: { percent: 2.9, fixed: 1.8, symbol: "DKK" },
     chf: { percent: 2.9, fixed: 0.3, symbol: "CHF" },
     mxn: { percent: 2.9, fixed: 3.0, symbol: "MXN" },
-    brl: { percent: 3.9, fixed: 0.5, symbol: "R$" },
+    brl: { percent: 3.9, fixed: 0.5, symbol: "R$" }
   };
 
   const loadData = async () => {
@@ -190,11 +190,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
               onChange={handleChange}
               value={options.flatRateCC}
               defaultValue=""
-              slotProps={{
-                input: {
-                  startAdornment: <InputAdornment position="start">{options.symbol}</InputAdornment>
-                }
-              }}
+              slotProps={{ input: { startAdornment: <InputAdornment position="start">{options.symbol}</InputAdornment> } }}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>

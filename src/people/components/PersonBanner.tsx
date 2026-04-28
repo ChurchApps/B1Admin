@@ -135,7 +135,7 @@ export const PersonBanner = memo((props: Props) => {
         height: 400,
         borderRadius: "50%",
         background: "rgba(255,255,255,0.05)",
-        pointerEvents: "none",
+        pointerEvents: "none"
       },
       "&::after": {
         content: "''",
@@ -146,8 +146,8 @@ export const PersonBanner = memo((props: Props) => {
         height: 300,
         borderRadius: "50%",
         background: "rgba(255,255,255,0.04)",
-        pointerEvents: "none",
-      },
+        pointerEvents: "none"
+      }
     }}>
       <Stack direction={{ xs: "column", lg: "row" }} spacing={{ xs: 2, md: 4 }} alignItems={{ xs: "flex-start", md: "center" }} sx={{ width: "100%", position: "relative", zIndex: 1 }}>
         {/* Column 1: Avatar + Name + Status */}
