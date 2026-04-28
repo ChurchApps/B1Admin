@@ -61,7 +61,7 @@ export const PagePreview: React.FC = () => {
   if (!pageData) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-        <Typography>Loading...</Typography>
+        <Typography>{Locale.label("site.pagePreview.loading")}</Typography>
       </Box>
     );
   }
@@ -90,7 +90,7 @@ export const PagePreview: React.FC = () => {
           </Box>
 
           <Box sx={{ position: "relative" }}>
-            <iframe src={previewUrl} style={{ width: "100%", height: "80vh", minHeight: "600px", border: "none", display: "block" }} title={`Preview of ${pageData.title}`} />
+            <iframe src={previewUrl} style={{ width: "100%", height: "80vh", minHeight: "600px", border: "none", display: "block" }} title={Locale.label("site.pagePreview.previewOf").replace("{title}", pageData.title)} />
           </Box>
         </Paper>
       </Box>

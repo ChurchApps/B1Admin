@@ -9,6 +9,7 @@ import {
   Person as PersonIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
+import { Locale } from "@churchapps/apphelper";
 import { NavigationTabs, type NavigationTab, type NavigationDropdown } from "../../components/ui";
 
 interface Props {
@@ -22,11 +23,11 @@ export const PersonNavigation = memo((props: Props) => {
   const { selectedTab, onTabChange, allForms, onFormSelect } = props;
 
   const tabs: NavigationTab[] = useMemo(() => [
-    { value: "details", label: "Details", icon: <PersonIcon /> },
-    { value: "notes", label: "Notes", icon: <NotesIcon /> },
-    { value: "groups", label: "Groups", icon: <GroupIcon /> },
-    { value: "attendance", label: "Attendance", icon: <AttendanceIcon /> },
-    { value: "donations", label: "Donations", icon: <DonationIcon /> }
+    { value: "details", label: Locale.label("people.personNavigation.details"), icon: <PersonIcon /> },
+    { value: "notes", label: Locale.label("people.personNavigation.notes"), icon: <NotesIcon /> },
+    { value: "groups", label: Locale.label("people.personNavigation.groups"), icon: <GroupIcon /> },
+    { value: "attendance", label: Locale.label("people.personNavigation.attendance"), icon: <AttendanceIcon /> },
+    { value: "donations", label: Locale.label("people.personNavigation.donations"), icon: <DonationIcon /> }
   ], []);
 
   const dropdown: NavigationDropdown<FormInterface> | undefined = useMemo(() => {
@@ -35,7 +36,7 @@ export const PersonNavigation = memo((props: Props) => {
 
     return {
       value: "forms",
-      label: "Forms",
+      label: Locale.label("people.personNavigation.forms"),
       icon: <FormIcon />,
       items: personForms,
       renderItem: (form: FormInterface) => (

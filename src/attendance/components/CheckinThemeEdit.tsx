@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, Switch, FormControlLabel, Typography, Button, IconButton, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, InputBox, ImageEditor } from "@churchapps/apphelper";
+import { ApiHelper, InputBox, ImageEditor, Locale } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
 interface IdleSlide {
@@ -140,9 +140,9 @@ export const CheckinThemeEdit: React.FC = () => {
   }
 
   return (
-    <InputBox headerText="Kiosk Settings" headerIcon="settings" saveFunction={handleSave} isSubmitting={isSubmitting}>
+    <InputBox headerText={Locale.label("attendance.checkinThemeEdit.kioskSettings")} headerIcon="settings" saveFunction={handleSave} isSubmitting={isSubmitting}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        Kiosk colors are managed in Settings &gt; App Theme. Configure background images and idle screen behavior below.
+        {Locale.label("attendance.checkinThemeEdit.headerSubtitle")}
       </Typography>
 
       {/* Background Image Section */}

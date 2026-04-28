@@ -82,7 +82,7 @@ export const PersonPage = () => {
       allowAnonymousPosts: false,
       contentType: "person",
       contentId: person.id,
-      title: person.name.display + " Notes",
+      title: person.name.display + Locale.label("people.personPage.notesSuffix"),
       visibility: "hidden"
     };
     const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
@@ -155,7 +155,7 @@ export const PersonPage = () => {
       <div style={{ padding: "24px" }}>
         {getCurrentTab()}
         {selectedTab === "details" && editMode === "edit" && person?.id && (
-          <GdprActions personId={person.id} personName={person.name?.display || "this person"} onAnonymized={refetch} />
+          <GdprActions personId={person.id} personName={person.name?.display || Locale.label("people.personPage.thisPerson")} onAnonymized={refetch} />
         )}
       </div>
     </>

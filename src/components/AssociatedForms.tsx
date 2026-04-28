@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FormSubmission } from "./";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Icon, Box } from "@mui/material";
 import { type FormSubmissionInterface } from "@churchapps/helpers";
-import { Permissions, FormSubmissionEdit, UserHelper, ApiHelper } from "@churchapps/apphelper";
+import { Permissions, FormSubmissionEdit, UserHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   contentType: string;
@@ -76,7 +76,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
           }}>
           <AccordionSummary onClick={() => handleAdd(uf.id)}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Button variant="text" onClick={() => handleAdd(uf.id)} data-testid="add-form-button" aria-label="Add form">
+              <Button variant="text" onClick={() => handleAdd(uf.id)} data-testid="add-form-button" aria-label={Locale.label("components.associatedForms.addForm")}>
                 <Icon>add</Icon>
               </Button>
               <span>{uf.name}</span>

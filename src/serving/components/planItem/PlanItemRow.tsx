@@ -105,7 +105,7 @@ export const PlanItemRow: React.FC<Props> = ({
         <ScheduleIcon sx={{ fontSize: 18, color: planItem.seconds === 0 ? "error.main" : "text.secondary" }} />
         <Box
           component="span"
-          title="Duration"
+          title={Locale.label("plans.planItem.duration")}
           sx={{
             color: planItem.seconds === 0 ? "error.main" : "text.secondary",
             fontSize: "0.85rem",

@@ -251,7 +251,7 @@ export const PersonEdit = memo((props: Props) => {
       saveFunction={handleSave}
       isSubmitting={isSubmitting}
       headerActionContent={
-        <Button id="mergeButton" size="small" onClick={props.showMergeSearch} data-testid="merge-person-button" aria-label="Merge person">
+        <Button id="mergeButton" size="small" onClick={props.showMergeSearch} data-testid="merge-person-button" aria-label={Locale.label("people.personEdit.mergePersonAria")}>
           {Locale.label("people.personEdit.merge")}
         </Button>
       }>

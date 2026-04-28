@@ -76,7 +76,7 @@ export function TableEdit(props: Props) {
     for (let i = 0; i < rows; i++) {
       const row: React.ReactElement[] = [];
       for (let j = 0; j < cols; j++) {
-        if (markdown) row.push(<TableCell key={j} style={{ cursor: "pointer" }} onClick={() => { setEditCellIdx([i, j]); }}><MarkdownPreviewLight value={contents[i][j] || "(empty)"} /></TableCell>);
+        if (markdown) row.push(<TableCell key={j} style={{ cursor: "pointer" }} onClick={() => { setEditCellIdx([i, j]); }}><MarkdownPreviewLight value={contents[i][j] || Locale.label("site.tableEdit.empty")} /></TableCell>);
         else row.push(<TableCell key={j}><TextField fullWidth size="small" label="" style={{ margin: 0 }} name={"cell-" + i + "-" + j} value={contents[i][j]} onChange={handleChange} data-testid={`table-cell-${i}-${j}-input`} /></TableCell>);
       }
       result.push(<TableRow key={i}>{row}</TableRow>);
@@ -88,27 +88,27 @@ export function TableEdit(props: Props) {
     <>
       <Grid container columnSpacing={3}>
         <Grid size={{ md: 6, xs: 12 }}>
-          <TextField fullWidth size="small" label="Rows" name="rows" value={rows} onChange={handleChange} data-testid="table-rows-input" />
+          <TextField fullWidth size="small" label={Locale.label("site.tableEdit.rows")} name="rows" value={rows} onChange={handleChange} data-testid="table-rows-input" />
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
-          <TextField fullWidth size="small" label="Columns" name="columns" value={cols} onChange={handleChange} data-testid="table-columns-input" />
+          <TextField fullWidth size="small" label={Locale.label("site.tableEdit.columns")} name="columns" value={cols} onChange={handleChange} data-testid="table-columns-input" />
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
           <FormControl fullWidth size="small">
-            <InputLabel>First Row is Header</InputLabel>
-            <Select fullWidth label="First Row is Header" size="small" name="head" value={props.parsedData.head?.toString() || "false"} onChange={handleChange}>
-              <MenuItem value="true">Yes</MenuItem>
-              <MenuItem value="false">No</MenuItem>
+            <InputLabel>{Locale.label("site.tableEdit.firstRowHeader")}</InputLabel>
+            <Select fullWidth label={Locale.label("site.tableEdit.firstRowHeader")} size="small" name="head" value={props.parsedData.head?.toString() || "false"} onChange={handleChange}>
+              <MenuItem value="true">{Locale.label("site.tableEdit.yes")}</MenuItem>
+              <MenuItem value="false">{Locale.label("site.tableEdit.no")}</MenuItem>
             </Select>
           </FormControl>
 
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
           <FormControl fullWidth size="small">
-            <InputLabel>Allow Markdown</InputLabel>
-            <Select fullWidth label="Allow Markdown" size="small" name="markdown" value={props.parsedData.markdown?.toString() || "false"} onChange={handleChange}>
-              <MenuItem value="true">Yes</MenuItem>
-              <MenuItem value="false">No</MenuItem>
+            <InputLabel>{Locale.label("site.tableEdit.allowMarkdown")}</InputLabel>
+            <Select fullWidth label={Locale.label("site.tableEdit.allowMarkdown")} size="small" name="markdown" value={props.parsedData.markdown?.toString() || "false"} onChange={handleChange}>
+              <MenuItem value="true">{Locale.label("site.tableEdit.yes")}</MenuItem>
+              <MenuItem value="false">{Locale.label("site.tableEdit.no")}</MenuItem>
             </Select>
           </FormControl>
 
@@ -116,10 +116,10 @@ export function TableEdit(props: Props) {
       </Grid>
 
       <FormControl fullWidth size="small">
-        <InputLabel>Size</InputLabel>
-        <Select fullWidth label="Size" size="small" name="size" value={props.parsedData.size?.toString() || "medium"} onChange={handleChange}>
-          <MenuItem value="medium">Medium</MenuItem>
-          <MenuItem value="small">Small</MenuItem>
+        <InputLabel>{Locale.label("site.tableEdit.size")}</InputLabel>
+        <Select fullWidth label={Locale.label("site.tableEdit.size")} size="small" name="size" value={props.parsedData.size?.toString() || "medium"} onChange={handleChange}>
+          <MenuItem value="medium">{Locale.label("site.tableEdit.medium")}</MenuItem>
+          <MenuItem value="small">{Locale.label("site.tableEdit.sizeSmall")}</MenuItem>
         </Select>
       </FormControl>
       {editCellIdx && getMarkdownEditor()}

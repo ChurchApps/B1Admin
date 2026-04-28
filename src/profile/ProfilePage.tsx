@@ -129,7 +129,7 @@ export const ProfilePage = () => {
       <>
         <PageHeader title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
         <Box sx={{ p: 3 }}>
-          <Alert severity="info">Profile editing is disabled in demo mode.</Alert>
+          <Alert severity="info">{Locale.label("profile.profilePage.demoModeAlert")}</Alert>
         </Box>
       </>
     );
@@ -189,11 +189,11 @@ export const ProfilePage = () => {
                       value={password}
                       onChange={handleChange}
                       disabled={isDemo}
-                      helperText={isDemo ? "Password changes are disabled in demo mode" : Locale.label("profile.profilePage.passwordHelper")}
+                      helperText={isDemo ? Locale.label("profile.profilePage.demoPasswordHelper") : Locale.label("profile.profilePage.passwordHelper")}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
+                            <IconButton aria-label={Locale.label("profile.profilePage.togglePasswordVisibility")} onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
                               {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
                             </IconButton>
                           </InputAdornment>
@@ -213,7 +213,7 @@ export const ProfilePage = () => {
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton aria-label="toggle password visibility" onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
+                            <IconButton aria-label={Locale.label("profile.profilePage.togglePasswordVisibility")} onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
                               {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
                             </IconButton>
                           </InputAdornment>
@@ -239,7 +239,7 @@ export const ProfilePage = () => {
             <CardContent>
               <Stack spacing={2}>
                 <Typography variant="h6" gutterBottom>
-                  Theme Preferences
+                  {Locale.label("profile.profilePage.themePreferences")}
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <LightMode color={mode === "light" ? "primary" : "disabled"} />
@@ -251,12 +251,12 @@ export const ProfilePage = () => {
                         data-testid="theme-toggle"
                       />
                     }
-                    label={mode === "dark" ? "Dark Mode" : "Light Mode"}
+                    label={mode === "dark" ? Locale.label("profile.profilePage.darkMode") : Locale.label("profile.profilePage.lightMode")}
                   />
                   <DarkMode color={mode === "dark" ? "primary" : "disabled"} />
                 </Box>
                 <Typography variant="body2" color="text.secondary">
-                  Your theme preference is saved automatically and will be remembered on this device.
+                  {Locale.label("profile.profilePage.themePreferencesHelper")}
                 </Typography>
               </Stack>
             </CardContent>

@@ -1,6 +1,6 @@
 import React from "react";
 import { FormControl, InputLabel, MenuItem, Select, TextField, Grid, Typography, type SelectChangeEvent } from "@mui/material";
-import { ApiHelper, ErrorMessages, UniqueIdHelper } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, UniqueIdHelper, Locale } from "@churchapps/apphelper";
 import { type TextingProviderInterface } from "@churchapps/helpers";
 
 interface Props {
@@ -30,7 +30,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
     if (provider === "TextInChurch" || provider === "Clearstream") {
       return (
         <Grid size={{ xs: 12, md: 6 }}>
-          <TextField fullWidth name="apiKey" label="API Key" value={apiKey} onChange={handleChange} type="password" />
+          <TextField fullWidth name="apiKey" label={Locale.label("settings.textingSettingsEdit.apiKey")} value={apiKey} onChange={handleChange} type="password" />
         </Grid>
       );
     }
@@ -38,10 +38,10 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
     return (
       <>
         <Grid size={{ xs: 12, md: 6 }}>
-          <TextField fullWidth name="apiKey" label="API Key" value={apiKey} onChange={handleChange} type="password" />
+          <TextField fullWidth name="apiKey" label={Locale.label("settings.textingSettingsEdit.apiKey")} value={apiKey} onChange={handleChange} type="password" />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <TextField fullWidth name="apiSecret" label="API Secret" value={apiSecret} onChange={handleChange} type="password" />
+          <TextField fullWidth name="apiSecret" label={Locale.label("settings.textingSettingsEdit.apiSecret")} value={apiSecret} onChange={handleChange} type="password" />
         </Grid>
       </>
     );
@@ -60,7 +60,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
         await ApiHelper.post("/texting/providers", [tp], "MessagingApi");
       }
     } catch (error: any) {
-      let message = "Error saving texting settings.";
+      let message = Locale.label("settings.textingSettingsEdit.saveError");
       if (error?.message) {
         try {
           const parsed = JSON.parse(error.message);
@@ -104,24 +104,24 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
       <Grid container spacing={3} marginBottom={2}>
         <Grid size={{ xs: 12, md: 4 }}>
           <FormControl fullWidth>
-            <InputLabel>Provider</InputLabel>
-            <Select name="provider" label="Provider" value={provider || ""} onChange={handleChange}>
-              <MenuItem value="">None</MenuItem>
-              <MenuItem value="Clearstream">Clearstream</MenuItem>
+            <InputLabel>{Locale.label("settings.textingSettingsEdit.provider")}</InputLabel>
+            <Select name="provider" label={Locale.label("settings.textingSettingsEdit.provider")} value={provider || ""} onChange={handleChange}>
+              <MenuItem value="">{Locale.label("settings.textingSettingsEdit.none")}</MenuItem>
+              <MenuItem value="Clearstream">{Locale.label("settings.textingSettingsEdit.clearstream")}</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         {provider === "Clearstream" && (
           <Grid size={{ xs: 12 }}>
             <Typography variant="body2" color="textSecondary" component="div">
-              Create an API Key in your <a href="https://app.clearstream.io/settings/api/keys" target="_blank" rel="noopener noreferrer">Clearstream Account Settings</a> under API Keys.
+              {Locale.label("settings.textingSettingsEdit.clearstreamHelper")} <a href="https://app.clearstream.io/settings/api/keys" target="_blank" rel="noopener noreferrer">{Locale.label("settings.textingSettingsEdit.clearstreamHelperLink")}</a> {Locale.label("settings.textingSettingsEdit.clearstreamHelperSuffix")}
             </Typography>
           </Grid>
         )}
         {provider === "TextInChurch" && (
           <Grid size={{ xs: 12 }}>
             <Typography variant="body2" color="textSecondary" component="div">
-              Visit <a href="https://textinchurch.com/support" target="_blank" rel="noopener noreferrer">Text In Church Support</a> to request developer API access. Once approved, create an API Key in your Account Settings &gt; Developer API section.
+              {Locale.label("settings.textingSettingsEdit.textInChurchHelper")} <a href="https://textinchurch.com/support" target="_blank" rel="noopener noreferrer">{Locale.label("settings.textingSettingsEdit.textInChurchHelperLink")}</a> {Locale.label("settings.textingSettingsEdit.textInChurchHelperSuffix")}
             </Typography>
           </Grid>
         )}

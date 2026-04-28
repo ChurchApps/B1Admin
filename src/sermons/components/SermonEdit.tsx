@@ -195,17 +195,17 @@ export const SermonEdit: React.FC<Props> = (props) => {
   switch (currentSermon?.videoType) {
     case "youtube_channel":
       keyLabel = <>{Locale.label("sermons.sermonEdit.youtubeChannelId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}><a target="blank" rel="noreferrer noopener" href="https://support.churchapps.org/docs/b1-admin/sermons/live-streaming">{Locale.label("sermons.sermonEdit.getYourChannelId")}</a></span></>;
-      keyPlaceholder = "UCfiDl90gAfZMkgbeCqX1Wi0 - This is not your channel url";
+      keyPlaceholder = Locale.label("sermons.sermonEdit.youtubeChannelIdHelpPlaceholder");
       break;
     case "youtube":
       keyLabel = <>{Locale.label("sermons.sermonEdit.youtubeId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}>https://youtube.com/watch?v=<b style={{ color: "#24b8ff" }}>abcd1234</b></span></>;
       keyPlaceholder = "abcd1234";
-      endAdornment = <Button variant="contained" onClick={() => fetchVideo("youtube")} data-testid="fetch-youtube-button" aria-label="Fetch YouTube video details">{Locale.label("sermons.sermonEdit.fetch")}</Button>;
+      endAdornment = <Button variant="contained" onClick={() => fetchVideo("youtube")} data-testid="fetch-youtube-button" aria-label={Locale.label("sermons.sermonEdit.fetchYouTubeAria")}>{Locale.label("sermons.sermonEdit.fetch")}</Button>;
       break;
     case "vimeo":
       keyLabel = <>{Locale.label("sermons.sermonEdit.vimeoId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}>https://vimeo.com/<b style={{ color: "#24b8ff" }}>123456789</b></span></>;
       keyPlaceholder = "123456789";
-      endAdornment = <Button variant="contained" onClick={() => fetchVideo("vimeo")} data-testid="fetch-vimeo-button" aria-label="Fetch Vimeo video details">{Locale.label("sermons.sermonEdit.fetch")}</Button>;
+      endAdornment = <Button variant="contained" onClick={() => fetchVideo("vimeo")} data-testid="fetch-vimeo-button" aria-label={Locale.label("sermons.sermonEdit.fetchVimeoAria")}>{Locale.label("sermons.sermonEdit.fetch")}</Button>;
       break;
     case "facebook":
       keyLabel = <>{Locale.label("sermons.sermonEdit.sermonId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}>https://facebook.com/video.php?v=<b>123456789</b></span></>;
@@ -224,7 +224,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
             {!currentSermon?.permanentUrl && (
               <FormControl fullWidth>
                 <InputLabel>{Locale.label("sermons.playlist")}</InputLabel>
-                <Select label={Locale.label("sermons.playlist")} name="playlistId" value={currentSermon?.playlistId || ""} onChange={handleChange} data-testid="sermon-playlist-select" aria-label="Select playlist">
+                <Select label={Locale.label("sermons.playlist")} name="playlistId" value={currentSermon?.playlistId || ""} onChange={handleChange} data-testid="sermon-playlist-select" aria-label={Locale.label("sermons.sermonEdit.selectPlaylistAria")}>
                   <MenuItem value="">{Locale.label("sermons.sermonEdit.none")}</MenuItem>
                   {getPlaylists()}
                 </Select>
@@ -235,7 +235,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
               <Grid size={{ xs: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel>{Locale.label("sermons.sermonEdit.videoProvider")}</InputLabel>
-                  <Select label={Locale.label("sermons.sermonEdit.videoProvider")} name="videoType" value={currentSermon?.videoType || ""} onChange={handleChange} data-testid="video-provider-select" aria-label="Select video provider">
+                  <Select label={Locale.label("sermons.sermonEdit.videoProvider")} name="videoType" value={currentSermon?.videoType || ""} onChange={handleChange} data-testid="video-provider-select" aria-label={Locale.label("sermons.sermonEdit.selectVideoProviderAria")}>
                     {currentSermon?.permanentUrl && (<MenuItem value="youtube_channel">{Locale.label("sermons.sermonEdit.currentYouTubeLiveStream")}</MenuItem>)}
                     <MenuItem value="youtube">{Locale.label("sermons.sermonEdit.youtube")}</MenuItem>
                     <MenuItem value="vimeo">{Locale.label("sermons.sermonEdit.vimeo")}</MenuItem>
@@ -248,7 +248,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
                 <TextField fullWidth label={keyLabel} name="videoData" value={currentSermon?.videoData || ""} onChange={handleChange} placeholder={keyPlaceholder}
                   InputProps={{ endAdornment: endAdornment }}
                   data-testid="video-data-input"
-                  aria-label="Video ID or URL"
+                  aria-label={Locale.label("sermons.sermonEdit.videoIdOrUrlAria")}
                 />
               </Grid>
             </Grid>
@@ -256,7 +256,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
               {!currentSermon?.permanentUrl && (
                 <Grid size={{ xs: 6 }}>
                   <label style={{ width: "100%" }}>{Locale.label("sermons.publishDate")}</label>
-                  <TextField fullWidth type="date" name="publishDate" value={(currentSermon?.publishDate) ? DateHelper.formatHtml5Date(DateHelper.toDate(currentSermon?.publishDate)) : ""} onChange={handleChange} placeholder={keyPlaceholder} data-testid="publish-date-input" aria-label="Publish date" />
+                  <TextField fullWidth type="date" name="publishDate" value={(currentSermon?.publishDate) ? DateHelper.formatHtml5Date(DateHelper.toDate(currentSermon?.publishDate)) : ""} onChange={handleChange} placeholder={keyPlaceholder} data-testid="publish-date-input" aria-label={Locale.label("sermons.sermonEdit.publishDateAria")} />
                 </Grid>
               )}
               <Grid size={{ xs: 6 }}>
@@ -268,28 +268,28 @@ export const SermonEdit: React.FC<Props> = (props) => {
 
             <Grid container spacing={3}>
               <Grid size={{ xs: 3 }}>
-                <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowImageEditor(true); }} data-testid="edit-thumbnail-link" aria-label="Edit sermon thumbnail">
-                  <img src={currentSermon?.thumbnail || "/images/no-image.png"} className="img-fluid" style={{ marginTop: 20 }} alt="Sermon thumbnail" data-testid="sermon-thumbnail"></img>
+                <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowImageEditor(true); }} data-testid="edit-thumbnail-link" aria-label={Locale.label("sermons.sermonEdit.editThumbnailAria")}>
+                  <img src={currentSermon?.thumbnail || "/images/no-image.png"} className="img-fluid" style={{ marginTop: 20 }} alt={Locale.label("sermons.sermonEdit.thumbnailAlt")} data-testid="sermon-thumbnail"></img>
                 </a>
               </Grid>
               <Grid size={{ xs: 9 }}>
-                <TextField fullWidth label={Locale.label("sermons.sermonEdit.title")} name="title" value={currentSermon?.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.title")} data-testid="sermon-title-input" aria-label="Sermon title" />
+                <TextField fullWidth label={Locale.label("sermons.sermonEdit.title")} name="title" value={currentSermon?.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.title")} data-testid="sermon-title-input" aria-label={Locale.label("sermons.sermonEdit.sermonTitleAria")} />
                 <Box sx={{ mt: 2 }}>
-                  <TextField fullWidth multiline label={Locale.label("sermons.sermonEdit.description")} name="description" value={currentSermon?.description || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.description")} data-testid="sermon-description-input" aria-label="Sermon description" />
+                  <TextField fullWidth multiline label={Locale.label("sermons.sermonEdit.description")} name="description" value={currentSermon?.description || ""} onChange={handleChange} placeholder={Locale.label("placeholders.sermon.description")} data-testid="sermon-description-input" aria-label={Locale.label("sermons.sermonEdit.sermonDescriptionAria")} />
                 </Box>
               </Grid>
             </Grid>
 
             {/* add to another playlist */}
             <div style={{ marginTop: 15 }}>
-              <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowOption(!showOption); }} data-testid="add-to-playlist-link" aria-label="Add sermon to another playlist">{Locale.label("sermons.sermonEdit.addToAnotherPlaylist")}</a>
+              <a href="about:blank" onClick={(e) => { e.preventDefault(); setShowOption(!showOption); }} data-testid="add-to-playlist-link" aria-label={Locale.label("sermons.sermonEdit.addToAnotherPlaylistAria")}>{Locale.label("sermons.sermonEdit.addToAnotherPlaylist")}</a>
               {showOption && (
                 <FormControl fullWidth>
                   <InputLabel>{Locale.label("sermons.playlist")}</InputLabel>
                   <Select label={Locale.label("sermons.playlist")} name="additionalPlaylistId" value={additionalPlaylistId} onChange={(e) => { e.preventDefault(); setAdditionalPlaylistId(e.target.value); }}
-                    endAdornment={<Button variant="contained" size="small" disabled={!additionalPlaylistId || additionalPlaylistId === ""} onClick={handleAdd} data-testid="add-to-playlist-button" aria-label="Add to selected playlist">{Locale.label("sermons.sermonEdit.add")}</Button>}
+                    endAdornment={<Button variant="contained" size="small" disabled={!additionalPlaylistId || additionalPlaylistId === ""} onClick={handleAdd} data-testid="add-to-playlist-button" aria-label={Locale.label("sermons.sermonEdit.addToSelectedPlaylistAria")}>{Locale.label("sermons.sermonEdit.add")}</Button>}
                     data-testid="additional-playlist-select"
-                    aria-label="Select additional playlist"
+                    aria-label={Locale.label("sermons.sermonEdit.selectAdditionalPlaylistAria")}
                   >
                     {getAdditionalPlaylists()}
                   </Select>

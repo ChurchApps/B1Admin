@@ -111,7 +111,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
         {Locale.label("site.donateLink.donationAmountsHelper")}
       </Typography>
       <div>
-        {amounts?.map((a) => (<Chip color="primary" size="small" label={`${CurrencyHelper.getCurrencySymbol(currency)} ${a}`} onDelete={() => { handleAmountDelete(a); }} sx={{ mr: 1, mt: 1, minWidth: 70 }} deleteIcon={<Icon sx={{ float: "right", marginLeft: "auto !important" }}>cancel</Icon>} data-testid={`amount-chip-${a}`} aria-label={`Remove ${CurrencyHelper.getCurrencySymbol(currency)} ${a} donation amount`} />))}
+        {amounts?.map((a) => (<Chip color="primary" size="small" label={`${CurrencyHelper.getCurrencySymbol(currency)} ${a}`} onDelete={() => { handleAmountDelete(a); }} sx={{ mr: 1, mt: 1, minWidth: 70, "& .MuiChip-deleteIcon": { float: "right", marginLeft: "auto" } }} deleteIcon={<Icon>cancel</Icon>} data-testid={`amount-chip-${a}`} aria-label={`Remove ${CurrencyHelper.getCurrencySymbol(currency)} ${a} donation amount`} />))}
       </div>
       <TextField
         fullWidth

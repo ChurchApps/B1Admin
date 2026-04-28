@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import { FormControl, InputLabel, Select, MenuItem, Typography, Link } from "@mui/material";
-import { Loading, ApiHelper } from "@churchapps/apphelper";
+import { Loading, ApiHelper, Locale } from "@churchapps/apphelper";
 import type { FormInterface } from "@churchapps/helpers";
 import { EnvironmentHelper } from "../../../helpers/EnvironmentHelper";
 
@@ -26,9 +26,9 @@ export const FormEdit = ({ parsedData, handleChange }: Props) => {
   if (standaloneForms?.length === 0) {
     return (
       <Typography fontSize="15px" fontStyle="italic" align="center">
-        No forms available!
+        {Locale.label("site.formEdit.noFormsAvailable")}
         <br />
-        <Link href={`${EnvironmentHelper.Common.B1AdminRoot}/forms`} target="_blank" rel="noreferrer">Create a new form</Link>
+        <Link href={`${EnvironmentHelper.Common.B1AdminRoot}/forms`} target="_blank" rel="noreferrer">{Locale.label("site.formEdit.createNewForm")}</Link>
       </Typography>
     );
   }
@@ -36,8 +36,8 @@ export const FormEdit = ({ parsedData, handleChange }: Props) => {
   return (
     <>
       <FormControl fullWidth>
-        <InputLabel>Select</InputLabel>
-        <Select fullWidth size="small" label="Select" name="formId" onChange={handleChange} value={parsedData.formId || ""}>
+        <InputLabel>{Locale.label("site.formEdit.select")}</InputLabel>
+        <Select fullWidth size="small" label={Locale.label("site.formEdit.select")} name="formId" onChange={handleChange} value={parsedData.formId || ""}>
           {standaloneForms?.map((form: FormInterface) => (<MenuItem value={form.id}>{form.name}</MenuItem>))}
         </Select>
       </FormControl>

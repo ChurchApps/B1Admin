@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ApiHelper, type GroupInterface, Locale } from "@churchapps/apphelper";
-import { TextField, Button, Table, TableBody, TableRow, TableCell, InputAdornment, Paper, Typography, Stack, IconButton, TableContainer } from "@mui/material";
+import { TextField, Button, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, IconButton, TableContainer } from "@mui/material";
+import { EmptyState } from "../../../components/ui/EmptyState";
 import { Search as SearchIcon, Group as GroupIcon, Check as CheckIcon } from "@mui/icons-material";
 
 interface Props {
@@ -75,7 +76,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
               handleAdd(sr);
             }}
             data-testid={`select-group-button-${sr.id}`}
-            aria-label="Select group">
+            aria-label={Locale.label("tasks.selectGroup.selectGroupAria")}>
             <CheckIcon />
           </IconButton>
         </TableCell>
@@ -129,19 +130,10 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
         </TableContainer>
       ) : (
         searchText && (
-          <Paper
-            sx={{
-              p: 3,
-              textAlign: "center",
-              backgroundColor: "grey.50",
-              border: "1px dashed",
-              borderColor: "grey.300"
-            }}>
-            <GroupIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
-            <Typography variant="body2" color="text.secondary">
-              {searchResults.length === 0 && searchText ? Locale.label("tasks.selectGroup.noResults") : Locale.label("tasks.selectGroup.searchPrompt")}
-            </Typography>
-          </Paper>
+          <EmptyState
+            icon={<GroupIcon />}
+            title={searchResults.length === 0 && searchText ? Locale.label("tasks.selectGroup.noResults") : Locale.label("tasks.selectGroup.searchPrompt")}
+          />
         )
       )}
     </Stack>

@@ -23,12 +23,12 @@ interface EditorToolbarProps {
 
 function formatRelative(ts: number): string {
   const diffSec = Math.max(0, Math.round((Date.now() - ts) / 1000));
-  if (diffSec < 5) return Locale.label("site.editorToolbar.justNow", "just now");
-  if (diffSec < 60) return `${diffSec}s ${Locale.label("site.editorToolbar.ago", "ago")}`;
+  if (diffSec < 5) return Locale.label("site.editorToolbar.justNow");
+  if (diffSec < 60) return `${diffSec}s ${Locale.label("site.editorToolbar.ago")}`;
   const diffMin = Math.round(diffSec / 60);
-  if (diffMin < 60) return `${diffMin}m ${Locale.label("site.editorToolbar.ago", "ago")}`;
+  if (diffMin < 60) return `${diffMin}m ${Locale.label("site.editorToolbar.ago")}`;
   const diffH = Math.round(diffMin / 60);
-  return `${diffH}h ${Locale.label("site.editorToolbar.ago", "ago")}`;
+  return `${diffH}h ${Locale.label("site.editorToolbar.ago")}`;
 }
 
 export function EditorToolbar(props: EditorToolbarProps) {
@@ -64,8 +64,8 @@ export function EditorToolbar(props: EditorToolbarProps) {
     : (container as BlockInterface)?.name;
 
   const savedLabel = lastSavedAt
-    ? `${Locale.label("site.editorToolbar.savedAllChanges", "All changes saved")} · ${formatRelative(lastSavedAt)}`
-    : Locale.label("site.editorToolbar.notSavedYet", "No changes yet");
+    ? `${Locale.label("site.editorToolbar.savedAllChanges")} · ${formatRelative(lastSavedAt)}`
+    : Locale.label("site.editorToolbar.notSavedYet");
 
   return (
     <Box
@@ -93,7 +93,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
           data-testid="content-editor-done-button"
           sx={{ textTransform: "none", color: "#374151", fontWeight: 500 }}
         >
-          {Locale.label("site.editorToolbar.exit", "Exit")}
+          {Locale.label("site.editorToolbar.exit")}
         </Button>
         <Divider orientation="vertical" flexItem sx={{ my: 1 }} />
         <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
@@ -142,14 +142,14 @@ export function EditorToolbar(props: EditorToolbarProps) {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Tooltip title={Locale.label("site.editorToolbar.undoTip", "Undo (Ctrl+Z)")} placement="bottom">
+          <Tooltip title={Locale.label("site.editorToolbar.undoTip")} placement="bottom">
             <span>
               <IconButton size="small" onClick={onUndo} disabled={!canUndo} sx={{ color: "#4b5563" }}>
                 <Icon fontSize="small">undo</Icon>
               </IconButton>
             </span>
           </Tooltip>
-          <Tooltip title={Locale.label("site.editorToolbar.redoTip", "Redo (Ctrl+Shift+Z)")} placement="bottom">
+          <Tooltip title={Locale.label("site.editorToolbar.redoTip")} placement="bottom">
             <span>
               <IconButton size="small" onClick={onRedo} disabled={!canRedo} sx={{ color: "#4b5563" }}>
                 <Icon fontSize="small">redo</Icon>
@@ -255,7 +255,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
               <Icon fontSize="small">history</Icon>
             </ListItemIcon>
             <ListItemText>
-              {Locale.label("site.editorToolbar.viewHistory", "View history")}
+              {Locale.label("site.editorToolbar.viewHistory")}
             </ListItemText>
           </MenuItem>
           <MenuItem

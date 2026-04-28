@@ -214,7 +214,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                   >
                     <img
                       src={currentPlaylist?.thumbnail || "/images/no-image.png"}
-                      alt="Playlist thumbnail"
+                      alt={Locale.label("sermons.playlists.playlistEdit.thumbnailAlt")}
                       style={{
                         maxWidth: "100%",
                         maxHeight: "200px",

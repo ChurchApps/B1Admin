@@ -63,24 +63,24 @@ export function TypographyEdit(props: Props) {
               <TextFieldsIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>Typography Scale</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>Configure fonts and type scale</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.typographyEdit.headerTitle")}</Typography>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.typographyEdit.headerSubtitle")}</Typography>
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
             <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-typography-button">Save Typography</LoadingButton>
+            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-typography-button">{Locale.label("site.typographyEdit.saveTypography")}</LoadingButton>
           </Stack>
         </Stack>
       </Box>
 
       <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
-        <CardWithHeader title="Typography Scale" icon={<FormatSizeIcon />}>
+        <CardWithHeader title={Locale.label("site.typographyEdit.typographyScale")} icon={<FormatSizeIcon />}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 type="number"
-                label="Base Size (px)"
+                label={Locale.label("site.typographyEdit.baseSize")}
                 fullWidth
                 name="baseSize"
                 value={typography.baseSize}
@@ -89,13 +89,13 @@ export function TypographyEdit(props: Props) {
                 data-testid="base-size-input"
               />
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-                  Base font size for body text (default: 16px)
+                {Locale.label("site.typographyEdit.baseSizeDesc")}
               </Typography>
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 type="number"
-                label="Type Scale"
+                label={Locale.label("site.typographyEdit.scale")}
                 fullWidth
                 name="scale"
                 value={typography.scale}
@@ -104,13 +104,13 @@ export function TypographyEdit(props: Props) {
                 data-testid="scale-input"
               />
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-                  Multiplier for each heading level (default: 1.25)
+                {Locale.label("site.typographyEdit.scaleDesc")}
               </Typography>
             </Grid>
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 type="number"
-                label="Line Height"
+                label={Locale.label("site.typographyEdit.lineHeight")}
                 fullWidth
                 name="lineHeight"
                 value={typography.lineHeight}
@@ -119,14 +119,14 @@ export function TypographyEdit(props: Props) {
                 data-testid="line-height-input"
               />
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-                  Line height for body text (default: 1.6)
+                {Locale.label("site.typographyEdit.lineHeightDesc")}
               </Typography>
             </Grid>
           </Grid>
         </CardWithHeader>
 
         <Box sx={{ mt: 3 }}>
-          <CardWithHeader title="Preview" icon={<VisibilityIcon />}>
+          <CardWithHeader title={Locale.label("site.typographyEdit.preview")} icon={<VisibilityIcon />}>
             <Box sx={{ p: 3, backgroundColor: alpha("#f5f5f5", 0.3), borderRadius: 2 }}>
               <Stack spacing={2}>
                 <Box>
@@ -138,7 +138,7 @@ export function TypographyEdit(props: Props) {
                       color: "text.primary"
                     }}
                   >
-                    Heading 1 - {getFontSizePreview(4)}
+                    {Locale.label("site.typographyEdit.headingPreview").replace("{level}", "1").replace("{size}", getFontSizePreview(4))}
                   </Typography>
                 </Box>
                 <Box>
@@ -150,7 +150,7 @@ export function TypographyEdit(props: Props) {
                       color: "text.primary"
                     }}
                   >
-                    Heading 2 - {getFontSizePreview(3)}
+                    {Locale.label("site.typographyEdit.headingPreview").replace("{level}", "2").replace("{size}", getFontSizePreview(3))}
                   </Typography>
                 </Box>
                 <Box>
@@ -162,7 +162,7 @@ export function TypographyEdit(props: Props) {
                       color: "text.primary"
                     }}
                   >
-                    Heading 3 - {getFontSizePreview(2)}
+                    {Locale.label("site.typographyEdit.headingPreview").replace("{level}", "3").replace("{size}", getFontSizePreview(2))}
                   </Typography>
                 </Box>
                 <Box>
@@ -174,7 +174,7 @@ export function TypographyEdit(props: Props) {
                       color: "text.primary"
                     }}
                   >
-                    Heading 4 - {getFontSizePreview(1)}
+                    {Locale.label("site.typographyEdit.headingPreview").replace("{level}", "4").replace("{size}", getFontSizePreview(1))}
                   </Typography>
                 </Box>
                 <Box sx={{ pt: 2, borderTop: "1px solid", borderColor: "divider" }}>
@@ -185,9 +185,7 @@ export function TypographyEdit(props: Props) {
                       color: "text.primary"
                     }}
                   >
-                    Body Text - {typography.baseSize}px: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    {Locale.label("site.typographyEdit.bodyText").replace("{size}", typography.baseSize.toString())}
                   </Typography>
                 </Box>
                 <Box>
@@ -198,7 +196,7 @@ export function TypographyEdit(props: Props) {
                       color: "text.secondary"
                     }}
                   >
-                    Small Text - {getFontSizePreview(-1)}: Supporting text and captions
+                    {Locale.label("site.typographyEdit.smallText").replace("{size}", getFontSizePreview(-1))}
                   </Typography>
                 </Box>
               </Stack>

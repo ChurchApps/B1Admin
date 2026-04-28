@@ -22,7 +22,7 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
-    const newLabel = prompt("Enter a new label");
+    const newLabel = prompt(Locale.label("groups.groupLabelsEdit.newLabelPrompt"));
     if (newLabel) {
       const val = newLabel.trim();
       if (val.length > 0) {
@@ -68,7 +68,7 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
     <>
       <div style={{ marginTop: 10 }}>{Locale.label("groups.groupLabelsEdit.labels")}</div>
       {getItems()}
-      <button type="button" onClick={handleAdd} data-testid="add-new-label-link" aria-label="Add new label" style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+      <button type="button" onClick={handleAdd} data-testid="add-new-label-link" aria-label={Locale.label("groups.groupLabelsEdit.addNewLabelAria")} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
         {Locale.label("groups.groupLabelsEdit.addNewLabel")}
       </button>
     </>

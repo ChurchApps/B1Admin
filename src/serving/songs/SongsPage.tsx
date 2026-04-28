@@ -1,9 +1,10 @@
 import React, { memo, useMemo, useCallback } from "react";
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Link, Navigate } from "react-router-dom";
-import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Paper, Chip, IconButton, TextField, InputAdornment } from "@mui/material";
+import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment } from "@mui/material";
 import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon, PlayCircle as PlayIcon, Timer as TimerIcon, Person as ArtistIcon } from "@mui/icons-material";
 import { SongSearchDialog } from "./SongSearchDialog";
+import { EmptyState } from "../../components/ui/EmptyState";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
 
@@ -81,32 +82,21 @@ export const SongsPage = memo(() => {
 
     if (songs.data.length === 0) {
       return (
-        <Paper sx={{ p: 6, textAlign: "center", backgroundColor: "background.subtle", border: "1px dashed", borderColor: "divider" }}>
-          <LibraryIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            {Locale.label("songs.library.empty.title") || "No Songs Found"}
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            {Locale.label("songs.library.empty.message") || "Get started by adding your first song to the library."}
-          </Typography>
-          {canEdit && (
+        <EmptyState
+          icon={<LibraryIcon />}
+          title={Locale.label("songs.library.empty.title") || "No Songs Found"}
+          description={Locale.label("songs.library.empty.message") || "Get started by adding your first song to the library."}
+          action={canEdit && (
             <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={() => setShowSearch(true)} size="large">
               {Locale.label("songs.library.empty.action") || "Add First Song"}
             </Button>
           )}
-        </Paper>
+        />
       );
     }
 
     if (filteredSongs && filteredSongs.length === 0) {
-      return (
-        <Paper sx={{ p: 4, textAlign: "center", backgroundColor: "background.subtle", border: "1px dashed", borderColor: "divider" }}>
-          <SearchIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-          <Typography variant="body1" color="text.secondary">
-            {Locale.label("songs.library.noResults") || "No songs match your search criteria."}
-          </Typography>
-        </Paper>
-      );
+      return <EmptyState icon={<SearchIcon />} title={Locale.label("songs.library.noResults") || "No songs match your search criteria."} />;
     }
 
     return (
@@ -114,7 +104,7 @@ export const SongsPage = memo(() => {
         <Stack spacing={2}>
           {filteredSongs?.map((songDetail) => (
             <Card key={songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
-              <CardContent sx={{ pb: "16px !important" }}>
+              <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
                 <Stack direction="row" spacing={2} alignItems="center">
                   {/* Thumbnail/Avatar */}
                   <Avatar
@@ -178,7 +168,7 @@ export const SongsPage = memo(() => {
           startIcon={<SearchIcon />}
           onClick={() => setShowSearchField(!showSearchField)}
           sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
-          Search
+          {Locale.label("songs.songsPage.search")}
         </Button>
         {canEdit && (
           <Button
@@ -186,7 +176,7 @@ export const SongsPage = memo(() => {
             variant="outlined"
             startIcon={<AddIcon />}
             data-testid="add-song-button"
-            aria-label="Add song"
+            aria-label={Locale.label("songs.songsPage.addSongAria")}
             sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
             {Locale.label("songs.addSong") || "Add Song"}
           </Button>
@@ -196,11 +186,11 @@ export const SongsPage = memo(() => {
       <Box sx={{ p: 3 }}>
         {(showSearchField || searchFilter) && songs.data && songs.data.length > 0 && (
           <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-            <CardContent sx={{ pb: "16px !important" }}>
+            <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                 <SearchIcon sx={{ color: "primary.main", fontSize: 24 }} />
                 <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                  Search Songs
+                  {Locale.label("songs.songsPage.searchSongs")}
                 </Typography>
               </Stack>
               <TextField

@@ -561,7 +561,7 @@ export function ElementEdit(props: Props) {
         <FormControlLabel
           control={<Checkbox size="small" onChange={handleCheck} checked={parsedData.enableLightbox === "true" ? true : false} disabled={!!parsedData.url} />}
           name="enableLightbox"
-          label="Enable Lightbox"
+          label={Locale.label("site.elementEdit.enableLightbox")}
         />
       </FormGroup>
       <FormControl fullWidth sx={{ marginTop: 2 }}>

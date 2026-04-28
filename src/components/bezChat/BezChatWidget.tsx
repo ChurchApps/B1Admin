@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Drawer, useMediaQuery, useTheme } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 import { BezChatPanel } from "./BezChatPanel";
 
 export const BezChatWidget: React.FC = () => {
@@ -26,7 +27,7 @@ export const BezChatWidget: React.FC = () => {
             transition: "transform 0.2s ease",
             "&:hover": { transform: "scale(1.08)" }
           }}
-          aria-label="Open Bez chat"
+          aria-label={Locale.label("components.bezChat.ariaOpen")}
         >
           <Box
             component="img"

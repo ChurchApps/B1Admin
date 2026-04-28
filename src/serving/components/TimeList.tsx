@@ -51,7 +51,7 @@ export const TimeList = (props: Props) => {
   };
 
   const getAddTimeLink = () => canEdit ? (
-    <IconButton aria-label="Add time" id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button">
+    <IconButton aria-label={Locale.label("plans.timeList.addTimeAria")} id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button">
       <Icon color="primary">add</Icon>
     </IconButton>
   ) : null;

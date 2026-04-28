@@ -1,5 +1,6 @@
 import { Button, Grid, Box } from "@mui/material";
 import React from "react";
+import { Locale } from "@churchapps/apphelper";
 
 export const PersonBanner: React.FC = () => {
   return (
@@ -37,7 +38,7 @@ export const PersonBanner: React.FC = () => {
         </Grid>
         <Grid size={{ xs: 12, md: 4 }} style={{ textAlign: "right", display: "flex", alignItems: "center" }} sx={{ display: "flex", justifyContent: { xs: "center", sm: "flex-end" } }}>
           <Button variant="contained" color="success">
-            MEMBER
+            {Locale.label("ui.personBanner.memberStatus")}
           </Button>
         </Grid>
       </Grid>

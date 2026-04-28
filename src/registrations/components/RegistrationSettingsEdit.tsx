@@ -10,7 +10,7 @@ import {
   Button
 } from "@mui/material";
 import { Settings as SettingsIcon } from "@mui/icons-material";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
 
 interface Props {
@@ -55,7 +55,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
         <Stack direction="row" spacing={1} alignItems="center">
           <SettingsIcon sx={{ color: "primary.main" }} />
           <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-            Registration Settings
+            {Locale.label("registrations.registrationSettingsEdit.registrationSettings")}
           </Typography>
         </Stack>
       </Box>
@@ -63,21 +63,21 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
         <Stack spacing={2}>
           <FormControlLabel
             control={<Switch checked={registrationEnabled} onChange={(e) => setRegistrationEnabled(e.target.checked)} />}
-            label="Enable Registration"
+            label={Locale.label("registrations.registrationSettingsEdit.enableRegistration")}
           />
 
           <TextField
-            label="Capacity"
+            label={Locale.label("registrations.registrationSettingsEdit.capacity")}
             type="number"
             value={capacity}
             onChange={(e) => setCapacity(e.target.value)}
-            placeholder="Leave empty for unlimited"
+            placeholder={Locale.label("registrations.registrationSettingsEdit.capacityPlaceholder")}
             size="small"
             fullWidth
           />
 
           <TextField
-            label="Registration Opens"
+            label={Locale.label("registrations.registrationSettingsEdit.registrationOpens")}
             type="datetime-local"
             value={registrationOpenDate}
             onChange={(e) => setRegistrationOpenDate(e.target.value)}
@@ -87,7 +87,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
           />
 
           <TextField
-            label="Registration Closes"
+            label={Locale.label("registrations.registrationSettingsEdit.registrationCloses")}
             type="datetime-local"
             value={registrationCloseDate}
             onChange={(e) => setRegistrationCloseDate(e.target.value)}
@@ -97,17 +97,17 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
           />
 
           <TextField
-            label="Tags"
+            label={Locale.label("registrations.registrationSettingsEdit.tags")}
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            placeholder="youth, retreat, vbs"
-            helperText="Comma-separated tags for filtering"
+            placeholder={Locale.label("registrations.registrationSettingsEdit.tagsPlaceholder")}
+            helperText={Locale.label("registrations.registrationSettingsEdit.tagsHelper")}
             size="small"
             fullWidth
           />
 
           <Button variant="contained" onClick={handleSave} disabled={saving}>
-            {saving ? "Saving..." : "Save Settings"}
+            {saving ? Locale.label("common.saving") : Locale.label("registrations.registrationSettingsEdit.saveSettings")}
           </Button>
         </Stack>
       </Box>

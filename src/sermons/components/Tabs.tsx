@@ -1,9 +1,10 @@
-import { SmallButton, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import { DisplayBox } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { Button, Icon } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import React from "react";
 import { TabEdit } from "./TabEdit";
 import { ensureSequentialSort, moveItemDown, moveItemUp } from "../../helpers/SortHelper";
@@ -15,7 +16,7 @@ export const Tabs: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const handleUpdated = () => { setCurrentTab(null); loadData(); };
-  const getEditContent = () => <SmallButton icon="add" text={Locale.label("sermons.liveStreamTimes.sidebarTabs.add")} onClick={handleAdd} />;
+  const getEditContent = () => <Button size="small" variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>{Locale.label("sermons.liveStreamTimes.sidebarTabs.add")}</Button>;
   const loadData = () => { ApiHelper.get("/links?category=streamingTab", "ContentApi").then((data: any) => { setTabs(data); setIsLoading(false); }); };
   const saveChanges = () => { ApiHelper.post("/links", tabs, "ContentApi").then(loadData); };
 
@@ -52,7 +53,7 @@ export const Tabs: React.FC = () => {
           <td style={{ textAlign: "right" }}>
             {upLink}
             {downLink}
-            <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentTab(tab)} sx={{ minWidth: "auto" }}>Edit</Button>
+            <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentTab(tab)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.sidebarTabs.edit")}</Button>
           </td>
         </tr>
       );

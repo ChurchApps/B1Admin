@@ -55,12 +55,12 @@ export function SpacingScaleEdit(props: Props) {
   };
 
   const spacingItems = [
-    { key: "xs", label: "Extra Small", description: "Tight spacing for compact layouts" },
-    { key: "sm", label: "Small", description: "Small gaps between related elements" },
-    { key: "md", label: "Medium", description: "Standard spacing for most layouts" },
-    { key: "lg", label: "Large", description: "Spacious layouts and sections" },
-    { key: "xl", label: "Extra Large", description: "Large gaps between major sections" },
-    { key: "xxl", label: "2X Large", description: "Maximum spacing for dramatic layouts" }
+    { key: "xs", label: Locale.label("site.spacingScaleEdit.extraSmall"), description: Locale.label("site.spacingScaleEdit.extraSmallDesc") },
+    { key: "sm", label: Locale.label("site.spacingScaleEdit.small"), description: Locale.label("site.spacingScaleEdit.smallDesc") },
+    { key: "md", label: Locale.label("site.spacingScaleEdit.medium"), description: Locale.label("site.spacingScaleEdit.mediumDesc") },
+    { key: "lg", label: Locale.label("site.spacingScaleEdit.large"), description: Locale.label("site.spacingScaleEdit.largeDesc") },
+    { key: "xl", label: Locale.label("site.spacingScaleEdit.extraLarge"), description: Locale.label("site.spacingScaleEdit.extraLargeDesc") },
+    { key: "xxl", label: Locale.label("site.spacingScaleEdit.twoXLarge"), description: Locale.label("site.spacingScaleEdit.twoXLargeDesc") }
   ];
 
   if (!spacing) return null;
@@ -74,19 +74,19 @@ export function SpacingScaleEdit(props: Props) {
               <SpaceBarIcon sx={{ fontSize: 24, color: "#FFF" }} />
             </Box>
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>Spacing Scale</Typography>
-              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>Configure consistent spacing values</Typography>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("site.spacingScaleEdit.headerTitle")}</Typography>
+              <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>{Locale.label("site.spacingScaleEdit.headerSubtitle")}</Typography>
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
             <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
-            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-spacing-button">Save Spacing</LoadingButton>
+            <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-spacing-button">{Locale.label("site.spacingScaleEdit.saveSpacing")}</LoadingButton>
           </Stack>
         </Stack>
       </Box>
 
       <Box sx={{ p: 3, backgroundColor: "#FFF", borderRadius: "0 0 12px 12px", border: "1px solid", borderColor: "grey.200", borderTop: "none" }}>
-        <CardWithHeader title="Spacing Values" icon={<SpaceBarIcon />}>
+        <CardWithHeader title={Locale.label("site.spacingScaleEdit.spacingValues")} icon={<SpaceBarIcon />}>
           <Grid container spacing={3}>
             {spacingItems.map((item) => (
               <Grid size={{ xs: 12, md: 6 }} key={item.key}>
@@ -110,14 +110,14 @@ export function SpacingScaleEdit(props: Props) {
         </CardWithHeader>
 
         <Box sx={{ mt: 3 }}>
-          <CardWithHeader title="Practical Examples" icon={<VisibilityIcon />}>
+          <CardWithHeader title={Locale.label("site.spacingScaleEdit.practicalExamples")} icon={<VisibilityIcon />}>
             <Box sx={{ p: 3, backgroundColor: alpha("#f5f5f5", 0.3), borderRadius: 2 }}>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                See how your spacing values affect real UI elements
+                {Locale.label("site.spacingScaleEdit.practicalExamplesDesc")}
               </Typography>
 
               {/* Icon Row - uses xs */}
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>Icon Row</Typography>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.iconRow")}</Typography>
               <Box sx={{
                 border: "1px solid #ddd",
                 borderRadius: 2,
@@ -132,11 +132,11 @@ export function SpacingScaleEdit(props: Props) {
                 ))}
               </Box>
               <Typography variant="caption" color="text.secondary" sx={{ mt: -3, mb: 4, display: "block" }}>
-                Icons use <strong>xs ({spacing.xs}px)</strong> gap between them
+                {Locale.label("site.spacingScaleEdit.iconRowDesc").replace("{value}", spacing.xs.toString())}
               </Typography>
 
               {/* Card Example - uses sm, md */}
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>Card with Content</Typography>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.cardWithContent")}</Typography>
               <Box sx={{
                 border: "1px solid #ddd",
                 borderRadius: 2,
@@ -144,18 +144,18 @@ export function SpacingScaleEdit(props: Props) {
                 mb: 4,
                 backgroundColor: "#fff"
               }}>
-                <Typography variant="h6" sx={{ mb: `${spacing.sm}px` }}>Card Title</Typography>
+                <Typography variant="h6" sx={{ mb: `${spacing.sm}px` }}>{Locale.label("site.spacingScaleEdit.cardTitle")}</Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: `${spacing.md}px` }}>
                   This card uses <strong>md ({spacing.md}px)</strong> padding and <strong>sm ({spacing.sm}px)</strong> gap between title and text.
                 </Typography>
                 <Stack direction="row" spacing={`${spacing.sm}px`}>
-                  <Box sx={{ px: 2, py: 1, backgroundColor: "primary.main", color: "#fff", borderRadius: 1, fontSize: "0.875rem" }}>Button 1</Box>
-                  <Box sx={{ px: 2, py: 1, backgroundColor: "grey.300", borderRadius: 1, fontSize: "0.875rem" }}>Button 2</Box>
+                  <Box sx={{ px: 2, py: 1, backgroundColor: "primary.main", color: "#fff", borderRadius: 1, fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonOne")}</Box>
+                  <Box sx={{ px: 2, py: 1, backgroundColor: "grey.300", borderRadius: 1, fontSize: "0.875rem" }}>{Locale.label("site.spacingScaleEdit.buttonTwo")}</Box>
                 </Stack>
               </Box>
 
               {/* Section Example - uses lg, xl */}
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>Page Section</Typography>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.pageSection")}</Typography>
               <Box sx={{
                 border: "1px solid #ddd",
                 borderRadius: 2,
@@ -163,15 +163,15 @@ export function SpacingScaleEdit(props: Props) {
                 mb: 4
               }}>
                 <Box sx={{ backgroundColor: "#1976d2", color: "#fff", py: `${spacing.xl}px`, px: `${spacing.lg}px`, textAlign: "center" }}>
-                  <Typography variant="h5" sx={{ mb: `${spacing.sm}px` }}>Hero Section</Typography>
+                  <Typography variant="h5" sx={{ mb: `${spacing.sm}px` }}>{Locale.label("site.spacingScaleEdit.heroSection")}</Typography>
                   <Typography variant="body2">
-                    Uses <strong>xl ({spacing.xl}px)</strong> vertical and <strong>lg ({spacing.lg}px)</strong> horizontal padding
+                    {Locale.label("site.spacingScaleEdit.heroSectionDesc").replace("{xl}", spacing.xl.toString()).replace("{lg}", spacing.lg.toString())}
                   </Typography>
                 </Box>
               </Box>
 
               {/* Full Page Section - uses xxl */}
-              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>Full-Width Banner</Typography>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.fullWidthBanner")}</Typography>
               <Box sx={{
                 border: "1px solid #ddd",
                 borderRadius: 2,
@@ -179,9 +179,9 @@ export function SpacingScaleEdit(props: Props) {
                 mb: 4
               }}>
                 <Box sx={{ backgroundColor: "#424242", color: "#fff", py: `${spacing.xxl}px`, px: `${spacing.lg}px`, textAlign: "center" }}>
-                  <Typography variant="h4" sx={{ mb: `${spacing.md}px` }}>Dramatic Section</Typography>
+                  <Typography variant="h4" sx={{ mb: `${spacing.md}px` }}>{Locale.label("site.spacingScaleEdit.dramaticSection")}</Typography>
                   <Typography variant="body1">
-                    Uses <strong>xxl ({spacing.xxl}px)</strong> vertical padding for maximum impact
+                    {Locale.label("site.spacingScaleEdit.dramaticSectionDesc").replace("{value}", spacing.xxl.toString())}
                   </Typography>
                 </Box>
               </Box>

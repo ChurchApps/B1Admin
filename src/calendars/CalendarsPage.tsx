@@ -30,6 +30,7 @@ import {
 } from "@mui/icons-material";
 import { CalendarEdit } from "./components";
 import { PermissionDenied } from "../components";
+import { EmptyState } from "../components/ui/EmptyState";
 
 export const CalendarsPage = () => {
   const [calendars, setCalendars] = useState<CuratedCalendarInterface[]>([]);
@@ -191,34 +192,16 @@ export const CalendarsPage = () => {
             {loading ? (
               <Loading data-testid="calendars-loading" />
             ) : calendars.length === 0 ? (
-              <Paper
-                sx={{
-                  p: 6,
-                  textAlign: "center",
-                  backgroundColor: "background.subtle",
-                  border: "1px dashed",
-                  borderColor: "divider",
-                  borderRadius: 2
-                }}
-              >
-                <CalendarIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
-                <Typography variant="h6" color="text.secondary" gutterBottom>
-                  {Locale.label("calendars.calendarList.noCalendars")}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                  {Locale.label("calendars.calendarList.createFirstCalendar")}
-                </Typography>
-                {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-                  <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => setCurrentCalendar({} as CuratedCalendarInterface)}
-                    data-testid="empty-state-add-calendar"
-                  >
+              <EmptyState
+                icon={<CalendarIcon />}
+                title={Locale.label("calendars.calendarList.noCalendars")}
+                description={Locale.label("calendars.calendarList.createFirstCalendar")}
+                action={UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+                  <Button variant="contained" startIcon={<AddIcon />} onClick={() => setCurrentCalendar({} as CuratedCalendarInterface)} data-testid="empty-state-add-calendar">
                     {Locale.label("calendars.calendarList.createCalendar")}
                   </Button>
                 )}
-              </Paper>
+              />
             ) : (
               <TableContainer
                 component={Paper}

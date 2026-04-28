@@ -1,6 +1,7 @@
-import { Grid, Typography, Card, CardContent, Stack, Box, Button, Paper, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Grid, Typography, Card, CardContent, Stack, Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import React from "react";
 import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { EmptyState } from "../../../components/ui/EmptyState";
 import { type AutomationInterface } from "@churchapps/helpers";
 import { AutomationDetails } from "./components/AutomationDetails";
 import { AutomationEdit } from "./components/AutomationEdit";
@@ -23,21 +24,7 @@ export const AutomationsPage = () => {
     if (automations.isLoading) return <Loading />;
 
     if (automations.data?.length === 0) {
-      return (
-        <Paper
-          sx={{
-            p: 4,
-            textAlign: "center",
-            backgroundColor: "background.subtle",
-            border: "1px dashed",
-            borderColor: "divider"
-          }}>
-          <AutomationsIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-          <Typography variant="body1" color="text.secondary">
-            {Locale.label("tasks.automationsPage.noAuto")}
-          </Typography>
-        </Paper>
-      );
+      return <EmptyState icon={<AutomationsIcon />} title={Locale.label("tasks.automationsPage.noAuto")} />;
     }
 
     return (

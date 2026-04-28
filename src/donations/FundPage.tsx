@@ -248,14 +248,14 @@ export const FundPage = () => {
                 <PersonIcon sx={{ color: "#FFF", fontSize: 24 }} />
                 <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.uniqueDonors}</Typography>
               </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Donors</Typography>
+              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.fundPage.donors")}</Typography>
             </Stack>
             <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
               <Stack direction="row" spacing={1} alignItems="center">
                 {/* <MoneyIcon sx={{ color: "#FFF", fontSize: 24 }} /> */}
                 <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</Typography>
               </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Total Amount</Typography>
+              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.fundPage.totalAmount")}</Typography>
             </Stack>
           </Stack>
         )}
@@ -294,7 +294,7 @@ export const FundPage = () => {
                 sx={{ minWidth: 200 }}
               />
               <Button variant="contained" onClick={loadDonations} startIcon={<FilterIcon />} sx={{ minWidth: 120 }}>
-                Filter
+                {Locale.label("donations.fundPage.filter")}
               </Button>
             </Stack>
           </Box>

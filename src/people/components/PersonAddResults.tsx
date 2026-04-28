@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from "react";
 
 import { type PersonInterface } from "@churchapps/helpers";
-import { Table, TableBody, TableRow, TableCell, Avatar } from "@mui/material";
-import { SmallButton } from "@churchapps/apphelper";
+import { Table, TableBody, TableRow, TableCell, Avatar, Button } from "@mui/material";
+import { Person as PersonIcon } from "@mui/icons-material";
+import { Locale } from "@churchapps/apphelper";
 
 interface Props {
   addFunction: (person: PersonInterface) => void;
@@ -48,14 +49,7 @@ export const PersonAddResults: React.FC<Props> = (props: Props) => {
           )}
         </TableCell>
         <TableCell>
-          <SmallButton
-            color="success"
-            icon="person"
-            text={props.actionLabel || "Add"}
-            ariaLabel={`Add person ${sr.name.display}`}
-            onClick={() => handleAdd(sr)}
-            data-testid={`add-person-button-${sr.id || "new"}`}
-          />
+          <Button size="small" variant="contained" color="success" startIcon={<PersonIcon />} aria-label={Locale.label("people.personAddResults.addPersonAria").replace("{name}", sr.name.display)} onClick={() => handleAdd(sr)} data-testid={`add-person-button-${sr.id || "new"}`}>{props.actionLabel || Locale.label("people.personAddResults.add")}</Button>
         </TableCell>
       </TableRow>
     );

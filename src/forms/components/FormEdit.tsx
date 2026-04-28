@@ -120,7 +120,7 @@ export function FormEdit(props: Props) {
       cancelFunction={props.updatedFunction}
       deleteFunction={props.formId ? handleDelete : undefined}>
       <ErrorMessages errors={errors} />
-      <TextField fullWidth={true} label={Locale.label("forms.formEdit.name")} type="text" name="name" value={form.name} onChange={handleChange} placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label="Form name" />
+      <TextField fullWidth={true} label={Locale.label("forms.formEdit.name")} type="text" name="name" value={form.name} onChange={handleChange} placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label={Locale.label("forms.formEdit.formNameAria")} />
       {!props.formId && (
         <FormControl fullWidth>
           <InputLabel id="associate">{Locale.label("forms.formEdit.associate")}</InputLabel>
@@ -134,7 +134,7 @@ export function FormEdit(props: Props) {
               if (e.target.value === "form") setStandAloneForm(true);
             }}
             data-testid="content-type-select"
-            aria-label="Content type">
+            aria-label={Locale.label("forms.formEdit.contentTypeAria")}>
             <MenuItem value="person">{Locale.label("forms.formEdit.ppl")}</MenuItem>
             <MenuItem value="form">{Locale.label("forms.formEdit.alone")}</MenuItem>
           </Select>
@@ -150,7 +150,7 @@ export function FormEdit(props: Props) {
               value={form?.restricted?.toString()}
               onChange={handleChange}
               data-testid="access-level-select"
-              aria-label="Access level">
+              aria-label={Locale.label("forms.formEdit.accessLevelAria")}>
               <MenuItem value="false">{Locale.label("forms.formEdit.public")}</MenuItem>
               <MenuItem value="true">{Locale.label("forms.formEdit.restrict")}</MenuItem>
             </Select>

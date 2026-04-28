@@ -553,10 +553,10 @@ export const ServiceOrder = memo((props: Props) => {
             {(showHeaderDrop || showItemDrop) && (
               <>
                 <div style={{ position: "fixed", bottom: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
-                  <DroppableScroll direction="down" text="Scroll Down" acceptTypes={["planItemHeader", "planItem"]} />
+                  <DroppableScroll direction="down" text={Locale.label("plans.serviceOrder.scrollDown")} acceptTypes={["planItemHeader", "planItem"]} />
                 </div>
                 <div style={{ position: "fixed", top: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 1000, width: "min(600px, 80%)" }}>
-                  <DroppableScroll direction="up" text="Scroll Up" acceptTypes={["planItemHeader", "planItem"]} />
+                  <DroppableScroll direction="up" text={Locale.label("plans.serviceOrder.scrollUp")} acceptTypes={["planItemHeader", "planItem"]} />
                 </div>
               </>
             )}

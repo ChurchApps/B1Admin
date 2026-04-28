@@ -62,10 +62,10 @@ export function PageLinkEdit(props: Props) {
 
   const validate = () => {
     const errors = [];
-    if (!page?.url || page.url === "") errors.push("Please enter a path.");
-    if (!page?.title || page.title === "") errors.push("Please enter a title.");
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push("Unauthorized to create pages");
-    if (!checked) errors.push("Please check Url Path");
+    if (!page?.url || page.url === "") errors.push(Locale.label("site.pageLinkEdit.errPath"));
+    if (!page?.title || page.title === "") errors.push(Locale.label("site.pageLinkEdit.errTitle"));
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.pageLinkEdit.unauthorizedCreate"));
+    if (!checked) errors.push(Locale.label("site.pageLinkEdit.errCheckUrl"));
     setErrors(errors);
     return errors.length === 0;
   };
@@ -91,7 +91,7 @@ export function PageLinkEdit(props: Props) {
   const handleDelete = () => {
     const errors = [];
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
-      errors.push("Unauthorized to delete pages");
+      errors.push(Locale.label("site.pageLinkEdit.unauthorizedDelete"));
     }
 
     if (errors.length > 0) {
@@ -155,7 +155,7 @@ export function PageLinkEdit(props: Props) {
           headerActionContent={
             page?.id && (
               <a href="about:blank" onClick={handleDuplicate}>
-                Duplicate
+                {Locale.label("site.pageLinkEdit.duplicate")}
               </a>
             )
           }
@@ -163,17 +163,17 @@ export function PageLinkEdit(props: Props) {
           <ErrorMessages errors={errors} />
           <Grid container spacing={2} style={{ minWidth: 500 }}>
             {page && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label="Page Title" name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.title")} />
+              <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.pageTitle")} name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.title")} />
             </Grid>}
             {link && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label="Link Text" name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkText")} />
+              <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.linkText")} name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkText")} />
             </Grid>}
             {page && <Grid size={{ xs: 6 }}>
               {!props.embedded && <FormControl fullWidth size="small">
-                <InputLabel>Layout</InputLabel>
-                <Select size="small" fullWidth label="Layout" value={page.layout || ""} name="layout" onChange={handleChange}>
-                  <MenuItem value="headerFooter">Header & Footer</MenuItem>
-                  <MenuItem value="cleanCentered">Clean Centered Content</MenuItem>
+                <InputLabel>{Locale.label("site.pageLinkEdit.layout")}</InputLabel>
+                <Select size="small" fullWidth label={Locale.label("site.pageLinkEdit.layout")} value={page.layout || ""} name="layout" onChange={handleChange}>
+                  <MenuItem value="headerFooter">{Locale.label("site.pageLinkEdit.headerFooter")}</MenuItem>
+                  <MenuItem value="cleanCentered">{Locale.label("site.pageLinkEdit.cleanCentered")}</MenuItem>
                 </Select>
               </FormControl>}
             </Grid>}
@@ -187,11 +187,11 @@ export function PageLinkEdit(props: Props) {
                     </Stack>
                   </Paper>
                 </div>)
-                : (<TextField size="small" fullWidth label="Url Path" name="url" value={page.url || ""} onChange={handleChange} placeholder={Locale.label("placeholders.page.urlPath")} helperText={Locale.label("site.pageLink.urlHelper")} InputProps={{ endAdornment: (<Button variant="contained" color="primary" size="small" onClick={handleSlugValidation}>{Locale.label("site.pageLink.check")}</Button>) }} />)
+                : (<TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.urlPath")} name="url" value={page.url || ""} onChange={handleChange} placeholder={Locale.label("placeholders.page.urlPath")} helperText={Locale.label("site.pageLink.urlHelper")} InputProps={{ endAdornment: (<Button variant="contained" color="primary" size="small" onClick={handleSlugValidation}>{Locale.label("site.pageLink.check")}</Button>) }} />)
               }
             </Grid>}
             {!page && link && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label="Url" name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
+              <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.url")} name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
             </Grid>}
           </Grid>
         </InputBox>

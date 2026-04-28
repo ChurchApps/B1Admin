@@ -1,6 +1,7 @@
 import { MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import React from "react";
+import { Locale } from "@churchapps/apphelper";
 
 type Props = {
   cols: number[]
@@ -52,12 +53,12 @@ export function RowMobileOrder(props: Props) {
     });
 
     return (<>
-      <div style={{ marginTop: 10 }}><b>Customize Mobile Order</b></div>
+      <div style={{ marginTop: 10 }}><b>{Locale.label("site.rowMobileOrder.customizeOrder")}</b></div>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Desktop Order</TableCell>
-            <TableCell>Mobile Order</TableCell>
+            <TableCell>{Locale.label("site.rowMobileOrder.desktopOrder")}</TableCell>
+            <TableCell>{Locale.label("site.rowMobileOrder.mobileOrder")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Fab, Drawer, useMediaQuery, useTheme } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import { Locale } from "@churchapps/apphelper";
 import { DocChatPanel } from "./DocChatPanel";
 
 export const DocChatWidget: React.FC = () => {
@@ -15,7 +16,7 @@ export const DocChatWidget: React.FC = () => {
           color="primary"
           onClick={() => setOpen(true)}
           sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 1200 }}
-          aria-label="Open help chat"
+          aria-label={Locale.label("components.docChat.ariaOpen")}
         >
           <QuestionAnswerIcon />
         </Fab>

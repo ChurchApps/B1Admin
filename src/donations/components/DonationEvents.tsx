@@ -76,7 +76,7 @@ export const DonationEvents = memo(() => {
               <li key={`actions-${log.id}`} style={{ float: "right" }}>
                 <Button aria-label="resolve-button" variant={log.resolved ? "outlined" : "contained"} onClick={() => handleClick(log.id, log.resolved)}>
                   {Locale.label("donations.donationEvents.mark")}
-                  {log.resolved ? "Unresolved" : "Resolved"}
+                  {log.resolved ? Locale.label("donations.donationEvents.unresolved") : Locale.label("donations.donationEvents.resolved")}
                 </Button>
               </li>
             </ul>

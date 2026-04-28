@@ -103,7 +103,7 @@ const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSetting
     return (
       <>
         {getSectionAnchor()}
-        <Box component="div" sx={{ ":before": { opacity: (section.answers?.backgroundOpacity) ? section.answers.backgroundOpacity + " !important" : "" } }} style={getStyle()} className={getClassName()} id={getId()}>
+        <Box component="div" sx={{ "&&:before": { opacity: section.answers?.backgroundOpacity || "" } }} style={getStyle()} className={getClassName()} id={getId()}>
           {contents}
         </Box>
       </>

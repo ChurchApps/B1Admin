@@ -43,7 +43,7 @@ export const PlanTypePage = () => {
 
   return (
     <>
-      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "5.5rem !important" } }}>
+      <Box sx={{ position: "relative", "& #page-header > div": { paddingTop: "5.5rem" } }}>
         <PageHeader
           title={planType.data.name || Locale.label("plans.planTypePage.planType")}
           subtitle={Locale.label("plans.planTypePage.subtitle")}
@@ -55,7 +55,7 @@ export const PlanTypePage = () => {
             startIcon={<GridOnIcon />}
             sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}
           >
-            Overview
+            {Locale.label("plans.planTypePage.overview")}
           </Button>
         </PageHeader>
         <Box sx={{

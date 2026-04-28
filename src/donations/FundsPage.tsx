@@ -125,14 +125,14 @@ export const FundsPage = () => {
                 <>
                   <Icon sx={{ color: "success.main", fontSize: 18 }}>check_circle</Icon>
                   <Typography variant="body2" sx={{ color: "success.main", fontWeight: 500 }}>
-                    Tax Deductible
+                    {Locale.label("donations.fundsPage.taxDeductible")}
                   </Typography>
                 </>
               ) : (
                 <>
                   <Icon sx={{ color: "warning.main", fontSize: 18 }}>info</Icon>
                   <Typography variant="body2" sx={{ color: "warning.main", fontWeight: 500 }}>
-                    Non-Deductible
+                    {Locale.label("donations.fundsPage.nonDeductible")}
                   </Typography>
                 </>
               )}
@@ -170,7 +170,7 @@ export const FundsPage = () => {
         </TableCell>
         <TableCell sx={{ fontWeight: 600 }}>
           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-            Tax Status
+            {Locale.label("donations.fundsPage.taxStatus")}
           </Typography>
         </TableCell>
         <TableCell sx={{ fontWeight: 600 }}>
@@ -231,7 +231,7 @@ export const FundsPage = () => {
                 <FundIcon sx={{ color: "#FFF", fontSize: 24 }} />
                 <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalFunds}</Typography>
               </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Total Funds</Typography>
+              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.fundsPage.totalFunds")}</Typography>
             </Stack>
           </Stack>
         )}
@@ -251,7 +251,7 @@ export const FundsPage = () => {
               setEditFundId("");
             }}
             data-testid="add-fund-button">
-            Add Fund
+            {Locale.label("donations.fundsPage.addFund")}
           </Button>
         )}
       </PageHeader>
@@ -272,7 +272,7 @@ export const FundsPage = () => {
               <Stack direction="row" spacing={1} alignItems="center">
                 {funds.data && (
                   <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={funds.data} filename="funds.csv" sx={{ mr: 1 }}>
-                    Export
+                    {Locale.label("donations.fundsPage.export")}
                   </Button>
                 )}
               </Stack>

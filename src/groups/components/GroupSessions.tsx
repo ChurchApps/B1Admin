@@ -7,10 +7,10 @@ import {
   ExportLink,
   Permissions,
   Loading,
-  SmallButton,
   Locale
 } from "@churchapps/apphelper";
 import { Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, Avatar, Box, Typography, Paper, Pagination, Chip } from "@mui/material";
+import { PersonRemove as PersonRemoveIcon } from "@mui/icons-material";
 import { SessionCard } from "./SessionCard";
 
 interface Props {
@@ -203,14 +203,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
       //let editLink = (canEdit) ? (<a href="about:blank" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId}><Icon>person_remove</Icon> Remove</a>) : null;
       const person = ArrayHelper.getOne(people, "id", vs.visit.personId);
       const editLink = canEdit ? (
-        <SmallButton
-          icon="person_remove"
-          text="Remove"
-          onClick={() => handleRemove(vs)}
-          color="error"
-          data-testid={`remove-session-visitor-button-${vs.id}`}
-          ariaLabel={`Remove ${person?.name?.display || "visitor"} from session`}
-        />
+        <Button size="small" variant="outlined" color="error" startIcon={<PersonRemoveIcon />} onClick={() => handleRemove(vs)} data-testid={`remove-session-visitor-button-${vs.id}`} aria-label={Locale.label("groups.groupSessions.removeAria").replace("{name}", person?.name?.display || Locale.label("groups.sessionAttendance.visitor"))}>{Locale.label("groups.groupSessions.removeButton")}</Button>
       ) : (
         <></>
       );

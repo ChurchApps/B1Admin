@@ -126,10 +126,10 @@ export const ChurchesTab = () => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             data-testid="church-search-input"
-            aria-label="Church name search"
+            aria-label={Locale.label("serverAdmin.churchesTab.churchNameSearchAria")}
             InputProps={{
               endAdornment: (
-                <Button variant="contained" id="searchButton" data-cy="search-button" disableElevation onClick={loadData} data-testid="search-churches-button" aria-label="Search churches">
+                <Button variant="contained" id="searchButton" data-cy="search-button" disableElevation onClick={loadData} data-testid="search-churches-button" aria-label={Locale.label("serverAdmin.churchesTab.searchChurchesAria")}>
                   {Locale.label("common.search")}
                 </Button>
               )

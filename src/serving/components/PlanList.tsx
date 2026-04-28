@@ -1,5 +1,6 @@
 import React, { useCallback, memo } from "react";
-import { Box, Card, CardContent, Typography, Stack, Paper, Chip, Avatar, Button, Menu, MenuItem, ListItemIcon, ListItemText, FormControlLabel, Switch } from "@mui/material";
+import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, Button, Menu, MenuItem, ListItemIcon, ListItemText, FormControlLabel, Switch } from "@mui/material";
+import { EmptyState } from "../../components/ui/EmptyState";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
@@ -122,54 +123,23 @@ export const PlanList = memo((props: Props) => {
   if (plans.length === 0 && !hasPastPlans) {
     return (
       <Box>
-        <Paper
-          sx={{
-            p: 6,
-            textAlign: "center",
-            backgroundColor: "background.subtle",
-            border: "1px dashed",
-            borderColor: "divider",
-            borderRadius: 2,
-            mb: 3
-          }}>
-          <EventNoteIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            {Locale.label("plans.planList.noPlans")}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            {Locale.label("plans.planList.createFirst")}
-          </Typography>
-          {canEdit && (
-            <Stack direction="row" spacing={2} justifyContent="center">
-              <Button
-                variant="contained"
-                size="large"
-                startIcon={<AddIcon />}
-                onClick={addPlan}
-                data-testid="add-plan-button"
-                sx={{
-                  fontSize: "1rem",
-                  py: 1.5,
-                  px: 3
-                }}>
-                {Locale.label("plans.planList.createPlan")}
-              </Button>
-              <Button
-                variant="contained"
-                size="large"
-                startIcon={<MenuBookIcon />}
-                endIcon={<ArrowDropDownIcon />}
-                onClick={(e) => setLessonMenuAnchor(e.currentTarget)}
-                sx={{
-                  fontSize: "1rem",
-                  py: 1.5,
-                  px: 3
-                }}>
-                {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
-              </Button>
-            </Stack>
-          )}
-        </Paper>
+        <Box sx={{ mb: 3 }}>
+          <EmptyState
+            icon={<EventNoteIcon />}
+            title={Locale.label("plans.planList.noPlans")}
+            description={Locale.label("plans.planList.createFirst")}
+            action={canEdit && (
+              <Stack direction="row" spacing={2} justifyContent="center">
+                <Button variant="contained" size="large" startIcon={<AddIcon />} onClick={addPlan} data-testid="add-plan-button" sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
+                  {Locale.label("plans.planList.createPlan")}
+                </Button>
+                <Button variant="contained" size="large" startIcon={<MenuBookIcon />} endIcon={<ArrowDropDownIcon />} onClick={(e) => setLessonMenuAnchor(e.currentTarget)} sx={{ fontSize: "1rem", py: 1.5, px: 3 }}>
+                  {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
+                </Button>
+              </Stack>
+            )}
+          />
+        </Box>
 
         <Menu
           anchorEl={lessonMenuAnchor}
@@ -200,7 +170,7 @@ export const PlanList = memo((props: Props) => {
             </Typography>
             <FormControlLabel
               control={<Switch size="small" checked={showPast} onChange={(e) => setShowPast(e.target.checked)} />}
-              label={<Stack direction="row" alignItems="center" spacing={0.5}><HistoryIcon fontSize="small" /><Typography variant="body2">Show Past</Typography></Stack>}
+              label={<Stack direction="row" alignItems="center" spacing={0.5}><HistoryIcon fontSize="small" /><Typography variant="body2">{Locale.label("plans.planList.showPast")}</Typography></Stack>}
               sx={{ ml: 2 }}
             />
           </Stack>
@@ -228,24 +198,13 @@ export const PlanList = memo((props: Props) => {
       </Box>
 
       {hasPastPlans && (
-        <Paper
-          sx={{
-            p: 4,
-            textAlign: "center",
-            backgroundColor: "background.subtle",
-            border: "1px dashed",
-            borderColor: "divider",
-            borderRadius: 2,
-            mb: 3
-          }}>
-          <EventNoteIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            No Upcoming Plans
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            There are no plans scheduled for today or later. Use the "Show Past" toggle above to view past plans.
-          </Typography>
-        </Paper>
+        <Box sx={{ mb: 3 }}>
+          <EmptyState
+            icon={<EventNoteIcon />}
+            title={Locale.label("plans.planList.noUpcomingPlans")}
+            description={Locale.label("plans.planList.noUpcomingPlansDescription")}
+          />
+        </Box>
       )}
 
       <Stack spacing={2} sx={{ mb: 4 }}>
@@ -263,7 +222,7 @@ export const PlanList = memo((props: Props) => {
                 borderColor: "primary.main"
               }
             }}>
-            <CardContent sx={{ pb: "16px !important" }}>
+            <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
               <Stack direction="row" alignItems="flex-start" justifyContent="space-between" flexWrap="wrap" useFlexGap spacing={1}>
                 <Stack direction="row" alignItems="center" spacing={2} sx={{ flex: 1, minWidth: 0 }}>
                   <Avatar

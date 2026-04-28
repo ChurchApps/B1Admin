@@ -1,5 +1,6 @@
 import React from "react";
 import type { LinkInterface } from "@churchapps/helpers";
+import { Locale } from "@churchapps/apphelper";
 import { DroppableWrapper } from "./DroppableWrapper";
 import { DraggableWrapper } from "./DraggableWrapper";
 import { Icon } from "@mui/material";
@@ -23,14 +24,14 @@ const NavRow: React.FC<{
   handleDrop: (index: number, parentId: string, link: LinkInterface) => void;
 }> = React.memo(({ link, index, nextLevel, style, setEditLink, handleDrop }) => {
   let linkText = link.text;
-  if (!linkText || linkText.trim().length === 0) linkText = "[No Title]";
+  if (!linkText || linkText.trim().length === 0) linkText = Locale.label("components.siteNavigation.noTitle");
 
   const anchor = (
     <a
       href="about:blank"
       onClick={(e) => { e.preventDefault(); setEditLink(link); }}
       data-testid={`edit-nav-link-${link.id}`}
-      aria-label={`Edit ${linkText} navigation link`}
+      aria-label={Locale.label("components.siteNavigation.ariaEditLink").replace("{linkText}", linkText)}
     >
       {linkText}
     </a>

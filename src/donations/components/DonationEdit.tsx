@@ -193,7 +193,7 @@ export const DonationEdit = memo((props: Props) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         data-testid="donation-date-input"
-        aria-label="Donation date"
+        aria-label={Locale.label("donations.donationEdit.ariaDate")}
       />
       <FormControl fullWidth>
         <InputLabel id="method">{Locale.label("donations.donationEdit.method")}</InputLabel>
@@ -205,7 +205,7 @@ export const DonationEdit = memo((props: Props) => {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           data-testid="payment-method-select"
-          aria-label="Payment method">
+          aria-label={Locale.label("donations.donationEdit.ariaMethod")}>
           <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
           <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
           <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
@@ -224,7 +224,7 @@ export const DonationEdit = memo((props: Props) => {
         multiline
         placeholder={Locale.label("placeholders.donation.notes")}
         data-testid="donation-notes-input"
-        aria-label="Donation notes"
+        aria-label={Locale.label("donations.donationEdit.ariaNotes")}
       />
     </InputBox>
   );

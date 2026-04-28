@@ -17,9 +17,8 @@ import {
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { Send as SendIcon } from "@mui/icons-material";
-import { SmallButton } from "@churchapps/apphelper";
+import { Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, IconButton, Tooltip } from "@mui/material";
+import { Send as SendIcon, KeyOff as KeyOffIcon, Key as KeyIcon, PersonRemove as PersonRemoveIcon, EditNote as EditNoteIcon } from "@mui/icons-material";
 import { SendInviteDialog } from "../../components";
 
 interface Props {
@@ -107,41 +106,26 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
     for (let i = 0; i < groupMembers.data.length; i++) {
       const gm = groupMembers.data[i];
-      const personName = gm.person?.name?.display || "Unknown";
+      const personName = gm.person?.name?.display || Locale.label("groups.groupMembers.unknown");
       const editLinks = [];
       if (canEdit) {
         if (gm.leader) {
           editLinks.push(
-            <SmallButton
-              icon="key_off"
-              toolTip="Remove Leader Access"
-              onClick={() => handleToggleLeader(gm)}
-              color="error"
-              data-testid={`remove-leader-button-${gm.id}`}
-              ariaLabel={`Remove leader access for ${personName}`}
-            />
+            <Tooltip key={`leader-${gm.id}`} title={Locale.label("groups.groupMembers.removeLeaderAccess")}>
+              <IconButton size="small" color="error" onClick={() => handleToggleLeader(gm)} data-testid={`remove-leader-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.removeLeaderAccessAria").replace("{name}", personName)}><KeyOffIcon fontSize="small" /></IconButton>
+            </Tooltip>
           );
         } else {
           editLinks.push(
-            <SmallButton
-              icon="key"
-              toolTip="Promote to Leader"
-              onClick={() => handleToggleLeader(gm)}
-              color="success"
-              data-testid={`promote-leader-button-${gm.id}`}
-              ariaLabel={`Promote ${personName} to leader`}
-            />
+            <Tooltip key={`leader-${gm.id}`} title={Locale.label("groups.groupMembers.promoteToLeader")}>
+              <IconButton size="small" color="success" onClick={() => handleToggleLeader(gm)} data-testid={`promote-leader-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.promoteToLeaderAria").replace("{name}", personName)}><KeyIcon fontSize="small" /></IconButton>
+            </Tooltip>
           );
         }
         editLinks.push(
-          <SmallButton
-            icon="person_remove"
-            toolTip="Remove"
-            onClick={() => handleRemove(gm)}
-            color="error"
-            data-testid={`remove-member-button-${gm.id}`}
-            ariaLabel={`Remove ${personName} from group`}
-          />
+          <Tooltip key={`remove-${gm.id}`} title={Locale.label("common.remove")}>
+            <IconButton size="small" color="error" onClick={() => handleRemove(gm)} data-testid={`remove-member-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.removeFromGroupAria").replace("{name}", personName)}><PersonRemoveIcon fontSize="small" /></IconButton>
+          </Tooltip>
         );
       }
 
@@ -190,15 +174,9 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const getEditContent = () => (
     <>
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
-        <SmallButton
-          icon="edit_square"
-          toolTip={Locale.label("groups.groupMembers.sendMemMsg")}
-          onClick={() => {
-            setCount(0);
-            setShow(!show);
-          }}
-          data-testid="send-message-button"
-          ariaLabel="Send message to members"></SmallButton>
+        <Tooltip title={Locale.label("groups.groupMembers.sendMemMsg")}>
+          <IconButton size="small" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" aria-label={Locale.label("groups.groupMembers.sendMessageAria")}><EditNoteIcon fontSize="small" /></IconButton>
+        </Tooltip>
       )}
       <ExportLink data={groupMembers.data} spaceAfter={true} filename="groupmembers.csv" />
     </>

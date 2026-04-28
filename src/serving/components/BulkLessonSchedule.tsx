@@ -91,7 +91,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
       // Parse: /lessons/{programId}/{studyId}/{lessonId}/{venueId}
       const segments = selectedContentPath.replace(/^\//, "").split("/").filter(Boolean);
       if (segments.length < 4) {
-        setError("Selected lesson path format not supported for bulk scheduling.");
+        setError(Locale.label("plans.bulkLessonSchedule.pathNotSupported"));
         setLoadingEntries(false);
         return;
       }
@@ -111,7 +111,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
         const remaining = selectedIndex >= 0 ? allLessons.slice(selectedIndex) : allLessons;
 
         if (remaining.length === 0) {
-          setError("No lessons found in this series.");
+          setError(Locale.label("plans.bulkLessonSchedule.noLessonsInSeries"));
           setLoadingEntries(false);
           return;
         }
@@ -135,7 +135,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
         setEntries(newEntries);
       } catch (err) {
         console.error("Error loading bulk schedule data:", err);
-        setError("Failed to load lesson data. Please try again.");
+        setError(Locale.label("plans.bulkLessonSchedule.loadFailed"));
       } finally {
         setLoadingEntries(false);
       }
@@ -196,7 +196,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
       props.onSave();
     } catch (err) {
       console.error("Error creating bulk plans:", err);
-      setError("Failed to create some plans. Please check and try again.");
+      setError(Locale.label("plans.bulkLessonSchedule.savingFailed"));
       setSaving(false);
     }
   };
@@ -208,7 +208,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
         headerIcon="calendar_month"
         saveFunction={handleSave}
         cancelFunction={props.onCancel}
-        saveText={saving ? `Scheduling... ${saveProgress}%` : undefined}
+        saveText={saving ? `${Locale.label("plans.bulkLessonSchedule.schedulingProgress")} ${saveProgress}%` : undefined}
       >
         {saving && <LinearProgress variant="determinate" value={saveProgress} sx={{ mb: 2 }} />}
         {error && <Alert severity="info" sx={{ mb: 2 }}>{error}</Alert>}
@@ -300,7 +300,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
           {loadingEntries && (
             <Box sx={{ py: 2, textAlign: "center" }}>
               <LinearProgress />
-              <Typography sx={{ mt: 1 }} variant="body2" color="text.secondary">Loading lesson series...</Typography>
+              <Typography sx={{ mt: 1 }} variant="body2" color="text.secondary">{Locale.label("plans.bulkLessonSchedule.loadingSeries")}</Typography>
             </Box>
           )}
 

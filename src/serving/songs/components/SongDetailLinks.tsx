@@ -1,7 +1,8 @@
 import React, { useEffect, memo, useMemo } from "react";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../../helpers";
-import { Stack, Box, Card, CardContent, Typography, Avatar, Paper, Button, IconButton } from "@mui/material";
+import { Stack, Box, Card, CardContent, Typography, Avatar, Button, IconButton } from "@mui/material";
+import { EmptyState } from "../../../components/ui/EmptyState";
 import { Link as LinkIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 
 interface Props {
@@ -119,7 +120,7 @@ export const SongDetailLinks = memo((props: Props) => {
         <Stack direction="row" spacing={1} alignItems="center">
           <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
           <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-            External Links
+            {Locale.label("songs.songDetailLinks.externalLinks")}
           </Typography>
         </Stack>
         {props.onEdit && (
@@ -136,24 +137,15 @@ export const SongDetailLinks = memo((props: Props) => {
       </Stack>
 
       {!allLinks || allLinks.length === 0 ? (
-        <Paper
-          sx={{
-            p: 3,
-            textAlign: "center",
-            backgroundColor: "grey.50",
-            border: "1px dashed",
-            borderColor: "grey.300"
-          }}>
-          <LinkIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            No external links added yet
-          </Typography>
-          {props.onEdit && (
+        <EmptyState
+          icon={<LinkIcon />}
+          title={Locale.label("songs.songDetailLinks.noLinksYet")}
+          action={props.onEdit && (
             <Button variant="contained" startIcon={<AddIcon />} onClick={props.onEdit} size="small">
-              Add First Link
+              {Locale.label("songs.songDetailLinks.addFirstLink")}
             </Button>
           )}
-        </Paper>
+        />
       ) : (
         <Stack
           direction="row"

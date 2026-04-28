@@ -40,7 +40,7 @@ export const Search: React.FC<Props> = (props) => {
               props.handleClickAction(person.id);
             }}
             data-testid="select-person-button"
-            aria-label="Select person">
+            aria-label={Locale.label("components.search.ariaSelectPerson")}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Icon sx={{ marginRight: "5px" }}>person</Icon>
               {props.buttonText}
@@ -65,10 +65,10 @@ export const Search: React.FC<Props> = (props) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         data-testid="person-search-input"
-        aria-label="Search for person"
+        aria-label={Locale.label("components.search.ariaSearchInput")}
         InputProps={{
           endAdornment: (
-            <Button variant="contained" id="searchButton" data-cy="search-button" onClick={() => props.handleSearch(searchText)} data-testid="search-button" aria-label="Search">
+            <Button variant="contained" id="searchButton" data-cy="search-button" onClick={() => props.handleSearch(searchText)} data-testid="search-button" aria-label={Locale.label("components.search.ariaSearch")}>
               {Locale.label("common.search")}
             </Button>
           )

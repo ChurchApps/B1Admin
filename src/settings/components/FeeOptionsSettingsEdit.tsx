@@ -245,7 +245,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
               fullWidth
               margin="dense"
               type="number"
-              label={Locale.label("settings.feeOptionsSettings.paypalFlatRate") || "PayPal Flat Rate"}
+              label={Locale.label("settings.feeOptionsSettings.paypalFlatRate")}
               name="paypalFlatRate"
               onChange={handleChange}
               value={options.flatRatePayPal}
@@ -258,7 +258,7 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
               fullWidth
               margin="dense"
               type="number"
-              label={Locale.label("settings.feeOptionsSettings.paypalTransactionFee") || "PayPal Transaction Fee"}
+              label={Locale.label("settings.feeOptionsSettings.paypalTransactionFee")}
               name="paypalTransactionFee"
               onChange={handleChange}
               value={options.transFeePayPal}

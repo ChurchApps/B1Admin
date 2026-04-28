@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { UserHelper, Permissions } from "@churchapps/apphelper";
+import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import UserContext from "./UserContext";
 import { LoginPage } from "@churchapps/apphelper/login";
 import { Alert } from "@mui/material";
@@ -52,11 +52,11 @@ export const Login: React.FC = () => {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", backgroundColor: "white" }}>
         {process.env.REACT_APP_STAGE === "demo" && (
           <Alert severity="error" style={{ margin: "16px 16px 0" }}>
-            <b>Demo:</b> This is the demo environment. All data is erased nightly.
+            <b>{Locale.label("app.login.demoLabel")}</b> {Locale.label("app.login.demoMessage")}
             <br />
-            You can log into a test church of "Grace Community Church"
+            {Locale.label("app.login.demoTestChurch")}
             <br />
-            Use the email "<b>demo@b1.church</b>" and password "<b>password</b>".
+            <span dangerouslySetInnerHTML={{ __html: Locale.label("app.login.demoCredentials").replace("{email}", "<b>demo@b1.church</b>").replace("{password}", "<b>password</b>") }} />
           </Alert>
         )}
         <LoginPage

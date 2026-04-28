@@ -27,8 +27,8 @@ export function BlockEdit(props: Props) {
 
   const validate = () => {
     const errors = [];
-    if (block.name === "") errors.push("Please enter a name.");
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push("Unauthorized to create blocks");
+    if (block.name === "") errors.push(Locale.label("site.blockEdit.errName"));
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.blockEdit.unauthorizedCreate"));
     setErrors(errors);
     return errors.length === 0;
   };
@@ -44,7 +44,7 @@ export function BlockEdit(props: Props) {
 
   const handleDelete = () => {
     const errors = [];
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push("Unauthorized to delete blocks");
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.blockEdit.unauthorizedDelete"));
 
     if (errors.length > 0) {
       setErrors(errors);
@@ -63,12 +63,12 @@ export function BlockEdit(props: Props) {
     <>
       <InputBox id="blockDetailsBox" headerText={Locale.label("site.blocks.editBlock")} headerIcon="school" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete} data-testid="edit-block-inputbox">
         <ErrorMessages errors={errors} />
-        <TextField fullWidth label="Name" name="name" value={block.name || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.block.name")} data-testid="block-name-input" aria-label="Block name" />
+        <TextField fullWidth label={Locale.label("site.blockEdit.name")} name="name" value={block.name || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.block.name")} data-testid="block-name-input" aria-label="Block name" />
         <FormControl fullWidth>
-          <InputLabel>Block Type</InputLabel>
-          <Select fullWidth label="Block Type" name="blockType" value={block.blockType || "elementBlock"} onChange={handleChange} data-testid="block-type-select" aria-label="Select block type">
-            <MenuItem value="elementBlock" data-testid="block-type-element" aria-label="Element block type">Element(s)</MenuItem>
-            <MenuItem value="sectionBlock" data-testid="block-type-section" aria-label="Section block type">Section(s)</MenuItem>
+          <InputLabel>{Locale.label("site.blockEdit.blockType")}</InputLabel>
+          <Select fullWidth label={Locale.label("site.blockEdit.blockType")} name="blockType" value={block.blockType || "elementBlock"} onChange={handleChange} data-testid="block-type-select" aria-label="Select block type">
+            <MenuItem value="elementBlock" data-testid="block-type-element" aria-label="Element block type">{Locale.label("site.blockEdit.elementBlock")}</MenuItem>
+            <MenuItem value="sectionBlock" data-testid="block-type-section" aria-label="Section block type">{Locale.label("site.blockEdit.sectionBlock")}</MenuItem>
           </Select>
         </FormControl>
       </InputBox>

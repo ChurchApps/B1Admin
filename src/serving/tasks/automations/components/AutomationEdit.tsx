@@ -104,7 +104,7 @@ export const AutomationEdit = (props: Props) => {
               name="title"
               onChange={handleChange}
               data-testid="automation-title-input"
-              aria-label="Automation title"
+              aria-label={Locale.label("tasks.automationEdit.automationTitleAria")}
               variant="outlined"
               sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
             />
@@ -117,7 +117,7 @@ export const AutomationEdit = (props: Props) => {
                 name="recurs"
                 onChange={handleChange}
                 data-testid="recurs-select"
-                aria-label="Recurrence"
+                aria-label={Locale.label("tasks.automationEdit.recurrenceAria")}
                 startAdornment={<RepeatIcon sx={{ color: "action.active", ml: 1, mr: 0.5 }} />}>
                 <MenuItem value="never">{Locale.label("tasks.automationEdit.never")}</MenuItem>
                 <MenuItem value="yearly">{Locale.label("tasks.automationEdit.yearly")}</MenuItem>

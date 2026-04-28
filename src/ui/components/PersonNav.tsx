@@ -1,5 +1,6 @@
 import { Icon, Button, Box } from "@mui/material";
 import React from "react";
+import { Locale } from "@churchapps/apphelper";
 
 export const PersonNav: React.FC = () => {
   return (
@@ -7,35 +8,35 @@ export const PersonNav: React.FC = () => {
       <ul>
         <li key="details" className="active">
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>
-            <Icon>person</Icon> Details
+            <Icon>person</Icon> {Locale.label("ui.personNav.details")}
           </Button>
         </li>
         <li key="notes">
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>
-            <Icon>sticky_note_2</Icon> Notes
+            <Icon>sticky_note_2</Icon> {Locale.label("ui.personNav.notes")}
           </Button>
         </li>
         <li key="attendance">
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>
-            <Icon>calendar_month</Icon> Attendance
+            <Icon>calendar_month</Icon> {Locale.label("ui.personNav.attendance")}
           </Button>
         </li>
         <li key="giving">
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>
-            <Icon>volunteer_activism</Icon> Giving
+            <Icon>volunteer_activism</Icon> {Locale.label("ui.personNav.giving")}
           </Button>
         </li>
         <li key="groups">
           <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>
-            <Icon>people</Icon> Groups
+            <Icon>people</Icon> {Locale.label("ui.personNav.groups")}
           </Button>
         </li>
       </ul>
 
-      <div className="subhead">Custom Forms</div>
+      <div className="subhead">{Locale.label("ui.personNav.customForms")}</div>
       <ul>
         <li key="discipleship">
-          <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>Discipleship</Button>
+          <Button variant="text" color="inherit" sx={{ p: 0, minWidth: 0 }}>{Locale.label("ui.personNav.discipleship")}</Button>
         </li>
       </ul>
     </Box>

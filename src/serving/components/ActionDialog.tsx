@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 import { useProviderContent } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
 
@@ -44,7 +45,7 @@ export const ActionDialog: React.FC<Props> = (props) => {
 
   return (
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
-      <DialogTitle>{props.contentName || "Action"}</DialogTitle>
+      <DialogTitle>{props.contentName || Locale.label("plans.actionDialog.fallbackTitle")}</DialogTitle>
       <DialogContent sx={{ p: 0, overflow: "hidden" }}>
         <ContentRenderer
           url={content?.url}

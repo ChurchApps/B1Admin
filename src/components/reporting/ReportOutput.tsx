@@ -179,7 +179,7 @@ export const ReportOutput = (props: Props) => {
 
     if (reportResult) {
       result.push(
-        <button type="button" className="no-default-style" key={result.length - 2} onClick={handlePrint} title="print">
+        <button type="button" className="no-default-style" key={result.length - 2} onClick={handlePrint} title={Locale.label("reporting.reportOutput.print")}>
           <Icon>print</Icon>
         </button>
       );

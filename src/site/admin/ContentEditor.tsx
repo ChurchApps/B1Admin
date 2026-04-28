@@ -218,7 +218,7 @@ export function ContentEditor(props: Props) {
 
   const getAddSection = (s: number, zone: string) => {
     const sort = s;
-    return <DroppableArea key={"addSection_" + zone + "_" + s.toString()} text="Drop here to add section" accept={["section", "sectionBlock"]} onDrop={(data) => handleDrop(data, sort, zone)} />;
+    return <DroppableArea key={"addSection_" + zone + "_" + s.toString()} text={Locale.label("site.contentEditor.dropToAddSection")} accept={["section", "sectionBlock"]} onDrop={(data) => handleDrop(data, sort, zone)} />;
   };
 
   const getSections = (zone: string) => {
@@ -505,7 +505,7 @@ export function ContentEditor(props: Props) {
       }
     } else {
       const block = container as BlockInterface;
-      if (block) result.push(getZoneBox((container as BlockInterface)?.sections, "Block Preview", "block", false));
+      if (block) result.push(getZoneBox((container as BlockInterface)?.sections, Locale.label("site.contentEditor.blockPreview"), "block", false));
     }
     return <>{result}</>;
   };
@@ -581,12 +581,9 @@ export function ContentEditor(props: Props) {
 
         <ConfirmDialog
           open={!!pendingDeleteElementId}
-          title={Locale.label("site.elements.deleteElementTitle", "Delete element?")}
-          message={Locale.label(
-            "site.elements.deleteElementBody",
-            "This element will be removed from the page. You can undo this with Ctrl+Z."
-          )}
-          confirmLabel={Locale.label("common.delete", "Delete")}
+          title={Locale.label("site.elements.deleteElementTitle")}
+          message={Locale.label("site.elements.deleteElementBody")}
+          confirmLabel={Locale.label("common.delete")}
           destructive
           onConfirm={confirmElementDelete}
           onCancel={() => setPendingDeleteElementId(null)}
@@ -622,7 +619,7 @@ export function ContentEditor(props: Props) {
                         width: "min(600px, 80%)",
                         maxWidth: "600px"
                       }}>
-                      <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
+                      <DroppableScroll key={"scrollDown"} text={Locale.label("site.contentEditor.scrollDown")} direction="down" />
                     </div>
                     <div
                       style={{
@@ -634,7 +631,7 @@ export function ContentEditor(props: Props) {
                         width: "min(600px, 80%)",
                         maxWidth: "600px"
                       }}>
-                      <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
+                      <DroppableScroll key={"scrollUp"} text={Locale.label("site.contentEditor.scrollUp")} direction="up" />
                     </div>
                   </>
                 )}
@@ -648,12 +645,12 @@ export function ContentEditor(props: Props) {
               title={
                 editElement
                   ? getElementTypeMeta(editElement.elementType).label
-                  : Locale.label("site.section.section", "Section")
+                  : Locale.label("site.section.section")
               }
               subtitle={
                 editElement
-                  ? Locale.label("common.element", "Element")
-                  : Locale.label("site.section.layoutContainer", "Layout container")
+                  ? Locale.label("common.element")
+                  : Locale.label("site.section.layoutContainer")
               }
               icon={
                 editElement

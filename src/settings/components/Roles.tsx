@@ -116,7 +116,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
           <Icon color="primary">add</Icon>
         </IconButton>
         <Menu id="add-menu" MenuListProps={{ "aria-labelledby": "addBtnGroup" }} anchorEl={anchorEl} open={open} onClose={handleClose}>
-          <MenuItem data-cy="add-campus" onClick={handleAddCustomRole} data-testid="add-custom-role-menu-item" aria-label="Add custom role">
+          <MenuItem data-cy="add-campus" onClick={handleAddCustomRole} data-testid="add-custom-role-menu-item" aria-label={Locale.label("settings.roles.addCustomRoleAria")}>
             <Icon sx={{ mr: "3px" }}>lock</Icon> {Locale.label("settings.roles.custAdd")}
           </MenuItem>
           <Divider />
@@ -128,7 +128,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
               }}
               title={role.description}
               data-testid={`add-predefined-role-${role.name.toLowerCase().replace(/\s+/g, "-")}`}
-              aria-label={`Add ${role.name} role`}>
+              aria-label={Locale.label("settings.roles.addPredefinedRoleAria").replace("{name}", role.name)}>
               <Icon sx={{ mr: "3px" }}>lock</Icon> {Locale.label("common.add")} "<strong>{role.name}</strong>" {Locale.label("settings.roles.role")}
             </MenuItem>
           ))}
@@ -168,10 +168,10 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
             selectRoleId(role.id);
           }}
           data-testid="edit-role-button"
-          aria-label="Edit role"
+          aria-label={Locale.label("settings.roles.editRoleAria")}
           sx={{ minWidth: "auto" }}
         >
-          Edit
+          {Locale.label("common.edit")}
         </Button>
       ) : null;
       result.push(

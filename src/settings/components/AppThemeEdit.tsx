@@ -105,15 +105,15 @@ export const AppThemeEdit: React.FC = () => {
     return (
       <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 2, overflow: "hidden", maxWidth: 360 }}>
         <Box sx={{ backgroundColor: colors.primary, color: colors.primaryContrast, p: 1.5, fontSize: "0.875rem", fontWeight: 500 }}>
-          Header Preview
+          {Locale.label("settings.appThemeEdit.headerPreview")}
         </Box>
         <Box sx={{ backgroundColor: colors.background, p: 2 }}>
           <Box sx={{ backgroundColor: colors.surface, borderRadius: 1, p: 2, mb: 1 }}>
-            <Typography variant="body2" sx={{ color: colors.textColor, fontWeight: 500 }}>Card content</Typography>
-            <Typography variant="caption" sx={{ color: colors.secondary }}>Secondary text</Typography>
+            <Typography variant="body2" sx={{ color: colors.textColor, fontWeight: 500 }}>{Locale.label("settings.appThemeEdit.cardContent")}</Typography>
+            <Typography variant="caption" sx={{ color: colors.secondary }}>{Locale.label("settings.appThemeEdit.secondaryText")}</Typography>
           </Box>
           <Box sx={{ backgroundColor: colors.primary, color: colors.primaryContrast, borderRadius: 1, p: 1, textAlign: "center", fontSize: "0.75rem" }}>
-            Button
+            {Locale.label("settings.appThemeEdit.button")}
           </Box>
         </Box>
       </Box>
@@ -127,14 +127,14 @@ export const AppThemeEdit: React.FC = () => {
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={2} sx={{ mb: 3 }}>
-          {colorField(mode, "Background", "background")}
-          {colorField(mode, "Surface", "surface")}
-          {colorField(mode, "Primary", "primary")}
-          {colorField(mode, "Primary Contrast", "primaryContrast")}
-          {colorField(mode, "Secondary", "secondary")}
-          {colorField(mode, "Text Color", "textColor")}
+          {colorField(mode, Locale.label("settings.appThemeEdit.background"), "background")}
+          {colorField(mode, Locale.label("settings.appThemeEdit.surface"), "surface")}
+          {colorField(mode, Locale.label("settings.appThemeEdit.primary"), "primary")}
+          {colorField(mode, Locale.label("settings.appThemeEdit.primaryContrast"), "primaryContrast")}
+          {colorField(mode, Locale.label("settings.appThemeEdit.secondary"), "secondary")}
+          {colorField(mode, Locale.label("settings.appThemeEdit.textColor"), "textColor")}
         </Grid>
-        <Typography variant="subtitle2" sx={{ mb: 1, color: "text.secondary" }}>Preview</Typography>
+        <Typography variant="subtitle2" sx={{ mb: 1, color: "text.secondary" }}>{Locale.label("settings.appThemeEdit.preview")}</Typography>
         {modePreview(mode)}
       </AccordionDetails>
     </Accordion>

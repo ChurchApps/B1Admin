@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ApiHelper, Locale } from "../helpers";
 import type { PersonInterface } from "@churchapps/helpers";
 import { TextField, Button, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
-import { SmallButton } from "@churchapps/apphelper";
+import { Person as PersonIcon } from "@mui/icons-material";
 import { CreatePerson } from "./CreatePerson";
 
 interface Props {
@@ -101,7 +101,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
           )}
         </TableCell>
         <TableCell>
-          <SmallButton color="success" icon="person" text={actionLabel || "Select"} ariaLabel="addPerson" onClick={() => handleAdd(sr)} data-testid={`add-person-${sr.id}`} />
+          <Button size="small" variant="contained" color="success" startIcon={<PersonIcon />} aria-label="addPerson" onClick={() => handleAdd(sr)} data-testid={`add-person-${sr.id}`}>{actionLabel || Locale.label("components.personAdd.select")}</Button>
         </TableCell>
       </TableRow>
     );

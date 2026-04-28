@@ -3,6 +3,7 @@ import React from "react";
 import { StyleList } from "./StyleList";
 import { AnimationsEdit } from "./AnimationsEdit";
 import { Accordion, AccordionSummary, Typography, AccordionDetails, Icon, Box } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 
 interface Props {
   fields: string[],
@@ -28,8 +29,8 @@ export const StylesAnimations: React.FC<Props> = (props) => {
     <Box sx={{ backgroundColor: "background.subtle", padding: "10px", marginBottom: "10px" }}>
       <Accordion expanded={expanded === "styles"} onChange={() => setExpanded((expanded === "styles") ? "" : "styles")}>
         <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>Styles</Typography>
-          <Typography sx={{ color: "text.secondary" }}>Advanced appearance options.</Typography>
+          <Typography sx={{ width: "33%", flexShrink: 0 }}>{Locale.label("site.stylesAnimations.styles")}</Typography>
+          <Typography sx={{ color: "text.secondary" }}>{Locale.label("site.stylesAnimations.stylesDesc")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <StyleList fields={props.fields} styles={props.styles} onChange={props.onStylesChange} />
@@ -38,8 +39,8 @@ export const StylesAnimations: React.FC<Props> = (props) => {
 
       <Accordion expanded={expanded === "animations"} onChange={() => setExpanded("animations")}>
         <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>Animations</Typography>
-          <Typography sx={{ color: "text.secondary" }}>Effect for when element is shown.</Typography>
+          <Typography sx={{ width: "33%", flexShrink: 0 }}>{Locale.label("site.stylesAnimations.animations")}</Typography>
+          <Typography sx={{ color: "text.secondary" }}>{Locale.label("site.stylesAnimations.animationsDesc")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <AnimationsEdit animations={props.animations} onSave={(animations) => { setExpanded(""); props.onAnimationsChange(animations); }} />

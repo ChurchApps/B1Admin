@@ -90,7 +90,7 @@ export const GroupAdd: React.FC<Props> = (props) => {
         onChange={handleChange}
         placeholder={Locale.label("placeholders.group.name")}
         data-testid="add-group-name-input"
-        aria-label="Group name"
+        aria-label={Locale.label("groups.groupAdd.groupNameAria")}
       />
     </InputBox>
   );

@@ -59,10 +59,10 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         data-testid="person-add-search-input"
-        aria-label="Search for person to add"
+        aria-label={Locale.label("people.personAdd.searchForPersonToAddAria")}
         InputProps={{
           endAdornment: (
-            <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch} data-testid="person-add-search-button" aria-label="Search for person">
+            <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch} data-testid="person-add-search-button" aria-label={Locale.label("people.personAdd.searchForPersonAria")}>
               {Locale.label("common.search")}
             </Button>
           )
@@ -75,7 +75,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
             type="button"
             onClick={() => setOpen(true)}
             data-testid="create-new-person-link"
-            aria-label="Create new person"
+            aria-label={Locale.label("people.personAdd.createNewPersonAria")}
             style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
             {Locale.label("createPerson.addNewPerson")}
           </button>

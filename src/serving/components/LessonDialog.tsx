@@ -110,7 +110,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
             {selectedChild.description ? (
               <MarkdownPreviewLight value={selectedChild.description} />
             ) : (
-              <Typography color="text.secondary" sx={{ textAlign: "center" }}>No preview available for this item.</Typography>
+              <Typography color="text.secondary" sx={{ textAlign: "center" }}>{Locale.label("plans.lessonDialog.noPreviewItem")}</Typography>
             )}
           </Box>
         );
@@ -164,7 +164,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
     return (
       <Box sx={{ p: 4, textAlign: "center", minHeight: 200, display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <Typography color="text.secondary">
-          Preview not available for this section.
+          {Locale.label("plans.lessonDialog.previewUnavailable")}
         </Typography>
       </Box>
     );
@@ -178,7 +178,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
             <ArrowBackIcon />
           </IconButton>
         )}
-        {selectedChild ? selectedChild.label : (props.sectionName || "Lesson Section")}
+        {selectedChild ? selectedChild.label : (props.sectionName || Locale.label("plans.lessonDialog.fallbackTitle"))}
       </DialogTitle>
       <DialogContent sx={{ p: 0, overflow: "hidden" }}>
         {renderContent()}
@@ -190,7 +190,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
           </Button>
         )}
         <Button variant="outlined" onClick={selectedChild ? handleBackToList : props.onClose}>
-          {selectedChild ? "Back" : "Close"}
+          {selectedChild ? Locale.label("plans.lessonDialog.back") : Locale.label("plans.lessonDialog.close")}
         </Button>
       </DialogActions>
     </Dialog>

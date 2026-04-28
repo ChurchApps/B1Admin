@@ -98,7 +98,7 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
           value={serviceTime.serviceId}
           onChange={handleChange}
           data-testid="service-select"
-          aria-label="Select service">
+          aria-label={Locale.label("attendance.serviceTimeEdit.serviceAria")}>
           {getServiceOptions()}
         </Select>
       </FormControl>
@@ -110,9 +110,9 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
         type="text"
         value={serviceTime.name}
         onChange={handleChange}
-        placeholder="8:00 AM"
+        placeholder={Locale.label("attendance.serviceTimeEdit.namePlaceholder")}
         data-testid="service-time-name-input"
-        aria-label="Service time name"
+        aria-label={Locale.label("attendance.serviceTimeEdit.nameAria")}
       />
     </InputBox>
   );

@@ -89,7 +89,7 @@ export const BlocksPage = () => {
           <TableCell align="right">
             <Stack direction="row" spacing={1} justifyContent="flex-end">
               <Button size="small" variant="outlined" component={Link} to={`/site/blocks/${block.id}`} startIcon={<EditIcon />} sx={{ textTransform: "none", minWidth: "auto" }}>{Locale.label("common.edit")}</Button>
-              <Button size="small" variant="outlined" startIcon={<SettingsIcon />} onClick={() => setEditBlock(block)} data-testid={`rename-block-${block.id}-button`} sx={{ textTransform: "none", minWidth: "auto" }}>{Locale.label("common.rename") || "Rename"}</Button>
+              <Button size="small" variant="outlined" startIcon={<SettingsIcon />} onClick={() => setEditBlock(block)} data-testid={`rename-block-${block.id}-button`} sx={{ textTransform: "none", minWidth: "auto" }}>{Locale.label("site.blocksPage.rename")}</Button>
             </Stack>
           </TableCell>
         </TableRow>

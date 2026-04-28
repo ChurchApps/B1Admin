@@ -150,7 +150,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSessionDate(new Date(e.currentTarget.value))}
         onKeyDown={handleKeyDown}
         data-testid="session-date-input"
-        aria-label="Session date"
+        aria-label={Locale.label("groups.sessionAdd.sessionDateAria")}
       />
     </InputBox>
   );

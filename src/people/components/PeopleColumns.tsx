@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Grid, FormControlLabel, Checkbox, Dialog, DialogTitle, DialogActions, Button, DialogContent, Tabs, Tab, Box } from "@mui/material";
-import { SmallButton, ApiHelper, Locale } from "@churchapps/apphelper";
+import { Grid, FormControlLabel, Checkbox, Dialog, DialogTitle, DialogActions, Button, DialogContent, Tabs, Tab, Box, IconButton, Tooltip } from "@mui/material";
+import { ViewColumn as ViewColumnIcon } from "@mui/icons-material";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   columns: { key: string; label: string; shortName: string }[];
@@ -111,7 +112,9 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
 
   return (
     <>
-      <SmallButton icon="view_column" onClick={handleClick} data-testid="columns-button" ariaLabel="Select columns" />
+      <Tooltip title={Locale.label("people.peopleColumns.selectColumns")}>
+        <IconButton size="small" onClick={handleClick} data-testid="columns-button" aria-label={Locale.label("people.peopleColumns.selectColumns")}><ViewColumnIcon fontSize="small" /></IconButton>
+      </Tooltip>
       <Dialog id="fieldsMenu" open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogTitle>{Locale.label("people.peopleColumns.filt")}</DialogTitle>
         <DialogContent>

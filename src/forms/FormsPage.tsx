@@ -4,8 +4,7 @@ import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
-import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon } from "@mui/icons-material";
-import { SmallButton } from "@churchapps/apphelper";
+import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Delete as DeleteIcon, Undo as UndoIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
@@ -45,43 +44,17 @@ export const FormsPage = () => {
         UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || (UserHelper.checkAccess(Permissions.membershipApi.forms.edit) && form.contentType !== "form") || form?.action === "admin";
       const editLink =
         canEdit && !isArchived ? (
-          <SmallButton
-            icon="edit"
-            text="Edit"
-            onClick={() => {
-              setSelectedFormId(form.id);
-            }}
-            data-testid={`edit-form-button-${form.id}`}
-            ariaLabel={`Edit form ${form.name}`}
-          />
+          <Button size="small" variant="outlined" startIcon={<EditIcon />} onClick={() => setSelectedFormId(form.id)} data-testid={`edit-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.editFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.edit")}</Button>
         ) : null;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
       const archiveLink =
         canEdit && !isArchived ? (
-          <SmallButton
-            icon="delete"
-            text="Archive"
-            color="error"
-            onClick={() => {
-              handleArchiveChange(form, true);
-            }}
-            data-testid={`archive-form-button-${form.id}`}
-            ariaLabel={`Archive form ${form.name}`}
-          />
+          <Button size="small" variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.archive")}</Button>
         ) : null;
       const unarchiveLink =
         canEdit && isArchived ? (
-          <SmallButton
-            icon="undo"
-            text="Restore"
-            color="success"
-            onClick={() => {
-              handleArchiveChange(form, false);
-            }}
-            data-testid={`restore-form-button-${form.id}`}
-            ariaLabel={`Restore form ${form.name}`}
-          />
+          <Button size="small" variant="outlined" color="success" startIcon={<UndoIcon />} onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.restoreFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.restore")}</Button>
         ) : null;
       result.push(
         <TableRow key={form.id}>
@@ -163,7 +136,7 @@ export const FormsPage = () => {
             <Typography variant="h6">{Locale.label("forms.formsPage.forms")}</Typography>
           </Stack>
           <Typography variant="body2" color="text.secondary">
-            {`${formsCount} ${formsCount === 1 ? "form" : "forms"}`}
+            {(formsCount === 1 ? Locale.label("forms.formsPage.formCount") : Locale.label("forms.formsPage.formCountPlural")).replace("{count}", formsCount.toString())}
           </Typography>
         </Stack>
       </Box>
@@ -180,7 +153,7 @@ export const FormsPage = () => {
             <Typography variant="h6">{Locale.label("forms.formsPage.archForms")}</Typography>
           </Stack>
           <Typography variant="body2" color="text.secondary">
-            {`${archivedCount} archived ${archivedCount === 1 ? "form" : "forms"}`}
+            {(archivedCount === 1 ? Locale.label("forms.formsPage.formArchivedCount") : Locale.label("forms.formsPage.formArchivedCountPlural")).replace("{count}", archivedCount.toString())}
           </Typography>
         </Stack>
       </Box>
@@ -218,7 +191,7 @@ export const FormsPage = () => {
               "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
             }}
             data-testid="add-form-button">
-            {Locale.label("forms.formsPage.addForm") || "Add Form"}
+            {Locale.label("forms.formsPage.addForm")}
           </Button>
         )}
       </PageHeader>

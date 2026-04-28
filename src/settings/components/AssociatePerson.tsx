@@ -1,8 +1,9 @@
-import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Table, TableBody, TableCell, TableRow, Button } from "@mui/material";
+import { Person as PersonIcon } from "@mui/icons-material";
 import React, { useState, useEffect } from "react";
 import { PersonAdd } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
-import { SmallButton, PersonHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { PersonHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 
 interface Props {
   person: PersonInterface;
@@ -48,7 +49,7 @@ export const AssociatePerson = ({ person, handleAssociatePerson, searchStatus, f
           <TableCell className="border-0">{person?.name?.display}</TableCell>
           {showChangeOption && (
             <TableCell className="border-0">
-              <SmallButton data-cy="change-person" onClick={handleChangeClick} text={Locale.label("settings.associatePerson.change")} icon="person" />
+              <Button size="small" variant="outlined" startIcon={<PersonIcon />} data-cy="change-person" onClick={handleChangeClick}>{Locale.label("settings.associatePerson.change")}</Button>
             </TableCell>
           )}
         </TableRow>

@@ -73,9 +73,9 @@ export class SecondaryMenuHelper {
   static getProfileMenu = (path:string) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
-    if (path.startsWith("/profile")) label = "Profile";
-    menuItems.push({ url: "/profile", label: "Profile", icon: "person" });
-    menuItems.push({ url: "/profile/devices", label: "Devices", icon: "devices" });
+    if (path.startsWith("/profile")) label = Locale.label("helpers.secondaryMenuHelper.profile");
+    menuItems.push({ url: "/profile", label: Locale.label("helpers.secondaryMenuHelper.profile"), icon: "person" });
+    menuItems.push({ url: "/profile/devices", label: Locale.label("helpers.secondaryMenuHelper.devices"), icon: "devices" });
     return { menuItems, label };
   };
 
@@ -104,7 +104,7 @@ export class SecondaryMenuHelper {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/funds", label: Locale.label("donations.donations.funds"), icon: "account_balance" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/statements", label: Locale.label("donations.donations.statements") || "Giving Statements", icon: "description" });
 
-    if (path.startsWith("/donations/stripe-import")) label = "Stripe Import";
+    if (path.startsWith("/donations/stripe-import")) label = Locale.label("helpers.secondaryMenuHelper.stripeImport");
     else if (path.startsWith("/donations/statements")) label = Locale.label("donations.donations.statements") || "Giving Statements";
     else if (path.startsWith("/donations/funds")) label = Locale.label("donations.donations.funds");
     else if (path.startsWith("/donations/batches")) label = Locale.label("donations.donations.batches");
@@ -116,10 +116,10 @@ export class SecondaryMenuHelper {
   static getDashboardMenu = (path: string) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
-    menuItems.push({ url: "/", label: "Quick Actions", icon: "flash_on" });
+    menuItems.push({ url: "/", label: Locale.label("helpers.secondaryMenuHelper.quickActions"), icon: "flash_on" });
     menuItems.push({ url: "/dashboard", label: Locale.label("components.wrapper.dash"), icon: "dashboard" });
 
-    if (path === "/") label = "Quick Actions";
+    if (path === "/") label = Locale.label("helpers.secondaryMenuHelper.quickActions");
     else if (path.startsWith("/dashboard")) label = Locale.label("components.wrapper.dash");
 
     return { menuItems, label };
@@ -127,24 +127,24 @@ export class SecondaryMenuHelper {
 
   static getSiteMenu = (path: string) => {
     const menuItems: MenuItem[] = [];
-    let label: string = "Website";
+    let label: string = Locale.label("helpers.secondaryMenuHelper.website");
 
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
-      menuItems.push({ url: "/site/pages", label: "Pages", icon: "article" });
-      menuItems.push({ url: "/site/blocks", label: "Blocks", icon: "widgets" });
-      menuItems.push({ url: "/site/appearance", label: "Appearance", icon: "palette" });
-      menuItems.push({ url: "/site/files", label: "Files", icon: "folder_open" });
-      menuItems.push({ url: "/calendars", label: "Calendars", icon: "calendar_month" });
-      menuItems.push({ url: "/registrations", label: "Registrations", icon: "how_to_reg" });
+      menuItems.push({ url: "/site/pages", label: Locale.label("helpers.secondaryMenuHelper.pages"), icon: "article" });
+      menuItems.push({ url: "/site/blocks", label: Locale.label("helpers.secondaryMenuHelper.blocks"), icon: "widgets" });
+      menuItems.push({ url: "/site/appearance", label: Locale.label("helpers.secondaryMenuHelper.appearance"), icon: "palette" });
+      menuItems.push({ url: "/site/files", label: Locale.label("helpers.secondaryMenuHelper.files"), icon: "folder_open" });
+      menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
+      menuItems.push({ url: "/registrations", label: Locale.label("helpers.secondaryMenuHelper.registrations"), icon: "how_to_reg" });
     }
 
-    if (path.startsWith("/registrations")) label = "Registrations";
-    else if (path.startsWith("/site/pages")) label = "Pages";
-    else if (path.startsWith("/site/blocks")) label = "Blocks";
-    else if (path.startsWith("/site/appearance")) label = "Appearance";
-    else if (path.startsWith("/site/files")) label = "Files";
-    else if (path.startsWith("/calendars")) label = "Calendars";
-    else if (path.startsWith("/site")) label = "Website";
+    if (path.startsWith("/registrations")) label = Locale.label("helpers.secondaryMenuHelper.registrations");
+    else if (path.startsWith("/site/pages")) label = Locale.label("helpers.secondaryMenuHelper.pages");
+    else if (path.startsWith("/site/blocks")) label = Locale.label("helpers.secondaryMenuHelper.blocks");
+    else if (path.startsWith("/site/appearance")) label = Locale.label("helpers.secondaryMenuHelper.appearance");
+    else if (path.startsWith("/site/files")) label = Locale.label("helpers.secondaryMenuHelper.files");
+    else if (path.startsWith("/calendars")) label = Locale.label("helpers.secondaryMenuHelper.calendars");
+    else if (path.startsWith("/site")) label = Locale.label("helpers.secondaryMenuHelper.website");
 
     return { menuItems, label };
   };
@@ -153,16 +153,16 @@ export class SecondaryMenuHelper {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) {
-      menuItems.push({ url: "/sermons", label: "Sermons", icon: "live_tv" });
-      menuItems.push({ url: "/sermons/playlists", label: "Playlists", icon: "video_library" });
-      menuItems.push({ url: "/sermons/times", label: "Live Stream Times", icon: "schedule" });
-      menuItems.push({ url: "/sermons/bulk", label: "Bulk Import", icon: "cloud_upload" });
+      menuItems.push({ url: "/sermons", label: Locale.label("helpers.secondaryMenuHelper.sermons"), icon: "live_tv" });
+      menuItems.push({ url: "/sermons/playlists", label: Locale.label("helpers.secondaryMenuHelper.playlists"), icon: "video_library" });
+      menuItems.push({ url: "/sermons/times", label: Locale.label("helpers.secondaryMenuHelper.liveStreamTimes"), icon: "schedule" });
+      menuItems.push({ url: "/sermons/bulk", label: Locale.label("helpers.secondaryMenuHelper.bulkImport"), icon: "cloud_upload" });
     }
 
-    if (path.startsWith("/sermons/bulk")) label = "Bulk Import";
-    else if (path.startsWith("/sermons/times")) label = "Live Stream Times";
-    else if (path.startsWith("/sermons/playlists")) label = "Playlists";
-    else if (path.startsWith("/sermons")) label = "Sermons";
+    if (path.startsWith("/sermons/bulk")) label = Locale.label("helpers.secondaryMenuHelper.bulkImport");
+    else if (path.startsWith("/sermons/times")) label = Locale.label("helpers.secondaryMenuHelper.liveStreamTimes");
+    else if (path.startsWith("/sermons/playlists")) label = Locale.label("helpers.secondaryMenuHelper.playlists");
+    else if (path.startsWith("/sermons")) label = Locale.label("helpers.secondaryMenuHelper.sermons");
 
     return { menuItems, label };
   };

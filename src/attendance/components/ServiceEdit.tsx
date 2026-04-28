@@ -102,7 +102,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
           value={service.campusId}
           onChange={handleChange}
           data-testid="campus-select"
-          aria-label="Select campus">
+          aria-label={Locale.label("attendance.serviceEdit.campusAria")}>
           {getCampusOptions()}
         </Select>
       </FormControl>
@@ -116,7 +116,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         onChange={handleChange}
         placeholder={Locale.label("placeholders.service.name")}
         data-testid="service-name-input"
-        aria-label="Service name"
+        aria-label={Locale.label("attendance.serviceEdit.nameAria")}
       />
     </InputBox>
   );

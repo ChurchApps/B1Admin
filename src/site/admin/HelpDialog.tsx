@@ -18,35 +18,23 @@ export function HelpDialog(props: HelpDialogProps) {
   const tips: Tip[] = [
     {
       icon: "add",
-      title: Locale.label("site.helpDialog.addTitle", "Add content"),
-      body: Locale.label(
-        "site.helpDialog.addBody",
-        "Click Add Content in the toolbar, then drag a section or element onto the page."
-      )
+      title: Locale.label("site.helpDialog.addTitle"),
+      body: Locale.label("site.helpDialog.addBody")
     },
     {
       icon: "edit",
-      title: Locale.label("site.helpDialog.editTitle", "Edit anything"),
-      body: Locale.label(
-        "site.helpDialog.editBody",
-        "Double-click any section or element to open its settings. Click once to select and use the floating toolbar."
-      )
+      title: Locale.label("site.helpDialog.editTitle"),
+      body: Locale.label("site.helpDialog.editBody")
     },
     {
       icon: "open_with",
-      title: Locale.label("site.helpDialog.moveTitle", "Rearrange"),
-      body: Locale.label(
-        "site.helpDialog.moveBody",
-        "Drag sections and elements to reorder them. Use the up/down arrows on the selection toolbar for precise moves."
-      )
+      title: Locale.label("site.helpDialog.moveTitle"),
+      body: Locale.label("site.helpDialog.moveBody")
     },
     {
       icon: "history",
-      title: Locale.label("site.helpDialog.undoTitle", "Undo & history"),
-      body: Locale.label(
-        "site.helpDialog.undoBody",
-        "Use Ctrl+Z to undo and Ctrl+Shift+Z to redo. Open the History panel from the menu to jump to any earlier state."
-      )
+      title: Locale.label("site.helpDialog.undoTitle"),
+      body: Locale.label("site.helpDialog.undoBody")
     }
   ];
 
@@ -64,7 +52,7 @@ export function HelpDialog(props: HelpDialogProps) {
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Icon fontSize="small" sx={{ color: "#6b7280" }}>help_outline</Icon>
-          {Locale.label("site.helpDialog.title", "Page editor basics")}
+          {Locale.label("site.helpDialog.title")}
         </Box>
         <IconButton size="small" onClick={onClose} aria-label="close">
           <Icon fontSize="small">close</Icon>
@@ -110,7 +98,7 @@ export function HelpDialog(props: HelpDialogProps) {
           endIcon={<Icon fontSize="small">open_in_new</Icon>}
           sx={{ textTransform: "none" }}
         >
-          {Locale.label("site.helpDialog.fullDocs", "Full documentation")}
+          {Locale.label("site.helpDialog.fullDocs")}
         </Button>
         <Button
           variant="contained"
@@ -119,7 +107,7 @@ export function HelpDialog(props: HelpDialogProps) {
           onClick={onClose}
           sx={{ textTransform: "none" }}
         >
-          {Locale.label("common.close", "Close")}
+          {Locale.label("common.close")}
         </Button>
       </DialogActions>
     </Dialog>

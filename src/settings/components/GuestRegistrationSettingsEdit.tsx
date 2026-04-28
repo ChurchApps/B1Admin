@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Icon, Stack, Switch, Tooltip, Typography } from "@mui/material";
 import { type GenericSettingInterface } from "@churchapps/helpers";
-import { ApiHelper, UniqueIdHelper } from "@churchapps/apphelper";
+import { ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   churchId: string;
@@ -41,15 +41,15 @@ export const GuestRegistrationSettingsEdit: React.FC<Props> = (props) => {
   return (
     <Box sx={{ mb: 2.5, pb: 2.5, borderBottom: "1px solid", borderColor: "divider" }}>
       <Stack direction="row" alignItems="center" sx={{ mb: 1.5 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>QR Guest Registration</Typography>
-        <Tooltip title="Display a QR code on the check-in kiosk so guests can self-register on their phone" arrow>
+        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("mobile.checkInPage.qrGuestRegistration")}</Typography>
+        <Tooltip title={Locale.label("mobile.checkInPage.qrTooltip")} arrow>
           <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
         </Tooltip>
       </Stack>
       <Stack direction="row" alignItems="center">
         <Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)} />
         <Typography variant="body2" sx={{ ml: 1, color: "text.secondary" }}>
-          {enabled ? "Enabled — QR code will appear on kiosk" : "Disabled"}
+          {enabled ? Locale.label("mobile.checkInPage.enabled") : Locale.label("mobile.checkInPage.disabled")}
         </Typography>
       </Stack>
     </Box>

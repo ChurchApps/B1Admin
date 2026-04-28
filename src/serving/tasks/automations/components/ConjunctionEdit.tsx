@@ -76,7 +76,7 @@ export const ConjunctionEdit = (props: Props) => {
               name="groupType"
               onChange={handleChange}
               data-testid="conjunction-type-select"
-              aria-label="Conjunction type">
+              aria-label={Locale.label("tasks.conjunctionEdit.conjunctionTypeAria")}>
               <MenuItem value="and">{Locale.label("tasks.conjunctionEdit.and")}</MenuItem>
               <MenuItem value="or">{Locale.label("tasks.conjunctionEdit.or")}</MenuItem>
             </Select>

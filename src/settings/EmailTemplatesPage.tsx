@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, Stack, Button, Typography, Chip } from "@mui/material";
 import { Email as EmailIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, PageHeader, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Loading, PageHeader, UserHelper, Locale } from "@churchapps/apphelper";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
 
 export interface EmailTemplateInterface {
@@ -30,7 +30,7 @@ export const EmailTemplatesPage: React.FC = () => {
   useEffect(() => { loadData(); }, [loadData]);
 
   const handleDelete = async (template: EmailTemplateInterface) => {
-    if (!window.confirm(`Delete template "${template.name}"?`)) return;
+    if (!window.confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name))) return;
     await ApiHelper.delete("/messaging/emailTemplates/" + UserHelper.currentUserChurch.church.id + "/" + template.id, "MessagingApi");
     loadData();
   };
@@ -61,9 +61,9 @@ export const EmailTemplatesPage: React.FC = () => {
 
   return (
     <>
-      <PageHeader title="Email Templates" subtitle="Create and manage reusable email templates">
+      <PageHeader title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
         <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew} sx={{ color: "#FFF", backgroundColor: "rgba(255,255,255,0.2)", borderColor: "#FFF", "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" } }}>
-          New Template
+          {Locale.label("settings.emailTemplatesPage.newTemplate")}
         </Button>
       </PageHeader>
 
@@ -75,19 +75,19 @@ export const EmailTemplatesPage: React.FC = () => {
             {templates.length === 0 ? (
               <Box sx={{ textAlign: "center", py: 6 }}>
                 <EmailIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-                <Typography variant="h6" color="text.secondary">No email templates yet</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Create a template to get started with bulk email.</Typography>
-                <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew}>Create Template</Button>
+                <Typography variant="h6" color="text.secondary">{Locale.label("settings.emailTemplatesPage.emptyTitle")}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("settings.emailTemplatesPage.emptyDescription")}</Typography>
+                <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew}>{Locale.label("settings.emailTemplatesPage.createTemplate")}</Button>
               </Box>
             ) : (
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Subject</TableCell>
-                    <TableCell>Category</TableCell>
-                    <TableCell>Modified</TableCell>
-                    <TableCell align="right">Actions</TableCell>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.name")}</TableCell>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.subject")}</TableCell>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.category")}</TableCell>
+                    <TableCell>{Locale.label("settings.emailTemplatesPage.modified")}</TableCell>
+                    <TableCell align="right">{Locale.label("settings.emailTemplatesPage.actions")}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -99,10 +99,10 @@ export const EmailTemplatesPage: React.FC = () => {
                       <TableCell>{formatDate(t.dateModified)}</TableCell>
                       <TableCell align="right">
                         <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                          <Tooltip title="Edit">
+                          <Tooltip title={Locale.label("settings.emailTemplatesPage.tooltipEdit")}>
                             <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleEdit(t); }}><EditIcon fontSize="small" /></IconButton>
                           </Tooltip>
-                          <Tooltip title="Delete">
+                          <Tooltip title={Locale.label("settings.emailTemplatesPage.tooltipDelete")}>
                             <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleDelete(t); }}><DeleteIcon fontSize="small" /></IconButton>
                           </Tooltip>
                         </Stack>

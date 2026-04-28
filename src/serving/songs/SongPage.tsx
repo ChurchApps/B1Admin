@@ -1,11 +1,12 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale, SmallButton } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { useParams, useNavigate } from "react-router-dom";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, Paper, IconButton } from "@mui/material";
-import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, IconButton, Tooltip } from "@mui/material";
+import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Arrangement } from "./components/Arrangement";
+import { EmptyState } from "../../components/ui/EmptyState";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { SongDetailsEdit } from "./components/SongDetailsEdit";
 import { SongDetailLinks } from "./components/SongDetailLinks";
@@ -107,7 +108,7 @@ export const SongPage = memo(() => {
             <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
               <MusicIcon sx={{ color: "primary.main" }} />
               <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                Arrangements
+                {Locale.label("songs.oldArrangements.arrangements")}
               </Typography>
             </Stack>
 
@@ -162,7 +163,7 @@ export const SongPage = memo(() => {
                     backgroundColor: "primary.light"
                   }
                 }}>
-                Add Arrangement
+                {Locale.label("songs.songPage.addArrangement")}
               </Button>
             )}
           </CardContent>
@@ -193,22 +194,11 @@ export const SongPage = memo(() => {
   const currentContent = useMemo(() => {
     if (!selectedArrangement) {
       return (
-        <Paper
-          sx={{
-            p: 6,
-            textAlign: "center",
-            backgroundColor: "background.subtle",
-            border: "1px dashed",
-            borderColor: "divider"
-          }}>
-          <ArrangementIcon sx={{ fontSize: 64, color: "text.secondary", mb: 2 }} />
-          <Typography variant="h6" color="text.secondary" gutterBottom>
-            No Arrangement Selected
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Select an arrangement from the sidebar to get started.
-          </Typography>
-        </Paper>
+        <EmptyState
+          icon={<ArrangementIcon />}
+          title={Locale.label("songs.songPage.noArrangementSelected")}
+          description={Locale.label("songs.songPage.noArrangementDescription")}
+        />
       );
     }
 
@@ -232,7 +222,11 @@ export const SongPage = memo(() => {
             <EditIcon fontSize="small" />
           </IconButton>
         )}
-        {canEdit && <SmallButton color="error" icon="delete" onClick={handleDeleteSong} />}
+        {canEdit && (
+          <Tooltip title={Locale.label("common.delete")}>
+            <IconButton size="small" color="error" onClick={handleDeleteSong} aria-label={Locale.label("songs.songPage.deleteSongAria")}><DeleteIcon fontSize="small" /></IconButton>
+          </Tooltip>
+        )}
         {canEdit && (
           <Button
             variant="outlined"
@@ -246,7 +240,7 @@ export const SongPage = memo(() => {
                 backgroundColor: "rgba(255,255,255,0.1)"
               }
             }}>
-            Add Arrangement
+            {Locale.label("songs.songPage.addArrangement")}
           </Button>
         )}
       </PageHeader>

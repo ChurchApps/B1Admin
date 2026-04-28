@@ -182,7 +182,7 @@ export const NewTask = (props: Props) => {
                   setModalField("associatedWith");
                 }}
                 data-testid="associate-with-input"
-                aria-label="Associate with"
+                aria-label={Locale.label("tasks.newTask.associateWithAria")}
                 variant="outlined"
                 sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
               />
@@ -205,7 +205,7 @@ export const NewTask = (props: Props) => {
                   setModalField("assignedTo");
                 }}
                 data-testid="assign-to-input"
-                aria-label="Assign to"
+                aria-label={Locale.label("tasks.newTask.assignToAria")}
                 variant="outlined"
                 sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
               />
@@ -219,7 +219,7 @@ export const NewTask = (props: Props) => {
                 onChange={handleChange}
                 placeholder={Locale.label("placeholders.task.title")}
                 data-testid="task-title-input"
-                aria-label="Task title"
+                aria-label={Locale.label("tasks.newTask.taskTitleAria")}
                 variant="outlined"
                 sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
               />
@@ -237,7 +237,7 @@ export const NewTask = (props: Props) => {
             rows={4}
             placeholder={Locale.label("placeholders.task.notes")}
             data-testid="task-notes-input"
-            aria-label="Task notes"
+            aria-label={Locale.label("tasks.newTask.taskNotesAria")}
             variant="outlined"
             sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
           />

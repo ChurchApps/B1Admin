@@ -14,13 +14,13 @@ type Props = {
 export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange }: Props) => (
   <>
     <FormControl fullWidth>
-      <InputLabel>Heading Type</InputLabel>
-      <Select fullWidth label="Heading Type" name="headingType" value={parsedData.headingType} onChange={handleChange}>
-        <MenuItem value="h6">Heading</MenuItem>
-        <MenuItem value="link">Link</MenuItem>
+      <InputLabel>{Locale.label("site.faqEdit.headingType")}</InputLabel>
+      <Select fullWidth label={Locale.label("site.faqEdit.headingType")} name="headingType" value={parsedData.headingType} onChange={handleChange}>
+        <MenuItem value="h6">{Locale.label("site.faqEdit.heading")}</MenuItem>
+        <MenuItem value="link">{Locale.label("site.faqEdit.link")}</MenuItem>
       </Select>
     </FormControl>
-    <TextField fullWidth label="Title" name="title" size="small" value={parsedData.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.faq.title")} />
+    <TextField fullWidth label={Locale.label("site.faqEdit.title")} name="title" size="small" value={parsedData.title || ""} onChange={handleChange} placeholder={Locale.label("placeholders.faq.title")} />
     <Box sx={{ marginTop: 2 }}>
       <HtmlEditor
         value={parsedData.description || ""}
@@ -29,7 +29,7 @@ export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange }: Props) =
       />
     </Box>
     <Box sx={{ marginTop: 2 }}>
-      <InputLabel>Icon Color</InputLabel>
+      <InputLabel>{Locale.label("site.faqEdit.iconColor")}</InputLabel>
       <ColorPicker color={parsedData?.iconColor || "#03a9f4"} updatedCallback={(c) => handleHtmlChange("iconColor", c)} globalStyles={null} />
     </Box>
   </>

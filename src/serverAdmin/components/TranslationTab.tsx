@@ -90,7 +90,7 @@ export const TranslationTab = () => {
                 <TextField id="end" name="end" value={DateHelper.formatHtml5Date(endDate)} type="date" onChange={handleChange} data-testid="translation-end-date-input" aria-label="End date" />
               </Grid>
               <Grid size={{ md: 1 }}>
-                <Button variant="outlined" style={{ height: 56, width: 200, marginTop: 8 }} onClick={loadData} data-testid="search-translation-stats-button" aria-label="Search translation statistics">
+                <Button variant="outlined" style={{ height: 56, width: 200, marginTop: 8 }} onClick={loadData} data-testid="search-translation-stats-button" aria-label={Locale.label("serverAdmin.translationTab.searchTranslationStatsAria")}>
                   <ManageSearchIcon fontSize="small" />
                   &nbsp;{Locale.label("serverAdmin.translation.search")}
                 </Button>

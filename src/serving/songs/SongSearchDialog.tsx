@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, IconButton, InputAdornment, Paper } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, IconButton, InputAdornment } from "@mui/material";
 import { Search as SearchIcon, MusicNote as MusicIcon, Person as ArtistIcon, Close as CloseIcon, Add as AddIcon } from "@mui/icons-material";
 import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../helpers";
 import { CreateSongDetail } from "./components/CreateSongDetail";
+import { EmptyState } from "../../components/ui/EmptyState";
 
 interface Props {
   searchText?: string;
@@ -73,41 +74,20 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
     }
 
     if (songDetails === null) {
-      return (
-        <Paper
-          sx={{
-            p: 4,
-            textAlign: "center",
-            backgroundColor: "background.subtle",
-            border: "1px dashed",
-            borderColor: "divider"
-          }}>
-          <SearchIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-          <Typography variant="body1" color="text.secondary">
-            {Locale.label("songs.search.enterQuery") || "Enter a search term to find songs."}
-          </Typography>
-        </Paper>
-      );
+      return <EmptyState icon={<SearchIcon />} title={Locale.label("songs.search.enterQuery") || "Enter a search term to find songs."} />;
     }
 
     if (songDetails.length === 0) {
       return (
-        <Paper
-          sx={{
-            p: 4,
-            textAlign: "center",
-            backgroundColor: "background.subtle",
-            border: "1px dashed",
-            borderColor: "divider"
-          }}>
-          <MusicIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-          <Typography variant="body1" color="text.secondary" gutterBottom>
-            {Locale.label("songs.search.noResults") || "No songs found for your search."}
-          </Typography>
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setShowCreate(true)} sx={{ mt: 2 }}>
-            {Locale.label("songs.search.createManually") || "Create Manually"}
-          </Button>
-        </Paper>
+        <EmptyState
+          icon={<MusicIcon />}
+          title={Locale.label("songs.search.noResults") || "No songs found for your search."}
+          action={(
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setShowCreate(true)}>
+              {Locale.label("songs.search.createManually") || "Create Manually"}
+            </Button>
+          )}
+        />
       );
     }
 
@@ -200,7 +180,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             data-testid="song-search-dialog-input"
-            aria-label="Song title or artist"
+            aria-label={Locale.label("songs.songSearchDialog.songTitleOrArtistAria")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -209,7 +189,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <Button variant="contained" onClick={handleSearch} disabled={!searchText.trim() || isSearching} data-testid="song-search-dialog-button" aria-label="Search songs">
+                  <Button variant="contained" onClick={handleSearch} disabled={!searchText.trim() || isSearching} data-testid="song-search-dialog-button" aria-label={Locale.label("songs.songSearchDialog.searchSongsAria")}>
                     {Locale.label("common.search") || "Search"}
                   </Button>
                 </InputAdornment>
@@ -251,12 +231,12 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
       <DialogActions sx={{ px: 3, pb: 3 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: "100%" }}>
           <Typography variant="caption" color="text.secondary">
-            Powered by:{" "}
+            {Locale.label("songs.songSearchDialog.poweredBy")}{" "}
             <a href="https://www.praisecharts.com/?XID=churchapps" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>
               PraiseCharts
             </a>
           </Typography>
-          <Button variant="outlined" onClick={props.onClose} data-testid="song-search-dialog-close" aria-label="Close dialog">
+          <Button variant="outlined" onClick={props.onClose} data-testid="song-search-dialog-close" aria-label={Locale.label("songs.songSearchDialog.closeDialogAria")}>
             {Locale.label("common.close") || "Close"}
           </Button>
         </Stack>

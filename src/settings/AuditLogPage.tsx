@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { UserHelper, Permissions, ApiHelper, Loading, ExportLink, PageHeader } from "@churchapps/apphelper";
+import { UserHelper, Permissions, ApiHelper, Loading, ExportLink, PageHeader, Locale } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination,
   TextField, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography
@@ -26,15 +26,15 @@ interface AuditLogResponse {
   offset: number;
 }
 
-const CATEGORIES = [
-  { value: "", label: "All Categories" },
-  { value: "login", label: "Login" },
-  { value: "person", label: "People" },
-  { value: "permission", label: "Permissions" },
-  { value: "donation", label: "Donations" },
-  { value: "group", label: "Groups" },
-  { value: "form", label: "Forms" },
-  { value: "settings", label: "Settings" }
+const getCategories = () => [
+  { value: "", label: Locale.label("settings.auditLogPage.allCategories") },
+  { value: "login", label: Locale.label("settings.auditLogPage.categoryLogin") },
+  { value: "person", label: Locale.label("settings.auditLogPage.categoryPerson") },
+  { value: "permission", label: Locale.label("settings.auditLogPage.categoryPermission") },
+  { value: "donation", label: Locale.label("settings.auditLogPage.categoryDonation") },
+  { value: "group", label: Locale.label("settings.auditLogPage.categoryGroup") },
+  { value: "form", label: Locale.label("settings.auditLogPage.categoryForm") },
+  { value: "settings", label: Locale.label("settings.auditLogPage.categorySettings") }
 ];
 
 const formatDate = (dateStr: string) => {
@@ -126,22 +126,22 @@ export const AuditLogPage: React.FC = () => {
 
   return (
     <>
-      <PageHeader title="Audit Log" subtitle="Track changes and activity across your church" />
+      <PageHeader title={Locale.label("settings.auditLogPage.title")} subtitle={Locale.label("settings.auditLogPage.subtitle")} />
 
       <Box sx={{ p: 3 }}>
         <Card sx={{ mb: 3, p: 2 }}>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
             <FormControl size="small" sx={{ minWidth: 180 }}>
-              <InputLabel>Category</InputLabel>
-              <Select value={category} label="Category" onChange={(e) => setCategory(e.target.value)}>
-                {CATEGORIES.map((c) => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
+              <InputLabel>{Locale.label("settings.auditLogPage.category")}</InputLabel>
+              <Select value={category} label={Locale.label("settings.auditLogPage.category")} onChange={(e) => setCategory(e.target.value)}>
+                {getCategories().map((c) => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
               </Select>
             </FormControl>
-            <TextField size="small" type="date" label="Start Date" value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
-            <TextField size="small" type="date" label="End Date" value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
-            <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>Search</Button>
+            <TextField size="small" type="date" label={Locale.label("settings.auditLogPage.startDate")} value={startDate} onChange={(e) => setStartDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+            <TextField size="small" type="date" label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
+            <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
             {logs.length > 0 && (
-              <Button variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={exportData} filename="audit-log.csv">Export CSV</Button>
+              <Button variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={exportData} filename="audit-log.csv">{Locale.label("settings.auditLogPage.exportCsv")}</Button>
             )}
           </Stack>
         </Card>
@@ -153,19 +153,19 @@ export const AuditLogPage: React.FC = () => {
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Date</TableCell>
-                      <TableCell>Category</TableCell>
-                      <TableCell>Action</TableCell>
-                      <TableCell>Entity</TableCell>
-                      <TableCell>IP Address</TableCell>
-                      <TableCell>Details</TableCell>
+                      <TableCell>{Locale.label("settings.auditLogPage.date")}</TableCell>
+                      <TableCell>{Locale.label("settings.auditLogPage.category")}</TableCell>
+                      <TableCell>{Locale.label("settings.auditLogPage.action")}</TableCell>
+                      <TableCell>{Locale.label("settings.auditLogPage.entity")}</TableCell>
+                      <TableCell>{Locale.label("settings.auditLogPage.ipAddress")}</TableCell>
+                      <TableCell>{Locale.label("settings.auditLogPage.details")}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {logs.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={6} align="center">
-                          <Typography variant="body2" color="text.secondary" sx={{ py: 3 }}>No audit log entries found</Typography>
+                          <Typography variant="body2" color="text.secondary" sx={{ py: 3 }}>{Locale.label("settings.auditLogPage.noEntries")}</Typography>
                         </TableCell>
                       </TableRow>
                     ) : (

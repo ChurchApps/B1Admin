@@ -1,6 +1,6 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Typography, CircularProgress, Alert } from "@mui/material";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   // Group mode
@@ -68,27 +68,29 @@ export const SendTextDialog: React.FC<Props> = (props) => {
         setResult(resp);
       }
     } catch (err: any) {
-      setError(err?.message || "Failed to send text message.");
+      setError(err?.message || Locale.label("groups.sendTextDialog.fallbackError"));
     } finally {
       setSending(false);
     }
   };
 
   const getTitle = () => {
-    if (isGroupMode) return `Text Group: ${props.groupName || ""}`;
-    return `Text: ${props.personName || ""}`;
+    if (isGroupMode) return Locale.label("groups.sendTextDialog.textGroupTitle").replace("{groupName}", props.groupName || "");
+    return Locale.label("groups.sendTextDialog.textPersonTitle").replace("{personName}", props.personName || "");
   };
 
   const renderPreview = () => {
-    if (!isGroupMode) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>Sending to {props.phoneNumber || "phone on file"}.</Typography>;
-    if (loadingPreview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>Loading recipients...</Typography>;
-    if (!preview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>This will send an SMS to eligible group members.</Typography>;
+    if (!isGroupMode) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendTextDialog.sendingTo").replace("{phoneNumber}", props.phoneNumber || Locale.label("groups.sendTextDialog.phoneOnFile"))}</Typography>;
+    if (loadingPreview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendTextDialog.loadingRecipients")}</Typography>;
+    if (!preview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendTextDialog.sendDefault")}</Typography>;
 
+    const eligibleSummaryKey = preview.totalMembers !== 1 ? "groups.sendTextDialog.eligibleSummary" : "groups.sendTextDialog.eligibleSummarySingular";
+    const noPhoneNoticeKey = preview.noPhoneCount !== 1 ? "groups.sendTextDialog.noPhoneNotice" : "groups.sendTextDialog.noPhoneNoticeSingular";
     return (
       <Alert severity={preview.eligibleCount > 0 ? "info" : "warning"} sx={{ mb: 2 }}>
-        <strong>{preview.eligibleCount}</strong> of {preview.totalMembers} member{preview.totalMembers !== 1 ? "s" : ""} will receive this text.
-        {preview.optedOutCount > 0 && <><br />{preview.optedOutCount} opted out.</>}
-        {preview.noPhoneCount > 0 && <><br />{preview.noPhoneCount} ha{preview.noPhoneCount !== 1 ? "ve" : "s"} no phone number on file.</>}
+        {Locale.label(eligibleSummaryKey).replace("{eligibleCount}", preview.eligibleCount.toString()).replace("{totalMembers}", preview.totalMembers.toString())}
+        {preview.optedOutCount > 0 && <><br />{Locale.label("groups.sendTextDialog.optedOutNotice").replace("{count}", preview.optedOutCount.toString())}</>}
+        {preview.noPhoneCount > 0 && <><br />{Locale.label(noPhoneNoticeKey).replace("{count}", preview.noPhoneCount.toString())}</>}
       </Alert>
     );
   };
@@ -96,16 +98,17 @@ export const SendTextDialog: React.FC<Props> = (props) => {
   const renderResult = () => {
     if (!result) return null;
     const isGroup = result.totalMembers !== undefined && result.totalMembers > 1;
+    const sentSummaryKey = result.recipientCount !== 1 ? "groups.sendTextDialog.sentSummary" : "groups.sendTextDialog.sentSummarySingular";
     return (
       <>
         <Alert severity={result.failCount === 0 ? "success" : "warning"} sx={{ mt: 1 }}>
-          Sent to {result.successCount} of {result.recipientCount} eligible recipient{result.recipientCount !== 1 ? "s" : ""}.
-          {result.failCount > 0 && <><br />{result.failCount} failed to send.</>}
+          {Locale.label(sentSummaryKey).replace("{successCount}", result.successCount.toString()).replace("{recipientCount}", result.recipientCount.toString())}
+          {result.failCount > 0 && <><br />{Locale.label("groups.sendTextDialog.sendFailedDetail").replace("{count}", result.failCount.toString())}</>}
         </Alert>
         {isGroup && (result.optedOutCount > 0 || result.noPhoneCount > 0) && (
           <Alert severity="info" sx={{ mt: 1 }}>
-            {result.optedOutCount > 0 && <>{result.optedOutCount} skipped (opted out).<br /></>}
-            {result.noPhoneCount > 0 && <>{result.noPhoneCount} skipped (no phone number).</>}
+            {result.optedOutCount > 0 && <>{Locale.label("groups.sendTextDialog.optedOutSkipped").replace("{count}", result.optedOutCount.toString())}<br /></>}
+            {result.noPhoneCount > 0 && <>{Locale.label("groups.sendTextDialog.noPhoneSkipped").replace("{count}", result.noPhoneCount.toString())}</>}
           </Alert>
         )}
       </>
@@ -127,31 +130,31 @@ export const SendTextDialog: React.FC<Props> = (props) => {
               multiline
               minRows={3}
               maxRows={6}
-              label="Message"
+              label={Locale.label("groups.sendTextDialog.messageLabel")}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               disabled={sending}
               inputProps={{ maxLength: 1600 }}
             />
             <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: "block" }}>
-              {charCount} character{charCount !== 1 ? "s" : ""} ({segmentCount} SMS segment{segmentCount !== 1 ? "s" : ""})
+              {Locale.label(charCount !== 1 ? "groups.sendTextDialog.characterCount" : "groups.sendTextDialog.characterCountSingular").replace("{count}", charCount.toString()).replace("{segments}", segmentCount.toString())}
             </Typography>
           </>
         )}
       </DialogContent>
       <DialogActions>
         {result ? (
-          <Button onClick={props.onClose}>Close</Button>
+          <Button onClick={props.onClose}>{Locale.label("common.close")}</Button>
         ) : (
           <>
-            <Button onClick={props.onClose} disabled={sending}>Cancel</Button>
+            <Button onClick={props.onClose} disabled={sending}>{Locale.label("common.cancel")}</Button>
             <Button
               variant="contained"
               onClick={handleSend}
               disabled={!canSend}
               startIcon={sending ? <CircularProgress size={16} /> : null}
             >
-              {sending ? "Sending..." : "Send"}
+              {sending ? Locale.label("groups.sendTextDialog.sending") : Locale.label("groups.sendTextDialog.send")}
             </Button>
           </>
         )}

@@ -45,7 +45,7 @@ export const Services: React.FC = () => {
     const defaultDate = getNextSunday();
     defaultDate.setTime(defaultDate.getTime() + (9 * 60 * 60 * 1000));
 
-    const link: StreamingServiceInterface = { churchId: UserHelper.currentUserChurch.church.id, serviceTime: defaultDate, chatBefore: 600, chatAfter: 600, duration: 3600, earlyStart: 600, provider: "youtube_live", providerKey: "", recurring: false, timezoneOffset: tz, videoUrl: "", label: "Sunday Morning", sermonId: "latest" };
+    const link: StreamingServiceInterface = { churchId: UserHelper.currentUserChurch.church.id, serviceTime: defaultDate, chatBefore: 600, chatAfter: 600, duration: 3600, earlyStart: 600, provider: "youtube_live", providerKey: "", recurring: false, timezoneOffset: tz, videoUrl: "", label: Locale.label("sermons.liveStreamTimes.servicesTab.defaultLabel"), sermonId: "latest" };
     setCurrentService(link);
     loadData();
   };

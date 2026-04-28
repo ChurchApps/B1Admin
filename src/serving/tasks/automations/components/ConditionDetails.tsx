@@ -84,7 +84,7 @@ export const ConditionDetails = (props: Props) => {
               </Typography>
             }
           />
-          <IconButton size="small" onClick={() => props.setEditCondition(condition)} data-testid={`edit-condition-button-${condition.id}`} aria-label="Edit condition">
+          <IconButton size="small" onClick={() => props.setEditCondition(condition)} data-testid={`edit-condition-button-${condition.id}`} aria-label={Locale.label("tasks.conditionDetails.editConditionAria")}>
             <EditIcon fontSize="small" />
           </IconButton>
         </ListItem>
@@ -130,10 +130,10 @@ export const ConditionDetails = (props: Props) => {
                   setParentId(conjunction.id);
                 }}
                 data-testid={`add-conjunction-button-${conjunction.id}`}
-                aria-label="Add conjunction">
+                aria-label={Locale.label("tasks.conditionDetails.addConjunctionAria")}>
                 <AddIcon fontSize="small" />
               </IconButton>
-              <IconButton size="small" onClick={() => props.setEditConjunction(conjunction)} data-testid={`edit-conjunction-button-${conjunction.id}`} aria-label="Edit conjunction">
+              <IconButton size="small" onClick={() => props.setEditConjunction(conjunction)} data-testid={`edit-conjunction-button-${conjunction.id}`} aria-label={Locale.label("tasks.conditionDetails.editConjunctionAria")}>
                 <EditIcon fontSize="small" />
               </IconButton>
             </Stack>
@@ -160,7 +160,7 @@ export const ConditionDetails = (props: Props) => {
           startIcon={<AddIcon />}
           onClick={() => props.setEditConjunction({ automationId: props.automation.id, groupType: "and" })}
           data-testid="add-automation-condition-button"
-          aria-label="Add condition"
+          aria-label={Locale.label("tasks.conditionDetails.addConditionAria")}
           sx={{ textTransform: "none" }}>
           {Locale.label("tasks.conditionDetails.addCondition")}
         </Button>

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, TextField, IconButton, Typography, CircularProgress, AppBar, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SuperBeeChatMessage } from "./SuperBeeChatMessage";
 
 interface ChatMessage {
@@ -36,9 +36,9 @@ export const SuperBeeChatPanel: React.FC<Props> = ({ onClose }) => {
 
     try {
       const response = await ApiHelper.post("/docChat/ask", { question, conversationHistory: messages, mode: "superbee" }, "AskApi");
-      setMessages([...updatedMessages, { role: "assistant", content: response.answer || "Even a superhero hits a wall sometimes. Try again!" }]);
+      setMessages([...updatedMessages, { role: "assistant", content: response.answer || Locale.label("components.superBeeChat.errorAnswer") }]);
     } catch {
-      setMessages([...updatedMessages, { role: "assistant", content: "Something went wrong. But don't worry — I'll be back stronger!" }]);
+      setMessages([...updatedMessages, { role: "assistant", content: Locale.label("components.superBeeChat.errorGeneric") }]);
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +61,7 @@ export const SuperBeeChatPanel: React.FC<Props> = ({ onClose }) => {
             alt="SuperBee"
             sx={{ width: 28, height: 28, borderRadius: "50%", mr: 1 }}
           />
-          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem", color: "#fff", fontWeight: "bold" }}>SuperBee</Typography>
+          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem", color: "#fff", fontWeight: "bold" }}>{Locale.label("components.superBeeChat.title")}</Typography>
           <IconButton sx={{ color: "#fff" }} onClick={onClose} edge="end"><CloseIcon /></IconButton>
         </Toolbar>
       </AppBar>
@@ -76,13 +76,13 @@ export const SuperBeeChatPanel: React.FC<Props> = ({ onClose }) => {
               sx={{ width: 80, height: 80, borderRadius: "50%", mb: 2 }}
             />
             <Typography color="text.secondary">
-              Hey there, champ! I'm SuperBee — your B1 Admin powerhouse. Hit me with your toughest questions!
+              {Locale.label("components.superBeeChat.intro")}
               <br /><br />
-              "How do I set up online giving?"
+              {Locale.label("components.superBeeChat.sampleGiving")}
               <br />
-              "How do I import members from a CSV?"
+              {Locale.label("components.superBeeChat.sampleCsv")}
               <br />
-              "How do I create a new group?"
+              {Locale.label("components.superBeeChat.sampleGroup")}
             </Typography>
           </Box>
         )}
@@ -102,7 +102,7 @@ export const SuperBeeChatPanel: React.FC<Props> = ({ onClose }) => {
           <TextField
             fullWidth
             size="small"
-            placeholder="Ask SuperBee anything..."
+            placeholder={Locale.label("components.superBeeChat.placeholderInput")}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}

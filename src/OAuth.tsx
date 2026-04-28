@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ApiHelper, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { Alert, Box, Button, Grid, Icon } from "@mui/material";
 
 export const OAuthPage: React.FC = () => {
@@ -21,7 +21,7 @@ export const OAuthPage: React.FC = () => {
   }, [clientId]);
 
   if (!UserHelper.currentUserChurch) {
-    return <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}><Alert severity="info">Loading church data...</Alert></Box>;
+    return <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}><Alert severity="info">{Locale.label("app.oauth.loadingChurchData")}</Alert></Box>;
   }
 
   const handleAllow = async () => {
@@ -56,22 +56,22 @@ export const OAuthPage: React.FC = () => {
           px="16px"
           mx="auto">
           <div style={{ textAlign: "center", margin: 50 }}>
-            <img src={"/images/logo-login.png"} alt="logo" />
+            <img src={"/images/logo-login.png"} alt={Locale.label("app.oauth.logoAlt")} />
           </div>
           <Alert severity="info" style={{ fontWeight: "bold" }}>
-            AUTHORIZATION REQUIRED
+            {Locale.label("app.oauth.authorizationRequired")}
           </Alert>
           <div style={{ marginLeft: 50, marginRight: 50 }}>
             <div style={{ textAlign: "center" }}>
               <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
-              <h2>{clientName || "Loading..."}</h2>
+              <h2>{clientName || Locale.label("app.oauth.loading")}</h2>
               <p>
-                Would you like to access the following data from <b>{UserHelper.currentUserChurch.church.name}</b> in the above application?
+                <span dangerouslySetInnerHTML={{ __html: Locale.label("app.oauth.promptAccess").replace("{churchName}", "<b>" + UserHelper.currentUserChurch.church.name + "</b>") }} />
               </p>
             </div>
 
             <ul>
-              <li>Plans</li>
+              <li>{Locale.label("app.oauth.permissionPlans")}</li>
             </ul>
           </div>
           <Box sx={{ backgroundColor: "action.hover", padding: "10px" }}>
@@ -85,13 +85,13 @@ export const OAuthPage: React.FC = () => {
                     window.location.href = redirectUri || "/";
                   }}
                   data-testid="oauth-deny-button"
-                  aria-label="Deny authorization">
-                  Deny
+                  aria-label={Locale.label("app.oauth.denyAria")}>
+                  {Locale.label("app.oauth.deny")}
                 </Button>
               </Grid>
               <Grid size={{ xs: 6 }} style={{ textAlign: "center" }}>
-                <Button fullWidth variant="contained" color="primary" onClick={handleAllow} data-testid="oauth-allow-button" aria-label="Allow authorization">
-                  Allow
+                <Button fullWidth variant="contained" color="primary" onClick={handleAllow} data-testid="oauth-allow-button" aria-label={Locale.label("app.oauth.allowAria")}>
+                  {Locale.label("app.oauth.allow")}
                 </Button>
               </Grid>
             </Grid>

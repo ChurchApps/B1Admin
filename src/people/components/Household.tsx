@@ -70,13 +70,13 @@ export const Household: React.FC<Props> = memo((props) => {
 
                 {age && (
                   <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                    Age: {age}
+                    {Locale.label("people.household.age")} {age}
                   </Typography>
                 )}
 
                 {m.membershipStatus && (
                   <Typography variant="body2" color="text.secondary">
-                    Status: {m.membershipStatus}
+                    {Locale.label("people.household.status")} {m.membershipStatus}
                   </Typography>
                 )}
               </Box>
@@ -101,7 +101,7 @@ export const Household: React.FC<Props> = memo((props) => {
                 )}
                 {!email && !phone && (
                   <Typography variant="body2" color="text.disabled" sx={{ fontStyle: "italic" }}>
-                    No contact information
+                    {Locale.label("people.household.noContactInfo")}
                   </Typography>
                 )}
               </Stack>
@@ -110,10 +110,10 @@ export const Household: React.FC<Props> = memo((props) => {
               <Stack spacing={1}>
                 {/* Placeholder for groups/involvement - can be expanded later */}
                 <Typography variant="body2" color="text.disabled" sx={{ fontStyle: "italic" }}>
-                  Groups: Youth Ministry, Worship Team
+                  {Locale.label("people.household.demoGroups")}
                 </Typography>
                 <Typography variant="body2" color="text.disabled" sx={{ fontStyle: "italic" }}>
-                  Last Activity: Nov 24, 2024
+                  {Locale.label("people.household.demoLastActivity")}
                 </Typography>
               </Stack>
             </TableCell>

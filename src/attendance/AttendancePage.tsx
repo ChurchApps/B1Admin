@@ -1,11 +1,12 @@
 import React from "react";
-import { Grid, Icon, Box, Card, CardContent, Container, Stack, Typography } from "@mui/material";
+import { Grid, Icon, Card, CardContent, Stack, Typography } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Group as GroupIcon } from "@mui/icons-material";
 import { Locale, ApiHelper, PageHeader } from "@churchapps/apphelper";
 import { AttendanceSetup } from "./components/AttendanceSetup";
 import { AttendanceNavigation } from "./components/AttendanceNavigation";
 import { ReportWithFilter } from "../components/reporting";
 import { CheckinThemeEdit } from "./components/CheckinThemeEdit";
+import { PageContainer } from "../components/ui/PageContainer";
 
 export const AttendancePage = () => {
   const [selectedTab, setSelectedTab] = React.useState("setup");
@@ -124,21 +125,19 @@ export const AttendancePage = () => {
       <AttendanceNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} />
 
       {/* Main Content */}
-      <Container maxWidth="xl">
-        <Box sx={{ py: 3 }}>
-          <Grid container spacing={3}>
-            <Grid size={12}>
-              {selectedTab === "setup" ? (
-                <Card sx={{ borderRadius: 2, boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                  <CardContent sx={{ p: 0 }}>{getCurrentTab()}</CardContent>
-                </Card>
-              ) : (
-                getCurrentTab()
-              )}
-            </Grid>
+      <PageContainer>
+        <Grid container spacing={3}>
+          <Grid size={12}>
+            {selectedTab === "setup" ? (
+              <Card sx={{ borderRadius: 2, boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                <CardContent sx={{ p: 0 }}>{getCurrentTab()}</CardContent>
+              </Card>
+            ) : (
+              getCurrentTab()
+            )}
           </Grid>
-        </Box>
-      </Container>
+        </Grid>
+      </PageContainer>
     </>
   );
 };

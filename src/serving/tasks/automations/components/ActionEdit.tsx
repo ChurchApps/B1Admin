@@ -120,7 +120,7 @@ export const ActionEdit = (props: Props) => {
                 name="actionType"
                 onChange={handleChange}
                 data-testid="action-type-select"
-                aria-label="Action type"
+                aria-label={Locale.label("tasks.actionEdit.actionTypeAria")}
                 startAdornment={<TaskIcon sx={{ color: "action.active", ml: 1, mr: 0.5 }} />}>
                 <MenuItem value="task">{Locale.label("tasks.actionEdit.taskAssign")}</MenuItem>
               </Select>
@@ -144,7 +144,7 @@ export const ActionEdit = (props: Props) => {
                 setModalField("assignedTo");
               }}
               data-testid="action-assign-to-input"
-              aria-label="Assign to"
+              aria-label={Locale.label("tasks.actionEdit.assignToAria")}
               variant="outlined"
               sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
             />
@@ -156,7 +156,7 @@ export const ActionEdit = (props: Props) => {
               name="title"
               onChange={handleDetailsChange}
               data-testid="action-task-title-input"
-              aria-label="Task title"
+              aria-label={Locale.label("tasks.actionEdit.taskTitleAria")}
               variant="outlined"
               sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
             />
@@ -170,7 +170,7 @@ export const ActionEdit = (props: Props) => {
               multiline
               rows={4}
               data-testid="action-task-note-input"
-              aria-label="Task note"
+              aria-label={Locale.label("tasks.actionEdit.taskNoteAria")}
               variant="outlined"
               sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
             />

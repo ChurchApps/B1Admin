@@ -111,7 +111,7 @@ export const ConditionEdit = (props: Props) => {
                 name="field"
                 onChange={handleChange}
                 data-testid="condition-type-select"
-                aria-label="Condition type"
+                aria-label={Locale.label("tasks.conditionEdit.conditionTypeAria")}
                 sx={{
                   "& .MuiListSubheader-root": {
                     backgroundColor: "grey.100",

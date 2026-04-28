@@ -101,11 +101,11 @@ export function PickColors(props: Props) {
 
     const result: React.ReactElement[] = [
       <FormControl fullWidth>
-        <InputLabel>Background Type</InputLabel>
-        <Select fullWidth size="small" label="Background Type" name="backgroundType" value={backgroundType} onChange={handleChange} data-testid="background-type-select">
-          <MenuItem value="color">Color</MenuItem>
-          <MenuItem value="image">Image</MenuItem>
-          <MenuItem value="youtube">Youtube Video</MenuItem>
+        <InputLabel>{Locale.label("site.pickColors.backgroundType")}</InputLabel>
+        <Select fullWidth size="small" label={Locale.label("site.pickColors.backgroundType")} name="backgroundType" value={backgroundType} onChange={handleChange} data-testid="background-type-select">
+          <MenuItem value="color">{Locale.label("site.pickColors.color")}</MenuItem>
+          <MenuItem value="image">{Locale.label("site.pickColors.image")}</MenuItem>
+          <MenuItem value="youtube">{Locale.label("site.pickColors.youtubeVideo")}</MenuItem>
         </Select>
       </FormControl>
     ];
@@ -123,13 +123,13 @@ export function PickColors(props: Props) {
       result.push(getGrayOptions());
       result.push(getThemeOptions());
       result.push(<br />);
-      result.push(<TextField key="backgroundText" fullWidth size="small" label="Background" name="background" value={props.background} onChange={handleChange} />);
+      result.push(<TextField key="backgroundText" fullWidth size="small" label={Locale.label("site.pickColors.background")} name="background" value={props.background} onChange={handleChange} />);
     } else if (backgroundType === "youtube") {
       const parts = props.background.split(":");
       const youtubeId = parts.length > 1 ? parts[1] : "";
       result.push(
         <>
-          <TextField fullWidth size="small" label="Youtube ID" name="youtubeId" value={youtubeId} onChange={handleChange} />
+          <TextField fullWidth size="small" label={Locale.label("site.pickColors.youtubeId")} name="youtubeId" value={youtubeId} onChange={handleChange} />
         </>
       );
     } else if (backgroundType === "image") {
@@ -138,13 +138,13 @@ export function PickColors(props: Props) {
           <img src={props.background} style={{ maxHeight: 100, maxWidth: "100%", width: "auto" }} alt="background image" />
           <br />
           <Button variant="contained" onClick={() => setSelectPhotoField("photo")} data-testid="select-photo-button">
-            Select photo
+            {Locale.label("site.pickColors.selectPhoto")}
           </Button>
           {props?.onChange && (
             <TextField
               fullWidth
               size="small"
-              label="Background Opacity"
+              label={Locale.label("site.pickColors.backgroundOpacity")}
               name="backgroundOpacity"
               value={props?.backgroundOpacity || "0.55"}
               onChange={props.onChange}
@@ -232,7 +232,7 @@ export function PickColors(props: Props) {
               padding: 5,
               marginBottom: 3
             }}>
-            Sample Text - <span style={{ color: l }}>Sample Link</span>
+            {Locale.label("site.pickColors.sampleText")} - <span style={{ color: l }}>{Locale.label("site.pickColors.sampleLink")}</span>
           </a>
         </Grid>
       );
@@ -249,13 +249,13 @@ export function PickColors(props: Props) {
     <Grid container spacing={1}>
       <Grid size={{ xs: 6 }}>
         <div style={{ marginBottom: 20 }}>
-          <b>Background</b>
+          <b>{Locale.label("site.pickColors.background")}</b>
         </div>
         {getBackgroundField()}
       </Grid>
       <Grid size={{ xs: 6 }}>
         <div style={{ marginBottom: 20 }}>
-          <b>Content</b>
+          <b>{Locale.label("site.pickColors.content")}</b>
         </div>
         <div>
           <InputLabel>{Locale.label("site.pickColors.headingColor")}</InputLabel>
@@ -281,7 +281,7 @@ export function PickColors(props: Props) {
 
   return (
     <>
-      <h4>Current Colors</h4>
+      <h4>{Locale.label("site.pickColors.currentColors")}</h4>
       <div
         style={{
           display: "block",
@@ -292,10 +292,10 @@ export function PickColors(props: Props) {
           padding: 5,
           marginBottom: 10
         }}>
-        Sample Text
+        {Locale.label("site.pickColors.sampleText")}
       </div>
       <Tabs value={tabValue} onChange={(event: React.SyntheticEvent, newValue: string) => setTabValue(newValue)}>
-        <Tab value="suggested" label="Suggested" />
+        <Tab value="suggested" label={Locale.label("site.pickColors.suggested")} />
         <Tab value="custom" label={Locale.label("common.custom")} />
       </Tabs>
       <div style={{ marginTop: 10 }}>{currentTab}</div>

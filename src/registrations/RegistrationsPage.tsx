@@ -14,7 +14,7 @@ import {
   LinearProgress
 } from "@mui/material";
 import { HowToReg as RegIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
 
@@ -47,7 +47,7 @@ export const RegistrationsPage = () => {
 
   const getCapacityDisplay = (event: EventInterface) => {
     const count = counts[event.id] || 0;
-    if (!event.capacity) return <Typography variant="body2">{count} registered</Typography>;
+    if (!event.capacity) return <Typography variant="body2">{count} {Locale.label("registrations.registrationsPage.registered")}</Typography>;
     const pct = Math.min((count / event.capacity) * 100, 100);
     return (
       <Box sx={{ minWidth: 120 }}>
@@ -72,14 +72,14 @@ export const RegistrationsPage = () => {
 
   return (
     <>
-      <PageHeader title="Event Registrations" subtitle="Manage event registration settings and view registrants" />
+      <PageHeader title={Locale.label("registrations.registrationsPage.title")} subtitle={Locale.label("registrations.registrationsPage.subtitle")} />
       <Box sx={{ p: 3 }}>
         <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
           <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <RegIcon sx={{ color: "primary.main" }} />
               <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                Events with Registration Enabled
+                {Locale.label("registrations.registrationsPage.enabledEvents")}
               </Typography>
             </Stack>
           </Box>
@@ -89,20 +89,20 @@ export const RegistrationsPage = () => {
             <Box sx={{ p: 3, textAlign: "center" }}>
               <RegIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
               <Typography variant="body2" color="text.secondary">
-                No events have registration enabled yet.
+                {Locale.label("registrations.registrationsPage.noEvents")}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                Enable registration on an event through the event edit settings.
+                {Locale.label("registrations.registrationsPage.noEventsHint")}
               </Typography>
             </Box>
           ) : (
             <Table>
               <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 600 }}>Event</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Registrations</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Tags</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.event")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.date")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.registrations")}</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.tags")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>{getRows()}</TableBody>

@@ -88,7 +88,7 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
         onKeyDown={handleKeyDown}
         placeholder={Locale.label("placeholders.role.name")}
         data-testid="role-name-input"
-        aria-label="Role name"
+        aria-label={Locale.label("settings.roleEdit.roleNameAria")}
       />
     </InputBox>
   );

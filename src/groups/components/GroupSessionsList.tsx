@@ -150,7 +150,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
     const timeLabel = session.serviceTime?.name || "";
     const count = sessionAttendanceCounts[session.id];
 
-    const rightText = isFuture ? Locale.label("groups.groupSessions.upcoming") || "upcoming" : count !== undefined ? String(count) : "";
+    const rightText = isFuture ? Locale.label("groups.groupSessions.upcoming") : count !== undefined ? String(count) : "";
 
     return (
       <React.Fragment key={session.id}>

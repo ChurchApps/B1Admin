@@ -65,7 +65,7 @@ export const ConditionDate = (props: Props) => {
         name="value"
         onChange={handleChange}
         data-testid="condition-number-input"
-        aria-label="Number value"
+        aria-label={Locale.label("tasks.conditionDate.numberValueAria")}
         variant="outlined"
         sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
       />
@@ -75,7 +75,7 @@ export const ConditionDate = (props: Props) => {
   const getDayOfWeek = () => (
     <FormControl fullWidth variant="outlined">
       <InputLabel>{Locale.label("tasks.conditionDate.dayOf")}</InputLabel>
-      <Select label={Locale.label("tasks.conditionDate.dayOf")} value={props.condition.value || "1"} name="value" onChange={handleChange} data-testid="day-of-week-select" aria-label="Day of week">
+      <Select label={Locale.label("tasks.conditionDate.dayOf")} value={props.condition.value || "1"} name="value" onChange={handleChange} data-testid="day-of-week-select" aria-label={Locale.label("tasks.conditionDate.dayOfWeekAria")}>
         <MenuItem value="1">{Locale.label("tasks.conditionDate.sun")}</MenuItem>
         <MenuItem value="2">{Locale.label("tasks.conditionDate.mon")}</MenuItem>
         <MenuItem value="3">{Locale.label("tasks.conditionDate.tues")}</MenuItem>

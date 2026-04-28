@@ -49,7 +49,7 @@ export const AssignmentEdit = (props: Props) => {
 
     for (let i = 0; i < groupMembers.length; i++) {
       const gm = groupMembers[i];
-      const personName = gm.person?.name?.display || "Unknown";
+      const personName = gm.person?.name?.display || Locale.label("person.unknown");
       rows.push(
         <TableRow key={i}>
           <TableCell>

@@ -34,7 +34,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   // Shared accordion styles for a warm, approachable look
   const accordionStyles = {
     mb: 1.5,
-    borderRadius: "12px !important",
+    "&&": { borderRadius: "12px" },
     boxShadow: "none",
     border: "1px solid",
     borderColor: "divider",
@@ -153,7 +153,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
                 onKeyDown={handleKeyDown}
                 placeholder={Locale.label("placeholders.church.name")}
                 data-testid="church-name-input"
-                aria-label="Church name"
+                aria-label={Locale.label("settings.churchSettingsEdit.churchNameAria")}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
@@ -166,7 +166,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
                 onKeyDown={handleKeyDown}
                 placeholder={Locale.label("placeholders.church.subdomain")}
                 data-testid="subdomain-input"
-                aria-label="Subdomain"
+                aria-label={Locale.label("settings.churchSettingsEdit.subdomainAria")}
                 helperText={Locale.label("settings.church.subdomainHelper")}
               />
             </Grid>
@@ -186,7 +186,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
                 onKeyDown={handleKeyDown}
                 placeholder={Locale.label("placeholders.church.address1")}
                 data-testid="address1-input"
-                aria-label="Address line 1"
+                aria-label={Locale.label("settings.churchSettingsEdit.addressLine1Aria")}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
@@ -259,8 +259,8 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
             <SettingsSectionHeader
               icon={<SmsIcon />}
               color="warning"
-              title="Texting"
-              subtitle="Configure SMS texting provider"
+              title={Locale.label("settings.churchSettingsEdit.textingTitle")}
+              subtitle={Locale.label("settings.churchSettingsEdit.textingSubtitle")}
             />
           </AccordionSummary>
           <AccordionDetails sx={{ pt: 2 }}>

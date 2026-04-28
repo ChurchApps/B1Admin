@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { FileUpload } from "../../components/FileUpload";
-import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
-import { InputBox, ApiHelper, SmallButton, Locale } from "@churchapps/apphelper";
-import { Folder as FolderIcon, InsertDriveFile as FileIcon } from "@mui/icons-material";
+import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress, IconButton, Tooltip } from "@mui/material";
+import { InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
+import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { CardWithHeader, EmptyState } from "../../components/ui";
 
 export function FilesManager() {
@@ -45,7 +45,7 @@ export function FilesManager() {
     return (
       <Box sx={{ mb: 2 }}>
         <Typography variant="body2" sx={{ mb: 1 }}>
-          Storage: {formatSize(usedSpace)} / 100MB
+          {Locale.label("site.filesManager.storage")} {formatSize(usedSpace)} {Locale.label("site.filesManager.storageLimit")}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ width: "100%", mr: 1 }}>
@@ -84,7 +84,9 @@ export function FilesManager() {
           </Typography>
         </TableCell>
         <TableCell align="right">
-          <SmallButton icon="delete" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} />
+          <Tooltip title={Locale.label("common.delete")}>
+            <IconButton size="small" color="error" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} aria-label={Locale.label("site.filesManager.deleteFile")}><DeleteIcon fontSize="small" /></IconButton>
+          </Tooltip>
         </TableCell>
       </TableRow>
     ))
@@ -105,20 +107,20 @@ export function FilesManager() {
             icon={<FileIcon sx={{ color: "primary.main" }} />}
             actions={
               <Typography variant="body2" color="text.secondary">
-                {files?.length || 0} file{files?.length !== 1 ? "s" : ""}
+                {files?.length || 0} {files?.length !== 1 ? Locale.label("site.filesManager.fileCountPlural") : Locale.label("site.filesManager.fileCountSingular")}
               </Typography>
             }>
             <Table sx={{ minWidth: 650 }}>
               <TableHead sx={{ backgroundColor: "background.paper", "& .MuiTableCell-root": { borderBottom: "2px solid", borderBottomColor: "divider" } }}>
                 <TableRow>
                   <TableCell>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Name</Typography>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.filesManager.name")}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Size</Typography>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.filesManager.size")}</Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Actions</Typography>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("site.filesManager.actions")}</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>

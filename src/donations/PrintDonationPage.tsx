@@ -1,4 +1,4 @@
-import { ArrayHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
+import { ArrayHelper, CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
@@ -357,16 +357,16 @@ export const PrintDonationPage = () => {
         <div className="header-bar"></div>
 
         <div className="title-section">
-          <h1 className="page-title">{currYear} Annual Giving Statement</h1>
-          <p className="subtitle">Period: January 1 - December 31, {currYear}</p>
-          <p className="meta-text">Issued: {getDate()}</p>
+          <h1 className="page-title">{Locale.label("donations.printDonationPage.annualStatementTitle").replace("{year}", currYear.toString())}</h1>
+          <p className="subtitle">{Locale.label("donations.printDonationPage.period").replace("{year}", currYear.toString())}</p>
+          <p className="meta-text">{Locale.label("donations.printDonationPage.issued")} {getDate()}</p>
         </div>
 
         <div className="gradient-divider"></div>
 
         <div className="info-section">
           <div className="info-column">
-            <h2 className="section-label">Donor Information</h2>
+            <h2 className="section-label">{Locale.label("donations.printDonationPage.donorInformation")}</h2>
             <div className="info-card">
               <p className="info-name">{person.data?.name?.display}</p>
               {person.data?.contactInfo?.address1 && <p className="info-detail">{person.data?.contactInfo?.address1}</p>}
@@ -377,7 +377,7 @@ export const PrintDonationPage = () => {
           </div>
 
           <div className="info-column">
-            <h2 className="section-label">Organization</h2>
+            <h2 className="section-label">{Locale.label("donations.printDonationPage.organization")}</h2>
             <div className="info-card">
               <p className="info-name">{context.userChurch?.church?.name}</p>
               {context.userChurch?.church?.address1 && <p className="info-detail">{context.userChurch?.church?.address1}</p>}
@@ -394,21 +394,21 @@ export const PrintDonationPage = () => {
         </div>
 
         <div className="section-container">
-          <h2 className="section-title">Statement Summary</h2>
+          <h2 className="section-title">{Locale.label("donations.printDonationPage.statementSummary")}</h2>
           <div className="summary-grid">
             <div className="summary-column">
-              <p className="section-label">Total Contributions</p>
+              <p className="section-label">{Locale.label("donations.printDonationPage.totalContributions")}</p>
               <div className="total-box">
                 <div className="total-amount">{getTotalContributions()}</div>
               </div>
             </div>
 
             <div className="summary-column">
-              <p className="section-label">Fund Breakdown</p>
+              <p className="section-label">{Locale.label("donations.printDonationPage.fundBreakdown")}</p>
               <table className="data-table">
                 <thead className="table-header">
                   <tr>
-                    <th>Fund</th>
+                    <th>{Locale.label("donations.printDonationPage.fund")}</th>
                     <th className="align-right">Amount</th>
                   </tr>
                 </thead>
@@ -419,13 +419,13 @@ export const PrintDonationPage = () => {
         </div>
 
         <div className="section-container">
-          <h2 className="section-title">Contribution Details</h2>
+          <h2 className="section-title">{Locale.label("donations.printDonationPage.contributionDetails")}</h2>
           <table className="data-table">
             <thead className="table-header">
               <tr>
                 <th>Date</th>
                 <th>Method</th>
-                <th>Fund</th>
+                <th>{Locale.label("donations.printDonationPage.fund")}</th>
                 <th className="align-right">Amount</th>
               </tr>
             </thead>
@@ -433,7 +433,7 @@ export const PrintDonationPage = () => {
               {tableDonations()}
               <tr className="table-footer-row">
                 <td colSpan={2} className="table-footer-cell"></td>
-                <td className="table-footer-cell" style={{ textAlign: "right" }}>Total Contributions:</td>
+                <td className="table-footer-cell" style={{ textAlign: "right" }}>{Locale.label("donations.printDonationPage.totalContributionsLabel")}</td>
                 <td className="table-footer-cell" style={{ textAlign: "right" }}>{getTotalContributions()}</td>
               </tr>
             </tbody>
@@ -442,11 +442,12 @@ export const PrintDonationPage = () => {
 
         <div className="footer-note">
           <p>
-            <strong>Note:</strong> This statement summarizes contributions made to {context.userChurch?.church?.name} during the calendar year {currYear}.
-            Please retain this document for your tax records. For questions regarding this statement, please contact the church office.
+            <strong>{Locale.label("donations.printDonationPage.noteLabel")}</strong> {Locale.label("donations.printDonationPage.noteText")
+              .replace("{churchName}", context.userChurch?.church?.name || "")
+              .replace("{year}", currYear.toString())}
           </p>
           <p style={{ fontSize: "10px", marginTop: "4px" }}>
-            No goods or services were provided by {context.userChurch?.church?.name} in return for these contributions. The only benefit received was an intangible religious benefit. {context.userChurch?.church?.name} is a non-profit organization.
+            {Locale.label("donations.printDonationPage.disclaimer").split("{churchName}").join(context.userChurch?.church?.name || "")}
           </p>
         </div>
       </div>
