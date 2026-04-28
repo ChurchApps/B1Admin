@@ -23,6 +23,8 @@ import { HelpDialog } from "./HelpDialog";
 import { ZoneBox } from "./ZoneBox";
 import { EmptyState } from "./EmptyState";
 import { ConfirmDialog } from "./ConfirmDialog";
+import { PropertyPanel } from "./PropertyPanel";
+import { AddContentPanel } from "./AddContentPanel";
 import { Locale } from "@churchapps/apphelper";
 import { useUndoRedo } from "../hooks/useUndoRedo";
 import { HistoryPanel } from "./HistoryPanel";
@@ -274,17 +276,58 @@ export function ContentEditor(props: Props) {
   const handleSectionEdit = (s: SectionInterface, e: ElementInterface) => {
     if (s) {
       if (s.targetBlockId) navigate(`/site/blocks/${s.targetBlockId}`);
-      else setEditSection(s);
-    } else if (e) setEditElement(e);
+      else {
+        setEditElement(null);
+        setEditSection(s);
+      }
+    } else if (e) {
+      setEditSection(null);
+      setEditElement(e);
+    }
+  };
+
+  const findElementInSections = (elementId: string): ElementInterface | null => {
+    if (!container?.sections) return null;
+    const search = (els: ElementInterface[]): ElementInterface | null => {
+      for (const e of els) {
+        if (e.id === elementId) return e;
+        if (e.elements && e.elements.length > 0) {
+          const found = search(e.elements);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+    for (const s of container.sections) {
+      if (s.elements) {
+        const found = search(s.elements);
+        if (found) return found;
+      }
+    }
+    return null;
   };
 
   const handleElementClick = (elementId: string) => {
     setSelectedElementId(elementId);
+    const found = findElementInSections(elementId);
+    if (found) {
+      setEditSection(null);
+      setEditElement(found);
+    }
   };
 
   const handleElementDoubleClick = (element: ElementInterface) => {
-    setSelectedElementId(null);
+    setSelectedElementId(element.id);
+    setEditSection(null);
     setEditElement(element);
+  };
+
+  const handleElementCancel = () => {
+    setEditElement(null);
+  };
+
+  const handleSectionCancel = () => {
+    setEditSection(null);
   };
 
   const handleElementDelete = (elementId: string) => {
@@ -547,90 +590,111 @@ export function ContentEditor(props: Props) {
           onCancel={() => setPendingDeleteElementId(null)}
         />
 
-        <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }} onClick={handleClickOutside}>
-          <DndProvider backend={HTML5Backend}>
-            <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
-            {showAdd && (
-              <ElementAdd
-                includeBlocks={!elementOnlyMode}
-                includeSection={!elementOnlyMode}
-                updateCallback={() => {
-                  setShowAdd(false);
-                }}
-                draggingCallback={() => setShowAdd(false)}
-              />
-            )}
-            {editElement && (
-              <ElementEdit
-                element={editElement}
-                updatedCallback={(updatedElement) => {
-                  setEditElement(null);
-                  if (updatedElement) {
-                    const isNewElement = !editElement.id;
-                    if (isNewElement) loadDataInternal("After adding element");
-                    else {
-                      const c = { ...container };
-                      c.sections.forEach((s) => {
-                        realtimeUpdateElement(updatedElement, s.elements);
-                      });
-                      setContainer(c);
-                      // Save snapshot after editing element
-                      saveSnapshot(c, "After editing element");
-                    }
-                  } else {
-                    loadDataInternal();
-                  }
-                }}
-                onRealtimeChange={handleRealtimeChange}
-                globalStyles={props.config?.globalStyles}
-              />
-            )}
-            {editSection && (
-              <SectionEdit
-                section={editSection}
-                updatedCallback={() => {
-                  const isNewSection = !editSection.id;
-                  setEditSection(null);
-                  loadDataInternal(isNewSection ? "After adding section" : "After editing section");
-                }}
-                globalStyles={props.config?.globalStyles}
-              />
-            )}
-
-            <div style={{ marginTop: 0, paddingTop: 0 }}>
-              {scrollTop > 150 && (
-                <>
-                  <div
-                    style={{
-                      position: "fixed",
-                      bottom: "30px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      zIndex: 1000,
-                      width: "min(600px, 80%)",
-                      maxWidth: "600px"
-                    }}>
-                    <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
-                  </div>
-                  <div
-                    style={{
-                      position: "fixed",
-                      top: "120px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      zIndex: 1000,
-                      width: "min(600px, 80%)",
-                      maxWidth: "600px"
-                    }}>
-                    <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
-                  </div>
-                </>
+        <DndProvider backend={HTML5Backend}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden", minHeight: 0 }}>
+            <AddContentPanel open={showAdd} onClose={() => setShowAdd(false)}>
+              {showAdd && (
+                <ElementAdd
+                  inPanel
+                  includeBlocks={!elementOnlyMode}
+                  includeSection={!elementOnlyMode}
+                  updateCallback={() => setShowAdd(false)}
+                  draggingCallback={() => { /* persistent panel — stay open while dragging */ }}
+                />
               )}
+            </AddContentPanel>
 
-              <ThemeProvider theme={getTheme()}>{getZoneBoxes()}</ThemeProvider>
+            <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden", minWidth: 0 }} onClick={handleClickOutside}>
+              <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
+
+              <div style={{ marginTop: 0, paddingTop: 0 }}>
+                {scrollTop > 150 && (
+                  <>
+                    <div
+                      style={{
+                        position: "fixed",
+                        bottom: "30px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 1000,
+                        width: "min(600px, 80%)",
+                        maxWidth: "600px"
+                      }}>
+                      <DroppableScroll key={"scrollDown"} text={"Scroll Down"} direction="down" />
+                    </div>
+                    <div
+                      style={{
+                        position: "fixed",
+                        top: "120px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 1000,
+                        width: "min(600px, 80%)",
+                        maxWidth: "600px"
+                      }}>
+                      <DroppableScroll key={"scrollUp"} text={"Scroll Up"} direction="up" />
+                    </div>
+                  </>
+                )}
+
+                <ThemeProvider theme={getTheme()}>{getZoneBoxes()}</ThemeProvider>
+              </div>
             </div>
-          </DndProvider>
-        </div>
+
+            <PropertyPanel
+              open={!!(editElement || editSection)}
+              title={
+                editElement
+                  ? Locale.label("site.elements.editElement")
+                  : Locale.label("site.section.editSection")
+              }
+              subtitle={editElement?.elementType || undefined}
+              icon={editElement ? "tune" : "view_agenda"}
+              onClose={() => {
+                if (editElement) handleElementCancel();
+                if (editSection) handleSectionCancel();
+              }}
+            >
+              {editElement && (
+                <ElementEdit
+                  inPanel
+                  element={editElement}
+                  updatedCallback={(updatedElement) => {
+                    setEditElement(null);
+                    if (updatedElement) {
+                      const isNewElement = !editElement.id;
+                      if (isNewElement) loadDataInternal("After adding element");
+                      else {
+                        const c = { ...container };
+                        c.sections.forEach((s) => {
+                          realtimeUpdateElement(updatedElement, s.elements);
+                        });
+                        setContainer(c);
+                        saveSnapshot(c, "After editing element");
+                      }
+                    } else {
+                      loadDataInternal();
+                    }
+                  }}
+                  onRealtimeChange={handleRealtimeChange}
+                  globalStyles={props.config?.globalStyles}
+                />
+              )}
+              {editSection && (
+                <SectionEdit
+                  inPanel
+                  section={editSection}
+                  updatedCallback={() => {
+                    const isNewSection = !editSection.id;
+                    setEditSection(null);
+                    loadDataInternal(isNewSection ? "After adding section" : "After editing section");
+                  }}
+                  globalStyles={props.config?.globalStyles}
+                />
+              )}
+            </PropertyPanel>
+          </div>
+        </DndProvider>
       </div>
     </ThemeProvider>
   );

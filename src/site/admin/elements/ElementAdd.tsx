@@ -9,6 +9,7 @@ type Props = {
   includeSection: boolean
   updateCallback: () => void
   draggingCallback: () => void
+  inPanel?: boolean
 };
 
 type CategoryType = "layout" | "content" | "media" | "church" | "advanced";
@@ -24,7 +25,6 @@ interface ElementConfig {
   blockId?: string;
 }
 
-// Draggable element card component
 function DraggableElement({ config, draggingCallback, index }: { config: ElementConfig; draggingCallback: () => void; index: number; }) {
   const dragRef = React.useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -53,23 +53,23 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
         background: "#fff",
         border: `1px solid ${isHovered ? "#1976d2" : "#e5e7eb"}`,
         borderRadius: "8px",
-        padding: "12px",
+        padding: "10px 12px",
         cursor: isDragging ? "grabbing" : "grab",
         opacity: isDragging ? 0.6 : 1,
         boxShadow: isHovered && !isDragging ? "0 2px 8px rgba(0,0,0,0.06)" : "none",
         transition: "border-color 0.15s ease, box-shadow 0.15s ease",
         display: "flex",
         alignItems: "center",
-        gap: "12px",
-        minHeight: "56px"
+        gap: "10px",
+        minHeight: "48px"
       }}
       title={config.description}
       tabIndex={index}
     >
       <Box
         sx={{
-          width: 36,
-          height: 36,
+          width: 32,
+          height: 32,
           borderRadius: "6px",
           background: "#f3f4f6",
           display: "flex",
@@ -78,19 +78,19 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
           flexShrink: 0
         }}
       >
-        <Icon sx={{ color: "#374151", fontSize: 20 }}>{config.icon}</Icon>
+        <Icon sx={{ color: "#374151", fontSize: 18 }}>{config.icon}</Icon>
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Box sx={{ color: "#111827", fontSize: "0.875rem", fontWeight: 600, lineHeight: 1.2 }}>
+        <Box sx={{ color: "#111827", fontSize: "0.85rem", fontWeight: 600, lineHeight: 1.2 }}>
           {config.label}
         </Box>
         {isHovered && (
-          <Box sx={{ color: "#6b7280", fontSize: "0.75rem", lineHeight: 1.3, mt: 0.25 }}>
+          <Box sx={{ color: "#6b7280", fontSize: "0.72rem", lineHeight: 1.3, mt: 0.25 }}>
             {config.description}
           </Box>
         )}
       </Box>
-      <Icon sx={{ color: "#d1d5db", fontSize: 16, flexShrink: 0 }}>drag_indicator</Icon>
+      <Icon sx={{ color: "#d1d5db", fontSize: 14, flexShrink: 0 }}>drag_indicator</Icon>
     </div>
   );
 }
@@ -108,7 +108,6 @@ export function ElementAdd(props: Props) {
 
   useEffect(loadData, []);
 
-  // Define all available elements with descriptions
   const allElements: ElementConfig[] = useMemo(() => {
     const elements: ElementConfig[] = [];
 
@@ -174,6 +173,89 @@ export function ElementAdd(props: Props) {
   ];
   if (showBlocks) tabs.push({ key: "blocks", label: Locale.label("site.elementAdd.blocks") });
 
+  const searchField = (
+    <TextField
+      autoFocus
+      placeholder={Locale.label("site.elementAdd.searchElements")}
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      size="small"
+      fullWidth
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <Icon sx={{ color: "#9ca3af", fontSize: 20 }}>search</Icon>
+          </InputAdornment>
+        )
+      }}
+    />
+  );
+
+  const tabsBar = (
+    <Tabs
+      value={activeTab}
+      onChange={(_, v) => setActiveTab(v)}
+      variant="scrollable"
+      scrollButtons="auto"
+      sx={{
+        minHeight: 36,
+        "& .MuiTab-root": {
+          minHeight: 36,
+          textTransform: "none",
+          fontSize: "0.8rem",
+          fontWeight: 500,
+          color: "#6b7280",
+          minWidth: "auto",
+          px: 1.5,
+          py: 0.5,
+          "&.Mui-selected": { color: "#1d4ed8", fontWeight: 600 }
+        },
+        "& .MuiTabs-indicator": { height: 2, backgroundColor: "#1d4ed8" }
+      }}
+    >
+      {tabs.map((tab) => (
+        <Tab key={tab.key} value={tab.key} label={tab.label} />
+      ))}
+    </Tabs>
+  );
+
+  const emptyState = (
+    <Box sx={{ textAlign: "center", py: 5, color: "#6b7280" }}>
+      <Icon sx={{ fontSize: 36, mb: 1, opacity: 0.5 }}>search_off</Icon>
+      <Box sx={{ fontSize: "0.85rem", fontWeight: 500 }}>
+        {Locale.label("site.elementAdd.noElementsFound")}
+      </Box>
+      <Box sx={{ fontSize: "0.75rem", mt: 0.25 }}>
+        {Locale.label("site.elementAdd.tryDifferentSearch")}
+      </Box>
+    </Box>
+  );
+
+  if (props.inPanel) {
+    return (
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
+        <Box sx={{ px: 1.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
+        <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1, flexShrink: 0 }}>{tabsBar}</Box>
+        <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", p: 1.25, background: "#f9fafb" }}>
+          {filteredElements.length === 0 ? (
+            emptyState
+          ) : (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+              {filteredElements.map((config, index) => (
+                <DraggableElement
+                  key={`${config.type}-${config.blockId || index}`}
+                  config={config}
+                  draggingCallback={props.draggingCallback}
+                  index={index}
+                />
+              ))}
+            </Box>
+          )}
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Dialog
       open={true}
@@ -193,62 +275,13 @@ export function ElementAdd(props: Props) {
         </IconButton>
       </DialogTitle>
 
-      <Box sx={{ px: 2.5, pt: 1.5, pb: 1, flexShrink: 0 }}>
-        <TextField
-          autoFocus
-          placeholder={Locale.label("site.elementAdd.searchElements")}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          size="small"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Icon sx={{ color: "#9ca3af", fontSize: 20 }}>search</Icon>
-              </InputAdornment>
-            )
-          }}
-        />
-      </Box>
+      <Box sx={{ px: 2.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
 
-      <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1.5, flexShrink: 0 }}>
-        <Tabs
-          value={activeTab}
-          onChange={(_, v) => setActiveTab(v)}
-          variant="scrollable"
-          scrollButtons="auto"
-          sx={{
-            minHeight: 40,
-            "& .MuiTab-root": {
-              minHeight: 40,
-              textTransform: "none",
-              fontSize: "0.8125rem",
-              fontWeight: 500,
-              color: "#6b7280",
-              minWidth: "auto",
-              px: 1.75,
-              "&.Mui-selected": { color: "#1d4ed8", fontWeight: 600 }
-            },
-            "& .MuiTabs-indicator": { height: 2, backgroundColor: "#1d4ed8" }
-          }}
-        >
-          {tabs.map((tab) => (
-            <Tab key={tab.key} value={tab.key} label={tab.label} />
-          ))}
-        </Tabs>
-      </Box>
+      <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1.5, flexShrink: 0 }}>{tabsBar}</Box>
 
       <DialogContent sx={{ p: 2, overflowY: "auto", background: "#f9fafb", flex: 1 }}>
         {filteredElements.length === 0 ? (
-          <Box sx={{ textAlign: "center", py: 6, color: "#6b7280" }}>
-            <Icon sx={{ fontSize: 40, mb: 1.5, opacity: 0.5 }}>search_off</Icon>
-            <Box sx={{ fontSize: "0.9rem", fontWeight: 500 }}>
-              {Locale.label("site.elementAdd.noElementsFound")}
-            </Box>
-            <Box sx={{ fontSize: "0.8rem", mt: 0.5 }}>
-              {Locale.label("site.elementAdd.tryDifferentSearch")}
-            </Box>
-          </Box>
+          emptyState
         ) : (
           <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 1.25 }}>
             {filteredElements.map((config, index) => (
