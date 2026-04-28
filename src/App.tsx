@@ -58,20 +58,12 @@ const createMdTheme = (mode: PaletteMode) =>
         defaultProps: { margin: "normal" },
         styleOverrides: {
           root: {
-            marginTop: 16,
-            marginBottom: 8,
             "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)" } }
           }
         }
       },
       MuiFormControl: {
-        defaultProps: { margin: "normal" },
-        styleOverrides: {
-          root: {
-            marginTop: 16,
-            marginBottom: 8
-          }
-        }
+        defaultProps: { margin: "normal" }
       },
       MuiButton: { styleOverrides: { root: { textTransform: "none" } } },
       MuiCard: {

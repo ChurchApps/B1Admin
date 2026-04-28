@@ -1,5 +1,6 @@
 import React from "react";
-import { Chip } from "@mui/material";
+import { Chip, alpha } from "@mui/material";
+import type { ChipProps, Theme } from "@mui/material";
 
 interface StatusChipProps {
   status: string;
@@ -7,52 +8,40 @@ interface StatusChipProps {
   size?: "small" | "medium";
 }
 
-const getStatusColors = (status: string, variant: "standard" | "header") => {
-  const normalizedStatus = status.toLowerCase();
+type StatusKind = "success" | "warning" | "info" | "default";
 
-  if (variant === "header") {
-    return {
-      backgroundColor: "rgba(255,255,255,0.2)",
-      color: "#FFF",
-      fontSize: "0.75rem",
-      height: 20
-    };
-  }
-
-  // Standard status colors
-  switch (normalizedStatus) {
-    case "member":
-    case "active":
-      return {
-        backgroundColor: "#e8f5e9",
-        color: "#2e7d32",
-        fontWeight: 600
-      };
-    case "visitor":
-    case "pending":
-      return {
-        backgroundColor: "#fff3e0",
-        color: "#f57c00",
-        fontWeight: 600
-      };
-    case "staff":
-      return {
-        backgroundColor: "#e3f2fd",
-        color: "#1565c0",
-        fontWeight: 600
-      };
-    default:
-      return {
-        color: "text.secondary",
-        borderColor: "grey.400",
-        fontSize: "0.75rem"
-      };
-  }
+const STATUS_KIND: Record<string, StatusKind> = {
+  member: "success",
+  active: "success",
+  visitor: "warning",
+  pending: "warning",
+  staff: "info"
 };
 
-export const StatusChip: React.FC<StatusChipProps> = ({ status, variant = "standard", size = "small" }) => {
-  const colors = getStatusColors(status, variant);
-  const isOutlined = variant === "standard" && !["member", "active", "visitor", "pending", "staff"].includes(status.toLowerCase());
+const headerSx = {
+  backgroundColor: "rgba(255,255,255,0.2)",
+  color: "#FFF",
+  fontSize: "0.75rem",
+  height: 20
+};
 
-  return <Chip label={status} size={size} variant={isOutlined ? "outlined" : "filled"} sx={colors} />;
+const tintedSx = (kind: Exclude<StatusKind, "default">) => (theme: Theme) => ({
+  backgroundColor: alpha(theme.palette[kind].main, 0.12),
+  color: theme.palette[kind].dark,
+  fontWeight: 600
+});
+
+export const StatusChip: React.FC<StatusChipProps> = ({ status, variant = "standard", size = "small" }) => {
+  if (variant === "header") {
+    return <Chip label={status} size={size} variant="filled" sx={headerSx} />;
+  }
+
+  const kind: StatusKind = STATUS_KIND[status.toLowerCase()] || "default";
+
+  const chipProps: Partial<ChipProps> =
+    kind === "default"
+      ? { variant: "outlined", sx: { color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" } }
+      : { variant: "filled", sx: tintedSx(kind) };
+
+  return <Chip label={status} size={size} {...chipProps} />;
 };

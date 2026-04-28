@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Image, Language, VolunteerActivism, MusicNote, Person, Groups, LiveTv, Lock, CameraAlt, SmartDisplay } from "@mui/icons-material";
 import { ApiHelper, UserHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
@@ -7,6 +7,8 @@ import { FeatureCard } from "./FeatureCard";
 import { QuickSetupModal, type WizardType } from "./QuickSetupModal";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 import { useNavigate } from "react-router-dom";
+import { PageContainer } from "../../components/ui/PageContainer";
+import { GRID_SIZES } from "../../components/ui/layoutPresets";
 
 export const AdminWelcome: React.FC = () => {
   const navigate = useNavigate();
@@ -44,58 +46,56 @@ export const AdminWelcome: React.FC = () => {
         title="Welcome to B1.church!"
         subtitle="Let's get your church set up. Here are some things you'll likely want to do first."
       />
-      <Container maxWidth="xl">
-        <Box sx={{ py: 4 }}>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            Click any card below to get started. You can always find these in the menu later.
-          </Typography>
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Your Church</Typography>
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Image fontSize="small" />} title="Add Your Church Logo" description="Upload your logo and update your church's contact information." linkUrl="/site/appearance#logo" />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Language fontSize="small" />} title="Create Your First Webpage" description="Build a public website where visitors can learn about you." onClick={() => handleCardClick("webpage", hasPages, "/site/pages")} />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<VolunteerActivism fontSize="small" />} title="Set Up Online Giving" description="Connect Stripe so your congregation can give online." linkUrl="/settings#giving" />
-            </Grid>
+      <PageContainer py={4}>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+          Click any card below to get started. You can always find these in the menu later.
+        </Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Your Church</Typography>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<Image fontSize="small" />} title="Add Your Church Logo" description="Upload your logo and update your church's contact information." linkUrl="/site/appearance#logo" />
           </Grid>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<Language fontSize="small" />} title="Create Your First Webpage" description="Build a public website where visitors can learn about you." onClick={() => handleCardClick("webpage", hasPages, "/site/pages")} />
+          </Grid>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<VolunteerActivism fontSize="small" />} title="Set Up Online Giving" description="Connect Stripe so your congregation can give online." linkUrl="/settings#giving" />
+          </Grid>
+        </Grid>
 
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Serving & Content</Typography>
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<MusicNote fontSize="small" />} title="Set Up FreeShow Backups" description="Connect FreeShow to back up your songs and service plans." onClick={() => handleCardClick("freeshow", hasTeams, "/serving")} />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<SmartDisplay fontSize="small" />} title="Set Up Your FreePlay Classroom" description="Create a ministry and classroom for FreePlay lessons on your TV." onClick={() => handleCardClick("freeplay", hasPlanTypes, "/serving")} />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<LiveTv fontSize="small" />} title="Upload a Sermon" description="Share your sermons online so people can watch anytime." linkUrl="/sermons" />
-            </Grid>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Serving & Content</Typography>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<MusicNote fontSize="small" />} title="Set Up FreeShow Backups" description="Connect FreeShow to back up your songs and service plans." onClick={() => handleCardClick("freeshow", hasTeams, "/serving")} />
           </Grid>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<SmartDisplay fontSize="small" />} title="Set Up Your FreePlay Classroom" description="Create a ministry and classroom for FreePlay lessons on your TV." onClick={() => handleCardClick("freeplay", hasPlanTypes, "/serving")} />
+          </Grid>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<LiveTv fontSize="small" />} title="Upload a Sermon" description="Share your sermons online so people can watch anytime." linkUrl="/sermons" />
+          </Grid>
+        </Grid>
 
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>People & Groups</Typography>
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Person fontSize="small" />} title="Add Your Congregation" description="Import or add your people to track attendance, groups, and giving." linkUrl="/people" />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Groups fontSize="small" />} title="Create Your First Group" description="Set up small groups, classes, or serving teams." onClick={() => handleCardClick("group", hasGroups, "/groups")} />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Lock fontSize="small" />} title="Invite Team Members" description="Add staff and volunteers as admins to help manage things." linkUrl="/settings#roles" />
-            </Grid>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>People & Groups</Typography>
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<Person fontSize="small" />} title="Add Your Congregation" description="Import or add your people to track attendance, groups, and giving." linkUrl="/people" />
           </Grid>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<Groups fontSize="small" />} title="Create Your First Group" description="Set up small groups, classes, or serving teams." onClick={() => handleCardClick("group", hasGroups, "/groups")} />
+          </Grid>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<Lock fontSize="small" />} title="Invite Team Members" description="Add staff and volunteers as admins to help manage things." linkUrl="/settings#roles" />
+          </Grid>
+        </Grid>
 
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Your Profile</Typography>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<CameraAlt fontSize="small" />} title="Set Your Avatar" description="Upload a profile photo so your team can recognize you." linkUrl={b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit"} external />
-            </Grid>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1.5 }}>Your Profile</Typography>
+        <Grid container spacing={2}>
+          <Grid size={GRID_SIZES.threeColumn}>
+            <FeatureCard icon={<CameraAlt fontSize="small" />} title="Set Your Avatar" description="Upload a profile photo so your team can recognize you." linkUrl={b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit"} external />
           </Grid>
-        </Box>
-      </Container>
+        </Grid>
+      </PageContainer>
 
       {wizardType && (
         <QuickSetupModal wizardType={wizardType} open={true} onClose={() => setWizardType(null)} onComplete={handleWizardComplete} />
