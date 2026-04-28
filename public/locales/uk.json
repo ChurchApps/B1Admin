@@ -1,12 +1,35 @@
 {
+  "app": {
+    "login": {
+      "demoCredentials": "Використовуйте електронну пошту \"{email}\" та пароль \"{password}\".",
+      "demoLabel": "Демо:",
+      "demoMessage": "Це демо-середовище. Усі дані щоночі видаляються.",
+      "demoTestChurch": "Ви можете увійти до тестової церкви \"Grace Community Church\""
+    },
+    "oauth": {
+      "allow": "Дозволити",
+      "allowAria": "Дозволити авторизацію",
+      "authorizationRequired": "ПОТРІБНА АВТОРИЗАЦІЯ",
+      "deny": "Відхилити",
+      "denyAria": "Відхилити авторизацію",
+      "loading": "Завантаження...",
+      "loadingChurchData": "Завантаження даних церкви...",
+      "logoAlt": "логотип",
+      "permissionPlans": "Плани",
+      "promptAccess": "Бажаєте отримати доступ до наступних даних з {churchName} у вищезазначеному додатку?"
+    }
+  },
   "attendance": {
+    "attendanceNavigation": {
+      "kioskTheme": "Тема кіоску"
+    },
     "attendancePage": {
       "att": "Відвідування",
       "campus": "Кампус",
       "campuses": "Кампуси",
       "category": "Категорія",
       "group": "Група",
-      "groupAttMsg": "Group attendance will show up once sessions have been added to a group and people have attended those sessions.",
+      "groupAttMsg": "Відвідування групи з'явиться після додавання сеансів до групи та коли люди їх відвідають.",
       "groups": "Групи",
       "scheduled": "Запланований",
       "service": "Служба",
@@ -17,36 +40,62 @@
       "unscheduled": "Незапланований"
     },
     "attendanceSetup": {
+      "addCampusAria": "Додати кампус",
       "addService": "Додати службу",
       "addServiceTime": "Додати час служби",
       "newCampus": "Новий кампус",
       "newService": "Нова служба",
       "newServiceTime": "Новий час служби",
-      "setupMessage": "Set up campuses, services, and service times to begin tracking attendance.",
+      "setupMessage": "Налаштуйте кампуси, служби та часи служб, щоб почати відстеження відвідуваності.",
       "unassigned": "Не призначено"
     },
     "campusEdit": {
       "confirmDelete": "Ви впевнені, що хочете видалити цей кампус?",
       "name": "Назва кампусу",
+      "nameAria": "Назва кампусу",
       "validate": {
-        "name": "Campus Name is required."
+        "name": "Назва кампусу обов'язкова."
       }
+    },
+    "checkinThemeEdit": {
+      "addSlide": "Додати слайд",
+      "background": "Фон",
+      "backgroundImage": "Фонове зображення",
+      "backgroundImageDesc": "Необов'язкове фонове зображення для екрану пошуку/привітання. Рекомендовано: 1920x1080.",
+      "change": "Змінити",
+      "changeImage": "Змінити зображення",
+      "duration": "Тривалість (с)",
+      "enableIdleScreen": "Увімкнути екран очікування",
+      "headerSubtitle": "Кольори кіоску керуються в Параметри > Тема програми. Нижче налаштуйте фонові зображення та поведінку екрана очікування.",
+      "idleScreen": "Екран очікування / заставка",
+      "kioskSettings": "Параметри кіоску",
+      "remove": "Видалити",
+      "slide": "Слайд {index}",
+      "slides": "Слайди",
+      "timeoutSeconds": "Таймаут (секунди)",
+      "upload": "Завантажити",
+      "uploadImage": "Завантажити зображення"
     },
     "serviceEdit": {
       "campus": "Кампус",
-      "confirmDelete": "Are you sure you wish to permanently delete this service?",
+      "campusAria": "Виберіть кампус",
+      "confirmDelete": "Ви впевнені, що хочете назавжди видалити цю службу?",
       "name": "Назва служби",
+      "nameAria": "Назва служби",
       "validate": {
         "campus": "Будь ласка, виберіть кампус.",
-        "name": "Service name is required."
+        "name": "Назва служби обов'язкова."
       }
     },
     "serviceTimeEdit": {
-      "confirmDelete": "Are you sure you wish to permanently delete this service time?",
+      "confirmDelete": "Ви впевнені, що хочете назавжди видалити цей час служби?",
       "name": "Час служби",
+      "nameAria": "Назва часу служби",
+      "namePlaceholder": "8:00",
       "service": "Служба",
+      "serviceAria": "Виберіть службу",
       "validate": {
-        "name": "Service time name is required.",
+        "name": "Назва часу служби обов'язкова.",
         "service": "Будь ласка, виберіть службу."
       }
     },
@@ -62,7 +111,7 @@
       "copiedToClipboard": "Скопійовано в буфер обміну",
       "copyIcsLink": "Копіювати посилання ICS",
       "downloadIcsFile": "Завантажити файл ICS",
-      "subscribe": "Subscribe",
+      "subscribe": "Підписатися",
       "subscribeTitle": "Підписатися на календар"
     },
     "calendarEdit": {
@@ -91,128 +140,164 @@
       "noGroups": "Групи не знайдені."
     },
     "calendarList": {
-      "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
-      "aboutParagraph2": "You can create multiple calendars for different purposes like worship services, youth events, and community outreach.",
-      "aboutParagraph3": "Share your calendars with members through ICS feeds or embed them on your website.",
+      "aboutParagraph1": "Календарі дозволяють організовувати та відображати події вашої церкви.",
+      "aboutParagraph2": "Ви можете створювати кілька календарів для різних цілей, як-от служби поклоніння, молодіжні події та соціальна робота.",
+      "aboutParagraph3": "Діліться календарями з учасниками через ICS або вбудовуйте їх на сайт.",
       "aboutTitle": "Про календарі",
-      "actions": "Actions",
+      "actions": "Дії",
       "active": "Активний",
       "addCalendar": "Додати календар",
       "calendar": "Календар",
       "calendars": "Календарі",
       "createCalendar": "Створити календар",
-      "createFirstCalendar": "Create First Calendar",
-      "curatedCalendar": "Curated Calendar",
+      "createFirstCalendar": "Створити перший календар",
+      "curatedCalendar": "Курований календар",
       "edit": "Редагувати",
-      "manageEvents": "Manage Events",
-      "noCalendars": "No calendars found",
-      "status": "Status",
-      "subtitleEmpty": "Get started by creating your first calendar",
-      "subtitleWithCount": "Subtitle With Count",
+      "manageEvents": "Керувати подіями",
+      "noCalendars": "Календарів не знайдено",
+      "status": "Статус",
+      "subtitleEmpty": "Почніть зі створення першого календаря",
+      "subtitleWithCount": "Підзаголовок із кількістю",
       "title": "Календарі"
     },
     "calendarPage": {
-      "actions": "Actions",
-      "addEventsHint": "Add events by selecting groups",
+      "actions": "Дії",
+      "addEventsHint": "Додавайте події, вибираючи групи",
       "calendar": "Календар",
-      "calendarEvents": "Calendar Events",
-      "confirmRemoveGroup": "Are you sure you wish to remove this group from the calendar?",
-      "groupName": "Group Name",
-      "groupsInCalendar": "Groups in Calendar",
-      "noGroupsAdded": "No groups added yet",
-      "removeGroup": "Remove Group",
-      "removeGroupAria": "Remove Group Aria",
-      "subtitle": "Manage calendar events and groups"
+      "calendarEvents": "Події календаря",
+      "confirmRemoveGroup": "Ви впевнені, що хочете видалити цю групу з календаря?",
+      "groupName": "Назва групи",
+      "groupsInCalendar": "Групи в календарі",
+      "noGroupsAdded": "Ще не додано жодної групи",
+      "removeGroup": "Видалити групу",
+      "removeGroupAria": "Видалити групу",
+      "subtitle": "Керуйте подіями та групами календаря"
     },
     "editEvent": {
-      "addAllEvents": "Add all the events of the group",
-      "addGroup": "Add Group",
-      "addSpecificEvents": "Add specific events",
+      "addAllEvents": "Додати всі події групи",
+      "addGroup": "Додати групу",
+      "addSpecificEvents": "Додати конкретні події",
       "cancel": "Скасувати",
-      "clickToAdd": "Click to add",
-      "noEventsFound": "No events found",
+      "clickToAdd": "Натисніть, щоб додати",
+      "noEventsFound": "Подій не знайдено",
       "save": "Зберегти",
-      "selectGroup": "Select a Group"
+      "selectGroup": "Виберіть групу"
     }
   },
   "common": {
     "add": "Додати",
     "amount": "Сума",
+    "appTheme": "Тема програми",
+    "b1CheckIn": "B1 CheckIn",
+    "b1Mobile": "B1 Мобільний",
     "back": "Назад",
-    "bottom": "Bottom",
+    "bottom": "Низ",
     "cancel": "Скасувати",
-    "center": "Center",
-    "change": "Change",
-    "changePhoto": "Change Photo",
+    "center": "Центр",
+    "change": "Змінити",
+    "changePhoto": "Змінити фото",
     "close": "Закрити",
     "comboBox": {
-      "addNew": "Add New..."
+      "addNew": "Додати нове..."
     },
     "createPerson": {
-      "confirmDuplicate": "{{existingName}} already exists with an email of {{existingEmail}}. Are you sure you wish to add {{firstName}} {{lastName}}?",
+      "confirmDuplicate": "{existingName} вже існує з електронною поштою {existingEmail}. Ви впевнені, що хочете додати {firstName} {lastName}?",
       "validate": {
-        "firstName": "Please enter a first name.",
-        "lastName": "Please enter a last name.",
-        "validEmail": "Please enter a valid email address."
+        "firstName": "Введіть ім'я.",
+        "lastName": "Введіть прізвище.",
+        "validEmail": "Введіть дійсну адресу електронної пошти."
       }
     },
-    "custom": "Custom",
+    "custom": "Власне",
     "delete": "Видалити",
     "done": "Готово",
-    "duplicate": "Duplicate",
+    "duplicate": "Дублювати",
     "edit": "Редагувати",
     "errorBoundary": {
-      "message": "Something went wrong. Please try again or contact support if the problem persists.",
-      "retry": "Retry",
-      "title": "Oops! An Error Occurred"
+      "message": "Щось пішло не так. Спробуйте ще раз або зверніться до служби підтримки, якщо проблема не зникає.",
+      "retry": "Повторити",
+      "title": "Ой! Сталася помилка"
     },
     "formSubmission": {
       "edit": "Редагувати",
-      "noData": "No data available",
-      "noQuestions": "No questions found"
+      "noData": "Немає доступних даних",
+      "noQuestions": "Питань не знайдено"
     },
     "help": "Допомога",
     "iconPicker": {
-      "noResults": "No icons found matching \"{{searchText}}\"",
-      "searchLabel": "Search Icons",
-      "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "Showing {{count}} commonly used icons. Use search to find more.",
-      "showingMatching": "Showing {{count}} icons matching \"{{searchText}}\"",
-      "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "noResults": "Не знайдено іконок, які відповідають \"{searchText}\"",
+      "searchLabel": "Пошук іконок",
+      "searchPlaceholder": "Почніть друкувати для пошуку (наприклад, особа, дім, церква)...",
+      "showingDefault": "Показано {count} часто використовуваних іконок. Використовуйте пошук, щоб знайти більше.",
+      "showingMatching": "Показано {count} іконок, які відповідають \"{searchText}\"",
+      "title": "Вибрати іконку",
+      "tryDifferent": "Спробуйте інший пошуковий запит"
     },
-    "left": "Left",
-    "name": "Name",
+    "left": "Ліво",
+    "mobile": "Мобільний",
+    "name": "Ім'я",
+    "navigation": "Навігація",
     "no": "Ні",
     "notes": "Примітки",
-    "person": "Person",
+    "person": "Особа",
     "remove": "Видалити",
     "reportFilter": {
-      "title": "Filter Report"
+      "title": "Фільтрувати звіт"
     },
     "reportFilterField": {
-      "any": "Any"
+      "any": "Будь-який"
     },
-    "right": "Right",
+    "right": "Право",
     "save": "Зберегти",
-    "saveChanges": "Save Changes",
+    "saveChanges": "Зберегти зміни",
     "saving": "Збереження...",
     "search": "Пошук",
     "searching": "Пошук...",
     "sermons": "Проповіді",
     "title": "Назва",
-    "top": "Top",
-    "tryAgain": "Try Again",
+    "top": "Верх",
+    "tryAgain": "Спробуйте ще раз",
     "update": "Оновити",
     "website": "Веб-сайт",
-    "yes": "Так",
-    "mobile": "Мобільний",
-    "navigation": "Навігація",
-    "appTheme": "Тема програми",
-    "b1Mobile": "B1 Мобільний",
-    "b1CheckIn": "B1 CheckIn"
+    "yes": "Так"
   },
   "components": {
+    "associatedForms": {
+      "addForm": "Додати форму"
+    },
+    "bezChat": {
+      "ariaOpen": "Відкрити чат Bez",
+      "errorAnswer": "На жаль, я не зміг знайти відповідь.",
+      "errorGeneric": "Щось пішло не так. Спробуйте ще раз.",
+      "intro": "Привіт, я Bez! Я можу допомогти вам орієнтуватися в B1 Admin. Спробуйте запитати мене:",
+      "placeholderInput": "Запитайте Bez...",
+      "sampleCsv": "\"Як імпортувати учасників із CSV?\"",
+      "sampleGiving": "\"Як налаштувати онлайн-пожертви?\"",
+      "sampleGroup": "\"Як створити нову групу?\"",
+      "title": "Запитати Bez"
+    },
+    "docChat": {
+      "ariaOpen": "Відкрити чат допомоги",
+      "composing": "Складання відповіді...",
+      "errorAnswer": "На жаль, я не зміг знайти відповідь.",
+      "errorGeneric": "Щось пішло не так. Спробуйте ще раз.",
+      "intro": "Запитайте про B1 Admin. Наприклад:",
+      "placeholderInput": "Поставте запитання...",
+      "sampleCsv": "\"Як імпортувати учасників із CSV?\"",
+      "sampleGiving": "\"Як налаштувати онлайн-пожертви?\"",
+      "sampleGroup": "\"Як створити нову групу?\"",
+      "searching": "Пошук у документації...",
+      "title": "Помічник"
+    },
+    "draggableWrapper": {
+      "ariaLabel": "Перетягуваний елемент"
+    },
+    "droppableWrapper": {
+      "ariaLabel": "Зона скидання"
+    },
+    "fileUpload": {
+      "file": "Файл"
+    },
     "footer": {
       "phone": "Телефон",
       "rights": "Всі права захищені."
@@ -222,14 +307,49 @@
       "featurePeople": "Управління людьми та домогосподарствами",
       "featurePlanning": "Планування та планування служб",
       "featureWebsite": "Конструктор веб-сайтів і управління контентом",
-      "subtitle": "Manage your congregation, plan services, track attendance, and handle donations — all in one place.",
+      "subtitle": "Керуйте вашою громадою, плануйте служби, відстежуйте відвідуваність та обробляйте пожертви — все в одному місці.",
       "title": "Управління церквою просто"
+    },
+    "permissionDenied": {
+      "contactAdmin": "Зверніться до адміністратора церкви, щоб отримати доступ.",
+      "defaultMessage": "У вас немає потрібних дозволів для доступу до цієї функції:"
+    },
+    "personAdd": {
+      "select": "Вибрати"
+    },
+    "search": {
+      "ariaSearch": "Пошук",
+      "ariaSearchInput": "Пошук особи",
+      "ariaSelectPerson": "Вибрати особу"
+    },
+    "sendInviteDialog": {
+      "addedMessage": "{personName} додано до {contextName}. Бажаєте надіслати їм запрошення на електронну пошту {personEmail}?",
+      "ariaTitle": "Надіслати запрошення електронною поштою?",
+      "errorFailed": "Не вдалося надіслати запрошення електронною поштою.",
+      "noThanks": "Ні, дякую",
+      "sendInvite": "Надіслати запрошення",
+      "sentMessage": "Запрошення надіслано на {personEmail}."
+    },
+    "siteNavigation": {
+      "ariaEditLink": "Редагувати посилання навігації {linkText}",
+      "noTitle": "[Без назви]"
+    },
+    "superBeeChat": {
+      "ariaOpen": "Відкрити чат SuperBee",
+      "errorAnswer": "Навіть супергерой інколи зустрічає перешкоди. Спробуйте ще раз!",
+      "errorGeneric": "Щось пішло не так. Але не хвилюйтеся — я повернуся сильнішим!",
+      "intro": "Привіт, чемпіоне! Я SuperBee — ваш потужний помічник B1 Admin. Задавайте найскладніші запитання!",
+      "placeholderInput": "Запитайте SuperBee про що завгодно...",
+      "sampleCsv": "\"Як імпортувати учасників із CSV?\"",
+      "sampleGiving": "\"Як налаштувати онлайн-пожертви?\"",
+      "sampleGroup": "\"Як створити нову групу?\"",
+      "title": "SuperBee"
     },
     "wrapper": {
       "att": "Відвідування",
       "dash": "Панель управління",
       "don": "Пожертви",
-      "form": "Form",
+      "form": "Форма",
       "forms": "Форми",
       "groups": "Групи",
       "plans": "Плани",
@@ -243,21 +363,122 @@
     }
   },
   "createPerson": {
-    "addNewPerson": "Add New Person",
+    "addNewPerson": "Додати нову особу",
     "email": "Електронна пошта",
-    "firstName": "First Name",
-    "lastName": "Last Name"
+    "firstName": "Ім'я",
+    "lastName": "Прізвище"
   },
   "dashboard": {
+    "adminWelcome": {
+      "addCongregationDesc": "Імпортуйте або додайте людей для відстеження відвідуваності, груп і пожертв.",
+      "addCongregationTitle": "Додайте вашу громаду",
+      "addLogoDesc": "Завантажте логотип і оновіть контактну інформацію церкви.",
+      "addLogoTitle": "Додайте логотип вашої церкви",
+      "createGroupDesc": "Налаштуйте малі групи, класи або команди служіння.",
+      "createGroupTitle": "Створіть першу групу",
+      "createWebpageDesc": "Створіть публічний веб-сайт, де відвідувачі можуть дізнатися про вас.",
+      "createWebpageTitle": "Створіть першу веб-сторінку",
+      "freePlayDesc": "Створіть служіння та клас для уроків FreePlay на телевізорі.",
+      "freePlayTitle": "Налаштуйте клас FreePlay",
+      "freeShowDesc": "Підключіть FreeShow для резервного копіювання пісень і планів служб.",
+      "freeShowTitle": "Налаштуйте резервне копіювання FreeShow",
+      "intro": "Натисніть будь-яку картку нижче, щоб почати. Ви завжди можете знайти їх у меню пізніше.",
+      "inviteTeamDesc": "Додайте співробітників і волонтерів як адміністраторів для допомоги в керуванні.",
+      "inviteTeamTitle": "Запросити членів команди",
+      "onlineGivingDesc": "Підключіть Stripe, щоб ваша громада могла жертвувати онлайн.",
+      "onlineGivingTitle": "Налаштувати онлайн-пожертви",
+      "peopleAndGroups": "Люди та групи",
+      "servingAndContent": "Служіння та вміст",
+      "setAvatarDesc": "Завантажте фото профілю, щоб ваша команда могла вас впізнавати.",
+      "setAvatarTitle": "Встановити аватар",
+      "subtitle": "Давайте налаштуємо вашу церкву. Ось декілька речей, які варто зробити спочатку.",
+      "title": "Ласкаво просимо до B1.church!",
+      "uploadSermonDesc": "Поширюйте проповіді онлайн, щоб люди могли дивитися їх у будь-який час.",
+      "uploadSermonTitle": "Завантажити проповідь",
+      "yourChurch": "Ваша церква",
+      "yourProfile": "Ваш профіль"
+    },
     "dashboardPage": {
       "dash": "Панель управління",
-      "subtitle": "Welcome to your church management dashboard. Search for people, view your groups, and manage your open tasks."
+      "subtitle": "Ласкаво просимо до вашої панелі керування церквою. Шукайте людей, переглядайте групи та керуйте відкритими завданнями."
+    },
+    "memberWelcome": {
+      "downloadAppDesc": "Завантажте додаток B1.church на телефон, щоб залишатися на зв'язку.",
+      "downloadAppTitle": "Завантажити мобільний додаток",
+      "fallbackChurchName": "ваша церква",
+      "findPeopleDesc": "Шукайте у церковному довіднику, щоб знайти та зв'язатися з іншими в громаді.",
+      "findPeopleTitle": "Знайдіть знайомих людей",
+      "intro": "Почніть із заповнення профілю та ознайомлення з тим, що пропонує ваша церква.",
+      "joinGroupDesc": "Перегляньте малі групи, класи та команди служіння, щоб знайти свою спільноту.",
+      "joinGroupTitle": "Приєднатися до групи",
+      "onlineGivingDesc": "Жертвуйте онлайн швидко та легко, а також за бажанням налаштуйте регулярні пожертви.",
+      "onlineGivingTitle": "Налаштувати онлайн-пожертви",
+      "setPhotoDesc": "Завантажте фото профілю, щоб люди в церкві могли вас впізнавати.",
+      "setPhotoTitle": "Додати фото",
+      "subtitle": "Ось декілька речей, які ви можете зробити, щоб приєднатися.",
+      "title": "Ласкаво просимо до {churchName}!",
+      "upcomingEventsDesc": "Перегляньте майбутні події, час служб і способи долучитися.",
+      "upcomingEventsTitle": "Подивіться, що відбувається"
     },
     "myGroups": "Мої групи",
     "peopleSearch": {
+      "ariaSearch": "Пошук людей",
+      "ariaSearchBox": "searchBox",
       "display": "Показати",
+      "noResults": "Не знайдено людей за вашими критеріями пошуку.",
       "photo": "Фото",
       "ppl": "Люди"
+    },
+    "quickSetupModal": {
+      "classroomName": "Назва класу",
+      "createContinue": "Створити та продовжити",
+      "creating": "Створення...",
+      "errorBothMinistryClassroom": "Введіть назву служіння та назву класу.",
+      "errorBothMinistryTeam": "Введіть назву служіння та назву команди.",
+      "errorGeneric": "Щось пішло не так. Спробуйте ще раз.",
+      "errorGroupName": "Введіть назву групи.",
+      "errorPageTitle": "Введіть назву сторінки.",
+      "errorPermFreePlay": "У вас немає дозволу для виконання цієї дії. Потрібно: MembershipApi - Groups - Edit, MembershipApi - Plans - Edit",
+      "errorPermGroups": "У вас немає дозволу для виконання цієї дії. Потрібно: MembershipApi - Groups - Edit",
+      "errorPermPages": "У вас немає дозволу для виконання цієї дії. Потрібно: ContentApi - Content - Edit",
+      "freePlayDescription": "Щоб почати з FreePlay, потрібно створити служіння і клас. Потім ви будете перенаправлені для прив'язки постачальника вмісту.",
+      "freePlayTitle": "Налаштуйте клас FreePlay",
+      "freeShowDescription": "Щоб створити резервну копію даних FreeShow, потрібно створити служіння та команду. Потім ви будете перенаправлені для додавання членів команди.",
+      "freeShowTitle": "Налаштуйте резервне копіювання FreeShow",
+      "groupDescription": "Введіть назву групи. Ви будете перенаправлені на сторінку групи для налаштування та додавання учасників.",
+      "groupName": "Назва групи",
+      "groupTitle": "Створіть першу групу",
+      "ministryName": "Назва служіння",
+      "pageTitle": "Назва сторінки",
+      "teamName": "Назва команди",
+      "webpageDescription": "Введіть назву першої сторінки. Ви будете перенаправлені до редактора сторінок для додавання вмісту.",
+      "webpageTitle": "Створіть першу веб-сторінку"
+    }
+  },
+  "device": {
+    "deviceAuthPage": {
+      "allow": "Дозволити",
+      "altLogo": "логотип",
+      "authorizationFailed": "Помилка авторизації. Спробуйте ще раз.",
+      "authorizationRequired": "ПОТРІБНА АВТОРИЗАЦІЯ",
+      "codePlaceholder": "XXXXXX",
+      "confirmPrompt": "Бажаєте отримати доступ до наступних даних з <b>{churchName}</b> у вищезазначеному додатку?",
+      "continue": "Продовжити",
+      "denied": "Авторизацію пристрою відхилено",
+      "deny": "Відхилити",
+      "deviceAuthorizedAlert": "ПРИСТРІЙ АВТОРИЗОВАНО",
+      "deviceAuthorizedHeading": "Пристрій авторизовано!",
+      "deviceAuthorizedMessage": "Тепер ви можете повернутися до телевізора. Пристрій підключиться автоматично.",
+      "deviceCodeLabel": "Код пристрою:",
+      "enterCodePrompt": "Введіть код, відображений на телевізорі:",
+      "expiresInMinutes": "Закінчується через {minutes} хв.",
+      "failedAuthorize": "Не вдалося авторизувати пристрій",
+      "invalidCode": "Недійсний або застарілий код. Перевірте та спробуйте ще раз.",
+      "loading": "Завантаження...",
+      "noChurchSelected": "Церкву не вибрано. Увійдіть знову та виберіть церкву.",
+      "requestedPermissions": "Запитані дозволи:",
+      "title": "Авторизувати пристрій",
+      "verifyFailed": "Не вдалося перевірити код. Спробуйте ще раз."
     }
   },
   "donation": {
@@ -276,11 +497,11 @@
       "thankYou": "Дякуємо за вашу пожертву!",
       "totalAmount": "Загальна сума",
       "validate": {
-        "amount": "Please enter a donation amount.",
-        "email": "Email is required.",
-        "firstName": "First name is required.",
-        "lastName": "Last name is required.",
-        "validEmail": "Please enter a valid email address."
+        "amount": "Введіть суму пожертви.",
+        "email": "Електронна пошта обов'язкова.",
+        "firstName": "Ім'я обов'язкове.",
+        "lastName": "Прізвище обов'язкове.",
+        "validEmail": "Введіть дійсну адресу електронної пошти."
       },
       "weekly": "Щотижня"
     },
@@ -288,26 +509,26 @@
       "donations": "Пожертви"
     },
     "nonAuthDonation": {
-      "donate": "Donate"
+      "donate": "Пожертвувати"
     },
     "page": {
       "amount": "Сума",
       "batch": "Batch",
       "currentYearCsv": "Current Year CSV",
       "currentYearPrint": "Current Year Print",
-      "date": "Date",
-      "fund": "Fund",
+      "date": "Дата",
+      "fund": "Фонд",
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
-      "method": "Method",
+      "method": "Метод",
       "willAppear": "Donations will appear here once they have been made."
     }
   },
   "donations": {
     "batchEdit": {
-      "confirmMsg": "Are you sure you wish to permanently delete this batch and all donations within it?",
-      "date": "Date",
-      "opName": "Name (optional)"
+      "confirmMsg": "Ви впевнені, що хочете назавжди видалити цей пакет і всі пожертви в ньому?",
+      "date": "Дата",
+      "opName": "Ім'я (необов'язково)"
     },
     "batchStatements": {
       "csvDescription": "Download a ZIP file containing individual CSV files for each donor with their detailed donation records",
@@ -319,775 +540,1169 @@
       "printAllStatements": "Print All {count} Statements",
       "printDescription": "Generate a consolidated document with all giving statements for printing",
       "printStatements": "Printable Statements",
-      "selectYear": "Select Year",
+      "selectYear": "Виберіть рік",
       "subtitle": "Download giving statements for all donors",
-      "summary": "Summary",
+      "summary": "Підсумок",
       "title": "Batch Giving Statements",
-      "totalAmount": "Total Amount:",
+      "totalAmount": "Загальна сума:",
       "totalDonations": "Total Donations:",
       "totalDonors": "Total Donors:",
-      "year": "Year",
+      "year": "Рік",
       "zipInfo": "This will download a ZIP file containing {count} individual CSV files, one for each donor."
     },
     "bulkEntry": {
-      "addDonation": "Add Donation",
-      "pressEnter": "Press Enter to save and add another donation",
-      "selectPerson": "Select Person or Anonymous"
+      "addDonation": "Додати пожертву",
+      "pressEnter": "Натисніть Enter, щоб зберегти та додати ще одну пожертву",
+      "selectPerson": "Виберіть особу або Анонімно"
     },
     "donationBatchPage": {
-      "batchDate": "Batch Date:",
-      "subtitle": "Manage donations in this batch",
-      "title": "Donation Batch"
+      "batchDate": "Дата пакета:",
+      "donations": "Пожертви",
+      "editBatch": "Редагувати пакет",
+      "subtitle": "Керуйте пожертвами в цьому пакеті",
+      "title": "Пакет пожертв",
+      "totalAmount": "Загальна сума"
     },
     "donationBatchesPage": {
-      "subtitle": "Manage donation batches and track giving records"
+      "addBatch": "Додати пакет",
+      "batches": "Пакети",
+      "donations": "Пожертви",
+      "export": "Експорт",
+      "stripeImportLink": "Імпортувати відсутні транзакції Stripe",
+      "subtitle": "Керуйте пакетами пожертв і відстежуйте записи про пожертви",
+      "totalAmount": "Загальна сума"
     },
     "donationEdit": {
-      "anon": "Anonymous",
-      "card": "Card",
-      "cash": "Cash",
-      "check": "Check",
-      "checkNum": "Check #",
-      "date": "Date",
-      "fund": "Fund",
-      "inKind": "In-Kind",
-      "lastDig": "Last 4 digits",
-      "method": "Method"
+      "anon": "Анонімно",
+      "ariaDate": "Дата пожертви",
+      "ariaMethod": "Метод оплати",
+      "ariaNotes": "Примітки до пожертви",
+      "card": "Картка",
+      "cash": "Готівка",
+      "check": "Чек",
+      "checkNum": "№ чека",
+      "date": "Дата",
+      "fund": "Фонд",
+      "inKind": "Натурою",
+      "lastDig": "Останні 4 цифри",
+      "method": "Метод"
     },
     "donationEvents": {
-      "event": "Event: ",
-      "failed": "Failed Donations - ",
-      "mark": "Mark as ",
-      "msg": "Message: ",
-      "unres": " unresolved"
+      "event": "Подія: ",
+      "failed": "Невдалі пожертви - ",
+      "mark": "Позначити як ",
+      "msg": "Повідомлення: ",
+      "resolved": "Вирішено",
+      "unres": " невирішено",
+      "unresolved": "Невирішено"
     },
     "donations": {
       "amt": "Сума",
-      "anon": "Anonymous",
-      "batches": "Batches",
-      "date": "Date",
+      "anon": "Анонімно",
+      "batches": "Пакети",
+      "date": "Дата",
       "don": "Пожертви",
-      "errMsg": "No fund found. Please create a fund before making a donation",
+      "edit": "Редагувати",
+      "errMsg": "Фонд не знайдено. Створіть фонд перед оформленням пожертви.",
+      "export": "Експорт",
       "funds": "Фонди",
-      "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
-      "statements": "Giving Statements",
-      "summary": "Summary",
-      "tableIdent": "Id",
-      "total": "Total"
+      "noDonMsg": "Пожертви не відстежуються. Після введення пожертви з'являться тут.",
+      "pending": "В очікуванні",
+      "statements": "Виписки пожертв",
+      "summary": "Підсумок",
+      "tableIdent": "ID",
+      "total": "Всього"
     },
     "donationsPage": {
       "batch": "Batch",
-      "date": "Date",
+      "date": "Дата",
       "don": "Пожертви",
-      "noBatch": "No batches found.",
-      "subtitle": "View donation summaries and analyze giving trends",
-      "total": "Total"
+      "noBatch": "Пакетів не знайдено.",
+      "subtitle": "Переглядайте підсумки пожертв і аналізуйте тенденції пожертвувань",
+      "total": "Всього"
     },
     "fundEdit": {
-      "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
-      "errBlank": "Enter a fund name",
-      "taxDeductible": "Tax Deductible",
-      "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "ariaFundName": "Назва фонду",
+      "ariaTaxDeductible": "Звільнено від податків",
+      "confirmMsg": "Ви впевнені, що хочете назавжди видалити цей фонд і всі пожертви в ньому?",
+      "errBlank": "Введіть назву фонду",
+      "taxDeductible": "Звільнено від податків",
+      "trackDonations": "Відстежує пожертви.",
+      "trackNonDonations": "Відстежує транзакції, що не є пожертвами, як-от реєстрації на табори, футболки, квитки на події тощо."
     },
     "fundPage": {
-      "subtitle": "Track donations and contributions to this fund"
+      "donors": "Жертводавці",
+      "filter": "Фільтр",
+      "subtitle": "Відстежуйте пожертви та внески до цього фонду",
+      "totalAmount": "Загальна сума"
     },
     "funds": {
+      "addFund": "Додати фонд",
       "fund": "Фонди",
-      "noFund": "No funds found."
+      "noFund": "Фондів не знайдено."
     },
     "fundsPage": {
+      "addFund": "Додати фонд",
       "amt": "Сума",
-      "anon": "Anonymous",
+      "anon": "Анонімно",
       "batch": "Batch",
-      "date": "Date",
-      "dateEnd": "End Date",
+      "date": "Дата",
+      "dateEnd": "Дата завершення",
       "dateStart": "Дата початку",
       "don": "Пожертви",
-      "donFilt": "Donation Filter",
-      "donor": "Donor",
-      "noDon": "No donations for selected date range",
-      "subtitle": "Manage donation funds and track giving categories"
+      "donFilt": "Фільтр пожертв",
+      "donor": "Жертводавець",
+      "export": "Експорт",
+      "noDon": "Немає пожертв за обраний діапазон дат",
+      "nonDeductible": "Не звільнено від податків",
+      "subtitle": "Керуйте фондами пожертв і відстежуйте категорії пожертвувань",
+      "taxDeductible": "Звільнено від податків",
+      "taxStatus": "Податковий статус",
+      "totalFunds": "Всього фондів"
     },
     "kpi": {
-      "avgGift": "Average Gift",
-      "donationCount": "Total Donations",
-      "donorCount": "Unique Donors",
-      "totalGiving": "Total Giving"
+      "avgGift": "Середній дар",
+      "donationCount": "Всього пожертв",
+      "donorCount": "Унікальних жертводавців",
+      "totalGiving": "Загальна сума пожертв"
     },
     "period": {
       "monthly": "Щомісяця",
       "quarterly": "Поквартально",
       "weekly": "Щотижня"
+    },
+    "printAllStatementsPage": {
+      "annualStatementTitle": "Річна виписка пожертв за {year}",
+      "contributionDetails": "Деталі внеску",
+      "disclaimer": "Жодних товарів чи послуг не було надано від {churchName} у відповідь на ці внески. Єдиною отриманою вигодою була нематеріальна релігійна вигода. {churchName} є некомерційною організацією.",
+      "donorInformation": "Інформація про жертводавця",
+      "fund": "Фонд",
+      "fundBreakdown": "Розбивка за фондами",
+      "issued": "Видано:",
+      "loadingStatements": "Завантаження виписок...",
+      "noteLabel": "Примітка:",
+      "noteText": "Ця виписка підсумовує внески, зроблені до {churchName} протягом календарного року {year}. Збережіть цей документ для своїх податкових записів. З питаннями щодо цієї виписки звертайтеся до церковного офісу.",
+      "organization": "Організація",
+      "period": "Період: 1 січня - 31 грудня {year}",
+      "statementSummary": "Підсумок виписки",
+      "totalContributions": "Загальні внески",
+      "totalContributionsLabel": "Загальні внески:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "Річна виписка пожертв за {year}",
+      "contributionDetails": "Деталі внеску",
+      "disclaimer": "Жодних товарів чи послуг не було надано від {churchName} у відповідь на ці внески. Єдиною отриманою вигодою була нематеріальна релігійна вигода. {churchName} є некомерційною організацією.",
+      "donorInformation": "Інформація про жертводавця",
+      "fund": "Фонд",
+      "fundBreakdown": "Розбивка за фондами",
+      "issued": "Видано:",
+      "noteLabel": "Примітка:",
+      "noteText": "Ця виписка підсумовує внески, зроблені до {churchName} протягом календарного року {year}. Збережіть цей документ для своїх податкових записів. З питаннями щодо цієї виписки звертайтеся до церковного офісу.",
+      "organization": "Організація",
+      "period": "Період: 1 січня - 31 грудня {year}",
+      "statementSummary": "Підсумок виписки",
+      "totalContributions": "Загальні внески",
+      "totalContributionsLabel": "Загальні внески:"
+    },
+    "stripeImportPage": {
+      "alreadyImported": "Вже імпортовано",
+      "alreadyImportedLabel": "Вже імпортовано:",
+      "clickImportMissing": "Натисніть \"Імпортувати відсутні\", щоб імпортувати {count} нову транзакцію(ї).",
+      "dateRangeDescription": "Виберіть діапазон дат для перевірки відсутніх транзакцій Stripe. Система автоматично пропустить уже імпортовані транзакції.",
+      "dateRequired": "Виберіть обидві дати початку та кінця",
+      "error": "Помилка",
+      "errorsLabel": "Помилки:",
+      "eventId": "ID події",
+      "failedFetch": "Не вдалося завантажити події",
+      "failedImport": "Не вдалося імпортувати події",
+      "importMissing": "Імпортувати відсутні",
+      "importResults": "Результати імпорту",
+      "imported": "Імпортовано",
+      "importedLabel": "Імпортовано:",
+      "new": "Новий",
+      "newLabel": "Нові:",
+      "noEvents": "Подій не знайдено. Виберіть діапазон дат і натисніть Попередній перегляд.",
+      "preview": "Попередній перегляд",
+      "previewResults": "Попередній перегляд результатів",
+      "selectDateRange": "Виберіть діапазон дат",
+      "skipped": "Пропущено",
+      "skippedLabel": "Пропущено:",
+      "status": "Статус",
+      "subtitle": "Імпортуйте відсутні транзакції Stripe, не отримані через вебхуки",
+      "title": "Імпортувати транзакції Stripe",
+      "totalLabel": "Всього:",
+      "type": "Тип"
     }
   },
   "forms": {
     "choicesEdit": {
-      "act": "Action",
-      "choices": "Choices",
-      "txt": "Text",
-      "value": "Value"
+      "act": "Дія",
+      "choices": "Варіанти",
+      "txt": "Текст",
+      "value": "Значення"
     },
     "form": {
-      "act": "Action",
-      "noCustomMsg": "No custom questions have been created yet. Questions will be listed here.",
-      "question": "Question",
-      "questions": "Questions",
-      "req": "Required",
-      "type": "Type"
+      "act": "Дія",
+      "addQuestion": "Додати запитання",
+      "addQuestionAria": "addQuestion",
+      "moveDownAria": "moveDown",
+      "moveUpAria": "moveUp",
+      "noCustomMsg": "Власних запитань ще не створено. Запитання будуть тут після додавання.",
+      "question": "Питання",
+      "questions": "Питання",
+      "req": "Обов'язково",
+      "type": "Тип"
     },
     "formEdit": {
-      "access": "Form Access",
-      "alone": "Stand Alone",
-      "associate": "Associate With",
-      "available": "Set Form Availability Timeframe",
-      "availableEnd": "Availability End Date",
-      "availableStart": "Availability Start Date",
-      "confirmMsg": "Are you sure you wish to permanently delete this form?",
-      "editForm": "Edit Form",
-      "endReqMsg": "End date is required.",
-      "name": "Form Name",
-      "nameReqMsg": "Form name is required.",
+      "access": "Доступ до форми",
+      "accessLevelAria": "Рівень доступу",
+      "alone": "Самостійна",
+      "associate": "Пов'язати з",
+      "available": "Встановити часовий діапазон доступності форми",
+      "availableEnd": "Дата кінця доступності",
+      "availableStart": "Дата початку доступності",
+      "confirmMsg": "Ви впевнені, що хочете назавжди видалити цю форму?",
+      "contentTypeAria": "Тип вмісту",
+      "editForm": "Редагувати форму",
+      "endReqMsg": "Дата кінця обов'язкова.",
+      "formNameAria": "Назва форми",
+      "name": "Назва форми",
+      "nameReqMsg": "Назва форми обов'язкова.",
       "ppl": "Люди",
-      "public": "Public",
-      "restrict": "Restricted",
-      "startReqMsg": "Start date is required.",
-      "thankYouMessage": "Thank You Message"
+      "public": "Публічна",
+      "restrict": "Обмежена",
+      "startReqMsg": "Дата початку обов'язкова.",
+      "thankYouMessage": "Повідомлення подяки"
     },
     "formMembers": {
-      "act": "Action",
-      "addPpl": "Add Person",
-      "admin": "Admin",
-      "emailNotif": "Email Notification",
-      "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
-      "formMem": "Form Members",
-      "perm": "Permission",
-      "view": "View Only"
+      "act": "Дія",
+      "addPpl": "Додати особу",
+      "admin": "Адмін",
+      "emailNotif": "Сповіщення електронною поштою",
+      "emailNotifInfoAria": "Інформація про сповіщення електронною поштою",
+      "emailNotifMsg": "Щоразу, коли форма буде надіслана, ви отримуватимете сповіщення електронною поштою.",
+      "formMem": "Учасники форми",
+      "perm": "Дозвіл",
+      "view": "Лише перегляд"
     },
     "formPage": {
-      "subtitleConfig": "Form configuration and submissions"
+      "subtitleConfig": "Налаштування та подачі форми"
     },
     "formQuestionEdit": {
       "amt": "Сума",
-      "ansReq": "Require an answer for this question",
-      "checkBox": "Checkbox",
-      "confirmMsg": "Are you sure you wish to permanently delete this question?",
-      "date": "Date",
-      "decNum": "Decimal",
-      "desc": "Description",
-      "fieldReq": "Field type is required.",
-      "fund": "Fund",
-      "multiChoice": "Multiple Choice",
-      "payment": "Payment",
-      "phoneNum": "Phone Number",
-      "plcOp": "Placeholder (optional)",
-      "prov": "Provider",
-      "questionEdit": "Edit Question",
-      "questionReq": "Question is required.",
-      "textArea": "Text Area",
-      "textBox": "Textbox",
-      "wholeNum": "Whole Number",
-      "yesNo": "Yes/No"
+      "ansReq": "Вимагати відповіді на це запитання",
+      "checkBox": "Прапорець",
+      "confirmMsg": "Ви впевнені, що хочете назавжди видалити це питання?",
+      "date": "Дата",
+      "decNum": "Десяткове",
+      "desc": "Опис",
+      "fieldReq": "Тип поля обов'язковий.",
+      "fund": "Фонд",
+      "multiChoice": "Кілька варіантів",
+      "payment": "Оплата",
+      "phoneNum": "Номер телефону",
+      "plcOp": "Підказка (необов'язково)",
+      "prov": "Постачальник",
+      "questionDescriptionAria": "Опис запитання",
+      "questionEdit": "Редагувати питання",
+      "questionReq": "Питання обов'язкове.",
+      "questionRequiredAria": "Обов'язкове запитання",
+      "questionTitleAria": "Назва запитання",
+      "textArea": "Текстова область",
+      "textBox": "Текстове поле",
+      "wholeNum": "Ціле число",
+      "yesNo": "Так/Ні"
     },
     "formSubmissions": {
-      "anon": "Anonymous",
-      "subBy": "Submitted By",
-      "subDate": "Submission Date",
-      "subFor": "Submitted For",
-      "subRes": "Form Submission Results",
-      "subSum": "Form Submission Summary"
+      "anon": "Анонімно",
+      "noSubmissions": "Подачі форм не знайдено",
+      "printSummaryAria": "print-summary",
+      "subBy": "Надіслано від",
+      "subDate": "Дата подачі",
+      "subFor": "Надіслано для",
+      "subRes": "Результати подачі форми",
+      "subSum": "Підсумок подачі форми"
     },
     "formsPage": {
-      "addForm": "Add Form",
-      "archForms": "Archived Forms",
-      "confirmMsg1": "Are you sure you want to archive this form?",
-      "confirmMsg2": "Are you sure you want to restore this form?",
+      "addForm": "Додати форму",
+      "archForms": "Архівовані форми",
+      "archive": "Архівувати",
+      "archiveFormAria": "Архівувати форму {name}",
+      "confirmMsg1": "Ви впевнені, що хочете архівувати цю форму?",
+      "confirmMsg2": "Ви впевнені, що хочете відновити цю форму?",
+      "edit": "Редагувати",
+      "editFormAria": "Редагувати форму {name}",
+      "form": "форма",
+      "formArchivedCount": "{count} архівована форма",
+      "formArchivedCountPlural": "{count} архівованих форм",
+      "formCount": "{count} форма",
+      "formCountPlural": "{count} форм",
       "forms": "Форми",
-      "noArch": "No archived forms.",
-      "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
-      "subtitleManage": "Create and manage custom forms",
+      "noArch": "Немає архівованих форм.",
+      "noCustomMsg": "Власних форм ще не створено. Вони з'являться тут після додавання.",
+      "restore": "Відновити",
+      "restoreFormAria": "Відновити форму {name}",
+      "subtitleManage": "Створюйте та керуйте власними формами",
       "url": "URL"
     },
     "tabs": {
-      "formMem": "Form Members",
-      "formSub": "Form Submissions",
-      "questions": "Questions",
-      "unAuth": "Unauthorized"
+      "formMem": "Учасники форми",
+      "formSub": "Подачі форми",
+      "questions": "Питання",
+      "unAuth": "Неавторизовано"
     }
   },
   "groups": {
     "groupAdd": {
       "add": "Додати",
-      "catName": "Category Name",
-      "catReq": "Category name is required.",
+      "catName": "Назва категорії",
+      "catReq": "Назва категорії обов'язкова.",
       "group": "Група",
-      "groupReq": "Group name is required.",
-      "ministry": "Ministry",
-      "new": "New ",
-      "team": "Team"
+      "groupNameAria": "Назва групи",
+      "groupReq": "Назва групи обов'язкова.",
+      "ministry": "Служіння",
+      "new": "Нове ",
+      "team": "Команда"
     },
     "groupBanner": {
-      "associatedServices": "Associated Services",
-      "labels": "Labels",
-      "meetingInfo": "Meeting Information",
-      "moreLabels": "More Labels",
-      "parentPickup": "Parent Pickup",
-      "printNametag": "Print Nametag",
+      "associatedServices": "Пов'язані служби",
+      "emailTooltip": "Надіслати лист цій групі",
+      "labels": "Мітки",
+      "meetingInfo": "Інформація про зустріч",
+      "moreLabels": "Більше міток",
+      "parentPickup": "Забирання батьками",
+      "printNametag": "Друк бейджа",
       "settings": "Параметри",
-      "team": "Team",
-      "trackAttendance": "Track Attendance"
+      "team": "Команда",
+      "textTooltip": "Надіслати SMS цій групі",
+      "trackAttendance": "Відстежувати відвідуваність"
     },
     "groupDetails": {
-      "about": "About",
-      "attendanceSettings": "Attendance Settings",
-      "labels": "Labels",
-      "locationPlaceholder": "Johnson Home",
-      "meetingInfo": "Meeting Information",
-      "meetingLocation": "Meeting Location",
-      "meetingTime": "Meeting Time",
-      "meetingTimePlaceholder": "Tuesdays at 7pm",
-      "noPhoto": "No photo available",
-      "parentPickup": "Parent Pickup",
-      "printNametag": "Print Nametag",
+      "about": "Про",
+      "attendanceSettings": "Налаштування відвідуваності",
+      "labels": "Мітки",
+      "locationPlaceholder": "Будинок Джонсона",
+      "meetingInfo": "Інформація про зустріч",
+      "meetingLocation": "Місце зустрічі",
+      "meetingTime": "Час зустрічі",
+      "meetingTimePlaceholder": "Вівторки о 19:00",
+      "noPhoto": "Фото недоступне",
+      "parentPickup": "Забирання батьками",
+      "printNametag": "Друк бейджа",
       "slugPlaceholder": "group-name",
-      "trackAttendance": "Track Attendance"
+      "trackAttendance": "Відстежувати відвідуваність"
     },
     "groupDetailsEdit": {
-      "addPhoto": "Add Photo",
-      "attTrack": "Track Attendance",
+      "addPhoto": "Додати фото",
+      "attTrack": "Відстежувати відвідуваність",
       "attendance": "Відвідування",
-      "catName": "Category Name",
+      "catName": "Назва категорії",
       "catNameMsg": "Please enter a category name.",
-      "clickToAddPhoto": "Click to add photo",
-      "confirmMsg": "Are you sure you wish to permanently delete this group?",
-      "groupDesc": "Group Description",
-      "groupDet": "Group Details",
-      "groupName": "Group Name",
-      "groupNameMsg": "Please enter a group name.",
-      "meetingLocation": "Meeting Location",
-      "meetingTime": "Meeting Time",
-      "parPick": "Parent Pickup",
-      "prinName": "Print Nametag",
-      "slug": "Slug (key name used for urls)"
+      "changePhotoAria": "Змінити фото групи",
+      "clickToAddPhoto": "Натисніть, щоб додати фото",
+      "confirmMsg": "Ви впевнені, що хочете назавжди видалити цю групу?",
+      "groupDesc": "Опис групи",
+      "groupDescriptionAria": "Опис групи",
+      "groupDet": "Деталі групи",
+      "groupName": "Назва групи",
+      "groupNameAria": "Назва групи",
+      "groupNameMsg": "Введіть назву групи.",
+      "groupPhotoAlt": "група",
+      "groupSlugAria": "Слаг групи",
+      "meetingLocation": "Місце зустрічі",
+      "meetingLocationAria": "Місце зустрічі",
+      "meetingTime": "Час зустрічі",
+      "meetingTimeAria": "Час зустрічі",
+      "parPick": "Забирання батьками",
+      "prinName": "Друк бейджа",
+      "slug": "Slug (ключова назва для URL-адрес)"
     },
     "groupLabelsEdit": {
-      "addNewLabel": "Add New Label",
-      "labels": "Labels"
+      "addNewLabel": "Додати нову мітку",
+      "addNewLabelAria": "Додати нову мітку",
+      "labels": "Мітки",
+      "newLabelPrompt": "Введіть нову мітку"
     },
     "groupMembers": {
-      "groupMem": "Group Members",
-      "noMem": "No group members found.",
-      "send": "Send",
-      "sendMemMsg": "Send a message to members",
-      "showTemplates": "Show Templates",
+      "groupMem": "Учасники групи",
+      "noMem": "Учасників групи не знайдено.",
+      "promoteToLeader": "Призначити лідером",
+      "promoteToLeaderAria": "Призначити {name} лідером",
+      "remove": "Видалити",
+      "removeFromGroupAria": "Видалити {name} з групи",
+      "removeLeaderAccess": "Прибрати права лідера",
+      "removeLeaderAccessAria": "Прибрати права лідера для {name}",
+      "send": "Надіслати",
+      "sendMemMsg": "Надіслати повідомлення учасникам",
+      "sendMessageAria": "Надіслати повідомлення учасникам",
+      "showTemplates": "Показати шаблони",
       "templates": {
-        "none": "None",
-        "templates": "Templates",
+        "none": "Немає",
+        "templates": "Шаблони",
         "welcome_volunteers": {
-          "heading": "Welcome Volunteers",
-          "message": "Welcome Thank you for volunteering.\n\nPlease download the B1.Church app and login to manage your schedule. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
+          "heading": "Ласкаво просимо, волонтери",
+          "message": "Дякуємо вам за волонтерство.\n\nЗавантажте додаток B1.Church і увійдіть, щоб керувати своїм розкладом. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
-      }
+      },
+      "unknown": "Невідомо"
     },
     "groupNavigation": {
-      "members": "Members",
-      "sessions": "Sessions"
+      "members": "Учасники",
+      "sessions": "Сеанси"
     },
     "groupPage": {
-      "addPpl": "Add Person"
+      "addPpl": "Додати особу"
     },
     "groupSessions": {
-      "addSesMsg": "Please add a new session to continue.",
-      "allYears": "All Years",
-      "attFor": "Attendance for",
-      "new": "New",
-      "noAttendance": "No attendance records found",
-      "noSesMsg": "There are no sessions.",
-      "noSessionsFound": "No sessions found",
-      "selectSession": "Select Session",
-      "session": "Session",
-      "sessions": "Sessions",
-      "tryAdjusting": "Try adjusting your search"
+      "addSesMsg": "Додайте новий сеанс, щоб продовжити.",
+      "allYears": "Усі роки",
+      "attFor": "Відвідуваність для",
+      "new": "Новий",
+      "noAttendance": "Записів про відвідуваність не знайдено",
+      "noSesMsg": "Немає сеансів.",
+      "noSessionsFound": "Сеансів не знайдено",
+      "removeAria": "Видалити {name} з сеансу",
+      "removeButton": "Видалити",
+      "selectSession": "Вибрати сеанс",
+      "session": "Сеанс",
+      "sessions": "Сеанси",
+      "tryAdjusting": "Спробуйте змінити пошук",
+      "upcoming": "майбутні"
     },
     "groupsPage": {
-      "addGroup": "Add Group",
+      "addGroup": "Додати групу",
       "cat": "Категорія",
-      "categories": "Categories",
+      "categories": "Категорії",
       "groups": "Групи",
-      "labels": "Labels",
-      "noGroupMsg": "No groups found. Please create a group.",
-      "pers": "1 person",
+      "labels": "Мітки",
+      "noGroupMsg": "Груп не знайдено. Створіть групу.",
+      "pers": "1 особа",
       "ppl": "Люди",
-      "spPpl": " people",
+      "spPpl": " людей",
       "subtitle": {
         "create": "Get started by creating your first group",
         "manage": "Organize and manage your church groups"
       },
       "totalGroups": "Всього груп",
-      "totalMembers": "Total Members"
+      "totalMembers": "Всього учасників"
     },
     "membersAdd": {
-      "availableMem": "Available Group Members",
-      "noMem": "No group members available."
+      "addMemberAria": "Додати учасника до групи",
+      "availableMem": "Доступні учасники групи",
+      "noMem": "Немає доступних учасників групи.",
+      "unknown": "Невідомо"
+    },
+    "sendEmailDialog": {
+      "bodyMergeFieldHint": "Вставити поле злиття в тіло:",
+      "cancel": "Скасувати",
+      "close": "Закрити",
+      "composePlaceholder": "Складіть лист тут...",
+      "eligibleSummary": "{eligibleCount} з {totalMembers} учасників отримають цей лист.",
+      "eligibleSummarySingular": "{eligibleCount} з {totalMembers} учасник отримає цей лист.",
+      "emailGroupTitle": "Електронна пошта групи: {groupName}",
+      "fallbackError": "Не вдалося надіслати лист.",
+      "loadTemplate": "Завантажити шаблон (необов'язково)",
+      "loadingRecipients": "Завантаження одержувачів...",
+      "manageTemplates": "Керувати шаблонами",
+      "mergeFieldChurchName": "Назва церкви",
+      "mergeFieldDisplayName": "Відображуване ім'я",
+      "mergeFieldEmail": "Електронна пошта",
+      "mergeFieldFirstName": "Ім'я",
+      "mergeFieldLastName": "Прізвище",
+      "noEmailNotice": "{count} не мають адреси електронної пошти.",
+      "noEmailNoticeSingular": "{count} не має адреси електронної пошти.",
+      "noEmailSkipped": "{count} пропущено (немає адреси електронної пошти).",
+      "none": "Немає",
+      "send": "Надіслати лист",
+      "sendDefault": "Цей лист буде надіслано відповідним учасникам групи.",
+      "sendFailedDetail": "{count} не вдалося надіслати.",
+      "sending": "Надсилання...",
+      "sentSummary": "Надіслано {successCount} з {recipientCount} відповідних одержувачів.",
+      "sentSummarySingular": "Надіслано {successCount} з {recipientCount} відповідного одержувача.",
+      "subject": "Тема",
+      "subjectMergeFieldHint": "Вставити поле злиття в тему:",
+      "subjectPlaceholder": "наприклад, Привіт {firstName}, оновлення від {churchName}"
+    },
+    "sendTextDialog": {
+      "cancel": "Скасувати",
+      "characterCount": "{count} символів ({segments} сегментів SMS)",
+      "characterCountSingular": "{count} символ ({segments} сегмент SMS)",
+      "close": "Закрити",
+      "eligibleSummary": "{eligibleCount} з {totalMembers} учасників отримають це SMS.",
+      "eligibleSummarySingular": "{eligibleCount} з {totalMembers} учасник отримає це SMS.",
+      "fallbackError": "Не вдалося надіслати SMS.",
+      "loadingRecipients": "Завантаження одержувачів...",
+      "messageLabel": "Повідомлення",
+      "noPhoneNotice": "{count} не мають номера телефону.",
+      "noPhoneNoticeSingular": "{count} не має номера телефону.",
+      "noPhoneSkipped": "{count} пропущено (немає номера телефону).",
+      "optedOutNotice": "{count} відмовилися.",
+      "optedOutSkipped": "{count} пропущено (відмовилися).",
+      "phoneOnFile": "номер у системі",
+      "send": "Надіслати",
+      "sendDefault": "Це SMS буде надіслано відповідним учасникам групи.",
+      "sendFailedDetail": "{count} не вдалося надіслати.",
+      "sending": "Надсилання...",
+      "sendingTo": "Надсилання на {phoneNumber}.",
+      "sentSummary": "Надіслано {successCount} з {recipientCount} відповідних одержувачів.",
+      "sentSummarySingular": "Надіслано {successCount} з {recipientCount} відповідного одержувача.",
+      "textGroupTitle": "SMS групі: {groupName}",
+      "textPersonTitle": "SMS: {personName}"
     },
     "serviceTimes": {
-      "services": "Service(s):"
+      "services": "Служба(и):"
     },
     "serviceTimesEdit": {
       "srvTimeAdd": "Додати час служби",
-      "srvTimeOp": "Service Times (optional)"
+      "srvTimeOp": "Час служб (необов'язково)"
     },
     "sessionAdd": {
-      "invDate": "Invalid Date",
-      "sesAdd": "Add a Session",
-      "sesDate": "Session Date",
+      "invDate": "Недійсна дата",
+      "sesAdd": "Додати сеанс",
+      "sesDate": "Дата сеансу",
+      "sessionDateAria": "Дата сеансу",
       "srvTime": "Час служби"
+    },
+    "sessionAttendance": {
+      "removeVisitorAria": "Видалити {name} з сеансу",
+      "visitor": "відвідувач"
     },
     "sessionCard": {
       "active": "Активний",
       "edit": "Редагувати",
-      "people": "people",
-      "person": "person",
-      "view": "View"
+      "invalidDate": "Недійсна дата",
+      "noDate": "Без дати",
+      "people": "людей",
+      "person": "особа",
+      "view": "Переглянути"
     },
     "sessionEdit": {
-      "deleteConfirm": "Are you sure you wish to permanently delete this session?",
-      "sesEdit": "Edit Session"
+      "deleteConfirm": "Ви впевнені, що хочете назавжди видалити цей сеанс?",
+      "sesEdit": "Редагувати сеанс"
     },
     "tabs": {
-      "mem": "Members",
-      "ses": "Sessions"
+      "mem": "Учасники",
+      "ses": "Сеанси"
+    }
+  },
+  "helpers": {
+    "conditionHelper": {
+      "dayOfMonth": ": День місяця",
+      "dayOfWeek": ": День тижня",
+      "endsWith": "закінчується на",
+      "is": "є",
+      "isNot": "не є",
+      "month": ": Місяць",
+      "startsWith": "починається з",
+      "yearsSince": "Років з "
+    },
+    "pageHelper": {
+      "bible": "Біблія",
+      "donate": "Пожертвувати",
+      "groups": "Групи",
+      "sermons": "Проповіді",
+      "stream": "Трансляція",
+      "verseOfTheDay": "Вірш дня"
+    },
+    "secondaryMenuHelper": {
+      "appearance": "Зовнішній вигляд",
+      "blocks": "Блоки",
+      "bulkImport": "Масовий імпорт",
+      "calendars": "Календарі",
+      "devices": "Пристрої",
+      "files": "Файли",
+      "liveStreamTimes": "Час прямих трансляцій",
+      "pages": "Сторінки",
+      "playlists": "Плейлисти",
+      "profile": "Профіль",
+      "quickActions": "Швидкі дії",
+      "registrations": "Реєстрації",
+      "sermons": "Проповіді",
+      "stripeImport": "Імпорт Stripe",
+      "website": "Веб-сайт"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "darkMode": "Темний режим",
+      "description": "Ці кольори використовуються мобільним додатком, порталом учасників та кіоском реєстрації. Залиште за замовчуванням або налаштуйте під ваш бренд.",
+      "lightMode": "Світлий режим",
+      "resetDefaults": "Скинути до замовчувань"
+    },
+    "appThemePage": {
+      "subtitle": "Налаштуйте кольори, що використовуються мобільним додатком, порталом учасників та кіоском",
+      "title": "Тема програми"
+    },
+    "b1MobilePage": {
+      "subtitle": "Налаштуйте параметри для додатку B1 Mobile",
+      "title": "B1 Мобільний"
+    },
+    "checkInPage": {
+      "disabled": "Вимкнено",
+      "enabled": "Увімкнено — QR-код з'явиться на кіоску",
+      "qrGuestRegistration": "QR-реєстрація гостей",
+      "qrTooltip": "Відображайте QR-код на кіоску реєстрації, щоб гості могли самостійно зареєструватися на телефоні",
+      "subtitle": "Налаштуйте параметри для додатку B1 CheckIn",
+      "title": "B1 CheckIn"
     }
   },
   "month": {
-    "apr": "April",
-    "april": "April",
-    "aug": "August",
-    "august": "August",
-    "dec": "December",
-    "december": "December",
-    "feb": "February",
-    "february": "February",
-    "jan": "January",
-    "january": "January",
-    "july": "July",
-    "june": "June",
-    "mar": "March",
-    "march": "March",
-    "may": "May",
-    "nov": "November",
-    "november": "November",
-    "oct": "October",
-    "october": "October",
-    "sep": "September",
-    "september": "September"
+    "apr": "Кв.",
+    "april": "Квітень",
+    "aug": "Серп.",
+    "august": "Серпень",
+    "dec": "Гру.",
+    "december": "Грудень",
+    "feb": "Лют.",
+    "february": "Лютий",
+    "jan": "Січ.",
+    "january": "Січень",
+    "july": "Липень",
+    "june": "Червень",
+    "mar": "Бер.",
+    "march": "Березень",
+    "may": "Травень",
+    "nov": "Лист.",
+    "november": "Листопад",
+    "oct": "Жовт.",
+    "october": "Жовтень",
+    "sep": "Вер.",
+    "september": "Вересень"
   },
   "people": {
+    "advancedPeopleSearch": {
+      "loadingCustomFields": "Завантаження користувацьких полів...",
+      "noCustomFields": "Користувацькі поля не визначені. Створіть користувацькі поля у Формах для пошуку за ними."
+    },
     "advancedSearch": {
-      "enterValuePlaceholder": "Enter value...",
+      "enterValuePlaceholder": "Введіть значення...",
       "search": "Пошук",
-      "valuePlaceholder": "Value"
+      "valuePlaceholder": "Значення"
     },
     "aiSearch": {
-      "placeholder": "Show me men over 30 with birthdays in July",
-      "title": "AI Search"
+      "exampleMen": "- Покажи чоловіків старше 30 років з днями народження у липні.",
+      "exampleWomen": "- Покажи заміжніх жінок.",
+      "examples": "Приклади:",
+      "placeholder": "Покажи чоловіків старше 30 років з днями народження у липні",
+      "search": "Пошук",
+      "searching": "Пошук...",
+      "title": "Пошук ШІ"
     },
     "editCondition": {
-      "act": "Activity",
-      "anniMonth": "Anniversary Month",
-      "any": "Any",
-      "attCamp": "has attended (campus)",
-      "attGen": "has attended (in general)",
-      "attGroup": "has attended (group)",
-      "attServ": "has attended (service)",
-      "attServTime": "has attended (service time)",
-      "bMonth": "Birth Month",
-      "contains": "contains",
-      "donTo": "has donated to",
-      "endW": "ends with",
-      "field": "Field",
-      "from": "From",
-      "groupMem": "Group Member",
-      "hasDon": "has donated (in general)",
-      "isMem": "is member of",
-      "marYears": "Years Married",
-      "memAtt": "Member Attendance",
-      "memDon": "Member Donations",
-      "notMem": "is not member of",
-      "operator": "Operator",
-      "saveCon": "Save Condition",
-      "startW": "starts with",
-      "to": "To",
-      "value": "Value",
-      "valuePlaceholder": "Value"
+      "act": "Активність",
+      "anniMonth": "Місяць річниці",
+      "any": "Будь-який",
+      "attCamp": "відвідував (кампус)",
+      "attGen": "відвідував (загалом)",
+      "attGroup": "відвідував (група)",
+      "attServ": "відвідував (служба)",
+      "attServTime": "відвідував (час служби)",
+      "bMonth": "Місяць народження",
+      "contains": "містить",
+      "donTo": "пожертвував до",
+      "endW": "закінчується на",
+      "field": "Поле",
+      "from": "Від",
+      "groupMem": "Член групи",
+      "hasDon": "пожертвував (загалом)",
+      "isMem": "є членом",
+      "marYears": "Років у шлюбі",
+      "memAtt": "Відвідування членів",
+      "memDon": "Пожертви членів",
+      "notMem": "не є членом",
+      "operator": "Оператор",
+      "saveCon": "Зберегти умову",
+      "startW": "починається з",
+      "to": "До",
+      "value": "Значення",
+      "valuePlaceholder": "Значення"
+    },
+    "gdprActions": {
+      "anonymize": "Анонімізувати",
+      "anonymizeConfirmType": "Введіть \"ANONYMIZE\" для підтвердження:",
+      "anonymizeDescription": "Це замінить усю особисту інформацію загальними значеннями та видалить особу з груп, форм і повідомлень. Суми пожертв та дати відвідувань будуть збережені для звітності, але не будуть пов'язані з цією особою. Це неможливо скасувати.",
+      "anonymizePlaceholder": "ANONYMIZE",
+      "anonymizeTitle": "Анонімізувати {personName}?",
+      "anonymizing": "Анонімізація...",
+      "dataManagement": "Керування даними",
+      "description": "Експортуйте або анонімізуйте дані цієї особи відповідно до GDPR.",
+      "exportData": "Експортувати дані",
+      "exporting": "Експортування..."
     },
     "groups": {
-      "notMemMsg": "Not currently a member of any groups."
+      "leader": "Лідер",
+      "notMemMsg": "Зараз не член жодної групи.",
+      "unknownGroup": "Невідома група"
     },
     "household": {
-      "house": " Household"
+      "age": "Вік:",
+      "demoGroups": "Групи: Молодіжне служіння, Хвалебна команда",
+      "demoLastActivity": "Остання активність: 24 лист. 2024",
+      "house": " Домогосподарство",
+      "noContactInfo": "Немає контактної інформації",
+      "status": "Статус:"
     },
     "householdEdit": {
-      "addMatch": "address to match",
-      "blankMsg": "Please provide a household name.",
-      "child": "Child",
-      "head": "Head",
-      "house": " Household",
-      "houseName": "Household Name",
-      "other": "Other",
-      "spouse": "Spouse",
-      "updQuestion": "Would you like to update"
+      "addMatch": "адреса для співставлення",
+      "addMember": "Додати члена домогосподарства",
+      "addMemberAria": "Додати члена домогосподарства",
+      "blankMsg": "Введіть назву домогосподарства.",
+      "cancelAddMember": "Скасувати додавання",
+      "child": "Дитина",
+      "head": "Голова",
+      "house": " Домогосподарство",
+      "houseName": "Назва домогосподарства",
+      "householdNameAria": "Назва домогосподарства",
+      "other": "Інший",
+      "removeMemberAria": "Видалити члена домогосподарства",
+      "spouse": "Чоловік/дружина",
+      "updQuestion": "Бажаєте оновити"
     },
     "merge": {
-      "merge": "merge",
-      "mergeRec": "Merge Records"
+      "merge": "об'єднати",
+      "mergeRec": "Об'єднати записи"
     },
     "mergeModal": {
       "cancel": "Скасувати",
-      "confirm": "Confirm",
-      "contactInfo": "Contact Info",
-      "fieldCon": "Please resolve field conflicts:",
-      "householdId": "Household ID",
+      "confirm": "Підтвердити",
+      "contactInfo": "Контактна інформація",
+      "fieldCon": "Усуньте конфлікти полів:",
+      "householdId": "ID домогосподарства",
       "id": "ID",
-      "merge": "Merging...",
-      "mergeQuestion": "Merge",
-      "name": "Name",
-      "profile": "Profile",
-      "selMsg": "Please select a value for all fields",
-      "with": "with"
+      "merge": "Об'єднання...",
+      "mergeQuestion": "Об'єднати",
+      "name": "Ім'я",
+      "profile": "Профіль",
+      "selMsg": "Виберіть значення для всіх полів",
+      "with": "з"
     },
     "peopleColumns": {
-      "appFilt": "Apply Filters",
-      "cust": "Custom",
-      "filt": "Filters",
-      "noFilt": "No filters available.",
-      "stand": "Standard"
+      "appFilt": "Застосувати фільтри",
+      "cust": "Власне",
+      "filt": "Фільтри",
+      "noFilt": "Немає доступних фільтрів.",
+      "selectColumns": "Вибрати стовпці",
+      "stand": "Стандартні"
     },
     "peoplePage": {
-      "addPerson": "Add Person",
-      "bDay": "Birthday",
-      "bDayNo": "Birthday (No Year)",
-      "deleteOp": "Delete Option",
-      "first": "First",
-      "last": "Last",
-      "middle": "Middle",
-      "nameNote": "Name Tag Notes",
+      "addPerson": "Додати особу",
+      "bDay": "День народження",
+      "bDayNo": "День народження (без року)",
+      "deleteOp": "Опція видалення",
+      "export": "Експорт",
+      "first": "Ім'я",
+      "last": "Прізвище",
+      "loading": "Завантаження людей...",
+      "middle": "По батькові",
+      "nameNote": "Нотатки на бейджі",
+      "noPeopleFound": "Людей не знайдено",
+      "peopleFound": "Знайдено {count} людей",
       "photo": "Фото",
-      "primEmail": "Primary Email",
-      "primPhone": "Primary Phone",
-      "recentPpl": "Recently Added People",
-      "searchPpl": "Search People"
+      "primEmail": "Основна електронна пошта",
+      "primPhone": "Основний телефон",
+      "recentPpl": "Нещодавно додані люди",
+      "searchPpl": "Пошук людей",
+      "searchResults": "Результати пошуку",
+      "showingRecent": "Показано {count} останніх людей"
     },
     "peopleSearch": {
-      "active": "active:",
-      "activity": "Activity",
-      "adv": "Advanced",
-      "advSearch": "Advanced Search",
+      "active": "активний:",
+      "activity": "Активність",
+      "adv": "Розширений",
+      "advSearch": "Розширений пошук",
       "campus": "Кампус",
-      "checkBoxes": "Check boxes to enable filters",
-      "clearAll": "Clear All",
-      "configure": "Configure",
-      "contact": "Contact Information",
-      "customFields": "Custom Fields",
-      "demographics": "Demographics",
-      "fund": "Fund",
+      "checkBoxes": "Поставте прапорці, щоб увімкнути фільтри",
+      "clearAll": "Очистити все",
+      "configure": "Налаштувати",
+      "contact": "Контактна інформація",
+      "customFields": "Власні поля",
+      "demographics": "Демографія",
+      "fund": "Фонд",
       "group": "Група",
-      "membership": "Membership & Groups",
-      "names": "Names",
-      "placeholder": "Search by name...",
+      "membership": "Членство та групи",
+      "names": "Імена",
+      "placeholder": "Пошук за іменем...",
       "service": "Служба",
       "serviceTime": "Час служби",
-      "simp": "Simple",
-      "simpSearch": "People Search",
-      "type": "Type"
+      "simp": "Простий",
+      "simpSearch": "Пошук людей",
+      "type": "Тип",
+      "typeToSearch": "Почніть друкувати для миттєвого пошуку"
     },
     "peopleSearchResults": {
-      "noResMsg": "No results found.  Please search for a different name or add a new person"
+      "deletePersonAria": "Видалити {name}",
+      "noResMsg": "Результатів не знайдено. Шукайте за іншим іменем або додайте нову особу."
+    },
+    "personAdd": {
+      "createNewPersonAria": "Створити нову особу",
+      "searchForPersonAria": "Пошук особи",
+      "searchForPersonToAddAria": "Пошук особи для додавання"
+    },
+    "personAddResults": {
+      "add": "Додати",
+      "addPersonAria": "Додати особу {name}"
     },
     "personAttendance": {
-      "noAttMsg": "No attendance records. Attendance will appear once attendance has been tracked for a group session."
+      "noAttMsg": "Записів про відвідуваність немає. Відвідуваність з'явиться після відстеження для сеансу групи."
+    },
+    "personBanner": {
+      "age": "Вік",
+      "gender": "Стать",
+      "hasLogin": "Має вхід",
+      "maritalStatus": "Сімейний стан",
+      "sendTextMessage": "Надіслати SMS"
     },
     "personEdit": {
-      "applyQuestion": "Would you like to apply that to the entire",
-      "cannotDeleteSelf": "You cannot delete your own person record.",
-      "confirmMsg": "Are you sure you wish to permanently delete this person record?",
-      "donorNumber": "Donor Number",
-      "exten": "Extension",
-      "family": "family",
-      "firstReq": "First name is required",
-      "for": "for",
-      "home": "Home",
-      "invalForm": "Inval Form",
-      "lastReq": "Last name is required",
-      "maritalStatus": "Marital Status",
-      "merge": "Merge",
+      "applyQuestion": "Бажаєте застосувати це до всього",
+      "cannotDeleteSelf": "Ви не можете видалити свій запис особи.",
+      "confirmMsg": "Ви впевнені, що хочете назавжди видалити цей запис особи?",
+      "donorNumber": "Номер жертводавця",
+      "exten": "Розширення",
+      "family": "сім'я",
+      "firstReq": "Ім'я обов'язкове",
+      "for": "для",
+      "home": "Дім",
+      "invalForm": "Недійсна форма",
+      "lastReq": "Прізвище обов'язкове",
+      "maritalStatus": "Сімейний стан",
+      "merge": "Об'єднати",
+      "mergePersonAria": "Об'єднати особу",
       "mobile": "Мобільний",
-      "nameNote": "Name Tag Notes",
-      "persDet": "Personal Details",
-      "upAddress": "You updated the address to",
-      "valEmail": "Please enter a valid email address.",
-      "work": "Work"
+      "nameNote": "Нотатки на бейджі",
+      "persDet": "Особисті дані",
+      "upAddress": "Ви оновили адресу на",
+      "valEmail": "Введіть дійсну адресу електронної пошти.",
+      "work": "Робота"
     },
     "personForm": {
-      "addForm": "Add Form",
-      "form": "Form",
-      "noFormMsg": "No form submission found for this person"
+      "addForm": "Додати форму",
+      "addFormAria": "Додати подачу для {name}",
+      "form": "Форма",
+      "noFormMsg": "Подачу форми для цієї особи не знайдено"
     },
     "personNav": {
-      "customForms": "Custom Forms"
+      "customForms": "Власні форми",
+      "discipleship": "Учнівство",
+      "groups": "Групи"
+    },
+    "personNavigation": {
+      "attendance": "Відвідування",
+      "details": "Деталі",
+      "donations": "Пожертви",
+      "forms": "Форми",
+      "groups": "Групи",
+      "notes": "Примітки"
+    },
+    "personPage": {
+      "notesSuffix": " Нотатки",
+      "thisPerson": "ця особа"
     },
     "personView": {
-      "home": "Home",
-      "memShip": "Membership:",
+      "edit": "Редагувати",
+      "hasLoginLabel": "Має вхід: {email}",
+      "home": "Дім",
+      "memShip": "Членство:",
       "mobile": "Мобільний",
-      "persDet": "Personal Details",
-      "work": "Work"
+      "persDet": "Особисті дані",
+      "work": "Робота"
     },
     "tabs": {
       "att": "Відвідування",
       "don": "Пожертви",
-      "noImplement": "Not Implemented"
+      "noImplement": "Не реалізовано"
     },
     "updateHouseHold": {
-      "update": "Update Address"
+      "update": "Оновити адресу"
     }
   },
   "person": {
-    "address": "Address",
-    "age": "Age",
-    "anniversary": "Anniversary",
-    "birthDate": "Birth Date",
-    "city": "City",
-    "country": "Country",
-    "displayName": "Display Name",
-    "divorced": "Divorced",
+    "address": "Адреса",
+    "age": "Вік",
+    "anniversary": "Річниця",
+    "birthDate": "Дата народження",
+    "city": "Місто",
+    "country": "Країна",
+    "displayName": "Відображуване ім'я",
+    "divorced": "Розлучений",
     "email": "Електронна пошта",
-    "female": "Female",
-    "firstName": "First Name",
-    "gender": "Gender",
-    "inactive": "Inactive",
-    "lastName": "Last Name",
-    "line1": "Line 1",
-    "line2": "Line 2",
-    "male": "Male",
-    "maritalStatus": "Marital Status",
-    "married": "Married",
-    "member": "Member",
-    "membershipStatus": "Membership Status",
-    "membershp": "Membership",
-    "middleName": "Middle Name",
-    "nickName": "Nick Name",
-    "noRec": "No records found",
-    "person": "Person",
+    "female": "Жіноча",
+    "firstName": "Ім'я",
+    "gender": "Стать",
+    "inactive": "Неактивний",
+    "lastName": "Прізвище",
+    "line1": "Рядок 1",
+    "line2": "Рядок 2",
+    "male": "Чоловіча",
+    "maritalStatus": "Сімейний стан",
+    "married": "Одружений",
+    "member": "Член",
+    "membershipStatus": "Статус членства",
+    "membershp": "Членство",
+    "middleName": "По батькові",
+    "nickName": "Прізвисько",
+    "noRec": "Записів не знайдено",
+    "person": "Особа",
     "phone": "Телефон",
-    "prefix": "Prefix",
-    "regularAttendee": "Regular Attendee",
-    "single": "Single",
-    "staff": "Staff",
-    "state": "State/Province",
-    "suffix": "Suffix",
-    "unknown": "Unknown",
-    "unspecified": "Unspecified",
-    "visitor": "Visitor",
-    "widowed": "Widowed",
-    "zip": "Zip/Postal"
+    "prefix": "Префікс",
+    "regularAttendee": "Регулярний відвідувач",
+    "single": "Неодружений",
+    "staff": "Персонал",
+    "state": "Штат/Провінція",
+    "suffix": "Суфікс",
+    "unknown": "Невідомо",
+    "unspecified": "Не вказано",
+    "visitor": "Відвідувач",
+    "widowed": "Овдовілий",
+    "zip": "Поштовий індекс"
   },
   "placeholders": {
     "addPage": {
-      "linkText": "Click here",
+      "linkText": "Натисніть тут",
       "linkUrl": "/new-page",
-      "title": "New Page"
+      "title": "Нова сторінка"
     },
     "batch": {
-      "name": "Sunday Offering - Jan 5"
+      "name": "Недільна пожертва - 5 січ."
     },
     "block": {
-      "name": "Hero Section"
+      "name": "Героїчна секція"
     },
     "campus": {
-      "name": "Downtown Campus"
+      "name": "Центральний кампус"
     },
     "choices": {
-      "text": "Option 1",
+      "text": "Варіант 1",
       "value": "option1"
     },
     "church": {
-      "address1": "123 Main Street",
-      "address2": "Suite 100",
-      "city": "Springfield",
-      "country": "USA",
+      "address1": "вул. Головна, 123",
+      "address2": "Офіс 100",
+      "city": "Спрингфілд",
+      "country": "США",
       "name": "Grace Community Church",
       "state": "IL",
       "subdomain": "gracechurch",
       "zip": "62701"
     },
     "device": {
-      "label": "Living Room Screen"
+      "label": "Екран у вітальні"
     },
     "donation": {
       "checkNumber": "1234",
       "lastDigits": "4242",
-      "notes": "Add any notes about this donation..."
+      "notes": "Додайте примітки до цієї пожертви..."
     },
     "element": {
-      "buttonText": "Click Here",
-      "cardTitle": "Card Title",
-      "donateText": "Donate Now",
-      "imageDescription": "Image description",
+      "buttonText": "Натисніть тут",
+      "cardTitle": "Назва картки",
+      "donateText": "Пожертвувати",
+      "imageDescription": "Опис зображення",
       "videoId": "dQw4w9WgXcQ"
     },
     "faq": {
-      "title": "What is your return policy?"
+      "title": "Яка ваша політика повернення?"
     },
     "font": {
-      "search": "Search fonts..."
+      "search": "Пошук шрифтів..."
     },
     "form": {
-      "name": "Contact Form",
-      "questionDescription": "Add additional details...",
-      "questionPlaceholder": "Enter your answer...",
-      "questionTitle": "Your question here",
-      "thankYouMessage": "Thank you for submitting the form!"
+      "name": "Контактна форма",
+      "questionDescription": "Додайте додаткові деталі...",
+      "questionPlaceholder": "Введіть вашу відповідь...",
+      "questionTitle": "Ваше запитання",
+      "thankYouMessage": "Дякуємо за надсилання форми!"
     },
     "fund": {
-      "name": "General Fund"
+      "name": "Загальний фонд"
     },
     "giving": {
       "publicKey": "pk_live_..."
     },
     "group": {
-      "category": "ABF, Sunday School, Ministry",
-      "name": "Life Group A"
+      "category": "ABF, Недільна школа, Служіння",
+      "name": "Життєва група A"
     },
     "household": {
-      "name": "Smith Family"
+      "name": "Сім'я Сміт"
     },
     "page": {
-      "linkText": "Read More",
+      "linkText": "Читати далі",
       "linkUrl": "https://example.com",
-      "title": "About Us",
+      "title": "Про нас",
       "urlPath": "/about-us"
     },
     "pairScreen": {
       "code": "ABC123"
     },
     "person": {
-      "address1": "123 Main Street",
-      "address2": "Apt 4B",
-      "city": "Nashville",
+      "address1": "вул. Головна, 123",
+      "address2": "кв. 4B",
+      "city": "Нашвілл",
       "donorNumber": "DN-12345",
       "email": "john.smith@example.com",
-      "firstName": "John",
-      "lastName": "Smith",
-      "middleName": "David",
-      "nameTag": "Lead Singer",
-      "nickname": "Johnny",
+      "firstName": "Іван",
+      "lastName": "Петренко",
+      "middleName": "Давидович",
+      "nameTag": "Провідний співак",
+      "nickname": "Іванко",
       "phoneExt": "1234",
       "simpleEmail": "john@example.com",
       "state": "TN",
       "zip": "37201"
     },
     "plan": {
-      "name": "Sunday Service - Jan 5"
+      "name": "Недільна служба - 5 січ."
     },
     "planItem": {
-      "description": "Brief description...",
-      "label": "Opening Song"
+      "description": "Короткий опис...",
+      "label": "Початкова пісня"
     },
     "planType": {
-      "name": "Sunday Service"
+      "name": "Недільна служба"
     },
     "position": {
       "count": "2",
-      "name": "Greeter"
+      "name": "Зустрічаючий"
     },
     "role": {
-      "name": "Ministry Leader"
+      "name": "Лідер служіння"
     },
     "sermon": {
-      "description": "Enter sermon description...",
-      "title": "Sunday Message"
+      "description": "Введіть опис проповіді...",
+      "title": "Недільна проповідь"
     },
     "service": {
-      "name": "Sunday Morning Service"
+      "name": "Недільна ранкова служба"
     },
     "song": {
-      "album": "Album Name",
-      "arrangementName": "Contemporary Arrangement",
-      "artist": "John Newton",
+      "album": "Назва альбому",
+      "arrangementName": "Сучасне аранжування",
+      "artist": "Джон Ньютон",
       "bpm": "120",
       "keySignature": "C#",
       "language": "English",
       "lengthSeconds": "180",
       "linkUrl": "https://example.com/chords",
-      "lyrics": "Enter lyrics here...",
-      "title": "Amazing Grace"
+      "lyrics": "Введіть текст тут...",
+      "title": "Дивна милість"
     },
     "task": {
-      "notes": "Add any notes about this task...",
-      "title": "Prepare worship slides"
+      "notes": "Додайте примітки до цього завдання...",
+      "title": "Підготувати слайди для поклоніння"
     },
     "time": {
-      "displayName": "Sunday Morning"
+      "displayName": "Недільний ранок"
     },
     "user": {
       "email": "john@example.com",
-      "firstName": "John",
-      "lastName": "Smith"
+      "firstName": "Іван",
+      "lastName": "Петренко"
     }
   },
   "plans": {
+    "actionDialog": {
+      "fallbackTitle": "Дія"
+    },
     "actionSelector": {
-      "addAction": "Add Action",
-      "addSection": "Add Section",
-      "fromAssociatedLesson": "From associated lesson:",
-      "noActionsAvailable": "No actions available",
-      "selectAction": "Select Action",
-      "selectExternalItem": "Select External Item"
+      "addAction": "Додати дію",
+      "addSection": "Додати секцію",
+      "fallbackAction": "Дія",
+      "fallbackContent": "Вміст",
+      "fallbackLoading": "Завантаження...",
+      "fallbackSection": "Секція",
+      "fromAssociatedLesson": "З пов'язаного уроку:",
+      "noActionsAvailable": "Немає доступних дій",
+      "noContent": "Немає доступного вмісту",
+      "selectAction": "Вибрати дію",
+      "selectExternalItem": "Вибрати зовнішній елемент"
     },
     "assignment": {
-      "addPosition": "Add Position",
-      "autoAssign": "Auto Assign",
-      "saveNotes": "Save Notes"
+      "addPosition": "Додати позицію",
+      "autoAssign": "Автопризначення",
+      "notesPlaceholder": "Додайте примітки для цього плану служби...",
+      "notesPlaceholderReadOnly": "Примітки плану (лише для читання)",
+      "planNotes": "Примітки плану",
+      "planNotesAria": "Примітки плану",
+      "saveNotes": "Зберегти примітки",
+      "saveSuccess": "Примітки успішно збережено"
     },
     "assignmentEdit": {
-      "assignPos": "Assign Position",
+      "assignPos": "Призначити позицію",
       "done": "Готово",
-      "editAssign": "Edit Assignment",
-      "noMem": "No group members found."
+      "editAssign": "Редагувати призначення",
+      "noMem": "Учасників групи не знайдено."
+    },
+    "browseGrid": {
+      "addOn": "Доповнення"
     },
     "bulkLessonSchedule": {
       "biWeekly": "Раз в два тижні",
-      "date": "Date",
-      "interval": "Interval",
-      "lesson": "Lesson",
-      "lessonsToSchedule": "lessons to schedule",
-      "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
-      "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
+      "date": "Дата",
+      "interval": "Інтервал",
+      "lesson": "Урок",
+      "lessonsToSchedule": "уроки для планування",
+      "loadFailed": "Не вдалося завантажити дані уроку. Спробуйте ще раз.",
+      "loadingSeries": "Завантаження серії уроків...",
+      "noLessonsInSeries": "У цій серії не знайдено уроків.",
+      "noPreviousLesson": "Не знайдено попереднього уроку для продовження. Заплануйте принаймні один урок спочатку.",
+      "noRemainingLessons": "У цій серії не залишилося уроків. Ви пройшли всі!",
+      "pathNotSupported": "Формат шляху обраного уроку не підтримується для масового планування.",
+      "savingFailed": "Не вдалося створити деякі плани. Перевірте та спробуйте ще раз.",
+      "schedulingProgress": "Планування...",
       "startDate": "Дата початку",
-      "startingLesson": "Starting Lesson",
-      "title": "Bulk Schedule Lessons",
-      "venue": "Venue",
+      "startingLesson": "Початковий урок",
+      "title": "Масово запланувати уроки",
+      "venue": "Місце",
       "weekly": "Щотижня"
     },
     "contentProviderAuth": {
-      "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
-      "errorGeneric": "Failed to link provider. Please try again.",
-      "link": "Link",
-      "linkAccount": "Link Account",
-      "linkNew": "Link New Provider",
-      "linked": "Linked",
-      "noLinkedDescription": "Link a content provider to access their content in your service plans.",
-      "noProvidersAvailable": "No content providers available",
-      "pkceInstructions": "Click the button below to authorize in a popup window:",
-      "pkceWaiting": "Waiting for authorization in popup...",
-      "refresh": "Refresh",
-      "selectProvider": "Link Content Provider",
-      "success": "Successfully linked!",
-      "title": "Content Providers",
-      "unlink": "Unlink",
-      "waitingForAuth": "Waiting for authorization..."
+      "accountLinked": "Обліковий запис підключено",
+      "authExpired": "Автентифікація закінчилась або не вдалася",
+      "authFailed": "Автентифікація не вдалася",
+      "contentProviderAccounts": "Облікові записи постачальників вмісту",
+      "deviceFlowFailed": "Не вдалося розпочати потік пристрою",
+      "deviceFlowInstructions": "Відвідайте URL-адресу нижче та введіть код для авторизації:",
+      "deviceFlowUnsupported": "Постачальник не підтримує потік пристрою",
+      "errorGeneric": "Не вдалося прив'язати постачальника. Спробуйте ще раз.",
+      "expiresPrefix": "Закінчується:",
+      "link": "Зв'язати",
+      "linkAccount": "Прив'язати обліковий запис",
+      "linkNew": "Прив'язати нового постачальника",
+      "linked": "Прив'язано",
+      "noLinkedDescription": "Прив'яжіть постачальника вмісту, щоб отримати доступ до його вмісту у ваших планах служб.",
+      "noProvidersAvailable": "Немає доступних постачальників вмісту",
+      "noProvidersAvailableLong": "Немає доступних постачальників вмісту, які потребують автентифікації.",
+      "pkceInstructions": "Натисніть кнопку нижче, щоб авторизуватися у спливаючому вікні:",
+      "pkceUnsupported": "Постачальник не підтримує автентифікацію PKCE",
+      "pkceWaiting": "Очікування авторизації у спливаючому вікні...",
+      "popupBlocked": "Не вдалося відкрити спливаюче вікно. Дозвольте спливаючі вікна для цього сайту.",
+      "refresh": "Оновити",
+      "selectProvider": "Прив'язати постачальника вмісту",
+      "sessionExpired": "Сесія авторизації закінчилася. Спробуйте ще раз.",
+      "sessionFailed": "Не вдалося створити сесію авторизації. Спробуйте ще раз.",
+      "startAuthFailed": "Не вдалося розпочати автентифікацію",
+      "success": "Успішно прив'язано!",
+      "title": "Постачальники вмісту",
+      "tokenExchangeFailed": "Не вдалося обміняти код на токени",
+      "tokenExpired": "Токен закінчився - підключіть заново",
+      "unlink": "Відв'язати",
+      "waitingForAuth": "Очікування авторизації..."
+    },
+    "contentRenderer": {
+      "fallbackPreview": "Попередній перегляд",
+      "fallbackTitle": "Попередній перегляд вмісту",
+      "noContent": "Немає вмісту для відображення.",
+      "noTextContent": "Немає текстового вмісту для відображення.",
+      "previewUnavailable": "Попередній перегляд недоступний для цього вмісту.",
+      "unableToLoad": "Не вдалося завантажити попередній перегляд. Вміст може потребувати автентифікації або тимчасово недоступний.",
+      "videoUnsupported": "Ваш браузер не підтримує тег video."
+    },
+    "lessonDialog": {
+      "back": "Назад",
+      "close": "Закрити",
+      "fallbackTitle": "Секція уроку",
+      "noPreviewItem": "Попередній перегляд недоступний для цього елемента.",
+      "previewUnavailable": "Попередній перегляд недоступний для цієї секції."
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -1096,242 +1711,301 @@
       "title": "Add Lesson Content"
     },
     "lessonScheduleEdit": {
-      "dateRequired": "Please select a date",
-      "scheduleLesson": "Schedule Lesson",
+      "dateRequired": "Виберіть дату",
+      "fallbackLesson": "Урок",
+      "scheduleLesson": "Запланувати урок",
       "scheduledDate": "Scheduled Date",
-      "selectLesson": "Select Lesson",
-      "venueRequired": "Please select a venue"
+      "scheduledDateAria": "Запланована дата",
+      "selectLesson": "Вибрати урок",
+      "venueRequired": "Виберіть місце"
     },
     "lessonSelector": {
-      "associateLesson": "Associate Lesson",
-      "browseOtherProviders": "Browse Other Providers",
-      "contentProvider": "Content Provider",
-      "lesson": "Lesson",
-      "linkProviderFirst": "Link this provider first to browse content",
-      "providerNotLinked": "Provider Not Linked"
+      "associateLesson": "Пов'язати урок",
+      "browseOtherProviders": "Перегляд інших постачальників",
+      "contentProvider": "Постачальник вмісту",
+      "lesson": "Урок",
+      "linkProviderFirst": "Спочатку прив'яжіть цього постачальника, щоб переглянути вміст",
+      "noContent": "Немає доступного вмісту",
+      "providerNotLinked": "Постачальник не прив'язаний",
+      "searchPlaceholder": "Пошук...",
+      "selectedPrefix": "Вибрано:"
     },
     "ministryList": {
-      "getStarted": "Get started by creating your first ministry",
-      "noMinMsg": "No ministries found. Please create a ministry."
+      "getStarted": "Почніть із створення першого служіння",
+      "noMinMsg": "Служінь не знайдено. Створіть служіння."
     },
     "ministryPage": {
-      "subtitle": "Organize ministry teams and service plans"
+      "subtitle": "Організовуйте команди служіння та плани служб"
     },
     "planEdit": {
-      "copyAll": "Positions and Assignments",
-      "copyNothing": "Nothing",
-      "copyPositions": "Positions Only",
-      "copyPrevious": "Copy from Previous Plan",
-      "copyServiceOrder": "Copy Order of Service",
-      "planAdd": "Add a Plan",
-      "planEdit": "Edit Plan",
-      "planReq": "Plan name is required.",
-      "servDate": "Service Date",
-      "servReq": "Service date is required."
+      "copyAll": "Позиції та призначення",
+      "copyNothing": "Нічого",
+      "copyPositions": "Лише позиції",
+      "copyPrevious": "Копіювати з попереднього плану",
+      "copyServiceOrder": "Копіювати порядок служби",
+      "planAdd": "Додати план",
+      "planEdit": "Редагувати план",
+      "planNameAria": "Назва плану",
+      "planReq": "Назва плану обов'язкова.",
+      "servDate": "Дата служби",
+      "servReq": "Дата служби обов'язкова.",
+      "serviceDateAria": "Дата служби",
+      "showVolunteerNames": "Показувати імена волонтерів на сторінці реєстрації",
+      "signupDeadline": "Кінцевий термін реєстрації (годин до служби)",
+      "signupDeadlineHelper": "Залиште порожнім, якщо без терміну"
     },
     "planItem": {
-      "addItem": "Add Item",
-      "editItem": "Edit Item",
-      "editSection": "Edit Section",
-      "expandToActions": "Expand to Actions",
-      "externalItem": "External Item",
-      "item": "Item",
-      "song": "Song"
+      "addItem": "Додати елемент",
+      "duration": "Тривалість",
+      "editItem": "Редагувати елемент",
+      "editSection": "Редагувати секцію",
+      "expandToActions": "Розгорнути до дій",
+      "externalItem": "Зовнішній елемент",
+      "item": "Елемент",
+      "song": "Пісня"
     },
     "planItemEdit": {
-      "confirmDelete": "Confirm Delete",
-      "confirmDeleteMessage": "Are you sure you want to delete this item?",
-      "description": "Description",
+      "confirmDelete": "Підтвердити видалення",
+      "confirmDeleteMessage": "Ви впевнені, що хочете видалити цей елемент?",
+      "description": "Опис",
+      "durationMinutesAria": "Хвилини тривалості",
+      "durationSecondsAria": "Секунди тривалості",
       "edit": "Редагувати",
-      "editAddOn": "Edit Add-On",
-      "editHeader": "Edit Header",
-      "editSong": "Edit Song",
-      "enterSearch": "Enter search term",
-      "minutes": "Minutes",
-      "seconds": "Seconds"
+      "editAddOn": "Редагувати доповнення",
+      "editHeader": "Редагувати заголовок",
+      "editSong": "Редагувати пісню",
+      "enterSearch": "Введіть пошуковий термін",
+      "minutes": "Хвилини",
+      "planItemDescriptionAria": "Опис елемента плану",
+      "planItemNameAria": "Назва елемента плану",
+      "searchBoxAria": "searchBox",
+      "searchSongsAria": "Пошук пісень",
+      "seconds": "Секунди"
     },
     "planList": {
-      "bulkSchedule": "Bulk Schedule",
-      "createFirst": "Create First Plan",
-      "createPlan": "Create Plan",
-      "newPlan": "New Plan",
-      "noPlans": "No plans found",
+      "bulkSchedule": "Масовий розклад",
+      "createFirst": "Створити перший план",
+      "createPlan": "Створити план",
+      "newPlan": "Новий план",
+      "noPlans": "Планів не знайдено",
+      "noUpcomingPlans": "Немає майбутніх планів",
+      "noUpcomingPlansDescription": "Немає запланованих планів на сьогодні або пізніше. Використовуйте перемикач \"Показати минулі\" вище, щоб переглянути минулі плани.",
       "plans": "Плани",
-      "scheduleLesson": "Schedule Lesson",
-      "serviceOrder": "Service Order"
+      "scheduleLesson": "Запланувати урок",
+      "serviceOrder": "Порядок служби",
+      "showPast": "Показати минулі"
     },
     "planPage": {
-      "assign": "Team Assignments",
-      "assignments": "Assignments",
-      "band": "Band",
-      "loadingPlan": "Loading plan...",
-      "noteSave": "Note saved",
-      "serviceOrder": "Service Order",
-      "servicePlan": "Service Plan",
-      "subtitle": "Plan and schedule your service"
+      "assign": "Призначення команди",
+      "assignments": "Призначення",
+      "band": "Гурт",
+      "loadingPlan": "Завантаження плану...",
+      "noteSave": "Примітку збережено",
+      "serviceOrder": "Порядок служби",
+      "servicePlan": "План служби",
+      "subtitle": "Плануйте та запланьте вашу службу"
     },
     "planType": {
-      "details": "Plan Type Details"
+      "details": "Деталі типу плану"
     },
     "planTypeEdit": {
       "add": "Додати",
       "edit": "Редагувати",
-      "errorSaving": "Error saving plan type",
-      "nameRequired": "Plan type name is required",
-      "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "errorSaving": "Помилка збереження типу плану",
+      "nameRequired": "Назва типу плану обов'язкова",
+      "planType": "Тип плану",
+      "planTypeName": "Назва типу плану"
     },
     "planTypeList": {
-      "addPlanType": "Add Plan Type",
-      "createPlanType": "Create Plan Type",
-      "createPlanTypes": "Create Plan Types",
-      "noPlanTypes": "No plan types found",
-      "planTypes": "Plan Types"
+      "addPlanType": "Додати тип плану",
+      "createPlanType": "Створити тип плану",
+      "createPlanTypes": "Створити типи планів",
+      "noPlanTypes": "Типів планів не знайдено",
+      "planTypes": "Типи планів"
     },
     "planTypePage": {
-      "notFound": "Plan type not found",
-      "pairTvApp": "Pair TV App",
-      "planType": "Plan Type",
-      "subtitle": "Configure plan type settings",
-      "tvAppDescription": "Show your lesson content on any TV or display using our free app"
+      "notFound": "Тип плану не знайдено",
+      "overview": "Огляд",
+      "pairTvApp": "Підключити ТВ-додаток",
+      "planType": "Тип плану",
+      "subtitle": "Налаштувати параметри типу плану",
+      "tvAppDescription": "Показуйте вміст уроку на будь-якому ТВ або дисплеї за допомогою нашого безкоштовного додатку"
     },
     "planTypePairDialog": {
-      "downloadTitle": "Download the Lessons.church TV App",
-      "instructions": "Enter the 4-character code displayed on the TV app screen:",
-      "pairTitle": "Pair Your Device",
-      "success": "Successfully paired! The TV app will now show content from this plan type.",
-      "title": "Pair TV App"
+      "downloadTitle": "Завантажте додаток Lessons.church TV",
+      "instructions": "Введіть 4-символьний код, відображений на екрані ТВ-додатку:",
+      "pairTitle": "Підключіть пристрій",
+      "success": "Успішно підключено! ТВ-додаток тепер показує вміст із цього типу плану.",
+      "title": "Підключити ТВ-додаток"
     },
     "planValidation": {
-      "and": "and",
-      "between": "between",
-      "blockCon": "Blockout date conflict of",
-      "cons": "Conflicts",
-      "during": "during",
-      "more": "more",
-      "needed": "needed.",
-      "notify": "Notify",
-      "person": "person",
-      "pleaseConfirm": "Please log in and confirm.",
-      "ppl": "people",
-      "timeCon": "Time conflict between",
-      "timeCon2": "Time conflict at",
-      "to": "to",
-      "val": "Validation",
-      "valPlan": "Plan is valid.",
-      "vol": "volunteer(s)",
-      "volNotif": "All volunteers notified.",
-      "volReq": "Volunteer Requests: "
+      "and": "та",
+      "between": "між",
+      "blockCon": "Конфлікт заблокованої дати",
+      "cons": "Конфлікти",
+      "during": "протягом",
+      "more": "більше",
+      "needed": "потрібно.",
+      "notify": "Сповістити",
+      "person": "особа",
+      "pleaseConfirm": "Увійдіть і підтвердьте.",
+      "ppl": "людей",
+      "timeCon": "Конфлікт часу між",
+      "timeCon2": "Конфлікт часу в",
+      "to": "до",
+      "val": "Перевірка",
+      "valPlan": "План дійсний.",
+      "vol": "волонтер(и)",
+      "volNotif": "Усіх волонтерів сповіщено.",
+      "volReq": "Заявки волонтерів: "
     },
     "plansPage": {
-      "addMinistry": "Add Ministry",
-      "editMinistry": "Edit Ministry",
-      "selMin": "Select a Ministry",
-      "subtitle": "Manage ministries and service plans"
+      "addMinistry": "Додати служіння",
+      "editMinistry": "Редагувати служіння",
+      "selMin": "Виберіть служіння",
+      "subtitle": "Керуйте служіннями та планами служб"
     },
     "positionEdit": {
-      "catName": "Category Name",
-      "catNameReq": "Category Name is required.",
-      "nameReq": "Name is required",
-      "posAdd": "Add a Position",
-      "posEdit": "Edit Position",
-      "volCount": "Volunteer Count",
-      "volGroup": "Volunteer Group"
+      "allowSelfSignup": "Дозволити самостійну реєстрацію",
+      "catName": "Назва категорії",
+      "catNameReq": "Назва категорії обов'язкова.",
+      "description": "Опис",
+      "descriptionHelper": "Показується волонтерам при перегляді можливостей реєстрації",
+      "nameReq": "Ім'я обов'язкове",
+      "posAdd": "Додати позицію",
+      "posEdit": "Редагувати позицію",
+      "volCount": "Кількість волонтерів",
+      "volGroup": "Група волонтерів"
     },
     "positionList": {
       "load": "Завантаження...",
-      "persNeed": "1 Person Needed",
-      "pos": "Position",
+      "persNeed": "Потрібна 1 особа",
+      "pos": "Позиція",
       "ppl": "Люди",
-      "pplNeed": " People Needed",
-      "team": "Team"
+      "pplNeed": " людей потрібно",
+      "signupSuffix": "реєстрація",
+      "team": "Команда"
     },
     "printPlan": {
-      "length": "Length",
-      "serviceOrder": "SERVICE ORDER",
+      "length": "Довжина",
+      "serviceOrder": "ПОРЯДОК СЛУЖБИ",
       "time": "Час"
     },
     "serviceOrder": {
-      "addFromLesson": "Add From Lesson",
-      "addSection": "Add Section",
-      "associateError": "Associate Error",
-      "associateLesson": "Associate Lesson",
-      "customizeLesson": "Customize",
-      "disassociateError": "Disassociate Error",
-      "lessonPreview": "Lesson Preview",
-      "loadError": "Load Error",
-      "noItems": "No items in service order",
-      "orderOfService": "Order of Service",
-      "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
-      "print": "Print"
+      "addFromLesson": "Додати з уроку",
+      "addSection": "Додати секцію",
+      "associateError": "Помилка прив'язки",
+      "associateLesson": "Пов'язати урок",
+      "customizeLesson": "Налаштувати",
+      "disassociateError": "Помилка відв'язки",
+      "lessonPreview": "Попередній перегляд уроку",
+      "loadError": "Помилка завантаження",
+      "noItems": "Немає елементів у порядку служби",
+      "orderOfService": "Порядок служби",
+      "previewBanner": "Це попередній перегляд пов'язаного уроку. Натисніть \"Налаштувати\" для редагування.",
+      "print": "Друк",
+      "scrollDown": "Прокрутити вниз",
+      "scrollUp": "Прокрутити вгору"
+    },
+    "servingOverviewPage": {
+      "endDate": "Дата завершення",
+      "exportCsv": "Експортувати CSV",
+      "filename": "serving-overview.csv",
+      "noData": "Немає даних про служіння за обраний діапазон дат.",
+      "overviewSuffix": "Огляд",
+      "position": "Позиція",
+      "startDate": "Дата початку",
+      "subtitle": "Позиції за датами з призначеними волонтерами",
+      "title": "Огляд служіння"
+    },
+    "servingPage": {
+      "showAll": "Показати все"
+    },
+    "songDialog": {
+      "close": "Закрити",
+      "fallbackTitle": "Деталі пісні",
+      "files": "Файли",
+      "lyrics": "Тексти"
     },
     "songs": {
-      "links": "Links"
+      "links": "Посилання"
     },
     "teamList": {
-      "createTeam": "Create Team",
-      "createTeams": "Create Teams",
-      "manage": "Manage",
-      "members": "members",
-      "newTeam": "New Team",
-      "noTeam": "No teams found. Please create a team.",
+      "createTeam": "Створити команду",
+      "createTeams": "Створити команди",
+      "manage": "Керувати",
+      "members": "учасники",
+      "newTeam": "Нова команда",
+      "noTeam": "Команд не знайдено. Створіть команду.",
       "teams": "Команди"
     },
     "timeEdit": {
-      "disName": "Display Name",
-      "disNameReq": "Display name is required.",
-      "endReq": "End time is required",
-      "followGuide": "Follow the guide below to set up service times",
-      "startReq": "Start time is required",
-      "teamNeed": "Needed Teams",
-      "teamReq": "Please Select Team(s).",
-      "timeAdd": "Add a Time",
-      "timeEdit": "Edit Time",
-      "timeEnd": "End Time",
-      "timeStart": "Start Time",
-      "tip": "Tip"
+      "disName": "Відображуване ім'я",
+      "disNameReq": "Відображуване ім'я обов'язкове.",
+      "endReq": "Час закінчення обов'язковий",
+      "endTimeAria": "Час завершення",
+      "followGuide": "Дотримуйтесь інструкції нижче, щоб налаштувати час служб",
+      "startReq": "Час початку обов'язковий",
+      "startTimeAria": "Час початку",
+      "teamNeed": "Потрібні команди",
+      "teamPrefix": "Команда",
+      "teamReq": "Виберіть команду(и).",
+      "timeAdd": "Додати час",
+      "timeDisplayNameAria": "Відображувана назва часу",
+      "timeEdit": "Редагувати час",
+      "timeEnd": "Час закінчення",
+      "timeStart": "Час початку",
+      "tip": "Підказка"
     },
     "timeList": {
-      "noTime": "No times have been added yet",
-      "sunServ": "Sunday Service",
-      "times": "Times"
+      "addTimeAria": "Додати час",
+      "noTime": "Час ще не додано",
+      "sunServ": "Недільна служба",
+      "times": "Часи"
     }
   },
   "profile": {
     "deviceContent": {
-      "associatedContent": "Associated Content"
+      "associatedContent": "Пов'язаний вміст"
     },
     "deviceEdit": {
-      "label": "Label",
-      "labelRequired": "Label is required"
+      "label": "Мітка",
+      "labelRequired": "Мітка обов'язкова"
     },
     "devices": {
-      "addScreen": "Add Screen",
-      "device": "Device",
-      "editDevice": "Edit Device",
-      "label": "Label",
-      "lastActiveDate": "Last Active Date",
-      "registrationDate": "Registration Date",
-      "title": "Devices"
+      "addScreen": "Додати екран",
+      "device": "Пристрій",
+      "editDevice": "Редагувати пристрій",
+      "label": "Мітка",
+      "lastActiveDate": "Дата останньої активності",
+      "registrationDate": "Дата реєстрації",
+      "title": "Пристрої"
+    },
+    "devicesPage": {
+      "addDevice": "Додати пристрій"
     },
     "linkedAccounts": {
-      "link": "Link",
-      "signUp": "Sign Up",
-      "unlink": "Unlink"
+      "link": "Зв'язати",
+      "signUp": "Зареєструватися",
+      "unlink": "Відв'язати"
     },
     "pairScreen": {
-      "codeRequired": "Pairing code is required",
-      "invalidCode": "Invalid pairing code",
-      "pairingCode": "Pairing Code"
+      "codeRequired": "Код підключення обов'язковий",
+      "invalidCode": "Недійсний код підключення",
+      "pairingCode": "Код підключення"
     },
     "profilePage": {
-      "accDel": "Account Deletion",
-      "confirmMsg": "Are you sure you wish to permanently delete your account?",
+      "accDel": "Видалення облікового запису",
+      "confirmMsg": "Ви впевнені, що хочете назавжди видалити свій обліковий запис?",
+      "darkMode": "Темний режим",
       "delAcc": "Delete my account",
       "deleteError": "Failed to delete account",
+      "demoModeAlert": "Редагування профілю вимкнено в демо-режимі.",
+      "demoPasswordHelper": "Зміна пароля вимкнена в демо-режимі",
       "emailMsg": "Please enter an email address.",
       "firstMsg": "Please enter firstname",
       "lastMsg": "Please enter lastname",
+      "lightMode": "Світлий режим",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
       "passLong": "Please enter a password that is at least 8 characters long.",
@@ -1342,19 +2016,81 @@
       "permWarn": "Careful, these actions are permanent",
       "profEdit": "Edit Account",
       "saveChange": "Changes saved.",
-      "saveChanges": "Save Changes",
+      "saveChanges": "Зберегти зміни",
       "saveError": "Failed to save changes",
       "subtitle": "Manage your profile and preferences",
-      "valEmail": "Please enter a valid email address."
+      "themePreferences": "Налаштування теми",
+      "themePreferencesHelper": "Ваші налаштування теми зберігаються автоматично і запам'ятовуються на цьому пристрої.",
+      "togglePasswordVisibility": "перемкнути видимість пароля",
+      "valEmail": "Введіть дійсну адресу електронної пошти."
+    }
+  },
+  "registrations": {
+    "registrationDetailsPage": {
+      "actions": "Дії",
+      "cancelConfirm": "Скасувати цю реєстрацію?",
+      "cancelRegistration": "Скасувати реєстрацію",
+      "csvDate": "Дата",
+      "csvMembers": "Учасники",
+      "csvName": "Ім'я",
+      "csvStatus": "Статус",
+      "date": "Дата",
+      "delete": "Видалити",
+      "deleteConfirm": "Назавжди видалити цю реєстрацію?",
+      "eventNotFound": "Подію не знайдено",
+      "eventRegistrations": "Реєстрації на подію",
+      "exportCsv": "Експортувати CSV",
+      "guest": "Гість",
+      "members": "Учасники",
+      "name": "Ім'я",
+      "noRegistrations": "Поки немає реєстрацій.",
+      "registrations": "Реєстрації",
+      "status": "Статус",
+      "subtitle": "Керувати реєстраціями для цієї події",
+      "unknown": "Невідомо"
+    },
+    "registrationSettingsEdit": {
+      "capacity": "Місткість",
+      "capacityPlaceholder": "Залиште порожнім для необмеженої кількості",
+      "enableRegistration": "Увімкнути реєстрацію",
+      "registrationCloses": "Реєстрація закривається",
+      "registrationOpens": "Реєстрація відкривається",
+      "registrationSettings": "Параметри реєстрації",
+      "saveSettings": "Зберегти налаштування",
+      "tags": "Теги",
+      "tagsHelper": "Розділені комами теги для фільтрації",
+      "tagsPlaceholder": "молодь, ретрит, vbs"
+    },
+    "registrationsPage": {
+      "date": "Дата",
+      "enabledEvents": "Події з увімкненою реєстрацією",
+      "event": "Подія",
+      "noEvents": "Жодна подія ще не має увімкненої реєстрації.",
+      "noEventsHint": "Увімкніть реєстрацію для події через налаштування редагування події.",
+      "registered": "зареєстровано",
+      "registrations": "Реєстрації",
+      "subtitle": "Керуйте налаштуваннями реєстрації подій і переглядайте реєстрації",
+      "tags": "Теги",
+      "title": "Реєстрації на подію"
     }
   },
   "reporting": {
     "detailed": "Detailed",
     "downloadOptions": "Download Options",
-    "noData": "No data available",
+    "givingKpiCards": {
+      "avgGift": "Середній дар",
+      "donationCount": "Всього пожертв",
+      "donorCount": "Унікальних жертводавців",
+      "totalGiving": "Загальна сума пожертв"
+    },
+    "noData": "Немає доступних даних",
+    "reportOutput": {
+      "anonymous": "Анонімно",
+      "print": "друк"
+    },
     "runReport": "Run Report",
     "sampleTemplate": "Sample Template",
-    "summary": "Summary",
+    "summary": "Підсумок",
     "toDateBeforeFromDate": "End date cannot be before start date",
     "useFilter": "Use Filter"
   },
@@ -1388,13 +2124,13 @@
       "chooseSource": "Choose Import Source",
       "fetch": "Fetch",
       "fetching": "Fetching...",
-      "import": "Import",
+      "import": "Імпорт",
       "importFromVimeo": "Import from Vimeo",
       "importFromYouTube": "Import from YouTube",
       "importIntoPlaylist": "Import Into Playlist",
       "selectPlaylist": "Please select a playlist",
       "subtitle": "Import videos from external platforms in bulk",
-      "title": "Bulk Import",
+      "title": "Масовий імпорт",
       "vimeo": "Vimeo",
       "vimeoChannelId": "Vimeo Channel ID",
       "vimeoChannelPlaceholder": "staffpicks",
@@ -1405,9 +2141,11 @@
       "youtubeDescription": "Import videos from your YouTube channel or playlists"
     },
     "duration": {
-      "minutes": "Minutes",
-      "seconds": "Seconds"
+      "minutes": "Хвилини",
+      "seconds": "Секунди"
     },
+    "edit": "Редагувати",
+    "editSermonAria": "Редагувати {title}",
     "getStarted": "Get started by adding your first sermon",
     "liveStreamTimes": {
       "externalLinks": {
@@ -1438,17 +2176,21 @@
           "urlRequired": "Please enter link"
         },
         "linkDetails": "Link Details",
-        "linkUrl": "Link URL",
+        "linkDisplayTextAria": "Текст посилання",
+        "linkUrl": "URL-адреса посилання",
+        "linkUrlAria": "URL-адреса посилання",
         "linkUrlPlaceholder": "https://example.com or /internal-page",
         "menuOrganization": "Menu Organization",
         "optionalSubmenuMessage": "Optionally organize this link under an existing submenu:",
         "saveLink": "Save Link",
         "saving": "Збереження...",
-        "submenuMessage": "This link will be placed under submenu:"
+        "submenuMessage": "This link will be placed under submenu:",
+        "submenuUnderAria": "Встановити як підменю під {text}"
       },
       "navigationLinks": {
         "add": "Додати",
-        "home": "Home",
+        "edit": "Редагувати",
+        "home": "Дім",
         "title": "Navigation Links"
       },
       "serviceEdit": {
@@ -1473,6 +2215,7 @@
         "serviceTimeRequired": "Service time is required",
         "startVideoEarly": "Start Video Early",
         "startVideoEarlyHelp": "Optional: For countdown videos or pre-service content",
+        "timeChipFallback": "Час",
         "videoSettings": "Video Settings",
         "weekly": "Щотижня",
         "yes": "Так"
@@ -1480,12 +2223,14 @@
       "services": "Служби",
       "servicesTab": {
         "addService": "Додати службу",
+        "defaultLabel": "Недільний ранок",
         "title": "Служби",
         "weekly": "Щотижня"
       },
       "settings": "Параметри",
       "sidebarTabs": {
         "add": "Додати",
+        "edit": "Редагувати",
         "title": "Content Tabs"
       },
       "subtitle": "Configure your recurring service times",
@@ -1523,7 +2268,7 @@
         "tabText": "Tab Text",
         "tabTextPlaceholder": "Enter tab display text"
       },
-      "title": "Live Stream Times"
+      "title": "Час прямих трансляцій"
     },
     "noPlaylist": "No Playlist",
     "noSermonsFound": "No sermons found",
@@ -1531,7 +2276,7 @@
     "notScheduled": "Not scheduled",
     "playlist": "Playlist",
     "playlists": {
-      "actions": "Actions",
+      "actions": "Дії",
       "addPlaylist": "Add Playlist",
       "adjustSearchTerms": "Try adjusting your search terms",
       "createFirstPlaylist": "Create First Playlist",
@@ -1546,7 +2291,7 @@
         "createNew": "Create New Playlist",
         "deleteConfirm": "Are you sure you wish to delete this playlist?",
         "describePlaylist": "Describe this playlist...",
-        "description": "Description",
+        "description": "Опис",
         "editPlaylist": "Edit Playlist",
         "enterTitle": "Enter playlist title...",
         "newPlaylist": "New Playlist",
@@ -1555,6 +2300,7 @@
         "publishHelp": "When should this playlist be available to viewers?",
         "publishingSchedule": "Publishing & Schedule",
         "recommendedSize": "Recommended size: 1280x720 pixels (16:9 aspect ratio)",
+        "thumbnailAlt": "Мініатюра плейлиста",
         "thumbnailImage": "Thumbnail Image",
         "unauthorized": "Unauthorized to create playlists",
         "unauthorizedDelete": "Unauthorized to delete playlists"
@@ -1562,7 +2308,7 @@
       "search": "Пошук",
       "searchPlaceholder": "Search playlists...",
       "subtitle": "Manage video playlists and organize your content",
-      "title": "Playlists"
+      "title": "Плейлисти"
     },
     "publishDate": "Publish Date",
     "searchPlaceholder": "Search sermons by title or playlist...",
@@ -1570,30 +2316,44 @@
     "sermonEdit": {
       "add": "Додати",
       "addToAnotherPlaylist": "Add to another playlist",
+      "addToAnotherPlaylistAria": "Додати проповідь до іншого плейлиста",
+      "addToSelectedPlaylistAria": "Додати до обраного плейлиста",
       "channelIdPlaceholder": "This is not your channel url - See help link above",
       "currentLiveService": "Current Live Service",
       "currentYouTubeLiveStream": "Current YouTube Live Stream",
       "customEmbedUrl": "Custom Embed Url",
       "deleteConfirm": "Are you sure you wish to delete this sermon?",
-      "description": "Description",
+      "description": "Опис",
       "editPermanentLiveUrl": "Edit Permanent Live Url",
       "editSermon": "Edit Sermon",
+      "editThumbnailAria": "Редагувати мініатюру проповіді",
       "facebook": "Facebook",
       "fetch": "Fetch",
+      "fetchVimeoAria": "Отримати деталі відео Vimeo",
+      "fetchYouTubeAria": "Отримати деталі відео YouTube",
       "getYourChannelId": "Get Your Channel Id",
       "newSermon": "New Sermon",
-      "none": "None",
+      "none": "Немає",
+      "publishDateAria": "Дата публікації",
+      "selectAdditionalPlaylistAria": "Вибрати додатковий плейлист",
+      "selectPlaylistAria": "Вибрати плейлист",
+      "selectVideoProviderAria": "Вибрати постачальника відео",
+      "sermonDescriptionAria": "Опис проповіді",
       "sermonEmbedUrl": "Sermon Embed Url",
       "sermonId": "Sermon ID",
+      "sermonTitleAria": "Назва проповіді",
+      "thumbnailAlt": "Мініатюра проповіді",
       "title": "Назва",
       "totalSermonDuration": "Total Sermon Duration",
       "unauthorized": "Unauthorized to create sermons",
       "unauthorizedDelete": "Unauthorized to delete sermons",
+      "videoIdOrUrlAria": "ID відео або URL",
       "videoProvider": "Video Provider",
       "vimeo": "Vimeo",
       "vimeoId": "Vimeo ID",
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube Channel ID",
+      "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Це не URL вашого каналу",
       "youtubeId": "YouTube ID"
     },
     "subtitle": "Manage your sermon library and live streams",
@@ -1604,9 +2364,9 @@
       "act": "Активний",
       "arch": "Archived",
       "church": "Church",
-      "churchName": "Church Name",
+      "churchName": "Назва церкви",
       "churches": "Churches",
-      "location": "Location",
+      "location": "Місцезнаходження",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUserChurches": "This user has no churches associated with their account.",
       "noUsers": "No users found. Please search for a different name or email.",
@@ -1616,7 +2376,7 @@
       "noteTwo": "Comparable software is SubSplash.  They start at $99/mo or $1200/year.  This does not include the cut they take on donations.",
       "notes": "Примітки",
       "regist": "Registered",
-      "searchResults": "Search Results",
+      "searchResults": "Результати пошуку",
       "servAdmin": "Адміністратор сервера",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
@@ -1627,6 +2387,10 @@
       "users": "Users",
       "valueNotes": "Notes on How Values are Calculated"
     },
+    "churchesTab": {
+      "churchNameSearchAria": "Пошук за назвою церкви",
+      "searchChurchesAria": "Пошук церков"
+    },
     "reportPage": {
       "adminOnly": "Admin Only",
       "report": "Report",
@@ -1634,11 +2398,19 @@
     },
     "translation": {
       "abbreviations": "Abbreviations",
-      "endDate": "End Date",
+      "endDate": "Дата завершення",
       "lookups": "Lookups",
       "search": "Пошук",
       "startDate": "Дата початку",
       "title": "Bible Translation Lookups"
+    },
+    "translationTab": {
+      "searchTranslationStatsAria": "Пошук статистики перекладу"
+    },
+    "usersTab": {
+      "noPersonLinked": "Особу не пов'язано",
+      "searchUsersAria": "Пошук користувачів",
+      "userNameOrEmailSearchAria": "Пошук за іменем користувача або електронною поштою"
     }
   },
   "settings": {
@@ -1649,27 +2421,38 @@
     },
     "appEdit": {
       "addTab": "Add Tab",
-      "bible": "Bible",
-      "changeImage": "Change Image",
+      "bible": "Біблія",
+      "changeImage": "Змінити зображення",
       "checkin": "Check-in",
       "deleteTab": "Delete Tab",
       "donation": "Donation",
       "donationLanding": "Donation Landing",
       "editTab": "Edit Tab",
+      "everyone": "Усі (включаючи анонімних)",
       "externalUrl": "External URL",
+      "groups": "Певні групи...",
       "internalPage": "Internal Page",
       "lessons": "Lessons",
       "liveStream": "Live Stream",
+      "loggedInUsers": "Користувачі, які увійшли",
       "memberDirectory": "Member Directory",
+      "membersStaff": "Учасники та персонал",
       "myGroups": "Мої групи",
+      "noGroupsFound": "Груп не знайдено",
       "page": "Page",
       "saveTab": "Save Tab",
       "saving": "Збереження...",
+      "selectGroups": "Виберіть групи:",
       "selectImage": "Select Image",
+      "staffOnly": "Лише персонал",
+      "tabIconAlt": "Іконка вкладки",
       "tabName": "Tab Name",
       "tabType": "Tab Type",
+      "team": "Члени команди (команди служіння)",
       "url": "URL",
-      "verseOfDay": "Verse of the Day"
+      "verseOfDay": "Вірш дня",
+      "visibility": "Видимість",
+      "volunteerOpportunities": "Можливості для волонтерів"
     },
     "appTabs": {
       "editTab": "Edit Tab",
@@ -1680,8 +2463,44 @@
       "title": "App Tabs",
       "untitled": "Untitled"
     },
+    "appThemeEdit": {
+      "background": "Фон",
+      "button": "Кнопка",
+      "cardContent": "Вміст картки",
+      "headerPreview": "Попередній перегляд заголовка",
+      "preview": "Попередній перегляд",
+      "primary": "Основний",
+      "primaryContrast": "Основний контраст",
+      "secondary": "Додатковий",
+      "secondaryText": "Додатковий текст",
+      "surface": "Поверхня",
+      "textColor": "Колір тексту"
+    },
     "associatePerson": {
-      "change": "Change"
+      "change": "Змінити"
+    },
+    "auditLogPage": {
+      "action": "Дія",
+      "allCategories": "Усі категорії",
+      "category": "Категорія",
+      "categoryDonation": "Пожертви",
+      "categoryForm": "Форми",
+      "categoryGroup": "Групи",
+      "categoryLogin": "Вхід",
+      "categoryPermission": "Дозволи",
+      "categoryPerson": "Люди",
+      "categorySettings": "Параметри",
+      "date": "Дата",
+      "details": "Деталі",
+      "endDate": "Дата завершення",
+      "entity": "Сутність",
+      "exportCsv": "Експортувати CSV",
+      "ipAddress": "IP-адреса",
+      "noEntries": "Записів журналу аудиту не знайдено",
+      "search": "Пошук",
+      "startDate": "Дата початку",
+      "subtitle": "Відстежуйте зміни та активність у вашій церкві",
+      "title": "Журнал аудиту"
     },
     "church": {
       "subdomainHelper": "Your church's unique web address"
@@ -1689,9 +2508,11 @@
     "churchSettingsEdit": {
       "address1": "Address Line 1",
       "address2": "Address Line 2",
+      "addressLine1Aria": "Адреса, рядок 1",
       "churchInfo": "Church Information",
       "churchInfoSubtitle": "Name, address, and subdomain",
-      "churchName": "Church Name",
+      "churchName": "Назва церкви",
+      "churchNameAria": "Назва церкви",
       "churchSettings": "Church Settings",
       "domainsSubtitle": "Custom domain configuration",
       "general": "General",
@@ -1699,21 +2520,24 @@
       "givingSubtitle": "Payment gateway and fee options",
       "noNameMsg": "Church name cannot be blank.",
       "noSubMsg": "Subdomain cannot be blank.",
-      "subdom": "Subdomain"
+      "subdom": "Піддомен",
+      "subdomainAria": "Піддомен",
+      "textingSubtitle": "Налаштувати постачальника SMS",
+      "textingTitle": "SMS-повідомлення"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Directory Approval Group",
       "forceMsg": "This group will handle all the member directory updates. Only after their approval, changes will be applied.",
       "groups": "Групи",
       "noGroups": "No Groups available",
-      "none": "None"
+      "none": "Немає"
     },
     "directoryVisibility": {
       "everyone": "Everyone (Including Visitors)",
       "label": "Show in Directory",
-      "members": "Members & Staff",
+      "members": "Учасники та персонал",
       "regularAttendees": "Regular Attendees & Above",
-      "staff": "Staff Only"
+      "staff": "Лише персонал"
     },
     "domain": {
       "domainPlaceholder": "yoursite.com",
@@ -1728,6 +2552,49 @@
       "domMsgConnect": "connect",
       "domain": "Domain",
       "domains": "Domains"
+    },
+    "emailTemplateEdit": {
+      "bodyRequired": "Вміст обов'язковий.",
+      "category": "Категорія",
+      "close": "Закрити",
+      "composePlaceholder": "Складіть шаблон листа тут...",
+      "editTemplate": "Редагувати шаблон",
+      "emailPreview": "Попередній перегляд листа",
+      "insertMergeBody": "Вставити поле злиття в тіло:",
+      "insertMergeSubject": "Вставити поле злиття в тему:",
+      "mergeChurchName": "Назва церкви",
+      "mergeDisplayName": "Відображуване ім'я",
+      "mergeEmail": "Електронна пошта",
+      "mergeFirstName": "Ім'я",
+      "mergeLastName": "Прізвище",
+      "nameRequired": "Ім'я обов'язкове.",
+      "newTemplate": "Новий шаблон",
+      "preview": "Попередній перегляд",
+      "previewBody": "Тіло:",
+      "previewSampleData": "Показано зразок: Іван Петренко, john@example.com",
+      "previewSubject": "Тема:",
+      "subject": "Тема",
+      "subjectPlaceholder": "наприклад, Привіт {firstName}, ласкаво просимо до {churchName}",
+      "subjectRequired": "Тема обов'язкова.",
+      "templateName": "Назва шаблону",
+      "templateNamePlaceholder": "наприклад, Лист привітання, Нагадування про подію",
+      "yourChurch": "Ваша церква"
+    },
+    "emailTemplatesPage": {
+      "actions": "Дії",
+      "category": "Категорія",
+      "createTemplate": "Створити шаблон",
+      "deleteConfirm": "Видалити шаблон \"{name}\"?",
+      "emptyDescription": "Створіть шаблон для початку масової розсилки.",
+      "emptyTitle": "Поки немає шаблонів листів",
+      "modified": "Змінено",
+      "name": "Ім'я",
+      "newTemplate": "Новий шаблон",
+      "subject": "Тема",
+      "subtitle": "Створюйте та керуйте багаторазовими шаблонами листів",
+      "title": "Шаблони листів",
+      "tooltipDelete": "Видалити",
+      "tooltipEdit": "Редагувати"
     },
     "feeOptionsSettings": {
       "achFlatRate": "Flat Rate [ ACH ]",
@@ -1744,16 +2611,19 @@
       "apiCredentials": "API Credentials",
       "clientId": "Client ID",
       "clientSecret": "Client Secret",
+      "currency": "Валюта",
+      "currencyHelper": "Переконайтеся, що ця валюта також увімкнена у вашій панелі Stripe. Увімкніть валюту тут:",
       "developersApiKeys": "Developers → API keys",
       "forceMsg": "Automatically forces users to cover the transaction fees",
-      "giving": "Giving",
-      "none": "None",
+      "forceSslHelpAria": "Допомога з примусовим SSL",
+      "giving": "Пожертви",
+      "none": "Немає",
       "paypal": "PayPal",
       "paypalCreateApp": "create an app to get your Client ID and Secret.",
       "paypalDeveloper": "PayPal Developer",
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
-      "prov": "Provider",
+      "prov": "Постачальник",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",
       "secKey": "Secret Key",
@@ -1761,14 +2631,16 @@
       "stripeCopyKeys": "to copy your Publishable and Secret keys (test & live).",
       "stripeDashboard": "Stripe Dashboard",
       "stripeGoTo": "and go to",
-      "stripeVisit": "Visit",
+      "stripeVisit": "Відвідайте",
       "transFee": "Transaction Fee"
     },
     "imageEditor": {
       "crop": "Crop",
-      "upload": "Upload"
+      "upload": "Завантажити",
+      "uploadImageAria": "Завантажити зображення"
     },
     "manageChurch": {
+      "auditLog": "Журнал аудиту",
       "editSettings": "Edit Settings",
       "imEx": "Import/Export",
       "mobileApps": "Mobile Apps",
@@ -1782,17 +2654,26 @@
       "title": "Mobile App Settings"
     },
     "preview": {
-      "preview": "Preview"
+      "preview": "Попередній перегляд"
+    },
+    "roleCheck": {
+      "permissionAria": "Дозвіл {label}"
     },
     "roleEdit": {
       "confirmMsg": "Are you sure you wish to permanently delete this role?",
       "roleEdit": "Edit Role",
       "roleName": "Role Name",
+      "roleNameAria": "Назва ролі",
       "valMsg": "Please enter a valid role name."
     },
     "roleMembers": {
+      "addRoleMemberAria": "Додати члена ролі",
       "confirmMsg": "Are you sure you wish to delete this user from",
-      "mem": "Members",
+      "edit": "Редагувати",
+      "editRoleMemberAria": "Редагувати члена ролі {firstName} {lastName}",
+      "lastAdminWarning": "Потрібен принаймні один адміністратор домену. Додайте іншого адміністратора перед видаленням цього.",
+      "mem": "Учасники",
+      "removeRoleMemberAria": "Видалити члена ролі {firstName} {lastName}",
       "roleAppMsg": "This role applies to all the members of the church."
     },
     "rolePage": {
@@ -1806,12 +2687,16 @@
     "roles": {
       "acc": "Accounting",
       "accDesc": "Has access to view and manage donations.",
+      "addCustomRoleAria": "Додати власну роль",
+      "addPredefinedRoleAria": "Додати роль {name}",
       "canEdit": "Can edit most data in ",
       "churchDesc": " including people, groups, attendance and forms.",
       "churchStaff": "Church Staff",
       "contAdmin": "Content Admin",
       "contAdminDesc": "Can edit website content, mobile content and sermons.",
       "custAdd": "Add Custom Role",
+      "edit": "Редагувати",
+      "editRoleAria": "Редагувати роль",
       "everyone": "Everyone",
       "itMsg": "? It ",
       "lesAdmin": "Lessons Admin",
@@ -1822,54 +2707,48 @@
     },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to contact the church",
-      "link": "Link",
+      "link": "Зв'язати",
       "linkHelperText": "It must be either church's email or a link to the church's contact form",
       "supportContact": "Support Contact"
+    },
+    "textingSettingsEdit": {
+      "apiKey": "API-ключ",
+      "apiSecret": "API-секрет",
+      "clearstream": "Clearstream",
+      "clearstreamHelper": "Створіть API-ключ у вашому",
+      "clearstreamHelperLink": "Налаштування облікового запису Clearstream",
+      "clearstreamHelperSuffix": "у розділі API-ключі.",
+      "none": "Немає",
+      "provider": "Постачальник",
+      "saveError": "Помилка збереження налаштувань SMS.",
+      "textInChurchHelper": "Відвідайте",
+      "textInChurchHelperLink": "Підтримка Text In Church",
+      "textInChurchHelperSuffix": "щоб запросити доступ до API розробника. Після затвердження створіть API-ключ у розділі Налаштування облікового запису > Developer API."
     },
     "userAdd": {
       "addTo": "Add To ",
       "createNew": "Create New User",
+      "createNewUserAria": "Створити нового користувача",
+      "emailAddressAria": "Електронна адреса",
       "errAnother": "Cannot save. Another user already exists for this email address.",
       "errDiff": "The user account for this email is associated with a different person.",
       "firstMsg": "Please enter firstname",
+      "firstNameAria": "Ім'я",
       "lastMsg": "Please enter lastname",
+      "lastNameAria": "Прізвище",
       "noAcc": "Don't have a user account?",
       "valEmail": "Please enter a valid Email",
       "valEmailMsg": "Enter a valid Email"
     },
     "visibilityPrefSettingsEdit": {
-      "address": "Address",
+      "address": "Адреса",
       "email": "Електронна пошта",
       "everyone": "Everyone",
       "forceMsg": "This will set the default value for people who have not configured their settings yet",
       "groups": "Groups Only",
-      "members": "Members",
-      "phoneNum": "Phone Number",
+      "members": "Учасники",
+      "phoneNum": "Номер телефону",
       "visibilityPreference": "Visibility Preference"
-    }
-  },
-  "mobile": {
-    "appThemeEdit": {
-      "description": "These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.",
-      "resetDefaults": "Reset to Defaults",
-      "lightMode": "Light Mode",
-      "darkMode": "Dark Mode"
-    },
-    "appThemePage": {
-      "title": "Тема програми",
-      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk"
-    },
-    "b1MobilePage": {
-      "title": "B1 Мобільний",
-      "subtitle": "Configure settings for the B1 Mobile app"
-    },
-    "checkInPage": {
-      "title": "B1 CheckIn",
-      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
-      "qrGuestRegistration": "QR Guest Registration",
-      "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
-      "enabled": "Enabled — QR code will appear on kiosk",
-      "disabled": "Disabled"
     }
   },
   "site": {
@@ -1879,6 +2758,34 @@
       "newPage": "New Page",
       "pageType": "Page Type"
     },
+    "addPageModal": {
+      "aboutUs": "Про нас",
+      "blank": "Порожня",
+      "describe": "Опишіть сторінку, яку ви хочете створити",
+      "donate": "Пожертвувати",
+      "errAiPromptTooShort": "Надайте детальний опис (принаймні 10 символів).",
+      "errAllSectionsFailed": "Не вдалося згенерувати всі секції. Спробуйте ще раз.",
+      "errFailedGenerate": "Не вдалося згенерувати сторінку. Спробуйте з іншим описом.",
+      "errLinkText": "Введіть текст посилання.",
+      "errLinkUrl": "Введіть URL-адресу.",
+      "errOutlineFailed": "Не вдалося згенерувати структуру сторінки",
+      "errTitle": "Введіть назву.",
+      "exampleContact": "Створіть контактну сторінку з картою, номером телефону, формою електронної пошти та посиланнями на соцмережі",
+      "exampleHomepage": "Створіть привітну головну сторінку з назвою церкви, місією, часом служб і кнопкою пожертв",
+      "exampleMinistries": "Створіть сторінку служінь, що показує молодіжну групу, хвалебну команду та місіонерську роботу з фотографіями",
+      "examples": "Приклади:",
+      "linkText": "Текст посилання",
+      "linkType": "Зв'язати",
+      "linkUrl": "URL-адреса посилання",
+      "location": "Місцезнаходження",
+      "pageTitle": "Назва сторінки",
+      "statusCreatingSections": "Створення секцій і елементів сторінки...",
+      "statusGatheringInfo": "Збір інформації про церкву...",
+      "statusGenerating": "Генерація {count} секцій...",
+      "statusOpening": "Відкриття нової сторінки...",
+      "statusPlanning": "Планування структури сторінки...",
+      "unauthorizedCreate": "Немає дозволу створювати сторінки"
+    },
     "animations": {
       "colorize": "Colorize",
       "editAnimations": "Edit Animations",
@@ -1886,7 +2793,7 @@
       "fast": "Fast",
       "focus": "Focus",
       "grow": "Grow",
-      "none": "None",
+      "none": "Немає",
       "normal": "Normal",
       "onShowAnimation": "On Show Animation",
       "onShowSpeed": "On Show Speed",
@@ -1899,34 +2806,110 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
-      "logoManagement": "Logo Management"
+      "branding": "Логотип і брендинг",
+      "brandingDescription": "Завантажуйте та керуйте логотипами та брендинговими ресурсами організації",
+      "edit": "Редагувати",
+      "favicon": "Фавікон",
+      "faviconDesc": "Квадратна іконка для вкладок браузера. Ідеальний розмір: 400×400px",
+      "logoDark": "Логотип для темного фону",
+      "logoDarkDesc": "Горизонтальний логотип для темного фону. Ідеальний розмір: 1280×320px",
+      "logoLight": "Логотип для світлого фону",
+      "logoLightDesc": "Горизонтальний логотип для світлого фону. Ідеальний розмір: 1280×320px",
+      "logoManagement": "Logo Management",
+      "logoUploadDescription": "Завантажте логотипи для різних контекстів. Усі зображення повинні мати прозорий фон для найкращого результату.",
+      "mainLogos": "Основні логотипи",
+      "noImage": "Немає зображення",
+      "ogImage": "Зображення для соцмереж",
+      "ogImageDesc": "Використовується для поширення в соцмережах та SEO. Ідеальний розмір: 1200×630px",
+      "seoAssets": "Ресурси SEO та браузера",
+      "upload": "Завантажити"
     },
     "appearancePage": {
       "subtitle": "Below is a preview of a sample site with your colors, fonts and logos. This is not your actual site content.",
       "title": "Site Styles"
+    },
+    "blockEdit": {
+      "blockType": "Тип блоку",
+      "elementBlock": "Елемент(и)",
+      "errName": "Введіть назву.",
+      "name": "Ім'я",
+      "sectionBlock": "Секція(ї)",
+      "unauthorizedCreate": "Немає дозволу створювати блоки",
+      "unauthorizedDelete": "Немає дозволу видаляти блоки"
     },
     "blocks": {
       "confirmDelete": "Are you sure you wish to permanently delete this block?",
       "editBlock": "Edit Block"
     },
     "blocksPage": {
-      "actions": "Actions",
+      "actions": "Дії",
       "addBlock": "Add Block",
       "block": "block",
-      "blocks": "Blocks",
+      "blocks": "Блоки",
       "createFirstBlock": "Create First Block",
-      "elements": "Element(s)",
+      "elements": "Елемент(и)",
       "getStarted": "Get started by creating your first reusable block",
       "noBlocksFound": "No blocks found",
+      "rename": "Перейменувати",
       "reusableBlocks": "Reusable Blocks",
-      "sections": "Section(s)",
+      "sections": "Секція(ї)",
       "subtitle": "Create and manage reusable content blocks for your website",
       "totalBlocks": "Total Blocks",
-      "type": "Type"
+      "type": "Тип"
+    },
+    "calendarElementEdit": {
+      "curatedCalendar": "Курований календар",
+      "groupCalendar": "Календар групи",
+      "select": "Вибрати",
+      "selectCalendar": "Вибрати календар"
+    },
+    "colorPicker": {
+      "color": "Колір",
+      "placeholder": "#FF0000"
+    },
+    "contentEditor": {
+      "blockPreview": "Попередній перегляд блоку",
+      "dropToAddElement": "Перетягніть сюди, щоб додати елемент",
+      "dropToAddSection": "Перетягніть сюди, щоб додати секцію",
+      "scrollDown": "Прокрутити вниз",
+      "scrollUp": "Прокрутити вгору"
     },
     "cssEdit": {
-      "customCss": "Custom CSS",
-      "customHtml": "Custom HTML"
+      "advancedFeature": "Розширена функція:",
+      "advancedFeatureDescription": "Власний CSS і JavaScript можуть вплинути на функціональність сайту. Ретельно тестуйте зміни та переконайтеся, що у вас є резервна копія поточних налаштувань.",
+      "commonCssExamples": "Поширені приклади CSS",
+      "commonJsExamples": "Поширені приклади JavaScript",
+      "customCss": "Власний CSS",
+      "customCssDescription": "Додайте власний CSS, щоб перевизначити стилі за замовчуванням або створити нові правила стилізації.",
+      "customHtml": "Власний HTML",
+      "customHtmlDescription": "Додайте власний HTML-код для сторонніх скриптів, таких як Google Analytics.",
+      "customLabel": "Власний CSS",
+      "customLabelHtml": "Власний HTML",
+      "exampleAnalytics": "Google Analytics",
+      "exampleCustomButton": "Власна стилізація кнопки",
+      "exampleCustomHtml": "Власний HTML",
+      "exampleHideElements": "Приховати елементи",
+      "exampleLinkColors": "Змінити кольори посилань",
+      "headerSubtitle": "Додайте власні стилі та скрипти на сайт",
+      "headerTitle": "CSS і JavaScript",
+      "proTip": "Порада:",
+      "proTipDescription": "Використовуйте інструменти розробника браузера (F12) для тестування змін CSS перед застосуванням. JavaScript буде додано до кожної сторінки сайту.",
+      "saveChanges": "Зберегти зміни",
+      "saving": "Збереження..."
+    },
+    "customFontModal": {
+      "all": "Усі",
+      "categoryFilter": "Фільтр категорій",
+      "display": "Відображення",
+      "handwriting": "Рукописний",
+      "monospace": "Моноширинний",
+      "name": "Ім'я",
+      "sample": "Зразок",
+      "sampleText": "Швидкий коричневий лис перестрибує через ледачого пса.",
+      "sansSerif": "Без зарубок",
+      "search": "Пошук",
+      "selectFont": "Виберіть шрифт",
+      "serif": "З зарубками"
     },
     "donateLink": {
       "add": "Додати",
@@ -1941,31 +2924,40 @@
       "noFunds": "No Funds",
       "selectFund": "Select donation fund",
       "textHelper": "Ex: (Donate now), (Yes, I will help!), (Donate $10 to Youth Camp), etc..",
-      "textLabel": "Text",
+      "textLabel": "Текст",
       "urlHelper": "Tip: you must link the page from the website builder that has the donation element.",
-      "urlLabel": "Url",
+      "urlLabel": "URL",
       "urlPlaceholder": "/donate"
     },
     "editorToolbar": {
       "addContent": "Add Content",
-      "block": "Block",
+      "ago": "тому",
+      "block": "Блок",
       "desktop": "Desktop",
+      "exit": "Вихід",
+      "justNow": "щойно",
       "mobile": "Мобільний",
+      "notSavedYet": "Поки немає змін",
       "page": "Page",
+      "redoTip": "Повторити (Ctrl+Shift+Z)",
+      "savedAllChanges": "Усі зміни збережено",
       "switchToDesktop": "Switch to Desktop View",
-      "switchToMobile": "Switch to Mobile View"
+      "switchToMobile": "Switch to Mobile View",
+      "undoTip": "Скасувати (Ctrl+Z)",
+      "viewHistory": "Переглянути історію"
     },
     "elementAdd": {
       "addElements": "Add Elements",
-      "advanced": "Advanced",
-      "all": "All",
-      "blocks": "Blocks",
+      "advanced": "Розширений",
+      "all": "Усі",
+      "blocks": "Блоки",
       "box": "Box",
       "calendar": "Календар",
-      "card": "Card",
+      "card": "Картка",
       "carousel": "Carousel",
       "church": "Church",
-      "content": "Content",
+      "common": "Поширені",
+      "content": "Вміст",
       "descBox": "Flexible container box",
       "descCalendar": "Event calendar view",
       "descCard": "Content card with image",
@@ -1996,45 +2988,54 @@
       "dragHint": "Drag elements onto the page to add them",
       "embedPage": "Embed Page",
       "expandable": "Expandable",
-      "form": "Form",
+      "form": "Форма",
       "groupList": "Group List",
       "html": "HTML",
-      "image": "Image",
-      "layout": "Layout",
-      "location": "Location",
-      "logo": "Logo",
+      "image": "Зображення",
+      "layout": "Макет",
+      "location": "Місцезнаходження",
+      "logo": "Логотип",
       "media": "Media",
       "noElementsFound": "No elements found",
       "row": "Row",
       "searchElements": "Search Elements",
-      "section": "Section",
-      "stream": "Stream",
+      "section": "Секція",
+      "stream": "Трансляція",
       "table": "Table",
-      "text": "Text",
+      "text": "Текст",
       "textWithPhoto": "Text with Photo",
-      "tryDifferentSearch": "Try a different search term",
+      "tryDifferentSearch": "Спробуйте інший пошуковий запит",
       "untitledBlock": "Untitled Block",
       "video": "Video"
     },
+    "elementEdit": {
+      "enableLightbox": "Увімкнути Lightbox"
+    },
+    "elementSelection": {
+      "moveDown": "Перемістити вниз",
+      "moveUp": "Перемістити вгору"
+    },
     "elements": {
-      "address": "Address",
+      "address": "Адреса",
       "addressHelper": "ex: City Hall, New York, NY",
-      "alignCenter": "Center",
-      "alignLeft": "Left",
-      "alignRight": "Right",
+      "alignCenter": "Центр",
+      "alignLeft": "Ліво",
+      "alignRight": "Право",
       "animationOptions": "Animation",
       "answersJSON": "Answers JSON",
       "answersJSONData": "JSON data format for form answers",
       "autoplay": "Autoplay",
-      "block": "Block",
+      "block": "Блок",
       "categoriesHelper": "ex: Small Groups, Sunday School",
-      "color": "Color",
+      "color": "Колір",
       "confirmDelete": "Are you sure you wish to permanently delete this element?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this element and all of it's children?",
       "contained": "Contained",
+      "deleteElementBody": "Цей елемент буде видалено зі сторінки. Ви можете скасувати це за допомогою Ctrl+Z.",
+      "deleteElementTitle": "Видалити елемент?",
       "doNotResizeImage": "Do not resize image",
       "editElement": "Edit Element",
-      "error": "Error",
+      "error": "Помилка",
       "fade": "Fade",
       "fullWidth": "Full Width",
       "heightPlaceholder": "1000",
@@ -2048,7 +3049,7 @@
       "imageDescribingTopic": "Image describing the topic",
       "info": "Info",
       "javascriptExcludeTag": "JavaScript (exclude script tag)",
-      "label": "Label",
+      "label": "Мітка",
       "linkUrlOptional": "Link URL (optional)",
       "loadingEditor": "Loading editor...",
       "mode": "Mode",
@@ -2061,26 +3062,26 @@
       "photoAlternativeText": "Photo alternative text",
       "photoLabel": "Photo Label",
       "photoPosition": "Photo Position",
-      "positionPhotoBottom": "Bottom",
-      "positionPhotoLeft": "Left",
-      "positionPhotoRight": "Right",
-      "positionPhotoTop": "Top",
-      "primary": "Primary",
+      "positionPhotoBottom": "Низ",
+      "positionPhotoLeft": "Ліво",
+      "positionPhotoRight": "Право",
+      "positionPhotoTop": "Верх",
+      "primary": "Основний",
       "roundedCorners": "Rounded Corners",
-      "secondary": "Secondary",
+      "secondary": "Додатковий",
       "selectPhoto": "Select Photo",
       "selectPhotoPosition": "Select photo position",
       "slide": "Slide",
-      "slides": "Slides",
+      "slides": "Слайди",
       "slidesIntervalSeconds": "Slide Interval (seconds)",
       "source": "Source",
-      "success": "Success",
-      "text": "Text",
+      "success": "Успіх",
+      "text": "Текст",
       "textAlignment": "Text Alignment",
       "title": "Назва",
       "titleAlignment": "Title Alignment",
       "translucent": "Translucent",
-      "type": "Type",
+      "type": "Тип",
       "url": "URL",
       "variant": "Variant",
       "videoAndInteraction": "Video and Interaction",
@@ -2088,46 +3089,128 @@
       "videoUrlVimeo": "Find the ID in the video URL: vimeo.com/[id]",
       "videoUrlYoutube": "Find the ID in the video URL: youtube.com/watch?v=[id]",
       "vimeo": "Vimeo",
-      "warning": "Warning",
+      "warning": "Попередження",
       "youtube": "YouTube",
       "zoomLevel": "Zoom Level",
       "zoomLevelExample": "10 is a good default. Higher is more zoomed in."
     },
+    "emptyState": {
+      "addFirstSection": "Додайте першу секцію",
+      "description": "Додайте секцію, щоб почати створювати сторінку. Ви можете змінювати порядок і налаштовувати секції в будь-який час.",
+      "title": "Ця сторінка порожня"
+    },
+    "faqEdit": {
+      "heading": "Заголовок",
+      "headingType": "Тип заголовка",
+      "iconColor": "Колір іконки",
+      "link": "Зв'язати",
+      "title": "Назва"
+    },
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
       "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
-      "upload": "Upload",
+      "upload": "Завантажити",
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
-      "files": "Files",
+      "actions": "Дії",
+      "deleteFile": "Видалити файл",
+      "fileCountPlural": "файли",
+      "fileCountSingular": "файл",
+      "files": "Файли",
       "getStarted": "Get started by uploading your first file",
-      "noFilesYet": "No files uploaded yet"
+      "name": "Ім'я",
+      "noFilesYet": "No files uploaded yet",
+      "size": "Розмір",
+      "storage": "Сховище:",
+      "storageLimit": "/ 100 МБ"
     },
     "filesPage": {
+      "loading": "Завантаження...",
       "subtitle": "Manage files and media for your website",
-      "title": "Files"
+      "title": "Файли"
     },
     "fontEdit": {
+      "applyCombination": "Натисніть будь-яку комбінацію, щоб застосувати її миттєво",
+      "bodyFont": "Шрифт тексту",
+      "bodyFontDesc": "Використовується для абзаців, описів і основного тексту",
       "fontSelection": "Font Selection",
+      "fontsNull": "Шрифти null",
+      "headerSubtitle": "Виберіть і налаштуйте шрифти сайту",
+      "headerTitle": "Налаштування типографіки",
+      "headingFont": "Шрифт заголовків",
+      "headingFontDesc": "Використовується для назв, заголовків і виділеного тексту",
+      "mainHeadingPreview": "Попередній перегляд основного заголовка",
       "popularFontCombinations": "Popular Font Combinations",
+      "previewBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.",
+      "previewBody2": "Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.",
+      "saveFonts": "Зберегти шрифти",
+      "saving": "Збереження...",
+      "secondaryHeading": "Додатковий заголовок",
       "typographyPreview": "Typography Preview"
+    },
+    "formEdit": {
+      "createNewForm": "Створити нову форму",
+      "noFormsAvailable": "Немає доступних форм!",
+      "select": "Вибрати"
+    },
+    "helpDialog": {
+      "addBody": "Натисніть Додати вміст на панелі інструментів, потім перетягніть секцію або елемент на сторінку.",
+      "addTitle": "Додати вміст",
+      "editBody": "Двічі клацніть на будь-якій секції або елементі, щоб відкрити її налаштування. Один клік для вибору та використання плаваючої панелі інструментів.",
+      "editTitle": "Редагувати все",
+      "fullDocs": "Повна документація",
+      "moveBody": "Перетягуйте секції та елементи, щоб змінити порядок. Використовуйте стрілки вгору/вниз на панелі вибору для точних переміщень.",
+      "moveTitle": "Переставити",
+      "title": "Основи редактора сторінок",
+      "undoBody": "Використовуйте Ctrl+Z для скасування і Ctrl+Shift+Z для повторення. Відкрийте панель Історія з меню, щоб перейти до будь-якого попереднього стану.",
+      "undoTitle": "Скасування та історія"
+    },
+    "historyPanel": {
+      "current": "(поточний)",
+      "noHistory": "Історія поки недоступна. Внесіть зміни, щоб почати відстеження історії.",
+      "restoreToPoint": "Відновити до цієї точки",
+      "title": "Історія редагування"
     },
     "navLink": {
       "addLink": "Add Link",
       "linkSettings": "Link Settings"
     },
+    "navLinkEdit": {
+      "errLinkText": "Введіть текст посилання",
+      "linkText": "Текст посилання",
+      "unauthorizedCreate": "Немає дозволу створювати сторінки",
+      "unauthorizedDelete": "Немає дозволу видаляти сторінки",
+      "url": "URL"
+    },
     "pageLink": {
-      "check": "Check",
+      "check": "Чек",
       "confirmDelete": "Are you sure you wish to permanently delete this page?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this page and all of it's contents?",
       "linkSettings": "Link Settings",
       "pageSettings": "Page Settings",
       "urlHelper": "ex: /camper-registration  (**Make sure to check before saving)"
     },
+    "pageLinkEdit": {
+      "cleanCentered": "Чистий центрований вміст",
+      "duplicate": "Дублювати",
+      "errCheckUrl": "Перевірте URL-шлях",
+      "errPath": "Введіть шлях.",
+      "errTitle": "Введіть назву.",
+      "headerFooter": "Заголовок і нижній колонтитул",
+      "layout": "Макет",
+      "linkText": "Текст посилання",
+      "pageTitle": "Назва сторінки",
+      "unauthorizedCreate": "Немає дозволу створювати сторінки",
+      "unauthorizedDelete": "Немає дозволу видаляти сторінки",
+      "url": "URL",
+      "urlPath": "URL-шлях"
+    },
     "pagePreview": {
       "editContent": "Edit Content",
+      "loading": "Завантаження...",
       "pageSettings": "Page Settings",
+      "previewOf": "Попередній перегляд {title}",
       "subtitle": "Previewing: {title}",
       "title": "Website Preview"
     },
@@ -2135,8 +3218,9 @@
       "convert": "Convert"
     },
     "pagesPage": {
-      "actions": "Actions",
+      "actions": "Дії",
       "addFirstPage": "Add First Page",
+      "addNavigationLink": "Додати посилання навігації",
       "addPage": "Add Page",
       "autoGenerated": "Auto-generated",
       "confirmConvert": "Would you like to convert this auto-generated page to a custom page?",
@@ -2147,7 +3231,7 @@
       "getStarted": "Get started by adding your first page.",
       "mainNavigation": "Main Navigation",
       "noPagesFound": "No pages found",
-      "pages": "Pages",
+      "pages": "Сторінки",
       "path": "Path",
       "previewPage": "Preview page",
       "showLogin": "Show Login",
@@ -2158,16 +3242,48 @@
       "websitePages": "Website Pages"
     },
     "paletteEdit": {
+      "accent": "Акцент",
+      "applyPaletteAria": "Застосувати запропоновану палітру кольорів",
+      "applySuggested": "Натисніть будь-яку палітру, щоб застосувати її миттєво",
+      "baseColors": "Базові кольори",
       "colorCombinationsPreview": "Color Combinations Preview",
       "colorValues": "Color Values",
+      "dark": "Темний",
+      "darkAccent": "Темний акцент",
+      "error": "Помилка",
+      "headerSubtitle": "Налаштуйте кольорову схему вашого сайту. Для кольорів мобільного додатку, порталу учасників і кіоску перейдіть до Параметри > Тема програми.",
+      "headerTitle": "Палітра кольорів",
+      "light": "Світлий",
+      "lightAccent": "Світлий акцент",
+      "palette": "Палітра",
+      "previewWorkTogether": "Подивіться, як ваші кольори поєднуються",
+      "primary": "Основний",
       "savePalette": "Save Palette",
-      "suggestedPalettes": "Suggested Palettes"
+      "secondary": "Додатковий",
+      "semanticColors": "Семантичні кольори",
+      "success": "Успіх",
+      "suggestedPalettes": "Suggested Palettes",
+      "warning": "Попередження"
     },
     "pickColors": {
+      "background": "Фон",
+      "backgroundField": "Фон",
+      "backgroundOpacity": "Прозорість фону",
+      "backgroundType": "Тип фону",
+      "color": "Колір",
+      "content": "Вміст",
+      "currentColors": "Поточні кольори",
       "headingColor": "Heading Color",
+      "image": "Зображення",
       "linkColor": "Link Color",
       "opacityHelper": "The opacity of black gradient layer on top of the image. Max value: 1",
-      "textColor": "Text Color"
+      "sampleLink": "Приклад посилання",
+      "sampleText": "Приклад тексту",
+      "selectPhoto": "Вибрати фото",
+      "suggested": "Запропоновано",
+      "textColor": "Колір тексту",
+      "youtubeId": "Youtube ID",
+      "youtubeVideo": "Відео Youtube"
     },
     "row": {
       "addColumn": "Add Column",
@@ -2177,19 +3293,19 @@
       "halves": "Halves",
       "hideMobileOrder": "Hide Mobile Order",
       "hideMobileSizes": "Hide Mobile Sizes",
-      "preview": "Preview",
+      "preview": "Попередній перегляд",
       "previewHelper": "Numbers represent twelfths of page",
       "quarters": "Quarters",
       "remove": "Видалити",
       "showMobileOrder": "Show Mobile Order",
       "showMobileSizes": "Show Mobile Sizes",
-      "size1": "1 - 1/12th",
+      "size1": "1 - 1/12",
       "size10": "10 - 5/6ths",
       "size11": "11 - 11/12ths",
       "size12": "12 - Full",
-      "size2": "2 - 1/6th",
-      "size3": "3 - 1/4th",
-      "size4": "4 - 1/3rd",
+      "size2": "2 - 1/6",
+      "size3": "3 - 1/4",
+      "size4": "4 - 1/3",
       "size5": "5 - 5/12ths",
       "size6": "6 - 1/2",
       "size7": "7 - 7/12ths",
@@ -2200,28 +3316,188 @@
       "totalValid": "Total: 12/12",
       "width": "Width"
     },
+    "rowMobileOrder": {
+      "customizeOrder": "Налаштувати мобільний порядок",
+      "desktopOrder": "Порядок настільної версії",
+      "mobileOrder": "Мобільний порядок"
+    },
+    "rowMobileSizes": {
+      "customizeLayout": "Налаштувати мобільний макет",
+      "desktopWidth": "Ширина настільної версії",
+      "mobileWidth": "Ширина мобільної версії",
+      "mobileWidthsHelper": "Мобільні ширини не повинні дорівнювати 12. Значення, що сумуються до 24, охоплять два рядки.",
+      "size1": "1 - 1/12",
+      "size10": "10 - 5/6",
+      "size11": "11 - 11/12",
+      "size12": "12 - ціле",
+      "size2": "2 - 1/6",
+      "size3": "3 - 1/4",
+      "size4": "4 - 1/3",
+      "size5": "5 - 5/12",
+      "size6": "6 - половина",
+      "size7": "7 - 7/12",
+      "size8": "8 - 2/3",
+      "size9": "9 - 3/4"
+    },
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
-      "editSection": "Edit Section"
+      "editSection": "Редагувати секцію",
+      "layoutContainer": "Контейнер макета",
+      "section": "Секція"
+    },
+    "sectionBlock": {
+      "deleteSection": "Видалити секцію",
+      "edit": "Редагувати"
     },
     "sectionEdit": {
+      "block": "Блок",
+      "blockNamePromptDefault": "Назва блоку",
       "convertTo": "Convert To",
       "convertToBlock": "Convert To Block",
-      "duplicate": "Duplicate",
-      "duplicateSection": "Duplicate Section"
+      "convertToBlockPrompt": "Ви впевнені, що хочете скопіювати цю секцію та весь її вміст у блок?",
+      "duplicate": "Дублювати",
+      "duplicateSection": "Duplicate Section",
+      "id": "ID"
+    },
+    "spacingScaleEdit": {
+      "buttonOne": "Кнопка 1",
+      "buttonTwo": "Кнопка 2",
+      "cardTitle": "Назва картки",
+      "cardWithContent": "Картка з вмістом",
+      "dramaticSection": "Драматична секція",
+      "dramaticSectionDesc": "Використовує xxl ({value}px) вертикальний відступ для максимального ефекту",
+      "extraLarge": "Дуже великий",
+      "extraLargeDesc": "Великі проміжки між основними секціями",
+      "extraSmall": "Дуже маленький",
+      "extraSmallDesc": "Тісне розташування для компактних макетів",
+      "fullWidthBanner": "Банер на всю ширину",
+      "headerSubtitle": "Налаштуйте узгоджені значення відступів",
+      "headerTitle": "Шкала відступів",
+      "heroSection": "Героїчна секція",
+      "heroSectionDesc": "Використовує xl ({xl}px) вертикальний і lg ({lg}px) горизонтальний відступи",
+      "iconRow": "Ряд іконок",
+      "iconRowDesc": "Іконки використовують xs ({value}px) відступ між ними",
+      "large": "Великий",
+      "largeDesc": "Просторі макети та секції",
+      "medium": "Середній",
+      "mediumDesc": "Стандартні відступи для більшості макетів",
+      "pageSection": "Секція сторінки",
+      "practicalExamples": "Практичні приклади",
+      "practicalExamplesDesc": "Подивіться, як значення відступів впливають на реальні елементи інтерфейсу",
+      "saveSpacing": "Зберегти відступи",
+      "small": "Малий",
+      "smallDesc": "Малі проміжки між пов'язаними елементами",
+      "spacingValues": "Значення відступів",
+      "twoXLarge": "2X великий",
+      "twoXLargeDesc": "Максимальні відступи для драматичних макетів"
     },
     "style": {
       "editStyle": "Edit Style"
     },
     "styleEdit": {
-      "property": "Property"
+      "addStyle": "Додати стиль",
+      "all": "Усі",
+      "blurRadius": "Радіус розмиття - px",
+      "desktopOnly": "Лише настільна версія",
+      "mobileOnly": "Лише мобільна версія",
+      "offsetX": "Зсув X - px",
+      "offsetY": "Зсув Y - px",
+      "platform": "Платформа:",
+      "property": "Property",
+      "stylesHelper": "Використовуйте ці поля для налаштування стилю окремого елемента. Для змін на всьому сайті використовуйте редактор зовнішнього вигляду сайту."
+    },
+    "stylesAnimations": {
+      "animations": "Анімації",
+      "animationsDesc": "Ефект для відображення елемента.",
+      "styles": "Стилі",
+      "stylesDesc": "Розширені параметри зовнішнього вигляду."
     },
     "stylesManager": {
-      "styleSettings": "Style Settings"
+      "color": "Палітра кольорів",
+      "colorDesc": "Налаштуйте кольорову схему сайту",
+      "css": "CSS і Javascript",
+      "cssDesc": "Додайте власні стилі та скрипти",
+      "fonts": "Шрифти",
+      "fontsDesc": "Виберіть і налаштуйте типографіку",
+      "footer": "Нижній колонтитул сайту",
+      "footerDesc": "Налаштуйте нижній колонтитул сайту",
+      "loadingPreview": "Завантаження попереднього перегляду...",
+      "logo": "Логотип",
+      "logoDesc": "Завантажте та керуйте логотипом",
+      "siteFooterName": "Нижній колонтитул сайту",
+      "spacing": "Шкала відступів",
+      "spacingDesc": "Визначте узгоджені значення відступів",
+      "styleSettings": "Style Settings",
+      "typography": "Шкала типографіки",
+      "typographyDesc": "Налаштуйте розміри шрифтів і відступи",
+      "yourChurch": "Ваша церква"
+    },
+    "tableEdit": {
+      "allowMarkdown": "Дозволити Markdown",
+      "columns": "Стовпці",
+      "empty": "(порожньо)",
+      "firstRowHeader": "Перший рядок - заголовок",
+      "medium": "Середній",
+      "no": "Ні",
+      "rows": "Рядки",
+      "size": "Розмір",
+      "sizeSmall": "Малий",
+      "yes": "Так"
     },
     "templates": {
       "viewSermons": "View Sermons"
+    },
+    "tokenPicker": {
+      "accent": "Акцент",
+      "baseSize": "Базовий розмір",
+      "bodyFont": "Шрифт тексту",
+      "borderRadius": "Радіус рамки",
+      "colors": "Кольори",
+      "dark": "Темний",
+      "darkAccent": "Темний акцент",
+      "designToken": "Дизайн-токен",
+      "error": "Помилка",
+      "extraLarge": "Дуже великий (32px)",
+      "extraSmall": "Дуже малий (4px)",
+      "full": "Повний (9999px)",
+      "headingFont": "Шрифт заголовків",
+      "large": "Великий (16px)",
+      "largeRadius": "Великий (16px)",
+      "largeSize": "Великий розмір",
+      "lightAccent": "Світлий акцент",
+      "lineHeight": "Висота рядка",
+      "medium": "Середній (16px)",
+      "mediumRadius": "Середній (8px)",
+      "noneRadius": "Немає (0px)",
+      "primary": "Основний",
+      "secondary": "Додатковий",
+      "selectToken": "Виберіть токен",
+      "small": "Малий (8px)",
+      "smallRadius": "Малий (4px)",
+      "smallSize": "Малий розмір",
+      "spacing": "Відступи",
+      "success": "Успіх",
+      "tokenLight": "Світлий",
+      "twoXLarge": "2X великий (48px)",
+      "typography": "Типографіка",
+      "warning": "Попередження"
+    },
+    "typographyEdit": {
+      "baseSize": "Базовий розмір (px)",
+      "baseSizeDesc": "Базовий розмір шрифту для основного тексту (за замовчуванням: 16px)",
+      "bodyText": "Основний текст - {size}px: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "headerSubtitle": "Налаштуйте шрифти та шкалу типу",
+      "headerTitle": "Шкала типографіки",
+      "headingPreview": "Заголовок {level} - {size}",
+      "lineHeight": "Висота рядка",
+      "lineHeightDesc": "Висота рядка для основного тексту (за замовчуванням: 1.6)",
+      "preview": "Попередній перегляд",
+      "saveTypography": "Зберегти типографіку",
+      "scale": "Шкала типу",
+      "scaleDesc": "Множник для кожного рівня заголовка (за замовчуванням: 1.25)",
+      "smallText": "Малий текст - {size}: Допоміжний текст і підписи",
+      "typographyScale": "Шкала типографіки"
     }
   },
   "songs": {
@@ -2230,7 +3506,7 @@
       "deleteConfirm": "Are you sure you want to delete this arrangement?",
       "edit": "Edit Arrangement",
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
-      "lyrics": "Lyrics",
+      "lyrics": "Тексти",
       "name": "Arrangement Name",
       "title": "Arrangement"
     },
@@ -2240,20 +3516,20 @@
       "title": "Create Song"
     },
     "deleteSong": {
-      "confirm": "Confirm"
+      "confirm": "Підтвердити"
     },
     "details": {
       "album": "Album",
       "artist": "Artist",
       "bpm": "BPM",
-      "key": "Key",
+      "key": "Ключ",
       "keySignature": "Key Signature",
       "keys": "Keys",
       "language": "Language",
-      "length": "Length",
+      "length": "Довжина",
       "meter": "Meter",
       "releaseDate": "Release Date",
-      "seconds": "Seconds"
+      "seconds": "Секунди"
     },
     "key": {
       "default": "Default",
@@ -2265,11 +3541,17 @@
     },
     "keys": {
       "add": "Додати",
-      "addExternalLink": "Add external link",
+      "addExternalLink": "Додати зовнішнє посилання",
+      "addExternalLinkAria": "Додати зовнішнє посилання",
       "addFiles": "Add Files",
-      "import": "Import",
+      "availableDownloads": "Доступні завантаження",
+      "editSelectedKeyAria": "Редагувати вибраний ключ",
+      "externalLinks": "Зовнішні посилання",
+      "import": "Імпорт",
       "importFromPraiseCharts": "Import files from PraiseCharts",
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
+      "keysTabsAria": "Вкладки ключів",
+      "noKeysAvailable": "Немає доступних ключів. Додайте ключ для початку.",
       "title": "Keys"
     },
     "library": {
@@ -2284,8 +3566,27 @@
       "chordChart": "Chord Chart",
       "deleteConfirm": "Are you sure you want to delete this link?",
       "edit": "Edit Link",
-      "text": "Text",
-      "url": "Url"
+      "text": "Текст",
+      "url": "URL"
+    },
+    "oldArrangement": {
+      "key": "Ключ"
+    },
+    "oldArrangements": {
+      "addArrangement": "Додати аранжування",
+      "addArrangementAria": "Додати аранжування",
+      "arrangements": "Аранжування",
+      "edit": "Редагувати",
+      "editArrangementAria": "Редагувати аранжування",
+      "noArrangements": "Аранжувань не знайдено."
+    },
+    "praiseChartsProducts": {
+      "close": "Закрити",
+      "free": "Безкоштовно",
+      "linkAccountPrefix": "У вас немає прив'язаного облікового запису PraiseCharts. Перейдіть до вашого",
+      "linkAccountSuffix": "щоб прив'язати обліковий запис.",
+      "profile": "профіль",
+      "title": "Додати продукти з PraiseCharts"
     },
     "search": {
       "createManually": "Create Manually",
@@ -2296,11 +3597,40 @@
       "placeholder": "Search songs by title or artist...",
       "title": "Search for a Song"
     },
+    "songDetailLinks": {
+      "addFirstLink": "Додати перше посилання",
+      "externalLinks": "Зовнішні посилання",
+      "noLinksYet": "Зовнішніх посилань ще не додано"
+    },
+    "songDetailLinksEdit": {
+      "externalLinks": "Зовнішні посилання",
+      "id": "ID",
+      "key": "Ключ",
+      "service": "Служба"
+    },
+    "songDetails": {
+      "editSongDetailsAria": "Редагувати деталі пісні",
+      "fallbackTitle": "Деталі пісні",
+      "noDetails": "Немає додаткових деталей для цієї пісні."
+    },
     "songPage": {
+      "addArrangement": "Додати аранжування",
+      "deleteSongAria": "Видалити пісню",
       "loading": "Завантаження...",
+      "noArrangementDescription": "Виберіть аранжування з бічної панелі для початку.",
+      "noArrangementSelected": "Не вибрано аранжування",
       "subtitle": "Manage song details and arrangements"
     },
+    "songSearchDialog": {
+      "closeDialogAria": "Закрити діалог",
+      "poweredBy": "Працює на:",
+      "searchSongsAria": "Пошук пісень",
+      "songTitleOrArtistAria": "Назва пісні або виконавець"
+    },
     "songsPage": {
+      "addSongAria": "Додати пісню",
+      "search": "Пошук",
+      "searchSongs": "Пошук пісень",
       "songs": "Пісні",
       "subtitle": "Manage your music library"
     },
@@ -2310,28 +3640,34 @@
     "actionEdit": {
       "actType": "Action Type",
       "actTypeHelp": "Select the type of action to perform",
-      "assignTo": "Assign to",
+      "actionTypeAria": "Тип дії",
+      "assignTo": "Призначити",
+      "assignToAria": "Призначити",
       "editAct": "Action Edit",
       "taskAssign": "Assign a Task",
       "taskNote": "Task Note",
-      "taskTitle": "Task Title"
+      "taskNoteAria": "Примітка завдання",
+      "taskTitle": "Task Title",
+      "taskTitleAria": "Назва завдання"
     },
     "automationDetails": {
       "active": "Активний",
-      "acts": "Actions",
-      "addAct": "Add Action",
+      "acts": "Дії",
+      "addAct": "Додати дію",
       "auto": "Automation Details",
-      "inactive": "Inactive",
+      "inactive": "Неактивний",
       "noAct": "No actions configured",
       "recurs": "Recurs"
     },
     "automationEdit": {
       "active": "Активний",
       "autoEdit": "Edit Automation",
-      "inactive": "Inactive",
+      "automationTitleAria": "Назва автоматизації",
+      "inactive": "Неактивний",
       "monthly": "Щомісяця",
       "never": "Never",
       "recurHelp": "Set how often this automation should run",
+      "recurrenceAria": "Повторення",
       "rep": "Repeat",
       "weekly": "Щотижня",
       "yearly": "Yearly"
@@ -2340,7 +3676,7 @@
       "active": "Активний",
       "addAuto": "Add Automation",
       "auto": "Automated Tasks",
-      "inactive": "Inactive",
+      "inactive": "Неактивний",
       "manageAuto": "Managed Automated Tasks",
       "noAuto": "No automations configured",
       "recurs": "Recurs",
@@ -2353,7 +3689,7 @@
       "group": "Група",
       "hasAtt": "has attended",
       "hasNoAtt": "has not attended",
-      "op": "Operator",
+      "op": "Оператор",
       "serv": "Служба",
       "servTime": "Час служби"
     },
@@ -2363,12 +3699,14 @@
       "dateFull": "Full Date",
       "datePart": "Date Part",
       "dayOf": "Day of",
+      "dayOfWeekAria": "День тижня",
       "fri": "Friday",
       "mon": "Monday",
       "month": "Month",
       "monthDay": "Day of Month",
       "nextMonth": "Next Month",
-      "op": "Operator",
+      "numberValueAria": "Числове значення",
+      "op": "Оператор",
       "prevMonth": "Previous Month",
       "relative": "Relative",
       "sat": "Saturday",
@@ -2382,11 +3720,15 @@
     "conditionDetails": {
       "addCon": "Add Condition",
       "addCondition": "Add Condition",
+      "addConditionAria": "Додати умову",
       "addConj": "Add Conjunction",
-      "all": "All",
+      "addConjunctionAria": "Додати сполучник",
+      "all": "Усі",
       "and": "AND",
-      "any": "Any",
+      "any": "Будь-який",
       "con": "Conditions:",
+      "editConditionAria": "Редагувати умову",
+      "editConjunctionAria": "Редагувати сполучник",
       "noCond": "No conditions added",
       "or": "OR",
       "trueCon": "of these conditions are true"
@@ -2394,61 +3736,71 @@
     "conditionEdit": {
       "conDetails": "Condition Details",
       "conEdit": "Edit Condition",
-      "conInfo": "Contact Info",
+      "conInfo": "Контактна інформація",
       "conType": "Condition Type",
+      "conditionTypeAria": "Тип умови",
       "confirmMsg": "Are you sure you want to delete this condition?",
       "gen": "General",
       "persAtt": "Personal Attributes",
       "today": "Today's Date"
     },
     "conditionSelect": {
-      "is": "is",
-      "isNot": "is not",
-      "op": "Operator"
+      "is": "є",
+      "isNot": "не є",
+      "op": "Оператор"
     },
     "conditionText": {
-      "contains": "contains",
-      "endW": "ends with",
-      "op": "Operator",
-      "startW": "starts with"
+      "conditionOperatorAria": "Оператор умови",
+      "conditionValueAria": "Значення умови",
+      "contains": "містить",
+      "endW": "закінчується на",
+      "op": "Оператор",
+      "startW": "починається з"
     },
     "conjunctionEdit": {
       "and": "AND - All of the conditions are true",
       "conjEdit": "Edit Conjunction",
       "conjType": "Conjunction Type",
+      "conjunctionTypeAria": "Тип сполучника",
       "or": "OR - Any of the conditions are true"
     },
     "contentPicker": {
       "group": "Група",
-      "pers": "Person",
-      "sel": "Select",
+      "pers": "Особа",
+      "sel": "Вибрати",
       "selPers": "Select a Person or Group"
     },
     "newTask": {
       "assignPers": "Please assign this task to a person.",
-      "assignTo": "Assign to",
+      "assignTo": "Призначити",
+      "assignToAria": "Призначити",
       "associatePers": "Please associate this task with a person.",
-      "associateW": "Associate with",
+      "associateW": "Пов'язати з",
+      "associateWithAria": "Пов'язати з",
       "newAssign": "New Assignment",
       "saving": "Збереження...",
       "taskNew": "New Task",
+      "taskNotesAria": "Примітки завдання",
+      "taskTitleAria": "Назва завдання",
       "titleTask": "Please enter a title for this task."
     },
     "requestedChanges": {
       "applied": "Changes applied",
       "apply": "Apply",
-      "field": "Field",
+      "field": "Поле",
       "newProfile": "New Profile",
       "requestedChanges": "Requested Changes",
-      "value": "Value"
+      "value": "Значення"
     },
     "selectGroup": {
       "group": "Група",
       "noResults": "No groups found matching your search",
-      "searchPrompt": "Search for a group to select"
+      "searchPrompt": "Search for a group to select",
+      "selectGroupAria": "Вибрати групу"
     },
     "taskList": {
       "addTask": "Add Task",
+      "addTaskAria": "Додати завдання",
       "assignGroup": "Assigned to My Groups",
       "assignMe": "Assigned to Me",
       "assignedTo": "Assigned to",
@@ -2456,11 +3808,13 @@
       "noTasks": "No tasks found",
       "notSpecified": "Not specified",
       "reqMe": "Requested by Me",
+      "showClosedTasksAria": "Показати закриті завдання",
+      "showOpenTasksAria": "Показати відкриті завдання",
       "tasks": "Завдання",
       "unassigned": "Не призначено"
     },
     "taskPage": {
-      "ago": "ago",
+      "ago": "тому",
       "assign": "Assign",
       "assigned": "Assigned",
       "associate": "Associate",
@@ -2481,6 +3835,20 @@
       "showOpen": "Show Open",
       "subtitle": "Manage tasks and automations",
       "tasks": "Завдання"
+    }
+  },
+  "ui": {
+    "personBanner": {
+      "memberStatus": "УЧАСНИК"
+    },
+    "personNav": {
+      "attendance": "Відвідування",
+      "customForms": "Власні форми",
+      "details": "Деталі",
+      "discipleship": "Учнівство",
+      "giving": "Пожертви",
+      "groups": "Групи",
+      "notes": "Примітки"
     }
   }
 }

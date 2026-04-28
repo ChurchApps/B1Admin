@@ -1,5 +1,28 @@
 {
+  "app": {
+    "login": {
+      "demoCredentials": "이메일 \"{email}\" 및 비밀번호 \"{password}\"를 사용하세요.",
+      "demoLabel": "데모:",
+      "demoMessage": "이것은 데모 환경입니다. 모든 데이터는 매일 밤 삭제됩니다.",
+      "demoTestChurch": "테스트 교회 \"Grace Community Church\"에 로그인할 수 있습니다"
+    },
+    "oauth": {
+      "allow": "허용",
+      "allowAria": "권한 부여 허용",
+      "authorizationRequired": "권한 부여 필요",
+      "deny": "거부",
+      "denyAria": "권한 부여 거부",
+      "loading": "로딩 중...",
+      "loadingChurchData": "교회 데이터 로딩 중...",
+      "logoAlt": "로고",
+      "permissionPlans": "계획",
+      "promptAccess": "위 애플리케이션에서 {churchName}의 다음 데이터에 액세스하시겠습니까?"
+    }
+  },
   "attendance": {
+    "attendanceNavigation": {
+      "kioskTheme": "키오스크 테마"
+    },
     "attendancePage": {
       "att": "출석",
       "campus": "캠퍼스",
@@ -17,6 +40,7 @@
       "unscheduled": "예정되지 않은"
     },
     "attendanceSetup": {
+      "addCampusAria": "캠퍼스 추가",
       "addService": "서비스 추가",
       "addServiceTime": "서비스 시간 추가",
       "newCampus": "뉴캠퍼스",
@@ -28,14 +52,36 @@
     "campusEdit": {
       "confirmDelete": "이 캠퍼스를 삭제하시겠습니까?",
       "name": "캠퍼스 이름",
+      "nameAria": "캠퍼스 이름",
       "validate": {
         "name": "캠퍼스 이름이 필요합니다."
       }
     },
+    "checkinThemeEdit": {
+      "addSlide": "슬라이드 추가",
+      "background": "배경",
+      "backgroundImage": "배경 이미지",
+      "backgroundImageDesc": "조회/환영 화면의 선택적 배경 이미지. 권장: 1920x1080.",
+      "change": "변경",
+      "changeImage": "이미지 변경",
+      "duration": "지속 시간(초)",
+      "enableIdleScreen": "유휴 화면 활성화",
+      "headerSubtitle": "키오스크 색상은 설정 > 앱 테마에서 관리됩니다. 아래에서 배경 이미지와 유휴 화면 동작을 구성하세요.",
+      "idleScreen": "유휴 화면 / 화면 보호기",
+      "kioskSettings": "키오스크 설정",
+      "remove": "제거",
+      "slide": "슬라이드 {index}",
+      "slides": "슬라이드",
+      "timeoutSeconds": "시간 초과(초)",
+      "upload": "업로드",
+      "uploadImage": "이미지 업로드"
+    },
     "serviceEdit": {
       "campus": "캠퍼스",
+      "campusAria": "캠퍼스 선택",
       "confirmDelete": "이 서비스를 영구적으로 삭제하시겠습니까?",
       "name": "서비스 이름",
+      "nameAria": "예배 이름",
       "validate": {
         "campus": "캠퍼스를 선택해주세요.",
         "name": "서비스 이름이 필요합니다."
@@ -44,7 +90,10 @@
     "serviceTimeEdit": {
       "confirmDelete": "이 서비스 시간을 영구적으로 삭제하시겠습니까?",
       "name": "서비스 시간",
+      "nameAria": "예배 시간 이름",
+      "namePlaceholder": "오전 8:00",
       "service": "서비스",
+      "serviceAria": "예배 선택",
       "validate": {
         "name": "서비스 시간 이름이 필요합니다.",
         "service": "서비스를 선택해주세요."
@@ -138,6 +187,9 @@
   "common": {
     "add": "추가",
     "amount": "금액",
+    "appTheme": "앱 테마",
+    "b1CheckIn": "B1 CheckIn",
+    "b1Mobile": "B1 Mobile",
     "back": "뒤로",
     "bottom": "하단",
     "cancel": "취소",
@@ -182,7 +234,9 @@
       "tryDifferent": "다른 검색어를 사용해 보세요."
     },
     "left": "왼쪽",
+    "mobile": "모바일",
     "name": "이름",
+    "navigation": "탐색",
     "no": "아니요",
     "notes": "노트",
     "person": "사람",
@@ -205,14 +259,45 @@
     "tryAgain": "다시 시도",
     "update": "업데이트",
     "website": "웹사이트",
-    "mobile": "모바일",
-    "navigation": "탐색",
-    "appTheme": "앱 테마",
-    "b1Mobile": "B1 Mobile",
-    "b1CheckIn": "B1 CheckIn",
     "yes": "예"
   },
   "components": {
+    "associatedForms": {
+      "addForm": "양식 추가"
+    },
+    "bezChat": {
+      "ariaOpen": "Bez 채팅 열기",
+      "errorAnswer": "죄송합니다. 답변을 찾을 수 없습니다.",
+      "errorGeneric": "문제가 발생했습니다. 다시 시도해 주세요.",
+      "intro": "안녕하세요, 저는 Bez입니다! B1 Admin 탐색을 도와드릴 수 있습니다. 다음과 같이 물어보세요:",
+      "placeholderInput": "Bez에게 질문하기...",
+      "sampleCsv": "\"CSV에서 멤버를 가져오는 방법은?\"",
+      "sampleGiving": "\"온라인 헌금을 설정하는 방법은?\"",
+      "sampleGroup": "\"새 그룹을 만드는 방법은?\"",
+      "title": "Bez에게 묻기"
+    },
+    "docChat": {
+      "ariaOpen": "도움말 채팅 열기",
+      "composing": "답변 작성 중...",
+      "errorAnswer": "죄송합니다. 답변을 찾을 수 없습니다.",
+      "errorGeneric": "문제가 발생했습니다. 다시 시도해 주세요.",
+      "intro": "B1 Admin에 대해 질문하세요. 예:",
+      "placeholderInput": "질문하기...",
+      "sampleCsv": "\"CSV에서 멤버를 가져오는 방법은?\"",
+      "sampleGiving": "\"온라인 헌금을 설정하는 방법은?\"",
+      "sampleGroup": "\"새 그룹을 만드는 방법은?\"",
+      "searching": "문서 검색 중...",
+      "title": "도움말 도우미"
+    },
+    "draggableWrapper": {
+      "ariaLabel": "드래그 가능 항목"
+    },
+    "droppableWrapper": {
+      "ariaLabel": "드롭 영역"
+    },
+    "fileUpload": {
+      "file": "파일"
+    },
     "footer": {
       "phone": "전화",
       "rights": "모든 권리 보유."
@@ -224,6 +309,41 @@
       "featureWebsite": "웹사이트 빌더 및 콘텐츠 관리",
       "subtitle": "교인을 관리하고, 예배를 계획하고, 출석을 추적하고, 헌금을 관리하세요 — 모두 한 곳에서.",
       "title": "간편한 교회 관리"
+    },
+    "permissionDenied": {
+      "contactAdmin": "액세스를 요청하려면 교회 관리자에게 문의하세요.",
+      "defaultMessage": "이 기능에 액세스하는 데 필요한 권한이 없습니다:"
+    },
+    "personAdd": {
+      "select": "선택"
+    },
+    "search": {
+      "ariaSearch": "검색",
+      "ariaSearchInput": "사람 검색",
+      "ariaSelectPerson": "사람 선택"
+    },
+    "sendInviteDialog": {
+      "addedMessage": "{personName}이(가) {contextName}에 추가되었습니다. {personEmail}로 이메일 초대장을 보내시겠습니까?",
+      "ariaTitle": "초대 이메일을 보내시겠습니까?",
+      "errorFailed": "초대 이메일 보내기에 실패했습니다.",
+      "noThanks": "괜찮습니다",
+      "sendInvite": "초대 보내기",
+      "sentMessage": "{personEmail}로 초대 이메일을 보냈습니다."
+    },
+    "siteNavigation": {
+      "ariaEditLink": "{linkText} 탐색 링크 편집",
+      "noTitle": "[제목 없음]"
+    },
+    "superBeeChat": {
+      "ariaOpen": "SuperBee 채팅 열기",
+      "errorAnswer": "슈퍼히어로도 가끔 벽에 부딪힙니다. 다시 시도해 주세요!",
+      "errorGeneric": "문제가 발생했습니다. 하지만 걱정 마세요 — 더 강해져서 돌아오겠습니다!",
+      "intro": "안녕하세요, 챔프! 저는 SuperBee — 당신의 B1 Admin 강자입니다. 가장 어려운 질문으로 도전하세요!",
+      "placeholderInput": "SuperBee에게 무엇이든 물어보세요...",
+      "sampleCsv": "\"CSV에서 멤버를 가져오는 방법은?\"",
+      "sampleGiving": "\"온라인 헌금을 설정하는 방법은?\"",
+      "sampleGroup": "\"새 그룹을 만드는 방법은?\"",
+      "title": "SuperBee"
     },
     "wrapper": {
       "att": "출석",
@@ -249,15 +369,116 @@
     "lastName": "성"
   },
   "dashboard": {
+    "adminWelcome": {
+      "addCongregationDesc": "출석, 그룹 및 헌금을 추적하려면 사람들을 가져오거나 추가하세요.",
+      "addCongregationTitle": "회중 추가",
+      "addLogoDesc": "로고를 업로드하고 교회의 연락처 정보를 업데이트하세요.",
+      "addLogoTitle": "교회 로고 추가",
+      "createGroupDesc": "소그룹, 교실 또는 봉사 팀을 설정하세요.",
+      "createGroupTitle": "첫 번째 그룹 만들기",
+      "createWebpageDesc": "방문자가 여러분에 대해 알 수 있는 공개 웹사이트를 구축하세요.",
+      "createWebpageTitle": "첫 번째 웹페이지 만들기",
+      "freePlayDesc": "TV에서 FreePlay 수업용 사역과 교실을 만드세요.",
+      "freePlayTitle": "FreePlay 교실 설정",
+      "freeShowDesc": "FreeShow를 연결하여 곡과 예배 계획을 백업하세요.",
+      "freeShowTitle": "FreeShow 백업 설정",
+      "intro": "시작하려면 아래 카드를 클릭하세요. 메뉴에서 나중에 언제든지 찾을 수 있습니다.",
+      "inviteTeamDesc": "스태프와 자원봉사자를 관리자로 추가하여 관리를 돕도록 하세요.",
+      "inviteTeamTitle": "팀원 초대",
+      "onlineGivingDesc": "Stripe를 연결하여 회중이 온라인으로 헌금할 수 있도록 하세요.",
+      "onlineGivingTitle": "온라인 헌금 설정",
+      "peopleAndGroups": "사람 및 그룹",
+      "servingAndContent": "봉사 및 콘텐츠",
+      "setAvatarDesc": "팀이 당신을 알아볼 수 있도록 프로필 사진을 업로드하세요.",
+      "setAvatarTitle": "아바타 설정",
+      "subtitle": "교회를 설정해 보세요. 가장 먼저 하고 싶은 몇 가지 작업이 있습니다.",
+      "title": "B1.church에 오신 것을 환영합니다!",
+      "uploadSermonDesc": "사람들이 언제든지 시청할 수 있도록 설교를 온라인으로 공유하세요.",
+      "uploadSermonTitle": "설교 업로드",
+      "yourChurch": "내 교회",
+      "yourProfile": "내 프로필"
+    },
     "dashboardPage": {
       "dash": "대시보드",
       "subtitle": "교회 관리 대시보드에 오신 것을 환영합니다. 사람들을 검색하고, 그룹을 보고, 열린 작업을 관리하세요."
     },
+    "memberWelcome": {
+      "downloadAppDesc": "어디서나 연결을 유지하려면 휴대폰에 B1.church 앱을 받으세요.",
+      "downloadAppTitle": "모바일 앱 다운로드",
+      "fallbackChurchName": "당신의 교회",
+      "findPeopleDesc": "교회 디렉토리를 검색하여 회중의 다른 사람들을 찾고 연결하세요.",
+      "findPeopleTitle": "아는 사람 찾기",
+      "intro": "프로필을 완성하고 교회가 제공하는 것을 탐색하는 것부터 시작하세요.",
+      "joinGroupDesc": "소그룹, 교실, 봉사 팀을 둘러보고 자신의 공동체를 찾으세요.",
+      "joinGroupTitle": "그룹 가입",
+      "onlineGivingDesc": "온라인으로 빠르고 쉽게 헌금하고, 선택적으로 정기 기부를 설정하세요.",
+      "onlineGivingTitle": "온라인 헌금 설정",
+      "setPhotoDesc": "교회의 사람들이 당신을 알아보고 이름과 얼굴을 연결할 수 있도록 프로필 사진을 업로드하세요.",
+      "setPhotoTitle": "사진 추가",
+      "subtitle": "연결을 유지하기 위해 할 수 있는 몇 가지 작업입니다.",
+      "title": "{churchName}에 오신 것을 환영합니다!",
+      "upcomingEventsDesc": "다가오는 이벤트, 예배 시간, 참여 방법을 확인하세요.",
+      "upcomingEventsTitle": "무슨 일이 있는지 보기"
+    },
     "myGroups": "내 그룹",
     "peopleSearch": {
+      "ariaSearch": "사람 검색",
+      "ariaSearchBox": "검색창",
       "display": "표시",
+      "noResults": "검색 조건과 일치하는 사람을 찾을 수 없습니다.",
       "photo": "사진",
       "ppl": "사람들"
+    },
+    "quickSetupModal": {
+      "classroomName": "교실 이름",
+      "createContinue": "만들고 계속",
+      "creating": "만드는 중...",
+      "errorBothMinistryClassroom": "사역 이름과 교실 이름을 모두 입력하세요.",
+      "errorBothMinistryTeam": "사역 이름과 팀 이름을 모두 입력하세요.",
+      "errorGeneric": "문제가 발생했습니다. 다시 시도해 주세요.",
+      "errorGroupName": "그룹 이름을 입력하세요.",
+      "errorPageTitle": "페이지 제목을 입력하세요.",
+      "errorPermFreePlay": "이 작업을 수행할 권한이 없습니다. 필요: MembershipApi - Groups - Edit, MembershipApi - Plans - Edit",
+      "errorPermGroups": "이 작업을 수행할 권한이 없습니다. 필요: MembershipApi - Groups - Edit",
+      "errorPermPages": "이 작업을 수행할 권한이 없습니다. 필요: ContentApi - Content - Edit",
+      "freePlayDescription": "FreePlay를 시작하려면 사역과 교실을 만들어야 합니다. 그 후 콘텐츠 공급자를 페어링하기 위해 리디렉션됩니다.",
+      "freePlayTitle": "FreePlay 교실 설정",
+      "freeShowDescription": "FreeShow 데이터를 백업하려면 사역과 팀을 만들어야 합니다. 그 후 팀원을 추가하기 위해 리디렉션됩니다.",
+      "freeShowTitle": "FreeShow 백업 설정",
+      "groupDescription": "그룹 이름을 입력하세요. 그룹 페이지로 리디렉션되어 구성하고 멤버를 추가할 수 있습니다.",
+      "groupName": "그룹 이름",
+      "groupTitle": "첫 번째 그룹 만들기",
+      "ministryName": "사역 이름",
+      "pageTitle": "페이지 제목",
+      "teamName": "팀 이름",
+      "webpageDescription": "첫 번째 페이지의 제목을 입력하세요. 페이지 편집기로 리디렉션되어 콘텐츠를 추가할 수 있습니다.",
+      "webpageTitle": "첫 번째 웹페이지 만들기"
+    }
+  },
+  "device": {
+    "deviceAuthPage": {
+      "allow": "허용",
+      "altLogo": "로고",
+      "authorizationFailed": "권한 부여 실패. 다시 시도해 주세요.",
+      "authorizationRequired": "권한 부여 필요",
+      "codePlaceholder": "XXXXXX",
+      "confirmPrompt": "위 애플리케이션에서 <b>{churchName}</b>의 다음 데이터에 액세스하시겠습니까?",
+      "continue": "계속",
+      "denied": "기기 권한 부여 거부됨",
+      "deny": "거부",
+      "deviceAuthorizedAlert": "기기가 권한 부여됨",
+      "deviceAuthorizedHeading": "기기가 권한 부여되었습니다!",
+      "deviceAuthorizedMessage": "이제 TV로 돌아갈 수 있습니다. 기기가 자동으로 연결됩니다.",
+      "deviceCodeLabel": "기기 코드:",
+      "enterCodePrompt": "TV에 표시된 코드를 입력하세요:",
+      "expiresInMinutes": "{minutes}분 후 만료",
+      "failedAuthorize": "기기 권한 부여에 실패했습니다",
+      "invalidCode": "코드가 잘못되었거나 만료되었습니다. 확인 후 다시 시도해 주세요.",
+      "loading": "로딩 중...",
+      "noChurchSelected": "선택된 교회가 없습니다. 다시 로그인하고 교회를 선택하세요.",
+      "requestedPermissions": "요청된 권한:",
+      "title": "기기 권한 부여",
+      "verifyFailed": "코드 확인 실패. 다시 시도해 주세요."
     }
   },
   "donation": {
@@ -336,14 +557,26 @@
     },
     "donationBatchPage": {
       "batchDate": "배치 날짜:",
+      "donations": "헌금",
+      "editBatch": "배치 편집",
       "subtitle": "이 배치의 기부 관리",
-      "title": "기부 배치"
+      "title": "기부 배치",
+      "totalAmount": "총액"
     },
     "donationBatchesPage": {
-      "subtitle": "기부 배치 관리 및 기록 추적"
+      "addBatch": "배치 추가",
+      "batches": "배치",
+      "donations": "헌금",
+      "export": "내보내기",
+      "stripeImportLink": "누락된 Stripe 거래 가져오기",
+      "subtitle": "기부 배치 관리 및 기록 추적",
+      "totalAmount": "총액"
     },
     "donationEdit": {
       "anon": "익명",
+      "ariaDate": "헌금 날짜",
+      "ariaMethod": "결제 방법",
+      "ariaNotes": "헌금 메모",
       "card": "카드",
       "cash": "현금",
       "check": "수표",
@@ -359,7 +592,9 @@
       "failed": "실패한 기부 - ",
       "mark": "다음으로 표시 ",
       "msg": "메시지: ",
-      "unres": " 해결되지 않음"
+      "resolved": "해결됨",
+      "unres": " 해결되지 않음",
+      "unresolved": "미해결"
     },
     "donations": {
       "amt": "금액",
@@ -367,9 +602,12 @@
       "batches": "배치",
       "date": "날짜",
       "don": "기부",
+      "edit": "편집",
       "errMsg": "기금을 찾을 수 없습니다. 기부하기 전에 기금을 생성해주세요",
+      "export": "내보내기",
       "funds": "기금",
       "noDonMsg": "추적된 기부가 없습니다. 기부가 입력되면 여기에 표시됩니다.",
+      "pending": "대기 중",
       "statements": "기부 명세서",
       "summary": "요약",
       "tableIdent": "ID",
@@ -384,6 +622,8 @@
       "total": "총액"
     },
     "fundEdit": {
+      "ariaFundName": "펀드 이름",
+      "ariaTaxDeductible": "세금 공제 가능",
       "confirmMsg": "이 기금과 그 안에 포함된 모든 기부를 영구적으로 삭제하시겠습니까?",
       "errBlank": "기금 이름을 입력하세요",
       "taxDeductible": "세금 공제 가능",
@@ -391,13 +631,18 @@
       "trackNonDonations": "캠프 등록, 티셔츠, 이벤트 티켓 등 비기부 거래를 추적합니다."
     },
     "fundPage": {
-      "subtitle": "이 기금에 대한 기부 및 기여 추적"
+      "donors": "기부자",
+      "filter": "필터",
+      "subtitle": "이 기금에 대한 기부 및 기여 추적",
+      "totalAmount": "총액"
     },
     "funds": {
+      "addFund": "펀드 추가",
       "fund": "기금",
       "noFund": "기금을 찾을 수 없습니다."
     },
     "fundsPage": {
+      "addFund": "펀드 추가",
       "amt": "금액",
       "anon": "익명",
       "batch": "배치",
@@ -407,8 +652,13 @@
       "don": "기부",
       "donFilt": "기부 필터",
       "donor": "기부자",
+      "export": "내보내기",
       "noDon": "선택한 날짜 범위에 대한 기부가 없습니다",
-      "subtitle": "기부 기금 관리 및 기부 범주 추적"
+      "nonDeductible": "공제 불가",
+      "subtitle": "기부 기금 관리 및 기부 범주 추적",
+      "taxDeductible": "세금 공제 가능",
+      "taxStatus": "세금 상태",
+      "totalFunds": "총 펀드"
     },
     "kpi": {
       "avgGift": "평균 헌금",
@@ -420,6 +670,68 @@
       "monthly": "월간",
       "quarterly": "분기",
       "weekly": "주간"
+    },
+    "printAllStatementsPage": {
+      "annualStatementTitle": "{year} 연간 헌금 명세서",
+      "contributionDetails": "기부 세부 정보",
+      "disclaimer": "이러한 기부에 대한 대가로 {churchName}이(가) 제공한 상품이나 서비스는 없습니다. 받은 유일한 혜택은 무형의 종교적 혜택이었습니다. {churchName}은(는) 비영리 단체입니다.",
+      "donorInformation": "기부자 정보",
+      "fund": "펀드",
+      "fundBreakdown": "펀드 분류",
+      "issued": "발행됨:",
+      "loadingStatements": "명세서 로딩 중...",
+      "noteLabel": "참고:",
+      "noteText": "이 명세서는 {year}년 동안 {churchName}에 기부한 내용을 요약한 것입니다. 세금 기록을 위해 이 문서를 보관하세요. 이 명세서에 대한 문의 사항은 교회 사무실로 연락해 주세요.",
+      "organization": "조직",
+      "period": "기간: {year}년 1월 1일 - 12월 31일",
+      "statementSummary": "명세서 요약",
+      "totalContributions": "총 기부금",
+      "totalContributionsLabel": "총 기부금:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "{year} 연간 헌금 명세서",
+      "contributionDetails": "기부 세부 정보",
+      "disclaimer": "이러한 기부에 대한 대가로 {churchName}이(가) 제공한 상품이나 서비스는 없습니다. 받은 유일한 혜택은 무형의 종교적 혜택이었습니다. {churchName}은(는) 비영리 단체입니다.",
+      "donorInformation": "기부자 정보",
+      "fund": "펀드",
+      "fundBreakdown": "펀드 분류",
+      "issued": "발행됨:",
+      "noteLabel": "참고:",
+      "noteText": "이 명세서는 {year}년 동안 {churchName}에 기부한 내용을 요약한 것입니다. 세금 기록을 위해 이 문서를 보관하세요. 이 명세서에 대한 문의 사항은 교회 사무실로 연락해 주세요.",
+      "organization": "조직",
+      "period": "기간: {year}년 1월 1일 - 12월 31일",
+      "statementSummary": "명세서 요약",
+      "totalContributions": "총 기부금",
+      "totalContributionsLabel": "총 기부금:"
+    },
+    "stripeImportPage": {
+      "alreadyImported": "이미 가져옴",
+      "alreadyImportedLabel": "이미 가져옴:",
+      "clickImportMissing": "{count}개의 새 거래를 가져오려면 \"누락 가져오기\"를 클릭하세요.",
+      "dateRangeDescription": "누락된 Stripe 거래를 확인할 날짜 범위를 선택하세요. 이미 가져온 거래는 시스템이 자동으로 건너뜁니다.",
+      "dateRequired": "시작 날짜와 종료 날짜를 모두 선택하세요",
+      "error": "오류",
+      "errorsLabel": "오류:",
+      "eventId": "이벤트 ID",
+      "failedFetch": "이벤트 가져오기 실패",
+      "failedImport": "이벤트 가져오기 실패",
+      "importMissing": "누락 가져오기",
+      "importResults": "가져오기 결과",
+      "imported": "가져옴",
+      "importedLabel": "가져옴:",
+      "new": "새로 만들기",
+      "newLabel": "새로 만들기:",
+      "noEvents": "이벤트를 찾을 수 없습니다. 날짜 범위를 선택하고 미리 보기를 클릭하세요.",
+      "preview": "미리 보기",
+      "previewResults": "미리 보기 결과",
+      "selectDateRange": "날짜 범위 선택",
+      "skipped": "건너뜀",
+      "skippedLabel": "건너뜀:",
+      "status": "상태",
+      "subtitle": "웹훅으로 캡처되지 않은 누락된 Stripe 거래를 가져옵니다",
+      "title": "Stripe 거래 가져오기",
+      "totalLabel": "총계:",
+      "type": "유형"
     }
   },
   "forms": {
@@ -431,6 +743,10 @@
     },
     "form": {
       "act": "행동",
+      "addQuestion": "질문 추가",
+      "addQuestionAria": "질문추가",
+      "moveDownAria": "아래로이동",
+      "moveUpAria": "위로이동",
       "noCustomMsg": "아직 생성된 맞춤 질문이 없습니다. 질문은 여기에 나열됩니다.",
       "question": "질문",
       "questions": "질문",
@@ -439,14 +755,17 @@
     },
     "formEdit": {
       "access": "양식 접근",
+      "accessLevelAria": "액세스 수준",
       "alone": "독립형",
       "associate": "연결 대상",
       "available": "양식 가용 기간 설정",
       "availableEnd": "가용 종료 날짜",
       "availableStart": "가용 시작 날짜",
       "confirmMsg": "이 양식을 영구적으로 삭제하시겠습니까?",
+      "contentTypeAria": "콘텐츠 유형",
       "editForm": "양식 편집",
       "endReqMsg": "종료 날짜가 필요합니다.",
+      "formNameAria": "양식 이름",
       "name": "양식 이름",
       "nameReqMsg": "양식 이름이 필요합니다.",
       "ppl": "사람들",
@@ -460,6 +779,7 @@
       "addPpl": "사람 추가",
       "admin": "관리자",
       "emailNotif": "이메일 알림",
+      "emailNotifInfoAria": "이메일 알림 정보",
       "emailNotifMsg": "양식이 제출될 때마다 메일로 알림을 받습니다.",
       "formMem": "양식 멤버",
       "perm": "권한",
@@ -483,8 +803,11 @@
       "phoneNum": "전화번호",
       "plcOp": "자리표시자 (선택 사항)",
       "prov": "제공자",
+      "questionDescriptionAria": "질문 설명",
       "questionEdit": "질문 편집",
       "questionReq": "질문이 필요합니다.",
+      "questionRequiredAria": "필수 질문",
+      "questionTitleAria": "질문 제목",
       "textArea": "텍스트 영역",
       "textBox": "텍스트 상자",
       "wholeNum": "정수",
@@ -492,6 +815,8 @@
     },
     "formSubmissions": {
       "anon": "익명",
+      "noSubmissions": "양식 제출을 찾을 수 없습니다",
+      "printSummaryAria": "요약-인쇄",
       "subBy": "제출자",
       "subDate": "제출 날짜",
       "subFor": "제출 대상",
@@ -501,11 +826,22 @@
     "formsPage": {
       "addForm": "양식 추가",
       "archForms": "보관된 양식",
+      "archive": "보관",
+      "archiveFormAria": "양식 {name} 보관",
       "confirmMsg1": "이 양식을 보관하시겠습니까?",
       "confirmMsg2": "이 양식을 복원하시겠습니까?",
+      "edit": "편집",
+      "editFormAria": "양식 {name} 편집",
+      "form": "양식",
+      "formArchivedCount": "{count}개의 보관된 양식",
+      "formArchivedCountPlural": "{count}개의 보관된 양식",
+      "formCount": "{count}개 양식",
+      "formCountPlural": "{count}개 양식",
       "forms": "양식",
       "noArch": "보관된 양식이 없습니다.",
       "noCustomMsg": "아직 생성된 맞춤 양식이 없습니다. 추가되면 여기에 나타납니다.",
+      "restore": "복원",
+      "restoreFormAria": "양식 {name} 복원",
       "subtitleManage": "사용자 정의 양식 만들기 및 관리",
       "url": "URL"
     },
@@ -522,6 +858,7 @@
       "catName": "범주 이름",
       "catReq": "범주 이름이 필요합니다.",
       "group": "그룹",
+      "groupNameAria": "그룹 이름",
       "groupReq": "그룹 이름이 필요합니다.",
       "ministry": "사역",
       "new": "새로운 ",
@@ -529,6 +866,7 @@
     },
     "groupBanner": {
       "associatedServices": "관련 서비스",
+      "emailTooltip": "이 그룹에 이메일 보내기",
       "labels": "레이블",
       "meetingInfo": "회의정보",
       "moreLabels": "추가 라벨",
@@ -536,6 +874,7 @@
       "printNametag": "이름표 인쇄",
       "settings": "설정",
       "team": "팀",
+      "textTooltip": "이 그룹에 문자 보내기",
       "trackAttendance": "출석 추적"
     },
     "groupDetails": {
@@ -559,27 +898,43 @@
       "attendance": "출석",
       "catName": "범주 이름",
       "catNameMsg": "범주 이름을 입력해주세요.",
+      "changePhotoAria": "그룹 사진 변경",
       "clickToAddPhoto": "사진을 추가하려면 클릭하세요.",
       "confirmMsg": "이 그룹을 영구적으로 삭제하시겠습니까?",
       "groupDesc": "그룹 설명",
+      "groupDescriptionAria": "그룹 설명",
       "groupDet": "그룹 세부사항",
       "groupName": "그룹 이름",
+      "groupNameAria": "그룹 이름",
       "groupNameMsg": "그룹 이름을 입력해주세요.",
+      "groupPhotoAlt": "그룹",
+      "groupSlugAria": "그룹 슬러그",
       "meetingLocation": "모임 장소",
+      "meetingLocationAria": "모임 장소",
       "meetingTime": "모임 시간",
+      "meetingTimeAria": "모임 시간",
       "parPick": "부모 픽업",
       "prinName": "이름표 인쇄",
       "slug": "슬러그 (URL에 사용되는 키 이름)"
     },
     "groupLabelsEdit": {
       "addNewLabel": "새 라벨 추가",
-      "labels": "레이블"
+      "addNewLabelAria": "새 라벨 추가",
+      "labels": "레이블",
+      "newLabelPrompt": "새 라벨을 입력하세요"
     },
     "groupMembers": {
       "groupMem": "그룹 멤버",
       "noMem": "그룹 멤버를 찾을 수 없습니다.",
+      "promoteToLeader": "리더로 승격",
+      "promoteToLeaderAria": "{name}을(를) 리더로 승격",
+      "remove": "제거",
+      "removeFromGroupAria": "{name}을(를) 그룹에서 제거",
+      "removeLeaderAccess": "리더 액세스 제거",
+      "removeLeaderAccessAria": "{name}의 리더 액세스 제거",
       "send": "보내기",
       "sendMemMsg": "멤버에게 메시지 보내기",
+      "sendMessageAria": "회원에게 메시지 보내기",
       "showTemplates": "템플릿 표시",
       "templates": {
         "none": "없음",
@@ -588,7 +943,8 @@
           "heading": "자원봉사자 환영",
           "message": "환영합니다. 자원봉사해 주셔서 감사합니다.\n\nB1.Church 앱을 다운로드하고 로그인하여 일정을 관리하세요. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
-      }
+      },
+      "unknown": "알 수 없음"
     },
     "groupNavigation": {
       "members": "멤버",
@@ -605,10 +961,13 @@
       "noAttendance": "출석 기록을 찾을 수 없습니다.",
       "noSesMsg": "세션이 없습니다.",
       "noSessionsFound": "세션을 찾을 수 없습니다.",
+      "removeAria": "세션에서 {name} 제거",
+      "removeButton": "제거",
       "selectSession": "세션 선택",
       "session": "세션",
       "sessions": "세션",
-      "tryAdjusting": "검색을 조정해 보세요"
+      "tryAdjusting": "검색을 조정해 보세요",
+      "upcoming": "예정됨"
     },
     "groupsPage": {
       "addGroup": "그룹 추가",
@@ -628,8 +987,67 @@
       "totalMembers": "총 회원 수"
     },
     "membersAdd": {
+      "addMemberAria": "그룹에 회원 추가",
       "availableMem": "사용 가능한 그룹 멤버",
-      "noMem": "사용 가능한 그룹 멤버가 없습니다."
+      "noMem": "사용 가능한 그룹 멤버가 없습니다.",
+      "unknown": "알 수 없음"
+    },
+    "sendEmailDialog": {
+      "bodyMergeFieldHint": "본문에 병합 필드 삽입:",
+      "cancel": "취소",
+      "close": "닫기",
+      "composePlaceholder": "여기에서 이메일을 작성하세요...",
+      "eligibleSummary": "{totalMembers}명 중 {eligibleCount}명의 회원이 이 이메일을 받게 됩니다.",
+      "eligibleSummarySingular": "{totalMembers}명 중 {eligibleCount}명의 회원이 이 이메일을 받게 됩니다.",
+      "emailGroupTitle": "이메일 그룹: {groupName}",
+      "fallbackError": "이메일 보내기 실패.",
+      "loadTemplate": "템플릿 불러오기 (선택)",
+      "loadingRecipients": "수신자 로딩 중...",
+      "manageTemplates": "템플릿 관리",
+      "mergeFieldChurchName": "교회 이름",
+      "mergeFieldDisplayName": "표시 이름",
+      "mergeFieldEmail": "이메일",
+      "mergeFieldFirstName": "이름",
+      "mergeFieldLastName": "성",
+      "noEmailNotice": "{count}명에게 등록된 이메일 주소가 없습니다.",
+      "noEmailNoticeSingular": "{count}명에게 등록된 이메일 주소가 없습니다.",
+      "noEmailSkipped": "{count}명 건너뜀 (이메일 주소 없음).",
+      "none": "없음",
+      "send": "이메일 보내기",
+      "sendDefault": "그룹의 대상 회원에게 이메일을 보냅니다.",
+      "sendFailedDetail": "{count}건 전송 실패.",
+      "sending": "전송 중...",
+      "sentSummary": "대상 수신자 {recipientCount}명 중 {successCount}명에게 전송됨.",
+      "sentSummarySingular": "대상 수신자 {recipientCount}명 중 {successCount}명에게 전송됨.",
+      "subject": "제목",
+      "subjectMergeFieldHint": "제목에 병합 필드 삽입:",
+      "subjectPlaceholder": "예: 안녕하세요 {firstName}님, {churchName}의 업데이트"
+    },
+    "sendTextDialog": {
+      "cancel": "취소",
+      "characterCount": "{count}자({segments} SMS 세그먼트)",
+      "characterCountSingular": "{count}자({segments} SMS 세그먼트)",
+      "close": "닫기",
+      "eligibleSummary": "{totalMembers}명 중 {eligibleCount}명의 회원이 이 문자를 받게 됩니다.",
+      "eligibleSummarySingular": "{totalMembers}명 중 {eligibleCount}명의 회원이 이 문자를 받게 됩니다.",
+      "fallbackError": "문자 메시지 보내기 실패.",
+      "loadingRecipients": "수신자 로딩 중...",
+      "messageLabel": "메시지",
+      "noPhoneNotice": "{count}명에게 등록된 전화번호가 없습니다.",
+      "noPhoneNoticeSingular": "{count}명에게 등록된 전화번호가 없습니다.",
+      "noPhoneSkipped": "{count}명 건너뜀 (전화번호 없음).",
+      "optedOutNotice": "{count}명 수신 거부됨.",
+      "optedOutSkipped": "{count}명 건너뜀 (수신 거부됨).",
+      "phoneOnFile": "등록된 전화",
+      "send": "보내기",
+      "sendDefault": "그룹의 대상 회원에게 SMS를 보냅니다.",
+      "sendFailedDetail": "{count}건 전송 실패.",
+      "sending": "전송 중...",
+      "sendingTo": "{phoneNumber}로 전송 중.",
+      "sentSummary": "대상 수신자 {recipientCount}명 중 {successCount}명에게 전송됨.",
+      "sentSummarySingular": "대상 수신자 {recipientCount}명 중 {successCount}명에게 전송됨.",
+      "textGroupTitle": "문자 그룹: {groupName}",
+      "textPersonTitle": "문자: {personName}"
     },
     "serviceTimes": {
       "services": "서비스:"
@@ -642,11 +1060,18 @@
       "invDate": "유효하지 않은 날짜",
       "sesAdd": "세션 추가",
       "sesDate": "세션 날짜",
+      "sessionDateAria": "세션 날짜",
       "srvTime": "서비스 시간"
+    },
+    "sessionAttendance": {
+      "removeVisitorAria": "세션에서 {name} 제거",
+      "visitor": "방문자"
     },
     "sessionCard": {
       "active": "활성",
       "edit": "편집",
+      "invalidDate": "잘못된 날짜",
+      "noDate": "날짜 없음",
       "people": "사람들",
       "person": "사람",
       "view": "보다"
@@ -658,6 +1083,67 @@
     "tabs": {
       "mem": "멤버",
       "ses": "세션"
+    }
+  },
+  "helpers": {
+    "conditionHelper": {
+      "dayOfMonth": ": 월의 일",
+      "dayOfWeek": ": 요일",
+      "endsWith": "다음으로 끝남",
+      "is": "는",
+      "isNot": "이(가) 아님",
+      "month": ": 월",
+      "startsWith": "다음으로 시작",
+      "yearsSince": "다음 이후 연수 "
+    },
+    "pageHelper": {
+      "bible": "성경",
+      "donate": "기부",
+      "groups": "그룹",
+      "sermons": "설교",
+      "stream": "스트림",
+      "verseOfTheDay": "오늘의 말씀"
+    },
+    "secondaryMenuHelper": {
+      "appearance": "모양",
+      "blocks": "블록",
+      "bulkImport": "일괄 가져오기",
+      "calendars": "달력",
+      "devices": "기기",
+      "files": "파일",
+      "liveStreamTimes": "라이브 스트림 시간",
+      "pages": "페이지",
+      "playlists": "재생 목록",
+      "profile": "프로필",
+      "quickActions": "빠른 작업",
+      "registrations": "등록",
+      "sermons": "설교",
+      "stripeImport": "Stripe 가져오기",
+      "website": "웹사이트"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "darkMode": "다크 모드",
+      "description": "이 색상은 모바일 앱, 회원 포털 및 체크인 키오스크에서 사용됩니다. 기본값으로 두거나 브랜드에 맞게 사용자 지정하세요.",
+      "lightMode": "라이트 모드",
+      "resetDefaults": "기본값으로 재설정"
+    },
+    "appThemePage": {
+      "subtitle": "모바일 앱, 회원 포털 및 체크인 키오스크에서 사용하는 색상을 사용자 지정하세요",
+      "title": "앱 테마"
+    },
+    "b1MobilePage": {
+      "subtitle": "B1 Mobile 앱 설정 구성",
+      "title": "B1 Mobile"
+    },
+    "checkInPage": {
+      "disabled": "비활성화됨",
+      "enabled": "활성화됨 — QR 코드가 키오스크에 표시됩니다",
+      "qrGuestRegistration": "QR 방문자 등록",
+      "qrTooltip": "체크인 키오스크에 QR 코드를 표시하여 방문자가 휴대폰으로 직접 등록할 수 있도록 합니다",
+      "subtitle": "B1 CheckIn 키오스크 앱 설정 구성",
+      "title": "B1 CheckIn"
     }
   },
   "month": {
@@ -684,13 +1170,22 @@
     "september": "9월"
   },
   "people": {
+    "advancedPeopleSearch": {
+      "loadingCustomFields": "사용자 지정 필드 로딩 중...",
+      "noCustomFields": "정의된 사용자 지정 필드가 없습니다. 검색하려면 양식에서 사용자 지정 필드를 만드세요."
+    },
     "advancedSearch": {
       "enterValuePlaceholder": "값 입력...",
       "search": "검색",
       "valuePlaceholder": "값"
     },
     "aiSearch": {
+      "exampleMen": "- 7월 생일이 있는 30세 이상 남성 보여주기.",
+      "exampleWomen": "- 결혼한 여성 보여주기.",
+      "examples": "예:",
       "placeholder": "7월에 생일이 있는 30세 이상 남성 보기",
+      "search": "검색",
+      "searching": "검색 중...",
       "title": "AI 검색"
     },
     "editCondition": {
@@ -722,20 +1217,44 @@
       "value": "값",
       "valuePlaceholder": "값"
     },
+    "gdprActions": {
+      "anonymize": "익명화",
+      "anonymizeConfirmType": "확인하려면 \"ANONYMIZE\"를 입력하세요:",
+      "anonymizeDescription": "모든 개인 정보가 일반 값으로 대체되고 이 사람이 그룹, 양식, 메시징에서 제거됩니다. 헌금 금액과 출석 날짜는 보고를 위해 보존되지만 이 사람과는 연결이 해제됩니다. 이 작업은 취소할 수 없습니다.",
+      "anonymizePlaceholder": "ANONYMIZE",
+      "anonymizeTitle": "{personName}을(를) 익명화하시겠습니까?",
+      "anonymizing": "익명화 중...",
+      "dataManagement": "데이터 관리",
+      "description": "GDPR 준수를 위해 이 사람의 데이터를 내보내거나 익명화하세요.",
+      "exportData": "데이터 내보내기",
+      "exporting": "내보내는 중..."
+    },
     "groups": {
-      "notMemMsg": "현재 어떤 그룹에도 소속되지 않음."
+      "leader": "리더",
+      "notMemMsg": "현재 어떤 그룹에도 소속되지 않음.",
+      "unknownGroup": "알 수 없는 그룹"
     },
     "household": {
-      "house": " 가구"
+      "age": "나이:",
+      "demoGroups": "그룹: 청소년 사역, 워십팀",
+      "demoLastActivity": "최근 활동: 2024년 11월 24일",
+      "house": " 가구",
+      "noContactInfo": "연락처 정보 없음",
+      "status": "상태:"
     },
     "householdEdit": {
       "addMatch": "일치하는 주소",
+      "addMember": "가구 구성원 추가",
+      "addMemberAria": "가구 구성원 추가",
       "blankMsg": "가구 이름을 입력해주세요.",
+      "cancelAddMember": "구성원 추가 취소",
       "child": "자녀",
       "head": "가장",
       "house": " 가구",
       "houseName": "가구 이름",
+      "householdNameAria": "가구 이름",
       "other": "기타",
+      "removeMemberAria": "가구 구성원 제거",
       "spouse": "배우자",
       "updQuestion": "업데이트하시겠습니까"
     },
@@ -762,6 +1281,7 @@
       "cust": "사용자 정의",
       "filt": "필터",
       "noFilt": "사용 가능한 필터가 없습니다.",
+      "selectColumns": "열 선택",
       "stand": "표준"
     },
     "peoplePage": {
@@ -769,15 +1289,21 @@
       "bDay": "생일",
       "bDayNo": "생일 (년도 없음)",
       "deleteOp": "삭제 옵션",
+      "export": "내보내기",
       "first": "이름",
       "last": "성",
+      "loading": "사람 로딩 중...",
       "middle": "중간 이름",
       "nameNote": "이름표 메모",
+      "noPeopleFound": "사람을 찾을 수 없습니다",
+      "peopleFound": "{count}명 찾음",
       "photo": "사진",
       "primEmail": "기본 이메일",
       "primPhone": "기본 전화",
       "recentPpl": "최근 추가된 사람",
-      "searchPpl": "사람 검색"
+      "searchPpl": "사람 검색",
+      "searchResults": "검색 결과",
+      "showingRecent": "가장 최근 {count}명 표시 중"
     },
     "peopleSearch": {
       "active": "활성:",
@@ -800,13 +1326,31 @@
       "serviceTime": "서비스 시간",
       "simp": "단순",
       "simpSearch": "인물 검색",
-      "type": "유형"
+      "type": "유형",
+      "typeToSearch": "즉시 검색하려면 입력하세요"
     },
     "peopleSearchResults": {
+      "deletePersonAria": "{name} 삭제",
       "noResMsg": "검색 결과가 없습니다. 다른 이름으로 검색하거나 새 사람을 추가해주세요"
+    },
+    "personAdd": {
+      "createNewPersonAria": "새 사람 만들기",
+      "searchForPersonAria": "사람 검색",
+      "searchForPersonToAddAria": "추가할 사람 검색"
+    },
+    "personAddResults": {
+      "add": "추가",
+      "addPersonAria": "{name} 추가"
     },
     "personAttendance": {
       "noAttMsg": "출석 기록이 없습니다. 그룹 세션에 대한 출석이 추적되면 여기에 표시됩니다."
+    },
+    "personBanner": {
+      "age": "나이",
+      "gender": "성별",
+      "hasLogin": "로그인 있음",
+      "maritalStatus": "결혼 상태",
+      "sendTextMessage": "문자 메시지 보내기"
     },
     "personEdit": {
       "applyQuestion": "전체에 적용하시겠습니까",
@@ -822,6 +1366,7 @@
       "lastReq": "성은 필수 항목입니다",
       "maritalStatus": "결혼 상태",
       "merge": "병합",
+      "mergePersonAria": "사람 병합",
       "mobile": "휴대폰",
       "nameNote": "이름표 메모",
       "persDet": "개인 정보",
@@ -831,13 +1376,30 @@
     },
     "personForm": {
       "addForm": "양식 추가",
+      "addFormAria": "{name} 제출 추가",
       "form": "양식",
       "noFormMsg": "이 사람에 대한 양식 제출을 찾을 수 없습니다"
     },
     "personNav": {
-      "customForms": "사용자 정의 양식"
+      "customForms": "사용자 정의 양식",
+      "discipleship": "제자도",
+      "groups": "그룹"
+    },
+    "personNavigation": {
+      "attendance": "출석",
+      "details": "세부 정보",
+      "donations": "헌금",
+      "forms": "양식",
+      "groups": "그룹",
+      "notes": "메모"
+    },
+    "personPage": {
+      "notesSuffix": " 메모",
+      "thisPerson": "이 사람"
     },
     "personView": {
+      "edit": "편집",
+      "hasLoginLabel": "로그인 있음: {email}",
       "home": "집",
       "memShip": "회원 자격:",
       "mobile": "휴대폰",
@@ -1038,18 +1600,31 @@
     }
   },
   "plans": {
+    "actionDialog": {
+      "fallbackTitle": "동작"
+    },
     "actionSelector": {
       "addAction": "작업 추가",
       "addSection": "섹션 추가",
+      "fallbackAction": "동작",
+      "fallbackContent": "콘텐츠",
+      "fallbackLoading": "로딩 중...",
+      "fallbackSection": "섹션",
       "fromAssociatedLesson": "연결된 레슨에서:",
       "noActionsAvailable": "사용 가능한 작업 없음",
+      "noContent": "사용 가능한 콘텐츠가 없습니다",
       "selectAction": "작업 선택",
       "selectExternalItem": "외부 항목 선택"
     },
     "assignment": {
       "addPosition": "직책 추가",
       "autoAssign": "자동 할당",
-      "saveNotes": "메모 저장"
+      "notesPlaceholder": "이 예배 계획에 대한 메모 추가...",
+      "notesPlaceholderReadOnly": "계획 메모 (읽기 전용)",
+      "planNotes": "계획 메모",
+      "planNotesAria": "계획 메모",
+      "saveNotes": "메모 저장",
+      "saveSuccess": "메모가 성공적으로 저장되었습니다"
     },
     "assignmentEdit": {
       "assignPos": "직책 할당",
@@ -1057,14 +1632,23 @@
       "editAssign": "할당 편집",
       "noMem": "그룹 멤버를 찾을 수 없습니다."
     },
+    "browseGrid": {
+      "addOn": "추가 기능"
+    },
     "bulkLessonSchedule": {
       "biWeekly": "격주",
       "date": "날짜",
       "interval": "간격",
       "lesson": "과정",
       "lessonsToSchedule": "예약할 과정",
+      "loadFailed": "수업 데이터 불러오기 실패. 다시 시도해 주세요.",
+      "loadingSeries": "수업 시리즈 로딩 중...",
+      "noLessonsInSeries": "이 시리즈에서 수업을 찾을 수 없습니다.",
       "noPreviousLesson": "이전 과정을 찾을 수 없습니다. 먼저 최소 한 개의 과정을 예약하세요.",
       "noRemainingLessons": "이 시리즈에 남은 과정이 없습니다. 모두 완료했습니다!",
+      "pathNotSupported": "선택한 수업 경로 형식은 일괄 일정 예약에 지원되지 않습니다.",
+      "savingFailed": "일부 계획 생성 실패. 확인 후 다시 시도해 주세요.",
+      "schedulingProgress": "일정 예약 중...",
       "startDate": "시작일",
       "startingLesson": "시작 과정",
       "title": "과정 일괄 일정 관리",
@@ -1072,22 +1656,53 @@
       "weekly": "주간"
     },
     "contentProviderAuth": {
+      "accountLinked": "계정 연결됨",
+      "authExpired": "인증 만료 또는 실패",
+      "authFailed": "인증 실패",
+      "contentProviderAccounts": "콘텐츠 공급자 계정",
+      "deviceFlowFailed": "기기 플로우 시작 실패",
       "deviceFlowInstructions": "아래 URL을 방문하여 인증 코드를 입력하세요:",
+      "deviceFlowUnsupported": "공급자가 기기 플로우를 지원하지 않습니다",
       "errorGeneric": "공급자 연결에 실패했습니다. 다시 시도해 주세요.",
+      "expiresPrefix": "만료:",
       "link": "연결",
       "linkAccount": "계정 연결",
       "linkNew": "새 공급자 연결",
       "linked": "연결됨",
       "noLinkedDescription": "서비스 계획에서 콘텐츠에 액세스하려면 콘텐츠 공급자를 연결하세요.",
       "noProvidersAvailable": "사용 가능한 콘텐츠 공급자 없음",
+      "noProvidersAvailableLong": "인증이 필요한 사용 가능한 콘텐츠 공급자가 없습니다.",
       "pkceInstructions": "팝업 창에서 인증하려면 아래 버튼을 클릭하세요:",
+      "pkceUnsupported": "공급자가 PKCE 인증을 지원하지 않습니다",
       "pkceWaiting": "팝업에서 인증 대기 중...",
+      "popupBlocked": "팝업을 열지 못했습니다. 이 사이트의 팝업을 허용해 주세요.",
       "refresh": "새로고침",
       "selectProvider": "콘텐츠 공급자 연결",
+      "sessionExpired": "권한 부여 세션이 만료되었습니다. 다시 시도해 주세요.",
+      "sessionFailed": "권한 부여 세션 생성 실패. 다시 시도해 주세요.",
+      "startAuthFailed": "인증 시작 실패",
       "success": "연결 성공!",
       "title": "콘텐츠 공급자",
+      "tokenExchangeFailed": "토큰을 위한 코드 교환 실패",
+      "tokenExpired": "토큰 만료 - 다시 연결해 주세요",
       "unlink": "연결 해제",
       "waitingForAuth": "인증 대기 중..."
+    },
+    "contentRenderer": {
+      "fallbackPreview": "미리 보기",
+      "fallbackTitle": "콘텐츠 미리보기",
+      "noContent": "표시할 콘텐츠가 없습니다.",
+      "noTextContent": "표시할 텍스트 콘텐츠가 없습니다.",
+      "previewUnavailable": "이 콘텐츠에 대한 미리 보기를 사용할 수 없습니다.",
+      "unableToLoad": "미리 보기를 로드할 수 없습니다. 콘텐츠에 인증이 필요하거나 일시적으로 사용할 수 없을 수 있습니다.",
+      "videoUnsupported": "브라우저가 비디오 태그를 지원하지 않습니다."
+    },
+    "lessonDialog": {
+      "back": "뒤로",
+      "close": "닫기",
+      "fallbackTitle": "수업 섹션",
+      "noPreviewItem": "이 항목에 대한 미리 보기를 사용할 수 없습니다.",
+      "previewUnavailable": "이 섹션에 대한 미리 보기를 사용할 수 없습니다."
     },
     "lessonHeaderSelector": {
       "description": "플랜에 추가할 헤더 또는 섹션을 선택하세요. 하위 항목이 플랜 항목으로 추가됩니다.",
@@ -1097,8 +1712,10 @@
     },
     "lessonScheduleEdit": {
       "dateRequired": "날짜를 선택하세요",
+      "fallbackLesson": "수업",
       "scheduleLesson": "수업 일정",
       "scheduledDate": "예정된 날짜",
+      "scheduledDateAria": "예정일",
       "selectLesson": "수업 선택",
       "venueRequired": "장소를 선택하세요"
     },
@@ -1108,7 +1725,10 @@
       "contentProvider": "콘텐츠 공급자",
       "lesson": "수업",
       "linkProviderFirst": "콘텐츠를 탐색하려면 먼저 이 공급자를 연결하세요",
-      "providerNotLinked": "공급자 연결되지 않음"
+      "noContent": "사용 가능한 콘텐츠가 없습니다",
+      "providerNotLinked": "공급자 연결되지 않음",
+      "searchPlaceholder": "검색...",
+      "selectedPrefix": "선택됨:"
     },
     "ministryList": {
       "getStarted": "첫 번째 사역을 만들어 시작해 보세요.",
@@ -1125,12 +1745,18 @@
       "copyServiceOrder": "예배 순서 복사",
       "planAdd": "계획 추가",
       "planEdit": "계획 편집",
+      "planNameAria": "계획 이름",
       "planReq": "계획 이름이 필요합니다.",
       "servDate": "예배 날짜",
-      "servReq": "예배 날짜가 필요합니다."
+      "servReq": "예배 날짜가 필요합니다.",
+      "serviceDateAria": "예배 날짜",
+      "showVolunteerNames": "신청 페이지에 자원봉사자 이름 표시",
+      "signupDeadline": "신청 마감(예배 몇 시간 전)",
+      "signupDeadlineHelper": "마감 없음은 비워두세요"
     },
     "planItem": {
       "addItem": "항목 추가",
+      "duration": "지속 시간",
       "editItem": "항목 편집",
       "editSection": "섹션 편집",
       "expandToActions": "작업으로 확장",
@@ -1142,12 +1768,18 @@
       "confirmDelete": "삭제 확인",
       "confirmDeleteMessage": "이 항목을 삭제하시겠습니까?",
       "description": "설명",
+      "durationMinutesAria": "지속 시간(분)",
+      "durationSecondsAria": "지속 시간(초)",
       "edit": "편집",
       "editAddOn": "추가 기능 편집",
       "editHeader": "헤더 편집",
       "editSong": "노래 편집",
       "enterSearch": "검색어를 입력하세요",
       "minutes": "분",
+      "planItemDescriptionAria": "계획 항목 설명",
+      "planItemNameAria": "계획 항목 이름",
+      "searchBoxAria": "검색창",
+      "searchSongsAria": "곡 검색",
       "seconds": "초"
     },
     "planList": {
@@ -1156,9 +1788,12 @@
       "createPlan": "계획 만들기",
       "newPlan": "새로운 계획",
       "noPlans": "계획을 찾을 수 없습니다.",
+      "noUpcomingPlans": "예정된 계획 없음",
+      "noUpcomingPlansDescription": "오늘 이후로 예정된 계획이 없습니다. 지난 계획을 보려면 위의 \"지난 항목 표시\" 토글을 사용하세요.",
       "plans": "계획",
       "scheduleLesson": "수업 일정",
-      "serviceOrder": "예배 순서"
+      "serviceOrder": "예배 순서",
+      "showPast": "지난 항목 표시"
     },
     "planPage": {
       "assign": "팀 할당",
@@ -1190,6 +1825,7 @@
     },
     "planTypePage": {
       "notFound": "계획 유형을 찾을 수 없습니다.",
+      "overview": "개요",
       "pairTvApp": "TV 앱 연결",
       "planType": "계획 유형",
       "subtitle": "계획 유형 설정 구성",
@@ -1230,8 +1866,11 @@
       "subtitle": "사역 및 봉사 계획 관리"
     },
     "positionEdit": {
+      "allowSelfSignup": "자체 등록 허용",
       "catName": "범주 이름",
       "catNameReq": "범주 이름이 필요합니다.",
+      "description": "설명",
+      "descriptionHelper": "자원봉사자가 신청 기회를 둘러볼 때 표시됩니다",
       "nameReq": "이름이 필요합니다",
       "posAdd": "직책 추가",
       "posEdit": "직책 편집",
@@ -1244,6 +1883,7 @@
       "pos": "직책",
       "ppl": "사람들",
       "pplNeed": " 명 필요",
+      "signupSuffix": "신청",
       "team": "팀"
     },
     "printPlan": {
@@ -1263,7 +1903,29 @@
       "noItems": "서비스 주문에 항목이 없습니다.",
       "orderOfService": "서비스 순서",
       "previewBanner": "이것은 연결된 수업의 미리보기입니다. 편집하려면 \"사용자 정의\"를 클릭하세요.",
-      "print": "인쇄"
+      "print": "인쇄",
+      "scrollDown": "아래로 스크롤",
+      "scrollUp": "위로 스크롤"
+    },
+    "servingOverviewPage": {
+      "endDate": "종료 날짜",
+      "exportCsv": "CSV 내보내기",
+      "filename": "serving-overview.csv",
+      "noData": "선택한 날짜 범위에 대한 봉사 데이터를 찾을 수 없습니다.",
+      "overviewSuffix": "개요",
+      "position": "직책",
+      "startDate": "시작 날짜",
+      "subtitle": "할당된 자원봉사자가 있는 날짜별 직책",
+      "title": "봉사 개요"
+    },
+    "servingPage": {
+      "showAll": "모두 표시"
+    },
+    "songDialog": {
+      "close": "닫기",
+      "fallbackTitle": "곡 세부 정보",
+      "files": "파일",
+      "lyrics": "가사"
     },
     "songs": {
       "links": "링크"
@@ -1281,17 +1943,22 @@
       "disName": "표시 이름",
       "disNameReq": "표시 이름이 필요합니다.",
       "endReq": "종료 시간이 필요합니다",
+      "endTimeAria": "종료 시간",
       "followGuide": "서비스 시간을 설정하려면 아래 가이드를 따르세요.",
       "startReq": "시작 시간이 필요합니다",
+      "startTimeAria": "시작 시간",
       "teamNeed": "필요한 팀",
+      "teamPrefix": "팀",
       "teamReq": "팀을 선택해주세요.",
       "timeAdd": "시간 추가",
+      "timeDisplayNameAria": "시간 표시 이름",
       "timeEdit": "시간 편집",
       "timeEnd": "종료 시간",
       "timeStart": "시작 시간",
       "tip": "팁"
     },
     "timeList": {
+      "addTimeAria": "시간 추가",
       "noTime": "아직 추가된 시간이 없습니다",
       "sunServ": "주일 예배",
       "times": "시간"
@@ -1314,6 +1981,9 @@
       "registrationDate": "등록일",
       "title": "기기"
     },
+    "devicesPage": {
+      "addDevice": "기기 추가"
+    },
     "linkedAccounts": {
       "link": "링크",
       "signUp": "가입",
@@ -1327,11 +1997,15 @@
     "profilePage": {
       "accDel": "계정 삭제",
       "confirmMsg": "계정을 영구적으로 삭제하시겠습니까?",
+      "darkMode": "다크 모드",
       "delAcc": "내 계정 삭제",
       "deleteError": "계정을 삭제하지 못했습니다.",
+      "demoModeAlert": "데모 모드에서는 프로필 편집이 비활성화됩니다.",
+      "demoPasswordHelper": "데모 모드에서는 비밀번호 변경이 비활성화됩니다",
       "emailMsg": "이메일 주소를 입력해주세요.",
       "firstMsg": "이름을 입력해주세요",
       "lastMsg": "성을 입력해주세요",
+      "lightMode": "라이트 모드",
       "linkedAccounts": "연결된 계정",
       "noDirect": "회원 명부에서 숨기기",
       "passLong": "비밀번호는 최소 8자 이상이어야 합니다.",
@@ -1345,13 +2019,75 @@
       "saveChanges": "변경 사항 저장",
       "saveError": "변경사항을 저장하지 못했습니다.",
       "subtitle": "프로필 및 기본 설정 관리",
+      "themePreferences": "테마 환경 설정",
+      "themePreferencesHelper": "테마 환경 설정은 자동으로 저장되며 이 기기에서 기억됩니다.",
+      "togglePasswordVisibility": "비밀번호 표시 전환",
       "valEmail": "유효한 이메일 주소를 입력해주세요."
+    }
+  },
+  "registrations": {
+    "registrationDetailsPage": {
+      "actions": "동작",
+      "cancelConfirm": "이 등록을 취소하시겠습니까?",
+      "cancelRegistration": "등록 취소",
+      "csvDate": "날짜",
+      "csvMembers": "회원",
+      "csvName": "이름",
+      "csvStatus": "상태",
+      "date": "날짜",
+      "delete": "삭제",
+      "deleteConfirm": "이 등록을 영구 삭제하시겠습니까?",
+      "eventNotFound": "이벤트를 찾을 수 없습니다",
+      "eventRegistrations": "이벤트 등록",
+      "exportCsv": "CSV 내보내기",
+      "guest": "게스트",
+      "members": "회원",
+      "name": "이름",
+      "noRegistrations": "아직 등록이 없습니다.",
+      "registrations": "등록",
+      "status": "상태",
+      "subtitle": "이 이벤트의 등록 관리",
+      "unknown": "알 수 없음"
+    },
+    "registrationSettingsEdit": {
+      "capacity": "정원",
+      "capacityPlaceholder": "무제한은 비워두세요",
+      "enableRegistration": "등록 활성화",
+      "registrationCloses": "등록 마감",
+      "registrationOpens": "등록 시작",
+      "registrationSettings": "등록 설정",
+      "saveSettings": "설정 저장",
+      "tags": "태그",
+      "tagsHelper": "필터링을 위한 쉼표로 구분된 태그",
+      "tagsPlaceholder": "youth, retreat, vbs"
+    },
+    "registrationsPage": {
+      "date": "날짜",
+      "enabledEvents": "등록이 활성화된 이벤트",
+      "event": "이벤트",
+      "noEvents": "아직 등록이 활성화된 이벤트가 없습니다.",
+      "noEventsHint": "이벤트 편집 설정을 통해 이벤트에서 등록을 활성화하세요.",
+      "registered": "등록됨",
+      "registrations": "등록",
+      "subtitle": "이벤트 등록 설정 관리 및 등록자 보기",
+      "tags": "태그",
+      "title": "이벤트 등록"
     }
   },
   "reporting": {
     "detailed": "상세",
     "downloadOptions": "다운로드 옵션",
+    "givingKpiCards": {
+      "avgGift": "평균 헌금",
+      "donationCount": "총 헌금 수",
+      "donorCount": "고유 기부자",
+      "totalGiving": "총 헌금액"
+    },
     "noData": "사용 가능한 데이터 없음",
+    "reportOutput": {
+      "anonymous": "익명",
+      "print": "인쇄"
+    },
     "runReport": "보고서 실행",
     "sampleTemplate": "샘플 템플릿",
     "summary": "요약",
@@ -1408,6 +2144,8 @@
       "minutes": "분",
       "seconds": "초"
     },
+    "edit": "편집",
+    "editSermonAria": "{title} 편집",
     "getStarted": "첫 번째 설교를 추가하여 시작하세요",
     "liveStreamTimes": {
       "externalLinks": {
@@ -1438,16 +2176,20 @@
           "urlRequired": "링크를 입력하세요"
         },
         "linkDetails": "링크 세부정보",
+        "linkDisplayTextAria": "링크 표시 텍스트",
         "linkUrl": "링크 URL",
+        "linkUrlAria": "링크 URL",
         "linkUrlPlaceholder": "https://example.com 또는 /internal-page",
         "menuOrganization": "메뉴 구성",
         "optionalSubmenuMessage": "선택사항: 기존 하위 메뉴 아래에 이 링크를 구성하세요:",
         "saveLink": "링크 저장",
         "saving": "저장 중...",
-        "submenuMessage": "이 링크는 하위 메뉴 아래에 배치됩니다:"
+        "submenuMessage": "이 링크는 하위 메뉴 아래에 배치됩니다:",
+        "submenuUnderAria": "{text} 아래의 하위 메뉴로 설정"
       },
       "navigationLinks": {
         "add": "추가",
+        "edit": "편집",
         "home": "집",
         "title": "탐색 링크"
       },
@@ -1473,6 +2215,7 @@
         "serviceTimeRequired": "예배 시간은 필수 항목입니다",
         "startVideoEarly": "비디오 조기 시작",
         "startVideoEarlyHelp": "선택사항: 카운트다운 비디오 또는 예배 전 콘텐츠용",
+        "timeChipFallback": "시간",
         "videoSettings": "비디오 설정",
         "weekly": "주간",
         "yes": "예"
@@ -1480,12 +2223,14 @@
       "services": "예배",
       "servicesTab": {
         "addService": "예배 추가",
+        "defaultLabel": "주일 아침",
         "title": "예배",
         "weekly": "주간"
       },
       "settings": "설정",
       "sidebarTabs": {
         "add": "추가",
+        "edit": "편집",
         "title": "콘텐츠 탭"
       },
       "subtitle": "반복되는 예배 시간 구성",
@@ -1555,6 +2300,7 @@
         "publishHelp": "이 재생목록은 언제 시청자에게 공개되어야 합니까?",
         "publishingSchedule": "게시 및 일정",
         "recommendedSize": "권장 크기: 1280x720 픽셀 (16:9 비율)",
+        "thumbnailAlt": "재생 목록 미리보기 이미지",
         "thumbnailImage": "썸네일 이미지",
         "unauthorized": "재생목록을 만들 권한이 없습니다",
         "unauthorizedDelete": "재생목록을 삭제할 권한이 없습니다"
@@ -1570,6 +2316,8 @@
     "sermonEdit": {
       "add": "추가",
       "addToAnotherPlaylist": "다른 재생목록에 추가",
+      "addToAnotherPlaylistAria": "다른 재생 목록에 설교 추가",
+      "addToSelectedPlaylistAria": "선택된 재생 목록에 추가",
       "channelIdPlaceholder": "이것은 채널 URL이 아닙니다 - 위의 도움말 링크를 참조하세요",
       "currentLiveService": "현재 라이브 예배",
       "currentYouTubeLiveStream": "현재 YouTube 라이브 스트림",
@@ -1578,22 +2326,34 @@
       "description": "설명",
       "editPermanentLiveUrl": "영구 라이브 URL 편집",
       "editSermon": "설교 편집",
+      "editThumbnailAria": "설교 미리보기 이미지 편집",
       "facebook": "Facebook",
       "fetch": "가져오기",
+      "fetchVimeoAria": "Vimeo 비디오 세부 정보 가져오기",
+      "fetchYouTubeAria": "YouTube 비디오 세부 정보 가져오기",
       "getYourChannelId": "채널 ID 가져오기",
       "newSermon": "새 설교",
       "none": "없음",
+      "publishDateAria": "게시 날짜",
+      "selectAdditionalPlaylistAria": "추가 재생 목록 선택",
+      "selectPlaylistAria": "재생 목록 선택",
+      "selectVideoProviderAria": "비디오 공급자 선택",
+      "sermonDescriptionAria": "설교 설명",
       "sermonEmbedUrl": "설교 삽입 URL",
       "sermonId": "설교 ID",
+      "sermonTitleAria": "설교 제목",
+      "thumbnailAlt": "설교 미리보기 이미지",
       "title": "제목",
       "totalSermonDuration": "전체 설교 시간",
       "unauthorized": "설교를 만들 권한이 없습니다",
       "unauthorizedDelete": "설교를 삭제할 권한이 없습니다",
+      "videoIdOrUrlAria": "비디오 ID 또는 URL",
       "videoProvider": "비디오 제공자",
       "vimeo": "Vimeo",
       "vimeoId": "Vimeo ID",
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube 채널 ID",
+      "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - 채널 URL이 아닙니다",
       "youtubeId": "YouTube ID"
     },
     "subtitle": "설교 라이브러리 및 라이브 스트리밍 관리",
@@ -1627,6 +2387,10 @@
       "users": "사용자",
       "valueNotes": "값 계산 방법에 대한 메모"
     },
+    "churchesTab": {
+      "churchNameSearchAria": "교회 이름 검색",
+      "searchChurchesAria": "교회 검색"
+    },
     "reportPage": {
       "adminOnly": "관리자 전용",
       "report": "보고서",
@@ -1639,6 +2403,14 @@
       "search": "검색",
       "startDate": "시작 날짜",
       "title": "성경 번역 조회"
+    },
+    "translationTab": {
+      "searchTranslationStatsAria": "번역 통계 검색"
+    },
+    "usersTab": {
+      "noPersonLinked": "연결된 사람 없음",
+      "searchUsersAria": "사용자 검색",
+      "userNameOrEmailSearchAria": "사용자 이름 또는 이메일 검색"
     }
   },
   "settings": {
@@ -1656,20 +2428,31 @@
       "donation": "기부",
       "donationLanding": "기부착륙",
       "editTab": "탭 편집",
+      "everyone": "모두 (익명 포함)",
       "externalUrl": "외부 URL",
+      "groups": "특정 그룹...",
       "internalPage": "내부 페이지",
       "lessons": "수업",
       "liveStream": "라이브 스트림",
+      "loggedInUsers": "로그인한 사용자",
       "memberDirectory": "회원 명부",
+      "membersStaff": "회원 및 스태프",
       "myGroups": "내 그룹",
+      "noGroupsFound": "그룹을 찾을 수 없습니다",
       "page": "페이지",
       "saveTab": "탭 저장",
       "saving": "저장 중...",
+      "selectGroups": "그룹 선택:",
       "selectImage": "이미지 선택",
+      "staffOnly": "스태프 전용",
+      "tabIconAlt": "탭 아이콘",
       "tabName": "탭 이름",
       "tabType": "탭 유형",
+      "team": "팀원 (봉사 팀)",
       "url": "URL",
-      "verseOfDay": "오늘의 말씀"
+      "verseOfDay": "오늘의 말씀",
+      "visibility": "표시 여부",
+      "volunteerOpportunities": "자원봉사 기회"
     },
     "appTabs": {
       "editTab": "탭 편집",
@@ -1680,8 +2463,44 @@
       "title": "앱 탭",
       "untitled": "제목 없음"
     },
+    "appThemeEdit": {
+      "background": "배경",
+      "button": "버튼",
+      "cardContent": "카드 콘텐츠",
+      "headerPreview": "헤더 미리보기",
+      "preview": "미리 보기",
+      "primary": "기본",
+      "primaryContrast": "기본 대비",
+      "secondary": "보조",
+      "secondaryText": "보조 텍스트",
+      "surface": "표면",
+      "textColor": "텍스트 색상"
+    },
     "associatePerson": {
       "change": "변경"
+    },
+    "auditLogPage": {
+      "action": "동작",
+      "allCategories": "모든 카테고리",
+      "category": "카테고리",
+      "categoryDonation": "헌금",
+      "categoryForm": "양식",
+      "categoryGroup": "그룹",
+      "categoryLogin": "로그인",
+      "categoryPermission": "권한",
+      "categoryPerson": "사람",
+      "categorySettings": "설정",
+      "date": "날짜",
+      "details": "세부 정보",
+      "endDate": "종료 날짜",
+      "entity": "엔티티",
+      "exportCsv": "CSV 내보내기",
+      "ipAddress": "IP 주소",
+      "noEntries": "감사 로그 항목을 찾을 수 없습니다",
+      "search": "검색",
+      "startDate": "시작 날짜",
+      "subtitle": "교회 전반의 변경 사항 및 활동 추적",
+      "title": "감사 로그"
     },
     "church": {
       "subdomainHelper": "교회의 고유한 웹 주소"
@@ -1689,9 +2508,11 @@
     "churchSettingsEdit": {
       "address1": "주소 1",
       "address2": "주소 2",
+      "addressLine1Aria": "주소 1번째 줄",
       "churchInfo": "교회 정보",
       "churchInfoSubtitle": "이름, 주소 및 서브도메인",
       "churchName": "교회 이름",
+      "churchNameAria": "교회 이름",
       "churchSettings": "교회 설정",
       "domainsSubtitle": "사용자 정의 도메인 구성",
       "general": "일반",
@@ -1699,7 +2520,10 @@
       "givingSubtitle": "결제 게이트웨이 및 수수료 옵션",
       "noNameMsg": "교회 이름은 비워둘 수 없습니다.",
       "noSubMsg": "서브도메인은 비워둘 수 없습니다.",
-      "subdom": "서브도메인"
+      "subdom": "서브도메인",
+      "subdomainAria": "하위 도메인",
+      "textingSubtitle": "SMS 텍스팅 공급자 구성",
+      "textingTitle": "텍스팅"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "디렉터리 승인 그룹",
@@ -1729,6 +2553,49 @@
       "domain": "도메인",
       "domains": "도메인"
     },
+    "emailTemplateEdit": {
+      "bodyRequired": "본문 내용이 필요합니다.",
+      "category": "카테고리",
+      "close": "닫기",
+      "composePlaceholder": "여기에서 이메일 템플릿을 작성하세요...",
+      "editTemplate": "템플릿 편집",
+      "emailPreview": "이메일 미리보기",
+      "insertMergeBody": "본문에 병합 필드 삽입:",
+      "insertMergeSubject": "제목에 병합 필드 삽입:",
+      "mergeChurchName": "교회 이름",
+      "mergeDisplayName": "표시 이름",
+      "mergeEmail": "이메일",
+      "mergeFirstName": "이름",
+      "mergeLastName": "성",
+      "nameRequired": "이름이 필요합니다.",
+      "newTemplate": "새 템플릿",
+      "preview": "미리 보기",
+      "previewBody": "본문:",
+      "previewSampleData": "표시된 샘플 데이터: John Smith, john@example.com",
+      "previewSubject": "제목:",
+      "subject": "제목",
+      "subjectPlaceholder": "예: 안녕하세요 {firstName}님, {churchName}에 오신 것을 환영합니다",
+      "subjectRequired": "제목이 필요합니다.",
+      "templateName": "템플릿 이름",
+      "templateNamePlaceholder": "예: 환영 이메일, 이벤트 알림",
+      "yourChurch": "내 교회"
+    },
+    "emailTemplatesPage": {
+      "actions": "동작",
+      "category": "카테고리",
+      "createTemplate": "템플릿 만들기",
+      "deleteConfirm": "템플릿 \"{name}\"을(를) 삭제하시겠습니까?",
+      "emptyDescription": "일괄 이메일을 시작하려면 템플릿을 만드세요.",
+      "emptyTitle": "아직 이메일 템플릿이 없습니다",
+      "modified": "수정됨",
+      "name": "이름",
+      "newTemplate": "새 템플릿",
+      "subject": "제목",
+      "subtitle": "재사용 가능한 이메일 템플릿 생성 및 관리",
+      "title": "이메일 템플릿",
+      "tooltipDelete": "삭제",
+      "tooltipEdit": "편집"
+    },
     "feeOptionsSettings": {
       "achFlatRate": "정액 요금 [ ACH ]",
       "achHardLimit": "엄격한 한도 [ ACH ]",
@@ -1744,8 +2611,11 @@
       "apiCredentials": "API 자격 증명",
       "clientId": "클라이언트 ID",
       "clientSecret": "클라이언트 비밀키",
+      "currency": "통화",
+      "currencyHelper": "이 통화가 Stripe 대시보드에서도 활성화되어 있는지 확인하세요. 여기에서 통화를 활성화하세요:",
       "developersApiKeys": "개발자 → API 키",
       "forceMsg": "사용자가 거래 수수료를 자동으로 부담하도록 강제합니다",
+      "forceSslHelpAria": "Force SSL 도움말",
       "giving": "기부",
       "none": "없음",
       "paypal": "PayPal",
@@ -1766,9 +2636,11 @@
     },
     "imageEditor": {
       "crop": "자르기",
-      "upload": "업로드"
+      "upload": "업로드",
+      "uploadImageAria": "이미지 업로드"
     },
     "manageChurch": {
+      "auditLog": "감사 로그",
       "editSettings": "설정 편집",
       "imEx": "가져오기/내보내기",
       "mobileApps": "모바일 앱",
@@ -1784,15 +2656,24 @@
     "preview": {
       "preview": "미리보기"
     },
+    "roleCheck": {
+      "permissionAria": "권한 {label}"
+    },
     "roleEdit": {
       "confirmMsg": "이 역할을 영구적으로 삭제하시겠습니까?",
       "roleEdit": "역할 편집",
       "roleName": "역할 이름",
+      "roleNameAria": "역할 이름",
       "valMsg": "유효한 역할 이름을 입력해주세요."
     },
     "roleMembers": {
+      "addRoleMemberAria": "역할 구성원 추가",
       "confirmMsg": "정말로 이 사용자를 삭제하시겠습니까",
+      "edit": "편집",
+      "editRoleMemberAria": "역할 구성원 {firstName} {lastName} 편집",
+      "lastAdminWarning": "최소 한 명의 도메인 관리자가 필요합니다. 이를 제거하기 전에 다른 관리자를 추가하세요.",
       "mem": "멤버",
+      "removeRoleMemberAria": "역할 구성원 {firstName} {lastName} 제거",
       "roleAppMsg": "이 역할은 교회의 모든 멤버에게 적용됩니다."
     },
     "rolePage": {
@@ -1806,12 +2687,16 @@
     "roles": {
       "acc": "회계",
       "accDesc": "기부를 보고 관리할 수 있습니다.",
+      "addCustomRoleAria": "사용자 지정 역할 추가",
+      "addPredefinedRoleAria": "{name} 역할 추가",
       "canEdit": "다음에서 대부분의 데이터를 편집할 수 있습니다 ",
       "churchDesc": " 사람, 그룹, 출석 및 양식 포함.",
       "churchStaff": "교회 직원",
       "contAdmin": "콘텐츠 관리자",
       "contAdminDesc": "웹사이트 콘텐츠, 모바일 콘텐츠 및 설교를 편집할 수 있습니다.",
       "custAdd": "사용자 정의 역할 추가",
+      "edit": "편집",
+      "editRoleAria": "역할 편집",
       "everyone": "모든 사람",
       "itMsg": "? ",
       "lesAdmin": "레슨 관리자",
@@ -1826,13 +2711,31 @@
       "linkHelperText": "교회 이메일이거나 교회 연락처 양식에 대한 링크여야 합니다",
       "supportContact": "지원 연락처"
     },
+    "textingSettingsEdit": {
+      "apiKey": "API 키",
+      "apiSecret": "API 시크릿",
+      "clearstream": "Clearstream",
+      "clearstreamHelper": "다음에서 API 키 만들기:",
+      "clearstreamHelperLink": "Clearstream 계정 설정",
+      "clearstreamHelperSuffix": "API 키 아래에서.",
+      "none": "없음",
+      "provider": "공급자",
+      "saveError": "텍스팅 설정 저장 중 오류가 발생했습니다.",
+      "textInChurchHelper": "방문",
+      "textInChurchHelperLink": "Text In Church 지원",
+      "textInChurchHelperSuffix": "개발자 API 액세스를 요청합니다. 승인되면 계정 설정 > 개발자 API 섹션에서 API 키를 생성하세요."
+    },
     "userAdd": {
       "addTo": "다음에 추가 ",
       "createNew": "새 사용자 생성",
+      "createNewUserAria": "새 사용자 만들기",
+      "emailAddressAria": "이메일 주소",
       "errAnother": "저장할 수 없습니다. 이 이메일 주소로 다른 사용자가 이미 존재합니다.",
       "errDiff": "이 이메일의 사용자 계정은 다른 사람과 연결되어 있습니다.",
       "firstMsg": "이름을 입력해주세요",
+      "firstNameAria": "이름",
       "lastMsg": "성을 입력해주세요",
+      "lastNameAria": "성",
       "noAcc": "사용자 계정이 없으신가요?",
       "valEmail": "유효한 이메일을 입력해주세요",
       "valEmailMsg": "유효한 이메일을 입력하세요"
@@ -1848,36 +2751,40 @@
       "visibilityPreference": "가시성 기본 설정"
     }
   },
-  "mobile": {
-    "appThemeEdit": {
-      "description": "이 색상은 모바일 앱, 회원 포털 및 체크인 키오스크에서 사용됩니다. 기본값으로 두거나 브랜드에 맞게 사용자 지정하세요.",
-      "resetDefaults": "기본값으로 재설정",
-      "lightMode": "라이트 모드",
-      "darkMode": "다크 모드"
-    },
-    "appThemePage": {
-      "title": "앱 테마",
-      "subtitle": "모바일 앱, 회원 포털 및 체크인 키오스크에서 사용하는 색상을 사용자 지정하세요"
-    },
-    "b1MobilePage": {
-      "title": "B1 Mobile",
-      "subtitle": "B1 Mobile 앱 설정 구성"
-    },
-    "checkInPage": {
-      "title": "B1 CheckIn",
-      "subtitle": "B1 CheckIn 키오스크 앱 설정 구성",
-      "qrGuestRegistration": "QR 방문자 등록",
-      "qrTooltip": "체크인 키오스크에 QR 코드를 표시하여 방문자가 휴대폰으로 직접 등록할 수 있도록 합니다",
-      "enabled": "활성화됨 — QR 코드가 키오스크에 표시됩니다",
-      "disabled": "비활성화됨"
-    }
-  },
   "site": {
     "addPage": {
       "aiPlaceholder": "예시: 교회 이름, 사명 선언, 예배 시간, 헌금 버튼이 있는 환영 홈페이지 만들기",
       "newLink": "새 링크",
       "newPage": "새 페이지",
       "pageType": "페이지 유형"
+    },
+    "addPageModal": {
+      "aboutUs": "소개",
+      "blank": "비어 있음",
+      "describe": "만들고 싶은 페이지를 설명하세요",
+      "donate": "기부",
+      "errAiPromptTooShort": "자세한 설명을 입력하세요(최소 10자).",
+      "errAllSectionsFailed": "모든 섹션 생성 실패. 다시 시도해 주세요.",
+      "errFailedGenerate": "페이지 생성 실패. 다른 설명으로 다시 시도해 주세요.",
+      "errLinkText": "링크 텍스트를 입력하세요.",
+      "errLinkUrl": "URL을 입력하세요.",
+      "errOutlineFailed": "페이지 개요 생성 실패",
+      "errTitle": "제목을 입력하세요.",
+      "exampleContact": "우리 위치 지도, 전화번호, 이메일 양식, 소셜 미디어 링크가 있는 연락처 페이지 만들기",
+      "exampleHomepage": "교회 이름, 미션 선언, 예배 시간, 기부 버튼이 있는 환영하는 홈페이지 만들기",
+      "exampleMinistries": "사진과 함께 청소년 그룹, 워십팀, 지역사회 봉사를 보여주는 사역 페이지 만들기",
+      "examples": "예:",
+      "linkText": "링크 텍스트",
+      "linkType": "링크",
+      "linkUrl": "링크 URL",
+      "location": "위치",
+      "pageTitle": "페이지 제목",
+      "statusCreatingSections": "페이지 섹션 및 요소 만들기 중...",
+      "statusGatheringInfo": "교회 정보 수집 중...",
+      "statusGenerating": "{count}개의 섹션 생성 중...",
+      "statusOpening": "새 페이지 여는 중...",
+      "statusPlanning": "페이지 구조 계획 중...",
+      "unauthorizedCreate": "페이지를 만들 권한이 없습니다"
     },
     "animations": {
       "colorize": "색상화",
@@ -1899,11 +2806,36 @@
       "slow": "느림"
     },
     "appearanceEdit": {
-      "logoManagement": "로고 관리"
+      "branding": "로고 및 브랜딩",
+      "brandingDescription": "조직의 로고 및 브랜딩 자산을 업로드 및 관리",
+      "edit": "편집",
+      "favicon": "파비콘",
+      "faviconDesc": "브라우저 탭용 정사각형 아이콘. 이상적인 크기: 400×400px",
+      "logoDark": "어두운 배경 로고",
+      "logoDarkDesc": "어두운 배경용 가로 로고. 이상적인 크기: 1280×320px",
+      "logoLight": "밝은 배경 로고",
+      "logoLightDesc": "밝은 배경용 가로 로고. 이상적인 크기: 1280×320px",
+      "logoManagement": "로고 관리",
+      "logoUploadDescription": "다양한 상황에 맞는 로고를 업로드하세요. 최상의 결과를 위해 모든 이미지는 투명한 배경을 가져야 합니다.",
+      "mainLogos": "메인 로고",
+      "noImage": "이미지 없음",
+      "ogImage": "소셜 미디어 이미지",
+      "ogImageDesc": "소셜 공유 및 SEO에 사용. 이상적인 크기: 1200×630px",
+      "seoAssets": "SEO 및 브라우저 자산",
+      "upload": "업로드"
     },
     "appearancePage": {
       "subtitle": "아래는 색상, 글꼴 및 로고가 적용된 샘플 사이트 미리보기입니다. 실제 사이트 콘텐츠가 아닙니다.",
       "title": "사이트 스타일"
+    },
+    "blockEdit": {
+      "blockType": "블록 유형",
+      "elementBlock": "요소",
+      "errName": "이름을 입력하세요.",
+      "name": "이름",
+      "sectionBlock": "섹션",
+      "unauthorizedCreate": "블록을 만들 권한이 없습니다",
+      "unauthorizedDelete": "블록을 삭제할 권한이 없습니다"
     },
     "blocks": {
       "confirmDelete": "이 블록을 영구적으로 삭제하시겠습니까?",
@@ -1918,15 +2850,66 @@
       "elements": "강요)",
       "getStarted": "첫 번째 재사용 가능한 블록을 만들어 시작해 보세요.",
       "noBlocksFound": "블록을 찾을 수 없습니다.",
+      "rename": "이름 바꾸기",
       "reusableBlocks": "재사용 가능한 블록",
       "sections": "섹션",
       "subtitle": "웹사이트에 재사용 가능한 콘텐츠 블록 생성 및 관리",
       "totalBlocks": "총 블록",
       "type": "유형"
     },
+    "calendarElementEdit": {
+      "curatedCalendar": "선별된 달력",
+      "groupCalendar": "그룹 달력",
+      "select": "선택",
+      "selectCalendar": "달력 선택"
+    },
+    "colorPicker": {
+      "color": "색상",
+      "placeholder": "#FF0000"
+    },
+    "contentEditor": {
+      "blockPreview": "블록 미리보기",
+      "dropToAddElement": "요소를 추가하려면 여기에 놓으세요",
+      "dropToAddSection": "섹션을 추가하려면 여기에 놓으세요",
+      "scrollDown": "아래로 스크롤",
+      "scrollUp": "위로 스크롤"
+    },
     "cssEdit": {
+      "advancedFeature": "고급 기능:",
+      "advancedFeatureDescription": "사용자 지정 CSS 및 JavaScript는 사이트의 기능에 영향을 줄 수 있습니다. 변경 사항을 철저히 테스트하고 현재 설정의 백업이 있는지 확인하세요.",
+      "commonCssExamples": "일반적인 CSS 예제",
+      "commonJsExamples": "일반적인 JavaScript 예제",
       "customCss": "사용자 정의 CSS",
-      "customHtml": "사용자 정의 HTML"
+      "customCssDescription": "사용자 지정 CSS를 추가하여 기본 스타일을 재정의하거나 새 스타일 규칙을 만드세요.",
+      "customHtml": "사용자 정의 HTML",
+      "customHtmlDescription": "Google Analytics와 같은 타사 스크립트를 위한 사용자 지정 HTML 코드를 추가하세요.",
+      "customLabel": "사용자 지정 CSS",
+      "customLabelHtml": "사용자 지정 HTML",
+      "exampleAnalytics": "Google Analytics",
+      "exampleCustomButton": "사용자 지정 버튼 스타일링",
+      "exampleCustomHtml": "사용자 지정 HTML",
+      "exampleHideElements": "요소 숨기기",
+      "exampleLinkColors": "링크 색상 변경",
+      "headerSubtitle": "사이트에 사용자 지정 스타일 및 스크립트 추가",
+      "headerTitle": "CSS 및 JavaScript",
+      "proTip": "전문가 팁:",
+      "proTipDescription": "브라우저의 개발자 도구(F12)를 사용하여 여기에 적용하기 전에 CSS 변경 사항을 테스트하세요. JavaScript 코드는 사이트의 모든 페이지에 추가됩니다.",
+      "saveChanges": "변경 사항 저장",
+      "saving": "저장 중..."
+    },
+    "customFontModal": {
+      "all": "전체",
+      "categoryFilter": "카테고리 필터",
+      "display": "디스플레이",
+      "handwriting": "필기",
+      "monospace": "고정폭",
+      "name": "이름",
+      "sample": "샘플",
+      "sampleText": "빠른 갈색 여우가 게으른 개를 뛰어넘습니다.",
+      "sansSerif": "산세리프",
+      "search": "검색",
+      "selectFont": "글꼴 선택",
+      "serif": "세리프"
     },
     "donateLink": {
       "add": "추가",
@@ -1948,12 +2931,20 @@
     },
     "editorToolbar": {
       "addContent": "콘텐츠 추가",
+      "ago": "전",
       "block": "차단하다",
       "desktop": "데스크탑",
+      "exit": "종료",
+      "justNow": "방금",
       "mobile": "휴대폰",
+      "notSavedYet": "아직 변경 사항 없음",
       "page": "페이지",
+      "redoTip": "다시 실행 (Ctrl+Shift+Z)",
+      "savedAllChanges": "모든 변경 사항 저장됨",
       "switchToDesktop": "데스크톱 보기로 전환",
-      "switchToMobile": "모바일 보기로 전환"
+      "switchToMobile": "모바일 보기로 전환",
+      "undoTip": "실행 취소 (Ctrl+Z)",
+      "viewHistory": "기록 보기"
     },
     "elementAdd": {
       "addElements": "요소 추가",
@@ -1965,6 +2956,7 @@
       "card": "카드",
       "carousel": "캐러셀",
       "church": "교회",
+      "common": "공통",
       "content": "콘텐츠",
       "descBox": "유연한 컨테이너 박스",
       "descCalendar": "이벤트 캘린더 보기",
@@ -2016,6 +3008,13 @@
       "untitledBlock": "제목 없는 블록",
       "video": "비디오"
     },
+    "elementEdit": {
+      "enableLightbox": "라이트박스 활성화"
+    },
+    "elementSelection": {
+      "moveDown": "아래로 이동",
+      "moveUp": "위로 이동"
+    },
     "elements": {
       "address": "주소",
       "addressHelper": "예: City Hall, New York, NY",
@@ -2032,6 +3031,8 @@
       "confirmDelete": "이 요소를 영구적으로 삭제하시겠습니까?",
       "confirmDuplicate": "이 요소와 모든 하위 요소의 복사본을 만드시겠습니까?",
       "contained": "채움",
+      "deleteElementBody": "이 요소는 페이지에서 제거됩니다. Ctrl+Z로 실행 취소할 수 있습니다.",
+      "deleteElementTitle": "요소를 삭제하시겠습니까?",
       "doNotResizeImage": "이미지 크기 조정 안 함",
       "editElement": "요소 편집",
       "error": "오류",
@@ -2093,6 +3094,18 @@
       "zoomLevel": "확대/축소 수준",
       "zoomLevelExample": "10이 좋은 기본값입니다. 높을수록 더 많이 확대됩니다."
     },
+    "emptyState": {
+      "addFirstSection": "첫 번째 섹션 추가",
+      "description": "페이지 만들기를 시작하려면 섹션을 추가하세요. 언제든지 섹션을 재정렬하고 사용자 지정할 수 있습니다.",
+      "title": "이 페이지가 비어 있습니다"
+    },
+    "faqEdit": {
+      "heading": "제목",
+      "headingType": "제목 유형",
+      "iconColor": "아이콘 색상",
+      "link": "링크",
+      "title": "제목"
+    },
     "files": {
       "confirmDelete": "삭제하시겠습니까",
       "storageInfo": "교회 웹사이트에 일반적으로 필요한 PDF 및 기타 문서를 저장하기 위해 100MB의 저장 공간이 무료로 제공됩니다. 추가 공간이 필요한 경우 Google Drive 또는 Dropbox를 사용하여 파일을 저장하는 것이 좋습니다.",
@@ -2100,22 +3113,75 @@
       "uploadFiles": "파일 업로드"
     },
     "filesManager": {
+      "actions": "동작",
+      "deleteFile": "파일 삭제",
+      "fileCountPlural": "파일",
+      "fileCountSingular": "파일",
       "files": "파일",
       "getStarted": "첫 번째 파일을 업로드하여 시작하세요",
-      "noFilesYet": "아직 업로드된 파일이 없습니다"
+      "name": "이름",
+      "noFilesYet": "아직 업로드된 파일이 없습니다",
+      "size": "크기",
+      "storage": "저장 공간:",
+      "storageLimit": "/ 100MB"
     },
     "filesPage": {
+      "loading": "로딩 중...",
       "subtitle": "웹사이트용 파일 및 미디어 관리",
       "title": "파일"
     },
     "fontEdit": {
+      "applyCombination": "조합을 클릭하면 즉시 적용됩니다",
+      "bodyFont": "본문 글꼴",
+      "bodyFontDesc": "단락, 설명 및 본문 텍스트에 사용",
       "fontSelection": "글꼴 선택",
+      "fontsNull": "글꼴 null",
+      "headerSubtitle": "사이트의 글꼴 선택 및 사용자 지정",
+      "headerTitle": "타이포그래피 설정",
+      "headingFont": "제목 글꼴",
+      "headingFontDesc": "제목, 헤더, 강조 텍스트에 사용",
+      "mainHeadingPreview": "메인 제목 미리 보기",
       "popularFontCombinations": "인기 있는 글꼴 조합",
+      "previewBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.",
+      "previewBody2": "Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.",
+      "saveFonts": "글꼴 저장",
+      "saving": "저장 중...",
+      "secondaryHeading": "보조 제목",
       "typographyPreview": "타이포그래피 미리보기"
+    },
+    "formEdit": {
+      "createNewForm": "새 양식 만들기",
+      "noFormsAvailable": "사용 가능한 양식이 없습니다!",
+      "select": "선택"
+    },
+    "helpDialog": {
+      "addBody": "도구 모음에서 콘텐츠 추가를 클릭한 다음 섹션이나 요소를 페이지에 드래그하세요.",
+      "addTitle": "콘텐츠 추가",
+      "editBody": "섹션이나 요소를 두 번 클릭하여 설정을 엽니다. 한 번 클릭하여 선택하고 부동 도구 모음을 사용하세요.",
+      "editTitle": "무엇이든 편집",
+      "fullDocs": "전체 문서",
+      "moveBody": "섹션과 요소를 드래그하여 순서를 변경하세요. 정확한 이동을 위해 선택 도구 모음의 위/아래 화살표를 사용하세요.",
+      "moveTitle": "재배치",
+      "title": "페이지 편집기 기본 사항",
+      "undoBody": "Ctrl+Z로 실행 취소하고 Ctrl+Shift+Z로 다시 실행하세요. 메뉴에서 기록 패널을 열어 이전 상태로 이동할 수 있습니다.",
+      "undoTitle": "실행 취소 및 기록"
+    },
+    "historyPanel": {
+      "current": "(현재)",
+      "noHistory": "아직 사용 가능한 기록이 없습니다. 기록 추적을 시작하려면 변경 작업을 해보세요.",
+      "restoreToPoint": "이 시점으로 복원",
+      "title": "편집 기록"
     },
     "navLink": {
       "addLink": "링크 추가",
       "linkSettings": "링크 설정"
+    },
+    "navLinkEdit": {
+      "errLinkText": "링크 텍스트를 입력하세요",
+      "linkText": "링크 텍스트",
+      "unauthorizedCreate": "페이지를 만들 권한이 없습니다",
+      "unauthorizedDelete": "페이지를 삭제할 권한이 없습니다",
+      "url": "URL"
     },
     "pageLink": {
       "check": "확인",
@@ -2125,9 +3191,26 @@
       "pageSettings": "페이지 설정",
       "urlHelper": "예: /camper-registration  (**저장하기 전에 확인하세요)"
     },
+    "pageLinkEdit": {
+      "cleanCentered": "깔끔한 중앙 정렬 콘텐츠",
+      "duplicate": "복제",
+      "errCheckUrl": "URL 경로를 확인하세요",
+      "errPath": "경로를 입력하세요.",
+      "errTitle": "제목을 입력하세요.",
+      "headerFooter": "헤더 및 푸터",
+      "layout": "레이아웃",
+      "linkText": "링크 텍스트",
+      "pageTitle": "페이지 제목",
+      "unauthorizedCreate": "페이지를 만들 권한이 없습니다",
+      "unauthorizedDelete": "페이지를 삭제할 권한이 없습니다",
+      "url": "URL",
+      "urlPath": "URL 경로"
+    },
     "pagePreview": {
       "editContent": "콘텐츠 편집",
+      "loading": "로딩 중...",
       "pageSettings": "페이지 설정",
+      "previewOf": "{title} 미리보기",
       "subtitle": "미리보기: {title}",
       "title": "웹사이트 미리보기"
     },
@@ -2137,6 +3220,7 @@
     "pagesPage": {
       "actions": "작업",
       "addFirstPage": "첫 페이지 추가",
+      "addNavigationLink": "탐색 링크 추가",
       "addPage": "페이지 추가",
       "autoGenerated": "자동 생성",
       "confirmConvert": "이 자동 생성 페이지를 사용자 정의 페이지로 변환하시겠습니까?",
@@ -2158,16 +3242,48 @@
       "websitePages": "웹사이트 페이지"
     },
     "paletteEdit": {
+      "accent": "강조",
+      "applyPaletteAria": "제안된 색상 팔레트 적용",
+      "applySuggested": "팔레트를 클릭하면 즉시 적용됩니다",
+      "baseColors": "기본 색상",
       "colorCombinationsPreview": "색상 조합 미리보기",
       "colorValues": "색상 값",
+      "dark": "어두움",
+      "darkAccent": "어두운 강조",
+      "error": "오류",
+      "headerSubtitle": "웹사이트의 색상 구성표를 사용자 지정하세요. 모바일 앱, 회원 포털 및 키오스크 색상은 설정 > 앱 테마로 이동하세요.",
+      "headerTitle": "색상 팔레트",
+      "light": "밝음",
+      "lightAccent": "밝은 강조",
+      "palette": "팔레트",
+      "previewWorkTogether": "색상이 어떻게 함께 작동하는지 미리 보기",
+      "primary": "기본",
       "savePalette": "팔레트 저장",
-      "suggestedPalettes": "제안된 팔레트"
+      "secondary": "보조",
+      "semanticColors": "의미 색상",
+      "success": "성공",
+      "suggestedPalettes": "제안된 팔레트",
+      "warning": "경고"
     },
     "pickColors": {
+      "background": "배경",
+      "backgroundField": "배경",
+      "backgroundOpacity": "배경 불투명도",
+      "backgroundType": "배경 유형",
+      "color": "색상",
+      "content": "콘텐츠",
+      "currentColors": "현재 색상",
       "headingColor": "제목 색상",
+      "image": "이미지",
       "linkColor": "링크 색상",
       "opacityHelper": "이미지 위의 검은색 그라데이션 레이어의 불투명도입니다. 최대값: 1",
-      "textColor": "텍스트 색상"
+      "sampleLink": "샘플 링크",
+      "sampleText": "샘플 텍스트",
+      "selectPhoto": "사진 선택",
+      "suggested": "추천",
+      "textColor": "텍스트 색상",
+      "youtubeId": "Youtube ID",
+      "youtubeVideo": "Youtube 동영상"
     },
     "row": {
       "addColumn": "열 추가",
@@ -2200,28 +3316,188 @@
       "totalValid": "합계: 12/12",
       "width": "너비"
     },
+    "rowMobileOrder": {
+      "customizeOrder": "모바일 순서 사용자 지정",
+      "desktopOrder": "데스크톱 순서",
+      "mobileOrder": "모바일 순서"
+    },
+    "rowMobileSizes": {
+      "customizeLayout": "모바일 레이아웃 사용자 지정",
+      "desktopWidth": "데스크톱 너비",
+      "mobileWidth": "모바일 너비",
+      "mobileWidthsHelper": "모바일 너비의 합이 12가 될 필요는 없습니다. 24가 되는 값은 두 행에 걸칩니다.",
+      "size1": "1 - 1/12",
+      "size10": "10 - 5/6",
+      "size11": "11 - 11/12",
+      "size12": "12 - 전체",
+      "size2": "2 - 1/6",
+      "size3": "3 - 1/4",
+      "size4": "4 - 1/3",
+      "size5": "5 - 5/12",
+      "size6": "6 - 절반",
+      "size7": "7 - 7/12",
+      "size8": "8 - 2/3",
+      "size9": "9 - 3/4"
+    },
     "section": {
       "confirmDelete": "이 섹션을 영구적으로 삭제하시겠습니까?",
       "confirmDuplicate": "이 섹션과 모든 콘텐츠의 복사본을 만드시겠습니까?",
-      "editSection": "섹션 편집"
+      "editSection": "섹션 편집",
+      "layoutContainer": "레이아웃 컨테이너",
+      "section": "섹션"
+    },
+    "sectionBlock": {
+      "deleteSection": "섹션 삭제",
+      "edit": "편집"
     },
     "sectionEdit": {
+      "block": "블록",
+      "blockNamePromptDefault": "블록 이름",
       "convertTo": "변환",
       "convertToBlock": "블록으로 변환",
+      "convertToBlockPrompt": "이 섹션과 모든 콘텐츠를 블록으로 복사하시겠습니까?",
       "duplicate": "복제",
-      "duplicateSection": "섹션 복제"
+      "duplicateSection": "섹션 복제",
+      "id": "ID"
+    },
+    "spacingScaleEdit": {
+      "buttonOne": "버튼 1",
+      "buttonTwo": "버튼 2",
+      "cardTitle": "카드 제목",
+      "cardWithContent": "콘텐츠가 있는 카드",
+      "dramaticSection": "드라마틱 섹션",
+      "dramaticSectionDesc": "최대 효과를 위해 xxl({value}px) 세로 패딩 사용",
+      "extraLarge": "엑스트라 라지",
+      "extraLargeDesc": "주요 섹션 간의 큰 간격",
+      "extraSmall": "엑스트라 스몰",
+      "extraSmallDesc": "콤팩트 레이아웃을 위한 좁은 간격",
+      "fullWidthBanner": "전체 너비 배너",
+      "headerSubtitle": "일관된 간격 값 구성",
+      "headerTitle": "간격 스케일",
+      "heroSection": "히어로 섹션",
+      "heroSectionDesc": "xl({xl}px) 세로 패딩 및 lg({lg}px) 가로 패딩 사용",
+      "iconRow": "아이콘 행",
+      "iconRowDesc": "아이콘 사이에 xs({value}px) 간격 사용",
+      "large": "라지",
+      "largeDesc": "여유로운 레이아웃과 섹션",
+      "medium": "미디엄",
+      "mediumDesc": "대부분의 레이아웃에 대한 표준 간격",
+      "pageSection": "페이지 섹션",
+      "practicalExamples": "실용적인 예",
+      "practicalExamplesDesc": "간격 값이 실제 UI 요소에 어떻게 영향을 미치는지 확인",
+      "saveSpacing": "간격 저장",
+      "small": "스몰",
+      "smallDesc": "관련 요소 사이의 작은 간격",
+      "spacingValues": "간격 값",
+      "twoXLarge": "2X 라지",
+      "twoXLargeDesc": "드라마틱한 레이아웃을 위한 최대 간격"
     },
     "style": {
       "editStyle": "스타일 편집"
     },
     "styleEdit": {
-      "property": "속성"
+      "addStyle": "스타일 추가",
+      "all": "전체",
+      "blurRadius": "블러 반경 - px",
+      "desktopOnly": "데스크톱 전용",
+      "mobileOnly": "모바일 전용",
+      "offsetX": "오프셋 X - px",
+      "offsetY": "오프셋 Y - px",
+      "platform": "플랫폼:",
+      "property": "속성",
+      "stylesHelper": "단일 요소의 스타일을 사용자 지정하려면 이 필드를 사용하세요. 사이트 전체 변경 사항은 사이트 외관 편집기를 사용하세요."
+    },
+    "stylesAnimations": {
+      "animations": "애니메이션",
+      "animationsDesc": "요소가 표시될 때의 효과입니다.",
+      "styles": "스타일",
+      "stylesDesc": "고급 모양 옵션."
     },
     "stylesManager": {
-      "styleSettings": "스타일 설정"
+      "color": "색상 팔레트",
+      "colorDesc": "사이트의 색상 구성표 사용자 지정",
+      "css": "CSS 및 Javascript",
+      "cssDesc": "사용자 지정 스타일 및 스크립트 추가",
+      "fonts": "글꼴",
+      "fontsDesc": "타이포그래피 선택 및 사용자 지정",
+      "footer": "사이트 푸터",
+      "footerDesc": "사이트 푸터 사용자 지정",
+      "loadingPreview": "미리 보기 로딩 중...",
+      "logo": "로고",
+      "logoDesc": "로고 업로드 및 관리",
+      "siteFooterName": "사이트 푸터",
+      "spacing": "간격 스케일",
+      "spacingDesc": "일관된 간격 값 정의",
+      "styleSettings": "스타일 설정",
+      "typography": "타이포그래피 스케일",
+      "typographyDesc": "글꼴 크기 및 간격 구성",
+      "yourChurch": "내 교회"
+    },
+    "tableEdit": {
+      "allowMarkdown": "마크다운 허용",
+      "columns": "열",
+      "empty": "(비어 있음)",
+      "firstRowHeader": "첫 번째 행이 헤더",
+      "medium": "미디엄",
+      "no": "아니요",
+      "rows": "행",
+      "size": "크기",
+      "sizeSmall": "스몰",
+      "yes": "예"
     },
     "templates": {
       "viewSermons": "설교 보기"
+    },
+    "tokenPicker": {
+      "accent": "강조",
+      "baseSize": "기본 크기",
+      "bodyFont": "본문 글꼴",
+      "borderRadius": "테두리 반경",
+      "colors": "색상",
+      "dark": "어두움",
+      "darkAccent": "어두운 강조",
+      "designToken": "디자인 토큰",
+      "error": "오류",
+      "extraLarge": "엑스트라 라지 (32px)",
+      "extraSmall": "엑스트라 스몰 (4px)",
+      "full": "전체 (9999px)",
+      "headingFont": "제목 글꼴",
+      "large": "라지 (16px)",
+      "largeRadius": "라지 (16px)",
+      "largeSize": "라지 크기",
+      "lightAccent": "밝은 강조",
+      "lineHeight": "줄 높이",
+      "medium": "미디엄 (16px)",
+      "mediumRadius": "미디엄 (8px)",
+      "noneRadius": "없음 (0px)",
+      "primary": "기본",
+      "secondary": "보조",
+      "selectToken": "토큰 선택",
+      "small": "스몰 (8px)",
+      "smallRadius": "스몰 (4px)",
+      "smallSize": "스몰 크기",
+      "spacing": "간격",
+      "success": "성공",
+      "tokenLight": "밝음",
+      "twoXLarge": "2X 라지 (48px)",
+      "typography": "타이포그래피",
+      "warning": "경고"
+    },
+    "typographyEdit": {
+      "baseSize": "기본 크기 (px)",
+      "baseSizeDesc": "본문 텍스트의 기본 글꼴 크기 (기본값: 16px)",
+      "bodyText": "본문 텍스트 - {size}px: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "headerSubtitle": "글꼴 및 타입 스케일 구성",
+      "headerTitle": "타이포그래피 스케일",
+      "headingPreview": "제목 {level} - {size}",
+      "lineHeight": "줄 높이",
+      "lineHeightDesc": "본문 텍스트의 줄 높이 (기본값: 1.6)",
+      "preview": "미리 보기",
+      "saveTypography": "타이포그래피 저장",
+      "scale": "타입 스케일",
+      "scaleDesc": "각 제목 수준의 배율 (기본값: 1.25)",
+      "smallText": "작은 텍스트 - {size}: 보조 텍스트와 캡션",
+      "typographyScale": "타이포그래피 스케일"
     }
   },
   "songs": {
@@ -2266,10 +3542,16 @@
     "keys": {
       "add": "추가",
       "addExternalLink": "외부 링크 추가",
+      "addExternalLinkAria": "외부 링크 추가",
       "addFiles": "파일 추가",
+      "availableDownloads": "사용 가능한 다운로드",
+      "editSelectedKeyAria": "선택한 키 편집",
+      "externalLinks": "외부 링크",
       "import": "가져오기",
       "importFromPraiseCharts": "PraiseCharts에서 파일 가져오기",
       "importPrompt": "PraiseCharts에서 텍스트 가사를 가져오시겠습니까?",
+      "keysTabsAria": "키 탭",
+      "noKeysAvailable": "사용 가능한 키가 없습니다. 시작하려면 키를 추가하세요.",
       "title": "키"
     },
     "library": {
@@ -2287,6 +3569,25 @@
       "text": "텍스트",
       "url": "URL"
     },
+    "oldArrangement": {
+      "key": "키"
+    },
+    "oldArrangements": {
+      "addArrangement": "편곡 추가",
+      "addArrangementAria": "편곡 추가",
+      "arrangements": "편곡",
+      "edit": "편집",
+      "editArrangementAria": "편곡 편집",
+      "noArrangements": "편곡을 찾을 수 없습니다."
+    },
+    "praiseChartsProducts": {
+      "close": "닫기",
+      "free": "무료",
+      "linkAccountPrefix": "연결된 PraiseCharts 계정이 없습니다. 다음으로 이동하세요:",
+      "linkAccountSuffix": "계정을 연결하려면.",
+      "profile": "프로필",
+      "title": "PraiseCharts에서 제품 추가"
+    },
     "search": {
       "createManually": "수동으로 만들기",
       "enterQuery": "노래를 찾으려면 검색어를 입력하세요.",
@@ -2296,11 +3597,40 @@
       "placeholder": "제목이나 아티스트로 노래 검색...",
       "title": "노래 검색"
     },
+    "songDetailLinks": {
+      "addFirstLink": "첫 번째 링크 추가",
+      "externalLinks": "외부 링크",
+      "noLinksYet": "아직 외부 링크가 추가되지 않았습니다"
+    },
+    "songDetailLinksEdit": {
+      "externalLinks": "외부 링크",
+      "id": "ID",
+      "key": "키",
+      "service": "서비스"
+    },
+    "songDetails": {
+      "editSongDetailsAria": "곡 세부 정보 편집",
+      "fallbackTitle": "곡 세부 정보",
+      "noDetails": "이 곡에 사용 가능한 추가 세부 정보가 없습니다."
+    },
     "songPage": {
+      "addArrangement": "편곡 추가",
+      "deleteSongAria": "곡 삭제",
       "loading": "로딩 중...",
+      "noArrangementDescription": "시작하려면 사이드바에서 편곡을 선택하세요.",
+      "noArrangementSelected": "편곡이 선택되지 않음",
       "subtitle": "노래 세부정보 및 편곡 관리"
     },
+    "songSearchDialog": {
+      "closeDialogAria": "대화 상자 닫기",
+      "poweredBy": "제공:",
+      "searchSongsAria": "곡 검색",
+      "songTitleOrArtistAria": "곡 제목 또는 아티스트"
+    },
     "songsPage": {
+      "addSongAria": "곡 추가",
+      "search": "검색",
+      "searchSongs": "곡 검색",
       "songs": "노래",
       "subtitle": "음악 라이브러리 관리"
     },
@@ -2310,11 +3640,15 @@
     "actionEdit": {
       "actType": "작업 유형",
       "actTypeHelp": "수행할 작업 유형을 선택하세요.",
+      "actionTypeAria": "동작 유형",
       "assignTo": "할당 대상",
+      "assignToAria": "할당 대상",
       "editAct": "작업 편집",
       "taskAssign": "작업 할당",
       "taskNote": "작업 메모",
-      "taskTitle": "작업 제목"
+      "taskNoteAria": "작업 메모",
+      "taskTitle": "작업 제목",
+      "taskTitleAria": "작업 제목"
     },
     "automationDetails": {
       "active": "활성",
@@ -2328,10 +3662,12 @@
     "automationEdit": {
       "active": "활성",
       "autoEdit": "자동화 편집",
+      "automationTitleAria": "자동화 제목",
       "inactive": "비활성",
       "monthly": "월간",
       "never": "사용 안 함",
       "recurHelp": "이 자동화를 얼마나 자주 실행해야 하는지 설정하세요.",
+      "recurrenceAria": "반복",
       "rep": "반복",
       "weekly": "주간",
       "yearly": "연간"
@@ -2363,11 +3699,13 @@
       "dateFull": "전체 날짜",
       "datePart": "날짜 부분",
       "dayOf": "일",
+      "dayOfWeekAria": "요일",
       "fri": "금요일",
       "mon": "월요일",
       "month": "월",
       "monthDay": "월의 일",
       "nextMonth": "다음 달",
+      "numberValueAria": "숫자 값",
       "op": "연산자",
       "prevMonth": "지난 달",
       "relative": "상대값",
@@ -2382,11 +3720,15 @@
     "conditionDetails": {
       "addCon": "조건 추가",
       "addCondition": "조건 추가",
+      "addConditionAria": "조건 추가",
       "addConj": "접속사 추가",
+      "addConjunctionAria": "연결 추가",
       "all": "모두",
       "and": "그리고",
       "any": "일부",
       "con": "조건:",
+      "editConditionAria": "조건 편집",
+      "editConjunctionAria": "연결 편집",
       "noCond": "추가된 조건 없음",
       "or": "또는",
       "trueCon": "이 조건 중"
@@ -2396,6 +3738,7 @@
       "conEdit": "조건 편집",
       "conInfo": "연락처 정보",
       "conType": "조건 유형",
+      "conditionTypeAria": "조건 유형",
       "confirmMsg": "이 조건을 삭제하시겠습니까?",
       "gen": "일반",
       "persAtt": "개인 속성",
@@ -2407,6 +3750,8 @@
       "op": "연산자"
     },
     "conditionText": {
+      "conditionOperatorAria": "조건 연산자",
+      "conditionValueAria": "조건 값",
       "contains": "포함",
       "endW": "로 끝남",
       "op": "연산자",
@@ -2416,6 +3761,7 @@
       "and": "AND - 모든 조건이 참",
       "conjEdit": "접속사 편집",
       "conjType": "접속사 유형",
+      "conjunctionTypeAria": "연결 유형",
       "or": "OR - 조건 중 하나가 참"
     },
     "contentPicker": {
@@ -2427,11 +3773,15 @@
     "newTask": {
       "assignPers": "이 작업을 사람에게 할당해주세요.",
       "assignTo": "할당 대상",
+      "assignToAria": "할당 대상",
       "associatePers": "이 작업을 사람과 연결해주세요.",
       "associateW": "연결 대상",
+      "associateWithAria": "연결 대상",
       "newAssign": "새로운 과제",
       "saving": "저장 중...",
       "taskNew": "새 작업",
+      "taskNotesAria": "작업 메모",
+      "taskTitleAria": "작업 제목",
       "titleTask": "이 작업의 제목을 입력해주세요."
     },
     "requestedChanges": {
@@ -2445,10 +3795,12 @@
     "selectGroup": {
       "group": "그룹",
       "noResults": "검색과 일치하는 그룹을 찾을 수 없습니다",
-      "searchPrompt": "선택할 그룹 검색"
+      "searchPrompt": "선택할 그룹 검색",
+      "selectGroupAria": "그룹 선택"
     },
     "taskList": {
       "addTask": "작업 추가",
+      "addTaskAria": "작업 추가",
       "assignGroup": "내 그룹에 할당됨",
       "assignMe": "나에게 할당됨",
       "assignedTo": "할당 대상",
@@ -2456,6 +3808,8 @@
       "noTasks": "작업을 찾을 수 없습니다.",
       "notSpecified": "지정되지 않음",
       "reqMe": "내가 요청함",
+      "showClosedTasksAria": "닫힌 작업 표시",
+      "showOpenTasksAria": "열린 작업 표시",
       "tasks": "작업",
       "unassigned": "할당되지 않음"
     },
@@ -2481,6 +3835,20 @@
       "showOpen": "열린 항목 표시",
       "subtitle": "작업 및 자동화 관리",
       "tasks": "작업"
+    }
+  },
+  "ui": {
+    "personBanner": {
+      "memberStatus": "회원"
+    },
+    "personNav": {
+      "attendance": "출석",
+      "customForms": "사용자 지정 양식",
+      "details": "세부 정보",
+      "discipleship": "제자도",
+      "giving": "헌금",
+      "groups": "그룹",
+      "notes": "메모"
     }
   }
 }

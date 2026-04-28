@@ -1,5 +1,28 @@
 {
+  "app": {
+    "login": {
+      "demoCredentials": "\"{email}\" e-postasını ve \"{password}\" parolasını kullanın.",
+      "demoLabel": "Demo:",
+      "demoMessage": "Bu demo ortamıdır. Tüm veriler her gece silinir.",
+      "demoTestChurch": "\"Grace Community Church\" test kilisesine giriş yapabilirsiniz"
+    },
+    "oauth": {
+      "allow": "İzin Ver",
+      "allowAria": "Yetkilendirmeye izin ver",
+      "authorizationRequired": "YETKİLENDİRME GEREKLİ",
+      "deny": "Reddet",
+      "denyAria": "Yetkilendirmeyi reddet",
+      "loading": "Yükleniyor...",
+      "loadingChurchData": "Kilise verileri yükleniyor...",
+      "logoAlt": "logo",
+      "permissionPlans": "Planlar",
+      "promptAccess": "Yukarıdaki uygulamada {churchName} kilisesinden aşağıdaki verilere erişmek ister misiniz?"
+    }
+  },
   "attendance": {
+    "attendanceNavigation": {
+      "kioskTheme": "Kiosk Teması"
+    },
     "attendancePage": {
       "att": "Katılım",
       "campus": "Kampüs",
@@ -17,6 +40,7 @@
       "unscheduled": "Unscheduled"
     },
     "attendanceSetup": {
+      "addCampusAria": "Kampüs ekle",
       "addService": "Add Service",
       "addServiceTime": "Add Service Time",
       "newCampus": "New Campus",
@@ -28,14 +52,36 @@
     "campusEdit": {
       "confirmDelete": "Are you sure you want to delete this campus?",
       "name": "Campus Name",
+      "nameAria": "Kampüs adı",
       "validate": {
         "name": "Campus Name is required."
       }
     },
+    "checkinThemeEdit": {
+      "addSlide": "Slayt Ekle",
+      "background": "Arka Plan",
+      "backgroundImage": "Arka Plan Resmi",
+      "backgroundImageDesc": "Arama/karşılama ekranı için isteğe bağlı arka plan resmi. Önerilen: 1920x1080.",
+      "change": "Değiştir",
+      "changeImage": "Resmi Değiştir",
+      "duration": "Süre (s)",
+      "enableIdleScreen": "Boşta ekranını etkinleştir",
+      "headerSubtitle": "Kiosk renkleri Ayarlar > Uygulama Teması'nda yönetilir. Aşağıda arka plan resimlerini ve boşta ekranı davranışını yapılandırın.",
+      "idleScreen": "Boşta Ekranı / Ekran Koruyucu",
+      "kioskSettings": "Kiosk Ayarları",
+      "remove": "Kaldır",
+      "slide": "Slayt {index}",
+      "slides": "Slaytlar",
+      "timeoutSeconds": "Zaman Aşımı (saniye)",
+      "upload": "Yükle",
+      "uploadImage": "Resim Yükle"
+    },
     "serviceEdit": {
       "campus": "Kampüs",
+      "campusAria": "Kampüs seçin",
       "confirmDelete": "Are you sure you wish to permanently delete this service?",
       "name": "Service Name",
+      "nameAria": "Hizmet adı",
       "validate": {
         "campus": "Please select a campus.",
         "name": "Service name is required."
@@ -44,7 +90,10 @@
     "serviceTimeEdit": {
       "confirmDelete": "Are you sure you wish to permanently delete this service time?",
       "name": "Service Time",
+      "nameAria": "Hizmet zamanı adı",
+      "namePlaceholder": "08:00",
       "service": "İbadet",
+      "serviceAria": "Hizmet seçin",
       "validate": {
         "name": "Service time name is required.",
         "service": "Please select a service."
@@ -138,6 +187,9 @@
   "common": {
     "add": "Ekle",
     "amount": "Amount",
+    "appTheme": "App Theme",
+    "b1CheckIn": "B1 CheckIn",
+    "b1Mobile": "B1 Mobile",
     "back": "Geri",
     "bottom": "Bottom",
     "cancel": "İptal",
@@ -182,7 +234,9 @@
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
+    "mobile": "Mobil",
     "name": "Ad",
+    "navigation": "Navigasyon",
     "no": "Hayır",
     "notes": "Notes",
     "person": "Person",
@@ -205,14 +259,45 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Web Sitesi",
-    "yes": "Evet",
-    "mobile": "Mobil",
-    "navigation": "Navigasyon",
-    "appTheme": "App Theme",
-    "b1Mobile": "B1 Mobile",
-    "b1CheckIn": "B1 CheckIn"
+    "yes": "Evet"
   },
   "components": {
+    "associatedForms": {
+      "addForm": "Form ekle"
+    },
+    "bezChat": {
+      "ariaOpen": "Bez sohbetini aç",
+      "errorAnswer": "Üzgünüm, bir cevap bulamadım.",
+      "errorGeneric": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+      "intro": "Merhaba, ben Bez! B1 Admin'de gezinmenize yardımcı olabilirim. Bana sormayı deneyin:",
+      "placeholderInput": "Bez'e bir soru sorun...",
+      "sampleCsv": "\"CSV'den üyeleri nasıl içe aktarırım?\"",
+      "sampleGiving": "\"Online bağışı nasıl ayarlarım?\"",
+      "sampleGroup": "\"Yeni bir grup nasıl oluştururum?\"",
+      "title": "Bez'e Sor"
+    },
+    "docChat": {
+      "ariaOpen": "Yardım sohbetini aç",
+      "composing": "Cevap oluşturuluyor...",
+      "errorAnswer": "Üzgünüm, bir cevap bulamadım.",
+      "errorGeneric": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+      "intro": "B1 Admin hakkında her türlü soruyu sorun. Örneğin:",
+      "placeholderInput": "Bir soru sorun...",
+      "sampleCsv": "\"CSV'den üyeleri nasıl içe aktarırım?\"",
+      "sampleGiving": "\"Online bağışı nasıl ayarlarım?\"",
+      "sampleGroup": "\"Yeni bir grup nasıl oluştururum?\"",
+      "searching": "Belgelerde aranıyor...",
+      "title": "Yardım Asistanı"
+    },
+    "draggableWrapper": {
+      "ariaLabel": "Sürüklenebilir öğe"
+    },
+    "droppableWrapper": {
+      "ariaLabel": "Bırakma alanı"
+    },
+    "fileUpload": {
+      "file": "Dosya"
+    },
     "footer": {
       "phone": "Telefon",
       "rights": "All rights reserved."
@@ -224,6 +309,41 @@
       "featureWebsite": "Website builder & content management",
       "subtitle": "Manage your congregation, plan services, track attendance, and handle donations — all in one place.",
       "title": "Church Management Made Simple"
+    },
+    "permissionDenied": {
+      "contactAdmin": "Erişim talep etmek için lütfen kilise yöneticinizle iletişime geçin.",
+      "defaultMessage": "Bu özelliğe erişmek için gerekli izne sahip değilsiniz:"
+    },
+    "personAdd": {
+      "select": "Seç"
+    },
+    "search": {
+      "ariaSearch": "Ara",
+      "ariaSearchInput": "Kişi ara",
+      "ariaSelectPerson": "Kişi seç"
+    },
+    "sendInviteDialog": {
+      "addedMessage": "{personName}, {contextName} kategorisine eklendi. Ona {personEmail} adresine bir e-posta daveti göndermek ister misiniz?",
+      "ariaTitle": "Davet E-postası Gönder?",
+      "errorFailed": "Davet e-postası gönderilemedi.",
+      "noThanks": "Hayır, Teşekkürler",
+      "sendInvite": "Davet Gönder",
+      "sentMessage": "{personEmail} adresine davet e-postası gönderildi."
+    },
+    "siteNavigation": {
+      "ariaEditLink": "{linkText} navigasyon bağlantısını düzenle",
+      "noTitle": "[Başlık Yok]"
+    },
+    "superBeeChat": {
+      "ariaOpen": "SuperBee sohbetini aç",
+      "errorAnswer": "Bir süper kahraman bile bazen duvara çarpar. Tekrar deneyin!",
+      "errorGeneric": "Bir şeyler ters gitti. Ama endişelenme — daha güçlü olarak geri döneceğim!",
+      "intro": "Merhaba şampiyon! Ben SuperBee — senin B1 Admin güç merkezin. Bana en zorlu sorularını sor!",
+      "placeholderInput": "SuperBee'ye bir şey sor...",
+      "sampleCsv": "\"CSV'den üyeleri nasıl içe aktarırım?\"",
+      "sampleGiving": "\"Online bağışı nasıl ayarlarım?\"",
+      "sampleGroup": "\"Yeni bir grup nasıl oluştururum?\"",
+      "title": "SuperBee"
     },
     "wrapper": {
       "att": "Katılım",
@@ -249,15 +369,116 @@
     "lastName": "Soyadı"
   },
   "dashboard": {
+    "adminWelcome": {
+      "addCongregationDesc": "Yoklama, gruplar ve bağışları takip etmek için kişilerinizi içe aktarın veya ekleyin.",
+      "addCongregationTitle": "Cemaatinizi Ekleyin",
+      "addLogoDesc": "Logonuzu yükleyin ve kilisenizin iletişim bilgilerini güncelleyin.",
+      "addLogoTitle": "Kilisenizin Logosunu Ekleyin",
+      "createGroupDesc": "Küçük gruplar, sınıflar veya hizmet ekipleri kurun.",
+      "createGroupTitle": "İlk Grubunuzu Oluşturun",
+      "createWebpageDesc": "Ziyaretçilerin sizi tanıyabileceği bir genel web sitesi oluşturun.",
+      "createWebpageTitle": "İlk Web Sayfanızı Oluşturun",
+      "freePlayDesc": "TV'nizde FreePlay dersleri için bir hizmet ve sınıf oluşturun.",
+      "freePlayTitle": "FreePlay Sınıfınızı Kurun",
+      "freeShowDesc": "Şarkılarınızı ve hizmet planlarınızı yedeklemek için FreeShow'u bağlayın.",
+      "freeShowTitle": "FreeShow Yedeklemelerini Kurun",
+      "intro": "Başlamak için aşağıdaki herhangi bir kartı tıklayın. Daha sonra bunları her zaman menüde bulabilirsiniz.",
+      "inviteTeamDesc": "İşleri yönetmeye yardımcı olmak için personel ve gönüllüleri yönetici olarak ekleyin.",
+      "inviteTeamTitle": "Ekip Üyelerini Davet Edin",
+      "onlineGivingDesc": "Cemaatiniz çevrimiçi bağış yapabilsin diye Stripe'ı bağlayın.",
+      "onlineGivingTitle": "Online Bağışı Kurun",
+      "peopleAndGroups": "Kişiler ve Gruplar",
+      "servingAndContent": "Hizmet ve İçerik",
+      "setAvatarDesc": "Ekibinizin sizi tanıyabilmesi için bir profil fotoğrafı yükleyin.",
+      "setAvatarTitle": "Avatarınızı Ayarlayın",
+      "subtitle": "Kilisenizi kuralım. Muhtemelen önce yapmak isteyeceğiniz bazı şeyler burada.",
+      "title": "B1.church'e Hoş Geldiniz!",
+      "uploadSermonDesc": "Vaazlarınızı çevrimiçi paylaşın, böylece insanlar istedikleri zaman izleyebilirler.",
+      "uploadSermonTitle": "Bir Vaaz Yükleyin",
+      "yourChurch": "Kiliseniz",
+      "yourProfile": "Profiliniz"
+    },
     "dashboardPage": {
       "dash": "Pano",
       "subtitle": "Welcome to your church management dashboard. Search for people, view your groups, and manage your open tasks."
     },
+    "memberWelcome": {
+      "downloadAppDesc": "Nereye giderseniz gidin bağlantıda kalmak için B1.church uygulamasını telefonunuza alın.",
+      "downloadAppTitle": "Mobil Uygulamayı İndir",
+      "fallbackChurchName": "kiliseniz",
+      "findPeopleDesc": "Cemaatteki diğer kişileri bulmak ve onlarla bağlantı kurmak için kilise rehberinde arama yapın.",
+      "findPeopleTitle": "Tanıdığınız İnsanları Bulun",
+      "intro": "Profilinizi tamamlayarak ve kilisenizin sunduklarını keşfederek başlayın.",
+      "joinGroupDesc": "Topluluğunuzu bulmak için küçük gruplar, sınıflar ve hizmet ekiplerine göz atın.",
+      "joinGroupTitle": "Bir Gruba Katılın",
+      "onlineGivingDesc": "Hızlı ve kolay bir şekilde çevrimiçi bağış yapın ve isteğe bağlı olarak tekrarlayan bağışlar ayarlayın.",
+      "onlineGivingTitle": "Online Bağışı Kurun",
+      "setPhotoDesc": "Kilisedeki insanların sizi tanıyabilmesi ve adınızla yüzünüzü eşleştirebilmesi için bir profil fotoğrafı yükleyin.",
+      "setPhotoTitle": "Fotoğrafınızı Ekleyin",
+      "subtitle": "Bağlantıda kalmak için yapabileceğiniz bazı şeyler burada.",
+      "title": "{churchName} kilisesine Hoş Geldiniz!",
+      "upcomingEventsDesc": "Yaklaşan etkinlikleri, hizmet zamanlarını ve katılım yollarını inceleyin.",
+      "upcomingEventsTitle": "Neler Oluyor Görün"
+    },
     "myGroups": "My Groups",
     "peopleSearch": {
+      "ariaSearch": "Kişi ara",
+      "ariaSearchBox": "arama kutusu",
       "display": "Display",
+      "noResults": "Arama kriterlerinize uygun kişi bulunamadı.",
       "photo": "Photo",
       "ppl": "İnsanlar"
+    },
+    "quickSetupModal": {
+      "classroomName": "Sınıf Adı",
+      "createContinue": "Oluştur ve Devam Et",
+      "creating": "Oluşturuluyor...",
+      "errorBothMinistryClassroom": "Lütfen hem hizmet adını hem de sınıf adını girin.",
+      "errorBothMinistryTeam": "Lütfen hem hizmet adını hem de ekip adını girin.",
+      "errorGeneric": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+      "errorGroupName": "Lütfen bir grup adı girin.",
+      "errorPageTitle": "Lütfen bir sayfa başlığı girin.",
+      "errorPermFreePlay": "Bu işlemi gerçekleştirmek için izniniz yok. Gerekli: MembershipApi - Groups - Edit, MembershipApi - Plans - Edit",
+      "errorPermGroups": "Bu işlemi gerçekleştirmek için izniniz yok. Gerekli: MembershipApi - Groups - Edit",
+      "errorPermPages": "Bu işlemi gerçekleştirmek için izniniz yok. Gerekli: ContentApi - Content - Edit",
+      "freePlayDescription": "FreePlay'e başlamak için bir hizmet ve bir sınıf oluşturmamız gerekiyor. Ardından bir içerik sağlayıcısı eşlemek üzere yönlendirileceksiniz.",
+      "freePlayTitle": "FreePlay Sınıfınızı Kurun",
+      "freeShowDescription": "FreeShow verilerinizi yedeklemek için bir hizmet ve bir ekip oluşturmamız gerekiyor. Ardından ekip üyeleri eklemek üzere yönlendirileceksiniz.",
+      "freeShowTitle": "FreeShow Yedeklemelerini Kurun",
+      "groupDescription": "Grubunuz için bir ad girin. Yapılandırmak ve üye eklemek için grup sayfasına yönlendirileceksiniz.",
+      "groupName": "Grup Adı",
+      "groupTitle": "İlk Grubunuzu Oluşturun",
+      "ministryName": "Hizmet Adı",
+      "pageTitle": "Sayfa Başlığı",
+      "teamName": "Ekip Adı",
+      "webpageDescription": "İlk sayfanız için bir başlık girin. İçerik eklemek için sayfa düzenleyiciye yönlendirileceksiniz.",
+      "webpageTitle": "İlk Web Sayfanızı Oluşturun"
+    }
+  },
+  "device": {
+    "deviceAuthPage": {
+      "allow": "İzin Ver",
+      "altLogo": "logo",
+      "authorizationFailed": "Yetkilendirme başarısız oldu. Lütfen tekrar deneyin.",
+      "authorizationRequired": "YETKİLENDİRME GEREKLİ",
+      "codePlaceholder": "XXXXXX",
+      "confirmPrompt": "Yukarıdaki uygulamada <b>{churchName}</b> kilisesinden aşağıdaki verilere erişmek ister misiniz?",
+      "continue": "Devam Et",
+      "denied": "Cihaz yetkilendirmesi reddedildi",
+      "deny": "Reddet",
+      "deviceAuthorizedAlert": "CİHAZ YETKİLENDİRİLDİ",
+      "deviceAuthorizedHeading": "Cihaz Yetkilendirildi!",
+      "deviceAuthorizedMessage": "Şimdi TV'nize geri dönebilirsiniz. Cihaz otomatik olarak bağlanacaktır.",
+      "deviceCodeLabel": "Cihaz kodu:",
+      "enterCodePrompt": "TV'nizde görüntülenen kodu girin:",
+      "expiresInMinutes": "{minutes} dakika sonra sona eriyor",
+      "failedAuthorize": "Cihaz yetkilendirilemedi",
+      "invalidCode": "Geçersiz veya süresi dolmuş kod. Lütfen kontrol edip tekrar deneyin.",
+      "loading": "Yükleniyor...",
+      "noChurchSelected": "Hiçbir kilise seçilmedi. Lütfen tekrar giriş yapın ve bir kilise seçin.",
+      "requestedPermissions": "İstenen İzinler:",
+      "title": "Cihazı Yetkilendir",
+      "verifyFailed": "Kod doğrulanamadı. Lütfen tekrar deneyin."
     }
   },
   "donation": {
@@ -336,14 +557,26 @@
     },
     "donationBatchPage": {
       "batchDate": "Batch Date:",
+      "donations": "Bağışlar",
+      "editBatch": "Toplu İşlemi Düzenle",
       "subtitle": "Manage donations in this batch",
-      "title": "Donation Batch"
+      "title": "Donation Batch",
+      "totalAmount": "Toplam Tutar"
     },
     "donationBatchesPage": {
-      "subtitle": "Manage donation batches and track giving records"
+      "addBatch": "Toplu İşlem Ekle",
+      "batches": "Toplu İşlemler",
+      "donations": "Bağışlar",
+      "export": "Dışa Aktar",
+      "stripeImportLink": "Eksik Stripe işlemlerini içe aktar",
+      "subtitle": "Manage donation batches and track giving records",
+      "totalAmount": "Toplam Tutar"
     },
     "donationEdit": {
       "anon": "Anonymous",
+      "ariaDate": "Bağış tarihi",
+      "ariaMethod": "Ödeme yöntemi",
+      "ariaNotes": "Bağış notları",
       "card": "Card",
       "cash": "Cash",
       "check": "Check",
@@ -359,7 +592,9 @@
       "failed": "Failed Donations - ",
       "mark": "Mark as ",
       "msg": "Message: ",
-      "unres": " unresolved"
+      "resolved": "Çözüldü",
+      "unres": " unresolved",
+      "unresolved": "Çözülmedi"
     },
     "donations": {
       "amt": "Amount",
@@ -367,9 +602,12 @@
       "batches": "Batches",
       "date": "Tarih",
       "don": "Bağışlar",
+      "edit": "Düzenle",
       "errMsg": "No fund found. Please create a fund before making a donation",
+      "export": "Dışa Aktar",
       "funds": "Funds",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "pending": "Beklemede",
       "statements": "Giving Statements",
       "summary": "Summary",
       "tableIdent": "Id",
@@ -384,6 +622,8 @@
       "total": "Total"
     },
     "fundEdit": {
+      "ariaFundName": "Fon adı",
+      "ariaTaxDeductible": "Vergiden düşülebilir",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
@@ -391,13 +631,18 @@
       "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
     },
     "fundPage": {
-      "subtitle": "Track donations and contributions to this fund"
+      "donors": "Bağışçılar",
+      "filter": "Filtre",
+      "subtitle": "Track donations and contributions to this fund",
+      "totalAmount": "Toplam Tutar"
     },
     "funds": {
+      "addFund": "Fon ekle",
       "fund": "Funds",
       "noFund": "No funds found."
     },
     "fundsPage": {
+      "addFund": "Fon Ekle",
       "amt": "Amount",
       "anon": "Anonymous",
       "batch": "Batch",
@@ -407,8 +652,13 @@
       "don": "Bağışlar",
       "donFilt": "Donation Filter",
       "donor": "Donor",
+      "export": "Dışa Aktar",
       "noDon": "No donations for selected date range",
-      "subtitle": "Manage donation funds and track giving categories"
+      "nonDeductible": "Vergiden Düşülemez",
+      "subtitle": "Manage donation funds and track giving categories",
+      "taxDeductible": "Vergiden Düşülebilir",
+      "taxStatus": "Vergi Durumu",
+      "totalFunds": "Toplam Fonlar"
     },
     "kpi": {
       "avgGift": "Average Gift",
@@ -420,6 +670,68 @@
       "monthly": "Monthly",
       "quarterly": "Quarterly",
       "weekly": "Weekly"
+    },
+    "printAllStatementsPage": {
+      "annualStatementTitle": "{year} Yıllık Bağış Bildirimi",
+      "contributionDetails": "Katkı Detayları",
+      "disclaimer": "Bu katkılar karşılığında {churchName} tarafından hiçbir mal veya hizmet sağlanmadı. Alınan tek fayda manevi dini bir faydaydı. {churchName} kar amacı gütmeyen bir kuruluştur.",
+      "donorInformation": "Bağışçı Bilgileri",
+      "fund": "Fon",
+      "fundBreakdown": "Fon Dağılımı",
+      "issued": "Düzenlendi:",
+      "loadingStatements": "Bildirimler yükleniyor...",
+      "noteLabel": "Not:",
+      "noteText": "Bu bildirim, {year} takvim yılı boyunca {churchName} kilisesine yapılan katkıları özetlemektedir. Lütfen bu belgeyi vergi kayıtlarınız için saklayın. Bu bildirim ile ilgili sorularınız için lütfen kilise ofisi ile iletişime geçin.",
+      "organization": "Kuruluş",
+      "period": "Dönem: 1 Ocak - 31 Aralık {year}",
+      "statementSummary": "Bildirim Özeti",
+      "totalContributions": "Toplam Katkılar",
+      "totalContributionsLabel": "Toplam Katkılar:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "{year} Yıllık Bağış Bildirimi",
+      "contributionDetails": "Katkı Detayları",
+      "disclaimer": "Bu katkılar karşılığında {churchName} tarafından hiçbir mal veya hizmet sağlanmadı. Alınan tek fayda manevi dini bir faydaydı. {churchName} kar amacı gütmeyen bir kuruluştur.",
+      "donorInformation": "Bağışçı Bilgileri",
+      "fund": "Fon",
+      "fundBreakdown": "Fon Dağılımı",
+      "issued": "Düzenlendi:",
+      "noteLabel": "Not:",
+      "noteText": "Bu bildirim, {year} takvim yılı boyunca {churchName} kilisesine yapılan katkıları özetlemektedir. Lütfen bu belgeyi vergi kayıtlarınız için saklayın. Bu bildirim ile ilgili sorularınız için lütfen kilise ofisi ile iletişime geçin.",
+      "organization": "Kuruluş",
+      "period": "Dönem: 1 Ocak - 31 Aralık {year}",
+      "statementSummary": "Bildirim Özeti",
+      "totalContributions": "Toplam Katkılar",
+      "totalContributionsLabel": "Toplam Katkılar:"
+    },
+    "stripeImportPage": {
+      "alreadyImported": "Zaten İçe Aktarıldı",
+      "alreadyImportedLabel": "Zaten İçe Aktarıldı:",
+      "clickImportMissing": "{count} yeni işlemi içe aktarmak için \"Eksikleri İçe Aktar\"a tıklayın.",
+      "dateRangeDescription": "Eksik Stripe işlemlerini kontrol etmek istediğiniz tarih aralığını seçin. Sistem zaten içe aktarılmış olan işlemleri otomatik olarak atlayacaktır.",
+      "dateRequired": "Lütfen hem başlangıç hem de bitiş tarihlerini seçin",
+      "error": "Hata",
+      "errorsLabel": "Hatalar:",
+      "eventId": "Olay ID",
+      "failedFetch": "Olaylar alınamadı",
+      "failedImport": "Olaylar içe aktarılamadı",
+      "importMissing": "Eksikleri İçe Aktar",
+      "importResults": "İçe Aktarma Sonuçları",
+      "imported": "İçe Aktarıldı",
+      "importedLabel": "İçe Aktarıldı:",
+      "new": "Yeni",
+      "newLabel": "Yeni:",
+      "noEvents": "Olay bulunamadı. Bir tarih aralığı seçin ve Önizleme'ye tıklayın.",
+      "preview": "Önizleme",
+      "previewResults": "Önizleme Sonuçları",
+      "selectDateRange": "Tarih Aralığı Seç",
+      "skipped": "Atlandı",
+      "skippedLabel": "Atlandı:",
+      "status": "Durum",
+      "subtitle": "Webhook'lar tarafından yakalanmayan eksik işlemleri Stripe'tan içe aktar",
+      "title": "Stripe İşlemlerini İçe Aktar",
+      "totalLabel": "Toplam:",
+      "type": "Tür"
     }
   },
   "forms": {
@@ -431,6 +743,10 @@
     },
     "form": {
       "act": "Action",
+      "addQuestion": "Soru Ekle",
+      "addQuestionAria": "soru ekle",
+      "moveDownAria": "aşağı taşı",
+      "moveUpAria": "yukarı taşı",
       "noCustomMsg": "No custom questions have been created yet. Questions will be listed here.",
       "question": "Question",
       "questions": "Questions",
@@ -439,14 +755,17 @@
     },
     "formEdit": {
       "access": "Form Access",
+      "accessLevelAria": "Erişim seviyesi",
       "alone": "Stand Alone",
       "associate": "Associate With",
       "available": "Set Form Availability Timeframe",
       "availableEnd": "Availability End Date",
       "availableStart": "Availability Start Date",
       "confirmMsg": "Are you sure you wish to permanently delete this form?",
+      "contentTypeAria": "İçerik türü",
       "editForm": "Edit Form",
       "endReqMsg": "End date is required.",
+      "formNameAria": "Form adı",
       "name": "Form Name",
       "nameReqMsg": "Form name is required.",
       "ppl": "İnsanlar",
@@ -460,6 +779,7 @@
       "addPpl": "Add Person",
       "admin": "Admin",
       "emailNotif": "Email Notification",
+      "emailNotifInfoAria": "E-posta bildirim bilgileri",
       "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
       "formMem": "Form Members",
       "perm": "Permission",
@@ -483,8 +803,11 @@
       "phoneNum": "Phone Number",
       "plcOp": "Placeholder (optional)",
       "prov": "Provider",
+      "questionDescriptionAria": "Soru açıklaması",
       "questionEdit": "Edit Question",
       "questionReq": "Question is required.",
+      "questionRequiredAria": "Soru zorunlu",
+      "questionTitleAria": "Soru başlığı",
       "textArea": "Text Area",
       "textBox": "Textbox",
       "wholeNum": "Whole Number",
@@ -492,6 +815,8 @@
     },
     "formSubmissions": {
       "anon": "Anonymous",
+      "noSubmissions": "Form gönderimi bulunamadı",
+      "printSummaryAria": "yazdır-özet",
       "subBy": "Submitted By",
       "subDate": "Submission Date",
       "subFor": "Submitted For",
@@ -501,11 +826,22 @@
     "formsPage": {
       "addForm": "Add Form",
       "archForms": "Archived Forms",
+      "archive": "Arşivle",
+      "archiveFormAria": "{name} formunu arşivle",
       "confirmMsg1": "Are you sure you want to archive this form?",
       "confirmMsg2": "Are you sure you want to restore this form?",
+      "edit": "Düzenle",
+      "editFormAria": "{name} formunu düzenle",
+      "form": "form",
+      "formArchivedCount": "{count} arşivlenmiş form",
+      "formArchivedCountPlural": "{count} arşivlenmiş form",
+      "formCount": "{count} form",
+      "formCountPlural": "{count} form",
       "forms": "Formlar",
       "noArch": "No archived forms.",
       "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "restore": "Geri Yükle",
+      "restoreFormAria": "{name} formunu geri yükle",
       "subtitleManage": "Create and manage custom forms",
       "url": "URL"
     },
@@ -522,6 +858,7 @@
       "catName": "Category Name",
       "catReq": "Category name is required.",
       "group": "Grup",
+      "groupNameAria": "Grup adı",
       "groupReq": "Group name is required.",
       "ministry": "Ministry",
       "new": "New ",
@@ -529,6 +866,7 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "emailTooltip": "Bu gruba e-posta gönder",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
       "moreLabels": "More Labels",
@@ -536,6 +874,7 @@
       "printNametag": "Print Nametag",
       "settings": "Ayarlar",
       "team": "Team",
+      "textTooltip": "Bu gruba mesaj gönder",
       "trackAttendance": "Track Attendance"
     },
     "groupDetails": {
@@ -559,27 +898,43 @@
       "attendance": "Katılım",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
+      "changePhotoAria": "Grup fotoğrafını değiştir",
       "clickToAddPhoto": "Click to add photo",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "groupDesc": "Group Description",
+      "groupDescriptionAria": "Grup açıklaması",
       "groupDet": "Group Details",
       "groupName": "Group Name",
+      "groupNameAria": "Grup adı",
       "groupNameMsg": "Please enter a group name.",
+      "groupPhotoAlt": "grup",
+      "groupSlugAria": "Grup slug",
       "meetingLocation": "Meeting Location",
+      "meetingLocationAria": "Toplantı yeri",
       "meetingTime": "Meeting Time",
+      "meetingTimeAria": "Toplantı zamanı",
       "parPick": "Parent Pickup",
       "prinName": "Print Nametag",
       "slug": "Slug (key name used for urls)"
     },
     "groupLabelsEdit": {
       "addNewLabel": "Add New Label",
-      "labels": "Labels"
+      "addNewLabelAria": "Yeni etiket ekle",
+      "labels": "Labels",
+      "newLabelPrompt": "Yeni bir etiket girin"
     },
     "groupMembers": {
       "groupMem": "Group Members",
       "noMem": "No group members found.",
+      "promoteToLeader": "Lidere Yükselt",
+      "promoteToLeaderAria": "{name} kullanıcısını lidere yükselt",
+      "remove": "Kaldır",
+      "removeFromGroupAria": "{name} kullanıcısını gruptan kaldır",
+      "removeLeaderAccess": "Lider Erişimini Kaldır",
+      "removeLeaderAccessAria": "{name} için lider erişimini kaldır",
       "send": "Send",
       "sendMemMsg": "Send a message to members",
+      "sendMessageAria": "Üyelere mesaj gönder",
       "showTemplates": "Show Templates",
       "templates": {
         "none": "None",
@@ -588,7 +943,8 @@
           "heading": "Welcome Volunteers",
           "message": "Welcome Thank you for volunteering.\n\nPlease download the B1.Church app and login to manage your schedule. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
-      }
+      },
+      "unknown": "Bilinmiyor"
     },
     "groupNavigation": {
       "members": "Members",
@@ -605,10 +961,13 @@
       "noAttendance": "No attendance records found",
       "noSesMsg": "There are no sessions.",
       "noSessionsFound": "No sessions found",
+      "removeAria": "{name} kullanıcısını oturumdan kaldır",
+      "removeButton": "Kaldır",
       "selectSession": "Select Session",
       "session": "Session",
       "sessions": "Sessions",
-      "tryAdjusting": "Try adjusting your search"
+      "tryAdjusting": "Try adjusting your search",
+      "upcoming": "yaklaşan"
     },
     "groupsPage": {
       "addGroup": "Add Group",
@@ -628,8 +987,67 @@
       "totalMembers": "Total Members"
     },
     "membersAdd": {
+      "addMemberAria": "Gruba üye ekle",
       "availableMem": "Available Group Members",
-      "noMem": "No group members available."
+      "noMem": "No group members available.",
+      "unknown": "Bilinmiyor"
+    },
+    "sendEmailDialog": {
+      "bodyMergeFieldHint": "Gövdeye birleştirme alanı ekle:",
+      "cancel": "İptal",
+      "close": "Kapat",
+      "composePlaceholder": "E-postanızı buraya yazın...",
+      "eligibleSummary": "{totalMembers} üyeden {eligibleCount} tanesi bu e-postayı alacak.",
+      "eligibleSummarySingular": "{totalMembers} üyeden {eligibleCount} tanesi bu e-postayı alacak.",
+      "emailGroupTitle": "Gruba E-posta: {groupName}",
+      "fallbackError": "E-posta gönderilemedi.",
+      "loadTemplate": "Şablon Yükle (isteğe bağlı)",
+      "loadingRecipients": "Alıcılar yükleniyor...",
+      "manageTemplates": "Şablonları Yönet",
+      "mergeFieldChurchName": "Kilise Adı",
+      "mergeFieldDisplayName": "Görüntülenen Ad",
+      "mergeFieldEmail": "E-posta",
+      "mergeFieldFirstName": "Ad",
+      "mergeFieldLastName": "Soyad",
+      "noEmailNotice": "{count} kişinin kayıtlı e-posta adresi yok.",
+      "noEmailNoticeSingular": "{count} kişinin kayıtlı e-posta adresi yok.",
+      "noEmailSkipped": "{count} atlandı (kayıtlı e-posta adresi yok).",
+      "none": "Yok",
+      "send": "E-posta Gönder",
+      "sendDefault": "Bu, uygun grup üyelerine bir e-posta gönderecek.",
+      "sendFailedDetail": "{count} tanesi gönderilemedi.",
+      "sending": "Gönderiliyor...",
+      "sentSummary": "{recipientCount} uygun alıcının {successCount} tanesine gönderildi.",
+      "sentSummarySingular": "{recipientCount} uygun alıcının {successCount} tanesine gönderildi.",
+      "subject": "Konu",
+      "subjectMergeFieldHint": "Konuya birleştirme alanı ekle:",
+      "subjectPlaceholder": "ör. Merhaba {firstName}, {churchName} kilisesinden güncelleme"
+    },
+    "sendTextDialog": {
+      "cancel": "İptal",
+      "characterCount": "{count} karakter ({segments} SMS segmenti)",
+      "characterCountSingular": "{count} karakter ({segments} SMS segmenti)",
+      "close": "Kapat",
+      "eligibleSummary": "{totalMembers} üyeden {eligibleCount} tanesi bu mesajı alacak.",
+      "eligibleSummarySingular": "{totalMembers} üyeden {eligibleCount} tanesi bu mesajı alacak.",
+      "fallbackError": "Mesaj gönderilemedi.",
+      "loadingRecipients": "Alıcılar yükleniyor...",
+      "messageLabel": "Mesaj",
+      "noPhoneNotice": "{count} kişinin kayıtlı telefon numarası yok.",
+      "noPhoneNoticeSingular": "{count} kişinin kayıtlı telefon numarası yok.",
+      "noPhoneSkipped": "{count} atlandı (telefon numarası yok).",
+      "optedOutNotice": "{count} kişi vazgeçti.",
+      "optedOutSkipped": "{count} atlandı (vazgeçildi).",
+      "phoneOnFile": "kayıtlı telefon",
+      "send": "Gönder",
+      "sendDefault": "Bu, uygun grup üyelerine bir SMS gönderecek.",
+      "sendFailedDetail": "{count} tanesi gönderilemedi.",
+      "sending": "Gönderiliyor...",
+      "sendingTo": "{phoneNumber} numarasına gönderiliyor.",
+      "sentSummary": "{recipientCount} uygun alıcının {successCount} tanesine gönderildi.",
+      "sentSummarySingular": "{recipientCount} uygun alıcının {successCount} tanesine gönderildi.",
+      "textGroupTitle": "Gruba Mesaj: {groupName}",
+      "textPersonTitle": "Mesaj: {personName}"
     },
     "serviceTimes": {
       "services": "Service(s):"
@@ -642,11 +1060,18 @@
       "invDate": "Invalid Date",
       "sesAdd": "Add a Session",
       "sesDate": "Session Date",
+      "sessionDateAria": "Oturum tarihi",
       "srvTime": "Service Time"
+    },
+    "sessionAttendance": {
+      "removeVisitorAria": "{name} kullanıcısını oturumdan kaldır",
+      "visitor": "ziyaretçi"
     },
     "sessionCard": {
       "active": "Active",
       "edit": "Düzenle",
+      "invalidDate": "Geçersiz Tarih",
+      "noDate": "Tarih Yok",
       "people": "people",
       "person": "person",
       "view": "View"
@@ -658,6 +1083,67 @@
     "tabs": {
       "mem": "Members",
       "ses": "Sessions"
+    }
+  },
+  "helpers": {
+    "conditionHelper": {
+      "dayOfMonth": ": Ayın günü",
+      "dayOfWeek": ": Haftanın günü",
+      "endsWith": "ile biten",
+      "is": "şudur",
+      "isNot": "değildir",
+      "month": ": Ay",
+      "startsWith": "ile başlayan",
+      "yearsSince": "Yıllar önce "
+    },
+    "pageHelper": {
+      "bible": "İncil",
+      "donate": "Bağış Yap",
+      "groups": "Gruplar",
+      "sermons": "Vaazlar",
+      "stream": "Yayın",
+      "verseOfTheDay": "Günün Ayeti"
+    },
+    "secondaryMenuHelper": {
+      "appearance": "Görünüm",
+      "blocks": "Bloklar",
+      "bulkImport": "Toplu İçe Aktarma",
+      "calendars": "Takvimler",
+      "devices": "Cihazlar",
+      "files": "Dosyalar",
+      "liveStreamTimes": "Canlı Yayın Saatleri",
+      "pages": "Sayfalar",
+      "playlists": "Çalma Listeleri",
+      "profile": "Profil",
+      "quickActions": "Hızlı Eylemler",
+      "registrations": "Kayıtlar",
+      "sermons": "Vaazlar",
+      "stripeImport": "Stripe İçe Aktarma",
+      "website": "Web Sitesi"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "darkMode": "Dark Mode",
+      "description": "These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.",
+      "lightMode": "Light Mode",
+      "resetDefaults": "Reset to Defaults"
+    },
+    "appThemePage": {
+      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk",
+      "title": "App Theme"
+    },
+    "b1MobilePage": {
+      "subtitle": "Configure settings for the B1 Mobile app",
+      "title": "B1 Mobile"
+    },
+    "checkInPage": {
+      "disabled": "Disabled",
+      "enabled": "Enabled — QR code will appear on kiosk",
+      "qrGuestRegistration": "QR Guest Registration",
+      "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
+      "title": "B1 CheckIn"
     }
   },
   "month": {
@@ -684,13 +1170,22 @@
     "september": "September"
   },
   "people": {
+    "advancedPeopleSearch": {
+      "loadingCustomFields": "Özel alanlar yükleniyor...",
+      "noCustomFields": "Tanımlanmış özel alan yok. Bunlara göre arama yapmak için Formlar'da özel alanlar oluşturun."
+    },
     "advancedSearch": {
       "enterValuePlaceholder": "Enter value...",
       "search": "Ara",
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
+      "exampleMen": "- Bana Temmuz ayında doğum günü olan 30 yaş üstü erkekleri göster.",
+      "exampleWomen": "- Bana evli kadınları göster.",
+      "examples": "Örnekler:",
       "placeholder": "Show me men over 30 with birthdays in July",
+      "search": "Ara",
+      "searching": "Aranıyor...",
       "title": "AI Search"
     },
     "editCondition": {
@@ -722,20 +1217,44 @@
       "value": "Value",
       "valuePlaceholder": "Value"
     },
+    "gdprActions": {
+      "anonymize": "Anonimleştir",
+      "anonymizeConfirmType": "Onaylamak için \"ANONYMIZE\" yazın:",
+      "anonymizeDescription": "Bu işlem tüm kişisel bilgileri genel değerlerle değiştirecek ve kişiyi gruplardan, formlardan ve mesajlaşmadan kaldıracaktır. Bağış miktarları ve katılım tarihleri raporlama için korunacak ancak bu kişiden ayrılacaktır. Bu işlem geri alınamaz.",
+      "anonymizePlaceholder": "ANONYMIZE",
+      "anonymizeTitle": "{personName} anonimleştirilsin mi?",
+      "anonymizing": "Anonimleştiriliyor...",
+      "dataManagement": "Veri Yönetimi",
+      "description": "GDPR uyumluluğu için bu kişinin verilerini dışa aktarın veya anonimleştirin.",
+      "exportData": "Verileri Dışa Aktar",
+      "exporting": "Dışa Aktarılıyor..."
+    },
     "groups": {
-      "notMemMsg": "Not currently a member of any groups."
+      "leader": "Lider",
+      "notMemMsg": "Not currently a member of any groups.",
+      "unknownGroup": "Bilinmeyen Grup"
     },
     "household": {
-      "house": " Household"
+      "age": "Yaş:",
+      "demoGroups": "Gruplar: Gençlik Hizmeti, İbadet Ekibi",
+      "demoLastActivity": "Son Etkinlik: 24 Kas 2024",
+      "house": " Household",
+      "noContactInfo": "İletişim bilgisi yok",
+      "status": "Durum:"
     },
     "householdEdit": {
       "addMatch": "address to match",
+      "addMember": "Hane Üyesi Ekle",
+      "addMemberAria": "Hane üyesi ekle",
       "blankMsg": "Please provide a household name.",
+      "cancelAddMember": "Üye ekleme işlemini iptal et",
       "child": "Child",
       "head": "Head",
       "house": " Household",
       "houseName": "Household Name",
+      "householdNameAria": "Hane adı",
       "other": "Other",
+      "removeMemberAria": "Hane üyesini kaldır",
       "spouse": "Spouse",
       "updQuestion": "Would you like to update"
     },
@@ -762,6 +1281,7 @@
       "cust": "Custom",
       "filt": "Filters",
       "noFilt": "No filters available.",
+      "selectColumns": "Sütunları seç",
       "stand": "Standard"
     },
     "peoplePage": {
@@ -769,15 +1289,21 @@
       "bDay": "Birthday",
       "bDayNo": "Birthday (No Year)",
       "deleteOp": "Delete Option",
+      "export": "Dışa Aktar",
       "first": "First",
       "last": "Last",
+      "loading": "Kişiler yükleniyor...",
       "middle": "Middle",
       "nameNote": "Name Tag Notes",
+      "noPeopleFound": "Kişi bulunamadı",
+      "peopleFound": "{count} kişi bulundu",
       "photo": "Photo",
       "primEmail": "Primary Email",
       "primPhone": "Primary Phone",
       "recentPpl": "Recently Added People",
-      "searchPpl": "Search People"
+      "searchPpl": "Search People",
+      "searchResults": "Arama Sonuçları",
+      "showingRecent": "En son {count} kişi gösteriliyor"
     },
     "peopleSearch": {
       "active": "active:",
@@ -800,13 +1326,31 @@
       "serviceTime": "Service Time",
       "simp": "Simple",
       "simpSearch": "People Search",
-      "type": "Type"
+      "type": "Type",
+      "typeToSearch": "Anında aramak için yazın"
     },
     "peopleSearchResults": {
+      "deletePersonAria": "{name} kullanıcısını sil",
       "noResMsg": "No results found.  Please search for a different name or add a new person"
+    },
+    "personAdd": {
+      "createNewPersonAria": "Yeni kişi oluştur",
+      "searchForPersonAria": "Kişi ara",
+      "searchForPersonToAddAria": "Eklemek için kişi ara"
+    },
+    "personAddResults": {
+      "add": "Ekle",
+      "addPersonAria": "{name} kişisini ekle"
     },
     "personAttendance": {
       "noAttMsg": "No attendance records. Attendance will appear once attendance has been tracked for a group session."
+    },
+    "personBanner": {
+      "age": "Yaş",
+      "gender": "Cinsiyet",
+      "hasLogin": "Giriş bilgisi var",
+      "maritalStatus": "Medeni Durum",
+      "sendTextMessage": "Mesaj gönder"
     },
     "personEdit": {
       "applyQuestion": "Would you like to apply that to the entire",
@@ -822,6 +1366,7 @@
       "lastReq": "Last name is required",
       "maritalStatus": "Marital Status",
       "merge": "Merge",
+      "mergePersonAria": "Kişiyi birleştir",
       "mobile": "Mobil",
       "nameNote": "Name Tag Notes",
       "persDet": "Personal Details",
@@ -831,13 +1376,30 @@
     },
     "personForm": {
       "addForm": "Add Form",
+      "addFormAria": "{name} gönderimini ekle",
       "form": "Form",
       "noFormMsg": "No form submission found for this person"
     },
     "personNav": {
-      "customForms": "Custom Forms"
+      "customForms": "Custom Forms",
+      "discipleship": "Öğrencilik",
+      "groups": "Gruplar"
+    },
+    "personNavigation": {
+      "attendance": "Katılım",
+      "details": "Detaylar",
+      "donations": "Bağışlar",
+      "forms": "Formlar",
+      "groups": "Gruplar",
+      "notes": "Notlar"
+    },
+    "personPage": {
+      "notesSuffix": " Notlar",
+      "thisPerson": "bu kişi"
     },
     "personView": {
+      "edit": "Düzenle",
+      "hasLoginLabel": "Giriş bilgisi var: {email}",
       "home": "Home",
       "memShip": "Membership:",
       "mobile": "Mobil",
@@ -1038,18 +1600,31 @@
     }
   },
   "plans": {
+    "actionDialog": {
+      "fallbackTitle": "Eylem"
+    },
     "actionSelector": {
       "addAction": "Add Action",
       "addSection": "Add Section",
+      "fallbackAction": "Eylem",
+      "fallbackContent": "İçerik",
+      "fallbackLoading": "Yükleniyor...",
+      "fallbackSection": "Bölüm",
       "fromAssociatedLesson": "From associated lesson:",
       "noActionsAvailable": "No actions available",
+      "noContent": "Kullanılabilir içerik yok",
       "selectAction": "Select Action",
       "selectExternalItem": "Select External Item"
     },
     "assignment": {
       "addPosition": "Add Position",
       "autoAssign": "Auto Assign",
-      "saveNotes": "Save Notes"
+      "notesPlaceholder": "Bu hizmet planı için notlar ekleyin...",
+      "notesPlaceholderReadOnly": "Plan notları (salt okunur)",
+      "planNotes": "Plan Notları",
+      "planNotesAria": "Plan notları",
+      "saveNotes": "Save Notes",
+      "saveSuccess": "Notlar başarıyla kaydedildi"
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
@@ -1057,14 +1632,23 @@
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
     },
+    "browseGrid": {
+      "addOn": "Eklenti"
+    },
     "bulkLessonSchedule": {
       "biWeekly": "Bi-Weekly",
       "date": "Tarih",
       "interval": "Interval",
       "lesson": "Lesson",
       "lessonsToSchedule": "lessons to schedule",
+      "loadFailed": "Ders verileri yüklenemedi. Lütfen tekrar deneyin.",
+      "loadingSeries": "Ders serisi yükleniyor...",
+      "noLessonsInSeries": "Bu seride ders bulunamadı.",
       "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
       "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
+      "pathNotSupported": "Seçilen ders yolu formatı toplu zamanlama için desteklenmiyor.",
+      "savingFailed": "Bazı planlar oluşturulamadı. Lütfen kontrol edin ve tekrar deneyin.",
+      "schedulingProgress": "Zamanlanıyor...",
       "startDate": "Start Date",
       "startingLesson": "Starting Lesson",
       "title": "Bulk Schedule Lessons",
@@ -1072,22 +1656,53 @@
       "weekly": "Weekly"
     },
     "contentProviderAuth": {
+      "accountLinked": "Hesap bağlandı",
+      "authExpired": "Kimlik doğrulama süresi doldu veya başarısız oldu",
+      "authFailed": "Kimlik doğrulama başarısız oldu",
+      "contentProviderAccounts": "İçerik Sağlayıcı Hesapları",
+      "deviceFlowFailed": "Cihaz akışı başlatılamadı",
       "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
+      "deviceFlowUnsupported": "Sağlayıcı cihaz akışını desteklemiyor",
       "errorGeneric": "Failed to link provider. Please try again.",
+      "expiresPrefix": "Sona erer:",
       "link": "Link",
       "linkAccount": "Link Account",
       "linkNew": "Link New Provider",
       "linked": "Linked",
       "noLinkedDescription": "Link a content provider to access their content in your service plans.",
       "noProvidersAvailable": "No content providers available",
+      "noProvidersAvailableLong": "Kimlik doğrulama gerektiren kullanılabilir içerik sağlayıcısı yok.",
       "pkceInstructions": "Click the button below to authorize in a popup window:",
+      "pkceUnsupported": "Sağlayıcı PKCE kimlik doğrulamasını desteklemiyor",
       "pkceWaiting": "Waiting for authorization in popup...",
+      "popupBlocked": "Pop-up açılamadı. Lütfen bu site için pop-up'lara izin verin.",
       "refresh": "Refresh",
       "selectProvider": "Link Content Provider",
+      "sessionExpired": "Yetkilendirme oturumunun süresi doldu. Lütfen tekrar deneyin.",
+      "sessionFailed": "Yetkilendirme oturumu oluşturulamadı. Lütfen tekrar deneyin.",
+      "startAuthFailed": "Kimlik doğrulama başlatılamadı",
       "success": "Successfully linked!",
       "title": "Content Providers",
+      "tokenExchangeFailed": "Kod, token ile değiştirilemedi",
+      "tokenExpired": "Token süresi doldu - lütfen yeniden bağlayın",
       "unlink": "Unlink",
       "waitingForAuth": "Waiting for authorization..."
+    },
+    "contentRenderer": {
+      "fallbackPreview": "Önizleme",
+      "fallbackTitle": "İçerik Önizlemesi",
+      "noContent": "Görüntülenecek içerik yok.",
+      "noTextContent": "Görüntülenecek metin içeriği yok.",
+      "previewUnavailable": "Bu içerik için önizleme mevcut değil.",
+      "unableToLoad": "Önizleme yüklenemedi. İçerik kimlik doğrulama gerektirebilir veya geçici olarak kullanılamaz.",
+      "videoUnsupported": "Tarayıcınız video etiketini desteklemiyor."
+    },
+    "lessonDialog": {
+      "back": "Geri",
+      "close": "Kapat",
+      "fallbackTitle": "Ders Bölümü",
+      "noPreviewItem": "Bu öğe için önizleme mevcut değil.",
+      "previewUnavailable": "Bu bölüm için önizleme mevcut değil."
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -1097,8 +1712,10 @@
     },
     "lessonScheduleEdit": {
       "dateRequired": "Please select a date",
+      "fallbackLesson": "Ders",
       "scheduleLesson": "Schedule Lesson",
       "scheduledDate": "Scheduled Date",
+      "scheduledDateAria": "Zamanlanmış tarih",
       "selectLesson": "Select Lesson",
       "venueRequired": "Please select a venue"
     },
@@ -1108,7 +1725,10 @@
       "contentProvider": "Content Provider",
       "lesson": "Lesson",
       "linkProviderFirst": "Link this provider first to browse content",
-      "providerNotLinked": "Provider Not Linked"
+      "noContent": "Kullanılabilir içerik yok",
+      "providerNotLinked": "Provider Not Linked",
+      "searchPlaceholder": "Ara...",
+      "selectedPrefix": "Seçilen:"
     },
     "ministryList": {
       "getStarted": "Get started by creating your first ministry",
@@ -1125,12 +1745,18 @@
       "copyServiceOrder": "Copy Order of Service",
       "planAdd": "Add a Plan",
       "planEdit": "Edit Plan",
+      "planNameAria": "Plan adı",
       "planReq": "Plan name is required.",
       "servDate": "Service Date",
-      "servReq": "Service date is required."
+      "servReq": "Service date is required.",
+      "serviceDateAria": "Hizmet tarihi",
+      "showVolunteerNames": "Kayıt sayfasında gönüllü adlarını göster",
+      "signupDeadline": "Kayıt Son Tarihi (hizmetten saatler önce)",
+      "signupDeadlineHelper": "Son tarih için boş bırakın"
     },
     "planItem": {
       "addItem": "Add Item",
+      "duration": "Süre",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "expandToActions": "Expand to Actions",
@@ -1142,12 +1768,18 @@
       "confirmDelete": "Confirm Delete",
       "confirmDeleteMessage": "Are you sure you want to delete this item?",
       "description": "Description",
+      "durationMinutesAria": "Süre dakika",
+      "durationSecondsAria": "Süre saniye",
       "edit": "Düzenle",
       "editAddOn": "Edit Add-On",
       "editHeader": "Edit Header",
       "editSong": "Edit Song",
       "enterSearch": "Enter search term",
       "minutes": "Minutes",
+      "planItemDescriptionAria": "Plan öğesi açıklaması",
+      "planItemNameAria": "Plan öğesi adı",
+      "searchBoxAria": "arama kutusu",
+      "searchSongsAria": "Şarkı ara",
       "seconds": "Seconds"
     },
     "planList": {
@@ -1156,9 +1788,12 @@
       "createPlan": "Create Plan",
       "newPlan": "New Plan",
       "noPlans": "No plans found",
+      "noUpcomingPlans": "Yaklaşan Plan Yok",
+      "noUpcomingPlansDescription": "Bugün veya daha sonrası için zamanlanmış plan yok. Geçmiş planları görüntülemek için yukarıdaki \"Geçmişi Göster\" anahtarını kullanın.",
       "plans": "Planlar",
       "scheduleLesson": "Schedule Lesson",
-      "serviceOrder": "Service Order"
+      "serviceOrder": "Service Order",
+      "showPast": "Geçmişi Göster"
     },
     "planPage": {
       "assign": "Team Assignments",
@@ -1190,6 +1825,7 @@
     },
     "planTypePage": {
       "notFound": "Plan type not found",
+      "overview": "Genel Bakış",
       "pairTvApp": "Pair TV App",
       "planType": "Plan Type",
       "subtitle": "Configure plan type settings",
@@ -1230,8 +1866,11 @@
       "subtitle": "Manage ministries and service plans"
     },
     "positionEdit": {
+      "allowSelfSignup": "Kendi Kendine Kayıt Olmaya İzin Ver",
       "catName": "Category Name",
       "catNameReq": "Category Name is required.",
+      "description": "Açıklama",
+      "descriptionHelper": "Gönüllüler kayıt fırsatlarına göz atarken gösterilir",
       "nameReq": "Name is required",
       "posAdd": "Add a Position",
       "posEdit": "Edit Position",
@@ -1244,6 +1883,7 @@
       "pos": "Position",
       "ppl": "İnsanlar",
       "pplNeed": " People Needed",
+      "signupSuffix": "kayıt",
       "team": "Team"
     },
     "printPlan": {
@@ -1263,7 +1903,29 @@
       "noItems": "No items in service order",
       "orderOfService": "Order of Service",
       "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
-      "print": "Print"
+      "print": "Print",
+      "scrollDown": "Aşağı Kaydır",
+      "scrollUp": "Yukarı Kaydır"
+    },
+    "servingOverviewPage": {
+      "endDate": "Bitiş Tarihi",
+      "exportCsv": "CSV Olarak Dışa Aktar",
+      "filename": "hizmet-genel-bakis.csv",
+      "noData": "Seçilen tarih aralığı için hizmet verisi bulunamadı.",
+      "overviewSuffix": "Genel Bakış",
+      "position": "Pozisyon",
+      "startDate": "Başlangıç Tarihi",
+      "subtitle": "Atanan gönüllülerle tarihe göre pozisyonlar",
+      "title": "Hizmet Genel Bakışı"
+    },
+    "servingPage": {
+      "showAll": "Tümünü Göster"
+    },
+    "songDialog": {
+      "close": "Kapat",
+      "fallbackTitle": "Şarkı Detayları",
+      "files": "Dosyalar",
+      "lyrics": "Şarkı Sözleri"
     },
     "songs": {
       "links": "Links"
@@ -1281,17 +1943,22 @@
       "disName": "Display Name",
       "disNameReq": "Display name is required.",
       "endReq": "End time is required",
+      "endTimeAria": "Bitiş zamanı",
       "followGuide": "Follow the guide below to set up service times",
       "startReq": "Start time is required",
+      "startTimeAria": "Başlangıç zamanı",
       "teamNeed": "Needed Teams",
+      "teamPrefix": "Ekip",
       "teamReq": "Please Select Team(s).",
       "timeAdd": "Add a Time",
+      "timeDisplayNameAria": "Zaman görüntüleme adı",
       "timeEdit": "Edit Time",
       "timeEnd": "End Time",
       "timeStart": "Start Time",
       "tip": "Tip"
     },
     "timeList": {
+      "addTimeAria": "Zaman ekle",
       "noTime": "No times have been added yet",
       "sunServ": "Sunday Service",
       "times": "Times"
@@ -1314,6 +1981,9 @@
       "registrationDate": "Registration Date",
       "title": "Devices"
     },
+    "devicesPage": {
+      "addDevice": "Cihaz ekle"
+    },
     "linkedAccounts": {
       "link": "Link",
       "signUp": "Sign Up",
@@ -1327,11 +1997,15 @@
     "profilePage": {
       "accDel": "Account Deletion",
       "confirmMsg": "Are you sure you wish to permanently delete your account?",
+      "darkMode": "Koyu Mod",
       "delAcc": "Delete my account",
       "deleteError": "Failed to delete account",
+      "demoModeAlert": "Demo modunda profil düzenleme devre dışı bırakıldı.",
+      "demoPasswordHelper": "Demo modunda parola değişiklikleri devre dışı bırakıldı",
       "emailMsg": "Please enter an email address.",
       "firstMsg": "Please enter firstname",
       "lastMsg": "Please enter lastname",
+      "lightMode": "Açık Mod",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
       "passLong": "Please enter a password that is at least 8 characters long.",
@@ -1345,13 +2019,75 @@
       "saveChanges": "Değişiklikleri Kaydet",
       "saveError": "Failed to save changes",
       "subtitle": "Manage your profile and preferences",
+      "themePreferences": "Tema Tercihleri",
+      "themePreferencesHelper": "Tema tercihiniz otomatik olarak kaydedilir ve bu cihazda hatırlanır.",
+      "togglePasswordVisibility": "parola görünürlüğünü değiştir",
       "valEmail": "Please enter a valid email address."
+    }
+  },
+  "registrations": {
+    "registrationDetailsPage": {
+      "actions": "Eylemler",
+      "cancelConfirm": "Bu kayıt iptal edilsin mi?",
+      "cancelRegistration": "Kaydı İptal Et",
+      "csvDate": "Tarih",
+      "csvMembers": "Üyeler",
+      "csvName": "Ad",
+      "csvStatus": "Durum",
+      "date": "Tarih",
+      "delete": "Sil",
+      "deleteConfirm": "Bu kayıt kalıcı olarak silinsin mi?",
+      "eventNotFound": "Etkinlik bulunamadı",
+      "eventRegistrations": "Etkinlik Kayıtları",
+      "exportCsv": "CSV Olarak Dışa Aktar",
+      "guest": "Misafir",
+      "members": "Üyeler",
+      "name": "Ad",
+      "noRegistrations": "Henüz kayıt yok.",
+      "registrations": "Kayıtlar",
+      "status": "Durum",
+      "subtitle": "Bu etkinlik için kayıtları yönetin",
+      "unknown": "Bilinmiyor"
+    },
+    "registrationSettingsEdit": {
+      "capacity": "Kapasite",
+      "capacityPlaceholder": "Sınırsız için boş bırakın",
+      "enableRegistration": "Kaydı Etkinleştir",
+      "registrationCloses": "Kayıt Kapanışı",
+      "registrationOpens": "Kayıt Açılışı",
+      "registrationSettings": "Kayıt Ayarları",
+      "saveSettings": "Ayarları Kaydet",
+      "tags": "Etiketler",
+      "tagsHelper": "Filtreleme için virgülle ayrılmış etiketler",
+      "tagsPlaceholder": "gençlik, kamp, vbs"
+    },
+    "registrationsPage": {
+      "date": "Tarih",
+      "enabledEvents": "Kayıt Etkinleştirilmiş Etkinlikler",
+      "event": "Etkinlik",
+      "noEvents": "Henüz hiçbir etkinlikte kayıt etkinleştirilmedi.",
+      "noEventsHint": "Etkinlik düzenleme ayarları aracılığıyla bir etkinlikte kaydı etkinleştirin.",
+      "registered": "kayıtlı",
+      "registrations": "Kayıtlar",
+      "subtitle": "Etkinlik kayıt ayarlarını yönetin ve kayıtlı olanları görüntüleyin",
+      "tags": "Etiketler",
+      "title": "Etkinlik Kayıtları"
     }
   },
   "reporting": {
     "detailed": "Detailed",
     "downloadOptions": "Download Options",
+    "givingKpiCards": {
+      "avgGift": "Ortalama Bağış",
+      "donationCount": "Toplam Bağışlar",
+      "donorCount": "Tekil Bağışçılar",
+      "totalGiving": "Toplam Bağış"
+    },
     "noData": "No data available",
+    "reportOutput": {
+      "anonymous": "Anonim",
+      "print": "yazdır"
+    },
     "runReport": "Run Report",
     "sampleTemplate": "Sample Template",
     "summary": "Summary",
@@ -1408,6 +2144,8 @@
       "minutes": "Minutes",
       "seconds": "Seconds"
     },
+    "edit": "Düzenle",
+    "editSermonAria": "{title} düzenle",
     "getStarted": "Get started by adding your first sermon",
     "liveStreamTimes": {
       "externalLinks": {
@@ -1438,16 +2176,20 @@
           "urlRequired": "Please enter link"
         },
         "linkDetails": "Link Details",
+        "linkDisplayTextAria": "Bağlantı görüntüleme metni",
         "linkUrl": "Link URL",
+        "linkUrlAria": "Bağlantı URL'si",
         "linkUrlPlaceholder": "https://example.com or /internal-page",
         "menuOrganization": "Menu Organization",
         "optionalSubmenuMessage": "Optionally organize this link under an existing submenu:",
         "saveLink": "Save Link",
         "saving": "Saving...",
-        "submenuMessage": "This link will be placed under submenu:"
+        "submenuMessage": "This link will be placed under submenu:",
+        "submenuUnderAria": "{text} altında alt menü olarak ayarla"
       },
       "navigationLinks": {
         "add": "Ekle",
+        "edit": "Düzenle",
         "home": "Home",
         "title": "Navigation Links"
       },
@@ -1473,6 +2215,7 @@
         "serviceTimeRequired": "Service time is required",
         "startVideoEarly": "Start Video Early",
         "startVideoEarlyHelp": "Optional: For countdown videos or pre-service content",
+        "timeChipFallback": "Zaman",
         "videoSettings": "Video Settings",
         "weekly": "Weekly",
         "yes": "Evet"
@@ -1480,12 +2223,14 @@
       "services": "Services",
       "servicesTab": {
         "addService": "Add Service",
+        "defaultLabel": "Pazar Sabahı",
         "title": "Services",
         "weekly": "Weekly"
       },
       "settings": "Ayarlar",
       "sidebarTabs": {
         "add": "Ekle",
+        "edit": "Düzenle",
         "title": "Content Tabs"
       },
       "subtitle": "Configure your recurring service times",
@@ -1555,6 +2300,7 @@
         "publishHelp": "When should this playlist be available to viewers?",
         "publishingSchedule": "Publishing & Schedule",
         "recommendedSize": "Recommended size: 1280x720 pixels (16:9 aspect ratio)",
+        "thumbnailAlt": "Çalma listesi küçük resmi",
         "thumbnailImage": "Thumbnail Image",
         "unauthorized": "Unauthorized to create playlists",
         "unauthorizedDelete": "Unauthorized to delete playlists"
@@ -1570,6 +2316,8 @@
     "sermonEdit": {
       "add": "add",
       "addToAnotherPlaylist": "Add to another playlist",
+      "addToAnotherPlaylistAria": "Vaazı başka bir çalma listesine ekle",
+      "addToSelectedPlaylistAria": "Seçilen çalma listesine ekle",
       "channelIdPlaceholder": "This is not your channel url - See help link above",
       "currentLiveService": "Current Live Service",
       "currentYouTubeLiveStream": "Current YouTube Live Stream",
@@ -1578,22 +2326,34 @@
       "description": "Description",
       "editPermanentLiveUrl": "Edit Permanent Live Url",
       "editSermon": "Edit Sermon",
+      "editThumbnailAria": "Vaaz küçük resmini düzenle",
       "facebook": "Facebook",
       "fetch": "Fetch",
+      "fetchVimeoAria": "Vimeo video detaylarını al",
+      "fetchYouTubeAria": "YouTube video detaylarını al",
       "getYourChannelId": "Get Your Channel Id",
       "newSermon": "New Sermon",
       "none": "None",
+      "publishDateAria": "Yayın tarihi",
+      "selectAdditionalPlaylistAria": "Ek çalma listesi seç",
+      "selectPlaylistAria": "Çalma listesi seç",
+      "selectVideoProviderAria": "Video sağlayıcı seç",
+      "sermonDescriptionAria": "Vaaz açıklaması",
       "sermonEmbedUrl": "Sermon Embed Url",
       "sermonId": "Sermon ID",
+      "sermonTitleAria": "Vaaz başlığı",
+      "thumbnailAlt": "Vaaz küçük resmi",
       "title": "Title",
       "totalSermonDuration": "Total Sermon Duration",
       "unauthorized": "Unauthorized to create sermons",
       "unauthorizedDelete": "Unauthorized to delete sermons",
+      "videoIdOrUrlAria": "Video ID veya URL",
       "videoProvider": "Video Provider",
       "vimeo": "Vimeo",
       "vimeoId": "Vimeo ID",
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube Channel ID",
+      "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Bu kanal URL'niz değildir",
       "youtubeId": "YouTube ID"
     },
     "subtitle": "Manage your sermon library and live streams",
@@ -1627,6 +2387,10 @@
       "users": "Users",
       "valueNotes": "Notes on How Values are Calculated"
     },
+    "churchesTab": {
+      "churchNameSearchAria": "Kilise adı arama",
+      "searchChurchesAria": "Kiliseleri ara"
+    },
     "reportPage": {
       "adminOnly": "Admin Only",
       "report": "Report",
@@ -1639,6 +2403,14 @@
       "search": "Ara",
       "startDate": "Start Date",
       "title": "Bible Translation Lookups"
+    },
+    "translationTab": {
+      "searchTranslationStatsAria": "Çeviri istatistiklerini ara"
+    },
+    "usersTab": {
+      "noPersonLinked": "Bağlı kişi yok",
+      "searchUsersAria": "Kullanıcıları ara",
+      "userNameOrEmailSearchAria": "Kullanıcı adı veya e-posta arama"
     }
   },
   "settings": {
@@ -1656,20 +2428,31 @@
       "donation": "Donation",
       "donationLanding": "Donation Landing",
       "editTab": "Edit Tab",
+      "everyone": "Herkes (anonim dahil)",
       "externalUrl": "External URL",
+      "groups": "Belirli Gruplar...",
       "internalPage": "Internal Page",
       "lessons": "Lessons",
       "liveStream": "Live Stream",
+      "loggedInUsers": "Giriş Yapmış Kullanıcılar",
       "memberDirectory": "Member Directory",
+      "membersStaff": "Üyeler ve Personel",
       "myGroups": "My Groups",
+      "noGroupsFound": "Grup bulunamadı",
       "page": "Page",
       "saveTab": "Save Tab",
       "saving": "Saving...",
+      "selectGroups": "Grupları Seç:",
       "selectImage": "Select Image",
+      "staffOnly": "Sadece Personel",
+      "tabIconAlt": "Sekme simgesi",
       "tabName": "Tab Name",
       "tabType": "Tab Type",
+      "team": "Ekip Üyeleri (hizmet ekipleri)",
       "url": "URL",
-      "verseOfDay": "Verse of the Day"
+      "verseOfDay": "Verse of the Day",
+      "visibility": "Görünürlük",
+      "volunteerOpportunities": "Gönüllülük Fırsatları"
     },
     "appTabs": {
       "editTab": "Edit Tab",
@@ -1680,8 +2463,44 @@
       "title": "App Tabs",
       "untitled": "Untitled"
     },
+    "appThemeEdit": {
+      "background": "Arka Plan",
+      "button": "Düğme",
+      "cardContent": "Kart içeriği",
+      "headerPreview": "Başlık Önizlemesi",
+      "preview": "Önizleme",
+      "primary": "Birincil",
+      "primaryContrast": "Birincil Kontrast",
+      "secondary": "İkincil",
+      "secondaryText": "İkincil metin",
+      "surface": "Yüzey",
+      "textColor": "Metin Rengi"
+    },
     "associatePerson": {
       "change": "Change"
+    },
+    "auditLogPage": {
+      "action": "Eylem",
+      "allCategories": "Tüm Kategoriler",
+      "category": "Kategori",
+      "categoryDonation": "Bağışlar",
+      "categoryForm": "Formlar",
+      "categoryGroup": "Gruplar",
+      "categoryLogin": "Giriş",
+      "categoryPermission": "İzinler",
+      "categoryPerson": "Kişiler",
+      "categorySettings": "Ayarlar",
+      "date": "Tarih",
+      "details": "Detaylar",
+      "endDate": "Bitiş Tarihi",
+      "entity": "Varlık",
+      "exportCsv": "CSV Olarak Dışa Aktar",
+      "ipAddress": "IP Adresi",
+      "noEntries": "Denetim günlüğü girişi bulunamadı",
+      "search": "Ara",
+      "startDate": "Başlangıç Tarihi",
+      "subtitle": "Kilisenizdeki değişiklikleri ve etkinlikleri takip edin",
+      "title": "Denetim Günlüğü"
     },
     "church": {
       "subdomainHelper": "Your church's unique web address"
@@ -1689,9 +2508,11 @@
     "churchSettingsEdit": {
       "address1": "Address Line 1",
       "address2": "Address Line 2",
+      "addressLine1Aria": "Adres satırı 1",
       "churchInfo": "Church Information",
       "churchInfoSubtitle": "Name, address, and subdomain",
       "churchName": "Church Name",
+      "churchNameAria": "Kilise adı",
       "churchSettings": "Church Settings",
       "domainsSubtitle": "Custom domain configuration",
       "general": "General",
@@ -1699,7 +2520,10 @@
       "givingSubtitle": "Payment gateway and fee options",
       "noNameMsg": "Church name cannot be blank.",
       "noSubMsg": "Subdomain cannot be blank.",
-      "subdom": "Subdomain"
+      "subdom": "Subdomain",
+      "subdomainAria": "Alt alan adı",
+      "textingSubtitle": "SMS mesajlaşma sağlayıcısını yapılandır",
+      "textingTitle": "Mesajlaşma"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Directory Approval Group",
@@ -1729,6 +2553,49 @@
       "domain": "Domain",
       "domains": "Domains"
     },
+    "emailTemplateEdit": {
+      "bodyRequired": "Gövde içeriği gereklidir.",
+      "category": "Kategori",
+      "close": "Kapat",
+      "composePlaceholder": "E-posta şablonunuzu buraya yazın...",
+      "editTemplate": "Şablonu Düzenle",
+      "emailPreview": "E-posta Önizlemesi",
+      "insertMergeBody": "Gövdeye birleştirme alanı ekle:",
+      "insertMergeSubject": "Konuya birleştirme alanı ekle:",
+      "mergeChurchName": "Kilise Adı",
+      "mergeDisplayName": "Görüntülenen Ad",
+      "mergeEmail": "E-posta",
+      "mergeFirstName": "Ad",
+      "mergeLastName": "Soyad",
+      "nameRequired": "Ad gereklidir.",
+      "newTemplate": "Yeni Şablon",
+      "preview": "Önizleme",
+      "previewBody": "Gövde:",
+      "previewSampleData": "Gösterilen örnek veri: John Smith, john@example.com",
+      "previewSubject": "Konu:",
+      "subject": "Konu",
+      "subjectPlaceholder": "ör. Merhaba {firstName}, {churchName} kilisesine hoş geldiniz",
+      "subjectRequired": "Konu gereklidir.",
+      "templateName": "Şablon Adı",
+      "templateNamePlaceholder": "ör. Hoş Geldiniz E-postası, Etkinlik Hatırlatıcısı",
+      "yourChurch": "Kiliseniz"
+    },
+    "emailTemplatesPage": {
+      "actions": "Eylemler",
+      "category": "Kategori",
+      "createTemplate": "Şablon Oluştur",
+      "deleteConfirm": "\"{name}\" şablonu silinsin mi?",
+      "emptyDescription": "Toplu e-posta ile başlamak için bir şablon oluşturun.",
+      "emptyTitle": "Henüz e-posta şablonu yok",
+      "modified": "Değiştirildi",
+      "name": "Ad",
+      "newTemplate": "Yeni Şablon",
+      "subject": "Konu",
+      "subtitle": "Yeniden kullanılabilir e-posta şablonları oluşturun ve yönetin",
+      "title": "E-posta Şablonları",
+      "tooltipDelete": "Sil",
+      "tooltipEdit": "Düzenle"
+    },
     "feeOptionsSettings": {
       "achFlatRate": "Flat Rate [ ACH ]",
       "achHardLimit": "Hard limit [ ACH ]",
@@ -1744,8 +2611,11 @@
       "apiCredentials": "API Credentials",
       "clientId": "Client ID",
       "clientSecret": "Client Secret",
+      "currency": "Para Birimi",
+      "currencyHelper": "Bu para biriminin Stripe Kontrol Panelinizde de etkinleştirildiğinden emin olun. Para birimini buradan etkinleştirin:",
       "developersApiKeys": "Developers → API keys",
       "forceMsg": "Automatically forces users to cover the transaction fees",
+      "forceSslHelpAria": "SSL'yi zorla yardım",
       "giving": "Giving",
       "none": "None",
       "paypal": "PayPal",
@@ -1766,9 +2636,11 @@
     },
     "imageEditor": {
       "crop": "Crop",
-      "upload": "Upload"
+      "upload": "Upload",
+      "uploadImageAria": "Resim yükle"
     },
     "manageChurch": {
+      "auditLog": "Denetim Günlüğü",
       "editSettings": "Edit Settings",
       "imEx": "Import/Export",
       "mobileApps": "Mobile Apps",
@@ -1784,15 +2656,24 @@
     "preview": {
       "preview": "Preview"
     },
+    "roleCheck": {
+      "permissionAria": "İzin {label}"
+    },
     "roleEdit": {
       "confirmMsg": "Are you sure you wish to permanently delete this role?",
       "roleEdit": "Edit Role",
       "roleName": "Role Name",
+      "roleNameAria": "Rol adı",
       "valMsg": "Please enter a valid role name."
     },
     "roleMembers": {
+      "addRoleMemberAria": "Rol üyesi ekle",
       "confirmMsg": "Are you sure you wish to delete this user from",
+      "edit": "Düzenle",
+      "editRoleMemberAria": "{firstName} {lastName} rol üyesini düzenle",
+      "lastAdminWarning": "En az bir Etki Alanı Yöneticisi gereklidir. Bu yöneticiyi kaldırmadan önce başka bir yönetici ekleyin.",
       "mem": "Members",
+      "removeRoleMemberAria": "{firstName} {lastName} rol üyesini kaldır",
       "roleAppMsg": "This role applies to all the members of the church."
     },
     "rolePage": {
@@ -1806,12 +2687,16 @@
     "roles": {
       "acc": "Accounting",
       "accDesc": "Has access to view and manage donations.",
+      "addCustomRoleAria": "Özel rol ekle",
+      "addPredefinedRoleAria": "{name} rolünü ekle",
       "canEdit": "Can edit most data in ",
       "churchDesc": " including people, groups, attendance and forms.",
       "churchStaff": "Church Staff",
       "contAdmin": "Content Admin",
       "contAdminDesc": "Can edit website content, mobile content and sermons.",
       "custAdd": "Add Custom Role",
+      "edit": "Düzenle",
+      "editRoleAria": "Rolü düzenle",
       "everyone": "Everyone",
       "itMsg": "? It ",
       "lesAdmin": "Lessons Admin",
@@ -1826,13 +2711,31 @@
       "linkHelperText": "It must be either church's email or a link to the church's contact form",
       "supportContact": "Support Contact"
     },
+    "textingSettingsEdit": {
+      "apiKey": "API Anahtarı",
+      "apiSecret": "API Sırrı",
+      "clearstream": "Clearstream",
+      "clearstreamHelper": "API Anahtarı oluşturun:",
+      "clearstreamHelperLink": "Clearstream Hesap Ayarları",
+      "clearstreamHelperSuffix": "API Anahtarları altında.",
+      "none": "Yok",
+      "provider": "Sağlayıcı",
+      "saveError": "Mesajlaşma ayarları kaydedilirken hata oluştu.",
+      "textInChurchHelper": "Ziyaret edin:",
+      "textInChurchHelperLink": "Text In Church Destek",
+      "textInChurchHelperSuffix": "geliştirici API erişimi talep etmek için. Onaylandıktan sonra, Hesap Ayarları > Geliştirici API bölümünde bir API Anahtarı oluşturun."
+    },
     "userAdd": {
       "addTo": "Add To ",
       "createNew": "Create New User",
+      "createNewUserAria": "Yeni kullanıcı oluştur",
+      "emailAddressAria": "E-posta adresi",
       "errAnother": "Cannot save. Another user already exists for this email address.",
       "errDiff": "The user account for this email is associated with a different person.",
       "firstMsg": "Please enter firstname",
+      "firstNameAria": "Ad",
       "lastMsg": "Please enter lastname",
+      "lastNameAria": "Soyad",
       "noAcc": "Don't have a user account?",
       "valEmail": "Please enter a valid Email",
       "valEmailMsg": "Enter a valid Email"
@@ -1848,36 +2751,40 @@
       "visibilityPreference": "Visibility Preference"
     }
   },
-  "mobile": {
-    "appThemeEdit": {
-      "description": "These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.",
-      "resetDefaults": "Reset to Defaults",
-      "lightMode": "Light Mode",
-      "darkMode": "Dark Mode"
-    },
-    "appThemePage": {
-      "title": "App Theme",
-      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk"
-    },
-    "b1MobilePage": {
-      "title": "B1 Mobile",
-      "subtitle": "Configure settings for the B1 Mobile app"
-    },
-    "checkInPage": {
-      "title": "B1 CheckIn",
-      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
-      "qrGuestRegistration": "QR Guest Registration",
-      "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
-      "enabled": "Enabled — QR code will appear on kiosk",
-      "disabled": "Disabled"
-    }
-  },
   "site": {
     "addPage": {
       "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
       "newLink": "New Link",
       "newPage": "New Page",
       "pageType": "Page Type"
+    },
+    "addPageModal": {
+      "aboutUs": "Hakkımızda",
+      "blank": "Boş",
+      "describe": "Oluşturmak istediğiniz sayfayı tanımlayın",
+      "donate": "Bağış Yap",
+      "errAiPromptTooShort": "Lütfen ayrıntılı bir açıklama girin (en az 10 karakter).",
+      "errAllSectionsFailed": "Tüm bölümlerin oluşturulması başarısız oldu. Lütfen tekrar deneyin.",
+      "errFailedGenerate": "Sayfa oluşturulamadı. Lütfen farklı bir açıklama ile tekrar deneyin.",
+      "errLinkText": "Lütfen bağlantı metnini girin.",
+      "errLinkUrl": "Lütfen bir url girin.",
+      "errOutlineFailed": "Sayfa anahattı oluşturulamadı",
+      "errTitle": "Lütfen bir başlık girin.",
+      "exampleContact": "Lokasyonumuzu, telefon numaramızı, e-posta formumuzu ve sosyal medya bağlantılarımızı içeren bir iletişim sayfası oluştur",
+      "exampleHomepage": "Kilise adımız, misyonumuz, hizmet zamanlarımız ve bağış düğmesi içeren karşılayıcı bir ana sayfa oluştur",
+      "exampleMinistries": "Gençlik grubumuzu, ibadet ekibimizi ve toplum yardımımızı fotoğraflarla gösteren bir hizmetler sayfası oluştur",
+      "examples": "Örnekler:",
+      "linkText": "Bağlantı Metni",
+      "linkType": "Bağlantı",
+      "linkUrl": "Bağlantı URL'si",
+      "location": "Konum",
+      "pageTitle": "Sayfa Başlığı",
+      "statusCreatingSections": "Sayfa bölümleri ve öğeleri oluşturuluyor...",
+      "statusGatheringInfo": "Kilise bilgileri toplanıyor...",
+      "statusGenerating": "{count} bölüm oluşturuluyor...",
+      "statusOpening": "Yeni sayfanız açılıyor...",
+      "statusPlanning": "Sayfa yapınız planlanıyor...",
+      "unauthorizedCreate": "Sayfa oluşturma yetkisi yok"
     },
     "animations": {
       "colorize": "Colorize",
@@ -1899,11 +2806,36 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
-      "logoManagement": "Logo Management"
+      "branding": "Logo ve Markalama",
+      "brandingDescription": "Kuruluşunuzun logolarını ve markalama varlıklarını yükleyin ve yönetin",
+      "edit": "Düzenle",
+      "favicon": "Favicon",
+      "faviconDesc": "Tarayıcı sekmeleri için kare simge. İdeal boyut: 400×400px",
+      "logoDark": "Koyu Arka Plan Logosu",
+      "logoDarkDesc": "Koyu arka planlar için yatay logo. İdeal boyut: 1280×320px",
+      "logoLight": "Açık Arka Plan Logosu",
+      "logoLightDesc": "Açık arka planlar için yatay logo. İdeal boyut: 1280×320px",
+      "logoManagement": "Logo Management",
+      "logoUploadDescription": "Farklı bağlamlar için logolarınızı yükleyin. En iyi sonuçlar için tüm görsellerin şeffaf arka planları olmalıdır.",
+      "mainLogos": "Ana Logolar",
+      "noImage": "Görsel yok",
+      "ogImage": "Sosyal Medya Görseli",
+      "ogImageDesc": "Sosyal paylaşım ve SEO için kullanılır. İdeal boyut: 1200×630px",
+      "seoAssets": "SEO ve Tarayıcı Varlıkları",
+      "upload": "Yükle"
     },
     "appearancePage": {
       "subtitle": "Below is a preview of a sample site with your colors, fonts and logos. This is not your actual site content.",
       "title": "Site Styles"
+    },
+    "blockEdit": {
+      "blockType": "Blok Türü",
+      "elementBlock": "Öğe(ler)",
+      "errName": "Lütfen bir ad girin.",
+      "name": "Ad",
+      "sectionBlock": "Bölüm(ler)",
+      "unauthorizedCreate": "Blok oluşturma yetkisi yok",
+      "unauthorizedDelete": "Blok silme yetkisi yok"
     },
     "blocks": {
       "confirmDelete": "Are you sure you wish to permanently delete this block?",
@@ -1918,15 +2850,66 @@
       "elements": "Element(s)",
       "getStarted": "Get started by creating your first reusable block",
       "noBlocksFound": "No blocks found",
+      "rename": "Yeniden Adlandır",
       "reusableBlocks": "Reusable Blocks",
       "sections": "Section(s)",
       "subtitle": "Create and manage reusable content blocks for your website",
       "totalBlocks": "Total Blocks",
       "type": "Type"
     },
+    "calendarElementEdit": {
+      "curatedCalendar": "Düzenlenmiş Takvim",
+      "groupCalendar": "Grup Takvimi",
+      "select": "Seç",
+      "selectCalendar": "Takvim Seç"
+    },
+    "colorPicker": {
+      "color": "Renk",
+      "placeholder": "#FF0000"
+    },
+    "contentEditor": {
+      "blockPreview": "Blok Önizlemesi",
+      "dropToAddElement": "Öğe eklemek için buraya bırakın",
+      "dropToAddSection": "Bölüm eklemek için buraya bırakın",
+      "scrollDown": "Aşağı Kaydır",
+      "scrollUp": "Yukarı Kaydır"
+    },
     "cssEdit": {
+      "advancedFeature": "Gelişmiş Özellik:",
+      "advancedFeatureDescription": "Özel CSS ve JavaScript sitenizin işlevselliğini etkileyebilir. Lütfen değişiklikleri iyice test edin ve mevcut ayarlarınızın bir yedeğine sahip olduğunuzdan emin olun.",
+      "commonCssExamples": "Yaygın CSS Örnekleri",
+      "commonJsExamples": "Yaygın JavaScript Örnekleri",
       "customCss": "Custom CSS",
-      "customHtml": "Custom HTML"
+      "customCssDescription": "Varsayılan stilleri geçersiz kılmak veya yeni stil kuralları oluşturmak için özel CSS ekleyin.",
+      "customHtml": "Custom HTML",
+      "customHtmlDescription": "Google Analytics gibi üçüncü taraf scriptler için özel HTML kodu ekleyin.",
+      "customLabel": "Özel CSS",
+      "customLabelHtml": "Özel HTML",
+      "exampleAnalytics": "Google Analytics",
+      "exampleCustomButton": "Özel düğme stili",
+      "exampleCustomHtml": "Özel HTML",
+      "exampleHideElements": "Öğeleri gizle",
+      "exampleLinkColors": "Bağlantı renklerini değiştir",
+      "headerSubtitle": "Sitenize özel stiller ve scriptler ekleyin",
+      "headerTitle": "CSS ve JavaScript",
+      "proTip": "Profesyonel İpucu:",
+      "proTipDescription": "CSS değişikliklerini buraya uygulamadan önce test etmek için tarayıcınızın geliştirici araçlarını (F12) kullanın. JavaScript kodu sitenizin her sayfasına eklenecektir.",
+      "saveChanges": "Değişiklikleri Kaydet",
+      "saving": "Kaydediliyor..."
+    },
+    "customFontModal": {
+      "all": "Tümü",
+      "categoryFilter": "Kategori Filtresi",
+      "display": "Gösterim",
+      "handwriting": "El Yazısı",
+      "monospace": "Monospace",
+      "name": "Ad",
+      "sample": "Örnek",
+      "sampleText": "Hızlı kahverengi tilki tembel köpeğin üzerinden atlar.",
+      "sansSerif": "Sans Serif",
+      "search": "Ara",
+      "selectFont": "Bir Yazı Tipi Seç",
+      "serif": "Serif"
     },
     "donateLink": {
       "add": "Ekle",
@@ -1948,12 +2931,20 @@
     },
     "editorToolbar": {
       "addContent": "Add Content",
+      "ago": "önce",
       "block": "Block",
       "desktop": "Desktop",
+      "exit": "Çıkış",
+      "justNow": "az önce",
       "mobile": "Mobil",
+      "notSavedYet": "Henüz değişiklik yok",
       "page": "Page",
+      "redoTip": "Yeniden Yap (Ctrl+Shift+Z)",
+      "savedAllChanges": "Tüm değişiklikler kaydedildi",
       "switchToDesktop": "Switch to Desktop View",
-      "switchToMobile": "Switch to Mobile View"
+      "switchToMobile": "Switch to Mobile View",
+      "undoTip": "Geri Al (Ctrl+Z)",
+      "viewHistory": "Geçmişi görüntüle"
     },
     "elementAdd": {
       "addElements": "Add Elements",
@@ -1965,6 +2956,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "common": "Yaygın",
       "content": "Content",
       "descBox": "Flexible container box",
       "descCalendar": "Event calendar view",
@@ -2016,6 +3008,13 @@
       "untitledBlock": "Untitled Block",
       "video": "Video"
     },
+    "elementEdit": {
+      "enableLightbox": "Lightbox'ı Etkinleştir"
+    },
+    "elementSelection": {
+      "moveDown": "Aşağı taşı",
+      "moveUp": "Yukarı taşı"
+    },
     "elements": {
       "address": "Address",
       "addressHelper": "ex: City Hall, New York, NY",
@@ -2032,6 +3031,8 @@
       "confirmDelete": "Are you sure you wish to permanently delete this element?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this element and all of it's children?",
       "contained": "Contained",
+      "deleteElementBody": "Bu öğe sayfadan kaldırılacaktır. Bu işlemi Ctrl+Z ile geri alabilirsiniz.",
+      "deleteElementTitle": "Öğeyi sil?",
       "doNotResizeImage": "Do not resize image",
       "editElement": "Edit Element",
       "error": "Error",
@@ -2093,6 +3094,18 @@
       "zoomLevel": "Zoom Level",
       "zoomLevelExample": "10 is a good default. Higher is more zoomed in."
     },
+    "emptyState": {
+      "addFirstSection": "İlk bölümünüzü ekleyin",
+      "description": "Sayfanızı oluşturmaya başlamak için bir bölüm ekleyin. Bölümleri istediğiniz zaman yeniden düzenleyebilir ve özelleştirebilirsiniz.",
+      "title": "Bu sayfa boş"
+    },
+    "faqEdit": {
+      "heading": "Başlık",
+      "headingType": "Başlık Türü",
+      "iconColor": "Simge Rengi",
+      "link": "Bağlantı",
+      "title": "Başlık"
+    },
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
       "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
@@ -2100,22 +3113,75 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "actions": "Eylemler",
+      "deleteFile": "Dosyayı sil",
+      "fileCountPlural": "dosya",
+      "fileCountSingular": "dosya",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
-      "noFilesYet": "No files uploaded yet"
+      "name": "Ad",
+      "noFilesYet": "No files uploaded yet",
+      "size": "Boyut",
+      "storage": "Depolama:",
+      "storageLimit": "/ 100MB"
     },
     "filesPage": {
+      "loading": "Yükleniyor...",
       "subtitle": "Manage files and media for your website",
       "title": "Files"
     },
     "fontEdit": {
+      "applyCombination": "Anında uygulamak için herhangi bir kombinasyona tıklayın",
+      "bodyFont": "Gövde Yazı Tipi",
+      "bodyFontDesc": "Paragraflar, açıklamalar ve gövde metni için kullanılır",
       "fontSelection": "Font Selection",
+      "fontsNull": "Yazı tipleri null",
+      "headerSubtitle": "Sitenizin yazı tiplerini seçin ve özelleştirin",
+      "headerTitle": "Tipografi Ayarları",
+      "headingFont": "Başlık Yazı Tipi",
+      "headingFontDesc": "Başlıklar, başlıklar ve vurgulama metni için kullanılır",
+      "mainHeadingPreview": "Ana Başlık Önizlemesi",
       "popularFontCombinations": "Popular Font Combinations",
+      "previewBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.",
+      "previewBody2": "Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.",
+      "saveFonts": "Yazı Tiplerini Kaydet",
+      "saving": "Kaydediliyor...",
+      "secondaryHeading": "İkincil Başlık",
       "typographyPreview": "Typography Preview"
+    },
+    "formEdit": {
+      "createNewForm": "Yeni form oluştur",
+      "noFormsAvailable": "Kullanılabilir form yok!",
+      "select": "Seç"
+    },
+    "helpDialog": {
+      "addBody": "Araç çubuğundaki İçerik Ekle'ye tıklayın, ardından sayfaya bir bölüm veya öğe sürükleyin.",
+      "addTitle": "İçerik ekle",
+      "editBody": "Ayarlarını açmak için herhangi bir bölüme veya öğeye çift tıklayın. Seçmek için bir kez tıklayın ve kayan araç çubuğunu kullanın.",
+      "editTitle": "Her şeyi düzenle",
+      "fullDocs": "Tam dokümantasyon",
+      "moveBody": "Bölümleri ve öğeleri yeniden sıralamak için sürükleyin. Hassas hareketler için seçim araç çubuğundaki yukarı/aşağı oklarını kullanın.",
+      "moveTitle": "Yeniden düzenle",
+      "title": "Sayfa düzenleyici temelleri",
+      "undoBody": "Geri almak için Ctrl+Z ve yeniden yapmak için Ctrl+Shift+Z kullanın. Daha önceki bir duruma atlamak için menüden Geçmiş panelini açın.",
+      "undoTitle": "Geri al ve geçmiş"
+    },
+    "historyPanel": {
+      "current": "(geçerli)",
+      "noHistory": "Henüz geçmiş yok. Geçmişi izlemeye başlamak için bazı değişiklikler yapın.",
+      "restoreToPoint": "Bu noktaya geri yükle",
+      "title": "Düzenleme Geçmişi"
     },
     "navLink": {
       "addLink": "Add Link",
       "linkSettings": "Link Settings"
+    },
+    "navLinkEdit": {
+      "errLinkText": "Lütfen bağlantı metnini girin",
+      "linkText": "Bağlantı Metni",
+      "unauthorizedCreate": "Sayfa oluşturma yetkisi yok",
+      "unauthorizedDelete": "Sayfa silme yetkisi yok",
+      "url": "URL"
     },
     "pageLink": {
       "check": "Check",
@@ -2125,9 +3191,26 @@
       "pageSettings": "Page Settings",
       "urlHelper": "ex: /camper-registration  (**Make sure to check before saving)"
     },
+    "pageLinkEdit": {
+      "cleanCentered": "Temiz Ortalanmış İçerik",
+      "duplicate": "Çoğalt",
+      "errCheckUrl": "Lütfen URL Yolunu kontrol edin",
+      "errPath": "Lütfen bir yol girin.",
+      "errTitle": "Lütfen bir başlık girin.",
+      "headerFooter": "Üst Bilgi ve Alt Bilgi",
+      "layout": "Düzen",
+      "linkText": "Bağlantı Metni",
+      "pageTitle": "Sayfa Başlığı",
+      "unauthorizedCreate": "Sayfa oluşturma yetkisi yok",
+      "unauthorizedDelete": "Sayfa silme yetkisi yok",
+      "url": "URL",
+      "urlPath": "URL Yolu"
+    },
     "pagePreview": {
       "editContent": "Edit Content",
+      "loading": "Yükleniyor...",
       "pageSettings": "Page Settings",
+      "previewOf": "{title} önizlemesi",
       "subtitle": "Previewing: {title}",
       "title": "Website Preview"
     },
@@ -2137,6 +3220,7 @@
     "pagesPage": {
       "actions": "Actions",
       "addFirstPage": "Add First Page",
+      "addNavigationLink": "Navigasyon bağlantısı ekle",
       "addPage": "Add Page",
       "autoGenerated": "Auto-generated",
       "confirmConvert": "Would you like to convert this auto-generated page to a custom page?",
@@ -2158,16 +3242,48 @@
       "websitePages": "Website Pages"
     },
     "paletteEdit": {
+      "accent": "Vurgu",
+      "applyPaletteAria": "Önerilen renk paletini uygula",
+      "applySuggested": "Anında uygulamak için herhangi bir palete tıklayın",
+      "baseColors": "Temel Renkler",
       "colorCombinationsPreview": "Color Combinations Preview",
       "colorValues": "Color Values",
+      "dark": "Koyu",
+      "darkAccent": "Koyu Vurgu",
+      "error": "Hata",
+      "headerSubtitle": "Web sitenizin renk şemasını özelleştirin. Mobil uygulama, üye portalı ve kiosk renkleri için Ayarlar > Uygulama Teması'na gidin.",
+      "headerTitle": "Renk Paleti",
+      "light": "Açık",
+      "lightAccent": "Açık Vurgu",
+      "palette": "Palet",
+      "previewWorkTogether": "Renklerinizin birlikte nasıl çalıştığını önizleyin",
+      "primary": "Birincil",
       "savePalette": "Save Palette",
-      "suggestedPalettes": "Suggested Palettes"
+      "secondary": "İkincil",
+      "semanticColors": "Semantik Renkler",
+      "success": "Başarı",
+      "suggestedPalettes": "Suggested Palettes",
+      "warning": "Uyarı"
     },
     "pickColors": {
+      "background": "Arka Plan",
+      "backgroundField": "Arka Plan",
+      "backgroundOpacity": "Arka Plan Saydamlığı",
+      "backgroundType": "Arka Plan Türü",
+      "color": "Renk",
+      "content": "İçerik",
+      "currentColors": "Mevcut Renkler",
       "headingColor": "Heading Color",
+      "image": "Görsel",
       "linkColor": "Link Color",
       "opacityHelper": "The opacity of black gradient layer on top of the image. Max value: 1",
-      "textColor": "Text Color"
+      "sampleLink": "Örnek Bağlantı",
+      "sampleText": "Örnek Metin",
+      "selectPhoto": "Fotoğraf seç",
+      "suggested": "Önerilen",
+      "textColor": "Text Color",
+      "youtubeId": "Youtube ID",
+      "youtubeVideo": "Youtube Videosu"
     },
     "row": {
       "addColumn": "Add Column",
@@ -2200,28 +3316,188 @@
       "totalValid": "Total: 12/12",
       "width": "Width"
     },
+    "rowMobileOrder": {
+      "customizeOrder": "Mobil Sırasını Özelleştir",
+      "desktopOrder": "Masaüstü Sırası",
+      "mobileOrder": "Mobil Sırası"
+    },
+    "rowMobileSizes": {
+      "customizeLayout": "Mobil Düzeni Özelleştir",
+      "desktopWidth": "Masaüstü Genişliği",
+      "mobileWidth": "Mobil Genişliği",
+      "mobileWidthsHelper": "Mobil genişliklerin 12'ye kadar çıkması gerekmez. 24'e kadar çıkan değerler iki satırı kaplar.",
+      "size1": "1 - 1/12",
+      "size10": "10 - 5/6",
+      "size11": "11 - 11/12",
+      "size12": "12 - tam",
+      "size2": "2 - 1/6",
+      "size3": "3 - 1/4",
+      "size4": "4 - 1/3",
+      "size5": "5 - 5/12",
+      "size6": "6 - yarım",
+      "size7": "7 - 7/12",
+      "size8": "8 - 2/3",
+      "size9": "9 - 3/4"
+    },
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
-      "editSection": "Edit Section"
+      "editSection": "Edit Section",
+      "layoutContainer": "Düzen kapsayıcısı",
+      "section": "Bölüm"
+    },
+    "sectionBlock": {
+      "deleteSection": "Bölümü sil",
+      "edit": "Düzenle"
     },
     "sectionEdit": {
+      "block": "Blok",
+      "blockNamePromptDefault": "Blok Adı",
       "convertTo": "Convert To",
       "convertToBlock": "Convert To Block",
+      "convertToBlockPrompt": "Bu bölümü ve tüm içeriğini bir bloğa kopyalamak istediğinizden emin misiniz?",
       "duplicate": "Duplicate",
-      "duplicateSection": "Duplicate Section"
+      "duplicateSection": "Duplicate Section",
+      "id": "ID"
+    },
+    "spacingScaleEdit": {
+      "buttonOne": "Düğme 1",
+      "buttonTwo": "Düğme 2",
+      "cardTitle": "Kart Başlığı",
+      "cardWithContent": "İçerikli Kart",
+      "dramaticSection": "Dramatik Bölüm",
+      "dramaticSectionDesc": "Maksimum etki için xxl ({value}px) dikey dolgu kullanır",
+      "extraLarge": "Ekstra Büyük",
+      "extraLargeDesc": "Ana bölümler arasında büyük boşluklar",
+      "extraSmall": "Ekstra Küçük",
+      "extraSmallDesc": "Kompakt düzenler için sıkı aralık",
+      "fullWidthBanner": "Tam Genişlikte Banner",
+      "headerSubtitle": "Tutarlı aralık değerlerini yapılandırın",
+      "headerTitle": "Aralık Ölçeği",
+      "heroSection": "Kahraman Bölümü",
+      "heroSectionDesc": "xl ({xl}px) dikey ve lg ({lg}px) yatay dolgu kullanır",
+      "iconRow": "Simge Satırı",
+      "iconRowDesc": "Simgeler aralarında xs ({value}px) boşluk kullanır",
+      "large": "Büyük",
+      "largeDesc": "Geniş düzenler ve bölümler",
+      "medium": "Orta",
+      "mediumDesc": "Çoğu düzen için standart aralık",
+      "pageSection": "Sayfa Bölümü",
+      "practicalExamples": "Pratik Örnekler",
+      "practicalExamplesDesc": "Aralık değerlerinizin gerçek UI öğelerini nasıl etkilediğini görün",
+      "saveSpacing": "Aralığı Kaydet",
+      "small": "Küçük",
+      "smallDesc": "İlişkili öğeler arasında küçük boşluklar",
+      "spacingValues": "Aralık Değerleri",
+      "twoXLarge": "2X Büyük",
+      "twoXLargeDesc": "Dramatik düzenler için maksimum aralık"
     },
     "style": {
       "editStyle": "Edit Style"
     },
     "styleEdit": {
-      "property": "Property"
+      "addStyle": "Stil ekle",
+      "all": "Tümü",
+      "blurRadius": "Bulanıklık Yarıçapı - px",
+      "desktopOnly": "Yalnızca Masaüstü",
+      "mobileOnly": "Yalnızca Mobil",
+      "offsetX": "Ofset X - px",
+      "offsetY": "Ofset Y - px",
+      "platform": "Platform:",
+      "property": "Property",
+      "stylesHelper": "Tek bir öğenin stilini özelleştirmek için bu alanları kullanın. Site genelinde değişiklikler için site görünüm düzenleyicisini kullanın."
+    },
+    "stylesAnimations": {
+      "animations": "Animasyonlar",
+      "animationsDesc": "Öğe gösterildiğinde uygulanacak efekt.",
+      "styles": "Stiller",
+      "stylesDesc": "Gelişmiş görünüm seçenekleri."
     },
     "stylesManager": {
-      "styleSettings": "Style Settings"
+      "color": "Renk Paleti",
+      "colorDesc": "Sitenizin renk şemasını özelleştirin",
+      "css": "CSS ve Javascript",
+      "cssDesc": "Özel stiller ve scriptler ekleyin",
+      "fonts": "Yazı Tipleri",
+      "fontsDesc": "Tipografiyi seçin ve özelleştirin",
+      "footer": "Site Alt Bilgisi",
+      "footerDesc": "Sitenizin alt bilgisini özelleştirin",
+      "loadingPreview": "Önizleme yükleniyor...",
+      "logo": "Logo",
+      "logoDesc": "Logonuzu yükleyin ve yönetin",
+      "siteFooterName": "Site Alt Bilgisi",
+      "spacing": "Aralık Ölçeği",
+      "spacingDesc": "Tutarlı aralık değerlerini tanımlayın",
+      "styleSettings": "Style Settings",
+      "typography": "Tipografi Ölçeği",
+      "typographyDesc": "Yazı tipi boyutlarını ve aralıklarını yapılandırın",
+      "yourChurch": "Kiliseniz"
+    },
+    "tableEdit": {
+      "allowMarkdown": "Markdown'a İzin Ver",
+      "columns": "Sütunlar",
+      "empty": "(boş)",
+      "firstRowHeader": "İlk Satır Başlık",
+      "medium": "Orta",
+      "no": "Hayır",
+      "rows": "Satırlar",
+      "size": "Boyut",
+      "sizeSmall": "Küçük",
+      "yes": "Evet"
     },
     "templates": {
       "viewSermons": "View Sermons"
+    },
+    "tokenPicker": {
+      "accent": "Vurgu",
+      "baseSize": "Temel Boyut",
+      "bodyFont": "Gövde Yazı Tipi",
+      "borderRadius": "Kenarlık Yarıçapı",
+      "colors": "Renkler",
+      "dark": "Koyu",
+      "darkAccent": "Koyu Vurgu",
+      "designToken": "Tasarım Tokeni",
+      "error": "Hata",
+      "extraLarge": "Ekstra Büyük (32px)",
+      "extraSmall": "Ekstra Küçük (4px)",
+      "full": "Tam (9999px)",
+      "headingFont": "Başlık Yazı Tipi",
+      "large": "Büyük (16px)",
+      "largeRadius": "Büyük (16px)",
+      "largeSize": "Büyük Boyut",
+      "lightAccent": "Açık Vurgu",
+      "lineHeight": "Satır Yüksekliği",
+      "medium": "Orta (16px)",
+      "mediumRadius": "Orta (8px)",
+      "noneRadius": "Yok (0px)",
+      "primary": "Birincil",
+      "secondary": "İkincil",
+      "selectToken": "Bir token seç",
+      "small": "Küçük (8px)",
+      "smallRadius": "Küçük (4px)",
+      "smallSize": "Küçük Boyut",
+      "spacing": "Aralık",
+      "success": "Başarı",
+      "tokenLight": "Açık",
+      "twoXLarge": "2X Büyük (48px)",
+      "typography": "Tipografi",
+      "warning": "Uyarı"
+    },
+    "typographyEdit": {
+      "baseSize": "Temel Boyut (px)",
+      "baseSizeDesc": "Gövde metni için temel yazı tipi boyutu (varsayılan: 16px)",
+      "bodyText": "Gövde Metni - {size}px: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "headerSubtitle": "Yazı tiplerini ve tip ölçeğini yapılandırın",
+      "headerTitle": "Tipografi Ölçeği",
+      "headingPreview": "Başlık {level} - {size}",
+      "lineHeight": "Satır Yüksekliği",
+      "lineHeightDesc": "Gövde metni için satır yüksekliği (varsayılan: 1.6)",
+      "preview": "Önizleme",
+      "saveTypography": "Tipografiyi Kaydet",
+      "scale": "Tip Ölçeği",
+      "scaleDesc": "Her başlık seviyesi için çarpan (varsayılan: 1.25)",
+      "smallText": "Küçük Metin - {size}: Destekleyici metin ve resim yazıları",
+      "typographyScale": "Tipografi Ölçeği"
     }
   },
   "songs": {
@@ -2266,10 +3542,16 @@
     "keys": {
       "add": "Ekle",
       "addExternalLink": "Add external link",
+      "addExternalLinkAria": "Harici bağlantı ekle",
       "addFiles": "Add Files",
+      "availableDownloads": "Kullanılabilir İndirmeler",
+      "editSelectedKeyAria": "Seçili anahtarı düzenle",
+      "externalLinks": "Harici Bağlantılar",
       "import": "Import",
       "importFromPraiseCharts": "Import files from PraiseCharts",
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
+      "keysTabsAria": "Anahtar sekmeleri",
+      "noKeysAvailable": "Kullanılabilir anahtar yok. Başlamak için bir anahtar ekleyin.",
       "title": "Keys"
     },
     "library": {
@@ -2287,6 +3569,25 @@
       "text": "Text",
       "url": "Url"
     },
+    "oldArrangement": {
+      "key": "Anahtar"
+    },
+    "oldArrangements": {
+      "addArrangement": "Düzenleme ekle",
+      "addArrangementAria": "Düzenleme ekle",
+      "arrangements": "Düzenlemeler",
+      "edit": "Düzenle",
+      "editArrangementAria": "Düzenlemeyi düzenle",
+      "noArrangements": "Düzenleme bulunamadı."
+    },
+    "praiseChartsProducts": {
+      "close": "Kapat",
+      "free": "Ücretsiz",
+      "linkAccountPrefix": "Bağlı bir PraiseCharts hesabınız yok. Bir hesap bağlamak için",
+      "linkAccountSuffix": "gidin.",
+      "profile": "profilinize",
+      "title": "PraiseCharts'tan Ürün Ekle"
+    },
     "search": {
       "createManually": "Create Manually",
       "enterQuery": "Enter a search term to find songs.",
@@ -2296,11 +3597,40 @@
       "placeholder": "Search songs by title or artist...",
       "title": "Search for a Song"
     },
+    "songDetailLinks": {
+      "addFirstLink": "İlk Bağlantıyı Ekle",
+      "externalLinks": "Harici Bağlantılar",
+      "noLinksYet": "Henüz harici bağlantı eklenmedi"
+    },
+    "songDetailLinksEdit": {
+      "externalLinks": "Harici Bağlantılar",
+      "id": "Id",
+      "key": "Anahtar",
+      "service": "Servis"
+    },
+    "songDetails": {
+      "editSongDetailsAria": "Şarkı detaylarını düzenle",
+      "fallbackTitle": "Şarkı Detayları",
+      "noDetails": "Bu şarkı için ek detay yok."
+    },
     "songPage": {
+      "addArrangement": "Düzenleme Ekle",
+      "deleteSongAria": "Şarkıyı sil",
       "loading": "Loading...",
+      "noArrangementDescription": "Başlamak için kenar çubuğundan bir düzenleme seçin.",
+      "noArrangementSelected": "Düzenleme Seçilmedi",
       "subtitle": "Manage song details and arrangements"
     },
+    "songSearchDialog": {
+      "closeDialogAria": "Dialog'u kapat",
+      "poweredBy": "Tarafından desteklenmektedir:",
+      "searchSongsAria": "Şarkı ara",
+      "songTitleOrArtistAria": "Şarkı başlığı veya sanatçı"
+    },
     "songsPage": {
+      "addSongAria": "Şarkı ekle",
+      "search": "Ara",
+      "searchSongs": "Şarkıları Ara",
       "songs": "Şarkılar",
       "subtitle": "Manage your music library"
     },
@@ -2310,11 +3640,15 @@
     "actionEdit": {
       "actType": "Action Type",
       "actTypeHelp": "Select the type of action to perform",
+      "actionTypeAria": "Eylem türü",
       "assignTo": "Assign to",
+      "assignToAria": "Şuna ata",
       "editAct": "Action Edit",
       "taskAssign": "Assign a Task",
       "taskNote": "Task Note",
-      "taskTitle": "Task Title"
+      "taskNoteAria": "Görev notu",
+      "taskTitle": "Task Title",
+      "taskTitleAria": "Görev başlığı"
     },
     "automationDetails": {
       "active": "Active",
@@ -2328,10 +3662,12 @@
     "automationEdit": {
       "active": "Active",
       "autoEdit": "Edit Automation",
+      "automationTitleAria": "Otomasyon başlığı",
       "inactive": "Inactive",
       "monthly": "Monthly",
       "never": "Never",
       "recurHelp": "Set how often this automation should run",
+      "recurrenceAria": "Tekrarlama",
       "rep": "Repeat",
       "weekly": "Weekly",
       "yearly": "Yearly"
@@ -2363,11 +3699,13 @@
       "dateFull": "Full Date",
       "datePart": "Date Part",
       "dayOf": "Day of",
+      "dayOfWeekAria": "Haftanın günü",
       "fri": "Friday",
       "mon": "Monday",
       "month": "Month",
       "monthDay": "Day of Month",
       "nextMonth": "Next Month",
+      "numberValueAria": "Sayı değeri",
       "op": "Operator",
       "prevMonth": "Previous Month",
       "relative": "Relative",
@@ -2382,11 +3720,15 @@
     "conditionDetails": {
       "addCon": "Add Condition",
       "addCondition": "Add Condition",
+      "addConditionAria": "Koşul ekle",
       "addConj": "Add Conjunction",
+      "addConjunctionAria": "Bağlaç ekle",
       "all": "All",
       "and": "AND",
       "any": "Any",
       "con": "Conditions:",
+      "editConditionAria": "Koşulu düzenle",
+      "editConjunctionAria": "Bağlacı düzenle",
       "noCond": "No conditions added",
       "or": "OR",
       "trueCon": "of these conditions are true"
@@ -2396,6 +3738,7 @@
       "conEdit": "Edit Condition",
       "conInfo": "Contact Info",
       "conType": "Condition Type",
+      "conditionTypeAria": "Koşul türü",
       "confirmMsg": "Are you sure you want to delete this condition?",
       "gen": "General",
       "persAtt": "Personal Attributes",
@@ -2407,6 +3750,8 @@
       "op": "Operator"
     },
     "conditionText": {
+      "conditionOperatorAria": "Koşul operatörü",
+      "conditionValueAria": "Koşul değeri",
       "contains": "contains",
       "endW": "ends with",
       "op": "Operator",
@@ -2416,6 +3761,7 @@
       "and": "AND - All of the conditions are true",
       "conjEdit": "Edit Conjunction",
       "conjType": "Conjunction Type",
+      "conjunctionTypeAria": "Bağlaç türü",
       "or": "OR - Any of the conditions are true"
     },
     "contentPicker": {
@@ -2427,11 +3773,15 @@
     "newTask": {
       "assignPers": "Please assign this task to a person.",
       "assignTo": "Assign to",
+      "assignToAria": "Şuna ata",
       "associatePers": "Please associate this task with a person.",
       "associateW": "Associate with",
+      "associateWithAria": "Şununla ilişkilendir",
       "newAssign": "New Assignment",
       "saving": "Saving...",
       "taskNew": "New Task",
+      "taskNotesAria": "Görev notları",
+      "taskTitleAria": "Görev başlığı",
       "titleTask": "Please enter a title for this task."
     },
     "requestedChanges": {
@@ -2445,10 +3795,12 @@
     "selectGroup": {
       "group": "Grup",
       "noResults": "No groups found matching your search",
-      "searchPrompt": "Search for a group to select"
+      "searchPrompt": "Search for a group to select",
+      "selectGroupAria": "Grup seç"
     },
     "taskList": {
       "addTask": "Add Task",
+      "addTaskAria": "Görev ekle",
       "assignGroup": "Assigned to My Groups",
       "assignMe": "Assigned to Me",
       "assignedTo": "Assigned to",
@@ -2456,6 +3808,8 @@
       "noTasks": "No tasks found",
       "notSpecified": "Not specified",
       "reqMe": "Requested by Me",
+      "showClosedTasksAria": "Kapalı görevleri göster",
+      "showOpenTasksAria": "Açık görevleri göster",
       "tasks": "Görevler",
       "unassigned": "Unassigned"
     },
@@ -2481,6 +3835,20 @@
       "showOpen": "Show Open",
       "subtitle": "Manage tasks and automations",
       "tasks": "Görevler"
+    }
+  },
+  "ui": {
+    "personBanner": {
+      "memberStatus": "ÜYE"
+    },
+    "personNav": {
+      "attendance": "Katılım",
+      "customForms": "Özel Formlar",
+      "details": "Detaylar",
+      "discipleship": "Öğrencilik",
+      "giving": "Bağış",
+      "groups": "Gruplar",
+      "notes": "Notlar"
     }
   }
 }

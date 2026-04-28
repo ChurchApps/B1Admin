@@ -1,5 +1,28 @@
 {
+  "app": {
+    "login": {
+      "demoCredentials": "Gunakan email \"{email}\" dan kata sandi \"{password}\".",
+      "demoLabel": "Demo:",
+      "demoMessage": "Ini adalah lingkungan demo. Semua data dihapus setiap malam.",
+      "demoTestChurch": "Anda dapat masuk ke gereja uji \"Grace Community Church\""
+    },
+    "oauth": {
+      "allow": "Izinkan",
+      "allowAria": "Izinkan otorisasi",
+      "authorizationRequired": "OTORISASI DIPERLUKAN",
+      "deny": "Tolak",
+      "denyAria": "Tolak otorisasi",
+      "loading": "Memuat...",
+      "loadingChurchData": "Memuat data gereja...",
+      "logoAlt": "logo",
+      "permissionPlans": "Rencana",
+      "promptAccess": "Apakah Anda ingin mengakses data berikut dari {churchName} di aplikasi di atas?"
+    }
+  },
   "attendance": {
+    "attendanceNavigation": {
+      "kioskTheme": "Tema Kios"
+    },
     "attendancePage": {
       "att": "Kehadiran",
       "campus": "Kampus",
@@ -17,6 +40,7 @@
       "unscheduled": "Tidak Dijadwalkan"
     },
     "attendanceSetup": {
+      "addCampusAria": "Tambah kampus",
       "addService": "Add Service",
       "addServiceTime": "Add Service Time",
       "newCampus": "New Campus",
@@ -28,14 +52,36 @@
     "campusEdit": {
       "confirmDelete": "Are you sure you want to delete this campus?",
       "name": "Campus Name",
+      "nameAria": "Nama kampus",
       "validate": {
         "name": "Campus Name is required."
       }
     },
+    "checkinThemeEdit": {
+      "addSlide": "Tambah Slide",
+      "background": "Latar Belakang",
+      "backgroundImage": "Gambar Latar Belakang",
+      "backgroundImageDesc": "Gambar latar belakang opsional untuk layar pencarian/selamat datang. Disarankan: 1920x1080.",
+      "change": "Ubah",
+      "changeImage": "Ubah Gambar",
+      "duration": "Durasi (detik)",
+      "enableIdleScreen": "Aktifkan layar idle",
+      "headerSubtitle": "Warna kios dikelola di Pengaturan > Tema Aplikasi. Konfigurasikan gambar latar belakang dan perilaku layar idle di bawah ini.",
+      "idleScreen": "Layar Idle / Screensaver",
+      "kioskSettings": "Pengaturan Kios",
+      "remove": "Hapus",
+      "slide": "Slide {index}",
+      "slides": "Slide",
+      "timeoutSeconds": "Batas waktu (detik)",
+      "upload": "Unggah",
+      "uploadImage": "Unggah Gambar"
+    },
     "serviceEdit": {
       "campus": "Kampus",
+      "campusAria": "Pilih kampus",
       "confirmDelete": "Are you sure you wish to permanently delete this service?",
       "name": "Service Name",
+      "nameAria": "Nama ibadah",
       "validate": {
         "campus": "Please select a campus.",
         "name": "Service name is required."
@@ -44,7 +90,10 @@
     "serviceTimeEdit": {
       "confirmDelete": "Are you sure you wish to permanently delete this service time?",
       "name": "Service Time",
+      "nameAria": "Nama waktu ibadah",
+      "namePlaceholder": "08:00",
       "service": "Layanan",
+      "serviceAria": "Pilih ibadah",
       "validate": {
         "name": "Service time name is required.",
         "service": "Please select a service."
@@ -138,6 +187,9 @@
   "common": {
     "add": "Tambah",
     "amount": "Jumlah",
+    "appTheme": "Tema Aplikasi",
+    "b1CheckIn": "B1 CheckIn",
+    "b1Mobile": "B1 Mobile",
     "back": "Kembali",
     "bottom": "Bawah",
     "cancel": "Batal",
@@ -182,7 +234,9 @@
       "tryDifferent": "Try a different search term"
     },
     "left": "Kiri",
+    "mobile": "Seluler",
     "name": "Nama",
+    "navigation": "Navigasi",
     "no": "Tidak",
     "notes": "Catatan",
     "person": "Orang",
@@ -205,14 +259,45 @@
     "tryAgain": "Coba Lagi",
     "update": "Perbarui",
     "website": "Situs Web",
-    "yes": "Ya",
-    "mobile": "Seluler",
-    "navigation": "Navigasi",
-    "appTheme": "Tema Aplikasi",
-    "b1Mobile": "B1 Mobile",
-    "b1CheckIn": "B1 CheckIn"
+    "yes": "Ya"
   },
   "components": {
+    "associatedForms": {
+      "addForm": "Tambah formulir"
+    },
+    "bezChat": {
+      "ariaOpen": "Buka obrolan Bez",
+      "errorAnswer": "Maaf, saya tidak dapat menemukan jawaban.",
+      "errorGeneric": "Ada yang salah. Silakan coba lagi.",
+      "intro": "Hai, saya Bez! Saya dapat membantu Anda menavigasi B1 Admin. Coba tanyakan kepada saya:",
+      "placeholderInput": "Tanyakan kepada Bez...",
+      "sampleCsv": "\"Bagaimana cara mengimpor anggota dari CSV?\"",
+      "sampleGiving": "\"Bagaimana cara mengatur persembahan online?\"",
+      "sampleGroup": "\"Bagaimana cara membuat grup baru?\"",
+      "title": "Tanya Bez"
+    },
+    "docChat": {
+      "ariaOpen": "Buka obrolan bantuan",
+      "composing": "Menyusun jawaban...",
+      "errorAnswer": "Maaf, saya tidak dapat menemukan jawaban.",
+      "errorGeneric": "Ada yang salah. Silakan coba lagi.",
+      "intro": "Tanyakan apa pun tentang B1 Admin. Misalnya:",
+      "placeholderInput": "Ajukan pertanyaan...",
+      "sampleCsv": "\"Bagaimana cara mengimpor anggota dari CSV?\"",
+      "sampleGiving": "\"Bagaimana cara mengatur persembahan online?\"",
+      "sampleGroup": "\"Bagaimana cara membuat grup baru?\"",
+      "searching": "Mencari dokumentasi...",
+      "title": "Asisten Bantuan"
+    },
+    "draggableWrapper": {
+      "ariaLabel": "Item yang dapat diseret"
+    },
+    "droppableWrapper": {
+      "ariaLabel": "Zona drop"
+    },
+    "fileUpload": {
+      "file": "Berkas"
+    },
     "footer": {
       "phone": "Telepon",
       "rights": "All rights reserved."
@@ -224,6 +309,41 @@
       "featureWebsite": "Website builder & content management",
       "subtitle": "Manage your congregation, plan services, track attendance, and handle donations — all in one place.",
       "title": "Church Management Made Simple"
+    },
+    "permissionDenied": {
+      "contactAdmin": "Silakan hubungi administrator gereja Anda untuk meminta akses.",
+      "defaultMessage": "Anda tidak memiliki izin yang diperlukan untuk mengakses fitur ini:"
+    },
+    "personAdd": {
+      "select": "Pilih"
+    },
+    "search": {
+      "ariaSearch": "Cari",
+      "ariaSearchInput": "Cari orang",
+      "ariaSelectPerson": "Pilih orang"
+    },
+    "sendInviteDialog": {
+      "addedMessage": "{personName} telah ditambahkan ke {contextName}. Apakah Anda ingin mengirim undangan email ke {personEmail}?",
+      "ariaTitle": "Kirim Email Undangan?",
+      "errorFailed": "Gagal mengirim email undangan.",
+      "noThanks": "Tidak, Terima Kasih",
+      "sendInvite": "Kirim Undangan",
+      "sentMessage": "Email undangan dikirim ke {personEmail}."
+    },
+    "siteNavigation": {
+      "ariaEditLink": "Edit tautan navigasi {linkText}",
+      "noTitle": "[Tanpa Judul]"
+    },
+    "superBeeChat": {
+      "ariaOpen": "Buka obrolan SuperBee",
+      "errorAnswer": "Bahkan superhero pun terkadang menabrak tembok. Coba lagi!",
+      "errorGeneric": "Ada yang salah. Tapi jangan khawatir — saya akan kembali lebih kuat!",
+      "intro": "Halo, juara! Saya SuperBee — pusat kekuatan B1 Admin Anda. Tanyakan pertanyaan tersulit Anda!",
+      "placeholderInput": "Tanyakan apa saja kepada SuperBee...",
+      "sampleCsv": "\"Bagaimana cara mengimpor anggota dari CSV?\"",
+      "sampleGiving": "\"Bagaimana cara mengatur persembahan online?\"",
+      "sampleGroup": "\"Bagaimana cara membuat grup baru?\"",
+      "title": "SuperBee"
     },
     "wrapper": {
       "att": "Kehadiran",
@@ -249,15 +369,116 @@
     "lastName": "Nama Belakang"
   },
   "dashboard": {
+    "adminWelcome": {
+      "addCongregationDesc": "Impor atau tambahkan jemaat Anda untuk melacak kehadiran, grup, dan persembahan.",
+      "addCongregationTitle": "Tambahkan Jemaat Anda",
+      "addLogoDesc": "Unggah logo Anda dan perbarui informasi kontak gereja Anda.",
+      "addLogoTitle": "Tambahkan Logo Gereja Anda",
+      "createGroupDesc": "Atur grup kecil, kelas, atau tim pelayanan.",
+      "createGroupTitle": "Buat Grup Pertama Anda",
+      "createWebpageDesc": "Bangun situs web publik di mana pengunjung dapat mengetahui tentang Anda.",
+      "createWebpageTitle": "Buat Halaman Web Pertama Anda",
+      "freePlayDesc": "Buat pelayanan dan ruang kelas untuk pelajaran FreePlay di TV Anda.",
+      "freePlayTitle": "Atur Ruang Kelas FreePlay Anda",
+      "freeShowDesc": "Hubungkan FreeShow untuk membuat cadangan lagu dan rencana ibadah Anda.",
+      "freeShowTitle": "Atur Cadangan FreeShow",
+      "intro": "Klik kartu mana pun di bawah untuk memulai. Anda dapat selalu menemukannya di menu nanti.",
+      "inviteTeamDesc": "Tambahkan staf dan sukarelawan sebagai admin untuk membantu mengelola.",
+      "inviteTeamTitle": "Undang Anggota Tim",
+      "onlineGivingDesc": "Hubungkan Stripe agar jemaat Anda dapat memberikan persembahan online.",
+      "onlineGivingTitle": "Atur Persembahan Online",
+      "peopleAndGroups": "Orang & Grup",
+      "servingAndContent": "Pelayanan & Konten",
+      "setAvatarDesc": "Unggah foto profil agar tim Anda dapat mengenali Anda.",
+      "setAvatarTitle": "Atur Avatar Anda",
+      "subtitle": "Mari kita siapkan gereja Anda. Berikut beberapa hal yang mungkin ingin Anda lakukan terlebih dahulu.",
+      "title": "Selamat datang di B1.church!",
+      "uploadSermonDesc": "Bagikan khotbah Anda secara online sehingga orang dapat menontonnya kapan saja.",
+      "uploadSermonTitle": "Unggah Khotbah",
+      "yourChurch": "Gereja Anda",
+      "yourProfile": "Profil Anda"
+    },
     "dashboardPage": {
       "dash": "Dasbor",
       "subtitle": "Welcome to your church management dashboard. Search for people, view your groups, and manage your open tasks."
     },
+    "memberWelcome": {
+      "downloadAppDesc": "Dapatkan aplikasi B1.church di ponsel Anda untuk tetap terhubung di mana pun Anda berada.",
+      "downloadAppTitle": "Unduh Aplikasi Mobile",
+      "fallbackChurchName": "gereja Anda",
+      "findPeopleDesc": "Cari direktori gereja untuk menemukan dan terhubung dengan orang lain dalam jemaat.",
+      "findPeopleTitle": "Temukan Orang yang Anda Kenal",
+      "intro": "Mulailah dengan melengkapi profil Anda dan menjelajahi apa yang ditawarkan gereja Anda.",
+      "joinGroupDesc": "Telusuri grup kecil, kelas, dan tim pelayanan untuk menemukan komunitas Anda.",
+      "joinGroupTitle": "Bergabung dengan Grup",
+      "onlineGivingDesc": "Berikan persembahan online dengan cepat dan mudah, dan opsional atur sumbangan berulang.",
+      "onlineGivingTitle": "Atur Persembahan Online",
+      "setPhotoDesc": "Unggah foto profil agar orang-orang di gereja dapat mengenali Anda dan mengaitkan wajah dengan nama Anda.",
+      "setPhotoTitle": "Tambahkan Foto Anda",
+      "subtitle": "Berikut beberapa hal yang dapat Anda lakukan untuk terhubung.",
+      "title": "Selamat datang di {churchName}!",
+      "upcomingEventsDesc": "Lihat acara mendatang, jadwal ibadah, dan cara terlibat.",
+      "upcomingEventsTitle": "Lihat Apa yang Sedang Terjadi"
+    },
     "myGroups": "My Groups",
     "peopleSearch": {
+      "ariaSearch": "Cari orang",
+      "ariaSearchBox": "kotak pencarian",
       "display": "Tampilan",
+      "noResults": "Tidak ada orang yang cocok dengan kriteria pencarian Anda.",
       "photo": "Foto",
       "ppl": "Orang"
+    },
+    "quickSetupModal": {
+      "classroomName": "Nama Ruang Kelas",
+      "createContinue": "Buat & Lanjutkan",
+      "creating": "Membuat...",
+      "errorBothMinistryClassroom": "Silakan masukkan nama pelayanan dan nama ruang kelas.",
+      "errorBothMinistryTeam": "Silakan masukkan nama pelayanan dan nama tim.",
+      "errorGeneric": "Ada yang salah. Silakan coba lagi.",
+      "errorGroupName": "Silakan masukkan nama grup.",
+      "errorPageTitle": "Silakan masukkan judul halaman.",
+      "errorPermFreePlay": "Anda tidak memiliki izin untuk melakukan tindakan ini. Diperlukan: MembershipApi - Groups - Edit, MembershipApi - Plans - Edit",
+      "errorPermGroups": "Anda tidak memiliki izin untuk melakukan tindakan ini. Diperlukan: MembershipApi - Groups - Edit",
+      "errorPermPages": "Anda tidak memiliki izin untuk melakukan tindakan ini. Diperlukan: ContentApi - Content - Edit",
+      "freePlayDescription": "Untuk memulai dengan FreePlay, kami perlu membuat pelayanan dan ruang kelas. Anda kemudian akan dialihkan untuk memasangkan penyedia konten.",
+      "freePlayTitle": "Atur Ruang Kelas FreePlay Anda",
+      "freeShowDescription": "Untuk membuat cadangan data FreeShow Anda, kami perlu membuat pelayanan dan tim. Anda kemudian akan dialihkan untuk menambahkan anggota tim.",
+      "freeShowTitle": "Atur Cadangan FreeShow",
+      "groupDescription": "Masukkan nama untuk grup Anda. Anda akan dialihkan ke halaman grup untuk mengonfigurasi dan menambahkan anggota.",
+      "groupName": "Nama Grup",
+      "groupTitle": "Buat Grup Pertama Anda",
+      "ministryName": "Nama Pelayanan",
+      "pageTitle": "Judul Halaman",
+      "teamName": "Nama Tim",
+      "webpageDescription": "Masukkan judul untuk halaman pertama Anda. Anda akan dialihkan ke editor halaman untuk menambahkan konten.",
+      "webpageTitle": "Buat Halaman Web Pertama Anda"
+    }
+  },
+  "device": {
+    "deviceAuthPage": {
+      "allow": "Izinkan",
+      "altLogo": "logo",
+      "authorizationFailed": "Otorisasi gagal. Silakan coba lagi.",
+      "authorizationRequired": "OTORISASI DIPERLUKAN",
+      "codePlaceholder": "XXXXXX",
+      "confirmPrompt": "Apakah Anda ingin mengakses data berikut dari <b>{churchName}</b> di aplikasi di atas?",
+      "continue": "Lanjutkan",
+      "denied": "Otorisasi perangkat ditolak",
+      "deny": "Tolak",
+      "deviceAuthorizedAlert": "PERANGKAT DIOTORISASI",
+      "deviceAuthorizedHeading": "Perangkat Diotorisasi!",
+      "deviceAuthorizedMessage": "Anda sekarang dapat kembali ke TV Anda. Perangkat akan terhubung secara otomatis.",
+      "deviceCodeLabel": "Kode perangkat:",
+      "enterCodePrompt": "Masukkan kode yang ditampilkan di TV Anda:",
+      "expiresInMinutes": "Kedaluwarsa dalam {minutes} menit",
+      "failedAuthorize": "Gagal mengotorisasi perangkat",
+      "invalidCode": "Kode tidak valid atau kedaluwarsa. Silakan periksa dan coba lagi.",
+      "loading": "Memuat...",
+      "noChurchSelected": "Tidak ada gereja yang dipilih. Silakan masuk lagi dan pilih gereja.",
+      "requestedPermissions": "Izin yang Diminta:",
+      "title": "Otorisasi Perangkat",
+      "verifyFailed": "Gagal memverifikasi kode. Silakan coba lagi."
     }
   },
   "donation": {
@@ -336,14 +557,26 @@
     },
     "donationBatchPage": {
       "batchDate": "Batch Date:",
+      "donations": "Persembahan",
+      "editBatch": "Edit Batch",
       "subtitle": "Manage donations in this batch",
-      "title": "Donation Batch"
+      "title": "Donation Batch",
+      "totalAmount": "Jumlah Total"
     },
     "donationBatchesPage": {
-      "subtitle": "Manage donation batches and track giving records"
+      "addBatch": "Tambah Batch",
+      "batches": "Batch",
+      "donations": "Persembahan",
+      "export": "Ekspor",
+      "stripeImportLink": "Impor transaksi Stripe yang hilang",
+      "subtitle": "Manage donation batches and track giving records",
+      "totalAmount": "Jumlah Total"
     },
     "donationEdit": {
       "anon": "Anonim",
+      "ariaDate": "Tanggal persembahan",
+      "ariaMethod": "Metode pembayaran",
+      "ariaNotes": "Catatan persembahan",
       "card": "Kartu",
       "cash": "Tunai",
       "check": "Cek",
@@ -359,7 +592,9 @@
       "failed": "Failed Donations - ",
       "mark": "Mark as ",
       "msg": "Message: ",
-      "unres": " unresolved"
+      "resolved": "Diselesaikan",
+      "unres": " unresolved",
+      "unresolved": "Belum diselesaikan"
     },
     "donations": {
       "amt": "Jumlah",
@@ -367,9 +602,12 @@
       "batches": "Batches",
       "date": "Tanggal",
       "don": "Donasi",
+      "edit": "Edit",
       "errMsg": "No fund found. Please create a fund before making a donation",
+      "export": "Ekspor",
       "funds": "Funds",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
+      "pending": "Tertunda",
       "statements": "Giving Statements",
       "summary": "Summary",
       "tableIdent": "Id",
@@ -384,6 +622,8 @@
       "total": "Total"
     },
     "fundEdit": {
+      "ariaFundName": "Nama dana",
+      "ariaTaxDeductible": "Dapat dikurangkan pajak",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
@@ -391,13 +631,18 @@
       "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
     },
     "fundPage": {
-      "subtitle": "Track donations and contributions to this fund"
+      "donors": "Donatur",
+      "filter": "Filter",
+      "subtitle": "Track donations and contributions to this fund",
+      "totalAmount": "Jumlah Total"
     },
     "funds": {
+      "addFund": "Tambah dana",
       "fund": "Funds",
       "noFund": "No funds found."
     },
     "fundsPage": {
+      "addFund": "Tambah Dana",
       "amt": "Jumlah",
       "anon": "Anonim",
       "batch": "Batch",
@@ -407,8 +652,13 @@
       "don": "Donasi",
       "donFilt": "Donation Filter",
       "donor": "Donor",
+      "export": "Ekspor",
       "noDon": "No donations for selected date range",
-      "subtitle": "Manage donation funds and track giving categories"
+      "nonDeductible": "Tidak Dapat Dikurangkan",
+      "subtitle": "Manage donation funds and track giving categories",
+      "taxDeductible": "Dapat Dikurangkan Pajak",
+      "taxStatus": "Status Pajak",
+      "totalFunds": "Total Dana"
     },
     "kpi": {
       "avgGift": "Average Gift",
@@ -420,6 +670,68 @@
       "monthly": "Bulanan",
       "quarterly": "Kuartalan",
       "weekly": "Mingguan"
+    },
+    "printAllStatementsPage": {
+      "annualStatementTitle": "Laporan Persembahan Tahunan {year}",
+      "contributionDetails": "Detail Kontribusi",
+      "disclaimer": "Tidak ada barang atau jasa yang diberikan oleh {churchName} sebagai imbalan atas kontribusi ini. Satu-satunya manfaat yang diterima adalah manfaat keagamaan yang tidak berwujud. {churchName} adalah organisasi nirlaba.",
+      "donorInformation": "Informasi Donatur",
+      "fund": "Dana",
+      "fundBreakdown": "Rincian Dana",
+      "issued": "Diterbitkan:",
+      "loadingStatements": "Memuat laporan...",
+      "noteLabel": "Catatan:",
+      "noteText": "Laporan ini merangkum kontribusi yang diberikan kepada {churchName} selama tahun kalender {year}. Harap simpan dokumen ini untuk catatan pajak Anda. Untuk pertanyaan terkait laporan ini, silakan hubungi kantor gereja.",
+      "organization": "Organisasi",
+      "period": "Periode: 1 Januari - 31 Desember, {year}",
+      "statementSummary": "Ringkasan Laporan",
+      "totalContributions": "Total Kontribusi",
+      "totalContributionsLabel": "Total Kontribusi:"
+    },
+    "printDonationPage": {
+      "annualStatementTitle": "Laporan Persembahan Tahunan {year}",
+      "contributionDetails": "Detail Kontribusi",
+      "disclaimer": "Tidak ada barang atau jasa yang diberikan oleh {churchName} sebagai imbalan atas kontribusi ini. Satu-satunya manfaat yang diterima adalah manfaat keagamaan yang tidak berwujud. {churchName} adalah organisasi nirlaba.",
+      "donorInformation": "Informasi Donatur",
+      "fund": "Dana",
+      "fundBreakdown": "Rincian Dana",
+      "issued": "Diterbitkan:",
+      "noteLabel": "Catatan:",
+      "noteText": "Laporan ini merangkum kontribusi yang diberikan kepada {churchName} selama tahun kalender {year}. Harap simpan dokumen ini untuk catatan pajak Anda. Untuk pertanyaan terkait laporan ini, silakan hubungi kantor gereja.",
+      "organization": "Organisasi",
+      "period": "Periode: 1 Januari - 31 Desember, {year}",
+      "statementSummary": "Ringkasan Laporan",
+      "totalContributions": "Total Kontribusi",
+      "totalContributionsLabel": "Total Kontribusi:"
+    },
+    "stripeImportPage": {
+      "alreadyImported": "Sudah Diimpor",
+      "alreadyImportedLabel": "Sudah Diimpor:",
+      "clickImportMissing": "Klik \"Impor yang Hilang\" untuk mengimpor {count} transaksi baru.",
+      "dateRangeDescription": "Pilih rentang tanggal yang ingin Anda periksa transaksi Stripe yang hilang. Sistem akan secara otomatis melewatkan transaksi yang sudah diimpor.",
+      "dateRequired": "Silakan pilih tanggal mulai dan akhir",
+      "error": "Kesalahan",
+      "errorsLabel": "Kesalahan:",
+      "eventId": "ID Acara",
+      "failedFetch": "Gagal mengambil acara",
+      "failedImport": "Gagal mengimpor acara",
+      "importMissing": "Impor yang Hilang",
+      "importResults": "Hasil Impor",
+      "imported": "Diimpor",
+      "importedLabel": "Diimpor:",
+      "new": "Baru",
+      "newLabel": "Baru:",
+      "noEvents": "Tidak ada acara ditemukan. Pilih rentang tanggal dan klik Pratinjau.",
+      "preview": "Pratinjau",
+      "previewResults": "Hasil Pratinjau",
+      "selectDateRange": "Pilih Rentang Tanggal",
+      "skipped": "Dilewati",
+      "skippedLabel": "Dilewati:",
+      "status": "Status",
+      "subtitle": "Impor transaksi yang hilang dari Stripe yang tidak ditangkap oleh webhook",
+      "title": "Impor Transaksi Stripe",
+      "totalLabel": "Total:",
+      "type": "Jenis"
     }
   },
   "forms": {
@@ -431,6 +743,10 @@
     },
     "form": {
       "act": "Action",
+      "addQuestion": "Tambah Pertanyaan",
+      "addQuestionAria": "Tambah pertanyaan",
+      "moveDownAria": "Pindah ke bawah",
+      "moveUpAria": "Pindah ke atas",
       "noCustomMsg": "No custom questions have been created yet. Questions will be listed here.",
       "question": "Pertanyaan",
       "questions": "Pertanyaan",
@@ -439,14 +755,17 @@
     },
     "formEdit": {
       "access": "Form Access",
+      "accessLevelAria": "Tingkat akses",
       "alone": "Stand Alone",
       "associate": "Associate With",
       "available": "Set Form Availability Timeframe",
       "availableEnd": "Availability End Date",
       "availableStart": "Availability Start Date",
       "confirmMsg": "Are you sure you wish to permanently delete this form?",
+      "contentTypeAria": "Jenis konten",
       "editForm": "Edit Form",
       "endReqMsg": "End date is required.",
+      "formNameAria": "Nama formulir",
       "name": "Form Name",
       "nameReqMsg": "Form name is required.",
       "ppl": "Orang",
@@ -460,6 +779,7 @@
       "addPpl": "Add Person",
       "admin": "Admin",
       "emailNotif": "Email Notification",
+      "emailNotifInfoAria": "Informasi notifikasi email",
       "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
       "formMem": "Form Members",
       "perm": "Permission",
@@ -483,8 +803,11 @@
       "phoneNum": "Nomor Telepon",
       "plcOp": "Placeholder (optional)",
       "prov": "Provider",
+      "questionDescriptionAria": "Deskripsi pertanyaan",
       "questionEdit": "Edit Question",
       "questionReq": "Question is required.",
+      "questionRequiredAria": "Pertanyaan wajib",
+      "questionTitleAria": "Judul pertanyaan",
       "textArea": "Area Teks",
       "textBox": "Kotak Teks",
       "wholeNum": "Whole Number",
@@ -492,6 +815,8 @@
     },
     "formSubmissions": {
       "anon": "Anonim",
+      "noSubmissions": "Tidak ada pengiriman formulir ditemukan",
+      "printSummaryAria": "cetak-ringkasan",
       "subBy": "Submitted By",
       "subDate": "Submission Date",
       "subFor": "Submitted For",
@@ -501,11 +826,22 @@
     "formsPage": {
       "addForm": "Add Form",
       "archForms": "Archived Forms",
+      "archive": "Arsipkan",
+      "archiveFormAria": "Arsipkan formulir {name}",
       "confirmMsg1": "Are you sure you want to archive this form?",
       "confirmMsg2": "Are you sure you want to restore this form?",
+      "edit": "Edit",
+      "editFormAria": "Edit formulir {name}",
+      "form": "formulir",
+      "formArchivedCount": "{count} formulir diarsipkan",
+      "formArchivedCountPlural": "{count} formulir diarsipkan",
+      "formCount": "{count} formulir",
+      "formCountPlural": "{count} formulir",
       "forms": "Formulir",
       "noArch": "No archived forms.",
       "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "restore": "Pulihkan",
+      "restoreFormAria": "Pulihkan formulir {name}",
       "subtitleManage": "Create and manage custom forms",
       "url": "URL"
     },
@@ -522,6 +858,7 @@
       "catName": "Category Name",
       "catReq": "Category name is required.",
       "group": "Grup",
+      "groupNameAria": "Nama grup",
       "groupReq": "Group name is required.",
       "ministry": "Ministry",
       "new": "New ",
@@ -529,6 +866,7 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "emailTooltip": "Email grup ini",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
       "moreLabels": "More Labels",
@@ -536,6 +874,7 @@
       "printNametag": "Print Nametag",
       "settings": "Pengaturan",
       "team": "Team",
+      "textTooltip": "SMS grup ini",
       "trackAttendance": "Track Attendance"
     },
     "groupDetails": {
@@ -559,27 +898,43 @@
       "attendance": "Kehadiran",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
+      "changePhotoAria": "Ubah foto grup",
       "clickToAddPhoto": "Click to add photo",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "groupDesc": "Group Description",
+      "groupDescriptionAria": "Deskripsi grup",
       "groupDet": "Group Details",
       "groupName": "Group Name",
+      "groupNameAria": "Nama grup",
       "groupNameMsg": "Please enter a group name.",
+      "groupPhotoAlt": "grup",
+      "groupSlugAria": "Slug grup",
       "meetingLocation": "Meeting Location",
+      "meetingLocationAria": "Lokasi pertemuan",
       "meetingTime": "Meeting Time",
+      "meetingTimeAria": "Waktu pertemuan",
       "parPick": "Parent Pickup",
       "prinName": "Print Nametag",
       "slug": "Slug (key name used for urls)"
     },
     "groupLabelsEdit": {
       "addNewLabel": "Add New Label",
-      "labels": "Labels"
+      "addNewLabelAria": "Tambah label baru",
+      "labels": "Labels",
+      "newLabelPrompt": "Masukkan label baru"
     },
     "groupMembers": {
       "groupMem": "Group Members",
       "noMem": "No group members found.",
+      "promoteToLeader": "Naikkan ke Pemimpin",
+      "promoteToLeaderAria": "Naikkan {name} ke pemimpin",
+      "remove": "Hapus",
+      "removeFromGroupAria": "Hapus {name} dari grup",
+      "removeLeaderAccess": "Hapus Akses Pemimpin",
+      "removeLeaderAccessAria": "Hapus akses pemimpin untuk {name}",
       "send": "Send",
       "sendMemMsg": "Send a message to members",
+      "sendMessageAria": "Kirim pesan ke anggota",
       "showTemplates": "Show Templates",
       "templates": {
         "none": "None",
@@ -588,7 +943,8 @@
           "heading": "Welcome Volunteers",
           "message": "Welcome Thank you for volunteering.\n\nPlease download the B1.Church app and login to manage your schedule. https://support.churchapps.org/docs/b1-mobile/getting-started/installing"
         }
-      }
+      },
+      "unknown": "Tidak diketahui"
     },
     "groupNavigation": {
       "members": "Anggota",
@@ -605,10 +961,13 @@
       "noAttendance": "No attendance records found",
       "noSesMsg": "There are no sessions.",
       "noSessionsFound": "No sessions found",
+      "removeAria": "Hapus {name} dari sesi",
+      "removeButton": "Hapus",
       "selectSession": "Select Session",
       "session": "Sesi",
       "sessions": "Sesi",
-      "tryAdjusting": "Try adjusting your search"
+      "tryAdjusting": "Try adjusting your search",
+      "upcoming": "akan datang"
     },
     "groupsPage": {
       "addGroup": "Add Group",
@@ -628,8 +987,67 @@
       "totalMembers": "Total Members"
     },
     "membersAdd": {
+      "addMemberAria": "Tambahkan anggota ke grup",
       "availableMem": "Available Group Members",
-      "noMem": "No group members available."
+      "noMem": "No group members available.",
+      "unknown": "Tidak diketahui"
+    },
+    "sendEmailDialog": {
+      "bodyMergeFieldHint": "Sisipkan kolom gabungan ke isi:",
+      "cancel": "Batal",
+      "close": "Tutup",
+      "composePlaceholder": "Tulis email Anda di sini...",
+      "eligibleSummary": "{eligibleCount} dari {totalMembers} anggota akan menerima email ini.",
+      "eligibleSummarySingular": "{eligibleCount} dari {totalMembers} anggota akan menerima email ini.",
+      "emailGroupTitle": "Email Grup: {groupName}",
+      "fallbackError": "Gagal mengirim email.",
+      "loadTemplate": "Muat Templat (opsional)",
+      "loadingRecipients": "Memuat penerima...",
+      "manageTemplates": "Kelola Templat",
+      "mergeFieldChurchName": "Nama Gereja",
+      "mergeFieldDisplayName": "Nama Tampilan",
+      "mergeFieldEmail": "Email",
+      "mergeFieldFirstName": "Nama Depan",
+      "mergeFieldLastName": "Nama Belakang",
+      "noEmailNotice": "{count} tidak memiliki alamat email yang terdaftar.",
+      "noEmailNoticeSingular": "{count} tidak memiliki alamat email yang terdaftar.",
+      "noEmailSkipped": "{count} dilewati (tidak ada alamat email).",
+      "none": "Tidak ada",
+      "send": "Kirim Email",
+      "sendDefault": "Ini akan mengirim email ke anggota grup yang memenuhi syarat.",
+      "sendFailedDetail": "{count} gagal dikirim.",
+      "sending": "Mengirim...",
+      "sentSummary": "Dikirim ke {successCount} dari {recipientCount} penerima yang memenuhi syarat.",
+      "sentSummarySingular": "Dikirim ke {successCount} dari {recipientCount} penerima yang memenuhi syarat.",
+      "subject": "Subjek",
+      "subjectMergeFieldHint": "Sisipkan kolom gabungan ke subjek:",
+      "subjectPlaceholder": "mis. Halo {firstName}, pembaruan dari {churchName}"
+    },
+    "sendTextDialog": {
+      "cancel": "Batal",
+      "characterCount": "{count} karakter ({segments} segmen SMS)",
+      "characterCountSingular": "{count} karakter ({segments} segmen SMS)",
+      "close": "Tutup",
+      "eligibleSummary": "{eligibleCount} dari {totalMembers} anggota akan menerima teks ini.",
+      "eligibleSummarySingular": "{eligibleCount} dari {totalMembers} anggota akan menerima teks ini.",
+      "fallbackError": "Gagal mengirim pesan teks.",
+      "loadingRecipients": "Memuat penerima...",
+      "messageLabel": "Pesan",
+      "noPhoneNotice": "{count} tidak memiliki nomor telepon yang terdaftar.",
+      "noPhoneNoticeSingular": "{count} tidak memiliki nomor telepon yang terdaftar.",
+      "noPhoneSkipped": "{count} dilewati (tidak ada nomor telepon).",
+      "optedOutNotice": "{count} memilih keluar.",
+      "optedOutSkipped": "{count} dilewati (memilih keluar).",
+      "phoneOnFile": "telepon terdaftar",
+      "send": "Kirim",
+      "sendDefault": "Ini akan mengirim SMS ke anggota grup yang memenuhi syarat.",
+      "sendFailedDetail": "{count} gagal dikirim.",
+      "sending": "Mengirim...",
+      "sendingTo": "Mengirim ke {phoneNumber}.",
+      "sentSummary": "Dikirim ke {successCount} dari {recipientCount} penerima yang memenuhi syarat.",
+      "sentSummarySingular": "Dikirim ke {successCount} dari {recipientCount} penerima yang memenuhi syarat.",
+      "textGroupTitle": "SMS Grup: {groupName}",
+      "textPersonTitle": "SMS: {personName}"
     },
     "serviceTimes": {
       "services": "Service(s):"
@@ -642,11 +1060,18 @@
       "invDate": "Invalid Date",
       "sesAdd": "Add a Session",
       "sesDate": "Session Date",
+      "sessionDateAria": "Tanggal sesi",
       "srvTime": "Service Time"
+    },
+    "sessionAttendance": {
+      "removeVisitorAria": "Hapus {name} dari sesi",
+      "visitor": "pengunjung"
     },
     "sessionCard": {
       "active": "Aktif",
       "edit": "Edit",
+      "invalidDate": "Tanggal Tidak Valid",
+      "noDate": "Tidak Ada Tanggal",
       "people": "people",
       "person": "person",
       "view": "Lihat"
@@ -658,6 +1083,67 @@
     "tabs": {
       "mem": "Anggota",
       "ses": "Sesi"
+    }
+  },
+  "helpers": {
+    "conditionHelper": {
+      "dayOfMonth": ": Hari dalam bulan",
+      "dayOfWeek": ": Hari dalam minggu",
+      "endsWith": "berakhir dengan",
+      "is": "adalah",
+      "isNot": "bukan",
+      "month": ": Bulan",
+      "startsWith": "dimulai dengan",
+      "yearsSince": "Tahun sejak "
+    },
+    "pageHelper": {
+      "bible": "Alkitab",
+      "donate": "Persembahan",
+      "groups": "Grup",
+      "sermons": "Khotbah",
+      "stream": "Streaming",
+      "verseOfTheDay": "Ayat Hari Ini"
+    },
+    "secondaryMenuHelper": {
+      "appearance": "Tampilan",
+      "blocks": "Blok",
+      "bulkImport": "Impor Massal",
+      "calendars": "Kalender",
+      "devices": "Perangkat",
+      "files": "Berkas",
+      "liveStreamTimes": "Waktu Streaming Langsung",
+      "pages": "Halaman",
+      "playlists": "Daftar Putar",
+      "profile": "Profil",
+      "quickActions": "Tindakan Cepat",
+      "registrations": "Pendaftaran",
+      "sermons": "Khotbah",
+      "stripeImport": "Impor Stripe",
+      "website": "Situs Web"
+    }
+  },
+  "mobile": {
+    "appThemeEdit": {
+      "darkMode": "Dark Mode",
+      "description": "These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.",
+      "lightMode": "Light Mode",
+      "resetDefaults": "Reset to Defaults"
+    },
+    "appThemePage": {
+      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk",
+      "title": "Tema Aplikasi"
+    },
+    "b1MobilePage": {
+      "subtitle": "Configure settings for the B1 Mobile app",
+      "title": "B1 Mobile"
+    },
+    "checkInPage": {
+      "disabled": "Disabled",
+      "enabled": "Enabled — QR code will appear on kiosk",
+      "qrGuestRegistration": "QR Guest Registration",
+      "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
+      "title": "B1 CheckIn"
     }
   },
   "month": {
@@ -684,13 +1170,22 @@
     "september": "September"
   },
   "people": {
+    "advancedPeopleSearch": {
+      "loadingCustomFields": "Memuat kolom kustom...",
+      "noCustomFields": "Tidak ada kolom kustom yang didefinisikan. Buat kolom kustom di Formulir untuk mencari berdasarkan kolom tersebut."
+    },
     "advancedSearch": {
       "enterValuePlaceholder": "Enter value...",
       "search": "Cari",
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
+      "exampleMen": "- Tunjukkan pria di atas 30 tahun dengan ulang tahun di bulan Juli.",
+      "exampleWomen": "- Tunjukkan wanita yang sudah menikah.",
+      "examples": "Contoh:",
       "placeholder": "Show me men over 30 with birthdays in July",
+      "search": "Cari",
+      "searching": "Mencari...",
       "title": "AI Search"
     },
     "editCondition": {
@@ -722,20 +1217,44 @@
       "value": "Value",
       "valuePlaceholder": "Value"
     },
+    "gdprActions": {
+      "anonymize": "Anonimkan",
+      "anonymizeConfirmType": "Ketik \"ANONYMIZE\" untuk mengonfirmasi:",
+      "anonymizeDescription": "Ini akan mengganti semua informasi pribadi dengan nilai umum dan menghapus orang dari grup, formulir, dan pesan. Jumlah persembahan dan tanggal kehadiran akan tetap dipertahankan untuk pelaporan tetapi dilepaskan dari orang ini. Ini tidak dapat dibatalkan.",
+      "anonymizePlaceholder": "ANONYMIZE",
+      "anonymizeTitle": "Anonimkan {personName}?",
+      "anonymizing": "Menganonimkan...",
+      "dataManagement": "Pengelolaan Data",
+      "description": "Ekspor atau anonimkan data orang ini untuk kepatuhan GDPR.",
+      "exportData": "Ekspor Data",
+      "exporting": "Mengekspor..."
+    },
     "groups": {
-      "notMemMsg": "Not currently a member of any groups."
+      "leader": "Pemimpin",
+      "notMemMsg": "Not currently a member of any groups.",
+      "unknownGroup": "Grup Tidak Diketahui"
     },
     "household": {
-      "house": " Household"
+      "age": "Usia:",
+      "demoGroups": "Grup: Pelayanan Pemuda, Tim Pujian",
+      "demoLastActivity": "Aktivitas Terakhir: 24 Nov 2024",
+      "house": " Household",
+      "noContactInfo": "Tidak ada informasi kontak",
+      "status": "Status:"
     },
     "householdEdit": {
       "addMatch": "address to match",
+      "addMember": "Tambah Anggota Rumah Tangga",
+      "addMemberAria": "Tambah anggota rumah tangga",
       "blankMsg": "Please provide a household name.",
+      "cancelAddMember": "Batalkan tambah anggota",
       "child": "Child",
       "head": "Head",
       "house": " Household",
       "houseName": "Household Name",
+      "householdNameAria": "Nama rumah tangga",
       "other": "Other",
+      "removeMemberAria": "Hapus anggota rumah tangga",
       "spouse": "Spouse",
       "updQuestion": "Would you like to update"
     },
@@ -762,6 +1281,7 @@
       "cust": "Kustom",
       "filt": "Filters",
       "noFilt": "No filters available.",
+      "selectColumns": "Pilih kolom",
       "stand": "Standard"
     },
     "peoplePage": {
@@ -769,15 +1289,21 @@
       "bDay": "Birthday",
       "bDayNo": "Birthday (No Year)",
       "deleteOp": "Delete Option",
+      "export": "Ekspor",
       "first": "First",
       "last": "Last",
+      "loading": "Memuat orang...",
       "middle": "Middle",
       "nameNote": "Name Tag Notes",
+      "noPeopleFound": "Tidak ada orang ditemukan",
+      "peopleFound": "Ditemukan {count} orang",
       "photo": "Foto",
       "primEmail": "Primary Email",
       "primPhone": "Primary Phone",
       "recentPpl": "Recently Added People",
-      "searchPpl": "Search People"
+      "searchPpl": "Search People",
+      "searchResults": "Hasil Pencarian",
+      "showingRecent": "Menampilkan {count} orang terbaru"
     },
     "peopleSearch": {
       "active": "active:",
@@ -800,13 +1326,31 @@
       "serviceTime": "Service Time",
       "simp": "Simple",
       "simpSearch": "People Search",
-      "type": "Jenis"
+      "type": "Jenis",
+      "typeToSearch": "Ketik untuk mencari secara instan"
     },
     "peopleSearchResults": {
+      "deletePersonAria": "Hapus {name}",
       "noResMsg": "No results found.  Please search for a different name or add a new person"
+    },
+    "personAdd": {
+      "createNewPersonAria": "Buat orang baru",
+      "searchForPersonAria": "Cari orang",
+      "searchForPersonToAddAria": "Cari orang untuk ditambahkan"
+    },
+    "personAddResults": {
+      "add": "Tambah",
+      "addPersonAria": "Tambah orang {name}"
     },
     "personAttendance": {
       "noAttMsg": "No attendance records. Attendance will appear once attendance has been tracked for a group session."
+    },
+    "personBanner": {
+      "age": "Usia",
+      "gender": "Jenis Kelamin",
+      "hasLogin": "Memiliki login",
+      "maritalStatus": "Status Pernikahan",
+      "sendTextMessage": "Kirim pesan teks"
     },
     "personEdit": {
       "applyQuestion": "Would you like to apply that to the entire",
@@ -822,6 +1366,7 @@
       "lastReq": "Last name is required",
       "maritalStatus": "Status Perkawinan",
       "merge": "Merge",
+      "mergePersonAria": "Gabungkan orang",
       "mobile": "Seluler",
       "nameNote": "Name Tag Notes",
       "persDet": "Personal Details",
@@ -831,13 +1376,30 @@
     },
     "personForm": {
       "addForm": "Add Form",
+      "addFormAria": "Tambah pengiriman {name}",
       "form": "Formulir",
       "noFormMsg": "No form submission found for this person"
     },
     "personNav": {
-      "customForms": "Custom Forms"
+      "customForms": "Custom Forms",
+      "discipleship": "Kemuridan",
+      "groups": "Grup"
+    },
+    "personNavigation": {
+      "attendance": "Kehadiran",
+      "details": "Detail",
+      "donations": "Persembahan",
+      "forms": "Formulir",
+      "groups": "Grup",
+      "notes": "Catatan"
+    },
+    "personPage": {
+      "notesSuffix": " Catatan",
+      "thisPerson": "orang ini"
     },
     "personView": {
+      "edit": "Edit",
+      "hasLoginLabel": "Memiliki login: {email}",
       "home": "Rumah",
       "memShip": "Membership:",
       "mobile": "Seluler",
@@ -1038,18 +1600,31 @@
     }
   },
   "plans": {
+    "actionDialog": {
+      "fallbackTitle": "Tindakan"
+    },
     "actionSelector": {
       "addAction": "Add Action",
       "addSection": "Add Section",
+      "fallbackAction": "Tindakan",
+      "fallbackContent": "Konten",
+      "fallbackLoading": "Memuat...",
+      "fallbackSection": "Bagian",
       "fromAssociatedLesson": "From associated lesson:",
       "noActionsAvailable": "No actions available",
+      "noContent": "Tidak ada konten tersedia",
       "selectAction": "Select Action",
       "selectExternalItem": "Select External Item"
     },
     "assignment": {
       "addPosition": "Add Position",
       "autoAssign": "Auto Assign",
-      "saveNotes": "Save Notes"
+      "notesPlaceholder": "Tambahkan catatan untuk rencana ibadah ini...",
+      "notesPlaceholderReadOnly": "Catatan rencana (hanya baca)",
+      "planNotes": "Catatan Rencana",
+      "planNotesAria": "Catatan rencana",
+      "saveNotes": "Save Notes",
+      "saveSuccess": "Catatan berhasil disimpan"
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
@@ -1057,14 +1632,23 @@
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
     },
+    "browseGrid": {
+      "addOn": "Tambahan"
+    },
     "bulkLessonSchedule": {
       "biWeekly": "Dua Mingguan",
       "date": "Tanggal",
       "interval": "Interval",
       "lesson": "Lesson",
       "lessonsToSchedule": "lessons to schedule",
+      "loadFailed": "Gagal memuat data pelajaran. Silakan coba lagi.",
+      "loadingSeries": "Memuat seri pelajaran...",
+      "noLessonsInSeries": "Tidak ada pelajaran ditemukan dalam seri ini.",
       "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
       "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
+      "pathNotSupported": "Format jalur pelajaran yang dipilih tidak didukung untuk penjadwalan massal.",
+      "savingFailed": "Gagal membuat beberapa rencana. Silakan periksa dan coba lagi.",
+      "schedulingProgress": "Menjadwalkan...",
       "startDate": "Start Date",
       "startingLesson": "Starting Lesson",
       "title": "Bulk Schedule Lessons",
@@ -1072,22 +1656,53 @@
       "weekly": "Mingguan"
     },
     "contentProviderAuth": {
+      "accountLinked": "Akun ditautkan",
+      "authExpired": "Otentikasi kedaluwarsa atau gagal",
+      "authFailed": "Otentikasi gagal",
+      "contentProviderAccounts": "Akun Penyedia Konten",
+      "deviceFlowFailed": "Gagal memulai aliran perangkat",
       "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
+      "deviceFlowUnsupported": "Penyedia tidak mendukung aliran perangkat",
       "errorGeneric": "Failed to link provider. Please try again.",
+      "expiresPrefix": "Kedaluwarsa:",
       "link": "Link",
       "linkAccount": "Link Account",
       "linkNew": "Link New Provider",
       "linked": "Linked",
       "noLinkedDescription": "Link a content provider to access their content in your service plans.",
       "noProvidersAvailable": "No content providers available",
+      "noProvidersAvailableLong": "Tidak ada penyedia konten yang tersedia yang memerlukan otentikasi.",
       "pkceInstructions": "Click the button below to authorize in a popup window:",
+      "pkceUnsupported": "Penyedia tidak mendukung otentikasi PKCE",
       "pkceWaiting": "Waiting for authorization in popup...",
+      "popupBlocked": "Gagal membuka popup. Silakan izinkan popup untuk situs ini.",
       "refresh": "Refresh",
       "selectProvider": "Link Content Provider",
+      "sessionExpired": "Sesi otorisasi kedaluwarsa. Silakan coba lagi.",
+      "sessionFailed": "Gagal membuat sesi otorisasi. Silakan coba lagi.",
+      "startAuthFailed": "Gagal memulai otentikasi",
       "success": "Successfully linked!",
       "title": "Content Providers",
+      "tokenExchangeFailed": "Gagal menukar kode untuk token",
+      "tokenExpired": "Token kedaluwarsa - silakan tautkan ulang",
       "unlink": "Unlink",
       "waitingForAuth": "Waiting for authorization..."
+    },
+    "contentRenderer": {
+      "fallbackPreview": "Pratinjau",
+      "fallbackTitle": "Pratinjau Konten",
+      "noContent": "Tidak ada konten untuk ditampilkan.",
+      "noTextContent": "Tidak ada konten teks untuk ditampilkan.",
+      "previewUnavailable": "Pratinjau tidak tersedia untuk konten ini.",
+      "unableToLoad": "Tidak dapat memuat pratinjau. Konten mungkin memerlukan otentikasi atau sementara tidak tersedia.",
+      "videoUnsupported": "Browser Anda tidak mendukung tag video."
+    },
+    "lessonDialog": {
+      "back": "Kembali",
+      "close": "Tutup",
+      "fallbackTitle": "Bagian Pelajaran",
+      "noPreviewItem": "Tidak ada pratinjau yang tersedia untuk item ini.",
+      "previewUnavailable": "Pratinjau tidak tersedia untuk bagian ini."
     },
     "lessonHeaderSelector": {
       "description": "Select a header or section to add to your plan. Its children will be added as plan items.",
@@ -1097,8 +1712,10 @@
     },
     "lessonScheduleEdit": {
       "dateRequired": "Please select a date",
+      "fallbackLesson": "Pelajaran",
       "scheduleLesson": "Schedule Lesson",
       "scheduledDate": "Scheduled Date",
+      "scheduledDateAria": "Tanggal yang dijadwalkan",
       "selectLesson": "Select Lesson",
       "venueRequired": "Please select a venue"
     },
@@ -1108,7 +1725,10 @@
       "contentProvider": "Content Provider",
       "lesson": "Lesson",
       "linkProviderFirst": "Link this provider first to browse content",
-      "providerNotLinked": "Provider Not Linked"
+      "noContent": "Tidak ada konten tersedia",
+      "providerNotLinked": "Provider Not Linked",
+      "searchPlaceholder": "Cari...",
+      "selectedPrefix": "Dipilih:"
     },
     "ministryList": {
       "getStarted": "Get started by creating your first ministry",
@@ -1125,12 +1745,18 @@
       "copyServiceOrder": "Copy Order of Service",
       "planAdd": "Add a Plan",
       "planEdit": "Edit Plan",
+      "planNameAria": "Nama rencana",
       "planReq": "Plan name is required.",
       "servDate": "Service Date",
-      "servReq": "Service date is required."
+      "servReq": "Service date is required.",
+      "serviceDateAria": "Tanggal ibadah",
+      "showVolunteerNames": "Tampilkan nama sukarelawan di halaman pendaftaran",
+      "signupDeadline": "Batas Pendaftaran (jam sebelum ibadah)",
+      "signupDeadlineHelper": "Biarkan kosong jika tidak ada batas waktu"
     },
     "planItem": {
       "addItem": "Add Item",
+      "duration": "Durasi",
       "editItem": "Edit Item",
       "editSection": "Edit Section",
       "expandToActions": "Expand to Actions",
@@ -1142,12 +1768,18 @@
       "confirmDelete": "Confirm Delete",
       "confirmDeleteMessage": "Are you sure you want to delete this item?",
       "description": "Description",
+      "durationMinutesAria": "Durasi menit",
+      "durationSecondsAria": "Durasi detik",
       "edit": "Edit",
       "editAddOn": "Edit Add-On",
       "editHeader": "Edit Header",
       "editSong": "Edit Song",
       "enterSearch": "Enter search term",
       "minutes": "Minutes",
+      "planItemDescriptionAria": "Deskripsi item rencana",
+      "planItemNameAria": "Nama item rencana",
+      "searchBoxAria": "kotak pencarian",
+      "searchSongsAria": "Cari lagu",
       "seconds": "Seconds"
     },
     "planList": {
@@ -1156,9 +1788,12 @@
       "createPlan": "Create Plan",
       "newPlan": "New Plan",
       "noPlans": "No plans found",
+      "noUpcomingPlans": "Tidak Ada Rencana Mendatang",
+      "noUpcomingPlansDescription": "Tidak ada rencana yang dijadwalkan untuk hari ini atau setelahnya. Gunakan tombol \"Tampilkan Sebelumnya\" di atas untuk melihat rencana sebelumnya.",
       "plans": "Rencana",
       "scheduleLesson": "Schedule Lesson",
-      "serviceOrder": "Service Order"
+      "serviceOrder": "Service Order",
+      "showPast": "Tampilkan Sebelumnya"
     },
     "planPage": {
       "assign": "Team Assignments",
@@ -1190,6 +1825,7 @@
     },
     "planTypePage": {
       "notFound": "Plan type not found",
+      "overview": "Ikhtisar",
       "pairTvApp": "Pair TV App",
       "planType": "Plan Type",
       "subtitle": "Configure plan type settings",
@@ -1230,8 +1866,11 @@
       "subtitle": "Manage ministries and service plans"
     },
     "positionEdit": {
+      "allowSelfSignup": "Izinkan Pendaftaran Sendiri",
       "catName": "Category Name",
       "catNameReq": "Category Name is required.",
+      "description": "Deskripsi",
+      "descriptionHelper": "Ditampilkan kepada sukarelawan saat menjelajahi peluang pendaftaran",
       "nameReq": "Name is required",
       "posAdd": "Add a Position",
       "posEdit": "Edit Position",
@@ -1244,6 +1883,7 @@
       "pos": "Position",
       "ppl": "Orang",
       "pplNeed": " People Needed",
+      "signupSuffix": "pendaftaran",
       "team": "Team"
     },
     "printPlan": {
@@ -1263,7 +1903,29 @@
       "noItems": "No items in service order",
       "orderOfService": "Order of Service",
       "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
-      "print": "Cetak"
+      "print": "Cetak",
+      "scrollDown": "Gulir ke Bawah",
+      "scrollUp": "Gulir ke Atas"
+    },
+    "servingOverviewPage": {
+      "endDate": "Tanggal Berakhir",
+      "exportCsv": "Ekspor CSV",
+      "filename": "ikhtisar-pelayanan.csv",
+      "noData": "Tidak ada data pelayanan ditemukan untuk rentang tanggal yang dipilih.",
+      "overviewSuffix": "Ikhtisar",
+      "position": "Posisi",
+      "startDate": "Tanggal Mulai",
+      "subtitle": "Posisi berdasarkan tanggal dengan sukarelawan yang ditugaskan",
+      "title": "Ikhtisar Pelayanan"
+    },
+    "servingPage": {
+      "showAll": "Tampilkan Semua"
+    },
+    "songDialog": {
+      "close": "Tutup",
+      "fallbackTitle": "Detail Lagu",
+      "files": "Berkas",
+      "lyrics": "Lirik"
     },
     "songs": {
       "links": "Links"
@@ -1281,17 +1943,22 @@
       "disName": "Display Name",
       "disNameReq": "Display name is required.",
       "endReq": "End time is required",
+      "endTimeAria": "Waktu berakhir",
       "followGuide": "Follow the guide below to set up service times",
       "startReq": "Start time is required",
+      "startTimeAria": "Waktu mulai",
       "teamNeed": "Needed Teams",
+      "teamPrefix": "Tim",
       "teamReq": "Please Select Team(s).",
       "timeAdd": "Add a Time",
+      "timeDisplayNameAria": "Nama tampilan waktu",
       "timeEdit": "Edit Time",
       "timeEnd": "End Time",
       "timeStart": "Start Time",
       "tip": "Tip"
     },
     "timeList": {
+      "addTimeAria": "Tambah waktu",
       "noTime": "No times have been added yet",
       "sunServ": "Sunday Service",
       "times": "Times"
@@ -1314,6 +1981,9 @@
       "registrationDate": "Registration Date",
       "title": "Devices"
     },
+    "devicesPage": {
+      "addDevice": "Tambah perangkat"
+    },
     "linkedAccounts": {
       "link": "Link",
       "signUp": "Sign Up",
@@ -1327,11 +1997,15 @@
     "profilePage": {
       "accDel": "Account Deletion",
       "confirmMsg": "Are you sure you wish to permanently delete your account?",
+      "darkMode": "Mode Gelap",
       "delAcc": "Delete my account",
       "deleteError": "Failed to delete account",
+      "demoModeAlert": "Pengeditan profil dinonaktifkan dalam mode demo.",
+      "demoPasswordHelper": "Perubahan kata sandi dinonaktifkan dalam mode demo",
       "emailMsg": "Please enter an email address.",
       "firstMsg": "Please enter firstname",
       "lastMsg": "Please enter lastname",
+      "lightMode": "Mode Terang",
       "linkedAccounts": "Linked Accounts",
       "noDirect": "Hide me from the member directory",
       "passLong": "Please enter a password that is at least 8 characters long.",
@@ -1345,13 +2019,75 @@
       "saveChanges": "Save Changes",
       "saveError": "Failed to save changes",
       "subtitle": "Manage your profile and preferences",
+      "themePreferences": "Preferensi Tema",
+      "themePreferencesHelper": "Preferensi tema Anda disimpan secara otomatis dan akan diingat di perangkat ini.",
+      "togglePasswordVisibility": "alihkan visibilitas kata sandi",
       "valEmail": "Silakan masukkan alamat email yang valid."
+    }
+  },
+  "registrations": {
+    "registrationDetailsPage": {
+      "actions": "Tindakan",
+      "cancelConfirm": "Batalkan pendaftaran ini?",
+      "cancelRegistration": "Batalkan Pendaftaran",
+      "csvDate": "Tanggal",
+      "csvMembers": "Anggota",
+      "csvName": "Nama",
+      "csvStatus": "Status",
+      "date": "Tanggal",
+      "delete": "Hapus",
+      "deleteConfirm": "Hapus pendaftaran ini secara permanen?",
+      "eventNotFound": "Acara tidak ditemukan",
+      "eventRegistrations": "Pendaftaran Acara",
+      "exportCsv": "Ekspor CSV",
+      "guest": "Tamu",
+      "members": "Anggota",
+      "name": "Nama",
+      "noRegistrations": "Belum ada pendaftaran.",
+      "registrations": "Pendaftaran",
+      "status": "Status",
+      "subtitle": "Kelola pendaftaran untuk acara ini",
+      "unknown": "Tidak diketahui"
+    },
+    "registrationSettingsEdit": {
+      "capacity": "Kapasitas",
+      "capacityPlaceholder": "Biarkan kosong untuk tidak terbatas",
+      "enableRegistration": "Aktifkan Pendaftaran",
+      "registrationCloses": "Pendaftaran Ditutup",
+      "registrationOpens": "Pendaftaran Dibuka",
+      "registrationSettings": "Pengaturan Pendaftaran",
+      "saveSettings": "Simpan Pengaturan",
+      "tags": "Tag",
+      "tagsHelper": "Tag yang dipisahkan koma untuk penyaringan",
+      "tagsPlaceholder": "pemuda, retret, vbs"
+    },
+    "registrationsPage": {
+      "date": "Tanggal",
+      "enabledEvents": "Acara dengan Pendaftaran Diaktifkan",
+      "event": "Acara",
+      "noEvents": "Belum ada acara yang mengaktifkan pendaftaran.",
+      "noEventsHint": "Aktifkan pendaftaran pada acara melalui pengaturan edit acara.",
+      "registered": "terdaftar",
+      "registrations": "Pendaftaran",
+      "subtitle": "Kelola pengaturan pendaftaran acara dan lihat pendaftar",
+      "tags": "Tag",
+      "title": "Pendaftaran Acara"
     }
   },
   "reporting": {
     "detailed": "Detailed",
     "downloadOptions": "Download Options",
+    "givingKpiCards": {
+      "avgGift": "Rata-rata Persembahan",
+      "donationCount": "Total Persembahan",
+      "donorCount": "Donatur Unik",
+      "totalGiving": "Total Persembahan"
+    },
     "noData": "Tidak ada data yang tersedia",
+    "reportOutput": {
+      "anonymous": "Anonim",
+      "print": "cetak"
+    },
     "runReport": "Run Report",
     "sampleTemplate": "Sample Template",
     "summary": "Summary",
@@ -1408,6 +2144,8 @@
       "minutes": "Minutes",
       "seconds": "Seconds"
     },
+    "edit": "Edit",
+    "editSermonAria": "Edit {title}",
     "getStarted": "Get started by adding your first sermon",
     "liveStreamTimes": {
       "externalLinks": {
@@ -1438,16 +2176,20 @@
           "urlRequired": "Please enter link"
         },
         "linkDetails": "Link Details",
+        "linkDisplayTextAria": "Teks tampilan tautan",
         "linkUrl": "Link URL",
+        "linkUrlAria": "URL tautan",
         "linkUrlPlaceholder": "https://example.com or /internal-page",
         "menuOrganization": "Menu Organization",
         "optionalSubmenuMessage": "Optionally organize this link under an existing submenu:",
         "saveLink": "Save Link",
         "saving": "Menyimpan...",
-        "submenuMessage": "This link will be placed under submenu:"
+        "submenuMessage": "This link will be placed under submenu:",
+        "submenuUnderAria": "Atur sebagai submenu di bawah {text}"
       },
       "navigationLinks": {
         "add": "Tambah",
+        "edit": "Edit",
         "home": "Rumah",
         "title": "Navigation Links"
       },
@@ -1473,6 +2215,7 @@
         "serviceTimeRequired": "Service time is required",
         "startVideoEarly": "Start Video Early",
         "startVideoEarlyHelp": "Optional: For countdown videos or pre-service content",
+        "timeChipFallback": "Waktu",
         "videoSettings": "Video Settings",
         "weekly": "Mingguan",
         "yes": "Ya"
@@ -1480,12 +2223,14 @@
       "services": "Services",
       "servicesTab": {
         "addService": "Add Service",
+        "defaultLabel": "Minggu Pagi",
         "title": "Services",
         "weekly": "Mingguan"
       },
       "settings": "Pengaturan",
       "sidebarTabs": {
         "add": "Tambah",
+        "edit": "Edit",
         "title": "Content Tabs"
       },
       "subtitle": "Configure your recurring service times",
@@ -1555,6 +2300,7 @@
         "publishHelp": "When should this playlist be available to viewers?",
         "publishingSchedule": "Publishing & Schedule",
         "recommendedSize": "Recommended size: 1280x720 pixels (16:9 aspect ratio)",
+        "thumbnailAlt": "Thumbnail daftar putar",
         "thumbnailImage": "Thumbnail Image",
         "unauthorized": "Unauthorized to create playlists",
         "unauthorizedDelete": "Unauthorized to delete playlists"
@@ -1570,6 +2316,8 @@
     "sermonEdit": {
       "add": "add",
       "addToAnotherPlaylist": "Add to another playlist",
+      "addToAnotherPlaylistAria": "Tambah khotbah ke daftar putar lain",
+      "addToSelectedPlaylistAria": "Tambah ke daftar putar yang dipilih",
       "channelIdPlaceholder": "This is not your channel url - See help link above",
       "currentLiveService": "Current Live Service",
       "currentYouTubeLiveStream": "Current YouTube Live Stream",
@@ -1578,22 +2326,34 @@
       "description": "Description",
       "editPermanentLiveUrl": "Edit Permanent Live Url",
       "editSermon": "Edit Sermon",
+      "editThumbnailAria": "Edit thumbnail khotbah",
       "facebook": "Facebook",
       "fetch": "Fetch",
+      "fetchVimeoAria": "Ambil detail video Vimeo",
+      "fetchYouTubeAria": "Ambil detail video YouTube",
       "getYourChannelId": "Get Your Channel Id",
       "newSermon": "New Sermon",
       "none": "None",
+      "publishDateAria": "Tanggal publikasi",
+      "selectAdditionalPlaylistAria": "Pilih daftar putar tambahan",
+      "selectPlaylistAria": "Pilih daftar putar",
+      "selectVideoProviderAria": "Pilih penyedia video",
+      "sermonDescriptionAria": "Deskripsi khotbah",
       "sermonEmbedUrl": "Sermon Embed Url",
       "sermonId": "Sermon ID",
+      "sermonTitleAria": "Judul khotbah",
+      "thumbnailAlt": "Thumbnail khotbah",
       "title": "Judul",
       "totalSermonDuration": "Total Sermon Duration",
       "unauthorized": "Unauthorized to create sermons",
       "unauthorizedDelete": "Unauthorized to delete sermons",
+      "videoIdOrUrlAria": "ID atau URL video",
       "videoProvider": "Video Provider",
       "vimeo": "Vimeo",
       "vimeoId": "Vimeo ID",
       "youtube": "YouTube",
       "youtubeChannelId": "YouTube Channel ID",
+      "youtubeChannelIdHelpPlaceholder": "UCfiDl90gAfZMkgbeCqX1Wi0 - Ini bukan url channel Anda",
       "youtubeId": "YouTube ID"
     },
     "subtitle": "Manage your sermon library and live streams",
@@ -1627,6 +2387,10 @@
       "users": "Users",
       "valueNotes": "Notes on How Values are Calculated"
     },
+    "churchesTab": {
+      "churchNameSearchAria": "Pencarian nama gereja",
+      "searchChurchesAria": "Cari gereja"
+    },
     "reportPage": {
       "adminOnly": "Admin Only",
       "report": "Report",
@@ -1639,6 +2403,14 @@
       "search": "Cari",
       "startDate": "Start Date",
       "title": "Bible Translation Lookups"
+    },
+    "translationTab": {
+      "searchTranslationStatsAria": "Cari statistik terjemahan"
+    },
+    "usersTab": {
+      "noPersonLinked": "Tidak ada orang yang ditautkan",
+      "searchUsersAria": "Cari pengguna",
+      "userNameOrEmailSearchAria": "Pencarian nama pengguna atau email"
     }
   },
   "settings": {
@@ -1656,20 +2428,31 @@
       "donation": "Donation",
       "donationLanding": "Donation Landing",
       "editTab": "Edit Tab",
+      "everyone": "Semua orang (termasuk anonim)",
       "externalUrl": "External URL",
+      "groups": "Grup tertentu...",
       "internalPage": "Internal Page",
       "lessons": "Lessons",
       "liveStream": "Live Stream",
+      "loggedInUsers": "Pengguna yang Masuk",
       "memberDirectory": "Member Directory",
+      "membersStaff": "Anggota & Staf",
       "myGroups": "My Groups",
+      "noGroupsFound": "Tidak ada grup ditemukan",
       "page": "Page",
       "saveTab": "Save Tab",
       "saving": "Menyimpan...",
+      "selectGroups": "Pilih Grup:",
       "selectImage": "Select Image",
+      "staffOnly": "Hanya Staf",
+      "tabIconAlt": "Ikon tab",
       "tabName": "Tab Name",
       "tabType": "Tab Type",
+      "team": "Anggota Tim (tim pelayanan)",
       "url": "URL",
-      "verseOfDay": "Verse of the Day"
+      "verseOfDay": "Verse of the Day",
+      "visibility": "Visibilitas",
+      "volunteerOpportunities": "Peluang Sukarelawan"
     },
     "appTabs": {
       "editTab": "Edit Tab",
@@ -1680,8 +2463,44 @@
       "title": "App Tabs",
       "untitled": "Untitled"
     },
+    "appThemeEdit": {
+      "background": "Latar Belakang",
+      "button": "Tombol",
+      "cardContent": "Konten kartu",
+      "headerPreview": "Pratinjau Header",
+      "preview": "Pratinjau",
+      "primary": "Utama",
+      "primaryContrast": "Kontras Utama",
+      "secondary": "Sekunder",
+      "secondaryText": "Teks sekunder",
+      "surface": "Permukaan",
+      "textColor": "Warna Teks"
+    },
     "associatePerson": {
       "change": "Ubah"
+    },
+    "auditLogPage": {
+      "action": "Tindakan",
+      "allCategories": "Semua Kategori",
+      "category": "Kategori",
+      "categoryDonation": "Persembahan",
+      "categoryForm": "Formulir",
+      "categoryGroup": "Grup",
+      "categoryLogin": "Login",
+      "categoryPermission": "Izin",
+      "categoryPerson": "Orang",
+      "categorySettings": "Pengaturan",
+      "date": "Tanggal",
+      "details": "Detail",
+      "endDate": "Tanggal Berakhir",
+      "entity": "Entitas",
+      "exportCsv": "Ekspor CSV",
+      "ipAddress": "Alamat IP",
+      "noEntries": "Tidak ada entri log audit ditemukan",
+      "search": "Cari",
+      "startDate": "Tanggal Mulai",
+      "subtitle": "Lacak perubahan dan aktivitas di gereja Anda",
+      "title": "Log Audit"
     },
     "church": {
       "subdomainHelper": "Your church's unique web address"
@@ -1689,9 +2508,11 @@
     "churchSettingsEdit": {
       "address1": "Address Line 1",
       "address2": "Address Line 2",
+      "addressLine1Aria": "Alamat baris 1",
       "churchInfo": "Church Information",
       "churchInfoSubtitle": "Name, address, and subdomain",
       "churchName": "Church Name",
+      "churchNameAria": "Nama gereja",
       "churchSettings": "Church Settings",
       "domainsSubtitle": "Custom domain configuration",
       "general": "General",
@@ -1699,7 +2520,10 @@
       "givingSubtitle": "Payment gateway and fee options",
       "noNameMsg": "Church name cannot be blank.",
       "noSubMsg": "Subdomain cannot be blank.",
-      "subdom": "Subdomain"
+      "subdom": "Subdomain",
+      "subdomainAria": "Subdomain",
+      "textingSubtitle": "Konfigurasikan penyedia SMS",
+      "textingTitle": "SMS"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Directory Approval Group",
@@ -1729,6 +2553,49 @@
       "domain": "Domain",
       "domains": "Domains"
     },
+    "emailTemplateEdit": {
+      "bodyRequired": "Konten isi diperlukan.",
+      "category": "Kategori",
+      "close": "Tutup",
+      "composePlaceholder": "Tulis templat email Anda di sini...",
+      "editTemplate": "Edit Templat",
+      "emailPreview": "Pratinjau Email",
+      "insertMergeBody": "Sisipkan kolom gabungan ke isi:",
+      "insertMergeSubject": "Sisipkan kolom gabungan ke subjek:",
+      "mergeChurchName": "Nama Gereja",
+      "mergeDisplayName": "Nama Tampilan",
+      "mergeEmail": "Email",
+      "mergeFirstName": "Nama Depan",
+      "mergeLastName": "Nama Belakang",
+      "nameRequired": "Nama diperlukan.",
+      "newTemplate": "Templat Baru",
+      "preview": "Pratinjau",
+      "previewBody": "Isi:",
+      "previewSampleData": "Data sampel ditampilkan: John Smith, john@example.com",
+      "previewSubject": "Subjek:",
+      "subject": "Subjek",
+      "subjectPlaceholder": "mis. Halo {firstName}, selamat datang di {churchName}",
+      "subjectRequired": "Subjek diperlukan.",
+      "templateName": "Nama Templat",
+      "templateNamePlaceholder": "mis. Email Selamat Datang, Pengingat Acara",
+      "yourChurch": "Gereja Anda"
+    },
+    "emailTemplatesPage": {
+      "actions": "Tindakan",
+      "category": "Kategori",
+      "createTemplate": "Buat Templat",
+      "deleteConfirm": "Hapus templat \"{name}\"?",
+      "emptyDescription": "Buat templat untuk memulai email massal.",
+      "emptyTitle": "Belum ada templat email",
+      "modified": "Diubah",
+      "name": "Nama",
+      "newTemplate": "Templat Baru",
+      "subject": "Subjek",
+      "subtitle": "Buat dan kelola templat email yang dapat digunakan kembali",
+      "title": "Templat Email",
+      "tooltipDelete": "Hapus",
+      "tooltipEdit": "Edit"
+    },
     "feeOptionsSettings": {
       "achFlatRate": "Flat Rate [ ACH ]",
       "achHardLimit": "Hard limit [ ACH ]",
@@ -1744,8 +2611,11 @@
       "apiCredentials": "API Credentials",
       "clientId": "Client ID",
       "clientSecret": "Client Secret",
+      "currency": "Mata Uang",
+      "currencyHelper": "Pastikan mata uang ini juga diaktifkan di Dasbor Stripe Anda. Aktifkan mata uang di sini:",
       "developersApiKeys": "Developers → API keys",
       "forceMsg": "Automatically forces users to cover the transaction fees",
+      "forceSslHelpAria": "Bantuan paksa SSL",
       "giving": "Giving",
       "none": "None",
       "paypal": "PayPal",
@@ -1766,9 +2636,11 @@
     },
     "imageEditor": {
       "crop": "Crop",
-      "upload": "Upload"
+      "upload": "Upload",
+      "uploadImageAria": "Unggah gambar"
     },
     "manageChurch": {
+      "auditLog": "Log Audit",
       "editSettings": "Edit Settings",
       "imEx": "Import/Export",
       "mobileApps": "Mobile Apps",
@@ -1784,15 +2656,24 @@
     "preview": {
       "preview": "Preview"
     },
+    "roleCheck": {
+      "permissionAria": "Izin {label}"
+    },
     "roleEdit": {
       "confirmMsg": "Are you sure you wish to permanently delete this role?",
       "roleEdit": "Edit Role",
       "roleName": "Role Name",
+      "roleNameAria": "Nama peran",
       "valMsg": "Please enter a valid role name."
     },
     "roleMembers": {
+      "addRoleMemberAria": "Tambah anggota peran",
       "confirmMsg": "Are you sure you wish to delete this user from",
+      "edit": "Edit",
+      "editRoleMemberAria": "Edit anggota peran {firstName} {lastName}",
+      "lastAdminWarning": "Setidaknya satu Admin Domain diperlukan. Tambahkan admin lain sebelum menghapus yang ini.",
       "mem": "Anggota",
+      "removeRoleMemberAria": "Hapus anggota peran {firstName} {lastName}",
       "roleAppMsg": "This role applies to all the members of the church."
     },
     "rolePage": {
@@ -1806,12 +2687,16 @@
     "roles": {
       "acc": "Accounting",
       "accDesc": "Has access to view and manage donations.",
+      "addCustomRoleAria": "Tambah peran kustom",
+      "addPredefinedRoleAria": "Tambah peran {name}",
       "canEdit": "Can edit most data in ",
       "churchDesc": " including people, groups, attendance and forms.",
       "churchStaff": "Church Staff",
       "contAdmin": "Content Admin",
       "contAdminDesc": "Can edit website content, mobile content and sermons.",
       "custAdd": "Add Custom Role",
+      "edit": "Edit",
+      "editRoleAria": "Edit peran",
       "everyone": "Everyone",
       "itMsg": "? It ",
       "lesAdmin": "Lessons Admin",
@@ -1826,13 +2711,31 @@
       "linkHelperText": "It must be either church's email or a link to the church's contact form",
       "supportContact": "Support Contact"
     },
+    "textingSettingsEdit": {
+      "apiKey": "Kunci API",
+      "apiSecret": "Rahasia API",
+      "clearstream": "Clearstream",
+      "clearstreamHelper": "Buat Kunci API di",
+      "clearstreamHelperLink": "Pengaturan Akun Clearstream",
+      "clearstreamHelperSuffix": "di bagian Kunci API.",
+      "none": "Tidak ada",
+      "provider": "Penyedia",
+      "saveError": "Kesalahan menyimpan pengaturan SMS.",
+      "textInChurchHelper": "Kunjungi",
+      "textInChurchHelperLink": "Dukungan Text In Church",
+      "textInChurchHelperSuffix": "untuk meminta akses API pengembang. Setelah disetujui, buat Kunci API di bagian Pengaturan Akun > API Pengembang."
+    },
     "userAdd": {
       "addTo": "Add To ",
       "createNew": "Create New User",
+      "createNewUserAria": "Buat pengguna baru",
+      "emailAddressAria": "Alamat email",
       "errAnother": "Cannot save. Another user already exists for this email address.",
       "errDiff": "The user account for this email is associated with a different person.",
       "firstMsg": "Please enter firstname",
+      "firstNameAria": "Nama depan",
       "lastMsg": "Please enter lastname",
+      "lastNameAria": "Nama belakang",
       "noAcc": "Don't have a user account?",
       "valEmail": "Please enter a valid Email",
       "valEmailMsg": "Enter a valid Email"
@@ -1848,36 +2751,40 @@
       "visibilityPreference": "Visibility Preference"
     }
   },
-  "mobile": {
-    "appThemeEdit": {
-      "description": "These colors are used by the mobile app, member portal, and check-in kiosk. Leave as defaults or customize to match your branding.",
-      "resetDefaults": "Reset to Defaults",
-      "lightMode": "Light Mode",
-      "darkMode": "Dark Mode"
-    },
-    "appThemePage": {
-      "title": "Tema Aplikasi",
-      "subtitle": "Customize the colors used by the mobile app, member portal, and check-in kiosk"
-    },
-    "b1MobilePage": {
-      "title": "B1 Mobile",
-      "subtitle": "Configure settings for the B1 Mobile app"
-    },
-    "checkInPage": {
-      "title": "B1 CheckIn",
-      "subtitle": "Configure settings for the B1 CheckIn kiosk app",
-      "qrGuestRegistration": "QR Guest Registration",
-      "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
-      "enabled": "Enabled — QR code will appear on kiosk",
-      "disabled": "Disabled"
-    }
-  },
   "site": {
     "addPage": {
       "aiPlaceholder": "Example: Create a welcoming homepage with our church name, mission statement, service times, and a donation button",
       "newLink": "New Link",
       "newPage": "New Page",
       "pageType": "Page Type"
+    },
+    "addPageModal": {
+      "aboutUs": "Tentang Kami",
+      "blank": "Kosong",
+      "describe": "Jelaskan halaman yang ingin Anda buat",
+      "donate": "Persembahan",
+      "errAiPromptTooShort": "Silakan berikan deskripsi yang lebih rinci (minimal 10 karakter).",
+      "errAllSectionsFailed": "Semua bagian gagal dibuat. Silakan coba lagi.",
+      "errFailedGenerate": "Gagal membuat halaman. Silakan coba lagi dengan deskripsi yang berbeda.",
+      "errLinkText": "Silakan masukkan teks tautan.",
+      "errLinkUrl": "Silakan masukkan url.",
+      "errOutlineFailed": "Gagal membuat kerangka halaman",
+      "errTitle": "Silakan masukkan judul.",
+      "exampleContact": "Buat halaman kontak dengan peta lokasi kami, nomor telepon, formulir email, dan tautan media sosial",
+      "exampleHomepage": "Buat halaman beranda yang ramah dengan nama gereja, pernyataan misi, jadwal ibadah, dan tombol persembahan",
+      "exampleMinistries": "Bangun halaman pelayanan yang menampilkan grup pemuda, tim pujian, dan jangkauan komunitas dengan foto",
+      "examples": "Contoh:",
+      "linkText": "Teks Tautan",
+      "linkType": "Tautan",
+      "linkUrl": "Url Tautan",
+      "location": "Lokasi",
+      "pageTitle": "Judul Halaman",
+      "statusCreatingSections": "Membuat bagian dan elemen halaman...",
+      "statusGatheringInfo": "Mengumpulkan informasi gereja...",
+      "statusGenerating": "Membuat {count} bagian...",
+      "statusOpening": "Membuka halaman baru Anda...",
+      "statusPlanning": "Merencanakan struktur halaman Anda...",
+      "unauthorizedCreate": "Tidak diizinkan membuat halaman"
     },
     "animations": {
       "colorize": "Colorize",
@@ -1899,11 +2806,36 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
-      "logoManagement": "Logo Management"
+      "branding": "Logo & Branding",
+      "brandingDescription": "Unggah dan kelola logo serta aset branding organisasi Anda",
+      "edit": "Edit",
+      "favicon": "Favicon",
+      "faviconDesc": "Ikon persegi untuk tab browser. Ukuran ideal: 400×400px",
+      "logoDark": "Logo Latar Belakang Gelap",
+      "logoDarkDesc": "Logo horizontal untuk latar belakang gelap. Ukuran ideal: 1280×320px",
+      "logoLight": "Logo Latar Belakang Terang",
+      "logoLightDesc": "Logo horizontal untuk latar belakang terang. Ukuran ideal: 1280×320px",
+      "logoManagement": "Logo Management",
+      "logoUploadDescription": "Unggah logo Anda untuk konteks yang berbeda. Semua gambar harus memiliki latar belakang transparan untuk hasil terbaik.",
+      "mainLogos": "Logo Utama",
+      "noImage": "Tidak ada gambar",
+      "ogImage": "Gambar Media Sosial",
+      "ogImageDesc": "Digunakan untuk berbagi sosial dan SEO. Ukuran ideal: 1200×630px",
+      "seoAssets": "Aset SEO & Browser",
+      "upload": "Unggah"
     },
     "appearancePage": {
       "subtitle": "Below is a preview of a sample site with your colors, fonts and logos. This is not your actual site content.",
       "title": "Site Styles"
+    },
+    "blockEdit": {
+      "blockType": "Jenis Blok",
+      "elementBlock": "Elemen",
+      "errName": "Silakan masukkan nama.",
+      "name": "Nama",
+      "sectionBlock": "Bagian",
+      "unauthorizedCreate": "Tidak diizinkan membuat blok",
+      "unauthorizedDelete": "Tidak diizinkan menghapus blok"
     },
     "blocks": {
       "confirmDelete": "Are you sure you wish to permanently delete this block?",
@@ -1918,15 +2850,66 @@
       "elements": "Element(s)",
       "getStarted": "Get started by creating your first reusable block",
       "noBlocksFound": "No blocks found",
+      "rename": "Ganti Nama",
       "reusableBlocks": "Reusable Blocks",
       "sections": "Section(s)",
       "subtitle": "Create and manage reusable content blocks for your website",
       "totalBlocks": "Total Blocks",
       "type": "Jenis"
     },
+    "calendarElementEdit": {
+      "curatedCalendar": "Kalender Terkurasi",
+      "groupCalendar": "Kalender Grup",
+      "select": "Pilih",
+      "selectCalendar": "Pilih Kalender"
+    },
+    "colorPicker": {
+      "color": "Warna",
+      "placeholder": "#FF0000"
+    },
+    "contentEditor": {
+      "blockPreview": "Pratinjau Blok",
+      "dropToAddElement": "Letakkan di sini untuk menambah elemen",
+      "dropToAddSection": "Letakkan di sini untuk menambah bagian",
+      "scrollDown": "Gulir ke Bawah",
+      "scrollUp": "Gulir ke Atas"
+    },
     "cssEdit": {
+      "advancedFeature": "Fitur Lanjutan:",
+      "advancedFeatureDescription": "CSS dan JavaScript kustom dapat memengaruhi fungsionalitas situs Anda. Harap uji perubahan dengan saksama dan pastikan Anda memiliki cadangan pengaturan saat ini.",
+      "commonCssExamples": "Contoh CSS Umum",
+      "commonJsExamples": "Contoh JavaScript Umum",
       "customCss": "Custom CSS",
-      "customHtml": "Custom HTML"
+      "customCssDescription": "Tambahkan CSS kustom untuk mengganti gaya default atau membuat aturan gaya baru.",
+      "customHtml": "Custom HTML",
+      "customHtmlDescription": "Tambahkan kode HTML kustom untuk skrip pihak ketiga seperti Google Analytics.",
+      "customLabel": "CSS Kustom",
+      "customLabelHtml": "HTML Kustom",
+      "exampleAnalytics": "Google Analytics",
+      "exampleCustomButton": "Gaya tombol kustom",
+      "exampleCustomHtml": "HTML Kustom",
+      "exampleHideElements": "Sembunyikan elemen",
+      "exampleLinkColors": "Ubah warna tautan",
+      "headerSubtitle": "Tambahkan gaya dan skrip kustom ke situs Anda",
+      "headerTitle": "CSS & JavaScript",
+      "proTip": "Tip Pro:",
+      "proTipDescription": "Gunakan alat pengembang browser Anda (F12) untuk menguji perubahan CSS sebelum menerapkannya di sini. Kode JavaScript akan ditambahkan ke setiap halaman situs Anda.",
+      "saveChanges": "Simpan Perubahan",
+      "saving": "Menyimpan..."
+    },
+    "customFontModal": {
+      "all": "Semua",
+      "categoryFilter": "Filter Kategori",
+      "display": "Display",
+      "handwriting": "Tulisan Tangan",
+      "monospace": "Monospace",
+      "name": "Nama",
+      "sample": "Sampel",
+      "sampleText": "The quick brown fox jumps over the lazy dog.",
+      "sansSerif": "Sans Serif",
+      "search": "Cari",
+      "selectFont": "Pilih Font",
+      "serif": "Serif"
     },
     "donateLink": {
       "add": "Tambah",
@@ -1948,12 +2931,20 @@
     },
     "editorToolbar": {
       "addContent": "Add Content",
+      "ago": "yang lalu",
       "block": "Block",
       "desktop": "Desktop",
+      "exit": "Keluar",
+      "justNow": "baru saja",
       "mobile": "Seluler",
+      "notSavedYet": "Belum ada perubahan",
       "page": "Page",
+      "redoTip": "Ulang (Ctrl+Shift+Z)",
+      "savedAllChanges": "Semua perubahan disimpan",
       "switchToDesktop": "Switch to Desktop View",
-      "switchToMobile": "Switch to Mobile View"
+      "switchToMobile": "Switch to Mobile View",
+      "undoTip": "Batalkan (Ctrl+Z)",
+      "viewHistory": "Lihat riwayat"
     },
     "elementAdd": {
       "addElements": "Add Elements",
@@ -1965,6 +2956,7 @@
       "card": "Kartu",
       "carousel": "Carousel",
       "church": "Church",
+      "common": "Umum",
       "content": "Content",
       "descBox": "Flexible container box",
       "descCalendar": "Event calendar view",
@@ -2016,6 +3008,13 @@
       "untitledBlock": "Untitled Block",
       "video": "Video"
     },
+    "elementEdit": {
+      "enableLightbox": "Aktifkan Lightbox"
+    },
+    "elementSelection": {
+      "moveDown": "Pindah ke bawah",
+      "moveUp": "Pindah ke atas"
+    },
     "elements": {
       "address": "Alamat",
       "addressHelper": "ex: City Hall, New York, NY",
@@ -2032,6 +3031,8 @@
       "confirmDelete": "Are you sure you wish to permanently delete this element?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this element and all of it's children?",
       "contained": "Contained",
+      "deleteElementBody": "Elemen ini akan dihapus dari halaman. Anda dapat membatalkan ini dengan Ctrl+Z.",
+      "deleteElementTitle": "Hapus elemen?",
       "doNotResizeImage": "Do not resize image",
       "editElement": "Edit Element",
       "error": "Error",
@@ -2093,6 +3094,18 @@
       "zoomLevel": "Zoom Level",
       "zoomLevelExample": "10 is a good default. Higher is more zoomed in."
     },
+    "emptyState": {
+      "addFirstSection": "Tambahkan bagian pertama Anda",
+      "description": "Tambahkan bagian untuk mulai membangun halaman Anda. Anda dapat mengatur ulang dan menyesuaikan bagian kapan saja.",
+      "title": "Halaman ini kosong"
+    },
+    "faqEdit": {
+      "heading": "Heading",
+      "headingType": "Jenis Heading",
+      "iconColor": "Warna Ikon",
+      "link": "Tautan",
+      "title": "Judul"
+    },
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
       "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
@@ -2100,22 +3113,75 @@
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "actions": "Tindakan",
+      "deleteFile": "Hapus berkas",
+      "fileCountPlural": "berkas",
+      "fileCountSingular": "berkas",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
-      "noFilesYet": "No files uploaded yet"
+      "name": "Nama",
+      "noFilesYet": "No files uploaded yet",
+      "size": "Ukuran",
+      "storage": "Penyimpanan:",
+      "storageLimit": "/ 100MB"
     },
     "filesPage": {
+      "loading": "Memuat...",
       "subtitle": "Manage files and media for your website",
       "title": "Files"
     },
     "fontEdit": {
+      "applyCombination": "Klik kombinasi mana pun untuk menerapkannya secara instan",
+      "bodyFont": "Font Badan",
+      "bodyFontDesc": "Digunakan untuk paragraf, deskripsi, dan teks badan",
       "fontSelection": "Font Selection",
+      "fontsNull": "Font null",
+      "headerSubtitle": "Pilih dan sesuaikan font situs Anda",
+      "headerTitle": "Pengaturan Tipografi",
+      "headingFont": "Font Heading",
+      "headingFontDesc": "Digunakan untuk judul, heading, dan teks penekanan",
+      "mainHeadingPreview": "Pratinjau Heading Utama",
       "popularFontCombinations": "Popular Font Combinations",
+      "previewBody": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus urna neque viverra justo nec ultrices dui sapien. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt.",
+      "previewBody2": "Faucibus purus in massa tempor. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non. Accumsan tortor posuere ac ut. Sit amet facilisis magna etiam.",
+      "saveFonts": "Simpan Font",
+      "saving": "Menyimpan...",
+      "secondaryHeading": "Heading Sekunder",
       "typographyPreview": "Typography Preview"
+    },
+    "formEdit": {
+      "createNewForm": "Buat formulir baru",
+      "noFormsAvailable": "Tidak ada formulir tersedia!",
+      "select": "Pilih"
+    },
+    "helpDialog": {
+      "addBody": "Klik Tambah Konten di bilah alat, lalu seret bagian atau elemen ke halaman.",
+      "addTitle": "Tambah konten",
+      "editBody": "Klik dua kali pada bagian atau elemen apa pun untuk membuka pengaturannya. Klik sekali untuk memilih dan gunakan bilah alat mengambang.",
+      "editTitle": "Edit apa pun",
+      "fullDocs": "Dokumentasi lengkap",
+      "moveBody": "Seret bagian dan elemen untuk mengatur ulang. Gunakan panah atas/bawah pada bilah alat pemilihan untuk pemindahan presisi.",
+      "moveTitle": "Atur Ulang",
+      "title": "Dasar editor halaman",
+      "undoBody": "Gunakan Ctrl+Z untuk membatalkan dan Ctrl+Shift+Z untuk mengulang. Buka panel Riwayat dari menu untuk melompat ke status sebelumnya.",
+      "undoTitle": "Batalkan & riwayat"
+    },
+    "historyPanel": {
+      "current": "(saat ini)",
+      "noHistory": "Belum ada riwayat tersedia. Lakukan beberapa perubahan untuk mulai melacak riwayat.",
+      "restoreToPoint": "Pulihkan ke titik ini",
+      "title": "Riwayat Edit"
     },
     "navLink": {
       "addLink": "Add Link",
       "linkSettings": "Link Settings"
+    },
+    "navLinkEdit": {
+      "errLinkText": "Silakan masukkan teks tautan",
+      "linkText": "Teks Tautan",
+      "unauthorizedCreate": "Tidak diizinkan membuat halaman",
+      "unauthorizedDelete": "Tidak diizinkan menghapus halaman",
+      "url": "Url"
     },
     "pageLink": {
       "check": "Cek",
@@ -2125,9 +3191,26 @@
       "pageSettings": "Page Settings",
       "urlHelper": "ex: /camper-registration  (**Make sure to check before saving)"
     },
+    "pageLinkEdit": {
+      "cleanCentered": "Konten Tengah Bersih",
+      "duplicate": "Duplikat",
+      "errCheckUrl": "Silakan periksa Path Url",
+      "errPath": "Silakan masukkan path.",
+      "errTitle": "Silakan masukkan judul.",
+      "headerFooter": "Header & Footer",
+      "layout": "Tata Letak",
+      "linkText": "Teks Tautan",
+      "pageTitle": "Judul Halaman",
+      "unauthorizedCreate": "Tidak diizinkan membuat halaman",
+      "unauthorizedDelete": "Tidak diizinkan menghapus halaman",
+      "url": "Url",
+      "urlPath": "Path Url"
+    },
     "pagePreview": {
       "editContent": "Edit Content",
+      "loading": "Memuat...",
       "pageSettings": "Page Settings",
+      "previewOf": "Pratinjau {title}",
       "subtitle": "Previewing: {title}",
       "title": "Website Preview"
     },
@@ -2137,6 +3220,7 @@
     "pagesPage": {
       "actions": "Tindakan",
       "addFirstPage": "Add First Page",
+      "addNavigationLink": "Tambah tautan navigasi",
       "addPage": "Add Page",
       "autoGenerated": "Auto-generated",
       "confirmConvert": "Would you like to convert this auto-generated page to a custom page?",
@@ -2158,16 +3242,48 @@
       "websitePages": "Website Pages"
     },
     "paletteEdit": {
+      "accent": "Aksen",
+      "applyPaletteAria": "Terapkan palet warna yang disarankan",
+      "applySuggested": "Klik palet mana pun untuk menerapkannya secara instan",
+      "baseColors": "Warna Dasar",
       "colorCombinationsPreview": "Color Combinations Preview",
       "colorValues": "Color Values",
+      "dark": "Gelap",
+      "darkAccent": "Aksen Gelap",
+      "error": "Kesalahan",
+      "headerSubtitle": "Sesuaikan skema warna situs web Anda. Untuk warna aplikasi mobile, portal anggota, dan kios, buka Pengaturan > Tema Aplikasi.",
+      "headerTitle": "Palet Warna",
+      "light": "Terang",
+      "lightAccent": "Aksen Terang",
+      "palette": "Palet",
+      "previewWorkTogether": "Pratinjau bagaimana warna Anda bekerja sama",
+      "primary": "Utama",
       "savePalette": "Save Palette",
-      "suggestedPalettes": "Suggested Palettes"
+      "secondary": "Sekunder",
+      "semanticColors": "Warna Semantik",
+      "success": "Berhasil",
+      "suggestedPalettes": "Suggested Palettes",
+      "warning": "Peringatan"
     },
     "pickColors": {
+      "background": "Latar Belakang",
+      "backgroundField": "Latar Belakang",
+      "backgroundOpacity": "Opasitas Latar Belakang",
+      "backgroundType": "Jenis Latar Belakang",
+      "color": "Warna",
+      "content": "Konten",
+      "currentColors": "Warna Saat Ini",
       "headingColor": "Heading Color",
+      "image": "Gambar",
       "linkColor": "Link Color",
       "opacityHelper": "The opacity of black gradient layer on top of the image. Max value: 1",
-      "textColor": "Text Color"
+      "sampleLink": "Tautan Sampel",
+      "sampleText": "Teks Sampel",
+      "selectPhoto": "Pilih foto",
+      "suggested": "Disarankan",
+      "textColor": "Text Color",
+      "youtubeId": "ID Youtube",
+      "youtubeVideo": "Video Youtube"
     },
     "row": {
       "addColumn": "Add Column",
@@ -2200,28 +3316,188 @@
       "totalValid": "Total: 12/12",
       "width": "Width"
     },
+    "rowMobileOrder": {
+      "customizeOrder": "Sesuaikan Urutan Mobile",
+      "desktopOrder": "Urutan Desktop",
+      "mobileOrder": "Urutan Mobile"
+    },
+    "rowMobileSizes": {
+      "customizeLayout": "Sesuaikan Tata Letak Mobile",
+      "desktopWidth": "Lebar Desktop",
+      "mobileWidth": "Lebar Mobile",
+      "mobileWidthsHelper": "Lebar mobile tidak harus berjumlah 12. Nilai yang berjumlah 24 akan membentang dua baris.",
+      "size1": "1 - 1/12",
+      "size10": "10 - 5/6",
+      "size11": "11 - 11/12",
+      "size12": "12 - penuh",
+      "size2": "2 - 1/6",
+      "size3": "3 - 1/4",
+      "size4": "4 - 1/3",
+      "size5": "5 - 5/12",
+      "size6": "6 - setengah",
+      "size7": "7 - 7/12",
+      "size8": "8 - 2/3",
+      "size9": "9 - 3/4"
+    },
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
-      "editSection": "Edit Section"
+      "editSection": "Edit Section",
+      "layoutContainer": "Wadah tata letak",
+      "section": "Bagian"
+    },
+    "sectionBlock": {
+      "deleteSection": "Hapus bagian",
+      "edit": "Edit"
     },
     "sectionEdit": {
+      "block": "Blok",
+      "blockNamePromptDefault": "Nama Blok",
       "convertTo": "Convert To",
       "convertToBlock": "Convert To Block",
+      "convertToBlockPrompt": "Apakah Anda yakin ingin menyalin bagian ini dan semua kontennya ke sebuah blok?",
       "duplicate": "Duplikat",
-      "duplicateSection": "Duplicate Section"
+      "duplicateSection": "Duplicate Section",
+      "id": "ID"
+    },
+    "spacingScaleEdit": {
+      "buttonOne": "Tombol 1",
+      "buttonTwo": "Tombol 2",
+      "cardTitle": "Judul Kartu",
+      "cardWithContent": "Kartu dengan Konten",
+      "dramaticSection": "Bagian Dramatis",
+      "dramaticSectionDesc": "Menggunakan padding vertikal xxl ({value}px) untuk dampak maksimal",
+      "extraLarge": "Ekstra Besar",
+      "extraLargeDesc": "Jarak besar antara bagian utama",
+      "extraSmall": "Ekstra Kecil",
+      "extraSmallDesc": "Jarak ketat untuk tata letak kompak",
+      "fullWidthBanner": "Banner Lebar Penuh",
+      "headerSubtitle": "Konfigurasikan nilai jarak yang konsisten",
+      "headerTitle": "Skala Jarak",
+      "heroSection": "Bagian Hero",
+      "heroSectionDesc": "Menggunakan padding xl ({xl}px) vertikal dan lg ({lg}px) horizontal",
+      "iconRow": "Baris Ikon",
+      "iconRowDesc": "Ikon menggunakan jarak xs ({value}px) di antara mereka",
+      "large": "Besar",
+      "largeDesc": "Tata letak dan bagian yang luas",
+      "medium": "Sedang",
+      "mediumDesc": "Jarak standar untuk sebagian besar tata letak",
+      "pageSection": "Bagian Halaman",
+      "practicalExamples": "Contoh Praktis",
+      "practicalExamplesDesc": "Lihat bagaimana nilai jarak Anda memengaruhi elemen UI nyata",
+      "saveSpacing": "Simpan Jarak",
+      "small": "Kecil",
+      "smallDesc": "Jarak kecil antara elemen terkait",
+      "spacingValues": "Nilai Jarak",
+      "twoXLarge": "2X Besar",
+      "twoXLargeDesc": "Jarak maksimum untuk tata letak dramatis"
     },
     "style": {
       "editStyle": "Edit Style"
     },
     "styleEdit": {
-      "property": "Property"
+      "addStyle": "Tambah gaya",
+      "all": "Semua",
+      "blurRadius": "Radius Blur - px",
+      "desktopOnly": "Hanya Desktop",
+      "mobileOnly": "Hanya Mobile",
+      "offsetX": "Offset X - px",
+      "offsetY": "Offset Y - px",
+      "platform": "Platform:",
+      "property": "Property",
+      "stylesHelper": "Gunakan kolom ini untuk menyesuaikan gaya elemen tunggal. Untuk perubahan seluruh situs gunakan editor tampilan situs."
+    },
+    "stylesAnimations": {
+      "animations": "Animasi",
+      "animationsDesc": "Efek saat elemen ditampilkan.",
+      "styles": "Gaya",
+      "stylesDesc": "Opsi tampilan lanjutan."
     },
     "stylesManager": {
-      "styleSettings": "Style Settings"
+      "color": "Palet Warna",
+      "colorDesc": "Sesuaikan skema warna situs Anda",
+      "css": "CSS & Javascript",
+      "cssDesc": "Tambahkan gaya dan skrip kustom",
+      "fonts": "Font",
+      "fontsDesc": "Pilih dan sesuaikan tipografi",
+      "footer": "Footer Situs",
+      "footerDesc": "Sesuaikan footer situs Anda",
+      "loadingPreview": "Memuat pratinjau...",
+      "logo": "Logo",
+      "logoDesc": "Unggah dan kelola logo Anda",
+      "siteFooterName": "Footer Situs",
+      "spacing": "Skala Jarak",
+      "spacingDesc": "Definisikan nilai jarak yang konsisten",
+      "styleSettings": "Style Settings",
+      "typography": "Skala Tipografi",
+      "typographyDesc": "Konfigurasikan ukuran font dan jarak",
+      "yourChurch": "Gereja Anda"
+    },
+    "tableEdit": {
+      "allowMarkdown": "Izinkan Markdown",
+      "columns": "Kolom",
+      "empty": "(kosong)",
+      "firstRowHeader": "Baris Pertama adalah Header",
+      "medium": "Sedang",
+      "no": "Tidak",
+      "rows": "Baris",
+      "size": "Ukuran",
+      "sizeSmall": "Kecil",
+      "yes": "Ya"
     },
     "templates": {
       "viewSermons": "View Sermons"
+    },
+    "tokenPicker": {
+      "accent": "Aksen",
+      "baseSize": "Ukuran Dasar",
+      "bodyFont": "Font Badan",
+      "borderRadius": "Radius Border",
+      "colors": "Warna",
+      "dark": "Gelap",
+      "darkAccent": "Aksen Gelap",
+      "designToken": "Token Desain",
+      "error": "Kesalahan",
+      "extraLarge": "Ekstra Besar (32px)",
+      "extraSmall": "Ekstra Kecil (4px)",
+      "full": "Penuh (9999px)",
+      "headingFont": "Font Heading",
+      "large": "Besar (16px)",
+      "largeRadius": "Besar (16px)",
+      "largeSize": "Ukuran Besar",
+      "lightAccent": "Aksen Terang",
+      "lineHeight": "Tinggi Baris",
+      "medium": "Sedang (16px)",
+      "mediumRadius": "Sedang (8px)",
+      "noneRadius": "Tidak Ada (0px)",
+      "primary": "Utama",
+      "secondary": "Sekunder",
+      "selectToken": "Pilih token",
+      "small": "Kecil (8px)",
+      "smallRadius": "Kecil (4px)",
+      "smallSize": "Ukuran Kecil",
+      "spacing": "Jarak",
+      "success": "Berhasil",
+      "tokenLight": "Terang",
+      "twoXLarge": "2X Besar (48px)",
+      "typography": "Tipografi",
+      "warning": "Peringatan"
+    },
+    "typographyEdit": {
+      "baseSize": "Ukuran Dasar (px)",
+      "baseSizeDesc": "Ukuran font dasar untuk teks badan (default: 16px)",
+      "bodyText": "Teks Badan - {size}px: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "headerSubtitle": "Konfigurasikan font dan skala tipe",
+      "headerTitle": "Skala Tipografi",
+      "headingPreview": "Heading {level} - {size}",
+      "lineHeight": "Tinggi Baris",
+      "lineHeightDesc": "Tinggi baris untuk teks badan (default: 1.6)",
+      "preview": "Pratinjau",
+      "saveTypography": "Simpan Tipografi",
+      "scale": "Skala Tipe",
+      "scaleDesc": "Pengganda untuk setiap tingkat heading (default: 1.25)",
+      "smallText": "Teks Kecil - {size}: Teks pendukung dan keterangan",
+      "typographyScale": "Skala Tipografi"
     }
   },
   "songs": {
@@ -2266,10 +3542,16 @@
     "keys": {
       "add": "Tambah",
       "addExternalLink": "Add external link",
+      "addExternalLinkAria": "Tambah tautan eksternal",
       "addFiles": "Add Files",
+      "availableDownloads": "Unduhan Tersedia",
+      "editSelectedKeyAria": "Edit nada yang dipilih",
+      "externalLinks": "Tautan Eksternal",
       "import": "Import",
       "importFromPraiseCharts": "Import files from PraiseCharts",
       "importPrompt": "Would you like to import the text lyrics from PraiseCharts?",
+      "keysTabsAria": "Tab nada",
+      "noKeysAvailable": "Tidak ada nada tersedia. Tambahkan nada untuk memulai.",
       "title": "Keys"
     },
     "library": {
@@ -2287,6 +3569,25 @@
       "text": "Text",
       "url": "Url"
     },
+    "oldArrangement": {
+      "key": "Nada"
+    },
+    "oldArrangements": {
+      "addArrangement": "Tambah aransemen",
+      "addArrangementAria": "Tambah aransemen",
+      "arrangements": "Aransemen",
+      "edit": "Edit",
+      "editArrangementAria": "Edit aransemen",
+      "noArrangements": "Tidak ada aransemen ditemukan."
+    },
+    "praiseChartsProducts": {
+      "close": "Tutup",
+      "free": "Gratis",
+      "linkAccountPrefix": "Anda tidak memiliki akun PraiseCharts yang ditautkan. Buka",
+      "linkAccountSuffix": "untuk menautkan akun.",
+      "profile": "profil Anda",
+      "title": "Tambah Produk dari PraiseCharts"
+    },
     "search": {
       "createManually": "Create Manually",
       "enterQuery": "Enter a search term to find songs.",
@@ -2296,11 +3597,40 @@
       "placeholder": "Search songs by title or artist...",
       "title": "Search for a Song"
     },
+    "songDetailLinks": {
+      "addFirstLink": "Tambah Tautan Pertama",
+      "externalLinks": "Tautan Eksternal",
+      "noLinksYet": "Belum ada tautan eksternal yang ditambahkan"
+    },
+    "songDetailLinksEdit": {
+      "externalLinks": "Tautan Eksternal",
+      "id": "Id",
+      "key": "Nada",
+      "service": "Layanan"
+    },
+    "songDetails": {
+      "editSongDetailsAria": "Edit detail lagu",
+      "fallbackTitle": "Detail Lagu",
+      "noDetails": "Tidak ada detail tambahan tersedia untuk lagu ini."
+    },
     "songPage": {
+      "addArrangement": "Tambah Aransemen",
+      "deleteSongAria": "Hapus lagu",
       "loading": "Loading...",
+      "noArrangementDescription": "Pilih aransemen dari sidebar untuk memulai.",
+      "noArrangementSelected": "Tidak Ada Aransemen Dipilih",
       "subtitle": "Manage song details and arrangements"
     },
+    "songSearchDialog": {
+      "closeDialogAria": "Tutup dialog",
+      "poweredBy": "Didukung oleh:",
+      "searchSongsAria": "Cari lagu",
+      "songTitleOrArtistAria": "Judul lagu atau artis"
+    },
     "songsPage": {
+      "addSongAria": "Tambah lagu",
+      "search": "Cari",
+      "searchSongs": "Cari Lagu",
       "songs": "Lagu",
       "subtitle": "Manage your music library"
     },
@@ -2310,11 +3640,15 @@
     "actionEdit": {
       "actType": "Action Type",
       "actTypeHelp": "Select the type of action to perform",
+      "actionTypeAria": "Jenis tindakan",
       "assignTo": "Assign to",
+      "assignToAria": "Tugaskan ke",
       "editAct": "Action Edit",
       "taskAssign": "Assign a Task",
       "taskNote": "Task Note",
-      "taskTitle": "Task Title"
+      "taskNoteAria": "Catatan tugas",
+      "taskTitle": "Task Title",
+      "taskTitleAria": "Judul tugas"
     },
     "automationDetails": {
       "active": "Aktif",
@@ -2328,10 +3662,12 @@
     "automationEdit": {
       "active": "Aktif",
       "autoEdit": "Edit Automation",
+      "automationTitleAria": "Judul otomatisasi",
       "inactive": "Tidak Aktif",
       "monthly": "Bulanan",
       "never": "Never",
       "recurHelp": "Set how often this automation should run",
+      "recurrenceAria": "Pengulangan",
       "rep": "Repeat",
       "weekly": "Mingguan",
       "yearly": "Yearly"
@@ -2363,11 +3699,13 @@
       "dateFull": "Full Date",
       "datePart": "Date Part",
       "dayOf": "Day of",
+      "dayOfWeekAria": "Hari dalam minggu",
       "fri": "Friday",
       "mon": "Monday",
       "month": "Month",
       "monthDay": "Day of Month",
       "nextMonth": "Next Month",
+      "numberValueAria": "Nilai angka",
       "op": "Operator",
       "prevMonth": "Previous Month",
       "relative": "Relative",
@@ -2382,11 +3720,15 @@
     "conditionDetails": {
       "addCon": "Add Condition",
       "addCondition": "Add Condition",
+      "addConditionAria": "Tambah kondisi",
       "addConj": "Add Conjunction",
+      "addConjunctionAria": "Tambah konjungsi",
       "all": "Semua",
       "and": "AND",
       "any": "Any",
       "con": "Conditions:",
+      "editConditionAria": "Edit kondisi",
+      "editConjunctionAria": "Edit konjungsi",
       "noCond": "No conditions added",
       "or": "OR",
       "trueCon": "of these conditions are true"
@@ -2396,6 +3738,7 @@
       "conEdit": "Edit Condition",
       "conInfo": "Contact Info",
       "conType": "Condition Type",
+      "conditionTypeAria": "Jenis kondisi",
       "confirmMsg": "Are you sure you want to delete this condition?",
       "gen": "General",
       "persAtt": "Personal Attributes",
@@ -2407,6 +3750,8 @@
       "op": "Operator"
     },
     "conditionText": {
+      "conditionOperatorAria": "Operator kondisi",
+      "conditionValueAria": "Nilai kondisi",
       "contains": "contains",
       "endW": "ends with",
       "op": "Operator",
@@ -2416,6 +3761,7 @@
       "and": "AND - All of the conditions are true",
       "conjEdit": "Edit Conjunction",
       "conjType": "Conjunction Type",
+      "conjunctionTypeAria": "Jenis konjungsi",
       "or": "OR - Any of the conditions are true"
     },
     "contentPicker": {
@@ -2427,11 +3773,15 @@
     "newTask": {
       "assignPers": "Please assign this task to a person.",
       "assignTo": "Assign to",
+      "assignToAria": "Tugaskan ke",
       "associatePers": "Please associate this task with a person.",
       "associateW": "Associate with",
+      "associateWithAria": "Kaitkan dengan",
       "newAssign": "New Assignment",
       "saving": "Menyimpan...",
       "taskNew": "New Task",
+      "taskNotesAria": "Catatan tugas",
+      "taskTitleAria": "Judul tugas",
       "titleTask": "Please enter a title for this task."
     },
     "requestedChanges": {
@@ -2445,10 +3795,12 @@
     "selectGroup": {
       "group": "Grup",
       "noResults": "No groups found matching your search",
-      "searchPrompt": "Search for a group to select"
+      "searchPrompt": "Search for a group to select",
+      "selectGroupAria": "Pilih grup"
     },
     "taskList": {
       "addTask": "Add Task",
+      "addTaskAria": "Tambah tugas",
       "assignGroup": "Assigned to My Groups",
       "assignMe": "Assigned to Me",
       "assignedTo": "Assigned to",
@@ -2456,6 +3808,8 @@
       "noTasks": "No tasks found",
       "notSpecified": "Not specified",
       "reqMe": "Requested by Me",
+      "showClosedTasksAria": "Tampilkan tugas tertutup",
+      "showOpenTasksAria": "Tampilkan tugas terbuka",
       "tasks": "Tugas",
       "unassigned": "Tidak Ditugaskan"
     },
@@ -2481,6 +3835,20 @@
       "showOpen": "Show Open",
       "subtitle": "Manage tasks and automations",
       "tasks": "Tugas"
+    }
+  },
+  "ui": {
+    "personBanner": {
+      "memberStatus": "ANGGOTA"
+    },
+    "personNav": {
+      "attendance": "Kehadiran",
+      "customForms": "Formulir Kustom",
+      "details": "Detail",
+      "discipleship": "Kemuridan",
+      "giving": "Persembahan",
+      "groups": "Grup",
+      "notes": "Catatan"
     }
   }
 }
