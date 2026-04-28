@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import { SmallButton, InputBox, type GenericSettingInterface, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { Button } from "@mui/material";
+import { Upload as UploadIcon } from "@mui/icons-material";
+import { InputBox, type GenericSettingInterface, ArrayHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   settings: GenericSettingInterface[];
@@ -31,15 +33,7 @@ export const ImageEditor: React.FC<Props> = (props) => {
   const getHeaderButton = () => (
     <div>
       <input type="file" onChange={handleUpload} id="fileUpload" accept="image/*" style={{ display: "none" }} />
-      <SmallButton
-        onClick={() => {
-          document.getElementById("fileUpload").click();
-        }}
-        text={Locale.label("settings.imageEditor.upload")}
-        icon="upload"
-        data-testid="upload-image-button"
-        ariaLabel="Upload image"
-      />
+      <Button size="small" variant="contained" startIcon={<UploadIcon />} onClick={() => document.getElementById("fileUpload").click()} data-testid="upload-image-button" aria-label="Upload image">{Locale.label("settings.imageEditor.upload")}</Button>
     </div>
   );
 

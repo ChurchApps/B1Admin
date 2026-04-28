@@ -1,10 +1,10 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale, SmallButton } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { useParams, useNavigate } from "react-router-dom";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, IconButton } from "@mui/material";
-import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, IconButton, Tooltip } from "@mui/material";
+import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Arrangement } from "./components/Arrangement";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { SongSearchDialog } from "./SongSearchDialog";
@@ -222,7 +222,11 @@ export const SongPage = memo(() => {
             <EditIcon fontSize="small" />
           </IconButton>
         )}
-        {canEdit && <SmallButton color="error" icon="delete" onClick={handleDeleteSong} />}
+        {canEdit && (
+          <Tooltip title={Locale.label("common.delete")}>
+            <IconButton size="small" color="error" onClick={handleDeleteSong} aria-label="Delete song"><DeleteIcon fontSize="small" /></IconButton>
+          </Tooltip>
+        )}
         {canEdit && (
           <Button
             variant="outlined"

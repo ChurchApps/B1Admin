@@ -12,7 +12,7 @@ import {
   Transform as TransformIcon,
   Visibility as VisibilityIcon
 } from "@mui/icons-material";
-import { ApiHelper, ErrorMessages, PageHeader, SmallButton, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, PageHeader, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useNavigate } from "react-router-dom";
 import { AddPageModal, NavLinkEdit } from "./components";
@@ -284,20 +284,9 @@ export const PagesPage = () => {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
               <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
               <div style={{ flexShrink: 0, marginLeft: 8 }}>
-                <SmallButton
-                  icon="add"
-                  onClick={() => {
-                    setEditLink({
-                      churchId: UserHelper.currentUserChurch.church.id,
-                      category: "website",
-                      linkType: "url",
-                      sort: 99,
-                      linkData: "",
-                      icon: ""
-                    });
-                  }}
-                  data-testid="add-navigation-link"
-                />
+                <Tooltip title="Add navigation link">
+                  <IconButton size="small" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" aria-label="Add navigation link"><AddIcon fontSize="small" /></IconButton>
+                </Tooltip>
               </div>
             </div>
             <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} />

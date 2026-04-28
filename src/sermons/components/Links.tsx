@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Icon } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { LinkEdit } from "./LinkEdit";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
-import { SmallButton } from "@churchapps/apphelper";
 import { DisplayBox } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { ensureSequentialSort, moveItemDown, moveItemUp } from "../../helpers/SortHelper";
@@ -40,7 +40,7 @@ export const Links: React.FC<Props> = (props) => {
   const cat = props.category ? props.category : "website";
 
   const handleUpdated = () => { setCurrentLink(null); loadData(); };
-  const getEditContent = () => <SmallButton icon="add" text={Locale.label("sermons.liveStreamTimes.navigationLinks.add")} onClick={handleAdd} data-testid="add-link-button" />;
+  const getEditContent = () => <Button size="small" variant="contained" startIcon={<AddIcon />} onClick={handleAdd} data-testid="add-link-button">{Locale.label("sermons.liveStreamTimes.navigationLinks.add")}</Button>;
   const loadData = () => { ApiHelper.get("/links?category=" + cat, "ContentApi").then((data: any) => { setLinks(data); setIsLoading(false); }); };
   const saveChanges = () => { ApiHelper.post("/links", links, "ContentApi").then(loadData); };
 

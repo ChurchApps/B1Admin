@@ -1,7 +1,8 @@
 import React from "react";
-import { ApiHelper, DisplayBox, SmallButton } from "@churchapps/apphelper";
+import { ApiHelper, DisplayBox } from "@churchapps/apphelper";
 
-import { Accordion, AccordionDetails, AccordionSummary, Button, Icon, Stack } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Icon, Stack, IconButton, Tooltip } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { type SongDetailInterface, type SongInterface } from "../../../helpers";
 import { ArrangementEdit } from "./ArrangementEdit";
 import { OldArrangement } from "./OldArrangement";
@@ -64,14 +65,9 @@ export const OldArrangements = (props: Props) => {
 
   const getEditContent = () => (
     <Stack direction="row">
-      <SmallButton
-        onClick={() => {
-          setEditArrangement({ name: "Default", songId: props.song?.id });
-        }}
-        icon="add"
-        data-testid="add-arrangement-button"
-        ariaLabel="Add arrangement"
-      />
+      <Tooltip title="Add arrangement">
+        <IconButton size="small" onClick={() => setEditArrangement({ name: "Default", songId: props.song?.id })} data-testid="add-arrangement-button" aria-label="Add arrangement"><AddIcon fontSize="small" /></IconButton>
+      </Tooltip>
       {arrangements?.length === 1 && (
         <Button
           size="small"

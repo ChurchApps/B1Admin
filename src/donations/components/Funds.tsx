@@ -1,9 +1,10 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { DisplayBox, UserHelper, Loading, Permissions, SmallButton, Locale } from "@churchapps/apphelper";
+import { DisplayBox, UserHelper, Loading, Permissions, Locale } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { FundEdit } from ".";
 import { Link } from "react-router-dom";
-import { Button, Icon, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Button, Icon, Table, TableBody, TableCell, TableRow, IconButton, Tooltip } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 
 export const Funds: React.FC = memo(() => {
@@ -21,14 +22,9 @@ export const Funds: React.FC = memo(() => {
   const editSection = useMemo(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.edit)) {
       return (
-        <SmallButton
-          onClick={() => {
-            setEditFund({ id: "", name: "", taxDeductible: true });
-          }}
-          icon="add"
-          data-testid="add-fund-button"
-          ariaLabel="Add fund"
-        />
+        <Tooltip title="Add fund">
+          <IconButton size="small" onClick={() => setEditFund({ id: "", name: "", taxDeductible: true })} data-testid="add-fund-button" aria-label="Add fund"><AddIcon fontSize="small" /></IconButton>
+        </Tooltip>
       );
     } else return null;
   }, []);

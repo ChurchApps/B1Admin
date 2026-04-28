@@ -1,6 +1,7 @@
-import { TableHead, Table, TableCell, TableRow, TableBody } from "@mui/material";
+import { TableHead, Table, TableCell, TableRow, TableBody, IconButton, Tooltip } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import React, { useState } from "react";
-import { ApiHelper, ErrorMessages, Banner, DisplayBox, DateHelper, SmallButton, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Banner, DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
 
@@ -32,14 +33,9 @@ export const DevicesPage = () => {
   React.useEffect(loadData, []);
 
   const editContent = (
-    <SmallButton
-      icon="add"
-      onClick={() => {
-        setShowAdd(true);
-      }}
-      data-testid="add-device-button"
-      ariaLabel="Add device"
-    />
+    <Tooltip title="Add device">
+      <IconButton size="small" onClick={() => setShowAdd(true)} data-testid="add-device-button" aria-label="Add device"><AddIcon fontSize="small" /></IconButton>
+    </Tooltip>
   );
 
   return (

@@ -4,8 +4,7 @@ import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
-import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon } from "@mui/icons-material";
-import { SmallButton } from "@churchapps/apphelper";
+import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Delete as DeleteIcon, Undo as UndoIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
@@ -45,43 +44,17 @@ export const FormsPage = () => {
         UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || (UserHelper.checkAccess(Permissions.membershipApi.forms.edit) && form.contentType !== "form") || form?.action === "admin";
       const editLink =
         canEdit && !isArchived ? (
-          <SmallButton
-            icon="edit"
-            text="Edit"
-            onClick={() => {
-              setSelectedFormId(form.id);
-            }}
-            data-testid={`edit-form-button-${form.id}`}
-            ariaLabel={`Edit form ${form.name}`}
-          />
+          <Button size="small" variant="outlined" startIcon={<EditIcon />} onClick={() => setSelectedFormId(form.id)} data-testid={`edit-form-button-${form.id}`} aria-label={`Edit form ${form.name}`}>Edit</Button>
         ) : null;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
       const archiveLink =
         canEdit && !isArchived ? (
-          <SmallButton
-            icon="delete"
-            text="Archive"
-            color="error"
-            onClick={() => {
-              handleArchiveChange(form, true);
-            }}
-            data-testid={`archive-form-button-${form.id}`}
-            ariaLabel={`Archive form ${form.name}`}
-          />
+          <Button size="small" variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={`Archive form ${form.name}`}>Archive</Button>
         ) : null;
       const unarchiveLink =
         canEdit && isArchived ? (
-          <SmallButton
-            icon="undo"
-            text="Restore"
-            color="success"
-            onClick={() => {
-              handleArchiveChange(form, false);
-            }}
-            data-testid={`restore-form-button-${form.id}`}
-            ariaLabel={`Restore form ${form.name}`}
-          />
+          <Button size="small" variant="outlined" color="success" startIcon={<UndoIcon />} onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={`Restore form ${form.name}`}>Restore</Button>
         ) : null;
       result.push(
         <TableRow key={form.id}>

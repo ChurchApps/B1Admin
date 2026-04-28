@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { FileUpload } from "../../components/FileUpload";
-import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
-import { InputBox, ApiHelper, SmallButton, Locale } from "@churchapps/apphelper";
-import { Folder as FolderIcon, InsertDriveFile as FileIcon } from "@mui/icons-material";
+import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress, IconButton, Tooltip } from "@mui/material";
+import { InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
+import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { CardWithHeader, EmptyState } from "../../components/ui";
 
 export function FilesManager() {
@@ -84,7 +84,9 @@ export function FilesManager() {
           </Typography>
         </TableCell>
         <TableCell align="right">
-          <SmallButton icon="delete" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} />
+          <Tooltip title={Locale.label("common.delete")}>
+            <IconButton size="small" color="error" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} aria-label="Delete file"><DeleteIcon fontSize="small" /></IconButton>
+          </Tooltip>
         </TableCell>
       </TableRow>
     ))

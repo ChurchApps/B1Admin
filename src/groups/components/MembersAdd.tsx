@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { type GroupInterface, type GroupMemberInterface, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DisplayBox, Loading, Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, TableHead } from "@mui/material";
-import { SmallButton } from "@churchapps/apphelper";
+import { Table, TableBody, TableRow, TableCell, TableHead, Button } from "@mui/material";
+import { PersonAdd as PersonAddIcon } from "@mui/icons-material";
 
 interface Props {
   group: GroupInterface;
@@ -58,7 +58,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
             <Link to={"/people/" + gm.personId}>{personName}</Link>
           </TableCell>
           <TableCell>
-            <SmallButton icon="person_add" text={Locale.label("common.add")} onClick={() => addMember(gm)} color="success" data-testid="add-member-button" ariaLabel="Add member to group" />
+            <Button size="small" variant="contained" color="success" startIcon={<PersonAddIcon />} onClick={() => addMember(gm)} data-testid="add-member-button" aria-label="Add member to group">{Locale.label("common.add")}</Button>
           </TableCell>
         </TableRow>
       );
