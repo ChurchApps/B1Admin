@@ -25,6 +25,7 @@ import { EmptyState } from "./EmptyState";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { PropertyPanel } from "./PropertyPanel";
 import { AddContentPanel } from "./AddContentPanel";
+import { getElementTypeMeta } from "./elements/elementTypeMeta";
 import { Locale } from "@churchapps/apphelper";
 import { useUndoRedo } from "../hooks/useUndoRedo";
 import { HistoryPanel } from "./HistoryPanel";
@@ -261,6 +262,7 @@ export function ContentEditor(props: Props) {
             onElementDuplicate={handleElementDuplicate}
             onElementMove={handleElementMove}
             onElementUpdate={handleRealtimeChange}
+            onSectionClick={(s) => handleSectionEdit(s, null)}
           />
         );
       }
@@ -645,11 +647,19 @@ export function ContentEditor(props: Props) {
               open={!!(editElement || editSection)}
               title={
                 editElement
-                  ? Locale.label("site.elements.editElement")
-                  : Locale.label("site.section.editSection")
+                  ? getElementTypeMeta(editElement.elementType).label
+                  : Locale.label("site.section.section", "Section")
               }
-              subtitle={editElement?.elementType || undefined}
-              icon={editElement ? "tune" : "view_agenda"}
+              subtitle={
+                editElement
+                  ? Locale.label("common.element", "Element")
+                  : Locale.label("site.section.layoutContainer", "Layout container")
+              }
+              icon={
+                editElement
+                  ? getElementTypeMeta(editElement.elementType).icon
+                  : "view_agenda"
+              }
               onClose={() => {
                 if (editElement) handleElementCancel();
                 if (editSection) handleSectionCancel();

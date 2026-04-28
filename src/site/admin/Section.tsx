@@ -23,6 +23,7 @@ interface Props {
   onElementDuplicate?: (elementId: string) => void;
   onElementMove?: (elementId: string, direction: "up" | "down") => void;
   onElementUpdate?: (element: ElementInterface) => void;
+  onSectionClick?: (section: SectionInterface) => void;
 }
 
 export const Section: React.FC<Props> = props => {
@@ -70,9 +71,12 @@ export const Section: React.FC<Props> = props => {
 
   // Handle clicks on any element in the section (including nested ones in rows)
   const handleSectionClick = (event: React.MouseEvent) => {
-    if (!props.onElementClick) return;
-
     const target = event.target as HTMLElement;
+
+    // Ignore clicks on droppable spacers, action buttons, and dialogs
+    if (target.closest('[data-testid="droppable-area"]')) return;
+    if (target.closest("button")) return;
+    if (target.closest(".MuiDialog-root")) return;
 
     // Find the closest element wrapper - look for data-element-id attribute or el-{id} pattern
     let elementId: string | null = null;
@@ -105,9 +109,16 @@ export const Section: React.FC<Props> = props => {
       }
     }
 
-    if (elementId) {
+    if (elementId && props.onElementClick) {
       event.stopPropagation();
       props.onElementClick(elementId);
+      return;
+    }
+
+    // No element matched — treat as a click on the section background
+    if (props.onSectionClick) {
+      event.stopPropagation();
+      props.onSectionClick(props.section);
     }
   };
 
