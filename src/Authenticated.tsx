@@ -2,7 +2,8 @@ import React, { Suspense } from "react";
 import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
 import { Wrapper, ErrorBoundary } from "./components";
 import { UserHelper } from "@churchapps/apphelper";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
 
 // Lazy load all page components for code splitting
@@ -55,15 +56,8 @@ const Site = React.lazy(() => import("./site").then((module) => ({ default: modu
 const Mobile = React.lazy(() => import("./mobile").then((module) => ({ default: module.Mobile })));
 const EmailTemplatesPage = React.lazy(() => import("./settings/EmailTemplatesPage").then((module) => ({ default: module.EmailTemplatesPage })));
 
-// Loading component for Suspense fallback
-const LoadingFallback: React.FC = () => (
-  <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px" flexDirection="column" gap={2}>
-    <CircularProgress />
-    <Typography variant="body2" color="text.secondary">
-      Loading...
-    </Typography>
-  </Box>
-);
+// Suspense fallback shown while a route's lazy chunk loads.
+const LoadingFallback: React.FC = () => <PageSkeleton />;
 
 export const Authenticated: React.FC = () => {
   const navigate = useNavigate();

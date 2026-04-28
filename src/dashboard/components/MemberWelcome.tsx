@@ -24,24 +24,24 @@ export const MemberWelcome: React.FC = () => {
           </Typography>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<CameraAlt fontSize="large" />} title="Add Your Photo" description="Upload a profile photo so people at church can recognize you and put a face to your name." linkUrl={b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit"} external />
+              <FeatureCard icon={<CameraAlt fontSize="small" />} title="Add Your Photo" description="Upload a profile photo so people at church can recognize you and put a face to your name." linkUrl={b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit"} external />
             </Grid>
             {UserHelper.checkAccess(Permissions.membershipApi.people.view) && (
               <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                <FeatureCard icon={<Person fontSize="large" />} title="Find People You Know" description="Search the church directory to find and connect with others in the congregation." linkUrl="/people" />
+                <FeatureCard icon={<Person fontSize="small" />} title="Find People You Know" description="Search the church directory to find and connect with others in the congregation." linkUrl="/people" />
               </Grid>
             )}
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Groups fontSize="large" />} title="Join a Group" description="Browse small groups, classes, and serving teams to find your community." linkUrl={b1Url + "/groups"} external />
+              <FeatureCard icon={<Groups fontSize="small" />} title="Join a Group" description="Browse small groups, classes, and serving teams to find your community." linkUrl={b1Url + "/groups"} external />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<VolunteerActivism fontSize="large" />} title="Set Up Online Giving" description="Give online quickly and easily, and optionally set up recurring donations." linkUrl={b1Url + "/donate"} external />
+              <FeatureCard icon={<VolunteerActivism fontSize="small" />} title="Set Up Online Giving" description="Give online quickly and easily, and optionally set up recurring donations." linkUrl={b1Url + "/donate"} external />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Event fontSize="large" />} title="See What's Happening" description="Check out upcoming events, service times, and ways to get involved." linkUrl={b1Url} external />
+              <FeatureCard icon={<Event fontSize="small" />} title="See What's Happening" description="Check out upcoming events, service times, and ways to get involved." linkUrl={b1Url} external />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<PhoneIphone fontSize="large" />} title="Download the Mobile App" description="Get the B1.church app on your phone to stay connected wherever you go." linkUrl="https://b1.church/app" external />
+              <FeatureCard icon={<PhoneIphone fontSize="small" />} title="Download the Mobile App" description="Get the B1.church app on your phone to stay connected wherever you go." linkUrl="https://b1.church/app" external />
             </Grid>
           </Grid>
         </Box>
