@@ -50,3 +50,9 @@ To accept online donations you must first register for developer credentials wit
 After obtaining your tokens, open **Settings → Giving Settings** in B1Admin, select the provider (Stripe or PayPal), paste in your Public and Private keys, and toggle "Pay Fees" as desired. Finally, configure your fee parameters in **Fee Options**.
 
 [![B1Admin Dev Setup](https://img.youtube.com/vi/5zsEJEp6yMw/0.jpg)](https://www.youtube.com/watch?v=5zsEJEp6yMw)
+
+### 🚀 Self-Hosting (Beta)
+
+If you'd like to deploy your own copy on Railway, you can use our template below. This is currently in beta — feedback welcome.
+
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/eGvddW?referralCode=QlwJ_E&utm_medium=integration&utm_source=template&utm_campaign=generic)
