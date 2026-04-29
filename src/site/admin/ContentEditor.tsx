@@ -1,8 +1,6 @@
-import { useEffect, useState, useContext, useRef, useCallback } from "react";
-import type { CSSProperties } from "react";
+import { useEffect, useState, useContext, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skeleton } from "@mui/material";
-import { useWindowWidth } from "@react-hook/window-size";
 import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface } from "../../helpers/Interfaces";
 import { ApiHelper, ArrayHelper, UserHelper } from "../../helpers";
 import { Permissions } from "@churchapps/helpers";
@@ -60,12 +58,11 @@ export function ContentEditor(props: Props) {
   const [editSection, setEditSection] = useState<SectionInterface>(null);
   const [editElement, setEditElement] = useState<ElementInterface>(null);
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
-  const [scrollTop, setScrollTop] = useState(0);
   const [deviceType, setDeviceType] = useState("desktop");
-  const windowWidth = useWindowWidth();
   const isMobileViewport = useMediaQuery("(max-width:900px)");
   const contentRef = React.useRef<HTMLDivElement>(null);
   const initialSnapshotSavedRef = React.useRef(false);
+  const [showScrollHelpers, setShowScrollHelpers] = useState(false);
 
   // Undo/Redo system
   const { canUndo, canRedo, undo, redo, saveSnapshot, history, currentHistoryIndex, restoreToIndex } = useUndoRedo({
@@ -117,7 +114,7 @@ export function ContentEditor(props: Props) {
   const [showAdd, setShowAdd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [pendingDeleteElementId, setPendingDeleteElementId] = useState<string | null>(null);
-  const css = StyleHelper.getCss(container?.sections || []);
+  const css = useMemo(() => StyleHelper.getCss(container?.sections || []), [container?.sections]);
 
   let elementOnlyMode = false;
   if (props.blockId && container?.sections?.length === 1 && container?.sections[0]?.id === "") elementOnlyMode = true;
@@ -361,10 +358,12 @@ export function ContentEditor(props: Props) {
     const findAndMoveElement = (elements: ElementInterface[], _parentElements?: ElementInterface[]): boolean => {
       for (let i = 0; i < elements.length; i++) {
         if (elements[i].id === elementId) {
-          const currentSort = elements[i].sort;
-          const newSort = direction === "up" ? currentSort - 1.5 : currentSort + 1.5;
-          elements[i].sort = newSort;
-          ApiHelper.post("/elements", [elements[i]], "ContentApi").then(() => {
+          const currentSort = typeof elements[i].sort === "number" ? elements[i].sort : i;
+          const updatedElement = {
+            ...elements[i],
+            sort: direction === "up" ? currentSort - 1.5 : currentSort + 1.5
+          };
+          ApiHelper.post("/elements", [updatedElement], "ContentApi").then(() => {
             loadDataInternal("After moving element");
           });
           return true;
@@ -383,21 +382,19 @@ export function ContentEditor(props: Props) {
 
   const handleClickOutside = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    if (!target.closest(".elementWrapper") && !target.closest(".MuiDialog-root")) {
+    const clickedInsideElement =
+      !!target.closest("[data-element-id]") ||
+      !!target.closest('[id^="el-"]') ||
+      !!target.closest('[data-testid="draggable-wrapper"]') ||
+      !!target.closest(".MuiDialog-root") ||
+      !!target.closest(".MuiPopover-root") ||
+      !!target.closest(".MuiMenu-root") ||
+      !!target.closest("button");
+
+    if (!clickedInsideElement) {
       setSelectedElementId(null);
     }
   };
-
-  let rightBarStyle: CSSProperties = {};
-
-  if (typeof window !== "undefined") {
-    const editorBar = document.getElementById("editorBar");
-    if (window.innerWidth > 900) {
-      if (window?.innerHeight) {
-        if (scrollTop < 50) rightBarStyle = { paddingTop: "70px" };
-      }
-    }
-  }
 
   const handleDone = () => {
     let url = "";
@@ -415,8 +412,10 @@ export function ContentEditor(props: Props) {
     const contentEl = contentRef.current;
     if (!contentEl) return;
     const onScroll = () => {
-      setScrollTop(contentEl.scrollTop);
+      const shouldShowHelpers = contentEl.scrollTop > 150;
+      setShowScrollHelpers((prev) => (prev === shouldShowHelpers ? prev : shouldShowHelpers));
     };
+    onScroll();
     contentEl.addEventListener("scroll", onScroll);
     return () => contentEl.removeEventListener("scroll", onScroll);
   }, []);
@@ -465,7 +464,7 @@ export function ContentEditor(props: Props) {
     }
   };
 
-  const getTheme = () => {
+  const previewTheme = useMemo(() => {
     const base = {
       palette: { mode: "light" as const },
       components: {
@@ -480,17 +479,16 @@ export function ContentEditor(props: Props) {
       });
     }
     return createTheme(base);
-  };
+  }, [deviceType]);
 
   const getZoneBox = (sections: SectionInterface[], name: string, keyName: string, showZoneLabel: boolean) => (
-    <ZoneBox key={crypto.randomUUID()} sections={sections} name={name} keyName={keyName} deviceType={deviceType} showZoneLabel={showZoneLabel}>
+    <ZoneBox key={keyName} sections={sections} name={name} keyName={keyName} deviceType={deviceType} showZoneLabel={showZoneLabel}>
       {getSections(keyName)}
     </ZoneBox>
   );
 
   const getZoneBoxes = () => {
     const result: any[] = [];
-    let idx = 0;
     if (props.pageId) {
       const page = container as PageInterface;
       if (page?.layout && zones[page.layout]) {
@@ -500,7 +498,6 @@ export function ContentEditor(props: Props) {
           const sections = ArrayHelper.getAll(page?.sections, "zone", z);
           const name = z.substring(0, 1).toUpperCase() + z.substring(1, z.length);
           result.push(getZoneBox(sections, name, z, showZoneLabel));
-          idx++;
         });
       }
     } else {
@@ -570,6 +567,7 @@ export function ContentEditor(props: Props) {
           onUndo={handleUndo}
           onRedo={handleRedo}
           onShowHistory={() => setShowHistory(true)}
+          lastSavedAt={lastSavedAt}
         />
         <HistoryPanel
           open={showHistory}
@@ -607,7 +605,7 @@ export function ContentEditor(props: Props) {
               <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
 
               <div style={{ marginTop: 0, paddingTop: 0 }}>
-                {scrollTop > 150 && (
+                {showScrollHelpers && (
                   <>
                     <div
                       style={{
@@ -636,12 +634,13 @@ export function ContentEditor(props: Props) {
                   </>
                 )}
 
-                <ThemeProvider theme={getTheme()}>{getZoneBoxes()}</ThemeProvider>
+                <ThemeProvider theme={previewTheme}>{getZoneBoxes()}</ThemeProvider>
               </div>
             </div>
 
             <PropertyPanel
               open={!!(editElement || editSection)}
+              width={editElement && ["text", "textWithPhoto", "card", "faq"].includes(editElement.elementType) ? 520 : 400}
               title={
                 editElement
                   ? getElementTypeMeta(editElement.elementType).label
@@ -664,6 +663,7 @@ export function ContentEditor(props: Props) {
             >
               {editElement && (
                 <ElementEdit
+                  key={`${editElement.id || "new"}-${editElement.elementType || "element"}`}
                   inPanel
                   element={editElement}
                   updatedCallback={(updatedElement) => {
