@@ -2378,6 +2378,7 @@
       "regist": "Registered",
       "searchResults": "Search Results",
       "servAdmin": "Server Admin",
+      "serverHealth": "Server Health",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
       "usageTrends": "Usage Trends",
@@ -2395,6 +2396,17 @@
       "adminOnly": "Admin Only",
       "report": "Report",
       "serverAdmin": "Server Admin"
+    },
+    "serverHealth": {
+      "detail": "Detail",
+      "environment": "Environment",
+      "loadError": "Unable to load server health.",
+      "no": "No",
+      "setting": "Setting",
+      "status": "Status",
+      "subtitle": "Indicates whether each API setting is configured. Values are not displayed.",
+      "title": "Server Health",
+      "yes": "Yes"
     },
     "translation": {
       "abbreviations": "Abbreviations",
