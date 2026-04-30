@@ -10,16 +10,46 @@ import {
   UserHelper,
   ExportLink,
   Permissions,
-  Loading,
   ArrayHelper,
   Locale,
   PersonAvatar
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Button, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, IconButton, Tooltip } from "@mui/material";
-import { Send as SendIcon, KeyOff as KeyOffIcon, Key as KeyIcon, PersonRemove as PersonRemoveIcon, EditNote as EditNoteIcon } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Skeleton,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography
+} from "@mui/material";
+import {
+  AutoAwesome as AutoAwesomeIcon,
+  Close as CloseIcon,
+  EditNote as EditNoteIcon,
+  Groups as GroupsIcon,
+  PersonRemove as PersonRemoveIcon,
+  Send as SendIcon,
+  Star as StarIcon,
+  StarBorder as StarBorderIcon
+} from "@mui/icons-material";
 import { SendInviteDialog } from "../../components";
+import { EmptyState } from "../../components/ui/EmptyState";
 
 interface Props {
   group: GroupInterface;
@@ -92,72 +122,169 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
 
+  const bodyCellSx = {
+    borderBottom: "1px solid",
+    borderColor: "divider",
+    py: 1.5,
+    "&&:first-of-type": { pl: 2.5 },
+    "&&:last-of-type": { pr: 1.5 }
+  } as const;
+
   const tableRows = useMemo(() => {
     const rows: JSX.Element[] = [];
-
-    if (groupMembers.data.length === 0) {
-      rows.push(
-        <TableRow key="0">
-          <TableCell>{Locale.label("groups.groupMembers.noMem")}</TableCell>
-        </TableRow>
-      );
-      return rows;
-    }
 
     for (let i = 0; i < groupMembers.data.length; i++) {
       const gm = groupMembers.data[i];
       const personName = gm.person?.name?.display || Locale.label("groups.groupMembers.unknown");
-      const editLinks = [];
+      const isLast = i === groupMembers.data.length - 1;
+      const cellSx = isLast ? { ...bodyCellSx, borderBottom: 0 } : bodyCellSx;
+
+      const roleCell = gm.leader ? (
+        <Chip
+          size="small"
+          variant="filled"
+          color="warning"
+          icon={<StarIcon sx={{ fontSize: 14 }} />}
+          label={Locale.label("groups.groupMembers.leader")}
+          sx={{
+            fontWeight: 600,
+            letterSpacing: "0.02em",
+            height: 22,
+            "& .MuiChip-icon": { ml: 0.75, mr: -0.25 },
+            "& .MuiChip-label": { px: 1 }
+          }}
+        />
+      ) : null;
+
+      let leaderToggle: JSX.Element | null = null;
       if (canEdit) {
-        if (gm.leader) {
-          editLinks.push(
-            <Tooltip key={`leader-${gm.id}`} title={Locale.label("groups.groupMembers.removeLeaderAccess")}>
-              <IconButton size="small" color="error" onClick={() => handleToggleLeader(gm)} data-testid={`remove-leader-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.removeLeaderAccessAria").replace("{name}", personName)}><KeyOffIcon fontSize="small" /></IconButton>
-            </Tooltip>
-          );
-        } else {
-          editLinks.push(
-            <Tooltip key={`leader-${gm.id}`} title={Locale.label("groups.groupMembers.promoteToLeader")}>
-              <IconButton size="small" color="success" onClick={() => handleToggleLeader(gm)} data-testid={`promote-leader-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.promoteToLeaderAria").replace("{name}", personName)}><KeyIcon fontSize="small" /></IconButton>
-            </Tooltip>
-          );
-        }
-        editLinks.push(
-          <Tooltip key={`remove-${gm.id}`} title={Locale.label("common.remove")}>
-            <IconButton size="small" color="error" onClick={() => handleRemove(gm)} data-testid={`remove-member-button-${gm.id}`} aria-label={Locale.label("groups.groupMembers.removeFromGroupAria").replace("{name}", personName)}><PersonRemoveIcon fontSize="small" /></IconButton>
+        leaderToggle = gm.leader ? (
+          <Tooltip title={Locale.label("groups.groupMembers.removeLeaderAccess")}>
+            <IconButton
+              size="small"
+              onClick={() => handleToggleLeader(gm)}
+              data-testid={`remove-leader-button-${gm.id}`}
+              aria-label={Locale.label("groups.groupMembers.removeLeaderAccessAria").replace("{name}", personName)}
+              sx={{
+                color: "warning.main",
+                transition: "background-color 0.15s",
+                "&:hover": { bgcolor: "warning.50" }
+              }}>
+              <StarIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title={Locale.label("groups.groupMembers.makeLeader")}>
+            <IconButton
+              size="small"
+              onClick={() => handleToggleLeader(gm)}
+              data-testid={`promote-leader-button-${gm.id}`}
+              aria-label={Locale.label("groups.groupMembers.promoteToLeaderAria").replace("{name}", personName)}
+              sx={{
+                color: "text.disabled",
+                transition: "color 0.15s, background-color 0.15s",
+                "&:hover": { color: "warning.main", bgcolor: "warning.50" }
+              }}>
+              <StarBorderIcon fontSize="small" />
+            </IconButton>
           </Tooltip>
         );
       }
 
+      const removeButton = canEdit ? (
+        <Tooltip title={Locale.label("common.remove")}>
+          <IconButton
+            size="small"
+            onClick={() => handleRemove(gm)}
+            data-testid={`remove-member-button-${gm.id}`}
+            aria-label={Locale.label("groups.groupMembers.removeFromGroupAria").replace("{name}", personName)}
+            sx={{
+              color: "text.disabled",
+              transition: "color 0.15s, background-color 0.15s",
+              "&:hover": { color: "error.main", bgcolor: "error.50" }
+            }}>
+            <PersonRemoveIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      ) : null;
+
       rows.push(
-        <TableRow key={gm.id}>
-          <TableCell>
+        <TableRow
+          key={gm.id}
+          sx={{
+            transition: "background-color 0.15s ease",
+            "&:hover": { backgroundColor: "action.hover" }
+          }}>
+          <TableCell sx={{ ...cellSx, width: 56 }}>
             <PersonAvatar person={gm.person} size="small" />
           </TableCell>
-          <TableCell>
-            <Link to={"/people/" + gm.personId}>{personName}</Link>
+          <TableCell sx={cellSx}>
+            <Link
+              to={"/people/" + gm.personId}
+              style={{ textDecoration: "none" }}>
+              <Typography
+                variant="body2"
+                component="span"
+                sx={{
+                  fontWeight: 500,
+                  color: "text.primary",
+                  transition: "color 0.15s",
+                  "&:hover": { color: "primary.main" }
+                }}>
+                {personName}
+              </Typography>
+            </Link>
           </TableCell>
-          <TableCell style={{ textAlign: "right" }}>{editLinks}</TableCell>
+          <TableCell sx={{ ...cellSx, width: 120 }}>{roleCell}</TableCell>
+          <TableCell sx={{ ...cellSx, width: 110, textAlign: "right", whiteSpace: "nowrap" }}>
+            {canEdit && (
+              <Stack
+                direction="row"
+                spacing={0.25}
+                justifyContent="flex-end"
+                alignItems="center"
+                divider={
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ height: 16, alignSelf: "center", borderColor: "divider", opacity: 0.6 }}
+                  />
+                }>
+                {leaderToggle}
+                {removeButton}
+              </Stack>
+            )}
+          </TableCell>
         </TableRow>
       );
     }
     return rows;
   }, [groupMembers.data, canEdit, handleToggleLeader, handleRemove]);
 
-  const tableHeader = useMemo(() => {
-    const rows: JSX.Element[] = [];
-    if (groupMembers.data.length === 0) {
-      return rows;
-    }
+  const headerCellSx = {
+    fontSize: "0.7rem",
+    fontWeight: 600,
+    letterSpacing: "0.06em",
+    textTransform: "uppercase",
+    color: "text.secondary",
+    borderBottom: "1px solid",
+    borderColor: "divider",
+    py: 1,
+    bgcolor: "grey.50",
+    "&&:first-of-type": { pl: 2.5 },
+    "&&:last-of-type": { pr: 1.5 }
+  } as const;
 
-    rows.push(
-      <TableRow key="header" sx={{ textAlign: "left" }}>
-        <th></th>
-        <th>{Locale.label("common.name")}</th>
-        <th></th>
+  const tableHeader = useMemo(() => {
+    if (groupMembers.data.length === 0) return null;
+    return (
+      <TableRow>
+        <TableCell sx={{ ...headerCellSx, width: 56 }} />
+        <TableCell sx={headerCellSx}>{Locale.label("common.name")}</TableCell>
+        <TableCell sx={{ ...headerCellSx, width: 120 }}>{Locale.label("groups.groupMembers.role")}</TableCell>
+        <TableCell sx={{ ...headerCellSx, width: 110, textAlign: "right" }} />
       </TableRow>
     );
-    return rows;
   }, [groupMembers.data.length]);
 
   const handleTemplateMessage = (templateType: string) => {
@@ -202,81 +329,222 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     }
   }, [props.addedPerson, handleAdd]);
 
+  const renderSkeleton = () => (
+    <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1.5, overflow: "hidden" }}>
+      <Stack divider={<Divider />}>
+        {[0, 1, 2].map((i) => (
+          <Stack
+            key={i}
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            sx={{ px: 2, py: 1.75 }}>
+            <Skeleton variant="circular" width={32} height={32} />
+            <Skeleton variant="text" width={120 + i * 30} height={18} />
+            <Box sx={{ flex: 1 }} />
+            {i % 2 === 0 && <Skeleton variant="rounded" width={72} height={22} />}
+            <Skeleton variant="circular" width={28} height={28} />
+            <Skeleton variant="circular" width={28} height={28} />
+          </Stack>
+        ))}
+      </Stack>
+    </Box>
+  );
+
+  const renderTable = () => (
+    <Box
+      sx={{
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 1.5,
+        overflow: "hidden"
+      }}>
+      <Table id="groupMemberTable" sx={{ "& td, & th": { borderBottomColor: "divider" } }}>
+        <TableHead>{tableHeader}</TableHead>
+        <TableBody>{tableRows}</TableBody>
+      </Table>
+    </Box>
+  );
+
   const getTable = () => {
-    if (groupMembers.isLoading) return <Loading />;
-    else {
+    if (groupMembers.isLoading) return renderSkeleton();
+    if (groupMembers.data.length === 0) {
       return (
-        <Table id="groupMemberTable">
-          <TableHead>{tableHeader}</TableHead>
-          <TableBody>{tableRows}</TableBody>
-        </Table>
+        <EmptyState
+          variant="card"
+          icon={<GroupsIcon />}
+          title={Locale.label("groups.groupMembers.noMemTitle")}
+          description={Locale.label("groups.groupMembers.noMemDesc")}
+        />
       );
     }
+    return renderTable();
   };
+
+  const memberCount = groupMembers.data.length;
+  const leaderCount = groupMembers.data.filter((m) => m.leader).length;
+  const showCounts = !groupMembers.isLoading && memberCount > 0;
+
+  const closeComposer = () => {
+    setShow(false);
+    setMessage("");
+    setCount(0);
+    setShowTemplates(false);
+    setSelectedTemplate("");
+  };
+
+  const onSend = () => {
+    handleSend();
+    closeComposer();
+  };
+
+  const composer = show && (
+    <Paper
+      variant="outlined"
+      sx={{
+        p: 2.25,
+        mt: 0.5,
+        mb: 2.5,
+        borderRadius: 1.5,
+        borderColor: "divider",
+        bgcolor: "grey.50"
+      }}>
+      <Stack spacing={1.75}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography
+            variant="subtitle2"
+            sx={{ fontWeight: 600, color: "text.primary", letterSpacing: "0.01em" }}>
+            {Locale.label("groups.groupMembers.sendMemMsg")}
+          </Typography>
+          <IconButton
+            size="small"
+            onClick={closeComposer}
+            aria-label={Locale.label("common.close")}
+            sx={{ color: "text.secondary" }}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </Stack>
+
+        {showTemplates ? (
+          <FormControl size="small" sx={{ alignSelf: "flex-start", minWidth: 240 }}>
+            <InputLabel id="message_templates">{Locale.label("groups.groupMembers.templates.templates")}</InputLabel>
+            <Select
+              name="templates"
+              labelId="message_templates"
+              label={Locale.label("groups.groupMembers.templates.templates")}
+              value={selectedTemplate}
+              onChange={(e) => {
+                setSelectedTemplate(e.target.value);
+                handleTemplateMessage(e.target.value);
+              }}>
+              <MenuItem value="">{Locale.label("groups.groupMembers.templates.none")}</MenuItem>
+              <MenuItem value="welcome_volunteers">{Locale.label("groups.groupMembers.templates.welcome_volunteers.heading")}</MenuItem>
+            </Select>
+          </FormControl>
+        ) : (
+          <Button
+            size="small"
+            variant="text"
+            startIcon={<AutoAwesomeIcon sx={{ fontSize: 16 }} />}
+            onClick={() => setShowTemplates(true)}
+            sx={{
+              alignSelf: "flex-start",
+              textTransform: "none",
+              fontWeight: 500,
+              color: "text.secondary",
+              px: 1,
+              py: 0.25,
+              "&:hover": { bgcolor: "action.hover", color: "primary.main" }
+            }}>
+            {Locale.label("groups.groupMembers.showTemplates")}
+          </Button>
+        )}
+
+        <TextField
+          fullWidth
+          multiline
+          minRows={3}
+          maxRows={8}
+          placeholder={Locale.label("groups.groupMembers.messagePlaceholder")}
+          value={message}
+          onChange={(e) => {
+            setCount(e.target.value.length);
+            setMessage(e.target.value);
+          }}
+          helperText={
+            selectedTemplate ? " " : (
+              <Box
+                component="span"
+                sx={{
+                  display: "block",
+                  textAlign: "right",
+                  fontVariantNumeric: "tabular-nums",
+                  color: count >= 140 ? "warning.main" : count >= 120 ? "warning.dark" : "text.disabled",
+                  fontWeight: count >= 120 ? 600 : 400
+                }}>
+                {count} / 140
+              </Box>
+            )
+          }
+          slotProps={{
+            htmlInput: { maxLength: selectedTemplate ? undefined : 140 },
+            formHelperText: { component: "div", sx: { m: 0, mt: 0.5 } }
+          }}
+          sx={{
+            "& .MuiOutlinedInput-root": { bgcolor: "background.paper" }
+          }}
+        />
+
+        <Stack direction="row" spacing={1} justifyContent="flex-end">
+          <Button
+            size="small"
+            variant="text"
+            onClick={closeComposer}
+            sx={{ textTransform: "none", color: "text.secondary" }}>
+            {Locale.label("common.cancel")}
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            disableElevation
+            endIcon={<SendIcon fontSize="small" />}
+            disabled={!message.trim()}
+            onClick={onSend}
+            sx={{ textTransform: "none", fontWeight: 600, px: 2 }}>
+            {Locale.label("groups.groupMembers.send")}
+          </Button>
+        </Stack>
+      </Stack>
+    </Paper>
+  );
 
   return (
     <DisplayBox id="groupMembersBox" data-cy="group-members-tab" headerText={Locale.label("groups.groupMembers.groupMem")} headerIcon="group" editContent={getEditContent()} help="docs/b1-admin/groups/">
-      {show === true && (
-        <div style={{ marginTop: "18px", marginBottom: "18px" }}>
-          {showTemplates === true ? (
-            <FormControl fullWidth>
-              <InputLabel id="message_templates">{Locale.label("groups.groupMembers.templates.templates")}</InputLabel>
-              <Select
-                name="templates"
-                labelId="message_templates"
-                label={Locale.label("groups.groupMembers.templates.templates")}
-                value={selectedTemplate}
-                onChange={(e) => {
-                  setSelectedTemplate(e.target.value);
-                  handleTemplateMessage(e.target.value);
-                }}>
-                <MenuItem value="">{Locale.label("groups.groupMembers.templates.none")}</MenuItem>
-                <MenuItem value="welcome_volunteers">{Locale.label("groups.groupMembers.templates.welcome_volunteers.heading")}</MenuItem>
-              </Select>
-            </FormControl>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setShowTemplates(!showTemplates)}
-              style={{ paddingLeft: "5px", background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-              {Locale.label("groups.groupMembers.showTemplates")}
-            </button>
+      {showCounts && (
+        <Stack
+          direction="row"
+          spacing={1.25}
+          alignItems="center"
+          sx={{ mt: -0.5, mb: 2, color: "text.secondary" }}>
+          <Typography variant="body2" sx={{ fontVariantNumeric: "tabular-nums" }}>
+            <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{memberCount}</Box>{" "}
+            {Locale.label(memberCount === 1 ? "groups.groupMembers.member" : "groups.groupMembers.members")}
+          </Typography>
+          {leaderCount > 0 && (
+            <>
+              <Box sx={{ width: 3, height: 3, borderRadius: "50%", bgcolor: "text.disabled" }} />
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <StarIcon sx={{ fontSize: 14, color: "warning.main" }} />
+                <Typography variant="body2" sx={{ fontVariantNumeric: "tabular-nums" }}>
+                  <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{leaderCount}</Box>{" "}
+                  {Locale.label(leaderCount === 1 ? "groups.groupMembers.leaderLower" : "groups.groupMembers.leadersLower")}
+                </Typography>
+              </Stack>
+            </>
           )}
-          <TextField
-            fullWidth
-            multiline
-            helperText={selectedTemplate ? "" : count + "/140"}
-            inputProps={{ maxLength: selectedTemplate ? null : 140 }}
-            value={message}
-            onChange={(e) => {
-              setCount(e.target.value.length);
-              setMessage(e.target.value);
-            }}
-            sx={{ margin: 0, marginTop: 1 }}
-          />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              alignItems: "center",
-              marginTop: "15px"
-            }}>
-            <Button
-              size="small"
-              variant="contained"
-              endIcon={<SendIcon fontSize="small" />}
-              onClick={() => {
-                handleSend();
-                setShow(false);
-                setMessage("");
-                setShowTemplates(false);
-                setSelectedTemplate("");
-              }}>
-              {Locale.label("groups.groupMembers.send")}
-            </Button>
-          </div>
-        </div>
+        </Stack>
       )}
+      {composer}
       {getTable()}
       {showInviteDialog && props.addedPerson && (
         <SendInviteDialog
