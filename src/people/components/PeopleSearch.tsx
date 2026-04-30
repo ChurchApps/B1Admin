@@ -9,6 +9,7 @@ import { Search as SearchIcon } from "@mui/icons-material";
 interface Props {
   updateSearchResults: (people: PersonInterface[]) => void;
   updatedFunction?: () => void;
+  resetSearchResults?: () => void;
 }
 
 export function PeopleSearch(props: Props) {
@@ -28,6 +29,8 @@ export function PeopleSearch(props: Props) {
       ApiHelper.post("/people/advancedSearch", [condition], "MembershipApi").then((data) => {
         props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
+    } else {
+      props.resetSearchResults?.();
     }
   }, [props]);
 
