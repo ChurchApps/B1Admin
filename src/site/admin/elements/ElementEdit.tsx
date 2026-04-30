@@ -186,6 +186,44 @@ export function ElementEdit(props: Props) {
     <StylesAnimations fields={fields} styles={parsedStyles} onStylesChange={handleStyleChange} animations={parsedAnimations} onAnimationsChange={handleAnimationChange} />
   );
 
+  const getRichTextEditor = (field: string) => (
+    <Box
+      sx={{
+        mt: 2,
+        "& .editor-container": {
+          border: "1px solid #e5e7eb",
+          borderRadius: 1,
+          overflow: "hidden",
+          backgroundColor: "#fff"
+        },
+        "& .toolbar": {
+          p: 1,
+          gap: 0.5,
+          alignItems: "center"
+        },
+        "& .editor-inner": {
+          minHeight: 260
+        },
+        "& .editor-scroller": {
+          minHeight: 180,
+          maxHeight: 320,
+          overflowY: "auto"
+        },
+        "& .editor-input": {
+          minHeight: 180,
+          padding: "12px"
+        }
+      }}
+    >
+      <HtmlEditor
+        value={parsedData[field] || ""}
+        onChange={(val) => {
+          handleHtmlChange(field, val);
+        }}
+      />
+    </Box>
+  );
+
   const getBoxFields = () => (
     <>
       <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.rounded === "true" ? true : false} />} name="rounded" label={Locale.label("site.elements.roundedCorners")} />
@@ -208,15 +246,7 @@ export function ElementEdit(props: Props) {
   const getTextFields = () => (
     <>
       {getTextAlignment("textAlignment")}
-      <Box sx={{ marginTop: 2 }}>
-        <HtmlEditor
-          value={parsedData.text || ""}
-          onChange={(val) => {
-            handleHtmlChange("text", val);
-          }}
-          style={{ maxHeight: 200, overflowY: "scroll" }}
-        />
-      </Box>
+      {getRichTextEditor("text")}
       {getAppearanceFields(["font", "color", "line", "margin", "padding", "text"])}
     </>
   );
@@ -270,15 +300,7 @@ export function ElementEdit(props: Props) {
         </Select>
       </FormControl>
       {getTextAlignment("textAlignment")}
-      <Box sx={{ marginTop: 2 }}>
-        <HtmlEditor
-          value={parsedData.text || ""}
-          onChange={(val) => {
-            handleHtmlChange("text", val);
-          }}
-          style={{ maxHeight: 200, overflowY: "scroll" }}
-        />
-      </Box>
+      {getRichTextEditor("text")}
       {getAppearanceFields([
         "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
       ])}
@@ -312,15 +334,7 @@ export function ElementEdit(props: Props) {
       {getTextAlignment("titleAlignment", Locale.label("site.elements.titleAlignment"))}
       <TextField fullWidth size="small" label={Locale.label("site.elements.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.element.cardTitle")} />
       {getTextAlignment("textAlignment")}
-      <Box sx={{ marginTop: 2 }}>
-        <HtmlEditor
-          value={parsedData.text || ""}
-          onChange={(val) => {
-            handleHtmlChange("text", val);
-          }}
-          style={{ maxHeight: 200, overflowY: "scroll" }}
-        />
-      </Box>
+      {getRichTextEditor("text")}
       {getAppearanceFields([
         "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
       ])}

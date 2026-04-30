@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
 
 export const PeoplePage = memo(() => {
-  const [searchResults, setSearchResults] = React.useState(null);
+  const [searchResults, setSearchResults] = React.useState<PersonInterface[] | null>(null);
   const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
@@ -72,6 +72,11 @@ export const PeoplePage = memo(() => {
     if (!recentPeople.data) return [];
     return recentPeople.data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d));
   }, [recentPeople.data]);
+
+  const resetSearchResults = useCallback(() => {
+    setSearchResults(expandedRecentPeople);
+    setIsSearchPerformed(false);
+  }, [expandedRecentPeople]);
 
   React.useEffect(() => {
     if (recentPeople.data && !isSearchPerformed) {
@@ -161,6 +166,7 @@ export const PeoplePage = memo(() => {
                 setSearchResults(people);
                 setIsSearchPerformed(true);
               }}
+              resetSearchResults={resetSearchResults}
               updatedFunction={refetch}
             />
             <AISearch
@@ -189,7 +195,13 @@ export const PeoplePage = memo(() => {
                 </Stack>
               </Box>
               <Box>
-                <PeopleSearchResults people={searchResults} columns={columns} selectedColumns={selectedColumns} updateSearchResults={(people) => setSearchResults(people)} updatedFunction={refetch} />
+                <PeopleSearchResults
+                  people={searchResults}
+                  columns={columns}
+                  selectedColumns={selectedColumns}
+                  updateSearchResults={(people) => setSearchResults(people)}
+                  updatedFunction={refetch}
+                />
               </Box>
             </Card>
           </Grid>
