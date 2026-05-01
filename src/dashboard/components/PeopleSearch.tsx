@@ -1,16 +1,22 @@
 import React from "react";
-import { Button, FormControl, InputLabel, OutlinedInput, Card, CardContent, Typography, Box, Stack } from "@mui/material";
-import { Person as PersonIcon, Search as SearchIcon } from "@mui/icons-material";
+import { Button, FormControl, InputLabel, OutlinedInput, Typography, Box, Stack } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { B1AdminPersonHelper } from "../../helpers";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
 import type { PersonInterface, SearchCondition } from "@churchapps/helpers";
 import { PeopleSearchResults } from "../../people/components";
+import { SectionHeading } from "../../components/ui/SectionHeading";
 import { useQuery } from "@tanstack/react-query";
+
+const SELECTED_COLUMNS = ["photo", "displayName"];
 
 export const PeopleSearch = () => {
   const [searchText, setSearchText] = React.useState("");
   const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
-  const selectedColumns = ["photo", "displayName"];
+  const columns = [
+    { key: "photo", label: Locale.label("dashboard.peopleSearch.photo"), shortName: "" },
+    { key: "displayName", label: Locale.label("dashboard.peopleSearch.display"), shortName: Locale.label("common.name") }
+  ];
 
   const searchResults = useQuery<PersonInterface[]>({
     queryKey: ["/people/advancedSearch", "MembershipApi", searchTerm],
@@ -24,115 +30,61 @@ export const PeopleSearch = () => {
     }
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
-
-  const handleSubmit = (e: React.MouseEvent) => {
-    if (e !== null) e.preventDefault();
+  const handleSubmit = () => {
     const term = searchText.trim();
     if (!term) return;
     setSearchTerm(term);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSubmit(e as any);
-    }
-  };
-
-  const columns = [
-    { key: "photo", label: Locale.label("dashboard.peopleSearch.photo"), shortName: "" },
-    { key: "displayName", label: Locale.label("dashboard.peopleSearch.display"), shortName: Locale.label("common.name") }
-  ];
+  const hasResults = searchResults.data && searchResults.data.length > 0;
+  const hasNoResults = searchResults.data && searchResults.data.length === 0 && searchTerm && !searchResults.isLoading;
 
   return (
-    <Card
-      elevation={2}
-      sx={{
-        borderRadius: 2,
-        border: "1px solid",
-        borderColor: "divider"
-      }}>
-      <CardContent>
-        {/* Header */}
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
-          <PersonIcon
-            sx={{
-              color: "primary.main",
-              fontSize: 24
-            }}
-          />
-          <Typography
-            variant="h6"
-            component="h2"
-            sx={{
-              fontWeight: 600,
-              color: "text.primary"
-            }}>
-            {Locale.label("dashboard.peopleSearch.ppl")}
-          </Typography>
-        </Stack>
+    <Box>
+      <SectionHeading title={Locale.label("dashboard.peopleSearch.ppl")} />
+      <FormControl fullWidth variant="outlined" margin="none">
+        <InputLabel htmlFor="searchText">{Locale.label("common.name")}</InputLabel>
+        <OutlinedInput
+          id="searchText"
+          aria-label={Locale.label("dashboard.peopleSearch.ariaSearchBox")}
+          name="searchText"
+          type="text"
+          label={Locale.label("common.name")}
+          value={searchText}
+          onChange={(e) => setSearchText(e.currentTarget.value)}
+          onKeyPress={(e) => { if (e.key === "Enter") handleSubmit(); }}
+          data-testid="dashboard-people-search-input"
+          endAdornment={
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              data-testid="dashboard-search-button"
+              aria-label={Locale.label("dashboard.peopleSearch.ariaSearch")}
+              disabled={searchResults.isLoading || !searchText.trim()}
+              startIcon={<SearchIcon />}
+              sx={{ ml: 1, fontWeight: 600 }}
+            >
+              {searchResults.isLoading ? Locale.label("common.searching") || "Searching..." : Locale.label("common.search")}
+            </Button>
+          }
+        />
+      </FormControl>
 
-        {/* Search Form */}
-        <Box sx={{ mb: 3 }}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="searchText">{Locale.label("common.name")}</InputLabel>
-            <OutlinedInput
-              id="searchText"
-              aria-label={Locale.label("dashboard.peopleSearch.ariaSearchBox")}
-              name="searchText"
-              type="text"
-              label={Locale.label("common.name")}
-              value={searchText}
-              onChange={handleChange}
-              onKeyPress={handleKeyPress}
-              data-testid="dashboard-people-search-input"
-              endAdornment={
-                <Button
-                  variant="contained"
-                  onClick={handleSubmit}
-                  data-testid="dashboard-search-button"
-                  aria-label={Locale.label("dashboard.peopleSearch.ariaSearch")}
-                  disabled={searchResults.isLoading || !searchText.trim()}
-                  startIcon={<SearchIcon />}
-                  sx={{
-                    ml: 1,
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      transform: "translateY(-1px)",
-                      boxShadow: 2
-                    }
-                  }}>
-                  {searchResults.isLoading ? Locale.label("common.searching") || "Searching..." : Locale.label("common.search")}
-                </Button>
-              }
-            />
-          </FormControl>
+      {searchResults.isLoading && searchTerm && (
+        <Box sx={{ mt: 2 }}><Loading /></Box>
+      )}
+
+      {hasResults && (
+        <Box sx={{ mt: 2 }}>
+          <PeopleSearchResults people={searchResults.data} columns={columns} selectedColumns={SELECTED_COLUMNS} />
         </Box>
+      )}
 
-        {/* Search Results */}
-        {searchResults.isLoading && searchTerm && (
-          <Box sx={{ mt: 2 }}>
-            <Loading />
-          </Box>
-        )}
-
-        {searchResults.data && searchResults.data.length > 0 && (
-          <Box sx={{ mt: 2 }}>
-            <PeopleSearchResults people={searchResults.data} columns={columns} selectedColumns={selectedColumns} />
-          </Box>
-        )}
-
-        {searchResults.data && searchResults.data.length === 0 && searchTerm && !searchResults.isLoading && (
-          <Box
-            sx={{
-              textAlign: "center",
-              py: 3,
-              color: "text.secondary"
-            }}>
-            <Typography variant="body2">{Locale.label("dashboard.peopleSearch.noResults")}</Typography>
-          </Box>
-        )}
-      </CardContent>
-    </Card>
+      {hasNoResults && (
+        <Box sx={{ textAlign: "center", py: 3, color: "text.secondary" }}>
+          <Typography variant="body2">{Locale.label("dashboard.peopleSearch.noResults")}</Typography>
+        </Box>
+      )}
+    </Box>
   );
 };

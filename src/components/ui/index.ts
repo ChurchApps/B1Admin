@@ -8,3 +8,4 @@ export { NavigationTabs } from "./NavigationTabs";
 export type { NavigationTab, NavigationDropdown } from "./NavigationTabs";
 export { Breadcrumbs } from "./Breadcrumbs";
 export type { BreadcrumbItem } from "./Breadcrumbs";
+export { SectionHeading } from "./SectionHeading";

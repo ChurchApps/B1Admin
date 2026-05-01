@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Divider } from "@mui/material";
+import { Grid, Typography, Stack, Box, Chip, Button, Divider } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
+import { SectionHeading } from "../../../components/ui/SectionHeading";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
-import { ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { NewTask } from "./";
 import UserContext from "../../../UserContext";
@@ -31,7 +32,6 @@ export const TaskList = memo((props: Props) => {
   const [showAdd, setShowAdd] = React.useState(false);
   const context = React.useContext(UserContext);
 
-  // React Query hooks for data fetching
   const tasks = useQuery<TaskInterface[]>({
     queryKey: props.status === Locale.label("tasks.taskPage.closed") ? ["/tasks/closed", "DoingApi"] : ["/tasks", "DoingApi"],
     placeholderData: []
@@ -54,11 +54,7 @@ export const TaskList = memo((props: Props) => {
     queryKey: ["/tasks/loadForGroups", "DoingApi", groupIds, props.status],
     enabled: groupIds.length > 0,
     placeholderData: [],
-    queryFn: async () => {
-      if (groupIds.length === 0) return [];
-      const { ApiHelper } = await import("@churchapps/apphelper");
-      return ApiHelper.post("/tasks/loadForGroups", { groupIds, status: props.status }, "DoingApi");
-    }
+    queryFn: () => ApiHelper.post("/tasks/loadForGroups", { groupIds, status: props.status }, "DoingApi")
   });
 
   const editContent = (
@@ -69,16 +65,11 @@ export const TaskList = memo((props: Props) => {
       onClick={() => setShowAdd(true)}
       data-testid="add-task-button"
       aria-label={Locale.label("tasks.taskList.addTaskAria")}
-      sx={{
-        borderRadius: 2,
-        textTransform: "none",
-        fontWeight: 600
-      }}>
+      sx={{ fontWeight: 600 }}>
       {Locale.label("tasks.taskList.addTask")}
     </Button>
   );
 
-  // Refetch function for all queries
   const refetch = useCallback(() => {
     tasks.refetch();
     groupMembers.refetch();
@@ -104,7 +95,6 @@ export const TaskList = memo((props: Props) => {
           "&:last-child": { mb: 0 }
         }}>
         <Stack spacing={2}>
-          {/* Task Header */}
           <Box
             sx={{
               display: "flex",
@@ -150,7 +140,6 @@ export const TaskList = memo((props: Props) => {
             />
           </Box>
 
-          {/* Task Details */}
           {!props.compact && (
             <>
               <Divider />
@@ -189,82 +178,54 @@ export const TaskList = memo((props: Props) => {
 
   const getSectionHeader = useCallback(
     (title: string, icon: React.ReactNode, count: number) => (
-      <Box sx={{ mb: 2 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          {icon}
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-            {title}
-          </Typography>
-          <Chip label={count} size="small" color="primary" sx={{ fontWeight: 600, fontSize: "0.75rem" }} />
-        </Stack>
-      </Box>
+      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1.5 }}>
+        {icon}
+        <Typography variant="subtitle2" sx={{ fontWeight: 600, color: "text.primary" }}>
+          {title}
+        </Typography>
+        <Chip label={count} size="small" color="primary" sx={{ fontWeight: 600, fontSize: "0.75rem" }} />
+      </Stack>
     ),
     []
   );
 
-  const assignedToMyGroups = useMemo(() => {
-    if (groupMembers.data?.length > 0) {
-      const memberGroupIds = ArrayHelper.getIds(groupMembers.data, "groupId");
-      return groupTasks.data?.length > 0 ? ArrayHelper.getAllArray(groupTasks.data, "assignedToId", memberGroupIds) : [];
-    }
-    return [];
-  }, [groupMembers.data, groupTasks.data]);
+  const sections = useMemo(() => {
+    const assignedToMe = tasks.data?.length > 0 ? ArrayHelper.getAll(tasks.data, "assignedToId", context.person?.id) : [];
+    const createdByMe = tasks.data?.length > 0 ? ArrayHelper.getAll(tasks.data, "createdById", context.person?.id) : [];
+    const assignedToMyGroups = groupIds.length > 0 && groupTasks.data?.length > 0
+      ? ArrayHelper.getAllArray(groupTasks.data, "assignedToId", groupIds)
+      : [];
+    const sectionIcon = { fontSize: "small" as const, sx: { color: "text.secondary" } };
+    return [
+      { key: "assignMe", label: Locale.label("tasks.taskList.assignMe"), icon: <AssignedIcon {...sectionIcon} />, items: assignedToMe },
+      { key: "assignGroup", label: Locale.label("tasks.taskList.assignGroup"), icon: <GroupIcon {...sectionIcon} />, items: assignedToMyGroups },
+      { key: "reqMe", label: Locale.label("tasks.taskList.reqMe"), icon: <CreatedIcon {...sectionIcon} />, items: createdByMe }
+    ];
+  }, [tasks.data, groupTasks.data, groupIds, context.person?.id]);
 
-  const assignedToMe = useMemo(() => {
-    return tasks.data?.length > 0 ? ArrayHelper.getAll(tasks.data, "assignedToId", context.person?.id) : [];
-  }, [tasks.data, context.person?.id]);
+  const hasAnyTasks = sections.some((s) => s.items.length > 0);
 
-  const createdByMe = useMemo(() => {
-    return tasks.data?.length > 0 ? ArrayHelper.getAll(tasks.data, "createdById", context.person?.id) : [];
-  }, [tasks.data, context.person?.id]);
+  const toggle = props.onStatusChange && (props.status === "Open"
+    ? { next: "Closed", icon: <ClosedTasksIcon />, label: Locale.label("tasks.tasksPage.showClosed"), aria: Locale.label("tasks.taskList.showClosedTasksAria"), testId: "show-closed-tasks-button" }
+    : { next: "Open", icon: <OpenTasksIcon />, label: Locale.label("tasks.tasksPage.showOpen"), aria: Locale.label("tasks.taskList.showOpenTasksAria"), testId: "show-open-tasks-button" });
 
-  const getAssignedToMyGroups = () => {
-    if (assignedToMyGroups.length === 0) return null;
-    return (
-      <Box sx={{ mb: 4 }}>
-        {getSectionHeader(Locale.label("tasks.taskList.assignGroup"), <GroupIcon />, assignedToMyGroups.length)}
-        <Stack spacing={2}>{assignedToMyGroups.map((t) => getTask(t))}</Stack>
-      </Box>
-    );
-  };
-
-  const getAssignedToMe = () => {
-    if (assignedToMe.length === 0) return null;
-    return (
-      <Box sx={{ mb: 4 }}>
-        {getSectionHeader(Locale.label("tasks.taskList.assignMe"), <AssignedIcon />, assignedToMe.length)}
-        <Stack spacing={2}>{assignedToMe.map((t) => getTask(t))}</Stack>
-      </Box>
-    );
-  };
-
-  const getCreatedByMe = () => {
-    if (createdByMe.length === 0) return null;
-    return (
-      <Box sx={{ mb: 4 }}>
-        {getSectionHeader(Locale.label("tasks.taskList.reqMe"), <CreatedIcon />, createdByMe.length)}
-        <Stack spacing={2}>{createdByMe.map((t) => getTask(t))}</Stack>
-      </Box>
-    );
-  };
-
-  const hasAnyTasks = assignedToMe.length > 0 || assignedToMyGroups.length > 0 || createdByMe.length > 0;
-
-  // Show loading state if any query is loading
-  if (tasks.isLoading || groupMembers.isLoading) {
-    return (
-      <Card
-        sx={{
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider"
-        }}>
-        <CardContent>
-          <Loading />
-        </CardContent>
-      </Card>
-    );
-  }
+  const headerAction = (
+    <Stack direction="row" spacing={1} alignItems="center">
+      {toggle && (
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={toggle.icon}
+          onClick={() => props.onStatusChange(toggle.next)}
+          data-testid={toggle.testId}
+          aria-label={toggle.aria}
+          sx={{ fontWeight: 600 }}>
+          {toggle.label}
+        </Button>
+      )}
+      {editContent}
+    </Stack>
+  );
 
   return (
     <>
@@ -281,68 +242,24 @@ export const TaskList = memo((props: Props) => {
         />
       )}
 
-      <Card
-        sx={{
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider"
-        }}>
-        <CardContent>
-          {/* Header */}
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <TaskIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                {Locale.label("tasks.taskList.tasks")}
-              </Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              {props.onStatusChange &&
-                (props.status === "Open" ? (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<ClosedTasksIcon />}
-                    onClick={() => props.onStatusChange("Closed")}
-                    data-testid="show-closed-tasks-button"
-                    aria-label={Locale.label("tasks.taskList.showClosedTasksAria")}
-                    sx={{
-                      textTransform: "none",
-                      fontWeight: 600
-                    }}>
-                    {Locale.label("tasks.tasksPage.showClosed")}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    startIcon={<OpenTasksIcon />}
-                    onClick={() => props.onStatusChange("Open")}
-                    data-testid="show-open-tasks-button"
-                    aria-label={Locale.label("tasks.taskList.showOpenTasksAria")}
-                    sx={{
-                      textTransform: "none",
-                      fontWeight: 600
-                    }}>
-                    {Locale.label("tasks.tasksPage.showOpen")}
-                  </Button>
-                ))}
-              {editContent}
-            </Stack>
-          </Stack>
+      <Box>
+        <SectionHeading title={Locale.label("tasks.taskList.tasks")} action={headerAction} />
 
-          {/* Content */}
-          {hasAnyTasks ? (
-            <Stack spacing={4}>
-              {getAssignedToMe()}
-              {getAssignedToMyGroups()}
-              {getCreatedByMe()}
-            </Stack>
-          ) : (
-            <EmptyState icon={<TaskIcon />} title={Locale.label("tasks.taskList.noTasks")} />
-          )}
-        </CardContent>
-      </Card>
+        {tasks.isLoading || groupMembers.isLoading ? (
+          <Loading />
+        ) : hasAnyTasks ? (
+          <Stack spacing={4}>
+            {sections.filter((s) => s.items.length > 0).map((s) => (
+              <Box key={s.key}>
+                {getSectionHeader(s.label, s.icon, s.items.length)}
+                <Stack spacing={2}>{s.items.map((t) => getTask(t))}</Stack>
+              </Box>
+            ))}
+          </Stack>
+        ) : (
+          <EmptyState icon={<TaskIcon />} title={Locale.label("tasks.taskList.noTasks")} />
+        )}
+      </Box>
     </>
   );
 });

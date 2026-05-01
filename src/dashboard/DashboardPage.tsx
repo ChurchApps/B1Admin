@@ -10,10 +10,10 @@ import { GRID_SIZES } from "../components/ui/layoutPresets";
 export const DashboardPage = () => (
   <>
     <PageHeader title={Locale.label("components.wrapper.dash")} />
-    <PageContainer>
-      <Grid container spacing={3}>
+    <PageContainer py={4}>
+      <Grid container spacing={4}>
         <Grid size={GRID_SIZES.mainContent}>
-          <Stack spacing={3}>
+          <Stack spacing={4}>
             <PeopleSearch />
             <Groups personId={UserHelper.person?.id} title={Locale.label("dashboard.myGroups")} />
           </Stack>

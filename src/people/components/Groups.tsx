@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Box, Card, CardContent, Typography, Stack, Chip, ListItem, ListItemIcon, ListItemText, ListItemButton, Avatar } from "@mui/material";
 import { Group as GroupIcon, Groups as GroupsIcon, SupervisorAccount as LeaderIcon } from "@mui/icons-material";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { SectionHeading } from "../../components/ui/SectionHeading";
 
 interface Props {
   personId: string;
@@ -19,7 +20,7 @@ export const Groups: React.FC<Props> = memo((props) => {
     placeholderData: []
   });
 
-  const recordsContent = useMemo(() => {
+  const body = useMemo(() => {
     if (groupMembers.isLoading) return <Loading size="sm" />;
 
     if (!groupMembers.data || groupMembers.data.length === 0) {
@@ -27,25 +28,20 @@ export const Groups: React.FC<Props> = memo((props) => {
     }
 
     return (
-      <Box
-        sx={{
-          "& .MuiCard-root": {
-            borderRadius: 2,
-            border: "1px solid",
-            borderColor: "divider"
-          }
-        }}>
-        <Stack spacing={2}>
-          {groupMembers.data.map((gm) => (
-            <Card
-              key={gm.id}
-              sx={{
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  transform: "translateY(-1px)",
-                  boxShadow: 2
-                }
-              }}>
+      <Stack spacing={2}>
+        {groupMembers.data.map((gm) => (
+          <Card
+            key={gm.id}
+            sx={{
+              borderRadius: 2,
+              border: "1px solid",
+              borderColor: "divider",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                transform: "translateY(-1px)",
+                boxShadow: 2
+              }
+            }}>
               <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
                 <ListItem sx={{ px: 0, py: 0 }}>
                   <ListItemButton
@@ -58,26 +54,9 @@ export const Groups: React.FC<Props> = memo((props) => {
                       "&:hover": { backgroundColor: "action.hover" }
                     }}>
                     <ListItemIcon sx={{ minWidth: 56 }}>
-                      {gm.group?.photoUrl ? (
-                        <Avatar
-                          src={gm.group.photoUrl}
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            bgcolor: "primary.light"
-                          }}>
-                          <GroupIcon sx={{ color: "primary.main" }} />
-                        </Avatar>
-                      ) : (
-                        <Avatar
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            bgcolor: "primary.light"
-                          }}>
-                          <GroupIcon sx={{ color: "primary.main" }} />
-                        </Avatar>
-                      )}
+                      <Avatar src={gm.group?.photoUrl} sx={{ width: 40, height: 40, bgcolor: "primary.light" }}>
+                        <GroupIcon sx={{ color: "primary.main" }} />
+                      </Avatar>
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -94,7 +73,6 @@ export const Groups: React.FC<Props> = memo((props) => {
                       secondary={
                         <Box sx={{ mt: 1 }}>
                           <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {/* Group Type/Category if available */}
                             {gm.group?.categoryName && (
                               <Chip
                                 label={gm.group.categoryName}
@@ -107,7 +85,6 @@ export const Groups: React.FC<Props> = memo((props) => {
                                 }}
                               />
                             )}
-                            {/* Leader indicator */}
                             {gm.leader && (
                               <Chip
                                 icon={<LeaderIcon />}
@@ -133,11 +110,17 @@ export const Groups: React.FC<Props> = memo((props) => {
                 </ListItem>
               </CardContent>
             </Card>
-          ))}
-        </Stack>
-      </Box>
+        ))}
+      </Stack>
     );
   }, [groupMembers.isLoading, groupMembers.data]);
 
-  return recordsContent;
+  if (!props.title) return body;
+
+  return (
+    <Box>
+      <SectionHeading title={props.title} />
+      {body}
+    </Box>
+  );
 });

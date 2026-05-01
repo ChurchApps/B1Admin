@@ -8,6 +8,7 @@ import { QuickSetupModal, type WizardType } from "./QuickSetupModal";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 import { useNavigate } from "react-router-dom";
 import { PageContainer } from "../../components/ui/PageContainer";
+import { SectionHeading } from "../../components/ui/SectionHeading";
 import { GRID_SIZES } from "../../components/ui/layoutPresets";
 
 type AdminCard =
@@ -83,20 +84,7 @@ export const AdminWelcome: React.FC = () => {
         <Stack spacing={4}>
           {sections.map((section) => (
             <Box key={section.heading}>
-              <Typography
-                variant="overline"
-                sx={(theme) => ({
-                  display: "block",
-                  color: theme.palette.primary.main,
-                  fontWeight: 700,
-                  letterSpacing: 1,
-                  mb: 1.5,
-                  borderBottom: `1px solid ${theme.palette.divider}`,
-                  pb: 1
-                })}
-              >
-                {section.heading}
-              </Typography>
+              <SectionHeading title={section.heading} />
               <Grid container spacing={2}>
                 {section.cards.map((card) => (
                   <Grid key={card.title} size={GRID_SIZES.threeColumn}>
