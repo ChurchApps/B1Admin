@@ -1,6 +1,8 @@
 const DEFAULT_BASE_URL = "http://localhost:3101";
 const API_BASE = "http://localhost:8084";
-const REQUIRED_ENVIRONMENT = "demo";
+// Tests work against either ENVIRONMENT=demo (stage demo deployments) or
+// ENVIRONMENT=dev pointed at localhost — same set reset-demo accepts.
+const ALLOWED_ENVIRONMENTS = ["demo", "dev"];
 const REQUIRED_MODULES = ["membership", "attendance", "content", "giving", "messaging", "doing"];
 
 class VerifyEnvError extends Error {
@@ -54,10 +56,10 @@ async function checkApiHealth() {
       "The Api dev server should already be running (Playwright webServer starts it).",
     ]);
   }
-  if (health.environment !== REQUIRED_ENVIRONMENT) {
+  if (!ALLOWED_ENVIRONMENTS.includes(health.environment)) {
     refuse([
-      `Api reports environment="${health.environment}" but must be "${REQUIRED_ENVIRONMENT}".`,
-      "Set ENVIRONMENT=demo in Api/.env and restart the Api.",
+      `Api reports environment="${health.environment}" but must be one of: ${ALLOWED_ENVIRONMENTS.join(", ")}.`,
+      "Set ENVIRONMENT=demo or ENVIRONMENT=dev (against localhost) in Api/.env and restart the Api.",
     ]);
   }
 }

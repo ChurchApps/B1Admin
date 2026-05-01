@@ -262,7 +262,7 @@ export const Assignment = (props: Props) => {
               <Stack direction="row" alignItems="center" spacing={1}>
                 <AutoAssignIcon sx={{ color: "primary.main", fontSize: 28 }} />
                 <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-                  {Locale.label("plans.planPage.assign") || "Team Assignments"}
+                  {Locale.label("plans.planPage.assign") || "Serving Team Assignments"}
                 </Typography>
               </Stack>
               {getAddPositionActions()}

@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../../helpers";
 import { PlanList } from "../components/PlanList";
+import { PlanTypeGroups } from "../components/PlanTypeGroups";
 import { Breadcrumbs } from "../../components/ui";
 
 export const PlanTypePage = () => {
@@ -76,6 +77,9 @@ export const PlanTypePage = () => {
       {/* Content */}
       <Box sx={{ p: 3 }}>
         <PlanList key="plans" ministry={ministry.data} planTypeId={planType.data.id} />
+        <Box sx={{ mt: 4 }}>
+          <PlanTypeGroups planTypeId={planType.data.id!} />
+        </Box>
       </Box>
     </>
   );

@@ -359,7 +359,7 @@
       "set": "Settings",
       "songs": "Songs",
       "tasks": "Tasks",
-      "teams": "Teams"
+      "teams": "Serving Teams"
     }
   },
   "createPerson": {
@@ -1746,7 +1746,7 @@
       "noMinMsg": "No ministries found. Please create a ministry."
     },
     "ministryPage": {
-      "subtitle": "Organize ministry teams and service plans"
+      "subtitle": "Organize serving teams and service plans"
     },
     "planEdit": {
       "copyAll": "Positions and Assignments",
@@ -1807,7 +1807,7 @@
       "showPast": "Show Past"
     },
     "planPage": {
-      "assign": "Team Assignments",
+      "assign": "Serving Team Assignments",
       "assignments": "Assignments",
       "band": "Band",
       "loadingPlan": "Loading plan...",
@@ -1826,6 +1826,21 @@
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
       "planTypeName": "Plan Type Name"
+    },
+    "planTypeGroups": {
+      "heading": "Associated Groups",
+      "description": "Plans for this plan type will show up on the group's page in the B1App for the groups listed below.",
+      "addGroup": "Add Group",
+      "selectGroup": "Select a group",
+      "showsLabel": "Shows",
+      "noGroups": "No groups associated",
+      "noGroupsDescription": "Associate groups with this plan type so members see plans on their group's page in the B1App.",
+      "removeConfirm": "Remove this group association?",
+      "timeFilter": {
+        "past": "Past plans only",
+        "future": "Upcoming plans only",
+        "both": "Past and upcoming plans"
+      }
     },
     "planTypeList": {
       "addPlanType": "Add Plan Type",
@@ -1895,7 +1910,7 @@
       "ppl": "People",
       "pplNeed": " People Needed",
       "signupSuffix": "signup",
-      "team": "Team"
+      "team": "Serving Team"
     },
     "printPlan": {
       "length": "Length",
@@ -1942,13 +1957,13 @@
       "links": "Links"
     },
     "teamList": {
-      "createTeam": "Create Team",
-      "createTeams": "Create Teams",
+      "createTeam": "Create Serving Team",
+      "createTeams": "Create Serving Teams",
       "manage": "Manage",
       "members": "members",
-      "newTeam": "New Team",
-      "noTeam": "No teams found. Please create a team.",
-      "teams": "Teams"
+      "newTeam": "New Serving Team",
+      "noTeam": "No serving teams found. Please create a serving team.",
+      "teams": "Serving Teams"
     },
     "timeEdit": {
       "disName": "Display Name",
@@ -1958,9 +1973,9 @@
       "followGuide": "Follow the guide below to set up service times",
       "startReq": "Start time is required",
       "startTimeAria": "Start time",
-      "teamNeed": "Needed Teams",
-      "teamPrefix": "Team",
-      "teamReq": "Please Select Team(s).",
+      "teamNeed": "Needed Serving Teams",
+      "teamPrefix": "Serving Team",
+      "teamReq": "Please Select Serving Team(s).",
       "timeAdd": "Add a Time",
       "timeDisplayNameAria": "Time display name",
       "timeEdit": "Edit Time",
@@ -2471,7 +2486,7 @@
       "tabIconAlt": "Tab icon",
       "tabName": "Tab Name",
       "tabType": "Tab Type",
-      "team": "Team Members (serving teams)",
+      "team": "Serving Team Members",
       "url": "URL",
       "verseOfDay": "Verse of the Day",
       "visibility": "Visibility",

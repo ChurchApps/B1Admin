@@ -83,6 +83,15 @@ export interface PlanTypeInterface {
   name?: string;
 }
 
+export interface AssociatedGroupInterface {
+  id?: string;
+  churchId?: string;
+  contentType?: string;
+  contentId?: string;
+  groupId?: string;
+  settings?: string;
+}
+
 export interface PlanInterface {
   id?: string;
   churchId?: string;
