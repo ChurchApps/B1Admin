@@ -4,7 +4,7 @@ import { B1AdminPersonHelper } from ".";
 import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card, Checkbox } from "@mui/material";
 import { Email as EmailIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
@@ -13,6 +13,11 @@ interface Props {
   selectedColumns: string[];
   updateSearchResults?: (people: PersonInterface[]) => void;
   updatedFunction?: () => void;
+  canSelectPeople?: boolean;
+  selectedPersonIds?: string[];
+  togglePersonSelection?: (personId: string) => void;
+  toggleAllVisiblePeople?: () => void;
+  currentPersonId?: string;
 }
 
 const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
@@ -23,6 +28,10 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const [currentSortedCol, setCurrentSortedCol] = useState<string>("");
   const [optionalColumns, setOptionalColumns] = React.useState<any[]>([]);
   const [formSubmissions, setFormSubmissions] = React.useState<any[]>([]);
+  const selectedPersonIds = props.selectedPersonIds || [];
+  const visiblePersonIds = useMemo(() => people?.map((person) => person.id).filter((id): id is string => !!id && id !== props.currentPersonId) || [], [people, props.currentPersonId]);
+  const allVisibleSelected = visiblePersonIds.length > 0 && visiblePersonIds.every((id) => selectedPersonIds.includes(id));
+  const someVisibleSelected = visiblePersonIds.some((id) => selectedPersonIds.includes(id));
 
   const navigateToPersonCreate = useCallback(
     (person: PersonInterface) => {
@@ -301,19 +310,35 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
 
   const rows = useMemo(() => {
     return (
-      people?.map((p) => (
-        <TableRow
-          key={p.id}
-          sx={{
-            "&:hover": { backgroundColor: "rgba(128,128,128,0.1)" },
-            cursor: "pointer"
-          }}
-          onClick={() => navigate(`/people/${p.id}`)}>
-          {getColumns(p)}
-        </TableRow>
-      )) || []
+      people?.map((p) => {
+        const isCurrentUser = !!p.id && p.id === props.currentPersonId;
+        return (
+          <TableRow
+            key={p.id}
+            sx={{
+              "&:hover": { backgroundColor: "rgba(128,128,128,0.1)" },
+              cursor: "pointer"
+            }}
+            onClick={() => navigate(`/people/${p.id}`)}>
+            {props.canSelectPeople && (
+              <TableCell padding="checkbox">
+                <Checkbox
+                  checked={!!p.id && selectedPersonIds.includes(p.id)}
+                  disabled={isCurrentUser}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={() => {
+                    if (p.id) props.togglePersonSelection?.(p.id);
+                  }}
+                  inputProps={{ "aria-label": isCurrentUser ? `Cannot select ${p?.name?.display || "current user"}` : `Select ${p?.name?.display || "person"}` }}
+                />
+              </TableCell>
+            )}
+            {getColumns(p)}
+          </TableRow>
     );
-  }, [people, getColumns, navigate]);
+      }) || []
+    );
+  }, [people, getColumns, navigate, props.canSelectPeople, props.currentPersonId, props.togglePersonSelection, selectedPersonIds]);
 
   const getSortArrows = useCallback(
     (isActive: boolean) => (
@@ -349,6 +374,18 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
 
   const headers = useMemo(() => {
     const result: JSX.Element[] = [];
+    if (props.canSelectPeople) {
+      result.push(
+        <TableCell key="bulkSelect" padding="checkbox">
+          <Checkbox
+            checked={allVisibleSelected}
+            indeterminate={!allVisibleSelected && someVisibleSelected}
+            onChange={() => props.toggleAllVisiblePeople?.()}
+            slotProps={{ input: { "aria-label": "Select all visible people" } }}
+          />
+        </TableCell>
+      );
+    }
     columns.forEach((c) => {
       if (selectedColumns.indexOf(c.key) > -1) {
         const isSortable = c.key !== "photo" && c.key !== "deleteOption";
@@ -400,7 +437,18 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         <TableRow>{result}</TableRow>
       </TableHead>
     );
-  }, [columns, selectedColumns, optionalColumns, currentSortedCol, sortTableByKey, getSortArrows]);
+  }, [
+    allVisibleSelected,
+    columns,
+    currentSortedCol,
+    getSortArrows,
+    optionalColumns,
+    props.canSelectPeople,
+    props.toggleAllVisiblePeople,
+    selectedColumns,
+    someVisibleSelected,
+    sortTableByKey
+  ]);
 
   const getResults = () => {
     if (people.length === 0) {

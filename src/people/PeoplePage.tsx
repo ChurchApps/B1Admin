@@ -1,21 +1,36 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Permissions, UserHelper, type PersonInterface } from "@churchapps/helpers";
-import { Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { ExportLink } from "@churchapps/apphelper";
-import { Grid, Box, Typography, Card, Stack, Button } from "@mui/material";
+import { Grid, Box, Typography, Card, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
-import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon } from "@mui/icons-material";
+import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
+
+interface BulkDeleteResponse {
+  success: boolean;
+  deletedIds: string[];
+  count: number;
+}
 
 export const PeoplePage = memo(() => {
   const [searchResults, setSearchResults] = React.useState<PersonInterface[] | null>(null);
   const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
+  const [selectedPersonIds, setSelectedPersonIds] = React.useState<string[]>([]);
+  const [isBulkDeleting, setIsBulkDeleting] = React.useState(false);
+  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = React.useState(false);
+  const [toast, setToast] = React.useState<{ open: boolean; message: string; severity: "success" | "error" }>({
+    open: false,
+    message: "",
+    severity: "success"
+  });
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
+  const currentPersonId = UserHelper.currentUserChurch?.person?.id || "";
 
   const recentPeople = useQuery<PersonInterface[]>({
     queryKey: ["/people/recent", "MembershipApi"],
@@ -83,6 +98,62 @@ export const PeoplePage = memo(() => {
       setSearchResults(expandedRecentPeople);
     }
   }, [expandedRecentPeople, isSearchPerformed]);
+
+  React.useEffect(() => {
+    if (!searchResults) return;
+
+    const visibleIds = new Set(searchResults.map((person) => person.id).filter((id): id is string => !!id));
+    setSelectedPersonIds((current) => current.filter((id) => id !== currentPersonId && visibleIds.has(id)));
+  }, [currentPersonId, searchResults]);
+
+  const togglePersonSelection = useCallback((personId: string) => {
+    if (personId === currentPersonId) return;
+    setSelectedPersonIds((current) => (current.includes(personId) ? current.filter((id) => id !== personId) : [...current, personId]));
+  }, [currentPersonId]);
+
+  const toggleAllVisiblePeople = useCallback(() => {
+    if (!searchResults) return;
+
+    const visibleIds = searchResults.map((person) => person.id).filter((id): id is string => !!id && id !== currentPersonId);
+    if (visibleIds.length === 0) return;
+
+    setSelectedPersonIds((current) => {
+      const allVisibleSelected = visibleIds.every((id) => current.includes(id));
+      if (allVisibleSelected) return current.filter((id) => !visibleIds.includes(id));
+
+      const merged = new Set([...current, ...visibleIds]);
+      return Array.from(merged);
+    });
+  }, [currentPersonId, searchResults]);
+
+  const handleBulkDelete = useCallback(async () => {
+    if (selectedPersonIds.length === 0) return;
+
+    setIsBulkDeleting(true);
+    try {
+      const response = await ApiHelper.post("/people/bulk-delete", { personIds: selectedPersonIds }, "MembershipApi") as BulkDeleteResponse;
+      const deletedIds = response?.deletedIds || selectedPersonIds;
+      const deletedIdSet = new Set(deletedIds);
+
+      setSearchResults((current) => current?.filter((person) => !person.id || !deletedIdSet.has(person.id)) || []);
+      setSelectedPersonIds([]);
+      setShowBulkDeleteConfirm(false);
+      setToast({
+        open: true,
+        message: `${response?.count || deletedIds.length} people deleted successfully`,
+        severity: "success"
+      });
+      await recentPeople.refetch();
+    } catch (error) {
+      setToast({
+        open: true,
+        message: error instanceof Error ? error.message : "Unable to delete selected people",
+        severity: "error"
+      });
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  }, [recentPeople, selectedPersonIds]);
 
   return (
     <>
@@ -185,6 +256,17 @@ export const PeoplePage = memo(() => {
                     <Typography variant="h6">{isSearchPerformed ? Locale.label("people.peoplePage.searchResults") : Locale.label("people.peoplePage.recentPpl")}</Typography>
                   </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
+                    {canEdit && selectedPersonIds.length > 0 && (
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="error"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => setShowBulkDeleteConfirm(true)}
+                        disabled={isBulkDeleting}>
+                        Delete Selected
+                      </Button>
+                    )}
                     {searchResults && (
                       <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={searchResults} filename="people.csv" sx={{ mr: 1 }}>
                         {Locale.label("people.peoplePage.export")}
@@ -201,12 +283,40 @@ export const PeoplePage = memo(() => {
                   selectedColumns={selectedColumns}
                   updateSearchResults={(people) => setSearchResults(people)}
                   updatedFunction={refetch}
+                  canSelectPeople={canEdit}
+                  selectedPersonIds={selectedPersonIds}
+                  togglePersonSelection={togglePersonSelection}
+                  toggleAllVisiblePeople={toggleAllVisiblePeople}
+                  currentPersonId={currentPersonId}
                 />
               </Box>
             </Card>
           </Grid>
         </Grid>
       </Box>
-    </>
-  );
+
+      <Dialog open={showBulkDeleteConfirm} onClose={() => !isBulkDeleting && setShowBulkDeleteConfirm(false)} maxWidth="xs" fullWidth>
+        <DialogTitle>Delete Selected People</DialogTitle>
+        <DialogContent>
+          <Typography>
+            {`Are you sure you want to delete ${selectedPersonIds.length} selected people? This action cannot be undone.`}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowBulkDeleteConfirm(false)} variant="outlined" disabled={isBulkDeleting}>
+            {Locale.label("common.cancel") || "Cancel"}
+          </Button>
+          <Button onClick={handleBulkDelete} color="error" variant="contained" disabled={isBulkDeleting}>
+            {isBulkDeleting ? "Deleting..." : "Delete"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar open={toast.open} autoHideDuration={5000} onClose={() => setToast((current) => ({ ...current, open: false }))} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Alert severity={toast.severity} onClose={() => setToast((current) => ({ ...current, open: false }))} sx={{ width: "100%" }}>
+          {toast.message}
+        </Alert>
+      </Snackbar>
+</>
+);
 });

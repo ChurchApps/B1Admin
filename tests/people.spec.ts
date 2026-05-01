@@ -544,6 +544,52 @@ test.describe('People Management', () => {
       const results = page.locator('table tbody tr').filter({ hasText: 'Zacchaeus Disposable' });
       await expect(results).toHaveCount(0);
     });
+
+    test('should allow selecting multiple people for bulk delete', async ({ page }) => {
+      const suffix = Date.now().toString();
+      const sharedLastName = `BulkDelete${suffix}`;
+      const peopleToCreate = [
+        { first: 'Zacchaeus', last: sharedLastName, email: `bulk-delete-a-${suffix}@example.com` },
+        { first: 'Zebedee', last: sharedLastName, email: `bulk-delete-b-${suffix}@example.com` },
+      ];
+
+      for (const person of peopleToCreate) {
+        await navigateToPeople(page);
+        await page.locator('[name="first"]').fill(person.first);
+        await page.locator('[name="last"]').fill(person.last);
+        await page.locator('[name="email"]').fill(person.email);
+        await page.locator('[type="submit"]').click();
+        await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
+      }
+
+      await navigateToPeople(page);
+      const searchInput = page.locator('input[name="searchText"]');
+      await searchInput.fill(sharedLastName);
+      await page.waitForResponse(
+        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        { timeout: 10000 }
+      );
+
+      const matchingRows = page.locator('table tbody tr').filter({ hasText: sharedLastName });
+      await expect(matchingRows).toHaveCount(2, { timeout: 10000 });
+
+      for (const person of peopleToCreate) {
+        const row = page.locator('table tbody tr').filter({ hasText: `${person.first} ${sharedLastName}` }).first();
+        await expect(row).toBeVisible({ timeout: 10000 });
+        await row.getByRole('checkbox').check();
+      }
+
+      const bulkDeleteBtn = page.getByRole('button', { name: 'Delete Selected' });
+      await expect(bulkDeleteBtn).toBeVisible({ timeout: 10000 });
+      await bulkDeleteBtn.click();
+
+      const confirmDialog = page.getByRole('dialog').filter({ hasText: 'Delete Selected People' });
+      await expect(confirmDialog).toBeVisible({ timeout: 10000 });
+      await expect(confirmDialog.getByText('Are you sure you want to delete 2 selected people?')).toBeVisible({ timeout: 10000 });
+      await confirmDialog.getByRole('button', { name: 'Cancel' }).click();
+      await expect(confirmDialog).toHaveCount(0, { timeout: 10000 });
+      await expect(page.getByRole('button', { name: 'Delete Selected' })).toBeVisible({ timeout: 10000 });
+    });
   });
 
   // Edge-case extensions: targeted gaps from .notes/B1Admin-test-coverage-gaps.md §3 (people).
