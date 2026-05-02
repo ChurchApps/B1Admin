@@ -2392,6 +2392,7 @@
       "church": "Church",
       "churchName": "Church Name",
       "churches": "Churches",
+      "impersonateUser": "Impersonate User",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUserChurches": "This user has no churches associated with their account.",
@@ -2417,6 +2418,15 @@
     "churchesTab": {
       "churchNameSearchAria": "Church name search",
       "searchChurchesAria": "Search churches"
+    },
+    "impersonateTab": {
+      "confirmMessage": "You will be logged out of your own session and signed in as {email}. To return to your account, log out and back in.",
+      "confirmTitle": "Impersonate this user?",
+      "description": "Search for a user account by email and impersonate them. Your session will be replaced with theirs and you will go through the normal login flow.",
+      "impersonate": "Impersonate",
+      "searchAria": "Search users to impersonate",
+      "searchLabel": "User email",
+      "searchPlaceholder": "Search by login email"
     },
     "reportPage": {
       "adminOnly": "Admin Only",

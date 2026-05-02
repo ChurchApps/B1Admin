@@ -2,12 +2,13 @@ import React from "react";
 import { Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { Grid, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Card, CardContent } from "@mui/material";
-import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, PersonSearch as UserIcon, HealthAndSafety as HealthIcon } from "@mui/icons-material";
+import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, PersonSearch as UserIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
 import { ChurchesTab } from "./components/ChurchesTab";
 import { TranslationTab } from "./components/TranslationTab";
 import { UsersTab } from "./components/UsersTab";
+import { ImpersonateTab } from "./components/ImpersonateTab";
 import { ServerHealthTab } from "./components/ServerHealthTab";
 
 export const AdminPage = () => {
@@ -19,6 +20,7 @@ export const AdminPage = () => {
     switch (selectedTab) {
       case "churches": return <ChurchesTab key="churches" />;
       case "users": return <UsersTab key="users" />;
+      case "impersonate": return <ImpersonateTab key="impersonate" />;
       case "usage": return <UsageTrendsTab key="usage" />;
       case "translation": return <TranslationTab key="translation" />;
       case "serverHealth": return <ServerHealthTab key="serverHealth" />;
@@ -36,6 +38,11 @@ export const AdminPage = () => {
       key: "users",
       icon: <UserIcon />,
       label: Locale.label("serverAdmin.adminPage.users")
+    },
+    {
+      key: "impersonate",
+      icon: <ImpersonateIcon />,
+      label: Locale.label("serverAdmin.adminPage.impersonateUser")
     },
     {
       key: "usage",
