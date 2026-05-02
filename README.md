@@ -55,4 +55,4 @@ After obtaining your tokens, open **Settings → Giving Settings** in B1Admin, s
 
 If you'd like to deploy your own copy on Railway, you can use our template below. This is currently in beta — feedback welcome.
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/HCSGmZ?referralCode=QlwJ_E&utm_medium=integration&utm_source=template&utm_campaign=generic)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/b1-template)
