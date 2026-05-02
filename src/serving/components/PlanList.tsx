@@ -25,7 +25,16 @@ export const PlanList = memo((props: Props) => {
   const [showLessonSchedule, setShowLessonSchedule] = React.useState(false);
   const [showBulkSchedule, setShowBulkSchedule] = React.useState(false);
   const [lessonMenuAnchor, setLessonMenuAnchor] = React.useState<null | HTMLElement>(null);
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+
+  const myMinistriesQuery = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    enabled: !hasPlansEdit,
+    placeholderData: []
+  });
+
+  const isMinistryMember = !hasPlansEdit && (myMinistriesQuery.data || []).some((g) => g.id === props.ministry.id);
+  const canEdit = hasPlansEdit || isMinistryMember;
 
   const plansQuery = useQuery<PlanInterface[]>({
     queryKey: props.planTypeId ? [`/plans/types/${props.planTypeId}`, "DoingApi"] : ["/plans", "DoingApi"],

@@ -11,9 +11,7 @@ import {
   type PersonInterface,
   type PlanInterface,
   type PositionInterface,
-  type TimeInterface,
-  UserHelper,
-  Permissions
+  type TimeInterface
 } from "@churchapps/apphelper";
 
 interface Props {
@@ -23,12 +21,13 @@ interface Props {
   people: PersonInterface[];
   times: TimeInterface[];
   blockoutDates: BlockoutDateInterface[];
+  canEdit: boolean;
   onUpdate: () => void;
 }
 
 export const PlanValidation = (props: Props) => {
   const [errors, setErrors] = React.useState<JSX.Element[]>([]);
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const { canEdit } = props;
   const [plans, setPlans] = React.useState<PlanInterface[]>([]);
   const [planTimeConflicts, setPlanTimeConflicts] = React.useState<{ time: TimeInterface; overlapingTimes: TimeInterface[] }[]>([]);
   const [externalPositions, setExternalPositions] = React.useState<PositionInterface[]>();

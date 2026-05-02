@@ -9,9 +9,7 @@ import {
   ArrayHelper,
   DateHelper,
   DisplayBox,
-  Locale,
-  UserHelper,
-  Permissions
+  Locale
 } from "@churchapps/apphelper";
 import { TimeEdit } from "./TimeEdit";
 
@@ -19,12 +17,13 @@ interface Props {
   times: TimeInterface[];
   plan: PlanInterface;
   positions: PositionInterface[];
+  canEdit: boolean;
   onUpdate: () => void;
 }
 
 export const TimeList = (props: Props) => {
   const [time, setTime] = React.useState<TimeInterface>(null);
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const { canEdit } = props;
 
   const handleAdd = () => {
     const startTime = new Date(props.plan.serviceDate);

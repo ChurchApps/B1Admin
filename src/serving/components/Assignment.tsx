@@ -17,6 +17,7 @@ import {
   UserHelper,
   Permissions
 } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { PositionEdit } from "./PositionEdit";
 import { PositionList } from "./PositionList";
 import { AssignmentEdit } from "./AssignmentEdit";
@@ -29,7 +30,16 @@ interface Props {
 
 export const Assignment = (props: Props) => {
   const [plan, setPlan] = React.useState<PlanInterface>(null);
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+
+  const myMinistriesQuery = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    enabled: !hasPlansEdit && !!props.plan?.ministryId,
+    placeholderData: []
+  });
+
+  const isMinistryMember = !hasPlansEdit && !!props.plan?.ministryId && (myMinistriesQuery.data || []).some((g) => g.id === props.plan.ministryId);
+  const canEdit = hasPlansEdit || isMinistryMember;
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
   const [people, setPeople] = React.useState<PersonInterface[]>([]);
@@ -267,7 +277,7 @@ export const Assignment = (props: Props) => {
               </Stack>
               {getAddPositionActions()}
             </Stack>
-            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} onSelect={(p) => setPosition(p)} onAssignmentSelect={handleAssignmentSelect} />
+            <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => setPosition(p)} onAssignmentSelect={handleAssignmentSelect} />
           </CardContent>
         </Card>
 
@@ -352,10 +362,10 @@ export const Assignment = (props: Props) => {
           )}
 
           {/* Time List */}
-          <TimeList times={times} positions={positions} plan={plan} onUpdate={loadData} />
+          <TimeList times={times} positions={positions} plan={plan} canEdit={canEdit} onUpdate={loadData} />
 
           {/* Plan Validation */}
-          <PlanValidation plan={plan} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} onUpdate={loadData} />
+          <PlanValidation plan={plan} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
         </Stack>
       </Grid>
 

@@ -9,9 +9,7 @@ import {
 import {
   ArrayHelper,
   Locale,
-  PersonHelper,
-  UserHelper,
-  Permissions
+  PersonHelper
 } from "@churchapps/apphelper";
 
 interface Props {
@@ -19,12 +17,13 @@ interface Props {
   assignments: AssignmentInterface[];
   people: PersonInterface[];
   groups: GroupInterface[];
+  canEdit: boolean;
   onSelect?: (position: PositionInterface) => void;
   onAssignmentSelect?: (position: PositionInterface, assignment: AssignmentInterface) => void;
 }
 
 export const PositionList = (props: Props) => {
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const { canEdit } = props;
   const theme = useTheme();
 
   const lightColors = [

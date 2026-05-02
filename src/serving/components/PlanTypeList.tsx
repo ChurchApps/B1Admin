@@ -16,7 +16,16 @@ interface Props {
 export const PlanTypeList = React.memo(({ ministry }: Props) => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [editItem, setEditItem] = React.useState<PlanTypeInterface | null>(null);
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+
+  const myMinistriesQuery = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    enabled: !hasPlansEdit,
+    placeholderData: []
+  });
+
+  const isMinistryMember = !hasPlansEdit && (myMinistriesQuery.data || []).some((g) => g.id === ministry.id);
+  const canEdit = hasPlansEdit || isMinistryMember;
 
   const planTypes = useQuery<PlanTypeInterface[]>({
     queryKey: [`/planTypes/ministryId/${ministry.id}`, "DoingApi"],

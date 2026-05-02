@@ -9,13 +9,23 @@ import { EmptyState } from "../../components/ui";
 
 interface Props {
   planTypeId: string;
+  ministryId?: string;
 }
 
 type TimeFilter = "past" | "future" | "both";
 const CONTENT_TYPE = "planType";
 
-export const PlanTypeGroups = React.memo(({ planTypeId }: Props) => {
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => {
+  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+
+  const myMinistriesQuery = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    enabled: !hasPlansEdit && !!ministryId,
+    placeholderData: []
+  });
+
+  const isMinistryMember = !hasPlansEdit && !!ministryId && (myMinistriesQuery.data || []).some((g) => g.id === ministryId);
+  const canEdit = hasPlansEdit || isMinistryMember;
   const [showPicker, setShowPicker] = React.useState(false);
   const [pickerValue, setPickerValue] = React.useState<GroupInterface | null>(null);
 

@@ -1,9 +1,10 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
-import { type PlanInterface } from "@churchapps/helpers";
+import { type GroupInterface, type PlanInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-providers";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
@@ -63,7 +64,16 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
 
 export const ServiceOrder = memo((props: Props) => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+
+  const myMinistriesQuery = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    enabled: !hasPlansEdit && !!props.plan?.ministryId,
+    placeholderData: []
+  });
+
+  const isMinistryMember = !hasPlansEdit && !!props.plan?.ministryId && (myMinistriesQuery.data || []).some((g) => g.id === props.plan.ministryId);
+  const canEdit = hasPlansEdit || isMinistryMember;
   const [editPlanItem, setEditPlanItem] = React.useState<PlanItemInterface | null>(null);
   const [showHeaderDrop, setShowHeaderDrop] = React.useState(false);
   const [showItemDrop, setShowItemDrop] = React.useState(false);
