@@ -1,7 +1,7 @@
 import React, { useContext, useState, useCallback, useMemo } from "react";
 import { Groups, PersonAttendance, PersonNotes, PersonDonations, GdprActions } from "./components";
 import { type PersonInterface, type ConversationInterface, type FormInterface } from "@churchapps/helpers";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale, SocketHelper, SubscriptionManager, UserHelper } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
 import { PersonBanner } from "./components/PersonBanner";
 import { PersonNavigation } from "./components/PersonNavigation";
@@ -33,6 +33,43 @@ export const PersonPage = () => {
     personData.refetch();
     formsData.refetch();
   }, [personData, formsData]);
+
+  // Subscribe to a content-scoped room for this person so any tab gets notified
+  // when a Notes conversation is created/updated for them — even before this tab
+  // knows the conversation id. Server broadcasts `conversationActivity` to
+  // `content-person-{id}` from ConversationController.save and MessageController.
+  //
+  // refetch is a useCallback whose reference changes every time react-query touches
+  // personData/formsData — which is constantly. Stash it in a ref so the subscription
+  // effect's deps stay limited to params.id. Otherwise every data update tears down
+  // the connection and re-creates it, racing with inbound broadcasts.
+  const refetchRef = React.useRef(refetch);
+  React.useEffect(() => { refetchRef.current = refetch; }, [refetch]);
+
+  React.useEffect(() => {
+    if (!params.id || params.id === "add") return;
+    const churchId = UserHelper.currentUserChurch?.church?.id;
+    const personId = UserHelper.person?.id;
+    if (!churchId) return;
+    const room = `content-person-${params.id}`;
+    console.log(`[PersonPage] joining content room ${room}`);
+    SubscriptionManager.joinRoom(room, churchId, personId)
+      .then(() => console.log(`[PersonPage] joinRoom resolved for ${room}`))
+      .catch((e) => console.warn(`[PersonPage] joinRoom failed for ${room}:`, e));
+    const handlerId = `PersonPage-${params.id}`;
+    SocketHelper.addHandler("conversationActivity", handlerId, (data: any) => {
+      console.log(`[PersonPage] conversationActivity received:`, data);
+      if (data?.contentType === "person" && data?.contentId === params.id) {
+        console.log(`[PersonPage] refetching person ${params.id}`);
+        refetchRef.current();
+      }
+    });
+    return () => {
+      console.log(`[PersonPage] leaving content room ${room}`);
+      SocketHelper.removeHandler(handlerId);
+      SubscriptionManager.leaveRoom(room, churchId).catch(() => { /* ignore */ });
+    };
+  }, [params.id]);
 
   const person = useMemo(() => {
     if (params.id === "add" || !params.id) {

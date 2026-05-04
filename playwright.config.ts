@@ -50,6 +50,14 @@ export default defineConfig({
     },
     {
       command: 'npm start',
+      // Force REACT_APP_STAGE=dev so EnvironmentHelper reads localhost API URLs
+      // from .env instead of pinning to prod URLs (matches B1App/playwright.config.ts).
+      // REACT_APP_MESSAGING_API_SOCKET points at the local Api's messaging WS port so
+      // NotificationService.initialize doesn't fall back to wss://socket.staging.*.
+      env: {
+        REACT_APP_STAGE: 'dev',
+        REACT_APP_MESSAGING_API_SOCKET: 'ws://localhost:8087',
+      },
       url: 'http://localhost:3101',
       reuseExistingServer: true,
       timeout: 120 * 1000,
