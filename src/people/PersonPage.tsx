@@ -52,20 +52,12 @@ export const PersonPage = () => {
     const personId = UserHelper.person?.id;
     if (!churchId) return;
     const room = `content-person-${params.id}`;
-    console.log(`[PersonPage] joining content room ${room}`);
-    SubscriptionManager.joinRoom(room, churchId, personId)
-      .then(() => console.log(`[PersonPage] joinRoom resolved for ${room}`))
-      .catch((e) => console.warn(`[PersonPage] joinRoom failed for ${room}:`, e));
+    SubscriptionManager.joinRoom(room, churchId, personId).catch(() => { /* ignore */ });
     const handlerId = `PersonPage-${params.id}`;
     SocketHelper.addHandler("conversationActivity", handlerId, (data: any) => {
-      console.log(`[PersonPage] conversationActivity received:`, data);
-      if (data?.contentType === "person" && data?.contentId === params.id) {
-        console.log(`[PersonPage] refetching person ${params.id}`);
-        refetchRef.current();
-      }
+      if (data?.contentType === "person" && data?.contentId === params.id) refetchRef.current();
     });
     return () => {
-      console.log(`[PersonPage] leaving content room ${room}`);
       SocketHelper.removeHandler(handlerId);
       SubscriptionManager.leaveRoom(room, churchId).catch(() => { /* ignore */ });
     };
