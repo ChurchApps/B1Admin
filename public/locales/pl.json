@@ -259,7 +259,8 @@
     "tryAgain": "Spróbuj ponownie",
     "update": "Aktualizuj",
     "website": "Strona internetowa",
-    "yes": "Tak"
+    "yes": "Tak",
+    "element": "Element"
   },
   "components": {
     "associatedForms": {

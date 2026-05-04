@@ -259,7 +259,8 @@
     "tryAgain": "다시 시도",
     "update": "업데이트",
     "website": "웹사이트",
-    "yes": "예"
+    "yes": "예",
+    "element": "요소"
   },
   "components": {
     "associatedForms": {

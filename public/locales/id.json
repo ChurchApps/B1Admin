@@ -259,7 +259,8 @@
     "tryAgain": "Coba Lagi",
     "update": "Perbarui",
     "website": "Situs Web",
-    "yes": "Ya"
+    "yes": "Ya",
+    "element": "Elemen"
   },
   "components": {
     "associatedForms": {

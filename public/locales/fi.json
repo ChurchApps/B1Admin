@@ -259,7 +259,8 @@
     "tryAgain": "Yritä uudelleen",
     "update": "Päivitä",
     "website": "Verkkosivusto",
-    "yes": "Kyllä"
+    "yes": "Kyllä",
+    "element": "Elementti"
   },
   "components": {
     "associatedForms": {

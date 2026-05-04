@@ -259,7 +259,8 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "はい"
+    "yes": "はい",
+    "element": "要素"
   },
   "components": {
     "associatedForms": {

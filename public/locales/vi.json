@@ -259,7 +259,8 @@
     "tryAgain": "Try Again",
     "update": "Cập nhật",
     "website": "Website",
-    "yes": "Có"
+    "yes": "Có",
+    "element": "Phần tử"
   },
   "components": {
     "associatedForms": {
