@@ -259,7 +259,8 @@
     "tryAgain": "重试",
     "update": "更新",
     "website": "网站",
-    "yes": "是"
+    "yes": "是",
+    "element": "元素"
   },
   "components": {
     "associatedForms": {

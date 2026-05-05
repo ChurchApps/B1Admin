@@ -259,7 +259,8 @@
     "tryAgain": "Prøv igjen",
     "update": "Oppdater",
     "website": "Nettsted",
-    "yes": "Ja"
+    "yes": "Ja",
+    "element": "Element"
   },
   "components": {
     "associatedForms": {

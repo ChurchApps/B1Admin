@@ -259,7 +259,8 @@
     "tryAgain": "पुनः प्रयास करें",
     "update": "अपडेट करें",
     "website": "वेबसाइट",
-    "yes": "हाँ"
+    "yes": "हाँ",
+    "element": "तत्व"
   },
   "components": {
     "associatedForms": {

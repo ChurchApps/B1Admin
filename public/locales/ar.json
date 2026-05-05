@@ -259,7 +259,8 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "نعم"
+    "yes": "نعم",
+    "element": "عنصر"
   },
   "components": {
     "associatedForms": {

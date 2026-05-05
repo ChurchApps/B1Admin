@@ -259,7 +259,8 @@
     "tryAgain": "Opnieuw proberen",
     "update": "Bijwerken",
     "website": "Website",
-    "yes": "Ja"
+    "yes": "Ja",
+    "element": "Element"
   },
   "components": {
     "associatedForms": {
