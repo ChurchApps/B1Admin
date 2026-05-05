@@ -259,7 +259,8 @@
     "tryAgain": "Покушај поново",
     "update": "Ажурирај",
     "website": "Веб страница",
-    "yes": "Да"
+    "yes": "Да",
+    "element": "Елемент"
   },
   "components": {
     "associatedForms": {

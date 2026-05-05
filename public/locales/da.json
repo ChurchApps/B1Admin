@@ -259,7 +259,8 @@
     "tryAgain": "Prøv igen",
     "update": "Opdater",
     "website": "Hjemmeside",
-    "yes": "Ja"
+    "yes": "Ja",
+    "element": "Element"
   },
   "components": {
     "associatedForms": {

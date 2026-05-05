@@ -259,7 +259,8 @@
     "tryAgain": "Försök igen",
     "update": "Uppdatera",
     "website": "Webbplats",
-    "yes": "Ja"
+    "yes": "Ja",
+    "element": "Element"
   },
   "components": {
     "associatedForms": {

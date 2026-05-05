@@ -259,7 +259,8 @@
     "tryAgain": "Réessayer",
     "update": "Mettre à jour",
     "website": "Site Web",
-    "yes": "Oui"
+    "yes": "Oui",
+    "element": "Élément"
   },
   "components": {
     "associatedForms": {

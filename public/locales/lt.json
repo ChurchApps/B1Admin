@@ -259,7 +259,8 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes"
+    "yes": "Yes",
+    "element": "Elementas"
   },
   "components": {
     "associatedForms": {

@@ -259,7 +259,8 @@
     "tryAgain": "Poskusite ponovno",
     "update": "Posodobi",
     "website": "Spletna stran",
-    "yes": "Da"
+    "yes": "Da",
+    "element": "Element"
   },
   "components": {
     "associatedForms": {

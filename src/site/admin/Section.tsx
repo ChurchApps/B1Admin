@@ -43,28 +43,29 @@ export const Section: React.FC<Props> = props => {
     return null;
   };
 
-  // Helper to find innermost nested element inside a container element
+  // Helper to find innermost nested element inside any element that contains children
   const findInnermostNestedElement = (containerEl: HTMLElement, target: HTMLElement, containerId: string): string | null => {
     const element = findElementById(props.section?.elements || [], containerId);
-    if (element?.elementType === "row" || element?.elementType === "carousel") {
+    if (element?.elements && element.elements.length > 0) {
       // Find innermost el-* element that contains the click target
       const allElDivs = containerEl.querySelectorAll('[id^="el-"]');
       let innermostId: string | null = null;
-      let innermostContainerId: string | null = null; // Track nested containers (carousels) as fallback
+      let innermostContainerId: string | null = null; // Track nested containers as fallback
       for (const nestedEl of allElDivs) {
         if (nestedEl.contains(target)) {
           const nestedId = nestedEl.id.substring(3);
           const nestedElement = findElementById(props.section?.elements || [], nestedId);
-          if (nestedElement && nestedElement.elementType !== "row" && nestedElement.elementType !== "carousel") {
+          const isContainer = !!nestedElement?.elements && nestedElement.elements.length > 0;
+          if (nestedElement && !isContainer) {
             innermostId = nestedId;
             // Don't break - keep looking for more nested elements (innermost wins)
-          } else if (nestedElement && nestedElement.elementType === "carousel") {
-            // Track carousels as fallback (allows selecting carousel inside row)
+          } else if (nestedElement && isContainer) {
+            // Track nested containers as fallback when there is no deeper leaf element
             innermostContainerId = nestedId;
           }
         }
       }
-      // Prefer non-container elements, but fall back to nested containers (carousel inside row)
+      // Prefer non-container elements, but fall back to nested containers
       return innermostId || innermostContainerId;
     }
     return null;

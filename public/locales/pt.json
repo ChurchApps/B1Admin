@@ -259,7 +259,8 @@
     "tryAgain": "Tentar novamente",
     "update": "Atualizar",
     "website": "Site",
-    "yes": "Sim"
+    "yes": "Sim",
+    "element": "Elemento"
   },
   "components": {
     "associatedForms": {

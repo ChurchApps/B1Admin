@@ -259,7 +259,8 @@
     "tryAgain": "Zkusit znovu",
     "update": "Aktualizovat",
     "website": "Webové stránky",
-    "yes": "Ano"
+    "yes": "Ano",
+    "element": "Prvek"
   },
   "components": {
     "associatedForms": {

@@ -259,7 +259,8 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Web Sitesi",
-    "yes": "Evet"
+    "yes": "Evet",
+    "element": "Öğe"
   },
   "components": {
     "associatedForms": {
