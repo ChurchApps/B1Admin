@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
 import { Wrapper, ErrorBoundary } from "./components";
-import { UserHelper } from "@churchapps/apphelper";
+import { NotificationService, UserHelper } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { PageSkeleton } from "./components/ui/PageSkeleton";
 import UserContext from "./UserContext";
@@ -68,6 +68,16 @@ export const Authenticated: React.FC = () => {
   UserHelper.userChurches = context.userChurches;
   UserHelper.user = context.user;
   UserHelper.person = context.person;
+
+  // One WebSocket per tab tied to the active userChurch — drives real-time refresh of
+  // notes/conversations and the unread bell count. Re-runs on church switch via
+  // NotificationService.initialize's internal change detection.
+  React.useEffect(() => {
+    if (!context.person?.id || !context.userChurch?.church?.id) return;
+    NotificationService.getInstance().initialize(context).catch((err) => {
+      console.error("NotificationService init failed:", err);
+    });
+  }, [context.person?.id, context.userChurch?.church?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const LayoutWithWrapper: React.FC = () => (
     <Box sx={{ display: "flex" }}>
