@@ -201,9 +201,7 @@ export function ElementEdit(props: Props) {
           gap: 0.5,
           alignItems: "center"
         },
-        "& .editor-inner": {
-          minHeight: 260
-        },
+        "& .editor-inner": { minHeight: 260 },
         "& .editor-scroller": {
           minHeight: 180,
           maxHeight: 320,

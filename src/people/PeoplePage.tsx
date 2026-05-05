@@ -317,6 +317,6 @@ export const PeoplePage = memo(() => {
           {toast.message}
         </Alert>
       </Snackbar>
-</>
-);
+    </>
+  );
 });

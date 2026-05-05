@@ -490,9 +490,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             htmlInput: { maxLength: selectedTemplate ? undefined : 140 },
             formHelperText: { component: "div", sx: { m: 0, mt: 0.5 } }
           }}
-          sx={{
-            "& .MuiOutlinedInput-root": { bgcolor: "background.paper" }
-          }}
+          sx={{ "& .MuiOutlinedInput-root": { bgcolor: "background.paper" } }}
         />
 
         <Stack direction="row" spacing={1} justifyContent="flex-end">

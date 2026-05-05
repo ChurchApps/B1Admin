@@ -811,10 +811,10 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.28.5"
 
-"@churchapps/apphelper@0.7.4":
-  version "0.7.4"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.7.4.tgz"
-  integrity sha512-Yr1w/jzho3u+vVKV0A9uxrEMx3aC9fm/BBqvm9Q+JD+KSdpDS22Wxq+RT58Itw30fv3MSIPOZKOTgy73tW/NPA==
+"@churchapps/apphelper@0.7.5":
+  version "0.7.5"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.7.5.tgz"
+  integrity sha512-C2liYr0PLAWlOgP7yzn/Jl1Eiynat0GH+fMD0C8Qv4CBlWI5evj3hSYLTtROEp+ujMADEKTTVL7L/SE4adSr7w==
   dependencies:
     "@churchapps/helpers" "^1.3.0"
     "@emotion/cache" "^11.14.0"

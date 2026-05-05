@@ -77,7 +77,7 @@ export const Authenticated: React.FC = () => {
     NotificationService.getInstance().initialize(context).catch((err) => {
       console.error("NotificationService init failed:", err);
     });
-  }, [context.person?.id, context.userChurch?.church?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [context.person?.id, context.userChurch?.church?.id]);
 
   const LayoutWithWrapper: React.FC = () => (
     <Box sx={{ display: "flex" }}>

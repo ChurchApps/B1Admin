@@ -56,15 +56,9 @@ const createMdTheme = (mode: PaletteMode) =>
       },
       MuiTextField: {
         defaultProps: { margin: "normal" },
-        styleOverrides: {
-          root: {
-            "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)" } }
-          }
-        }
+        styleOverrides: { root: { "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)" } } } }
       },
-      MuiFormControl: {
-        defaultProps: { margin: "normal" }
-      },
+      MuiFormControl: { defaultProps: { margin: "normal" } },
       MuiButton: { styleOverrides: { root: { textTransform: "none" } } },
       MuiCard: {
         styleOverrides: {

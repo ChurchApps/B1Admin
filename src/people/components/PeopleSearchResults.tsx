@@ -335,7 +335,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             )}
             {getColumns(p)}
           </TableRow>
-    );
+        );
       }) || []
     );
   }, [people, getColumns, navigate, props.canSelectPeople, props.currentPersonId, props.togglePersonSelection, selectedPersonIds]);

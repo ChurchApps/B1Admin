@@ -112,9 +112,7 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
               marginBottom: 0,
               padding: "8px"
             },
-            "& #input-box-header": {
-              display: "none"
-            }
+            "& #input-box-header": { display: "none" }
           }}
         >
           {children}
