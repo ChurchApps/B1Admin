@@ -39,11 +39,6 @@ export const DeviceAuthPage: React.FC = () => {
   const [step, setStep] = React.useState<"code" | "confirm">("code");
   const [autoSubmitted, setAutoSubmitted] = React.useState(false);
 
-  // If not authenticated, redirect to login with state for return
-  if (!ApiHelper.isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
   // Use the already-selected church from login
   const churchName = UserHelper.currentUserChurch?.church?.name;
 
@@ -85,6 +80,11 @@ export const DeviceAuthPage: React.FC = () => {
       });
     }
   }, [deviceInfo?.clientId]);
+
+  // If not authenticated, redirect to login with state for return
+  if (!ApiHelper.isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
   const handleCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -17,8 +17,6 @@ export const BatchGivingStatementsPage = () => {
   const [selectedYear, setSelectedYear] = useState<number>(currentYear);
   const [currency, setCurrency] = useState<string>("usd");
 
-  if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
-
   // Fetch all donations
   const allDonations = useQuery<DonationInterface[]>({
     queryKey: ["/donations", "GivingApi"],
@@ -191,6 +189,8 @@ export const BatchGivingStatementsPage = () => {
       setCurrency(result);
     });
   }, []);
+
+  if (!UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) return <></>;
 
   return (
     <>

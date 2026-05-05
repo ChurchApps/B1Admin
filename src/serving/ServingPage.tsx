@@ -47,8 +47,6 @@ export const ServingPage = () => {
     ministries.refetch();
   };
 
-  if (ministries.isLoading) return <Loading />;
-
   const groups = isAdmin
     ? (ministries.data || []).filter((g) => {
       if (showAllMinistries) return true;
@@ -69,6 +67,8 @@ export const ServingPage = () => {
       }
     }
   }, [groups, selectedMinistryId]);
+
+  if (ministries.isLoading) return <Loading />;
 
   // Show add ministry form
   if (showAdd) {

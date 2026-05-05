@@ -78,6 +78,12 @@ export const PrintAllStatementsPage = () => {
     }
   }, [isLoading, people.data, navigate]);
 
+  useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      setCurrency(result);
+    });
+  }, []);
+
   const getDate = () => {
     const date = DateHelper.prettyDate(new Date());
     const time = DateHelper.prettyTime(new Date());
@@ -143,12 +149,6 @@ export const PrintAllStatementsPage = () => {
       </Box>
     );
   }
-
-  useEffect(() => {
-    CurrencyHelper.loadCurrency().then((result) => {
-      setCurrency(result);
-    });
-  }, []);
 
   return (
     <>
