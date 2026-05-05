@@ -3227,6 +3227,8 @@
     "navLinkEdit": {
       "errLinkText": "Please enter link text",
       "linkText": "Link Text",
+      "noParent": "(none)",
+      "parentPage": "Parent Page",
       "unauthorizedCreate": "Unauthorized to create pages",
       "unauthorizedDelete": "Unauthorized to delete pages",
       "url": "Url"
