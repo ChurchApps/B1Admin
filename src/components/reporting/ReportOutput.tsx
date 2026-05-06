@@ -27,14 +27,15 @@ export const ReportOutput = (props: Props) => {
   const [kpis, setKpis] = React.useState<GivingKpis>(null);
   const [currency, setCurrency] = React.useState<string>("usd");
 
+  const open = Boolean(anchorEl);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const isMounted = useMountedState();
+
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
       if (result && isMounted()) setCurrency(result);
     });
   }, [isMounted]);
-  const open = Boolean(anchorEl);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const isMounted = useMountedState();
 
   const handlePrint = useReactToPrint({ contentRef });
 
