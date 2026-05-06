@@ -132,6 +132,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       customerId: customerId,
       type: paymentMethod.type,
       churchId: props.churchId,
+      currency: gateway?.currency || "usd",
       funds: [],
       person: {
         id: person?.id,
@@ -219,7 +220,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   const getTransactionFee = async (amount: number) => {
     if (amount > 0) {
       try {
-        const response = await ApiHelper.post("/donate/fee?churchId=" + props.churchId, { type: "creditCard", amount }, "GivingApi");
+        const response = await ApiHelper.post("/donate/fee?churchId=" + props.churchId, { type: "creditCard", amount, currency: gateway?.currency || "usd" }, "GivingApi");
         return response.calculatedFee;
       } catch (error) {
         console.log("Error calculating transaction fee:", error);
@@ -236,7 +237,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
         <>
           <hr />
           <h4>{Locale.label("donation.donationForm.funds")}</h4>
-          <FundDonations fundDonations={fundDonations} funds={funds} params={searchParams} updatedFunction={handleFundDonationsChange} />
+          <FundDonations fundDonations={fundDonations} funds={funds} params={searchParams} updatedFunction={handleFundDonationsChange} currency={gateway?.currency} />
         </>
       );
     }
@@ -336,19 +337,19 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
             <>
               {gateway && gateway.payFees === true ? (
                 <Typography fontSize={14} fontStyle="italic">
-                  *{Locale.label("donation.donationForm.fees").replace("{}", CurrencyHelper.formatCurrency(transactionFee))}
+                  *{Locale.label("donation.donationForm.fees").replace("{}", CurrencyHelper.formatCurrencyWithLocale(transactionFee, gateway?.currency || "usd"))}
                 </Typography>
               ) : (
                 <FormGroup>
                   <FormControlLabel
                     control={<Checkbox />}
                     name="transaction-fee"
-                    label={Locale.label("donation.donationForm.cover").replace("{}", CurrencyHelper.formatCurrency(transactionFee))}
+                    label={Locale.label("donation.donationForm.cover").replace("{}", CurrencyHelper.formatCurrencyWithLocale(transactionFee, gateway?.currency || "usd"))}
                     onChange={handleCheckChange}
                   />
                 </FormGroup>
               )}
-              <p>{Locale.label("donation.donationForm.totalAmount").replace("{}", CurrencyHelper.formatCurrency(total))}</p>
+              <p>{Locale.label("donation.donationForm.totalAmount").replace("{}", CurrencyHelper.formatCurrencyWithLocale(total, gateway?.currency || "usd"))}</p>
             </>
           )}
         </div>

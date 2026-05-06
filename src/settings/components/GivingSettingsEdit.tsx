@@ -74,19 +74,18 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
-  // Currency selection hidden for now - defaulting to USD
   const getCurrency = () => {
     if (provider !== "Stripe") return null;
     return (
-      <div style={{ display: "none" }}>
-        <Typography variant="body2" color="textSecondary" component="div">{Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
+      <Grid size={{ xs: 12, md: 4 }}>
+        <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>{Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
         <FormControl fullWidth>
           <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
           <Select name="currency" label={Locale.label("settings.givingSettingsEdit.currency")} value={currency} onChange={handleChange}>
             {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
           </Select>
         </FormControl>
-      </div>
+      </Grid>
     );
   };
 

@@ -8,6 +8,7 @@ interface StripeEventResult {
   eventId: string;
   type: string;
   amount: number;
+  currency?: string;
   created: string;
   customer: string;
   status: "new" | "already_imported" | "imported" | "skipped" | "error";
@@ -121,7 +122,7 @@ export const StripeImportPage = () => {
         </TableCell>
         <TableCell>
           <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-            {CurrencyHelper.formatCurrency(event.amount)}
+            {CurrencyHelper.formatCurrencyWithLocale(event.amount, event.currency || "usd")}
           </Typography>
         </TableCell>
         <TableCell>

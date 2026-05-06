@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { ArrayHelper, type PersonInterface, type ReportInterface, type ReportResultInterface } from "@churchapps/helpers";
 import { DisplayBox, ExportLink, Loading } from "../";
+import { CurrencyHelper } from "@churchapps/apphelper";
 import { ApiHelper, Locale } from "../../helpers";
 import { useReactToPrint } from "react-to-print";
 import { TableReport } from "./TableReport";
@@ -24,6 +25,13 @@ export const ReportOutput = (props: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [downloadData, setDownloadData] = React.useState<ReportResultInterface>(null);
   const [kpis, setKpis] = React.useState<GivingKpis>(null);
+  const [currency, setCurrency] = React.useState<string>("usd");
+
+  React.useEffect(() => {
+    CurrencyHelper.loadCurrency().then((result) => {
+      if (result && isMounted()) setCurrency(result);
+    });
+  }, [isMounted]);
   const open = Boolean(anchorEl);
   const contentRef = useRef<HTMLDivElement>(null);
   const isMounted = useMountedState();
@@ -212,7 +220,7 @@ export const ReportOutput = (props: Props) => {
     else {
       return (
         <>
-          {kpis && <GivingKpiCards kpis={kpis} />}
+          {kpis && <GivingKpiCards kpis={kpis} currency={currency} />}
           <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
             {getOutputs()}
           </DisplayBox>

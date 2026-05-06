@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { CurrencyHelper } from "@churchapps/apphelper";
 import { Locale } from "../../helpers";
 
 export interface GivingKpis {
@@ -13,17 +14,14 @@ export interface GivingKpis {
 
 interface Props {
   kpis: GivingKpis;
+  currency?: string;
 }
-
-const formatCurrency = (value: number) => {
-  const usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  return usd.format(value || 0);
-};
 
 const formatNumber = (value: number) => (value || 0).toLocaleString();
 
 export const GivingKpiCards = (props: Props) => {
-  const { kpis } = props;
+  const { kpis, currency = "usd" } = props;
+  const formatCurrency = (value: number) => CurrencyHelper.formatCurrencyWithLocale(value || 0, currency, 0);
 
   const cards = [
     { label: Locale.label("reporting.givingKpiCards.totalGiving"), value: formatCurrency(kpis.totalGiving) },
