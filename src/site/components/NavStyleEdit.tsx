@@ -11,10 +11,10 @@ interface Props {
 }
 
 export interface NavSolidInterface {
-  backgroundColor: string;
-  linkColor: string;
-  linkHoverColor: string;
-  activeColor: string;
+  backgroundColor: string | null;
+  linkColor: string | null;
+  linkHoverColor: string | null;
+  activeColor: string | null;
 }
 
 export interface NavTransparentInterface {
@@ -28,17 +28,15 @@ export interface NavStylesInterface {
   transparent: NavTransparentInterface;
 }
 
-const SOLID_DEFAULTS: NavSolidInterface = {
+const EMPTY_SOLID: NavSolidInterface = { backgroundColor: null, linkColor: null, linkHoverColor: null, activeColor: null };
+const EMPTY_TRANSPARENT: NavTransparentInterface = { linkColor: null, linkHoverColor: null, activeColor: null };
+
+// Starting color when an override is first toggled on.
+const PICKER_INITIAL = {
   backgroundColor: "#FFFFFF",
   linkColor: "#555555",
   linkHoverColor: "#03A9F4",
   activeColor: "#03A9F4"
-};
-
-const TRANSPARENT_DEFAULTS: NavTransparentInterface = {
-  linkColor: null,
-  linkHoverColor: null,
-  activeColor: null
 };
 
 export function NavStyleEdit(props: Props) {
@@ -50,15 +48,13 @@ export function NavStyleEdit(props: Props) {
       try {
         const parsed = JSON.parse(props.globalStyle.navStyles);
         setNavStyles({
-          solid: { ...SOLID_DEFAULTS, ...(parsed.solid || {}) },
-          transparent: { ...TRANSPARENT_DEFAULTS, ...(parsed.transparent || {}) }
+          solid: { ...EMPTY_SOLID, ...(parsed.solid || {}) },
+          transparent: { ...EMPTY_TRANSPARENT, ...(parsed.transparent || {}) }
         });
-      } catch {
-        setNavStyles({ solid: { ...SOLID_DEFAULTS }, transparent: { ...TRANSPARENT_DEFAULTS } });
-      }
-    } else {
-      setNavStyles({ solid: { ...SOLID_DEFAULTS }, transparent: { ...TRANSPARENT_DEFAULTS } });
+        return;
+      } catch { /* fall through to empty */ }
     }
+    setNavStyles({ solid: { ...EMPTY_SOLID }, transparent: { ...EMPTY_TRANSPARENT } });
   }, [props.globalStyle]);
 
   const handleSave = () => {
@@ -69,41 +65,40 @@ export function NavStyleEdit(props: Props) {
     }, 500);
   };
 
-  const handleSolidChange = (field: keyof NavSolidInterface, value: string) => {
+  const setSolid = (field: keyof NavSolidInterface, value: string | null) => {
     setNavStyles({ ...navStyles, solid: { ...navStyles.solid, [field]: value } });
   };
 
-  const handleTransparentToggle = (field: keyof NavTransparentInterface, enabled: boolean) => {
-    const next = { ...navStyles.transparent };
-    next[field] = enabled ? "#FFFFFF" : null;
-    setNavStyles({ ...navStyles, transparent: next });
-  };
-
-  const handleTransparentChange = (field: keyof NavTransparentInterface, value: string) => {
+  const setTransparent = (field: keyof NavTransparentInterface, value: string | null) => {
     setNavStyles({ ...navStyles, transparent: { ...navStyles.transparent, [field]: value } });
   };
 
   if (!navStyles) return null;
 
-  const transparentField = (field: keyof NavTransparentInterface, label: string, testId: string) => {
-    const value = navStyles.transparent[field];
+  const colorField = (
+    value: string | null,
+    initial: string,
+    label: string,
+    testId: string,
+    onChange: (val: string | null) => void
+  ) => {
     const enabled = value !== null;
     return (
-      <Grid size={{ xs: 12, md: 4 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <FormControlLabel
-          control={<Switch checked={enabled} onChange={(e) => handleTransparentToggle(field, e.target.checked)} data-testid={`${testId}-toggle`} />}
+          control={<Switch checked={enabled} onChange={(e) => onChange(e.target.checked ? initial : null)} data-testid={`${testId}-toggle`} />}
           label={Locale.label("site.navStyleEdit.override")}
         />
         <TextField
           type="color"
           label={label}
           fullWidth
-          value={enabled ? value : "#FFFFFF"}
+          value={enabled ? value : initial}
           disabled={!enabled}
-          onChange={(e) => handleTransparentChange(field, e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           data-testid={`${testId}-input`}
           sx={{ "& .MuiInputBase-input": { height: 48 } }}
-          helperText={enabled ? null : Locale.label("site.navStyleEdit.auto")}
+          helperText={enabled ? null : Locale.label("site.navStyleEdit.unset")}
         />
       </Grid>
     );
@@ -133,18 +128,10 @@ export function NavStyleEdit(props: Props) {
         <CardWithHeader title={Locale.label("site.navStyleEdit.solidSection")} icon={<MenuIcon />}>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("site.navStyleEdit.solidSectionDesc")}</Typography>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <TextField type="color" label={Locale.label("site.navStyleEdit.backgroundColor")} fullWidth value={navStyles.solid.backgroundColor} onChange={(e) => handleSolidChange("backgroundColor", e.target.value)} data-testid="nav-solid-bg-input" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <TextField type="color" label={Locale.label("site.navStyleEdit.linkColor")} fullWidth value={navStyles.solid.linkColor} onChange={(e) => handleSolidChange("linkColor", e.target.value)} data-testid="nav-solid-link-input" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <TextField type="color" label={Locale.label("site.navStyleEdit.linkHoverColor")} fullWidth value={navStyles.solid.linkHoverColor} onChange={(e) => handleSolidChange("linkHoverColor", e.target.value)} data-testid="nav-solid-hover-input" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <TextField type="color" label={Locale.label("site.navStyleEdit.activeColor")} fullWidth value={navStyles.solid.activeColor} onChange={(e) => handleSolidChange("activeColor", e.target.value)} data-testid="nav-solid-active-input" sx={{ "& .MuiInputBase-input": { height: 48 } }} />
-            </Grid>
+            {colorField(navStyles.solid.backgroundColor, PICKER_INITIAL.backgroundColor, Locale.label("site.navStyleEdit.backgroundColor"), "nav-solid-bg", (v) => setSolid("backgroundColor", v))}
+            {colorField(navStyles.solid.linkColor, PICKER_INITIAL.linkColor, Locale.label("site.navStyleEdit.linkColor"), "nav-solid-link", (v) => setSolid("linkColor", v))}
+            {colorField(navStyles.solid.linkHoverColor, PICKER_INITIAL.linkHoverColor, Locale.label("site.navStyleEdit.linkHoverColor"), "nav-solid-hover", (v) => setSolid("linkHoverColor", v))}
+            {colorField(navStyles.solid.activeColor, PICKER_INITIAL.activeColor, Locale.label("site.navStyleEdit.activeColor"), "nav-solid-active", (v) => setSolid("activeColor", v))}
           </Grid>
         </CardWithHeader>
 
@@ -152,9 +139,9 @@ export function NavStyleEdit(props: Props) {
           <CardWithHeader title={Locale.label("site.navStyleEdit.transparentSection")} icon={<MenuIcon />}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("site.navStyleEdit.transparentSectionDesc")}</Typography>
             <Grid container spacing={2}>
-              {transparentField("linkColor", Locale.label("site.navStyleEdit.linkColor"), "nav-transparent-link")}
-              {transparentField("linkHoverColor", Locale.label("site.navStyleEdit.linkHoverColor"), "nav-transparent-hover")}
-              {transparentField("activeColor", Locale.label("site.navStyleEdit.activeColor"), "nav-transparent-active")}
+              {colorField(navStyles.transparent.linkColor, PICKER_INITIAL.linkColor, Locale.label("site.navStyleEdit.linkColor"), "nav-transparent-link", (v) => setTransparent("linkColor", v))}
+              {colorField(navStyles.transparent.linkHoverColor, PICKER_INITIAL.linkHoverColor, Locale.label("site.navStyleEdit.linkHoverColor"), "nav-transparent-hover", (v) => setTransparent("linkHoverColor", v))}
+              {colorField(navStyles.transparent.activeColor, PICKER_INITIAL.activeColor, Locale.label("site.navStyleEdit.activeColor"), "nav-transparent-active", (v) => setTransparent("activeColor", v))}
             </Grid>
           </CardWithHeader>
         </Box>

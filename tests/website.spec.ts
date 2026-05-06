@@ -412,20 +412,24 @@ test.describe('Website Management', () => {
     test('should open and cancel navigation styling', async () => {
       const navOption = page.locator('[data-testid="style-option-nav"]');
       await navOption.click();
-      const solidBg = page.locator('[data-testid="nav-solid-bg-input"]');
+      const solidBgToggle = page.locator('[data-testid="nav-solid-bg-toggle"]');
       const transparentLinkToggle = page.locator('[data-testid="nav-transparent-link-toggle"]');
-      await expect(solidBg).toBeVisible({ timeout: 10000 });
+      await expect(solidBgToggle).toBeVisible({ timeout: 10000 });
       await expect(transparentLinkToggle).toBeVisible();
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
-      await expect(solidBg).toHaveCount(0);
+      await expect(solidBgToggle).toHaveCount(0);
     });
 
     test('should save nav solid colors and persist them', async () => {
       const navOption = page.locator('[data-testid="style-option-nav"]');
       await navOption.click();
+      const linkToggle = page.locator('[data-testid="nav-solid-link-toggle"] input[type="checkbox"]');
       const linkInput = page.locator('[data-testid="nav-solid-link-input"] input[type="color"]');
       await expect(linkInput).toBeVisible({ timeout: 10000 });
+      await expect(linkInput).toBeDisabled();
+      await linkToggle.check();
+      await expect(linkInput).toBeEnabled();
       // `fill` does not work on type=color; use React's native setter.
       await linkInput.evaluate((el: HTMLInputElement) => {
         const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!;
@@ -440,6 +444,7 @@ test.describe('Website Management', () => {
       const reopened = page.locator('[data-testid="nav-solid-link-input"] input[type="color"]');
       await expect(reopened).toBeVisible({ timeout: 10000 });
       await expect(reopened).toHaveValue('#7fff00');
+      await expect(reopened).toBeEnabled();
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
     });
