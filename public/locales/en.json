@@ -1787,6 +1787,7 @@
       "editHeader": "Edit Header",
       "editSong": "Edit Song",
       "enterSearch": "Enter search term",
+      "includeInServices": "Include in services",
       "minutes": "Minutes",
       "planItemDescriptionAria": "Plan item description",
       "planItemNameAria": "Plan item name",
@@ -1932,7 +1933,8 @@
       "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
       "print": "Print",
       "scrollDown": "Scroll Down",
-      "scrollUp": "Scroll Up"
+      "scrollUp": "Scroll Up",
+      "viewingAs": "Viewing as"
     },
     "servingOverviewPage": {
       "endDate": "End Date",
@@ -1982,7 +1984,12 @@
       "timeEdit": "Edit Time",
       "timeEnd": "End Time",
       "timeStart": "Start Time",
-      "tip": "Tip"
+      "tip": "Tip",
+      "type": "Type",
+      "typeAria": "Service time type",
+      "typeOther": "Other",
+      "typeRehearsal": "Rehearsal",
+      "typeService": "Service"
     },
     "timeList": {
       "addTimeAria": "Add time",

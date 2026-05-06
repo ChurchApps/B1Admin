@@ -3,11 +3,12 @@ import { Box } from "@mui/material";
 import { Add as AddIcon, DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../../helpers";
-import { formatTime, getSectionDuration } from "../PlanUtils";
+import { formatTime, formatClockTime, getSectionDuration } from "../PlanUtils";
 
 interface Props {
   planItem: PlanItemInterface;
   startTime?: number;
+  serviceStartTime?: Date;
   readOnly?: boolean;
   onAddClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onEditClick: () => void;
@@ -20,18 +21,20 @@ interface Props {
 export const PlanItemHeader: React.FC<Props> = ({
   planItem,
   startTime = 0,
+  serviceStartTime,
   readOnly,
   onAddClick,
   onEditClick,
   children
 }) => {
   const sectionDuration = getSectionDuration(planItem);
+  const railLabel = serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime);
 
   return (
     <>
       <Box className="planItemHeader" sx={{ display: "flex", alignItems: "center" }}>
         <div className="timeRailCell">
-          <span className="timeRailLabel">{formatTime(startTime)}</span>
+          <span className="timeRailLabel">{railLabel}</span>
           <span className="timeRailDot" />
           <span className="timeRailLine" />
         </div>

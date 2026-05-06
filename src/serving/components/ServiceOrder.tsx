@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert } from "@mui/material";
+import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert, TextField } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
-import { type GroupInterface, type PlanInterface } from "@churchapps/helpers";
+import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
@@ -83,6 +83,9 @@ export const ServiceOrder = memo((props: Props) => {
   const [venueName, setVenueName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
+  const [exclusions, setExclusions] = React.useState<PlanItemTimeInterface[]>([]);
+  const [selectedServiceTimeId, setSelectedServiceTimeId] = React.useState<string>("");
 
   // Get the provider dynamically based on plan's providerId
   const provider: IProvider | null = useMemo(() => {
@@ -109,6 +112,28 @@ export const ServiceOrder = memo((props: Props) => {
       }
     }
   }, [props.plan?.id]);
+
+  const loadTimesAndExclusions = useCallback(async () => {
+    if (!props.plan?.id) return;
+    try {
+      const [times, ex] = await Promise.all([
+        ApiHelper.get("/times/plan/" + props.plan.id, "DoingApi"),
+        ApiHelper.get("/planItemTimes/plan/" + props.plan.id, "DoingApi")
+      ]);
+      const services = ((times || []) as TimeInterface[]).filter((t) => (t.serviceTimeType ?? "service") === "service");
+      services.sort((a, b) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
+      setServiceTimes(services);
+      setExclusions(ex || []);
+      setSelectedServiceTimeId((prev) => {
+        if (prev && services.some((s) => s.id === prev)) return prev;
+        return services[0]?.id || "";
+      });
+    } catch (error) {
+      console.error("Error loading service times:", error);
+    }
+  }, [props.plan?.id]);
+
+  const selectedServiceTime = useMemo(() => serviceTimes.find((s) => s.id === selectedServiceTimeId) || null, [serviceTimes, selectedServiceTimeId]);
 
 
   const handleAssociateLesson = useCallback(async (contentId: string, selectedVenueName?: string, contentPath?: string, providerId?: string) => {
@@ -411,12 +436,26 @@ export const ServiceOrder = memo((props: Props) => {
     [loadData]
   );
 
+  const isItemExcluded = useCallback((planItemId: string): boolean => {
+    if (!selectedServiceTimeId) return false;
+    return exclusions.some((ex) => ex.planItemId === planItemId && ex.timeId === selectedServiceTimeId && ex.excluded);
+  }, [exclusions, selectedServiceTimeId]);
+
+  // Section duration that respects per-item exclusions for the selected service time.
+  const effectiveSectionDuration = useCallback((item: PlanItemInterface): number => {
+    if (item.itemType !== "header" && isItemExcluded(item.id || "")) return 0;
+    let total = item.itemType === "header" ? 0 : (item.seconds || 0);
+    if (item.children) item.children.forEach((c) => { total += effectiveSectionDuration(c); });
+    return total;
+  }, [isItemExcluded]);
+
   const renderPlanItems = () => {
     const result: JSX.Element[] = [];
     let cumulativeTime = 0;
 
     planItems.forEach((pi, index) => {
       const sectionStartTime = cumulativeTime;
+      const excluded = pi.itemType !== "header" && isItemExcluded(pi.id || "");
 
       result.push(
         <React.Fragment key={pi.id || `temp-${index}`}>
@@ -455,11 +494,16 @@ export const ServiceOrder = memo((props: Props) => {
                 }}
                 onChange={() => {
                   loadData();
+                  loadTimesAndExclusions();
                 }}
                 startTime={sectionStartTime}
                 associatedVenueId={hasAssociatedContent ? getContentPath() : undefined}
                 associatedProviderId={props.plan?.providerId}
                 ministryId={props.plan?.ministryId}
+                serviceTime={selectedServiceTime}
+                exclusions={exclusions}
+                selectedServiceTimeId={selectedServiceTimeId}
+                excluded={excluded}
               />
             </DraggableWrapper>
           ) : (
@@ -474,12 +518,16 @@ export const ServiceOrder = memo((props: Props) => {
               associatedVenueId={hasAssociatedContent ? getContentPath() : undefined}
               associatedProviderId={props.plan?.providerId}
               ministryId={props.plan?.ministryId}
+              serviceTime={selectedServiceTime}
+              exclusions={exclusions}
+              selectedServiceTimeId={selectedServiceTimeId}
+              excluded={excluded}
             />
           )}
         </React.Fragment>
       );
 
-      cumulativeTime += getSectionDuration(pi);
+      cumulativeTime += effectiveSectionDuration(pi);
     });
 
     return result;
@@ -488,6 +536,10 @@ export const ServiceOrder = memo((props: Props) => {
   React.useEffect(() => {
     loadData();
   }, [loadData]);
+
+  React.useEffect(() => {
+    loadTimesAndExclusions();
+  }, [loadTimesAndExclusions]);
 
   // Load venue name when there's an associated lesson
   React.useEffect(() => {
@@ -554,6 +606,22 @@ export const ServiceOrder = memo((props: Props) => {
                   variant="outlined"
                   sx={{ fontWeight: 500 }}
                 />
+              )}
+              {serviceTimes.length > 0 && (
+                <TextField
+                  select
+                  size="small"
+                  label={Locale.label("plans.serviceOrder.viewingAs")}
+                  value={selectedServiceTimeId}
+                  onChange={(e) => setSelectedServiceTimeId(e.target.value)}
+                  sx={{ minWidth: 180 }}
+                >
+                  {serviceTimes.map((st) => (
+                    <MenuItem key={st.id} value={st.id}>
+                      {st.displayName} {st.startTime ? `· ${new Date(st.startTime).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : ""}
+                    </MenuItem>
+                  ))}
+                </TextField>
               )}
             </Stack>
             {editContent}

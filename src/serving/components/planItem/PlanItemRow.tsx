@@ -4,12 +4,14 @@ import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as Sched
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
-import { formatTime } from "../PlanUtils";
+import { formatTime, formatClockTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
 
 interface Props {
   planItem: PlanItemInterface;
   startTime?: number;
+  serviceStartTime?: Date;
+  excluded?: boolean;
   readOnly?: boolean;
   onLabelClick?: () => void;
   onEditClick: () => void;
@@ -21,18 +23,21 @@ interface Props {
 export const PlanItemRow: React.FC<Props> = ({
   planItem,
   startTime = 0,
+  serviceStartTime,
+  excluded,
   readOnly,
   onLabelClick,
   onEditClick
 }) => {
+  const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
   return (
     <Box
       className={`planItem${onLabelClick ? " clickableRow" : ""}`}
-      sx={{ display: "flex", alignItems: "center", cursor: onLabelClick ? "pointer" : "default" }}
+      sx={{ display: "flex", alignItems: "center", cursor: onLabelClick ? "pointer" : "default", opacity: excluded ? 0.5 : 1 }}
       onClick={onLabelClick}
     >
       <div className="timeRailCell">
-        <span className="timeRailLabel">{formatTime(startTime)}</span>
+        <span className="timeRailLabel" style={excluded ? { color: "#999" } : undefined}>{railLabel}</span>
         <span className="timeRailDot" />
         <span className="timeRailLine" />
       </div>

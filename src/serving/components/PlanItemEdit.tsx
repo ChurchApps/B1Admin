@@ -1,6 +1,7 @@
 import React from "react";
-import { Button, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, Grid, InputLabel, List, ListItem, ListItemText, OutlinedInput, Stack, TextField } from "@mui/material";
+import { Box, Button, Checkbox, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, List, ListItem, ListItemText, OutlinedInput, Stack, TextField, Typography } from "@mui/material";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
+import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { shouldShowLabel, shouldShowDescription, shouldShowDuration } from "./planItemUtils";
 
@@ -18,6 +19,9 @@ export const PlanItemEdit = (props: Props) => {
   const [searching, setSearching] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
+  const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
+  const [originalExclusions, setOriginalExclusions] = React.useState<PlanItemTimeInterface[]>([]);
+  const [excludedTimeIds, setExcludedTimeIds] = React.useState<Set<string>>(new Set());
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
@@ -33,18 +37,67 @@ export const PlanItemEdit = (props: Props) => {
     setPlanItem(pi);
   };
 
-  const loadData = React.useCallback(() => {
+  const loadData = React.useCallback(async () => {
     setPlanItem(props.planItem);
+    if (!props.planItem?.planId) return;
+    try {
+      const times: TimeInterface[] = await ApiHelper.get("/times/plan/" + props.planItem.planId, "DoingApi");
+      const services = (times || []).filter((t) => (t.serviceTimeType ?? "service") === "service");
+      services.sort((a, b) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
+      setServiceTimes(services);
+    } catch (e) {
+      setServiceTimes([]);
+    }
+    if (props.planItem?.id) {
+      try {
+        const exs: PlanItemTimeInterface[] = await ApiHelper.get("/planItemTimes/planItem/" + props.planItem.id, "DoingApi");
+        setOriginalExclusions(exs || []);
+        setExcludedTimeIds(new Set((exs || []).filter((e) => e.excluded).map((e) => e.timeId || "")));
+      } catch (e) {
+        setOriginalExclusions([]);
+        setExcludedTimeIds(new Set());
+      }
+    } else {
+      setOriginalExclusions([]);
+      setExcludedTimeIds(new Set());
+    }
   }, [props.planItem]);
+
+  const persistExclusions = async (planItemId: string) => {
+    if (serviceTimes.length === 0) return;
+    const originalExcludedTimeIds = new Set(originalExclusions.filter((e) => e.excluded).map((e) => e.timeId || ""));
+    const toAdd: PlanItemTimeInterface[] = [];
+    excludedTimeIds.forEach((tid) => {
+      if (!originalExcludedTimeIds.has(tid)) toAdd.push({ planItemId, timeId: tid, excluded: true });
+    });
+    const toDelete: PlanItemTimeInterface[] = originalExclusions.filter((e) => e.excluded && !excludedTimeIds.has(e.timeId || ""));
+
+    const ops: Promise<any>[] = [];
+    if (toAdd.length > 0) ops.push(ApiHelper.post("/planItemTimes", toAdd, "DoingApi"));
+    toDelete.forEach((e) => { if (e.id) ops.push(ApiHelper.delete("/planItemTimes/" + e.id, "DoingApi")); });
+    await Promise.all(ops);
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await ApiHelper.post("/planItems", [planItem], "DoingApi");
+      const saved = await ApiHelper.post("/planItems", [planItem], "DoingApi");
+      const savedId = (Array.isArray(saved) ? saved[0]?.id : saved?.id) || planItem?.id;
+      if (savedId && planItem?.itemType !== "header") {
+        await persistExclusions(savedId);
+      }
       props.onDone();
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const toggleExclusion = (timeId: string) => {
+    setExcludedTimeIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(timeId)) next.delete(timeId); else next.add(timeId);
+      return next;
+    });
   };
 
   React.useEffect(() => {
@@ -229,6 +282,26 @@ export const PlanItemEdit = (props: Props) => {
                 />
               </Grid>
             </Grid>
+          )}
+          {planItem?.itemType !== "header" && serviceTimes.length > 1 && (
+            <Box>
+              <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                {Locale.label("plans.planItemEdit.includeInServices")}
+              </Typography>
+              <FormGroup>
+                {serviceTimes.map((st) => {
+                  const checked = !excludedTimeIds.has(st.id || "");
+                  const label = st.startTime ? `${st.displayName || ""} · ${new Date(st.startTime).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : (st.displayName || "");
+                  return (
+                    <FormControlLabel
+                      key={st.id}
+                      control={<Checkbox checked={checked} onChange={() => toggleExclusion(st.id || "")} data-testid={`include-service-${st.id}`} />}
+                      label={label}
+                    />
+                  );
+                })}
+              </FormGroup>
+            </Box>
           )}
         </Stack>
       </DialogContent>

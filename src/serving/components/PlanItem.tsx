@@ -4,6 +4,7 @@ import { FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon,
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
+import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
@@ -24,6 +25,10 @@ interface Props {
   associatedVenueId?: string;
   associatedProviderId?: string;
   ministryId?: string;
+  serviceTime?: TimeInterface | null;
+  exclusions?: PlanItemTimeInterface[];
+  selectedServiceTimeId?: string;
+  excluded?: boolean;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -107,11 +112,17 @@ export const PlanItem = React.memo((props: Props) => {
     });
   };
 
+  const isChildExcluded = (childId: string): boolean => {
+    if (!props.selectedServiceTimeId) return false;
+    return (props.exclusions || []).some((ex) => ex.planItemId === childId && ex.timeId === props.selectedServiceTimeId && ex.excluded);
+  };
+
   const getChildren = () => {
     const result: JSX.Element[] = [];
     let cumulativeTime = props.startTime || 0;
     props.planItem.children?.forEach((c, index) => {
       const childStartTime = cumulativeTime;
+      const childExcluded = c.itemType !== "header" && isChildExcluded(c.id || "");
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
           {props.showItemDrop && (
@@ -140,11 +151,11 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} />
           </DraggableWrapper>
         </React.Fragment>
       );
-      cumulativeTime += c.seconds || 0;
+      if (!childExcluded) cumulativeTime += c.seconds || 0;
     });
     if (props.showItemDrop) {
       result.push(
@@ -176,6 +187,7 @@ export const PlanItem = React.memo((props: Props) => {
     <PlanItemHeader
       planItem={props.planItem}
       startTime={props.startTime}
+      serviceStartTime={props.serviceTime?.startTime}
       readOnly={props.readOnly}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem(props.planItem)}
@@ -188,6 +200,8 @@ export const PlanItem = React.memo((props: Props) => {
     <PlanItemRow
       planItem={props.planItem}
       startTime={props.startTime}
+      serviceStartTime={props.serviceTime?.startTime}
+      excluded={props.excluded}
       readOnly={props.readOnly}
       onLabelClick={onLabelClick}
       onEditClick={() => props.setEditPlanItem(props.planItem)}
