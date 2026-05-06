@@ -2907,6 +2907,18 @@
       "urlLabel": "Url",
       "urlPlaceholder": "/donate"
     },
+    "donationEdit": {
+      "allowedFunds": "Limit to specific funds",
+      "allowedFundsHelper": "Leave empty to allow all funds. Donors will only see the funds you select here.",
+      "allowRecurring": "Allow recurring gifts",
+      "allowSingleGift": "Allow single (one-time) gifts",
+      "defaultFund": "Default fund",
+      "defaultFundHelper": "Preselect this fund when the page loads. Combine with hiding the fund selector to route every gift here.",
+      "fundOptions": "Fund Options",
+      "giftOptions": "Gift Options",
+      "noDefaultFund": "No default",
+      "showFundSelector": "Show fund selector to donors"
+    },
     "editorToolbar": {
       "addContent": "Add Content",
       "ago": "ago",

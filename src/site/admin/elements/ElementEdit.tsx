@@ -17,6 +17,7 @@ import { FormEdit } from "./FormEdit";
 import { FaqEdit } from "./FaqEdit";
 import { CalendarElementEdit } from "./CalendarElementEdit";
 import { DonateLinkEdit } from "./DonateLinkEdit";
+import { DonationEdit } from "./DonationEdit";
 import { PickColors } from "./PickColors";
 import { TableEdit } from "./TableEdit";
 import { StylesAnimations } from "./StylesAnimations";
@@ -622,7 +623,16 @@ export function ElementEdit(props: Props) {
       case "textWithPhoto": result = getTextWithPhotoFields(); break;
       case "card": result = getCardFields(); break;
       case "logo": result = getLogoFields(); break;
-      case "donation": result = <></>; break;
+      case "donation":
+        result = (
+          <>
+            <DonationEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />
+            {getAppearanceFields([
+              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
+            ])}
+          </>
+        );
+        break;
       case "donateLink":
         result = (
           <>
@@ -735,7 +745,7 @@ export function ElementEdit(props: Props) {
 
   // Auto-save elements that have no settings to edit
   useEffect(() => {
-    const elementHasNoSettings = (elementType: string): boolean => elementType === "sermons" || elementType === "donation";
+    const elementHasNoSettings = (elementType: string): boolean => elementType === "sermons";
     if (element && !element.id && elementHasNoSettings(element.elementType)) {
       handleSave();
     }
