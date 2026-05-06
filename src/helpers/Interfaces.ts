@@ -193,6 +193,7 @@ export interface GlobalStyleInterface {
   typography?: string;
   spacing?: string;
   borderRadius?: string;
+  navStyles?: string;
   customCss?: string;
   customJS?: string;
 }

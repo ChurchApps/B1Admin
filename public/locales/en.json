@@ -3409,6 +3409,8 @@
       "loadingPreview": "Loading preview...",
       "logo": "Logo",
       "logoDesc": "Upload and manage your logo",
+      "nav": "Navigation",
+      "navDesc": "Style the site's navigation bar",
       "siteFooterName": "Site Footer",
       "spacing": "Spacing Scale",
       "spacingDesc": "Define consistent spacing values",
@@ -3416,6 +3418,22 @@
       "typography": "Typography Scale",
       "typographyDesc": "Configure font sizes and spacing",
       "yourChurch": "Your Church"
+    },
+    "navStyleEdit": {
+      "activeColor": "Active link color",
+      "auto": "Auto",
+      "backgroundColor": "Background color",
+      "clearOverride": "Clear",
+      "headerSubtitle": "Match the navigation to your church's branding",
+      "headerTitle": "Navigation Styling",
+      "linkColor": "Link color",
+      "linkHoverColor": "Link hover color",
+      "override": "Override",
+      "saveNav": "Save Navigation",
+      "solidSection": "Header (solid)",
+      "solidSectionDesc": "Used on most pages.",
+      "transparentSection": "Header over hero (transparent)",
+      "transparentSectionDesc": "Used when the nav floats over a hero image. Leave blank to auto-match the hero's text color."
     },
     "tableEdit": {
       "allowMarkdown": "Allow Markdown",

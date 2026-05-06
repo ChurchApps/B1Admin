@@ -409,6 +409,41 @@ test.describe('Website Management', () => {
       await expect(saveLogoBtn).toHaveCount(0);
     });
 
+    test('should open and cancel navigation styling', async () => {
+      const navOption = page.locator('[data-testid="style-option-nav"]');
+      await navOption.click();
+      const solidBg = page.locator('[data-testid="nav-solid-bg-input"]');
+      const transparentLinkToggle = page.locator('[data-testid="nav-transparent-link-toggle"]');
+      await expect(solidBg).toBeVisible({ timeout: 10000 });
+      await expect(transparentLinkToggle).toBeVisible();
+      const cancelBtn = page.locator('button').getByText('Cancel');
+      await cancelBtn.click();
+      await expect(solidBg).toHaveCount(0);
+    });
+
+    test('should save nav solid colors and persist them', async () => {
+      const navOption = page.locator('[data-testid="style-option-nav"]');
+      await navOption.click();
+      const linkInput = page.locator('[data-testid="nav-solid-link-input"] input[type="color"]');
+      await expect(linkInput).toBeVisible({ timeout: 10000 });
+      // `fill` does not work on type=color; use React's native setter.
+      await linkInput.evaluate((el: HTMLInputElement) => {
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!;
+        setter.call(el, '#7fff00');
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      await expect(linkInput).toHaveValue('#7fff00');
+      const saveBtn = page.locator('[data-testid="save-nav-button"]');
+      await saveBtn.click();
+      await expect(linkInput).toHaveCount(0, { timeout: 10000 });
+      await navOption.click();
+      const reopened = page.locator('[data-testid="nav-solid-link-input"] input[type="color"]');
+      await expect(reopened).toBeVisible({ timeout: 10000 });
+      await expect(reopened).toHaveValue('#7fff00');
+      const cancelBtn = page.locator('button').getByText('Cancel');
+      await cancelBtn.click();
+    });
+
     test('should add footer', async () => {
       const footerSettings = page.locator('h6').getByText('Site Footer');
       await footerSettings.click();

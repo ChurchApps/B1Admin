@@ -4,6 +4,7 @@ export { FontEdit } from "./FontEdit";
 export { CustomFontModal } from "./CustomFontModal";
 export { TypographyEdit } from "./TypographyEdit";
 export { SpacingScaleEdit } from "./SpacingScaleEdit";
+export { NavStyleEdit } from "./NavStyleEdit";
 export { CssEdit } from "./CssEdit";
 export { Preview } from "./Preview";
 export { StylesManager } from "./StylesManager";

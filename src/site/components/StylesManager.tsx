@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import { Box, Grid, Card, CardContent, Stack, Typography } from "@mui/material";
-import { Palette as PaletteIcon, TextFields as TextFieldsIcon, Code as CodeIcon, Image as ImageIcon, SmartButton as SmartButtonIcon, Style as StyleIcon, SpaceBar as SpaceBarIcon, FormatSize as FormatSizeIcon } from "@mui/icons-material";
+import { Palette as PaletteIcon, TextFields as TextFieldsIcon, Code as CodeIcon, Image as ImageIcon, SmartButton as SmartButtonIcon, Style as StyleIcon, SpaceBar as SpaceBarIcon, FormatSize as FormatSizeIcon, Menu as MenuIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface, BlockInterface, GenericSettingInterface } from "../../helpers/Interfaces";
-import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit, SpacingScaleEdit } from "./";
+import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit, SpacingScaleEdit, NavStyleEdit } from "./";
 import UserContext from "../../UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CardWithHeader } from "../../components/ui";
@@ -15,7 +15,7 @@ export function StylesManager() {
   const location = useLocation();
   const hash = location.hash?.replace("#", "");
   const [globalStyle, setGlobalStyle] = useState<GlobalStyleInterface>(null);
-  const [section, setSection] = useState<string>(["palette", "fonts", "typography", "spacing", "css", "logo"].includes(hash) ? hash : "");
+  const [section, setSection] = useState<string>(["palette", "fonts", "typography", "spacing", "nav", "css", "logo"].includes(hash) ? hash : "");
   const [churchSettings, setChurchSettings] = useState<any>(null);
   const [currentSettings, setCurrentSettings] = useState<GenericSettingInterface[]>([]);
 
@@ -80,6 +80,15 @@ export function StylesManager() {
     setSection("");
   };
 
+  const handleNavUpdate = (navStylesJson: string) => {
+    if (navStylesJson) {
+      const gs = { ...globalStyle };
+      gs.navStyles = navStylesJson;
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => loadData());
+    }
+    setSection("");
+  };
+
   useEffect(() => { loadData(); }, []);
 
   const getFooter = async () => {
@@ -123,6 +132,13 @@ export function StylesManager() {
       action: () => setSection("spacing")
     },
     {
+      id: "nav",
+      icon: <MenuIcon />,
+      title: Locale.label("site.stylesManager.nav"),
+      description: Locale.label("site.stylesManager.navDesc"),
+      action: () => setSection("nav")
+    },
+    {
       id: "css",
       icon: <CodeIcon />,
       title: Locale.label("site.stylesManager.css"),
@@ -153,6 +169,7 @@ export function StylesManager() {
           {section === "fonts" && <FontEdit globalStyle={globalStyle} updatedFunction={handleFontsUpdate} />}
           {section === "typography" && <TypographyEdit globalStyle={globalStyle} updatedFunction={handleTypographyUpdate} />}
           {section === "spacing" && <SpacingScaleEdit globalStyle={globalStyle} updatedFunction={handleSpacingUpdate} />}
+          {section === "nav" && <NavStyleEdit globalStyle={globalStyle} updatedFunction={handleNavUpdate} />}
           {section === "css" && <CssEdit globalStyle={globalStyle} updatedFunction={handleUpdate} />}
           {section === "logo" && <AppearanceEdit settings={currentSettings} updatedFunction={() => { setSection(""); loadData(); }} />}
           {section === "" && (
