@@ -165,10 +165,10 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.28.5"
 
-"@churchapps/apphelper@0.7.8":
-  version "0.7.8"
-  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.7.8.tgz"
-  integrity sha512-0kxn8edfacJAkaOmcWFHrh0hU/aIiq6kj2goq4UNsMdUbvwGHJ9BKv4Hv3CFjACZM4zy0F/MAAPHGS29TP5Iag==
+"@churchapps/apphelper@0.7.10":
+  version "0.7.10"
+  resolved "https://registry.npmjs.org/@churchapps/apphelper/-/apphelper-0.7.10.tgz"
+  integrity sha512-S0IvfgFjyt3pdanlfQvv62MWYvzq714/s2lgHA66zRM/mAJBuIHPvV4rDYrsPDjdcMzEE8X2EYJf05/72uKs+Q==
   dependencies:
     "@churchapps/helpers" "^1.3.0"
     "@emotion/cache" "^11.14.0"
