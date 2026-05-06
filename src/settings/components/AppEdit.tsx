@@ -263,6 +263,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                   <MenuItem value="bible">{Locale.label("settings.appEdit.bible")}</MenuItem>
                   <MenuItem value="stream">{Locale.label("settings.appEdit.liveStream")}</MenuItem>
                   <MenuItem value="votd">{Locale.label("settings.appEdit.verseOfDay")}</MenuItem>
+                  <MenuItem value="sermons">{Locale.label("settings.appEdit.sermons")}</MenuItem>
                   <MenuItem value="checkin">{Locale.label("settings.appEdit.checkin")}</MenuItem>
                   <MenuItem value="donation">{Locale.label("settings.appEdit.donation")}</MenuItem>
                   <MenuItem value="donationLanding">{Locale.label("settings.appEdit.donationLanding")}</MenuItem>
@@ -270,6 +271,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                   <MenuItem value="groups">{Locale.label("settings.appEdit.myGroups")}</MenuItem>
                   <MenuItem value="lessons">{Locale.label("settings.appEdit.lessons")}</MenuItem>
                   <MenuItem value="volunteer">{Locale.label("settings.appEdit.volunteerOpportunities")}</MenuItem>
+                  <MenuItem value="plans">{Locale.label("settings.appEdit.plans")}</MenuItem>
                   <MenuItem value="url">{Locale.label("settings.appEdit.externalUrl")}</MenuItem>
                   <MenuItem value="page">{Locale.label("settings.appEdit.internalPage")}</MenuItem>
                 </Select>

@@ -9,6 +9,7 @@ import { Box, Button, Card, CardContent, Icon, InputAdornment, Menu, MenuItem, S
 import { Add as AddIcon, CalendarMonth as CalendarIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
 import React from "react";
 import { SermonEdit } from "./SermonEdit";
+import { TabVisibilityBanner } from "../../components/ui";
 
 export const Sermons = () => {
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
@@ -263,6 +264,8 @@ export const Sermons = () => {
             </Stack>
           </PageHeader>
         </Box>
+
+        <TabVisibilityBanner linkType="sermons" hasContent={sermons.length > 0} />
 
         {/* Content */}
         <Box sx={{ px: 3 }}>

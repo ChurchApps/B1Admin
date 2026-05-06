@@ -2489,10 +2489,12 @@
       "myGroups": "My Groups",
       "noGroupsFound": "No groups found",
       "page": "Page",
+      "plans": "Serving Plans",
       "saveTab": "Save Tab",
       "saving": "Saving...",
       "selectGroups": "Select Groups:",
       "selectImage": "Select Image",
+      "sermons": "Sermons",
       "staffOnly": "Staff Only",
       "tabIconAlt": "Tab icon",
       "tabName": "Tab Name",
@@ -3686,6 +3688,45 @@
       "subtitle": "Manage your music library"
     },
     "title": "Songs"
+  },
+  "tabBanner": {
+    "cta": "Add tab",
+    "sermons": {
+      "title": "Members can't see your sermons yet",
+      "body": "You have sermons published, but no Sermons tab in your members' app. Add one so members can find them."
+    },
+    "groups": {
+      "title": "Members can't browse your groups yet",
+      "body": "You have groups created, but no Groups tab in your members' app."
+    },
+    "donation": {
+      "title": "Members can't give yet",
+      "body": "Online giving is configured, but there's no Give tab in your members' app."
+    },
+    "directory": {
+      "title": "Members can't browse the directory yet",
+      "body": "You have a directory, but no Directory tab in your members' app."
+    },
+    "stream": {
+      "title": "Live stream isn't on the dashboard",
+      "body": "Service times are configured, but there's no Live tab in your members' app."
+    },
+    "checkin": {
+      "title": "Members can't check in from the app",
+      "body": "Check-in is configured, but there's no Check-in tab in your members' app."
+    },
+    "volunteer": {
+      "title": "Volunteer opportunities aren't visible",
+      "body": "You have ministries, but no Volunteer tab in your members' app."
+    },
+    "plans": {
+      "title": "Serving plans aren't visible",
+      "body": "You have ministries, but no Serving tab in your members' app."
+    },
+    "page": {
+      "title": "Your custom pages aren't on the dashboard",
+      "body": "Add a tab so members can find these pages in the app."
+    }
   },
   "tasks": {
     "actionEdit": {

@@ -6,11 +6,19 @@ import {
   Settings as SettingsIcon,
   LiveTv as LiveTvIcon
 } from "@mui/icons-material";
+import { useQuery } from "@tanstack/react-query";
+import type { StreamingServiceInterface } from "@churchapps/helpers";
 import { Services, Tabs } from "./components";
 import { NavigationTabs } from "../components/ui/NavigationTabs";
+import { TabVisibilityBanner } from "../components/ui";
 
 export const LiveStreamTimesPage = memo(() => {
   const [selectedTab, setSelectedTab] = React.useState("services");
+
+  const services = useQuery<StreamingServiceInterface[]>({
+    queryKey: ["/streamingServices", "ContentApi"],
+    placeholderData: []
+  });
 
   if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) return <></>;
 
@@ -43,6 +51,7 @@ export const LiveStreamTimesPage = memo(() => {
   return (
     <>
       <PageHeader title={Locale.label("sermons.liveStreamTimes.title")} subtitle={Locale.label("sermons.liveStreamTimes.subtitle")} />
+      <TabVisibilityBanner linkType="stream" hasContent={(services.data || []).length > 0} />
       <NavigationTabs selectedTab={selectedTab} onTabChange={setSelectedTab} tabs={tabs} />
       <Box sx={{ p: 3 }}>
         {getCurrentTab()}

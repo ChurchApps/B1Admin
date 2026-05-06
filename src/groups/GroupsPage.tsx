@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, But
 import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
+import { TabVisibilityBanner } from "../components/ui";
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -186,6 +187,8 @@ const GroupsPage = () => {
           )}
         </Stack>
       </PageHeader>
+
+      <TabVisibilityBanner linkType="groups" hasContent={groups.length > 0} />
 
       {/* Main Content */}
       <Box sx={{ p: 3 }}>
