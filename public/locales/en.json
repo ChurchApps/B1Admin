@@ -58,23 +58,8 @@
       }
     },
     "checkinThemeEdit": {
-      "addSlide": "Add Slide",
-      "background": "Background",
-      "backgroundImage": "Background Image",
-      "backgroundImageDesc": "Optional background image for the lookup/welcome screen. Recommended: 1920x1080.",
-      "change": "Change",
-      "changeImage": "Change Image",
-      "duration": "Duration (s)",
-      "enableIdleScreen": "Enable idle screen",
       "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
-      "idleScreen": "Idle Screen / Screensaver",
-      "kioskSettings": "Kiosk Settings",
-      "remove": "Remove",
-      "slide": "Slide {index}",
-      "slides": "Slides",
-      "timeoutSeconds": "Timeout (seconds)",
-      "upload": "Upload",
-      "uploadImage": "Upload Image"
+      "kioskSettings": "Kiosk Settings"
     },
     "serviceEdit": {
       "campus": "Campus",
@@ -190,7 +175,6 @@
     "appTheme": "App Theme",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
-    "back": "Back",
     "bottom": "Bottom",
     "cancel": "Cancel",
     "center": "Center",
@@ -200,6 +184,7 @@
     "comboBox": {
       "addNew": "Add New..."
     },
+    "confirm": "Confirm",
     "createPerson": {
       "confirmDuplicate": "{existingName} already exists with an email of {existingEmail}. Are you sure you wish to add {firstName} {lastName}?",
       "validate": {
@@ -213,6 +198,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Edit",
+    "element": "Element",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -234,7 +220,9 @@
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
+    "loading": "Loading",
     "mobile": "Mobile",
+    "more": "More",
     "name": "Name",
     "navigation": "Navigation",
     "no": "No",
@@ -259,8 +247,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes",
-    "element": "Element"
+    "yes": "Yes"
   },
   "components": {
     "associatedForms": {
@@ -304,10 +291,6 @@
       "rights": "All rights reserved."
     },
     "loginHeroPanel": {
-      "featureDonations": "Donations & financial tracking",
-      "featurePeople": "People & household management",
-      "featurePlanning": "Service planning & scheduling",
-      "featureWebsite": "Website builder & content management",
       "subtitle": "Manage your congregation, plan services, track attendance, and handle donations — all in one place.",
       "title": "Church Management Made Simple"
     },
@@ -400,8 +383,7 @@
       "yourProfile": "Your Profile"
     },
     "dashboardPage": {
-      "dash": "Dashboard",
-      "subtitle": "Welcome to your church management dashboard. Search for people, view your groups, and manage your open tasks."
+      "dash": "Dashboard"
     },
     "memberWelcome": {
       "downloadAppDesc": "Get the B1.church app on your phone to stay connected wherever you go.",
@@ -661,12 +643,6 @@
       "taxStatus": "Tax Status",
       "totalFunds": "Total Funds"
     },
-    "kpi": {
-      "avgGift": "Average Gift",
-      "donationCount": "Total Donations",
-      "donorCount": "Unique Donors",
-      "totalGiving": "Total Giving"
-    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
@@ -833,7 +809,6 @@
       "confirmMsg2": "Are you sure you want to restore this form?",
       "edit": "Edit",
       "editFormAria": "Edit form {name}",
-      "form": "form",
       "formArchivedCount": "{count} archived form",
       "formArchivedCountPlural": "{count} archived forms",
       "formCount": "{count} form",
@@ -925,21 +900,13 @@
       "newLabelPrompt": "Enter a new label"
     },
     "groupMembers": {
-      "cancel": "Cancel",
       "groupMem": "Group Members",
       "leader": "Leader",
-      "leaderLower": "leader",
-      "leadersLower": "leaders",
       "makeLeader": "Make Leader",
-      "member": "member",
-      "members": "members",
       "messagePlaceholder": "Write a message to send to all group members…",
-      "noMem": "No group members found.",
       "noMemDesc": "Add members from the panel to the right to start building this group.",
       "noMemTitle": "No members yet",
-      "promoteToLeader": "Promote to Leader",
       "promoteToLeaderAria": "Promote {name} to leader",
-      "remove": "Remove",
       "removeFromGroupAria": "Remove {name} from group",
       "removeLeaderAccess": "Remove Leader Access",
       "removeLeaderAccessAria": "Remove leader access for {name}",
@@ -1006,11 +973,7 @@
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Insert merge field into body:",
-      "cancel": "Cancel",
-      "close": "Close",
       "composePlaceholder": "Compose your email here...",
-      "eligibleSummary": "{eligibleCount} of {totalMembers} members will receive this email.",
-      "eligibleSummarySingular": "{eligibleCount} of {totalMembers} member will receive this email.",
       "emailGroupTitle": "Email Group: {groupName}",
       "fallbackError": "Failed to send email.",
       "loadTemplate": "Load Template (optional)",
@@ -1021,32 +984,20 @@
       "mergeFieldEmail": "Email",
       "mergeFieldFirstName": "First Name",
       "mergeFieldLastName": "Last Name",
-      "noEmailNotice": "{count} have no email address on file.",
-      "noEmailNoticeSingular": "{count} has no email address on file.",
       "noEmailSkipped": "{count} skipped (no email address on file).",
       "none": "None",
       "send": "Send Email",
       "sendDefault": "This will send an email to eligible group members.",
       "sendFailedDetail": "{count} failed to send.",
       "sending": "Sending...",
-      "sentSummary": "Sent to {successCount} of {recipientCount} eligible recipients.",
-      "sentSummarySingular": "Sent to {successCount} of {recipientCount} eligible recipient.",
       "subject": "Subject",
       "subjectMergeFieldHint": "Insert merge field into subject:",
       "subjectPlaceholder": "e.g. Hello {firstName}, update from {churchName}"
     },
     "sendTextDialog": {
-      "cancel": "Cancel",
-      "characterCount": "{count} characters ({segments} SMS segments)",
-      "characterCountSingular": "{count} character ({segments} SMS segment)",
-      "close": "Close",
-      "eligibleSummary": "{eligibleCount} of {totalMembers} members will receive this text.",
-      "eligibleSummarySingular": "{eligibleCount} of {totalMembers} member will receive this text.",
       "fallbackError": "Failed to send text message.",
       "loadingRecipients": "Loading recipients...",
       "messageLabel": "Message",
-      "noPhoneNotice": "{count} have no phone number on file.",
-      "noPhoneNoticeSingular": "{count} has no phone number on file.",
       "noPhoneSkipped": "{count} skipped (no phone number).",
       "optedOutNotice": "{count} opted out.",
       "optedOutSkipped": "{count} skipped (opted out).",
@@ -1056,8 +1007,6 @@
       "sendFailedDetail": "{count} failed to send.",
       "sending": "Sending...",
       "sendingTo": "Sending to {phoneNumber}.",
-      "sentSummary": "Sent to {successCount} of {recipientCount} eligible recipients.",
-      "sentSummarySingular": "Sent to {successCount} of {recipientCount} eligible recipient.",
       "textGroupTitle": "Text Group: {groupName}",
       "textPersonTitle": "Text: {personName}"
     },
@@ -1633,10 +1582,8 @@
       "autoAssign": "Auto Assign",
       "notesPlaceholder": "Add notes for this service plan...",
       "notesPlaceholderReadOnly": "Plan notes (read-only)",
-      "planNotes": "Plan Notes",
       "planNotesAria": "Plan notes",
-      "saveNotes": "Save Notes",
-      "saveSuccess": "Notes saved successfully"
+      "saveNotes": "Save Notes"
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
@@ -1656,8 +1603,6 @@
       "loadFailed": "Failed to load lesson data. Please try again.",
       "loadingSeries": "Loading lesson series...",
       "noLessonsInSeries": "No lessons found in this series.",
-      "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
-      "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
       "pathNotSupported": "Selected lesson path format not supported for bulk scheduling.",
       "savingFailed": "Failed to create some plans. Please check and try again.",
       "schedulingProgress": "Scheduling...",
@@ -1668,10 +1613,8 @@
       "weekly": "Weekly"
     },
     "contentProviderAuth": {
-      "accountLinked": "Account linked",
       "authExpired": "Authentication expired or failed",
       "authFailed": "Authentication failed",
-      "contentProviderAccounts": "Content Provider Accounts",
       "deviceFlowFailed": "Failed to start device flow",
       "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
       "deviceFlowUnsupported": "Provider does not support device flow",
@@ -1683,7 +1626,6 @@
       "linked": "Linked",
       "noLinkedDescription": "Link a content provider to access their content in your service plans.",
       "noProvidersAvailable": "No content providers available",
-      "noProvidersAvailableLong": "No content providers available that require authentication.",
       "pkceInstructions": "Click the button below to authorize in a popup window:",
       "pkceUnsupported": "Provider does not support PKCE authentication",
       "pkceWaiting": "Waiting for authorization in popup...",
@@ -1823,25 +1765,27 @@
     },
     "planTypeEdit": {
       "add": "Add",
+      "confirmDelete": "Confirm Delete",
       "edit": "Edit",
+      "errorDeleting": "Error Deleting",
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
       "planTypeName": "Plan Type Name"
     },
     "planTypeGroups": {
-      "heading": "Associated Groups",
-      "description": "Plans for this plan type will show up on the group's page in the B1App for the groups listed below.",
       "addGroup": "Add Group",
-      "selectGroup": "Select a group",
-      "showsLabel": "Shows",
+      "description": "Plans for this plan type will show up on the group's page in the B1App for the groups listed below.",
+      "heading": "Associated Groups",
       "noGroups": "No groups associated",
       "noGroupsDescription": "Associate groups with this plan type so members see plans on their group's page in the B1App.",
       "removeConfirm": "Remove this group association?",
+      "selectGroup": "Select a group",
+      "showsLabel": "Shows",
       "timeFilter": {
-        "past": "Past plans only",
+        "both": "Past and upcoming plans",
         "future": "Upcoming plans only",
-        "both": "Past and upcoming plans"
+        "past": "Past plans only"
       }
     },
     "planTypeList": {
@@ -1854,17 +1798,8 @@
     "planTypePage": {
       "notFound": "Plan type not found",
       "overview": "Overview",
-      "pairTvApp": "Pair TV App",
       "planType": "Plan Type",
-      "subtitle": "Configure plan type settings",
-      "tvAppDescription": "Show your lesson content on any TV or display using our free app"
-    },
-    "planTypePairDialog": {
-      "downloadTitle": "Download the Lessons.church TV App",
-      "instructions": "Enter the 4-character code displayed on the TV app screen:",
-      "pairTitle": "Pair Your Device",
-      "success": "Successfully paired! The TV app will now show content from this plan type.",
-      "title": "Pair TV App"
+      "subtitle": "Configure plan type settings"
     },
     "planValidation": {
       "and": "and",
@@ -1978,7 +1913,6 @@
       "startTimeAria": "Start time",
       "teamNeed": "Needed Serving Teams",
       "teamPrefix": "Serving Team",
-      "teamReq": "Please Select Serving Team(s).",
       "timeAdd": "Add a Time",
       "timeDisplayNameAria": "Time display name",
       "timeEdit": "Edit Time",
@@ -2119,7 +2053,6 @@
     },
     "noData": "No data available",
     "reportOutput": {
-      "anonymous": "Anonymous",
       "print": "print"
     },
     "runReport": "Run Report",
@@ -2403,7 +2336,6 @@
       "impersonateUser": "Impersonate User",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
-      "noUserChurches": "This user has no churches associated with their account.",
       "noUsers": "No users found. Please search for a different name or email.",
       "noteFour": "Comparable software is ProPresenter.  It's $399 for a site license.  I made assumptions that the average church installs the software on 3 computers and divided our total installs by 3 to get the number of churches.  I also made the assumption that churches will upgrade to a newer version every 5 years on average.  So $399 / 5 years / 3 computers = $26.60 annual cost per computer.  If we can quantify these assumptions we should update this number.",
       "noteOne": "Comparable software is Breeze.  They charge $72/mo or $864/year.",
@@ -2417,10 +2349,6 @@
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
       "usageTrends": "Usage Trends",
-      "userChurches": "Churches",
-      "userSearch": "Search by Name or Email",
-      "userSearchPlaceholder": "Search by name or email",
-      "users": "Users",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
@@ -2462,11 +2390,6 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Search translation statistics"
-    },
-    "usersTab": {
-      "noPersonLinked": "No person linked",
-      "searchUsersAria": "Search users",
-      "userNameOrEmailSearchAria": "User name or email search"
     }
   },
   "settings": {
@@ -2701,7 +2624,6 @@
       "auditLog": "Audit Log",
       "editSettings": "Edit Settings",
       "imEx": "Import/Export",
-      "mobileApps": "Mobile Apps",
       "noData": "No church data available",
       "subtitle": "Configure church settings and preferences",
       "title": "Manage Church"
@@ -2727,7 +2649,6 @@
     "roleMembers": {
       "addRoleMemberAria": "Add role member",
       "confirmMsg": "Are you sure you wish to delete this user from",
-      "edit": "Edit",
       "editRoleMemberAria": "Edit role member {firstName} {lastName}",
       "lastAdminWarning": "At least one Domain Admin is required. Add another admin before removing this one.",
       "mem": "Members",
@@ -2753,7 +2674,6 @@
       "contAdmin": "Content Admin",
       "contAdminDesc": "Can edit website content, mobile content and sermons.",
       "custAdd": "Add Custom Role",
-      "edit": "Edit",
       "editRoleAria": "Edit role",
       "everyone": "Everyone",
       "itMsg": "? It ",
@@ -2991,10 +2911,8 @@
       "addContent": "Add Content",
       "ago": "ago",
       "block": "Block",
-      "desktop": "Desktop",
       "exit": "Exit",
       "justNow": "just now",
-      "mobile": "Mobile",
       "notSavedYet": "No changes yet",
       "page": "Page",
       "redoTip": "Redo (Ctrl+Shift+Z)",
@@ -3015,7 +2933,6 @@
       "carousel": "Carousel",
       "church": "Church",
       "common": "Common",
-      "content": "Content",
       "descBox": "Flexible container box",
       "descCalendar": "Event calendar view",
       "descCard": "Content card with image",
@@ -3042,15 +2959,12 @@
       "descVideo": "Video embed or upload",
       "donateLink": "Donate Link",
       "donation": "Donation",
-      "dragAndDrop": "Drag and drop onto page",
-      "dragHint": "Drag elements onto the page to add them",
       "embedPage": "Embed Page",
       "expandable": "Expandable",
       "form": "Form",
       "groupList": "Group List",
       "html": "HTML",
       "image": "Image",
-      "layout": "Layout",
       "location": "Location",
       "logo": "Logo",
       "media": "Media",
@@ -3184,7 +3098,6 @@
       "storageLimit": "/ 100MB"
     },
     "filesPage": {
-      "loading": "Loading...",
       "subtitle": "Manage files and media for your website",
       "title": "Files"
     },
@@ -3327,7 +3240,6 @@
     },
     "pickColors": {
       "background": "Background",
-      "backgroundField": "Background",
       "backgroundOpacity": "Background Opacity",
       "backgroundType": "Background Type",
       "color": "Color",
@@ -3602,7 +3514,6 @@
     "keys": {
       "add": "Add",
       "addExternalLink": "Add external link",
-      "addExternalLinkAria": "Add external link",
       "addFiles": "Add Files",
       "availableDownloads": "Available Downloads",
       "editSelectedKeyAria": "Edit selected key",
@@ -3697,43 +3608,7 @@
     "title": "Songs"
   },
   "tabBanner": {
-    "cta": "Add tab",
-    "sermons": {
-      "title": "Members can't see your sermons yet",
-      "body": "You have sermons published, but no Sermons tab in your members' app. Add one so members can find them."
-    },
-    "groups": {
-      "title": "Members can't browse your groups yet",
-      "body": "You have groups created, but no Groups tab in your members' app."
-    },
-    "donation": {
-      "title": "Members can't give yet",
-      "body": "Online giving is configured, but there's no Give tab in your members' app."
-    },
-    "directory": {
-      "title": "Members can't browse the directory yet",
-      "body": "You have a directory, but no Directory tab in your members' app."
-    },
-    "stream": {
-      "title": "Live stream isn't on the dashboard",
-      "body": "Service times are configured, but there's no Live tab in your members' app."
-    },
-    "checkin": {
-      "title": "Members can't check in from the app",
-      "body": "Check-in is configured, but there's no Check-in tab in your members' app."
-    },
-    "volunteer": {
-      "title": "Volunteer opportunities aren't visible",
-      "body": "You have ministries, but no Volunteer tab in your members' app."
-    },
-    "plans": {
-      "title": "Serving plans aren't visible",
-      "body": "You have ministries, but no Serving tab in your members' app."
-    },
-    "page": {
-      "title": "Your custom pages aren't on the dashboard",
-      "body": "Add a tab so members can find these pages in the app."
-    }
+    "cta": "Add tab"
   },
   "tasks": {
     "actionEdit": {

@@ -125,6 +125,7 @@ export const ServiceOrder = memo((props: Props) => {
       setServiceTimes(services);
       setExclusions(ex || []);
       setSelectedServiceTimeId((prev) => {
+        if (prev === "elapsed") return prev;
         if (prev && services.some((s) => s.id === prev)) return prev;
         return services[0]?.id || "";
       });
@@ -621,6 +622,7 @@ export const ServiceOrder = memo((props: Props) => {
                       {st.displayName} {st.startTime ? `· ${new Date(st.startTime).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : ""}
                     </MenuItem>
                   ))}
+                  <MenuItem value="elapsed">{Locale.label("plans.serviceOrder.runTimes")}</MenuItem>
                 </TextField>
               )}
             </Stack>
