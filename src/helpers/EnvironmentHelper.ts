@@ -11,6 +11,7 @@ export class EnvironmentHelper {
     const stage = process.env.REACT_APP_STAGE;
 
     switch (stage) {
+      case "demo": EnvironmentHelper.initDemo(); break;
       case "staging": EnvironmentHelper.initStaging(); break;
       case "prod": EnvironmentHelper.initProd(); break;
       default: EnvironmentHelper.initDev(); break;
@@ -48,6 +49,12 @@ export class EnvironmentHelper {
     this.initStaging();
     EnvironmentHelper.LessonsApi = process.env.REACT_APP_LESSONS_API || EnvironmentHelper.LessonsApi;
     EnvironmentHelper.B1Url = process.env.REACT_APP_B1_WEBSITE_URL || EnvironmentHelper.B1Url;
+  };
+
+  //NOTE: None of these values are secret.
+  static initDemo = () => {
+    EnvironmentHelper.initStaging();
+    EnvironmentHelper.B1Url = "https://{subdomain}.demosite.b1.church";
   };
 
   //NOTE: None of these values are secret.

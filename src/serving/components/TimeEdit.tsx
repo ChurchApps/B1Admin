@@ -31,7 +31,6 @@ export const TimeEdit = (props: Props) => {
     if (!time.displayName) errors.push(Locale.label("plans.timeEdit.disNameReq"));
     if (!time.startTime) errors.push(Locale.label("plans.timeEdit.startReq"));
     if (!time.endTime) errors.push(Locale.label("plans.timeEdit.endReq"));
-    if (!time.teams || time.teams === "") errors.push(Locale.label("plans.timeEdit.teamReq"));
     setErrors(errors);
     if (errors.length === 0) ApiHelper.post("/times", [time], "DoingApi").then(props.onUpdate);
   };
@@ -84,8 +83,7 @@ export const TimeEdit = (props: Props) => {
         headerIcon="assignment"
         saveFunction={handleSave}
         cancelFunction={props.onUpdate}
-        deleteFunction={time.id ? handleDelete : null}
-        isSubmitting={props.categories.length === 0}>
+        deleteFunction={time.id ? handleDelete : null}>
         <TextField
           fullWidth
           select
