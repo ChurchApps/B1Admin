@@ -24,42 +24,42 @@ const ICON_FOR_LINK_TYPE: Record<string, string> = {
   url: "link"
 };
 
-export const MobileAppSettingsPage = () => {
-  const [selectedTab, setSelectedTab] = useState<LinkInterface>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const buildNewTab = (linkType = "url", linkData = ""): LinkInterface => {
-    const tab: LinkInterface = {
-      churchId: UserHelper.currentUserChurch.church.id,
-      sort: 0,
-      text: "",
-      url: "",
-      icon: ICON_FOR_LINK_TYPE[linkType] || "home",
-      linkData,
-      linkType,
-      category: "b1Tab"
-    };
-    (tab as any).visibility = "everyone";
-    return tab;
+const buildNewTab = (linkType = "url", linkData = ""): LinkInterface => {
+  const tab: LinkInterface = {
+    churchId: UserHelper.currentUserChurch.church.id,
+    sort: 0,
+    text: "",
+    url: "",
+    icon: ICON_FOR_LINK_TYPE[linkType] || "home",
+    linkData,
+    linkType,
+    category: "b1Tab"
   };
+  (tab as any).visibility = "everyone";
+  return tab;
+};
+
+export const MobileAppSettingsPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedTab, setSelectedTab] = useState<LinkInterface>(() => {
+    if (!UserHelper.currentUserChurch) return null;
+    const linkType = searchParams.get("linkType");
+    if (!linkType) return null;
+    return buildNewTab(linkType, searchParams.get("linkData") || "");
+  });
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleAddTab = () => {
     setSelectedTab(buildNewTab());
   };
 
   useEffect(() => {
-    if (!UserHelper.currentUserChurch) return;
-    const linkType = searchParams.get("linkType");
-    if (!linkType) return;
-    const linkData = searchParams.get("linkData") || "";
-    setSelectedTab(buildNewTab(linkType, linkData));
+    if (!searchParams.has("linkType") && !searchParams.has("linkData")) return;
     const next = new URLSearchParams(searchParams);
     next.delete("linkType");
     next.delete("linkData");
     setSearchParams(next, { replace: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParams, setSearchParams]);
 
   const handleTabsUpdated = () => {
     setSelectedTab(null);
