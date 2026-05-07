@@ -42,6 +42,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       case "parentPickup": g.parentPickup = e.target.value === "true"; break;
       case "printNametag": g.printNametag = e.target.value === "true"; break;
       case "slug": g.slug = e.target.value; break;
+      case "joinPolicy": g.joinPolicy = e.target.value as GroupInterface["joinPolicy"]; break;
     }
     setGroup(g);
   };
@@ -332,6 +333,22 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <GroupLabelsEdit group={group} onUpdate={handleArrayChange} />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth>
+                    <InputLabel>{Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"}</InputLabel>
+                    <Select
+                      label={Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"}
+                      name="joinPolicy"
+                      data-testid="join-policy-select"
+                      value={group.joinPolicy || "open"}
+                      onChange={handleChange}
+                      onKeyDown={handleKeyDown}>
+                      <MenuItem value="open">Open (members can join immediately)</MenuItem>
+                      <MenuItem value="request">Request to Join (leader approval required)</MenuItem>
+                      <MenuItem value="closed">Closed (admin-add only)</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
             </>

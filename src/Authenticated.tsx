@@ -11,6 +11,7 @@ const PeoplePage = React.lazy(() => import("./people/PeoplePage").then((module) 
 const PersonPage = React.lazy(() => import("./people/PersonPage").then((module) => ({ default: module.PersonPage })));
 const GroupsPage = React.lazy(() => import("./groups/GroupsPage"));
 const GroupPage = React.lazy(() => import("./groups/GroupPage").then((module) => ({ default: module.GroupPage })));
+const PendingRequestsPage = React.lazy(() => import("./groups/PendingRequestsPage"));
 const AttendancePage = React.lazy(() => import("./attendance/AttendancePage").then((module) => ({ default: module.AttendancePage })));
 const DonationsPage = React.lazy(() => import("./donations/DonationsPage").then((module) => ({ default: module.DonationsPage })));
 const DonationBatchPage = React.lazy(() => import("./donations/DonationBatchPage").then((module) => ({ default: module.DonationBatchPage })));
@@ -104,6 +105,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/people/add" element={<PersonPage />} />
           <Route path="/people/:id" element={<PersonPage />} />
           <Route path="/people" element={<PeoplePage />} />
+          <Route path="/groups/pending" element={<PendingRequestsPage />} />
           <Route path="/groups/:id" element={<GroupPage />} />
           <Route path="/groups" element={<GroupsPage />} />
           <Route path="/attendance" element={<AttendancePage />} />

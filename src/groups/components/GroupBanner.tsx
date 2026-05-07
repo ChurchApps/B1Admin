@@ -237,7 +237,7 @@ export const GroupBanner = memo((props: Props) => {
                   </Tooltip>
                 )}
                 {canEdit && (
-                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>
+                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit} data-testid="edit-group-button" aria-label="Edit group">
                     <EditIcon fontSize="small" />
                   </IconButton>
                 )}

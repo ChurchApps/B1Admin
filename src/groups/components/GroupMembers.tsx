@@ -1,9 +1,11 @@
 import React, { useState, memo, useMemo, useCallback, useRef } from "react";
 import {
   type GroupInterface,
+  type GroupJoinRequestInterface,
   type GroupMemberInterface,
   type PersonInterface
 } from "@churchapps/helpers";
+import { PendingJoinRequests } from "./PendingJoinRequests";
 import {
   ApiHelper,
   DisplayBox,
@@ -69,6 +71,12 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
   const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: [`/groupmembers?groupId=${props.group?.id}`, "MembershipApi"],
+    placeholderData: [],
+    enabled: !!props.group?.id && canView
+  });
+
+  const pendingRequests = useQuery<GroupJoinRequestInterface[]>({
+    queryKey: [`/groupjoinrequests/group/${props.group?.id}`, "MembershipApi"],
     placeholderData: [],
     enabled: !!props.group?.id && canView
   });
@@ -543,6 +551,10 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
         </Stack>
       )}
       {composer}
+      <PendingJoinRequests
+        requests={pendingRequests.data || []}
+        onChanged={() => { pendingRequests.refetch(); groupMembers.refetch(); }}
+      />
       {getTable()}
       {showInviteDialog && props.addedPerson && (
         <SendInviteDialog
