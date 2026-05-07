@@ -28,7 +28,7 @@ export function TypographyEdit(props: Props) {
         setTypography({
           baseSize: typeof parsed.baseSize === "number" ? parsed.baseSize : defaults.baseSize,
           scale: typeof parsed.scale === "number" ? parsed.scale : defaults.scale,
-          lineHeight: typeof parsed.lineHeight === "number" ? parsed.lineHeight : defaults.lineHeight,
+          lineHeight: typeof parsed.lineHeight === "number" ? parsed.lineHeight : defaults.lineHeight
         });
       } catch {
         setTypography(defaults);

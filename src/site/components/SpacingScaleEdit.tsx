@@ -34,7 +34,7 @@ export function SpacingScaleEdit(props: Props) {
           md: typeof parsed.md === "number" ? parsed.md : defaults.md,
           lg: typeof parsed.lg === "number" ? parsed.lg : defaults.lg,
           xl: typeof parsed.xl === "number" ? parsed.xl : defaults.xl,
-          xxl: typeof parsed.xxl === "number" ? parsed.xxl : defaults.xxl,
+          xxl: typeof parsed.xxl === "number" ? parsed.xxl : defaults.xxl
         });
       } catch {
         setSpacing(defaults);
