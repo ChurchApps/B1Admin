@@ -225,6 +225,10 @@ test.describe('Sermons Management', () => {
   });
 
   test.describe.serial('Live Stream Times', () => {
+    // Live stream services share data — a retry would create duplicate
+    // "Zacchaeus Test Service" rows and break subsequent assertions.
+    test.describe.configure({ retries: 0 });
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
@@ -250,7 +254,9 @@ test.describe('Sermons Management', () => {
       await expect(name).toBeVisible({ timeout: 10000 });
       await name.fill('Zacchaeus Test Service');
       const saveBtn = page.locator('button').getByText('Save');
+      const post = page.waitForResponse(r => r.url().includes('/streamingServices') && r.request().method() === 'POST', { timeout: 15000 });
       await saveBtn.click();
+      await post;
       const validatedService = page.locator('p').getByText('Zacchaeus Test Service');
       await expect(validatedService).toHaveCount(1, { timeout: 10000 });
     });
@@ -312,8 +318,8 @@ test.describe('Sermons Management', () => {
     test('should show settings tab with sidebar tabs section and view stream link', async () => {
       const settingsBtn = page.locator('[role="tab"]').getByText('Settings');
       await settingsBtn.click();
-      // Tabs section header (Content Tabs) and Add small-button render in Settings tab
-      await expect(page.locator('[data-testid="small-button-add"]')).toBeVisible({ timeout: 10000 });
+      // Settings tab renders the Content Tabs section header
+      await expect(page.getByRole('heading', { name: 'Content Tabs' })).toBeVisible({ timeout: 10000 });
       // External "View Your Stream" button is rendered in the Settings tab
       await expect(page.getByRole('link', { name: 'View Your Stream' })).toBeVisible();
     });

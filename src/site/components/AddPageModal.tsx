@@ -273,7 +273,6 @@ export function AddPageModal(props: Props) {
       setIsSubmitting(true);
       try {
         let pageData = null;
-        let linkData = null;
         if (pageTemplate !== "link") {
           const p = { ...page };
           const slugString = link?.text || page.title || "new-page";
@@ -289,10 +288,15 @@ export function AddPageModal(props: Props) {
         if (props.mode === "navigation") {
           const l = { ...link };
           if (pageTemplate !== "link") l.url = pageData.url;
-          linkData = await ApiHelper.post("/links", [l], "ContentApi").then((data: any) => data[0]);
+          await ApiHelper.post("/links", [l], "ContentApi");
         }
 
         props.updatedCallback();
+      } catch (err: any) {
+        // Surface backend errors (e.g., duplicate URL) instead of silently
+        // leaving the dialog open with no feedback.
+        const message = err?.message || Locale.label("site.addPageModal.errFailedGenerate");
+        setErrors([message]);
       } finally {
         setIsSubmitting(false);
       }

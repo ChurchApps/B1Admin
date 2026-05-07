@@ -423,9 +423,11 @@ test.describe('People Management', () => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const editBtn = page.locator('button').getByText('edit').first();
       await editBtn.click();
-      const addBtn = page.locator('button').getByText('Add');
+      const addBtn = page.locator('[data-testid="add-household-member-button"]');
       await addBtn.click();
-      const closeBtn = page.locator('button').getByText('close');
+      // Cancel uses an IconButton with aria-label, no visible text label.
+      const closeBtn = page.locator('button[aria-label="Cancel add member"]');
+      await expect(closeBtn).toBeVisible({ timeout: 10000 });
       await closeBtn.click();
       await expect(closeBtn).toHaveCount(0, { timeout: 10000 });
     });

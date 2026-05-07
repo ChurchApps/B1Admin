@@ -15,6 +15,10 @@ test.describe('Website Management', () => {
 
 
   test.describe.serial('Pages', () => {
+    // Pages tests share data — a retry would create duplicate "Zacchaeus
+    // Test Page" rows (URL slug collision throws 500) and break the chain.
+    test.describe.configure({ retries: 0 });
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
@@ -50,9 +54,14 @@ test.describe('Website Management', () => {
       const name = page.locator('[name="title"]');
       await name.fill('Zacchaeus Test Page');
       const saveBtn = page.locator('button').getByText('Save');
+      // Wait for the create-page POST to complete before asserting on the UI;
+      // under load the table refetch can lag behind the dialog close, leaving
+      // a race where toHaveCount(1) hits the empty state.
+      const pagePost = page.waitForResponse(r => r.url().includes('/content/pages') && r.request().method() === 'POST', { timeout: 15000 });
       await saveBtn.click();
+      await pagePost;
       const validatedPage = page.locator('td').getByText('Zacchaeus Test Page');
-      await expect(validatedPage).toHaveCount(1);
+      await expect(validatedPage).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel adding page', async () => {
@@ -95,10 +104,17 @@ test.describe('Website Management', () => {
       await editBtn.click();
       const contentBtn = page.locator('button').getByText('Edit Content');
       await contentBtn.click();
-      const addBtn = page.locator('button').getByText('add');
-      await addBtn.click();
-      await expect(page.locator('div').getByText('Section').nth(2)).toBeVisible({ timeout: 10000 });
-      const section = page.locator('div').getByText('Section').nth(2);
+      const addBtn = page.locator('[data-testid="content-editor-add-button"]');
+      // Open the elements panel — it's a toggle, so guard against accidental
+      // double-click closing it.
+      const ensurePanelOpen = async () => {
+        const sectionVisible = await page.locator('[data-testid="draggable-element-section"]')
+          .isVisible({ timeout: 500 }).catch(() => false);
+        if (!sectionVisible) await addBtn.click();
+      };
+      await ensurePanelOpen();
+      const section = page.locator('[data-testid="draggable-element-section"]');
+      await expect(section).toBeVisible({ timeout: 10000 });
       const dropzone = page.locator('div [data-testid="droppable-area"]').first();
       await section.hover();
       await page.mouse.down();
@@ -108,9 +124,9 @@ test.describe('Website Management', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       //add text to confirm
-      await addBtn.click();
-      await expect(page.locator('div').getByText('Text').nth(1)).toBeVisible({ timeout: 10000 });
-      const text = page.locator('div').getByText('Text').nth(1);
+      await ensurePanelOpen();
+      const text = page.locator('[data-testid="draggable-element-text"]');
+      await expect(text).toBeVisible({ timeout: 10000 });
       const secondaryDropzone = page.locator('div [data-testid="droppable-area"]').nth(1);
       await text.hover();
       await page.mouse.down();
@@ -176,6 +192,10 @@ test.describe('Website Management', () => {
   });
 
   test.describe.serial('Blocks', () => {
+    // Blocks tests share data — a retry would create duplicate "Zacchaeus
+    // Test Block" rows and break subsequent assertions.
+    test.describe.configure({ retries: 0 });
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
@@ -205,7 +225,9 @@ test.describe('Website Management', () => {
       const typeSelect = page.locator('[data-testid="block-type-section"]');
       await typeSelect.click();
       const saveBtn = page.locator('button').getByText('Save');
+      const blockPost = page.waitForResponse(r => r.url().includes('/content/blocks') && r.request().method() === 'POST', { timeout: 15000 });
       await saveBtn.click();
+      await blockPost;
       const validatedBlock = page.locator('td').getByText('Zacchaeus Test Block');
       await expect(validatedBlock).toBeVisible({ timeout: 10000 });
       await expect(validatedBlock).toHaveCount(1);
@@ -224,11 +246,16 @@ test.describe('Website Management', () => {
     test('should edit block content', async () => {
       const editBtn = page.locator('td a').getByText('Edit').last();
       await editBtn.click();
-      const addBtn = page.locator('button').getByText('add');
+      const addBtn = page.locator('[data-testid="content-editor-add-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
-      await addBtn.click();
-      await expect(page.locator('div').getByText('Section').nth(2)).toBeVisible({ timeout: 10000 });
-      const section = page.locator('div').getByText('Section').nth(2);
+      const ensurePanelOpen = async () => {
+        const sectionVisible = await page.locator('[data-testid="draggable-element-section"]')
+          .isVisible({ timeout: 500 }).catch(() => false);
+        if (!sectionVisible) await addBtn.click();
+      };
+      await ensurePanelOpen();
+      const section = page.locator('[data-testid="draggable-element-section"]');
+      await expect(section).toBeVisible({ timeout: 10000 });
       const dropzone = page.locator('div [data-testid="droppable-area"]').first();
       await section.hover();
       await page.mouse.down();
@@ -240,9 +267,9 @@ test.describe('Website Management', () => {
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
       //add text to confirm
-      await addBtn.click();
-      await expect(page.locator('div').getByText('Text').nth(1)).toBeVisible({ timeout: 10000 });
-      const text = page.locator('div').getByText('Text').nth(1);
+      await ensurePanelOpen();
+      const text = page.locator('[data-testid="draggable-element-text"]');
+      await expect(text).toBeVisible({ timeout: 10000 });
       const secondaryDropzone = page.locator('div [data-testid="droppable-area"]').nth(1);
       await text.hover();
       await page.mouse.down();
@@ -458,6 +485,10 @@ test.describe('Website Management', () => {
   });
 
   test.describe.serial('Files', () => {
+    // Files tests share data — a retry would create a duplicate "logo.png"
+    // upload and break "should remove file" assertions.
+    test.describe.configure({ retries: 0 });
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
@@ -482,8 +513,11 @@ test.describe('Website Management', () => {
       await chooseFileBtn.click();
       await chooseFileBtn.setInputFiles('public/images/logo.png');
       const uploadBtn = page.locator('button').getByText('Upload');
+      const filesPost = page.waitForResponse(r => r.url().includes('/content/files') && r.request().method() === 'POST' && !r.url().includes('postUrl'), { timeout: 30000 });
       await uploadBtn.click();
-      const validatedUpload = page.locator('td').getByText('Logo.png');
+      await filesPost;
+      // Use exact match: "logo.png" without the church- prefix that's in demo data.
+      const validatedUpload = page.locator('td').getByText('logo.png', { exact: true });
       await expect(validatedUpload).toBeVisible({ timeout: 10000 });
       await expect(validatedUpload).toHaveCount(1);
     });
@@ -495,9 +529,11 @@ test.describe('Website Management', () => {
         await dialog.accept();
       });
 
-      const deleteBtn = page.locator('button').getByText('delete');
+      // Find the row with logo.png (uploaded by previous test) and click its delete button.
+      const targetRow = page.locator('tr', { has: page.locator('td').getByText('logo.png', { exact: true }) }).first();
+      const deleteBtn = targetRow.locator('button[aria-label]').last();
       await deleteBtn.click();
-      const validatedDeletion = page.locator('td').getByText('Logo.png');
+      const validatedDeletion = page.locator('td').getByText('logo.png', { exact: true });
       await expect(validatedDeletion).toHaveCount(0);
     });
 

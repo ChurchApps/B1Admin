@@ -21,11 +21,52 @@ test.describe.serial('Settings Management', () => {
   });
 
   test.describe.serial('General Settings', () => {
+    // Roles tests share data — a retry would create duplicate "Zacchaeus
+    // Test Role" rows and break subsequent assertions. Disable retries here.
+    test.describe.configure({ retries: 0 });
+
+    const closeAnyModal = async () => {
+      // ESC-loop until any modal/dialog is gone. ESC on MUI Dialog with an
+      // onClose triggers props.onClose(), which closes both SendInvite and
+      // any other transient dialog without depending on a button selector.
+      for (let i = 0; i < 6; i++) {
+        const anyModal = page.locator('.MuiDialog-container');
+        if (!(await anyModal.first().isVisible({ timeout: 200 }).catch(() => false))) return;
+        await page.keyboard.press('Escape');
+        await page.waitForTimeout(150);
+      }
+    };
+
+    const navigateToSettingsWithModalGuard = async () => {
+      for (let attempt = 0; attempt < 3; attempt++) {
+        await closeAnyModal();
+        try {
+          await navigateToSettings(page);
+          return;
+        } catch (err) {
+          // Modal may have appeared mid-click — dismiss and retry.
+          await closeAnyModal();
+          if (attempt === 2) throw err;
+        }
+      }
+    };
+
     test.beforeEach(async () => {
+      // Dismiss any leftover SendInviteDialog from a prior test before
+      // attempting to re-navigate (it intercepts pointer events on the
+      // primary nav button). Loop because the dialog can re-fire on a slow
+      // backend even after the first dismiss.
+      for (let i = 0; i < 5; i++) {
+        await dismissSendInviteIfPresent(page, 1500);
+        const dialog = page.locator('div[role="dialog"]:has-text("Send Invite Email")');
+        if (!(await dialog.isVisible({ timeout: 250 }).catch(() => false))) break;
+      }
+      // Belt-and-suspenders: ESC-close any other lingering modal.
+      await closeAnyModal();
       // Mobile/Form sub-describes leave the page off /settings; navigate back
       // before each General Settings test so add-role-button is in the DOM.
       if (!/\/settings(\?|$|\/$)/.test(page.url())) {
-        await navigateToSettings(page);
+        await navigateToSettingsWithModalGuard();
       }
       // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
       await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
@@ -68,13 +109,21 @@ test.describe.serial('Settings Management', () => {
       const roleName = page.locator('[name="roleName"]');
       await roleName.fill('Zacchaeus Test Role');
       const saveBtn = page.locator('button').getByText('Save');
+      // Wait for the role POST to complete so the table refresh is reflected
+      // before the toHaveCount assertion. Without this the retry can create
+      // a duplicate row, breaking subsequent serial tests.
+      const rolePost = page.waitForResponse(
+        r => r.url().includes('/membership/roles') && r.request().method() === 'POST',
+        { timeout: 15000 }
+      ).catch(() => null);
       await saveBtn.click();
+      await rolePost;
       const validatedRole = page.locator('a').getByText('Zacchaeus Test Role');
-      await expect(validatedRole).toHaveCount(1);
+      await expect(validatedRole).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should add person to role', async () => {
-      const role = page.locator('a').getByText('Zacchaeus Test Role');
+      const role = page.locator('a').getByText('Zacchaeus Test Role').first();
       await role.click();
       const addBtn = page.locator('[data-testid="add-role-member-button"]');
       await addBtn.click();
@@ -89,8 +138,13 @@ test.describe.serial('Settings Management', () => {
       await dismissSendInviteIfPresent(page);
       const validatedPerson = page.locator('table tbody tr').filter({ hasText: 'Jennifer Williams' }).first();
       await expect(validatedPerson).toBeVisible({ timeout: 15000 });
-      // Return to the roles list so subsequent tests find [data-testid="edit-role-button"].
-      await navigateToSettings(page);
+      // The SendInviteDialog can race with navigation — keep dismissing
+      // until it stays gone. The next test's beforeEach handles re-navigation.
+      for (let i = 0; i < 3; i++) {
+        await dismissSendInviteIfPresent(page, 1500);
+        const dialog = page.locator('div[role="dialog"]:has-text("Send Invite Email")');
+        if (!(await dialog.isVisible({ timeout: 500 }).catch(() => false))) break;
+      }
     });
 
     test('should edit role', async () => {

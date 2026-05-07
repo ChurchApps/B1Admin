@@ -65,6 +65,7 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
       }}
       title={config.description}
       tabIndex={index}
+      data-testid={`draggable-element-${config.type}${config.blockId ? "-" + config.blockId : ""}`}
     >
       <Box
         sx={{

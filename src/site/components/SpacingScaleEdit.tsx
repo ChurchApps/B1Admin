@@ -24,11 +24,24 @@ export function SpacingScaleEdit(props: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    const defaults: SpacingInterface = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 };
     if (props.globalStyle?.spacing) {
-      setSpacing(JSON.parse(props.globalStyle.spacing));
+      try {
+        const parsed = JSON.parse(props.globalStyle.spacing) as Partial<SpacingInterface>;
+        setSpacing({
+          xs: typeof parsed.xs === "number" ? parsed.xs : defaults.xs,
+          sm: typeof parsed.sm === "number" ? parsed.sm : defaults.sm,
+          md: typeof parsed.md === "number" ? parsed.md : defaults.md,
+          lg: typeof parsed.lg === "number" ? parsed.lg : defaults.lg,
+          xl: typeof parsed.xl === "number" ? parsed.xl : defaults.xl,
+          xxl: typeof parsed.xxl === "number" ? parsed.xxl : defaults.xxl,
+        });
+      } catch {
+        setSpacing(defaults);
+      }
     } else {
       // Set default values
-      setSpacing({ xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 });
+      setSpacing(defaults);
     }
   }, [props.globalStyle]);
 

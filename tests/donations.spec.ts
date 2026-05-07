@@ -61,6 +61,10 @@ test.describe.serial('Donations Management', () => {
   });
 
   test.describe('Funds', () => {
+    // Funds tests share data — a retry would create duplicate "Zacchaeus
+    // Fund" rows and break subsequent assertions. Disable retries here.
+    test.describe.configure({ retries: 0 });
+
     test('should create fund', async () => {
       await openFundsTab(page);
       const addBtn = page.locator('[data-testid="add-fund-button"]');
@@ -101,7 +105,9 @@ test.describe.serial('Donations Management', () => {
       // FundEdit re-renders after the API populates the fund — wait for the
       // value to land before clicking Cancel, otherwise the button detaches.
       await expect(fundName).toHaveValue(TEST_FUND_RENAMED, { timeout: 10000 });
-      await page.locator('button').getByText('Cancel').click();
+      // The Cancel button can re-render mid-click as the fund-detail panel
+      // refreshes; force-click avoids the "element detached" race.
+      await page.locator('button').getByText('Cancel').click({ force: true });
       await expect(fundName).toHaveCount(0, { timeout: 10000 });
     });
   });
@@ -132,7 +138,13 @@ test.describe.serial('Donations Management', () => {
       const row = page.locator('tr').filter({ has: page.locator('a').getByText(TEST_BATCH_INITIAL) });
       const editBtn = row.getByRole('button', { name: /Edit/ });
       await expect(editBtn).toBeVisible({ timeout: 10000 });
+      // Wait for the BatchEdit GET to complete before asserting on the input.
+      const batchGet = page.waitForResponse(
+        r => /\/giving\/donationbatches\/[^/?]+(\?|$)/.test(r.url()) && r.request().method() === 'GET',
+        { timeout: 15000 }
+      ).catch(() => null);
       await editBtn.click();
+      await batchGet;
 
       const batchName = page.locator('[name="name"]');
       // BatchEdit renders empty, then async-populates from /donationbatches.

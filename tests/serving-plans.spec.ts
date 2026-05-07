@@ -35,6 +35,9 @@ test.describe.serial('Serving Management - Plans', () => {
   });
 
   test.describe('Ministry CRUD', () => {
+    // Ministry tests share data — a retry would create duplicate "Zacchaeus
+    // Ministry"/"Zebedee Ministry" tabs and break subsequent assertions.
+    test.describe.configure({ retries: 0 });
 
     test('should add ministry', async () => {
       const addBtn = page.locator('button').getByText('Add Ministry');
@@ -58,7 +61,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should edit ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zacchaeus Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zacchaeus Ministry').first();
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
@@ -70,13 +73,20 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(minName).toBeVisible({ timeout: 10000 });
       await minName.fill('Zebedee Ministry');
       const saveBtn = page.locator('button').getByText('Save');
+      // Wait for the group save POST so the cache invalidation has a chance
+      // to update the banner before we assert on it.
+      const groupPost = page.waitForResponse(
+        r => r.url().includes('/membership/groups') && r.request().method() === 'POST',
+        { timeout: 15000 }
+      ).catch(() => null);
       await saveBtn.click();
+      await groupPost;
       const verifiedEdit = page.locator('p').getByText('Zebedee Ministry');
-      await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
+      await expect(verifiedEdit).toHaveCount(1, { timeout: 15000 });
     });
 
     test('should cancel editing ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
@@ -92,7 +102,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should add person to ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
@@ -104,13 +114,15 @@ test.describe.serial('Serving Management - Plans', () => {
       await searchBtn.click();
       const addBtn = page.locator('button').getByText('Add').last();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
+      const memberPost = page.waitForResponse(r => r.url().includes('/groupmembers') && r.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
       await addBtn.click();
+      await memberPost;
       const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Dorothy Jackson');
       await expect(verifiedPerson).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should advanced add person to ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
@@ -136,26 +148,26 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should promote person to ministry leader', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
 
-      const promoteBtn = page.locator('button').getByText('key').first();
+      const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
       await expect(promoteBtn).toBeVisible({ timeout: 10000 });
       await promoteBtn.click();
       await page.reload();
-      const verifiedPromoted = page.locator('button').getByText('key_off');
+      const verifiedPromoted = page.locator('[data-testid^="remove-leader-button-"]');
       await expect(verifiedPromoted).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should remove person from ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();
 
-      const removeBtn = page.locator('button').getByText('person_remove').first();
+      const removeBtn = page.locator('[data-testid^="remove-member-button-"]').first();
       await expect(removeBtn).toBeVisible({ timeout: 10000 });
       await removeBtn.click();
       const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
@@ -164,8 +176,12 @@ test.describe.serial('Serving Management - Plans', () => {
   });
 
   test.describe('Plan Types', () => {
+    // Plan Type tests share data — a retry would create duplicate "Zacchaeus
+    // Plans" rows and break subsequent assertions.
+    test.describe.configure({ retries: 0 });
+
     test('should create plan type', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
 
       const addBtn = page.locator('button').getByText('Create Plan Type');
@@ -180,7 +196,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should edit plan type', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
 
       const editBtn = editIconButton(page).last();
@@ -195,7 +211,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should cancel editing plan type', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
 
       const editBtn = editIconButton(page).last();
@@ -209,7 +225,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should add service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Zebedee Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
@@ -230,7 +246,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should edit service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Zebedee Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
@@ -249,7 +265,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should cancel editing service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Zebedee Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
@@ -267,7 +283,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should delete service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const plansBtn = page.locator('a').getByText('Zebedee Plans');
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
@@ -286,7 +302,7 @@ test.describe.serial('Serving Management - Plans', () => {
 
   test.describe('Teams', () => {
     test('should add team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
 
       const addBtn = page.locator('[data-testid="add-team-button"]');
@@ -301,7 +317,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should edit team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const teamBtn = page.locator('a').getByText('Zacchaeus Team');
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
@@ -320,7 +336,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should add person to team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const teamBtn = page.locator('a').getByText('Zebedee Team');
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
@@ -340,7 +356,7 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should advanced add person to team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const teamBtn = page.locator('a').getByText('Zebedee Team');
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
@@ -368,30 +384,30 @@ test.describe.serial('Serving Management - Plans', () => {
     });
 
     test('should promote person to team leader', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const teamBtn = page.locator('a').getByText('Zebedee Team');
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
       await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
 
-      const promoteBtn = page.locator('button').getByText('key').first();
+      const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
       await expect(promoteBtn).toBeVisible({ timeout: 10000 });
       await promoteBtn.click();
       await page.reload();
-      const verifiedPromoted = page.locator('button').getByText('key_off');
+      const verifiedPromoted = page.locator('[data-testid^="remove-leader-button-"]');
       await expect(verifiedPromoted).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should remove person from team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const teamBtn = page.locator('a').getByText('Zebedee Team');
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
       await teamBtn.click()
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
 
-      const removeBtn = page.locator('button').getByText('person_remove').last();
+      const removeBtn = page.locator('[data-testid^="remove-member-button-"]').last();
       await expect(removeBtn).toBeVisible({ timeout: 10000 });
       await removeBtn.click();
       const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
@@ -405,7 +421,7 @@ test.describe.serial('Serving Management - Plans', () => {
         await dialog.accept();
       });
 
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const teamBtn = page.locator('a').getByText('Zebedee Team');
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
@@ -430,7 +446,7 @@ test.describe.serial('Serving Management - Plans', () => {
         await dialog.accept();
       });
 
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry');
+      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
       await minBtn.click();
       const manageBtn = page.locator('a').getByText('Edit Ministry');
       await manageBtn.click();

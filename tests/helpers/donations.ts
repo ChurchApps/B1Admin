@@ -17,7 +17,17 @@ export async function fillFundForm(page: Page, input: FillFundFormInput) {
   await expect(fundName).toBeVisible({ timeout: 10000 });
   await fundName.fill(input.name);
   if (input.toggleTaxDeductible) {
-    await page.locator('[name="taxDeductible"]').click();
+    // FundEdit re-renders mid-click as the panel hydrates; force-click
+    // avoids the "element detached" race on the checkbox.
+    await page.locator('[name="taxDeductible"]').click({ force: true });
   }
-  await page.locator("button").getByText("Save").click();
+  // Wait for the fund POST to complete so the table refresh is reflected
+  // before the caller asserts on row counts. Without this, retries can
+  // create duplicate funds and trigger "found 2 instead of 1" failures.
+  const fundPost = page.waitForResponse(
+    r => r.url().includes("/giving/funds") && r.request().method() === "POST",
+    { timeout: 15000 }
+  );
+  await page.locator("button").getByText("Save").click({ force: true });
+  await fundPost;
 }

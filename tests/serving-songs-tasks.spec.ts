@@ -9,6 +9,10 @@ import { STORAGE_STATE_PATH } from './global-setup';
 test.describe('Serving Management - Songs & Tasks', () => {
 
   test.describe.serial('Songs', () => {
+    // Songs tests share data — a retry would create duplicate "Zacchaeus
+    // Song" rows and break subsequent assertions.
+    test.describe.configure({ retries: 0 });
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
@@ -466,7 +470,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
 
       const searchBtn = page.locator('button').getByText('Search');
       await searchBtn.click();
-      const searchInput = page.locator('input');
+      // After clicking Search, a search input renders; multiple inputs may be
+      // on the page, so target the visible textbox by role + name fallback.
+      const searchInput = page.locator('input[type="text"]').last();
       await searchInput.fill('Amazing Grace');
       await searchInput.press('Enter');
       // SongsPage filters client-side on title/artist substring; the demo
@@ -477,6 +483,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
   });
 
   test.describe.serial('Tasks', () => {
+    // Tasks tests share data — a retry would create duplicate task/automation
+    // rows and break subsequent assertions.
+    test.describe.configure({ retries: 0 });
+
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
@@ -523,10 +533,12 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const addBtn = page.locator('[data-testid="add-task-button"]');
       await addBtn.click();
       const assignInput = page.locator('[data-testid="assign-to-input"]');
-      await expect(assignInput).toHaveCount(1);
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(assignInput).toHaveCount(0);
+      await expect(assignInput).toBeVisible({ timeout: 10000 });
+      // The NewTask form re-renders during async loads; force-click avoids
+      // the "element detached" race and target the last Cancel (in the form).
+      const cancelBtn = page.locator('button').getByText('Cancel').last();
+      await cancelBtn.click({ force: true });
+      await expect(assignInput).toHaveCount(0, { timeout: 10000 });
     });
 
     test('should toggle show closed tasks', async () => {

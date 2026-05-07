@@ -21,11 +21,21 @@ export function TypographyEdit(props: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    const defaults: TypographyInterface = { baseSize: 16, scale: 1.25, lineHeight: 1.6 };
     if (props.globalStyle?.typography) {
-      setTypography(JSON.parse(props.globalStyle.typography));
+      try {
+        const parsed = JSON.parse(props.globalStyle.typography) as Partial<TypographyInterface>;
+        setTypography({
+          baseSize: typeof parsed.baseSize === "number" ? parsed.baseSize : defaults.baseSize,
+          scale: typeof parsed.scale === "number" ? parsed.scale : defaults.scale,
+          lineHeight: typeof parsed.lineHeight === "number" ? parsed.lineHeight : defaults.lineHeight,
+        });
+      } catch {
+        setTypography(defaults);
+      }
     } else {
       // Set default values
-      setTypography({ baseSize: 16, scale: 1.25, lineHeight: 1.6 });
+      setTypography(defaults);
     }
   }, [props.globalStyle]);
 
