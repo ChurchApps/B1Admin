@@ -8,7 +8,7 @@ import { Box, Button, Grid, Tabs, Tab, FormControlLabel, Switch } from "@mui/mat
 import { Assignment as AssignmentIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
-import { EmptyState, TabVisibilityBanner } from "../components/ui";
+import { EmptyState } from "../components/ui";
 import UserContext from "../UserContext";
 import { Link } from "react-router-dom";
 
@@ -159,9 +159,6 @@ export const ServingPage = () => {
           </>
         )}
       </PageHeader>
-
-      <TabVisibilityBanner linkType="volunteer" hasContent={groups.length > 0} />
-      <TabVisibilityBanner linkType="plans" hasContent={groups.length > 0} />
 
       {/* Ministry Tabs */}
       {groups.length > 1 && (

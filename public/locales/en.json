@@ -3636,9 +3636,6 @@
     },
     "title": "Songs"
   },
-  "tabBanner": {
-    "cta": "Add tab"
-  },
   "tasks": {
     "actionEdit": {
       "actType": "Action Type",

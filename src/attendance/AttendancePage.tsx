@@ -7,7 +7,6 @@ import { AttendanceNavigation } from "./components/AttendanceNavigation";
 import { ReportWithFilter } from "../components/reporting";
 import { CheckinThemeEdit } from "./components/CheckinThemeEdit";
 import { PageContainer } from "../components/ui/PageContainer";
-import { TabVisibilityBanner } from "../components/ui";
 
 export const AttendancePage = () => {
   const [selectedTab, setSelectedTab] = React.useState("setup");
@@ -123,7 +122,6 @@ export const AttendancePage = () => {
           </Stack>
         </Stack>
       </PageHeader>
-      <TabVisibilityBanner linkType="checkin" hasContent={stats.serviceTimes > 0} />
       <AttendanceNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} />
 
       {/* Main Content */}

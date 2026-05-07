@@ -3,10 +3,10 @@ import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, ExportLink, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, IconButton, Toolbar, Stack, Typography, Icon } from "@mui/material";
-import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon } from "@mui/icons-material";
-import { type GroupInterface } from "@churchapps/helpers";
+import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon } from "@mui/icons-material";
+import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
-import { TabVisibilityBanner } from "../components/ui";
+import { useQuery } from "@tanstack/react-query";
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -35,6 +35,14 @@ const GroupsPage = () => {
   };
 
   React.useEffect(loadData, [isMounted]);
+
+  const canApproveRequests = UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit);
+  const { data: pendingRequests = [] } = useQuery<GroupJoinRequestInterface[]>({
+    queryKey: ["/groupjoinrequests/pending", "MembershipApi"],
+    placeholderData: [],
+    enabled: canApproveRequests
+  });
+  const pendingCount = pendingRequests?.length || 0;
 
   const getRows = () => {
     const rows: JSX.Element[] = [];
@@ -165,30 +173,53 @@ const GroupsPage = () => {
               </Stack>
             </Stack>
           )}
-          {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-            <Button
-              variant="outlined"
-              startIcon={<AddIcon />}
-              onClick={() => setShowAdd(true)}
-              sx={{
-                color: "#FFF",
-                borderColor: "rgba(255,255,255,0.5)",
-                "&:hover": {
-                  borderColor: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)"
-                },
-                position: { md: "relative" },
-                ml: { md: "auto" },
-                zIndex: 1
-              }}
-              data-testid="add-group-button">
-              {Locale.label("groups.groupsPage.addGroup")}
-            </Button>
-          )}
+          <Stack
+            direction="row"
+            spacing={1.5}
+            sx={{
+              position: { md: "relative" },
+              ml: { md: "auto" },
+              zIndex: 1,
+              flexWrap: "wrap"
+            }}>
+            {canApproveRequests && pendingCount > 0 && (
+              <Button
+                variant="outlined"
+                component={Link}
+                to="/groups/pending"
+                startIcon={<InboxIcon />}
+                data-testid="pending-requests-link"
+                sx={{
+                  color: "#FFF",
+                  borderColor: "rgba(255,255,255,0.5)",
+                  "&:hover": {
+                    borderColor: "#FFF",
+                    backgroundColor: "rgba(255,255,255,0.1)"
+                  }
+                }}>
+                {pendingCount} pending request{pendingCount === 1 ? "" : "s"}
+              </Button>
+            )}
+            {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={() => setShowAdd(true)}
+                sx={{
+                  color: "#FFF",
+                  borderColor: "rgba(255,255,255,0.5)",
+                  "&:hover": {
+                    borderColor: "#FFF",
+                    backgroundColor: "rgba(255,255,255,0.1)"
+                  }
+                }}
+                data-testid="add-group-button">
+                {Locale.label("groups.groupsPage.addGroup")}
+              </Button>
+            )}
+          </Stack>
         </Stack>
       </PageHeader>
-
-      <TabVisibilityBanner linkType="groups" hasContent={groups.length > 0} />
 
       {/* Main Content */}
       <Box sx={{ p: 3 }}>

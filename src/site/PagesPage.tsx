@@ -23,7 +23,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { PermissionDenied } from "../components";
-import { TabVisibilityBanner } from "../components/ui";
 
 export const PagesPage = () => {
   const theme = useTheme();
@@ -260,7 +259,6 @@ export const PagesPage = () => {
           {Locale.label("site.pagesPage.addPage")}
         </Button>
       </PageHeader>
-      <TabVisibilityBanner linkType="page" hasContent={pageStats.custom > 0} />
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.mode === "light" ? "#FFF" : "#292929", paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
           <DndProvider backend={HTML5Backend}>

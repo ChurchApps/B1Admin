@@ -10,7 +10,6 @@ import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon,
 import { PageHeader } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
-import { TabVisibilityBanner } from "../components/ui";
 
 interface BulkDeleteResponse {
   success: boolean;
@@ -228,8 +227,6 @@ export const PeoplePage = memo(() => {
           </Button>
         )}
       </PageHeader>
-
-      <TabVisibilityBanner linkType="directory" hasContent={(recentPeople.data || []).length > 5} />
 
       {/* Main Content */}
       <Box sx={{ p: 3 }}>
