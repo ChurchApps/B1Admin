@@ -523,6 +523,54 @@ export function ElementEdit(props: Props) {
     </>
   );
 
+  const getGroupsFields = () => (
+    <>
+      <TextField
+        fullWidth
+        size="small"
+        label="Heading (optional)"
+        name="title"
+        onChange={handleChange}
+        value={parsedData.title || ""}
+        helperText="Shown above the filter row, e.g. 'Find a Group'."
+      />
+      <TextField
+        fullWidth
+        size="small"
+        sx={{ marginTop: 2 }}
+        label="Pre-filter category (optional)"
+        name="category"
+        onChange={handleChange}
+        value={parsedData.category || ""}
+        helperText="Restrict the directory to a single category. Hides the category dropdown when set."
+      />
+      <TextField
+        fullWidth
+        size="small"
+        sx={{ marginTop: 2 }}
+        label="Pre-filter label (optional)"
+        name="label"
+        onChange={handleChange}
+        value={parsedData.label || ""}
+        helperText="Restrict the directory to groups with this label."
+      />
+      <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
+        <InputLabel>Show search box</InputLabel>
+        <Select label="Show search box" name="showSearch" value={parsedData.showSearch === false ? "false" : "true"} onChange={handleChange}>
+          <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+          <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
+        <InputLabel>Show category dropdown</InputLabel>
+        <Select label="Show category dropdown" name="showCategory" value={parsedData.showCategory === false ? "false" : "true"} onChange={handleChange}>
+          <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+          <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+        </Select>
+      </FormControl>
+    </>
+  );
+
   const getCarouselFields = () => (
     <>
       <TextField fullWidth size="small" type="number" label={Locale.label("site.elements.heightPx")} name="height" onChange={handleChange} value={parsedData.height || "250"} />
@@ -682,6 +730,7 @@ export function ElementEdit(props: Props) {
         );
         break;
       case "groupList": result = getGroupListFields(); break;
+      case "groups": result = getGroupsFields(); break;
     }
     return result;
   };

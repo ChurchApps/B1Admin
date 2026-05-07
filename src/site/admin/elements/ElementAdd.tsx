@@ -136,6 +136,7 @@ export function ElementAdd(props: Props) {
       { type: "form", dndType: "element", icon: "assignment", label: Locale.label("site.elementAdd.form"), description: Locale.label("site.elementAdd.descForm"), category: "church" },
       { type: "calendar", dndType: "element", icon: "event", label: Locale.label("site.elementAdd.calendar"), description: Locale.label("site.elementAdd.descCalendar"), category: "church" },
       { type: "groupList", dndType: "element", icon: "groups", label: Locale.label("site.elementAdd.groupList"), description: Locale.label("site.elementAdd.descGroupList"), category: "church" },
+      { type: "groups", dndType: "element", icon: "manage_search", label: "Groups Browser", description: "Filterable directory of all church groups, with optional search and category filters.", category: "church" },
       { type: "rawHTML", dndType: "element", icon: "code", label: Locale.label("site.elementAdd.html"), description: Locale.label("site.elementAdd.descHtml"), category: "advanced" },
       { type: "iframe", dndType: "element", icon: "web", label: Locale.label("site.elementAdd.embedPage"), description: Locale.label("site.elementAdd.descEmbedPage"), category: "advanced" }
     );
