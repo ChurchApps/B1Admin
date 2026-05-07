@@ -65,7 +65,11 @@ export const TimeList = (props: Props) => {
       const endTime = new Date(t.endTime);
       //endTime.setMinutes(endTime.getMinutes() - endTime.getTimezoneOffset());
       const typeIcon = t.serviceTimeType === "rehearsal" ? "music_note" : t.serviceTimeType === "other" ? "event_note" : "schedule";
-      const typeKey = t.serviceTimeType === "rehearsal" ? "plans.timeEdit.typeRehearsal" : t.serviceTimeType === "other" ? "plans.timeEdit.typeOther" : "plans.timeEdit.typeService";
+      const typeLabel = t.serviceTimeType === "rehearsal"
+        ? Locale.label("plans.timeEdit.typeRehearsal")
+        : t.serviceTimeType === "other"
+          ? Locale.label("plans.timeEdit.typeOther")
+          : Locale.label("plans.timeEdit.typeService");
       result.push(
         <tr key={t.id}>
           <td style={{ verticalAlign: "top" }}>
@@ -82,7 +86,7 @@ export const TimeList = (props: Props) => {
             ) : (
               <span>{t.displayName}</span>
             )}
-            <span style={{ marginLeft: 8, fontSize: 11, color: "#666", textTransform: "uppercase" }}>{Locale.label(typeKey)}</span>
+            <span style={{ marginLeft: 8, fontSize: 11, color: "#666", textTransform: "uppercase" }}>{typeLabel}</span>
             <div style={{ fontSize: 12 }}>
               {DateHelper.prettyDateTime(startTime)}
               {t.endTime ? " - " + DateHelper.prettyTime(endTime) : ""}

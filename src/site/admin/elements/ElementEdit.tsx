@@ -1,7 +1,7 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { AnimationsInterface, BlockInterface, ElementInterface, GlobalStyleInterface, InlineStylesInterface } from "../../../helpers";
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
+import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
 import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, GalleryModal, Locale } from "@churchapps/apphelper";
 import React from "react";
 
@@ -32,6 +32,8 @@ type Props = {
 
 export function ElementEdit(props: Props) {
   const [blocks, setBlocks] = useState<BlockInterface[]>(null);
+  const [groupLabelOptions, setGroupLabelOptions] = useState<string[]>([]);
+  const [groupCategoryOptions, setGroupCategoryOptions] = useState<string[]>([]);
   const [selectPhotoField, setSelectPhotoField] = React.useState<string>(null);
   const [element, setElement] = useState<ElementInterface>(null);
   const [errors, setErrors] = useState([]);
@@ -523,53 +525,62 @@ export function ElementEdit(props: Props) {
     </>
   );
 
-  const getGroupsFields = () => (
-    <>
-      <TextField
-        fullWidth
-        size="small"
-        label="Heading (optional)"
-        name="title"
-        onChange={handleChange}
-        value={parsedData.title || ""}
-        helperText="Shown above the filter row, e.g. 'Find a Group'."
-      />
-      <TextField
-        fullWidth
-        size="small"
-        sx={{ marginTop: 2 }}
-        label="Pre-filter category (optional)"
-        name="category"
-        onChange={handleChange}
-        value={parsedData.category || ""}
-        helperText="Restrict the directory to a single category. Hides the category dropdown when set."
-      />
-      <TextField
-        fullWidth
-        size="small"
-        sx={{ marginTop: 2 }}
-        label="Pre-filter label (optional)"
-        name="label"
-        onChange={handleChange}
-        value={parsedData.label || ""}
-        helperText="Restrict the directory to groups with this label."
-      />
-      <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
-        <InputLabel>Show search box</InputLabel>
-        <Select label="Show search box" name="showSearch" value={parsedData.showSearch === false ? "false" : "true"} onChange={handleChange}>
-          <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-          <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
-        <InputLabel>Show category dropdown</InputLabel>
-        <Select label="Show category dropdown" name="showCategory" value={parsedData.showCategory === false ? "false" : "true"} onChange={handleChange}>
-          <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-          <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-        </Select>
-      </FormControl>
-    </>
-  );
+  const getGroupsFields = () => {
+    const setNamedValue = (name: string, value: string) => {
+      handleChange({ target: { name, value } } as unknown as SelectChangeEvent);
+    };
+    return (
+      <>
+        <TextField
+          fullWidth
+          size="small"
+          label="Heading (optional)"
+          name="title"
+          onChange={handleChange}
+          value={parsedData.title || ""}
+          helperText="Shown above the filter row, e.g. 'Find a Group'."
+        />
+        <Autocomplete
+          freeSolo
+          size="small"
+          sx={{ marginTop: 2 }}
+          options={groupCategoryOptions}
+          value={parsedData.category || ""}
+          onChange={(_e, val) => setNamedValue("category", val || "")}
+          onInputChange={(_e, val) => setNamedValue("category", val || "")}
+          renderInput={(params) => (
+            <TextField {...params} label="Pre-filter category (optional)" helperText="Restrict to a single category. Hides the category dropdown when set." />
+          )}
+        />
+        <Autocomplete
+          freeSolo
+          size="small"
+          sx={{ marginTop: 2 }}
+          options={groupLabelOptions}
+          value={parsedData.label || ""}
+          onChange={(_e, val) => setNamedValue("label", val || "")}
+          onInputChange={(_e, val) => setNamedValue("label", val || "")}
+          renderInput={(params) => (
+            <TextField {...params} label="Pre-filter label (optional)" helperText="Restrict to groups with this label. Pick from existing labels or type a new one." />
+          )}
+        />
+        <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
+          <InputLabel>Show search box</InputLabel>
+          <Select label="Show search box" name="showSearch" value={parsedData.showSearch === false ? "false" : "true"} onChange={handleChange}>
+            <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+            <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
+          <InputLabel>Show category dropdown</InputLabel>
+          <Select label="Show category dropdown" name="showCategory" value={parsedData.showCategory === false ? "false" : "true"} onChange={handleChange}>
+            <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+            <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+          </Select>
+        </FormControl>
+      </>
+    );
+  };
 
   const getCarouselFields = () => (
     <>
@@ -799,6 +810,24 @@ export function ElementEdit(props: Props) {
       handleSave();
     }
   }, [element]);
+
+  // Load existing labels + categories so the Groups element's pre-filter
+  // pickers offer real choices instead of free-text "what label is valid?".
+  useEffect(() => {
+    if (element?.elementType !== "groups") return;
+    if (groupLabelOptions.length || groupCategoryOptions.length) return;
+    ApiHelper.get("/groups", "MembershipApi").then((groups: any[]) => {
+      if (!Array.isArray(groups)) return;
+      const labels = new Set<string>();
+      const cats = new Set<string>();
+      groups.forEach((g) => {
+        (g.labelArray || []).forEach((l: string) => { if (l && l.trim()) labels.add(l.trim()); });
+        if (g.categoryName && g.categoryName.trim()) cats.add(g.categoryName.trim());
+      });
+      setGroupLabelOptions([...labels].sort());
+      setGroupCategoryOptions([...cats].sort());
+    });
+  }, [element?.elementType]);
 
   const getStandardFields = () => (
     <>

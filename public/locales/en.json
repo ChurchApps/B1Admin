@@ -291,6 +291,10 @@
       "rights": "All rights reserved."
     },
     "loginHeroPanel": {
+      "featureDonations": "Online Giving",
+      "featurePeople": "People & Households",
+      "featurePlanning": "Service Planning",
+      "featureWebsite": "Website & App",
       "subtitle": "Manage your congregation, plan services, track attendance, and handle donations — all in one place.",
       "title": "Church Management Made Simple"
     },
@@ -877,6 +881,7 @@
       "changePhotoAria": "Change group photo",
       "clickToAddPhoto": "Click to add photo",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
+      "enrollment": "Enrollment",
       "groupDesc": "Group Description",
       "groupDescriptionAria": "Group description",
       "groupDet": "Group Details",
@@ -902,7 +907,11 @@
     "groupMembers": {
       "groupMem": "Group Members",
       "leader": "Leader",
+      "leaderLower": "leader",
+      "leadersLower": "leaders",
       "makeLeader": "Make Leader",
+      "member": "member",
+      "members": "members",
       "messagePlaceholder": "Write a message to send to all group members…",
       "noMemDesc": "Add members from the panel to the right to start building this group.",
       "noMemTitle": "No members yet",
@@ -974,6 +983,8 @@
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Insert merge field into body:",
       "composePlaceholder": "Compose your email here...",
+      "eligibleSummary": "{eligibleCount} of {totalMembers} members will receive this email.",
+      "eligibleSummarySingular": "{eligibleCount} of {totalMembers} member will receive this email.",
       "emailGroupTitle": "Email Group: {groupName}",
       "fallbackError": "Failed to send email.",
       "loadTemplate": "Load Template (optional)",
@@ -984,20 +995,30 @@
       "mergeFieldEmail": "Email",
       "mergeFieldFirstName": "First Name",
       "mergeFieldLastName": "Last Name",
+      "noEmailNotice": "{count} members have no email address on file and will be skipped.",
+      "noEmailNoticeSingular": "{count} member has no email address on file and will be skipped.",
       "noEmailSkipped": "{count} skipped (no email address on file).",
       "none": "None",
       "send": "Send Email",
       "sendDefault": "This will send an email to eligible group members.",
       "sendFailedDetail": "{count} failed to send.",
       "sending": "Sending...",
+      "sentSummary": "Sent to {successCount} of {recipientCount} recipients.",
+      "sentSummarySingular": "Sent to {successCount} of {recipientCount} recipient.",
       "subject": "Subject",
       "subjectMergeFieldHint": "Insert merge field into subject:",
       "subjectPlaceholder": "e.g. Hello {firstName}, update from {churchName}"
     },
     "sendTextDialog": {
+      "characterCount": "{count} characters in {segments} segment(s).",
+      "characterCountSingular": "{count} character in {segments} segment(s).",
+      "eligibleSummary": "{eligibleCount} of {totalMembers} members will receive this text.",
+      "eligibleSummarySingular": "{eligibleCount} of {totalMembers} member will receive this text.",
       "fallbackError": "Failed to send text message.",
       "loadingRecipients": "Loading recipients...",
       "messageLabel": "Message",
+      "noPhoneNotice": "{count} members have no phone number on file and will be skipped.",
+      "noPhoneNoticeSingular": "{count} member has no phone number on file and will be skipped.",
       "noPhoneSkipped": "{count} skipped (no phone number).",
       "optedOutNotice": "{count} opted out.",
       "optedOutSkipped": "{count} skipped (opted out).",
@@ -1007,6 +1028,8 @@
       "sendFailedDetail": "{count} failed to send.",
       "sending": "Sending...",
       "sendingTo": "Sending to {phoneNumber}.",
+      "sentSummary": "Sent to {successCount} of {recipientCount} recipients.",
+      "sentSummarySingular": "Sent to {successCount} of {recipientCount} recipient.",
       "textGroupTitle": "Text Group: {groupName}",
       "textPersonTitle": "Text: {personName}"
     },
@@ -1867,6 +1890,7 @@
       "orderOfService": "Order of Service",
       "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
       "print": "Print",
+      "runTimes": "Run Times",
       "scrollDown": "Scroll Down",
       "scrollUp": "Scroll Up",
       "viewingAs": "Viewing as"
@@ -2908,10 +2932,10 @@
       "urlPlaceholder": "/donate"
     },
     "donationEdit": {
-      "allowedFunds": "Limit to specific funds",
-      "allowedFundsHelper": "Leave empty to allow all funds. Donors will only see the funds you select here.",
       "allowRecurring": "Allow recurring gifts",
       "allowSingleGift": "Allow single (one-time) gifts",
+      "allowedFunds": "Limit to specific funds",
+      "allowedFundsHelper": "Leave empty to allow all funds. Donors will only see the funds you select here.",
       "defaultFund": "Default fund",
       "defaultFundHelper": "Preselect this fund when the page loads. Combine with hiding the fund selector to route every gift here.",
       "fundOptions": "Fund Options",
@@ -2938,6 +2962,7 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
+      "block": "Block",
       "blocks": "Blocks",
       "box": "Box",
       "calendar": "Calendar",
@@ -3167,6 +3192,21 @@
       "unauthorizedCreate": "Unauthorized to create pages",
       "unauthorizedDelete": "Unauthorized to delete pages",
       "url": "Url"
+    },
+    "navStyleEdit": {
+      "activeColor": "Active link color",
+      "backgroundColor": "Background color",
+      "headerSubtitle": "Match the navigation to your church's branding",
+      "headerTitle": "Navigation Styling",
+      "linkColor": "Link color",
+      "linkHoverColor": "Link hover color",
+      "override": "Override",
+      "saveNav": "Save Navigation",
+      "solidSection": "Header (solid)",
+      "solidSectionDesc": "Used on most pages. Each color is optional — leave Override off to keep the site's current rendering.",
+      "transparentSection": "Header over hero (transparent)",
+      "transparentSectionDesc": "Used when the nav floats over a hero image. Leave Override off to auto-match the hero's text color.",
+      "unset": "Default"
     },
     "pageLink": {
       "check": "Check",
@@ -3418,21 +3458,6 @@
       "typography": "Typography Scale",
       "typographyDesc": "Configure font sizes and spacing",
       "yourChurch": "Your Church"
-    },
-    "navStyleEdit": {
-      "activeColor": "Active link color",
-      "backgroundColor": "Background color",
-      "headerSubtitle": "Match the navigation to your church's branding",
-      "headerTitle": "Navigation Styling",
-      "linkColor": "Link color",
-      "linkHoverColor": "Link hover color",
-      "override": "Override",
-      "saveNav": "Save Navigation",
-      "solidSection": "Header (solid)",
-      "solidSectionDesc": "Used on most pages. Each color is optional — leave Override off to keep the site's current rendering.",
-      "transparentSection": "Header over hero (transparent)",
-      "transparentSectionDesc": "Used when the nav floats over a hero image. Leave Override off to auto-match the hero's text color.",
-      "unset": "Default"
     },
     "tableEdit": {
       "allowMarkdown": "Allow Markdown",

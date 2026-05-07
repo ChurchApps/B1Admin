@@ -106,23 +106,29 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     if (loadingPreview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendEmailDialog.loadingRecipients")}</Typography>;
     if (!preview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendEmailDialog.sendDefault")}</Typography>;
 
-    const eligibleSummaryKey = preview.totalMembers !== 1 ? "groups.sendEmailDialog.eligibleSummary" : "groups.sendEmailDialog.eligibleSummarySingular";
-    const noEmailNoticeKey = preview.noEmailCount !== 1 ? "groups.sendEmailDialog.noEmailNotice" : "groups.sendEmailDialog.noEmailNoticeSingular";
+    const eligibleSummary = preview.totalMembers !== 1
+      ? Locale.label("groups.sendEmailDialog.eligibleSummary")
+      : Locale.label("groups.sendEmailDialog.eligibleSummarySingular");
+    const noEmailNotice = preview.noEmailCount !== 1
+      ? Locale.label("groups.sendEmailDialog.noEmailNotice")
+      : Locale.label("groups.sendEmailDialog.noEmailNoticeSingular");
     return (
       <Alert severity={preview.eligibleCount > 0 ? "info" : "warning"} sx={{ mb: 2 }}>
-        {Locale.label(eligibleSummaryKey).replace("{eligibleCount}", preview.eligibleCount.toString()).replace("{totalMembers}", preview.totalMembers.toString())}
-        {preview.noEmailCount > 0 && <><br />{Locale.label(noEmailNoticeKey).replace("{count}", preview.noEmailCount.toString())}</>}
+        {eligibleSummary.replace("{eligibleCount}", preview.eligibleCount.toString()).replace("{totalMembers}", preview.totalMembers.toString())}
+        {preview.noEmailCount > 0 && <><br />{noEmailNotice.replace("{count}", preview.noEmailCount.toString())}</>}
       </Alert>
     );
   };
 
   const renderResult = () => {
     if (!result) return null;
-    const sentSummaryKey = result.recipientCount !== 1 ? "groups.sendEmailDialog.sentSummary" : "groups.sendEmailDialog.sentSummarySingular";
+    const sentSummary = result.recipientCount !== 1
+      ? Locale.label("groups.sendEmailDialog.sentSummary")
+      : Locale.label("groups.sendEmailDialog.sentSummarySingular");
     return (
       <>
         <Alert severity={result.failCount === 0 ? "success" : "warning"} sx={{ mt: 1 }}>
-          {Locale.label(sentSummaryKey).replace("{successCount}", result.successCount.toString()).replace("{recipientCount}", result.recipientCount.toString())}
+          {sentSummary.replace("{successCount}", result.successCount.toString()).replace("{recipientCount}", result.recipientCount.toString())}
           {result.failCount > 0 && <><br />{Locale.label("groups.sendEmailDialog.sendFailedDetail").replace("{count}", result.failCount.toString())}</>}
         </Alert>
         {result.noEmailCount > 0 && (

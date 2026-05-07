@@ -6,11 +6,11 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import LinkIcon from "@mui/icons-material/Link";
 import { Locale } from "@churchapps/apphelper";
 
-const features: { icon: React.ReactNode; labelKey: string }[] = [
-  { icon: <PeopleIcon />, labelKey: "components.loginHeroPanel.featurePeople" },
-  { icon: <EventIcon />, labelKey: "components.loginHeroPanel.featurePlanning" },
-  { icon: <AttachMoneyIcon />, labelKey: "components.loginHeroPanel.featureDonations" },
-  { icon: <LinkIcon />, labelKey: "components.loginHeroPanel.featureWebsite" }
+const features: { id: string; icon: React.ReactNode; getLabel: () => string }[] = [
+  { id: "people", icon: <PeopleIcon />, getLabel: () => Locale.label("components.loginHeroPanel.featurePeople") },
+  { id: "planning", icon: <EventIcon />, getLabel: () => Locale.label("components.loginHeroPanel.featurePlanning") },
+  { id: "donations", icon: <AttachMoneyIcon />, getLabel: () => Locale.label("components.loginHeroPanel.featureDonations") },
+  { id: "website", icon: <LinkIcon />, getLabel: () => Locale.label("components.loginHeroPanel.featureWebsite") }
 ];
 
 export const LoginHeroPanel: React.FC = () => (
@@ -59,11 +59,11 @@ export const LoginHeroPanel: React.FC = () => (
       </Typography>
       <Stack spacing={2} sx={{ textAlign: "left" }}>
         {features.map((f) => (
-          <Stack key={f.labelKey} direction="row" spacing={1.5} alignItems="center" sx={{ color: "rgba(255,255,255,0.9)", fontSize: "0.875rem" }}>
+          <Stack key={f.id} direction="row" spacing={1.5} alignItems="center" sx={{ color: "rgba(255,255,255,0.9)", fontSize: "0.875rem" }}>
             <Box sx={(theme) => ({ width: 32, height: 32, minWidth: 32, background: alpha(theme.palette.common.white, 0.15), borderRadius: 1, display: "flex", alignItems: "center", justifyContent: "center", "& svg": { fontSize: 16 } })}>
               {f.icon}
             </Box>
-            <Box component="span">{Locale.label(f.labelKey)}</Box>
+            <Box component="span">{f.getLabel()}</Box>
           </Stack>
         ))}
       </Stack>

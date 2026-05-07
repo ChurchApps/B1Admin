@@ -534,7 +534,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
           sx={{ mt: -0.5, mb: 2, color: "text.secondary" }}>
           <Typography variant="body2" sx={{ fontVariantNumeric: "tabular-nums" }}>
             <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{memberCount}</Box>{" "}
-            {Locale.label(memberCount === 1 ? "groups.groupMembers.member" : "groups.groupMembers.members")}
+            {memberCount === 1 ? Locale.label("groups.groupMembers.member") : Locale.label("groups.groupMembers.members")}
           </Typography>
           {leaderCount > 0 && (
             <>
@@ -543,7 +543,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
                 <StarIcon sx={{ fontSize: 14, color: "warning.main" }} />
                 <Typography variant="body2" sx={{ fontVariantNumeric: "tabular-nums" }}>
                   <Box component="span" sx={{ fontWeight: 600, color: "text.primary" }}>{leaderCount}</Box>{" "}
-                  {Locale.label(leaderCount === 1 ? "groups.groupMembers.leaderLower" : "groups.groupMembers.leadersLower")}
+                  {leaderCount === 1 ? Locale.label("groups.groupMembers.leaderLower") : Locale.label("groups.groupMembers.leadersLower")}
                 </Typography>
               </Stack>
             </>

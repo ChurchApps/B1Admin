@@ -84,13 +84,17 @@ export const SendTextDialog: React.FC<Props> = (props) => {
     if (loadingPreview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendTextDialog.loadingRecipients")}</Typography>;
     if (!preview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendTextDialog.sendDefault")}</Typography>;
 
-    const eligibleSummaryKey = preview.totalMembers !== 1 ? "groups.sendTextDialog.eligibleSummary" : "groups.sendTextDialog.eligibleSummarySingular";
-    const noPhoneNoticeKey = preview.noPhoneCount !== 1 ? "groups.sendTextDialog.noPhoneNotice" : "groups.sendTextDialog.noPhoneNoticeSingular";
+    const eligibleSummary = preview.totalMembers !== 1
+      ? Locale.label("groups.sendTextDialog.eligibleSummary")
+      : Locale.label("groups.sendTextDialog.eligibleSummarySingular");
+    const noPhoneNotice = preview.noPhoneCount !== 1
+      ? Locale.label("groups.sendTextDialog.noPhoneNotice")
+      : Locale.label("groups.sendTextDialog.noPhoneNoticeSingular");
     return (
       <Alert severity={preview.eligibleCount > 0 ? "info" : "warning"} sx={{ mb: 2 }}>
-        {Locale.label(eligibleSummaryKey).replace("{eligibleCount}", preview.eligibleCount.toString()).replace("{totalMembers}", preview.totalMembers.toString())}
+        {eligibleSummary.replace("{eligibleCount}", preview.eligibleCount.toString()).replace("{totalMembers}", preview.totalMembers.toString())}
         {preview.optedOutCount > 0 && <><br />{Locale.label("groups.sendTextDialog.optedOutNotice").replace("{count}", preview.optedOutCount.toString())}</>}
-        {preview.noPhoneCount > 0 && <><br />{Locale.label(noPhoneNoticeKey).replace("{count}", preview.noPhoneCount.toString())}</>}
+        {preview.noPhoneCount > 0 && <><br />{noPhoneNotice.replace("{count}", preview.noPhoneCount.toString())}</>}
       </Alert>
     );
   };
@@ -98,11 +102,13 @@ export const SendTextDialog: React.FC<Props> = (props) => {
   const renderResult = () => {
     if (!result) return null;
     const isGroup = result.totalMembers !== undefined && result.totalMembers > 1;
-    const sentSummaryKey = result.recipientCount !== 1 ? "groups.sendTextDialog.sentSummary" : "groups.sendTextDialog.sentSummarySingular";
+    const sentSummary = result.recipientCount !== 1
+      ? Locale.label("groups.sendTextDialog.sentSummary")
+      : Locale.label("groups.sendTextDialog.sentSummarySingular");
     return (
       <>
         <Alert severity={result.failCount === 0 ? "success" : "warning"} sx={{ mt: 1 }}>
-          {Locale.label(sentSummaryKey).replace("{successCount}", result.successCount.toString()).replace("{recipientCount}", result.recipientCount.toString())}
+          {sentSummary.replace("{successCount}", result.successCount.toString()).replace("{recipientCount}", result.recipientCount.toString())}
           {result.failCount > 0 && <><br />{Locale.label("groups.sendTextDialog.sendFailedDetail").replace("{count}", result.failCount.toString())}</>}
         </Alert>
         {isGroup && (result.optedOutCount > 0 || result.noPhoneCount > 0) && (
@@ -137,7 +143,10 @@ export const SendTextDialog: React.FC<Props> = (props) => {
               inputProps={{ maxLength: 1600 }}
             />
             <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: "block" }}>
-              {Locale.label(charCount !== 1 ? "groups.sendTextDialog.characterCount" : "groups.sendTextDialog.characterCountSingular").replace("{count}", charCount.toString()).replace("{segments}", segmentCount.toString())}
+              {(charCount !== 1
+                ? Locale.label("groups.sendTextDialog.characterCount")
+                : Locale.label("groups.sendTextDialog.characterCountSingular")
+              ).replace("{count}", charCount.toString()).replace("{segments}", segmentCount.toString())}
             </Typography>
           </>
         )}
