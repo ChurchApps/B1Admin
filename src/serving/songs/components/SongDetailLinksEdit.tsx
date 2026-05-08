@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type SongDetailLinkInterface } from "../../../helpers";
-import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, type SelectChangeEvent, Stack, Typography, Box, IconButton } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Stack, Typography, Box, IconButton } from "@mui/material";
 import { Link as LinkIcon, Done as DoneIcon, Add as AddIcon } from "@mui/icons-material";
 
 interface Props {
@@ -9,18 +10,14 @@ interface Props {
   reload: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const SongDetailLinksEdit = (props: Props) => {
   const [songDetailLinks, setSongDetailLinks] = React.useState<SongDetailLinkInterface[]>([]);
   const [editLink, setEditLink] = React.useState<SongDetailLinkInterface>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    const l = { ...editLink };
-    switch (e.target.name) {
-      case "serviceKey": l.serviceKey = e.target.value; break;
-      case "service": l.service = e.target.value; break;
-    }
-    setEditLink(l);
-  };
+  const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { service: "Apple", serviceKey: "" } });
+  const watchedService = watch("service");
 
   const loadData = () => {
     if (props.songDetailId) {
@@ -29,36 +26,39 @@ export const SongDetailLinksEdit = (props: Props) => {
       });
     }
   };
+
   useEffect(() => {
     loadData();
   }, [props.songDetailId]);
 
-  const getPlaceholder = (link: SongDetailLinkInterface) => {
-    let result = "";
-    switch (link.service) {
-      case "Apple": result = "10-000-reasons-bless-the-lord-10th-anniversary-feat/1618341399"; break;
-      case "CCLI": result = "6016351"; break;
-      case "Genius": result = "Matt-redman-10000-reasons-bless-the-lord-lyrics"; break;
-      case "Hymnary": result = "https://hymnary.org/text/" + link.serviceKey; break;
-      case "MusicBrainz": result = "https://musicbrainz.org/recording/" + link.serviceKey; break;
-      case "Spotify": result = "2I9pjIezpupeJfVM1r9ZIm"; break;
-      case "YouTube": result = "XtwIT8JjddM"; break;
+  useEffect(() => {
+    if (editLink) reset({ service: editLink.service ?? "Apple", serviceKey: editLink.serviceKey ?? "" });
+  }, [editLink, reset]);
+
+  const getPlaceholder = (service: string) => {
+    switch (service) {
+      case "Apple": return "10-000-reasons-bless-the-lord-10th-anniversary-feat/1618341399";
+      case "CCLI": return "6016351";
+      case "Genius": return "Matt-redman-10000-reasons-bless-the-lord-lyrics";
+      case "Hymnary": return "https://hymnary.org/text/";
+      case "MusicBrainz": return "https://musicbrainz.org/recording/";
+      case "Spotify": return "2I9pjIezpupeJfVM1r9ZIm";
+      case "YouTube": return "XtwIT8JjddM";
+      default: return "";
     }
-    return result;
   };
 
-  const determineUrl = (link: SongDetailLinkInterface) => {
-    let result = "";
-    switch (link.service) {
-      case "Apple": result = "https://music.apple.com/us/album/" + link.serviceKey; break;
-      case "CCLI": result = "https://songselect.ccli.com/Songs/" + link.serviceKey; break;
-      case "Genius": result = "https://genius.com/" + link.serviceKey; break;
-      case "Hymnary": result = "https://hymnary.org/text/" + link.serviceKey; break;
-      case "MusicBrainz": result = "https://musicbrainz.org/recording/" + link.serviceKey; break;
-      case "Spotify": result = "https://open.spotify.com/track/" + link.serviceKey; break;
-      case "YouTube": result = "https://www.youtube.com/watch?v=" + link.serviceKey; break;
+  const determineUrl = (service: string, serviceKey: string) => {
+    switch (service) {
+      case "Apple": return "https://music.apple.com/us/album/" + serviceKey;
+      case "CCLI": return "https://songselect.ccli.com/Songs/" + serviceKey;
+      case "Genius": return "https://genius.com/" + serviceKey;
+      case "Hymnary": return "https://hymnary.org/text/" + serviceKey;
+      case "MusicBrainz": return "https://musicbrainz.org/recording/" + serviceKey;
+      case "Spotify": return "https://open.spotify.com/track/" + serviceKey;
+      case "YouTube": return "https://www.youtube.com/watch?v=" + serviceKey;
+      default: return "";
     }
-    return result;
   };
 
   const handleAdd = () => {
@@ -72,14 +72,13 @@ export const SongDetailLinksEdit = (props: Props) => {
     });
   };
 
-  const handleSave = () => {
-    const l = { ...editLink };
-    l.url = determineUrl(l);
-
+  const onValid = (values: AnyRecord) => {
+    const l: SongDetailLinkInterface = { ...editLink, service: values.service, serviceKey: values.serviceKey };
+    l.url = determineUrl(values.service, values.serviceKey);
     ApiHelper.post("/songDetailLinks", [l], "ContentApi").then(() => {
       loadData();
       setEditLink(null);
-      if (l.service === "MusicBrainz") props.reload();
+      if (values.service === "MusicBrainz") props.reload();
     });
   };
 
@@ -102,24 +101,24 @@ export const SongDetailLinksEdit = (props: Props) => {
       <InputBox
         headerText={Locale.label("plans.songs.links")}
         headerIcon="link"
-        cancelFunction={() => {
-          setEditLink(null);
-        }}
-        saveFunction={handleSave}
+        cancelFunction={() => { setEditLink(null); }}
+        saveFunction={handleSubmit(onValid)}
         deleteFunction={editLink.id ? handleDelete : null}>
         <FormControl fullWidth size="small">
           <InputLabel>{Locale.label("songs.songDetailLinksEdit.service")}</InputLabel>
-          <Select size="small" name="service" label={Locale.label("songs.songDetailLinksEdit.service")} value={editLink.service} onChange={handleChange}>
-            <MenuItem value="Apple">Apple</MenuItem>
-            <MenuItem value="CCLI">CCLI</MenuItem>
-            <MenuItem value="Genius">Genius</MenuItem>
-            <MenuItem value="Hymnary">Hymnary</MenuItem>
-            <MenuItem value="MusicBrainz">MusicBrainz</MenuItem>
-            <MenuItem value="Spotify">Spotify</MenuItem>
-            <MenuItem value="YouTube">YouTube</MenuItem>
-          </Select>
+          <Controller name="service" control={control} render={({ field }) => (
+            <Select {...field} size="small" label={Locale.label("songs.songDetailLinksEdit.service")}>
+              <MenuItem value="Apple">Apple</MenuItem>
+              <MenuItem value="CCLI">CCLI</MenuItem>
+              <MenuItem value="Genius">Genius</MenuItem>
+              <MenuItem value="Hymnary">Hymnary</MenuItem>
+              <MenuItem value="MusicBrainz">MusicBrainz</MenuItem>
+              <MenuItem value="Spotify">Spotify</MenuItem>
+              <MenuItem value="YouTube">YouTube</MenuItem>
+            </Select>
+          )} />
         </FormControl>
-        <TextField size="small" name="serviceKey" placeholder={getPlaceholder(editLink)} fullWidth label={Locale.label("songs.songDetailLinksEdit.id")} value={editLink.serviceKey} onChange={handleChange} />
+        <TextField size="small" placeholder={getPlaceholder(watchedService)} fullWidth label={Locale.label("songs.songDetailLinksEdit.id")} {...register("serviceKey")} />
       </InputBox>
     );
   } else {

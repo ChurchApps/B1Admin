@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { ErrorMessages, InputBox, ApiHelper, UserHelper, SlugHelper, Locale } from "@churchapps/apphelper";
+import { useForm, Controller } from "react-hook-form";
+import { Alert, Button, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { InputBox, ApiHelper, UserHelper, SlugHelper, Locale } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface } from "@churchapps/helpers";
 import type { PageInterface } from "../../helpers/Interfaces";
-import { Button, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
-import type { SelectChangeEvent } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
 type Props = {
@@ -15,187 +15,146 @@ type Props = {
   onDone: () => void;
 };
 
+type AnyRecord = Record<string, any>;
+
 export function PageLinkEdit(props: Props) {
-  const [page, setPage] = useState<PageInterface | null>(null);
-  const [link, setLink] = useState<LinkInterface | null>(null);
-  const [errors, setErrors] = useState<string[]>([]);
   const [checked, setChecked] = useState<boolean>(false);
 
-  const handleCancel = () => props.updatedCallback(page, link);
+  const { control, register, handleSubmit, reset, setValue, setError, watch, formState } = useForm<AnyRecord>({ defaultValues: { title: "", url: "", layout: "", linkText: "", linkUrl: "" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.url?.message) summaryErrors.push(e.url.message);
+  if (e.title?.message) summaryErrors.push(e.title.message);
+  if (e.root?.message) summaryErrors.push(e.root.message);
+  if (e._checkUrl?.message) summaryErrors.push(e._checkUrl.message);
 
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSave();
-    }
-  };
+  const handleCancel = () => props.updatedCallback(props.page, props.link || null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
-    e.preventDefault();
-    const p = { ...page } as PageInterface;
-    const val = e.target.value;
-    switch (e.target.name) {
-      case "title": p.title = val; break;
-      case "url":
-        p.url = val.toLowerCase();
-        if (link) {
-          const l = { ...link };
-          l.url = val.toLowerCase();
-          setLink(l);
-        }
-        break;
-      case "layout": p.layout = val; break;
-    }
-    setPage(p);
-  };
-
-  const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
-    e.preventDefault();
-    const l = { ...link } as LinkInterface;
-    const val = e.target.value;
-    switch (e.target.name) {
-      case "linkText": l.text = val; break;
-      case "linkUrl": l.url = val; break;
-    }
-    setLink(l);
-  };
-
-  const validate = () => {
-    const errors = [];
-    if (!page?.url || page.url === "") errors.push(Locale.label("site.pageLinkEdit.errPath"));
-    if (!page?.title || page.title === "") errors.push(Locale.label("site.pageLinkEdit.errTitle"));
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.pageLinkEdit.unauthorizedCreate"));
-    if (!checked) errors.push(Locale.label("site.pageLinkEdit.errCheckUrl"));
-    setErrors(errors);
-    return errors.length === 0;
-  };
-
-  const handleSave = async () => {
-    if (validate()) {
-      let pageData = page;
-      let linkData = link;
-
-      if (pageData) {
-        [pageData] = await ApiHelper.post("/pages", [page], "ContentApi");
-      }
-
-      if (link) {
-        [linkData] = await ApiHelper.post("/links", [link], "ContentApi");
-      }
-
-      setPage(pageData);
-      props.updatedCallback(pageData, linkData);
-    }
-  };
-
-  const handleDelete = () => {
-    const errors = [];
+  const onValid = async (values: AnyRecord) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
-      errors.push(Locale.label("site.pageLinkEdit.unauthorizedDelete"));
+      setError("root", { message: Locale.label("site.pageLinkEdit.unauthorizedCreate") });
+      return;
     }
-
-    if (errors.length > 0) {
-      setErrors(errors);
+    if (!checked) {
+      setError("_checkUrl", { message: Locale.label("site.pageLinkEdit.errCheckUrl") });
       return;
     }
 
-    if (page) {
+    let pageData = props.page ? { ...props.page, title: values.title, url: values.url, layout: values.layout } : null;
+    let linkData = props.link ? { ...props.link, text: values.linkText, url: values.linkUrl || values.url } : null;
+
+    if (pageData) { [pageData] = await ApiHelper.post("/pages", [pageData], "ContentApi"); }
+    if (linkData) { [linkData] = await ApiHelper.post("/links", [linkData], "ContentApi"); }
+
+    props.updatedCallback(pageData, linkData);
+  };
+
+  const handleDelete = () => {
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
+      setError("root", { message: Locale.label("site.pageLinkEdit.unauthorizedDelete") });
+      return;
+    }
+    if (props.page) {
       if (window.confirm(Locale.label("site.pageLink.confirmDelete"))) {
-        ApiHelper.delete("/pages/" + page.id?.toString(), "ContentApi").then(() => {
-          if (link) {
-            ApiHelper.delete("/links/" + link.id?.toString(), "ContentApi").then(() => props.updatedCallback(null, null));
+        ApiHelper.delete("/pages/" + props.page.id?.toString(), "ContentApi").then(() => {
+          if (props.link) {
+            ApiHelper.delete("/links/" + props.link.id?.toString(), "ContentApi").then(() => props.updatedCallback(null, null));
           } else {
-            props.updatedCallback(null, link);
+            props.updatedCallback(null, props.link || null);
           }
         });
       }
     } else {
-      if (link) {
-        ApiHelper.delete("/links/" + link.id?.toString(), "ContentApi").then(() => props.updatedCallback(null, null));
+      if (props.link) {
+        ApiHelper.delete("/links/" + props.link.id?.toString(), "ContentApi").then(() => props.updatedCallback(null, null));
       }
     }
   };
 
   const handleSlugValidation = () => {
-    const p = { ...page } as PageInterface;
-    p.url = SlugHelper.slugifyString(p.url || "", "urlPath");
-    setPage(p);
+    const currentUrl = watch("url") || "";
+    const slugged = SlugHelper.slugifyString(currentUrl, "urlPath");
+    setValue("url", slugged);
     setChecked(true);
   };
 
   const handleDuplicate = (e: React.MouseEvent) => {
     e.preventDefault();
     if (confirm(Locale.label("site.pageLink.confirmDuplicate"))) {
-      ApiHelper.post("/pages/duplicate/" + page?.id, {}, "ContentApi").then((data: any) => {
-        setPage(null);
-        props.updatedCallback(data, link);
+      ApiHelper.post("/pages/duplicate/" + props.page?.id, {}, "ContentApi").then((data: any) => {
+        props.updatedCallback(data, props.link || null);
       });
     }
   };
 
   useEffect(() => {
-    setPage(props.page);
-    setLink(props.link || null);
-    if (props.page?.url) {
-      setChecked(true);
-    }
-  }, [props.page, props.link]);
+    reset({
+      title: props.page?.title || "",
+      url: props.page?.url || "",
+      layout: props.page?.layout || "",
+      linkText: props.link?.text || "",
+      linkUrl: props.link?.url || ""
+    });
+    setChecked(!!props.page?.url);
+  }, [props.page, props.link, reset]);
 
-  if (!page && !link) return <></>;
-  else {
-    return (
-      <Dialog open={true} onClose={props.onDone} style={{ minWidth: 800 }}>
-        <InputBox
-          id="pageDetailsBox"
-          headerText={page ? Locale.label("site.pageLink.pageSettings") : Locale.label("site.pageLink.linkSettings")}
-          headerIcon="article"
-          saveFunction={handleSave}
-          cancelFunction={handleCancel}
-          deleteFunction={handleDelete}
-          headerActionContent={
-            page?.id && (
-              <a href="about:blank" onClick={handleDuplicate}>
-                {Locale.label("site.pageLinkEdit.duplicate")}
-              </a>
-            )
-          }
-        >
-          <ErrorMessages errors={errors} />
-          <Grid container spacing={2} style={{ minWidth: 500 }}>
-            {page && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.pageTitle")} name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.title")} />
-            </Grid>}
-            {link && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.linkText")} name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkText")} />
-            </Grid>}
-            {page && <Grid size={{ xs: 6 }}>
-              {!props.embedded && <FormControl fullWidth size="small">
-                <InputLabel>{Locale.label("site.pageLinkEdit.layout")}</InputLabel>
-                <Select size="small" fullWidth label={Locale.label("site.pageLinkEdit.layout")} value={page.layout || ""} name="layout" onChange={handleChange}>
+  const urlValue = watch("url");
+
+  if (!props.page && !props.link) return <></>;
+  return (
+    <Dialog open={true} onClose={props.onDone} style={{ minWidth: 800 }}>
+      <InputBox
+        id="pageDetailsBox"
+        headerText={props.page ? Locale.label("site.pageLink.pageSettings") : Locale.label("site.pageLink.linkSettings")}
+        headerIcon="article"
+        saveFunction={handleSubmit(onValid)}
+        cancelFunction={handleCancel}
+        deleteFunction={handleDelete}
+        headerActionContent={
+          props.page?.id && (
+            <a href="about:blank" onClick={handleDuplicate}>
+              {Locale.label("site.pageLinkEdit.duplicate")}
+            </a>
+          )
+        }
+      >
+        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <Grid container spacing={2} style={{ minWidth: 500 }}>
+          {props.page && <Grid size={{ xs: 6 }}>
+            <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.pageTitle")} placeholder={Locale.label("placeholders.page.title")} error={!!e.title} helperText={e.title?.message} {...register("title", { required: Locale.label("site.pageLinkEdit.errTitle") })} name="title" />
+          </Grid>}
+          {props.link && <Grid size={{ xs: 6 }}>
+            <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.linkText")} placeholder={Locale.label("placeholders.page.linkText")} {...register("linkText")} name="linkText" />
+          </Grid>}
+          {props.page && <Grid size={{ xs: 6 }}>
+            {!props.embedded && <FormControl fullWidth size="small">
+              <InputLabel>{Locale.label("site.pageLinkEdit.layout")}</InputLabel>
+              <Controller name="layout" control={control} render={({ field }) => (
+                <Select {...field} size="small" fullWidth label={Locale.label("site.pageLinkEdit.layout")}>
                   <MenuItem value="headerFooter">{Locale.label("site.pageLinkEdit.headerFooter")}</MenuItem>
                   <MenuItem value="cleanCentered">{Locale.label("site.pageLinkEdit.cleanCentered")}</MenuItem>
                 </Select>
-              </FormControl>}
-            </Grid>}
-            {page && <Grid size={{ xs: 6 }}>
-              {checked
-                ? (<div style={{ marginTop: "5px", paddingLeft: "4px" }}>
-                  <Paper elevation={0}>
-                    <Stack direction="row" alignItems="center" justifyContent="space-between">
-                      <Typography>{page.url}</Typography>
-                      <IconButton color="primary" onClick={() => setChecked(false)}><EditIcon /></IconButton>
-                    </Stack>
-                  </Paper>
-                </div>)
-                : (<TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.urlPath")} name="url" value={page.url || ""} onChange={handleChange} placeholder={Locale.label("placeholders.page.urlPath")} helperText={Locale.label("site.pageLink.urlHelper")} InputProps={{ endAdornment: (<Button variant="contained" color="primary" size="small" onClick={handleSlugValidation}>{Locale.label("site.pageLink.check")}</Button>) }} />)
-              }
-            </Grid>}
-            {!page && link && <Grid size={{ xs: 6 }}>
-              <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.url")} name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.page.linkUrl")} />
-            </Grid>}
-          </Grid>
-        </InputBox>
-      </Dialog>
-    );
-  }
+              )} />
+            </FormControl>}
+          </Grid>}
+          {props.page && <Grid size={{ xs: 6 }}>
+            {checked
+              ? (<div style={{ marginTop: "5px", paddingLeft: "4px" }}>
+                <Paper elevation={0}>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Typography>{urlValue}</Typography>
+                    <IconButton color="primary" onClick={() => setChecked(false)}><EditIcon /></IconButton>
+                  </Stack>
+                </Paper>
+              </div>)
+              : (<TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.urlPath")} placeholder={Locale.label("placeholders.page.urlPath")} helperText={Locale.label("site.pageLink.urlHelper")} InputProps={{ endAdornment: (<Button variant="contained" color="primary" size="small" onClick={handleSlugValidation}>{Locale.label("site.pageLink.check")}</Button>) }} error={!!e.url} {...register("url", { required: Locale.label("site.pageLinkEdit.errPath") })} name="url" />)
+            }
+          </Grid>}
+          {!props.page && props.link && <Grid size={{ xs: 6 }}>
+            <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.url")} placeholder={Locale.label("placeholders.page.linkUrl")} {...register("linkUrl")} name="linkUrl" />
+          </Grid>}
+        </Grid>
+      </InputBox>
+    </Dialog>
+  );
 }

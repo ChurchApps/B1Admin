@@ -32,6 +32,7 @@
     "react-ga4": "^3.0.1",
     "react-google-charts": "^5.2.1",
     "react-google-recaptcha": "^3.1.0",
+    "react-hook-form": "^7.75.0",
     "react-image-file-resizer": "^0.4.8",
     "react-router-dom": "^7.15.0",
     "react-select": "^5.8.1",

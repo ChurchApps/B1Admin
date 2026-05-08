@@ -1,9 +1,12 @@
 import { TextField } from "@mui/material";
 import React from "react";
+import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { CategorySelect } from "./CategorySelect";
 import UserContext from "../../UserContext";
+
+type AnyRecord = Record<string, any>;
 
 interface Props {
   updatedFunction: () => void;
@@ -12,56 +15,42 @@ interface Props {
 }
 
 export const GroupAdd: React.FC<Props> = (props) => {
-  const [group, setGroup] = React.useState<GroupInterface>({ categoryName: props.categoryName || "", name: "", tags: props.tags });
-  const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const context = React.useContext(UserContext);
+
+  const { control, register, handleSubmit } = useForm<AnyRecord>({ defaultValues: { categoryName: props.categoryName || "", name: "" } });
+
+  const { errors } = useFormState({ control });
+  const e = errors as any;
+
+  const summaryErrors: string[] = React.useMemo(() => {
+    const errs: string[] = [];
+    if (e.categoryName?.message) errs.push(e.categoryName.message);
+    if (e.name?.message) errs.push(e.name.message);
+    return errs;
+  }, [errors]);
 
   const handleCancel = () => {
     props.updatedFunction();
   };
 
-  const handleAdd = async () => {
-    if (validate()) {
-      setIsSubmitting(true);
-      try {
-        const result = await ApiHelper.post("/groups", [group], "MembershipApi");
-        // Auto-add creator as member for ministries
-        if (props.tags === "ministry" && result?.[0]?.id && context?.person?.id) {
-          const groupMember: GroupMemberInterface = {
-            groupId: result[0].id,
-            personId: context.person.id
-          };
-          await ApiHelper.post("/groupMembers", [groupMember], "MembershipApi");
-        }
-      } finally {
-        setIsSubmitting(false);
-        props.updatedFunction();
+  const onValid = async (values: AnyRecord) => {
+    setIsSubmitting(true);
+    try {
+      const group: GroupInterface = { categoryName: values.categoryName, name: values.name, tags: props.tags };
+      const result = await ApiHelper.post("/groups", [group], "MembershipApi");
+      // Auto-add creator as member for ministries
+      if (props.tags === "ministry" && result?.[0]?.id && context?.person?.id) {
+        const groupMember: GroupMemberInterface = {
+          groupId: result[0].id,
+          personId: context.person.id
+        };
+        await ApiHelper.post("/groupMembers", [groupMember], "MembershipApi");
       }
+    } finally {
+      setIsSubmitting(false);
+      props.updatedFunction();
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setErrors([]);
-    const g = { ...group } as GroupInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "name": g.name = value; break;
-    }
-    setGroup(g);
-  };
-
-  const handleCategoryChange = (value: string) => {
-    setErrors([]);
-    setGroup({ ...group, categoryName: value });
-  };
-
-  const validate = () => {
-    const result = [];
-    if (!group.categoryName) result.push(Locale.label("groups.groupAdd.catReq"));
-    if (!group.name) result.push(Locale.label("groups.groupAdd.groupReq"));
-    setErrors(result);
-    return result.length === 0;
   };
 
   let label = Locale.label("groups.groupAdd.group");
@@ -69,29 +58,20 @@ export const GroupAdd: React.FC<Props> = (props) => {
   else if (props.tags === "ministry") label = Locale.label("groups.groupAdd.ministry");
 
   return (
-    <InputBox headerText={Locale.label("groups.groupAdd.new") + label} headerIcon="group" cancelFunction={handleCancel} saveFunction={handleAdd} saveText={Locale.label("groups.groupAdd.add")} isSubmitting={isSubmitting}>
-      <ErrorMessages errors={errors} />
+    <InputBox headerText={Locale.label("groups.groupAdd.new") + label} headerIcon="group" cancelFunction={handleCancel} saveFunction={handleSubmit(onValid)} saveText={Locale.label("groups.groupAdd.add")} isSubmitting={isSubmitting}>
+      <ErrorMessages errors={summaryErrors} />
       {props.tags === "standard" && (
-        <CategorySelect
-          value={group.categoryName}
-          onChange={handleCategoryChange}
-          label={Locale.label("groups.groupAdd.catName")}
-          tags={props.tags}
-          testId="add-category-name"
-        />
+        <Controller name="categoryName" control={control} rules={{ required: Locale.label("groups.groupAdd.catReq") }} render={({ field }) => (
+          <CategorySelect
+            value={field.value}
+            onChange={field.onChange}
+            label={Locale.label("groups.groupAdd.catName")}
+            tags={props.tags}
+            testId="add-category-name"
+          />
+        )} />
       )}
-      <TextField
-        fullWidth={true}
-        label={Locale.label("common.name")}
-        type="text"
-        id="groupName"
-        name="name"
-        value={group.name}
-        onChange={handleChange}
-        placeholder={Locale.label("placeholders.group.name")}
-        data-testid="add-group-name-input"
-        aria-label={Locale.label("groups.groupAdd.groupNameAria")}
-      />
+      <TextField fullWidth={true} label={Locale.label("common.name")} type="text" id="groupName" placeholder={Locale.label("placeholders.group.name")} data-testid="add-group-name-input" aria-label={Locale.label("groups.groupAdd.groupNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("groups.groupAdd.groupReq") })} />
     </InputBox>
   );
 };

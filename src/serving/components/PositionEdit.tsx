@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
+import { useForm, Controller, useFormState } from "react-hook-form";
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { type GroupInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
 import ReactSelect from "react-select";
@@ -10,133 +11,118 @@ interface Props {
   updatedFunction: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 type OptionType = {
   value: string;
   label: string;
 };
 
 export const PositionEdit = (props: Props) => {
-  const options: OptionType[] = [];
-  props.categoryNames.forEach((categoryName) => options.push({ value: categoryName, label: categoryName }));
+  const initialOptions: OptionType[] = props.categoryNames.map((n) => ({ value: n, label: n }));
 
-  const [position, setPosition] = React.useState<PositionInterface>(props.position);
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const [categoryOptions, setCategoryOptions] = React.useState<OptionType[]>(initialOptions);
   const [categoryInput, setCategoryInput] = React.useState("");
-  const [categoryOptions, setCategoryOptions] = React.useState<OptionType[]>(options);
+  const [allowSelfSignup, setAllowSelfSignup] = React.useState<boolean>(props.position?.allowSelfSignup ?? false);
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    setErrors([]);
-    const p = { ...position } as PositionInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "categoryName": p.categoryName = value; break;
-      case "name": p.name = value; break;
-      case "count": p.count = parseInt(value); break;
-      case "groupId": p.groupId = value; break;
-      case "description": p.description = value; break;
+  const { control, register, handleSubmit, setValue, watch } = useForm<AnyRecord>({
+    defaultValues: {
+      categoryName: props.position?.categoryName ?? "",
+      name: props.position?.name ?? "",
+      count: props.position?.count ?? 0,
+      groupId: props.position?.groupId ?? "",
+      description: props.position?.description ?? ""
     }
-    setPosition(p);
-  };
+  });
 
-  const handleSave = () => {
-    const errors: string[] = [];
-    if (!position.categoryName) errors.push(Locale.label("plans.positionEdit.catNameReq"));
-    if (!position.name) errors.push(Locale.label("plans.positionEdit.nameReq"));
-    setErrors(errors);
-    if (errors.length === 0) ApiHelper.post("/positions", [position], "DoingApi").then(props.updatedFunction);
-  };
+  const { errors } = useFormState({ control });
+  const e = errors as any;
 
-  const handleDelete = () => {
-    ApiHelper.delete("/positions/" + position.id, "DoingApi").then(props.updatedFunction);
-  };
+  const summaryErrors: string[] = React.useMemo(() => {
+    const errs: string[] = [];
+    if (e.categoryName?.message) errs.push(e.categoryName.message);
+    if (e.name?.message) errs.push(e.name.message);
+    return errs;
+  }, [errors]);
 
-  const categoryOption = position?.categoryName === "" && categoryOptions.length > 0 ? categoryOptions[0] : { value: position.categoryName, label: position.categoryName };
+  const watchedCategory = watch("categoryName");
+  const categoryOption = !watchedCategory && categoryOptions.length > 0
+    ? categoryOptions[0]
+    : { value: watchedCategory, label: watchedCategory };
 
   const handleCategoryChange = (newValue: { label: string; value: string }) => {
-    const p: PositionInterface = { ...position };
-    p.categoryName = newValue.value;
+    setValue("categoryName", newValue.value, { shouldValidate: true });
     setCategoryInput("");
-    setPosition(p);
   };
 
   const handleCategoryBlur = () => {
     if (categoryInput) {
-      const options = [...categoryOptions];
-      options.push({ value: categoryInput, label: categoryInput });
-      const p: PositionInterface = { ...position };
-      p.categoryName = categoryInput;
-      setCategoryOptions(options);
-      setPosition(p);
+      const opts = [...categoryOptions, { value: categoryInput, label: categoryInput }];
+      setCategoryOptions(opts);
+      setValue("categoryName", categoryInput, { shouldValidate: true });
     }
   };
 
   const getGroupOptions = () => {
-    const options = [];
-    for (let i = 0; i < groups.length; i++) {
-      options.push(
-        <MenuItem key={i} value={groups[i].id}>
-          {groups[i].name}
-        </MenuItem>
-      );
-    }
-    return options;
+    return groups.map((g, i) => (
+      <MenuItem key={i} value={g.id}>{g.name}</MenuItem>
+    ));
   };
 
-  const loadData = () => {
-    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => setGroups(data));
+  const onValid = (values: AnyRecord) => {
+    const p: PositionInterface = {
+      ...props.position,
+      categoryName: values.categoryName,
+      name: values.name,
+      count: parseInt(values.count),
+      groupId: values.groupId,
+      description: values.description,
+      allowSelfSignup
+    };
+    ApiHelper.post("/positions", [p], "DoingApi").then(props.updatedFunction);
+  };
+
+  const handleDelete = () => {
+    ApiHelper.delete("/positions/" + props.position.id, "DoingApi").then(props.updatedFunction);
   };
 
   useEffect(() => {
-    loadData();
+    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => setGroups(data));
   }, []);
 
   return (
     <>
-      <ErrorMessages errors={errors} />
+      <ErrorMessages errors={summaryErrors} />
       <InputBox
         headerText={props.position?.id ? Locale.label("plans.positionEdit.posEdit") : Locale.label("plans.positionEdit.posAdd")}
         headerIcon="assignment"
-        saveFunction={handleSave}
+        saveFunction={handleSubmit(onValid)}
         cancelFunction={props.updatedFunction}
-        deleteFunction={position.id ? handleDelete : null}>
+        deleteFunction={props.position?.id ? handleDelete : null}>
         <FormControl fullWidth>
-          <div
-            style={{
-              fontSize: 12,
-              color: "#999",
-              position: "absolute",
-              top: -8,
-              left: 10,
-              backgroundColor: "#FFF",
-              zIndex: 999
-            }}>
+          <div style={{ fontSize: 12, color: "#999", position: "absolute", top: -8, left: 10, backgroundColor: "#FFF", zIndex: 999 }}>
             {Locale.label("plans.positionEdit.catName")}
           </div>
-          <ReactSelect
-            onInputChange={(newValue: string) => {
-              setCategoryInput(newValue);
-            }}
-            value={categoryOption}
-            onChange={handleCategoryChange}
-            options={categoryOptions}
-            onBlur={handleCategoryBlur}
-            className="comboBox"
-          />
+          <Controller name="categoryName" control={control} rules={{ required: Locale.label("plans.positionEdit.catNameReq") }} render={() => (
+            <ReactSelect onInputChange={(v: string) => setCategoryInput(v)} value={categoryOption} onChange={handleCategoryChange} options={categoryOptions} onBlur={handleCategoryBlur} className="comboBox" />
+          )} />
         </FormControl>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={position.name} onChange={handleChange} placeholder={Locale.label("placeholders.position.name")} />
-        <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" name="count" type="number" value={position.count} onChange={handleChange} placeholder={Locale.label("placeholders.position.count")} />
+        <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.position.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.positionEdit.nameReq") })} />
+        <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" type="number" placeholder={Locale.label("placeholders.position.count")} {...register("count")} />
         <FormControl fullWidth>
           <InputLabel>{Locale.label("plans.positionEdit.volGroup")}</InputLabel>
-          <Select name="groupId" label={Locale.label("plans.positionEdit.volGroup")} value={position.groupId} onChange={handleChange}>
-            {getGroupOptions()}
-          </Select>
+          <Controller name="groupId" control={control} render={({ field }) => (
+            <Select {...field} value={field.value ?? ""} label={Locale.label("plans.positionEdit.volGroup")}>
+              {getGroupOptions()}
+            </Select>
+          )} />
         </FormControl>
         <FormControlLabel
-          control={<Checkbox checked={position.allowSelfSignup || false} onChange={(e) => setPosition({ ...position, allowSelfSignup: e.target.checked })} />}
+          control={<Checkbox checked={allowSelfSignup} onChange={(ev) => setAllowSelfSignup(ev.target.checked)} />}
           label={Locale.label("plans.positionEdit.allowSelfSignup")}
         />
-        <TextField fullWidth label={Locale.label("plans.positionEdit.description")} id="description" name="description" type="text" multiline rows={2} value={position.description || ""} onChange={handleChange} helperText={Locale.label("plans.positionEdit.descriptionHelper")} />
+        <TextField fullWidth label={Locale.label("plans.positionEdit.description")} id="description" type="text" multiline rows={2} placeholder="" helperText={Locale.label("plans.positionEdit.descriptionHelper")} {...register("description")} />
       </InputBox>
     </>
   );

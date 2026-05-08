@@ -1,7 +1,8 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Switch, Typography, Tooltip, IconButton, type SelectChangeEvent } from "@mui/material";
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Switch, Typography, Tooltip, IconButton } from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
-import { ApiHelper, ErrorMessages, Locale, UniqueIdHelper } from "@churchapps/apphelper";
+import { Controller, useForm } from "react-hook-form";
+import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
 import { type PaymentGatewaysInterface } from "../../helpers";
 import { FeeOptionsSettingsEdit } from "./FeeOptionsSettingsEdit";
 
@@ -11,96 +12,33 @@ interface Props {
   onError?: (errors: string[]) => void;
 }
 
+type AnyRecord = Record<string, any>;
+
+const stripeSupportedCurrencies = [
+  "usd", "eur", "gbp", "cad", "aud", "inr", "jpy", "sgd", "hkd", "sek", "nok", "dkk", "chf", "mxn", "brl"
+];
+
 export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const [gateway, setGateway] = React.useState<PaymentGatewaysInterface>(null);
-  const [provider, setProvider] = React.useState("");
-  const [publicKey, setPublicKey] = React.useState("");
-  const [privateKey, setPrivateKey] = React.useState("");
-  const [payFees, setPayFees] = React.useState<boolean>(false);
-  const [currency, setCurrency] = React.useState("usd");
   const [errors, setErrors] = React.useState<string[]>([]);
 
-  //these are just temporary until we get the list as per the languages we support
-  const stripeSupportedCurrencies = [
-    "usd", "eur", "gbp", "cad", "aud", "inr", "jpy", "sgd", "hkd", "sek", "nok", "dkk", "chf", "mxn", "brl"
-  ];
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    e.preventDefault();
-    switch (e.target.name) {
-      case "provider": setProvider(e.target.value); break;
-      case "publicKey": setPublicKey(e.target.value); break;
-      case "privateKey": setPrivateKey(e.target.value); break;
-      case "currency": setCurrency(e.target.value); break;
-    }
-  };
-
-  const getKeys = () => {
-    if (provider === "") return null;
-    else {
-      const publicLabel = provider === "Paypal"
-        ? Locale.label("settings.givingSettingsEdit.clientId")
-        : Locale.label("settings.givingSettingsEdit.pubKey");
-      const privateLabel = provider === "Paypal"
-        ? Locale.label("settings.givingSettingsEdit.clientSecret")
-        : Locale.label("settings.givingSettingsEdit.secKey");
-
-      return (
-        <>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <TextField fullWidth name="publicKey" label={publicLabel} value={publicKey} onChange={handleChange} placeholder={Locale.label("placeholders.giving.publicKey")} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 4 }}>
-            <TextField fullWidth name="privateKey" label={privateLabel} value={privateKey} placeholder={Locale.label("settings.giving.secretPlaceholder")} type="password" onChange={handleChange} />
-          </Grid>
-          <Grid size={{ xs: 12 }}>
-            <Stack direction="row" alignItems="center">
-              <Typography>{Locale.label("settings.givingSettingsEdit.transFee")}</Typography>
-              <Tooltip title={Locale.label("settings.givingSettingsEdit.forceMsg")} arrow>
-                <IconButton data-testid="force-ssl-help-button" aria-label={Locale.label("settings.givingSettingsEdit.forceSslHelpAria")}>
-                  <HelpIcon />
-                </IconButton>
-              </Tooltip>
-              <Switch
-                checked={payFees === true}
-                onChange={(e) => {
-                  setPayFees(e.target.checked);
-                }}
-              />
-            </Stack>
-          </Grid>
-        </>
-      );
-    }
-  };
-
-  const getCurrency = () => {
-    if (provider !== "Stripe") return null;
-    return (
-      <Grid size={{ xs: 12, md: 4 }}>
-        <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>{Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></Typography>
-        <FormControl fullWidth>
-          <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
-          <Select name="currency" label={Locale.label("settings.givingSettingsEdit.currency")} value={currency} onChange={handleChange}>
-            {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
-          </Select>
-        </FormControl>
-      </Grid>
-    );
-  };
+  const { register, reset, control, watch, getValues } = useForm<AnyRecord>({ defaultValues: { provider: "", publicKey: "", privateKey: "", payFees: false, currency: "usd" } });
+  const provider = watch("provider");
+  const currency = watch("currency");
 
   const save = async () => {
     try {
-      if (provider === "") {
+      const values = getValues();
+      if (values.provider === "") {
         if (!UniqueIdHelper.isMissing(gateway?.id)) await ApiHelper.delete("/gateways/" + gateway.id, "GivingApi");
       } else {
-        if (privateKey === "") return;
+        if (values.privateKey === "") return;
         const gw: PaymentGatewaysInterface = gateway === null ? { churchId: props.churchId } : { ...gateway };
-        gw.provider = provider;
-        gw.publicKey = publicKey;
-        gw.payFees = payFees;
-        gw.currency = currency;
-        if (privateKey !== "") gw.privateKey = privateKey;
+        gw.provider = values.provider;
+        gw.publicKey = values.publicKey;
+        gw.payFees = values.payFees;
+        gw.currency = values.currency;
+        if (values.privateKey !== "") gw.privateKey = values.privateKey;
         await ApiHelper.post("/gateways", [gw], "GivingApi");
       }
     } catch (error: any) {
@@ -118,47 +56,103 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const checkSave = () => {
-    if (props.saveTrigger !== null) save();
-  };
-
   const loadData = async () => {
     const gateways = await ApiHelper.get("/gateways", "GivingApi");
     if (gateways.length === 0) {
       setGateway(null);
-      setProvider("");
-      setPublicKey("");
-      setPayFees(false);
-      setCurrency("usd");
+      reset({ provider: "", publicKey: "", privateKey: "", payFees: false, currency: "usd" });
     } else {
       setGateway(gateways[0]);
-      setProvider(gateways[0].provider || "");
-      setPublicKey(gateways[0].publicKey || "");
-      setPayFees(gateways[0].payFees || false);
-      setCurrency(gateways[0].currency || "usd");
+      reset({
+        provider: gateways[0].provider || "",
+        publicKey: gateways[0].publicKey || "",
+        privateKey: "",
+        payFees: gateways[0].payFees || false,
+        currency: gateways[0].currency || "usd"
+      });
     }
-    setPrivateKey("");
   };
 
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
-  React.useEffect(checkSave, [props.saveTrigger]);
+
+  React.useEffect(() => {
+    if (props.saveTrigger !== null) save();
+  }, [props.saveTrigger]);
+
+  const getKeys = () => {
+    if (!provider) return null;
+    const publicLabel = provider === "Paypal" ? Locale.label("settings.givingSettingsEdit.clientId") : Locale.label("settings.givingSettingsEdit.pubKey");
+    const privateLabel = provider === "Paypal" ? Locale.label("settings.givingSettingsEdit.clientSecret") : Locale.label("settings.givingSettingsEdit.secKey");
+    return (
+      <>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <TextField fullWidth label={publicLabel} placeholder={Locale.label("placeholders.giving.publicKey")} {...register("publicKey")} />
+        </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <TextField fullWidth label={privateLabel} placeholder={Locale.label("settings.giving.secretPlaceholder")} type="password" {...register("privateKey")} />
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <Stack direction="row" alignItems="center">
+            <Typography>{Locale.label("settings.givingSettingsEdit.transFee")}</Typography>
+            <Tooltip title={Locale.label("settings.givingSettingsEdit.forceMsg")} arrow>
+              <IconButton data-testid="force-ssl-help-button" aria-label={Locale.label("settings.givingSettingsEdit.forceSslHelpAria")}>
+                <HelpIcon />
+              </IconButton>
+            </Tooltip>
+            <Controller
+              control={control}
+              name="payFees"
+              render={({ field }) => <Switch checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} />}
+            />
+          </Stack>
+        </Grid>
+      </>
+    );
+  };
+
+  const getCurrency = () => {
+    if (provider !== "Stripe") return null;
+    return (
+      <Grid size={{ xs: 12, md: 4 }}>
+        <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>
+          {Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a>
+        </Typography>
+        <Controller
+          control={control}
+          name="currency"
+          render={({ field }) => (
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
+              <Select {...field} label={Locale.label("settings.givingSettingsEdit.currency")}>
+                {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
+              </Select>
+            </FormControl>
+          )}
+        />
+      </Grid>
+    );
+  };
 
   return (
     <>
-      <ErrorMessages errors={errors} />
-      {/* <div className="subHead">{Locale.label("settings.givingSettingsEdit.giving")}</div> */}
+      {errors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{errors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <Grid container spacing={3} marginBottom={2}>
         <Grid size={{ xs: 12, md: 4 }}>
-          <FormControl fullWidth>
-            <InputLabel>{Locale.label("settings.givingSettingsEdit.prov")}</InputLabel>
-            <Select name="provider" label={Locale.label("settings.givingSettingsEdit.prov")} value={provider || ""} onChange={handleChange}>
-              <MenuItem value="">{Locale.label("settings.givingSettingsEdit.none")}</MenuItem>
-              <MenuItem value="Stripe">{Locale.label("settings.givingSettingsEdit.stripe")}</MenuItem>
-              {/* <MenuItem value="Paypal">{Locale.label("settings.givingSettingsEdit.paypal")}</MenuItem> */}
-            </Select>
-          </FormControl>
+          <Controller
+            control={control}
+            name="provider"
+            render={({ field }) => (
+              <FormControl fullWidth>
+                <InputLabel>{Locale.label("settings.givingSettingsEdit.prov")}</InputLabel>
+                <Select {...field} label={Locale.label("settings.givingSettingsEdit.prov")}>
+                  <MenuItem value="">{Locale.label("settings.givingSettingsEdit.none")}</MenuItem>
+                  <MenuItem value="Stripe">{Locale.label("settings.givingSettingsEdit.stripe")}</MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          />
         </Grid>
         {provider === "Stripe" && (
           <Grid size={{ xs: 12 }}>

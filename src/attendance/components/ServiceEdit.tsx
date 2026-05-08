@@ -1,123 +1,72 @@
 import React from "react";
-import { FormControl, InputLabel, Select, TextField, MenuItem, type SelectChangeEvent } from "@mui/material";
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
 import { type ServiceInterface, type CampusInterface } from "@churchapps/helpers";
-import { useMountedState, InputBox, ApiHelper, UniqueIdHelper, ErrorMessages } from "@churchapps/apphelper";
-import { Locale } from "@churchapps/apphelper";
+import { useMountedState, InputBox, ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   service: ServiceInterface;
   updatedFunction: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const ServiceEdit: React.FC<Props> = (props) => {
-  const [service, setService] = React.useState({} as ServiceInterface);
   const [campuses, setCampuses] = React.useState([] as CampusInterface[]);
-  const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const isMounted = useMountedState();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    setErrors([]);
-    const s = { ...service } as ServiceInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "name": s.name = value; break;
-      case "campus": s.campusId = value; break;
-    }
-    setService(s);
+  const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "", campusId: "" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.name?.message) summaryErrors.push(e.name.message);
+  if (e.campusId?.message) summaryErrors.push(e.campusId.message);
+
+  const onValid = (values: AnyRecord) => {
+    setIsSubmitting(true);
+    const service = { ...props.service, ...values };
+    ApiHelper.post("/services", [service], "AttendanceApi")
+      .then(props.updatedFunction)
+      .finally(() => { setIsSubmitting(false); });
   };
 
-  const validate = () => {
-    const result = [];
-    if (!service.name) result.push(Locale.label("attendance.serviceEdit.validate.name"));
-    if (!service.campusId) result.push(Locale.label("attendance.serviceEdit.validate.campus"));
-    setErrors(result);
-    return result.length === 0;
-  };
-
-  const handleSave = () => {
-    if (validate()) {
-      setIsSubmitting(true);
-      ApiHelper.post("/services", [service], "AttendanceApi")
-        .then(props.updatedFunction)
-        .finally(() => {
-          setIsSubmitting(false);
-        });
-    }
-  };
   const handleDelete = () => {
-    if (window.confirm(Locale.label("attendance.serviceEdit.confirmDelete"))) ApiHelper.delete("/services/" + service.id, "AttendanceApi").then(props.updatedFunction);
+    if (window.confirm(Locale.label("attendance.serviceEdit.confirmDelete"))) ApiHelper.delete("/services/" + props.service.id, "AttendanceApi").then(props.updatedFunction);
   };
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/campuses", "AttendanceApi").then((data: any) => {
-      if (isMounted()) {
-        setCampuses(data);
-      }
-      if (data.length > 0) {
-        if (UniqueIdHelper.isMissing(service?.campusId)) {
-          const s = { ...props.service };
-          s.campusId = data[0].id;
-          if (isMounted()) {
-            setService(s);
-          }
-        }
-      }
+    ApiHelper.get("/campuses", "AttendanceApi").then((data: CampusInterface[]) => {
+      if (isMounted()) setCampuses(data);
+      const defaultCampusId = UniqueIdHelper.isMissing(props.service?.campusId) && data.length > 0 ? data[0].id : (props.service?.campusId || "");
+      if (isMounted()) reset({ name: props.service?.name || "", campusId: defaultCampusId });
     });
-  }, [props.service, isMounted]);
+  }, [props.service, isMounted, reset]);
 
-  const getCampusOptions = () => {
-    const options = [];
-    for (let i = 0; i < campuses.length; i++) {
-      options.push(<MenuItem key={i} value={campuses[i].id}>{campuses[i].name}</MenuItem>);
-    }
-    return options;
-  };
+  React.useEffect(() => { loadData(); }, [loadData]);
 
-  React.useEffect(() => {
-    setService(props.service);
-    loadData();
-  }, [props.service, loadData, isMounted]);
-
-  if (service === null || service.id === undefined) return null;
+  if (props.service === null || props.service.id === undefined) return null;
 
   return (
     <InputBox
       id="serviceBox"
       data-cy="service-box"
       cancelFunction={props.updatedFunction}
-      saveFunction={handleSave}
+      saveFunction={handleSubmit(onValid)}
       deleteFunction={props.service?.id ? handleDelete : null}
-      headerText={service.name}
+      headerText={props.service.name}
       headerIcon="calendar_month"
       isSubmitting={isSubmitting}
       help="docs/b1-admin/attendance/">
-      <ErrorMessages errors={errors} />
+      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <FormControl fullWidth>
         <InputLabel id="campus">{Locale.label("attendance.serviceEdit.campus")}</InputLabel>
-        <Select
-          name="campus"
-          labelId="campus"
-          label={Locale.label("attendance.serviceEdit.campus")}
-          value={service.campusId}
-          onChange={handleChange}
-          data-testid="campus-select"
-          aria-label={Locale.label("attendance.serviceEdit.campusAria")}>
-          {getCampusOptions()}
-        </Select>
+        <Controller name="campusId" control={control} rules={{ required: Locale.label("attendance.serviceEdit.validate.campus") }} render={({ field }) => (
+          <Select {...field} labelId="campus" label={Locale.label("attendance.serviceEdit.campus")} data-testid="campus-select" aria-label={Locale.label("attendance.serviceEdit.campusAria")} error={!!e.campusId}>
+            {campuses.map((c, i) => <MenuItem key={i} value={c.id}>{c.name}</MenuItem>)}
+          </Select>
+        )} />
       </FormControl>
-      <TextField
-        fullWidth
-        label={Locale.label("attendance.serviceEdit.name")}
-        id="name"
-        name="name"
-        type="text"
-        value={service.name}
-        onChange={handleChange}
-        placeholder={Locale.label("placeholders.service.name")}
-        data-testid="service-name-input"
-        aria-label={Locale.label("attendance.serviceEdit.nameAria")}
-      />
+      <TextField fullWidth label={Locale.label("attendance.serviceEdit.name")} id="name" type="text" placeholder={Locale.label("placeholders.service.name")} data-testid="service-name-input" aria-label={Locale.label("attendance.serviceEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceEdit.validate.name") })} />
     </InputBox>
   );
 };

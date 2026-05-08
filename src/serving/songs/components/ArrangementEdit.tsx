@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type ArrangementInterface } from "../../../helpers";
 import { TextField } from "@mui/material";
@@ -9,45 +10,34 @@ interface Props {
   onCancel: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const ArrangementEdit = (props: Props) => {
-  const [arrangement, setArrangement] = React.useState<ArrangementInterface>(props.arrangement);
+  const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: "", lyrics: "" } });
 
   useEffect(() => {
-    setArrangement(props.arrangement);
-  }, [props.arrangement]);
+    if (props.arrangement) reset({ ...props.arrangement });
+  }, [props.arrangement, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const a = { ...arrangement };
-    switch (e.target.name) {
-      case "name": a.name = e.target.value; break;
-      case "lyrics": a.lyrics = e.target.value; break;
-    }
-    setArrangement(a);
-  };
-
-  const handleSave = () => {
-    ApiHelper.post("/arrangements", [arrangement], "ContentApi").then((data) => {
+  const onValid = (values: AnyRecord) => {
+    const a: ArrangementInterface = { ...props.arrangement, ...values };
+    ApiHelper.post("/arrangements", [a], "ContentApi").then((data) => {
       props.onSave(data[0]);
     });
   };
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("songs.arrangement.deleteConfirm"))) {
-      ApiHelper.delete("/arrangements/" + arrangement?.id, "ContentApi").then(() => {
+      ApiHelper.delete("/arrangements/" + props.arrangement?.id, "ContentApi").then(() => {
         props.onSave(null);
       });
     }
   };
 
   return (
-    <InputBox
-      headerText={props.arrangement?.name || Locale.label("songs.arrangement.edit")}
-      headerIcon="library_music"
-      saveFunction={handleSave}
-      cancelFunction={props.onCancel}
-      deleteFunction={arrangement?.id ? handleDelete : null}>
-      <TextField label={Locale.label("songs.arrangement.name")} name="name" value={arrangement?.name} onChange={handleChange} fullWidth placeholder={Locale.label("placeholders.song.arrangementName")} />
-      <TextField label={Locale.label("songs.arrangement.lyrics")} multiline name="lyrics" value={arrangement?.lyrics} onChange={handleChange} fullWidth placeholder={Locale.label("placeholders.song.lyrics")} />
+    <InputBox headerText={props.arrangement?.name || Locale.label("songs.arrangement.edit")} headerIcon="library_music" saveFunction={handleSubmit(onValid)} cancelFunction={props.onCancel} deleteFunction={props.arrangement?.id ? handleDelete : null}>
+      <TextField label={Locale.label("songs.arrangement.name")} fullWidth placeholder={Locale.label("placeholders.song.arrangementName")} {...register("name")} />
+      <TextField label={Locale.label("songs.arrangement.lyrics")} multiline fullWidth placeholder={Locale.label("placeholders.song.lyrics")} {...register("lyrics")} />
     </InputBox>
   );
 };

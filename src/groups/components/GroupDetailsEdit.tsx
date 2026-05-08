@@ -1,13 +1,16 @@
 import React from "react";
+import { useForm, Controller, useFormState } from "react-hook-form";
 import { CategorySelect, ServiceTimesEdit } from ".";
 import { ApiHelper, InputBox, ErrorMessages, Locale, GalleryModal } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography, type SelectChangeEvent } from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState } from "@churchapps/apphelper";
 import { MarkdownEditor } from "@churchapps/apphelper/markdown";
 import { GroupLabelsEdit } from "./GroupLabelsEdit";
+
+type AnyRecord = Record<string, any>;
 
 interface Props {
   id?: string;
@@ -16,81 +19,88 @@ interface Props {
 }
 
 export const GroupDetailsEdit: React.FC<Props> = (props) => {
-  const [group, setGroup] = React.useState<GroupInterface>({} as GroupInterface);
-  const [errors, setErrors] = React.useState([]);
   const [redirect, setRedirect] = React.useState("");
   const [showGalleryModal, setShowGalleryModal] = React.useState(false);
+  // Non-RHF state for external widgets
+  const [about, setAbout] = React.useState("");
+  const [photoUrl, setPhotoUrl] = React.useState("");
+  const [labelArray, setLabelArray] = React.useState<string[]>([]);
   const isMounted = useMountedState();
+
+  const { control, register, handleSubmit, reset } = useForm<AnyRecord>({
+    defaultValues: {
+      name: "",
+      categoryName: "",
+      meetingTime: "",
+      meetingLocation: "",
+      trackAttendance: "false",
+      parentPickup: "false",
+      printNametag: "false",
+      slug: "",
+      joinPolicy: "open"
+    }
+  });
+
+  const { errors } = useFormState({ control });
+  const e = errors as any;
+
+  const summaryErrors: string[] = React.useMemo(() => {
+    const errs: string[] = [];
+    if (e.categoryName?.message) errs.push(e.categoryName.message);
+    if (e.name?.message) errs.push(e.name.message);
+    return errs;
+  }, [errors]);
+
+  React.useEffect(() => {
+    if (isMounted() && props.group) {
+      reset({
+        name: props.group.name || "",
+        categoryName: props.group.categoryName || "",
+        meetingTime: props.group.meetingTime || "",
+        meetingLocation: props.group.meetingLocation || "",
+        trackAttendance: props.group.trackAttendance?.toString() || "false",
+        parentPickup: props.group.parentPickup?.toString() || "false",
+        printNametag: props.group.printNametag?.toString() || "false",
+        slug: props.group.slug || "",
+        joinPolicy: props.group.joinPolicy || "open"
+      });
+      setAbout(props.group.about || "");
+      setPhotoUrl(props.group.photoUrl || "");
+      setLabelArray(props.group.labelArray || []);
+    }
+  }, [props.group, isMounted, reset]);
 
   const handleCancel = () => props.updatedFunction();
 
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSave();
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    e.preventDefault();
-    const g = { ...group };
-    switch (e.target.name) {
-      case "name": g.name = e.target.value; break;
-      case "meetingTime": g.meetingTime = e.target.value; break;
-      case "meetingLocation": g.meetingLocation = e.target.value; break;
-      case "trackAttendance": g.trackAttendance = e.target.value === "true"; break;
-      case "parentPickup": g.parentPickup = e.target.value === "true"; break;
-      case "printNametag": g.printNametag = e.target.value === "true"; break;
-      case "slug": g.slug = e.target.value; break;
-      case "joinPolicy": g.joinPolicy = e.target.value as GroupInterface["joinPolicy"]; break;
-    }
-    setGroup(g);
-  };
-
-  const handleCategoryChange = (value: string) => {
-    setGroup({ ...group, categoryName: value });
-  };
-
-  const handleArrayChange = (val: string[]) => {
-    const g = { ...group };
-    g.labelArray = val;
-    setGroup(g);
-  };
-
-  const handleMarkdownChange = (newValue: string) => {
-    if (group.id) {
-      const g = { ...group };
-      g.about = newValue;
-      setGroup(g);
-    }
-  };
-
-  const validate = () => {
-    const errors = [];
-    if (group.categoryName === "") errors.push(Locale.label("groups.groupDetailsEdit.catNameMsg"));
-    if (group.name === "") errors.push(Locale.label("groups.groupDetailsEdit.groupNameMsg"));
-    setErrors(errors);
-    return errors.length === 0;
-  };
-
-  const handleSave = () => {
-    if (validate()) {
-      ApiHelper.post("/groups", [group], "MembershipApi").then((data) => {
-        setGroup(data);
-        props.updatedFunction();
-      });
-    }
+  const onValid = (values: AnyRecord) => {
+    const group: GroupInterface = {
+      ...props.group,
+      name: values.name,
+      categoryName: values.categoryName,
+      meetingTime: values.meetingTime,
+      meetingLocation: values.meetingLocation,
+      trackAttendance: values.trackAttendance === "true",
+      parentPickup: values.parentPickup === "true",
+      printNametag: values.printNametag === "true",
+      slug: values.slug,
+      joinPolicy: values.joinPolicy as GroupInterface["joinPolicy"],
+      about,
+      photoUrl,
+      labelArray
+    };
+    ApiHelper.post("/groups", [group], "MembershipApi").then(() => {
+      props.updatedFunction();
+    });
   };
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("groups.groupDetailsEdit.confirmMsg"))) {
-      ApiHelper.delete("/groups/" + group.id.toString(), "MembershipApi").then(() => setRedirect("/groups"));
+      ApiHelper.delete("/groups/" + props.group.id.toString(), "MembershipApi").then(() => setRedirect("/groups"));
     }
   };
 
-  const handlePhotoSelected = (photoUrl: string) => {
-    const updatedGroup = { ...group, photoUrl: photoUrl };
-    setGroup(updatedGroup);
+  const handlePhotoSelected = (newPhotoUrl: string) => {
+    setPhotoUrl(newPhotoUrl);
     setShowGalleryModal(false);
   };
 
@@ -98,79 +108,54 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     setShowGalleryModal(show);
   };
 
-  React.useEffect(() => {
-    if (isMounted()) {
-      setGroup(props.group);
-    }
-  }, [props.group, isMounted]);
+  const teamMode = props.group?.tags?.indexOf("team") !== -1;
 
   const getAttendance = () => {
     if (teamMode) return <></>;
-    else {
-      return (
-        <>
-          <Box
-            sx={{
-              backgroundColor: "primary.light",
-              color: "primary.contrastText",
-              p: 1.25,
-              my: 2.5
-            }}>
-            <b>{Locale.label("groups.groupDetailsEdit.attendance")}</b>
-          </Box>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>{Locale.label("groups.groupDetailsEdit.attTrack")}</InputLabel>
-                <Select
-                  label={Locale.label("groups.groupDetailsEdit.attTrack")}
-                  id="trackAttendance"
-                  name="trackAttendance"
-                  data-cy="select-attendance-type"
-                  value={group.trackAttendance?.toString() || "false"}
-                  onChange={handleChange}
-                  onKeyDown={handleKeyDown}>
+    return (
+      <>
+        <Box sx={{ backgroundColor: "primary.light", color: "primary.contrastText", p: 1.25, my: 2.5 }}>
+          <b>{Locale.label("groups.groupDetailsEdit.attendance")}</b>
+        </Box>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("groups.groupDetailsEdit.attTrack")}</InputLabel>
+              <Controller name="trackAttendance" control={control} render={({ field }) => (
+                <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.attTrack")} id="trackAttendance" data-cy="select-attendance-type">
                   <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
                   <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
                 </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Stack direction={{ xs: "column", md: "row" }}>
-                <FormControl fullWidth>
-                  <InputLabel>{Locale.label("groups.groupDetailsEdit.parPick")}</InputLabel>
-                  <Select
-                    label={Locale.label("groups.groupDetailsEdit.parPick")}
-                    name="parentPickup"
-                    value={group.parentPickup?.toString() || "false"}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}>
-                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl fullWidth sx={{ marginLeft: { md: 2 } }}>
-                  <InputLabel>{Locale.label("groups.groupDetailsEdit.prinName")}</InputLabel>
-                  <Select
-                    label={Locale.label("groups.groupDetailsEdit.prinName")}
-                    name="printNametag"
-                    value={group.printNametag?.toString() || "false"}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}>
-                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-                  </Select>
-                </FormControl>
-              </Stack>
-            </Grid>
+              )} />
+            </FormControl>
           </Grid>
-          <ServiceTimesEdit group={group} />
-        </>
-      );
-    }
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Stack direction={{ xs: "column", md: "row" }}>
+              <FormControl fullWidth>
+                <InputLabel>{Locale.label("groups.groupDetailsEdit.parPick")}</InputLabel>
+                <Controller name="parentPickup" control={control} render={({ field }) => (
+                  <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.parPick")}>
+                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                  </Select>
+                )} />
+              </FormControl>
+              <FormControl fullWidth sx={{ marginLeft: { md: 2 } }}>
+                <InputLabel>{Locale.label("groups.groupDetailsEdit.prinName")}</InputLabel>
+                <Controller name="printNametag" control={control} render={({ field }) => (
+                  <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.prinName")}>
+                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                  </Select>
+                )} />
+              </FormControl>
+            </Stack>
+          </Grid>
+        </Grid>
+        <ServiceTimesEdit group={props.group} />
+      </>
+    );
   };
-
-  const teamMode = group?.tags?.indexOf("team") !== -1;
 
   const galleryModal = showGalleryModal && (
     <GalleryModal
@@ -182,180 +167,112 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
   );
 
   if (redirect !== "") return <Navigate to={redirect} />;
-  else {
-    return (
-      <>
-        {galleryModal}
-        <InputBox id="groupDetailsBox" headerText={Locale.label("groups.groupDetailsEdit.groupDet")} headerIcon="group" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete} help="docs/b1-admin/groups/">
-          <ErrorMessages errors={errors} />
-          <Grid container spacing={3}>
-            {!teamMode && (
-              <Grid size={{ xs: 12, md: 6 }}>
+
+  return (
+    <>
+      {galleryModal}
+      <InputBox id="groupDetailsBox" headerText={Locale.label("groups.groupDetailsEdit.groupDet")} headerIcon="group" saveFunction={handleSubmit(onValid)} cancelFunction={handleCancel} deleteFunction={handleDelete} help="docs/b1-admin/groups/">
+        <ErrorMessages errors={summaryErrors} />
+        <Grid container spacing={3}>
+          {!teamMode && (
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Controller name="categoryName" control={control} rules={{ required: Locale.label("groups.groupDetailsEdit.catNameMsg") }} render={({ field }) => (
                 <CategorySelect
-                  value={group.categoryName || ""}
-                  onChange={handleCategoryChange}
+                  value={field.value}
+                  onChange={field.onChange}
                   label={Locale.label("groups.groupDetailsEdit.catName")}
-                  tags={group.tags}
+                  tags={props.group?.tags}
                   testId="category-name"
                 />
-              </Grid>
-            )}
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label={Locale.label("groups.groupDetailsEdit.groupName")}
-                type="text"
-                name="name"
-                value={group.name || ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                placeholder={Locale.label("placeholders.group.name")}
-                data-testid="group-name-input"
-                aria-label={Locale.label("groups.groupDetailsEdit.groupNameAria")}
-              />
+              )} />
             </Grid>
+          )}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField fullWidth label={Locale.label("groups.groupDetailsEdit.groupName")} type="text" placeholder={Locale.label("placeholders.group.name")} data-testid="group-name-input" aria-label={Locale.label("groups.groupDetailsEdit.groupNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("groups.groupDetailsEdit.groupNameMsg") })} />
           </Grid>
-          <Grid container spacing={3}>
-            {!teamMode && (
+        </Grid>
+        <Grid container spacing={3}>
+          {!teamMode && (
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth type="text" placeholder={Locale.label("groups.groupDetails.meetingTimePlaceholder")} label={Locale.label("groups.groupDetailsEdit.meetingTime")} data-testid="meeting-time-input" aria-label={Locale.label("groups.groupDetailsEdit.meetingTimeAria")} {...register("meetingTime")} />
+            </Grid>
+          )}
+          <Grid size={{ xs: 12, md: 6 }}>
+            <TextField fullWidth type="text" placeholder={Locale.label("groups.groupDetails.locationPlaceholder")} label={Locale.label("groups.groupDetailsEdit.meetingLocation")} data-testid="meeting-location-input" aria-label={Locale.label("groups.groupDetailsEdit.meetingLocationAria")} {...register("meetingLocation")} />
+          </Grid>
+        </Grid>
+        {!teamMode && (
+          <>
+            <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  type="text"
-                  name="meetingTime"
-                  placeholder={Locale.label("groups.groupDetails.meetingTimePlaceholder")}
-                  label={Locale.label("groups.groupDetailsEdit.meetingTime")}
-                  value={group.meetingTime || ""}
-                  onChange={handleChange}
-                  onKeyDown={handleKeyDown}
-                  data-testid="meeting-time-input"
-                  aria-label={Locale.label("groups.groupDetailsEdit.meetingTimeAria")}
+                <MarkdownEditor
+                  value={about}
+                  onChange={(val) => setAbout(val)}
+                  style={{ maxHeight: 200, overflowY: "scroll" }}
+                  placeholder={Locale.label("groups.groupDetailsEdit.groupDesc")}
+                  data-testid="group-description-editor"
+                  ariaLabel={Locale.label("groups.groupDetailsEdit.groupDescriptionAria")}
                 />
               </Grid>
-            )}
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                type="text"
-                name="meetingLocation"
-                placeholder={Locale.label("groups.groupDetails.locationPlaceholder")}
-                label={Locale.label("groups.groupDetailsEdit.meetingLocation")}
-                value={group.meetingLocation || ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                data-testid="meeting-location-input"
-                aria-label={Locale.label("groups.groupDetailsEdit.meetingLocationAria")}
-              />
-            </Grid>
-          </Grid>
-          {!teamMode && (
-            <>
-              <Grid container spacing={3}>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <MarkdownEditor
-                    value={group.about || ""}
-                    onChange={(val) => handleMarkdownChange(val)}
-                    style={{ maxHeight: 200, overflowY: "scroll" }}
-                    placeholder={Locale.label("groups.groupDetailsEdit.groupDesc")}
-                    data-testid="group-description-editor"
-                    ariaLabel={Locale.label("groups.groupDetailsEdit.groupDescriptionAria")}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <Box sx={{ textAlign: "center" }}>
-                    <Box
-                      sx={{
-                        width: "100%",
-                        maxWidth: 280,
-                        height: 158, // 16:9 aspect ratio
-                        borderRadius: 2,
-                        overflow: "hidden",
-                        mx: "auto",
-                        mb: 2,
-                        backgroundColor: group.photoUrl ? "transparent" : "grey.100",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        border: "1px solid",
-                        borderColor: "grey.300",
-                        cursor: "pointer",
-                        "&:hover": { borderColor: "primary.main" }
-                      }}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleGalleryModal(true);
-                      }}>
-                      {group.photoUrl ? (
-                        <img
-                          src={group.photoUrl}
-                          alt={Locale.label("groups.groupDetailsEdit.groupPhotoAlt")}
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover"
-                          }}
-                        />
-                      ) : (
-                        <Stack alignItems="center" spacing={1} sx={{ color: "grey.500" }}>
-                          <PhotoCameraIcon sx={{ fontSize: 32 }} />
-                          <Typography variant="body2" color="grey.500">
-                            {Locale.label("groups.groupDetailsEdit.clickToAddPhoto")}
-                          </Typography>
-                        </Stack>
-                      )}
-                    </Box>
-                    <Button
-                      variant="outlined"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleGalleryModal(true);
-                      }}
-                      data-testid="change-photo-button"
-                      aria-label={Locale.label("groups.groupDetailsEdit.changePhotoAria")}
-                      size="small">
-                      {group.photoUrl ? Locale.label("common.changePhoto") : Locale.label("groups.groupDetailsEdit.addPhoto")}
-                    </Button>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Box sx={{ textAlign: "center" }}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      maxWidth: 280,
+                      height: 158,
+                      borderRadius: 2,
+                      overflow: "hidden",
+                      mx: "auto",
+                      mb: 2,
+                      backgroundColor: photoUrl ? "transparent" : "grey.100",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "1px solid",
+                      borderColor: "grey.300",
+                      cursor: "pointer",
+                      "&:hover": { borderColor: "primary.main" }
+                    }}
+                    onClick={(ev) => { ev.preventDefault(); toggleGalleryModal(true); }}>
+                    {photoUrl ? (
+                      <img src={photoUrl} alt={Locale.label("groups.groupDetailsEdit.groupPhotoAlt")} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <Stack alignItems="center" spacing={1} sx={{ color: "grey.500" }}>
+                        <PhotoCameraIcon sx={{ fontSize: 32 }} />
+                        <Typography variant="body2" color="grey.500">{Locale.label("groups.groupDetailsEdit.clickToAddPhoto")}</Typography>
+                      </Stack>
+                    )}
                   </Box>
-                </Grid>
+                  <Button variant="outlined" onClick={(ev) => { ev.preventDefault(); toggleGalleryModal(true); }} data-testid="change-photo-button" aria-label={Locale.label("groups.groupDetailsEdit.changePhotoAria")} size="small">
+                    {photoUrl ? Locale.label("common.changePhoto") : Locale.label("groups.groupDetailsEdit.addPhoto")}
+                  </Button>
+                </Box>
+              </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    name="slug"
-                    label={Locale.label("groups.groupDetailsEdit.slug")}
-                    value={group.slug || ""}
-                    onChange={handleChange}
-                    onKeyDown={handleKeyDown}
-                    placeholder={Locale.label("groups.groupDetails.slugPlaceholder")}
-                    data-testid="group-slug-input"
-                    aria-label={Locale.label("groups.groupDetailsEdit.groupSlugAria")}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <GroupLabelsEdit group={group} onUpdate={handleArrayChange} />
-                </Grid>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <FormControl fullWidth>
-                    <InputLabel>{Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"}</InputLabel>
-                    <Select
-                      label={Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"}
-                      name="joinPolicy"
-                      data-testid="join-policy-select"
-                      value={group.joinPolicy || "open"}
-                      onChange={handleChange}
-                      onKeyDown={handleKeyDown}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField fullWidth type="text" label={Locale.label("groups.groupDetailsEdit.slug")} placeholder={Locale.label("groups.groupDetails.slugPlaceholder")} data-testid="group-slug-input" aria-label={Locale.label("groups.groupDetailsEdit.groupSlugAria")} {...register("slug")} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <GroupLabelsEdit group={{ ...props.group, labelArray }} onUpdate={(val) => setLabelArray(val)} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>{Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"}</InputLabel>
+                  <Controller name="joinPolicy" control={control} render={({ field }) => (
+                    <Select {...field} value={field.value ?? "open"} label={Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"} data-testid="join-policy-select">
                       <MenuItem value="open">Open (members can join immediately)</MenuItem>
                       <MenuItem value="request">Request to Join (leader approval required)</MenuItem>
                       <MenuItem value="closed">Closed (admin-add only)</MenuItem>
                     </Select>
-                  </FormControl>
-                </Grid>
+                  )} />
+                </FormControl>
               </Grid>
-            </>
-          )}
-          {getAttendance()}
-        </InputBox>
-      </>
-    );
-  }
+            </Grid>
+          </>
+        )}
+        {getAttendance()}
+      </InputBox>
+    </>
+  );
 };

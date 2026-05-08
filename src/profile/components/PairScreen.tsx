@@ -1,44 +1,32 @@
 import React from "react";
-import { TextField } from "@mui/material";
-import { ApiHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { Alert, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 
 interface Props {
   updatedFunction: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const PairScreen = (props: Props) => {
-  const [code, setCode] = React.useState<string>("");
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const { register, handleSubmit, setError, formState } = useForm<AnyRecord>({ defaultValues: { code: "" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.code?.message) summaryErrors.push(e.code.message);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setErrors([]);
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "code": setCode(value); break;
-    }
-  };
-
-  const validate = () => {
-    const result = [];
-    if (!code) result.push(Locale.label("profile.pairScreen.codeRequired"));
-    setErrors(result);
-    return result.length === 0;
-  };
-
-  const handleSave = () => {
-    if (validate()) {
-      ApiHelper.get("/devices/pair/" + code, "MessagingApi").then((data) => {
-        if (data.success) props.updatedFunction();
-        else setErrors([Locale.label("profile.pairScreen.invalidCode")]);
-      });
-    }
+  const onValid = (values: AnyRecord) => {
+    ApiHelper.get("/devices/pair/" + values.code, "MessagingApi").then((data) => {
+      if (data.success) props.updatedFunction();
+      else setError("code", { message: Locale.label("profile.pairScreen.invalidCode") });
+    });
   };
 
   return (
     <>
-      <ErrorMessages errors={errors} />
-      <InputBox headerText={Locale.label("profile.devices.addScreen")} headerIcon="tv" saveFunction={handleSave} cancelFunction={props.updatedFunction}>
-        <TextField fullWidth label={Locale.label("profile.pairScreen.pairingCode")} id="code" name="code" type="text" value={code} onChange={handleChange} placeholder={Locale.label("placeholders.pairScreen.code")} />
+      <InputBox headerText={Locale.label("profile.devices.addScreen")} headerIcon="tv" saveFunction={handleSubmit(onValid)} cancelFunction={props.updatedFunction}>
+        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <TextField fullWidth label={Locale.label("profile.pairScreen.pairingCode")} id="code" type="text" placeholder={Locale.label("placeholders.pairScreen.code")} error={!!e.code} helperText={e.code?.message} {...register("code", { required: Locale.label("profile.pairScreen.codeRequired") })} />
       </InputBox>
     </>
   );

@@ -1,10 +1,13 @@
 import React from "react";
+import { useForm, useFormState } from "react-hook-form";
 import { UpdateHouseHold } from "./modals/UpdateHouseHold";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { InputBox, PersonHelper, ApiHelper, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { PersonAdd } from "../../components";
 import { Table, TableBody, TableCell, TableRow, TextField, FormControl, Select, MenuItem, InputLabel, Button, IconButton, Tooltip, type SelectChangeEvent } from "@mui/material";
 import { PersonRemove as PersonRemoveIcon, PersonAdd as PersonAddIcon, Close as CloseIcon } from "@mui/icons-material";
+
+type AnyRecord = Record<string, any>;
 
 interface Props {
   updatedFunction: () => void;
@@ -19,25 +22,28 @@ export function HouseholdEdit(props: Props) {
   const [showUpdateAddressModal, setShowUpdateAddressModal] = React.useState<boolean>(false);
   const [text, setText] = React.useState("");
   const [selectedPerson, setSelectedPerson] = React.useState<PersonInterface>(null);
-  const [household, setHousehold] = React.useState<HouseholdInterface>({ name: "" });
-  const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const { control, register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: props.household?.name || "" } });
+
+  const { errors } = useFormState({ control });
+  const e = errors as any;
+
+  const summaryErrors: string[] = React.useMemo(() => {
+    const errs: string[] = [];
+    if (e.name?.message) errs.push(e.name.message);
+    return errs;
+  }, [errors]);
+
+  React.useEffect(() => {
+    if (props.household) reset({ name: props.household.name || "" });
+  }, [props.household, reset]);
 
   function handleRemove(index: number) {
     const m = [...members];
     m.splice(index, 1);
     setMembers(m);
   }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setErrors([]);
-    const h = { ...household } as HouseholdInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "name": h.name = value; break;
-    }
-    setHousehold(h);
-  };
 
   function handleChangeRole(e: SelectChangeEvent, index: number) {
     const m = [...members];
@@ -68,25 +74,17 @@ export function HouseholdEdit(props: Props) {
     setShowAdd(false);
   }
 
-  const validate = () => {
-    const result = [];
-    if (!household.name) result.push(Locale.label("people.householdEdit.blankMsg"));
-    setErrors(result);
-    return result.length === 0;
+  const onValid = (values: AnyRecord) => {
+    if (!props.household?.id) return;
+    setIsSubmitting(true);
+    const household: HouseholdInterface = { ...props.household, name: values.name };
+    const promises = [];
+    promises.push(ApiHelper.post("/households", [household], "MembershipApi"));
+    promises.push(ApiHelper.post("/people/household/" + household.id, members, "MembershipApi"));
+    Promise.all(promises)
+      .then(() => props.updatedFunction())
+      .finally(() => setIsSubmitting(false));
   };
-
-  function handleSave() {
-    if (!household?.id) return;
-    if (validate()) {
-      setIsSubmitting(true);
-      const promises = [];
-      promises.push(ApiHelper.post("/households", [household], "MembershipApi"));
-      promises.push(ApiHelper.post("/people/household/" + household.id, members, "MembershipApi"));
-      Promise.all(promises)
-        .then(() => props.updatedFunction())
-        .finally(() => setIsSubmitting(false));
-    }
-  }
 
   function handleNo() {
     setShowUpdateAddressModal(false);
@@ -133,13 +131,6 @@ export function HouseholdEdit(props: Props) {
     </TableRow>
   ));
 
-  React.useEffect(() => {
-    setHousehold(props.household);
-    return () => {
-      setHousehold(null);
-    };
-  }, [props.household]);
-
   const personAdd = showAdd ? (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
@@ -151,29 +142,19 @@ export function HouseholdEdit(props: Props) {
       <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} person={props.currentPerson} showCreatePersonOnNotFound={true} />
     </div>
   ) : null;
+
   return (
     <>
       <UpdateHouseHold show={showUpdateAddressModal} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} text={text} />
       <InputBox
         id="householdBox"
         headerIcon="group"
-        headerText={household?.name + Locale.label("people.householdEdit.house")}
+        headerText={(props.household?.name || "") + Locale.label("people.householdEdit.house")}
         isSubmitting={isSubmitting}
-        saveFunction={handleSave}
+        saveFunction={handleSubmit(onValid)}
         cancelFunction={props.updatedFunction}>
-        <ErrorMessages errors={errors} />
-        <TextField
-          fullWidth
-          name="name"
-          id="name"
-          type="text"
-          value={household?.name}
-          onChange={handleChange}
-          label={Locale.label("people.householdEdit.houseName")}
-          placeholder={Locale.label("placeholders.household.name")}
-          data-testid="household-name-input"
-          aria-label={Locale.label("people.householdEdit.householdNameAria")}
-        />
+        <ErrorMessages errors={summaryErrors} />
+        <TextField fullWidth id="name" type="text" label={Locale.label("people.householdEdit.houseName")} placeholder={Locale.label("placeholders.household.name")} data-testid="household-name-input" aria-label={Locale.label("people.householdEdit.householdNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("people.householdEdit.blankMsg") })} />
         <Table size="small" id="householdMemberTable">
           <TableBody>
             {rows}

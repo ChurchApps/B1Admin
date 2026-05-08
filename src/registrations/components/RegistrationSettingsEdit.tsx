@@ -1,15 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  Card,
-  Box,
-  Typography,
-  Stack,
-  TextField,
-  FormControlLabel,
-  Switch,
-  Button
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Card, Box, Typography, Stack, TextField, FormControlLabel, Switch, Button } from "@mui/material";
 import { Settings as SettingsIcon } from "@mui/icons-material";
+import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
 
@@ -18,31 +10,32 @@ interface Props {
   onUpdate: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) => {
-  const [registrationEnabled, setRegistrationEnabled] = useState(event.registrationEnabled || false);
-  const [capacity, setCapacity] = useState<string>(event.capacity?.toString() || "");
-  const [registrationOpenDate, setRegistrationOpenDate] = useState(event.registrationOpenDate ? new Date(event.registrationOpenDate).toISOString().slice(0, 16) : "");
-  const [registrationCloseDate, setRegistrationCloseDate] = useState(event.registrationCloseDate ? new Date(event.registrationCloseDate).toISOString().slice(0, 16) : "");
-  const [tags, setTags] = useState(event.tags || "");
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    setRegistrationEnabled(event.registrationEnabled || false);
-    setCapacity(event.capacity?.toString() || "");
-    setRegistrationOpenDate(event.registrationOpenDate ? new Date(event.registrationOpenDate).toISOString().slice(0, 16) : "");
-    setRegistrationCloseDate(event.registrationCloseDate ? new Date(event.registrationCloseDate).toISOString().slice(0, 16) : "");
-    setTags(event.tags || "");
-  }, [event]);
+  const { register, handleSubmit, reset, control } = useForm<AnyRecord>({ defaultValues: { registrationEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "" } });
 
-  const handleSave = async () => {
+  useEffect(() => {
+    reset({
+      registrationEnabled: event.registrationEnabled || false,
+      capacity: event.capacity?.toString() || "",
+      registrationOpenDate: event.registrationOpenDate ? new Date(event.registrationOpenDate).toISOString().slice(0, 16) : "",
+      registrationCloseDate: event.registrationCloseDate ? new Date(event.registrationCloseDate).toISOString().slice(0, 16) : "",
+      tags: event.tags || ""
+    });
+  }, [event, reset]);
+
+  const onValid = async (values: AnyRecord) => {
     setSaving(true);
     const updated: EventInterface = {
       ...event,
-      registrationEnabled,
-      capacity: capacity ? parseInt(capacity) : null,
-      registrationOpenDate: registrationOpenDate ? new Date(registrationOpenDate) : null,
-      registrationCloseDate: registrationCloseDate ? new Date(registrationCloseDate) : null,
-      tags
+      registrationEnabled: values.registrationEnabled,
+      capacity: values.capacity ? parseInt(values.capacity) : null,
+      registrationOpenDate: values.registrationOpenDate ? new Date(values.registrationOpenDate) : null,
+      registrationCloseDate: values.registrationCloseDate ? new Date(values.registrationCloseDate) : null,
+      tags: values.tags
     };
     await ApiHelper.post("/events", [updated], "ContentApi");
     setSaving(false);
@@ -61,52 +54,18 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
       </Box>
       <Box sx={{ p: 2 }}>
         <Stack spacing={2}>
-          <FormControlLabel
-            control={<Switch checked={registrationEnabled} onChange={(e) => setRegistrationEnabled(e.target.checked)} />}
-            label={Locale.label("registrations.registrationSettingsEdit.enableRegistration")}
+          <Controller
+            control={control}
+            name="registrationEnabled"
+            render={({ field }) => (
+              <FormControlLabel control={<Switch checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} />} label={Locale.label("registrations.registrationSettingsEdit.enableRegistration")} />
+            )}
           />
-
-          <TextField
-            label={Locale.label("registrations.registrationSettingsEdit.capacity")}
-            type="number"
-            value={capacity}
-            onChange={(e) => setCapacity(e.target.value)}
-            placeholder={Locale.label("registrations.registrationSettingsEdit.capacityPlaceholder")}
-            size="small"
-            fullWidth
-          />
-
-          <TextField
-            label={Locale.label("registrations.registrationSettingsEdit.registrationOpens")}
-            type="datetime-local"
-            value={registrationOpenDate}
-            onChange={(e) => setRegistrationOpenDate(e.target.value)}
-            size="small"
-            fullWidth
-            slotProps={{ inputLabel: { shrink: true } }}
-          />
-
-          <TextField
-            label={Locale.label("registrations.registrationSettingsEdit.registrationCloses")}
-            type="datetime-local"
-            value={registrationCloseDate}
-            onChange={(e) => setRegistrationCloseDate(e.target.value)}
-            size="small"
-            fullWidth
-            slotProps={{ inputLabel: { shrink: true } }}
-          />
-
-          <TextField
-            label={Locale.label("registrations.registrationSettingsEdit.tags")}
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            placeholder={Locale.label("registrations.registrationSettingsEdit.tagsPlaceholder")}
-            helperText={Locale.label("registrations.registrationSettingsEdit.tagsHelper")}
-            size="small"
-            fullWidth
-          />
-
-          <Button variant="contained" onClick={handleSave} disabled={saving}>
+          <TextField label={Locale.label("registrations.registrationSettingsEdit.capacity")} type="number" placeholder={Locale.label("registrations.registrationSettingsEdit.capacityPlaceholder")} size="small" fullWidth {...register("capacity")} />
+          <TextField label={Locale.label("registrations.registrationSettingsEdit.registrationOpens")} type="datetime-local" size="small" fullWidth slotProps={{ inputLabel: { shrink: true } }} {...register("registrationOpenDate")} />
+          <TextField label={Locale.label("registrations.registrationSettingsEdit.registrationCloses")} type="datetime-local" size="small" fullWidth slotProps={{ inputLabel: { shrink: true } }} {...register("registrationCloseDate")} />
+          <TextField label={Locale.label("registrations.registrationSettingsEdit.tags")} placeholder={Locale.label("registrations.registrationSettingsEdit.tagsPlaceholder")} helperText={Locale.label("registrations.registrationSettingsEdit.tagsHelper")} size="small" fullWidth {...register("tags")} />
+          <Button variant="contained" onClick={handleSubmit(onValid)} disabled={saving}>
             {saving ? Locale.label("common.saving") : Locale.label("registrations.registrationSettingsEdit.saveSettings")}
           </Button>
         </Stack>

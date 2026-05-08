@@ -1,5 +1,6 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField, Box, type SelectChangeEvent } from "@mui/material";
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
 import React, { memo, useCallback, useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { PersonAdd } from "../../components";
 import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale, InputBox } from "@churchapps/apphelper";
 import { FundDonations } from "@churchapps/apphelper/donations";
@@ -13,49 +14,34 @@ interface Props {
   currency?: string;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const DonationEdit = memo((props: Props) => {
   const [donation, setDonation] = React.useState<DonationInterface>({});
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [showSelectPerson, setShowSelectPerson] = React.useState(false);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSave();
-    }
-  }, []);
+  const { register, handleSubmit, reset, control, watch, formState } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
+  const e = formState.errors as any;
+  const method = watch("method");
+  const methodDetails = watch("methodDetails");
+  const summaryErrors: string[] = [];
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-      const d = { ...donation } as DonationInterface;
-      const value = e.target.value;
-      switch (e.target.name) {
-        case "notes": d.notes = value; break;
-        case "date": d.donationDate = value; break;
-        case "method": d.method = value; break;
-        case "methodDetails": d.methodDetails = value; break;
-      }
-      setDonation(d);
-    },
-    [donation]
-  );
-
-  const handleCancel = useCallback(() => {
-    props.updatedFunction();
-  }, [props.updatedFunction]);
+  const handleCancel = useCallback(() => props.updatedFunction(), [props.updatedFunction]);
 
   const handleDelete = useCallback(() => {
-    ApiHelper.delete("/donations/" + donation.id, "GivingApi").then(() => {
-      props.updatedFunction();
-    });
+    ApiHelper.delete("/donations/" + donation.id, "GivingApi").then(() => props.updatedFunction());
   }, [donation.id, props.updatedFunction]);
 
   const getDeleteFunction = useCallback(() => (UniqueIdHelper.isMissing(props.donationId) ? undefined : handleDelete), [props.donationId, handleDelete]);
 
-  const handleSave = useCallback(() => {
-    const donationToSave = {
+  const onValid = (values: AnyRecord) => {
+    const donationToSave: DonationInterface = {
       ...donation,
-      donationDate: donation.donationDate ? DateHelper.formatHtml5Date(donation.donationDate) : null
+      donationDate: values.date ? DateHelper.formatHtml5Date(values.date) : null,
+      method: values.method,
+      methodDetails: values.methodDetails,
+      notes: values.notes
     };
     ApiHelper.post("/donations", [donationToSave], "GivingApi").then((data: any) => {
       const id = data[0].id;
@@ -71,80 +57,49 @@ export const DonationEdit = memo((props: Props) => {
       if (fDonations.length > 0) promises.push(ApiHelper.post("/funddonations", fDonations, "GivingApi"));
       Promise.all(promises).then(() => props.updatedFunction());
     });
-  }, [donation, fundDonations, props.updatedFunction]);
+  };
 
   const loadData = useCallback(() => {
     if (UniqueIdHelper.isMissing(props.donationId)) {
-      setDonation({
-        donationDate: DateHelper.formatHtml5Date(new Date()),  // Initialize as YYYY-MM-DD string
-        batchId: props.batchId,
-        amount: 0,
-        method: "Check"
-      });
+      const initial = { donationDate: DateHelper.formatHtml5Date(new Date()), batchId: props.batchId, amount: 0, method: "Check" };
+      setDonation(initial);
+      reset({ date: initial.donationDate, method: "Check", methodDetails: "", notes: "" });
       const fd: FundDonationInterface = { amount: 0, fundId: props.funds[0]?.id };
       setFundDonations([fd]);
     } else {
-      ApiHelper.get("/donations/" + props.donationId, "GivingApi").then((data: any) => populatePerson(data));
+      ApiHelper.get("/donations/" + props.donationId, "GivingApi").then(async (data: DonationInterface) => {
+        if (!UniqueIdHelper.isMissing(data.personId)) data.person = await ApiHelper.get("/people/" + data.personId.toString(), "MembershipApi");
+        if (data.donationDate) data.donationDate = DateHelper.formatHtml5Date(data.donationDate);
+        setDonation(data);
+        reset({ date: (data.donationDate as string) || "", method: data.method || "Check", methodDetails: data.methodDetails || "", notes: data.notes || "" });
+      });
       ApiHelper.get("/funddonations?donationId=" + props.donationId, "GivingApi").then((data: any) => setFundDonations(data));
     }
-  }, [props.donationId, props.batchId, props.funds]);
+  }, [props.donationId, props.batchId, props.funds, reset]);
 
-  const populatePerson = useCallback(async (data: DonationInterface) => {
-    if (!UniqueIdHelper.isMissing(data.personId)) data.person = await ApiHelper.get("/people/" + data.personId.toString(), "MembershipApi");
-    // donationDate is now a YYYY-MM-DD string - normalize it with formatHtml5Date
-    if (data.donationDate) data.donationDate = DateHelper.formatHtml5Date(data.donationDate);
-    setDonation(data);
-  }, []);
+  const methodDetailsField = useMemo(() => {
+    if (method === "Cash") return null;
+    const label = method === "Check" ? Locale.label("donations.donationEdit.checkNum") : Locale.label("donations.donationEdit.lastDig");
+    const placeholder = method === "Check" ? Locale.label("placeholders.donation.checkNumber") : Locale.label("placeholders.donation.lastDigits");
+    return <TextField fullWidth label={label} InputLabelProps={{ shrink: !!methodDetails }} placeholder={placeholder} {...register("methodDetails")} />;
+  }, [method, methodDetails, register]);
 
-  const methodDetails = useMemo(() => {
-    if (donation.method === "Cash") return null;
-    const label = donation.method === "Check" ? Locale.label("donations.donationEdit.checkNum") : Locale.label("donations.donationEdit.lastDig");
-    const placeholder = donation.method === "Check" ? Locale.label("placeholders.donation.checkNumber") : Locale.label("placeholders.donation.lastDigits");
-    return <TextField fullWidth name="methodDetails" label={label} InputLabelProps={{ shrink: !!donation?.methodDetails }} value={donation.methodDetails || ""} onChange={handleChange} placeholder={placeholder} />;
-  }, [donation.method, donation.methodDetails, handleChange]);
+  const handlePersonAdd = useCallback((p: PersonInterface) => {
+    const d = { ...donation } as DonationInterface;
+    if (p === null) { d.person = null; d.personId = ""; } else { d.person = p; d.personId = p.id; }
+    setDonation(d);
+    setShowSelectPerson(false);
+  }, [donation]);
 
-  const handlePersonAdd = useCallback(
-    (p: PersonInterface) => {
-      const d = { ...donation } as DonationInterface;
-      if (p === null) {
-        d.person = null;
-        d.personId = "";
-      } else {
-        d.person = p;
-        d.personId = p.id;
-      }
-      setDonation(d);
-      setShowSelectPerson(false);
-    },
-    [donation]
-  );
+  const handleFundDonationsChange = useCallback((fd: FundDonationInterface[]) => {
+    setFundDonations(fd);
+    let totalAmount = 0;
+    for (let i = 0; i < fd.length; i++) totalAmount += fd[i].amount;
+    if (totalAmount !== donation.amount) setDonation({ ...donation, amount: totalAmount });
+  }, [donation]);
 
-  const handleFundDonationsChange = useCallback(
-    (fd: FundDonationInterface[]) => {
-      setFundDonations(fd);
-      let totalAmount = 0;
-      for (let i = 0; i < fd.length; i++) totalAmount += fd[i].amount;
-      if (totalAmount !== donation.amount) {
-        const d = { ...donation };
-        d.amount = totalAmount;
-        setDonation(d);
-      }
-    },
-    [donation]
-  );
-
-  const handlePersonSelect = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setShowSelectPerson(true);
-  }, []);
-
-  const handleAnonymousSelect = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      handlePersonAdd(null);
-    },
-    [handlePersonAdd]
-  );
+  const handlePersonSelect = useCallback((ev: React.MouseEvent) => { ev.preventDefault(); setShowSelectPerson(true); }, []);
+  const handleAnonymousSelect = useCallback((ev: React.MouseEvent) => { ev.preventDefault(); handlePersonAdd(null); }, [handlePersonAdd]);
 
   const personSection = useMemo(() => {
     if (showSelectPerson) {
@@ -157,75 +112,44 @@ export const DonationEdit = memo((props: Props) => {
           </button>
         </>
       );
-    } else {
-      const personText = donation.person === undefined || donation.person === null ? Locale.label("donations.donationEdit.anon") : (donation.person.name?.display || Locale.label("donations.donationEdit.anon"));
-      return (
-        <div>
-          <button type="button" className="text-decoration" data-cy="donating-person" onClick={handlePersonSelect} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
-            {personText}
-          </button>
-        </div>
-      );
     }
+    const personText = donation.person === undefined || donation.person === null ? Locale.label("donations.donationEdit.anon") : (donation.person.name?.display || Locale.label("donations.donationEdit.anon"));
+    return (
+      <div>
+        <button type="button" className="text-decoration" data-cy="donating-person" onClick={handlePersonSelect} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          {personText}
+        </button>
+      </div>
+    );
   }, [showSelectPerson, donation.person, handlePersonAdd, handlePersonSelect, handleAnonymousSelect]);
 
   React.useEffect(loadData, [loadData]);
 
   return (
-    <InputBox
-      id="donationBox"
-      // headerIcon="attach_money"
-      headerText={Locale.label("common.edit")}
-      cancelFunction={handleCancel}
-      deleteFunction={getDeleteFunction()}
-      saveFunction={handleSave}
-      help="docs/b1-admin/donations/">
+    <InputBox id="donationBox" headerText={Locale.label("common.edit")} cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSubmit(onValid)} help="docs/b1-admin/donations/">
+      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <Box>
         <label>{Locale.label("common.person")}</label>
         {personSection}
       </Box>
-      <TextField
-        fullWidth
-        label={Locale.label("donations.donationEdit.date")}
-        type="date"
-        name="date"
-        value={DateHelper.formatHtml5Date(donation.donationDate) || ""}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        data-testid="donation-date-input"
-        aria-label={Locale.label("donations.donationEdit.ariaDate")}
+      <TextField fullWidth label={Locale.label("donations.donationEdit.date")} type="date" data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...register("date")} />
+      <Controller
+        control={control}
+        name="method"
+        render={({ field }) => (
+          <FormControl fullWidth>
+            <InputLabel id="method">{Locale.label("donations.donationEdit.method")}</InputLabel>
+            <Select {...field} labelId="method" label={Locale.label("donations.donationEdit.method")} data-testid="payment-method-select" aria-label={Locale.label("donations.donationEdit.ariaMethod")}>
+              <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
+              <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
+              <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
+            </Select>
+          </FormControl>
+        )}
       />
-      <FormControl fullWidth>
-        <InputLabel id="method">{Locale.label("donations.donationEdit.method")}</InputLabel>
-        <Select
-          name="method"
-          labelId="method"
-          label={Locale.label("donations.donationEdit.method")}
-          value={donation.method || ""}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          data-testid="payment-method-select"
-          aria-label={Locale.label("donations.donationEdit.ariaMethod")}>
-          <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
-          <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
-          <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
-        </Select>
-      </FormControl>
-      {methodDetails}
+      {methodDetailsField}
       <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} currency={props?.currency} />
-      <TextField
-        fullWidth
-        label={Locale.label("common.notes")}
-        data-cy="note"
-        name="notes"
-        value={donation.notes || ""}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        multiline
-        placeholder={Locale.label("placeholders.donation.notes")}
-        data-testid="donation-notes-input"
-        aria-label={Locale.label("donations.donationEdit.ariaNotes")}
-      />
+      <TextField fullWidth label={Locale.label("common.notes")} data-cy="note" multiline placeholder={Locale.label("placeholders.donation.notes")} data-testid="donation-notes-input" aria-label={Locale.label("donations.donationEdit.ariaNotes")} {...register("notes")} />
     </InputBox>
   );
 });

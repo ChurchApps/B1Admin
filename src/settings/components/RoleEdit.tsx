@@ -1,7 +1,8 @@
-import { TextField } from "@mui/material";
-import React, { useState, useCallback } from "react";
+import { Alert, TextField } from "@mui/material";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { type RoleInterface } from "@churchapps/helpers";
-import { ApiHelper, InputBox, UniqueIdHelper, ErrorMessages, Locale, Loading } from "@churchapps/apphelper";
+import { ApiHelper, InputBox, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 
 interface Props {
@@ -9,9 +10,13 @@ interface Props {
   updatedFunction: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
-  const [role, setRole] = useState<RoleInterface>({} as RoleInterface);
-  const [errors, setErrors] = useState<string[]>([]);
+  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { roleName: "" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.roleName?.message) summaryErrors.push(e.roleName.message);
 
   const roleQuery = useQuery<RoleInterface>({
     queryKey: [`/roles/${roleId}`, "MembershipApi"],
@@ -20,53 +25,22 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
 
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(roleId) && roleQuery.data) {
-      setRole(roleQuery.data);
+      reset({ roleName: roleQuery.data.name || "" });
     } else if (UniqueIdHelper.isMissing(roleId)) {
-      setRole({} as RoleInterface);
+      reset({ roleName: "" });
     }
-  }, [roleId, roleQuery.data]);
+  }, [roleId, roleQuery.data, reset]);
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const r = { ...role };
-      r.name = e.currentTarget.value;
-
-      setRole(r);
-      setErrors([]);
-    },
-    [role]
-  );
-
-  const handleSave = useCallback(() => {
-    if (!role.name?.trim()) {
-      setErrors([Locale.label("settings.roleEdit.valMsg")]);
-      return;
-    }
-
-    const r = {
-      ...role,
-      name: role.name.trim()
-    };
+  const onValid = (values: AnyRecord) => {
+    const r = { ...roleQuery.data, name: values.roleName.trim() };
     ApiHelper.post("/roles", [r], "MembershipApi").then(() => updatedFunction());
-  }, [role, updatedFunction]);
+  };
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<any>) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleSave();
-      }
-    },
-    [handleSave]
-  );
-
-  const handleCancel = useCallback(() => updatedFunction(), [updatedFunction]);
-
-  const handleDelete = useCallback(() => {
+  const handleDelete = () => {
     if (window.confirm(Locale.label("settings.roleEdit.confirmMsg"))) {
-      ApiHelper.delete("/roles/" + role.id, "MembershipApi").then(() => updatedFunction());
+      ApiHelper.delete("/roles/" + roleQuery.data?.id, "MembershipApi").then(() => updatedFunction());
     }
-  }, [role.id, updatedFunction]);
+  };
 
   if (roleQuery.isLoading && !UniqueIdHelper.isMissing(roleId)) return <Loading />;
 
@@ -75,21 +49,11 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
       id="roleBox"
       headerIcon="lock"
       headerText={Locale.label("settings.roleEdit.roleEdit")}
-      saveFunction={handleSave}
-      cancelFunction={handleCancel}
-      deleteFunction={!UniqueIdHelper.isMissing(roleId) && role.name !== "Domain Admins" ? handleDelete : undefined}>
-      <ErrorMessages errors={errors} />
-      <TextField
-        fullWidth
-        name="roleName"
-        label={Locale.label("settings.roleEdit.roleName")}
-        value={role?.name || ""}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder={Locale.label("placeholders.role.name")}
-        data-testid="role-name-input"
-        aria-label={Locale.label("settings.roleEdit.roleNameAria")}
-      />
+      saveFunction={handleSubmit(onValid)}
+      cancelFunction={updatedFunction}
+      deleteFunction={!UniqueIdHelper.isMissing(roleId) && roleQuery.data?.name !== "Domain Admins" ? handleDelete : undefined}>
+      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+      <TextField fullWidth label={Locale.label("settings.roleEdit.roleName")} placeholder={Locale.label("placeholders.role.name")} data-testid="role-name-input" aria-label={Locale.label("settings.roleEdit.roleNameAria")} error={!!e.roleName} helperText={e.roleName?.message} {...register("roleName", { required: Locale.label("settings.roleEdit.valMsg") })} />
     </InputBox>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { TextField } from "@mui/material";
-import { ApiHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { Alert, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type DeviceInterface } from "../DevicesPage";
 import { DeviceContent } from "./DeviceContent";
 
@@ -9,45 +10,29 @@ interface Props {
   updatedFunction: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const DeviceEdit = (props: Props) => {
-  const [device, setDevice] = React.useState<DeviceInterface>(props.device);
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { label: "" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.label?.message) summaryErrors.push(e.label.message);
 
   useEffect(() => {
-    setDevice(props.device);
-  }, [props.device]);
+    reset({ ...props.device });
+  }, [props.device, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setErrors([]);
-    const value = e.target.value;
-    const d = { ...device };
-    switch (e.target.name) {
-      case "label": d.label = value; break;
-    }
-    setDevice(d);
-  };
-
-  const validate = () => {
-    const result = [];
-    if (!device.label) result.push(Locale.label("profile.deviceEdit.labelRequired"));
-    setErrors(result);
-    return result.length === 0;
-  };
-
-  const handleSave = () => {
-    if (validate()) {
-      ApiHelper.post("/devices", [device], "MessagingApi").then(() => {
-        props.updatedFunction();
-      });
-    }
+  const onValid = (values: AnyRecord) => {
+    const device = { ...props.device, ...values };
+    ApiHelper.post("/devices", [device], "MessagingApi").then(() => { props.updatedFunction(); });
   };
 
   return (
     <>
-      <ErrorMessages errors={errors} />
-      <InputBox headerText={Locale.label("profile.devices.editDevice")} headerIcon="tv" saveFunction={handleSave} cancelFunction={props.updatedFunction}>
-        <TextField fullWidth label={Locale.label("profile.deviceEdit.label")} name="label" type="text" value={device?.label} onChange={handleChange} placeholder={Locale.label("placeholders.device.label")} />
-        <DeviceContent device={device} />
+      <InputBox headerText={Locale.label("profile.devices.editDevice")} headerIcon="tv" saveFunction={handleSubmit(onValid)} cancelFunction={props.updatedFunction}>
+        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <TextField fullWidth label={Locale.label("profile.deviceEdit.label")} type="text" placeholder={Locale.label("placeholders.device.label")} error={!!e.label} helperText={e.label?.message} {...register("label", { required: Locale.label("profile.deviceEdit.labelRequired") })} />
+        <DeviceContent device={props.device} />
       </InputBox>
     </>
   );

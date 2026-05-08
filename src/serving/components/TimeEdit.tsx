@@ -1,4 +1,5 @@
 import React from "react";
+import { useForm, Controller, useFormState } from "react-hook-form";
 import { Checkbox, MenuItem, TextField, Typography } from "@mui/material";
 import { type TimeInterface } from "@churchapps/helpers";
 import { ApiHelper, DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
@@ -9,54 +10,72 @@ interface Props {
   onUpdate: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const TimeEdit = (props: Props) => {
-  const [time, setTime] = React.useState<TimeInterface>(props.time);
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const [teams, setTeams] = React.useState<string>(props.time?.teams ?? "");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setErrors([]);
-    const t = { ...time } as TimeInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "displayName": t.displayName = value; break;
-      case "startTime": t.startTime = new Date(value); break;
-      case "endTime": t.endTime = new Date(value); break;
-      case "serviceTimeType": t.serviceTimeType = value; break;
+  const { control, register, handleSubmit, reset } = useForm<AnyRecord>({
+    defaultValues: {
+      serviceTimeType: props.time?.serviceTimeType ?? "service",
+      displayName: props.time?.displayName ?? "",
+      startTime: DateHelper.formatHtml5DateTime(props.time?.startTime) ?? "",
+      endTime: DateHelper.formatHtml5DateTime(props.time?.endTime) ?? ""
     }
-    setTime(t);
-  };
+  });
 
-  const handleSave = () => {
-    const errors: string[] = [];
-    if (!time.displayName) errors.push(Locale.label("plans.timeEdit.disNameReq"));
-    if (!time.startTime) errors.push(Locale.label("plans.timeEdit.startReq"));
-    if (!time.endTime) errors.push(Locale.label("plans.timeEdit.endReq"));
-    setErrors(errors);
-    if (errors.length === 0) ApiHelper.post("/times", [time], "DoingApi").then(props.onUpdate);
+  const { errors } = useFormState({ control });
+  const e = errors as any;
+
+  const summaryErrors: string[] = React.useMemo(() => {
+    const errs: string[] = [];
+    if (e.displayName?.message) errs.push(e.displayName.message);
+    if (e.startTime?.message) errs.push(e.startTime.message);
+    if (e.endTime?.message) errs.push(e.endTime.message);
+    return errs;
+  }, [errors]);
+
+  React.useEffect(() => {
+    reset({
+      serviceTimeType: props.time?.serviceTimeType ?? "service",
+      displayName: props.time?.displayName ?? "",
+      startTime: DateHelper.formatHtml5DateTime(props.time?.startTime) ?? "",
+      endTime: DateHelper.formatHtml5DateTime(props.time?.endTime) ?? ""
+    });
+    setTeams(props.time?.teams ?? "");
+  }, [props.time, reset]);
+
+  const onValid = (values: AnyRecord) => {
+    const t: TimeInterface = {
+      ...props.time,
+      serviceTimeType: values.serviceTimeType,
+      displayName: values.displayName,
+      startTime: values.startTime ? new Date(values.startTime) : undefined,
+      endTime: values.endTime ? new Date(values.endTime) : undefined,
+      teams
+    };
+    ApiHelper.post("/times", [t], "DoingApi").then(props.onUpdate);
   };
 
   const handleDelete = () => {
-    ApiHelper.delete("/times/" + time.id, "DoingApi").then(props.onUpdate);
+    ApiHelper.delete("/times/" + props.time.id, "DoingApi").then(props.onUpdate);
   };
 
   const handleTeamCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const teamList = time.teams?.split(",") || [];
-    if (teamList.length === 1 && teamList[0] === "") teamList.pop();
+    const teamList = teams.split(",").filter(Boolean);
     if (e.target.checked) teamList.push(e.target.value);
     else teamList.splice(teamList.indexOf(e.target.value), 1);
-    const t = { ...time } as TimeInterface;
-    t.teams = teamList.join(",");
-    setTime(t);
+    setTeams(teamList.join(","));
   };
 
   const getTeams = () => {
     const result: JSX.Element[] = [];
-    const teamList = time.teams?.split(",") || [];
+    const teamList = teams.split(",").filter(Boolean);
     props.categories.forEach((c) => {
       const checked = teamList.includes(c);
       result.push(
-        <div>
-          <Checkbox key={c} name="team" checked={checked} onChange={handleTeamCheck} value={c} data-testid={`team-checkbox-${c.toLowerCase().replace(/\s+/g, "-")}`} aria-label={`${Locale.label("plans.timeEdit.teamPrefix")} ${c}`} />
+        <div key={c}>
+          <Checkbox name="team" checked={checked} onChange={handleTeamCheck} value={c} data-testid={`team-checkbox-${c.toLowerCase().replace(/\s+/g, "-")}`} aria-label={`${Locale.label("plans.timeEdit.teamPrefix")} ${c}`} />
           <label>{c}</label>
         </div>
       );
@@ -77,62 +96,23 @@ export const TimeEdit = (props: Props) => {
 
   return (
     <>
-      <ErrorMessages errors={errors} />
+      <ErrorMessages errors={summaryErrors} />
       <InputBox
         headerText={props.time?.id ? Locale.label("plans.timeEdit.timeEdit") : Locale.label("plans.timeEdit.timeAdd")}
         headerIcon="assignment"
-        saveFunction={handleSave}
+        saveFunction={handleSubmit(onValid)}
         cancelFunction={props.onUpdate}
-        deleteFunction={time.id ? handleDelete : null}>
-        <TextField
-          fullWidth
-          select
-          label={Locale.label("plans.timeEdit.type")}
-          id="serviceTimeType"
-          name="serviceTimeType"
-          value={time.serviceTimeType ?? "service"}
-          onChange={handleChange}
-          data-testid="time-type-input"
-          aria-label={Locale.label("plans.timeEdit.typeAria")}
-        >
-          <MenuItem value="service">{Locale.label("plans.timeEdit.typeService")}</MenuItem>
-          <MenuItem value="rehearsal">{Locale.label("plans.timeEdit.typeRehearsal")}</MenuItem>
-          <MenuItem value="other">{Locale.label("plans.timeEdit.typeOther")}</MenuItem>
-        </TextField>
-        <TextField
-          fullWidth
-          label={Locale.label("plans.timeEdit.disName")}
-          id="displayName"
-          name="displayName"
-          type="text"
-          value={time.displayName}
-          onChange={handleChange}
-          placeholder={Locale.label("placeholders.time.displayName")}
-          data-testid="time-display-name-input"
-          aria-label={Locale.label("plans.timeEdit.timeDisplayNameAria")}
-        />
-        <TextField
-          fullWidth
-          label={Locale.label("plans.timeEdit.timeStart")}
-          id="startTime"
-          name="startTime"
-          type="datetime-local"
-          value={DateHelper.formatHtml5DateTime(time.startTime)}
-          onChange={handleChange}
-          data-testid="time-start-input"
-          aria-label={Locale.label("plans.timeEdit.startTimeAria")}
-        />
-        <TextField
-          fullWidth
-          label={Locale.label("plans.timeEdit.timeEnd")}
-          id="endTime"
-          name="endTime"
-          type="datetime-local"
-          value={DateHelper.formatHtml5DateTime(time.endTime)}
-          onChange={handleChange}
-          data-testid="time-end-input"
-          aria-label={Locale.label("plans.timeEdit.endTimeAria")}
-        />
+        deleteFunction={props.time?.id ? handleDelete : null}>
+        <Controller name="serviceTimeType" control={control} render={({ field }) => (
+          <TextField fullWidth select label={Locale.label("plans.timeEdit.type")} id="serviceTimeType" value={field.value ?? "service"} onChange={field.onChange} data-testid="time-type-input" aria-label={Locale.label("plans.timeEdit.typeAria")}>
+            <MenuItem value="service">{Locale.label("plans.timeEdit.typeService")}</MenuItem>
+            <MenuItem value="rehearsal">{Locale.label("plans.timeEdit.typeRehearsal")}</MenuItem>
+            <MenuItem value="other">{Locale.label("plans.timeEdit.typeOther")}</MenuItem>
+          </TextField>
+        )} />
+        <TextField fullWidth label={Locale.label("plans.timeEdit.disName")} id="displayName" type="text" placeholder={Locale.label("placeholders.time.displayName")} data-testid="time-display-name-input" aria-label={Locale.label("plans.timeEdit.timeDisplayNameAria")} error={!!e.displayName} helperText={e.displayName?.message} {...register("displayName", { required: Locale.label("plans.timeEdit.disNameReq") })} />
+        <TextField fullWidth label={Locale.label("plans.timeEdit.timeStart")} id="startTime" type="datetime-local" data-testid="time-start-input" aria-label={Locale.label("plans.timeEdit.startTimeAria")} error={!!e.startTime} helperText={e.startTime?.message} {...register("startTime", { required: Locale.label("plans.timeEdit.startReq") })} />
+        <TextField fullWidth label={Locale.label("plans.timeEdit.timeEnd")} id="endTime" type="datetime-local" data-testid="time-end-input" aria-label={Locale.label("plans.timeEdit.endTimeAria")} error={!!e.endTime} helperText={e.endTime?.message} {...register("endTime", { required: Locale.label("plans.timeEdit.endReq") })} />
         <div style={{ marginTop: 10 }}>
           <b>{Locale.label("plans.timeEdit.teamNeed")}</b>
         </div>

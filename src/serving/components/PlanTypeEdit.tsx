@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import { ApiHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type PlanTypeInterface } from "../../helpers";
 
 interface Props {
@@ -8,22 +9,24 @@ interface Props {
   onClose: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
-  const [current, setCurrent] = React.useState<PlanTypeInterface>({ ...planType } || {});
-  const [errors, setErrors] = React.useState<string[]>([]);
   const [loading, setLoading] = React.useState(false);
 
-  const handleSave = async () => {
-    setLoading(true);
-    setErrors([]);
+  const { register, handleSubmit, setError, formState } = useForm<AnyRecord>({ defaultValues: { name: planType?.name || "" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.name?.message) summaryErrors.push(e.name.message);
 
+  const onValid = async (values: AnyRecord) => {
+    setLoading(true);
     try {
-      await ApiHelper.post("/planTypes", [current], "DoingApi");
+      await ApiHelper.post("/planTypes", [{ ...planType, ...values }], "DoingApi");
       onClose();
     } catch (error: any) {
-      setErrors([error.message || Locale.label("plans.planTypeEdit.errorSaving")]);
+      setError("name", { message: error.message || Locale.label("plans.planTypeEdit.errorSaving") });
     }
-
     setLoading(false);
   };
 
@@ -31,53 +34,27 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
     if (!window.confirm(Locale.label("plans.planTypeEdit.confirmDelete") || "Are you sure you want to delete this plan type?")) return;
     setLoading(true);
     try {
-      await ApiHelper.delete("/planTypes/" + current.id, "DoingApi");
+      await ApiHelper.delete("/planTypes/" + planType?.id, "DoingApi");
       onClose();
     } catch (error: any) {
-      setErrors([error.message || Locale.label("plans.planTypeEdit.errorDeleting")]);
+      setError("name", { message: error.message || Locale.label("plans.planTypeEdit.errorDeleting") });
       setLoading(false);
     }
   };
 
-  const handleChange = (field: keyof PlanTypeInterface, value: string) => {
-    setCurrent(prev => ({ ...prev, [field]: value }));
-  };
-
-  const validate = () => {
-    const newErrors: string[] = [];
-    if (!current.name?.trim()) newErrors.push(Locale.label("plans.planTypeEdit.nameRequired"));
-    setErrors(newErrors);
-    return newErrors.length === 0;
-  };
-
-  React.useEffect(() => {
-    if (current.name) validate();
-  }, [current.name]);
-
   return (
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{current.id ? Locale.label("plans.planTypeEdit.edit") : Locale.label("plans.planTypeEdit.add")} {Locale.label("plans.planTypeEdit.planType")}</DialogTitle>
+      <DialogTitle>{planType?.id ? Locale.label("plans.planTypeEdit.edit") : Locale.label("plans.planTypeEdit.add")} {Locale.label("plans.planTypeEdit.planType")}</DialogTitle>
       <DialogContent>
         <Box sx={{ pt: 1 }}>
-          <ErrorMessages errors={errors} />
-
-          <InputBox
-            headerIcon="assignment"
-            headerText={Locale.label("plans.planType.details")}>
-            <TextField
-              fullWidth
-              label={Locale.label("plans.planTypeEdit.planTypeName")}
-              value={current.name || ""}
-              onChange={(e) => handleChange("name", e.target.value)}
-              required
-              margin="normal"
-              placeholder={Locale.label("placeholders.planType.name")}
-            />
+          {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+          <InputBox headerIcon="assignment" headerText={Locale.label("plans.planType.details")}>
+            <TextField fullWidth label={Locale.label("plans.planTypeEdit.planTypeName")} required margin="normal" placeholder={Locale.label("placeholders.planType.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planTypeEdit.nameRequired") })} />
           </InputBox>
         </Box>
       </DialogContent>
       <DialogActions>
-        {current.id && (
+        {planType?.id && (
           <Button onClick={handleDelete} disabled={loading} color="error" sx={{ mr: "auto" }}>
             {Locale.label("common.delete")}
           </Button>
@@ -85,10 +62,7 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
         <Button onClick={onClose} disabled={loading}>
           {Locale.label("common.cancel")}
         </Button>
-        <Button
-          onClick={handleSave}
-          variant="contained"
-          disabled={loading || !current.name?.trim()}>
+        <Button onClick={handleSubmit(onValid)} variant="contained" disabled={loading}>
           {Locale.label("common.save")}
         </Button>
       </DialogActions>
