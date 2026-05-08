@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { ApiHelper, DateHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
 import { TextField } from "@mui/material";
@@ -10,48 +11,40 @@ interface Props {
   onCancel: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
+const buildDefaults = (sd: SongDetailInterface): AnyRecord => ({
+  ...sd,
+  releaseDate: sd?.releaseDate ? DateHelper.formatHtml5Date(sd.releaseDate) : ""
+});
+
 export const SongDetailsEdit = (props: Props) => {
-  const [songDetail, setSongDetail] = React.useState<SongDetailInterface>(props.songDetail);
+  const { register, handleSubmit, reset, control } = useForm<AnyRecord>({ defaultValues: buildDefaults(props.songDetail) });
 
   useEffect(() => {
-    setSongDetail(props.songDetail);
-  }, [props.songDetail]);
+    reset(buildDefaults(props.songDetail));
+  }, [props.songDetail, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const sd = { ...songDetail };
-    switch (e.target.name) {
-      case "album": sd.album = e.target.value; break;
-      case "language": sd.language = e.target.value; break;
-      case "releaseDate": sd.releaseDate = DateHelper.toDate(e.target.value); break;
-      case "bpm": sd.bpm = parseInt(e.target.value); break;
-      case "keySignature": sd.keySignature = e.target.value; break;
-      case "seconds": sd.seconds = parseInt(e.target.value); break;
-    }
-    setSongDetail(sd);
-  };
-
-  const handleSave = () => {
-    ApiHelper.post("/songDetails", [songDetail], "ContentApi").then((data) => {
+  const onValid = (values: AnyRecord) => {
+    const sd: SongDetailInterface = { ...props.songDetail, ...values };
+    sd.releaseDate = values.releaseDate ? DateHelper.toDate(values.releaseDate) : null;
+    sd.bpm = values.bpm !== "" && values.bpm != null ? Number(values.bpm) : null;
+    sd.seconds = values.seconds !== "" && values.seconds != null ? Number(values.seconds) : null;
+    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data) => {
       props.onSave(data[0]);
     });
   };
 
   return (
-    <InputBox headerText={props.songDetail?.title} headerIcon="album" saveFunction={handleSave} cancelFunction={props.onCancel}>
-      <TextField label={Locale.label("songs.details.album")} name="album" value={songDetail?.album} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.album")} />
-      <TextField label={Locale.label("songs.details.language")} name="language" value={songDetail?.language} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.language")} />
-      <TextField
-        type="date"
-        label={Locale.label("songs.details.releaseDate")}
-        name="releaseDate"
-        value={songDetail?.releaseDate ? DateHelper.formatHtml5Date(songDetail.releaseDate) : ""}
-        onChange={handleChange}
-        fullWidth
-        size="small"
-      />
-      <TextField type="number" label={Locale.label("songs.details.bpm")} name="bpm" value={songDetail?.bpm} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.bpm")} />
-      <TextField label={Locale.label("songs.details.key")} name="keySignature" value={songDetail?.keySignature} placeholder={Locale.label("placeholders.song.keySignature")} onChange={handleChange} fullWidth size="small" />
-      <TextField type="number" label={Locale.label("songs.details.seconds")} name="seconds" value={songDetail?.seconds} onChange={handleChange} fullWidth size="small" placeholder={Locale.label("placeholders.song.lengthSeconds")} />
+    <InputBox headerText={props.songDetail?.title} headerIcon="album" saveFunction={handleSubmit(onValid)} cancelFunction={props.onCancel}>
+      <TextField label={Locale.label("songs.details.album")} fullWidth size="small" placeholder={Locale.label("placeholders.song.album")} {...register("album")} />
+      <TextField label={Locale.label("songs.details.language")} fullWidth size="small" placeholder={Locale.label("placeholders.song.language")} {...register("language")} />
+      <Controller name="releaseDate" control={control} render={({ field }) => (
+        <TextField type="date" label={Locale.label("songs.details.releaseDate")} fullWidth size="small" InputLabelProps={{ shrink: true }} value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} />
+      )} />
+      <TextField type="number" label={Locale.label("songs.details.bpm")} fullWidth size="small" placeholder={Locale.label("placeholders.song.bpm")} {...register("bpm")} />
+      <TextField label={Locale.label("songs.details.key")} fullWidth size="small" placeholder={Locale.label("placeholders.song.keySignature")} {...register("keySignature")} />
+      <TextField type="number" label={Locale.label("songs.details.seconds")} fullWidth size="small" placeholder={Locale.label("placeholders.song.lengthSeconds")} {...register("seconds")} />
     </InputBox>
   );
 };

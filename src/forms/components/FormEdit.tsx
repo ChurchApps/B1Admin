@@ -1,6 +1,7 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { useMountedState, ApiHelper, InputBox, DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { useForm, Controller } from "react-hook-form";
+import { useMountedState, ApiHelper, InputBox, DateHelper, Locale } from "@churchapps/apphelper";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -20,13 +21,23 @@ export interface FormInterface {
   thankYouMessage?: string;
 }
 
+type AnyRecord = Record<string, any>;
+
 export function FormEdit(props: Props) {
-  const [form, setForm] = useState<FormInterface>({ name: "", contentType: "person", thankYouMessage: "" } as FormInterface);
   const [standAloneForm, setStandAloneForm] = useState<boolean>(false);
   const [showDates, setShowDates] = useState<boolean>(false);
-  const [errors, setErrors] = React.useState<string[]>([]);
   const isMounted = useMountedState();
   const queryClient = useQueryClient();
+
+  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { name: "", contentType: "person", thankYouMessage: "", restricted: false, accessStartTime: null, accessEndTime: null } });
+
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.name?.message) summaryErrors.push(e.name.message);
+  if (e.accessStartTime?.message) summaryErrors.push(e.accessStartTime.message);
+  if (e.accessEndTime?.message) summaryErrors.push(e.accessEndTime.message);
+
+  const watchedId = watch("id");
 
   const formQuery = useQuery<FormInterface>({
     queryKey: ["/forms/" + props.formId, "MembershipApi"],
@@ -36,24 +47,24 @@ export function FormEdit(props: Props) {
   React.useEffect(() => {
     if (formQuery.data && isMounted()) {
       const data = formQuery.data;
-      if (data.restricted !== undefined && data.contentType === "form") {
-        setStandAloneForm(true);
-      } else {
-        setStandAloneForm(false);
-      }
-      setForm(data);
+      if (data.restricted !== undefined && data.contentType === "form") setStandAloneForm(true);
+      else setStandAloneForm(false);
       setShowDates(!!data.accessEndTime);
+      reset({
+        ...data,
+        accessStartTime: data.accessStartTime ? DateHelper.formatHtml5Date(data.accessStartTime) : null,
+        accessEndTime: data.accessEndTime ? DateHelper.formatHtml5Date(data.accessEndTime) : null,
+        restricted: data.restricted ?? false
+      });
     }
   }, [formQuery.data, isMounted]);
 
   const saveFormMutation = useMutation({
-    mutationFn: (formData: FormInterface) => ApiHelper.post("/forms", [formData], "MembershipApi"),
+    mutationFn: (formData: AnyRecord) => ApiHelper.post("/forms", [formData], "MembershipApi"),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/forms", "MembershipApi"] });
       queryClient.invalidateQueries({ queryKey: ["/forms/archived", "MembershipApi"] });
-      if (props.formId) {
-        queryClient.invalidateQueries({ queryKey: ["/forms/" + props.formId, "MembershipApi"] });
-      }
+      if (props.formId) queryClient.invalidateQueries({ queryKey: ["/forms/" + props.formId, "MembershipApi"] });
       props.updatedFunction();
     }
   });
@@ -67,103 +78,50 @@ export function FormEdit(props: Props) {
     }
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    setErrors([]);
-    const f = { ...form } as FormInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "name": f.name = value; break;
-      case "contentType": f.contentType = value; break;
-      case "restricted": f.restricted = value === "true"; break;
-      case "accessStartTime": f.accessStartTime = showDates ? DateHelper.toDate(value) : null; break;
-      case "accessEndTime": f.accessEndTime = showDates ? DateHelper.toDate(value) : null; break;
-      case "thankYouMessage": f.thankYouMessage = value; break;
+  const onValid = (values: AnyRecord) => {
+    const f = { ...values };
+    if (!showDates) { f.accessEndTime = null; f.accessStartTime = null; } else {
+      f.accessStartTime = f.accessStartTime ? DateHelper.toDate(f.accessStartTime) : null;
+      f.accessEndTime = f.accessEndTime ? DateHelper.toDate(f.accessEndTime) : null;
     }
-    setForm(f);
+    saveFormMutation.mutate(f);
   };
-
-  const validate = () => {
-    const result = [];
-    if (!form.name) result.push(Locale.label("forms.formEdit.nameReqMsg"));
-    if (showDates) {
-      if (!form.accessStartTime) result.push(Locale.label("forms.formEdit.startReqMsg"));
-      if (!form.accessEndTime) result.push(Locale.label("forms.formEdit.endReqMsg"));
-    }
-    setErrors(result);
-    return result.length === 0;
-  };
-
-  function handleSave() {
-    if (validate()) {
-      const f = form;
-      if (!showDates) {
-        f.accessEndTime = null;
-        f.accessStartTime = null;
-      }
-      saveFormMutation.mutate(f);
-    }
-  }
 
   function handleDelete() {
     if (window.confirm(Locale.label("forms.formEdit.confirmMsg"))) {
-      deleteFormMutation.mutate(form.id!);
+      deleteFormMutation.mutate(watchedId!);
     }
   }
 
   return (
-    <InputBox
-      id="formBox"
-      headerIcon="format_align_left"
-      headerText={Locale.label("forms.formEdit.editForm")}
-      saveFunction={handleSave}
-      isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending}
-      cancelFunction={props.updatedFunction}
-      deleteFunction={props.formId ? handleDelete : undefined}>
-      <ErrorMessages errors={errors} />
-      <TextField fullWidth={true} label={Locale.label("forms.formEdit.name")} type="text" name="name" value={form.name} onChange={handleChange} placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label={Locale.label("forms.formEdit.formNameAria")} />
+    <InputBox id="formBox" headerIcon="format_align_left" headerText={Locale.label("forms.formEdit.editForm")} saveFunction={handleSubmit(onValid)} isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending} cancelFunction={props.updatedFunction} deleteFunction={props.formId ? handleDelete : undefined}>
+      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+      <TextField fullWidth label={Locale.label("forms.formEdit.name")} type="text" placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label={Locale.label("forms.formEdit.formNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("forms.formEdit.nameReqMsg") })} />
       {!props.formId && (
         <FormControl fullWidth>
           <InputLabel id="associate">{Locale.label("forms.formEdit.associate")}</InputLabel>
-          <Select
-            name="contentType"
-            labelId="associate"
-            label={Locale.label("forms.formEdit.associate")}
-            value={form.contentType}
-            onChange={(e) => {
-              handleChange(e);
-              if (e.target.value === "form") setStandAloneForm(true);
-            }}
-            data-testid="content-type-select"
-            aria-label={Locale.label("forms.formEdit.contentTypeAria")}>
-            <MenuItem value="person">{Locale.label("forms.formEdit.ppl")}</MenuItem>
-            <MenuItem value="form">{Locale.label("forms.formEdit.alone")}</MenuItem>
-          </Select>
+          <Controller name="contentType" control={control} render={({ field }) => (
+            <Select {...field} value={field.value ?? "person"} labelId="associate" label={Locale.label("forms.formEdit.associate")} data-testid="content-type-select" aria-label={Locale.label("forms.formEdit.contentTypeAria")} onChange={(e) => { field.onChange(e); if (e.target.value === "form") setStandAloneForm(true); }}>
+              <MenuItem value="person">{Locale.label("forms.formEdit.ppl")}</MenuItem>
+              <MenuItem value="form">{Locale.label("forms.formEdit.alone")}</MenuItem>
+            </Select>
+          )} />
         </FormControl>
       )}
       {standAloneForm && (
         <>
           <FormControl fullWidth>
             <InputLabel>{Locale.label("forms.formEdit.access")}</InputLabel>
-            <Select
-              label={Locale.label("forms.formEdit.access")}
-              name="restricted"
-              value={form?.restricted?.toString()}
-              onChange={handleChange}
-              data-testid="access-level-select"
-              aria-label={Locale.label("forms.formEdit.accessLevelAria")}>
-              <MenuItem value="false">{Locale.label("forms.formEdit.public")}</MenuItem>
-              <MenuItem value="true">{Locale.label("forms.formEdit.restrict")}</MenuItem>
-            </Select>
+            <Controller name="restricted" control={control} render={({ field }) => (
+              <Select {...field} value={field.value?.toString() ?? "false"} label={Locale.label("forms.formEdit.access")} data-testid="access-level-select" aria-label={Locale.label("forms.formEdit.accessLevelAria")} onChange={(e) => field.onChange(e.target.value === "true")}>
+                <MenuItem value="false">{Locale.label("forms.formEdit.public")}</MenuItem>
+                <MenuItem value="true">{Locale.label("forms.formEdit.restrict")}</MenuItem>
+              </Select>
+            )} />
           </FormControl>
           <FormControl fullWidth>
             <InputLabel>{Locale.label("forms.formEdit.available")}</InputLabel>
-            <Select
-              label={Locale.label("forms.formEdit.available")}
-              name="limit"
-              value={showDates.toString()}
-              onChange={(e) => {
-                setShowDates(e.target.value === "true");
-              }}>
+            <Select label={Locale.label("forms.formEdit.available")} name="limit" value={showDates.toString()} onChange={(e) => { setShowDates(e.target.value === "true"); }}>
               <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
               <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
             </Select>
@@ -172,29 +130,11 @@ export function FormEdit(props: Props) {
       )}
       {showDates && (
         <>
-          <TextField
-            fullWidth={true}
-            type="date"
-            label={Locale.label("forms.formEdit.availableStart")}
-            InputLabelProps={{ shrink: true }}
-            name="accessStartTime"
-            value={DateHelper.formatHtml5Date(form.accessStartTime)}
-            onChange={handleChange}
-            InputProps={{ inputProps: { max: DateHelper.formatHtml5Date(form.accessEndTime) } }}
-          />
-          <TextField
-            fullWidth={true}
-            type="date"
-            label={Locale.label("forms.formEdit.availableEnd")}
-            InputLabelProps={{ shrink: true }}
-            name="accessEndTime"
-            value={DateHelper.formatHtml5Date(form.accessEndTime)}
-            onChange={handleChange}
-            InputProps={{ inputProps: { min: DateHelper.formatHtml5Date(form.accessStartTime) } }}
-          />
+          <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableStart")} InputLabelProps={{ shrink: true }} error={!!e.accessStartTime} helperText={e.accessStartTime?.message} {...register("accessStartTime", { required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false })} />
+          <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableEnd")} InputLabelProps={{ shrink: true }} error={!!e.accessEndTime} helperText={e.accessEndTime?.message} {...register("accessEndTime", { required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false })} />
         </>
       )}
-      <TextField fullWidth={true} label={Locale.label("forms.formEdit.thankYouMessage")} type="text" name="thankYouMessage" value={form.thankYouMessage} onChange={handleChange} placeholder={Locale.label("placeholders.form.thankYouMessage")} />
+      <TextField fullWidth label={Locale.label("forms.formEdit.thankYouMessage")} type="text" placeholder={Locale.label("placeholders.form.thankYouMessage")} {...register("thankYouMessage")} />
     </InputBox>
   );
 }

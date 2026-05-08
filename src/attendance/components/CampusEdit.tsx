@@ -1,77 +1,52 @@
 import React from "react";
-import { TextField } from "@mui/material";
+import { Alert, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
 import { type CampusInterface } from "@churchapps/helpers";
-import { InputBox, ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
   campus: CampusInterface;
   updatedFunction: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const CampusEdit: React.FC<Props> = (props) => {
-  const [campus, setCampus] = React.useState({} as CampusInterface);
-  const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setErrors([]);
-    const c = { ...campus } as CampusInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "name": c.name = value; break;
-    }
-    setCampus(c);
-  };
+  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.name?.message) summaryErrors.push(e.name.message);
 
-  const validate = () => {
-    const result = [];
-    if (!campus.name) result.push(Locale.label("attendance.campusEdit.validate.name"));
-    setErrors(result);
-    return result.length === 0;
-  };
-
-  const handleSave = () => {
-    if (validate()) {
-      ApiHelper.post("/campuses", [campus], "AttendanceApi")
-        .then(props.updatedFunction)
-        .finally(() => {
-          setIsSubmitting(false);
-        });
-    }
+  const onValid = (values: AnyRecord) => {
+    const campus = { ...props.campus, ...values };
+    ApiHelper.post("/campuses", [campus], "AttendanceApi")
+      .then(props.updatedFunction)
+      .finally(() => { setIsSubmitting(false); });
   };
 
   const handleDelete = () => {
-    if (window.confirm(Locale.label("attendance.campusEdit.confirmDelete"))) ApiHelper.delete("/campuses/" + campus.id, "AttendanceApi").then(props.updatedFunction);
+    if (window.confirm(Locale.label("attendance.campusEdit.confirmDelete"))) ApiHelper.delete("/campuses/" + props.campus.id, "AttendanceApi").then(props.updatedFunction);
   };
 
-  React.useEffect(() => setCampus(props.campus), [props.campus]);
+  React.useEffect(() => { reset({ name: props.campus?.name || "" }); }, [props.campus, reset]);
 
-  if (campus === null || campus.id === undefined) return null;
+  if (props.campus === null || props.campus.id === undefined) return null;
 
   return (
     <InputBox
       id="campusBox"
       data-cy="campus-box"
       cancelFunction={props.updatedFunction}
-      saveFunction={handleSave}
+      saveFunction={handleSubmit(onValid)}
       deleteFunction={props.campus?.id ? handleDelete : null}
-      headerText={campus.name}
+      headerText={props.campus.name}
       headerIcon="church"
       isSubmitting={isSubmitting}
       help="docs/b1-admin/attendance/">
-      <ErrorMessages errors={errors} />
-      <TextField
-        fullWidth
-        label={Locale.label("attendance.campusEdit.name")}
-        id="name"
-        name="name"
-        type="text"
-        value={campus.name}
-        onChange={handleChange}
-        placeholder={Locale.label("placeholders.campus.name")}
-        data-testid="campus-name-input"
-        aria-label={Locale.label("attendance.campusEdit.nameAria")}
-      />
+      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+      <TextField fullWidth label={Locale.label("attendance.campusEdit.name")} id="name" type="text" placeholder={Locale.label("placeholders.campus.name")} data-testid="campus-name-input" aria-label={Locale.label("attendance.campusEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.campusEdit.validate.name") })} />
     </InputBox>
   );
 };

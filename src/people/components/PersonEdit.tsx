@@ -42,8 +42,8 @@ const normalizePhone = (raw: string | null | undefined): string => {
   if (!digits) return ext ? "x" + ext : "";
   const normalized = (base ?? "").trim().startsWith("+") ? "+" + digits
     : digits.length === 10 ? "+1" + digits
-    : digits.length === 11 && digits.startsWith("1") ? "+" + digits
-    : "+" + digits;
+      : digits.length === 11 && digits.startsWith("1") ? "+" + digits
+        : "+" + digits;
   return ext ? normalized + "x" + ext : normalized;
 };
 
@@ -67,9 +67,7 @@ export const PersonEdit = memo((props: Props) => {
   const [members, setMembers] = useState<PersonInterface[]>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { control, register, handleSubmit, reset, getValues } = useForm<AnyRecord>({
-    defaultValues: buildFormDefaults(props.person)
-  });
+  const { control, register, handleSubmit, reset, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person) });
 
   const { errors } = useFormState({ control });
 

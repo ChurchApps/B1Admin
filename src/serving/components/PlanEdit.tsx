@@ -1,5 +1,6 @@
 import React from "react";
-import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
+import { useForm, Controller, useFormState } from "react-hook-form";
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
 import { type PlanInterface } from "../../helpers";
 import { useMutation } from "@tanstack/react-query";
@@ -11,57 +12,51 @@ interface Props {
   updatedFunction: () => void;
 }
 
-
+type AnyRecord = Record<string, any>;
 
 export const PlanEdit = (props: Props) => {
-  const [plan, setPlan] = React.useState<PlanInterface>({ ...props.plan, serviceOrder: true });
-  const [copyMode, setCopyMode] = React.useState<string>("all"); // "none" | "positions" | "all"
+  const [copyMode, setCopyMode] = React.useState<string>("all");
   const [copyServiceOrder, setCopyServiceOrder] = React.useState<boolean>(false);
-  const [errors, setErrors] = React.useState<string[]>([]);
 
-  // Get the most recent plan that is before the new plan's date
+  const { control, register, handleSubmit, watch } = useForm<AnyRecord>({
+    defaultValues: {
+      name: props.plan?.name ?? "",
+      serviceDate: DateHelper.formatHtml5Date(props.plan?.serviceDate) ?? "",
+      signupDeadlineHours: props.plan?.signupDeadlineHours ?? "",
+      showVolunteerNames: props.plan?.showVolunteerNames !== false
+    }
+  });
+
+  const { errors } = useFormState({ control });
+  const e = errors as any;
+
+  const summaryErrors: string[] = React.useMemo(() => {
+    const errs: string[] = [];
+    if (e.name?.message) errs.push(e.name.message);
+    if (e.serviceDate?.message) errs.push(e.serviceDate.message);
+    return errs;
+  }, [errors]);
+
+  const watchedDate = watch("serviceDate");
+
   const previousPlan = React.useMemo(() => {
-    if (props.plans.length === 0 || !plan.serviceDate) return null;
-    const currentDate = new Date(plan.serviceDate).getTime();
+    if (props.plans.length === 0 || !watchedDate) return null;
+    const currentDate = new Date(watchedDate).getTime();
     const sorted = [...props.plans]
       .filter(p => {
         const planDate = p.serviceDate ? new Date(p.serviceDate).getTime() : 0;
-        return planDate < currentDate;  // Only include plans before new plan's date
+        return planDate < currentDate;
       })
       .sort((a, b) => {
         const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
         const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
-        return dateB - dateA;  // Sort descending to get most recent previous plan first
+        return dateB - dateA;
       });
     return sorted[0] || null;
-  }, [props.plans, plan.serviceDate]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    setErrors([]);
-    const p = { ...plan } as PlanInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "name": p.name = value; break;
-      case "serviceDate": p.serviceDate = DateHelper.toDate(value); break;
-      case "planTypeId": p.planTypeId = value; break;
-      case "signupDeadlineHours": p.signupDeadlineHours = value ? parseInt(value) : undefined; break;
-      case "copyMode":
-        setCopyMode(value);
-        return; // Don't update plan state
-    }
-    setPlan(p);
-  };
-
-  const validate = () => {
-    const result = [];
-    if (!plan.name) result.push(Locale.label("plans.planEdit.planReq"));
-    if (!plan.serviceDate) result.push(Locale.label("plans.planEdit.servReq"));
-    setErrors(result);
-    return result.length === 0;
-  };
+  }, [props.plans, watchedDate]);
 
   const savePlanMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (plan: PlanInterface) => {
       const { ApiHelper } = await import("@churchapps/apphelper");
       if ((copyMode === "none" && !copyServiceOrder) || !previousPlan) {
         return ApiHelper.post("/plans", [plan], "DoingApi");
@@ -78,7 +73,7 @@ export const PlanEdit = (props: Props) => {
   const deletePlanMutation = useMutation({
     mutationFn: async () => {
       const { ApiHelper } = await import("@churchapps/apphelper");
-      return ApiHelper.delete("/plans/" + plan.id, "DoingApi");
+      return ApiHelper.delete("/plans/" + props.plan.id, "DoingApi");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/plans", "DoingApi"] });
@@ -86,10 +81,16 @@ export const PlanEdit = (props: Props) => {
     }
   });
 
-  const handleSave = () => {
-    if (validate()) {
-      savePlanMutation.mutate();
-    }
+  const onValid = (values: AnyRecord) => {
+    const plan: PlanInterface = {
+      ...props.plan,
+      name: values.name,
+      serviceDate: DateHelper.toDate(values.serviceDate),
+      serviceOrder: true,
+      signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : undefined,
+      showVolunteerNames: values.showVolunteerNames
+    };
+    savePlanMutation.mutate(plan);
   };
 
   const handleDelete = () => {
@@ -98,37 +99,20 @@ export const PlanEdit = (props: Props) => {
 
   return (
     <>
-      <ErrorMessages errors={errors} />
+      <ErrorMessages errors={summaryErrors} />
       <InputBox
-        headerText={plan.id ? Locale.label("plans.planEdit.planEdit") : Locale.label("plans.planEdit.planAdd")}
+        headerText={props.plan?.id ? Locale.label("plans.planEdit.planEdit") : Locale.label("plans.planEdit.planAdd")}
         headerIcon="assignment"
-        saveFunction={handleSave}
+        saveFunction={handleSubmit(onValid)}
         cancelFunction={props.updatedFunction}
-        deleteFunction={plan.id ? handleDelete : null}>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" name="name" type="text" value={plan.name} onChange={handleChange} placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label={Locale.label("plans.planEdit.planNameAria")} />
-        <TextField
-          fullWidth
-          label={Locale.label("plans.planEdit.servDate")}
-          id="serviceDate"
-          name="serviceDate"
-          type="date"
-          value={DateHelper.formatHtml5Date(plan.serviceDate)}
-          onChange={handleChange}
-          data-testid="service-date-input"
-          aria-label={Locale.label("plans.planEdit.serviceDateAria")}
-        />
-        {!plan.id && previousPlan && (
+        deleteFunction={props.plan?.id ? handleDelete : null}>
+        <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label={Locale.label("plans.planEdit.planNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planEdit.planReq") })} />
+        <TextField fullWidth label={Locale.label("plans.planEdit.servDate")} id="serviceDate" type="date" data-testid="service-date-input" aria-label={Locale.label("plans.planEdit.serviceDateAria")} error={!!e.serviceDate} helperText={e.serviceDate?.message} {...register("serviceDate", { required: Locale.label("plans.planEdit.servReq") })} />
+        {!props.plan?.id && previousPlan && (
           <>
             <FormControl fullWidth>
               <InputLabel id="copyMode">{Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}:</InputLabel>
-              <Select
-                name="copyMode"
-                labelId="copyMode"
-                label={Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}
-                value={copyMode}
-                onChange={handleChange}
-                data-testid="copy-mode-select"
-              >
+              <Select name="copyMode" labelId="copyMode" label={Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"} value={copyMode} onChange={(e) => setCopyMode(e.target.value)} data-testid="copy-mode-select">
                 <MenuItem value="none">{Locale.label("plans.planEdit.copyNothing") || "Nothing"}</MenuItem>
                 <MenuItem value="positions">{Locale.label("plans.planEdit.copyPositions") || "Positions Only"}</MenuItem>
                 <MenuItem value="all">{Locale.label("plans.planEdit.copyAll") || "Positions and Assignments"}</MenuItem>
@@ -137,10 +121,12 @@ export const PlanEdit = (props: Props) => {
             <FormControlLabel control={<Checkbox checked={copyServiceOrder} onChange={(e) => setCopyServiceOrder(e.target.checked)} />} label={Locale.label("plans.planEdit.copyServiceOrder") || "Copy Order of Service"} />
           </>
         )}
-        {plan.id && (
+        {props.plan?.id && (
           <>
-            <TextField fullWidth label={Locale.label("plans.planEdit.signupDeadline")} id="signupDeadlineHours" name="signupDeadlineHours" type="number" value={plan.signupDeadlineHours || ""} onChange={handleChange} helperText={Locale.label("plans.planEdit.signupDeadlineHelper")} />
-            <FormControlLabel control={<Checkbox checked={plan.showVolunteerNames !== false} onChange={(e) => setPlan({ ...plan, showVolunteerNames: e.target.checked })} />} label={Locale.label("plans.planEdit.showVolunteerNames")} />
+            <TextField fullWidth label={Locale.label("plans.planEdit.signupDeadline")} id="signupDeadlineHours" type="number" helperText={Locale.label("plans.planEdit.signupDeadlineHelper")} {...register("signupDeadlineHours")} />
+            <Controller name="showVolunteerNames" control={control} render={({ field }) => (
+              <FormControlLabel control={<Checkbox checked={field.value ?? true} onChange={(ev) => field.onChange(ev.target.checked)} />} label={Locale.label("plans.planEdit.showVolunteerNames")} />
+            )} />
           </>
         )}
       </InputBox>

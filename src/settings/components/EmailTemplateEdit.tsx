@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useForm, Controller, useFormState } from "react-hook-form";
 import { TextField, FormControl, InputLabel, MenuItem, Select, Box, Chip, Stack, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, InputBox, ErrorMessages, UserHelper, Locale } from "@churchapps/apphelper";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import type { EmailTemplateInterface } from "../EmailTemplatesPage";
+
+// EmailTemplateInterface fields; RHF requires looser typing for nested paths
+type AnyRecord = Record<string, any>;
 
 const getMergeFields = () => [
   { key: "{{firstName}}", label: Locale.label("settings.emailTemplateEdit.mergeFirstName") },
@@ -23,30 +27,35 @@ interface Props {
 }
 
 export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel, onDelete }) => {
-  const [name, setName] = useState(template.name || "");
-  const [subject, setSubject] = useState(template.subject || "");
-  const [htmlContent, setHtmlContent] = useState(template.htmlContent || "");
-  const [category, setCategory] = useState(template.category || "General");
-  const [errors, setErrors] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
 
-  const validate = () => {
-    const errs: string[] = [];
-    if (!name.trim()) errs.push(Locale.label("settings.emailTemplateEdit.nameRequired"));
-    if (!subject.trim()) errs.push(Locale.label("settings.emailTemplateEdit.subjectRequired"));
-    if (!htmlContent.trim()) errs.push(Locale.label("settings.emailTemplateEdit.bodyRequired"));
-    setErrors(errs);
-    return errs.length === 0;
-  };
+  const { control, register, handleSubmit, getValues, setValue } = useForm<AnyRecord>({
+    defaultValues: {
+      name: template.name || "",
+      subject: template.subject || "",
+      htmlContent: template.htmlContent || "",
+      category: template.category || "General"
+    }
+  });
 
-  const handleSave = async () => {
-    if (!validate()) return;
+  const { errors } = useFormState({ control });
+  const e = errors as any;
+
+  const summaryErrors = React.useMemo(() => {
+    const errs: string[] = [];
+    if (e.name?.message) errs.push(e.name.message);
+    if (e.subject?.message) errs.push(e.subject.message);
+    if (e.htmlContent?.message) errs.push(e.htmlContent.message);
+    return errs;
+  }, [errors]);
+
+  const onValid = async (values: AnyRecord) => {
     const t: EmailTemplateInterface = {
       ...template,
-      name,
-      subject,
-      htmlContent,
-      category,
+      name: values.name,
+      subject: values.subject,
+      htmlContent: values.htmlContent,
+      category: values.category,
       churchId: UserHelper.currentUserChurch.church.id
     };
     await ApiHelper.post("/messaging/emailTemplates", [t], "MessagingApi");
@@ -54,19 +63,16 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
   };
 
   const insertMergeField = (field: string) => {
-    // Append to subject field (user can position it themselves)
-    setSubject(prev => prev + field);
+    setValue("subject", getValues("subject") + field);
   };
 
   const insertMergeFieldInBody = (field: string) => {
-    // Append to body. The HtmlEditor doesn't expose cursor position easily,
-    // so we append to the HTML content.
-    setHtmlContent(prev => prev + field);
+    setValue("htmlContent", getValues("htmlContent") + field);
   };
 
   const getPreviewHtml = () => {
     const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("settings.emailTemplateEdit.yourChurch");
-    let preview = htmlContent;
+    let preview = getValues("htmlContent");
     preview = preview.replace(/\{\{firstName\}\}/g, "John");
     preview = preview.replace(/\{\{lastName\}\}/g, "Smith");
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
@@ -77,7 +83,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
 
   const getPreviewSubject = () => {
     const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("settings.emailTemplateEdit.yourChurch");
-    let preview = subject;
+    let preview = getValues("subject");
     preview = preview.replace(/\{\{firstName\}\}/g, "John");
     preview = preview.replace(/\{\{lastName\}\}/g, "Smith");
     preview = preview.replace(/\{\{displayName\}\}/g, "John Smith");
@@ -88,14 +94,16 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
 
   return (
     <>
-      <InputBox headerIcon="email" headerText={template.id ? Locale.label("settings.emailTemplateEdit.editTemplate") : Locale.label("settings.emailTemplateEdit.newTemplate")} saveFunction={handleSave} cancelFunction={onCancel} deleteFunction={onDelete}>
-        <ErrorMessages errors={errors} />
-        <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.templateName")} value={name} onChange={(e) => setName(e.target.value)} placeholder={Locale.label("settings.emailTemplateEdit.templateNamePlaceholder")} />
+      <InputBox headerIcon="email" headerText={template.id ? Locale.label("settings.emailTemplateEdit.editTemplate") : Locale.label("settings.emailTemplateEdit.newTemplate")} saveFunction={handleSubmit(onValid)} cancelFunction={onCancel} deleteFunction={onDelete}>
+        <ErrorMessages errors={summaryErrors} />
+        <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.templateName")} placeholder={Locale.label("settings.emailTemplateEdit.templateNamePlaceholder")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("settings.emailTemplateEdit.nameRequired") })} />
         <FormControl fullWidth>
           <InputLabel>{Locale.label("settings.emailTemplateEdit.category")}</InputLabel>
-          <Select label={Locale.label("settings.emailTemplateEdit.category")} value={category} onChange={(e: SelectChangeEvent) => setCategory(e.target.value)}>
-            {CATEGORIES.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
-          </Select>
+          <Controller name="category" control={control} render={({ field }) => (
+            <Select {...field} label={Locale.label("settings.emailTemplateEdit.category")} onChange={(ev: SelectChangeEvent) => field.onChange(ev.target.value)}>
+              {CATEGORIES.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+            </Select>
+          )} />
         </FormControl>
 
         <Box sx={{ mt: 2 }}>
@@ -107,7 +115,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
           </Stack>
         </Box>
 
-        <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.subject")} value={subject} onChange={(e) => setSubject(e.target.value)} placeholder={Locale.label("settings.emailTemplateEdit.subjectPlaceholder")} />
+        <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.subject")} placeholder={Locale.label("settings.emailTemplateEdit.subjectPlaceholder")} error={!!e.subject} helperText={e.subject?.message} {...register("subject", { required: Locale.label("settings.emailTemplateEdit.subjectRequired") })} />
 
         <Box sx={{ mt: 2 }}>
           <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>{Locale.label("settings.emailTemplateEdit.insertMergeBody")}</Typography>
@@ -119,12 +127,9 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
         </Box>
 
         <Box sx={{ mt: 1, border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1 }}>
-          <HtmlEditor
-            value={htmlContent}
-            onChange={(val) => setHtmlContent(val)}
-            style={{ minHeight: 200 }}
-            placeholder={Locale.label("settings.emailTemplateEdit.composePlaceholder")}
-          />
+          <Controller name="htmlContent" control={control} rules={{ required: Locale.label("settings.emailTemplateEdit.bodyRequired") }} render={({ field }) => (
+            <HtmlEditor value={field.value} onChange={(val) => field.onChange(val)} style={{ minHeight: 200 }} placeholder={Locale.label("settings.emailTemplateEdit.composePlaceholder")} />
+          )} />
         </Box>
 
         <Box sx={{ mt: 2, textAlign: "right" }}>

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { ApiHelper, InputBox, type LinkInterface, Locale } from "@churchapps/apphelper";
 import { TextField } from "@mui/material";
 
@@ -8,41 +9,34 @@ interface Props {
   onCancel: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export const LinkEdit = (props: Props) => {
-  const [link, setLink] = React.useState<LinkInterface>(props.link);
+  const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { url: "", text: "" } });
 
   useEffect(() => {
-    setLink(props.link);
-  }, [props.link]);
+    if (props.link) reset({ ...props.link });
+  }, [props.link, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const l = { ...link };
-
-    switch (e.target.name) {
-      case "url": l.url = e.target.value; break;
-      case "text": l.text = e.target.value; break;
-    }
-    setLink(l);
-  };
-
-  const handleSave = () => {
-    ApiHelper.post("/links", [link], "ContentApi").then((data) => {
+  const onValid = (values: AnyRecord) => {
+    const l: LinkInterface = { ...props.link, ...values };
+    ApiHelper.post("/links", [l], "ContentApi").then((data) => {
       props.onSave(data[0]);
     });
   };
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("songs.link.deleteConfirm"))) {
-      ApiHelper.delete("/links/" + link?.id, "ContentApi").then(() => {
+      ApiHelper.delete("/links/" + props.link?.id, "ContentApi").then(() => {
         props.onSave(null);
       });
     }
   };
 
   return (
-    <InputBox headerText={Locale.label("songs.link.edit")} headerIcon="link" saveFunction={handleSave} cancelFunction={props.onCancel} deleteFunction={link?.id ? handleDelete : null}>
-      <TextField label={Locale.label("songs.link.url")} name="url" value={link?.url} onChange={handleChange} fullWidth placeholder={Locale.label("placeholders.song.linkUrl")} />
-      <TextField label={Locale.label("songs.link.text")} name="text" value={link?.text} onChange={handleChange} fullWidth placeholder={Locale.label("songs.link.chordChart")} />
+    <InputBox headerText={Locale.label("songs.link.edit")} headerIcon="link" saveFunction={handleSubmit(onValid)} cancelFunction={props.onCancel} deleteFunction={props.link?.id ? handleDelete : null}>
+      <TextField label={Locale.label("songs.link.url")} fullWidth placeholder={Locale.label("placeholders.song.linkUrl")} {...register("url")} />
+      <TextField label={Locale.label("songs.link.text")} fullWidth placeholder={Locale.label("songs.link.chordChart")} {...register("text")} />
     </InputBox>
   );
 };

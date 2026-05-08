@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { ErrorMessages, InputBox, UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
-import { FormControl, InputLabel, MenuItem, Select, TextField, type SelectChangeEvent } from "@mui/material";
+import { useEffect } from "react";
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { useForm, Controller } from "react-hook-form";
+import { InputBox, UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
 import type { BlockInterface } from "../../helpers";
 
 type Props = {
@@ -8,68 +9,54 @@ type Props = {
   updatedCallback: (block: BlockInterface) => void;
 };
 
+type AnyRecord = Record<string, any>;
+
 export function BlockEdit(props: Props) {
-  const [block, setBlock] = useState<BlockInterface>(null);
-  const [errors, setErrors] = useState([]);
+  const { control, register, handleSubmit, reset, setError, formState } = useForm<AnyRecord>({ defaultValues: { name: "", blockType: "elementBlock" } });
+  const e = formState.errors as any;
+  const summaryErrors: string[] = [];
+  if (e.name?.message) summaryErrors.push(e.name.message);
+  if (e.root?.message) summaryErrors.push(e.root.message);
 
-  const handleCancel = () => props.updatedCallback(block);
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSave(); } };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
-    e.preventDefault();
-    const b = { ...block };
-    const val = e.target.value;
-    switch (e.target.name) {
-      case "name": b.name = val; break;
-      case "blockType": b.blockType = val; break;
+  const handleCancel = () => props.updatedCallback(props.block);
+
+  const onValid = (values: AnyRecord) => {
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
+      setError("root", { message: Locale.label("site.blockEdit.unauthorizedCreate") });
+      return;
     }
-    setBlock(b);
-  };
-
-  const validate = () => {
-    const errors = [];
-    if (block.name === "") errors.push(Locale.label("site.blockEdit.errName"));
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.blockEdit.unauthorizedCreate"));
-    setErrors(errors);
-    return errors.length === 0;
-  };
-
-  const handleSave = () => {
-    if (validate()) {
-      ApiHelper.post("/blocks", [block], "ContentApi").then((data: any) => {
-        setBlock(data);
-        props.updatedCallback(data);
-      });
-    }
+    const block = { ...props.block, ...values };
+    ApiHelper.post("/blocks", [block], "ContentApi").then((data: any) => {
+      props.updatedCallback(data);
+    });
   };
 
   const handleDelete = () => {
-    const errors = [];
-    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.blockEdit.unauthorizedDelete"));
-
-    if (errors.length > 0) {
-      setErrors(errors);
+    if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
+      setError("root", { message: Locale.label("site.blockEdit.unauthorizedDelete") });
       return;
     }
-
     if (window.confirm(Locale.label("site.blocks.confirmDelete"))) {
-      ApiHelper.delete("/blocks/" + block.id.toString(), "ContentApi").then(() => props.updatedCallback(null));
+      ApiHelper.delete("/blocks/" + props.block.id.toString(), "ContentApi").then(() => props.updatedCallback(null));
     }
   };
 
-  useEffect(() => { setBlock(props.block); }, [props.block]);
+  useEffect(() => { reset({ name: props.block?.name || "", blockType: props.block?.blockType || "elementBlock" }); }, [props.block, reset]);
 
-  if (!block) return <></>;
+  if (!props.block) return <></>;
   return (
     <>
-      <InputBox id="blockDetailsBox" headerText={Locale.label("site.blocks.editBlock")} headerIcon="school" saveFunction={handleSave} cancelFunction={handleCancel} deleteFunction={handleDelete} data-testid="edit-block-inputbox">
-        <ErrorMessages errors={errors} />
-        <TextField fullWidth label={Locale.label("site.blockEdit.name")} name="name" value={block.name || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.block.name")} data-testid="block-name-input" aria-label="Block name" />
+      <InputBox id="blockDetailsBox" headerText={Locale.label("site.blocks.editBlock")} headerIcon="school" saveFunction={handleSubmit(onValid)} cancelFunction={handleCancel} deleteFunction={handleDelete} data-testid="edit-block-inputbox">
+        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <TextField fullWidth label={Locale.label("site.blockEdit.name")} placeholder={Locale.label("placeholders.block.name")} data-testid="block-name-input" aria-label="Block name" error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("site.blockEdit.errName") })} />
         <FormControl fullWidth>
           <InputLabel>{Locale.label("site.blockEdit.blockType")}</InputLabel>
-          <Select fullWidth label={Locale.label("site.blockEdit.blockType")} name="blockType" value={block.blockType || "elementBlock"} onChange={handleChange} data-testid="block-type-select" aria-label="Select block type">
-            <MenuItem value="elementBlock" data-testid="block-type-element" aria-label="Element block type">{Locale.label("site.blockEdit.elementBlock")}</MenuItem>
-            <MenuItem value="sectionBlock" data-testid="block-type-section" aria-label="Section block type">{Locale.label("site.blockEdit.sectionBlock")}</MenuItem>
-          </Select>
+          <Controller name="blockType" control={control} render={({ field }) => (
+            <Select {...field} fullWidth label={Locale.label("site.blockEdit.blockType")} data-testid="block-type-select" aria-label="Select block type">
+              <MenuItem value="elementBlock" data-testid="block-type-element" aria-label="Element block type">{Locale.label("site.blockEdit.elementBlock")}</MenuItem>
+              <MenuItem value="sectionBlock" data-testid="block-type-section" aria-label="Section block type">{Locale.label("site.blockEdit.sectionBlock")}</MenuItem>
+            </Select>
+          )} />
         </FormControl>
       </InputBox>
     </>

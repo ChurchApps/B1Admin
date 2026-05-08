@@ -17,13 +17,13 @@ import {
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { InputBox, Locale } from "@churchapps/apphelper";
-import { ErrorMessages } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
 import { UniqueIdHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
 import type { PlaylistInterface } from "@churchapps/helpers";
+import { useForm, Controller } from "react-hook-form";
 
 interface Props {
   currentPlaylist: PlaylistInterface,
@@ -32,75 +32,68 @@ interface Props {
   updatedPhoto: string
 }
 
-export const PlaylistEdit: React.FC<Props> = (props) => {
-  const [errors, setErrors] = React.useState<string[]>([]);
-  const [currentPlaylist, setCurrentPlaylist] = React.useState<PlaylistInterface>(null);
+type AnyRecord = Record<string, any>;
 
-  const checkDelete = () => { if (!UniqueIdHelper.isMissing(currentPlaylist?.id)) return handleDelete; else return null; };
+export const PlaylistEdit: React.FC<Props> = (props) => {
+  const thumbnailRef = React.useRef<string>(null);
+  const [thumbnailDisplay, setThumbnailDisplay] = React.useState<string>(null);
+
+  const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { title: "", description: "", publishDate: "" } });
+  const watchedId = watch("id");
+
+  React.useEffect(() => {
+    if (props.currentPlaylist) {
+      thumbnailRef.current = props.currentPlaylist.thumbnail ?? null;
+      setThumbnailDisplay(props.currentPlaylist.thumbnail ?? null);
+      reset({
+        ...props.currentPlaylist,
+        publishDate: props.currentPlaylist.publishDate ? DateHelper.formatHtml5Date(DateHelper.toDate(props.currentPlaylist.publishDate)) : ""
+      });
+    }
+  }, [props.currentPlaylist, reset]);
+
+  React.useEffect(() => {
+    if (props.updatedPhoto !== null && props.updatedPhoto !== thumbnailRef.current) {
+      thumbnailRef.current = props.updatedPhoto;
+      setThumbnailDisplay(props.updatedPhoto);
+      props.showPhotoEditor("", null);
+    }
+  }, [props.updatedPhoto]);
+
+  const checkDelete = () => { if (!UniqueIdHelper.isMissing(watchedId)) return handleDelete; else return null; };
   const handleCancel = () => { props.updatedFunction(); };
 
   const handleDelete = () => {
-    const errors = [];
-    if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errors.push(Locale.label("sermons.playlists.playlistEdit.unauthorizedDelete"));
-
-    if (errors.length > 0) {
-      setErrors(errors);
-      return;
-    }
+    const errs: string[] = [];
+    if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.playlists.playlistEdit.unauthorizedDelete"));
+    if (errs.length > 0) return;
 
     if (window.confirm(Locale.label("sermons.playlists.playlistEdit.deleteConfirm"))) {
-      ApiHelper.delete("/playlists/" + currentPlaylist.id, "ContentApi").then(() => { setCurrentPlaylist(null); props.updatedFunction(); });
+      ApiHelper.delete("/playlists/" + watchedId, "ContentApi").then(() => { props.updatedFunction(); });
     }
   };
 
-  const handlePhotoUpdated = () => {
-    if (props.updatedPhoto !== null && props.updatedPhoto !== currentPlaylist?.thumbnail) {
-      const p = { ...currentPlaylist };
-      p.thumbnail = props.updatedPhoto;
-      props.showPhotoEditor("", null);
-      setCurrentPlaylist(p);
-    }
+  const onValid = (values: AnyRecord) => {
+    const errs: string[] = [];
+    if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.playlists.playlistEdit.unauthorized"));
+    if (errs.length > 0) return;
+
+    const p: PlaylistInterface = { ...props.currentPlaylist, ...values, thumbnail: thumbnailRef.current };
+    p.publishDate = values.publishDate ? DateHelper.toDate(values.publishDate) : null;
+    ApiHelper.post("/playlists", [p], "ContentApi").then(props.updatedFunction);
   };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const val = e.target.value;
-    const v = { ...currentPlaylist };
-    switch (e.target.name) {
-      case "title": v.title = val; break;
-      case "description": v.description = val; break;
-      case "publishDate": v.publishDate = DateHelper.toDate(val); break;
-    }
-    setCurrentPlaylist(v);
-  };
-
-  const handleSave = () => {
-    const errors = [];
-    if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errors.push(Locale.label("sermons.playlists.playlistEdit.unauthorized"));
-
-    if (errors.length > 0) {
-      setErrors(errors);
-      return;
-    }
-
-    ApiHelper.post("/playlists", [currentPlaylist], "ContentApi").then(props.updatedFunction);
-  };
-
-  React.useEffect(() => { setCurrentPlaylist(props.currentPlaylist); }, [props.currentPlaylist]);
-  React.useEffect(handlePhotoUpdated, [props.updatedPhoto, currentPlaylist]);
 
   return (
     <>
       <InputBox
         headerIcon="calendar_month"
-        headerText={UniqueIdHelper.isMissing(currentPlaylist?.id) ? Locale.label("sermons.playlists.playlistEdit.createNew") : Locale.label("sermons.playlists.playlistEdit.editPlaylist")}
-        saveFunction={handleSave}
+        headerText={UniqueIdHelper.isMissing(watchedId) ? Locale.label("sermons.playlists.playlistEdit.createNew") : Locale.label("sermons.playlists.playlistEdit.editPlaylist")}
+        saveFunction={handleSubmit(onValid)}
         cancelFunction={handleCancel}
         deleteFunction={checkDelete()}
         help="docs/b1-admin/sermons/playlists"
         data-testid="edit-playlist-inputbox"
       >
-        <ErrorMessages errors={errors} />
-
         <Grid container spacing={3}>
           {/* Basic Information Section */}
           <Grid size={12}>
@@ -113,17 +106,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
 
             <Grid container spacing={2}>
               <Grid size={12}>
-                <TextField
-                  fullWidth
-                  label={Locale.label("sermons.playlists.playlistEdit.playlistTitle")}
-                  name="title"
-                  value={currentPlaylist?.title || ""}
-                  onChange={handleChange}
-                  data-testid="playlist-title-input"
-                  variant="outlined"
-                  placeholder={Locale.label("sermons.playlists.playlistEdit.enterTitle")}
-                  sx={{ mb: 2 }}
-                />
+                <TextField fullWidth label={Locale.label("sermons.playlists.playlistEdit.playlistTitle")} data-testid="playlist-title-input" variant="outlined" placeholder={Locale.label("sermons.playlists.playlistEdit.enterTitle")} sx={{ mb: 2 }} {...register("title")} />
               </Grid>
 
               <Grid size={12}>
@@ -132,9 +115,6 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                   multiline
                   rows={3}
                   label={Locale.label("sermons.playlists.playlistEdit.description")}
-                  name="description"
-                  value={currentPlaylist?.description || ""}
-                  onChange={handleChange}
                   data-testid="playlist-description-input"
                   variant="outlined"
                   placeholder={Locale.label("sermons.playlists.playlistEdit.describePlaylist")}
@@ -143,6 +123,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                       <DescriptionIcon sx={{ color: "text.secondary", mr: 1, mt: 1 }} />
                     )
                   }}
+                  {...register("description")}
                 />
               </Grid>
             </Grid>
@@ -159,18 +140,9 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
               </Typography>
             </Stack>
 
-            <TextField
-              fullWidth
-              type="date"
-              label={Locale.label("sermons.playlists.playlistEdit.publishDate")}
-              name="publishDate"
-              value={(currentPlaylist?.publishDate) ? DateHelper.formatHtml5Date(DateHelper.toDate(currentPlaylist?.publishDate)) : ""}
-              onChange={handleChange}
-              data-testid="playlist-publish-date-input"
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              helperText={Locale.label("sermons.playlists.playlistEdit.publishHelp")}
-            />
+            <Controller name="publishDate" control={control} render={({ field }) => (
+              <TextField fullWidth type="date" label={Locale.label("sermons.playlists.playlistEdit.publishDate")} data-testid="playlist-publish-date-input" variant="outlined" InputLabelProps={{ shrink: true }} helperText={Locale.label("sermons.playlists.playlistEdit.publishHelp")} value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} inputRef={field.ref} name="publishDate" />
+            )} />
           </Grid>
 
           {/* Thumbnail Section */}
@@ -213,7 +185,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                     }}
                   >
                     <img
-                      src={currentPlaylist?.thumbnail || "/images/no-image.png"}
+                      src={thumbnailDisplay || "/images/no-image.png"}
                       alt={Locale.label("sermons.playlists.playlistEdit.thumbnailAlt")}
                       style={{
                         maxWidth: "100%",
@@ -229,7 +201,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                     startIcon={<PhotoCameraIcon />}
                     onClick={(e) => {
                       e.preventDefault();
-                      props.showPhotoEditor("playlist", currentPlaylist?.thumbnail || "");
+                      props.showPhotoEditor("playlist", thumbnailDisplay || "");
                     }}
                     sx={{
                       textTransform: "none",
@@ -241,7 +213,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
                       }
                     }}
                   >
-                    {currentPlaylist?.thumbnail ? Locale.label("sermons.playlists.playlistEdit.changeThumbnail") : Locale.label("sermons.playlists.playlistEdit.addThumbnail")}
+                    {thumbnailDisplay ? Locale.label("sermons.playlists.playlistEdit.changeThumbnail") : Locale.label("sermons.playlists.playlistEdit.addThumbnail")}
                   </Button>
 
                   <Typography variant="caption" color="text.secondary" sx={{ textAlign: "center" }}>
