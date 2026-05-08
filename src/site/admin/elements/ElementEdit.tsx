@@ -552,18 +552,19 @@ export function ElementEdit(props: Props) {
             <TextField {...params} label="Pre-filter category (optional)" helperText="Restrict to a single category. Hides the category dropdown when set." />
           )}
         />
-        <Autocomplete
-          freeSolo
-          size="small"
-          sx={{ marginTop: 2 }}
-          options={groupLabelOptions}
-          value={parsedData.label || ""}
-          onChange={(_e, val) => setNamedValue("label", val || "")}
-          onInputChange={(_e, val) => setNamedValue("label", val || "")}
-          renderInput={(params) => (
-            <TextField {...params} label="Pre-filter label (optional)" helperText="Restrict to groups with this label. Pick from existing labels or type a new one." />
-          )}
-        />
+        <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
+          <InputLabel>Pre-filter label (optional)</InputLabel>
+          <Select
+            label="Pre-filter label (optional)"
+            name="label"
+            value={parsedData.label || ""}
+            onChange={handleChange}>
+            <MenuItem value="">Any label</MenuItem>
+            {groupLabelOptions.map((l) => (
+              <MenuItem key={l} value={l}>{l}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
           <InputLabel>Show search box</InputLabel>
           <Select label="Show search box" name="showSearch" value={parsedData.showSearch === false ? "false" : "true"} onChange={handleChange}>
