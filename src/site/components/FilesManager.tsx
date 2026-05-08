@@ -92,9 +92,7 @@ export function FilesManager() {
     ))
     : (
       <TableRow>
-        <TableCell colSpan={3}>
-          <EmptyState icon={<FolderIcon />} title={Locale.label("site.filesManager.noFilesYet")} description={Locale.label("site.filesManager.getStarted")} variant="table" colSpan={3} />
-        </TableCell>
+        <EmptyState icon={<FolderIcon />} title={Locale.label("site.filesManager.noFilesYet")} description={Locale.label("site.filesManager.getStarted")} variant="table" colSpan={3} />
       </TableRow>
     );
 

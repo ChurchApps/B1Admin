@@ -19,9 +19,6 @@ export default defineConfig(({ mode }) => {
     },
 
     build: {
-      rollupOptions: {
-        maxParallelFileOps: 2
-      },
       chunkSizeWarningLimit: 1000,
       minify: 'esbuild',
       target: 'es2020'

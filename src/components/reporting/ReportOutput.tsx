@@ -129,7 +129,7 @@ export const ReportOutput = (props: Props) => {
     }
   };
 
-  const getExportMenu = (key: number) => {
+  const getExportMenu = () => {
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -138,8 +138,8 @@ export const ReportOutput = (props: Props) => {
       setAnchorEl(null);
     };
     return (
-      <>
-        <Button size="small" title={Locale.label("reporting.downloadOptions")} onClick={handleClick} key={key}>
+      <React.Fragment key="export-menu">
+        <Button size="small" title={Locale.label("reporting.downloadOptions")} onClick={handleClick}>
           <Icon>download</Icon>
         </Button>
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -177,7 +177,7 @@ export const ReportOutput = (props: Props) => {
             </MenuItem>
           )}
         </Menu>
-      </>
+      </React.Fragment>
     );
   };
 
@@ -188,13 +188,13 @@ export const ReportOutput = (props: Props) => {
 
     if (reportResult) {
       result.push(
-        <button type="button" className="no-default-style" key={result.length - 2} onClick={handlePrint} title={Locale.label("reporting.reportOutput.print")}>
+        <button type="button" className="no-default-style" key="print" onClick={handlePrint} title={Locale.label("reporting.reportOutput.print")}>
           <Icon>print</Icon>
         </button>
       );
     }
     if (reportResult?.table.length > 0 || detailedPersonSummary?.length > 0) {
-      result.push(getExportMenu(result.length - 1));
+      result.push(getExportMenu());
     }
     return result;
   };

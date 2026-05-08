@@ -71,10 +71,20 @@ export const SongsPage = memo(() => {
 
   const filteredSongs = useMemo(() => {
     if (!songs.data) return null;
-    if (!searchFilter.trim()) return songs.data;
+    // The /songDetails endpoint joins songs→arrangements→songDetails, so a song
+    // with multiple arrangements appears once per arrangement. Dedupe by songId
+    // (each row from that join carries `songId` from the song table).
+    const seen = new Set<string>();
+    const unique = songs.data.filter((song) => {
+      const id = (song as any).songId || song.id;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+    if (!searchFilter.trim()) return unique;
 
     const filter = searchFilter.toLowerCase();
-    return songs.data.filter((song) => song.title?.toLowerCase().includes(filter) || song.artist?.toLowerCase().includes(filter));
+    return unique.filter((song) => song.title?.toLowerCase().includes(filter) || song.artist?.toLowerCase().includes(filter));
   }, [songs.data, searchFilter]);
 
   const songsContent = useMemo(() => {
@@ -103,7 +113,7 @@ export const SongsPage = memo(() => {
       <Box sx={{ "& .MuiCard-root": { borderRadius: 2, border: "1px solid", borderColor: "divider" } }}>
         <Stack spacing={2}>
           {filteredSongs?.map((songDetail) => (
-            <Card key={songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
+            <Card key={(songDetail as any).songId || songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
               <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
                 <Stack direction="row" spacing={2} alignItems="center">
                   {/* Thumbnail/Avatar */}
