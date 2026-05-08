@@ -1,30 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  Button,
-  Stack,
-  TextField,
-  FormControl,
-  Icon,
-  InputLabel,
-  Select,
-  MenuItem,
-  Dialog,
-  type SelectChangeEvent,
-  Box,
-  Divider,
-  IconButton,
-  Grid,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Typography
-} from "@mui/material";
-import {
-  Save as SaveIcon,
-  Cancel as CancelIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon
-} from "@mui/icons-material";
+import React, { useEffect, useState, useCallback } from "react";
+import { Button, Stack, TextField, FormControl, Icon, InputLabel, Select, MenuItem, Dialog, Box, Divider, IconButton, Grid, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
+import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
+import { Controller, useForm } from "react-hook-form";
 import type { LinkInterface, GroupInterface } from "@churchapps/helpers";
 import { IconPicker } from "../../components/iconPicker";
 import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale, GalleryModal } from "@churchapps/apphelper";
@@ -42,292 +19,213 @@ interface Props {
   updatedFunction?: () => void;
 }
 
+type AnyRecord = Record<string, any>;
+
 export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () => {} }: Props) {
-  const [currentTab, setCurrentTab] = useState<LinkInterface>(null);
+  const [icon, setIcon] = useState<string>("");
+  const [photo, setPhoto] = useState<string>("");
+  const [groupIdsJson, setGroupIdsJson] = useState<string>("");
   const [pages, setPages] = useState<PageInterface[]>(null);
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showPhotoGallery, setShowPhotoGallery] = useState<boolean>(false);
 
+  const { register, handleSubmit, reset, control, watch, setValue } = useForm<AnyRecord>({ defaultValues: { text: "", linkType: "", linkData: "", url: "", visibility: "everyone" } });
+  const linkType = watch("linkType");
+  const visibility = watch("visibility");
+
   useEffect(() => {
-    setCurrentTab(currentTabFromProps);
-  }, [currentTabFromProps]);
+    if (currentTabFromProps) {
+      reset({
+        text: currentTabFromProps.text || "",
+        linkType: currentTabFromProps.linkType || "",
+        linkData: currentTabFromProps.linkData || "",
+        url: currentTabFromProps.url || "",
+        visibility: (currentTabFromProps as any).visibility || "everyone"
+      });
+      setIcon(currentTabFromProps.icon || "");
+      setPhoto((currentTabFromProps as any).photo || "");
+      setGroupIdsJson((currentTabFromProps as any).groupIds || "");
+    }
+  }, [currentTabFromProps, reset]);
 
   useEffect(() => {
     ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => setGroups(data || []));
   }, []);
 
-  const handleSave = async () => {
+  const onValid = async (values: AnyRecord) => {
     setIsSaving(true);
     try {
-      if (currentTab.linkType !== "url" && currentTab.linkType !== "page") currentTab.url = "";
-      await ApiHelper.post("/links", [currentTab], "ContentApi");
+      const t: LinkInterface = { ...currentTabFromProps, text: values.text, linkType: values.linkType, linkData: values.linkData, url: values.url, icon };
+      (t as any).visibility = values.visibility;
+      (t as any).photo = photo;
+      (t as any).groupIds = values.visibility === "groups" ? (groupIdsJson || null) : null;
+      if (t.linkType !== "url" && t.linkType !== "page") t.url = "";
+      await ApiHelper.post("/links", [t], "ContentApi");
       updatedFunction();
-    } catch (error) {
-      console.error("Error saving tab:", error);
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
-    const val = e.target.value;
-    const t = { ...currentTab };
-    switch (e.target.name) {
-      case "text": t.text = val; break;
-      case "type": t.linkType = val; break;
-      case "page": t.linkData = val; t.url = ArrayHelper.getOne(pages, "id", val).url; break;
-      case "url": t.url = val; break;
-      case "visibility":
-        (t as any).visibility = val;
-        if (val !== "groups") (t as any).groupIds = null;
-        break;
-    }
-    setCurrentTab(t);
-  };
-
   const handleGroupChange = (groupId: string, checked: boolean) => {
-    const t = { ...currentTab } as any;
-    let groupIds: string[] = t.groupIds ? JSON.parse(t.groupIds) : [];
-    if (checked) {
-      if (!groupIds.includes(groupId)) groupIds.push(groupId);
-    } else {
-      groupIds = groupIds.filter(id => id !== groupId);
-    }
-    t.groupIds = groupIds.length > 0 ? JSON.stringify(groupIds) : null;
-    setCurrentTab(t);
+    let ids: string[] = groupIdsJson ? JSON.parse(groupIdsJson) : [];
+    if (checked) { if (!ids.includes(groupId)) ids.push(groupId); } else ids = ids.filter(id => id !== groupId);
+    setGroupIdsJson(ids.length > 0 ? JSON.stringify(ids) : "");
   };
 
   const getSelectedGroupIds = (): string[] => {
-    const groupIds = (currentTab as any)?.groupIds;
-    if (!groupIds) return [];
-    try {
-      return JSON.parse(groupIds);
-    } catch {
-      return [];
-    }
+    if (!groupIdsJson) return [];
+    try { return JSON.parse(groupIdsJson); } catch { return []; }
   };
 
-  const onSelect = useCallback((iconName: string) => {
-    setCurrentTab(prev => ({ ...prev, icon: iconName }));
+  const onIconSelect = useCallback((iconName: string) => {
+    setIcon(iconName);
     setIsModalOpen(false);
   }, []);
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("settings.app.confirmDeleteTab"))) {
-      ApiHelper.delete("/links/" + currentTab.id, "ContentApi").then(() => {
-        setCurrentTab(null);
-        updatedFunction();
-      }).catch((error) => console.error("Error deleting tab:", error));
+      ApiHelper.delete("/links/" + currentTabFromProps.id, "ContentApi").then(() => updatedFunction());
     }
   };
 
   const handlePhotoSelected = (image: string) => {
-    const t = { ...currentTab };
-    (t as any).photo = image;
-    setCurrentTab(t);
+    setPhoto(image);
     setShowPhotoGallery(false);
   };
 
   const loadPages = useCallback(() => {
-    ApiHelper.get("/pages", "ContentApi").then((_pages: PageInterface[]) => {
-      setPages(_pages || []);
-    });
+    ApiHelper.get("/pages", "ContentApi").then((_pages: PageInterface[]) => setPages(_pages || []));
   }, []);
 
   useEffect(() => {
-    if (currentTab?.linkType === "page" && pages === null) {
-      loadPages();
-    }
-  }, [currentTab?.linkType, pages, loadPages]);
+    if (linkType === "page" && pages === null) loadPages();
+  }, [linkType, pages, loadPages]);
 
   useEffect(() => {
-    if (currentTab?.linkType === "page" && pages && pages.length > 0 && currentTab.linkData === "") {
-      setCurrentTab(prev => ({ ...prev, linkData: pages[0]?.id || "" }));
+    if (linkType === "page" && pages && pages.length > 0 && !watch("linkData")) {
+      setValue("linkData", pages[0]?.id || "");
     }
-  }, [currentTab?.linkType, currentTab?.linkData, pages]);
+  }, [linkType, pages, setValue, watch]);
 
-  const getPage = () => {
-    if (currentTab?.linkType === "page") {
-      const options: React.ReactElement[] = [];
-      if (pages) {
-        pages.forEach(page => {
-          options.push(<MenuItem value={page.id} key={page.id}>{page.title}</MenuItem>);
-        });
-      }
-      return (
-        <FormControl fullWidth>
-          <InputLabel id="page">{Locale.label("settings.appEdit.page")}</InputLabel>
-          <Select labelId="page" label={Locale.label("settings.appEdit.page")} name="page" value={currentTab?.linkData || ""} onChange={handleChange} data-testid="page-select">
-            {options}
-          </Select>
-        </FormControl>
-      );
-    } else return null;
+  const onPageChange = (id: string) => {
+    setValue("linkData", id);
+    const page = ArrayHelper.getOne(pages, "id", id);
+    if (page) setValue("url", page.url);
   };
 
-  if (!currentTab) return null;
+  const getPage = () => {
+    if (linkType !== "page") return null;
+    return (
+      <Controller
+        control={control}
+        name="linkData"
+        render={({ field }) => (
+          <FormControl fullWidth>
+            <InputLabel id="page">{Locale.label("settings.appEdit.page")}</InputLabel>
+            <Select labelId="page" label={Locale.label("settings.appEdit.page")} value={field.value || ""} onChange={(ev) => onPageChange(ev.target.value as string)} data-testid="page-select">
+              {pages?.map(page => <MenuItem value={page.id} key={page.id}>{page.title}</MenuItem>)}
+            </Select>
+          </FormControl>
+        )}
+      />
+    );
+  };
+
+  if (!currentTabFromProps) return null;
 
   return (
     <>
       <CardWithHeader
-        title={UniqueIdHelper.isMissing(currentTab?.id) ? Locale.label("settings.appEdit.addTab") : Locale.label("settings.appEdit.editTab")}
+        title={UniqueIdHelper.isMissing(currentTabFromProps?.id) ? Locale.label("settings.appEdit.addTab") : Locale.label("settings.appEdit.editTab")}
         icon={<EditIcon />}
         actions={
           <Stack direction="row" spacing={1}>
-            <Button
-              variant="outlined"
-              color="error"
-              startIcon={<CancelIcon />}
-              onClick={updatedFunction}
-              size="small"
-              sx={{ textTransform: "none" }}
-            >
-              {Locale.label("common.cancel")}
-            </Button>
-            <LoadingButton
-              loading={isSaving}
-              loadingText={Locale.label("settings.appEdit.saving")}
-              variant="contained"
-              startIcon={<SaveIcon />}
-              onClick={handleSave}
-              size="small"
-              sx={{ textTransform: "none" }}
-            >
-              {Locale.label("settings.appEdit.saveTab")}
-            </LoadingButton>
+            <Button variant="outlined" color="error" startIcon={<CancelIcon />} onClick={updatedFunction} size="small" sx={{ textTransform: "none" }}>{Locale.label("common.cancel")}</Button>
+            <LoadingButton loading={isSaving} loadingText={Locale.label("settings.appEdit.saving")} variant="contained" startIcon={<SaveIcon />} onClick={handleSubmit(onValid)} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.saveTab")}</LoadingButton>
           </Stack>
         }
       >
         <Grid container spacing={3}>
           <Grid size={{ xs: 12 }}>
             <Stack spacing={3}>
-              {/* Tab Name and Icon */}
               <TextField
                 fullWidth
                 label={Locale.label("settings.appEdit.tabName")}
-                name="text"
-                value={currentTab?.text || ""}
-                onChange={handleChange}
-                InputProps={{
-                  endAdornment: (
-                    <IconButton
-                      onClick={() => setIsModalOpen(true)}
-                      data-testid="icon-dropdown-button"
-                      sx={{ color: "primary.main" }}
-                    >
-                      <Icon>{currentTab?.icon}</Icon>
-                    </IconButton>
-                  )
-                }}
+                {...register("text")}
+                InputProps={{ endAdornment: (<IconButton onClick={() => setIsModalOpen(true)} data-testid="icon-dropdown-button" sx={{ color: "primary.main" }}><Icon>{icon}</Icon></IconButton>) }}
                 helperText={Locale.label("settings.app.tabNameHelper")}
               />
 
-              {/* Tab Image */}
               <Box>
-                {(currentTab as any)?.photo && (
+                {photo && (
                   <Box sx={{ mb: 2, maxWidth: 300 }}>
-                    <img
-                      src={(currentTab as any).photo}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        aspectRatio: "16/9",
-                        objectFit: "cover",
-                        borderRadius: 4
-                      }}
-                      alt={Locale.label("settings.appEdit.tabIconAlt")}
-                    />
+                    <img src={photo} style={{ width: "100%", height: "auto", aspectRatio: "16/9", objectFit: "cover", borderRadius: 4 }} alt={Locale.label("settings.appEdit.tabIconAlt")} />
                   </Box>
                 )}
-                <Button
-                  variant="outlined"
-                  onClick={() => setShowPhotoGallery(true)}
-                  sx={{ textTransform: "none" }}
-                >
-                  {(currentTab as any)?.photo ? Locale.label("settings.appEdit.changeImage") : Locale.label("settings.appEdit.selectImage")}
+                <Button variant="outlined" onClick={() => setShowPhotoGallery(true)} sx={{ textTransform: "none" }}>
+                  {photo ? Locale.label("settings.appEdit.changeImage") : Locale.label("settings.appEdit.selectImage")}
                 </Button>
               </Box>
 
-              {/* Tab Type */}
-              <FormControl fullWidth>
-                <InputLabel id="type">{Locale.label("settings.appEdit.tabType")}</InputLabel>
-                <Select
-                  labelId="type"
-                  label={Locale.label("settings.appEdit.tabType")}
-                  name="type"
-                  value={currentTab?.linkType || ""}
-                  onChange={handleChange}
-                >
-                  <MenuItem value="bible">{Locale.label("settings.appEdit.bible")}</MenuItem>
-                  <MenuItem value="stream">{Locale.label("settings.appEdit.liveStream")}</MenuItem>
-                  <MenuItem value="votd">{Locale.label("settings.appEdit.verseOfDay")}</MenuItem>
-                  <MenuItem value="sermons">{Locale.label("settings.appEdit.sermons")}</MenuItem>
-                  <MenuItem value="checkin">{Locale.label("settings.appEdit.checkin")}</MenuItem>
-                  <MenuItem value="donation">{Locale.label("settings.appEdit.donation")}</MenuItem>
-                  <MenuItem value="donationLanding">{Locale.label("settings.appEdit.donationLanding")}</MenuItem>
-                  <MenuItem value="directory">{Locale.label("settings.appEdit.memberDirectory")}</MenuItem>
-                  <MenuItem value="groups">{Locale.label("settings.appEdit.myGroups")}</MenuItem>
-                  <MenuItem value="lessons">{Locale.label("settings.appEdit.lessons")}</MenuItem>
-                  <MenuItem value="volunteer">{Locale.label("settings.appEdit.volunteerOpportunities")}</MenuItem>
-                  <MenuItem value="plans">{Locale.label("settings.appEdit.plans")}</MenuItem>
-                  <MenuItem value="url">{Locale.label("settings.appEdit.externalUrl")}</MenuItem>
-                  <MenuItem value="page">{Locale.label("settings.appEdit.internalPage")}</MenuItem>
-                </Select>
-              </FormControl>
+              <Controller
+                control={control}
+                name="linkType"
+                render={({ field }) => (
+                  <FormControl fullWidth>
+                    <InputLabel id="type">{Locale.label("settings.appEdit.tabType")}</InputLabel>
+                    <Select {...field} labelId="type" label={Locale.label("settings.appEdit.tabType")}>
+                      <MenuItem value="bible">{Locale.label("settings.appEdit.bible")}</MenuItem>
+                      <MenuItem value="stream">{Locale.label("settings.appEdit.liveStream")}</MenuItem>
+                      <MenuItem value="votd">{Locale.label("settings.appEdit.verseOfDay")}</MenuItem>
+                      <MenuItem value="sermons">{Locale.label("settings.appEdit.sermons")}</MenuItem>
+                      <MenuItem value="checkin">{Locale.label("settings.appEdit.checkin")}</MenuItem>
+                      <MenuItem value="donation">{Locale.label("settings.appEdit.donation")}</MenuItem>
+                      <MenuItem value="donationLanding">{Locale.label("settings.appEdit.donationLanding")}</MenuItem>
+                      <MenuItem value="directory">{Locale.label("settings.appEdit.memberDirectory")}</MenuItem>
+                      <MenuItem value="groups">{Locale.label("settings.appEdit.myGroups")}</MenuItem>
+                      <MenuItem value="lessons">{Locale.label("settings.appEdit.lessons")}</MenuItem>
+                      <MenuItem value="volunteer">{Locale.label("settings.appEdit.volunteerOpportunities")}</MenuItem>
+                      <MenuItem value="plans">{Locale.label("settings.appEdit.plans")}</MenuItem>
+                      <MenuItem value="url">{Locale.label("settings.appEdit.externalUrl")}</MenuItem>
+                      <MenuItem value="page">{Locale.label("settings.appEdit.internalPage")}</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
 
-              {/* URL Field */}
-              {currentTab?.linkType === "url" && (
-                <TextField
-                  fullWidth
-                  label={Locale.label("settings.appEdit.url")}
-                  name="url"
-                  type="url"
-                  value={currentTab?.url || ""}
-                  onChange={handleChange}
-                  helperText={Locale.label("settings.app.urlHelper")}
-                />
+              {linkType === "url" && (
+                <TextField fullWidth label={Locale.label("settings.appEdit.url")} type="url" helperText={Locale.label("settings.app.urlHelper")} {...register("url")} />
               )}
 
-              {/* Page Selection */}
               {getPage()}
 
-              {/* Visibility */}
-              <FormControl fullWidth>
-                <InputLabel id="visibility">{Locale.label("settings.appEdit.visibility")}</InputLabel>
-                <Select
-                  labelId="visibility"
-                  label={Locale.label("settings.appEdit.visibility")}
-                  name="visibility"
-                  value={(currentTab as any)?.visibility || "everyone"}
-                  onChange={handleChange}
-                >
-                  <MenuItem value="everyone">{Locale.label("settings.appEdit.everyone")}</MenuItem>
-                  <MenuItem value="visitors">{Locale.label("settings.appEdit.loggedInUsers")}</MenuItem>
-                  <MenuItem value="members">{Locale.label("settings.appEdit.membersStaff")}</MenuItem>
-                  <MenuItem value="staff">{Locale.label("settings.appEdit.staffOnly")}</MenuItem>
-                  <MenuItem value="team">{Locale.label("settings.appEdit.team")}</MenuItem>
-                  <MenuItem value="groups">{Locale.label("settings.appEdit.groups")}</MenuItem>
-                </Select>
-              </FormControl>
+              <Controller
+                control={control}
+                name="visibility"
+                render={({ field }) => (
+                  <FormControl fullWidth>
+                    <InputLabel id="visibility">{Locale.label("settings.appEdit.visibility")}</InputLabel>
+                    <Select {...field} labelId="visibility" label={Locale.label("settings.appEdit.visibility")}>
+                      <MenuItem value="everyone">{Locale.label("settings.appEdit.everyone")}</MenuItem>
+                      <MenuItem value="visitors">{Locale.label("settings.appEdit.loggedInUsers")}</MenuItem>
+                      <MenuItem value="members">{Locale.label("settings.appEdit.membersStaff")}</MenuItem>
+                      <MenuItem value="staff">{Locale.label("settings.appEdit.staffOnly")}</MenuItem>
+                      <MenuItem value="team">{Locale.label("settings.appEdit.team")}</MenuItem>
+                      <MenuItem value="groups">{Locale.label("settings.appEdit.groups")}</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
 
-              {/* Group Selection */}
-              {(currentTab as any)?.visibility === "groups" && (
+              {visibility === "groups" && (
                 <Box sx={{ pl: 2, border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2 }}>
                   <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.appEdit.selectGroups")}</Typography>
                   <FormGroup>
                     {groups.map(group => (
-                      <FormControlLabel
-                        key={group.id}
-                        control={
-                          <Checkbox
-                            checked={getSelectedGroupIds().includes(group.id)}
-                            onChange={(e) => handleGroupChange(group.id, e.target.checked)}
-                          />
-                        }
-                        label={group.name}
-                      />
+                      <FormControlLabel key={group.id} control={<Checkbox checked={getSelectedGroupIds().includes(group.id)} onChange={(ev) => handleGroupChange(group.id, ev.target.checked)} />} label={group.name} />
                     ))}
                   </FormGroup>
                   {groups.length === 0 && (
@@ -336,21 +234,11 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                 </Box>
               )}
 
-              {/* Delete Action */}
-              {!UniqueIdHelper.isMissing(currentTab?.id) && (
+              {!UniqueIdHelper.isMissing(currentTabFromProps?.id) && (
                 <>
                   <Divider sx={{ mt: 2 }} />
                   <Box sx={{ textAlign: "center" }}>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      startIcon={<DeleteIcon />}
-                      onClick={handleDelete}
-                      size="small"
-                      sx={{ textTransform: "none" }}
-                    >
-                      {Locale.label("settings.appEdit.deleteTab")}
-                    </Button>
+                    <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={handleDelete} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.deleteTab")}</Button>
                   </Box>
                 </>
               )}
@@ -359,20 +247,14 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
         </Grid>
       </CardWithHeader>
 
-      {/* Icon Picker Modal */}
       {isModalOpen && (
         <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} maxWidth="md" fullWidth>
-          <IconPicker currentIcon={currentTab?.icon} onUpdate={onSelect} onClose={() => setIsModalOpen(false)} />
+          <IconPicker currentIcon={icon} onUpdate={onIconSelect} onClose={() => setIsModalOpen(false)} />
         </Dialog>
       )}
 
-      {/* Photo Gallery Modal */}
       {showPhotoGallery && (
-        <GalleryModal
-          onClose={() => setShowPhotoGallery(false)}
-          onSelect={handlePhotoSelected}
-          aspectRatio={16 / 9}
-        />
+        <GalleryModal onClose={() => setShowPhotoGallery(false)} onSelect={handlePhotoSelected} aspectRatio={16 / 9} />
       )}
     </>
   );
