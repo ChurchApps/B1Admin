@@ -20,44 +20,6 @@ export default defineConfig(({ mode }) => {
 
     build: {
       rollupOptions: {
-        output: {
-          manualChunks(id: string) {
-            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) return 'vendor';
-            if (id.includes('node_modules/react-router-dom/') || id.includes('node_modules/react-router/')) return 'router';
-            if (id.includes('node_modules/@mui/')) return 'mui';
-            if (id.includes('node_modules/@churchapps/')) return 'churchapps';
-            if (id.includes('node_modules/react-dnd') || id.includes('node_modules/dnd-core')) return 'dnd';
-            if (
-              id.includes('node_modules/react-cookie') ||
-              id.includes('node_modules/axios') ||
-              id.includes('node_modules/cropperjs') ||
-              id.includes('node_modules/react-cropper')
-            ) return 'utilities';
-            if (id.includes('/src/people/PeoplePage') || id.includes('/src/people/PersonPage')) return 'people';
-            if (id.includes('/src/groups/GroupsPage') || id.includes('/src/groups/GroupPage')) return 'groups';
-            if (
-              id.includes('/src/donations/DonationsPage') ||
-              id.includes('/src/donations/DonationBatchPage') ||
-              id.includes('/src/donations/DonationBatchesPage') ||
-              id.includes('/src/donations/FundPage') ||
-              id.includes('/src/donations/FundsPage')
-            ) return 'donations';
-            if (id.includes('/src/forms/FormsPage') || id.includes('/src/forms/FormPage')) return 'forms';
-            if (
-              id.includes('/src/serving/ServingPage') ||
-              id.includes('/src/serving/plans/PlanPage') ||
-              id.includes('/src/serving/planTypes/PlanTypePage')
-            ) return 'serving';
-            if (id.includes('/src/serving/songs/SongsPage') || id.includes('/src/serving/songs/SongPage')) return 'songs';
-            if (
-              id.includes('/src/serving/tasks/TasksPage') ||
-              id.includes('/src/serving/tasks/TaskPage') ||
-              id.includes('/src/serving/tasks/automations/AutomationsPage')
-            ) return 'tasks';
-            if (id.includes('/src/serverAdmin/AdminPage') || id.includes('/src/serverAdmin/ReportPage')) return 'admin';
-            if (id.includes('/src/reports/ReportsPage') || id.includes('/src/reports/ReportPage')) return 'reports';
-          }
-        },
         maxParallelFileOps: 2
       },
       chunkSizeWarningLimit: 1000,
