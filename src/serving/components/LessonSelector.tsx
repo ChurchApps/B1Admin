@@ -29,7 +29,7 @@ interface Props {
   returnVenueName?: boolean;
   ministryId?: string;
   defaultProviderId?: string;
-  /** Full path from the previous plan's providerPlanId (e.g. /lessons/prog/study/lesson/venue) */
+  /** Path from the previous plan's providerPlanId — opens the picker at the parent of that path. */
   initialNavigationPath?: string;
   /** Provider ID from the previous plan */
   initialProviderId?: string;

@@ -80,7 +80,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [showAssociateLessonSelector, setShowAssociateLessonSelector] = React.useState(false);
   const [showLessonHeaderSelector, setShowLessonHeaderSelector] = React.useState(false);
   const [addMenuAnchor, setAddMenuAnchor] = React.useState<null | HTMLElement>(null);
-  const [venueName, setVenueName] = React.useState<string>("");
+  const [contentName, setContentName] = React.useState<string>("");
   const [previewLessonItems, setPreviewLessonItems] = React.useState<PlanItemInterface[]>([]);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
@@ -137,29 +137,28 @@ export const ServiceOrder = memo((props: Props) => {
   const selectedServiceTime = useMemo(() => serviceTimes.find((s) => s.id === selectedServiceTimeId) || null, [serviceTimes, selectedServiceTimeId]);
 
 
-  const handleAssociateLesson = useCallback(async (contentId: string, selectedVenueName?: string, contentPath?: string, providerId?: string) => {
+  const handleAssociateContent = useCallback(async (contentId: string, selectedContentName?: string, contentPath?: string, providerId?: string) => {
     try {
       setShowAssociateLessonSelector(false);
-      // Update the plan with the content association using path-based system
       const updatedPlan = {
         ...props.plan,
         providerId: providerId,
-        providerPlanId: contentPath || contentId, // Store path for provider method calls
-        providerPlanName: selectedVenueName || "",
+        providerPlanId: contentPath || contentId,
+        providerPlanName: selectedContentName || "",
         // Backward compat
         contentType: "provider",
         contentId: contentId
       };
       await ApiHelper.post("/plans", [updatedPlan], "DoingApi");
-      setVenueName(selectedVenueName || "");
+      setContentName(selectedContentName || "");
       if (props.onPlanUpdate) props.onPlanUpdate();
     } catch (error) {
-      console.error("Error associating lesson:", error);
+      console.error("Error associating content:", error);
       setErrorMessage(Locale.label("plans.serviceOrder.associateError") || "Failed to associate lesson");
     }
   }, [props.plan, props.onPlanUpdate]);
 
-  const handleDisassociateLesson = useCallback(async () => {
+  const handleDisassociateContent = useCallback(async () => {
     try {
       const updatedPlan = {
         ...props.plan,
@@ -170,26 +169,22 @@ export const ServiceOrder = memo((props: Props) => {
         providerPlanName: null
       };
       await ApiHelper.post("/plans", [updatedPlan], "DoingApi");
-      setVenueName("");
+      setContentName("");
       if (props.onPlanUpdate) props.onPlanUpdate();
     } catch (error) {
-      console.error("Error disassociating lesson:", error);
+      console.error("Error disassociating content:", error);
       setErrorMessage(Locale.label("plans.serviceOrder.disassociateError") || "Failed to unlink lesson");
     }
   }, [props.plan, props.onPlanUpdate]);
 
-  // Helper methods for lesson/content association
   const hasAssociatedContent = !!(props.plan?.providerId && props.plan?.providerPlanId);
-  const hasAssociatedLesson = hasAssociatedContent; // Alias for backward compat
 
-  // Get content path for provider method calls
   const getContentPath = useCallback((): string | null => {
     if (!hasAssociatedContent) return null;
     return props.plan?.providerPlanId || null;
   }, [hasAssociatedContent, props.plan?.providerPlanId]);
 
-  // Determine if we should show preview mode
-  const showPreviewMode = hasAssociatedLesson && planItems.length === 0 && previewLessonItems.length > 0;
+  const showPreviewMode = hasAssociatedContent && planItems.length === 0 && previewLessonItems.length > 0;
 
   const saveHierarchicalItems = async (items: PlanItemInterface[], parentId?: string): Promise<void> => {
     if (!items || items.length === 0) return;
@@ -264,27 +259,24 @@ export const ServiceOrder = memo((props: Props) => {
     setEditPlanItem({ itemType: "header", planId: props.plan.id, sort: planItems?.length + 1 || 1 });
   }, [props.plan.id, planItems?.length, showPreviewMode, handleCustomizeLesson]);
 
-  // Load content/venue name when there's an associated content
-  const loadVenueName = useCallback(async () => {
+  const loadContentName = useCallback(async () => {
     if (!hasAssociatedContent) {
-      setVenueName("");
+      setContentName("");
       return;
     }
-    // Use providerPlanName if available (new system)
     if (props.plan?.providerPlanName) {
-      setVenueName(props.plan.providerPlanName);
+      setContentName(props.plan.providerPlanName);
       return;
     }
-    // Otherwise fetch from provider
     if (!provider) return;
     try {
       const contentPath = getContentPath();
       if (!contentPath) return;
 
       const instructions = await getProviderInstructions(provider, contentPath);
-      if (instructions?.name) setVenueName(instructions.name);
+      if (instructions?.name) setContentName(instructions.name);
     } catch (error) {
-      console.error("Error loading venue name:", error);
+      console.error("Error loading content name:", error);
     }
   }, [hasAssociatedContent, getContentPath, provider, props.plan?.providerPlanName]);
 
@@ -307,7 +299,7 @@ export const ServiceOrder = memo((props: Props) => {
         } else {
           setPreviewLessonItems([]);
         }
-        if (instructions?.name) setVenueName(instructions.name);
+        if (instructions?.name) setContentName(instructions.name);
       } catch (error) {
         console.error("Error loading preview lesson items:", error);
         setPreviewLessonItems([]);
@@ -317,7 +309,7 @@ export const ServiceOrder = memo((props: Props) => {
     }
   }, [hasAssociatedContent, planItems.length, getContentPath, provider, props.plan?.providerId]);
 
-  const handleAddLesson = useCallback(() => {
+  const handleAddContent = useCallback(() => {
     // Always show the LessonHeaderSelector - it now supports provider browsing
     setShowLessonHeaderSelector(true);
   }, []);
@@ -350,8 +342,8 @@ export const ServiceOrder = memo((props: Props) => {
             {hasAssociatedContent ? (
               <Chip
                 icon={<MenuBookIcon sx={{ fontSize: 18 }} />}
-                label={venueName || "Loading..."}
-                onDelete={handleDisassociateLesson}
+                label={contentName || "Loading..."}
+                onDelete={handleDisassociateContent}
                 deleteIcon={<CloseIcon sx={{ fontSize: 16 }} />}
                 size="small"
                 sx={{
@@ -413,7 +405,7 @@ export const ServiceOrder = memo((props: Props) => {
               <MenuItem onClick={() => { setAddMenuAnchor(null); addHeader(); }}>
                 <AddIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addSection")}
               </MenuItem>
-              <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddLesson(); }}>
+              <MenuItem onClick={() => { setAddMenuAnchor(null); handleAddContent(); }}>
                 <MenuBookIcon sx={{ mr: 1 }} /> {Locale.label("plans.serviceOrder.addFromLesson") || "Add from Lesson"}
               </MenuItem>
             </Menu>
@@ -422,7 +414,7 @@ export const ServiceOrder = memo((props: Props) => {
       </Stack>
     ),
     [
-      props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedLesson, hasAssociatedContent, provider?.name, venueName, handleDisassociateLesson, handleAddLesson
+      props.plan?.id, addHeader, canEdit, addMenuAnchor, hasAssociatedContent, provider?.name, contentName, handleDisassociateContent, handleAddContent
     ]
   );
 
@@ -498,7 +490,7 @@ export const ServiceOrder = memo((props: Props) => {
                   loadTimesAndExclusions();
                 }}
                 startTime={sectionStartTime}
-                associatedVenueId={hasAssociatedContent ? getContentPath() : undefined}
+                associatedContentPath={hasAssociatedContent ? getContentPath() : undefined}
                 associatedProviderId={props.plan?.providerId}
                 ministryId={props.plan?.ministryId}
                 serviceTime={selectedServiceTime}
@@ -516,7 +508,7 @@ export const ServiceOrder = memo((props: Props) => {
               onChange={() => { }}
               readOnly={true}
               startTime={sectionStartTime}
-              associatedVenueId={hasAssociatedContent ? getContentPath() : undefined}
+              associatedContentPath={hasAssociatedContent ? getContentPath() : undefined}
               associatedProviderId={props.plan?.providerId}
               ministryId={props.plan?.ministryId}
               serviceTime={selectedServiceTime}
@@ -542,10 +534,9 @@ export const ServiceOrder = memo((props: Props) => {
     loadTimesAndExclusions();
   }, [loadTimesAndExclusions]);
 
-  // Load venue name when there's an associated lesson
   React.useEffect(() => {
-    loadVenueName();
-  }, [loadVenueName]);
+    loadContentName();
+  }, [loadContentName]);
 
   // Load preview lesson items when plan has associated lesson but no plan items
   React.useEffect(() => {
@@ -567,7 +558,7 @@ export const ServiceOrder = memo((props: Props) => {
       <LessonSelector
         open={showAssociateLessonSelector}
         onClose={() => setShowAssociateLessonSelector(false)}
-        onSelect={handleAssociateLesson}
+        onSelect={handleAssociateContent}
         returnVenueName={true}
         ministryId={props.plan?.ministryId}
         defaultProviderId={props.plan?.providerId}
@@ -644,10 +635,10 @@ export const ServiceOrder = memo((props: Props) => {
               showPreviewMode ? (
                 <LessonPreview
                   lessonItems={previewLessonItems}
-                  venueName={venueName}
+                  contentName={contentName}
                   onCustomize={handleCustomizeLesson}
                   associatedProviderId={props.plan?.providerId}
-                  associatedVenueId={getContentPath() || undefined}
+                  associatedContentPath={getContentPath() || undefined}
                   ministryId={props.plan?.ministryId}
                 />
               ) : (

@@ -7,10 +7,10 @@ import { PlanItem } from "./PlanItem";
 
 interface Props {
   lessonItems: PlanItemInterface[];
-  venueName: string;
+  contentName: string;
   onCustomize: () => void;
   associatedProviderId?: string;
-  associatedVenueId?: string;
+  associatedContentPath?: string;
   ministryId?: string;
 }
 
@@ -32,7 +32,7 @@ export const LessonPreview = memo((props: Props) => {
           readOnly={true}
           startTime={startTime}
           associatedProviderId={props.associatedProviderId}
-          associatedVenueId={props.associatedVenueId}
+          associatedContentPath={props.associatedContentPath}
           ministryId={props.ministryId}
         />
       );
@@ -54,7 +54,7 @@ export const LessonPreview = memo((props: Props) => {
         }}
       >
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {Locale.label("plans.serviceOrder.lessonPreview") || "Lesson Preview"}: {props.venueName}
+          {Locale.label("plans.serviceOrder.lessonPreview") || "Lesson Preview"}: {props.contentName}
         </Typography>
         <Button
           variant="contained"
