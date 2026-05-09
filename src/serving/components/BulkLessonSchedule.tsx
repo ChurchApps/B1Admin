@@ -21,6 +21,7 @@ interface Props {
 interface ScheduleEntry {
   lesson: ContentFolder;
   venue: ContentFolder | null;
+  venueMismatch: boolean; // true when the lesson didn't have the user's chosen venue and we substituted another
   date: Date;
   included: boolean;
 }
@@ -123,12 +124,19 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
             date.setDate(date.getDate() + (i * intervalDays));
 
             let venue: ContentFolder | null = null;
+            let venueMismatch = false;
             try {
               const venues = await browseAt(lesson.path, selectedProviderId);
-              venue = venues.find(v => v.title === selectedVenueName) || venues[0] || null;
+              const exact = venues.find(v => v.title === selectedVenueName);
+              if (exact) {
+                venue = exact;
+              } else if (venues[0]) {
+                venue = venues[0];
+                venueMismatch = !!selectedVenueName;
+              }
             } catch { /* venue will be null */ }
 
-            return { lesson, venue, date, included: true };
+            return { lesson, venue, venueMismatch, date, included: true };
           })
         );
 
@@ -167,6 +175,10 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
 
     const toSchedule = entries.filter(e => e.included && e.venue);
     try {
+      // Chain the copy source forward: each new plan copies from the previously-created plan
+      // (or from previousPlan for the first iteration). This keeps each adjustTime diff small
+      // (one interval) instead of compounding from a single fixed origin.
+      let copySourceId: string | undefined = previousPlan?.id;
       for (let i = 0; i < toSchedule.length; i++) {
         const entry = toSchedule[i];
         const formattedDate = DateHelper.prettyDate(entry.date);
@@ -185,8 +197,9 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
           contentId: entry.venue!.id
         };
 
-        if (copyMode !== "none" && previousPlan?.id) {
-          await ApiHelper.post("/plans/copy/" + previousPlan.id, { ...newPlan, copyMode }, "DoingApi");
+        if (copyMode !== "none" && copySourceId) {
+          const created = await ApiHelper.post("/plans/copy/" + copySourceId, { ...newPlan, copyMode }, "DoingApi");
+          if (created?.id) copySourceId = created.id;
         } else {
           await ApiHelper.post("/plans", [newPlan], "DoingApi");
         }
@@ -310,6 +323,12 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
               <Typography variant="subtitle2" color="text.secondary">
                 {includedCount} {Locale.label("plans.bulkLessonSchedule.lessonsToSchedule") || "lessons to schedule"}
               </Typography>
+              {entries.some(e => e.venueMismatch) && (
+                <Alert severity="warning">
+                  {Locale.label("plans.bulkLessonSchedule.venueMismatch")
+                    || `Some lessons don't have a "${selectedVenueName}" venue — a substitute is shown below. Review before scheduling.`}
+                </Alert>
+              )}
 
               <Table size="small">
                 <TableHead>
@@ -332,7 +351,16 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
                       </TableCell>
                       <TableCell>{DateHelper.prettyDate(entry.date)}</TableCell>
                       <TableCell>{entry.lesson.title}</TableCell>
-                      <TableCell>{entry.venue?.title || "—"}</TableCell>
+                      <TableCell>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                          {entry.venue?.title || "—"}
+                          {entry.venueMismatch && (
+                            <Typography variant="caption" color="warning.main" sx={{ fontWeight: 500 }}>
+                              ({Locale.label("plans.bulkLessonSchedule.substituted") || "substituted"})
+                            </Typography>
+                          )}
+                        </Box>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
