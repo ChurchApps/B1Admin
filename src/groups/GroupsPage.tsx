@@ -44,6 +44,24 @@ const GroupsPage = () => {
   });
   const pendingCount = pendingRequests?.length || 0;
 
+  const exportData = groups.map((g) => {
+    const { labelArray, ...rest } = g;
+
+    return {
+      ...rest,
+
+      labels: Array.isArray(labelArray)
+        ? labelArray.join(", ")
+        : "",
+
+      labelCount: Array.isArray(labelArray)
+        ? labelArray.length
+        : 0,
+
+      memberCount: Number(g.memberCount || 0)
+    };
+  });
+
   const getRows = () => {
     const rows: JSX.Element[] = [];
 
@@ -112,7 +130,7 @@ const GroupsPage = () => {
         <Paper sx={{ width: "100%", overflowX: "auto" }}>
           {groups.length > 0 && UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
             <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 }, justifyContent: "flex-end" }}>
-              <IconButton component={ExportLink} data={groups} filename="groups.csv" size="small" sx={{ color: "primary.main" }}>
+              <IconButton component={ExportLink} data={exportData} filename="groups.csv" size="small" sx={{ color: "primary.main" }}>
                 <ExportIcon />
               </IconButton>
             </Toolbar>
