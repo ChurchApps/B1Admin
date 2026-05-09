@@ -198,9 +198,11 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
 
       // Add children based on whether this is a header or section
       if (isHeader) {
-        // Header selected: children are sections (become providerSection items)
+        // Header selected: only sections become providerSection children. (The previous
+        // `=== "section" || !== "action"` simplified to "anything but action", which let
+        // headers/files leak in.)
         section.children?.forEach((child, childIndex) => {
-          if (child.itemType === "section" || child.itemType !== "action") {
+          if (child.itemType === "section") {
             headerItem.children!.push(
               instructionToPlanItem(
                 child,
@@ -213,11 +215,9 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
           }
         });
       } else {
-        // Section selected: children are actions (become providerPresentation items)
+        // Section selected: only actions become providerPresentation children.
         section.children?.forEach((child, childIndex) => {
-          if (child.itemType === "action" || child.itemType !== "section") {
-            // Skip file type items
-            if (child.itemType === "file") return;
+          if (child.itemType === "action") {
             headerItem.children!.push(
               instructionToPlanItem(
                 child,

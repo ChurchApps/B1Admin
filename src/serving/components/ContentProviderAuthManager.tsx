@@ -14,8 +14,6 @@ interface Props {
 }
 
 export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuthChange }) => {
-  console.log("[ContentProviderAuthManager] Render with ministryId:", ministryId);
-
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [showProviderSelector, setShowProviderSelector] = useState(false);
@@ -45,18 +43,16 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
   useEffect(() => () => { cancelActivePolls(); }, [cancelActivePolls]);
 
-  const availableProviders = useMemo(() => {
-    const providers = getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject", "dropbox", "jesusfilm"]);
-    console.log("[ContentProviderAuthManager] availableProviders:", providers);
-    return providers;
-  }, []);
+  const availableProviders = useMemo(
+    () => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject", "dropbox", "jesusfilm"]),
+    []
+  );
 
   // Get implemented providers
-  const authProviders = useMemo(() => {
-    const implemented = availableProviders.filter(p => p.implemented);
-    console.log("[ContentProviderAuthManager] authProviders (implemented):", implemented);
-    return implemented;
-  }, [availableProviders]);
+  const authProviders = useMemo(
+    () => availableProviders.filter(p => p.implemented),
+    [availableProviders]
+  );
 
   // Providers not yet linked (for modal)
   const unlinkableProviders = useMemo(() => {
@@ -65,30 +61,24 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   }, [authProviders, linkedProviders]);
 
   const loadLinkedProviders = useCallback(async () => {
-    console.log("[ContentProviderAuthManager] loadLinkedProviders called, ministryId:", ministryId);
     if (!ministryId) {
-      console.log("[ContentProviderAuthManager] No ministryId, clearing providers");
       setLinkedProviders([]);
       setLoading(false);
       return;
     }
     try {
       setLoading(true);
-      console.log("[ContentProviderAuthManager] Fetching linked providers...");
       const linked = await ContentProviderAuthHelper.getLinkedProviders(ministryId);
-      console.log("[ContentProviderAuthManager] API returned:", linked);
       setLinkedProviders(linked || []);
     } catch (error) {
-      console.error("[ContentProviderAuthManager] Error loading linked providers:", error);
+      console.error("Error loading linked providers:", error);
       setLinkedProviders([]);
     } finally {
-      console.log("[ContentProviderAuthManager] Setting loading to false");
       setLoading(false);
     }
   }, [ministryId]);
 
   useEffect(() => {
-    console.log("[ContentProviderAuthManager] useEffect triggered, calling loadLinkedProviders");
     loadLinkedProviders();
   }, [loadLinkedProviders]);
 
@@ -278,6 +268,8 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
         if (popup.closed) {
           setAuthStatus("idle");
           setAuthProviderId(null);
+          setCodeVerifier(null);
+          setPkceWindow(null);
           return;
         }
 
@@ -350,7 +342,6 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
       setShowProviderSelector(false);
       try {
         const now = Math.floor(Date.now() / 1000);
-        console.log("Storing auth for public API provider:", providerId);
         await ContentProviderAuthHelper.storeAuth(ministryId, providerId, {
           access_token: "public_api",
           refresh_token: "",
@@ -359,9 +350,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
           expires_in: 60 * 60 * 24 * 365 * 10, // 10 years
           scope: ""
         });
-        console.log("Auth stored, reloading linked providers");
         await loadLinkedProviders();
-        console.log("Linked providers reloaded:", linkedProviders);
         if (onAuthChange) onAuthChange();
       } catch (error) {
         console.error("Error linking provider:", error);
@@ -402,10 +391,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
     return availableProviders.find(p => p.id === authProviderId) || null;
   }, [authProviderId, availableProviders]);
 
-  console.log("[ContentProviderAuthManager] Render state - loading:", loading, "authProviders.length:", authProviders.length, "linkedProviders:", linkedProviders);
-
   if (loading) {
-    console.log("[ContentProviderAuthManager] Showing loading spinner");
     return (
       <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
         <CircularProgress />
@@ -414,7 +400,6 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   }
 
   if (authProviders.length === 0) {
-    console.log("[ContentProviderAuthManager] No authProviders, showing empty message");
     return (
       <Typography color="text.secondary">
         {Locale.label("plans.contentProviderAuth.noProvidersAvailable") || "No content providers available that require authentication."}
