@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { Box, Button, Card, CardContent, CircularProgress, IconButton, Stack, Typography } from "@mui/material";
 import { Link as LinkIcon, LinkOff as LinkOffIcon, Refresh as RefreshIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -29,6 +29,21 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   // PKCE state
   const [codeVerifier, setCodeVerifier] = useState<string | null>(null);
   const [pkceWindow, setPkceWindow] = useState<Window | null>(null);
+
+  // Polling cancellation: bumping the generation invalidates any outstanding poll closures,
+  // so closing the dialog (or starting a new flow) stops the previous chain.
+  const pollGenerationRef = useRef(0);
+  const activePollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelActivePolls = useCallback(() => {
+    pollGenerationRef.current += 1;
+    if (activePollTimeoutRef.current) {
+      clearTimeout(activePollTimeoutRef.current);
+      activePollTimeoutRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => { cancelActivePolls(); }, [cancelActivePolls]);
 
   const availableProviders = useMemo(() => {
     const providers = getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject", "dropbox", "jesusfilm"]);
@@ -135,22 +150,35 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   const pollDeviceFlowToken = useCallback(async (
     provider: IProvider,
     deviceCode: string,
-    interval: number
+    initialInterval: number
   ) => {
+    cancelActivePolls();
+    const generation = pollGenerationRef.current;
+    // RFC 8628 §3.5: once the server returns slow_down, the increased interval must persist
+    // for subsequent polls. Storing this in a closure-local `let` instead of recomputing
+    // `interval + 5` each time keeps the bump compounding correctly.
+    let currentInterval = initialInterval;
+
+    const isCancelled = () => generation !== pollGenerationRef.current;
+
     const poll = async () => {
+      if (isCancelled()) return;
       if (!("pollDeviceFlowToken" in provider) || typeof provider.pollDeviceFlowToken !== "function") return;
       try {
         const result = await (provider as any).pollDeviceFlowToken(deviceCode);
+        if (isCancelled()) return;
 
         if (result && "access_token" in result) {
           // Success - we have the token
           await ContentProviderAuthHelper.storeAuth(ministryId, provider.id, result);
+          if (isCancelled()) return;
           setAuthStatus("success");
           await loadLinkedProviders();
           if (onAuthChange) onAuthChange();
 
           // Auto-close after success
-          setTimeout(() => {
+          activePollTimeoutRef.current = setTimeout(() => {
+            if (isCancelled()) return;
             setAuthProviderId(null);
             setAuthStatus("idle");
             setDeviceFlowData(null);
@@ -160,9 +188,8 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
         if (result && "error" in result) {
           if (result.error === "authorization_pending" || result.error === "slow_down") {
-            // Keep polling
-            const nextInterval = result.error === "slow_down" ? interval + 5 : interval;
-            setTimeout(() => poll(), nextInterval * 1000);
+            if (result.error === "slow_down") currentInterval += 5;
+            activePollTimeoutRef.current = setTimeout(poll, currentInterval * 1000);
             return;
           }
 
@@ -176,15 +203,15 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
         setAuthError(Locale.label("plans.contentProviderAuth.authExpired"));
         setAuthStatus("error");
       } catch (error) {
+        if (isCancelled()) return;
         console.error("Error polling device flow:", error);
         setAuthError(Locale.label("plans.contentProviderAuth.authFailed"));
         setAuthStatus("error");
       }
     };
 
-    // Start polling after initial interval
-    setTimeout(poll, interval * 1000);
-  }, [ministryId, loadLinkedProviders, onAuthChange]);
+    activePollTimeoutRef.current = setTimeout(poll, currentInterval * 1000);
+  }, [ministryId, loadLinkedProviders, onAuthChange, cancelActivePolls]);
 
   // Start PKCE OAuth flow
   const startPKCEFlow = useCallback(async (providerId: string) => {
@@ -239,10 +266,15 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
       setPkceWindow(popup);
       setAuthStatus("pkce_waiting");
 
+      cancelActivePolls();
+      const generation = pollGenerationRef.current;
+      const isCancelled = () => generation !== pollGenerationRef.current;
+
       // Step 4: Poll the relay for the auth code
       const expiresAt = Date.now() + (expiresIn || 300) * 1000;
 
       const poll = async () => {
+        if (isCancelled()) return;
         if (popup.closed) {
           setAuthStatus("idle");
           setAuthProviderId(null);
@@ -258,6 +290,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
         try {
           const result = await ApiHelper.getAnonymous(`/oauth/relay/sessions/${sessionCode}`, "MembershipApi");
+          if (isCancelled()) return;
 
           if (result?.status === "completed" && result?.authCode) {
             popup.close();
@@ -268,14 +301,17 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
               verifier,
               redirectUri
             );
+            if (isCancelled()) return;
 
             if (tokens) {
               await ContentProviderAuthHelper.storeAuth(ministryId, providerId, tokens);
+              if (isCancelled()) return;
               setAuthStatus("success");
               await loadLinkedProviders();
               if (onAuthChange) onAuthChange();
 
-              setTimeout(() => {
+              activePollTimeoutRef.current = setTimeout(() => {
+                if (isCancelled()) return;
                 setAuthProviderId(null);
                 setAuthStatus("idle");
                 setCodeVerifier(null);
@@ -288,20 +324,21 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
           }
 
           // Still pending — poll again
-          setTimeout(poll, 3000);
+          activePollTimeoutRef.current = setTimeout(poll, 3000);
         } catch (error) {
+          if (isCancelled()) return;
           console.error("Polling error:", error);
-          setTimeout(poll, 5000);
+          activePollTimeoutRef.current = setTimeout(poll, 5000);
         }
       };
 
-      setTimeout(poll, 3000);
+      activePollTimeoutRef.current = setTimeout(poll, 3000);
     } catch (error) {
       console.error("Error starting PKCE flow:", error);
       setAuthError(Locale.label("plans.contentProviderAuth.startAuthFailed"));
       setAuthStatus("error");
     }
-  }, [ministryId, loadLinkedProviders, onAuthChange]);
+  }, [ministryId, loadLinkedProviders, onAuthChange, cancelActivePolls]);
 
   // Handle link button click
   const handleLink = useCallback(async (providerId: string) => {
@@ -347,6 +384,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
   // Close auth dialog
   const handleCloseDialog = useCallback(() => {
+    cancelActivePolls();
     if (pkceWindow && !pkceWindow.closed) {
       pkceWindow.close();
     }
@@ -356,7 +394,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
     setAuthError(null);
     setCodeVerifier(null);
     setPkceWindow(null);
-  }, [pkceWindow]);
+  }, [pkceWindow, cancelActivePolls]);
 
   // Get current provider being authenticated
   const currentProvider = useMemo(() => {

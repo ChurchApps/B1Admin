@@ -59,12 +59,14 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
     return withLesson[0] || null;
   }, [props.plans]);
 
-  // Browse content at a given path for a provider
+  // Browse content at a given path for a provider. Mirrors useProviderBrowser.browseRaw —
+  // when a ministryId is available, always go through the proxy so caching, CORS, and
+  // failure modes match the lesson selector elsewhere in B1Admin.
   const browseAt = useCallback(async (path: string, provId: string): Promise<ContentFolder[]> => {
     const provider = getProvider(provId);
     if (!provider) return [];
     let items: ContentItem[] = [];
-    if (provider.requiresAuth) {
+    if (props.ministryId) {
       items = await ApiHelper.post("/providerProxy/browse", { ministryId: props.ministryId, providerId: provId, path: path || null }, "DoingApi");
     } else {
       items = await provider.browse(path || null, null);
