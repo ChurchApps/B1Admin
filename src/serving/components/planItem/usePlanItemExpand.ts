@@ -85,8 +85,10 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     );
 
     if (actionItems.length > 0) {
-      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
+      // Post the replacement items first; only delete the original section once the post has
+      // succeeded. If the post fails, the original section stays and nothing is lost.
       await ApiHelper.post("/planItems", actionItems, "DoingApi");
+      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
     }
   }, [planItem, ministryId, createActionItems]);
 
@@ -128,8 +130,10 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     );
 
     if (actionItems.length > 0) {
-      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
+      // Post the replacement items first; only delete the original section once the post has
+      // succeeded. If the post fails, the original section stays and nothing is lost.
       await ApiHelper.post("/planItems", actionItems, "DoingApi");
+      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
     }
   }, [planItem, associatedProviderId, associatedContentPath, ministryId, createActionItems]);
 
