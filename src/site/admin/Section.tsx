@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState } from "react";
+import React, { type CSSProperties, useEffect, useRef, useState } from "react";
 import type { ElementInterface, SectionInterface } from "../../helpers";
 import { ApiHelper } from "../../helpers";
 import { Locale } from "@churchapps/apphelper";
@@ -29,7 +29,7 @@ interface Props {
 
 export const Section: React.FC<Props> = props => {
   const [isDragging, setIsDragging] = useState(false);
-
+  const sectionContentRef = useRef<HTMLDivElement | null>(null);
 
   // Helper function to find element by ID in the nested structure
   const findElementById = (elements: ElementInterface[], id: string): ElementInterface | null => {
@@ -41,6 +41,74 @@ export const Section: React.FC<Props> = props => {
       }
     }
     return null;
+  };
+
+  useEffect(() => {
+    if (!sectionContentRef.current) return;
+
+    const rawHtmlWrappers = Array.from(
+      sectionContentRef.current.querySelectorAll(".elementWrapper.rawHTML")
+    ) as HTMLElement[];
+
+    const rawHtmlElements: ElementInterface[] = [];
+
+    const collect = (elements: ElementInterface[]) => {
+      elements.forEach(el => {
+        const type = (el.elementType || "").toLowerCase();
+        if (type === "rawhtml" || type === "html" || type === "embed") {
+          rawHtmlElements.push(el);
+        }
+        if (el.elements?.length) collect(el.elements);
+      });
+    };
+
+    collect(props.section?.elements || []);
+
+    rawHtmlWrappers.forEach((wrapper, index) => {
+      const element = rawHtmlElements[index];
+      if (element?.id) {
+        wrapper.setAttribute("data-element-id", element.id);
+      }
+    });
+
+    if (!props.onEdit) return;
+
+    const iframes = Array.from(
+      sectionContentRef.current.querySelectorAll(".elementWrapper.rawHTML iframe")
+    ) as HTMLIFrameElement[];
+
+    iframes.forEach(iframe => {
+      iframe.style.pointerEvents = "none";
+    });
+
+    return () => {
+      iframes.forEach(iframe => {
+        iframe.style.pointerEvents = "";
+      });
+    };
+  }, [props.onEdit, props.section]);
+
+  const findRawHtmlElementByWrapper = (rawHtmlWrapper: HTMLElement): ElementInterface | null => {
+    const root = sectionContentRef.current;
+    if (!root) return null;
+
+    const rawHtmlWrappers = Array.from(root.querySelectorAll(".elementWrapper.rawHTML")) as HTMLElement[];
+    const rawHtmlIndex = rawHtmlWrappers.indexOf(rawHtmlWrapper);
+    if (rawHtmlIndex === -1) return null;
+
+    const rawHtmlElements: ElementInterface[] = [];
+
+    const collect = (elements: ElementInterface[]) => {
+      elements.forEach(el => {
+        const type = (el.elementType || "").toLowerCase();
+        if (type === "rawhtml" || type === "html" || type === "embed") rawHtmlElements.push(el);
+        if (el.elements?.length) collect(el.elements);
+      });
+    };
+
+    collect(props.section?.elements || []);
+
+    return rawHtmlElements[rawHtmlIndex] || null;
   };
 
   // Helper to find innermost nested element inside any element that contains children
@@ -74,7 +142,16 @@ export const Section: React.FC<Props> = props => {
   // Handle clicks on any element in the section (including nested ones in rows)
   const handleSectionClick = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
-
+    const rawHtmlWrapper = target.closest(".elementWrapper.rawHTML") as HTMLElement;
+    if (rawHtmlWrapper) {
+      const rawHtmlElement = findRawHtmlElementByWrapper(rawHtmlWrapper);
+      if (rawHtmlElement?.id && props.onElementClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        props.onElementClick(rawHtmlElement.id);
+        return;
+      }
+    }
     // Ignore clicks on droppable spacers, action buttons, and dialogs
     if (target.closest('[data-testid="droppable-area"]')) return;
     if (target.closest("button")) return;
@@ -129,6 +206,16 @@ export const Section: React.FC<Props> = props => {
     if (!props.onElementDoubleClick) return;
 
     const target = event.target as HTMLElement;
+    const rawHtmlWrapper = target.closest(".elementWrapper.rawHTML") as HTMLElement;
+    if (rawHtmlWrapper) {
+      const rawHtmlElement = findRawHtmlElementByWrapper(rawHtmlWrapper);
+      if (rawHtmlElement && props.onElementDoubleClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        props.onElementDoubleClick(rawHtmlElement);
+        return;
+      }
+    }
     let elementId: string | null = null;
 
     // First, try to find element by data-element-id attribute (our wrapper)
@@ -302,7 +389,7 @@ export const Section: React.FC<Props> = props => {
     return (<DroppableArea accept={["element", "elementBlock"]} text={Locale.label("site.contentEditor.dropToAddElement")} onDrop={(data) => handleDrop(data, sort)} updateIsDragging={(dragging) => setIsDragging(dragging)} />);
   };
 
-  const contents = (<Container onClick={handleSectionClick} onDoubleClick={handleSectionDoubleClick}>
+  const contents = (<Container ref={sectionContentRef} onClick={handleSectionClick} onDoubleClick={handleSectionDoubleClick}>
     {props.onEdit && getAddElement(0)}
     {getElements()}
   </Container>);
@@ -343,10 +430,17 @@ export const Section: React.FC<Props> = props => {
     const selectedElement = getSelectedNestedElement();
     if (!selectedElement) return null;
 
+    const type = (selectedElement.elementType || "").toLowerCase();
+
+    const targetSelector =
+      type === "rawhtml" || type === "html" || type === "embed"
+        ? `.elementWrapper.rawHTML[data-element-id="${props.selectedElementId}"]`
+        : `#el-${props.selectedElementId}`;
+
     return (
       <FloatingElementSelection
         element={selectedElement}
-        targetSelector={`#el-${props.selectedElementId}`}
+        targetSelector={targetSelector}
         onEdit={() => props.onEdit(null, selectedElement)}
         onDelete={() => props.onElementDelete(selectedElement.id)}
         onDuplicate={() => props.onElementDuplicate(selectedElement.id)}
