@@ -306,6 +306,29 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
     setMessage(newMessage);
   };
 
+  const exportData = groupMembers.data.map((gm) => {
+    const { person, ...rest } = gm;
+    const { contactInfo, name, ...personRest } = person || {};
+
+    return {
+      ...rest,
+      ...personRest,
+
+      personIdValue: person?.id,
+      personName: name?.display,
+
+      personEmail: contactInfo?.email,
+      personHomePhone: contactInfo?.homePhone,
+      personMobilePhone: contactInfo?.mobilePhone,
+      personWorkPhone: contactInfo?.workPhone,
+      personAddress1: contactInfo?.address1,
+      personAddress2: contactInfo?.address2,
+      personCity: contactInfo?.city,
+      personState: contactInfo?.state,
+      personZip: contactInfo?.zip
+    };
+  });
+
   const getEditContent = () => (
     <>
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
@@ -313,7 +336,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
           <IconButton size="small" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" aria-label={Locale.label("groups.groupMembers.sendMessageAria")}><EditNoteIcon fontSize="small" /></IconButton>
         </Tooltip>
       )}
-      <ExportLink data={groupMembers.data} spaceAfter={true} filename="groupmembers.csv" />
+      <ExportLink data={exportData} spaceAfter={true} filename="groupmembers.csv" />
     </>
   );
 

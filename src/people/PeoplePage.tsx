@@ -155,6 +155,38 @@ export const PeoplePage = memo(() => {
     }
   }, [recentPeople, selectedPersonIds]);
 
+  const getExportData = (people: PersonInterface[]) => {
+    return people.map((person) => {
+      const { name, contactInfo, ...rest } = person;
+
+      return {
+        ...rest,
+
+        display: name?.display,
+        first: name?.first,
+        last: name?.last,
+        middle: name?.middle,
+        nick: name?.nick,
+        suffix: name?.suffix,
+
+        address1: contactInfo?.address1,
+        address2: contactInfo?.address2,
+        city: contactInfo?.city,
+        state: contactInfo?.state,
+        zip: contactInfo?.zip,
+        email: contactInfo?.email,
+        homePhone: contactInfo?.homePhone,
+        workPhone: contactInfo?.workPhone,
+        mobilePhone: contactInfo?.mobilePhone,
+
+        contactCity: contactInfo?.city,
+        contactState: contactInfo?.state,
+        contactZip: contactInfo?.zip,
+        contactEmail: contactInfo?.email
+      };
+    });
+  };
+
   return (
     <>
       <PageHeader
@@ -268,7 +300,7 @@ export const PeoplePage = memo(() => {
                       </Button>
                     )}
                     {searchResults && (
-                      <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={searchResults} filename="people.csv" sx={{ mr: 1 }}>
+                      <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={getExportData(searchResults || [])} filename="people.csv" sx={{ mr: 1 }}>
                         {Locale.label("people.peoplePage.export")}
                       </Button>
                     )}
