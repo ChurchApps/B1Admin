@@ -25,11 +25,9 @@ export function getNextChildSort(children: PlanItemInterface[] | undefined | nul
 }
 
 /**
- * Plan item type constants and documentation.
+ * Plan item type constants.
  *
- * ITEM TYPE MAPPINGS:
- *
- * Current (provider-based):
+ * Current (always emit these):
  * - "header"              - Top-level section header in a plan
  * - "item"                - Generic custom item
  * - "arrangementKey"      - Song with arrangement/key info
@@ -37,15 +35,12 @@ export function getNextChildSort(children: PlanItemInterface[] | undefined | nul
  * - "providerPresentation"- Action/slide from provider (leaf node)
  * - "providerFile"        - Downloadable file from provider
  *
- * Legacy (Lessons.church specific - maintain for backwards compatibility):
- * - "lessonSection"       -> maps to "providerSection"
- * - "lessonAction"        -> maps to "providerPresentation"
- * - "lessonAddOn"         -> maps to "providerFile"
- * - "section"             -> maps to "providerSection"
- * - "action"              -> maps to "providerPresentation"
- * - "addon"               -> maps to "providerFile"
- * - "song"                -> maps to "arrangementKey"
- * - "file"                -> maps to "providerFile"
+ * Legacy values that may still appear on existing rows in the database. Reads must accept them;
+ * writes must only emit the current values above.
+ *   "lessonSection" / "section"          → treated as providerSection
+ *   "lessonAction"  / "action"           → treated as providerPresentation
+ *   "lessonAddOn"   / "addon" / "file"   → treated as providerFile
+ *   "song"                               → treated as arrangementKey
  */
 export const ITEM_TYPES = {
   // Current types
@@ -56,7 +51,6 @@ export const ITEM_TYPES = {
   PROVIDER_PRESENTATION: "providerPresentation",
   PROVIDER_FILE: "providerFile",
 
-  // Legacy types (for reference)
   LEGACY: {
     LESSON_SECTION: "lessonSection",
     LESSON_ACTION: "lessonAction",

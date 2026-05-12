@@ -69,34 +69,19 @@ export class ContentProviderAuthHelper {
   }
 
   static async getValidAuth(ministryId: string, providerId: string): Promise<ContentProviderAuthData | null> {
-    console.log(`[ContentProviderAuthHelper] getValidAuth called for ${providerId}, ministry: ${ministryId}`);
     const auth = await this.getAuth(ministryId, providerId);
-    if (!auth) {
-      console.log(`[ContentProviderAuthHelper] No auth found in database for ${providerId}`);
-      return null;
-    }
-    console.log(`[ContentProviderAuthHelper] Auth found, expires_in: ${auth.expires_in}, has refresh_token: ${!!auth.refresh_token}`);
+    if (!auth) return null;
 
     const provider = getProvider(providerId);
-    if (!provider) {
-      console.log(`[ContentProviderAuthHelper] Provider ${providerId} not found`);
-      return null;
-    }
+    if (!provider) return null;
 
-    if (provider.isAuthValid(auth)) {
-      console.log(`[ContentProviderAuthHelper] Auth is valid for ${providerId}`);
-      return auth;
-    }
+    if (provider.isAuthValid(auth)) return auth;
 
-    console.log(`[ContentProviderAuthHelper] Auth expired for ${providerId}, attempting refresh...`);
-    // Try to refresh
     const refreshed = await provider.refreshToken(auth);
     if (refreshed) {
-      console.log(`[ContentProviderAuthHelper] Token refreshed successfully for ${providerId}`);
       await this.storeAuth(ministryId, providerId, refreshed);
       return refreshed;
     }
-    console.log(`[ContentProviderAuthHelper] Token refresh failed for ${providerId}`);
     return null;
   }
 

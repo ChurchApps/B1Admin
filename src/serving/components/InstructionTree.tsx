@@ -94,20 +94,26 @@ const InstructionItemRow: React.FC<{
         </Box>
         {isExpanded && (
           <Box sx={{ pl: 4 }}>
-            {visibleChildren.map((child, childIndex) => (
-              <InstructionItemRow
-                key={child.relatedId || child.id || childIndex}
-                item={child}
-                providerId={providerId}
-                depth={depth + 1}
-                pathIndices={[...pathIndices, childIndex]}
-                expandedSections={expandedSections}
-                onToggleExpanded={onToggleExpanded}
-                onAddSection={onAddSection}
-                onAddAction={onAddAction}
-                excludeActions={excludeActions}
-              />
-            ))}
+            {visibleChildren.map((child) => {
+              // navigateToPath walks the unfiltered children, so we must store the original
+              // index — not the filtered one — or the saved providerContentPath lands on the
+              // wrong sibling whenever a file/excluded action sits before this item.
+              const originalIndex = item.children!.indexOf(child);
+              return (
+                <InstructionItemRow
+                  key={child.relatedId || child.id || originalIndex}
+                  item={child}
+                  providerId={providerId}
+                  depth={depth + 1}
+                  pathIndices={[...pathIndices, originalIndex]}
+                  expandedSections={expandedSections}
+                  onToggleExpanded={onToggleExpanded}
+                  onAddSection={onAddSection}
+                  onAddAction={onAddAction}
+                  excludeActions={excludeActions}
+                />
+              );
+            })}
           </Box>
         )}
       </Box>

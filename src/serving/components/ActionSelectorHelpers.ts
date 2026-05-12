@@ -53,7 +53,7 @@ export interface ActionSelectorProps {
   open: boolean;
   onClose: () => void;
   onSelect: (actionId: string, actionName: string, seconds?: number, providerId?: string, itemType?: "providerSection" | "providerPresentation" | "providerFile", image?: string, mediaUrl?: string, providerPath?: string, providerContentPath?: string) => void;
-  /** Full content path for the associated content (e.g., /lessons/program-1/study-1/lesson-1/venue-1) */
+  /** Provider-defined path to the leaf folder whose contents should be offered as actions. */
   contentPath?: string;
   /** Provider ID for the associated content */
   providerId?: string;

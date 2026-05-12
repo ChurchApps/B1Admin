@@ -22,7 +22,7 @@ interface Props {
   onChange?: () => void;
   readOnly?: boolean;
   startTime?: number;
-  associatedVenueId?: string;
+  associatedContentPath?: string;
   associatedProviderId?: string;
   ministryId?: string;
   serviceTime?: TimeInterface | null;
@@ -43,7 +43,7 @@ export const PlanItem = React.memo((props: Props) => {
   const { handleExpandToActions } = usePlanItemExpand({
     planItem: props.planItem,
     associatedProviderId: props.associatedProviderId,
-    associatedVenueId: props.associatedVenueId,
+    associatedContentPath: props.associatedContentPath,
     ministryId: props.ministryId,
     onChange: props.onChange
   });
@@ -151,7 +151,7 @@ export const PlanItem = React.memo((props: Props) => {
             draggingCallback={(isDragging) => {
               if (props.onDragChange) props.onDragChange(isDragging);
             }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedVenueId={props.associatedVenueId} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} />
+            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} />
           </DraggableWrapper>
         </React.Fragment>
       );
@@ -259,7 +259,7 @@ export const PlanItem = React.memo((props: Props) => {
           onClose={() => setLessonSectionId(null)}
           onExpandToActions={
             !props.readOnly && (
-              (props.associatedVenueId && props.planItem.relatedId) ||
+              (props.associatedContentPath && props.planItem.relatedId) ||
               (props.planItem.providerId && props.planItem.providerPath && props.planItem.providerContentPath)
             )
               ? async () => {
@@ -291,7 +291,7 @@ export const PlanItem = React.memo((props: Props) => {
           open={showActionSelector}
           onClose={() => setShowActionSelector(false)}
           onSelect={handleActionSelected}
-          contentPath={props.associatedVenueId}
+          contentPath={props.associatedContentPath}
           providerId={props.associatedProviderId}
           ministryId={props.ministryId}
         />

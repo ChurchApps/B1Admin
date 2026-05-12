@@ -7,7 +7,7 @@ import { findThumbnailRecursive } from "../planItemUtils";
 interface ExpandOptions {
   planItem: PlanItemInterface;
   associatedProviderId?: string;
-  associatedVenueId?: string;
+  associatedContentPath?: string;
   ministryId?: string;
   onChange?: () => void;
   onError?: (message: string) => void;
@@ -20,21 +20,20 @@ interface ExpandResult {
 }
 
 /**
- * Hook that provides expand functionality for plan items.
- * Consolidates the logic for expanding sections into individual action items.
+ * Expand a section plan item into its child action items.
  *
- * Supports two expansion methods:
- * 1. Provider-based expansion (current): Uses item-level provider fields (providerId, providerPath, providerContentPath)
- * 2. Legacy expansion: Uses plan-level provider association for old items that only have relatedId
+ * Two expansion paths:
+ * 1. Item-level provider fields (providerId / providerPath / providerContentPath on the item itself)
+ * 2. Plan-level provider association — used when the item only has a relatedId and the
+ *    plan carries the providerId + content path
  */
 export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
-  const { planItem, associatedProviderId, associatedVenueId, ministryId, onChange, onError } = options;
+  const { planItem, associatedProviderId, associatedContentPath, ministryId, onChange, onError } = options;
   const [isExpanding, setIsExpanding] = useState(false);
 
-  // Determine if expansion is possible
   const canExpandViaProvider = !!(planItem.providerId && planItem.providerPath && planItem.providerContentPath);
-  const canExpandViaLegacy = !!(associatedProviderId && associatedVenueId && planItem.relatedId);
-  const canExpand = canExpandViaProvider || canExpandViaLegacy;
+  const canExpandViaPlan = !!(associatedProviderId && associatedContentPath && planItem.relatedId);
+  const canExpand = canExpandViaProvider || canExpandViaPlan;
 
   // Shared logic for creating action items from a section's children
   const createActionItems = useCallback((
@@ -86,24 +85,24 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     );
 
     if (actionItems.length > 0) {
-      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
+      // Post the replacement items first; only delete the original section once the post has
+      // succeeded. If the post fails, the original section stays and nothing is lost.
       await ApiHelper.post("/planItems", actionItems, "DoingApi");
+      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
     }
   }, [planItem, ministryId, createActionItems]);
 
-  // Expand via legacy association (plan-level provider data)
-  const expandViaLegacy = useCallback(async () => {
-    if (!associatedProviderId || !associatedVenueId || !ministryId) return;
+  const expandViaPlan = useCallback(async () => {
+    if (!associatedProviderId || !associatedContentPath || !ministryId) return;
 
     const instructions: Instructions = await ApiHelper.post(
       "/providerProxy/getInstructions",
-      { ministryId, providerId: associatedProviderId, path: associatedVenueId },
+      { ministryId, providerId: associatedProviderId, path: associatedContentPath },
       "DoingApi"
     );
 
     if (!instructions?.items) return;
 
-    // Search the instruction tree for a matching relatedId
     const findSection = (items: InstructionItem[], parentPath: string): { item: InstructionItem; path: string } | null => {
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -126,17 +125,18 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       found.item,
       found.path,
       associatedProviderId,
-      associatedVenueId,
+      associatedContentPath,
       planItem.sort || 1
     );
 
     if (actionItems.length > 0) {
-      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
+      // Post the replacement items first; only delete the original section once the post has
+      // succeeded. If the post fails, the original section stays and nothing is lost.
       await ApiHelper.post("/planItems", actionItems, "DoingApi");
+      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
     }
-  }, [planItem, associatedProviderId, associatedVenueId, ministryId, createActionItems]);
+  }, [planItem, associatedProviderId, associatedContentPath, ministryId, createActionItems]);
 
-  // Main expand handler
   const handleExpandToActions = useCallback(async () => {
     if (!canExpand) {
       console.warn("Cannot expand section: no provider path available");
@@ -148,7 +148,7 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       if (canExpandViaProvider) {
         await expandViaProvider();
       } else {
-        await expandViaLegacy();
+        await expandViaPlan();
       }
       if (onChange) onChange();
     } catch (error) {
@@ -157,7 +157,7 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
     } finally {
       setIsExpanding(false);
     }
-  }, [canExpand, canExpandViaProvider, expandViaProvider, expandViaLegacy, onChange, onError]);
+  }, [canExpand, canExpandViaProvider, expandViaProvider, expandViaPlan, onChange, onError]);
 
   return {
     isExpanding,
