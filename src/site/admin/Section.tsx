@@ -50,6 +50,18 @@ export const Section: React.FC<Props> = props => {
       sectionContentRef.current.querySelectorAll(".elementWrapper.rawHTML")
     ) as HTMLElement[];
 
+    const executeRawHtmlScripts = (wrapper: HTMLElement) => {
+      const scripts = Array.from(wrapper.querySelectorAll("script")) as HTMLScriptElement[];
+      scripts.forEach((sourceScript) => {
+        const replacement = document.createElement("script");
+        Array.from(sourceScript.attributes).forEach((attr) => {
+          replacement.setAttribute(attr.name, attr.value);
+        });
+        replacement.text = sourceScript.text || sourceScript.textContent || "";
+        sourceScript.parentNode?.replaceChild(replacement, sourceScript);
+      });
+    };
+
     const rawHtmlElements: ElementInterface[] = [];
 
     const collect = (elements: ElementInterface[]) => {
@@ -69,6 +81,7 @@ export const Section: React.FC<Props> = props => {
       if (element?.id) {
         wrapper.setAttribute("data-element-id", element.id);
       }
+      executeRawHtmlScripts(wrapper);
     });
 
     if (!props.onEdit) return;
