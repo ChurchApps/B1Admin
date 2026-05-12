@@ -41,27 +41,24 @@ export const PlanList = memo((props: Props) => {
     placeholderData: []
   });
 
-  const plans = React.useMemo(() => {
-    let result: PlanInterface[];
+  const allPlans = React.useMemo(() => {
     // When planTypeId is provided, the API already returns filtered data
-    if (props.planTypeId) {
-      result = plansQuery.data || [];
-    } else {
-      // When no planTypeId, filter by ministry only
-      result = ArrayHelper.getAll(plansQuery.data || [], "ministryId", props.ministry.id);
-    }
-    if (!showPast) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      result = result.filter(p => {
-        if (!p.serviceDate) return true;
-        const d = new Date(p.serviceDate);
-        d.setHours(0, 0, 0, 0);
-        return d >= today;
-      });
-    }
-    return result;
-  }, [plansQuery.data, props.ministry.id, props.planTypeId, showPast]);
+    if (props.planTypeId) return plansQuery.data || [];
+    // When no planTypeId, filter by ministry only
+    return ArrayHelper.getAll(plansQuery.data || [], "ministryId", props.ministry.id);
+  }, [plansQuery.data, props.ministry.id, props.planTypeId]);
+
+  const plans = React.useMemo(() => {
+    if (showPast) return allPlans;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return allPlans.filter(p => {
+      if (!p.serviceDate) return true;
+      const d = new Date(p.serviceDate);
+      d.setHours(0, 0, 0, 0);
+      return d >= today;
+    });
+  }, [allPlans, showPast]);
 
   const addPlan = useCallback(() => {
     const lastSunday = DateHelper.getLastSunday();
@@ -120,7 +117,7 @@ export const PlanList = memo((props: Props) => {
   }
 
   if (plan && canEdit) {
-    return <PlanEdit plan={plan} plans={plans} updatedFunction={handleUpdated} />;
+    return <PlanEdit plan={plan} plans={allPlans} updatedFunction={handleUpdated} />;
   }
 
   if (plansQuery.isLoading) {
