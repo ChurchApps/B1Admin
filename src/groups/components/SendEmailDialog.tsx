@@ -54,7 +54,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   // Load templates on mount
   React.useEffect(() => {
     setLoadingTemplates(true);
-    ApiHelper.get("/messaging/emailTemplates", "MessagingApi")
+    ApiHelper.get("/emailTemplates", "MessagingApi")
       .then((data) => setTemplates(data || []))
       .catch(() => { /* templates load failure is handled by empty list */ })
       .finally(() => setLoadingTemplates(false));
@@ -64,7 +64,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (!props.groupId) return;
     setLoadingPreview(true);
-    ApiHelper.get("/messaging/emailTemplates/preview/" + props.groupId, "MessagingApi")
+    ApiHelper.get("/emailTemplates/preview/" + props.groupId, "MessagingApi")
       .then((data) => setPreview(data))
       .catch(() => { /* preview is optional */ })
       .finally(() => setLoadingPreview(false));
@@ -74,7 +74,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     setSelectedTemplateId(templateId);
     if (!templateId) return;
     try {
-      const fullTemplate = await ApiHelper.get("/messaging/emailTemplates/" + templateId, "MessagingApi");
+      const fullTemplate = await ApiHelper.get("/emailTemplates/" + templateId, "MessagingApi");
       setSubject(fullTemplate.subject || "");
       setHtmlContent(fullTemplate.htmlContent || "");
     } catch {
@@ -89,7 +89,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     setError("");
     try {
       const payload: any = { groupId: props.groupId, subject, htmlContent };
-      const resp = await ApiHelper.post("/messaging/emailTemplates/send", payload, "MessagingApi");
+      const resp = await ApiHelper.post("/emailTemplates/send", payload, "MessagingApi");
       if (resp.error) {
         setError(resp.error);
       } else {

@@ -22,7 +22,7 @@ export const EmailTemplatesPage: React.FC = () => {
 
   const loadData = useCallback(() => {
     setLoading(true);
-    ApiHelper.get("/messaging/emailTemplates", "MessagingApi")
+    ApiHelper.get("/emailTemplates", "MessagingApi")
       .then((data: EmailTemplateInterface[]) => setTemplates(data || []))
       .finally(() => setLoading(false));
   }, []);
@@ -31,13 +31,13 @@ export const EmailTemplatesPage: React.FC = () => {
 
   const handleDelete = async (template: EmailTemplateInterface) => {
     if (!window.confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name))) return;
-    await ApiHelper.delete("/messaging/emailTemplates/" + UserHelper.currentUserChurch.church.id + "/" + template.id, "MessagingApi");
+    await ApiHelper.delete("/emailTemplates/" + UserHelper.currentUserChurch.church.id + "/" + template.id, "MessagingApi");
     loadData();
   };
 
   const handleEdit = (template: EmailTemplateInterface) => {
     // Load full template (list view doesn't include htmlContent)
-    ApiHelper.get("/messaging/emailTemplates/" + template.id, "MessagingApi").then((data: EmailTemplateInterface) => {
+    ApiHelper.get("/emailTemplates/" + template.id, "MessagingApi").then((data: EmailTemplateInterface) => {
       setEditTemplate(data);
     });
   };

@@ -58,7 +58,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
       category: values.category,
       churchId: UserHelper.currentUserChurch.church.id
     };
-    await ApiHelper.post("/messaging/emailTemplates", [t], "MessagingApi");
+    await ApiHelper.post("/emailTemplates", [t], "MessagingApi");
     onSave();
   };
 
