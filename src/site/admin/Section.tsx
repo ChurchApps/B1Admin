@@ -31,6 +31,16 @@ export const Section: React.FC<Props> = props => {
   const [isDragging, setIsDragging] = useState(false);
   const sectionContentRef = useRef<HTMLDivElement | null>(null);
 
+  const getElementAnswers = (element: ElementInterface): Record<string, any> => {
+    if (element?.answers) return element.answers;
+    if (!element?.answersJSON) return {};
+    try {
+      return JSON.parse(element.answersJSON);
+    } catch {
+      return {};
+    }
+  };
+
   // Helper function to find element by ID in the nested structure
   const findElementById = (elements: ElementInterface[], id: string): ElementInterface | null => {
     for (const el of elements) {
@@ -49,6 +59,38 @@ export const Section: React.FC<Props> = props => {
     const rawHtmlWrappers = Array.from(
       sectionContentRef.current.querySelectorAll(".elementWrapper.rawHTML")
     ) as HTMLElement[];
+
+    const executeRawHtmlScripts = (wrapper: HTMLElement) => {
+      const scripts = Array.from(wrapper.querySelectorAll("script")) as HTMLScriptElement[];
+      scripts.forEach((sourceScript) => {
+        const replacement = document.createElement("script");
+        Array.from(sourceScript.attributes).forEach((attr) => {
+          replacement.setAttribute(attr.name, attr.value);
+        });
+        replacement.text = sourceScript.text || sourceScript.textContent || "";
+        sourceScript.parentNode?.replaceChild(replacement, sourceScript);
+      });
+    };
+
+    const syncRawHtmlJavascript = (element?: ElementInterface) => {
+      if (!element?.id) return;
+
+      const answers = getElementAnswers(element);
+      const scriptId = "script-" + element.id;
+      const existing = document.getElementById(scriptId);
+
+      if (!answers.javascript) {
+        existing?.remove();
+        return;
+      }
+
+      const replacement = document.createElement("script");
+      replacement.id = scriptId;
+      replacement.text = answers.javascript;
+
+      existing?.remove();
+      document.body.appendChild(replacement);
+    };
 
     const rawHtmlElements: ElementInterface[] = [];
 
@@ -69,6 +111,8 @@ export const Section: React.FC<Props> = props => {
       if (element?.id) {
         wrapper.setAttribute("data-element-id", element.id);
       }
+      executeRawHtmlScripts(wrapper);
+      syncRawHtmlJavascript(element);
     });
 
     if (!props.onEdit) return;
@@ -84,6 +128,9 @@ export const Section: React.FC<Props> = props => {
     return () => {
       iframes.forEach(iframe => {
         iframe.style.pointerEvents = "";
+      });
+      rawHtmlElements.forEach((element) => {
+        if (element?.id) document.getElementById("script-" + element.id)?.remove();
       });
     };
   }, [props.onEdit, props.section]);
