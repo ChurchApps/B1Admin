@@ -24,7 +24,7 @@ interface Props {
   roleMembers: RoleMemberInterface[];
 }
 
-const validateEmail = (email: string) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email);
+const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 export const UserAdd = (props: Props) => {
   const [email, setEmail] = useState("");

@@ -191,7 +191,7 @@ export const PersonEdit = memo((props: Props) => {
             </Grid>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 4 }}>
-                <TextField fullWidth label={Locale.label("person.email")} type="email" id="email" placeholder={Locale.label("placeholders.person.email")} data-testid="email-input" aria-label="Email address" error={!!e.contactInfo?.email} helperText={e.contactInfo?.email?.message} {...register("contactInfo.email", { validate: (v: string) => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(v) || Locale.label("people.personEdit.valEmail") })} />
+                <TextField fullWidth label={Locale.label("person.email")} type="email" id="email" placeholder={Locale.label("placeholders.person.email")} data-testid="email-input" aria-label="Email address" error={!!e.contactInfo?.email} helperText={e.contactInfo?.email?.message} {...register("contactInfo.email", { validate: (v: string) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || Locale.label("people.personEdit.valEmail") })} />
               </Grid>
               <Grid size={{ xs: 12, md: 4 }}>
                 <TextField inputProps={{ maxLength: 20 }} fullWidth label={Locale.label("people.personEdit.nameNote")} id="nametagnotes" placeholder={Locale.label("placeholders.person.nameTag")} {...register("nametagNotes")} />

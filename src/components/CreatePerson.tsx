@@ -42,7 +42,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
     setPerson(p);
   };
 
-  const validateEmail = (email: string) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email);
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const checkExistingEmail = async () => {
     const result = await ApiHelper.get("/people/search?email=" + person.contactInfo.email, "MembershipApi");
