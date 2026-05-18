@@ -10,6 +10,7 @@ export { PersonAttendance } from "./PersonAttendance";
 export { PersonDonations } from "./PersonDonations";
 export { PersonEdit } from "./PersonEdit";
 export { PersonForm } from "./PersonForm";
+export { PersonAssociatedForms } from "./PersonAssociatedForms";
 export { PersonNavigation } from "./PersonNavigation";
 export { PersonNotes } from "./PersonNotes";
 export { PersonView } from "./PersonView";
