@@ -75,6 +75,7 @@ export const PersonDetails = memo((props: Props) => {
 
     setExporting(true);
     try {
+      const personFormSubmissions = (person.formSubmissions || []).filter((submission) => submission.form?.contentType === "person" || submission.contentType === "person");
       const rows: Record<string, string>[] = [
         { section: "Person", form: "", question: "Display Name", answer: person.name?.display || "" },
         { section: "Person", form: "", question: "First Name", answer: person.name?.first || "" },
@@ -103,7 +104,7 @@ export const PersonDetails = memo((props: Props) => {
         { section: "Person", form: "", question: "Hide Me From Member Directory", answer: person.optedOut ? (Locale.label("common.yes") || "Yes") : (Locale.label("common.no") || "No") }
       ];
 
-      const detailedSubmissions = await Promise.all((person.formSubmissions || []).map((submission) => ApiHelper.get(`/formsubmissions/${submission.id}/?include=questions,answers`, "MembershipApi")));
+      const detailedSubmissions = await Promise.all(personFormSubmissions.map((submission) => ApiHelper.get(`/formsubmissions/${submission.id}/?include=questions,answers`, "MembershipApi")));
       detailedSubmissions.forEach((submission: any) => {
         const answersByQuestionId = new Map((submission.answers || []).map((answer: any) => [answer.questionId, answer]));
         (submission.questions || []).forEach((question: any) => {

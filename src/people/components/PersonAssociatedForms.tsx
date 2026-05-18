@@ -17,8 +17,9 @@ export const PersonAssociatedForms: React.FC<Props> = (props) => {
   const [selectedFormId, setSelectedFormId] = useState<string>("");
   const [expanded, setExpanded] = useState<string>("");
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
+  const personFormSubmissions = (props.formSubmissions || []).filter((fs) => fs.form?.contentType === "person" || fs.contentType === "person");
 
-  const submittedFormIds = new Set((props.formSubmissions || []).map((fs) => fs.formId));
+  const submittedFormIds = new Set(personFormSubmissions.map((fs) => fs.formId));
   const availableForms = allForms.filter((form) => !submittedFormIds.has(form.id));
 
   const handleEdit = (formSubmissionId: string) => {
@@ -40,7 +41,7 @@ export const PersonAssociatedForms: React.FC<Props> = (props) => {
 
   useEffect(() => {
     ApiHelper.get("/forms", "MembershipApi").then((data) => {
-      const personPageForms = (data || []).filter((form: any) => !form.archived && (form.contentType === "person" || form.contentType === "form"));
+      const personPageForms = (data || []).filter((form: any) => !form.archived && form.contentType === "person");
       setAllForms(personPageForms);
     });
   }, []);
@@ -62,7 +63,7 @@ export const PersonAssociatedForms: React.FC<Props> = (props) => {
 
   return (
     <div id="personFormsAccordion">
-      {(props.formSubmissions || []).map((fs) => (
+      {personFormSubmissions.map((fs) => (
         <Accordion
           key={fs.id}
           expanded={expanded === `submitted-${fs.id}`}
