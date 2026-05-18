@@ -1,0 +1,111 @@
+import { test, expect, type Page } from '@playwright/test';
+import { login } from './helpers/auth';
+import { navigateToSettings } from './helpers/navigation';
+import { STORAGE_STATE_PATH } from './global-setup';
+
+// ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or
+// Zebedee entered anywhere, it is a result of these tests.
+const WEBHOOK_NAME = 'Zacchaeus Test Webhook';
+const WEBHOOK_NAME_EDITED = 'Zebedee Test Webhook';
+const WEBHOOK_URL = 'https://example.com/hooks/playwright';
+
+// The Webhooks page is reached via a button in the Settings header, not the
+// primary nav — it has no nav-item testid of its own.
+const openWebhooksPage = async (page: Page) => {
+  await page.getByRole('button', { name: 'Webhooks', exact: true }).click();
+  await page.waitForURL(/\/settings\/webhooks/, { timeout: 15000 });
+  await expect(page.getByRole('button', { name: 'New Webhook' })).toBeVisible({ timeout: 15000 });
+};
+
+test.describe.serial('Webhooks', () => {
+  let page: Page;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+    await navigateToSettings(page);
+    await openWebhooksPage(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  // Re-runs on a non-reset local DB can leave test webhooks behind; clear them
+  // so the create assertion starts from a known state. In CI the DB is fresh.
+  test('cleans up leftover test webhooks', async () => {
+    for (let i = 0; i < 10; i++) {
+      const row = page.locator('tr').filter({ hasText: /Zacchaeus Test Webhook|Zebedee Test Webhook/ }).first();
+      if (await row.count() === 0) break;
+      page.once('dialog', (d) => d.accept());
+      await row.getByRole('button', { name: 'Delete' }).click();
+      await expect(row).toHaveCount(0, { timeout: 10000 }).catch(() => { });
+    }
+  });
+
+  test('creates a webhook and reveals the signing secret once', async () => {
+    await page.getByRole('button', { name: 'New Webhook' }).click();
+
+    await page.getByLabel('Name', { exact: true }).fill(WEBHOOK_NAME);
+    await page.getByLabel('Payload URL', { exact: true }).fill(WEBHOOK_URL);
+
+    // Event catalog loads async — wait for the checkbox before toggling it.
+    const personCreated = page.getByLabel('person.created');
+    await expect(personCreated).toBeVisible({ timeout: 10000 });
+    await personCreated.check();
+
+    const savePost = page.waitForResponse(
+      (r) => r.url().includes('/webhooks') && r.request().method() === 'POST',
+      { timeout: 15000 }
+    );
+    await page.locator('button').getByText('Save').click();
+    await savePost;
+
+    // Create returns the secret exactly once, shown in a dialog.
+    const secretDialog = page.locator('div[role="dialog"]:has-text("Signing Secret")');
+    await expect(secretDialog).toBeVisible({ timeout: 10000 });
+    await secretDialog.getByRole('button', { name: 'Close' }).click();
+    await expect(secretDialog).toHaveCount(0, { timeout: 10000 });
+
+    const row = page.locator('tr').filter({ hasText: WEBHOOK_NAME });
+    await expect(row).toHaveCount(1, { timeout: 10000 });
+  });
+
+  test('rejects a webhook with no events selected', async () => {
+    await page.getByRole('button', { name: 'New Webhook' }).click();
+    await page.getByLabel('Name', { exact: true }).fill('Zacchaeus Invalid Webhook');
+    await page.getByLabel('Payload URL', { exact: true }).fill(WEBHOOK_URL);
+    await page.locator('button').getByText('Save').click();
+    // Client-side validation blocks the save and surfaces an error message.
+    await expect(page.getByText('Select at least one event')).toBeVisible({ timeout: 5000 });
+    await page.locator('button').getByText('Cancel').click();
+  });
+
+  test('edits a webhook', async () => {
+    await page.locator('tr').filter({ hasText: WEBHOOK_NAME }).first().getByText(WEBHOOK_NAME).click();
+    const nameField = page.getByLabel('Name', { exact: true });
+    await expect(nameField).toHaveValue(WEBHOOK_NAME, { timeout: 10000 });
+    await nameField.fill(WEBHOOK_NAME_EDITED);
+
+    const savePost = page.waitForResponse(
+      (r) => r.url().includes('/webhooks') && r.request().method() === 'POST',
+      { timeout: 15000 }
+    );
+    await page.locator('button').getByText('Save').click();
+    await savePost;
+
+    // Updates do not return a secret, so no dialog — we land back on the list.
+    await expect(page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED })).toHaveCount(1, { timeout: 10000 });
+  });
+
+  test('deletes a webhook', async () => {
+    const row = page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED }).first();
+    page.once('dialog', async (dialog) => {
+      expect(dialog.type()).toBe('confirm');
+      await dialog.accept();
+    });
+    await row.getByRole('button', { name: 'Delete' }).click();
+    await expect(page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED })).toHaveCount(0, { timeout: 10000 });
+  });
+});

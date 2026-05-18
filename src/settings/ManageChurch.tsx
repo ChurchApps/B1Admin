@@ -4,7 +4,7 @@ import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from 
 import { useNavigate, useLocation } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Stack, Button } from "@mui/material";
-import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, History as HistoryIcon } from "@mui/icons-material";
+import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, History as HistoryIcon, Webhook as WebhookIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
 import { useQuery } from "@tanstack/react-query";
 
@@ -103,6 +103,21 @@ export const ManageChurch = () => {
               {Locale.label("settings.manageChurch.auditLog")}
             </Button>
           )}
+          <Button
+            variant="outlined"
+            startIcon={<WebhookIcon />}
+            onClick={() => navigate("/settings/webhooks")}
+            sx={{
+              color: "#FFF",
+              backgroundColor: "transparent",
+              borderColor: "#FFF",
+              "&:hover": {
+                backgroundColor: "rgba(255,255,255,0.2)",
+                color: "#FFF"
+              }
+            }}>
+            {Locale.label("settings.webhooksPage.title")}
+          </Button>
           <Button
             variant="outlined"
             startIcon={<PlayArrowIcon />}
