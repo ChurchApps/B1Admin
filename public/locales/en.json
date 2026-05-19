@@ -2811,6 +2811,8 @@
       "secretIntro": "Copy your signing secret now — it will not be shown again.",
       "secretSignNote": "Use it to verify the X-B1-Signature header on every delivery.",
       "secretTitle": "Signing Secret",
+      "sendTest": "Send Test Event",
+      "sendingTest": "Sending…",
       "url": "Payload URL",
       "urlPlaceholder": "https://example.com/webhooks/b1",
       "urlRequired": "URL is required"

@@ -30,6 +30,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
   const [copied, setCopied] = useState(false);
   const [deliveries, setDeliveries] = useState<WebhookDeliveryInterface[]>([]);
   const [detail, setDetail] = useState<WebhookDeliveryInterface | null>(null);
+  const [testing, setTesting] = useState(false);
 
   const loadDeliveries = useCallback(() => {
     if (!webhook.id) return;
@@ -74,6 +75,16 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
     loadDeliveries();
   };
 
+  const handleSendTest = async () => {
+    setTesting(true);
+    try {
+      await ApiHelper.post("/webhooks/" + webhook.id + "/test", {}, "MembershipApi");
+      loadDeliveries();
+    } finally {
+      setTesting(false);
+    }
+  };
+
   const copySecret = () => {
     if (secret) navigator.clipboard?.writeText(secret);
     setCopied(true);
@@ -103,9 +114,10 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
           ))}
         </Box>
         {webhook.id && (
-          <Box sx={{ mt: 2 }}>
+          <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
             <Button variant="outlined" size="small" onClick={handleRegenerate}>{Locale.label("settings.webhookEdit.regenerateSecret")}</Button>
-          </Box>
+            <Button variant="outlined" size="small" onClick={handleSendTest} disabled={testing}>{testing ? Locale.label("settings.webhookEdit.sendingTest") : Locale.label("settings.webhookEdit.sendTest")}</Button>
+          </Stack>
         )}
       </InputBox>
 

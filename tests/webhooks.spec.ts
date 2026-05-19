@@ -99,6 +99,28 @@ test.describe.serial('Webhooks', () => {
     await expect(page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED })).toHaveCount(1, { timeout: 10000 });
   });
 
+  test('sends a test event', async () => {
+    await page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED }).first().getByText(WEBHOOK_NAME_EDITED).click();
+    const testButton = page.getByRole('button', { name: 'Send Test Event' });
+    await expect(testButton).toBeVisible({ timeout: 10000 });
+
+    // The test route builds a synthetic payload and delivers it synchronously.
+    const testPost = page.waitForResponse(
+      (r) => /\/webhooks\/[^/]+\/test$/.test(r.url()) && r.request().method() === 'POST',
+      { timeout: 15000 }
+    );
+    await testButton.click();
+    await testPost;
+
+    // The delivery log refreshes and shows the synthetic delivery for the
+    // webhook's first subscribed event (person.created).
+    await expect(page.locator('tr').filter({ hasText: 'person.created' }).first()).toBeVisible({ timeout: 10000 });
+
+    // Return to the list so the next test starts from the webhook list view.
+    await page.locator('button').getByText('Cancel').click();
+    await expect(page.getByRole('button', { name: 'New Webhook' })).toBeVisible({ timeout: 10000 });
+  });
+
   test('deletes a webhook', async () => {
     const row = page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED }).first();
     page.once('dialog', async (dialog) => {
