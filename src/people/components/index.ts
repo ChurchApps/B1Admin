@@ -9,6 +9,7 @@ export { Person } from "./Person";
 export { PersonAttendance } from "./PersonAttendance";
 export { PersonDonations } from "./PersonDonations";
 export { PersonEdit } from "./PersonEdit";
+export { PersonExportDialog } from "./PersonExportDialog";
 export { PersonForm } from "./PersonForm";
 export { PersonAssociatedForms } from "./PersonAssociatedForms";
 export { PersonNavigation } from "./PersonNavigation";
