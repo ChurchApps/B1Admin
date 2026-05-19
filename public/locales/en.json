@@ -2832,6 +2832,42 @@
       "tooltipDelete": "Delete",
       "tooltipEdit": "Edit",
       "url": "URL"
+    },
+    "apiKeyEdit": {
+      "close": "Close",
+      "copied": "Copied",
+      "copy": "Copy",
+      "expires": "Expires",
+      "expiresHelp": "Leave blank for a key that never expires.",
+      "keyIntro": "Copy your API key now — it will not be shown again.",
+      "keyTitle": "API Key",
+      "name": "Name",
+      "namePlaceholder": "e.g. Zapier integration",
+      "nameRequired": "Name is required",
+      "newKey": "New API Key",
+      "scopes": "Scopes",
+      "scopesRequired": "Select at least one scope"
+    },
+    "developer": {
+      "actions": "Actions",
+      "apiKeys": "API Keys",
+      "app": "Application",
+      "authorized": "Authorized",
+      "connectedApps": "Connected Apps",
+      "delete": "Delete",
+      "deleteKeyConfirm": "Delete API key \"{name}\"? Any integration using it will stop working.",
+      "expires": "Expires",
+      "lastUsed": "Last Used",
+      "name": "Name",
+      "newKey": "New API Key",
+      "noConnections": "No apps have been authorized yet.",
+      "noKeys": "No API keys yet.",
+      "prefix": "Key",
+      "revoke": "Revoke",
+      "revokeConfirm": "Revoke access for \"{name}\"?",
+      "scopes": "Scopes",
+      "subtitle": "Manage API keys and connected applications",
+      "title": "Developer"
     }
   },
   "site": {
