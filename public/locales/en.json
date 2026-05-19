@@ -542,14 +542,6 @@
       "pressEnter": "Press Enter to save and add another donation",
       "selectPerson": "Select Person or Anonymous"
     },
-    "donationBatchPage": {
-      "batchDate": "Batch Date:",
-      "donations": "Donations",
-      "editBatch": "Edit Batch",
-      "subtitle": "Manage donations in this batch",
-      "title": "Donation Batch",
-      "totalAmount": "Total Amount"
-    },
     "donationBatchesPage": {
       "addBatch": "Add Batch",
       "batches": "Batches",
@@ -557,6 +549,14 @@
       "export": "Export",
       "stripeImportLink": "Import missing Stripe transactions",
       "subtitle": "Manage donation batches and track giving records",
+      "totalAmount": "Total Amount"
+    },
+    "donationBatchPage": {
+      "batchDate": "Batch Date:",
+      "donations": "Donations",
+      "editBatch": "Edit Batch",
+      "subtitle": "Manage donations in this batch",
+      "title": "Donation Batch",
       "totalAmount": "Total Amount"
     },
     "donationEdit": {
@@ -696,10 +696,10 @@
       "eventId": "Event ID",
       "failedFetch": "Failed to fetch events",
       "failedImport": "Failed to import events",
-      "importMissing": "Import Missing",
-      "importResults": "Import Results",
       "imported": "Imported",
       "importedLabel": "Imported:",
+      "importMissing": "Import Missing",
+      "importResults": "Import Results",
       "new": "New",
       "newLabel": "New:",
       "noEvents": "No events found. Select a date range and click Preview.",
@@ -777,7 +777,6 @@
       "date": "Date",
       "decNum": "Decimal",
       "desc": "Description",
-      "fieldReq": "Field type is required.",
       "fund": "Fund",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
@@ -793,16 +792,6 @@
       "textBox": "Textbox",
       "wholeNum": "Whole Number",
       "yesNo": "Yes/No"
-    },
-    "formSubmissions": {
-      "anon": "Anonymous",
-      "noSubmissions": "No form submissions found",
-      "printSummaryAria": "print-summary",
-      "subBy": "Submitted By",
-      "subDate": "Submission Date",
-      "subFor": "Submitted For",
-      "subRes": "Form Submission Results",
-      "subSum": "Form Submission Summary"
     },
     "formsPage": {
       "addForm": "Add Form",
@@ -824,6 +813,16 @@
       "restoreFormAria": "Restore form {name}",
       "subtitleManage": "Create and manage custom forms",
       "url": "URL"
+    },
+    "formSubmissions": {
+      "anon": "Anonymous",
+      "noSubmissions": "No form submissions found",
+      "printSummaryAria": "print-summary",
+      "subBy": "Submitted By",
+      "subDate": "Submission Date",
+      "subFor": "Submitted For",
+      "subRes": "Form Submission Results",
+      "subSum": "Form Submission Summary"
     },
     "tabs": {
       "formMem": "Form Members",
@@ -874,8 +873,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
-      "attTrack": "Track Attendance",
       "attendance": "Attendance",
+      "attTrack": "Track Attendance",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Change group photo",
@@ -987,8 +986,8 @@
       "eligibleSummarySingular": "{eligibleCount} of {totalMembers} member will receive this email.",
       "emailGroupTitle": "Email Group: {groupName}",
       "fallbackError": "Failed to send email.",
-      "loadTemplate": "Load Template (optional)",
       "loadingRecipients": "Loading recipients...",
+      "loadTemplate": "Load Template (optional)",
       "manageTemplates": "Manage Templates",
       "mergeFieldChurchName": "Church Name",
       "mergeFieldDisplayName": "Display Name",
@@ -1165,12 +1164,30 @@
     },
     "aiSearch": {
       "exampleMen": "- Show me men over 30 with birthdays in July.",
-      "exampleWomen": "- Show me women who are married.",
       "examples": "Examples:",
+      "exampleWomen": "- Show me women who are married.",
       "placeholder": "Show me men over 30 with birthdays in July",
       "search": "Search",
       "searching": "Searching...",
       "title": "AI Search"
+    },
+    "bulk": {
+      "actions": "Actions",
+      "addToGroup": "Add To Group",
+      "apply": "Apply",
+      "clearSelection": "Clear Selection",
+      "createNewGroup": "Create New Group",
+      "delete": "Delete",
+      "error": "Error",
+      "fieldPrompt": "Field Prompt",
+      "fieldSuccess": "Field Success",
+      "group": "Group",
+      "newGroupName": "New Group Name",
+      "optedOutField": "Opted Out Field",
+      "optedOutNo": "Opted Out No",
+      "optedOutYes": "Opted Out Yes",
+      "removeFromGroup": "Remove From Group",
+      "selected": "Selected"
     },
     "editCondition": {
       "act": "Activity",
@@ -1235,8 +1252,8 @@
       "child": "Child",
       "head": "Head",
       "house": " Household",
-      "houseName": "Household Name",
       "householdNameAria": "Household name",
+      "houseName": "Household Name",
       "other": "Other",
       "removeMemberAria": "Remove household member",
       "spouse": "Spouse",
@@ -1631,8 +1648,10 @@
       "schedulingProgress": "Scheduling...",
       "startDate": "Start Date",
       "startingLesson": "Starting Lesson",
+      "substituted": "Substituted",
       "title": "Bulk Schedule Lessons",
       "venue": "Venue",
+      "venueMismatch": "Venue Mismatch",
       "weekly": "Weekly"
     },
     "contentProviderAuth": {
@@ -1645,8 +1664,8 @@
       "expiresPrefix": "Expires:",
       "link": "Link",
       "linkAccount": "Link Account",
-      "linkNew": "Link New Provider",
       "linked": "Linked",
+      "linkNew": "Link New Provider",
       "noLinkedDescription": "Link a content provider to access their content in your service plans.",
       "noProvidersAvailable": "No content providers available",
       "pkceInstructions": "Click the button below to authorize in a popup window:",
@@ -1690,9 +1709,9 @@
     "lessonScheduleEdit": {
       "dateRequired": "Please select a date",
       "fallbackLesson": "Lesson",
-      "scheduleLesson": "Schedule Lesson",
       "scheduledDate": "Scheduled Date",
       "scheduledDateAria": "Scheduled date",
+      "scheduleLesson": "Schedule Lesson",
       "selectLesson": "Select Lesson",
       "venueRequired": "Please select a venue"
     },
@@ -1725,8 +1744,8 @@
       "planNameAria": "Plan name",
       "planReq": "Plan name is required.",
       "servDate": "Service Date",
-      "servReq": "Service date is required.",
       "serviceDateAria": "Service date",
+      "servReq": "Service date is required.",
       "showVolunteerNames": "Show volunteer names on signup page",
       "signupDeadline": "Signup Deadline (hours before service)",
       "signupDeadlineHelper": "Leave blank for no deadline"
@@ -1782,6 +1801,12 @@
       "serviceOrder": "Service Order",
       "servicePlan": "Service Plan",
       "subtitle": "Plan and schedule your service"
+    },
+    "plansPage": {
+      "addMinistry": "Add Ministry",
+      "editMinistry": "Edit Ministry",
+      "selMin": "Select a Ministry",
+      "subtitle": "Manage ministries and service plans"
     },
     "planType": {
       "details": "Plan Type Details"
@@ -1844,12 +1869,6 @@
       "vol": "volunteer(s)",
       "volNotif": "All volunteers notified.",
       "volReq": "Volunteer Requests: "
-    },
-    "plansPage": {
-      "addMinistry": "Add Ministry",
-      "editMinistry": "Edit Ministry",
-      "selMin": "Select a Ministry",
-      "subtitle": "Manage ministries and service plans"
     },
     "positionEdit": {
       "allowSelfSignup": "Allow Self-Signup",
@@ -2355,17 +2374,17 @@
       "act": "Active",
       "arch": "Archived",
       "church": "Church",
-      "churchName": "Church Name",
       "churches": "Churches",
+      "churchName": "Church Name",
       "impersonateUser": "Impersonate User",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
-      "noUsers": "No users found. Please search for a different name or email.",
       "noteFour": "Comparable software is ProPresenter.  It's $399 for a site license.  I made assumptions that the average church installs the software on 3 computers and divided our total installs by 3 to get the number of churches.  I also made the assumption that churches will upgrade to a newer version every 5 years on average.  So $399 / 5 years / 3 computers = $26.60 annual cost per computer.  If we can quantify these assumptions we should update this number.",
       "noteOne": "Comparable software is Breeze.  They charge $72/mo or $864/year.",
+      "notes": "Notes",
       "noteThree": "Comparable content is Orange.  They charge $1023/year for churches with 26-50 viewers for 252 Basic.",
       "noteTwo": "Comparable software is SubSplash.  They start at $99/mo or $1200/year.  This does not include the cut they take on donations.",
-      "notes": "Notes",
+      "noUsers": "No users found. Please search for a different name or email.",
       "regist": "Registered",
       "searchResults": "Search Results",
       "servAdmin": "Server Admin",
@@ -2550,13 +2569,13 @@
       "errorInvalid": "Invalid format. Enter domain only (e.g., yoursite.com or sub.yoursite.org). Do not include http://, paths, or trailing slashes."
     },
     "domainSettingsEdit": {
+      "domain": "Domain",
+      "domains": "Domains",
       "domMsg": "You can make your B1 website answer for any custom domain you wish.  Enter the associated domain name here and then add the following record to your DNS:",
       "domMsg2": "If your DNS provider will not allow you to add a CNAME record you can alternatively use an A record:",
       "domMsg3": "If you receive SSL errors after adding the DNS entry.  Click here to ",
       "domMsg4": ".  It can take up to 5 minutes.",
-      "domMsgConnect": "connect",
-      "domain": "Domain",
-      "domains": "Domains"
+      "domMsgConnect": "connect"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Body content is required.",
@@ -2623,7 +2642,6 @@
       "forceSslHelpAria": "Force SSL help",
       "giving": "Giving",
       "none": "None",
-      "paypal": "PayPal",
       "paypalCreateApp": "create an app to get your Client ID and Secret.",
       "paypalDeveloper": "PayPal Developer",
       "paypalGoTo": "Go to",
@@ -2755,9 +2773,9 @@
     "webhookEdit": {
       "active": "Active",
       "attempts": "Attempts",
+      "close": "Close",
       "copied": "Copied",
       "copy": "Copy",
-      "close": "Close",
       "date": "Date",
       "deliveries": "Recent Deliveries",
       "deliveryDetail": "Delivery Detail",
@@ -2981,10 +2999,10 @@
       "urlPlaceholder": "/donate"
     },
     "donationEdit": {
-      "allowRecurring": "Allow recurring gifts",
-      "allowSingleGift": "Allow single (one-time) gifts",
       "allowedFunds": "Limit to specific funds",
       "allowedFundsHelper": "Leave empty to allow all funds. Donors will only see the funds you select here.",
+      "allowRecurring": "Allow recurring gifts",
+      "allowSingleGift": "Allow single (one-time) gifts",
       "defaultFund": "Default fund",
       "defaultFundHelper": "Preselect this fund when the page loads. Combine with hiding the fund selector to route every gift here.",
       "fundOptions": "Fund Options",
@@ -3069,10 +3087,6 @@
     "elementEdit": {
       "enableLightbox": "Enable Lightbox"
     },
-    "elementSelection": {
-      "moveDown": "Move down",
-      "moveUp": "Move up"
-    },
     "elements": {
       "address": "Address",
       "addressHelper": "ex: City Hall, New York, NY",
@@ -3151,6 +3165,10 @@
       "youtube": "YouTube",
       "zoomLevel": "Zoom Level",
       "zoomLevelExample": "10 is a good default. Higher is more zoomed in."
+    },
+    "elementSelection": {
+      "moveDown": "Move down",
+      "moveUp": "Move up"
     },
     "emptyState": {
       "addFirstSection": "Add your first section",
@@ -3598,8 +3616,8 @@
       "artist": "Artist",
       "bpm": "BPM",
       "key": "Key",
-      "keySignature": "Key Signature",
       "keys": "Keys",
+      "keySignature": "Key Signature",
       "language": "Language",
       "length": "Length",
       "meter": "Meter",
@@ -3712,9 +3730,9 @@
   },
   "tasks": {
     "actionEdit": {
+      "actionTypeAria": "Action type",
       "actType": "Action Type",
       "actTypeHelp": "Select the type of action to perform",
-      "actionTypeAria": "Action type",
       "assignTo": "Assign to",
       "assignToAria": "Assign to",
       "editAct": "Action Edit",
@@ -3809,11 +3827,11 @@
     },
     "conditionEdit": {
       "conDetails": "Condition Details",
+      "conditionTypeAria": "Condition type",
       "conEdit": "Edit Condition",
+      "confirmMsg": "Are you sure you want to delete this condition?",
       "conInfo": "Contact Info",
       "conType": "Condition Type",
-      "conditionTypeAria": "Condition type",
-      "confirmMsg": "Are you sure you want to delete this condition?",
       "gen": "General",
       "persAtt": "Personal Attributes",
       "today": "Today's Date"
@@ -3875,9 +3893,9 @@
     "taskList": {
       "addTask": "Add Task",
       "addTaskAria": "Add task",
+      "assignedTo": "Assigned to",
       "assignGroup": "Assigned to My Groups",
       "assignMe": "Assigned to Me",
-      "assignedTo": "Assigned to",
       "associatedWith": "Associated with",
       "noTasks": "No tasks found",
       "notSpecified": "Not specified",

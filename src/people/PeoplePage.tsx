@@ -6,10 +6,12 @@ import { ExportLink } from "@churchapps/apphelper";
 import { Grid, Box, Typography, Card, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
-import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
+import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
+import { type BulkResult } from "./components/bulk/BulkFieldDialog";
 
 interface BulkDeleteResponse {
   success: boolean;
@@ -155,6 +157,18 @@ export const PeoplePage = memo(() => {
     }
   }, [recentPeople, selectedPersonIds]);
 
+  const handleBulkComplete = useCallback((result: BulkResult) => {
+    setToast({ open: true, message: result.message, severity: result.severity });
+    if (result.severity !== "success") return;
+
+    if (result.fieldUpdates) {
+      const selectedSet = new Set(selectedPersonIds);
+      setSearchResults((current) => current?.map((person) => (person.id && selectedSet.has(person.id) ? { ...person, ...result.fieldUpdates } : person)) || null);
+    }
+    setSelectedPersonIds([]);
+    recentPeople.refetch();
+  }, [selectedPersonIds, recentPeople]);
+
   const getExportData = (people: PersonInterface[]) => {
     return people.map((person) => {
       const { name, contactInfo, ...rest } = person;
@@ -289,15 +303,11 @@ export const PeoplePage = memo(() => {
                   </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
                     {canEdit && selectedPersonIds.length > 0 && (
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="error"
-                        startIcon={<DeleteIcon />}
-                        onClick={() => setShowBulkDeleteConfirm(true)}
-                        disabled={isBulkDeleting}>
-                        Delete Selected
-                      </Button>
+                      <>
+                        <Typography variant="body2" color="text.secondary">{Locale.label("people.bulk.selected").replace("{count}", selectedPersonIds.length.toString())}</Typography>
+                        <Button size="small" onClick={() => setSelectedPersonIds([])}>{Locale.label("people.bulk.clearSelection")}</Button>
+                        <PeopleBulkActions selectedPersonIds={selectedPersonIds} onComplete={handleBulkComplete} onDeleteClick={() => setShowBulkDeleteConfirm(true)} />
+                      </>
                     )}
                     {searchResults && (
                       <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={getExportData(searchResults || [])} filename="people.csv" sx={{ mr: 1 }}>
