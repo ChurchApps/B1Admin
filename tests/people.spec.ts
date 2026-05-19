@@ -581,16 +581,138 @@ test.describe('People Management', () => {
         await row.getByRole('checkbox').check();
       }
 
-      const bulkDeleteBtn = page.getByRole('button', { name: 'Delete Selected' });
-      await expect(bulkDeleteBtn).toBeVisible({ timeout: 10000 });
-      await bulkDeleteBtn.click();
+      const bulkActionsBtn = page.getByTestId('bulk-actions-button');
+      await expect(bulkActionsBtn).toBeVisible({ timeout: 10000 });
+      await bulkActionsBtn.click();
+      await page.getByTestId('bulk-action-delete').click();
 
       const confirmDialog = page.getByRole('dialog').filter({ hasText: 'Delete Selected People' });
       await expect(confirmDialog).toBeVisible({ timeout: 10000 });
       await expect(confirmDialog.getByText('Are you sure you want to delete 2 selected people?')).toBeVisible({ timeout: 10000 });
       await confirmDialog.getByRole('button', { name: 'Cancel' }).click();
       await expect(confirmDialog).toHaveCount(0, { timeout: 10000 });
-      await expect(page.getByRole('button', { name: 'Delete Selected' })).toBeVisible({ timeout: 10000 });
+      await expect(bulkActionsBtn).toBeVisible({ timeout: 10000 });
+    });
+
+    test('should bulk-update membership status for selected people', async ({ page }) => {
+      const suffix = Date.now().toString();
+      const sharedLastName = `BulkStatus${suffix}`;
+      const peopleToCreate = [
+        { first: 'Bartholomew', last: sharedLastName, email: `bulk-status-a-${suffix}@example.com` },
+        { first: 'Barnabas', last: sharedLastName, email: `bulk-status-b-${suffix}@example.com` },
+      ];
+
+      for (const person of peopleToCreate) {
+        await navigateToPeople(page);
+        await page.locator('[name="first"]').fill(person.first);
+        await page.locator('[name="last"]').fill(person.last);
+        await page.locator('[name="email"]').fill(person.email);
+        await page.locator('[type="submit"]').click();
+        await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
+      }
+
+      await navigateToPeople(page);
+      await page.locator('input[name="searchText"]').fill(sharedLastName);
+      await page.waitForResponse(
+        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        { timeout: 10000 }
+      );
+
+      const matchingRows = page.locator('table tbody tr').filter({ hasText: sharedLastName });
+      await expect(matchingRows).toHaveCount(2, { timeout: 10000 });
+
+      for (const person of peopleToCreate) {
+        const row = page.locator('table tbody tr').filter({ hasText: `${person.first} ${sharedLastName}` }).first();
+        await row.getByRole('checkbox').check();
+      }
+
+      await page.getByTestId('bulk-actions-button').click();
+      await page.getByTestId('bulk-action-membershipStatus').click();
+
+      const dialog = page.getByRole('dialog');
+      await expect(dialog).toBeVisible({ timeout: 10000 });
+      await dialog.getByTestId('bulk-field-select').click();
+      await page.getByRole('option', { name: 'Member' }).click();
+
+      const updateResponse = page.waitForResponse(
+        (response) => response.url().includes('/people/bulk-update') && response.status() === 200,
+        { timeout: 10000 }
+      );
+      await dialog.getByTestId('bulk-field-apply').click();
+      await updateResponse;
+      await expect(dialog).toHaveCount(0, { timeout: 10000 });
+    });
+
+    test('should bulk add and remove selected people from a group', async ({ page }) => {
+      const suffix = Date.now().toString();
+      const sharedLastName = `BulkGroup${suffix}`;
+      const groupName = `Bulk All ${suffix}`;
+      const peopleToCreate = [
+        { first: 'Cleopas', last: sharedLastName, email: `bulk-group-a-${suffix}@example.com` },
+        { first: 'Cornelius', last: sharedLastName, email: `bulk-group-b-${suffix}@example.com` },
+      ];
+
+      for (const person of peopleToCreate) {
+        await navigateToPeople(page);
+        await page.locator('[name="first"]').fill(person.first);
+        await page.locator('[name="last"]').fill(person.last);
+        await page.locator('[name="email"]').fill(person.email);
+        await page.locator('[type="submit"]').click();
+        await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
+      }
+
+      const selectMatchingPeople = async () => {
+        await navigateToPeople(page);
+        await page.locator('input[name="searchText"]').fill(sharedLastName);
+        await page.waitForResponse(
+          (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+          { timeout: 10000 }
+        );
+        const rows = page.locator('table tbody tr').filter({ hasText: sharedLastName });
+        await expect(rows).toHaveCount(2, { timeout: 10000 });
+        for (const person of peopleToCreate) {
+          const row = page.locator('table tbody tr').filter({ hasText: `${person.first} ${sharedLastName}` }).first();
+          await row.getByRole('checkbox').check();
+        }
+      };
+
+      // Add both people to a brand-new group created inline.
+      await selectMatchingPeople();
+      await page.getByTestId('bulk-actions-button').click();
+      await page.getByTestId('bulk-action-add-group').click();
+
+      const addDialog = page.getByRole('dialog');
+      await expect(addDialog).toBeVisible({ timeout: 10000 });
+      await addDialog.getByTestId('bulk-create-group-toggle').check();
+      await addDialog.getByRole('textbox', { name: 'New group name' }).fill(groupName);
+
+      const addResponse = page.waitForResponse(
+        (response) => response.url().includes('/groupMembers/bulk-add') && response.status() === 200,
+        { timeout: 10000 }
+      );
+      await addDialog.getByTestId('bulk-group-apply').click();
+      const addBody = await (await addResponse).json();
+      expect(addBody.count).toBe(2);
+      await expect(addDialog).toHaveCount(0, { timeout: 10000 });
+
+      // Remove the same people from that group.
+      await selectMatchingPeople();
+      await page.getByTestId('bulk-actions-button').click();
+      await page.getByTestId('bulk-action-remove-group').click();
+
+      const removeDialog = page.getByRole('dialog');
+      await expect(removeDialog).toBeVisible({ timeout: 10000 });
+      await removeDialog.getByTestId('bulk-group-select').click();
+      await page.getByRole('option', { name: groupName }).click();
+
+      const removeResponse = page.waitForResponse(
+        (response) => response.url().includes('/groupMembers/bulk-remove') && response.status() === 200,
+        { timeout: 10000 }
+      );
+      await removeDialog.getByTestId('bulk-group-apply').click();
+      const removeBody = await (await removeResponse).json();
+      expect(removeBody.count).toBe(2);
+      await expect(removeDialog).toHaveCount(0, { timeout: 10000 });
     });
   });
 

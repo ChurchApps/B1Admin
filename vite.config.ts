@@ -23,7 +23,10 @@ export default defineConfig(({ mode }) => {
       minify: 'esbuild',
       target: 'es2020'
     },
-    resolve: { alias: { 'cropperjs/dist/cropper.css': path.resolve(__dirname, 'node_modules/cropperjs/dist/cropper.css') } },
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+      alias: { 'cropperjs/dist/cropper.css': path.resolve(__dirname, 'node_modules/cropperjs/dist/cropper.css') },
+    },
     server: {
       host: '0.0.0.0',
       port: Number(env.PORT) ?? 3101,
