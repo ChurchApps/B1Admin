@@ -121,6 +121,41 @@ test.describe.serial('Webhooks', () => {
     await expect(page.getByRole('button', { name: 'New Webhook' })).toBeVisible({ timeout: 10000 });
   });
 
+  test('delivers Slack-formatted payloads for a Slack connector', async () => {
+    await page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED }).first().getByText(WEBHOOK_NAME_EDITED).click();
+
+    // Switch the connector type to Slack — a single MUI Select on the editor.
+    const connectorSelect = page.getByRole('combobox');
+    await expect(connectorSelect).toBeVisible({ timeout: 10000 });
+    await connectorSelect.click();
+    await page.getByRole('option', { name: 'Slack', exact: true }).click();
+
+    const savePost = page.waitForResponse(
+      (r) => r.url().includes('/webhooks') && r.request().method() === 'POST',
+      { timeout: 15000 }
+    );
+    await page.locator('button').getByText('Save').click();
+    await savePost;
+
+    // Reopen and confirm the connector type persisted.
+    await page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED }).first().getByText(WEBHOOK_NAME_EDITED).click();
+    await expect(page.getByRole('combobox')).toHaveText('Slack', { timeout: 10000 });
+
+    // A test delivery for a Slack connector carries a Slack {text} message,
+    // not the raw {event,...} envelope — the test route returns the delivery.
+    const testPost = page.waitForResponse(
+      (r) => /\/webhooks\/[^/]+\/test$/.test(r.url()) && r.request().method() === 'POST',
+      { timeout: 15000 }
+    );
+    await page.getByRole('button', { name: 'Send Test Event' }).click();
+    const delivery = await (await testPost).json();
+    expect(delivery.payload).toContain('"text"');
+    expect(delivery.payload).not.toContain('"occurredAt"');
+
+    await page.locator('button').getByText('Cancel').click();
+    await expect(page.getByRole('button', { name: 'New Webhook' })).toBeVisible({ timeout: 10000 });
+  });
+
   test('deletes a webhook', async () => {
     const row = page.locator('tr').filter({ hasText: WEBHOOK_NAME_EDITED }).first();
     page.once('dialog', async (dialog) => {

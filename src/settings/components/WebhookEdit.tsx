@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { TextField, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { TextField, MenuItem, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
 import type { WebhookInterface, WebhookDeliveryInterface } from "../WebhooksPage";
 
@@ -22,6 +22,7 @@ const codeBox = { backgroundColor: "#fafafa", border: "1px solid", borderColor: 
 export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDelete }) => {
   const [name, setName] = useState(webhook.name || "");
   const [url, setUrl] = useState(webhook.url || "");
+  const [connectorType, setConnectorType] = useState(webhook.connectorType || "standard");
   const [active, setActive] = useState(webhook.active !== false);
   const [events, setEvents] = useState<string[]>(webhook.events || []);
   const [catalog, setCatalog] = useState<Record<string, string[]>>({});
@@ -57,7 +58,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
 
   const handleSave = async () => {
     if (!validate()) return;
-    const payload: WebhookInterface = { id: webhook.id, name, url, events, active };
+    const payload: WebhookInterface = { id: webhook.id, name, url, events, active, connectorType };
     const saved: WebhookInterface = await ApiHelper.post("/webhooks", payload, "MembershipApi");
     // The signing secret is only returned when a webhook is first created.
     if (saved?.secret) setSecret(saved.secret);
@@ -101,7 +102,12 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
       <InputBox headerIcon="webhook" headerText={webhook.id ? Locale.label("settings.webhookEdit.editWebhook") : Locale.label("settings.webhookEdit.newWebhook")} saveFunction={handleSave} cancelFunction={onCancel} deleteFunction={onDelete}>
         <ErrorMessages errors={errors} />
         <TextField fullWidth label={Locale.label("settings.webhookEdit.name")} placeholder={Locale.label("settings.webhookEdit.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
-        <TextField fullWidth label={Locale.label("settings.webhookEdit.url")} placeholder={Locale.label("settings.webhookEdit.urlPlaceholder")} value={url} onChange={(e) => setUrl(e.target.value)} />
+        <TextField select fullWidth label={Locale.label("settings.webhookEdit.connectorType")} value={connectorType} onChange={(e) => setConnectorType(e.target.value)}>
+          <MenuItem value="standard">{Locale.label("settings.webhookEdit.connectorStandard")}</MenuItem>
+          <MenuItem value="slack">{Locale.label("settings.webhookEdit.connectorSlack")}</MenuItem>
+          <MenuItem value="discord">{Locale.label("settings.webhookEdit.connectorDiscord")}</MenuItem>
+        </TextField>
+        <TextField fullWidth label={Locale.label("settings.webhookEdit.url")} placeholder={Locale.label("settings.webhookEdit.urlPlaceholder")} value={url} onChange={(e) => setUrl(e.target.value)} helperText={connectorType === "slack" ? Locale.label("settings.webhookEdit.slackUrlHelp") : connectorType === "discord" ? Locale.label("settings.webhookEdit.discordUrlHelp") : ""} />
         <FormControlLabel control={<Switch checked={active} onChange={(e) => setActive(e.target.checked)} />} label={Locale.label("settings.webhookEdit.active")} />
         <Box sx={{ mt: 2 }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.webhookEdit.events")}</Typography>

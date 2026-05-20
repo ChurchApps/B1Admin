@@ -13,6 +13,7 @@ export interface WebhookInterface {
   secret?: string;
   events?: string[];
   active?: boolean;
+  connectorType?: string;
   consecutiveFailures?: number;
   dateCreated?: Date;
   dateModified?: Date;
@@ -32,7 +33,7 @@ export interface WebhookDeliveryInterface {
   dateCompleted?: Date;
 }
 
-const blankWebhook = (): WebhookInterface => ({ name: "", url: "", events: [], active: true });
+const blankWebhook = (): WebhookInterface => ({ name: "", url: "", events: [], active: true, connectorType: "standard" });
 
 export const WebhooksPage: React.FC = () => {
   const [webhooks, setWebhooks] = useState<WebhookInterface[]>([]);
