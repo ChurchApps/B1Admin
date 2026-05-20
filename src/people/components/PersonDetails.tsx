@@ -1,8 +1,9 @@
 import React, { memo } from "react";
-import { Household, Merge, PersonEdit } from "./";
+import { Household, Merge, PersonAssociatedForms, PersonEdit, PersonExportDialog } from "./";
 import { type PersonInterface } from "@churchapps/helpers";
-import { PersonHelper } from "@churchapps/apphelper";
-import { ImageEditor } from "@churchapps/apphelper";
+import { DisplayBox, ImageEditor, Locale, Permissions, PersonHelper, UserHelper } from "@churchapps/apphelper";
+import { Button } from "@mui/material";
+import { FileDownload as ExportIcon } from "@mui/icons-material";
 
 interface Props {
   person: PersonInterface;
@@ -15,7 +16,9 @@ interface Props {
 export const PersonDetails = memo((props: Props) => {
   const [person, setPerson] = React.useState<PersonInterface>(props.person);
   const [showMergeSearch, setShowMergeSearch] = React.useState<boolean>(false);
+  const [showExportDialog, setShowExportDialog] = React.useState(false);
   const { inPhotoEditMode, setInPhotoEditMode, editMode, setEditMode } = props;
+  const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
 
   React.useEffect(() => setPerson(props.person), [props.person]);
 
@@ -59,12 +62,26 @@ export const PersonDetails = memo((props: Props) => {
     <>
       {addMergeSearch}
       {imageEditor}
+      <PersonExportDialog open={showExportDialog} onClose={() => setShowExportDialog(false)} person={person} />
 
       {editMode === "edit" ? (
         <PersonEdit id="personDetailsBox" person={person} updatedFunction={handleUpdated} togglePhotoEditor={togglePhotoEditor} showMergeSearch={handleShowSearch} />
       ) : (
         <>
           <Household person={person} reload={person?.photoUpdated} />
+            {formPermission && (
+              <DisplayBox
+                id="personFormsBox"
+                headerIcon="description"
+                headerText={Locale.label("people.personNavigation.forms") || "Forms"}
+                editContent={(
+                  <Button size="small" variant="outlined" startIcon={<ExportIcon />} onClick={() => setShowExportDialog(true)} sx={{ minWidth: "auto" }}>
+                    {Locale.label("people.peoplePage.export") || "Export"}
+                  </Button>
+                )}>
+                <PersonAssociatedForms contentId={person.id} formSubmissions={person.formSubmissions} updatedFunction={props.updatedFunction} />
+              </DisplayBox>
+            )}
         </>
       )}
     </>
