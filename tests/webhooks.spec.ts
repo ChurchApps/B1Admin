@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { login } from './helpers/auth';
-import { navigateToSettings } from './helpers/navigation';
+import { navigateTo } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or
@@ -9,11 +9,10 @@ const WEBHOOK_NAME = 'Zacchaeus Test Webhook';
 const WEBHOOK_NAME_EDITED = 'Zebedee Test Webhook';
 const WEBHOOK_URL = 'https://example.com/hooks/playwright';
 
-// The Webhooks page is reached via a button in the Settings header, not the
-// primary nav — it has no nav-item testid of its own.
+// Webhooks now lives as a sub-tab under the Developer secondary-nav item.
 const openWebhooksPage = async (page: Page) => {
-  await page.getByRole('button', { name: 'Webhooks', exact: true }).click();
-  await page.waitForURL(/\/settings\/webhooks/, { timeout: 15000 });
+  await navigateTo(page, 'developer');
+  await page.getByRole('tab', { name: 'Webhooks', exact: true }).click();
   await expect(page.getByRole('button', { name: 'New Webhook' })).toBeVisible({ timeout: 15000 });
 };
 
@@ -24,7 +23,6 @@ test.describe.serial('Webhooks', () => {
     const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
     page = await context.newPage();
     await login(page);
-    await navigateToSettings(page);
     await openWebhooksPage(page);
   });
 

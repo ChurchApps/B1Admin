@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { TextField, MenuItem, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
-import type { WebhookInterface, WebhookDeliveryInterface } from "../WebhooksPage";
+import type { WebhookInterface, WebhookDeliveryInterface } from "./WebhooksSection";
 
 interface Props {
   webhook: WebhookInterface;

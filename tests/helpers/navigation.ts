@@ -34,7 +34,8 @@ type SecondarySection =
   | "statements"
   | "playlists"
   | "liveStreamTimes"
-  | "serverAdmin";
+  | "serverAdmin"
+  | "developer";
 
 export type NavSection = PrimarySection | SecondarySection;
 
@@ -72,6 +73,7 @@ const SECONDARY_ROUTES: Record<
   playlists: { parent: "sermons", label: "Playlists", url: /\/sermons\/playlists/ },
   liveStreamTimes: { parent: "sermons", label: "Live Stream Times", url: /\/sermons\/times/ },
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ },
+  developer: { parent: "settings", label: "Developer", url: /\/settings\/developer/ },
 };
 
 export async function openPrimaryNav(page: Page) {
