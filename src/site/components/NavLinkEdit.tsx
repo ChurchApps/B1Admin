@@ -68,7 +68,8 @@ export function NavLinkEdit(props: Props) {
       setError("root", { message: Locale.label("site.navLinkEdit.unauthorizedDelete") });
       return;
     }
-    if (props.link) ApiHelper.delete("/links/" + props.link.id.toString(), "ContentApi").then(() => { props.updatedCallback(null); });
+    if (!props.link?.id) { props.updatedCallback(null); return; }
+    ApiHelper.delete("/links/" + props.link.id.toString(), "ContentApi").then(() => { props.updatedCallback(null); });
   };
 
   useEffect(() => {

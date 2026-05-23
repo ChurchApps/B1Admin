@@ -86,8 +86,6 @@ typings/
 #yarn.lock
 
 # dotenv environment variables file
-.env
-.env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -120,3 +118,4 @@ dist
 # TernJS port file
 .tern-port
 .auth-state.json
+config.bat
