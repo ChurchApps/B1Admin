@@ -36,6 +36,7 @@ import {
   EventAvailable as AttendanceIcon,
   Assignment as CustomFieldIcon
 } from "@mui/icons-material";
+import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
 
 interface Props {
   updateSearchResults: (people: PersonInterface[]) => void;
@@ -249,13 +250,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           label: Locale.label("person.membershipStatus"),
           type: "select",
           operators: ["equals", "notEquals"],
-          options: [
-            { value: "Visitor", label: Locale.label("person.visitor") },
-            { value: "Regular Attendee", label: Locale.label("person.regularAttendee") },
-            { value: "Member", label: Locale.label("person.member") },
-            { value: "Staff", label: Locale.label("person.staff") },
-            { value: "Inactive", label: Locale.label("person.inactive") }
-          ]
+          options: getMembershipStatusOptions()
         }
       ],
       activity: [],

@@ -20,9 +20,7 @@ const STATUS_KIND: Record<string, StatusKind> = {
 
 const headerSx = {
   backgroundColor: "rgba(255,255,255,0.2)",
-  color: "#FFF",
-  fontSize: "0.75rem",
-  height: 20
+  color: "#fff"
 };
 
 const tintedSx = (kind: Exclude<StatusKind, "default">) => (theme: Theme) => ({

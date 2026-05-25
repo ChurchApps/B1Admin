@@ -4,6 +4,7 @@ import { Button, Menu, MenuItem, Divider, ListItemIcon, ListItemText } from "@mu
 import { ExpandMore as ExpandMoreIcon, HowToReg as StatusIcon, Favorite as MaritalIcon, Wc as GenderIcon, MailLock as OptOutIcon, GroupAdd as GroupAddIcon, GroupRemove as GroupRemoveIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { BulkFieldDialog, type BulkFieldOption, type BulkResult } from "./BulkFieldDialog";
 import { BulkGroupDialog } from "./BulkGroupDialog";
+import { getMembershipStatusOptions } from "../../helpers/MembershipStatusOptions";
 
 interface FieldConfig {
   field: "membershipStatus" | "maritalStatus" | "gender" | "optedOut";
@@ -29,13 +30,7 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
       field: "membershipStatus",
       titleKey: "people.bulk.membershipStatusTitle",
       fieldLabel: Locale.label("person.membershipStatus"),
-      options: [
-        { value: "Visitor", label: Locale.label("person.visitor") },
-        { value: "Regular Attendee", label: Locale.label("person.regularAttendee") },
-        { value: "Member", label: Locale.label("person.member") },
-        { value: "Staff", label: Locale.label("person.staff") },
-        { value: "Inactive", label: Locale.label("person.inactive") }
-      ]
+      options: getMembershipStatusOptions()
     },
     {
       field: "maritalStatus",
