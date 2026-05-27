@@ -1316,9 +1316,12 @@
       "primEmail": "Primary Email",
       "primPhone": "Primary Phone",
       "printDirectory": "Print Directory",
+      "allMembers": "All Members",
       "recentPpl": "Recently Added People",
       "searchPpl": "Search People",
       "searchResults": "Search Results",
+      "showAll": "Show All Members",
+      "showingMembers": "Showing {count} members",
       "showingRecent": "Showing {count} most recent people"
     },
     "peopleSearch": {

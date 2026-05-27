@@ -5,7 +5,8 @@ export class EnvironmentHelper {
   private static LessonsApi = "";
   static B1Url = "";
   static ChurchAppsUrl = "";
-  static Common = CommonEnvironmentHelper;
+  
+  static get Common() { return CommonEnvironmentHelper; }
 
   static init = async () => {
     const stage = process.env.REACT_APP_STAGE;
