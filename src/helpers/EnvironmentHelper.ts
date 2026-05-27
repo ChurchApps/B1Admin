@@ -1,5 +1,4 @@
 import { CommonEnvironmentHelper, ApiHelper, Locale } from "@churchapps/apphelper";
-import { EnvironmentHelper as WebsiteEnvironmentHelper } from "@churchapps/apphelper/website";
 
 export class EnvironmentHelper {
   private static LessonsApi = "";
@@ -19,27 +18,20 @@ export class EnvironmentHelper {
     }
     EnvironmentHelper.Common.init(stage);
 
-    WebsiteEnvironmentHelper.init();
-    ApiHelper.apiConfigs.push(
-      {
-        keyName: "ReportingApi",
-        url: EnvironmentHelper.Common.ReportingApi,
-        jwt: "",
-        permissions: []
-      },
-      {
-        keyName: "LessonsApi",
-        url: EnvironmentHelper.LessonsApi,
-        jwt: "",
-        permissions: []
-      },
-      {
-        keyName: "AskApi",
-        url: EnvironmentHelper.Common.AskApi,
-        jwt: "",
-        permissions: []
-      }
-    );
+    // Inlined from apphelper/website EnvironmentHelper.init() — that helper crashes
+    // here because its internal `Common` reference is undefined (circular import with
+    // apphelper main snapshots the binding before it initializes).
+    ApiHelper.apiConfigs = [
+      { keyName: "MembershipApi", url: CommonEnvironmentHelper.MembershipApi, jwt: "", permissions: [] },
+      { keyName: "AttendanceApi", url: CommonEnvironmentHelper.AttendanceApi, jwt: "", permissions: [] },
+      { keyName: "MessagingApi", url: CommonEnvironmentHelper.MessagingApi, jwt: "", permissions: [] },
+      { keyName: "ContentApi", url: CommonEnvironmentHelper.ContentApi, jwt: "", permissions: [] },
+      { keyName: "GivingApi", url: CommonEnvironmentHelper.GivingApi, jwt: "", permissions: [] },
+      { keyName: "DoingApi", url: CommonEnvironmentHelper.DoingApi, jwt: "", permissions: [] },
+      { keyName: "ReportingApi", url: CommonEnvironmentHelper.ReportingApi, jwt: "", permissions: [] },
+      { keyName: "LessonsApi", url: EnvironmentHelper.LessonsApi, jwt: "", permissions: [] },
+      { keyName: "AskApi", url: CommonEnvironmentHelper.AskApi, jwt: "", permissions: [] }
+    ];
 
     await Locale.init([`/locales/{{lng}}.json?v=1`, `/apphelper/locales/{{lng}}.json`]);
   };
