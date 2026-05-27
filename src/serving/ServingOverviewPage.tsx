@@ -22,8 +22,8 @@ interface GridRow {
 }
 
 const formatShortDate = (dateStr: string) => {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  if (!dateStr) return "";
+  return DateHelper.toDate(dateStr).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 };
 
 const getDefaultDates = () => {

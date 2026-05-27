@@ -4,6 +4,9 @@ import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import unusedImports from "eslint-plugin-unused-imports";
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 export default [
   { ignores: ["node_modules/", "dist/", "build/", ".next/", "coverage/", "*.config.js"] },
@@ -89,4 +92,4 @@ export default [
       "react-hooks/exhaustive-deps": "off",
     },
   },
-];
+]; //

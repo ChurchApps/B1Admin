@@ -3,10 +3,10 @@ import { Permissions, UserHelper, type PersonInterface } from "@churchapps/helpe
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { ExportLink } from "@churchapps/apphelper";
-import { Grid, Box, Typography, Card, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from "@mui/material";
+import { Grid, Box, Typography, Card, Stack, Button, IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
-import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon } from "@mui/icons-material";
+import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
@@ -314,6 +314,11 @@ export const PeoplePage = memo(() => {
                         {Locale.label("people.peoplePage.export")}
                       </Button>
                     )}
+                    <Tooltip title={Locale.label("people.peoplePage.printDirectory")}>
+                      <IconButton size="small" onClick={() => window.open("/people/print-directory", "_blank")} sx={{ color: "text.secondary" }}>
+                        <PrintIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                     <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
                   </Stack>
                 </Stack>
