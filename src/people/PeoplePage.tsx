@@ -1,9 +1,9 @@
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback } from "react";
 import { Permissions, UserHelper, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { ExportLink } from "@churchapps/apphelper";
-import { Grid, Box, Typography, Card, Stack, Button, IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert } from "@mui/material";
+import { Grid, Box, Typography, Card, Stack, Button, IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon } from "@mui/icons-material";
@@ -19,62 +19,18 @@ interface BulkDeleteResponse {
   count: number;
 }
 
-const DEFAULT_SELECTED_COLUMNS = ["photo", "displayName"];
-const SELECTED_COLUMNS_STORAGE_KEY = "people_selected_columns";
-
-const getStorageKey = (churchId: string, personId: string) => {
-  if (churchId && personId) return `${SELECTED_COLUMNS_STORAGE_KEY}_${churchId}_${personId}`;
-  return SELECTED_COLUMNS_STORAGE_KEY;
-};
-
-const saveSelectedColumns = (storageKey: string, selectedColumns: string[]) => {
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(selectedColumns));
-  } catch {
-    // localStorage can be unavailable in restricted browser contexts.
-  }
-};
-
-const parseSavedColumns = (savedColumns: string | null) => {
-  if (!savedColumns) return null;
-
-  try {
-    const parsed = JSON.parse(savedColumns);
-    if (Array.isArray(parsed) && parsed.every((column) => typeof column === "string")) return parsed;
-  } catch {
-    return null;
-  }
-
-  return null;
-};
-
-const loadSelectedColumns = (storageKey: string) => {
-  try {
-    return parseSavedColumns(localStorage.getItem(storageKey));
-  } catch {
-    return null;
-  }
-};
-
-const sortPeopleAlphabetically = (people: PersonInterface[]) => {
-  return [...people].sort((a, b) => {
-    const lastNameCompare = (a.name?.last || a.name?.display || "").localeCompare(b.name?.last || b.name?.display || "", undefined, { sensitivity: "base" });
-    if (lastNameCompare !== 0) return lastNameCompare;
-
-    const firstNameCompare = (a.name?.first || "").localeCompare(b.name?.first || "", undefined, { sensitivity: "base" });
-    if (firstNameCompare !== 0) return firstNameCompare;
-
-    return (a.name?.display || "").localeCompare(b.name?.display || "", undefined, { sensitivity: "base" });
-  });
-};
+const INITIAL_PAGE_SIZE = 50;
 
 export const PeoplePage = memo(() => {
   const [searchResults, setSearchResults] = React.useState<PersonInterface[] | null>(null);
-  const [selectedColumns, setSelectedColumns] = React.useState<string[]>(DEFAULT_SELECTED_COLUMNS);
+  const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
   const [selectedPersonIds, setSelectedPersonIds] = React.useState<string[]>([]);
   const [isBulkDeleting, setIsBulkDeleting] = React.useState(false);
   const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = React.useState(false);
+  const [loadAll, setLoadAll] = React.useState(false);
+  const [allPeople, setAllPeople] = React.useState<PersonInterface[]>([]);
+  const [maybeMore, setMaybeMore] = React.useState(true);
   const [toast, setToast] = React.useState<{ open: boolean; message: string; severity: "success" | "error" }>({
     open: false,
     message: "",
@@ -82,20 +38,15 @@ export const PeoplePage = memo(() => {
   });
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
   const currentPersonId = UserHelper.currentUserChurch?.person?.id || "";
-  const currentChurchId = UserHelper.currentUserChurch?.church?.id || "";
-  const selectedColumnsStorageKey = useMemo(() => getStorageKey(currentChurchId, currentPersonId), [currentChurchId, currentPersonId]);
 
-  const directoryPeople = useQuery<PersonInterface[]>({
-    queryKey: ["/people", "MembershipApi", "directory"],
-    queryFn: async () => {
-      const data: PersonInterface[] = await ApiHelper.get("/people", "MembershipApi");
-      return sortPeopleAlphabetically(data.map((person: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(person)));
-    }
+  const peopleQuery = useQuery<PersonInterface[]>({
+    queryKey: [loadAll ? "/people/list" : `/people/list?pageSize=${INITIAL_PAGE_SIZE}`, "MembershipApi"],
+    placeholderData: []
   });
 
   const refetch = useCallback(() => {
-    directoryPeople.refetch();
-  }, [directoryPeople]);
+    peopleQuery.refetch();
+  }, [peopleQuery]);
 
   const columns = [
     { key: "photo", label: Locale.label("people.peoplePage.photo"), shortName: "" },
@@ -120,43 +71,46 @@ export const PeoplePage = memo(() => {
     { key: "deleteOption", label: Locale.label("people.peoplePage.deleteOp"), shortName: Locale.label("common.delete") }
   ];
 
-  const handleToggleColumn = useCallback((key: string) => {
-    setSelectedColumns((current) => {
-      const updatedColumns = current.includes(key) ? current.filter((column) => column !== key) : [...current, key];
-      saveSelectedColumns(selectedColumnsStorageKey, updatedColumns);
-      return updatedColumns;
-    });
-  }, [selectedColumnsStorageKey]);
-
-  // Removed getEditContent - functionality moved to header
+  const handleToggleColumn = (key: string) => {
+    const sc = [...selectedColumns];
+    const index = sc.indexOf(key);
+    if (index === -1) sc.push(key);
+    else sc.splice(index, 1);
+    localStorage.setItem("selectedColumns", JSON.stringify(sc));
+    setSelectedColumns(sc);
+  };
 
   React.useEffect(() => {
-    const savedColumns = loadSelectedColumns(selectedColumnsStorageKey);
-    if (savedColumns) {
-      setSelectedColumns(savedColumns);
-      return;
+    if (localStorage.getItem("selectedColumns")) {
+      setSelectedColumns(JSON.parse(localStorage.getItem("selectedColumns")));
+    } else {
+      localStorage.setItem("selectedColumns", JSON.stringify(["photo", "displayName"]));
     }
-
-    const defaultColumns = [...DEFAULT_SELECTED_COLUMNS];
-    setSelectedColumns(defaultColumns);
-    saveSelectedColumns(selectedColumnsStorageKey, defaultColumns);
-  }, [selectedColumnsStorageKey]);
-
-  const resetSearchResults = useCallback(() => {
-    setSearchResults(directoryPeople.data || []);
-    setIsSearchPerformed(false);
-  }, [directoryPeople.data]);
-
-  const updateSearchResults = useCallback((people: PersonInterface[]) => {
-    setSearchResults(sortPeopleAlphabetically(people));
-    setIsSearchPerformed(true);
   }, []);
 
   React.useEffect(() => {
-    if (directoryPeople.data && !isSearchPerformed) {
-      setSearchResults(directoryPeople.data);
-    }
-  }, [directoryPeople.data, isSearchPerformed]);
+    if (peopleQuery.isPlaceholderData) return;
+    const data = peopleQuery.data;
+    if (!data) return;
+    const expanded = data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d));
+    setAllPeople(expanded);
+    setMaybeMore(!loadAll && data.length === INITIAL_PAGE_SIZE);
+  }, [peopleQuery.data, peopleQuery.isPlaceholderData, loadAll]);
+
+  const resetSearchResults = useCallback(() => {
+    setSearchResults(allPeople);
+    setIsSearchPerformed(false);
+  }, [allPeople]);
+
+  React.useEffect(() => {
+    if (isSearchPerformed) return;
+    if (allPeople.length === 0 && peopleQuery.isFetching) return;
+    setSearchResults(allPeople);
+  }, [allPeople, isSearchPerformed, peopleQuery.isFetching]);
+
+  const handleShowAll = useCallback(() => {
+    setLoadAll(true);
+  }, []);
 
   React.useEffect(() => {
     if (!searchResults) return;
@@ -195,6 +149,7 @@ export const PeoplePage = memo(() => {
       const deletedIdSet = new Set(deletedIds);
 
       setSearchResults((current) => current?.filter((person) => !person.id || !deletedIdSet.has(person.id)) || []);
+      setAllPeople((current) => current.filter((person) => !person.id || !deletedIdSet.has(person.id)));
       setSelectedPersonIds([]);
       setShowBulkDeleteConfirm(false);
       setToast({
@@ -202,7 +157,6 @@ export const PeoplePage = memo(() => {
         message: `${response?.count || deletedIds.length} people deleted successfully`,
         severity: "success"
       });
-      await directoryPeople.refetch();
     } catch (error) {
       setToast({
         open: true,
@@ -212,7 +166,7 @@ export const PeoplePage = memo(() => {
     } finally {
       setIsBulkDeleting(false);
     }
-  }, [directoryPeople, selectedPersonIds]);
+  }, [selectedPersonIds]);
 
   const handleBulkComplete = useCallback((result: BulkResult) => {
     setToast({ open: true, message: result.message, severity: result.severity });
@@ -221,10 +175,10 @@ export const PeoplePage = memo(() => {
     if (result.fieldUpdates) {
       const selectedSet = new Set(selectedPersonIds);
       setSearchResults((current) => current?.map((person) => (person.id && selectedSet.has(person.id) ? { ...person, ...result.fieldUpdates } : person)) || null);
+      setAllPeople((current) => current.map((person) => (person.id && selectedSet.has(person.id) ? { ...person, ...result.fieldUpdates } : person)));
     }
     setSelectedPersonIds([]);
-    directoryPeople.refetch();
-  }, [selectedPersonIds, directoryPeople]);
+  }, [selectedPersonIds]);
 
   const getExportData = (people: PersonInterface[]) => {
     return people.map((person) => {
@@ -261,11 +215,13 @@ export const PeoplePage = memo(() => {
   return (
     <>
       <PageHeader
-        title={Locale.label("components.wrapper.ppl")}
+        title={Locale.label("people.peoplePage.searchPpl")}
         subtitle={
           searchResults
-            ? Locale.label("people.peoplePage.peopleFound").replace("{count}", searchResults.length.toString())
-            : directoryPeople.isLoading
+            ? isSearchPerformed
+              ? Locale.label("people.peoplePage.peopleFound").replace("{count}", searchResults.length.toString())
+              : Locale.label("people.peoplePage.showingMembers").replace("{count}", searchResults.length.toString())
+            : peopleQuery.isLoading
               ? Locale.label("people.peoplePage.loading")
               : Locale.label("people.peoplePage.noPeopleFound")
         }>
@@ -334,12 +290,18 @@ export const PeoplePage = memo(() => {
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 3 }}>
             <PeopleSearch
-              updateSearchResults={updateSearchResults}
+              updateSearchResults={(people) => {
+                setSearchResults(people);
+                setIsSearchPerformed(true);
+              }}
               resetSearchResults={resetSearchResults}
               updatedFunction={refetch}
             />
             <AISearch
-              updateSearchResults={updateSearchResults}
+              updateSearchResults={(people) => {
+                setSearchResults(people);
+                setIsSearchPerformed(true);
+              }}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 9 }}>
@@ -348,7 +310,7 @@ export const PeoplePage = memo(() => {
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Stack direction="row" spacing={1} alignItems="center">
                     <PeopleIcon />
-                    <Typography variant="h6">{isSearchPerformed ? Locale.label("people.peoplePage.searchResults") : Locale.label("components.wrapper.ppl")}</Typography>
+                    <Typography variant="h6">{isSearchPerformed ? Locale.label("people.peoplePage.searchResults") : Locale.label("people.peoplePage.allMembers")}</Typography>
                   </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
                     {canEdit && selectedPersonIds.length > 0 && (
@@ -385,6 +347,13 @@ export const PeoplePage = memo(() => {
                   toggleAllVisiblePeople={toggleAllVisiblePeople}
                   currentPersonId={currentPersonId}
                 />
+                {!isSearchPerformed && !loadAll && maybeMore && allPeople.length > 0 && (
+                  <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+                    <Button variant="outlined" onClick={handleShowAll} disabled={peopleQuery.isFetching} startIcon={peopleQuery.isFetching ? <CircularProgress size={16} /> : null}>
+                      {Locale.label("people.peoplePage.showAll")}
+                    </Button>
+                  </Box>
+                )}
               </Box>
             </Card>
           </Grid>
