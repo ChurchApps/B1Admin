@@ -16,8 +16,7 @@ export const membershipStatusDefinitions: MembershipStatusDefinition[] = [
   { value: "Member", labelKey: "person.member" },
   { value: "Staff", labelKey: "person.staff" },
   { value: "Inactive", labelKey: "person.inactive" },
-  { value: "Deceased", labelKey: "person.deceased" },
-  { value: "Former Member", labelKey: "person.formerMember" }
+  { value: "Deceased", labelKey: "person.deceased" }
 ];
 
 export const getMembershipStatusOptions = (): MembershipStatusOption[] =>
