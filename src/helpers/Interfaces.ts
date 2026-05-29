@@ -6,6 +6,8 @@ export interface PaymentGatewaysInterface {
   privateKey?: string;
   payFees?: boolean;
   currency?: string;
+  enabled?: boolean;
+  settings?: Record<string, any>;
 }
 
 export interface SongInterface {
@@ -81,15 +83,6 @@ export interface PlanTypeInterface {
   churchId?: string;
   ministryId?: string;
   name?: string;
-}
-
-export interface AssociatedGroupInterface {
-  id?: string;
-  churchId?: string;
-  contentType?: string;
-  contentId?: string;
-  groupId?: string;
-  settings?: string;
 }
 
 export interface PlanInterface {
@@ -193,7 +186,6 @@ export interface GlobalStyleInterface {
   typography?: string;
   spacing?: string;
   borderRadius?: string;
-  navStyles?: string;
   customCss?: string;
   customJS?: string;
 }
