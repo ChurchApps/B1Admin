@@ -4,7 +4,7 @@ export class EnvironmentHelper {
   private static LessonsApi = "";
   static B1Url = "";
   static ChurchAppsUrl = "";
-  
+
   static get Common() { return CommonEnvironmentHelper; }
 
   static init = async () => {

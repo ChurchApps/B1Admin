@@ -2,6 +2,7 @@ import { FormControl, InputLabel, MenuItem, Select, type SelectChangeEvent, Stac
 import React from "react";
 import { ConditionHelper } from "../../../../helpers";
 import { type ConditionInterface, Locale } from "@churchapps/apphelper";
+import { getLocalizedMembershipStatusOptions } from "../../../../people/helpers/MembershipStatusOptions";
 
 interface Props {
   condition: ConditionInterface;
@@ -63,11 +64,7 @@ export const ConditionSelect = (props: Props) => {
     <FormControl fullWidth variant="outlined">
       <InputLabel>{Locale.label("person.membershipStatus")}</InputLabel>
       <Select label={Locale.label("person.membershipStatus")} value={props.condition.value || Locale.label("person.visitor")} name="value" onChange={handleChange}>
-        <MenuItem value={Locale.label("person.visitor")}>{Locale.label("person.visitor")}</MenuItem>
-        <MenuItem value={Locale.label("person.regularAttendee")}>{Locale.label("person.regularAttendee")}</MenuItem>
-        <MenuItem value={Locale.label("person.member")}>{Locale.label("person.member")}</MenuItem>
-        <MenuItem value={Locale.label("person.staff")}>{Locale.label("person.staff")}</MenuItem>
-        <MenuItem value={Locale.label("person.inactive")}>{Locale.label("person.inactive")}</MenuItem>
+        {getLocalizedMembershipStatusOptions().map((option) => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
       </Select>
     </FormControl>
   );

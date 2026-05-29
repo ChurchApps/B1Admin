@@ -15,6 +15,7 @@ import {
   Locale
 } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
+import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
 
 interface Props {
   conditionAdded: (condition: any) => void;
@@ -123,19 +124,7 @@ export function EditCondition(props: Props) {
         result = getValueSelect(options);
         break;
       case "membershipStatus":
-        options = [
-          <MenuItem key="/Visitor" value="Visitor">
-            {Locale.label("person.visitor")}
-          </MenuItem>,
-          <MenuItem key="Regular Attendee" value="Regular Attendee">
-            {Locale.label("person.regularAttendee")}
-          </MenuItem>,
-          <MenuItem value="Member">{Locale.label("person.member")}</MenuItem>,
-          <MenuItem value="Staff">{Locale.label("person.staff")}</MenuItem>,
-          <MenuItem key="Inactive" value="Inactive">
-            {Locale.label("person.inactive")}
-          </MenuItem>
-        ];
+        options = getMembershipStatusOptions().map((option) => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>);
         setDefaultValue("Visitor");
         result = getValueSelect(options);
         break;

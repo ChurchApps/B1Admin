@@ -1441,6 +1441,7 @@
     "birthDate": "Birth Date",
     "city": "City",
     "country": "Country",
+    "deceased": "Deceased",
     "displayName": "Display Name",
     "divorced": "Divorced",
     "email": "Email",

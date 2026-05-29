@@ -7,6 +7,7 @@ import { PersonHelper, DateHelper, InputBox, ApiHelper, Loading, ErrorMessages, 
 import { Navigate } from "react-router-dom";
 import UserContext from "../../UserContext";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, FormControlLabel, Checkbox } from "@mui/material";
+import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 type AnyRecord = Record<string, any>;
@@ -212,11 +213,7 @@ export const PersonEdit = memo((props: Props) => {
               <InputLabel id="membershipStatus-label">{Locale.label("person.membershipStatus")}</InputLabel>
               <Controller name="membershipStatus" control={control} render={({ field }) => (
                 <Select {...field} value={field.value ?? ""} id="membershipStatus" labelId="membershipStatus-label" label={Locale.label("person.membershipStatus")} data-testid="membership-status-select" aria-label="Membership status">
-                  <MenuItem value="Visitor">{Locale.label("person.visitor")}</MenuItem>
-                  <MenuItem value="Regular Attendee">{Locale.label("person.regularAttendee")}</MenuItem>
-                  <MenuItem value="Member">{Locale.label("person.member")}</MenuItem>
-                  <MenuItem value="Staff">{Locale.label("person.staff")}</MenuItem>
-                  <MenuItem value="Inactive">{Locale.label("person.inactive")}</MenuItem>
+                  {getMembershipStatusOptions().map((option) => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
                 </Select>
               )} />
             </FormControl>

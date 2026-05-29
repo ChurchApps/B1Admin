@@ -49,7 +49,7 @@ export const PersonBanner = memo((props: Props) => {
 
   const membershipStatus = useMemo(() => {
     if (!person?.membershipStatus) return null;
-    return <StatusChip status={person.membershipStatus} size="small" />;
+    return <StatusChip status={person.membershipStatus} variant="header" size="small" />;
   }, [person?.membershipStatus]);
 
   const quickStats = useMemo(() => {
