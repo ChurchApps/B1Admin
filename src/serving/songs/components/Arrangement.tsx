@@ -40,8 +40,13 @@ export const Arrangement = memo((props: Props) => {
     if (!songDetail?.praiseChartsId) return;
 
     const data: any = await ApiHelper.get("/praiseCharts/raw/" + songDetail.praiseChartsId, "ContentApi");
+    const lyrics = data?.details?.lyrics;
+    if (!lyrics) {
+      setCanImportLyrics(false);
+      return;
+    }
     const a = { ...props.arrangement };
-    const lines = data.details.lyrics.split("\n");
+    const lines = lyrics.split("\n");
 
     const newLines = [];
     let nextLineIsTitle = true;
