@@ -6,9 +6,11 @@ import { ExportLink } from "@churchapps/apphelper";
 import { Grid, Box, Typography, Card, Stack, Button, IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
+import { SavedLists } from "./components/SavedLists";
+import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
 import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
 import { type BulkResult } from "./components/bulk/BulkFieldDialog";
@@ -25,6 +27,8 @@ export const PeoplePage = memo(() => {
   const [searchResults, setSearchResults] = React.useState<PersonInterface[] | null>(null);
   const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
+  const [selectedListFilters, setSelectedListFilters] = React.useState<Record<string, ActiveFilter> | undefined>(undefined);
+  const queryClient = useQueryClient();
   const [selectedPersonIds, setSelectedPersonIds] = React.useState<string[]>([]);
   const [isBulkDeleting, setIsBulkDeleting] = React.useState(false);
   const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = React.useState(false);
@@ -110,6 +114,12 @@ export const PeoplePage = memo(() => {
 
   const handleShowAll = useCallback(() => {
     setLoadAll(true);
+  }, []);
+
+  const handleSelectList = useCallback((conditions: Record<string, ActiveFilter>) => {
+    // New object reference each time so re-selecting the same list re-seeds the search.
+    setSelectedListFilters({ ...conditions });
+    setIsSearchPerformed(true);
   }, []);
 
   React.useEffect(() => {
@@ -296,7 +306,11 @@ export const PeoplePage = memo(() => {
               }}
               resetSearchResults={resetSearchResults}
               updatedFunction={refetch}
+              initialFilters={selectedListFilters}
+              canManageLists={canEdit}
+              onListSaved={() => queryClient.invalidateQueries({ queryKey: ["/lists", "MembershipApi"] })}
             />
+            <SavedLists onSelect={handleSelectList} canManage={canEdit} />
             <AISearch
               updateSearchResults={(people) => {
                 setSearchResults(people);

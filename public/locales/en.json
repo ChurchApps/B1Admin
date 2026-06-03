@@ -1291,6 +1291,18 @@
       "selMsg": "Please select a value for all fields",
       "with": "with"
     },
+    "lists": {
+      "title": "Saved Lists",
+      "empty": "No saved lists yet. Build an advanced search, then \"Save as List.\"",
+      "saveAs": "Save as List",
+      "name": "List Name",
+      "category": "Category",
+      "categoryPlaceholder": "Optional — group related lists",
+      "createdBy": "by {name}",
+      "rename": "Rename",
+      "delete": "Delete List",
+      "confirmDelete": "Delete the list \"{name}\"? This cannot be undone."
+    },
     "peopleColumns": {
       "appFilt": "Apply Filters",
       "cust": "Custom",
