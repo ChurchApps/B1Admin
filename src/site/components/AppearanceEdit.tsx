@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import Resizer from "react-image-file-resizer";
 import { Box, Typography, Stack, Button, Card, CardContent, alpha } from "@mui/material";
 import { Image as ImageIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon } from "@mui/icons-material";
-import { ArrayHelper, ApiHelper, ImageEditor, Locale } from "@churchapps/apphelper";
+import { ArrayHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { ImageEditor } from "../../components/gallery";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 

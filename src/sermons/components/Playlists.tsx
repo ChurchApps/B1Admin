@@ -2,7 +2,7 @@ import { Loading, Locale } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
-import { ImageEditor } from "@churchapps/apphelper";
+import { ImageEditor } from "../../components/gallery";
 import type { PlaylistInterface } from "@churchapps/helpers";
 import {
   Card,

@@ -1,7 +1,8 @@
 import React from "react";
 import { TextField, Switch, FormControlLabel, Typography, Button, IconButton, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, InputBox, ImageEditor, Locale } from "@churchapps/apphelper";
+import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ImageEditor } from "../../components/gallery";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
 interface IdleSlide {

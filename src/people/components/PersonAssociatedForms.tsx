@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Icon, TextField } from "@mui/material";
 import { type FormSubmissionInterface } from "@churchapps/helpers";
-import { ApiHelper, FormSubmissionEdit, Loading, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
+import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
 import { FormSubmission } from "../../components";
 
 interface Props {

@@ -53,8 +53,8 @@
     "@types/slug": "^5.0.9",
     "@typescript-eslint/eslint-plugin": "^8.59.2",
     "@typescript-eslint/parser": "^8.59.2",
-    "@vitejs/plugin-react": "^6.0.1",
-    "@vitejs/plugin-react-swc": "^4.3.0",
+    "@vitejs/plugin-react": "^4.6.0",
+    "@vitejs/plugin-react-swc": "^3.10.2",
     "copyfiles": "^2.4.1",
     "esbuild": "^0.28.0",
     "eslint": "^10.3.0",
@@ -67,7 +67,7 @@
     "sourcemap-codec": "^1.4.8",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.11"
+    "vite": "^6.3.5"
   },
   "scripts": {
     "preinstall": "node -e \"if(!(process.env.npm_config_user_agent||'').startsWith('yarn')){console.error('\\n[B1Admin] This project uses Yarn (Berry). Run \\'yarn install\\' instead of npm/pnpm.\\n');process.exit(1)}\"",

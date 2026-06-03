@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { CategorySelect, ServiceTimesEdit } from ".";
-import { ApiHelper, InputBox, ErrorMessages, Locale, GalleryModal } from "@churchapps/apphelper";
+import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { GalleryModal } from "../../components/gallery";
 import { Navigate } from "react-router-dom";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";

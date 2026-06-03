@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { GlobalStyleInterface } from "../../../helpers";
-import { GalleryModal, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
+import { GalleryModal } from "../../../components/gallery";
 import { FormControl, InputLabel, Select, MenuItem, TextField, Tabs, Tab, Button, Grid } from "@mui/material";
 import { HexColorPicker } from "react-colorful";
 

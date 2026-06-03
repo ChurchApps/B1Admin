@@ -4,7 +4,8 @@ import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Edit as E
 import { Controller, useForm } from "react-hook-form";
 import type { LinkInterface, GroupInterface } from "@churchapps/helpers";
 import { IconPicker } from "../../components/iconPicker";
-import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale, GalleryModal } from "@churchapps/apphelper";
+import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { GalleryModal } from "../../components/gallery";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 
 interface PageInterface {

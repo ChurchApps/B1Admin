@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense, lazy } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { AnimationsInterface, BlockInterface, ElementInterface, GlobalStyleInterface, InlineStylesInterface } from "../../../helpers";
 import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
-import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, GalleryModal, Locale } from "@churchapps/apphelper";
+import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { GalleryModal } from "../../../components/gallery";
 import React from "react";
 
 const HtmlEditorLazy = lazy(() => import("@churchapps/apphelper/markdown").then((mod) => ({ default: mod.HtmlEditor })));

@@ -3,7 +3,8 @@ import { FormSubmission } from "./";
 import { Button, Box, Card, CardContent } from "@mui/material";
 import { Description as DescriptionIcon, Add as AddIcon } from "@mui/icons-material";
 import { type FormSubmissionInterface, type FormInterface } from "@churchapps/helpers";
-import { FormSubmissionEdit, DisplayBox, Locale } from "@churchapps/apphelper";
+import { DisplayBox, Locale } from "@churchapps/apphelper";
+import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
 import { EmptyState } from "../../components/ui/EmptyState";
 
 interface Props {
