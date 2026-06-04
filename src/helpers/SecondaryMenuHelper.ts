@@ -28,10 +28,12 @@ export class SecondaryMenuHelper {
     menuItems.push({ url: "/groups", label: Locale.label("components.wrapper.groups"), icon: "groups" });
     if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || isMinistryMember) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.teams"), icon: "people" });
     menuItems.push({ url: "/people", label: Locale.label("components.wrapper.ppl"), icon: "person" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people/demographics", label: Locale.label("people.demographics.title"), icon: "bar_chart" });
     if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.viewSummary)) menuItems.push({ url: "/attendance", label: Locale.label("components.wrapper.att"), icon: "calendar_month" });
 
     if (path.startsWith("/groups") && search?.includes("tag=team")) label = Locale.label("components.wrapper.teams");
     else if (path.startsWith("/groups")) label = Locale.label("components.wrapper.groups");
+    else if (path.startsWith("/people/demographics")) label = Locale.label("people.demographics.title");
     else if (path.startsWith("/people")) label = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/attendance")) label = Locale.label("components.wrapper.att");
 

@@ -9,6 +9,7 @@ import UserContext from "./UserContext";
 // Lazy load all page components for code splitting
 const PeoplePage = React.lazy(() => import("./people/PeoplePage").then((module) => ({ default: module.PeoplePage })));
 const PersonPage = React.lazy(() => import("./people/PersonPage").then((module) => ({ default: module.PersonPage })));
+const DemographicsPage = React.lazy(() => import("./people/demographics/DemographicsPage").then((module) => ({ default: module.DemographicsPage })));
 const GroupsPage = React.lazy(() => import("./groups/GroupsPage"));
 const GroupPage = React.lazy(() => import("./groups/GroupPage").then((module) => ({ default: module.GroupPage })));
 const PendingRequestsPage = React.lazy(() => import("./groups/PendingRequestsPage"));
@@ -104,6 +105,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/admin/report/:keyName" element={<AdminReportPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/people/add" element={<PersonPage />} />
+          <Route path="/people/demographics" element={<DemographicsPage />} />
           <Route path="/people/:id" element={<PersonPage />} />
           <Route path="/people" element={<PeoplePage />} />
           <Route path="/groups/pending" element={<PendingRequestsPage />} />

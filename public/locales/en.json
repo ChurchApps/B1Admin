@@ -1153,6 +1153,19 @@
     "september": "September"
   },
   "people": {
+    "demographics": {
+      "title": "Demographics",
+      "subtitle": "An overview of your congregation",
+      "age": "Age",
+      "membershipStatus": "Membership Types",
+      "gender": "Gender",
+      "maritalStatus": "Marital Status",
+      "female": "Female",
+      "male": "Male",
+      "total": "Total",
+      "unassigned": "Unassigned",
+      "noData": "No data available"
+    },
     "advancedPeopleSearch": {
       "loadingCustomFields": "Loading custom fields...",
       "noCustomFields": "No custom fields defined. Create custom fields in Forms to search by them."
