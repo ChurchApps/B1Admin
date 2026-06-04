@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
 import { useCampuses } from "../../hooks/useCampuses";
-import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type CampusInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
+import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
 import { ArrayHelper, InputBox, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
 import {
@@ -156,10 +156,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   // Lazy-loaded options
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [funds, setFunds] = useState<FundInterface[]>([]);
-  const [campuses, setCampuses] = useState<CampusInterface[]>([]);
-  // Church-wide (Membership) campuses for the "belongs to campus" condition —
-  // distinct from `campuses` above, which is the Attendance list used by the
-  // "attended a campus" complex filter.
+  // Church-wide (Membership) campuses — used both for the "belongs to campus"
+  // condition and the "attended a campus" complex filter. Campuses are mastered
+  // in the membership module (the attendance copy is frozen/deprecated).
   const membershipCampuses = useCampuses();
   const [services, setServices] = useState<ServiceInterface[]>([]);
   const [serviceTimes, setServiceTimes] = useState<ServiceTimeInterface[]>([]);
@@ -367,13 +366,11 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         setFunds(fundData);
       }
       if (Permissions.attendanceApi.attendance) {
-        const [campusData, serviceData, serviceTimeData, groupData] = await Promise.all([
-          ApiHelper.get("/campuses", "AttendanceApi"),
+        const [serviceData, serviceTimeData, groupData] = await Promise.all([
           ApiHelper.get("/services", "AttendanceApi"),
           ApiHelper.get("/serviceTimes", "AttendanceApi"),
           ApiHelper.get("/groups", "MembershipApi")
         ]);
-        setCampuses(campusData);
         setServices(serviceData);
         setServiceTimes(serviceTimeData);
         setGroups((prev) => prev.length ? prev : groupData);
@@ -1033,10 +1030,10 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                       if (complexFilterDialog.field === "memberDonations") {
                         text = funds.find((f) => f.id === e.target.value)?.name || "";
                       } else if (complexConfig.operator === "attendedCampus") {
-                        text = campuses.find((c) => c.id === e.target.value)?.name || "";
+                        text = membershipCampuses.find((c) => c.id === e.target.value)?.name || "";
                       } else if (complexConfig.operator === "attendedService") {
                         const service = services.find((s) => s.id === e.target.value);
-                        text = service ? `${service.campus.name} - ${service.name}` : "";
+                        text = service ? `${membershipCampuses.find((c) => c.id === service.campusId)?.name || ""} - ${service.name}` : "";
                       } else if (complexConfig.operator === "attendedServiceTime") {
                         text = serviceTimes.find((st) => st.id === e.target.value)?.longName || "";
                       } else {
@@ -1051,7 +1048,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                         </MenuItem>
                       ))
                       : complexConfig.operator === "attendedCampus"
-                        ? campuses.map((c) => (
+                        ? membershipCampuses.map((c) => (
                           <MenuItem key={c.id} value={c.id}>
                             {c.name}
                           </MenuItem>
@@ -1059,7 +1056,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                         : complexConfig.operator === "attendedService"
                           ? services.map((s) => (
                             <MenuItem key={s.id} value={s.id}>
-                              {s.campus.name} - {s.name}
+                              {membershipCampuses.find((c) => c.id === s.campusId)?.name || ""} - {s.name}
                             </MenuItem>
                           ))
                           : complexConfig.operator === "attendedServiceTime"
@@ -1197,10 +1194,10 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                     if (complexFilterDialog.field === "memberDonations") {
                       text = funds.find((f) => f.id === e.target.value)?.name || "";
                     } else if (complexConfig.operator === "attendedCampus") {
-                      text = campuses.find((c) => c.id === e.target.value)?.name || "";
+                      text = membershipCampuses.find((c) => c.id === e.target.value)?.name || "";
                     } else if (complexConfig.operator === "attendedService") {
                       const service = services.find((s) => s.id === e.target.value);
-                      text = service ? `${service.campus.name} - ${service.name}` : "";
+                      text = service ? `${membershipCampuses.find((c) => c.id === service.campusId)?.name || ""} - ${service.name}` : "";
                     } else if (complexConfig.operator === "attendedServiceTime") {
                       text = serviceTimes.find((st) => st.id === e.target.value)?.longName || "";
                     } else {
@@ -1215,7 +1212,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                       </MenuItem>
                     ))
                     : complexConfig.operator === "attendedCampus"
-                      ? campuses.map((c) => (
+                      ? membershipCampuses.map((c) => (
                         <MenuItem key={c.id} value={c.id}>
                           {c.name}
                         </MenuItem>
@@ -1223,7 +1220,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                       : complexConfig.operator === "attendedService"
                         ? services.map((s) => (
                           <MenuItem key={s.id} value={s.id}>
-                            {s.campus.name} - {s.name}
+                            {membershipCampuses.find((c) => c.id === s.campusId)?.name || ""} - {s.name}
                           </MenuItem>
                         ))
                         : complexConfig.operator === "attendedServiceTime"

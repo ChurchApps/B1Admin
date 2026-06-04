@@ -1,8 +1,9 @@
 import React from "react";
 import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import { type ServiceInterface, type CampusInterface } from "@churchapps/helpers";
-import { useMountedState, InputBox, ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { type ServiceInterface } from "@churchapps/helpers";
+import { InputBox, ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { useCampuses } from "../../hooks/useCampuses";
 
 interface Props {
   service: ServiceInterface;
@@ -12,9 +13,9 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const ServiceEdit: React.FC<Props> = (props) => {
-  const [campuses, setCampuses] = React.useState([] as CampusInterface[]);
+  // Campuses are mastered in the membership module; read the shared cached list.
+  const campuses = useCampuses();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const isMounted = useMountedState();
 
   const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "", campusId: "" } });
   const e = formState.errors as any;
@@ -35,12 +36,9 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/campuses", "AttendanceApi").then((data: CampusInterface[]) => {
-      if (isMounted()) setCampuses(data);
-      const defaultCampusId = UniqueIdHelper.isMissing(props.service?.campusId) && data.length > 0 ? data[0].id : (props.service?.campusId || "");
-      if (isMounted()) reset({ name: props.service?.name || "", campusId: defaultCampusId });
-    });
-  }, [props.service, isMounted, reset]);
+    const defaultCampusId = UniqueIdHelper.isMissing(props.service?.campusId) && campuses.length > 0 ? campuses[0].id : (props.service?.campusId || "");
+    reset({ name: props.service?.name || "", campusId: defaultCampusId });
+  }, [props.service, campuses, reset]);
 
   React.useEffect(() => { loadData(); }, [loadData]);
 

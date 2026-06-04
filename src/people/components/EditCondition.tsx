@@ -338,38 +338,30 @@ export function EditCondition(props: Props) {
         });
       }
       if (condition.field === "memberAttendance") {
-        const optionsArray: any[] = [];
         setLoadingOptions(true);
-        ApiHelper.get("/campuses", "AttendanceApi").then((campuses: CampusInterface[]) => {
-          const options: any[] = [];
-          campuses.forEach((c) => {
-            options.push({ value: c.id, text: c.name });
-          });
-          optionsArray.push({ campuses: options });
-        });
-        ApiHelper.get("/services", "AttendanceApi").then((services: ServiceInterface[]) => {
-          const options: any[] = [];
-          services.forEach((s) => {
-            options.push({ value: s.id, text: `${s.campus.name} - ${s.name}` });
-          });
-          optionsArray.push({ services: options });
-        });
-        ApiHelper.get("/serviceTimes", "AttendanceApi").then((serviceTimes: ServiceTimeInterface[]) => {
-          const options: any[] = [];
-          serviceTimes.forEach((st) => {
-            options.push({ value: st.id, text: st.longName });
-          });
-          optionsArray.push({ serviceTimes: options });
-        });
-        ApiHelper.get("/groups", "MembershipApi").then((groups: GroupInterface[]) => {
-          const options: any[] = [];
-          groups.forEach((g) => {
-            options.push({ value: g.id, text: g.name });
-          });
-          optionsArray.push({ groups: options });
+        // Campuses are mastered in the membership module; resolve campus names
+        // from there and build the service / service-time labels client-side
+        // (the attendance copy is frozen/deprecated).
+        (async () => {
+          const [campuses, services, serviceTimes, groups] = await Promise.all([
+            ApiHelper.get("/campuses", "MembershipApi") as Promise<CampusInterface[]>,
+            ApiHelper.get("/services", "AttendanceApi") as Promise<ServiceInterface[]>,
+            ApiHelper.get("/serviceTimes", "AttendanceApi") as Promise<ServiceTimeInterface[]>,
+            ApiHelper.get("/groups", "MembershipApi") as Promise<GroupInterface[]>
+          ]);
+          const campusName = (id: string) => campuses.find((c) => c.id === id)?.name || "";
+          const serviceById = (id: string) => services.find((s) => s.id === id);
+          const optionsArray: any[] = [];
+          optionsArray.push({ campuses: campuses.map((c) => ({ value: c.id, text: c.name })) });
+          optionsArray.push({ services: services.map((s) => ({ value: s.id, text: `${campusName(s.campusId)} - ${s.name}` })) });
+          optionsArray.push({ serviceTimes: serviceTimes.map((st) => {
+            const s = serviceById(st.serviceId);
+            return { value: st.id, text: `${campusName(s?.campusId)} - ${s?.name} - ${st.name}` };
+          }) });
+          optionsArray.push({ groups: groups.map((g) => ({ value: g.id, text: g.name })) });
+          setLoadedOptions(optionsArray);
           setLoadingOptions(false);
-        });
-        setLoadedOptions(optionsArray);
+        })();
       }
     }
   }, [condition?.field.toString()]);

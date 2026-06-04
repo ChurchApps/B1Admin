@@ -22,7 +22,7 @@ export const ReportFilterField = (props: Props) => {
       case "provided": setRawData(props.parameter.options); break;
       case "month": setRawData(getMonths()); break;
       case "campus":
-        ApiHelper.get("/campuses", "AttendanceApi").then((data) => {
+        ApiHelper.get("/campuses", "MembershipApi").then((data) => {
           data.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           if (isMounted()) {
             setRawData(data);

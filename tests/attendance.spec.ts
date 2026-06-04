@@ -7,11 +7,13 @@ import { STORAGE_STATE_PATH } from './global-setup';
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe('Attendance Management', () => {
 
-  // Setup tests form a single chain: campus -> service -> service time -> cleanup.
+  // Setup tests form a single chain: service -> service time -> cleanup.
   // Each level references the previous (services pick a campus, times pick a service).
-  // The chain shares a single page across all tests — login + navigation run once
-  // in beforeAll instead of per-test, since each step already leaves the UI in a
-  // known state for the next step.
+  // Campuses are now managed in Settings (mastered in the membership module), so the
+  // attendance setup screen no longer creates campuses — services attach to the
+  // seeded "Main Campus". The chain shares a single page across all tests — login +
+  // navigation run once in beforeAll instead of per-test, since each step already
+  // leaves the UI in a known state for the next step.
   test.describe.serial('Setup', () => {
     let page: Page;
 
@@ -26,54 +28,12 @@ test.describe('Attendance Management', () => {
       await page?.context().close();
     });
 
-    test('should add campus', async () => {
-      const addBtn = page.locator('[data-testid="add-campus-button"]');
-      await addBtn.click();
-      const campusName = page.locator('input[id="name"]');
-      await campusName.fill('Zacchaeus Test Campus');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const verifiedName = page.locator('button').getByText('Zacchaeus Test Campus');
-      await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
-    });
-
-    test('should cancel adding campus', async () => {
-      const addBtn = page.locator('[data-testid="add-campus-button"]');
-      await addBtn.click();
-      const campusName = page.locator('input[id="name"]');
-      await expect(campusName).toHaveCount(1);
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(campusName).toHaveCount(0, { timeout: 10000 });
-    });
-
-    test('should edit campus', async () => {
-      const originName = page.locator('button').getByText('Zacchaeus Test Campus');
-      await originName.click();
-      const campusName = page.locator('input[id="name"]');
-      await campusName.fill('Zebedee Test Campus');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const verifiedName = page.locator('button').getByText('Zebedee Test Campus');
-      await expect(verifiedName).toHaveCount(1, { timeout: 10000 });
-    });
-
-    test('should cancel editing campus', async () => {
-      const originName = page.locator('button').getByText('Zebedee Test Campus');
-      await originName.click();
-      const campusName = page.locator('input[id="name"]');
-      await expect(campusName).toHaveCount(1);
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(campusName).toHaveCount(0, { timeout: 10000 });
-    });
-
     test('should add service', async () => {
       const addServBtn = page.locator('button').getByText('Add Service').last();
       await addServBtn.click();
       const campusSelect = page.locator('div[role="combobox"]');
       await campusSelect.click();
-      const selCampus = page.locator('li').getByText('Zebedee Test Campus');
+      const selCampus = page.locator('li').getByText('Main Campus');
       await expect(selCampus).toBeVisible({ timeout: 10000 });
       await selCampus.click();
       const servName = page.locator('input[id="name"]');
@@ -89,7 +49,7 @@ test.describe('Attendance Management', () => {
       await serv.click();
       const campusSelect = page.locator('div[role="combobox"]');
       await campusSelect.click();
-      const selCampus = page.locator('li').getByText('Zebedee Test Campus');
+      const selCampus = page.locator('li').getByText('Main Campus');
       await expect(selCampus).toBeVisible({ timeout: 10000 });
       await selCampus.click();
       const servName = page.locator('input[id="name"]');
@@ -178,20 +138,6 @@ test.describe('Attendance Management', () => {
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
       await expect(serv).toHaveCount(0, { timeout: 10000 });
-    });
-
-    test('should delete campus', async () => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
-        await dialog.accept();
-      });
-
-      const originName = page.locator('button').getByText('Zebedee Test Campus');
-      await originName.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
-      await deleteBtn.click();
-      await expect(originName).toHaveCount(0, { timeout: 10000 });
     });
   });
 

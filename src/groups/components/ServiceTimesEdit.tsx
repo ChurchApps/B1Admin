@@ -1,10 +1,11 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { type GroupInterface, type GroupServiceTimeInterface, type ServiceTimeInterface } from "@churchapps/helpers";
+import { type GroupInterface, type GroupServiceTimeInterface, type ServiceInterface, type ServiceTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import {
   Table, TableBody, TableRow, TableCell, FormControl, InputLabel, Select, Button, MenuItem, type SelectChangeEvent,
   Icon
 } from "@mui/material";
+import { useCampuses } from "../../hooks/useCampuses";
 
 interface Props {
   group: GroupInterface;
@@ -12,12 +13,18 @@ interface Props {
 }
 
 export const ServiceTimesEdit = memo((props: Props) => {
+  // Campuses are mastered in the membership module; build the "Campus - Service -
+  // Service Time" label client-side rather than relying on the (frozen)
+  // attendance longName join.
+  const campuses = useCampuses();
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [serviceTimes, setServiceTimes] = React.useState<ServiceTimeInterface[]>([]);
+  const [services, setServices] = React.useState<ServiceInterface[]>([]);
   const [addServiceTimeId, setAddServiceTimeId] = React.useState("");
 
   const loadData = useCallback(() => {
     ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data) => setGroupServiceTimes(data));
+    ApiHelper.get("/services", "AttendanceApi").then((data) => setServices(data));
     ApiHelper.get("/servicetimes", "AttendanceApi").then((data) => {
       setServiceTimes(data);
       const st = data[0] as ServiceTimeInterface;
@@ -55,12 +62,17 @@ export const ServiceTimesEdit = memo((props: Props) => {
   }, [groupServiceTimes, handleRemove]);
 
   const options = useMemo(() => {
-    return serviceTimes.map((serviceTime, index) => (
-      <MenuItem key={index} value={serviceTime.id}>
-        {serviceTime.longName}
-      </MenuItem>
-    ));
-  }, [serviceTimes]);
+    return serviceTimes.map((serviceTime, index) => {
+      const service = services.find((s) => s.id === serviceTime.serviceId);
+      const campusName = campuses.find((c) => c.id === service?.campusId)?.name || "";
+      const longName = [campusName, service?.name, serviceTime.name].filter(Boolean).join(" - ");
+      return (
+        <MenuItem key={index} value={serviceTime.id}>
+          {longName || serviceTime.longName}
+        </MenuItem>
+      );
+    });
+  }, [serviceTimes, services, campuses]);
 
   const handleAdd = useCallback(
     (e: React.MouseEvent) => {

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Box, Card, CardContent, Typography, Stack, Chip, Divider, List, ListItem } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Church as ChurchIcon, Schedule as ScheduleIcon, Group as GroupIcon, EventAvailable as EventIcon } from "@mui/icons-material";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { useCampuses } from "../../hooks/useCampuses";
 
 interface Props {
   personId: string;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 export const PersonAttendance: React.FC<Props> = memo((props) => {
+  // Campuses are mastered in the membership module; resolve the campus name by id.
+  const campuses = useCampuses();
   const attendanceRecords = useQuery<AttendanceRecordInterface[]>({
     queryKey: ["/attendancerecords?personId=" + props.personId, "AttendanceApi"],
     enabled: !UniqueIdHelper.isMissing(props.personId),
@@ -80,6 +83,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
               <List sx={{ p: 0 }}>
                 {dateRecords.map((record, index) => {
                   const group = ArrayHelper.getOne(groups.data, "id", record.groupId);
+                  const campusName = campuses.find((c) => c.id === record.campus?.id)?.name || record.campus?.name;
 
                   return (
                     <ListItem
@@ -95,10 +99,10 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
                       <Box sx={{ width: "100%" }}>
                         <Stack direction="row" spacing={2} flexWrap="wrap">
                           {/* Campus */}
-                          {record.campus?.name && (
+                          {campusName && (
                             <Chip
                               icon={<ChurchIcon />}
-                              label={record.campus.name}
+                              label={campusName}
                               variant="outlined"
                               size="small"
                               sx={{
@@ -178,7 +182,7 @@ export const PersonAttendance: React.FC<Props> = memo((props) => {
           </CardContent>
         </Card>
       ));
-  }, [attendanceRecords.data, groups.data]);
+  }, [attendanceRecords.data, groups.data, campuses]);
 
   const content = useMemo(() => {
     if (attendanceRecords.isLoading || groups.isLoading) return <Loading size="sm" />;
