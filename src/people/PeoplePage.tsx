@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from "react";
-import { Permissions, UserHelper, type PersonInterface } from "@churchapps/helpers";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Permissions, UserHelper, type PersonInterface, type SearchCondition } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { ExportLink } from "@churchapps/apphelper";
@@ -33,6 +34,8 @@ export const PeoplePage = memo(() => {
   const [saveableCriteria, setSaveableCriteria] = React.useState<ListConditions | null>(null);
   const [saveListDialog, setSaveListDialog] = React.useState<{ open: boolean; name: string; category: string; saving: boolean }>({ open: false, name: "", category: "", saving: false });
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [selectedPersonIds, setSelectedPersonIds] = React.useState<string[]>([]);
   const [isBulkDeleting, setIsBulkDeleting] = React.useState(false);
   const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = React.useState(false);
@@ -133,6 +136,15 @@ export const PeoplePage = memo(() => {
       // Advanced list: seed the advanced panel (new ref each time so re-selecting re-seeds).
       setSelectedListFilters({ ...conditions });
     }
+  }, []);
+
+  React.useEffect(() => {
+    const conditions = (location.state as { searchConditions?: SearchCondition[] } | null)?.searchConditions;
+    if (conditions && conditions.length > 0) {
+      handleSelectList(conditions);
+      navigate(location.pathname, { replace: true, state: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSaveList = useCallback(async () => {
