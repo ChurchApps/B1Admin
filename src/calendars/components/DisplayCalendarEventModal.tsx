@@ -31,7 +31,11 @@ export function DisplayCalendarEventModal(props: Props) {
 
   const handleDelete = () => {
     if (confirm(Locale.label("calendars.calendarEvent.confirmDelete"))) {
-      ApiHelper.delete("/curatedEvents/calendar/" + props.curatedCalendarId + "/event/" + props.event.id, "ContentApi").then(() => {
+      const deleteUrl = props.event.eventId
+        ? "/curatedEvents/calendar/" + props.curatedCalendarId + "/event/" + props.event.eventId
+        : "/curatedEvents/" + props.event.id;
+
+      ApiHelper.delete(deleteUrl, "ContentApi").then(() => {
         if (props.onDone) props.onDone();
       });
     }
@@ -64,7 +68,7 @@ export function DisplayCalendarEventModal(props: Props) {
         <Button variant="text" onClick={props.onDone} data-testid="calendar-event-cancel-button">
           {Locale.label("calendars.calendarEvent.cancel")}
         </Button>
-        {props.event.eventId && props.mode === "edit" && (
+        {props.event.id && props.mode === "edit" && (
           <Button variant="contained" onClick={handleDelete} data-testid="calendar-event-delete-button">
             {Locale.label("calendars.calendarEvent.delete")}
           </Button>
