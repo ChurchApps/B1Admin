@@ -12,8 +12,9 @@ interface Props {
   resetSearchResults?: () => void;
   // Seeds the advanced search from a saved List and auto-expands the panel.
   initialFilters?: Record<string, ActiveFilter>;
-  canManageLists?: boolean;
-  onListSaved?: () => void;
+  // Reports the criteria behind the current results so the parent can offer "Save as List":
+  // the advanced filter spec (object) or a simple-search condition (array), null when cleared.
+  onReportCriteria?: (criteria: Record<string, ActiveFilter> | SearchCondition[] | null) => void;
 }
 
 export function PeopleSearch(props: Props) {
@@ -34,11 +35,13 @@ export function PeopleSearch(props: Props) {
       });
     } else if (term.trim()) {
       // Simple search by name
-      const condition: SearchCondition = { field: "displayName", operator: "contains", value: term.trim() };
-      ApiHelper.post("/people/advancedSearch", [condition], "MembershipApi").then((data) => {
+      const conditions: SearchCondition[] = [{ field: "displayName", operator: "contains", value: term.trim() }];
+      props.onReportCriteria?.(conditions);
+      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data) => {
         props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else {
+      props.onReportCriteria?.(null);
       props.resetSearchResults?.();
     }
   }, [props]);
@@ -123,8 +126,7 @@ export function PeopleSearch(props: Props) {
             updatedFunction={props.updatedFunction}
             embedded={true}
             initialFilters={props.initialFilters}
-            canManageLists={props.canManageLists}
-            onListSaved={props.onListSaved}
+            onReportCriteria={props.onReportCriteria}
           />
         )}
       </Stack>

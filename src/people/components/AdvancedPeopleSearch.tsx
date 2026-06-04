@@ -45,10 +45,10 @@ interface Props {
   embedded?: boolean;
   // When provided, seeds the search with a saved List's filter spec and re-runs it live.
   initialFilters?: Record<string, ActiveFilter>;
-  // Whether the current user may save the active search as a List.
-  canManageLists?: boolean;
-  // Notifies the parent (so the saved-lists picker can refresh) after a List is saved.
-  onListSaved?: () => void;
+  // Reports the current high-level filter spec (or null when cleared) so a parent can
+  // offer "Save as List". We report activeFilters — not the converted conditions — so
+  // saved lists re-resolve live each time they are opened.
+  onReportCriteria?: (filters: Record<string, ActiveFilter> | null) => void;
 }
 
 interface FilterField {
@@ -151,12 +151,6 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const [complexFilterDialog, setComplexFilterDialog] = useState<{ open: boolean; field: string | null }>({ open: false, field: null });
   const [complexConfig, setComplexConfig] = useState<ComplexFilterConfig | null>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout>();
-
-  // Save-as-List dialog
-  const [saveListDialogOpen, setSaveListDialogOpen] = useState(false);
-  const [listName, setListName] = useState("");
-  const [listCategory, setListCategory] = useState("");
-  const [savingList, setSavingList] = useState(false);
 
   // Lazy-loaded options
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -451,9 +445,11 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
   };
 
-  // Auto-search when filters change
+  // Auto-search when filters change, and report the active spec so the parent can
+  // offer "Save as List" (or clear the offer when no filters remain).
   useEffect(() => {
     if (Object.keys(activeFilters).length > 0) {
+      props.onReportCriteria?.(activeFilters);
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
@@ -464,6 +460,8 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
         });
       }, 500);
+    } else {
+      props.onReportCriteria?.(null);
     }
   }, [activeFilters]);
 
@@ -618,11 +616,12 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   }, [activeFilters, customFieldQuestions]);
 
   const handleAdvancedSearch = useCallback(async () => {
+    props.onReportCriteria?.(activeFilters);
     const postConditions = await convertConditions();
     ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data) => {
       props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
     });
-  }, [convertConditions, props.updateSearchResults]);
+  }, [convertConditions, props.updateSearchResults, activeFilters]);
 
   const clearAllFilters = () => {
     setActiveFilters({});
@@ -809,20 +808,6 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     setActiveFilters(props.initialFilters);
   }, [props.initialFilters]);
 
-  const handleSaveList = async () => {
-    if (!listName.trim()) return;
-    setSavingList(true);
-    try {
-      await ApiHelper.post("/lists", [{ name: listName.trim(), category: listCategory.trim() || undefined, conditions: activeFilters }], "MembershipApi");
-      setSaveListDialogOpen(false);
-      setListName("");
-      setListCategory("");
-      props.onListSaved?.();
-    } finally {
-      setSavingList(false);
-    }
-  };
-
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {
@@ -864,48 +849,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               color="default"
               sx={styles.filterChip}
             />
-            {props.canManageLists && (
-              <Chip
-                label={Locale.label("people.lists.saveAs")}
-                onClick={() => setSaveListDialogOpen(true)}
-                size="small"
-                variant="filled"
-                color="primary"
-                sx={styles.filterChip}
-              />
-            )}
           </Stack>
         </Paper>
       )}
-
-      {/* Save current search as a List */}
-      <Dialog open={saveListDialogOpen} onClose={() => setSaveListDialogOpen(false)} maxWidth="xs" fullWidth>
-        <DialogTitle>{Locale.label("people.lists.saveAs")}</DialogTitle>
-        <DialogContent>
-          <Stack spacing={2} sx={{ mt: 1 }}>
-            <TextField
-              fullWidth
-              autoFocus
-              label={Locale.label("people.lists.name")}
-              value={listName}
-              onChange={(e) => setListName(e.target.value)}
-            />
-            <TextField
-              fullWidth
-              label={Locale.label("people.lists.category")}
-              placeholder={Locale.label("people.lists.categoryPlaceholder")}
-              value={listCategory}
-              onChange={(e) => setListCategory(e.target.value)}
-            />
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setSaveListDialogOpen(false)}>{Locale.label("common.cancel")}</Button>
-          <Button onClick={handleSaveList} variant="contained" disabled={savingList || !listName.trim()}>
-            {Locale.label("common.save")}
-          </Button>
-        </DialogActions>
-      </Dialog>
 
       <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: "block" }}>
         {Locale.label("people.peopleSearch.checkBoxes")}

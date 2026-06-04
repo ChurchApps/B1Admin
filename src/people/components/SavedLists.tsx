@@ -3,7 +3,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { PlaylistPlay as ListIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
+import { type SearchCondition } from "@churchapps/helpers";
 import { type ActiveFilter } from "./AdvancedPeopleSearch";
+
+// A saved list stores either the advanced-search filter spec (object, re-resolved live)
+// or a flat condition set from simple/AI search (array, server-evaluated each run).
+export type ListConditions = Record<string, ActiveFilter> | SearchCondition[];
 
 export interface ListInterface {
   id?: string;
@@ -12,12 +17,12 @@ export interface ListInterface {
   createdByPersonName?: string;
   name?: string;
   category?: string;
-  conditions?: Record<string, ActiveFilter>;
+  conditions?: ListConditions;
 }
 
 interface Props {
-  // Loads the selected list's saved filter spec; the search then re-runs live.
-  onSelect: (conditions: Record<string, ActiveFilter>) => void;
+  // Loads the selected list's saved query; the search then re-runs live.
+  onSelect: (conditions: ListConditions) => void;
   canManage: boolean;
 }
 

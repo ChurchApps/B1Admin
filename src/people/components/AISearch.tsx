@@ -1,11 +1,13 @@
 import React from "react";
-import { type PersonInterface } from "@churchapps/helpers";
+import { type SearchCondition, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DisplayBox, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { Button, TextField, Typography } from "@mui/material";
 import { B1AdminPersonHelper } from "../../helpers";
 
 interface Props {
   updateSearchResults: (people: PersonInterface[]) => void;
+  // Reports the AI-generated conditions so the parent can offer "Save as List".
+  onReportCriteria?: (criteria: SearchCondition[] | null) => void;
 }
 
 export const AISearch = (props: Props) => {
@@ -18,12 +20,13 @@ export const AISearch = (props: Props) => {
     setIsLoading(true);
     try {
       // First, get the filters from AskApi
-      const filters = await ApiHelper.post("/query/people", { query: text }, "AskApi");
+      const filters: SearchCondition[] = await ApiHelper.post("/query/people", { query: text }, "AskApi");
 
       // Then use those filters to search for people
       const response = await ApiHelper.post("/people/advancedSearch", filters, "MembershipApi");
 
       props.updateSearchResults(response?.map((p: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(p)));
+      if (filters?.length) props.onReportCriteria?.(filters);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       setErrors([message]);

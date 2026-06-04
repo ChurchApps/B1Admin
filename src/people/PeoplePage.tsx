@@ -3,12 +3,12 @@ import { Permissions, UserHelper, type PersonInterface } from "@churchapps/helpe
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { ExportLink } from "@churchapps/apphelper";
-import { Grid, Box, Typography, Card, Stack, Button, IconButton, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
+import { Grid, Box, Typography, Card, Stack, Button, IconButton, Tooltip, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
-import { SavedLists } from "./components/SavedLists";
+import { SavedLists, type ListConditions } from "./components/SavedLists";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon } from "@mui/icons-material";
+import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
@@ -28,6 +28,10 @@ export const PeoplePage = memo(() => {
   const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
   const [isSearchPerformed, setIsSearchPerformed] = React.useState(false);
   const [selectedListFilters, setSelectedListFilters] = React.useState<Record<string, ActiveFilter> | undefined>(undefined);
+  // The query behind the current results (advanced filter spec or simple/AI conditions),
+  // so it can be saved as a List. Null when results aren't from a search.
+  const [saveableCriteria, setSaveableCriteria] = React.useState<ListConditions | null>(null);
+  const [saveListDialog, setSaveListDialog] = React.useState<{ open: boolean; name: string; category: string; saving: boolean }>({ open: false, name: "", category: "", saving: false });
   const queryClient = useQueryClient();
   const [selectedPersonIds, setSelectedPersonIds] = React.useState<string[]>([]);
   const [isBulkDeleting, setIsBulkDeleting] = React.useState(false);
@@ -116,11 +120,32 @@ export const PeoplePage = memo(() => {
     setLoadAll(true);
   }, []);
 
-  const handleSelectList = useCallback((conditions: Record<string, ActiveFilter>) => {
-    // New object reference each time so re-selecting the same list re-seeds the search.
-    setSelectedListFilters({ ...conditions });
+  const handleSelectList = useCallback((conditions: ListConditions) => {
+    setSaveableCriteria(conditions);
     setIsSearchPerformed(true);
+    if (Array.isArray(conditions)) {
+      // Simple/AI list: run the stored conditions directly against current data.
+      setSelectedListFilters(undefined);
+      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data) => {
+        setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
+      });
+    } else {
+      // Advanced list: seed the advanced panel (new ref each time so re-selecting re-seeds).
+      setSelectedListFilters({ ...conditions });
+    }
   }, []);
+
+  const handleSaveList = useCallback(async () => {
+    if (!saveableCriteria || !saveListDialog.name.trim()) return;
+    setSaveListDialog((d) => ({ ...d, saving: true }));
+    try {
+      await ApiHelper.post("/lists", [{ name: saveListDialog.name.trim(), category: saveListDialog.category.trim() || undefined, conditions: saveableCriteria }], "MembershipApi");
+      queryClient.invalidateQueries({ queryKey: ["/lists", "MembershipApi"] });
+      setSaveListDialog({ open: false, name: "", category: "", saving: false });
+    } catch {
+      setSaveListDialog((d) => ({ ...d, saving: false }));
+    }
+  }, [saveableCriteria, saveListDialog.name, saveListDialog.category, queryClient]);
 
   React.useEffect(() => {
     if (!searchResults) return;
@@ -307,8 +332,7 @@ export const PeoplePage = memo(() => {
               resetSearchResults={resetSearchResults}
               updatedFunction={refetch}
               initialFilters={selectedListFilters}
-              canManageLists={canEdit}
-              onListSaved={() => queryClient.invalidateQueries({ queryKey: ["/lists", "MembershipApi"] })}
+              onReportCriteria={setSaveableCriteria}
             />
             <SavedLists onSelect={handleSelectList} canManage={canEdit} />
             <AISearch
@@ -316,6 +340,7 @@ export const PeoplePage = memo(() => {
                 setSearchResults(people);
                 setIsSearchPerformed(true);
               }}
+              onReportCriteria={setSaveableCriteria}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 9 }}>
@@ -333,6 +358,11 @@ export const PeoplePage = memo(() => {
                         <Button size="small" onClick={() => setSelectedPersonIds([])}>{Locale.label("people.bulk.clearSelection")}</Button>
                         <PeopleBulkActions selectedPersonIds={selectedPersonIds} onComplete={handleBulkComplete} onDeleteClick={() => setShowBulkDeleteConfirm(true)} />
                       </>
+                    )}
+                    {canEdit && saveableCriteria && isSearchPerformed && searchResults && searchResults.length > 0 && (
+                      <Button size="small" variant="outlined" startIcon={<SaveListIcon />} onClick={() => setSaveListDialog({ open: true, name: "", category: "", saving: false })} sx={{ mr: 1 }}>
+                        {Locale.label("people.lists.saveAs")}
+                      </Button>
                     )}
                     {searchResults && (
                       <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={getExportData(searchResults || [])} filename="people.csv" sx={{ mr: 1 }}>
@@ -373,6 +403,20 @@ export const PeoplePage = memo(() => {
           </Grid>
         </Grid>
       </Box>
+
+      <Dialog open={saveListDialog.open} onClose={() => setSaveListDialog((d) => ({ ...d, open: false }))} maxWidth="xs" fullWidth>
+        <DialogTitle>{Locale.label("people.lists.saveAs")}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ mt: 1 }}>
+            <TextField fullWidth autoFocus label={Locale.label("people.lists.name")} value={saveListDialog.name} onChange={(e) => setSaveListDialog((d) => ({ ...d, name: e.target.value }))} />
+            <TextField fullWidth label={Locale.label("people.lists.category")} placeholder={Locale.label("people.lists.categoryPlaceholder")} value={saveListDialog.category} onChange={(e) => setSaveListDialog((d) => ({ ...d, category: e.target.value }))} />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSaveListDialog((d) => ({ ...d, open: false }))}>{Locale.label("common.cancel")}</Button>
+          <Button onClick={handleSaveList} variant="contained" disabled={saveListDialog.saving || !saveListDialog.name.trim()}>{Locale.label("common.save")}</Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog open={showBulkDeleteConfirm} onClose={() => !isBulkDeleting && setShowBulkDeleteConfirm(false)} maxWidth="xs" fullWidth>
         <DialogTitle>Delete Selected People</DialogTitle>
