@@ -29,9 +29,13 @@ function getOgImage(img: any) {
 }
 
 async function dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {
-  const res: Response = await fetch(dataUrl);
-  const blob: Blob = await res.blob();
-  return new File([blob], fileName, { type: "image/png" });
+  
+  const [header, base64 = ""] = dataUrl.split(",");
+  const mime = header.match(/data:(.*?);base64/)?.[1] ?? "image/png";
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new File([bytes], fileName, { type: mime });
 }
 
 function resizeImage(file: File, width: number, height: number) {
@@ -50,8 +54,8 @@ function resizeImage(file: File, width: number, height: number) {
         height
       );
     } catch (err) {
-      console.error("Error in resizing file");
-      reject();
+      console.error("Error in resizing file", err);
+      reject(err);
     }
   });
 }
@@ -98,26 +102,35 @@ export function AppearanceEdit(props: Props) {
   };
 
   const imageUpdated = async (dataUrl: string, keyName: string) => {
-    if (dataUrl !== null) {
-      const settings = [...currentSettings];
-      const keySetting = settings.filter((s: any) => s.keyName === keyName);
+    try {
+      if (dataUrl !== null) {
+        const settings = [...currentSettings];
+        const keySetting = settings.filter((s: any) => s.keyName === keyName);
 
-      if (keySetting.length === 0) settings.push({ keyName, value: await getValue(keyName, dataUrl), public: 1 });
-      else keySetting[0].value = await getValue(keyName, dataUrl);
+        if (keySetting.length === 0) settings.push({ keyName, value: await getValue(keyName, dataUrl), public: 1 });
+        else keySetting[0].value = await getValue(keyName, dataUrl);
 
-      if (keyName === "favicon_400x400") {
-        const index = settings.findIndex(s => s.keyName === "favicon_16x16");
-        if (dataUrl !== "") {
-          const imageDataUrl = await getImageUri(dataUrl, "favicon_16x16", 16, 16);
-          if (index !== -1) settings[index].value = imageDataUrl;
-          else settings.push({ keyName: "favicon_16x16", value: imageDataUrl, public: 1 });
-        } else if (index !== -1) settings[index].value = "";
+        if (keyName === "favicon_400x400") {
+          // The 16x16 derivation is a nice-to-have; never let a failure here block
+          // staging/saving the primary favicon (which is already staged above).
+          try {
+            const index = settings.findIndex(s => s.keyName === "favicon_16x16");
+            if (dataUrl !== "") {
+              const imageDataUrl = await getImageUri(dataUrl, "favicon_16x16", 16, 16);
+              if (index !== -1) settings[index].value = imageDataUrl;
+              else settings.push({ keyName: "favicon_16x16", value: imageDataUrl, public: 1 });
+            } else if (index !== -1) settings[index].value = "";
+          } catch (e) {
+            console.error("favicon_16x16 generation failed", e);
+          }
+        }
+
+        setCurrentSettings(settings);
       }
-
-      setCurrentSettings(settings);
+    } finally {
+      setEditLogo(false);
+      setCurrentUrl(null);
     }
-    setEditLogo(false);
-    setCurrentUrl(null);
   };
 
   const getLogoEditor = (logoName: string) => {
