@@ -28,7 +28,10 @@ test.describe('People Management', () => {
     });
 
     test('should advance search for people', async ({ page }) => {
-      const advBtn = page.locator('p').getByText('Advanced');
+      // Match the "▶ Advanced" / "▼ Advanced" toggle specifically — a plain
+      // getByText('Advanced') also matches the SavedLists "...advanced search..."
+      // copy that shows when no saved lists exist (strict-mode violation).
+      const advBtn = page.locator('p').getByText(/[▶▼] Advanced/);
       await advBtn.click();
       // Names accordion is expanded by default; first filter is First Name.
       const firstCheck = page.locator('div input[type="checkbox"]').first();
@@ -52,7 +55,10 @@ test.describe('People Management', () => {
     });
 
     test('should delete advance search conditions', async ({ page }) => {
-      const advBtn = page.locator('p').getByText('Advanced');
+      // Match the "▶ Advanced" / "▼ Advanced" toggle specifically — a plain
+      // getByText('Advanced') also matches the SavedLists "...advanced search..."
+      // copy that shows when no saved lists exist (strict-mode violation).
+      const advBtn = page.locator('p').getByText(/[▶▼] Advanced/);
       await advBtn.click();
       const firstCheck = page.locator('div input[type="checkbox"]').first();
       await expect(firstCheck).toBeVisible({ timeout: 10000 });

@@ -1,6 +1,7 @@
 export * from "../../components";
 export { ChurchSettingsEdit } from "./ChurchSettingsEdit";
 export { SettingsSectionHeader } from "./SettingsSectionHeader";
+export { CampusEdit } from "./CampusEdit";
 
 export { RoleEdit } from "./RoleEdit";
 export { RoleCheck } from "./RoleCheck";

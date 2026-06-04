@@ -97,6 +97,7 @@ export interface PlanInterface {
   churchId?: string;
   name?: string;
   ministryId?: string;
+  campusId?: string;
   planTypeId?: string;
   serviceDate?: Date;
   notes?: string;

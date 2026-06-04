@@ -14,6 +14,7 @@ interface DemographicsData {
   membershipStatus: { name: string; count: number }[];
   gender: { name: string; count: number }[];
   maritalStatus: { name: string; count: number }[];
+  campus: { name: string; count: number; id: string }[];
 }
 
 export const DemographicsPage = memo(() => {
@@ -28,6 +29,13 @@ export const DemographicsPage = memo(() => {
   }, [navigate]);
 
   const drillToField = (field: string) => (name: string) => drillTo([{ field, operator: "equals", value: valueFor(name) }]);
+
+  // Campus drills by id (the slice label is the campus name, not the stored
+  // value), so map the clicked name back to its campusId. "Unassigned" -> "".
+  const drillToCampus = (name: string) => {
+    const id = name === "Unassigned" ? "" : (data?.campus.find((c) => c.name === name)?.id ?? "");
+    drillTo([{ field: "campusId", operator: "equals", value: id }]);
+  };
 
   const drillToAge = (group: string, series: "female" | "male" | "unassigned") => {
     const conditions: SearchCondition[] = [];
@@ -68,6 +76,11 @@ export const DemographicsPage = memo(() => {
             <Grid size={{ xs: 12, md: 6 }}>
               <DonutChart title={Locale.label("people.demographics.maritalStatus")} data={data.maritalStatus} onSelect={drillToField("maritalStatus")} />
             </Grid>
+            {data.campus && data.campus.length > 0 && (
+              <Grid size={{ xs: 12, md: 6 }}>
+                <DonutChart title={Locale.label("people.demographics.campus")} data={data.campus.map((c) => ({ name: c.name, count: c.count }))} onSelect={drillToCampus} />
+              </Grid>
+            )}
           </Grid>
         ) : null}
       </Box>

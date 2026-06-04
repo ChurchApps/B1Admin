@@ -4,7 +4,7 @@ import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from 
 import { useNavigate, useLocation } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Stack, Button } from "@mui/material";
-import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, History as HistoryIcon } from "@mui/icons-material";
+import { Lock as LockIcon, PlayArrow as PlayArrowIcon, Edit as EditIcon, History as HistoryIcon, Business as BusinessIcon } from "@mui/icons-material";
 import { RolesTab, ChurchSettingsEdit } from "./components";
 import { useQuery } from "@tanstack/react-query";
 
@@ -86,6 +86,23 @@ export const ManageChurch = () => {
             }}>
             {Locale.label("settings.roles.roles")}
           </Button>
+          {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
+            <Button
+              variant="outlined"
+              startIcon={<BusinessIcon />}
+              onClick={() => navigate("/settings/campuses")}
+              sx={{
+                color: "#FFF",
+                backgroundColor: "transparent",
+                borderColor: "#FFF",
+                "&:hover": {
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  color: "#FFF"
+                }
+              }}>
+              {Locale.label("settings.campuses.campuses")}
+            </Button>
+          )}
           {UserHelper.checkAccess(Permissions.membershipApi.server.admin) && (
             <Button
               variant="outlined"

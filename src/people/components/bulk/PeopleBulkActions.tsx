@@ -1,13 +1,14 @@
 import React from "react";
 import { Locale } from "@churchapps/apphelper";
+import { useCampuses } from "../../../hooks/useCampuses";
 import { Button, Menu, MenuItem, Divider, ListItemIcon, ListItemText } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon, HowToReg as StatusIcon, Favorite as MaritalIcon, Wc as GenderIcon, MailLock as OptOutIcon, GroupAdd as GroupAddIcon, GroupRemove as GroupRemoveIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { ExpandMore as ExpandMoreIcon, HowToReg as StatusIcon, Favorite as MaritalIcon, Wc as GenderIcon, MailLock as OptOutIcon, GroupAdd as GroupAddIcon, GroupRemove as GroupRemoveIcon, Delete as DeleteIcon, Business as CampusIcon } from "@mui/icons-material";
 import { BulkFieldDialog, type BulkFieldOption, type BulkResult } from "./BulkFieldDialog";
 import { BulkGroupDialog } from "./BulkGroupDialog";
 import { getMembershipStatusOptions } from "../../helpers/MembershipStatusOptions";
 
 interface FieldConfig {
-  field: "membershipStatus" | "maritalStatus" | "gender" | "optedOut";
+  field: "membershipStatus" | "maritalStatus" | "gender" | "optedOut" | "campusId";
   titleKey: string;
   fieldLabel: string;
   isBoolean?: boolean;
@@ -24,6 +25,11 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [fieldConfig, setFieldConfig] = React.useState<FieldConfig | null>(null);
   const [groupMode, setGroupMode] = React.useState<"add" | "remove" | null>(null);
+  const campuses = useCampuses();
+  const campusOptions: BulkFieldOption[] = React.useMemo(
+    () => campuses.filter((c) => c.id).map((c) => ({ value: c.id as string, label: c.name || "" })),
+    [campuses]
+  );
 
   const fieldConfigs: FieldConfig[] = [
     {
@@ -63,20 +69,30 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
         { value: "false", label: Locale.label("people.bulk.optedOutNo") },
         { value: "true", label: Locale.label("people.bulk.optedOutYes") }
       ]
-    }
+    },
+    ...(campusOptions.length > 0
+      ? [{
+        field: "campusId" as const,
+        titleKey: "people.bulk.campusTitle",
+        fieldLabel: Locale.label("person.campus"),
+        options: campusOptions
+      }]
+      : [])
   ];
 
   const fieldIcons: Record<string, JSX.Element> = {
     membershipStatus: <StatusIcon fontSize="small" />,
     maritalStatus: <MaritalIcon fontSize="small" />,
     gender: <GenderIcon fontSize="small" />,
-    optedOut: <OptOutIcon fontSize="small" />
+    optedOut: <OptOutIcon fontSize="small" />,
+    campusId: <CampusIcon fontSize="small" />
   };
   const menuLabels: Record<string, string> = {
     membershipStatus: "people.bulk.setMembershipStatus",
     maritalStatus: "people.bulk.setMaritalStatus",
     gender: "people.bulk.setGender",
-    optedOut: "people.bulk.setOptedOut"
+    optedOut: "people.bulk.setOptedOut",
+    campusId: "people.bulk.setCampus"
   };
 
   const closeMenu = () => setAnchorEl(null);

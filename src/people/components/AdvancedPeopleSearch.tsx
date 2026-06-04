@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
+import { useCampuses } from "../../hooks/useCampuses";
 import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type CampusInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
 import { ArrayHelper, InputBox, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
@@ -156,6 +157,10 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [funds, setFunds] = useState<FundInterface[]>([]);
   const [campuses, setCampuses] = useState<CampusInterface[]>([]);
+  // Church-wide (Membership) campuses for the "belongs to campus" condition —
+  // distinct from `campuses` above, which is the Attendance list used by the
+  // "attended a campus" complex filter.
+  const membershipCampuses = useCampuses();
   const [services, setServices] = useState<ServiceInterface[]>([]);
   const [serviceTimes, setServiceTimes] = useState<ServiceTimeInterface[]>([]);
   const [customFieldQuestions, setCustomFieldQuestions] = useState<QuestionInterface[]>([]);
@@ -257,6 +262,13 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals", "notEquals"],
           options: getMembershipStatusOptions()
+        },
+        {
+          key: "campusId",
+          label: Locale.label("person.campus"),
+          type: "select",
+          operators: ["equals", "notEquals"],
+          options: membershipCampuses.map((c) => ({ value: c.id, label: c.name }))
         }
       ],
       activity: [],
@@ -339,7 +351,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     return categories;
-  }, [groups, customFieldQuestions]);
+  }, [groups, membershipCampuses, customFieldQuestions]);
 
   const loadCategoryData = useCallback(async (category: string) => {
     if (loadedCategories.includes(category)) return;

@@ -10,6 +10,7 @@ import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState } from "@churchapps/apphelper";
 import { MarkdownEditor } from "@churchapps/apphelper/markdown";
 import { GroupLabelsEdit } from "./GroupLabelsEdit";
+import { CampusSelect } from "../../components/CampusSelect";
 
 type AnyRecord = Record<string, any>;
 
@@ -38,6 +39,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       parentPickup: "false",
       printNametag: "false",
       slug: "",
+      campusId: "",
       joinPolicy: "open"
     }
   });
@@ -63,6 +65,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
         parentPickup: props.group.parentPickup?.toString() || "false",
         printNametag: props.group.printNametag?.toString() || "false",
         slug: props.group.slug || "",
+        campusId: props.group.campusId || "",
         joinPolicy: props.group.joinPolicy || "open"
       });
       setAbout(props.group.about || "");
@@ -89,6 +92,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       photoUrl,
       labelArray
     };
+    // "" = Unassigned; store null so it matches campusId IS NULL.
+    group.campusId = values.campusId || null;
     ApiHelper.post("/groups", [group], "MembershipApi").then(() => {
       props.updatedFunction();
     });
@@ -256,6 +261,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <GroupLabelsEdit group={{ ...props.group, labelArray }} onUpdate={(val) => setLabelArray(val)} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <CampusSelect control={control} testId="group-campus-select" />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>

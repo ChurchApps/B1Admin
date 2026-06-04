@@ -3,6 +3,7 @@ import { useForm, Controller, useFormState } from "react-hook-form";
 import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
 import { type PlanInterface } from "../../helpers";
+import { CampusSelect } from "../../components/CampusSelect";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
 
@@ -22,6 +23,7 @@ export const PlanEdit = (props: Props) => {
     defaultValues: {
       name: props.plan?.name ?? "",
       serviceDate: DateHelper.formatHtml5Date(props.plan?.serviceDate) ?? "",
+      campusId: props.plan?.campusId ?? "",
       signupDeadlineHours: props.plan?.signupDeadlineHours ?? "",
       showVolunteerNames: props.plan?.showVolunteerNames !== false
     }
@@ -90,6 +92,7 @@ export const PlanEdit = (props: Props) => {
       signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : undefined,
       showVolunteerNames: values.showVolunteerNames
     };
+    plan.campusId = values.campusId || null;
     savePlanMutation.mutate(plan);
   };
 
@@ -108,6 +111,7 @@ export const PlanEdit = (props: Props) => {
         deleteFunction={props.plan?.id ? handleDelete : null}>
         <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label={Locale.label("plans.planEdit.planNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planEdit.planReq") })} />
         <TextField fullWidth label={Locale.label("plans.planEdit.servDate")} id="serviceDate" type="date" data-testid="service-date-input" aria-label={Locale.label("plans.planEdit.serviceDateAria")} error={!!e.serviceDate} helperText={e.serviceDate?.message} {...register("serviceDate", { required: Locale.label("plans.planEdit.servReq") })} />
+        <CampusSelect control={control} testId="plan-campus-select" />
         {!props.plan?.id && previousPlan && (
           <>
             <FormControl fullWidth>

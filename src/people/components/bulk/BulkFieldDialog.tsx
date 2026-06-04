@@ -8,7 +8,7 @@ export interface BulkResult { message: string; severity: "success" | "error"; fi
 
 interface Props {
   open: boolean;
-  field: "membershipStatus" | "maritalStatus" | "gender" | "optedOut";
+  field: "membershipStatus" | "maritalStatus" | "gender" | "optedOut" | "campusId";
   title: string;
   fieldLabel: string;
   isBoolean?: boolean;

@@ -5,6 +5,7 @@ import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card, Checkbox } from "@mui/material";
+import { useCampuses } from "../../hooks/useCampuses";
 import { Email as EmailIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
@@ -28,6 +29,12 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const [currentSortedCol, setCurrentSortedCol] = useState<string>("");
   const [optionalColumns, setOptionalColumns] = React.useState<any[]>([]);
   const [formSubmissions, setFormSubmissions] = React.useState<any[]>([]);
+  const campuses = useCampuses();
+  const campusMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    campuses.forEach((c) => { if (c.id) map[c.id] = c.name || ""; });
+    return map;
+  }, [campuses]);
   const selectedPersonIds = props.selectedPersonIds || [];
   const visiblePersonIds = useMemo(() => people?.map((person) => person.id).filter((id): id is string => !!id && id !== props.currentPersonId) || [], [people, props.currentPersonId]);
   const allVisibleSelected = visiblePersonIds.length > 0 && visiblePersonIds.every((id) => selectedPersonIds.includes(id));
@@ -178,6 +185,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           );
           break;
         case "maritalStatus": result = <>{p.maritalStatus}</>; break;
+        case "campus": result = <>{p.campusId ? (campusMap[p.campusId] || "") : ""}</>; break;
         case "anniversary": result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.anniversary)}</>; break;
         case "nametagNotes": result = <>{p.nametagNotes}</>; break;
         case "deleteOption":
@@ -201,7 +209,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
 
       return result;
     },
-    [getPhotoJSX, handleDelete, getAnswer]
+    [getPhotoJSX, handleDelete, getAnswer, campusMap]
   );
 
   const getColumns = useCallback(

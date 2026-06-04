@@ -8,6 +8,7 @@ import { Navigate } from "react-router-dom";
 import UserContext from "../../UserContext";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, FormControlLabel, Checkbox } from "@mui/material";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
+import { CampusSelect } from "../../components/CampusSelect";
 
 // PersonInterface has typed subfields; RHF nested paths require looser typing
 type AnyRecord = Record<string, any>;
@@ -96,6 +97,8 @@ export const PersonEdit = memo((props: Props) => {
   const buildPerson = useCallback((values: AnyRecord): PersonInterface => {
     const p: PersonInterface = JSON.parse(JSON.stringify(props.person));
     Object.assign(p, values);
+    // "" = the Unassigned option; store as null so it matches campusId IS NULL.
+    if (!p.campusId) p.campusId = null;
     if (p.contactInfo) {
       p.contactInfo.homePhone = (p.contactInfo.homePhone?.length ?? 0) <= 4 ? null : p.contactInfo.homePhone;
       p.contactInfo.workPhone = (p.contactInfo.workPhone?.length ?? 0) <= 4 ? null : p.contactInfo.workPhone;
@@ -252,6 +255,12 @@ export const PersonEdit = memo((props: Props) => {
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <TextField fullWidth type="date" id="anniversary" InputLabelProps={{ shrink: true }} label={Locale.label("person.anniversary")} data-testid="anniversary-input" aria-label="Anniversary" {...register("anniversary")} />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <CampusSelect control={control} />
           </Grid>
         </Grid>
 

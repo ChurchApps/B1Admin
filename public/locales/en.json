@@ -1160,6 +1160,7 @@
       "membershipStatus": "Membership Types",
       "gender": "Gender",
       "maritalStatus": "Marital Status",
+      "campus": "Campus",
       "female": "Female",
       "male": "Male",
       "total": "Total",
@@ -1210,7 +1211,9 @@
       "removeFromGroupPrompt": "Remove {count} selected people from a group.",
       "removeFromGroupTitle": "Remove from Group",
       "removeSuccess": "Removed {count} people from {group}.",
+      "campusTitle": "Assign to Campus",
       "selected": "Selected",
+      "setCampus": "Assign to Campus",
       "setGender": "Set Gender",
       "setMaritalStatus": "Set Marital Status",
       "setMembershipStatus": "Set Membership Status",
@@ -1464,6 +1467,7 @@
     "age": "Age",
     "anniversary": "Anniversary",
     "birthDate": "Birth Date",
+    "campus": "Campus",
     "city": "City",
     "country": "Country",
     "deceased": "Deceased",
@@ -2484,6 +2488,25 @@
       "confirmDeleteTab": "Are you sure you wish to delete this tab?",
       "tabNameHelper": "Choose a descriptive name for your tab",
       "urlHelper": "Enter the full URL (e.g., https://example.com)"
+    },
+    "campuses": {
+      "campuses": "Campuses",
+      "campus": "Campus",
+      "subtitle": "Manage your church's physical locations",
+      "addCampus": "Add Campus",
+      "location": "Location",
+      "none": "No campuses have been added yet."
+    },
+    "campusEdit": {
+      "name": "Name",
+      "address2": "Address Line 2",
+      "timezone": "Time Zone",
+      "noTimezone": "None",
+      "website": "Website",
+      "confirmDelete": "Are you sure you wish to delete this campus?",
+      "validate": {
+        "name": "Please enter a campus name."
+      }
     },
     "appEdit": {
       "addTab": "Add Tab",
