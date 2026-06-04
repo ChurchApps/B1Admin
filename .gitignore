@@ -129,4 +129,4 @@ dist
 # TernJS port file
 .tern-port
 .auth-state.json
-.env
+config.bat

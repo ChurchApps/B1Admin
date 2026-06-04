@@ -10,11 +10,13 @@ import {
   Cancel as CancelIcon,
   Event as CalendarIcon,
   Sms as SmsIcon,
-  Email as EmailIcon
+  Email as EmailIcon,
+  NotificationsActive as NotificationsActiveIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
+import { SendNotificationDialog } from "./SendNotificationDialog";
 
 interface Props {
   group: GroupInterface;
@@ -27,9 +29,11 @@ export const GroupBanner = memo((props: Props) => {
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
+  const [showNotificationDialog, setShowNotificationDialog] = React.useState(false);
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
+  const canSendNotifications = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
 
   React.useEffect(() => {
@@ -229,6 +233,13 @@ export const GroupBanner = memo((props: Props) => {
                     <EmailIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
+                {canSendNotifications && (
+                  <Tooltip title="Send push notification">
+                    <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowNotificationDialog(true)} aria-label="Send push notification">
+                      <NotificationsActiveIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                )}
                 {canText && hasTextingProvider && (
                   <Tooltip title={Locale.label("groups.groupBanner.textTooltip")}>
                     <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
@@ -433,6 +444,13 @@ export const GroupBanner = memo((props: Props) => {
           groupId={group?.id}
           groupName={group?.name}
           onClose={() => setShowEmailDialog(false)}
+        />
+      )}
+      {showNotificationDialog && (
+        <SendNotificationDialog
+          groupId={group?.id}
+          groupName={group?.name}
+          onClose={() => setShowNotificationDialog(false)}
         />
       )}
     </Box>
