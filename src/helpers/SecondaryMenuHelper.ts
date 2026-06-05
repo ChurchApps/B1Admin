@@ -92,8 +92,10 @@ export class SecondaryMenuHelper {
       menuItems.push({ url: "/serving/songs", label: Locale.label("components.wrapper.songs"), icon: "music_note" });
     }
     menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.tasks"), icon: "list_alt" });
+    menuItems.push({ url: "/serving/tasks/workflows", label: Locale.label("components.wrapper.workflows"), icon: "view_kanban" });
 
     if (path.startsWith("/serving/songs")) label = Locale.label("components.wrapper.songs");
+    else if (path.startsWith("/serving/tasks/workflows")) label = Locale.label("components.wrapper.workflows");
     else if (path.startsWith("/serving/tasks")) label = Locale.label("components.wrapper.tasks");
     else if (path.startsWith("/serving")) label = Locale.label("components.wrapper.plans");
 

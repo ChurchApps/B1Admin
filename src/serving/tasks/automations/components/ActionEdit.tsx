@@ -2,8 +2,10 @@ import { MenuItem, Select, TextField, type SelectChangeEvent, Card, CardContent,
 import React from "react";
 import { type ActionInterface } from "@churchapps/helpers";
 import { ErrorMessages, ApiHelper, Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { ContentPicker } from "../../components/ContentPicker";
 import { Task as TaskIcon, Search as SearchIcon, Save as SaveIcon, Cancel as CancelIcon, Assignment as ActionIcon } from "@mui/icons-material";
+import { type WorkflowInterface } from "../../workflows/interfaces";
 
 interface Props {
   action: ActionInterface;
@@ -16,6 +18,7 @@ export const ActionEdit = (props: Props) => {
   const [errors, setErrors] = React.useState([]);
   const [taskDetails, setTaskDetails] = React.useState<any>({});
   const [modalField, setModalField] = React.useState("");
+  const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [] });
 
   const init = () => {
     setAction(props.action);
@@ -46,6 +49,10 @@ export const ActionEdit = (props: Props) => {
     const a = { ...action };
     switch (e.target.name) {
       case "actionType": a.actionType = val; break;
+      case "workflowId":
+        setTaskDetails({ ...taskDetails, workflowId: val });
+        a.actionData = JSON.stringify({ workflowId: val });
+        break;
     }
     setAction(a);
   };
@@ -123,11 +130,21 @@ export const ActionEdit = (props: Props) => {
                 aria-label={Locale.label("tasks.actionEdit.actionTypeAria")}
                 startAdornment={<TaskIcon sx={{ color: "action.active", ml: 1, mr: 0.5 }} />}>
                 <MenuItem value="task">{Locale.label("tasks.actionEdit.taskAssign")}</MenuItem>
+                <MenuItem value="addToWorkflow">{Locale.label("tasks.actionEdit.addToWorkflow")}</MenuItem>
               </Select>
               <FormHelperText>{Locale.label("tasks.actionEdit.actTypeHelp")}</FormHelperText>
             </FormControl>
 
-            <TextField
+            {action?.actionType === "addToWorkflow" && (
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>{Locale.label("tasks.workflowsPage.title")}</InputLabel>
+                <Select label={Locale.label("tasks.workflowsPage.title")} value={taskDetails.workflowId || ""} name="workflowId" data-testid="action-workflow-select" onChange={handleChange}>
+                  {(workflows.data || []).map((w) => <MenuItem key={w.id} value={w.id}>{w.name}</MenuItem>)}
+                </Select>
+              </FormControl>
+            )}
+
+            {action?.actionType !== "addToWorkflow" && <TextField
               fullWidth
               label={Locale.label("tasks.actionEdit.assignTo")}
               value={taskDetails.assignedToLabel || ""}
@@ -147,9 +164,9 @@ export const ActionEdit = (props: Props) => {
               aria-label={Locale.label("tasks.actionEdit.assignToAria")}
               variant="outlined"
               sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-            />
+            />}
 
-            <TextField
+            {action?.actionType !== "addToWorkflow" && <TextField
               fullWidth
               label={Locale.label("tasks.actionEdit.taskTitle")}
               value={taskDetails?.title || ""}
@@ -159,9 +176,9 @@ export const ActionEdit = (props: Props) => {
               aria-label={Locale.label("tasks.actionEdit.taskTitleAria")}
               variant="outlined"
               sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-            />
+            />}
 
-            <TextField
+            {action?.actionType !== "addToWorkflow" && <TextField
               fullWidth
               label={Locale.label("tasks.actionEdit.taskNote")}
               value={taskDetails?.note || ""}
@@ -173,7 +190,7 @@ export const ActionEdit = (props: Props) => {
               aria-label={Locale.label("tasks.actionEdit.taskNoteAria")}
               variant="outlined"
               sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-            />
+            />}
           </Stack>
 
           {/* Action Buttons */}

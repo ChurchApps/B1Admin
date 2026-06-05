@@ -26,6 +26,10 @@ const AdminReportPage = React.lazy(() => import("./serverAdmin/ReportPage").then
 const TasksPage = React.lazy(() => import("./serving/tasks/TasksPage").then((module) => ({ default: module.TasksPage })));
 const TaskPage = React.lazy(() => import("./serving/tasks/TaskPage").then((module) => ({ default: module.TaskPage })));
 const AutomationsPage = React.lazy(() => import("./serving/tasks/automations/AutomationsPage").then((module) => ({ default: module.AutomationsPage })));
+const WorkflowsPage = React.lazy(() => import("./serving/tasks/workflows/WorkflowsPage").then((module) => ({ default: module.WorkflowsPage })));
+const WorkflowBoardPage = React.lazy(() => import("./serving/tasks/workflows/WorkflowBoardPage").then((module) => ({ default: module.WorkflowBoardPage })));
+const WorkflowReportsPage = React.lazy(() => import("./serving/tasks/workflows/WorkflowReportsPage").then((module) => ({ default: module.WorkflowReportsPage })));
+const MyCardsPage = React.lazy(() => import("./serving/tasks/workflows/MyCardsPage").then((module) => ({ default: module.MyCardsPage })));
 const DashboardPage = React.lazy(() => import("./dashboard/DashboardPage").then((module) => ({ default: module.DashboardPage })));
 const QuickActionsPage = React.lazy(() => import("./dashboard/QuickActionsPage").then((module) => ({ default: module.QuickActionsPage })));
 const AdminPage = React.lazy(() => import("./serverAdmin/AdminPage").then((module) => ({ default: module.AdminPage })));
@@ -126,6 +130,10 @@ export const Authenticated: React.FC = () => {
           <Route path="/email-templates" element={<EmailTemplatesPage />} />
           <Route path="/settings/*" element={<Settings />} />
           <Route path="/serving/tasks/automations" element={<AutomationsPage />} />
+          <Route path="/serving/tasks/workflows/mine" element={<MyCardsPage />} />
+          <Route path="/serving/tasks/workflows/:id/reports" element={<WorkflowReportsPage />} />
+          <Route path="/serving/tasks/workflows/:id" element={<WorkflowBoardPage />} />
+          <Route path="/serving/tasks/workflows" element={<WorkflowsPage />} />
           <Route path="/serving/tasks/:id" element={<TaskPage />} />
           <Route path="/serving/tasks" element={<TasksPage />} />
           <Route path="/profile/devices" element={<DevicesPage />} />

@@ -15,7 +15,9 @@ export default defineConfig(({ mode }) => {
     ],
 
     optimizeDeps: {
-      include: ['@churchapps/helpers']
+      // Pre-bundle react-dnd so the lazy-loaded Workflows board route doesn't
+      // trigger a mid-session dep re-optimization (which 504s the board chunk).
+      include: ['@churchapps/helpers', 'react-dnd', 'react-dnd-html5-backend']
     },
 
     build: {

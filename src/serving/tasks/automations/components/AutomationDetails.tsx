@@ -92,6 +92,21 @@ export const AutomationDetails = (props: Props) => {
               </ListItem>
             );
           }
+          if (action.actionType === "addToWorkflow") {
+            return (
+              <ListItem key={action.id} sx={{ px: 0, py: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1, mb: 1, "&:last-child": { mb: 0 } }}>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ flex: 1 }}>
+                  <TaskIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>{Locale.label("tasks.actionEdit.addToWorkflow")}</Typography>
+                  </Box>
+                  <IconButton size="small" onClick={() => setEditAction(action)} sx={{ flexShrink: 0 }}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                </Stack>
+              </ListItem>
+            );
+          }
           return null;
         })}
       </List>
