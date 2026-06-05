@@ -70,7 +70,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
       saveFunction={handleSubmit(onValid)}
       deleteFunction={props.campus?.id ? handleDelete : null}
       headerText={props.campus.name || Locale.label("settings.campuses.campus")}
-      headerIcon="church"
+      headerIcon="business"
       isSubmitting={isSubmitting}
       help="docs/b1-admin/settings/">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
