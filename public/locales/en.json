@@ -336,6 +336,7 @@
     },
     "wrapper": {
       "att": "Attendance",
+      "automations": "Automations",
       "dash": "Dashboard",
       "don": "Donations",
       "form": "Form",

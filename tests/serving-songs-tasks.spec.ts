@@ -627,7 +627,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -651,7 +651,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -668,7 +668,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -699,7 +699,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -718,7 +718,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -739,7 +739,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -776,7 +776,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -797,7 +797,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -816,7 +816,7 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
       await tasksBtn.click();
       await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[role="tablist"] button').getByText('Automations');
+      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
       await automationsBtn.click();
       await expect(page).toHaveURL(/\/tasks\/automations/);
 
@@ -840,11 +840,14 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(page.locator('button').getByText(/Add Song/i).first()).toBeVisible({ timeout: 10000 });
     });
 
-    test('Tasks page exposes the Tasks/Automations tab navigation', async ({ page }) => {
+    test('Serving subnav exposes Tasks, Workflows and Automations links', async ({ page }) => {
       const tasksLink = page.locator('[id="secondaryMenu"]').getByText('Tasks').first();
       await tasksLink.click();
       await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
-      await expect(page.locator('button[role="tab"]').getByText('Automations')).toBeVisible({ timeout: 10000 });
+      const secondaryMenu = page.locator('[id="secondaryMenu"]');
+      await expect(secondaryMenu.locator('a').getByText('Tasks')).toBeVisible({ timeout: 10000 });
+      await expect(secondaryMenu.locator('a').getByText('Workflows')).toBeVisible({ timeout: 10000 });
+      await expect(secondaryMenu.locator('a').getByText('Automations')).toBeVisible({ timeout: 10000 });
     });
   });
 });

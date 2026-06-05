@@ -2,7 +2,6 @@ import { Grid, Typography, Card, CardContent, Stack, Box, Button, List, ListItem
 import React from "react";
 import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { EmptyState } from "../../../components/ui/EmptyState";
-import { TasksNavigation } from "../components/TasksNavigation";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "./interfaces";
 import { useQuery } from "@tanstack/react-query";
@@ -15,11 +14,6 @@ export const WorkflowsPage = () => {
 
   const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [] });
   const categories = useQuery<WorkflowCategoryInterface[]>({ queryKey: ["/workflowCategories", "DoingApi"], placeholderData: [] });
-
-  const handleTabChange = (tab: string) => {
-    if (tab === "tasks") navigate("/serving/tasks");
-    else if (tab === "automations") navigate("/serving/tasks/automations");
-  };
 
   const handleAdded = (workflow: WorkflowInterface) => {
     setShowAdd(false);
@@ -80,7 +74,6 @@ export const WorkflowsPage = () => {
           </Button>
         </Stack>
       </PageHeader>
-      <TasksNavigation selectedTab="workflows" onTabChange={handleTabChange} />
 
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>

@@ -2,7 +2,6 @@ import { Box, Card, CardContent, Stack } from "@mui/material";
 import React from "react";
 import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { EmptyState } from "../../../components/ui/EmptyState";
-import { TasksNavigation } from "../components/TasksNavigation";
 import { WorkflowCard } from "./components/WorkflowCard";
 import { type WorkflowCardInterface } from "./interfaces";
 import { useQuery } from "@tanstack/react-query";
@@ -12,12 +11,6 @@ import { useNavigate } from "react-router-dom";
 export const MyCardsPage = () => {
   const navigate = useNavigate();
   const cards = useQuery<WorkflowCardInterface[]>({ queryKey: ["/tasks/cards/my", "DoingApi"], placeholderData: [] });
-
-  const handleTabChange = (tab: string) => {
-    if (tab === "tasks") navigate("/serving/tasks");
-    else if (tab === "workflows") navigate("/serving/tasks/workflows");
-    else if (tab === "automations") navigate("/serving/tasks/automations");
-  };
 
   const getContent = () => {
     if (cards.isLoading) return <Loading />;
@@ -36,7 +29,6 @@ export const MyCardsPage = () => {
   return (
     <>
       <PageHeader title={Locale.label("tasks.myCards.title")} subtitle={Locale.label("tasks.myCards.subtitle")} />
-      <TasksNavigation selectedTab="workflows" onTabChange={handleTabChange} />
       <Box sx={{ p: 3 }}>
         <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
           <CardContent>{getContent()}</CardContent>

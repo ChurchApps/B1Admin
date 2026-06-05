@@ -154,9 +154,9 @@ test.describe.serial('Serving Management - Workflows', () => {
   });
 
   test('automation can use the Add to Workflow action', async () => {
-    // Navigate straight to the automations tab by URL (prior test ended on a Person page).
+    // Navigate straight to the automations page by URL (prior test ended on a Person page).
     await page.goto('/serving/tasks/automations');
-    await recoverFromViteError(page, page.locator('[role="tablist"]'));
+    await recoverFromViteError(page, page.locator('button').getByText('Add Automation'));
     await expect(page).toHaveURL(/\/tasks\/automations/, { timeout: 10000 });
 
     // Create an automation, then add an addToWorkflow action to it.
