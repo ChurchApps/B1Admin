@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { request } from '@playwright/test';
 import { servingTest as test, expect } from './helpers/test-fixtures';
 import { login } from './helpers/auth';
 import { navigateToServing, navigateToPeople } from './helpers/navigation';
@@ -12,7 +13,9 @@ import { STORAGE_STATE_PATH } from './global-setup';
 // ZACCHAEUS is the marker name for rows these tests create.
 
 async function gotoWorkflows(page: Page) {
-  await page.locator('[id="secondaryMenu"] a').getByText('Workflows').click();
+  // Navigate by URL rather than the secondary menu — robust even when the prior
+  // test left us outside the Serving area (e.g. on the People page).
+  await page.goto('/serving/tasks/workflows');
   await expect(page).toHaveURL(/\/serving\/tasks\/workflows/, { timeout: 10000 });
   await recoverFromViteError(page, page.locator('[data-testid="add-workflow-button"]'));
 }
@@ -107,6 +110,8 @@ test.describe.serial('Serving Management - Workflows', () => {
   test('create a new workflow', async () => {
     await gotoWorkflows(page);
     await page.locator('[data-testid="add-workflow-button"]').click();
+    // The Add button now opens a menu (Blank / templates); pick Blank for the form.
+    await page.locator('[data-testid="add-workflow-blank"]').click();
     const nameInput = page.locator('[data-testid="workflow-name-input"] input');
     await nameInput.waitFor({ state: 'visible', timeout: 10000 });
     await nameInput.fill('Zacchaeus Workflow');
@@ -204,5 +209,121 @@ test.describe.serial('Serving Management - Workflows', () => {
     await page.getByRole('option', { name: 'New Visitor Follow-up' }).click();
     await page.locator('[data-testid="bulk-workflow-apply"]').click();
     await expect(page.getByText(/Added 2 people to the workflow/i)).toBeVisible({ timeout: 10000 });
+  });
+
+  // ---- Hardening features (permissions, pinned, skip/sendBack, bulk, duplicate, templates, group-add) ----
+
+  test('duplicate a workflow copies it with its steps', async () => {
+    await gotoWorkflows(page);
+    await page.locator('[data-testid="duplicate-workflow-WFL00000001"]').click();
+    // The copy appears in the list with a "(copy)" suffix.
+    await expect(page.getByText('New Visitor Follow-up (copy)').first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test('create a workflow from a starter template', async () => {
+    await gotoWorkflows(page);
+    await page.locator('[data-testid="add-workflow-button"]').click();
+    await page.locator('[data-testid="add-workflow-template-newVisitor"]').click();
+    // Creating from a template navigates straight to the new board, pre-seeded with steps.
+    await expect(page).toHaveURL(/\/serving\/tasks\/workflows\/[\w-]+$/, { timeout: 15000 });
+    await recoverFromViteError(page, page.locator('[data-testid="workflow-board"]'));
+    await expect(page.locator('[data-testid="workflow-board"]').getByText('Send welcome email').first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test('adding a group to a step creates a card per member', async () => {
+    await openSeedBoard(page);
+    const countLocator = page.locator('[data-testid="step-count-WFS00000001"]');
+    const before = parseInt(((await countLocator.innerText()).trim() || '0'), 10);
+
+    await page.locator('[data-testid="add-card-WFS00000001"]').click();
+    // Switch the picker to the Group tab and choose "Young Families Group" (GRP00000014, ~6 members).
+    await page.getByRole('dialog').getByRole('tab', { name: /Group/i }).click();
+    const search = page.getByRole('dialog').getByRole('textbox').first();
+    const groupButton = page.locator('[data-testid="select-group-button-GRP00000014"]');
+    // Retry the search until the row appears (the group list loads asynchronously).
+    await expect(async () => {
+      await search.fill('Young Families');
+      await search.press('Enter');
+      await expect(groupButton).toBeVisible({ timeout: 1500 });
+    }).toPass({ timeout: 15000 });
+    await groupButton.click();
+
+    await openSeedBoard(page);
+    const after = parseInt(((await page.locator('[data-testid="step-count-WFS00000001"]').innerText()).trim() || '0'), 10);
+    expect(after).toBeGreaterThan(before);
+  });
+
+  test('pinned assignment keeps the owner across step changes', async () => {
+    await openSeedBoard(page);
+    // TSK00000104 (James Wilson) is on "Connect to Group" assigned to Demo User.
+    await page.locator('[data-testid="workflow-card-TSK00000104"]').click();
+    await page.locator('[data-testid="workflow-card-drawer"]').waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('[data-testid="card-pin-button"]').click();
+    // Move it to "Call" — whose default assignee is Michael Davis. Pinned should keep Demo User.
+    await page.locator('[data-testid="card-step-select"]').click();
+    await page.getByRole('option', { name: 'Call' }).click();
+
+    await openSeedBoard(page);
+    const moved = page.locator('[data-testid="workflow-column-WFS00000002"] [data-testid="workflow-card-TSK00000104"]');
+    await expect(moved).toBeVisible({ timeout: 10000 });
+    await expect(moved).toContainText('Demo User');
+    await expect(page.locator('[data-testid="card-pinned-TSK00000104"]')).toBeVisible();
+  });
+
+  test('skip advances and send back retreats a card', async () => {
+    await openSeedBoard(page);
+    // TSK00000102 is on "Greet" (WFS1). Skip -> "Call" (WFS2).
+    await page.locator('[data-testid="workflow-card-TSK00000102"]').click();
+    await page.locator('[data-testid="workflow-card-drawer"]').waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('[data-testid="card-skip-button"]').click();
+    await openSeedBoard(page);
+    await expect(page.locator('[data-testid="workflow-column-WFS00000002"] [data-testid="workflow-card-TSK00000102"]')).toBeVisible({ timeout: 10000 });
+
+    // Now send it back -> "Greet" (WFS1).
+    await page.locator('[data-testid="workflow-card-TSK00000102"]').click();
+    await page.locator('[data-testid="workflow-card-drawer"]').waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('[data-testid="card-sendback-button"]').click();
+    await openSeedBoard(page);
+    await expect(page.locator('[data-testid="workflow-column-WFS00000001"] [data-testid="workflow-card-TSK00000102"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('bulk complete removes selected cards from the board', async () => {
+    await openSeedBoard(page);
+    await page.locator('[data-testid="card-select-TSK00000102"]').getByRole('checkbox').check();
+    await page.locator('[data-testid="card-select-TSK00000103"]').getByRole('checkbox').check();
+    await page.locator('[data-testid="bulk-action-bar"]').waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('[data-testid="bulk-complete-button"]').click();
+    await openSeedBoard(page);
+    await expect(page.locator('[data-testid="workflow-card-TSK00000102"]')).toHaveCount(0, { timeout: 10000 });
+    await expect(page.locator('[data-testid="workflow-card-TSK00000103"]')).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test('permission tiers are enforced at the API (view / edit-assigned / admin)', async () => {
+    const API_BASE = 'http://localhost:8084';
+    const ctx = await request.newContext();
+    // Log in as the seeded "Workflow Volunteer" — DoingApi/Doing/View only, person PER00000069.
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'volunteer@b1.church', password: 'password' } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const jwt = body.userChurches?.[0]?.jwt as string;
+    expect(jwt).toBeTruthy();
+    const auth = { headers: { Authorization: 'Bearer ' + jwt } };
+
+    // View tier: can load the board.
+    const board = await ctx.get(`${API_BASE}/doing/tasks/board/WFL00000001`, auth);
+    expect(board.status()).toBe(200);
+
+    // Edit-assigned tier: can act on a card assigned to them (TSK00000105 -> PER00000069)...
+    const own = await ctx.post(`${API_BASE}/doing/tasks/TSK00000105/pin`, { ...auth, data: { pinned: true } });
+    expect(own.status()).toBe(200);
+    // ...but NOT a card assigned to someone else (TSK00000104 -> Demo User).
+    const other = await ctx.post(`${API_BASE}/doing/tasks/TSK00000104/pin`, { ...auth, data: { pinned: true } });
+    expect(other.status()).toBe(401);
+
+    // Admin tier: managing workflow definitions is denied without Doing/Admin.
+    const dup = await ctx.post(`${API_BASE}/doing/workflows/WFL00000001/duplicate`, { ...auth, data: {} });
+    expect(dup.status()).toBe(401);
+
+    await ctx.dispose();
   });
 });

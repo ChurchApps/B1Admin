@@ -48,6 +48,7 @@ export interface WorkflowCardInterface extends TaskInterface {
   dueDate?: Date;
   snoozedUntil?: Date;
   sort?: number;
+  pinnedAssignment?: boolean;
 }
 
 // Board payload returned by GET /doing/tasks/board/:workflowId

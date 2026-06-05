@@ -12,6 +12,10 @@ interface Props {
   workflowId: string;
   step: WorkflowStepInterface;
   cards: WorkflowCardInterface[];
+  canEdit: boolean;
+  canManage: boolean;
+  selectedIds: Set<string>;
+  onToggleSelect: (cardId: string) => void;
   onDropCard: (cardId: string, stepId: string) => void;
   onOpenCard: (card: WorkflowCardInterface) => void;
   onEditStep: (step: WorkflowStepInterface) => void;
@@ -24,9 +28,15 @@ export const WorkflowStepColumn = (props: Props) => {
 
   const handleAddCard = async (contentType: string, contentId: string, label: string) => {
     setShowPicker(false);
-    if (contentType !== "person") return;
-    // Drop the card directly on this column's step (not the workflow's first step).
-    await ApiHelper.post("/tasks/addToWorkflow", { workflowId: props.workflowId, stepId: step.id, associatedWith: { type: "person", id: contentId, label } }, "DoingApi");
+    if (contentType === "person") {
+      // Drop the card directly on this column's step (not the workflow's first step).
+      await ApiHelper.post("/tasks/addToWorkflow", { workflowId: props.workflowId, stepId: step.id, associatedWith: { type: "person", id: contentId, label } }, "DoingApi");
+    } else if (contentType === "group") {
+      // Adding a group expands to its members — one bulk request creates a card per person on this step.
+      const members: { personId?: string; person?: { name?: { display?: string } } }[] = await ApiHelper.get("/groupmembers?groupId=" + contentId, "MembershipApi");
+      const people = members.filter((m) => m.personId).map((m) => ({ id: m.personId, label: m.person?.name?.display }));
+      await ApiHelper.post("/tasks/bulkAddToWorkflow", { workflowId: props.workflowId, stepId: step.id, people }, "DoingApi");
+    }
     props.onChanged();
   };
 
@@ -37,24 +47,32 @@ export const WorkflowStepColumn = (props: Props) => {
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{step.name}</Typography>
           <Chip size="small" label={cards.length} data-testid={"step-count-" + step.id} />
         </Stack>
-        <IconButton size="small" onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} aria-label={Locale.label("tasks.workflowStepEdit.editStep")}><EditIcon fontSize="small" /></IconButton>
+        {props.canManage && (
+          <IconButton size="small" onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} aria-label={Locale.label("tasks.workflowStepEdit.editStep")}><EditIcon fontSize="small" /></IconButton>
+        )}
       </Stack>
 
       <DroppableWrapper accept="workflowCard" onDrop={(d: any) => props.onDropCard(d.data.id, step.id)}>
         <Box sx={{ minHeight: 60 }}>
           {cards.map((card) => (
             <DraggableWrapper key={card.id} dndType="workflowCard" data={card} onDoubleClick={() => props.onOpenCard(card)}>
-              <Box onClick={() => props.onOpenCard(card)}>
-                <WorkflowCard card={card} />
-              </Box>
+              <WorkflowCard
+                card={card}
+                selectable={props.canEdit}
+                selected={props.selectedIds.has(card.id)}
+                onToggleSelect={() => props.onToggleSelect(card.id)}
+                onOpen={() => props.onOpenCard(card)}
+              />
             </DraggableWrapper>
           ))}
         </Box>
       </DroppableWrapper>
 
-      <Button fullWidth size="small" startIcon={<AddIcon />} data-testid={"add-card-" + step.id} onClick={() => setShowPicker(true)} sx={{ mt: 1, textTransform: "none" }}>
-        {Locale.label("tasks.workflowBoard.addCard")}
-      </Button>
+      {props.canEdit && (
+        <Button fullWidth size="small" startIcon={<AddIcon />} data-testid={"add-card-" + step.id} onClick={() => setShowPicker(true)} sx={{ mt: 1, textTransform: "none" }}>
+          {Locale.label("tasks.workflowBoard.addCard")}
+        </Button>
+      )}
 
       {showPicker && <ContentPicker onClose={() => setShowPicker(false)} onSelect={handleAddCard} />}
     </Box>

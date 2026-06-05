@@ -1,24 +1,44 @@
-import { Grid, Typography, Card, CardContent, Stack, Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Grid, Typography, Card, CardContent, Stack, Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import React from "react";
-import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "./interfaces";
 import { useQuery } from "@tanstack/react-query";
-import { ViewKanban as WorkflowsIcon, Add as AddIcon, Assignment as MyCardsIcon } from "@mui/icons-material";
+import { ViewKanban as WorkflowsIcon, Add as AddIcon, Assignment as MyCardsIcon, ContentCopy as DuplicateIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { canViewWorkflows, canManageWorkflows } from "./permissions";
+
+interface TemplateInterface { key: string; name: string; description: string }
 
 export const WorkflowsPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
+  const [addAnchor, setAddAnchor] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
-  const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [] });
-  const categories = useQuery<WorkflowCategoryInterface[]>({ queryKey: ["/workflowCategories", "DoingApi"], placeholderData: [] });
+  const canView = canViewWorkflows();
+  const canManage = canManageWorkflows();
+
+  const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [], enabled: canView });
+  const categories = useQuery<WorkflowCategoryInterface[]>({ queryKey: ["/workflowCategories", "DoingApi"], placeholderData: [], enabled: canView });
+  const templates = useQuery<TemplateInterface[]>({ queryKey: ["/workflows/templates", "DoingApi"], placeholderData: [], enabled: canManage });
 
   const handleAdded = (workflow: WorkflowInterface) => {
     setShowAdd(false);
     workflows.refetch();
     if (workflow?.id) navigate("/serving/tasks/workflows/" + workflow.id);
+  };
+
+  const createFromTemplate = async (templateKey: string) => {
+    setAddAnchor(null);
+    const workflow: WorkflowInterface = await ApiHelper.post("/workflows/fromTemplate", { templateKey }, "DoingApi");
+    if (workflow?.id) navigate("/serving/tasks/workflows/" + workflow.id);
+  };
+
+  const duplicate = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    await ApiHelper.post("/workflows/" + id + "/duplicate", {}, "DoingApi");
+    workflows.refetch();
   };
 
   const getGroupedList = () => {
@@ -41,7 +61,14 @@ export const WorkflowsPage = () => {
             <Typography variant="subtitle2" color="text.secondary" sx={{ px: 1, py: 0.5, fontWeight: 600 }}>{group}</Typography>
             <List sx={{ p: 0 }}>
               {groups[group].map((workflow) => (
-                <ListItem key={workflow.id} disablePadding>
+                <ListItem
+                  key={workflow.id}
+                  disablePadding
+                  secondaryAction={canManage ? (
+                    <Tooltip title={Locale.label("tasks.workflowsPage.duplicate")}>
+                      <IconButton edge="end" data-testid={"duplicate-workflow-" + workflow.id} onClick={(e) => duplicate(e, workflow.id)}><DuplicateIcon fontSize="small" /></IconButton>
+                    </Tooltip>
+                  ) : undefined}>
                   <ListItemButton
                     data-testid={"workflow-row-" + workflow.id}
                     onClick={() => navigate("/serving/tasks/workflows/" + workflow.id)}
@@ -62,6 +89,8 @@ export const WorkflowsPage = () => {
     );
   };
 
+  if (!canView) return <Box sx={{ p: 4 }}><Typography>{Locale.label("common.noAccess")}</Typography></Box>;
+
   return (
     <>
       <PageHeader title={Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowsPage.subtitle")}>
@@ -69,11 +98,20 @@ export const WorkflowsPage = () => {
           <Button variant="outlined" startIcon={<MyCardsIcon />} onClick={() => navigate("/serving/tasks/workflows/mine")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF" } }}>
             {Locale.label("tasks.myCards.title")}
           </Button>
-          <Button variant="outlined" startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={() => setShowAdd(true)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
-            {Locale.label("tasks.workflowsPage.addWorkflow")}
-          </Button>
+          {canManage && (
+            <Button variant="outlined" startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={(e) => setAddAnchor(e.currentTarget)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
+              {Locale.label("tasks.workflowsPage.addWorkflow")}
+            </Button>
+          )}
         </Stack>
       </PageHeader>
+
+      <Menu anchorEl={addAnchor} open={Boolean(addAnchor)} onClose={() => setAddAnchor(null)}>
+        <MenuItem data-testid="add-workflow-blank" onClick={() => { setAddAnchor(null); setShowAdd(true); }}>{Locale.label("tasks.workflowsPage.blankWorkflow")}</MenuItem>
+        {(templates.data || []).map((t) => (
+          <MenuItem key={t.key} data-testid={"add-workflow-template-" + t.key} onClick={() => createFromTemplate(t.key)}>{t.name}</MenuItem>
+        ))}
+      </Menu>
 
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>
