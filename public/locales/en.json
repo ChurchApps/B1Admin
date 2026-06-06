@@ -2737,6 +2737,19 @@
       "upload": "Upload",
       "uploadImageAria": "Upload image"
     },
+    "landing": {
+      "configuration": "Configuration",
+      "developerSubtitle": "API keys, webhooks, connected apps",
+      "campusesSubtitle": "Physical locations",
+      "campusesCount": "{count} locations",
+      "campusesOne": "1 location",
+      "domainsCount": "{count} connected",
+      "domainsOne": "1 connected",
+      "domainsNone": "No custom domains",
+      "givingProvider": "{provider} · {currency}",
+      "notConfigured": "Not configured",
+      "notSet": "Not set"
+    },
     "manageChurch": {
       "auditLog": "Audit Log",
       "editSettings": "Edit Settings",
@@ -2779,6 +2792,9 @@
     },
     "rolePermissions": {
       "permEdit": "Edit Permissions"
+    },
+    "rolesPage": {
+      "subtitle": "Manage roles and permissions"
     },
     "roles": {
       "acc": "Accounting",
@@ -2908,6 +2924,7 @@
       "copy": "Copy",
       "expires": "Expires",
       "expiresHelp": "Leave blank for a key that never expires.",
+      "generalScopes": "general",
       "keyIntro": "Copy your API key now — it will not be shown again.",
       "keyTitle": "API Key",
       "name": "Name",

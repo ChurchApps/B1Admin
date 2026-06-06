@@ -46,7 +46,8 @@ export const Header: React.FC = () => {
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/site/pages", label: Locale.label("common.website"), icon: "language" });
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) menuItems.push({ url: "/mobile", label: Locale.label("common.mobile"), icon: "phone_iphone" });
 
-    if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
+    else if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("components.wrapper.set"), icon: "settings" });
     else if (formPermission || isFormMember) menuItems.push({ url: "/forms", label: Locale.label("components.wrapper.set"), icon: "settings" });
     // if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) tabs.push(<NavItem key="/admin" url="/admin" label={Locale.label("components.wrapper.servAdmin")} icon="admin_panel_settings" selected={selectedTab === "admin"} />);
     return menuItems;
@@ -96,7 +97,7 @@ export const Header: React.FC = () => {
         "/serving/tasks": "nav-item-tasks",
         "/site": "nav-item-site",
         "/settings": "nav-item-settings",
-        "/settings/developer": "nav-item-developer",
+        "/settings/roles": "nav-item-roles",
         "/attendance": "nav-item-attendance",
         "/forms": "nav-item-forms",
         "/admin": "nav-item-admin",
@@ -128,7 +129,7 @@ export const Header: React.FC = () => {
             donations: "nav-item-donations",
             plans: "nav-item-plans",
             tasks: "nav-item-tasks",
-            developer: "nav-item-developer",
+            roles: "nav-item-roles",
             settings: "nav-item-settings",
             attendance: "nav-item-attendance",
             forms: "nav-item-forms",

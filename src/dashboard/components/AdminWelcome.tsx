@@ -85,7 +85,7 @@ export const AdminWelcome: React.FC = () => {
             <FeatureCard icon={<Groups fontSize="small" />} title={Locale.label("dashboard.adminWelcome.createGroupTitle")} description={Locale.label("dashboard.adminWelcome.createGroupDesc")} onClick={() => handleCardClick("group", hasGroups, "/groups")} />
           </Grid>
           <Grid size={GRID_SIZES.threeColumn}>
-            <FeatureCard icon={<Lock fontSize="small" />} title={Locale.label("dashboard.adminWelcome.inviteTeamTitle")} description={Locale.label("dashboard.adminWelcome.inviteTeamDesc")} linkUrl="/settings#roles" />
+            <FeatureCard icon={<Lock fontSize="small" />} title={Locale.label("dashboard.adminWelcome.inviteTeamTitle")} description={Locale.label("dashboard.adminWelcome.inviteTeamDesc")} linkUrl="/settings/roles" />
           </Grid>
         </Grid>
 

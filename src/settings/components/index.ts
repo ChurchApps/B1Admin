@@ -2,6 +2,11 @@ export * from "../../components";
 export { ChurchSettingsEdit } from "./ChurchSettingsEdit";
 export { SettingsSectionHeader } from "./SettingsSectionHeader";
 export { CampusEdit } from "./CampusEdit";
+export { CampusesSection } from "./CampusesSection";
+export { DeveloperSection } from "./DeveloperSection";
+export { SettingsConfigList } from "./SettingsConfigList";
+export { SettingsToggleSection } from "./SettingsToggleSection";
+export { ChurchInfoSection } from "./ChurchInfoSection";
 
 export { RoleEdit } from "./RoleEdit";
 export { RoleCheck } from "./RoleCheck";
