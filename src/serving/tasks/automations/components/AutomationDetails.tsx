@@ -7,7 +7,8 @@ import { AutomationEdit } from "./AutomationEdit";
 import { ConditionDetails } from "./ConditionDetails";
 import { ConjunctionEdit } from "./ConjunctionEdit";
 import { ConditionEdit } from "./ConditionEdit";
-import { Card, CardContent, Typography, Stack, Box, Button, IconButton, Divider, List, ListItem, Chip } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Divider, List, ListItem, Chip } from "@mui/material";
+import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import {
   SettingsSuggest as AutomationsIcon,
   Edit as EditIcon,
@@ -85,9 +86,7 @@ export const AutomationDetails = (props: Props) => {
                       </Typography>
                     </Stack>
                   </Box>
-                  <IconButton size="small" onClick={() => setEditAction(action)} sx={{ flexShrink: 0 }}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
+                  <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditAction(action)} sx={{ flexShrink: 0 }} />
                 </Stack>
               </ListItem>
             );
@@ -100,9 +99,7 @@ export const AutomationDetails = (props: Props) => {
                   <Box sx={{ flex: 1, minWidth: 0 }}>
                     <Typography variant="body2" sx={{ fontWeight: 600 }}>{Locale.label("tasks.actionEdit.addToWorkflow")}</Typography>
                   </Box>
-                  <IconButton size="small" onClick={() => setEditAction(action)} sx={{ flexShrink: 0 }}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
+                  <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditAction(action)} sx={{ flexShrink: 0 }} />
                 </Stack>
               </ListItem>
             );
@@ -184,9 +181,7 @@ export const AutomationDetails = (props: Props) => {
                   {Locale.label("tasks.automationDetails.auto")}
                 </Typography>
               </Stack>
-              <IconButton size="small" onClick={() => setEditDetails(true)}>
-                <EditIcon fontSize="small" />
-              </IconButton>
+              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setEditDetails(true)} />
             </Box>
 
             <Divider />
@@ -222,9 +217,7 @@ export const AutomationDetails = (props: Props) => {
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {Locale.label("tasks.automationDetails.acts")}:
                 </Typography>
-                <Button size="small" startIcon={<AddIcon />} onClick={() => setEditAction({ automationId: automation.id, actionType: "task" })} sx={{ textTransform: "none" }}>
-                  {Locale.label("tasks.automationDetails.addAct")}
-                </Button>
+                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => setEditAction({ automationId: automation.id, actionType: "task" })} />
               </Stack>
               {getActions()}
             </Box>

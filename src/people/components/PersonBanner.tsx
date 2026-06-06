@@ -1,6 +1,6 @@
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper, Locale } from "@churchapps/apphelper";
-import { Typography, IconButton, Stack, Chip, Tooltip, Box } from "@mui/material";
+import { Typography, Stack, Chip, Box } from "@mui/material";
 import {
   Phone as PhoneIcon,
   Email as EmailIcon,
@@ -9,6 +9,7 @@ import {
   ViewKanban as WorkflowIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo, useState, useEffect } from "react";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { StatusChip } from "../../components";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
 import { AddToWorkflowDialog } from "./AddToWorkflowDialog";
@@ -170,11 +171,7 @@ export const PersonBanner = memo((props: Props) => {
                 {person?.name?.display}
               </Typography>
               {canEdit && (
-                <Tooltip title={Locale.label("people.personBanner.addToWorkflow")}>
-                  <IconButton size="small" sx={{ color: "#FFF" }} data-testid="add-to-workflow-button" onClick={() => setShowWorkflowDialog(true)}>
-                    <WorkflowIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
+                <AppIconButton label={Locale.label("people.personBanner.addToWorkflow")} icon={<WorkflowIcon />} tone="header" data-testid="add-to-workflow-button" onClick={() => setShowWorkflowDialog(true)} />
               )}
             </Stack>
             <Stack direction="row" flexWrap="wrap" gap={1}>
@@ -214,11 +211,7 @@ export const PersonBanner = memo((props: Props) => {
                 {info.value}
               </Typography>
               {info.showTextButton && (
-                <Tooltip title={Locale.label("people.personBanner.sendTextMessage")}>
-                  <IconButton size="small" sx={{ color: "#FFF", p: 0.25 }} onClick={() => setShowTextDialog(true)}>
-                    <SmsIcon sx={{ fontSize: 14 }} />
-                  </IconButton>
-                </Tooltip>
+                <AppIconButton label={Locale.label("people.personBanner.sendTextMessage")} icon={<SmsIcon />} tone="header" sx={{ p: 0.25 }} onClick={() => setShowTextDialog(true)} />
               )}
             </Stack>
           ))}

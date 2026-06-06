@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, Chip, Grid, Icon, IconButton, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Grid, Icon, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
   Add as AddIcon,
@@ -23,6 +23,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { PermissionDenied } from "../components";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const PagesPage = () => {
   const theme = useTheme();
@@ -39,15 +40,15 @@ export const PagesPage = () => {
     if (item.children && item.children.length > 0) {
       return (
         <Box sx={{ display: "flex", alignItems: "center", ml: level * 2 }}>
-          <IconButton
-            size="small"
+          <AppIconButton
+            label={item.expanded ? Locale.label("common.collapse", "Collapse") : Locale.label("common.expand", "Expand")}
+            icon={item.expanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
             onClick={() => {
               item.expanded = !item.expanded;
               setPageTree([...pageTree]);
             }}
-            sx={{ p: 0.5 }}>
-            {item.expanded ? <ExpandMoreIcon fontSize="small" /> : <ChevronRightIcon fontSize="small" />}
-          </IconButton>
+            sx={{ p: 0.5 }}
+          />
         </Box>
       );
     } else return <Box sx={{ width: 32, ml: level * 2 }}></Box>;
@@ -60,17 +61,14 @@ export const PagesPage = () => {
         <TableRow key={item.url || item.pageId || item.title} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
           <TableCell sx={{ width: 120 }}>
             {item.custom ? (
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<EditIcon />}
+              <AppIconButton
+                label={Locale.label("common.edit")}
+                icon={<EditIcon />}
                 onClick={() => {
                   navigate("/site/pages/preview/" + item.pageId);
                 }}
                 data-testid="edit-page-button"
-                sx={{ textTransform: "none", minWidth: "auto", fontSize: "0.75rem" }}>
-                {Locale.label("common.edit")}
-              </Button>
+              />
             ) : (
               <Button
                 variant="outlined"
@@ -98,14 +96,12 @@ export const PagesPage = () => {
                 onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}>
                 {item.url}
               </Typography>
-              <Tooltip title={Locale.label("site.pagesPage.previewPage")}>
-                <IconButton
-                  size="small"
-                  onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}
-                  sx={{ p: 0.5 }}>
-                  <VisibilityIcon sx={{ fontSize: 16 }} />
-                </IconButton>
-              </Tooltip>
+              <AppIconButton
+                label={Locale.label("site.pagesPage.previewPage")}
+                icon={<VisibilityIcon sx={{ fontSize: 16 }} />}
+                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}
+                sx={{ p: 0.5 }}
+              />
               {!item.custom && <Chip label={Locale.label("site.pagesPage.generated")} size="small" color="default" sx={{ fontSize: "0.7rem", height: 18 }} />}
             </Stack>
           </TableCell>
@@ -284,9 +280,7 @@ export const PagesPage = () => {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
               <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
               <div style={{ flexShrink: 0, marginLeft: 8 }}>
-                <Tooltip title={Locale.label("site.pagesPage.addNavigationLink")}>
-                  <IconButton size="small" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" aria-label={Locale.label("site.pagesPage.addNavigationLink")}><AddIcon fontSize="small" /></IconButton>
-                </Tooltip>
+                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" />
               </div>
             </div>
             <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} />

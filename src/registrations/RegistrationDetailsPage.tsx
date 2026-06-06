@@ -12,8 +12,6 @@ import {
   Stack,
   Chip,
   Button,
-  IconButton,
-  Tooltip,
   LinearProgress,
   Grid
 } from "@mui/material";
@@ -27,6 +25,7 @@ import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from 
 import { type EventInterface, type RegistrationInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const RegistrationDetailsPage = () => {
   const params = useParams();
@@ -109,13 +108,9 @@ export const RegistrationDetailsPage = () => {
         {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
           <>
             {reg.status !== "cancelled" && (
-              <Tooltip title={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} arrow>
-                <IconButton size="small" onClick={() => handleCancel(reg.id)} color="warning"><CancelIcon fontSize="small" /></IconButton>
-              </Tooltip>
+              <AppIconButton label={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} icon={<CancelIcon />} onClick={() => handleCancel(reg.id)} />
             )}
-            <Tooltip title={Locale.label("registrations.registrationDetailsPage.delete")} arrow>
-              <IconButton size="small" onClick={() => handleDelete(reg.id)} color="error"><DeleteIcon fontSize="small" /></IconButton>
-            </Tooltip>
+            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleDelete(reg.id)} />
           </>
         )}
       </TableCell>

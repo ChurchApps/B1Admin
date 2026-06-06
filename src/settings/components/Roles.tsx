@@ -1,8 +1,10 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { DisplayBox, UserHelper, ApiHelper, Permissions, type ChurchInterface, type RoleInterface, type RolePermissionInterface, Locale } from "@churchapps/apphelper";
-import { Button, Divider, Icon, IconButton, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Divider, Icon, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   selectRoleId: (id: string) => void;
@@ -104,17 +106,17 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
 
     return (
       <>
-        <IconButton
-          aria-label="addButton"
+        <AppIconButton
+          label={Locale.label("common.add")}
+          icon={<AddIcon />}
+          tone="card"
           id="addBtnGroup"
           data-cy="add-button"
           aria-controls={open ? "add-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="true"
           onClick={handleClick}
-          data-testid="add-role-button">
-          <Icon color="primary">add</Icon>
-        </IconButton>
+          data-testid="add-role-button" />
         <Menu id="add-menu" MenuListProps={{ "aria-labelledby": "addBtnGroup" }} anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem data-cy="add-campus" onClick={handleAddCustomRole} data-testid="add-custom-role-menu-item" aria-label={Locale.label("settings.roles.addCustomRoleAria")}>
             <Icon sx={{ mr: "3px" }}>lock</Icon> {Locale.label("settings.roles.custAdd")}
@@ -160,19 +162,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
 
     sortedRoles.forEach((role) => {
       const editLink = canEdit ? (
-        <Button
-          size="small"
-          variant="outlined"
-          startIcon={<Icon>edit</Icon>}
-          onClick={() => {
-            selectRoleId(role.id);
-          }}
-          data-testid="edit-role-button"
-          aria-label={Locale.label("settings.roles.editRoleAria")}
-          sx={{ minWidth: "auto" }}
-        >
-          {Locale.label("common.edit")}
-        </Button>
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => { selectRoleId(role.id); }} data-testid="edit-role-button" />
       ) : null;
       result.push(
         <TableRow key={role.id}>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { ApiHelper, type GroupInterface, Locale } from "@churchapps/apphelper";
-import { TextField, Button, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, IconButton, TableContainer, Paper } from "@mui/material";
+import { TextField, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, TableContainer, Paper } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { Search as SearchIcon, Group as GroupIcon, Check as CheckIcon } from "@mui/icons-material";
 
 interface Props {
@@ -68,17 +69,14 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
           </Stack>
         </TableCell>
         <TableCell align="right">
-          <IconButton
-            size="small"
-            color="primary"
+          <AppIconButton
+            label={Locale.label("tasks.selectGroup.selectGroupAria")}
+            icon={<CheckIcon />}
             onClick={(e) => {
               e.stopPropagation();
               handleAdd(sr);
             }}
-            data-testid={`select-group-button-${sr.id}`}
-            aria-label={Locale.label("tasks.selectGroup.selectGroupAria")}>
-            <CheckIcon />
-          </IconButton>
+            data-testid={`select-group-button-${sr.id}`} />
         </TableCell>
       </TableRow>
     );
@@ -97,19 +95,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <Button
-                variant="contained"
-                id="searchButton"
-                data-cy="search-button"
-                onClick={handleSearch}
-                startIcon={<SearchIcon />}
-                sx={{
-                  borderRadius: 2,
-                  textTransform: "none",
-                  fontWeight: 600
-                }}>
-                {Locale.label("common.search")}
-              </Button>
+              <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-cy="search-button" onClick={handleSearch} />
             </InputAdornment>
           )
         }}

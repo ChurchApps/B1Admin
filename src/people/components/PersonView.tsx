@@ -2,7 +2,9 @@ import React, { memo, useMemo, useState, useEffect } from "react";
 import { AssociatedForms } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, DisplayBox, DateHelper, Locale, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
-import { Button, Grid, Icon, Stack, Table, TableBody, TableRow, TableCell, Chip } from "@mui/material";
+import { Grid, Icon, Stack, Table, TableBody, TableRow, TableCell, Chip } from "@mui/material";
+import { Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { formattedPhoneNumber } from "./PersonEdit";
 
 interface Props {
@@ -222,7 +224,9 @@ export const PersonView = memo(({ person, editFunction, updatedFunction, showFor
       editContent={editFunction || headerActions ? (
         <Stack direction="row" spacing={1} alignItems="center">
           {headerActions}
-          {editFunction && <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={editFunction} data-testid="edit-person-button" sx={{ minWidth: "auto" }}>{Locale.label("people.personView.edit")}</Button>}
+          {editFunction && (
+            <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" data-testid="edit-person-button" onClick={editFunction} />
+          )}
         </Stack>
       ) : undefined}
       footerContent={showForms ? <AssociatedForms contentType="person" contentId={person?.id} formSubmissions={person?.formSubmissions} updatedFunction={updatedFunction} /> : undefined}>

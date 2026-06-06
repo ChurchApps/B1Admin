@@ -3,6 +3,8 @@ import React, { memo, useCallback, useMemo } from "react";
 import { ServiceEdit, ServiceTimeEdit } from "./";
 import { Link } from "react-router-dom";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Typography, Button, Stack } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import {
   type AttendanceInterface,
   type CampusInterface,
@@ -248,19 +250,12 @@ export const AttendanceSetup = memo(() => {
       <TableRow key={key}>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}>
-          <Button
-            size="small"
-            startIcon={<Icon sx={{ fontSize: 16 }}>add</Icon>}
+          <AppIconButton
+            label={Locale.label("common.add")}
+            icon={<AddIcon />}
             onClick={() => selectService({ id: "", campusId: campus.id, name: "" })}
-            sx={{
-              color: "text.secondary",
-              textTransform: "none",
-              fontSize: "0.85rem",
-              pl: 2,
-              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" }
-            }}>
-            {Locale.label("attendance.attendanceSetup.addService")}
-          </Button>
+            sx={{ ml: 2 }}
+          />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
@@ -273,19 +268,12 @@ export const AttendanceSetup = memo(() => {
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}>
-          <Button
-            size="small"
-            startIcon={<Icon sx={{ fontSize: 14 }}>add</Icon>}
+          <AppIconButton
+            label={Locale.label("common.add")}
+            icon={<AddIcon />}
             onClick={() => selectServiceTime({ id: "", serviceId: service.id, name: "" })}
-            sx={{
-              color: "text.secondary",
-              textTransform: "none",
-              fontSize: "0.8rem",
-              pl: 4,
-              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" }
-            }}>
-            {Locale.label("attendance.attendanceSetup.addServiceTime")}
-          </Button>
+            sx={{ ml: 4 }}
+          />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>

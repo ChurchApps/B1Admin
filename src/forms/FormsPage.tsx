@@ -9,6 +9,7 @@ import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import { SmartTabs } from "../components/ui";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const FormsPage = () => {
   const [selectedFormId, setSelectedFormId] = React.useState("notset");
@@ -44,7 +45,7 @@ export const FormsPage = () => {
         UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || (UserHelper.checkAccess(Permissions.membershipApi.forms.edit) && form.contentType !== "form") || form?.action === "admin";
       const editLink =
         canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" startIcon={<EditIcon />} onClick={() => setSelectedFormId(form.id)} data-testid={`edit-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.editFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.edit")}</Button>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setSelectedFormId(form.id)} data-testid={`edit-form-button-${form.id}`} />
         ) : null;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;

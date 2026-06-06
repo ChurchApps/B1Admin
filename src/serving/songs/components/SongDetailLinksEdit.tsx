@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type SongDetailLinkInterface } from "../../../helpers";
-import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Stack, Typography, Box, IconButton } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Stack, Typography, Box } from "@mui/material";
 import { Link as LinkIcon, Done as DoneIcon, Add as AddIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 
 interface Props {
   songDetailId: string;
@@ -132,24 +133,8 @@ export const SongDetailLinksEdit = (props: Props) => {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <IconButton
-              onClick={handleAdd}
-              size="small"
-              sx={{
-                color: "primary.main",
-                "&:hover": { backgroundColor: "primary.light" }
-              }}>
-              <AddIcon fontSize="small" />
-            </IconButton>
-            <IconButton
-              onClick={props.reload}
-              size="small"
-              sx={{
-                color: "success.main",
-                "&:hover": { backgroundColor: "success.light" }
-              }}>
-              <DoneIcon fontSize="small" />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={handleAdd} />
+            <AppIconButton label={Locale.label("common.done")} icon={<DoneIcon />} tone="card" onClick={props.reload} />
           </Stack>
         </Stack>
 

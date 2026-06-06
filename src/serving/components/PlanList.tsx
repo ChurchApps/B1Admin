@@ -1,6 +1,7 @@
 import React, { useCallback, memo } from "react";
 import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, Button, Menu, MenuItem, ListItemIcon, ListItemText, FormControlLabel, Switch } from "@mui/material";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
@@ -292,22 +293,7 @@ export const PlanList = memo((props: Props) => {
 
                 {canEdit && (
                   <Box sx={{ flexShrink: 0 }}>
-                    <Button
-                      size="small"
-                      startIcon={<EditIcon />}
-                      onClick={() => setPlan(p)}
-                      variant="outlined"
-                      sx={{
-                        color: "primary.main",
-                        borderColor: "primary.main",
-                        whiteSpace: "nowrap",
-                        "&:hover": {
-                          backgroundColor: "primary.light",
-                          borderColor: "primary.dark"
-                        }
-                      }}>
-                      {Locale.label("common.edit")}
-                    </Button>
+                    <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setPlan(p)} />
                   </Box>
                 )}
               </Stack>

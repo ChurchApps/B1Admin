@@ -1,5 +1,6 @@
 import React from "react";
-import { Icon, IconButton } from "@mui/material";
+import { Icon } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import {
   type PlanInterface,
   type PositionInterface,
@@ -11,6 +12,7 @@ import {
   DisplayBox,
   Locale
 } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { TimeEdit } from "./TimeEdit";
 
 interface Props {
@@ -51,9 +53,7 @@ export const TimeList = (props: Props) => {
   };
 
   const getAddTimeLink = () => canEdit ? (
-    <IconButton aria-label={Locale.label("plans.timeList.addTimeAria")} id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button">
-      <Icon color="primary">add</Icon>
-    </IconButton>
+    <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button" />
   ) : null;
 
   const getRows = () => {

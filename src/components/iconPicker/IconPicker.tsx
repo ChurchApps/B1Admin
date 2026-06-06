@@ -8,12 +8,12 @@ import {
   Icon,
   Box,
   Typography,
-  IconButton,
   Stack,
   Pagination
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../ui/AppIconButton";
 import { IconNamesList } from "./IconNamesList";
 
 interface Props {
@@ -117,13 +117,7 @@ export const IconPicker: React.FC<Props> = (props) => {
               </Typography>
             </Box>
           </Stack>
-          <IconButton
-            onClick={props.onClose}
-            sx={{ color: "#FFF" }}
-            size="small"
-          >
-            <CloseIcon />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} tone="header" onClick={props.onClose} />
         </Stack>
       </DialogTitle>
 

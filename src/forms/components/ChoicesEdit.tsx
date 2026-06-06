@@ -1,7 +1,9 @@
 import React from "react";
 import { type QuestionInterface } from "@churchapps/helpers";
 import { Locale } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, TableHead, FormLabel, TextField, Button } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, FormLabel, TextField } from "@mui/material";
+import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   question: QuestionInterface;
@@ -48,9 +50,7 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
             <TableCell>{c.value}</TableCell>
             <TableCell>{c.text}</TableCell>
             <TableCell>
-              <Button variant="contained" size="small" onClick={handleRemove} data-index={i}>
-                {Locale.label("common.remove")}
-              </Button>
+              <AppIconButton destructive label={Locale.label("common.remove")} icon={<DeleteIcon />} onClick={handleRemove} data-index={i} />
             </TableCell>
           </TableRow>
         );
@@ -80,9 +80,7 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
               <TextField label={Locale.label("forms.choicesEdit.txt")} fullWidth size="small" name="choiceText" data-cy="text" value={choiceText} onChange={handleChange} placeholder={Locale.label("placeholders.choices.text")} />
             </TableCell>
             <TableCell>
-              <Button id="addQuestionChoiceButton" data-cy="add-button" variant="contained" size="small" onClick={handleAdd}>
-                {Locale.label("common.add")}
-              </Button>
+              <AppIconButton id="addQuestionChoiceButton" data-cy="add-button" label={Locale.label("common.add")} icon={<AddIcon />} onClick={handleAdd} />
             </TableCell>
           </TableRow>
         </TableBody>

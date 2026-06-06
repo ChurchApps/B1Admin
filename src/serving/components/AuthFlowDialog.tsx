@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
-import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Link, Stack, Typography } from "@mui/material";
+import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Link, Stack, Typography } from "@mui/material";
 import { ContentCopy as ContentCopyIcon, Check as CheckIcon } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type ProviderInfo, type DeviceAuthorizationResponse } from "@churchapps/content-providers";
 
 export type AuthStatus = "idle" | "loading" | "device_flow" | "pkce_waiting" | "success" | "error";
@@ -94,9 +95,7 @@ export const AuthFlowDialog: React.FC<Props> = ({
               <Typography variant="h4" fontFamily="monospace" fontWeight={700}>
                 {deviceFlowData.user_code}
               </Typography>
-              <IconButton onClick={handleCopyCode} size="small">
-                {copied ? <CheckIcon color="success" /> : <ContentCopyIcon />}
-              </IconButton>
+              <AppIconButton label={Locale.label("common.copy")} icon={copied ? <CheckIcon color="success" /> : <ContentCopyIcon />} onClick={handleCopyCode} />
             </Box>
 
             <Alert severity="info">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton, Tooltip, Stack, Button, Typography, Chip, Card } from "@mui/material";
+import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Stack, Button, Typography, Chip, Card } from "@mui/material";
 import { Webhook as WebhookIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { WebhookEdit } from "./WebhookEdit";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export interface WebhookInterface {
   id?: string;
@@ -95,12 +96,8 @@ export const WebhooksSection: React.FC = () => {
                   <TableCell><Chip size="small" color={w.active ? "success" : "default"} label={w.active ? Locale.label("settings.webhooksPage.active") : Locale.label("settings.webhooksPage.disabled")} /></TableCell>
                   <TableCell align="right">
                     <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                      <Tooltip title={Locale.label("settings.webhooksPage.tooltipEdit")}>
-                        <IconButton size="small" onClick={(e) => { e.stopPropagation(); setEditWebhook(w); }}><EditIcon fontSize="small" /></IconButton>
-                      </Tooltip>
-                      <Tooltip title={Locale.label("settings.webhooksPage.tooltipDelete")}>
-                        <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleDelete(w); }}><DeleteIcon fontSize="small" /></IconButton>
-                      </Tooltip>
+                      <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={(e) => { e.stopPropagation(); setEditWebhook(w); }} />
+                      <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={(e) => { e.stopPropagation(); handleDelete(w); }} />
                     </Stack>
                   </TableCell>
                 </TableRow>

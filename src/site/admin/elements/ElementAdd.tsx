@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Dialog, DialogTitle, DialogContent, Icon, IconButton, InputAdornment, TextField, Tabs, Tab, Box, Fade } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Icon, InputAdornment, TextField, Tabs, Tab, Box, Fade } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { BlockInterface } from "../../../helpers";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { useDrag } from "react-dnd";
 
 type Props = {
@@ -272,9 +274,7 @@ export function ElementAdd(props: Props) {
         <Box sx={{ fontSize: "1.05rem", fontWeight: 600, color: "#111827" }}>
           {Locale.label("site.elementAdd.addElements")}
         </Box>
-        <IconButton size="small" onClick={props.updateCallback} aria-label="close">
-          <Icon fontSize="small">close</Icon>
-        </IconButton>
+        <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={props.updateCallback} />
       </DialogTitle>
 
       <Box sx={{ px: 2.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>

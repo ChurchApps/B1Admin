@@ -1,7 +1,9 @@
 import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface, type SessionInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
-import { Box, Button, Chip, Divider, Icon, IconButton, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   group: GroupInterface;
@@ -158,16 +160,15 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
           disablePadding
           secondaryAction={
             canEdit && onEditSession ? (
-              <IconButton
+              <AppIconButton
+                label={Locale.label("common.edit")}
+                icon={<EditIcon />}
                 edge="end"
-                size="small"
-                aria-label={Locale.label("groups.sessionCard.edit")}
                 onClick={(e) => {
                   e.stopPropagation();
                   onEditSession(session);
-                }}>
-                <Icon fontSize="small">edit</Icon>
-              </IconButton>
+                }}
+              />
             ) : null
           }>
           <ListItemButton
@@ -277,7 +278,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
 
       {canEdit && (
         <Box sx={{ p: 1.5, borderTop: 1, borderColor: "divider" }}>
-          <Button variant="contained" color="primary" fullWidth startIcon={<Icon>add</Icon>} onClick={handleAddClick} data-cy="create-new-session">
+          <Button variant="contained" color="primary" fullWidth startIcon={<AddIcon />} onClick={handleAddClick} data-cy="create-new-session">
             {Locale.label("groups.groupSessions.new")}
           </Button>
         </Box>

@@ -1,9 +1,10 @@
 import React from "react";
-import { TextField, Switch, FormControlLabel, Typography, Button, IconButton, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { TextField, Switch, FormControlLabel, Typography, Button, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { ImageEditor } from "../components/gallery";
 import type { GenericSettingInterface } from "@churchapps/helpers";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 interface IdleSlide {
   imageUrl: string;
@@ -216,9 +217,7 @@ export const KioskThemeEdit: React.FC = () => {
                 sx={{ width: 120 }}
                 slotProps={{ htmlInput: { min: 3 } }}
               />
-              <IconButton color="error" onClick={() => removeSlide(index)} size="small">
-                <DeleteIcon />
-              </IconButton>
+              <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => removeSlide(index)} />
             </Stack>
           ))}
           <Button variant="outlined" startIcon={<AddIcon />} onClick={addSlide}>{Locale.label("mobile.checkInPage.kiosk.addSlide")}</Button>

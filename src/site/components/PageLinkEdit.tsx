@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Alert, Button, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Button, Dialog, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
 import { InputBox, ApiHelper, UserHelper, SlugHelper, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface } from "@churchapps/helpers";
 import type { PageInterface } from "../../helpers/Interfaces";
@@ -143,7 +144,7 @@ export function PageLinkEdit(props: Props) {
                 <Paper elevation={0}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Typography>{urlValue}</Typography>
-                    <IconButton color="primary" onClick={() => setChecked(false)}><EditIcon /></IconButton>
+                    <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setChecked(false)} />
                   </Stack>
                 </Paper>
               </div>)

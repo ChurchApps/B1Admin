@@ -1,7 +1,8 @@
-import { Box, Typography, Chip, IconButton, Button, Stack } from "@mui/material";
+import { Box, Typography, Chip, Button, Stack } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Edit as EditIcon, Add as AddIcon, CheckCircleOutline as OutcomeIcon, CallSplit as AutoIcon, ArrowRightAlt as ArrowIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { DraggableWrapper } from "../../../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../../../components/DroppableWrapper";
 import { ContentPicker } from "../../components/ContentPicker";
@@ -61,7 +62,7 @@ export const WorkflowStepColumn = (props: Props) => {
           <Chip size="small" label={cards.length} data-testid={"step-count-" + step.id} />
         </Stack>
         {props.canManage && (
-          <IconButton size="small" onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} aria-label={Locale.label("tasks.workflowStepEdit.editStep")}><EditIcon fontSize="small" /></IconButton>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} />
         )}
       </Stack>
 

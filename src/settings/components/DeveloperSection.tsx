@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton, Tooltip, Button, Typography, Card, Stack, Chip } from "@mui/material";
+import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Card, Stack, Chip } from "@mui/material";
 import { Key as KeyIcon, Delete as DeleteIcon, Add as AddIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ApiKeyEdit } from "./ApiKeyEdit";
 import { WebhooksSection } from "./WebhooksSection";
 
@@ -135,9 +136,7 @@ export const DeveloperSection: React.FC = () => {
                         <TableCell>{fmtDate(k.lastUsedAt)}</TableCell>
                         <TableCell>{fmtDate(k.expiresAt)}</TableCell>
                         <TableCell align="right">
-                          <Tooltip title={Locale.label("settings.developer.delete")}>
-                            <IconButton size="small" onClick={() => handleDeleteKey(k)}><DeleteIcon fontSize="small" /></IconButton>
-                          </Tooltip>
+                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleDeleteKey(k)} />
                         </TableCell>
                       </TableRow>
                     ))}

@@ -10,8 +10,9 @@ import {
   Locale
 } from "@churchapps/apphelper";
 import { Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, Avatar, Box, Typography, Paper, Pagination, Chip } from "@mui/material";
-import { PersonRemove as PersonRemoveIcon } from "@mui/icons-material";
+import { PersonRemove as PersonRemoveIcon, Add as AddIcon } from "@mui/icons-material";
 import { SessionCard } from "./SessionCard";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   group: GroupInterface;
@@ -203,7 +204,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
       //let editLink = (canEdit) ? (<a href="about:blank" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId}><Icon>person_remove</Icon> Remove</a>) : null;
       const person = ArrayHelper.getOne(people, "id", vs.visit.personId);
       const editLink = canEdit ? (
-        <Button size="small" variant="outlined" color="error" startIcon={<PersonRemoveIcon />} onClick={() => handleRemove(vs)} data-testid={`remove-session-visitor-button-${vs.id}`} aria-label={Locale.label("groups.groupSessions.removeAria").replace("{name}", person?.name?.display || Locale.label("groups.sessionAttendance.visitor"))}>{Locale.label("groups.groupSessions.removeButton")}</Button>
+        <AppIconButton label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} destructive onClick={() => handleRemove(vs)} data-testid={`remove-session-visitor-button-${vs.id}`} />
       ) : (
         <></>
       );
@@ -367,7 +368,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
   const getAddButton = () => {
     if (!UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit)) return null;
     return (
-      <Button variant="contained" color="primary" startIcon={<Icon>add</Icon>} onClick={handleAdd} data-cy="create-new-session">
+      <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleAdd} data-cy="create-new-session">
         {Locale.label("groups.groupSessions.new")}
       </Button>
     );

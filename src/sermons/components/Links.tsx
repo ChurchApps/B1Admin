@@ -1,7 +1,8 @@
 import React from "react";
 import { Button, Icon } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { LinkEdit } from "./LinkEdit";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import { DisplayBox } from "@churchapps/apphelper";
@@ -89,7 +90,7 @@ export const Links: React.FC<Props> = (props) => {
                       <td style={{ textAlign: "right" }}>
                         {upLink}
                         {downLink}
-                        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.navigationLinks.edit")}</Button>
+                        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setCurrentLink(link)} />
                       </td>
                     </tr>
                     <>
@@ -105,7 +106,7 @@ export const Links: React.FC<Props> = (props) => {
                     <td style={{ textAlign: "right" }}>
                       {upLink}
                       {downLink}
-                      <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.navigationLinks.edit")}</Button>
+                      <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setCurrentLink(link)} />
                     </td>
                   </tr>
                 )}
@@ -129,7 +130,7 @@ export const Links: React.FC<Props> = (props) => {
             <td style={{ textAlign: "right" }}>
               {upLink}
               {downLink}
-              <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentLink(link)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.navigationLinks.edit")}</Button>
+              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setCurrentLink(link)} />
             </td>
           </tr>
           {link.children && <RecursiveLinks childrenLinks={link.children} nestedLevel={0} />}

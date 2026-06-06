@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, Button, Typography, Stack, IconButton, Paper, Table, TableBody, TableCell, TableRow, TableHead, Select, MenuItem, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { Box, Button, Typography, Stack, Paper, Table, TableBody, TableCell, TableRow, TableHead, Select, MenuItem, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { Add as AddIcon, Groups as GroupsIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { ApiHelper, Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type AssociatedGroupInterface } from "../../helpers";
@@ -105,9 +106,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
         </TableCell>
         {canEdit && (
           <TableCell align="right">
-            <IconButton size="small" onClick={() => handleRemove(assoc)}>
-              <DeleteIcon fontSize="small" />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleRemove(assoc)} />
           </TableCell>
         )}
       </TableRow>

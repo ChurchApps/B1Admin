@@ -1,8 +1,9 @@
 import React, { useState, memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch, Tooltip, IconButton } from "@mui/material";
+import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch } from "@mui/material";
 import { Info } from "@mui/icons-material";
 import { PersonAdd } from "../../components";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PersonInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { DisplayBox, ApiHelper, PersonHelper, Locale } from "@churchapps/apphelper";
 
@@ -139,11 +140,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         <th>{Locale.label("forms.formMembers.act")}</th>
         <th>
           {Locale.label("forms.formMembers.emailNotif")}
-          <Tooltip title={Locale.label("forms.formMembers.emailNotifMsg")} arrow>
-            <IconButton data-testid="email-notification-info-button" aria-label={Locale.label("forms.formMembers.emailNotifInfoAria")}>
-              <Info fontSize="small" color="primary" />
-            </IconButton>
-          </Tooltip>
+          <AppIconButton tone="card" label={Locale.label("forms.formMembers.emailNotifMsg")} icon={<Info />} data-testid="email-notification-info-button" />
         </th>
       </TableRow>
     );

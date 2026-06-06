@@ -179,6 +179,7 @@
       "addNew": "Add New..."
     },
     "confirm": "Confirm",
+    "copy": "Copy",
     "createPerson": {
       "confirmDuplicate": "{existingName} already exists with an email of {existingEmail}. Are you sure you wish to add {firstName} {lastName}?",
       "validate": {
@@ -190,9 +191,11 @@
     "custom": "Custom",
     "delete": "Delete",
     "done": "Done",
+    "collapse": "Collapse",
     "duplicate": "Duplicate",
     "edit": "Edit",
     "element": "Element",
+    "expand": "Expand",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -222,6 +225,7 @@
     "no": "No",
     "notes": "Notes",
     "person": "Person",
+    "print": "Print",
     "remove": "Remove",
     "reportFilter": {
       "title": "Filter Report"
@@ -250,7 +254,9 @@
       "addForm": "Add form"
     },
     "bezChat": {
+      "ariaClose": "Close chat",
       "ariaOpen": "Open Bez chat",
+      "ariaSend": "Send message",
       "errorAnswer": "I'm sorry, I couldn't find an answer.",
       "errorGeneric": "Something went wrong. Please try again.",
       "intro": "Hi, I'm Bez! I can help you navigate B1 Admin. Try asking me:",
@@ -261,7 +267,9 @@
       "title": "Ask Bez"
     },
     "docChat": {
+      "ariaClose": "Close chat",
       "ariaOpen": "Open help chat",
+      "ariaSend": "Send message",
       "composing": "Composing answer...",
       "errorAnswer": "I'm sorry, I couldn't find an answer.",
       "errorGeneric": "Something went wrong. Please try again.",
@@ -319,7 +327,9 @@
       "noTitle": "[No Title]"
     },
     "superBeeChat": {
+      "ariaClose": "Close chat",
       "ariaOpen": "Open SuperBee chat",
+      "ariaSend": "Send message",
       "errorAnswer": "Even a superhero hits a wall sometimes. Try again!",
       "errorGeneric": "Something went wrong. But don't worry — I'll be back stronger!",
       "intro": "Hey there, champ! I'm SuperBee — your B1 Admin powerhouse. Hit me with your toughest questions!",
@@ -958,6 +968,7 @@
       "addGroup": "Add Group",
       "cat": "Category",
       "categories": "Categories",
+      "export": "Export",
       "groups": "Groups",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
@@ -3830,6 +3841,9 @@
     },
     "praiseChartsProducts": {
       "close": "Close",
+      "collapse": "Collapse",
+      "download": "Download",
+      "expand": "Expand",
       "free": "Free",
       "linkAccountPrefix": "You do not have a linked PraiseCharts account. Go to your",
       "linkAccountSuffix": "to link an account.",

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { ApiHelper, CurrencyHelper, Locale } from "@churchapps/apphelper";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Icon } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
+import { Download as DownloadIcon, ExpandLess as ExpandLessIcon, ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { PraiseChartsHelper } from "../../../helpers/PraiseChartsHelper";
 import { Link } from "react-router-dom";
 
@@ -88,16 +90,20 @@ export const PraiseChartsProducts = (props: Props) => {
     let result = <></>;
     if (product.price) {
       if (product.permissions?.can_download) {
+        // Download is a "must carry text" glyph per convention, but it sits in a
+        // tight price-cell column beside Free/$price buttons; rendered as a labeled
+        // download button so the action reads consistently with its siblings.
         result = (
           <Button
             variant="contained"
             size="small"
             color="primary"
+            startIcon={<DownloadIcon />}
             onClick={(e) => {
               e.preventDefault();
               download(product);
             }}>
-            <Icon>download</Icon>
+            {Locale.label("songs.praiseChartsProducts.download")}
           </Button>
         );
       } else if (product.price.price === 0) {
@@ -136,21 +142,11 @@ export const PraiseChartsProducts = (props: Props) => {
     if (product.children?.length > 0) {
       if (expandedSkus.includes(product.sku)) {
         expand = (
-          <button
-            type="button"
-            onClick={() => setExpandedSkus(expandedSkus.filter((s) => s !== product.sku))}
-            style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }}>
-            <Icon>expand_less</Icon>
-          </button>
+          <AppIconButton label={Locale.label("common.collapse")} icon={<ExpandLessIcon />} onClick={() => setExpandedSkus(expandedSkus.filter((s) => s !== product.sku))} />
         );
       } else {
         expand = (
-          <button
-            type="button"
-            onClick={() => setExpandedSkus([...expandedSkus, product.sku])}
-            style={{ background: "none", border: 0, padding: 0, cursor: "pointer" }}>
-            <Icon>expand_more</Icon>
-          </button>
+          <AppIconButton label={Locale.label("common.expand")} icon={<ExpandMoreIcon />} onClick={() => setExpandedSkus([...expandedSkus, product.sku])} />
         );
       }
     }

@@ -9,12 +9,12 @@ import {
   CircularProgress,
   Typography,
   Stack,
-  IconButton,
   Breadcrumbs,
   Link
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { getProvider, type Instructions, type InstructionItem, type ContentFolder } from "@churchapps/content-providers";
 import { getProviderInstructions } from "./ActionSelectorHelpers";
 import { InstructionTree } from "./InstructionTree";
@@ -343,9 +343,7 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
       <DialogTitle>
         <Stack direction="row" alignItems="center" spacing={1}>
           {(browser.currentPath || (hasAssociatedLesson && mode === "browse")) && (
-            <IconButton size="small" onClick={handleBack}>
-              <ArrowBackIcon />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.back")} icon={<ArrowBackIcon />} onClick={handleBack} />
           )}
           <span>{Locale.label("plans.lessonHeaderSelector.selectContent") || "Select Lesson Content"}</span>
         </Stack>

@@ -1,6 +1,7 @@
-import { Drawer, Box, Typography, Stack, Button, Divider, MenuItem, Select, IconButton, Menu } from "@mui/material";
+import { Drawer, Box, Typography, Stack, Button, Divider, MenuItem, Select, Menu } from "@mui/material";
 import React, { useContext } from "react";
 import { ApiHelper, type ConversationInterface, Notes, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
@@ -77,7 +78,7 @@ export const WorkflowCardDrawer = (props: Props) => {
       <Box sx={{ p: 2 }} data-testid="workflow-card-drawer">
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" sx={{ fontWeight: 600 }}>{card.title || card.associatedWithLabel}</Typography>
-          <IconButton onClick={props.onClose} aria-label={Locale.label("common.close")}><CloseIcon /></IconButton>
+          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={props.onClose} />
         </Stack>
         <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowCard.assignedTo")}: {card.assignedToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
         {card.pinnedAssignment && <Typography variant="caption" color="primary" data-testid="card-pinned-note">{Locale.label("tasks.workflowCard.pinnedNote")}</Typography>}

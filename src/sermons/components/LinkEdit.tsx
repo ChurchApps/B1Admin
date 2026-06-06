@@ -13,8 +13,7 @@ import {
   Card,
   CardContent,
   Button,
-  Icon,
-  IconButton
+  Icon
 } from "@mui/material";
 import { Close as CloseIcon, Save as SaveIcon, Delete as DeleteIcon, Link as LinkIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -22,6 +21,7 @@ import { ErrorMessages } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface } from "@churchapps/helpers";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   currentLink: LinkInterface,
@@ -156,13 +156,12 @@ export const LinkEdit: React.FC<Props> = (props) => {
                 </Typography>
               </Box>
             </Stack>
-            <IconButton
+            <AppIconButton
+              label={Locale.label("common.close")}
+              icon={<CloseIcon />}
+              tone="header"
               onClick={() => props.updatedFunction()}
-              sx={{ color: "#FFF" }}
-              size="small"
-            >
-              <CloseIcon />
-            </IconButton>
+            />
           </Stack>
         </DialogTitle>
 

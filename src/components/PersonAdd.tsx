@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import { ApiHelper, Locale } from "../helpers";
 import type { PersonInterface } from "@churchapps/helpers";
 import { TextField, Button, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
-import { Person as PersonIcon } from "@mui/icons-material";
+import { Person as PersonIcon, Search as SearchIcon } from "@mui/icons-material";
 import { CreatePerson } from "./CreatePerson";
+import { AppIconButton } from "./ui/AppIconButton";
 
 interface Props {
   addFunction: (person: PersonInterface) => void;
@@ -120,9 +121,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
         inputRef={inputRef}
         InputProps={autoSearch ? undefined : {
           endAdornment: (
-            <Button variant="contained" id="searchButton" data-testid="search-button" onClick={handleSearch}>
-              {Locale.label("common.search")}
-            </Button>
+            <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-testid="search-button" onClick={handleSearch} />
           )
         }}
       />

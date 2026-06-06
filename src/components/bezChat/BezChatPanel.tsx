@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, TextField, IconButton, Typography, CircularProgress, AppBar, Toolbar } from "@mui/material";
+import { Box, TextField, Typography, CircularProgress, AppBar, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../ui/AppIconButton";
 import { BezChatMessage } from "./BezChatMessage";
 
 interface ChatMessage {
@@ -62,7 +63,7 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
             sx={{ width: 28, height: 28, borderRadius: "50%", mr: 1 }}
           />
           <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem", color: "#fff" }}>{Locale.label("components.bezChat.title")}</Typography>
-          <IconButton sx={{ color: "#fff" }} onClick={onClose} edge="end"><CloseIcon /></IconButton>
+          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} tone="header" onClick={onClose} edge="end" />
         </Toolbar>
       </AppBar>
 
@@ -110,9 +111,7 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
             multiline
             maxRows={3}
           />
-          <IconButton sx={{ color: "#F5A623" }} onClick={handleSend} disabled={isLoading || !input.trim()}>
-            <SendIcon />
-          </IconButton>
+          <AppIconButton label={Locale.label("components.bezChat.ariaSend")} icon={<SendIcon />} tone="card" onClick={handleSend} disabled={isLoading || !input.trim()} />
         </Box>
       </Box>
     </Box>

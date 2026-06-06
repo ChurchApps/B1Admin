@@ -1,8 +1,9 @@
 import React from "react";
 import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
 
-import { Accordion, AccordionDetails, AccordionSummary, Button, Icon, Stack, IconButton, Tooltip } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Accordion, AccordionDetails, AccordionSummary, Stack } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { type SongDetailInterface, type SongInterface } from "../../../helpers";
 import { ArrangementEdit } from "./ArrangementEdit";
 import { OldArrangement } from "./OldArrangement";
@@ -37,19 +38,14 @@ export const OldArrangements = (props: Props) => {
             <AccordionSummary>
               {arrangement.name}
               <span style={{ marginLeft: "auto" }}>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<Icon>edit</Icon>}
+                <AppIconButton
+                  label={`${Locale.label("songs.oldArrangements.editArrangementAria")} ${arrangement.name}`}
+                  icon={<EditIcon />}
                   onClick={() => {
                     setEditArrangement(arrangement);
                   }}
                   data-testid={`edit-arrangement-button-${arrangement.id}`}
-                  aria-label={`${Locale.label("songs.oldArrangements.editArrangementAria")} ${arrangement.name}`}
-                  sx={{ minWidth: "auto" }}
-                >
-                  {Locale.label("songs.oldArrangements.edit")}
-                </Button>
+                />
               </span>
             </AccordionSummary>
             <AccordionDetails>
@@ -65,23 +61,17 @@ export const OldArrangements = (props: Props) => {
 
   const getEditContent = () => (
     <Stack direction="row">
-      <Tooltip title={Locale.label("songs.oldArrangements.addArrangement")}>
-        <IconButton size="small" onClick={() => setEditArrangement({ name: "Default", songId: props.song?.id })} data-testid="add-arrangement-button" aria-label={Locale.label("songs.oldArrangements.addArrangementAria")}><AddIcon fontSize="small" /></IconButton>
-      </Tooltip>
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setEditArrangement({ name: "Default", songId: props.song?.id })} data-testid="add-arrangement-button" />
       {arrangements?.length === 1 && (
-        <Button
-          size="small"
-          variant="outlined"
-          startIcon={<Icon>edit</Icon>}
+        <AppIconButton
+          label={Locale.label("common.edit")}
+          icon={<EditIcon />}
+          tone="card"
           onClick={() => {
             setEditArrangement(arrangements[0]);
           }}
           data-testid="edit-single-arrangement-button"
-          aria-label={Locale.label("songs.oldArrangements.editArrangementAria")}
-          sx={{ minWidth: "auto" }}
-        >
-          {Locale.label("songs.oldArrangements.edit")}
-        </Button>
+        />
       )}
     </Stack>
   );

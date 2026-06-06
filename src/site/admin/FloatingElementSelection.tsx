@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Box, IconButton, Tooltip, Portal } from "@mui/material";
+import { Box, Portal } from "@mui/material";
 import { Delete, ContentCopy, ArrowUpward, ArrowDownward } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { ElementInterface } from "../../helpers";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   element: ElementInterface;
@@ -16,7 +17,6 @@ interface Props {
 
 const actionButtonSx = {
   padding: "3px",
-  color: "#4b5563",
   "&:hover": { backgroundColor: "#f3f4f6" }
 };
 
@@ -108,37 +108,13 @@ export const FloatingElementSelection: React.FC<Props> = ({
           WebkitBackdropFilter: "blur(6px)"
         }}
       >
-        <Tooltip title={Locale.label("common.duplicate")} placement="top">
-          <IconButton size="small" onClick={onDuplicate} sx={actionButtonSx}>
-            <ContentCopy sx={{ fontSize: 14 }} />
-          </IconButton>
-        </Tooltip>
+        <AppIconButton label={Locale.label("common.duplicate")} icon={<ContentCopy sx={{ fontSize: 14 }} />} onClick={onDuplicate} sx={actionButtonSx} />
 
-        <Tooltip title={Locale.label("site.elementSelection.moveUp")} placement="top">
-          <IconButton size="small" onClick={onMoveUp} sx={actionButtonSx}>
-            <ArrowUpward sx={{ fontSize: 14 }} />
-          </IconButton>
-        </Tooltip>
+        <AppIconButton label={Locale.label("site.elementSelection.moveUp")} icon={<ArrowUpward sx={{ fontSize: 14 }} />} onClick={onMoveUp} sx={actionButtonSx} />
 
-        <Tooltip title={Locale.label("site.elementSelection.moveDown")} placement="top">
-          <IconButton size="small" onClick={onMoveDown} sx={actionButtonSx}>
-            <ArrowDownward sx={{ fontSize: 14 }} />
-          </IconButton>
-        </Tooltip>
+        <AppIconButton label={Locale.label("site.elementSelection.moveDown")} icon={<ArrowDownward sx={{ fontSize: 14 }} />} onClick={onMoveDown} sx={actionButtonSx} />
 
-        <Tooltip title={Locale.label("common.delete")} placement="top">
-          <IconButton
-            size="small"
-            onClick={onDelete}
-            sx={{
-              ...actionButtonSx,
-              color: "#dc2626",
-              "&:hover": { backgroundColor: "#fef2f2", color: "#b91c1c" }
-            }}
-          >
-            <Delete sx={{ fontSize: 14 }} />
-          </IconButton>
-        </Tooltip>
+        <AppIconButton label={Locale.label("common.delete")} icon={<Delete sx={{ fontSize: 14 }} />} destructive onClick={onDelete} sx={{ ...actionButtonSx, "&:hover": { backgroundColor: "#fef2f2" } }} />
       </Box>
     </Portal>
   );

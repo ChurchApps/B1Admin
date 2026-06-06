@@ -1,7 +1,8 @@
-import { Grid, Typography, Card, CardContent, Stack, Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { Grid, Typography, Card, CardContent, Stack, Box, Button, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { EmptyState } from "../../../components/ui/EmptyState";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
@@ -65,9 +66,7 @@ export const WorkflowsPage = () => {
                   key={workflow.id}
                   disablePadding
                   secondaryAction={canManage ? (
-                    <Tooltip title={Locale.label("tasks.workflowsPage.duplicate")}>
-                      <IconButton edge="end" data-testid={"duplicate-workflow-" + workflow.id} onClick={(e) => duplicate(e, workflow.id)}><DuplicateIcon fontSize="small" /></IconButton>
-                    </Tooltip>
+                    <AppIconButton label={Locale.label("common.duplicate")} icon={<DuplicateIcon />} edge="end" data-testid={"duplicate-workflow-" + workflow.id} onClick={(e) => duplicate(e, workflow.id)} />
                   ) : undefined}>
                   <ListItemButton
                     data-testid={"workflow-row-" + workflow.id}

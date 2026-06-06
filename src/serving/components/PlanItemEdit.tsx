@@ -1,5 +1,7 @@
 import React from "react";
 import { Box, Button, Checkbox, Chip, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, List, ListItem, ListItemText, OutlinedInput, Stack, TextField, Typography } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
 import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
@@ -203,9 +205,7 @@ export const PlanItemEdit = (props: Props) => {
             onChange={handleSearchChange}
             data-testid="song-search-input"
             endAdornment={
-              <Button variant="contained" onClick={handleSearch} data-testid="song-search-button" aria-label={Locale.label("plans.planItemEdit.searchSongsAria")}>
-                {Locale.label("common.search")}
-              </Button>
+              <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} edge="end" onClick={handleSearch} data-testid="song-search-button" />
             }
           />
         </FormControl>

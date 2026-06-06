@@ -3,8 +3,9 @@ import { HouseholdEdit } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
 import { DisplayBox, ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, PersonHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Button, Icon, Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Chip } from "@mui/material";
-import { Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
+import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Chip } from "@mui/material";
+import { Edit as EditIcon, Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   person: PersonInterface;
@@ -34,7 +35,7 @@ export const Household: React.FC<Props> = memo((props) => {
     }
   };
   const getEditContent = () => (UserHelper.checkAccess(Permissions.membershipApi.people.edit)
-    ? <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={handleEdit} aria-label="editHousehold" sx={{ minWidth: "auto" }}>Edit</Button>
+    ? <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={handleEdit} />
     : undefined);
   React.useEffect(loadData, [props.person]);
   React.useEffect(() => {

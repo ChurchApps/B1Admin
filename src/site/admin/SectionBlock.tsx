@@ -1,10 +1,11 @@
 import React from "react";
-import { Button, Icon, IconButton, Tooltip } from "@mui/material";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import type { ElementInterface, SectionInterface } from "../../helpers";
 import { ApiHelper } from "../../helpers";
 import { Locale } from "@churchapps/apphelper";
 import { DraggableIcon } from "./DraggableIcon";
 import { Section } from "./Section";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 
 interface Props {
@@ -37,15 +38,11 @@ export const SectionBlock: React.FC<Props> = props => {
                 <td><DraggableIcon dndType="section" elementType="section" data={props.section} /></td>
                 <td>
                   <div className="sectionEditButton">
-                    <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => props.onEdit(props.section, null)} sx={{ minWidth: "auto" }}>{Locale.label("site.sectionBlock.edit")}</Button>
+                    <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => props.onEdit(props.section, null)} />
                   </div>
                 </td>
                 <td>
-                  <Tooltip title={Locale.label("site.sectionBlock.deleteSection")}>
-                    <IconButton size="small" onClick={handleDelete} sx={{ color: "error.main", ml: 0.5 }}>
-                      <Icon>delete</Icon>
-                    </IconButton>
-                  </Tooltip>
+                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={handleDelete} sx={{ ml: 0.5 }} />
                 </td>
               </tr>
             </tbody>

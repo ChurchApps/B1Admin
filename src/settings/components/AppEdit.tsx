@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Button, Stack, TextField, FormControl, Icon, InputLabel, Select, MenuItem, Dialog, Box, Divider, IconButton, Grid, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
+import { Button, Stack, TextField, FormControl, Icon, InputLabel, Select, MenuItem, Dialog, Box, Divider, Grid, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import type { LinkInterface, GroupInterface } from "@churchapps/helpers";
@@ -7,6 +7,7 @@ import { IconPicker } from "../../components/iconPicker";
 import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { GalleryModal } from "../../components/gallery";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface PageInterface {
   id?: string;
@@ -156,7 +157,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                 fullWidth
                 label={Locale.label("settings.appEdit.tabName")}
                 {...register("text")}
-                InputProps={{ endAdornment: (<IconButton onClick={() => setIsModalOpen(true)} data-testid="icon-dropdown-button" sx={{ color: "primary.main" }}><Icon>{icon}</Icon></IconButton>) }}
+                InputProps={{ endAdornment: (<AppIconButton label={Locale.label("common.change")} icon={<Icon>{icon}</Icon>} tone="card" onClick={() => setIsModalOpen(true)} data-testid="icon-dropdown-button" />) }}
                 helperText={Locale.label("settings.app.tabNameHelper")}
               />
 

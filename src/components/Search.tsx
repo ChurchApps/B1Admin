@@ -1,7 +1,9 @@
 import React from "react";
 import { type PersonInterface } from "@churchapps/helpers";
 import { Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, Icon, TextField, Button, Box } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, Icon, TextField, Box } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
+import { AppIconButton } from "./ui/AppIconButton";
 
 interface Props {
   handleSearch: (text: string) => void;
@@ -68,9 +70,7 @@ export const Search: React.FC<Props> = (props) => {
         aria-label={Locale.label("components.search.ariaSearchInput")}
         InputProps={{
           endAdornment: (
-            <Button variant="contained" id="searchButton" data-cy="search-button" onClick={() => props.handleSearch(searchText)} data-testid="search-button" aria-label={Locale.label("components.search.ariaSearch")}>
-              {Locale.label("common.search")}
-            </Button>
+            <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-cy="search-button" data-testid="search-button" onClick={() => props.handleSearch(searchText)} />
           )
         }}
       />

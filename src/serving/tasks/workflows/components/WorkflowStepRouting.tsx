@@ -1,7 +1,8 @@
-import { Box, Typography, Stack, Button, TextField, Select, MenuItem, IconButton, Chip, Divider, FormControl, InputLabel, ListSubheader } from "@mui/material";
+import { Box, Typography, Stack, TextField, Select, MenuItem, Chip, Divider, FormControl, InputLabel, ListSubheader } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, type ConditionInterface } from "@churchapps/apphelper";
 import { Add as AddIcon, Delete as DeleteIcon, CallSplit as RouteIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { ConditionEdit } from "../../automations/components/ConditionEdit";
 import { type WorkflowStepInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "@churchapps/helpers";
 
@@ -128,13 +129,13 @@ export const WorkflowStepRouting = (props: Props) => {
           <Box key={route.id} data-testid={"outcome-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <TextField fullWidth size="small" label={Locale.label("tasks.workflowRouting.outcomeLabel")} defaultValue={route.label || ""} data-testid={"outcome-label-" + route.id} onBlur={(e) => { if (e.target.value !== route.label) saveRoute({ ...route, label: e.target.value }); }} />
-              <IconButton size="small" color="error" data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} aria-label={Locale.label("tasks.workflowRouting.remove")}><DeleteIcon fontSize="small" /></IconButton>
+              <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} destructive data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />
             </Stack>
             <Box sx={{ mt: 1 }}>{outcomeTargetSelect(route)}</Box>
           </Box>
         ))}
       </Stack>
-      <Button size="small" startIcon={<AddIcon />} data-testid="add-outcome-button" onClick={addOutcome} sx={{ mt: 1, textTransform: "none" }}>{Locale.label("tasks.workflowRouting.addOutcome")}</Button>
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} data-testid="add-outcome-button" onClick={addOutcome} sx={{ mt: 1 }} />
 
       <Divider sx={{ my: 2 }} />
 
@@ -146,7 +147,7 @@ export const WorkflowStepRouting = (props: Props) => {
           <Box key={route.id} data-testid={"auto-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Box sx={{ flexGrow: 1 }}>{targetSelect(route, false)}</Box>
-              <IconButton size="small" color="error" data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} aria-label={Locale.label("tasks.workflowRouting.remove")}><DeleteIcon fontSize="small" /></IconButton>
+              <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} destructive data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />
             </Stack>
             <Box sx={{ mt: 1 }}>
               <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowRouting.conditions")}</Typography>
@@ -156,12 +157,12 @@ export const WorkflowStepRouting = (props: Props) => {
                 ))}
                 {(conditions[route.id] || []).length === 0 && <Typography variant="caption" color="text.secondary" sx={{ fontStyle: "italic" }}>{Locale.label("tasks.workflowRouting.noConditions")}</Typography>}
               </Stack>
-              <Button size="small" startIcon={<AddIcon />} data-testid={"add-condition-" + route.id} onClick={() => addCondition(route)} sx={{ mt: 0.5, textTransform: "none" }}>{Locale.label("tasks.workflowRouting.addCondition")}</Button>
+              <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} data-testid={"add-condition-" + route.id} onClick={() => addCondition(route)} sx={{ mt: 0.5 }} />
             </Box>
           </Box>
         ))}
       </Stack>
-      <Button size="small" startIcon={<AddIcon />} data-testid="add-auto-route-button" onClick={addAuto} disabled={otherSteps.length === 0} sx={{ mt: 1, textTransform: "none" }}>{Locale.label("tasks.workflowRouting.addAuto")}</Button>
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} data-testid="add-auto-route-button" onClick={addAuto} disabled={otherSteps.length === 0} sx={{ mt: 1 }} />
     </Box>
   );
 };

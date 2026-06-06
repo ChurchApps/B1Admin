@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, ExportLink, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, IconButton, Toolbar, Stack, Typography } from "@mui/material";
+import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, Toolbar, Stack, Typography } from "@mui/material";
 import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
@@ -138,9 +138,9 @@ const GroupsPage = () => {
         <Paper sx={{ width: "100%", overflowX: "auto" }}>
           {groups.length > 0 && UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
             <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 }, justifyContent: "flex-end" }}>
-              <IconButton component={ExportLink} data={exportData} filename="groups.csv" size="small" sx={{ color: "primary.main" }}>
-                <ExportIcon />
-              </IconButton>
+              <Button variant="outlined" size="small" startIcon={<ExportIcon />} component={ExportLink} data={exportData} filename="groups.csv">
+                {Locale.label("groups.groupsPage.export")}
+              </Button>
             </Toolbar>
           )}
           <Table>

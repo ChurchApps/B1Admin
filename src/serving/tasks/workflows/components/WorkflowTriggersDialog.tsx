@@ -1,7 +1,8 @@
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, List, ListItem, ListItemText, IconButton, Typography, Stack } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, List, ListItem, ListItemText, Typography, Stack } from "@mui/material";
 import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { type FormWorkflowTriggerInterface } from "@churchapps/helpers";
 
 interface FormInterface { id?: string; name?: string }
@@ -49,7 +50,7 @@ export const WorkflowTriggersDialog: React.FC<Props> = (props) => {
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("tasks.workflowTriggers.subtitle")}</Typography>
         <List dense>
           {triggers.map((t) => (
-            <ListItem key={t.id} secondaryAction={<IconButton edge="end" onClick={() => removeTrigger(t.id)} data-testid={"remove-trigger-" + t.id}><DeleteIcon /></IconButton>}>
+            <ListItem key={t.id} secondaryAction={<AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} edge="end" destructive onClick={() => removeTrigger(t.id)} data-testid={"remove-trigger-" + t.id} />}>
               <ListItemText primary={formName(t.formId)} secondary={Locale.label("tasks.workflowTriggers.formTrigger")} />
             </ListItem>
           ))}

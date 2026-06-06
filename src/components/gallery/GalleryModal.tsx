@@ -2,8 +2,10 @@
 
 import { ApiHelper, FileHelper, Locale } from "@churchapps/apphelper";
 import { CommonEnvironmentHelper } from "@churchapps/helpers";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Tab, Tabs, Tooltip, Icon } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs } from "@mui/material";
+import { DeleteOutline as DeleteOutlineIcon } from "@mui/icons-material";
 import React, { useState } from "react";
+import { AppIconButton } from "../ui/AppIconButton";
 import { ImageEditor } from "./ImageEditor";
 import { TabPanel } from "./TabPanel";
 import { StockPhotos } from "./StockPhotos";
@@ -93,11 +95,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
             />
           </a>
           <Box id="deleteIcon" sx={{ position: "absolute", top: 3, right: 3, visibility: "hidden", backgroundColor: "whitesmoke", borderRadius: 5 }}>
-            <Tooltip title="Delete">
-              <IconButton size="small" color="error" onClick={() => handleDelete(parts[2], parts[3])} aria-label="Delete image" data-testid="delete-image">
-                <Icon sx={{ fontSize: "17px !important" }}>delete_outline</Icon>
-              </IconButton>
-            </Tooltip>
+            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteOutlineIcon />} destructive onClick={() => handleDelete(parts[2], parts[3])} data-testid="delete-image" />
           </Box>
         </Box>
       </Grid>);

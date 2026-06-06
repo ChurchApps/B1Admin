@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { ApiHelper, DisplayBox, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { type RoleMemberInterface, type RoleInterface } from "@churchapps/helpers";
-import { Alert, Button, Icon, Stack, Table, TableBody, TableCell, TableHead, TableRow, IconButton, Tooltip } from "@mui/material";
-import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { Alert, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   role: RoleInterface;
@@ -55,24 +56,10 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
     for (let i = 0; i < roleMembers.length; i++) {
       const rm = roleMembers[i];
       const removeLink = canDelete ? (
-        <Tooltip title={Locale.label("common.delete")}>
-          <IconButton size="small" color="error" onClick={() => handleRemove(rm)} data-testid={`remove-role-member-button-${rm.id}`} aria-label={Locale.label("settings.roleMembers.removeRoleMemberAria").replace("{firstName}", rm.user?.firstName).replace("{lastName}", rm.user?.lastName)}><DeleteIcon fontSize="small" /></IconButton>
-        </Tooltip>
+        <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleRemove(rm)} data-testid={`remove-role-member-button-${rm.id}`} />
       ) : null;
       const editLink = canEdit ? (
-        <Button
-          size="small"
-          variant="outlined"
-          startIcon={<Icon>edit</Icon>}
-          onClick={() => {
-            props.setSelectedRoleMember(rm.userId);
-          }}
-          data-testid={`edit-role-member-button-${rm.id}`}
-          aria-label={Locale.label("settings.roleMembers.editRoleMemberAria").replace("{firstName}", rm.user?.firstName).replace("{lastName}", rm.user?.lastName)}
-          sx={{ minWidth: "auto" }}
-        >
-          {Locale.label("common.edit")}
-        </Button>
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => { props.setSelectedRoleMember(rm.userId); }} data-testid={`edit-role-member-button-${rm.id}`} />
       ) : null;
 
       const { firstName, lastName } = rm.user;

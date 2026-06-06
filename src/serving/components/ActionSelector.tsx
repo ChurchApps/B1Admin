@@ -8,13 +8,13 @@ import {
   Stack,
   Typography,
   Box,
-  IconButton,
   CircularProgress,
   Breadcrumbs,
   Link
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ProviderChipSelector } from "./ProviderChipSelector";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { getProvider, type ContentFile, type ContentFolder, type Instructions, type InstructionItem } from "@churchapps/content-providers";
 import { generatePath, getProviderInstructions, type ActionSelectorProps } from "./ActionSelectorHelpers";
@@ -235,9 +235,7 @@ export const ActionSelector: React.FC<ActionSelectorProps> = ({ open, onClose, o
       <DialogTitle>
         <Stack direction="row" alignItems="center" spacing={1}>
           {(browser.currentPath || (contentPath && mode === "browse")) && (
-            <IconButton size="small" onClick={handleBack}>
-              <ArrowBackIcon />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.back")} icon={<ArrowBackIcon />} onClick={handleBack} />
           )}
           <span>{Locale.label("plans.actionSelector.selectExternalItem") || "Select External Item"}</span>
         </Stack>

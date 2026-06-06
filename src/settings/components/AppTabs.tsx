@@ -3,13 +3,11 @@ import {
   Box,
   Stack,
   Typography,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListItemSecondaryAction,
-  Tooltip,
   Divider,
   Icon,
   Chip
@@ -23,6 +21,7 @@ import {
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { CardWithHeader, EmptyState } from "../../components/ui";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ensureSequentialSort, moveItemDown, moveItemUp } from "../../helpers/SortHelper";
 
 interface Props {
@@ -133,39 +132,9 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
         />
         <ListItemSecondaryAction>
           <Stack direction="row" spacing={0.5}>
-            <Tooltip title={Locale.label("settings.appTabs.moveUp")} arrow>
-              <span>
-                <IconButton
-                  size="small"
-                  onClick={() => moveUp(index)}
-                  disabled={index === 0}
-                  sx={{ color: "text.secondary" }}
-                >
-                  <ArrowUpIcon fontSize="small" />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={Locale.label("settings.appTabs.moveDown")} arrow>
-              <span>
-                <IconButton
-                  size="small"
-                  onClick={() => moveDown(index)}
-                  disabled={index === tabs.length - 1}
-                  sx={{ color: "text.secondary" }}
-                >
-                  <ArrowDownIcon fontSize="small" />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={Locale.label("settings.appTabs.editTab")} arrow>
-              <IconButton
-                size="small"
-                onClick={() => handleEdit(tab)}
-                sx={{ color: "primary.main" }}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            <AppIconButton label={Locale.label("settings.appTabs.moveUp")} icon={<ArrowUpIcon />} onClick={() => moveUp(index)} disabled={index === 0} />
+            <AppIconButton label={Locale.label("settings.appTabs.moveDown")} icon={<ArrowDownIcon />} onClick={() => moveDown(index)} disabled={index === tabs.length - 1} />
+            <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => handleEdit(tab)} />
           </Stack>
         </ListItemSecondaryAction>
       </ListItem>

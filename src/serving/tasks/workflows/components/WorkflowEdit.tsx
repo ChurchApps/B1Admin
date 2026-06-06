@@ -1,7 +1,8 @@
-import { Card, CardContent, Typography, Stack, Box, Button, TextField, Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, IconButton, type SelectChangeEvent } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Button, TextField, Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { ViewKanban as WorkflowsIcon, Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Check as CheckIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 
 const ADD_CATEGORY = "__add__";
@@ -103,8 +104,8 @@ export const WorkflowEdit = (props: Props) => {
                   data-testid="new-category-input"
                   variant="outlined"
                 />
-                <IconButton color="primary" onClick={handleAddCategory} data-testid="new-category-save" aria-label={Locale.label("common.save")}><CheckIcon /></IconButton>
-                <IconButton onClick={cancelAddCategory} data-testid="new-category-cancel" aria-label={Locale.label("common.cancel")}><CancelIcon /></IconButton>
+                <AppIconButton label={Locale.label("common.save")} icon={<CheckIcon />} onClick={handleAddCategory} data-testid="new-category-save" />
+                <AppIconButton label={Locale.label("common.cancel")} icon={<CancelIcon />} onClick={cancelAddCategory} data-testid="new-category-cancel" />
               </Stack>
             ) : (
               <FormControl fullWidth variant="outlined">

@@ -6,12 +6,13 @@ import { DateHelper } from "@churchapps/apphelper";
 import { PageHeader } from "@churchapps/apphelper";
 import { ImageEditor } from "../../components/gallery";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
-import { Box, Button, Card, CardContent, Grid, Icon, IconButton, InputAdornment, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Grid, InputAdornment, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { Add as AddIcon, CalendarMonth as CalendarIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon, LiveTv as LiveTvIcon, PlaylistPlay as PlaylistIcon, Search as SearchIcon, ArrowDropDown as ArrowDropDownIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { SermonEdit } from "./SermonEdit";
 import { PlaylistEdit } from "./PlaylistEdit";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Sermons = () => {
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
@@ -208,17 +209,12 @@ export const Sermons = () => {
             </Stack>
           </TableCell>
           <TableCell align="right">
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<Icon>edit</Icon>}
+            <AppIconButton
+              label={Locale.label("common.edit")}
+              icon={<EditIcon />}
               onClick={() => { setCurrentSermon(video); }}
               data-testid={`edit-sermon-${video.id}`}
-              aria-label={Locale.label("sermons.editSermonAria").replace("{title}", video.title)}
-              sx={{ minWidth: "auto" }}
-            >
-              {Locale.label("sermons.edit")}
-            </Button>
+            />
           </TableCell>
         </TableRow>
       );
@@ -323,15 +319,12 @@ export const Sermons = () => {
           </Typography>
         </TableCell>
         <TableCell align="right">
-          <Tooltip title={Locale.label("sermons.playlists.editPlaylist")} arrow>
-            <IconButton
-              size="small"
-              onClick={() => setCurrentPlaylist(playlist)}
-              sx={{ color: "primary.main" }}
-            >
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          <AppIconButton
+            label={Locale.label("common.edit")}
+            icon={<EditIcon />}
+            tone="card"
+            onClick={() => setCurrentPlaylist(playlist)}
+          />
         </TableCell>
       </TableRow>
     ));
@@ -413,16 +406,13 @@ export const Sermons = () => {
                       {Locale.label("sermons.title")}
                     </Typography>
                   </Stack>
-                  <Tooltip title={Locale.label("sermons.search")} arrow>
-                    <IconButton
-                      size="small"
-                      onClick={() => setShowSermonSearch(!showSermonSearch)}
-                      color={showSermonSearch ? "primary" : "default"}
-                      data-testid="sermon-search-button"
-                    >
-                      <SearchIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  <AppIconButton
+                    label={Locale.label("common.search")}
+                    icon={<SearchIcon />}
+                    tone={showSermonSearch ? "card" : "default"}
+                    onClick={() => setShowSermonSearch(!showSermonSearch)}
+                    data-testid="sermon-search-button"
+                  />
                 </Box>
               )}
 
@@ -466,26 +456,20 @@ export const Sermons = () => {
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={0.5}>
-                  <Tooltip title={Locale.label("sermons.playlists.search")} arrow>
-                    <IconButton
-                      size="small"
-                      onClick={() => setShowPlaylistSearch(!showPlaylistSearch)}
-                      color={showPlaylistSearch ? "primary" : "default"}
-                      data-testid="playlist-search-button"
-                    >
-                      <SearchIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={Locale.label("sermons.playlists.addPlaylist")} arrow>
-                    <IconButton
-                      size="small"
-                      color="primary"
-                      onClick={handleAddPlaylist}
-                      data-testid="add-playlist-button"
-                    >
-                      <AddIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  <AppIconButton
+                    label={Locale.label("common.search")}
+                    icon={<SearchIcon />}
+                    tone={showPlaylistSearch ? "card" : "default"}
+                    onClick={() => setShowPlaylistSearch(!showPlaylistSearch)}
+                    data-testid="playlist-search-button"
+                  />
+                  <AppIconButton
+                    label={Locale.label("common.add")}
+                    icon={<AddIcon />}
+                    tone="card"
+                    onClick={handleAddPlaylist}
+                    data-testid="add-playlist-button"
+                  />
                 </Stack>
               </Box>
 

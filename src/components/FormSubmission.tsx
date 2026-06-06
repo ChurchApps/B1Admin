@@ -1,9 +1,10 @@
 import React, { memo } from "react";
 import { Question } from "./";
-import { Grid, Box, IconButton, Tooltip, Typography, Stack } from "@mui/material";
+import { Grid, Box, Typography, Stack } from "@mui/material";
 import { Edit as EditIcon } from "@mui/icons-material";
 import { type FormSubmissionInterface } from "@churchapps/helpers";
 import { Permissions, ApiHelper, UserHelper, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "./ui/AppIconButton";
 
 interface Props {
   formSubmissionId: string;
@@ -72,22 +73,7 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
             right: 0,
             zIndex: 1
           }}>
-          <Tooltip title={Locale.label("common.formSubmission.edit")}>
-            <IconButton
-              onClick={() => props.editFunction(props.formSubmissionId)}
-              size="small"
-              sx={{
-                color: "primary.main",
-                "&:hover": {
-                  backgroundColor: "primary.light",
-                  color: "primary.contrastText"
-                }
-              }}
-              data-testid="edit-form-submission-button"
-              aria-label={Locale.label("common.formSubmission.edit")}>
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => props.editFunction(props.formSubmissionId)} data-testid="edit-form-submission-button" />
         </Box>
       )}
 

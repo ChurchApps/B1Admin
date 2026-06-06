@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, Divider, IconButton } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Box, Divider } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { useProviderContent, type ProviderContentChild } from "../hooks/useProviderContent";
 import { ContentRenderer } from "./ContentRenderer";
@@ -174,9 +175,7 @@ export const LessonDialog: React.FC<Props> = (props) => {
     <Dialog open={true} onClose={props.onClose} fullWidth maxWidth="lg">
       <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         {selectedChild && (
-          <IconButton size="small" onClick={handleBackToList} sx={{ mr: 1 }}>
-            <ArrowBackIcon />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.back")} icon={<ArrowBackIcon />} onClick={handleBackToList} sx={{ mr: 1 }} />
         )}
         {selectedChild ? selectedChild.label : (props.sectionName || Locale.label("plans.lessonDialog.fallbackTitle"))}
       </DialogTitle>

@@ -1,8 +1,9 @@
-import { Menu, MenuItem, Box, Typography, Stack, Button, IconButton, List, ListItem, ListItemIcon, ListItemText, Chip } from "@mui/material";
+import { Menu, MenuItem, Box, Typography, Stack, List, ListItem, ListItemIcon, ListItemText, Chip } from "@mui/material";
 import React from "react";
 import { type AutomationInterface, type ConditionInterface, type ConjunctionInterface, Locale } from "@churchapps/apphelper";
 import { ArrayHelper } from "@churchapps/apphelper";
 import { Add as AddIcon, Edit as EditIcon, Done as ConditionIcon, AccountTree as ConjunctionIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../../components/ui/AppIconButton";
 
 interface Props {
   automation: AutomationInterface;
@@ -84,9 +85,7 @@ export const ConditionDetails = (props: Props) => {
               </Typography>
             }
           />
-          <IconButton size="small" onClick={() => props.setEditCondition(condition)} data-testid={`edit-condition-button-${condition.id}`} aria-label={Locale.label("tasks.conditionDetails.editConditionAria")}>
-            <EditIcon fontSize="small" />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => props.setEditCondition(condition)} data-testid={`edit-condition-button-${condition.id}`} />
         </ListItem>
       );
     });
@@ -123,19 +122,15 @@ export const ConditionDetails = (props: Props) => {
               slotProps={{ primary: { component: "div" } }}
             />
             <Stack direction="row" spacing={0.5}>
-              <IconButton
-                size="small"
+              <AppIconButton
+                label={Locale.label("common.add")}
+                icon={<AddIcon />}
                 onClick={(e) => {
                   setMenuAnchor(e.currentTarget);
                   setParentId(conjunction.id);
                 }}
-                data-testid={`add-conjunction-button-${conjunction.id}`}
-                aria-label={Locale.label("tasks.conditionDetails.addConjunctionAria")}>
-                <AddIcon fontSize="small" />
-              </IconButton>
-              <IconButton size="small" onClick={() => props.setEditConjunction(conjunction)} data-testid={`edit-conjunction-button-${conjunction.id}`} aria-label={Locale.label("tasks.conditionDetails.editConjunctionAria")}>
-                <EditIcon fontSize="small" />
-              </IconButton>
+                data-testid={`add-conjunction-button-${conjunction.id}`} />
+              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => props.setEditConjunction(conjunction)} data-testid={`edit-conjunction-button-${conjunction.id}`} />
             </Stack>
           </ListItem>
           {getConditionMenu()}
@@ -155,15 +150,11 @@ export const ConditionDetails = (props: Props) => {
         <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
           {Locale.label("tasks.conditionDetails.con")}:
         </Typography>
-        <Button
-          size="small"
-          startIcon={<AddIcon />}
+        <AppIconButton
+          label={Locale.label("common.add")}
+          icon={<AddIcon />}
           onClick={() => props.setEditConjunction({ automationId: props.automation.id, groupType: "and" })}
-          data-testid="add-automation-condition-button"
-          aria-label={Locale.label("tasks.conditionDetails.addConditionAria")}
-          sx={{ textTransform: "none" }}>
-          {Locale.label("tasks.conditionDetails.addCondition")}
-        </Button>
+          data-testid="add-automation-condition-button" />
       </Stack>
 
       {tree.length === 0 && (!props.conditions || props.conditions.length === 0) ? (

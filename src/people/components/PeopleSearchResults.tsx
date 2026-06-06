@@ -4,9 +4,10 @@ import { B1AdminPersonHelper } from ".";
 import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card, Checkbox } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, Typography, Stack, Box, Chip, Card, Checkbox } from "@mui/material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useCampuses } from "../../hooks/useCampuses";
-import { Email as EmailIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon, Phone as PhoneIcon } from "@mui/icons-material";
+import { Delete as DeleteIcon, Email as EmailIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
   people: PersonInterface[];
@@ -190,18 +191,16 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         case "nametagNotes": result = <>{p.nametagNotes}</>; break;
         case "deleteOption":
           result = (
-            <Tooltip title={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)} arrow placement="left-start">
-              <IconButton
-                sx={{ color: "#c84545" }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (p.id) handleDelete(p.id.toString());
-                }}
-                data-testid={`delete-person-button-${p.id}`}
-                aria-label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)}>
-                <Icon>delete</Icon>
-              </IconButton>
-            </Tooltip>
+            <AppIconButton
+              label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)}
+              icon={<DeleteIcon />}
+              destructive
+              onClick={(e) => {
+                e.stopPropagation();
+                if (p.id) handleDelete(p.id.toString());
+              }}
+              data-testid={`delete-person-button-${p.id}`}
+            />
           );
           break;
         case key: result = getAnswer(p, key); break;
