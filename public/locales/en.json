@@ -1125,10 +1125,17 @@
       "title": "B1 Mobile"
     },
     "checkInPage": {
+      "copyLink": "Copy link",
       "disabled": "Disabled",
+      "downloadQr": "Download PNG",
       "enabled": "Enabled — QR code will appear on kiosk",
+      "linkCopied": "Copied!",
       "qrGuestRegistration": "QR Guest Registration",
+      "qrShareDescription": "Print this QR code on flyers, bulletins, or signage. Guests can scan it to register from their phone.  It will also show in app.",
+      "qrShareTitle": "Share registration QR code",
       "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "registrationUrl": "Registration link",
+      "saveToActivate": "Save your changes to activate this link.",
       "subtitle": "Configure settings for the B1 CheckIn kiosk app",
       "title": "B1 CheckIn"
     }
