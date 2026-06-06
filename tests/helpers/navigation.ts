@@ -33,7 +33,6 @@ type SecondarySection =
   | "batches"
   | "funds"
   | "statements"
-  | "playlists"
   | "liveStreamTimes"
   | "serverAdmin";
 
@@ -58,7 +57,7 @@ const SECONDARY_ROUTES: Record<
 > = {
   groups: { parent: "people", label: "Groups", url: /\/groups/ },
   attendance: { parent: "people", label: "Attendance", url: /\/attendance/ },
-  forms: { parent: "settings", label: "Forms", url: /\/forms/ },
+  forms: { parent: "people", label: "Forms", url: /\/forms/ },
   roles: { parent: "settings", label: "Roles", url: /\/settings\/roles/ },
   songs: { parent: "serving", label: "Songs", url: /\/serving\/songs/ },
   tasks: { parent: "serving", label: "Tasks", url: /\/serving\/tasks/ },
@@ -71,7 +70,6 @@ const SECONDARY_ROUTES: Record<
   batches: { parent: "donations", label: "Batches", url: /\/donations\/batches/ },
   funds: { parent: "donations", label: "Funds", url: /\/donations\/funds/ },
   statements: { parent: "donations", label: "Giving Statements", url: /\/donations\/statements/ },
-  playlists: { parent: "sermons", label: "Playlists", url: /\/sermons\/playlists/ },
   liveStreamTimes: { parent: "sermons", label: "Live Stream Times", url: /\/sermons\/times/ },
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ },
 };

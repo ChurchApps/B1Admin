@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogActions, Typography, Box, Button } from "@mui/material";
+import { HowToReg as RegIcon } from "@mui/icons-material";
 import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 
@@ -10,6 +12,9 @@ interface Props {
 }
 
 export function DisplayCalendarEventModal(props: Props) {
+  const navigate = useNavigate();
+  const realEventId = (props.event as CuratedEventWithEventInterface & { realEventId?: string }).realEventId;
+
   const getDisplayTime = () => {
     let result = "";
     if (props.event.allDay) {
@@ -68,6 +73,11 @@ export function DisplayCalendarEventModal(props: Props) {
         <Button variant="text" onClick={props.onDone} data-testid="calendar-event-cancel-button">
           {Locale.label("calendars.calendarEvent.cancel")}
         </Button>
+        {realEventId && props.mode === "edit" && (
+          <Button variant="outlined" startIcon={<RegIcon />} onClick={() => navigate("/registrations/" + realEventId)} data-testid="calendar-event-registrations-button">
+            {Locale.label("calendars.calendarEvent.manageRegistrations")}
+          </Button>
+        )}
         {props.event.id && props.mode === "edit" && (
           <Button variant="contained" onClick={handleDelete} data-testid="calendar-event-delete-button">
             {Locale.label("calendars.calendarEvent.delete")}

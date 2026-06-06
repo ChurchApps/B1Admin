@@ -31,7 +31,6 @@ const WorkflowBoardPage = React.lazy(() => import("./serving/tasks/workflows/Wor
 const WorkflowReportsPage = React.lazy(() => import("./serving/tasks/workflows/WorkflowReportsPage").then((module) => ({ default: module.WorkflowReportsPage })));
 const MyCardsPage = React.lazy(() => import("./serving/tasks/workflows/MyCardsPage").then((module) => ({ default: module.MyCardsPage })));
 const DashboardPage = React.lazy(() => import("./dashboard/DashboardPage").then((module) => ({ default: module.DashboardPage })));
-const QuickActionsPage = React.lazy(() => import("./dashboard/QuickActionsPage").then((module) => ({ default: module.QuickActionsPage })));
 const AdminPage = React.lazy(() => import("./serverAdmin/AdminPage").then((module) => ({ default: module.AdminPage })));
 const ProfilePage = React.lazy(() => import("./profile/ProfilePage").then((module) => ({ default: module.ProfilePage })));
 const ServingPage = React.lazy(() => import("./serving/ServingPage").then((module) => ({ default: module.ServingPage })));
@@ -52,7 +51,6 @@ const BatchGivingStatementsPage = React.lazy(() => import("./donations/BatchGivi
 const OAuthPage = React.lazy(() => import("./OAuth").then((module) => ({ default: module.OAuthPage })));
 const DeviceAuthPage = React.lazy(() => import("./device/DeviceAuthPage").then((module) => ({ default: module.DeviceAuthPage })));
 const SermonsPage = React.lazy(() => import("./sermons/SermonsPage").then((module) => ({ default: module.SermonsPage })));
-const PlaylistsPage = React.lazy(() => import("./sermons/PlaylistsPage").then((module) => ({ default: module.PlaylistsPage })));
 const LiveStreamTimesPage = React.lazy(() => import("./sermons/LiveStreamTimesPage").then((module) => ({ default: module.LiveStreamTimesPage })));
 const BulkImportPage = React.lazy(() => import("./sermons/BulkImportPage").then((module) => ({ default: module.BulkImportPage })));
 const CalendarsPage = React.lazy(() => import("./calendars/CalendarsPage").then((module) => ({ default: module.CalendarsPage })));
@@ -144,7 +142,6 @@ export const Authenticated: React.FC = () => {
           <Route path="/serving" element={<ServingPage />} />
           <Route path="/serving/songs" element={<SongsPage />} />
           <Route path="/serving/songs/:id" element={<SongPage />} />
-          <Route path="/sermons/playlists" element={<PlaylistsPage />} />
           <Route path="/sermons/times" element={<LiveStreamTimesPage />} />
           <Route path="/sermons/bulk" element={<BulkImportPage />} />
           <Route path="/sermons" element={<SermonsPage />} />
@@ -155,7 +152,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/site/*" element={<Site />} />
           <Route path="/mobile/*" element={<Mobile />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/" element={<QuickActionsPage />} />
+          <Route path="/" element={<DashboardPage />} />
         </Route>
 
         <Route

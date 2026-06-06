@@ -2,9 +2,10 @@ import React, { memo, useMemo } from "react";
 import { UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { Box, Card, CardContent, Typography, Stack, Chip, ListItem, ListItemIcon, ListItemText, ListItemButton, Avatar } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Chip, List, ListItemButton, ListItemAvatar, ListItemText, Avatar } from "@mui/material";
 import { Group as GroupIcon, Groups as GroupsIcon, SupervisorAccount as LeaderIcon } from "@mui/icons-material";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { CardWithHeader } from "../../components/ui/CardWithHeader";
 
 interface Props {
   personId: string;
@@ -19,6 +20,8 @@ export const Groups: React.FC<Props> = memo((props) => {
     placeholderData: []
   });
 
+  const count = groupMembers.data?.length || 0;
+
   const recordsContent = useMemo(() => {
     if (groupMembers.isLoading) return <Loading size="sm" />;
 
@@ -27,117 +30,51 @@ export const Groups: React.FC<Props> = memo((props) => {
     }
 
     return (
-      <Box
-        sx={{
-          "& .MuiCard-root": {
-            borderRadius: 2,
-            border: "1px solid",
-            borderColor: "divider"
-          }
-        }}>
-        <Stack spacing={2}>
-          {groupMembers.data.map((gm) => (
-            <Card
-              key={gm.id}
-              sx={{
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  transform: "translateY(-1px)",
-                  boxShadow: 2
-                }
-              }}>
-              <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
-                <ListItem sx={{ px: 0, py: 0 }}>
-                  <ListItemButton
-                    component={Link}
-                    to={`/groups/${gm.groupId}`}
-                    sx={{
-                      px: 0,
-                      py: 1,
-                      borderRadius: 1,
-                      "&:hover": { backgroundColor: "action.hover" }
-                    }}>
-                    <ListItemIcon sx={{ minWidth: 56 }}>
-                      {gm.group?.photoUrl ? (
-                        <Avatar
-                          src={gm.group.photoUrl}
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            bgcolor: "primary.light"
-                          }}>
-                          <GroupIcon sx={{ color: "primary.main" }} />
-                        </Avatar>
-                      ) : (
-                        <Avatar
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            bgcolor: "primary.light"
-                          }}>
-                          <GroupIcon sx={{ color: "primary.main" }} />
-                        </Avatar>
-                      )}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={
-                        <Typography
-                          variant="h6"
-                          sx={{
-                            fontWeight: 600,
-                            color: "primary.main",
-                            fontSize: "1rem"
-                          }}>
-                          {gm.group?.name || Locale.label("people.groups.unknownGroup")}
-                        </Typography>
-                      }
-                      secondary={
-                        <Box sx={{ mt: 1 }}>
-                          <Stack direction="row" spacing={1} flexWrap="wrap">
-                            {/* Group Type/Category if available */}
-                            {gm.group?.categoryName && (
-                              <Chip
-                                label={gm.group.categoryName}
-                                variant="outlined"
-                                size="small"
-                                sx={{
-                                  color: "text.secondary",
-                                  borderColor: "divider",
-                                  fontSize: "0.75rem"
-                                }}
-                              />
-                            )}
-                            {/* Leader indicator */}
-                            {gm.leader && (
-                              <Chip
-                                icon={<LeaderIcon />}
-                                label={Locale.label("people.groups.leader")}
-                                variant="filled"
-                                size="small"
-                                color="secondary"
-                                sx={{
-                                  fontSize: "0.75rem",
-                                  fontWeight: 600
-                                }}
-                              />
-                            )}
-                          </Stack>
-                        </Box>
-                      }
-                      slotProps={{
-                        primary: { component: "div" },
-                        secondary: { component: "div" }
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </CardContent>
-            </Card>
-          ))}
-        </Stack>
-      </Box>
+      <List disablePadding>
+        {groupMembers.data.map((gm, index) => (
+          <ListItemButton
+            key={gm.id}
+            component={Link}
+            to={`/groups/${gm.groupId}`}
+            divider={index < groupMembers.data.length - 1}
+            sx={{ px: 1, py: 1, borderRadius: 1 }}>
+            <ListItemAvatar sx={{ minWidth: 52 }}>
+              <Avatar src={gm.group?.photoUrl} sx={{ width: 36, height: 36, bgcolor: "primary.light" }}>
+                <GroupIcon sx={{ color: "primary.main" }} />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={<Typography sx={{ fontWeight: 600, color: "primary.main", fontSize: "0.95rem" }}>{gm.group?.name || Locale.label("people.groups.unknownGroup")}</Typography>}
+              slotProps={{ primary: { component: "div" } }}
+            />
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
+              {gm.group?.categoryName && (
+                <Chip label={gm.group.categoryName} variant="outlined" size="small" sx={{ color: "text.secondary", borderColor: "divider", fontSize: "0.75rem" }} />
+              )}
+              {gm.leader && (
+                <Chip icon={<LeaderIcon />} label={Locale.label("people.groups.leader")} variant="filled" size="small" color="secondary" sx={{ fontSize: "0.75rem", fontWeight: 600 }} />
+              )}
+            </Stack>
+          </ListItemButton>
+        ))}
+      </List>
     );
   }, [groupMembers.isLoading, groupMembers.data]);
 
-  return recordsContent;
+  if (props.title) {
+    return (
+      <CardWithHeader
+        title={props.title}
+        icon={<GroupsIcon sx={{ color: "primary.main" }} />}
+        actions={count > 0 ? <Chip label={count} size="small" color="primary" sx={{ fontWeight: 600 }} /> : undefined}>
+        {recordsContent}
+      </CardWithHeader>
+    );
+  }
+
+  return (
+    <Card>
+      <CardContent>{recordsContent}</CardContent>
+    </Card>
+  );
 });
