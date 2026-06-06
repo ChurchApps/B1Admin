@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, ExportLink, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, IconButton, Toolbar, Stack, Typography, Icon } from "@mui/material";
-import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, IconButton, Toolbar, Stack, Typography } from "@mui/material";
+import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
@@ -43,6 +43,14 @@ const GroupsPage = () => {
     enabled: canApproveRequests
   });
   const pendingCount = pendingRequests?.length || 0;
+
+  const canEditPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const { data: myMinistries = [] } = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    placeholderData: [],
+    enabled: !canEditPlans
+  });
+  const showServingTeams = canEditPlans || (myMinistries?.length || 0) > 0;
 
   const exportData = groups.map((g) => {
     const { labelArray, ...rest } = g;
@@ -175,20 +183,6 @@ const GroupsPage = () => {
                 </Stack>
                 <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("groups.groupsPage.totalGroups")}</Typography>
               </Stack>
-              <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <FolderIcon sx={{ color: "#FFF", fontSize: 24 }} />
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{[...new Set(groups.map((g) => g.categoryName))].length}</Typography>
-                </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("groups.groupsPage.categories")}</Typography>
-              </Stack>
-              <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Icon sx={{ color: "#FFF", fontSize: 24 }}>people</Icon>
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{groups.reduce((total, group) => total + (group.memberCount || 0), 0)}</Typography>
-                </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("groups.groupsPage.totalMembers")}</Typography>
-              </Stack>
             </Stack>
           )}
           <Stack
@@ -216,6 +210,24 @@ const GroupsPage = () => {
                   }
                 }}>
                 {pendingCount} pending request{pendingCount === 1 ? "" : "s"}
+              </Button>
+            )}
+            {showServingTeams && (
+              <Button
+                variant="outlined"
+                component={Link}
+                to="/serving"
+                startIcon={<PeopleIcon />}
+                data-testid="serving-teams-button"
+                sx={{
+                  color: "#FFF",
+                  borderColor: "rgba(255,255,255,0.5)",
+                  "&:hover": {
+                    borderColor: "#FFF",
+                    backgroundColor: "rgba(255,255,255,0.1)"
+                  }
+                }}>
+                {Locale.label("components.wrapper.teams")}
               </Button>
             )}
             {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (

@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, Switch, FormControlLabel, Typography, Button, IconButton, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
-import { ImageEditor } from "../../components/gallery";
+import { ImageEditor } from "../components/gallery";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
 interface IdleSlide {
@@ -27,7 +27,7 @@ const DEFAULT_SETTINGS: CheckinSettingsConfig = {
   idleScreen: { enabled: false, timeoutSeconds: 120, slides: [] }
 };
 
-export const CheckinThemeEdit: React.FC = () => {
+export const KioskThemeEdit: React.FC = () => {
   const [config, setConfig] = React.useState<CheckinSettingsConfig>({ ...DEFAULT_SETTINGS });
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -141,32 +141,32 @@ export const CheckinThemeEdit: React.FC = () => {
   }
 
   return (
-    <InputBox headerText={Locale.label("attendance.checkinThemeEdit.kioskSettings")} headerIcon="settings" saveFunction={handleSave} isSubmitting={isSubmitting}>
+    <InputBox headerText={Locale.label("mobile.checkInPage.kiosk.sectionTitle")} headerIcon="settings" saveFunction={handleSave} isSubmitting={isSubmitting}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        {Locale.label("attendance.checkinThemeEdit.headerSubtitle")}
+        {Locale.label("mobile.checkInPage.kiosk.headerSubtitle")}
       </Typography>
 
       {/* Background Image Section */}
       <Accordion defaultExpanded>
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="subtitle1" fontWeight={600}>Background Image</Typography>
+          <Typography variant="subtitle1" fontWeight={600}>{Locale.label("mobile.checkInPage.kiosk.backgroundImage")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Optional background image for the lookup/welcome screen. Recommended: 1920x1080.
+            {Locale.label("mobile.checkInPage.kiosk.backgroundImageDesc")}
           </Typography>
           {config.backgroundImage && (
             <Box sx={{ mb: 2 }}>
-              <img src={config.backgroundImage} alt="Background" style={{ maxWidth: 300, maxHeight: 170, borderRadius: 8, border: "1px solid #ccc" }} />
+              <img src={config.backgroundImage} alt={Locale.label("mobile.checkInPage.kiosk.backgroundImage")} style={{ maxWidth: 300, maxHeight: 170, borderRadius: 8, border: "1px solid #ccc" }} />
             </Box>
           )}
           <Stack direction="row" spacing={2}>
             <Button variant="outlined" onClick={() => setEditingImage("background")}>
-              {config.backgroundImage ? "Change Image" : "Upload Image"}
+              {config.backgroundImage ? Locale.label("mobile.checkInPage.kiosk.changeImage") : Locale.label("mobile.checkInPage.kiosk.uploadImage")}
             </Button>
             {config.backgroundImage && (
               <Button variant="outlined" color="error" onClick={() => setConfig(prev => ({ ...prev, backgroundImage: "" }))}>
-                Remove
+                {Locale.label("common.remove")}
               </Button>
             )}
           </Stack>
@@ -176,7 +176,7 @@ export const CheckinThemeEdit: React.FC = () => {
       {/* Idle Screen Section */}
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="subtitle1" fontWeight={600}>Idle Screen / Screensaver</Typography>
+          <Typography variant="subtitle1" fontWeight={600}>{Locale.label("mobile.checkInPage.kiosk.idleScreen")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <FormControlLabel
@@ -186,11 +186,11 @@ export const CheckinThemeEdit: React.FC = () => {
                 onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, enabled: e.target.checked } }))}
               />
             }
-            label="Enable idle screen"
+            label={Locale.label("mobile.checkInPage.kiosk.enableIdleScreen")}
           />
           <TextField
             type="number"
-            label="Timeout (seconds)"
+            label={Locale.label("mobile.checkInPage.kiosk.timeoutSeconds")}
             value={config.idleScreen.timeoutSeconds}
             onChange={e => setConfig(prev => ({ ...prev, idleScreen: { ...prev.idleScreen, timeoutSeconds: parseInt(e.target.value) || 120 } }))}
             size="small"
@@ -198,18 +198,18 @@ export const CheckinThemeEdit: React.FC = () => {
             slotProps={{ htmlInput: { min: 10 } }}
           />
 
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>Slides</Typography>
+          <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("mobile.checkInPage.kiosk.slides")}</Typography>
           {config.idleScreen.slides.map((slide, index) => (
             <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: "1px solid #e0e0e0", borderRadius: 2 }}>
               {slide.imageUrl && (
-                <img src={slide.imageUrl} alt={`Slide ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: 4 }} />
+                <img src={slide.imageUrl} alt={`${Locale.label("mobile.checkInPage.kiosk.slides")} ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: 4 }} />
               )}
               <Button size="small" variant="outlined" onClick={() => { setEditingSlideIndex(index); setEditingImage("slide"); }}>
-                {slide.imageUrl ? "Change" : "Upload"}
+                {slide.imageUrl ? Locale.label("common.change") : Locale.label("mobile.checkInPage.kiosk.upload")}
               </Button>
               <TextField
                 type="number"
-                label="Duration (s)"
+                label={Locale.label("mobile.checkInPage.kiosk.duration")}
                 value={slide.durationSeconds}
                 onChange={e => updateSlideDuration(index, parseInt(e.target.value) || 10)}
                 size="small"
@@ -221,7 +221,7 @@ export const CheckinThemeEdit: React.FC = () => {
               </IconButton>
             </Stack>
           ))}
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={addSlide}>Add Slide</Button>
+          <Button variant="outlined" startIcon={<AddIcon />} onClick={addSlide}>{Locale.label("mobile.checkInPage.kiosk.addSlide")}</Button>
         </AccordionDetails>
       </Accordion>
     </InputBox>

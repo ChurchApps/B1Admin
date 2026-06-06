@@ -9,7 +9,7 @@ import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions } from "./components/SavedLists";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon } from "@mui/icons-material";
+import { People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
@@ -273,32 +273,22 @@ export const PeoplePage = memo(() => {
               ? Locale.label("people.peoplePage.loading")
               : Locale.label("people.peoplePage.noPeopleFound")
         }>
-        <SearchIcon
+        <Button
+          variant="outlined"
           sx={{
-            fontSize: 32,
-            color: "rgba(255,255,255,0.8)",
-            cursor: "pointer",
+            color: "#FFF",
+            borderColor: "rgba(255,255,255,0.5)",
+            mr: 1,
             "&:hover": {
-              color: "#FFF",
-              transform: "scale(1.1)"
-            },
-            transition: "all 0.2s ease",
-            mr: 2
-          }}
-          onClick={() => {
-            const searchPanel = document.getElementById("peopleSearch");
-            if (searchPanel) {
-              searchPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-              // Focus on the search input after scrolling
-              setTimeout(() => {
-                const searchInput = document.getElementById("searchText") || document.querySelector('[data-testid="people-search-input"]');
-                if (searchInput) {
-                  (searchInput as HTMLElement).focus();
-                }
-              }, 500);
+              borderColor: "#FFF",
+              backgroundColor: "rgba(255,255,255,0.1)"
             }
           }}
-        />
+          startIcon={<BarChartIcon />}
+          onClick={() => navigate("/people/demographics")}
+          data-testid="demographics-button">
+          {Locale.label("people.demographics.title")}
+        </Button>
         {canEdit && (
           <Button
             variant="outlined"

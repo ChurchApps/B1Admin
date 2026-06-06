@@ -5,6 +5,7 @@ import type { GenericSettingInterface } from "@churchapps/helpers";
 import { QRCodeCanvas } from "qrcode.react";
 import { PermissionDenied } from "../components";
 import { EnvironmentHelper } from "../helpers";
+import { KioskThemeEdit } from "./KioskThemeEdit";
 
 export const CheckInPage: React.FC = () => {
   const [enabled, setEnabled] = React.useState(false);
@@ -117,6 +118,10 @@ export const CheckInPage: React.FC = () => {
               </Stack>
             </Box>
           )}
+        </Box>
+
+        <Box sx={{ mt: 3 }}>
+          <KioskThemeEdit />
         </Box>
       </Box>
     </>

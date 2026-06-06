@@ -20,9 +20,6 @@
     }
   },
   "attendance": {
-    "attendanceNavigation": {
-      "kioskTheme": "Kiosk Theme"
-    },
     "attendancePage": {
       "att": "Attendance",
       "campus": "Campus",
@@ -56,10 +53,6 @@
       "validate": {
         "name": "Campus Name is required."
       }
-    },
-    "checkinThemeEdit": {
-      "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
-      "kioskSettings": "Kiosk Settings"
     },
     "serviceEdit": {
       "campus": "Campus",
@@ -1129,6 +1122,21 @@
       "disabled": "Disabled",
       "downloadQr": "Download PNG",
       "enabled": "Enabled — QR code will appear on kiosk",
+      "kiosk": {
+        "addSlide": "Add Slide",
+        "backgroundImage": "Background Image",
+        "backgroundImageDesc": "Optional background image for the lookup/welcome screen. Recommended: 1920x1080.",
+        "changeImage": "Change Image",
+        "duration": "Duration (s)",
+        "enableIdleScreen": "Enable idle screen",
+        "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
+        "idleScreen": "Idle Screen / Screensaver",
+        "sectionTitle": "Kiosk Theme",
+        "slides": "Slides",
+        "timeoutSeconds": "Timeout (seconds)",
+        "upload": "Upload",
+        "uploadImage": "Upload Image"
+      },
       "linkCopied": "Copied!",
       "qrGuestRegistration": "QR Guest Registration",
       "qrShareDescription": "Print this QR code on flyers, bulletins, or signage. Guests can scan it to register from their phone.  It will also show in app.",
