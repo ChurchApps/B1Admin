@@ -3,14 +3,14 @@ import React from "react";
 import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { WorkflowCard } from "./components/WorkflowCard";
-import { type WorkflowCardInterface } from "./interfaces";
+import { type TaskInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Assignment as MyCardsIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 export const MyCardsPage = () => {
   const navigate = useNavigate();
-  const cards = useQuery<WorkflowCardInterface[]>({ queryKey: ["/tasks/cards/my", "DoingApi"], placeholderData: [] });
+  const cards = useQuery<TaskInterface[]>({ queryKey: ["/tasks/cards/my", "DoingApi"], placeholderData: [] });
 
   const getContent = () => {
     if (cards.isLoading) return <Loading />;

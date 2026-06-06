@@ -2,7 +2,7 @@ import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, Typography } from "@mui/material";
 import { type BulkResult } from "./BulkFieldDialog";
-import { type WorkflowInterface } from "../../../serving/tasks/workflows/interfaces";
+import { type WorkflowInterface } from "@churchapps/helpers";
 
 interface Props {
   open: boolean;

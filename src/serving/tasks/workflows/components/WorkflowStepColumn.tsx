@@ -6,12 +6,12 @@ import { DraggableWrapper } from "../../../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../../../components/DroppableWrapper";
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowCard } from "./WorkflowCard";
-import { type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "../interfaces";
+import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "@churchapps/helpers";
 
 interface Props {
   workflowId: string;
   step: WorkflowStepInterface;
-  cards: WorkflowCardInterface[];
+  cards: TaskInterface[];
   routes?: WorkflowStepRouteInterface[];
   steps?: WorkflowStepInterface[];
   workflows?: WorkflowInterface[];
@@ -20,7 +20,7 @@ interface Props {
   selectedIds: Set<string>;
   onToggleSelect: (cardId: string) => void;
   onDropCard: (cardId: string, stepId: string) => void;
-  onOpenCard: (card: WorkflowCardInterface) => void;
+  onOpenCard: (card: TaskInterface) => void;
   onEditStep: (step: WorkflowStepInterface) => void;
   onChanged: () => void;
 }

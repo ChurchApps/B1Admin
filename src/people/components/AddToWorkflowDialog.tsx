@@ -2,7 +2,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl,
 import React from "react";
 import { ApiHelper, Locale, type PersonInterface } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { type WorkflowInterface } from "../../serving/tasks/workflows/interfaces";
+import { type WorkflowInterface } from "@churchapps/helpers";
 
 interface Props {
   person: PersonInterface;

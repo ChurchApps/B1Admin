@@ -2,10 +2,10 @@ import { Box, Typography, Chip, Stack, Checkbox } from "@mui/material";
 import React from "react";
 import { Locale, DateHelper } from "@churchapps/apphelper";
 import { Person as PersonIcon, Schedule as DueIcon, Snooze as SnoozeIcon, PushPin as PinIcon } from "@mui/icons-material";
-import { type WorkflowCardInterface } from "../interfaces";
+import { type TaskInterface } from "@churchapps/helpers";
 
 interface Props {
-  card: WorkflowCardInterface;
+  card: TaskInterface;
   selectable?: boolean;
   selected?: boolean;
   onToggleSelect?: () => void;

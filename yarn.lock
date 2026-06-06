@@ -261,7 +261,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/helpers@npm:1.5.0, @churchapps/helpers@npm:^1.5.0":
+"@churchapps/helpers@npm:1.5.0":
   version: 1.5.0
   resolution: "@churchapps/helpers@npm:1.5.0"
   dependencies:
@@ -272,6 +272,20 @@ __metadata:
     rrule:
       optional: true
   checksum: 10c0/4d6975dbe7c2bd4bdc244c61f11be1322051ef2d5ffb9e84870c473e0448561b8d786c927ce6946ac3c527ac482c2c2b32e62cad7ed7890e816d6a01b23ac8c0
+  languageName: node
+  linkType: hard
+
+"@churchapps/helpers@npm:^1.5.5":
+  version: 1.5.5
+  resolution: "@churchapps/helpers@npm:1.5.5"
+  dependencies:
+    dayjs: "npm:^1.11.20"
+  peerDependencies:
+    rrule: ^2.8.1
+  peerDependenciesMeta:
+    rrule:
+      optional: true
+  checksum: 10c0/e26e88479559c6c796b15e667bef18c15511875a44f13159f40dfe5f896491aaab787b208296283860058944d950395c8238caa009ddc18d7d0a94a35144b319
   languageName: node
   linkType: hard
 
@@ -2513,7 +2527,7 @@ __metadata:
   dependencies:
     "@churchapps/apphelper": "npm:^0.8.0"
     "@churchapps/content-providers": "npm:^0.3.0"
-    "@churchapps/helpers": "npm:^1.5.0"
+    "@churchapps/helpers": "npm:^1.5.5"
     "@eslint/js": "npm:^10.0.1"
     "@mui/icons-material": "npm:^7.3.11"
     "@mui/material": "npm:^7.3.11"

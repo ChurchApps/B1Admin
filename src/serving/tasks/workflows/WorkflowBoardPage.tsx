@@ -12,7 +12,7 @@ import { WorkflowEdit } from "./components/WorkflowEdit";
 import { WorkflowCardDrawer } from "./components/WorkflowCardDrawer";
 import { WorkflowTriggersDialog } from "./components/WorkflowTriggersDialog";
 import { ContentPicker } from "../components/ContentPicker";
-import { type WorkflowBoardInterface, type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "./interfaces";
+import { type WorkflowBoardInterface, type WorkflowStepInterface, type TaskInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permissions";
 
 export const WorkflowBoardPage = () => {
@@ -21,7 +21,7 @@ export const WorkflowBoardPage = () => {
   const workflowId = params.id;
   const [editStep, setEditStep] = React.useState<WorkflowStepInterface | null>(null);
   const [editWorkflow, setEditWorkflow] = React.useState<WorkflowInterface | null>(null);
-  const [openCard, setOpenCard] = React.useState<WorkflowCardInterface | null>(null);
+  const [openCard, setOpenCard] = React.useState<TaskInterface | null>(null);
   const [showTriggers, setShowTriggers] = React.useState(false);
   const [selectedIds, setSelectedIds] = React.useState<Set<string>>(new Set());
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);

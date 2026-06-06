@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowBack as BackIcon } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import { type WorkflowStepInterface } from "./interfaces";
+import { type WorkflowStepInterface } from "@churchapps/helpers";
 
 interface ReportData {
   stepCounts: { stepId: string; count: number }[];

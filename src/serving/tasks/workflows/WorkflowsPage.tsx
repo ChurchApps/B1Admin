@@ -3,7 +3,7 @@ import React from "react";
 import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { WorkflowEdit } from "./components/WorkflowEdit";
-import { type WorkflowInterface, type WorkflowCategoryInterface } from "./interfaces";
+import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { ViewKanban as WorkflowsIcon, Add as AddIcon, Assignment as MyCardsIcon, ContentCopy as DuplicateIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";

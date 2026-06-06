@@ -4,7 +4,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Person as PersonIcon } from "@mui/icons-material";
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowStepRouting } from "./WorkflowStepRouting";
-import { type WorkflowStepInterface, type WorkflowInterface } from "../interfaces";
+import { type WorkflowStepInterface, type WorkflowInterface } from "@churchapps/helpers";
 
 interface Props {
   step: WorkflowStepInterface;

@@ -2,7 +2,7 @@ import { Card, CardContent, Typography, Stack, Box, Button, TextField, Switch, F
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { ViewKanban as WorkflowsIcon, Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Check as CheckIcon } from "@mui/icons-material";
-import { type WorkflowInterface, type WorkflowCategoryInterface } from "../interfaces";
+import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 
 const ADD_CATEGORY = "__add__";
 

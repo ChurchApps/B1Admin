@@ -4,11 +4,11 @@ import { ApiHelper, type ConversationInterface, Notes, Locale } from "@churchapp
 import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
-import { type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowStepRouteInterface } from "../interfaces";
+import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface } from "@churchapps/helpers";
 import { canEditCard } from "../permissions";
 
 interface Props {
-  card: WorkflowCardInterface;
+  card: TaskInterface;
   steps: WorkflowStepInterface[];
   routes?: WorkflowStepRouteInterface[];
   onClose: () => void;

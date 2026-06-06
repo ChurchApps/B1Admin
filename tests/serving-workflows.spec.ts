@@ -309,7 +309,7 @@ test.describe.serial('Serving Management - Workflows', () => {
   test('permission tiers are enforced at the API (view / edit-assigned / admin)', async () => {
     const API_BASE = 'http://localhost:8084';
     const ctx = await request.newContext();
-    // Log in as the seeded "Workflow Volunteer" — DoingApi/Doing/View only, person PER00000069.
+    // Log in as the seeded "Workflow Volunteer" — DoingApi/Tasks/View only, person PER00000069.
     const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'volunteer@b1.church', password: 'password' } });
     expect(loginRes.ok()).toBeTruthy();
     const body = await loginRes.json();

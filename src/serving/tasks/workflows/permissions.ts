@@ -1,17 +1,11 @@
-// Shim for the DoingApi permission tiers, until @churchapps/helpers exposes them.
-import { UserHelper } from "@churchapps/apphelper";
+// Convenience wrappers around the DoingApi permission tiers. The tier constants
+// live in @churchapps/helpers (Permissions.doingApi); canEditCard's per-card rule
+// is B1Admin-specific so it stays here.
+import { Permissions, UserHelper } from "@churchapps/apphelper";
 
-const doing = (action: string) => ({ api: "DoingApi", contentType: "Doing", action });
-
-export const DoingPermissions = {
-  view: doing("View"),
-  edit: doing("Edit"),
-  admin: doing("Admin")
-};
-
-export const canViewWorkflows = () => UserHelper.checkAccess(DoingPermissions.view);
-export const canEditCards = () => UserHelper.checkAccess(DoingPermissions.edit);
-export const canManageWorkflows = () => UserHelper.checkAccess(DoingPermissions.admin);
+export const canViewWorkflows = () => UserHelper.checkAccess(Permissions.doingApi.tasks.view);
+export const canEditCards = () => UserHelper.checkAccess(Permissions.doingApi.tasks.edit);
+export const canManageWorkflows = () => UserHelper.checkAccess(Permissions.doingApi.tasks.admin);
 
 // Edit-assigned tier: full editors, or the person the card is assigned to.
 export const canEditCard = (card: { assignedToType?: string; assignedToId?: string }) =>

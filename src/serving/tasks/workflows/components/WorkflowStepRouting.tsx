@@ -3,7 +3,7 @@ import React from "react";
 import { ApiHelper, Locale, type ConditionInterface } from "@churchapps/apphelper";
 import { Add as AddIcon, Delete as DeleteIcon, CallSplit as RouteIcon } from "@mui/icons-material";
 import { ConditionEdit } from "../../automations/components/ConditionEdit";
-import { type WorkflowStepInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "../interfaces";
+import { type WorkflowStepInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "@churchapps/helpers";
 
 const WF_PREFIX = "wf:";
 

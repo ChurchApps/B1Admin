@@ -2,7 +2,7 @@ import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, List, ListItem, ListItemText, IconButton, Typography, Stack } from "@mui/material";
 import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { type FormWorkflowTriggerInterface } from "../interfaces";
+import { type FormWorkflowTriggerInterface } from "@churchapps/helpers";
 
 interface FormInterface { id?: string; name?: string }
 
