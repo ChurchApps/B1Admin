@@ -45,6 +45,12 @@ export function editIconButton(page: Page) {
   return page.locator('button:has(svg[data-testid="EditIcon"])');
 }
 
+// The person-details "Personal Details" box surfaces edit via a DisplayBox editContent
+// button, not the banner EditIcon svg the page used to show.
+export function personDetailsEditButton(page: Page) {
+  return page.locator('[data-testid="edit-person-button"]');
+}
+
 export function closeIconButton(page: Page) {
   return page.locator('button:has(svg[data-testid="CloseIcon"])');
 }

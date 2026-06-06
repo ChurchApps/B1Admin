@@ -2,7 +2,6 @@ import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper, Locale } from "@churchapps/apphelper";
 import { Typography, IconButton, Stack, Chip, Tooltip, Box } from "@mui/material";
 import {
-  Edit as EditIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
   Home as HomeIcon,
@@ -17,11 +16,10 @@ import { AddToWorkflowDialog } from "./AddToWorkflowDialog";
 interface Props {
   person: PersonInterface;
   togglePhotoEditor?: (show: boolean) => void;
-  onEdit?: () => void;
 }
 
 export const PersonBanner = memo((props: Props) => {
-  const { person, togglePhotoEditor, onEdit } = props;
+  const { person, togglePhotoEditor } = props;
 
   const [userEmail, setUserEmail] = useState<string>("");
   const [showTextDialog, setShowTextDialog] = useState(false);
@@ -171,11 +169,6 @@ export const PersonBanner = memo((props: Props) => {
                 }}>
                 {person?.name?.display}
               </Typography>
-              {canEdit && (
-                <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>
-                  <EditIcon fontSize="small" />
-                </IconButton>
-              )}
               {canEdit && (
                 <Tooltip title={Locale.label("people.personBanner.addToWorkflow")}>
                   <IconButton size="small" sx={{ color: "#FFF" }} data-testid="add-to-workflow-button" onClick={() => setShowWorkflowDialog(true)}>

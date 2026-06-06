@@ -1446,10 +1446,9 @@
       "work": "Work"
     },
     "personForm": {
-      "addForm": "Add Form",
-      "addFormAria": "Add {name} submission",
+      "editAria": "Edit {name}",
       "form": "Form",
-      "noFormMsg": "No form submission found for this person"
+      "notFilledOut": "Not filled out yet."
     },
     "personNav": {
       "customForms": "Custom Forms",
@@ -1462,11 +1461,15 @@
       "donations": "Donations",
       "forms": "Forms",
       "groups": "Groups",
-      "notes": "Notes"
+      "notes": "Notes",
+      "profile": "Profile"
     },
     "personPage": {
       "notesSuffix": " Notes",
       "thisPerson": "this person"
+    },
+    "personProfile": {
+      "railLabel": "Profile & Forms"
     },
     "personView": {
       "edit": "Edit",
