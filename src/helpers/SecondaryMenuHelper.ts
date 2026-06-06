@@ -18,7 +18,7 @@ export class SecondaryMenuHelper {
     else if (path.startsWith("/site") || path.startsWith("/calendars") || path.startsWith("/registrations")) result = this.getSiteMenu(path);
     else if (path.startsWith("/sermons")) result = this.getSermonsMenu(path);
     else if (path.startsWith("/profile")) result = this.getProfileMenu(path);
-    else if (path === "/" || path.startsWith("/dashboard")) result = this.getDashboardMenu(path);
+    else if (path === "/" || path.startsWith("/dashboard")) result = this.getDashboardMenu();
     return result;
   };
 
@@ -120,14 +120,10 @@ export class SecondaryMenuHelper {
     return { menuItems, label };
   };
 
-  static getDashboardMenu = (path: string) => {
+  static getDashboardMenu = () => {
     const menuItems: MenuItem[] = [];
-    let label: string = "";
-    menuItems.push({ url: "/", label: Locale.label("helpers.secondaryMenuHelper.quickActions"), icon: "flash_on" });
-    menuItems.push({ url: "/dashboard", label: Locale.label("components.wrapper.dash"), icon: "dashboard" });
-
-    if (path === "/") label = Locale.label("helpers.secondaryMenuHelper.quickActions");
-    else if (path.startsWith("/dashboard")) label = Locale.label("components.wrapper.dash");
+    const label: string = Locale.label("components.wrapper.dash");
+    menuItems.push({ url: "/", label, icon: "dashboard" });
 
     return { menuItems, label };
   };

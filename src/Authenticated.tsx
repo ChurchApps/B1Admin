@@ -31,7 +31,6 @@ const WorkflowBoardPage = React.lazy(() => import("./serving/tasks/workflows/Wor
 const WorkflowReportsPage = React.lazy(() => import("./serving/tasks/workflows/WorkflowReportsPage").then((module) => ({ default: module.WorkflowReportsPage })));
 const MyCardsPage = React.lazy(() => import("./serving/tasks/workflows/MyCardsPage").then((module) => ({ default: module.MyCardsPage })));
 const DashboardPage = React.lazy(() => import("./dashboard/DashboardPage").then((module) => ({ default: module.DashboardPage })));
-const QuickActionsPage = React.lazy(() => import("./dashboard/QuickActionsPage").then((module) => ({ default: module.QuickActionsPage })));
 const AdminPage = React.lazy(() => import("./serverAdmin/AdminPage").then((module) => ({ default: module.AdminPage })));
 const ProfilePage = React.lazy(() => import("./profile/ProfilePage").then((module) => ({ default: module.ProfilePage })));
 const ServingPage = React.lazy(() => import("./serving/ServingPage").then((module) => ({ default: module.ServingPage })));
@@ -153,7 +152,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/site/*" element={<Site />} />
           <Route path="/mobile/*" element={<Mobile />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/" element={<QuickActionsPage />} />
+          <Route path="/" element={<DashboardPage />} />
         </Route>
 
         <Route

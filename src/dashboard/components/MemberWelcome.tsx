@@ -1,51 +1,31 @@
 import React from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { CameraAlt, Groups, VolunteerActivism, Event, PhoneIphone, Person } from "@mui/icons-material";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
-import { PageHeader } from "@churchapps/apphelper";
-import { FeatureCard } from "./FeatureCard";
+import { QuickActionItem } from "./QuickActionItem";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
+import { GRID_SIZES } from "../../components/ui/layoutPresets";
 
 export const MemberWelcome: React.FC = () => {
-  const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("dashboard.memberWelcome.fallbackChurchName");
   const subDomain = UserHelper.currentUserChurch?.church?.subDomain || "";
   const b1Url = EnvironmentHelper.B1Url.replace("{subdomain}", subDomain);
 
+  const items = [
+    { icon: <CameraAlt fontSize="small" />, title: Locale.label("dashboard.memberWelcome.setPhotoTitle"), linkUrl: b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit", external: true, show: true },
+    { icon: <Person fontSize="small" />, title: Locale.label("dashboard.memberWelcome.findPeopleTitle"), linkUrl: "/people", show: UserHelper.checkAccess(Permissions.membershipApi.people.view) },
+    { icon: <Groups fontSize="small" />, title: Locale.label("dashboard.memberWelcome.joinGroupTitle"), linkUrl: b1Url + "/groups", external: true, show: true },
+    { icon: <VolunteerActivism fontSize="small" />, title: Locale.label("dashboard.memberWelcome.onlineGivingTitle"), linkUrl: b1Url + "/donate", external: true, show: true },
+    { icon: <Event fontSize="small" />, title: Locale.label("dashboard.memberWelcome.upcomingEventsTitle"), linkUrl: b1Url, external: true, show: true },
+    { icon: <PhoneIphone fontSize="small" />, title: Locale.label("dashboard.memberWelcome.downloadAppTitle"), linkUrl: "https://b1.church/app", external: true, show: true }
+  ];
+
   return (
-    <>
-      <PageHeader
-        title={Locale.label("dashboard.memberWelcome.title").replace("{churchName}", churchName)}
-        subtitle={Locale.label("dashboard.memberWelcome.subtitle")}
-      />
-      <Container maxWidth="xl">
-        <Box sx={{ py: 4 }}>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            {Locale.label("dashboard.memberWelcome.intro")}
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<CameraAlt fontSize="small" />} title={Locale.label("dashboard.memberWelcome.setPhotoTitle")} description={Locale.label("dashboard.memberWelcome.setPhotoDesc")} linkUrl={b1Url + "/mobile/community?id=" + UserHelper.person?.id + "#edit"} external />
-            </Grid>
-            {UserHelper.checkAccess(Permissions.membershipApi.people.view) && (
-              <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                <FeatureCard icon={<Person fontSize="small" />} title={Locale.label("dashboard.memberWelcome.findPeopleTitle")} description={Locale.label("dashboard.memberWelcome.findPeopleDesc")} linkUrl="/people" />
-              </Grid>
-            )}
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Groups fontSize="small" />} title={Locale.label("dashboard.memberWelcome.joinGroupTitle")} description={Locale.label("dashboard.memberWelcome.joinGroupDesc")} linkUrl={b1Url + "/groups"} external />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<VolunteerActivism fontSize="small" />} title={Locale.label("dashboard.memberWelcome.onlineGivingTitle")} description={Locale.label("dashboard.memberWelcome.onlineGivingDesc")} linkUrl={b1Url + "/donate"} external />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<Event fontSize="small" />} title={Locale.label("dashboard.memberWelcome.upcomingEventsTitle")} description={Locale.label("dashboard.memberWelcome.upcomingEventsDesc")} linkUrl={b1Url} external />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-              <FeatureCard icon={<PhoneIphone fontSize="small" />} title={Locale.label("dashboard.memberWelcome.downloadAppTitle")} description={Locale.label("dashboard.memberWelcome.downloadAppDesc")} linkUrl="https://b1.church/app" external />
-            </Grid>
-          </Grid>
-        </Box>
-      </Container>
-    </>
+    <Grid container spacing={1}>
+      {items.filter((item) => item.show).map((item) => (
+        <Grid key={item.title} size={GRID_SIZES.threeColumn}>
+          <QuickActionItem icon={item.icon} title={item.title} linkUrl={item.linkUrl} external={item.external} />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
