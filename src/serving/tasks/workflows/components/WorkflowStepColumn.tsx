@@ -1,17 +1,19 @@
 import { Box, Typography, Chip, IconButton, Button, Stack } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
+import { Edit as EditIcon, Add as AddIcon, CheckCircleOutline as OutcomeIcon, CallSplit as AutoIcon, ArrowRightAlt as ArrowIcon } from "@mui/icons-material";
 import { DraggableWrapper } from "../../../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../../../components/DroppableWrapper";
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowCard } from "./WorkflowCard";
-import { type WorkflowStepInterface, type WorkflowCardInterface } from "../interfaces";
+import { type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowStepRouteInterface } from "../interfaces";
 
 interface Props {
   workflowId: string;
   step: WorkflowStepInterface;
   cards: WorkflowCardInterface[];
+  routes?: WorkflowStepRouteInterface[];
+  steps?: WorkflowStepInterface[];
   canEdit: boolean;
   canManage: boolean;
   selectedIds: Set<string>;
@@ -25,6 +27,16 @@ interface Props {
 export const WorkflowStepColumn = (props: Props) => {
   const { step, cards } = props;
   const [showPicker, setShowPicker] = React.useState(false);
+
+  // Make the step's conditional routes legible on the board itself: each route
+  // reads "<outcome / condition> → <target step or close>" under the header, so
+  // the branch structure is visible even though columns lay out linearly.
+  const routes = props.routes || [];
+  const stepName = (id?: string) => props.steps?.find((s) => s.id === id)?.name;
+  const routeSource = (r: WorkflowStepRouteInterface) =>
+    r.trigger === "onComplete" ? (r.label || Locale.label("tasks.workflowCard.outcome"))
+      : r.kind === "personMatch" ? Locale.label("tasks.workflowRouting.ifMatch")
+        : Locale.label("tasks.workflowRouting.always");
 
   const handleAddCard = async (contentType: string, contentId: string, label: string) => {
     setShowPicker(false);
@@ -51,6 +63,21 @@ export const WorkflowStepColumn = (props: Props) => {
           <IconButton size="small" onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} aria-label={Locale.label("tasks.workflowStepEdit.editStep")}><EditIcon fontSize="small" /></IconButton>
         )}
       </Stack>
+
+      {routes.length > 0 && (
+        <Box data-testid={"step-routes-" + step.id} sx={{ mb: 1, px: 0.5 }}>
+          {routes.map((r) => (
+            <Stack key={r.id} direction="row" alignItems="center" spacing={0.25} data-testid={"route-annotation-" + r.id} sx={{ color: "text.secondary", py: 0.1 }}>
+              {r.trigger === "onComplete" ? <OutcomeIcon sx={{ fontSize: 13 }} /> : <AutoIcon sx={{ fontSize: 13 }} />}
+              <Typography variant="caption" noWrap sx={{ fontWeight: 600 }}>{routeSource(r)}</Typography>
+              <ArrowIcon sx={{ fontSize: 14 }} />
+              <Typography variant="caption" noWrap sx={{ fontStyle: r.targetStepId ? "normal" : "italic" }}>
+                {r.targetStepId ? stepName(r.targetStepId) : Locale.label("tasks.workflowRouting.closes")}
+              </Typography>
+            </Stack>
+          ))}
+        </Box>
+      )}
 
       <DroppableWrapper accept="workflowCard" onDrop={(d: any) => props.onDropCard(d.data.id, step.id)}>
         <Box sx={{ minHeight: 60 }}>

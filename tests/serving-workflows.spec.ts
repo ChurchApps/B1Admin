@@ -337,6 +337,20 @@ test.describe.serial('Serving Management - Workflows', () => {
 
   // ---- Conditional routing (outcome buttons + automatic personMatch routing) ----
 
+  test('the board annotates each step with its conditional routes', async () => {
+    await openBoardById(page, 'WFL00000003');
+    // The "Contact" step (WFS6) shows its two outcome routes under the column header.
+    const reached = page.locator('[data-testid="route-annotation-WSR00000001"]');
+    await expect(reached).toBeVisible({ timeout: 10000 });
+    await expect(reached).toContainText('Reached');
+    await expect(reached).toContainText('Scheduled');
+    await expect(page.locator('[data-testid="route-annotation-WSR00000002"]')).toContainText('Not Interested');
+
+    // The Membership Class "Invited" step shows its automatic (personMatch) route.
+    await openBoardById(page, 'WFL00000002');
+    await expect(page.locator('[data-testid="route-annotation-WSR00000003"]')).toBeVisible({ timeout: 10000 });
+  });
+
   test('completing with an outcome routes the card to the target step', async () => {
     await openBoardById(page, 'WFL00000003');
     // TSK00000106 sits on "Contact" (WFS6), whose "Reached" outcome -> "Scheduled" (WFS7).

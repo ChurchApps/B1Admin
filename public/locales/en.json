@@ -4112,7 +4112,10 @@
       "conditions": "Conditions",
       "addCondition": "Add Condition",
       "noConditions": "No conditions yet — this route matches everyone.",
-      "remove": "Remove"
+      "remove": "Remove",
+      "closes": "close",
+      "ifMatch": "if matches",
+      "always": "always"
     },
     "workflowCategories": {
       "title": "Category",

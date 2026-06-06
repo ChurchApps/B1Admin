@@ -68,7 +68,9 @@ export const WorkflowBoardPage = () => {
   if (board.isLoading) return <Loading />;
   const steps = board.data?.steps || [];
   const cards = board.data?.cards || [];
+  const routes = board.data?.routes || [];
   const cardsForStep = (stepId: string) => cards.filter((c) => c.stepId === stepId);
+  const routesForStep = (stepId: string) => routes.filter((r) => r.stepId === stepId);
 
   return (
     <>
@@ -113,6 +115,8 @@ export const WorkflowBoardPage = () => {
                     workflowId={workflowId}
                     step={step}
                     cards={cardsForStep(step.id)}
+                    routes={routesForStep(step.id)}
+                    steps={steps}
                     canEdit={canEdit}
                     canManage={canManage}
                     selectedIds={selectedIds}
