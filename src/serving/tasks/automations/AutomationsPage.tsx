@@ -5,15 +5,12 @@ import { EmptyState } from "../../../components/ui/EmptyState";
 import { type AutomationInterface } from "@churchapps/helpers";
 import { AutomationDetails } from "./components/AutomationDetails";
 import { AutomationEdit } from "./components/AutomationEdit";
-import { TasksNavigation } from "../components/TasksNavigation";
 import { useQuery } from "@tanstack/react-query";
 import { SettingsSuggest as AutomationsIcon, Add as AddIcon, PlayCircle as ActiveIcon, PauseCircle as InactiveIcon } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 
 export const AutomationsPage = () => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [editAutomation, setEditAutomation] = React.useState(null);
-  const navigate = useNavigate();
 
   const automations = useQuery<AutomationInterface[]>({
     queryKey: ["/automations", "DoingApi"],
@@ -78,10 +75,6 @@ export const AutomationsPage = () => {
     automations.refetch();
   };
 
-  const handleTabChange = (tab: string) => {
-    if (tab === "tasks") navigate("/serving/tasks");
-  };
-
   return (
     <>
       <PageHeader title={Locale.label("tasks.automationsPage.manageAuto")} subtitle={Locale.label("tasks.automationsPage.subtitle")}>
@@ -103,7 +96,6 @@ export const AutomationsPage = () => {
           {Locale.label("tasks.automationsPage.addAuto")}
         </Button>
       </PageHeader>
-      <TasksNavigation selectedTab="automations" onTabChange={handleTabChange} />
 
       {/* Automations Content */}
       <Box sx={{ p: 3 }}>

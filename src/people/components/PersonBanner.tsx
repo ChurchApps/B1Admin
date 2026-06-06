@@ -6,11 +6,13 @@ import {
   Phone as PhoneIcon,
   Email as EmailIcon,
   Home as HomeIcon,
-  Sms as SmsIcon
+  Sms as SmsIcon,
+  ViewKanban as WorkflowIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo, useState, useEffect } from "react";
 import { StatusChip } from "../../components";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
+import { AddToWorkflowDialog } from "./AddToWorkflowDialog";
 
 interface Props {
   person: PersonInterface;
@@ -23,6 +25,7 @@ export const PersonBanner = memo((props: Props) => {
 
   const [userEmail, setUserEmail] = useState<string>("");
   const [showTextDialog, setShowTextDialog] = useState(false);
+  const [showWorkflowDialog, setShowWorkflowDialog] = useState(false);
   const [hasTextingProvider, setHasTextingProvider] = useState(false);
 
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
@@ -173,6 +176,13 @@ export const PersonBanner = memo((props: Props) => {
                   <EditIcon fontSize="small" />
                 </IconButton>
               )}
+              {canEdit && (
+                <Tooltip title={Locale.label("people.personBanner.addToWorkflow")}>
+                  <IconButton size="small" sx={{ color: "#FFF" }} data-testid="add-to-workflow-button" onClick={() => setShowWorkflowDialog(true)}>
+                    <WorkflowIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
             <Stack direction="row" flexWrap="wrap" gap={1}>
               {membershipStatus}
@@ -228,6 +238,9 @@ export const PersonBanner = memo((props: Props) => {
           phoneNumber={person.contactInfo.mobilePhone}
           onClose={() => setShowTextDialog(false)}
         />
+      )}
+      {showWorkflowDialog && person?.id && (
+        <AddToWorkflowDialog person={person} onClose={() => setShowWorkflowDialog(false)} />
       )}
     </Box>
   );

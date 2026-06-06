@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ApiHelper, type GroupInterface, Locale } from "@churchapps/apphelper";
-import { TextField, Button, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, IconButton, TableContainer } from "@mui/material";
+import { TextField, Button, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, IconButton, TableContainer, Paper } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { Search as SearchIcon, Group as GroupIcon, Check as CheckIcon } from "@mui/icons-material";
 
