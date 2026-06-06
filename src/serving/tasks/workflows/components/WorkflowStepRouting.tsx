@@ -1,20 +1,23 @@
-import { Box, Typography, Stack, Button, TextField, Select, MenuItem, IconButton, Chip, Divider, FormControl, InputLabel } from "@mui/material";
+import { Box, Typography, Stack, Button, TextField, Select, MenuItem, IconButton, Chip, Divider, FormControl, InputLabel, ListSubheader } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, type ConditionInterface } from "@churchapps/apphelper";
 import { Add as AddIcon, Delete as DeleteIcon, CallSplit as RouteIcon } from "@mui/icons-material";
 import { ConditionEdit } from "../../automations/components/ConditionEdit";
-import { type WorkflowStepInterface, type WorkflowStepRouteInterface } from "../interfaces";
+import { type WorkflowStepInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "../interfaces";
+
+const WF_PREFIX = "wf:";
 
 interface Props {
   step: WorkflowStepInterface;
   steps: WorkflowStepInterface[];
+  workflows?: WorkflowInterface[];
 }
 
 // Routing editor shown inside WorkflowStepEdit. Manages a step's conditional exits:
 // "outcome" routes (buttons shown when completing) and "personMatch" routes
 // (auto-advance on entry when the card's person matches a condition tree).
 export const WorkflowStepRouting = (props: Props) => {
-  const { step, steps } = props;
+  const { step, steps, workflows = [] } = props;
   const [routes, setRoutes] = React.useState<WorkflowStepRouteInterface[]>([]);
   const [editCondition, setEditCondition] = React.useState<ConditionInterface | null>(null);
   const [conditions, setConditions] = React.useState<{ [routeId: string]: ConditionInterface[] }>({});
@@ -54,6 +57,13 @@ export const WorkflowStepRouting = (props: Props) => {
   const targetValue = (route: WorkflowStepRouteInterface) => route.targetStepId || "";
   const setTarget = (route: WorkflowStepRouteInterface, value: string) => saveRoute({ ...route, targetStepId: value || undefined });
 
+  // Outcome target can be a step or a "wf:<id>" hand-off; the two fields are mutually exclusive.
+  const outcomeTargetValue = (route: WorkflowStepRouteInterface) => (route.targetWorkflowId ? WF_PREFIX + route.targetWorkflowId : route.targetStepId || "");
+  const setOutcomeTarget = (route: WorkflowStepRouteInterface, value: string) => {
+    if (value.startsWith(WF_PREFIX)) saveRoute({ ...route, targetWorkflowId: value.slice(WF_PREFIX.length), targetStepId: undefined });
+    else saveRoute({ ...route, targetStepId: value || undefined, targetWorkflowId: undefined });
+  };
+
   const addCondition = async (route: WorkflowStepRouteInterface) => {
     // The route's root conjunction is created server-side; fetch it to attach the condition.
     const conj: { id?: string }[] = await ApiHelper.get("/conjunctions/stepRoute/" + route.id, "DoingApi");
@@ -92,6 +102,18 @@ export const WorkflowStepRouting = (props: Props) => {
     </FormControl>
   );
 
+  const outcomeTargetSelect = (route: WorkflowStepRouteInterface) => (
+    <FormControl fullWidth size="small">
+      <InputLabel>{Locale.label("tasks.workflowRouting.targetStep")}</InputLabel>
+      <Select label={Locale.label("tasks.workflowRouting.targetStep")} value={outcomeTargetValue(route)} data-testid={"route-target-" + route.id} onChange={(e) => setOutcomeTarget(route, e.target.value)}>
+        <MenuItem value="">{Locale.label("tasks.workflowRouting.completeCard")}</MenuItem>
+        {otherSteps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
+        {workflows.length > 0 && <ListSubheader>{Locale.label("tasks.workflowRouting.sendToWorkflow")}</ListSubheader>}
+        {workflows.map((w) => <MenuItem key={w.id} value={WF_PREFIX + w.id}>{w.name}</MenuItem>)}
+      </Select>
+    </FormControl>
+  );
+
   return (
     <Box>
       <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
@@ -108,7 +130,7 @@ export const WorkflowStepRouting = (props: Props) => {
               <TextField fullWidth size="small" label={Locale.label("tasks.workflowRouting.outcomeLabel")} defaultValue={route.label || ""} data-testid={"outcome-label-" + route.id} onBlur={(e) => { if (e.target.value !== route.label) saveRoute({ ...route, label: e.target.value }); }} />
               <IconButton size="small" color="error" data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} aria-label={Locale.label("tasks.workflowRouting.remove")}><DeleteIcon fontSize="small" /></IconButton>
             </Stack>
-            <Box sx={{ mt: 1 }}>{targetSelect(route, true)}</Box>
+            <Box sx={{ mt: 1 }}>{outcomeTargetSelect(route)}</Box>
           </Box>
         ))}
       </Stack>

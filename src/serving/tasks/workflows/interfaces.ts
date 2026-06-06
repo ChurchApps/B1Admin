@@ -41,6 +41,7 @@ export interface WorkflowStepRouteInterface {
   kind?: string;
   label?: string;
   targetStepId?: string;
+  targetWorkflowId?: string;
 }
 
 export interface FormWorkflowTriggerInterface {

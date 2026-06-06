@@ -129,7 +129,7 @@ export const WorkflowsPage = () => {
 
           {showAdd && (
             <Grid size={{ xs: 12, md: 4 }}>
-              <WorkflowEdit workflow={{ name: "", active: true }} categories={categories.data} onCancel={() => setShowAdd(false)} onSave={handleAdded} />
+              <WorkflowEdit workflow={{ name: "", active: true }} categories={categories.data} onCancel={() => setShowAdd(false)} onSave={handleAdded} onCategoriesChanged={() => categories.refetch()} />
             </Grid>
           )}
         </Grid>

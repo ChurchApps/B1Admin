@@ -4,11 +4,12 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Person as PersonIcon } from "@mui/icons-material";
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowStepRouting } from "./WorkflowStepRouting";
-import { type WorkflowStepInterface } from "../interfaces";
+import { type WorkflowStepInterface, type WorkflowInterface } from "../interfaces";
 
 interface Props {
   step: WorkflowStepInterface;
   steps?: WorkflowStepInterface[];
+  workflows?: WorkflowInterface[];
   onCancel: () => void;
   onSave: () => void;
   onDelete?: () => void;
@@ -52,7 +53,7 @@ export const WorkflowStepEdit = (props: Props) => {
           </Box>
 
           <Divider />
-          <WorkflowStepRouting step={step} steps={props.steps || []} />
+          <WorkflowStepRouting step={step} steps={props.steps || []} workflows={props.workflows || []} />
 
           <Stack direction="row" spacing={2} justifyContent="flex-end">
             {step?.id && <Button variant="outlined" color="error" startIcon={<DeleteIcon />} data-testid="step-delete-button" onClick={handleDelete}>{Locale.label("common.delete")}</Button>}

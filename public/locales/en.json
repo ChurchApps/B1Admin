@@ -4101,7 +4101,8 @@
       "title": "Routing",
       "saveStepFirst": "Save the step before adding routing.",
       "outcomes": "Outcomes (when completed)",
-      "outcomesHelp": "Buttons shown when completing a card on this step. Each can send the card to another step or close it.",
+      "outcomesHelp": "Buttons shown when completing a card on this step. Each can send the card to another step, hand it off to another workflow, or close it.",
+      "sendToWorkflow": "Send to another workflow",
       "addOutcome": "Add Outcome",
       "automatic": "Automatic routing (on entry)",
       "automaticHelp": "When a card enters this step, send it onward automatically if the person matches.",
@@ -4120,7 +4121,8 @@
     "workflowCategories": {
       "title": "Category",
       "uncategorized": "Uncategorized",
-      "addCategory": "Add Category"
+      "addCategory": "Add Category",
+      "newCategory": "New category name"
     },
     "workflowReports": {
       "title": "Reports",

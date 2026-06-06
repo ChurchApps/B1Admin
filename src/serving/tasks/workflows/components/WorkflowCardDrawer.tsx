@@ -73,7 +73,7 @@ export const WorkflowCardDrawer = (props: Props) => {
   };
 
   return (
-    <Drawer anchor="right" open={true} onClose={props.onClose} PaperProps={{ sx: { width: { xs: "100%", sm: 420 } } }}>
+    <Drawer anchor="right" open={true} onClose={props.onClose} sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }} PaperProps={{ sx: { width: { xs: "100%", sm: 420 } } }}>
       <Box sx={{ p: 2 }} data-testid="workflow-card-drawer">
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6" sx={{ fontWeight: 600 }}>{card.title || card.associatedWithLabel}</Typography>

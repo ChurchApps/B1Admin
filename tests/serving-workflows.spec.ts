@@ -387,6 +387,34 @@ test.describe.serial('Serving Management - Workflows', () => {
     await expect(page.locator('[data-testid^="outcome-label-"] input').first()).toHaveValue('Welcomed', { timeout: 10000 });
   });
 
+  test('a cross-workflow outcome hands the card off to another workflow (API)', async () => {
+    const API_BASE = 'http://localhost:8084';
+    const ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'demo@b1.church', password: 'password' } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === 'CHU00000001') || body.userChurches?.[0];
+    const auth = { headers: { Authorization: 'Bearer ' + (uc?.jwt as string) } };
+
+    // TSK00000108 on WFL1's "Connect to Group" (WFS3); its "Enroll in Class" outcome (WSR4)
+    // hands off to "Membership Class" (WFL2): source closes, new card created for the person.
+    const done = await ctx.post(`${API_BASE}/doing/tasks/TSK00000108/complete`, { ...auth, data: { routeId: 'WSR00000004' } });
+    expect(done.status()).toBe(200);
+    expect((await done.json()).status).toBe('Closed');
+
+    const board1 = await (await ctx.get(`${API_BASE}/doing/tasks/board/WFL00000001`, auth)).json();
+    expect((board1.cards || []).some((c: any) => c.id === 'TSK00000108')).toBeFalsy();
+
+    // PER6 is not a "Smith", so the new card stays on WFL2's first step (no personMatch bump).
+    const board2 = await (await ctx.get(`${API_BASE}/doing/tasks/board/WFL00000002`, auth)).json();
+    const handed = (board2.cards || []).find((c: any) => c.associatedWithId === 'PER00000006' && c.title === 'Handoff Tester');
+    expect(handed).toBeTruthy();
+    expect(handed.stepId).toBe('WFS00000004');
+
+    await ctx.post(`${API_BASE}/doing/tasks/${handed.id}/complete`, { ...auth, data: {} });
+    await ctx.dispose();
+  });
+
   // ---- Architecture invariants (cleanup regression guards) ----
 
   test('cards stay out of plain-task surfaces and the generic save endpoint (API)', async () => {

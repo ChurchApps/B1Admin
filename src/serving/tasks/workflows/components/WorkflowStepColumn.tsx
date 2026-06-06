@@ -6,7 +6,7 @@ import { DraggableWrapper } from "../../../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../../../components/DroppableWrapper";
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowCard } from "./WorkflowCard";
-import { type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowStepRouteInterface } from "../interfaces";
+import { type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "../interfaces";
 
 interface Props {
   workflowId: string;
@@ -14,6 +14,7 @@ interface Props {
   cards: WorkflowCardInterface[];
   routes?: WorkflowStepRouteInterface[];
   steps?: WorkflowStepInterface[];
+  workflows?: WorkflowInterface[];
   canEdit: boolean;
   canManage: boolean;
   selectedIds: Set<string>;
@@ -30,6 +31,11 @@ export const WorkflowStepColumn = (props: Props) => {
 
   const routes = props.routes || [];
   const stepName = (id?: string) => props.steps?.find((s) => s.id === id)?.name;
+  const workflowName = (id?: string) => props.workflows?.find((w) => w.id === id)?.name;
+  const routeTarget = (r: WorkflowStepRouteInterface) =>
+    r.targetWorkflowId ? (workflowName(r.targetWorkflowId) || Locale.label("tasks.workflowRouting.sendToWorkflow"))
+      : r.targetStepId ? stepName(r.targetStepId)
+        : Locale.label("tasks.workflowRouting.closes");
   const routeSource = (r: WorkflowStepRouteInterface) =>
     r.trigger === "onComplete" ? (r.label || Locale.label("tasks.workflowCard.outcome"))
       : r.kind === "personMatch" ? Locale.label("tasks.workflowRouting.ifMatch")
@@ -67,7 +73,7 @@ export const WorkflowStepColumn = (props: Props) => {
               <Typography variant="caption" noWrap sx={{ fontWeight: 600 }}>{routeSource(r)}</Typography>
               <ArrowIcon sx={{ fontSize: 14 }} />
               <Typography variant="caption" noWrap sx={{ fontStyle: r.targetStepId ? "normal" : "italic" }}>
-                {r.targetStepId ? stepName(r.targetStepId) : Locale.label("tasks.workflowRouting.closes")}
+                {routeTarget(r)}
               </Typography>
             </Stack>
           ))}

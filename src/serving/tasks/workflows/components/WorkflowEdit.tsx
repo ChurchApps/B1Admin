@@ -1,8 +1,10 @@
-import { Card, CardContent, Typography, Stack, Box, Button, TextField, Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Button, TextField, Switch, FormControlLabel, FormControl, InputLabel, Select, MenuItem, IconButton, type SelectChangeEvent } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { ViewKanban as WorkflowsIcon, Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { ViewKanban as WorkflowsIcon, Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Check as CheckIcon } from "@mui/icons-material";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "../interfaces";
+
+const ADD_CATEGORY = "__add__";
 
 interface Props {
   workflow: WorkflowInterface;
@@ -10,14 +12,22 @@ interface Props {
   onCancel: () => void;
   onSave: (workflow: WorkflowInterface) => void;
   onDelete?: () => void;
+  onCategoriesChanged?: () => void;
 }
 
 export const WorkflowEdit = (props: Props) => {
   const [workflow, setWorkflow] = React.useState<WorkflowInterface>(null);
+  const [categories, setCategories] = React.useState<WorkflowCategoryInterface[]>([]);
+  const [addingCategory, setAddingCategory] = React.useState(false);
+  const [newCategoryName, setNewCategoryName] = React.useState("");
 
   React.useEffect(() => {
     setWorkflow(props.workflow);
   }, [props.workflow]);
+
+  React.useEffect(() => {
+    setCategories(props.categories || []);
+  }, [props.categories]);
 
   const handleSave = async () => {
     const result = await ApiHelper.post("/workflows", [workflow], "DoingApi");
@@ -32,8 +42,28 @@ export const WorkflowEdit = (props: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
     const w = { ...workflow };
     if (e.target.name === "name") w.name = e.target.value;
-    else if (e.target.name === "categoryId") w.categoryId = e.target.value || undefined;
+    else if (e.target.name === "categoryId") {
+      if (e.target.value === ADD_CATEGORY) { setAddingCategory(true); return; }
+      w.categoryId = e.target.value || undefined;
+    }
     setWorkflow(w);
+  };
+
+  const handleAddCategory = async () => {
+    const name = newCategoryName.trim();
+    if (!name) return;
+    const result = await ApiHelper.post("/workflowCategories", [{ name }], "DoingApi");
+    const category: WorkflowCategoryInterface = result[0];
+    setCategories([...categories, category]);
+    setWorkflow({ ...workflow, categoryId: category.id });
+    setAddingCategory(false);
+    setNewCategoryName("");
+    props.onCategoriesChanged?.();
+  };
+
+  const cancelAddCategory = () => {
+    setAddingCategory(false);
+    setNewCategoryName("");
   };
 
   return (
@@ -61,14 +91,30 @@ export const WorkflowEdit = (props: Props) => {
               variant="outlined"
             />
 
-            {props.categories && props.categories.length > 0 && (
+            {addingCategory ? (
+              <Stack direction="row" spacing={1} alignItems="center">
+                <TextField
+                  fullWidth
+                  autoFocus
+                  label={Locale.label("tasks.workflowCategories.newCategory")}
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddCategory(); } }}
+                  data-testid="new-category-input"
+                  variant="outlined"
+                />
+                <IconButton color="primary" onClick={handleAddCategory} data-testid="new-category-save" aria-label={Locale.label("common.save")}><CheckIcon /></IconButton>
+                <IconButton onClick={cancelAddCategory} data-testid="new-category-cancel" aria-label={Locale.label("common.cancel")}><CancelIcon /></IconButton>
+              </Stack>
+            ) : (
               <FormControl fullWidth variant="outlined">
                 <InputLabel>{Locale.label("tasks.workflowCategories.title")}</InputLabel>
                 <Select label={Locale.label("tasks.workflowCategories.title")} value={workflow?.categoryId || ""} name="categoryId" onChange={handleChange} data-testid="workflow-category-select">
                   <MenuItem value="">{Locale.label("tasks.workflowCategories.uncategorized")}</MenuItem>
-                  {props.categories.map((c) => (
+                  {categories.map((c) => (
                     <MenuItem key={c.id} value={c.id}>{c.name}</MenuItem>
                   ))}
+                  <MenuItem value={ADD_CATEGORY} data-testid="workflow-category-add">+ {Locale.label("tasks.workflowCategories.addCategory")}</MenuItem>
                 </Select>
               </FormControl>
             )}

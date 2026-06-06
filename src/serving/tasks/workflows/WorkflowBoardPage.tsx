@@ -5,13 +5,14 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Add as AddIcon, BarChart as ReportIcon, ArrowBack as BackIcon, Bolt as TriggerIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon } from "@mui/icons-material";
+import { Add as AddIcon, BarChart as ReportIcon, ArrowBack as BackIcon, Bolt as TriggerIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon, Edit as EditIcon } from "@mui/icons-material";
 import { WorkflowStepColumn } from "./components/WorkflowStepColumn";
 import { WorkflowStepEdit } from "./components/WorkflowStepEdit";
+import { WorkflowEdit } from "./components/WorkflowEdit";
 import { WorkflowCardDrawer } from "./components/WorkflowCardDrawer";
 import { WorkflowTriggersDialog } from "./components/WorkflowTriggersDialog";
 import { ContentPicker } from "../components/ContentPicker";
-import { type WorkflowBoardInterface, type WorkflowStepInterface, type WorkflowCardInterface } from "./interfaces";
+import { type WorkflowBoardInterface, type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "./interfaces";
 import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permissions";
 
 export const WorkflowBoardPage = () => {
@@ -19,6 +20,7 @@ export const WorkflowBoardPage = () => {
   const navigate = useNavigate();
   const workflowId = params.id;
   const [editStep, setEditStep] = React.useState<WorkflowStepInterface | null>(null);
+  const [editWorkflow, setEditWorkflow] = React.useState<WorkflowInterface | null>(null);
   const [openCard, setOpenCard] = React.useState<WorkflowCardInterface | null>(null);
   const [showTriggers, setShowTriggers] = React.useState(false);
   const [selectedIds, setSelectedIds] = React.useState<Set<string>>(new Set());
@@ -30,6 +32,9 @@ export const WorkflowBoardPage = () => {
   const canManage = canManageWorkflows();
 
   const board = useQuery<WorkflowBoardInterface>({ queryKey: ["/tasks/board/" + workflowId, "DoingApi"], enabled: !!workflowId && canView });
+  // Hand-off targets for the routing editor; also names hand-off routes in board annotations.
+  const workflows = useQuery<WorkflowInterface[]>({ queryKey: ["/workflows", "DoingApi"], placeholderData: [], enabled: canView });
+  const categories = useQuery<WorkflowCategoryInterface[]>({ queryKey: ["/workflowCategories", "DoingApi"], placeholderData: [], enabled: canView });
 
   const refetch = () => board.refetch();
   const clearSelection = () => setSelectedIds(new Set());
@@ -48,8 +53,25 @@ export const WorkflowBoardPage = () => {
   };
 
   const handleAddStep = () => {
+    setEditWorkflow(null);
     const nextSort = (board.data?.steps?.length || 0) + 1;
     setEditStep({ workflowId, name: "", sort: nextSort });
+  };
+
+  const handleEditWorkflow = () => {
+    setEditStep(null);
+    setEditWorkflow(board.data?.workflow || null);
+  };
+
+  const handleWorkflowSaved = () => {
+    setEditWorkflow(null);
+    board.refetch();
+    workflows.refetch();
+  };
+
+  const handleWorkflowDeleted = () => {
+    setEditWorkflow(null);
+    navigate("/serving/tasks/workflows");
   };
 
   const ids = () => Array.from(selectedIds);
@@ -77,6 +99,7 @@ export const WorkflowBoardPage = () => {
       <PageHeader title={board.data?.workflow?.name || Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowBoard.subtitle")}>
         <Stack direction="row" spacing={1}>
           <Button variant="outlined" startIcon={<BackIcon />} onClick={() => navigate("/serving/tasks/workflows")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowsPage.title")}</Button>
+          {canManage && <Button variant="outlined" startIcon={<EditIcon />} data-testid="edit-workflow-button" onClick={handleEditWorkflow} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowEdit.editWorkflow")}</Button>}
           {canManage && <Button variant="outlined" startIcon={<TriggerIcon />} data-testid="board-triggers-button" onClick={() => setShowTriggers(true)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowTriggers.title")}</Button>}
           <Button variant="outlined" startIcon={<ReportIcon />} data-testid="board-reports-button" onClick={() => navigate("/serving/tasks/workflows/" + workflowId + "/reports")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowReports.title")}</Button>
           {canManage && <Button variant="outlined" startIcon={<AddIcon />} data-testid="add-step-button" onClick={handleAddStep} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF" } }}>{Locale.label("tasks.workflowBoard.addStep")}</Button>}
@@ -117,6 +140,7 @@ export const WorkflowBoardPage = () => {
                     cards={cardsForStep(step.id)}
                     routes={routesForStep(step.id)}
                     steps={steps}
+                    workflows={workflows.data || []}
                     canEdit={canEdit}
                     canManage={canManage}
                     selectedIds={selectedIds}
@@ -134,9 +158,15 @@ export const WorkflowBoardPage = () => {
             </DndProvider>
           </Box>
 
+          {editWorkflow && canManage && (
+            <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
+              <WorkflowEdit workflow={editWorkflow} categories={categories.data} onCancel={() => setEditWorkflow(null)} onSave={handleWorkflowSaved} onDelete={handleWorkflowDeleted} onCategoriesChanged={() => categories.refetch()} />
+            </Box>
+          )}
+
           {editStep && canManage && (
             <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
-              <WorkflowStepEdit step={editStep} steps={steps} onCancel={() => setEditStep(null)} onSave={() => { setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
+              <WorkflowStepEdit step={editStep} steps={steps} workflows={(workflows.data || []).filter((w) => w.id !== workflowId)} onCancel={() => setEditStep(null)} onSave={() => { setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
             </Box>
           )}
         </Stack>
