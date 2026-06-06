@@ -387,6 +387,57 @@ test.describe.serial('Serving Management - Workflows', () => {
     await expect(page.locator('[data-testid^="outcome-label-"] input').first()).toHaveValue('Welcomed', { timeout: 10000 });
   });
 
+  // ---- Architecture invariants (cleanup regression guards) ----
+
+  test('cards stay out of plain-task surfaces and the generic save endpoint (API)', async () => {
+    const API_BASE = 'http://localhost:8084';
+    const ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'demo@b1.church', password: 'password' } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === 'CHU00000001') || body.userChurches?.[0];
+    const auth = { headers: { Authorization: 'Bearer ' + (uc?.jwt as string) } };
+
+    // The generic task endpoint must refuse to create/mutate a workflow card —
+    // cards have to go through the card endpoints (which run routing + per-card perms).
+    const blocked = await ctx.post(`${API_BASE}/doing/tasks`, { ...auth, data: [{ title: 'Sneaky card', status: 'Open', workflowId: 'WFL00000001', stepId: 'WFS00000001' }] });
+    expect(blocked.status()).toBe(400);
+
+    // The plain task list excludes workflow cards (they live on the board / My Cards).
+    const list = await ctx.get(`${API_BASE}/doing/tasks`, auth);
+    expect(list.status()).toBe(200);
+    const tasks = await list.json();
+    expect(Array.isArray(tasks)).toBeTruthy();
+    expect((tasks as any[]).some((t) => t.workflowId)).toBeFalsy();
+
+    await ctx.dispose();
+  });
+
+  test('a manual send-back does not re-trigger the target step onEnter route (API)', async () => {
+    const API_BASE = 'http://localhost:8084';
+    const ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'demo@b1.church', password: 'password' } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === 'CHU00000001') || body.userChurches?.[0];
+    const auth = { headers: { Authorization: 'Bearer ' + (uc?.jwt as string) } };
+
+    // John Smith matches WSR00000003 on "Invited" (WFS4) -> auto-routes to "Attended" (WFS5).
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: 'WFL00000002', stepId: 'WFS00000004', associatedWith: { type: 'person', id: 'PER00000001', label: 'John Smith' } } });
+    const card = await added.json();
+    expect(card.stepId).toBe('WFS00000005');
+
+    // Sending it back to "Invited" must keep it there — the onEnter route is suppressed
+    // for an explicit manual move, so it does NOT bounce forward to "Attended" again.
+    const back = await ctx.post(`${API_BASE}/doing/tasks/${card.id}/sendBack`, { ...auth, data: {} });
+    expect(back.status()).toBe(200);
+    expect((await back.json()).stepId).toBe('WFS00000004');
+
+    // Clean up the card created by this test.
+    await ctx.post(`${API_BASE}/doing/tasks/${card.id}/complete`, { ...auth, data: {} });
+    await ctx.dispose();
+  });
+
   test('a personMatch route auto-advances a matching card on entry (API)', async () => {
     const API_BASE = 'http://localhost:8084';
     const ctx = await request.newContext();

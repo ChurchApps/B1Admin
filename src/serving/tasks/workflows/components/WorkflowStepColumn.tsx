@@ -28,9 +28,6 @@ export const WorkflowStepColumn = (props: Props) => {
   const { step, cards } = props;
   const [showPicker, setShowPicker] = React.useState(false);
 
-  // Make the step's conditional routes legible on the board itself: each route
-  // reads "<outcome / condition> → <target step or close>" under the header, so
-  // the branch structure is visible even though columns lay out linearly.
   const routes = props.routes || [];
   const stepName = (id?: string) => props.steps?.find((s) => s.id === id)?.name;
   const routeSource = (r: WorkflowStepRouteInterface) =>
@@ -41,10 +38,8 @@ export const WorkflowStepColumn = (props: Props) => {
   const handleAddCard = async (contentType: string, contentId: string, label: string) => {
     setShowPicker(false);
     if (contentType === "person") {
-      // Drop the card directly on this column's step (not the workflow's first step).
       await ApiHelper.post("/tasks/addToWorkflow", { workflowId: props.workflowId, stepId: step.id, associatedWith: { type: "person", id: contentId, label } }, "DoingApi");
     } else if (contentType === "group") {
-      // Adding a group expands to its members — one bulk request creates a card per person on this step.
       const members: { personId?: string; person?: { name?: { display?: string } } }[] = await ApiHelper.get("/groupmembers?groupId=" + contentId, "MembershipApi");
       const people = members.filter((m) => m.personId).map((m) => ({ id: m.personId, label: m.person?.name?.display }));
       await ApiHelper.post("/tasks/bulkAddToWorkflow", { workflowId: props.workflowId, stepId: step.id, people }, "DoingApi");

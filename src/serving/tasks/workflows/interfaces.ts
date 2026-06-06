@@ -1,7 +1,5 @@
-// Local shim for the Workflow interfaces until @churchapps/helpers republishes
-// with WorkflowInterface/WorkflowStepInterface/etc and the extended TaskInterface.
-// FOLLOW-UP: once @churchapps/helpers ships these, delete this file and import
-// the interfaces directly from "@churchapps/helpers".
+// Shim: these live in @churchapps/helpers but the installed 1.5.0 predates them.
+// Delete this file and import from the package once it's republished (>1.5.0).
 import { type TaskInterface } from "@churchapps/helpers";
 
 export interface WorkflowInterface {
@@ -32,10 +30,7 @@ export interface WorkflowCategoryInterface {
   sort?: number;
 }
 
-// A conditional exit from a step ("if this then that"). trigger: "onEnter"
-// (auto-evaluated on entry) | "onComplete" (a button shown when completing).
-// kind: "outcome" (button) | "personMatch" (condition tree) | "always" (default).
-// targetStepId null = complete/close the card.
+// trigger: onEnter | onComplete. kind: outcome | personMatch | always.
 export interface WorkflowStepRouteInterface {
   id?: string;
   churchId?: string;
@@ -56,8 +51,6 @@ export interface FormWorkflowTriggerInterface {
   active?: boolean;
 }
 
-// A "card" is a Task carrying workflow fields. The published TaskInterface does
-// not yet declare these, so extend it locally.
 export interface WorkflowCardInterface extends TaskInterface {
   workflowId?: string;
   stepId?: string;
@@ -67,7 +60,6 @@ export interface WorkflowCardInterface extends TaskInterface {
   pinnedAssignment?: boolean;
 }
 
-// Board payload returned by GET /doing/tasks/board/:workflowId
 export interface WorkflowBoardInterface {
   workflow: WorkflowInterface;
   steps: WorkflowStepInterface[];

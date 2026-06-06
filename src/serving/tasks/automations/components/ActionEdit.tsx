@@ -144,53 +144,53 @@ export const ActionEdit = (props: Props) => {
               </FormControl>
             )}
 
-            {action?.actionType !== "addToWorkflow" && <TextField
-              fullWidth
-              label={Locale.label("tasks.actionEdit.assignTo")}
-              value={taskDetails.assignedToLabel || ""}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon sx={{ color: "action.active" }} />
-                  </InputAdornment>
-                ),
-                sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
-              }}
-              onFocus={(e) => {
-                e.target.blur();
-                setModalField("assignedTo");
-              }}
-              data-testid="action-assign-to-input"
-              aria-label={Locale.label("tasks.actionEdit.assignToAria")}
-              variant="outlined"
-              sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-            />}
-
-            {action?.actionType !== "addToWorkflow" && <TextField
-              fullWidth
-              label={Locale.label("tasks.actionEdit.taskTitle")}
-              value={taskDetails?.title || ""}
-              name="title"
-              onChange={handleDetailsChange}
-              data-testid="action-task-title-input"
-              aria-label={Locale.label("tasks.actionEdit.taskTitleAria")}
-              variant="outlined"
-              sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-            />}
-
-            {action?.actionType !== "addToWorkflow" && <TextField
-              fullWidth
-              label={Locale.label("tasks.actionEdit.taskNote")}
-              value={taskDetails?.note || ""}
-              name="note"
-              onChange={handleDetailsChange}
-              multiline
-              rows={4}
-              data-testid="action-task-note-input"
-              aria-label={Locale.label("tasks.actionEdit.taskNoteAria")}
-              variant="outlined"
-              sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
-            />}
+            {action?.actionType !== "addToWorkflow" && <>
+              <TextField
+                fullWidth
+                label={Locale.label("tasks.actionEdit.assignTo")}
+                value={taskDetails.assignedToLabel || ""}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon sx={{ color: "action.active" }} />
+                    </InputAdornment>
+                  ),
+                  sx: { "& .MuiInputBase-input": { cursor: "pointer" } }
+                }}
+                onFocus={(e) => {
+                  e.target.blur();
+                  setModalField("assignedTo");
+                }}
+                data-testid="action-assign-to-input"
+                aria-label={Locale.label("tasks.actionEdit.assignToAria")}
+                variant="outlined"
+                sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
+              />
+              <TextField
+                fullWidth
+                label={Locale.label("tasks.actionEdit.taskTitle")}
+                value={taskDetails?.title || ""}
+                name="title"
+                onChange={handleDetailsChange}
+                data-testid="action-task-title-input"
+                aria-label={Locale.label("tasks.actionEdit.taskTitleAria")}
+                variant="outlined"
+                sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
+              />
+              <TextField
+                fullWidth
+                label={Locale.label("tasks.actionEdit.taskNote")}
+                value={taskDetails?.note || ""}
+                name="note"
+                onChange={handleDetailsChange}
+                multiline
+                rows={4}
+                data-testid="action-task-note-input"
+                aria-label={Locale.label("tasks.actionEdit.taskNoteAria")}
+                variant="outlined"
+                sx={{ "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: "primary.main" } } }}
+              />
+            </>}
           </Stack>
 
           {/* Action Buttons */}
