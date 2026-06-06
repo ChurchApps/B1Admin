@@ -97,7 +97,7 @@ export const WebhooksSection: React.FC = () => {
                   <TableCell align="right">
                     <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                       <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={(e) => { e.stopPropagation(); setEditWebhook(w); }} />
-                      <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={(e) => { e.stopPropagation(); handleDelete(w); }} />
+                      <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={(e) => { e.stopPropagation(); handleDelete(w); }} />
                     </Stack>
                   </TableCell>
                 </TableRow>

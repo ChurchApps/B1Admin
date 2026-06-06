@@ -51,7 +51,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
           <Icon>schedule</Icon> {gst.serviceTime.name}
         </TableCell>
         <TableCell>
-          <AppIconButton label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} destructive data-id={gst.id} onClick={handleRemove} />
+          <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} data-id={gst.id} onClick={handleRemove} />
         </TableCell>
       </TableRow>
     ));
@@ -105,7 +105,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
           endAdornment={
             <>
               <Icon>arrow_drop_down</Icon>
-              <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" size="medium" data-cy="add-service-time" onClick={handleAdd} />
+              <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" size="medium" data-cy="add-service-time" onClick={handleAdd} />
             </>
           }>
           {options}

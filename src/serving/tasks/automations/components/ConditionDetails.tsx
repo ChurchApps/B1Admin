@@ -125,6 +125,7 @@ export const ConditionDetails = (props: Props) => {
               <AppIconButton
                 label={Locale.label("common.add")}
                 icon={<AddIcon />}
+                intent="add"
                 onClick={(e) => {
                   setMenuAnchor(e.currentTarget);
                   setParentId(conjunction.id);
@@ -153,6 +154,7 @@ export const ConditionDetails = (props: Props) => {
         <AppIconButton
           label={Locale.label("common.add")}
           icon={<AddIcon />}
+          intent="add"
           onClick={() => props.setEditConjunction({ automationId: props.automation.id, groupType: "and" })}
           data-testid="add-automation-condition-button" />
       </Stack>

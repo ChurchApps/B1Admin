@@ -291,7 +291,6 @@ export const LinkEdit: React.FC<Props> = (props) => {
             {currentLink?.id && (
               <Button
                 variant="outlined"
-                color="error"
                 startIcon={<DeleteIcon />}
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}

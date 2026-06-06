@@ -110,6 +110,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
           label={Locale.label("common.add")}
           icon={<AddIcon />}
           tone="card"
+          intent="add"
           id="addBtnGroup"
           data-cy="add-button"
           aria-controls={open ? "add-menu" : undefined}

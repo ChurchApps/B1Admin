@@ -50,7 +50,7 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
             <TableCell>{c.value}</TableCell>
             <TableCell>{c.text}</TableCell>
             <TableCell>
-              <AppIconButton destructive label={Locale.label("common.remove")} icon={<DeleteIcon />} onClick={handleRemove} data-index={i} />
+              <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<DeleteIcon />} onClick={handleRemove} data-index={i} />
             </TableCell>
           </TableRow>
         );
@@ -80,7 +80,7 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
               <TextField label={Locale.label("forms.choicesEdit.txt")} fullWidth size="small" name="choiceText" data-cy="text" value={choiceText} onChange={handleChange} placeholder={Locale.label("placeholders.choices.text")} />
             </TableCell>
             <TableCell>
-              <AppIconButton id="addQuestionChoiceButton" data-cy="add-button" label={Locale.label("common.add")} icon={<AddIcon />} onClick={handleAdd} />
+              <AppIconButton intent="add" id="addQuestionChoiceButton" data-cy="add-button" label={Locale.label("common.add")} icon={<AddIcon />} onClick={handleAdd} />
             </TableCell>
           </TableRow>
         </TableBody>

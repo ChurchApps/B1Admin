@@ -307,7 +307,7 @@ export const PlanItemEdit = (props: Props) => {
       </DialogContent>
       <DialogActions>
         {planItem?.id && (
-          <Button onClick={() => setShowDeleteConfirm(true)} color="error" sx={{ mr: "auto" }} disabled={isSaving}>
+          <Button onClick={() => setShowDeleteConfirm(true)} sx={{ mr: "auto" }} disabled={isSaving}>
             {Locale.label("common.delete") || "Delete"}
           </Button>
         )}

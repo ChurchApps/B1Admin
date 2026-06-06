@@ -56,7 +56,7 @@ export const WorkflowStepEdit = (props: Props) => {
           <WorkflowStepRouting step={step} steps={props.steps || []} workflows={props.workflows || []} />
 
           <Stack direction="row" spacing={2} justifyContent="flex-end">
-            {step?.id && <Button variant="outlined" color="error" startIcon={<DeleteIcon />} data-testid="step-delete-button" onClick={handleDelete}>{Locale.label("common.delete")}</Button>}
+            {step?.id && <Button variant="outlined" startIcon={<DeleteIcon />} data-testid="step-delete-button" onClick={handleDelete}>{Locale.label("common.delete")}</Button>}
             <Button variant="outlined" startIcon={<CancelIcon />} onClick={props.onCancel}>{Locale.label("common.cancel")}</Button>
             <Button variant="contained" startIcon={<SaveIcon />} data-testid="step-save-button" onClick={handleSave}>{Locale.label("common.save")}</Button>
           </Stack>

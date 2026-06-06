@@ -51,7 +51,7 @@ export const FormsPage = () => {
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
       const archiveLink =
         canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.archive")}</Button>
+          <Button size="small" variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.archive")}</Button>
         ) : null;
       const unarchiveLink =
         canEdit && isArchived ? (

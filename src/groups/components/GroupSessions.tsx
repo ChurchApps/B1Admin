@@ -204,7 +204,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
       //let editLink = (canEdit) ? (<a href="about:blank" onClick={handleRemove} className="text-danger" data-personid={vs.visit.personId}><Icon>person_remove</Icon> Remove</a>) : null;
       const person = ArrayHelper.getOne(people, "id", vs.visit.personId);
       const editLink = canEdit ? (
-        <AppIconButton label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} destructive onClick={() => handleRemove(vs)} data-testid={`remove-session-visitor-button-${vs.id}`} />
+        <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} onClick={() => handleRemove(vs)} data-testid={`remove-session-visitor-button-${vs.id}`} />
       ) : (
         <></>
       );

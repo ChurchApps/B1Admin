@@ -101,7 +101,7 @@ export const EmailTemplatesPage: React.FC = () => {
                       <TableCell align="right">
                         <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={(e) => { e.stopPropagation(); handleEdit(t); }} />
-                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={(e) => { e.stopPropagation(); handleDelete(t); }} />
+                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={(e) => { e.stopPropagation(); handleDelete(t); }} />
                         </Stack>
                       </TableCell>
                     </TableRow>

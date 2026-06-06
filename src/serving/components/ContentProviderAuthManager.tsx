@@ -486,7 +486,6 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
                       <AppIconButton label={Locale.label("plans.contentProviderAuth.refresh") || "Refresh"} icon={<RefreshIcon />} onClick={() => handleLink(providerInfo.id)} />
                       <Button
                         variant="outlined"
-                        color="error"
                         size="small"
                         startIcon={<LinkOffIcon />}
                         onClick={() => handleUnlink(providerInfo.id)}

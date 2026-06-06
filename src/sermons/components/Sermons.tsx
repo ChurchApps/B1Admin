@@ -464,6 +464,7 @@ export const Sermons = () => {
                     data-testid="playlist-search-button"
                   />
                   <AppIconButton
+                    intent="add"
                     label={Locale.label("common.add")}
                     icon={<AddIcon />}
                     tone="card"

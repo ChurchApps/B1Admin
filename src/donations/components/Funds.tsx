@@ -23,7 +23,7 @@ export const Funds: React.FC = memo(() => {
   const editSection = useMemo(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.edit)) {
       return (
-        <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setEditFund({ id: "", name: "", taxDeductible: true })} data-testid="add-fund-button" />
+        <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setEditFund({ id: "", name: "", taxDeductible: true })} data-testid="add-fund-button" />
       );
     } else return null;
   }, []);

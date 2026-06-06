@@ -85,7 +85,7 @@ export function FilesManager() {
           </Typography>
         </TableCell>
         <TableCell align="right">
-          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} />
+          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} />
         </TableCell>
       </TableRow>
     ))

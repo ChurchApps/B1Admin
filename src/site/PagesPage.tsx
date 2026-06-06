@@ -280,7 +280,7 @@ export const PagesPage = () => {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
               <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
               <div style={{ flexShrink: 0, marginLeft: 8 }}>
-                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" />
+                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" />
               </div>
             </div>
             <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} />

@@ -79,7 +79,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
           }}>
           <AccordionSummary onClick={() => handleAdd(uf.id)}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => handleAdd(uf.id)} data-testid="add-form-button" />
+              <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => handleAdd(uf.id)} data-testid="add-form-button" />
               <span>{uf.name}</span>
             </Box>
           </AccordionSummary>

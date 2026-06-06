@@ -136,7 +136,7 @@ export const DeveloperSection: React.FC = () => {
                         <TableCell>{fmtDate(k.lastUsedAt)}</TableCell>
                         <TableCell>{fmtDate(k.expiresAt)}</TableCell>
                         <TableCell align="right">
-                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleDeleteKey(k)} />
+                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDeleteKey(k)} />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -179,7 +179,7 @@ export const DeveloperSection: React.FC = () => {
                         <TableCell>{fmtDate(c.createdAt)}</TableCell>
                         <TableCell>{fmtDate(c.expiresAt)}</TableCell>
                         <TableCell align="right">
-                          <Button size="small" color="error" onClick={() => handleRevoke(c)}>{Locale.label("settings.developer.revoke")}</Button>
+                          <Button size="small" onClick={() => handleRevoke(c)}>{Locale.label("settings.developer.revoke")}</Button>
                         </TableCell>
                       </TableRow>
                     ))}

@@ -166,7 +166,7 @@ export const KioskThemeEdit: React.FC = () => {
               {config.backgroundImage ? Locale.label("mobile.checkInPage.kiosk.changeImage") : Locale.label("mobile.checkInPage.kiosk.uploadImage")}
             </Button>
             {config.backgroundImage && (
-              <Button variant="outlined" color="error" onClick={() => setConfig(prev => ({ ...prev, backgroundImage: "" }))}>
+              <Button variant="outlined" onClick={() => setConfig(prev => ({ ...prev, backgroundImage: "" }))}>
                 {Locale.label("common.remove")}
               </Button>
             )}
@@ -217,7 +217,7 @@ export const KioskThemeEdit: React.FC = () => {
                 sx={{ width: 120 }}
                 slotProps={{ htmlInput: { min: 3 } }}
               />
-              <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => removeSlide(index)} />
+              <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => removeSlide(index)} />
             </Stack>
           ))}
           <Button variant="outlined" startIcon={<AddIcon />} onClick={addSlide}>{Locale.label("mobile.checkInPage.kiosk.addSlide")}</Button>

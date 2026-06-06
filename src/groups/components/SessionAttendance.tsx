@@ -70,9 +70,9 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
     return rows.map(({ vs, person }) => {
       const editLink = canEdit ? (
         <AppIconButton
+          intent="remove"
           label={Locale.label("common.remove")}
           icon={<PersonRemoveIcon />}
-          destructive
           onClick={() => handleRemove(vs)}
           data-testid={`remove-session-visitor-button-${vs.id}`}
         />

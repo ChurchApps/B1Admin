@@ -95,7 +95,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
             />
           </a>
           <Box id="deleteIcon" sx={{ position: "absolute", top: 3, right: 3, visibility: "hidden", backgroundColor: "whitesmoke", borderRadius: 5 }}>
-            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteOutlineIcon />} destructive onClick={() => handleDelete(parts[2], parts[3])} data-testid="delete-image" />
+            <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteOutlineIcon />} onClick={() => handleDelete(parts[2], parts[3])} data-testid="delete-image" />
           </Box>
         </Box>
       </Grid>);

@@ -34,7 +34,7 @@ export const DevicesPage = () => {
   React.useEffect(loadData, []);
 
   const editContent = (
-    <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-device-button" />
+    <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-device-button" />
   );
 
   return (

@@ -124,7 +124,6 @@ export const PraiseChartsProducts = (props: Props) => {
           <Button
             variant="contained"
             size="small"
-            color="error"
             onClick={(e) => {
               e.preventDefault();
               purchase(product.sku);

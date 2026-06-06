@@ -42,7 +42,7 @@ export const SectionBlock: React.FC<Props> = props => {
                   </div>
                 </td>
                 <td>
-                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={handleDelete} sx={{ ml: 0.5 }} />
+                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="card" intent="remove" onClick={handleDelete} sx={{ ml: 0.5 }} />
                 </td>
               </tr>
             </tbody>

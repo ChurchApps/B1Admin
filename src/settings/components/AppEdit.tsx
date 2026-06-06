@@ -145,7 +145,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
         icon={<EditIcon />}
         actions={
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" color="error" startIcon={<CancelIcon />} onClick={updatedFunction} size="small" sx={{ textTransform: "none" }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" startIcon={<CancelIcon />} onClick={updatedFunction} size="small" sx={{ textTransform: "none" }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSaving} loadingText={Locale.label("settings.appEdit.saving")} variant="contained" startIcon={<SaveIcon />} onClick={handleSubmit(onValid)} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.saveTab")}</LoadingButton>
           </Stack>
         }
@@ -240,7 +240,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                 <>
                   <Divider sx={{ mt: 2 }} />
                   <Box sx={{ textAlign: "center" }}>
-                    <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={handleDelete} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.deleteTab")}</Button>
+                    <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleDelete} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.deleteTab")}</Button>
                   </Box>
                 </>
               )}

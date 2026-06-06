@@ -132,7 +132,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
             </Box>
           </TableCell>
           <TableCell sx={{ py: 1.5, width: 50 }}>
-            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteOutlineIcon />} destructive onClick={() => handleDelete(index)} />
+            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteOutlineIcon />} intent="remove" onClick={() => handleDelete(index)} />
           </TableCell>
         </TableRow>
       );
@@ -203,7 +203,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
               />
             </TableCell>
             <TableCell sx={{ py: 1 }}>
-              <AppIconButton label={Locale.label("common.add")} icon={<AddCircleOutlineIcon />} tone="card" onClick={handleAdd} />
+              <AppIconButton label={Locale.label("common.add")} icon={<AddCircleOutlineIcon />} tone="card" intent="add" onClick={handleAdd} />
             </TableCell>
           </TableRow>
         </TableBody>

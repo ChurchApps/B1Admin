@@ -128,7 +128,7 @@ export const WorkflowEdit = (props: Props) => {
 
           <Stack direction="row" spacing={2} justifyContent="flex-end">
             {workflow?.id && (
-              <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={handleDelete} data-testid="workflow-delete-button" sx={{ borderRadius: 2, textTransform: "none", fontWeight: 600 }}>
+              <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleDelete} data-testid="workflow-delete-button" sx={{ borderRadius: 2, textTransform: "none", fontWeight: 600 }}>
                 {Locale.label("common.delete")}
               </Button>
             )}

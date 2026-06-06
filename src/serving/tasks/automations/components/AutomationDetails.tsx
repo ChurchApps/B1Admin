@@ -217,7 +217,7 @@ export const AutomationDetails = (props: Props) => {
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   {Locale.label("tasks.automationDetails.acts")}:
                 </Typography>
-                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => setEditAction({ automationId: automation.id, actionType: "task" })} />
+                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => setEditAction({ automationId: automation.id, actionType: "task" })} />
               </Stack>
               {getActions()}
             </Box>

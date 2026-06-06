@@ -192,9 +192,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
         case "deleteOption":
           result = (
             <AppIconButton
+              intent="remove"
               label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)}
               icon={<DeleteIcon />}
-              destructive
               onClick={(e) => {
                 e.stopPropagation();
                 if (p.id) handleDelete(p.id.toString());

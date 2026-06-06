@@ -191,7 +191,7 @@ const InstructionItemRow: React.FC<{
           </Typography>
         )}
       </Box>
-      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => onAddAction(item, providerId, pathIndices)} />
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => onAddAction(item, providerId, pathIndices)} />
     </Box>
   );
 };

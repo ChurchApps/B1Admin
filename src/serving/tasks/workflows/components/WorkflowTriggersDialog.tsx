@@ -50,7 +50,7 @@ export const WorkflowTriggersDialog: React.FC<Props> = (props) => {
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("tasks.workflowTriggers.subtitle")}</Typography>
         <List dense>
           {triggers.map((t) => (
-            <ListItem key={t.id} secondaryAction={<AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} edge="end" destructive onClick={() => removeTrigger(t.id)} data-testid={"remove-trigger-" + t.id} />}>
+            <ListItem key={t.id} secondaryAction={<AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" edge="end" onClick={() => removeTrigger(t.id)} data-testid={"remove-trigger-" + t.id} />}>
               <ListItemText primary={formName(t.formId)} secondary={Locale.label("tasks.workflowTriggers.formTrigger")} />
             </ListItem>
           ))}

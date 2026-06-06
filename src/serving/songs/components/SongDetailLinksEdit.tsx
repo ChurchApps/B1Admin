@@ -133,7 +133,7 @@ export const SongDetailLinksEdit = (props: Props) => {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={handleAdd} />
+            <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" intent="add" onClick={handleAdd} />
             <AppIconButton label={Locale.label("common.done")} icon={<DoneIcon />} tone="card" onClick={props.reload} />
           </Stack>
         </Stack>

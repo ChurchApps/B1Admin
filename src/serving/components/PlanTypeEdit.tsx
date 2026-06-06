@@ -55,7 +55,7 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
       </DialogContent>
       <DialogActions>
         {planType?.id && (
-          <Button onClick={handleDelete} disabled={loading} color="error" sx={{ mr: "auto" }}>
+          <Button onClick={handleDelete} disabled={loading} sx={{ mr: "auto" }}>
             {Locale.label("common.delete")}
           </Button>
         )}

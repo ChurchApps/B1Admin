@@ -102,7 +102,7 @@ export const SavedLists = (props: Props) => {
                   {props.canManage && (
                     <>
                       <AppIconButton label={Locale.label("people.lists.rename")} icon={<EditIcon />} onClick={() => { setRenameTarget(list); setRenameValue(list.name || ""); }} />
-                      <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => setDeleteTarget(list)} />
+                      <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => setDeleteTarget(list)} />
                     </>
                   )}
                 </Stack>

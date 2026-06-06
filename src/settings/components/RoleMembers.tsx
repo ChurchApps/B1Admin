@@ -56,7 +56,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
     for (let i = 0; i < roleMembers.length; i++) {
       const rm = roleMembers[i];
       const removeLink = canDelete ? (
-        <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleRemove(rm)} data-testid={`remove-role-member-button-${rm.id}`} />
+        <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleRemove(rm)} data-testid={`remove-role-member-button-${rm.id}`} />
       ) : null;
       const editLink = canEdit ? (
         <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => { props.setSelectedRoleMember(rm.userId); }} data-testid={`edit-role-member-button-${rm.id}`} />

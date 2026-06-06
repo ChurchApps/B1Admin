@@ -106,7 +106,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
         </TableCell>
         {canEdit && (
           <TableCell align="right">
-            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleRemove(assoc)} />
+            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleRemove(assoc)} />
           </TableCell>
         )}
       </TableRow>

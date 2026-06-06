@@ -213,7 +213,7 @@ export const SongPage = memo(() => {
           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={() => setEditSongDetails(true)} />
         )}
         {canEdit && (
-          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={handleDeleteSong} />
+          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="header" intent="remove" onClick={handleDeleteSong} />
         )}
         {canEdit && (
           <Button

@@ -53,7 +53,7 @@ export const TimeList = (props: Props) => {
   };
 
   const getAddTimeLink = () => canEdit ? (
-    <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button" />
+    <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" intent="add" id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button" />
   ) : null;
 
   const getRows = () => {

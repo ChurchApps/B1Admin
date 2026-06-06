@@ -68,7 +68,7 @@ export const CalendarPage = () => {
       {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
         <TableCell align="right">
           <AppIconButton
-            destructive
+            intent="remove"
             label={Locale.label("common.remove")}
             icon={<DeleteIcon />}
             onClick={() => handleGroupDelete(g.id)}

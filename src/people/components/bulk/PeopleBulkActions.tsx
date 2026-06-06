@@ -130,7 +130,7 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleDelete} data-testid="bulk-action-delete" sx={{ color: "error.main" }}>
-          <ListItemIcon><DeleteIcon fontSize="small" color="error" /></ListItemIcon>
+          <ListItemIcon><DeleteIcon fontSize="small" /></ListItemIcon>
           <ListItemText>{Locale.label("people.bulk.delete")}</ListItemText>
         </MenuItem>
       </Menu>

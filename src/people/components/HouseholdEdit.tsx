@@ -127,7 +127,7 @@ export function HouseholdEdit(props: Props) {
         </FormControl>
       </TableCell>
       <TableCell>
-        <AppIconButton label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} destructive onClick={() => handleRemove(index)} data-testid="remove-household-member-button" />
+        <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} onClick={() => handleRemove(index)} data-testid="remove-household-member-button" />
       </TableCell>
     </TableRow>
   ));
@@ -161,7 +161,7 @@ export function HouseholdEdit(props: Props) {
               <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell>
-                <AppIconButton label={Locale.label("common.add")} icon={<PersonAddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-household-member-button" />
+                <AppIconButton intent="add" label={Locale.label("common.add")} icon={<PersonAddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-household-member-button" />
               </TableCell>
             </TableRow>
           </TableBody>

@@ -194,9 +194,9 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
 
       const removeButton = canEdit ? (
         <AppIconButton
+          intent="remove"
           label={Locale.label("common.remove")}
           icon={<PersonRemoveIcon />}
-          destructive
           onClick={() => handleRemove(gm)}
           data-testid={`remove-member-button-${gm.id}`}
         />

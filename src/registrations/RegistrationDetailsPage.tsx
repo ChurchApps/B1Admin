@@ -110,7 +110,7 @@ export const RegistrationDetailsPage = () => {
             {reg.status !== "cancelled" && (
               <AppIconButton label={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} icon={<CancelIcon />} onClick={() => handleCancel(reg.id)} />
             )}
-            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} destructive onClick={() => handleDelete(reg.id)} />
+            <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(reg.id)} />
           </>
         )}
       </TableCell>

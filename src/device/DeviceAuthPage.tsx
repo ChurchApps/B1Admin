@@ -238,7 +238,6 @@ export const DeviceAuthPage: React.FC = () => {
                 <Button
                   fullWidth
                   variant="contained"
-                  color="error"
                   onClick={handleDeny}
                   disabled={loading}
                 >

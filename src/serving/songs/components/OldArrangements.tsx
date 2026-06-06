@@ -61,7 +61,7 @@ export const OldArrangements = (props: Props) => {
 
   const getEditContent = () => (
     <Stack direction="row">
-      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setEditArrangement({ name: "Default", songId: props.song?.id })} data-testid="add-arrangement-button" />
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" intent="add" onClick={() => setEditArrangement({ name: "Default", songId: props.song?.id })} data-testid="add-arrangement-button" />
       {arrangements?.length === 1 && (
         <AppIconButton
           label={Locale.label("common.edit")}

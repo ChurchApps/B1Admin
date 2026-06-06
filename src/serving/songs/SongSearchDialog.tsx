@@ -141,7 +141,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                   )}
                 </Box>
 
-                <AppIconButton label={`Select ${songDetail.title}`} icon={<AddIcon />} tone="card" />
+                <AppIconButton label={`Select ${songDetail.title}`} icon={<AddIcon />} tone="card" intent="add" />
               </Stack>
             </CardContent>
           </Card>

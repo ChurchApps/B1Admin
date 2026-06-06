@@ -174,7 +174,6 @@ export function CalendarEdit(props: Props) {
             {!isNew && (
               <Button
                 variant="outlined"
-                color="error"
                 onClick={handleDelete}
                 disabled={saving || deleting}
                 startIcon={deleting ? undefined : <DeleteIcon />}

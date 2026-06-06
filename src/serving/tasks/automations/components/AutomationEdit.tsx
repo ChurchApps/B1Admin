@@ -142,7 +142,6 @@ export const AutomationEdit = (props: Props) => {
             {automation?.id && (
               <Button
                 variant="outlined"
-                color="error"
                 startIcon={<DeleteIcon />}
                 onClick={handleDelete}
                 sx={{

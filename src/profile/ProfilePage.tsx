@@ -268,7 +268,7 @@ export const ProfilePage = () => {
                 </Typography>
                 <Typography color="text.secondary">{Locale.label("profile.profilePage.permWarn")}</Typography>
                 <Box>
-                  <LoadingButton variant="outlined" color="error" loading={deleteAccountMutation.isPending} onClick={handleAccountDelete} data-testid="delete-account-button">
+                  <LoadingButton variant="outlined" loading={deleteAccountMutation.isPending} onClick={handleAccountDelete} data-testid="delete-account-button">
                     {Locale.label("profile.profilePage.delAcc")}
                   </LoadingButton>
                 </Box>

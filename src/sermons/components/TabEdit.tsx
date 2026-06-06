@@ -288,7 +288,6 @@ export const TabEdit: React.FC<Props> = (props) => {
             {currentTab?.id && (
               <Button
                 variant="outlined"
-                color="error"
                 startIcon={<DeleteIcon />}
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}

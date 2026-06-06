@@ -123,6 +123,7 @@ export function CuratedEventCalendar(props: Props) {
         {props.mode === "edit" && (
           <AppIconButton
             tone="card"
+            intent="add"
             label={Locale.label("common.add")}
             icon={<AddIcon />}
             onClick={() => setOpen(true)}

@@ -70,7 +70,7 @@ export const ElementSelection: React.FC<Props> = ({
 
             <AppIconButton label={Locale.label("site.elementSelection.moveDown")} icon={<ArrowDownward sx={{ fontSize: 14 }} />} onClick={onMoveDown} sx={actionButtonSx} />
 
-            <AppIconButton label={Locale.label("common.delete")} icon={<Delete sx={{ fontSize: 14 }} />} destructive onClick={onDelete} sx={{ ...actionButtonSx, "&:hover": { backgroundColor: "#fef2f2" } }} />
+            <AppIconButton label={Locale.label("common.delete")} icon={<Delete sx={{ fontSize: 14 }} />} intent="remove" onClick={onDelete} sx={actionButtonSx} />
           </Box>
         </>
       )}

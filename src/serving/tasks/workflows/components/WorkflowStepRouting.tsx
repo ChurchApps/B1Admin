@@ -129,13 +129,13 @@ export const WorkflowStepRouting = (props: Props) => {
           <Box key={route.id} data-testid={"outcome-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <TextField fullWidth size="small" label={Locale.label("tasks.workflowRouting.outcomeLabel")} defaultValue={route.label || ""} data-testid={"outcome-label-" + route.id} onBlur={(e) => { if (e.target.value !== route.label) saveRoute({ ...route, label: e.target.value }); }} />
-              <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} destructive data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />
+              <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} intent="remove" data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />
             </Stack>
             <Box sx={{ mt: 1 }}>{outcomeTargetSelect(route)}</Box>
           </Box>
         ))}
       </Stack>
-      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} data-testid="add-outcome-button" onClick={addOutcome} sx={{ mt: 1 }} />
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" data-testid="add-outcome-button" onClick={addOutcome} sx={{ mt: 1 }} />
 
       <Divider sx={{ my: 2 }} />
 
@@ -147,7 +147,7 @@ export const WorkflowStepRouting = (props: Props) => {
           <Box key={route.id} data-testid={"auto-route-" + route.id} sx={{ p: 1, border: "1px solid", borderColor: "grey.200", borderRadius: 1 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Box sx={{ flexGrow: 1 }}>{targetSelect(route, false)}</Box>
-              <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} destructive data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />
+              <AppIconButton label={Locale.label("common.remove")} icon={<DeleteIcon />} intent="remove" data-testid={"remove-route-" + route.id} onClick={() => removeRoute(route)} />
             </Stack>
             <Box sx={{ mt: 1 }}>
               <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowRouting.conditions")}</Typography>
@@ -157,12 +157,12 @@ export const WorkflowStepRouting = (props: Props) => {
                 ))}
                 {(conditions[route.id] || []).length === 0 && <Typography variant="caption" color="text.secondary" sx={{ fontStyle: "italic" }}>{Locale.label("tasks.workflowRouting.noConditions")}</Typography>}
               </Stack>
-              <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} data-testid={"add-condition-" + route.id} onClick={() => addCondition(route)} sx={{ mt: 0.5 }} />
+              <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" data-testid={"add-condition-" + route.id} onClick={() => addCondition(route)} sx={{ mt: 0.5 }} />
             </Box>
           </Box>
         ))}
       </Stack>
-      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} data-testid="add-auto-route-button" onClick={addAuto} disabled={otherSteps.length === 0} sx={{ mt: 1 }} />
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" data-testid="add-auto-route-button" onClick={addAuto} disabled={otherSteps.length === 0} sx={{ mt: 1 }} />
     </Box>
   );
 };

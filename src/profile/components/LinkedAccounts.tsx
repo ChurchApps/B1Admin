@@ -81,7 +81,7 @@ export const LinkedAccounts = () => {
                 </>
               )}
               {praiseChartsAccessToken && (
-                <Button variant="contained" color="error" onClick={unlinkPraiseCharts}>
+                <Button variant="contained" onClick={unlinkPraiseCharts}>
                   {Locale.label("profile.linkedAccounts.unlink")}
                 </Button>
               )}
