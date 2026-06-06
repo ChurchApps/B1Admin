@@ -4094,7 +4094,25 @@
       "pin": "Pin assignment",
       "pinnedNote": "Pinned — keeps this owner across steps",
       "sendBack": "Send Back",
-      "skip": "Skip"
+      "skip": "Skip",
+      "outcome": "Outcome"
+    },
+    "workflowRouting": {
+      "title": "Routing",
+      "saveStepFirst": "Save the step before adding routing.",
+      "outcomes": "Outcomes (when completed)",
+      "outcomesHelp": "Buttons shown when completing a card on this step. Each can send the card to another step or close it.",
+      "addOutcome": "Add Outcome",
+      "automatic": "Automatic routing (on entry)",
+      "automaticHelp": "When a card enters this step, send it onward automatically if the person matches.",
+      "addAuto": "Add Automatic Route",
+      "outcomeLabel": "Button label",
+      "targetStep": "Go to step",
+      "completeCard": "Complete the card",
+      "conditions": "Conditions",
+      "addCondition": "Add Condition",
+      "noConditions": "No conditions yet — this route matches everyone.",
+      "remove": "Remove"
     },
     "workflowCategories": {
       "title": "Category",

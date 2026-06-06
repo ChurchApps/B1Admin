@@ -32,6 +32,22 @@ export interface WorkflowCategoryInterface {
   sort?: number;
 }
 
+// A conditional exit from a step ("if this then that"). trigger: "onEnter"
+// (auto-evaluated on entry) | "onComplete" (a button shown when completing).
+// kind: "outcome" (button) | "personMatch" (condition tree) | "always" (default).
+// targetStepId null = complete/close the card.
+export interface WorkflowStepRouteInterface {
+  id?: string;
+  churchId?: string;
+  workflowId?: string;
+  stepId?: string;
+  sort?: number;
+  trigger?: string;
+  kind?: string;
+  label?: string;
+  targetStepId?: string;
+}
+
 export interface FormWorkflowTriggerInterface {
   id?: string;
   churchId?: string;
@@ -56,4 +72,5 @@ export interface WorkflowBoardInterface {
   workflow: WorkflowInterface;
   steps: WorkflowStepInterface[];
   cards: WorkflowCardInterface[];
+  routes: WorkflowStepRouteInterface[];
 }

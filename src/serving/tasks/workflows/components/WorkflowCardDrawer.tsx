@@ -4,18 +4,21 @@ import { ApiHelper, type ConversationInterface, Notes, Locale } from "@churchapp
 import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
-import { type WorkflowStepInterface, type WorkflowCardInterface } from "../interfaces";
+import { type WorkflowStepInterface, type WorkflowCardInterface, type WorkflowStepRouteInterface } from "../interfaces";
 import { canEditCard } from "../permissions";
 
 interface Props {
   card: WorkflowCardInterface;
   steps: WorkflowStepInterface[];
+  routes?: WorkflowStepRouteInterface[];
   onClose: () => void;
   onChanged: () => void;
 }
 
 export const WorkflowCardDrawer = (props: Props) => {
   const { card, steps } = props;
+  // Outcome buttons configured for the card's current step.
+  const outcomes = (props.routes || []).filter((r) => r.stepId === card.stepId && r.trigger === "onComplete");
   const context = useContext(UserContext);
   const [showPicker, setShowPicker] = React.useState(false);
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
@@ -42,8 +45,8 @@ export const WorkflowCardDrawer = (props: Props) => {
     props.onChanged();
   };
 
-  const complete = async () => {
-    await ApiHelper.post("/tasks/" + card.id + "/complete", {}, "DoingApi");
+  const complete = async (routeId?: string) => {
+    await ApiHelper.post("/tasks/" + card.id + "/complete", routeId ? { routeId } : {}, "DoingApi");
     props.onChanged();
     props.onClose();
   };
@@ -99,8 +102,22 @@ export const WorkflowCardDrawer = (props: Props) => {
             <Stack direction="row" spacing={1}>
               <Button variant="outlined" size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
               <Button variant="outlined" size="small" startIcon={<SnoozeIcon />} data-testid="card-snooze-button" onClick={(e) => setSnoozeAnchor(e.currentTarget)}>{Locale.label("tasks.workflowCard.snooze")}</Button>
-              <Button variant="contained" size="small" color="success" startIcon={<CompleteIcon />} data-testid="card-complete-button" onClick={complete}>{Locale.label("tasks.workflowCard.complete")}</Button>
+              {outcomes.length === 0 && (
+                <Button variant="contained" size="small" color="success" startIcon={<CompleteIcon />} data-testid="card-complete-button" onClick={() => complete()}>{Locale.label("tasks.workflowCard.complete")}</Button>
+              )}
             </Stack>
+          )}
+
+          {/* Outcome routing: completing via a named outcome can move the card on (or close it). */}
+          {editable && outcomes.length > 0 && (
+            <Box>
+              <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowCard.outcome")}</Typography>
+              <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 0.5 }}>
+                {outcomes.map((o) => (
+                  <Button key={o.id} variant="contained" size="small" color="success" startIcon={<CompleteIcon />} data-testid={"card-outcome-" + o.id} onClick={() => complete(o.id)}>{o.label}</Button>
+                ))}
+              </Stack>
+            </Box>
           )}
 
           <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>

@@ -1,12 +1,14 @@
-import { Card, CardContent, Typography, Stack, Box, Button, TextField } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Button, TextField, Divider } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Person as PersonIcon } from "@mui/icons-material";
 import { ContentPicker } from "../../components/ContentPicker";
+import { WorkflowStepRouting } from "./WorkflowStepRouting";
 import { type WorkflowStepInterface } from "../interfaces";
 
 interface Props {
   step: WorkflowStepInterface;
+  steps?: WorkflowStepInterface[];
   onCancel: () => void;
   onSave: () => void;
   onDelete?: () => void;
@@ -48,6 +50,9 @@ export const WorkflowStepEdit = (props: Props) => {
             <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowStepEdit.defaultAssignee")}: {step?.defaultAssignToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
             <Button size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
           </Box>
+
+          <Divider />
+          <WorkflowStepRouting step={step} steps={props.steps || []} />
 
           <Stack direction="row" spacing={2} justifyContent="flex-end">
             {step?.id && <Button variant="outlined" color="error" startIcon={<DeleteIcon />} data-testid="step-delete-button" onClick={handleDelete}>{Locale.label("common.delete")}</Button>}

@@ -132,13 +132,13 @@ export const WorkflowBoardPage = () => {
 
           {editStep && canManage && (
             <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
-              <WorkflowStepEdit step={editStep} onCancel={() => setEditStep(null)} onSave={() => { setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
+              <WorkflowStepEdit step={editStep} steps={steps} onCancel={() => setEditStep(null)} onSave={() => { setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
             </Box>
           )}
         </Stack>
       </Box>
 
-      {openCard && <WorkflowCardDrawer card={openCard} steps={steps} onClose={() => setOpenCard(null)} onChanged={refetch} />}
+      {openCard && <WorkflowCardDrawer card={openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
       {showTriggers && <WorkflowTriggersDialog workflowId={workflowId} onClose={() => setShowTriggers(false)} />}
       {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
     </>

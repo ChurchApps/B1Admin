@@ -30,6 +30,14 @@ async function openSeedBoard(page: Page) {
   await page.locator('[data-testid="workflow-board"]').waitFor({ state: 'visible', timeout: 15000 });
 }
 
+// Open a specific workflow board directly by id (used by the routing tests).
+async function openBoardById(page: Page, workflowId: string) {
+  await page.goto('/serving/tasks/workflows/' + workflowId);
+  await expect(page).toHaveURL(new RegExp('/serving/tasks/workflows/' + workflowId), { timeout: 10000 });
+  await recoverFromViteError(page, page.locator('[data-testid="workflow-board"]'));
+  await page.locator('[data-testid="workflow-board"]').waitFor({ state: 'visible', timeout: 15000 });
+}
+
 test.describe.serial('Serving Management - Workflows', () => {
   test.describe.configure({ retries: 0 });
 
@@ -323,6 +331,68 @@ test.describe.serial('Serving Management - Workflows', () => {
     // Admin tier: managing workflow definitions is denied without Doing/Admin.
     const dup = await ctx.post(`${API_BASE}/doing/workflows/WFL00000001/duplicate`, { ...auth, data: {} });
     expect(dup.status()).toBe(401);
+
+    await ctx.dispose();
+  });
+
+  // ---- Conditional routing (outcome buttons + automatic personMatch routing) ----
+
+  test('completing with an outcome routes the card to the target step', async () => {
+    await openBoardById(page, 'WFL00000003');
+    // TSK00000106 sits on "Contact" (WFS6), whose "Reached" outcome -> "Scheduled" (WFS7).
+    await page.locator('[data-testid="workflow-card-TSK00000106"]').click();
+    await page.locator('[data-testid="workflow-card-drawer"]').waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('[data-testid="card-outcome-WSR00000001"]').click();
+    await openBoardById(page, 'WFL00000003');
+    await expect(page.locator('[data-testid="workflow-column-WFS00000007"] [data-testid="workflow-card-TSK00000106"]')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('an outcome with no target step closes the card', async () => {
+    await openBoardById(page, 'WFL00000003');
+    // TSK00000107 on "Contact" (WFS6); the "Not Interested" outcome has no target -> closes.
+    await page.locator('[data-testid="workflow-card-TSK00000107"]').click();
+    await page.locator('[data-testid="workflow-card-drawer"]').waitFor({ state: 'visible', timeout: 10000 });
+    await page.locator('[data-testid="card-outcome-WSR00000002"]').click();
+    await openBoardById(page, 'WFL00000003');
+    await expect(page.locator('[data-testid="workflow-card-TSK00000107"]')).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test('configure a new outcome from the step editor', async () => {
+    await openBoardById(page, 'WFL00000003');
+    // Edit the "Scheduled" step (WFS7, no seeded outcomes) and add an outcome button.
+    await page.locator('[data-testid="edit-step-WFS00000007"]').click();
+    await page.locator('[data-testid="add-outcome-button"]').click();
+    // A new outcome row appears with an editable label field.
+    await expect(page.locator('[data-testid^="outcome-route-"]').first()).toBeVisible({ timeout: 10000 });
+    const label = page.locator('[data-testid^="outcome-label-"] input').first();
+    await label.fill('Welcomed');
+    await label.blur();
+    // Reopen the editor and confirm the outcome persisted.
+    await openBoardById(page, 'WFL00000003');
+    await page.locator('[data-testid="edit-step-WFS00000007"]').click();
+    await expect(page.locator('[data-testid^="outcome-label-"] input').first()).toHaveValue('Welcomed', { timeout: 10000 });
+  });
+
+  test('a personMatch route auto-advances a matching card on entry (API)', async () => {
+    const API_BASE = 'http://localhost:8084';
+    const ctx = await request.newContext();
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'demo@b1.church', password: 'password' } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === 'CHU00000001') || body.userChurches?.[0];
+    const jwt = uc?.jwt as string;
+    expect(jwt).toBeTruthy();
+    const auth = { headers: { Authorization: 'Bearer ' + jwt } };
+
+    // John Smith (PER00000001, lastName "Smith") matches WSR00000003 -> jumps to "Attended" (WFS5).
+    const matchRes = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: 'WFL00000002', stepId: 'WFS00000004', associatedWith: { type: 'person', id: 'PER00000001', label: 'John Smith' } } });
+    expect(matchRes.status()).toBe(200);
+    expect((await matchRes.json()).stepId).toBe('WFS00000005');
+
+    // Robert Johnson (PER00000006, lastName "Johnson") does not match -> stays on "Invited" (WFS4).
+    const noMatchRes = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: 'WFL00000002', stepId: 'WFS00000004', associatedWith: { type: 'person', id: 'PER00000006', label: 'Robert Johnson' } } });
+    expect(noMatchRes.status()).toBe(200);
+    expect((await noMatchRes.json()).stepId).toBe('WFS00000004');
 
     await ctx.dispose();
   });
