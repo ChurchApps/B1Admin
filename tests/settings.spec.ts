@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { settingsTest as test, expect } from './helpers/test-fixtures';
 import { dismissSendInviteIfPresent, editIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
-import { navigateToSettings, navigateToRoles } from './helpers/navigation';
+import { navigateToSettings, navigateToRoles, navigateToForms } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -267,13 +267,8 @@ test.describe.serial('Settings Management', () => {
 
   test.describe.serial('Form Settings', () => {
     test.beforeEach(async () => {
-      // Mobile Settings tests leave us on /mobile, where the Form secondary
-      // menu doesn't exist — re-enter /settings before clicking the tab.
-      if (!/\/settings(\?|$|\/$)/.test(page.url())) {
-        await navigateToSettings(page);
-      }
-      const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
-      await formTab.dispatchEvent('click');
+      // Forms now live under People → Forms; navigate there before each test.
+      await navigateToForms(page);
       await expect(page.locator('[data-testid="add-form-button"]')).toBeVisible({ timeout: 10000 });
     });
 

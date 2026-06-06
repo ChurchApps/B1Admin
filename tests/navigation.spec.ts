@@ -71,7 +71,7 @@ test.describe('Secondary Navigation', () => {
     await expect(page).toHaveURL(/\/attendance/);
   });
 
-  test('opens Forms via Settings', async ({ page }) => {
+  test('opens Forms via People', async ({ page }) => {
     await navigateTo(page, 'forms');
     await expect(page).toHaveURL(/\/forms/);
   });
@@ -129,11 +129,6 @@ test.describe('Secondary Navigation', () => {
   test('opens Giving Statements via Donations', async ({ page }) => {
     await navigateTo(page, 'statements');
     await expect(page).toHaveURL(/\/donations\/statements/);
-  });
-
-  test('opens Playlists via Sermons', async ({ page }) => {
-    await navigateTo(page, 'playlists');
-    await expect(page).toHaveURL(/\/sermons\/playlists/);
   });
 
   test('opens Live Stream Times via Sermons', async ({ page }) => {

@@ -115,6 +115,7 @@
       "cancel": "Cancel",
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Delete",
+      "manageRegistrations": "Manage Registrations",
       "noGroups": "No groups found."
     },
     "calendarList": {
@@ -2148,7 +2149,7 @@
       "enabledEvents": "Events with Registration Enabled",
       "event": "Event",
       "noEvents": "No events have registration enabled yet.",
-      "noEventsHint": "Enable registration on an event through the event edit settings.",
+      "noEventsHint": "To enable registration, open an event on a calendar and click Manage Registrations.",
       "registered": "registered",
       "registrations": "Registrations",
       "subtitle": "Manage event registration settings and view registrants",
@@ -2392,6 +2393,7 @@
       "title": "Playlists"
     },
     "publishDate": "Publish Date",
+    "search": "Search",
     "searchPlaceholder": "Search sermons by title or playlist...",
     "sermon": "Sermon",
     "sermonEdit": {

@@ -5,7 +5,7 @@ import { login } from './helpers/auth';
 import { STORAGE_STATE_PATH } from './global-setup';
 
 // Coverage for ChurchAppsSupport/b1Admin/forms.md.
-// Forms live under Settings → Forms. Two contentTypes:
+// Forms live under People → Forms. Two contentTypes:
 //   - "person": data-collection forms attached to a person profile.
 //   - "form":   stand-alone forms with public URLs and access-window options.
 // FormEdit (FormEdit.tsx) is the create/edit drawer; Form.tsx renders
@@ -24,7 +24,7 @@ async function selectMuiOption(page: import('@playwright/test').Page, openLocato
 }
 
 async function openFormsPage(page: import('@playwright/test').Page) {
-  // settingsTest fixture leaves us on /settings; explicitly navigate to forms.
+  // settingsTest fixture lands us elsewhere; explicitly navigate to forms (People → Forms).
   await navigateToForms(page);
   await expect(page).toHaveURL(/\/forms/, { timeout: 15000 });
   // Add Form button is the canonical signal that the page rendered.

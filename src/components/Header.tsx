@@ -35,6 +35,7 @@ export const Header: React.FC = () => {
     const menuItems: { url: string; icon: string; label: string }[] = [];
     menuItems.push({ url: "/", icon: "home", label: Locale.label("components.wrapper.dash") });
     if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people", icon: "person", label: Locale.label("components.wrapper.ppl") });
+    else if (formPermission || isFormMember) menuItems.push({ url: "/forms", icon: "person", label: Locale.label("components.wrapper.ppl") });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("components.wrapper.don"), icon: donationIcon });
 
     const canViewPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || isMinistryMember;
@@ -48,7 +49,6 @@ export const Header: React.FC = () => {
 
     if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
     else if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("components.wrapper.set"), icon: "settings" });
-    else if (formPermission || isFormMember) menuItems.push({ url: "/forms", label: Locale.label("components.wrapper.set"), icon: "settings" });
     // if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) tabs.push(<NavItem key="/admin" url="/admin" label={Locale.label("components.wrapper.servAdmin")} icon="admin_panel_settings" selected={selectedTab === "admin"} />);
     return menuItems;
   }, [donationError, formPermission, isFormMember, isMinistryMember]);
@@ -67,12 +67,13 @@ export const Header: React.FC = () => {
     if (path.startsWith("/people")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/attendance")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/groups")) result = Locale.label("components.wrapper.ppl");
+    else if (path.startsWith("/forms")) result = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/donations")) result = Locale.label("components.wrapper.don");
     else if (path.startsWith("/serving") || window.location.search.indexOf("tag=") > -1) result = Locale.label("components.wrapper.serving");
     else if (path.startsWith("/sermons")) result = Locale.label("common.sermons");
     else if (path.startsWith("/calendars") || path.startsWith("/site") || path.startsWith("/registrations")) result = Locale.label("common.website");
     else if (path.startsWith("/mobile")) result = Locale.label("common.mobile");
-    else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = Locale.label("components.wrapper.set");
+    else if (path.startsWith("/settings") || path.startsWith("/admin")) result = Locale.label("components.wrapper.set");
     else if (path.startsWith("/dashboard")) result = Locale.label("dashboard.dashboardPage.dash");
     return result;
   };
