@@ -190,19 +190,7 @@ test.describe.serial('Serving Management - Workflows', () => {
     await expect(page.locator('p').getByText('Add to Workflow')).toBeVisible({ timeout: 10000 });
   });
 
-  test('configure a form trigger on a workflow', async () => {
-    await openSeedBoard(page);
-    await page.locator('[data-testid="board-triggers-button"]').click();
-    // Seeded trigger uses the "Visitor Information Card" form.
-    await expect(page.getByRole('dialog').getByText('Visitor Information Card')).toBeVisible({ timeout: 10000 });
-    // Add a second trigger for "VBS Registration".
-    await page.locator('[data-testid="trigger-form-select"]').click();
-    await page.getByRole('option', { name: 'VBS Registration' }).click();
-    await page.locator('[data-testid="add-trigger-button"]').click();
-    await expect(page.getByRole('dialog').getByText('VBS Registration')).toBeVisible({ timeout: 10000 });
-    // Close the dialog so its backdrop doesn't block the next test's navigation.
-    await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click();
-  });
+  // Form triggers were unified into the event-trigger engine; see serving-event-triggers.spec.ts.
 
   test('bulk add people to a workflow from People', async () => {
     await navigateToPeople(page);

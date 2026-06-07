@@ -106,7 +106,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
                   workPhone: "",
                   mobilePhone: ""
                 },
-                membershipStatus: "",
+                membershipStatus: "Visitor",
                 gender: "",
                 birthDate: null,
                 maritalStatus: "",
