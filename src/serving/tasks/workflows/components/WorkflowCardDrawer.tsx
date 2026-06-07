@@ -20,6 +20,16 @@ export const WorkflowCardDrawer = (props: Props) => {
   const { card, steps } = props;
   // Outcome buttons configured for the card's current step.
   const outcomes = (props.routes || []).filter((r) => r.stepId === card.stepId && r.trigger === "onComplete");
+  // Automated-action events recorded on the card by action steps (stored in data JSON).
+  const history: { date?: string; message?: string }[] = (() => {
+    if (!card.data) return [];
+    try {
+      const parsed = JSON.parse(card.data);
+      return Array.isArray(parsed?.history) ? parsed.history : [];
+    } catch {
+      return [];
+    }
+  })();
   const context = useContext(UserContext);
   const [showPicker, setShowPicker] = React.useState(false);
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
@@ -126,6 +136,17 @@ export const WorkflowCardDrawer = (props: Props) => {
             <MenuItem onClick={() => snooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
             <MenuItem onClick={() => snooze(7)}>{Locale.label("tasks.workflowCard.snooze1Week")}</MenuItem>
           </Menu>
+
+          {history.length > 0 && (
+            <Box data-testid="card-history">
+              <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowCard.history")}</Typography>
+              <Stack spacing={0.25} sx={{ mt: 0.5 }}>
+                {history.map((h, i) => (
+                  <Typography key={i} variant="caption" data-testid={"history-entry-" + i}>• {h.message}</Typography>
+                ))}
+              </Stack>
+            </Box>
+          )}
 
           <Divider />
           <Notes context={context} conversationId={card.conversationId} createConversation={handleCreateConversation} />

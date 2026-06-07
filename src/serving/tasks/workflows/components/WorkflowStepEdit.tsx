@@ -1,10 +1,12 @@
-import { Card, CardContent, Typography, Stack, Box, Button, TextField, Divider } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Button, TextField, Divider, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Person as PersonIcon } from "@mui/icons-material";
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowStepRouting } from "./WorkflowStepRouting";
+import { WorkflowStepActions } from "./WorkflowStepActions";
 import { type WorkflowStepInterface, type WorkflowInterface } from "@churchapps/helpers";
+import "../types";
 
 interface Props {
   step: WorkflowStepInterface;
@@ -46,11 +48,30 @@ export const WorkflowStepEdit = (props: Props) => {
         <Stack spacing={2}>
           <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>{Locale.label("tasks.workflowStepEdit.editStep")}</Typography>
           <TextField fullWidth label={Locale.label("tasks.workflowStepEdit.stepName")} value={step?.name || ""} data-testid="step-name-input" onChange={(e) => setStep({ ...step, name: e.target.value })} />
-          <TextField fullWidth type="number" label={Locale.label("tasks.workflowStepEdit.dueDays")} value={step?.expectedResponseDays ?? ""} data-testid="step-due-days-input" onChange={(e) => handleNumber("expectedResponseDays", e.target.value)} helperText={Locale.label("tasks.workflowStepEdit.dueDaysHelp")} />
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowStepEdit.defaultAssignee")}: {step?.defaultAssignToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
-            <Button size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
-          </Box>
+
+          <ToggleButtonGroup exclusive size="small" color="primary" value={step?.stepType || "human"} data-testid="step-type-toggle" onChange={(_e, v) => v && setStep({ ...step, stepType: v })}>
+            <ToggleButton value="human" data-testid="step-type-human">{Locale.label("tasks.workflowStepEdit.typeHuman")}</ToggleButton>
+            <ToggleButton value="action" data-testid="step-type-action">{Locale.label("tasks.workflowStepEdit.typeAction")}</ToggleButton>
+          </ToggleButtonGroup>
+
+          {(step?.stepType || "human") === "human" && (
+            <>
+              <TextField fullWidth type="number" label={Locale.label("tasks.workflowStepEdit.dueDays")} value={step?.expectedResponseDays ?? ""} data-testid="step-due-days-input" onChange={(e) => handleNumber("expectedResponseDays", e.target.value)} helperText={Locale.label("tasks.workflowStepEdit.dueDaysHelp")} />
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowStepEdit.defaultAssignee")}: {step?.defaultAssignToLabel || Locale.label("tasks.workflowBoard.unassigned")}</Typography>
+                <Button size="small" startIcon={<PersonIcon />} onClick={() => setShowPicker(true)}>{Locale.label("tasks.workflowCard.assign")}</Button>
+              </Box>
+            </>
+          )}
+
+          {step?.stepType === "action" && (
+            <>
+              <Divider />
+              {step?.id
+                ? <WorkflowStepActions stepId={step.id} workflows={props.workflows || []} />
+                : <Typography variant="body2" color="text.secondary">{Locale.label("tasks.workflowActions.saveFirst")}</Typography>}
+            </>
+          )}
 
           <Divider />
           <WorkflowStepRouting step={step} steps={props.steps || []} workflows={props.workflows || []} />

@@ -4132,7 +4132,34 @@
       "stepName": "Step Name",
       "dueDays": "Due in (days)",
       "dueDaysHelp": "Sets a due date when a card enters this step",
-      "defaultAssignee": "Default assignee"
+      "defaultAssignee": "Default assignee",
+      "typeHuman": "Person step",
+      "typeAction": "Automated step"
+    },
+    "workflowActions": {
+      "title": "Automated actions",
+      "add": "Add Action",
+      "none": "No actions",
+      "saveFirst": "Save the step before adding actions.",
+      "days": "Wait days",
+      "selectTemplate": "Select email template",
+      "subjectOverride": "Subject (optional)",
+      "noGroup": "No group selected",
+      "pickGroup": "Pick group",
+      "selectWorkflow": "Select workflow",
+      "note": "Note",
+      "selectField": "Field",
+      "value": "Value",
+      "webhookUrl": "Webhook URL (https)",
+      "type": {
+        "delay": "Wait",
+        "sendEmail": "Send email",
+        "addToGroup": "Add to group",
+        "addToWorkflow": "Add to workflow",
+        "addNote": "Add note",
+        "setField": "Set field",
+        "webhook": "Webhook"
+      }
     },
     "workflowCard": {
       "assign": "Assign",
@@ -4148,7 +4175,8 @@
       "pinnedNote": "Pinned — keeps this owner across steps",
       "sendBack": "Send Back",
       "skip": "Skip",
-      "outcome": "Outcome"
+      "outcome": "Outcome",
+      "history": "Activity"
     },
     "workflowRouting": {
       "title": "Routing",

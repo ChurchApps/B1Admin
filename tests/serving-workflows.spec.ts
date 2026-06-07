@@ -457,4 +457,80 @@ test.describe.serial('Serving Management - Workflows', () => {
 
     await ctx.dispose();
   });
+
+  // ---- Action steps (automated, auto-advancing steps) ----
+
+  const API_BASE = 'http://localhost:8084';
+  async function apiAuth(ctx: any) {
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'demo@b1.church', password: 'password' } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === 'CHU00000001') || body.userChurches?.[0];
+    return { headers: { Authorization: 'Bearer ' + (uc?.jwt as string) } };
+  }
+  // Build a workflow: human "Greet" -> action step -> human "Done". Returns ids.
+  async function buildActionWorkflow(ctx: any, auth: any, actions: { actionType: string; config: any }[]) {
+    const wfRes = await ctx.post(`${API_BASE}/doing/workflows`, { ...auth, data: [{ name: 'Zacchaeus Action WF', active: true }] });
+    const wf = (await wfRes.json())[0];
+    const stepRes = await ctx.post(`${API_BASE}/doing/workflowSteps`, { ...auth, data: [
+      { workflowId: wf.id, name: 'Greet', sort: 1, stepType: 'human' },
+      { workflowId: wf.id, name: 'Auto', sort: 2, stepType: 'action' },
+      { workflowId: wf.id, name: 'Done', sort: 3, stepType: 'human' }
+    ] });
+    const steps = await stepRes.json();
+    const auto = steps.find((s: any) => s.name === 'Auto');
+    const done = steps.find((s: any) => s.name === 'Done');
+    if (actions.length) {
+      await ctx.post(`${API_BASE}/doing/workflowStepActions`, { ...auth, data: actions.map((a, i) => ({ stepId: auto.id, sort: i + 1, actionType: a.actionType, config: JSON.stringify(a.config) })) });
+    }
+    return { wf, auto, done };
+  }
+
+  test('a card entering an action step runs its action and auto-advances (API)', async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto, done } = await buildActionWorkflow(ctx, auth, [{ actionType: 'addNote', config: { note: 'Zacchaeus note' } }]);
+
+    // Adding a card directly onto the action step should pass it through to "Done".
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: 'person', id: 'PER00000001', label: 'John Smith' } } });
+    expect(added.status()).toBe(200);
+    const card = await added.json();
+    expect(card.stepId).toBe(done.id); // did not rest on the action step
+    expect(JSON.parse(card.data || '{}').history?.some((h: any) => h.message === 'Note: Zacchaeus note')).toBeTruthy();
+
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
+  test('a delay action parks the card on the action step (API)', async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, [{ actionType: 'delay', config: { days: 3 } }]);
+
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: 'person', id: 'PER00000001', label: 'John Smith' } } });
+    expect(added.status()).toBe(200);
+    const card = await added.json();
+    expect(card.stepId).toBe(auto.id); // parked, waiting on the delay
+    expect(card.snoozedUntil).toBeTruthy();
+
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
+  test('action steps render as a connector on the board', async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, [{ actionType: 'addNote', config: { note: 'x' } }]);
+    await ctx.dispose();
+
+    await openBoardById(page, wf.id);
+    // The action step is a thin connector, not a card-holding column.
+    await expect(page.locator(`[data-testid="workflow-connector-${auto.id}"]`)).toBeVisible({ timeout: 10000 });
+    await expect(page.locator(`[data-testid="workflow-column-${auto.id}"]`)).toHaveCount(0);
+
+    const cleanup = await request.newContext();
+    const auth2 = await apiAuth(cleanup);
+    await cleanup.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth2);
+    await cleanup.dispose();
+  });
 });

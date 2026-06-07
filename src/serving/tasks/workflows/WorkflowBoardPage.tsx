@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Add as AddIcon, BarChart as ReportIcon, ArrowBack as BackIcon, Bolt as TriggerIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon, Edit as EditIcon } from "@mui/icons-material";
 import { WorkflowStepColumn } from "./components/WorkflowStepColumn";
+import { WorkflowActionConnector } from "./components/WorkflowActionConnector";
 import { WorkflowStepEdit } from "./components/WorkflowStepEdit";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { WorkflowCardDrawer } from "./components/WorkflowCardDrawer";
@@ -93,8 +94,10 @@ export const WorkflowBoardPage = () => {
   const steps = board.data?.steps || [];
   const cards = board.data?.cards || [];
   const routes = board.data?.routes || [];
+  const actions = board.data?.actions || [];
   const cardsForStep = (stepId: string) => cards.filter((c) => c.stepId === stepId);
   const routesForStep = (stepId: string) => routes.filter((r) => r.stepId === stepId);
+  const actionsForStep = (stepId: string) => actions.filter((a) => a.stepId === stepId);
 
   return (
     <>
@@ -148,23 +151,34 @@ export const WorkflowBoardPage = () => {
             <DndProvider backend={HTML5Backend}>
               <Box sx={{ display: "flex", flexDirection: "row", alignItems: "flex-start", pb: 2 }} data-testid="workflow-board">
                 {steps.map((step) => (
-                  <WorkflowStepColumn
-                    key={step.id}
-                    workflowId={workflowId}
-                    step={step}
-                    cards={cardsForStep(step.id)}
-                    routes={routesForStep(step.id)}
-                    steps={steps}
-                    workflows={workflows.data || []}
-                    canEdit={canEdit}
-                    canManage={canManage}
-                    selectedIds={selectedIds}
-                    onToggleSelect={toggleSelect}
-                    onDropCard={handleDropCard}
-                    onOpenCard={setOpenCard}
-                    onEditStep={setEditStep}
-                    onChanged={refetch}
-                  />
+                  step.stepType === "action" ? (
+                    <WorkflowActionConnector
+                      key={step.id}
+                      step={step}
+                      actions={actionsForStep(step.id)}
+                      cards={cardsForStep(step.id)}
+                      canManage={canManage}
+                      onEditStep={setEditStep}
+                    />
+                  ) : (
+                    <WorkflowStepColumn
+                      key={step.id}
+                      workflowId={workflowId}
+                      step={step}
+                      cards={cardsForStep(step.id)}
+                      routes={routesForStep(step.id)}
+                      steps={steps}
+                      workflows={workflows.data || []}
+                      canEdit={canEdit}
+                      canManage={canManage}
+                      selectedIds={selectedIds}
+                      onToggleSelect={toggleSelect}
+                      onDropCard={handleDropCard}
+                      onOpenCard={setOpenCard}
+                      onEditStep={setEditStep}
+                      onChanged={refetch}
+                    />
+                  )
                 ))}
                 {steps.length === 0 && canManage && (
                   <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-first-step-button">{Locale.label("tasks.workflowBoard.addStep")}</Button>
