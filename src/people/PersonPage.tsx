@@ -77,7 +77,7 @@ export const PersonPage = () => {
           workPhone: "",
           mobilePhone: ""
         },
-        membershipStatus: "",
+        membershipStatus: "Visitor",
         gender: "",
         birthDate: null,
         maritalStatus: "",
