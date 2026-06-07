@@ -4197,9 +4197,9 @@
       "selectForm": "Form"
     },
     "eventTriggers": {
-      "title": "Event Triggers",
-      "subtitle": "Start a workflow automatically when a record is added, changed, or removed.",
-      "manage": "Event Triggers",
+      "title": "Triggers",
+      "subtitle": "Start a workflow automatically when a record is added, changed, or removed — including form submissions.",
+      "manage": "Triggers",
       "addTrigger": "Add Trigger",
       "editTrigger": "Edit Trigger",
       "noTriggers": "No event triggers configured.",

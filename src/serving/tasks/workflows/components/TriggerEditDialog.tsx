@@ -2,7 +2,6 @@ import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, TextField, Stack, Typography, FormControlLabel, Switch, IconButton, Box, ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { type WorkflowInterface } from "@churchapps/helpers";
 
 interface FieldDef { key: string; label: string; type: string; options?: { value: string; label: string }[]; optionsSource?: string }
 interface EventDef { eventType: string; label: string; recordType: string; fields: FieldDef[] }
@@ -12,8 +11,8 @@ interface StepInterface { id?: string; name?: string }
 
 interface Props {
   trigger: WorkflowTriggerInterface;
+  workflowId: string; // the trigger always targets this one workflow (board context)
   events: EventDef[];
-  workflows: WorkflowInterface[];
   onClose: () => void;
   onSave: () => void;
 }
@@ -32,7 +31,7 @@ const operatorsFor = (type?: string): string[] => {
 export const TriggerEditDialog: React.FC<Props> = (props) => {
   const [name, setName] = React.useState(props.trigger.name || "");
   const [eventType, setEventType] = React.useState(props.trigger.eventType || "");
-  const [workflowId, setWorkflowId] = React.useState(props.trigger.workflowId || "");
+  const workflowId = props.workflowId;
   const [stepId, setStepId] = React.useState(props.trigger.stepId || "");
   const [oncePerSubject, setOncePerSubject] = React.useState(props.trigger.oncePerSubject ?? true);
   const [active, setActive] = React.useState(props.trigger.active ?? true);
@@ -66,6 +65,7 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
       if (dynamicOptions[src]) return;
       if (src === "funds") ApiHelper.get("/funds", "GivingApi").then((f: any[]) => setDynamicOptions((p) => ({ ...p, funds: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
       else if (src === "groups") ApiHelper.get("/groups", "MembershipApi").then((g: any[]) => setDynamicOptions((p) => ({ ...p, groups: (g || []).map((x) => ({ value: x.id, label: x.name })) })));
+      else if (src === "forms") ApiHelper.get("/forms", "MembershipApi").then((f: any[]) => setDynamicOptions((p) => ({ ...p, forms: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
     });
   }, [eventType]);
 
@@ -133,21 +133,13 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
             </Select>
           </FormControl>
 
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-            <FormControl fullWidth size="small">
-              <InputLabel>{Locale.label("tasks.eventTriggers.workflow")}</InputLabel>
-              <Select label={Locale.label("tasks.eventTriggers.workflow")} value={workflowId} data-testid="trigger-workflow-select" onChange={(e) => { setWorkflowId(e.target.value); setStepId(""); }}>
-                {props.workflows.map((w) => <MenuItem key={w.id} value={w.id}>{w.name}</MenuItem>)}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth size="small">
-              <InputLabel>{Locale.label("tasks.eventTriggers.step")}</InputLabel>
-              <Select label={Locale.label("tasks.eventTriggers.step")} value={stepId} data-testid="trigger-step-select" onChange={(e) => setStepId(e.target.value)}>
-                <MenuItem value="">{Locale.label("tasks.eventTriggers.firstStep")}</MenuItem>
-                {steps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
-              </Select>
-            </FormControl>
-          </Stack>
+          <FormControl fullWidth size="small">
+            <InputLabel>{Locale.label("tasks.eventTriggers.step")}</InputLabel>
+            <Select label={Locale.label("tasks.eventTriggers.step")} value={stepId} data-testid="trigger-step-select" onChange={(e) => setStepId(e.target.value)}>
+              <MenuItem value="">{Locale.label("tasks.eventTriggers.firstStep")}</MenuItem>
+              {steps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
+            </Select>
+          </FormControl>
 
           <Box>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>

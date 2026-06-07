@@ -6,7 +6,7 @@ import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { ViewKanban as WorkflowsIcon, Add as AddIcon, Assignment as MyCardsIcon, ContentCopy as DuplicateIcon, Bolt as TriggerIcon } from "@mui/icons-material";
+import { ViewKanban as WorkflowsIcon, Add as AddIcon, Assignment as MyCardsIcon, ContentCopy as DuplicateIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { canViewWorkflows, canManageWorkflows } from "./permissions";
 
@@ -97,11 +97,6 @@ export const WorkflowsPage = () => {
           <Button variant="outlined" startIcon={<MyCardsIcon />} onClick={() => navigate("/serving/tasks/workflows/mine")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF" } }}>
             {Locale.label("tasks.myCards.title")}
           </Button>
-          {canManage && (
-            <Button variant="outlined" startIcon={<TriggerIcon />} data-testid="event-triggers-button" onClick={() => navigate("/serving/tasks/workflows/triggers")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF" } }}>
-              {Locale.label("tasks.eventTriggers.manage")}
-            </Button>
-          )}
           {canManage && (
             <Button variant="outlined" startIcon={<AddIcon />} data-testid="add-workflow-button" onClick={(e) => setAddAnchor(e.currentTarget)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
               {Locale.label("tasks.workflowsPage.addWorkflow")}

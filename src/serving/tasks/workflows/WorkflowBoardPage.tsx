@@ -10,7 +10,7 @@ import { WorkflowStepColumn } from "./components/WorkflowStepColumn";
 import { WorkflowStepEdit } from "./components/WorkflowStepEdit";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { WorkflowCardDrawer } from "./components/WorkflowCardDrawer";
-import { WorkflowTriggersDialog } from "./components/WorkflowTriggersDialog";
+import { WorkflowTriggersManager } from "./components/WorkflowTriggersManager";
 import { ContentPicker } from "../components/ContentPicker";
 import { type WorkflowBoardInterface, type WorkflowStepInterface, type TaskInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permissions";
@@ -100,7 +100,7 @@ export const WorkflowBoardPage = () => {
         <Stack direction="row" spacing={1}>
           <Button variant="outlined" startIcon={<BackIcon />} onClick={() => navigate("/serving/tasks/workflows")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowsPage.title")}</Button>
           {canManage && <Button variant="outlined" startIcon={<EditIcon />} data-testid="edit-workflow-button" onClick={handleEditWorkflow} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowEdit.editWorkflow")}</Button>}
-          {canManage && <Button variant="outlined" startIcon={<TriggerIcon />} data-testid="board-triggers-button" onClick={() => setShowTriggers(true)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowTriggers.title")}</Button>}
+          {canManage && <Button variant="outlined" startIcon={<TriggerIcon />} data-testid="board-triggers-button" onClick={() => setShowTriggers(true)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.eventTriggers.title")}</Button>}
           <Button variant="outlined" startIcon={<ReportIcon />} data-testid="board-reports-button" onClick={() => navigate("/serving/tasks/workflows/" + workflowId + "/reports")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)" }}>{Locale.label("tasks.workflowReports.title")}</Button>
           {canManage && <Button variant="outlined" startIcon={<AddIcon />} data-testid="add-step-button" onClick={handleAddStep} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF" } }}>{Locale.label("tasks.workflowBoard.addStep")}</Button>}
         </Stack>
@@ -173,7 +173,7 @@ export const WorkflowBoardPage = () => {
       </Box>
 
       {openCard && <WorkflowCardDrawer card={openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
-      {showTriggers && <WorkflowTriggersDialog workflowId={workflowId} onClose={() => setShowTriggers(false)} />}
+      {showTriggers && <WorkflowTriggersManager workflowId={workflowId} onClose={() => setShowTriggers(false)} />}
       {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
     </>
   );
