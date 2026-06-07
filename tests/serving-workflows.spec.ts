@@ -140,8 +140,10 @@ test.describe.serial('Serving Management - Workflows', () => {
     await expect(page.locator('[data-testid="workflow-board"]').getByText('Greet').first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('My Cards shows the demo user assigned card', async () => {
-    await page.goto('/serving/tasks/workflows/mine');
+  test('My Work inbox shows the demo user assigned card', async () => {
+    // My Cards + My Tasks are merged into the "My Work" inbox at /serving/tasks.
+    await page.goto('/serving/tasks');
+    await page.locator('[data-testid="my-work-cards-tab"]').click();
     await recoverFromViteError(page, page.locator('[data-testid="my-cards-list"]'));
     await page.locator('[data-testid="my-cards-list"]').waitFor({ state: 'visible', timeout: 15000 });
     // TSK00000104 (James Wilson) is assigned to Demo User.
@@ -166,31 +168,10 @@ test.describe.serial('Serving Management - Workflows', () => {
     await page.locator('[role="dialog"] button').getByText('Close').click();
   });
 
-  test('automation can use the Add to Workflow action', async () => {
-    // Navigate straight to the automations page by URL (prior test ended on a Person page).
-    await page.goto('/serving/tasks/automations');
-    await recoverFromViteError(page, page.locator('button').getByText('Add Automation'));
-    await expect(page).toHaveURL(/\/tasks\/automations/, { timeout: 10000 });
-
-    // Create an automation, then add an addToWorkflow action to it.
-    await page.locator('button').getByText('Add Automation').click();
-    const autoName = page.locator('[name="title"]');
-    await autoName.waitFor({ state: 'visible', timeout: 10000 });
-    await autoName.fill('Zacchaeus Workflow Automation');
-    await page.locator('button').getByText('Save').click();
-    await expect(page.locator('h6').getByText('Zacchaeus Workflow Automation')).toBeVisible({ timeout: 10000 });
-
-    await page.locator('h6').getByText('Zacchaeus Workflow Automation').click();
-    await page.locator('button').getByText('Add Action').click();
-    await page.locator('[data-testid="action-type-select"]').click();
-    await page.getByRole('option', { name: 'Add to Workflow' }).click();
-    await page.locator('[data-testid="action-workflow-select"]').click();
-    await page.getByRole('option', { name: 'New Visitor Follow-up' }).click();
-    await page.locator('button').getByText('Save').click();
-    await expect(page.locator('p').getByText('Add to Workflow')).toBeVisible({ timeout: 10000 });
-  });
-
-  // Form triggers were unified into the event-trigger engine; see serving-event-triggers.spec.ts.
+  // Standalone Automations were folded into the unified rules engine. "Add to workflow"
+  // and scheduled rules are now authored in the board's Triggers tab — see
+  // serving-event-triggers.spec.ts ('create, then delete, a scheduled rule' and the
+  // event-trigger cases). Form triggers run through the same engine too.
 
   test('bulk add people to a workflow from People', async () => {
     await navigateToPeople(page);

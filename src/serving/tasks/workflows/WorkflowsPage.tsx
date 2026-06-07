@@ -94,7 +94,7 @@ export const WorkflowsPage = () => {
     <>
       <PageHeader title={Locale.label("tasks.workflowsPage.title")} subtitle={Locale.label("tasks.workflowsPage.subtitle")}>
         <Stack direction="row" spacing={1}>
-          <Button variant="outlined" startIcon={<MyCardsIcon />} onClick={() => navigate("/serving/tasks/workflows/mine")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF" } }}>
+          <Button variant="outlined" startIcon={<MyCardsIcon />} onClick={() => navigate("/serving/tasks")} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF" } }}>
             {Locale.label("tasks.myCards.title")}
           </Button>
           {canManage && (

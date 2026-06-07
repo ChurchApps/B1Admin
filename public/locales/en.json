@@ -347,6 +347,7 @@
       "form": "Form",
       "forms": "Forms",
       "groups": "Groups",
+      "myWork": "My Work",
       "plans": "Plans",
       "ppl": "People",
       "servAdmin": "Server Admin",
@@ -4123,7 +4124,8 @@
       "unassigned": "Unassigned",
       "selectedCount": "{count} selected",
       "moveTo": "Move to…",
-      "clearSelection": "Clear"
+      "clearSelection": "Clear",
+      "boardTab": "Board"
     },
     "workflowStepEdit": {
       "editStep": "Edit Step",
@@ -4188,6 +4190,10 @@
       "subtitle": "Cards assigned to you",
       "noCards": "You have no assigned cards."
     },
+    "myWork": {
+      "title": "My Work",
+      "subtitle": "Your workflow cards and tasks"
+    },
     "workflowTriggers": {
       "title": "Triggers",
       "subtitle": "Automatically add people to this workflow when they submit a form.",
@@ -4218,7 +4224,15 @@
       "oncePerSubject": "Only once per person",
       "active": "Active",
       "noConditions": "Runs for every matching event.",
-      "selectEvent": "Select an event"
+      "selectEvent": "Select an event",
+      "kindEvent": "When something happens",
+      "kindSchedule": "On a schedule",
+      "recurs": "Repeats",
+      "recur_daily": "Daily",
+      "recur_weekly": "Weekly",
+      "recur_monthly": "Monthly",
+      "recur_yearly": "Yearly",
+      "saveRuleFirst": "Save the rule first to add conditions."
     }
   },
   "ui": {
