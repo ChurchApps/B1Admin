@@ -134,8 +134,8 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
           </FormControl>
 
           <FormControl fullWidth size="small">
-            <InputLabel>{Locale.label("tasks.eventTriggers.step")}</InputLabel>
-            <Select label={Locale.label("tasks.eventTriggers.step")} value={stepId} data-testid="trigger-step-select" onChange={(e) => setStepId(e.target.value)}>
+            <InputLabel shrink>{Locale.label("tasks.eventTriggers.step")}</InputLabel>
+            <Select displayEmpty label={Locale.label("tasks.eventTriggers.step")} value={stepId} data-testid="trigger-step-select" onChange={(e) => setStepId(e.target.value)}>
               <MenuItem value="">{Locale.label("tasks.eventTriggers.firstStep")}</MenuItem>
               {steps.map((s) => <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>)}
             </Select>
