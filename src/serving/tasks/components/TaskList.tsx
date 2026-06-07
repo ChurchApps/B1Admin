@@ -343,9 +343,9 @@ export const TaskList = memo((props: Props) => {
           {props.compact ? (
             <>
               <Tabs value={tab} onChange={(_e, v) => setTab(v)} variant="scrollable" scrollButtons="auto" sx={{ borderBottom: 1, borderColor: "divider", mb: 2, minHeight: 40 }}>
-                <Tab sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignMe"), assignedToMe.length)} />
-                <Tab sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignGroup"), assignedToMyGroups.length)} />
-                <Tab sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.reqMe"), createdByMe.length)} />
+                <Tab data-testid="tasklist-tab-assigned" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignMe"), assignedToMe.length)} />
+                <Tab data-testid="tasklist-tab-groups" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignGroup"), assignedToMyGroups.length)} />
+                <Tab data-testid="tasklist-tab-created" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.reqMe"), createdByMe.length)} />
               </Tabs>
               {(() => {
                 const active = tab === 0 ? assignedToMe : tab === 1 ? assignedToMyGroups : createdByMe;

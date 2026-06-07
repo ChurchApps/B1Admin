@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Routes, Route, useNavigate, Outlet } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate, Outlet } from "react-router-dom";
 import { Wrapper, ErrorBoundary } from "./components";
 import { NotificationService, UserHelper } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
@@ -135,7 +135,8 @@ export const Authenticated: React.FC = () => {
           <Route path="/serving/overview" element={<ServingOverviewPage />} />
           <Route path="/serving/planTypes/:id" element={<PlanTypePage />} />
           <Route path="/serving/plans/:id" element={<PlanPage />} />
-          <Route path="/serving" element={<ServingPage />} />
+          <Route path="/serving/plans" element={<ServingPage />} />
+          <Route path="/serving" element={<Navigate to="/serving/tasks" replace />} />
           <Route path="/serving/songs" element={<SongsPage />} />
           <Route path="/serving/songs/:id" element={<SongPage />} />
           <Route path="/sermons/times" element={<LiveStreamTimesPage />} />

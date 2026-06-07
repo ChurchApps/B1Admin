@@ -141,9 +141,8 @@ test.describe.serial('Serving Management - Workflows', () => {
   });
 
   test('My Work inbox shows the demo user assigned card', async () => {
-    // My Cards + My Tasks are merged into the "My Work" inbox at /serving/tasks.
+    // The "My Work" inbox at /serving/tasks shows My Cards beside the tasks module.
     await page.goto('/serving/tasks');
-    await page.locator('[data-testid="my-work-cards-tab"]').click();
     await recoverFromViteError(page, page.locator('[data-testid="my-cards-list"]'));
     await page.locator('[data-testid="my-cards-list"]').waitFor({ state: 'visible', timeout: 15000 });
     // TSK00000104 (James Wilson) is assigned to Demo User.

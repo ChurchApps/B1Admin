@@ -23,14 +23,15 @@ test.describe.serial('Serving Management - Plans', () => {
     await page?.context().close();
   });
 
-  // All tests pivot on the Zebedee Ministry tab on /serving (root). Edit
-  // Ministry / Edit Plan Type flows navigate off /serving (to /groups or
-  // /serving/planTypes), so re-enter /serving before each test. Also dismiss
-  // any leftover SendInviteDialog (e.g. from adding Dorothy with an email).
+  // Plans now live at /serving/plans (the Serving section defaults to My Work).
+  // Edit Ministry / Edit Plan Type flows navigate off to /groups or
+  // /serving/planTypes, so re-enter the plans page before each test. Also
+  // dismiss any leftover SendInviteDialog (e.g. from adding Dorothy with an email).
   test.beforeEach(async () => {
     await dismissSendInviteIfPresent(page, 500);
-    if (!/\/serving(?!\/)/.test(page.url())) {
-      await navigateToServing(page);
+    if (!/\/serving\/plans/.test(page.url())) {
+      await page.goto("/serving/plans");
+      await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
     }
   });
 
@@ -466,6 +467,8 @@ test.describe.serial('Serving Management - Plans', () => {
 // Edge-case extensions: Plans page navigation surface (independent of Zebedee chain).
 test.describe('Plans page navigation', () => {
   test('Add Ministry button is visible on the Serving Plans page', async ({ page }) => {
+    await page.goto('/serving/plans');
+    await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
     await expect(page.locator('button').getByText('Add Ministry').first()).toBeVisible({ timeout: 15000 });
   });
 

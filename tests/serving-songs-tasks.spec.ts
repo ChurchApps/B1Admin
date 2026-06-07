@@ -5,12 +5,11 @@ import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
-// The "My Work" inbox (/serving/tasks) has two tabs: My Cards (default) and My Tasks.
-// The plain task list lives under the My Tasks tab.
+// The "My Work" inbox (/serving/tasks) shows My Cards beside the tasks module; the
+// plain task list (Add Task, sections) is the right-hand module.
 async function openMyTasks(page: Page) {
   await page.locator('[id="secondaryMenu"] a').getByText('My Work').click();
   await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-  await page.locator('[data-testid="my-work-tasks-tab"]').click();
 }
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -508,6 +507,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await page?.context().close();
     });
 
+    // The tasks module on My Work is the compact (tabbed) TaskList — one tab is
+    // visible at a time (Assigned to Me / My Groups / Created by Me), so counts are
+    // per-tab. "Test Task" is created by Demo User, so it always lives on the
+    // Created-by-Me tab regardless of who it's assigned to.
     test('should add a task', async () => {
       await openMyTasks(page);
 
@@ -527,8 +530,9 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await taskNotes.fill('Zacchaeus Testing (Playwright)');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      // New task is assigned to Demo User -> visible on the default Assigned-to-Me tab.
       const validatedTask = page.locator('a').getByText('Test Task');
-      await expect(validatedTask).toHaveCount(2, { timeout: 10000 });
+      await expect(validatedTask).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel adding a task', async () => {
@@ -548,23 +552,22 @@ test.describe('Serving Management - Songs & Tasks', () => {
     test('should toggle show closed tasks', async () => {
       await openMyTasks(page);
 
-      // After "should add a task" creates one task assigned to Demo User, it appears
-      // in both "Assigned to Me" and "Created by Me" sections -> 2 links.
+      // On the default Assigned-to-Me tab the open task shows once.
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(2);
+      await expect(task).toHaveCount(1);
       const closedBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedBtn.click();
       await expect(task).toHaveCount(0, { timeout: 10000 });
       const openBtn = page.locator('[data-testid="show-open-tasks-button"]');
       await openBtn.click();
-      await expect(task).toHaveCount(2, { timeout: 10000 });
+      await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should reassign tasks', async () => {
       await openMyTasks(page);
 
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(2);
+      await expect(task).toHaveCount(1);
       const selectedTask = page.locator('a').getByText('Test Task').first();
       await selectedTask.click()
       const assignBtn = page.locator('[title="Edit Assigned"]');
@@ -576,13 +579,17 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
       await openMyTasks(page);
-      // After reassignment, task is no longer in "Assigned to Me" but still in
-      // "Created by Me" -> 1 link remaining.
+      // Reassigned to Dorothy -> gone from the Assigned-to-Me tab (default).
+      await expect(task).toHaveCount(0, { timeout: 10000 });
+      // Still created by Demo User -> present on the Created-by-Me tab.
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
       await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should reassociate tasks', async () => {
       await openMyTasks(page);
+      // The task was reassigned away from Demo User, so find it on the Created-by-Me tab.
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
 
       const task = page.locator('a').getByText('Test Task').first();
       await task.click()
@@ -594,15 +601,13 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await searchBtn.click();
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
-      await openMyTasks(page);
-      // After reassociation, the single remaining list entry shows
-      // "Grace Jackson" as the Associated-With label.
-      const validatedAssociation = page.locator('p').getByText('Grace Jackson');
-      await expect(validatedAssociation).toHaveCount(1, { timeout: 10000 });
+      // The task detail header reflects the new association (compact list rows omit it).
+      await expect(page.getByText(/Grace Jackson/).first()).toBeVisible({ timeout: 10000 });
     });
 
     test('should close a task', async () => {
       await openMyTasks(page);
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
 
       const task = page.locator('a').getByText('Test Task').first();
       await task.click();
@@ -611,12 +616,14 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const closedBtn = page.locator('li').getByText('Closed');
       await closedBtn.click();
       await openMyTasks(page);
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
       // Task is now closed -> invisible on the default "Open" filter.
-      await expect(task).toHaveCount(0, { timeout: 10000 });
+      const task2 = page.locator('a').getByText('Test Task');
+      await expect(task2).toHaveCount(0, { timeout: 10000 });
       const closedTasksBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedTasksBtn.click();
-      // After switching to "Closed" filter, the task reappears in "Created by Me".
-      await expect(task).toHaveCount(1, { timeout: 10000 });
+      // After switching to "Closed" filter, the task reappears on Created-by-Me.
+      await expect(task2).toHaveCount(1, { timeout: 10000 });
     });
   });
 
