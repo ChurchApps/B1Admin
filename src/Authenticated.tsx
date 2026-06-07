@@ -30,6 +30,7 @@ const WorkflowsPage = React.lazy(() => import("./serving/tasks/workflows/Workflo
 const WorkflowBoardPage = React.lazy(() => import("./serving/tasks/workflows/WorkflowBoardPage").then((module) => ({ default: module.WorkflowBoardPage })));
 const WorkflowReportsPage = React.lazy(() => import("./serving/tasks/workflows/WorkflowReportsPage").then((module) => ({ default: module.WorkflowReportsPage })));
 const MyCardsPage = React.lazy(() => import("./serving/tasks/workflows/MyCardsPage").then((module) => ({ default: module.MyCardsPage })));
+const TriggersPage = React.lazy(() => import("./serving/tasks/workflows/TriggersPage").then((module) => ({ default: module.TriggersPage })));
 const DashboardPage = React.lazy(() => import("./dashboard/DashboardPage").then((module) => ({ default: module.DashboardPage })));
 const AdminPage = React.lazy(() => import("./serverAdmin/AdminPage").then((module) => ({ default: module.AdminPage })));
 const ProfilePage = React.lazy(() => import("./profile/ProfilePage").then((module) => ({ default: module.ProfilePage })));
@@ -129,6 +130,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/settings/*" element={<Settings />} />
           <Route path="/serving/tasks/automations" element={<AutomationsPage />} />
           <Route path="/serving/tasks/workflows/mine" element={<MyCardsPage />} />
+          <Route path="/serving/tasks/workflows/triggers" element={<TriggersPage />} />
           <Route path="/serving/tasks/workflows/:id/reports" element={<WorkflowReportsPage />} />
           <Route path="/serving/tasks/workflows/:id" element={<WorkflowBoardPage />} />
           <Route path="/serving/tasks/workflows" element={<WorkflowsPage />} />

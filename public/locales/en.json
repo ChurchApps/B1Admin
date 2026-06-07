@@ -4195,6 +4195,30 @@
       "noTriggers": "No triggers configured.",
       "formTrigger": "Form submission",
       "selectForm": "Form"
+    },
+    "eventTriggers": {
+      "title": "Event Triggers",
+      "subtitle": "Start a workflow automatically when a record is added, changed, or removed.",
+      "manage": "Event Triggers",
+      "addTrigger": "Add Trigger",
+      "editTrigger": "Edit Trigger",
+      "noTriggers": "No event triggers configured.",
+      "name": "Name",
+      "event": "When this happens",
+      "workflow": "Add to workflow",
+      "step": "Starting step",
+      "firstStep": "First step",
+      "conditions": "Only if",
+      "addCondition": "Add Condition",
+      "matchAll": "Match ALL conditions",
+      "matchAny": "Match ANY condition",
+      "field": "Field",
+      "operator": "Operator",
+      "value": "Value",
+      "oncePerSubject": "Only once per person",
+      "active": "Active",
+      "noConditions": "Runs for every matching event.",
+      "selectEvent": "Select an event"
     }
   },
   "ui": {
