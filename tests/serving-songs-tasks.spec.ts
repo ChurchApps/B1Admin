@@ -5,6 +5,13 @@ import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
+// The "My Work" inbox (/serving/tasks) shows My Cards beside the tasks module; the
+// plain task list (Add Task, sections) is the right-hand module.
+async function openMyTasks(page: Page) {
+  await page.locator('[id="secondaryMenu"] a').getByText('My Work').click();
+  await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
+}
+
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe('Serving Management - Songs & Tasks', () => {
 
@@ -500,10 +507,12 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await page?.context().close();
     });
 
+    // The tasks module on My Work is the compact (tabbed) TaskList — one tab is
+    // visible at a time (Assigned to Me / My Groups / Created by Me), so counts are
+    // per-tab. "Test Task" is created by Demo User, so it always lives on the
+    // Created-by-Me tab regardless of who it's assigned to.
     test('should add a task', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
+      await openMyTasks(page);
 
       const addBtn = page.locator('[data-testid="add-task-button"]');
       await addBtn.click();
@@ -521,14 +530,13 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await taskNotes.fill('Zacchaeus Testing (Playwright)');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
+      // New task is assigned to Demo User -> visible on the default Assigned-to-Me tab.
       const validatedTask = page.locator('a').getByText('Test Task');
-      await expect(validatedTask).toHaveCount(2, { timeout: 10000 });
+      await expect(validatedTask).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should cancel adding a task', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
+      await openMyTasks(page);
 
       const addBtn = page.locator('[data-testid="add-task-button"]');
       await addBtn.click();
@@ -542,29 +550,24 @@ test.describe('Serving Management - Songs & Tasks', () => {
     });
 
     test('should toggle show closed tasks', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
+      await openMyTasks(page);
 
-      // After "should add a task" creates one task assigned to Demo User, it appears
-      // in both "Assigned to Me" and "Created by Me" sections -> 2 links.
+      // On the default Assigned-to-Me tab the open task shows once.
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(2);
+      await expect(task).toHaveCount(1);
       const closedBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedBtn.click();
       await expect(task).toHaveCount(0, { timeout: 10000 });
       const openBtn = page.locator('[data-testid="show-open-tasks-button"]');
       await openBtn.click();
-      await expect(task).toHaveCount(2, { timeout: 10000 });
+      await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should reassign tasks', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
+      await openMyTasks(page);
 
       const task = page.locator('a').getByText('Test Task');
-      await expect(task).toHaveCount(2);
+      await expect(task).toHaveCount(1);
       const selectedTask = page.locator('a').getByText('Test Task').first();
       await selectedTask.click()
       const assignBtn = page.locator('[title="Edit Assigned"]');
@@ -575,16 +578,18 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await searchBtn.click();
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
-      await tasksBtn.click();
-      // After reassignment, task is no longer in "Assigned to Me" but still in
-      // "Created by Me" -> 1 link remaining.
+      await openMyTasks(page);
+      // Reassigned to Dorothy -> gone from the Assigned-to-Me tab (default).
+      await expect(task).toHaveCount(0, { timeout: 10000 });
+      // Still created by Demo User -> present on the Created-by-Me tab.
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
       await expect(task).toHaveCount(1, { timeout: 10000 });
     });
 
     test('should reassociate tasks', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
+      await openMyTasks(page);
+      // The task was reassigned away from Demo User, so find it on the Created-by-Me tab.
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
 
       const task = page.locator('a').getByText('Test Task').first();
       await task.click()
@@ -596,17 +601,13 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await searchBtn.click();
       const selectBtn = page.locator('button').getByText('Select');
       await selectBtn.click();
-      await tasksBtn.click();
-      // After reassociation, the single remaining list entry shows
-      // "Grace Jackson" as the Associated-With label.
-      const validatedAssociation = page.locator('p').getByText('Grace Jackson');
-      await expect(validatedAssociation).toHaveCount(1, { timeout: 10000 });
+      // The task detail header reflects the new association (compact list rows omit it).
+      await expect(page.getByText(/Grace Jackson/).first()).toBeVisible({ timeout: 10000 });
     });
 
     test('should close a task', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
+      await openMyTasks(page);
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
 
       const task = page.locator('a').getByText('Test Task').first();
       await task.click();
@@ -614,220 +615,15 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await openBtn.click();
       const closedBtn = page.locator('li').getByText('Closed');
       await closedBtn.click();
-      await tasksBtn.click();
+      await openMyTasks(page);
+      await page.locator('[data-testid="tasklist-tab-created"]').click();
       // Task is now closed -> invisible on the default "Open" filter.
-      await expect(task).toHaveCount(0, { timeout: 10000 });
+      const task2 = page.locator('a').getByText('Test Task');
+      await expect(task2).toHaveCount(0, { timeout: 10000 });
       const closedTasksBtn = page.locator('[data-testid="show-closed-tasks-button"]');
       await closedTasksBtn.click();
-      // After switching to "Closed" filter, the task reappears in "Created by Me".
-      await expect(task).toHaveCount(1, { timeout: 10000 });
-    });
-
-    test('should add an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const addBtn = page.locator('button').getByText('Add Automation');
-      await addBtn.click();
-      const autoName = page.locator('[name="title"]');
-      await expect(autoName).toBeVisible({ timeout: 10000 });
-      await autoName.fill('Zacchaeus Test Automation');
-      const recurranceBox = page.locator('[id="mui-component-select-recurs"]');
-      await recurranceBox.click();
-      const selRecurrance = page.locator('[data-value="yearly"]');
-      await selRecurrance.click();
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const validatedAuto = page.locator('h6').getByText('Zacchaeus Test Automation');
-      await expect(validatedAuto).toBeVisible({ timeout: 10000 });
-      await expect(validatedAuto).toHaveCount(1);
-    });
-
-    test('should cancel adding an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const addBtn = page.locator('button').getByText('Add Automation');
-      await addBtn.click();
-      const autoName = page.locator('[name="title"]');
-      await expect(autoName).toHaveCount(1);
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(autoName).toHaveCount(0);
-    });
-
-    test('should add task to an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
-      await auto.click();
-      const addBtn = page.locator('button').getByText('Add Action');
-      await addBtn.click();
-      const assignBox = page.locator('input').nth(1);
-      await assignBox.click();
-      const personSearch = page.locator('[name="personAddText"]');
-      await personSearch.fill('Demo User');
-      const searchBtn = page.locator('[data-testid="search-button"]');
-      await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
-      await selectBtn.click();
-      const taskName = page.locator('[name="title"]');
-      await taskName.fill('Zacchaeus Test Task');
-      const taskNotes = page.locator('[name="note"]');
-      await taskNotes.fill('Zacchaeus Testing (Playwright)');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const validatedTask = page.locator('p').getByText('Zacchaeus Test Task');
-      await expect(validatedTask).toBeVisible({ timeout: 10000 });
-      await expect(validatedTask).toHaveCount(1);
-    });
-
-    test('should cancel adding task to an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
-      await auto.click();
-      const addBtn = page.locator('button').getByText('Add Action');
-      await addBtn.click();
-      const assignBox = page.locator('input').nth(1);
-      await expect(assignBox).toHaveCount(1);
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(assignBox).toHaveCount(0);
-    });
-
-    test('should edit task on automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
-      await auto.click();
-      const editBtn = editIconButton(page).nth(1);
-      await editBtn.click();
-      const taskName = page.locator('[name="title"]');
-      await taskName.fill('Zebedee Test Task');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const validatedTask = page.locator('p').getByText('Zebedee Test Task');
-      await expect(validatedTask).toBeVisible({ timeout: 10000 });
-      await expect(validatedTask).toHaveCount(1);
-    });
-
-    test('should add condition to an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
-      await auto.click();
-      const addBtn = page.locator('button').getByText('Add Condition');
-      await addBtn.click();
-      // Save the conjunction with the default groupType (and) — the
-      // [data-value="or"] dropdown selector is fragile under MUI v7. The
-      // important thing is that a conjunction exists so the conjunction's
-      // Add icon button appears on the next render.
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-
-      // Wait for the ConjunctionEdit form to close (its Save button detaches).
-      const addConBtn = page.locator(`button[data-testid^="add-conjunction-button-"]`).last();
-      await expect(addConBtn).toBeVisible({ timeout: 10000 });
-      await addConBtn.click();
-      const addCon = page.locator('li').getByText('Add Condition');
-      await addCon.click();
-      const conType = page.locator('[role="combobox"]').first();
-      await conType.click();
-      const selConType = page.locator('[data-value="displayName"]');
-      await selConType.click();
-      const name = page.locator('[name="value"]');
-      await name.fill('Demo User');
-      await saveBtn.click();
-      const validatedCon = page.locator('p').getByText('Display Name is Demo User');
-      await expect(validatedCon).toBeVisible({ timeout: 10000 });
-      await expect(validatedCon).toHaveCount(1);
-    });
-
-    test('should edit an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const auto = page.locator('h6').getByText('Zacchaeus Test Automation');
-      await auto.click();
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
-      const autoName = page.locator('[name="title"]');
-      await autoName.fill('Zebedee Test Automation');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const validatedAuto = page.locator('h6').getByText('Zebedee Test Automation');
-      await expect(validatedAuto).toBeVisible({ timeout: 10000 });
-      await expect(validatedAuto).toHaveCount(1);
-    });
-
-    test('should cancel editing an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const auto = page.locator('h6').getByText('Zebedee Test Automation');
-      await auto.click();
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
-      const autoName = page.locator('[name="title"]');
-      await expect(autoName).toHaveCount(1);
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(autoName).toHaveCount(0);
-    });
-
-    test('should delete an automation', async () => {
-      const tasksBtn = page.locator('[id="secondaryMenu"] a').getByText('Tasks');
-      await tasksBtn.click();
-      await expect(page).toHaveURL(/\/tasks/, { timeout: 10000 });
-      const automationsBtn = page.locator('[id="secondaryMenu"] a').getByText('Automations');
-      await automationsBtn.click();
-      await expect(page).toHaveURL(/\/tasks\/automations/);
-
-      const auto = page.locator('h6').getByText('Zebedee Test Automation');
-      await auto.click();
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
-      await deleteBtn.click();
-      const validatedDeletion = page.locator('h6').getByText('Zebedee Test Automation');
-      await expect(validatedDeletion).toHaveCount(0);
+      // After switching to "Closed" filter, the task reappears on Created-by-Me.
+      await expect(task2).toHaveCount(1, { timeout: 10000 });
     });
   });
 
@@ -840,14 +636,13 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(page.locator('button').getByText(/Add Song/i).first()).toBeVisible({ timeout: 10000 });
     });
 
-    test('Serving subnav exposes Tasks, Workflows and Automations links', async ({ page }) => {
-      const tasksLink = page.locator('[id="secondaryMenu"]').getByText('Tasks').first();
+    test('Serving subnav exposes My Work and Workflows links', async ({ page }) => {
+      const tasksLink = page.locator('[id="secondaryMenu"]').getByText('My Work').first();
       await tasksLink.click();
       await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
       const secondaryMenu = page.locator('[id="secondaryMenu"]');
-      await expect(secondaryMenu.locator('a').getByText('Tasks')).toBeVisible({ timeout: 10000 });
+      await expect(secondaryMenu.locator('a').getByText('My Work')).toBeVisible({ timeout: 10000 });
       await expect(secondaryMenu.locator('a').getByText('Workflows')).toBeVisible({ timeout: 10000 });
-      await expect(secondaryMenu.locator('a').getByText('Automations')).toBeVisible({ timeout: 10000 });
     });
   });
 });

@@ -140,8 +140,9 @@ test.describe.serial('Serving Management - Workflows', () => {
     await expect(page.locator('[data-testid="workflow-board"]').getByText('Greet').first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('My Cards shows the demo user assigned card', async () => {
-    await page.goto('/serving/tasks/workflows/mine');
+  test('My Work inbox shows the demo user assigned card', async () => {
+    // The "My Work" inbox at /serving/tasks shows My Cards beside the tasks module.
+    await page.goto('/serving/tasks');
     await recoverFromViteError(page, page.locator('[data-testid="my-cards-list"]'));
     await page.locator('[data-testid="my-cards-list"]').waitFor({ state: 'visible', timeout: 15000 });
     // TSK00000104 (James Wilson) is assigned to Demo User.
@@ -166,31 +167,10 @@ test.describe.serial('Serving Management - Workflows', () => {
     await page.locator('[role="dialog"] button').getByText('Close').click();
   });
 
-  test('automation can use the Add to Workflow action', async () => {
-    // Navigate straight to the automations page by URL (prior test ended on a Person page).
-    await page.goto('/serving/tasks/automations');
-    await recoverFromViteError(page, page.locator('button').getByText('Add Automation'));
-    await expect(page).toHaveURL(/\/tasks\/automations/, { timeout: 10000 });
-
-    // Create an automation, then add an addToWorkflow action to it.
-    await page.locator('button').getByText('Add Automation').click();
-    const autoName = page.locator('[name="title"]');
-    await autoName.waitFor({ state: 'visible', timeout: 10000 });
-    await autoName.fill('Zacchaeus Workflow Automation');
-    await page.locator('button').getByText('Save').click();
-    await expect(page.locator('h6').getByText('Zacchaeus Workflow Automation')).toBeVisible({ timeout: 10000 });
-
-    await page.locator('h6').getByText('Zacchaeus Workflow Automation').click();
-    await page.locator('button').getByText('Add Action').click();
-    await page.locator('[data-testid="action-type-select"]').click();
-    await page.getByRole('option', { name: 'Add to Workflow' }).click();
-    await page.locator('[data-testid="action-workflow-select"]').click();
-    await page.getByRole('option', { name: 'New Visitor Follow-up' }).click();
-    await page.locator('button').getByText('Save').click();
-    await expect(page.locator('p').getByText('Add to Workflow')).toBeVisible({ timeout: 10000 });
-  });
-
-  // Form triggers were unified into the event-trigger engine; see serving-event-triggers.spec.ts.
+  // Standalone Automations were folded into the unified rules engine. "Add to workflow"
+  // and scheduled rules are now authored in the board's Triggers tab — see
+  // serving-event-triggers.spec.ts ('create, then delete, a scheduled rule' and the
+  // event-trigger cases). Form triggers run through the same engine too.
 
   test('bulk add people to a workflow from People', async () => {
     await navigateToPeople(page);
@@ -476,5 +456,100 @@ test.describe.serial('Serving Management - Workflows', () => {
     expect((await noMatchRes.json()).stepId).toBe('WFS00000004');
 
     await ctx.dispose();
+  });
+
+  // ---- On-enter step actions (automations attached to any step) ----
+
+  const API_BASE = 'http://localhost:8084';
+  async function apiAuth(ctx: any) {
+    const loginRes = await ctx.post(`${API_BASE}/membership/users/login`, { data: { email: 'demo@b1.church', password: 'password' } });
+    expect(loginRes.ok()).toBeTruthy();
+    const body = await loginRes.json();
+    const uc = (body.userChurches || []).find((c: any) => c.church?.id === 'CHU00000001') || body.userChurches?.[0];
+    return { headers: { Authorization: 'Bearer ' + (uc?.jwt as string) } };
+  }
+  // Build a workflow: "Greet" -> "Auto" (carries on-enter actions) -> "Done". Returns ids.
+  // routeAutoToDone adds an onEnter "always" route so Auto becomes a pass-through.
+  async function buildActionWorkflow(ctx: any, auth: any, actions: { actionType: string; config: any }[], routeAutoToDone = false) {
+    const wfRes = await ctx.post(`${API_BASE}/doing/workflows`, { ...auth, data: [{ name: 'Zacchaeus Action WF', active: true }] });
+    const wf = (await wfRes.json())[0];
+    const stepRes = await ctx.post(`${API_BASE}/doing/workflowSteps`, { ...auth, data: [
+      { workflowId: wf.id, name: 'Greet', sort: 1 },
+      { workflowId: wf.id, name: 'Auto', sort: 2 },
+      { workflowId: wf.id, name: 'Done', sort: 3 }
+    ] });
+    const steps = await stepRes.json();
+    const auto = steps.find((s: any) => s.name === 'Auto');
+    const done = steps.find((s: any) => s.name === 'Done');
+    if (actions.length) {
+      await ctx.post(`${API_BASE}/doing/workflowStepActions`, { ...auth, data: actions.map((a, i) => ({ stepId: auto.id, sort: i + 1, actionType: a.actionType, config: JSON.stringify(a.config) })) });
+    }
+    if (routeAutoToDone) {
+      await ctx.post(`${API_BASE}/doing/workflowStepRoutes`, { ...auth, data: [{ workflowId: wf.id, stepId: auto.id, trigger: 'onEnter', kind: 'always', sort: 1, targetStepId: done.id }] });
+    }
+    return { wf, auto, done };
+  }
+
+  test('a card entering a step runs its on-enter action and rests there (API)', async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, [{ actionType: 'addNote', config: { note: 'Zacchaeus note' } }]);
+
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: 'person', id: 'PER00000001', label: 'John Smith' } } });
+    expect(added.status()).toBe(200);
+    const card = await added.json();
+    expect(card.stepId).toBe(auto.id); // rests on the step for a human
+    expect(JSON.parse(card.data || '{}').history?.some((h: any) => h.message === 'Note: Zacchaeus note')).toBeTruthy();
+
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
+  test('on-enter actions run and the card advances when an onEnter always route is set (API)', async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto, done } = await buildActionWorkflow(ctx, auth, [{ actionType: 'addNote', config: { note: 'passing through' } }], true);
+
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: 'person', id: 'PER00000001', label: 'John Smith' } } });
+    expect(added.status()).toBe(200);
+    const card = await added.json();
+    expect(card.stepId).toBe(done.id); // the always route advanced it after the action ran
+    expect(JSON.parse(card.data || '{}').history?.some((h: any) => h.message === 'Note: passing through')).toBeTruthy();
+
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
+  test('a delay action parks the card on the step (API)', async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, [{ actionType: 'delay', config: { days: 3 } }]);
+
+    const added = await ctx.post(`${API_BASE}/doing/tasks/addToWorkflow`, { ...auth, data: { workflowId: wf.id, stepId: auto.id, associatedWith: { type: 'person', id: 'PER00000001', label: 'John Smith' } } });
+    expect(added.status()).toBe(200);
+    const card = await added.json();
+    expect(card.stepId).toBe(auto.id); // parked, waiting on the delay
+    expect(card.snoozedUntil).toBeTruthy();
+
+    await ctx.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth);
+    await ctx.dispose();
+  });
+
+  test('every step renders as a column with an automated-actions badge (no connector)', async () => {
+    const ctx = await request.newContext();
+    const auth = await apiAuth(ctx);
+    const { wf, auto } = await buildActionWorkflow(ctx, auth, [{ actionType: 'addNote', config: { note: 'x' } }]);
+    await ctx.dispose();
+
+    await openBoardById(page, wf.id);
+    // The step is a normal column with an actions badge; the old connector is gone.
+    await expect(page.locator(`[data-testid="workflow-column-${auto.id}"]`)).toBeVisible({ timeout: 10000 });
+    await expect(page.locator(`[data-testid="step-actions-${auto.id}"]`)).toBeVisible();
+    await expect(page.locator(`[data-testid="workflow-connector-${auto.id}"]`)).toHaveCount(0);
+
+    const cleanup = await request.newContext();
+    const auth2 = await apiAuth(cleanup);
+    await cleanup.delete(`${API_BASE}/doing/workflows/${wf.id}`, auth2);
+    await cleanup.dispose();
   });
 });

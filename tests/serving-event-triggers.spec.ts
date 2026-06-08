@@ -17,7 +17,7 @@ async function openManager(page: Page) {
   await page.goto('/serving/tasks/workflows/WFL00000001');
   await recoverFromViteError(page, page.locator('[data-testid="workflow-board"]'));
   await page.locator('[data-testid="workflow-board"]').waitFor({ state: 'visible', timeout: 15000 });
-  await page.locator('[data-testid="board-triggers-button"]').click();
+  await page.locator('[data-testid="board-triggers-tab"]').click();
   await page.locator('[data-testid="add-event-trigger-button"]').waitFor({ state: 'visible', timeout: 10000 });
 }
 
@@ -81,6 +81,24 @@ test.describe.serial('Serving Management - Event Triggers', () => {
     await expect(row).toBeVisible({ timeout: 10000 });
     await row.locator('[data-testid^="remove-event-trigger-"]').click();
     await expect(page.getByText('Zacchaeus Form Trigger')).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test('create, then delete, a scheduled rule', async () => {
+    await openManager(page);
+    await page.locator('[data-testid="add-event-trigger-button"]').click();
+
+    await page.locator('[data-testid="trigger-kind-schedule"]').click();
+    await page.locator('[data-testid="trigger-name"] input').fill('Zacchaeus Schedule');
+    // Scheduled rules pick a recurrence, not an event.
+    await page.locator('[data-testid="trigger-recurs-select"]').click();
+    await page.getByRole('option', { name: 'Monthly' }).click();
+
+    await page.locator('[data-testid="save-trigger-button"]').click();
+
+    const row = page.locator('li').filter({ hasText: 'Zacchaeus Schedule' });
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await row.locator('[data-testid^="remove-event-trigger-"]').click();
+    await expect(page.getByText('Zacchaeus Schedule')).toHaveCount(0, { timeout: 10000 });
   });
 
   // The point of the feature: a back-end mutation from ANY front-end fires the
