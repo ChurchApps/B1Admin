@@ -12,9 +12,6 @@ export interface WorkflowStepActionInterface {
 }
 
 declare module "@churchapps/helpers" {
-  interface WorkflowStepInterface {
-    stepType?: string; // "human" (default) | "action"
-  }
   interface WorkflowBoardInterface {
     actions?: WorkflowStepActionInterface[];
   }

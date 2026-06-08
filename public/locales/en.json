@@ -4132,9 +4132,7 @@
       "stepName": "Step Name",
       "dueDays": "Due in (days)",
       "dueDaysHelp": "Sets a due date when a card enters this step",
-      "defaultAssignee": "Default assignee",
-      "typeHuman": "Person step",
-      "typeAction": "Automated step"
+      "defaultAssignee": "Default assignee"
     },
     "workflowActions": {
       "title": "Automated actions",

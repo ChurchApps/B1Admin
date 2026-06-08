@@ -1,19 +1,21 @@
 import { Box, Typography, Chip, Button, Stack } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { Edit as EditIcon, Add as AddIcon, CheckCircleOutline as OutcomeIcon, CallSplit as AutoIcon, ArrowRightAlt as ArrowIcon } from "@mui/icons-material";
+import { Edit as EditIcon, Add as AddIcon, CheckCircleOutline as OutcomeIcon, CallSplit as AutoIcon, ArrowRightAlt as ArrowIcon, Bolt as ActionIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { DraggableWrapper } from "../../../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../../../components/DroppableWrapper";
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowCard } from "./WorkflowCard";
 import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "@churchapps/helpers";
+import { type WorkflowStepActionInterface } from "../types";
 
 interface Props {
   workflowId: string;
   step: WorkflowStepInterface;
   cards: TaskInterface[];
   routes?: WorkflowStepRouteInterface[];
+  actions?: WorkflowStepActionInterface[];
   steps?: WorkflowStepInterface[];
   workflows?: WorkflowInterface[];
   canEdit: boolean;
@@ -31,6 +33,7 @@ export const WorkflowStepColumn = (props: Props) => {
   const [showPicker, setShowPicker] = React.useState(false);
 
   const routes = props.routes || [];
+  const actions = props.actions || [];
   const stepName = (id?: string) => props.steps?.find((s) => s.id === id)?.name;
   const workflowName = (id?: string) => props.workflows?.find((w) => w.id === id)?.name;
   const routeTarget = (r: WorkflowStepRouteInterface) =>
@@ -65,6 +68,15 @@ export const WorkflowStepColumn = (props: Props) => {
           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} />
         )}
       </Stack>
+
+      {actions.length > 0 && (
+        <Stack direction="row" alignItems="center" spacing={0.5} flexWrap="wrap" data-testid={"step-actions-" + step.id} sx={{ mb: 1, px: 0.5, color: "text.secondary" }}>
+          <ActionIcon sx={{ fontSize: 13 }} />
+          {actions.map((a) => (
+            <Chip key={a.id} size="small" variant="outlined" label={Locale.label("tasks.workflowActions.type." + a.actionType)} sx={{ height: 18, fontSize: 11 }} />
+          ))}
+        </Stack>
+      )}
 
       {routes.length > 0 && (
         <Box data-testid={"step-routes-" + step.id} sx={{ mb: 1, px: 0.5 }}>

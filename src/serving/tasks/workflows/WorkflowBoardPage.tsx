@@ -7,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Add as AddIcon, BarChart as ReportIcon, ArrowBack as BackIcon, Bolt as TriggerIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon, Edit as EditIcon } from "@mui/icons-material";
 import { WorkflowStepColumn } from "./components/WorkflowStepColumn";
-import { WorkflowActionConnector } from "./components/WorkflowActionConnector";
 import { WorkflowStepEdit } from "./components/WorkflowStepEdit";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { WorkflowCardDrawer } from "./components/WorkflowCardDrawer";
@@ -145,28 +144,19 @@ export const WorkflowBoardPage = () => {
       )}
 
       {tab === 0 && (
-      <Box sx={{ p: 3 }}>
-        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-          <Box sx={{ flexGrow: 1, overflowX: "auto" }}>
-            <DndProvider backend={HTML5Backend}>
-              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "flex-start", pb: 2 }} data-testid="workflow-board">
-                {steps.map((step) => (
-                  step.stepType === "action" ? (
-                    <WorkflowActionConnector
-                      key={step.id}
-                      step={step}
-                      actions={actionsForStep(step.id)}
-                      cards={cardsForStep(step.id)}
-                      canManage={canManage}
-                      onEditStep={setEditStep}
-                    />
-                  ) : (
+        <Box sx={{ p: 3 }}>
+          <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+            <Box sx={{ flexGrow: 1, overflowX: "auto" }}>
+              <DndProvider backend={HTML5Backend}>
+                <Box sx={{ display: "flex", flexDirection: "row", alignItems: "flex-start", pb: 2 }} data-testid="workflow-board">
+                  {steps.map((step) => (
                     <WorkflowStepColumn
                       key={step.id}
                       workflowId={workflowId}
                       step={step}
                       cards={cardsForStep(step.id)}
                       routes={routesForStep(step.id)}
+                      actions={actionsForStep(step.id)}
                       steps={steps}
                       workflows={workflows.data || []}
                       canEdit={canEdit}
@@ -178,28 +168,27 @@ export const WorkflowBoardPage = () => {
                       onEditStep={setEditStep}
                       onChanged={refetch}
                     />
-                  )
-                ))}
-                {steps.length === 0 && canManage && (
-                  <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-first-step-button">{Locale.label("tasks.workflowBoard.addStep")}</Button>
-                )}
+                  ))}
+                  {steps.length === 0 && canManage && (
+                    <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-first-step-button">{Locale.label("tasks.workflowBoard.addStep")}</Button>
+                  )}
+                </Box>
+              </DndProvider>
+            </Box>
+
+            {editWorkflow && canManage && (
+              <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
+                <WorkflowEdit workflow={editWorkflow} categories={categories.data} onCancel={() => setEditWorkflow(null)} onSave={handleWorkflowSaved} onDelete={handleWorkflowDeleted} onCategoriesChanged={() => categories.refetch()} />
               </Box>
-            </DndProvider>
-          </Box>
+            )}
 
-          {editWorkflow && canManage && (
-            <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
-              <WorkflowEdit workflow={editWorkflow} categories={categories.data} onCancel={() => setEditWorkflow(null)} onSave={handleWorkflowSaved} onDelete={handleWorkflowDeleted} onCategoriesChanged={() => categories.refetch()} />
-            </Box>
-          )}
-
-          {editStep && canManage && (
-            <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
-              <WorkflowStepEdit step={editStep} steps={steps} workflows={(workflows.data || []).filter((w) => w.id !== workflowId)} onCancel={() => setEditStep(null)} onSave={() => { setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
-            </Box>
-          )}
-        </Stack>
-      </Box>
+            {editStep && canManage && (
+              <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
+                <WorkflowStepEdit step={editStep} steps={steps} workflows={(workflows.data || []).filter((w) => w.id !== workflowId)} onCancel={() => setEditStep(null)} onSave={() => { setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
+              </Box>
+            )}
+          </Stack>
+        </Box>
       )}
 
       {openCard && <WorkflowCardDrawer card={openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
