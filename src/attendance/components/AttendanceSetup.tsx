@@ -253,6 +253,7 @@ export const AttendanceSetup = memo(() => {
           <AppIconButton
             label={Locale.label("common.add")}
             icon={<AddIcon />}
+            data-testid={"add-service-button-" + campus.id}
             onClick={() => selectService({ id: "", campusId: campus.id, name: "" })}
             sx={{ ml: 2 }}
           />
@@ -271,6 +272,7 @@ export const AttendanceSetup = memo(() => {
           <AppIconButton
             label={Locale.label("common.add")}
             icon={<AddIcon />}
+            data-testid={"add-service-time-button-" + service.id}
             onClick={() => selectServiceTime({ id: "", serviceId: service.id, name: "" })}
             sx={{ ml: 4 }}
           />
@@ -337,9 +339,7 @@ export const AttendanceSetup = memo(() => {
       rows.push(getRow({ name: Locale.label("attendance.attendanceSetup.unassigned") }, undefined, undefined, g, `unassigned-${g.id}`));
     });
     return rows;
-  }, [
-    attendance.data, campuses, getGroups, compare, unassignedGroups, selectService, selectServiceTime
-  ]);
+  }, [attendance.data, campuses, getGroups, compare, unassignedGroups, selectService, selectServiceTime]);
 
   const table = useMemo(() => {
     if (attendance.isLoading) return <Loading />;
