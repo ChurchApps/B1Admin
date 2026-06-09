@@ -293,7 +293,8 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "divider"
+          borderColor: "divider",
+          marginTop: 4
         }}>
         <CardContent>
           {/* Header */}

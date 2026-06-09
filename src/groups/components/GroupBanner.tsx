@@ -10,11 +10,13 @@ import {
   Cancel as CancelIcon,
   Event as CalendarIcon,
   Sms as SmsIcon,
-  Email as EmailIcon
+  Email as EmailIcon,
+  NotificationsActive as NotificationsActiveIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
+import { SendNotificationDialog } from "./SendNotificationDialog";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
@@ -28,9 +30,11 @@ export const GroupBanner = memo((props: Props) => {
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
+  const [showNotificationDialog, setShowNotificationDialog] = React.useState(false);
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
+  const canSendNotifications = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
 
   React.useEffect(() => {
@@ -226,6 +230,9 @@ export const GroupBanner = memo((props: Props) => {
               </Stack>
               <Stack direction="row" spacing={0.5} alignItems="center">
                 <AppIconButton label={Locale.label("groups.groupBanner.emailTooltip")} icon={<EmailIcon />} tone="header" onClick={() => setShowEmailDialog(true)} />
+                {canSendNotifications && (
+                  <AppIconButton label="Send push notification" icon={<NotificationsActiveIcon />} tone="header" onClick={() => setShowNotificationDialog(true)} />
+                )}
                 {canText && hasTextingProvider && (
                   <AppIconButton label={Locale.label("groups.groupBanner.textTooltip")} icon={<SmsIcon />} tone="header" onClick={() => setShowTextDialog(true)} />
                 )}
@@ -424,6 +431,13 @@ export const GroupBanner = memo((props: Props) => {
           groupId={group?.id}
           groupName={group?.name}
           onClose={() => setShowEmailDialog(false)}
+        />
+      )}
+      {showNotificationDialog && (
+        <SendNotificationDialog
+          groupId={group?.id}
+          groupName={group?.name}
+          onClose={() => setShowNotificationDialog(false)}
         />
       )}
     </Box>
