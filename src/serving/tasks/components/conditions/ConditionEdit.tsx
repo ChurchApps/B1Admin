@@ -163,7 +163,6 @@ export const ConditionEdit = (props: Props) => {
             {condition?.id && (
               <Button
                 variant="outlined"
-                color="error"
                 startIcon={<DeleteIcon />}
                 onClick={handleDelete}
                 sx={{

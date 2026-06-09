@@ -1,7 +1,9 @@
 import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, ExportLink, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
-import { Avatar, Box, Icon, IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Avatar, Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { PersonRemove as PersonRemoveIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   group: GroupInterface;
@@ -67,14 +69,13 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
 
     return rows.map(({ vs, person }) => {
       const editLink = canEdit ? (
-        <IconButton
-          size="small"
-          color="error"
+        <AppIconButton
+          intent="remove"
+          label={Locale.label("common.remove")}
+          icon={<PersonRemoveIcon />}
           onClick={() => handleRemove(vs)}
           data-testid={`remove-session-visitor-button-${vs.id}`}
-          aria-label={Locale.label("groups.sessionAttendance.removeVisitorAria").replace("{name}", person?.name?.display || Locale.label("groups.sessionAttendance.visitor"))}>
-          <Icon fontSize="small">person_remove</Icon>
-        </IconButton>
+        />
       ) : (
         <></>
       );

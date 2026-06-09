@@ -2,10 +2,12 @@ import React, { memo, useCallback, useMemo } from "react";
 import { type GroupInterface, type GroupServiceTimeInterface, type ServiceInterface, type ServiceTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import {
-  Table, TableBody, TableRow, TableCell, FormControl, InputLabel, Select, Button, MenuItem, type SelectChangeEvent,
+  Table, TableBody, TableRow, TableCell, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent,
   Icon
 } from "@mui/material";
+import { PersonRemove as PersonRemoveIcon, Add as AddIcon } from "@mui/icons-material";
 import { useCampuses } from "../../hooks/useCampuses";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   group: GroupInterface;
@@ -49,13 +51,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
           <Icon>schedule</Icon> {gst.serviceTime.name}
         </TableCell>
         <TableCell>
-          <button
-            type="button"
-            style={{ color: "#dc3545", background: "none", border: 0, padding: 0, cursor: "pointer" }}
-            data-id={gst.id}
-            onClick={handleRemove}>
-            <Icon>person_remove</Icon> {Locale.label("common.remove")}
-          </button>
+          <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} data-id={gst.id} onClick={handleRemove} />
         </TableCell>
       </TableRow>
     ));
@@ -109,9 +105,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
           endAdornment={
             <>
               <Icon>arrow_drop_down</Icon>
-              <Button variant="contained" data-cy="add-service-time" onClick={handleAdd}>
-                <Icon>add</Icon> {Locale.label("common.add")}
-              </Button>
+              <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" size="medium" data-cy="add-service-time" onClick={handleAdd} />
             </>
           }>
           {options}

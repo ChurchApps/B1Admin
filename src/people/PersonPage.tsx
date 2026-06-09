@@ -1,20 +1,18 @@
-import React, { useContext, useState, useCallback, useMemo } from "react";
+import React, { useContext, useCallback, useMemo } from "react";
 import { Groups, PersonAttendance, PersonNotes, PersonDonations, GdprActions } from "./components";
-import { type PersonInterface, type ConversationInterface, type FormInterface } from "@churchapps/helpers";
+import { type PersonInterface, type ConversationInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, SocketHelper, SubscriptionManager, UserHelper } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
 import { PersonBanner } from "./components/PersonBanner";
 import { PersonNavigation } from "./components/PersonNavigation";
 import { PersonDetails } from "./components/PersonDetails";
 import UserContext from "../UserContext";
-import { PersonForm } from "./components/PersonForm";
 import { useQuery } from "@tanstack/react-query";
 
 export const PersonPage = () => {
   const [selectedTab, setSelectedTab] = React.useState("");
   const context = useContext(UserContext);
   const params = useParams();
-  const [form, setForm] = useState<FormInterface>(null);
   const [inPhotoEditMode, setInPhotoEditMode] = React.useState<boolean>(false);
   const [editMode, setEditMode] = React.useState<string>("display");
 
@@ -24,15 +22,9 @@ export const PersonPage = () => {
     placeholderData: null
   });
 
-  const formsData = useQuery<FormInterface[]>({
-    queryKey: ["/forms?contentType=person", "MembershipApi"],
-    placeholderData: []
-  });
-
   const refetch = useCallback(() => {
     personData.refetch();
-    formsData.refetch();
-  }, [personData, formsData]);
+  }, [personData]);
 
   // Subscribe to a content-scoped room for this person so any tab gets notified
   // when a Notes conversation is created/updated for them — even before this tab
@@ -85,7 +77,7 @@ export const PersonPage = () => {
           workPhone: "",
           mobilePhone: ""
         },
-        membershipStatus: "",
+        membershipStatus: "Visitor",
         gender: "",
         birthDate: null,
         maritalStatus: "",
@@ -103,8 +95,6 @@ export const PersonPage = () => {
     }
     return p;
   }, [params.id, personData.data]);
-
-  const allForms = useMemo(() => (formsData.data || []).filter((formData) => formData.contentType === "person"), [formsData.data]);
 
   const handleCreateConversation = async () => {
     const conv: ConversationInterface = {
@@ -156,7 +146,6 @@ export const PersonPage = () => {
       case "attendance": currentTab = <PersonAttendance key="attendance" personId={person.id} updatedFunction={refetch} />; break;
       case "donations": currentTab = <PersonDonations key="donations" personId={person.id} />; break;
       case "groups": currentTab = <Groups key="groups" personId={person?.id} updatedFunction={refetch} />; break;
-      case "form": currentTab = <PersonForm key="form" form={form} contentType={"person"} contentId={person.id} formSubmissions={person.formSubmissions} updatedFunction={refetch} />; break;
       default: currentTab = <div key="default">{Locale.label("people.tabs.noImplement")}</div>; break;
     }
     return currentTab;
@@ -167,19 +156,10 @@ export const PersonPage = () => {
       <PersonBanner
         person={person}
         togglePhotoEditor={setInPhotoEditMode}
-        onEdit={() => {
-          setEditMode("edit");
-          setSelectedTab("details");
-        }}
       />
       <PersonNavigation
         selectedTab={selectedTab}
         onTabChange={setSelectedTab}
-        allForms={allForms}
-        onFormSelect={(form) => {
-          setForm(form);
-          setSelectedTab("form");
-        }}
       />
       <div style={{ padding: "24px" }}>
         {getCurrentTab()}

@@ -507,3 +507,51 @@ test.describe('Group communication and roster controls', () => {
     await expect(page.locator(`[data-testid="promote-leader-button-${memberId}"]`)).toBeVisible({ timeout: 10000 });
   });
 });
+
+// Regression coverage for the campus migration: campuses moved from the attendance
+// DB to the membership DB, so the demo no longer seeds attendance.campuses. The
+// group edit "Service Times (optional)" field loads its options from
+// GET /attendance/servicetimes and its assigned-rows list from
+// GET /attendance/groupservicetimes — both of which used to INNER JOIN campuses and
+// returned [] for churches with no attendance.campuses row, blanking the field.
+// "Women's Bible Study" is a standard (non-team) seed group with no service-time
+// assignment, untouched by the lifecycle chain above.
+test.describe('Group service times (optional) field', () => {
+  test('lists available service times and assigns one to a group', async ({ page }) => {
+    const groupLink = page.locator('table tbody tr a').getByText("Women's Bible Study", { exact: true });
+    await expect(groupLink).toBeVisible({ timeout: 10000 });
+    await groupLink.click();
+    await page.waitForURL(/\/groups\/GRP\w+/, { timeout: 10000 });
+
+    // Enter edit mode — the "Service Times (optional)" field lives in the group edit box.
+    await editIconButton(page).first().click();
+    const box = page.locator('#groupDetailsBox');
+    await expect(box).toBeVisible({ timeout: 10000 });
+
+    // The dropdown is populated from GET /attendance/servicetimes. Before the fix it
+    // was empty (inner join on the now-unseeded attendance.campuses).
+    const chooser = box.locator('[data-cy="choose-service-time"]');
+    await expect(chooser).toBeVisible({ timeout: 10000 });
+    await chooser.click();
+    const options = page.locator('li[role="option"]');
+    await expect(options.first()).toBeVisible({ timeout: 10000 });
+    expect(await options.count()).toBeGreaterThan(0);
+
+    // Pick a known seed service time and add it to the group.
+    await options.filter({ hasText: '9:00 AM Service' }).first().click();
+    const addResp = page.waitForResponse((r) => r.url().includes('/groupservicetimes') && r.request().method() === 'POST');
+    await box.locator('[data-cy="add-service-time"]').click();
+    await addResp;
+
+    // The assigned-times list (GET /groupservicetimes) now shows the row — this read
+    // path also previously inner-joined campuses.
+    const assignedRow = box.locator('table tbody tr').filter({ hasText: '9:00 AM Service' }).first();
+    await expect(assignedRow).toBeVisible({ timeout: 10000 });
+
+    // Clean up so the seed group is unchanged for later runs.
+    const delResp = page.waitForResponse((r) => r.url().includes('/groupservicetimes') && r.request().method() === 'DELETE');
+    await assignedRow.locator('button:has(svg[data-testid="PersonRemoveIcon"])').click();
+    await delResp;
+    await expect(box.locator('table tbody tr').filter({ hasText: '9:00 AM Service' })).toHaveCount(0, { timeout: 10000 });
+  });
+});

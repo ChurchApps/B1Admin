@@ -6,7 +6,8 @@ import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Card, Stack, Button } from "@mui/material";
-import { VolunteerActivism as DonationIcon, Add as AddIcon, FileDownload as ExportIcon, CalendarMonth as DateIcon } from "@mui/icons-material";
+import { VolunteerActivism as DonationIcon, Add as AddIcon, FileDownload as ExportIcon, CalendarMonth as DateIcon, Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
@@ -122,9 +123,7 @@ export const DonationBatchesPage = () => {
     for (let i = 0; i < batches.data.length; i++) {
       const b = batches.data[i];
       const editLink = canEdit ? (
-        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} data-cy={`edit-${i}`} data-id={b.id} onClick={showEditBatch} sx={{ minWidth: "auto" }}>
-          Edit
-        </Button>
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-${i}`} data-id={b.id} onClick={showEditBatch} />
       ) : null;
 
       const batchLink = canViewBatch ? (

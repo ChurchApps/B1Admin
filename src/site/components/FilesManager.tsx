@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { FileUpload } from "../../components/FileUpload";
-import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress, IconButton, Tooltip } from "@mui/material";
+import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
 import { InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
 import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { CardWithHeader, EmptyState } from "../../components/ui";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export function FilesManager() {
   const [pendingFileSave, setPendingFileSave] = useState(false);
@@ -84,9 +85,7 @@ export function FilesManager() {
           </Typography>
         </TableCell>
         <TableCell align="right">
-          <Tooltip title={Locale.label("common.delete")}>
-            <IconButton size="small" color="error" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} aria-label={Locale.label("site.filesManager.deleteFile")}><DeleteIcon fontSize="small" /></IconButton>
-          </Tooltip>
+          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDelete(file)} data-testid={`delete-file-${file.id}-button`} />
         </TableCell>
       </TableRow>
     ))

@@ -1,9 +1,10 @@
-import { TableHead, Table, TableCell, TableRow, TableBody, IconButton, Tooltip } from "@mui/material";
+import { TableHead, Table, TableCell, TableRow, TableBody } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { ApiHelper, ErrorMessages, Banner, DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export interface DeviceInterface {
   id: string;
@@ -33,9 +34,7 @@ export const DevicesPage = () => {
   React.useEffect(loadData, []);
 
   const editContent = (
-    <Tooltip title={Locale.label("profile.devicesPage.addDevice")}>
-      <IconButton size="small" onClick={() => setShowAdd(true)} data-testid="add-device-button" aria-label={Locale.label("profile.devicesPage.addDevice")}><AddIcon fontSize="small" /></IconButton>
-    </Tooltip>
+    <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-device-button" />
   );
 
   return (

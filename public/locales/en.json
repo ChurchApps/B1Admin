@@ -20,9 +20,6 @@
     }
   },
   "attendance": {
-    "attendanceNavigation": {
-      "kioskTheme": "Kiosk Theme"
-    },
     "attendancePage": {
       "att": "Attendance",
       "campus": "Campus",
@@ -56,10 +53,6 @@
       "validate": {
         "name": "Campus Name is required."
       }
-    },
-    "checkinThemeEdit": {
-      "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
-      "kioskSettings": "Kiosk Settings"
     },
     "serviceEdit": {
       "campus": "Campus",
@@ -122,6 +115,7 @@
       "cancel": "Cancel",
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Delete",
+      "manageRegistrations": "Manage Registrations",
       "noGroups": "No groups found."
     },
     "calendarList": {
@@ -185,6 +179,7 @@
       "addNew": "Add New..."
     },
     "confirm": "Confirm",
+    "copy": "Copy",
     "createPerson": {
       "confirmDuplicate": "{existingName} already exists with an email of {existingEmail}. Are you sure you wish to add {firstName} {lastName}?",
       "validate": {
@@ -196,9 +191,11 @@
     "custom": "Custom",
     "delete": "Delete",
     "done": "Done",
+    "collapse": "Collapse",
     "duplicate": "Duplicate",
     "edit": "Edit",
     "element": "Element",
+    "expand": "Expand",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -228,6 +225,7 @@
     "no": "No",
     "notes": "Notes",
     "person": "Person",
+    "print": "Print",
     "remove": "Remove",
     "reportFilter": {
       "title": "Filter Report"
@@ -247,14 +245,18 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes"
+    "yes": "Yes",
+    "back": "Back",
+    "noAccess": "You do not have access to this section."
   },
   "components": {
     "associatedForms": {
       "addForm": "Add form"
     },
     "bezChat": {
+      "ariaClose": "Close chat",
       "ariaOpen": "Open Bez chat",
+      "ariaSend": "Send message",
       "errorAnswer": "I'm sorry, I couldn't find an answer.",
       "errorGeneric": "Something went wrong. Please try again.",
       "intro": "Hi, I'm Bez! I can help you navigate B1 Admin. Try asking me:",
@@ -265,7 +267,9 @@
       "title": "Ask Bez"
     },
     "docChat": {
+      "ariaClose": "Close chat",
       "ariaOpen": "Open help chat",
+      "ariaSend": "Send message",
       "composing": "Composing answer...",
       "errorAnswer": "I'm sorry, I couldn't find an answer.",
       "errorGeneric": "Something went wrong. Please try again.",
@@ -323,7 +327,9 @@
       "noTitle": "[No Title]"
     },
     "superBeeChat": {
+      "ariaClose": "Close chat",
       "ariaOpen": "Open SuperBee chat",
+      "ariaSend": "Send message",
       "errorAnswer": "Even a superhero hits a wall sometimes. Try again!",
       "errorGeneric": "Something went wrong. But don't worry — I'll be back stronger!",
       "intro": "Hey there, champ! I'm SuperBee — your B1 Admin powerhouse. Hit me with your toughest questions!",
@@ -335,11 +341,13 @@
     },
     "wrapper": {
       "att": "Attendance",
+      "automations": "Automations",
       "dash": "Dashboard",
       "don": "Donations",
       "form": "Form",
       "forms": "Forms",
       "groups": "Groups",
+      "myWork": "My Work",
       "plans": "Plans",
       "ppl": "People",
       "servAdmin": "Server Admin",
@@ -347,7 +355,8 @@
       "set": "Settings",
       "songs": "Songs",
       "tasks": "Tasks",
-      "teams": "Serving Teams"
+      "teams": "Serving Teams",
+      "workflows": "Workflows"
     }
   },
   "createPerson": {
@@ -960,6 +969,7 @@
       "addGroup": "Add Group",
       "cat": "Category",
       "categories": "Categories",
+      "export": "Export",
       "groups": "Groups",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
@@ -1121,10 +1131,32 @@
       "title": "B1 Mobile"
     },
     "checkInPage": {
+      "copyLink": "Copy link",
       "disabled": "Disabled",
+      "downloadQr": "Download PNG",
       "enabled": "Enabled — QR code will appear on kiosk",
+      "kiosk": {
+        "addSlide": "Add Slide",
+        "backgroundImage": "Background Image",
+        "backgroundImageDesc": "Optional background image for the lookup/welcome screen. Recommended: 1920x1080.",
+        "changeImage": "Change Image",
+        "duration": "Duration (s)",
+        "enableIdleScreen": "Enable idle screen",
+        "headerSubtitle": "Kiosk colors are managed in Settings > App Theme. Configure background images and idle screen behavior below.",
+        "idleScreen": "Idle Screen / Screensaver",
+        "sectionTitle": "Kiosk Theme",
+        "slides": "Slides",
+        "timeoutSeconds": "Timeout (seconds)",
+        "upload": "Upload",
+        "uploadImage": "Upload Image"
+      },
+      "linkCopied": "Copied!",
       "qrGuestRegistration": "QR Guest Registration",
+      "qrShareDescription": "Print this QR code on flyers, bulletins, or signage. Guests can scan it to register from their phone.  It will also show in app.",
+      "qrShareTitle": "Share registration QR code",
       "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "registrationUrl": "Registration link",
+      "saveToActivate": "Save your changes to activate this link.",
       "subtitle": "Configure settings for the B1 CheckIn kiosk app",
       "title": "B1 CheckIn"
     }
@@ -1217,7 +1249,10 @@
       "setGender": "Set Gender",
       "setMaritalStatus": "Set Marital Status",
       "setMembershipStatus": "Set Membership Status",
-      "setOptedOut": "Set Opted Out"
+      "setOptedOut": "Set Opted Out",
+      "addToWorkflow": "Add to Workflow",
+      "addToWorkflowPrompt": "Add {count} selected people to a workflow as cards.",
+      "workflowSuccess": "Added {count} people to the workflow."
     },
     "editCondition": {
       "act": "Activity",
@@ -1397,7 +1432,8 @@
       "gender": "Gender",
       "hasLogin": "Has login",
       "maritalStatus": "Marital Status",
-      "sendTextMessage": "Send text message"
+      "sendTextMessage": "Send text message",
+      "addToWorkflow": "Add to Workflow"
     },
     "personEdit": {
       "applyQuestion": "Would you like to apply that to the entire",
@@ -1422,10 +1458,9 @@
       "work": "Work"
     },
     "personForm": {
-      "addForm": "Add Form",
-      "addFormAria": "Add {name} submission",
+      "editAria": "Edit {name}",
       "form": "Form",
-      "noFormMsg": "No form submission found for this person"
+      "notFilledOut": "Not filled out yet."
     },
     "personNav": {
       "customForms": "Custom Forms",
@@ -1438,11 +1473,15 @@
       "donations": "Donations",
       "forms": "Forms",
       "groups": "Groups",
-      "notes": "Notes"
+      "notes": "Notes",
+      "profile": "Profile"
     },
     "personPage": {
       "notesSuffix": " Notes",
       "thisPerson": "this person"
+    },
+    "personProfile": {
+      "railLabel": "Profile & Forms"
     },
     "personView": {
       "edit": "Edit",
@@ -2125,7 +2164,7 @@
       "enabledEvents": "Events with Registration Enabled",
       "event": "Event",
       "noEvents": "No events have registration enabled yet.",
-      "noEventsHint": "Enable registration on an event through the event edit settings.",
+      "noEventsHint": "To enable registration, open an event on a calendar and click Manage Registrations.",
       "registered": "registered",
       "registrations": "Registrations",
       "subtitle": "Manage event registration settings and view registrants",
@@ -2369,6 +2408,7 @@
       "title": "Playlists"
     },
     "publishDate": "Publish Date",
+    "search": "Search",
     "searchPlaceholder": "Search sermons by title or playlist...",
     "sermon": "Sermon",
     "sermonEdit": {
@@ -2729,6 +2769,19 @@
       "upload": "Upload",
       "uploadImageAria": "Upload image"
     },
+    "landing": {
+      "configuration": "Configuration",
+      "developerSubtitle": "API keys, webhooks, connected apps",
+      "campusesSubtitle": "Physical locations",
+      "campusesCount": "{count} locations",
+      "campusesOne": "1 location",
+      "domainsCount": "{count} connected",
+      "domainsOne": "1 connected",
+      "domainsNone": "No custom domains",
+      "givingProvider": "{provider} · {currency}",
+      "notConfigured": "Not configured",
+      "notSet": "Not set"
+    },
     "manageChurch": {
       "auditLog": "Audit Log",
       "editSettings": "Edit Settings",
@@ -2771,6 +2824,9 @@
     },
     "rolePermissions": {
       "permEdit": "Edit Permissions"
+    },
+    "rolesPage": {
+      "subtitle": "Manage roles and permissions"
     },
     "roles": {
       "acc": "Accounting",
@@ -2900,6 +2956,7 @@
       "copy": "Copy",
       "expires": "Expires",
       "expiresHelp": "Leave blank for a key that never expires.",
+      "generalScopes": "general",
       "keyIntro": "Copy your API key now — it will not be shown again.",
       "keyTitle": "API Key",
       "name": "Name",
@@ -3785,6 +3842,9 @@
     },
     "praiseChartsProducts": {
       "close": "Close",
+      "collapse": "Collapse",
+      "download": "Download",
+      "expand": "Expand",
       "free": "Free",
       "linkAccountPrefix": "You do not have a linked PraiseCharts account. Go to your",
       "linkAccountSuffix": "to link an account.",
@@ -3851,7 +3911,8 @@
       "taskNote": "Task Note",
       "taskNoteAria": "Task note",
       "taskTitle": "Task Title",
-      "taskTitleAria": "Task title"
+      "taskTitleAria": "Task title",
+      "addToWorkflow": "Add to Workflow"
     },
     "automationDetails": {
       "active": "Active",
@@ -4037,7 +4098,167 @@
       "showClosed": "Show Closed",
       "showOpen": "Show Open",
       "subtitle": "Manage tasks and automations",
-      "tasks": "Tasks"
+      "tasks": "Tasks",
+      "workflows": "Workflows"
+    },
+    "workflowsPage": {
+      "title": "Workflows",
+      "subtitle": "Move people through a series of steps",
+      "addWorkflow": "Add Workflow",
+      "noWorkflows": "No workflows yet. Add one to get started.",
+      "added": "Added to workflow.",
+      "duplicate": "Duplicate",
+      "blankWorkflow": "Blank workflow"
+    },
+    "workflowEdit": {
+      "editWorkflow": "Edit Workflow",
+      "name": "Name",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "workflowBoard": {
+      "subtitle": "Drag cards between steps",
+      "addStep": "Add Step",
+      "addCard": "Add Card",
+      "step": "Step",
+      "unassigned": "Unassigned",
+      "selectedCount": "{count} selected",
+      "moveTo": "Move to…",
+      "clearSelection": "Clear",
+      "boardTab": "Board"
+    },
+    "workflowStepEdit": {
+      "editStep": "Edit Step",
+      "stepName": "Step Name",
+      "dueDays": "Due in (days)",
+      "dueDaysHelp": "Sets a due date when a card enters this step",
+      "defaultAssignee": "Default assignee"
+    },
+    "workflowActions": {
+      "title": "Automated actions",
+      "add": "Add Action",
+      "none": "No actions",
+      "saveFirst": "Save the step before adding actions.",
+      "days": "Wait days",
+      "selectTemplate": "Select email template",
+      "subjectOverride": "Subject (optional)",
+      "noGroup": "No group selected",
+      "pickGroup": "Pick group",
+      "selectWorkflow": "Select workflow",
+      "note": "Note",
+      "selectField": "Field",
+      "value": "Value",
+      "webhookUrl": "Webhook URL (https)",
+      "type": {
+        "delay": "Wait",
+        "sendEmail": "Send email",
+        "addToGroup": "Add to group",
+        "addToWorkflow": "Add to workflow",
+        "addNote": "Add note",
+        "setField": "Set field",
+        "webhook": "Webhook"
+      }
+    },
+    "workflowCard": {
+      "assign": "Assign",
+      "assignedTo": "Assigned to",
+      "complete": "Complete",
+      "overdue": "Overdue",
+      "snoozed": "Snoozed",
+      "snooze": "Snooze",
+      "snooze1Day": "1 Day",
+      "snooze3Days": "3 Days",
+      "snooze1Week": "1 Week",
+      "pin": "Pin assignment",
+      "pinnedNote": "Pinned — keeps this owner across steps",
+      "sendBack": "Send Back",
+      "skip": "Skip",
+      "outcome": "Outcome",
+      "history": "Activity"
+    },
+    "workflowRouting": {
+      "title": "Routing",
+      "saveStepFirst": "Save the step before adding routing.",
+      "outcomes": "Outcomes (when completed)",
+      "outcomesHelp": "Buttons shown when completing a card on this step. Each can send the card to another step, hand it off to another workflow, or close it.",
+      "sendToWorkflow": "Send to another workflow",
+      "addOutcome": "Add Outcome",
+      "automatic": "Automatic routing (on entry)",
+      "automaticHelp": "When a card enters this step, send it onward automatically if the person matches.",
+      "addAuto": "Add Automatic Route",
+      "outcomeLabel": "Button label",
+      "targetStep": "Go to step",
+      "completeCard": "Complete the card",
+      "conditions": "Conditions",
+      "addCondition": "Add Condition",
+      "noConditions": "No conditions yet — this route matches everyone.",
+      "remove": "Remove",
+      "closes": "close",
+      "ifMatch": "if matches",
+      "always": "always"
+    },
+    "workflowCategories": {
+      "title": "Category",
+      "uncategorized": "Uncategorized",
+      "addCategory": "Add Category",
+      "newCategory": "New category name"
+    },
+    "workflowReports": {
+      "title": "Reports",
+      "subtitle": "Workflow analytics",
+      "perStep": "Cards per Step",
+      "overdue": "Overdue",
+      "throughput": "Completed (30 days)",
+      "noData": "No data yet"
+    },
+    "myCards": {
+      "title": "My Cards",
+      "subtitle": "Cards assigned to you",
+      "noCards": "You have no assigned cards."
+    },
+    "myWork": {
+      "title": "My Work",
+      "subtitle": "Your workflow cards and tasks"
+    },
+    "workflowTriggers": {
+      "title": "Triggers",
+      "subtitle": "Automatically add people to this workflow when they submit a form.",
+      "addTrigger": "Add Trigger",
+      "noTriggers": "No triggers configured.",
+      "formTrigger": "Form submission",
+      "selectForm": "Form"
+    },
+    "eventTriggers": {
+      "title": "Triggers",
+      "subtitle": "Start a workflow automatically when a record is added, changed, or removed — including form submissions.",
+      "manage": "Triggers",
+      "addTrigger": "Add Trigger",
+      "editTrigger": "Edit Trigger",
+      "noTriggers": "No event triggers configured.",
+      "name": "Name",
+      "event": "When this happens",
+      "workflow": "Add to workflow",
+      "step": "Starting step",
+      "firstStep": "First step",
+      "conditions": "Only if",
+      "addCondition": "Add Condition",
+      "matchAll": "Match ALL conditions",
+      "matchAny": "Match ANY condition",
+      "field": "Field",
+      "operator": "Operator",
+      "value": "Value",
+      "oncePerSubject": "Only once per person",
+      "active": "Active",
+      "noConditions": "Runs for every matching event.",
+      "selectEvent": "Select an event",
+      "kindEvent": "When something happens",
+      "kindSchedule": "On a schedule",
+      "recurs": "Repeats",
+      "recur_daily": "Daily",
+      "recur_weekly": "Weekly",
+      "recur_monthly": "Monthly",
+      "recur_yearly": "Yearly",
+      "saveRuleFirst": "Save the rule first to add conditions."
     }
   },
   "ui": {

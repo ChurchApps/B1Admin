@@ -7,8 +7,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Tooltip,
-  IconButton,
   Card,
   Box,
   Stack,
@@ -19,6 +17,7 @@ import { ApiHelper, UserHelper, Loading, PageHeader, Locale, Permissions } from 
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
 import { CuratedCalendar } from "./components/CuratedCalendar";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const CalendarPage = () => {
   const params = useParams();
@@ -68,20 +67,13 @@ export const CalendarPage = () => {
       </TableCell>
       {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
         <TableCell align="right">
-          <Tooltip title={Locale.label("calendars.calendarPage.removeGroup")} arrow>
-            <IconButton
-              size="small"
-              onClick={() => handleGroupDelete(g.id)}
-              data-testid={`remove-group-${g.id}-button`}
-              aria-label={Locale.label("calendars.calendarPage.removeGroupAria", g.name)}
-              sx={{
-                color: "error.main",
-                "&:hover": { backgroundColor: "error.light" }
-              }}
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          <AppIconButton
+            intent="remove"
+            label={Locale.label("common.remove")}
+            icon={<DeleteIcon />}
+            onClick={() => handleGroupDelete(g.id)}
+            data-testid={`remove-group-${g.id}-button`}
+          />
         </TableCell>
       )}
     </TableRow>

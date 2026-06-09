@@ -3,8 +3,9 @@ import { ApiHelper, ArrayHelper, PageHeader, UserHelper, Permissions, Locale } f
 import { useParams, useNavigate } from "react-router-dom";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button, IconButton, Tooltip } from "@mui/material";
+import { Grid, Box, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Button } from "@mui/material";
 import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIcon, Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { Arrangement } from "./components/Arrangement";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { SongSearchDialog } from "./SongSearchDialog";
@@ -209,23 +210,10 @@ export const SongPage = memo(() => {
     <>
       <PageHeader title={songDetail.data?.title || song.data?.name || Locale.label("songs.songPage.loading")} subtitle={Locale.label("songs.songPage.subtitle")}>
         {canEdit && (
-          <IconButton
-            onClick={() => setEditSongDetails(true)}
-            sx={{
-              color: "rgba(255,255,255,0.8)",
-              "&:hover": {
-                color: "#FFF",
-                backgroundColor: "rgba(255,255,255,0.1)"
-              }
-            }}
-            size="small">
-            <EditIcon fontSize="small" />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={() => setEditSongDetails(true)} />
         )}
         {canEdit && (
-          <Tooltip title={Locale.label("common.delete")}>
-            <IconButton size="small" color="error" onClick={handleDeleteSong} aria-label={Locale.label("songs.songPage.deleteSongAria")}><DeleteIcon fontSize="small" /></IconButton>
-          </Tooltip>
+          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="header" intent="remove" onClick={handleDeleteSong} />
         )}
         {canEdit && (
           <Button

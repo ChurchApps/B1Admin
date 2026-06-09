@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, TextField, IconButton, Typography, Paper, AppBar, Toolbar } from "@mui/material";
+import { Box, TextField, Typography, Paper, AppBar, Toolbar } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../ui/AppIconButton";
 import { DocChatMessage } from "./DocChatMessage";
 
 interface ChatMessage {
@@ -66,7 +67,7 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
       <AppBar position="static" color="primary" elevation={0}>
         <Toolbar variant="dense">
           <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem" }}>{Locale.label("components.docChat.title")}</Typography>
-          <IconButton color="inherit" onClick={onClose} edge="end"><CloseIcon /></IconButton>
+          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} tone="header" onClick={onClose} edge="end" />
         </Toolbar>
       </AppBar>
 
@@ -126,9 +127,7 @@ export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
             multiline
             maxRows={3}
           />
-          <IconButton color="primary" onClick={handleSend} disabled={isLoading || !input.trim()}>
-            <SendIcon />
-          </IconButton>
+          <AppIconButton label={Locale.label("components.docChat.ariaSend")} icon={<SendIcon />} tone="card" onClick={handleSend} disabled={isLoading || !input.trim()} />
         </Box>
       </Box>
     </Box>

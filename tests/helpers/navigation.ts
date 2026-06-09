@@ -21,6 +21,7 @@ type SecondarySection =
   | "groups"
   | "attendance"
   | "forms"
+  | "roles"
   | "songs"
   | "tasks"
   | "pages"
@@ -32,10 +33,8 @@ type SecondarySection =
   | "batches"
   | "funds"
   | "statements"
-  | "playlists"
   | "liveStreamTimes"
-  | "serverAdmin"
-  | "developer";
+  | "serverAdmin";
 
 export type NavSection = PrimarySection | SecondarySection;
 
@@ -43,7 +42,7 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   dashboard: /\/dashboard|\/$/,
   people: /\/people/,
   donations: /\/donations(?!\/)/,
-  serving: /\/serving(?!\/)/,
+  serving: /\/serving\/tasks/,
   sermons: /\/sermons(?!\/)/,
   website: /\/site\/pages/,
   mobile: /\/mobile/,
@@ -58,9 +57,10 @@ const SECONDARY_ROUTES: Record<
 > = {
   groups: { parent: "people", label: "Groups", url: /\/groups/ },
   attendance: { parent: "people", label: "Attendance", url: /\/attendance/ },
-  forms: { parent: "settings", label: "Forms", url: /\/forms/ },
+  forms: { parent: "people", label: "Forms", url: /\/forms/ },
+  roles: { parent: "settings", label: "Roles", url: /\/settings\/roles/ },
   songs: { parent: "serving", label: "Songs", url: /\/serving\/songs/ },
-  tasks: { parent: "serving", label: "Tasks", url: /\/serving\/tasks/ },
+  tasks: { parent: "serving", label: "My Work", url: /\/serving\/tasks/ },
   pages: { parent: "website", label: "Pages", url: /\/site\/pages/ },
   blocks: { parent: "website", label: "Blocks", url: /\/site\/blocks/ },
   appearance: { parent: "website", label: "Appearance", url: /\/site\/appearance/ },
@@ -70,10 +70,8 @@ const SECONDARY_ROUTES: Record<
   batches: { parent: "donations", label: "Batches", url: /\/donations\/batches/ },
   funds: { parent: "donations", label: "Funds", url: /\/donations\/funds/ },
   statements: { parent: "donations", label: "Giving Statements", url: /\/donations\/statements/ },
-  playlists: { parent: "sermons", label: "Playlists", url: /\/sermons\/playlists/ },
   liveStreamTimes: { parent: "sermons", label: "Live Stream Times", url: /\/sermons\/times/ },
   serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ },
-  developer: { parent: "settings", label: "Developer", url: /\/settings\/developer/ },
 };
 
 export async function openPrimaryNav(page: Page) {
@@ -122,6 +120,19 @@ export async function navigateToGroups(page: Page) {
 
 export async function navigateToSettings(page: Page) {
   await navigateTo(page, "settings");
+}
+
+export async function navigateToRoles(page: Page) {
+  await navigateTo(page, "roles");
+}
+
+// Developer is a section of the Settings landing's configuration list (not a
+// secondary-nav item). Navigate to the landing and select the Developer section.
+export async function navigateToDeveloper(page: Page) {
+  await navigateToSettings(page);
+  const section = page.locator('[data-testid="settings-section-developer"]');
+  await section.waitFor({ state: "visible", timeout: 10000 });
+  await section.click();
 }
 
 export async function navigateToForms(page: Page) {

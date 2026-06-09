@@ -1,5 +1,7 @@
-import { Box, Icon, IconButton, Tooltip } from "@mui/material";
+import { Box, Icon } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface PropertyPanelProps {
   open: boolean;
@@ -94,11 +96,7 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
               )}
             </Box>
           </Box>
-          <Tooltip title={Locale.label("common.close", "Close")} placement="bottom">
-            <IconButton size="small" onClick={onClose} aria-label="close" sx={{ color: "#6b7280" }}>
-              <Icon fontSize="small">close</Icon>
-            </IconButton>
-          </Tooltip>
+          <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={onClose} />
         </Box>
         <Box
           sx={{

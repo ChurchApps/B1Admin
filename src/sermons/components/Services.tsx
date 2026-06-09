@@ -1,5 +1,5 @@
-import { Icon, Button, Typography, Stack, Chip } from "@mui/material";
-import { Add as AddIcon, VideoCall as VideoCallIcon } from "@mui/icons-material";
+import { Button, Typography, Stack, Chip } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon, VideoCall as VideoCallIcon } from "@mui/icons-material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
@@ -8,6 +8,7 @@ import { DisplayBox } from "@churchapps/apphelper";
 import type { StreamingServiceInterface } from "@churchapps/helpers";
 import { ServiceEdit } from "./ServiceEdit";
 import { TableList } from "./TableList";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Services: React.FC = () => {
   const [services, setServices] = React.useState<StreamingServiceInterface[]>([]);
@@ -82,18 +83,11 @@ export const Services: React.FC = () => {
             </Typography>
           </td>
           <td style={{ textAlign: "right" }}>
-            <Button
-              size="small"
-              variant="outlined"
+            <AppIconButton
+              label={Locale.label("common.edit")}
+              icon={<EditIcon />}
               onClick={() => setCurrentService(service)}
-              sx={{
-                minWidth: "auto",
-                borderRadius: 2,
-                textTransform: "none"
-              }}
-            >
-              <Icon sx={{ fontSize: 18 }}>edit</Icon>
-            </Button>
+            />
           </td>
         </tr>
       );

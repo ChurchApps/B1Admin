@@ -2,7 +2,9 @@ import React, { memo, useMemo, useState, useEffect } from "react";
 import { AssociatedForms } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, DisplayBox, DateHelper, Locale, PersonAvatar, ApiHelper } from "@churchapps/apphelper";
-import { Button, Grid, Icon, Table, TableBody, TableRow, TableCell, Chip } from "@mui/material";
+import { Grid, Icon, Stack, Table, TableBody, TableRow, TableCell, Chip } from "@mui/material";
+import { Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { formattedPhoneNumber } from "./PersonEdit";
 
 interface Props {
@@ -10,9 +12,11 @@ interface Props {
   person: PersonInterface;
   editFunction: () => void;
   updatedFunction: () => void;
+  showForms?: boolean;
+  headerActions?: React.ReactNode;
 }
 
-export const PersonView = memo(({ person, editFunction, updatedFunction }: Props) => {
+export const PersonView = memo(({ person, editFunction, updatedFunction, showForms = true, headerActions }: Props) => {
   const [userEmail, setUserEmail] = useState<string>("");
 
   useEffect(() => {
@@ -188,7 +192,7 @@ export const PersonView = memo(({ person, editFunction, updatedFunction }: Props
     return (
       <Grid container spacing={3}>
         <Grid size={{ xs: 3 }}>
-          <div style={{ border: "3px solid #fff", borderRadius: "50%", boxShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>
+          <div style={{ display: "inline-flex", border: "3px solid #fff", borderRadius: "50%", boxShadow: "0 2px 4px rgba(0,0,0,0.2)" }}>
             <PersonAvatar person={person} size="xxlarge" />
           </div>
         </Grid>
@@ -217,8 +221,15 @@ export const PersonView = memo(({ person, editFunction, updatedFunction }: Props
   return (
     <DisplayBox
       headerText={Locale.label("people.personView.persDet")}
-      editContent={editFunction ? <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={editFunction} sx={{ minWidth: "auto" }}>{Locale.label("people.personView.edit")}</Button> : undefined}
-      footerContent={<AssociatedForms contentType="person" contentId={person?.id} formSubmissions={person?.formSubmissions} updatedFunction={updatedFunction} />}>
+      editContent={editFunction || headerActions ? (
+        <Stack direction="row" spacing={1} alignItems="center">
+          {headerActions}
+          {editFunction && (
+            <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" data-testid="edit-person-button" onClick={editFunction} />
+          )}
+        </Stack>
+      ) : undefined}
+      footerContent={showForms ? <AssociatedForms contentType="person" contentId={person?.id} formSubmissions={person?.formSubmissions} updatedFunction={updatedFunction} /> : undefined}>
       {personFields}
     </DisplayBox>
   );

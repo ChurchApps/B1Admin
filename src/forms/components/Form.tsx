@@ -3,6 +3,8 @@ import { FormQuestionEdit } from ".";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps/apphelper";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
+import { ArrowUpward as ArrowUpwardIcon, ArrowDownward as ArrowDownwardIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   id: string;
@@ -73,17 +75,13 @@ export const Form: React.FC<Props> = (props) => {
         i === 0 ? (
           <span style={{ display: "inline-block", width: 20 }} />
         ) : (
-          <Button size="small" onClick={moveUp} sx={{ minWidth: "auto", p: 0.5, mr: 0.5 }} aria-label={Locale.label("forms.form.moveUpAria")}>
-            <Icon sx={{ fontSize: 18 }}>arrow_upward</Icon>
-          </Button>
+          <AppIconButton label={Locale.label("forms.form.moveUpAria")} icon={<ArrowUpwardIcon />} onClick={moveUp} sx={{ p: 0.5, mr: 0.5 }} />
         );
       const downArrow =
         i === questions.length - 1 ? (
           <></>
         ) : (
-          <Button size="small" onClick={moveDown} sx={{ minWidth: "auto", p: 0.5 }} aria-label={Locale.label("forms.form.moveDownAria")}>
-            <Icon sx={{ fontSize: 18 }}>arrow_downward</Icon>
-          </Button>
+          <AppIconButton label={Locale.label("forms.form.moveDownAria")} icon={<ArrowDownwardIcon />} onClick={moveDown} sx={{ p: 0.5 }} />
         );
       rows.push(
         <TableRow

@@ -1,17 +1,15 @@
 import { test, expect, type Page } from '@playwright/test';
 import { login } from './helpers/auth';
-import { navigateToSettings } from './helpers/navigation';
+import { navigateToDeveloper } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
 // BARNABAS is the name used for testing. If you see Barnabas entered anywhere,
 // it is a result of these tests.
 const KEY_NAME = 'Barnabas Test Key';
 
-// The Developer page is reached via a button in the Settings header, not the
-// primary nav — it has no nav-item testid of its own.
+// Developer is a section of the Settings landing's configuration list.
 const openDeveloperPage = async (page: Page) => {
-  await page.getByRole('button', { name: 'Developer', exact: true }).click();
-  await page.waitForURL(/\/settings\/developer/, { timeout: 15000 });
+  await navigateToDeveloper(page);
   await expect(page.getByRole('button', { name: 'New API Key' })).toBeVisible({ timeout: 15000 });
 };
 
@@ -22,7 +20,6 @@ test.describe.serial('Developer Portal', () => {
     const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
     page = await context.newPage();
     await login(page);
-    await navigateToSettings(page);
     await openDeveloperPage(page);
   });
 

@@ -58,7 +58,7 @@ export const GdprActions: React.FC<Props> = (props) => {
             <Button variant="outlined" size="small" onClick={handleExport} disabled={exporting}>
               {exporting ? Locale.label("people.gdprActions.exporting") : Locale.label("people.gdprActions.exportData")}
             </Button>
-            <Button variant="outlined" size="small" color="error" onClick={() => setAnonymizeOpen(true)}>
+            <Button variant="outlined" size="small" onClick={() => setAnonymizeOpen(true)}>
               {Locale.label("people.gdprActions.anonymize")}
             </Button>
           </Stack>

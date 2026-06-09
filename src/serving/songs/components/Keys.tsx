@@ -2,8 +2,9 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface } from "../../../helpers";
 import { type LinkInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, IconButton, Chip } from "@mui/material";
+import { Box, Button, Menu, MenuItem, Tab, Tabs, Card, CardContent, Typography, Stack, List, ListItem, ListItemButton, ListItemText, Chip } from "@mui/material";
 import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { PraiseChartsProducts } from "./PraiseChartsProducts";
 import { KeyEdit } from "./KeyEdit";
 import { PraiseChartsHelper } from "../../../helpers/PraiseChartsHelper";
@@ -152,9 +153,7 @@ export const Keys = memo((props: Props) => {
             <ListItem key={l.id} sx={{ px: 0, py: 0.5 }}>
               <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
                 {canEdit && (
-                  <IconButton size="small" onClick={() => setEditLink(l)} sx={{ color: "primary.main" }}>
-                    <EditIcon fontSize="small" />
-                  </IconButton>
+                  <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setEditLink(l)} />
                 )}
                 <ListItemButton
                   component="a"
@@ -228,15 +227,7 @@ export const Keys = memo((props: Props) => {
               </Typography>
             </Stack>
             {selectedKey && canEdit && (
-              <IconButton
-                onClick={() => setEditKey(selectedKey)}
-                sx={{
-                  color: "primary.main",
-                  "&:hover": { backgroundColor: "primary.light" }
-                }}
-                aria-label={Locale.label("songs.keys.editSelectedKeyAria")}>
-                <EditIcon />
-              </IconButton>
+              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setEditKey(selectedKey)} />
             )}
           </Stack>
 

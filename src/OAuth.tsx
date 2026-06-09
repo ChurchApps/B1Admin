@@ -80,7 +80,6 @@ export const OAuthPage: React.FC = () => {
                 <Button
                   fullWidth
                   variant="contained"
-                  color="error"
                   onClick={() => {
                     window.location.href = redirectUri || "/";
                   }}

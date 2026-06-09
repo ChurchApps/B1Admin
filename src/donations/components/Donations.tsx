@@ -4,6 +4,7 @@ import { type DonationInterface, type DonationBatchInterface, type FundInterface
 import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Button, Box, Chip } from "@mui/material";
 import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, FileDownload as ExportIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -131,9 +132,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     for (let i = 0; i < donations.length; i++) {
       const d = donations[i];
       const editButton = canEdit ? (
-        <Button size="small" variant="outlined" startIcon={<EditIcon />} data-cy={`edit-link-${i}`} data-id={d.id} onClick={showEditDonation} sx={{ minWidth: "auto" }}>
-          {Locale.label("donations.donations.edit")}
-        </Button>
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-link-${i}`} data-id={d.id} onClick={showEditDonation} />
       ) : null;
 
       const isPending = (d as any).status === "pending";

@@ -1,6 +1,6 @@
 import { type GroupInterface, type GroupServiceTimeInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
-import { Typography, Chip, IconButton, Stack, Box, Tooltip } from "@mui/material";
+import { Typography, Chip, Stack, Box } from "@mui/material";
 import {
   Edit as EditIcon,
   Schedule as ScheduleIcon,
@@ -17,6 +17,7 @@ import React, { memo, useMemo } from "react";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
 import { SendNotificationDialog } from "./SendNotificationDialog";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   group: GroupInterface;
@@ -228,29 +229,15 @@ export const GroupBanner = memo((props: Props) => {
                 {groupType}
               </Stack>
               <Stack direction="row" spacing={0.5} alignItems="center">
-                <Tooltip title={Locale.label("groups.groupBanner.emailTooltip")}>
-                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowEmailDialog(true)}>
-                    <EmailIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
+                <AppIconButton label={Locale.label("groups.groupBanner.emailTooltip")} icon={<EmailIcon />} tone="header" onClick={() => setShowEmailDialog(true)} />
                 {canSendNotifications && (
-                  <Tooltip title="Send push notification">
-                    <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowNotificationDialog(true)} aria-label="Send push notification">
-                      <NotificationsActiveIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  <AppIconButton label="Send push notification" icon={<NotificationsActiveIcon />} tone="header" onClick={() => setShowNotificationDialog(true)} />
                 )}
                 {canText && hasTextingProvider && (
-                  <Tooltip title={Locale.label("groups.groupBanner.textTooltip")}>
-                    <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
-                      <SmsIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  <AppIconButton label={Locale.label("groups.groupBanner.textTooltip")} icon={<SmsIcon />} tone="header" onClick={() => setShowTextDialog(true)} />
                 )}
                 {canEdit && (
-                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit} data-testid="edit-group-button" aria-label="Edit group">
-                    <EditIcon fontSize="small" />
-                  </IconButton>
+                  <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={onEdit} data-testid="edit-group-button" />
                 )}
               </Stack>
             </Stack>

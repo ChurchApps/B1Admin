@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, IconButton, Tooltip, Button, Typography, Card, Stack } from "@mui/material";
+import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Card, Stack, Chip } from "@mui/material";
 import { Key as KeyIcon, Delete as DeleteIcon, Add as AddIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, PageHeader, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { PermissionDenied } from "../components";
-import { NavigationTabs, type NavigationTab } from "../components/ui";
-import { ApiKeyEdit } from "./components/ApiKeyEdit";
-import { WebhooksSection } from "./components/WebhooksSection";
+import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
+import { NavigationTabs, type NavigationTab } from "../../components/ui";
+import { AppIconButton } from "../../components/ui/AppIconButton";
+import { ApiKeyEdit } from "./ApiKeyEdit";
+import { WebhooksSection } from "./WebhooksSection";
 
 export interface ApiKeyInterface {
   id?: string;
@@ -29,12 +29,28 @@ export interface ConnectionInterface {
 
 const fmtDate = (d?: Date) => (d ? new Date(d).toLocaleDateString() : "—");
 
+// Scopes come back as a delimited string (e.g. "people:read,groups:edit"). Render
+// each as a compact chip so the column reads as tokens rather than a wall of text.
+const renderScopes = (scopes?: string) => {
+  const list = (scopes || "").split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);
+  if (list.length === 0) return <Typography variant="body2" color="text.secondary">—</Typography>;
+  return (
+    <Stack direction="row" flexWrap="wrap" gap={0.5} sx={{ maxWidth: 440 }}>
+      {list.map((s) => (
+        <Chip key={s} label={s} size="small" variant="outlined" sx={{ height: 22, fontFamily: "monospace", fontSize: "0.72rem", "& .MuiChip-label": { px: 0.75 } }} />
+      ))}
+    </Stack>
+  );
+};
+
 type DeveloperTab = "apiKeys" | "webhooks" | "connections";
 
 const sectionToolbarSx = { p: 2, borderBottom: 1, borderColor: "divider" };
 const emptyStateSx = { textAlign: "center" as const, py: 6, px: 2 };
 
-export const DeveloperPage: React.FC = () => {
+// Developer portal (API keys, webhooks, connected apps). Rendered as a section of
+// the Settings landing's configuration list.
+export const DeveloperSection: React.FC = () => {
   const [tab, setTab] = useState<DeveloperTab>("apiKeys");
   const [apiKeys, setApiKeys] = useState<ApiKeyInterface[]>([]);
   const [connections, setConnections] = useState<ConnectionInterface[]>([]);
@@ -70,12 +86,8 @@ export const DeveloperPage: React.FC = () => {
 
   const handleKeySaved = () => { setShowKeyEdit(false); loadData(); };
 
-  if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
-
   return (
     <>
-      <PageHeader title={Locale.label("settings.developer.title")} subtitle={Locale.label("settings.developer.subtitle")} />
-
       <NavigationTabs
         selectedTab={tab}
         onTabChange={(v) => setTab(v as DeveloperTab)}
@@ -86,7 +98,7 @@ export const DeveloperPage: React.FC = () => {
         ] satisfies NavigationTab[]}
       />
 
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ pt: 3 }}>
         {tab === "apiKeys" && (showKeyEdit ? (
           <ApiKeyEdit onSave={handleKeySaved} onCancel={() => setShowKeyEdit(false)} />
         ) : (
@@ -120,13 +132,11 @@ export const DeveloperPage: React.FC = () => {
                       <TableRow key={k.id} hover>
                         <TableCell><Typography fontWeight={600}>{k.name}</Typography></TableCell>
                         <TableCell><Typography variant="body2" fontFamily="monospace">cak_{k.prefix}…</Typography></TableCell>
-                        <TableCell><Typography variant="body2">{k.scopes || "—"}</Typography></TableCell>
+                        <TableCell>{renderScopes(k.scopes)}</TableCell>
                         <TableCell>{fmtDate(k.lastUsedAt)}</TableCell>
                         <TableCell>{fmtDate(k.expiresAt)}</TableCell>
                         <TableCell align="right">
-                          <Tooltip title={Locale.label("settings.developer.delete")}>
-                            <IconButton size="small" onClick={() => handleDeleteKey(k)}><DeleteIcon fontSize="small" /></IconButton>
-                          </Tooltip>
+                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDeleteKey(k)} />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -165,11 +175,11 @@ export const DeveloperPage: React.FC = () => {
                     {connections.map((c) => (
                       <TableRow key={c.id} hover>
                         <TableCell><Typography fontWeight={600}>{c.clientName}</Typography></TableCell>
-                        <TableCell><Typography variant="body2">{c.scopes || "—"}</Typography></TableCell>
+                        <TableCell>{renderScopes(c.scopes)}</TableCell>
                         <TableCell>{fmtDate(c.createdAt)}</TableCell>
                         <TableCell>{fmtDate(c.expiresAt)}</TableCell>
                         <TableCell align="right">
-                          <Button size="small" color="error" onClick={() => handleRevoke(c)}>{Locale.label("settings.developer.revoke")}</Button>
+                          <Button size="small" onClick={() => handleRevoke(c)}>{Locale.label("settings.developer.revoke")}</Button>
                         </TableCell>
                       </TableRow>
                     ))}

@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { peopleTest as test, expect } from './helpers/test-fixtures';
 import { navigateToPeople } from './helpers/navigation';
-import { editIconButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
+import { personDetailsEditButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { STORAGE_STATE_PATH } from './global-setup';
 
@@ -440,7 +440,7 @@ test.describe('People Management', () => {
 
     test('should cancel editing person details', async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
@@ -449,7 +449,7 @@ test.describe('People Management', () => {
 
     test('should edit person details', async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       const middleName = page.locator('[name="name.middle"]');
       await expect(middleName).toBeVisible({ timeout: 10000 });
@@ -463,7 +463,7 @@ test.describe('People Management', () => {
 
     test('should cancel merging person details', async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       const mergeBtn = page.locator('button').getByText('merge');
       await mergeBtn.click();
@@ -474,7 +474,7 @@ test.describe('People Management', () => {
 
     test('should merge person details', async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.PATRICIA);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       const mergeBtn = page.locator('button').getByText('merge');
       await mergeBtn.click();
@@ -538,7 +538,7 @@ test.describe('People Management', () => {
       await page.locator('[type="submit"]').click();
       await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
 
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       await page.locator('button').getByText('Delete').click();
 
@@ -726,8 +726,8 @@ test.describe('People Management', () => {
   test.describe('People — edge-case affordances', () => {
     test('person profile exposes a top-level Edit button for contact info', async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      // PersonPage renders an EditIcon button in the header for people with edit permission.
-      await expect(editIconButton(page).first()).toBeVisible({ timeout: 10000 });
+      // The Personal Details box exposes an Edit button for people with edit permission.
+      await expect(personDetailsEditButton(page).first()).toBeVisible({ timeout: 10000 });
     });
 
     test('search with no matches renders an empty results state', async ({ page }) => {

@@ -4,13 +4,14 @@ import { Permissions, UserHelper, type PersonInterface, type SearchCondition } f
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { ExportLink } from "@churchapps/apphelper";
-import { Grid, Box, Typography, Card, Stack, Button, IconButton, Tooltip, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
+import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions } from "./components/SavedLists";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { Search as SearchIcon, People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon } from "@mui/icons-material";
+import { People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
+import { AppIconButton } from "../components/ui/AppIconButton";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
@@ -273,32 +274,22 @@ export const PeoplePage = memo(() => {
               ? Locale.label("people.peoplePage.loading")
               : Locale.label("people.peoplePage.noPeopleFound")
         }>
-        <SearchIcon
+        <Button
+          variant="outlined"
           sx={{
-            fontSize: 32,
-            color: "rgba(255,255,255,0.8)",
-            cursor: "pointer",
+            color: "#FFF",
+            borderColor: "rgba(255,255,255,0.5)",
+            mr: 1,
             "&:hover": {
-              color: "#FFF",
-              transform: "scale(1.1)"
-            },
-            transition: "all 0.2s ease",
-            mr: 2
-          }}
-          onClick={() => {
-            const searchPanel = document.getElementById("peopleSearch");
-            if (searchPanel) {
-              searchPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-              // Focus on the search input after scrolling
-              setTimeout(() => {
-                const searchInput = document.getElementById("searchText") || document.querySelector('[data-testid="people-search-input"]');
-                if (searchInput) {
-                  (searchInput as HTMLElement).focus();
-                }
-              }, 500);
+              borderColor: "#FFF",
+              backgroundColor: "rgba(255,255,255,0.1)"
             }
           }}
-        />
+          startIcon={<BarChartIcon />}
+          onClick={() => navigate("/people/demographics")}
+          data-testid="demographics-button">
+          {Locale.label("people.demographics.title")}
+        </Button>
         {canEdit && (
           <Button
             variant="outlined"
@@ -382,11 +373,7 @@ export const PeoplePage = memo(() => {
                         {Locale.label("people.peoplePage.export")}
                       </Button>
                     )}
-                    <Tooltip title={Locale.label("people.peoplePage.printDirectory")}>
-                      <IconButton size="small" onClick={() => window.open("/people/print-directory", "_blank")} sx={{ color: "text.secondary" }}>
-                        <PrintIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                    <AppIconButton label={Locale.label("people.peoplePage.printDirectory")} icon={<PrintIcon />} tone="card" onClick={() => window.open("/people/print-directory", "_blank")} />
                     <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
                   </Stack>
                 </Stack>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Divider, Icon, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import { Box, Button, Divider, Icon, Menu, MenuItem, ListItemIcon, ListItemText, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import { Undo as UndoIcon, Redo as RedoIcon, MoreVert as MoreVertIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { PageInterface, BlockInterface } from "../../helpers/Interfaces";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface EditorToolbarProps {
   onDone: () => void;
@@ -142,20 +144,8 @@ export function EditorToolbar(props: EditorToolbarProps) {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Tooltip title={Locale.label("site.editorToolbar.undoTip")} placement="bottom">
-            <span>
-              <IconButton size="small" onClick={onUndo} disabled={!canUndo} sx={{ color: "#4b5563" }}>
-                <Icon fontSize="small">undo</Icon>
-              </IconButton>
-            </span>
-          </Tooltip>
-          <Tooltip title={Locale.label("site.editorToolbar.redoTip")} placement="bottom">
-            <span>
-              <IconButton size="small" onClick={onRedo} disabled={!canRedo} sx={{ color: "#4b5563" }}>
-                <Icon fontSize="small">redo</Icon>
-              </IconButton>
-            </span>
-          </Tooltip>
+          <AppIconButton label={Locale.label("site.editorToolbar.undoTip")} icon={<UndoIcon />} onClick={onUndo} disabled={!canUndo} />
+          <AppIconButton label={Locale.label("site.editorToolbar.redoTip")} icon={<RedoIcon />} onClick={onRedo} disabled={!canRedo} />
         </Box>
 
         <Box
@@ -228,16 +218,12 @@ export function EditorToolbar(props: EditorToolbarProps) {
           {Locale.label("site.editorToolbar.addContent")}
         </Button>
 
-        <Tooltip title={Locale.label("common.more", "More")} placement="bottom">
-          <IconButton
-            size="small"
-            onClick={(e) => setMenuAnchor(e.currentTarget)}
-            sx={{ color: "#4b5563" }}
-            data-testid="content-editor-overflow-button"
-          >
-            <Icon fontSize="small">more_vert</Icon>
-          </IconButton>
-        </Tooltip>
+        <AppIconButton
+          label={Locale.label("common.more", "More")}
+          icon={<MoreVertIcon />}
+          onClick={(e) => setMenuAnchor(e.currentTarget)}
+          data-testid="content-editor-overflow-button"
+        />
         <Menu
           anchorEl={menuAnchor}
           open={Boolean(menuAnchor)}

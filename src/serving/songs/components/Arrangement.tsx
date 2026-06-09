@@ -2,8 +2,9 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type SongDetailInterface } from "../../../helpers";
 import { ChordProHelper } from "../../../helpers/ChordProHelper";
 import { ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Card, CardContent, Typography, Stack, IconButton, Box, Alert, Button } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Alert, Button } from "@mui/material";
 import { Edit as EditIcon, QueueMusic as ArrangementIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { Keys } from "./Keys";
 import { ArrangementEdit } from "./ArrangementEdit";
 import { useNavigate } from "react-router-dom";
@@ -88,15 +89,7 @@ export const Arrangement = memo((props: Props) => {
               </Typography>
             </Stack>
             {canEdit && (
-              <IconButton
-                onClick={() => setEdit(true)}
-                sx={{
-                  color: "primary.main",
-                  "&:hover": { backgroundColor: "primary.light" }
-                }}
-                aria-label="Edit arrangement">
-                <EditIcon />
-              </IconButton>
+              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setEdit(true)} />
             )}
           </Stack>
 

@@ -1,8 +1,9 @@
 import React from "react";
-import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Switch, Typography, Tooltip, IconButton } from "@mui/material";
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Switch, Typography } from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PaymentGatewaysInterface } from "../../helpers";
 import { FeeOptionsSettingsEdit } from "./FeeOptionsSettingsEdit";
 
@@ -96,11 +97,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         <Grid size={{ xs: 12 }}>
           <Stack direction="row" alignItems="center">
             <Typography>{Locale.label("settings.givingSettingsEdit.transFee")}</Typography>
-            <Tooltip title={Locale.label("settings.givingSettingsEdit.forceMsg")} arrow>
-              <IconButton data-testid="force-ssl-help-button" aria-label={Locale.label("settings.givingSettingsEdit.forceSslHelpAria")}>
-                <HelpIcon />
-              </IconButton>
-            </Tooltip>
+            <AppIconButton label={Locale.label("settings.givingSettingsEdit.forceMsg")} icon={<HelpIcon />} data-testid="force-ssl-help-button" />
             <Controller
               control={control}
               name="payFees"

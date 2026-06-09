@@ -3,9 +3,10 @@ import { DisplayBox, UserHelper, Loading, Permissions, Locale } from "@churchapp
 import { type FundInterface } from "@churchapps/helpers";
 import { FundEdit } from ".";
 import { Link } from "react-router-dom";
-import { Button, Icon, Table, TableBody, TableCell, TableRow, IconButton, Tooltip } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Funds: React.FC = memo(() => {
   const [editFund, setEditFund] = React.useState<FundInterface>(null);
@@ -22,9 +23,7 @@ export const Funds: React.FC = memo(() => {
   const editSection = useMemo(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.edit)) {
       return (
-        <Tooltip title={Locale.label("donations.funds.addFund")}>
-          <IconButton size="small" onClick={() => setEditFund({ id: "", name: "", taxDeductible: true })} data-testid="add-fund-button" aria-label={Locale.label("donations.funds.addFund")}><AddIcon fontSize="small" /></IconButton>
-        </Tooltip>
+        <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setEditFund({ id: "", name: "", taxDeductible: true })} data-testid="add-fund-button" />
       );
     } else return null;
   }, []);
@@ -52,9 +51,7 @@ export const Funds: React.FC = memo(() => {
     for (let i = 0; i < funds.data.length; i++) {
       const f = funds.data[i];
       const editLink = canEdit ? (
-        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} data-cy={`edit-${i}`} onClick={() => handleEdit(f)} sx={{ minWidth: "auto" }}>
-          Edit
-        </Button>
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-${i}`} onClick={() => handleEdit(f)} />
       ) : null;
       const viewLink = canViewIndividual ? <Link to={"/donations/funds/" + f.id}>{f.name}</Link> : <>{f.name}</>;
       result.push(

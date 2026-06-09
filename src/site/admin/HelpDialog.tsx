@@ -1,5 +1,7 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, IconButton } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface HelpDialogProps {
   open: boolean;
@@ -54,9 +56,7 @@ export function HelpDialog(props: HelpDialogProps) {
           <Icon fontSize="small" sx={{ color: "#6b7280" }}>help_outline</Icon>
           {Locale.label("site.helpDialog.title")}
         </Box>
-        <IconButton size="small" onClick={onClose} aria-label="close">
-          <Icon fontSize="small">close</Icon>
-        </IconButton>
+        <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={onClose} />
       </DialogTitle>
       <DialogContent sx={{ pt: 2 }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>

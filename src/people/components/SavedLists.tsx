@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField, Typography } from "@mui/material";
 import { PlaylistPlay as ListIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type SearchCondition } from "@churchapps/helpers";
 import { type ActiveFilter } from "./AdvancedPeopleSearch";
 
@@ -100,16 +101,8 @@ export const SavedLists = (props: Props) => {
                   </Button>
                   {props.canManage && (
                     <>
-                      <Tooltip title={Locale.label("people.lists.rename")}>
-                        <IconButton size="small" onClick={() => { setRenameTarget(list); setRenameValue(list.name || ""); }}>
-                          <EditIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={Locale.label("people.lists.delete")}>
-                        <IconButton size="small" onClick={() => setDeleteTarget(list)}>
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
+                      <AppIconButton label={Locale.label("people.lists.rename")} icon={<EditIcon />} onClick={() => { setRenameTarget(list); setRenameValue(list.name || ""); }} />
+                      <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => setDeleteTarget(list)} />
                     </>
                   )}
                 </Stack>

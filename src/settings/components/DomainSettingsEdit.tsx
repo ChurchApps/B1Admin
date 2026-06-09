@@ -1,10 +1,11 @@
 import React from "react";
 import { type DomainInterface } from "@churchapps/helpers";
 import { ArrayHelper, ApiHelper, Locale } from "@churchapps/apphelper";
-import { TextField, TableCell, TableBody, TableRow, Table, TableHead, Alert, Box, Typography, IconButton } from "@mui/material";
+import { TextField, TableCell, TableBody, TableRow, Table, TableHead, Alert, Box, Typography } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import LinkIcon from "@mui/icons-material/Link";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   churchId: string;
@@ -131,14 +132,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
             </Box>
           </TableCell>
           <TableCell sx={{ py: 1.5, width: 50 }}>
-            <IconButton
-              size="small"
-              onClick={() => handleDelete(index)}
-              sx={{ color: "error.main", "&:hover": { bgcolor: "error.light", color: "error.contrastText" } }}
-              aria-label={Locale.label("common.delete")}
-            >
-              <DeleteOutlineIcon fontSize="small" />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.delete")} icon={<DeleteOutlineIcon />} intent="remove" onClick={() => handleDelete(index)} />
           </TableCell>
         </TableRow>
       );
@@ -209,14 +203,7 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
               />
             </TableCell>
             <TableCell sx={{ py: 1 }}>
-              <IconButton
-                size="small"
-                onClick={handleAdd}
-                sx={{ color: "primary.main", "&:hover": { bgcolor: "primary.light", color: "primary.contrastText" } }}
-                aria-label={Locale.label("common.add")}
-              >
-                <AddCircleOutlineIcon />
-              </IconButton>
+              <AppIconButton label={Locale.label("common.add")} icon={<AddCircleOutlineIcon />} tone="card" intent="add" onClick={handleAdd} />
             </TableCell>
           </TableRow>
         </TableBody>

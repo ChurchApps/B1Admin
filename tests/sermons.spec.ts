@@ -1,6 +1,5 @@
 import type { Page } from '@playwright/test';
 import { sermonsTest as test, expect } from './helpers/test-fixtures';
-import { editIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToSermons } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
@@ -146,6 +145,8 @@ test.describe('Sermons Management', () => {
 
   });
 
+  // Playlists now live in a panel on the right side of the Sermons page (no
+  // separate route/menu item); locators are scoped to [data-testid="playlists-panel"].
   test.describe.serial('Playlists', () => {
     let page: Page;
 
@@ -160,13 +161,11 @@ test.describe('Sermons Management', () => {
       await page?.context().close();
     });
 
-    test.beforeEach(async () => {
-      const playlistHomeBtn = page.locator('[id="secondaryMenu"]').getByText('Playlists');
-      await playlistHomeBtn.click();
-    });
+    const panel = () => page.locator('[data-testid="playlists-panel"]');
+    const panelEditButton = () => panel().locator('button:has(svg[data-testid="EditIcon"])').first();
 
     test('should add playlist', async () => {
-      const addBtn = page.locator('[data-testid="add-playlist-button"]');
+      const addBtn = panel().locator('[data-testid="add-playlist-button"]');
       await addBtn.click();
       const name = page.locator('[name="title"]');
       await name.fill('Zacchaeus Test Playlist');
@@ -177,8 +176,7 @@ test.describe('Sermons Management', () => {
     });
 
     test('should edit playlist', async () => {
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      await panelEditButton().click();
       const name = page.locator('[name="title"]');
       await expect(name).toBeVisible({ timeout: 10000 });
       await name.fill('Zebedee Test Playlist');
@@ -189,17 +187,16 @@ test.describe('Sermons Management', () => {
     });
 
     test('should search for a playlist', async () => {
-      const searchBtn = page.locator('button').getByText('Search');
+      const searchBtn = panel().locator('[data-testid="playlist-search-button"]');
       await searchBtn.click();
-      const searchBar = page.locator('input');
-      await searchBar.fill('Zebedee Test Playlist')
-      const validatedPlaylist = page.locator('td').getByText('Zebedee Test Playlist');
+      const searchBar = panel().locator('input');
+      await searchBar.fill('Zebedee Test Playlist');
+      const validatedPlaylist = panel().locator('td').getByText('Zebedee Test Playlist');
       await expect(validatedPlaylist).toHaveCount(1);
     });
 
     test('should cancel editing playlist', async () => {
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      await panelEditButton().click();
       const name = page.locator('[name="title"]');
       await expect(name).toBeVisible({ timeout: 10000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
@@ -214,8 +211,7 @@ test.describe('Sermons Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      await panelEditButton().click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
       const validatedDeletion = page.getByText('Zebedee Test Playlist');
@@ -341,8 +337,9 @@ test.describe('Sermons Management', () => {
     });
 
     test.beforeEach(async () => {
-      const bulkImportBtn = page.locator('[id="secondaryMenu"]').getByText('Bulk Import');
-      await bulkImportBtn.click();
+      await navigateToSermons(page);
+      await page.locator('[data-testid="add-sermon-button"]').click();
+      await page.locator('[data-testid="bulk-import-menu-item"]').click();
       await expect(page).toHaveURL(/\/sermons\/bulk/, { timeout: 10000 });
     });
 

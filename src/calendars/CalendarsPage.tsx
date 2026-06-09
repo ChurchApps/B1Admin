@@ -15,11 +15,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  IconButton,
   Chip,
   TableContainer,
-  Paper,
-  Tooltip
+  Paper
 } from "@mui/material";
 import {
   CalendarMonth as CalendarIcon,
@@ -31,6 +29,7 @@ import {
 import { CalendarEdit } from "./components";
 import { PermissionDenied } from "../components";
 import { EmptyState } from "../components/ui/EmptyState";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const CalendarsPage = () => {
   const [calendars, setCalendars] = useState<CuratedCalendarInterface[]>([]);
@@ -101,49 +100,27 @@ export const CalendarsPage = () => {
       </TableCell>
       <TableCell align="right">
         <Stack direction="row" spacing={1} justifyContent="flex-end">
-          <Tooltip title={Locale.label("calendars.calendarList.manageEvents")} arrow>
-            <IconButton
-              size="small"
+          <AppIconButton
+            tone="card"
+            label={Locale.label("calendars.calendarList.manageEvents")}
+            icon={<EventIcon />}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate("/calendars/" + calendar.id);
+            }}
+            data-testid={`manage-calendar-${calendar.id}`}
+          />
+          {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+            <AppIconButton
+              tone="card"
+              label={Locale.label("common.edit")}
+              icon={<EditIcon />}
               onClick={(e) => {
                 e.stopPropagation();
-                navigate("/calendars/" + calendar.id);
+                setCurrentCalendar(calendar);
               }}
-              sx={{
-                color: "primary.main",
-                backgroundColor: "primary.light",
-                "&:hover": {
-                  backgroundColor: "primary.light",
-                  transform: "translateY(-1px)"
-                },
-                transition: "all 0.2s ease"
-              }}
-              data-testid={`manage-calendar-${calendar.id}`}
-            >
-              <EventIcon sx={{ fontSize: 18 }} />
-            </IconButton>
-          </Tooltip>
-          {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-            <Tooltip title={Locale.label("calendars.calendarList.edit")} arrow>
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCurrentCalendar(calendar);
-                }}
-                sx={{
-                  color: "primary.main",
-                  backgroundColor: "primary.light",
-                  "&:hover": {
-                    backgroundColor: "primary.light",
-                    transform: "translateY(-1px)"
-                  },
-                  transition: "all 0.2s ease"
-                }}
-                data-testid={`edit-calendar-${calendar.id}`}
-              >
-                <EditIcon sx={{ fontSize: 18 }} />
-              </IconButton>
-            </Tooltip>
+              data-testid={`edit-calendar-${calendar.id}`}
+            />
           )}
         </Stack>
       </TableCell>

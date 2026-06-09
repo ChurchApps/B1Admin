@@ -4,11 +4,12 @@ import { ApiHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { Button, Icon } from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
+import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import React from "react";
 import { TabEdit } from "./TabEdit";
 import { ensureSequentialSort, moveItemDown, moveItemUp } from "../../helpers/SortHelper";
 import { TableList } from "./TableList";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Tabs: React.FC = () => {
   const [tabs, setTabs] = React.useState<LinkInterface[]>([]);
@@ -53,7 +54,7 @@ export const Tabs: React.FC = () => {
           <td style={{ textAlign: "right" }}>
             {upLink}
             {downLink}
-            <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} onClick={() => setCurrentTab(tab)} sx={{ minWidth: "auto" }}>{Locale.label("sermons.liveStreamTimes.sidebarTabs.edit")}</Button>
+            <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setCurrentTab(tab)} />
           </td>
         </tr>
       );

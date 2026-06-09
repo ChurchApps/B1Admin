@@ -2,7 +2,7 @@ import type { Page, Locator } from '@playwright/test';
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
 import { navigateToSettings, navigateToPeople, navigateToGroups, navigateToServing } from './helpers/navigation';
-import { openKnownPerson, editIconButton, SEED_PEOPLE } from './helpers/fixtures';
+import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE } from './helpers/fixtures';
 import { STORAGE_STATE_PATH } from './global-setup';
 
 // Planning-Center-style church-wide Campus feature. Exercises every surface the
@@ -90,13 +90,13 @@ test.describe.serial('Campus multi-site', () => {
 
   test('assigns a person to a campus and persists', async () => {
     await openKnownPerson(page, SEED_PEOPLE.DONALD);
-    await editIconButton(page).first().click();
+    await personDetailsEditButton(page).first().click();
     const select = page.getByTestId('campus-select');
     await expect(select).toBeVisible({ timeout: 10000 });
     await pickOption(select, NORTH);
     await expectResponse('/people', clickSave);
     // Reopen the editor; the dropdown should show the saved campus.
-    await editIconButton(page).first().click();
+    await personDetailsEditButton(page).first().click();
     await expect(page.getByTestId('campus-select')).toContainText(NORTH, { timeout: 10000 });
   });
 

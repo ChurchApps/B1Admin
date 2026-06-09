@@ -16,7 +16,6 @@ import {
   Box,
   Card,
   CardContent,
-  IconButton,
   type SelectChangeEvent
 } from "@mui/material";
 import { Close as CloseIcon, Delete as DeleteIcon, Save as SaveIcon } from "@mui/icons-material";
@@ -24,6 +23,7 @@ import { ErrorMessages, Locale } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { IconPicker } from "../../components/iconPicker";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props { currentTab: LinkInterface, updatedFunction?: () => void }
 
@@ -154,13 +154,12 @@ export const TabEdit: React.FC<Props> = (props) => {
                 </Typography>
               </Box>
             </Stack>
-            <IconButton
+            <AppIconButton
+              label={Locale.label("common.close")}
+              icon={<CloseIcon />}
+              tone="header"
               onClick={() => props.updatedFunction()}
-              sx={{ color: "#FFF" }}
-              size="small"
-            >
-              <CloseIcon />
-            </IconButton>
+            />
           </Stack>
         </DialogTitle>
 
@@ -289,7 +288,6 @@ export const TabEdit: React.FC<Props> = (props) => {
             {currentTab?.id && (
               <Button
                 variant="outlined"
-                color="error"
                 startIcon={<DeleteIcon />}
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}

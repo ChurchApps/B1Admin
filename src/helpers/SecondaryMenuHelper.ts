@@ -10,48 +10,47 @@ export class SecondaryMenuHelper {
   static getSecondaryMenu = (path: string, data: any) => {
     let result: { menuItems: MenuItem[]; label: string } = { menuItems: [], label: "" };
 
-    if (path.startsWith("/people") || path.startsWith("/groups") || path.startsWith("/attendance")) result = this.getPeopleMenu(path, data.search, data?.isMinistryMember);
+    if (path.startsWith("/people") || path.startsWith("/groups") || path.startsWith("/attendance") || path.startsWith("/forms")) result = this.getPeopleMenu(path, data);
     else if (path.startsWith("/mobile")) result = this.getMobileMenu(path);
-    else if (path.startsWith("/settings") || path.startsWith("/admin") || path.startsWith("/forms")) result = this.getSettingsMenu(path, data);
+    else if (path.startsWith("/settings") || path.startsWith("/admin")) result = this.getSettingsMenu(path);
     else if (path.startsWith("/serving")) result = this.getServingMenu(path, data);
     else if (path.startsWith("/donations")) result = this.getDonationsMenu(path);
     else if (path.startsWith("/site") || path.startsWith("/calendars") || path.startsWith("/registrations")) result = this.getSiteMenu(path);
     else if (path.startsWith("/sermons")) result = this.getSermonsMenu(path);
     else if (path.startsWith("/profile")) result = this.getProfileMenu(path);
-    else if (path === "/" || path.startsWith("/dashboard")) result = this.getDashboardMenu(path);
+    else if (path === "/" || path.startsWith("/dashboard")) result = this.getDashboardMenu();
     return result;
   };
 
-  static getPeopleMenu = (path: string, search?: string, isMinistryMember?: boolean) => {
+  static getPeopleMenu = (path: string, data: any) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
-    menuItems.push({ url: "/groups", label: Locale.label("components.wrapper.groups"), icon: "groups" });
-    if (UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || isMinistryMember) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.teams"), icon: "people" });
     menuItems.push({ url: "/people", label: Locale.label("components.wrapper.ppl"), icon: "person" });
-    if (UserHelper.checkAccess(Permissions.membershipApi.people.view)) menuItems.push({ url: "/people/demographics", label: Locale.label("people.demographics.title"), icon: "bar_chart" });
+    menuItems.push({ url: "/groups", label: Locale.label("components.wrapper.groups"), icon: "groups" });
     if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.viewSummary)) menuItems.push({ url: "/attendance", label: Locale.label("components.wrapper.att"), icon: "calendar_month" });
+    if (data?.formPermission) menuItems.push({ url: "/forms", label: Locale.label("components.wrapper.forms"), icon: "description" });
 
-    if (path.startsWith("/groups") && search?.includes("tag=team")) label = Locale.label("components.wrapper.teams");
+    if (path.startsWith("/groups") && data?.search?.includes("tag=team")) label = Locale.label("components.wrapper.teams");
     else if (path.startsWith("/groups")) label = Locale.label("components.wrapper.groups");
     else if (path.startsWith("/people/demographics")) label = Locale.label("people.demographics.title");
     else if (path.startsWith("/people")) label = Locale.label("components.wrapper.ppl");
     else if (path.startsWith("/attendance")) label = Locale.label("components.wrapper.att");
+    else if (path.startsWith("/forms")) label = Locale.label("components.wrapper.forms");
 
     return { menuItems, label };
   };
 
-  static getSettingsMenu = (path: string, data: any) => {
+  static getSettingsMenu = (path: string) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
-    if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
-    if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings/developer", label: Locale.label("settings.developer.title"), icon: "code" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) menuItems.push({ url: "/settings", label: Locale.label("components.wrapper.set"), icon: "settings" });
+    if (UserHelper.checkAccess(Permissions.membershipApi.roles.view)) menuItems.push({ url: "/settings/roles", label: Locale.label("settings.roles.roles"), icon: "lock" });
     if (UserHelper.checkAccess(Permissions.membershipApi.server.admin)) menuItems.push({ url: "/admin", label: Locale.label("components.wrapper.servAdmin"), icon: "admin_panel_settings" });
-    if (data.formPermission) menuItems.push({ url: "/forms", label: Locale.label("components.wrapper.forms"), icon: "description" });
 
-    if (path.startsWith("/settings/developer")) label = Locale.label("settings.developer.title");
+    if (path.startsWith("/settings/roles") || path.startsWith("/settings/role")) label = Locale.label("settings.roles.roles");
+    else if (path.startsWith("/settings/campuses")) label = Locale.label("settings.campuses.campuses");
     else if (path.startsWith("/settings")) label = Locale.label("components.wrapper.set");
     else if (path.startsWith("/admin")) label = Locale.label("components.wrapper.servAdmin");
-    else if (path.startsWith("/forms")) label = Locale.label("components.wrapper.forms");
 
     return { menuItems, label };
   };
@@ -87,14 +86,16 @@ export class SecondaryMenuHelper {
     const menuItems: MenuItem[] = [];
     let label: string = "";
     const canViewPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || data?.isMinistryMember;
+    menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.myWork"), icon: "list_alt" });
+    menuItems.push({ url: "/serving/tasks/workflows", label: Locale.label("components.wrapper.workflows"), icon: "view_kanban" });
     if (canViewPlans) {
-      menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.plans"), icon: "assignment" });
+      menuItems.push({ url: "/serving/plans", label: Locale.label("components.wrapper.plans"), icon: "assignment" });
       menuItems.push({ url: "/serving/songs", label: Locale.label("components.wrapper.songs"), icon: "music_note" });
     }
-    menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.tasks"), icon: "list_alt" });
 
     if (path.startsWith("/serving/songs")) label = Locale.label("components.wrapper.songs");
-    else if (path.startsWith("/serving/tasks")) label = Locale.label("components.wrapper.tasks");
+    else if (path.startsWith("/serving/tasks/workflows")) label = Locale.label("components.wrapper.workflows");
+    else if (path.startsWith("/serving/tasks")) label = Locale.label("components.wrapper.myWork");
     else if (path.startsWith("/serving")) label = Locale.label("components.wrapper.plans");
 
     return { menuItems, label };
@@ -117,14 +118,10 @@ export class SecondaryMenuHelper {
     return { menuItems, label };
   };
 
-  static getDashboardMenu = (path: string) => {
+  static getDashboardMenu = () => {
     const menuItems: MenuItem[] = [];
-    let label: string = "";
-    menuItems.push({ url: "/", label: Locale.label("helpers.secondaryMenuHelper.quickActions"), icon: "flash_on" });
-    menuItems.push({ url: "/dashboard", label: Locale.label("components.wrapper.dash"), icon: "dashboard" });
-
-    if (path === "/") label = Locale.label("helpers.secondaryMenuHelper.quickActions");
-    else if (path.startsWith("/dashboard")) label = Locale.label("components.wrapper.dash");
+    const label: string = Locale.label("components.wrapper.dash");
+    menuItems.push({ url: "/", label, icon: "dashboard" });
 
     return { menuItems, label };
   };
@@ -158,14 +155,11 @@ export class SecondaryMenuHelper {
     let label: string = "";
     if (UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) {
       menuItems.push({ url: "/sermons", label: Locale.label("helpers.secondaryMenuHelper.sermons"), icon: "live_tv" });
-      menuItems.push({ url: "/sermons/playlists", label: Locale.label("helpers.secondaryMenuHelper.playlists"), icon: "video_library" });
       menuItems.push({ url: "/sermons/times", label: Locale.label("helpers.secondaryMenuHelper.liveStreamTimes"), icon: "schedule" });
-      menuItems.push({ url: "/sermons/bulk", label: Locale.label("helpers.secondaryMenuHelper.bulkImport"), icon: "cloud_upload" });
     }
 
     if (path.startsWith("/sermons/bulk")) label = Locale.label("helpers.secondaryMenuHelper.bulkImport");
     else if (path.startsWith("/sermons/times")) label = Locale.label("helpers.secondaryMenuHelper.liveStreamTimes");
-    else if (path.startsWith("/sermons/playlists")) label = Locale.label("helpers.secondaryMenuHelper.playlists");
     else if (path.startsWith("/sermons")) label = Locale.label("helpers.secondaryMenuHelper.sermons");
 
     return { menuItems, label };

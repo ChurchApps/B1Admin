@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, Button, Typography, Stack, IconButton, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
+import { Box, Button, Typography, Stack, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
 import { Add as AddIcon, Assignment as AssignmentIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../../helpers";
@@ -121,14 +122,13 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
                   </TableCell>
                   {canEdit && (
                     <TableCell align="right">
-                      <IconButton
-                        size="small"
+                      <AppIconButton
+                        label={Locale.label("common.edit")}
+                        icon={<EditIcon />}
                         onClick={(e) => {
                           e.preventDefault();
                           handleEdit(planType);
-                        }}>
-                        <EditIcon fontSize="small" />
-                      </IconButton>
+                        }} />
                     </TableCell>
                   )}
                 </TableRow>

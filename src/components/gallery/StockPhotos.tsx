@@ -1,8 +1,10 @@
 "use client";
-import { Button, Grid, TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { CommonEnvironmentHelper } from "@churchapps/helpers";
+import { AppIconButton } from "../ui/AppIconButton";
 
 interface Props {
   aspectRatio: number,
@@ -84,7 +86,7 @@ export const StockPhotos: React.FC<Props> = (props: Props) => {
 
   return (<>
     <TextField fullWidth name="personAddText" label="Search Term" value={searchText} onChange={handleChange}
-      InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-testid="search-button" onClick={handleSearch}>Search</Button> }}
+      InputProps={{ endAdornment: <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-testid="search-button" onClick={handleSearch} /> }}
     />
     {searchResults && <div>{Locale.label("stockPhotos.providedBy")} <a href="https://pexels.com">Pexels</a>.</div>}
     <Grid container spacing={3} alignItems="center">

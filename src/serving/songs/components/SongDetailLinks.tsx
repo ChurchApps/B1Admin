@@ -1,9 +1,10 @@
 import React, { useEffect, memo, useMemo } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../../helpers";
-import { Stack, Box, Card, CardContent, Typography, Avatar, Button, IconButton } from "@mui/material";
+import { Stack, Box, Card, CardContent, Typography, Avatar, Button } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { Link as LinkIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 
 interface Props {
   songDetail: SongDetailInterface;
@@ -124,15 +125,7 @@ export const SongDetailLinks = memo((props: Props) => {
           </Typography>
         </Stack>
         {props.onEdit && (
-          <IconButton
-            onClick={props.onEdit}
-            size="small"
-            sx={{
-              color: "primary.main",
-              "&:hover": { backgroundColor: "primary.light" }
-            }}>
-            <EditIcon fontSize="small" />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={props.onEdit} />
         )}
       </Stack>
 

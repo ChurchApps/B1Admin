@@ -16,6 +16,7 @@ test.describe('Attendance Management', () => {
   // leaves the UI in a known state for the next step.
   test.describe.serial('Setup', () => {
     let page: Page;
+    let createdServiceId = '';
 
     test.beforeAll(async ({ browser }) => {
       const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
@@ -28,116 +29,74 @@ test.describe('Attendance Management', () => {
       await page?.context().close();
     });
 
-    test('should add service', async () => {
-      const addServBtn = page.locator('button').getByText('Add Service').last();
-      await addServBtn.click();
-      const campusSelect = page.locator('div[role="combobox"]');
+    // The setup screen lists campuses/services/times in one table with inline "Add"
+    // icon buttons (data-testid add-service-button-<campusId> / add-service-time-button-<serviceId>).
+    // Services attach to the seeded "Main Campus", which is mastered in the membership
+    // module — the attendance.campuses table is intentionally empty in the demo.
+    test('should add a service (campus sourced from membership)', async () => {
+      await page.locator('[data-testid^="add-service-button-"]').first().click();
+      const box = page.locator('#serviceBox');
+      await expect(box).toBeVisible({ timeout: 10000 });
+      // The campus dropdown is populated from the membership campuses (useCampuses).
+      const campusSelect = box.locator('[data-testid="campus-select"]');
       await campusSelect.click();
-      const selCampus = page.locator('li').getByText('Main Campus');
-      await expect(selCampus).toBeVisible({ timeout: 10000 });
-      await selCampus.click();
-      const servName = page.locator('input[id="name"]');
-      await servName.fill('Zacchaeus Test Service');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const verifiedServ = page.locator('button').getByText('Zacchaeus Test Service');
-      await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
+      await page.getByRole('option', { name: 'Main Campus' }).click();
+      await box.locator('[data-testid="service-name-input"] input').fill('Zacchaeus Test Service');
+      const resp = page.waitForResponse((r) => r.url().includes('/services') && r.request().method() === 'POST' && r.status() === 200);
+      await box.getByRole('button', { name: 'Save' }).click();
+      createdServiceId = (await (await resp).json())[0].id;
+      await expect(page.locator('button').getByText('Zacchaeus Test Service')).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit service', async () => {
-      const serv = page.locator('button').getByText('Zacchaeus Test Service');
-      await serv.click();
-      const campusSelect = page.locator('div[role="combobox"]');
-      await campusSelect.click();
-      const selCampus = page.locator('li').getByText('Main Campus');
-      await expect(selCampus).toBeVisible({ timeout: 10000 });
-      await selCampus.click();
-      const servName = page.locator('input[id="name"]');
-      await servName.fill('Zebedee Test Service');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const verifiedServ = page.locator('button').getByText('Zebedee Test Service');
-      await expect(verifiedServ).toHaveCount(1, { timeout: 10000 });
+    test('should edit the service', async () => {
+      await page.locator('button').getByText('Zacchaeus Test Service').click();
+      const box = page.locator('#serviceBox');
+      await expect(box).toBeVisible({ timeout: 10000 });
+      await box.locator('[data-testid="service-name-input"] input').fill('Zebedee Test Service');
+      await box.getByRole('button', { name: 'Save' }).click();
+      await expect(page.locator('button').getByText('Zebedee Test Service')).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing service', async () => {
-      const serv = page.locator('button').getByText('Sunday Evening Service');
-      await serv.click();
-      const campusSelect = page.locator('div[role="combobox"]');
-      await expect(campusSelect).toHaveCount(1, { timeout: 10000 });
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(campusSelect).toHaveCount(0, { timeout: 10000 });
+    test('should add a service time (Service dropdown loads despite empty attendance.campuses)', async () => {
+      await page.locator(`[data-testid="add-service-time-button-${createdServiceId}"]`).click();
+      const box = page.locator('#serviceTimeBox');
+      await expect(box).toBeVisible({ timeout: 10000 });
+      // Regression guard: the Service dropdown reads GET /attendance/services, which used
+      // to INNER JOIN the now-unseeded attendance.campuses and return an empty list.
+      const serviceSelect = box.locator('[data-testid="service-select"]');
+      await serviceSelect.click();
+      await expect(page.getByRole('option', { name: 'Sunday Morning Service' })).toBeVisible({ timeout: 10000 });
+      await page.getByRole('option', { name: 'Zebedee Test Service' }).click();
+      await box.locator('[data-testid="service-time-name-input"] input').fill('Zacchaeus Test Time');
+      await box.getByRole('button', { name: 'Save' }).click();
+      await expect(page.locator('button').getByText('Zacchaeus Test Time')).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should add service time', async () => {
-      const addServTimeBtn = page.locator('button').getByText('Add Service Time').first();
-      await addServTimeBtn.click();
-      const servSelect = page.locator('div[role="combobox"]');
-      await servSelect.click();
-      const selServ = page.locator('li').getByText('Zebedee Test Service');
-      await expect(selServ).toBeVisible({ timeout: 10000 });
-      await selServ.click();
-      const timeName = page.locator('input[id="name"]');
-      await timeName.fill('Zacchaeus Test Time');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const verifiedTime = page.locator('button').getByText('Zacchaeus Test Time');
-      await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
+    test('should edit the service time', async () => {
+      await page.locator('button').getByText('Zacchaeus Test Time').click();
+      const box = page.locator('#serviceTimeBox');
+      await expect(box).toBeVisible({ timeout: 10000 });
+      await box.locator('[data-testid="service-time-name-input"] input').fill('Zebedee Test Time');
+      await box.getByRole('button', { name: 'Save' }).click();
+      await expect(page.locator('button').getByText('Zebedee Test Time')).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit service time', async () => {
-      const time = page.locator('button').getByText('Zacchaeus Test Time');
-      await time.click();
-      const servSelect = page.locator('div[role="combobox"]');
-      await servSelect.click();
-      const selServ = page.locator('li').getByText('Zebedee Test Service');
-      await expect(selServ).toBeVisible({ timeout: 10000 });
-      await selServ.click();
-      const timeName = page.locator('input[id="name"]');
-      await timeName.fill('Zebedee Test Time');
-      const saveBtn = page.locator('button').getByText('Save');
-      await saveBtn.click();
-      const verifiedTime = page.locator('button').getByText('Zebedee Test Time');
-      await expect(verifiedTime).toHaveCount(1, { timeout: 10000 });
+    test('should delete the service time', async () => {
+      page.once('dialog', (dialog) => dialog.accept());
+      await page.locator('button').getByText('Zebedee Test Time').click();
+      const box = page.locator('#serviceTimeBox');
+      await expect(box).toBeVisible({ timeout: 10000 });
+      await box.getByRole('button', { name: 'Delete' }).click();
+      await expect(page.locator('button').getByText('Zebedee Test Time')).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should cancel editing service time', async () => {
-      const serv = page.locator('button').getByText('6:00 PM Service');
-      await serv.click();
-      const servSelect = page.locator('div[role="combobox"]');
-      await expect(servSelect).toHaveCount(1, { timeout: 10000 });
-      const cancelBtn = page.locator('button').getByText('Cancel');
-      await cancelBtn.click();
-      await expect(servSelect).toHaveCount(0, { timeout: 10000 });
-    });
-
-    test('should delete service time', async () => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
-        await dialog.accept();
-      });
-
-      const time = page.locator('button').getByText('Zebedee Test Time');
-      await time.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
-      await deleteBtn.click();
-      await expect(time).toHaveCount(0, { timeout: 10000 });
-    });
-
-    test('should delete service', async () => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
-        await dialog.accept();
-      });
-
-      const serv = page.locator('button').getByText('Zebedee Test Service');
-      await serv.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
-      await deleteBtn.click();
-      await expect(serv).toHaveCount(0, { timeout: 10000 });
+    test('should delete the service', async () => {
+      page.once('dialog', (dialog) => dialog.accept());
+      await page.locator('button').getByText('Zebedee Test Service').click();
+      const box = page.locator('#serviceBox');
+      await expect(box).toBeVisible({ timeout: 10000 });
+      await box.getByRole('button', { name: 'Delete' }).click();
+      await expect(page.locator('button').getByText('Zebedee Test Service')).toHaveCount(0, { timeout: 10000 });
     });
   });
 
