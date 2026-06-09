@@ -1,8 +1,8 @@
-import React, { memo, useCallback } from "react";
+import { memo, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { type SearchCondition } from "@churchapps/helpers";
-import { Box, Grid } from "@mui/material";
+import { Box, GlobalStyles, Grid } from "@mui/material";
 import { BarChart as BarChartIcon } from "@mui/icons-material";
 import { Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { AgeChart } from "./components/AgeChart";
@@ -16,6 +16,8 @@ interface DemographicsData {
   maritalStatus: { name: string; count: number }[];
   campus: { name: string; count: number; id: string }[];
 }
+
+const googleChartTooltipStyles = { ".google-visualization-tooltip, .google-visualization-tooltip *": { pointerEvents: "none" } };
 
 export const DemographicsPage = memo(() => {
   const query = useQuery<DemographicsData>({ queryKey: ["/people/demographics", "MembershipApi"] });
@@ -53,6 +55,7 @@ export const DemographicsPage = memo(() => {
 
   return (
     <>
+      <GlobalStyles styles={googleChartTooltipStyles} />
       <PageHeader
         title={Locale.label("people.demographics.title")}
         subtitle={data ? `${Locale.label("people.demographics.total")}: ${data.total.toLocaleString()}` : Locale.label("people.demographics.subtitle")}>
