@@ -245,7 +245,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
       // Target the "Edit selected key" button directly. editIconButton().last()
       // is fragile here because the page has multiple EditIcon buttons (header,
       // External Links, Arrangement, Keys) and DOM order changed.
-      const editBtn = page.getByRole('button', { name: 'Edit selected key' });
+      // The selected-key edit is an icon-only "Edit" AppIconButton in the
+      // Keys & Downloads card header — scope to that card to disambiguate
+      // from the other Edit icons on the song page.
+      const editBtn = page.locator('.MuiCard-root').filter({ has: page.getByRole('heading', { name: 'Keys', exact: true }) }).locator('button[aria-label="Edit"]').first();
       await editBtn.click();
       const label = page.locator('[name="shortDescription"]');
       await expect(label).toBeVisible({ timeout: 10000 });
@@ -273,7 +276,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
       const song = page.locator('a').getByText('Frolic', { exact: true }).first();
       await song.click();
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
-      const editBtn = page.getByRole('button', { name: 'Edit selected key' });
+      // The selected-key edit is an icon-only "Edit" AppIconButton in the
+      // Keys & Downloads card header — scope to that card to disambiguate
+      // from the other Edit icons on the song page.
+      const editBtn = page.locator('.MuiCard-root').filter({ has: page.getByRole('heading', { name: 'Keys', exact: true }) }).locator('button[aria-label="Edit"]').first();
       await editBtn.click();
       const keySignature = page.locator('[name="keySignature"]');
       await expect(keySignature).toHaveCount(1);
@@ -307,7 +313,10 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
       // Click the "Zacchaeus Key" tab so it becomes selected, then delete it.
       await page.locator('[role="tab"]').filter({ hasText: 'Zacchaeus Key' }).click();
-      const editBtn = page.getByRole('button', { name: 'Edit selected key' });
+      // The selected-key edit is an icon-only "Edit" AppIconButton in the
+      // Keys & Downloads card header — scope to that card to disambiguate
+      // from the other Edit icons on the song page.
+      const editBtn = page.locator('.MuiCard-root').filter({ has: page.getByRole('heading', { name: 'Keys', exact: true }) }).locator('button[aria-label="Edit"]').first();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete').last();
       await deleteBtn.click();
@@ -522,7 +531,8 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await personSearch.fill('Demo User');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
+      // Result rows render an icon-only AppIconButton (aria-label "Select").
+      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
       await selectBtn.click();
       const taskName = page.locator('[name="title"]');
       await taskName.fill('Test Task');
@@ -576,7 +586,8 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
+      // Result rows render an icon-only AppIconButton (aria-label "Select").
+      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
       await selectBtn.click();
       await openMyTasks(page);
       // Reassigned to Dorothy -> gone from the Assigned-to-Me tab (default).
@@ -599,7 +610,8 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await personSearch.fill('Grace Jackson');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
+      // Result rows render an icon-only AppIconButton (aria-label "Select").
+      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
       await selectBtn.click();
       // The task detail header reflects the new association (compact list rows omit it).
       await expect(page.getByText(/Grace Jackson/).first()).toBeVisible({ timeout: 10000 });

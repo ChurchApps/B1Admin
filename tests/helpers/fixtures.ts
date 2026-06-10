@@ -21,16 +21,23 @@ export type SeedPersonName = (typeof SEED_PEOPLE)[keyof typeof SEED_PEOPLE];
 // that depends on default sort + prior test mutations.
 export async function openKnownPerson(page: Page, name: SeedPersonName) {
   await navigateToPeople(page);
-  const row = page.locator("table tbody tr").filter({ hasText: name }).first();
-  await row.waitFor({ state: "visible", timeout: 10000 });
-  await row.click();
-  await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
+  await openPersonRow(page, name);
 }
 
 // Same as openKnownPerson but assumes you're already on /people — just
 // finds the row and clicks it.
 export async function openPersonRow(page: Page, name: SeedPersonName | string) {
   const row = page.locator("table tbody tr").filter({ hasText: name }).first();
+  // The default /people view only lists the first page of members (50,
+  // alphabetical by last name) — seed people late in the alphabet (the
+  // Moores) fall past the cutoff. Filter via the instant search box when
+  // the row isn't already on screen.
+  if (!(await row.isVisible({ timeout: 3000 }).catch(() => false))) {
+    const search = page.locator('input[name="searchText"]');
+    const searched = page.waitForResponse((r) => r.url().includes("/people/advancedSearch") && r.status() === 200, { timeout: 10000 }).catch(() => null);
+    await search.fill(String(name));
+    await searched;
+  }
   await row.waitFor({ state: "visible", timeout: 10000 });
   await row.click();
   await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });

@@ -1,7 +1,7 @@
 import type { Page, Locator } from '@playwright/test';
 import { test, expect } from '@playwright/test';
 import { login } from './helpers/auth';
-import { navigateToSettings, navigateToPeople, navigateToGroups, navigateToServing } from './helpers/navigation';
+import { navigateToSettings, navigateToPeople, navigateToGroups } from './helpers/navigation';
 import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE } from './helpers/fixtures';
 import { STORAGE_STATE_PATH } from './global-setup';
 
@@ -168,17 +168,52 @@ test.describe.serial('Campus multi-site', () => {
   });
 
   test('assigns a plan to a campus', async () => {
-    await navigateToServing(page);
-    // Seed data: "Worship" ministry → "Sunday Service" plan type with plans.
-    const worship = page.locator('[role="tab"]').getByText('Worship').first();
-    if (await worship.isVisible({ timeout: 5000 }).catch(() => false)) await worship.click();
+    // The Serving section defaults to My Work; ministries live at /serving/plans.
+    // Uses a test-created ministry: the demo admin's DoingApi JWT carries no
+    // Plans__Edit permission, so PlanAuth only authorizes ministry MEMBERS —
+    // creating the ministry adds the user, while seeded-ministry plans 401
+    // (see the fixme below).
+    await page.goto('/serving/plans');
+    await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
+    await page.locator('button').getByText('Add Ministry').click();
+    await page.locator('[name="name"]').fill('Barnabas Ministry');
+    await page.locator('button').getByText('Add').first().click();
+    const minTab = page.locator('[role="tab"]').getByText('Barnabas Ministry').first();
+    await expect(minTab).toBeVisible({ timeout: 10000 });
+    await minTab.click();
+    await page.locator('button').getByText('Create Plan Type').click();
+    await page.locator('[type="text"]').fill('Barnabas Plans');
+    await page.locator('button').getByText('Save').click();
+    const planType = page.locator('a').getByText('Barnabas Plans');
+    await expect(planType).toBeVisible({ timeout: 10000 });
+    await planType.click();
+    await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/, { timeout: 10000 });
+    await page.locator('[data-testid="add-plan-button"]').click();
+    await page.locator('[name="name"]').fill('Campus Assignment Plan');
+    await page.locator('[id="serviceDate"]').fill('2030-04-01');
+    await expectResponse('/plans', clickSave);
+    // Reopen the plan and assign the campus — the feature under test.
+    // Plan rows expose an icon-only AppIconButton ("Edit"), no text.
+    const editBtn = page.locator('button[aria-label="Edit"]').first();
+    await expect(editBtn).toBeVisible({ timeout: 10000 });
+    await editBtn.click();
+    const select = page.getByTestId('plan-campus-select');
+    await expect(select).toBeVisible({ timeout: 10000 });
+    await pickOption(select, MAIN);
+    await expectResponse('/plans', clickSave);
+  });
+
+  // Regression guard for the 2026-06-09 Plans-permission move: Plans/Edit now
+  // lives under DoingApi in permissionsList (PlanAuth checks the DoingApi
+  // principal), so a Domain Admin can edit seeded-ministry plans without being
+  // a ministry member. History in .notes/B1Admin-test-judgment-log.md.
+  test('Domain Admin can edit a seeded ministry plan without being a member', async () => {
+    await page.goto('/serving/plans');
     const planType = page.locator('a').getByText('Sunday Service').first();
     await expect(planType).toBeVisible({ timeout: 10000 });
     await planType.click();
     await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/, { timeout: 10000 });
-    const editBtn = page.locator('button').getByText('Edit').first();
-    await expect(editBtn).toBeVisible({ timeout: 10000 });
-    await editBtn.click();
+    await page.locator('button[aria-label="Edit"]').first().click();
     const select = page.getByTestId('plan-campus-select');
     await expect(select).toBeVisible({ timeout: 10000 });
     await pickOption(select, MAIN);

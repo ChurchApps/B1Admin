@@ -76,7 +76,12 @@ test.describe.serial('Developer Portal', () => {
   });
 
   test('shows the Connected Apps section', async () => {
+    // The Developer section is tabbed (API Keys / Webhooks / Connected Apps);
+    // the heading only renders once its tab is selected. Return to API Keys
+    // afterward so the delete test still sees the key table.
+    await page.getByRole('tab', { name: 'Connected Apps' }).click();
     await expect(page.getByRole('heading', { name: 'Connected Apps' })).toBeVisible({ timeout: 10000 });
+    await page.getByRole('tab', { name: 'API Keys' }).click();
   });
 
   test('deletes the API key', async () => {

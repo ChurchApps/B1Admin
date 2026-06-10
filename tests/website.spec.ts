@@ -244,7 +244,8 @@ test.describe('Website Management', () => {
     });
 
     test('should edit block content', async () => {
-      const editBtn = page.locator('td a').getByText('Edit').last();
+      // The row edit affordance is an icon-only IconButton-as-Link (aria-label "Edit").
+      const editBtn = page.locator('td a[aria-label="Edit"]').last();
       await editBtn.click();
       const addBtn = page.locator('[data-testid="content-editor-add-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
@@ -308,7 +309,7 @@ test.describe('Website Management', () => {
     });
 
     test('should verify done btn functionality', async () => {
-      const editBtn = page.locator('td a').getByText('Edit').last();
+      const editBtn = page.locator('td a[aria-label="Edit"]').last();
       await editBtn.click();
       await expect(page).toHaveURL(/\/site\/blocks\/[^/]+/);
       const doneBtn = page.locator('[data-testid="content-editor-done-button"]');

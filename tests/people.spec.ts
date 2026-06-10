@@ -210,8 +210,10 @@ test.describe('People Management', () => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const groupsBtn = page.locator('button').getByText('Groups');
       await groupsBtn.click();
+      // Group rows render as ListItemButton component={Link} — an <a> directly
+      // inside the <ul>, with no <li> wrapper.
       const seekText = page.locator('p').getByText('Not currently a member of any groups.');
-      const seekGroup = page.locator('li').first();
+      const seekGroup = page.locator('ul a[href^="/groups/"]').first();
       await expect(seekText.or(seekGroup)).toBeVisible({ timeout: 10000 });
     });
 
@@ -219,7 +221,7 @@ test.describe('People Management', () => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const groupsBtn = page.locator('button').getByText('Groups');
       await groupsBtn.click();
-      const seekGroup = page.locator('li').first();
+      const seekGroup = page.locator('ul a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -240,7 +242,9 @@ test.describe('People Management', () => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const attBtn = page.locator('button').getByText('Attendance');
       await attBtn.click();
-      const seekGroup = page.locator('li').first();
+      // Attendance rows are non-clickable ListItems; the group navigates via
+      // the Link inside the group Chip's label.
+      const seekGroup = page.locator('li a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -322,19 +326,16 @@ test.describe('People Management', () => {
       await expect(addBtn).toBeVisible({ timeout: 10000 });
     });
 
-    test('should open forms dropdown and select a form', async ({ page }) => {
-      // adding-people.md (steps 11-13) documents selecting a form from the Forms
-      // dropdown on the person page. The dropdown only renders when at least one
-      // contentType=person form exists; demo seeds "Friend or Family Connection".
+    test('should open a person form from the profile rail', async ({ page }) => {
+      // The Forms dropdown was replaced (2026-06-06) by the PersonProfileTabs
+      // left rail: person-contentType forms render as rail items under
+      // "Profile & Forms". Demo seeds the "Visitor Information Card" form.
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const formsTab = page.locator('button').getByText('Forms');
-      await expect(formsTab).toBeVisible({ timeout: 10000 });
-      await formsTab.click();
-      const firstForm = page.getByRole('menuitem').first();
-      await expect(firstForm).toBeVisible({ timeout: 10000 });
-      await firstForm.click();
-      // Selecting the form swaps the tab panel into PersonForm; it renders
-      // question fields. Just assert we left the Details view.
+      const railItem = page.getByText('Visitor Information Card', { exact: true }).first();
+      await expect(railItem).toBeVisible({ timeout: 10000 });
+      await railItem.click();
+      // Selecting a form swaps the profile pane for the form's DisplayBox.
+      await expect(page.locator('h2').getByText('Visitor Information Card')).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[name="name.first"]')).toHaveCount(0);
     });
   });
@@ -352,7 +353,8 @@ test.describe('People Management', () => {
 
     test('should cancel editing person household', async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = page.locator('button').getByText('edit');
+      // The household DisplayBox edit affordance is an icon-only AppIconButton.
+      const editBtn = page.locator('#householdBox button[aria-label="Edit"]');
       await editBtn.first().click();
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
@@ -384,9 +386,9 @@ test.describe('People Management', () => {
 
       test('should remove person from household', async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const editBtn = page.locator('button').getByText('edit').first();
+        const editBtn = page.locator('#householdBox button[aria-label="Edit"]').first();
         await editBtn.click();
-        const removeBtn = page.locator('button').getByText('Remove').last();
+        const removeBtn = page.locator('[data-testid="remove-household-member-button"]').last();
         await expect(removeBtn).toBeVisible({ timeout: 10000 });
         await removeBtn.click();
         const saveBtn = page.locator('button').getByText('Save');
@@ -400,16 +402,16 @@ test.describe('People Management', () => {
 
       test('should add person to household', async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const editBtn = page.locator('button').getByText('edit').first();
+        const editBtn = page.locator('#householdBox button[aria-label="Edit"]').first();
         await editBtn.click();
-        // Scope the Add click to the household member table — there are other
-        // "Add" buttons elsewhere on the person detail page (Forms, Donations).
-        const addBtn = page.locator('[id="householdMemberTable"] button').getByText('Add').first();
+        const addBtn = page.locator('[data-testid="add-household-member-button"]');
         await expect(addBtn).toBeVisible({ timeout: 10000 });
         await addBtn.click();
         await page.locator('input[name="personAddText"]').fill('Carol');
-        await page.locator('button').getByText('Search').click();
-        const selBtn = page.locator('button').getByText('Select');
+        await page.locator('[data-testid="search-button"]').click();
+        // The result-row add affordance is an icon-only AppIconButton
+        // (data-testid="add-person-<id>") inside the results table.
+        const selBtn = page.locator('#householdMemberAddTable [data-testid^="add-person-"]').first();
         await expect(selBtn).toBeVisible({ timeout: 10000 });
         await selBtn.click();
         // Confirmation dialog when adding a person who is already in another household.
@@ -427,12 +429,12 @@ test.describe('People Management', () => {
 
     test('should cancel adding person to household', async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = page.locator('button').getByText('edit').first();
+      const editBtn = page.locator('#householdBox button[aria-label="Edit"]').first();
       await editBtn.click();
       const addBtn = page.locator('[data-testid="add-household-member-button"]');
       await addBtn.click();
-      // Cancel uses an IconButton with aria-label, no visible text label.
-      const closeBtn = page.locator('button[aria-label="Cancel add member"]');
+      // The add-member panel closes via an icon-only AppIconButton ("Close").
+      const closeBtn = page.locator('#householdBox button[aria-label="Close"]');
       await expect(closeBtn).toBeVisible({ timeout: 10000 });
       await closeBtn.click();
       await expect(closeBtn).toHaveCount(0, { timeout: 10000 });
@@ -515,11 +517,14 @@ test.describe('People Management', () => {
       // After merge, one of the two should no longer show in search results.
       await navigateToPeople(page);
       const searchInput = page.locator('input[name="searchText"]');
-      await searchInput.fill('Robert Moore');
-      await page.waitForResponse(
+      // Register the listener before the fill that triggers the request,
+      // otherwise a fast response slips past the waiter.
+      const searched = page.waitForResponse(
         (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
         { timeout: 10000 }
       );
+      await searchInput.fill('Robert Moore');
+      await searched;
       const validatedMerge = page.locator('table tbody tr').filter({ hasText: 'Robert Moore' });
       await expect(validatedMerge).toHaveCount(0, { timeout: 10000 });
     });

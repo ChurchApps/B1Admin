@@ -113,7 +113,9 @@ test.describe.serial('Serving Management - Plans', () => {
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add').last();
+      // Result rows render icon-only AppIconButtons; a text "Add" locator would
+      // substring-match the "Add a New Person" button and open the wrong dialog.
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       const memberPost = page.waitForResponse(r => r.url().includes('/groupmembers') && r.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
       await addBtn.click();
@@ -138,10 +140,11 @@ test.describe.serial('Serving Management - Plans', () => {
       const equalsCondition = page.locator('li[data-value="equals"]');
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
+      // Advanced search fires automatically as conditions change — no Search button.
+      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch(() => null);
       await firstName.fill('Grace');
-      const searchBtn = page.locator('button').getByText('Search').last();
-      await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add');
+      await searched;
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Grace Jackson');
@@ -254,7 +257,8 @@ test.describe.serial('Serving Management - Plans', () => {
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = page.locator('button').getByText('Edit');
+      // Plan rows expose an icon-only AppIconButton ("Edit"), no text.
+      const editBtn = page.locator('button[aria-label="Edit"]').first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const planName = page.locator('[name="name"]');
@@ -273,7 +277,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = page.locator('button').getByText('Edit');
+      const editBtn = page.locator('button[aria-label="Edit"]').first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const planName = page.locator('[name="name"]');
@@ -291,7 +295,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = page.locator('button').getByText('Edit');
+      const editBtn = page.locator('button[aria-label="Edit"]').first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
@@ -349,7 +353,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add').last();
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
@@ -374,10 +378,11 @@ test.describe.serial('Serving Management - Plans', () => {
       const equalsCondition = page.locator('li[data-value="equals"]');
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
+      // Advanced search fires automatically as conditions change — no Search button.
+      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch(() => null);
       await firstName.fill('Grace');
-      const searchBtn = page.locator('button').getByText('Search').last();
-      await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add');
+      await searched;
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');

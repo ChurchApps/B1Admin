@@ -9,6 +9,10 @@ import { STORAGE_STATE_PATH } from './global-setup';
 // serving-plans.spec.ts (which owns the "Zebedee" namespace). Setup creates
 // them, Cleanup removes them — no cross-file state dependency.
 test.describe.serial('Serving Management - Lessons', () => {
+  // The whole file is one create→use→cleanup chain; a retry re-runs Setup and
+  // creates a duplicate "Apollos Ministry" tab, strict-violating every
+  // downstream tab lookup. Same policy as serving-plans' Ministry CRUD.
+  test.describe.configure({ retries: 0 });
   let page: Page;
 
   test.beforeAll(async ({ browser }) => {
@@ -33,11 +37,18 @@ test.describe.serial('Serving Management - Lessons', () => {
     if (await viteError.isVisible({ timeout: 200 }).catch(() => false)) {
       await page.reload();
     }
-    // The "Apollos Ministry" tab list lives on /serving (root) only — sub-
-    // routes like /serving/planTypes/<id> don't render it.
-    if (!/^\/serving\/?$/.test(new URL(page.url()).pathname)) {
-      await navigateToServing(page);
+    // The ministry tab list lives on /serving/plans (the Serving section
+    // defaults to My Work) — sub-routes like /serving/planTypes/<id> don't
+    // render it.
+    // Exact match: the lesson-plan detail page lives at /serving/plans/<id>,
+    // which must NOT count as "already on the ministries list".
+    if (!/^\/serving\/plans\/?$/.test(new URL(page.url()).pathname)) {
+      await page.goto('/serving/plans');
+      await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
     }
+    // Ministry tabs render after the groups query resolves; under 4-worker
+    // dev-server load that can outlast a bare 10s click timeout.
+    await page.locator('[role="tab"]').first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => { });
   });
 
   test.describe('Setup', () => {
@@ -73,7 +84,9 @@ test.describe.serial('Serving Management - Lessons', () => {
       await expect(personSearch).toBeVisible({ timeout: 10000 });
       await personSearch.fill('Dorothy');
       await page.locator('[data-testid="person-add-search-button"]').click();
-      const addPerson = page.locator('button').getByText('Add').last();
+      // Result rows render icon-only AppIconButtons — text "Add" would
+      // substring-match "Add a New Person" instead.
+      const addPerson = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addPerson).toBeVisible({ timeout: 10000 });
       await addPerson.click();
       // Dorothy has an email, so the SendInviteDialog opens — dismiss it before

@@ -77,13 +77,13 @@ test.describe.serial('Group Management', () => {
 
       const searchInput = page.locator('input[name="personAddText"]');
       await searchInput.fill('Demo User');
-      const searchBtn = page.locator('button').getByText('Search').first();
+      const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
 
-      // Pick the Add button on the search result row (aria-label includes the
-      // person name) — not the "Add a New Person" link button at the top of
-      // the panel, which would open a creation dialog.
-      const addBtn = page.locator('button[aria-label^="Add person "]').first();
+      // Pick the icon-only Add button on the search result row — not the
+      // "Add a New Person" link button at the top of the panel, which would
+      // open a creation dialog.
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       // Demo User has an email, so SendInviteDialog opens — dismiss it.
@@ -112,7 +112,8 @@ test.describe.serial('Group Management', () => {
 
       await page.waitForResponse(response => response.url().includes('/people') && response.status() === 200, { timeout: 10000 });
 
-      const addBtn = page.locator('button').getByText('Add').last();
+      // Result rows render an icon-only AppIconButton (no "Add" text).
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').last();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       // Donald has an email → SendInviteDialog opens. Use the helper so the

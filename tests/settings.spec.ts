@@ -146,7 +146,8 @@ test.describe.serial('Settings Management', () => {
       await searchBox.fill('Jennifer Williams');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
+      // Result rows render an icon-only AppIconButton (aria-label "Add").
+      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
       await selectBtn.click();
       // Person has email → auto-saves and opens SendInviteDialog. Dismiss it
       // before asserting on the Members table (which is the target column).
@@ -201,6 +202,10 @@ test.describe.serial('Settings Management', () => {
   });
 
   test.describe.serial('Mobile Settings', () => {
+    // Tab create/edit/delete isn't idempotent — a retry would add a duplicate
+    // tab and break the count assertions.
+    test.describe.configure({ retries: 0 });
+
     test.beforeEach(async () => {
       // "Mobile" is a primary nav item (not in settings secondary menu),
       // gated by ContentApi content.edit permission. Navigate via the primary nav.
@@ -214,34 +219,38 @@ test.describe.serial('Settings Management', () => {
       await expect(page.locator('button').getByText('Add Tab')).toBeVisible({ timeout: 10000 });
     });
 
+    // "Settings Tab" names are private to this spec — mobile-app.spec owns
+    // "Zacchaeus Test Tab" on the same page and the two files run in parallel
+    // workers; sharing a name breaks both files' count assertions. Edit clicks
+    // are row-scoped for the same reason.
     test('should create mobile app tab', async () => {
       const addBtn = page.locator('button').getByText('Add Tab');
       await addBtn.dispatchEvent('click');
       const tabName = page.locator('[name="text"]');
-      await tabName.fill('Zacchaeus Test Tab')
+      await tabName.fill('Zacchaeus Settings Tab')
       const url = page.locator('[name="url"]');
       await url.fill('https://pony.town/');
       const saveBtn = page.locator('button').getByText('Save Tab');
       await saveBtn.click();
-      const validatedTab = page.locator('h6').getByText('Zacchaeus Test Tab');
+      const validatedTab = page.locator('h6').getByText('Zacchaeus Settings Tab');
       await expect(validatedTab).toHaveCount(1);
     });
 
     test('should edit mobile app tab', async () => {
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      const row = page.getByRole('listitem').filter({ hasText: 'Zacchaeus Settings Tab' }).first();
+      await row.locator('button[aria-label="Edit"]').click();
       const tabName = page.locator('[name="text"]');
-      await expect(tabName).toHaveValue('Zacchaeus Test Tab', { timeout: 10000 });
-      await tabName.fill('Zebedee Test Tab')
+      await expect(tabName).toHaveValue('Zacchaeus Settings Tab', { timeout: 10000 });
+      await tabName.fill('Zebedee Settings Tab')
       const saveBtn = page.locator('button').getByText('Save Tab');
       await saveBtn.click();
-      const validatedTab = page.locator('h6').getByText('Zebedee Test Tab');
+      const validatedTab = page.locator('h6').getByText('Zebedee Settings Tab');
       await expect(validatedTab).toHaveCount(1);
     });
 
     test('should cancel edit mobile app tab', async () => {
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      const row = page.getByRole('listitem').filter({ hasText: 'Zebedee Settings Tab' }).first();
+      await row.locator('button[aria-label="Edit"]').click();
       const tabName = page.locator('[name="text"]');
       await expect(tabName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
@@ -256,11 +265,11 @@ test.describe.serial('Settings Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      const row = page.getByRole('listitem').filter({ hasText: 'Zebedee Settings Tab' }).first();
+      await row.locator('button[aria-label="Edit"]').click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      const validatedDeletion = page.locator('h6').getByText('Zebedee Test Tab');
+      const validatedDeletion = page.locator('h6').getByText('Zebedee Settings Tab');
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
@@ -435,7 +444,8 @@ test.describe.serial('Settings Management', () => {
       await personSearch.fill('Dorothy Jackson');
       const searchBtn = page.locator('[id="searchButton"]');
       await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Select');
+      // Result rows render an icon-only AppIconButton (aria-label "Add").
+      const addBtn = page.locator('[data-testid^="add-person-"]').first();
       await addBtn.click();
 
       const validatedAddition = page.locator('td a').getByText('Dorothy Jackson');

@@ -206,23 +206,24 @@ test.describe('Attendance Management', () => {
     });
   });
 
+  // Kiosk Theme settings moved off the Attendance page in the 2026-06-08
+  // AttendanceSetup redesign; KioskThemeEdit now renders on the B1 CheckIn
+  // page at /mobile/checkin (below the QR guest-registration card).
   test.describe('Kiosk Theme', () => {
     test('should open kiosk theme settings', async ({ page }) => {
-      const kioskTab = page.locator('button[role="tab"]').getByText('Kiosk Theme');
-      await kioskTab.click();
+      await page.goto('/mobile/checkin');
 
-      const heading = page.getByText('Kiosk Settings');
-      await expect(heading).toBeVisible({ timeout: 10000 });
+      const heading = page.getByText('Kiosk Theme').first();
+      await expect(heading).toBeVisible({ timeout: 15000 });
       await expect(page.getByText('Background Image').first()).toBeVisible();
       await expect(page.getByText('Idle Screen / Screensaver')).toBeVisible();
     });
 
     test('should expand idle screen accordion and toggle enable', async ({ page }) => {
-      const kioskTab = page.locator('button[role="tab"]').getByText('Kiosk Theme');
-      await kioskTab.click();
+      await page.goto('/mobile/checkin');
 
       const idleHeader = page.getByText('Idle Screen / Screensaver');
-      await expect(idleHeader).toBeVisible({ timeout: 10000 });
+      await expect(idleHeader).toBeVisible({ timeout: 15000 });
       await idleHeader.click();
 
       const enableLabel = page.getByText('Enable idle screen');

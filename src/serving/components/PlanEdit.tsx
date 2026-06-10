@@ -60,7 +60,10 @@ export const PlanEdit = (props: Props) => {
   const savePlanMutation = useMutation({
     mutationFn: async (plan: PlanInterface) => {
       const { ApiHelper } = await import("@churchapps/apphelper");
-      if ((copyMode === "none" && !copyServiceOrder) || !previousPlan) {
+      // The copy-from-previous options only render for new plans; an existing
+      // plan must save plainly or the copy endpoint duplicates its positions
+      // (and 401s when the loaded plan row lacks ministryId).
+      if (plan.id || (copyMode === "none" && !copyServiceOrder) || !previousPlan) {
         return ApiHelper.post("/plans", [plan], "DoingApi");
       } else {
         return ApiHelper.post("/plans/copy/" + previousPlan.id, { ...plan, copyMode, copyServiceOrder }, "DoingApi");

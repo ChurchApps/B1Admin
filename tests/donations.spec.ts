@@ -113,6 +113,10 @@ test.describe.serial('Donations Management', () => {
   });
 
   test.describe('Batches', () => {
+    // Batch creation isn't idempotent — a serial-chain retry re-creates the
+    // batch and the toHaveCount(1) assertions see duplicates (same policy as Funds).
+    test.describe.configure({ retries: 0 });
+
     test('should create batch', async () => {
       await openBatchesTab(page);
 
@@ -121,7 +125,11 @@ test.describe.serial('Donations Management', () => {
       await addBtn.click();
       await page.locator('[name="name"]').fill(TEST_BATCH_INITIAL);
       await page.locator('[name="date"]').fill('2025-10-10');
+      // Wait for the save POST so a slow API under 4-worker load doesn't
+      // time out the count assertion below.
+      const batchPost = page.waitForResponse(r => r.url().includes('/donationbatches') && r.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
       await page.locator('button').getByText('Save').click();
+      await batchPost;
 
       await expect(page.locator('a').getByText(TEST_BATCH_INITIAL)).toHaveCount(1, { timeout: 10000 });
       await expect(page.locator('p').getByText('Oct 10, 2025')).toHaveCount(1, { timeout: 10000 });

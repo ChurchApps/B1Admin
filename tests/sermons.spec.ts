@@ -13,6 +13,9 @@ test.describe('Sermons Management', () => {
   }); */
 
   test.describe.serial('Sermons Home', () => {
+    // Add sermon / add live URL aren't idempotent — a retry re-adds the row and
+    // the toHaveCount(1) assertions see duplicates. Same policy as Live Stream Times.
+    test.describe.configure({ retries: 0 });
     let page: Page;
 
     test.beforeAll(async ({ browser }) => {
@@ -43,7 +46,7 @@ test.describe('Sermons Management', () => {
 
     test('should edit sermon', async () => {
       const sermonRow = page.locator('tr').filter({ hasText: 'Zacchaeus Test Sermon' });
-      const editBtn = sermonRow.locator('button').getByText('edit');
+      const editBtn = sermonRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const name = page.locator('[name="title"]');
       await expect(name).toHaveValue('Zacchaeus Test Sermon', { timeout: 10000 });
@@ -57,7 +60,9 @@ test.describe('Sermons Management', () => {
     });
 
     test('should search for a sermon', async () => {
-      const searchBar = page.locator('input');
+      // The search field is hidden behind the header search toggle.
+      await page.locator('[data-testid="sermon-search-button"]').click();
+      const searchBar = page.locator('input[placeholder]').first();
       await searchBar.fill('Zebedee Test Sermon')
       const validatedSermon = page.locator('td').getByText('Zebedee Test Sermon');
       await expect(validatedSermon).toHaveCount(1);
@@ -65,7 +70,7 @@ test.describe('Sermons Management', () => {
 
     test('should cancel editing sermon', async () => {
       const sermonRow = page.locator('tr').filter({ hasText: 'Zebedee Test Sermon' });
-      const editBtn = sermonRow.locator('button').getByText('edit');
+      const editBtn = sermonRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const date = page.locator('[name="publishDate"]');
       await expect(date).toBeVisible({ timeout: 10000 });
@@ -82,7 +87,7 @@ test.describe('Sermons Management', () => {
       });
 
       const sermonRow = page.locator('tr').filter({ hasText: 'Zebedee Test Sermon' });
-      const editBtn = sermonRow.locator('button').getByText('edit');
+      const editBtn = sermonRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
@@ -105,7 +110,7 @@ test.describe('Sermons Management', () => {
 
     test('should edit live URL', async () => {
       const urlRow = page.locator('tr').filter({ hasText: 'Zacchaeus Test Live URL' });
-      const editBtn = urlRow.locator('button').getByText('edit');
+      const editBtn = urlRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const name = page.locator('[name="title"]');
       await expect(name).toHaveValue('Zacchaeus Test Live URL', { timeout: 10000 });
@@ -118,7 +123,7 @@ test.describe('Sermons Management', () => {
 
     test('should cancel editing live URL', async () => {
       const urlRow = page.locator('tr').filter({ hasText: 'Zebedee Test Live URL' });
-      const editBtn = urlRow.locator('button').getByText('edit');
+      const editBtn = urlRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const name = page.locator('[name="title"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -135,7 +140,7 @@ test.describe('Sermons Management', () => {
       });
 
       const urlRow = page.locator('tr').filter({ hasText: 'Zebedee Test Live URL' });
-      const editBtn = urlRow.locator('button').getByText('edit');
+      const editBtn = urlRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
@@ -258,7 +263,7 @@ test.describe('Sermons Management', () => {
     });
 
     test('should edit service', async () => {
-      const editBtn = page.locator('button').getByText('edit').last();
+      const editBtn = page.locator('button[aria-label="Edit"]').last();
       await editBtn.click();
       const name = page.locator('[name="serviceLabel"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -270,7 +275,7 @@ test.describe('Sermons Management', () => {
     });
 
     test('should cancel editing service', async () => {
-      const editBtn = page.locator('button').getByText('edit').last();
+      const editBtn = page.locator('button[aria-label="Edit"]').last();
       await editBtn.click();
       const name = page.locator('[name="serviceLabel"]');
       await expect(name).toBeVisible({ timeout: 10000 });
@@ -286,7 +291,7 @@ test.describe('Sermons Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = page.locator('button').getByText('edit').last();
+      const editBtn = page.locator('button[aria-label="Edit"]').last();
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
@@ -355,11 +360,12 @@ test.describe('Sermons Management', () => {
       await expect(page.locator('button').getByText('Fetch')).toBeVisible();
     });
 
-    test('should return to source selection via Back to Selection', async () => {
+    test('should return to source selection via the header Back button', async () => {
       await page.locator('[data-testid="import-youtube-button"]').click();
       await expect(page.locator('[name="channelId"]')).toBeVisible({ timeout: 10000 });
 
-      const backBtn = page.locator('button').getByText('Back to Selection');
+      // "Back to Selection" became an icon-only AppIconButton in the page header.
+      const backBtn = page.locator('button[aria-label="Back"]');
       await backBtn.click();
 
       await expect(page.locator('[data-testid="import-youtube-button"]')).toBeVisible({ timeout: 10000 });

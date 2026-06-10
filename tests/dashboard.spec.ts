@@ -76,8 +76,9 @@ test.describe('Dashboard Management', () => {
       await personSearch.fill('Demo User');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
-      await selectBtn.first().click();
+      // Result rows render an icon-only AppIconButton (aria-label "Select").
+      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
+      await selectBtn.click();
 
       const taskName = page.locator('[name="title"]');
       await taskName.fill('Dashboard Task');

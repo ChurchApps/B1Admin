@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import { settingsTest as test, expect } from './helpers/test-fixtures';
-import { navigateToForms } from './helpers/navigation';
+import { navigateToForms, navigateToPeople } from './helpers/navigation';
+import { openPersonRow, SEED_PEOPLE } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { STORAGE_STATE_PATH } from './global-setup';
 
@@ -217,5 +218,48 @@ test.describe.serial('Stand Alone form lifecycle', () => {
     await openFormsPage(page);
     await expect(page.locator('table tbody tr').filter({ hasText: DISPOSABLE_STANDALONE_FORM }))
       .toHaveCount(0, { timeout: 10000 });
+  });
+});
+
+// forms.md steps 13-18: person-contentType forms surface as rail items on the
+// person profile; submissions persist and re-render their answers inline.
+// Demo seeds the "Visitor Information Card" form (FRM00000001) with a full
+// submission for Brian Harris (FSB00000001) and none for Donald Clark.
+test.describe('Person form submissions (profile rail)', () => {
+  test('a seeded submission renders its stored answers', async ({ page }) => {
+    await navigateToPeople(page);
+    await openPersonRow(page, 'Brian Harris');
+    const railItem = page.getByText('Visitor Information Card', { exact: true }).first();
+    await expect(railItem).toBeVisible({ timeout: 10000 });
+    await railItem.click();
+    // Scope to the form pane — the banner shows the same email for the person.
+    const pane = page.locator('[data-testid="display-box-content"]');
+    await expect(pane.getByText('brian.harris@email.com')).toBeVisible({ timeout: 10000 });
+    await expect(pane.getByText('Friend or Family', { exact: true })).toBeVisible();
+  });
+
+  test('submitting a person form stores and re-renders the answers', async ({ page }) => {
+    await navigateToPeople(page);
+    await openPersonRow(page, SEED_PEOPLE.DONALD);
+    const railItem = page.getByText('Visitor Information Card', { exact: true }).first();
+    await expect(railItem).toBeVisible({ timeout: 10000 });
+    await railItem.click();
+    // Selecting a form swaps the whole profile pane for the form's DisplayBox,
+    // so its edit affordance (DisplayBox fallback aria-label "editButton") is
+    // the only one on screen.
+    const editBtn = page.locator('button[aria-label="editButton"]').first();
+    await expect(editBtn).toBeVisible({ timeout: 10000 });
+    await editBtn.click();
+    await expect(page.locator('#formSubmissionBox')).toBeVisible({ timeout: 10000 });
+    await page.getByLabel('First Name', { exact: true }).fill('Donald');
+    await page.getByLabel('Last Name', { exact: true }).fill('Clark');
+    // Distinctive value: Donald's real email also renders in the banner, so it
+    // can't serve as the persistence signal.
+    await page.getByLabel('Email Address', { exact: true }).fill('donald.card@example.com');
+    const post = page.waitForResponse(r => r.url().includes('/formsubmissions') && r.request().method() === 'POST' && r.status() === 200, { timeout: 15000 });
+    await page.locator('#formSubmissionBox button', { hasText: /^Submit$/ }).click();
+    await post;
+    await expect(page.locator('#formSubmissionBox')).toHaveCount(0, { timeout: 10000 });
+    await expect(page.getByText('donald.card@example.com').first()).toBeVisible({ timeout: 10000 });
   });
 });
