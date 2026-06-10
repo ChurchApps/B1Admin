@@ -34,7 +34,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     []
   );
   const contentRef: any = useRef<HTMLDivElement>(null);
-  const handleSummaryPrint = useReactToPrint({ content: () => contentRef.current });
+  const handleSummaryPrint = useReactToPrint({ contentRef });
 
   const getPerson = useCallback((people: PersonInterface[], formSubmission: any) => {
     let result = people.find((person: PersonInterface) => person.id === formSubmission.submittedBy);
@@ -116,7 +116,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         formSubmission.questions.forEach((question: QuestionInterface) => {
           const answer = formSubmission.answers.find((answer: AnswerInterface) => answer.questionId === question.id) || null;
           const answerValue = answer?.value || "";
-          if (question.fieldType === "Yes/No" && answer?.value) answer.value = yesNoMap[answer.value];
+          if (question.fieldType === "Yes/No" && answer?.value) answer.value = (yesNoMap as Record<string, string>)[answer.value];
           csvData[question.title] = answerValue;
           formSubmission.csvData.push({ [question.title]: answerValue });
           if (question.fieldType === "Multiple Choice" || question.fieldType === "Yes/No" || question.fieldType === "Checkbox") {

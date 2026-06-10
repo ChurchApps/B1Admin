@@ -109,7 +109,7 @@ export const ReportOutput = (props: Props) => {
       });
 
       const donationUrl = "/donations/summary?type=person&" + queryParams.join("&");
-      ApiHelper.get(donationUrl, "GivingApi").then((data) => {
+      ApiHelper.get(donationUrl, "GivingApi").then((data: any) => {
         populatePeople(data);
       });
 

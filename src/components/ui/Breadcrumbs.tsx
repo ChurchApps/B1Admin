@@ -17,7 +17,7 @@ interface BreadcrumbsProps {
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, showHome = true }) => {
   const navigate = useNavigate();
 
-  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, path?: string) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>, path?: string) => {
     event.preventDefault();
     if (path) navigate(path);
   };

@@ -8,7 +8,7 @@ import { OAuthCallback } from "./oauth/OAuthCallback";
 
 import { Authenticated } from "./Authenticated";
 import { Logout } from "./Logout";
-import { type ErrorLogInterface, type ErrrorAppDataInterface } from "@churchapps/helpers";
+import { type ErrorLogInterface, type ErrorAppDataInterface } from "@churchapps/helpers";
 import { AnalyticsHelper } from "./helpers";
 import { UserHelper, ErrorHelper } from "@churchapps/apphelper";
 import { Pingback } from "./Pingback";
@@ -23,7 +23,7 @@ export const ControlPanel = () => {
   }, [location]);
 
   const getErrorAppData = () => {
-    const result: ErrrorAppDataInterface = {
+    const result: ErrorAppDataInterface = {
       churchId: UserHelper.currentUserChurch?.church?.id || "",
       userId: UserHelper.user?.id || "",
       originUrl: location?.toString(),
@@ -32,7 +32,7 @@ export const ControlPanel = () => {
     return result;
   };
 
-  const customErrorHandler = (error: ErrorLogInterface) => {
+  const customErrorHandler = (_error: ErrorLogInterface) => {
     //disabled for now.  This causes infinite loops when the error happens on useEffect page loads.
 
     /*
@@ -44,7 +44,7 @@ export const ControlPanel = () => {
 
   ErrorHelper.init(getErrorAppData, customErrorHandler);
 
-  const user = React.useContext(UserContext).user; //to force rerender on login
+  React.useContext(UserContext); //to force rerender on login
   return (
     <>
       <ErrorMessages errors={errors} />

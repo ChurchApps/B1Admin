@@ -1,5 +1,6 @@
 import React from "react";
-import { ApiHelper, Locale, type ConditionInterface } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { type ConditionInterface } from "@churchapps/helpers";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, TextField, Stack, Typography, FormControlLabel, Switch, IconButton, Box, ToggleButtonGroup, ToggleButton, Chip } from "@mui/material";
 import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ConditionEdit } from "../../components/conditions/ConditionEdit";

@@ -81,7 +81,7 @@ export function CuratedEventCalendar(props: Props) {
     ev.end = new Date(ev.end);
     if (ev.recurrenceRule) {
       const dates = EventHelper.getRange(ev, startRange, endRange);
-      dates.forEach((date) => {
+      dates.forEach((date: any) => {
         const evt = { ...event };
         const diff = new Date(evt.end).getTime() - new Date(evt.start).getTime();
         evt.start = date;

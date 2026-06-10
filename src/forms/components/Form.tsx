@@ -20,10 +20,10 @@ export const Form: React.FC<Props> = (props) => {
     setEditQuestionId("notset");
   };
   const loadData = () => {
-    ApiHelper.get("/forms/" + props.id, "MembershipApi").then((data) => setForm(data));
+    ApiHelper.get("/forms/" + props.id, "MembershipApi").then((data: any) => setForm(data));
     loadQuestions();
   };
-  const loadQuestions = () => ApiHelper.get("/questions?formId=" + props.id, "MembershipApi").then((data) => setQuestions(data));
+  const loadQuestions = () => ApiHelper.get("/questions?formId=" + props.id, "MembershipApi").then((data: any) => setQuestions(data));
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const anchor = e.currentTarget as HTMLAnchorElement;

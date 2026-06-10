@@ -1,5 +1,4 @@
 import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
-import React from "react";
 import { Chart } from "react-google-charts";
 import { Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { useNavigate, useParams } from "react-router-dom";

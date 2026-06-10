@@ -22,7 +22,7 @@ export const SongDetailLinksEdit = (props: Props) => {
 
   const loadData = () => {
     if (props.songDetailId) {
-      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetailId, "ContentApi").then((data) => {
+      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetailId, "ContentApi").then((data: any) => {
         setSongDetailLinks(data);
       });
     }

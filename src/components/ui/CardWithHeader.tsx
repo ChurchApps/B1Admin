@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { Card, Box, Stack, Typography } from "@mui/material";
 
 interface CardWithHeaderProps {

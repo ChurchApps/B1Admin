@@ -18,10 +18,10 @@ export const DeviceContent = (props: Props) => {
   const [contents, setContents] = React.useState<DeviceContentInterface[]>([]);
 
   const loadData = () => {
-    ApiHelper.get("/classrooms", "LessonsApi").then((data) => {
+    ApiHelper.get("/classrooms", "LessonsApi").then((data: any) => {
       setClassRooms(data);
     });
-    ApiHelper.get("/deviceContents/deviceId/" + props.device.id, "MessagingApi").then((data) => {
+    ApiHelper.get("/deviceContents/deviceId/" + props.device.id, "MessagingApi").then((data: any) => {
       setContents(data);
     });
   };

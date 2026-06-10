@@ -217,7 +217,6 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                   style={{ maxHeight: 200, overflowY: "scroll" }}
                   placeholder={Locale.label("groups.groupDetailsEdit.groupDesc")}
                   data-testid="group-description-editor"
-                  ariaLabel={Locale.label("groups.groupDetailsEdit.groupDescriptionAria")}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>

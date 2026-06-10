@@ -37,7 +37,7 @@ export const SessionAdd: React.FC<Props> = (props) => {
   };
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data) => {
+    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => {
       setGroupServiceTimes(data);
       if (data.length > 0) setValue("serviceTimeId", data[0].serviceTimeId);
     });

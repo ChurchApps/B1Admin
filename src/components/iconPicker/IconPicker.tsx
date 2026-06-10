@@ -196,7 +196,7 @@ export const IconPicker: React.FC<Props> = (props) => {
               >
                 <Icon sx={{ fontSize: 40, color: "text.secondary" }}>search_off</Icon>
                 <Typography variant="body2" color="text.secondary">
-                  {Locale.label("common.iconPicker.noResults", { searchText })}
+                  {Locale.t("common.iconPicker.noResults", { searchText })}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   {Locale.label("common.iconPicker.tryDifferent")}
@@ -223,8 +223,8 @@ export const IconPicker: React.FC<Props> = (props) => {
               <Icon sx={{ fontSize: 14, color: "text.secondary" }}>info</Icon>
               <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.7rem" }}>
                 {searchText
-                  ? Locale.label("common.iconPicker.showingMatching", { count: filteredIcons.length, searchText })
-                  : Locale.label("common.iconPicker.showingDefault", { count: defaultIcons.length })
+                  ? Locale.t("common.iconPicker.showingMatching", { count: filteredIcons.length, searchText })
+                  : Locale.t("common.iconPicker.showingDefault", { count: defaultIcons.length })
                 }
               </Typography>
             </Stack>

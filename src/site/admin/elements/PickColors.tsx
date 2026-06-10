@@ -295,7 +295,7 @@ export function PickColors(props: Props) {
         }}>
         {Locale.label("site.pickColors.sampleText")}
       </div>
-      <Tabs value={tabValue} onChange={(event: React.SyntheticEvent, newValue: string) => setTabValue(newValue)}>
+      <Tabs value={tabValue} onChange={(_event: React.SyntheticEvent, newValue: string) => setTabValue(newValue)}>
         <Tab value="suggested" label={Locale.label("site.pickColors.suggested")} />
         <Tab value="custom" label={Locale.label("common.custom")} />
       </Tabs>

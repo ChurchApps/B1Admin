@@ -99,12 +99,12 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
   }, [tabValue, standardItems, optionalItems, optionalColumns.length]);
 
   React.useEffect(() => {
-    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data) => {
+    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: any) => {
       if (data.length > 0) {
         const personForms = data.filter((f: any) => f.contentType === "person");
         if (personForms.length > 0) {
           personForms.forEach((f: any) => {
-            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q) => setOptionalColumns((prevState) => [...prevState, ...q]));
+            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q: any) => setOptionalColumns((prevState) => [...prevState, ...q]));
           });
         }
       } else setOptionalColumns([]);
@@ -117,7 +117,7 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
       <Dialog id="fieldsMenu" open={open} onClose={handleClose} fullWidth maxWidth="md">
         <DialogTitle>{Locale.label("people.peopleColumns.filt")}</DialogTitle>
         <DialogContent>
-          <Tabs value={tabValue} onChange={(event: React.SyntheticEvent, newValue: string) => setTabValue(newValue)}>
+          <Tabs value={tabValue} onChange={(_event: React.SyntheticEvent, newValue: string) => setTabValue(newValue)}>
             <Tab value="standard" label={Locale.label("people.peopleColumns.stand")} />
             <Tab value="custom" label={Locale.label("people.peopleColumns.cust")} />
           </Tabs>

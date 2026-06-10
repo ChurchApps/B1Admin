@@ -37,7 +37,7 @@ export const Keys = memo((props: Props) => {
   }, []);
 
   const handleTabChange = useCallback(
-    (event: React.SyntheticEvent, newValue: string) => {
+    (_event: React.SyntheticEvent, newValue: string) => {
       if (newValue === "add") {
         setEditKey({
           arrangementId: props.arrangement.id,
@@ -75,7 +75,7 @@ export const Keys = memo((props: Props) => {
 
   const loadLinks = useCallback(() => {
     if (selectedKey) {
-      ApiHelper.get("/links?category=arrangementKey_" + selectedKey.id, "ContentApi").then((data) => {
+      ApiHelper.get("/links?category=arrangementKey_" + selectedKey.id, "ContentApi").then((data: any) => {
         setLinks(data);
       });
     }

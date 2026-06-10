@@ -37,7 +37,6 @@ export const DeviceAuthPage: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState(false);
   const [step, setStep] = React.useState<"code" | "confirm">("code");
-  const [autoSubmitted, setAutoSubmitted] = React.useState(false);
 
   // Use the already-selected church from login
   const churchName = UserHelper.currentUserChurch?.church?.name;

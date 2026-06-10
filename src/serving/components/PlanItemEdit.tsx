@@ -124,7 +124,7 @@ export const PlanItemEdit = (props: Props) => {
       return;
     } else {
       setSearching(true);
-      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data) => {
+      ApiHelper.get("/songs/search?q=" + encodeURIComponent(searchText), "ContentApi").then((data: any) => {
         setSongs(data);
         setSearching(false);
       });

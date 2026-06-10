@@ -113,14 +113,6 @@ export function TokenPicker(props: TokenPickerProps) {
     );
   };
 
-  const getDisplayValue = () => {
-    for (const group of activeGroups) {
-      const token = group.tokens.find(t => t.value === value);
-      if (token) return token.label;
-    }
-    return value || Locale.label("site.tokenPicker.selectToken");
-  };
-
   const getCurrentPreview = () => {
     for (const group of activeGroups) {
       const token = group.tokens.find(t => t.value === value);

@@ -45,7 +45,7 @@ export const PersonView = memo(({ person, editFunction, updatedFunction, showFor
     if (p.birthDate) {
       attributes.push(
         <div key="age">
-          <label>{Locale.label("person.age")}</label> <b>{PersonHelper.getAge(p.birthDate)}</b>
+          <label>{Locale.label("person.age")}</label> <b>{PersonHelper.getAge(new Date(p.birthDate))}</b>
         </div>
       );
     }

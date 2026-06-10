@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { peopleTest as test, expect } from './helpers/test-fixtures';
 import { navigateToPeople } from './helpers/navigation';
-import { personDetailsEditButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
+import { personDetailsEditButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { STORAGE_STATE_PATH } from './global-setup';
 

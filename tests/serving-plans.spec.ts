@@ -79,7 +79,7 @@ test.describe.serial('Serving Management - Plans', () => {
       const groupPost = page.waitForResponse(
         r => r.url().includes('/membership/groups') && r.request().method() === 'POST',
         { timeout: 15000 }
-      ).catch(() => null);
+      ).catch((): null => null);
       await saveBtn.click();
       await groupPost;
       const verifiedEdit = page.locator('p').getByText('Zebedee Ministry');
@@ -117,7 +117,7 @@ test.describe.serial('Serving Management - Plans', () => {
       // substring-match the "Add a New Person" button and open the wrong dialog.
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
-      const memberPost = page.waitForResponse(r => r.url().includes('/groupmembers') && r.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
+      const memberPost = page.waitForResponse(r => r.url().includes('/groupmembers') && r.request().method() === 'POST', { timeout: 15000 }).catch((): null => null);
       await addBtn.click();
       await memberPost;
       const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Dorothy Jackson');
@@ -141,7 +141,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
       // Advanced search fires automatically as conditions change — no Search button.
-      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch(() => null);
+      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill('Grace');
       await searched;
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
@@ -379,7 +379,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
       // Advanced search fires automatically as conditions change — no Search button.
-      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch(() => null);
+      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill('Grace');
       await searched;
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();

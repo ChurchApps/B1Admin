@@ -372,7 +372,7 @@ export function EditCondition(props: Props) {
     return (
       <FormControl fullWidth>
         <InputLabel>{Locale.label("people.editCondition.value")}</InputLabel>
-        <Select name="value" label={Locale.label("people.editCondition.value")} type="text" placeholder="Value" value={selectValue} onChange={handleChange}>
+        <Select name="value" label={Locale.label("people.editCondition.value")} value={selectValue} onChange={handleChange}>
           {options}
         </Select>
       </FormControl>
@@ -587,7 +587,7 @@ export function EditCondition(props: Props) {
       </FormControl>
       <FormControl fullWidth>
         <InputLabel>{Locale.label("people.editCondition.operator")}</InputLabel>
-        <Select name="operator" label={Locale.label("people.editCondition.operator")} type="text" placeholder="Value" value={condition.operator} onChange={handleChange}>
+        <Select name="operator" label={Locale.label("people.editCondition.operator")} value={condition.operator} onChange={handleChange}>
           {getOperatorOptions()}
         </Select>
       </FormControl>

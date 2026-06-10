@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { Paper, Stack, Typography, TableCell } from "@mui/material";
 
 interface EmptyStateProps {
@@ -13,7 +13,7 @@ interface EmptyStateProps {
 export const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description, action, variant = "card", colSpan = 5 }) => {
   const content = (
     <Stack spacing={2} alignItems="center">
-      {React.cloneElement(icon as React.ReactElement, { sx: { fontSize: variant === "card" ? 64 : 48, color: variant === "card" ? "grey.400" : "text.secondary" } })}
+      {React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: variant === "card" ? 64 : 48, color: variant === "card" ? "grey.400" : "text.secondary" } })}
       <Typography variant={variant === "card" ? "h6" : "body1"} color="text.secondary" gutterBottom={variant === "card"}>
         {title}
       </Typography>

@@ -55,7 +55,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   React.useEffect(() => {
     setLoadingTemplates(true);
     ApiHelper.get("/emailTemplates", "MessagingApi")
-      .then((data) => setTemplates(data || []))
+      .then((data: any) => setTemplates(data || []))
       .catch(() => { /* templates load failure is handled by empty list */ })
       .finally(() => setLoadingTemplates(false));
   }, []);
@@ -65,7 +65,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     if (!props.groupId) return;
     setLoadingPreview(true);
     ApiHelper.get("/emailTemplates/preview/" + props.groupId, "MessagingApi")
-      .then((data) => setPreview(data))
+      .then((data: any) => setPreview(data))
       .catch(() => { /* preview is optional */ })
       .finally(() => setLoadingPreview(false));
   }, [props.groupId]);

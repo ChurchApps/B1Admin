@@ -9,7 +9,7 @@ interface Props {
 export const ServiceTimes: React.FC<Props> = (props) => {
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
 
-  const loadData = React.useCallback(() => ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data) => setGroupServiceTimes(data)), [props.group.id]);
+  const loadData = React.useCallback(() => ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => setGroupServiceTimes(data)), [props.group.id]);
 
   const getRows = () => {
     const result: JSX.Element[] = [];

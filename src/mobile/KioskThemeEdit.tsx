@@ -1,8 +1,7 @@
 import React from "react";
 import { TextField, Switch, FormControlLabel, Typography, Button, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
-import { ImageEditor } from "../components/gallery";
+import { ApiHelper, ImageEditor, InputBox, Locale } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 import { AppIconButton } from "../components/ui/AppIconButton";
 

@@ -21,8 +21,7 @@ export const DonationEdit = memo((props: Props) => {
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [showSelectPerson, setShowSelectPerson] = React.useState(false);
 
-  const { register, handleSubmit, reset, control, watch, formState } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
-  const e = formState.errors as any;
+  const { register, handleSubmit, reset, control, watch } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
   const method = watch("method");
   const methodDetails = watch("methodDetails");
   const summaryErrors: string[] = [];

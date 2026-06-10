@@ -1,5 +1,6 @@
 import React from "react";
-import { ApiHelper, type RolePermissionInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { type RolePermissionInterface } from "@churchapps/helpers";
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 
 interface Props {
@@ -29,7 +30,7 @@ export const RoleCheck: React.FC<Props> = (props) => {
         contentType: props.contentType,
         action: props.action
       };
-      ApiHelper.post("/rolepermissions/", [rp], "MembershipApi").then((data) => {
+      ApiHelper.post("/rolepermissions/", [rp], "MembershipApi").then((data: any) => {
         rp.id = data[0];
         setRolePermission(rp);
       });

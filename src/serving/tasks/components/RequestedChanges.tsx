@@ -1,6 +1,6 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ApiHelper, DateHelper, Locale, type PersonInterface, type TaskInterface } from "@churchapps/apphelper";
+import { ApiHelper, Locale, type PersonInterface } from "@churchapps/apphelper";
+import { type TaskInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableCell, TableHead, TableRow, Card, CardContent, Typography, Stack, Box, Button, Paper, Avatar } from "@mui/material";
 import {
   AssignmentReturn as ChangesIcon,
@@ -95,7 +95,7 @@ export const RequestedChanges = (props: Props) => {
           p.photoUpdated = new Date(+getTime);
           break;
         }
-        case "birthDate": p.birthDate = DateHelper.toDate(value); break;
+        case "birthDate": p.birthDate = value; break;
         case "contactInfo.email": p.contactInfo.email = value; break;
         case "contactInfo.address1": p.contactInfo.address1 = value; break;
         case "contactInfo.address2": p.contactInfo.address2 = value; break;

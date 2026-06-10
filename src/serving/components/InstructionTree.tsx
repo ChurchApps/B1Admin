@@ -72,9 +72,9 @@ const InstructionItemRow: React.FC<{
           )}
           <Box sx={{ flex: 1 }}>
             <Typography sx={{ fontWeight: depth === 0 ? 500 : 400 }}>{item.label}</Typography>
-            {item.description && (
+            {item.content && (
               <Typography variant="caption" color="text.secondary">
-                {item.description}
+                {item.content}
                 {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
               </Typography>
             )}
@@ -140,9 +140,9 @@ const InstructionItemRow: React.FC<{
       >
         <Box sx={{ flex: 1 }}>
           <Typography variant="body2">{item.label}</Typography>
-          {item.description && (
+          {item.content && (
             <Typography variant="caption" color="text.secondary">
-              {item.description}
+              {item.content}
               {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
             </Typography>
           )}
@@ -184,9 +184,9 @@ const InstructionItemRow: React.FC<{
       )}
       <Box sx={{ flex: 1 }}>
         <Typography variant="body2">{item.label}</Typography>
-        {item.description && (
+        {item.content && (
           <Typography variant="caption" color="text.secondary">
-            {item.description}
+            {item.content}
             {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
           </Typography>
         )}

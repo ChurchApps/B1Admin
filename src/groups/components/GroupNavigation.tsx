@@ -1,6 +1,6 @@
 import { type GroupInterface } from "@churchapps/helpers";
 import { Group as GroupIcon, CalendarMonth as AttendanceIcon } from "@mui/icons-material";
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { Locale } from "@churchapps/apphelper";
 

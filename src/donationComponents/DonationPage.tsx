@@ -5,9 +5,9 @@ import { loadStripe } from "@stripe/stripe-js";
 import type { Stripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
-import { DonationForm, RecurringDonations, PaymentMethods } from "@churchapps/apphelper/donations";
+import { DonationForm, RecurringDonations, PaymentMethods, StripePaymentMethod } from "@churchapps/apphelper/donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
-import type { DonationInterface, PersonInterface, StripePaymentMethod, ChurchInterface } from "@churchapps/helpers";
+import type { DonationInterface, PersonInterface, ChurchInterface } from "@churchapps/helpers";
 // import { Link } from "react-router-dom"
 import { Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Link, Menu, MenuItem } from "@mui/material";
 

@@ -34,7 +34,7 @@ export async function openPersonRow(page: Page, name: SeedPersonName | string) {
   // the row isn't already on screen.
   if (!(await row.isVisible({ timeout: 3000 }).catch(() => false))) {
     const search = page.locator('input[name="searchText"]');
-    const searched = page.waitForResponse((r) => r.url().includes("/people/advancedSearch") && r.status() === 200, { timeout: 10000 }).catch(() => null);
+    const searched = page.waitForResponse((r) => r.url().includes("/people/advancedSearch") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
     await search.fill(String(name));
     await searched;
   }
@@ -85,8 +85,8 @@ export async function recoverFromViteError(page: import("@playwright/test").Page
   for (let i = 0; i < 4; i++) {
     if (successLocator) {
       const result = await Promise.race([
-        viteError.waitFor({ state: "visible", timeout: 8000 }).then(() => "error" as const).catch(() => null),
-        successLocator.waitFor({ state: "visible", timeout: 8000 }).then(() => "success" as const).catch(() => null),
+        viteError.waitFor({ state: "visible", timeout: 8000 }).then(() => "error" as const).catch((): null => null),
+        successLocator.waitFor({ state: "visible", timeout: 8000 }).then(() => "success" as const).catch((): null => null),
       ]);
       if (result === "success") return;
       if (result !== "error") return;

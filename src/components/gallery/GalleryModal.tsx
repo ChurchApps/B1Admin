@@ -1,13 +1,11 @@
 "use client";
 
-import { ApiHelper, FileHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, FileHelper, ImageEditor, Locale, TabPanel } from "@churchapps/apphelper";
 import { CommonEnvironmentHelper } from "@churchapps/helpers";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs } from "@mui/material";
 import { DeleteOutline as DeleteOutlineIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { AppIconButton } from "../ui/AppIconButton";
-import { ImageEditor } from "./ImageEditor";
-import { TabPanel } from "./TabPanel";
 import { StockPhotos } from "./StockPhotos";
 
 interface Props {
@@ -29,7 +27,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   const contentRoot = props.contentRoot || CommonEnvironmentHelper.ContentRoot;
   const handleClose = () => { if (props.onClose) props.onClose(); else if (props.onCancel) props.onCancel(); };
 
-  const handleTabChange = (el: any, newValue: any) => { setTabIndex(newValue); };
+  const handleTabChange = (_el: any, newValue: any) => { setTabIndex(newValue); };
 
   const loadData = () => { ApiHelper.get("/gallery/" + aspectRatio.toString(), "ContentApi").then((data: any) => setImages(data.images)); };
 

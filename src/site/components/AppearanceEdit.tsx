@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import Resizer from "react-image-file-resizer";
 import { Box, Typography, Stack, Button, Card, CardContent, alpha } from "@mui/material";
 import { Image as ImageIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon } from "@mui/icons-material";
-import { ArrayHelper, ApiHelper, Locale } from "@churchapps/apphelper";
-import { ImageEditor } from "../../components/gallery";
+import { ArrayHelper, ApiHelper, ImageEditor, Locale } from "@churchapps/apphelper";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
@@ -13,7 +12,7 @@ interface Props {
 }
 
 function getOgImage(img: any) {
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<string>((resolve) => {
     img.onload = function () {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -66,17 +65,6 @@ export function AppearanceEdit(props: Props) {
   const [currentEditLogo, setCurrentEditLogo] = useState<string>("");
   const [currentUrl, setCurrentUrl] = useState("about:blank");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    const settings = [...currentSettings];
-    const keySetting = settings.filter((c: any) => c.keyName === name);
-
-    if (keySetting.length === 0) settings.push({ keyName: name, value, public: 1 });
-    else keySetting[0].value = value;
-
-    setCurrentSettings(settings);
-  };
 
   const init = () => {
     const startingUrl = (ArrayHelper.getOne(props.settings, "keyName", currentEditLogo))?.value;

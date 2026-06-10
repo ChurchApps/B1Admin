@@ -7,7 +7,7 @@ export const LinkedAccounts = () => {
   const [settings, setSettings] = React.useState<SettingInterface[]>([]);
 
   const loadData = () => {
-    ApiHelper.get("/settings/my", "ContentApi").then((data) => {
+    ApiHelper.get("/settings/my", "ContentApi").then((data: any) => {
       setSettings(data);
     });
   };

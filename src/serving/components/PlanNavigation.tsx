@@ -1,6 +1,6 @@
 import { type PlanInterface } from "../../helpers";
 import { Assignment as AssignmentIcon, Album as AlbumIcon } from "@mui/icons-material";
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { Locale } from "@churchapps/apphelper";
 

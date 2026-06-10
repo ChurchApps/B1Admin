@@ -1,4 +1,3 @@
-import React from "react";
 import { Box } from "@mui/material";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
 import { FilesManager } from "./components";

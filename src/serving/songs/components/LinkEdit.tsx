@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ApiHelper, InputBox, type LinkInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { type LinkInterface } from "@churchapps/helpers";
 import { TextField } from "@mui/material";
 
 interface Props {
@@ -20,7 +21,7 @@ export const LinkEdit = (props: Props) => {
 
   const onValid = (values: AnyRecord) => {
     const l: LinkInterface = { ...props.link, ...values };
-    ApiHelper.post("/links", [l], "ContentApi").then((data) => {
+    ApiHelper.post("/links", [l], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
   };

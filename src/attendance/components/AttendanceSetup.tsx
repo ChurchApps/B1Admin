@@ -142,7 +142,7 @@ export const AttendanceSetup = memo(() => {
       return rows;
     }
 
-    const getRow = (campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface, key: string, isLast?: { campus?: boolean; service?: boolean }) => {
+    const getRow = (campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface, key: string, _isLast?: { campus?: boolean; service?: boolean }) => {
       const campusChanged = campus?.name !== lastCampus;
       const serviceChanged = service?.name !== lastService;
 

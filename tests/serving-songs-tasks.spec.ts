@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { servingTest as test, expect } from './helpers/test-fixtures';
-import { editIconButton, addIconButton, checkIconButton } from './helpers/fixtures';
+import { editIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToServing } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';

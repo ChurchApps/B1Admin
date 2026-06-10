@@ -30,7 +30,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   const childErrorsRef = React.useRef<string[]>([]);
   const [expanded, setExpanded] = React.useState<string | false>(props.initialSection || "church-info");
 
-  const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { ...(props.church || {}), churchName: props.church?.name || "" } });
+  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { ...(props.church || {}), churchName: props.church?.name || "" } });
 
   const fe = formState.errors as any;
 

@@ -53,7 +53,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
     itemType,
     relatedId: item.relatedId,
     label: item.label || "",
-    description: item.description,
+    description: item.content,
     seconds: item.seconds ?? 0,
     providerId,
     providerPath,
@@ -161,7 +161,7 @@ export const ServiceOrder = memo((props: Props) => {
 
   const handleDisassociateContent = useCallback(async () => {
     try {
-      const updatedPlan = {
+      const updatedPlan: PlanInterface = {
         ...props.plan,
         contentType: null,
         contentId: null,
@@ -191,7 +191,7 @@ export const ServiceOrder = memo((props: Props) => {
     if (!items || items.length === 0) return;
 
     // Prepare top-level items for this batch
-    const itemsToSave = items.map((item, index) => {
+    const itemsToSave = items.map((item, index): PlanItemInterface => {
       const cleanItem = { ...item };
       delete cleanItem.id; // Completely remove the id property
       return {
@@ -233,10 +233,10 @@ export const ServiceOrder = memo((props: Props) => {
         const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
 
         // Keep top-level headers with their section children, but strip grandchildren (actions)
-        const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface) => ({
+        const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface): PlanItemInterface => ({
           ...item,
           // Keep children (sections) but strip their children (actions)
-          children: item.children?.map((section: PlanItemInterface) => ({
+          children: item.children?.map((section: PlanItemInterface): PlanItemInterface => ({
             ...section,
             children: undefined // Remove actions from sections
           }))

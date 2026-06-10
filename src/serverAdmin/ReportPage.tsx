@@ -2,8 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { ApiHelper, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
-import { Box, Container, Card, CardContent, Skeleton, Chip } from "@mui/material";
-import { ArrowBack as BackIcon } from "@mui/icons-material";
+import { Box, Container, Card, CardContent, Skeleton, Chip, Stack } from "@mui/material";
 import { ReportWithFilter } from "../components/reporting/ReportWithFilter";
 import { type ReportInterface } from "@churchapps/helpers";
 
@@ -16,7 +15,7 @@ export const ReportPage = () => {
     if (params.keyName) {
       setLoading(true);
       ApiHelper.get("/reports/" + params.keyName, "ReportingApi")
-        .then((data) => {
+        .then((data: any) => {
           setReport(data);
           setLoading(false);
         })
@@ -33,16 +32,8 @@ export const ReportPage = () => {
   return (
     <>
       <PageHeader
-        title={loading ? <Skeleton width={300} /> : report?.displayName || Locale.label("serverAdmin.reportPage.report")}
-        subtitle={!loading && report?.description ? report.description : undefined}
-        breadcrumbs={[
-          {
-            href: "/admin",
-            text: Locale.label("serverAdmin.reportPage.serverAdmin"),
-            icon: <BackIcon />
-          }
-        ]}
-        bgColor="error.main">
+        title={report?.displayName || Locale.label("serverAdmin.reportPage.report")}
+        subtitle={!loading && report?.description ? report.description : undefined}>
         <Chip
           label={Locale.label("serverAdmin.reportPage.adminOnly")}
           size="small"

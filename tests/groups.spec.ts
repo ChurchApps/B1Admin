@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { groupsTest as test, expect } from './helpers/test-fixtures';
-import { dismissSendInviteIfPresent, editIconButton, closeIconButton } from './helpers/fixtures';
+import { dismissSendInviteIfPresent, editIconButton } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToGroups } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';

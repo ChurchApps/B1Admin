@@ -27,7 +27,7 @@ export const ServerHealthTab = () => {
   const loadData = React.useCallback(() => {
     setLoading(true);
     ApiHelper.get("/serverHealth", "MembershipApi")
-      .then((d) => setData(d))
+      .then((d: any) => setData(d))
       .finally(() => setLoading(false));
   }, []);
 

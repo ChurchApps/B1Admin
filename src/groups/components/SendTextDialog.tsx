@@ -46,7 +46,7 @@ export const SendTextDialog: React.FC<Props> = (props) => {
     if (!isGroupMode || !props.groupId) return;
     setLoadingPreview(true);
     ApiHelper.get("/texting/preview/" + props.groupId, "MessagingApi")
-      .then((data) => { setPreview(data); })
+      .then((data: any) => { setPreview(data); })
       .catch(() => { /* preview is optional — allow send even if it fails */ })
       .finally(() => { setLoadingPreview(false); });
   }, [isGroupMode, props.groupId]);

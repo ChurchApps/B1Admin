@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { ApiHelper, type GroupInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { type GroupInterface } from "@churchapps/helpers";
 import { TextField, Table, TableBody, TableRow, TableCell, InputAdornment, Typography, Stack, TableContainer, Paper } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
@@ -15,7 +16,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
   const [searchText, setSearchText] = useState("");
 
   const loadData = () => {
-    ApiHelper.get("/groups", "MembershipApi").then((data) => {
+    ApiHelper.get("/groups", "MembershipApi").then((data: any) => {
       setGroups(data);
     });
   };

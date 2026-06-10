@@ -15,7 +15,7 @@ export function AddableElement(props: Props) {
   const dragRef = React.useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  const [{ isDragging }, drag, preview] = useDrag(
+  const [{ isDragging }, drag] = useDrag(
     () => {
       const result = {
         type: props.dndType,

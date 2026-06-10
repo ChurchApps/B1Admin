@@ -14,7 +14,7 @@ export const ChurchesTab = () => {
 
   const loadData = () => {
     const term = escape(searchText.trim());
-    ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data) => setChurches(data));
+    ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data: any) => setChurches(data));
   };
 
   const handleArchive = (church: ChurchInterface) => {

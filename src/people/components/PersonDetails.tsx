@@ -1,8 +1,7 @@
 import React, { memo } from "react";
 import { Household, Merge, PersonEdit, PersonExportDialog, PersonProfileTabs, PersonView } from "./";
 import { type PersonInterface } from "@churchapps/helpers";
-import { Locale, Permissions, PersonHelper, UserHelper } from "@churchapps/apphelper";
-import { ImageEditor } from "../../components/gallery";
+import { ImageEditor, Locale, Permissions, PersonHelper, UserHelper } from "@churchapps/apphelper";
 import { Button } from "@mui/material";
 import { FileDownload as ExportIcon } from "@mui/icons-material";
 

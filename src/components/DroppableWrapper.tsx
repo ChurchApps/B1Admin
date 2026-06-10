@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import React, { useEffect } from "react";
 import { useDrop } from "react-dnd";
 import { Locale } from "@churchapps/apphelper";
@@ -23,7 +23,7 @@ export function DroppableWrapper(props: Props) {
       drop: (data) => {
         onDrop(data);
       },
-      canDrop: (_item, monitor) => {
+      canDrop: (_item, _monitor) => {
         // Always allow drop if types match - let the parent handle validation
         const canDropResult = true;
         return canDropResult;

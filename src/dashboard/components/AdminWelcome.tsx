@@ -19,10 +19,10 @@ export const AdminWelcome: React.FC = () => {
   const [hasPlanTypes, setHasPlanTypes] = React.useState<boolean | null>(null);
 
   React.useEffect(() => {
-    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => setHasTeams(data?.length > 0)).catch(() => setHasTeams(false));
-    ApiHelper.get("/pages", "ContentApi").then((data) => setHasPages(data?.length > 0)).catch(() => setHasPages(false));
-    ApiHelper.get("/groups/tag/standard", "MembershipApi").then((data) => setHasGroups(data?.length > 0)).catch(() => setHasGroups(false));
-    ApiHelper.get("/planTypes", "DoingApi").then((data) => setHasPlanTypes(data?.length > 0)).catch(() => setHasPlanTypes(false));
+    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: any) => setHasTeams(data?.length > 0)).catch(() => setHasTeams(false));
+    ApiHelper.get("/pages", "ContentApi").then((data: any) => setHasPages(data?.length > 0)).catch(() => setHasPages(false));
+    ApiHelper.get("/groups/tag/standard", "MembershipApi").then((data: any) => setHasGroups(data?.length > 0)).catch(() => setHasGroups(false));
+    ApiHelper.get("/planTypes", "DoingApi").then((data: any) => setHasPlanTypes(data?.length > 0)).catch(() => setHasPlanTypes(false));
   }, []);
 
   const handleCardClick = (wizardKey: WizardType, existsAlready: boolean | null, fallbackUrl: string) => {
@@ -38,7 +38,7 @@ export const AdminWelcome: React.FC = () => {
     navigate(redirectUrl);
   };
 
-  const sections = [
+  const sections: { label: string; items: { icon: React.ReactElement; title: string; linkUrl?: string; external?: boolean; onClick?: () => void }[] }[] = [
     {
       label: Locale.label("dashboard.adminWelcome.yourChurch"),
       items: [

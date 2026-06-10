@@ -7,7 +7,7 @@ interface Props {
   element: ElementInterface;
   church?: ChurchInterface;
   churchSettings: any;
-  textColor?: string;
+  textColor: string;
   onEdit?: (section: any, element: ElementInterface) => void;
   onMove?: () => void;
 }

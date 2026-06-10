@@ -5,13 +5,13 @@ import React, { memo, useState } from "react";
 export interface NavigationTab {
   value: string;
   label: string;
-  icon?: React.ReactNode;
+  icon?: string | React.ReactElement;
 }
 
 export interface NavigationDropdown<T = any> {
   value: string;
   label: string;
-  icon?: React.ReactNode;
+  icon?: string | React.ReactElement;
   items: T[];
   renderItem: (item: T) => React.ReactNode;
   onItemSelect: (item: T) => void;

@@ -1,4 +1,4 @@
-import { getProvider } from "@churchapps/content-providers";
+import { getProvider, TokenHelper } from "@churchapps/content-providers";
 import { ApiHelper } from "@churchapps/apphelper";
 import type { ContentProviderAuthData } from "@churchapps/content-providers";
 import type { ContentProviderAuthInterface } from "./Interfaces";
@@ -75,9 +75,10 @@ export class ContentProviderAuthHelper {
     const provider = getProvider(providerId);
     if (!provider) return null;
 
-    if (provider.isAuthValid(auth)) return auth;
+    const tokenHelper = new TokenHelper();
+    if (tokenHelper.isAuthValid(auth)) return auth;
 
-    const refreshed = await provider.refreshToken(auth);
+    const refreshed = await tokenHelper.refreshToken(provider.config, auth);
     if (refreshed) {
       await this.storeAuth(ministryId, providerId, refreshed);
       return refreshed;

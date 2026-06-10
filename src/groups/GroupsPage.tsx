@@ -22,7 +22,7 @@ const GroupsPage = () => {
   const loadData = () => {
     setIsLoading(true);
     ApiHelper.get("/groups/tag/standard", "MembershipApi")
-      .then((data) => {
+      .then((data: any) => {
         if (isMounted()) {
           setGroups(data);
         }

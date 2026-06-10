@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { CurrencyHelper } from "@churchapps/apphelper";
 import { Locale } from "../../helpers";

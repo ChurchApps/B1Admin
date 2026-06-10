@@ -7,7 +7,7 @@ import { TableList } from "./TableList";
 
 interface Props { updatedFunction?: () => void, churchId:string }
 
-export const ExternalLinks: React.FC<Props> = (props) => {
+export const ExternalLinks: React.FC<Props> = () => {
 
   const getChurchEditSettingRows = (): React.ReactElement[] => {
     if (!Permissions.membershipApi.settings.edit) return [];

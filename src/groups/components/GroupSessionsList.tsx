@@ -1,5 +1,6 @@
 import React, { useCallback, memo, useMemo } from "react";
-import { type GroupInterface, type SessionInterface } from "@churchapps/helpers";
+import { type GroupInterface } from "@churchapps/helpers";
+import { type SessionInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Box, Button, Chip, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
@@ -46,7 +47,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
 
   const loadSessions = useCallback(() => {
     if (group.id) {
-      ApiHelper.get("/sessions?groupId=" + group.id, "AttendanceApi").then(async (data) => {
+      ApiHelper.get("/sessions?groupId=" + group.id, "AttendanceApi").then(async (data: any) => {
         if (data.length > 0) {
           const sortedSessions = [...data].sort((a, b) => {
             const dateA = a?.sessionDate ? new Date(a.sessionDate).getTime() : 0;

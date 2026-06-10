@@ -208,7 +208,7 @@ test.describe.serial('Mobile tab ordering', () => {
       // If a concurrent delete shifted the row to the top between the order
       // read and the click, Move Up disables — the order is already settled.
       if (await moveUp.isDisabled().catch(() => true)) continue;
-      const saved = page.waitForResponse(r => r.url().includes('/links') && r.request().method() === 'POST' && r.status() === 200, { timeout: 15000 }).catch(() => null);
+      const saved = page.waitForResponse(r => r.url().includes('/links') && r.request().method() === 'POST' && r.status() === 200, { timeout: 15000 }).catch((): null => null);
       await moveUp.click({ timeout: 5000 }).catch(() => { });
       await saved;
     }

@@ -37,7 +37,7 @@ export const SongDetails = memo((props: Props) => {
   }, []);
 
   const songDetailItems = useMemo(() => {
-    const items = [];
+    const items: any[] = [];
     if (!props.songDetail) return items;
 
     if (props.songDetail.artist) {

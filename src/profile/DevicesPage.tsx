@@ -25,7 +25,7 @@ export const DevicesPage = () => {
   const [editDevice, setEditDevice] = useState<DeviceInterface>(null);
 
   const loadData = () => {
-    ApiHelper.get("/devices/my", "MessagingApi").then((data) => {
+    ApiHelper.get("/devices/my", "MessagingApi").then((data: any) => {
       data = data.filter((d: DeviceInterface) => d.appName === "ChurchAppsPlayer");
       setDevices(data);
     });

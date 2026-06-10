@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, type SyntheticEvent } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Alert, Autocomplete, Dialog, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { InputBox, ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";

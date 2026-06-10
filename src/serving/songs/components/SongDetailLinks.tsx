@@ -16,7 +16,7 @@ export const SongDetailLinks = memo((props: Props) => {
 
   useEffect(() => {
     if (props.songDetail?.id) {
-      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetail?.id, "ContentApi").then((data) => {
+      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetail?.id, "ContentApi").then((data: any) => {
         setSongDetailLinks(data);
       });
     }

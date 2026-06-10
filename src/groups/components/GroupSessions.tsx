@@ -13,6 +13,8 @@ import { Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, A
 import { PersonRemove as PersonRemoveIcon, Add as AddIcon } from "@mui/icons-material";
 import { SessionCard } from "./SessionCard";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { type GroupInterface, type PersonInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
+import { type SessionInterface } from "../../helpers";
 
 interface Props {
   group: GroupInterface;
@@ -40,7 +42,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
 
   const loadAttDownloadData = useCallback(() => {
     if (session?.id) {
-      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data) => {
+      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data: any) => {
         setDownloadData(data);
       });
     }
@@ -52,7 +54,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
         setVisitSessions(vs);
         const peopleIds = ArrayHelper.getUniqueValues(vs, "visit.personId");
         if (peopleIds.length > 0) {
-          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data) => setPeople(data));
+          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data: any) => setPeople(data));
         } else {
           setPeople([]);
         }
@@ -89,7 +91,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
 
   const loadSessions = useCallback(() => {
     if (group.id) {
-      ApiHelper.get("/sessions?groupId=" + group.id, "AttendanceApi").then(async (data) => {
+      ApiHelper.get("/sessions?groupId=" + group.id, "AttendanceApi").then(async (data: any) => {
         if (data.length > 0) {
           // Sort sessions by date (most recent first), with null safety
           const sortedSessions = [...data].sort((a, b) => {
@@ -298,7 +300,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
       <Box sx={{ mb: 3 }}>
         <Grid container spacing={2} sx={{ mb: 2 }}>
           {paginatedSessions.map((sessionItem) => (
-            <Grid item size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={sessionItem.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={sessionItem.id}>
               <SessionCard
                 session={sessionItem}
                 attendanceCount={sessionAttendanceCounts[sessionItem.id] || 0}

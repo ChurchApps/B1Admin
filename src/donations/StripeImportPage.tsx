@@ -110,7 +110,7 @@ export const StripeImportPage = () => {
       );
     }
 
-    return importData.results.map((event, index) => (
+    return importData.results.map((event) => (
       <TableRow key={event.eventId} sx={{ "&:hover": { backgroundColor: "action.hover" } }}>
         <TableCell>
           <Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}>

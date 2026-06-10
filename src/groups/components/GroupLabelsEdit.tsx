@@ -38,7 +38,7 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = () => {
-    ApiHelper.get("/groups", "MembershipApi").then((groups) => {
+    ApiHelper.get("/groups", "MembershipApi").then((groups: any) => {
       const result: string[] = [];
       groups.forEach((group: GroupInterface) => {
         group.labelArray.forEach((label) => {

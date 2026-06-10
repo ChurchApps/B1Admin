@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../helpers";

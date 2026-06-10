@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableRow, Button } from "@mui/material";
 import { Person as PersonIcon } from "@mui/icons-material";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { PersonAdd } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Locale, PersonAvatar } from "@churchapps/apphelper";

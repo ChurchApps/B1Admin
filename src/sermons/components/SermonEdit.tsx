@@ -8,7 +8,7 @@ import { ApiHelper } from "@churchapps/apphelper";
 import { UniqueIdHelper } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
-import { ImageEditor } from "../../components/gallery";
+import { ImageEditor } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
 import { Duration } from "./Duration";

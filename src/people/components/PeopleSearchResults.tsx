@@ -160,12 +160,12 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             </Stack>
           );
           break;
-        case "birthDate": result = <>{p.birthDate === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.birthDate)}</>; break;
+        case "birthDate": result = <>{p.birthDate === null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.birthDate))}</>; break;
         case "birthDay": result = <>{B1AdminPersonHelper.getBirthDay(p)}</>; break;
         case "age":
           result = (
             <Typography variant="body2" color="text.secondary">
-              {p.birthDate === null ? "" : PersonHelper.getAge(p.birthDate)}
+              {p.birthDate === null ? "" : PersonHelper.getAge(new Date(p.birthDate))}
             </Typography>
           );
           break;
@@ -187,7 +187,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           break;
         case "maritalStatus": result = <>{p.maritalStatus}</>; break;
         case "campus": result = <>{p.campusId ? (campusMap[p.campusId] || "") : ""}</>; break;
-        case "anniversary": result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.anniversary)}</>; break;
+        case "anniversary": result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.anniversary))}</>; break;
         case "nametagNotes": result = <>{p.nametagNotes}</>; break;
         case "deleteOption":
           result = (
@@ -232,13 +232,13 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   );
 
   useEffect(() => {
-    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data) => {
+    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: any) => {
       if (data.length > 0) {
         const personForms = data.filter((f: any) => f.contentType === "person");
         if (personForms.length > 0) {
           personForms.forEach((f: any) => {
-            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q) => setOptionalColumns((prevState) => [...prevState, ...q]));
-            ApiHelper.get(`/formsubmissions/formId/${f.id}/?include=questions,answers`, "MembershipApi").then((fs) => setFormSubmissions((prevState) => [...prevState, ...fs]));
+            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q: any) => setOptionalColumns((prevState) => [...prevState, ...q]));
+            ApiHelper.get(`/formsubmissions/formId/${f.id}/?include=questions,answers`, "MembershipApi").then((fs: any) => setFormSubmissions((prevState) => [...prevState, ...fs]));
           });
         }
       } else setOptionalColumns([]);
@@ -512,7 +512,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       {getResults()}
       <Card sx={{ mt: 3 }} id="createPersonForm">
         <Box sx={{ p: 3 }}>
-          <CreatePerson onCreate={navigateToPersonCreate} updatedFunction={props.updatedFunction} />
+          <CreatePerson onCreate={navigateToPersonCreate} />
         </Box>
       </Card>
     </Box>

@@ -17,7 +17,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
   const isSubscribed = useRef(true);
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/groupmembers?groupId=" + props.group.id, "MembershipApi").then((data) => {
+    ApiHelper.get("/groupmembers?groupId=" + props.group.id, "MembershipApi").then((data: any) => {
       if (isSubscribed.current) {
         setGroupMembers(data);
       }

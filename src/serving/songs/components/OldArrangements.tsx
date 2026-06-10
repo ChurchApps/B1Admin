@@ -19,7 +19,7 @@ export const OldArrangements = (props: Props) => {
   const [editArrangement, setEditArrangement] = React.useState<any>(null);
 
   const loadData = () => {
-    ApiHelper.get("/arrangements/song/" + props.song.id, "ContentApi").then((data) => setArrangements(data));
+    ApiHelper.get("/arrangements/song/" + props.song.id, "ContentApi").then((data: any) => setArrangements(data));
   };
 
   React.useEffect(() => {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Alert, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
@@ -16,7 +15,7 @@ export const PairScreen = (props: Props) => {
   if (e.code?.message) summaryErrors.push(e.code.message);
 
   const onValid = (values: AnyRecord) => {
-    ApiHelper.get("/devices/pair/" + values.code, "MessagingApi").then((data) => {
+    ApiHelper.get("/devices/pair/" + values.code, "MessagingApi").then((data: any) => {
       if (data.success) props.updatedFunction();
       else setError("code", { message: Locale.label("profile.pairScreen.invalidCode") });
     });

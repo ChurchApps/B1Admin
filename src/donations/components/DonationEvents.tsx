@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Icon } from "@mui/material";
 import { DateHelper, ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";

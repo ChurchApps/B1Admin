@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const GroupBanner = memo((props: Props) => {
-  const { group, onEdit, editMode } = props;
+  const { group, onEdit } = props;
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
@@ -48,7 +48,7 @@ export const GroupBanner = memo((props: Props) => {
   React.useEffect(() => {
     if (group?.id) {
       ApiHelper.get("/groupservicetimes?groupId=" + group.id, "AttendanceApi")
-        .then((data) => setGroupServiceTimes(data))
+        .then((data: any) => setGroupServiceTimes(data))
         .catch(() => setGroupServiceTimes([]));
     }
   }, [group?.id]);

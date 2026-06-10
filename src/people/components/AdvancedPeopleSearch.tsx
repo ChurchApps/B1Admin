@@ -151,7 +151,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const [expandedCategories, setExpandedCategories] = useState<string[]>(["names"]);
   const [complexFilterDialog, setComplexFilterDialog] = useState<{ open: boolean; field: string | null }>({ open: false, field: null });
   const [complexConfig, setComplexConfig] = useState<ComplexFilterConfig | null>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
 
   // Lazy-loaded options
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -391,7 +391,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     setLoadedCategories((prev) => [...prev, category]);
   }, [loadedCategories]);
 
-  const handleCategoryExpand = (category: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+  const handleCategoryExpand = (category: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     if (isExpanded) {
       setExpandedCategories([...expandedCategories, category]);
       loadCategoryData(category);
@@ -465,7 +465,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
       debounceTimerRef.current = setTimeout(async () => {
         const postConditions = await convertConditions();
-        ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data) => {
+        ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data: any) => {
           props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
         });
       }, 500);
@@ -627,7 +627,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const handleAdvancedSearch = useCallback(async () => {
     props.onReportCriteria?.(activeFilters);
     const postConditions = await convertConditions();
-    ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data) => {
+    ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data: any) => {
       props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
     });
   }, [convertConditions, props.updateSearchResults, activeFilters]);
@@ -639,27 +639,6 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const getActiveFilterCount = (category: string) => {
     const categoryFields = filterCategories[category]?.map((f) => f.key) || [];
     return Object.keys(activeFilters).filter((key) => categoryFields.includes(key)).length;
-  };
-
-  const getFilterDisplayValue = (filter: ActiveFilter) => {
-    const fieldConfig = Object.values(filterCategories).flat().find((f) => f.key === filter.field);
-    if (!fieldConfig) return filter.value;
-
-    if (filter.field === "memberAttendance" || filter.field === "memberDonations") {
-      try {
-        const parsed = JSON.parse(filter.value);
-        return `${parsed[0]?.text || "Any"}`;
-      } catch (e) {
-        return filter.value;
-      }
-    }
-
-    if (fieldConfig.type === "select" && fieldConfig.options) {
-      const option = fieldConfig.options.find(opt => opt.value === filter.value);
-      return option?.label || filter.value;
-    }
-
-    return filter.value;
   };
 
   const renderOperatorSelect = (field: FilterField) => {
@@ -835,7 +814,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             <Typography variant="caption" color="primary" sx={{ fontWeight: 600, mr: 0.5 }}>
               {Object.keys(activeFilters).length} {Locale.label("people.peopleSearch.active")}
             </Typography>
-            {Object.entries(activeFilters).map(([key, filter]) => {
+            {Object.entries(activeFilters).map(([key]) => {
               const fieldConfig = Object.values(filterCategories).flat().find((f) => f.key === key);
               return (
                 <Chip

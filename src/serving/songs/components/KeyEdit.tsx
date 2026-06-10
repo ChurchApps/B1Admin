@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type ArrangementKeyInterface } from "../../../helpers";
@@ -21,7 +21,7 @@ export const KeyEdit = (props: Props) => {
 
   const onValid = (values: AnyRecord) => {
     const k: ArrangementKeyInterface = { ...props.arrangementKey, ...values };
-    ApiHelper.post("/arrangementKeys", [k], "ContentApi").then((data) => {
+    ApiHelper.post("/arrangementKeys", [k], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
   };

@@ -1,4 +1,3 @@
-import React from "react";
 import { Loading, PageHeader } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Box, Paper } from "@mui/material";

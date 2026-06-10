@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { settingsTest as test, expect } from './helpers/test-fixtures';
-import { dismissSendInviteIfPresent, editIconButton } from './helpers/fixtures';
+import { dismissSendInviteIfPresent } from './helpers/fixtures';
 import { login } from './helpers/auth';
 import { navigateToSettings, navigateToRoles, navigateToForms } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
@@ -130,7 +130,7 @@ test.describe.serial('Settings Management', () => {
       const rolePost = page.waitForResponse(
         r => r.url().includes('/membership/roles') && r.request().method() === 'POST',
         { timeout: 15000 }
-      ).catch(() => null);
+      ).catch((): null => null);
       await saveBtn.click();
       await rolePost;
       const validatedRole = page.locator('a').getByText('Zacchaeus Test Role');

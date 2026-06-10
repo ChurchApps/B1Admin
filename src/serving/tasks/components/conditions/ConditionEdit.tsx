@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, ListSubheader, MenuItem, Select, type SelectChangeEvent, Card, CardContent, Typography, Stack, Box, Button, Divider } from "@mui/material";
 import React from "react";
-import { ErrorMessages, ApiHelper, type ConditionInterface, Locale } from "@churchapps/apphelper";
+import { ErrorMessages, ApiHelper, Locale } from "@churchapps/apphelper";
+import { type ConditionInterface } from "@churchapps/helpers";
 import { ConditionAttendance } from "./ConditionAttendance";
 import { ConditionDate } from "./ConditionDate";
 import { ConditionSelect } from "./ConditionSelect";
@@ -31,7 +32,7 @@ export const ConditionEdit = (props: Props) => {
 
   const handleSave = async () => {
     if (validate()) {
-      ApiHelper.post("/conditions", [condition], "DoingApi").then((d) => {
+      ApiHelper.post("/conditions", [condition], "DoingApi").then((d: any) => {
         props.onSave(d[0]);
       });
     }

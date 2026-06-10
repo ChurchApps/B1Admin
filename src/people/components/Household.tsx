@@ -26,12 +26,12 @@ export const Household: React.FC<Props> = memo((props) => {
   };
   const loadData = () => {
     if (!UniqueIdHelper.isMissing(props.person?.householdId)) {
-      ApiHelper.get("/households/" + props?.person.householdId, "MembershipApi").then((data) => setHousehold(data));
+      ApiHelper.get("/households/" + props?.person.householdId, "MembershipApi").then((data: any) => setHousehold(data));
     }
   };
   const loadMembers = () => {
     if (household != null) {
-      ApiHelper.get("/people/household/" + household.id, "MembershipApi").then((data) => setMembers(data));
+      ApiHelper.get("/people/household/" + household.id, "MembershipApi").then((data: any) => setMembers(data));
     }
   };
   const getEditContent = () => (UserHelper.checkAccess(Permissions.membershipApi.people.edit)
@@ -49,7 +49,7 @@ export const Household: React.FC<Props> = memo((props) => {
     return members
       .filter((m) => m.id !== props.person.id)
       .map((m) => {
-        const age = m.birthDate ? PersonHelper.getAge(m.birthDate) : null;
+        const age = m.birthDate ? PersonHelper.getAge(new Date(m.birthDate)) : null;
         const email = m.contactInfo?.email;
         const phone = m.contactInfo?.mobilePhone || m.contactInfo?.homePhone || m.contactInfo?.workPhone;
 

@@ -267,7 +267,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
 
     // Save to API and get the ID
     if (pageIdRef.current || blockIdRef.current) {
-      ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result) => {
+      ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result: any) => {
         // Update entry with the server ID
         setUndoStack(prev => {
           // Find and update the entry we just added
@@ -277,7 +277,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
               : e);
           return newStack;
         });
-      }).catch(err => {
+      }).catch((err: any) => {
         console.error("Failed to save history to API:", err);
       });
     }

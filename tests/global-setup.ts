@@ -1,7 +1,6 @@
 import { chromium, type FullConfig } from "@playwright/test";
 import path from "path";
 import { fileURLToPath } from "url";
-// @ts-expect-error - plain ESM JS module, no .d.ts
 import { verifyEnv } from "./setup/verify-env.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

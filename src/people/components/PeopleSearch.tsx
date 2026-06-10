@@ -20,7 +20,7 @@ interface Props {
 export function PeopleSearch(props: Props) {
   const [searchText, setSearchText] = React.useState("");
   const [showAdvanced, setShowAdvanced] = React.useState(false);
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
 
   // When a saved list is loaded, reveal the advanced panel so it can seed + run.
   useEffect(() => {
@@ -30,14 +30,14 @@ export function PeopleSearch(props: Props) {
   const performSearch = useCallback((term: string, advancedConditions?: SearchCondition[]) => {
     if (advancedConditions && advancedConditions.length > 0) {
       // Advanced search with conditions
-      ApiHelper.post("/people/advancedSearch", advancedConditions, "MembershipApi").then((data) => {
+      ApiHelper.post("/people/advancedSearch", advancedConditions, "MembershipApi").then((data: any) => {
         props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else if (term.trim()) {
       // Simple search by name
       const conditions: SearchCondition[] = [{ field: "displayName", operator: "contains", value: term.trim() }];
       props.onReportCriteria?.(conditions);
-      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data) => {
+      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: any) => {
         props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else {

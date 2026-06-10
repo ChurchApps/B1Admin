@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type ArrangementInterface } from "../../../helpers";
@@ -21,7 +21,7 @@ export const ArrangementEdit = (props: Props) => {
 
   const onValid = (values: AnyRecord) => {
     const a: ArrangementInterface = { ...props.arrangement, ...values };
-    ApiHelper.post("/arrangements", [a], "ContentApi").then((data) => {
+    ApiHelper.post("/arrangements", [a], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
   };

@@ -1,10 +1,10 @@
 import { Box, Typography, Stack, TextField, Select, MenuItem, Chip, Divider, FormControl, InputLabel, ListSubheader } from "@mui/material";
 import React from "react";
-import { ApiHelper, Locale, type ConditionInterface } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Add as AddIcon, Delete as DeleteIcon, CallSplit as RouteIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { ConditionEdit } from "../../components/conditions/ConditionEdit";
-import { type WorkflowStepInterface, type WorkflowStepRouteInterface, type WorkflowInterface } from "@churchapps/helpers";
+import { type WorkflowStepInterface, type WorkflowStepRouteInterface, type WorkflowInterface, type ConditionInterface } from "@churchapps/helpers";
 
 const WF_PREFIX = "wf:";
 

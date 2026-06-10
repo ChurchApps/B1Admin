@@ -104,7 +104,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data) => setAllForms(data));
+    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: any) => setAllForms(data));
   }, []);
 
   useEffect(determineUnsubmitted, [allForms, props]);

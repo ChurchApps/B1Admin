@@ -127,7 +127,7 @@ test.describe.serial('Donations Management', () => {
       await page.locator('[name="date"]').fill('2025-10-10');
       // Wait for the save POST so a slow API under 4-worker load doesn't
       // time out the count assertion below.
-      const batchPost = page.waitForResponse(r => r.url().includes('/donationbatches') && r.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
+      const batchPost = page.waitForResponse(r => r.url().includes('/donationbatches') && r.request().method() === 'POST', { timeout: 15000 }).catch((): null => null);
       await page.locator('button').getByText('Save').click();
       await batchPost;
 
@@ -150,7 +150,7 @@ test.describe.serial('Donations Management', () => {
       const batchGet = page.waitForResponse(
         r => /\/giving\/donationbatches\/[^/?]+(\?|$)/.test(r.url()) && r.request().method() === 'GET',
         { timeout: 15000 }
-      ).catch(() => null);
+      ).catch((): null => null);
       await editBtn.click();
       await batchGet;
 

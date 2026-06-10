@@ -8,7 +8,7 @@ import {
   Sms as SmsIcon,
   ViewKanban as WorkflowIcon
 } from "@mui/icons-material";
-import React, { memo, useMemo, useState, useEffect } from "react";
+import { memo, useMemo, useState, useEffect } from "react";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { StatusChip } from "../../components";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
@@ -59,7 +59,7 @@ export const PersonBanner = memo((props: Props) => {
     const stats = [];
 
     if (person.birthDate) {
-      const age = PersonHelper.getAge(person.birthDate);
+      const age = PersonHelper.getAge(new Date(person.birthDate));
       stats.push({ label: Locale.label("people.personBanner.age"), value: `${age}` });
     }
 

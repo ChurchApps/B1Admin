@@ -1,10 +1,10 @@
-import { ApiHelper, ArrayHelper, type AssignmentInterface, DateHelper, type PersonInterface, type PlanInterface, type PositionInterface, type TimeInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale } from "@churchapps/apphelper";
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { type PlanItemInterface } from "../../helpers";
 import { formatClockTime } from "../components/PlanUtils";
-import { type PlanItemTimeInterface } from "@churchapps/helpers";
+import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -23,13 +23,13 @@ export const PrintPlan = () => {
   };
 
   const loadData = async () => {
-    ApiHelper.get("/plans/" + params.id, "DoingApi").then((data) => {
+    ApiHelper.get("/plans/" + params.id, "DoingApi").then((data: any) => {
       setPlan(data);
     });
-    ApiHelper.get("/positions/plan/" + params.id, "DoingApi").then((data) => {
+    ApiHelper.get("/positions/plan/" + params.id, "DoingApi").then((data: any) => {
       setPositions(data);
     });
-    ApiHelper.get("/planItems/plan/" + params.id.toString(), "DoingApi").then((d) => {
+    ApiHelper.get("/planItems/plan/" + params.id.toString(), "DoingApi").then((d: any) => {
       setPlanItems(d);
     });
     ApiHelper.get("/times/plan/" + params.id, "DoingApi").then((d: TimeInterface[]) => {

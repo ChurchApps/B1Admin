@@ -25,9 +25,9 @@ export const ServiceTimesEdit = memo((props: Props) => {
   const [addServiceTimeId, setAddServiceTimeId] = React.useState("");
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data) => setGroupServiceTimes(data));
-    ApiHelper.get("/services", "AttendanceApi").then((data) => setServices(data));
-    ApiHelper.get("/servicetimes", "AttendanceApi").then((data) => {
+    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => setGroupServiceTimes(data));
+    ApiHelper.get("/services", "AttendanceApi").then((data: any) => setServices(data));
+    ApiHelper.get("/servicetimes", "AttendanceApi").then((data: any) => {
       setServiceTimes(data);
       const st = data[0] as ServiceTimeInterface;
       if (data.length > 0) setAddServiceTimeId(st.id);

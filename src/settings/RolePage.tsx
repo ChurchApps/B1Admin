@@ -27,7 +27,7 @@ export const RolePage = () => {
       setRole({ id: null, name: "Everyone" });
       return;
     }
-    ApiHelper.get("/roles/" + params.roleId, "MembershipApi").then((data) => setRole(data));
+    ApiHelper.get("/roles/" + params.roleId, "MembershipApi").then((data: any) => setRole(data));
   };
   const loadRoleMembers = () => {
     ApiHelper.get("/rolemembers/roles/" + params.roleId + "?include=users", "MembershipApi").then((data: any) => {

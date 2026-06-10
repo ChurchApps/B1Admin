@@ -1,5 +1,5 @@
 import { CalendarMonth as CalendarIcon, Group as GroupIcon, Settings as SettingsIcon } from "@mui/icons-material";
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 

@@ -21,7 +21,6 @@ const actionButtonSx = {
 };
 
 export const FloatingElementSelection: React.FC<Props> = ({
-  element,
   targetSelector,
   onDelete,
   onDuplicate,
@@ -29,7 +28,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
   onMoveDown
 }) => {
   const [position, setPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number>(undefined);
 
   useEffect(() => {
     const updatePosition = () => {

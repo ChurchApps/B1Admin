@@ -259,7 +259,7 @@ export function AddPageModal(props: Props) {
       navigate(`/site/pages/preview/${pageId}`);
 
     } catch (error) {
-      setAiErrors([error?.message || Locale.label("site.addPageModal.errFailedGenerate")]);
+      setAiErrors([(error as Error)?.message || Locale.label("site.addPageModal.errFailedGenerate")]);
     } finally {
       setIsSubmitting(false);
       setAiGenerationStatus("");

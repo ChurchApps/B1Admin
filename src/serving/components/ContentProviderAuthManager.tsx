@@ -26,7 +26,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   const [authError, setAuthError] = useState<string | null>(null);
 
   // PKCE state
-  const [codeVerifier, setCodeVerifier] = useState<string | null>(null);
+  const [, setCodeVerifier] = useState<string | null>(null);
   const [pkceWindow, setPkceWindow] = useState<Window | null>(null);
 
   // Polling cancellation: bumping the generation invalidates any outstanding poll closures,

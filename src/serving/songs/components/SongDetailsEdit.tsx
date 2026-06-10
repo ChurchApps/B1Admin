@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { ApiHelper, DateHelper, InputBox, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
@@ -30,7 +30,7 @@ export const SongDetailsEdit = (props: Props) => {
     sd.releaseDate = values.releaseDate ? DateHelper.toDate(values.releaseDate) : null;
     sd.bpm = values.bpm !== "" && values.bpm != null ? Number(values.bpm) : null;
     sd.seconds = values.seconds !== "" && values.seconds != null ? Number(values.seconds) : null;
-    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data) => {
+    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
   };

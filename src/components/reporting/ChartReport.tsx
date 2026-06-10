@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Chart } from "react-google-charts";
 import type { ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers";
 import { ReportHelper } from "./ReportHelper";

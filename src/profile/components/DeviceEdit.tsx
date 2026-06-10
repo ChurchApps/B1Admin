@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Alert, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";

@@ -22,7 +22,7 @@ export const TeamList = memo((props: Props) => {
   }, []);
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => {
+    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: any) => {
       if (isMounted()) setGroups(ArrayHelper.getAll(data, "categoryName", props.ministry.id));
     });
   }, [props.ministry.id, isMounted]);

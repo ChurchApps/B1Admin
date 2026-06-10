@@ -6,10 +6,10 @@ import {
   type BlockoutDateInterface,
   type GroupInterface,
   type PersonInterface,
-  type PlanInterface,
   type PositionInterface,
   type TimeInterface
 } from "@churchapps/helpers";
+import { type PlanInterface } from "../../helpers";
 import {
   ApiHelper,
   ArrayHelper,
@@ -201,10 +201,10 @@ export const Assignment = (props: Props) => {
       });
     }
 
-    ApiHelper.get("/times/plan/" + props.plan?.id, "DoingApi").then((data) => {
+    ApiHelper.get("/times/plan/" + props.plan?.id, "DoingApi").then((data: any) => {
       setTimes(data);
     });
-    ApiHelper.get("/blockoutDates/upcoming", "DoingApi").then((data) => {
+    ApiHelper.get("/blockoutDates/upcoming", "DoingApi").then((data: any) => {
       setBlockoutDates(data);
     });
     const d = await ApiHelper.get("/assignments/plan/" + props.plan?.id, "DoingApi");

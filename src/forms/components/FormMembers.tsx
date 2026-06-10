@@ -16,7 +16,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
   const [formMembers, setFormMembers] = useState<MemberPermissionInterface[]>([]);
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/memberpermissions/form/" + props.formId, "MembershipApi").then((results) => {
+    ApiHelper.get("/memberpermissions/form/" + props.formId, "MembershipApi").then((results: any) => {
       const filterMembers: string[] = [];
       results.forEach((member: MemberPermissionInterface) => filterMembers.push(member.memberId));
       setFilterList(filterMembers);
@@ -33,7 +33,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         action: "view",
         personName: p.name.display
       };
-      ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then((result) => {
+      ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then((result: any) => {
         const fm = [...formMembers];
         fm.push(result[0]);
         setFormMembers(fm);

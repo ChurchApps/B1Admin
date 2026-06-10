@@ -16,17 +16,17 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) {
-      ApiHelper.get("/eventLog/type/failed/", "GivingApi").then((data) => {
+      ApiHelper.get("/eventLog/type/failed/", "GivingApi").then((data: any) => {
         if (data?.length > 0 && data.find((error: any) => !error.resolved)) setDonationError(true);
       });
     }
 
     if (!formPermission && context?.person?.id) {
-      ApiHelper.get("/memberpermissions/member/" + context.person?.id, "MembershipApi").then((data) => setIsFormMember(data?.length > 0));
+      ApiHelper.get("/memberpermissions/member/" + context.person?.id, "MembershipApi").then((data: any) => setIsFormMember(data?.length > 0));
     }
 
     if (!UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) {
-      ApiHelper.get("/groups/my/ministry", "MembershipApi").then((data) => setIsMinistryMember(data?.length > 0));
+      ApiHelper.get("/groups/my/ministry", "MembershipApi").then((data: any) => setIsMinistryMember(data?.length > 0));
     }
   }, [formPermission, context?.person?.id]);
 

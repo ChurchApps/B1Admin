@@ -112,7 +112,7 @@ export const PersonPage = () => {
     return result[0].id;
   };
 
-  const defaultTab = "details";
+  const defaultTab: string = "details";
 
   React.useEffect(() => {
     if (selectedTab === "" && defaultTab !== "") {

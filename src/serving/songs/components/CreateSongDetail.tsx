@@ -14,8 +14,8 @@ export const CreateSongDetail: React.FC<Props> = (props) => {
   const { register, handleSubmit } = useForm<AnyRecord>({ defaultValues: { title: "", artist: "", seconds: 0 } });
 
   const onValid = (values: AnyRecord) => {
-    const sd: SongDetailInterface = { ...values };
-    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data) => {
+    const sd = { ...values } as SongDetailInterface;
+    ApiHelper.post("/songDetails", [sd], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
   };

@@ -47,7 +47,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data) => {
+    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => {
       setGroupServiceTimes(data);
     });
   }, [props.group]);
@@ -70,7 +70,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
     if (props.session?.id) {
       setLoading(true);
       ApiHelper.get("/sessions/" + props.session.id, "AttendanceApi")
-        .then((data) => {
+        .then((data: any) => {
           const sessionDate = data?.sessionDate && !isNaN(new Date(data.sessionDate).getTime())
             ? DateHelper.formatHtml5Date(new Date(data.sessionDate))
             : DateHelper.formatHtml5Date(new Date());
@@ -80,7 +80,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
           });
           setLoading(false);
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.error("Failed to load session:", error);
           setLoading(false);
         });

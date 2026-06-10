@@ -131,7 +131,7 @@ export const PeoplePage = memo(() => {
     if (Array.isArray(conditions)) {
       // Simple/AI list: run the stored conditions directly against current data.
       setSelectedListFilters(undefined);
-      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data) => {
+      ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: any) => {
         setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else {

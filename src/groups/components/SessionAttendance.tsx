@@ -25,7 +25,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
         setVisitSessions(vs);
         const peopleIds = ArrayHelper.getUniqueValues(vs, "visit.personId");
         if (peopleIds.length > 0) {
-          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data) => setPeople(data));
+          ApiHelper.get("/people/ids?ids=" + escape(peopleIds.join(",")), "MembershipApi").then((data: any) => setPeople(data));
         } else {
           setPeople([]);
         }
@@ -40,7 +40,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
 
   const loadDownloadData = useCallback(() => {
     if (session?.id) {
-      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data) => setDownloadData(data));
+      ApiHelper.get("/visitsessions/download/" + session.id, "AttendanceApi").then((data: any) => setDownloadData(data));
     }
   }, [session?.id]);
 

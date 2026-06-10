@@ -1,4 +1,3 @@
-import React from "react";
 import { Chart } from "react-google-charts";
 import { Card, CardContent, Typography, useTheme } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";

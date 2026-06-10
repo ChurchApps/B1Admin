@@ -88,7 +88,7 @@ export const PositionEdit = (props: Props) => {
   };
 
   useEffect(() => {
-    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => setGroups(data));
+    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: any) => setGroups(data));
   }, []);
 
   return (

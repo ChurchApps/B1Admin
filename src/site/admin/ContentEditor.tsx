@@ -98,7 +98,7 @@ export function ContentEditor(props: Props) {
   };
 
   // Force light mode while editor is mounted so preview matches the public website
-  const { mode } = useThemeMode();
+  useThemeMode();
   useEffect(() => {
     const wasInDarkMode = document.body.classList.contains("dark-theme");
     if (wasInDarkMode) {
@@ -125,7 +125,7 @@ export function ContentEditor(props: Props) {
     headerFooter: ["main"]
   };
 
-  const churchSettings = props.config?.appearance || context?.userChurch?.settings || {};
+  const churchSettings = props.config?.appearance || (context?.userChurch as any)?.settings || {};
 
   useEffect(() => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) navigate("/site");
@@ -468,8 +468,8 @@ export function ContentEditor(props: Props) {
     const base = {
       palette: { mode: "light" as const },
       components: {
-        MuiTextField: { defaultProps: { margin: "normal" } },
-        MuiFormControl: { defaultProps: { margin: "normal" } }
+        MuiTextField: { defaultProps: { margin: "normal" as const } },
+        MuiFormControl: { defaultProps: { margin: "normal" as const } }
       }
     };
     if (deviceType === "mobile") {

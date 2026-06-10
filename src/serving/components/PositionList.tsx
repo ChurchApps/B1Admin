@@ -1,4 +1,3 @@
-import React from "react";
 import { Badge, Chip, Table, TableBody, TableCell, TableHead, TableRow, Avatar, useTheme } from "@mui/material";
 import {
   type AssignmentInterface,

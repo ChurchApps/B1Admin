@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { DisplayBox, UserHelper, ApiHelper, Permissions, type ChurchInterface, type RoleInterface, type RolePermissionInterface, Locale } from "@churchapps/apphelper";
+import { DisplayBox, UserHelper, ApiHelper, Permissions, type ChurchInterface, Locale } from "@churchapps/apphelper";
+import { type RoleInterface, type RolePermissionInterface } from "@churchapps/helpers";
 import { Divider, Icon, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";

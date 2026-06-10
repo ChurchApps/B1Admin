@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Grid, type SelectChangeEvent, Box, Typography, Card, CardContent, Stack, alpha } from "@mui/material";
+import { Button, Grid, Box, Typography, Card, CardContent, Stack, alpha } from "@mui/material";
 import { TextFields as TextFieldsIcon, Visibility as VisibilityIcon, FormatSize as FormatSizeIcon, Style as StyleIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
@@ -35,16 +35,6 @@ export function FontEdit(props: Props) {
       props.updatedFunction(JSON.stringify(fonts));
       setIsSubmitting(false);
     }, 500);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<string>) => {
-    const val = e.target.value;
-    const f = { ...fonts };
-    switch (e.target.name) {
-      case "body": f.body = val; break;
-      case "heading": f.heading = val; break;
-    }
-    setFonts(f);
   };
 
   const updateFont = (font: string) => {

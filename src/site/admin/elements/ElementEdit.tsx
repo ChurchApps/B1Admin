@@ -219,7 +219,7 @@ export function ElementEdit(props: Props) {
     >
       <HtmlEditor
         value={parsedData[field] || ""}
-        onChange={(val) => {
+        onChange={(val: any) => {
           handleHtmlChange(field, val);
         }}
       />
