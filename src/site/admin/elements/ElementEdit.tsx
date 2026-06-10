@@ -3,6 +3,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import type { AnimationsInterface, BlockInterface, ElementInterface, GlobalStyleInterface, InlineStylesInterface } from "../../../helpers";
 import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
 import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { ElementTypes } from "@churchapps/helpers";
 import { FormCard } from "../../../components/ui";
 import { GalleryModal } from "../../../components/gallery";
 import React from "react";
@@ -125,6 +126,7 @@ export function ElementEdit(props: Props) {
         })
         .catch((error: any) => {
           console.error("ElementEdit API error:", error);
+          setErrors([error?.message || Locale.label("common.error")]);
         });
     } else {
       setErrors(innerErrors);
@@ -569,14 +571,14 @@ export function ElementEdit(props: Props) {
         </FormControl>
         <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
           <InputLabel>Show search box</InputLabel>
-          <Select label="Show search box" name="showSearch" value={parsedData.showSearch === false ? "false" : "true"} onChange={handleChange}>
+          <Select label="Show search box" name="showSearch" value={parsedData.showSearch === false || parsedData.showSearch === "false" ? "false" : "true"} onChange={handleChange}>
             <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
             <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth size="small" sx={{ marginTop: 2 }}>
           <InputLabel>Show category dropdown</InputLabel>
-          <Select label="Show category dropdown" name="showCategory" value={parsedData.showCategory === false ? "false" : "true"} onChange={handleChange}>
+          <Select label="Show category dropdown" name="showCategory" value={parsedData.showCategory === false || parsedData.showCategory === "false" ? "false" : "true"} onChange={handleChange}>
             <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
             <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
           </Select>
@@ -790,7 +792,14 @@ export function ElementEdit(props: Props) {
   };
 
   useEffect(() => {
-    setElement(props.element);
+    const el = { ...props.element };
+    // Seed new elements with their canonical defaults so saved data is explicit
+    // (renderer fallbacks don't always match the editor's displayed defaults).
+    if (!el.id && !el.answersJSON && el.elementType) {
+      const defaults = ElementTypes[el.elementType]?.defaults;
+      if (defaults && Object.keys(defaults).length > 0) el.answersJSON = JSON.stringify(defaults);
+    }
+    setElement(el);
   }, [props.element]);
 
   useEffect(() => {

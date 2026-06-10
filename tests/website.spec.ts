@@ -681,6 +681,15 @@ test.describe('Website Management', () => {
     });
   });
 
+  test.describe('Page editor — existing content', () => {
+    test('demo Home page sections render in the editor canvas', async ({ page }) => {
+      await page.goto('/site/pages/PAG00000001');
+      await expect(page.locator('.elementWrapper').first()).toBeVisible({ timeout: 20000 });
+      expect(await page.locator('.elementWrapper').count()).toBeGreaterThan(5);
+      await expect(page.getByText('Welcome to Grace Community Church').first()).toBeVisible();
+    });
+  });
+
   test.describe('Appearance — toggles persist after save', () => {
     test('navigating away and back to Appearance keeps the user on the section', async ({ page }) => {
       const appearanceTab = page.locator('[id="secondaryMenu"]').getByText('Appearance');

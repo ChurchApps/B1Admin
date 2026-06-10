@@ -493,8 +493,8 @@ export function ContentEditor(props: Props) {
     const result: any[] = [];
     if (props.pageId) {
       const page = container as PageInterface;
-      if (page?.layout && zones[page.layout]) {
-        const layoutZones: string[] = zones[page.layout];
+      if (page) {
+        const layoutZones: string[] = zones[page.layout] || ["main"];
         const showZoneLabel = layoutZones.length > 1;
         layoutZones.forEach((z: string) => {
           const sections = ArrayHelper.getAll(page?.sections, "zone", z);

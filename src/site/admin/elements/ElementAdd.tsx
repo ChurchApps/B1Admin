@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Dialog, DialogTitle, DialogContent, Icon, InputAdornment, TextField, Tabs, Tab, Box, Fade } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ElementTypes } from "@churchapps/helpers";
 import type { BlockInterface } from "../../../helpers";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { useDrag } from "react-dnd";
@@ -111,6 +112,33 @@ export function ElementAdd(props: Props) {
 
   useEffect(loadData, []);
 
+  const elementUI: Record<string, { icon: string; labelKey?: string; descKey?: string; label?: string; description?: string }> = {
+    row: { icon: "view_column", labelKey: "site.elementAdd.row", descKey: "site.elementAdd.descRow" },
+    box: { icon: "crop_square", labelKey: "site.elementAdd.box", descKey: "site.elementAdd.descBox" },
+    carousel: { icon: "view_carousel", labelKey: "site.elementAdd.carousel", descKey: "site.elementAdd.descCarousel" },
+    text: { icon: "text_fields", labelKey: "site.elementAdd.text", descKey: "site.elementAdd.descText" },
+    textWithPhoto: { icon: "article", labelKey: "site.elementAdd.textWithPhoto", descKey: "site.elementAdd.descTextWithPhoto" },
+    card: { icon: "dashboard", labelKey: "site.elementAdd.card", descKey: "site.elementAdd.descCard" },
+    faq: { icon: "help_outline", labelKey: "site.elementAdd.expandable", descKey: "site.elementAdd.descExpandable" },
+    table: { icon: "table_chart", labelKey: "site.elementAdd.table", descKey: "site.elementAdd.descTable" },
+    image: { icon: "image", labelKey: "site.elementAdd.image", descKey: "site.elementAdd.descImage" },
+    video: { icon: "play_circle", labelKey: "site.elementAdd.video", descKey: "site.elementAdd.descVideo" },
+    map: { icon: "place", labelKey: "site.elementAdd.location", descKey: "site.elementAdd.descLocation" },
+    logo: { icon: "church", labelKey: "site.elementAdd.logo", descKey: "site.elementAdd.descLogo" },
+    sermons: { icon: "video_library", labelKey: "common.sermons", descKey: "site.elementAdd.descSermons" },
+    stream: { icon: "live_tv", labelKey: "site.elementAdd.stream", descKey: "site.elementAdd.descStream" },
+    donation: { icon: "favorite", labelKey: "site.elementAdd.donation", descKey: "site.elementAdd.descDonation" },
+    donateLink: { icon: "volunteer_activism", labelKey: "site.elementAdd.donateLink", descKey: "site.elementAdd.descDonateLink" },
+    form: { icon: "assignment", labelKey: "site.elementAdd.form", descKey: "site.elementAdd.descForm" },
+    calendar: { icon: "event", labelKey: "site.elementAdd.calendar", descKey: "site.elementAdd.descCalendar" },
+    groupList: { icon: "groups", labelKey: "site.elementAdd.groupList", descKey: "site.elementAdd.descGroupList" },
+    groups: { icon: "manage_search", label: "Groups Browser", description: "Filterable directory of all church groups, with optional search and category filters." },
+    rawHTML: { icon: "code", labelKey: "site.elementAdd.html", descKey: "site.elementAdd.descHtml" },
+    iframe: { icon: "web", labelKey: "site.elementAdd.embedPage", descKey: "site.elementAdd.descEmbedPage" }
+  };
+
+  const hiddenTypes = ["column", "block", "whiteSpace", "buttonLink"];
+
   const allElements: ElementConfig[] = useMemo(() => {
     const elements: ElementConfig[] = [];
 
@@ -118,30 +146,18 @@ export function ElementAdd(props: Props) {
       elements.push({ type: "section", dndType: "section", icon: "view_agenda", label: Locale.label("site.elementAdd.section"), description: Locale.label("site.elementAdd.descSection"), category: "layout" });
     }
 
-    elements.push(
-      { type: "row", dndType: "element", icon: "view_column", label: Locale.label("site.elementAdd.row"), description: Locale.label("site.elementAdd.descRow"), category: "layout" },
-      { type: "box", dndType: "element", icon: "crop_square", label: Locale.label("site.elementAdd.box"), description: Locale.label("site.elementAdd.descBox"), category: "layout" },
-      { type: "carousel", dndType: "element", icon: "view_carousel", label: Locale.label("site.elementAdd.carousel"), description: Locale.label("site.elementAdd.descCarousel"), category: "layout" },
-      { type: "text", dndType: "element", icon: "text_fields", label: Locale.label("site.elementAdd.text"), description: Locale.label("site.elementAdd.descText"), category: "content" },
-      { type: "textWithPhoto", dndType: "element", icon: "article", label: Locale.label("site.elementAdd.textWithPhoto"), description: Locale.label("site.elementAdd.descTextWithPhoto"), category: "content" },
-      { type: "card", dndType: "element", icon: "dashboard", label: Locale.label("site.elementAdd.card"), description: Locale.label("site.elementAdd.descCard"), category: "content" },
-      { type: "faq", dndType: "element", icon: "help_outline", label: Locale.label("site.elementAdd.expandable"), description: Locale.label("site.elementAdd.descExpandable"), category: "content" },
-      { type: "table", dndType: "element", icon: "table_chart", label: Locale.label("site.elementAdd.table"), description: Locale.label("site.elementAdd.descTable"), category: "content" },
-      { type: "image", dndType: "element", icon: "image", label: Locale.label("site.elementAdd.image"), description: Locale.label("site.elementAdd.descImage"), category: "media" },
-      { type: "video", dndType: "element", icon: "play_circle", label: Locale.label("site.elementAdd.video"), description: Locale.label("site.elementAdd.descVideo"), category: "media" },
-      { type: "map", dndType: "element", icon: "place", label: Locale.label("site.elementAdd.location"), description: Locale.label("site.elementAdd.descLocation"), category: "media" },
-      { type: "logo", dndType: "element", icon: "church", label: Locale.label("site.elementAdd.logo"), description: Locale.label("site.elementAdd.descLogo"), category: "church" },
-      { type: "sermons", dndType: "element", icon: "video_library", label: Locale.label("common.sermons"), description: Locale.label("site.elementAdd.descSermons"), category: "church" },
-      { type: "stream", dndType: "element", icon: "live_tv", label: Locale.label("site.elementAdd.stream"), description: Locale.label("site.elementAdd.descStream"), category: "church" },
-      { type: "donation", dndType: "element", icon: "favorite", label: Locale.label("site.elementAdd.donation"), description: Locale.label("site.elementAdd.descDonation"), category: "church" },
-      { type: "donateLink", dndType: "element", icon: "volunteer_activism", label: Locale.label("site.elementAdd.donateLink"), description: Locale.label("site.elementAdd.descDonateLink"), category: "church" },
-      { type: "form", dndType: "element", icon: "assignment", label: Locale.label("site.elementAdd.form"), description: Locale.label("site.elementAdd.descForm"), category: "church" },
-      { type: "calendar", dndType: "element", icon: "event", label: Locale.label("site.elementAdd.calendar"), description: Locale.label("site.elementAdd.descCalendar"), category: "church" },
-      { type: "groupList", dndType: "element", icon: "groups", label: Locale.label("site.elementAdd.groupList"), description: Locale.label("site.elementAdd.descGroupList"), category: "church" },
-      { type: "groups", dndType: "element", icon: "manage_search", label: "Groups Browser", description: "Filterable directory of all church groups, with optional search and category filters.", category: "church" },
-      { type: "rawHTML", dndType: "element", icon: "code", label: Locale.label("site.elementAdd.html"), description: Locale.label("site.elementAdd.descHtml"), category: "advanced" },
-      { type: "iframe", dndType: "element", icon: "web", label: Locale.label("site.elementAdd.embedPage"), description: Locale.label("site.elementAdd.descEmbedPage"), category: "advanced" }
-    );
+    Object.values(ElementTypes).forEach((def) => {
+      if (hiddenTypes.includes(def.elementType)) return;
+      const ui = elementUI[def.elementType];
+      elements.push({
+        type: def.elementType,
+        dndType: "element",
+        icon: ui?.icon || "widgets",
+        label: ui?.label || (ui?.labelKey ? Locale.label(ui.labelKey) : def.label),
+        description: ui?.description || (ui?.descKey ? Locale.label(ui.descKey) : def.label),
+        category: def.category
+      });
+    });
 
     return elements;
   }, [props.includeSection]);
