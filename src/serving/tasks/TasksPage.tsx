@@ -41,7 +41,7 @@ export const TasksPage = () => {
             <TaskList compact={true} status={status} onStatusChange={setStatus} />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <CardWithHeader title={Locale.label("components.wrapper.workflows")} icon={<WorkflowsIcon sx={{ color: "primary.main" }} />}>
+            <CardWithHeader title={Locale.label("components.wrapper.workflows")} icon={<WorkflowsIcon sx={{ color: "primary.main", fontSize: 20 }} />}>
               {getCards()}
             </CardWithHeader>
           </Grid>

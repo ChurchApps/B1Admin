@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { TextField, FormControl, InputLabel, MenuItem, Select, Box, Chip, Stack, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import { TextField, FormControl, Grid, InputLabel, MenuItem, Select, Box, Chip, Stack, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, ErrorMessages, UserHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
@@ -128,15 +128,21 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
     <>
       <FormCard icon="email" title={template.id ? Locale.label("settings.emailTemplateEdit.editTemplate") : Locale.label("settings.emailTemplateEdit.newTemplate")} onSave={handleSubmit(onValid)} onCancel={onCancel} onDelete={onDelete}>
         <ErrorMessages errors={summaryErrors} />
-        <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.templateName")} placeholder={Locale.label("settings.emailTemplateEdit.templateNamePlaceholder")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("settings.emailTemplateEdit.nameRequired") })} />
-        <FormControl fullWidth>
-          <InputLabel>{Locale.label("settings.emailTemplateEdit.category")}</InputLabel>
-          <Controller name="category" control={control} render={({ field }) => (
-            <Select {...field} label={Locale.label("settings.emailTemplateEdit.category")} onChange={(ev: SelectChangeEvent) => field.onChange(ev.target.value)}>
-              {CATEGORIES.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
-            </Select>
-          )} />
-        </FormControl>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.templateName")} placeholder={Locale.label("settings.emailTemplateEdit.templateNamePlaceholder")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("settings.emailTemplateEdit.nameRequired") })} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("settings.emailTemplateEdit.category")}</InputLabel>
+              <Controller name="category" control={control} render={({ field }) => (
+                <Select {...field} label={Locale.label("settings.emailTemplateEdit.category")} onChange={(ev: SelectChangeEvent) => field.onChange(ev.target.value)}>
+                  {CATEGORIES.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+                </Select>
+              )} />
+            </FormControl>
+          </Grid>
+        </Grid>
 
         <Box sx={{ mt: 2 }}>
           <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>{Locale.label("settings.emailTemplateEdit.insertMergeSubject")}</Typography>

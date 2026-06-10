@@ -1,5 +1,6 @@
 import type { StyleOption } from "../../../helpers";
-import { InputBox, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../../components/ui";
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useEffect } from "react";
 import { ColorPicker } from "../ColorPicker";
@@ -57,7 +58,7 @@ export const StyleEdit: React.FC<Props> = (props) => {
     props.onSave(props.style.platform, name, storedValue);
   };
 
-  return <InputBox saveFunction={handleSave} saveText={Locale.label("common.update")} headerText={Locale.label("site.style.editStyle")} cancelFunction={() => { props.onSave("", "", ""); }} deleteFunction={(props.style.name) ? () => { props.onSave(props.style.platform, props.style.name, null ); } : null}>
+  return <FormCard onSave={handleSave} saveText={Locale.label("common.update")} title={Locale.label("site.style.editStyle")} onCancel={() => { props.onSave("", "", ""); }} onDelete={(props.style.name) ? () => { props.onSave(props.style.platform, props.style.name, null ); } : undefined}>
     <FormControl size="small" fullWidth>
       <InputLabel>{Locale.label("site.styleEdit.property")}</InputLabel>
       <Select size="small" fullWidth label={Locale.label("site.styleEdit.property")} name="name" value={name} onChange={(e) => { setName(e.target.value); }}>
@@ -65,6 +66,6 @@ export const StyleEdit: React.FC<Props> = (props) => {
       </Select>
     </FormControl>
     {getInputField()}
-  </InputBox>;
+  </FormCard>;
 
 };

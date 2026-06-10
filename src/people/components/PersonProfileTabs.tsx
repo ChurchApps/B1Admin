@@ -173,7 +173,7 @@ export const PersonProfileTabs: React.FC<Props> = (props) => {
           width: { xs: "100%", md: 280 },
           flexShrink: 0,
           py: 2,
-          backgroundColor: theme.palette.mode === "light" ? "#FFF" : "#292929",
+          backgroundColor: theme.palette.background.paper,
           borderRight: `1px solid ${theme.palette.divider}`,
           position: "relative",
           zIndex: 1

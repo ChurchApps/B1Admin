@@ -17,6 +17,7 @@ import { HowToReg as RegIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
+import { CountChip } from "../components/ui";
 
 export const RegistrationsPage = () => {
   const navigate = useNavigate();
@@ -75,12 +76,13 @@ export const RegistrationsPage = () => {
       <PageHeader title={Locale.label("registrations.registrationsPage.title")} subtitle={Locale.label("registrations.registrationsPage.subtitle")} />
       <Box sx={{ p: 3 }}>
         <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <RegIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <RegIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("registrations.registrationsPage.enabledEvents")}
               </Typography>
+              {events.length > 0 && <CountChip count={events.length} />}
             </Stack>
           </Box>
           {loading ? (
@@ -97,7 +99,7 @@ export const RegistrationsPage = () => {
             </Box>
           ) : (
             <Table>
-              <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+              <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.event")}</TableCell>
                   <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.date")}</TableCell>

@@ -16,7 +16,7 @@ import {
   Title as TitleIcon,
   Description as DescriptionIcon
 } from "@mui/icons-material";
-import { InputBox, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
 import { UniqueIdHelper } from "@churchapps/apphelper";
@@ -24,6 +24,7 @@ import { UserHelper } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
 import type { PlaylistInterface } from "@churchapps/helpers";
 import { useForm, Controller } from "react-hook-form";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   currentPlaylist: PlaylistInterface,
@@ -60,7 +61,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
     }
   }, [props.updatedPhoto]);
 
-  const checkDelete = () => { if (!UniqueIdHelper.isMissing(watchedId)) return handleDelete; else return null; };
+  const checkDelete = () => { if (!UniqueIdHelper.isMissing(watchedId)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction(); };
 
   const handleDelete = () => {
@@ -85,12 +86,12 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
 
   return (
     <>
-      <InputBox
-        headerIcon="calendar_month"
-        headerText={UniqueIdHelper.isMissing(watchedId) ? Locale.label("sermons.playlists.playlistEdit.createNew") : Locale.label("sermons.playlists.playlistEdit.editPlaylist")}
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={handleCancel}
-        deleteFunction={checkDelete()}
+      <FormCard
+        icon="calendar_month"
+        title={UniqueIdHelper.isMissing(watchedId) ? Locale.label("sermons.playlists.playlistEdit.createNew") : Locale.label("sermons.playlists.playlistEdit.editPlaylist")}
+        onSave={handleSubmit(onValid)}
+        onCancel={handleCancel}
+        onDelete={checkDelete()}
         help="docs/b1-admin/sermons/playlists"
         data-testid="edit-playlist-inputbox"
       >
@@ -224,7 +225,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
             </Card>
           </Grid>
         </Grid>
-      </InputBox>
+      </FormCard>
     </>
   );
 };

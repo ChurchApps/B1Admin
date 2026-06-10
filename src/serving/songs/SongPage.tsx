@@ -8,6 +8,7 @@ import { LibraryMusic as MusicIcon, Add as AddIcon, QueueMusic as ArrangementIco
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { Arrangement } from "./components/Arrangement";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { CountChip } from "../../components/ui";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { SongDetailsEdit } from "./components/SongDetailsEdit";
 import { SongDetailLinks } from "./components/SongDetailLinks";
@@ -107,10 +108,11 @@ export const SongPage = memo(() => {
         <Card sx={{ height: "fit-content", borderRadius: 2 }}>
           <CardContent>
             <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-              <MusicIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <MusicIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("songs.oldArrangements.arrangements")}
               </Typography>
+              {arrangements.data.length > 0 && <CountChip count={arrangements.data.length} />}
             </Stack>
 
             <List sx={{ p: 0 }}>

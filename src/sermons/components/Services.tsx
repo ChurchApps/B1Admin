@@ -64,7 +64,7 @@ export const Services: React.FC = () => {
         <tr key={service.id}>
           <td>
             <Stack direction="row" spacing={1} alignItems="center">
-              <VideoCallIcon sx={{ fontSize: 18, color: "primary.main" }} />
+              <VideoCallIcon sx={{ fontSize: 20, color: "primary.main" }} />
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 {service.label}
               </Typography>
@@ -72,7 +72,7 @@ export const Services: React.FC = () => {
                 <Chip
                   label={Locale.label("sermons.liveStreamTimes.servicesTab.weekly")}
                   size="small"
-                  sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }}
+                  sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }}
                 />
               )}
             </Stack>
@@ -82,7 +82,7 @@ export const Services: React.FC = () => {
               {DateHelper.prettyDateTime(service.serviceTime)}
             </Typography>
           </td>
-          <td style={{ textAlign: "right" }}>
+          <td style={{ textAlign: "right" }} className="rowActions">
             <AppIconButton
               label={Locale.label("common.edit")}
               icon={<EditIcon />}

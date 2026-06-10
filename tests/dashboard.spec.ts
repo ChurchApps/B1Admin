@@ -40,7 +40,7 @@ test.describe('Dashboard Management', () => {
     const searchBtn = page.locator('[data-testid="dashboard-search-button"]');
     await expect(searchBtn).toBeEnabled();
     await searchBtn.click();
-    const results = page.locator('h6').getByText('Dorothy Jackson');
+    const results = page.getByRole('link', { name: 'Dorothy Jackson' }).first();
     await expect(results).toBeVisible({ timeout: 10000 });
     await results.click();
     await expect(page).toHaveURL(/\/people\/PER\w+/, { timeout: 10000 });

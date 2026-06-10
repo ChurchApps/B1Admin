@@ -1,6 +1,7 @@
 import React from "react";
-import { ApiHelper, ArrayHelper, DateHelper, ExportLink, Loading, Locale, PageHeader, type PersonInterface } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, PageHeader, type PersonInterface } from "@churchapps/apphelper";
 import { Box, Card, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { ExportButton } from "../components/ui";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
@@ -142,7 +143,7 @@ export const ServingOverviewPage = () => {
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
             <TextField label={Locale.label("plans.servingOverviewPage.startDate")} type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
             <TextField label={Locale.label("plans.servingOverviewPage.endDate")} type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} size="small" InputLabelProps={{ shrink: true }} />
-            <ExportLink data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />
+            <ExportButton data={csvData} customHeaders={csvHeaders} filename={Locale.label("plans.servingOverviewPage.filename")} text={Locale.label("plans.servingOverviewPage.exportCsv")} />
           </Stack>
         </Card>
 

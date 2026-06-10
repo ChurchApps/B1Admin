@@ -151,7 +151,7 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "text.secondary", fontSize: 20 }}>church</Icon>
+            <Icon sx={{ color: "primary.main", fontSize: 20 }}>church</Icon>
             <Typography sx={{ fontWeight: 600, fontSize: "0.95rem", color: "text.primary" }}>
               {campus.name}
             </Typography>
@@ -220,8 +220,8 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 8 }}>
-            <Icon sx={{ color: "#ddd", fontSize: 12 }}>circle</Icon>
-            <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 400, fontSize: "0.85rem" }}>
+            <Icon sx={{ color: "var(--border-main)", fontSize: 12 }}>circle</Icon>
+            <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500, fontSize: "0.85rem" }}>
               {group.name}
             </Typography>
           </Stack>
@@ -367,11 +367,11 @@ export const AttendanceSetup = memo(() => {
       <ServiceTimeEdit serviceTime={selectedServiceTime} updatedFunction={handleUpdated} />
 
       {/* Modern Header Section */}
-      <Box sx={{ p: 3, borderBottom: "1px solid", borderBottomColor: "divider" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Icon sx={{ color: "primary.main", fontSize: 28 }}>group</Icon>
-            <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Icon sx={{ color: "primary.main", fontSize: 20 }}>group</Icon>
+            <Typography variant="h6">
               {Locale.label("attendance.attendancePage.groups")}
             </Typography>
           </Stack>

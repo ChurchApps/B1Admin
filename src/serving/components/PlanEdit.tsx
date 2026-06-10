@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { type PlanInterface } from "../../helpers";
 import { CampusSelect } from "../../components/CampusSelect";
 import { useMutation } from "@tanstack/react-query";
@@ -106,14 +107,20 @@ export const PlanEdit = (props: Props) => {
   return (
     <>
       <ErrorMessages errors={summaryErrors} />
-      <InputBox
-        headerText={props.plan?.id ? Locale.label("plans.planEdit.planEdit") : Locale.label("plans.planEdit.planAdd")}
-        headerIcon="assignment"
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={props.updatedFunction}
-        deleteFunction={props.plan?.id ? handleDelete : null}>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label={Locale.label("plans.planEdit.planNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planEdit.planReq") })} />
-        <TextField fullWidth label={Locale.label("plans.planEdit.servDate")} id="serviceDate" type="date" data-testid="service-date-input" aria-label={Locale.label("plans.planEdit.serviceDateAria")} error={!!e.serviceDate} helperText={e.serviceDate?.message} {...register("serviceDate", { required: Locale.label("plans.planEdit.servReq") })} />
+      <FormCard
+        title={props.plan?.id ? Locale.label("plans.planEdit.planEdit") : Locale.label("plans.planEdit.planAdd")}
+        icon="assignment"
+        onSave={handleSubmit(onValid)}
+        onCancel={props.updatedFunction}
+        onDelete={props.plan?.id ? handleDelete : undefined}>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.plan.name")} data-testid="plan-name-input" aria-label={Locale.label("plans.planEdit.planNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planEdit.planReq") })} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("plans.planEdit.servDate")} id="serviceDate" type="date" data-testid="service-date-input" aria-label={Locale.label("plans.planEdit.serviceDateAria")} error={!!e.serviceDate} helperText={e.serviceDate?.message} {...register("serviceDate", { required: Locale.label("plans.planEdit.servReq") })} />
+          </Grid>
+        </Grid>
         <CampusSelect control={control} testId="plan-campus-select" />
         {!props.plan?.id && previousPlan && (
           <>
@@ -136,7 +143,7 @@ export const PlanEdit = (props: Props) => {
             )} />
           </>
         )}
-      </InputBox>
+      </FormCard>
     </>
   );
 };

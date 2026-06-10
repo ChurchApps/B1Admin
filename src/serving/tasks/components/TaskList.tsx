@@ -300,8 +300,8 @@ export const TaskList = memo((props: Props) => {
           {/* Header */}
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <TaskIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <TaskIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("tasks.taskList.tasks")}
               </Typography>
             </Stack>

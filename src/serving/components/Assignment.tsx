@@ -270,8 +270,8 @@ export const Assignment = (props: Props) => {
           <CardContent>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <AutoAssignIcon sx={{ color: "primary.main", fontSize: 28 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <AutoAssignIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("plans.planPage.assign") || "Serving Team Assignments"}
                 </Typography>
               </Stack>
@@ -293,8 +293,8 @@ export const Assignment = (props: Props) => {
           <CardContent>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <NotesIcon sx={{ color: "primary.main", fontSize: 28 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <NotesIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("common.notes") || "Plan Notes"}
                 </Typography>
               </Stack>

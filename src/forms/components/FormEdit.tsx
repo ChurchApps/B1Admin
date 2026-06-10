@@ -1,7 +1,8 @@
-import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useMountedState, ApiHelper, InputBox, DateHelper, Locale } from "@churchapps/apphelper";
+import { useMountedState, ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -94,7 +95,7 @@ export function FormEdit(props: Props) {
   }
 
   return (
-    <InputBox id="formBox" headerIcon="format_align_left" headerText={Locale.label("forms.formEdit.editForm")} saveFunction={handleSubmit(onValid)} isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending} cancelFunction={props.updatedFunction} deleteFunction={props.formId ? handleDelete : undefined}>
+    <FormCard id="formBox" icon="format_align_left" title={Locale.label("forms.formEdit.editForm")} onSave={handleSubmit(onValid)} isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending} onCancel={props.updatedFunction} onDelete={props.formId ? handleDelete : undefined}>
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("forms.formEdit.name")} type="text" placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label={Locale.label("forms.formEdit.formNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("forms.formEdit.nameReqMsg") })} />
       {!props.formId && (
@@ -109,32 +110,40 @@ export function FormEdit(props: Props) {
         </FormControl>
       )}
       {standAloneForm && (
-        <>
-          <FormControl fullWidth>
-            <InputLabel>{Locale.label("forms.formEdit.access")}</InputLabel>
-            <Controller name="restricted" control={control} render={({ field }) => (
-              <Select {...field} value={field.value?.toString() ?? "false"} label={Locale.label("forms.formEdit.access")} data-testid="access-level-select" aria-label={Locale.label("forms.formEdit.accessLevelAria")} onChange={(e) => field.onChange(e.target.value === "true")}>
-                <MenuItem value="false">{Locale.label("forms.formEdit.public")}</MenuItem>
-                <MenuItem value="true">{Locale.label("forms.formEdit.restrict")}</MenuItem>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("forms.formEdit.access")}</InputLabel>
+              <Controller name="restricted" control={control} render={({ field }) => (
+                <Select {...field} value={field.value?.toString() ?? "false"} label={Locale.label("forms.formEdit.access")} data-testid="access-level-select" aria-label={Locale.label("forms.formEdit.accessLevelAria")} onChange={(e) => field.onChange(e.target.value === "true")}>
+                  <MenuItem value="false">{Locale.label("forms.formEdit.public")}</MenuItem>
+                  <MenuItem value="true">{Locale.label("forms.formEdit.restrict")}</MenuItem>
+                </Select>
+              )} />
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("forms.formEdit.available")}</InputLabel>
+              <Select label={Locale.label("forms.formEdit.available")} name="limit" value={showDates.toString()} onChange={(e) => { setShowDates(e.target.value === "true"); }}>
+                <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
               </Select>
-            )} />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>{Locale.label("forms.formEdit.available")}</InputLabel>
-            <Select label={Locale.label("forms.formEdit.available")} name="limit" value={showDates.toString()} onChange={(e) => { setShowDates(e.target.value === "true"); }}>
-              <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-              <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-            </Select>
-          </FormControl>
-        </>
+            </FormControl>
+          </Grid>
+        </Grid>
       )}
       {showDates && (
-        <>
-          <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableStart")} InputLabelProps={{ shrink: true }} error={!!e.accessStartTime} helperText={e.accessStartTime?.message} {...register("accessStartTime", { required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false })} />
-          <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableEnd")} InputLabelProps={{ shrink: true }} error={!!e.accessEndTime} helperText={e.accessEndTime?.message} {...register("accessEndTime", { required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false })} />
-        </>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableStart")} error={!!e.accessStartTime} helperText={e.accessStartTime?.message} {...register("accessStartTime", { required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false })} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableEnd")} error={!!e.accessEndTime} helperText={e.accessEndTime?.message} {...register("accessEndTime", { required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false })} />
+          </Grid>
+        </Grid>
       )}
       <TextField fullWidth label={Locale.label("forms.formEdit.thankYouMessage")} type="text" placeholder={Locale.label("placeholders.form.thankYouMessage")} {...register("thankYouMessage")} />
-    </InputBox>
+    </FormCard>
   );
 }

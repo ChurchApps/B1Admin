@@ -29,7 +29,7 @@ export const DashboardPage = () => {
       <PageHeader title={headerTitle} subtitle={headerSubtitle} />
       <PageContainer>
         <Box sx={{ mb: 3 }}>
-          <CardWithHeader title={Locale.label("helpers.secondaryMenuHelper.quickActions")} icon={<FlashOn sx={{ color: "primary.main" }} />}>
+          <CardWithHeader title={Locale.label("helpers.secondaryMenuHelper.quickActions")} icon={<FlashOn sx={{ color: "primary.main", fontSize: 20 }} />}>
             {isDomainAdmin ? <AdminWelcome /> : <MemberWelcome />}
           </CardWithHeader>
         </Box>

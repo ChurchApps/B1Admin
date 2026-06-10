@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type LinkInterface } from "@churchapps/helpers";
 import { TextField } from "@mui/material";
+import { FormCard } from "../../../components/ui";
 
 interface Props {
   link: LinkInterface;
@@ -35,9 +36,9 @@ export const LinkEdit = (props: Props) => {
   };
 
   return (
-    <InputBox headerText={Locale.label("songs.link.edit")} headerIcon="link" saveFunction={handleSubmit(onValid)} cancelFunction={props.onCancel} deleteFunction={props.link?.id ? handleDelete : null}>
+    <FormCard title={Locale.label("songs.link.edit")} icon="link" onSave={handleSubmit(onValid)} onCancel={props.onCancel} onDelete={props.link?.id ? handleDelete : undefined}>
       <TextField label={Locale.label("songs.link.url")} fullWidth placeholder={Locale.label("placeholders.song.linkUrl")} {...register("url")} />
       <TextField label={Locale.label("songs.link.text")} fullWidth placeholder={Locale.label("songs.link.chordChart")} {...register("text")} />
-    </InputBox>
+    </FormCard>
   );
 };

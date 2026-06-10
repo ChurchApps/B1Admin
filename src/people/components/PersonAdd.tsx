@@ -76,7 +76,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
             onClick={() => setOpen(true)}
             data-testid="create-new-person-link"
             aria-label={Locale.label("people.personAdd.createNewPersonAria")}
-            style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("createPerson.addNewPerson")}
           </button>
         </Typography>

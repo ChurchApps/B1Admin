@@ -4,7 +4,6 @@ import {
   ArrayHelper,
   PersonHelper,
   UserHelper,
-  ExportLink,
   Permissions,
   Loading,
   Locale
@@ -13,6 +12,7 @@ import { Table, TableBody, TableRow, TableCell, TableHead, Icon, Button, Grid, A
 import { PersonRemove as PersonRemoveIcon, Add as AddIcon } from "@mui/icons-material";
 import { SessionCard } from "./SessionCard";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { ExportButton } from "../../components/ui";
 import { type GroupInterface, type PersonInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
 import { type SessionInterface } from "../../helpers";
 
@@ -221,7 +221,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
                 {person?.name?.display}
               </a>
             </TableCell>
-            <TableCell style={{ textAlign: "right" }}>{editLink}</TableCell>
+            <TableCell align="right" className="rowActions">{editLink}</TableCell>
           </TableRow>
         );
       }
@@ -399,7 +399,7 @@ export const GroupSessions: React.FC<Props> = memo((props) => {
               {session.serviceTime?.name && ` • ${session.serviceTime.name}`}
             </Typography>
           </Box>
-          {downloadData && <ExportLink data={downloadData} spaceAfter={true} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} />}
+          {downloadData && <ExportButton data={downloadData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} text={Locale.label("groups.groupsPage.export")} />}
         </Box>
 
         {visitSessions.length === 0 ? (

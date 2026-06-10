@@ -109,7 +109,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           result = (
             <Box>
               <Link to={"/people/" + (p.id || "")} style={{ textDecoration: "none" }}>
-                <Typography variant="h6" sx={{ color: "primary.main", "&:hover": { textDecoration: "underline" } }}>
+                <Typography variant="body2" sx={{ color: "var(--link)", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}>
                   {p?.name?.display}
                 </Typography>
               </Link>
@@ -133,7 +133,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             <Stack direction="row" spacing={1} alignItems="center">
               {p?.contactInfo?.email && (
                 <>
-                  <EmailIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+                  <EmailIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                   <Typography variant="body2">{p?.contactInfo?.email}</Typography>
                 </>
               )}
@@ -145,7 +145,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             <Stack direction="row" spacing={1} alignItems="center">
               {(p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone) && (
                 <>
-                  <PhoneIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+                  <PhoneIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                   <Typography variant="body2">{p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone}</Typography>
                 </>
               )}
@@ -196,7 +196,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       const result: JSX.Element[] = [];
       columns.forEach((c) => {
         if (selectedColumns.indexOf(c.key) > -1) {
-          result.push(<TableCell key={c.key}>{getColumn(p, c.key)}</TableCell>);
+          if (c.key === "deleteOption") result.push(<TableCell key={c.key} align="right" className="rowActions">{getColumn(p, c.key)}</TableCell>);
+          else result.push(<TableCell key={c.key}>{getColumn(p, c.key)}</TableCell>);
         }
       });
       if (optionalColumns.length > 0) {
@@ -333,9 +334,10 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       if (selectedColumns.indexOf(c.key) > -1) {
         result.push({
           key: c.key,
-          label: c.shortName,
+          label: c.key === "deleteOption" ? "" : c.shortName,
           sortable: c.key !== "photo" && c.key !== "deleteOption",
-          minWidth: c.key === "photo" ? 88 : 160
+          minWidth: c.key === "photo" ? 88 : 160,
+          align: c.key === "deleteOption" ? "right" : undefined
         });
       }
     });
@@ -399,10 +401,6 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             minWidth: "100%",
             tableLayout: "auto",
             "& .MuiTableCell-root": {
-              borderBottom: "1px solid",
-              borderBottomColor: "divider",
-              py: 2,
-              px: 2,
               verticalAlign: "top",
               whiteSpace: "nowrap"
             }

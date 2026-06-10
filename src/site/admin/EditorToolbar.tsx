@@ -93,7 +93,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
           onClick={onDone}
           startIcon={<Icon>arrow_back</Icon>}
           data-testid="content-editor-done-button"
-          sx={{ textTransform: "none", color: "#374151", fontWeight: 500 }}
+          sx={{ textTransform: "none", color: "text.primary", fontWeight: 500 }}
         >
           {Locale.label("site.editorToolbar.exit")}
         </Button>
@@ -106,7 +106,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
               fontWeight: 600,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: "#9ca3af",
+              color: "text.secondary",
               lineHeight: 1
             }}
           >
@@ -119,7 +119,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
             sx={{
               fontSize: "0.95rem",
               fontWeight: 500,
-              color: "#374151",
+              color: "text.primary",
               lineHeight: 1.3,
               whiteSpace: "nowrap",
               overflow: "hidden",
@@ -153,7 +153,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
             display: { xs: "none", md: "flex" },
             alignItems: "center",
             gap: 0.5,
-            color: lastSavedAt ? "#16a34a" : "#9ca3af",
+            color: lastSavedAt ? "success.main" : "text.secondary",
             fontSize: "0.8rem",
             fontWeight: 500,
             whiteSpace: "nowrap"
@@ -178,13 +178,13 @@ export function EditorToolbar(props: EditorToolbarProps) {
           data-testid="device-type-toggle"
           sx={{
             "& .MuiToggleButton-root": {
-              border: "1px solid #e5e7eb",
-              color: "#6b7280",
+              border: "1px solid var(--border-main)",
+              color: "text.secondary",
               px: 1,
               "&.Mui-selected": {
-                backgroundColor: "#eff6ff",
-                color: "#1d4ed8",
-                "&:hover": { backgroundColor: "#dbeafe" }
+                backgroundColor: "var(--c1l7)",
+                color: "primary.main",
+                "&:hover": { backgroundColor: "var(--c1l6)" }
               }
             }
           }}
@@ -210,8 +210,8 @@ export function EditorToolbar(props: EditorToolbarProps) {
           sx={{
             textTransform: "none",
             fontWeight: 600,
-            backgroundColor: showAdd ? "#1565c0" : "#1976d2",
-            "&:hover": { backgroundColor: "#1565c0" }
+            backgroundColor: showAdd ? "primary.dark" : "primary.main",
+            "&:hover": { backgroundColor: "primary.dark" }
           }}
           data-testid="content-editor-add-button"
         >

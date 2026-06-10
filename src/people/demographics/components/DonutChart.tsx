@@ -27,18 +27,20 @@ export const DonutChart = ({ title, data, onSelect }: Props) => {
   };
 
   const chartEvents = onSelect
-    ? [{
-      eventName: "select" as const,
-      callback: ({ chartWrapper }: any) => {
-        const chart = chartWrapper.getChart();
-        const selection = chart.getSelection();
-        if (selection.length > 0 && selection[0].row != null) {
-          const item = data[selection[0].row];
-          if (item) onSelect(item.name);
-          chart.setSelection([]);
+    ? [
+      {
+        eventName: "select" as const,
+        callback: ({ chartWrapper }: any) => {
+          const chart = chartWrapper.getChart();
+          const selection = chart.getSelection();
+          if (selection.length > 0 && selection[0].row != null) {
+            const item = data[selection[0].row];
+            if (item) onSelect(item.name);
+            chart.setSelection([]);
+          }
         }
       }
-    }]
+    ]
     : undefined;
 
   return (

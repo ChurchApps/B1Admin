@@ -155,7 +155,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
       result.push(
         <TableRow key="everyone">
           <TableCell>
-            <i className="groups" /> <Link to={`/settings/role/everyone`}>({Locale.label("settings.roles.everyone")})</Link>
+            <i className="groups" /> <Link to={`/settings/role/everyone`} style={{ color: "var(--link)", fontWeight: 500 }}>({Locale.label("settings.roles.everyone")})</Link>
           </TableCell>
           <TableCell></TableCell>
         </TableRow>
@@ -169,9 +169,9 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
       result.push(
         <TableRow key={role.id}>
           <TableCell>
-            <i className="lock" /> <Link to={`/settings/role/${role.id}`}>{role.name}</Link>
+            <i className="lock" /> <Link to={`/settings/role/${role.id}`} style={{ color: "var(--link)", fontWeight: 500 }}>{role.name}</Link>
           </TableCell>
-          <TableCell align="right">{editLink}</TableCell>
+          <TableCell align="right" className="rowActions">{editLink}</TableCell>
         </TableRow>
       );
     });
@@ -185,7 +185,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
         <TableHead>
           <TableRow>
             <TableCell>{Locale.label("common.name")}</TableCell>
-            <TableCell></TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>{rows}</TableBody>

@@ -5,6 +5,7 @@ import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
 import { ArrowUpward as ArrowUpwardIcon, ArrowDownward as ArrowDownwardIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CountChip } from "../../components/ui";
 
 interface Props {
   id: string;
@@ -96,7 +97,7 @@ export const Form: React.FC<Props> = (props) => {
               component="button"
               type="button"
               onClick={handleClick}
-              sx={{ background: "none", border: 0, p: 0, color: "primary.light", cursor: "pointer", fontWeight: 500 }}>
+              sx={{ background: "none", border: 0, p: 0, color: "var(--link)", cursor: "pointer", fontWeight: 500 }}>
               {questions[i].title}
             </Box>
           </TableCell>
@@ -184,11 +185,12 @@ export const Form: React.FC<Props> = (props) => {
         {/* Main Questions Content - Full Width Card */}
         <Card sx={{ width: "100%" }}>
           {/* Card Header */}
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <Icon>help</Icon>
+                <Icon sx={{ color: "primary.main", fontSize: 20 }}>help</Icon>
                 <Typography variant="h6">{Locale.label("forms.form.questions")}</Typography>
+                {questions?.length > 0 && <CountChip count={questions.length} />}
               </Stack>
               {formPermission && (
                 <Button

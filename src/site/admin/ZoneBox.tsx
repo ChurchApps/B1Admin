@@ -28,7 +28,7 @@ export function ZoneBox(props: ZoneBoxProps) {
             py: 0.25,
             borderRadius: "4px",
             backgroundColor: "rgba(243, 244, 246, 0.85)",
-            color: "#6b7280",
+            color: "text.secondary",
             fontWeight: 500,
             fontSize: "0.7rem",
             letterSpacing: "0.04em",

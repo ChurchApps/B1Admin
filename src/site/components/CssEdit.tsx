@@ -132,7 +132,7 @@ a {
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>{example.title}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <Box sx={{ backgroundColor: "#f8f9fa", p: 2, borderRadius: 1, border: "1px solid", borderColor: "grey.200" }}>
+                      <Box sx={{ backgroundColor: "var(--bg-sub)", p: 2, borderRadius: 1, border: "1px solid", borderColor: "grey.200" }}>
                         <Typography variant="body2" component="pre" sx={{ fontFamily: "Monaco, Menlo, \"Ubuntu Mono\", monospace", fontSize: "0.75rem", margin: 0, whiteSpace: "pre-wrap", color: "text.primary" }}>{example.code}</Typography>
                       </Box>
                     </AccordionDetails>
@@ -164,7 +164,7 @@ a {
                         <Typography variant="body2" sx={{ fontWeight: 500 }}>{example.title}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Box sx={{ backgroundColor: "#f8f9fa", p: 2, borderRadius: 1, border: "1px solid", borderColor: "grey.200" }}>
+                        <Box sx={{ backgroundColor: "var(--bg-sub)", p: 2, borderRadius: 1, border: "1px solid", borderColor: "grey.200" }}>
                           <Typography variant="body2" component="pre" sx={{ fontFamily: "Monaco, Menlo, \"Ubuntu Mono\", monospace", fontSize: "0.75rem", margin: 0, whiteSpace: "pre-wrap", color: "text.primary" }}>{example.code}</Typography>
                         </Box>
                       </AccordionDetails>

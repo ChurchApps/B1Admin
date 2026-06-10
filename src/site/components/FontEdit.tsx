@@ -49,7 +49,7 @@ export function FontEdit(props: Props) {
       {fontList.map(heading => (
         <Grid size={{ xs: 12, md: 6 }} key={heading}>
           <Card sx={{ border: "1px solid", borderColor: "grey.200", borderRadius: 2, overflow: "hidden" }}>
-            <Box sx={{ p: 2, backgroundColor: alpha("#1976d2", 0.04), borderBottom: "1px solid", borderColor: "divider" }}>
+            <Box sx={{ p: 2, backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.04), borderBottom: "1px solid", borderColor: "divider" }}>
               <Typography variant="h6" sx={{ fontFamily: heading, fontWeight: 600, color: "primary.main", fontSize: "1.125rem" }}>{heading}</Typography>
             </Box>
             <CardContent sx={{ p: 1.5 }}>
@@ -117,7 +117,7 @@ export function FontEdit(props: Props) {
 
         <Box sx={{ mt: 3 }}>
           <CardWithHeader title={Locale.label("site.fontEdit.typographyPreview")} icon={<VisibilityIcon />}>
-            <Box sx={{ p: 3, backgroundColor: alpha("#f5f5f5", 0.3), borderRadius: 2 }}>
+            <Box sx={{ p: 3, backgroundColor: "var(--bg-sub)", borderRadius: 2 }}>
               <Typography variant="h4" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.fontEdit.mainHeadingPreview")}</Typography>
               <Typography variant="body1" sx={{ fontFamily: fonts?.body || "Roboto", mb: 3, lineHeight: 1.6, color: "text.primary" }}>{Locale.label("site.fontEdit.previewBody")}</Typography>
               <Typography variant="h6" sx={{ fontFamily: fonts?.heading || "Roboto", fontWeight: 600, mb: 2, color: "text.primary" }}>{Locale.label("site.fontEdit.secondaryHeading")}</Typography>

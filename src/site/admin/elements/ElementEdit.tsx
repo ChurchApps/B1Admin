@@ -2,7 +2,8 @@ import { useState, useEffect, Suspense, lazy } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { AnimationsInterface, BlockInterface, ElementInterface, GlobalStyleInterface, InlineStylesInterface } from "../../../helpers";
 import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
-import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../../components/ui";
 import { GalleryModal } from "../../../components/gallery";
 import React from "react";
 
@@ -195,7 +196,7 @@ export function ElementEdit(props: Props) {
       sx={{
         mt: 2,
         "& .editor-container": {
-          border: "1px solid #e5e7eb",
+          border: "1px solid var(--border-main)",
           borderRadius: 1,
           overflow: "hidden",
           backgroundColor: "#fff"
@@ -868,14 +869,14 @@ export function ElementEdit(props: Props) {
 
   const formContent = (
     <>
-      <InputBox
+      <FormCard
         id="dialogForm"
-        headerText={Locale.label("site.elements.editElement")}
-        headerIcon="school"
-        saveFunction={handleSave}
-        cancelFunction={handleCancel}
-        deleteFunction={handleDelete}
-        headerActionContent={
+        title={Locale.label("site.elements.editElement")}
+        icon="school"
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+        headerActions={
           props.element.id && (
             <a href="about:blank" onClick={handleDuplicate}>
               {Locale.label("common.duplicate")}
@@ -884,7 +885,7 @@ export function ElementEdit(props: Props) {
         }
         data-testid="edit-element-inputbox">
         <div id="dialogFormContent">{element?.elementType === "block" ? getBlockFields() : getStandardFields()}</div>
-      </InputBox>
+      </FormCard>
       {selectPhotoField && <GalleryModal onClose={() => setSelectPhotoField(null)} onSelect={handlePhotoSelected} aspectRatio={0} />}
     </>
   );

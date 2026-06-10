@@ -83,8 +83,8 @@ export const Arrangement = memo((props: Props) => {
         <CardContent>
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
             <Stack direction="row" spacing={2} alignItems="center">
-              <ArrangementIcon sx={{ color: "primary.main", fontSize: 24 }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <ArrangementIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("songs.arrangement.title") || "Arrangement"} - {props.arrangement?.name}
               </Typography>
             </Stack>

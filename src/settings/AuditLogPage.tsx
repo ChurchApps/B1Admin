@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useMemo } from "react";
-import { UserHelper, Permissions, ApiHelper, Loading, ExportLink, PageHeader, Locale } from "@churchapps/apphelper";
+import { UserHelper, Permissions, ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import {
   Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination,
   TextField, Select, MenuItem, FormControl, InputLabel, Button, Card, Stack, Chip, Typography
 } from "@mui/material";
-import { FileDownload as ExportIcon, Search as SearchIcon } from "@mui/icons-material";
+import { Search as SearchIcon } from "@mui/icons-material";
+import { ExportButton } from "../components/ui";
 
 interface AuditLog {
   id: string;
@@ -141,7 +142,7 @@ export const AuditLogPage: React.FC = () => {
             <TextField size="small" type="date" label={Locale.label("settings.auditLogPage.endDate")} value={endDate} onChange={(e) => setEndDate(e.target.value)} InputLabelProps={{ shrink: true }} />
             <Button variant="contained" startIcon={<SearchIcon />} onClick={handleSearch}>{Locale.label("settings.auditLogPage.search")}</Button>
             {logs.length > 0 && (
-              <Button variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={exportData} filename="audit-log.csv">{Locale.label("settings.auditLogPage.exportCsv")}</Button>
+              <ExportButton data={exportData} filename="audit-log.csv" text={Locale.label("settings.auditLogPage.exportCsv")} />
             )}
           </Stack>
         </Card>

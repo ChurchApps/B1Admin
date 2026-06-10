@@ -63,8 +63,8 @@ export const GroupBanner = memo((props: Props) => {
           label={Locale.label("groups.groupBanner.team")}
           size="small"
           sx={{
-            backgroundColor: "#e3f2fd",
-            color: "#1565c0",
+            backgroundColor: "rgba(255,255,255,0.2)",
+            color: "#fff",
             fontWeight: 600,
             fontSize: "0.875rem"
           }}
@@ -77,8 +77,8 @@ export const GroupBanner = memo((props: Props) => {
           label={group.categoryName}
           size="small"
           sx={{
-            backgroundColor: "#f3e5f5",
-            color: "#6a1b9a",
+            backgroundColor: "rgba(255,255,255,0.2)",
+            color: "#fff",
             fontWeight: 600,
             fontSize: "0.875rem"
           }}
@@ -115,7 +115,7 @@ export const GroupBanner = memo((props: Props) => {
 
     if (group.trackAttendance !== undefined) {
       info.push({
-        icon: group.trackAttendance ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
+        icon: group.trackAttendance ? <CheckIcon sx={{ color: "success.light", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "error.light", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.trackAttendance"),
         value: group.trackAttendance ? Locale.label("common.yes") : Locale.label("common.no")
       });
@@ -123,7 +123,7 @@ export const GroupBanner = memo((props: Props) => {
 
     if (group.printNametag !== undefined) {
       info.push({
-        icon: group.printNametag ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
+        icon: group.printNametag ? <CheckIcon sx={{ color: "success.light", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "error.light", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.printNametag"),
         value: group.printNametag ? Locale.label("common.yes") : Locale.label("common.no")
       });
@@ -131,7 +131,7 @@ export const GroupBanner = memo((props: Props) => {
 
     if (group.parentPickup !== undefined) {
       info.push({
-        icon: group.parentPickup ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
+        icon: group.parentPickup ? <CheckIcon sx={{ color: "success.light", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "error.light", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.parentPickup"),
         value: group.parentPickup ? Locale.label("common.yes") : Locale.label("common.no")
       });

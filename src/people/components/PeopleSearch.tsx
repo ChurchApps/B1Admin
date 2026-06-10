@@ -1,7 +1,8 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
 import { type SearchCondition, type PersonInterface } from "@churchapps/helpers";
-import { InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { TextField, Box, Typography, Stack } from "@mui/material";
 import { AdvancedPeopleSearch, type ActiveFilter } from "./AdvancedPeopleSearch";
 import { Search as SearchIcon } from "@mui/icons-material";
@@ -73,10 +74,10 @@ export function PeopleSearch(props: Props) {
   }, []);
 
   return (
-    <InputBox
+    <FormCard
       id="peopleSearch"
-      headerIcon="person"
-      headerText={Locale.label("people.peopleSearch.simpSearch")}
+      icon="person"
+      title={Locale.label("people.peopleSearch.simpSearch")}
       help="docs/b1-admin/people/searching-people"
     >
       <Stack spacing={2}>
@@ -130,6 +131,6 @@ export function PeopleSearch(props: Props) {
           />
         )}
       </Stack>
-    </InputBox>
+    </FormCard>
   );
 }

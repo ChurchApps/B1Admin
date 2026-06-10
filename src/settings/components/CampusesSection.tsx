@@ -4,6 +4,7 @@ import { Locale, Loading } from "@churchapps/apphelper";
 import { Box, Button, Card, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Business as BusinessIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
+import { CountChip } from "../../components/ui";
 import { CampusEdit } from "./CampusEdit";
 
 // Campus management (list + inline editor). Shared by the Settings landing's
@@ -36,7 +37,7 @@ export const CampusesSection: React.FC = () => {
         data-testid={`campus-row-${c.id}`}>
         <TableCell>
           <Stack direction="row" spacing={1} alignItems="center">
-            <BusinessIcon sx={{ color: "primary.light", fontSize: 20 }} />
+            <BusinessIcon sx={{ color: "primary.main", fontSize: 20 }} />
             <Typography variant="body2" sx={{ fontWeight: 500 }}>{c.name}</Typography>
           </Stack>
         </TableCell>
@@ -54,10 +55,11 @@ export const CampusesSection: React.FC = () => {
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: editCampus ? 7 : 12 }}>
         <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <BusinessIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>{Locale.label("settings.campuses.campuses")}</Typography>
+              <BusinessIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">{Locale.label("settings.campuses.campuses")}</Typography>
+              {data.length > 0 && <CountChip count={data.length} />}
             </Stack>
             <Button variant="outlined" size="small" startIcon={<AddIcon />} onClick={() => setEditCampus({})} data-testid="add-campus-button">
               {Locale.label("settings.campuses.addCampus")}

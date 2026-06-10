@@ -3,6 +3,7 @@ import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, 
 import { Webhook as WebhookIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { WebhookEdit } from "./WebhookEdit";
+import { CountChip } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export interface WebhookInterface {
@@ -63,8 +64,12 @@ export const WebhooksSection: React.FC = () => {
 
   return (
     <Card>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
-        <Typography variant="h6">{Locale.label("settings.webhooksPage.title")}</Typography>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <WebhookIcon sx={{ color: "primary.main", fontSize: 20 }} />
+          <Typography variant="h6">{Locale.label("settings.webhooksPage.title")}</Typography>
+          {webhooks.length > 0 && <CountChip count={webhooks.length} />}
+        </Stack>
         <Button variant="contained" startIcon={<AddIcon />} onClick={() => setEditWebhook(blankWebhook())}>
           {Locale.label("settings.webhooksPage.newWebhook")}
         </Button>
@@ -84,7 +89,7 @@ export const WebhooksSection: React.FC = () => {
                 <TableCell>{Locale.label("settings.webhooksPage.url")}</TableCell>
                 <TableCell>{Locale.label("settings.webhooksPage.events")}</TableCell>
                 <TableCell>{Locale.label("settings.webhooksPage.status")}</TableCell>
-                <TableCell align="right">{Locale.label("settings.webhooksPage.actions")}</TableCell>
+                <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -94,7 +99,7 @@ export const WebhooksSection: React.FC = () => {
                   <TableCell><Typography variant="body2" sx={{ maxWidth: 280, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w.url}</Typography></TableCell>
                   <TableCell>{w.events?.length || 0}</TableCell>
                   <TableCell><Chip size="small" color={w.active ? "success" : "default"} label={w.active ? Locale.label("settings.webhooksPage.active") : Locale.label("settings.webhooksPage.disabled")} /></TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" className="rowActions">
                     <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                       <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={(e) => { e.stopPropagation(); setEditWebhook(w); }} />
                       <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={(e) => { e.stopPropagation(); handleDelete(w); }} />

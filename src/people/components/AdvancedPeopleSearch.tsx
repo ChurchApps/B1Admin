@@ -2,7 +2,8 @@ import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "
 import { B1AdminPersonHelper } from ".";
 import { useCampuses } from "../../hooks/useCampuses";
 import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
-import { ArrayHelper, InputBox, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
+import { ArrayHelper, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
 import {
   Button,
@@ -1086,23 +1087,23 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
   return (
     <>
-      <InputBox
+      <FormCard
         id="advancedSearch"
-        headerIcon="person"
-        headerText={Locale.label("people.peopleSearch.advSearch")}
-        headerActionContent={
+        icon="person"
+        title={Locale.label("people.peopleSearch.advSearch")}
+        headerActions={
           props.toggleFunction && (
             <Button onClick={props.toggleFunction} sx={{ textTransform: "none" }}>
               {Locale.label("people.peopleSearch.simp")}
             </Button>
           )
         }
-        saveFunction={handleAdvancedSearch}
+        onSave={handleAdvancedSearch}
         saveText={Locale.label("people.advancedSearch.search")}
         isSubmitting={Object.keys(activeFilters).length < 1}
         help="docs/b1-admin/people/searching-people">
         {renderContent()}
-      </InputBox>
+      </FormCard>
 
       {/* Complex Filter Dialog */}
       <Dialog open={complexFilterDialog.open} onClose={() => setComplexFilterDialog({ open: false, field: null })} maxWidth="sm" fullWidth>

@@ -56,7 +56,7 @@ export const DonationEvents = memo(() => {
       return (
         <Accordion key={log.id}>
           <AccordionSummary>
-            <Icon sx={{ marginRight: "5px", color: !log.resolved ? "#dc3545" : "#000" }}>error</Icon>
+            <Icon sx={{ marginRight: "5px", color: !log.resolved ? "error.main" : "text.primary" }}>error</Icon>
             <span className="capitalize">{eventType}</span> - {DateHelper.prettyDate(log.created)}
           </AccordionSummary>
           <AccordionDetails>

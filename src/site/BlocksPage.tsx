@@ -7,6 +7,7 @@ import { SmartButton as BlockIcon, Add as AddIcon, Edit as EditIcon, Settings as
 import { Link } from "react-router-dom";
 import { BlockEdit } from "./components";
 import { PermissionDenied } from "../components";
+import { CountChip } from "../components/ui";
 
 export const BlocksPage = () => {
   const [blocks, setBlocks] = useState<BlockInterface[]>([]);
@@ -68,7 +69,7 @@ export const BlocksPage = () => {
                 to={`/site/blocks/${block.id}`}
                 style={{
                   textDecoration: "none",
-                  color: "var(--primary-main, #1976d2)",
+                  color: "var(--link)",
                   fontWeight: 500
                 }}
               >
@@ -78,7 +79,7 @@ export const BlocksPage = () => {
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Icon sx={{ color: "text.secondary", fontSize: 16 }}>
+              <Icon sx={{ color: "text.secondary", fontSize: 18 }}>
                 {block.blockType === "elementBlock" ? "widgets" : "view_module"}
               </Icon>
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
@@ -171,15 +172,13 @@ export const BlocksPage = () => {
 
         {/* Main Table Card */}
         <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <BlockIcon />
+                <BlockIcon sx={{ color: "primary.main", fontSize: 20 }} />
                 <Typography variant="h6">{Locale.label("site.blocksPage.blocks")}</Typography>
+                {stats.totalBlocks > 0 && <CountChip count={stats.totalBlocks} />}
               </Stack>
-              <Typography variant="body2" color="text.secondary">
-                {stats.totalBlocks} {stats.totalBlocks === 1 ? Locale.label("site.blocksPage.block") : Locale.label("site.blocksPage.blocks")}
-              </Typography>
             </Stack>
           </Box>
           <Box>{getTable()}</Box>

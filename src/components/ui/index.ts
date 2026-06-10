@@ -11,3 +11,5 @@ export type { BreadcrumbItem } from "./Breadcrumbs";
 export { FormCard } from "./FormCard";
 export { SortableTableHead } from "./SortableTableHead";
 export type { SortableColumn, SortDirection } from "./SortableTableHead";
+export { CountChip } from "./CountChip";
+export { ExportButton } from "./ExportButton";

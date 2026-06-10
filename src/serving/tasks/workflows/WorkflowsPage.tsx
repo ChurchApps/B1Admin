@@ -3,6 +3,7 @@ import React from "react";
 import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
+import { CountChip } from "../../../components/ui";
 import { WorkflowEdit } from "./components/WorkflowEdit";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
@@ -118,8 +119,9 @@ export const WorkflowsPage = () => {
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
-                  <WorkflowsIcon sx={{ color: "primary.main" }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>{Locale.label("tasks.workflowsPage.title")}</Typography>
+                  <WorkflowsIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                  <Typography variant="h6">{Locale.label("tasks.workflowsPage.title")}</Typography>
+                  {(workflows.data?.length || 0) > 0 && <CountChip count={workflows.data.length} />}
                 </Stack>
                 {getGroupedList()}
               </CardContent>

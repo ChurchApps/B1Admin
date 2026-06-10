@@ -92,13 +92,13 @@ export const CalendarsPage = () => {
           label={Locale.label("calendars.calendarList.active")}
           size="small"
           sx={{
-            backgroundColor: "#e8f5e9",
-            color: "#2e7d32",
+            backgroundColor: "rgba(46, 125, 50, 0.1)",
+            color: "success.main",
             fontWeight: 600
           }}
         />
       </TableCell>
-      <TableCell align="right">
+      <TableCell align="right" className="rowActions">
         <Stack direction="row" spacing={1} justifyContent="flex-end">
           <AppIconButton
             tone="card"
@@ -197,9 +197,7 @@ export const CalendarsPage = () => {
                       <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                         {Locale.label("calendars.calendarList.status")}
                       </TableCell>
-                      <TableCell align="right" sx={{ fontWeight: 600, color: "text.secondary" }}>
-                        {Locale.label("calendars.calendarList.actions")}
-                      </TableCell>
+                      <TableCell align="right" />
                     </TableRow>
                   </TableHead>
                   <TableBody>{getRows()}</TableBody>
@@ -230,9 +228,7 @@ export const CalendarsPage = () => {
                         <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                           {Locale.label("calendars.calendarList.status")}
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, color: "text.secondary" }}>
-                          {Locale.label("calendars.calendarList.actions")}
-                        </TableCell>
+                        <TableCell align="right" />
                       </TableRow>
                     </TableHead>
                     <TableBody>{getRows()}</TableBody>

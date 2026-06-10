@@ -221,8 +221,8 @@ export const Keys = memo((props: Props) => {
           {/* Header */}
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
             <Stack direction="row" spacing={2} alignItems="center">
-              <KeyIcon sx={{ color: "primary.main", fontSize: 24 }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <KeyIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("songs.keys.title") || "Keys & Downloads"}
               </Typography>
             </Stack>

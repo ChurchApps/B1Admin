@@ -2,7 +2,6 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Grid, InputLabel, MenuItem, Select, TextField, FormControl, Button, Box } from "@mui/material";
 import { Loading, Locale } from "@churchapps/apphelper";
-import { InputBox } from "@churchapps/apphelper";
 import { ErrorMessages } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import { UniqueIdHelper } from "@churchapps/apphelper";
@@ -12,6 +11,7 @@ import { ImageEditor } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
 import { Duration } from "./Duration";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   currentSermon: SermonInterface,
@@ -48,7 +48,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     });
   };
 
-  const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentSermon?.id)) return handleDelete; else return null; };
+  const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentSermon?.id)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction(); };
 
   const handlePhotoUpdated = (dataUrl: string) => {
@@ -205,12 +205,12 @@ export const SermonEdit: React.FC<Props> = (props) => {
       keyPlaceholder = Locale.label("sermons.sermonEdit.youtubeChannelIdHelpPlaceholder");
       break;
     case "youtube":
-      keyLabel = <>{Locale.label("sermons.sermonEdit.youtubeId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}>https://youtube.com/watch?v=<b style={{ color: "#24b8ff" }}>abcd1234</b></span></>;
+      keyLabel = <>{Locale.label("sermons.sermonEdit.youtubeId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}>https://youtube.com/watch?v=<b style={{ color: "var(--link)" }}>abcd1234</b></span></>;
       keyPlaceholder = "abcd1234";
       endAdornment = <Button variant="contained" onClick={() => fetchVideo("youtube")} data-testid="fetch-youtube-button" aria-label={Locale.label("sermons.sermonEdit.fetchYouTubeAria")}>{Locale.label("sermons.sermonEdit.fetch")}</Button>;
       break;
     case "vimeo":
-      keyLabel = <>{Locale.label("sermons.sermonEdit.vimeoId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}>https://vimeo.com/<b style={{ color: "#24b8ff" }}>123456789</b></span></>;
+      keyLabel = <>{Locale.label("sermons.sermonEdit.vimeoId")} <span className="description" style={{ float: "right", marginTop: 3, paddingLeft: 5 }}>https://vimeo.com/<b style={{ color: "var(--link)" }}>123456789</b></span></>;
       keyPlaceholder = "123456789";
       endAdornment = <Button variant="contained" onClick={() => fetchVideo("vimeo")} data-testid="fetch-vimeo-button" aria-label={Locale.label("sermons.sermonEdit.fetchVimeoAria")}>{Locale.label("sermons.sermonEdit.fetch")}</Button>;
       break;
@@ -225,7 +225,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     return (
       <>
         {showImageEditor && <ImageEditor aspectRatio={16 / 9} outputWidth={640} outputHeight={360} photoUrl={thumbnail || ""} onCancel={() => setShowImageEditor(false)} onUpdate={handlePhotoUpdated} />}
-        <InputBox headerIcon="calendar_month" headerText={(props.currentSermon?.permanentUrl) ? Locale.label("sermons.sermonEdit.editPermanentLiveUrl") : Locale.label("sermons.sermonEdit.editSermon")} saveFunction={handleSubmit(onValid)} cancelFunction={handleCancel} deleteFunction={checkDelete()} help="docs/b1-admin/sermons/" data-testid="sermon-edit-box">
+        <FormCard icon="calendar_month" title={(props.currentSermon?.permanentUrl) ? Locale.label("sermons.sermonEdit.editPermanentLiveUrl") : Locale.label("sermons.sermonEdit.editSermon")} onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={checkDelete()} help="docs/b1-admin/sermons/" data-testid="sermon-edit-box">
           <ErrorMessages errors={errors} data-testid="sermon-errors" />
           <>
             {!props.currentSermon?.permanentUrl && (
@@ -307,7 +307,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
               )}
             </div>
           </>
-        </InputBox>
+        </FormCard>
       </>
     );
   }

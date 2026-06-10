@@ -1,6 +1,7 @@
 import type { SelectChangeEvent } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { ErrorMessages, InputBox, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import type { AnimationsInterface, BlockInterface, GlobalStyleInterface, SectionInterface } from "../../helpers";
 import { Button, Dialog, FormControl, Icon, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { PickColors } from "./elements/PickColors";
@@ -142,20 +143,23 @@ export function SectionEdit(props: Props) {
   if (!section) return <></>;
 
   const formContent = (
-    <InputBox
+    <FormCard
       id="sectionDetailsBox"
-      headerText={Locale.label("site.section.editSection")}
-      headerIcon="school"
-      saveFunction={handleSave}
-      cancelFunction={handleCancel}
-      deleteFunction={handleDelete}
+      title={Locale.label("site.section.editSection")}
+      icon="school"
+      onSave={handleSave}
+      onCancel={handleCancel}
+      onDelete={handleDelete}
       data-testid="edit-section-inputbox"
-      headerActionContent={props.section.id && (<><Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button><Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button></>)}
+      headerActions={props.section.id && (<>
+        <Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button>
+        <Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button>
+      </>)}
     >
       <div id="dialogFormContent">
         {(section?.targetBlockId) ? getBlockFields() : getStandardFields()}
       </div>
-    </InputBox>
+    </FormCard>
   );
 
   if (props.inPanel) return formContent;

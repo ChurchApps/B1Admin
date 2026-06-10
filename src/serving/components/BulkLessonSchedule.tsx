@@ -5,7 +5,8 @@ import {
   Checkbox, LinearProgress, Alert
 } from "@mui/material";
 import { MenuBook as MenuBookIcon } from "@mui/icons-material";
-import { ApiHelper, DateHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { getProvider, type ContentFolder, type ContentItem } from "@churchapps/content-providers";
 import { type PlanInterface } from "../../helpers";
 import { LessonSelector } from "./LessonSelector";
@@ -218,11 +219,11 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
 
   return (
     <>
-      <InputBox
-        headerText={Locale.label("plans.bulkLessonSchedule.title") || "Bulk Schedule Lessons"}
-        headerIcon="calendar_month"
-        saveFunction={handleSave}
-        cancelFunction={props.onCancel}
+      <FormCard
+        title={Locale.label("plans.bulkLessonSchedule.title") || "Bulk Schedule Lessons"}
+        icon="calendar_month"
+        onSave={handleSave}
+        onCancel={props.onCancel}
         saveText={saving ? `${Locale.label("plans.bulkLessonSchedule.schedulingProgress")} ${saveProgress}%` : undefined}
       >
         {saving && <LinearProgress variant="determinate" value={saveProgress} sx={{ mb: 2 }} />}
@@ -370,7 +371,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
             </>
           )}
         </Stack>
-      </InputBox>
+      </FormCard>
 
       <LessonSelector
         open={showLessonSelector}

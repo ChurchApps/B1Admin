@@ -128,7 +128,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
       {showCreatePersonOnNotFound && hasSearched && searchText && searchResults.length === 0 && (
         <Typography sx={{ marginTop: "7px" }}>
           {Locale.label("person.noRec")}{" "}
-          <button type="button" onClick={() => setOpen(true)} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          <button type="button" onClick={() => setOpen(true)} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("createPerson.addNewPerson")}
           </button>
         </Typography>

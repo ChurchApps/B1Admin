@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Box, Typography, Stack, TextField, FormControlLabel, Switch, Button } from "@mui/material";
+import { Card, Box, Typography, Stack, TextField, FormControlLabel, Switch, Button, Grid } from "@mui/material";
 import { Settings as SettingsIcon } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -62,8 +62,14 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
             )}
           />
           <TextField label={Locale.label("registrations.registrationSettingsEdit.capacity")} type="number" placeholder={Locale.label("registrations.registrationSettingsEdit.capacityPlaceholder")} size="small" fullWidth {...register("capacity")} />
-          <TextField label={Locale.label("registrations.registrationSettingsEdit.registrationOpens")} type="datetime-local" size="small" fullWidth slotProps={{ inputLabel: { shrink: true } }} {...register("registrationOpenDate")} />
-          <TextField label={Locale.label("registrations.registrationSettingsEdit.registrationCloses")} type="datetime-local" size="small" fullWidth slotProps={{ inputLabel: { shrink: true } }} {...register("registrationCloseDate")} />
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField label={Locale.label("registrations.registrationSettingsEdit.registrationOpens")} type="datetime-local" size="small" fullWidth {...register("registrationOpenDate")} />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField label={Locale.label("registrations.registrationSettingsEdit.registrationCloses")} type="datetime-local" size="small" fullWidth {...register("registrationCloseDate")} />
+            </Grid>
+          </Grid>
           <TextField label={Locale.label("registrations.registrationSettingsEdit.tags")} placeholder={Locale.label("registrations.registrationSettingsEdit.tagsPlaceholder")} helperText={Locale.label("registrations.registrationSettingsEdit.tagsHelper")} size="small" fullWidth {...register("tags")} />
           <Button variant="contained" onClick={handleSubmit(onValid)} disabled={saving}>
             {saving ? Locale.label("common.saving") : Locale.label("registrations.registrationSettingsEdit.saveSettings")}

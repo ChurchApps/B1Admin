@@ -32,7 +32,7 @@ export function Preview(props: Props) {
             </Grid>
           </Grid>
         </div>
-        <div style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: "cover", padding: 50, backgroundColor: "#cccccc" }}>
+        <div style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: "cover", padding: 50, backgroundColor: "var(--border-main)" }}>
           <div style={{ backgroundColor: palette.light, color: palette.darkAccent, textAlign: "center", opacity: 0.9, padding: 30 }}>
             <h1 style={{ fontFamily: fonts.heading }}>Welcome to {props.churchName}</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>

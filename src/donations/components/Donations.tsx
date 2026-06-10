@@ -1,10 +1,11 @@
 import React from "react";
-import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, ExportLink, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
+import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface } from "@churchapps/helpers";
-import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Button, Box, Chip } from "@mui/material";
-import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, FileDownload as ExportIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Box, Chip } from "@mui/material";
+import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CountChip, ExportButton } from "../../components/ui";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -37,11 +38,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
 
   const getHeaderActions = React.useCallback(() => {
     if (funds.length === 0 || !donations) return null;
-    return (
-      <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={donations} filename="donations.csv">
-        {Locale.label("donations.donations.export")}
-      </Button>
-    );
+    return <ExportButton data={donations} filename="donations.csv" text={Locale.label("donations.donations.export")} />;
   }, [funds.length, donations]);
 
   const showEditDonation = React.useCallback(
@@ -95,13 +92,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
               {Locale.label("donations.donations.amt")}
             </Typography>
           </TableCell>
-          {canEdit && (
-            <TableCell sx={{ fontWeight: 600 }}>
-              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                {Locale.label("common.edit")}
-              </Typography>
-            </TableCell>
-          )}
+          {canEdit && <TableCell align="right" />}
         </TableRow>
       </TableHead>
     );
@@ -146,7 +137,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.light" variant="body2">
+              <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.main" variant="body2">
                 <span style={{ fontWeight: 500, color: "text.primary" }}>{d.id}</span>
               </IconText>
               {isPending && <Chip icon={<PendingIcon />} label={Locale.label("donations.donations.pending")} size="small" color="warning" variant="outlined" />}
@@ -167,7 +158,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
               <span style={{ fontWeight: 600 }}>{CurrencyHelper.formatCurrencyWithLocale(d.amount, currency)}</span>
             </IconText>
           </TableCell>
-          {canEdit && <TableCell>{editButton}</TableCell>}
+          {canEdit && <TableCell align="right" className="rowActions">{editButton}</TableCell>}
         </TableRow>
       );
     }
@@ -177,7 +168,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       <TableRow key="total" sx={{ borderTop: 2, backgroundColor: "grey.50" }}>
         <TableCell sx={{ fontWeight: "bold", fontSize: 15 }}>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "primary.light", fontSize: 20 }}>calculate</Icon>
+            <Icon sx={{ color: "primary.main", fontSize: 20 }}>calculate</Icon>
             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
               {Locale.label("donations.donations.total")}
             </Typography>
@@ -211,11 +202,12 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     return (
       <>
         {/* Header with actions */}
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+        <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Stack direction="row" spacing={1} alignItems="center">
-              <DonationIcon />
+              <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />
               <Typography variant="h6">{Locale.label("donations.donations.don")}</Typography>
+              {donations?.length > 0 && <CountChip count={donations.length} />}
             </Stack>
             {getHeaderActions()}
           </Stack>

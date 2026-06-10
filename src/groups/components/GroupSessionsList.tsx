@@ -2,9 +2,10 @@ import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type SessionInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
-import { Box, Button, Chip, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Box, Button, Divider, Icon, List, ListItem, ListItemButton, Pagination, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { Edit as EditIcon, Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CountChip } from "../../components/ui";
 
 interface Props {
   group: GroupInterface;
@@ -221,7 +222,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
           <Typography variant="h6" component="div">
             {Locale.label("groups.groupSessions.sessions")}
           </Typography>
-          <Chip label={filteredSessions.length} size="small" />
+          {filteredSessions.length > 0 && <CountChip count={filteredSessions.length} />}
         </Box>
         {availableYears.length > 0 && (
           <ToggleButtonGroup

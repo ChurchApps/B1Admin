@@ -1,6 +1,7 @@
 import React, { useCallback, memo } from "react";
 import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, Button, Menu, MenuItem, ListItemIcon, ListItemText, FormControlLabel, Switch } from "@mui/material";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { CountChip } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -171,10 +172,11 @@ export const PlanList = memo((props: Props) => {
       <Box sx={{ mb: 3 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap" useFlexGap spacing={1} sx={{ mb: 2 }}>
           <Stack direction="row" alignItems="center" spacing={2}>
-            <AssignmentIcon sx={{ color: "primary.main" }} />
-            <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
+            <AssignmentIcon sx={{ color: "primary.main", fontSize: 20 }} />
+            <Typography variant="h6">
               {Locale.label("plans.planList.plans")}
             </Typography>
+            {plans.length > 0 && <CountChip count={plans.length} />}
             <FormControlLabel
               control={<Switch size="small" checked={showPast} onChange={(e) => setShowPast(e.target.checked)} />}
               label={<Stack direction="row" alignItems="center" spacing={0.5}><HistoryIcon fontSize="small" /><Typography variant="body2">{Locale.label("plans.planList.showPast")}</Typography></Stack>}

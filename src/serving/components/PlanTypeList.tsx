@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanTypeInterface } from "../../helpers";
 import { PlanTypeEdit } from "./PlanTypeEdit";
-import { EmptyState } from "../../components/ui";
+import { CountChip, EmptyState } from "../../components/ui";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -59,10 +59,11 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
     <Box>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <AssignmentIcon sx={{ color: "primary.main" }} />
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          <AssignmentIcon sx={{ color: "primary.main", fontSize: 20 }} />
+          <Typography variant="h6">
             {Locale.label("plans.planTypeList.planTypes")}
           </Typography>
+          {types.length > 0 && <CountChip count={types.length} />}
         </Stack>
         {canEdit && types.length > 0 && (
           <Button
@@ -113,7 +114,7 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
                       to={`/serving/planTypes/${planType.id}`}
                       sx={{
                         textDecoration: "none",
-                        color: "primary.main",
+                        color: "var(--link)",
                         fontWeight: 500,
                         "&:hover": { textDecoration: "underline" }
                       }}>
@@ -121,7 +122,7 @@ export const PlanTypeList = React.memo(({ ministry }: Props) => {
                     </Typography>
                   </TableCell>
                   {canEdit && (
-                    <TableCell align="right">
+                    <TableCell align="right" className="rowActions">
                       <AppIconButton
                         label={Locale.label("common.edit")}
                         icon={<EditIcon />}
