@@ -1,14 +1,14 @@
 import React from "react";
 import { FundEdit } from "./components";
-import { UserHelper, ExportLink, Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Card, Stack, Button } from "@mui/material";
-import { VolunteerActivism as FundIcon, Add as AddIcon, FileDownload as ExportIcon, Edit as EditIcon } from "@mui/icons-material";
+import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { EmptyState, SortableTableHead, type SortDirection } from "../components/ui";
+import { CountChip, EmptyState, ExportButton, SortableTableHead, type SortDirection } from "../components/ui";
 
 export const FundsPage = () => {
   const [editFundId, setEditFundId] = React.useState("notset");
@@ -128,7 +128,7 @@ export const FundsPage = () => {
               )}
             </Stack>
           </TableCell>
-          <TableCell>{editLink}</TableCell>
+          <TableCell align="right" className="rowActions">{editLink}</TableCell>
         </TableRow>
       );
     }
@@ -145,7 +145,7 @@ export const FundsPage = () => {
               columns={[
                 { key: "name", label: Locale.label("common.name"), sortable: true },
                 { key: "taxDeductible", label: Locale.label("donations.fundsPage.taxStatus") },
-                { key: "edit", label: Locale.label("common.edit") }
+                { key: "edit", label: "", align: "right" }
               ]}
               sortBy={sortBy}
               sortDirection={sortDirection}
@@ -217,18 +217,15 @@ export const FundsPage = () => {
 
         {/* Main table */}
         <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <FundIcon />
+                <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />
                 <Typography variant="h6">{Locale.label("donations.funds.fund")}</Typography>
+                {sortedFunds.length > 0 && <CountChip count={sortedFunds.length} />}
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">
-                {funds.data && (
-                  <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={funds.data} filename="funds.csv" sx={{ mr: 1 }}>
-                    {Locale.label("donations.fundsPage.export")}
-                  </Button>
-                )}
+                {funds.data && <ExportButton data={funds.data} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
               </Stack>
             </Stack>
           </Box>

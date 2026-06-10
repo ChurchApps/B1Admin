@@ -88,7 +88,7 @@ export const EmailTemplatesPage: React.FC = () => {
                     <TableCell>{Locale.label("settings.emailTemplatesPage.subject")}</TableCell>
                     <TableCell>{Locale.label("settings.emailTemplatesPage.category")}</TableCell>
                     <TableCell>{Locale.label("settings.emailTemplatesPage.modified")}</TableCell>
-                    <TableCell align="right">{Locale.label("settings.emailTemplatesPage.actions")}</TableCell>
+                    <TableCell align="right"></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -98,7 +98,7 @@ export const EmailTemplatesPage: React.FC = () => {
                       <TableCell>{t.subject}</TableCell>
                       <TableCell>{t.category && <Chip label={t.category} size="small" />}</TableCell>
                       <TableCell>{formatDate(t.dateModified)}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="right" className="rowActions">
                         <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={(e) => { e.stopPropagation(); handleEdit(t); }} />
                           <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={(e) => { e.stopPropagation(); handleDelete(t); }} />

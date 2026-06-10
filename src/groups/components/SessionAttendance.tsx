@@ -1,9 +1,10 @@
 import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
-import { ApiHelper, ArrayHelper, ExportLink, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
-import { Avatar, Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { ApiHelper, ArrayHelper, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
+import { Avatar, Box, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { PersonRemove as PersonRemoveIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CountChip, ExportButton } from "../../components/ui";
 
 interface Props {
   group: GroupInterface;
@@ -89,7 +90,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
               {person?.name?.display}
             </a>
           </TableCell>
-          <TableCell style={{ textAlign: "right" }}>{editLink}</TableCell>
+          <TableCell align="right" className="rowActions">{editLink}</TableCell>
         </TableRow>
       );
     });
@@ -133,21 +134,24 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   }
 
   return (
-    <Paper sx={{ p: 2, position: "relative" }}>
-      {downloadData && downloadData.length > 0 && (
-        <Box sx={{ position: "absolute", top: 4, right: 4 }}>
-          <ExportLink data={downloadData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} />
+    <Paper sx={{ p: 2 }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 2 }}>
+        <Box>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="h6" component="div" data-cy="session-present-msg">
+              {Locale.label("groups.groupSessions.attFor")} {group.name}
+            </Typography>
+            {visitSessions.length > 0 && <CountChip count={visitSessions.length} />}
+          </Stack>
+          <Typography variant="body2" color="text.secondary">
+            {Locale.label("groups.groupSessions.session")}: {session.displayName}
+            {(session as any).serviceTime?.name && ` • ${(session as any).serviceTime.name}`}
+          </Typography>
         </Box>
-      )}
-      <Box sx={{ mb: 2, pr: 5 }}>
-        <Typography variant="h6" component="div" data-cy="session-present-msg">
-          {Locale.label("groups.groupSessions.attFor")} {group.name}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {Locale.label("groups.groupSessions.session")}: {session.displayName}
-          {(session as any).serviceTime?.name && ` • ${(session as any).serviceTime.name}`}
-        </Typography>
-      </Box>
+        {downloadData && downloadData.length > 0 && (
+          <ExportButton data={downloadData} filename={`${group.name}_visits.csv`} customHeaders={customHeaders} text={Locale.label("groups.groupsPage.export")} />
+        )}
+      </Stack>
 
       {visitSessions.length === 0 ? (
         <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", py: 4 }}>

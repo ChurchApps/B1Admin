@@ -18,6 +18,7 @@ import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventIn
 import { PermissionDenied } from "../components";
 import { CuratedCalendar } from "./components/CuratedCalendar";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { CountChip } from "../components/ui";
 
 export const CalendarPage = () => {
   const params = useParams();
@@ -66,7 +67,7 @@ export const CalendarPage = () => {
         </Typography>
       </TableCell>
       {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-        <TableCell align="right">
+        <TableCell align="right" className="rowActions">
           <AppIconButton
             intent="remove"
             label={Locale.label("common.remove")}
@@ -103,10 +104,10 @@ export const CalendarPage = () => {
                 borderColor: "grey.200"
               }}
             >
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <CalendarIcon sx={{ color: "primary.main" }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                  <CalendarIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                  <Typography variant="h6">
                     {Locale.label("calendars.calendarPage.calendarEvents")}
                   </Typography>
                 </Stack>
@@ -132,12 +133,13 @@ export const CalendarPage = () => {
                 borderColor: "grey.200"
               }}
             >
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <GroupsIcon sx={{ color: "primary.main" }} />
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                  <GroupsIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                  <Typography variant="h6">
                     {Locale.label("calendars.calendarPage.groupsInCalendar")}
                   </Typography>
+                  {addedGroups.length > 0 && <CountChip count={addedGroups.length} />}
                 </Stack>
               </Box>
               <Box>
@@ -162,9 +164,7 @@ export const CalendarPage = () => {
                         <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                           {Locale.label("calendars.calendarPage.groupName")}
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 600, color: "text.secondary" }}>
-                          {Locale.label("calendars.calendarPage.actions")}
-                        </TableCell>
+                        <TableCell align="right" />
                       </TableRow>
                     </TableHead>
                     <TableBody>{getRows()}</TableBody>

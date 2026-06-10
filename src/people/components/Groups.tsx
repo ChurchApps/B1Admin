@@ -6,6 +6,7 @@ import { Card, CardContent, Typography, Stack, Chip, List, ListItemButton, ListI
 import { Group as GroupIcon, Groups as GroupsIcon, SupervisorAccount as LeaderIcon } from "@mui/icons-material";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { CardWithHeader } from "../../components/ui/CardWithHeader";
+import { CountChip } from "../../components/ui/CountChip";
 
 interface Props {
   personId: string;
@@ -65,8 +66,8 @@ export const Groups: React.FC<Props> = memo((props) => {
     return (
       <CardWithHeader
         title={props.title}
-        icon={<GroupsIcon sx={{ color: "primary.main" }} />}
-        actions={count > 0 ? <Chip label={count} size="small" color="primary" sx={{ fontWeight: 600 }} /> : undefined}>
+        icon={<GroupsIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+        actions={count > 0 ? <CountChip count={count} /> : undefined}>
         {recordsContent}
       </CardWithHeader>
     );

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { SermonEdit } from "./SermonEdit";
 import { PlaylistEdit } from "./PlaylistEdit";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CountChip } from "../../components/ui";
 
 export const Sermons = () => {
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
@@ -189,7 +190,7 @@ export const Sermons = () => {
         >
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <PlaylistIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+              <PlaylistIcon sx={{ fontSize: 18, color: "text.secondary" }} />
               <Typography variant="body2">
                 {getPlaylistTitle(video.playlistId) || Locale.label("sermons.noPlaylist")}
               </Typography>
@@ -202,13 +203,13 @@ export const Sermons = () => {
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <CalendarIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+              <CalendarIcon sx={{ fontSize: 18, color: "text.secondary" }} />
               <Typography variant="body2" color="text.secondary">
                 {(video.publishDate) ? DateHelper.prettyDate(DateHelper.toDate(video.publishDate)) : Locale.label("sermons.notScheduled")}
               </Typography>
             </Stack>
           </TableCell>
-          <TableCell align="right">
+          <TableCell align="right" className="rowActions">
             <AppIconButton
               label={Locale.label("common.edit")}
               icon={<EditIcon />}
@@ -266,7 +267,7 @@ export const Sermons = () => {
               <TableCell sx={{ width: "25%" }}>{Locale.label("sermons.playlist")}</TableCell>
               <TableCell sx={{ width: "45%" }}>{Locale.label("sermons.sermon")}</TableCell>
               <TableCell sx={{ width: "25%" }}>{Locale.label("sermons.publishDate")}</TableCell>
-              <TableCell sx={{ width: "5%" }}></TableCell>
+              <TableCell sx={{ width: "5%" }} align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -318,7 +319,7 @@ export const Sermons = () => {
             {playlist.title}
           </Typography>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="right" className="rowActions">
           <AppIconButton
             label={Locale.label("common.edit")}
             icon={<EditIcon />}
@@ -399,12 +400,13 @@ export const Sermons = () => {
             }}>
               {/* Search Bar */}
               {sermons.length > 0 && (
-                <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <LiveTvIcon fontSize="small" sx={{ color: "text.secondary" }} />
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    <LiveTvIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                    <Typography variant="h6">
                       {Locale.label("sermons.title")}
                     </Typography>
+                    {filteredSermons.length > 0 && <CountChip count={filteredSermons.length} />}
                   </Stack>
                   <AppIconButton
                     label={Locale.label("common.search")}
@@ -448,12 +450,13 @@ export const Sermons = () => {
               border: "1px solid",
               borderColor: "divider"
             }}>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <VideoLibraryIcon fontSize="small" sx={{ color: "text.secondary" }} />
-                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  <VideoLibraryIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                  <Typography variant="h6">
                     {Locale.label("sermons.playlists.title")}
                   </Typography>
+                  {playlists.length > 0 && <CountChip count={playlists.length} />}
                 </Stack>
                 <Stack direction="row" spacing={0.5}>
                   <AppIconButton

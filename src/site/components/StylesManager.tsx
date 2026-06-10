@@ -180,7 +180,7 @@ export function StylesManager() {
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
-          <CardWithHeader title={Locale.label("site.stylesManager.styleSettings")} icon={<StyleIcon sx={{ color: "primary.main" }} />}>
+          <CardWithHeader title={Locale.label("site.stylesManager.styleSettings")} icon={<StyleIcon sx={{ color: "primary.main", fontSize: 20 }} />}>
             <Stack spacing={2}>
               {styleOptions.map((option) => (
                 <Card

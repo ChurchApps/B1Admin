@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Card, Stack, Chip } from "@mui/material";
 import { Key as KeyIcon, Delete as DeleteIcon, Add as AddIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
-import { NavigationTabs, type NavigationTab } from "../../components/ui";
+import { CountChip, NavigationTabs, type NavigationTab } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ApiKeyEdit } from "./ApiKeyEdit";
 import { WebhooksSection } from "./WebhooksSection";
@@ -45,7 +45,7 @@ const renderScopes = (scopes?: string) => {
 
 type DeveloperTab = "apiKeys" | "webhooks" | "connections";
 
-const sectionToolbarSx = { p: 2, borderBottom: 1, borderColor: "divider" };
+const sectionToolbarSx = { p: 2, borderBottom: 1, borderColor: "var(--border-light)" };
 const emptyStateSx = { textAlign: "center" as const, py: 6, px: 2 };
 
 // Developer portal (API keys, webhooks, connected apps). Rendered as a section of
@@ -104,7 +104,11 @@ export const DeveloperSection: React.FC = () => {
         ) : (
           <Card>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={sectionToolbarSx}>
-              <Typography variant="h6">{Locale.label("settings.developer.apiKeys")}</Typography>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <KeyIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">{Locale.label("settings.developer.apiKeys")}</Typography>
+                {apiKeys.length > 0 && <CountChip count={apiKeys.length} />}
+              </Stack>
               <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowKeyEdit(true)}>
                 {Locale.label("settings.developer.newKey")}
               </Button>
@@ -124,7 +128,7 @@ export const DeveloperSection: React.FC = () => {
                       <TableCell>{Locale.label("settings.developer.scopes")}</TableCell>
                       <TableCell>{Locale.label("settings.developer.lastUsed")}</TableCell>
                       <TableCell>{Locale.label("settings.developer.expires")}</TableCell>
-                      <TableCell align="right">{Locale.label("settings.developer.actions")}</TableCell>
+                      <TableCell align="right"></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -135,7 +139,7 @@ export const DeveloperSection: React.FC = () => {
                         <TableCell>{renderScopes(k.scopes)}</TableCell>
                         <TableCell>{fmtDate(k.lastUsedAt)}</TableCell>
                         <TableCell>{fmtDate(k.expiresAt)}</TableCell>
-                        <TableCell align="right">
+                        <TableCell align="right" className="rowActions">
                           <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDeleteKey(k)} />
                         </TableCell>
                       </TableRow>
@@ -152,7 +156,11 @@ export const DeveloperSection: React.FC = () => {
         {tab === "connections" && (
           <Card>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={sectionToolbarSx}>
-              <Typography variant="h6">{Locale.label("settings.developer.connectedApps")}</Typography>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">{Locale.label("settings.developer.connectedApps")}</Typography>
+                {connections.length > 0 && <CountChip count={connections.length} />}
+              </Stack>
             </Stack>
             {loading ? <Loading /> : connections.length === 0 ? (
               <Box sx={emptyStateSx}>

@@ -50,8 +50,8 @@ export const Tabs: React.FC = () => {
       const downLink = (idx === tabs.length - 1) ? null : <a href="about:blank" data-idx={idx} onClick={moveDown}><Icon>arrow_downward</Icon></a>;
       rows.push(
         <tr key={idx}>
-          <td><a href={tab.url} style={{ display: "flex", alignItems: "center" }}><Icon sx={{ marginRight: "5px" }}>{tab.icon}</Icon>{tab.text}</a></td>
-          <td style={{ textAlign: "right" }}>
+          <td><a href={tab.url} style={{ display: "flex", alignItems: "center", color: "var(--link)", fontWeight: 500 }}><Icon sx={{ marginRight: "5px" }}>{tab.icon}</Icon>{tab.text}</a></td>
+          <td style={{ textAlign: "right" }} className="rowActions">
             {upLink}
             {downLink}
             <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setCurrentTab(tab)} />

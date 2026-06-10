@@ -6,7 +6,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type AssociatedGroupInterface } from "../../helpers";
-import { EmptyState } from "../../components/ui";
+import { CountChip, EmptyState } from "../../components/ui";
 
 interface Props {
   planTypeId: string;
@@ -105,7 +105,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
           )}
         </TableCell>
         {canEdit && (
-          <TableCell align="right">
+          <TableCell align="right" className="rowActions">
             <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleRemove(assoc)} />
           </TableCell>
         )}
@@ -117,10 +117,11 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
     <Box>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <GroupsIcon sx={{ color: "primary.main" }} />
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          <GroupsIcon sx={{ color: "primary.main", fontSize: 20 }} />
+          <Typography variant="h6">
             {Locale.label("plans.planTypeGroups.heading")}
           </Typography>
+          {associationsList.length > 0 && <CountChip count={associationsList.length} />}
         </Stack>
         {canEdit && associationsList.length > 0 && availableGroups.length > 0 && (
           <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowPicker(true)} size="small">

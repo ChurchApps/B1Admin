@@ -1,14 +1,14 @@
 import React from "react";
 import { BatchEdit, DonationEvents } from "./components";
-import { DateHelper, UserHelper, ExportLink, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { DateHelper, UserHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Card, Stack, Button } from "@mui/material";
-import { VolunteerActivism as DonationIcon, Add as AddIcon, FileDownload as ExportIcon, CalendarMonth as DateIcon, Edit as EditIcon } from "@mui/icons-material";
+import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as DateIcon, Edit as EditIcon } from "@mui/icons-material";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { EmptyState, SortableTableHead, type SortDirection } from "../components/ui";
+import { CountChip, EmptyState, ExportButton, SortableTableHead, type SortDirection } from "../components/ui";
 
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
@@ -141,7 +141,7 @@ export const DonationBatchesPage = () => {
               {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount, currency)}
             </Typography>
           </TableCell>
-          <TableCell>{editLink}</TableCell>
+          <TableCell align="right" className="rowActions">{editLink}</TableCell>
         </TableRow>
       );
     }
@@ -160,7 +160,7 @@ export const DonationBatchesPage = () => {
                 { key: "batchDate", label: Locale.label("donations.donationsPage.date"), sortable: true },
                 { key: "donationCount", label: Locale.label("donations.donationsPage.don") },
                 { key: "totalAmount", label: Locale.label("donations.donationsPage.total") },
-                { key: "edit", label: Locale.label("common.edit") }
+                { key: "edit", label: "", align: "right" }
               ]}
               sortBy={sortBy}
               sortDirection={sortDirection}
@@ -260,18 +260,15 @@ export const DonationBatchesPage = () => {
 
         {/* Main table */}
         <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <DonationIcon />
-                <Typography variant="h6">{Locale.label("donations.donationsPage.batch")}</Typography>
+                <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">{Locale.label("donations.donations.batches")}</Typography>
+                {sortedBatches.length > 0 && <CountChip count={sortedBatches.length} />}
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">
-                {batches.data && (
-                  <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={batches.data} filename="donationbatches.csv" sx={{ mr: 1 }}>
-                    {Locale.label("donations.donationBatchesPage.export")}
-                  </Button>
-                )}
+                {batches.data && <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
               </Stack>
             </Stack>
           </Box>

@@ -67,16 +67,24 @@ const createMdTheme = (mode: PaletteMode) =>
             boxShadow: mode === "light" ? "0 2px 8px rgba(0,0,0,0.1)" : "0 2px 8px rgba(0,0,0,0.4)"
           }
         }
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            padding: "12px 16px",
+            borderBottom: "1px solid var(--border-light)"
+          }
+        }
       }
     },
     typography: {
       fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-      h1: { fontSize: "2rem", fontWeight: 500, lineHeight: 1.2 },
-      h2: { fontSize: "1.75rem", fontWeight: 500, lineHeight: 1.25 },
-      h3: { fontSize: "1.5rem", fontWeight: 500, lineHeight: 1.3 },
-      h4: { fontSize: "1.25rem", fontWeight: 500, lineHeight: 1.35 },
-      h5: { fontSize: "1.125rem", fontWeight: 500, lineHeight: 1.4 },
-      h6: { fontSize: "1rem", fontWeight: 600, lineHeight: 1.45 },
+      h1: { fontSize: "2.5rem", fontWeight: 500, lineHeight: 1.2 },
+      h2: { fontSize: "2.25rem", fontWeight: 500, lineHeight: 1.25 },
+      h3: { fontSize: "clamp(1.75rem, 3vw, 2.25rem)", fontWeight: 500, lineHeight: 1.3 },
+      h4: { fontSize: "1.75rem", fontWeight: 500, lineHeight: 1.35 },
+      h5: { fontSize: "1.5rem", fontWeight: 500, lineHeight: 1.4 },
+      h6: { fontSize: "1.25rem", fontWeight: 500, lineHeight: 1.45 },
       subtitle1: { fontSize: "1rem", fontWeight: 500, lineHeight: 1.5 },
       subtitle2: { fontSize: "0.875rem", fontWeight: 600, lineHeight: 1.5 },
       body1: { fontSize: "1rem", fontWeight: 400, lineHeight: 1.5 },

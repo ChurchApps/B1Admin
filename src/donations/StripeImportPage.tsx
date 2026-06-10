@@ -3,6 +3,7 @@ import { ApiHelper, DateHelper, UserHelper, CurrencyHelper, Loading, PageHeader,
 import { Permissions } from "@churchapps/apphelper";
 import { Box, Typography, Card, Stack, Button, TextField, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
 import { CloudDownload as ImportIcon, Search as PreviewIcon, CheckCircle, Error as ErrorIcon, Info, SkipNext } from "@mui/icons-material";
+import { CountChip } from "../components/ui";
 
 interface StripeEventResult {
   eventId: string;
@@ -246,13 +247,14 @@ export const StripeImportPage = () => {
 
         {!loading && importData && (
           <Card>
-            <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+            <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <ImportIcon />
+                  <ImportIcon sx={{ color: "primary.main", fontSize: 20 }} />
                   <Typography variant="h6">
                     {importData.dryRun ? Locale.label("donations.stripeImportPage.previewResults") : Locale.label("donations.stripeImportPage.importResults")}
                   </Typography>
+                  {importData.results?.length > 0 && <CountChip count={importData.results.length} />}
                 </Stack>
               </Stack>
             </Box>

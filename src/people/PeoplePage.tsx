@@ -3,15 +3,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Permissions, UserHelper, type PersonInterface, type SearchCondition } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
-import { ExportLink } from "@churchapps/apphelper";
 import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions } from "./components/SavedLists";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
-import { People as PeopleIcon, PersonAdd as PersonAddIcon, FileDownload as ExportIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
+import { People as PeopleIcon, PersonAdd as PersonAddIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { CountChip, ExportButton } from "../components/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AISearch } from "./components/AISearch";
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
@@ -349,11 +349,12 @@ export const PeoplePage = memo(() => {
           </Grid>
           <Grid size={{ xs: 12, md: 9 }}>
             <Card>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <PeopleIcon />
+                    <PeopleIcon sx={{ color: "primary.main", fontSize: 20 }} />
                     <Typography variant="h6">{isSearchPerformed ? Locale.label("people.peoplePage.searchResults") : Locale.label("people.peoplePage.allMembers")}</Typography>
+                    {searchResults && searchResults.length > 0 && <CountChip count={searchResults.length} />}
                   </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
                     {canEdit && selectedPersonIds.length > 0 && (
@@ -368,11 +369,7 @@ export const PeoplePage = memo(() => {
                         {Locale.label("people.lists.saveAs")}
                       </Button>
                     )}
-                    {searchResults && (
-                      <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={getExportData(searchResults || [])} filename="people.csv" sx={{ mr: 1 }}>
-                        {Locale.label("people.peoplePage.export")}
-                      </Button>
-                    )}
+                    {searchResults && <ExportButton data={getExportData(searchResults || [])} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
                     <AppIconButton label={Locale.label("people.peoplePage.printDirectory")} icon={<PrintIcon />} tone="card" onClick={() => window.open("/people/print-directory", "_blank")} />
                     <PeopleColumns selectedColumns={selectedColumns} toggleColumn={handleToggleColumn} columns={columns} />
                   </Stack>

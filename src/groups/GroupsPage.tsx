@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { GroupAdd } from "./components";
-import { ApiHelper, UserHelper, ExportLink, Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, Toolbar, Stack, Typography } from "@mui/material";
-import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, People as PeopleIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow, Box, Card, Chip, Button, Stack, Typography } from "@mui/material";
+import { Add as AddIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
+import { CountChip, ExportButton, SortableTableHead } from "../components/ui";
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -88,7 +89,7 @@ const GroupsPage = () => {
       const cat =
         g.categoryName !== lastCat ? (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <FolderIcon sx={{ marginRight: "5px" }} /> {g.categoryName}
+            <FolderIcon sx={{ color: "text.secondary", fontSize: 18, marginRight: "5px" }} /> {g.categoryName}
           </Box>
         ) : (
           <></>
@@ -99,7 +100,8 @@ const GroupsPage = () => {
           <TableCell>{cat}</TableCell>
           <TableCell>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <GroupIcon sx={{ marginRight: "5px" }} /> <Link to={"/groups/" + g.id.toString()}>{g.name}</Link>
+              <GroupIcon sx={{ color: "primary.main", fontSize: 20, marginRight: "5px" }} />{" "}
+              <Link to={"/groups/" + g.id.toString()} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{g.name}</Link>
             </Box>
           </TableCell>
           <TableCell>
@@ -115,39 +117,43 @@ const GroupsPage = () => {
     return rows;
   };
 
-  const getTableHeader = () => {
-    const rows: JSX.Element[] = [];
-    if (groups.length === 0) return rows;
-    rows.push(
-      <TableRow sx={{ textAlign: "left" }} key="header">
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.cat")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("common.name")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.labels")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.ppl")}</TableCell>
-      </TableRow>
-    );
-    return rows;
-  };
-
   const addBox = showAdd ? <GroupAdd updatedFunction={handleAddUpdated} tags="standard" /> : <></>;
 
   const getTable = () => {
     if (isLoading) return <Loading />;
     else {
       return (
-        <Paper sx={{ width: "100%", overflowX: "auto" }}>
-          {groups.length > 0 && UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-            <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 }, justifyContent: "flex-end" }}>
-              <Button variant="outlined" size="small" startIcon={<ExportIcon />} component={ExportLink} data={exportData} filename="groups.csv">
-                {Locale.label("groups.groupsPage.export")}
-              </Button>
-            </Toolbar>
-          )}
-          <Table>
-            <TableHead sx={{ backgroundColor: "background.subtle" }}>{getTableHeader()}</TableHead>
-            <TableBody>{getRows()}</TableBody>
-          </Table>
-        </Paper>
+        <Card>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Stack direction="row" spacing={1} alignItems="center">
+                <GroupIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">{Locale.label("groups.groupsPage.groups")}</Typography>
+                {groups.length > 0 && <CountChip count={groups.length} />}
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                {groups.length > 0 && UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
+                  <ExportButton data={exportData} filename="groups.csv" text={Locale.label("groups.groupsPage.export")} />
+                )}
+              </Stack>
+            </Stack>
+          </Box>
+          <Box sx={{ overflowX: "auto" }}>
+            <Table>
+              {groups.length > 0 && (
+                <SortableTableHead
+                  columns={[
+                    { key: "categoryName", label: Locale.label("groups.groupsPage.cat") },
+                    { key: "name", label: Locale.label("common.name") },
+                    { key: "labels", label: Locale.label("groups.groupsPage.labels") },
+                    { key: "memberCount", label: Locale.label("groups.groupsPage.ppl") }
+                  ]}
+                />
+              )}
+              <TableBody>{getRows()}</TableBody>
+            </Table>
+          </Box>
+        </Card>
       );
     }
   };

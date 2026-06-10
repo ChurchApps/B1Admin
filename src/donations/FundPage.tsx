@@ -1,16 +1,16 @@
 import React from "react";
-import { ApiHelper, DateHelper, UserHelper, ExportLink, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, UserHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
 import { Table, TableBody, TableRow, TableCell, TableHead, TextField, Box, Typography, Card, Stack, Button } from "@mui/material";
 import {
   VolunteerActivism as FundIcon,
-  FileDownload as ExportIcon,
   FilterAlt as FilterIcon,
   CalendarMonth as DateIcon,
   Person as PersonIcon,
   Receipt as ReceiptIcon
 } from "@mui/icons-material";
+import { CountChip, ExportButton } from "../components/ui";
 
 export const FundPage = () => {
   const params = useParams();
@@ -109,8 +109,8 @@ export const FundPage = () => {
       ) : (
         <TableCell>
           <Stack direction="row" spacing={1} alignItems="center">
-            <PersonIcon sx={{ color: "primary.light", fontSize: 18 }} />
-            <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
+            <PersonIcon sx={{ color: "text.secondary", fontSize: 18 }} />
+            <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
               {people[fd.donation.personId] || Locale.label("donations.fundsPage.anon")}
             </Typography>
           </Stack>
@@ -132,8 +132,8 @@ export const FundPage = () => {
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <ReceiptIcon sx={{ color: "primary.light", fontSize: 18 }} />
-              <Typography component={Link} data-cy={`batchId-${fd.donation.batchId}-${i}`} to={"/donations/" + fd.donation.batchId} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
+              <ReceiptIcon sx={{ color: "text.secondary", fontSize: 18 }} />
+              <Typography component={Link} data-cy={`batchId-${fd.donation.batchId}-${i}`} to={"/donations/" + fd.donation.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
                 {fd.donation.batchId}
               </Typography>
             </Stack>
@@ -265,9 +265,9 @@ export const FundPage = () => {
       <Box sx={{ p: 3 }}>
         {/* Date Filter Card */}
         <Card sx={{ mb: 3 }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <FilterIcon />
+              <FilterIcon sx={{ color: "primary.main", fontSize: 20 }} />
               <Typography variant="h6">{Locale.label("donations.fundsPage.donFilt")}</Typography>
             </Stack>
           </Box>
@@ -302,18 +302,15 @@ export const FundPage = () => {
 
         {/* Main donations table */}
         <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <FundIcon />
+                <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />
                 <Typography variant="h6">{Locale.label("donations.fundsPage.don")}</Typography>
+                {fundDonations?.length > 0 && <CountChip count={fundDonations.length} />}
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">
-                {fundDonations && (
-                  <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={fundDonations} filename="funddonations.csv" sx={{ mr: 1 }}>
-                    Export
-                  </Button>
-                )}
+                {fundDonations && <ExportButton data={fundDonations} filename="funddonations.csv" text={Locale.label("donations.fundsPage.export")} />}
               </Stack>
             </Stack>
           </Box>

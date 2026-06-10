@@ -8,7 +8,7 @@ import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon,
 import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
-import { SmartTabs } from "../components/ui";
+import { CountChip, SmartTabs } from "../components/ui";
 import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const FormsPage = () => {
@@ -61,7 +61,8 @@ export const FormsPage = () => {
         <TableRow key={form.id}>
           <TableCell>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Icon sx={{ fontSize: 20, marginRight: "5px" }}>format_align_left</Icon> <Link to={"/forms/" + form.id}>{form.name}</Link>
+              <Icon sx={{ color: "primary.main", fontSize: 20, marginRight: "5px" }}>format_align_left</Icon>{" "}
+              <Link to={"/forms/" + form.id} style={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>{form.name}</Link>
             </Box>
           </TableCell>
           <TableCell>{formLink}</TableCell>
@@ -130,15 +131,13 @@ export const FormsPage = () => {
 
   const formsCard = (
     <Card sx={{ mt: getSidebar() ? 2 : 0 }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
-            <DescriptionIcon />
+            <DescriptionIcon sx={{ color: "primary.main", fontSize: 20 }} />
             <Typography variant="h6">{Locale.label("forms.formsPage.forms")}</Typography>
+            {formsCount > 0 && <CountChip count={formsCount} />}
           </Stack>
-          <Typography variant="body2" color="text.secondary">
-            {(formsCount === 1 ? Locale.label("forms.formsPage.formCount") : Locale.label("forms.formsPage.formCountPlural")).replace("{count}", formsCount.toString())}
-          </Typography>
         </Stack>
       </Box>
       <Box sx={{ p: 0 }}>{renderTable(getRows(false), false)}</Box>
@@ -147,15 +146,13 @@ export const FormsPage = () => {
 
   const archivedCard = (
     <Card>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
-            <ArchiveIcon />
+            <ArchiveIcon sx={{ color: "primary.main", fontSize: 20 }} />
             <Typography variant="h6">{Locale.label("forms.formsPage.archForms")}</Typography>
+            {archivedCount > 0 && <CountChip count={archivedCount} />}
           </Stack>
-          <Typography variant="body2" color="text.secondary">
-            {(archivedCount === 1 ? Locale.label("forms.formsPage.formArchivedCount") : Locale.label("forms.formsPage.formArchivedCountPlural")).replace("{count}", archivedCount.toString())}
-          </Typography>
         </Stack>
       </Box>
       <Box sx={{ p: 0 }}>{renderTable(getArchivedRows(), true)}</Box>

@@ -579,8 +579,8 @@ export const ServiceOrder = memo((props: Props) => {
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <AlbumIcon sx={{ color: "primary.main", fontSize: 28 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <AlbumIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("plans.serviceOrder.orderOfService")}
                 </Typography>
               </Stack>

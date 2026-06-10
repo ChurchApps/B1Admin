@@ -24,6 +24,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { PermissionDenied } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { CountChip } from "../components/ui";
 
 export const PagesPage = () => {
   const theme = useTheme();
@@ -92,7 +93,7 @@ export const PagesPage = () => {
               {getExpandControl(item, level)}
               <Typography
                 variant="body2"
-                sx={{ fontFamily: "monospace", cursor: "pointer", color: "primary.main", "&:hover": { textDecoration: "underline" } }}
+                sx={{ fontFamily: "monospace", cursor: "pointer", color: "var(--link)", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}
                 onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}>
                 {item.url}
               </Typography>
@@ -289,13 +290,14 @@ export const PagesPage = () => {
         <Grid size={{ xs: 12, md: 10 }} style={{ position: "relative", zIndex: 1 }}>
           <Box sx={{ p: 3 }}>
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <ArticleIcon sx={{ color: "primary.main" }} />
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                    <ArticleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                    <Typography variant="h6">
                       {Locale.label("site.pagesPage.pages")}
                     </Typography>
+                    {pageStats.total > 0 && <CountChip count={pageStats.total} />}
                   </Stack>
                 </Stack>
               </Box>

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ApiHelper, Locale, type PersonInterface } from "@churchapps/apphelper";
 import { type TaskInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableCell, TableHead, TableRow, Card, CardContent, Typography, Stack, Box, Button, Paper, Avatar } from "@mui/material";
+import { CountChip } from "../../../components/ui";
 import {
   AssignmentReturn as ChangesIcon,
   CheckCircle as ApplyIcon,
@@ -132,10 +133,11 @@ export const RequestedChanges = (props: Props) => {
           {/* Header */}
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <ChangesIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <ChangesIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("tasks.requestedChanges.requestedChanges")}
               </Typography>
+              {(requestedChanges?.length || 0) > 0 && <CountChip count={requestedChanges.length} />}
             </Stack>
             {props.task.status !== Locale.label("tasks.taskPage.closed") && (
               <Button

@@ -23,7 +23,7 @@ export const SongsPage = memo(() => {
 
   const handleAdd = useCallback(
     async (songDetail: SongDetailInterface) => {
-      let selectedSong = null;
+      let selectedSong;
       if (!songDetail.id) {
         songDetail = await ApiHelper.post("/songDetails/create", songDetail, "ContentApi");
       }
@@ -200,8 +200,8 @@ export const SongsPage = memo(() => {
           <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
             <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                <SearchIcon sx={{ color: "primary.main", fontSize: 24 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <SearchIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("songs.songsPage.searchSongs")}
                 </Typography>
               </Stack>

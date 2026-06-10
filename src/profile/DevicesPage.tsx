@@ -76,7 +76,7 @@ export const DevicesPage = () => {
                     <button
                       type="button"
                       onClick={() => setEditDevice(device)}
-                      style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
+                      style={{ background: "none", border: 0, padding: 0, color: "var(--link)", fontWeight: 500, cursor: "pointer" }}>
                       {device.label || Locale.label("profile.devices.device")}
                     </button>
                   </TableCell>

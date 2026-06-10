@@ -67,7 +67,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
         <TableRow key={i}>
           <TableCell>{`${firstName} ${lastName}`}</TableCell>
           <TableCell>{rm.user.email}</TableCell>
-          <TableCell>
+          <TableCell align="right" className="rowActions">
             <Stack direction="row" spacing={1} justifyContent="end">
               {editLink}
               {removeLink}
@@ -85,7 +85,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
       <TableRow>
         <TableCell>{Locale.label("common.name")}</TableCell>
         <TableCell>{Locale.label("person.email")}</TableCell>
-        <TableCell></TableCell>
+        <TableCell align="right"></TableCell>
       </TableRow>
     );
   }, [isRoleEveryone]);

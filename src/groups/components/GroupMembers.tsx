@@ -10,7 +10,6 @@ import {
   ApiHelper,
   DisplayBox,
   UserHelper,
-  ExportLink,
   Permissions,
   ArrayHelper,
   Locale,
@@ -51,6 +50,7 @@ import {
 import { SendInviteDialog } from "../../components";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { ExportButton } from "../../components/ui";
 
 interface Props {
   group: GroupInterface;
@@ -221,16 +221,14 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
                 component="span"
                 sx={{
                   fontWeight: 500,
-                  color: "text.primary",
-                  transition: "color 0.15s",
-                  "&:hover": { color: "primary.main" }
+                  color: "var(--link)"
                 }}>
                 {personName}
               </Typography>
             </Link>
           </TableCell>
           <TableCell sx={{ ...cellSx, width: 120 }}>{roleCell}</TableCell>
-          <TableCell sx={{ ...cellSx, width: 110, textAlign: "right", whiteSpace: "nowrap" }}>
+          <TableCell align="right" className="rowActions" sx={{ ...cellSx, width: 110, whiteSpace: "nowrap" }}>
             {canEdit && (
               <Stack
                 direction="row"
@@ -320,7 +318,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
         <AppIconButton label={Locale.label("groups.groupMembers.sendMemMsg")} icon={<EditNoteIcon />} tone="card" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" />
       )}
-      <ExportLink data={exportData} spaceAfter={true} filename="groupmembers.csv" />
+      <ExportButton data={exportData} filename="groupmembers.csv" text={Locale.label("groups.groupsPage.export")} />
     </>
   );
 

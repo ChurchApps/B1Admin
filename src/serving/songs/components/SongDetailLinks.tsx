@@ -120,7 +120,7 @@ export const SongDetailLinks = memo((props: Props) => {
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
         <Stack direction="row" spacing={1} alignItems="center">
           <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+          <Typography variant="h6">
             {Locale.label("songs.songDetailLinks.externalLinks")}
           </Typography>
         </Stack>

@@ -56,9 +56,9 @@ export const MembersAdd: React.FC<Props> = (props) => {
             <PersonAvatar person={gm.person} size="small" />
           </TableCell>
           <TableCell>
-            <Link to={"/people/" + gm.personId}>{personName}</Link>
+            <Link to={"/people/" + gm.personId} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{personName}</Link>
           </TableCell>
-          <TableCell>
+          <TableCell align="right" className="rowActions">
             <AppIconButton intent="add" label={Locale.label("common.add")} icon={<PersonAddIcon />} onClick={() => addMember(gm)} data-testid="add-member-button" />
           </TableCell>
         </TableRow>
