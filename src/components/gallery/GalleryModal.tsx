@@ -1,6 +1,7 @@
 "use client";
 
-import { ApiHelper, FileHelper, ImageEditor, Locale, TabPanel } from "@churchapps/apphelper";
+import { ApiHelper, ImageEditor, Locale, TabPanel } from "@churchapps/apphelper";
+import { FileHelper } from "@churchapps/apphelper/dist/helpers/FileHelper.js";
 import { CommonEnvironmentHelper } from "@churchapps/helpers";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs } from "@mui/material";
 import { DeleteOutline as DeleteOutlineIcon } from "@mui/icons-material";
@@ -41,7 +42,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
     try {
       const fileName = Math.floor(Date.now() / 1000).toString() + ".jpg";
       const blob = FileHelper.dataURLtoBlob(dataUrl);
-      const file = new File([blob], "file_name");
+      const file = new File([blob], fileName, { type: blob.type });
 
       const params = { folder: aspectRatio.toString(), fileName };
 
