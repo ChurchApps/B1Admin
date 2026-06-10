@@ -127,7 +127,7 @@ export const TabEdit: React.FC<Props> = (props) => {
         }}
       >
         <DialogTitle sx={{
-          backgroundColor: "#1976d2",
+          backgroundColor: "primary.main",
           color: "#FFF",
           p: 3
         }}>
@@ -171,8 +171,8 @@ export const TabEdit: React.FC<Props> = (props) => {
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>visibility</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>visibility</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                     {Locale.label("sermons.liveStreamTimes.tabEdit.tabDisplay")}
                   </Typography>
                 </Stack>
@@ -206,12 +206,12 @@ export const TabEdit: React.FC<Props> = (props) => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "#1976d2",
+                        color: "primary.main",
                         backgroundColor: "#fff",
                         cursor: "pointer",
                         "&:hover": {
-                          borderColor: "#1976d2",
-                          backgroundColor: "#f5f5f5"
+                          borderColor: "primary.main",
+                          backgroundColor: "var(--bg-sub)"
                         }
                       }}
                     >
@@ -226,8 +226,8 @@ export const TabEdit: React.FC<Props> = (props) => {
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>settings</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>settings</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                     {Locale.label("sermons.liveStreamTimes.tabEdit.linkConfiguration")}
                   </Typography>
                 </Stack>

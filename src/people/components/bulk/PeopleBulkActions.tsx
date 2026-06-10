@@ -73,12 +73,14 @@ export const PeopleBulkActions: React.FC<Props> = (props) => {
       ]
     },
     ...(campusOptions.length > 0
-      ? [{
-        field: "campusId" as const,
-        titleKey: "people.bulk.campusTitle",
-        fieldLabel: Locale.label("person.campus"),
-        options: campusOptions
-      }]
+      ? [
+        {
+          field: "campusId" as const,
+          titleKey: "people.bulk.campusTitle",
+          fieldLabel: Locale.label("person.campus"),
+          options: campusOptions
+        }
+      ]
       : [])
   ];
 

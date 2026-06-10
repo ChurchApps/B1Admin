@@ -2,7 +2,8 @@ import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { Checkbox, MenuItem, TextField, Typography } from "@mui/material";
 import { type TimeInterface } from "@churchapps/helpers";
-import { ApiHelper, DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   time: TimeInterface;
@@ -97,12 +98,12 @@ export const TimeEdit = (props: Props) => {
   return (
     <>
       <ErrorMessages errors={summaryErrors} />
-      <InputBox
-        headerText={props.time?.id ? Locale.label("plans.timeEdit.timeEdit") : Locale.label("plans.timeEdit.timeAdd")}
-        headerIcon="assignment"
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={props.onUpdate}
-        deleteFunction={props.time?.id ? handleDelete : null}>
+      <FormCard
+        title={props.time?.id ? Locale.label("plans.timeEdit.timeEdit") : Locale.label("plans.timeEdit.timeAdd")}
+        icon="assignment"
+        onSave={handleSubmit(onValid)}
+        onCancel={props.onUpdate}
+        onDelete={props.time?.id ? handleDelete : undefined}>
         <Controller name="serviceTimeType" control={control} render={({ field }) => (
           <TextField fullWidth select label={Locale.label("plans.timeEdit.type")} id="serviceTimeType" value={field.value ?? "service"} onChange={field.onChange} data-testid="time-type-input" aria-label={Locale.label("plans.timeEdit.typeAria")}>
             <MenuItem value="service">{Locale.label("plans.timeEdit.typeService")}</MenuItem>
@@ -117,7 +118,7 @@ export const TimeEdit = (props: Props) => {
           <b>{Locale.label("plans.timeEdit.teamNeed")}</b>
         </div>
         {getTeams()}
-      </InputBox>
+      </FormCard>
     </>
   );
 };

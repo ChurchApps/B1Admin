@@ -146,7 +146,7 @@ export const DeviceAuthPage: React.FC = () => {
       return (
         <>
           <div style={{ textAlign: "center" }}>
-            <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--success-main, #4caf50)" }}>check_circle</Icon>
+            <Icon sx={{ fontSize: 120, mt: 3.75, color: "success.main" }}>check_circle</Icon>
             <h2>{Locale.label("device.deviceAuthPage.deviceAuthorizedHeading")}</h2>
             <p>{Locale.label("device.deviceAuthPage.deviceAuthorizedMessage")}</p>
           </div>

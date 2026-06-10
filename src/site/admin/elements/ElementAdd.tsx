@@ -53,7 +53,7 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
       onMouseLeave={() => setIsHovered(false)}
       style={{
         background: "#fff",
-        border: `1px solid ${isHovered ? "#1976d2" : "#e5e7eb"}`,
+        border: `1px solid ${isHovered ? "var(--c1)" : "var(--border-main)"}`,
         borderRadius: "8px",
         padding: "10px 12px",
         cursor: isDragging ? "grabbing" : "grab",
@@ -74,26 +74,26 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
           width: 32,
           height: 32,
           borderRadius: "6px",
-          background: "#f3f4f6",
+          background: "var(--bg-sub)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0
         }}
       >
-        <Icon sx={{ color: "#374151", fontSize: 18 }}>{config.icon}</Icon>
+        <Icon sx={{ color: "text.primary", fontSize: 18 }}>{config.icon}</Icon>
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Box sx={{ color: "#111827", fontSize: "0.85rem", fontWeight: 600, lineHeight: 1.2 }}>
+        <Box sx={{ color: "text.primary", fontSize: "0.85rem", fontWeight: 600, lineHeight: 1.2 }}>
           {config.label}
         </Box>
         {isHovered && (
-          <Box sx={{ color: "#6b7280", fontSize: "0.72rem", lineHeight: 1.3, mt: 0.25 }}>
+          <Box sx={{ color: "text.secondary", fontSize: "0.72rem", lineHeight: 1.3, mt: 0.25 }}>
             {config.description}
           </Box>
         )}
       </Box>
-      <Icon sx={{ color: "#d1d5db", fontSize: 14, flexShrink: 0 }}>drag_indicator</Icon>
+      <Icon sx={{ color: "divider", fontSize: 14, flexShrink: 0 }}>drag_indicator</Icon>
     </div>
   );
 }
@@ -188,7 +188,7 @@ export function ElementAdd(props: Props) {
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <Icon sx={{ color: "#9ca3af", fontSize: 20 }}>search</Icon>
+            <Icon sx={{ color: "text.secondary", fontSize: 20 }}>search</Icon>
           </InputAdornment>
         )
       }}
@@ -208,13 +208,13 @@ export function ElementAdd(props: Props) {
           textTransform: "none",
           fontSize: "0.8rem",
           fontWeight: 500,
-          color: "#6b7280",
+          color: "text.secondary",
           minWidth: "auto",
           px: 1.5,
           py: 0.5,
-          "&.Mui-selected": { color: "#1d4ed8", fontWeight: 600 }
+          "&.Mui-selected": { color: "primary.main", fontWeight: 600 }
         },
-        "& .MuiTabs-indicator": { height: 2, backgroundColor: "#1d4ed8" }
+        "& .MuiTabs-indicator": { height: 2, backgroundColor: "primary.main" }
       }}
     >
       {tabs.map((tab) => (
@@ -224,7 +224,7 @@ export function ElementAdd(props: Props) {
   );
 
   const emptyState = (
-    <Box sx={{ textAlign: "center", py: 5, color: "#6b7280" }}>
+    <Box sx={{ textAlign: "center", py: 5, color: "text.secondary" }}>
       <Icon sx={{ fontSize: 36, mb: 1, opacity: 0.5 }}>search_off</Icon>
       <Box sx={{ fontSize: "0.85rem", fontWeight: 500 }}>
         {Locale.label("site.elementAdd.noElementsFound")}
@@ -239,8 +239,8 @@ export function ElementAdd(props: Props) {
     return (
       <Box sx={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         <Box sx={{ px: 1.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
-        <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1, flexShrink: 0 }}>{tabsBar}</Box>
-        <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", p: 1.25, background: "#f9fafb" }}>
+        <Box sx={{ borderBottom: "1px solid var(--border-main)", px: 1, flexShrink: 0 }}>{tabsBar}</Box>
+        <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", p: 1.25, background: "var(--bg-sub)" }}>
           {filteredElements.length === 0 ? (
             emptyState
           ) : (
@@ -270,8 +270,8 @@ export function ElementAdd(props: Props) {
       TransitionComponent={Fade}
       transitionDuration={150}
     >
-      <DialogTitle sx={{ p: 2.5, pb: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb" }}>
-        <Box sx={{ fontSize: "1.05rem", fontWeight: 600, color: "#111827" }}>
+      <DialogTitle sx={{ p: 2.5, pb: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border-main)" }}>
+        <Box sx={{ fontSize: "1.05rem", fontWeight: 600, color: "text.primary" }}>
           {Locale.label("site.elementAdd.addElements")}
         </Box>
         <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={props.updateCallback} />
@@ -279,9 +279,9 @@ export function ElementAdd(props: Props) {
 
       <Box sx={{ px: 2.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
 
-      <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1.5, flexShrink: 0 }}>{tabsBar}</Box>
+      <Box sx={{ borderBottom: "1px solid var(--border-main)", px: 1.5, flexShrink: 0 }}>{tabsBar}</Box>
 
-      <DialogContent sx={{ p: 2, overflowY: "auto", background: "#f9fafb", flex: 1 }}>
+      <DialogContent sx={{ p: 2, overflowY: "auto", background: "var(--bg-sub)", flex: 1 }}>
         {filteredElements.length === 0 ? (
           emptyState
         ) : (

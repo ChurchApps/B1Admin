@@ -2,7 +2,7 @@ import React from "react";
 import { type PersonInterface, type ContactInfoInterface, type NameInterface } from "@churchapps/helpers";
 import { Locale } from "@churchapps/apphelper";
 import { EnvironmentHelper } from "../../../helpers";
-import { Dialog, Button, Container, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Dialog, Button, Container, DialogTitle, DialogContent, DialogActions, FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
 
 interface Props {
   show: boolean;
@@ -200,7 +200,7 @@ export const MergeModal: React.FC<Props> = (props) => {
           <>
             <p>{Locale.label("people.mergeModal.fieldCon")} </p>
             <Container>{createConflictRows()}</Container>
-            <span style={{ color: "#dc3545", fontStyle: "italic" }}>{error}</span>
+            <Box component="span" sx={{ color: "error.main", fontStyle: "italic" }}>{error}</Box>
           </>
         )}
         {mergeInProgress && <p style={{ textAlign: "center", fontStyle: "italic", marginBottom: 0 }}>{Locale.label("people.mergeModal.merge")}</p>}

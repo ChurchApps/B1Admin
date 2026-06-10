@@ -25,7 +25,7 @@ export const BezChatMessage: React.FC<Props> = ({ message }) => {
         sx={{
           p: 1.5,
           maxWidth: "80%",
-          backgroundColor: isUser ? "primary.main" : "#FFF8E7",
+          backgroundColor: isUser ? "primary.main" : "var(--bg-sub)",
           color: isUser ? "primary.contrastText" : "text.primary"
         }}
       >

@@ -1,6 +1,6 @@
 import React, { useState, memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch } from "@mui/material";
+import { Box, Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch } from "@mui/material";
 import { Info } from "@mui/icons-material";
 import { PersonAdd } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -109,12 +109,13 @@ export const FormMembers: React.FC<Props> = memo((props) => {
           </TableCell>
           <TableCell>
             {
-              <button
+              <Box
+                component="button"
                 type="button"
                 onClick={() => handleRemoveMember(fm.memberId)}
-                style={{ display: "flex", alignItems: "center", color: "#dc3545", background: "none", border: 0, padding: 0, cursor: "pointer" }}>
+                sx={{ display: "flex", alignItems: "center", color: "error.main", background: "none", border: 0, padding: 0, cursor: "pointer" }}>
                 <Icon sx={{ marginRight: "5px" }}>person_remove</Icon> {Locale.label("common.remove")}
-              </button>
+              </Box>
             }
           </TableCell>
           <TableCell>

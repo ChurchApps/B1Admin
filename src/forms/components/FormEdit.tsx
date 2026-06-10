@@ -1,7 +1,8 @@
 import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useMountedState, ApiHelper, InputBox, DateHelper, Locale } from "@churchapps/apphelper";
+import { useMountedState, ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
@@ -94,7 +95,7 @@ export function FormEdit(props: Props) {
   }
 
   return (
-    <InputBox id="formBox" headerIcon="format_align_left" headerText={Locale.label("forms.formEdit.editForm")} saveFunction={handleSubmit(onValid)} isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending} cancelFunction={props.updatedFunction} deleteFunction={props.formId ? handleDelete : undefined}>
+    <FormCard id="formBox" icon="format_align_left" title={Locale.label("forms.formEdit.editForm")} onSave={handleSubmit(onValid)} isSubmitting={saveFormMutation.isPending || deleteFormMutation.isPending} onCancel={props.updatedFunction} onDelete={props.formId ? handleDelete : undefined}>
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("forms.formEdit.name")} type="text" placeholder={Locale.label("placeholders.form.name")} data-testid="form-name-input" aria-label={Locale.label("forms.formEdit.formNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("forms.formEdit.nameReqMsg") })} />
       {!props.formId && (
@@ -135,6 +136,6 @@ export function FormEdit(props: Props) {
         </>
       )}
       <TextField fullWidth label={Locale.label("forms.formEdit.thankYouMessage")} type="text" placeholder={Locale.label("placeholders.form.thankYouMessage")} {...register("thankYouMessage")} />
-    </InputBox>
+    </FormCard>
   );
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { CategorySelect, ServiceTimesEdit } from ".";
-import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { GalleryModal } from "../../components/gallery";
 import { Navigate } from "react-router-dom";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography } from "@mui/material";
@@ -177,7 +178,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
   return (
     <>
       {galleryModal}
-      <InputBox id="groupDetailsBox" headerText={Locale.label("groups.groupDetailsEdit.groupDet")} headerIcon="group" saveFunction={handleSubmit(onValid)} cancelFunction={handleCancel} deleteFunction={handleDelete} help="docs/b1-admin/groups/">
+      <FormCard id="groupDetailsBox" title={Locale.label("groups.groupDetailsEdit.groupDet")} icon="group" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} help="docs/b1-admin/groups/">
         <ErrorMessages errors={summaryErrors} />
         <Grid container spacing={3}>
           {!teamMode && (
@@ -280,7 +281,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
           </>
         )}
         {getAttendance()}
-      </InputBox>
+      </FormCard>
     </>
   );
 };

@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { type GroupInterface, type PositionInterface } from "@churchapps/helpers";
-import { ApiHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import ReactSelect from "react-select";
 
 interface Props {
@@ -94,12 +95,12 @@ export const PositionEdit = (props: Props) => {
   return (
     <>
       <ErrorMessages errors={summaryErrors} />
-      <InputBox
-        headerText={props.position?.id ? Locale.label("plans.positionEdit.posEdit") : Locale.label("plans.positionEdit.posAdd")}
-        headerIcon="assignment"
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={props.updatedFunction}
-        deleteFunction={props.position?.id ? handleDelete : null}>
+      <FormCard
+        title={props.position?.id ? Locale.label("plans.positionEdit.posEdit") : Locale.label("plans.positionEdit.posAdd")}
+        icon="assignment"
+        onSave={handleSubmit(onValid)}
+        onCancel={props.updatedFunction}
+        onDelete={props.position?.id ? handleDelete : undefined}>
         <FormControl fullWidth>
           <div style={{ fontSize: 12, color: "var(--text-muted)", position: "absolute", top: -8, left: 10, backgroundColor: "var(--bg-card)", zIndex: 999 }}>
             {Locale.label("plans.positionEdit.catName")}
@@ -123,7 +124,7 @@ export const PositionEdit = (props: Props) => {
           label={Locale.label("plans.positionEdit.allowSelfSignup")}
         />
         <TextField fullWidth label={Locale.label("plans.positionEdit.description")} id="description" type="text" multiline rows={2} placeholder="" helperText={Locale.label("plans.positionEdit.descriptionHelper")} {...register("description")} />
-      </InputBox>
+      </FormCard>
     </>
   );
 };

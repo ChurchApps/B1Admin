@@ -1,9 +1,10 @@
 import React from "react";
 import { TextField, Switch, FormControlLabel, Typography, Button, Box, Stack, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
-import { ApiHelper, ImageEditor, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ImageEditor, Locale } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { FormCard } from "../components/ui";
 
 interface IdleSlide {
   imageUrl: string;
@@ -141,7 +142,7 @@ export const KioskThemeEdit: React.FC = () => {
   }
 
   return (
-    <InputBox headerText={Locale.label("mobile.checkInPage.kiosk.sectionTitle")} headerIcon="settings" saveFunction={handleSave} isSubmitting={isSubmitting}>
+    <FormCard title={Locale.label("mobile.checkInPage.kiosk.sectionTitle")} icon="settings" onSave={handleSave} isSubmitting={isSubmitting}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         {Locale.label("mobile.checkInPage.kiosk.headerSubtitle")}
       </Typography>
@@ -200,7 +201,7 @@ export const KioskThemeEdit: React.FC = () => {
 
           <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("mobile.checkInPage.kiosk.slides")}</Typography>
           {config.idleScreen.slides.map((slide, index) => (
-            <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: "1px solid #e0e0e0", borderRadius: 2 }}>
+            <Stack key={index} direction="row" spacing={2} alignItems="center" sx={{ mb: 2, p: 1.5, border: "1px solid var(--border-main)", borderRadius: 2 }}>
               {slide.imageUrl && (
                 <img src={slide.imageUrl} alt={`${Locale.label("mobile.checkInPage.kiosk.slides")} ${index + 1}`} style={{ width: 120, height: 68, objectFit: "cover", borderRadius: 4 }} />
               )}
@@ -222,6 +223,6 @@ export const KioskThemeEdit: React.FC = () => {
           <Button variant="outlined" startIcon={<AddIcon />} onClick={addSlide}>{Locale.label("mobile.checkInPage.kiosk.addSlide")}</Button>
         </AccordionDetails>
       </Accordion>
-    </InputBox>
+    </FormCard>
   );
 };

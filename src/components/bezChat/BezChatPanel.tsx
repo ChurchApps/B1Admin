@@ -54,7 +54,7 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <AppBar position="static" elevation={0} sx={{ backgroundColor: "#F5A623" }}>
+      <AppBar position="static" elevation={0} sx={{ backgroundColor: "warning.main" }}>
         <Toolbar variant="dense">
           <Box
             component="img"
@@ -92,7 +92,7 @@ export const BezChatPanel: React.FC<Props> = ({ onClose }) => {
         ))}
         {isLoading && (
           <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-            <CircularProgress size={24} sx={{ color: "#F5A623" }} />
+            <CircularProgress size={24} sx={{ color: "warning.main" }} />
           </Box>
         )}
         <div ref={messagesEndRef} />

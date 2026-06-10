@@ -24,7 +24,7 @@ export const AppIconButton = React.forwardRef<HTMLButtonElement, AppIconButtonPr
   const hoverColor = intent === "add" ? "success.main" : intent === "remove" ? "error.main" : tone === "header" ? undefined : "primary.main";
   const baseSx = {
     ...(tone === "header" ? { color: "common.white" } : {}),
-    ...(hoverColor ? { "&:hover": { color: hoverColor } } : {}),
+    ...(hoverColor ? { "&:hover": { color: hoverColor } } : {})
   };
 
   const sizedIcon =

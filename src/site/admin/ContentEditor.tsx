@@ -548,7 +548,7 @@ export function ContentEditor(props: Props) {
   return (
     <ThemeProvider theme={lightEditorTheme}>
       <CssBaseline />
-      <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "#e5e8ee" }}>
+      <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "var(--bg-main)" }}>
         <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
         <style>{css}</style>
 

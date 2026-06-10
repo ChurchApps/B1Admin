@@ -97,7 +97,7 @@ export const RegistrationsPage = () => {
             </Box>
           ) : (
             <Table>
-              <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+              <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.event")}</TableCell>
                   <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationsPage.date")}</TableCell>

@@ -68,7 +68,7 @@ export const BlocksPage = () => {
                 to={`/site/blocks/${block.id}`}
                 style={{
                   textDecoration: "none",
-                  color: "var(--primary-main, #1976d2)",
+                  color: "var(--link)",
                   fontWeight: 500
                 }}
               >

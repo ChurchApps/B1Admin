@@ -2,7 +2,8 @@ import React from "react";
 import { useForm, useFormState } from "react-hook-form";
 import { UpdateHouseHold } from "./modals/UpdateHouseHold";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
-import { InputBox, PersonHelper, ApiHelper, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { PersonHelper, ApiHelper, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { PersonAdd } from "../../components";
 import { Table, TableBody, TableCell, TableRow, TextField, FormControl, Select, MenuItem, InputLabel, type SelectChangeEvent } from "@mui/material";
 import { PersonRemove as PersonRemoveIcon, PersonAdd as PersonAddIcon, Close as CloseIcon } from "@mui/icons-material";
@@ -145,13 +146,13 @@ export function HouseholdEdit(props: Props) {
   return (
     <>
       <UpdateHouseHold show={showUpdateAddressModal} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} text={text} />
-      <InputBox
+      <FormCard
         id="householdBox"
-        headerIcon="group"
-        headerText={(props.household?.name || "") + Locale.label("people.householdEdit.house")}
+        icon="group"
+        title={(props.household?.name || "") + Locale.label("people.householdEdit.house")}
         isSubmitting={isSubmitting}
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={props.updatedFunction}>
+        onSave={handleSubmit(onValid)}
+        onCancel={props.updatedFunction}>
         <ErrorMessages errors={summaryErrors} />
         <TextField fullWidth id="name" type="text" label={Locale.label("people.householdEdit.houseName")} placeholder={Locale.label("placeholders.household.name")} data-testid="household-name-input" aria-label={Locale.label("people.householdEdit.householdNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("people.householdEdit.blankMsg") })} />
         <Table size="small" id="householdMemberTable">
@@ -167,7 +168,7 @@ export function HouseholdEdit(props: Props) {
           </TableBody>
         </Table>
         {personAdd}
-      </InputBox>
+      </FormCard>
     </>
   );
 }

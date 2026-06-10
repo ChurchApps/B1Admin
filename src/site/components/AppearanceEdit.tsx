@@ -28,7 +28,7 @@ function getOgImage(img: any) {
 }
 
 async function dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {
-  
+
   const [header, base64 = ""] = dataUrl.split(",");
   const mime = header.match(/data:(.*?);base64/)?.[1] ?? "image/png";
   const binary = atob(base64);
@@ -161,7 +161,7 @@ export function AppearanceEdit(props: Props) {
         <Box sx={{ backgroundColor: backgroundColor, minHeight: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
           {hasLogo
             ? (<img src={logoImage.value} alt={title} style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }} />)
-            : (<Stack alignItems="center" spacing={1} sx={{ color: alpha("#000", 0.4) }}>
+            : (<Stack alignItems="center" spacing={1} sx={{ color: (theme) => alpha(theme.palette.common.black, 0.4) }}>
               <ImageIcon sx={{ fontSize: 48 }} />
               <Typography variant="body2">{Locale.label("site.appearanceEdit.noImage")}</Typography>
             </Stack>)

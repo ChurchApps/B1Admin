@@ -46,19 +46,21 @@ export const AgeChart = ({ title, data, onSelect }: Props) => {
   // Column 0 is the age-group domain; series columns follow in the same order as the header.
   const seriesByColumn: ("female" | "male" | "unassigned")[] = hasUnassigned ? ["female", "male", "unassigned"] : ["female", "male"];
   const chartEvents = onSelect
-    ? [{
-      eventName: "select" as const,
-      callback: ({ chartWrapper }: any) => {
-        const chart = chartWrapper.getChart();
-        const selection = chart.getSelection();
-        if (selection.length > 0 && selection[0].row != null && selection[0].column != null) {
-          const group = data[selection[0].row]?.group;
-          const series = seriesByColumn[selection[0].column - 1];
-          if (group && series) onSelect(group, series);
-          chart.setSelection([]);
+    ? [
+      {
+        eventName: "select" as const,
+        callback: ({ chartWrapper }: any) => {
+          const chart = chartWrapper.getChart();
+          const selection = chart.getSelection();
+          if (selection.length > 0 && selection[0].row != null && selection[0].column != null) {
+            const group = data[selection[0].row]?.group;
+            const series = seriesByColumn[selection[0].column - 1];
+            if (group && series) onSelect(group, series);
+            chart.setSelection([]);
+          }
         }
       }
-    }]
+    ]
     : undefined;
 
   return (

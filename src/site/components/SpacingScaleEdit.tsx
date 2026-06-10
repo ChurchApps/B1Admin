@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Grid, TextField, Box, Typography, Stack, Button, alpha } from "@mui/material";
+import { Grid, TextField, Box, Typography, Stack, Button } from "@mui/material";
 import { SpaceBar as SpaceBarIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
@@ -124,7 +124,7 @@ export function SpacingScaleEdit(props: Props) {
 
         <Box sx={{ mt: 3 }}>
           <CardWithHeader title={Locale.label("site.spacingScaleEdit.practicalExamples")} icon={<VisibilityIcon />}>
-            <Box sx={{ p: 3, backgroundColor: alpha("#f5f5f5", 0.3), borderRadius: 2 }}>
+            <Box sx={{ p: 3, backgroundColor: "var(--bg-sub)", borderRadius: 2 }}>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
                 {Locale.label("site.spacingScaleEdit.practicalExamplesDesc")}
               </Typography>
@@ -132,7 +132,7 @@ export function SpacingScaleEdit(props: Props) {
               {/* Icon Row - uses xs */}
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.iconRow")}</Typography>
               <Box sx={{
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-main)",
                 borderRadius: 2,
                 p: `${spacing.sm}px`,
                 mb: 4,
@@ -151,7 +151,7 @@ export function SpacingScaleEdit(props: Props) {
               {/* Card Example - uses sm, md */}
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.cardWithContent")}</Typography>
               <Box sx={{
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-main)",
                 borderRadius: 2,
                 p: `${spacing.md}px`,
                 mb: 4,
@@ -170,12 +170,12 @@ export function SpacingScaleEdit(props: Props) {
               {/* Section Example - uses lg, xl */}
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.pageSection")}</Typography>
               <Box sx={{
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-main)",
                 borderRadius: 2,
                 overflow: "hidden",
                 mb: 4
               }}>
-                <Box sx={{ backgroundColor: "#1976d2", color: "#fff", py: `${spacing.xl}px`, px: `${spacing.lg}px`, textAlign: "center" }}>
+                <Box sx={{ backgroundColor: "primary.main", color: "#fff", py: `${spacing.xl}px`, px: `${spacing.lg}px`, textAlign: "center" }}>
                   <Typography variant="h5" sx={{ mb: `${spacing.sm}px` }}>{Locale.label("site.spacingScaleEdit.heroSection")}</Typography>
                   <Typography variant="body2">
                     {Locale.label("site.spacingScaleEdit.heroSectionDesc").replace("{xl}", spacing.xl.toString()).replace("{lg}", spacing.lg.toString())}
@@ -186,12 +186,12 @@ export function SpacingScaleEdit(props: Props) {
               {/* Full Page Section - uses xxl */}
               <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2 }}>{Locale.label("site.spacingScaleEdit.fullWidthBanner")}</Typography>
               <Box sx={{
-                border: "1px solid #ddd",
+                border: "1px solid var(--border-main)",
                 borderRadius: 2,
                 overflow: "hidden",
                 mb: 4
               }}>
-                <Box sx={{ backgroundColor: "#424242", color: "#fff", py: `${spacing.xxl}px`, px: `${spacing.lg}px`, textAlign: "center" }}>
+                <Box sx={{ backgroundColor: "grey.800", color: "#fff", py: `${spacing.xxl}px`, px: `${spacing.lg}px`, textAlign: "center" }}>
                   <Typography variant="h4" sx={{ mb: `${spacing.md}px` }}>{Locale.label("site.spacingScaleEdit.dramaticSection")}</Typography>
                   <Typography variant="body1">
                     {Locale.label("site.spacingScaleEdit.dramaticSectionDesc").replace("{value}", spacing.xxl.toString())}

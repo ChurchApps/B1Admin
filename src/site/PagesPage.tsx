@@ -256,7 +256,7 @@ export const PagesPage = () => {
         </Button>
       </PageHeader>
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.mode === "light" ? "#FFF" : "#292929", paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
+        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.background.paper, paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
           <DndProvider backend={HTML5Backend}>
             <h2 style={{ marginTop: 0 }}>{Locale.label("site.pagesPage.pages")}</h2>
             <div>

@@ -1,9 +1,10 @@
 import React from "react";
-import { Alert, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Alert, Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { type ServiceTimeInterface, type ServiceInterface } from "@churchapps/helpers";
-import { useMountedState, InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
+import { useMountedState, ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   serviceTime: ServiceTimeInterface;
@@ -47,26 +48,27 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
 
   if (props.serviceTime === null || props.serviceTime.id === undefined) return null;
   return (
-    <InputBox
-      id="serviceTimeBox"
-      data-cy="service-time-box"
-      cancelFunction={props.updatedFunction}
-      saveFunction={handleSubmit(onValid)}
-      deleteFunction={props.serviceTime?.id ? handleDelete : null}
-      headerText={props.serviceTime.name}
-      isSubmitting={isSubmitting}
-      headerIcon="schedule"
-      help="docs/b1-admin/attendance/">
-      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
-      <FormControl fullWidth>
-        <InputLabel id="service">{Locale.label("attendance.serviceTimeEdit.service")}</InputLabel>
-        <Controller name="serviceId" control={control} rules={{ required: Locale.label("attendance.serviceTimeEdit.validate.service") }} render={({ field }) => (
-          <Select {...field} labelId="service" label={Locale.label("attendance.serviceTimeEdit.service")} data-testid="service-select" aria-label={Locale.label("attendance.serviceTimeEdit.serviceAria")} error={!!e.serviceId}>
-            {services.map((s, i) => <MenuItem key={i} value={s.id}>{s.name}</MenuItem>)}
-          </Select>
-        )} />
-      </FormControl>
-      <TextField fullWidth label={Locale.label("attendance.serviceTimeEdit.name")} id="name" type="text" placeholder={Locale.label("attendance.serviceTimeEdit.namePlaceholder")} data-testid="service-time-name-input" aria-label={Locale.label("attendance.serviceTimeEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceTimeEdit.validate.name") })} />
-    </InputBox>
+    <Box data-cy="service-time-box">
+      <FormCard
+        id="serviceTimeBox"
+        onCancel={props.updatedFunction}
+        onSave={handleSubmit(onValid)}
+        onDelete={props.serviceTime?.id ? handleDelete : undefined}
+        title={props.serviceTime.name}
+        isSubmitting={isSubmitting}
+        icon="schedule"
+        help="docs/b1-admin/attendance/">
+        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <FormControl fullWidth>
+          <InputLabel id="service">{Locale.label("attendance.serviceTimeEdit.service")}</InputLabel>
+          <Controller name="serviceId" control={control} rules={{ required: Locale.label("attendance.serviceTimeEdit.validate.service") }} render={({ field }) => (
+            <Select {...field} labelId="service" label={Locale.label("attendance.serviceTimeEdit.service")} data-testid="service-select" aria-label={Locale.label("attendance.serviceTimeEdit.serviceAria")} error={!!e.serviceId}>
+              {services.map((s, i) => <MenuItem key={i} value={s.id}>{s.name}</MenuItem>)}
+            </Select>
+          )} />
+        </FormControl>
+        <TextField fullWidth label={Locale.label("attendance.serviceTimeEdit.name")} id="name" type="text" placeholder={Locale.label("attendance.serviceTimeEdit.namePlaceholder")} data-testid="service-time-name-input" aria-label={Locale.label("attendance.serviceTimeEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceTimeEdit.validate.name") })} />
+      </FormCard>
+    </Box>
   );
 };

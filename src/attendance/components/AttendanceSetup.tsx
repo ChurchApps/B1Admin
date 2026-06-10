@@ -220,7 +220,7 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 8 }}>
-            <Icon sx={{ color: "#ddd", fontSize: 12 }}>circle</Icon>
+            <Icon sx={{ color: "var(--border-main)", fontSize: 12 }}>circle</Icon>
             <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 400, fontSize: "0.85rem" }}>
               {group.name}
             </Typography>

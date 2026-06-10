@@ -1,5 +1,6 @@
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { InputBox, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import {
   Grid,
   InputLabel,
@@ -62,7 +63,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
     return errs;
   }, [errors]);
 
-  const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentService?.id)) return handleDelete; else return null; };
+  const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentService?.id)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction(); };
 
   const loadData = () => {
@@ -185,12 +186,12 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   if (isLoading) return <Loading />;
   else {
     return (
-      <InputBox
-        headerIcon="video_settings"
-        headerText={UniqueIdHelper.isMissing(props.currentService?.id) ? Locale.label("sermons.liveStreamTimes.serviceEdit.addNewService") : Locale.label("sermons.liveStreamTimes.serviceEdit.editService")}
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={handleCancel}
-        deleteFunction={checkDelete()}
+      <FormCard
+        icon="video_settings"
+        title={UniqueIdHelper.isMissing(props.currentService?.id) ? Locale.label("sermons.liveStreamTimes.serviceEdit.addNewService") : Locale.label("sermons.liveStreamTimes.serviceEdit.editService")}
+        onSave={handleSubmit(onValid)}
+        onCancel={handleCancel}
+        onDelete={checkDelete()}
         data-testid="edit-service-inputbox"
       >
         <Stack spacing={3}>
@@ -269,13 +270,13 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                         <MenuItem value="false">
                           <Stack direction="row" spacing={1} alignItems="center">
                             <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.no")}</Typography>
-                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")} size="small" sx={{ backgroundColor: "#fff3e0", color: "#f57c00" }} />
+                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")} size="small" sx={{ backgroundColor: "rgba(237, 108, 2, 0.08)", color: "warning.main" }} />
                           </Stack>
                         </MenuItem>
                         <MenuItem value="true">
                           <Stack direction="row" spacing={1} alignItems="center">
                             <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.yes")}</Typography>
-                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")} size="small" sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }} />
+                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
                           </Stack>
                         </MenuItem>
                       </Select>
@@ -403,7 +404,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
                       <MenuItem value="latest">
                         <Stack direction="row" spacing={1} alignItems="center">
                           <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.latestSermon")}</Typography>
-                          <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.auto")} size="small" sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }} />
+                          <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.auto")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
                         </Stack>
                       </MenuItem>
                       {getSermons()}
@@ -414,7 +415,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
             </Grid>
           </Box>
         </Stack>
-      </InputBox>
+      </FormCard>
     );
   }
 };

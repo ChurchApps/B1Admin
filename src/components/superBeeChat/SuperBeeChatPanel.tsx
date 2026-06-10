@@ -54,7 +54,7 @@ export const SuperBeeChatPanel: React.FC<Props> = ({ onClose }) => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <AppBar position="static" elevation={0} sx={{ backgroundColor: "#1565C0" }}>
+      <AppBar position="static" elevation={0} sx={{ backgroundColor: "primary.main" }}>
         <Toolbar variant="dense">
           <Box
             component="img"
@@ -92,7 +92,7 @@ export const SuperBeeChatPanel: React.FC<Props> = ({ onClose }) => {
         ))}
         {isLoading && (
           <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
-            <CircularProgress size={24} sx={{ color: "#1565C0" }} />
+            <CircularProgress size={24} sx={{ color: "primary.main" }} />
           </Box>
         )}
         <div ref={messagesEndRef} />

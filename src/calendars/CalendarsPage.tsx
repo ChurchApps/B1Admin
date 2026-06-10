@@ -92,8 +92,8 @@ export const CalendarsPage = () => {
           label={Locale.label("calendars.calendarList.active")}
           size="small"
           sx={{
-            backgroundColor: "#e8f5e9",
-            color: "#2e7d32",
+            backgroundColor: "rgba(46, 125, 50, 0.1)",
+            color: "success.main",
             fontWeight: 600
           }}
         />

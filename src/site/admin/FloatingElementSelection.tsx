@@ -17,7 +17,7 @@ interface Props {
 
 const actionButtonSx = {
   padding: "3px",
-  "&:hover": { backgroundColor: "#f3f4f6" }
+  "&:hover": { backgroundColor: "action.hover" }
 };
 
 export const FloatingElementSelection: React.FC<Props> = ({
@@ -84,7 +84,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
           left: position.left,
           width: position.width,
           height: position.height,
-          outline: "1.5px solid #1976d2",
+          outline: "1.5px solid var(--focus)",
           outlineOffset: "1px",
           pointerEvents: "none",
           zIndex: 1001
@@ -100,7 +100,7 @@ export const FloatingElementSelection: React.FC<Props> = ({
           gap: 0,
           backgroundColor: "rgba(255, 255, 255, 0.96)",
           borderRadius: "4px",
-          border: "1px solid #e5e7eb",
+          border: "1px solid var(--border-main)",
           padding: "1px",
           zIndex: 1002,
           backdropFilter: "blur(6px)",

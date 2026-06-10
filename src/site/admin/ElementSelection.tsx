@@ -20,7 +20,7 @@ interface Props {
 
 const actionButtonSx = {
   padding: "3px",
-  "&:hover": { backgroundColor: "#f3f4f6" }
+  "&:hover": { backgroundColor: "action.hover" }
 };
 
 export const ElementSelection: React.FC<Props> = ({
@@ -37,7 +37,7 @@ export const ElementSelection: React.FC<Props> = ({
     <Box
       sx={{
         position: "relative",
-        outline: isSelected ? "1.5px solid #1976d2" : "none",
+        outline: isSelected ? "1.5px solid var(--focus)" : "none",
         outlineOffset: "1px",
         transition: "outline 0.15s ease"
       }}
@@ -57,7 +57,7 @@ export const ElementSelection: React.FC<Props> = ({
               gap: 0,
               backgroundColor: "rgba(255, 255, 255, 0.96)",
               borderRadius: "4px",
-              border: "1px solid #e5e7eb",
+              border: "1px solid var(--border-main)",
               padding: "1px",
               zIndex: 1002,
               backdropFilter: "blur(6px)",

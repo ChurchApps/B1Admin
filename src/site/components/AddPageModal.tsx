@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { ErrorMessages, InputBox, UserHelper, SlugHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { ErrorMessages, UserHelper, SlugHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { Permissions, type LinkInterface } from "@churchapps/helpers";
 import { Button, Dialog, Grid, Icon, InputLabel, type SelectChangeEvent, TextField, Typography, CircularProgress, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -334,7 +335,7 @@ export function AddPageModal(props: Props) {
     return (
 
       <Dialog open={true} onClose={props.onDone} className="dialogForm">
-        <InputBox id="dialogForm" headerText={(pageTemplate === "link") ? Locale.label("site.addPage.newLink") : Locale.label("site.addPage.newPage")} headerIcon="article" saveFunction={handleSave} cancelFunction={handleCancel} data-testid="add-page-modal" isSubmitting={isSubmitting}>
+        <FormCard id="dialogForm" title={(pageTemplate === "link") ? Locale.label("site.addPage.newLink") : Locale.label("site.addPage.newPage")} icon="article" onSave={handleSave} onCancel={handleCancel} data-testid="add-page-modal" isSubmitting={isSubmitting}>
           <ErrorMessages errors={errors} />
 
           <InputLabel>{Locale.label("site.addPage.pageType")}</InputLabel>
@@ -404,7 +405,7 @@ export function AddPageModal(props: Props) {
               </Grid>}
             </Grid>
           )}
-        </InputBox>
+        </FormCard>
 
       </Dialog>
     );

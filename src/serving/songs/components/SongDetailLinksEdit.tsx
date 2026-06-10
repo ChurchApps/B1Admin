@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailLinkInterface } from "../../../helpers";
 import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Stack, Typography, Box } from "@mui/material";
 import { Link as LinkIcon, Done as DoneIcon, Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
+import { FormCard } from "../../../components/ui";
 
 interface Props {
   songDetailId: string;
@@ -89,7 +90,7 @@ export const SongDetailLinksEdit = (props: Props) => {
         <button
           type="button"
           onClick={() => setEditLink(link)}
-          style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
           {link.service}
         </button>
       </TableCell>
@@ -99,12 +100,12 @@ export const SongDetailLinksEdit = (props: Props) => {
 
   if (editLink) {
     return (
-      <InputBox
-        headerText={Locale.label("plans.songs.links")}
-        headerIcon="link"
-        cancelFunction={() => { setEditLink(null); }}
-        saveFunction={handleSubmit(onValid)}
-        deleteFunction={editLink.id ? handleDelete : null}>
+      <FormCard
+        title={Locale.label("plans.songs.links")}
+        icon="link"
+        onCancel={() => { setEditLink(null); }}
+        onSave={handleSubmit(onValid)}
+        onDelete={editLink.id ? handleDelete : undefined}>
         <FormControl fullWidth size="small">
           <InputLabel>{Locale.label("songs.songDetailLinksEdit.service")}</InputLabel>
           <Controller name="service" control={control} render={({ field }) => (
@@ -120,7 +121,7 @@ export const SongDetailLinksEdit = (props: Props) => {
           )} />
         </FormControl>
         <TextField size="small" placeholder={getPlaceholder(watchedService)} fullWidth label={Locale.label("songs.songDetailLinksEdit.id")} {...register("serviceKey")} />
-      </InputBox>
+      </FormCard>
     );
   } else {
     return (

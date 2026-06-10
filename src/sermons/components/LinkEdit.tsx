@@ -129,7 +129,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
         }}
       >
         <DialogTitle sx={{
-          backgroundColor: "#1976d2",
+          backgroundColor: "primary.main",
           color: "#FFF",
           p: 3
         }}>
@@ -173,8 +173,8 @@ export const LinkEdit: React.FC<Props> = (props) => {
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>edit</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>edit</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                     {Locale.label("sermons.liveStreamTimes.linkEdit.linkDetails")}
                   </Typography>
                 </Stack>
@@ -213,8 +213,8 @@ export const LinkEdit: React.FC<Props> = (props) => {
               <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
                 <CardContent>
                   <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                    <Icon sx={{ color: "#1976d2", fontSize: 18 }}>account_tree</Icon>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                    <Icon sx={{ color: "primary.main", fontSize: 18 }}>account_tree</Icon>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                       {Locale.label("sermons.liveStreamTimes.linkEdit.menuOrganization")}
                     </Typography>
                   </Stack>
@@ -265,9 +265,9 @@ export const LinkEdit: React.FC<Props> = (props) => {
                               textTransform: "none",
                               fontWeight: 500,
                               "&.Mui-selected": {
-                                backgroundColor: "#1976d2",
+                                backgroundColor: "primary.main",
                                 color: "#FFF",
-                                "&:hover": { backgroundColor: "#1565c0" }
+                                "&:hover": { backgroundColor: "primary.dark" }
                               }
                             }}
                           >

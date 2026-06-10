@@ -150,7 +150,7 @@ export const RegistrationDetailsPage = () => {
                 </Box>
               ) : (
                 <Table size="small">
-                  <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+                  <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
                     <TableRow>
                       <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.name")}</TableCell>
                       <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.members")}</TableCell>

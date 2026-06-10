@@ -1,8 +1,9 @@
 import React from "react";
-import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Alert, Box, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { type ServiceInterface } from "@churchapps/helpers";
-import { InputBox, ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
 
 interface Props {
@@ -45,26 +46,27 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   if (props.service === null || props.service.id === undefined) return null;
 
   return (
-    <InputBox
-      id="serviceBox"
-      data-cy="service-box"
-      cancelFunction={props.updatedFunction}
-      saveFunction={handleSubmit(onValid)}
-      deleteFunction={props.service?.id ? handleDelete : null}
-      headerText={props.service.name}
-      headerIcon="calendar_month"
-      isSubmitting={isSubmitting}
-      help="docs/b1-admin/attendance/">
-      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
-      <FormControl fullWidth>
-        <InputLabel id="campus">{Locale.label("attendance.serviceEdit.campus")}</InputLabel>
-        <Controller name="campusId" control={control} rules={{ required: Locale.label("attendance.serviceEdit.validate.campus") }} render={({ field }) => (
-          <Select {...field} labelId="campus" label={Locale.label("attendance.serviceEdit.campus")} data-testid="campus-select" aria-label={Locale.label("attendance.serviceEdit.campusAria")} error={!!e.campusId}>
-            {campuses.map((c, i) => <MenuItem key={i} value={c.id}>{c.name}</MenuItem>)}
-          </Select>
-        )} />
-      </FormControl>
-      <TextField fullWidth label={Locale.label("attendance.serviceEdit.name")} id="name" type="text" placeholder={Locale.label("placeholders.service.name")} data-testid="service-name-input" aria-label={Locale.label("attendance.serviceEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceEdit.validate.name") })} />
-    </InputBox>
+    <Box data-cy="service-box">
+      <FormCard
+        id="serviceBox"
+        onCancel={props.updatedFunction}
+        onSave={handleSubmit(onValid)}
+        onDelete={props.service?.id ? handleDelete : undefined}
+        title={props.service.name}
+        icon="calendar_month"
+        isSubmitting={isSubmitting}
+        help="docs/b1-admin/attendance/">
+        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <FormControl fullWidth>
+          <InputLabel id="campus">{Locale.label("attendance.serviceEdit.campus")}</InputLabel>
+          <Controller name="campusId" control={control} rules={{ required: Locale.label("attendance.serviceEdit.validate.campus") }} render={({ field }) => (
+            <Select {...field} labelId="campus" label={Locale.label("attendance.serviceEdit.campus")} data-testid="campus-select" aria-label={Locale.label("attendance.serviceEdit.campusAria")} error={!!e.campusId}>
+              {campuses.map((c, i) => <MenuItem key={i} value={c.id}>{c.name}</MenuItem>)}
+            </Select>
+          )} />
+        </FormControl>
+        <TextField fullWidth label={Locale.label("attendance.serviceEdit.name")} id="name" type="text" placeholder={Locale.label("placeholders.service.name")} data-testid="service-name-input" aria-label={Locale.label("attendance.serviceEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceEdit.validate.name") })} />
+      </FormCard>
+    </Box>
   );
 };

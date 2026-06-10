@@ -3,7 +3,8 @@ import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { ChoicesEdit } from ".";
 import { type QuestionInterface } from "@churchapps/helpers";
-import { useMountedState, ApiHelper, InputBox, UniqueIdHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { useMountedState, ApiHelper, UniqueIdHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { PaymentEdit } from "./PaymentEdit";
 
 interface Props {
@@ -69,7 +70,7 @@ export function FormQuestionEdit(props: Props) {
   React.useEffect(loadData, [props.questionId || props.formId]);
 
   return (
-    <InputBox id="questionBox" headerIcon="help" headerText={Locale.label("forms.formQuestionEdit.questionEdit")} saveFunction={handleSubmit(onValid)} cancelFunction={props.updatedFunction} isSubmitting={isSubmitting} deleteFunction={!UniqueIdHelper.isMissing(watchedQuestion.id) ? handleDelete : undefined} help="docs/b1-admin/forms/">
+    <FormCard id="questionBox" icon="help" title={Locale.label("forms.formQuestionEdit.questionEdit")} onSave={handleSubmit(onValid)} onCancel={props.updatedFunction} isSubmitting={isSubmitting} onDelete={!UniqueIdHelper.isMissing(watchedQuestion.id) ? handleDelete : undefined} help="docs/b1-admin/forms/">
       <ErrorMessages errors={summaryErrors} />
       <FormControl fullWidth>
         <InputLabel id="provider">{Locale.label("forms.formQuestionEdit.prov")}</InputLabel>
@@ -99,6 +100,6 @@ export function FormQuestionEdit(props: Props) {
           <FormControlLabel control={<Checkbox checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="question-required-checkbox" aria-label={Locale.label("forms.formQuestionEdit.questionRequiredAria")} />} label={Locale.label("forms.formQuestionEdit.ansReq")} />
         )} />
       )}
-    </InputBox>
+    </FormCard>
   );
 }

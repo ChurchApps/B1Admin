@@ -146,7 +146,7 @@ export const PeoplePage = memo(() => {
       handleSelectList(conditions);
       navigate(location.pathname, { replace: true, state: null });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   const handleSaveList = useCallback(async () => {

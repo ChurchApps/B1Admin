@@ -256,7 +256,7 @@ export const PlanValidation = (props: Props) => {
     else {
       return (
         <p>
-          <button type="button" onClick={notify} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          <button type="button" onClick={notify} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("plans.planValidation.notify")} {pending.length} {Locale.label("plans.planValidation.vol")}
           </button>
         </p>

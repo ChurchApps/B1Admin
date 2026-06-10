@@ -157,7 +157,7 @@ export const CalendarPage = () => {
                   </Box>
                 ) : (
                   <Table size="small">
-                    <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+                    <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
                       <TableRow>
                         <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>
                           {Locale.label("calendars.calendarPage.groupName")}

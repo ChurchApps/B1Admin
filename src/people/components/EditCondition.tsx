@@ -354,10 +354,12 @@ export function EditCondition(props: Props) {
           const optionsArray: any[] = [];
           optionsArray.push({ campuses: campuses.map((c) => ({ value: c.id, text: c.name })) });
           optionsArray.push({ services: services.map((s) => ({ value: s.id, text: `${campusName(s.campusId)} - ${s.name}` })) });
-          optionsArray.push({ serviceTimes: serviceTimes.map((st) => {
-            const s = serviceById(st.serviceId);
-            return { value: st.id, text: `${campusName(s?.campusId)} - ${s?.name} - ${st.name}` };
-          }) });
+          optionsArray.push({
+            serviceTimes: serviceTimes.map((st) => {
+              const s = serviceById(st.serviceId);
+              return { value: st.id, text: `${campusName(s?.campusId)} - ${s?.name} - ${st.name}` };
+            })
+          });
           optionsArray.push({ groups: groups.map((g) => ({ value: g.id, text: g.name })) });
           setLoadedOptions(optionsArray);
           setLoadingOptions(false);

@@ -80,7 +80,7 @@ export const TimeList = (props: Props) => {
               <button
                 type="button"
                 onClick={() => handleSelect(t)}
-                style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+                style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
                 {t.displayName}
               </button>
             ) : (

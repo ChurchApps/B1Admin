@@ -49,11 +49,11 @@ export function HelpDialog(props: HelpDialogProps) {
           justifyContent: "space-between",
           fontSize: "1.05rem",
           fontWeight: 600,
-          borderBottom: "1px solid #e5e7eb"
+          borderBottom: "1px solid var(--border-main)"
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Icon fontSize="small" sx={{ color: "#6b7280" }}>help_outline</Icon>
+          <Icon fontSize="small" sx={{ color: "text.secondary" }}>help_outline</Icon>
           {Locale.label("site.helpDialog.title")}
         </Box>
         <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={onClose} />
@@ -67,20 +67,20 @@ export function HelpDialog(props: HelpDialogProps) {
                   width: 36,
                   height: 36,
                   borderRadius: "8px",
-                  background: "#f3f4f6",
+                  background: "var(--bg-sub)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0
                 }}
               >
-                <Icon sx={{ color: "#374151", fontSize: 20 }}>{tip.icon}</Icon>
+                <Icon sx={{ color: "text.primary", fontSize: 20 }}>{tip.icon}</Icon>
               </Box>
               <Box>
-                <Box sx={{ fontWeight: 600, color: "#111827", fontSize: "0.9rem", mb: 0.25 }}>
+                <Box sx={{ fontWeight: 600, color: "text.primary", fontSize: "0.9rem", mb: 0.25 }}>
                   {tip.title}
                 </Box>
-                <Box sx={{ color: "#4b5563", fontSize: "0.825rem", lineHeight: 1.45 }}>
+                <Box sx={{ color: "text.secondary", fontSize: "0.825rem", lineHeight: 1.45 }}>
                   {tip.body}
                 </Box>
               </Box>
@@ -88,7 +88,7 @@ export function HelpDialog(props: HelpDialogProps) {
           ))}
         </Box>
       </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2, borderTop: "1px solid #e5e7eb", justifyContent: "space-between" }}>
+      <DialogActions sx={{ px: 3, pb: 2, borderTop: "1px solid var(--border-main)", justifyContent: "space-between" }}>
         <Button
           variant="text"
           color="primary"

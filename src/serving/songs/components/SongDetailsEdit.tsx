@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { ApiHelper, DateHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface } from "../../../helpers";
 import { TextField } from "@mui/material";
+import { FormCard } from "../../../components/ui";
 
 interface Props {
   songDetail: SongDetailInterface;
@@ -36,7 +37,7 @@ export const SongDetailsEdit = (props: Props) => {
   };
 
   return (
-    <InputBox headerText={props.songDetail?.title} headerIcon="album" saveFunction={handleSubmit(onValid)} cancelFunction={props.onCancel}>
+    <FormCard title={props.songDetail?.title} icon="album" onSave={handleSubmit(onValid)} onCancel={props.onCancel}>
       <TextField label={Locale.label("songs.details.album")} fullWidth size="small" placeholder={Locale.label("placeholders.song.album")} {...register("album")} />
       <TextField label={Locale.label("songs.details.language")} fullWidth size="small" placeholder={Locale.label("placeholders.song.language")} {...register("language")} />
       <Controller name="releaseDate" control={control} render={({ field }) => (
@@ -45,6 +46,6 @@ export const SongDetailsEdit = (props: Props) => {
       <TextField type="number" label={Locale.label("songs.details.bpm")} fullWidth size="small" placeholder={Locale.label("placeholders.song.bpm")} {...register("bpm")} />
       <TextField label={Locale.label("songs.details.key")} fullWidth size="small" placeholder={Locale.label("placeholders.song.keySignature")} {...register("keySignature")} />
       <TextField type="number" label={Locale.label("songs.details.seconds")} fullWidth size="small" placeholder={Locale.label("placeholders.song.lengthSeconds")} {...register("seconds")} />
-    </InputBox>
+    </FormCard>
   );
 };

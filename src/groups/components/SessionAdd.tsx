@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupServiceTimeInterface, type SessionInterface } from "@churchapps/helpers";
-import { ApiHelper, InputBox, ErrorMessages, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
-import { TextField, FormControl, Select, InputLabel, MenuItem } from "@mui/material";
+import { ApiHelper, ErrorMessages, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { TextField, FormControl, Select, InputLabel, MenuItem, Box } from "@mui/material";
+import { FormCard } from "../../components/ui";
 
 type AnyRecord = Record<string, any>;
 
@@ -75,16 +76,17 @@ export const SessionAdd: React.FC<Props> = (props) => {
   };
 
   return (
-    <InputBox
-      data-cy="add-session-box"
-      headerIcon="calendar_month"
-      headerText={Locale.label("groups.sessionAdd.sesAdd")}
-      saveFunction={handleSubmit(onValid)}
-      cancelFunction={handleCancel}
-      help="docs/b1-admin/attendance/">
-      <ErrorMessages errors={summaryErrors} />
-      {getServiceTimes()}
-      <TextField fullWidth type="date" InputLabelProps={{ shrink: true }} label={Locale.label("groups.sessionAdd.sesDate")} data-testid="session-date-input" aria-label={Locale.label("groups.sessionAdd.sessionDateAria")} error={!!e.sessionDate} helperText={e.sessionDate?.message} {...register("sessionDate", { validate: validateDate })} />
-    </InputBox>
+    <Box data-cy="add-session-box">
+      <FormCard
+        icon="calendar_month"
+        title={Locale.label("groups.sessionAdd.sesAdd")}
+        onSave={handleSubmit(onValid)}
+        onCancel={handleCancel}
+        help="docs/b1-admin/attendance/">
+        <ErrorMessages errors={summaryErrors} />
+        {getServiceTimes()}
+        <TextField fullWidth type="date" InputLabelProps={{ shrink: true }} label={Locale.label("groups.sessionAdd.sesDate")} data-testid="session-date-input" aria-label={Locale.label("groups.sessionAdd.sessionDateAria")} error={!!e.sessionDate} helperText={e.sessionDate?.message} {...register("sessionDate", { validate: validateDate })} />
+      </FormCard>
+    </Box>
   );
 };

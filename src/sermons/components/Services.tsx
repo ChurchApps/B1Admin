@@ -72,7 +72,7 @@ export const Services: React.FC = () => {
                 <Chip
                   label={Locale.label("sermons.liveStreamTimes.servicesTab.weekly")}
                   size="small"
-                  sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }}
+                  sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }}
                 />
               )}
             </Stack>

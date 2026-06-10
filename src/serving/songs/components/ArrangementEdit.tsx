@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type ArrangementInterface } from "../../../helpers";
 import { TextField } from "@mui/material";
+import { FormCard } from "../../../components/ui";
 
 interface Props {
   arrangement: ArrangementInterface;
@@ -35,9 +36,9 @@ export const ArrangementEdit = (props: Props) => {
   };
 
   return (
-    <InputBox headerText={props.arrangement?.name || Locale.label("songs.arrangement.edit")} headerIcon="library_music" saveFunction={handleSubmit(onValid)} cancelFunction={props.onCancel} deleteFunction={props.arrangement?.id ? handleDelete : null}>
+    <FormCard title={props.arrangement?.name || Locale.label("songs.arrangement.edit")} icon="library_music" onSave={handleSubmit(onValid)} onCancel={props.onCancel} onDelete={props.arrangement?.id ? handleDelete : undefined}>
       <TextField label={Locale.label("songs.arrangement.name")} fullWidth placeholder={Locale.label("placeholders.song.arrangementName")} {...register("name")} />
       <TextField label={Locale.label("songs.arrangement.lyrics")} multiline fullWidth placeholder={Locale.label("placeholders.song.lyrics")} {...register("lyrics")} />
-    </InputBox>
+    </FormCard>
   );
 };

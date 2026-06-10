@@ -3,7 +3,8 @@ import { useForm, Controller, useFormState } from "react-hook-form";
 import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
 import { B1AdminPersonHelper, UpdateHouseHold } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
-import { PersonHelper, DateHelper, InputBox, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { PersonHelper, DateHelper, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { Navigate } from "react-router-dom";
 import UserContext from "../../UserContext";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, FormControlLabel, Checkbox } from "@mui/material";
@@ -32,7 +33,7 @@ const phoneSlotProps = { htmlInput: { "aria-describedby": "errorMsg", "aria-labe
 const phoneMenuProps = { "aria-label": "phone-number" };
 const phoneRules = (v: string) => !v || v.length <= 4 || matchIsValidTel(v.split("x")[0]) || Locale.label("people.personEdit.invalForm");
 const phoneHelperText = (hasError: boolean) => (
-  <div id="errorMsg">{hasError && <p style={{ margin: 0, color: "#d32f2f" }}>{Locale.label("people.personEdit.invalForm")}</p>}</div>
+  <div id="errorMsg">{hasError && <Box component="p" sx={{ margin: 0, color: "error.main" }}>{Locale.label("people.personEdit.invalForm")}</Box>}</div>
 );
 
 // Normalize legacy phone formats like "(217) 555-2504" or "217-555-2504" into E.164
@@ -165,8 +166,8 @@ export const PersonEdit = memo((props: Props) => {
   return (
     <>
       <UpdateHouseHold show={showUpdateAddressModal} text={modalText} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} />
-      <InputBox headerIcon="person" headerText={Locale.label("people.personEdit.persDet")} cancelFunction={props.updatedFunction} deleteFunction={handleDelete} saveFunction={handleSubmit(onValid)} isSubmitting={isSubmitting}
-        headerActionContent={
+      <FormCard icon="person" title={Locale.label("people.personEdit.persDet")} onCancel={props.updatedFunction} onDelete={handleDelete} onSave={handleSubmit(onValid)} isSubmitting={isSubmitting}
+        headerActions={
           <Button id="mergeButton" size="small" onClick={props.showMergeSearch} data-testid="merge-person-button" aria-label={Locale.label("people.personEdit.mergePersonAria")}>
             {Locale.label("people.personEdit.merge")}
           </Button>
@@ -314,7 +315,7 @@ export const PersonEdit = memo((props: Props) => {
             )} />
           </Grid>
         </Grid>
-      </InputBox>
+      </FormCard>
       {redirect !== "" && <Navigate to={redirect} />}
     </>
   );

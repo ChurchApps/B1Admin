@@ -91,7 +91,7 @@ export const IconPicker: React.FC<Props> = (props) => {
       PaperProps={{ sx: { borderRadius: 2 } }}
     >
       <DialogTitle sx={{
-        backgroundColor: "#1976d2",
+        backgroundColor: "primary.main",
         color: "#FFF",
         p: 2
       }}>

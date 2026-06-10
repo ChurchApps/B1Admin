@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
-import { FileUpload, InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
+import { FileUpload, ApiHelper, Locale } from "@churchapps/apphelper";
 import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { CardWithHeader, EmptyState } from "../../components/ui";
+import { CardWithHeader, EmptyState, FormCard } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export function FilesManager() {
@@ -127,7 +127,7 @@ export function FilesManager() {
           </CardWithHeader>
         </Grid>
         <Grid size={{ md: 4, xs: 12 }}>
-          <InputBox headerIcon="cloud_upload" headerText={Locale.label("site.files.uploadFiles")} saveFunction={handleSave} saveText={Locale.label("site.files.upload")} data-testid="file-upload-inputbox">
+          <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} onSave={handleSave} saveText={Locale.label("site.files.upload")} data-testid="file-upload-inputbox">
             {getStorage()}
             <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
               {Locale.label("site.files.storageInfo")}
@@ -145,7 +145,7 @@ export function FilesManager() {
                 <FileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} />
               </Box>
             )}
-          </InputBox>
+          </FormCard>
         </Grid>
       </Grid>
     </Box>
