@@ -213,6 +213,7 @@
     "done": "Klar",
     "duplicate": "Duplicera",
     "edit": "Redigera",
+    "element": "Element",
     "errorBoundary": {
       "message": "Något gick fel. Försök igen eller kontakta support om problemet kvarstår.",
       "retry": "Försök igen",
@@ -259,8 +260,7 @@
     "tryAgain": "Försök igen",
     "update": "Uppdatera",
     "website": "Webbplats",
-    "yes": "Ja",
-    "element": "Element"
+    "yes": "Ja"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "sedan",
       "block": "Block",
       "desktop": "Dator",
+      "disablePublish": "Stäng av publicering",
+      "disablePublishConfirm": "Stäng av publicering för denna sida? Ändringar går då direkt live igen.",
+      "discardChanges": "Förkasta opublicerade ändringar",
+      "discardChangesConfirm": "Förkasta alla ändringar som gjorts sedan senaste publiceringen? Redigeraren återställs till liveversionen.",
       "exit": "Avsluta",
       "justNow": "just nu",
       "mobile": "Mobil",
       "notSavedYet": "Inga ändringar än",
       "page": "Sida",
+      "publish": "Publicera",
+      "publishOffTip": "Ändringar går just nu live direkt. Publicera för att spara en liveversion och hålla framtida ändringar privata till nästa publicering.",
+      "publishedLabel": "Publicerad",
       "redoTip": "Gör om (Ctrl+Shift+Z)",
       "savedAllChanges": "Alla ändringar sparade",
       "switchToDesktop": "Byt till datorvy",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicera sektion",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Vår berättelse",
+      "all": "Alla",
+      "blank": "Tom sektion",
+      "category": {
+        "about": "Om oss",
+        "cta": "Uppmaning till handling",
+        "giving": "Givande",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Personer och grupper",
+        "services": "Gudstjänster"
+      },
+      "connectColumns": "Kontaktkolumner",
+      "ctaBanner": "Nästa steg-banner",
+      "faqSection": "Vanliga frågor",
+      "findUs": "Hitta oss",
+      "galleryRow": "Fotorad",
+      "givingBanner": "Banner för givande",
+      "givingOptions": "Sätt att ge",
+      "groupListSection": "Grupplista",
+      "groupsBrowser": "Bläddra bland grupper",
+      "heroCentered": "Hero med foto",
+      "heroGradient": "Hero med gradient",
+      "heroSplit": "Delad hero",
+      "ministriesCards": "Verksamhetskort",
+      "sermonsLatest": "Senaste predikningar",
+      "serviceTimes": "Gudstjänsttider",
+      "staffGrid": "Personalöversikt",
+      "storyColumns": "Tre kolumner",
+      "testimony": "Vittnesbördscitat",
+      "title": "Lägg till en sektion",
+      "verseBanner": "Banner med bibelvers",
+      "watchOnline": "Titta online",
+      "welcome": "Välkomsttext"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Knapp 1",
       "buttonTwo": "Knapp 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animationer",
       "animationsDesc": "Effekt när elementet visas.",
+      "hideOnDesktop": "Dölj på dator",
+      "hideOnMobile": "Dölj på mobil",
       "styles": "Stilar",
-      "stylesDesc": "Avancerade utseendealternativ."
+      "stylesDesc": "Avancerade utseendealternativ.",
+      "visibility": "Synlighet:"
     },
     "stylesManager": {
       "color": "Färgpalett",

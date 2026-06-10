@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Divider, Icon, Menu, MenuItem, ListItemIcon, ListItemText, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import { Badge, Box, Button, Divider, Icon, Menu, MenuItem, ListItemIcon, ListItemText, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
 import { Undo as UndoIcon, Redo as RedoIcon, MoreVert as MoreVertIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { PageInterface, BlockInterface } from "../../helpers/Interfaces";
@@ -21,6 +21,10 @@ interface EditorToolbarProps {
   onRedo?: () => void;
   onShowHistory?: () => void;
   lastSavedAt?: number | null;
+  hasUnpublishedChanges?: boolean;
+  onPublish?: () => void;
+  onDiscardChanges?: () => void;
+  onUnpublish?: () => void;
 }
 
 function formatRelative(ts: number): string {
@@ -48,8 +52,17 @@ export function EditorToolbar(props: EditorToolbarProps) {
     onRedo,
     onShowHistory,
     onToggleHelp,
-    lastSavedAt
+    lastSavedAt,
+    hasUnpublishedChanges,
+    onPublish,
+    onDiscardChanges,
+    onUnpublish
   } = props;
+
+  const publishedAt = isPageMode ? (container as PageInterface)?.publishedAt : null;
+  const publishTooltip = publishedAt
+    ? `${Locale.label("site.editorToolbar.publishedLabel")} ${formatRelative(new Date(publishedAt).getTime())}`
+    : Locale.label("site.editorToolbar.publishOffTip");
 
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [, setTick] = useState(0);
@@ -168,6 +181,23 @@ export function EditorToolbar(props: EditorToolbarProps) {
 
       {/* RIGHT: Device toggle + Add + overflow */}
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, flex: "0 0 auto" }}>
+        {isPageMode && onPublish && (
+          <Tooltip title={publishTooltip} placement="bottom">
+            <Badge color="warning" variant="dot" invisible={!publishedAt || !hasUnpublishedChanges} data-testid="publish-badge">
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={onPublish}
+                startIcon={<Icon>publish</Icon>}
+                sx={{ textTransform: "none", fontWeight: 600 }}
+                data-testid="publish-button"
+              >
+                {Locale.label("site.editorToolbar.publish")}
+              </Button>
+            </Badge>
+          </Tooltip>
+        )}
+
         <ToggleButtonGroup
           size="small"
           value={deviceType}
@@ -244,6 +274,34 @@ export function EditorToolbar(props: EditorToolbarProps) {
               {Locale.label("site.editorToolbar.viewHistory")}
             </ListItemText>
           </MenuItem>
+          {isPageMode && publishedAt && onDiscardChanges && (
+            <MenuItem
+              onClick={() => {
+                setMenuAnchor(null);
+                onDiscardChanges();
+              }}
+              data-testid="discard-changes-menu-item"
+            >
+              <ListItemIcon>
+                <Icon fontSize="small">restore_page</Icon>
+              </ListItemIcon>
+              <ListItemText>{Locale.label("site.editorToolbar.discardChanges")}</ListItemText>
+            </MenuItem>
+          )}
+          {isPageMode && publishedAt && onUnpublish && (
+            <MenuItem
+              onClick={() => {
+                setMenuAnchor(null);
+                onUnpublish();
+              }}
+              data-testid="disable-publish-menu-item"
+            >
+              <ListItemIcon>
+                <Icon fontSize="small">public_off</Icon>
+              </ListItemIcon>
+              <ListItemText>{Locale.label("site.editorToolbar.disablePublish")}</ListItemText>
+            </MenuItem>
+          )}
           <MenuItem
             onClick={() => {
               setMenuAnchor(null);

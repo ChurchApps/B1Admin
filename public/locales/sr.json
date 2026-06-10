@@ -213,6 +213,7 @@
     "done": "Готово",
     "duplicate": "Дупликат",
     "edit": "Уреди",
+    "element": "Елемент",
     "errorBoundary": {
       "message": "Нешто је пошло наопако. Молимо покушај поново или контактирај подршку ако проблем траје.",
       "retry": "Покушај поново",
@@ -259,8 +260,7 @@
     "tryAgain": "Покушај поново",
     "update": "Ажурирај",
     "website": "Веб страница",
-    "yes": "Да",
-    "element": "Елемент"
+    "yes": "Да"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "пре",
       "block": "Блок",
       "desktop": "Десктоп",
+      "disablePublish": "Искључи објављивање",
+      "disablePublishConfirm": "Искључити објављивање за ову страницу? Измене ће поново одмах ићи уживо.",
+      "discardChanges": "Одбаци необјављене измене",
+      "discardChangesConfirm": "Одбацити све измене направљене од последњег објављивања? Уређивач ће бити враћен на верзију уживо.",
       "exit": "Изађи",
       "justNow": "управо сада",
       "mobile": "Мобилни",
       "notSavedYet": "Нема промена",
       "page": "Страница",
+      "publish": "Објави",
+      "publishOffTip": "Измене тренутно одмах иду уживо. Објавите да бисте сачували верзију уживо и задржали будуће измене приватним до следећег објављивања.",
+      "publishedLabel": "Објављено",
       "redoTip": "Понови (Ctrl+Shift+Z)",
       "savedAllChanges": "Све промене сачуване",
       "switchToDesktop": "Пребаци на десктоп приказ",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Дуплирај секцију",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Наша прича",
+      "all": "Све",
+      "blank": "Празна секција",
+      "category": {
+        "about": "О нама",
+        "cta": "Позив на акцију",
+        "giving": "Давање",
+        "hero": "Насловна",
+        "media": "Медији",
+        "people": "Људи и групе",
+        "services": "Службе"
+      },
+      "connectColumns": "Колоне за контакт",
+      "ctaBanner": "Банер за следећи корак",
+      "faqSection": "Честа питања",
+      "findUs": "Пронађите нас",
+      "galleryRow": "Ред фотографија",
+      "givingBanner": "Банер за давање",
+      "givingOptions": "Начини давања",
+      "groupListSection": "Листа група",
+      "groupsBrowser": "Прегледач група",
+      "heroCentered": "Насловна са фотографијом",
+      "heroGradient": "Насловна са градијентом",
+      "heroSplit": "Подељена насловна",
+      "ministriesCards": "Картице служења",
+      "sermonsLatest": "Недавне проповеди",
+      "serviceTimes": "Времена служби",
+      "staffGrid": "Мрежа особља",
+      "storyColumns": "Три колоне",
+      "testimony": "Цитат сведочанства",
+      "title": "Додај секцију",
+      "verseBanner": "Банер са стихом",
+      "watchOnline": "Гледајте онлајн",
+      "welcome": "Текст добродошлице"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Дугме 1",
       "buttonTwo": "Дугме 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Анимације",
       "animationsDesc": "Ефекат при приказивању елемента.",
+      "hideOnDesktop": "Сакриј на десктопу",
+      "hideOnMobile": "Сакриј на мобилном",
       "styles": "Стилови",
-      "stylesDesc": "Напредне опције изгледа."
+      "stylesDesc": "Напредне опције изгледа.",
+      "visibility": "Видљивост:"
     },
     "stylesManager": {
       "color": "Палета боја",

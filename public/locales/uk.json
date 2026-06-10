@@ -213,6 +213,7 @@
     "done": "Готово",
     "duplicate": "Дублювати",
     "edit": "Редагувати",
+    "element": "Елемент",
     "errorBoundary": {
       "message": "Щось пішло не так. Спробуйте ще раз або зверніться до служби підтримки, якщо проблема не зникає.",
       "retry": "Повторити",
@@ -259,8 +260,7 @@
     "tryAgain": "Спробуйте ще раз",
     "update": "Оновити",
     "website": "Веб-сайт",
-    "yes": "Так",
-    "element": "Елемент"
+    "yes": "Так"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "тому",
       "block": "Блок",
       "desktop": "Desktop",
+      "disablePublish": "Вимкнути публікацію",
+      "disablePublishConfirm": "Вимкнути публікацію для цієї сторінки? Зміни знову одразу з'являтимуться на сайті.",
+      "discardChanges": "Відхилити неопубліковані зміни",
+      "discardChangesConfirm": "Відхилити всі зміни, зроблені після останньої публікації? Редактор буде відновлено до опублікованої версії.",
       "exit": "Вихід",
       "justNow": "щойно",
       "mobile": "Мобільний",
       "notSavedYet": "Поки немає змін",
       "page": "Page",
+      "publish": "Опублікувати",
+      "publishOffTip": "Наразі зміни одразу з'являються на сайті. Опублікуйте, щоб зберегти опубліковану версію, а майбутні зміни залишатимуться прихованими до наступної публікації.",
+      "publishedLabel": "Опубліковано",
       "redoTip": "Повторити (Ctrl+Shift+Z)",
       "savedAllChanges": "Усі зміни збережено",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Наша історія",
+      "all": "Усі",
+      "blank": "Порожня секція",
+      "category": {
+        "about": "Про нас",
+        "cta": "Заклик до дії",
+        "giving": "Пожертви",
+        "hero": "Головний банер",
+        "media": "Медіа",
+        "people": "Люди та групи",
+        "services": "Служби"
+      },
+      "connectColumns": "Контактні колонки",
+      "ctaBanner": "Банер «Наступний крок»",
+      "faqSection": "Поширені запитання",
+      "findUs": "Знайдіть нас",
+      "galleryRow": "Ряд фотографій",
+      "givingBanner": "Банер пожертв",
+      "givingOptions": "Способи пожертвувати",
+      "groupListSection": "Список груп",
+      "groupsBrowser": "Перегляд груп",
+      "heroCentered": "Головний банер із фото",
+      "heroGradient": "Головний банер із градієнтом",
+      "heroSplit": "Розділений головний банер",
+      "ministriesCards": "Картки служінь",
+      "sermonsLatest": "Останні проповіді",
+      "serviceTimes": "Розклад служб",
+      "staffGrid": "Сітка співробітників",
+      "storyColumns": "Три колонки",
+      "testimony": "Цитата свідчення",
+      "title": "Додати секцію",
+      "verseBanner": "Банер із віршем",
+      "watchOnline": "Дивитися онлайн",
+      "welcome": "Текст привітання"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Кнопка 1",
       "buttonTwo": "Кнопка 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Анімації",
       "animationsDesc": "Ефект для відображення елемента.",
+      "hideOnDesktop": "Приховати на комп'ютері",
+      "hideOnMobile": "Приховати на мобільному",
       "styles": "Стилі",
-      "stylesDesc": "Розширені параметри зовнішнього вигляду."
+      "stylesDesc": "Розширені параметри зовнішнього вигляду.",
+      "visibility": "Видимість:"
     },
     "stylesManager": {
       "color": "Палітра кольорів",

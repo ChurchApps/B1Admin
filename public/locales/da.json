@@ -213,6 +213,7 @@
     "done": "Færdig",
     "duplicate": "Dupliker",
     "edit": "Rediger",
+    "element": "Element",
     "errorBoundary": {
       "message": "Noget gik galt. Prøv igen, eller kontakt support, hvis problemet fortsætter.",
       "retry": "Prøv igen",
@@ -259,8 +260,7 @@
     "tryAgain": "Prøv igen",
     "update": "Opdater",
     "website": "Hjemmeside",
-    "yes": "Ja",
-    "element": "Element"
+    "yes": "Ja"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "siden",
       "block": "Blok",
       "desktop": "Desktop",
+      "disablePublish": "Slå udgivelse fra",
+      "disablePublishConfirm": "Slå udgivelse fra for denne side? Ændringer går straks live igen.",
+      "discardChanges": "Kassér ikke-udgivne ændringer",
+      "discardChangesConfirm": "Kassér alle ændringer foretaget siden seneste udgivelse? Editoren gendannes til den live version.",
       "exit": "Afslut",
       "justNow": "lige nu",
       "mobile": "Mobil",
       "notSavedYet": "Ingen ændringer endnu",
       "page": "Side",
+      "publish": "Udgiv",
+      "publishOffTip": "Ændringer går i øjeblikket straks live. Udgiv for at gemme en live version og holde fremtidige ændringer private indtil næste udgivelse.",
+      "publishedLabel": "Udgivet",
       "redoTip": "Gentag (Ctrl+Shift+Z)",
       "savedAllChanges": "Alle ændringer gemt",
       "switchToDesktop": "Skift til desktopvisning",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Dupliker sektion",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Vores historie",
+      "all": "Alle",
+      "blank": "Tom sektion",
+      "category": {
+        "about": "Om os",
+        "cta": "Opfordring til handling",
+        "giving": "Bidrag",
+        "hero": "Hero",
+        "media": "Medier",
+        "people": "Personer og grupper",
+        "services": "Gudstjenester"
+      },
+      "connectColumns": "Kontaktkolonner",
+      "ctaBanner": "Næste skridt-banner",
+      "faqSection": "Ofte stillede spørgsmål",
+      "findUs": "Find os",
+      "galleryRow": "Fotorække",
+      "givingBanner": "Bidragsbanner",
+      "givingOptions": "Måder at give på",
+      "groupListSection": "Gruppeliste",
+      "groupsBrowser": "Gennemse grupper",
+      "heroCentered": "Foto-hero",
+      "heroGradient": "Gradient-hero",
+      "heroSplit": "Opdelt hero",
+      "ministriesCards": "Tjenestekort",
+      "sermonsLatest": "Seneste prædikener",
+      "serviceTimes": "Gudstjenestetider",
+      "staffGrid": "Medarbejderoversigt",
+      "storyColumns": "Tre kolonner",
+      "testimony": "Vidnesbyrdscitat",
+      "title": "Tilføj en sektion",
+      "verseBanner": "Banner med bibelvers",
+      "watchOnline": "Se online",
+      "welcome": "Velkomsttekst"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Knap 1",
       "buttonTwo": "Knap 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animationer",
       "animationsDesc": "Effekt, når elementet vises.",
+      "hideOnDesktop": "Skjul på computer",
+      "hideOnMobile": "Skjul på mobil",
       "styles": "Stilarter",
-      "stylesDesc": "Avancerede udseendesindstillinger."
+      "stylesDesc": "Avancerede udseendesindstillinger.",
+      "visibility": "Synlighed:"
     },
     "stylesManager": {
       "color": "Farvepalette",

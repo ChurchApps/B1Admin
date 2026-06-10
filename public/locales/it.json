@@ -213,6 +213,7 @@
     "done": "Fatto",
     "duplicate": "Duplica",
     "edit": "Modifica",
+    "element": "Elemento",
     "errorBoundary": {
       "message": "Qualcosa è andato storto. Riprova o contatta l'assistenza se il problema persiste.",
       "retry": "Riprova",
@@ -259,8 +260,7 @@
     "tryAgain": "Riprova",
     "update": "Aggiorna",
     "website": "Sito Web",
-    "yes": "Sì",
-    "element": "Elemento"
+    "yes": "Sì"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "fa",
       "block": "Bloccare",
       "desktop": "Desktop",
+      "disablePublish": "Disattiva la pubblicazione",
+      "disablePublishConfirm": "Disattivare la pubblicazione per questa pagina? Le modifiche torneranno ad andare online immediatamente.",
+      "discardChanges": "Scarta le modifiche non pubblicate",
+      "discardChangesConfirm": "Scartare tutte le modifiche effettuate dall'ultima pubblicazione? L'editor verrà ripristinato alla versione online.",
       "exit": "Esci",
       "justNow": "ora",
       "mobile": "Mobile",
       "notSavedYet": "Nessuna modifica ancora",
       "page": "Pagina",
+      "publish": "Pubblica",
+      "publishOffTip": "Attualmente le modifiche vanno online immediatamente. Pubblica per salvare una versione online e mantenere private le modifiche future fino alla prossima pubblicazione.",
+      "publishedLabel": "Pubblicato",
       "redoTip": "Ripeti (Ctrl+Shift+Z)",
       "savedAllChanges": "Tutte le modifiche salvate",
       "switchToDesktop": "Passa alla visualizzazione del desktop",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplica sezione",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "La nostra storia",
+      "all": "Tutti",
+      "blank": "Sezione vuota",
+      "category": {
+        "about": "Chi siamo",
+        "cta": "Invito all'azione",
+        "giving": "Offerte",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Persone e gruppi",
+        "services": "Culti"
+      },
+      "connectColumns": "Colonne di contatto",
+      "ctaBanner": "Banner prossimo passo",
+      "faqSection": "Domande frequenti",
+      "findUs": "Dove trovarci",
+      "galleryRow": "Fila di foto",
+      "givingBanner": "Banner offerte",
+      "givingOptions": "Modi per donare",
+      "groupListSection": "Elenco gruppi",
+      "groupsBrowser": "Esplora gruppi",
+      "heroCentered": "Hero con foto",
+      "heroGradient": "Hero sfumato",
+      "heroSplit": "Hero diviso",
+      "ministriesCards": "Schede ministeri",
+      "sermonsLatest": "Messaggi recenti",
+      "serviceTimes": "Orari dei culti",
+      "staffGrid": "Griglia dello staff",
+      "storyColumns": "Tre colonne",
+      "testimony": "Citazione di testimonianza",
+      "title": "Aggiungi una sezione",
+      "verseBanner": "Banner versetto",
+      "watchOnline": "Guarda online",
+      "welcome": "Testo di benvenuto"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Pulsante 1",
       "buttonTwo": "Pulsante 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animazioni",
       "animationsDesc": "Effetto per quando l'elemento viene mostrato.",
+      "hideOnDesktop": "Nascondi su desktop",
+      "hideOnMobile": "Nascondi su mobile",
       "styles": "Stili",
-      "stylesDesc": "Opzioni di aspetto avanzate."
+      "stylesDesc": "Opzioni di aspetto avanzate.",
+      "visibility": "Visibilità:"
     },
     "stylesManager": {
       "color": "Palette di Colori",

@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Chỉnh sửa",
+    "element": "Phần tử",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or Liên hệ support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Cập nhật",
     "website": "Website",
-    "yes": "Có",
-    "element": "Phần tử"
+    "yes": "Có"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "trước",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Tắt xuất bản",
+      "disablePublishConfirm": "Tắt xuất bản cho trang này? Các chỉnh sửa sẽ lại hiển thị công khai ngay lập tức.",
+      "discardChanges": "Hủy các thay đổi chưa xuất bản",
+      "discardChangesConfirm": "Hủy tất cả thay đổi kể từ lần xuất bản gần nhất? Trình chỉnh sửa sẽ được khôi phục về phiên bản đang hiển thị.",
       "exit": "Thoát",
       "justNow": "vừa xong",
       "mobile": "Mobile",
       "notSavedYet": "Chưa có thay đổi",
       "page": "Page",
+      "publish": "Xuất bản",
+      "publishOffTip": "Hiện tại các chỉnh sửa sẽ hiển thị công khai ngay lập tức. Hãy xuất bản để lưu phiên bản công khai và giữ các chỉnh sửa sau ở chế độ riêng tư cho đến lần xuất bản tiếp theo.",
+      "publishedLabel": "Đã xuất bản",
       "redoTip": "Làm lại (Ctrl+Shift+Z)",
       "savedAllChanges": "Tất cả thay đổi đã lưu",
       "switchToDesktop": "Switch to Desktop Xem",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Câu chuyện của chúng tôi",
+      "all": "Tất cả",
+      "blank": "Phần trống",
+      "category": {
+        "about": "Giới thiệu",
+        "cta": "Kêu gọi hành động",
+        "giving": "Dâng hiến",
+        "hero": "Banner chính",
+        "media": "Truyền thông",
+        "people": "Mọi người và nhóm",
+        "services": "Các buổi lễ"
+      },
+      "connectColumns": "Cột liên hệ",
+      "ctaBanner": "Banner bước tiếp theo",
+      "faqSection": "Câu hỏi thường gặp",
+      "findUs": "Tìm chúng tôi",
+      "galleryRow": "Hàng ảnh",
+      "givingBanner": "Banner dâng hiến",
+      "givingOptions": "Các cách dâng hiến",
+      "groupListSection": "Danh sách nhóm",
+      "groupsBrowser": "Duyệt các nhóm",
+      "heroCentered": "Banner chính với ảnh",
+      "heroGradient": "Banner chính gradient",
+      "heroSplit": "Banner chính chia đôi",
+      "ministriesCards": "Thẻ mục vụ",
+      "sermonsLatest": "Bài giảng gần đây",
+      "serviceTimes": "Giờ các buổi lễ",
+      "staffGrid": "Lưới nhân sự",
+      "storyColumns": "Ba cột",
+      "testimony": "Trích dẫn lời chứng",
+      "title": "Thêm một phần",
+      "verseBanner": "Banner câu Kinh Thánh",
+      "watchOnline": "Xem trực tuyến",
+      "welcome": "Lời chào mừng"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Nút 1",
       "buttonTwo": "Nút 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Hoạt ảnh",
       "animationsDesc": "Hiệu ứng khi phần tử được hiển thị.",
+      "hideOnDesktop": "Ẩn trên máy tính",
+      "hideOnMobile": "Ẩn trên điện thoại",
       "styles": "Kiểu",
-      "stylesDesc": "Tùy chọn giao diện nâng cao."
+      "stylesDesc": "Tùy chọn giao diện nâng cao.",
+      "visibility": "Khả năng hiển thị:"
     },
     "stylesManager": {
       "color": "Bảng màu",

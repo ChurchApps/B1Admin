@@ -213,6 +213,7 @@
     "done": "Tapos na",
     "duplicate": "Kopyahin",
     "edit": "I-edit",
+    "element": "Elemento",
     "errorBoundary": {
       "message": "May mali. Mangyaring subukang muli o makipag -ugnay sa suporta kung magpapatuloy ang problema.",
       "retry": "Muling",
@@ -259,8 +260,7 @@
     "tryAgain": "Subukan muli",
     "update": "I-update",
     "website": "Website",
-    "yes": "Oo",
-    "element": "Elemento"
+    "yes": "Oo"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "ang nakalipas",
       "block": "I -block",
       "desktop": "Desktop",
+      "disablePublish": "I-off ang pag-publish",
+      "disablePublishConfirm": "I-off ang pag-publish para sa pahinang ito? Ang mga pagbabago ay agad na magiging live muli.",
+      "discardChanges": "I-discard ang mga hindi pa na-publish na pagbabago",
+      "discardChangesConfirm": "I-discard ang lahat ng pagbabagong ginawa mula noong huling pag-publish? Ibabalik ang editor sa live na bersyon.",
       "exit": "Lumabas",
       "justNow": "ngayon lang",
       "mobile": "Mobile",
       "notSavedYet": "Wala pang pagbabago",
       "page": "Pahina",
+      "publish": "I-publish",
+      "publishOffTip": "Kasalukuyang agad na nagiging live ang mga pagbabago. Mag-publish para mag-save ng live na bersyon at panatilihing pribado ang mga susunod na pagbabago hanggang sa susunod na pag-publish.",
+      "publishedLabel": "Na-publish",
       "redoTip": "Redo (Ctrl+Shift+Z)",
       "savedAllChanges": "Lahat ng pagbabago ay na-save",
       "switchToDesktop": "Lumipat sa view ng desktop",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Kopyahin ang Seksyon",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Ang Aming Kuwento",
+      "all": "Lahat",
+      "blank": "Blangkong Seksyon",
+      "category": {
+        "about": "Tungkol sa Amin",
+        "cta": "Call to Action",
+        "giving": "Pagbibigay",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Mga Tao at Grupo",
+        "services": "Mga Serbisyo"
+      },
+      "connectColumns": "Mga Contact Column",
+      "ctaBanner": "Banner ng Susunod na Hakbang",
+      "faqSection": "Mga Karaniwang Tanong",
+      "findUs": "Hanapin Kami",
+      "galleryRow": "Hilera ng mga Larawan",
+      "givingBanner": "Banner ng Pagbibigay",
+      "givingOptions": "Mga Paraan ng Pagbibigay",
+      "groupListSection": "Listahan ng mga Grupo",
+      "groupsBrowser": "Browser ng mga Grupo",
+      "heroCentered": "Hero na may Larawan",
+      "heroGradient": "Gradient na Hero",
+      "heroSplit": "Split na Hero",
+      "ministriesCards": "Mga Card ng Ministeryo",
+      "sermonsLatest": "Mga Pinakabagong Mensahe",
+      "serviceTimes": "Mga Oras ng Serbisyo",
+      "staffGrid": "Grid ng Staff",
+      "storyColumns": "Tatlong Column",
+      "testimony": "Quote ng Patotoo",
+      "title": "Magdagdag ng Seksyon",
+      "verseBanner": "Banner ng Bersikulo",
+      "watchOnline": "Manood Online",
+      "welcome": "Teksto ng Pagbati"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Button 1",
       "buttonTwo": "Button 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Mga Animation",
       "animationsDesc": "Effect kapag ipinapakita ang element.",
+      "hideOnDesktop": "Itago sa desktop",
+      "hideOnMobile": "Itago sa mobile",
       "styles": "Mga Style",
-      "stylesDesc": "Mga advanced na opsyon ng hitsura."
+      "stylesDesc": "Mga advanced na opsyon ng hitsura.",
+      "visibility": "Visibility:"
     },
     "stylesManager": {
       "color": "Color Palette",

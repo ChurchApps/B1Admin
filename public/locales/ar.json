@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "تحرير",
+    "element": "عنصر",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "نعم",
-    "element": "عنصر"
+    "yes": "نعم"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "مضت",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "إيقاف النشر",
+      "disablePublishConfirm": "هل تريد إيقاف النشر لهذه الصفحة؟ ستصبح التعديلات منشورة فورًا مرة أخرى.",
+      "discardChanges": "تجاهل التغييرات غير المنشورة",
+      "discardChangesConfirm": "هل تريد تجاهل جميع التغييرات التي أُجريت منذ آخر نشر؟ سيُستعاد المحرر إلى النسخة المنشورة.",
       "exit": "خروج",
       "justNow": "الآن",
       "mobile": "Mobile",
       "notSavedYet": "لا توجد تغييرات بعد",
       "page": "Page",
+      "publish": "نشر",
+      "publishOffTip": "تُنشر التعديلات حاليًا فورًا. انشر لحفظ نسخة منشورة وإبقاء التعديلات المستقبلية خاصة حتى النشر التالي.",
+      "publishedLabel": "منشور",
       "redoTip": "إعادة (Ctrl+Shift+Z)",
       "savedAllChanges": "تم حفظ جميع التغييرات",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "المعرّف"
     },
+    "sectionTemplates": {
+      "aboutSplit": "قصتنا",
+      "all": "الكل",
+      "blank": "قسم فارغ",
+      "category": {
+        "about": "من نحن",
+        "cta": "دعوة لاتخاذ إجراء",
+        "giving": "العطاء",
+        "hero": "هيرو",
+        "media": "الوسائط",
+        "people": "الأشخاص والمجموعات",
+        "services": "الاجتماعات"
+      },
+      "connectColumns": "أعمدة التواصل",
+      "ctaBanner": "لافتة الخطوة التالية",
+      "faqSection": "أسئلة شائعة",
+      "findUs": "كيف تجدنا",
+      "galleryRow": "صف صور",
+      "givingBanner": "لافتة العطاء",
+      "givingOptions": "طرق العطاء",
+      "groupListSection": "قائمة المجموعات",
+      "groupsBrowser": "متصفح المجموعات",
+      "heroCentered": "هيرو بصورة",
+      "heroGradient": "هيرو متدرج",
+      "heroSplit": "هيرو مقسم",
+      "ministriesCards": "بطاقات الخدمات",
+      "sermonsLatest": "أحدث العظات",
+      "serviceTimes": "مواعيد الاجتماعات",
+      "staffGrid": "شبكة فريق العمل",
+      "storyColumns": "ثلاثة أعمدة",
+      "testimony": "اقتباس شهادة",
+      "title": "إضافة قسم",
+      "verseBanner": "لافتة آية",
+      "watchOnline": "شاهد عبر الإنترنت",
+      "welcome": "نص ترحيبي"
+    },
     "spacingScaleEdit": {
       "buttonOne": "زر 1",
       "buttonTwo": "زر 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "الرسوم المتحركة",
       "animationsDesc": "تأثير عند عرض العنصر.",
+      "hideOnDesktop": "إخفاء على سطح المكتب",
+      "hideOnMobile": "إخفاء على الجوال",
       "styles": "الأنماط",
-      "stylesDesc": "خيارات المظهر المتقدمة."
+      "stylesDesc": "خيارات المظهر المتقدمة.",
+      "visibility": "الظهور:"
     },
     "stylesManager": {
       "color": "لوحة الألوان",

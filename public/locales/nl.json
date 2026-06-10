@@ -213,6 +213,7 @@
     "done": "Klaar",
     "duplicate": "Dupliceren",
     "edit": "Bewerken",
+    "element": "Element",
     "errorBoundary": {
       "message": "Er is iets misgegaan. Probeer het opnieuw of neem contact op met support als het probleem aanhoudt.",
       "retry": "Opnieuw proberen",
@@ -259,8 +260,7 @@
     "tryAgain": "Opnieuw proberen",
     "update": "Bijwerken",
     "website": "Website",
-    "yes": "Ja",
-    "element": "Element"
+    "yes": "Ja"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "geleden",
       "block": "Blok",
       "desktop": "Desktop",
+      "disablePublish": "Publiceren uitschakelen",
+      "disablePublishConfirm": "Publiceren voor deze pagina uitschakelen? Wijzigingen gaan dan weer direct live.",
+      "discardChanges": "Niet-gepubliceerde wijzigingen verwerpen",
+      "discardChangesConfirm": "Alle wijzigingen sinds de laatste publicatie verwerpen? De editor wordt teruggezet naar de live versie.",
       "exit": "Afsluiten",
       "justNow": "zojuist",
       "mobile": "Mobiel",
       "notSavedYet": "Nog geen wijzigingen",
       "page": "Pagina",
+      "publish": "Publiceren",
+      "publishOffTip": "Wijzigingen gaan momenteel direct live. Publiceer om een live versie op te slaan en toekomstige wijzigingen privé te houden tot de volgende publicatie.",
+      "publishedLabel": "Gepubliceerd",
       "redoTip": "Opnieuw (Ctrl+Shift+Z)",
       "savedAllChanges": "Alle wijzigingen opgeslagen",
       "switchToDesktop": "Overschakelen naar desktopweergave",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Sectie dupliceren",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Ons verhaal",
+      "all": "Alles",
+      "blank": "Lege sectie",
+      "category": {
+        "about": "Over ons",
+        "cta": "Oproep tot actie",
+        "giving": "Geven",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Mensen & groepen",
+        "services": "Diensten"
+      },
+      "connectColumns": "Contactkolommen",
+      "ctaBanner": "Banner volgende stap",
+      "faqSection": "Veelgestelde vragen",
+      "findUs": "Vind ons",
+      "galleryRow": "Fotorij",
+      "givingBanner": "Geefbanner",
+      "givingOptions": "Manieren om te geven",
+      "groupListSection": "Groepslijst",
+      "groupsBrowser": "Groepenoverzicht",
+      "heroCentered": "Foto-hero",
+      "heroGradient": "Hero met kleurverloop",
+      "heroSplit": "Gesplitste hero",
+      "ministriesCards": "Bedieningskaarten",
+      "sermonsLatest": "Recente preken",
+      "serviceTimes": "Diensttijden",
+      "staffGrid": "Teamoverzicht",
+      "storyColumns": "Drie kolommen",
+      "testimony": "Getuigenis",
+      "title": "Een sectie toevoegen",
+      "verseBanner": "Banner met Bijbeltekst",
+      "watchOnline": "Online kijken",
+      "welcome": "Welkomsttekst"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Knop 1",
       "buttonTwo": "Knop 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animaties",
       "animationsDesc": "Effect voor wanneer element wordt weergegeven.",
+      "hideOnDesktop": "Verbergen op desktop",
+      "hideOnMobile": "Verbergen op mobiel",
       "styles": "Stijlen",
-      "stylesDesc": "Geavanceerde weergaveopties."
+      "stylesDesc": "Geavanceerde weergaveopties.",
+      "visibility": "Zichtbaarheid:"
     },
     "stylesManager": {
       "color": "Kleurenpalet",

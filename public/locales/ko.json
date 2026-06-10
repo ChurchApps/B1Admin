@@ -213,6 +213,7 @@
     "done": "완료",
     "duplicate": "복제",
     "edit": "편집",
+    "element": "요소",
     "errorBoundary": {
       "message": "문제가 발생했습니다. 문제가 지속되면 다시 시도하거나 지원팀에 문의하세요.",
       "retry": "다시 해 보다",
@@ -259,8 +260,7 @@
     "tryAgain": "다시 시도",
     "update": "업데이트",
     "website": "웹사이트",
-    "yes": "예",
-    "element": "요소"
+    "yes": "예"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "전",
       "block": "차단하다",
       "desktop": "데스크탑",
+      "disablePublish": "게시 기능 끄기",
+      "disablePublishConfirm": "이 페이지의 게시 기능을 끄시겠습니까? 수정 사항이 다시 즉시 반영됩니다.",
+      "discardChanges": "게시되지 않은 변경 사항 취소",
+      "discardChangesConfirm": "마지막 게시 이후의 모든 변경 사항을 취소하시겠습니까? 편집기가 게시된 버전으로 복원됩니다.",
       "exit": "종료",
       "justNow": "방금",
       "mobile": "휴대폰",
       "notSavedYet": "아직 변경 사항 없음",
       "page": "페이지",
+      "publish": "게시",
+      "publishOffTip": "현재 수정 사항은 즉시 반영됩니다. 게시하면 게시 버전이 저장되고, 다음 게시 전까지 이후의 수정 사항은 비공개로 유지됩니다.",
+      "publishedLabel": "게시됨",
       "redoTip": "다시 실행 (Ctrl+Shift+Z)",
       "savedAllChanges": "모든 변경 사항 저장됨",
       "switchToDesktop": "데스크톱 보기로 전환",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "섹션 복제",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "우리의 이야기",
+      "all": "전체",
+      "blank": "빈 섹션",
+      "category": {
+        "about": "소개",
+        "cta": "행동 유도",
+        "giving": "헌금",
+        "hero": "히어로",
+        "media": "미디어",
+        "people": "사람 및 그룹",
+        "services": "예배"
+      },
+      "connectColumns": "연락처 컬럼",
+      "ctaBanner": "다음 단계 배너",
+      "faqSection": "자주 묻는 질문",
+      "findUs": "오시는 길",
+      "galleryRow": "사진 갤러리",
+      "givingBanner": "헌금 배너",
+      "givingOptions": "헌금 방법",
+      "groupListSection": "그룹 목록",
+      "groupsBrowser": "그룹 탐색기",
+      "heroCentered": "사진 히어로",
+      "heroGradient": "그라데이션 히어로",
+      "heroSplit": "분할 히어로",
+      "ministriesCards": "사역 카드",
+      "sermonsLatest": "최근 설교",
+      "serviceTimes": "예배 시간",
+      "staffGrid": "스태프 그리드",
+      "storyColumns": "3개 컬럼",
+      "testimony": "간증 인용구",
+      "title": "섹션 추가",
+      "verseBanner": "성경 구절 배너",
+      "watchOnline": "온라인 시청",
+      "welcome": "환영 문구"
+    },
     "spacingScaleEdit": {
       "buttonOne": "버튼 1",
       "buttonTwo": "버튼 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "애니메이션",
       "animationsDesc": "요소가 표시될 때의 효과입니다.",
+      "hideOnDesktop": "데스크톱에서 숨기기",
+      "hideOnMobile": "모바일에서 숨기기",
       "styles": "스타일",
-      "stylesDesc": "고급 모양 옵션."
+      "stylesDesc": "고급 모양 옵션.",
+      "visibility": "표시 여부:"
     },
     "stylesManager": {
       "color": "색상 팔레트",

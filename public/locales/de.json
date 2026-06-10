@@ -213,6 +213,7 @@
     "done": "Fertig",
     "duplicate": "Duplizieren",
     "edit": "Bearbeiten",
+    "element": "Element",
     "errorBoundary": {
       "message": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
       "retry": "Wiederholen",
@@ -259,8 +260,7 @@
     "tryAgain": "Erneut versuchen",
     "update": "Aktualisieren",
     "website": "Website",
-    "yes": "Ja",
-    "element": "Element"
+    "yes": "Ja"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "her",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Veröffentlichung deaktivieren",
+      "disablePublishConfirm": "Veröffentlichung für diese Seite deaktivieren? Änderungen gehen sofort wieder live.",
+      "discardChanges": "Unveröffentlichte Änderungen verwerfen",
+      "discardChangesConfirm": "Alle Änderungen seit der letzten Veröffentlichung verwerfen? Der Editor wird auf die Live-Version zurückgesetzt.",
       "exit": "Beenden",
       "justNow": "gerade eben",
       "mobile": "Mobil",
       "notSavedYet": "Noch keine Änderungen",
       "page": "Seite",
+      "publish": "Veröffentlichen",
+      "publishOffTip": "Änderungen gehen derzeit sofort live. Beim Veröffentlichen wird eine Live-Version gespeichert und zukünftige Änderungen bleiben bis zur nächsten Veröffentlichung privat.",
+      "publishedLabel": "Veröffentlicht",
       "redoTip": "Wiederherstellen (Strg+Shift+Z)",
       "savedAllChanges": "Alle Änderungen gespeichert",
       "switchToDesktop": "Zur Desktop-Ansicht wechseln",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Abschnitt duplizieren",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Unsere Geschichte",
+      "all": "Alle",
+      "blank": "Leerer Abschnitt",
+      "category": {
+        "about": "Über uns",
+        "cta": "Call-to-Action",
+        "giving": "Spenden",
+        "hero": "Hero",
+        "media": "Medien",
+        "people": "Personen & Gruppen",
+        "services": "Gottesdienste"
+      },
+      "connectColumns": "Kontaktspalten",
+      "ctaBanner": "Banner für den nächsten Schritt",
+      "faqSection": "Häufige Fragen",
+      "findUs": "So finden Sie uns",
+      "galleryRow": "Fotoreihe",
+      "givingBanner": "Spendenbanner",
+      "givingOptions": "Spendenmöglichkeiten",
+      "groupListSection": "Gruppenliste",
+      "groupsBrowser": "Gruppen-Browser",
+      "heroCentered": "Foto-Hero",
+      "heroGradient": "Hero mit Farbverlauf",
+      "heroSplit": "Geteilter Hero",
+      "ministriesCards": "Dienstbereich-Karten",
+      "sermonsLatest": "Aktuelle Predigten",
+      "serviceTimes": "Gottesdienstzeiten",
+      "staffGrid": "Mitarbeiterübersicht",
+      "storyColumns": "Drei Spalten",
+      "testimony": "Zeugnis-Zitat",
+      "title": "Abschnitt hinzufügen",
+      "verseBanner": "Bibelvers-Banner",
+      "watchOnline": "Online ansehen",
+      "welcome": "Willkommenstext"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Schaltfläche 1",
       "buttonTwo": "Schaltfläche 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animationen",
       "animationsDesc": "Effekt, wenn das Element angezeigt wird.",
+      "hideOnDesktop": "Auf Desktop ausblenden",
+      "hideOnMobile": "Auf Mobilgeräten ausblenden",
       "styles": "Stile",
-      "stylesDesc": "Erweiterte Erscheinungsoptionen."
+      "stylesDesc": "Erweiterte Erscheinungsoptionen.",
+      "visibility": "Sichtbarkeit:"
     },
     "stylesManager": {
       "color": "Farbpalette",

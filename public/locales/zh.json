@@ -213,6 +213,7 @@
     "done": "完成",
     "duplicate": "复制",
     "edit": "编辑",
+    "element": "元素",
     "errorBoundary": {
       "message": "出了点问题。如果问题仍然存在，请重试或联系支持人员。",
       "retry": "重试",
@@ -259,8 +260,7 @@
     "tryAgain": "重试",
     "update": "更新",
     "website": "网站",
-    "yes": "是",
-    "element": "元素"
+    "yes": "是"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "前",
       "block": "堵塞",
       "desktop": "桌面",
+      "disablePublish": "关闭发布",
+      "disablePublishConfirm": "要关闭此页面的发布功能吗？修改将再次立即上线。",
+      "discardChanges": "放弃未发布的更改",
+      "discardChangesConfirm": "要放弃自上次发布以来的所有更改吗？编辑器将恢复为线上版本。",
       "exit": "退出",
       "justNow": "刚刚",
       "mobile": "手机",
       "notSavedYet": "尚无更改",
       "page": "页",
+      "publish": "发布",
+      "publishOffTip": "当前修改会立即上线。点击发布可保存线上版本，并使后续修改在下次发布前保持私密。",
+      "publishedLabel": "已发布",
       "redoTip": "重做 (Ctrl+Shift+Z)",
       "savedAllChanges": "所有更改已保存",
       "switchToDesktop": "切换到桌面视图",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "复制部分",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "我们的故事",
+      "all": "全部",
+      "blank": "空白部分",
+      "category": {
+        "about": "关于我们",
+        "cta": "行动号召",
+        "giving": "奉献",
+        "hero": "主视觉",
+        "media": "媒体",
+        "people": "人员与小组",
+        "services": "聚会"
+      },
+      "connectColumns": "联系方式分栏",
+      "ctaBanner": "下一步横幅",
+      "faqSection": "常见问题",
+      "findUs": "找到我们",
+      "galleryRow": "照片行",
+      "givingBanner": "奉献横幅",
+      "givingOptions": "奉献方式",
+      "groupListSection": "小组列表",
+      "groupsBrowser": "小组浏览",
+      "heroCentered": "照片主视觉",
+      "heroGradient": "渐变主视觉",
+      "heroSplit": "分栏主视觉",
+      "ministriesCards": "事工卡片",
+      "sermonsLatest": "最新讲道",
+      "serviceTimes": "聚会时间",
+      "staffGrid": "同工网格",
+      "storyColumns": "三栏",
+      "testimony": "见证引言",
+      "title": "添加部分",
+      "verseBanner": "经文横幅",
+      "watchOnline": "在线观看",
+      "welcome": "欢迎文字"
+    },
     "spacingScaleEdit": {
       "buttonOne": "按钮 1",
       "buttonTwo": "按钮 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "动画",
       "animationsDesc": "元素显示时的效果。",
+      "hideOnDesktop": "在桌面端隐藏",
+      "hideOnMobile": "在移动端隐藏",
       "styles": "样式",
-      "stylesDesc": "高级外观选项。"
+      "stylesDesc": "高级外观选项。",
+      "visibility": "可见性："
     },
     "stylesManager": {
       "color": "调色板",

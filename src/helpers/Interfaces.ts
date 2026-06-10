@@ -248,6 +248,7 @@ export interface PageInterface {
   url?: string;
   title?: string;
   layout?: string;
+  publishedAt?: string;
   sections?: SectionInterface[];
 }
 

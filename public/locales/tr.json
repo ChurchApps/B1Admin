@@ -213,6 +213,7 @@
     "done": "Bitti",
     "duplicate": "Duplicate",
     "edit": "Düzenle",
+    "element": "Öğe",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Web Sitesi",
-    "yes": "Evet",
-    "element": "Öğe"
+    "yes": "Evet"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "önce",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Yayınlamayı kapat",
+      "disablePublishConfirm": "Bu sayfa için yayınlama kapatılsın mı? Düzenlemeler yeniden anında yayına geçecek.",
+      "discardChanges": "Yayınlanmamış değişikliklerden vazgeç",
+      "discardChangesConfirm": "Son yayından bu yana yapılan tüm değişiklikler atılsın mı? Düzenleyici yayındaki sürüme geri yüklenecek.",
       "exit": "Çıkış",
       "justNow": "az önce",
       "mobile": "Mobil",
       "notSavedYet": "Henüz değişiklik yok",
       "page": "Page",
+      "publish": "Yayınla",
+      "publishOffTip": "Düzenlemeler şu anda anında yayına geçiyor. Yayındaki bir sürümü kaydetmek ve sonraki düzenlemeleri bir sonraki yayına kadar gizli tutmak için yayınlayın.",
+      "publishedLabel": "Yayınlandı",
       "redoTip": "Yeniden Yap (Ctrl+Shift+Z)",
       "savedAllChanges": "Tüm değişiklikler kaydedildi",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Hikayemiz",
+      "all": "Tümü",
+      "blank": "Boş Bölüm",
+      "category": {
+        "about": "Hakkımızda",
+        "cta": "Eylem Çağrısı",
+        "giving": "Bağış",
+        "hero": "Hero",
+        "media": "Medya",
+        "people": "Kişiler ve Gruplar",
+        "services": "İbadetler"
+      },
+      "connectColumns": "İletişim Sütunları",
+      "ctaBanner": "Sonraki Adım Banner'ı",
+      "faqSection": "Sık Sorulan Sorular",
+      "findUs": "Bizi Bulun",
+      "galleryRow": "Fotoğraf Satırı",
+      "givingBanner": "Bağış Banner'ı",
+      "givingOptions": "Bağış Yolları",
+      "groupListSection": "Grup Listesi",
+      "groupsBrowser": "Grup Tarayıcısı",
+      "heroCentered": "Fotoğraflı Hero",
+      "heroGradient": "Degrade Hero",
+      "heroSplit": "Bölünmüş Hero",
+      "ministriesCards": "Hizmet Kartları",
+      "sermonsLatest": "Son Vaazlar",
+      "serviceTimes": "İbadet Saatleri",
+      "staffGrid": "Personel Tablosu",
+      "storyColumns": "Üç Sütun",
+      "testimony": "Tanıklık Alıntısı",
+      "title": "Bölüm Ekle",
+      "verseBanner": "Ayet Banner'ı",
+      "watchOnline": "Çevrimiçi İzle",
+      "welcome": "Karşılama Metni"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Düğme 1",
       "buttonTwo": "Düğme 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animasyonlar",
       "animationsDesc": "Öğe gösterildiğinde uygulanacak efekt.",
+      "hideOnDesktop": "Masaüstünde gizle",
+      "hideOnMobile": "Mobilde gizle",
       "styles": "Stiller",
-      "stylesDesc": "Gelişmiş görünüm seçenekleri."
+      "stylesDesc": "Gelişmiş görünüm seçenekleri.",
+      "visibility": "Görünürlük:"
     },
     "stylesManager": {
       "color": "Renk Paleti",

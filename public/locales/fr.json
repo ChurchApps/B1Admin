@@ -213,6 +213,7 @@
     "done": "Terminé",
     "duplicate": "Dupliquer",
     "edit": "Modifier",
+    "element": "Élément",
     "errorBoundary": {
       "message": "Quelque chose s'est mal passé. Veuillez réessayer ou contacter l'assistance si le problème persiste.",
       "retry": "Réessayer",
@@ -259,8 +260,7 @@
     "tryAgain": "Réessayer",
     "update": "Mettre à jour",
     "website": "Site Web",
-    "yes": "Oui",
-    "element": "Élément"
+    "yes": "Oui"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "il y a",
       "block": "Bloc",
       "desktop": "Bureau",
+      "disablePublish": "Désactiver la publication",
+      "disablePublishConfirm": "Désactiver la publication pour cette page ? Les modifications seront de nouveau mises en ligne immédiatement.",
+      "discardChanges": "Abandonner les modifications non publiées",
+      "discardChangesConfirm": "Abandonner toutes les modifications effectuées depuis la dernière publication ? L'éditeur sera restauré à la version en ligne.",
       "exit": "Quitter",
       "justNow": "à l'instant",
       "mobile": "Mobile",
       "notSavedYet": "Aucune modification pour l'instant",
       "page": "Page",
+      "publish": "Publier",
+      "publishOffTip": "Les modifications sont actuellement mises en ligne immédiatement. Publiez pour enregistrer une version en ligne et garder les futures modifications privées jusqu'à la prochaine publication.",
+      "publishedLabel": "Publié",
       "redoTip": "Rétablir (Ctrl+Maj+Z)",
       "savedAllChanges": "Toutes les modifications enregistrées",
       "switchToDesktop": "Passer à la vue Bureau",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Dupliquer la section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Notre histoire",
+      "all": "Tout",
+      "blank": "Section vide",
+      "category": {
+        "about": "À propos",
+        "cta": "Appel à l'action",
+        "giving": "Dons",
+        "hero": "Hero",
+        "media": "Médias",
+        "people": "Personnes et groupes",
+        "services": "Cultes"
+      },
+      "connectColumns": "Colonnes de contact",
+      "ctaBanner": "Bannière prochaine étape",
+      "faqSection": "Questions fréquentes",
+      "findUs": "Nous trouver",
+      "galleryRow": "Rangée de photos",
+      "givingBanner": "Bannière de dons",
+      "givingOptions": "Façons de donner",
+      "groupListSection": "Liste des groupes",
+      "groupsBrowser": "Explorateur de groupes",
+      "heroCentered": "Hero avec photo",
+      "heroGradient": "Hero dégradé",
+      "heroSplit": "Hero divisé",
+      "ministriesCards": "Cartes des ministères",
+      "sermonsLatest": "Derniers sermons",
+      "serviceTimes": "Horaires des cultes",
+      "staffGrid": "Grille de l'équipe",
+      "storyColumns": "Trois colonnes",
+      "testimony": "Citation de témoignage",
+      "title": "Ajouter une section",
+      "verseBanner": "Bannière avec verset",
+      "watchOnline": "Regarder en ligne",
+      "welcome": "Texte de bienvenue"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Bouton 1",
       "buttonTwo": "Bouton 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animations",
       "animationsDesc": "Effet lorsque l'élément est affiché.",
+      "hideOnDesktop": "Masquer sur ordinateur",
+      "hideOnMobile": "Masquer sur mobile",
       "styles": "Styles",
-      "stylesDesc": "Options d'apparence avancées."
+      "stylesDesc": "Options d'apparence avancées.",
+      "visibility": "Visibilité :"
     },
     "stylesManager": {
       "color": "Palette de couleurs",

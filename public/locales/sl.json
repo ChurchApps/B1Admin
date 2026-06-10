@@ -213,6 +213,7 @@
     "done": "Končano",
     "duplicate": "Podvoji",
     "edit": "Uredi",
+    "element": "Element",
     "errorBoundary": {
       "message": "Nekaj je šlo narobe. Prosimo, poskusite znova.",
       "retry": "Poskusi ponovno",
@@ -259,8 +260,7 @@
     "tryAgain": "Poskusite ponovno",
     "update": "Posodobi",
     "website": "Spletna stran",
-    "yes": "Da",
-    "element": "Element"
+    "yes": "Da"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "nazaj",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Izklopi objavljanje",
+      "disablePublishConfirm": "Izklopiti objavljanje za to stran? Spremembe bodo spet takoj vidne v živo.",
+      "discardChanges": "Zavrzi neobjavljene spremembe",
+      "discardChangesConfirm": "Zavreči vse spremembe od zadnje objave? Urejevalnik bo obnovljen na objavljeno različico.",
       "exit": "Izhod",
       "justNow": "ravnokar",
       "mobile": "Mobilni",
       "notSavedYet": "Še ni sprememb",
       "page": "Page",
+      "publish": "Objavi",
+      "publishOffTip": "Spremembe so trenutno takoj vidne v živo. Objavite, da shranite objavljeno različico, prihodnje spremembe pa ostanejo zasebne do naslednje objave.",
+      "publishedLabel": "Objavljeno",
       "redoTip": "Ponovi (Ctrl+Shift+Z)",
       "savedAllChanges": "Vse spremembe shranjene",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Naša zgodba",
+      "all": "Vse",
+      "blank": "Prazen razdelek",
+      "category": {
+        "about": "O nas",
+        "cta": "Poziv k dejanju",
+        "giving": "Darovanje",
+        "hero": "Hero",
+        "media": "Mediji",
+        "people": "Ljudje in skupine",
+        "services": "Bogoslužja"
+      },
+      "connectColumns": "Stolpci s kontakti",
+      "ctaBanner": "Pasica naslednjega koraka",
+      "faqSection": "Pogosta vprašanja",
+      "findUs": "Najdite nas",
+      "galleryRow": "Vrstica fotografij",
+      "givingBanner": "Pasica za darovanje",
+      "givingOptions": "Načini darovanja",
+      "groupListSection": "Seznam skupin",
+      "groupsBrowser": "Brskalnik skupin",
+      "heroCentered": "Hero s fotografijo",
+      "heroGradient": "Hero s prelivom",
+      "heroSplit": "Deljeni hero",
+      "ministriesCards": "Kartice služb",
+      "sermonsLatest": "Najnovejše pridige",
+      "serviceTimes": "Časi bogoslužij",
+      "staffGrid": "Mreža sodelavcev",
+      "storyColumns": "Trije stolpci",
+      "testimony": "Pričevanje",
+      "title": "Dodaj razdelek",
+      "verseBanner": "Pasica z verzom",
+      "watchOnline": "Glejte na spletu",
+      "welcome": "Pozdravno besedilo"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Gumb 1",
       "buttonTwo": "Gumb 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animacije",
       "animationsDesc": "Učinek pri prikazu elementa.",
+      "hideOnDesktop": "Skrij na namizju",
+      "hideOnMobile": "Skrij na mobilnih napravah",
       "styles": "Slogi",
-      "stylesDesc": "Napredne možnosti videza."
+      "stylesDesc": "Napredne možnosti videza.",
+      "visibility": "Vidnost:"
     },
     "stylesManager": {
       "color": "Barvna paleta",

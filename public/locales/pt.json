@@ -213,6 +213,7 @@
     "done": "Concluído",
     "duplicate": "Duplicar",
     "edit": "Editar",
+    "element": "Elemento",
     "errorBoundary": {
       "message": "Algo deu errado. Tente novamente ou entre em contato com o suporte se o problema persistir.",
       "retry": "Tentar novamente",
@@ -259,8 +260,7 @@
     "tryAgain": "Tentar novamente",
     "update": "Atualizar",
     "website": "Site",
-    "yes": "Sim",
-    "element": "Elemento"
+    "yes": "Sim"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "atrás",
       "block": "Bloquear",
       "desktop": "Área de trabalho",
+      "disablePublish": "Desativar publicação",
+      "disablePublishConfirm": "Desativar a publicação desta página? As edições voltarão a entrar no ar imediatamente.",
+      "discardChanges": "Descartar alterações não publicadas",
+      "discardChangesConfirm": "Descartar todas as alterações feitas desde a última publicação? O editor será restaurado para a versão publicada.",
       "exit": "Sair",
       "justNow": "agora mesmo",
       "mobile": "Celular",
       "notSavedYet": "Sem alterações ainda",
       "page": "Página",
+      "publish": "Publicar",
+      "publishOffTip": "No momento, as edições entram no ar imediatamente. Publique para salvar uma versão ao vivo e manter as próximas edições privadas até a próxima publicação.",
+      "publishedLabel": "Publicado",
       "redoTip": "Refazer (Ctrl+Shift+Z)",
       "savedAllChanges": "Todas as alterações salvas",
       "switchToDesktop": "Mudar para a visualização da área de trabalho",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicar seção",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Nossa História",
+      "all": "Todos",
+      "blank": "Seção em Branco",
+      "category": {
+        "about": "Sobre",
+        "cta": "Chamada para Ação",
+        "giving": "Contribuição",
+        "hero": "Hero",
+        "media": "Mídia",
+        "people": "Pessoas e Grupos",
+        "services": "Cultos"
+      },
+      "connectColumns": "Colunas de Contato",
+      "ctaBanner": "Banner de Próximo Passo",
+      "faqSection": "Perguntas Frequentes",
+      "findUs": "Encontre-nos",
+      "galleryRow": "Fileira de Fotos",
+      "givingBanner": "Banner de Contribuição",
+      "givingOptions": "Formas de Contribuir",
+      "groupListSection": "Lista de Grupos",
+      "groupsBrowser": "Navegador de Grupos",
+      "heroCentered": "Hero com Foto",
+      "heroGradient": "Hero com Gradiente",
+      "heroSplit": "Hero Dividido",
+      "ministriesCards": "Cartões de Ministérios",
+      "sermonsLatest": "Mensagens Recentes",
+      "serviceTimes": "Horários de Culto",
+      "staffGrid": "Grade da Equipe",
+      "storyColumns": "Três Colunas",
+      "testimony": "Testemunho",
+      "title": "Adicionar uma Seção",
+      "verseBanner": "Banner de Versículo",
+      "watchOnline": "Assista Online",
+      "welcome": "Texto de Boas-Vindas"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Botão 1",
       "buttonTwo": "Botão 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animações",
       "animationsDesc": "Efeito para quando o elemento é mostrado.",
+      "hideOnDesktop": "Ocultar no desktop",
+      "hideOnMobile": "Ocultar no celular",
       "styles": "Estilos",
-      "stylesDesc": "Opções avançadas de aparência."
+      "stylesDesc": "Opções avançadas de aparência.",
+      "visibility": "Visibilidade:"
     },
     "stylesManager": {
       "color": "Paleta de Cores",

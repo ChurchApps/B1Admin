@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "編集",
+    "element": "要素",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "はい",
-    "element": "要素"
+    "yes": "はい"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "前",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "公開機能をオフにする",
+      "disablePublishConfirm": "このページの公開機能をオフにしますか？編集内容は再び即時に反映されます。",
+      "discardChanges": "未公開の変更を破棄",
+      "discardChangesConfirm": "前回の公開以降のすべての変更を破棄しますか？エディターは公開中のバージョンに復元されます。",
       "exit": "終了",
       "justNow": "たった今",
       "mobile": "Mobile",
       "notSavedYet": "まだ変更はありません",
       "page": "Page",
+      "publish": "公開",
+      "publishOffTip": "現在、編集内容は即時に反映されます。公開すると公開バージョンが保存され、次の公開まで今後の編集は非公開のままになります。",
+      "publishedLabel": "公開済み",
       "redoTip": "やり直し (Ctrl+Shift+Z)",
       "savedAllChanges": "すべての変更を保存しました",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "私たちのストーリー",
+      "all": "すべて",
+      "blank": "空白セクション",
+      "category": {
+        "about": "紹介",
+        "cta": "行動喚起",
+        "giving": "献金",
+        "hero": "ヒーロー",
+        "media": "メディア",
+        "people": "人とグループ",
+        "services": "礼拝"
+      },
+      "connectColumns": "連絡先カラム",
+      "ctaBanner": "次のステップバナー",
+      "faqSection": "よくある質問",
+      "findUs": "アクセス",
+      "galleryRow": "写真ギャラリー",
+      "givingBanner": "献金バナー",
+      "givingOptions": "献金の方法",
+      "groupListSection": "グループリスト",
+      "groupsBrowser": "グループブラウザー",
+      "heroCentered": "写真ヒーロー",
+      "heroGradient": "グラデーションヒーロー",
+      "heroSplit": "分割ヒーロー",
+      "ministriesCards": "ミニストリーカード",
+      "sermonsLatest": "最近のメッセージ",
+      "serviceTimes": "礼拝時間",
+      "staffGrid": "スタッフグリッド",
+      "storyColumns": "3カラム",
+      "testimony": "証しの引用",
+      "title": "セクションを追加",
+      "verseBanner": "聖句バナー",
+      "watchOnline": "オンラインで視聴",
+      "welcome": "ウェルカムテキスト"
+    },
     "spacingScaleEdit": {
       "buttonOne": "ボタン1",
       "buttonTwo": "ボタン2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "アニメーション",
       "animationsDesc": "要素が表示されるときの効果。",
+      "hideOnDesktop": "デスクトップで非表示",
+      "hideOnMobile": "モバイルで非表示",
       "styles": "スタイル",
-      "stylesDesc": "高度な外観オプション。"
+      "stylesDesc": "高度な外観オプション。",
+      "visibility": "表示設定:"
     },
     "stylesManager": {
       "color": "カラーパレット",

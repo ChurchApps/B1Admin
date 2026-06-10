@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Edit",
+    "element": "Elementas",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes",
-    "element": "Elementas"
+    "yes": "Yes"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "atgal",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Išjungti publikavimą",
+      "disablePublishConfirm": "Išjungti šio puslapio publikavimą? Pakeitimai vėl bus skelbiami iš karto.",
+      "discardChanges": "Atmesti nepublikuotus pakeitimus",
+      "discardChangesConfirm": "Atmesti visus pakeitimus, atliktus po paskutinio publikavimo? Redaktorius bus atkurtas į paskelbtą versiją.",
       "exit": "Išeiti",
       "justNow": "ką tik",
       "mobile": "Mobile",
       "notSavedYet": "Pakeitimų dar nėra",
       "page": "Page",
+      "publish": "Publikuoti",
+      "publishOffTip": "Šiuo metu pakeitimai skelbiami iš karto. Publikuokite, kad išsaugotumėte paskelbtą versiją, o būsimi pakeitimai liktų privatūs iki kito publikavimo.",
+      "publishedLabel": "Publikuota",
       "redoTip": "Pakartoti (Ctrl+Shift+Z)",
       "savedAllChanges": "Visi pakeitimai išsaugoti",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Mūsų istorija",
+      "all": "Visi",
+      "blank": "Tuščia skiltis",
+      "category": {
+        "about": "Apie mus",
+        "cta": "Raginimas veikti",
+        "giving": "Aukojimas",
+        "hero": "Hero",
+        "media": "Medija",
+        "people": "Žmonės ir grupės",
+        "services": "Pamaldos"
+      },
+      "connectColumns": "Kontaktų stulpeliai",
+      "ctaBanner": "Kito žingsnio baneris",
+      "faqSection": "Dažni klausimai",
+      "findUs": "Raskite mus",
+      "galleryRow": "Nuotraukų eilutė",
+      "givingBanner": "Aukojimo baneris",
+      "givingOptions": "Aukojimo būdai",
+      "groupListSection": "Grupių sąrašas",
+      "groupsBrowser": "Grupių naršyklė",
+      "heroCentered": "Hero su nuotrauka",
+      "heroGradient": "Gradientinis hero",
+      "heroSplit": "Padalintas hero",
+      "ministriesCards": "Tarnysčių kortelės",
+      "sermonsLatest": "Naujausi pamokslai",
+      "serviceTimes": "Pamaldų laikai",
+      "staffGrid": "Darbuotojų tinklelis",
+      "storyColumns": "Trys stulpeliai",
+      "testimony": "Liudijimo citata",
+      "title": "Pridėti skiltį",
+      "verseBanner": "Biblijos eilutės baneris",
+      "watchOnline": "Žiūrėkite internetu",
+      "welcome": "Pasveikinimo tekstas"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Mygtukas 1",
       "buttonTwo": "Mygtukas 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animacijos",
       "animationsDesc": "Efektas, kai elementas rodomas.",
+      "hideOnDesktop": "Slėpti kompiuteryje",
+      "hideOnMobile": "Slėpti mobiliajame",
       "styles": "Stiliai",
-      "stylesDesc": "Pažangūs išvaizdos parinktys."
+      "stylesDesc": "Pažangūs išvaizdos parinktys.",
+      "visibility": "Matomumas:"
     },
     "stylesManager": {
       "color": "Spalvų paletė",

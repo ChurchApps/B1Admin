@@ -213,6 +213,7 @@
     "done": "हो गया",
     "duplicate": "डुप्लिकेट",
     "edit": "संपादित करें",
+    "element": "तत्व",
     "errorBoundary": {
       "message": "कुछ गलत हो गया। यदि समस्या बनी रहती है तो कृपया पुनः प्रयास करें या सहायता से संपर्क करें।",
       "retry": "पुन: प्रयास करें",
@@ -259,8 +260,7 @@
     "tryAgain": "पुनः प्रयास करें",
     "update": "अपडेट करें",
     "website": "वेबसाइट",
-    "yes": "हाँ",
-    "element": "तत्व"
+    "yes": "हाँ"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "पहले",
       "block": "अवरोध पैदा करना",
       "desktop": "डेस्कटॉप",
+      "disablePublish": "प्रकाशन बंद करें",
+      "disablePublishConfirm": "इस पेज के लिए प्रकाशन बंद करें? बदलाव फिर से तुरंत लाइव हो जाएँगे।",
+      "discardChanges": "अप्रकाशित बदलाव हटाएँ",
+      "discardChangesConfirm": "पिछले प्रकाशन के बाद किए गए सभी बदलाव हटाएँ? संपादक को लाइव संस्करण पर बहाल कर दिया जाएगा।",
       "exit": "बाहर निकलें",
       "justNow": "अभी",
       "mobile": "मोबाइल",
       "notSavedYet": "अभी तक कोई बदलाव नहीं",
       "page": "पेज",
+      "publish": "प्रकाशित करें",
+      "publishOffTip": "बदलाव अभी तुरंत लाइव हो जाते हैं। लाइव संस्करण सहेजने और अगले प्रकाशन तक भविष्य के बदलावों को निजी रखने के लिए प्रकाशित करें।",
+      "publishedLabel": "प्रकाशित",
       "redoTip": "पुनः करें (Ctrl+Shift+Z)",
       "savedAllChanges": "सभी परिवर्तन सहेजे गए",
       "switchToDesktop": "डेस्कटॉप दृश्य पर स्विच करें",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "अनुभाग को डुप्लिकेट करें",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "हमारी कहानी",
+      "all": "सभी",
+      "blank": "खाली अनुभाग",
+      "category": {
+        "about": "परिचय",
+        "cta": "कॉल टू एक्शन",
+        "giving": "दान",
+        "hero": "हीरो",
+        "media": "मीडिया",
+        "people": "लोग और समूह",
+        "services": "आराधना"
+      },
+      "connectColumns": "संपर्क कॉलम",
+      "ctaBanner": "अगला कदम बैनर",
+      "faqSection": "सामान्य प्रश्न",
+      "findUs": "हमें खोजें",
+      "galleryRow": "फ़ोटो पंक्ति",
+      "givingBanner": "दान बैनर",
+      "givingOptions": "दान करने के तरीके",
+      "groupListSection": "समूह सूची",
+      "groupsBrowser": "समूह ब्राउज़र",
+      "heroCentered": "फ़ोटो हीरो",
+      "heroGradient": "ग्रेडिएंट हीरो",
+      "heroSplit": "स्प्लिट हीरो",
+      "ministriesCards": "सेवकाई कार्ड",
+      "sermonsLatest": "हाल के संदेश",
+      "serviceTimes": "आराधना का समय",
+      "staffGrid": "स्टाफ़ ग्रिड",
+      "storyColumns": "तीन कॉलम",
+      "testimony": "गवाही उद्धरण",
+      "title": "अनुभाग जोड़ें",
+      "verseBanner": "वचन बैनर",
+      "watchOnline": "ऑनलाइन देखें",
+      "welcome": "स्वागत पाठ"
+    },
     "spacingScaleEdit": {
       "buttonOne": "बटन 1",
       "buttonTwo": "बटन 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "एनिमेशन",
       "animationsDesc": "तत्व दिखाए जाने पर प्रभाव।",
+      "hideOnDesktop": "डेस्कटॉप पर छिपाएँ",
+      "hideOnMobile": "मोबाइल पर छिपाएँ",
       "styles": "स्टाइल",
-      "stylesDesc": "उन्नत उपस्थिति विकल्प।"
+      "stylesDesc": "उन्नत उपस्थिति विकल्प।",
+      "visibility": "दृश्यता:"
     },
     "stylesManager": {
       "color": "रंग पैलेट",

@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Upraviť",
+    "element": "Prvok",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Áno",
-    "element": "Prvok"
+    "yes": "Áno"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "pred",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Vypnúť publikovanie",
+      "disablePublishConfirm": "Vypnúť publikovanie pre túto stránku? Úpravy budú opäť okamžite naživo.",
+      "discardChanges": "Zahodiť nepublikované zmeny",
+      "discardChangesConfirm": "Zahodiť všetky zmeny vykonané od posledného publikovania? Editor sa obnoví na živú verziu.",
       "exit": "Ukončiť",
       "justNow": "práve teraz",
       "mobile": "Mobilný",
       "notSavedYet": "Zatiaľ žiadne zmeny",
       "page": "Page",
+      "publish": "Publikovať",
+      "publishOffTip": "Úpravy sa momentálne zverejňujú okamžite. Publikovaním uložíte živú verziu a ďalšie úpravy zostanú súkromné až do nasledujúceho publikovania.",
+      "publishedLabel": "Publikované",
       "redoTip": "Znova (Ctrl+Shift+Z)",
       "savedAllChanges": "Všetky zmeny uložené",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Náš príbeh",
+      "all": "Všetky",
+      "blank": "Prázdna sekcia",
+      "category": {
+        "about": "O nás",
+        "cta": "Výzva na akciu",
+        "giving": "Dary",
+        "hero": "Hero",
+        "media": "Médiá",
+        "people": "Ľudia a skupiny",
+        "services": "Bohoslužby"
+      },
+      "connectColumns": "Kontaktné stĺpce",
+      "ctaBanner": "Banner ďalšieho kroku",
+      "faqSection": "Časté otázky",
+      "findUs": "Nájdite nás",
+      "galleryRow": "Rad fotografií",
+      "givingBanner": "Banner darovania",
+      "givingOptions": "Spôsoby darovania",
+      "groupListSection": "Zoznam skupín",
+      "groupsBrowser": "Prehliadač skupín",
+      "heroCentered": "Hero s fotografiou",
+      "heroGradient": "Hero s gradientom",
+      "heroSplit": "Rozdelený hero",
+      "ministriesCards": "Karty služieb",
+      "sermonsLatest": "Najnovšie kázne",
+      "serviceTimes": "Časy bohoslužieb",
+      "staffGrid": "Mriežka tímu",
+      "storyColumns": "Tri stĺpce",
+      "testimony": "Svedectvo",
+      "title": "Pridať sekciu",
+      "verseBanner": "Banner s veršom",
+      "watchOnline": "Sledovať online",
+      "welcome": "Uvítací text"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Tlačidlo 1",
       "buttonTwo": "Tlačidlo 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animácie",
       "animationsDesc": "Efekt pri zobrazení prvku.",
+      "hideOnDesktop": "Skryť na počítači",
+      "hideOnMobile": "Skryť na mobile",
       "styles": "Štýly",
-      "stylesDesc": "Pokročilé možnosti vzhľadu."
+      "stylesDesc": "Pokročilé možnosti vzhľadu.",
+      "visibility": "Viditeľnosť:"
     },
     "stylesManager": {
       "color": "Farebná paleta",

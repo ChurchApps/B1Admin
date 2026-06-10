@@ -213,6 +213,7 @@
     "done": "Selesai",
     "duplicate": "Duplikat",
     "edit": "Edit",
+    "element": "Elemen",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Coba Lagi",
@@ -259,8 +260,7 @@
     "tryAgain": "Coba Lagi",
     "update": "Perbarui",
     "website": "Situs Web",
-    "yes": "Ya",
-    "element": "Elemen"
+    "yes": "Ya"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "yang lalu",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Matikan penerbitan",
+      "disablePublishConfirm": "Matikan penerbitan untuk halaman ini? Perubahan akan kembali langsung tayang.",
+      "discardChanges": "Buang perubahan yang belum diterbitkan",
+      "discardChangesConfirm": "Buang semua perubahan sejak penerbitan terakhir? Editor akan dikembalikan ke versi tayang.",
       "exit": "Keluar",
       "justNow": "baru saja",
       "mobile": "Seluler",
       "notSavedYet": "Belum ada perubahan",
       "page": "Page",
+      "publish": "Terbitkan",
+      "publishOffTip": "Saat ini perubahan langsung tayang. Terbitkan untuk menyimpan versi tayang dan menjaga perubahan berikutnya tetap privat hingga penerbitan selanjutnya.",
+      "publishedLabel": "Diterbitkan",
       "redoTip": "Ulang (Ctrl+Shift+Z)",
       "savedAllChanges": "Semua perubahan disimpan",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Kisah Kami",
+      "all": "Semua",
+      "blank": "Bagian Kosong",
+      "category": {
+        "about": "Tentang",
+        "cta": "Ajakan Bertindak",
+        "giving": "Persembahan",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Orang & Grup",
+        "services": "Ibadah"
+      },
+      "connectColumns": "Kolom Kontak",
+      "ctaBanner": "Banner Langkah Berikutnya",
+      "faqSection": "Pertanyaan Umum",
+      "findUs": "Temukan Kami",
+      "galleryRow": "Baris Foto",
+      "givingBanner": "Banner Persembahan",
+      "givingOptions": "Cara Memberi",
+      "groupListSection": "Daftar Grup",
+      "groupsBrowser": "Penjelajah Grup",
+      "heroCentered": "Hero Foto",
+      "heroGradient": "Hero Gradien",
+      "heroSplit": "Hero Terbagi",
+      "ministriesCards": "Kartu Pelayanan",
+      "sermonsLatest": "Pesan Terbaru",
+      "serviceTimes": "Jadwal Ibadah",
+      "staffGrid": "Kisi Staf",
+      "storyColumns": "Tiga Kolom",
+      "testimony": "Kutipan Kesaksian",
+      "title": "Tambahkan Bagian",
+      "verseBanner": "Banner Ayat",
+      "watchOnline": "Tonton Online",
+      "welcome": "Teks Sambutan"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Tombol 1",
       "buttonTwo": "Tombol 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animasi",
       "animationsDesc": "Efek saat elemen ditampilkan.",
+      "hideOnDesktop": "Sembunyikan di desktop",
+      "hideOnMobile": "Sembunyikan di seluler",
       "styles": "Gaya",
-      "stylesDesc": "Opsi tampilan lanjutan."
+      "stylesDesc": "Opsi tampilan lanjutan.",
+      "visibility": "Visibilitas:"
     },
     "stylesManager": {
       "color": "Palet Warna",

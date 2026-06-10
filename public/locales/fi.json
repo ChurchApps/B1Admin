@@ -213,6 +213,7 @@
     "done": "Valmis",
     "duplicate": "Monistaa",
     "edit": "Muokkaa",
+    "element": "Elementti",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Yritä uudelleen",
@@ -259,8 +260,7 @@
     "tryAgain": "Yritä uudelleen",
     "update": "Päivitä",
     "website": "Verkkosivusto",
-    "yes": "Kyllä",
-    "element": "Elementti"
+    "yes": "Kyllä"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "sitten",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Poista julkaisu käytöstä",
+      "disablePublishConfirm": "Poistetaanko julkaisu käytöstä tältä sivulta? Muutokset tulevat jälleen heti näkyviin.",
+      "discardChanges": "Hylkää julkaisemattomat muutokset",
+      "discardChangesConfirm": "Hylätäänkö kaikki viimeisimmän julkaisun jälkeen tehdyt muutokset? Editori palautetaan julkaistuun versioon.",
       "exit": "Poistu",
       "justNow": "juuri nyt",
       "mobile": "Matkapuhelin",
       "notSavedYet": "Ei vielä muutoksia",
       "page": "Page",
+      "publish": "Julkaise",
+      "publishOffTip": "Muutokset tulevat tällä hetkellä heti näkyviin. Julkaise tallentaaksesi julkisen version, jolloin tulevat muutokset pysyvät yksityisinä seuraavaan julkaisuun asti.",
+      "publishedLabel": "Julkaistu",
       "redoTip": "Tee uudelleen (Ctrl+Shift+Z)",
       "savedAllChanges": "Kaikki muutokset tallennettu",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Tarinamme",
+      "all": "Kaikki",
+      "blank": "Tyhjä osio",
+      "category": {
+        "about": "Tietoa meistä",
+        "cta": "Toimintakehotus",
+        "giving": "Lahjoittaminen",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Ihmiset ja ryhmät",
+        "services": "Jumalanpalvelukset"
+      },
+      "connectColumns": "Yhteystietosarakkeet",
+      "ctaBanner": "Seuraava askel -banneri",
+      "faqSection": "Usein kysytyt kysymykset",
+      "findUs": "Löydät meidät",
+      "galleryRow": "Kuvarivi",
+      "givingBanner": "Lahjoitusbanneri",
+      "givingOptions": "Tapoja lahjoittaa",
+      "groupListSection": "Ryhmäluettelo",
+      "groupsBrowser": "Ryhmäselain",
+      "heroCentered": "Valokuva-hero",
+      "heroGradient": "Liukuväri-hero",
+      "heroSplit": "Jaettu hero",
+      "ministriesCards": "Työmuotokortit",
+      "sermonsLatest": "Uusimmat saarnat",
+      "serviceTimes": "Jumalanpalvelusajat",
+      "staffGrid": "Työntekijäruudukko",
+      "storyColumns": "Kolme palstaa",
+      "testimony": "Todistuslainaus",
+      "title": "Lisää osio",
+      "verseBanner": "Raamatunjakeen banneri",
+      "watchOnline": "Katso verkossa",
+      "welcome": "Tervetuloteksti"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Painike 1",
       "buttonTwo": "Painike 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animaatiot",
       "animationsDesc": "Tehoste, kun elementti näytetään.",
+      "hideOnDesktop": "Piilota tietokoneella",
+      "hideOnMobile": "Piilota mobiilissa",
       "styles": "Tyylit",
-      "stylesDesc": "Edistyneet ulkoasuvaihtoehdot."
+      "stylesDesc": "Edistyneet ulkoasuvaihtoehdot.",
+      "visibility": "Näkyvyys:"
     },
     "stylesManager": {
       "color": "Väripaletti",

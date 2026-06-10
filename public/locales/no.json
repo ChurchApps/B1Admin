@@ -213,6 +213,7 @@
     "done": "Ferdig",
     "duplicate": "Dupliser",
     "edit": "Rediger",
+    "element": "Element",
     "errorBoundary": {
       "message": "Noe gikk galt. Vennligst prøv igjen eller kontakt kundestøtte hvis problemet vedvarer.",
       "retry": "Prøv på nytt",
@@ -259,8 +260,7 @@
     "tryAgain": "Prøv igjen",
     "update": "Oppdater",
     "website": "Nettsted",
-    "yes": "Ja",
-    "element": "Element"
+    "yes": "Ja"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "siden",
       "block": "Blokkere",
       "desktop": "Skrivebord",
+      "disablePublish": "Slå av publisering",
+      "disablePublishConfirm": "Slå av publisering for denne siden? Endringer går da live umiddelbart igjen.",
+      "discardChanges": "Forkast upubliserte endringer",
+      "discardChangesConfirm": "Forkaste alle endringer gjort siden forrige publisering? Redigeringsverktøyet gjenopprettes til live-versjonen.",
       "exit": "Avslutt",
       "justNow": "akkurat nå",
       "mobile": "Mobil",
       "notSavedYet": "Ingen endringer ennå",
       "page": "Side",
+      "publish": "Publiser",
+      "publishOffTip": "Endringer går for øyeblikket live umiddelbart. Publiser for å lagre en live-versjon og holde fremtidige endringer private til neste publisering.",
+      "publishedLabel": "Publisert",
       "redoTip": "Gjør om (Ctrl+Shift+Z)",
       "savedAllChanges": "Alle endringer lagret",
       "switchToDesktop": "Bytt til skrivebordsvisning",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Dupliser seksjon",
       "id": "ID"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Vår historie",
+      "all": "Alle",
+      "blank": "Tom seksjon",
+      "category": {
+        "about": "Om oss",
+        "cta": "Handlingsoppfordring",
+        "giving": "Givertjeneste",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Mennesker og grupper",
+        "services": "Gudstjenester"
+      },
+      "connectColumns": "Kontaktkolonner",
+      "ctaBanner": "Neste steg-banner",
+      "faqSection": "Vanlige spørsmål",
+      "findUs": "Finn oss",
+      "galleryRow": "Fotorad",
+      "givingBanner": "Giverbanner",
+      "givingOptions": "Måter å gi på",
+      "groupListSection": "Gruppeliste",
+      "groupsBrowser": "Gruppeoversikt",
+      "heroCentered": "Foto-hero",
+      "heroGradient": "Gradient-hero",
+      "heroSplit": "Delt hero",
+      "ministriesCards": "Tjenestekort",
+      "sermonsLatest": "Siste taler",
+      "serviceTimes": "Gudstjenestetider",
+      "staffGrid": "Stabsoversikt",
+      "storyColumns": "Tre kolonner",
+      "testimony": "Vitnesbyrd",
+      "title": "Legg til en seksjon",
+      "verseBanner": "Bibelvers-banner",
+      "watchOnline": "Se på nett",
+      "welcome": "Velkomsttekst"
+    },
     "spacingScaleEdit": {
       "buttonOne": "Knapp 1",
       "buttonTwo": "Knapp 2",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animasjoner",
       "animationsDesc": "Effekt for når elementet vises.",
+      "hideOnDesktop": "Skjul på skrivebord",
+      "hideOnMobile": "Skjul på mobil",
       "styles": "Stiler",
-      "stylesDesc": "Avanserte utseendealternativer."
+      "stylesDesc": "Avanserte utseendealternativer.",
+      "visibility": "Synlighet:"
     },
     "stylesManager": {
       "color": "Fargepalett",

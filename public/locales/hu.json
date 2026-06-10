@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Edit",
+    "element": "Elem",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes",
-    "element": "Elem"
+    "yes": "Yes"
   },
   "components": {
     "associatedForms": {
@@ -2937,11 +2937,18 @@
       "ago": "ezelőtt",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Közzététel kikapcsolása",
+      "disablePublishConfirm": "Kikapcsolja a közzétételt ennél az oldalnál? A módosítások ismét azonnal élesbe kerülnek.",
+      "discardChanges": "Nem közzétett módosítások elvetése",
+      "discardChangesConfirm": "Elveti az utolsó közzététel óta végzett összes módosítást? A szerkesztő visszaáll az élő verzióra.",
       "exit": "Kilépés",
       "justNow": "épp most",
       "mobile": "Mobile",
       "notSavedYet": "Még nincs változás",
       "page": "Page",
+      "publish": "Közzététel",
+      "publishOffTip": "A módosítások jelenleg azonnal élesbe kerülnek. Tegye közzé, hogy elmentsen egy élő verziót, és a jövőbeli módosítások a következő közzétételig privátak maradjanak.",
+      "publishedLabel": "Közzétéve",
       "redoTip": "Újra (Ctrl+Shift+Z)",
       "savedAllChanges": "Minden módosítás mentve",
       "switchToDesktop": "Switch to Desktop View",
@@ -3363,6 +3370,42 @@
       "duplicateSection": "Duplicate Section",
       "id": "Azonosító"
     },
+    "sectionTemplates": {
+      "aboutSplit": "Történetünk",
+      "all": "Összes",
+      "blank": "Üres szekció",
+      "category": {
+        "about": "Rólunk",
+        "cta": "Cselekvésre ösztönzés",
+        "giving": "Adakozás",
+        "hero": "Hero",
+        "media": "Média",
+        "people": "Emberek és csoportok",
+        "services": "Istentiszteletek"
+      },
+      "connectColumns": "Kapcsolati oszlopok",
+      "ctaBanner": "Következő lépés banner",
+      "faqSection": "Gyakori kérdések",
+      "findUs": "Találjon meg minket",
+      "galleryRow": "Fotósor",
+      "givingBanner": "Adakozás banner",
+      "givingOptions": "Adakozási lehetőségek",
+      "groupListSection": "Csoportlista",
+      "groupsBrowser": "Csoportböngésző",
+      "heroCentered": "Fotó hero",
+      "heroGradient": "Színátmenetes hero",
+      "heroSplit": "Osztott hero",
+      "ministriesCards": "Szolgálati kártyák",
+      "sermonsLatest": "Legutóbbi üzenetek",
+      "serviceTimes": "Istentiszteleti időpontok",
+      "staffGrid": "Munkatársi rács",
+      "storyColumns": "Három oszlop",
+      "testimony": "Bizonyságtétel idézet",
+      "title": "Szekció hozzáadása",
+      "verseBanner": "Igevers banner",
+      "watchOnline": "Nézze online",
+      "welcome": "Üdvözlő szöveg"
+    },
     "spacingScaleEdit": {
       "buttonOne": "1. gomb",
       "buttonTwo": "2. gomb",
@@ -3413,8 +3456,11 @@
     "stylesAnimations": {
       "animations": "Animációk",
       "animationsDesc": "Hatás, amikor az elem megjelenik.",
+      "hideOnDesktop": "Elrejtés asztali nézetben",
+      "hideOnMobile": "Elrejtés mobilon",
       "styles": "Stílusok",
-      "stylesDesc": "Speciális megjelenési opciók."
+      "stylesDesc": "Speciális megjelenési opciók.",
+      "visibility": "Láthatóság:"
     },
     "stylesManager": {
       "color": "Színpaletta",

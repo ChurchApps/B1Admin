@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useRef, useCallback, useMemo } from "react";
+﻿import { useEffect, useState, useContext, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skeleton } from "@mui/material";
 import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface } from "../../helpers/Interfaces";
@@ -28,6 +28,8 @@ import { Locale } from "@churchapps/apphelper";
 import { useUndoRedo } from "../hooks/useUndoRedo";
 import { HistoryPanel } from "./HistoryPanel";
 import { useThemeMode } from "../../ThemeContext";
+import { SectionTemplatePicker } from "./templates/SectionTemplatePicker";
+import { buildTemplateSection, type SectionTemplateDef } from "./templates/sectionTemplates";
 
 const lightEditorTheme = createTheme({
   palette: { mode: "light", background: { default: "#e5e8ee", paper: "#ffffff" } },
@@ -81,6 +83,7 @@ export function ContentEditor(props: Props) {
   const handleUndo = async () => {
     const snapshot = await undo();
     if (snapshot) {
+      setHasUnpublishedChanges(true);
       window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
     }
   };
@@ -88,6 +91,7 @@ export function ContentEditor(props: Props) {
   const handleRedo = async () => {
     const snapshot = await redo();
     if (snapshot) {
+      setHasUnpublishedChanges(true);
       window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
     }
   };
@@ -116,7 +120,30 @@ export function ContentEditor(props: Props) {
   const [showAdd, setShowAdd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [pendingDeleteElementId, setPendingDeleteElementId] = useState<string | null>(null);
-  const css = useMemo(() => StyleHelper.getCss(container?.sections || []), [container?.sections]);
+
+  // Items hidden on the previewed device render dimmed in the canvas (instead of display:none)
+  // so they stay selectable; selectors cover sections, top-level wrappers and nested el-{id} divs.
+  const getEditorVisibilityCss = (sections: SectionInterface[], device: string) => {
+    const selectors: string[] = [`.elementWrapper.${device === "mobile" ? "hiddenOnMobile" : "hiddenOnDesktop"}`];
+    const collectElement = (e: ElementInterface) => {
+      if (e.styles?.[device === "mobile" ? "mobile" : "desktop"]?.display === "none" && e.id) {
+        selectors.push(`#el-${e.id}`, `[data-element-id="${e.id}"]`);
+      }
+      e.elements?.forEach(collectElement);
+    };
+    sections?.forEach((s) => {
+      if (s.styles?.[device === "mobile" ? "mobile" : "desktop"]?.display === "none") {
+        selectors.push(`#section-${s.answers?.sectionId || s.id}`);
+      }
+      s.elements?.forEach(collectElement);
+    });
+    return `${selectors.join(", ")} { display: block !important; opacity: 0.45; outline: 2px dashed #9e9e9e; outline-offset: -2px; }`;
+  };
+
+  const css = useMemo(
+    () => StyleHelper.getCss(container?.sections || [], deviceType) + "\n" + getEditorVisibilityCss(container?.sections || [], deviceType),
+    [container?.sections, deviceType]
+  );
 
   let elementOnlyMode = false;
   if (props.blockId && container?.sections?.length === 1 && container?.sections[0]?.id === "") elementOnlyMode = true;
@@ -142,7 +169,10 @@ export function ContentEditor(props: Props) {
     });
   };
 
+  const [hasUnpublishedChanges, setHasUnpublishedChanges] = useState(false);
+
   const loadDataInternal = (snapshotDescription?: string) => {
+    if (snapshotDescription) setHasUnpublishedChanges(true);
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       props.loadData(props.pageId || props.blockId).then((p: PageInterface | BlockInterface) => {
         if (p?.sections) {
@@ -190,6 +220,8 @@ export function ContentEditor(props: Props) {
     if (isMobileViewport) navigate("/site");
   }, [isMobileViewport]);
 
+  const [templateDrop, setTemplateDrop] = useState<{ sort: number; zone: string } | null>(null);
+
   const handleDrop = (data: any, sort: number, zone: string) => {
     if (container) saveSnapshot(container, "Before adding section");
     if (data.data) {
@@ -200,7 +232,7 @@ export function ContentEditor(props: Props) {
       ApiHelper.post("/sections", [section], "ContentApi").then(() => {
         loadDataInternal("After adding section");
       });
-    } else {
+    } else if (data.blockId) {
       const sec = {
         sort,
         background: "#FFF",
@@ -212,7 +244,64 @@ export function ContentEditor(props: Props) {
       };
       if (sec.zone === "siteFooter") sec.pageId = null;
       setEditSection(sec);
+    } else {
+      setTemplateDrop({ sort, zone });
     }
+  };
+
+  const handleTemplateBlank = () => {
+    if (!templateDrop) return;
+    const sec: SectionInterface = {
+      sort: templateDrop.sort,
+      background: "#FFF",
+      textColor: "dark",
+      pageId: templateDrop.zone === "siteFooter" ? null : props.pageId,
+      blockId: props.blockId,
+      zone: templateDrop.zone
+    };
+    setTemplateDrop(null);
+    setEditSection(sec);
+  };
+
+  const handleTemplateSelect = (template: SectionTemplateDef) => {
+    if (!templateDrop) return;
+    const section = buildTemplateSection(template, {
+      pageId: templateDrop.zone === "siteFooter" ? undefined : props.pageId,
+      blockId: props.blockId,
+      zone: templateDrop.zone,
+      sort: templateDrop.sort
+    });
+    setTemplateDrop(null);
+    ApiHelper.post("/sections/tree", { section }, "ContentApi").then(() => {
+      loadDataInternal("After adding section");
+    });
+  };
+
+  const handlePublish = () => {
+    if (!props.pageId) return;
+    ApiHelper.post(`/pages/${props.pageId}/publish`, {}, "ContentApi").then((data: any) => {
+      setContainer((prev) => (prev ? { ...prev, publishedAt: data.publishedAt } : prev));
+      setHasUnpublishedChanges(false);
+    });
+  };
+
+  const handleDiscardChanges = () => {
+    if (!props.pageId) return;
+    if (!window.confirm(Locale.label("site.editorToolbar.discardChangesConfirm"))) return;
+    if (container) saveSnapshot(container, "Before discarding unpublished changes");
+    ApiHelper.post(`/pages/${props.pageId}/discard`, {}, "ContentApi").then(() => {
+      loadDataInternal("After discarding unpublished changes");
+      setHasUnpublishedChanges(false);
+    });
+  };
+
+  const handleUnpublish = () => {
+    if (!props.pageId) return;
+    if (!window.confirm(Locale.label("site.editorToolbar.disablePublishConfirm"))) return;
+    ApiHelper.delete(`/pages/${props.pageId}/published`, "ContentApi").then(() => {
+      setContainer((prev) => (prev ? { ...prev, publishedAt: null } : prev));
+      setHasUnpublishedChanges(false);
+    });
   };
 
   const getAddSection = (s: number, zone: string) => {
@@ -530,6 +619,10 @@ export function ContentEditor(props: Props) {
           onRedo={handleRedo}
           onShowHistory={() => setShowHistory(true)}
           lastSavedAt={lastSavedAt}
+          hasUnpublishedChanges={hasUnpublishedChanges}
+          onPublish={handlePublish}
+          onDiscardChanges={handleDiscardChanges}
+          onUnpublish={handleUnpublish}
         />
         <HistoryPanel
           open={showHistory}
@@ -570,6 +663,10 @@ export function ContentEditor(props: Props) {
           onRedo={handleRedo}
           onShowHistory={() => setShowHistory(true)}
           lastSavedAt={lastSavedAt}
+          hasUnpublishedChanges={hasUnpublishedChanges}
+          onPublish={handlePublish}
+          onDiscardChanges={handleDiscardChanges}
+          onUnpublish={handleUnpublish}
         />
         <HistoryPanel
           open={showHistory}
@@ -589,6 +686,13 @@ export function ContentEditor(props: Props) {
           onCancel={() => setPendingDeleteElementId(null)}
         />
 
+        <SectionTemplatePicker
+          open={!!templateDrop}
+          onClose={() => setTemplateDrop(null)}
+          onSelectBlank={handleTemplateBlank}
+          onSelectTemplate={handleTemplateSelect}
+        />
+
         <DndProvider backend={HTML5Backend}>
           <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden", minHeight: 0 }}>
             <AddContentPanel open={showAdd} onClose={() => setShowAdd(false)}>
@@ -598,7 +702,7 @@ export function ContentEditor(props: Props) {
                   includeBlocks={!elementOnlyMode}
                   includeSection={!elementOnlyMode}
                   updateCallback={() => setShowAdd(false)}
-                  draggingCallback={() => { /* persistent panel — stay open while dragging */ }}
+                  draggingCallback={() => { /* persistent panel â€” stay open while dragging */ }}
                 />
               )}
             </AddContentPanel>
@@ -679,6 +783,7 @@ export function ContentEditor(props: Props) {
                           realtimeUpdateElement(updatedElement, s.elements);
                         });
                         setContainer(c);
+                        setHasUnpublishedChanges(true);
                         saveSnapshot(c, "After editing element");
                       }
                     } else {
