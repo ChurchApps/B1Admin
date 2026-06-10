@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { TextField, FormControlLabel, Checkbox, Box, Typography, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import type { ApiKeyInterface } from "./DeveloperSection";
 
 interface Props {
@@ -68,7 +69,7 @@ export const ApiKeyEdit: React.FC<Props> = ({ onSave, onCancel }) => {
 
   return (
     <>
-      <InputBox headerIcon="key" headerText={Locale.label("settings.apiKeyEdit.newKey")} saveFunction={handleSave} cancelFunction={onCancel}>
+      <FormCard icon="key" title={Locale.label("settings.apiKeyEdit.newKey")} onSave={handleSave} onCancel={onCancel}>
         <ErrorMessages errors={errors} />
         <TextField fullWidth label={Locale.label("settings.apiKeyEdit.name")} placeholder={Locale.label("settings.apiKeyEdit.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
         <TextField fullWidth type="date" label={Locale.label("settings.apiKeyEdit.expires")} InputLabelProps={{ shrink: true }} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} helperText={Locale.label("settings.apiKeyEdit.expiresHelp")} />
@@ -87,7 +88,7 @@ export const ApiKeyEdit: React.FC<Props> = ({ onSave, onCancel }) => {
             ))}
           </Stack>
         </Box>
-      </InputBox>
+      </FormCard>
 
       <Dialog open={!!rawKey} onClose={closeKey} maxWidth="sm" fullWidth>
         <DialogTitle>{Locale.label("settings.apiKeyEdit.keyTitle")}</DialogTitle>

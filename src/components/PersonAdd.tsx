@@ -91,13 +91,13 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
           <button
             type="button"
             onClick={() => handleAdd(sr)}
-            style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", textDecoration: "underline", textAlign: "left" }}>
+            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer", textDecoration: "underline", textAlign: "left" }}>
             {sr.name.display}
           </button>
           {includeEmail && (
             <>
               <br />
-              <i style={{ color: "#999" }}>{sr.contactInfo.email}</i>
+              <i style={{ color: "var(--text-muted)" }}>{sr.contactInfo.email}</i>
             </>
           )}
         </TableCell>

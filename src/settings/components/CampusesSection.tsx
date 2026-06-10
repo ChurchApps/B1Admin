@@ -65,7 +65,7 @@ export const CampusesSection: React.FC = () => {
           </Stack>
           {rows.length > 0 ? (
             <Table>
-              <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+              <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 600 }}>{Locale.label("settings.campusEdit.name")}</TableCell>
                   <TableCell sx={{ fontWeight: 600 }}>{Locale.label("settings.campuses.location")}</TableCell>

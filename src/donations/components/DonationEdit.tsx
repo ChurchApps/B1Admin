@@ -2,7 +2,8 @@ import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Box } from
 import React, { memo, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { PersonAdd } from "../../components";
-import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale, InputBox } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { FundDonations } from "@churchapps/apphelper/donations";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 
@@ -106,7 +107,7 @@ export const DonationEdit = memo((props: Props) => {
         <>
           <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} />
           <hr />
-          <button type="button" className="text-decoration" onClick={handleAnonymousSelect} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          <button type="button" className="text-decoration" onClick={handleAnonymousSelect} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("donations.donationEdit.anon")}
           </button>
         </>
@@ -115,7 +116,7 @@ export const DonationEdit = memo((props: Props) => {
     const personText = donation.person === undefined || donation.person === null ? Locale.label("donations.donationEdit.anon") : (donation.person.name?.display || Locale.label("donations.donationEdit.anon"));
     return (
       <div>
-        <button type="button" className="text-decoration" data-cy="donating-person" onClick={handlePersonSelect} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+        <button type="button" className="text-decoration" data-cy="donating-person" onClick={handlePersonSelect} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
           {personText}
         </button>
       </div>
@@ -125,7 +126,7 @@ export const DonationEdit = memo((props: Props) => {
   React.useEffect(loadData, [loadData]);
 
   return (
-    <InputBox id="donationBox" headerText={Locale.label("common.edit")} cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSubmit(onValid)} help="docs/b1-admin/donations/">
+    <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} help="docs/b1-admin/donations/">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <Box>
         <label>{Locale.label("common.person")}</label>
@@ -149,6 +150,6 @@ export const DonationEdit = memo((props: Props) => {
       {methodDetailsField}
       <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} currency={props?.currency} />
       <TextField fullWidth label={Locale.label("common.notes")} data-cy="note" multiline placeholder={Locale.label("placeholders.donation.notes")} data-testid="donation-notes-input" aria-label={Locale.label("donations.donationEdit.ariaNotes")} {...register("notes")} />
-    </InputBox>
+    </FormCard>
   );
 });

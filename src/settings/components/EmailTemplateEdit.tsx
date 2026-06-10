@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { TextField, FormControl, InputLabel, MenuItem, Select, Box, Chip, Stack, Typography, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
-import { ApiHelper, InputBox, ErrorMessages, UserHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, UserHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import type { EmailTemplateInterface } from "../EmailTemplatesPage";
 
@@ -125,7 +126,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
 
   return (
     <>
-      <InputBox headerIcon="email" headerText={template.id ? Locale.label("settings.emailTemplateEdit.editTemplate") : Locale.label("settings.emailTemplateEdit.newTemplate")} saveFunction={handleSubmit(onValid)} cancelFunction={onCancel} deleteFunction={onDelete}>
+      <FormCard icon="email" title={template.id ? Locale.label("settings.emailTemplateEdit.editTemplate") : Locale.label("settings.emailTemplateEdit.newTemplate")} onSave={handleSubmit(onValid)} onCancel={onCancel} onDelete={onDelete}>
         <ErrorMessages errors={summaryErrors} />
         <TextField fullWidth label={Locale.label("settings.emailTemplateEdit.templateName")} placeholder={Locale.label("settings.emailTemplateEdit.templateNamePlaceholder")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("settings.emailTemplateEdit.nameRequired") })} />
         <FormControl fullWidth>
@@ -218,7 +219,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
         <Box sx={{ mt: 2, textAlign: "right" }}>
           <Button variant="outlined" size="small" onClick={() => setShowPreview(true)}>{Locale.label("settings.emailTemplateEdit.preview")}</Button>
         </Box>
-      </InputBox>
+      </FormCard>
 
       <Dialog open={showPreview} onClose={() => setShowPreview(false)} maxWidth="md" fullWidth>
         <DialogTitle>{Locale.label("settings.emailTemplateEdit.emailPreview")}</DialogTitle>
@@ -226,7 +227,7 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewSubject")}</Typography>
           <Typography variant="body1" sx={{ mb: 2, fontWeight: 600 }}>{getPreviewSubject()}</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewBody")}</Typography>
-          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "#fafafa" }}>
+          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "var(--bg-sub)" }}>
             <div dangerouslySetInnerHTML={{ __html: getPreviewHtml() }} />
           </Box>
           <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>

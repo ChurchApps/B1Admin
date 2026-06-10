@@ -2,7 +2,8 @@ import { Alert, TextField } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { type RoleInterface } from "@churchapps/helpers";
-import { ApiHelper, InputBox, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
+import { ApiHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { useQuery } from "@tanstack/react-query";
 
 interface Props {
@@ -45,15 +46,15 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
   if (roleQuery.isLoading && !UniqueIdHelper.isMissing(roleId)) return <Loading />;
 
   return (
-    <InputBox
+    <FormCard
       id="roleBox"
-      headerIcon="lock"
-      headerText={Locale.label("settings.roleEdit.roleEdit")}
-      saveFunction={handleSubmit(onValid)}
-      cancelFunction={updatedFunction}
-      deleteFunction={!UniqueIdHelper.isMissing(roleId) && roleQuery.data?.name !== "Domain Admins" ? handleDelete : undefined}>
+      icon="lock"
+      title={Locale.label("settings.roleEdit.roleEdit")}
+      onSave={handleSubmit(onValid)}
+      onCancel={updatedFunction}
+      onDelete={!UniqueIdHelper.isMissing(roleId) && roleQuery.data?.name !== "Domain Admins" ? handleDelete : undefined}>
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("settings.roleEdit.roleName")} placeholder={Locale.label("placeholders.role.name")} data-testid="role-name-input" aria-label={Locale.label("settings.roleEdit.roleNameAria")} error={!!e.roleName} helperText={e.roleName?.message} {...register("roleName", { required: Locale.label("settings.roleEdit.valMsg") })} />
-    </InputBox>
+    </FormCard>
   );
 };

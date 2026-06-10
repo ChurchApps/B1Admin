@@ -4,10 +4,11 @@ import { B1AdminPersonHelper } from ".";
 import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, TableHead, Typography, Stack, Box, Chip, Card, Checkbox } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Card, Checkbox } from "@mui/material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { SortableTableHead, StatusChip, type SortableColumn } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
-import { Delete as DeleteIcon, Email as EmailIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon, Phone as PhoneIcon } from "@mui/icons-material";
+import { Delete as DeleteIcon, Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
   people: PersonInterface[];
@@ -113,18 +114,9 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
                 </Typography>
               </Link>
               {p.membershipStatus && (
-                <Chip
-                  label={p.membershipStatus}
-                  size="small"
-                  variant="outlined"
-                  sx={{
-                    fontSize: "0.75rem",
-                    mt: 0.5,
-                    backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "background.subtle",
-                    color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "text.secondary",
-                    borderColor: "transparent"
-                  }}
-                />
+                <Box sx={{ mt: 0.5 }}>
+                  <StatusChip status={p.membershipStatus} />
+                </Box>
               )}
             </Box>
           );
@@ -171,19 +163,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           break;
         case "gender": result = <>{p.gender}</>; break;
         case "membershipStatus":
-          result = (
-            <Chip
-              label={p.membershipStatus || "Unknown"}
-              size="small"
-              variant="outlined"
-              sx={{
-                fontSize: "0.75rem",
-                backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "background.subtle",
-                color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "text.secondary",
-                borderColor: "transparent"
-              }}
-            />
-          );
+          result = <StatusChip status={p.membershipStatus || "Unknown"} />;
           break;
         case "maritalStatus": result = <>{p.maritalStatus}</>; break;
         case "campus": result = <>{p.campusId ? (campusMap[p.campusId] || "") : ""}</>; break;
@@ -347,42 +327,31 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     );
   }, [people, getColumns, navigate, props.canSelectPeople, props.currentPersonId, props.togglePersonSelection, selectedPersonIds]);
 
-  const getSortArrows = useCallback(
-    (isActive: boolean) => (
-      <Box
-        component="span"
-        sx={{
-          display: "inline-flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          ml: 0.5,
-          flexShrink: 0,
-          lineHeight: 0,
-          color: isActive ? "text.primary" : "text.secondary"
-        }}>
-        <KeyboardArrowUpIcon
-          sx={{
-            fontSize: 16,
-            mb: "-6px",
-            opacity: isActive && sortDirection ? 1 : 0.45
-          }}
-        />
-        <KeyboardArrowDownIcon
-          sx={{
-            fontSize: 16,
-            opacity: isActive && !sortDirection ? 1 : 0.45
-          }}
-        />
-      </Box>
-    ),
-    [sortDirection]
-  );
+  const headColumns = useMemo<SortableColumn[]>(() => {
+    const result: SortableColumn[] = [];
+    columns.forEach((c) => {
+      if (selectedColumns.indexOf(c.key) > -1) {
+        result.push({
+          key: c.key,
+          label: c.shortName,
+          sortable: c.key !== "photo" && c.key !== "deleteOption",
+          minWidth: c.key === "photo" ? 88 : 160
+        });
+      }
+    });
+    optionalColumns.forEach((c) => {
+      if (selectedColumns.indexOf(c.id) > -1) result.push({ key: c.id, label: c.title, sortable: true, minWidth: 160 });
+    });
+    return result;
+  }, [columns, selectedColumns, optionalColumns]);
 
-  const headers = useMemo(() => {
-    const result: JSX.Element[] = [];
-    if (props.canSelectPeople) {
-      result.push(
+  const headers = useMemo(() => (
+    <SortableTableHead
+      columns={headColumns}
+      sortBy={currentSortedCol}
+      sortDirection={sortDirection ? "asc" : "desc"}
+      onSort={sortTableByKey}
+      leading={props.canSelectPeople ? (
         <TableCell key="bulkSelect" padding="checkbox">
           <Checkbox
             checked={allVisibleSelected}
@@ -391,68 +360,15 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             slotProps={{ input: { "aria-label": "Select all visible people" } }}
           />
         </TableCell>
-      );
-    }
-    columns.forEach((c) => {
-      if (selectedColumns.indexOf(c.key) > -1) {
-        const isSortable = c.key !== "photo" && c.key !== "deleteOption";
-        const isActive = currentSortedCol === c.key;
-        result.push(
-          <TableCell
-            key={c.key}
-            onClick={isSortable ? () => sortTableByKey(c.key) : undefined}
-            sx={{
-              whiteSpace: "nowrap",
-              minWidth: c.key === "photo" ? 88 : 160,
-              cursor: isSortable ? "pointer" : "default"
-            }}>
-            <Box component="span" sx={{ display: "inline-flex", alignItems: "center", verticalAlign: "middle" }}>
-              <Box component="span">{c.shortName}</Box>
-              {isSortable && getSortArrows(isActive)}
-            </Box>
-          </TableCell>
-        );
-      }
-    });
-
-    if (optionalColumns.length > 0) {
-      optionalColumns.forEach((c) => {
-        const key = c.id;
-        if (selectedColumns.indexOf(key) > -1) {
-          const isActive = currentSortedCol === key;
-          result.push(
-            <TableCell
-              key={key}
-              onClick={() => sortTableByKey(key)}
-              sx={{
-                whiteSpace: "nowrap",
-                minWidth: 160,
-                cursor: "pointer"
-              }}>
-              <Box component="span" sx={{ display: "inline-flex", alignItems: "center", verticalAlign: "middle" }}>
-                <Box component="span">{c.title}</Box>
-                {getSortArrows(isActive)}
-              </Box>
-            </TableCell>
-          );
-        }
-      });
-    }
-
-    return (
-      <TableHead>
-        <TableRow>{result}</TableRow>
-      </TableHead>
-    );
-  }, [
+      ) : undefined}
+    />
+  ), [
     allVisibleSelected,
-    columns,
+    headColumns,
     currentSortedCol,
-    getSortArrows,
-    optionalColumns,
+    sortDirection,
     props.canSelectPeople,
     props.toggleAllVisiblePeople,
-    selectedColumns,
     someVisibleSelected,
     sortTableByKey
   ]);
@@ -489,14 +405,6 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
               px: 2,
               verticalAlign: "top",
               whiteSpace: "nowrap"
-            },
-            "& .MuiTableHead-root .MuiTableCell-root": {
-              backgroundColor: "background.subtle",
-              fontWeight: 600,
-              color: "text.primary",
-              "&:hover": { color: "text.primary" },
-              "&:active": { color: "text.primary" },
-              "& span": { color: "inherit" }
             }
           }}>
           {headers}

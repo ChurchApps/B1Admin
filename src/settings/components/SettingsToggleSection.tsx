@@ -1,5 +1,6 @@
 import React from "react";
-import { DisplayBox, InputBox } from "@churchapps/apphelper";
+import { DisplayBox } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   headerText: string;
@@ -39,9 +40,9 @@ export const SettingsToggleSection: React.FC<Props> = (props) => {
 
   if (editing) {
     return (
-      <InputBox headerText={props.headerText} headerIcon={props.headerIcon} saveFunction={handleSave} cancelFunction={handleCancel} isSubmitting={saving} data-testid={props["data-testid"]}>
+      <FormCard title={props.headerText} icon={props.headerIcon} onSave={handleSave} onCancel={handleCancel} isSubmitting={saving} data-testid={props["data-testid"]}>
         {props.renderEdit(saveTrigger, (errors) => { childErrorsRef.current = errors; })}
-      </InputBox>
+      </FormCard>
     );
   }
 

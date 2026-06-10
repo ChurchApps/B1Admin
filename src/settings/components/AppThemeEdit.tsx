@@ -1,7 +1,8 @@
 import React from "react";
 import { TextField, Grid, Typography, Box, Stack, Button, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 
 export interface AppThemeModeColors {
@@ -141,7 +142,7 @@ export const AppThemeEdit: React.FC = () => {
   );
 
   return (
-    <InputBox headerText={Locale.label("common.appTheme")} headerIcon="palette" saveFunction={handleSave} isSubmitting={isSubmitting}>
+    <FormCard title={Locale.label("common.appTheme")} icon="palette" onSave={handleSave} isSubmitting={isSubmitting}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
         {Locale.label("mobile.appThemeEdit.description")}
       </Typography>
@@ -150,6 +151,6 @@ export const AppThemeEdit: React.FC = () => {
       </Box>
       {modeSection("light", Locale.label("mobile.appThemeEdit.lightMode"))}
       {modeSection("dark", Locale.label("mobile.appThemeEdit.darkMode"))}
-    </InputBox>
+    </FormCard>
   );
 };

@@ -37,7 +37,7 @@ export const PlanItemRow: React.FC<Props> = ({
       onClick={onLabelClick}
     >
       <div className="timeRailCell">
-        <span className="timeRailLabel" style={excluded ? { color: "#999" } : undefined}>{railLabel}</span>
+        <span className="timeRailLabel" style={excluded ? { color: "var(--text-muted)" } : undefined}>{railLabel}</span>
         <span className="timeRailDot" />
         <span className="timeRailLine" />
       </div>

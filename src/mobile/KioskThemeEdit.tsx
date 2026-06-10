@@ -157,7 +157,7 @@ export const KioskThemeEdit: React.FC = () => {
           </Typography>
           {config.backgroundImage && (
             <Box sx={{ mb: 2 }}>
-              <img src={config.backgroundImage} alt={Locale.label("mobile.checkInPage.kiosk.backgroundImage")} style={{ maxWidth: 300, maxHeight: 170, borderRadius: 8, border: "1px solid #ccc" }} />
+              <img src={config.backgroundImage} alt={Locale.label("mobile.checkInPage.kiosk.backgroundImage")} style={{ maxWidth: 300, maxHeight: 170, borderRadius: 8, border: "1px solid var(--border-main)" }} />
             </Box>
           )}
           <Stack direction="row" spacing={2}>

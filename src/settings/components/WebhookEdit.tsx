@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { TextField, MenuItem, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
-import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import type { WebhookInterface, WebhookDeliveryInterface } from "./WebhooksSection";
 
 interface Props {
@@ -99,7 +100,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
 
   return (
     <>
-      <InputBox headerIcon="webhook" headerText={webhook.id ? Locale.label("settings.webhookEdit.editWebhook") : Locale.label("settings.webhookEdit.newWebhook")} saveFunction={handleSave} cancelFunction={onCancel} deleteFunction={onDelete}>
+      <FormCard icon="webhook" title={webhook.id ? Locale.label("settings.webhookEdit.editWebhook") : Locale.label("settings.webhookEdit.newWebhook")} onSave={handleSave} onCancel={onCancel} onDelete={onDelete}>
         <ErrorMessages errors={errors} />
         <TextField fullWidth label={Locale.label("settings.webhookEdit.name")} placeholder={Locale.label("settings.webhookEdit.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
         <TextField select fullWidth label={Locale.label("settings.webhookEdit.connectorType")} value={connectorType} onChange={(e) => setConnectorType(e.target.value)}>
@@ -125,7 +126,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
             <Button variant="outlined" size="small" onClick={handleSendTest} disabled={testing}>{testing ? Locale.label("settings.webhookEdit.sendingTest") : Locale.label("settings.webhookEdit.sendTest")}</Button>
           </Stack>
         )}
-      </InputBox>
+      </FormCard>
 
       {webhook.id && (
         <Box sx={{ mt: 2 }}>

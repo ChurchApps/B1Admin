@@ -101,7 +101,7 @@ export const PositionEdit = (props: Props) => {
         cancelFunction={props.updatedFunction}
         deleteFunction={props.position?.id ? handleDelete : null}>
         <FormControl fullWidth>
-          <div style={{ fontSize: 12, color: "#999", position: "absolute", top: -8, left: 10, backgroundColor: "#FFF", zIndex: 999 }}>
+          <div style={{ fontSize: 12, color: "var(--text-muted)", position: "absolute", top: -8, left: 10, backgroundColor: "var(--bg-card)", zIndex: 999 }}>
             {Locale.label("plans.positionEdit.catName")}
           </div>
           <Controller name="categoryName" control={control} rules={{ required: Locale.label("plans.positionEdit.catNameReq") }} render={() => (

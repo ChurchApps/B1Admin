@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { ApiHelper, InputBox, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { GivingSettingsEdit } from "./GivingSettingsEdit";
 import { Alert, TextField, Grid, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -104,7 +105,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   if (!props.church || !props.church.id) return null;
 
   return (
-    <InputBox id="churchSettingsBox" cancelFunction={props.updatedFunction} saveFunction={handleSubmit(onValid)} headerText={Locale.label("settings.churchSettingsEdit.churchSettings")} headerIcon="business">
+    <FormCard id="churchSettingsBox" onCancel={props.updatedFunction} onSave={handleSubmit(onValid)} title={Locale.label("settings.churchSettingsEdit.churchSettings")} icon="business">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
 
       {/* Church Information Accordion */}
@@ -191,6 +192,6 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
           <DomainSettingsEdit churchId={props.church?.id || ""} saveTrigger={saveTrigger} />
         </AccordionDetails>
       </Accordion>
-    </InputBox>
+    </FormCard>
   );
 };

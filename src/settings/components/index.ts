@@ -13,7 +13,6 @@ export { RoleCheck } from "./RoleCheck";
 export { RoleMembers } from "./RoleMembers";
 export { RolePermissions } from "./RolePermissions";
 export { UserAdd } from "./UserAdd";
-export { Preview } from "./Preview";
 export { AssociatePerson } from "./AssociatePerson";
 export { Roles } from "./Roles";
 export { RolesTab } from "./RolesTab";

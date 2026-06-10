@@ -128,7 +128,7 @@ export const AttendanceSetup = memo(() => {
         <TableRow key="0">
           <TableCell colSpan={5} sx={{ textAlign: "center", py: 4 }}>
             <Stack spacing={2} alignItems="center">
-              <Icon sx={{ fontSize: 48, color: "#ccc" }}>group</Icon>
+              <Icon sx={{ fontSize: 48, color: "var(--text-muted)" }}>group</Icon>
               <Typography variant="h6" color="text.secondary">
                 {Locale.label("attendance.attendancePage.groupAttMsg")}
               </Typography>
@@ -163,7 +163,7 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 2 }}>
-            <Icon sx={{ color: "#999", fontSize: 18 }}>calendar_month</Icon>
+            <Icon sx={{ color: "var(--text-muted)", fontSize: 18 }}>calendar_month</Icon>
             <Button
               variant="text"
               size="small"
@@ -185,7 +185,7 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 4 }}>
-            <Icon sx={{ color: "#bbb", fontSize: 16 }}>schedule</Icon>
+            <Icon sx={{ color: "var(--text-muted)", fontSize: 16 }}>schedule</Icon>
             <Button
               variant="text"
               size="small"

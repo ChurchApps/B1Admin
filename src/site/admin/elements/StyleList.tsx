@@ -40,7 +40,7 @@ export const StyleList: React.FC<Props> = (props) => {
           <div key={crypto.randomUUID()} style={{ marginBottom: 5 }}>
             <a
               href="about:blank"
-              style={{ color: "#999", textDecoration: "underline" }}
+              style={{ color: "var(--text-muted)", textDecoration: "underline" }}
               onClick={(e) => {
                 e.preventDefault();
                 setEditStyle({ platform: platformKey, name: key, value });
@@ -90,7 +90,7 @@ export const StyleList: React.FC<Props> = (props) => {
     return (
       <>
         <hr />
-        <p style={{ color: "#999999", fontSize: 12 }}>{Locale.label("site.styleEdit.stylesHelper")}</p>
+        <p style={{ color: "var(--text-muted)", fontSize: 12 }}>{Locale.label("site.styleEdit.stylesHelper")}</p>
         <div>
           <b>{Locale.label("site.styleEdit.platform")}</b>
         </div>

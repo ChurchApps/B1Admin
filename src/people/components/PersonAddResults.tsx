@@ -45,7 +45,7 @@ export const PersonAddResults: React.FC<Props> = (props: Props) => {
           {props.includeEmail && (
             <>
               <br />
-              <i style={{ color: "#999" }}>{sr.contactInfo.email}</i>
+              <i style={{ color: "var(--text-muted)" }}>{sr.contactInfo.email}</i>
             </>
           )}
         </TableCell>

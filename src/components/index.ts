@@ -4,7 +4,6 @@ export * from "../helpers";
 export { DisplayBox, Loading, InputBox, ErrorMessages, ExportLink, PageHeader, ImageEditor, FileUpload } from "@churchapps/apphelper";
 
 export { ErrorBoundary } from "./ErrorBoundary";
-export { Footer } from "./Footer";
 export { AssociatedForms } from "./AssociatedForms";
 export { ComboBox } from "./ComboBox";
 export { FormSubmission } from "./FormSubmission";

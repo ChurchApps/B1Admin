@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { ApiHelper, DisplayBox, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { Box, Divider, Grid, Stack, TextField, Typography } from "@mui/material";
 
 type AnyRecord = Record<string, any>;
@@ -43,7 +44,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
 
   if (editing) {
     return (
-      <InputBox headerText={Locale.label("settings.churchSettingsEdit.churchInfo")} headerIcon="business" saveFunction={handleSubmit(onValid)} cancelFunction={() => { reset(); setEditing(false); }} isSubmitting={saving}>
+      <FormCard title={Locale.label("settings.churchSettingsEdit.churchInfo")} icon="business" onSave={handleSubmit(onValid)} onCancel={() => { reset(); setEditing(false); }} isSubmitting={saving}>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
             <TextField fullWidth label={Locale.label("settings.churchSettingsEdit.churchName")} id="churchName" data-testid="church-name-input" error={!!fe.churchName} helperText={fe.churchName?.message} {...register("churchName", { required: Locale.label("settings.churchSettingsEdit.noNameMsg") })} />
@@ -76,7 +77,7 @@ export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
             <TextField fullWidth label={Locale.label("person.country")} id="country" {...register("country")} />
           </Grid>
         </Grid>
-      </InputBox>
+      </FormCard>
     );
   }
 

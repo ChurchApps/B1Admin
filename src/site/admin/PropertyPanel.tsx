@@ -105,7 +105,7 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
             overflowX: "hidden",
             px: 1.5,
             py: 1,
-            "&& .inputBox": {
+            "& #input-box": {
               boxShadow: "none",
               marginBottom: 0,
               padding: "8px"

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { InputBox, ApiHelper, UserHelper, type PersonInterface, ErrorMessages, type UserInterface, type UserChurchInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, type PersonInterface, ErrorMessages, type UserInterface, type UserChurchInterface, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { type RoleInterface, type RoleMemberInterface, type LoadCreateUserRequestInterface, type HouseholdInterface } from "@churchapps/helpers";
 import { AssociatePerson } from "./";
 import { TextField } from "@mui/material";
@@ -196,7 +197,7 @@ export const UserAdd = (props: Props) => {
   const message = !showNameFields && !editMode && hasSearched && (
     <span>
       {Locale.label("settings.userAdd.noAcc")}{" "}
-      <button type="button" onClick={CreateNewUser} data-testid="create-new-user-link" aria-label={Locale.label("settings.userAdd.createNewUserAria")} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+      <button type="button" onClick={CreateNewUser} data-testid="create-new-user-link" aria-label={Locale.label("settings.userAdd.createNewUserAria")} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
         {Locale.label("settings.userAdd.createNew")}
       </button>
     </span>
@@ -212,7 +213,7 @@ export const UserAdd = (props: Props) => {
   );
 
   return (
-    <InputBox headerIcon="lock" headerText={Locale.label("settings.userAdd.addTo") + props.role.name} saveFunction={handleSave} cancelFunction={props.updatedFunction}>
+    <FormCard icon="lock" title={Locale.label("settings.userAdd.addTo") + props.role.name} onSave={handleSave} onCancel={props.updatedFunction}>
       <ErrorMessages errors={errors} />
       {(!showNameFields || editMode) && (
         <AssociatePerson
@@ -236,6 +237,6 @@ export const UserAdd = (props: Props) => {
           onClose={() => { setShowInviteDialog(false); props.updatedFunction(); }}
         />
       )}
-    </InputBox>
+    </FormCard>
   );
 };

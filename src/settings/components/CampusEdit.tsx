@@ -2,7 +2,8 @@ import React from "react";
 import { Alert, TextField, MenuItem, Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { type CampusInterface } from "./CampusInterface";
-import { InputBox, ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   campus: CampusInterface;
@@ -63,14 +64,14 @@ export const CampusEdit: React.FC<Props> = (props) => {
   if (props.campus === null) return null;
 
   return (
-    <InputBox
+    <FormCard
       id="campusBox"
-      data-cy="campus-box"
-      cancelFunction={props.updatedFunction}
-      saveFunction={handleSubmit(onValid)}
-      deleteFunction={props.campus?.id ? handleDelete : null}
-      headerText={props.campus.name || Locale.label("settings.campuses.campus")}
-      headerIcon="business"
+      data-testid="campus-box"
+      onCancel={props.updatedFunction}
+      onSave={handleSubmit(onValid)}
+      onDelete={props.campus?.id ? handleDelete : undefined}
+      title={props.campus.name || Locale.label("settings.campuses.campus")}
+      icon="business"
       isSubmitting={isSubmitting}
       help="docs/b1-admin/settings/">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
@@ -93,6 +94,6 @@ export const CampusEdit: React.FC<Props> = (props) => {
         {TIMEZONES.map((tz) => <MenuItem key={tz} value={tz}>{tz}</MenuItem>)}
       </TextField>
       <TextField fullWidth label={Locale.label("settings.campusEdit.website")} id="website" type="text" {...register("website")} />
-    </InputBox>
+    </FormCard>
   );
 };
