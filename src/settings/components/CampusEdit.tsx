@@ -76,8 +76,14 @@ export const CampusEdit: React.FC<Props> = (props) => {
       help="docs/b1-admin/settings/">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("settings.campusEdit.name")} id="name" type="text" data-testid="campus-name-input" error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("settings.campusEdit.validate.name") })} sx={{ mb: 1 }} />
-      <TextField fullWidth label={Locale.label("person.address")} id="address1" type="text" {...register("address1")} sx={{ mb: 1 }} />
-      <TextField fullWidth label={Locale.label("settings.campusEdit.address2")} id="address2" type="text" {...register("address2")} sx={{ mb: 1 }} />
+      <Grid container spacing={1} sx={{ mb: 1 }}>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField fullWidth label={Locale.label("person.address")} id="address1" type="text" {...register("address1")} />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField fullWidth label={Locale.label("settings.campusEdit.address2")} id="address2" type="text" {...register("address2")} />
+        </Grid>
+      </Grid>
       <Grid container spacing={1} sx={{ mb: 1 }}>
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField fullWidth label={Locale.label("person.city")} id="city" type="text" {...register("city")} />

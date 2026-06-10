@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
@@ -61,18 +61,24 @@ export const GroupAdd: React.FC<Props> = (props) => {
   return (
     <FormCard title={Locale.label("groups.groupAdd.new") + label} icon="group" onCancel={handleCancel} onSave={handleSubmit(onValid)} saveText={Locale.label("groups.groupAdd.add")} isSubmitting={isSubmitting}>
       <ErrorMessages errors={summaryErrors} />
-      {props.tags === "standard" && (
-        <Controller name="categoryName" control={control} rules={{ required: Locale.label("groups.groupAdd.catReq") }} render={({ field }) => (
-          <CategorySelect
-            value={field.value}
-            onChange={field.onChange}
-            label={Locale.label("groups.groupAdd.catName")}
-            tags={props.tags}
-            testId="add-category-name"
-          />
-        )} />
-      )}
-      <TextField fullWidth={true} label={Locale.label("common.name")} type="text" id="groupName" placeholder={Locale.label("placeholders.group.name")} data-testid="add-group-name-input" aria-label={Locale.label("groups.groupAdd.groupNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("groups.groupAdd.groupReq") })} />
+      <Grid container spacing={2}>
+        {props.tags === "standard" && (
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Controller name="categoryName" control={control} rules={{ required: Locale.label("groups.groupAdd.catReq") }} render={({ field }) => (
+              <CategorySelect
+                value={field.value}
+                onChange={field.onChange}
+                label={Locale.label("groups.groupAdd.catName")}
+                tags={props.tags}
+                testId="add-category-name"
+              />
+            )} />
+          </Grid>
+        )}
+        <Grid size={{ xs: 12, sm: props.tags === "standard" ? 6 : 12 }}>
+          <TextField fullWidth={true} label={Locale.label("common.name")} type="text" id="groupName" placeholder={Locale.label("placeholders.group.name")} data-testid="add-group-name-input" aria-label={Locale.label("groups.groupAdd.groupNameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("groups.groupAdd.groupReq") })} />
+        </Grid>
+      </Grid>
     </FormCard>
   );
 };

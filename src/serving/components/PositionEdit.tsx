@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { type GroupInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
@@ -109,8 +109,14 @@ export const PositionEdit = (props: Props) => {
             <ReactSelect onInputChange={(v: string) => setCategoryInput(v)} value={categoryOption} onChange={handleCategoryChange} options={categoryOptions} onBlur={handleCategoryBlur} className="comboBox" />
           )} />
         </FormControl>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.position.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.positionEdit.nameReq") })} />
-        <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" type="number" placeholder={Locale.label("placeholders.position.count")} {...register("count")} />
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.position.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.positionEdit.nameReq") })} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" type="number" placeholder={Locale.label("placeholders.position.count")} {...register("count")} />
+          </Grid>
+        </Grid>
         <FormControl fullWidth>
           <InputLabel>{Locale.label("plans.positionEdit.volGroup")}</InputLabel>
           <Controller name="groupId" control={control} render={({ field }) => (

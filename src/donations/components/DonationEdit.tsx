@@ -1,4 +1,4 @@
-import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
+import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
 import React, { memo, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { PersonAdd } from "../../components";
@@ -132,21 +132,27 @@ export const DonationEdit = memo((props: Props) => {
         <label>{Locale.label("common.person")}</label>
         {personSection}
       </Box>
-      <TextField fullWidth label={Locale.label("donations.donationEdit.date")} type="date" data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...register("date")} />
-      <Controller
-        control={control}
-        name="method"
-        render={({ field }) => (
-          <FormControl fullWidth>
-            <InputLabel id="method">{Locale.label("donations.donationEdit.method")}</InputLabel>
-            <Select {...field} labelId="method" label={Locale.label("donations.donationEdit.method")} data-testid="payment-method-select" aria-label={Locale.label("donations.donationEdit.ariaMethod")}>
-              <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
-              <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
-              <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
-            </Select>
-          </FormControl>
-        )}
-      />
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField fullWidth label={Locale.label("donations.donationEdit.date")} type="date" data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...register("date")} />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <Controller
+            control={control}
+            name="method"
+            render={({ field }) => (
+              <FormControl fullWidth>
+                <InputLabel id="method">{Locale.label("donations.donationEdit.method")}</InputLabel>
+                <Select {...field} labelId="method" label={Locale.label("donations.donationEdit.method")} data-testid="payment-method-select" aria-label={Locale.label("donations.donationEdit.ariaMethod")}>
+                  <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
+                  <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
+                  <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          />
+        </Grid>
+      </Grid>
       {methodDetailsField}
       <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} currency={props?.currency} />
       <TextField fullWidth label={Locale.label("common.notes")} data-cy="note" multiline placeholder={Locale.label("placeholders.donation.notes")} data-testid="donation-notes-input" aria-label={Locale.label("donations.donationEdit.ariaNotes")} {...register("notes")} />

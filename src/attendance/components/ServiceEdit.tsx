@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Box, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { type ServiceInterface } from "@churchapps/helpers";
 import { ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
@@ -57,15 +57,21 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         isSubmitting={isSubmitting}
         help="docs/b1-admin/attendance/">
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
-        <FormControl fullWidth>
-          <InputLabel id="campus">{Locale.label("attendance.serviceEdit.campus")}</InputLabel>
-          <Controller name="campusId" control={control} rules={{ required: Locale.label("attendance.serviceEdit.validate.campus") }} render={({ field }) => (
-            <Select {...field} labelId="campus" label={Locale.label("attendance.serviceEdit.campus")} data-testid="campus-select" aria-label={Locale.label("attendance.serviceEdit.campusAria")} error={!!e.campusId}>
-              {campuses.map((c, i) => <MenuItem key={i} value={c.id}>{c.name}</MenuItem>)}
-            </Select>
-          )} />
-        </FormControl>
-        <TextField fullWidth label={Locale.label("attendance.serviceEdit.name")} id="name" type="text" placeholder={Locale.label("placeholders.service.name")} data-testid="service-name-input" aria-label={Locale.label("attendance.serviceEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceEdit.validate.name") })} />
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel id="campus">{Locale.label("attendance.serviceEdit.campus")}</InputLabel>
+              <Controller name="campusId" control={control} rules={{ required: Locale.label("attendance.serviceEdit.validate.campus") }} render={({ field }) => (
+                <Select {...field} labelId="campus" label={Locale.label("attendance.serviceEdit.campus")} data-testid="campus-select" aria-label={Locale.label("attendance.serviceEdit.campusAria")} error={!!e.campusId}>
+                  {campuses.map((c, i) => <MenuItem key={i} value={c.id}>{c.name}</MenuItem>)}
+                </Select>
+              )} />
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("attendance.serviceEdit.name")} id="name" type="text" placeholder={Locale.label("placeholders.service.name")} data-testid="service-name-input" aria-label={Locale.label("attendance.serviceEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceEdit.validate.name") })} />
+          </Grid>
+        </Grid>
       </FormCard>
     </Box>
   );

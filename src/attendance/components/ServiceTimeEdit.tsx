@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { type ServiceTimeInterface, type ServiceInterface } from "@churchapps/helpers";
@@ -59,15 +59,21 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
         icon="schedule"
         help="docs/b1-admin/attendance/">
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
-        <FormControl fullWidth>
-          <InputLabel id="service">{Locale.label("attendance.serviceTimeEdit.service")}</InputLabel>
-          <Controller name="serviceId" control={control} rules={{ required: Locale.label("attendance.serviceTimeEdit.validate.service") }} render={({ field }) => (
-            <Select {...field} labelId="service" label={Locale.label("attendance.serviceTimeEdit.service")} data-testid="service-select" aria-label={Locale.label("attendance.serviceTimeEdit.serviceAria")} error={!!e.serviceId}>
-              {services.map((s, i) => <MenuItem key={i} value={s.id}>{s.name}</MenuItem>)}
-            </Select>
-          )} />
-        </FormControl>
-        <TextField fullWidth label={Locale.label("attendance.serviceTimeEdit.name")} id="name" type="text" placeholder={Locale.label("attendance.serviceTimeEdit.namePlaceholder")} data-testid="service-time-name-input" aria-label={Locale.label("attendance.serviceTimeEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceTimeEdit.validate.name") })} />
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel id="service">{Locale.label("attendance.serviceTimeEdit.service")}</InputLabel>
+              <Controller name="serviceId" control={control} rules={{ required: Locale.label("attendance.serviceTimeEdit.validate.service") }} render={({ field }) => (
+                <Select {...field} labelId="service" label={Locale.label("attendance.serviceTimeEdit.service")} data-testid="service-select" aria-label={Locale.label("attendance.serviceTimeEdit.serviceAria")} error={!!e.serviceId}>
+                  {services.map((s, i) => <MenuItem key={i} value={s.id}>{s.name}</MenuItem>)}
+                </Select>
+              )} />
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("attendance.serviceTimeEdit.name")} id="name" type="text" placeholder={Locale.label("attendance.serviceTimeEdit.namePlaceholder")} data-testid="service-time-name-input" aria-label={Locale.label("attendance.serviceTimeEdit.nameAria")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("attendance.serviceTimeEdit.validate.name") })} />
+          </Grid>
+        </Grid>
       </FormCard>
     </Box>
   );

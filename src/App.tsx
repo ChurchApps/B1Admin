@@ -59,6 +59,9 @@ const createMdTheme = (mode: PaletteMode) =>
         styleOverrides: { root: { "& .MuiOutlinedInput-root": { "&:hover fieldset": { borderColor: mode === "light" ? "rgba(0, 0, 0, 0.23)" : "rgba(255, 255, 255, 0.23)" } } } }
       },
       MuiFormControl: { defaultProps: { margin: "normal" } },
+      // always-shrunk labels: react-hook-form reset() fills inputs without events, so MUI's filled-state detection misses them
+      MuiInputLabel: { defaultProps: { shrink: true } },
+      MuiOutlinedInput: { defaultProps: { notched: true } },
       MuiButton: { styleOverrides: { root: { textTransform: "none" } } },
       MuiCard: {
         styleOverrides: {

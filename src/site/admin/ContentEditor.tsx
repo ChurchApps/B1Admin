@@ -33,7 +33,9 @@ const lightEditorTheme = createTheme({
   palette: { mode: "light", background: { default: "#e5e8ee", paper: "#ffffff" } },
   components: {
     MuiTextField: { defaultProps: { margin: "normal" } },
-    MuiFormControl: { defaultProps: { margin: "normal" } }
+    MuiFormControl: { defaultProps: { margin: "normal" } },
+    MuiInputLabel: { defaultProps: { shrink: true } },
+    MuiOutlinedInput: { defaultProps: { notched: true } }
   }
 });
 

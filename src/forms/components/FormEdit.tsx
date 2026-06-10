@@ -1,4 +1,4 @@
-import { Alert, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useMountedState, ApiHelper, DateHelper, Locale } from "@churchapps/apphelper";
@@ -110,30 +110,38 @@ export function FormEdit(props: Props) {
         </FormControl>
       )}
       {standAloneForm && (
-        <>
-          <FormControl fullWidth>
-            <InputLabel>{Locale.label("forms.formEdit.access")}</InputLabel>
-            <Controller name="restricted" control={control} render={({ field }) => (
-              <Select {...field} value={field.value?.toString() ?? "false"} label={Locale.label("forms.formEdit.access")} data-testid="access-level-select" aria-label={Locale.label("forms.formEdit.accessLevelAria")} onChange={(e) => field.onChange(e.target.value === "true")}>
-                <MenuItem value="false">{Locale.label("forms.formEdit.public")}</MenuItem>
-                <MenuItem value="true">{Locale.label("forms.formEdit.restrict")}</MenuItem>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("forms.formEdit.access")}</InputLabel>
+              <Controller name="restricted" control={control} render={({ field }) => (
+                <Select {...field} value={field.value?.toString() ?? "false"} label={Locale.label("forms.formEdit.access")} data-testid="access-level-select" aria-label={Locale.label("forms.formEdit.accessLevelAria")} onChange={(e) => field.onChange(e.target.value === "true")}>
+                  <MenuItem value="false">{Locale.label("forms.formEdit.public")}</MenuItem>
+                  <MenuItem value="true">{Locale.label("forms.formEdit.restrict")}</MenuItem>
+                </Select>
+              )} />
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("forms.formEdit.available")}</InputLabel>
+              <Select label={Locale.label("forms.formEdit.available")} name="limit" value={showDates.toString()} onChange={(e) => { setShowDates(e.target.value === "true"); }}>
+                <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
               </Select>
-            )} />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>{Locale.label("forms.formEdit.available")}</InputLabel>
-            <Select label={Locale.label("forms.formEdit.available")} name="limit" value={showDates.toString()} onChange={(e) => { setShowDates(e.target.value === "true"); }}>
-              <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-              <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-            </Select>
-          </FormControl>
-        </>
+            </FormControl>
+          </Grid>
+        </Grid>
       )}
       {showDates && (
-        <>
-          <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableStart")} InputLabelProps={{ shrink: true }} error={!!e.accessStartTime} helperText={e.accessStartTime?.message} {...register("accessStartTime", { required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false })} />
-          <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableEnd")} InputLabelProps={{ shrink: true }} error={!!e.accessEndTime} helperText={e.accessEndTime?.message} {...register("accessEndTime", { required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false })} />
-        </>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableStart")} error={!!e.accessStartTime} helperText={e.accessStartTime?.message} {...register("accessStartTime", { required: showDates ? Locale.label("forms.formEdit.startReqMsg") : false })} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth type="date" label={Locale.label("forms.formEdit.availableEnd")} error={!!e.accessEndTime} helperText={e.accessEndTime?.message} {...register("accessEndTime", { required: showDates ? Locale.label("forms.formEdit.endReqMsg") : false })} />
+          </Grid>
+        </Grid>
       )}
       <TextField fullWidth label={Locale.label("forms.formEdit.thankYouMessage")} type="text" placeholder={Locale.label("placeholders.form.thankYouMessage")} {...register("thankYouMessage")} />
     </FormCard>
