@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Badge, Box, Button, Divider, Icon, Menu, MenuItem, ListItemIcon, ListItemText, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
+import { Box, Button, Chip, Divider, Icon, Menu, MenuItem, ListItemIcon, ListItemText, ToggleButton, ToggleButtonGroup, Tooltip } from "@mui/material";
 import { Undo as UndoIcon, Redo as RedoIcon, MoreVert as MoreVertIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { PageInterface, BlockInterface } from "../../helpers/Interfaces";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import type { SaveStatus } from "./saveStatusTracker";
 
 interface EditorToolbarProps {
   onDone: () => void;
@@ -20,6 +21,7 @@ interface EditorToolbarProps {
   onUndo?: () => void;
   onRedo?: () => void;
   onShowHistory?: () => void;
+  saveStatus?: SaveStatus;
   lastSavedAt?: number | null;
   hasUnpublishedChanges?: boolean;
   onPublish?: () => void;
@@ -52,6 +54,7 @@ export function EditorToolbar(props: EditorToolbarProps) {
     onRedo,
     onShowHistory,
     onToggleHelp,
+    saveStatus,
     lastSavedAt,
     hasUnpublishedChanges,
     onPublish,
@@ -78,9 +81,29 @@ export function EditorToolbar(props: EditorToolbarProps) {
     ? (container as PageInterface)?.title
     : (container as BlockInterface)?.name;
 
-  const savedLabel = lastSavedAt
-    ? `${Locale.label("site.editorToolbar.savedAllChanges")} · ${formatRelative(lastSavedAt)}`
-    : Locale.label("site.editorToolbar.notSavedYet");
+  const status: SaveStatus = saveStatus || "saved";
+  const savedLabel = status === "saving"
+    ? Locale.label("site.editorToolbar.saving")
+    : status === "error"
+      ? Locale.label("site.editorToolbar.saveError")
+      : lastSavedAt
+        ? `${Locale.label("site.editorToolbar.savedAllChanges")} · ${formatRelative(lastSavedAt)}`
+        : Locale.label("site.editorToolbar.savedAllChanges");
+  const savedIcon = status === "saving" ? "sync" : status === "error" ? "cloud_off" : "cloud_done";
+  const savedColor = status === "saving" ? "text.secondary" : status === "error" ? "warning.main" : "success.main";
+
+  const needsPublish = !publishedAt || hasUnpublishedChanges;
+  const pillStatus = publishedAt ? (hasUnpublishedChanges ? "unpublished-changes" : "published") : "live-on-save";
+  const pillLabel = pillStatus === "published"
+    ? Locale.label("site.editorToolbar.statusPublished")
+    : pillStatus === "unpublished-changes"
+      ? Locale.label("site.editorToolbar.statusUnpublishedChanges")
+      : Locale.label("site.editorToolbar.statusLiveOnSave");
+  const pillSx = pillStatus === "published"
+    ? { backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.dark" }
+    : pillStatus === "unpublished-changes"
+      ? { backgroundColor: "rgba(237, 108, 2, 0.12)", color: "warning.dark" }
+      : { backgroundColor: "var(--bg-sub)", color: "text.secondary" };
 
   return (
     <Box
@@ -143,6 +166,17 @@ export function EditorToolbar(props: EditorToolbarProps) {
             {containerName || ""}
           </Box>
         </Box>
+        {isPageMode && container && (
+          <Tooltip title={publishTooltip} placement="bottom">
+            <Chip
+              size="small"
+              label={pillLabel}
+              data-testid="publish-status-pill"
+              data-status={pillStatus}
+              sx={{ fontWeight: 600, fontSize: "0.7rem", ...pillSx }}
+            />
+          </Tooltip>
+        )}
       </Box>
 
       {/* CENTER: undo/redo + saved indicator */}
@@ -162,18 +196,21 @@ export function EditorToolbar(props: EditorToolbarProps) {
         </Box>
 
         <Box
+          data-testid="save-status"
+          data-status={status}
           sx={{
             display: { xs: "none", md: "flex" },
             alignItems: "center",
             gap: 0.5,
-            color: lastSavedAt ? "success.main" : "text.secondary",
+            color: savedColor,
             fontSize: "0.8rem",
             fontWeight: 500,
-            whiteSpace: "nowrap"
+            whiteSpace: "nowrap",
+            "@keyframes saveSpin": { from: { transform: "rotate(0deg)" }, to: { transform: "rotate(360deg)" } }
           }}
         >
-          <Icon fontSize="inherit" sx={{ fontSize: "0.95rem" }}>
-            {lastSavedAt ? "cloud_done" : "cloud_outlined"}
+          <Icon fontSize="inherit" sx={{ fontSize: "0.95rem", animation: status === "saving" ? "saveSpin 1s linear infinite" : "none" }}>
+            {savedIcon}
           </Icon>
           <span>{savedLabel}</span>
         </Box>
@@ -183,18 +220,19 @@ export function EditorToolbar(props: EditorToolbarProps) {
       <Box sx={{ display: "flex", alignItems: "center", gap: 1, flex: "0 0 auto" }}>
         {isPageMode && onPublish && (
           <Tooltip title={publishTooltip} placement="bottom">
-            <Badge color="warning" variant="dot" invisible={!publishedAt || !hasUnpublishedChanges} data-testid="publish-badge">
-              <Button
-                variant="outlined"
-                color="success"
-                onClick={onPublish}
-                startIcon={<Icon>publish</Icon>}
-                sx={{ textTransform: "none", fontWeight: 600 }}
-                data-testid="publish-button"
-              >
-                {Locale.label("site.editorToolbar.publish")}
-              </Button>
-            </Badge>
+            <Button
+              variant={needsPublish ? "contained" : "outlined"}
+              color={needsPublish ? "success" : "inherit"}
+              disableElevation
+              onClick={onPublish}
+              startIcon={<Icon>{needsPublish ? "publish" : "check"}</Icon>}
+              sx={needsPublish
+                ? { textTransform: "none", fontWeight: 600 }
+                : { textTransform: "none", fontWeight: 600, color: "text.secondary", borderColor: "var(--border-main)", opacity: 0.85 }}
+              data-testid="publish-button"
+            >
+              {needsPublish ? Locale.label("site.editorToolbar.publish") : Locale.label("site.editorToolbar.publishedLabel")}
+            </Button>
           </Tooltip>
         )}
 

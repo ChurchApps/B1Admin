@@ -1,11 +1,8 @@
 import React from "react";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import type { ElementInterface, SectionInterface } from "../../helpers";
-import { ApiHelper } from "../../helpers";
-import { Locale } from "@churchapps/apphelper";
 import { DraggableIcon } from "./DraggableIcon";
 import { Section } from "./Section";
-import { AppIconButton } from "../../components/ui/AppIconButton";
+import { SectionToolbar } from "./SectionToolbar";
 
 
 interface Props {
@@ -14,40 +11,29 @@ interface Props {
   churchId?: string;
   churchSettings: any;
   onEdit?: (section: SectionInterface, element: ElementInterface) => void
-  onDelete?: () => void
   onMove?: () => void
+  onSectionMove?: (section: SectionInterface, direction: "up" | "down") => void;
+  onSectionDuplicate?: (sectionId: string) => void;
+  onSectionDelete?: (section: SectionInterface) => void;
+  isFirstSection?: boolean;
+  isLastSection?: boolean;
 }
 
 export const SectionBlock: React.FC<Props> = props => {
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("site.section.confirmDelete"))) {
-      ApiHelper.delete("/sections/" + props.section.id, "ContentApi").then(() => {
-        if (props.onDelete) props.onDelete();
-      });
-    }
-  };
-
   const getEdit = () => {
-    if (props.onEdit) {
+    if (props.onEdit && props.onSectionMove) {
       return (
-        <div className="sectionActions">
-          <table style={{ float: "right" }}>
-            <tbody>
-              <tr>
-                <td><DraggableIcon dndType="section" elementType="section" data={props.section} /></td>
-                <td>
-                  <div className="sectionEditButton">
-                    <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => props.onEdit(props.section, null)} />
-                  </div>
-                </td>
-                <td>
-                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="card" intent="remove" onClick={handleDelete} sx={{ ml: 0.5 }} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <SectionToolbar
+          isFirst={!!props.isFirstSection}
+          isLast={!!props.isLastSection}
+          dragHandle={<DraggableIcon dndType="section" elementType="section" data={props.section} />}
+          onSettings={() => props.onEdit(props.section, null)}
+          onMoveUp={() => props.onSectionMove(props.section, "up")}
+          onMoveDown={() => props.onSectionMove(props.section, "down")}
+          onDuplicate={() => props.onSectionDuplicate?.(props.section.id)}
+          onDelete={() => props.onSectionDelete?.(props.section)}
+        />
       );
     }
   };
@@ -62,7 +48,7 @@ export const SectionBlock: React.FC<Props> = props => {
 
   const getClassName = () => {
     let result = "";
-    if (props.onEdit) result += "sectionBlock sectionWrapper";
+    if (props.onEdit) result += "sectionBlock sectionWrapper sectionEditWrapper";
     return result;
   };
 

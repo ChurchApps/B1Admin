@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Додати секцію",
+      "backToSite": "Назад до сайту",
       "blockPreview": "Попередній перегляд блоку",
+      "discard": "Відхилити",
+      "discardElementMessage": "Відхилити незбережені зміни цього елемента?",
+      "discardElementTitle": "Відхилити зміни?",
+      "discardSectionMessage": "Відхилити незбережені зміни цієї секції?",
       "dropToAddElement": "Перетягніть сюди, щоб додати елемент",
       "dropToAddSection": "Перетягніть сюди, щоб додати секцію",
+      "keepEditing": "Продовжити редагування",
       "scrollDown": "Прокрутити вниз",
-      "scrollUp": "Прокрутити вгору"
+      "scrollUp": "Прокрутити вгору",
+      "smallScreenMessage": "Відкрийте цю сторінку на планшеті або комп'ютері, щоб редагувати свій вебсайт.",
+      "smallScreenTitle": "Цьому редактору потрібен більший екран"
     },
     "cssEdit": {
       "advancedFeature": "Розширена функція:",
@@ -2944,13 +2953,17 @@
       "exit": "Вихід",
       "justNow": "щойно",
       "mobile": "Мобільний",
-      "notSavedYet": "Поки немає змін",
       "page": "Page",
       "publish": "Опублікувати",
       "publishOffTip": "Наразі зміни одразу з'являються на сайті. Опублікуйте, щоб зберегти опубліковану версію, а майбутні зміни залишатимуться прихованими до наступної публікації.",
       "publishedLabel": "Опубліковано",
       "redoTip": "Повторити (Ctrl+Shift+Z)",
+      "saveError": "Не вдалося зберегти",
       "savedAllChanges": "Усі зміни збережено",
+      "saving": "Збереження…",
+      "statusLiveOnSave": "На сайті після збереження",
+      "statusPublished": "Опубліковано",
+      "statusUnpublishedChanges": "Неопубліковані зміни",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Скасувати (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Картка",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Колонка",
       "common": "Поширені",
       "content": "Вміст",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Увімкнути Lightbox"
+      "enableLightbox": "Увімкнути Lightbox",
+      "groupAnimation": "Анімація",
+      "groupContent": "Вміст",
+      "groupStyle": "Стиль"
     },
     "elementSelection": {
       "moveDown": "Перемістити вниз",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Повна документація",
       "moveBody": "Перетягуйте секції та елементи, щоб змінити порядок. Використовуйте стрілки вгору/вниз на панелі вибору для точних переміщень.",
       "moveTitle": "Переставити",
+      "shortcutsBody": "Delete видаляє вибраний елемент, Ctrl+D дублює його, Alt+вгору/вниз переміщує його, а Esc знімає виділення.",
+      "shortcutsTitle": "Комбінації клавіш",
       "title": "Основи редактора сторінок",
       "undoBody": "Використовуйте Ctrl+Z для скасування і Ctrl+Shift+Z для повторення. Відкрийте панель Історія з меню, щоб перейти до будь-якого попереднього стану.",
       "undoTitle": "Скасування та історія"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Це назавжди видалить секцію та все, що в ній. Ви можете скасувати це за допомогою Ctrl+Z.",
+      "deleteSectionTitle": "Видалити секцію?",
       "editSection": "Редагувати секцію",
       "layoutContainer": "Контейнер макета",
       "section": "Секція"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Банер із віршем",
       "watchOnline": "Дивитися онлайн",
       "welcome": "Текст привітання"
+    },
+    "sectionToolbar": {
+      "delete": "Видалити секцію",
+      "dragToReorder": "Перетягніть, щоб змінити порядок",
+      "duplicate": "Дублювати секцію",
+      "moveDown": "Перемістити секцію вниз",
+      "moveUp": "Перемістити секцію вгору",
+      "settings": "Налаштування секції"
     },
     "siteTemplates": {
       "back": "Назад",

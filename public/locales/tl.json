@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Magdagdag ng section",
+      "backToSite": "Bumalik sa Site",
       "blockPreview": "Preview ng Block",
+      "discard": "I-discard",
+      "discardElementMessage": "I-discard ang mga hindi na-save na pagbabago sa element na ito?",
+      "discardElementTitle": "I-discard ang mga pagbabago?",
+      "discardSectionMessage": "I-discard ang mga hindi na-save na pagbabago sa section na ito?",
       "dropToAddElement": "I-drop dito upang magdagdag ng element",
       "dropToAddSection": "I-drop dito upang magdagdag ng section",
+      "keepEditing": "Magpatuloy sa pag-edit",
       "scrollDown": "Mag-scroll Pababa",
-      "scrollUp": "Mag-scroll Pataas"
+      "scrollUp": "Mag-scroll Pataas",
+      "smallScreenMessage": "Buksan ang pahinang ito sa tablet o desktop upang i-edit ang iyong website.",
+      "smallScreenTitle": "Kailangan ng editor na ito ng mas malaking screen"
     },
     "cssEdit": {
       "advancedFeature": "Advanced Feature:",
@@ -2944,13 +2953,17 @@
       "exit": "Lumabas",
       "justNow": "ngayon lang",
       "mobile": "Mobile",
-      "notSavedYet": "Wala pang pagbabago",
       "page": "Pahina",
       "publish": "I-publish",
       "publishOffTip": "Kasalukuyang agad na nagiging live ang mga pagbabago. Mag-publish para mag-save ng live na bersyon at panatilihing pribado ang mga susunod na pagbabago hanggang sa susunod na pag-publish.",
       "publishedLabel": "Na-publish",
       "redoTip": "Redo (Ctrl+Shift+Z)",
+      "saveError": "Hindi ma-save",
       "savedAllChanges": "Lahat ng pagbabago ay na-save",
+      "saving": "Nagse-save…",
+      "statusLiveOnSave": "Magiging live kapag na-save",
+      "statusPublished": "Na-publish",
+      "statusUnpublishedChanges": "Mga hindi pa na-publish na pagbabago",
       "switchToDesktop": "Lumipat sa view ng desktop",
       "switchToMobile": "Lumipat sa mobile view",
       "undoTip": "Undo (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Simbahan",
+      "column": "Column",
       "common": "Karaniwan",
       "content": "Nilalaman",
       "descBox": "Flexible na container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Paganahin ang Lightbox"
+      "enableLightbox": "Paganahin ang Lightbox",
+      "groupAnimation": "Animation",
+      "groupContent": "Nilalaman",
+      "groupStyle": "Istilo"
     },
     "elementSelection": {
       "moveDown": "Ilipat pababa",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Kumpletong dokumentasyon",
       "moveBody": "I-drag ang mga section at element upang muling ayusin ang mga ito. Gamitin ang up/down arrows sa selection toolbar para sa mga tumpak na paglilipat.",
       "moveTitle": "Muling ayusin",
+      "shortcutsBody": "Tinatanggal ng Delete ang napiling element, dinodoble ito ng Ctrl+D, inililipat ito ng Alt+Up/Down, at ina-deselect ng Esc.",
+      "shortcutsTitle": "Mga keyboard shortcut",
       "title": "Mga pangunahing kaalaman sa Page editor",
       "undoBody": "Gamitin ang Ctrl+Z upang mag-undo at Ctrl+Shift+Z upang mag-redo. Buksan ang History panel mula sa menu upang tumalon sa anumang nakaraang estado.",
       "undoTitle": "Undo at history"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Sigurado ka bang nais mong permanenteng tanggalin ang seksyon na ito?",
       "confirmDuplicate": "Sigurado ka bang nais mong gumawa ng kopya ng seksyon na ito at lahat ng nilalaman nito?",
+      "deleteSectionBody": "Permanente nitong tatanggalin ang section at lahat ng nasa loob nito. Maaari mo itong i-undo gamit ang Ctrl+Z.",
+      "deleteSectionTitle": "Tanggalin ang section?",
       "editSection": "I-edit ang Seksyon",
       "layoutContainer": "Layout container",
       "section": "Section"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner ng Bersikulo",
       "watchOnline": "Manood Online",
       "welcome": "Teksto ng Pagbati"
+    },
+    "sectionToolbar": {
+      "delete": "Tanggalin ang section",
+      "dragToReorder": "I-drag upang muling ayusin",
+      "duplicate": "Kopyahin ang section",
+      "moveDown": "Ilipat pababa ang section",
+      "moveUp": "Ilipat pataas ang section",
+      "settings": "Mga setting ng section"
     },
     "siteTemplates": {
       "back": "Bumalik",

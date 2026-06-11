@@ -1,7 +1,7 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { AnimationsInterface, BlockInterface, ElementInterface, GlobalStyleInterface, InlineStylesInterface } from "../../../helpers";
-import { Autocomplete, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Button, FormControl, Icon, InputLabel, MenuItem, Select, TextField, Checkbox, FormGroup, FormControlLabel, Typography, Slider, Dialog } from "@mui/material";
 import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { ElementTypes } from "@churchapps/helpers";
 import { FormCard } from "../../../components/ui";
@@ -23,13 +23,49 @@ import { DonateLinkEdit } from "./DonateLinkEdit";
 import { DonationEdit } from "./DonationEdit";
 import { PickColors } from "./PickColors";
 import { TableEdit } from "./TableEdit";
-import { StylesAnimations } from "./StylesAnimations";
+import { StyleList } from "./StyleList";
+import { AnimationsEdit } from "./AnimationsEdit";
+import { VisibilityToggles } from "./VisibilityToggles";
+import { trackSave } from "../saveStatusTracker";
+
+const standardAppearance = [
+  "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
+];
+const fullAppearance = [
+  "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
+];
+const mediaAppearance = [
+  "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
+];
+
+const APPEARANCE_FIELDS: Record<string, string[]> = {
+  row: standardAppearance,
+  table: standardAppearance,
+  box: fullAppearance,
+  text: ["font", "color", "line", "margin", "padding", "text"],
+  textWithPhoto: fullAppearance,
+  card: fullAppearance,
+  logo: [
+    "border", "background", "height", "min", "max", "margin", "padding", "width"
+  ],
+  donation: standardAppearance,
+  donateLink: ["border"],
+  stream: mediaAppearance,
+  buttonLink: mediaAppearance,
+  video: mediaAppearance,
+  form: standardAppearance,
+  faq: standardAppearance,
+  calendar: standardAppearance,
+  image: ["border", "background", "color", "height", "margin", "padding", "width"]
+};
 
 type Props = {
   element: ElementInterface;
   globalStyles: GlobalStyleInterface;
   updatedCallback: (element: ElementInterface) => void;
   onRealtimeChange: (element: ElementInterface) => void;
+  onCancel?: () => void;
+  onDirtyChange?: (dirty: boolean) => void;
   inPanel?: boolean;
 };
 
@@ -44,8 +80,30 @@ export function ElementEdit(props: Props) {
   const parsedData = element?.answersJSON ? JSON.parse(element.answersJSON) : {};
   const parsedStyles = element?.stylesJSON ? JSON.parse(element.stylesJSON) : {};
   const parsedAnimations = element?.animationsJSON ? JSON.parse(element.animationsJSON) : {};
+  const baselineRef = React.useRef<{ answersJSON?: string; stylesJSON?: string; animationsJSON?: string }>(null);
+  const normalizedHtmlFieldsRef = React.useRef<Set<string>>(new Set());
+  const dirtyRef = React.useRef(false);
 
-  const handleCancel = () => props.updatedCallback(element);
+  const reportDirty = (el: ElementInterface) => {
+    const b = baselineRef.current;
+    if (!b || !el) return;
+    const dirty = (el.answersJSON || null) !== (b.answersJSON || null)
+      || (el.stylesJSON || null) !== (b.stylesJSON || null)
+      || (el.animationsJSON || null) !== (b.animationsJSON || null);
+    if (dirty !== dirtyRef.current) {
+      dirtyRef.current = dirty;
+      props.onDirtyChange?.(dirty);
+    }
+  };
+
+  useEffect(() => {
+    reportDirty(element);
+  }, [element?.answersJSON, element?.stylesJSON, element?.animationsJSON]);
+
+  const handleCancel = () => {
+    if (props.onCancel) props.onCancel();
+    else props.updatedCallback(props.element);
+  };
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -83,6 +141,16 @@ export function ElementEdit(props: Props) {
 
   const handleHtmlChange = (field: string, newValue: string) => {
     try {
+      // Lexical normalizes the stored HTML on mount and fires onChange with it;
+      // rebase the dirty-tracking baseline so that first emission never reads as an edit.
+      if (!normalizedHtmlFieldsRef.current.has(field)) {
+        normalizedHtmlFieldsRef.current.add(field);
+        if (baselineRef.current) {
+          const baseAnswers = baselineRef.current.answersJSON ? JSON.parse(baselineRef.current.answersJSON) : {};
+          baseAnswers[field] = newValue;
+          baselineRef.current = { ...baselineRef.current, answersJSON: JSON.stringify(baseAnswers) };
+        }
+      }
       parsedData[field] = newValue;
       const p = { ...element };
       p.answers = parsedData;
@@ -115,12 +183,17 @@ export function ElementEdit(props: Props) {
 
   const handleSave = () => {
     if (innerErrors.length === 0) {
-      ApiHelper.post("/elements", [element], "ContentApi")
+      trackSave(ApiHelper.post("/elements", [element], "ContentApi"))
         .then((response: any) => {
           const data = Array.isArray(response) ? response[0] : response;
           if (data.answersJSON) data.answers = JSON.parse(data.answersJSON);
           if (data.stylesJSON) data.styles = JSON.parse(data.stylesJSON);
           if (data.animationsJSON) data.animations = JSON.parse(data.animationsJSON);
+          baselineRef.current = { answersJSON: data.answersJSON, stylesJSON: data.stylesJSON, animationsJSON: data.animationsJSON };
+          if (dirtyRef.current) {
+            dirtyRef.current = false;
+            props.onDirtyChange?.(false);
+          }
           setElement(data);
           props.updatedCallback(data);
         })
@@ -160,7 +233,7 @@ export function ElementEdit(props: Props) {
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("site.elements.confirmDelete"))) {
-      ApiHelper.delete("/elements/" + element.id.toString(), "ContentApi").then(() => props.updatedCallback(null));
+      trackSave(ApiHelper.delete("/elements/" + element.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
     }
   };
 
@@ -188,10 +261,6 @@ export function ElementEdit(props: Props) {
     p.answersJSON = JSON.stringify(parsedData);
     setElement(p);
   };
-
-  const getAppearanceFields = (fields: string[]) => (
-    <StylesAnimations fields={fields} styles={parsedStyles} onStylesChange={handleStyleChange} animations={parsedAnimations} onAnimationsChange={handleAnimationChange} />
-  );
 
   const getRichTextEditor = (field: string) => (
     <Box
@@ -233,18 +302,6 @@ export function ElementEdit(props: Props) {
     <>
       <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.rounded === "true" ? true : false} />} name="rounded" label={Locale.label("site.elements.roundedCorners")} />
       <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.translucent === "true" ? true : false} />} name="translucent" label={Locale.label("site.elements.translucent")} />
-      <br />
-      <PickColors
-        background={parsedData?.background}
-        textColor={parsedData?.textColor}
-        headingColor={parsedData?.headingColor || parsedData?.textColor}
-        linkColor={parsedData?.linkColor}
-        updatedCallback={selectColors}
-        globalStyles={props.globalStyles}
-      />
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
-      ])}
     </>
   );
 
@@ -252,7 +309,6 @@ export function ElementEdit(props: Props) {
     <>
       {getTextAlignment("textAlignment")}
       {getRichTextEditor("text")}
-      {getAppearanceFields(["font", "color", "line", "margin", "padding", "text"])}
     </>
   );
 
@@ -306,9 +362,6 @@ export function ElementEdit(props: Props) {
       </FormControl>
       {getTextAlignment("textAlignment")}
       {getRichTextEditor("text")}
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
-      ])}
     </>
   );
 
@@ -340,18 +393,12 @@ export function ElementEdit(props: Props) {
       <TextField fullWidth size="small" label={Locale.label("site.elements.title")} name="title" value={parsedData.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.element.cardTitle")} />
       {getTextAlignment("textAlignment")}
       {getRichTextEditor("text")}
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "text", "width"
-      ])}
     </>
   );
 
   const getLogoFields = () => (
     <>
       <TextField fullWidth size="small" label={Locale.label("site.elements.linkUrlOptional")} name="url" value={parsedData.url || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
-      {getAppearanceFields([
-        "border", "background", "height", "min", "max", "margin", "padding", "width"
-      ])}
     </>
   );
 
@@ -389,9 +436,6 @@ export function ElementEdit(props: Props) {
           </Select>
         </FormControl>
         {blockField}
-        {getAppearanceFields([
-          "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
-        ])}
       </>
     );
   };
@@ -437,9 +481,6 @@ export function ElementEdit(props: Props) {
         <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.external === "true" ? true : false} />} name="external" label={Locale.label("site.elements.openInNewTab")} />
         <FormControlLabel control={<Checkbox onChange={handleCheck} checked={parsedData.fullWidth === "true" ? true : false} />} name="fullWidth" label={Locale.label("site.elements.fullWidth")} />
       </FormGroup>
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
-      ])}
     </>
   );
 
@@ -463,9 +504,6 @@ export function ElementEdit(props: Props) {
           {Locale.label("site.elements.videoUrlVimeo")} <br /> {Locale.label("site.elements.idExampleVimeo")}
         </Typography>
       )}
-      {getAppearanceFields([
-        "border", "background", "color", "font", "height", "min", "max", "line", "margin", "padding", "width"
-      ])}
     </>
   );
 
@@ -649,7 +687,6 @@ export function ElementEdit(props: Props) {
           <MenuItem value="right">{Locale.label("common.right")}</MenuItem>
         </Select>
       </FormControl>
-      {getAppearanceFields(["border", "background", "color", "height", "margin", "padding", "width"])}
     </>
   );
 
@@ -799,6 +836,12 @@ export function ElementEdit(props: Props) {
       const defaults = ElementTypes[el.elementType]?.defaults;
       if (defaults && Object.keys(defaults).length > 0) el.answersJSON = JSON.stringify(defaults);
     }
+    baselineRef.current = { answersJSON: el.answersJSON, stylesJSON: el.stylesJSON, animationsJSON: el.animationsJSON };
+    normalizedHtmlFieldsRef.current = new Set();
+    if (dirtyRef.current) {
+      dirtyRef.current = false;
+      props.onDirtyChange?.(false);
+    }
     setElement(el);
   }, [props.element]);
 
@@ -841,12 +884,54 @@ export function ElementEdit(props: Props) {
     });
   }, [element?.elementType]);
 
-  const getStandardFields = () => (
-    <>
-      <ErrorMessages errors={errors} />
-      {getFields()}
-    </>
-  );
+  const groupSummarySx = { "& .MuiAccordionSummary-content": { my: 1 } };
+  const groupTitleSx = { fontWeight: 600, fontSize: "0.9rem" };
+
+  const getStandardFields = () => {
+    const appearanceFields = APPEARANCE_FIELDS[element?.elementType];
+    return (
+      <>
+        <ErrorMessages errors={errors} />
+        {appearanceFields && <VisibilityToggles styles={parsedStyles} onChange={handleStyleChange} />}
+        <Accordion defaultExpanded disableGutters data-testid="element-group-content" sx={{ boxShadow: "none", border: "1px solid var(--border-light)" }}>
+          <AccordionSummary expandIcon={<Icon>expand_more</Icon>} sx={groupSummarySx}>
+            <Typography sx={groupTitleSx}>{Locale.label("site.elementEdit.groupContent")}</Typography>
+          </AccordionSummary>
+          <AccordionDetails sx={{ "& > *:not(:last-child)": { mb: 2 } }}>{getFields()}</AccordionDetails>
+        </Accordion>
+        {appearanceFields && (
+          <>
+            <Accordion disableGutters data-testid="element-group-style" sx={{ boxShadow: "none", border: "1px solid var(--border-light)" }}>
+              <AccordionSummary expandIcon={<Icon>expand_more</Icon>} sx={groupSummarySx}>
+                <Typography sx={groupTitleSx}>{Locale.label("site.elementEdit.groupStyle")}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {element?.elementType === "box" && (
+                  <PickColors
+                    background={parsedData?.background}
+                    textColor={parsedData?.textColor}
+                    headingColor={parsedData?.headingColor || parsedData?.textColor}
+                    linkColor={parsedData?.linkColor}
+                    updatedCallback={selectColors}
+                    globalStyles={props.globalStyles}
+                  />
+                )}
+                <StyleList fields={appearanceFields} styles={parsedStyles} onChange={handleStyleChange} />
+              </AccordionDetails>
+            </Accordion>
+            <Accordion disableGutters data-testid="element-group-animation" sx={{ boxShadow: "none", border: "1px solid var(--border-light)" }}>
+              <AccordionSummary expandIcon={<Icon>expand_more</Icon>} sx={groupSummarySx}>
+                <Typography sx={groupTitleSx}>{Locale.label("site.elementEdit.groupAnimation")}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <AnimationsEdit animations={parsedAnimations} onSave={(a) => { if (a !== null) handleAnimationChange(a); }} />
+              </AccordionDetails>
+            </Accordion>
+          </>
+        )}
+      </>
+    );
+  };
 
   const getBlockFields = () => {
     const options: React.ReactElement[] = [];
@@ -868,7 +953,7 @@ export function ElementEdit(props: Props) {
   const handleDuplicate = (e: React.MouseEvent) => {
     e.preventDefault();
     if (confirm(Locale.label("site.elements.confirmDuplicate"))) {
-      ApiHelper.post("/elements/duplicate/" + props.element.id, {}, "ContentApi").then((data: any) => {
+      trackSave(ApiHelper.post("/elements/duplicate/" + props.element.id, {}, "ContentApi")).then((data: any) => {
         props.updatedCallback(data);
       });
     }
@@ -882,6 +967,7 @@ export function ElementEdit(props: Props) {
         id="dialogForm"
         title={Locale.label("site.elements.editElement")}
         icon="school"
+        stickyFooter={props.inPanel}
         onSave={handleSave}
         onCancel={handleCancel}
         onDelete={handleDelete}

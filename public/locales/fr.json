@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Ajouter une section",
+      "backToSite": "Retour au site",
       "blockPreview": "Aperçu du bloc",
+      "discard": "Abandonner",
+      "discardElementMessage": "Abandonner les modifications non enregistrées de cet élément ?",
+      "discardElementTitle": "Abandonner les modifications ?",
+      "discardSectionMessage": "Abandonner les modifications non enregistrées de cette section ?",
       "dropToAddElement": "Déposez ici pour ajouter un élément",
       "dropToAddSection": "Déposez ici pour ajouter une section",
+      "keepEditing": "Continuer la modification",
       "scrollDown": "Faire défiler vers le bas",
-      "scrollUp": "Faire défiler vers le haut"
+      "scrollUp": "Faire défiler vers le haut",
+      "smallScreenMessage": "Ouvrez cette page sur une tablette ou un ordinateur pour modifier votre site web.",
+      "smallScreenTitle": "Cet éditeur nécessite un écran plus grand"
     },
     "cssEdit": {
       "advancedFeature": "Fonctionnalité avancée :",
@@ -2944,13 +2953,17 @@
       "exit": "Quitter",
       "justNow": "à l'instant",
       "mobile": "Mobile",
-      "notSavedYet": "Aucune modification pour l'instant",
       "page": "Page",
       "publish": "Publier",
       "publishOffTip": "Les modifications sont actuellement mises en ligne immédiatement. Publiez pour enregistrer une version en ligne et garder les futures modifications privées jusqu'à la prochaine publication.",
       "publishedLabel": "Publié",
       "redoTip": "Rétablir (Ctrl+Maj+Z)",
+      "saveError": "Échec de l'enregistrement",
       "savedAllChanges": "Toutes les modifications enregistrées",
+      "saving": "Enregistrement…",
+      "statusLiveOnSave": "En ligne à l'enregistrement",
+      "statusPublished": "Publié",
+      "statusUnpublishedChanges": "Modifications non publiées",
       "switchToDesktop": "Passer à la vue Bureau",
       "switchToMobile": "Passer à la vue mobile",
       "undoTip": "Annuler (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Carte",
       "carousel": "Carrousel",
       "church": "Église",
+      "column": "Colonne",
       "common": "Commun",
       "content": "Contenu",
       "descBox": "Conteneur flexible",
@@ -3019,7 +3033,10 @@
       "video": "Vidéo"
     },
     "elementEdit": {
-      "enableLightbox": "Activer la boîte lumineuse"
+      "enableLightbox": "Activer la boîte lumineuse",
+      "groupAnimation": "Animation",
+      "groupContent": "Contenu",
+      "groupStyle": "Style"
     },
     "elementSelection": {
       "moveDown": "Déplacer vers le bas",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Documentation complète",
       "moveBody": "Faites glisser les sections et les éléments pour les réorganiser. Utilisez les flèches haut/bas dans la barre d'outils de sélection pour des déplacements précis.",
       "moveTitle": "Réorganiser",
+      "shortcutsBody": "Delete supprime l'élément sélectionné, Ctrl+D le duplique, Alt+Haut/Bas le déplace et Esc le désélectionne.",
+      "shortcutsTitle": "Raccourcis clavier",
       "title": "Bases de l'éditeur de page",
       "undoBody": "Utilisez Ctrl+Z pour annuler et Ctrl+Maj+Z pour rétablir. Ouvrez le panneau Historique du menu pour revenir à un état antérieur.",
       "undoTitle": "Annuler et historique"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer définitivement cette section ?",
       "confirmDuplicate": "Êtes-vous sûr de vouloir faire une copie de cette section et de tout son contenu ?",
+      "deleteSectionBody": "Cette action supprime définitivement la section et tout son contenu. Vous pouvez annuler cela avec Ctrl+Z.",
+      "deleteSectionTitle": "Supprimer la section ?",
       "editSection": "Modifier la Section",
       "layoutContainer": "Conteneur de mise en page",
       "section": "Section"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Bannière avec verset",
       "watchOnline": "Regarder en ligne",
       "welcome": "Texte de bienvenue"
+    },
+    "sectionToolbar": {
+      "delete": "Supprimer la section",
+      "dragToReorder": "Glisser pour réorganiser",
+      "duplicate": "Dupliquer la section",
+      "moveDown": "Déplacer la section vers le bas",
+      "moveUp": "Déplacer la section vers le haut",
+      "settings": "Paramètres de la section"
     },
     "siteTemplates": {
       "back": "Retour",

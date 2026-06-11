@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Přidat sekci",
+      "backToSite": "Zpět na web",
       "blockPreview": "Náhled bloku",
+      "discard": "Zahodit",
+      "discardElementMessage": "Zahodit neuložené změny tohoto prvku?",
+      "discardElementTitle": "Zahodit změny?",
+      "discardSectionMessage": "Zahodit neuložené změny této sekce?",
       "dropToAddElement": "Přetáhněte sem pro přidání prvku",
       "dropToAddSection": "Přetáhněte sem pro přidání sekce",
+      "keepEditing": "Pokračovat v úpravách",
       "scrollDown": "Posunout dolů",
-      "scrollUp": "Posunout nahoru"
+      "scrollUp": "Posunout nahoru",
+      "smallScreenMessage": "Otevřete tuto stránku na tabletu nebo počítači a upravte svůj web.",
+      "smallScreenTitle": "Tento editor potřebuje větší obrazovku"
     },
     "cssEdit": {
       "advancedFeature": "Pokročilá funkce:",
@@ -2944,13 +2953,17 @@
       "exit": "Ukončit",
       "justNow": "právě teď",
       "mobile": "Mobil",
-      "notSavedYet": "Zatím žádné změny",
       "page": "Stránka",
       "publish": "Publikovat",
       "publishOffTip": "Úpravy se nyní projeví okamžitě. Publikováním uložíte živou verzi a budoucí úpravy zůstanou soukromé až do dalšího publikování.",
       "publishedLabel": "Publikováno",
       "redoTip": "Znovu (Ctrl+Shift+Z)",
+      "saveError": "Nepodařilo se uložit",
       "savedAllChanges": "Všechny změny uloženy",
+      "saving": "Ukládání…",
+      "statusLiveOnSave": "Živě při uložení",
+      "statusPublished": "Publikováno",
+      "statusUnpublishedChanges": "Nepublikované změny",
       "switchToDesktop": "Přepnout na zobrazení pro počítač",
       "switchToMobile": "Přepnout na mobilní zobrazení",
       "undoTip": "Zpět (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Karta",
       "carousel": "Karusel",
       "church": "Sbor",
+      "column": "Sloupec",
       "common": "Běžné",
       "content": "Obsah",
       "descBox": "Flexibilní kontejnerový box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Povolit Lightbox"
+      "enableLightbox": "Povolit Lightbox",
+      "groupAnimation": "Animace",
+      "groupContent": "Obsah",
+      "groupStyle": "Styl"
     },
     "elementSelection": {
       "moveDown": "Posunout dolů",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Úplná dokumentace",
       "moveBody": "Přetahováním sekcí a prvků je můžete přeskupovat. Použijte šipky nahoru/dolů na panelu nástrojů výběru pro přesné posuny.",
       "moveTitle": "Přeskupit",
+      "shortcutsBody": "Delete odstraní vybraný prvek, Ctrl+D jej duplikuje, Alt+šipka nahoru/dolů jej přesune a Esc zruší výběr.",
+      "shortcutsTitle": "Klávesové zkratky",
       "title": "Základy editoru stránek",
       "undoBody": "Použijte Ctrl+Z pro vrácení zpět a Ctrl+Shift+Z pro znovu provedení. Otevřete panel Historie z menu pro skok na jakýkoli dřívější stav.",
       "undoTitle": "Zpět a historie"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Opravdu chcete trvale smazat tuto sekci?",
       "confirmDuplicate": "Opravdu chcete vytvořit kopii této sekce a veškerého jejího obsahu?",
+      "deleteSectionBody": "Tímto trvale smažete sekci a vše v ní. Můžete to vrátit zpět pomocí Ctrl+Z.",
+      "deleteSectionTitle": "Smazat sekci?",
       "editSection": "Upravit sekci",
       "layoutContainer": "Kontejner rozložení",
       "section": "Sekce"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner s veršem",
       "watchOnline": "Sledovat online",
       "welcome": "Uvítací text"
+    },
+    "sectionToolbar": {
+      "delete": "Smazat sekci",
+      "dragToReorder": "Přetažením změníte pořadí",
+      "duplicate": "Duplikovat sekci",
+      "moveDown": "Přesunout sekci dolů",
+      "moveUp": "Přesunout sekci nahoru",
+      "settings": "Nastavení sekce"
     },
     "siteTemplates": {
       "back": "Zpět",

@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Agregar sección",
+      "backToSite": "Volver al Sitio",
       "blockPreview": "Vista Previa del Bloque",
+      "discard": "Descartar",
+      "discardElementMessage": "¿Descartar los cambios no guardados de este elemento?",
+      "discardElementTitle": "¿Descartar cambios?",
+      "discardSectionMessage": "¿Descartar los cambios no guardados de esta sección?",
       "dropToAddElement": "Suelte aquí para agregar elemento",
       "dropToAddSection": "Suelte aquí para agregar sección",
+      "keepEditing": "Seguir editando",
       "scrollDown": "Desplazar Hacia Abajo",
-      "scrollUp": "Desplazar Hacia Arriba"
+      "scrollUp": "Desplazar Hacia Arriba",
+      "smallScreenMessage": "Abra esta página en una tableta o computadora de escritorio para editar su sitio web.",
+      "smallScreenTitle": "Este editor necesita una pantalla más grande"
     },
     "cssEdit": {
       "advancedFeature": "Función Avanzada:",
@@ -2944,13 +2953,17 @@
       "exit": "Salir",
       "justNow": "ahora mismo",
       "mobile": "Móvil",
-      "notSavedYet": "Sin cambios aún",
       "page": "Página",
       "publish": "Publicar",
       "publishOffTip": "Actualmente los cambios se publican de inmediato. Al publicar se guarda una versión en vivo y los próximos cambios permanecen privados hasta la siguiente publicación.",
       "publishedLabel": "Publicado",
       "redoTip": "Rehacer (Ctrl+Shift+Z)",
+      "saveError": "No se pudo guardar",
       "savedAllChanges": "Todos los cambios guardados",
+      "saving": "Guardando…",
+      "statusLiveOnSave": "En vivo al guardar",
+      "statusPublished": "Publicado",
+      "statusUnpublishedChanges": "Cambios sin publicar",
       "switchToDesktop": "Cambiar a la vista de escritorio",
       "switchToMobile": "Cambiar a vista móvil",
       "undoTip": "Deshacer (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Tarjeta",
       "carousel": "Carrusel",
       "church": "Iglesia",
+      "column": "Columna",
       "common": "Común",
       "content": "Contenido",
       "descBox": "Contenedor flexible",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Habilitar Lightbox"
+      "enableLightbox": "Habilitar Lightbox",
+      "groupAnimation": "Animación",
+      "groupContent": "Contenido",
+      "groupStyle": "Estilo"
     },
     "elementSelection": {
       "moveDown": "Mover hacia abajo",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Documentación completa",
       "moveBody": "Arrastre secciones y elementos para reordenarlos. Use las flechas arriba/abajo en la barra de herramientas de selección para movimientos precisos.",
       "moveTitle": "Reorganizar",
+      "shortcutsBody": "Delete elimina el elemento seleccionado, Ctrl+D lo duplica, Alt+Arriba/Abajo lo mueve y Esc anula la selección.",
+      "shortcutsTitle": "Atajos de teclado",
       "title": "Conceptos básicos del editor de páginas",
       "undoBody": "Use Ctrl+Z para deshacer y Ctrl+Shift+Z para rehacer. Abra el panel de Historial desde el menú para saltar a cualquier estado anterior.",
       "undoTitle": "Deshacer e historial"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "¿Está seguro de que desea eliminar permanentemente esta sección?",
       "confirmDuplicate": "¿Está seguro de que desea hacer una copia de esta sección y todo su contenido?",
+      "deleteSectionBody": "Esto elimina permanentemente la sección y todo su contenido. Puede deshacer esto con Ctrl+Z.",
+      "deleteSectionTitle": "¿Eliminar sección?",
       "editSection": "Editar Sección",
       "layoutContainer": "Contenedor de diseño",
       "section": "Sección"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner con versículo",
       "watchOnline": "Ver en línea",
       "welcome": "Texto de bienvenida"
+    },
+    "sectionToolbar": {
+      "delete": "Eliminar sección",
+      "dragToReorder": "Arrastrar para reordenar",
+      "duplicate": "Duplicar sección",
+      "moveDown": "Mover sección hacia abajo",
+      "moveUp": "Mover sección hacia arriba",
+      "settings": "Configuración de la sección"
     },
     "siteTemplates": {
       "back": "Atrás",

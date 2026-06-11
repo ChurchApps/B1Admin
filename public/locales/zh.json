@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "添加部分",
+      "backToSite": "返回站点",
       "blockPreview": "区块预览",
+      "discard": "放弃",
+      "discardElementMessage": "要放弃此元素未保存的更改吗？",
+      "discardElementTitle": "放弃更改？",
+      "discardSectionMessage": "要放弃此部分未保存的更改吗？",
       "dropToAddElement": "拖放到此处以添加元素",
       "dropToAddSection": "拖放到此处以添加部分",
+      "keepEditing": "继续编辑",
       "scrollDown": "向下滚动",
-      "scrollUp": "向上滚动"
+      "scrollUp": "向上滚动",
+      "smallScreenMessage": "请在平板电脑或台式电脑上打开此页面以编辑您的网站。",
+      "smallScreenTitle": "此编辑器需要更大的屏幕"
     },
     "cssEdit": {
       "advancedFeature": "高级功能：",
@@ -2944,13 +2953,17 @@
       "exit": "退出",
       "justNow": "刚刚",
       "mobile": "手机",
-      "notSavedYet": "尚无更改",
       "page": "页",
       "publish": "发布",
       "publishOffTip": "当前修改会立即上线。点击发布可保存线上版本，并使后续修改在下次发布前保持私密。",
       "publishedLabel": "已发布",
       "redoTip": "重做 (Ctrl+Shift+Z)",
+      "saveError": "无法保存",
       "savedAllChanges": "所有更改已保存",
+      "saving": "保存中…",
+      "statusLiveOnSave": "保存即上线",
+      "statusPublished": "已发布",
+      "statusUnpublishedChanges": "未发布的更改",
       "switchToDesktop": "切换到桌面视图",
       "switchToMobile": "切换到移动视图",
       "undoTip": "撤销 (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "卡片",
       "carousel": "轮播",
       "church": "教会",
+      "column": "列",
       "common": "常用",
       "content": "内容",
       "descBox": "灵活容器盒",
@@ -3019,7 +3033,10 @@
       "video": "视频"
     },
     "elementEdit": {
-      "enableLightbox": "启用灯箱"
+      "enableLightbox": "启用灯箱",
+      "groupAnimation": "动画",
+      "groupContent": "内容",
+      "groupStyle": "样式"
     },
     "elementSelection": {
       "moveDown": "向下移动",
@@ -3172,6 +3189,8 @@
       "fullDocs": "完整文档",
       "moveBody": "拖动部分和元素以重新排序。使用选择工具栏上的上/下箭头进行精确移动。",
       "moveTitle": "重新排列",
+      "shortcutsBody": "Delete 键删除所选元素，Ctrl+D 复制该元素，Alt+上/下 移动该元素，Esc 取消选择。",
+      "shortcutsTitle": "键盘快捷键",
       "title": "页面编辑器基础",
       "undoBody": "使用 Ctrl+Z 撤销，使用 Ctrl+Shift+Z 重做。从菜单中打开“历史记录”面板可跳转到任何先前状态。",
       "undoTitle": "撤销与历史"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "您确定要永久删除此部分吗？",
       "confirmDuplicate": "您确定要复制此部分及其所有内容吗？",
+      "deleteSectionBody": "此操作将永久删除该部分及其中的所有内容。您可以使用 Ctrl+Z 撤销。",
+      "deleteSectionTitle": "删除部分？",
       "editSection": "编辑部分",
       "layoutContainer": "布局容器",
       "section": "部分"
@@ -3406,6 +3427,14 @@
       "verseBanner": "经文横幅",
       "watchOnline": "在线观看",
       "welcome": "欢迎文字"
+    },
+    "sectionToolbar": {
+      "delete": "删除部分",
+      "dragToReorder": "拖动以重新排序",
+      "duplicate": "复制部分",
+      "moveDown": "下移部分",
+      "moveUp": "上移部分",
+      "settings": "部分设置"
     },
     "siteTemplates": {
       "back": "返回",

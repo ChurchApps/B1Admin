@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Dodaj sekcję",
+      "backToSite": "Wróć do witryny",
       "blockPreview": "Podgląd bloku",
+      "discard": "Odrzuć",
+      "discardElementMessage": "Odrzucić niezapisane zmiany w tym elemencie?",
+      "discardElementTitle": "Odrzucić zmiany?",
+      "discardSectionMessage": "Odrzucić niezapisane zmiany w tej sekcji?",
       "dropToAddElement": "Upuść tutaj, aby dodać element",
       "dropToAddSection": "Upuść tutaj, aby dodać sekcję",
+      "keepEditing": "Kontynuuj edycję",
       "scrollDown": "Przewiń w dół",
-      "scrollUp": "Przewiń w górę"
+      "scrollUp": "Przewiń w górę",
+      "smallScreenMessage": "Otwórz tę stronę na tablecie lub komputerze, aby edytować swoją witrynę.",
+      "smallScreenTitle": "Ten edytor wymaga większego ekranu"
     },
     "cssEdit": {
       "advancedFeature": "Funkcja zaawansowana:",
@@ -2944,13 +2953,17 @@
       "exit": "Wyjdź",
       "justNow": "teraz",
       "mobile": "Mobilny",
-      "notSavedYet": "Brak zmian",
       "page": "Page",
       "publish": "Opublikuj",
       "publishOffTip": "Zmiany są obecnie natychmiast widoczne na żywo. Opublikuj, aby zapisać wersję opublikowaną, a przyszłe zmiany pozostaną prywatne do następnej publikacji.",
       "publishedLabel": "Opublikowano",
       "redoTip": "Ponów (Ctrl+Shift+Z)",
+      "saveError": "Nie udało się zapisać",
       "savedAllChanges": "Wszystkie zmiany zapisane",
+      "saving": "Zapisywanie…",
+      "statusLiveOnSave": "Na żywo po zapisaniu",
+      "statusPublished": "Opublikowano",
+      "statusUnpublishedChanges": "Nieopublikowane zmiany",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Cofnij (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Karta",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Kolumna",
       "common": "Wspólne",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Włącz Lightbox"
+      "enableLightbox": "Włącz Lightbox",
+      "groupAnimation": "Animacja",
+      "groupContent": "Treść",
+      "groupStyle": "Styl"
     },
     "elementSelection": {
       "moveDown": "Przesuń w dół",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Pełna dokumentacja",
       "moveBody": "Przeciągaj sekcje i elementy, aby zmienić ich kolejność. Użyj strzałek w górę/dół na pasku narzędzi zaznaczenia dla precyzyjnych ruchów.",
       "moveTitle": "Zmień układ",
+      "shortcutsBody": "Delete usuwa zaznaczony element, Ctrl+D go duplikuje, Alt+Góra/Dół go przenosi, a Esc usuwa zaznaczenie.",
+      "shortcutsTitle": "Skróty klawiszowe",
       "title": "Podstawy edytora stron",
       "undoBody": "Użyj Ctrl+Z do cofnięcia i Ctrl+Shift+Z do ponowienia. Otwórz panel historii z menu, aby przejść do wcześniejszego stanu.",
       "undoTitle": "Cofnij i historia"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Spowoduje to trwałe usunięcie sekcji i całej jej zawartości. Możesz to cofnąć za pomocą Ctrl+Z.",
+      "deleteSectionTitle": "Usunąć sekcję?",
       "editSection": "Edit Section",
       "layoutContainer": "Kontener układu",
       "section": "Sekcja"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Baner z wersetem",
       "watchOnline": "Oglądaj online",
       "welcome": "Tekst powitalny"
+    },
+    "sectionToolbar": {
+      "delete": "Usuń sekcję",
+      "dragToReorder": "Przeciągnij, aby zmienić kolejność",
+      "duplicate": "Duplikuj sekcję",
+      "moveDown": "Przenieś sekcję w dół",
+      "moveUp": "Przenieś sekcję w górę",
+      "settings": "Ustawienia sekcji"
     },
     "siteTemplates": {
       "back": "Wstecz",

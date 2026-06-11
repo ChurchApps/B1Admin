@@ -21,12 +21,15 @@ const actionButtonSx = {
 };
 
 export const FloatingElementSelection: React.FC<Props> = ({
+  element,
   targetSelector,
   onDelete,
   onDuplicate,
   onMoveUp,
   onMoveDown
 }) => {
+  // Duplicating or reordering a column would corrupt the 12-grid sizing RowEdit manages by index.
+  const isColumn = element?.elementType === "column";
   const [position, setPosition] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
   const rafRef = useRef<number>(undefined);
 
@@ -107,11 +110,15 @@ export const FloatingElementSelection: React.FC<Props> = ({
           WebkitBackdropFilter: "blur(6px)"
         }}
       >
-        <AppIconButton label={Locale.label("common.duplicate")} icon={<ContentCopy sx={{ fontSize: 14 }} />} onClick={onDuplicate} sx={actionButtonSx} />
+        {!isColumn && (
+          <>
+            <AppIconButton label={Locale.label("common.duplicate")} icon={<ContentCopy sx={{ fontSize: 14 }} />} onClick={onDuplicate} sx={actionButtonSx} />
 
-        <AppIconButton label={Locale.label("site.elementSelection.moveUp")} icon={<ArrowUpward sx={{ fontSize: 14 }} />} onClick={onMoveUp} sx={actionButtonSx} />
+            <AppIconButton label={Locale.label("site.elementSelection.moveUp")} icon={<ArrowUpward sx={{ fontSize: 14 }} />} onClick={onMoveUp} sx={actionButtonSx} />
 
-        <AppIconButton label={Locale.label("site.elementSelection.moveDown")} icon={<ArrowDownward sx={{ fontSize: 14 }} />} onClick={onMoveDown} sx={actionButtonSx} />
+            <AppIconButton label={Locale.label("site.elementSelection.moveDown")} icon={<ArrowDownward sx={{ fontSize: 14 }} />} onClick={onMoveDown} sx={actionButtonSx} />
+          </>
+        )}
 
         <AppIconButton label={Locale.label("common.delete")} icon={<Delete sx={{ fontSize: 14 }} />} intent="remove" onClick={onDelete} sx={actionButtonSx} />
       </Box>

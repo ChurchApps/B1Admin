@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Box } from "@mui/material";
 import type { ElementInterface } from "../../helpers";
 import { ApiHelper } from "@churchapps/apphelper";
+import { trackSave } from "./saveStatusTracker";
 
 interface Props {
   element: ElementInterface;
@@ -104,7 +105,7 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
     const handleMouseUp = () => {
       if (draggingRef.current && localStylesRef.current) {
         const updatedElement = { ...elementRef.current, stylesJSON: JSON.stringify(localStylesRef.current) };
-        ApiHelper.post("/elements", [updatedElement], "ContentApi");
+        trackSave(ApiHelper.post("/elements", [updatedElement], "ContentApi"));
         onUpdateRef.current(updatedElement);
         localStylesRef.current = null;
         setLocalStyles(null);

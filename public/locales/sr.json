@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Додај секцију",
+      "backToSite": "Назад на веб локацију",
       "blockPreview": "Преглед блока",
+      "discard": "Одбаци",
+      "discardElementMessage": "Одбацити несачуване измене овог елемента?",
+      "discardElementTitle": "Одбацити измене?",
+      "discardSectionMessage": "Одбацити несачуване измене ове секције?",
       "dropToAddElement": "Спустите овде да додате елемент",
       "dropToAddSection": "Спустите овде да додате секцију",
+      "keepEditing": "Настави уређивање",
       "scrollDown": "Помери надоле",
-      "scrollUp": "Помери нагоре"
+      "scrollUp": "Помери нагоре",
+      "smallScreenMessage": "Отворите ову страницу на таблету или десктоп рачунару да бисте уређивали своју веб локацију.",
+      "smallScreenTitle": "Овом уређивачу је потребан већи екран"
     },
     "cssEdit": {
       "advancedFeature": "Напредна функција:",
@@ -2944,13 +2953,17 @@
       "exit": "Изађи",
       "justNow": "управо сада",
       "mobile": "Мобилни",
-      "notSavedYet": "Нема промена",
       "page": "Страница",
       "publish": "Објави",
       "publishOffTip": "Измене тренутно одмах иду уживо. Објавите да бисте сачували верзију уживо и задржали будуће измене приватним до следећег објављивања.",
       "publishedLabel": "Објављено",
       "redoTip": "Понови (Ctrl+Shift+Z)",
+      "saveError": "Чување није успело",
       "savedAllChanges": "Све промене сачуване",
+      "saving": "Чување…",
+      "statusLiveOnSave": "Уживо при чувању",
+      "statusPublished": "Објављено",
+      "statusUnpublishedChanges": "Необјављене измене",
       "switchToDesktop": "Пребаци на десктоп приказ",
       "switchToMobile": "Пребаци на мобилни приказ",
       "undoTip": "Поништи (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Картица",
       "carousel": "Карусел",
       "church": "Црква",
+      "column": "Колона",
       "common": "Уобичајено",
       "content": "Садржај",
       "descBox": "Флексибилна контејнер кутија",
@@ -3019,7 +3033,10 @@
       "video": "Видео"
     },
     "elementEdit": {
-      "enableLightbox": "Омогући Lightbox"
+      "enableLightbox": "Омогући Lightbox",
+      "groupAnimation": "Анимација",
+      "groupContent": "Садржај",
+      "groupStyle": "Стил"
     },
     "elementSelection": {
       "moveDown": "Помери надоле",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Пуна документација",
       "moveBody": "Превуците секције и елементе да их преуредите. Користите стрелице горе/доле на траци алата избора за прецизне покрете.",
       "moveTitle": "Преуреди",
+      "shortcutsBody": "Delete уклања изабрани елемент, Ctrl+D га дуплира, Alt+горе/доле га помера, а Esc поништава избор.",
+      "shortcutsTitle": "Пречице на тастатури",
       "title": "Основе уређивача страница",
       "undoBody": "Користите Ctrl+Z за поништавање и Ctrl+Shift+Z за понављање. Отворите панел Историја из менија да бисте скочили у било које раније стање.",
       "undoTitle": "Поништавање и историја"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Да ли сте сигурни да желите да трајно обришете ову секцију?",
       "confirmDuplicate": "Да ли сте сигурни да желите да направите копију ове секције и свог њеног садржаја?",
+      "deleteSectionBody": "Ово трајно брише секцију и све што се у њој налази. Можете то поништити помоћу Ctrl+Z.",
+      "deleteSectionTitle": "Обрисати секцију?",
       "editSection": "Уреди секцију",
       "layoutContainer": "Контејнер распореда",
       "section": "Секција"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Банер са стихом",
       "watchOnline": "Гледајте онлајн",
       "welcome": "Текст добродошлице"
+    },
+    "sectionToolbar": {
+      "delete": "Обриши секцију",
+      "dragToReorder": "Превуци за преуређивање",
+      "duplicate": "Дуплирај секцију",
+      "moveDown": "Помери секцију надоле",
+      "moveUp": "Помери секцију нагоре",
+      "settings": "Подешавања секције"
     },
     "siteTemplates": {
       "back": "Назад",

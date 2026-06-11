@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Lägg till avsnitt",
+      "backToSite": "Tillbaka till webbplatsen",
       "blockPreview": "Blockförhandsgranskning",
+      "discard": "Förkasta",
+      "discardElementMessage": "Förkasta osparade ändringar i detta element?",
+      "discardElementTitle": "Förkasta ändringar?",
+      "discardSectionMessage": "Förkasta osparade ändringar i detta avsnitt?",
       "dropToAddElement": "Släpp här för att lägga till element",
       "dropToAddSection": "Släpp här för att lägga till avsnitt",
+      "keepEditing": "Fortsätt redigera",
       "scrollDown": "Bläddra ner",
-      "scrollUp": "Bläddra upp"
+      "scrollUp": "Bläddra upp",
+      "smallScreenMessage": "Öppna denna sida på en surfplatta eller dator för att redigera din webbplats.",
+      "smallScreenTitle": "Denna redigerare behöver en större skärm"
     },
     "cssEdit": {
       "advancedFeature": "Avancerad funktion:",
@@ -2944,13 +2953,17 @@
       "exit": "Avsluta",
       "justNow": "just nu",
       "mobile": "Mobil",
-      "notSavedYet": "Inga ändringar än",
       "page": "Sida",
       "publish": "Publicera",
       "publishOffTip": "Ändringar går just nu live direkt. Publicera för att spara en liveversion och hålla framtida ändringar privata till nästa publicering.",
       "publishedLabel": "Publicerad",
       "redoTip": "Gör om (Ctrl+Shift+Z)",
+      "saveError": "Kunde inte spara",
       "savedAllChanges": "Alla ändringar sparade",
+      "saving": "Sparar…",
+      "statusLiveOnSave": "Live vid sparande",
+      "statusPublished": "Publicerad",
+      "statusUnpublishedChanges": "Opublicerade ändringar",
       "switchToDesktop": "Byt till datorvy",
       "switchToMobile": "Byt till mobilvy",
       "undoTip": "Ångra (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Kort",
       "carousel": "Karusell",
       "church": "Kyrka",
+      "column": "Kolumn",
       "common": "Vanlig",
       "content": "Innehåll",
       "descBox": "Flexibel containerruta",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Aktivera Lightbox"
+      "enableLightbox": "Aktivera Lightbox",
+      "groupAnimation": "Animation",
+      "groupContent": "Innehåll",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Flytta ner",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Fullständig dokumentation",
       "moveBody": "Dra avsnitt och element för att ordna om dem. Använd upp/ner-pilarna i markeringsverktygsfältet för exakta flyttningar.",
       "moveTitle": "Ordna om",
+      "shortcutsBody": "Delete tar bort det markerade elementet, Ctrl+D duplicerar det, Alt+upp/ner flyttar det och Esc avmarkerar.",
+      "shortcutsTitle": "Tangentbordsgenvägar",
       "title": "Grundläggande sidredigerare",
       "undoBody": "Använd Ctrl+Z för att ångra och Ctrl+Shift+Z för att göra om. Öppna historikpanelen från menyn för att hoppa till ett tidigare läge.",
       "undoTitle": "Ångra och historik"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Är du säker på att du vill ta bort denna sektion permanent?",
       "confirmDuplicate": "Är du säker på att du vill göra en kopia av denna sektion och allt dess innehåll?",
+      "deleteSectionBody": "Detta tar bort avsnittet och allt i det permanent. Du kan ångra detta med Ctrl+Z.",
+      "deleteSectionTitle": "Ta bort avsnitt?",
       "editSection": "Redigera sektion",
       "layoutContainer": "Layout-behållare",
       "section": "Avsnitt"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner med bibelvers",
       "watchOnline": "Titta online",
       "welcome": "Välkomsttext"
+    },
+    "sectionToolbar": {
+      "delete": "Ta bort avsnitt",
+      "dragToReorder": "Dra för att ordna om",
+      "duplicate": "Duplicera avsnitt",
+      "moveDown": "Flytta avsnittet nedåt",
+      "moveUp": "Flytta avsnittet uppåt",
+      "settings": "Avsnittsinställningar"
     },
     "siteTemplates": {
       "back": "Tillbaka",

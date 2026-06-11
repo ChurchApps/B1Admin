@@ -7,13 +7,14 @@ interface PropertyPanelProps {
   open: boolean;
   title: string;
   subtitle?: string;
+  breadcrumb?: React.ReactNode;
   icon?: string;
   onClose: () => void;
   width?: number;
   children: React.ReactNode;
 }
 
-export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 400, children }: PropertyPanelProps) {
+export function PropertyPanel({ open, title, subtitle, breadcrumb, icon, onClose, width = 400, children }: PropertyPanelProps) {
   return (
     <Box
       sx={{
@@ -80,7 +81,7 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
               >
                 {title}
               </Box>
-              {subtitle && (
+              {breadcrumb || (subtitle && (
                 <Box
                   sx={{
                     fontSize: "0.7rem",
@@ -93,10 +94,10 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
                 >
                   {subtitle}
                 </Box>
-              )}
+              ))}
             </Box>
           </Box>
-          <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={onClose} />
+          <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={onClose} data-testid="property-panel-close" />
         </Box>
         <Box
           sx={{
@@ -104,7 +105,8 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
             overflowY: "auto",
             overflowX: "hidden",
             px: 1.5,
-            py: 1,
+            pt: 1,
+            pb: 0,
             "& #input-box": {
               boxShadow: "none",
               marginBottom: 0,

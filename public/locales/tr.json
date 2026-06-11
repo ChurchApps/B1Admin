@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Bölüm ekle",
+      "backToSite": "Siteye Dön",
       "blockPreview": "Blok Önizlemesi",
+      "discard": "Vazgeç",
+      "discardElementMessage": "Bu öğedeki kaydedilmemiş değişiklikler atılsın mı?",
+      "discardElementTitle": "Değişiklikler atılsın mı?",
+      "discardSectionMessage": "Bu bölümdeki kaydedilmemiş değişiklikler atılsın mı?",
       "dropToAddElement": "Öğe eklemek için buraya bırakın",
       "dropToAddSection": "Bölüm eklemek için buraya bırakın",
+      "keepEditing": "Düzenlemeye devam et",
       "scrollDown": "Aşağı Kaydır",
-      "scrollUp": "Yukarı Kaydır"
+      "scrollUp": "Yukarı Kaydır",
+      "smallScreenMessage": "Web sitenizi düzenlemek için bu sayfayı bir tablet veya masaüstü bilgisayarda açın.",
+      "smallScreenTitle": "Bu düzenleyici daha büyük bir ekran gerektirir"
     },
     "cssEdit": {
       "advancedFeature": "Gelişmiş Özellik:",
@@ -2944,13 +2953,17 @@
       "exit": "Çıkış",
       "justNow": "az önce",
       "mobile": "Mobil",
-      "notSavedYet": "Henüz değişiklik yok",
       "page": "Page",
       "publish": "Yayınla",
       "publishOffTip": "Düzenlemeler şu anda anında yayına geçiyor. Yayındaki bir sürümü kaydetmek ve sonraki düzenlemeleri bir sonraki yayına kadar gizli tutmak için yayınlayın.",
       "publishedLabel": "Yayınlandı",
       "redoTip": "Yeniden Yap (Ctrl+Shift+Z)",
+      "saveError": "Kaydedilemedi",
       "savedAllChanges": "Tüm değişiklikler kaydedildi",
+      "saving": "Kaydediliyor…",
+      "statusLiveOnSave": "Kaydedince yayında",
+      "statusPublished": "Yayınlandı",
+      "statusUnpublishedChanges": "Yayınlanmamış değişiklikler",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Geri Al (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Sütun",
       "common": "Yaygın",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Lightbox'ı Etkinleştir"
+      "enableLightbox": "Lightbox'ı Etkinleştir",
+      "groupAnimation": "Animasyon",
+      "groupContent": "İçerik",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Aşağı taşı",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Tam dokümantasyon",
       "moveBody": "Bölümleri ve öğeleri yeniden sıralamak için sürükleyin. Hassas hareketler için seçim araç çubuğundaki yukarı/aşağı oklarını kullanın.",
       "moveTitle": "Yeniden düzenle",
+      "shortcutsBody": "Delete seçili öğeyi kaldırır, Ctrl+D çoğaltır, Alt+Yukarı/Aşağı taşır ve Esc seçimi kaldırır.",
+      "shortcutsTitle": "Klavye kısayolları",
       "title": "Sayfa düzenleyici temelleri",
       "undoBody": "Geri almak için Ctrl+Z ve yeniden yapmak için Ctrl+Shift+Z kullanın. Daha önceki bir duruma atlamak için menüden Geçmiş panelini açın.",
       "undoTitle": "Geri al ve geçmiş"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Bu, bölümü ve içindeki her şeyi kalıcı olarak siler. Ctrl+Z ile geri alabilirsiniz.",
+      "deleteSectionTitle": "Bölüm silinsin mi?",
       "editSection": "Edit Section",
       "layoutContainer": "Düzen kapsayıcısı",
       "section": "Bölüm"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Ayet Banner'ı",
       "watchOnline": "Çevrimiçi İzle",
       "welcome": "Karşılama Metni"
+    },
+    "sectionToolbar": {
+      "delete": "Bölümü sil",
+      "dragToReorder": "Yeniden sıralamak için sürükleyin",
+      "duplicate": "Bölümü çoğalt",
+      "moveDown": "Bölümü aşağı taşı",
+      "moveUp": "Bölümü yukarı taşı",
+      "settings": "Bölüm ayarları"
     },
     "siteTemplates": {
       "back": "Geri",

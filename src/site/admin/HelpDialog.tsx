@@ -37,6 +37,11 @@ export function HelpDialog(props: HelpDialogProps) {
       icon: "history",
       title: Locale.label("site.helpDialog.undoTitle"),
       body: Locale.label("site.helpDialog.undoBody")
+    },
+    {
+      icon: "keyboard",
+      title: Locale.label("site.helpDialog.shortcutsTitle"),
+      body: Locale.label("site.helpDialog.shortcutsBody")
     }
   ];
 

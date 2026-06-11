@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "إضافة قسم",
+      "backToSite": "العودة إلى الموقع",
       "blockPreview": "معاينة الكتلة",
+      "discard": "تجاهل",
+      "discardElementMessage": "هل تريد تجاهل التغييرات غير المحفوظة في هذا العنصر؟",
+      "discardElementTitle": "هل تريد تجاهل التغييرات؟",
+      "discardSectionMessage": "هل تريد تجاهل التغييرات غير المحفوظة في هذا القسم؟",
       "dropToAddElement": "أفلت هنا لإضافة عنصر",
       "dropToAddSection": "أفلت هنا لإضافة قسم",
+      "keepEditing": "متابعة التحرير",
       "scrollDown": "التمرير للأسفل",
-      "scrollUp": "التمرير للأعلى"
+      "scrollUp": "التمرير للأعلى",
+      "smallScreenMessage": "افتح هذه الصفحة على جهاز لوحي أو حاسوب مكتبي لتحرير موقعك الإلكتروني.",
+      "smallScreenTitle": "يحتاج هذا المحرر إلى شاشة أكبر"
     },
     "cssEdit": {
       "advancedFeature": "ميزة متقدمة:",
@@ -2944,13 +2953,17 @@
       "exit": "خروج",
       "justNow": "الآن",
       "mobile": "Mobile",
-      "notSavedYet": "لا توجد تغييرات بعد",
       "page": "Page",
       "publish": "نشر",
       "publishOffTip": "تُنشر التعديلات حاليًا فورًا. انشر لحفظ نسخة منشورة وإبقاء التعديلات المستقبلية خاصة حتى النشر التالي.",
       "publishedLabel": "منشور",
       "redoTip": "إعادة (Ctrl+Shift+Z)",
+      "saveError": "تعذر الحفظ",
       "savedAllChanges": "تم حفظ جميع التغييرات",
+      "saving": "جارٍ الحفظ…",
+      "statusLiveOnSave": "مباشر عند الحفظ",
+      "statusPublished": "منشور",
+      "statusUnpublishedChanges": "تغييرات غير منشورة",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "تراجع (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "عمود",
       "common": "شائع",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "تمكين Lightbox"
+      "enableLightbox": "تمكين Lightbox",
+      "groupAnimation": "الحركة",
+      "groupContent": "المحتوى",
+      "groupStyle": "النمط"
     },
     "elementSelection": {
       "moveDown": "نقل لأسفل",
@@ -3172,6 +3189,8 @@
       "fullDocs": "الوثائق الكاملة",
       "moveBody": "اسحب الأقسام والعناصر لإعادة ترتيبها. استخدم الأسهم لأعلى/لأسفل على شريط أدوات التحديد للنقلات الدقيقة.",
       "moveTitle": "إعادة ترتيب",
+      "shortcutsBody": "يزيل مفتاح Delete العنصر المحدد، ويكرره Ctrl+D، ويحركه Alt+سهم لأعلى/لأسفل، ويلغي Esc التحديد.",
+      "shortcutsTitle": "اختصارات لوحة المفاتيح",
       "title": "أساسيات محرر الصفحة",
       "undoBody": "استخدم Ctrl+Z للتراجع و Ctrl+Shift+Z للإعادة. افتح لوحة السجل من القائمة للقفز إلى أي حالة سابقة.",
       "undoTitle": "التراجع والسجل"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "سيؤدي هذا إلى حذف القسم وكل محتوياته نهائيًا. يمكنك التراجع عن هذا باستخدام Ctrl+Z.",
+      "deleteSectionTitle": "حذف القسم؟",
       "editSection": "Edit Section",
       "layoutContainer": "حاوية التخطيط",
       "section": "قسم"
@@ -3406,6 +3427,14 @@
       "verseBanner": "لافتة آية",
       "watchOnline": "شاهد عبر الإنترنت",
       "welcome": "نص ترحيبي"
+    },
+    "sectionToolbar": {
+      "delete": "حذف القسم",
+      "dragToReorder": "اسحب لإعادة الترتيب",
+      "duplicate": "تكرار القسم",
+      "moveDown": "نقل القسم لأسفل",
+      "moveUp": "نقل القسم لأعلى",
+      "settings": "إعدادات القسم"
     },
     "siteTemplates": {
       "back": "رجوع",

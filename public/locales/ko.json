@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "섹션 추가",
+      "backToSite": "사이트로 돌아가기",
       "blockPreview": "블록 미리보기",
+      "discard": "버리기",
+      "discardElementMessage": "이 요소의 저장되지 않은 변경 사항을 버리시겠습니까?",
+      "discardElementTitle": "변경 사항을 버리시겠습니까?",
+      "discardSectionMessage": "이 섹션의 저장되지 않은 변경 사항을 버리시겠습니까?",
       "dropToAddElement": "요소를 추가하려면 여기에 놓으세요",
       "dropToAddSection": "섹션을 추가하려면 여기에 놓으세요",
+      "keepEditing": "계속 편집",
       "scrollDown": "아래로 스크롤",
-      "scrollUp": "위로 스크롤"
+      "scrollUp": "위로 스크롤",
+      "smallScreenMessage": "웹사이트를 편집하려면 태블릿이나 데스크톱에서 이 페이지를 여세요.",
+      "smallScreenTitle": "이 편집기는 더 큰 화면이 필요합니다"
     },
     "cssEdit": {
       "advancedFeature": "고급 기능:",
@@ -2944,13 +2953,17 @@
       "exit": "종료",
       "justNow": "방금",
       "mobile": "휴대폰",
-      "notSavedYet": "아직 변경 사항 없음",
       "page": "페이지",
       "publish": "게시",
       "publishOffTip": "현재 수정 사항은 즉시 반영됩니다. 게시하면 게시 버전이 저장되고, 다음 게시 전까지 이후의 수정 사항은 비공개로 유지됩니다.",
       "publishedLabel": "게시됨",
       "redoTip": "다시 실행 (Ctrl+Shift+Z)",
+      "saveError": "저장하지 못했습니다",
       "savedAllChanges": "모든 변경 사항 저장됨",
+      "saving": "저장 중…",
+      "statusLiveOnSave": "저장 시 즉시 반영",
+      "statusPublished": "게시됨",
+      "statusUnpublishedChanges": "게시되지 않은 변경 사항",
       "switchToDesktop": "데스크톱 보기로 전환",
       "switchToMobile": "모바일 보기로 전환",
       "undoTip": "실행 취소 (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "카드",
       "carousel": "캐러셀",
       "church": "교회",
+      "column": "열",
       "common": "공통",
       "content": "콘텐츠",
       "descBox": "유연한 컨테이너 박스",
@@ -3019,7 +3033,10 @@
       "video": "비디오"
     },
     "elementEdit": {
-      "enableLightbox": "라이트박스 활성화"
+      "enableLightbox": "라이트박스 활성화",
+      "groupAnimation": "애니메이션",
+      "groupContent": "콘텐츠",
+      "groupStyle": "스타일"
     },
     "elementSelection": {
       "moveDown": "아래로 이동",
@@ -3172,6 +3189,8 @@
       "fullDocs": "전체 문서",
       "moveBody": "섹션과 요소를 드래그하여 순서를 변경하세요. 정확한 이동을 위해 선택 도구 모음의 위/아래 화살표를 사용하세요.",
       "moveTitle": "재배치",
+      "shortcutsBody": "Delete는 선택한 요소를 삭제하고, Ctrl+D는 복제, Alt+Up/Down은 이동, Esc는 선택을 해제합니다.",
+      "shortcutsTitle": "키보드 단축키",
       "title": "페이지 편집기 기본 사항",
       "undoBody": "Ctrl+Z로 실행 취소하고 Ctrl+Shift+Z로 다시 실행하세요. 메뉴에서 기록 패널을 열어 이전 상태로 이동할 수 있습니다.",
       "undoTitle": "실행 취소 및 기록"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "이 섹션을 영구적으로 삭제하시겠습니까?",
       "confirmDuplicate": "이 섹션과 모든 콘텐츠의 복사본을 만드시겠습니까?",
+      "deleteSectionBody": "섹션과 그 안의 모든 콘텐츠가 영구적으로 삭제됩니다. Ctrl+Z로 실행 취소할 수 있습니다.",
+      "deleteSectionTitle": "섹션을 삭제하시겠습니까?",
       "editSection": "섹션 편집",
       "layoutContainer": "레이아웃 컨테이너",
       "section": "섹션"
@@ -3406,6 +3427,14 @@
       "verseBanner": "성경 구절 배너",
       "watchOnline": "온라인 시청",
       "welcome": "환영 문구"
+    },
+    "sectionToolbar": {
+      "delete": "섹션 삭제",
+      "dragToReorder": "드래그하여 순서 변경",
+      "duplicate": "섹션 복제",
+      "moveDown": "섹션 아래로 이동",
+      "moveUp": "섹션 위로 이동",
+      "settings": "섹션 설정"
     },
     "siteTemplates": {
       "back": "뒤로",

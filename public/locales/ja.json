@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "セクションを追加",
+      "backToSite": "サイトに戻る",
       "blockPreview": "ブロックプレビュー",
+      "discard": "破棄",
+      "discardElementMessage": "この要素の未保存の変更を破棄しますか？",
+      "discardElementTitle": "変更を破棄しますか？",
+      "discardSectionMessage": "このセクションの未保存の変更を破棄しますか？",
       "dropToAddElement": "ここにドロップして要素を追加",
       "dropToAddSection": "ここにドロップしてセクションを追加",
+      "keepEditing": "編集を続ける",
       "scrollDown": "下にスクロール",
-      "scrollUp": "上にスクロール"
+      "scrollUp": "上にスクロール",
+      "smallScreenMessage": "ウェブサイトを編集するには、このページをタブレットまたはデスクトップで開いてください。",
+      "smallScreenTitle": "このエディターにはより大きな画面が必要です"
     },
     "cssEdit": {
       "advancedFeature": "高度な機能：",
@@ -2944,13 +2953,17 @@
       "exit": "終了",
       "justNow": "たった今",
       "mobile": "Mobile",
-      "notSavedYet": "まだ変更はありません",
       "page": "Page",
       "publish": "公開",
       "publishOffTip": "現在、編集内容は即時に反映されます。公開すると公開バージョンが保存され、次の公開まで今後の編集は非公開のままになります。",
       "publishedLabel": "公開済み",
       "redoTip": "やり直し (Ctrl+Shift+Z)",
+      "saveError": "保存できませんでした",
       "savedAllChanges": "すべての変更を保存しました",
+      "saving": "保存中…",
+      "statusLiveOnSave": "保存時に即時反映",
+      "statusPublished": "公開済み",
+      "statusUnpublishedChanges": "未公開の変更",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "元に戻す (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "教会",
+      "column": "カラム",
       "common": "共通",
       "content": "コンテンツ",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "ビデオ"
     },
     "elementEdit": {
-      "enableLightbox": "ライトボックスを有効にする"
+      "enableLightbox": "ライトボックスを有効にする",
+      "groupAnimation": "アニメーション",
+      "groupContent": "コンテンツ",
+      "groupStyle": "スタイル"
     },
     "elementSelection": {
       "moveDown": "下に移動",
@@ -3172,6 +3189,8 @@
       "fullDocs": "完全なドキュメント",
       "moveBody": "セクションと要素をドラッグして並べ替えます。選択ツールバーの上下矢印を使用して正確に移動します。",
       "moveTitle": "再配置",
+      "shortcutsBody": "Delete で選択中の要素を削除、Ctrl+D で複製、Alt+Up/Down で移動、Esc で選択を解除します。",
+      "shortcutsTitle": "キーボードショートカット",
       "title": "ページエディタの基本",
       "undoBody": "Ctrl+Zで元に戻し、Ctrl+Shift+Zでやり直します。メニューから履歴パネルを開いて、以前の状態にジャンプします。",
       "undoTitle": "元に戻す＆履歴"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "セクションとその中のすべてのコンテンツが完全に削除されます。Ctrl+Z で元に戻せます。",
+      "deleteSectionTitle": "セクションを削除しますか？",
       "editSection": "Edit Section",
       "layoutContainer": "レイアウトコンテナ",
       "section": "セクション"
@@ -3406,6 +3427,14 @@
       "verseBanner": "聖句バナー",
       "watchOnline": "オンラインで視聴",
       "welcome": "ウェルカムテキスト"
+    },
+    "sectionToolbar": {
+      "delete": "セクションを削除",
+      "dragToReorder": "ドラッグして並べ替え",
+      "duplicate": "セクションを複製",
+      "moveDown": "セクションを下に移動",
+      "moveUp": "セクションを上に移動",
+      "settings": "セクション設定"
     },
     "siteTemplates": {
       "back": "戻る",

@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Abschnitt hinzufügen",
+      "backToSite": "Zurück zur Website",
       "blockPreview": "Block-Vorschau",
+      "discard": "Verwerfen",
+      "discardElementMessage": "Nicht gespeicherte Änderungen an diesem Element verwerfen?",
+      "discardElementTitle": "Änderungen verwerfen?",
+      "discardSectionMessage": "Nicht gespeicherte Änderungen an diesem Abschnitt verwerfen?",
       "dropToAddElement": "Hier ablegen, um Element hinzuzufügen",
       "dropToAddSection": "Hier ablegen, um Abschnitt hinzuzufügen",
+      "keepEditing": "Weiter bearbeiten",
       "scrollDown": "Nach unten scrollen",
-      "scrollUp": "Nach oben scrollen"
+      "scrollUp": "Nach oben scrollen",
+      "smallScreenMessage": "Öffnen Sie diese Seite auf einem Tablet oder Desktop, um Ihre Website zu bearbeiten.",
+      "smallScreenTitle": "Dieser Editor benötigt einen größeren Bildschirm"
     },
     "cssEdit": {
       "advancedFeature": "Erweiterte Funktion:",
@@ -2944,13 +2953,17 @@
       "exit": "Beenden",
       "justNow": "gerade eben",
       "mobile": "Mobil",
-      "notSavedYet": "Noch keine Änderungen",
       "page": "Seite",
       "publish": "Veröffentlichen",
       "publishOffTip": "Änderungen gehen derzeit sofort live. Beim Veröffentlichen wird eine Live-Version gespeichert und zukünftige Änderungen bleiben bis zur nächsten Veröffentlichung privat.",
       "publishedLabel": "Veröffentlicht",
       "redoTip": "Wiederherstellen (Strg+Shift+Z)",
+      "saveError": "Speichern fehlgeschlagen",
       "savedAllChanges": "Alle Änderungen gespeichert",
+      "saving": "Wird gespeichert…",
+      "statusLiveOnSave": "Live beim Speichern",
+      "statusPublished": "Veröffentlicht",
+      "statusUnpublishedChanges": "Unveröffentlichte Änderungen",
       "switchToDesktop": "Zur Desktop-Ansicht wechseln",
       "switchToMobile": "Zur mobilen Ansicht wechseln",
       "undoTip": "Rückgängig (Strg+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Karte",
       "carousel": "Karussell",
       "church": "Gemeinde",
+      "column": "Spalte",
       "common": "Häufig",
       "content": "Inhalt",
       "descBox": "Flexibler Container-Box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Lightbox aktivieren"
+      "enableLightbox": "Lightbox aktivieren",
+      "groupAnimation": "Animation",
+      "groupContent": "Inhalt",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Nach unten verschieben",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Vollständige Dokumentation",
       "moveBody": "Ziehen Sie Abschnitte und Elemente, um sie neu anzuordnen. Verwenden Sie die Auf-/Ab-Pfeile in der Auswahl-Symbolleiste für präzise Bewegungen.",
       "moveTitle": "Neu anordnen",
+      "shortcutsBody": "Delete entfernt das ausgewählte Element, Strg+D dupliziert es, Alt+Auf/Ab verschiebt es und Esc hebt die Auswahl auf.",
+      "shortcutsTitle": "Tastaturkürzel",
       "title": "Grundlagen des Seiteneditors",
       "undoBody": "Verwenden Sie Strg+Z zum Rückgängigmachen und Strg+Shift+Z zum Wiederherstellen. Öffnen Sie das Verlaufsfenster aus dem Menü, um zu einem früheren Zustand zu springen.",
       "undoTitle": "Rückgängig & Verlauf"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Sind Sie sicher, dass Sie diesen Abschnitt dauerhaft löschen möchten?",
       "confirmDuplicate": "Sind Sie sicher, dass Sie eine Kopie dieses Abschnitts und aller seiner Inhalte erstellen möchten?",
+      "deleteSectionBody": "Dies löscht den Abschnitt und alle seine Inhalte dauerhaft. Sie können dies mit Strg+Z rückgängig machen.",
+      "deleteSectionTitle": "Abschnitt löschen?",
       "editSection": "Abschnitt bearbeiten",
       "layoutContainer": "Layout-Container",
       "section": "Abschnitt"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Bibelvers-Banner",
       "watchOnline": "Online ansehen",
       "welcome": "Willkommenstext"
+    },
+    "sectionToolbar": {
+      "delete": "Abschnitt löschen",
+      "dragToReorder": "Zum Neuanordnen ziehen",
+      "duplicate": "Abschnitt duplizieren",
+      "moveDown": "Abschnitt nach unten verschieben",
+      "moveUp": "Abschnitt nach oben verschieben",
+      "settings": "Abschnittseinstellungen"
     },
     "siteTemplates": {
       "back": "Zurück",

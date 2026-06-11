@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Tambah bagian",
+      "backToSite": "Kembali ke Situs",
       "blockPreview": "Pratinjau Blok",
+      "discard": "Buang",
+      "discardElementMessage": "Buang perubahan yang belum disimpan pada elemen ini?",
+      "discardElementTitle": "Buang perubahan?",
+      "discardSectionMessage": "Buang perubahan yang belum disimpan pada bagian ini?",
       "dropToAddElement": "Letakkan di sini untuk menambah elemen",
       "dropToAddSection": "Letakkan di sini untuk menambah bagian",
+      "keepEditing": "Lanjutkan mengedit",
       "scrollDown": "Gulir ke Bawah",
-      "scrollUp": "Gulir ke Atas"
+      "scrollUp": "Gulir ke Atas",
+      "smallScreenMessage": "Buka halaman ini di tablet atau desktop untuk mengedit situs web Anda.",
+      "smallScreenTitle": "Editor ini membutuhkan layar yang lebih besar"
     },
     "cssEdit": {
       "advancedFeature": "Fitur Lanjutan:",
@@ -2944,13 +2953,17 @@
       "exit": "Keluar",
       "justNow": "baru saja",
       "mobile": "Seluler",
-      "notSavedYet": "Belum ada perubahan",
       "page": "Page",
       "publish": "Terbitkan",
       "publishOffTip": "Saat ini perubahan langsung tayang. Terbitkan untuk menyimpan versi tayang dan menjaga perubahan berikutnya tetap privat hingga penerbitan selanjutnya.",
       "publishedLabel": "Diterbitkan",
       "redoTip": "Ulang (Ctrl+Shift+Z)",
+      "saveError": "Tidak dapat menyimpan",
       "savedAllChanges": "Semua perubahan disimpan",
+      "saving": "Menyimpan…",
+      "statusLiveOnSave": "Tayang saat disimpan",
+      "statusPublished": "Diterbitkan",
+      "statusUnpublishedChanges": "Perubahan belum diterbitkan",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Batalkan (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Kartu",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Kolom",
       "common": "Umum",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Aktifkan Lightbox"
+      "enableLightbox": "Aktifkan Lightbox",
+      "groupAnimation": "Animasi",
+      "groupContent": "Konten",
+      "groupStyle": "Gaya"
     },
     "elementSelection": {
       "moveDown": "Pindah ke bawah",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Dokumentasi lengkap",
       "moveBody": "Seret bagian dan elemen untuk mengatur ulang. Gunakan panah atas/bawah pada bilah alat pemilihan untuk pemindahan presisi.",
       "moveTitle": "Atur Ulang",
+      "shortcutsBody": "Delete menghapus elemen yang dipilih, Ctrl+D menduplikatnya, Alt+Up/Down memindahkannya, dan Esc membatalkan pilihan.",
+      "shortcutsTitle": "Pintasan keyboard",
       "title": "Dasar editor halaman",
       "undoBody": "Gunakan Ctrl+Z untuk membatalkan dan Ctrl+Shift+Z untuk mengulang. Buka panel Riwayat dari menu untuk melompat ke status sebelumnya.",
       "undoTitle": "Batalkan & riwayat"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Ini menghapus bagian beserta seluruh isinya secara permanen. Anda dapat membatalkannya dengan Ctrl+Z.",
+      "deleteSectionTitle": "Hapus bagian?",
       "editSection": "Edit Section",
       "layoutContainer": "Wadah tata letak",
       "section": "Bagian"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner Ayat",
       "watchOnline": "Tonton Online",
       "welcome": "Teks Sambutan"
+    },
+    "sectionToolbar": {
+      "delete": "Hapus bagian",
+      "dragToReorder": "Seret untuk mengubah urutan",
+      "duplicate": "Duplikat bagian",
+      "moveDown": "Pindahkan bagian ke bawah",
+      "moveUp": "Pindahkan bagian ke atas",
+      "settings": "Pengaturan bagian"
     },
     "siteTemplates": {
       "back": "Kembali",

@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Sectie toevoegen",
+      "backToSite": "Terug naar site",
       "blockPreview": "Blokvoorbeeld",
+      "discard": "Verwerpen",
+      "discardElementMessage": "Niet-opgeslagen wijzigingen aan dit element verwerpen?",
+      "discardElementTitle": "Wijzigingen verwerpen?",
+      "discardSectionMessage": "Niet-opgeslagen wijzigingen aan deze sectie verwerpen?",
       "dropToAddElement": "Hier neerzetten om element toe te voegen",
       "dropToAddSection": "Hier neerzetten om sectie toe te voegen",
+      "keepEditing": "Doorgaan met bewerken",
       "scrollDown": "Scrol omlaag",
-      "scrollUp": "Scrol omhoog"
+      "scrollUp": "Scrol omhoog",
+      "smallScreenMessage": "Open deze pagina op een tablet of desktop om je website te bewerken.",
+      "smallScreenTitle": "Deze editor heeft een groter scherm nodig"
     },
     "cssEdit": {
       "advancedFeature": "Geavanceerde functie:",
@@ -2944,13 +2953,17 @@
       "exit": "Afsluiten",
       "justNow": "zojuist",
       "mobile": "Mobiel",
-      "notSavedYet": "Nog geen wijzigingen",
       "page": "Pagina",
       "publish": "Publiceren",
       "publishOffTip": "Wijzigingen gaan momenteel direct live. Publiceer om een live versie op te slaan en toekomstige wijzigingen privé te houden tot de volgende publicatie.",
       "publishedLabel": "Gepubliceerd",
       "redoTip": "Opnieuw (Ctrl+Shift+Z)",
+      "saveError": "Opslaan mislukt",
       "savedAllChanges": "Alle wijzigingen opgeslagen",
+      "saving": "Opslaan…",
+      "statusLiveOnSave": "Live bij opslaan",
+      "statusPublished": "Gepubliceerd",
+      "statusUnpublishedChanges": "Niet-gepubliceerde wijzigingen",
       "switchToDesktop": "Overschakelen naar desktopweergave",
       "switchToMobile": "Overschakelen naar mobiele weergave",
       "undoTip": "Ongedaan maken (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Kaart",
       "carousel": "Carrousel",
       "church": "Kerk",
+      "column": "Kolom",
       "common": "Algemeen",
       "content": "Inhoud",
       "descBox": "Flexibele containerbox",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Lightbox inschakelen"
+      "enableLightbox": "Lightbox inschakelen",
+      "groupAnimation": "Animatie",
+      "groupContent": "Inhoud",
+      "groupStyle": "Stijl"
     },
     "elementSelection": {
       "moveDown": "Omlaag verplaatsen",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Volledige documentatie",
       "moveBody": "Sleep secties en elementen om ze te herschikken. Gebruik de pijltjes omhoog/omlaag op de selectiewerkbalk voor precieze bewegingen.",
       "moveTitle": "Herschikken",
+      "shortcutsBody": "Delete verwijdert het geselecteerde element, Ctrl+D dupliceert het, Alt+Omhoog/Omlaag verplaatst het en Esc deselecteert.",
+      "shortcutsTitle": "Sneltoetsen",
       "title": "Basisbeginselen van de pagina-editor",
       "undoBody": "Gebruik Ctrl+Z om ongedaan te maken en Ctrl+Shift+Z om opnieuw uit te voeren. Open het Geschiedenis-paneel vanuit het menu om naar een eerdere status te springen.",
       "undoTitle": "Ongedaan maken & geschiedenis"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Weet u zeker dat u deze sectie permanent wilt verwijderen?",
       "confirmDuplicate": "Weet u zeker dat u een kopie wilt maken van deze sectie en al zijn inhoud?",
+      "deleteSectionBody": "Hiermee worden de sectie en alles erin permanent verwijderd. Je kunt dit ongedaan maken met Ctrl+Z.",
+      "deleteSectionTitle": "Sectie verwijderen?",
       "editSection": "Sectie bewerken",
       "layoutContainer": "Lay-outcontainer",
       "section": "Sectie"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner met Bijbeltekst",
       "watchOnline": "Online kijken",
       "welcome": "Welkomsttekst"
+    },
+    "sectionToolbar": {
+      "delete": "Sectie verwijderen",
+      "dragToReorder": "Sleep om te herschikken",
+      "duplicate": "Sectie dupliceren",
+      "moveDown": "Sectie omlaag verplaatsen",
+      "moveUp": "Sectie omhoog verplaatsen",
+      "settings": "Sectie-instellingen"
     },
     "siteTemplates": {
       "back": "Terug",

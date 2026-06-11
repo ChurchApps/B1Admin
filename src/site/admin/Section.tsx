@@ -8,6 +8,9 @@ import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@ch
 import type { ChurchInterface } from "@churchapps/helpers";
 import { ElementSelection } from "./ElementSelection";
 import { FloatingElementSelection } from "./FloatingElementSelection";
+import { SectionToolbar } from "./SectionToolbar";
+import { getElementTypeMeta } from "./elements/elementTypeMeta";
+import { trackSave } from "./saveStatusTracker";
 
 interface Props {
   first?: boolean,
@@ -25,6 +28,12 @@ interface Props {
   onElementMove?: (elementId: string, direction: "up" | "down") => void;
   onElementUpdate?: (element: ElementInterface) => void;
   onSectionClick?: (section: SectionInterface) => void;
+  onSectionMove?: (section: SectionInterface, direction: "up" | "down") => void;
+  onSectionDuplicate?: (sectionId: string) => void;
+  onSectionDelete?: (section: SectionInterface) => void;
+  isFirstSection?: boolean;
+  isLastSection?: boolean;
+  isSectionEditing?: boolean;
 }
 
 export const Section: React.FC<Props> = props => {
@@ -134,6 +143,21 @@ export const Section: React.FC<Props> = props => {
       });
     };
   }, [props.onEdit, props.section]);
+
+  // Stamp type labels onto wrappers so the hover CSS chip (content: attr(data-el-label)) can render them.
+  useEffect(() => {
+    const root = sectionContentRef.current;
+    if (!root || !props.onEdit) return;
+    root.querySelectorAll('[id^="el-"]').forEach((node) => {
+      const el = findElementById(props.section?.elements || [], node.id.substring(3));
+      if (!el) return;
+      const wrapper = (node.closest(".elementWrapper") as HTMLElement) || (node as HTMLElement);
+      wrapper.setAttribute("data-el-label", getElementTypeMeta(el.elementType).label);
+    });
+    root.querySelectorAll(".elementWrapper.rawHTML").forEach((wrapper) => {
+      wrapper.setAttribute("data-el-label", getElementTypeMeta("rawHTML").label);
+    });
+  }, [props.section, props.onEdit]);
 
   const findRawHtmlElementByWrapper = (rawHtmlWrapper: HTMLElement): ElementInterface | null => {
     const root = sectionContentRef.current;
@@ -347,7 +371,7 @@ export const Section: React.FC<Props> = props => {
 
   const getStyle = () => {
 
-    let result: CSSProperties = {};
+    let result: CSSProperties;
     if (props.section.background.indexOf("/") > -1) {
       result = { backgroundImage: "url('" + props.section.background + "')" };
     } else {
@@ -421,7 +445,7 @@ export const Section: React.FC<Props> = props => {
       element.sort = sort;
       element.sectionId = props.section.id;
       if (props.onBeforeChange) props.onBeforeChange("Before moving element");
-      ApiHelper.post("/elements", [element], "ContentApi").then(() => { props.onMove(); });
+      trackSave(ApiHelper.post("/elements", [element], "ContentApi")).then(() => { props.onMove(); });
     } else {
       const element: ElementInterface = { sectionId: props.section.id, elementType: data.elementType, sort, blockId: props.section.blockId };
       if (data.blockId) element.answersJSON = JSON.stringify({ targetBlockId: data.blockId });
@@ -436,7 +460,7 @@ export const Section: React.FC<Props> = props => {
     return (<DroppableArea accept={["element", "elementBlock"]} text={Locale.label("site.contentEditor.dropToAddElement")} onDrop={(data) => handleDrop(data, sort)} updateIsDragging={(dragging) => setIsDragging(dragging)} />);
   };
 
-  const contents = (<Container ref={sectionContentRef} onClick={handleSectionClick} onDoubleClick={handleSectionDoubleClick}>
+  const contents = (<Container ref={sectionContentRef} className={isDragging ? "dragActive" : undefined} onClick={handleSectionClick} onDoubleClick={handleSectionDoubleClick}>
     {props.onEdit && getAddElement(0)}
     {getElements()}
   </Container>);
@@ -470,6 +494,17 @@ export const Section: React.FC<Props> = props => {
     return findElementById(props.section.elements, props.selectedElementId);
   };
 
+  const findParentElement = (elements: ElementInterface[], id: string): ElementInterface | null => {
+    for (const el of elements) {
+      if (el.elements?.some((c) => c.id === id)) return el;
+      if (el.elements?.length) {
+        const found = findParentElement(el.elements, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
   // Render floating selection for nested elements
   const renderFloatingSelection = () => {
     if (!isNestedElementSelected() || !props.onElementDelete || !props.onElementDuplicate || !props.onElementMove) return null;
@@ -479,10 +514,16 @@ export const Section: React.FC<Props> = props => {
 
     const type = (selectedElement.elementType || "").toLowerCase();
 
-    const targetSelector =
+    let targetSelector =
       type === "rawhtml" || type === "html" || type === "embed"
         ? `.elementWrapper.rawHTML[data-element-id="${props.selectedElementId}"]`
         : `#el-${props.selectedElementId}`;
+    if (type === "column") {
+      // Columns render without an el-{id} node; target the indexed .rowColumn inside the parent row instead.
+      const parent = findParentElement(props.section?.elements || [], selectedElement.id);
+      const idx = parent?.elements?.findIndex((c) => c.id === selectedElement.id) ?? -1;
+      if (parent?.id && idx >= 0) targetSelector = `#el-${parent.id} .rowColumn-${idx}`;
+    }
 
     return (
       <FloatingElementSelection
@@ -497,7 +538,7 @@ export const Section: React.FC<Props> = props => {
     );
   };
 
-  let result = <></>;
+  let result: React.ReactElement;
   if (props.section.background && props.section.background.indexOf("youtube:") > -1) {
     const youtubeId = props.section.background.split(":")[1];
     result = (<>{getSectionAnchor()}<YoutubeBackground isDragging={isDragging} id={getId()} videoId={youtubeId} overlay="rgba(0,0,0,.4)" contentClassName={getVideoClassName()}>{contents}</YoutubeBackground></>);
@@ -505,9 +546,22 @@ export const Section: React.FC<Props> = props => {
 
   if (props.onEdit) {
     return (
-      <div>
+      <div className="sectionEditWrapper">
         <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest(".elementWrapper")) { props.onEdit(props.section, null); } }}>
           {result}
+          <div className="sectionHoverEdge" />
+          {props.onSectionMove && (
+            <SectionToolbar
+              isFirst={!!props.isFirstSection}
+              isLast={!!props.isLastSection}
+              visible={props.isSectionEditing}
+              onSettings={() => props.onEdit(props.section, null)}
+              onMoveUp={() => props.onSectionMove(props.section, "up")}
+              onMoveDown={() => props.onSectionMove(props.section, "down")}
+              onDuplicate={() => props.onSectionDuplicate?.(props.section.id)}
+              onDelete={() => props.onSectionDelete?.(props.section)}
+            />
+          )}
         </DraggableWrapper>
         {renderFloatingSelection()}
       </div>

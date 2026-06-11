@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Pridėti skiltį",
+      "backToSite": "Grįžti į svetainę",
       "blockPreview": "Bloko peržiūra",
+      "discard": "Atmesti",
+      "discardElementMessage": "Atmesti neišsaugotus šio elemento pakeitimus?",
+      "discardElementTitle": "Atmesti pakeitimus?",
+      "discardSectionMessage": "Atmesti neišsaugotus šios skilties pakeitimus?",
       "dropToAddElement": "Numeskite čia, kad pridėtumėte elementą",
       "dropToAddSection": "Numeskite čia, kad pridėtumėte skiltį",
+      "keepEditing": "Tęsti redagavimą",
       "scrollDown": "Slinkti žemyn",
-      "scrollUp": "Slinkti aukštyn"
+      "scrollUp": "Slinkti aukštyn",
+      "smallScreenMessage": "Norėdami redaguoti savo svetainę, atidarykite šį puslapį planšetėje arba kompiuteryje.",
+      "smallScreenTitle": "Šiam redaktoriui reikia didesnio ekrano"
     },
     "cssEdit": {
       "advancedFeature": "Pažangi funkcija:",
@@ -2944,13 +2953,17 @@
       "exit": "Išeiti",
       "justNow": "ką tik",
       "mobile": "Mobile",
-      "notSavedYet": "Pakeitimų dar nėra",
       "page": "Page",
       "publish": "Publikuoti",
       "publishOffTip": "Šiuo metu pakeitimai skelbiami iš karto. Publikuokite, kad išsaugotumėte paskelbtą versiją, o būsimi pakeitimai liktų privatūs iki kito publikavimo.",
       "publishedLabel": "Publikuota",
       "redoTip": "Pakartoti (Ctrl+Shift+Z)",
+      "saveError": "Nepavyko išsaugoti",
       "savedAllChanges": "Visi pakeitimai išsaugoti",
+      "saving": "Saugoma…",
+      "statusLiveOnSave": "Paskelbiama išsaugojus",
+      "statusPublished": "Publikuota",
+      "statusUnpublishedChanges": "Nepublikuoti pakeitimai",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Atšaukti (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Stulpelis",
       "common": "Bendras",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Įjungti šviesos dėžę"
+      "enableLightbox": "Įjungti šviesos dėžę",
+      "groupAnimation": "Animacija",
+      "groupContent": "Turinys",
+      "groupStyle": "Stilius"
     },
     "elementSelection": {
       "moveDown": "Perkelti žemyn",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Visa dokumentacija",
       "moveBody": "Vilkite skiltis ir elementus, kad juos pertvarkytumėte. Naudokite pažymėjimo įrankių juostos rodykles aukštyn / žemyn tikslesniems judesiams.",
       "moveTitle": "Pertvarkyti",
+      "shortcutsBody": "Delete pašalina pasirinktą elementą, Ctrl+D jį dubliuoja, Alt+Up/Down perkelia, o Esc panaikina pasirinkimą.",
+      "shortcutsTitle": "Spartieji klavišai",
       "title": "Puslapio redaktoriaus pagrindai",
       "undoBody": "Naudokite Ctrl+Z, kad atšauktumėte, ir Ctrl+Shift+Z, kad pakartotumėte. Atidarykite istorijos skydelį iš meniu, kad pereitumėte į ankstesnę būseną.",
       "undoTitle": "Atšaukti ir istorija"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Tai visam laikui ištrina skiltį ir visą jos turinį. Tai galite atšaukti su Ctrl+Z.",
+      "deleteSectionTitle": "Ištrinti skiltį?",
       "editSection": "Edit Section",
       "layoutContainer": "Išdėstymo konteineris",
       "section": "Skiltis"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Biblijos eilutės baneris",
       "watchOnline": "Žiūrėkite internetu",
       "welcome": "Pasveikinimo tekstas"
+    },
+    "sectionToolbar": {
+      "delete": "Ištrinti skiltį",
+      "dragToReorder": "Vilkite, kad pertvarkytumėte",
+      "duplicate": "Dubliuoti skiltį",
+      "moveDown": "Perkelti skiltį žemyn",
+      "moveUp": "Perkelti skiltį aukštyn",
+      "settings": "Skilties nustatymai"
     },
     "siteTemplates": {
       "back": "Atgal",

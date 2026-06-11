@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Tilføj sektion",
+      "backToSite": "Tilbage til webstedet",
       "blockPreview": "Blokforhåndsvisning",
+      "discard": "Kassér",
+      "discardElementMessage": "Kassér ikke-gemte ændringer i dette element?",
+      "discardElementTitle": "Kassér ændringer?",
+      "discardSectionMessage": "Kassér ikke-gemte ændringer i denne sektion?",
       "dropToAddElement": "Slip her for at tilføje element",
       "dropToAddSection": "Slip her for at tilføje sektion",
+      "keepEditing": "Fortsæt redigering",
       "scrollDown": "Rul ned",
-      "scrollUp": "Rul op"
+      "scrollUp": "Rul op",
+      "smallScreenMessage": "Åbn denne side på en tablet eller computer for at redigere dit websted.",
+      "smallScreenTitle": "Denne editor kræver en større skærm"
     },
     "cssEdit": {
       "advancedFeature": "Avanceret funktion:",
@@ -2944,13 +2953,17 @@
       "exit": "Afslut",
       "justNow": "lige nu",
       "mobile": "Mobil",
-      "notSavedYet": "Ingen ændringer endnu",
       "page": "Side",
       "publish": "Udgiv",
       "publishOffTip": "Ændringer går i øjeblikket straks live. Udgiv for at gemme en live version og holde fremtidige ændringer private indtil næste udgivelse.",
       "publishedLabel": "Udgivet",
       "redoTip": "Gentag (Ctrl+Shift+Z)",
+      "saveError": "Kunne ikke gemme",
       "savedAllChanges": "Alle ændringer gemt",
+      "saving": "Gemmer…",
+      "statusLiveOnSave": "Live ved gem",
+      "statusPublished": "Udgivet",
+      "statusUnpublishedChanges": "Ikke-udgivne ændringer",
       "switchToDesktop": "Skift til desktopvisning",
       "switchToMobile": "Skift til mobilvisning",
       "undoTip": "Fortryd (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Kort",
       "carousel": "Karrusel",
       "church": "Kirke",
+      "column": "Kolonne",
       "common": "Almindelig",
       "content": "Indhold",
       "descBox": "Fleksibel containerboks",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Aktivér Lightbox"
+      "enableLightbox": "Aktivér Lightbox",
+      "groupAnimation": "Animation",
+      "groupContent": "Indhold",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Flyt ned",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Fuld dokumentation",
       "moveBody": "Træk sektioner og elementer for at omarrangere dem. Brug op/ned-pilene i valgværktøjslinjen til præcise flytninger.",
       "moveTitle": "Omarranger",
+      "shortcutsBody": "Delete fjerner det valgte element, Ctrl+D duplikerer det, Alt+pil op/ned flytter det, og Esc fravælger.",
+      "shortcutsTitle": "Tastaturgenveje",
       "title": "Sideeditorens grundlæggende",
       "undoBody": "Brug Ctrl+Z for at fortryde og Ctrl+Shift+Z for at gentage. Åbn historikpanelet fra menuen for at hoppe til en tidligere tilstand.",
       "undoTitle": "Fortryd & historik"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Er du sikker på, at du vil slette denne sektion permanent?",
       "confirmDuplicate": "Er du sikker på, at du vil lave en kopi af denne sektion og alt dens indhold?",
+      "deleteSectionBody": "Dette sletter permanent sektionen og alt dens indhold. Du kan fortryde dette med Ctrl+Z.",
+      "deleteSectionTitle": "Slet sektion?",
       "editSection": "Rediger sektion",
       "layoutContainer": "Layoutbeholder",
       "section": "Sektion"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner med bibelvers",
       "watchOnline": "Se online",
       "welcome": "Velkomsttekst"
+    },
+    "sectionToolbar": {
+      "delete": "Slet sektion",
+      "dragToReorder": "Træk for at ændre rækkefølgen",
+      "duplicate": "Duplikér sektion",
+      "moveDown": "Flyt sektion ned",
+      "moveUp": "Flyt sektion op",
+      "settings": "Sektionsindstillinger"
     },
     "siteTemplates": {
       "back": "Tilbage",

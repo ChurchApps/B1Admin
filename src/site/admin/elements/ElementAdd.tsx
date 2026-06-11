@@ -12,6 +12,7 @@ type Props = {
   includeSection: boolean
   updateCallback: () => void
   draggingCallback: () => void
+  onSelect?: (config: { type: string; dndType: string; blockId?: string }) => void
   inPanel?: boolean
 };
 
@@ -28,7 +29,7 @@ interface ElementConfig {
   blockId?: string;
 }
 
-function DraggableElement({ config, draggingCallback, index }: { config: ElementConfig; draggingCallback: () => void; index: number; }) {
+function DraggableElement({ config, draggingCallback, index, onSelect }: { config: ElementConfig; draggingCallback: () => void; index: number; onSelect?: (config: { type: string; dndType: string; blockId?: string }) => void; }) {
   const dragRef = React.useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -52,6 +53,10 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
       ref={dragRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => {
+        if (isDragging) return;
+        onSelect?.({ type: config.type, dndType: config.dndType, blockId: config.blockId });
+      }}
       style={{
         background: "#fff",
         border: `1px solid ${isHovered ? "var(--c1)" : "var(--border-main)"}`,
@@ -267,6 +272,7 @@ export function ElementAdd(props: Props) {
                   config={config}
                   draggingCallback={props.draggingCallback}
                   index={index}
+                  onSelect={props.onSelect}
                 />
               ))}
             </Box>
@@ -308,6 +314,7 @@ export function ElementAdd(props: Props) {
                 config={config}
                 draggingCallback={props.draggingCallback}
                 index={index}
+                onSelect={props.onSelect}
               />
             ))}
           </Box>

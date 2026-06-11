@@ -6,13 +6,28 @@ import type { AnimationsInterface, BlockInterface, GlobalStyleInterface, Section
 import { Button, Dialog, FormControl, Icon, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { PickColors } from "./elements/PickColors";
 import { StylesAnimations } from "./elements/StylesAnimations";
+import { trackSave } from "./saveStatusTracker";
 
 type Props = {
   section: SectionInterface;
   updatedCallback: (section: SectionInterface) => void;
   globalStyles: GlobalStyleInterface;
+  onCancel?: () => void;
+  onDirtyChange?: (dirty: boolean) => void;
   inPanel?: boolean;
 };
+
+const sectionFingerprint = (s: SectionInterface) =>
+  JSON.stringify([
+    s?.answersJSON || null,
+    s?.stylesJSON || null,
+    s?.animationsJSON || null,
+    s?.background || null,
+    s?.textColor || null,
+    s?.headingColor || null,
+    s?.linkColor || null,
+    s?.targetBlockId || null
+  ]);
 
 export function SectionEdit(props: Props) {
   const [blocks, setBlocks] = useState<BlockInterface[]>(null);
@@ -21,8 +36,22 @@ export function SectionEdit(props: Props) {
   const parsedData = (section?.answersJSON) ? JSON.parse(section.answersJSON) : {};
   const parsedStyles = (section?.stylesJSON) ? JSON.parse(section.stylesJSON) : {};
   const parsedAnimations = (section?.animationsJSON) ? JSON.parse(section.animationsJSON) : {};
+  const baselineRef = React.useRef<string>(null);
+  const dirtyRef = React.useRef(false);
 
-  const handleCancel = () => props.updatedCallback(section);
+  useEffect(() => {
+    if (!section || baselineRef.current === null) return;
+    const dirty = sectionFingerprint(section) !== baselineRef.current;
+    if (dirty !== dirtyRef.current) {
+      dirtyRef.current = dirty;
+      props.onDirtyChange?.(dirty);
+    }
+  }, [section]);
+
+  const handleCancel = () => {
+    if (props.onCancel) props.onCancel();
+    else props.updatedCallback(props.section);
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     e.preventDefault();
     const p = { ...section };
@@ -54,7 +83,12 @@ export function SectionEdit(props: Props) {
 
   const handleSave = () => {
     if (validate()) {
-      ApiHelper.post("/sections", [section], "ContentApi").then((data: any) => {
+      trackSave(ApiHelper.post("/sections", [section], "ContentApi")).then((data: any) => {
+        baselineRef.current = sectionFingerprint(data);
+        if (dirtyRef.current) {
+          dirtyRef.current = false;
+          props.onDirtyChange?.(false);
+        }
         setSection(data);
         props.updatedCallback(data);
       });
@@ -63,7 +97,7 @@ export function SectionEdit(props: Props) {
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("site.section.confirmDelete"))) {
-      ApiHelper.delete("/sections/" + section.id.toString(), "ContentApi").then(() => props.updatedCallback(null));
+      trackSave(ApiHelper.delete("/sections/" + section.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
     }
   };
 
@@ -76,6 +110,11 @@ export function SectionEdit(props: Props) {
       }
     };
 
+    baselineRef.current = sectionFingerprint(props.section);
+    if (dirtyRef.current) {
+      dirtyRef.current = false;
+      props.onDirtyChange?.(false);
+    }
     setSection(props.section);
     loadBlocks();
   }, [props.section]);
@@ -84,7 +123,16 @@ export function SectionEdit(props: Props) {
   const getStandardFields = () => (<>
     <ErrorMessages errors={errors} />
     <TextField fullWidth size="small" label={Locale.label("site.sectionEdit.id")} name="sectionId" value={parsedData.sectionId || ""} onChange={handleChange} />
-    <PickColors background={section?.background} backgroundOpacity={parsedData?.backgroundOpacity} textColor={section?.textColor} headingColor={section?.headingColor} linkColor={section?.linkColor} updatedCallback={selectColors} globalStyles={props.globalStyles} onChange={handleChange} />
+    <PickColors
+      background={section?.background}
+      backgroundOpacity={parsedData?.backgroundOpacity}
+      textColor={section?.textColor}
+      headingColor={section?.headingColor}
+      linkColor={section?.linkColor}
+      updatedCallback={selectColors}
+      globalStyles={props.globalStyles}
+      onChange={handleChange}
+    />
     {getAppearanceFields([
       "border", "color", "font", "height", "line", "margin", "padding", "width"
     ])}
@@ -122,7 +170,7 @@ export function SectionEdit(props: Props) {
   const handleDuplicate = (e: React.MouseEvent) => {
     e.preventDefault();
     if (confirm(Locale.label("site.section.confirmDuplicate"))) {
-      ApiHelper.post("/sections/duplicate/" + props.section.id, {}, "ContentApi").then((data: any) => {
+      trackSave(ApiHelper.post("/sections/duplicate/" + props.section.id, {}, "ContentApi")).then((data: any) => {
         props.updatedCallback(data);
       });
     }
@@ -132,7 +180,7 @@ export function SectionEdit(props: Props) {
     e.preventDefault();
     const name = window.prompt(Locale.label("site.sectionEdit.convertToBlockPrompt"), Locale.label("site.sectionEdit.blockNamePromptDefault"));
     if (name !== null) {
-      ApiHelper.post(`/sections/duplicate/${props.section.id}?convertToBlock=${name.toString()}`, {}, "ContentApi").then((data: any) => {
+      trackSave(ApiHelper.post(`/sections/duplicate/${props.section.id}?convertToBlock=${name.toString()}`, {}, "ContentApi")).then((data: any) => {
         props.updatedCallback(data);
       });
     }
@@ -147,6 +195,7 @@ export function SectionEdit(props: Props) {
       id="sectionDetailsBox"
       title={Locale.label("site.section.editSection")}
       icon="school"
+      stickyFooter={props.inPanel}
       onSave={handleSave}
       onCancel={handleCancel}
       onDelete={handleDelete}

@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Lisää osio",
+      "backToSite": "Takaisin sivustolle",
       "blockPreview": "Lohkon esikatselu",
+      "discard": "Hylkää",
+      "discardElementMessage": "Hylätäänkö tämän elementin tallentamattomat muutokset?",
+      "discardElementTitle": "Hylätäänkö muutokset?",
+      "discardSectionMessage": "Hylätäänkö tämän osion tallentamattomat muutokset?",
       "dropToAddElement": "Pudota tähän lisätäksesi elementin",
       "dropToAddSection": "Pudota tähän lisätäksesi osion",
+      "keepEditing": "Jatka muokkaamista",
       "scrollDown": "Vieritä alas",
-      "scrollUp": "Vieritä ylös"
+      "scrollUp": "Vieritä ylös",
+      "smallScreenMessage": "Avaa tämä sivu tabletilla tai tietokoneella muokataksesi verkkosivustoasi.",
+      "smallScreenTitle": "Tämä editori tarvitsee suuremman näytön"
     },
     "cssEdit": {
       "advancedFeature": "Edistynyt ominaisuus:",
@@ -2944,13 +2953,17 @@
       "exit": "Poistu",
       "justNow": "juuri nyt",
       "mobile": "Matkapuhelin",
-      "notSavedYet": "Ei vielä muutoksia",
       "page": "Page",
       "publish": "Julkaise",
       "publishOffTip": "Muutokset tulevat tällä hetkellä heti näkyviin. Julkaise tallentaaksesi julkisen version, jolloin tulevat muutokset pysyvät yksityisinä seuraavaan julkaisuun asti.",
       "publishedLabel": "Julkaistu",
       "redoTip": "Tee uudelleen (Ctrl+Shift+Z)",
+      "saveError": "Tallennus epäonnistui",
       "savedAllChanges": "Kaikki muutokset tallennettu",
+      "saving": "Tallennetaan…",
+      "statusLiveOnSave": "Julkaistaan tallennettaessa",
+      "statusPublished": "Julkaistu",
+      "statusUnpublishedChanges": "Julkaisemattomia muutoksia",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Kumoa (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Kortti",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Sarake",
       "common": "Yleinen",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Ota lightbox käyttöön"
+      "enableLightbox": "Ota lightbox käyttöön",
+      "groupAnimation": "Animaatio",
+      "groupContent": "Sisältö",
+      "groupStyle": "Tyyli"
     },
     "elementSelection": {
       "moveDown": "Siirrä alas",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Täysi dokumentaatio",
       "moveBody": "Vedä osioita ja elementtejä järjestääksesi ne uudelleen. Käytä ylä-/alanuolia valintatyökalupalkissa tarkkaan siirtoon.",
       "moveTitle": "Järjestä uudelleen",
+      "shortcutsBody": "Delete poistaa valitun elementin, Ctrl+D monistaa sen, Alt+ylös/alas siirtää sitä ja Esc poistaa valinnan.",
+      "shortcutsTitle": "Pikanäppäimet",
       "title": "Sivun editorin perusteet",
       "undoBody": "Käytä Ctrl+Z kumotaksesi ja Ctrl+Shift+Z tehdäksesi uudelleen. Avaa Historia-paneeli valikosta hypätäksesi mihin tahansa aikaisempaan tilaan.",
       "undoTitle": "Kumoa ja historia"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Tämä poistaa osion ja kaiken sen sisällön pysyvästi. Voit kumota tämän painamalla Ctrl+Z.",
+      "deleteSectionTitle": "Poistetaanko osio?",
       "editSection": "Edit Section",
       "layoutContainer": "Asettelusäilö",
       "section": "Osio"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Raamatunjakeen banneri",
       "watchOnline": "Katso verkossa",
       "welcome": "Tervetuloteksti"
+    },
+    "sectionToolbar": {
+      "delete": "Poista osio",
+      "dragToReorder": "Järjestä raahaamalla",
+      "duplicate": "Monista osio",
+      "moveDown": "Siirrä osiota alaspäin",
+      "moveUp": "Siirrä osiota ylöspäin",
+      "settings": "Osion asetukset"
     },
     "siteTemplates": {
       "back": "Takaisin",

@@ -3105,11 +3105,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Add section",
+      "backToSite": "Back to Site",
       "blockPreview": "Block Preview",
+      "discard": "Discard",
+      "discardElementMessage": "Discard unsaved changes to this element?",
+      "discardElementTitle": "Discard changes?",
+      "discardSectionMessage": "Discard unsaved changes to this section?",
       "dropToAddElement": "Drop here to add element",
       "dropToAddSection": "Drop here to add section",
+      "keepEditing": "Keep editing",
       "scrollDown": "Scroll Down",
-      "scrollUp": "Scroll Up"
+      "scrollUp": "Scroll Up",
+      "smallScreenMessage": "Open this page on a tablet or desktop to edit your website.",
+      "smallScreenTitle": "This editor needs a larger screen"
     },
     "cssEdit": {
       "advancedFeature": "Advanced Feature:",
@@ -3188,13 +3197,17 @@
       "discardChangesConfirm": "Discard all changes made since the last publish? The editor will be restored to the live version.",
       "exit": "Exit",
       "justNow": "just now",
-      "notSavedYet": "No changes yet",
       "page": "Page",
       "publish": "Publish",
       "publishedLabel": "Published",
       "publishOffTip": "Edits currently go live immediately. Publish to save a live version and keep future edits private until the next publish.",
       "redoTip": "Redo (Ctrl+Shift+Z)",
       "savedAllChanges": "All changes saved",
+      "saveError": "Couldn't save",
+      "saving": "Saving…",
+      "statusLiveOnSave": "Live on save",
+      "statusPublished": "Published",
+      "statusUnpublishedChanges": "Unpublished changes",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Undo (Ctrl+Z)",
@@ -3211,6 +3224,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Column",
       "common": "Common",
       "descBox": "Flexible container box",
       "descCalendar": "Event calendar view",
@@ -3260,7 +3274,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Enable Lightbox"
+      "enableLightbox": "Enable Lightbox",
+      "groupAnimation": "Animation",
+      "groupContent": "Content",
+      "groupStyle": "Style"
     },
     "elements": {
       "address": "Address",
@@ -3412,6 +3429,8 @@
       "fullDocs": "Full documentation",
       "moveBody": "Drag sections and elements to reorder them. Use the up/down arrows on the selection toolbar for precise moves.",
       "moveTitle": "Rearrange",
+      "shortcutsBody": "Delete removes the selected element, Ctrl+D duplicates it, Alt+Up/Down moves it, and Esc deselects.",
+      "shortcutsTitle": "Keyboard shortcuts",
       "title": "Page editor basics",
       "undoBody": "Use Ctrl+Z to undo and Ctrl+Shift+Z to redo. Open the History panel from the menu to jump to any earlier state.",
       "undoTitle": "Undo & history"
@@ -3609,6 +3628,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "This permanently deletes the section and everything in it. You can undo this with Ctrl+Z.",
+      "deleteSectionTitle": "Delete section?",
       "editSection": "Edit Section",
       "layoutContainer": "Layout container",
       "section": "Section"
@@ -3662,6 +3683,14 @@
       "verseBanner": "Verse Banner",
       "watchOnline": "Watch Online",
       "welcome": "Welcome Text"
+    },
+    "sectionToolbar": {
+      "delete": "Delete section",
+      "dragToReorder": "Drag to reorder",
+      "duplicate": "Duplicate section",
+      "moveDown": "Move section down",
+      "moveUp": "Move section up",
+      "settings": "Section settings"
     },
     "siteTemplates": {
       "back": "Back",

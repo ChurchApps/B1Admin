@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Aggiungi sezione",
+      "backToSite": "Torna al sito",
       "blockPreview": "Anteprima Blocco",
+      "discard": "Scarta",
+      "discardElementMessage": "Scartare le modifiche non salvate a questo elemento?",
+      "discardElementTitle": "Scartare le modifiche?",
+      "discardSectionMessage": "Scartare le modifiche non salvate a questa sezione?",
       "dropToAddElement": "Rilascia qui per aggiungere elemento",
       "dropToAddSection": "Rilascia qui per aggiungere sezione",
+      "keepEditing": "Continua a modificare",
       "scrollDown": "Scorri Giù",
-      "scrollUp": "Scorri Su"
+      "scrollUp": "Scorri Su",
+      "smallScreenMessage": "Apra questa pagina su un tablet o un desktop per modificare il suo sito web.",
+      "smallScreenTitle": "Questo editor richiede uno schermo più grande"
     },
     "cssEdit": {
       "advancedFeature": "Funzionalità Avanzata:",
@@ -2944,13 +2953,17 @@
       "exit": "Esci",
       "justNow": "ora",
       "mobile": "Mobile",
-      "notSavedYet": "Nessuna modifica ancora",
       "page": "Pagina",
       "publish": "Pubblica",
       "publishOffTip": "Attualmente le modifiche vanno online immediatamente. Pubblica per salvare una versione online e mantenere private le modifiche future fino alla prossima pubblicazione.",
       "publishedLabel": "Pubblicato",
       "redoTip": "Ripeti (Ctrl+Shift+Z)",
+      "saveError": "Impossibile salvare",
       "savedAllChanges": "Tutte le modifiche salvate",
+      "saving": "Salvataggio…",
+      "statusLiveOnSave": "Online al salvataggio",
+      "statusPublished": "Pubblicato",
+      "statusUnpublishedChanges": "Modifiche non pubblicate",
       "switchToDesktop": "Passa alla visualizzazione del desktop",
       "switchToMobile": "Passa alla visualizzazione mobile",
       "undoTip": "Annulla (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Scheda",
       "carousel": "Carosello",
       "church": "Chiesa",
+      "column": "Colonna",
       "common": "Comune",
       "content": "Contenuto",
       "descBox": "Contenitore flessibile",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Abilita Lightbox"
+      "enableLightbox": "Abilita Lightbox",
+      "groupAnimation": "Animazione",
+      "groupContent": "Contenuto",
+      "groupStyle": "Stile"
     },
     "elementSelection": {
       "moveDown": "Sposta giù",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Documentazione completa",
       "moveBody": "Trascina sezioni ed elementi per riordinarli. Usa le frecce su/giù sulla barra di selezione per movimenti precisi.",
       "moveTitle": "Riorganizza",
+      "shortcutsBody": "Delete rimuove l'elemento selezionato, Ctrl+D lo duplica, Alt+Up/Down lo sposta ed Esc deseleziona.",
+      "shortcutsTitle": "Scorciatoie da tastiera",
       "title": "Nozioni di base dell'editor di pagine",
       "undoBody": "Usa Ctrl+Z per annullare e Ctrl+Shift+Z per ripetere. Apri il pannello Cronologia dal menu per saltare a uno stato precedente.",
       "undoTitle": "Annulla e cronologia"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "È sicuro di voler eliminare definitivamente questa sezione?",
       "confirmDuplicate": "È sicuro di voler creare una copia di questa sezione e di tutti i suoi contenuti?",
+      "deleteSectionBody": "Questo elimina definitivamente la sezione e tutto il suo contenuto. Può annullare l'operazione con Ctrl+Z.",
+      "deleteSectionTitle": "Eliminare la sezione?",
       "editSection": "Modifica Sezione",
       "layoutContainer": "Contenitore di layout",
       "section": "Sezione"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Banner versetto",
       "watchOnline": "Guarda online",
       "welcome": "Testo di benvenuto"
+    },
+    "sectionToolbar": {
+      "delete": "Elimina sezione",
+      "dragToReorder": "Trascina per riordinare",
+      "duplicate": "Duplica sezione",
+      "moveDown": "Sposta la sezione in basso",
+      "moveUp": "Sposta la sezione in alto",
+      "settings": "Impostazioni della sezione"
     },
     "siteTemplates": {
       "back": "Indietro",

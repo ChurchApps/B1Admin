@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "अनुभाग जोड़ें",
+      "backToSite": "साइट पर वापस जाएँ",
       "blockPreview": "ब्लॉक पूर्वावलोकन",
+      "discard": "हटाएँ",
+      "discardElementMessage": "इस तत्व में सहेजे न गए बदलाव हटाएँ?",
+      "discardElementTitle": "बदलाव हटाएँ?",
+      "discardSectionMessage": "इस अनुभाग में सहेजे न गए बदलाव हटाएँ?",
       "dropToAddElement": "तत्व जोड़ने के लिए यहाँ छोड़ें",
       "dropToAddSection": "अनुभाग जोड़ने के लिए यहाँ छोड़ें",
+      "keepEditing": "संपादन जारी रखें",
       "scrollDown": "नीचे स्क्रॉल करें",
-      "scrollUp": "ऊपर स्क्रॉल करें"
+      "scrollUp": "ऊपर स्क्रॉल करें",
+      "smallScreenMessage": "अपनी वेबसाइट संपादित करने के लिए इस पेज को टैबलेट या डेस्कटॉप पर खोलें।",
+      "smallScreenTitle": "इस संपादक के लिए बड़ी स्क्रीन चाहिए"
     },
     "cssEdit": {
       "advancedFeature": "उन्नत सुविधा:",
@@ -2944,13 +2953,17 @@
       "exit": "बाहर निकलें",
       "justNow": "अभी",
       "mobile": "मोबाइल",
-      "notSavedYet": "अभी तक कोई बदलाव नहीं",
       "page": "पेज",
       "publish": "प्रकाशित करें",
       "publishOffTip": "बदलाव अभी तुरंत लाइव हो जाते हैं। लाइव संस्करण सहेजने और अगले प्रकाशन तक भविष्य के बदलावों को निजी रखने के लिए प्रकाशित करें।",
       "publishedLabel": "प्रकाशित",
       "redoTip": "पुनः करें (Ctrl+Shift+Z)",
+      "saveError": "सहेजा नहीं जा सका",
       "savedAllChanges": "सभी परिवर्तन सहेजे गए",
+      "saving": "सहेज रहा है…",
+      "statusLiveOnSave": "सहेजते ही लाइव",
+      "statusPublished": "प्रकाशित",
+      "statusUnpublishedChanges": "अप्रकाशित बदलाव",
       "switchToDesktop": "डेस्कटॉप दृश्य पर स्विच करें",
       "switchToMobile": "मोबाइल व्यू पर स्विच करें",
       "undoTip": "पूर्ववत करें (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "कार्ड",
       "carousel": "कैरोसेल",
       "church": "चर्च",
+      "column": "कॉलम",
       "common": "सामान्य",
       "content": "सामग्री",
       "descBox": "लचीला कंटेनर बॉक्स",
@@ -3019,7 +3033,10 @@
       "video": "वीडियो"
     },
     "elementEdit": {
-      "enableLightbox": "लाइटबॉक्स सक्षम करें"
+      "enableLightbox": "लाइटबॉक्स सक्षम करें",
+      "groupAnimation": "एनीमेशन",
+      "groupContent": "सामग्री",
+      "groupStyle": "शैली"
     },
     "elementSelection": {
       "moveDown": "नीचे ले जाएं",
@@ -3172,6 +3189,8 @@
       "fullDocs": "पूर्ण दस्तावेज़ीकरण",
       "moveBody": "अनुभागों और तत्वों को पुनर्व्यवस्थित करने के लिए खींचें। सटीक चालों के लिए चयन टूलबार पर ऊपर/नीचे तीर का उपयोग करें।",
       "moveTitle": "पुनर्व्यवस्थित करें",
+      "shortcutsBody": "Delete चयनित तत्व को हटाता है, Ctrl+D उसकी प्रति बनाता है, Alt+Up/Down उसे ले जाता है, और Esc चयन हटाता है।",
+      "shortcutsTitle": "कीबोर्ड शॉर्टकट",
       "title": "पृष्ठ संपादक की मूल बातें",
       "undoBody": "पूर्ववत करने के लिए Ctrl+Z और पुनः करने के लिए Ctrl+Shift+Z का उपयोग करें। किसी भी पुरानी स्थिति पर जाने के लिए मेनू से इतिहास पैनल खोलें।",
       "undoTitle": "पूर्ववत करें और इतिहास"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "क्या आप वाकई इस अनुभाग को स्थायी रूप से हटाना चाहते हैं?",
       "confirmDuplicate": "क्या आप वाकई इस अनुभाग और इसकी सभी सामग्री की एक प्रति बनाना चाहते हैं?",
+      "deleteSectionBody": "यह अनुभाग और उसके अंदर की सभी सामग्री को स्थायी रूप से हटा देता है। आप Ctrl+Z से इसे पूर्ववत कर सकते हैं।",
+      "deleteSectionTitle": "अनुभाग हटाएं?",
       "editSection": "अनुभाग संपादित करें",
       "layoutContainer": "लेआउट कंटेनर",
       "section": "अनुभाग"
@@ -3406,6 +3427,14 @@
       "verseBanner": "वचन बैनर",
       "watchOnline": "ऑनलाइन देखें",
       "welcome": "स्वागत पाठ"
+    },
+    "sectionToolbar": {
+      "delete": "अनुभाग हटाएं",
+      "dragToReorder": "पुनर्व्यवस्थित करने के लिए खींचें",
+      "duplicate": "अनुभाग को डुप्लिकेट करें",
+      "moveDown": "अनुभाग नीचे ले जाएं",
+      "moveUp": "अनुभाग ऊपर ले जाएं",
+      "settings": "अनुभाग सेटिंग्स"
     },
     "siteTemplates": {
       "back": "वापस",

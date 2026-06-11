@@ -18,6 +18,7 @@ interface FormCardProps {
   deleteText?: string;
   isSubmitting?: boolean;
   headerActions?: ReactNode;
+  stickyFooter?: boolean;
   "data-testid"?: string;
 }
 
@@ -41,7 +42,7 @@ export const FormCard: React.FC<FormCardProps> = (props) => {
       </Box>
       <Box sx={{ p: 2, "& > *:not(:last-child)": { mb: 2 } }}>{props.children}</Box>
       {hasFooter && (
-        <Box sx={{ p: 2, borderTop: "1px solid var(--border-light)" }}>
+        <Box sx={{ p: 2, borderTop: "1px solid var(--border-light)", ...(props.stickyFooter ? { position: "sticky", bottom: 0, backgroundColor: "background.paper", zIndex: 2 } : {}) }}>
           <Stack direction="row" spacing={1} alignItems="center">
             {props.onDelete && (
               <Button id="delete" color="error" onClick={props.onDelete} aria-label={props.deleteText || Locale.label("common.delete")}>

@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Legg til seksjon",
+      "backToSite": "Tilbake til nettstedet",
       "blockPreview": "Blokkforhåndsvisning",
+      "discard": "Forkast",
+      "discardElementMessage": "Forkaste ulagrede endringer i dette elementet?",
+      "discardElementTitle": "Forkaste endringer?",
+      "discardSectionMessage": "Forkaste ulagrede endringer i denne seksjonen?",
       "dropToAddElement": "Slipp her for å legge til element",
       "dropToAddSection": "Slipp her for å legge til seksjon",
+      "keepEditing": "Fortsett å redigere",
       "scrollDown": "Bla ned",
-      "scrollUp": "Bla opp"
+      "scrollUp": "Bla opp",
+      "smallScreenMessage": "Åpne denne siden på et nettbrett eller en datamaskin for å redigere nettstedet ditt.",
+      "smallScreenTitle": "Dette redigeringsverktøyet trenger en større skjerm"
     },
     "cssEdit": {
       "advancedFeature": "Avansert funksjon:",
@@ -2944,13 +2953,17 @@
       "exit": "Avslutt",
       "justNow": "akkurat nå",
       "mobile": "Mobil",
-      "notSavedYet": "Ingen endringer ennå",
       "page": "Side",
       "publish": "Publiser",
       "publishOffTip": "Endringer går for øyeblikket live umiddelbart. Publiser for å lagre en live-versjon og holde fremtidige endringer private til neste publisering.",
       "publishedLabel": "Publisert",
       "redoTip": "Gjør om (Ctrl+Shift+Z)",
+      "saveError": "Kunne ikke lagre",
       "savedAllChanges": "Alle endringer lagret",
+      "saving": "Lagrer…",
+      "statusLiveOnSave": "Live ved lagring",
+      "statusPublished": "Publisert",
+      "statusUnpublishedChanges": "Upubliserte endringer",
       "switchToDesktop": "Bytt til skrivebordsvisning",
       "switchToMobile": "Bytt til mobilvisning",
       "undoTip": "Angre (Ctrl+Z)",
@@ -2966,6 +2979,7 @@
       "card": "Kort",
       "carousel": "Karusell",
       "church": "Kirke",
+      "column": "Kolonne",
       "common": "Vanlig",
       "content": "Innhold",
       "descBox": "Fleksibel containerboks",
@@ -3019,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Aktiver Lightbox"
+      "enableLightbox": "Aktiver Lightbox",
+      "groupAnimation": "Animasjon",
+      "groupContent": "Innhold",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Flytt ned",
@@ -3172,6 +3189,8 @@
       "fullDocs": "Full dokumentasjon",
       "moveBody": "Dra seksjoner og elementer for å omorganisere dem. Bruk pil opp/ned på utvalgsverktøylinjen for presise flyttinger.",
       "moveTitle": "Omorganiser",
+      "shortcutsBody": "Delete fjerner det valgte elementet, Ctrl+D dupliserer det, Alt+Opp/Ned flytter det, og Esc fjerner markeringen.",
+      "shortcutsTitle": "Hurtigtaster",
       "title": "Grunnleggende om sideredigeringsverktøyet",
       "undoBody": "Bruk Ctrl+Z for å angre og Ctrl+Shift+Z for å gjøre om. Åpne historikkpanelet fra menyen for å hoppe til en tidligere tilstand.",
       "undoTitle": "Angre og historikk"
@@ -3353,6 +3372,8 @@
     "section": {
       "confirmDelete": "Er du sikker på at du vil slette denne seksjonen permanent?",
       "confirmDuplicate": "Er du sikker på at du vil lage en kopi av denne seksjonen og alt innholdet?",
+      "deleteSectionBody": "Dette sletter seksjonen og alt innholdet i den permanent. Du kan angre med Ctrl+Z.",
+      "deleteSectionTitle": "Slette seksjonen?",
       "editSection": "Rediger seksjon",
       "layoutContainer": "Layoutbeholder",
       "section": "Seksjon"
@@ -3406,6 +3427,14 @@
       "verseBanner": "Bibelvers-banner",
       "watchOnline": "Se på nett",
       "welcome": "Velkomsttekst"
+    },
+    "sectionToolbar": {
+      "delete": "Slett seksjon",
+      "dragToReorder": "Dra for å endre rekkefølge",
+      "duplicate": "Dupliser seksjon",
+      "moveDown": "Flytt seksjon ned",
+      "moveUp": "Flytt seksjon opp",
+      "settings": "Seksjonsinnstillinger"
     },
     "siteTemplates": {
       "back": "Tilbake",
