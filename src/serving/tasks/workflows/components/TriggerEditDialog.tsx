@@ -81,6 +81,8 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
       if (src === "funds") ApiHelper.get("/funds", "GivingApi").then((f: any[]) => setDynamicOptions((p) => ({ ...p, funds: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
       else if (src === "groups") ApiHelper.get("/groups", "MembershipApi").then((g: any[]) => setDynamicOptions((p) => ({ ...p, groups: (g || []).map((x) => ({ value: x.id, label: x.name })) })));
       else if (src === "forms") ApiHelper.get("/forms", "MembershipApi").then((f: any[]) => setDynamicOptions((p) => ({ ...p, forms: (f || []).map((x) => ({ value: x.id, label: x.name })) })));
+      else if (src === "lists") ApiHelper.get("/lists", "MembershipApi").then((l: any[]) => setDynamicOptions((p) => ({ ...p, lists: (l || []).map((x) => ({ value: x.id, label: x.name })) })));
+      else if (src === "events") ApiHelper.get("/events/registerable", "ContentApi").then((ev: any[]) => setDynamicOptions((p) => ({ ...p, events: (ev || []).map((x) => ({ value: x.id, label: x.title || x.id })) })));
     });
   }, [eventType]);
 

@@ -17,7 +17,9 @@ declare module "@churchapps/helpers" {
   }
 }
 
-export const ACTION_TYPES = ["delay", "sendEmail", "addToGroup", "addToWorkflow", "addNote", "setField", "webhook"] as const;
+export const ACTION_TYPES = [
+  "delay", "sendEmail", "addToGroup", "removeFromGroup", "addToWorkflow", "addNote", "setField", "webhook", "createTask"
+] as const;
 export type ActionType = (typeof ACTION_TYPES)[number];
 
 // Allow-listed person fields a setField action may write (mirrors the API gateway).
