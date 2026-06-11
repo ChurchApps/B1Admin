@@ -3246,6 +3246,7 @@
       "previewPage": "Page d'aperçu",
       "showLogin": "Afficher la connexion",
       "showLoginTooltip": "Afficher le bouton de connexion dans la barre de navigation",
+      "startFromTemplate": "Commencer à partir d'un modèle",
       "subtitle": "Gérez les pages, le contenu et la navigation de votre site Web",
       "toggleLoginVisibility": "Basculer la visibilité du bouton de connexion",
       "totalPages": "Nombre total de pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Bannière avec verset",
       "watchOnline": "Regarder en ligne",
       "welcome": "Texte de bienvenue"
+    },
+    "siteTemplates": {
+      "back": "Retour",
+      "create": "Créer le site",
+      "creating": "Création de {title}...",
+      "descriptions": {
+        "classic": "Un site traditionnel complet avec une page d'accueil chaleureuse, une page À propos et une page pour préparer votre visite.",
+        "community": "Met les groupes et les ministères au premier plan pour que les gens créent des liens rapidement.",
+        "heritage": "Un design classique centré sur les Écritures pour les assemblées établies.",
+        "media": "Conçu autour de votre diffusion en direct et de vos archives de messages, pour les Églises très présentes en ligne.",
+        "modern": "Un style contemporain avec des dégradés audacieux, des cultes en ligne et une page de contact.",
+        "simple": "Un site de départ épuré de deux pages, parfait pour les implantations d'Églises et les petites assemblées.",
+        "visitor": "Axé sur les réponses aux questions des nouveaux visiteurs avant leur arrivée."
+      },
+      "errFailed": "Échec de la création du site. Veuillez réessayer.",
+      "exists": "Existe déjà",
+      "existsNote": "Les pages marquées « existe déjà » resteront inchangées.",
+      "intro": "Choisissez un site de départ ci-dessous. Nous créerons les pages et les liens de navigation pour vous — tout pourra être modifié ensuite.",
+      "names": {
+        "classic": "Église classique",
+        "community": "Vie communautaire",
+        "heritage": "Héritage",
+        "media": "En ligne d'abord",
+        "modern": "Accueil moderne",
+        "simple": "Démarrage simple",
+        "visitor": "Priorité aux visiteurs"
+      },
+      "nav": {
+        "about": "À propos",
+        "connect": "Contact",
+        "give": "Dons",
+        "home": "Accueil",
+        "live": "En direct",
+        "sermons": "Sermons",
+        "visit": "Visite"
+      },
+      "navLinksNote": "Ajoute également des liens de navigation vers les pages intégrées :",
+      "pageCount": "{count} pages",
+      "pages": {
+        "about": "À propos",
+        "connect": "Contact",
+        "home": "Accueil",
+        "visit": "Préparez votre visite"
+      },
+      "title": "Commencer à partir d'un modèle"
     },
     "spacingScaleEdit": {
       "buttonOne": "Bouton 1",

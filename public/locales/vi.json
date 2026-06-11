@@ -3246,6 +3246,7 @@
       "previewPage": "Xem trước page",
       "showLogin": "Show Đăng nhập",
       "showLoginTooltip": "Show Đăng nhập button in the navigation bar",
+      "startFromTemplate": "Bắt đầu từ mẫu",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle Đăng nhập button visibility",
       "totalPages": "Tổng cộng Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner câu Kinh Thánh",
       "watchOnline": "Xem trực tuyến",
       "welcome": "Lời chào mừng"
+    },
+    "siteTemplates": {
+      "back": "Quay lại",
+      "create": "Tạo trang web",
+      "creating": "Đang tạo {title}...",
+      "descriptions": {
+        "classic": "Một trang web truyền thống hoàn chỉnh với trang chủ chào đón, trang giới thiệu và trang lên kế hoạch thăm viếng.",
+        "community": "Đặt các nhóm và mục vụ lên hàng đầu để mọi người nhanh chóng được kết nối.",
+        "heritage": "Thiết kế cổ điển, lấy Kinh Thánh làm trọng tâm, dành cho các hội thánh lâu đời.",
+        "media": "Xây dựng quanh buổi phát trực tiếp và kho lưu trữ bài giảng của bạn, dành cho các hội thánh có sự hiện diện trực tuyến mạnh mẽ.",
+        "modern": "Diện mạo hiện đại với gradient nổi bật, các buổi lễ trực tuyến và trang kết nối.",
+        "simple": "Trang web khởi đầu gọn gàng gồm hai trang, hoàn hảo cho các hội thánh mới thành lập và các hội chúng nhỏ.",
+        "visitor": "Tập trung trả lời các câu hỏi của khách lần đầu trước khi họ đến."
+      },
+      "errFailed": "Không thể tạo trang web. Vui lòng thử lại.",
+      "exists": "Đã tồn tại",
+      "existsNote": "Các trang được đánh dấu \"đã tồn tại\" sẽ được giữ nguyên.",
+      "intro": "Chọn một trang web khởi đầu bên dưới. Chúng tôi sẽ tạo các trang và liên kết điều hướng cho bạn — mọi thứ đều có thể chỉnh sửa sau.",
+      "names": {
+        "classic": "Hội thánh cổ điển",
+        "community": "Đời sống cộng đồng",
+        "heritage": "Di sản",
+        "media": "Trực tuyến trước tiên",
+        "modern": "Chào đón hiện đại",
+        "simple": "Khởi đầu đơn giản",
+        "visitor": "Hướng đến khách thăm"
+      },
+      "nav": {
+        "about": "Giới thiệu",
+        "connect": "Kết nối",
+        "give": "Dâng hiến",
+        "home": "Trang chủ",
+        "live": "Trực tiếp",
+        "sermons": "Bài giảng",
+        "visit": "Thăm viếng"
+      },
+      "navLinksNote": "Đồng thời thêm liên kết điều hướng đến các trang có sẵn:",
+      "pageCount": "{count} trang",
+      "pages": {
+        "about": "Về chúng tôi",
+        "connect": "Kết nối",
+        "home": "Trang chủ",
+        "visit": "Lên kế hoạch thăm viếng"
+      },
+      "title": "Bắt đầu từ mẫu"
     },
     "spacingScaleEdit": {
       "buttonOne": "Nút 1",

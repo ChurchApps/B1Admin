@@ -8,9 +8,7 @@ export interface TemplateElementDef {
   elements?: TemplateElementDef[];
 }
 
-export interface SectionTemplateDef {
-  key: string;
-  category: "hero" | "about" | "services" | "people" | "media" | "giving" | "cta";
+export interface SectionContentDef {
   section: {
     background: string;
     textColor: string;
@@ -22,9 +20,14 @@ export interface SectionTemplateDef {
   elements: TemplateElementDef[];
 }
 
-const STOCK = "https://content.churchapps.org/stockPhotos";
+export interface SectionTemplateDef extends SectionContentDef {
+  key: string;
+  category: "hero" | "about" | "services" | "people" | "media" | "giving" | "cta";
+}
 
-const row = (columns: number[], children: TemplateElementDef[][], mobileSizes?: number[]): TemplateElementDef => ({
+export const STOCK = "https://content.churchapps.org/stockPhotos";
+
+export const row = (columns: number[], children: TemplateElementDef[][], mobileSizes?: number[]): TemplateElementDef => ({
   elementType: "row",
   answers: { columns: columns.join(","), ...(mobileSizes ? { mobileSizes: mobileSizes.join(",") } : {}) },
   elements: columns.map((size, i) => ({
@@ -34,14 +37,14 @@ const row = (columns: number[], children: TemplateElementDef[][], mobileSizes?: 
   }))
 });
 
-const text = (html: string, textAlignment: "left" | "center" | "right" = "left"): TemplateElementDef => ({ elementType: "text", answers: { text: html, textAlignment } });
+export const text = (html: string, textAlignment: "left" | "center" | "right" = "left"): TemplateElementDef => ({ elementType: "text", answers: { text: html, textAlignment } });
 
-const button = (buttonLinkText: string, buttonLinkUrl: string, variant: "contained" | "outlined" = "contained"): TemplateElementDef => ({
+export const button = (buttonLinkText: string, buttonLinkUrl: string, variant: "contained" | "outlined" = "contained"): TemplateElementDef => ({
   elementType: "buttonLink",
   answers: { buttonLinkText, buttonLinkUrl, buttonLinkVariant: variant, buttonLinkColor: "primary", external: "false", fullWidth: "false" }
 });
 
-const card = (title: string, html: string, photo?: string, photoAlt?: string): TemplateElementDef => ({
+export const card = (title: string, html: string, photo?: string, photoAlt?: string): TemplateElementDef => ({
   elementType: "card",
   answers: { title, titleAlignment: "center", text: html, textAlignment: "center", ...(photo ? { photo, photoAlt: photoAlt || title } : {}) }
 });
@@ -52,7 +55,8 @@ export const sectionTemplates: SectionTemplateDef[] = [
   {
     key: "heroCentered",
     category: "hero",
-    section: { background: STOCK + "/4/worship.png", textColor: "light", styles: { all: { "padding-top": "110px", "padding-bottom": "110px" } } },
+    // text-align centers the inline MUI button: buttonLink elements have no wrapper or alignment answer of their own.
+    section: { background: STOCK + "/4/worship.png", textColor: "light", styles: { all: { "padding-top": "110px", "padding-bottom": "110px", "text-align": "center" } } },
     elements: [
       text("<h1>Welcome Home</h1><p>Join us this Sunday as we worship together and grow in faith. Wherever you are on your journey, you belong here.</p>", "center"),
       button("Plan Your Visit", "/about")
@@ -75,7 +79,7 @@ export const sectionTemplates: SectionTemplateDef[] = [
   {
     key: "heroGradient",
     category: "hero",
-    section: { background: "linear-gradient(135deg, #1e3a8a 0%, #312e81 100%)", textColor: "light", styles: { all: { "padding-top": "100px", "padding-bottom": "100px" } } },
+    section: { background: "linear-gradient(135deg, #1e3a8a 0%, #312e81 100%)", textColor: "light", styles: { all: { "padding-top": "100px", "padding-bottom": "100px", "text-align": "center" } } },
     elements: [
       text("<h1>Love God. Love People.</h1><p>Sundays at 9:00 &amp; 11:00 AM</p>", "center"),
       button("Watch Online", "/sermons", "outlined")
@@ -143,7 +147,7 @@ export const sectionTemplates: SectionTemplateDef[] = [
     elements: [
       row([6, 6], [
         [text("<h2>Find Us</h2><p>123 Main Street<br />Your City, ST 00000</p><p>We meet every Sunday at 9:00 and 11:00 AM. Guest parking is available right by the main entrance, and our welcome team will help you find everything you need.</p>"), button("Get Directions", "/about", "outlined")],
-        [{ elementType: "image", answers: { photo: STOCK + "/1.78/checkin.png", photoAlt: "Church building" } }]
+        [{ elementType: "image", answers: { photo: STOCK + "/1.78/votd.png", photoAlt: "The road to church" } }]
       ])
     ]
   },
@@ -168,7 +172,7 @@ export const sectionTemplates: SectionTemplateDef[] = [
       text("<h2>Ministries For Every Age</h2>", "center"),
       row([4, 4, 4], [
         [card("Kids", "<p>A safe, fun place for children to discover God's love.</p>", STOCK + "/1.78/lessons.png", "Kids ministry")],
-        [card("Students", "<p>Middle and high schoolers building real friendships and real faith.</p>", STOCK + "/1.78/checkin.png", "Student ministry")],
+        [card("Students", "<p>Middle and high schoolers building real friendships and real faith.</p>", STOCK + "/1.78/bible2.png", "Student ministry")],
         [card("Adults", "<p>Groups and studies that help you grow wherever you are.</p>", STOCK + "/1.78/hands.png", "Adult ministry")]
       ])
     ]
@@ -226,7 +230,7 @@ export const sectionTemplates: SectionTemplateDef[] = [
   {
     key: "givingBanner",
     category: "giving",
-    section: { background: "var(--accent)", textColor: "light", styles: { all: { "padding-top": "60px", "padding-bottom": "60px" } } },
+    section: { background: "var(--accent)", textColor: "light", styles: { all: { "padding-top": "60px", "padding-bottom": "60px", "text-align": "center" } } },
     elements: [
       text("<h2>Generosity Changes Lives</h2><p>Your giving fuels ministry in our church, our city, and around the world.</p>", "center"),
       button("Give Now", "/donate")
@@ -246,7 +250,7 @@ export const sectionTemplates: SectionTemplateDef[] = [
   {
     key: "ctaBanner",
     category: "cta",
-    section: { background: "var(--primary)", textColor: "light", styles: { all: { "padding-top": "60px", "padding-bottom": "60px" } } },
+    section: { background: "var(--primary)", textColor: "light", styles: { all: { "padding-top": "60px", "padding-bottom": "60px", "text-align": "center" } } },
     elements: [
       text("<h2>Ready To Take Your Next Step?</h2><p>We'd love to help you get connected.</p>", "center"),
       button("Get Connected", "/about", "outlined")
@@ -296,7 +300,7 @@ const toElement = (def: TemplateElementDef, sort: number): ElementInterface => (
   elements: def.elements?.map((child, i) => toElement(child, i + 1))
 });
 
-export const buildTemplateSection = (template: SectionTemplateDef, target: { pageId?: string; blockId?: string; zone?: string; sort: number }): SectionInterface => ({
+export const buildTemplateSection = (template: SectionContentDef, target: { pageId?: string; blockId?: string; zone?: string; sort: number }): SectionInterface => ({
   pageId: target.pageId,
   blockId: target.blockId,
   zone: target.zone,

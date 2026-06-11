@@ -319,6 +319,31 @@ test.describe("Website Management", () => {
       await expect(validatedDeletion).toHaveCount(0);
     });
 
+    test("should create a site from a starter template", async () => {
+      await page.locator('[data-testid="start-from-template-button"]').click();
+      const templateCard = page.locator('[data-testid="site-template-classic"]');
+      await expect(templateCard).toBeVisible({ timeout: 10000 });
+      await templateCard.click();
+      // Demo data already has a home page; the detail view flags it as existing.
+      await expect(page.getByText("Already exists", { exact: true })).toBeVisible({ timeout: 10000 });
+      const treePost = page.waitForResponse(r => r.url().includes("/content/sections/tree") && r.request().method() === "POST", { timeout: 20000 });
+      await page.locator('[data-testid="site-template-create-button"]').click();
+      expect((await treePost).status()).toBe(200);
+      // Creation finishes by opening the first created page (About, since Home was skipped) in the preview.
+      await page.waitForURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 30000 });
+      await expect(page.locator("h6").getByText("About Us").first()).toBeVisible({ timeout: 10000 });
+      // Both template pages now exist; the pre-existing home page was left untouched.
+      await navigateToSite(page);
+      await expect(page.locator("td").getByText("About Us")).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("td").getByText("Plan Your Visit")).toHaveCount(1);
+      // Exactly one row for "/" — the pre-existing home page was not duplicated.
+      const homeRow = page.locator("tr").filter({ has: page.locator("td").getByText("/", { exact: true }) });
+      await expect(homeRow).toHaveCount(1);
+      await expect(homeRow.locator("td").getByText("Home", { exact: true })).toBeVisible();
+      // Only the Visit nav link is new — Home/About/Sermons/Give links already existed and were not duplicated.
+      await expect(page.getByText("Visit", { exact: true })).toBeVisible({ timeout: 10000 });
+    });
+
   });
 
   test.describe.serial("Blocks", () => {

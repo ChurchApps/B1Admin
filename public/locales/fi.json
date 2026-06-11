@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Aloita mallipohjasta",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Raamatunjakeen banneri",
       "watchOnline": "Katso verkossa",
       "welcome": "Tervetuloteksti"
+    },
+    "siteTemplates": {
+      "back": "Takaisin",
+      "create": "Luo sivusto",
+      "creating": "Luodaan {title}...",
+      "descriptions": {
+        "classic": "Täydellinen perinteinen sivusto, jossa on kutsuva etusivu, Tietoa meistä -sivu ja vierailun suunnittelusivu.",
+        "community": "Nostaa ryhmät ja työmuodot etusijalle, jotta ihmiset löytävät yhteyden nopeasti.",
+        "heritage": "Klassinen, Raamattua korostava ilme vakiintuneille seurakunnille.",
+        "media": "Rakennettu suoratoistosi ja saarna-arkistosi ympärille seurakunnille, joilla on vahva verkkoläsnäolo.",
+        "modern": "Nykyaikainen ilme rohkeilla liukuväreillä, verkkojumalanpalveluksilla ja yhteyssivulla.",
+        "simple": "Selkeä kahden sivun aloitus, täydellinen uusille ja pienille seurakunnille.",
+        "visitor": "Keskittyy vastaamaan ensikertalaisen kysymyksiin jo ennen saapumista."
+      },
+      "errFailed": "Sivuston luominen epäonnistui. Yritä uudelleen.",
+      "exists": "On jo olemassa",
+      "existsNote": "Sivut, joissa on merkintä \"on jo olemassa\", jätetään ennalleen.",
+      "intro": "Valitse aloitussivusto alta. Luomme sivut ja navigointilinkit puolestasi — kaikkea voi muokata jälkeenpäin.",
+      "names": {
+        "classic": "Klassinen seurakunta",
+        "community": "Yhteisöelämä",
+        "heritage": "Perinne",
+        "media": "Verkko edellä",
+        "modern": "Moderni vastaanotto",
+        "simple": "Yksinkertainen alku",
+        "visitor": "Vierailijat keskiössä"
+      },
+      "nav": {
+        "about": "Tietoa meistä",
+        "connect": "Ota yhteyttä",
+        "give": "Lahjoita",
+        "home": "Etusivu",
+        "live": "Live",
+        "sermons": "Saarnat",
+        "visit": "Vierailu"
+      },
+      "navLinksNote": "Lisää myös navigointilinkit valmiisiin sivuihin:",
+      "pageCount": "{count} sivua",
+      "pages": {
+        "about": "Tietoa meistä",
+        "connect": "Ota yhteyttä",
+        "home": "Etusivu",
+        "visit": "Suunnittele vierailusi"
+      },
+      "title": "Aloita mallipohjasta"
     },
     "spacingScaleEdit": {
       "buttonOne": "Painike 1",

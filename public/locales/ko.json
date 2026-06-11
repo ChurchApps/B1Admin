@@ -3246,6 +3246,7 @@
       "previewPage": "미리보기 페이지",
       "showLogin": "로그인 표시",
       "showLoginTooltip": "탐색 표시줄에 로그인 버튼 표시",
+      "startFromTemplate": "템플릿으로 시작하기",
       "subtitle": "웹사이트 페이지, 콘텐츠, 탐색 관리",
       "toggleLoginVisibility": "로그인 버튼 가시성 전환",
       "totalPages": "총 페이지",
@@ -3405,6 +3406,51 @@
       "verseBanner": "성경 구절 배너",
       "watchOnline": "온라인 시청",
       "welcome": "환영 문구"
+    },
+    "siteTemplates": {
+      "back": "뒤로",
+      "create": "사이트 만들기",
+      "creating": "{title} 만드는 중...",
+      "descriptions": {
+        "classic": "환영하는 홈 페이지, 소개 페이지, 방문 안내 페이지를 갖춘 완성형 전통 사이트입니다.",
+        "community": "그룹과 사역을 전면에 내세워 사람들이 빠르게 연결되도록 돕습니다.",
+        "heritage": "오랜 역사를 지닌 교회를 위한 클래식하고 말씀 중심적인 디자인입니다.",
+        "media": "라이브 스트리밍과 설교 아카이브를 중심으로 구성되어 온라인 활동이 활발한 교회에 적합합니다.",
+        "modern": "대담한 그라데이션, 온라인 예배, 연결 페이지를 갖춘 현대적인 디자인입니다.",
+        "simple": "깔끔한 2페이지 스타터로, 교회 개척과 소규모 교회에 안성맞춤입니다.",
+        "visitor": "처음 방문하는 분들의 궁금증을 방문 전에 해소하는 데 초점을 맞췄습니다."
+      },
+      "errFailed": "사이트 생성에 실패했습니다. 다시 시도해 주세요.",
+      "exists": "이미 존재함",
+      "existsNote": "\"이미 존재함\"으로 표시된 페이지는 변경되지 않습니다.",
+      "intro": "아래에서 스타터 사이트를 선택하세요. 페이지와 탐색 링크를 만들어 드립니다. 모든 내용은 나중에 수정할 수 있습니다.",
+      "names": {
+        "classic": "클래식 교회",
+        "community": "커뮤니티 라이프",
+        "heritage": "헤리티지",
+        "media": "온라인 퍼스트",
+        "modern": "모던 웰컴",
+        "simple": "심플 스타트",
+        "visitor": "방문자 중심"
+      },
+      "nav": {
+        "about": "소개",
+        "connect": "연결",
+        "give": "헌금",
+        "home": "홈",
+        "live": "라이브",
+        "sermons": "설교",
+        "visit": "방문"
+      },
+      "navLinksNote": "기본 제공 페이지로 연결되는 탐색 링크도 추가됩니다:",
+      "pageCount": "{count}개 페이지",
+      "pages": {
+        "about": "소개",
+        "connect": "연결",
+        "home": "홈",
+        "visit": "방문 안내"
+      },
+      "title": "템플릿으로 시작하기"
     },
     "spacingScaleEdit": {
       "buttonOne": "버튼 1",

@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Kezdés sablonból",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Igevers banner",
       "watchOnline": "Nézze online",
       "welcome": "Üdvözlő szöveg"
+    },
+    "siteTemplates": {
+      "back": "Vissza",
+      "create": "Webhely létrehozása",
+      "creating": "{title} létrehozása...",
+      "descriptions": {
+        "classic": "Teljes, hagyományos webhely barátságos kezdőlappal, bemutatkozó oldallal és látogatástervező oldallal.",
+        "community": "A csoportokat és szolgálatokat helyezi középpontba, hogy az emberek gyorsan kapcsolódhassanak.",
+        "heritage": "Klasszikus, igeközpontú dizájn régóta fennálló gyülekezetek számára.",
+        "media": "Az élő közvetítés és az üzenetarchívum köré épül, erős online jelenléttel rendelkező gyülekezeteknek.",
+        "modern": "Modern megjelenés merész színátmenetekkel, online istentiszteletekkel és kapcsolódás oldallal.",
+        "simple": "Letisztult, kétoldalas kezdőcsomag, tökéletes gyülekezetplántálásokhoz és kis gyülekezetekhez.",
+        "visitor": "Arra összpontosít, hogy az először érkező vendégek kérdéseit még érkezésük előtt megválaszolja."
+      },
+      "errFailed": "A webhely létrehozása sikertelen. Kérjük, próbálja újra.",
+      "exists": "Már létezik",
+      "existsNote": "A „már létezik” jelölésű oldalak változatlanok maradnak.",
+      "intro": "Válasszon az alábbi kezdő webhelyek közül. Létrehozzuk Önnek az oldalakat és a navigációs linkeket — később minden szerkeszthető.",
+      "names": {
+        "classic": "Klasszikus gyülekezet",
+        "community": "Közösségi élet",
+        "heritage": "Örökség",
+        "media": "Elsősorban online",
+        "modern": "Modern üdvözlet",
+        "simple": "Egyszerű kezdet",
+        "visitor": "Látogatóközpontú"
+      },
+      "nav": {
+        "about": "Rólunk",
+        "connect": "Kapcsolódás",
+        "give": "Adakozás",
+        "home": "Kezdőlap",
+        "live": "Élő",
+        "sermons": "Igehirdetések",
+        "visit": "Látogatás"
+      },
+      "navLinksNote": "Emellett navigációs linkeket ad hozzá a beépített oldalakhoz:",
+      "pageCount": "{count} oldal",
+      "pages": {
+        "about": "Rólunk",
+        "connect": "Kapcsolódás",
+        "home": "Kezdőlap",
+        "visit": "Tervezze meg látogatását"
+      },
+      "title": "Kezdés sablonból"
     },
     "spacingScaleEdit": {
       "buttonOne": "1. gomb",

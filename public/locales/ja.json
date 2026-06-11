@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "テンプレートから始める",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "聖句バナー",
       "watchOnline": "オンラインで視聴",
       "welcome": "ウェルカムテキスト"
+    },
+    "siteTemplates": {
+      "back": "戻る",
+      "create": "サイトを作成",
+      "creating": "{title}を作成中...",
+      "descriptions": {
+        "classic": "温かみのあるホームページ、教会紹介ページ、来訪案内ページを備えた、完成された伝統的なサイトです。",
+        "community": "グループとミニストリーを前面に出し、人々がすぐにつながれるようにします。",
+        "heritage": "歴史ある教会のための、聖書を中心としたクラシックなデザインです。",
+        "media": "ライブ配信とメッセージアーカイブを中心に構成された、オンラインでの活動が盛んな教会向けのサイトです。",
+        "modern": "大胆なグラデーション、オンライン礼拝、「つながる」ページを備えた現代的なデザインです。",
+        "simple": "すっきりとした2ページ構成のスターター。開拓教会や小規模な教会に最適です。",
+        "visitor": "初めて訪れる方の疑問に、来訪前に答えることに重点を置いています。"
+      },
+      "errFailed": "サイトの作成に失敗しました。もう一度お試しください。",
+      "exists": "既に存在します",
+      "existsNote": "「既に存在します」と表示されたページは変更されません。",
+      "intro": "以下からスターターサイトを選んでください。ページとナビゲーションリンクを自動で作成します。すべて後から編集できます。",
+      "names": {
+        "classic": "クラシックチャーチ",
+        "community": "コミュニティライフ",
+        "heritage": "ヘリテージ",
+        "media": "オンラインファースト",
+        "modern": "モダンウェルカム",
+        "simple": "シンプルスタート",
+        "visitor": "ビジターフォーカス"
+      },
+      "nav": {
+        "about": "私たちについて",
+        "connect": "つながる",
+        "give": "献金",
+        "home": "ホーム",
+        "live": "ライブ配信",
+        "sermons": "説教",
+        "visit": "はじめての方へ"
+      },
+      "navLinksNote": "組み込みページへのナビゲーションリンクも追加されます：",
+      "pageCount": "{count}ページ",
+      "pages": {
+        "about": "私たちについて",
+        "connect": "つながる",
+        "home": "ホーム",
+        "visit": "来訪のご案内"
+      },
+      "title": "テンプレートから始める"
     },
     "spacingScaleEdit": {
       "buttonOne": "ボタン1",

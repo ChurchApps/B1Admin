@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Začať zo šablóny",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner s veršom",
       "watchOnline": "Sledovať online",
       "welcome": "Uvítací text"
+    },
+    "siteTemplates": {
+      "back": "Späť",
+      "create": "Vytvoriť web",
+      "creating": "Vytvára sa {title}...",
+      "descriptions": {
+        "classic": "Kompletný tradičný web s vľúdnou domovskou stránkou, stránkou o nás a stránkou na naplánovanie návštevy.",
+        "community": "Dáva skupiny a služby do popredia, aby sa ľudia rýchlo zapojili.",
+        "heritage": "Klasický dizajn s dôrazom na Písmo pre etablované spoločenstvá.",
+        "media": "Postavený okolo vášho živého vysielania a archívu kázní, pre cirkvi so silnou online prítomnosťou.",
+        "modern": "Súčasný vzhľad s výraznými gradientmi, online bohoslužbami a kontaktnou stránkou.",
+        "simple": "Prehľadný štart s dvoma stránkami, ideálny pre nové a malé spoločenstvá.",
+        "visitor": "Zameraný na zodpovedanie otázok prvého návštevníka ešte pred jeho príchodom."
+      },
+      "errFailed": "Web sa nepodarilo vytvoriť. Skúste to znova.",
+      "exists": "Už existuje",
+      "existsNote": "Stránky označené ako \"už existuje\" zostanú nezmenené.",
+      "intro": "Vyberte si nižšie štartovací web. Stránky a navigačné odkazy vytvoríme za vás — všetko sa dá následne upraviť.",
+      "names": {
+        "classic": "Klasická cirkev",
+        "community": "Život spoločenstva",
+        "heritage": "Dedičstvo",
+        "media": "Online na prvom mieste",
+        "modern": "Moderné privítanie",
+        "simple": "Jednoduchý štart",
+        "visitor": "Zameranie na návštevníkov"
+      },
+      "nav": {
+        "about": "O nás",
+        "connect": "Zapojte sa",
+        "give": "Darovať",
+        "home": "Domov",
+        "live": "Naživo",
+        "sermons": "Kázne",
+        "visit": "Návšteva"
+      },
+      "navLinksNote": "Pridá aj navigačné odkazy na vstavané stránky:",
+      "pageCount": "Počet stránok: {count}",
+      "pages": {
+        "about": "O nás",
+        "connect": "Zapojte sa",
+        "home": "Domov",
+        "visit": "Naplánujte si návštevu"
+      },
+      "title": "Začať zo šablóny"
     },
     "spacingScaleEdit": {
       "buttonOne": "Tlačidlo 1",

@@ -3503,6 +3503,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Start From a Template",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3661,6 +3662,51 @@
       "verseBanner": "Verse Banner",
       "watchOnline": "Watch Online",
       "welcome": "Welcome Text"
+    },
+    "siteTemplates": {
+      "back": "Back",
+      "create": "Create Site",
+      "creating": "Creating {title}...",
+      "descriptions": {
+        "classic": "A complete traditional site with a welcoming home page, about page, and plan-your-visit page.",
+        "community": "Puts groups and ministries front and center so people get connected fast.",
+        "heritage": "A classic, scripture-forward design for established congregations.",
+        "media": "Built around your live stream and message archive for churches with a strong online presence.",
+        "modern": "A contemporary look with bold gradients, online services, and a connect page.",
+        "simple": "A clean two-page starter, perfect for church plants and small congregations.",
+        "visitor": "Focused on answering a first-time guest's questions before they arrive."
+      },
+      "errFailed": "Failed to create the site. Please try again.",
+      "exists": "Already exists",
+      "existsNote": "Pages marked \"already exists\" will be left unchanged.",
+      "intro": "Pick a starter site below. We'll create the pages and navigation links for you — everything can be edited afterward.",
+      "names": {
+        "classic": "Classic Church",
+        "community": "Community Life",
+        "heritage": "Heritage",
+        "media": "Online First",
+        "modern": "Modern Welcome",
+        "simple": "Simple Start",
+        "visitor": "Visitor Focus"
+      },
+      "nav": {
+        "about": "About",
+        "connect": "Connect",
+        "give": "Give",
+        "home": "Home",
+        "live": "Live",
+        "sermons": "Sermons",
+        "visit": "Visit"
+      },
+      "navLinksNote": "Also adds navigation links to built-in pages:",
+      "pageCount": "{count} pages",
+      "pages": {
+        "about": "About Us",
+        "connect": "Connect",
+        "home": "Home",
+        "visit": "Plan Your Visit"
+      },
+      "title": "Start From a Template"
     },
     "spacingScaleEdit": {
       "buttonOne": "Button 1",

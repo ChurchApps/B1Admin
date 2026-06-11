@@ -3246,6 +3246,7 @@
       "previewPage": "Forhåndsvis side",
       "showLogin": "Vis login",
       "showLoginTooltip": "Vis login-knap i navigationslinjen",
+      "startFromTemplate": "Start fra en skabelon",
       "subtitle": "Administrer dine webstedssider, indhold og navigation",
       "toggleLoginVisibility": "Skift synlighed for login-knap",
       "totalPages": "Sider i alt",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner med bibelvers",
       "watchOnline": "Se online",
       "welcome": "Velkomsttekst"
+    },
+    "siteTemplates": {
+      "back": "Tilbage",
+      "create": "Opret websted",
+      "creating": "Opretter {title}...",
+      "descriptions": {
+        "classic": "Et komplet traditionelt websted med en indbydende forside, en om os-side og en side til at planlægge dit besøg.",
+        "community": "Sætter grupper og tjenester i centrum, så folk hurtigt bliver en del af fællesskabet.",
+        "heritage": "Et klassisk design med fokus på Skriften til etablerede menigheder.",
+        "media": "Bygget op omkring din livestream og dit prædikenarkiv, til kirker med en stærk online tilstedeværelse.",
+        "modern": "Et moderne udtryk med markante farveovergange, online gudstjenester og en kontaktside.",
+        "simple": "Et enkelt websted med to sider, perfekt til nye kirker og små menigheder.",
+        "visitor": "Fokuseret på at besvare førstegangsgæstens spørgsmål, inden de ankommer."
+      },
+      "errFailed": "Webstedet kunne ikke oprettes. Prøv venligst igen.",
+      "exists": "Findes allerede",
+      "existsNote": "Sider markeret med \"findes allerede\" forbliver uændrede.",
+      "intro": "Vælg et startwebsted nedenfor. Vi opretter siderne og navigationslinkene for dig — alt kan redigeres bagefter.",
+      "names": {
+        "classic": "Klassisk kirke",
+        "community": "Fællesskabsliv",
+        "heritage": "Tradition",
+        "media": "Online først",
+        "modern": "Moderne velkomst",
+        "simple": "Enkel start",
+        "visitor": "Fokus på besøgende"
+      },
+      "nav": {
+        "about": "Om os",
+        "connect": "Kontakt",
+        "give": "Giv",
+        "home": "Hjem",
+        "live": "Live",
+        "sermons": "Prædikener",
+        "visit": "Besøg"
+      },
+      "navLinksNote": "Tilføjer også navigationslinks til indbyggede sider:",
+      "pageCount": "{count} sider",
+      "pages": {
+        "about": "Om os",
+        "connect": "Kontakt",
+        "home": "Hjem",
+        "visit": "Planlæg dit besøg"
+      },
+      "title": "Start fra en skabelon"
     },
     "spacingScaleEdit": {
       "buttonOne": "Knap 1",

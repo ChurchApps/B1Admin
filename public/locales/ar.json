@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "البدء من قالب",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "لافتة آية",
       "watchOnline": "شاهد عبر الإنترنت",
       "welcome": "نص ترحيبي"
+    },
+    "siteTemplates": {
+      "back": "رجوع",
+      "create": "إنشاء الموقع",
+      "creating": "جارٍ إنشاء {title}...",
+      "descriptions": {
+        "classic": "موقع تقليدي متكامل يضم صفحة رئيسية ترحيبية وصفحة من نحن وصفحة لتخطيط زيارتك.",
+        "community": "يضع المجموعات والخدمات في المقدمة ليتواصل الناس بسرعة.",
+        "heritage": "تصميم كلاسيكي يركّز على الكتاب المقدس للكنائس الراسخة.",
+        "media": "مبني حول البث المباشر وأرشيف العظات للكنائس ذات الحضور القوي عبر الإنترنت.",
+        "modern": "مظهر عصري بتدرجات لونية جريئة واجتماعات عبر الإنترنت وصفحة تواصل.",
+        "simple": "موقع بسيط من صفحتين، مثالي للكنائس الناشئة والصغيرة.",
+        "visitor": "يركّز على الإجابة عن أسئلة الزائر الجديد قبل وصوله."
+      },
+      "errFailed": "فشل إنشاء الموقع. يرجى المحاولة مرة أخرى.",
+      "exists": "موجودة بالفعل",
+      "existsNote": "الصفحات التي تحمل علامة \"موجودة بالفعل\" ستُترك دون تغيير.",
+      "intro": "اختر موقعًا للبدء أدناه. سننشئ الصفحات وروابط التنقل نيابة عنك — ويمكن تعديل كل شيء لاحقًا.",
+      "names": {
+        "classic": "الكنيسة الكلاسيكية",
+        "community": "الحياة المجتمعية",
+        "heritage": "التراث",
+        "media": "الإنترنت أولًا",
+        "modern": "ترحيب عصري",
+        "simple": "بداية بسيطة",
+        "visitor": "التركيز على الزوار"
+      },
+      "nav": {
+        "about": "من نحن",
+        "connect": "تواصل",
+        "give": "العطاء",
+        "home": "الرئيسية",
+        "live": "البث المباشر",
+        "sermons": "العظات",
+        "visit": "الزيارة"
+      },
+      "navLinksNote": "يضيف أيضًا روابط تنقل إلى الصفحات المدمجة:",
+      "pageCount": "{count} صفحات",
+      "pages": {
+        "about": "من نحن",
+        "connect": "تواصل معنا",
+        "home": "الصفحة الرئيسية",
+        "visit": "خطط لزيارتك"
+      },
+      "title": "البدء من قالب"
     },
     "spacingScaleEdit": {
       "buttonOne": "زر 1",

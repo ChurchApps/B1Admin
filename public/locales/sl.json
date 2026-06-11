@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Začni s predlogo",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Pasica z verzom",
       "watchOnline": "Glejte na spletu",
       "welcome": "Pozdravno besedilo"
+    },
+    "siteTemplates": {
+      "back": "Nazaj",
+      "create": "Ustvari spletno mesto",
+      "creating": "Ustvarjanje {title}...",
+      "descriptions": {
+        "classic": "Celovito tradicionalno spletno mesto s prijazno domačo stranjo, stranjo o nas in stranjo za načrtovanje obiska.",
+        "community": "Skupine in službe postavlja v ospredje, da se ljudje hitro povežejo.",
+        "heritage": "Klasično oblikovanje s poudarkom na Svetem pismu za uveljavljena občestva.",
+        "media": "Zgrajeno okoli vašega prenosa v živo in arhiva pridig, za cerkve z močno spletno prisotnostjo.",
+        "modern": "Sodoben videz z izrazitimi prelivi, spletnimi bogoslužji in stranjo za povezovanje.",
+        "simple": "Pregleden začetek z dvema stranema, popoln za nove in majhne skupnosti.",
+        "visitor": "Osredotočeno na odgovore na vprašanja prvega obiskovalca, še preden pride."
+      },
+      "errFailed": "Spletnega mesta ni bilo mogoče ustvariti. Poskusite znova.",
+      "exists": "Že obstaja",
+      "existsNote": "Strani z oznako »že obstaja« bodo ostale nespremenjene.",
+      "intro": "Spodaj izberite začetno spletno mesto. Strani in navigacijske povezave bomo ustvarili za vas — vse lahko pozneje uredite.",
+      "names": {
+        "classic": "Klasična cerkev",
+        "community": "Življenje skupnosti",
+        "heritage": "Dediščina",
+        "media": "Najprej na spletu",
+        "modern": "Sodobna dobrodošlica",
+        "simple": "Preprost začetek",
+        "visitor": "Poudarek na obiskovalcih"
+      },
+      "nav": {
+        "about": "O nas",
+        "connect": "Poveži se",
+        "give": "Daruj",
+        "home": "Domov",
+        "live": "V živo",
+        "sermons": "Pridige",
+        "visit": "Obisk"
+      },
+      "navLinksNote": "Doda tudi navigacijske povezave do vgrajenih strani:",
+      "pageCount": "{count} strani",
+      "pages": {
+        "about": "O nas",
+        "connect": "Poveži se",
+        "home": "Domov",
+        "visit": "Načrtujte svoj obisk"
+      },
+      "title": "Začni s predlogo"
     },
     "spacingScaleEdit": {
       "buttonOne": "Gumb 1",

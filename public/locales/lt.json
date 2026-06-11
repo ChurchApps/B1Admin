@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Pradėti nuo šablono",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Biblijos eilutės baneris",
       "watchOnline": "Žiūrėkite internetu",
       "welcome": "Pasveikinimo tekstas"
+    },
+    "siteTemplates": {
+      "back": "Atgal",
+      "create": "Sukurti svetainę",
+      "creating": "Kuriama {title}...",
+      "descriptions": {
+        "classic": "Išsami tradicinė svetainė su svetingu pradiniu puslapiu, puslapiu apie mus ir apsilankymo planavimo puslapiu.",
+        "community": "Grupės ir tarnystės iškeliamos į pirmą planą, kad žmonės greitai įsitrauktų.",
+        "heritage": "Klasikinis, į Šventąjį Raštą orientuotas dizainas įsitvirtinusioms bendruomenėms.",
+        "media": "Sukurta aplink jūsų tiesioginę transliaciją ir pamokslų archyvą — bažnyčioms, aktyviai veikiančioms internete.",
+        "modern": "Šiuolaikinė išvaizda su ryškiais gradientais, pamaldomis internetu ir puslapiu „Įsitrauk“.",
+        "simple": "Tvarkinga dviejų puslapių pradinė svetainė, puikiai tinkanti naujai įkurtoms ir mažoms bendruomenėms.",
+        "visitor": "Skirta atsakyti į pirmą kartą atvykstančio svečio klausimus dar prieš jam atvykstant."
+      },
+      "errFailed": "Nepavyko sukurti svetainės. Bandykite dar kartą.",
+      "exists": "Jau egzistuoja",
+      "existsNote": "Puslapiai, pažymėti „jau egzistuoja“, liks nepakeisti.",
+      "intro": "Pasirinkite pradinę svetainę žemiau. Sukursime puslapius ir navigacijos nuorodas už jus — vėliau viską galėsite redaguoti.",
+      "names": {
+        "classic": "Klasikinė bažnyčia",
+        "community": "Bendruomenės gyvenimas",
+        "heritage": "Paveldas",
+        "media": "Pirmiausia internete",
+        "modern": "Modernus pasveikinimas",
+        "simple": "Paprasta pradžia",
+        "visitor": "Dėmesys lankytojams"
+      },
+      "nav": {
+        "about": "Apie mus",
+        "connect": "Įsitrauk",
+        "give": "Aukoti",
+        "home": "Pradžia",
+        "live": "Tiesiogiai",
+        "sermons": "Pamokslai",
+        "visit": "Apsilankymas"
+      },
+      "navLinksNote": "Taip pat prideda navigacijos nuorodas į numatytuosius puslapius:",
+      "pageCount": "{count} psl.",
+      "pages": {
+        "about": "Apie mus",
+        "connect": "Įsitrauk",
+        "home": "Pradžia",
+        "visit": "Suplanuokite apsilankymą"
+      },
+      "title": "Pradėti nuo šablono"
     },
     "spacingScaleEdit": {
       "buttonOne": "Mygtukas 1",

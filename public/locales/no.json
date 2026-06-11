@@ -3246,6 +3246,7 @@
       "previewPage": "Forhåndsvisningsside",
       "showLogin": "Vis pålogging",
       "showLoginTooltip": "Vis påloggingsknapp i navigasjonslinjen",
+      "startFromTemplate": "Start fra en mal",
       "subtitle": "Administrer nettsidene dine, innholdet og navigasjonen",
       "toggleLoginVisibility": "Slå påloggingsknappens synlighet",
       "totalPages": "Totalt antall sider",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Bibelvers-banner",
       "watchOnline": "Se på nett",
       "welcome": "Velkomsttekst"
+    },
+    "siteTemplates": {
+      "back": "Tilbake",
+      "create": "Opprett nettsted",
+      "creating": "Oppretter {title}...",
+      "descriptions": {
+        "classic": "Et komplett tradisjonelt nettsted med en innbydende hjemmeside, om oss-side og planlegg besøket-side.",
+        "community": "Setter grupper og tjenester i sentrum slik at folk raskt blir koblet på.",
+        "heritage": "Et klassisk design med Bibelen i fokus, for etablerte menigheter.",
+        "media": "Bygget rundt direktestrømmen og talearkivet ditt, for menigheter med sterk tilstedeværelse på nett.",
+        "modern": "Et moderne uttrykk med markante fargeoverganger, gudstjenester på nett og en kontaktside.",
+        "simple": "En enkel start med to sider, perfekt for menighetsplantinger og små menigheter.",
+        "visitor": "Fokusert på å svare på spørsmålene til førstegangsbesøkende før de kommer."
+      },
+      "errFailed": "Kunne ikke opprette nettstedet. Prøv igjen.",
+      "exists": "Finnes allerede",
+      "existsNote": "Sider merket med \"finnes allerede\" blir ikke endret.",
+      "intro": "Velg et startnettsted nedenfor. Vi oppretter sidene og navigasjonslenkene for deg — alt kan redigeres etterpå.",
+      "names": {
+        "classic": "Klassisk kirke",
+        "community": "Fellesskapsliv",
+        "heritage": "Tradisjon",
+        "media": "Nett først",
+        "modern": "Moderne velkomst",
+        "simple": "Enkel start",
+        "visitor": "Besøksfokus"
+      },
+      "nav": {
+        "about": "Om oss",
+        "connect": "Kontakt",
+        "give": "Gi",
+        "home": "Hjem",
+        "live": "Direkte",
+        "sermons": "Taler",
+        "visit": "Besøk"
+      },
+      "navLinksNote": "Legger også til navigasjonslenker til innebygde sider:",
+      "pageCount": "{count} sider",
+      "pages": {
+        "about": "Om oss",
+        "connect": "Kontakt",
+        "home": "Hjem",
+        "visit": "Planlegg besøket"
+      },
+      "title": "Start fra en mal"
     },
     "spacingScaleEdit": {
       "buttonOne": "Knapp 1",

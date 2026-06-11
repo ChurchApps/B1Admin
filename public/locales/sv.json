@@ -3246,6 +3246,7 @@
       "previewPage": "Förhandsvisa sida",
       "showLogin": "Visa inloggning",
       "showLoginTooltip": "Visa inloggningsknapp i navigeringsfältet",
+      "startFromTemplate": "Börja från en mall",
       "subtitle": "Hantera webbplatsens sidor, innehåll och navigering",
       "toggleLoginVisibility": "Växla synlighet för inloggningsknapp",
       "totalPages": "Totalt antal sidor",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner med bibelvers",
       "watchOnline": "Titta online",
       "welcome": "Välkomsttext"
+    },
+    "siteTemplates": {
+      "back": "Tillbaka",
+      "create": "Skapa webbplats",
+      "creating": "Skapar {title}...",
+      "descriptions": {
+        "classic": "En komplett traditionell webbplats med en välkomnande startsida, en om oss-sida och en sida för att planera ditt besök.",
+        "community": "Sätter grupper och verksamheter i centrum så att människor snabbt kommer in i gemenskapen.",
+        "heritage": "En klassisk design med Bibeln i fokus för etablerade församlingar.",
+        "media": "Byggd kring din livesändning och ditt predikoarkiv, för kyrkor med stark närvaro online.",
+        "modern": "Ett modernt utseende med djärva gradienter, onlinegudstjänster och en kontaktsida.",
+        "simple": "En ren startwebbplats med två sidor, perfekt för församlingsplanteringar och små församlingar.",
+        "visitor": "Fokuserad på att besvara förstagångsbesökarens frågor innan de kommer."
+      },
+      "errFailed": "Det gick inte att skapa webbplatsen. Försök igen.",
+      "exists": "Finns redan",
+      "existsNote": "Sidor markerade med ”finns redan” lämnas oförändrade.",
+      "intro": "Välj en startwebbplats nedan. Vi skapar sidorna och navigeringslänkarna åt dig – allt kan redigeras efteråt.",
+      "names": {
+        "classic": "Klassisk kyrka",
+        "community": "Gemenskapsliv",
+        "heritage": "Tradition",
+        "media": "Online först",
+        "modern": "Modernt välkomnande",
+        "simple": "Enkel start",
+        "visitor": "Besökarfokus"
+      },
+      "nav": {
+        "about": "Om oss",
+        "connect": "Kontakt",
+        "give": "Ge",
+        "home": "Hem",
+        "live": "Live",
+        "sermons": "Predikningar",
+        "visit": "Besök"
+      },
+      "navLinksNote": "Lägger även till navigeringslänkar till inbyggda sidor:",
+      "pageCount": "{count} sidor",
+      "pages": {
+        "about": "Om oss",
+        "connect": "Kontakt",
+        "home": "Hem",
+        "visit": "Planera ditt besök"
+      },
+      "title": "Börja från en mall"
     },
     "spacingScaleEdit": {
       "buttonOne": "Knapp 1",

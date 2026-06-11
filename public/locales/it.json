@@ -3246,6 +3246,7 @@
       "previewPage": "Pagina di anteprima",
       "showLogin": "Mostra accesso",
       "showLoginTooltip": "Mostra il pulsante di accesso nella barra di navigazione",
+      "startFromTemplate": "Inizia da un modello",
       "subtitle": "Gestisci le pagine, i contenuti e la navigazione del tuo sito web",
       "toggleLoginVisibility": "Attiva/disattiva la visibilità del pulsante di accesso",
       "totalPages": "Pagine totali",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner versetto",
       "watchOnline": "Guarda online",
       "welcome": "Testo di benvenuto"
+    },
+    "siteTemplates": {
+      "back": "Indietro",
+      "create": "Crea sito",
+      "creating": "Creazione di {title}...",
+      "descriptions": {
+        "classic": "Un sito tradizionale completo con una home page accogliente, una pagina chi siamo e una pagina per pianificare la visita.",
+        "community": "Mette gruppi e ministeri in primo piano perché le persone si connettano rapidamente.",
+        "heritage": "Un design classico, incentrato sulla Scrittura, per congregazioni consolidate.",
+        "media": "Costruito attorno alla diretta streaming e all'archivio dei messaggi, per chiese con una forte presenza online.",
+        "modern": "Un aspetto contemporaneo con gradienti audaci, culti online e una pagina connettiti.",
+        "simple": "Un sito di partenza essenziale di due pagine, perfetto per nuove chiese e piccole congregazioni.",
+        "visitor": "Pensato per rispondere alle domande di chi visita per la prima volta, prima ancora che arrivi."
+      },
+      "errFailed": "Creazione del sito non riuscita. Riprova.",
+      "exists": "Già esistente",
+      "existsNote": "Le pagine contrassegnate come \"già esistente\" non verranno modificate.",
+      "intro": "Scegli un sito di partenza qui sotto. Creeremo per te le pagine e i link di navigazione — tutto potrà essere modificato in seguito.",
+      "names": {
+        "classic": "Chiesa classica",
+        "community": "Vita di comunità",
+        "heritage": "Eredità",
+        "media": "Prima l'online",
+        "modern": "Benvenuto moderno",
+        "simple": "Inizio semplice",
+        "visitor": "Focus sui visitatori"
+      },
+      "nav": {
+        "about": "Chi siamo",
+        "connect": "Connettiti",
+        "give": "Dona",
+        "home": "Home",
+        "live": "Diretta",
+        "sermons": "Sermoni",
+        "visit": "Visita"
+      },
+      "navLinksNote": "Aggiunge anche link di navigazione alle pagine integrate:",
+      "pageCount": "{count} pagine",
+      "pages": {
+        "about": "Chi Siamo",
+        "connect": "Connettiti",
+        "home": "Home",
+        "visit": "Pianifica la tua visita"
+      },
+      "title": "Inizia da un modello"
     },
     "spacingScaleEdit": {
       "buttonOne": "Pulsante 1",

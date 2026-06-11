@@ -3246,6 +3246,7 @@
       "previewPage": "Seite vorschauen",
       "showLogin": "Login anzeigen",
       "showLoginTooltip": "Login-Button in der Navigationsleiste anzeigen",
+      "startFromTemplate": "Mit einer Vorlage starten",
       "subtitle": "Verwalten Sie Ihre Webseiten, Inhalte und Navigation",
       "toggleLoginVisibility": "Sichtbarkeit des Login-Buttons umschalten",
       "totalPages": "Seiten gesamt",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Bibelvers-Banner",
       "watchOnline": "Online ansehen",
       "welcome": "Willkommenstext"
+    },
+    "siteTemplates": {
+      "back": "Zurück",
+      "create": "Website erstellen",
+      "creating": "{title} wird erstellt...",
+      "descriptions": {
+        "classic": "Eine vollständige traditionelle Website mit einladender Startseite, Über-uns-Seite und einer Seite zur Besuchsplanung.",
+        "community": "Stellt Gruppen und Dienstbereiche in den Mittelpunkt, damit Menschen schnell Anschluss finden.",
+        "heritage": "Ein klassisches Design mit Fokus auf der Heiligen Schrift für etablierte Gemeinden.",
+        "media": "Aufgebaut rund um Ihren Livestream und Ihr Predigtarchiv – für Gemeinden mit starker Online-Präsenz.",
+        "modern": "Ein modernes Erscheinungsbild mit kräftigen Farbverläufen, Online-Gottesdiensten und einer Kontaktseite.",
+        "simple": "Ein übersichtlicher Einstieg mit zwei Seiten, perfekt für Gemeindegründungen und kleine Gemeinden.",
+        "visitor": "Darauf ausgerichtet, die Fragen von Erstbesuchern schon vor ihrem Besuch zu beantworten."
+      },
+      "errFailed": "Die Website konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+      "exists": "Bereits vorhanden",
+      "existsNote": "Seiten mit der Markierung „bereits vorhanden“ bleiben unverändert.",
+      "intro": "Wählen Sie unten eine Startvorlage aus. Wir erstellen die Seiten und Navigationslinks für Sie – alles kann anschließend bearbeitet werden.",
+      "names": {
+        "classic": "Klassische Gemeinde",
+        "community": "Gemeinschaftsleben",
+        "heritage": "Tradition",
+        "media": "Online zuerst",
+        "modern": "Modernes Willkommen",
+        "simple": "Einfacher Start",
+        "visitor": "Besucherfokus"
+      },
+      "nav": {
+        "about": "Über uns",
+        "connect": "Kontakt",
+        "give": "Spenden",
+        "home": "Startseite",
+        "live": "Live",
+        "sermons": "Predigten",
+        "visit": "Besuch"
+      },
+      "navLinksNote": "Fügt außerdem Navigationslinks zu integrierten Seiten hinzu:",
+      "pageCount": "{count} Seiten",
+      "pages": {
+        "about": "Über uns",
+        "connect": "Kontakt",
+        "home": "Startseite",
+        "visit": "Besuch planen"
+      },
+      "title": "Mit einer Vorlage starten"
     },
     "spacingScaleEdit": {
       "buttonOne": "Schaltfläche 1",

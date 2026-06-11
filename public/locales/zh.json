@@ -3246,6 +3246,7 @@
       "previewPage": "预览页面",
       "showLogin": "显示登录",
       "showLoginTooltip": "在导航栏中显示登录按钮",
+      "startFromTemplate": "从模板开始",
       "subtitle": "管理您的网站页面、内容和导航",
       "toggleLoginVisibility": "切换登录按钮可见性",
       "totalPages": "总页数",
@@ -3405,6 +3406,51 @@
       "verseBanner": "经文横幅",
       "watchOnline": "在线观看",
       "welcome": "欢迎文字"
+    },
+    "siteTemplates": {
+      "back": "返回",
+      "create": "创建网站",
+      "creating": "正在创建 {title}...",
+      "descriptions": {
+        "classic": "一个完整的传统网站，包含热情的首页、关于我们页面和计划来访页面。",
+        "community": "将小组和事工放在最显眼的位置，让人们快速融入。",
+        "heritage": "经典且以圣经为中心的设计，适合历史悠久的教会。",
+        "media": "以您的直播和讲道存档为核心，适合线上影响力强的教会。",
+        "modern": "现代风格，配有醒目的渐变、线上聚会和联系页面。",
+        "simple": "简洁的两页起步网站，非常适合新建教会和小型会众。",
+        "visitor": "专注于在初次来访的访客到来之前解答他们的问题。"
+      },
+      "errFailed": "创建网站失败。请重试。",
+      "exists": "已存在",
+      "existsNote": "标记为“已存在”的页面将保持不变。",
+      "intro": "请在下方选择一个起步网站。我们将为您创建页面和导航链接——之后一切都可以编辑。",
+      "names": {
+        "classic": "经典教会",
+        "community": "社区生活",
+        "heritage": "传承",
+        "media": "线上优先",
+        "modern": "现代欢迎",
+        "simple": "简单起步",
+        "visitor": "聚焦访客"
+      },
+      "nav": {
+        "about": "关于我们",
+        "connect": "联系",
+        "give": "奉献",
+        "home": "首页",
+        "live": "直播",
+        "sermons": "讲道",
+        "visit": "来访"
+      },
+      "navLinksNote": "同时还会为内置页面添加导航链接：",
+      "pageCount": "{count} 个页面",
+      "pages": {
+        "about": "关于我们",
+        "connect": "联系",
+        "home": "首页",
+        "visit": "计划您的来访"
+      },
+      "title": "从模板开始"
     },
     "spacingScaleEdit": {
       "buttonOne": "按钮 1",

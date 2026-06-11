@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Mulai dari Template",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner Ayat",
       "watchOnline": "Tonton Online",
       "welcome": "Teks Sambutan"
+    },
+    "siteTemplates": {
+      "back": "Kembali",
+      "create": "Buat Situs",
+      "creating": "Membuat {title}...",
+      "descriptions": {
+        "classic": "Situs tradisional lengkap dengan halaman beranda yang ramah, halaman tentang kami, dan halaman rencana kunjungan.",
+        "community": "Menampilkan grup dan pelayanan di posisi utama agar orang-orang cepat terhubung.",
+        "heritage": "Desain klasik yang berfokus pada Alkitab untuk jemaat yang sudah mapan.",
+        "media": "Dibangun di sekitar siaran langsung dan arsip khotbah Anda, untuk gereja dengan kehadiran online yang kuat.",
+        "modern": "Tampilan kontemporer dengan gradien yang berani, ibadah online, dan halaman terhubung.",
+        "simple": "Situs awal dua halaman yang bersih, sempurna untuk perintisan gereja dan jemaat kecil.",
+        "visitor": "Berfokus menjawab pertanyaan tamu yang baru pertama kali datang sebelum mereka tiba."
+      },
+      "errFailed": "Gagal membuat situs. Silakan coba lagi.",
+      "exists": "Sudah ada",
+      "existsNote": "Halaman yang ditandai \"sudah ada\" tidak akan diubah.",
+      "intro": "Pilih situs awal di bawah ini. Kami akan membuatkan halaman dan tautan navigasi untuk Anda — semuanya dapat diedit setelahnya.",
+      "names": {
+        "classic": "Gereja Klasik",
+        "community": "Kehidupan Komunitas",
+        "heritage": "Warisan",
+        "media": "Utamakan Online",
+        "modern": "Sambutan Modern",
+        "simple": "Awal Sederhana",
+        "visitor": "Fokus Pengunjung"
+      },
+      "nav": {
+        "about": "Tentang",
+        "connect": "Terhubung",
+        "give": "Persembahan",
+        "home": "Beranda",
+        "live": "Siaran Langsung",
+        "sermons": "Khotbah",
+        "visit": "Kunjungan"
+      },
+      "navLinksNote": "Juga menambahkan tautan navigasi ke halaman bawaan:",
+      "pageCount": "{count} halaman",
+      "pages": {
+        "about": "Tentang Kami",
+        "connect": "Terhubung",
+        "home": "Beranda",
+        "visit": "Rencanakan Kunjungan Anda"
+      },
+      "title": "Mulai dari Template"
     },
     "spacingScaleEdit": {
       "buttonOne": "Tombol 1",

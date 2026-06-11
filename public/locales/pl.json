@@ -3246,6 +3246,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Zacznij od szablonu",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Baner z wersetem",
       "watchOnline": "Oglądaj online",
       "welcome": "Tekst powitalny"
+    },
+    "siteTemplates": {
+      "back": "Wstecz",
+      "create": "Utwórz witrynę",
+      "creating": "Tworzenie {title}...",
+      "descriptions": {
+        "classic": "Kompletna, tradycyjna witryna z przyjazną stroną główną, stroną o nas i stroną planowania wizyty.",
+        "community": "Stawia grupy i służby na pierwszym planie, aby ludzie szybko nawiązywali kontakt.",
+        "heritage": "Klasyczny projekt z Pismem Świętym na pierwszym miejscu, dla ugruntowanych wspólnot.",
+        "media": "Zbudowana wokół transmisji na żywo i archiwum kazań, dla kościołów z silną obecnością online.",
+        "modern": "Współczesny wygląd z wyrazistymi gradientami, nabożeństwami online i stroną kontaktową.",
+        "simple": "Przejrzysty start z dwiema stronami, idealny dla nowo powstających i małych wspólnot.",
+        "visitor": "Skupiona na odpowiadaniu na pytania osób odwiedzających po raz pierwszy, zanim jeszcze przyjdą."
+      },
+      "errFailed": "Nie udało się utworzyć witryny. Spróbuj ponownie.",
+      "exists": "Już istnieje",
+      "existsNote": "Strony oznaczone jako \"już istnieje\" pozostaną bez zmian.",
+      "intro": "Wybierz poniżej witrynę startową. Utworzymy za Ciebie strony i linki nawigacyjne — wszystko można później edytować.",
+      "names": {
+        "classic": "Klasyczny kościół",
+        "community": "Życie wspólnoty",
+        "heritage": "Dziedzictwo",
+        "media": "Najpierw online",
+        "modern": "Nowoczesne powitanie",
+        "simple": "Prosty start",
+        "visitor": "Z myślą o gościach"
+      },
+      "nav": {
+        "about": "O nas",
+        "connect": "Kontakt",
+        "give": "Ofiarność",
+        "home": "Strona główna",
+        "live": "Na żywo",
+        "sermons": "Kazania",
+        "visit": "Wizyta"
+      },
+      "navLinksNote": "Dodaje także linki nawigacyjne do stron wbudowanych:",
+      "pageCount": "Strony: {count}",
+      "pages": {
+        "about": "O nas",
+        "connect": "Kontakt",
+        "home": "Strona główna",
+        "visit": "Zaplanuj wizytę"
+      },
+      "title": "Zacznij od szablonu"
     },
     "spacingScaleEdit": {
       "buttonOne": "Przycisk 1",

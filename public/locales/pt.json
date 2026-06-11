@@ -3246,6 +3246,7 @@
       "previewPage": "Página de visualização",
       "showLogin": "Mostrar login",
       "showLoginTooltip": "Mostrar botão de login na barra de navegação",
+      "startFromTemplate": "Começar com um Modelo",
       "subtitle": "Gerencie as páginas, o conteúdo e a navegação do seu site",
       "toggleLoginVisibility": "Alternar a visibilidade do botão de login",
       "totalPages": "Total de páginas",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner de Versículo",
       "watchOnline": "Assista Online",
       "welcome": "Texto de Boas-Vindas"
+    },
+    "siteTemplates": {
+      "back": "Voltar",
+      "create": "Criar Site",
+      "creating": "Criando {title}...",
+      "descriptions": {
+        "classic": "Um site tradicional completo com uma página inicial acolhedora, página sobre nós e página para planejar sua visita.",
+        "community": "Coloca grupos e ministérios em destaque para que as pessoas se conectem rapidamente.",
+        "heritage": "Um design clássico com destaque para as Escrituras, para congregações estabelecidas.",
+        "media": "Construído em torno da sua transmissão ao vivo e do arquivo de mensagens, para igrejas com forte presença online.",
+        "modern": "Um visual contemporâneo com gradientes marcantes, cultos online e uma página de conexão.",
+        "simple": "Um começo simples com duas páginas, perfeito para plantações de igrejas e congregações pequenas.",
+        "visitor": "Focado em responder às perguntas de quem visita pela primeira vez, antes mesmo de chegar."
+      },
+      "errFailed": "Falha ao criar o site. Tente novamente.",
+      "exists": "Já existe",
+      "existsNote": "As páginas marcadas como \"já existe\" permanecerão inalteradas.",
+      "intro": "Escolha um site inicial abaixo. Criaremos as páginas e os links de navegação para você — tudo pode ser editado depois.",
+      "names": {
+        "classic": "Igreja Clássica",
+        "community": "Vida em Comunidade",
+        "heritage": "Herança",
+        "media": "Online em Primeiro Lugar",
+        "modern": "Boas-Vindas Modernas",
+        "simple": "Começo Simples",
+        "visitor": "Foco no Visitante"
+      },
+      "nav": {
+        "about": "Sobre",
+        "connect": "Conecte-se",
+        "give": "Contribua",
+        "home": "Início",
+        "live": "Ao Vivo",
+        "sermons": "Sermões",
+        "visit": "Visite"
+      },
+      "navLinksNote": "Também adiciona links de navegação para páginas integradas:",
+      "pageCount": "{count} páginas",
+      "pages": {
+        "about": "Sobre Nós",
+        "connect": "Conecte-se",
+        "home": "Início",
+        "visit": "Planeje Sua Visita"
+      },
+      "title": "Começar com um Modelo"
     },
     "spacingScaleEdit": {
       "buttonOne": "Botão 1",

@@ -3246,6 +3246,7 @@
       "previewPage": "Pagina voorbeeld",
       "showLogin": "Login tonen",
       "showLoginTooltip": "Toon loginknop in de navigatiebalk",
+      "startFromTemplate": "Begin met een sjabloon",
       "subtitle": "Beheer de pagina's, inhoud en navigatie van uw website",
       "toggleLoginVisibility": "Zichtbaarheid loginknop omschakelen",
       "totalPages": "Totaal aantal pagina's",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner met Bijbeltekst",
       "watchOnline": "Online kijken",
       "welcome": "Welkomsttekst"
+    },
+    "siteTemplates": {
+      "back": "Terug",
+      "create": "Site aanmaken",
+      "creating": "{title} wordt aangemaakt...",
+      "descriptions": {
+        "classic": "Een complete traditionele site met een gastvrije homepage, een over-ons-pagina en een pagina om uw bezoek te plannen.",
+        "community": "Zet groepen en bedieningen centraal zodat mensen snel verbonden raken.",
+        "heritage": "Een klassiek ontwerp met de Bijbel voorop, voor gevestigde gemeenten.",
+        "media": "Opgebouwd rond uw livestream en prekenarchief, voor kerken met een sterke online aanwezigheid.",
+        "modern": "Een eigentijdse uitstraling met opvallende kleurverlopen, onlinediensten en een contactpagina.",
+        "simple": "Een overzichtelijke starter met twee pagina's, perfect voor kerkplantingen en kleine gemeenten.",
+        "visitor": "Gericht op het beantwoorden van de vragen van een eerste bezoeker, nog voordat die er is."
+      },
+      "errFailed": "Het aanmaken van de site is mislukt. Probeer het opnieuw.",
+      "exists": "Bestaat al",
+      "existsNote": "Pagina's gemarkeerd met \"bestaat al\" blijven ongewijzigd.",
+      "intro": "Kies hieronder een startersite. Wij maken de pagina's en navigatielinks voor u aan — alles kan achteraf worden aangepast.",
+      "names": {
+        "classic": "Klassieke kerk",
+        "community": "Gemeenschapsleven",
+        "heritage": "Erfgoed",
+        "media": "Online voorop",
+        "modern": "Modern welkom",
+        "simple": "Eenvoudige start",
+        "visitor": "Gericht op bezoekers"
+      },
+      "nav": {
+        "about": "Over ons",
+        "connect": "Contact",
+        "give": "Geven",
+        "home": "Home",
+        "live": "Live",
+        "sermons": "Preken",
+        "visit": "Bezoek"
+      },
+      "navLinksNote": "Voegt ook navigatielinks toe naar ingebouwde pagina's:",
+      "pageCount": "{count} pagina's",
+      "pages": {
+        "about": "Over ons",
+        "connect": "Contact",
+        "home": "Home",
+        "visit": "Plan uw bezoek"
+      },
+      "title": "Begin met een sjabloon"
     },
     "spacingScaleEdit": {
       "buttonOne": "Knop 1",

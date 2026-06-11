@@ -3246,6 +3246,7 @@
       "previewPage": "PREVIEW PAGE",
       "showLogin": "Magpakita ng pag -login",
       "showLoginTooltip": "Ipakita ang pindutan ng pag -login sa nabigasyon bar",
+      "startFromTemplate": "Magsimula sa isang Template",
       "subtitle": "Pamahalaan ang iyong mga pahina ng website, nilalaman, at nabigasyon",
       "toggleLoginVisibility": "Toggle Button Button Visibility",
       "totalPages": "Kabuuang mga pahina",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner ng Bersikulo",
       "watchOnline": "Manood Online",
       "welcome": "Teksto ng Pagbati"
+    },
+    "siteTemplates": {
+      "back": "Bumalik",
+      "create": "Gumawa ng Site",
+      "creating": "Ginagawa ang {title}...",
+      "descriptions": {
+        "classic": "Isang kumpletong tradisyonal na site na may malugod na home page, pahina tungkol sa amin, at pahina para sa pagplano ng pagbisita.",
+        "community": "Inilalagay sa unahan ang mga grupo at ministeryo para mabilis na makakonekta ang mga tao.",
+        "heritage": "Isang klasiko at nakasentro sa Kasulatan na disenyo para sa mga matagal nang kongregasyon.",
+        "media": "Nakabuo sa paligid ng iyong live stream at archive ng mga mensahe, para sa mga simbahang may malakas na presensya online.",
+        "modern": "Isang makabagong itsura na may matitingkad na gradient, mga online na serbisyo, at pahina para makakonekta.",
+        "simple": "Isang malinis na panimulang site na may dalawang pahina, perpekto para sa mga bagong tatag na simbahan at maliliit na kongregasyon.",
+        "visitor": "Nakatuon sa pagsagot sa mga tanong ng unang beses na bisita bago pa sila dumating."
+      },
+      "errFailed": "Hindi nagawa ang site. Pakisubukang muli.",
+      "exists": "Mayroon na",
+      "existsNote": "Ang mga pahinang minarkahang \"mayroon na\" ay hindi babaguhin.",
+      "intro": "Pumili ng panimulang site sa ibaba. Gagawin namin ang mga pahina at mga link sa nabigasyon para sa iyo — maaaring i-edit ang lahat pagkatapos.",
+      "names": {
+        "classic": "Klasikong Simbahan",
+        "community": "Buhay ng Komunidad",
+        "heritage": "Pamana",
+        "media": "Online Muna",
+        "modern": "Makabagong Pagtanggap",
+        "simple": "Simpleng Simula",
+        "visitor": "Pokus sa Bisita"
+      },
+      "nav": {
+        "about": "Tungkol sa Amin",
+        "connect": "Kumonekta",
+        "give": "Magbigay",
+        "home": "Bahay",
+        "live": "Live",
+        "sermons": "Mga Sermon",
+        "visit": "Bumisita"
+      },
+      "navLinksNote": "Nagdaragdag din ng mga link sa nabigasyon papunta sa mga built-in na pahina:",
+      "pageCount": "{count} na pahina",
+      "pages": {
+        "about": "Tungkol sa Amin",
+        "connect": "Kumonekta",
+        "home": "Bahay",
+        "visit": "Planuhin ang Iyong Pagbisita"
+      },
+      "title": "Magsimula sa isang Template"
     },
     "spacingScaleEdit": {
       "buttonOne": "Button 1",

@@ -3246,6 +3246,7 @@
       "previewPage": "Náhled stránky",
       "showLogin": "Zobrazit přihlášení",
       "showLoginTooltip": "Zobrazit tlačítko přihlášení v navigačním panelu",
+      "startFromTemplate": "Začít ze šablony",
       "subtitle": "Spravujte stránky webu, obsah a navigaci",
       "toggleLoginVisibility": "Přepnout viditelnost tlačítka přihlášení",
       "totalPages": "Celkový počet stránek",
@@ -3405,6 +3406,51 @@
       "verseBanner": "Banner s veršem",
       "watchOnline": "Sledovat online",
       "welcome": "Uvítací text"
+    },
+    "siteTemplates": {
+      "back": "Zpět",
+      "create": "Vytvořit web",
+      "creating": "Vytváří se {title}...",
+      "descriptions": {
+        "classic": "Kompletní tradiční web s přívětivou domovskou stránkou, stránkou O nás a stránkou pro naplánování návštěvy.",
+        "community": "Staví skupiny a služby do popředí, aby se lidé rychle zapojili.",
+        "heritage": "Klasický design zaměřený na Písmo pro zavedené sbory.",
+        "media": "Postaveno kolem vašeho živého vysílání a archivu kázání, pro církve se silnou online přítomností.",
+        "modern": "Současný vzhled s výraznými barevnými přechody, online bohoslužbami a kontaktní stránkou.",
+        "simple": "Čistý začátek se dvěma stránkami, ideální pro nově založené i malé sbory.",
+        "visitor": "Zaměřeno na zodpovězení otázek nových návštěvníků ještě před jejich příchodem."
+      },
+      "errFailed": "Web se nepodařilo vytvořit. Zkuste to prosím znovu.",
+      "exists": "Již existuje",
+      "existsNote": "Stránky označené „již existuje“ zůstanou beze změny.",
+      "intro": "Vyberte si níže výchozí web. Stránky a navigační odkazy vytvoříme za vás — vše lze následně upravit.",
+      "names": {
+        "classic": "Klasická církev",
+        "community": "Život společenství",
+        "heritage": "Tradice",
+        "media": "Online na prvním místě",
+        "modern": "Moderní přivítání",
+        "simple": "Jednoduchý začátek",
+        "visitor": "Zaměřeno na návštěvníky"
+      },
+      "nav": {
+        "about": "O nás",
+        "connect": "Kontakt",
+        "give": "Darovat",
+        "home": "Domů",
+        "live": "Živě",
+        "sermons": "Kázání",
+        "visit": "Návštěva"
+      },
+      "navLinksNote": "Přidá také navigační odkazy na vestavěné stránky:",
+      "pageCount": "{count} stránek",
+      "pages": {
+        "about": "O nás",
+        "connect": "Kontakt",
+        "home": "Domů",
+        "visit": "Naplánujte si návštěvu"
+      },
+      "title": "Začít ze šablony"
     },
     "spacingScaleEdit": {
       "buttonOne": "Tlačítko 1",
