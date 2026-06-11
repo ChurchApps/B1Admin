@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { ApiHelper, ArrayHelper, CommonEnvironmentHelper, DateHelper, DisplayBox, Locale, type PersonInterface, UserHelper } from "@churchapps/apphelper";
 import { type AssignmentInterface, type BlockoutDateInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
+import { type SchedulingPreferenceInterface } from "../../helpers";
 
 interface Props {
   plan: PlanInterface;
@@ -20,6 +21,8 @@ export const PlanValidation = (props: Props) => {
   const [planTimeConflicts, setPlanTimeConflicts] = React.useState<{ time: TimeInterface; overlapingTimes: TimeInterface[] }[]>([]);
   const [externalPositions, setExternalPositions] = React.useState<PositionInterface[]>();
   const [externalAssignments, setExternalAssignments] = React.useState<AssignmentInterface[]>();
+  const [preferences, setPreferences] = React.useState<SchedulingPreferenceInterface[]>([]);
+  const [monthCounts, setMonthCounts] = React.useState<{ personId: string; count: number }[]>([]);
 
   const validateBlockout = (issues: JSX.Element[]) => {
     const conflicts: { person: PersonInterface; blockout: BlockoutDateInterface }[] = [];
@@ -153,13 +156,79 @@ export const PlanValidation = (props: Props) => {
     });
   };
 
+  const matchesPreferredTime = (preferredTimes: string) => {
+    const tokens = (preferredTimes || "").split(",").map((t) => t.trim().toLowerCase()).filter((t) => t.length > 0);
+    if (tokens.length === 0 || props.times.length === 0) return null;
+    const candidates: string[] = [];
+    props.times.forEach((t) => {
+      if (t.displayName) candidates.push(t.displayName.toLowerCase());
+      if (t.startTime) {
+        const d = new Date(t.startTime);
+        const h24 = d.getHours();
+        const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+        const mm = d.getMinutes().toString().padStart(2, "0");
+        const ampm = h24 < 12 ? "am" : "pm";
+        candidates.push(`${h12}:${mm}`, `${h12}:${mm} ${ampm}`, `${h12}:${mm}${ampm}`, `${h24.toString().padStart(2, "0")}:${mm}`);
+      }
+    });
+    return tokens.some((token) => candidates.some((c) => c.includes(token)));
+  };
+
+  const validatePreferences = (issues: JSX.Element[]) => {
+    const assignedPeople = props.people.filter((person) => props.assignments.some((a) => a.personId === person.id && a.status !== "Declined"));
+    assignedPeople.forEach((person) => {
+      const pref = preferences.find((p) => p.personId === person.id);
+      if (!pref) return;
+      const name = person?.name?.display || Locale.label("person.unknown");
+      const count = monthCounts.find((c) => c.personId === person.id)?.count || 0;
+      if (pref.maxPerMonth && count > pref.maxPerMonth) {
+        issues.push(
+          <>
+            <b>{name}:</b> {Locale.label("plans.planValidation.overMaxPerMonth") || "is scheduled"} {count} {Locale.label("plans.planValidation.timesThisMonth") || "times this month, over their preferred max of"} {pref.maxPerMonth}.
+          </>
+        );
+      }
+      if (matchesPreferredTime(pref.preferredTimes) === false) {
+        issues.push(
+          <>
+            <b>{name}:</b> {Locale.label("plans.planValidation.prefTimeMismatch") || "prefers serving at"} {pref.preferredTimes}.
+          </>
+        );
+      }
+      if (pref.householdScheduling === "apart") {
+        const partners = assignedPeople.filter((other) => other.id !== person.id && other.householdId && other.householdId === person.householdId);
+        partners.forEach((other) => {
+          issues.push(
+            <>
+              <b>{name}:</b> {Locale.label("plans.planValidation.householdApart") || "prefers not to serve the same day as"} {other?.name?.display || Locale.label("person.unknown")}.
+            </>
+          );
+        });
+      }
+    });
+  };
+
   const validate = () => {
     const result: JSX.Element[] = [];
     validatePoisitionsFilled(result);
     validateTimeConflicts(result);
     validateBlockout(result);
+    validatePreferences(result);
     setErrors(result);
     return result.length === 0;
+  };
+
+  const loadPreferenceData = () => {
+    const personIds = ArrayHelper.getUniqueValues(props.assignments, "personId").filter((id) => id);
+    if (personIds.length === 0) {
+      setPreferences([]);
+      setMonthCounts([]);
+      return;
+    }
+    ApiHelper.get("/schedulingPreferences/people?ids=" + personIds.join(","), "DoingApi").then((data: SchedulingPreferenceInterface[]) => setPreferences(data || []));
+    if (props.plan?.serviceDate) {
+      ApiHelper.get("/assignments/monthCounts?date=" + new Date(props.plan.serviceDate).toISOString().split("T")[0], "DoingApi").then((data: any[]) => setMonthCounts(data || []));
+    }
   };
 
   const getAll = async () => {
@@ -209,8 +278,13 @@ export const PlanValidation = (props: Props) => {
 
   useEffect(() => {
     getAll();
+    loadPreferenceData();
     validate();
   }, [props.assignments, props.positions, props.people]);
+
+  useEffect(() => {
+    validate();
+  }, [preferences, monthCounts]);
 
   const getErrorList = () => {
     if (errors.length === 0) return <p>{Locale.label("plans.planValidation.valPlan")}</p>;
@@ -247,10 +321,32 @@ export const PlanValidation = (props: Props) => {
     Promise.all(promises).then(props.onUpdate);
   };
 
+  const publish = () => {
+    const plan: PlanInterface = { ...props.plan, prepared: false };
+    ApiHelper.post("/plans", [plan], "DoingApi").then(() => {
+      const pending = getPendingNotifications();
+      if (pending.length > 0) notify();
+      else props.onUpdate();
+    });
+  };
+
   const getNotificationLink = () => {
     if (!canEdit) return null;
 
     const pending = getPendingNotifications();
+
+    if (props.plan?.prepared) {
+      return (
+        <p>
+          {Locale.label("plans.planValidation.penciledIn") || "Penciled in — volunteers can't see these assignments yet."}{" "}
+          <button type="button" onClick={publish} data-testid="publish-plan-button" style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
+            {pending.length > 0
+              ? (Locale.label("plans.planValidation.publishNotify") || "Publish & Notify") + " " + pending.length + " " + Locale.label("plans.planValidation.vol")
+              : Locale.label("plans.planValidation.publish") || "Publish Plan"}
+          </button>
+        </p>
+      );
+    }
 
     if (pending.length === 0) return <p>{Locale.label("plans.planValidation.volNotif")}</p>;
     else {

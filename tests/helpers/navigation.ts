@@ -32,6 +32,7 @@ type SecondarySection =
   | "registrations"
   | "batches"
   | "funds"
+  | "campaigns"
   | "statements"
   | "liveStreamTimes"
   | "serverAdmin";
@@ -46,7 +47,7 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   sermons: /\/sermons(?!\/)/,
   website: /\/site\/pages/,
   mobile: /\/mobile/,
-  settings: /\/settings/,
+  settings: /\/settings/
 };
 
 // For each secondary section: the primary parent to open first, the text label in
@@ -69,9 +70,10 @@ const SECONDARY_ROUTES: Record<
   registrations: { parent: "website", label: "Registrations", url: /\/registrations/ },
   batches: { parent: "donations", label: "Batches", url: /\/donations\/batches/ },
   funds: { parent: "donations", label: "Funds", url: /\/donations\/funds/ },
+  campaigns: { parent: "donations", label: "Campaigns", url: /\/donations\/campaigns/ },
   statements: { parent: "donations", label: "Giving Statements", url: /\/donations\/statements/ },
   liveStreamTimes: { parent: "sermons", label: "Live Stream Times", url: /\/sermons\/times/ },
-  serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ },
+  serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ }
 };
 
 export async function openPrimaryNav(page: Page) {

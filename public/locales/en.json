@@ -551,6 +551,45 @@
       "pressEnter": "Press Enter to save and add another donation",
       "selectPerson": "Select Person or Anonymous"
     },
+    "campaignEdit": {
+      "allowSelfPledge": "Allow donors to pledge",
+      "confirmMsg": "Are you sure you wish to permanently delete this campaign and all pledges within it?",
+      "description": "Description",
+      "endDate": "End Date (optional)",
+      "errBlank": "Enter a campaign name",
+      "errFund": "Select a fund",
+      "errStartDate": "Enter a start date",
+      "fund": "Fund",
+      "goalAmount": "Goal Amount (optional)",
+      "showPublic": "Show progress on giving page",
+      "startDate": "Start Date"
+    },
+    "campaignPage": {
+      "addPledge": "Add Pledge",
+      "anon": "Anonymous",
+      "donor": "Donor",
+      "editCampaign": "Edit Campaign",
+      "noPledges": "No pledges have been made to this campaign yet.",
+      "ofGoal": "of goal",
+      "pledges": "Pledges",
+      "status": "Status",
+      "subtitle": "Pledges and giving progress for this campaign"
+    },
+    "campaignsPage": {
+      "addCampaign": "Add Campaign",
+      "campaigns": "Campaigns",
+      "dates": "Dates",
+      "export": "Export",
+      "fund": "Fund",
+      "given": "Given",
+      "goal": "Goal",
+      "noCampaigns": "No campaigns have been created yet.",
+      "ongoing": "Ongoing",
+      "pledged": "Pledged",
+      "progress": "Progress",
+      "subtitle": "Track pledge campaigns and progress toward giving goals",
+      "totalCampaigns": "Total Campaigns"
+    },
     "donationBatchesPage": {
       "addBatch": "Add Batch",
       "batches": "Batches",
@@ -596,6 +635,7 @@
       "amt": "Amount",
       "anon": "Anonymous",
       "batches": "Batches",
+      "campaigns": "Campaigns",
       "date": "Date",
       "don": "Donations",
       "edit": "Edit",
@@ -661,8 +701,24 @@
       "quarterly": "Quarterly",
       "weekly": "Weekly"
     },
+    "pledgeEdit": {
+      "addPledge": "Add Pledge",
+      "amount": "Pledge Amount",
+      "confirmMsg": "Are you sure you wish to permanently delete this pledge?",
+      "editPledge": "Edit Pledge",
+      "errAmount": "Enter a pledge amount greater than zero",
+      "errPerson": "Select a person"
+    },
+    "pledgeStatus": {
+      "beyondPledged": "Beyond Pledged",
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "nonPledged": "Non-Pledged",
+      "notStarted": "Not Started"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
+      "campaign": "Campaign",
       "contributionDetails": "Contribution Details",
       "disclaimer": "No goods or services were provided by {churchName} in return for these contributions. The only benefit received was an intangible religious benefit. {churchName} is a non-profit organization.",
       "donorInformation": "Donor Information",
@@ -674,12 +730,17 @@
       "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
       "organization": "Organization",
       "period": "Period: January 1 - December 31, {year}",
+      "pledged": "Pledged",
+      "pledgeProgress": "Pledge Campaigns",
+      "given": "Given",
       "statementSummary": "Statement Summary",
+      "status": "Status",
       "totalContributions": "Total Contributions",
       "totalContributionsLabel": "Total Contributions:"
     },
     "printDonationPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
+      "campaign": "Campaign",
       "contributionDetails": "Contribution Details",
       "disclaimer": "No goods or services were provided by {churchName} in return for these contributions. The only benefit received was an intangible religious benefit. {churchName} is a non-profit organization.",
       "donorInformation": "Donor Information",
@@ -690,7 +751,11 @@
       "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
       "organization": "Organization",
       "period": "Period: January 1 - December 31, {year}",
+      "pledged": "Pledged",
+      "pledgeProgress": "Pledge Campaigns",
+      "given": "Given",
       "statementSummary": "Statement Summary",
+      "status": "Status",
       "totalContributions": "Total Contributions",
       "totalContributionsLabel": "Total Contributions:"
     },
@@ -1722,8 +1787,10 @@
       "autoAssign": "Auto Assign",
       "notesPlaceholder": "Add notes for this service plan...",
       "notesPlaceholderReadOnly": "Plan notes (read-only)",
+      "penciledIn": "Penciled In",
       "planNotesAria": "Plan notes",
-      "saveNotes": "Save Notes"
+      "saveNotes": "Save Notes",
+      "undoAutoAssign": "Undo Auto Assign"
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
@@ -1834,6 +1901,7 @@
       "subtitle": "Organize serving teams and service plans"
     },
     "planEdit": {
+      "autoReplaceOnDecline": "Automatically schedule a replacement when a volunteer declines",
       "copyAll": "Positions and Assignments",
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
@@ -1843,9 +1911,10 @@
       "planEdit": "Edit Plan",
       "planNameAria": "Plan name",
       "planReq": "Plan name is required.",
+      "prepared": "Penciled in (hide assignments from volunteers until published)",
       "servDate": "Service Date",
-      "serviceDateAria": "Service date",
       "servReq": "Service date is required.",
+      "serviceDateAria": "Service date",
       "showVolunteerNames": "Show volunteer names on signup page",
       "signupDeadline": "Signup Deadline (hours before service)",
       "signupDeadlineHelper": "Leave blank for no deadline"
@@ -1902,12 +1971,6 @@
       "servicePlan": "Service Plan",
       "subtitle": "Plan and schedule your service"
     },
-    "plansPage": {
-      "addMinistry": "Add Ministry",
-      "editMinistry": "Edit Ministry",
-      "selMin": "Select a Ministry",
-      "subtitle": "Manage ministries and service plans"
-    },
     "planType": {
       "details": "Plan Type Details"
     },
@@ -1955,20 +2018,33 @@
       "blockCon": "Blockout date conflict of",
       "cons": "Conflicts",
       "during": "during",
+      "householdApart": "prefers not to serve the same day as",
       "more": "more",
       "needed": "needed.",
       "notify": "Notify",
+      "overMaxPerMonth": "is scheduled",
+      "penciledIn": "Penciled in — volunteers can't see these assignments yet.",
       "person": "person",
       "pleaseConfirm": "Please log in and confirm.",
       "ppl": "people",
+      "prefTimeMismatch": "prefers serving at",
+      "publish": "Publish Plan",
+      "publishNotify": "Publish & Notify",
       "timeCon": "Time conflict between",
       "timeCon2": "Time conflict at",
+      "timesThisMonth": "times this month, over their preferred max of",
       "to": "to",
       "val": "Validation",
       "valPlan": "Plan is valid.",
       "vol": "volunteer(s)",
       "volNotif": "All volunteers notified.",
       "volReq": "Volunteer Requests: "
+    },
+    "plansPage": {
+      "addMinistry": "Add Ministry",
+      "editMinistry": "Edit Ministry",
+      "selMin": "Select a Ministry",
+      "subtitle": "Manage ministries and service plans"
     },
     "positionEdit": {
       "allowSelfSignup": "Allow Self-Signup",
@@ -1995,6 +2071,17 @@
       "length": "Length",
       "serviceOrder": "SERVICE ORDER",
       "time": "Time"
+    },
+    "schedulingPreference": {
+      "household": "Household scheduling",
+      "householdApart": "Don't schedule household the same day",
+      "householdNone": "No preference",
+      "householdTogether": "Schedule household together",
+      "maxPerMonth": "Max times per month",
+      "maxPerMonthHelper": "Leave blank for no limit",
+      "preferredTimes": "Preferred service times",
+      "preferredTimesHelper": "e.g. 9:00 am or First Service. Separate multiple with commas.",
+      "title": "Scheduling Preferences"
     },
     "serviceOrder": {
       "addFromLesson": "Add From Lesson",

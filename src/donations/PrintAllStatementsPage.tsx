@@ -5,6 +5,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 import { Box, CircularProgress, Typography } from "@mui/material";
+import { type PledgeProgressRowInterface } from "../helpers";
 
 export const PrintAllStatementsPage = () => {
   const navigate = useNavigate();
@@ -29,6 +30,12 @@ export const PrintAllStatementsPage = () => {
   // Fetch all funds
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
+    placeholderData: []
+  });
+
+  // Fetch pledge progress for all campaigns
+  const pledgeProgress = useQuery<PledgeProgressRowInterface[]>({
+    queryKey: ["/campaigns/progress/people", "GivingApi"],
     placeholderData: []
   });
 
@@ -120,6 +127,8 @@ export const PrintAllStatementsPage = () => {
 
     return result;
   };
+
+  const getPledgeRows = (personId: string) => pledgeProgress.data?.filter((row) => row.personId === personId) || [];
 
   const getDonationDetails = (personId: string) => {
     const result: any[] = [];
@@ -378,6 +387,7 @@ export const PrintAllStatementsPage = () => {
         const totalContributions = getTotalContributions(person.id!);
         const fundTotals = getFundTotals(person.id!);
         const donationDetails = getDonationDetails(person.id!);
+        const pledgeRows = getPledgeRows(person.id!);
 
         return (
           <div key={person.id} className={index < people.data!.length - 1 ? "page-break" : ""}>
@@ -483,6 +493,32 @@ export const PrintAllStatementsPage = () => {
                   </tbody>
                 </table>
               </div>
+
+              {pledgeRows.length > 0 && (
+                <div className="section-container">
+                  <h2 className="section-title">{Locale.label("donations.printAllStatementsPage.pledgeProgress")}</h2>
+                  <table className="data-table">
+                    <thead className="table-header">
+                      <tr>
+                        <th>{Locale.label("donations.printAllStatementsPage.campaign")}</th>
+                        <th className="align-right">{Locale.label("donations.printAllStatementsPage.pledged")}</th>
+                        <th className="align-right">{Locale.label("donations.printAllStatementsPage.given")}</th>
+                        <th>{Locale.label("donations.printAllStatementsPage.status")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pledgeRows.map((row, idx) => (
+                        <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
+                          <td className="table-cell">{row.campaignName}</td>
+                          <td className="table-cell align-right">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</td>
+                          <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</td>
+                          <td className="table-cell">{Locale.label("donations.pledgeStatus." + row.status)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
 
               <div className="footer-note">
                 <p>

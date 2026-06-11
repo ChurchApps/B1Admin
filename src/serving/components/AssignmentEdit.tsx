@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
-import { Table, TableCell, TableRow, Avatar } from "@mui/material";
+import { Table, TableCell, TableRow, Avatar, IconButton, Tooltip } from "@mui/material";
+import { Tune as TuneIcon } from "@mui/icons-material";
 import { type AssignmentInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale, PersonHelper } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { SchedulingPreferenceEdit } from "./SchedulingPreferenceEdit";
 
 interface Props {
   assignment: AssignmentInterface;
@@ -13,6 +15,7 @@ interface Props {
 
 export const AssignmentEdit = (props: Props) => {
   const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
+  const [preferencePerson, setPreferencePerson] = React.useState<{ id: string; name: string }>(null);
 
   const handleSave = () => {
     props.updatedFunction(true);
@@ -64,6 +67,16 @@ export const AssignmentEdit = (props: Props) => {
               {personName}
             </button>
           </TableCell>
+          <TableCell align="right">
+            <Tooltip title={Locale.label("plans.schedulingPreference.title") || "Scheduling Preferences"}>
+              <IconButton
+                size="small"
+                onClick={() => setPreferencePerson({ id: gm.personId, name: personName })}
+                data-testid={"preferences-button-" + gm.personId}>
+                <TuneIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </TableCell>
         </TableRow>
       );
     }
@@ -85,6 +98,7 @@ export const AssignmentEdit = (props: Props) => {
         saveText={Locale.label("plans.assignmentEdit.done")}>
         <Table size="small">{getMembers()}</Table>
       </FormCard>
+      {preferencePerson && <SchedulingPreferenceEdit personId={preferencePerson.id} personName={preferencePerson.name} onClose={() => setPreferencePerson(null)} />}
     </>
   );
 };

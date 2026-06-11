@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem } from "@mui/material";
-import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
+import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem, Chip } from "@mui/material";
+import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon, Undo as UndoIcon, EditNote as PreparedIcon } from "@mui/icons-material";
 import {
   type AssignmentInterface,
   type BlockoutDateInterface,
@@ -139,6 +139,22 @@ export const Assignment = (props: Props) => {
     // When positions exist, show Auto Assign and Add Position buttons
     return (
       <Stack direction="row" spacing={1}>
+        {plan?.lastAutofillRunId && (
+          <Button
+            variant="outlined"
+            color="warning"
+            startIcon={<UndoIcon />}
+            onClick={handleUndoAutoAssign}
+            data-testid="undo-auto-assign-button"
+            size="small"
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              fontWeight: 600
+            }}>
+            {Locale.label("plans.assignment.undoAutoAssign") || "Undo Auto Assign"}
+          </Button>
+        )}
         <Button
           variant="outlined"
           startIcon={<AutoAssignIcon />}
@@ -191,6 +207,10 @@ export const Assignment = (props: Props) => {
 
   const loadData = useCallback(async () => {
     setPlan(props.plan);
+    // Refresh the plan row itself — autofill/undo/publish mutate prepared and lastAutofillRunId.
+    ApiHelper.get("/plans/" + props.plan?.id, "DoingApi").then((data: PlanInterface) => {
+      if (data?.id) setPlan(data);
+    });
     const positionsData = await ApiHelper.get("/positions/plan/" + props.plan?.id, "DoingApi");
     setPositions(positionsData);
 
@@ -236,6 +256,12 @@ export const Assignment = (props: Props) => {
     });
   };
 
+  const handleUndoAutoAssign = async () => {
+    ApiHelper.post("/plans/autofill/" + props.plan.id + "/undo", {}, "DoingApi").then(() => {
+      loadData();
+    });
+  };
+
   // Load all plans for the plan type to find previous plan for copy functionality
   const loadPlans = useCallback(async () => {
     if (props.plan?.planTypeId) {
@@ -274,6 +300,16 @@ export const Assignment = (props: Props) => {
                 <Typography variant="h6">
                   {Locale.label("plans.planPage.assign") || "Serving Team Assignments"}
                 </Typography>
+                {plan?.prepared && (
+                  <Chip
+                    icon={<PreparedIcon />}
+                    label={Locale.label("plans.assignment.penciledIn") || "Penciled In"}
+                    size="small"
+                    color="warning"
+                    variant="outlined"
+                    data-testid="penciled-in-chip"
+                  />
+                )}
               </Stack>
               {getAddPositionActions()}
             </Stack>
