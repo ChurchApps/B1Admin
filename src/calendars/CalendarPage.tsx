@@ -10,15 +10,25 @@ import {
   Card,
   Box,
   Stack,
-  TableHead
+  TableHead,
+  Button
 } from "@mui/material";
-import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon } from "@mui/icons-material";
+import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon, Add as AddIcon, Print as PrintIcon, UploadFile as ImportIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Loading, PageHeader, Locale, Permissions } from "@churchapps/apphelper";
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
 import { CuratedCalendar } from "./components/CuratedCalendar";
+import { NewEventModal } from "./components/NewEventModal";
+import { ImportIcsModal } from "./components/ImportIcsModal";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CountChip } from "../components/ui";
+
+const printStyles = `@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area { position: absolute; left: 0; top: 0; width: 100%; border: none !important; }
+  .print-area .rbc-calendar { height: 9.5in !important; }
+}`;
 
 export const CalendarPage = () => {
   const params = useParams();
@@ -27,6 +37,8 @@ export const CalendarPage = () => {
   const [isLoadingGroups, setIsLoadingGroups] = useState<boolean>(false);
   const [events, setEvents] = useState<CuratedEventInterface[]>([]);
   const [refresh, refresher] = useState({});
+  const [showNewEvent, setShowNewEvent] = useState(false);
+  const [showImport, setShowImport] = useState(false);
 
   const curatedCalendarId = params.id;
 
@@ -87,17 +99,31 @@ export const CalendarPage = () => {
   if (!curatedCalendarId) return null;
   if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
+  const headerButtonSx = { color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } };
+
   return (
     <>
+      <style>{printStyles}</style>
       <PageHeader
         title={currentCalendar?.name || Locale.label("calendars.calendarPage.calendar")}
         subtitle={Locale.label("calendars.calendarPage.subtitle")}
-      />
+      >
+        <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setShowNewEvent(true)} sx={headerButtonSx} data-testid="new-event-button">
+          {Locale.label("calendars.calendarPage.newEvent")}
+        </Button>
+        <Button variant="outlined" startIcon={<ImportIcon />} onClick={() => setShowImport(true)} sx={headerButtonSx} data-testid="import-ics-button">
+          {Locale.label("calendars.calendarPage.importIcs")}
+        </Button>
+        <Button variant="outlined" startIcon={<PrintIcon />} onClick={() => window.print()} sx={headerButtonSx} data-testid="print-calendar-button">
+          {Locale.label("calendars.calendarPage.print")}
+        </Button>
+      </PageHeader>
 
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 8 }}>
             <Card
+              className="print-area"
               sx={{
                 borderRadius: 2,
                 border: "1px solid",
@@ -175,6 +201,30 @@ export const CalendarPage = () => {
           </Grid>
         </Grid>
       </Box>
+      {showNewEvent && (
+        <NewEventModal
+          churchId={UserHelper.currentUserChurch?.church?.id}
+          curatedCalendarId={curatedCalendarId}
+          onDone={(saved) => {
+            setShowNewEvent(false);
+            if (saved) {
+              loadData();
+              refresher({});
+            }
+          }}
+        />
+      )}
+      {showImport && (
+        <ImportIcsModal
+          onDone={(imported) => {
+            setShowImport(false);
+            if (imported) {
+              loadData();
+              refresher({});
+            }
+          }}
+        />
+      )}
     </>
   );
 };

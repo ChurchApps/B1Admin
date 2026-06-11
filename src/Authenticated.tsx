@@ -55,6 +55,8 @@ const LiveStreamTimesPage = React.lazy(() => import("./sermons/LiveStreamTimesPa
 const BulkImportPage = React.lazy(() => import("./sermons/BulkImportPage").then((module) => ({ default: module.BulkImportPage })));
 const CalendarsPage = React.lazy(() => import("./calendars/CalendarsPage").then((module) => ({ default: module.CalendarsPage })));
 const CalendarPage = React.lazy(() => import("./calendars/CalendarPage").then((module) => ({ default: module.CalendarPage })));
+const RoomsResourcesPage = React.lazy(() => import("./calendars/RoomsResourcesPage").then((module) => ({ default: module.RoomsResourcesPage })));
+const ApprovalsPage = React.lazy(() => import("./calendars/ApprovalsPage").then((module) => ({ default: module.ApprovalsPage })));
 const RegistrationsPage = React.lazy(() => import("./registrations/RegistrationsPage").then((module) => ({ default: module.RegistrationsPage })));
 const RegistrationDetailsPage = React.lazy(() => import("./registrations/RegistrationDetailsPage").then((module) => ({ default: module.RegistrationDetailsPage })));
 const Site = React.lazy(() => import("./site").then((module) => ({ default: module.Site })));
@@ -148,6 +150,8 @@ export const Authenticated: React.FC = () => {
           <Route path="/sermons" element={<SermonsPage />} />
           <Route path="/registrations/:eventId" element={<RegistrationDetailsPage />} />
           <Route path="/registrations" element={<RegistrationsPage />} />
+          <Route path="/calendars/rooms" element={<RoomsResourcesPage />} />
+          <Route path="/calendars/approvals" element={<ApprovalsPage />} />
           <Route path="/calendars/:id" element={<CalendarPage />} />
           <Route path="/calendars" element={<CalendarsPage />} />
           <Route path="/site/*" element={<Site />} />
