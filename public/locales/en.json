@@ -1352,7 +1352,20 @@
       "createdBy": "by {name}",
       "rename": "Rename",
       "delete": "Delete List",
-      "confirmDelete": "Delete the list \"{name}\"? This cannot be undone."
+      "confirmDelete": "Delete the list \"{name}\"? This cannot be undone.",
+      "settings": "List Settings",
+      "sharing": "Who can see this list",
+      "sharingOrg": "All staff",
+      "sharingPrivate": "Only me",
+      "match": "Match",
+      "matchAll": "All filters",
+      "matchAny": "Any filter",
+      "household": "Include household",
+      "householdNone": "Matches only",
+      "householdChildren": "Children of matches",
+      "householdAll": "Entire household",
+      "autoRefresh": "Refresh nightly",
+      "notifyOnChange": "Email me when membership changes"
     },
     "peopleColumns": {
       "appFilt": "Apply Filters",
