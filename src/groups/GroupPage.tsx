@@ -4,6 +4,8 @@ import { type GroupInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { GroupMembersTab } from "./components/GroupMembersTab";
 import { GroupSessionsTab } from "./components/GroupSessionsTab";
+import { GroupCalendarTab } from "./components/GroupCalendarTab";
+import { GroupHealthTab } from "./components/GroupHealthTab";
 import { Grid } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
@@ -25,13 +27,12 @@ export const GroupPage = () => {
   }, [selectedTab]);
 
   const getCurrentTab = () => {
-    let currentTab = null;
     switch (selectedTab) {
-      case "members": currentTab = <GroupMembersTab key="members" group={group.data} />; break;
-      case "sessions": currentTab = <GroupSessionsTab key="sessions" group={group.data} />; break;
-      default: currentTab = <GroupMembersTab key="members" group={group.data} />; break;
+      case "sessions": return <GroupSessionsTab key="sessions" group={group.data} />;
+      case "calendar": return <GroupCalendarTab key="calendar" group={group.data} />;
+      case "health": return <GroupHealthTab key="health" group={group.data} />;
+      default: return <GroupMembersTab key="members" group={group.data} />;
     }
-    return currentTab;
   };
 
   const handleEdit = () => {

@@ -1043,6 +1043,7 @@
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
       "attendance": "Attendance",
+      "attendanceReminders": "Attendance Reminder Emails",
       "attTrack": "Track Attendance",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
@@ -1103,8 +1104,43 @@
       "unknown": "Unknown"
     },
     "groupNavigation": {
+      "calendar": "Calendar",
+      "health": "Health",
       "members": "Members",
       "sessions": "Sessions"
+    },
+    "groupCalendar": {
+      "addEvents": "Add Events",
+      "bulkAddTitle": "Add Recurring Events",
+      "confirmDelete": "Delete \"{title}\" and all of its occurrences?",
+      "datesPreview": "{count} meetings will be created. Uncheck any dates to skip.",
+      "events": "Events",
+      "everyTwoWeeks": "Every 2 Weeks",
+      "firstMeeting": "First Meeting",
+      "lastMeeting": "Last Meeting",
+      "noDates": "No meeting dates fall in the selected range.",
+      "noEvents": "No events yet. Use Add Events to schedule this group's meetings.",
+      "oneTime": "One time",
+      "skipHolidays": "Skip holidays",
+      "skippedDates": "Skipped Dates",
+      "until": "until"
+    },
+    "groupHealth": {
+      "attendance": "Attendance",
+      "attendanceTrend": "Attendance Trend",
+      "avgAge": "Avg Age",
+      "avgAttendance": "Avg Attendance",
+      "churn90": "Churn (90d)",
+      "joined": "Joined",
+      "joined90": "Joined (90d)",
+      "left": "Left",
+      "left90": "Left (90d)",
+      "members": "Members",
+      "membershipChanges": "Membership Changes (12 months)",
+      "month": "Month",
+      "subtitle": "Compare growth, churn and attendance across groups",
+      "title": "Group Health",
+      "week": "Week"
     },
     "groupPage": {
       "addPpl": "Add Person"

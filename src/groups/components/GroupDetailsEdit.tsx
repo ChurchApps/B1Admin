@@ -37,6 +37,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       meetingTime: "",
       meetingLocation: "",
       trackAttendance: "false",
+      attendanceReminders: "false",
       parentPickup: "false",
       printNametag: "false",
       slug: "",
@@ -63,6 +64,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
         meetingTime: props.group.meetingTime || "",
         meetingLocation: props.group.meetingLocation || "",
         trackAttendance: props.group.trackAttendance?.toString() || "false",
+        attendanceReminders: (props.group as AnyRecord).attendanceReminders?.toString() || "false",
         parentPickup: props.group.parentPickup?.toString() || "false",
         printNametag: props.group.printNametag?.toString() || "false",
         slug: props.group.slug || "",
@@ -95,6 +97,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     };
     // "" = Unassigned; store null so it matches campusId IS NULL.
     group.campusId = values.campusId || null;
+    // Cast until the published GroupInterface includes attendanceReminders.
+    (group as AnyRecord).attendanceReminders = values.attendanceReminders === "true";
     ApiHelper.post("/groups", [group], "MembershipApi").then(() => {
       props.updatedFunction();
     });
@@ -126,15 +130,26 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
         </Box>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 6 }}>
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("groups.groupDetailsEdit.attTrack")}</InputLabel>
-              <Controller name="trackAttendance" control={control} render={({ field }) => (
-                <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.attTrack")} id="trackAttendance" data-cy="select-attendance-type">
-                  <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-                  <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-                </Select>
-              )} />
-            </FormControl>
+            <Stack direction={{ xs: "column", md: "row" }}>
+              <FormControl fullWidth>
+                <InputLabel>{Locale.label("groups.groupDetailsEdit.attTrack")}</InputLabel>
+                <Controller name="trackAttendance" control={control} render={({ field }) => (
+                  <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.attTrack")} id="trackAttendance" data-cy="select-attendance-type">
+                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                  </Select>
+                )} />
+              </FormControl>
+              <FormControl fullWidth sx={{ marginLeft: { md: 2 } }}>
+                <InputLabel>{Locale.label("groups.groupDetailsEdit.attendanceReminders")}</InputLabel>
+                <Controller name="attendanceReminders" control={control} render={({ field }) => (
+                  <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.attendanceReminders")} data-testid="attendance-reminders-select">
+                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                  </Select>
+                )} />
+              </FormControl>
+            </Stack>
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack direction={{ xs: "column", md: "row" }}>
