@@ -141,7 +141,6 @@ export const PeoplePage = memo(() => {
         setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else if (Array.isArray(conditions)) {
-      // Simple/AI list: run the stored conditions directly against current data.
       setSaveableCriteria(conditions);
       setSelectedListFilters(undefined);
       ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: any) => {
@@ -331,19 +330,14 @@ export const PeoplePage = memo(() => {
             }}
             startIcon={<PersonAddIcon />}
             onClick={() => {
-              // Scroll to the CreatePerson component at the bottom
               const createPersonSection = document.querySelector('[data-cy="createPerson"]') || document.querySelector(".create-person") || document.getElementById("createPersonForm");
               if (createPersonSection) {
                 createPersonSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                // Focus on first input field after scrolling
                 setTimeout(() => {
                   const firstInput = createPersonSection.querySelector("input") as HTMLElement;
-                  if (firstInput) {
-                    firstInput.focus();
-                  }
+                  if (firstInput) firstInput.focus();
                 }, 500);
               } else {
-                // Fallback: scroll to bottom of page
                 window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
               }
             }}>

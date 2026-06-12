@@ -42,50 +42,6 @@ export const ApprovalsPage = () => {
 
   const headSx = { fontWeight: 600, color: "text.secondary" };
 
-  const getBookingRows = () => bookings.map((b) => (
-    <TableRow key={b.id} hover>
-      <TableCell>
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>{b.eventTitle}</Typography>
-        <Typography variant="caption" color="text.secondary">{b.eventStart ? new Date(b.eventStart).toLocaleString() : ""}</Typography>
-      </TableCell>
-      <TableCell>
-        {b.roomName || b.resourceName}
-        {b.resourceId && (b.quantity || 1) > 1 ? ` × ${b.quantity}` : ""}
-      </TableCell>
-      <TableCell>
-        {b.conflicts?.length > 0 ? (
-          <Tooltip title={<>{b.conflicts.map((c, i) => <div key={i}>{c.message}</div>)}</>}>
-            <Chip icon={<ConflictIcon />} label={Locale.label("calendars.approvals.conflicts")} size="small" color="warning" data-testid={`booking-conflicts-${b.id}`} />
-          </Tooltip>
-        ) : (
-          <Chip label={Locale.label("calendars.approvals.noConflicts")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.main" }} />
-        )}
-      </TableCell>
-      <TableCell align="right">
-        <Stack direction="row" spacing={1} justifyContent="flex-end">
-          <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => resolveBooking(b.id, "approve")} data-testid={`approve-booking-${b.id}`} />
-          <AppIconButton intent="remove" label={Locale.label("calendars.approvals.reject")} icon={<RejectIcon />} onClick={() => resolveBooking(b.id, "reject")} data-testid={`reject-booking-${b.id}`} />
-        </Stack>
-      </TableCell>
-    </TableRow>
-  ));
-
-  const getEventRows = () => events.map((e) => (
-    <TableRow key={e.id} hover>
-      <TableCell>
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>{e.title}</Typography>
-        <Typography variant="caption" color="text.secondary">{e.start ? new Date(e.start).toLocaleString() : ""}</Typography>
-      </TableCell>
-      <TableCell>{e.description}</TableCell>
-      <TableCell align="right">
-        <Stack direction="row" spacing={1} justifyContent="flex-end">
-          <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => resolveEvent(e.id, "approve")} data-testid={`approve-event-${e.id}`} />
-          <AppIconButton intent="remove" label={Locale.label("calendars.approvals.reject")} icon={<RejectIcon />} onClick={() => resolveEvent(e.id, "reject")} data-testid={`reject-event-${e.id}`} />
-        </Stack>
-      </TableCell>
-    </TableRow>
-  ));
-
   if (!canResolve) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
 
   return (
@@ -117,7 +73,35 @@ export const ApprovalsPage = () => {
                         <TableCell align="right" />
                       </TableRow>
                     </TableHead>
-                    <TableBody>{getBookingRows()}</TableBody>
+                    <TableBody>
+                      {bookings.map((b) => (
+                        <TableRow key={b.id} hover>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>{b.eventTitle}</Typography>
+                            <Typography variant="caption" color="text.secondary">{b.eventStart ? new Date(b.eventStart).toLocaleString() : ""}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            {b.roomName || b.resourceName}
+                            {b.resourceId && (b.quantity || 1) > 1 ? ` × ${b.quantity}` : ""}
+                          </TableCell>
+                          <TableCell>
+                            {b.conflicts?.length > 0 ? (
+                              <Tooltip title={<>{b.conflicts.map((c, i) => <div key={i}>{c.message}</div>)}</>}>
+                                <Chip icon={<ConflictIcon />} label={Locale.label("calendars.approvals.conflicts")} size="small" color="warning" data-testid={`booking-conflicts-${b.id}`} />
+                              </Tooltip>
+                            ) : (
+                              <Chip label={Locale.label("calendars.approvals.noConflicts")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.main" }} />
+                            )}
+                          </TableCell>
+                          <TableCell align="right">
+                            <Stack direction="row" spacing={1} justifyContent="flex-end">
+                              <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => resolveBooking(b.id, "approve")} data-testid={`approve-booking-${b.id}`} />
+                              <AppIconButton intent="remove" label={Locale.label("calendars.approvals.reject")} icon={<RejectIcon />} onClick={() => resolveBooking(b.id, "reject")} data-testid={`reject-booking-${b.id}`} />
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 )}
               </Card>
@@ -144,7 +128,23 @@ export const ApprovalsPage = () => {
                         <TableCell align="right" />
                       </TableRow>
                     </TableHead>
-                    <TableBody>{getEventRows()}</TableBody>
+                    <TableBody>
+                      {events.map((e) => (
+                        <TableRow key={e.id} hover>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>{e.title}</Typography>
+                            <Typography variant="caption" color="text.secondary">{e.start ? new Date(e.start).toLocaleString() : ""}</Typography>
+                          </TableCell>
+                          <TableCell>{e.description}</TableCell>
+                          <TableCell align="right">
+                            <Stack direction="row" spacing={1} justifyContent="flex-end">
+                              <AppIconButton tone="card" label={Locale.label("calendars.approvals.approve")} icon={<ApproveIcon />} onClick={() => resolveEvent(e.id, "approve")} data-testid={`approve-event-${e.id}`} />
+                              <AppIconButton intent="remove" label={Locale.label("calendars.approvals.reject")} icon={<RejectIcon />} onClick={() => resolveEvent(e.id, "reject")} data-testid={`reject-event-${e.id}`} />
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 )}
               </Card>

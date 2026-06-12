@@ -12,10 +12,8 @@ interface Props {
   updatedFunction: () => void;
 }
 
-type AnyRecord = Record<string, any>;
-
 export const CampaignEdit: React.FC<Props> = (props) => {
-  const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "", fundId: "", goalAmount: "", startDate: "", endDate: "", description: "", showPublic: false, allowSelfPledge: false } });
+  const { control, register, handleSubmit, reset, formState } = useForm<Record<string, any>>({ defaultValues: { name: "", fundId: "", goalAmount: "", startDate: "", endDate: "", description: "", showPublic: false, allowSelfPledge: false } });
   const e = formState.errors as any;
   const summaryErrors: string[] = [];
   if (e.name?.message) summaryErrors.push(e.name.message);
@@ -35,7 +33,7 @@ export const CampaignEdit: React.FC<Props> = (props) => {
     });
   }, [props.campaign, reset]);
 
-  const onValid = (values: AnyRecord) => {
+  const onValid = (values: Record<string, any>) => {
     const campaign: CampaignInterface = {
       ...props.campaign,
       name: values.name.trim(),

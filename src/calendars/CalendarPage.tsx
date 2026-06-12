@@ -71,27 +71,6 @@ export const CalendarPage = () => {
 
   const addedGroups = groups.filter((g) => events.find((event) => event.groupId === g.id));
 
-  const getRows = () => addedGroups.map((g) => (
-    <TableRow key={g.id}>
-      <TableCell>
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-          {g.name}
-        </Typography>
-      </TableCell>
-      {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-        <TableCell align="right" className="rowActions">
-          <AppIconButton
-            intent="remove"
-            label={Locale.label("common.remove")}
-            icon={<DeleteIcon />}
-            onClick={() => handleGroupDelete(g.id)}
-            data-testid={`remove-group-${g.id}-button`}
-          />
-        </TableCell>
-      )}
-    </TableRow>
-  ));
-
   useEffect(() => {
     loadData();
   }, [curatedCalendarId]);
@@ -193,7 +172,20 @@ export const CalendarPage = () => {
                         <TableCell align="right" />
                       </TableRow>
                     </TableHead>
-                    <TableBody>{getRows()}</TableBody>
+                    <TableBody>
+                      {addedGroups.map((g) => (
+                        <TableRow key={g.id}>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>{g.name}</Typography>
+                          </TableCell>
+                          {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+                            <TableCell align="right" className="rowActions">
+                              <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<DeleteIcon />} onClick={() => handleGroupDelete(g.id)} data-testid={`remove-group-${g.id}-button`} />
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 )}
               </Box>

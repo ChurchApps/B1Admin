@@ -52,7 +52,6 @@ export const Assignment = (props: Props) => {
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
 
-  // Get the most recent plan that is before the current plan's date
   const previousPlan = React.useMemo(() => {
     if (allPlans.length === 0 || !props.plan?.serviceDate) return null;
     const currentDate = new Date(props.plan.serviceDate).getTime();
@@ -60,12 +59,12 @@ export const Assignment = (props: Props) => {
       .filter(p => {
         if (p.id === props.plan?.id) return false;
         const planDate = p.serviceDate ? new Date(p.serviceDate).getTime() : 0;
-        return planDate < currentDate;  // Only include plans before current plan
+        return planDate < currentDate;
       })
       .sort((a, b) => {
         const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
         const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
-        return dateB - dateA;  // Sort descending to get most recent previous plan first
+        return dateB - dateA;
       });
     return sorted[0] || null;
   }, [allPlans, props.plan?.id, props.plan?.serviceDate]);
@@ -83,7 +82,6 @@ export const Assignment = (props: Props) => {
   const getAddPositionActions = () => {
     if (!canEdit) return null;
 
-    // When no positions exist, show copy from previous dropdown instead of Auto Assign
     if (positions.length === 0 && previousPlan) {
       return (
         <Stack direction="row" spacing={1} alignItems="center">
@@ -136,7 +134,6 @@ export const Assignment = (props: Props) => {
       );
     }
 
-    // When positions exist, show Auto Assign and Add Position buttons
     return (
       <Stack direction="row" spacing={1}>
         {plan?.lastAutofillRunId && (
@@ -262,7 +259,6 @@ export const Assignment = (props: Props) => {
     });
   };
 
-  // Load all plans for the plan type to find previous plan for copy functionality
   const loadPlans = useCallback(async () => {
     if (props.plan?.planTypeId) {
       const plans = await ApiHelper.get("/plans/types/" + props.plan.planTypeId, "DoingApi");
@@ -283,7 +279,6 @@ export const Assignment = (props: Props) => {
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: 8 }}>
-        {/* Assignments Section */}
         <Card
           sx={{
             mb: 3,
@@ -317,7 +312,6 @@ export const Assignment = (props: Props) => {
           </CardContent>
         </Card>
 
-        {/* Notes Section */}
         <Card
           sx={{
             borderRadius: 2,
@@ -377,7 +371,6 @@ export const Assignment = (props: Props) => {
 
       <Grid size={{ xs: 12, md: 4 }}>
         <Stack spacing={3}>
-          {/* Position/Assignment Edit */}
           {canEdit && position && !assignment && (
             <PositionEdit
               position={position}
@@ -397,15 +390,11 @@ export const Assignment = (props: Props) => {
             />
           )}
 
-          {/* Time List */}
           <TimeList times={times} positions={positions} plan={plan} canEdit={canEdit} onUpdate={loadData} />
-
-          {/* Plan Validation */}
           <PlanValidation plan={plan} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
         </Stack>
       </Grid>
 
-      {/* Success Snackbar */}
       <Snackbar
         open={showSuccessMessage}
         autoHideDuration={3000}

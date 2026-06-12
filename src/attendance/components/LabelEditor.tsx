@@ -83,8 +83,6 @@ const binaryToSvg = (binary: string) => {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${binary.length + QUIET * 2} 100" width="100%" height="100%" preserveAspectRatio="none">${rects}</svg>`;
 };
 
-const barcodeSvg = (symbology: string | undefined, text: string) => (text ? binaryToSvg(symbology === "code39" ? code39Binary(text) : code128Binary(text)) : "");
-
 const SAMPLE: Record<string, string> = {
   "person.displayName": "Emma Johnson",
   "person.firstName": "Emma",
@@ -162,7 +160,7 @@ export function LabelEditor(props: Props) {
     switch (b.type) {
       case "text": return b.text || "";
       case "field": return SAMPLE[b.field || ""] ?? b.field ?? "";
-      case "barcode": return <div style={{ width: "100%", height: "100%" }} dangerouslySetInnerHTML={{ __html: barcodeSvg(b.symbology, encoded) }} />;
+      case "barcode": return <div style={{ width: "100%", height: "100%" }} dangerouslySetInnerHTML={{ __html: encoded ? binaryToSvg(b.symbology === "code39" ? code39Binary(encoded) : code128Binary(encoded)) : "" }} />;
       case "qrcode": return <QRCodeSVG value={encoded || " "} style={{ width: "100%", height: "100%" }} />;
       case "box": return null;
     }

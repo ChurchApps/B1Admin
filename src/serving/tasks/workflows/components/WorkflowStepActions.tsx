@@ -13,8 +13,6 @@ interface Props {
   workflows: WorkflowInterface[];
 }
 
-// Editor for the ordered list of automated actions on an action step. Each action
-// persists on its own Save; config is stored as a JSON string on the action.
 export const WorkflowStepActions = (props: Props) => {
   const [actions, setActions] = React.useState<WorkflowStepActionInterface[]>([]);
   const [templates, setTemplates] = React.useState<EmailTemplateInterface[]>([]);

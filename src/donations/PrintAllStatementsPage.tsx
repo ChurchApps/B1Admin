@@ -15,31 +15,26 @@ export const PrintAllStatementsPage = () => {
   const context = useContext(UserContext);
   const [currency, setCurrency] = useState<string>("usd");
 
-  // Fetch all donations
   const allDonations = useQuery<DonationInterface[]>({
     queryKey: ["/donations", "GivingApi"],
     placeholderData: []
   });
 
-  // Fetch all fund donations
   const allFundDonations = useQuery<FundDonationInterface[]>({
     queryKey: ["/fundDonations", "GivingApi"],
     placeholderData: []
   });
 
-  // Fetch all funds
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
     placeholderData: []
   });
 
-  // Fetch pledge progress for all campaigns
   const pledgeProgress = useQuery<PledgeProgressRowInterface[]>({
     queryKey: ["/campaigns/progress/people", "GivingApi"],
     placeholderData: []
   });
 
-  // Filter donations by selected year
   const yearDonations = useMemo(() => {
     return (
       allDonations.data?.filter((don) => {
@@ -50,7 +45,6 @@ export const PrintAllStatementsPage = () => {
     );
   }, [allDonations.data, currYear]);
 
-  // Get unique person IDs from donations
   const personIds = useMemo(() => {
     const ids = new Set<string>();
     yearDonations.forEach((donation) => {
@@ -61,14 +55,12 @@ export const PrintAllStatementsPage = () => {
     return Array.from(ids).sort();
   }, [yearDonations]);
 
-  // Fetch all people who made donations
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people/ids?ids=" + personIds.join(","), "MembershipApi"],
     placeholderData: [],
     enabled: personIds.length > 0
   });
 
-  // Filter fund donations for selected year
   const yearFundDonations = useMemo(() => {
     return allFundDonations.data?.filter((fundDonation) =>
       yearDonations.some((donation) => donation.id === fundDonation.donationId)) || [];
@@ -90,12 +82,6 @@ export const PrintAllStatementsPage = () => {
       setCurrency(result);
     });
   }, []);
-
-  const getDate = () => {
-    const date = DateHelper.prettyDate(new Date());
-    const time = DateHelper.prettyTime(new Date());
-    return `${date} ${time}`;
-  };
 
   const getTotalContributions = (personId: string) => {
     let result = 0;
@@ -397,7 +383,7 @@ export const PrintAllStatementsPage = () => {
               <div className="title-section">
                 <h1 className="page-title">{Locale.label("donations.printAllStatementsPage.annualStatementTitle").replace("{year}", currYear.toString())}</h1>
                 <p className="subtitle">{Locale.label("donations.printAllStatementsPage.period").replace("{year}", currYear.toString())}</p>
-                <p className="meta-text">{Locale.label("donations.printAllStatementsPage.issued")} {getDate()}</p>
+                <p className="meta-text">{Locale.label("donations.printAllStatementsPage.issued")} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>
               </div>
 
               <div className="gradient-divider"></div>

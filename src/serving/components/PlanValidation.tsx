@@ -118,7 +118,6 @@ export const PlanValidation = (props: Props) => {
         const a = duties[i];
         const plan = plans.find((p) => p.id === a.position.planId);
         planTimeConflicts.forEach((tc) => {
-          //get overlaping times from planTimeConflicts based on current duty.
           const filtered = tc.overlapingTimes.filter((ot) => a.position.planId === ot.planId && ot.teams?.indexOf(a.position.categoryName) > -1);
           if (filtered.length > 0) {
             issues.push(
@@ -237,21 +236,14 @@ export const PlanValidation = (props: Props) => {
       if (data.length > 0) {
         let filteredTimes: any[] = [];
         let timeConflicts: any[] = [];
-        const removeDuplicates = () =>
-          function (c: any) {
-            return !filteredTimes.includes(c);
-          };
         for (const t of props.times) {
-          //filter the ones that overlap.
           const overlapingTimes = data.filter((d: TimeInterface) => d.startTime < t.endTime && d.endTime > t.startTime);
-          //remove the ones that are in the current plan, cause they are getting validated in validateTimeConflicts().
           const removedcurrentPlan = overlapingTimes.filter((ot: TimeInterface) => ot.planId !== props.plan.id);
-          filteredTimes = [...filteredTimes, ...removedcurrentPlan.filter(removeDuplicates())];
-          //an array with current time and it's overlaping times from other plans.
+          // ponytail: dedupe across loop iterations before accumulating
+          filteredTimes = [...filteredTimes, ...removedcurrentPlan.filter((c) => !filteredTimes.includes(c))];
           timeConflicts = [...timeConflicts, { time: t, overlapingTimes: [...removedcurrentPlan] }];
         }
         setPlanTimeConflicts(timeConflicts);
-        // load positions/assignments, if overlap.
         if (filteredTimes.length > 0) {
           const allPlans: PlanInterface[] = await ApiHelper.get("/plans", "DoingApi");
           setPlans(allPlans);

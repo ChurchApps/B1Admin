@@ -70,39 +70,6 @@ export const LabelsPage = () => {
 
   if (!UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit)) return <PermissionDenied permissions={[Permissions.attendanceApi.attendance.edit]} />;
 
-  const getTable = () => (templates.length === 0
-    ? <EmptyState icon={<LabelIcon />} title={Locale.label("attendance.labels.noTemplates")} description={Locale.label("attendance.labels.noTemplatesDesc")} />
-    : (
-      <TableContainer component={Paper} sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-        <Table data-testid="labels-table">
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.labels.name")}</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.labels.type")}</TableCell>
-              <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.labels.size")}</TableCell>
-              <TableCell align="right" />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {templates.map((t) => (
-              <TableRow key={t.id} hover data-testid={`label-row-${t.id}`}>
-                <TableCell>{t.name}</TableCell>
-                <TableCell>{Locale.label(t.labelType === "pickup" ? "attendance.labels.pickup" : "attendance.labels.nametag")}</TableCell>
-                <TableCell>{`${Number(t.width)}" × ${Number(t.height)}"`}</TableCell>
-                <TableCell align="right">
-                  {t.isDefault
-                    ? <Chip label={Locale.label("attendance.labels.default")} color="primary" size="small" sx={{ mr: 1 }} />
-                    : <AppIconButton tone="card" label={Locale.label("attendance.labels.setDefault")} icon={<StarBorderIcon />} onClick={() => handleSetDefault(t)} data-testid={`default-label-${t.id}`} />}
-                  <AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing(t)} data-testid={`edit-label-${t.id}`} />
-                  <AppIconButton tone="card" intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(t)} data-testid={`delete-label-${t.id}`} />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    ));
-
   return (
     <>
       <PageHeader title={Locale.label("attendance.labels.title")} subtitle={Locale.label("attendance.labels.subtitle")}>
@@ -126,7 +93,40 @@ export const LabelsPage = () => {
       <Box sx={{ p: 3 }}>
         {editing
           ? <LabelEditor template={editing} updatedCallback={handleUpdated} />
-          : loading ? <Loading /> : getTable()}
+          : loading
+            ? <Loading />
+            : templates.length === 0
+              ? <EmptyState icon={<LabelIcon />} title={Locale.label("attendance.labels.noTemplates")} description={Locale.label("attendance.labels.noTemplatesDesc")} />
+              : (
+                <TableContainer component={Paper} sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+                  <Table data-testid="labels-table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.labels.name")}</TableCell>
+                        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.labels.type")}</TableCell>
+                        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.labels.size")}</TableCell>
+                        <TableCell align="right" />
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {templates.map((t) => (
+                        <TableRow key={t.id} hover data-testid={`label-row-${t.id}`}>
+                          <TableCell>{t.name}</TableCell>
+                          <TableCell>{Locale.label(t.labelType === "pickup" ? "attendance.labels.pickup" : "attendance.labels.nametag")}</TableCell>
+                          <TableCell>{`${Number(t.width)}" × ${Number(t.height)}"`}</TableCell>
+                          <TableCell align="right">
+                            {t.isDefault
+                              ? <Chip label={Locale.label("attendance.labels.default")} color="primary" size="small" sx={{ mr: 1 }} />
+                              : <AppIconButton tone="card" label={Locale.label("attendance.labels.setDefault")} icon={<StarBorderIcon />} onClick={() => handleSetDefault(t)} data-testid={`default-label-${t.id}`} />}
+                            <AppIconButton tone="card" label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setEditing(t)} data-testid={`edit-label-${t.id}`} />
+                            <AppIconButton tone="card" intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(t)} data-testid={`delete-label-${t.id}`} />
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
       </Box>
     </>
   );

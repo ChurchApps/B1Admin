@@ -16,9 +16,6 @@ interface Props {
 // Run-now only works where a "current set" exists to apply against (mirrors the API).
 const RUN_NOW_EVENT_TYPES = ["person.created", "person.updated", "group.member.added", "list.member.added"];
 
-// Triggers are managed per-workflow: a trigger always adds people to this one workflow,
-// so its editor lives here (the workflow is implied — no picker). Rendered inline in the
-// board's Triggers tab. Supports both event-driven and scheduled (recurring) rules.
 export const WorkflowTriggersManager: React.FC<Props> = (props) => {
   const [triggers, setTriggers] = React.useState<WorkflowTriggerInterface[]>([]);
   const [events, setEvents] = React.useState<EventDef[]>([]);
@@ -64,7 +61,6 @@ export const WorkflowTriggersManager: React.FC<Props> = (props) => {
     load();
   };
 
-  // Pause-all stops new firings and parks queued retries; resume-all reverses both.
   const togglePaused = async (e: React.MouseEvent, t: WorkflowTriggerInterface) => {
     e.stopPropagation();
     if (!t.id) return;
@@ -73,7 +69,6 @@ export const WorkflowTriggersManager: React.FC<Props> = (props) => {
     setExecutionsKey((k) => k + 1);
   };
 
-  // Bulk-apply-on-create: run the automation against everything currently matching.
   const runNow = async (e: React.MouseEvent, t: WorkflowTriggerInterface) => {
     e.stopPropagation();
     if (!t.id) return;
@@ -88,8 +83,6 @@ export const WorkflowTriggersManager: React.FC<Props> = (props) => {
     setExecutionsKey((k) => k + 1);
   };
 
-  // Close on save; to add conditions to a brand-new schedule rule, reopen it (now it
-  // has an id + a server-created root conjunction) — mirrors the "save step first" flow.
   const handleSaved = () => { setEditing(null); load(); };
 
   const rowActions = (t: WorkflowTriggerInterface) => {

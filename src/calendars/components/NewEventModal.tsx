@@ -50,7 +50,6 @@ export function NewEventModal(props: Props) {
     return undefined;
   };
 
-  // Live double-booking check whenever the schedule or selections change.
   useEffect(() => {
     if (!start || !end || (roomIds.length === 0 && resourceIds.length === 0)) {
       setConflicts([]);

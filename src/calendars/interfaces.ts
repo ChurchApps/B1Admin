@@ -60,11 +60,5 @@ export interface EventTemplateInterface {
 
 export interface ConflictInterface {
   type: "room" | "resource" | "blockout";
-  roomId?: string;
-  resourceId?: string;
-  blockoutId?: string;
-  conflictingEventId?: string;
-  conflictingEventTitle?: string;
-  date: Date | string;
   message: string;
 }

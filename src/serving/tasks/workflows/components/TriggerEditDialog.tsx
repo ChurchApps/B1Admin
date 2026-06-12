@@ -44,11 +44,9 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
   const [rows, setRows] = React.useState<ConditionRow[]>([]);
   const [steps, setSteps] = React.useState<StepInterface[]>([]);
   const [dynamicOptions, setDynamicOptions] = React.useState<Record<string, { value: string; label: string }[]>>({});
-  // Schedule rules use the relational condition tree (chips + ConditionEdit), keyed by triggerId.
   const [schedConditions, setSchedConditions] = React.useState<ConditionInterface[]>([]);
   const [editCondition, setEditCondition] = React.useState<ConditionInterface | null>(null);
 
-  // Parse the stored inline condition tree (event rules only) once.
   React.useEffect(() => {
     try {
       const parsed = props.trigger.conditions ? JSON.parse(props.trigger.conditions) : null;
@@ -73,7 +71,6 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
 
   React.useEffect(() => { loadSchedConditions(); }, [loadSchedConditions]);
 
-  // Load dynamic option lists (funds, groups) referenced by the current event's fields.
   React.useEffect(() => {
     const sources = new Set((eventDef?.fields || []).map((f) => f.optionsSource).filter(Boolean) as string[]);
     sources.forEach((src) => {
@@ -154,7 +151,6 @@ export const TriggerEditDialog: React.FC<Props> = (props) => {
     );
   };
 
-  // The relational condition editor takes over the dialog body while open.
   if (editCondition) {
     return (
       <Dialog open={true} onClose={() => setEditCondition(null)} maxWidth="md" fullWidth>

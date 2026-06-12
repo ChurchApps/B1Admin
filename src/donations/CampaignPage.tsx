@@ -231,9 +231,7 @@ export const CampaignPage = () => {
                 <Typography variant="h6">{Locale.label("donations.campaignPage.pledges")}</Typography>
                 {sortedRows.length > 0 && <CountChip count={sortedRows.length} />}
               </Stack>
-              <Stack direction="row" spacing={1} alignItems="center">
-                {progress.data?.rows && <ExportButton data={getExportData()} filename="pledges.csv" text={Locale.label("donations.campaignsPage.export")} />}
-              </Stack>
+              {progress.data?.rows && <ExportButton data={getExportData()} filename="pledges.csv" text={Locale.label("donations.campaignsPage.export")} />}
             </Stack>
           </Box>
           <Box>{getTable()}</Box>

@@ -30,8 +30,6 @@ interface Props {
 
 const STATUS_COLORS: Record<string, "success" | "warning" | "error" | "default"> = { success: "success", pending: "warning", failed: "error", paused: "default" };
 
-// Execution history for a workflow's automations: every trigger firing with its
-// success/pending/failed/paused state, plus per-row retry / pause / resume.
 export const TriggerExecutionsPanel: React.FC<Props> = (props) => {
   const [executions, setExecutions] = React.useState<AutomationExecutionInterface[]>([]);
 

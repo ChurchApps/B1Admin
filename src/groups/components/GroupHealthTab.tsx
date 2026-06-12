@@ -11,7 +11,6 @@ import { getChartTheme, CHART_PALETTE } from "../../people/demographics/componen
 
 interface GroupHealthData {
   memberCount: number;
-  leaderCount: number;
   averageAge: number | null;
   joins90: number;
   leaves90: number;

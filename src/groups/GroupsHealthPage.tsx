@@ -11,7 +11,6 @@ interface GroupHealthRow {
   name: string;
   categoryName: string;
   memberCount: number;
-  leaderCount: number;
   averageAge: number | null;
   femaleCount: number;
   maleCount: number;

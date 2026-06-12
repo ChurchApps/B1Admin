@@ -55,7 +55,6 @@ export const SavedLists = (props: Props) => {
     invalidate();
   };
 
-  // Group lists by category for a tidy picker (uncategorized last).
   const { grouped, categories } = useMemo(() => {
     const grouped = lists.reduce<Record<string, ListInterface[]>>((acc, list) => {
       const key = list.category?.trim() || "";

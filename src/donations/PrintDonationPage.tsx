@@ -1,6 +1,6 @@
 import { ArrayHelper, CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
@@ -70,12 +70,7 @@ export const PrintDonationPage = () => {
     });
   }, []);
 
-  const getDate = () => {
-    const date = DateHelper.prettyDate(new Date());
-    const time = DateHelper.prettyTime(new Date());
-    const dateTime = `${date} ${time}`;
-    return dateTime;
-  };
+  const getDate = () => `${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`;
 
   const getTotalContributions = () => {
     let result = 0;
@@ -111,7 +106,7 @@ export const PrintDonationPage = () => {
         result.push({ fund: fd.fund, total: fd.amount });
       }
     });
-    const tableValues: React.ReactElement[] = [];
+    const tableValues: JSX.Element[] = [];
 
     result.forEach((tv, index) => {
       tableValues.push(
@@ -125,7 +120,7 @@ export const PrintDonationPage = () => {
   };
 
   const tableDonations = () => {
-    const result: React.ReactElement[] = [];
+    const result: JSX.Element[] = [];
     fundDonations.forEach((fd, index) => {
       const donation = ArrayHelper.getOne(donations, "id", fd.donationId);
       const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
