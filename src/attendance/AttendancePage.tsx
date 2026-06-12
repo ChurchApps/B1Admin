@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Grid, Icon, Card, CardContent, Stack, Typography } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Group as GroupIcon } from "@mui/icons-material";
 import { Locale, ApiHelper, PageHeader } from "@churchapps/apphelper";
@@ -9,6 +10,7 @@ import { PageContainer } from "../components/ui/PageContainer";
 import { useCampuses } from "../hooks/useCampuses";
 
 export const AttendancePage = () => {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = React.useState("setup");
   // Campuses are mastered in the membership module.
   const campuses = useCampuses();
@@ -119,7 +121,7 @@ export const AttendancePage = () => {
           </Stack>
         </Stack>
       </PageHeader>
-      <AttendanceNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} />
+      <AttendanceNavigation selectedTab={selectedTab} onTabChange={(tab) => (tab === "labels" ? navigate("/attendance/labels") : setSelectedTab(tab))} />
 
       {/* Main Content */}
       <PageContainer>

@@ -15,6 +15,7 @@ const GroupPage = React.lazy(() => import("./groups/GroupPage").then((module) =>
 const PendingRequestsPage = React.lazy(() => import("./groups/PendingRequestsPage"));
 const GroupsHealthPage = React.lazy(() => import("./groups/GroupsHealthPage"));
 const AttendancePage = React.lazy(() => import("./attendance/AttendancePage").then((module) => ({ default: module.AttendancePage })));
+const LabelsPage = React.lazy(() => import("./attendance/LabelsPage").then((module) => ({ default: module.LabelsPage })));
 const DonationsPage = React.lazy(() => import("./donations/DonationsPage").then((module) => ({ default: module.DonationsPage })));
 const DonationBatchPage = React.lazy(() => import("./donations/DonationBatchPage").then((module) => ({ default: module.DonationBatchPage })));
 const FundPage = React.lazy(() => import("./donations/FundPage").then((module) => ({ default: module.FundPage })));
@@ -117,6 +118,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/groups/health" element={<GroupsHealthPage />} />
           <Route path="/groups/:id" element={<GroupPage />} />
           <Route path="/groups" element={<GroupsPage />} />
+          <Route path="/attendance/labels" element={<LabelsPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/donations/funds/:id" element={<FundPage />} />
           <Route path="/donations/funds" element={<FundsPage />} />
