@@ -36,7 +36,7 @@ export const Question: React.FC<Props> = memo((props) => {
   }
 
   // Process the answer value based on field type
-  let displayValue = "";
+  let displayValue: string;
   let chipColor: "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" = "default";
 
   switch (q.fieldType) {

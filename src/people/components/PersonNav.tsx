@@ -15,22 +15,17 @@ export const PersonNav: React.FC<Props> = (props) => {
 
   if (person === undefined || person === null) return null;
 
-  let defaultTab = "details";
   tabs.push({ key: "details", icon: "person", label: Locale.label("person.person") });
 
   if (UserHelper.checkAccess(Permissions.membershipApi.people.edit)) {
     tabs.push({ key: "notes", icon: "notes", label: Locale.label("common.notes") });
-    if (defaultTab === "") defaultTab = "notes";
   }
   if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.view)) {
     tabs.push({ key: "attendance", icon: "calendar_month", label: Locale.label("people.tabs.att") });
-    if (defaultTab === "") defaultTab = "attendance";
   }
   if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) {
     tabs.push({ key: "donations", icon: "volunteer_activism", label: Locale.label("people.tabs.don") });
-    if (defaultTab === "") defaultTab = "donations";
   }
-  // Default tab is initialized via useState; avoid setting state during render.
   const getItem = (tab: any) => {
     if (tab.key === selectedTab) {
       return (

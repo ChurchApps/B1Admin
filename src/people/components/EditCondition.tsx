@@ -97,7 +97,7 @@ export function EditCondition(props: Props) {
 
   const getValueField = () => {
     let options: JSX.Element[] = [];
-    let result: JSX.Element = null;
+    let result: JSX.Element;
     switch (condition.field) {
       case "gender":
         options = [
@@ -382,7 +382,7 @@ export function EditCondition(props: Props) {
   };
 
   const getOperatorOptions = () => {
-    let result = [];
+    let result: JSX.Element[];
 
     switch (condition?.field) {
       case "gender":
