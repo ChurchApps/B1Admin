@@ -86,6 +86,10 @@ typings/
 #yarn.lock
 
 # dotenv environment variables file
+.env
+.env.*
+!.env.sample
+!.env.example
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
