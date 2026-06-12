@@ -13,7 +13,9 @@ const DemographicsPage = React.lazy(() => import("./people/demographics/Demograp
 const GroupsPage = React.lazy(() => import("./groups/GroupsPage"));
 const GroupPage = React.lazy(() => import("./groups/GroupPage").then((module) => ({ default: module.GroupPage })));
 const PendingRequestsPage = React.lazy(() => import("./groups/PendingRequestsPage"));
+const GroupsHealthPage = React.lazy(() => import("./groups/GroupsHealthPage"));
 const AttendancePage = React.lazy(() => import("./attendance/AttendancePage").then((module) => ({ default: module.AttendancePage })));
+const LabelsPage = React.lazy(() => import("./attendance/LabelsPage").then((module) => ({ default: module.LabelsPage })));
 const DonationsPage = React.lazy(() => import("./donations/DonationsPage").then((module) => ({ default: module.DonationsPage })));
 const DonationBatchPage = React.lazy(() => import("./donations/DonationBatchPage").then((module) => ({ default: module.DonationBatchPage })));
 const FundPage = React.lazy(() => import("./donations/FundPage").then((module) => ({ default: module.FundPage })));
@@ -38,6 +40,8 @@ const PlanTypePage = React.lazy(() => import("./serving/planTypes/PlanTypePage")
 const DonationBatchesPage = React.lazy(() => import("./donations/DonationBatchesPage").then((module) => ({ default: module.DonationBatchesPage })));
 const StripeImportPage = React.lazy(() => import("./donations/StripeImportPage").then((module) => ({ default: module.StripeImportPage })));
 const FundsPage = React.lazy(() => import("./donations/FundsPage").then((module) => ({ default: module.FundsPage })));
+const CampaignsPage = React.lazy(() => import("./donations/CampaignsPage").then((module) => ({ default: module.CampaignsPage })));
+const CampaignPage = React.lazy(() => import("./donations/CampaignPage").then((module) => ({ default: module.CampaignPage })));
 const SongsPage = React.lazy(() => import("./serving/songs/SongsPage").then((module) => ({ default: module.SongsPage })));
 const SongPage = React.lazy(() => import("./serving/songs/SongPage").then((module) => ({ default: module.SongPage })));
 const PrintPlan = React.lazy(() => import("./serving/plans/PrintPlan").then((module) => ({ default: module.PrintPlan })));
@@ -53,6 +57,8 @@ const LiveStreamTimesPage = React.lazy(() => import("./sermons/LiveStreamTimesPa
 const BulkImportPage = React.lazy(() => import("./sermons/BulkImportPage").then((module) => ({ default: module.BulkImportPage })));
 const CalendarsPage = React.lazy(() => import("./calendars/CalendarsPage").then((module) => ({ default: module.CalendarsPage })));
 const CalendarPage = React.lazy(() => import("./calendars/CalendarPage").then((module) => ({ default: module.CalendarPage })));
+const RoomsResourcesPage = React.lazy(() => import("./calendars/RoomsResourcesPage").then((module) => ({ default: module.RoomsResourcesPage })));
+const ApprovalsPage = React.lazy(() => import("./calendars/ApprovalsPage").then((module) => ({ default: module.ApprovalsPage })));
 const RegistrationsPage = React.lazy(() => import("./registrations/RegistrationsPage").then((module) => ({ default: module.RegistrationsPage })));
 const RegistrationDetailsPage = React.lazy(() => import("./registrations/RegistrationDetailsPage").then((module) => ({ default: module.RegistrationDetailsPage })));
 const Site = React.lazy(() => import("./site").then((module) => ({ default: module.Site })));
@@ -109,11 +115,15 @@ export const Authenticated: React.FC = () => {
           <Route path="/people/:id" element={<PersonPage />} />
           <Route path="/people" element={<PeoplePage />} />
           <Route path="/groups/pending" element={<PendingRequestsPage />} />
+          <Route path="/groups/health" element={<GroupsHealthPage />} />
           <Route path="/groups/:id" element={<GroupPage />} />
           <Route path="/groups" element={<GroupsPage />} />
+          <Route path="/attendance/labels" element={<LabelsPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/donations/funds/:id" element={<FundPage />} />
           <Route path="/donations/funds" element={<FundsPage />} />
+          <Route path="/donations/campaigns/:id" element={<CampaignPage />} />
+          <Route path="/donations/campaigns" element={<CampaignsPage />} />
           <Route path="/donations/batches/:id" element={<DonationBatchPage />} />
           <Route path="/donations/batches" element={<DonationBatchesPage />} />
           <Route path="/donations/stripe-import" element={<StripeImportPage />} />
@@ -144,6 +154,8 @@ export const Authenticated: React.FC = () => {
           <Route path="/sermons" element={<SermonsPage />} />
           <Route path="/registrations/:eventId" element={<RegistrationDetailsPage />} />
           <Route path="/registrations" element={<RegistrationsPage />} />
+          <Route path="/calendars/rooms" element={<RoomsResourcesPage />} />
+          <Route path="/calendars/approvals" element={<ApprovalsPage />} />
           <Route path="/calendars/:id" element={<CalendarPage />} />
           <Route path="/calendars" element={<CalendarsPage />} />
           <Route path="/site/*" element={<Site />} />

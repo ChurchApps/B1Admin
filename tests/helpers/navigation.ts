@@ -29,9 +29,12 @@ type SecondarySection =
   | "appearance"
   | "files"
   | "calendars"
+  | "roomsResources"
+  | "approvals"
   | "registrations"
   | "batches"
   | "funds"
+  | "campaigns"
   | "statements"
   | "liveStreamTimes"
   | "serverAdmin";
@@ -46,7 +49,7 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   sermons: /\/sermons(?!\/)/,
   website: /\/site\/pages/,
   mobile: /\/mobile/,
-  settings: /\/settings/,
+  settings: /\/settings/
 };
 
 // For each secondary section: the primary parent to open first, the text label in
@@ -66,12 +69,15 @@ const SECONDARY_ROUTES: Record<
   appearance: { parent: "website", label: "Appearance", url: /\/site\/appearance/ },
   files: { parent: "website", label: "Files", url: /\/site\/files/ },
   calendars: { parent: "website", label: "Calendars", url: /\/calendars/ },
+  roomsResources: { parent: "website", label: "Rooms & Resources", url: /\/calendars\/rooms/ },
+  approvals: { parent: "website", label: "Approvals", url: /\/calendars\/approvals/ },
   registrations: { parent: "website", label: "Registrations", url: /\/registrations/ },
   batches: { parent: "donations", label: "Batches", url: /\/donations\/batches/ },
   funds: { parent: "donations", label: "Funds", url: /\/donations\/funds/ },
+  campaigns: { parent: "donations", label: "Campaigns", url: /\/donations\/campaigns/ },
   statements: { parent: "donations", label: "Giving Statements", url: /\/donations\/statements/ },
   liveStreamTimes: { parent: "sermons", label: "Live Stream Times", url: /\/sermons\/times/ },
-  serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ },
+  serverAdmin: { parent: "settings", label: "Server Admin", url: /\/admin/ }
 };
 
 export async function openPrimaryNav(page: Page) {
@@ -149,6 +155,14 @@ export async function navigateToAttendance(page: Page) {
 
 export async function navigateToCalendars(page: Page) {
   await navigateTo(page, "calendars");
+}
+
+export async function navigateToRoomsResources(page: Page) {
+  await navigateTo(page, "roomsResources");
+}
+
+export async function navigateToApprovals(page: Page) {
+  await navigateTo(page, "approvals");
 }
 
 export async function navigateToServing(page: Page) {

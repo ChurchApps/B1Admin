@@ -1,9 +1,10 @@
 import { ArrayHelper, CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
+import { type PledgeProgressRowInterface } from "../helpers";
 
 export const PrintDonationPage = () => {
   const [currency, setCurrency] = useState<string>("usd");
@@ -34,6 +35,13 @@ export const PrintDonationPage = () => {
     placeholderData: []
   });
 
+  const allPledgeProgress = useQuery<PledgeProgressRowInterface[]>({
+    queryKey: ["/campaigns/progress/people", "GivingApi"],
+    placeholderData: []
+  });
+
+  const pledgeRows = useMemo(() => allPledgeProgress.data?.filter((row) => row.personId === params.personId) || [], [allPledgeProgress.data, params.personId]);
+
   const donations = useMemo(() => {
     return (
       allDonations.data?.filter((don) => {
@@ -62,12 +70,7 @@ export const PrintDonationPage = () => {
     });
   }, []);
 
-  const getDate = () => {
-    const date = DateHelper.prettyDate(new Date());
-    const time = DateHelper.prettyTime(new Date());
-    const dateTime = `${date} ${time}`;
-    return dateTime;
-  };
+  const getDate = () => `${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`;
 
   const getTotalContributions = () => {
     let result = 0;
@@ -103,7 +106,7 @@ export const PrintDonationPage = () => {
         result.push({ fund: fd.fund, total: fd.amount });
       }
     });
-    const tableValues: React.ReactElement[] = [];
+    const tableValues: JSX.Element[] = [];
 
     result.forEach((tv, index) => {
       tableValues.push(
@@ -117,7 +120,7 @@ export const PrintDonationPage = () => {
   };
 
   const tableDonations = () => {
-    const result: React.ReactElement[] = [];
+    const result: JSX.Element[] = [];
     fundDonations.forEach((fd, index) => {
       const donation = ArrayHelper.getOne(donations, "id", fd.donationId);
       const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
@@ -439,6 +442,32 @@ export const PrintDonationPage = () => {
             </tbody>
           </table>
         </div>
+
+        {pledgeRows.length > 0 && (
+          <div className="section-container">
+            <h2 className="section-title">{Locale.label("donations.printDonationPage.pledgeProgress")}</h2>
+            <table className="data-table">
+              <thead className="table-header">
+                <tr>
+                  <th>{Locale.label("donations.printDonationPage.campaign")}</th>
+                  <th className="align-right">{Locale.label("donations.printDonationPage.pledged")}</th>
+                  <th className="align-right">{Locale.label("donations.printDonationPage.given")}</th>
+                  <th>{Locale.label("donations.printDonationPage.status")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pledgeRows.map((row, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
+                    <td className="table-cell">{row.campaignName}</td>
+                    <td className="table-cell align-right">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</td>
+                    <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</td>
+                    <td className="table-cell">{Locale.label("donations.pledgeStatus." + row.status)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         <div className="footer-note">
           <p>

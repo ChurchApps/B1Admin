@@ -3,7 +3,7 @@ import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow, Box, Card, Chip, Button, Stack, Typography } from "@mui/material";
-import { Add as AddIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, People as PeopleIcon } from "@mui/icons-material";
+import { Add as AddIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, MonitorHeart as HealthIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
@@ -216,6 +216,24 @@ const GroupsPage = () => {
                   }
                 }}>
                 {pendingCount} pending request{pendingCount === 1 ? "" : "s"}
+              </Button>
+            )}
+            {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view) && (
+              <Button
+                variant="outlined"
+                component={Link}
+                to="/groups/health"
+                startIcon={<HealthIcon />}
+                data-testid="group-health-link"
+                sx={{
+                  color: "#FFF",
+                  borderColor: "rgba(255,255,255,0.5)",
+                  "&:hover": {
+                    borderColor: "#FFF",
+                    backgroundColor: "rgba(255,255,255,0.1)"
+                  }
+                }}>
+                {Locale.label("groups.groupHealth.title")}
               </Button>
             )}
             {showServingTeams && (

@@ -13,8 +13,6 @@ interface Props {
   workflows: WorkflowInterface[];
 }
 
-// Editor for the ordered list of automated actions on an action step. Each action
-// persists on its own Save; config is stored as a JSON string on the action.
 export const WorkflowStepActions = (props: Props) => {
   const [actions, setActions] = React.useState<WorkflowStepActionInterface[]>([]);
   const [templates, setTemplates] = React.useState<EmailTemplateInterface[]>([]);
@@ -57,8 +55,12 @@ export const WorkflowStepActions = (props: Props) => {
     setActions((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleGroupPick = (contentType: string, contentId: string, label: string) => {
-    if (pickerIndex !== null && contentType === "group") setConfig(pickerIndex, { groupId: contentId, groupLabel: label });
+  const handlePick = (contentType: string, contentId: string, label: string) => {
+    if (pickerIndex !== null) {
+      const target = actions[pickerIndex];
+      if (target?.actionType === "createTask") setConfig(pickerIndex, { assignedToType: contentType, assignedToId: contentId, assignedToLabel: label });
+      else if (contentType === "group") setConfig(pickerIndex, { groupId: contentId, groupLabel: label });
+    }
     setPickerIndex(null);
   };
 
@@ -78,10 +80,22 @@ export const WorkflowStepActions = (props: Props) => {
           </Stack>
         );
       case "addToGroup":
+      case "removeFromGroup":
         return (
           <Stack direction="row" spacing={1} alignItems="center">
             <Typography variant="body2" color="text.secondary">{c.groupLabel || Locale.label("tasks.workflowActions.noGroup")}</Typography>
             <Button size="small" data-testid={"action-group-pick-" + index} onClick={() => setPickerIndex(index)}>{Locale.label("tasks.workflowActions.pickGroup")}</Button>
+          </Stack>
+        );
+      case "createTask":
+        return (
+          <Stack spacing={1}>
+            <TextField size="small" fullWidth label={Locale.label("tasks.workflowActions.taskTitle")} value={c.title || ""} data-testid={"action-task-title-" + index} onChange={(e) => setConfig(index, { title: e.target.value })} />
+            <TextField size="small" fullWidth label={Locale.label("tasks.workflowActions.taskDescription")} value={c.description || ""} onChange={(e) => setConfig(index, { description: e.target.value })} />
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="body2" color="text.secondary">{c.assignedToLabel || Locale.label("tasks.workflowActions.noAssignee")}</Typography>
+              <Button size="small" data-testid={"action-assignee-pick-" + index} onClick={() => setPickerIndex(index)}>{Locale.label("tasks.workflowActions.pickAssignee")}</Button>
+            </Stack>
           </Stack>
         );
       case "addToWorkflow":
@@ -131,7 +145,7 @@ export const WorkflowStepActions = (props: Props) => {
         ))}
         <Button size="small" startIcon={<AddIcon />} data-testid="add-action-button" onClick={addAction}>{Locale.label("tasks.workflowActions.add")}</Button>
       </Stack>
-      {pickerIndex !== null && <ContentPicker onClose={() => setPickerIndex(null)} onSelect={handleGroupPick} />}
+      {pickerIndex !== null && <ContentPicker onClose={() => setPickerIndex(null)} onSelect={handlePick} />}
     </Box>
   );
 };

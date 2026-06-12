@@ -54,6 +54,52 @@
         "name": "Campus Name is required."
       }
     },
+    "labels": {
+      "align": "Align",
+      "always": "Always",
+      "barcode": "Barcode",
+      "blank": "Blank",
+      "bold": "Bold",
+      "border": "Border",
+      "box": "Box",
+      "center": "Center",
+      "condition": "Condition",
+      "confirmDelete": "Are you sure you wish to delete this label template?",
+      "default": "Default",
+      "empty": "Empty",
+      "equals": "Equals",
+      "field": "Field",
+      "fill": "Fill",
+      "fontSize": "Font Size",
+      "height": "Height (in)",
+      "italic": "Italic",
+      "left": "Left",
+      "name": "Name",
+      "nametag": "Nametag",
+      "noTemplates": "No label templates",
+      "noTemplatesDesc": "Create a label template to customize the labels printed by check-in kiosks.",
+      "notEmpty": "Not Empty",
+      "notEquals": "Not Equals",
+      "operator": "Operator",
+      "palette": "Add Block",
+      "pickup": "Pickup Slip",
+      "properties": "Properties",
+      "qrCode": "QR Code",
+      "removeBlock": "Remove Block",
+      "right": "Right",
+      "selectBlock": "Select a block on the canvas to edit it.",
+      "setDefault": "Set Default",
+      "size": "Size",
+      "starterNametag": "Nametag 3.5\" x 1.1\"",
+      "starterPickup": "Pickup Slip 3.5\" x 1.1\"",
+      "subtitle": "Design the nametag and pickup labels printed at check-in",
+      "symbology": "Symbology",
+      "text": "Text",
+      "title": "Check-in Labels",
+      "type": "Type",
+      "value": "Value",
+      "width": "Width (in)"
+    },
     "serviceEdit": {
       "campus": "Campus",
       "campusAria": "Select campus",
@@ -80,10 +126,27 @@
     "tabs": {
       "attTrend": "Attendance Trend",
       "groupAtt": "Group Attendance",
+      "labels": "Labels",
       "setup": "Setup"
     }
   },
   "calendars": {
+    "approvals": {
+      "approve": "Approve",
+      "bookingRequests": "Room & Resource Requests",
+      "conflicts": "Conflicts",
+      "description": "Description",
+      "event": "Event",
+      "eventRequests": "Event Requests",
+      "noConflicts": "No conflicts",
+      "noPendingBookings": "No pending room or resource requests.",
+      "noPendingEvents": "No pending event requests.",
+      "reject": "Reject",
+      "roomResource": "Room / Resource",
+      "status": "Status",
+      "subtitle": "Review pending room, resource and event requests",
+      "title": "Approvals"
+    },
     "calendar": {
       "add": "Add",
       "copiedToClipboard": "Copied to clipboard",
@@ -147,7 +210,10 @@
       "confirmRemoveGroup": "Are you sure you wish to remove this group from the calendar?",
       "groupName": "Group Name",
       "groupsInCalendar": "Groups in Calendar",
+      "importIcs": "Import .ics",
+      "newEvent": "New Event",
       "noGroupsAdded": "No groups added yet",
+      "print": "Print",
       "removeGroup": "Remove Group",
       "removeGroupAria": "Remove Group Aria",
       "subtitle": "Manage calendar events and groups"
@@ -161,6 +227,82 @@
       "noEventsFound": "No events found",
       "save": "Save",
       "selectGroup": "Select a Group"
+    },
+    "importIcs": {
+      "chooseFile": "Choose .ics file",
+      "failed": "Import failed. Check the file contents.",
+      "group": "Group",
+      "import": "Import",
+      "imported": "Imported {} events.",
+      "noEventsFound": "No events found in the file.",
+      "pasteHint": "Or paste .ics contents here",
+      "title": "Import .ics Calendar"
+    },
+    "newEvent": {
+      "daily": "Daily",
+      "description": "Description",
+      "doesNotRepeat": "Does not repeat",
+      "end": "End",
+      "eventTitle": "Title",
+      "group": "Group",
+      "monthly": "Monthly",
+      "noTemplate": "(no template)",
+      "private": "Private",
+      "public": "Public",
+      "repeats": "Repeats",
+      "resources": "Resources",
+      "rooms": "Rooms",
+      "seats": "Seats {}",
+      "start": "Start",
+      "template": "Template",
+      "title": "New Event",
+      "visibility": "Visibility",
+      "weekly": "Weekly"
+    },
+    "rooms": {
+      "addBlockout": "Add Blockout",
+      "addResource": "Add Resource",
+      "addRoom": "Add Room",
+      "addTemplate": "Add Template",
+      "allRoomsResources": "All rooms & resources",
+      "approvalGroup": "Approval Group",
+      "approvalGroupHint": "Requests are auto-approved for members of this group; everyone else needs approval.",
+      "blockouts": "Blockouts",
+      "blockoutTarget": "Applies To",
+      "capacity": "Capacity",
+      "confirmDeleteBlockout": "Are you sure you wish to delete this blockout?",
+      "confirmDeleteResource": "Are you sure you wish to delete this resource?",
+      "confirmDeleteRoom": "Are you sure you wish to delete this room?",
+      "confirmDeleteTemplate": "Are you sure you wish to delete this template?",
+      "description": "Description",
+      "durationMinutes": "Duration (minutes)",
+      "editBlockout": "Edit Blockout",
+      "editResource": "Edit Resource",
+      "editRoom": "Edit Room",
+      "editTemplate": "Edit Template",
+      "endTime": "End",
+      "eventDescription": "Event Description",
+      "eventTitle": "Event Title",
+      "noApprovalNeeded": "No approval needed",
+      "noBlockouts": "No blockouts yet",
+      "noBlockoutsDesc": "Block out dates when rooms or resources are unavailable.",
+      "noResources": "No resources yet",
+      "noResourcesDesc": "Add shared resources (projectors, tables, vans) with quantities.",
+      "noRooms": "No rooms yet",
+      "noRoomsDesc": "Add rooms so events can book them and conflicts can be detected.",
+      "noTemplates": "No templates yet",
+      "noTemplatesDesc": "Templates prefill new events with a title, duration, rooms and resources.",
+      "quantity": "Quantity",
+      "reason": "Reason",
+      "resourceName": "Resource Name",
+      "resources": "Resources",
+      "roomName": "Room Name",
+      "rooms": "Rooms",
+      "startTime": "Start",
+      "subtitle": "Manage bookable rooms, shared resources, blockout dates and event templates",
+      "templateName": "Template Name",
+      "templates": "Templates",
+      "title": "Rooms & Resources"
     }
   },
   "common": {
@@ -551,6 +693,45 @@
       "pressEnter": "Press Enter to save and add another donation",
       "selectPerson": "Select Person or Anonymous"
     },
+    "campaignEdit": {
+      "allowSelfPledge": "Allow donors to pledge",
+      "confirmMsg": "Are you sure you wish to permanently delete this campaign and all pledges within it?",
+      "description": "Description",
+      "endDate": "End Date (optional)",
+      "errBlank": "Enter a campaign name",
+      "errFund": "Select a fund",
+      "errStartDate": "Enter a start date",
+      "fund": "Fund",
+      "goalAmount": "Goal Amount (optional)",
+      "showPublic": "Show progress on giving page",
+      "startDate": "Start Date"
+    },
+    "campaignPage": {
+      "addPledge": "Add Pledge",
+      "anon": "Anonymous",
+      "donor": "Donor",
+      "editCampaign": "Edit Campaign",
+      "noPledges": "No pledges have been made to this campaign yet.",
+      "ofGoal": "of goal",
+      "pledges": "Pledges",
+      "status": "Status",
+      "subtitle": "Pledges and giving progress for this campaign"
+    },
+    "campaignsPage": {
+      "addCampaign": "Add Campaign",
+      "campaigns": "Campaigns",
+      "dates": "Dates",
+      "export": "Export",
+      "fund": "Fund",
+      "given": "Given",
+      "goal": "Goal",
+      "noCampaigns": "No campaigns have been created yet.",
+      "ongoing": "Ongoing",
+      "pledged": "Pledged",
+      "progress": "Progress",
+      "subtitle": "Track pledge campaigns and progress toward giving goals",
+      "totalCampaigns": "Total Campaigns"
+    },
     "donationBatchesPage": {
       "addBatch": "Add Batch",
       "batches": "Batches",
@@ -596,6 +777,7 @@
       "amt": "Amount",
       "anon": "Anonymous",
       "batches": "Batches",
+      "campaigns": "Campaigns",
       "date": "Date",
       "don": "Donations",
       "edit": "Edit",
@@ -661,8 +843,24 @@
       "quarterly": "Quarterly",
       "weekly": "Weekly"
     },
+    "pledgeEdit": {
+      "addPledge": "Add Pledge",
+      "amount": "Pledge Amount",
+      "confirmMsg": "Are you sure you wish to permanently delete this pledge?",
+      "editPledge": "Edit Pledge",
+      "errAmount": "Enter a pledge amount greater than zero",
+      "errPerson": "Select a person"
+    },
+    "pledgeStatus": {
+      "beyondPledged": "Beyond Pledged",
+      "fulfilled": "Fulfilled",
+      "inProgress": "In Progress",
+      "nonPledged": "Non-Pledged",
+      "notStarted": "Not Started"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
+      "campaign": "Campaign",
       "contributionDetails": "Contribution Details",
       "disclaimer": "No goods or services were provided by {churchName} in return for these contributions. The only benefit received was an intangible religious benefit. {churchName} is a non-profit organization.",
       "donorInformation": "Donor Information",
@@ -674,12 +872,17 @@
       "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
       "organization": "Organization",
       "period": "Period: January 1 - December 31, {year}",
+      "pledged": "Pledged",
+      "pledgeProgress": "Pledge Campaigns",
+      "given": "Given",
       "statementSummary": "Statement Summary",
+      "status": "Status",
       "totalContributions": "Total Contributions",
       "totalContributionsLabel": "Total Contributions:"
     },
     "printDonationPage": {
       "annualStatementTitle": "{year} Annual Giving Statement",
+      "campaign": "Campaign",
       "contributionDetails": "Contribution Details",
       "disclaimer": "No goods or services were provided by {churchName} in return for these contributions. The only benefit received was an intangible religious benefit. {churchName} is a non-profit organization.",
       "donorInformation": "Donor Information",
@@ -690,7 +893,11 @@
       "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
       "organization": "Organization",
       "period": "Period: January 1 - December 31, {year}",
+      "pledged": "Pledged",
+      "pledgeProgress": "Pledge Campaigns",
+      "given": "Given",
       "statementSummary": "Statement Summary",
+      "status": "Status",
       "totalContributions": "Total Contributions",
       "totalContributionsLabel": "Total Contributions:"
     },
@@ -883,6 +1090,7 @@
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
       "attendance": "Attendance",
+      "attendanceReminders": "Attendance Reminder Emails",
       "attTrack": "Track Attendance",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
@@ -943,8 +1151,43 @@
       "unknown": "Unknown"
     },
     "groupNavigation": {
+      "calendar": "Calendar",
+      "health": "Health",
       "members": "Members",
       "sessions": "Sessions"
+    },
+    "groupCalendar": {
+      "addEvents": "Add Events",
+      "bulkAddTitle": "Add Recurring Events",
+      "confirmDelete": "Delete \"{title}\" and all of its occurrences?",
+      "datesPreview": "{count} meetings will be created. Uncheck any dates to skip.",
+      "events": "Events",
+      "everyTwoWeeks": "Every 2 Weeks",
+      "firstMeeting": "First Meeting",
+      "lastMeeting": "Last Meeting",
+      "noDates": "No meeting dates fall in the selected range.",
+      "noEvents": "No events yet. Use Add Events to schedule this group's meetings.",
+      "oneTime": "One time",
+      "skipHolidays": "Skip holidays",
+      "skippedDates": "Skipped Dates",
+      "until": "until"
+    },
+    "groupHealth": {
+      "attendance": "Attendance",
+      "attendanceTrend": "Attendance Trend",
+      "avgAge": "Avg Age",
+      "avgAttendance": "Avg Attendance",
+      "churn90": "Churn (90d)",
+      "joined": "Joined",
+      "joined90": "Joined (90d)",
+      "left": "Left",
+      "left90": "Left (90d)",
+      "members": "Members",
+      "membershipChanges": "Membership Changes (12 months)",
+      "month": "Month",
+      "subtitle": "Compare growth, churn and attendance across groups",
+      "title": "Group Health",
+      "week": "Week"
     },
     "groupPage": {
       "addPpl": "Add Person"
@@ -1099,6 +1342,7 @@
     },
     "secondaryMenuHelper": {
       "appearance": "Appearance",
+      "approvals": "Approvals",
       "blocks": "Blocks",
       "bulkImport": "Bulk Import",
       "calendars": "Calendars",
@@ -1110,6 +1354,7 @@
       "profile": "Profile",
       "quickActions": "Quick Actions",
       "registrations": "Registrations",
+      "roomsResources": "Rooms & Resources",
       "sermons": "Sermons",
       "stripeImport": "Stripe Import",
       "website": "Website"
@@ -1352,7 +1597,20 @@
       "createdBy": "by {name}",
       "rename": "Rename",
       "delete": "Delete List",
-      "confirmDelete": "Delete the list \"{name}\"? This cannot be undone."
+      "confirmDelete": "Delete the list \"{name}\"? This cannot be undone.",
+      "settings": "List Settings",
+      "sharing": "Who can see this list",
+      "sharingOrg": "All staff",
+      "sharingPrivate": "Only me",
+      "match": "Match",
+      "matchAll": "All filters",
+      "matchAny": "Any filter",
+      "household": "Include household",
+      "householdNone": "Matches only",
+      "householdChildren": "Children of matches",
+      "householdAll": "Entire household",
+      "autoRefresh": "Refresh nightly",
+      "notifyOnChange": "Email me when membership changes"
     },
     "peopleColumns": {
       "appFilt": "Apply Filters",
@@ -1709,8 +1967,10 @@
       "autoAssign": "Auto Assign",
       "notesPlaceholder": "Add notes for this service plan...",
       "notesPlaceholderReadOnly": "Plan notes (read-only)",
+      "penciledIn": "Penciled In",
       "planNotesAria": "Plan notes",
-      "saveNotes": "Save Notes"
+      "saveNotes": "Save Notes",
+      "undoAutoAssign": "Undo Auto Assign"
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
@@ -1821,6 +2081,7 @@
       "subtitle": "Organize serving teams and service plans"
     },
     "planEdit": {
+      "autoReplaceOnDecline": "Automatically schedule a replacement when a volunteer declines",
       "copyAll": "Positions and Assignments",
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
@@ -1830,9 +2091,10 @@
       "planEdit": "Edit Plan",
       "planNameAria": "Plan name",
       "planReq": "Plan name is required.",
+      "prepared": "Penciled in (hide assignments from volunteers until published)",
       "servDate": "Service Date",
-      "serviceDateAria": "Service date",
       "servReq": "Service date is required.",
+      "serviceDateAria": "Service date",
       "showVolunteerNames": "Show volunteer names on signup page",
       "signupDeadline": "Signup Deadline (hours before service)",
       "signupDeadlineHelper": "Leave blank for no deadline"
@@ -1889,12 +2151,6 @@
       "servicePlan": "Service Plan",
       "subtitle": "Plan and schedule your service"
     },
-    "plansPage": {
-      "addMinistry": "Add Ministry",
-      "editMinistry": "Edit Ministry",
-      "selMin": "Select a Ministry",
-      "subtitle": "Manage ministries and service plans"
-    },
     "planType": {
       "details": "Plan Type Details"
     },
@@ -1942,20 +2198,33 @@
       "blockCon": "Blockout date conflict of",
       "cons": "Conflicts",
       "during": "during",
+      "householdApart": "prefers not to serve the same day as",
       "more": "more",
       "needed": "needed.",
       "notify": "Notify",
+      "overMaxPerMonth": "is scheduled",
+      "penciledIn": "Penciled in — volunteers can't see these assignments yet.",
       "person": "person",
       "pleaseConfirm": "Please log in and confirm.",
       "ppl": "people",
+      "prefTimeMismatch": "prefers serving at",
+      "publish": "Publish Plan",
+      "publishNotify": "Publish & Notify",
       "timeCon": "Time conflict between",
       "timeCon2": "Time conflict at",
+      "timesThisMonth": "times this month, over their preferred max of",
       "to": "to",
       "val": "Validation",
       "valPlan": "Plan is valid.",
       "vol": "volunteer(s)",
       "volNotif": "All volunteers notified.",
       "volReq": "Volunteer Requests: "
+    },
+    "plansPage": {
+      "addMinistry": "Add Ministry",
+      "editMinistry": "Edit Ministry",
+      "selMin": "Select a Ministry",
+      "subtitle": "Manage ministries and service plans"
     },
     "positionEdit": {
       "allowSelfSignup": "Allow Self-Signup",
@@ -1982,6 +2251,17 @@
       "length": "Length",
       "serviceOrder": "SERVICE ORDER",
       "time": "Time"
+    },
+    "schedulingPreference": {
+      "household": "Household scheduling",
+      "householdApart": "Don't schedule household the same day",
+      "householdNone": "No preference",
+      "householdTogether": "Schedule household together",
+      "maxPerMonth": "Max times per month",
+      "maxPerMonthHelper": "Leave blank for no limit",
+      "preferredTimes": "Preferred service times",
+      "preferredTimesHelper": "e.g. 9:00 am or First Service. Separate multiple with commas.",
+      "title": "Scheduling Preferences"
     },
     "serviceOrder": {
       "addFromLesson": "Add From Lesson",
@@ -4274,11 +4554,17 @@
         "delay": "Wait",
         "sendEmail": "Send email",
         "addToGroup": "Add to group",
+        "removeFromGroup": "Remove from group",
         "addToWorkflow": "Add to workflow",
         "addNote": "Add note",
         "setField": "Set field",
-        "webhook": "Webhook"
-      }
+        "webhook": "Webhook",
+        "createTask": "Create task"
+      },
+      "taskTitle": "Task title",
+      "taskDescription": "Description (optional)",
+      "noAssignee": "Unassigned",
+      "pickAssignee": "Pick assignee"
     },
     "workflowCard": {
       "assign": "Assign",
@@ -4379,7 +4665,31 @@
       "recur_weekly": "Weekly",
       "recur_monthly": "Monthly",
       "recur_yearly": "Yearly",
-      "saveRuleFirst": "Save the rule first to add conditions."
+      "saveRuleFirst": "Save the rule first to add conditions.",
+      "runNow": "Run now",
+      "runNowResult": "Applied to {created} people; {skipped} skipped (already in workflow).",
+      "runNowFailed": "Run now failed.",
+      "pauseAll": "Pause automation",
+      "resumeAll": "Resume automation",
+      "paused": "Paused"
+    },
+    "executions": {
+      "title": "Execution History",
+      "refresh": "Refresh",
+      "noExecutions": "No executions yet. They appear here when a trigger fires.",
+      "when": "When",
+      "trigger": "Trigger",
+      "subject": "Person",
+      "statusHeader": "Status",
+      "attempts": "Attempts",
+      "retry": "Retry",
+      "pause": "Pause",
+      "resume": "Resume",
+      "status_success": "Success",
+      "status_pending": "Pending",
+      "status_failed": "Failed",
+      "status_paused": "Paused",
+      "deletedTrigger": "(deleted trigger)"
     }
   },
   "ui": {

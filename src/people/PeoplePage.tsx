@@ -3,10 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Permissions, UserHelper, type PersonInterface, type SearchCondition } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
-import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress } from "@mui/material";
+import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select } from "@mui/material";
 import { B1AdminPersonHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
-import { SavedLists, type ListConditions } from "./components/SavedLists";
+import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
+import { buildRulesFromCriteria } from "./components/listRules";
 import { type ActiveFilter } from "./components/AdvancedPeopleSearch";
 import { People as PeopleIcon, PersonAdd as PersonAddIcon, Print as PrintIcon, BookmarkAdd as SaveListIcon, BarChart as BarChartIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
@@ -33,7 +34,8 @@ export const PeoplePage = memo(() => {
   // The query behind the current results (advanced filter spec or simple/AI conditions),
   // so it can be saved as a List. Null when results aren't from a search.
   const [saveableCriteria, setSaveableCriteria] = React.useState<ListConditions | null>(null);
-  const [saveListDialog, setSaveListDialog] = React.useState<{ open: boolean; name: string; category: string; saving: boolean }>({ open: false, name: "", category: "", saving: false });
+  const emptySaveListDialog = { open: false, name: "", category: "", scope: "org", match: "all" as "all" | "any", householdInclusion: "none", autoRefresh: false, notifyOnChange: false, saving: false };
+  const [saveListDialog, setSaveListDialog] = React.useState(emptySaveListDialog);
   const queryClient = useQueryClient();
   const location = useLocation();
   const navigate = useNavigate();
@@ -125,17 +127,28 @@ export const PeoplePage = memo(() => {
     setLoadAll(true);
   }, []);
 
-  const handleSelectList = useCallback((conditions: ListConditions) => {
-    setSaveableCriteria(conditions);
+  const handleSelectList = useCallback((list: ListInterface) => {
+    const conditions = list.conditions;
     setIsSearchPerformed(true);
-    if (Array.isArray(conditions)) {
-      // Simple/AI list: run the stored conditions directly against current data.
+    // Match-any / household-inclusion semantics only exist server-side; those lists
+    // evaluate via the rules engine. Plain all-match lists keep the client flow so
+    // the advanced panel stays seeded and editable.
+    const needsServerEval = !!list.id && !!list.rules && (list.rules.match !== "all" || (!!list.householdInclusion && list.householdInclusion !== "none"));
+    if (needsServerEval) {
+      setSaveableCriteria(null);
+      setSelectedListFilters(undefined);
+      ApiHelper.get(`/lists/${list.id}/people`, "MembershipApi").then((data: any) => {
+        setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
+      });
+    } else if (Array.isArray(conditions)) {
+      setSaveableCriteria(conditions);
       setSelectedListFilters(undefined);
       ApiHelper.post("/people/advancedSearch", conditions, "MembershipApi").then((data: any) => {
         setSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
       });
     } else {
       // Advanced list: seed the advanced panel (new ref each time so re-selecting re-seeds).
+      setSaveableCriteria(conditions);
       setSelectedListFilters({ ...conditions });
     }
   }, []);
@@ -143,7 +156,7 @@ export const PeoplePage = memo(() => {
   React.useEffect(() => {
     const conditions = (location.state as { searchConditions?: SearchCondition[] } | null)?.searchConditions;
     if (conditions && conditions.length > 0) {
-      handleSelectList(conditions);
+      handleSelectList({ conditions });
       navigate(location.pathname, { replace: true, state: null });
     }
 
@@ -153,13 +166,27 @@ export const PeoplePage = memo(() => {
     if (!saveableCriteria || !saveListDialog.name.trim()) return;
     setSaveListDialog((d) => ({ ...d, saving: true }));
     try {
-      await ApiHelper.post("/lists", [{ name: saveListDialog.name.trim(), category: saveListDialog.category.trim() || undefined, conditions: saveableCriteria }], "MembershipApi");
+      // The rules tree is the canonical server-evaluable query; the conditions blob is
+      // kept alongside so the advanced panel can be re-seeded for editing.
+      const rules = buildRulesFromCriteria(saveableCriteria, saveListDialog.match);
+      await ApiHelper.post("/lists", [
+        {
+          name: saveListDialog.name.trim(),
+          category: saveListDialog.category.trim() || undefined,
+          conditions: saveableCriteria,
+          rules,
+          scope: saveListDialog.scope,
+          householdInclusion: saveListDialog.householdInclusion,
+          autoRefresh: saveListDialog.autoRefresh,
+          notifyOnChange: saveListDialog.autoRefresh && saveListDialog.notifyOnChange
+        }
+      ], "MembershipApi");
       queryClient.invalidateQueries({ queryKey: ["/lists", "MembershipApi"] });
-      setSaveListDialog({ open: false, name: "", category: "", saving: false });
+      setSaveListDialog(emptySaveListDialog);
     } catch {
       setSaveListDialog((d) => ({ ...d, saving: false }));
     }
-  }, [saveableCriteria, saveListDialog.name, saveListDialog.category, queryClient]);
+  }, [saveableCriteria, saveListDialog, queryClient]);
 
   React.useEffect(() => {
     if (!searchResults) return;
@@ -303,19 +330,14 @@ export const PeoplePage = memo(() => {
             }}
             startIcon={<PersonAddIcon />}
             onClick={() => {
-              // Scroll to the CreatePerson component at the bottom
               const createPersonSection = document.querySelector('[data-cy="createPerson"]') || document.querySelector(".create-person") || document.getElementById("createPersonForm");
               if (createPersonSection) {
                 createPersonSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                // Focus on first input field after scrolling
                 setTimeout(() => {
                   const firstInput = createPersonSection.querySelector("input") as HTMLElement;
-                  if (firstInput) {
-                    firstInput.focus();
-                  }
+                  if (firstInput) firstInput.focus();
                 }, 500);
               } else {
-                // Fallback: scroll to bottom of page
                 window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
               }
             }}>
@@ -365,7 +387,7 @@ export const PeoplePage = memo(() => {
                       </>
                     )}
                     {canEdit && saveableCriteria && isSearchPerformed && searchResults && searchResults.length > 0 && (
-                      <Button size="small" variant="outlined" startIcon={<SaveListIcon />} onClick={() => setSaveListDialog({ open: true, name: "", category: "", saving: false })} sx={{ mr: 1 }}>
+                      <Button size="small" variant="outlined" startIcon={<SaveListIcon />} onClick={() => setSaveListDialog({ ...emptySaveListDialog, open: true })} sx={{ mr: 1 }}>
                         {Locale.label("people.lists.saveAs")}
                       </Button>
                     )}
@@ -407,11 +429,43 @@ export const PeoplePage = memo(() => {
           <Stack spacing={2} sx={{ mt: 1 }}>
             <TextField fullWidth autoFocus label={Locale.label("people.lists.name")} value={saveListDialog.name} onChange={(e) => setSaveListDialog((d) => ({ ...d, name: e.target.value }))} />
             <TextField fullWidth label={Locale.label("people.lists.category")} placeholder={Locale.label("people.lists.categoryPlaceholder")} value={saveListDialog.category} onChange={(e) => setSaveListDialog((d) => ({ ...d, category: e.target.value }))} />
+            <FormControl fullWidth size="small">
+              <InputLabel>{Locale.label("people.lists.sharing")}</InputLabel>
+              <Select label={Locale.label("people.lists.sharing")} value={saveListDialog.scope} onChange={(e) => setSaveListDialog((d) => ({ ...d, scope: e.target.value }))} data-testid="save-list-sharing">
+                <MenuItem value="org">{Locale.label("people.lists.sharingOrg")}</MenuItem>
+                <MenuItem value="private">{Locale.label("people.lists.sharingPrivate")}</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth size="small">
+              <InputLabel>{Locale.label("people.lists.match")}</InputLabel>
+              <Select label={Locale.label("people.lists.match")} value={saveListDialog.match} onChange={(e) => setSaveListDialog((d) => ({ ...d, match: e.target.value as "all" | "any" }))} data-testid="save-list-match">
+                <MenuItem value="all">{Locale.label("people.lists.matchAll")}</MenuItem>
+                <MenuItem value="any">{Locale.label("people.lists.matchAny")}</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth size="small">
+              <InputLabel>{Locale.label("people.lists.household")}</InputLabel>
+              <Select label={Locale.label("people.lists.household")} value={saveListDialog.householdInclusion} onChange={(e) => setSaveListDialog((d) => ({ ...d, householdInclusion: e.target.value }))} data-testid="save-list-household">
+                <MenuItem value="none">{Locale.label("people.lists.householdNone")}</MenuItem>
+                <MenuItem value="children">{Locale.label("people.lists.householdChildren")}</MenuItem>
+                <MenuItem value="household">{Locale.label("people.lists.householdAll")}</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox checked={saveListDialog.autoRefresh} onChange={(e) => setSaveListDialog((d) => ({ ...d, autoRefresh: e.target.checked }))} data-testid="save-list-autorefresh" />}
+              label={Locale.label("people.lists.autoRefresh")}
+            />
+            {saveListDialog.autoRefresh && (
+              <FormControlLabel
+                control={<Checkbox checked={saveListDialog.notifyOnChange} onChange={(e) => setSaveListDialog((d) => ({ ...d, notifyOnChange: e.target.checked }))} data-testid="save-list-notify" />}
+                label={Locale.label("people.lists.notifyOnChange")}
+              />
+            )}
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setSaveListDialog((d) => ({ ...d, open: false }))}>{Locale.label("common.cancel")}</Button>
-          <Button onClick={handleSaveList} variant="contained" disabled={saveListDialog.saving || !saveListDialog.name.trim()}>{Locale.label("common.save")}</Button>
+          <Button onClick={handleSaveList} variant="contained" disabled={saveListDialog.saving || !saveListDialog.name.trim()} data-testid="save-list-confirm">{Locale.label("common.save")}</Button>
         </DialogActions>
       </Dialog>
 

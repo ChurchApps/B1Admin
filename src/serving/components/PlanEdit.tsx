@@ -26,7 +26,9 @@ export const PlanEdit = (props: Props) => {
       serviceDate: DateHelper.formatHtml5Date(props.plan?.serviceDate) ?? "",
       campusId: props.plan?.campusId ?? "",
       signupDeadlineHours: props.plan?.signupDeadlineHours ?? "",
-      showVolunteerNames: props.plan?.showVolunteerNames !== false
+      showVolunteerNames: props.plan?.showVolunteerNames !== false,
+      prepared: props.plan?.prepared === true,
+      autoReplaceOnDecline: props.plan?.autoReplaceOnDecline === true
     }
   });
 
@@ -94,7 +96,9 @@ export const PlanEdit = (props: Props) => {
       serviceDate: DateHelper.toDate(values.serviceDate),
       serviceOrder: true,
       signupDeadlineHours: values.signupDeadlineHours ? parseInt(values.signupDeadlineHours) : undefined,
-      showVolunteerNames: values.showVolunteerNames
+      showVolunteerNames: values.showVolunteerNames,
+      prepared: values.prepared,
+      autoReplaceOnDecline: values.autoReplaceOnDecline
     };
     plan.campusId = values.campusId || null;
     savePlanMutation.mutate(plan);
@@ -140,6 +144,12 @@ export const PlanEdit = (props: Props) => {
             <TextField fullWidth label={Locale.label("plans.planEdit.signupDeadline")} id="signupDeadlineHours" type="number" helperText={Locale.label("plans.planEdit.signupDeadlineHelper")} {...register("signupDeadlineHours")} />
             <Controller name="showVolunteerNames" control={control} render={({ field }) => (
               <FormControlLabel control={<Checkbox checked={field.value ?? true} onChange={(ev) => field.onChange(ev.target.checked)} />} label={Locale.label("plans.planEdit.showVolunteerNames")} />
+            )} />
+            <Controller name="prepared" control={control} render={({ field }) => (
+              <FormControlLabel control={<Checkbox checked={field.value ?? false} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="prepared-checkbox" />} label={Locale.label("plans.planEdit.prepared") || "Penciled in (hide assignments from volunteers until published)"} />
+            )} />
+            <Controller name="autoReplaceOnDecline" control={control} render={({ field }) => (
+              <FormControlLabel control={<Checkbox checked={field.value ?? false} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="auto-replace-checkbox" />} label={Locale.label("plans.planEdit.autoReplaceOnDecline") || "Automatically schedule a replacement when a volunteer declines"} />
             )} />
           </>
         )}

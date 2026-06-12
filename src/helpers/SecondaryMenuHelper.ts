@@ -107,10 +107,12 @@ export class SecondaryMenuHelper {
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("donations.donations.summary"), icon: "volunteer_activism" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/batches", label: Locale.label("donations.donations.batches"), icon: "folder" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/funds", label: Locale.label("donations.donations.funds"), icon: "account_balance" });
+    if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/campaigns", label: Locale.label("donations.donations.campaigns"), icon: "flag" });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations/statements", label: Locale.label("donations.donations.statements") || "Giving Statements", icon: "description" });
 
     if (path.startsWith("/donations/stripe-import")) label = Locale.label("helpers.secondaryMenuHelper.stripeImport");
     else if (path.startsWith("/donations/statements")) label = Locale.label("donations.donations.statements") || "Giving Statements";
+    else if (path.startsWith("/donations/campaigns")) label = Locale.label("donations.donations.campaigns");
     else if (path.startsWith("/donations/funds")) label = Locale.label("donations.donations.funds");
     else if (path.startsWith("/donations/batches")) label = Locale.label("donations.donations.batches");
     else if (path.startsWith("/donations")) label = Locale.label("donations.donations.summary");
@@ -136,6 +138,8 @@ export class SecondaryMenuHelper {
       menuItems.push({ url: "/site/appearance", label: Locale.label("helpers.secondaryMenuHelper.appearance"), icon: "palette" });
       menuItems.push({ url: "/site/files", label: Locale.label("helpers.secondaryMenuHelper.files"), icon: "folder_open" });
       menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
+      menuItems.push({ url: "/calendars/rooms", label: Locale.label("helpers.secondaryMenuHelper.roomsResources"), icon: "meeting_room" });
+      menuItems.push({ url: "/calendars/approvals", label: Locale.label("helpers.secondaryMenuHelper.approvals"), icon: "event_available" });
       menuItems.push({ url: "/registrations", label: Locale.label("helpers.secondaryMenuHelper.registrations"), icon: "how_to_reg" });
     }
 
@@ -144,6 +148,8 @@ export class SecondaryMenuHelper {
     else if (path.startsWith("/site/blocks")) label = Locale.label("helpers.secondaryMenuHelper.blocks");
     else if (path.startsWith("/site/appearance")) label = Locale.label("helpers.secondaryMenuHelper.appearance");
     else if (path.startsWith("/site/files")) label = Locale.label("helpers.secondaryMenuHelper.files");
+    else if (path.startsWith("/calendars/rooms")) label = Locale.label("helpers.secondaryMenuHelper.roomsResources");
+    else if (path.startsWith("/calendars/approvals")) label = Locale.label("helpers.secondaryMenuHelper.approvals");
     else if (path.startsWith("/calendars")) label = Locale.label("helpers.secondaryMenuHelper.calendars");
     else if (path.startsWith("/site")) label = Locale.label("helpers.secondaryMenuHelper.website");
 

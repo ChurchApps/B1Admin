@@ -1,4 +1,4 @@
-import { CalendarMonth as CalendarIcon, Group as GroupIcon, Settings as SettingsIcon } from "@mui/icons-material";
+import { CalendarMonth as CalendarIcon, Group as GroupIcon, Label as LabelIcon, Settings as SettingsIcon } from "@mui/icons-material";
 import { memo, useMemo } from "react";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
@@ -19,6 +19,9 @@ export const AttendanceNavigation = memo((props: Props) => {
     }
     if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.view)) {
       tabsList.push({ value: "groups", label: Locale.label("attendance.tabs.groupAtt"), icon: <GroupIcon /> });
+    }
+    if (UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit)) {
+      tabsList.push({ value: "labels", label: Locale.label("attendance.tabs.labels"), icon: <LabelIcon /> });
     }
     return tabsList;
   }, []);
