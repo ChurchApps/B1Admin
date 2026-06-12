@@ -16,7 +16,7 @@ export function DisplayCalendarEventModal(props: Props) {
   const realEventId = (props.event as CuratedEventWithEventInterface & { realEventId?: string }).realEventId;
 
   const getDisplayTime = () => {
-    let result = "";
+    let result: string;
     if (props.event.allDay) {
       const prettyStartDate = DateHelper.prettyDate(props.event.start);
       const prettyEndDate = DateHelper.prettyDate(props.event.end);

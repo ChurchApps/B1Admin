@@ -40,7 +40,7 @@ const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSetting
   };
 
   const getStyle = (): CSSProperties => {
-    let result: CSSProperties = {};
+    let result: CSSProperties;
     if (section.background?.indexOf("/") > -1) {
       result = { backgroundImage: "url('" + section.background + "')" };
     } else {

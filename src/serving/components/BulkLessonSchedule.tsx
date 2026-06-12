@@ -66,7 +66,7 @@ export const BulkLessonSchedule: React.FC<Props> = (props) => {
   const browseAt = useCallback(async (path: string, provId: string): Promise<ContentFolder[]> => {
     const provider = getProvider(provId);
     if (!provider) return [];
-    let items: ContentItem[] = [];
+    let items: ContentItem[];
     if (props.ministryId) {
       items = await ApiHelper.post("/providerProxy/browse", { ministryId: props.ministryId, providerId: provId, path: path || null }, "DoingApi");
     } else {

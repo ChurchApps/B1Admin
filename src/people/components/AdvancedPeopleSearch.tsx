@@ -1006,7 +1006,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                               : Locale.label("people.peopleSearch.group")
                     }
                     onChange={(e) => {
-                      let text = "";
+                      let text: string;
                       if (complexFilterDialog.field === "memberDonations") {
                         text = funds.find((f) => f.id === e.target.value)?.name || "";
                       } else if (complexConfig.operator === "attendedCampus") {
@@ -1170,7 +1170,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                             : Locale.label("people.peopleSearch.group")
                   }
                   onChange={(e) => {
-                    let text = "";
+                    let text: string;
                     if (complexFilterDialog.field === "memberDonations") {
                       text = funds.find((f) => f.id === e.target.value)?.name || "";
                     } else if (complexConfig.operator === "attendedCampus") {

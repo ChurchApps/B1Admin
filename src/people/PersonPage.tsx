@@ -121,7 +121,7 @@ export const PersonPage = () => {
   }, [selectedTab, defaultTab]);
 
   const getCurrentTab = () => {
-    let currentTab = null;
+    let currentTab: JSX.Element;
     // Tabs other than details need a loaded person; the query can flush to
     // null during refetches/navigation, so guard against crashing child
     // components that dereference person.id unconditionally.
