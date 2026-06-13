@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from "react";
 import { HouseholdEdit } from ".";
-import { type PersonInterface } from "@churchapps/helpers";
-import { DisplayBox, ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, PersonHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
+import { type GroupMemberInterface, type PersonInterface, type VisitInterface } from "@churchapps/helpers";
+import { DisplayBox, ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, PersonHelper, Locale, PersonAvatar, DateHelper } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Chip } from "@mui/material";
 import { Edit as EditIcon, Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
@@ -15,6 +15,8 @@ interface Props {
 export const Household: React.FC<Props> = memo((props) => {
   const [household, setHousehold] = React.useState(null);
   const [members, setMembers] = React.useState<PersonInterface[]>(null);
+  const [memberGroups, setMemberGroups] = React.useState<Record<string, string[]>>({});
+  const [memberLastActivity, setMemberLastActivity] = React.useState<Record<string, string>>({});
   const [mode, setMode] = React.useState("display");
   const [, setPhoto] = React.useState("");
 
@@ -42,6 +44,55 @@ export const Household: React.FC<Props> = memo((props) => {
     setPhoto(PersonHelper.getPhotoUrl(props.person));
   }, [props.person]);
   React.useEffect(loadMembers, [household]);
+  React.useEffect(() => {
+    let active = true;
+
+    const loadMemberSummaries = async () => {
+      if (!members?.length) {
+        setMemberGroups({});
+        setMemberLastActivity({});
+        return;
+      }
+
+      const memberIds = members.map((m) => m.id).filter(Boolean) as string[];
+      const canViewGroups = UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view);
+      const canViewAttendance = UserHelper.checkAccess(Permissions.attendanceApi.attendance.view);
+
+      const groupEntries = canViewGroups
+        ? await Promise.all(memberIds.map(async (personId) => {
+          try {
+            const groupMembers: GroupMemberInterface[] = await ApiHelper.get("/groupmembers?personId=" + personId, "MembershipApi");
+            const groupNames = (groupMembers || []).map((gm) => gm.group?.name).filter(Boolean) as string[];
+            return [personId, groupNames] as const;
+          } catch {
+            return [personId, []] as const;
+          }
+        }))
+        : [];
+
+      const activityEntries = canViewAttendance
+        ? await Promise.all(memberIds.map(async (personId) => {
+          try {
+            const visits: VisitInterface[] = await ApiHelper.get("/visits?personId=" + personId, "AttendanceApi");
+            const latest = (visits || [])
+              .map((visit) => visit.visitDate ? DateHelper.toDate(visit.visitDate) : null)
+              .filter((date): date is Date => !!date && !Number.isNaN(date.getTime()))
+              .sort((a, b) => b.getTime() - a.getTime())[0];
+            return [personId, latest ? DateHelper.prettyDate(latest) : ""] as const;
+          } catch {
+            return [personId, ""] as const;
+          }
+        }))
+        : [];
+
+      if (!active) return;
+      setMemberGroups(Object.fromEntries(groupEntries));
+      setMemberLastActivity(Object.fromEntries(activityEntries.filter(([, date]) => !!date)));
+    };
+
+    loadMemberSummaries();
+    return () => { active = false; };
+  }, [members]);
 
   const getRows = useMemo(() => {
     if (!members) return [];
@@ -52,6 +103,8 @@ export const Household: React.FC<Props> = memo((props) => {
         const age = m.birthDate ? PersonHelper.getAge(new Date(m.birthDate)) : null;
         const email = m.contactInfo?.email;
         const phone = m.contactInfo?.mobilePhone || m.contactInfo?.homePhone || m.contactInfo?.workPhone;
+        const groups = m.id ? memberGroups[m.id] || [] : [];
+        const lastActivity = m.id ? memberLastActivity[m.id] : "";
 
         return (
           <TableRow key={m.id} sx={{ "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" } }}>
@@ -109,19 +162,22 @@ export const Household: React.FC<Props> = memo((props) => {
             </TableCell>
             <TableCell sx={{ p: 3, width: "30%" }}>
               <Stack spacing={1}>
-                {/* Placeholder for groups/involvement - can be expanded later */}
-                <Typography variant="body2" color="text.disabled" sx={{ fontStyle: "italic" }}>
-                  {Locale.label("people.household.demoGroups")}
-                </Typography>
-                <Typography variant="body2" color="text.disabled" sx={{ fontStyle: "italic" }}>
-                  {Locale.label("people.household.demoLastActivity")}
-                </Typography>
+                {groups.length > 0 && (
+                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: "italic" }}>
+                    {Locale.label("people.household.groups")} {groups.join(", ")}
+                  </Typography>
+                )}
+                {lastActivity && (
+                  <Typography variant="body2" color="text.secondary" sx={{ fontStyle: "italic" }}>
+                    {Locale.label("people.household.lastActivity")} {lastActivity}
+                  </Typography>
+                )}
               </Stack>
             </TableCell>
           </TableRow>
         );
       });
-  }, [members]);
+  }, [memberGroups, memberLastActivity, members, props.person.id]);
 
   const getTable = () => {
     if (!members) return <Loading size="sm" />;
