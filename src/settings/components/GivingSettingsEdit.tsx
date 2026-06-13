@@ -22,6 +22,9 @@ const stripeSupportedCurrencies = [
   "usd", "eur", "gbp", "cad", "aud", "inr", "jpy", "sgd", "hkd", "sek", "nok", "dkk", "chf", "mxn", "brl"
 ];
 
+// ponytail: temp prod kill-switch for KingdomFunding — delete when it launches
+const kfSelectable = process.env.REACT_APP_STAGE !== "prod";
+
 export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const [gateway, setGateway] = React.useState<PaymentGatewaysInterface>(null);
   const [errors, setErrors] = React.useState<string[]>([]);
@@ -192,7 +195,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
                 <Select {...field} label={Locale.label("settings.givingSettingsEdit.prov")}>
                   <MenuItem value="">{Locale.label("settings.givingSettingsEdit.none")}</MenuItem>
                   <MenuItem value="Stripe">{Locale.label("settings.givingSettingsEdit.stripe")}</MenuItem>
-                  <MenuItem value="KingdomFunding">{Locale.label("settings.givingSettingsEdit.kingdomFunding")}</MenuItem>
+                  {(kfSelectable || provider === "KingdomFunding") && <MenuItem value="KingdomFunding">{Locale.label("settings.givingSettingsEdit.kingdomFunding")}</MenuItem>}
                 </Select>
               </FormControl>
             )}
