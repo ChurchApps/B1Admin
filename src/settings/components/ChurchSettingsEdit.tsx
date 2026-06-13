@@ -1,10 +1,10 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 import { type ChurchInterface } from "@churchapps/helpers";
-import { ApiHelper, InputBox, ErrorMessages, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { GivingSettingsEdit } from "./GivingSettingsEdit";
-import { TextField, Grid, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { Alert, TextField, Grid, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import BusinessIcon from "@mui/icons-material/Business";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -13,20 +13,20 @@ import SmsIcon from "@mui/icons-material/Sms";
 import LanguageIcon from "@mui/icons-material/Language";
 import { DomainSettingsEdit } from "./DomainSettingsEdit";
 import { TextingSettingsEdit } from "./TextingSettingsEdit";
-import { DirectoryApproveSettingsEdit } from "./DirectoryApproveSettingsEdit";
 import { SupportContactSettingsEdit } from "./SupportContactSettingsEdit";
-import { VisbilityPrefSettingsEdit } from "./VisibilityPrefSettingsEdit";
-import { GuestRegistrationSettingsEdit } from "./GuestRegistrationSettingsEdit";
 import { SettingsSectionHeader } from "./SettingsSectionHeader";
+
+// ChurchInterface has typed fields; RHF nested paths require looser typing
+type AnyRecord = Record<string, any>;
 
 interface Props {
   church: ChurchInterface;
   updatedFunction: () => void;
+  initialSection?: string;
 }
 
 export const ChurchSettingsEdit: React.FC<Props> = (props) => {
-  const [church, setChurch] = React.useState({} as ChurchInterface);
-  const [errors, setErrors] = React.useState([]);
+  const [errors, setErrors] = React.useState<string[]>([]);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
   const childErrorsRef = React.useRef<string[]>([]);
   const [expanded, setExpanded] = React.useState<string | false>(props.initialSection || "church-info");
@@ -50,7 +50,7 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   // Shared accordion styles for a warm, approachable look
   const accordionStyles = {
     mb: 1.5,
-    borderRadius: "12px !important",
+    "&&": { borderRadius: "12px" },
     boxShadow: "none",
     border: "1px solid",
     borderColor: "divider",
@@ -74,50 +74,17 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const handleSave = async () => {
-    if (validate()) {
-      setErrors([]);
-      childErrorsRef.current = [];
-      setSaveTrigger(new Date());
-      await new Promise(resolve => setTimeout(resolve, 500));
-      if (childErrorsRef.current.length > 0) return;
-      const resp = await ApiHelper.post("/churches", [church], "MembershipApi");
-      if (resp.errors !== undefined) setErrors(resp.errors);
-      else props.updatedFunction();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSave();
-    }
-  };
-
-  const validate = () => {
-    const errors = [];
-    if (!church.name?.trim()) errors.push(Locale.label("settings.churchSettingsEdit.noNameMsg"));
-    if (!church.subDomain?.trim()) errors.push(Locale.label("settings.churchSettingsEdit.noSubMsg"));
-    setErrors(errors);
-    return errors.length === 0;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onValid = async (values: AnyRecord) => {
     setErrors([]);
-    const c = { ...church };
-    const { name, value } = e.target;
-
-    switch (name) {
-      case "churchName": c.name = value; break;
-      case "address1": c.address1 = value; break;
-      case "address2": c.address2 = value; break;
-      case "city": c.city = value; break;
-      case "state": c.state = value; break;
-      case "zip": c.zip = value; break;
-      case "country": c.country = value; break;
-      case "subDomain": c.subDomain = value; break;
-    }
-    setChurch(c);
+    childErrorsRef.current = [];
+    setSaveTrigger(new Date());
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if (childErrorsRef.current.length > 0) return;
+    const { churchName, ...rest } = values;
+    const church: ChurchInterface = { ...props.church, ...rest, name: churchName };
+    const resp = await ApiHelper.post("/churches", [church], "MembershipApi");
+    if (resp.errors !== undefined) setErrors(resp.errors);
+    else props.updatedFunction();
   };
 
   const handleGivingError = (givingErrors: string[]) => {
@@ -132,59 +99,27 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
 
   const giveSection = () => {
     if (!UserHelper.checkAccess(Permissions.givingApi.settings.edit)) return null;
-    return <GivingSettingsEdit churchId={church?.id || ""} churchInfo={church} saveTrigger={saveTrigger} onError={handleGivingError} />;
+    return <GivingSettingsEdit churchId={props.church?.id || ""} churchInfo={props.church} saveTrigger={saveTrigger} onError={handleGivingError} />;
   };
 
-  React.useEffect(() => setChurch(props.church), [props.church]);
-
-  if (!church || !church.id) return null;
+  if (!props.church || !props.church.id) return null;
 
   return (
     <FormCard id="churchSettingsBox" onCancel={props.updatedFunction} onSave={handleSubmit(onValid)} title={Locale.label("settings.churchSettingsEdit.churchSettings")} icon="business">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
 
       {/* Church Information Accordion */}
-      <Accordion
-        expanded={expanded === "church-info"}
-        onChange={handleAccordionChange("church-info")}
-        sx={accordionStyles}
-      >
+      <Accordion expanded={expanded === "church-info"} onChange={handleAccordionChange("church-info")} sx={accordionStyles}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
-          <SettingsSectionHeader
-            icon={<BusinessIcon />}
-            color="primary"
-            title={Locale.label("settings.churchSettingsEdit.churchInfo")}
-            subtitle={church?.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle")}
-          />
+          <SettingsSectionHeader icon={<BusinessIcon />} color="primary" title={Locale.label("settings.churchSettingsEdit.churchInfo")} subtitle={props.church?.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle")} />
         </AccordionSummary>
         <AccordionDetails sx={{ pt: 2 }}>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                name="churchName"
-                label={Locale.label("settings.churchSettingsEdit.churchName")}
-                value={church?.name || ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                placeholder={Locale.label("placeholders.church.name")}
-                data-testid="church-name-input"
-                aria-label="Church name"
-              />
+              <TextField fullWidth label={Locale.label("settings.churchSettingsEdit.churchName")} id="churchName" placeholder={Locale.label("placeholders.church.name")} data-testid="church-name-input" aria-label={Locale.label("settings.churchSettingsEdit.churchNameAria")} error={!!fe.churchName} helperText={fe.churchName?.message} {...register("churchName", { required: Locale.label("settings.churchSettingsEdit.noNameMsg") })} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                name="subDomain"
-                label={Locale.label("settings.churchSettingsEdit.subdom")}
-                value={church?.subDomain || ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                placeholder={Locale.label("placeholders.church.subdomain")}
-                data-testid="subdomain-input"
-                aria-label="Subdomain"
-                helperText={Locale.label("settings.church.subdomainHelper")}
-              />
+              <TextField fullWidth label={Locale.label("settings.churchSettingsEdit.subdom")} id="subDomain" placeholder={Locale.label("placeholders.church.subdomain")} data-testid="subdomain-input" aria-label={Locale.label("settings.churchSettingsEdit.subdomainAria")} helperText={fe.subDomain?.message || Locale.label("settings.church.subdomainHelper")} error={!!fe.subDomain} {...register("subDomain", { required: Locale.label("settings.churchSettingsEdit.noSubMsg") })} />
             </Grid>
           </Grid>
 
@@ -193,73 +128,42 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                name="address1"
-                label={Locale.label("settings.churchSettingsEdit.address1")}
-                value={church?.address1 || ""}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                placeholder={Locale.label("placeholders.church.address1")}
-                data-testid="address1-input"
-                aria-label="Address line 1"
-              />
+              <TextField fullWidth label={Locale.label("settings.churchSettingsEdit.address1")} id="address1" placeholder={Locale.label("placeholders.church.address1")} data-testid="address1-input" aria-label={Locale.label("settings.churchSettingsEdit.addressLine1Aria")} {...register("address1")} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth name="address2" label={Locale.label("settings.churchSettingsEdit.address2")} value={church?.address2 || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.church.address2")} />
+              <TextField fullWidth label={Locale.label("settings.churchSettingsEdit.address2")} id="address2" placeholder={Locale.label("placeholders.church.address2")} {...register("address2")} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth name="city" label={Locale.label("person.city")} value={church?.city || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.church.city")} />
+              <TextField fullWidth label={Locale.label("person.city")} id="city" placeholder={Locale.label("placeholders.church.city")} {...register("city")} />
             </Grid>
             <Grid size={{ xs: 12, md: 3 }}>
-              <TextField fullWidth name="state" label={Locale.label("person.state")} value={church?.state || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.church.state")} />
+              <TextField fullWidth label={Locale.label("person.state")} id="state" placeholder={Locale.label("placeholders.church.state")} {...register("state")} />
             </Grid>
             <Grid size={{ xs: 12, md: 3 }}>
-              <TextField fullWidth name="zip" label={Locale.label("person.zip")} value={church?.zip || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.church.zip")} />
+              <TextField fullWidth label={Locale.label("person.zip")} id="zip" placeholder={Locale.label("placeholders.church.zip")} {...register("zip")} />
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <TextField fullWidth name="country" label={Locale.label("person.country")} value={church?.country || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.church.country")} />
+              <TextField fullWidth label={Locale.label("person.country")} id="country" placeholder={Locale.label("placeholders.church.country")} {...register("country")} />
             </Grid>
           </Grid>
         </AccordionDetails>
       </Accordion>
 
       {/* General Settings Accordion */}
-      <Accordion
-        expanded={expanded === "general"}
-        onChange={handleAccordionChange("general")}
-        sx={accordionStyles}
-      >
+      <Accordion expanded={expanded === "general"} onChange={handleAccordionChange("general")} sx={accordionStyles}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
-          <SettingsSectionHeader
-            icon={<TuneIcon />}
-            color="secondary"
-            title={Locale.label("settings.churchSettingsEdit.general")}
-            subtitle={Locale.label("settings.churchSettingsEdit.generalSubtitle")}
-          />
+          <SettingsSectionHeader icon={<TuneIcon />} color="secondary" title={Locale.label("settings.churchSettingsEdit.general")} subtitle={Locale.label("settings.churchSettingsEdit.generalSubtitle")} />
         </AccordionSummary>
         <AccordionDetails sx={{ pt: 1 }}>
-          <SupportContactSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-          <DirectoryApproveSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-          <VisbilityPrefSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
-          <GuestRegistrationSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+          <SupportContactSettingsEdit churchId={props.church?.id || ""} saveTrigger={saveTrigger} />
         </AccordionDetails>
       </Accordion>
 
       {/* Giving Settings Accordion */}
       {UserHelper.checkAccess(Permissions.givingApi.settings.edit) && (
-        <Accordion
-          expanded={expanded === "giving"}
-          onChange={handleAccordionChange("giving")}
-          sx={accordionStyles}
-        >
+        <Accordion expanded={expanded === "giving"} onChange={handleAccordionChange("giving")} sx={accordionStyles}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
-            <SettingsSectionHeader
-              icon={<VolunteerActivismIcon />}
-              color="success"
-              title={Locale.label("settings.givingSettingsEdit.giving")}
-              subtitle={Locale.label("settings.churchSettingsEdit.givingSubtitle")}
-            />
+            <SettingsSectionHeader icon={<VolunteerActivismIcon />} color="success" title={Locale.label("settings.givingSettingsEdit.giving")} subtitle={Locale.label("settings.churchSettingsEdit.givingSubtitle")} />
           </AccordionSummary>
           <AccordionDetails sx={{ pt: 2 }}>
             {giveSection()}
@@ -269,41 +173,23 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
 
       {/* Texting Settings Accordion */}
       {UserHelper.checkAccess(Permissions.membershipApi.settings.edit) && (
-        <Accordion
-          expanded={expanded === "texting"}
-          onChange={handleAccordionChange("texting")}
-          sx={accordionStyles}
-        >
+        <Accordion expanded={expanded === "texting"} onChange={handleAccordionChange("texting")} sx={accordionStyles}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
-            <SettingsSectionHeader
-              icon={<SmsIcon />}
-              color="warning"
-              title="Texting"
-              subtitle="Configure SMS texting provider"
-            />
+            <SettingsSectionHeader icon={<SmsIcon />} color="warning" title={Locale.label("settings.churchSettingsEdit.textingTitle")} subtitle={Locale.label("settings.churchSettingsEdit.textingSubtitle")} />
           </AccordionSummary>
           <AccordionDetails sx={{ pt: 2 }}>
-            <TextingSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} onError={handleTextingError} />
+            <TextingSettingsEdit churchId={props.church?.id || ""} saveTrigger={saveTrigger} onError={handleTextingError} />
           </AccordionDetails>
         </Accordion>
       )}
 
       {/* Domains Accordion */}
-      <Accordion
-        expanded={expanded === "domains"}
-        onChange={handleAccordionChange("domains")}
-        sx={accordionStyles}
-      >
+      <Accordion expanded={expanded === "domains"} onChange={handleAccordionChange("domains")} sx={accordionStyles}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={accordionSummaryStyles}>
-          <SettingsSectionHeader
-            icon={<LanguageIcon />}
-            color="info"
-            title={Locale.label("settings.domainSettingsEdit.domains")}
-            subtitle={Locale.label("settings.churchSettingsEdit.domainsSubtitle")}
-          />
+          <SettingsSectionHeader icon={<LanguageIcon />} color="info" title={Locale.label("settings.domainSettingsEdit.domains")} subtitle={Locale.label("settings.churchSettingsEdit.domainsSubtitle")} />
         </AccordionSummary>
         <AccordionDetails sx={{ pt: 2 }}>
-          <DomainSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
+          <DomainSettingsEdit churchId={props.church?.id || ""} saveTrigger={saveTrigger} />
         </AccordionDetails>
       </Accordion>
     </FormCard>

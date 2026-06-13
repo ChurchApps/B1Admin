@@ -144,7 +144,7 @@ export const ManageChurch = () => {
             headerIcon="volunteer_activism"
             data-testid="settings-giving"
             view={givingView}
-            renderEdit={(saveTrigger, onError) => <GivingSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onError={onError} />}
+            renderEdit={(saveTrigger, onError) => <GivingSettingsEdit churchId={churchId} churchInfo={church.data} saveTrigger={saveTrigger} onError={onError} />}
             onSaved={handleSaved}
           />
         );
