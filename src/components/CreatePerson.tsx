@@ -53,12 +53,12 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
     const household = { name: person.name.last } as HouseholdInterface;
 
     setIsSubmitting(true);
-    ApiHelper.post("/households", [household], "MembershipApi").then((data) => {
+    ApiHelper.post("/households", [household], "MembershipApi").then((data: any) => {
       household.id = data[0].id;
       person.householdId = household.id;
       person.name.display = [person.name.first, person.name.last].join(" ");
       ApiHelper.post("/people", [person], "MembershipApi")
-        .then((data) => {
+        .then((data: any) => {
           person.id = data[0].id;
           onCreate(person);
           setPerson({ ...person, name: { first: "", last: "" }, contactInfo: { email: "" } });
@@ -82,7 +82,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
           if (existingPerson) {
             if (
               window.confirm(
-                Locale.label("common.createPerson.confirmDuplicate", {
+                Locale.t("common.createPerson.confirmDuplicate", {
                   existingName: existingPerson.name.display,
                   existingEmail: existingPerson.contactInfo.email,
                   firstName: person.name.first,

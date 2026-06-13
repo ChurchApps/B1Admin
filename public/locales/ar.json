@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "تحرير",
+    "element": "عنصر",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "نعم",
-    "element": "عنصر"
+    "yes": "نعم"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "إضافة قسم",
+      "backToSite": "العودة إلى الموقع",
       "blockPreview": "معاينة الكتلة",
+      "discard": "تجاهل",
+      "discardElementMessage": "هل تريد تجاهل التغييرات غير المحفوظة في هذا العنصر؟",
+      "discardElementTitle": "هل تريد تجاهل التغييرات؟",
+      "discardSectionMessage": "هل تريد تجاهل التغييرات غير المحفوظة في هذا القسم؟",
       "dropToAddElement": "أفلت هنا لإضافة عنصر",
       "dropToAddSection": "أفلت هنا لإضافة قسم",
+      "keepEditing": "متابعة التحرير",
       "scrollDown": "التمرير للأسفل",
-      "scrollUp": "التمرير للأعلى"
+      "scrollUp": "التمرير للأعلى",
+      "smallScreenMessage": "افتح هذه الصفحة على جهاز لوحي أو حاسوب مكتبي لتحرير موقعك الإلكتروني.",
+      "smallScreenTitle": "يحتاج هذا المحرر إلى شاشة أكبر"
     },
     "cssEdit": {
       "advancedFeature": "ميزة متقدمة:",
@@ -2937,13 +2946,24 @@
       "ago": "مضت",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "إيقاف النشر",
+      "disablePublishConfirm": "هل تريد إيقاف النشر لهذه الصفحة؟ ستصبح التعديلات منشورة فورًا مرة أخرى.",
+      "discardChanges": "تجاهل التغييرات غير المنشورة",
+      "discardChangesConfirm": "هل تريد تجاهل جميع التغييرات التي أُجريت منذ آخر نشر؟ سيُستعاد المحرر إلى النسخة المنشورة.",
       "exit": "خروج",
       "justNow": "الآن",
       "mobile": "Mobile",
-      "notSavedYet": "لا توجد تغييرات بعد",
       "page": "Page",
+      "publish": "نشر",
+      "publishOffTip": "تُنشر التعديلات حاليًا فورًا. انشر لحفظ نسخة منشورة وإبقاء التعديلات المستقبلية خاصة حتى النشر التالي.",
+      "publishedLabel": "منشور",
       "redoTip": "إعادة (Ctrl+Shift+Z)",
+      "saveError": "تعذر الحفظ",
       "savedAllChanges": "تم حفظ جميع التغييرات",
+      "saving": "جارٍ الحفظ…",
+      "statusLiveOnSave": "مباشر عند الحفظ",
+      "statusPublished": "منشور",
+      "statusUnpublishedChanges": "تغييرات غير منشورة",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "تراجع (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "عمود",
       "common": "شائع",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "تمكين Lightbox"
+      "enableLightbox": "تمكين Lightbox",
+      "groupAnimation": "الحركة",
+      "groupContent": "المحتوى",
+      "groupStyle": "النمط"
     },
     "elementSelection": {
       "moveDown": "نقل لأسفل",
@@ -3165,6 +3189,8 @@
       "fullDocs": "الوثائق الكاملة",
       "moveBody": "اسحب الأقسام والعناصر لإعادة ترتيبها. استخدم الأسهم لأعلى/لأسفل على شريط أدوات التحديد للنقلات الدقيقة.",
       "moveTitle": "إعادة ترتيب",
+      "shortcutsBody": "يزيل مفتاح Delete العنصر المحدد، ويكرره Ctrl+D، ويحركه Alt+سهم لأعلى/لأسفل، ويلغي Esc التحديد.",
+      "shortcutsTitle": "اختصارات لوحة المفاتيح",
       "title": "أساسيات محرر الصفحة",
       "undoBody": "استخدم Ctrl+Z للتراجع و Ctrl+Shift+Z للإعادة. افتح لوحة السجل من القائمة للقفز إلى أي حالة سابقة.",
       "undoTitle": "التراجع والسجل"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "البدء من قالب",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "سيؤدي هذا إلى حذف القسم وكل محتوياته نهائيًا. يمكنك التراجع عن هذا باستخدام Ctrl+Z.",
+      "deleteSectionTitle": "حذف القسم؟",
       "editSection": "Edit Section",
       "layoutContainer": "حاوية التخطيط",
       "section": "قسم"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
       "id": "المعرّف"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "قصتنا",
+      "all": "الكل",
+      "blank": "قسم فارغ",
+      "category": {
+        "about": "من نحن",
+        "cta": "دعوة لاتخاذ إجراء",
+        "giving": "العطاء",
+        "hero": "هيرو",
+        "media": "الوسائط",
+        "people": "الأشخاص والمجموعات",
+        "services": "الاجتماعات"
+      },
+      "connectColumns": "أعمدة التواصل",
+      "ctaBanner": "لافتة الخطوة التالية",
+      "faqSection": "أسئلة شائعة",
+      "findUs": "كيف تجدنا",
+      "galleryRow": "صف صور",
+      "givingBanner": "لافتة العطاء",
+      "givingOptions": "طرق العطاء",
+      "groupListSection": "قائمة المجموعات",
+      "groupsBrowser": "متصفح المجموعات",
+      "heroCentered": "هيرو بصورة",
+      "heroGradient": "هيرو متدرج",
+      "heroSplit": "هيرو مقسم",
+      "ministriesCards": "بطاقات الخدمات",
+      "sermonsLatest": "أحدث العظات",
+      "serviceTimes": "مواعيد الاجتماعات",
+      "staffGrid": "شبكة فريق العمل",
+      "storyColumns": "ثلاثة أعمدة",
+      "testimony": "اقتباس شهادة",
+      "title": "إضافة قسم",
+      "verseBanner": "لافتة آية",
+      "watchOnline": "شاهد عبر الإنترنت",
+      "welcome": "نص ترحيبي"
+    },
+    "sectionToolbar": {
+      "delete": "حذف القسم",
+      "dragToReorder": "اسحب لإعادة الترتيب",
+      "duplicate": "تكرار القسم",
+      "moveDown": "نقل القسم لأسفل",
+      "moveUp": "نقل القسم لأعلى",
+      "settings": "إعدادات القسم"
+    },
+    "siteTemplates": {
+      "back": "رجوع",
+      "create": "إنشاء الموقع",
+      "creating": "جارٍ إنشاء {title}...",
+      "descriptions": {
+        "classic": "موقع تقليدي متكامل يضم صفحة رئيسية ترحيبية وصفحة من نحن وصفحة لتخطيط زيارتك.",
+        "community": "يضع المجموعات والخدمات في المقدمة ليتواصل الناس بسرعة.",
+        "heritage": "تصميم كلاسيكي يركّز على الكتاب المقدس للكنائس الراسخة.",
+        "media": "مبني حول البث المباشر وأرشيف العظات للكنائس ذات الحضور القوي عبر الإنترنت.",
+        "modern": "مظهر عصري بتدرجات لونية جريئة واجتماعات عبر الإنترنت وصفحة تواصل.",
+        "simple": "موقع بسيط من صفحتين، مثالي للكنائس الناشئة والصغيرة.",
+        "visitor": "يركّز على الإجابة عن أسئلة الزائر الجديد قبل وصوله."
+      },
+      "errFailed": "فشل إنشاء الموقع. يرجى المحاولة مرة أخرى.",
+      "exists": "موجودة بالفعل",
+      "existsNote": "الصفحات التي تحمل علامة \"موجودة بالفعل\" ستُترك دون تغيير.",
+      "intro": "اختر موقعًا للبدء أدناه. سننشئ الصفحات وروابط التنقل نيابة عنك — ويمكن تعديل كل شيء لاحقًا.",
+      "names": {
+        "classic": "الكنيسة الكلاسيكية",
+        "community": "الحياة المجتمعية",
+        "heritage": "التراث",
+        "media": "الإنترنت أولًا",
+        "modern": "ترحيب عصري",
+        "simple": "بداية بسيطة",
+        "visitor": "التركيز على الزوار"
+      },
+      "nav": {
+        "about": "من نحن",
+        "connect": "تواصل",
+        "give": "العطاء",
+        "home": "الرئيسية",
+        "live": "البث المباشر",
+        "sermons": "العظات",
+        "visit": "الزيارة"
+      },
+      "navLinksNote": "يضيف أيضًا روابط تنقل إلى الصفحات المدمجة:",
+      "pageCount": "{count} صفحات",
+      "pages": {
+        "about": "من نحن",
+        "connect": "تواصل معنا",
+        "home": "الصفحة الرئيسية",
+        "visit": "خطط لزيارتك"
+      },
+      "title": "البدء من قالب"
     },
     "spacingScaleEdit": {
       "buttonOne": "زر 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "الرسوم المتحركة",
       "animationsDesc": "تأثير عند عرض العنصر.",
+      "hideOnDesktop": "إخفاء على سطح المكتب",
+      "hideOnMobile": "إخفاء على الجوال",
       "styles": "الأنماط",
-      "stylesDesc": "خيارات المظهر المتقدمة."
+      "stylesDesc": "خيارات المظهر المتقدمة.",
+      "visibility": "الظهور:"
     },
     "stylesManager": {
       "color": "لوحة الألوان",

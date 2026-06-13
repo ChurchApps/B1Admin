@@ -8,7 +8,7 @@ import { DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
 import { DonationForm, MultiGatewayDonationForm, RecurringDonations, PaymentMethods, StripePaymentMethod as AppHelperStripePaymentMethod, DonationHelper } from "@churchapps/apphelper-donations";
 import type { PaymentGateway } from "@churchapps/apphelper-donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
-import type { DonationInterface, PersonInterface, StripePaymentMethod, ChurchInterface } from "@churchapps/helpers";
+import type { DonationInterface, PersonInterface, ChurchInterface } from "@churchapps/helpers";
 // import { Link } from "react-router-dom"
 import { Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Link, Menu, MenuItem } from "@mui/material";
 

@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { FormControl, InputLabel, MenuItem, Select, TextField, Box, Typography, Button } from "@mui/material";
 import { MenuBook as MenuBookIcon } from "@mui/icons-material";
-import { ApiHelper, DateHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { type PlanInterface } from "../../helpers";
 import { LessonSelector } from "./LessonSelector";
 
@@ -109,11 +110,11 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
   return (
     <>
       <ErrorMessages errors={errors} />
-      <InputBox
-        headerText={Locale.label("plans.lessonScheduleEdit.scheduleLesson") || "Schedule Lesson"}
-        headerIcon="menu_book"
-        saveFunction={handleSave}
-        cancelFunction={props.onCancel}
+      <FormCard
+        title={Locale.label("plans.lessonScheduleEdit.scheduleLesson") || "Schedule Lesson"}
+        icon="menu_book"
+        onSave={handleSave}
+        onCancel={props.onCancel}
       >
         <TextField
           fullWidth
@@ -182,7 +183,7 @@ export const LessonScheduleEdit: React.FC<Props> = (props) => {
             </Select>
           </FormControl>
         )}
-      </InputBox>
+      </FormCard>
 
       <LessonSelector
         open={showLessonSelector}

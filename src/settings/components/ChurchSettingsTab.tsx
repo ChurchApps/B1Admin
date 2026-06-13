@@ -12,7 +12,7 @@ export const ChurchSettingsTab = () => {
   const loadData = () => {
     //const churchId = params.id;
     if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) setRedirectUrl("/");
-    ApiHelper.get("/churches/" + churchId + "?include=permissions", "MembershipApi").then((data) => setChurch(data));
+    ApiHelper.get("/churches/" + churchId + "?include=permissions", "MembershipApi").then((data: any) => setChurch(data));
   };
 
   React.useEffect(loadData, [UserHelper.currentUserChurch.church.id]);

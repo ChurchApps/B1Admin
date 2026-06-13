@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Edit",
+    "element": "Elem",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes",
-    "element": "Elem"
+    "yes": "Yes"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Szekció hozzáadása",
+      "backToSite": "Vissza a webhelyre",
       "blockPreview": "Blokk előnézete",
+      "discard": "Elvetés",
+      "discardElementMessage": "Elveti az elem nem mentett módosításait?",
+      "discardElementTitle": "Elveti a módosításokat?",
+      "discardSectionMessage": "Elveti a szekció nem mentett módosításait?",
       "dropToAddElement": "Dobja ide elem hozzáadásához",
       "dropToAddSection": "Dobja ide szekció hozzáadásához",
+      "keepEditing": "Szerkesztés folytatása",
       "scrollDown": "Görgetés lefelé",
-      "scrollUp": "Görgetés felfelé"
+      "scrollUp": "Görgetés felfelé",
+      "smallScreenMessage": "Webhelye szerkesztéséhez nyissa meg ezt az oldalt táblagépen vagy asztali számítógépen.",
+      "smallScreenTitle": "A szerkesztőhöz nagyobb képernyő szükséges"
     },
     "cssEdit": {
       "advancedFeature": "Speciális funkció:",
@@ -2937,13 +2946,24 @@
       "ago": "ezelőtt",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Közzététel kikapcsolása",
+      "disablePublishConfirm": "Kikapcsolja a közzétételt ennél az oldalnál? A módosítások ismét azonnal élesbe kerülnek.",
+      "discardChanges": "Nem közzétett módosítások elvetése",
+      "discardChangesConfirm": "Elveti az utolsó közzététel óta végzett összes módosítást? A szerkesztő visszaáll az élő verzióra.",
       "exit": "Kilépés",
       "justNow": "épp most",
       "mobile": "Mobile",
-      "notSavedYet": "Még nincs változás",
       "page": "Page",
+      "publish": "Közzététel",
+      "publishOffTip": "A módosítások jelenleg azonnal élesbe kerülnek. Tegye közzé, hogy elmentsen egy élő verziót, és a jövőbeli módosítások a következő közzétételig privátak maradjanak.",
+      "publishedLabel": "Közzétéve",
       "redoTip": "Újra (Ctrl+Shift+Z)",
+      "saveError": "Nem sikerült menteni",
       "savedAllChanges": "Minden módosítás mentve",
+      "saving": "Mentés…",
+      "statusLiveOnSave": "Mentéskor élesbe kerül",
+      "statusPublished": "Közzétéve",
+      "statusUnpublishedChanges": "Közzé nem tett módosítások",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Visszavonás (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Oszlop",
       "common": "Általános",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Lightbox engedélyezése"
+      "enableLightbox": "Lightbox engedélyezése",
+      "groupAnimation": "Animáció",
+      "groupContent": "Tartalom",
+      "groupStyle": "Stílus"
     },
     "elementSelection": {
       "moveDown": "Lefelé mozgatás",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Teljes dokumentáció",
       "moveBody": "Húzza a szekciókat és elemeket az átrendezéshez. Használja a fel/le nyilakat a kiválasztási eszköztáron a precíz mozgatáshoz.",
       "moveTitle": "Átrendezés",
+      "shortcutsBody": "A Delete eltávolítja a kijelölt elemet, a Ctrl+D megkettőzi, az Alt+Up/Down mozgatja, az Esc pedig megszünteti a kijelölést.",
+      "shortcutsTitle": "Billentyűparancsok",
       "title": "Oldalszerkesztő alapjai",
       "undoBody": "Használja a Ctrl+Z gombot a visszavonáshoz és a Ctrl+Shift+Z gombot az újrázáshoz. Nyissa meg az Előzmények panelt a menüből bármelyik korábbi állapotra való ugráshoz.",
       "undoTitle": "Visszavonás és előzmények"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Kezdés sablonból",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Ez véglegesen törli a szekciót és annak teljes tartalmát. A Ctrl+Z billentyűkombinációval visszavonhatja.",
+      "deleteSectionTitle": "Törli a szekciót?",
       "editSection": "Edit Section",
       "layoutContainer": "Elrendezés tároló",
       "section": "Szekció"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
       "id": "Azonosító"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Történetünk",
+      "all": "Összes",
+      "blank": "Üres szekció",
+      "category": {
+        "about": "Rólunk",
+        "cta": "Cselekvésre ösztönzés",
+        "giving": "Adakozás",
+        "hero": "Hero",
+        "media": "Média",
+        "people": "Emberek és csoportok",
+        "services": "Istentiszteletek"
+      },
+      "connectColumns": "Kapcsolati oszlopok",
+      "ctaBanner": "Következő lépés banner",
+      "faqSection": "Gyakori kérdések",
+      "findUs": "Találjon meg minket",
+      "galleryRow": "Fotósor",
+      "givingBanner": "Adakozás banner",
+      "givingOptions": "Adakozási lehetőségek",
+      "groupListSection": "Csoportlista",
+      "groupsBrowser": "Csoportböngésző",
+      "heroCentered": "Fotó hero",
+      "heroGradient": "Színátmenetes hero",
+      "heroSplit": "Osztott hero",
+      "ministriesCards": "Szolgálati kártyák",
+      "sermonsLatest": "Legutóbbi üzenetek",
+      "serviceTimes": "Istentiszteleti időpontok",
+      "staffGrid": "Munkatársi rács",
+      "storyColumns": "Három oszlop",
+      "testimony": "Bizonyságtétel idézet",
+      "title": "Szekció hozzáadása",
+      "verseBanner": "Igevers banner",
+      "watchOnline": "Nézze online",
+      "welcome": "Üdvözlő szöveg"
+    },
+    "sectionToolbar": {
+      "delete": "Szekció törlése",
+      "dragToReorder": "Húzza az átrendezéshez",
+      "duplicate": "Szekció megkettőzése",
+      "moveDown": "Szekció mozgatása lefelé",
+      "moveUp": "Szekció mozgatása felfelé",
+      "settings": "Szekció beállításai"
+    },
+    "siteTemplates": {
+      "back": "Vissza",
+      "create": "Webhely létrehozása",
+      "creating": "{title} létrehozása...",
+      "descriptions": {
+        "classic": "Teljes, hagyományos webhely barátságos kezdőlappal, bemutatkozó oldallal és látogatástervező oldallal.",
+        "community": "A csoportokat és szolgálatokat helyezi középpontba, hogy az emberek gyorsan kapcsolódhassanak.",
+        "heritage": "Klasszikus, igeközpontú dizájn régóta fennálló gyülekezetek számára.",
+        "media": "Az élő közvetítés és az üzenetarchívum köré épül, erős online jelenléttel rendelkező gyülekezeteknek.",
+        "modern": "Modern megjelenés merész színátmenetekkel, online istentiszteletekkel és kapcsolódás oldallal.",
+        "simple": "Letisztult, kétoldalas kezdőcsomag, tökéletes gyülekezetplántálásokhoz és kis gyülekezetekhez.",
+        "visitor": "Arra összpontosít, hogy az először érkező vendégek kérdéseit még érkezésük előtt megválaszolja."
+      },
+      "errFailed": "A webhely létrehozása sikertelen. Kérjük, próbálja újra.",
+      "exists": "Már létezik",
+      "existsNote": "A „már létezik” jelölésű oldalak változatlanok maradnak.",
+      "intro": "Válasszon az alábbi kezdő webhelyek közül. Létrehozzuk Önnek az oldalakat és a navigációs linkeket — később minden szerkeszthető.",
+      "names": {
+        "classic": "Klasszikus gyülekezet",
+        "community": "Közösségi élet",
+        "heritage": "Örökség",
+        "media": "Elsősorban online",
+        "modern": "Modern üdvözlet",
+        "simple": "Egyszerű kezdet",
+        "visitor": "Látogatóközpontú"
+      },
+      "nav": {
+        "about": "Rólunk",
+        "connect": "Kapcsolódás",
+        "give": "Adakozás",
+        "home": "Kezdőlap",
+        "live": "Élő",
+        "sermons": "Igehirdetések",
+        "visit": "Látogatás"
+      },
+      "navLinksNote": "Emellett navigációs linkeket ad hozzá a beépített oldalakhoz:",
+      "pageCount": "{count} oldal",
+      "pages": {
+        "about": "Rólunk",
+        "connect": "Kapcsolódás",
+        "home": "Kezdőlap",
+        "visit": "Tervezze meg látogatását"
+      },
+      "title": "Kezdés sablonból"
     },
     "spacingScaleEdit": {
       "buttonOne": "1. gomb",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animációk",
       "animationsDesc": "Hatás, amikor az elem megjelenik.",
+      "hideOnDesktop": "Elrejtés asztali nézetben",
+      "hideOnMobile": "Elrejtés mobilon",
       "styles": "Stílusok",
-      "stylesDesc": "Speciális megjelenési opciók."
+      "stylesDesc": "Speciális megjelenési opciók.",
+      "visibility": "Láthatóság:"
     },
     "stylesManager": {
       "color": "Színpaletta",

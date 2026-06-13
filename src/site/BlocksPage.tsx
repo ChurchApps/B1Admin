@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import type { JSX } from "react";
 import { ApiHelper, Loading, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import type { BlockInterface } from "../helpers";
-import { TableRow, TableCell, Table, TableBody, TableHead, Box, Typography, Stack, Button, Card, Icon } from "@mui/material";
+import { TableRow, TableCell, Table, TableBody, TableHead, Box, Typography, Stack, Button, Card, Icon, IconButton, Tooltip } from "@mui/material";
 import { SmartButton as BlockIcon, Add as AddIcon, Edit as EditIcon, Settings as SettingsIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { BlockEdit } from "./components";
 import { PermissionDenied } from "../components";
+import { CountChip } from "../components/ui";
 
 export const BlocksPage = () => {
   const [blocks, setBlocks] = useState<BlockInterface[]>([]);
@@ -68,7 +69,7 @@ export const BlocksPage = () => {
                 to={`/site/blocks/${block.id}`}
                 style={{
                   textDecoration: "none",
-                  color: "var(--primary-main, #1976d2)",
+                  color: "var(--link)",
                   fontWeight: 500
                 }}
               >
@@ -78,7 +79,7 @@ export const BlocksPage = () => {
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Icon sx={{ color: "text.secondary", fontSize: 16 }}>
+              <Icon sx={{ color: "text.secondary", fontSize: 18 }}>
                 {block.blockType === "elementBlock" ? "widgets" : "view_module"}
               </Icon>
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
@@ -88,7 +89,9 @@ export const BlocksPage = () => {
           </TableCell>
           <TableCell align="right">
             <Stack direction="row" spacing={1} justifyContent="flex-end">
-              <Button size="small" variant="outlined" component={Link} to={`/site/blocks/${block.id}`} startIcon={<EditIcon />} sx={{ textTransform: "none", minWidth: "auto" }}>{Locale.label("common.edit")}</Button>
+              <Tooltip title={Locale.label("common.edit")}>
+                <IconButton size="small" aria-label={Locale.label("common.edit")} component={Link} to={`/site/blocks/${block.id}`}><EditIcon fontSize="small" /></IconButton>
+              </Tooltip>
               <Button size="small" variant="outlined" startIcon={<SettingsIcon />} onClick={() => setEditBlock(block)} data-testid={`rename-block-${block.id}-button`} sx={{ textTransform: "none", minWidth: "auto" }}>{Locale.label("site.blocksPage.rename")}</Button>
             </Stack>
           </TableCell>
@@ -169,15 +172,13 @@ export const BlocksPage = () => {
 
         {/* Main Table Card */}
         <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <BlockIcon />
+                <BlockIcon sx={{ color: "primary.main", fontSize: 20 }} />
                 <Typography variant="h6">{Locale.label("site.blocksPage.blocks")}</Typography>
+                {stats.totalBlocks > 0 && <CountChip count={stats.totalBlocks} />}
               </Stack>
-              <Typography variant="body2" color="text.secondary">
-                {stats.totalBlocks} {stats.totalBlocks === 1 ? Locale.label("site.blocksPage.block") : Locale.label("site.blocksPage.blocks")}
-              </Typography>
             </Stack>
           </Box>
           <Box>{getTable()}</Box>

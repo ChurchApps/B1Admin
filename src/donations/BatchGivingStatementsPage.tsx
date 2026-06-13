@@ -70,40 +70,6 @@ export const BatchGivingStatementsPage = () => {
       yearDonations.some((donation) => donation.id === fundDonation.donationId)) || [];
   }, [allFundDonations.data, yearDonations]);
 
-  // Prepare CSV data
-  const csvData = useMemo(() => {
-    const data: any[] = [];
-
-    personIds.forEach((personId) => {
-      const person = people.data?.find((p) => p.id === personId);
-      const personDonations = yearDonations.filter((d) => d.personId === personId);
-      const personFundDonations = yearFundDonations.filter((fd) =>
-        personDonations.some((d) => d.id === fd.donationId));
-
-      // Calculate total for this person
-      let totalAmount = 0;
-      personFundDonations.forEach((fd) => {
-        totalAmount += fd.amount || 0;
-      });
-
-      data.push({
-        lastName: person?.name?.last || "",
-        firstName: person?.name?.first || "",
-        email: person?.contactInfo?.email || "",
-        phone: person?.contactInfo?.homePhone || person?.contactInfo?.mobilePhone || "",
-        address: person?.contactInfo?.address1 || "",
-        city: person?.contactInfo?.city || "",
-        state: person?.contactInfo?.state || "",
-        zip: person?.contactInfo?.zip || "",
-        year: selectedYear,
-        totalAmount: totalAmount,
-        donationCount: personDonations.length
-      });
-    });
-
-    return data.sort((a, b) => a.lastName.localeCompare(b.lastName));
-  }, [personIds, people.data, yearDonations, yearFundDonations, selectedYear]);
-
   const handlePrintAll = () => {
     // Navigate to consolidated print view in the same window
     const url = `/donations/print-all?year=${selectedYear}`;

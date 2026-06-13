@@ -1,7 +1,8 @@
-import React from "react";
-import { Dialog, DialogTitle, DialogContent, List, ListItem, ListItemButton, ListItemText, IconButton, Typography, Box } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, List, ListItem, ListItemButton, ListItemText, Typography, Box } from "@mui/material";
 import { Icon } from "@mui/material";
+import { Close as CloseIcon, Restore as RestoreIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface HistoryEntry {
   description: string;
@@ -31,9 +32,7 @@ export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span>{Locale.label("site.historyPanel.title")}</span>
-        <IconButton onClick={onClose} size="small">
-          <Icon>close</Icon>
-        </IconButton>
+        <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={onClose} />
       </DialogTitle>
       <DialogContent dividers>
         {history.length === 0 ? (
@@ -52,14 +51,12 @@ export function HistoryPanel({ open, onClose, history, currentIndex, onRestore }
                   disablePadding
                   secondaryAction={
                     !isCurrentState && (
-                      <IconButton
+                      <AppIconButton
+                        label={Locale.label("site.historyPanel.restoreToPoint")}
+                        icon={<RestoreIcon />}
                         edge="end"
                         onClick={() => handleRestore(index)}
-                        size="small"
-                        title={Locale.label("site.historyPanel.restoreToPoint")}
-                      >
-                        <Icon fontSize="small">restore</Icon>
-                      </IconButton>
+                      />
                     )
                   }
                 >

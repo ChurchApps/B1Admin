@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { GroupAdd } from "./components";
-import { ApiHelper, UserHelper, ExportLink, Loading, Locale, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Chip, Button, IconButton, Toolbar, Stack, Typography, Icon } from "@mui/material";
-import { Add as AddIcon, FileDownload as ExportIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow, Box, Card, Chip, Button, Stack, Typography } from "@mui/material";
+import { Add as AddIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, MonitorHeart as HealthIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
+import { CountChip, ExportButton, SortableTableHead } from "../components/ui";
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
@@ -22,7 +23,7 @@ const GroupsPage = () => {
   const loadData = () => {
     setIsLoading(true);
     ApiHelper.get("/groups/tag/standard", "MembershipApi")
-      .then((data) => {
+      .then((data: any) => {
         if (isMounted()) {
           setGroups(data);
         }
@@ -43,6 +44,14 @@ const GroupsPage = () => {
     enabled: canApproveRequests
   });
   const pendingCount = pendingRequests?.length || 0;
+
+  const canEditPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const { data: myMinistries = [] } = useQuery<GroupInterface[]>({
+    queryKey: ["/groups/my/ministry", "MembershipApi"],
+    placeholderData: [],
+    enabled: !canEditPlans
+  });
+  const showServingTeams = canEditPlans || (myMinistries?.length || 0) > 0;
 
   const exportData = groups.map((g) => {
     const { labelArray, ...rest } = g;
@@ -80,7 +89,7 @@ const GroupsPage = () => {
       const cat =
         g.categoryName !== lastCat ? (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <FolderIcon sx={{ marginRight: "5px" }} /> {g.categoryName}
+            <FolderIcon sx={{ color: "text.secondary", fontSize: 18, marginRight: "5px" }} /> {g.categoryName}
           </Box>
         ) : (
           <></>
@@ -91,7 +100,8 @@ const GroupsPage = () => {
           <TableCell>{cat}</TableCell>
           <TableCell>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <GroupIcon sx={{ marginRight: "5px" }} /> <Link to={"/groups/" + g.id.toString()}>{g.name}</Link>
+              <GroupIcon sx={{ color: "primary.main", fontSize: 20, marginRight: "5px" }} />{" "}
+              <Link to={"/groups/" + g.id.toString()} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{g.name}</Link>
             </Box>
           </TableCell>
           <TableCell>
@@ -107,39 +117,43 @@ const GroupsPage = () => {
     return rows;
   };
 
-  const getTableHeader = () => {
-    const rows: JSX.Element[] = [];
-    if (groups.length === 0) return rows;
-    rows.push(
-      <TableRow sx={{ textAlign: "left" }} key="header">
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.cat")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("common.name")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.labels")}</TableCell>
-        <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("groups.groupsPage.ppl")}</TableCell>
-      </TableRow>
-    );
-    return rows;
-  };
-
   const addBox = showAdd ? <GroupAdd updatedFunction={handleAddUpdated} tags="standard" /> : <></>;
 
   const getTable = () => {
     if (isLoading) return <Loading />;
     else {
       return (
-        <Paper sx={{ width: "100%", overflowX: "auto" }}>
-          {groups.length > 0 && UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
-            <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 }, justifyContent: "flex-end" }}>
-              <IconButton component={ExportLink} data={exportData} filename="groups.csv" size="small" sx={{ color: "primary.main" }}>
-                <ExportIcon />
-              </IconButton>
-            </Toolbar>
-          )}
-          <Table>
-            <TableHead sx={{ backgroundColor: "background.subtle" }}>{getTableHeader()}</TableHead>
-            <TableBody>{getRows()}</TableBody>
-          </Table>
-        </Paper>
+        <Card>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Stack direction="row" spacing={1} alignItems="center">
+                <GroupIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">{Locale.label("groups.groupsPage.groups")}</Typography>
+                {groups.length > 0 && <CountChip count={groups.length} />}
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center">
+                {groups.length > 0 && UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (
+                  <ExportButton data={exportData} filename="groups.csv" text={Locale.label("groups.groupsPage.export")} />
+                )}
+              </Stack>
+            </Stack>
+          </Box>
+          <Box sx={{ overflowX: "auto" }}>
+            <Table>
+              {groups.length > 0 && (
+                <SortableTableHead
+                  columns={[
+                    { key: "categoryName", label: Locale.label("groups.groupsPage.cat") },
+                    { key: "name", label: Locale.label("common.name") },
+                    { key: "labels", label: Locale.label("groups.groupsPage.labels") },
+                    { key: "memberCount", label: Locale.label("groups.groupsPage.ppl") }
+                  ]}
+                />
+              )}
+              <TableBody>{getRows()}</TableBody>
+            </Table>
+          </Box>
+        </Card>
       );
     }
   };
@@ -175,20 +189,6 @@ const GroupsPage = () => {
                 </Stack>
                 <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("groups.groupsPage.totalGroups")}</Typography>
               </Stack>
-              <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <FolderIcon sx={{ color: "#FFF", fontSize: 24 }} />
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{[...new Set(groups.map((g) => g.categoryName))].length}</Typography>
-                </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("groups.groupsPage.categories")}</Typography>
-              </Stack>
-              <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Icon sx={{ color: "#FFF", fontSize: 24 }}>people</Icon>
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{groups.reduce((total, group) => total + (group.memberCount || 0), 0)}</Typography>
-                </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("groups.groupsPage.totalMembers")}</Typography>
-              </Stack>
             </Stack>
           )}
           <Stack
@@ -216,6 +216,42 @@ const GroupsPage = () => {
                   }
                 }}>
                 {pendingCount} pending request{pendingCount === 1 ? "" : "s"}
+              </Button>
+            )}
+            {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view) && (
+              <Button
+                variant="outlined"
+                component={Link}
+                to="/groups/health"
+                startIcon={<HealthIcon />}
+                data-testid="group-health-link"
+                sx={{
+                  color: "#FFF",
+                  borderColor: "rgba(255,255,255,0.5)",
+                  "&:hover": {
+                    borderColor: "#FFF",
+                    backgroundColor: "rgba(255,255,255,0.1)"
+                  }
+                }}>
+                {Locale.label("groups.groupHealth.title")}
+              </Button>
+            )}
+            {showServingTeams && (
+              <Button
+                variant="outlined"
+                component={Link}
+                to="/serving"
+                startIcon={<PeopleIcon />}
+                data-testid="serving-teams-button"
+                sx={{
+                  color: "#FFF",
+                  borderColor: "rgba(255,255,255,0.5)",
+                  "&:hover": {
+                    borderColor: "#FFF",
+                    backgroundColor: "rgba(255,255,255,0.1)"
+                  }
+                }}>
+                {Locale.label("components.wrapper.teams")}
               </Button>
             )}
             {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && (

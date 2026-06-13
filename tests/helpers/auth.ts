@@ -41,8 +41,8 @@ export async function login(page: Page) {
   // renders in <1s. Whichever appears first tells us what to do — far faster
   // than waiting out a fixed timeout on one of them.
   const winner = await Promise.race([
-    navButton.waitFor({ state: "visible", timeout: 15000 }).then(() => "authenticated" as const).catch(() => null),
-    emailInput.waitFor({ state: "visible", timeout: 15000 }).then(() => "login" as const).catch(() => null),
+    navButton.waitFor({ state: "visible", timeout: 15000 }).then(() => "authenticated" as const).catch((): null => null),
+    emailInput.waitFor({ state: "visible", timeout: 15000 }).then(() => "login" as const).catch((): null => null),
   ]);
 
   if (winner === "authenticated") return;

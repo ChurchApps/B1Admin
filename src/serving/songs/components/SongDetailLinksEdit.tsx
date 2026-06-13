@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailLinkInterface } from "../../../helpers";
-import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Stack, Typography, Box, IconButton } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField, Stack, Typography, Box } from "@mui/material";
 import { Link as LinkIcon, Done as DoneIcon, Add as AddIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
+import { FormCard } from "../../../components/ui";
 
 interface Props {
   songDetailId: string;
@@ -21,7 +23,7 @@ export const SongDetailLinksEdit = (props: Props) => {
 
   const loadData = () => {
     if (props.songDetailId) {
-      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetailId, "ContentApi").then((data) => {
+      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetailId, "ContentApi").then((data: any) => {
         setSongDetailLinks(data);
       });
     }
@@ -88,7 +90,7 @@ export const SongDetailLinksEdit = (props: Props) => {
         <button
           type="button"
           onClick={() => setEditLink(link)}
-          style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
           {link.service}
         </button>
       </TableCell>
@@ -98,12 +100,12 @@ export const SongDetailLinksEdit = (props: Props) => {
 
   if (editLink) {
     return (
-      <InputBox
-        headerText={Locale.label("plans.songs.links")}
-        headerIcon="link"
-        cancelFunction={() => { setEditLink(null); }}
-        saveFunction={handleSubmit(onValid)}
-        deleteFunction={editLink.id ? handleDelete : null}>
+      <FormCard
+        title={Locale.label("plans.songs.links")}
+        icon="link"
+        onCancel={() => { setEditLink(null); }}
+        onSave={handleSubmit(onValid)}
+        onDelete={editLink.id ? handleDelete : undefined}>
         <FormControl fullWidth size="small">
           <InputLabel>{Locale.label("songs.songDetailLinksEdit.service")}</InputLabel>
           <Controller name="service" control={control} render={({ field }) => (
@@ -119,7 +121,7 @@ export const SongDetailLinksEdit = (props: Props) => {
           )} />
         </FormControl>
         <TextField size="small" placeholder={getPlaceholder(watchedService)} fullWidth label={Locale.label("songs.songDetailLinksEdit.id")} {...register("serviceKey")} />
-      </InputBox>
+      </FormCard>
     );
   } else {
     return (
@@ -127,29 +129,13 @@ export const SongDetailLinksEdit = (props: Props) => {
         <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
           <Stack direction="row" spacing={1} alignItems="center">
             <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+            <Typography variant="h6">
               {Locale.label("songs.songDetailLinksEdit.externalLinks")}
             </Typography>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <IconButton
-              onClick={handleAdd}
-              size="small"
-              sx={{
-                color: "primary.main",
-                "&:hover": { backgroundColor: "primary.light" }
-              }}>
-              <AddIcon fontSize="small" />
-            </IconButton>
-            <IconButton
-              onClick={props.reload}
-              size="small"
-              sx={{
-                color: "success.main",
-                "&:hover": { backgroundColor: "success.light" }
-              }}>
-              <DoneIcon fontSize="small" />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" intent="add" onClick={handleAdd} />
+            <AppIconButton label={Locale.label("common.done")} icon={<DoneIcon />} tone="card" onClick={props.reload} />
           </Stack>
         </Stack>
 

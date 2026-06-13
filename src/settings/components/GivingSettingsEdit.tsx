@@ -3,6 +3,11 @@ import { FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Swit
 import HelpIcon from "@mui/icons-material/Help";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { ApiHelper, ErrorMessages, Locale, UniqueIdHelper, UserHelper, type ChurchInterface } from "@churchapps/apphelper";
+import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Grid, Stack, Switch, Typography } from "@mui/material";
+import HelpIcon from "@mui/icons-material/Help";
+import { Controller, useForm } from "react-hook-form";
+import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PaymentGatewaysInterface } from "../../helpers";
 import { FeeOptionsSettingsEdit } from "./FeeOptionsSettingsEdit";
 
@@ -180,7 +185,60 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (!UniqueIdHelper.isMissing(props.churchId)) loadData();
   }, [props.churchId]);
-  React.useEffect(checkSave, [props.saveTrigger]);
+
+  React.useEffect(() => {
+    if (props.saveTrigger !== null) save();
+  }, [props.saveTrigger]);
+
+  const getKeys = () => {
+    if (!provider) return null;
+    const publicLabel = provider === "Paypal" ? Locale.label("settings.givingSettingsEdit.clientId") : Locale.label("settings.givingSettingsEdit.pubKey");
+    const privateLabel = provider === "Paypal" ? Locale.label("settings.givingSettingsEdit.clientSecret") : Locale.label("settings.givingSettingsEdit.secKey");
+    return (
+      <>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <TextField fullWidth label={publicLabel} placeholder={Locale.label("placeholders.giving.publicKey")} {...register("publicKey")} />
+        </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <TextField fullWidth label={privateLabel} placeholder={Locale.label("settings.giving.secretPlaceholder")} type="password" {...register("privateKey")} />
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <Stack direction="row" alignItems="center">
+            <Typography>{Locale.label("settings.givingSettingsEdit.transFee")}</Typography>
+            <AppIconButton label={Locale.label("settings.givingSettingsEdit.forceMsg")} icon={<HelpIcon />} data-testid="force-ssl-help-button" />
+            <Controller
+              control={control}
+              name="payFees"
+              render={({ field }) => <Switch checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} />}
+            />
+          </Stack>
+        </Grid>
+      </>
+    );
+  };
+
+  const getCurrency = () => {
+    if (provider !== "Stripe") return null;
+    return (
+      <Grid size={{ xs: 12, md: 4 }}>
+        <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>
+          {Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a>
+        </Typography>
+        <Controller
+          control={control}
+          name="currency"
+          render={({ field }) => (
+            <FormControl fullWidth>
+              <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
+              <Select {...field} label={Locale.label("settings.givingSettingsEdit.currency")}>
+                {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
+              </Select>
+            </FormControl>
+          )}
+        />
+      </Grid>
+    );
+  };
 
   return (
     <>

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FormSubmission } from "./";
-import { Accordion, AccordionDetails, AccordionSummary, Button, Icon, Box } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { type FormSubmissionInterface } from "@churchapps/helpers";
-import { Permissions, FormSubmissionEdit, UserHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { Permissions, UserHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormSubmissionEdit } from "@churchapps/apphelper/forms";
+import { AppIconButton } from "./ui/AppIconButton";
 
 interface Props {
   contentType: string;
@@ -76,9 +79,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
           }}>
           <AccordionSummary onClick={() => handleAdd(uf.id)}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Button variant="text" onClick={() => handleAdd(uf.id)} data-testid="add-form-button" aria-label={Locale.label("components.associatedForms.addForm")}>
-                <Icon>add</Icon>
-              </Button>
+              <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} onClick={() => handleAdd(uf.id)} data-testid="add-form-button" />
               <span>{uf.name}</span>
             </Box>
           </AccordionSummary>
@@ -103,7 +104,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data) => setAllForms(data));
+    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: any) => setAllForms(data));
   }, []);
 
   useEffect(determineUnsubmitted, [allForms, props]);

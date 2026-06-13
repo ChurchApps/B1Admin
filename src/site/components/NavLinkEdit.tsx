@@ -1,7 +1,8 @@
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, type SyntheticEvent } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Alert, Autocomplete, Dialog, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { InputBox, ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface } from "@churchapps/helpers";
 import { PageHelper } from "../../helpers";
@@ -86,7 +87,7 @@ export function NavLinkEdit(props: Props) {
   if (!props.link) return <></>;
   return (
     <Dialog open={true} onClose={props.onDone} style={{ minWidth: 800 }} sx={{ zIndex: 2000 }}>
-      <InputBox id="pageDetailsBox" headerText={props.link?.id ? Locale.label("site.navLink.linkSettings") : Locale.label("site.navLink.addLink")} headerIcon="article" saveFunction={handleSubmit(onValid)} cancelFunction={handleCancel} deleteFunction={handleDelete}>
+      <FormCard id="pageDetailsBox" title={props.link?.id ? Locale.label("site.navLink.linkSettings") : Locale.label("site.navLink.addLink")} icon="article" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete}>
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
         <Controller name="url" control={control} render={({ field }) => (
           <Autocomplete disablePortal limitTags={3} freeSolo options={getPageOptions()} value={field.value} onChange={(_e: SyntheticEvent, value: string) => { field.onChange(value); }} onInputChange={(_e: SyntheticEvent, value: string) => { field.onChange(value); }} sx={{ width: 300 }} ListboxProps={{ style: { maxHeight: 150 } }} renderInput={(params) => <TextField {...params} size="small" fullWidth label={Locale.label("site.navLinkEdit.url")} name="linkUrl" />} />
@@ -103,7 +104,7 @@ export function NavLinkEdit(props: Props) {
             </Select>
           )} />
         </FormControl>
-      </InputBox>
+      </FormCard>
     </Dialog>
   );
 }

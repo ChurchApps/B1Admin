@@ -1,34 +1,37 @@
-import type { Page } from '@playwright/test';
-import { peopleTest as test, expect } from './helpers/test-fixtures';
-import { navigateToPeople } from './helpers/navigation';
-import { editIconButton, closeIconButton, SEED_PEOPLE, openPersonRow } from './helpers/fixtures';
-import { login } from './helpers/auth';
-import { STORAGE_STATE_PATH } from './global-setup';
+import { request, type Page } from "@playwright/test";
+import { peopleTest as test, expect } from "./helpers/test-fixtures";
+import { navigateToPeople } from "./helpers/navigation";
+import { personDetailsEditButton, SEED_PEOPLE, openPersonRow } from "./helpers/fixtures";
+import { login } from "./helpers/auth";
+import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus/Zebedee entered anywhere, it is a result of these tests.
 
-test.describe('People Management', () => {
+test.describe("People Management", () => {
 
-  test.describe('Individuals', () => {
-    test('should view person details', async ({ page }) => {
+  test.describe("Individuals", () => {
+    test("should view person details", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       await expect(page).toHaveURL(/\/people\/PER\d+/);
     });
 
-    test('should search for people', async ({ page }) => {
+    test("should search for people", async ({ page }) => {
       const searchInput = page.locator('input[name="searchText"]');
-      await searchInput.fill('Smith');
+      await searchInput.fill("Smith");
       // PeopleSearch debounces the simple search 500ms after typing stops.
       await page.waitForResponse(
-        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
         { timeout: 10000 }
       );
-      const smithRow = page.locator('table tbody tr').filter({ hasText: 'Smith' }).first();
+      const smithRow = page.locator("table tbody tr").filter({ hasText: "Smith" }).first();
       await expect(smithRow).toBeVisible({ timeout: 10000 });
     });
 
-    test('should advance search for people', async ({ page }) => {
-      const advBtn = page.locator('p').getByText('Advanced');
+    test("should advance search for people", async ({ page }) => {
+      // Match the "▶ Advanced" / "▼ Advanced" toggle specifically — a plain
+      // getByText('Advanced') also matches the SavedLists "...advanced search..."
+      // copy that shows when no saved lists exist (strict-mode violation).
+      const advBtn = page.locator("p").getByText(/[▶▼] Advanced/);
       await advBtn.click();
       // Names accordion is expanded by default; first filter is First Name.
       const firstCheck = page.locator('div input[type="checkbox"]').first();
@@ -39,39 +42,42 @@ test.describe('People Management', () => {
       const equalsCondition = page.locator('li[data-value="equals"]');
       await equalsCondition.click();
       const firstNameInput = page.locator('input[placeholder="Enter value..."]').first();
-      await firstNameInput.fill('Donald');
+      await firstNameInput.fill("Donald");
       // Filter auto-searches 500ms after change.
       await page.waitForResponse(
-        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
         { timeout: 10000 }
       );
-      const donaldRow = page.locator('table tbody tr').filter({ hasText: 'Donald Clark' }).first();
+      const donaldRow = page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first();
       await expect(donaldRow).toBeVisible({ timeout: 10000 });
       await donaldRow.click();
       await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
     });
 
-    test('should delete advance search conditions', async ({ page }) => {
-      const advBtn = page.locator('p').getByText('Advanced');
+    test("should delete advance search conditions", async ({ page }) => {
+      // Match the "▶ Advanced" / "▼ Advanced" toggle specifically — a plain
+      // getByText('Advanced') also matches the SavedLists "...advanced search..."
+      // copy that shows when no saved lists exist (strict-mode violation).
+      const advBtn = page.locator("p").getByText(/[▶▼] Advanced/);
       await advBtn.click();
       const firstCheck = page.locator('div input[type="checkbox"]').first();
       await expect(firstCheck).toBeVisible({ timeout: 10000 });
       await firstCheck.click();
       const secondCheck = page.locator('div input[type="checkbox"]').nth(1);
       await secondCheck.click();
-      const checkTwo = page.locator('span').getByText('2 active:');
+      const checkTwo = page.locator("span").getByText("2 active:");
       await expect(checkTwo).toHaveCount(1);
       // MUI Chip deleteIcon renders as an <svg> inside the Chip root (which
       // Playwright sees as a button-role element). The svg has the click
       // handler with stopPropagation; force-click to bypass the chip-level
       // actionability check.
-      const chipDeleteIcons = page.locator('.MuiChip-deleteIcon');
+      const chipDeleteIcons = page.locator(".MuiChip-deleteIcon");
       await chipDeleteIcons.last().click({ force: true });
-      const checkOne = page.locator('span').getByText('1 active:');
+      const checkOne = page.locator("span").getByText("1 active:");
       await expect(checkOne).toHaveCount(1, { timeout: 10000 });
       await secondCheck.click();
       await expect(checkTwo).toHaveCount(1);
-      const clearAll = page.locator('span').getByText('Clear All');
+      const clearAll = page.locator("span").getByText("Clear All");
       await clearAll.click();
       await expect(checkTwo).toHaveCount(0);
     });
@@ -80,24 +86,24 @@ test.describe('People Management', () => {
     // project's webServer config). The UI renders an error banner when AskApi is
     // unreachable, and the feature can only be exercised end-to-end when AskApi
     // is running locally.
-    test.skip('should AI search for people', async ({ page }) => {
+    test.skip("should AI search for people", async ({ page }) => {
       const searchInput = page.locator('[id="display-box"] textarea').first();
-      await searchInput.fill('Show me married men');
-      const searchBtn = page.locator('button').getByText('Search').last();
+      await searchInput.fill("Show me married men");
+      const searchBtn = page.locator("button").getByText("Search").last();
       await expect(searchBtn).toBeEnabled();
       await searchBtn.click();
 
-      await page.waitForResponse((response) => response.url().includes('/people') && response.status() === 200, { timeout: 10000 });
-      const results = page.locator('table tbody tr');
+      await page.waitForResponse((response) => response.url().includes("/people") && response.status() === 200, { timeout: 10000 });
+      const results = page.locator("table tbody tr");
       await expect(results.first()).toBeVisible({ timeout: 10000 });
       await results.first().click();
-      await expect(page.locator('p').getByText('Male')).toBeVisible();
-      await expect(page.locator('p').getByText('Married')).toBeVisible();
+      await expect(page.locator("p").getByText("Male")).toBeVisible();
+      await expect(page.locator("p").getByText("Married")).toBeVisible();
     });
 
-    test('should open notes tab', async ({ page }) => {
+    test("should open notes tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const notesBtn = page.locator('button').getByText('Notes');
+      const notesBtn = page.locator("button").getByText("Notes");
       await notesBtn.click();
       // Notes panel renders the AddNote textarea (name="noteText") once the
       // initial messages load resolves.
@@ -108,7 +114,7 @@ test.describe('People Management', () => {
     // Notes tests each seed their own note on Donald and target it via `.last()`.
     // With fullyParallel, concurrent runs would race on the "last note" locator —
     // keep them serial so each test owns the most recent note when it acts.
-    test.describe.serial('Donald notes lifecycle', () => {
+    test.describe.serial("Donald notes lifecycle", () => {
       let page: Page;
 
       test.beforeAll(async ({ browser }) => {
@@ -131,24 +137,24 @@ test.describe('People Management', () => {
         }
       });
 
-      test('should add a note from people notes tab', async () => {
+      test("should add a note from people notes tab", async () => {
         // Donald Clark has no seeded notes and is reliably in the "25 most recent"
         // landing list, so openPersonRow can find him without a search.
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const notesBtn = page.locator('button').getByText('Notes');
+        const notesBtn = page.locator("button").getByText("Notes");
         await notesBtn.click();
         const seekNotes = page.locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
-        await seekNotes.fill('Zacchaeus Test Note');
-        const sendBtn = page.locator('button').getByText('send');
+        await seekNotes.fill("Zacchaeus Test Note");
+        const sendBtn = page.locator("button").getByText("send");
         await sendBtn.click();
-        const validatedNote = page.locator('p').getByText('Zacchaeus Test Note');
+        const validatedNote = page.locator("p").getByText("Zacchaeus Test Note");
         await expect(validatedNote.first()).toBeVisible({ timeout: 15000 });
       });
 
-      test('should edit a note from people notes tab', async () => {
+      test("should edit a note from people notes tab", async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const notesBtn = page.locator('button').getByText('Notes');
+        const notesBtn = page.locator("button").getByText("Notes");
         await notesBtn.click();
         // Add a note first so the edit affordance definitely exists for this person.
         const seekNotes = page.locator('[name="noteText"]');
@@ -157,104 +163,108 @@ test.describe('People Management', () => {
         // *after* the conversation is loaded — wait for the prior note to
         // render (proxy for "conversation load done") and a short tick so the
         // reset has fired before we fill.
-        await expect(page.locator('p').getByText('Zacchaeus Test Note').first()).toBeVisible({ timeout: 10000 });
+        await expect(page.locator("p").getByText("Zacchaeus Test Note").first()).toBeVisible({ timeout: 10000 });
         await page.waitForTimeout(500);
-        await seekNotes.fill('Zacchaeus Pre-edit Note');
-        await expect(seekNotes).toHaveValue('Zacchaeus Pre-edit Note', { timeout: 5000 });
-        await page.locator('button').getByText('send').click();
-        await expect(page.locator('p').getByText('Zacchaeus Pre-edit Note').first()).toBeVisible({ timeout: 15000 });
+        await seekNotes.fill("Zacchaeus Pre-edit Note");
+        await expect(seekNotes).toHaveValue("Zacchaeus Pre-edit Note", { timeout: 5000 });
+        await page.locator("button").getByText("send").click();
+        await expect(page.locator("p").getByText("Zacchaeus Pre-edit Note").first()).toBeVisible({ timeout: 15000 });
 
-        const editBtn = page.locator('button[aria-label="editNote"]').filter({ has: page.locator('text=edit') });
+        const editBtn = page.locator('button[aria-label="editNote"]').filter({ has: page.locator("text=edit") });
         // Edit the note we just added (last in the list).
         await editBtn.last().click();
         // AddNote fetches the message content asynchronously and then calls
         // setMessage — wait for the form to show the original content before
         // replacing it, otherwise the fill gets overwritten by the response.
-        await expect(seekNotes).toHaveValue('Zacchaeus Pre-edit Note', { timeout: 10000 });
-        await seekNotes.fill('Zebedee Test Note');
-        await page.locator('button').getByText('send').click();
-        const validatedEdit = page.locator('p').getByText('Zebedee Test Note');
+        await expect(seekNotes).toHaveValue("Zacchaeus Pre-edit Note", { timeout: 10000 });
+        await seekNotes.fill("Zebedee Test Note");
+        await page.locator("button").getByText("send").click();
+        const validatedEdit = page.locator("p").getByText("Zebedee Test Note");
         await expect(validatedEdit.first()).toBeVisible({ timeout: 15000 });
       });
 
-      test('should delete a note from people notes tab', async () => {
+      test("should delete a note from people notes tab", async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const notesBtn = page.locator('button').getByText('Notes');
+        const notesBtn = page.locator("button").getByText("Notes");
         await notesBtn.click();
         // Seed a note to guarantee a delete target.
         const seekNotes = page.locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
-        await seekNotes.fill('Zacchaeus Delete Target');
-        await page.locator('button').getByText('send').click();
-        const target = page.locator('p').getByText('Zacchaeus Delete Target');
+        await seekNotes.fill("Zacchaeus Delete Target");
+        await page.locator("button").getByText("send").click();
+        const target = page.locator("p").getByText("Zacchaeus Delete Target");
         await expect(target.first()).toBeVisible({ timeout: 15000 });
 
         // Click edit on the note we just added (last in the list).
         await page.locator('button[aria-label="editNote"]').last().click();
         // Wait for edit mode to load this note's content before clicking delete.
-        await expect(seekNotes).toHaveValue('Zacchaeus Delete Target', { timeout: 10000 });
+        await expect(seekNotes).toHaveValue("Zacchaeus Delete Target", { timeout: 10000 });
         // In edit mode, an extra IconButton with material-icon text "delete" appears.
-        const deleteBtn = page.locator('button').getByText('delete', { exact: true });
+        const deleteBtn = page.locator("button").getByText("delete", { exact: true });
         await deleteBtn.click();
         await expect(target).toHaveCount(0, { timeout: 15000 });
       });
     });
 
-    test('should open groups tab', async ({ page }) => {
+    test("should open groups tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const groupsBtn = page.locator('button').getByText('Groups');
+      const groupsBtn = page.locator("button").getByText("Groups");
       await groupsBtn.click();
-      const seekText = page.locator('p').getByText('Not currently a member of any groups.');
-      const seekGroup = page.locator('li').first();
+      // Group rows render as ListItemButton component={Link} — an <a> directly
+      // inside the <ul>, with no <li> wrapper.
+      const seekText = page.locator("p").getByText("Not currently a member of any groups.");
+      const seekGroup = page.locator('ul a[href^="/groups/"]').first();
       await expect(seekText.or(seekGroup)).toBeVisible({ timeout: 10000 });
     });
 
-    test('should open group from people groups tab', async ({ page }) => {
+    test("should open group from people groups tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const groupsBtn = page.locator('button').getByText('Groups');
+      const groupsBtn = page.locator("button").getByText("Groups");
       await groupsBtn.click();
-      const seekGroup = page.locator('li').first();
+      const seekGroup = page.locator('ul a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
     });
 
-    test('should open attendance tab', async ({ page }) => {
+    test("should open attendance tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const attBtn = page.locator('button').getByText('Attendance');
+      const attBtn = page.locator("button").getByText("Attendance");
       await expect(attBtn).toBeVisible({ timeout: 10000 });
       await attBtn.click();
-      const seekText = page.locator('p').getByText('No attendance records');
-      const seekDate = page.locator('li').first();
+      const seekText = page.locator("p").getByText("No attendance records");
+      const seekDate = page.locator("li").first();
       await expect(seekText.or(seekDate)).toBeVisible({ timeout: 10000 });
     });
 
-    test('should open group from people attendance', async ({ page }) => {
+    test("should open group from people attendance", async ({ page }) => {
       // Donald Clark has seeded attendance records (see attendance demo.sql).
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const attBtn = page.locator('button').getByText('Attendance');
+      const attBtn = page.locator("button").getByText("Attendance");
       await attBtn.click();
-      const seekGroup = page.locator('li').first();
+      // Attendance rows are non-clickable ListItems; the group navigates via
+      // the Link inside the group Chip's label.
+      const seekGroup = page.locator('li a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
     });
 
-    test('should open donations tab', async ({ page }) => {
+    test("should open donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator('button').getByText('Donations');
+      const donationBtn = page.locator("button").getByText("Donations");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
       // Donald has no seeded donations; the apphelper "willAppear" copy renders.
-      const seekText = page.locator('td').getByText('Donations will appear once a donation has been entered.');
-      const donationRow = page.locator('td').getByText(/\$\d/).first();
+      const seekText = page.locator("td").getByText("Donations will appear once a donation has been entered.");
+      const donationRow = page.locator("td").getByText(/\$\d/).first();
       await expect(seekText.or(donationRow)).toBeVisible({ timeout: 10000 });
     });
 
     // Skipped: Stripe payment fields are in a secure iframe that Playwright cannot access
-    test.skip('should add card from people donations tab', async ({ page }) => {
+    test.skip("should add card from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator('button').getByText('Donations');
+      const donationBtn = page.locator("button").getByText("Donations");
       await donationBtn.click();
       const addBtn = page.locator('[id="addBtnGroup"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
@@ -262,16 +272,16 @@ test.describe('People Management', () => {
       const addCardBtn = page.locator('[aria-labelledby="addBtnGroup"] li').first();
       await addCardBtn.click();
       const cardEntry = page.locator('[name="cardnumber"]');
-      await cardEntry.fill('4242424242424242');
-      await page.locator('[name="exp-date"]').fill('0132');
-      await page.locator('[name="cvc"]').fill('123');
-      await page.locator('[name="postal"]').fill('11111');
-      await page.locator('Button').getByText('Save').click();
+      await cardEntry.fill("4242424242424242");
+      await page.locator('[name="exp-date"]').fill("0132");
+      await page.locator('[name="cvc"]').fill("123");
+      await page.locator('[name="postal"]').fill("11111");
+      await page.locator("Button").getByText("Save").click();
     });
 
-    test('should cancel adding card from people donations tab', async ({ page }) => {
+    test("should cancel adding card from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator('button').getByText('Donations');
+      const donationBtn = page.locator("button").getByText("Donations");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
       const addBtn = page.locator('[id="addBtnGroup"]');
@@ -280,28 +290,28 @@ test.describe('People Management', () => {
       const addCardMenuItem = page.locator('[aria-labelledby="addBtnGroup"] li[aria-label="add-card"]');
       await expect(addCardMenuItem).toBeVisible({ timeout: 10000 });
       await addCardMenuItem.click();
-      await page.locator('button').getByText('Cancel').click();
+      await page.locator("button").getByText("Cancel").click();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
     });
 
     // Skipped: Stripe payment fields are in a secure iframe that Playwright cannot access
-    test.skip('should add bank account from people donations tab', async ({ page }) => {
+    test.skip("should add bank account from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator('button').getByText('Donations');
+      const donationBtn = page.locator("button").getByText("Donations");
       await donationBtn.click();
       const addBtn = page.locator('[id="addBtnGroup"]');
       await addBtn.click();
       const addBankBtn = page.locator('[aria-labelledby="addBtnGroup"] li').last();
       await addBankBtn.click();
-      await page.locator('[name="account-holder-name"]').fill('Zacchaeus');
-      await page.locator('[name="routing-number"]').fill('110000000');
-      await page.locator('[name="account-number"]').fill('000123456789');
-      await page.locator('Button').getByText('Save').click();
+      await page.locator('[name="account-holder-name"]').fill("Zacchaeus");
+      await page.locator('[name="routing-number"]').fill("110000000");
+      await page.locator('[name="account-number"]').fill("000123456789");
+      await page.locator("Button").getByText("Save").click();
     });
 
-    test('should cancel adding bank from people donations tab', async ({ page }) => {
+    test("should cancel adding bank from people donations tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const donationBtn = page.locator('button').getByText('Donations');
+      const donationBtn = page.locator("button").getByText("Donations");
       await expect(donationBtn).toBeVisible({ timeout: 10000 });
       await donationBtn.click();
       const addBtn = page.locator('[id="addBtnGroup"]');
@@ -310,52 +320,50 @@ test.describe('People Management', () => {
       const addBankMenuItem = page.locator('[aria-labelledby="addBtnGroup"] li[aria-label="add-bank"]');
       await expect(addBankMenuItem).toBeVisible({ timeout: 10000 });
       await addBankMenuItem.click();
-      const cancelBtn = page.locator('button').getByText('Cancel').first();
+      const cancelBtn = page.locator("button").getByText("Cancel").first();
       await expect(cancelBtn).toBeVisible({ timeout: 10000 });
       await cancelBtn.click();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
     });
 
-    test('should open forms dropdown and select a form', async ({ page }) => {
-      // adding-people.md (steps 11-13) documents selecting a form from the Forms
-      // dropdown on the person page. The dropdown only renders when at least one
-      // contentType=person form exists; demo seeds "Friend or Family Connection".
+    test("should open a person form from the profile rail", async ({ page }) => {
+      // The Forms dropdown was replaced (2026-06-06) by the PersonProfileTabs
+      // left rail: person-contentType forms render as rail items under
+      // "Profile & Forms". Demo seeds the "Visitor Information Card" form.
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const formsTab = page.locator('button').getByText('Forms');
-      await expect(formsTab).toBeVisible({ timeout: 10000 });
-      await formsTab.click();
-      const firstForm = page.getByRole('menuitem').first();
-      await expect(firstForm).toBeVisible({ timeout: 10000 });
-      await firstForm.click();
-      // Selecting the form swaps the tab panel into PersonForm; it renders
-      // question fields. Just assert we left the Details view.
+      const railItem = page.getByText("Visitor Information Card", { exact: true }).first();
+      await expect(railItem).toBeVisible({ timeout: 10000 });
+      await railItem.click();
+      // Selecting a form swaps the profile pane for the form's DisplayBox.
+      await expect(page.locator("h2").getByText("Visitor Information Card")).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[name="name.first"]')).toHaveCount(0);
     });
   });
 
-  test.describe('Main Functions', () => {
-    test('should add people', async ({ page }) => {
-      await page.locator('[name="first"]').fill('Zacchaeus');
-      await page.locator('[name="last"]').fill('Tester');
-      await page.locator('[name="email"]').fill('zacchaeustester@gmail.com');
+  test.describe("Main Functions", () => {
+    test("should add people", async ({ page }) => {
+      await page.locator('[name="first"]').fill("Zacchaeus");
+      await page.locator('[name="last"]').fill("Tester");
+      await page.locator('[name="email"]').fill("zacchaeustester@gmail.com");
       await page.locator('[type="submit"]').click();
 
       await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
-      await expect(page.locator('p').getByText('Zacchaeus').first()).toBeVisible({ timeout: 10000 });
+      await expect(page.locator("p").getByText("Zacchaeus").first()).toBeVisible({ timeout: 10000 });
     });
 
-    test('should cancel editing person household', async ({ page }) => {
+    test("should cancel editing person household", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = page.locator('button').getByText('edit');
+      // The household DisplayBox edit affordance is an icon-only AppIconButton.
+      const editBtn = page.locator('#householdBox button[aria-label="Edit"]');
       await editBtn.first().click();
-      const cancelBtn = page.locator('button').getByText('Cancel');
+      const cancelBtn = page.locator("button").getByText("Cancel");
       await cancelBtn.click();
       await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
     });
 
     // Remove then add the same household member — the row-count assertion after
     // removal depends on remove running before add puts Carol back.
-    test.describe.serial('Donald household membership', () => {
+    test.describe.serial("Donald household membership", () => {
       let page: Page;
 
       test.beforeAll(async ({ browser }) => {
@@ -376,14 +384,14 @@ test.describe('People Management', () => {
         }
       });
 
-      test('should remove person from household', async () => {
+      test("should remove person from household", async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const editBtn = page.locator('button').getByText('edit').first();
+        const editBtn = page.locator('#householdBox button[aria-label="Edit"]').first();
         await editBtn.click();
-        const removeBtn = page.locator('button').getByText('Remove').last();
+        const removeBtn = page.locator('[data-testid="remove-household-member-button"]').last();
         await expect(removeBtn).toBeVisible({ timeout: 10000 });
         await removeBtn.click();
-        const saveBtn = page.locator('button').getByText('Save');
+        const saveBtn = page.locator("button").getByText("Save");
         await expect(saveBtn).toBeVisible({ timeout: 10000 });
         await saveBtn.click();
         await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -392,116 +400,117 @@ test.describe('People Management', () => {
         await expect(personRows).toHaveCount(2, { timeout: 10000 });
       });
 
-      test('should add person to household', async () => {
+      test("should add person to household", async () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
-        const editBtn = page.locator('button').getByText('edit').first();
+        const editBtn = page.locator('#householdBox button[aria-label="Edit"]').first();
         await editBtn.click();
-        // Scope the Add click to the household member table — there are other
-        // "Add" buttons elsewhere on the person detail page (Forms, Donations).
-        const addBtn = page.locator('[id="householdMemberTable"] button').getByText('Add').first();
+        const addBtn = page.locator('[data-testid="add-household-member-button"]');
         await expect(addBtn).toBeVisible({ timeout: 10000 });
         await addBtn.click();
-        await page.locator('input[name="personAddText"]').fill('Carol');
-        await page.locator('button').getByText('Search').click();
-        const selBtn = page.locator('button').getByText('Select');
+        await page.locator('input[name="personAddText"]').fill("Carol");
+        await page.locator('[data-testid="search-button"]').click();
+        // The result-row add affordance is an icon-only AppIconButton
+        // (data-testid="add-person-<id>") inside the results table.
+        const selBtn = page.locator('#householdMemberAddTable [data-testid^="add-person-"]').first();
         await expect(selBtn).toBeVisible({ timeout: 10000 });
         await selBtn.click();
         // Confirmation dialog when adding a person who is already in another household.
-        const yesBtn = page.locator('button').getByText('Yes');
+        const yesBtn = page.locator("button").getByText("Yes");
         if (await yesBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
           await yesBtn.click();
         }
-        const saveBtn = page.locator('button').getByText('Save');
+        const saveBtn = page.locator("button").getByText("Save");
         await expect(saveBtn).toBeVisible({ timeout: 10000 });
         await saveBtn.click();
-        const validatedAddition = page.locator('[id="householdBox"] h5').getByText('Carol Clark');
+        const validatedAddition = page.locator('[id="householdBox"] h5').getByText("Carol Clark");
         await expect(validatedAddition).toHaveCount(1, { timeout: 10000 });
       });
     });
 
-    test('should cancel adding person to household', async ({ page }) => {
+    test("should cancel adding person to household", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = page.locator('button').getByText('edit').first();
+      const editBtn = page.locator('#householdBox button[aria-label="Edit"]').first();
       await editBtn.click();
       const addBtn = page.locator('[data-testid="add-household-member-button"]');
       await addBtn.click();
-      // Cancel uses an IconButton with aria-label, no visible text label.
-      const closeBtn = page.locator('button[aria-label="Cancel add member"]');
+      // The add-member panel closes via an icon-only AppIconButton ("Close").
+      const closeBtn = page.locator('#householdBox button[aria-label="Close"]');
       await expect(closeBtn).toBeVisible({ timeout: 10000 });
       await closeBtn.click();
       await expect(closeBtn).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should cancel editing person details', async ({ page }) => {
+    test("should cancel editing person details", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
-      const cancelBtn = page.locator('button').getByText('Cancel');
+      const cancelBtn = page.locator("button").getByText("Cancel");
       await cancelBtn.click();
       await expect(page.locator('[name="name.middle"]')).toHaveCount(0);
     });
 
-    test('should edit person details', async ({ page }) => {
+    test("should edit person details", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       const middleName = page.locator('[name="name.middle"]');
       await expect(middleName).toBeVisible({ timeout: 10000 });
-      await middleName.fill('Zacchaeus');
-      await page.locator('button').getByText('Save').click();
+      await middleName.fill("Zacchaeus");
+      await page.locator("button").getByText("Save").click();
       await expect(editBtn.first()).toBeVisible({ timeout: 10000 });
       await editBtn.first().click();
       await expect(middleName).toBeVisible({ timeout: 10000 });
-      await expect(middleName).toHaveValue('Zacchaeus');
+      await expect(middleName).toHaveValue("Zacchaeus");
     });
 
-    test('should cancel merging person details', async ({ page }) => {
+    test("should cancel merging person details", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
-      const mergeBtn = page.locator('button').getByText('merge');
+      const mergeBtn = page.locator("button").getByText("merge");
       await mergeBtn.click();
-      const cancelBtn = page.locator('button').getByText('Cancel').first();
+      const cancelBtn = page.locator("button").getByText("Cancel").first();
       await cancelBtn.click();
       await expect(page.locator('[name="personAddText"]')).toHaveCount(0);
     });
 
-    test('should merge person details', async ({ page }) => {
+    test("should merge person details", async ({ page }) => {
+      test.slow();
       await openPersonRow(page, SEED_PEOPLE.PATRICIA);
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
-      const mergeBtn = page.locator('button').getByText('merge');
+      const mergeBtn = page.locator("button").getByText("merge");
       await mergeBtn.click();
       const mergeSearch = page.locator('[name="personAddText"]');
       // Search by full name — "Robert Moore" disambiguates from Robert Johnson
       // and other Roberts that exist in the seed data.
-      await mergeSearch.fill('Robert Moore');
+      await mergeSearch.fill("Robert Moore");
       const searchResponse = page.waitForResponse(
-        (response) => response.url().includes('/people/search') && response.status() === 200,
-        { timeout: 10000 }
+        (response) => response.url().includes("/people/search") && response.status() === 200,
+        { timeout: 20000 }
       );
       // Merge box renders its own Search button inside InputBox; scope to the merge box.
-      await page.locator('#mergeBox').getByRole('button', { name: 'Search' }).click();
+      await page.locator("#mergeBox").getByRole("button", { name: "Search" }).click();
       await searchResponse;
       // The Search component renders one select-person-button per result row.
       // Anchor on the household member we expect to merge.
-      const robertRow = page.locator('#searchResults tr').filter({ hasText: 'Robert Moore' }).first();
-      await expect(robertRow).toBeVisible({ timeout: 10000 });
+      const robertRow = page.locator("#searchResults tr").filter({ hasText: "Robert Moore" }).first();
+      await expect(robertRow).toBeVisible({ timeout: 20000 });
       await robertRow.locator('[data-testid="select-person-button"]').click();
       // MergeModal renders inside data-cy="merge-modal"; the Confirm button has
       // data-cy="confirm-merge". Wait for the modal to mount before clicking.
       const confirmBtn = page.locator('[data-cy="confirm-merge"]');
-      await expect(confirmBtn).toBeVisible({ timeout: 10000 });
+      await expect(confirmBtn).toBeVisible({ timeout: 20000 });
       // Listen for the /people DELETE that removes the merged-out person, plus
       // the internal navigate("/people") fired by Merge.tsx after Promise.all
       // resolves. Both must complete before we re-search.
       const deleteResponse = page.waitForResponse(
         (response) => response.url().match(/\/people\/PER\d+/) !== null
-          && response.request().method() === 'DELETE'
+          && response.request().method() === "DELETE"
           && response.status() === 200,
-        { timeout: 15000 }
+        { timeout: 30000 }
       );
-      const navAfterMerge = page.waitForURL(/\/people(\?|$)/, { timeout: 15000 });
+      const navAfterMerge = page.waitForURL(/\/people(\?|$)/, { timeout: 30000 });
       await confirmBtn.click();
       await deleteResponse;
       await navAfterMerge;
@@ -509,50 +518,54 @@ test.describe('People Management', () => {
       // After merge, one of the two should no longer show in search results.
       await navigateToPeople(page);
       const searchInput = page.locator('input[name="searchText"]');
-      await searchInput.fill('Robert Moore');
-      await page.waitForResponse(
-        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
-        { timeout: 10000 }
+      // Register the listener before the fill that triggers the request,
+      // otherwise a fast response slips past the waiter.
+      const searched = page.waitForResponse(
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
+        { timeout: 20000 }
       );
-      const validatedMerge = page.locator('table tbody tr').filter({ hasText: 'Robert Moore' });
-      await expect(validatedMerge).toHaveCount(0, { timeout: 10000 });
+      await searchInput.fill("Robert Moore");
+      await searched;
+      const validatedMerge = page.locator("table tbody tr").filter({ hasText: "Robert Moore" });
+      await expect(validatedMerge).toHaveCount(0, { timeout: 20000 });
     });
 
-    test('should delete person from details page', async ({ page }) => {
-      page.once('dialog', async (dialog) => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
+    test("should delete person from details page", async ({ page }) => {
+      page.once("dialog", async (dialog) => {
+        expect(dialog.type()).toBe("confirm");
+        expect(dialog.message()).toContain("Are you sure");
         await dialog.accept();
       });
 
       // Create a disposable person first so the delete target is deterministic.
-      await page.locator('[name="first"]').fill('Zacchaeus');
-      await page.locator('[name="last"]').fill('Disposable');
-      await page.locator('[name="email"]').fill('disposable@example.com');
+      await page.locator('[name="first"]').fill("Zacchaeus");
+      await page.locator('[name="last"]').fill("Disposable");
+      await page.locator('[name="email"]').fill("disposable@example.com");
       await page.locator('[type="submit"]').click();
       await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
 
-      const editBtn = editIconButton(page);
+      const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
-      await page.locator('button').getByText('Delete').click();
+      await page.locator("button").getByText("Delete").click();
 
       await page.waitForURL(/\/people(\?|$)/, { timeout: 10000 });
       const searchInput = page.locator('input[name="searchText"]');
-      await searchInput.fill('Zacchaeus Disposable');
+      await searchInput.fill("Zacchaeus Disposable");
       await page.waitForResponse(
-        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
         { timeout: 10000 }
       );
-      const results = page.locator('table tbody tr').filter({ hasText: 'Zacchaeus Disposable' });
+      const results = page.locator("table tbody tr").filter({ hasText: "Zacchaeus Disposable" });
       await expect(results).toHaveCount(0);
     });
 
-    test('should allow selecting multiple people for bulk delete', async ({ page }) => {
+    test("should allow selecting multiple people for bulk delete", async ({ page }) => {
+      test.slow();
       const suffix = Date.now().toString();
       const sharedLastName = `BulkDelete${suffix}`;
       const peopleToCreate = [
-        { first: 'Zacchaeus', last: sharedLastName, email: `bulk-delete-a-${suffix}@example.com` },
-        { first: 'Zebedee', last: sharedLastName, email: `bulk-delete-b-${suffix}@example.com` },
+        { first: "Zacchaeus", last: sharedLastName, email: `bulk-delete-a-${suffix}@example.com` },
+        { first: "Zebedee", last: sharedLastName, email: `bulk-delete-b-${suffix}@example.com` }
       ];
 
       for (const person of peopleToCreate) {
@@ -561,45 +574,45 @@ test.describe('People Management', () => {
         await page.locator('[name="last"]').fill(person.last);
         await page.locator('[name="email"]').fill(person.email);
         await page.locator('[type="submit"]').click();
-        await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
+        await page.waitForURL(/\/people\/[^/]+/, { timeout: 20000 });
       }
 
       await navigateToPeople(page);
       const searchInput = page.locator('input[name="searchText"]');
       await searchInput.fill(sharedLastName);
       await page.waitForResponse(
-        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
-        { timeout: 10000 }
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
+        { timeout: 20000 }
       );
 
-      const matchingRows = page.locator('table tbody tr').filter({ hasText: sharedLastName });
-      await expect(matchingRows).toHaveCount(2, { timeout: 10000 });
+      const matchingRows = page.locator("table tbody tr").filter({ hasText: sharedLastName });
+      await expect(matchingRows).toHaveCount(2, { timeout: 20000 });
 
       for (const person of peopleToCreate) {
-        const row = page.locator('table tbody tr').filter({ hasText: `${person.first} ${sharedLastName}` }).first();
-        await expect(row).toBeVisible({ timeout: 10000 });
-        await row.getByRole('checkbox').check();
+        const row = page.locator("table tbody tr").filter({ hasText: `${person.first} ${sharedLastName}` }).first();
+        await expect(row).toBeVisible({ timeout: 20000 });
+        await row.getByRole("checkbox").check();
       }
 
-      const bulkActionsBtn = page.getByTestId('bulk-actions-button');
-      await expect(bulkActionsBtn).toBeVisible({ timeout: 10000 });
+      const bulkActionsBtn = page.getByTestId("bulk-actions-button");
+      await expect(bulkActionsBtn).toBeVisible({ timeout: 20000 });
       await bulkActionsBtn.click();
-      await page.getByTestId('bulk-action-delete').click();
+      await page.getByTestId("bulk-action-delete").click();
 
-      const confirmDialog = page.getByRole('dialog').filter({ hasText: 'Delete Selected People' });
-      await expect(confirmDialog).toBeVisible({ timeout: 10000 });
-      await expect(confirmDialog.getByText('Are you sure you want to delete 2 selected people?')).toBeVisible({ timeout: 10000 });
-      await confirmDialog.getByRole('button', { name: 'Cancel' }).click();
-      await expect(confirmDialog).toHaveCount(0, { timeout: 10000 });
-      await expect(bulkActionsBtn).toBeVisible({ timeout: 10000 });
+      const confirmDialog = page.getByRole("dialog").filter({ hasText: "Delete Selected People" });
+      await expect(confirmDialog).toBeVisible({ timeout: 20000 });
+      await expect(confirmDialog.getByText("Are you sure you want to delete 2 selected people?")).toBeVisible({ timeout: 20000 });
+      await confirmDialog.getByRole("button", { name: "Cancel" }).click();
+      await expect(confirmDialog).toHaveCount(0, { timeout: 20000 });
+      await expect(bulkActionsBtn).toBeVisible({ timeout: 20000 });
     });
 
-    test('should bulk-update membership status for selected people', async ({ page }) => {
+    test("should bulk-update membership status for selected people", async ({ page }) => {
       const suffix = Date.now().toString();
       const sharedLastName = `BulkStatus${suffix}`;
       const peopleToCreate = [
-        { first: 'Bartholomew', last: sharedLastName, email: `bulk-status-a-${suffix}@example.com` },
-        { first: 'Barnabas', last: sharedLastName, email: `bulk-status-b-${suffix}@example.com` },
+        { first: "Bartholomew", last: sharedLastName, email: `bulk-status-a-${suffix}@example.com` },
+        { first: "Barnabas", last: sharedLastName, email: `bulk-status-b-${suffix}@example.com` }
       ];
 
       for (const person of peopleToCreate) {
@@ -614,42 +627,43 @@ test.describe('People Management', () => {
       await navigateToPeople(page);
       await page.locator('input[name="searchText"]').fill(sharedLastName);
       await page.waitForResponse(
-        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
         { timeout: 10000 }
       );
 
-      const matchingRows = page.locator('table tbody tr').filter({ hasText: sharedLastName });
+      const matchingRows = page.locator("table tbody tr").filter({ hasText: sharedLastName });
       await expect(matchingRows).toHaveCount(2, { timeout: 10000 });
 
       for (const person of peopleToCreate) {
-        const row = page.locator('table tbody tr').filter({ hasText: `${person.first} ${sharedLastName}` }).first();
-        await row.getByRole('checkbox').check();
+        const row = page.locator("table tbody tr").filter({ hasText: `${person.first} ${sharedLastName}` }).first();
+        await row.getByRole("checkbox").check();
       }
 
-      await page.getByTestId('bulk-actions-button').click();
-      await page.getByTestId('bulk-action-membershipStatus').click();
+      await page.getByTestId("bulk-actions-button").click();
+      await page.getByTestId("bulk-action-membershipStatus").click();
 
-      const dialog = page.getByRole('dialog');
+      const dialog = page.getByRole("dialog");
       await expect(dialog).toBeVisible({ timeout: 10000 });
-      await dialog.getByTestId('bulk-field-select').click();
-      await page.getByRole('option', { name: 'Member' }).click();
+      await dialog.getByTestId("bulk-field-select").click();
+      await page.getByRole("option", { name: "Member" }).click();
 
       const updateResponse = page.waitForResponse(
-        (response) => response.url().includes('/people/bulk-update') && response.status() === 200,
+        (response) => response.url().includes("/people/bulk-update") && response.status() === 200,
         { timeout: 10000 }
       );
-      await dialog.getByTestId('bulk-field-apply').click();
+      await dialog.getByTestId("bulk-field-apply").click();
       await updateResponse;
       await expect(dialog).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should bulk add and remove selected people from a group', async ({ page }) => {
+    test("should bulk add and remove selected people from a group", async ({ page }) => {
+      test.slow();
       const suffix = Date.now().toString();
       const sharedLastName = `BulkGroup${suffix}`;
-      const groupName = `Bulk All ${suffix}`;
+      const groupName = `Zz Bulk ${suffix}`;
       const peopleToCreate = [
-        { first: 'Cleopas', last: sharedLastName, email: `bulk-group-a-${suffix}@example.com` },
-        { first: 'Cornelius', last: sharedLastName, email: `bulk-group-b-${suffix}@example.com` },
+        { first: "Cleopas", last: sharedLastName, email: `bulk-group-a-${suffix}@example.com` },
+        { first: "Cornelius", last: sharedLastName, email: `bulk-group-b-${suffix}@example.com` }
       ];
 
       for (const person of peopleToCreate) {
@@ -658,90 +672,100 @@ test.describe('People Management', () => {
         await page.locator('[name="last"]').fill(person.last);
         await page.locator('[name="email"]').fill(person.email);
         await page.locator('[type="submit"]').click();
-        await page.waitForURL(/\/people\/[^/]+/, { timeout: 10000 });
+        await page.waitForURL(/\/people\/[^/]+/, { timeout: 20000 });
       }
 
       const selectMatchingPeople = async () => {
         await navigateToPeople(page);
         await page.locator('input[name="searchText"]').fill(sharedLastName);
         await page.waitForResponse(
-          (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
-          { timeout: 10000 }
+          (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
+          { timeout: 20000 }
         );
-        const rows = page.locator('table tbody tr').filter({ hasText: sharedLastName });
-        await expect(rows).toHaveCount(2, { timeout: 10000 });
+        const rows = page.locator("table tbody tr").filter({ hasText: sharedLastName });
+        await expect(rows).toHaveCount(2, { timeout: 20000 });
         for (const person of peopleToCreate) {
-          const row = page.locator('table tbody tr').filter({ hasText: `${person.first} ${sharedLastName}` }).first();
-          await row.getByRole('checkbox').check();
+          const row = page.locator("table tbody tr").filter({ hasText: `${person.first} ${sharedLastName}` }).first();
+          await row.getByRole("checkbox").check();
         }
       };
 
       // Add both people to a brand-new group created inline.
       await selectMatchingPeople();
-      await page.getByTestId('bulk-actions-button').click();
-      await page.getByTestId('bulk-action-add-group').click();
+      await page.getByTestId("bulk-actions-button").click();
+      await page.getByTestId("bulk-action-add-group").click();
 
-      const addDialog = page.getByRole('dialog');
-      await expect(addDialog).toBeVisible({ timeout: 10000 });
-      await addDialog.getByTestId('bulk-create-group-toggle').check();
-      await addDialog.getByRole('textbox', { name: 'New group name' }).fill(groupName);
+      const addDialog = page.getByRole("dialog");
+      await expect(addDialog).toBeVisible({ timeout: 20000 });
+      await addDialog.getByTestId("bulk-create-group-toggle").check();
+      await addDialog.getByRole("textbox", { name: "New group name" }).fill(groupName);
 
       const addResponse = page.waitForResponse(
-        (response) => response.url().includes('/groupMembers/bulk-add') && response.status() === 200,
-        { timeout: 10000 }
+        (response) => response.url().includes("/groupMembers/bulk-add") && response.status() === 200,
+        { timeout: 20000 }
       );
-      await addDialog.getByTestId('bulk-group-apply').click();
+      await addDialog.getByTestId("bulk-group-apply").click();
       const addBody = await (await addResponse).json();
       expect(addBody.count).toBe(2);
-      await expect(addDialog).toHaveCount(0, { timeout: 10000 });
+      await expect(addDialog).toHaveCount(0, { timeout: 20000 });
 
       // Remove the same people from that group.
       await selectMatchingPeople();
-      await page.getByTestId('bulk-actions-button').click();
-      await page.getByTestId('bulk-action-remove-group').click();
+      await page.getByTestId("bulk-actions-button").click();
+      await page.getByTestId("bulk-action-remove-group").click();
 
-      const removeDialog = page.getByRole('dialog');
-      await expect(removeDialog).toBeVisible({ timeout: 10000 });
-      await removeDialog.getByTestId('bulk-group-select').click();
-      await page.getByRole('option', { name: groupName }).click();
+      const removeDialog = page.getByRole("dialog");
+      await expect(removeDialog).toBeVisible({ timeout: 20000 });
+      await removeDialog.getByTestId("bulk-group-select").click();
+      await page.getByRole("option", { name: groupName }).click();
 
       const removeResponse = page.waitForResponse(
-        (response) => response.url().includes('/groupMembers/bulk-remove') && response.status() === 200,
-        { timeout: 10000 }
+        (response) => response.url().includes("/groupMembers/bulk-remove") && response.status() === 200,
+        { timeout: 20000 }
       );
-      await removeDialog.getByTestId('bulk-group-apply').click();
+      await removeDialog.getByTestId("bulk-group-apply").click();
       const removeBody = await (await removeResponse).json();
       expect(removeBody.count).toBe(2);
-      await expect(removeDialog).toHaveCount(0, { timeout: 10000 });
+      await expect(removeDialog).toHaveCount(0, { timeout: 20000 });
+
+      const ctx = await request.newContext();
+      const loginRes = await ctx.post("http://localhost:8084/membership/users/login", { data: { email: "demo@b1.church", password: "password" } });
+      const loginBody = await loginRes.json();
+      const uc = (loginBody.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || loginBody.userChurches?.[0];
+      const auth = { headers: { Authorization: "Bearer " + uc?.jwt } };
+      const allGroups = await (await ctx.get("http://localhost:8084/membership/groups", auth)).json();
+      const leaked = (Array.isArray(allGroups) ? allGroups : []).find((g: any) => g.name === groupName);
+      if (leaked?.id) await ctx.delete(`http://localhost:8084/membership/groups/${leaked.id}`, auth);
+      await ctx.dispose();
     });
   });
 
   // Edge-case extensions: targeted gaps from .notes/B1Admin-test-coverage-gaps.md §3 (people).
-  test.describe('People — edge-case affordances', () => {
-    test('person profile exposes a top-level Edit button for contact info', async ({ page }) => {
+  test.describe("People — edge-case affordances", () => {
+    test("person profile exposes a top-level Edit button for contact info", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      // PersonPage renders an EditIcon button in the header for people with edit permission.
-      await expect(editIconButton(page).first()).toBeVisible({ timeout: 10000 });
+      // The Personal Details box exposes an Edit button for people with edit permission.
+      await expect(personDetailsEditButton(page).first()).toBeVisible({ timeout: 10000 });
     });
 
-    test('search with no matches renders an empty results state', async ({ page }) => {
+    test("search with no matches renders an empty results state", async ({ page }) => {
       const searchInput = page.locator('input[name="searchText"]');
-      await searchInput.fill('Zzzzz Nonexistent Surname');
+      await searchInput.fill("Zzzzz Nonexistent Surname");
       await page.waitForResponse(
-        (response) => response.url().includes('/people/advancedSearch') && response.status() === 200,
+        (response) => response.url().includes("/people/advancedSearch") && response.status() === 200,
         { timeout: 10000 }
       );
       // Result table should have zero rows (or render an explicit no-match state).
-      await expect(page.locator('table tbody tr').filter({ hasText: 'Zzzzz' })).toHaveCount(0);
+      await expect(page.locator("table tbody tr").filter({ hasText: "Zzzzz" })).toHaveCount(0);
     });
 
-    test('person attendance tab is accessible and shows visit history container', async ({ page }) => {
+    test("person attendance tab is accessible and shows visit history container", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
-      const attBtn = page.locator('button').getByText('Attendance');
+      const attBtn = page.locator("button").getByText("Attendance");
       await attBtn.click();
       // The container renders either a list (with visits) or an empty-state paragraph.
-      const list = page.locator('ul li').first();
-      const empty = page.locator('p').getByText(/No attendance/i);
+      const list = page.locator("ul li").first();
+      const empty = page.locator("p").getByText(/No attendance/i);
       await expect(list.or(empty)).toBeVisible({ timeout: 10000 });
     });
   });

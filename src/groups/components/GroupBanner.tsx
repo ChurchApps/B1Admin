@@ -1,6 +1,6 @@
 import { type GroupInterface, type GroupServiceTimeInterface } from "@churchapps/helpers";
 import { UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
-import { Typography, Chip, IconButton, Stack, Box, Tooltip } from "@mui/material";
+import { Typography, Chip, Stack, Box } from "@mui/material";
 import {
   Edit as EditIcon,
   Schedule as ScheduleIcon,
@@ -10,11 +10,14 @@ import {
   Cancel as CancelIcon,
   Event as CalendarIcon,
   Sms as SmsIcon,
-  Email as EmailIcon
+  Email as EmailIcon,
+  NotificationsActive as NotificationsActiveIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
+import { SendNotificationDialog } from "./SendNotificationDialog";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   group: GroupInterface;
@@ -23,13 +26,15 @@ interface Props {
 }
 
 export const GroupBanner = memo((props: Props) => {
-  const { group, onEdit, editMode } = props;
+  const { group, onEdit } = props;
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
+  const [showNotificationDialog, setShowNotificationDialog] = React.useState(false);
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
+  const canSendNotifications = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
 
   React.useEffect(() => {
@@ -43,7 +48,7 @@ export const GroupBanner = memo((props: Props) => {
   React.useEffect(() => {
     if (group?.id) {
       ApiHelper.get("/groupservicetimes?groupId=" + group.id, "AttendanceApi")
-        .then((data) => setGroupServiceTimes(data))
+        .then((data: any) => setGroupServiceTimes(data))
         .catch(() => setGroupServiceTimes([]));
     }
   }, [group?.id]);
@@ -58,8 +63,8 @@ export const GroupBanner = memo((props: Props) => {
           label={Locale.label("groups.groupBanner.team")}
           size="small"
           sx={{
-            backgroundColor: "#e3f2fd",
-            color: "#1565c0",
+            backgroundColor: "rgba(255,255,255,0.2)",
+            color: "#fff",
             fontWeight: 600,
             fontSize: "0.875rem"
           }}
@@ -72,8 +77,8 @@ export const GroupBanner = memo((props: Props) => {
           label={group.categoryName}
           size="small"
           sx={{
-            backgroundColor: "#f3e5f5",
-            color: "#6a1b9a",
+            backgroundColor: "rgba(255,255,255,0.2)",
+            color: "#fff",
             fontWeight: 600,
             fontSize: "0.875rem"
           }}
@@ -110,7 +115,7 @@ export const GroupBanner = memo((props: Props) => {
 
     if (group.trackAttendance !== undefined) {
       info.push({
-        icon: group.trackAttendance ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
+        icon: group.trackAttendance ? <CheckIcon sx={{ color: "success.light", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "error.light", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.trackAttendance"),
         value: group.trackAttendance ? Locale.label("common.yes") : Locale.label("common.no")
       });
@@ -118,7 +123,7 @@ export const GroupBanner = memo((props: Props) => {
 
     if (group.printNametag !== undefined) {
       info.push({
-        icon: group.printNametag ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
+        icon: group.printNametag ? <CheckIcon sx={{ color: "success.light", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "error.light", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.printNametag"),
         value: group.printNametag ? Locale.label("common.yes") : Locale.label("common.no")
       });
@@ -126,7 +131,7 @@ export const GroupBanner = memo((props: Props) => {
 
     if (group.parentPickup !== undefined) {
       info.push({
-        icon: group.parentPickup ? <CheckIcon sx={{ color: "#4caf50", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "#f44336", fontSize: 16, mr: 0.5 }} />,
+        icon: group.parentPickup ? <CheckIcon sx={{ color: "success.light", fontSize: 16, mr: 0.5 }} /> : <CancelIcon sx={{ color: "error.light", fontSize: 16, mr: 0.5 }} />,
         label: Locale.label("groups.groupBanner.parentPickup"),
         value: group.parentPickup ? Locale.label("common.yes") : Locale.label("common.no")
       });
@@ -224,22 +229,15 @@ export const GroupBanner = memo((props: Props) => {
                 {groupType}
               </Stack>
               <Stack direction="row" spacing={0.5} alignItems="center">
-                <Tooltip title={Locale.label("groups.groupBanner.emailTooltip")}>
-                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowEmailDialog(true)}>
-                    <EmailIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
+                <AppIconButton label={Locale.label("groups.groupBanner.emailTooltip")} icon={<EmailIcon />} tone="header" onClick={() => setShowEmailDialog(true)} />
+                {canSendNotifications && (
+                  <AppIconButton label="Send push notification" icon={<NotificationsActiveIcon />} tone="header" onClick={() => setShowNotificationDialog(true)} />
+                )}
                 {canText && hasTextingProvider && (
-                  <Tooltip title={Locale.label("groups.groupBanner.textTooltip")}>
-                    <IconButton size="small" sx={{ color: "#FFF" }} onClick={() => setShowTextDialog(true)}>
-                      <SmsIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                  <AppIconButton label={Locale.label("groups.groupBanner.textTooltip")} icon={<SmsIcon />} tone="header" onClick={() => setShowTextDialog(true)} />
                 )}
                 {canEdit && (
-                  <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit} data-testid="edit-group-button" aria-label="Edit group">
-                    <EditIcon fontSize="small" />
-                  </IconButton>
+                  <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={onEdit} data-testid="edit-group-button" />
                 )}
               </Stack>
             </Stack>
@@ -433,6 +431,13 @@ export const GroupBanner = memo((props: Props) => {
           groupId={group?.id}
           groupName={group?.name}
           onClose={() => setShowEmailDialog(false)}
+        />
+      )}
+      {showNotificationDialog && (
+        <SendNotificationDialog
+          groupId={group?.id}
+          groupName={group?.name}
+          onClose={() => setShowNotificationDialog(false)}
         />
       )}
     </Box>

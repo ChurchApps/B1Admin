@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useCallback } from "react";
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Link, Navigate } from "react-router-dom";
-import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment } from "@mui/material";
+import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment, Tooltip } from "@mui/material";
 import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon, PlayCircle as PlayIcon, Timer as TimerIcon, Person as ArtistIcon } from "@mui/icons-material";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { EmptyState } from "../../components/ui/EmptyState";
@@ -23,7 +23,7 @@ export const SongsPage = memo(() => {
 
   const handleAdd = useCallback(
     async (songDetail: SongDetailInterface) => {
-      let selectedSong = null;
+      let selectedSong;
       if (!songDetail.id) {
         songDetail = await ApiHelper.post("/songDetails/create", songDetail, "ContentApi");
       }
@@ -152,13 +152,15 @@ export const SongsPage = memo(() => {
                   </Box>
 
                   {/* Action Button */}
-                  <IconButton
-                    component={Link}
-                    to={`/serving/songs/${(songDetail as any).songId}`}
-                    sx={{ color: "primary.main", "&:hover": { backgroundColor: "primary.light", color: "primary.dark" } }}
-                    aria-label={`Play ${songDetail.title}`}>
-                    <PlayIcon />
-                  </IconButton>
+                  <Tooltip title={`Play ${songDetail.title}`}>
+                    <IconButton
+                      component={Link}
+                      to={`/serving/songs/${(songDetail as any).songId}`}
+                      sx={{ color: "primary.main", "&:hover": { backgroundColor: "primary.light", color: "primary.dark" } }}
+                      aria-label={`Play ${songDetail.title}`}>
+                      <PlayIcon />
+                    </IconButton>
+                  </Tooltip>
                 </Stack>
               </CardContent>
             </Card>
@@ -198,8 +200,8 @@ export const SongsPage = memo(() => {
           <Card sx={{ mb: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
             <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
               <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                <SearchIcon sx={{ color: "primary.main", fontSize: 24 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <SearchIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("songs.songsPage.searchSongs")}
                 </Typography>
               </Stack>

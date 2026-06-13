@@ -13,8 +13,7 @@ import {
   Card,
   CardContent,
   Button,
-  Icon,
-  IconButton
+  Icon
 } from "@mui/material";
 import { Close as CloseIcon, Save as SaveIcon, Delete as DeleteIcon, Link as LinkIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -22,6 +21,7 @@ import { ErrorMessages } from "@churchapps/apphelper";
 import { UserHelper } from "@churchapps/apphelper";
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface } from "@churchapps/helpers";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   currentLink: LinkInterface,
@@ -129,7 +129,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
         }}
       >
         <DialogTitle sx={{
-          backgroundColor: "#1976d2",
+          backgroundColor: "primary.main",
           color: "#FFF",
           p: 3
         }}>
@@ -156,13 +156,12 @@ export const LinkEdit: React.FC<Props> = (props) => {
                 </Typography>
               </Box>
             </Stack>
-            <IconButton
+            <AppIconButton
+              label={Locale.label("common.close")}
+              icon={<CloseIcon />}
+              tone="header"
               onClick={() => props.updatedFunction()}
-              sx={{ color: "#FFF" }}
-              size="small"
-            >
-              <CloseIcon />
-            </IconButton>
+            />
           </Stack>
         </DialogTitle>
 
@@ -174,8 +173,8 @@ export const LinkEdit: React.FC<Props> = (props) => {
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>edit</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>edit</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                     {Locale.label("sermons.liveStreamTimes.linkEdit.linkDetails")}
                   </Typography>
                 </Stack>
@@ -214,8 +213,8 @@ export const LinkEdit: React.FC<Props> = (props) => {
               <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
                 <CardContent>
                   <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                    <Icon sx={{ color: "#1976d2", fontSize: 18 }}>account_tree</Icon>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                    <Icon sx={{ color: "primary.main", fontSize: 18 }}>account_tree</Icon>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                       {Locale.label("sermons.liveStreamTimes.linkEdit.menuOrganization")}
                     </Typography>
                   </Stack>
@@ -266,9 +265,9 @@ export const LinkEdit: React.FC<Props> = (props) => {
                               textTransform: "none",
                               fontWeight: 500,
                               "&.Mui-selected": {
-                                backgroundColor: "#1976d2",
+                                backgroundColor: "primary.main",
                                 color: "#FFF",
-                                "&:hover": { backgroundColor: "#1565c0" }
+                                "&:hover": { backgroundColor: "primary.dark" }
                               }
                             }}
                           >
@@ -292,7 +291,6 @@ export const LinkEdit: React.FC<Props> = (props) => {
             {currentLink?.id && (
               <Button
                 variant="outlined"
-                color="error"
                 startIcon={<DeleteIcon />}
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}

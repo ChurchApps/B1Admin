@@ -3,17 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "yarn@4.15.0",
   "dependencies": {
-    "@churchapps/apphelper": "0.6.17",
-    "@churchapps/apphelper-donations": "0.6.17",
-    "@churchapps/apphelper-forms": "0.6.14",
-    "@churchapps/apphelper-login": "0.6.16",
-    "@churchapps/apphelper-markdown": "0.6.15",
-    "@churchapps/apphelper-website": "0.6.17",
-    "@churchapps/content-providers": "^0.1.0",
-    "@churchapps/helpers": "1.2.29",
-    "@mui/icons-material": "^7.1.2",
-    "@mui/material": "^7.1.2",
+    "@churchapps/apphelper": "^0.11.0",
+    "@churchapps/content-providers": "^0.3.1",
+    "@churchapps/helpers": "^1.8.0",
+    "@mui/icons-material": "^7.3.11",
+    "@mui/material": "^7.3.11",
     "@react-google-maps/api": "^2.20.0",
     "@react-hook/window-size": "^3.1.1",
     "@sentry/react": "^10.27.0",
@@ -26,7 +22,8 @@
     "i18next-browser-languagedetector": "^8.2.0",
     "jszip": "^3.10.1",
     "mui-tel-input": "^9.0.1",
-    "react": "^19.1.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.2.6",
     "react-big-calendar": "^1.19.4",
     "react-colorful": "^5.6.1",
     "react-cookie": "^8.0.1",
@@ -72,6 +69,7 @@
     "vite": "^6.3.5"
   },
   "scripts": {
+    "preinstall": "node -e \"if(!(process.env.npm_config_user_agent||'').startsWith('yarn')){console.error('\\n[B1Admin] This project uses Yarn (Berry). Run \\'yarn install\\' instead of npm/pnpm.\\n');process.exit(1)}\"",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -81,24 +79,32 @@
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
     "lint": "eslint --fix src/",
-    "predeploy-demo": "export REACT_APP_STAGE=demo && npm run postinstall && npm run build",
-    "exec-deploy-demo": "aws s3 sync dist/ s3://demo-chums-app",
+    "predeploy-demo": "REACT_APP_STAGE=demo yarn postinstall && REACT_APP_STAGE=demo yarn build",
+    "exec-deploy-demo": "aws s3 sync dist/ s3://demo-chums-app --exclude \"sw.js\" && aws s3 cp dist/sw.js s3://demo-chums-app/sw.js --cache-control no-cache",
     "postdeploy-demo": "aws cloudfront create-invalidation --distribution-id E2OZ4STEUZXHZZ --paths \"/*\"",
-    "deploy-demo": "npm run predeploy-demo && npm run exec-deploy-demo && npm run postdeploy-demo",
-    "predeploy-staging": "export REACT_APP_STAGE=staging && npm run postinstall && npm run build",
-    "exec-deploy-staging": "aws s3 sync dist/ s3://staging-chums-app",
+    "deploy-demo": "yarn predeploy-demo && yarn exec-deploy-demo && yarn postdeploy-demo",
+    "predeploy-staging": "REACT_APP_STAGE=staging yarn postinstall && REACT_APP_STAGE=staging yarn build",
+    "exec-deploy-staging": "aws s3 sync dist/ s3://staging-chums-app --exclude \"sw.js\" && aws s3 cp dist/sw.js s3://staging-chums-app/sw.js --cache-control no-cache",
     "postdeploy-staging": "aws cloudfront create-invalidation --distribution-id E2OZ4STEUZXHZZ --paths \"/*\"",
-    "deploy-staging": "npm run predeploy-staging && npm run exec-deploy-staging && npm run postdeploy-staging",
-    "predeploy-prod": "export REACT_APP_STAGE=prod && npm run postinstall && npm run build",
-    "exec-deploy-prod": "aws s3 sync dist/ s3://chums-app",
+    "deploy-staging": "yarn predeploy-staging && yarn exec-deploy-staging && yarn postdeploy-staging",
+    "predeploy-prod": "REACT_APP_STAGE=prod yarn postinstall && REACT_APP_STAGE=prod yarn build",
+    "exec-deploy-prod": "aws s3 sync dist/ s3://chums-app --exclude \"sw.js\" && aws s3 cp dist/sw.js s3://chums-app/sw.js --cache-control no-cache",
     "postdeploy-prod": "aws cloudfront create-invalidation --distribution-id E2OZ4STEUZXHZZ --paths \"/*\"",
-    "deploy-prod": "npm run predeploy-prod && npm run exec-deploy-prod && npm run postdeploy-prod",
-    "postinstall": "copyfiles -a -f node_modules/@churchapps/apphelper/public/locales/** public/apphelper/locales && copyfiles -a -f node_modules/@churchapps/apphelper/public/css/** public/apphelper/css"
+    "deploy-prod": "yarn predeploy-prod && yarn exec-deploy-prod && yarn postdeploy-prod",
+    "postinstall": "copyfiles -a -f \"node_modules/@churchapps/apphelper/dist/public/locales/**\" public/apphelper/locales && copyfiles -a -f \"node_modules/@churchapps/apphelper/dist/public/css/**\" public/apphelper/css"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js}": [
-      "npm run lint:fix"
+      "yarn lint:fix"
     ]
+  },
+  "dependenciesMeta": {
+    "@swc/core": {
+      "built": true
+    },
+    "esbuild": {
+      "built": true
+    }
   },
   "browserslist": [
     ">0.3%",

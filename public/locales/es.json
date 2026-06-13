@@ -213,6 +213,7 @@
     "done": "Listo",
     "duplicate": "Duplicar",
     "edit": "Editar",
+    "element": "Elemento",
     "errorBoundary": {
       "message": "Algo salió mal. Inténtelo de nuevo o comuníquese con el soporte técnico si el problema persiste.",
       "retry": "Rever",
@@ -259,8 +260,7 @@
     "tryAgain": "Intentar de nuevo",
     "update": "Actualizar",
     "website": "Sitio Web",
-    "yes": "Sí",
-    "element": "Elemento"
+    "yes": "Sí"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Agregar sección",
+      "backToSite": "Volver al Sitio",
       "blockPreview": "Vista Previa del Bloque",
+      "discard": "Descartar",
+      "discardElementMessage": "¿Descartar los cambios no guardados de este elemento?",
+      "discardElementTitle": "¿Descartar cambios?",
+      "discardSectionMessage": "¿Descartar los cambios no guardados de esta sección?",
       "dropToAddElement": "Suelte aquí para agregar elemento",
       "dropToAddSection": "Suelte aquí para agregar sección",
+      "keepEditing": "Seguir editando",
       "scrollDown": "Desplazar Hacia Abajo",
-      "scrollUp": "Desplazar Hacia Arriba"
+      "scrollUp": "Desplazar Hacia Arriba",
+      "smallScreenMessage": "Abra esta página en una tableta o computadora de escritorio para editar su sitio web.",
+      "smallScreenTitle": "Este editor necesita una pantalla más grande"
     },
     "cssEdit": {
       "advancedFeature": "Función Avanzada:",
@@ -2937,13 +2946,24 @@
       "ago": "atrás",
       "block": "Bloquear",
       "desktop": "De oficina",
+      "disablePublish": "Desactivar la publicación",
+      "disablePublishConfirm": "¿Desactivar la publicación para esta página? Los cambios volverán a publicarse de inmediato.",
+      "discardChanges": "Descartar cambios sin publicar",
+      "discardChangesConfirm": "¿Descartar todos los cambios realizados desde la última publicación? El editor se restaurará a la versión publicada.",
       "exit": "Salir",
       "justNow": "ahora mismo",
       "mobile": "Móvil",
-      "notSavedYet": "Sin cambios aún",
       "page": "Página",
+      "publish": "Publicar",
+      "publishOffTip": "Actualmente los cambios se publican de inmediato. Al publicar se guarda una versión en vivo y los próximos cambios permanecen privados hasta la siguiente publicación.",
+      "publishedLabel": "Publicado",
       "redoTip": "Rehacer (Ctrl+Shift+Z)",
+      "saveError": "No se pudo guardar",
       "savedAllChanges": "Todos los cambios guardados",
+      "saving": "Guardando…",
+      "statusLiveOnSave": "En vivo al guardar",
+      "statusPublished": "Publicado",
+      "statusUnpublishedChanges": "Cambios sin publicar",
       "switchToDesktop": "Cambiar a la vista de escritorio",
       "switchToMobile": "Cambiar a vista móvil",
       "undoTip": "Deshacer (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Tarjeta",
       "carousel": "Carrusel",
       "church": "Iglesia",
+      "column": "Columna",
       "common": "Común",
       "content": "Contenido",
       "descBox": "Contenedor flexible",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Habilitar Lightbox"
+      "enableLightbox": "Habilitar Lightbox",
+      "groupAnimation": "Animación",
+      "groupContent": "Contenido",
+      "groupStyle": "Estilo"
     },
     "elementSelection": {
       "moveDown": "Mover hacia abajo",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Documentación completa",
       "moveBody": "Arrastre secciones y elementos para reordenarlos. Use las flechas arriba/abajo en la barra de herramientas de selección para movimientos precisos.",
       "moveTitle": "Reorganizar",
+      "shortcutsBody": "Delete elimina el elemento seleccionado, Ctrl+D lo duplica, Alt+Arriba/Abajo lo mueve y Esc anula la selección.",
+      "shortcutsTitle": "Atajos de teclado",
       "title": "Conceptos básicos del editor de páginas",
       "undoBody": "Use Ctrl+Z para deshacer y Ctrl+Shift+Z para rehacer. Abra el panel de Historial desde el menú para saltar a cualquier estado anterior.",
       "undoTitle": "Deshacer e historial"
@@ -3239,6 +3265,7 @@
       "previewPage": "Página de vista previa",
       "showLogin": "Mostrar inicio de sesión",
       "showLoginTooltip": "Mostrar el botón de inicio de sesión en la barra de navegación",
+      "startFromTemplate": "Comenzar desde una plantilla",
       "subtitle": "Administre las páginas, el contenido y la navegación de su sitio web",
       "toggleLoginVisibility": "Alternar visibilidad del botón de inicio de sesión",
       "totalPages": "Total de páginas",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "¿Está seguro de que desea eliminar permanentemente esta sección?",
       "confirmDuplicate": "¿Está seguro de que desea hacer una copia de esta sección y todo su contenido?",
+      "deleteSectionBody": "Esto elimina permanentemente la sección y todo su contenido. Puede deshacer esto con Ctrl+Z.",
+      "deleteSectionTitle": "¿Eliminar sección?",
       "editSection": "Editar Sección",
       "layoutContainer": "Contenedor de diseño",
       "section": "Sección"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicar",
       "duplicateSection": "Duplicar sección",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Nuestra historia",
+      "all": "Todos",
+      "blank": "Sección en blanco",
+      "category": {
+        "about": "Acerca de",
+        "cta": "Llamado a la acción",
+        "giving": "Donaciones",
+        "hero": "Hero",
+        "media": "Multimedia",
+        "people": "Personas y grupos",
+        "services": "Servicios"
+      },
+      "connectColumns": "Columnas de contacto",
+      "ctaBanner": "Banner de siguiente paso",
+      "faqSection": "Preguntas frecuentes",
+      "findUs": "Encuéntranos",
+      "galleryRow": "Fila de fotos",
+      "givingBanner": "Banner de donaciones",
+      "givingOptions": "Formas de donar",
+      "groupListSection": "Lista de grupos",
+      "groupsBrowser": "Explorador de grupos",
+      "heroCentered": "Hero con foto",
+      "heroGradient": "Hero con degradado",
+      "heroSplit": "Hero dividido",
+      "ministriesCards": "Tarjetas de ministerios",
+      "sermonsLatest": "Sermones recientes",
+      "serviceTimes": "Horarios de servicios",
+      "staffGrid": "Cuadrícula del personal",
+      "storyColumns": "Tres columnas",
+      "testimony": "Cita de testimonio",
+      "title": "Agregar una sección",
+      "verseBanner": "Banner con versículo",
+      "watchOnline": "Ver en línea",
+      "welcome": "Texto de bienvenida"
+    },
+    "sectionToolbar": {
+      "delete": "Eliminar sección",
+      "dragToReorder": "Arrastrar para reordenar",
+      "duplicate": "Duplicar sección",
+      "moveDown": "Mover sección hacia abajo",
+      "moveUp": "Mover sección hacia arriba",
+      "settings": "Configuración de la sección"
+    },
+    "siteTemplates": {
+      "back": "Atrás",
+      "create": "Crear sitio",
+      "creating": "Creando {title}...",
+      "descriptions": {
+        "classic": "Un sitio tradicional completo con una página de inicio acogedora, una página acerca de nosotros y una página para planificar la visita.",
+        "community": "Pone los grupos y ministerios en primer plano para que las personas se conecten rápidamente.",
+        "heritage": "Un diseño clásico centrado en las Escrituras, ideal para congregaciones establecidas.",
+        "media": "Construido en torno a su transmisión en vivo y su archivo de mensajes, para iglesias con una fuerte presencia en línea.",
+        "modern": "Un estilo contemporáneo con degradados llamativos, servicios en línea y una página de conexión.",
+        "simple": "Un sitio inicial sencillo de dos páginas, perfecto para iglesias nuevas y congregaciones pequeñas.",
+        "visitor": "Enfocado en responder las preguntas de los visitantes antes de que lleguen."
+      },
+      "errFailed": "No se pudo crear el sitio. Por favor, inténtelo de nuevo.",
+      "exists": "Ya existe",
+      "existsNote": "Las páginas marcadas como \"ya existe\" no se modificarán.",
+      "intro": "Elija un sitio inicial a continuación. Crearemos las páginas y los enlaces de navegación por usted — todo se puede editar después.",
+      "names": {
+        "classic": "Iglesia Clásica",
+        "community": "Vida Comunitaria",
+        "heritage": "Legado",
+        "media": "En Línea Primero",
+        "modern": "Bienvenida Moderna",
+        "simple": "Inicio Sencillo",
+        "visitor": "Enfoque en Visitantes"
+      },
+      "nav": {
+        "about": "Acerca de",
+        "connect": "Conéctate",
+        "give": "Donar",
+        "home": "Inicio",
+        "live": "En Vivo",
+        "sermons": "Sermones",
+        "visit": "Visítanos"
+      },
+      "navLinksNote": "También agrega enlaces de navegación a páginas integradas:",
+      "pageCount": "{count} páginas",
+      "pages": {
+        "about": "Acerca de Nosotros",
+        "connect": "Conéctate",
+        "home": "Inicio",
+        "visit": "Planifica tu Visita"
+      },
+      "title": "Comenzar desde una plantilla"
     },
     "spacingScaleEdit": {
       "buttonOne": "Botón 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animaciones",
       "animationsDesc": "Efecto cuando el elemento se muestra.",
+      "hideOnDesktop": "Ocultar en escritorio",
+      "hideOnMobile": "Ocultar en móvil",
       "styles": "Estilos",
-      "stylesDesc": "Opciones avanzadas de apariencia."
+      "stylesDesc": "Opciones avanzadas de apariencia.",
+      "visibility": "Visibilidad:"
     },
     "stylesManager": {
       "color": "Paleta de Colores",

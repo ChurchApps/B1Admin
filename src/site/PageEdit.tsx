@@ -30,7 +30,7 @@ export const PageEdit: React.FC = () => {
       if (gs) {
         setConfig({
           globalStyles: gs,
-          appearance: context?.userChurch?.settings,
+          appearance: (context?.userChurch as any)?.settings,
           church: context?.userChurch?.church
         });
       }

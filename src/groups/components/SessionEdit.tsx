@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupServiceTimeInterface, type SessionInterface } from "@churchapps/helpers";
-import { ApiHelper, InputBox, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
-import { TextField, FormControl, Select, InputLabel, MenuItem } from "@mui/material";
+import { ApiHelper, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
+import { TextField, FormControl, Grid, Select, InputLabel, MenuItem, Box } from "@mui/material";
+import { FormCard } from "../../components/ui";
 
 type AnyRecord = Record<string, any>;
 
@@ -47,7 +48,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = React.useCallback(() => {
-    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data) => {
+    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => {
       setGroupServiceTimes(data);
     });
   }, [props.group]);
@@ -70,7 +71,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
     if (props.session?.id) {
       setLoading(true);
       ApiHelper.get("/sessions/" + props.session.id, "AttendanceApi")
-        .then((data) => {
+        .then((data: any) => {
           const sessionDate = data?.sessionDate && !isNaN(new Date(data.sessionDate).getTime())
             ? DateHelper.formatHtml5Date(new Date(data.sessionDate))
             : DateHelper.formatHtml5Date(new Date());
@@ -80,7 +81,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
           });
           setLoading(false);
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.error("Failed to load session:", error);
           setLoading(false);
         });
@@ -93,7 +94,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
     if (groupServiceTimes.length === 0) return <></>;
     return (
       <Controller name="serviceTimeId" control={control} render={({ field }) => (
-        <FormControl>
+        <FormControl fullWidth>
           <InputLabel id="service-time">{Locale.label("groups.sessionAdd.srvTime")}</InputLabel>
           <Select {...field} value={field.value ?? ""} label={Locale.label("groups.sessionAdd.srvTime")} labelId="service-time">
             {groupServiceTimes.map((gst, i) => (
@@ -107,24 +108,31 @@ export const SessionEdit: React.FC<Props> = (props) => {
 
   if (loading) {
     return (
-      <InputBox data-cy="edit-session-box" headerIcon="edit" headerText={Locale.label("groups.sessionEdit.sesEdit")} cancelFunction={handleCancel} help="docs/b1-admin/attendance/">
-        <Loading />
-      </InputBox>
+      <Box data-cy="edit-session-box">
+        <FormCard icon="edit" title={Locale.label("groups.sessionEdit.sesEdit")} onCancel={handleCancel} help="docs/b1-admin/attendance/">
+          <Loading />
+        </FormCard>
+      </Box>
     );
   }
 
   return (
-    <InputBox
-      data-cy="edit-session-box"
-      headerIcon="edit"
-      headerText={Locale.label("groups.sessionEdit.sesEdit")}
-      saveFunction={handleSubmit(onValid)}
-      cancelFunction={handleCancel}
-      deleteFunction={handleDelete}
-      help="docs/b1-admin/attendance/">
-      <ErrorMessages errors={summaryErrors} />
-      {getServiceTimes()}
-      <TextField fullWidth type="date" InputLabelProps={{ shrink: true }} label={Locale.label("groups.sessionAdd.sesDate")} data-testid="session-date-input" aria-label={Locale.label("groups.sessionAdd.sessionDateAria")} error={!!e.sessionDate} helperText={e.sessionDate?.message} {...register("sessionDate", { validate: validateDate })} />
-    </InputBox>
+    <Box data-cy="edit-session-box">
+      <FormCard
+        icon="edit"
+        title={Locale.label("groups.sessionEdit.sesEdit")}
+        onSave={handleSubmit(onValid)}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+        help="docs/b1-admin/attendance/">
+        <ErrorMessages errors={summaryErrors} />
+        <Grid container spacing={2}>
+          {groupServiceTimes.length > 0 && <Grid size={{ xs: 12, sm: 6 }}>{getServiceTimes()}</Grid>}
+          <Grid size={{ xs: 12, sm: groupServiceTimes.length > 0 ? 6 : 12 }}>
+            <TextField fullWidth type="date" label={Locale.label("groups.sessionAdd.sesDate")} data-testid="session-date-input" aria-label={Locale.label("groups.sessionAdd.sessionDateAria")} error={!!e.sessionDate} helperText={e.sessionDate?.message} {...register("sessionDate", { validate: validateDate })} />
+          </Grid>
+        </Grid>
+      </FormCard>
+    </Box>
   );
 };

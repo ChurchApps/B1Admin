@@ -1,17 +1,20 @@
-import { Box, Icon, IconButton, Tooltip } from "@mui/material";
+import { Box, Icon } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface PropertyPanelProps {
   open: boolean;
   title: string;
   subtitle?: string;
+  breadcrumb?: React.ReactNode;
   icon?: string;
   onClose: () => void;
   width?: number;
   children: React.ReactNode;
 }
 
-export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 400, children }: PropertyPanelProps) {
+export function PropertyPanel({ open, title, subtitle, breadcrumb, icon, onClose, width = 400, children }: PropertyPanelProps) {
   return (
     <Box
       sx={{
@@ -19,7 +22,7 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
         flexShrink: 0,
         overflow: "hidden",
         transition: "width 0.18s ease-out",
-        borderLeft: open ? "1px solid #e5e7eb" : "none",
+        borderLeft: open ? "1px solid var(--border-main)" : "none",
         backgroundColor: "#ffffff",
         display: "flex",
         flexDirection: "column",
@@ -42,9 +45,9 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
             justifyContent: "space-between",
             px: 2,
             py: 1.25,
-            borderBottom: "1px solid #e5e7eb",
+            borderBottom: "1px solid var(--border-main)",
             flexShrink: 0,
-            backgroundColor: "#fafafa"
+            backgroundColor: "var(--bg-sub)"
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, minWidth: 0 }}>
@@ -54,14 +57,14 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
                   width: 28,
                   height: 28,
                   borderRadius: "6px",
-                  background: "#eff6ff",
+                  background: "var(--c1l7)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0
                 }}
               >
-                <Icon sx={{ color: "#1d4ed8", fontSize: 18 }}>{icon}</Icon>
+                <Icon sx={{ color: "primary.main", fontSize: 18 }}>{icon}</Icon>
               </Box>
             )}
             <Box sx={{ minWidth: 0 }}>
@@ -69,7 +72,7 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
                 sx={{
                   fontSize: "0.9rem",
                   fontWeight: 600,
-                  color: "#111827",
+                  color: "text.primary",
                   lineHeight: 1.2,
                   whiteSpace: "nowrap",
                   overflow: "hidden",
@@ -78,11 +81,11 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
               >
                 {title}
               </Box>
-              {subtitle && (
+              {breadcrumb || (subtitle && (
                 <Box
                   sx={{
                     fontSize: "0.7rem",
-                    color: "#6b7280",
+                    color: "text.secondary",
                     lineHeight: 1.2,
                     whiteSpace: "nowrap",
                     overflow: "hidden",
@@ -91,14 +94,10 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
                 >
                   {subtitle}
                 </Box>
-              )}
+              ))}
             </Box>
           </Box>
-          <Tooltip title={Locale.label("common.close", "Close")} placement="bottom">
-            <IconButton size="small" onClick={onClose} aria-label="close" sx={{ color: "#6b7280" }}>
-              <Icon fontSize="small">close</Icon>
-            </IconButton>
-          </Tooltip>
+          <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={onClose} data-testid="property-panel-close" />
         </Box>
         <Box
           sx={{
@@ -106,13 +105,19 @@ export function PropertyPanel({ open, title, subtitle, icon, onClose, width = 40
             overflowY: "auto",
             overflowX: "hidden",
             px: 1.5,
-            py: 1,
-            "&& .inputBox": {
+            pt: 1,
+            pb: 0,
+            "& #input-box": {
               boxShadow: "none",
               marginBottom: 0,
               padding: "8px"
             },
-            "& #input-box-header": { display: "none" }
+            "& #input-box-header": { display: "none" },
+            "& .MuiCard-root": {
+              boxShadow: "none",
+              marginBottom: 0
+            },
+            "& .MuiCard-root > .MuiBox-root:first-of-type": { display: "none" }
           }}
         >
           {children}

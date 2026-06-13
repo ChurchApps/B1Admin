@@ -25,7 +25,7 @@ export const SuperBeeChatMessage: React.FC<Props> = ({ message }) => {
         sx={{
           p: 1.5,
           maxWidth: "80%",
-          backgroundColor: isUser ? "primary.main" : "#E8F0FE",
+          backgroundColor: isUser ? "primary.main" : "var(--bg-sub)",
           color: isUser ? "primary.contrastText" : "text.primary"
         }}
       >

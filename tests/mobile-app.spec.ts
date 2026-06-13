@@ -136,8 +136,8 @@ test.describe.serial('Mobile tab lifecycle', () => {
   test('opens the existing tab in the edit drawer with delete affordance', async () => {
     await openMobileSettings(page);
     const row = await findTabRow(page, DISPOSABLE_TAB);
-    // Edit button has the Tooltip title "Edit Tab" — clickable IconButton.
-    await row.getByRole('button', { name: /Edit Tab/i }).click();
+    // Row edit is an icon-only AppIconButton with the generic "Edit" label.
+    await row.getByRole('button', { name: 'Edit' }).click();
     // Drawer should show Edit Tab header + Delete Tab button.
     await expect(page.locator('input[name="text"]')).toHaveValue(DISPOSABLE_TAB, { timeout: 10000 });
     await expect(page.getByRole('button', { name: /Delete Tab/i })).toBeVisible();
@@ -146,12 +146,93 @@ test.describe.serial('Mobile tab lifecycle', () => {
   test('deletes the disposable tab', async () => {
     await openMobileSettings(page);
     const row = await findTabRow(page, DISPOSABLE_TAB);
-    await row.getByRole('button', { name: /Edit Tab/i }).click();
+    await row.getByRole('button', { name: 'Edit' }).click();
     await page.locator('input[name="text"]').waitFor({ state: 'visible', timeout: 10000 });
     page.once('dialog', async d => { await d.accept(); });
     await page.getByRole('button', { name: /Delete Tab/i }).click();
     // Tab should disappear from the list.
     await expect(page.getByRole('heading', { level: 6, name: DISPOSABLE_TAB, exact: true }))
       .toHaveCount(0, { timeout: 15000 });
+  });
+});
+
+// mobile-admin.md steps 12-13: tab ordering via the row Move Up / Move Down
+// icon buttons (each move POSTs the re-sorted list to /links).
+test.describe.serial('Mobile tab ordering', () => {
+  // Creates aren't idempotent — a retry would duplicate the ordering tabs.
+  test.describe.configure({ retries: 0 });
+  let page: Page;
+  const TAB_A = 'Zacchaeus Order Tab A';
+  const TAB_B = 'Zacchaeus Order Tab B';
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  async function createUrlTab(name: string) {
+    await openAddTabDrawer(page);
+    await page.locator('input[name="text"]').fill(name);
+    await selectMuiByLabel(page, 'Tab Type', 'External URL');
+    await page.locator('input[name="url"]').fill('https://example.org');
+    await page.getByRole('button', { name: /Save Tab/i }).click();
+    await findTabRow(page, name);
+  }
+
+  async function tabNames() {
+    return page.getByRole('listitem').getByRole('heading', { level: 6 }).allTextContents();
+  }
+
+  test('moves the lower of two created tabs above the other and persists the order', async () => {
+    await openMobileSettings(page);
+    await createUrlTab(TAB_A);
+    await createUrlTab(TAB_B);
+    // New tabs don't get a deterministic sort, so derive which one currently
+    // sits lower instead of assuming creation order.
+    const before = await tabNames();
+    const lower = before.indexOf(TAB_A) > before.indexOf(TAB_B) ? TAB_A : TAB_B;
+    const upper = lower === TAB_A ? TAB_B : TAB_A;
+
+    // Other specs may add/remove their own tabs in this list concurrently, so
+    // each Move Up only guarantees one adjacent swap — repeat until it's above.
+    for (let i = 0; i < 6; i++) {
+      const names = await tabNames();
+      if (names.indexOf(lower) < names.indexOf(upper)) break;
+      const row = await findTabRow(page, lower);
+      const moveUp = row.getByRole('button', { name: 'Move Up' });
+      // If a concurrent delete shifted the row to the top between the order
+      // read and the click, Move Up disables — the order is already settled.
+      if (await moveUp.isDisabled().catch(() => true)) continue;
+      const saved = page.waitForResponse(r => r.url().includes('/links') && r.request().method() === 'POST' && r.status() === 200, { timeout: 15000 }).catch((): null => null);
+      await moveUp.click({ timeout: 5000 }).catch(() => { });
+      await saved;
+    }
+    await expect.poll(async () => {
+      const names = await tabNames();
+      return names.indexOf(lower) !== -1 && names.indexOf(lower) < names.indexOf(upper);
+    }, { timeout: 10000 }).toBe(true);
+
+    // The new order survives a reload (sort persisted via POST /links).
+    await page.reload();
+    await findTabRow(page, lower);
+    const after = await tabNames();
+    expect(after.indexOf(lower)).toBeLessThan(after.indexOf(upper));
+  });
+
+  test('deletes the ordering tabs', async () => {
+    await openMobileSettings(page);
+    for (const name of [TAB_A, TAB_B]) {
+      const row = await findTabRow(page, name);
+      await row.getByRole('button', { name: 'Edit' }).click();
+      await page.locator('input[name="text"]').waitFor({ state: 'visible', timeout: 10000 });
+      page.once('dialog', async d => { await d.accept(); });
+      await page.getByRole('button', { name: /Delete Tab/i }).click();
+      await expect(page.getByRole('heading', { level: 6, name, exact: true })).toHaveCount(0, { timeout: 15000 });
+    }
   });
 });

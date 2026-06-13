@@ -213,6 +213,7 @@
     "done": "完成",
     "duplicate": "复制",
     "edit": "编辑",
+    "element": "元素",
     "errorBoundary": {
       "message": "出了点问题。如果问题仍然存在，请重试或联系支持人员。",
       "retry": "重试",
@@ -259,8 +260,7 @@
     "tryAgain": "重试",
     "update": "更新",
     "website": "网站",
-    "yes": "是",
-    "element": "元素"
+    "yes": "是"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "添加部分",
+      "backToSite": "返回站点",
       "blockPreview": "区块预览",
+      "discard": "放弃",
+      "discardElementMessage": "要放弃此元素未保存的更改吗？",
+      "discardElementTitle": "放弃更改？",
+      "discardSectionMessage": "要放弃此部分未保存的更改吗？",
       "dropToAddElement": "拖放到此处以添加元素",
       "dropToAddSection": "拖放到此处以添加部分",
+      "keepEditing": "继续编辑",
       "scrollDown": "向下滚动",
-      "scrollUp": "向上滚动"
+      "scrollUp": "向上滚动",
+      "smallScreenMessage": "请在平板电脑或台式电脑上打开此页面以编辑您的网站。",
+      "smallScreenTitle": "此编辑器需要更大的屏幕"
     },
     "cssEdit": {
       "advancedFeature": "高级功能：",
@@ -2937,13 +2946,24 @@
       "ago": "前",
       "block": "堵塞",
       "desktop": "桌面",
+      "disablePublish": "关闭发布",
+      "disablePublishConfirm": "要关闭此页面的发布功能吗？修改将再次立即上线。",
+      "discardChanges": "放弃未发布的更改",
+      "discardChangesConfirm": "要放弃自上次发布以来的所有更改吗？编辑器将恢复为线上版本。",
       "exit": "退出",
       "justNow": "刚刚",
       "mobile": "手机",
-      "notSavedYet": "尚无更改",
       "page": "页",
+      "publish": "发布",
+      "publishOffTip": "当前修改会立即上线。点击发布可保存线上版本，并使后续修改在下次发布前保持私密。",
+      "publishedLabel": "已发布",
       "redoTip": "重做 (Ctrl+Shift+Z)",
+      "saveError": "无法保存",
       "savedAllChanges": "所有更改已保存",
+      "saving": "保存中…",
+      "statusLiveOnSave": "保存即上线",
+      "statusPublished": "已发布",
+      "statusUnpublishedChanges": "未发布的更改",
       "switchToDesktop": "切换到桌面视图",
       "switchToMobile": "切换到移动视图",
       "undoTip": "撤销 (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "卡片",
       "carousel": "轮播",
       "church": "教会",
+      "column": "列",
       "common": "常用",
       "content": "内容",
       "descBox": "灵活容器盒",
@@ -3012,7 +3033,10 @@
       "video": "视频"
     },
     "elementEdit": {
-      "enableLightbox": "启用灯箱"
+      "enableLightbox": "启用灯箱",
+      "groupAnimation": "动画",
+      "groupContent": "内容",
+      "groupStyle": "样式"
     },
     "elementSelection": {
       "moveDown": "向下移动",
@@ -3165,6 +3189,8 @@
       "fullDocs": "完整文档",
       "moveBody": "拖动部分和元素以重新排序。使用选择工具栏上的上/下箭头进行精确移动。",
       "moveTitle": "重新排列",
+      "shortcutsBody": "Delete 键删除所选元素，Ctrl+D 复制该元素，Alt+上/下 移动该元素，Esc 取消选择。",
+      "shortcutsTitle": "键盘快捷键",
       "title": "页面编辑器基础",
       "undoBody": "使用 Ctrl+Z 撤销，使用 Ctrl+Shift+Z 重做。从菜单中打开“历史记录”面板可跳转到任何先前状态。",
       "undoTitle": "撤销与历史"
@@ -3239,6 +3265,7 @@
       "previewPage": "预览页面",
       "showLogin": "显示登录",
       "showLoginTooltip": "在导航栏中显示登录按钮",
+      "startFromTemplate": "从模板开始",
       "subtitle": "管理您的网站页面、内容和导航",
       "toggleLoginVisibility": "切换登录按钮可见性",
       "totalPages": "总页数",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "您确定要永久删除此部分吗？",
       "confirmDuplicate": "您确定要复制此部分及其所有内容吗？",
+      "deleteSectionBody": "此操作将永久删除该部分及其中的所有内容。您可以使用 Ctrl+Z 撤销。",
+      "deleteSectionTitle": "删除部分？",
       "editSection": "编辑部分",
       "layoutContainer": "布局容器",
       "section": "部分"
@@ -3362,6 +3391,95 @@
       "duplicate": "复制",
       "duplicateSection": "复制部分",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "我们的故事",
+      "all": "全部",
+      "blank": "空白部分",
+      "category": {
+        "about": "关于我们",
+        "cta": "行动号召",
+        "giving": "奉献",
+        "hero": "主视觉",
+        "media": "媒体",
+        "people": "人员与小组",
+        "services": "聚会"
+      },
+      "connectColumns": "联系方式分栏",
+      "ctaBanner": "下一步横幅",
+      "faqSection": "常见问题",
+      "findUs": "找到我们",
+      "galleryRow": "照片行",
+      "givingBanner": "奉献横幅",
+      "givingOptions": "奉献方式",
+      "groupListSection": "小组列表",
+      "groupsBrowser": "小组浏览",
+      "heroCentered": "照片主视觉",
+      "heroGradient": "渐变主视觉",
+      "heroSplit": "分栏主视觉",
+      "ministriesCards": "事工卡片",
+      "sermonsLatest": "最新讲道",
+      "serviceTimes": "聚会时间",
+      "staffGrid": "同工网格",
+      "storyColumns": "三栏",
+      "testimony": "见证引言",
+      "title": "添加部分",
+      "verseBanner": "经文横幅",
+      "watchOnline": "在线观看",
+      "welcome": "欢迎文字"
+    },
+    "sectionToolbar": {
+      "delete": "删除部分",
+      "dragToReorder": "拖动以重新排序",
+      "duplicate": "复制部分",
+      "moveDown": "下移部分",
+      "moveUp": "上移部分",
+      "settings": "部分设置"
+    },
+    "siteTemplates": {
+      "back": "返回",
+      "create": "创建网站",
+      "creating": "正在创建 {title}...",
+      "descriptions": {
+        "classic": "一个完整的传统网站，包含热情的首页、关于我们页面和计划来访页面。",
+        "community": "将小组和事工放在最显眼的位置，让人们快速融入。",
+        "heritage": "经典且以圣经为中心的设计，适合历史悠久的教会。",
+        "media": "以您的直播和讲道存档为核心，适合线上影响力强的教会。",
+        "modern": "现代风格，配有醒目的渐变、线上聚会和联系页面。",
+        "simple": "简洁的两页起步网站，非常适合新建教会和小型会众。",
+        "visitor": "专注于在初次来访的访客到来之前解答他们的问题。"
+      },
+      "errFailed": "创建网站失败。请重试。",
+      "exists": "已存在",
+      "existsNote": "标记为“已存在”的页面将保持不变。",
+      "intro": "请在下方选择一个起步网站。我们将为您创建页面和导航链接——之后一切都可以编辑。",
+      "names": {
+        "classic": "经典教会",
+        "community": "社区生活",
+        "heritage": "传承",
+        "media": "线上优先",
+        "modern": "现代欢迎",
+        "simple": "简单起步",
+        "visitor": "聚焦访客"
+      },
+      "nav": {
+        "about": "关于我们",
+        "connect": "联系",
+        "give": "奉献",
+        "home": "首页",
+        "live": "直播",
+        "sermons": "讲道",
+        "visit": "来访"
+      },
+      "navLinksNote": "同时还会为内置页面添加导航链接：",
+      "pageCount": "{count} 个页面",
+      "pages": {
+        "about": "关于我们",
+        "connect": "联系",
+        "home": "首页",
+        "visit": "计划您的来访"
+      },
+      "title": "从模板开始"
     },
     "spacingScaleEdit": {
       "buttonOne": "按钮 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "动画",
       "animationsDesc": "元素显示时的效果。",
+      "hideOnDesktop": "在桌面端隐藏",
+      "hideOnMobile": "在移动端隐藏",
       "styles": "样式",
-      "stylesDesc": "高级外观选项。"
+      "stylesDesc": "高级外观选项。",
+      "visibility": "可见性："
     },
     "stylesManager": {
       "color": "调色板",

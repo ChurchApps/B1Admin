@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "../helpers";
 import type { PersonInterface } from "@churchapps/helpers";
-import { TextField, Button, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
-import { Person as PersonIcon } from "@mui/icons-material";
+import { TextField, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
+import { PersonAdd as PersonAddIcon, Search as SearchIcon } from "@mui/icons-material";
 import { CreatePerson } from "./CreatePerson";
+import { AppIconButton } from "./ui/AppIconButton";
 
 interface Props {
   addFunction: (person: PersonInterface) => void;
@@ -90,18 +91,18 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
           <button
             type="button"
             onClick={() => handleAdd(sr)}
-            style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", textDecoration: "underline", textAlign: "left" }}>
+            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer", textDecoration: "underline", textAlign: "left" }}>
             {sr.name.display}
           </button>
           {includeEmail && (
             <>
               <br />
-              <i style={{ color: "#999" }}>{sr.contactInfo.email}</i>
+              <i style={{ color: "var(--text-muted)" }}>{sr.contactInfo.email}</i>
             </>
           )}
         </TableCell>
         <TableCell>
-          <Button size="small" variant="contained" color="success" startIcon={<PersonIcon />} aria-label="addPerson" onClick={() => handleAdd(sr)} data-testid={`add-person-${sr.id}`}>{actionLabel || Locale.label("components.personAdd.select")}</Button>
+          <AppIconButton intent="add" label={actionLabel || Locale.label("common.add")} icon={<PersonAddIcon />} onClick={() => handleAdd(sr)} data-testid={`add-person-${sr.id}`} />
         </TableCell>
       </TableRow>
     );
@@ -120,16 +121,14 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
         inputRef={inputRef}
         InputProps={autoSearch ? undefined : {
           endAdornment: (
-            <Button variant="contained" id="searchButton" data-testid="search-button" onClick={handleSearch}>
-              {Locale.label("common.search")}
-            </Button>
+            <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-testid="search-button" onClick={handleSearch} />
           )
         }}
       />
       {showCreatePersonOnNotFound && hasSearched && searchText && searchResults.length === 0 && (
         <Typography sx={{ marginTop: "7px" }}>
           {Locale.label("person.noRec")}{" "}
-          <button type="button" onClick={() => setOpen(true)} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          <button type="button" onClick={() => setOpen(true)} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("createPerson.addNewPerson")}
           </button>
         </Typography>

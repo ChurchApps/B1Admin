@@ -1,6 +1,8 @@
 import React from "react";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { ApiHelper, InputBox, ErrorMessages, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { GivingSettingsEdit } from "./GivingSettingsEdit";
 import { TextField, Grid, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -27,7 +29,19 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   const [errors, setErrors] = React.useState([]);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
   const childErrorsRef = React.useRef<string[]>([]);
-  const [expanded, setExpanded] = React.useState<string | false>("church-info");
+  const [expanded, setExpanded] = React.useState<string | false>(props.initialSection || "church-info");
+
+  const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { ...(props.church || {}), churchName: props.church?.name || "" } });
+
+  const fe = formState.errors as any;
+
+  const summaryErrors: string[] = [...errors];
+  if (fe.churchName?.message) summaryErrors.push(fe.churchName.message);
+  if (fe.subDomain?.message) summaryErrors.push(fe.subDomain.message);
+
+  React.useEffect(() => {
+    if (props.church) reset({ ...props.church, churchName: props.church.name || "" });
+  }, [props.church, reset]);
 
   const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
@@ -126,8 +140,8 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
   if (!church || !church.id) return null;
 
   return (
-    <InputBox id="churchSettingsBox" cancelFunction={props.updatedFunction} saveFunction={handleSave} headerText={Locale.label("settings.churchSettingsEdit.churchSettings")} headerIcon="business">
-      <ErrorMessages errors={errors} />
+    <FormCard id="churchSettingsBox" onCancel={props.updatedFunction} onSave={handleSubmit(onValid)} title={Locale.label("settings.churchSettingsEdit.churchSettings")} icon="business">
+      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
 
       {/* Church Information Accordion */}
       <Accordion
@@ -292,6 +306,6 @@ export const ChurchSettingsEdit: React.FC<Props> = (props) => {
           <DomainSettingsEdit churchId={church?.id || ""} saveTrigger={saveTrigger} />
         </AccordionDetails>
       </Accordion>
-    </InputBox>
+    </FormCard>
   );
 };

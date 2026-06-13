@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { UserAdd, RolePermissions, RoleMembers } from "./components";
 import { type RoleInterface, type RoleMemberInterface } from "@churchapps/helpers";
-import { ApiHelper, UserHelper, Permissions, DisplayBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Permissions, DisplayBox, Locale, PageHeader } from "@churchapps/apphelper";
 import { useParams } from "react-router-dom";
 import { Box, Grid } from "@mui/material";
-import { Banner } from "@churchapps/apphelper";
 
 export const RolePage = () => {
   const params = useParams();
@@ -27,7 +26,7 @@ export const RolePage = () => {
       setRole({ id: null, name: "Everyone" });
       return;
     }
-    ApiHelper.get("/roles/" + params.roleId, "MembershipApi").then((data) => setRole(data));
+    ApiHelper.get("/roles/" + params.roleId, "MembershipApi").then((data: any) => setRole(data));
   };
   const loadRoleMembers = () => {
     ApiHelper.get("/rolemembers/roles/" + params.roleId + "?include=users", "MembershipApi").then((data: any) => {
@@ -70,13 +69,9 @@ export const RolePage = () => {
   else {
     return (
       <>
-        <Banner>
-          <h1>
-            {Locale.label("settings.rolePage.roleEdit")} {role?.name}
-          </h1>
-        </Banner>
-        <Box id="mainContent" sx={{ p: 2 }}>
-          <Grid container spacing={2}>
+        <PageHeader title={`${Locale.label("settings.rolePage.roleEdit")} ${role?.name || ""}`} />
+        <Box id="mainContent" sx={{ p: 3 }}>
+          <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 8 }}>
               <RoleMembers role={role} roleMembers={roleMembers} addFunction={handleShowAdd} setSelectedRoleMember={setSelectedRoleMemberId} updatedFunction={handleAdd} />
             </Grid>

@@ -1,7 +1,8 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper } from "@mui/material";
 import React from "react";
 import { SelectGroup } from ".";
-import { type GroupInterface, Locale, PersonHelper, type PersonInterface } from "@churchapps/apphelper";
+import { Locale, PersonHelper, type PersonInterface } from "@churchapps/apphelper";
+import { type GroupInterface } from "@churchapps/helpers";
 import { PersonAdd } from "../../../components";
 import { Person as PersonIcon, Group as GroupIcon, Close as CloseIcon } from "@mui/icons-material";
 import { SmartTabs } from "../../../components/ui";

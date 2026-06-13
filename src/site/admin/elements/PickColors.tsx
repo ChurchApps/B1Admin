@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import type { GlobalStyleInterface } from "../../../helpers";
-import { GalleryModal, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
+import { GalleryModal } from "../../../components/gallery";
 import { FormControl, InputLabel, Select, MenuItem, TextField, Tabs, Tab, Button, Grid } from "@mui/material";
 import { HexColorPicker } from "react-colorful";
 
@@ -294,7 +295,7 @@ export function PickColors(props: Props) {
         }}>
         {Locale.label("site.pickColors.sampleText")}
       </div>
-      <Tabs value={tabValue} onChange={(event: React.SyntheticEvent, newValue: string) => setTabValue(newValue)}>
+      <Tabs value={tabValue} onChange={(_event: React.SyntheticEvent, newValue: string) => setTabValue(newValue)}>
         <Tab value="suggested" label={Locale.label("site.pickColors.suggested")} />
         <Tab value="custom" label={Locale.label("common.custom")} />
       </Tabs>

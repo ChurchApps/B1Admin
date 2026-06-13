@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Alert, Button, Dialog, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
-import { InputBox, ApiHelper, UserHelper, SlugHelper, Locale } from "@churchapps/apphelper";
+import { Alert, Button, Dialog, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { ApiHelper, UserHelper, SlugHelper, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
+import { FormCard } from "../../components/ui";
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface } from "@churchapps/helpers";
 import type { PageInterface } from "../../helpers/Interfaces";
@@ -103,14 +105,14 @@ export function PageLinkEdit(props: Props) {
   if (!props.page && !props.link) return <></>;
   return (
     <Dialog open={true} onClose={props.onDone} style={{ minWidth: 800 }}>
-      <InputBox
+      <FormCard
         id="pageDetailsBox"
-        headerText={props.page ? Locale.label("site.pageLink.pageSettings") : Locale.label("site.pageLink.linkSettings")}
-        headerIcon="article"
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={handleCancel}
-        deleteFunction={handleDelete}
-        headerActionContent={
+        title={props.page ? Locale.label("site.pageLink.pageSettings") : Locale.label("site.pageLink.linkSettings")}
+        icon="article"
+        onSave={handleSubmit(onValid)}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+        headerActions={
           props.page?.id && (
             <a href="about:blank" onClick={handleDuplicate}>
               {Locale.label("site.pageLinkEdit.duplicate")}
@@ -143,7 +145,7 @@ export function PageLinkEdit(props: Props) {
                 <Paper elevation={0}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Typography>{urlValue}</Typography>
-                    <IconButton color="primary" onClick={() => setChecked(false)}><EditIcon /></IconButton>
+                    <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setChecked(false)} />
                   </Stack>
                 </Paper>
               </div>)
@@ -154,7 +156,7 @@ export function PageLinkEdit(props: Props) {
             <TextField size="small" fullWidth label={Locale.label("site.pageLinkEdit.url")} placeholder={Locale.label("placeholders.page.linkUrl")} {...register("linkUrl")} name="linkUrl" />
           </Grid>}
         </Grid>
-      </InputBox>
+      </FormCard>
     </Dialog>
   );
 }

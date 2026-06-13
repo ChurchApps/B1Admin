@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Alert, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   fund: FundInterface;
@@ -35,13 +36,13 @@ export const FundEdit: React.FC<Props> = (props) => {
   };
 
   return (
-    <InputBox
+    <FormCard
       id="fundsBox"
-      headerIcon="volunteer_activism"
-      headerText={Locale.label("common.edit")}
-      cancelFunction={props.updatedFunction}
-      saveFunction={handleSubmit(onValid)}
-      deleteFunction={props.fund?.id === "" ? undefined : handleDelete}
+      icon="volunteer_activism"
+      title={Locale.label("common.edit")}
+      onCancel={props.updatedFunction}
+      onSave={handleSubmit(onValid)}
+      onDelete={props.fund?.id === "" ? undefined : handleDelete}
       help="docs/b1-admin/donations/">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("common.name")} placeholder={Locale.label("placeholders.fund.name")} data-testid="fund-name-input" aria-label={Locale.label("donations.fundEdit.ariaFundName")} error={!!e.fundName} helperText={e.fundName?.message} {...register("fundName", { required: Locale.label("donations.fundEdit.errBlank") })} />
@@ -56,6 +57,6 @@ export const FundEdit: React.FC<Props> = (props) => {
       <Typography sx={{ fontStyle: "italic", fontSize: "12px", marginLeft: "5px" }}>
         {taxDeductible ? Locale.label("donations.fundEdit.trackDonations") : Locale.label("donations.fundEdit.trackNonDonations")}
       </Typography>
-    </InputBox>
+    </FormCard>
   );
 };

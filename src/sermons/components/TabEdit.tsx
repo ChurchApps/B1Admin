@@ -16,7 +16,6 @@ import {
   Box,
   Card,
   CardContent,
-  IconButton,
   type SelectChangeEvent
 } from "@mui/material";
 import { Close as CloseIcon, Delete as DeleteIcon, Save as SaveIcon } from "@mui/icons-material";
@@ -24,6 +23,7 @@ import { ErrorMessages, Locale } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { IconPicker } from "../../components/iconPicker";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props { currentTab: LinkInterface, updatedFunction?: () => void }
 
@@ -127,7 +127,7 @@ export const TabEdit: React.FC<Props> = (props) => {
         }}
       >
         <DialogTitle sx={{
-          backgroundColor: "#1976d2",
+          backgroundColor: "primary.main",
           color: "#FFF",
           p: 3
         }}>
@@ -154,13 +154,12 @@ export const TabEdit: React.FC<Props> = (props) => {
                 </Typography>
               </Box>
             </Stack>
-            <IconButton
+            <AppIconButton
+              label={Locale.label("common.close")}
+              icon={<CloseIcon />}
+              tone="header"
               onClick={() => props.updatedFunction()}
-              sx={{ color: "#FFF" }}
-              size="small"
-            >
-              <CloseIcon />
-            </IconButton>
+            />
           </Stack>
         </DialogTitle>
 
@@ -172,8 +171,8 @@ export const TabEdit: React.FC<Props> = (props) => {
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>visibility</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>visibility</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                     {Locale.label("sermons.liveStreamTimes.tabEdit.tabDisplay")}
                   </Typography>
                 </Stack>
@@ -207,12 +206,12 @@ export const TabEdit: React.FC<Props> = (props) => {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "#1976d2",
+                        color: "primary.main",
                         backgroundColor: "#fff",
                         cursor: "pointer",
                         "&:hover": {
-                          borderColor: "#1976d2",
-                          backgroundColor: "#f5f5f5"
+                          borderColor: "primary.main",
+                          backgroundColor: "var(--bg-sub)"
                         }
                       }}
                     >
@@ -227,8 +226,8 @@ export const TabEdit: React.FC<Props> = (props) => {
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Icon sx={{ color: "#1976d2", fontSize: 18 }}>settings</Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
+                  <Icon sx={{ color: "primary.main", fontSize: 18 }}>settings</Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                     {Locale.label("sermons.liveStreamTimes.tabEdit.linkConfiguration")}
                   </Typography>
                 </Stack>
@@ -289,7 +288,6 @@ export const TabEdit: React.FC<Props> = (props) => {
             {currentTab?.id && (
               <Button
                 variant="outlined"
-                color="error"
                 startIcon={<DeleteIcon />}
                 onClick={() => setDeleteDialogOpen(true)}
                 disabled={isLoading}

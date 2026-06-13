@@ -1,9 +1,11 @@
-import { TableHead, Table, TableCell, TableRow, TableBody, IconButton, Tooltip } from "@mui/material";
+import { TableHead, Table, TableCell, TableRow, TableBody } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import React, { useState } from "react";
-import { ApiHelper, ErrorMessages, Banner, DisplayBox, DateHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, DisplayBox, DateHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { Box } from "@mui/material";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export interface DeviceInterface {
   id: string;
@@ -24,7 +26,7 @@ export const DevicesPage = () => {
   const [editDevice, setEditDevice] = useState<DeviceInterface>(null);
 
   const loadData = () => {
-    ApiHelper.get("/devices/my", "MessagingApi").then((data) => {
+    ApiHelper.get("/devices/my", "MessagingApi").then((data: any) => {
       data = data.filter((d: DeviceInterface) => d.appName === "ChurchAppsPlayer");
       setDevices(data);
     });
@@ -33,17 +35,13 @@ export const DevicesPage = () => {
   React.useEffect(loadData, []);
 
   const editContent = (
-    <Tooltip title={Locale.label("profile.devicesPage.addDevice")}>
-      <IconButton size="small" onClick={() => setShowAdd(true)} data-testid="add-device-button" aria-label={Locale.label("profile.devicesPage.addDevice")}><AddIcon fontSize="small" /></IconButton>
-    </Tooltip>
+    <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-device-button" />
   );
 
   return (
     <>
-      <Banner>
-        <h1>{Locale.label("profile.devices.title")}</h1>
-      </Banner>
-      <div id="mainContent">
+      <PageHeader title={Locale.label("profile.devices.title")} />
+      <Box id="mainContent" sx={{ p: 3 }}>
         {showAdd && (
           <PairScreen
             updatedFunction={() => {
@@ -78,7 +76,7 @@ export const DevicesPage = () => {
                     <button
                       type="button"
                       onClick={() => setEditDevice(device)}
-                      style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+                      style={{ background: "none", border: 0, padding: 0, color: "var(--link)", fontWeight: 500, cursor: "pointer" }}>
                       {device.label || Locale.label("profile.devices.device")}
                     </button>
                   </TableCell>
@@ -89,7 +87,7 @@ export const DevicesPage = () => {
             </TableBody>
           </Table>
         </DisplayBox>
-      </div>
+      </Box>
     </>
   );
 };

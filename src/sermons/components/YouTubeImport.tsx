@@ -1,9 +1,9 @@
 import { ErrorMessages, Locale } from "@churchapps/apphelper";
-import { InputBox } from "@churchapps/apphelper";
 import { ApiHelper } from "@churchapps/apphelper";
 import type { PlaylistInterface, SermonInterface } from "@churchapps/helpers";
 import { Checkbox, FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import React from "react";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   handleDone: () => void;
@@ -74,14 +74,14 @@ export const YouTubeImport = (props: Props) => {
   if (!sermons) {
     return (<>
       <ErrorMessages errors={errors} />
-      <InputBox headerIcon="video_library" headerText={Locale.label("sermons.bulkImport.import")} saveText={isFetching ? Locale.label("sermons.bulkImport.fetching") : Locale.label("sermons.bulkImport.fetch")} saveFunction={handleFetch} cancelFunction={props.handleDone} isSubmitting={isFetching}>
+      <FormCard icon="video_library" title={Locale.label("sermons.bulkImport.import")} saveText={isFetching ? Locale.label("sermons.bulkImport.fetching") : Locale.label("sermons.bulkImport.fetch")} onSave={handleFetch} onCancel={props.handleDone} isSubmitting={isFetching}>
         <TextField fullWidth label={Locale.label("sermons.bulkImport.youtubeChannelId")} name="channelId" value={channelId} onChange={(e) => { setChannelId(e.target.value); }} placeholder={Locale.label("sermons.bulkImport.youtubeChannelPlaceholder")} />
-      </InputBox>
+      </FormCard>
     </>);
   } else {
     return (<>
       <ErrorMessages errors={errors} />
-      <InputBox headerIcon="video_library" headerText={Locale.label("sermons.bulkImport.import")} saveText={Locale.label("sermons.bulkImport.import")} saveFunction={handleSave} cancelFunction={props.handleDone}>
+      <FormCard icon="video_library" title={Locale.label("sermons.bulkImport.import")} saveText={Locale.label("sermons.bulkImport.import")} onSave={handleSave} onCancel={props.handleDone}>
         <FormControl fullWidth>
           <InputLabel>{Locale.label("sermons.bulkImport.importIntoPlaylist")}</InputLabel>
           <Select fullWidth label={Locale.label("sermons.bulkImport.importIntoPlaylist")} name="playlistId" value={playlistId} onChange={(e) => { setPlaylistId(e.target.value); }}>
@@ -89,7 +89,7 @@ export const YouTubeImport = (props: Props) => {
           </Select>
         </FormControl>
         {getTable()}
-      </InputBox>
+      </FormCard>
     </>);
   }
 };

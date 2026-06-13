@@ -21,16 +21,23 @@ export type SeedPersonName = (typeof SEED_PEOPLE)[keyof typeof SEED_PEOPLE];
 // that depends on default sort + prior test mutations.
 export async function openKnownPerson(page: Page, name: SeedPersonName) {
   await navigateToPeople(page);
-  const row = page.locator("table tbody tr").filter({ hasText: name }).first();
-  await row.waitFor({ state: "visible", timeout: 10000 });
-  await row.click();
-  await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
+  await openPersonRow(page, name);
 }
 
 // Same as openKnownPerson but assumes you're already on /people — just
 // finds the row and clicks it.
 export async function openPersonRow(page: Page, name: SeedPersonName | string) {
   const row = page.locator("table tbody tr").filter({ hasText: name }).first();
+  // The default /people view only lists the first page of members (50,
+  // alphabetical by last name) — seed people late in the alphabet (the
+  // Moores) fall past the cutoff. Filter via the instant search box when
+  // the row isn't already on screen.
+  if (!(await row.isVisible({ timeout: 3000 }).catch(() => false))) {
+    const search = page.locator('input[name="searchText"]');
+    const searched = page.waitForResponse((r) => r.url().includes("/people/advancedSearch") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
+    await search.fill(String(name));
+    await searched;
+  }
   await row.waitFor({ state: "visible", timeout: 10000 });
   await row.click();
   await page.waitForURL(/\/people\/PER\d+/, { timeout: 10000 });
@@ -43,6 +50,12 @@ export async function openPersonRow(page: Page, name: SeedPersonName | string) {
 
 export function editIconButton(page: Page) {
   return page.locator('button:has(svg[data-testid="EditIcon"])');
+}
+
+// The person-details "Personal Details" box surfaces edit via a DisplayBox editContent
+// button, not the banner EditIcon svg the page used to show.
+export function personDetailsEditButton(page: Page) {
+  return page.locator('[data-testid="edit-person-button"]');
 }
 
 export function closeIconButton(page: Page) {
@@ -72,8 +85,8 @@ export async function recoverFromViteError(page: import("@playwright/test").Page
   for (let i = 0; i < 4; i++) {
     if (successLocator) {
       const result = await Promise.race([
-        viteError.waitFor({ state: "visible", timeout: 8000 }).then(() => "error" as const).catch(() => null),
-        successLocator.waitFor({ state: "visible", timeout: 8000 }).then(() => "success" as const).catch(() => null),
+        viteError.waitFor({ state: "visible", timeout: 8000 }).then(() => "error" as const).catch((): null => null),
+        successLocator.waitFor({ state: "visible", timeout: 8000 }).then(() => "success" as const).catch((): null => null),
       ]);
       if (result === "success") return;
       if (result !== "error") return;

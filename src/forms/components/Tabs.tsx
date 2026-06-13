@@ -13,7 +13,7 @@ interface Props {
 export const Tabs: React.FC<Props> = (props) => {
   // Use the selectedTab from props if provided, otherwise fall back to local state
   const currentSelectedTab = props.selectedTab || "";
-  let currentTab = null;
+  let currentTab: JSX.Element;
 
   switch (currentSelectedTab) {
     case "questions": currentTab = <Form id={props.form.id} />; break;

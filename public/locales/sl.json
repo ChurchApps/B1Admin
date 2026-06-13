@@ -213,6 +213,7 @@
     "done": "Končano",
     "duplicate": "Podvoji",
     "edit": "Uredi",
+    "element": "Element",
     "errorBoundary": {
       "message": "Nekaj je šlo narobe. Prosimo, poskusite znova.",
       "retry": "Poskusi ponovno",
@@ -259,8 +260,7 @@
     "tryAgain": "Poskusite ponovno",
     "update": "Posodobi",
     "website": "Spletna stran",
-    "yes": "Da",
-    "element": "Element"
+    "yes": "Da"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Dodaj razdelek",
+      "backToSite": "Nazaj na stran",
       "blockPreview": "Predogled bloka",
+      "discard": "Zavrzi",
+      "discardElementMessage": "Zavreči neshranjene spremembe tega elementa?",
+      "discardElementTitle": "Zavreči spremembe?",
+      "discardSectionMessage": "Zavreči neshranjene spremembe tega razdelka?",
       "dropToAddElement": "Spustite tukaj za dodajanje elementa",
       "dropToAddSection": "Spustite tukaj za dodajanje razdelka",
+      "keepEditing": "Nadaljuj z urejanjem",
       "scrollDown": "Pomakni navzdol",
-      "scrollUp": "Pomakni navzgor"
+      "scrollUp": "Pomakni navzgor",
+      "smallScreenMessage": "Odprite to stran na tablici ali računalniku, da uredite svojo spletno stran.",
+      "smallScreenTitle": "Ta urejevalnik potrebuje večji zaslon"
     },
     "cssEdit": {
       "advancedFeature": "Napredna funkcija:",
@@ -2937,13 +2946,24 @@
       "ago": "nazaj",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Izklopi objavljanje",
+      "disablePublishConfirm": "Izklopiti objavljanje za to stran? Spremembe bodo spet takoj vidne v živo.",
+      "discardChanges": "Zavrzi neobjavljene spremembe",
+      "discardChangesConfirm": "Zavreči vse spremembe od zadnje objave? Urejevalnik bo obnovljen na objavljeno različico.",
       "exit": "Izhod",
       "justNow": "ravnokar",
       "mobile": "Mobilni",
-      "notSavedYet": "Še ni sprememb",
       "page": "Page",
+      "publish": "Objavi",
+      "publishOffTip": "Spremembe so trenutno takoj vidne v živo. Objavite, da shranite objavljeno različico, prihodnje spremembe pa ostanejo zasebne do naslednje objave.",
+      "publishedLabel": "Objavljeno",
       "redoTip": "Ponovi (Ctrl+Shift+Z)",
+      "saveError": "Shranjevanje ni uspelo",
       "savedAllChanges": "Vse spremembe shranjene",
+      "saving": "Shranjevanje…",
+      "statusLiveOnSave": "V živo ob shranjevanju",
+      "statusPublished": "Objavljeno",
+      "statusUnpublishedChanges": "Neobjavljene spremembe",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Razveljavi (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Kartice",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Stolpec",
       "common": "Pogosto",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Omogoči Lightbox"
+      "enableLightbox": "Omogoči Lightbox",
+      "groupAnimation": "Animacija",
+      "groupContent": "Vsebina",
+      "groupStyle": "Slog"
     },
     "elementSelection": {
       "moveDown": "Premakni dol",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Celotna dokumentacija",
       "moveBody": "Povlecite razdelke in elemente, da jih prerazporedite. Uporabite puščice gor/dol v orodni vrstici izbire za natančne premike.",
       "moveTitle": "Prerazporedi",
+      "shortcutsBody": "Delete odstrani izbrani element, Ctrl+D ga podvoji, Alt+Gor/Dol ga premakne, Esc pa prekliče izbiro.",
+      "shortcutsTitle": "Bližnjice na tipkovnici",
       "title": "Osnove urejevalnika strani",
       "undoBody": "Uporabite Ctrl+Z za razveljavitev in Ctrl+Shift+Z za ponovitev. Odprite ploščo Zgodovina iz menija, da skočite v katero koli prejšnje stanje.",
       "undoTitle": "Razveljavitev in zgodovina"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Začni s predlogo",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "S tem trajno izbrišete razdelek in vse, kar je v njem. Dejanje lahko razveljavite s Ctrl+Z.",
+      "deleteSectionTitle": "Izbrisati razdelek?",
       "editSection": "Edit Section",
       "layoutContainer": "Vsebnik postavitve",
       "section": "Razdelek"
@@ -3362,6 +3391,95 @@
       "duplicate": "Podvoji",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Naša zgodba",
+      "all": "Vse",
+      "blank": "Prazen razdelek",
+      "category": {
+        "about": "O nas",
+        "cta": "Poziv k dejanju",
+        "giving": "Darovanje",
+        "hero": "Hero",
+        "media": "Mediji",
+        "people": "Ljudje in skupine",
+        "services": "Bogoslužja"
+      },
+      "connectColumns": "Stolpci s kontakti",
+      "ctaBanner": "Pasica naslednjega koraka",
+      "faqSection": "Pogosta vprašanja",
+      "findUs": "Najdite nas",
+      "galleryRow": "Vrstica fotografij",
+      "givingBanner": "Pasica za darovanje",
+      "givingOptions": "Načini darovanja",
+      "groupListSection": "Seznam skupin",
+      "groupsBrowser": "Brskalnik skupin",
+      "heroCentered": "Hero s fotografijo",
+      "heroGradient": "Hero s prelivom",
+      "heroSplit": "Deljeni hero",
+      "ministriesCards": "Kartice služb",
+      "sermonsLatest": "Najnovejše pridige",
+      "serviceTimes": "Časi bogoslužij",
+      "staffGrid": "Mreža sodelavcev",
+      "storyColumns": "Trije stolpci",
+      "testimony": "Pričevanje",
+      "title": "Dodaj razdelek",
+      "verseBanner": "Pasica z verzom",
+      "watchOnline": "Glejte na spletu",
+      "welcome": "Pozdravno besedilo"
+    },
+    "sectionToolbar": {
+      "delete": "Izbriši razdelek",
+      "dragToReorder": "Povlecite za spremembo vrstnega reda",
+      "duplicate": "Podvoji razdelek",
+      "moveDown": "Premakni razdelek navzdol",
+      "moveUp": "Premakni razdelek navzgor",
+      "settings": "Nastavitve razdelka"
+    },
+    "siteTemplates": {
+      "back": "Nazaj",
+      "create": "Ustvari spletno mesto",
+      "creating": "Ustvarjanje {title}...",
+      "descriptions": {
+        "classic": "Celovito tradicionalno spletno mesto s prijazno domačo stranjo, stranjo o nas in stranjo za načrtovanje obiska.",
+        "community": "Skupine in službe postavlja v ospredje, da se ljudje hitro povežejo.",
+        "heritage": "Klasično oblikovanje s poudarkom na Svetem pismu za uveljavljena občestva.",
+        "media": "Zgrajeno okoli vašega prenosa v živo in arhiva pridig, za cerkve z močno spletno prisotnostjo.",
+        "modern": "Sodoben videz z izrazitimi prelivi, spletnimi bogoslužji in stranjo za povezovanje.",
+        "simple": "Pregleden začetek z dvema stranema, popoln za nove in majhne skupnosti.",
+        "visitor": "Osredotočeno na odgovore na vprašanja prvega obiskovalca, še preden pride."
+      },
+      "errFailed": "Spletnega mesta ni bilo mogoče ustvariti. Poskusite znova.",
+      "exists": "Že obstaja",
+      "existsNote": "Strani z oznako »že obstaja« bodo ostale nespremenjene.",
+      "intro": "Spodaj izberite začetno spletno mesto. Strani in navigacijske povezave bomo ustvarili za vas — vse lahko pozneje uredite.",
+      "names": {
+        "classic": "Klasična cerkev",
+        "community": "Življenje skupnosti",
+        "heritage": "Dediščina",
+        "media": "Najprej na spletu",
+        "modern": "Sodobna dobrodošlica",
+        "simple": "Preprost začetek",
+        "visitor": "Poudarek na obiskovalcih"
+      },
+      "nav": {
+        "about": "O nas",
+        "connect": "Poveži se",
+        "give": "Daruj",
+        "home": "Domov",
+        "live": "V živo",
+        "sermons": "Pridige",
+        "visit": "Obisk"
+      },
+      "navLinksNote": "Doda tudi navigacijske povezave do vgrajenih strani:",
+      "pageCount": "{count} strani",
+      "pages": {
+        "about": "O nas",
+        "connect": "Poveži se",
+        "home": "Domov",
+        "visit": "Načrtujte svoj obisk"
+      },
+      "title": "Začni s predlogo"
     },
     "spacingScaleEdit": {
       "buttonOne": "Gumb 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animacije",
       "animationsDesc": "Učinek pri prikazu elementa.",
+      "hideOnDesktop": "Skrij na namizju",
+      "hideOnMobile": "Skrij na mobilnih napravah",
       "styles": "Slogi",
-      "stylesDesc": "Napredne možnosti videza."
+      "stylesDesc": "Napredne možnosti videza.",
+      "visibility": "Vidnost:"
     },
     "stylesManager": {
       "color": "Barvna paleta",

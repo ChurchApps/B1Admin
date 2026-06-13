@@ -1,4 +1,3 @@
-import React from "react";
 
 export const Pingback = () => {
   const params = new URLSearchParams(window.location.search);

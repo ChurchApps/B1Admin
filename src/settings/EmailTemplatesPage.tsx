@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Tooltip, Stack, Button, Typography, Chip } from "@mui/material";
+import { Box, Table, TableHead, TableRow, TableCell, TableBody, Stack, Button, Typography, Chip } from "@mui/material";
 import { Email as EmailIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, PageHeader, UserHelper, Locale } from "@churchapps/apphelper";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export interface EmailTemplateInterface {
   id?: string;
@@ -87,7 +88,7 @@ export const EmailTemplatesPage: React.FC = () => {
                     <TableCell>{Locale.label("settings.emailTemplatesPage.subject")}</TableCell>
                     <TableCell>{Locale.label("settings.emailTemplatesPage.category")}</TableCell>
                     <TableCell>{Locale.label("settings.emailTemplatesPage.modified")}</TableCell>
-                    <TableCell align="right">{Locale.label("settings.emailTemplatesPage.actions")}</TableCell>
+                    <TableCell align="right"></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -97,14 +98,10 @@ export const EmailTemplatesPage: React.FC = () => {
                       <TableCell>{t.subject}</TableCell>
                       <TableCell>{t.category && <Chip label={t.category} size="small" />}</TableCell>
                       <TableCell>{formatDate(t.dateModified)}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="right" className="rowActions">
                         <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                          <Tooltip title={Locale.label("settings.emailTemplatesPage.tooltipEdit")}>
-                            <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleEdit(t); }}><EditIcon fontSize="small" /></IconButton>
-                          </Tooltip>
-                          <Tooltip title={Locale.label("settings.emailTemplatesPage.tooltipDelete")}>
-                            <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleDelete(t); }}><DeleteIcon fontSize="small" /></IconButton>
-                          </Tooltip>
+                          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={(e) => { e.stopPropagation(); handleEdit(t); }} />
+                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={(e) => { e.stopPropagation(); handleDelete(t); }} />
                         </Stack>
                       </TableCell>
                     </TableRow>

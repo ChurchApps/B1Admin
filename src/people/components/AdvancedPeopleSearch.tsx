@@ -1,7 +1,9 @@
 import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "react";
 import { B1AdminPersonHelper } from ".";
-import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type CampusInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
-import { ArrayHelper, InputBox, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
+import { useCampuses } from "../../hooks/useCampuses";
+import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface } from "@churchapps/helpers";
+import { ArrayHelper, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
 import {
   Button,
@@ -43,6 +45,12 @@ interface Props {
   toggleFunction?: () => void;
   updatedFunction?: () => void;
   embedded?: boolean;
+  // When provided, seeds the search with a saved List's filter spec and re-runs it live.
+  initialFilters?: Record<string, ActiveFilter>;
+  // Reports the current high-level filter spec (or null when cleared) so a parent can
+  // offer "Save as List". We report activeFilters — not the converted conditions — so
+  // saved lists re-resolve live each time they are opened.
+  onReportCriteria?: (filters: Record<string, ActiveFilter> | null) => void;
 }
 
 interface FilterField {
@@ -54,7 +62,7 @@ interface FilterField {
   icon?: React.ReactNode;
 }
 
-interface ActiveFilter {
+export interface ActiveFilter {
   field: string;
   operator: string;
   value: string;
@@ -144,12 +152,15 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const [expandedCategories, setExpandedCategories] = useState<string[]>(["names"]);
   const [complexFilterDialog, setComplexFilterDialog] = useState<{ open: boolean; field: string | null }>({ open: false, field: null });
   const [complexConfig, setComplexConfig] = useState<ComplexFilterConfig | null>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout>();
+  const debounceTimerRef = useRef<NodeJS.Timeout>(undefined);
 
   // Lazy-loaded options
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [funds, setFunds] = useState<FundInterface[]>([]);
-  const [campuses, setCampuses] = useState<CampusInterface[]>([]);
+  // Church-wide (Membership) campuses — used both for the "belongs to campus"
+  // condition and the "attended a campus" complex filter. Campuses are mastered
+  // in the membership module (the attendance copy is frozen/deprecated).
+  const membershipCampuses = useCampuses();
   const [services, setServices] = useState<ServiceInterface[]>([]);
   const [serviceTimes, setServiceTimes] = useState<ServiceTimeInterface[]>([]);
   const [customFieldQuestions, setCustomFieldQuestions] = useState<QuestionInterface[]>([]);
@@ -251,6 +262,13 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           type: "select",
           operators: ["equals", "notEquals"],
           options: getMembershipStatusOptions()
+        },
+        {
+          key: "campusId",
+          label: Locale.label("person.campus"),
+          type: "select",
+          operators: ["equals", "notEquals"],
+          options: membershipCampuses.map((c) => ({ value: c.id, label: c.name }))
         }
       ],
       activity: [],
@@ -333,7 +351,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     return categories;
-  }, [groups, customFieldQuestions]);
+  }, [groups, membershipCampuses, customFieldQuestions]);
 
   const loadCategoryData = useCallback(async (category: string) => {
     if (loadedCategories.includes(category)) return;
@@ -349,13 +367,11 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         setFunds(fundData);
       }
       if (Permissions.attendanceApi.attendance) {
-        const [campusData, serviceData, serviceTimeData, groupData] = await Promise.all([
-          ApiHelper.get("/campuses", "AttendanceApi"),
+        const [serviceData, serviceTimeData, groupData] = await Promise.all([
           ApiHelper.get("/services", "AttendanceApi"),
           ApiHelper.get("/serviceTimes", "AttendanceApi"),
           ApiHelper.get("/groups", "MembershipApi")
         ]);
-        setCampuses(campusData);
         setServices(serviceData);
         setServiceTimes(serviceTimeData);
         setGroups((prev) => prev.length ? prev : groupData);
@@ -376,7 +392,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     setLoadedCategories((prev) => [...prev, category]);
   }, [loadedCategories]);
 
-  const handleCategoryExpand = (category: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+  const handleCategoryExpand = (category: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     if (isExpanded) {
       setExpandedCategories([...expandedCategories, category]);
       loadCategoryData(category);
@@ -439,19 +455,23 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
   };
 
-  // Auto-search when filters change
+  // Auto-search when filters change, and report the active spec so the parent can
+  // offer "Save as List" (or clear the offer when no filters remain).
   useEffect(() => {
     if (Object.keys(activeFilters).length > 0) {
+      props.onReportCriteria?.(activeFilters);
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
 
       debounceTimerRef.current = setTimeout(async () => {
         const postConditions = await convertConditions();
-        ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data) => {
+        ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data: any) => {
           props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
         });
       }, 500);
+    } else {
+      props.onReportCriteria?.(null);
     }
   }, [activeFilters]);
 
@@ -606,11 +626,12 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   }, [activeFilters, customFieldQuestions]);
 
   const handleAdvancedSearch = useCallback(async () => {
+    props.onReportCriteria?.(activeFilters);
     const postConditions = await convertConditions();
-    ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data) => {
+    ApiHelper.post("/people/advancedSearch", postConditions, "MembershipApi").then((data: any) => {
       props.updateSearchResults(data.map((d: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(d)));
     });
-  }, [convertConditions, props.updateSearchResults]);
+  }, [convertConditions, props.updateSearchResults, activeFilters]);
 
   const clearAllFilters = () => {
     setActiveFilters({});
@@ -619,27 +640,6 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
   const getActiveFilterCount = (category: string) => {
     const categoryFields = filterCategories[category]?.map((f) => f.key) || [];
     return Object.keys(activeFilters).filter((key) => categoryFields.includes(key)).length;
-  };
-
-  const getFilterDisplayValue = (filter: ActiveFilter) => {
-    const fieldConfig = Object.values(filterCategories).flat().find((f) => f.key === filter.field);
-    if (!fieldConfig) return filter.value;
-
-    if (filter.field === "memberAttendance" || filter.field === "memberDonations") {
-      try {
-        const parsed = JSON.parse(filter.value);
-        return `${parsed[0]?.text || "Any"}`;
-      } catch (e) {
-        return filter.value;
-      }
-    }
-
-    if (fieldConfig.type === "select" && fieldConfig.options) {
-      const option = fieldConfig.options.find(opt => opt.value === filter.value);
-      return option?.label || filter.value;
-    }
-
-    return filter.value;
   };
 
   const renderOperatorSelect = (field: FilterField) => {
@@ -781,6 +781,22 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     loadCategoryData("demographics");
   }, []);
 
+  // Seed the search from a saved List. Only the option-backed filter keys need their
+  // category preloaded so convertConditions() can resolve them; derive that set from
+  // the seeded keys (rather than loading all categories) and let the auto-search
+  // effect re-run the query live against current data.
+  useEffect(() => {
+    if (!props.initialFilters) return;
+    const categories = new Set<string>();
+    Object.keys(props.initialFilters).forEach((key) => {
+      if (key.startsWith("customField_")) categories.add("customFields");
+      else if (key === "groupMember") categories.add("membership");
+      else if (key === "memberDonations" || key === "memberAttendance") categories.add("activity");
+    });
+    categories.forEach((c) => loadCategoryData(c));
+    setActiveFilters(props.initialFilters);
+  }, [props.initialFilters]);
+
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {
@@ -799,7 +815,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             <Typography variant="caption" color="primary" sx={{ fontWeight: 600, mr: 0.5 }}>
               {Object.keys(activeFilters).length} {Locale.label("people.peopleSearch.active")}
             </Typography>
-            {Object.entries(activeFilters).map(([key, filter]) => {
+            {Object.entries(activeFilters).map(([key]) => {
               const fieldConfig = Object.values(filterCategories).flat().find((f) => f.key === key);
               return (
                 <Chip
@@ -990,14 +1006,14 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                               : Locale.label("people.peopleSearch.group")
                     }
                     onChange={(e) => {
-                      let text = "";
+                      let text: string;
                       if (complexFilterDialog.field === "memberDonations") {
                         text = funds.find((f) => f.id === e.target.value)?.name || "";
                       } else if (complexConfig.operator === "attendedCampus") {
-                        text = campuses.find((c) => c.id === e.target.value)?.name || "";
+                        text = membershipCampuses.find((c) => c.id === e.target.value)?.name || "";
                       } else if (complexConfig.operator === "attendedService") {
                         const service = services.find((s) => s.id === e.target.value);
-                        text = service ? `${service.campus.name} - ${service.name}` : "";
+                        text = service ? `${membershipCampuses.find((c) => c.id === service.campusId)?.name || ""} - ${service.name}` : "";
                       } else if (complexConfig.operator === "attendedServiceTime") {
                         text = serviceTimes.find((st) => st.id === e.target.value)?.longName || "";
                       } else {
@@ -1012,7 +1028,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                         </MenuItem>
                       ))
                       : complexConfig.operator === "attendedCampus"
-                        ? campuses.map((c) => (
+                        ? membershipCampuses.map((c) => (
                           <MenuItem key={c.id} value={c.id}>
                             {c.name}
                           </MenuItem>
@@ -1020,7 +1036,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                         : complexConfig.operator === "attendedService"
                           ? services.map((s) => (
                             <MenuItem key={s.id} value={s.id}>
-                              {s.campus.name} - {s.name}
+                              {membershipCampuses.find((c) => c.id === s.campusId)?.name || ""} - {s.name}
                             </MenuItem>
                           ))
                           : complexConfig.operator === "attendedServiceTime"
@@ -1071,23 +1087,23 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
   return (
     <>
-      <InputBox
+      <FormCard
         id="advancedSearch"
-        headerIcon="person"
-        headerText={Locale.label("people.peopleSearch.advSearch")}
-        headerActionContent={
+        icon="person"
+        title={Locale.label("people.peopleSearch.advSearch")}
+        headerActions={
           props.toggleFunction && (
             <Button onClick={props.toggleFunction} sx={{ textTransform: "none" }}>
               {Locale.label("people.peopleSearch.simp")}
             </Button>
           )
         }
-        saveFunction={handleAdvancedSearch}
+        onSave={handleAdvancedSearch}
         saveText={Locale.label("people.advancedSearch.search")}
         isSubmitting={Object.keys(activeFilters).length < 1}
         help="docs/b1-admin/people/searching-people">
         {renderContent()}
-      </InputBox>
+      </FormCard>
 
       {/* Complex Filter Dialog */}
       <Dialog open={complexFilterDialog.open} onClose={() => setComplexFilterDialog({ open: false, field: null })} maxWidth="sm" fullWidth>
@@ -1154,14 +1170,14 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                             : Locale.label("people.peopleSearch.group")
                   }
                   onChange={(e) => {
-                    let text = "";
+                    let text: string;
                     if (complexFilterDialog.field === "memberDonations") {
                       text = funds.find((f) => f.id === e.target.value)?.name || "";
                     } else if (complexConfig.operator === "attendedCampus") {
-                      text = campuses.find((c) => c.id === e.target.value)?.name || "";
+                      text = membershipCampuses.find((c) => c.id === e.target.value)?.name || "";
                     } else if (complexConfig.operator === "attendedService") {
                       const service = services.find((s) => s.id === e.target.value);
-                      text = service ? `${service.campus.name} - ${service.name}` : "";
+                      text = service ? `${membershipCampuses.find((c) => c.id === service.campusId)?.name || ""} - ${service.name}` : "";
                     } else if (complexConfig.operator === "attendedServiceTime") {
                       text = serviceTimes.find((st) => st.id === e.target.value)?.longName || "";
                     } else {
@@ -1176,7 +1192,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                       </MenuItem>
                     ))
                     : complexConfig.operator === "attendedCampus"
-                      ? campuses.map((c) => (
+                      ? membershipCampuses.map((c) => (
                         <MenuItem key={c.id} value={c.id}>
                           {c.name}
                         </MenuItem>
@@ -1184,7 +1200,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                       : complexConfig.operator === "attendedService"
                         ? services.map((s) => (
                           <MenuItem key={s.id} value={s.id}>
-                            {s.campus.name} - {s.name}
+                            {membershipCampuses.find((c) => c.id === s.campusId)?.name || ""} - {s.name}
                           </MenuItem>
                         ))
                         : complexConfig.operator === "attendedServiceTime"

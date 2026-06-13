@@ -38,7 +38,7 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
   };
 
   const loadData = () => {
-    ApiHelper.get("/groups", "MembershipApi").then((groups) => {
+    ApiHelper.get("/groups", "MembershipApi").then((groups: any) => {
       const result: string[] = [];
       groups.forEach((group: GroupInterface) => {
         group.labelArray.forEach((label) => {
@@ -68,7 +68,7 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
     <>
       <div style={{ marginTop: 10 }}>{Locale.label("groups.groupLabelsEdit.labels")}</div>
       {getItems()}
-      <button type="button" onClick={handleAdd} data-testid="add-new-label-link" aria-label={Locale.label("groups.groupLabelsEdit.addNewLabelAria")} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+      <button type="button" onClick={handleAdd} data-testid="add-new-label-link" aria-label={Locale.label("groups.groupLabelsEdit.addNewLabelAria")} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
         {Locale.label("groups.groupLabelsEdit.addNewLabel")}
       </button>
     </>

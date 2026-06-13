@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert, TextField } from "@mui/material";
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
@@ -52,7 +53,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
     itemType,
     relatedId: item.relatedId,
     label: item.label || "",
-    description: item.description,
+    description: item.content,
     seconds: item.seconds ?? 0,
     providerId,
     providerPath,
@@ -160,7 +161,7 @@ export const ServiceOrder = memo((props: Props) => {
 
   const handleDisassociateContent = useCallback(async () => {
     try {
-      const updatedPlan = {
+      const updatedPlan: PlanInterface = {
         ...props.plan,
         contentType: null,
         contentId: null,
@@ -190,7 +191,7 @@ export const ServiceOrder = memo((props: Props) => {
     if (!items || items.length === 0) return;
 
     // Prepare top-level items for this batch
-    const itemsToSave = items.map((item, index) => {
+    const itemsToSave = items.map((item, index): PlanItemInterface => {
       const cleanItem = { ...item };
       delete cleanItem.id; // Completely remove the id property
       return {
@@ -232,10 +233,10 @@ export const ServiceOrder = memo((props: Props) => {
         const planItemsFromInstructions = instructions.items.map((item, index) => instructionToPlanItem(item, currentProviderId, contentPath, [index]));
 
         // Keep top-level headers with their section children, but strip grandchildren (actions)
-        const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface) => ({
+        const sectionsOnly = planItemsFromInstructions.map((item: PlanItemInterface): PlanItemInterface => ({
           ...item,
           // Keep children (sections) but strip their children (actions)
-          children: item.children?.map((section: PlanItemInterface) => ({
+          children: item.children?.map((section: PlanItemInterface): PlanItemInterface => ({
             ...section,
             children: undefined // Remove actions from sections
           }))
@@ -325,18 +326,11 @@ export const ServiceOrder = memo((props: Props) => {
   const editContent = useMemo(
     () => (
       <Stack direction="row" spacing={1} alignItems="center">
-        <Button
-          onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, "_blank")}
-          variant="outlined"
-          size="small"
-          title={Locale.label("plans.serviceOrder.print")}
-          aria-label={Locale.label("plans.serviceOrder.print") || "Print plan"}
-          sx={{
-            minWidth: 40,
-            borderRadius: 2
-          }}>
-          <PrintIcon sx={{ fontSize: 20 }} />
-        </Button>
+        <AppIconButton
+          label={Locale.label("common.print")}
+          icon={<PrintIcon />}
+          tone="card"
+          onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, "_blank")} />
         {canEdit && (
           <>
             {hasAssociatedContent ? (
@@ -585,8 +579,8 @@ export const ServiceOrder = memo((props: Props) => {
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <AlbumIcon sx={{ color: "primary.main", fontSize: 28 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <AlbumIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("plans.serviceOrder.orderOfService")}
                 </Typography>
               </Stack>

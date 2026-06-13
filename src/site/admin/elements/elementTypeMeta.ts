@@ -8,6 +8,7 @@ interface ElementTypeMeta {
 const META: Record<string, { getLabel: () => string; icon: string }> = {
   section: { getLabel: () => Locale.label("site.elementAdd.section", "Section"), icon: "view_agenda" },
   row: { getLabel: () => Locale.label("site.elementAdd.row", "Row"), icon: "view_column" },
+  column: { getLabel: () => Locale.label("site.elementAdd.column", "Column"), icon: "view_week" },
   box: { getLabel: () => Locale.label("site.elementAdd.box", "Box"), icon: "crop_square" },
   carousel: { getLabel: () => Locale.label("site.elementAdd.carousel", "Carousel"), icon: "view_carousel" },
   text: { getLabel: () => Locale.label("site.elementAdd.text", "Text"), icon: "text_fields" },

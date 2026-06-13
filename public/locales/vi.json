@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Chỉnh sửa",
+    "element": "Phần tử",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or Liên hệ support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Cập nhật",
     "website": "Website",
-    "yes": "Có",
-    "element": "Phần tử"
+    "yes": "Có"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Thêm phần",
+      "backToSite": "Quay lại trang web",
       "blockPreview": "Xem trước khối",
+      "discard": "Hủy bỏ",
+      "discardElementMessage": "Hủy các thay đổi chưa lưu của phần tử này?",
+      "discardElementTitle": "Hủy thay đổi?",
+      "discardSectionMessage": "Hủy các thay đổi chưa lưu của phần này?",
       "dropToAddElement": "Thả vào đây để thêm phần tử",
       "dropToAddSection": "Thả vào đây để thêm phần",
+      "keepEditing": "Tiếp tục chỉnh sửa",
       "scrollDown": "Cuộn xuống",
-      "scrollUp": "Cuộn lên"
+      "scrollUp": "Cuộn lên",
+      "smallScreenMessage": "Mở trang này trên máy tính bảng hoặc máy tính để chỉnh sửa trang web của bạn.",
+      "smallScreenTitle": "Trình chỉnh sửa này cần màn hình lớn hơn"
     },
     "cssEdit": {
       "advancedFeature": "Tính năng nâng cao:",
@@ -2937,13 +2946,24 @@
       "ago": "trước",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Tắt xuất bản",
+      "disablePublishConfirm": "Tắt xuất bản cho trang này? Các chỉnh sửa sẽ lại hiển thị công khai ngay lập tức.",
+      "discardChanges": "Hủy các thay đổi chưa xuất bản",
+      "discardChangesConfirm": "Hủy tất cả thay đổi kể từ lần xuất bản gần nhất? Trình chỉnh sửa sẽ được khôi phục về phiên bản đang hiển thị.",
       "exit": "Thoát",
       "justNow": "vừa xong",
       "mobile": "Mobile",
-      "notSavedYet": "Chưa có thay đổi",
       "page": "Page",
+      "publish": "Xuất bản",
+      "publishOffTip": "Hiện tại các chỉnh sửa sẽ hiển thị công khai ngay lập tức. Hãy xuất bản để lưu phiên bản công khai và giữ các chỉnh sửa sau ở chế độ riêng tư cho đến lần xuất bản tiếp theo.",
+      "publishedLabel": "Đã xuất bản",
       "redoTip": "Làm lại (Ctrl+Shift+Z)",
+      "saveError": "Không thể lưu",
       "savedAllChanges": "Tất cả thay đổi đã lưu",
+      "saving": "Đang lưu…",
+      "statusLiveOnSave": "Hiển thị công khai khi lưu",
+      "statusPublished": "Đã xuất bản",
+      "statusUnpublishedChanges": "Thay đổi chưa xuất bản",
       "switchToDesktop": "Switch to Desktop Xem",
       "switchToMobile": "Switch to Mobile Xem",
       "undoTip": "Hoàn tác (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Cột",
       "common": "Phổ biến",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Bật Lightbox"
+      "enableLightbox": "Bật Lightbox",
+      "groupAnimation": "Hiệu ứng động",
+      "groupContent": "Nội dung",
+      "groupStyle": "Kiểu dáng"
     },
     "elementSelection": {
       "moveDown": "Di chuyển xuống",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Tài liệu đầy đủ",
       "moveBody": "Kéo các phần và phần tử để sắp xếp lại. Sử dụng mũi tên lên/xuống trên thanh công cụ chọn để di chuyển chính xác.",
       "moveTitle": "Sắp xếp lại",
+      "shortcutsBody": "Phím Delete xóa phần tử đã chọn, Ctrl+D nhân bản nó, Alt+Lên/Xuống di chuyển nó, và Esc bỏ chọn.",
+      "shortcutsTitle": "Phím tắt",
       "title": "Cơ bản về trình chỉnh sửa trang",
       "undoBody": "Sử dụng Ctrl+Z để hoàn tác và Ctrl+Shift+Z để làm lại. Mở bảng Lịch sử từ menu để chuyển đến trạng thái trước đó.",
       "undoTitle": "Hoàn tác & lịch sử"
@@ -3239,6 +3265,7 @@
       "previewPage": "Xem trước page",
       "showLogin": "Show Đăng nhập",
       "showLoginTooltip": "Show Đăng nhập button in the navigation bar",
+      "startFromTemplate": "Bắt đầu từ mẫu",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle Đăng nhập button visibility",
       "totalPages": "Tổng cộng Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently Xóa this section?",
       "confirmDuplicate": "Are you sure you wish to make a Sao chép of this section and Tất cả of it's contents?",
+      "deleteSectionBody": "Thao tác này xóa vĩnh viễn phần này và mọi thứ trong đó. Bạn có thể hoàn tác bằng Ctrl+Z.",
+      "deleteSectionTitle": "Xóa phần?",
       "editSection": "Chỉnh sửa Section",
       "layoutContainer": "Vùng chứa bố cục",
       "section": "Phần"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Câu chuyện của chúng tôi",
+      "all": "Tất cả",
+      "blank": "Phần trống",
+      "category": {
+        "about": "Giới thiệu",
+        "cta": "Kêu gọi hành động",
+        "giving": "Dâng hiến",
+        "hero": "Banner chính",
+        "media": "Truyền thông",
+        "people": "Mọi người và nhóm",
+        "services": "Các buổi lễ"
+      },
+      "connectColumns": "Cột liên hệ",
+      "ctaBanner": "Banner bước tiếp theo",
+      "faqSection": "Câu hỏi thường gặp",
+      "findUs": "Tìm chúng tôi",
+      "galleryRow": "Hàng ảnh",
+      "givingBanner": "Banner dâng hiến",
+      "givingOptions": "Các cách dâng hiến",
+      "groupListSection": "Danh sách nhóm",
+      "groupsBrowser": "Duyệt các nhóm",
+      "heroCentered": "Banner chính với ảnh",
+      "heroGradient": "Banner chính gradient",
+      "heroSplit": "Banner chính chia đôi",
+      "ministriesCards": "Thẻ mục vụ",
+      "sermonsLatest": "Bài giảng gần đây",
+      "serviceTimes": "Giờ các buổi lễ",
+      "staffGrid": "Lưới nhân sự",
+      "storyColumns": "Ba cột",
+      "testimony": "Trích dẫn lời chứng",
+      "title": "Thêm một phần",
+      "verseBanner": "Banner câu Kinh Thánh",
+      "watchOnline": "Xem trực tuyến",
+      "welcome": "Lời chào mừng"
+    },
+    "sectionToolbar": {
+      "delete": "Xóa phần",
+      "dragToReorder": "Kéo để sắp xếp lại",
+      "duplicate": "Nhân bản phần",
+      "moveDown": "Di chuyển phần xuống",
+      "moveUp": "Di chuyển phần lên",
+      "settings": "Cài đặt phần"
+    },
+    "siteTemplates": {
+      "back": "Quay lại",
+      "create": "Tạo trang web",
+      "creating": "Đang tạo {title}...",
+      "descriptions": {
+        "classic": "Một trang web truyền thống hoàn chỉnh với trang chủ chào đón, trang giới thiệu và trang lên kế hoạch thăm viếng.",
+        "community": "Đặt các nhóm và mục vụ lên hàng đầu để mọi người nhanh chóng được kết nối.",
+        "heritage": "Thiết kế cổ điển, lấy Kinh Thánh làm trọng tâm, dành cho các hội thánh lâu đời.",
+        "media": "Xây dựng quanh buổi phát trực tiếp và kho lưu trữ bài giảng của bạn, dành cho các hội thánh có sự hiện diện trực tuyến mạnh mẽ.",
+        "modern": "Diện mạo hiện đại với gradient nổi bật, các buổi lễ trực tuyến và trang kết nối.",
+        "simple": "Trang web khởi đầu gọn gàng gồm hai trang, hoàn hảo cho các hội thánh mới thành lập và các hội chúng nhỏ.",
+        "visitor": "Tập trung trả lời các câu hỏi của khách lần đầu trước khi họ đến."
+      },
+      "errFailed": "Không thể tạo trang web. Vui lòng thử lại.",
+      "exists": "Đã tồn tại",
+      "existsNote": "Các trang được đánh dấu \"đã tồn tại\" sẽ được giữ nguyên.",
+      "intro": "Chọn một trang web khởi đầu bên dưới. Chúng tôi sẽ tạo các trang và liên kết điều hướng cho bạn — mọi thứ đều có thể chỉnh sửa sau.",
+      "names": {
+        "classic": "Hội thánh cổ điển",
+        "community": "Đời sống cộng đồng",
+        "heritage": "Di sản",
+        "media": "Trực tuyến trước tiên",
+        "modern": "Chào đón hiện đại",
+        "simple": "Khởi đầu đơn giản",
+        "visitor": "Hướng đến khách thăm"
+      },
+      "nav": {
+        "about": "Giới thiệu",
+        "connect": "Kết nối",
+        "give": "Dâng hiến",
+        "home": "Trang chủ",
+        "live": "Trực tiếp",
+        "sermons": "Bài giảng",
+        "visit": "Thăm viếng"
+      },
+      "navLinksNote": "Đồng thời thêm liên kết điều hướng đến các trang có sẵn:",
+      "pageCount": "{count} trang",
+      "pages": {
+        "about": "Về chúng tôi",
+        "connect": "Kết nối",
+        "home": "Trang chủ",
+        "visit": "Lên kế hoạch thăm viếng"
+      },
+      "title": "Bắt đầu từ mẫu"
     },
     "spacingScaleEdit": {
       "buttonOne": "Nút 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Hoạt ảnh",
       "animationsDesc": "Hiệu ứng khi phần tử được hiển thị.",
+      "hideOnDesktop": "Ẩn trên máy tính",
+      "hideOnMobile": "Ẩn trên điện thoại",
       "styles": "Kiểu",
-      "stylesDesc": "Tùy chọn giao diện nâng cao."
+      "stylesDesc": "Tùy chọn giao diện nâng cao.",
+      "visibility": "Khả năng hiển thị:"
     },
     "stylesManager": {
       "color": "Bảng màu",

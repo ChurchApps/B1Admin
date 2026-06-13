@@ -16,10 +16,12 @@ export const GroupPage = () => {
   const [addPersonVisible, setAddPersonVisible] = React.useState(false);
   const [addSessionVisible, setAddSessionVisible] = React.useState(false);
   const [addMemberVisible, setAddMemberVisible] = React.useState(false);
+  const [inPhotoEditMode, setInPhotoEditMode] = React.useState(false);
+  const [editMode, setEditMode] = React.useState("display");
 
   const addPerson = (p: PersonInterface) => setAddedPerson(p);
   const loadData = () => {
-    ApiHelper.get("/groups/" + params.id, "MembershipApi").then((data) => setGroup(data));
+    ApiHelper.get("/groups/" + params.id, "MembershipApi").then((data: any) => setGroup(data));
   };
   const handleSessionAdd = (session: SessionInterface) => {
     setAddedSession(session);
@@ -61,7 +63,7 @@ export const GroupPage = () => {
       <div id="mainContent">
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 8 }}>
-            <GroupDetails group={group} updatedFunction={handleGroupUpdated} />
+            <GroupDetails group={group} updatedFunction={handleGroupUpdated} loadData={loadData} inPhotoEditMode={inPhotoEditMode} setInPhotoEditMode={setInPhotoEditMode} editMode={editMode} setEditMode={setEditMode} />
             <Tabs group={group} addedPerson={addedPerson} addedSession={addedSession} addedCallback={handleAddedCallback} sidebarVisibilityFunction={handleSidebarVisibility} />
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>{getSidebarModules()}</Grid>

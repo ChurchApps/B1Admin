@@ -1,7 +1,9 @@
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { CategorySelect, ServiceTimesEdit } from ".";
-import { ApiHelper, InputBox, ErrorMessages, Locale, GalleryModal } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
+import { GalleryModal } from "../../components/gallery";
 import { Navigate } from "react-router-dom";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
@@ -9,6 +11,7 @@ import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState } from "@churchapps/apphelper";
 import { MarkdownEditor } from "@churchapps/apphelper/markdown";
 import { GroupLabelsEdit } from "./GroupLabelsEdit";
+import { CampusSelect } from "../../components/CampusSelect";
 
 type AnyRecord = Record<string, any>;
 
@@ -34,9 +37,11 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       meetingTime: "",
       meetingLocation: "",
       trackAttendance: "false",
+      attendanceReminders: "false",
       parentPickup: "false",
       printNametag: "false",
       slug: "",
+      campusId: "",
       joinPolicy: "open"
     }
   });
@@ -59,9 +64,11 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
         meetingTime: props.group.meetingTime || "",
         meetingLocation: props.group.meetingLocation || "",
         trackAttendance: props.group.trackAttendance?.toString() || "false",
+        attendanceReminders: (props.group as AnyRecord).attendanceReminders?.toString() || "false",
         parentPickup: props.group.parentPickup?.toString() || "false",
         printNametag: props.group.printNametag?.toString() || "false",
         slug: props.group.slug || "",
+        campusId: props.group.campusId || "",
         joinPolicy: props.group.joinPolicy || "open"
       });
       setAbout(props.group.about || "");
@@ -88,6 +95,10 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       photoUrl,
       labelArray
     };
+    // "" = Unassigned; store null so it matches campusId IS NULL.
+    group.campusId = values.campusId || null;
+    // Cast until the published GroupInterface includes attendanceReminders.
+    (group as AnyRecord).attendanceReminders = values.attendanceReminders === "true";
     ApiHelper.post("/groups", [group], "MembershipApi").then(() => {
       props.updatedFunction();
     });
@@ -119,15 +130,26 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
         </Box>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 6 }}>
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("groups.groupDetailsEdit.attTrack")}</InputLabel>
-              <Controller name="trackAttendance" control={control} render={({ field }) => (
-                <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.attTrack")} id="trackAttendance" data-cy="select-attendance-type">
-                  <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
-                  <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
-                </Select>
-              )} />
-            </FormControl>
+            <Stack direction={{ xs: "column", md: "row" }}>
+              <FormControl fullWidth>
+                <InputLabel>{Locale.label("groups.groupDetailsEdit.attTrack")}</InputLabel>
+                <Controller name="trackAttendance" control={control} render={({ field }) => (
+                  <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.attTrack")} id="trackAttendance" data-cy="select-attendance-type">
+                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                  </Select>
+                )} />
+              </FormControl>
+              <FormControl fullWidth sx={{ marginLeft: { md: 2 } }}>
+                <InputLabel>{Locale.label("groups.groupDetailsEdit.attendanceReminders")}</InputLabel>
+                <Controller name="attendanceReminders" control={control} render={({ field }) => (
+                  <Select {...field} value={field.value ?? "false"} label={Locale.label("groups.groupDetailsEdit.attendanceReminders")} data-testid="attendance-reminders-select">
+                    <MenuItem value="false">{Locale.label("common.no")}</MenuItem>
+                    <MenuItem value="true">{Locale.label("common.yes")}</MenuItem>
+                  </Select>
+                )} />
+              </FormControl>
+            </Stack>
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <Stack direction={{ xs: "column", md: "row" }}>
@@ -171,7 +193,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
   return (
     <>
       {galleryModal}
-      <InputBox id="groupDetailsBox" headerText={Locale.label("groups.groupDetailsEdit.groupDet")} headerIcon="group" saveFunction={handleSubmit(onValid)} cancelFunction={handleCancel} deleteFunction={handleDelete} help="docs/b1-admin/groups/">
+      <FormCard id="groupDetailsBox" title={Locale.label("groups.groupDetailsEdit.groupDet")} icon="group" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} help="docs/b1-admin/groups/">
         <ErrorMessages errors={summaryErrors} />
         <Grid container spacing={3}>
           {!teamMode && (
@@ -211,7 +233,6 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                   style={{ maxHeight: 200, overflowY: "scroll" }}
                   placeholder={Locale.label("groups.groupDetailsEdit.groupDesc")}
                   data-testid="group-description-editor"
-                  ariaLabel={Locale.label("groups.groupDetailsEdit.groupDescriptionAria")}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
@@ -257,6 +278,9 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
                 <GroupLabelsEdit group={{ ...props.group, labelArray }} onUpdate={(val) => setLabelArray(val)} />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
+                <CampusSelect control={control} testId="group-campus-select" />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel>{Locale.label("groups.groupDetailsEdit.enrollment") || "Enrollment"}</InputLabel>
                   <Controller name="joinPolicy" control={control} render={({ field }) => (
@@ -272,7 +296,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
           </>
         )}
         {getAttendance()}
-      </InputBox>
+      </FormCard>
     </>
   );
 };

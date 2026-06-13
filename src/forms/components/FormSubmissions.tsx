@@ -9,10 +9,10 @@ import {
 import {
   DateHelper,
   DisplayBox,
-  ExportLink,
   Locale,
   Loading
 } from "@churchapps/apphelper";
+import { CountChip, ExportButton } from "../../components/ui";
 import { useReactToPrint } from "react-to-print";
 import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -34,7 +34,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
     []
   );
   const contentRef: any = useRef<HTMLDivElement>(null);
-  const handleSummaryPrint = useReactToPrint({ content: () => contentRef.current });
+  const handleSummaryPrint = useReactToPrint({ contentRef });
 
   const getPerson = useCallback((people: PersonInterface[], formSubmission: any) => {
     let result = people.find((person: PersonInterface) => person.id === formSubmission.submittedBy);
@@ -116,7 +116,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         formSubmission.questions.forEach((question: QuestionInterface) => {
           const answer = formSubmission.answers.find((answer: AnswerInterface) => answer.questionId === question.id) || null;
           const answerValue = answer?.value || "";
-          if (question.fieldType === "Yes/No" && answer?.value) answer.value = yesNoMap[answer.value];
+          if (question.fieldType === "Yes/No" && answer?.value) answer.value = (yesNoMap as Record<string, string>)[answer.value];
           csvData[question.title] = answerValue;
           formSubmission.csvData.push({ [question.title]: answerValue });
           if (question.fieldType === "Multiple Choice" || question.fieldType === "Yes/No" || question.fieldType === "Checkbox") {
@@ -232,7 +232,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           }}>
           <TableCell key="personName">
             {personId ? (
-              <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
+              <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
                 {personName}
               </Typography>
             ) : (
@@ -254,8 +254,8 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
   const editLinks = useMemo(() => {
     const formName = formSubmissions.data?.length ? formSubmissions.data[0].form?.name + ".csv" : "form_submissions.csv";
     return (
-      <>
-        <ExportLink data={summaryCsv} spaceAfter={true} filename={formName} />
+      <Stack direction="row" spacing={1} alignItems="center">
+        <ExportButton data={summaryCsv} filename={formName} text={Locale.label("donations.donations.export")} />
         <button
           type="button"
           aria-label={Locale.label("forms.formSubmissions.printSummaryAria")}
@@ -263,18 +263,21 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           style={{ background: "none", border: 0, padding: 0, cursor: "pointer", color: "inherit" }}>
           <Icon>print</Icon>
         </button>
-      </>
+      </Stack>
     );
   }, [formSubmissions.data, summaryCsv, handleSummaryPrint]);
+
+  const submissionCount = formSubmissions.data?.length || 0;
 
   const formSubmissionsTable = useMemo(
     () => (
       <Card>
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+        <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Stack direction="row" spacing={1} alignItems="center">
-              <Icon>assignment</Icon>
+              <Icon sx={{ color: "primary.main", fontSize: 20 }}>assignment</Icon>
               <Typography variant="h6">{Locale.label("forms.formSubmissions.subRes")}</Typography>
+              {submissionCount > 0 && <CountChip count={submissionCount} />}
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
               {editLinks}
@@ -298,7 +301,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
         </Box>
       </Card>
     ),
-    [tableHeader, tableRows, editLinks]
+    [tableHeader, tableRows, editLinks, submissionCount]
   );
 
   if (people.isLoading || formSubmissions.isLoading) return <Loading />;

@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { type CSSProperties } from "react";
 import { Box, Container, Grid } from "@mui/material";
 import { AppearanceHelper } from "@churchapps/apphelper";
 import { Element, YoutubeBackground } from "@churchapps/apphelper/website";
@@ -40,7 +40,7 @@ const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSetting
   };
 
   const getStyle = (): CSSProperties => {
-    let result: CSSProperties = {};
+    let result: CSSProperties;
     if (section.background?.indexOf("/") > -1) {
       result = { backgroundImage: "url('" + section.background + "')" };
     } else {
@@ -128,10 +128,10 @@ export function WebsiteFooter(props: Props) {
       <>
         <div className="section headingsLight linksLightAccent" style={{ backgroundColor: "var(--dark)", color: "var(--light)", paddingTop: 40, paddingBottom: 40 }}>
           <Grid container spacing={2} className="container">
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               {photo}
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <h2>{props.church.name}</h2>
               <p>
                 {props.church.address1}<br />

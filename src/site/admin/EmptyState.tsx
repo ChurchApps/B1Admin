@@ -25,19 +25,19 @@ export function EmptyState({ onAddClick }: EmptyStateProps) {
             width: 56,
             height: 56,
             borderRadius: "50%",
-            backgroundColor: "#f3f4f6",
+            backgroundColor: "var(--bg-sub)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             mb: 2.5
           }}
         >
-          <Icon sx={{ fontSize: "2rem", color: "#9ca3af" }}>dashboard_customize</Icon>
+          <Icon sx={{ fontSize: "2rem", color: "text.secondary" }}>dashboard_customize</Icon>
         </Box>
-        <Typography variant="h6" component="h2" sx={{ fontWeight: 600, color: "#111827", mb: 1 }}>
+        <Typography variant="h6" component="h2" sx={{ fontWeight: 600, color: "text.primary", mb: 1 }}>
           {Locale.label("site.emptyState.title")}
         </Typography>
-        <Typography variant="body2" sx={{ color: "#6b7280", maxWidth: 420, mb: 3, lineHeight: 1.5 }}>
+        <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: 420, mb: 3, lineHeight: 1.5 }}>
           {Locale.label("site.emptyState.description")}
         </Typography>
         {onAddClick && (

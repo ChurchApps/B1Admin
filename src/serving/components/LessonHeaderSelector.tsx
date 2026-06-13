@@ -9,12 +9,12 @@ import {
   CircularProgress,
   Typography,
   Stack,
-  IconButton,
   Breadcrumbs,
   Link
 } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { getProvider, type Instructions, type InstructionItem, type ContentFolder } from "@churchapps/content-providers";
 import { getProviderInstructions } from "./ActionSelectorHelpers";
 import { InstructionTree } from "./InstructionTree";
@@ -61,7 +61,7 @@ function instructionToPlanItem(
     itemType,
     relatedId: item.relatedId || item.id,
     label: item.label || "",
-    description: item.description,
+    description: item.content,
     seconds: item.seconds,
     providerId,
     providerPath,
@@ -188,7 +188,7 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
         itemType: "header",
         relatedId: section.relatedId || section.id,
         label: section.label || "",
-        description: section.description,
+        description: section.content,
         providerId: provId,
         providerPath: currentProviderPath,
         providerContentPath: generatePath(pathIndices),
@@ -343,9 +343,7 @@ export const LessonHeaderSelector: React.FC<LessonHeaderSelectorProps> = ({
       <DialogTitle>
         <Stack direction="row" alignItems="center" spacing={1}>
           {(browser.currentPath || (hasAssociatedLesson && mode === "browse")) && (
-            <IconButton size="small" onClick={handleBack}>
-              <ArrowBackIcon />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.back")} icon={<ArrowBackIcon />} onClick={handleBack} />
           )}
           <span>{Locale.label("plans.lessonHeaderSelector.selectContent") || "Select Lesson Content"}</span>
         </Stack>

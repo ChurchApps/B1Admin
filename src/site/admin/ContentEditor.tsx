@@ -1,6 +1,6 @@
-import { useEffect, useState, useContext, useRef, useCallback, useMemo } from "react";
+﻿import { useEffect, useState, useContext, useRef, useCallback, useMemo, useSyncExternalStore } from "react";
 import { useNavigate } from "react-router-dom";
-import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skeleton } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, useMediaQuery, Container, Skeleton, Box, Button, Icon, Typography } from "@mui/material";
 import type { BlockInterface, ElementInterface, PageInterface, SectionInterface, GlobalStyleInterface } from "../../helpers/Interfaces";
 import { ApiHelper, ArrayHelper, UserHelper } from "../../helpers";
 import { Permissions } from "@churchapps/helpers";
@@ -28,12 +28,20 @@ import { Locale } from "@churchapps/apphelper";
 import { useUndoRedo } from "../hooks/useUndoRedo";
 import { HistoryPanel } from "./HistoryPanel";
 import { useThemeMode } from "../../ThemeContext";
+import { SectionTemplatePicker } from "./templates/SectionTemplatePicker";
+import { buildTemplateSection, type SectionTemplateDef } from "./templates/sectionTemplates";
+import { trackSave, resetSaveStatus, subscribeSaveStatus, getSaveStatus, getLastSavedAt } from "./saveStatusTracker";
+import { EDITOR_HOVER_CSS, getSelectionSuppressCss } from "./editorCss";
+import { AddSectionDivider } from "./AddSectionDivider";
+import { SelectionBreadcrumb, type BreadcrumbCrumb } from "./SelectionBreadcrumb";
 
 const lightEditorTheme = createTheme({
   palette: { mode: "light", background: { default: "#e5e8ee", paper: "#ffffff" } },
   components: {
     MuiTextField: { defaultProps: { margin: "normal" } },
-    MuiFormControl: { defaultProps: { margin: "normal" } }
+    MuiFormControl: { defaultProps: { margin: "normal" } },
+    MuiInputLabel: { defaultProps: { shrink: true } },
+    MuiOutlinedInput: { defaultProps: { notched: true } }
   }
 });
 
@@ -50,6 +58,13 @@ interface Props {
   onDone?: (url?: string) => void;
   config?: ConfigInterface;
 }
+
+type PanelAction =
+  | { kind: "close" }
+  | { kind: "escape" }
+  | { kind: "element"; element: ElementInterface }
+  | { kind: "section"; section: SectionInterface }
+  | { kind: "blockNav"; blockId: string };
 
 export function ContentEditor(props: Props) {
   const navigate = useNavigate();
@@ -70,15 +85,17 @@ export function ContentEditor(props: Props) {
     blockId: props.blockId
   });
   const [showHistory, setShowHistory] = useState(false);
-  const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
+  const saveStatus = useSyncExternalStore(subscribeSaveStatus, getSaveStatus);
+  const lastSavedAt = useSyncExternalStore(subscribeSaveStatus, getLastSavedAt);
 
   useEffect(() => {
-    if (history && history.length > 1) setLastSavedAt(Date.now());
-  }, [history?.length]);
+    resetSaveStatus();
+  }, [props.pageId, props.blockId]);
 
   const handleUndo = async () => {
     const snapshot = await undo();
     if (snapshot) {
+      setHasUnpublishedChanges(true);
       window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
     }
   };
@@ -86,6 +103,7 @@ export function ContentEditor(props: Props) {
   const handleRedo = async () => {
     const snapshot = await redo();
     if (snapshot) {
+      setHasUnpublishedChanges(true);
       window.dispatchEvent(new CustomEvent("undoredo:restore", { detail: snapshot }));
     }
   };
@@ -98,7 +116,7 @@ export function ContentEditor(props: Props) {
   };
 
   // Force light mode while editor is mounted so preview matches the public website
-  const { mode } = useThemeMode();
+  useThemeMode();
   useEffect(() => {
     const wasInDarkMode = document.body.classList.contains("dark-theme");
     if (wasInDarkMode) {
@@ -114,7 +132,35 @@ export function ContentEditor(props: Props) {
   const [showAdd, setShowAdd] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [pendingDeleteElementId, setPendingDeleteElementId] = useState<string | null>(null);
-  const css = useMemo(() => StyleHelper.getCss(container?.sections || []), [container?.sections]);
+  const panelDirtyRef = useRef(false);
+  const [pendingPanelAction, setPendingPanelAction] = useState<PanelAction | null>(null);
+  const [pendingDeleteSection, setPendingDeleteSection] = useState<SectionInterface | null>(null);
+
+  // Items hidden on the previewed device render dimmed in the canvas (instead of display:none)
+  // so they stay selectable; selectors cover sections, top-level wrappers and nested el-{id} divs.
+  const getEditorVisibilityCss = (sections: SectionInterface[], device: string) => {
+    const selectors: string[] = [`.elementWrapper.${device === "mobile" ? "hiddenOnMobile" : "hiddenOnDesktop"}`];
+    const collectElement = (e: ElementInterface) => {
+      if (e.styles?.[device === "mobile" ? "mobile" : "desktop"]?.display === "none" && e.id) {
+        selectors.push(`#el-${e.id}`, `[data-element-id="${e.id}"]`);
+      }
+      e.elements?.forEach(collectElement);
+    };
+    sections?.forEach((s) => {
+      if (s.styles?.[device === "mobile" ? "mobile" : "desktop"]?.display === "none") {
+        selectors.push(`#section-${s.answers?.sectionId || s.id}`);
+      }
+      s.elements?.forEach(collectElement);
+    });
+    return `${selectors.join(", ")} { display: block !important; opacity: 0.45; outline: 2px dashed #9e9e9e; outline-offset: -2px; }`;
+  };
+
+  const css = useMemo(
+    () => StyleHelper.getCss(container?.sections || [], deviceType) + "\n" + getEditorVisibilityCss(container?.sections || [], deviceType),
+    [container?.sections, deviceType]
+  );
+
+  const hoverCss = useMemo(() => EDITOR_HOVER_CSS + getSelectionSuppressCss(selectedElementId), [selectedElementId]);
 
   let elementOnlyMode = false;
   if (props.blockId && container?.sections?.length === 1 && container?.sections[0]?.id === "") elementOnlyMode = true;
@@ -125,7 +171,7 @@ export function ContentEditor(props: Props) {
     headerFooter: ["main"]
   };
 
-  const churchSettings = props.config?.appearance || context?.userChurch?.settings || {};
+  const churchSettings = props.config?.appearance || (context?.userChurch as any)?.settings || {};
 
   useEffect(() => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) navigate("/site");
@@ -140,7 +186,10 @@ export function ContentEditor(props: Props) {
     });
   };
 
+  const [hasUnpublishedChanges, setHasUnpublishedChanges] = useState(false);
+
   const loadDataInternal = (snapshotDescription?: string) => {
+    if (snapshotDescription) setHasUnpublishedChanges(true);
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       props.loadData(props.pageId || props.blockId).then((p: PageInterface | BlockInterface) => {
         if (p?.sections) {
@@ -184,9 +233,8 @@ export function ContentEditor(props: Props) {
     return () => window.removeEventListener("undoredo:restore", handleRestore as unknown as EventListener);
   }, [container]);
 
-  useEffect(() => {
-    if (isMobileViewport) navigate("/site");
-  }, [isMobileViewport]);
+
+  const [templateDrop, setTemplateDrop] = useState<{ sort: number; zone: string } | null>(null);
 
   const handleDrop = (data: any, sort: number, zone: string) => {
     if (container) saveSnapshot(container, "Before adding section");
@@ -195,10 +243,10 @@ export function ContentEditor(props: Props) {
       section.sort = sort;
       section.zone = zone;
       section.pageId = zone === "siteFooter" ? null : props.pageId;
-      ApiHelper.post("/sections", [section], "ContentApi").then(() => {
+      trackSave(ApiHelper.post("/sections", [section], "ContentApi")).then(() => {
         loadDataInternal("After adding section");
       });
-    } else {
+    } else if (data.blockId) {
       const sec = {
         sort,
         background: "#FFF",
@@ -209,20 +257,141 @@ export function ContentEditor(props: Props) {
         zone: zone
       };
       if (sec.zone === "siteFooter") sec.pageId = null;
-      setEditSection(sec);
+      requestPanelChange({ kind: "section", section: sec });
+    } else {
+      setTemplateDrop({ sort, zone });
     }
+  };
+
+  const handleTemplateBlank = () => {
+    if (!templateDrop) return;
+    const sec: SectionInterface = {
+      sort: templateDrop.sort,
+      background: "#FFF",
+      textColor: "dark",
+      pageId: templateDrop.zone === "siteFooter" ? null : props.pageId,
+      blockId: props.blockId,
+      zone: templateDrop.zone
+    };
+    setTemplateDrop(null);
+    requestPanelChange({ kind: "section", section: sec });
+  };
+
+  const handleTemplateSelect = (template: SectionTemplateDef) => {
+    if (!templateDrop) return;
+    const section = buildTemplateSection(template, {
+      pageId: templateDrop.zone === "siteFooter" ? undefined : props.pageId,
+      blockId: props.blockId,
+      zone: templateDrop.zone,
+      sort: templateDrop.sort
+    });
+    setTemplateDrop(null);
+    trackSave(ApiHelper.post("/sections/tree", { section }, "ContentApi")).then(() => {
+      loadDataInternal("After adding section");
+    });
+  };
+
+  const handlePublish = () => {
+    if (!props.pageId) return;
+    trackSave(ApiHelper.post(`/pages/${props.pageId}/publish`, {}, "ContentApi")).then((data: any) => {
+      setContainer((prev) => (prev ? { ...prev, publishedAt: data.publishedAt } : prev));
+      setHasUnpublishedChanges(false);
+    });
+  };
+
+  const handleDiscardChanges = () => {
+    if (!props.pageId) return;
+    if (!window.confirm(Locale.label("site.editorToolbar.discardChangesConfirm"))) return;
+    if (container) saveSnapshot(container, "Before discarding unpublished changes");
+    trackSave(ApiHelper.post(`/pages/${props.pageId}/discard`, {}, "ContentApi")).then(() => {
+      loadDataInternal("After discarding unpublished changes");
+      setHasUnpublishedChanges(false);
+    });
+  };
+
+  const handleUnpublish = () => {
+    if (!props.pageId) return;
+    if (!window.confirm(Locale.label("site.editorToolbar.disablePublishConfirm"))) return;
+    trackSave(ApiHelper.delete(`/pages/${props.pageId}/published`, "ContentApi")).then(() => {
+      setContainer((prev) => (prev ? { ...prev, publishedAt: null } : prev));
+      setHasUnpublishedChanges(false);
+    });
   };
 
   const getAddSection = (s: number, zone: string) => {
     const sort = s;
-    return <DroppableArea key={"addSection_" + zone + "_" + s.toString()} text={Locale.label("site.contentEditor.dropToAddSection")} accept={["section", "sectionBlock"]} onDrop={(data) => handleDrop(data, sort, zone)} />;
+    return (
+      <AddSectionDivider key={"addSection_" + zone + "_" + s.toString()} sort={sort} zone={zone} onAdd={(addSort, addZone) => setTemplateDrop({ sort: addSort, zone: addZone })}>
+        <DroppableArea text={Locale.label("site.contentEditor.dropToAddSection")} accept={["section", "sectionBlock"]} onDrop={(data) => handleDrop(data, sort, zone)} />
+      </AddSectionDivider>
+    );
+  };
+
+  const handlePaletteSelect = (item: { type: string; dndType: string; blockId?: string }) => {
+    const defaultZone = props.pageId ? "main" : "block";
+    const zoneSections = defaultZone === "block" ? container?.sections : ArrayHelper.getAll(container?.sections, "zone", defaultZone);
+    const lastSection = zoneSections && zoneSections.length > 0 ? zoneSections[zoneSections.length - 1] : null;
+    const maxSort = (elements?: ElementInterface[]) => (elements && elements.length > 0 ? Math.max(...elements.map((e) => e.sort || 0)) : 0);
+
+    if (item.dndType === "section") {
+      setTemplateDrop({ sort: (lastSection?.sort ?? 0) + 1, zone: defaultZone });
+      return;
+    }
+    if (item.dndType === "sectionBlock") {
+      handleDrop({ blockId: item.blockId }, (lastSection?.sort ?? 0) + 1, defaultZone);
+      return;
+    }
+
+    let target: { sectionId: string; blockId?: string; parentId?: string; sort: number } | null = null;
+    if (selectedElementId) {
+      const path = findElementPath(selectedElementId);
+      if (path?.section) target = { sectionId: path.section.id, blockId: path.section.blockId, parentId: path.element.parentId, sort: (path.element.sort || 0) + 0.1 };
+    }
+    if (!target && editSection?.id) target = { sectionId: editSection.id, blockId: editSection.blockId, sort: maxSort(editSection.elements) + 1 };
+    if (!target && lastSection) target = { sectionId: lastSection.id, blockId: lastSection.blockId, sort: maxSort(lastSection.elements) + 1 };
+    if (!target) {
+      setTemplateDrop({ sort: 0, zone: defaultZone });
+      return;
+    }
+
+    const element: ElementInterface = { sectionId: target.sectionId, elementType: item.type, sort: target.sort, blockId: target.blockId, parentId: target.parentId };
+    if (item.blockId) element.answersJSON = JSON.stringify({ targetBlockId: item.blockId });
+    else if (item.type === "row") element.answersJSON = JSON.stringify({ columns: "6,6" });
+    else if (item.type === "box") element.answersJSON = JSON.stringify({ background: "var(--light)", text: "var(--dark)" });
+    requestPanelChange({ kind: "element", element });
+  };
+
+  const handleSectionMove = (section: SectionInterface, direction: "up" | "down") => {
+    if (container) saveSnapshot(container, "Before moving section");
+    const sort = typeof section.sort === "number" ? section.sort : 0;
+    trackSave(ApiHelper.post("/sections", [{ ...section, sort: direction === "up" ? sort - 1.5 : sort + 1.5 }], "ContentApi")).then(() => {
+      loadDataInternal("After moving section");
+    });
+  };
+
+  const handleSectionDuplicate = (sectionId: string) => {
+    if (container) saveSnapshot(container, "Before duplicating section");
+    trackSave(ApiHelper.post(`/sections/duplicate/${sectionId}`, {}, "ContentApi")).then(() => {
+      loadDataInternal("After duplicating section");
+    });
+  };
+
+  const confirmSectionDelete = () => {
+    const section = pendingDeleteSection;
+    if (!section) return;
+    if (container) saveSnapshot(container, "Before deleting section");
+    trackSave(ApiHelper.delete(`/sections/${section.id}`, "ContentApi")).then(() => {
+      if (editSection?.id === section.id) setEditSection(null);
+      setPendingDeleteSection(null);
+      loadDataInternal("After deleting section");
+    });
   };
 
   const getSections = (zone: string) => {
     const result: React.ReactElement[] = [];
     result.push(getAddSection(0, zone));
     const sections = zone === "block" ? container?.sections : ArrayHelper.getAll(container?.sections, "zone", zone);
-    sections?.forEach((section) => {
+    sections?.forEach((section, index) => {
       if (section.targetBlockId) {
         result.push(
           <SectionBlock
@@ -230,12 +399,14 @@ export function ContentEditor(props: Props) {
             section={section}
             churchSettings={churchSettings}
             onEdit={handleSectionEdit}
-            onDelete={() => {
-              loadDataInternal("After deleting section");
-            }}
             onMove={() => {
               loadDataInternal("After moving section");
             }}
+            onSectionMove={handleSectionMove}
+            onSectionDuplicate={handleSectionDuplicate}
+            onSectionDelete={(s) => setPendingDeleteSection(s)}
+            isFirstSection={index === 0}
+            isLastSection={index === sections.length - 1}
           />
         );
       } else {
@@ -260,6 +431,12 @@ export function ContentEditor(props: Props) {
             onElementMove={handleElementMove}
             onElementUpdate={handleRealtimeChange}
             onSectionClick={(s) => handleSectionEdit(s, null)}
+            onSectionMove={handleSectionMove}
+            onSectionDuplicate={handleSectionDuplicate}
+            onSectionDelete={(s) => setPendingDeleteSection(s)}
+            isFirstSection={index === 0}
+            isLastSection={index === sections.length - 1}
+            isSectionEditing={!!editSection && editSection.id === section.id}
           />
         );
       }
@@ -267,31 +444,27 @@ export function ContentEditor(props: Props) {
     });
 
     if (!sections || sections.length === 0) {
-      result.push(<EmptyState key="empty" onAddClick={() => setShowAdd(true)} />);
+      result.push(<EmptyState key="empty" onAddClick={() => setTemplateDrop({ sort: 0, zone })} />);
     }
     return result;
   };
 
   const handleSectionEdit = (s: SectionInterface, e: ElementInterface) => {
     if (s) {
-      if (s.targetBlockId) navigate(`/site/blocks/${s.targetBlockId}`);
-      else {
-        setEditElement(null);
-        setEditSection(s);
-      }
+      if (s.targetBlockId) requestPanelChange({ kind: "blockNav", blockId: s.targetBlockId });
+      else requestPanelChange({ kind: "section", section: s });
     } else if (e) {
-      setEditSection(null);
-      setEditElement(e);
+      requestPanelChange({ kind: "element", element: e });
     }
   };
 
-  const findElementInSections = (elementId: string): ElementInterface | null => {
+  const findElementPath = (elementId: string): { section: SectionInterface; ancestors: ElementInterface[]; element: ElementInterface } | null => {
     if (!container?.sections) return null;
-    const search = (els: ElementInterface[]): ElementInterface | null => {
+    const search = (els: ElementInterface[], ancestors: ElementInterface[]): { ancestors: ElementInterface[]; element: ElementInterface } | null => {
       for (const e of els) {
-        if (e.id === elementId) return e;
+        if (e.id === elementId) return { ancestors, element: e };
         if (e.elements && e.elements.length > 0) {
-          const found = search(e.elements);
+          const found = search(e.elements, [...ancestors, e]);
           if (found) return found;
         }
       }
@@ -299,34 +472,105 @@ export function ContentEditor(props: Props) {
     };
     for (const s of container.sections) {
       if (s.elements) {
-        const found = search(s.elements);
-        if (found) return found;
+        const found = search(s.elements, []);
+        if (found) return { section: s, ...found };
       }
     }
     return null;
   };
 
-  const handleElementClick = (elementId: string) => {
-    setSelectedElementId(elementId);
-    const found = findElementInSections(elementId);
-    if (found) {
-      setEditSection(null);
-      setEditElement(found);
+  const findElementInSections = (elementId: string): ElementInterface | null => findElementPath(elementId)?.element || null;
+
+  const executePanelAction = (action: PanelAction) => {
+    switch (action.kind) {
+      case "close":
+        setEditElement(null);
+        setEditSection(null);
+        break;
+      case "escape":
+        setSelectedElementId(null);
+        setEditElement(null);
+        setEditSection(null);
+        break;
+      case "element":
+        setSelectedElementId(action.element.id || null);
+        setEditSection(null);
+        setEditElement(action.element);
+        break;
+      case "section":
+        setEditElement(null);
+        setEditSection(action.section);
+        break;
+      case "blockNav":
+        navigate(`/site/blocks/${action.blockId}`);
+        break;
     }
   };
 
+  // editElement still holds the pre-edit object (realtime patches only replace the
+  // copy inside container.sections), so re-patching it reverts the live preview.
+  const revertRealtimePreview = () => {
+    if (realtimeDebounceRef.current) clearTimeout(realtimeDebounceRef.current);
+    const original = editElement;
+    if (original?.id) {
+      setContainer((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          sections: prev.sections.map((s) => ({
+            ...s,
+            elements: s.elements ? replaceElementImmutable(s.elements, original) : s.elements
+          }))
+        };
+      });
+    }
+  };
+
+  const requestPanelChange = (action: PanelAction) => {
+    if (action.kind === "element" && editElement && action.element.id && action.element.id === editElement.id) {
+      setSelectedElementId(action.element.id);
+      return;
+    }
+    if (action.kind === "section" && editSection && action.section.id && action.section.id === editSection.id) return;
+    if (!panelDirtyRef.current || (!editElement && !editSection)) {
+      executePanelAction(action);
+      return;
+    }
+    setPendingPanelAction(action);
+  };
+
+  const confirmDiscardPanel = () => {
+    const action = pendingPanelAction;
+    if (!action) return;
+    if (editElement) {
+      revertRealtimePreview();
+      if (!editElement.id) setSelectedElementId(null);
+    }
+    panelDirtyRef.current = false;
+    setPendingPanelAction(null);
+    executePanelAction(action);
+  };
+
+  const handleElementClick = (elementId: string) => {
+    const found = findElementInSections(elementId);
+    if (found) requestPanelChange({ kind: "element", element: found });
+    else setSelectedElementId(elementId);
+  };
+
+  const getPanelBreadcrumb = () => {
+    if (!editElement?.id) return null;
+    const path = findElementPath(editElement.id);
+    if (!path) return null;
+    const crumbs: BreadcrumbCrumb[] = [
+      { label: Locale.label("site.section.section"), onClick: () => handleSectionEdit(path.section, null) },
+      ...path.ancestors.map((a) => ({ label: getElementTypeMeta(a.elementType).label, onClick: () => handleElementClick(a.id) })),
+      { label: getElementTypeMeta(path.element.elementType).label }
+    ];
+    return <SelectionBreadcrumb crumbs={crumbs} />;
+  };
+
   const handleElementDoubleClick = (element: ElementInterface) => {
-    setSelectedElementId(element.id);
-    setEditSection(null);
-    setEditElement(element);
-  };
-
-  const handleElementCancel = () => {
-    setEditElement(null);
-  };
-
-  const handleSectionCancel = () => {
-    setEditSection(null);
+    requestPanelChange({ kind: "element", element });
   };
 
   const handleElementDelete = (elementId: string) => {
@@ -337,7 +581,7 @@ export function ContentEditor(props: Props) {
     const elementId = pendingDeleteElementId;
     if (!elementId) return;
     if (container) saveSnapshot(container, "Before deleting element");
-    ApiHelper.delete(`/elements/${elementId}`, "ContentApi").then(() => {
+    trackSave(ApiHelper.delete(`/elements/${elementId}`, "ContentApi")).then(() => {
       setSelectedElementId(null);
       setPendingDeleteElementId(null);
       loadDataInternal("After deleting element");
@@ -346,7 +590,7 @@ export function ContentEditor(props: Props) {
 
   const handleElementDuplicate = (elementId: string) => {
     if (container) saveSnapshot(container, "Before duplicating element");
-    ApiHelper.post(`/elements/duplicate/${elementId}`, {}, "ContentApi").then(() => {
+    trackSave(ApiHelper.post(`/elements/duplicate/${elementId}`, {}, "ContentApi")).then(() => {
       setSelectedElementId(null);
       loadDataInternal("After duplicating element");
     });
@@ -363,7 +607,7 @@ export function ContentEditor(props: Props) {
             ...elements[i],
             sort: direction === "up" ? currentSort - 1.5 : currentSort + 1.5
           };
-          ApiHelper.post("/elements", [updatedElement], "ContentApi").then(() => {
+          trackSave(ApiHelper.post("/elements", [updatedElement], "ContentApi")).then(() => {
             loadDataInternal("After moving element");
           });
           return true;
@@ -407,6 +651,34 @@ export function ContentEditor(props: Props) {
     if (props.onDone) props.onDone(url);
     else navigate(`/site/pages/preview/${props.pageId}`);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (document.querySelector(".MuiDialog-root, .MuiPopover-root, .MuiMenu-root")) return;
+      if (e.key === "Escape") {
+        requestPanelChange({ kind: "escape" });
+        return;
+      }
+      const ae = document.activeElement as HTMLElement | null;
+      if (ae && (["INPUT", "TEXTAREA", "SELECT"].includes(ae.tagName) || ae.isContentEditable)) return;
+      if (!selectedElementId) return;
+      if (e.key === "Delete" || e.key === "Backspace") {
+        e.preventDefault();
+        setPendingDeleteElementId(selectedElementId);
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d") {
+        e.preventDefault();
+        handleElementDuplicate(selectedElementId);
+      } else if (e.altKey && e.key === "ArrowUp") {
+        e.preventDefault();
+        handleElementMove(selectedElementId, "up");
+      } else if (e.altKey && e.key === "ArrowDown") {
+        e.preventDefault();
+        handleElementMove(selectedElementId, "down");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedElementId, container, editElement, editSection]);
 
   useEffect(() => {
     const contentEl = contentRef.current;
@@ -468,8 +740,8 @@ export function ContentEditor(props: Props) {
     const base = {
       palette: { mode: "light" as const },
       components: {
-        MuiTextField: { defaultProps: { margin: "normal" } },
-        MuiFormControl: { defaultProps: { margin: "normal" } }
+        MuiTextField: { defaultProps: { margin: "normal" as const } },
+        MuiFormControl: { defaultProps: { margin: "normal" as const } }
       }
     };
     if (deviceType === "mobile") {
@@ -491,8 +763,8 @@ export function ContentEditor(props: Props) {
     const result: any[] = [];
     if (props.pageId) {
       const page = container as PageInterface;
-      if (page?.layout && zones[page.layout]) {
-        const layoutZones: string[] = zones[page.layout];
+      if (page) {
+        const layoutZones: string[] = zones[page.layout] || ["main"];
         const showZoneLabel = layoutZones.length > 1;
         layoutZones.forEach((z: string) => {
           const sections = ArrayHelper.getAll(page?.sections, "zone", z);
@@ -506,6 +778,35 @@ export function ContentEditor(props: Props) {
     }
     return <>{result}</>;
   };
+
+  if (isMobileViewport) {
+    return (
+      <ThemeProvider theme={lightEditorTheme}>
+        <CssBaseline />
+        <Box
+          data-testid="editor-small-screen"
+          sx={{
+            minHeight: "calc(100vh - 64px)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            px: 3,
+            gap: 1.5,
+            backgroundColor: "var(--bg-main)"
+          }}
+        >
+          <Icon sx={{ fontSize: 48, color: "text.secondary" }}>devices</Icon>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>{Locale.label("site.contentEditor.smallScreenTitle")}</Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary", maxWidth: 360 }}>{Locale.label("site.contentEditor.smallScreenMessage")}</Typography>
+          <Button variant="contained" disableElevation onClick={() => navigate("/site")} sx={{ textTransform: "none", fontWeight: 600, mt: 1 }}>
+            {Locale.label("site.contentEditor.backToSite")}
+          </Button>
+        </Box>
+      </ThemeProvider>
+    );
+  }
 
   if (!container) {
     return (
@@ -527,7 +828,12 @@ export function ContentEditor(props: Props) {
           onUndo={handleUndo}
           onRedo={handleRedo}
           onShowHistory={() => setShowHistory(true)}
+          saveStatus={saveStatus}
           lastSavedAt={lastSavedAt}
+          hasUnpublishedChanges={hasUnpublishedChanges}
+          onPublish={handlePublish}
+          onDiscardChanges={handleDiscardChanges}
+          onUnpublish={handleUnpublish}
         />
         <HistoryPanel
           open={showHistory}
@@ -548,9 +854,10 @@ export function ContentEditor(props: Props) {
   return (
     <ThemeProvider theme={lightEditorTheme}>
       <CssBaseline />
-      <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "#e5e8ee" }}>
+      <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "var(--bg-main)" }}>
         <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
         <style>{css}</style>
+        <style>{hoverCss}</style>
 
         <EditorToolbar
           onDone={handleDone}
@@ -567,7 +874,12 @@ export function ContentEditor(props: Props) {
           onUndo={handleUndo}
           onRedo={handleRedo}
           onShowHistory={() => setShowHistory(true)}
+          saveStatus={saveStatus}
           lastSavedAt={lastSavedAt}
+          hasUnpublishedChanges={hasUnpublishedChanges}
+          onPublish={handlePublish}
+          onDiscardChanges={handleDiscardChanges}
+          onUnpublish={handleUnpublish}
         />
         <HistoryPanel
           open={showHistory}
@@ -587,6 +899,36 @@ export function ContentEditor(props: Props) {
           onCancel={() => setPendingDeleteElementId(null)}
         />
 
+        <ConfirmDialog
+          open={!!pendingDeleteSection}
+          title={Locale.label("site.section.deleteSectionTitle")}
+          message={Locale.label("site.section.deleteSectionBody")}
+          confirmLabel={Locale.label("common.delete")}
+          destructive
+          data-testid="delete-section-dialog"
+          onConfirm={confirmSectionDelete}
+          onCancel={() => setPendingDeleteSection(null)}
+        />
+
+        <ConfirmDialog
+          open={!!pendingPanelAction}
+          title={Locale.label("site.contentEditor.discardElementTitle")}
+          message={editSection ? Locale.label("site.contentEditor.discardSectionMessage") : Locale.label("site.contentEditor.discardElementMessage")}
+          confirmLabel={Locale.label("site.contentEditor.discard")}
+          cancelLabel={Locale.label("site.contentEditor.keepEditing")}
+          destructive
+          data-testid="discard-element-dialog"
+          onConfirm={confirmDiscardPanel}
+          onCancel={() => setPendingPanelAction(null)}
+        />
+
+        <SectionTemplatePicker
+          open={!!templateDrop}
+          onClose={() => setTemplateDrop(null)}
+          onSelectBlank={handleTemplateBlank}
+          onSelectTemplate={handleTemplateSelect}
+        />
+
         <DndProvider backend={HTML5Backend}>
           <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden", minHeight: 0 }}>
             <AddContentPanel open={showAdd} onClose={() => setShowAdd(false)}>
@@ -596,7 +938,8 @@ export function ContentEditor(props: Props) {
                   includeBlocks={!elementOnlyMode}
                   includeSection={!elementOnlyMode}
                   updateCallback={() => setShowAdd(false)}
-                  draggingCallback={() => { /* persistent panel — stay open while dragging */ }}
+                  draggingCallback={() => { /* persistent panel â€” stay open while dragging */ }}
+                  onSelect={handlePaletteSelect}
                 />
               )}
             </AddContentPanel>
@@ -651,22 +994,23 @@ export function ContentEditor(props: Props) {
                   ? Locale.label("common.element")
                   : Locale.label("site.section.layoutContainer")
               }
+              breadcrumb={getPanelBreadcrumb()}
               icon={
                 editElement
                   ? getElementTypeMeta(editElement.elementType).icon
                   : "view_agenda"
               }
-              onClose={() => {
-                if (editElement) handleElementCancel();
-                if (editSection) handleSectionCancel();
-              }}
+              onClose={() => requestPanelChange({ kind: "close" })}
             >
               {editElement && (
                 <ElementEdit
                   key={`${editElement.id || "new"}-${editElement.elementType || "element"}`}
                   inPanel
                   element={editElement}
+                  onCancel={() => requestPanelChange({ kind: "close" })}
+                  onDirtyChange={(dirty) => { panelDirtyRef.current = dirty; }}
                   updatedCallback={(updatedElement) => {
+                    panelDirtyRef.current = false;
                     setEditElement(null);
                     if (updatedElement) {
                       const isNewElement = !editElement.id;
@@ -677,6 +1021,7 @@ export function ContentEditor(props: Props) {
                           realtimeUpdateElement(updatedElement, s.elements);
                         });
                         setContainer(c);
+                        setHasUnpublishedChanges(true);
                         saveSnapshot(c, "After editing element");
                       }
                     } else {
@@ -691,8 +1036,11 @@ export function ContentEditor(props: Props) {
                 <SectionEdit
                   inPanel
                   section={editSection}
+                  onCancel={() => requestPanelChange({ kind: "close" })}
+                  onDirtyChange={(dirty) => { panelDirtyRef.current = dirty; }}
                   updatedCallback={() => {
                     const isNewSection = !editSection.id;
+                    panelDirtyRef.current = false;
                     setEditSection(null);
                     loadDataInternal(isNewSection ? "After adding section" : "After editing section");
                   }}

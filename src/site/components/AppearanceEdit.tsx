@@ -12,7 +12,7 @@ interface Props {
 }
 
 function getOgImage(img: any) {
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<string>((resolve) => {
     img.onload = function () {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -28,9 +28,13 @@ function getOgImage(img: any) {
 }
 
 async function dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {
-  const res: Response = await fetch(dataUrl);
-  const blob: Blob = await res.blob();
-  return new File([blob], fileName, { type: "image/png" });
+
+  const [header, base64 = ""] = dataUrl.split(",");
+  const mime = header.match(/data:(.*?);base64/)?.[1] ?? "image/png";
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new File([bytes], fileName, { type: mime });
 }
 
 function resizeImage(file: File, width: number, height: number) {
@@ -49,8 +53,8 @@ function resizeImage(file: File, width: number, height: number) {
         height
       );
     } catch (err) {
-      console.error("Error in resizing file");
-      reject();
+      console.error("Error in resizing file", err);
+      reject(err);
     }
   });
 }
@@ -61,17 +65,6 @@ export function AppearanceEdit(props: Props) {
   const [currentEditLogo, setCurrentEditLogo] = useState<string>("");
   const [currentUrl, setCurrentUrl] = useState("about:blank");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    const settings = [...currentSettings];
-    const keySetting = settings.filter((c: any) => c.keyName === name);
-
-    if (keySetting.length === 0) settings.push({ keyName: name, value, public: 1 });
-    else keySetting[0].value = value;
-
-    setCurrentSettings(settings);
-  };
 
   const init = () => {
     const startingUrl = (ArrayHelper.getOne(props.settings, "keyName", currentEditLogo))?.value;
@@ -97,26 +90,35 @@ export function AppearanceEdit(props: Props) {
   };
 
   const imageUpdated = async (dataUrl: string, keyName: string) => {
-    if (dataUrl !== null) {
-      const settings = [...currentSettings];
-      const keySetting = settings.filter((s: any) => s.keyName === keyName);
+    try {
+      if (dataUrl !== null) {
+        const settings = [...currentSettings];
+        const keySetting = settings.filter((s: any) => s.keyName === keyName);
 
-      if (keySetting.length === 0) settings.push({ keyName, value: await getValue(keyName, dataUrl), public: 1 });
-      else keySetting[0].value = await getValue(keyName, dataUrl);
+        if (keySetting.length === 0) settings.push({ keyName, value: await getValue(keyName, dataUrl), public: 1 });
+        else keySetting[0].value = await getValue(keyName, dataUrl);
 
-      if (keyName === "favicon_400x400") {
-        const index = settings.findIndex(s => s.keyName === "favicon_16x16");
-        if (dataUrl !== "") {
-          const imageDataUrl = await getImageUri(dataUrl, "favicon_16x16", 16, 16);
-          if (index !== -1) settings[index].value = imageDataUrl;
-          else settings.push({ keyName: "favicon_16x16", value: imageDataUrl, public: 1 });
-        } else if (index !== -1) settings[index].value = "";
+        if (keyName === "favicon_400x400") {
+          // The 16x16 derivation is a nice-to-have; never let a failure here block
+          // staging/saving the primary favicon (which is already staged above).
+          try {
+            const index = settings.findIndex(s => s.keyName === "favicon_16x16");
+            if (dataUrl !== "") {
+              const imageDataUrl = await getImageUri(dataUrl, "favicon_16x16", 16, 16);
+              if (index !== -1) settings[index].value = imageDataUrl;
+              else settings.push({ keyName: "favicon_16x16", value: imageDataUrl, public: 1 });
+            } else if (index !== -1) settings[index].value = "";
+          } catch (e) {
+            console.error("favicon_16x16 generation failed", e);
+          }
+        }
+
+        setCurrentSettings(settings);
       }
-
-      setCurrentSettings(settings);
+    } finally {
+      setEditLogo(false);
+      setCurrentUrl(null);
     }
-    setEditLogo(false);
-    setCurrentUrl(null);
   };
 
   const getLogoEditor = (logoName: string) => {
@@ -159,7 +161,7 @@ export function AppearanceEdit(props: Props) {
         <Box sx={{ backgroundColor: backgroundColor, minHeight: 120, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
           {hasLogo
             ? (<img src={logoImage.value} alt={title} style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }} />)
-            : (<Stack alignItems="center" spacing={1} sx={{ color: alpha("#000", 0.4) }}>
+            : (<Stack alignItems="center" spacing={1} sx={{ color: (theme) => alpha(theme.palette.common.black, 0.4) }}>
               <ImageIcon sx={{ fontSize: 48 }} />
               <Typography variant="body2">{Locale.label("site.appearanceEdit.noImage")}</Typography>
             </Stack>)

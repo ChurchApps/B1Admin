@@ -1,8 +1,10 @@
 import React, { memo, useCallback, useMemo } from "react";
 
-import { CampusEdit, ServiceEdit, ServiceTimeEdit } from "./";
+import { ServiceEdit, ServiceTimeEdit } from "./";
 import { Link } from "react-router-dom";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, IconButton, Paper, Box, Typography, Button, Stack } from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Typography, Button, Stack } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import {
   type AttendanceInterface,
   type CampusInterface,
@@ -17,9 +19,13 @@ import {
   Locale
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
+import { useCampuses } from "../../hooks/useCampuses";
 
 export const AttendanceSetup = memo(() => {
-  const [selectedCampus, setSelectedCampus] = React.useState<CampusInterface>(null);
+  // Campuses are mastered in the membership module; the attendance copy is
+  // frozen/deprecated. Drive the campus rows from the membership list so newly
+  // created campuses appear here (ready to have services added).
+  const campuses = useCampuses();
   const [selectedService, setSelectedService] = React.useState<ServiceInterface>(null);
   const [selectedServiceTime, setSelectedServiceTime] = React.useState<ServiceTimeInterface>(null);
 
@@ -40,7 +46,6 @@ export const AttendanceSetup = memo(() => {
 
 
   const removeEditors = useCallback(() => {
-    setSelectedCampus(null);
     setSelectedService(null);
     setSelectedServiceTime(null);
   }, []);
@@ -55,14 +60,6 @@ export const AttendanceSetup = memo(() => {
     removeEditors();
     refetch();
   }, [removeEditors, refetch]);
-
-  const selectCampus = useCallback(
-    (campus: CampusInterface) => {
-      removeEditors();
-      if (campus.name !== "Undefined") setSelectedCampus(campus);
-    },
-    [removeEditors]
-  );
 
   const selectService = useCallback(
     (service: ServiceInterface) => {
@@ -106,33 +103,8 @@ export const AttendanceSetup = memo(() => {
     [groups.data, groupServiceTimes.data]
   );
 
-  const handleAddCampus = useCallback(() => {
-    selectCampus({ id: "", name: Locale.label("attendance.attendanceSetup.newCampus") });
-  }, [selectCampus]);
-
-  const handleAddService = useCallback(() => {
-    selectService({ id: "", campusId: "", name: Locale.label("attendance.attendanceSetup.newService") });
-  }, [selectService]);
-
-  const handleAddServiceTime = useCallback(() => {
-    selectServiceTime({ id: "", serviceId: "", name: Locale.label("attendance.attendanceSetup.newServiceTime") });
-  }, [selectServiceTime]);
-
-  const editLinks = useMemo(
-    () => (
-      <IconButton
-        aria-label={Locale.label("attendance.attendanceSetup.addCampusAria")}
-        data-cy="add-campus-button"
-        onClick={handleAddCampus}
-        data-testid="add-campus-button">
-        <Icon color="primary">add</Icon>
-      </IconButton>
-    ),
-    [handleAddCampus]
-  );
-
   const tableHeader = useMemo(() => {
-    if (attendance.data.length === 0) return [];
+    if (attendance.data.length === 0 && campuses.length === 0) return [];
     return [
       <TableRow key="header">
         <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.attendancePage.campus")}</TableCell>
@@ -142,7 +114,7 @@ export const AttendanceSetup = memo(() => {
         <TableCell sx={{ fontWeight: 600, color: "text.secondary" }}>{Locale.label("attendance.attendancePage.group")}</TableCell>
       </TableRow>
     ];
-  }, [attendance.data.length]);
+  }, [attendance.data.length, campuses.length]);
 
   const getRows = useCallback(() => {
     const rows: JSX.Element[] = [];
@@ -151,12 +123,12 @@ export const AttendanceSetup = memo(() => {
     let lastServiceTime = "";
     let lastCategory = "";
 
-    if (attendance.data.length === 0) {
+    if (attendance.data.length === 0 && campuses.length === 0) {
       rows.push(
         <TableRow key="0">
           <TableCell colSpan={5} sx={{ textAlign: "center", py: 4 }}>
             <Stack spacing={2} alignItems="center">
-              <Icon sx={{ fontSize: 48, color: "#ccc" }}>group</Icon>
+              <Icon sx={{ fontSize: 48, color: "var(--text-muted)" }}>group</Icon>
               <Typography variant="h6" color="text.secondary">
                 {Locale.label("attendance.attendancePage.groupAttMsg")}
               </Typography>
@@ -170,7 +142,7 @@ export const AttendanceSetup = memo(() => {
       return rows;
     }
 
-    const getRow = (campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface, key: string, isLast?: { campus?: boolean; service?: boolean }) => {
+    const getRow = (campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface, key: string, _isLast?: { campus?: boolean; service?: boolean }) => {
       const campusChanged = campus?.name !== lastCampus;
       const serviceChanged = service?.name !== lastService;
 
@@ -179,21 +151,10 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Icon sx={{ color: "text.secondary", fontSize: 20 }}>church</Icon>
-            <Button
-              variant="text"
-              size="small"
-              onClick={() => selectCampus(campus)}
-              sx={{
-                color: "primary.main",
-                textTransform: "none",
-                fontWeight: 600,
-                minWidth: "auto",
-                p: 0,
-                fontSize: "0.95rem"
-              }}>
+            <Icon sx={{ color: "primary.main", fontSize: 20 }}>church</Icon>
+            <Typography sx={{ fontWeight: 600, fontSize: "0.95rem", color: "text.primary" }}>
               {campus.name}
-            </Button>
+            </Typography>
           </Stack>
         );
 
@@ -202,7 +163,7 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 2 }}>
-            <Icon sx={{ color: "#999", fontSize: 18 }}>calendar_month</Icon>
+            <Icon sx={{ color: "var(--text-muted)", fontSize: 18 }}>calendar_month</Icon>
             <Button
               variant="text"
               size="small"
@@ -224,7 +185,7 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 4 }}>
-            <Icon sx={{ color: "#bbb", fontSize: 16 }}>schedule</Icon>
+            <Icon sx={{ color: "var(--text-muted)", fontSize: 16 }}>schedule</Icon>
             <Button
               variant="text"
               size="small"
@@ -259,8 +220,8 @@ export const AttendanceSetup = memo(() => {
           <></>
         ) : (
           <Stack direction="row" spacing={1} alignItems="center" sx={{ pl: 8 }}>
-            <Icon sx={{ color: "#ddd", fontSize: 12 }}>circle</Icon>
-            <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "primary.main", fontWeight: 400, fontSize: "0.85rem" }}>
+            <Icon sx={{ color: "var(--border-main)", fontSize: 12 }}>circle</Icon>
+            <Typography component={Link} to={"/groups/" + group.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500, fontSize: "0.85rem" }}>
               {group.name}
             </Typography>
           </Stack>
@@ -289,19 +250,13 @@ export const AttendanceSetup = memo(() => {
       <TableRow key={key}>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}>
-          <Button
-            size="small"
-            startIcon={<Icon sx={{ fontSize: 16 }}>add</Icon>}
+          <AppIconButton
+            label={Locale.label("common.add")}
+            icon={<AddIcon />}
+            data-testid={"add-service-button-" + campus.id}
             onClick={() => selectService({ id: "", campusId: campus.id, name: "" })}
-            sx={{
-              color: "text.secondary",
-              textTransform: "none",
-              fontSize: "0.85rem",
-              pl: 2,
-              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" }
-            }}>
-            {Locale.label("attendance.attendanceSetup.addService")}
-          </Button>
+            sx={{ ml: 2 }}
+          />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
@@ -314,71 +269,77 @@ export const AttendanceSetup = memo(() => {
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}>
-          <Button
-            size="small"
-            startIcon={<Icon sx={{ fontSize: 14 }}>add</Icon>}
+          <AppIconButton
+            label={Locale.label("common.add")}
+            icon={<AddIcon />}
+            data-testid={"add-service-time-button-" + service.id}
             onClick={() => selectServiceTime({ id: "", serviceId: service.id, name: "" })}
-            sx={{
-              color: "text.secondary",
-              textTransform: "none",
-              fontSize: "0.8rem",
-              pl: 4,
-              "&:hover": { color: "#1565C0", backgroundColor: "rgba(21, 101, 192, 0.04)" }
-            }}>
-            {Locale.label("attendance.attendanceSetup.addServiceTime")}
-          </Button>
+            sx={{ ml: 4 }}
+          />
         </TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
         <TableCell sx={{ py: 0.5, border: 0 }}></TableCell>
       </TableRow>
     );
 
-    // Group data by campus and service
-    const campusGroups: { [key: string]: any } = {};
+    // Group the attendance tree's services/service-times by campus id. Campus
+    // names come from the membership master, not the (frozen) tree payload.
+    const servicesByCampus: { [campusId: string]: { [serviceName: string]: { service: any; serviceTimes: any[] } } } = {};
     attendance.data.forEach((a) => {
-      const campusName = a.campus?.name || "Unknown";
-      if (!campusGroups[campusName]) campusGroups[campusName] = { campus: a.campus, services: {} };
-
+      if (!a.service) return; // campus-only tree row; the campus comes from the membership list below
+      const cid = a.campus?.id || "";
+      if (!servicesByCampus[cid]) servicesByCampus[cid] = {};
       const serviceName = a.service?.name || "Unknown";
-      if (!campusGroups[campusName].services[serviceName]) {
-        campusGroups[campusName].services[serviceName] = { service: a.service, serviceTimes: [] };
-      }
+      if (!servicesByCampus[cid][serviceName]) servicesByCampus[cid][serviceName] = { service: a.service, serviceTimes: [] };
+      servicesByCampus[cid][serviceName].serviceTimes.push(a);
+    });
 
-      campusGroups[campusName].services[serviceName].serviceTimes.push(a);
+    // Canonical campus list = membership campuses, plus any campus id that still
+    // has attendance services but is missing from membership (legacy safety).
+    const campusList: CampusInterface[] = campuses.map((c) => ({ id: c.id, name: c.name }));
+    Object.keys(servicesByCampus).forEach((cid) => {
+      if (cid && !campusList.some((c) => c.id === cid)) {
+        const treeCampus = attendance.data.find((a) => a.campus?.id === cid)?.campus;
+        if (treeCampus) campusList.push({ id: treeCampus.id, name: treeCampus.name });
+      }
     });
 
     // Render grouped structure
-    Object.values(campusGroups).forEach((campusGroup: any, campusIdx) => {
-      const servicesList = Object.values(campusGroup.services);
+    campusList.forEach((campus, campusIdx) => {
+      const services = servicesByCampus[campus.id] || {};
+      const servicesList = Object.values(services);
 
-      servicesList.forEach((serviceGroup: any, serviceIdx) => {
-        serviceGroup.serviceTimes.forEach((a: any, stIdx: number) => {
-          const filteredGroups = a.serviceTime === undefined ? [] : getGroups(a.serviceTime.id);
-          const sortedGroups = filteredGroups.sort(compare);
-          if (sortedGroups.length > 0) {
-            sortedGroups.forEach((g) => {
-              rows.push(getRow(a.campus, a.service, a.serviceTime, g, `${a.serviceTime?.id || stIdx}-${g.id}`));
-            });
-          } else {
-            rows.push(getRow(a.campus, a.service, a.serviceTime, undefined, `st-${campusIdx}-${serviceIdx}-${stIdx}`));
-          }
+      if (servicesList.length === 0) {
+        // Campus with no services yet — show its header so a service can be added.
+        rows.push(getRow(campus, undefined, undefined, undefined, `campus-${campusIdx}`));
+      } else {
+        servicesList.forEach((serviceGroup: any, serviceIdx) => {
+          serviceGroup.serviceTimes.forEach((a: any, stIdx: number) => {
+            const filteredGroups = a.serviceTime === undefined ? [] : getGroups(a.serviceTime.id);
+            const sortedGroups = filteredGroups.sort(compare);
+            if (sortedGroups.length > 0) {
+              sortedGroups.forEach((g) => {
+                rows.push(getRow(campus, a.service, a.serviceTime, g, `${a.serviceTime?.id || stIdx}-${g.id}`));
+              });
+            } else {
+              rows.push(getRow(campus, a.service, a.serviceTime, undefined, `st-${campusIdx}-${serviceIdx}-${stIdx}`));
+            }
+          });
+
+          // Add "Add Service Time" button after each service
+          rows.push(getAddServiceTimeRow(serviceGroup.service, `add-st-${campusIdx}-${serviceIdx}`));
         });
-
-        // Add "Add Service Time" button after each service
-        rows.push(getAddServiceTimeRow(serviceGroup.service, `add-st-${campusIdx}-${serviceIdx}`));
-      });
+      }
 
       // Add "Add Service" button after each campus
-      rows.push(getAddServiceRow(campusGroup.campus, `add-svc-${campusIdx}`));
+      rows.push(getAddServiceRow(campus, `add-svc-${campusIdx}`));
     });
 
     unassignedGroups.forEach((g) => {
       rows.push(getRow({ name: Locale.label("attendance.attendanceSetup.unassigned") }, undefined, undefined, g, `unassigned-${g.id}`));
     });
     return rows;
-  }, [
-    attendance.data, getGroups, compare, unassignedGroups, selectCampus, selectService, selectServiceTime, handleAddService, handleAddServiceTime
-  ]);
+  }, [attendance.data, campuses, getGroups, compare, unassignedGroups, selectService, selectServiceTime]);
 
   const table = useMemo(() => {
     if (attendance.isLoading) return <Loading />;
@@ -402,20 +363,18 @@ export const AttendanceSetup = memo(() => {
 
   return (
     <>
-      <CampusEdit campus={selectedCampus} updatedFunction={handleUpdated} />
       <ServiceEdit service={selectedService} updatedFunction={handleUpdated} />
       <ServiceTimeEdit serviceTime={selectedServiceTime} updatedFunction={handleUpdated} />
 
       {/* Modern Header Section */}
-      <Box sx={{ p: 3, borderBottom: "1px solid", borderBottomColor: "divider" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Icon sx={{ color: "primary.main", fontSize: 28 }}>group</Icon>
-            <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Icon sx={{ color: "primary.main", fontSize: 20 }}>group</Icon>
+            <Typography variant="h6">
               {Locale.label("attendance.attendancePage.groups")}
             </Typography>
           </Stack>
-          {editLinks}
         </Stack>
       </Box>
 

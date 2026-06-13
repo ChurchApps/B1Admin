@@ -10,6 +10,7 @@ interface ConfirmDialogProps {
   destructive?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
+  "data-testid"?: string;
 }
 
 export function ConfirmDialog(props: ConfirmDialogProps) {
@@ -25,15 +26,15 @@ export function ConfirmDialog(props: ConfirmDialogProps) {
   } = props;
 
   return (
-    <Dialog open={open} onClose={onCancel} fullWidth maxWidth="xs">
+    <Dialog open={open} onClose={onCancel} fullWidth maxWidth="xs" data-testid={props["data-testid"]}>
       <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1, fontSize: "1rem", fontWeight: 600 }}>
         {destructive && (
-          <Icon fontSize="small" sx={{ color: "#dc2626" }}>warning_amber</Icon>
+          <Icon fontSize="small" sx={{ color: "error.main" }}>warning_amber</Icon>
         )}
         {title}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText sx={{ color: "#4b5563", fontSize: "0.9rem" }}>{message}</DialogContentText>
+        <DialogContentText sx={{ color: "text.secondary", fontSize: "0.9rem" }}>{message}</DialogContentText>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 2 }}>
         <Button onClick={onCancel} sx={{ textTransform: "none" }}>

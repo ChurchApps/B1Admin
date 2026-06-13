@@ -6,7 +6,7 @@ import { Add as AddIcon, People as PeopleIcon } from "@mui/icons-material";
 import { type GroupInterface } from "@churchapps/helpers";
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { GroupAdd } from "../../groups/components";
-import { EmptyState } from "../../components/ui";
+import { CountChip, EmptyState } from "../../components/ui";
 
 interface Props {
   ministry: GroupInterface;
@@ -22,7 +22,7 @@ export const TeamList = memo((props: Props) => {
   }, []);
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => {
+    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: any) => {
       if (isMounted()) setGroups(ArrayHelper.getAll(data, "categoryName", props.ministry.id));
     });
   }, [props.ministry.id, isMounted]);
@@ -46,10 +46,11 @@ export const TeamList = memo((props: Props) => {
     <Box>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
-          <PeopleIcon sx={{ color: "primary.main" }} />
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          <PeopleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+          <Typography variant="h6">
             {Locale.label("plans.teamList.teams")}
           </Typography>
+          {groups.length > 0 && <CountChip count={groups.length} />}
         </Stack>
         {UserHelper.checkAccess(Permissions.membershipApi.groups.edit) && groups.length > 0 && (
           <Button
@@ -106,7 +107,7 @@ export const TeamList = memo((props: Props) => {
                         to={`/groups/${g.id}?tag=team`}
                         sx={{
                           fontWeight: 500,
-                          color: "primary.main",
+                          color: "var(--link)",
                           textDecoration: "none",
                           "&:hover": { textDecoration: "underline" }
                         }}>

@@ -1,8 +1,6 @@
-import React from "react";
 import { Loading, PageHeader } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { Box, Paper } from "@mui/material";
-import { Inbox as InboxIcon } from "@mui/icons-material";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
 import { PendingJoinRequests } from "./components/PendingJoinRequests";
 
@@ -16,7 +14,7 @@ const PendingRequestsPage = () => {
 
   return (
     <>
-      <PageHeader icon={<InboxIcon />} title="Pending Join Requests" subtitle="Approve or decline member-initiated requests across all groups." />
+      <PageHeader title="Pending Join Requests" subtitle="Approve or decline member-initiated requests across all groups." />
       <Box sx={{ p: 3 }} data-testid="pending-requests-page">
         <Paper sx={{ p: 2 }}>
           {requests.data && requests.data.length > 0 ? (

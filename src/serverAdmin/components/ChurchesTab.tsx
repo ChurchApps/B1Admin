@@ -14,7 +14,7 @@ export const ChurchesTab = () => {
 
   const loadData = () => {
     const term = escape(searchText.trim());
-    ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data) => setChurches(data));
+    ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data: any) => setChurches(data));
   };
 
   const handleArchive = (church: ChurchInterface) => {
@@ -77,9 +77,8 @@ export const ChurchesTab = () => {
   };
 
   const getManageAccessLink = (church: ChurchInterface) => {
-    let result: JSX.Element = null;
-    result = (
-      <button type="button" data-churchid={church.id} onClick={handleEditAccess} style={{ marginRight: 40, background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+    const result: JSX.Element = (
+      <button type="button" data-churchid={church.id} onClick={handleEditAccess} style={{ marginRight: 40, background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
         {church.name}
       </button>
     );

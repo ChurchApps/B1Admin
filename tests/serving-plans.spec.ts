@@ -23,14 +23,15 @@ test.describe.serial('Serving Management - Plans', () => {
     await page?.context().close();
   });
 
-  // All tests pivot on the Zebedee Ministry tab on /serving (root). Edit
-  // Ministry / Edit Plan Type flows navigate off /serving (to /groups or
-  // /serving/planTypes), so re-enter /serving before each test. Also dismiss
-  // any leftover SendInviteDialog (e.g. from adding Dorothy with an email).
+  // Plans now live at /serving/plans (the Serving section defaults to My Work).
+  // Edit Ministry / Edit Plan Type flows navigate off to /groups or
+  // /serving/planTypes, so re-enter the plans page before each test. Also
+  // dismiss any leftover SendInviteDialog (e.g. from adding Dorothy with an email).
   test.beforeEach(async () => {
     await dismissSendInviteIfPresent(page, 500);
-    if (!/\/serving(?!\/)/.test(page.url())) {
-      await navigateToServing(page);
+    if (!/\/serving\/plans/.test(page.url())) {
+      await page.goto("/serving/plans");
+      await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
     }
   });
 
@@ -78,7 +79,7 @@ test.describe.serial('Serving Management - Plans', () => {
       const groupPost = page.waitForResponse(
         r => r.url().includes('/membership/groups') && r.request().method() === 'POST',
         { timeout: 15000 }
-      ).catch(() => null);
+      ).catch((): null => null);
       await saveBtn.click();
       await groupPost;
       const verifiedEdit = page.locator('p').getByText('Zebedee Ministry');
@@ -112,9 +113,11 @@ test.describe.serial('Serving Management - Plans', () => {
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add').last();
+      // Result rows render icon-only AppIconButtons; a text "Add" locator would
+      // substring-match the "Add a New Person" button and open the wrong dialog.
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
-      const memberPost = page.waitForResponse(r => r.url().includes('/groupmembers') && r.request().method() === 'POST', { timeout: 15000 }).catch(() => null);
+      const memberPost = page.waitForResponse(r => r.url().includes('/groupmembers') && r.request().method() === 'POST', { timeout: 15000 }).catch((): null => null);
       await addBtn.click();
       await memberPost;
       const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Dorothy Jackson');
@@ -137,10 +140,11 @@ test.describe.serial('Serving Management - Plans', () => {
       const equalsCondition = page.locator('li[data-value="equals"]');
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
+      // Advanced search fires automatically as conditions change — no Search button.
+      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill('Grace');
-      const searchBtn = page.locator('button').getByText('Search').last();
-      await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add');
+      await searched;
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Grace Jackson');
@@ -253,7 +257,8 @@ test.describe.serial('Serving Management - Plans', () => {
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = page.locator('button').getByText('Edit');
+      // Plan rows expose an icon-only AppIconButton ("Edit"), no text.
+      const editBtn = page.locator('button[aria-label="Edit"]').first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const planName = page.locator('[name="name"]');
@@ -272,7 +277,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = page.locator('button').getByText('Edit');
+      const editBtn = page.locator('button[aria-label="Edit"]').first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const planName = page.locator('[name="name"]');
@@ -290,7 +295,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await plansBtn.click()
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
-      const editBtn = page.locator('button').getByText('Edit');
+      const editBtn = page.locator('button[aria-label="Edit"]').first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const deleteBtn = page.locator('button').getByText('Delete');
@@ -348,7 +353,7 @@ test.describe.serial('Serving Management - Plans', () => {
       await personSearch.fill('Dorothy');
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add').last();
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
@@ -373,10 +378,11 @@ test.describe.serial('Serving Management - Plans', () => {
       const equalsCondition = page.locator('li[data-value="equals"]');
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
+      // Advanced search fires automatically as conditions change — no Search button.
+      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch((): null => null);
       await firstName.fill('Grace');
-      const searchBtn = page.locator('button').getByText('Search').last();
-      await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Add');
+      await searched;
+      const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
@@ -466,17 +472,19 @@ test.describe.serial('Serving Management - Plans', () => {
 // Edge-case extensions: Plans page navigation surface (independent of Zebedee chain).
 test.describe('Plans page navigation', () => {
   test('Add Ministry button is visible on the Serving Plans page', async ({ page }) => {
+    await page.goto('/serving/plans');
+    await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
     await expect(page.locator('button').getByText('Add Ministry').first()).toBeVisible({ timeout: 15000 });
   });
 
-  test('Plans subnavigation reveals secondary entries (Songs, Tasks)', async ({ page }) => {
+  test('Plans subnavigation reveals secondary entries (Songs, My Work)', async ({ page }) => {
     // SecondaryMenu surfaces entries based on the active primary section.
     await expect(page.locator('[id="secondaryMenu"]').getByText('Songs').first()).toBeVisible({ timeout: 15000 });
-    await expect(page.locator('[id="secondaryMenu"]').getByText('Tasks').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[id="secondaryMenu"]').getByText('My Work').first()).toBeVisible({ timeout: 15000 });
   });
 
-  test('Tasks secondary item navigates to /serving/tasks', async ({ page }) => {
-    await page.locator('[id="secondaryMenu"]').getByText('Tasks').first().click();
+  test('My Work secondary item navigates to /serving/tasks', async ({ page }) => {
+    await page.locator('[id="secondaryMenu"]').getByText('My Work').first().click();
     await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
     await expect(page).toHaveURL(/\/serving\/tasks/);
   });

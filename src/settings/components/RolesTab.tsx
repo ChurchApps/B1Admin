@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Roles, RoleEdit } from "./";
 import { type ChurchInterface } from "@churchapps/apphelper";
 

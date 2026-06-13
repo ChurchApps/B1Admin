@@ -213,6 +213,7 @@
     "done": "Klar",
     "duplicate": "Duplicera",
     "edit": "Redigera",
+    "element": "Element",
     "errorBoundary": {
       "message": "Något gick fel. Försök igen eller kontakta support om problemet kvarstår.",
       "retry": "Försök igen",
@@ -259,8 +260,7 @@
     "tryAgain": "Försök igen",
     "update": "Uppdatera",
     "website": "Webbplats",
-    "yes": "Ja",
-    "element": "Element"
+    "yes": "Ja"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Lägg till avsnitt",
+      "backToSite": "Tillbaka till webbplatsen",
       "blockPreview": "Blockförhandsgranskning",
+      "discard": "Förkasta",
+      "discardElementMessage": "Förkasta osparade ändringar i detta element?",
+      "discardElementTitle": "Förkasta ändringar?",
+      "discardSectionMessage": "Förkasta osparade ändringar i detta avsnitt?",
       "dropToAddElement": "Släpp här för att lägga till element",
       "dropToAddSection": "Släpp här för att lägga till avsnitt",
+      "keepEditing": "Fortsätt redigera",
       "scrollDown": "Bläddra ner",
-      "scrollUp": "Bläddra upp"
+      "scrollUp": "Bläddra upp",
+      "smallScreenMessage": "Öppna denna sida på en surfplatta eller dator för att redigera din webbplats.",
+      "smallScreenTitle": "Denna redigerare behöver en större skärm"
     },
     "cssEdit": {
       "advancedFeature": "Avancerad funktion:",
@@ -2937,13 +2946,24 @@
       "ago": "sedan",
       "block": "Block",
       "desktop": "Dator",
+      "disablePublish": "Stäng av publicering",
+      "disablePublishConfirm": "Stäng av publicering för denna sida? Ändringar går då direkt live igen.",
+      "discardChanges": "Förkasta opublicerade ändringar",
+      "discardChangesConfirm": "Förkasta alla ändringar som gjorts sedan senaste publiceringen? Redigeraren återställs till liveversionen.",
       "exit": "Avsluta",
       "justNow": "just nu",
       "mobile": "Mobil",
-      "notSavedYet": "Inga ändringar än",
       "page": "Sida",
+      "publish": "Publicera",
+      "publishOffTip": "Ändringar går just nu live direkt. Publicera för att spara en liveversion och hålla framtida ändringar privata till nästa publicering.",
+      "publishedLabel": "Publicerad",
       "redoTip": "Gör om (Ctrl+Shift+Z)",
+      "saveError": "Kunde inte spara",
       "savedAllChanges": "Alla ändringar sparade",
+      "saving": "Sparar…",
+      "statusLiveOnSave": "Live vid sparande",
+      "statusPublished": "Publicerad",
+      "statusUnpublishedChanges": "Opublicerade ändringar",
       "switchToDesktop": "Byt till datorvy",
       "switchToMobile": "Byt till mobilvy",
       "undoTip": "Ångra (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Kort",
       "carousel": "Karusell",
       "church": "Kyrka",
+      "column": "Kolumn",
       "common": "Vanlig",
       "content": "Innehåll",
       "descBox": "Flexibel containerruta",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Aktivera Lightbox"
+      "enableLightbox": "Aktivera Lightbox",
+      "groupAnimation": "Animation",
+      "groupContent": "Innehåll",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Flytta ner",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Fullständig dokumentation",
       "moveBody": "Dra avsnitt och element för att ordna om dem. Använd upp/ner-pilarna i markeringsverktygsfältet för exakta flyttningar.",
       "moveTitle": "Ordna om",
+      "shortcutsBody": "Delete tar bort det markerade elementet, Ctrl+D duplicerar det, Alt+upp/ner flyttar det och Esc avmarkerar.",
+      "shortcutsTitle": "Tangentbordsgenvägar",
       "title": "Grundläggande sidredigerare",
       "undoBody": "Använd Ctrl+Z för att ångra och Ctrl+Shift+Z för att göra om. Öppna historikpanelen från menyn för att hoppa till ett tidigare läge.",
       "undoTitle": "Ångra och historik"
@@ -3239,6 +3265,7 @@
       "previewPage": "Förhandsvisa sida",
       "showLogin": "Visa inloggning",
       "showLoginTooltip": "Visa inloggningsknapp i navigeringsfältet",
+      "startFromTemplate": "Börja från en mall",
       "subtitle": "Hantera webbplatsens sidor, innehåll och navigering",
       "toggleLoginVisibility": "Växla synlighet för inloggningsknapp",
       "totalPages": "Totalt antal sidor",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Är du säker på att du vill ta bort denna sektion permanent?",
       "confirmDuplicate": "Är du säker på att du vill göra en kopia av denna sektion och allt dess innehåll?",
+      "deleteSectionBody": "Detta tar bort avsnittet och allt i det permanent. Du kan ångra detta med Ctrl+Z.",
+      "deleteSectionTitle": "Ta bort avsnitt?",
       "editSection": "Redigera sektion",
       "layoutContainer": "Layout-behållare",
       "section": "Avsnitt"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicera",
       "duplicateSection": "Duplicera sektion",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Vår berättelse",
+      "all": "Alla",
+      "blank": "Tom sektion",
+      "category": {
+        "about": "Om oss",
+        "cta": "Uppmaning till handling",
+        "giving": "Givande",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Personer och grupper",
+        "services": "Gudstjänster"
+      },
+      "connectColumns": "Kontaktkolumner",
+      "ctaBanner": "Nästa steg-banner",
+      "faqSection": "Vanliga frågor",
+      "findUs": "Hitta oss",
+      "galleryRow": "Fotorad",
+      "givingBanner": "Banner för givande",
+      "givingOptions": "Sätt att ge",
+      "groupListSection": "Grupplista",
+      "groupsBrowser": "Bläddra bland grupper",
+      "heroCentered": "Hero med foto",
+      "heroGradient": "Hero med gradient",
+      "heroSplit": "Delad hero",
+      "ministriesCards": "Verksamhetskort",
+      "sermonsLatest": "Senaste predikningar",
+      "serviceTimes": "Gudstjänsttider",
+      "staffGrid": "Personalöversikt",
+      "storyColumns": "Tre kolumner",
+      "testimony": "Vittnesbördscitat",
+      "title": "Lägg till en sektion",
+      "verseBanner": "Banner med bibelvers",
+      "watchOnline": "Titta online",
+      "welcome": "Välkomsttext"
+    },
+    "sectionToolbar": {
+      "delete": "Ta bort avsnitt",
+      "dragToReorder": "Dra för att ordna om",
+      "duplicate": "Duplicera avsnitt",
+      "moveDown": "Flytta avsnittet nedåt",
+      "moveUp": "Flytta avsnittet uppåt",
+      "settings": "Avsnittsinställningar"
+    },
+    "siteTemplates": {
+      "back": "Tillbaka",
+      "create": "Skapa webbplats",
+      "creating": "Skapar {title}...",
+      "descriptions": {
+        "classic": "En komplett traditionell webbplats med en välkomnande startsida, en om oss-sida och en sida för att planera ditt besök.",
+        "community": "Sätter grupper och verksamheter i centrum så att människor snabbt kommer in i gemenskapen.",
+        "heritage": "En klassisk design med Bibeln i fokus för etablerade församlingar.",
+        "media": "Byggd kring din livesändning och ditt predikoarkiv, för kyrkor med stark närvaro online.",
+        "modern": "Ett modernt utseende med djärva gradienter, onlinegudstjänster och en kontaktsida.",
+        "simple": "En ren startwebbplats med två sidor, perfekt för församlingsplanteringar och små församlingar.",
+        "visitor": "Fokuserad på att besvara förstagångsbesökarens frågor innan de kommer."
+      },
+      "errFailed": "Det gick inte att skapa webbplatsen. Försök igen.",
+      "exists": "Finns redan",
+      "existsNote": "Sidor markerade med ”finns redan” lämnas oförändrade.",
+      "intro": "Välj en startwebbplats nedan. Vi skapar sidorna och navigeringslänkarna åt dig – allt kan redigeras efteråt.",
+      "names": {
+        "classic": "Klassisk kyrka",
+        "community": "Gemenskapsliv",
+        "heritage": "Tradition",
+        "media": "Online först",
+        "modern": "Modernt välkomnande",
+        "simple": "Enkel start",
+        "visitor": "Besökarfokus"
+      },
+      "nav": {
+        "about": "Om oss",
+        "connect": "Kontakt",
+        "give": "Ge",
+        "home": "Hem",
+        "live": "Live",
+        "sermons": "Predikningar",
+        "visit": "Besök"
+      },
+      "navLinksNote": "Lägger även till navigeringslänkar till inbyggda sidor:",
+      "pageCount": "{count} sidor",
+      "pages": {
+        "about": "Om oss",
+        "connect": "Kontakt",
+        "home": "Hem",
+        "visit": "Planera ditt besök"
+      },
+      "title": "Börja från en mall"
     },
     "spacingScaleEdit": {
       "buttonOne": "Knapp 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animationer",
       "animationsDesc": "Effekt när elementet visas.",
+      "hideOnDesktop": "Dölj på dator",
+      "hideOnMobile": "Dölj på mobil",
       "styles": "Stilar",
-      "stylesDesc": "Avancerade utseendealternativ."
+      "stylesDesc": "Avancerade utseendealternativ.",
+      "visibility": "Synlighet:"
     },
     "stylesManager": {
       "color": "Färgpalett",

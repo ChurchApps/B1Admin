@@ -2,8 +2,9 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type SongDetailInterface } from "../../../helpers";
 import { ChordProHelper } from "../../../helpers/ChordProHelper";
 import { ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Card, CardContent, Typography, Stack, IconButton, Box, Alert, Button } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Alert, Button } from "@mui/material";
 import { Edit as EditIcon, QueueMusic as ArrangementIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { Keys } from "./Keys";
 import { ArrangementEdit } from "./ArrangementEdit";
 import { useNavigate } from "react-router-dom";
@@ -40,8 +41,13 @@ export const Arrangement = memo((props: Props) => {
     if (!songDetail?.praiseChartsId) return;
 
     const data: any = await ApiHelper.get("/praiseCharts/raw/" + songDetail.praiseChartsId, "ContentApi");
+    const lyrics = data?.details?.lyrics;
+    if (!lyrics) {
+      setCanImportLyrics(false);
+      return;
+    }
     const a = { ...props.arrangement };
-    const lines = data.details.lyrics.split("\n");
+    const lines = lyrics.split("\n");
 
     const newLines = [];
     let nextLineIsTitle = true;
@@ -77,21 +83,13 @@ export const Arrangement = memo((props: Props) => {
         <CardContent>
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
             <Stack direction="row" spacing={2} alignItems="center">
-              <ArrangementIcon sx={{ color: "primary.main", fontSize: 24 }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <ArrangementIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("songs.arrangement.title") || "Arrangement"} - {props.arrangement?.name}
               </Typography>
             </Stack>
             {canEdit && (
-              <IconButton
-                onClick={() => setEdit(true)}
-                sx={{
-                  color: "primary.main",
-                  "&:hover": { backgroundColor: "primary.light" }
-                }}
-                aria-label="Edit arrangement">
-                <EditIcon />
-              </IconButton>
+              <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={() => setEdit(true)} />
             )}
           </Stack>
 

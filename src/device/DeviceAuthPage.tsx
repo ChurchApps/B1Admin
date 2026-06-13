@@ -37,7 +37,6 @@ export const DeviceAuthPage: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState(false);
   const [step, setStep] = React.useState<"code" | "confirm">("code");
-  const [autoSubmitted, setAutoSubmitted] = React.useState(false);
 
   // Use the already-selected church from login
   const churchName = UserHelper.currentUserChurch?.church?.name;
@@ -147,7 +146,7 @@ export const DeviceAuthPage: React.FC = () => {
       return (
         <>
           <div style={{ textAlign: "center" }}>
-            <Icon style={{ fontSize: 120, marginTop: 30, color: "var(--success-main, #4caf50)" }}>check_circle</Icon>
+            <Icon sx={{ fontSize: 120, mt: 3.75, color: "success.main" }}>check_circle</Icon>
             <h2>{Locale.label("device.deviceAuthPage.deviceAuthorizedHeading")}</h2>
             <p>{Locale.label("device.deviceAuthPage.deviceAuthorizedMessage")}</p>
           </div>
@@ -238,7 +237,6 @@ export const DeviceAuthPage: React.FC = () => {
                 <Button
                   fullWidth
                   variant="contained"
-                  color="error"
                   onClick={handleDeny}
                   disabled={loading}
                 >

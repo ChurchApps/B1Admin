@@ -1,10 +1,13 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { type GroupInterface, type GroupServiceTimeInterface, type ServiceTimeInterface } from "@churchapps/helpers";
+import { type GroupInterface, type GroupServiceTimeInterface, type ServiceInterface, type ServiceTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import {
-  Table, TableBody, TableRow, TableCell, FormControl, InputLabel, Select, Button, MenuItem, type SelectChangeEvent,
+  Table, TableBody, TableRow, TableCell, FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent,
   Icon
 } from "@mui/material";
+import { PersonRemove as PersonRemoveIcon, Add as AddIcon } from "@mui/icons-material";
+import { useCampuses } from "../../hooks/useCampuses";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface Props {
   group: GroupInterface;
@@ -12,13 +15,19 @@ interface Props {
 }
 
 export const ServiceTimesEdit = memo((props: Props) => {
+  // Campuses are mastered in the membership module; build the "Campus - Service -
+  // Service Time" label client-side rather than relying on the (frozen)
+  // attendance longName join.
+  const campuses = useCampuses();
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [serviceTimes, setServiceTimes] = React.useState<ServiceTimeInterface[]>([]);
+  const [services, setServices] = React.useState<ServiceInterface[]>([]);
   const [addServiceTimeId, setAddServiceTimeId] = React.useState("");
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data) => setGroupServiceTimes(data));
-    ApiHelper.get("/servicetimes", "AttendanceApi").then((data) => {
+    ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => setGroupServiceTimes(data));
+    ApiHelper.get("/services", "AttendanceApi").then((data: any) => setServices(data));
+    ApiHelper.get("/servicetimes", "AttendanceApi").then((data: any) => {
       setServiceTimes(data);
       const st = data[0] as ServiceTimeInterface;
       if (data.length > 0) setAddServiceTimeId(st.id);
@@ -42,25 +51,24 @@ export const ServiceTimesEdit = memo((props: Props) => {
           <Icon>schedule</Icon> {gst.serviceTime.name}
         </TableCell>
         <TableCell>
-          <button
-            type="button"
-            style={{ color: "#dc3545", background: "none", border: 0, padding: 0, cursor: "pointer" }}
-            data-id={gst.id}
-            onClick={handleRemove}>
-            <Icon>person_remove</Icon> {Locale.label("common.remove")}
-          </button>
+          <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} data-id={gst.id} onClick={handleRemove} />
         </TableCell>
       </TableRow>
     ));
   }, [groupServiceTimes, handleRemove]);
 
   const options = useMemo(() => {
-    return serviceTimes.map((serviceTime, index) => (
-      <MenuItem key={index} value={serviceTime.id}>
-        {serviceTime.longName}
-      </MenuItem>
-    ));
-  }, [serviceTimes]);
+    return serviceTimes.map((serviceTime, index) => {
+      const service = services.find((s) => s.id === serviceTime.serviceId);
+      const campusName = campuses.find((c) => c.id === service?.campusId)?.name || "";
+      const longName = [campusName, service?.name, serviceTime.name].filter(Boolean).join(" - ");
+      return (
+        <MenuItem key={index} value={serviceTime.id}>
+          {longName || serviceTime.longName}
+        </MenuItem>
+      );
+    });
+  }, [serviceTimes, services, campuses]);
 
   const handleAdd = useCallback(
     (e: React.MouseEvent) => {
@@ -97,9 +105,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
           endAdornment={
             <>
               <Icon>arrow_drop_down</Icon>
-              <Button variant="contained" data-cy="add-service-time" onClick={handleAdd}>
-                <Icon>add</Icon> {Locale.label("common.add")}
-              </Button>
+              <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" size="medium" data-cy="add-service-time" onClick={handleAdd} />
             </>
           }>
           {options}

@@ -7,7 +7,7 @@ export const LinkedAccounts = () => {
   const [settings, setSettings] = React.useState<SettingInterface[]>([]);
 
   const loadData = () => {
-    ApiHelper.get("/settings/my", "ContentApi").then((data) => {
+    ApiHelper.get("/settings/my", "ContentApi").then((data: any) => {
       setSettings(data);
     });
   };
@@ -81,7 +81,7 @@ export const LinkedAccounts = () => {
                 </>
               )}
               {praiseChartsAccessToken && (
-                <Button variant="contained" color="error" onClick={unlinkPraiseCharts}>
+                <Button variant="contained" onClick={unlinkPraiseCharts}>
                   {Locale.label("profile.linkedAccounts.unlink")}
                 </Button>
               )}

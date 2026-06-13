@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Edit",
+    "element": "Elementas",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes",
-    "element": "Elementas"
+    "yes": "Yes"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Pridėti skiltį",
+      "backToSite": "Grįžti į svetainę",
       "blockPreview": "Bloko peržiūra",
+      "discard": "Atmesti",
+      "discardElementMessage": "Atmesti neišsaugotus šio elemento pakeitimus?",
+      "discardElementTitle": "Atmesti pakeitimus?",
+      "discardSectionMessage": "Atmesti neišsaugotus šios skilties pakeitimus?",
       "dropToAddElement": "Numeskite čia, kad pridėtumėte elementą",
       "dropToAddSection": "Numeskite čia, kad pridėtumėte skiltį",
+      "keepEditing": "Tęsti redagavimą",
       "scrollDown": "Slinkti žemyn",
-      "scrollUp": "Slinkti aukštyn"
+      "scrollUp": "Slinkti aukštyn",
+      "smallScreenMessage": "Norėdami redaguoti savo svetainę, atidarykite šį puslapį planšetėje arba kompiuteryje.",
+      "smallScreenTitle": "Šiam redaktoriui reikia didesnio ekrano"
     },
     "cssEdit": {
       "advancedFeature": "Pažangi funkcija:",
@@ -2937,13 +2946,24 @@
       "ago": "atgal",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Išjungti publikavimą",
+      "disablePublishConfirm": "Išjungti šio puslapio publikavimą? Pakeitimai vėl bus skelbiami iš karto.",
+      "discardChanges": "Atmesti nepublikuotus pakeitimus",
+      "discardChangesConfirm": "Atmesti visus pakeitimus, atliktus po paskutinio publikavimo? Redaktorius bus atkurtas į paskelbtą versiją.",
       "exit": "Išeiti",
       "justNow": "ką tik",
       "mobile": "Mobile",
-      "notSavedYet": "Pakeitimų dar nėra",
       "page": "Page",
+      "publish": "Publikuoti",
+      "publishOffTip": "Šiuo metu pakeitimai skelbiami iš karto. Publikuokite, kad išsaugotumėte paskelbtą versiją, o būsimi pakeitimai liktų privatūs iki kito publikavimo.",
+      "publishedLabel": "Publikuota",
       "redoTip": "Pakartoti (Ctrl+Shift+Z)",
+      "saveError": "Nepavyko išsaugoti",
       "savedAllChanges": "Visi pakeitimai išsaugoti",
+      "saving": "Saugoma…",
+      "statusLiveOnSave": "Paskelbiama išsaugojus",
+      "statusPublished": "Publikuota",
+      "statusUnpublishedChanges": "Nepublikuoti pakeitimai",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Atšaukti (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Stulpelis",
       "common": "Bendras",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Įjungti šviesos dėžę"
+      "enableLightbox": "Įjungti šviesos dėžę",
+      "groupAnimation": "Animacija",
+      "groupContent": "Turinys",
+      "groupStyle": "Stilius"
     },
     "elementSelection": {
       "moveDown": "Perkelti žemyn",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Visa dokumentacija",
       "moveBody": "Vilkite skiltis ir elementus, kad juos pertvarkytumėte. Naudokite pažymėjimo įrankių juostos rodykles aukštyn / žemyn tikslesniems judesiams.",
       "moveTitle": "Pertvarkyti",
+      "shortcutsBody": "Delete pašalina pasirinktą elementą, Ctrl+D jį dubliuoja, Alt+Up/Down perkelia, o Esc panaikina pasirinkimą.",
+      "shortcutsTitle": "Spartieji klavišai",
       "title": "Puslapio redaktoriaus pagrindai",
       "undoBody": "Naudokite Ctrl+Z, kad atšauktumėte, ir Ctrl+Shift+Z, kad pakartotumėte. Atidarykite istorijos skydelį iš meniu, kad pereitumėte į ankstesnę būseną.",
       "undoTitle": "Atšaukti ir istorija"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Pradėti nuo šablono",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Tai visam laikui ištrina skiltį ir visą jos turinį. Tai galite atšaukti su Ctrl+Z.",
+      "deleteSectionTitle": "Ištrinti skiltį?",
       "editSection": "Edit Section",
       "layoutContainer": "Išdėstymo konteineris",
       "section": "Skiltis"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Mūsų istorija",
+      "all": "Visi",
+      "blank": "Tuščia skiltis",
+      "category": {
+        "about": "Apie mus",
+        "cta": "Raginimas veikti",
+        "giving": "Aukojimas",
+        "hero": "Hero",
+        "media": "Medija",
+        "people": "Žmonės ir grupės",
+        "services": "Pamaldos"
+      },
+      "connectColumns": "Kontaktų stulpeliai",
+      "ctaBanner": "Kito žingsnio baneris",
+      "faqSection": "Dažni klausimai",
+      "findUs": "Raskite mus",
+      "galleryRow": "Nuotraukų eilutė",
+      "givingBanner": "Aukojimo baneris",
+      "givingOptions": "Aukojimo būdai",
+      "groupListSection": "Grupių sąrašas",
+      "groupsBrowser": "Grupių naršyklė",
+      "heroCentered": "Hero su nuotrauka",
+      "heroGradient": "Gradientinis hero",
+      "heroSplit": "Padalintas hero",
+      "ministriesCards": "Tarnysčių kortelės",
+      "sermonsLatest": "Naujausi pamokslai",
+      "serviceTimes": "Pamaldų laikai",
+      "staffGrid": "Darbuotojų tinklelis",
+      "storyColumns": "Trys stulpeliai",
+      "testimony": "Liudijimo citata",
+      "title": "Pridėti skiltį",
+      "verseBanner": "Biblijos eilutės baneris",
+      "watchOnline": "Žiūrėkite internetu",
+      "welcome": "Pasveikinimo tekstas"
+    },
+    "sectionToolbar": {
+      "delete": "Ištrinti skiltį",
+      "dragToReorder": "Vilkite, kad pertvarkytumėte",
+      "duplicate": "Dubliuoti skiltį",
+      "moveDown": "Perkelti skiltį žemyn",
+      "moveUp": "Perkelti skiltį aukštyn",
+      "settings": "Skilties nustatymai"
+    },
+    "siteTemplates": {
+      "back": "Atgal",
+      "create": "Sukurti svetainę",
+      "creating": "Kuriama {title}...",
+      "descriptions": {
+        "classic": "Išsami tradicinė svetainė su svetingu pradiniu puslapiu, puslapiu apie mus ir apsilankymo planavimo puslapiu.",
+        "community": "Grupės ir tarnystės iškeliamos į pirmą planą, kad žmonės greitai įsitrauktų.",
+        "heritage": "Klasikinis, į Šventąjį Raštą orientuotas dizainas įsitvirtinusioms bendruomenėms.",
+        "media": "Sukurta aplink jūsų tiesioginę transliaciją ir pamokslų archyvą — bažnyčioms, aktyviai veikiančioms internete.",
+        "modern": "Šiuolaikinė išvaizda su ryškiais gradientais, pamaldomis internetu ir puslapiu „Įsitrauk“.",
+        "simple": "Tvarkinga dviejų puslapių pradinė svetainė, puikiai tinkanti naujai įkurtoms ir mažoms bendruomenėms.",
+        "visitor": "Skirta atsakyti į pirmą kartą atvykstančio svečio klausimus dar prieš jam atvykstant."
+      },
+      "errFailed": "Nepavyko sukurti svetainės. Bandykite dar kartą.",
+      "exists": "Jau egzistuoja",
+      "existsNote": "Puslapiai, pažymėti „jau egzistuoja“, liks nepakeisti.",
+      "intro": "Pasirinkite pradinę svetainę žemiau. Sukursime puslapius ir navigacijos nuorodas už jus — vėliau viską galėsite redaguoti.",
+      "names": {
+        "classic": "Klasikinė bažnyčia",
+        "community": "Bendruomenės gyvenimas",
+        "heritage": "Paveldas",
+        "media": "Pirmiausia internete",
+        "modern": "Modernus pasveikinimas",
+        "simple": "Paprasta pradžia",
+        "visitor": "Dėmesys lankytojams"
+      },
+      "nav": {
+        "about": "Apie mus",
+        "connect": "Įsitrauk",
+        "give": "Aukoti",
+        "home": "Pradžia",
+        "live": "Tiesiogiai",
+        "sermons": "Pamokslai",
+        "visit": "Apsilankymas"
+      },
+      "navLinksNote": "Taip pat prideda navigacijos nuorodas į numatytuosius puslapius:",
+      "pageCount": "{count} psl.",
+      "pages": {
+        "about": "Apie mus",
+        "connect": "Įsitrauk",
+        "home": "Pradžia",
+        "visit": "Suplanuokite apsilankymą"
+      },
+      "title": "Pradėti nuo šablono"
     },
     "spacingScaleEdit": {
       "buttonOne": "Mygtukas 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animacijos",
       "animationsDesc": "Efektas, kai elementas rodomas.",
+      "hideOnDesktop": "Slėpti kompiuteryje",
+      "hideOnMobile": "Slėpti mobiliajame",
       "styles": "Stiliai",
-      "stylesDesc": "Pažangūs išvaizdos parinktys."
+      "stylesDesc": "Pažangūs išvaizdos parinktys.",
+      "visibility": "Matomumas:"
     },
     "stylesManager": {
       "color": "Spalvų paletė",

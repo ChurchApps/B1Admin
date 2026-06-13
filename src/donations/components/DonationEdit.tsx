@@ -1,8 +1,9 @@
-import { Alert, FormControl, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
+import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
 import React, { memo, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { PersonAdd } from "../../components";
-import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale, InputBox } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, UniqueIdHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { FundDonations } from "@churchapps/apphelper/donations";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
 
@@ -21,8 +22,7 @@ export const DonationEdit = memo((props: Props) => {
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [showSelectPerson, setShowSelectPerson] = React.useState(false);
 
-  const { register, handleSubmit, reset, control, watch, formState } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
-  const e = formState.errors as any;
+  const { register, handleSubmit, reset, control, watch } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
   const method = watch("method");
   const methodDetails = watch("methodDetails");
   const summaryErrors: string[] = [];
@@ -107,7 +107,7 @@ export const DonationEdit = memo((props: Props) => {
         <>
           <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} />
           <hr />
-          <button type="button" className="text-decoration" onClick={handleAnonymousSelect} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+          <button type="button" className="text-decoration" onClick={handleAnonymousSelect} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("donations.donationEdit.anon")}
           </button>
         </>
@@ -116,7 +116,7 @@ export const DonationEdit = memo((props: Props) => {
     const personText = donation.person === undefined || donation.person === null ? Locale.label("donations.donationEdit.anon") : (donation.person.name?.display || Locale.label("donations.donationEdit.anon"));
     return (
       <div>
-        <button type="button" className="text-decoration" data-cy="donating-person" onClick={handlePersonSelect} style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+        <button type="button" className="text-decoration" data-cy="donating-person" onClick={handlePersonSelect} style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
           {personText}
         </button>
       </div>
@@ -126,30 +126,36 @@ export const DonationEdit = memo((props: Props) => {
   React.useEffect(loadData, [loadData]);
 
   return (
-    <InputBox id="donationBox" headerText={Locale.label("common.edit")} cancelFunction={handleCancel} deleteFunction={getDeleteFunction()} saveFunction={handleSubmit(onValid)} help="docs/b1-admin/donations/">
+    <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} help="docs/b1-admin/donations/">
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <Box>
         <label>{Locale.label("common.person")}</label>
         {personSection}
       </Box>
-      <TextField fullWidth label={Locale.label("donations.donationEdit.date")} type="date" data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...register("date")} />
-      <Controller
-        control={control}
-        name="method"
-        render={({ field }) => (
-          <FormControl fullWidth>
-            <InputLabel id="method">{Locale.label("donations.donationEdit.method")}</InputLabel>
-            <Select {...field} labelId="method" label={Locale.label("donations.donationEdit.method")} data-testid="payment-method-select" aria-label={Locale.label("donations.donationEdit.ariaMethod")}>
-              <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
-              <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
-              <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
-            </Select>
-          </FormControl>
-        )}
-      />
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField fullWidth label={Locale.label("donations.donationEdit.date")} type="date" data-testid="donation-date-input" aria-label={Locale.label("donations.donationEdit.ariaDate")} {...register("date")} />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <Controller
+            control={control}
+            name="method"
+            render={({ field }) => (
+              <FormControl fullWidth>
+                <InputLabel id="method">{Locale.label("donations.donationEdit.method")}</InputLabel>
+                <Select {...field} labelId="method" label={Locale.label("donations.donationEdit.method")} data-testid="payment-method-select" aria-label={Locale.label("donations.donationEdit.ariaMethod")}>
+                  <MenuItem value="Check">{Locale.label("donations.donationEdit.check")}</MenuItem>
+                  <MenuItem value="Cash">{Locale.label("donations.donationEdit.cash")}</MenuItem>
+                  <MenuItem value="Card">{Locale.label("donations.donationEdit.card")}</MenuItem>
+                </Select>
+              </FormControl>
+            )}
+          />
+        </Grid>
+      </Grid>
       {methodDetailsField}
       <FundDonations fundDonations={fundDonations} funds={props.funds} updatedFunction={handleFundDonationsChange} currency={props?.currency} />
       <TextField fullWidth label={Locale.label("common.notes")} data-cy="note" multiline placeholder={Locale.label("placeholders.donation.notes")} data-testid="donation-notes-input" aria-label={Locale.label("donations.donationEdit.ariaNotes")} {...register("notes")} />
-    </InputBox>
+    </FormCard>
   );
 });

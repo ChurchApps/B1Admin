@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { type GroupInterface, type PositionInterface } from "@churchapps/helpers";
-import { ApiHelper, ErrorMessages, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import ReactSelect from "react-select";
 
 interface Props {
@@ -88,28 +89,34 @@ export const PositionEdit = (props: Props) => {
   };
 
   useEffect(() => {
-    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data) => setGroups(data));
+    ApiHelper.get("/groups/tag/team", "MembershipApi").then((data: any) => setGroups(data));
   }, []);
 
   return (
     <>
       <ErrorMessages errors={summaryErrors} />
-      <InputBox
-        headerText={props.position?.id ? Locale.label("plans.positionEdit.posEdit") : Locale.label("plans.positionEdit.posAdd")}
-        headerIcon="assignment"
-        saveFunction={handleSubmit(onValid)}
-        cancelFunction={props.updatedFunction}
-        deleteFunction={props.position?.id ? handleDelete : null}>
+      <FormCard
+        title={props.position?.id ? Locale.label("plans.positionEdit.posEdit") : Locale.label("plans.positionEdit.posAdd")}
+        icon="assignment"
+        onSave={handleSubmit(onValid)}
+        onCancel={props.updatedFunction}
+        onDelete={props.position?.id ? handleDelete : undefined}>
         <FormControl fullWidth>
-          <div style={{ fontSize: 12, color: "#999", position: "absolute", top: -8, left: 10, backgroundColor: "#FFF", zIndex: 999 }}>
+          <div style={{ fontSize: 12, color: "var(--text-muted)", position: "absolute", top: -8, left: 10, backgroundColor: "var(--bg-card)", zIndex: 999 }}>
             {Locale.label("plans.positionEdit.catName")}
           </div>
           <Controller name="categoryName" control={control} rules={{ required: Locale.label("plans.positionEdit.catNameReq") }} render={() => (
             <ReactSelect onInputChange={(v: string) => setCategoryInput(v)} value={categoryOption} onChange={handleCategoryChange} options={categoryOptions} onBlur={handleCategoryBlur} className="comboBox" />
           )} />
         </FormControl>
-        <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.position.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.positionEdit.nameReq") })} />
-        <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" type="number" placeholder={Locale.label("placeholders.position.count")} {...register("count")} />
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("common.name")} id="name" type="text" placeholder={Locale.label("placeholders.position.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.positionEdit.nameReq") })} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth label={Locale.label("plans.positionEdit.volCount")} id="count" type="number" placeholder={Locale.label("placeholders.position.count")} {...register("count")} />
+          </Grid>
+        </Grid>
         <FormControl fullWidth>
           <InputLabel>{Locale.label("plans.positionEdit.volGroup")}</InputLabel>
           <Controller name="groupId" control={control} render={({ field }) => (
@@ -123,7 +130,7 @@ export const PositionEdit = (props: Props) => {
           label={Locale.label("plans.positionEdit.allowSelfSignup")}
         />
         <TextField fullWidth label={Locale.label("plans.positionEdit.description")} id="description" type="text" multiline rows={2} placeholder="" helperText={Locale.label("plans.positionEdit.descriptionHelper")} {...register("description")} />
-      </InputBox>
+      </FormCard>
     </>
   );
 };

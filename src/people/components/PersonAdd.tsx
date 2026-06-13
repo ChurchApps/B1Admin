@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 
 import { type PersonInterface } from "@churchapps/helpers";
-import { TextField, Button, Typography, Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { TextField, Typography, Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { PersonAddResults } from "./PersonAddResults";
 import { PersonEdit } from "./PersonEdit";
 
@@ -62,9 +64,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
         aria-label={Locale.label("people.personAdd.searchForPersonToAddAria")}
         InputProps={{
           endAdornment: (
-            <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch} data-testid="person-add-search-button" aria-label={Locale.label("people.personAdd.searchForPersonAria")}>
-              {Locale.label("common.search")}
-            </Button>
+            <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} id="searchButton" data-cy="search-button" onClick={handleSearch} data-testid="person-add-search-button" />
           )
         }}
       />
@@ -76,7 +76,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
             onClick={() => setOpen(true)}
             data-testid="create-new-person-link"
             aria-label={Locale.label("people.personAdd.createNewPersonAria")}
-            style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
             {Locale.label("createPerson.addNewPerson")}
           </button>
         </Typography>
@@ -106,7 +106,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
                   workPhone: "",
                   mobilePhone: ""
                 },
-                membershipStatus: "",
+                membershipStatus: "Visitor",
                 gender: "",
                 birthDate: null,
                 maritalStatus: "",

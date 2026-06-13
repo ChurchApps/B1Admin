@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, Chip, Grid, Icon, IconButton, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Grid, Icon, Stack, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
   Add as AddIcon,
@@ -8,6 +8,7 @@ import {
   Description as DescriptionIcon,
   Edit as EditIcon,
   ExpandMore as ExpandMoreIcon,
+  AutoAwesomeMosaic as AutoAwesomeMosaicIcon,
   Public as PublicIcon,
   Transform as TransformIcon,
   Visibility as VisibilityIcon
@@ -16,6 +17,7 @@ import { ApiHelper, ErrorMessages, PageHeader, UserHelper, Locale, Permissions }
 import { useWindowWidth } from "@react-hook/window-size";
 import { useNavigate } from "react-router-dom";
 import { AddPageModal, NavLinkEdit } from "./components";
+import { SiteTemplatePicker } from "./admin/templates/SiteTemplatePicker";
 import { PageHelper, EnvironmentHelper } from "../helpers";
 import type { PageLink } from "../helpers";
 import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers";
@@ -23,6 +25,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { PermissionDenied } from "../components";
+import { AppIconButton } from "../components/ui/AppIconButton";
+import { CountChip } from "../components/ui";
 
 export const PagesPage = () => {
   const theme = useTheme();
@@ -34,20 +38,21 @@ export const PagesPage = () => {
   const [links, setLinks] = useState<LinkInterface[]>([]);
   const [editLink, setEditLink] = useState<LinkInterface | null>(null);
   const [showLogin, setShowLogin] = useState<GenericSettingInterface>();
+  const [showSiteTemplates, setShowSiteTemplates] = useState(false);
 
   const getExpandControl = (item: PageLink, level: number) => {
     if (item.children && item.children.length > 0) {
       return (
         <Box sx={{ display: "flex", alignItems: "center", ml: level * 2 }}>
-          <IconButton
-            size="small"
+          <AppIconButton
+            label={item.expanded ? Locale.label("common.collapse", "Collapse") : Locale.label("common.expand", "Expand")}
+            icon={item.expanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
             onClick={() => {
               item.expanded = !item.expanded;
               setPageTree([...pageTree]);
             }}
-            sx={{ p: 0.5 }}>
-            {item.expanded ? <ExpandMoreIcon fontSize="small" /> : <ChevronRightIcon fontSize="small" />}
-          </IconButton>
+            sx={{ p: 0.5 }}
+          />
         </Box>
       );
     } else return <Box sx={{ width: 32, ml: level * 2 }}></Box>;
@@ -60,17 +65,14 @@ export const PagesPage = () => {
         <TableRow key={item.url || item.pageId || item.title} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
           <TableCell sx={{ width: 120 }}>
             {item.custom ? (
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<EditIcon />}
+              <AppIconButton
+                label={Locale.label("common.edit")}
+                icon={<EditIcon />}
                 onClick={() => {
                   navigate("/site/pages/preview/" + item.pageId);
                 }}
                 data-testid="edit-page-button"
-                sx={{ textTransform: "none", minWidth: "auto", fontSize: "0.75rem" }}>
-                {Locale.label("common.edit")}
-              </Button>
+              />
             ) : (
               <Button
                 variant="outlined"
@@ -94,18 +96,16 @@ export const PagesPage = () => {
               {getExpandControl(item, level)}
               <Typography
                 variant="body2"
-                sx={{ fontFamily: "monospace", cursor: "pointer", color: "primary.main", "&:hover": { textDecoration: "underline" } }}
+                sx={{ fontFamily: "monospace", cursor: "pointer", color: "var(--link)", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}
                 onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}>
                 {item.url}
               </Typography>
-              <Tooltip title={Locale.label("site.pagesPage.previewPage")}>
-                <IconButton
-                  size="small"
-                  onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}
-                  sx={{ p: 0.5 }}>
-                  <VisibilityIcon sx={{ fontSize: 16 }} />
-                </IconButton>
-              </Tooltip>
+              <AppIconButton
+                label={Locale.label("site.pagesPage.previewPage")}
+                icon={<VisibilityIcon sx={{ fontSize: 16 }} />}
+                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}
+                sx={{ p: 0.5 }}
+              />
               {!item.custom && <Chip label={Locale.label("site.pagesPage.generated")} size="small" color="default" sx={{ fontSize: "0.7rem", height: 18 }} />}
             </Stack>
           </TableCell>
@@ -216,6 +216,15 @@ export const PagesPage = () => {
 
   return (
     <>
+      <SiteTemplatePicker
+        open={showSiteTemplates}
+        onClose={() => setShowSiteTemplates(false)}
+        updatedCallback={(firstCreatedPageId) => {
+          setShowSiteTemplates(false);
+          loadData();
+          if (firstCreatedPageId) navigate("/site/pages/preview/" + firstCreatedPageId);
+        }}
+      />
       {addMode !== "" && (
         <AddPageModal
           updatedCallback={() => {
@@ -250,6 +259,16 @@ export const PagesPage = () => {
         ]}>
         <Button
           variant="outlined"
+          startIcon={<AutoAwesomeMosaicIcon />}
+          onClick={() => {
+            setShowSiteTemplates(true);
+          }}
+          data-testid="start-from-template-button"
+          sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
+          {Locale.label("site.pagesPage.startFromTemplate")}
+        </Button>
+        <Button
+          variant="outlined"
           startIcon={<AddIcon />}
           onClick={() => {
             setAddMode("unlinked");
@@ -260,7 +279,7 @@ export const PagesPage = () => {
         </Button>
       </PageHeader>
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.mode === "light" ? "#FFF" : "#292929", paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
+        <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.background.paper, paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
           <DndProvider backend={HTML5Backend}>
             <h2 style={{ marginTop: 0 }}>{Locale.label("site.pagesPage.pages")}</h2>
             <div>
@@ -284,9 +303,7 @@ export const PagesPage = () => {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
               <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
               <div style={{ flexShrink: 0, marginLeft: 8 }}>
-                <Tooltip title={Locale.label("site.pagesPage.addNavigationLink")}>
-                  <IconButton size="small" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" aria-label={Locale.label("site.pagesPage.addNavigationLink")}><AddIcon fontSize="small" /></IconButton>
-                </Tooltip>
+                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "" })} data-testid="add-navigation-link" />
               </div>
             </div>
             <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} />
@@ -295,13 +312,14 @@ export const PagesPage = () => {
         <Grid size={{ xs: 12, md: 10 }} style={{ position: "relative", zIndex: 1 }}>
           <Box sx={{ p: 3 }}>
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <ArticleIcon sx={{ color: "primary.main" }} />
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                    <ArticleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                    <Typography variant="h6">
                       {Locale.label("site.pagesPage.pages")}
                     </Typography>
+                    {pageStats.total > 0 && <CountChip count={pageStats.total} />}
                   </Stack>
                 </Stack>
               </Box>
@@ -319,14 +337,24 @@ export const PagesPage = () => {
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
                       {Locale.label("site.pagesPage.getStarted")}
                     </Typography>
-                    <Button
-                      variant="contained"
-                      startIcon={<AddIcon />}
-                      onClick={() => {
-                        setAddMode("unlinked");
-                      }}>
-                      {Locale.label("site.pagesPage.addFirstPage")}
-                    </Button>
+                    <Stack direction="row" spacing={2} justifyContent="center">
+                      <Button
+                        variant="contained"
+                        startIcon={<AutoAwesomeMosaicIcon />}
+                        onClick={() => {
+                          setShowSiteTemplates(true);
+                        }}>
+                        {Locale.label("site.pagesPage.startFromTemplate")}
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        onClick={() => {
+                          setAddMode("unlinked");
+                        }}>
+                        {Locale.label("site.pagesPage.addFirstPage")}
+                      </Button>
+                    </Stack>
                   </Box>
                 ) : (
                   <Table sx={{ minWidth: 650 }}>

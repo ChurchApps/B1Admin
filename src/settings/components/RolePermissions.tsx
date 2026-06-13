@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { RoleCheck } from "./";
-import { ApiHelper, DisplayBox, type RoleInterface, type RolePermissionInterface, type PermissionInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DisplayBox, type PermissionInterface, Locale } from "@churchapps/apphelper";
+import { type RoleInterface, type RolePermissionInterface } from "@churchapps/helpers";
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Icon } from "@mui/material";
 
 interface Props {
@@ -13,15 +14,15 @@ export const RolePermissions: React.FC<Props> = (props) => {
 
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+  const handleChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/rolepermissions/roles/" + props.role.id, "MembershipApi").then((data) => setRolePermissions(data));
+    ApiHelper.get("/rolepermissions/roles/" + props.role.id, "MembershipApi").then((data: any) => setRolePermissions(data));
   }, [props.role]);
   const loadPermissions = useCallback(() => {
-    ApiHelper.get("/permissions", "MembershipApi").then((data) => setPermissions(data));
+    ApiHelper.get("/permissions", "MembershipApi").then((data: any) => setPermissions(data));
   }, []);
 
   const getSections = () => {

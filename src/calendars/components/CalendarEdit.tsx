@@ -9,7 +9,6 @@ import {
   Button,
   Stack,
   Typography,
-  IconButton,
   Divider,
   Alert
 } from "@mui/material";
@@ -20,6 +19,7 @@ import {
   Delete as DeleteIcon,
   CalendarMonth as CalendarIcon
 } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 type Props = {
   calendar: CuratedCalendarInterface;
@@ -113,16 +113,12 @@ export function CalendarEdit(props: Props) {
               {isNew ? Locale.label("calendars.calendarEdit.createCalendar") : Locale.label("calendars.calendarEdit.editCalendar")}
             </Typography>
           </Stack>
-          <IconButton
-            size="small"
+          <AppIconButton
+            tone="card"
+            label={Locale.label("common.close")}
+            icon={<CloseIcon />}
             onClick={handleCancel}
-            sx={{
-              backgroundColor: "rgba(0,0,0,0.04)",
-              "&:hover": { backgroundColor: "rgba(0,0,0,0.08)" }
-            }}
-          >
-            <CloseIcon sx={{ fontSize: 18 }} />
-          </IconButton>
+          />
         </Stack>
       </Box>
 
@@ -178,7 +174,6 @@ export function CalendarEdit(props: Props) {
             {!isNew && (
               <Button
                 variant="outlined"
-                color="error"
                 onClick={handleDelete}
                 disabled={saving || deleting}
                 startIcon={deleting ? undefined : <DeleteIcon />}

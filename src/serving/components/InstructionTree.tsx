@@ -1,7 +1,8 @@
 import React from "react";
-import { Button, Typography, Box, IconButton } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
 import { PlayArrow as PlayArrowIcon, ExpandMore as ExpandMoreIcon, ChevronRight as ChevronRightIcon, Add as AddIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type InstructionItem } from "@churchapps/content-providers";
 
 interface InstructionTreeProps {
@@ -60,9 +61,7 @@ const InstructionItemRow: React.FC<{
             "&:hover": { bgcolor: depth === 0 ? "grey.200" : "action.hover" }
           }}
         >
-          <IconButton size="small" onClick={() => onToggleExpanded(itemId)} sx={{ mr: 1 }}>
-            {isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          </IconButton>
+          <AppIconButton label={isExpanded ? Locale.label("common.collapse") : Locale.label("common.expand")} icon={isExpanded ? <ExpandMoreIcon /> : <ChevronRightIcon />} onClick={() => onToggleExpanded(itemId)} sx={{ mr: 1 }} />
           {thumbnail && (
             <Box
               component="img"
@@ -73,9 +72,9 @@ const InstructionItemRow: React.FC<{
           )}
           <Box sx={{ flex: 1 }}>
             <Typography sx={{ fontWeight: depth === 0 ? 500 : 400 }}>{item.label}</Typography>
-            {item.description && (
+            {item.content && (
               <Typography variant="caption" color="text.secondary">
-                {item.description}
+                {item.content}
                 {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
               </Typography>
             )}
@@ -141,9 +140,9 @@ const InstructionItemRow: React.FC<{
       >
         <Box sx={{ flex: 1 }}>
           <Typography variant="body2">{item.label}</Typography>
-          {item.description && (
+          {item.content && (
             <Typography variant="caption" color="text.secondary">
-              {item.description}
+              {item.content}
               {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
             </Typography>
           )}
@@ -185,21 +184,14 @@ const InstructionItemRow: React.FC<{
       )}
       <Box sx={{ flex: 1 }}>
         <Typography variant="body2">{item.label}</Typography>
-        {item.description && (
+        {item.content && (
           <Typography variant="caption" color="text.secondary">
-            {item.description}
+            {item.content}
             {item.seconds ? ` - ${Math.round(item.seconds / 60)}min` : ""}
           </Typography>
         )}
       </Box>
-      <IconButton
-        size="small"
-        color="primary"
-        onClick={() => onAddAction(item, providerId, pathIndices)}
-        title={Locale.label("plans.actionSelector.addAction") || "Add Action"}
-      >
-        <AddIcon />
-      </IconButton>
+      <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => onAddAction(item, providerId, pathIndices)} />
     </Box>
   );
 };

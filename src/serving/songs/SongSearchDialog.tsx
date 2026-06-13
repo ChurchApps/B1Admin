@@ -1,7 +1,8 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, IconButton, InputAdornment } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box, Card, CardContent, Typography, Stack, Avatar, InputAdornment } from "@mui/material";
 import { Search as SearchIcon, MusicNote as MusicIcon, Person as ArtistIcon, Close as CloseIcon, Add as AddIcon } from "@mui/icons-material";
 import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type SongDetailInterface } from "../../helpers";
 import { CreateSongDetail } from "./components/CreateSongDetail";
 import { EmptyState } from "../../components/ui/EmptyState";
@@ -140,14 +141,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
                   )}
                 </Box>
 
-                <IconButton
-                  sx={{
-                    color: "primary.main",
-                    "&:hover": { backgroundColor: "primary.light" }
-                  }}
-                  aria-label={`Select ${songDetail.title}`}>
-                  <AddIcon />
-                </IconButton>
+                <AppIconButton label={`Select ${songDetail.title}`} icon={<AddIcon />} tone="card" intent="add" />
               </Stack>
             </CardContent>
           </Card>
@@ -164,9 +158,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
             <SearchIcon sx={{ color: "primary.main" }} />
             <Typography variant="h6">{Locale.label("songs.search.title") || "Search for a Song"}</Typography>
           </Stack>
-          <IconButton onClick={props.onClose} size="small">
-            <CloseIcon />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={props.onClose} />
         </Stack>
       </DialogTitle>
 
@@ -189,9 +181,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <Button variant="contained" onClick={handleSearch} disabled={!searchText.trim() || isSearching} data-testid="song-search-dialog-button" aria-label={Locale.label("songs.songSearchDialog.searchSongsAria")}>
-                    {Locale.label("common.search") || "Search"}
-                  </Button>
+                  <AppIconButton label={Locale.label("common.search")} icon={<SearchIcon />} onClick={handleSearch} disabled={!searchText.trim() || isSearching} data-testid="song-search-dialog-button" />
                 </InputAdornment>
               )
             }}

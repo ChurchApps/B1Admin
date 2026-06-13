@@ -1,16 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Box, Grid, Card, CardContent, Stack, Typography } from "@mui/material";
 import { Palette as PaletteIcon, TextFields as TextFieldsIcon, Code as CodeIcon, Image as ImageIcon, SmartButton as SmartButtonIcon, Style as StyleIcon, SpaceBar as SpaceBarIcon, FormatSize as FormatSizeIcon, Menu as MenuIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface, BlockInterface, GenericSettingInterface } from "../../helpers/Interfaces";
 import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit, SpacingScaleEdit, NavStyleEdit } from "./";
-import UserContext from "../../UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CardWithHeader } from "../../components/ui";
 import React from "react";
 
 export function StylesManager() {
-  const context = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   const hash = location.hash?.replace("#", "");
@@ -182,7 +180,7 @@ export function StylesManager() {
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
-          <CardWithHeader title={Locale.label("site.stylesManager.styleSettings")} icon={<StyleIcon sx={{ color: "primary.main" }} />}>
+          <CardWithHeader title={Locale.label("site.stylesManager.styleSettings")} icon={<StyleIcon sx={{ color: "primary.main", fontSize: 20 }} />}>
             <Stack spacing={2}>
               {styleOptions.map((option) => (
                 <Card

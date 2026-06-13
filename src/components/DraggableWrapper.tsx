@@ -26,7 +26,7 @@ export function DraggableWrapper(props: Props) {
         const isDragging = !!monitor.isDragging();
         return { isDragging };
       },
-      end: (item, monitor) => {
+      end: (_item, monitor) => {
         monitor.didDrop();
       }
     }),
@@ -41,7 +41,7 @@ export function DraggableWrapper(props: Props) {
 
   return (
     <div
-      ref={drag}
+      ref={(node) => { drag(node); }}
       style={{ opacity, transition: "opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)", cursor: isDragging ? "grabbing" : "grab" }}
       className="dragButton"
       onDoubleClick={onDoubleClick}

@@ -213,6 +213,7 @@
     "done": "Bitti",
     "duplicate": "Duplicate",
     "edit": "Düzenle",
+    "element": "Öğe",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Web Sitesi",
-    "yes": "Evet",
-    "element": "Öğe"
+    "yes": "Evet"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Bölüm ekle",
+      "backToSite": "Siteye Dön",
       "blockPreview": "Blok Önizlemesi",
+      "discard": "Vazgeç",
+      "discardElementMessage": "Bu öğedeki kaydedilmemiş değişiklikler atılsın mı?",
+      "discardElementTitle": "Değişiklikler atılsın mı?",
+      "discardSectionMessage": "Bu bölümdeki kaydedilmemiş değişiklikler atılsın mı?",
       "dropToAddElement": "Öğe eklemek için buraya bırakın",
       "dropToAddSection": "Bölüm eklemek için buraya bırakın",
+      "keepEditing": "Düzenlemeye devam et",
       "scrollDown": "Aşağı Kaydır",
-      "scrollUp": "Yukarı Kaydır"
+      "scrollUp": "Yukarı Kaydır",
+      "smallScreenMessage": "Web sitenizi düzenlemek için bu sayfayı bir tablet veya masaüstü bilgisayarda açın.",
+      "smallScreenTitle": "Bu düzenleyici daha büyük bir ekran gerektirir"
     },
     "cssEdit": {
       "advancedFeature": "Gelişmiş Özellik:",
@@ -2937,13 +2946,24 @@
       "ago": "önce",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Yayınlamayı kapat",
+      "disablePublishConfirm": "Bu sayfa için yayınlama kapatılsın mı? Düzenlemeler yeniden anında yayına geçecek.",
+      "discardChanges": "Yayınlanmamış değişikliklerden vazgeç",
+      "discardChangesConfirm": "Son yayından bu yana yapılan tüm değişiklikler atılsın mı? Düzenleyici yayındaki sürüme geri yüklenecek.",
       "exit": "Çıkış",
       "justNow": "az önce",
       "mobile": "Mobil",
-      "notSavedYet": "Henüz değişiklik yok",
       "page": "Page",
+      "publish": "Yayınla",
+      "publishOffTip": "Düzenlemeler şu anda anında yayına geçiyor. Yayındaki bir sürümü kaydetmek ve sonraki düzenlemeleri bir sonraki yayına kadar gizli tutmak için yayınlayın.",
+      "publishedLabel": "Yayınlandı",
       "redoTip": "Yeniden Yap (Ctrl+Shift+Z)",
+      "saveError": "Kaydedilemedi",
       "savedAllChanges": "Tüm değişiklikler kaydedildi",
+      "saving": "Kaydediliyor…",
+      "statusLiveOnSave": "Kaydedince yayında",
+      "statusPublished": "Yayınlandı",
+      "statusUnpublishedChanges": "Yayınlanmamış değişiklikler",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Geri Al (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Sütun",
       "common": "Yaygın",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Lightbox'ı Etkinleştir"
+      "enableLightbox": "Lightbox'ı Etkinleştir",
+      "groupAnimation": "Animasyon",
+      "groupContent": "İçerik",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Aşağı taşı",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Tam dokümantasyon",
       "moveBody": "Bölümleri ve öğeleri yeniden sıralamak için sürükleyin. Hassas hareketler için seçim araç çubuğundaki yukarı/aşağı oklarını kullanın.",
       "moveTitle": "Yeniden düzenle",
+      "shortcutsBody": "Delete seçili öğeyi kaldırır, Ctrl+D çoğaltır, Alt+Yukarı/Aşağı taşır ve Esc seçimi kaldırır.",
+      "shortcutsTitle": "Klavye kısayolları",
       "title": "Sayfa düzenleyici temelleri",
       "undoBody": "Geri almak için Ctrl+Z ve yeniden yapmak için Ctrl+Shift+Z kullanın. Daha önceki bir duruma atlamak için menüden Geçmiş panelini açın.",
       "undoTitle": "Geri al ve geçmiş"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Bir Şablondan Başlayın",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Bu, bölümü ve içindeki her şeyi kalıcı olarak siler. Ctrl+Z ile geri alabilirsiniz.",
+      "deleteSectionTitle": "Bölüm silinsin mi?",
       "editSection": "Edit Section",
       "layoutContainer": "Düzen kapsayıcısı",
       "section": "Bölüm"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Hikayemiz",
+      "all": "Tümü",
+      "blank": "Boş Bölüm",
+      "category": {
+        "about": "Hakkımızda",
+        "cta": "Eylem Çağrısı",
+        "giving": "Bağış",
+        "hero": "Hero",
+        "media": "Medya",
+        "people": "Kişiler ve Gruplar",
+        "services": "İbadetler"
+      },
+      "connectColumns": "İletişim Sütunları",
+      "ctaBanner": "Sonraki Adım Banner'ı",
+      "faqSection": "Sık Sorulan Sorular",
+      "findUs": "Bizi Bulun",
+      "galleryRow": "Fotoğraf Satırı",
+      "givingBanner": "Bağış Banner'ı",
+      "givingOptions": "Bağış Yolları",
+      "groupListSection": "Grup Listesi",
+      "groupsBrowser": "Grup Tarayıcısı",
+      "heroCentered": "Fotoğraflı Hero",
+      "heroGradient": "Degrade Hero",
+      "heroSplit": "Bölünmüş Hero",
+      "ministriesCards": "Hizmet Kartları",
+      "sermonsLatest": "Son Vaazlar",
+      "serviceTimes": "İbadet Saatleri",
+      "staffGrid": "Personel Tablosu",
+      "storyColumns": "Üç Sütun",
+      "testimony": "Tanıklık Alıntısı",
+      "title": "Bölüm Ekle",
+      "verseBanner": "Ayet Banner'ı",
+      "watchOnline": "Çevrimiçi İzle",
+      "welcome": "Karşılama Metni"
+    },
+    "sectionToolbar": {
+      "delete": "Bölümü sil",
+      "dragToReorder": "Yeniden sıralamak için sürükleyin",
+      "duplicate": "Bölümü çoğalt",
+      "moveDown": "Bölümü aşağı taşı",
+      "moveUp": "Bölümü yukarı taşı",
+      "settings": "Bölüm ayarları"
+    },
+    "siteTemplates": {
+      "back": "Geri",
+      "create": "Site Oluştur",
+      "creating": "{title} oluşturuluyor...",
+      "descriptions": {
+        "classic": "Karşılayıcı bir ana sayfa, hakkımızda sayfası ve ziyaret planlama sayfası içeren eksiksiz, geleneksel bir site.",
+        "community": "İnsanların hızla bağlantı kurabilmesi için grupları ve hizmetleri ön plana çıkarır.",
+        "heritage": "Köklü topluluklar için Kutsal Yazı odaklı, klasik bir tasarım.",
+        "media": "Güçlü bir çevrimiçi varlığa sahip kiliseler için canlı yayınınız ve vaaz arşiviniz etrafında kurulmuştur.",
+        "modern": "Cesur degradeler, çevrimiçi ibadetler ve bir iletişim sayfası içeren çağdaş bir görünüm.",
+        "simple": "Yeni kurulan kiliseler ve küçük topluluklar için mükemmel, iki sayfalık sade bir başlangıç.",
+        "visitor": "İlk kez gelen bir misafirin sorularını daha gelmeden yanıtlamaya odaklanır."
+      },
+      "errFailed": "Site oluşturulamadı. Lütfen tekrar deneyin.",
+      "exists": "Zaten mevcut",
+      "existsNote": "\"Zaten mevcut\" olarak işaretlenen sayfalar değiştirilmeden bırakılır.",
+      "intro": "Aşağıdan bir başlangıç sitesi seçin. Sayfaları ve gezinme bağlantılarını sizin için oluşturacağız — her şey daha sonra düzenlenebilir.",
+      "names": {
+        "classic": "Klasik Kilise",
+        "community": "Topluluk Yaşamı",
+        "heritage": "Miras",
+        "media": "Önce Çevrimiçi",
+        "modern": "Modern Karşılama",
+        "simple": "Basit Başlangıç",
+        "visitor": "Ziyaretçi Odaklı"
+      },
+      "nav": {
+        "about": "Hakkımızda",
+        "connect": "İletişim",
+        "give": "Bağış",
+        "home": "Ana Sayfa",
+        "live": "Canlı",
+        "sermons": "Vaazlar",
+        "visit": "Ziyaret"
+      },
+      "navLinksNote": "Ayrıca yerleşik sayfalara gezinme bağlantıları ekler:",
+      "pageCount": "{count} sayfa",
+      "pages": {
+        "about": "Hakkımızda",
+        "connect": "İletişim",
+        "home": "Ana Sayfa",
+        "visit": "Ziyaretinizi Planlayın"
+      },
+      "title": "Bir Şablondan Başlayın"
     },
     "spacingScaleEdit": {
       "buttonOne": "Düğme 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animasyonlar",
       "animationsDesc": "Öğe gösterildiğinde uygulanacak efekt.",
+      "hideOnDesktop": "Masaüstünde gizle",
+      "hideOnMobile": "Mobilde gizle",
       "styles": "Stiller",
-      "stylesDesc": "Gelişmiş görünüm seçenekleri."
+      "stylesDesc": "Gelişmiş görünüm seçenekleri.",
+      "visibility": "Görünürlük:"
     },
     "stylesManager": {
       "color": "Renk Paleti",

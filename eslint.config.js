@@ -90,6 +90,13 @@ export default [
       // React hooks
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "off",
+
+      // --- Design standards: color comes from theme.palette.* or var(--*) tokens only ---
+      // (white is allowed — hero text/icons are white by design)
+      "no-restricted-syntax": ["warn", {
+        selector: "JSXAttribute[name.name=/^(sx|style)$/] Literal[value=/#(?!f{3,6}\\b|F{3,6}\\b)[0-9a-fA-F]{3,8}\\b/]",
+        message: "No hex colors in sx/style — use theme.palette.* or var(--*) tokens."
+      }],
     },
   },
 ];

@@ -83,7 +83,6 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
               <Button
                 size="small"
                 variant="outlined"
-                color="error"
                 startIcon={<DeclineIcon />}
                 disabled={working === req.id}
                 onClick={() => setDeclineTarget(req)}

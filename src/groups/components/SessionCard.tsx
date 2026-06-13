@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, Typography, Button, Box, Chip, Avatar } from "@mui/material";
-import { Icon } from "@mui/material";
-import { type SessionInterface } from "@churchapps/helpers";
+import { Visibility as VisibilityIcon, Edit as EditIcon } from "@mui/icons-material";
+import { type SessionInterface } from "../../helpers";
 import { DateHelper, Locale } from "@churchapps/apphelper";
 
 interface Props {
@@ -33,7 +33,7 @@ export const SessionCard: React.FC<Props> = ({ session, attendanceCount, isSelec
       if (isNaN(date.getTime())) {
         return Locale.label("groups.sessionCard.invalidDate");
       }
-      return DateHelper.formatDate(date);
+      return DateHelper.prettyDate(date);
     } catch (error) {
       console.error("Date formatting error:", error, "for date:", session.sessionDate);
       return Locale.label("groups.sessionCard.invalidDate");
@@ -84,7 +84,7 @@ export const SessionCard: React.FC<Props> = ({ session, attendanceCount, isSelec
               e.stopPropagation();
               onView(session);
             }}
-            startIcon={<Icon>visibility</Icon>}
+            startIcon={<VisibilityIcon />}
             fullWidth>
             {Locale.label("groups.sessionCard.view")}
           </Button>
@@ -96,7 +96,7 @@ export const SessionCard: React.FC<Props> = ({ session, attendanceCount, isSelec
                 e.stopPropagation();
                 onEdit(session);
               }}
-              startIcon={<Icon>edit</Icon>}
+              startIcon={<EditIcon />}
               fullWidth>
               {Locale.label("groups.sessionCard.edit")}
             </Button>

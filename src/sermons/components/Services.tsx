@@ -1,5 +1,5 @@
-import { Icon, Button, Typography, Stack, Chip } from "@mui/material";
-import { Add as AddIcon, VideoCall as VideoCallIcon } from "@mui/icons-material";
+import { Button, Typography, Stack, Chip } from "@mui/material";
+import { Add as AddIcon, Edit as EditIcon, VideoCall as VideoCallIcon } from "@mui/icons-material";
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { DateHelper } from "@churchapps/apphelper";
@@ -8,6 +8,7 @@ import { DisplayBox } from "@churchapps/apphelper";
 import type { StreamingServiceInterface } from "@churchapps/helpers";
 import { ServiceEdit } from "./ServiceEdit";
 import { TableList } from "./TableList";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Services: React.FC = () => {
   const [services, setServices] = React.useState<StreamingServiceInterface[]>([]);
@@ -63,7 +64,7 @@ export const Services: React.FC = () => {
         <tr key={service.id}>
           <td>
             <Stack direction="row" spacing={1} alignItems="center">
-              <VideoCallIcon sx={{ fontSize: 18, color: "primary.main" }} />
+              <VideoCallIcon sx={{ fontSize: 20, color: "primary.main" }} />
               <Typography variant="body2" sx={{ fontWeight: 500 }}>
                 {service.label}
               </Typography>
@@ -71,7 +72,7 @@ export const Services: React.FC = () => {
                 <Chip
                   label={Locale.label("sermons.liveStreamTimes.servicesTab.weekly")}
                   size="small"
-                  sx={{ backgroundColor: "#e8f5e9", color: "#2e7d32" }}
+                  sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }}
                 />
               )}
             </Stack>
@@ -81,19 +82,12 @@ export const Services: React.FC = () => {
               {DateHelper.prettyDateTime(service.serviceTime)}
             </Typography>
           </td>
-          <td style={{ textAlign: "right" }}>
-            <Button
-              size="small"
-              variant="outlined"
+          <td style={{ textAlign: "right" }} className="rowActions">
+            <AppIconButton
+              label={Locale.label("common.edit")}
+              icon={<EditIcon />}
               onClick={() => setCurrentService(service)}
-              sx={{
-                minWidth: "auto",
-                borderRadius: 2,
-                textTransform: "none"
-              }}
-            >
-              <Icon sx={{ fontSize: 18 }}>edit</Icon>
-            </Button>
+            />
           </td>
         </tr>
       );

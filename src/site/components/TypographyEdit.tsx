@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Grid, TextField, Box, Typography, Stack, Button, alpha } from "@mui/material";
+import { Grid, TextField, Box, Typography, Stack, Button } from "@mui/material";
 import { TextFields as TextFieldsIcon, Visibility as VisibilityIcon, FormatSize as FormatSizeIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import type { GlobalStyleInterface } from "../../helpers/Interfaces";
@@ -137,7 +137,7 @@ export function TypographyEdit(props: Props) {
 
         <Box sx={{ mt: 3 }}>
           <CardWithHeader title={Locale.label("site.typographyEdit.preview")} icon={<VisibilityIcon />}>
-            <Box sx={{ p: 3, backgroundColor: alpha("#f5f5f5", 0.3), borderRadius: 2 }}>
+            <Box sx={{ p: 3, backgroundColor: "var(--bg-sub)", borderRadius: 2 }}>
               <Stack spacing={2}>
                 <Box>
                   <Typography

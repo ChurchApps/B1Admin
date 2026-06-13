@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
-import { Table, TableCell, TableRow, Avatar } from "@mui/material";
+import { Table, TableCell, TableRow, Avatar, IconButton, Tooltip } from "@mui/material";
+import { Tune as TuneIcon } from "@mui/icons-material";
 import { type AssignmentInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
-import { ApiHelper, InputBox, Locale, PersonHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale, PersonHelper } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
+import { SchedulingPreferenceEdit } from "./SchedulingPreferenceEdit";
 
 interface Props {
   assignment: AssignmentInterface;
@@ -12,6 +15,7 @@ interface Props {
 
 export const AssignmentEdit = (props: Props) => {
   const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
+  const [preferencePerson, setPreferencePerson] = React.useState<{ id: string; name: string }>(null);
 
   const handleSave = () => {
     props.updatedFunction(true);
@@ -23,7 +27,7 @@ export const AssignmentEdit = (props: Props) => {
 
   const loadData = () => {
     if (!props.position?.groupId) return;
-    ApiHelper.get("/groupmembers?groupId=" + props.position.groupId, "MembershipApi").then((data) => {
+    ApiHelper.get("/groupmembers?groupId=" + props.position.groupId, "MembershipApi").then((data: any) => {
       setGroupMembers(data);
     });
   };
@@ -59,9 +63,19 @@ export const AssignmentEdit = (props: Props) => {
             <button
               type="button"
               onClick={() => selectPerson(gm)}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+              style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
               {personName}
             </button>
+          </TableCell>
+          <TableCell align="right">
+            <Tooltip title={Locale.label("plans.schedulingPreference.title") || "Scheduling Preferences"}>
+              <IconButton
+                size="small"
+                onClick={() => setPreferencePerson({ id: gm.personId, name: personName })}
+                data-testid={"preferences-button-" + gm.personId}>
+                <TuneIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </TableCell>
         </TableRow>
       );
@@ -75,15 +89,16 @@ export const AssignmentEdit = (props: Props) => {
 
   return (
     <>
-      <InputBox
-        headerText={props.assignment?.id ? Locale.label("plans.assignmentEdit.editAssign") : Locale.label("plans.assignmentEdit.assignPos")}
-        headerIcon="assignment"
-        saveFunction={handleSave}
-        cancelFunction={() => props.updatedFunction(true)}
-        deleteFunction={props.assignment.id ? handleDelete : null}
+      <FormCard
+        title={props.assignment?.id ? Locale.label("plans.assignmentEdit.editAssign") : Locale.label("plans.assignmentEdit.assignPos")}
+        icon="assignment"
+        onSave={handleSave}
+        onCancel={() => props.updatedFunction(true)}
+        onDelete={props.assignment.id ? handleDelete : undefined}
         saveText={Locale.label("plans.assignmentEdit.done")}>
         <Table size="small">{getMembers()}</Table>
-      </InputBox>
+      </FormCard>
+      {preferencePerson && <SchedulingPreferenceEdit personId={preferencePerson.id} personName={preferencePerson.name} onClose={() => setPreferencePerson(null)} />}
     </>
   );
 };

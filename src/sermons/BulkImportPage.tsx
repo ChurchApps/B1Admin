@@ -4,6 +4,7 @@ import { Box, Typography, Grid, Paper, Stack, Card, CardContent, Button } from "
 import { CloudUpload as CloudUploadIcon, YouTube as YouTubeIcon, VideoLibrary as VimeoIcon, ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { YouTubeImport, VimeoImport } from "./components";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const BulkImportPage = memo(() => {
   const [importType, setImportType] = React.useState<"youtube" | "vimeo" | "">();
@@ -15,21 +16,12 @@ export const BulkImportPage = memo(() => {
       <Box sx={{ mb: 3 }}>
         <PageHeader title={Locale.label("sermons.bulkImport.title")} subtitle={Locale.label("sermons.bulkImport.subtitle")}>
           {importType && (
-            <Button
-              variant="outlined"
-              startIcon={<ArrowBackIcon />}
+            <AppIconButton
+              label={Locale.label("common.back")}
+              icon={<ArrowBackIcon />}
+              tone="header"
               onClick={() => setImportType("")}
-              sx={{
-                color: "#FFF",
-                borderColor: "rgba(255,255,255,0.5)",
-                "&:hover": {
-                  borderColor: "#FFF",
-                  backgroundColor: "rgba(255,255,255,0.1)"
-                }
-              }}
-            >
-              {Locale.label("sermons.bulkImport.backToSelection")}
-            </Button>
+            />
           )}
         </PageHeader>
       </Box>

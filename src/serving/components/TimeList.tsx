@@ -1,5 +1,6 @@
 import React from "react";
-import { Icon, IconButton } from "@mui/material";
+import { Icon } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import {
   type PlanInterface,
   type PositionInterface,
@@ -11,6 +12,7 @@ import {
   DisplayBox,
   Locale
 } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { TimeEdit } from "./TimeEdit";
 
 interface Props {
@@ -51,9 +53,7 @@ export const TimeList = (props: Props) => {
   };
 
   const getAddTimeLink = () => canEdit ? (
-    <IconButton aria-label={Locale.label("plans.timeList.addTimeAria")} id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button">
-      <Icon color="primary">add</Icon>
-    </IconButton>
+    <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} tone="card" intent="add" id="addBtnGroup" data-cy="add-button" onClick={handleAdd} data-testid="add-time-button" />
   ) : null;
 
   const getRows = () => {
@@ -80,18 +80,18 @@ export const TimeList = (props: Props) => {
               <button
                 type="button"
                 onClick={() => handleSelect(t)}
-                style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+                style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
                 {t.displayName}
               </button>
             ) : (
               <span>{t.displayName}</span>
             )}
-            <span style={{ marginLeft: 8, fontSize: 11, color: "#666", textTransform: "uppercase" }}>{typeLabel}</span>
+            <span style={{ marginLeft: 8, fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase" }}>{typeLabel}</span>
             <div style={{ fontSize: 12 }}>
               {DateHelper.prettyDateTime(startTime)}
               {t.endTime ? " - " + DateHelper.prettyTime(endTime) : ""}
               <br />
-              <i style={{ color: "#999" }}>{teamList.join(", ")}</i>
+              <i style={{ color: "var(--text-muted)" }}>{teamList.join(", ")}</i>
             </div>
           </td>
         </tr>

@@ -1,4 +1,4 @@
-import { Grid, Icon, TextField, Typography, InputAdornment, IconButton, Box, Card, CardContent, Alert, Stack, FormControlLabel, Switch } from "@mui/material";
+import { Grid, Icon, TextField, Typography, InputAdornment, Box, Card, CardContent, Alert, Stack, FormControlLabel, Switch } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
@@ -6,6 +6,7 @@ import { LinkedAccounts } from "./components/LinkedAccounts";
 import { DarkMode, LightMode } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { LoadingButton } from "../components";
+import { AppIconButton } from "../components/ui/AppIconButton";
 import { useMutation } from "@tanstack/react-query";
 import { useThemeMode } from "../ThemeContext";
 
@@ -193,9 +194,7 @@ export const ProfilePage = () => {
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton aria-label={Locale.label("profile.profilePage.togglePasswordVisibility")} onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
-                              {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
-                            </IconButton>
+                            <AppIconButton label={Locale.label("profile.profilePage.togglePasswordVisibility")} icon={showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>} onClick={() => setShowPassword(!showPassword)} disabled={isDemo} />
                           </InputAdornment>
                         )
                       }}
@@ -213,9 +212,7 @@ export const ProfilePage = () => {
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton aria-label={Locale.label("profile.profilePage.togglePasswordVisibility")} onClick={() => setShowPassword(!showPassword)} disabled={isDemo}>
-                              {showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}
-                            </IconButton>
+                            <AppIconButton label={Locale.label("profile.profilePage.togglePasswordVisibility")} icon={showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>} onClick={() => setShowPassword(!showPassword)} disabled={isDemo} />
                           </InputAdornment>
                         )
                       }}
@@ -271,7 +268,7 @@ export const ProfilePage = () => {
                 </Typography>
                 <Typography color="text.secondary">{Locale.label("profile.profilePage.permWarn")}</Typography>
                 <Box>
-                  <LoadingButton variant="outlined" color="error" loading={deleteAccountMutation.isPending} onClick={handleAccountDelete} data-testid="delete-account-button">
+                  <LoadingButton variant="outlined" loading={deleteAccountMutation.isPending} onClick={handleAccountDelete} data-testid="delete-account-button">
                     {Locale.label("profile.profilePage.delAcc")}
                   </LoadingButton>
                 </Box>

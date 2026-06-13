@@ -1,6 +1,6 @@
 import { type FormInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { Assignment as FormIcon, Group as GroupIcon, Description as DescriptionIcon } from "@mui/icons-material";
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 

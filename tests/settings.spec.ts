@@ -1,8 +1,8 @@
 import type { Page } from '@playwright/test';
 import { settingsTest as test, expect } from './helpers/test-fixtures';
-import { dismissSendInviteIfPresent, editIconButton } from './helpers/fixtures';
+import { dismissSendInviteIfPresent } from './helpers/fixtures';
 import { login } from './helpers/auth';
-import { navigateToSettings } from './helpers/navigation';
+import { navigateToSettings, navigateToRoles, navigateToForms } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -20,71 +20,71 @@ test.describe.serial('Settings Management', () => {
     await page?.context().close();
   });
 
-  test.describe.serial('General Settings', () => {
-    // Roles tests share data — a retry would create duplicate "Zacchaeus
-    // Test Role" rows and break subsequent assertions. Disable retries here.
+  // Shared modal helpers (used by Church Settings + Roles).
+  const closeAnyModal = async () => {
+    // ESC-loop until any modal/dialog is gone. ESC on MUI Dialog with an
+    // onClose triggers props.onClose(), which closes both SendInvite and
+    // any other transient dialog without depending on a button selector.
+    for (let i = 0; i < 6; i++) {
+      const anyModal = page.locator('.MuiDialog-container');
+      if (!(await anyModal.first().isVisible({ timeout: 200 }).catch(() => false))) return;
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(150);
+    }
+  };
+
+  const dismissInviteLoop = async () => {
+    // Dismiss any leftover SendInviteDialog from a prior test before
+    // attempting to re-navigate (it intercepts pointer events on the nav).
+    for (let i = 0; i < 5; i++) {
+      await dismissSendInviteIfPresent(page, 1500);
+      const dialog = page.locator('div[role="dialog"]:has-text("Send Invite Email")');
+      if (!(await dialog.isVisible({ timeout: 250 }).catch(() => false))) break;
+    }
+    await closeAnyModal();
+  };
+
+  const navigateWithModalGuard = async (nav: () => Promise<void>) => {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await closeAnyModal();
+      try {
+        await nav();
+        return;
+      } catch (err) {
+        // Modal may have appeared mid-click — dismiss and retry.
+        await closeAnyModal();
+        if (attempt === 2) throw err;
+      }
+    }
+  };
+
+  test.describe.serial('Church Settings', () => {
     test.describe.configure({ retries: 0 });
 
-    const closeAnyModal = async () => {
-      // ESC-loop until any modal/dialog is gone. ESC on MUI Dialog with an
-      // onClose triggers props.onClose(), which closes both SendInvite and
-      // any other transient dialog without depending on a button selector.
-      for (let i = 0; i < 6; i++) {
-        const anyModal = page.locator('.MuiDialog-container');
-        if (!(await anyModal.first().isVisible({ timeout: 200 }).catch(() => false))) return;
-        await page.keyboard.press('Escape');
-        await page.waitForTimeout(150);
-      }
-    };
-
-    const navigateToSettingsWithModalGuard = async () => {
-      for (let attempt = 0; attempt < 3; attempt++) {
-        await closeAnyModal();
-        try {
-          await navigateToSettings(page);
-          return;
-        } catch (err) {
-          // Modal may have appeared mid-click — dismiss and retry.
-          await closeAnyModal();
-          if (attempt === 2) throw err;
-        }
-      }
-    };
-
     test.beforeEach(async () => {
-      // Dismiss any leftover SendInviteDialog from a prior test before
-      // attempting to re-navigate (it intercepts pointer events on the
-      // primary nav button). Loop because the dialog can re-fire on a slow
-      // backend even after the first dismiss.
-      for (let i = 0; i < 5; i++) {
-        await dismissSendInviteIfPresent(page, 1500);
-        const dialog = page.locator('div[role="dialog"]:has-text("Send Invite Email")');
-        if (!(await dialog.isVisible({ timeout: 250 }).catch(() => false))) break;
-      }
-      // Belt-and-suspenders: ESC-close any other lingering modal.
-      await closeAnyModal();
-      // Mobile/Form sub-describes leave the page off /settings; navigate back
-      // before each General Settings test so add-role-button is in the DOM.
+      await dismissInviteLoop();
+      // The landing is the master–detail config page; Church Information is the
+      // default-selected section. Navigate back if a prior sub-tab left us off it.
       if (!/\/settings(\?|$|\/$)/.test(page.url())) {
-        await navigateToSettingsWithModalGuard();
+        await navigateWithModalGuard(() => navigateToSettings(page));
       }
-      // Wait for the General Settings content to be ready (avoids WebSocket networkidle flakiness)
-      await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
+      await expect(page.locator('[data-testid="settings-section-church-info"]')).toBeVisible({ timeout: 15000 });
     });
 
     test('should edit church', async () => {
-      const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
-      await editSettingsBtn.dispatchEvent('click');
+      // Church Information is selected by default — open its section Edit form.
+      const editBtn = page.locator('[data-testid="small-button-edit"]').first();
+      await editBtn.dispatchEvent('click');
       const churchName = page.locator('[name="churchName"]');
       await expect(churchName).toBeVisible({ timeout: 10000 });
       const originalName = await churchName.inputValue();
       await churchName.fill('Gracious Community Church');
       const saveBtn = page.locator('button').getByText('Save');
       await saveBtn.click();
-      // Wait for the edit modal to close before re-opening it.
+      // Wait for the edit panel to close (back to read-only view) before re-opening.
       await expect(churchName).toHaveCount(0, { timeout: 10000 });
       // Revert the name back
-      await editSettingsBtn.dispatchEvent('click');
+      await editBtn.dispatchEvent('click');
       await expect(churchName).toBeVisible({ timeout: 10000 });
       await churchName.fill(originalName || 'Grace Community Church');
       await saveBtn.click();
@@ -92,13 +92,28 @@ test.describe.serial('Settings Management', () => {
     });
 
     test('should cancel editing church', async () => {
-      const editSettingsBtn = page.locator('a, button').getByText('Edit Settings');
-      await editSettingsBtn.dispatchEvent('click');
+      const editBtn = page.locator('[data-testid="small-button-edit"]').first();
+      await editBtn.dispatchEvent('click');
       const churchName = page.locator('[name="churchName"]');
       await expect(churchName).toBeVisible({ timeout: 10000 });
       const cancelBtn = page.locator('button').getByText('Cancel');
       await cancelBtn.click();
       await expect(churchName).toHaveCount(0);
+    });
+  });
+
+  test.describe.serial('Roles', () => {
+    // Roles tests share data — a retry would create duplicate "Zacchaeus
+    // Test Role" rows and break subsequent assertions. Disable retries here.
+    test.describe.configure({ retries: 0 });
+
+    test.beforeEach(async () => {
+      await dismissInviteLoop();
+      // Roles is its own page in the settings secondary nav.
+      if (!/\/settings\/roles/.test(page.url())) {
+        await navigateWithModalGuard(() => navigateToRoles(page));
+      }
+      await expect(page.locator('[data-testid="add-role-button"]')).toBeVisible({ timeout: 15000 });
     });
 
     test('should create role', async () => {
@@ -115,7 +130,7 @@ test.describe.serial('Settings Management', () => {
       const rolePost = page.waitForResponse(
         r => r.url().includes('/membership/roles') && r.request().method() === 'POST',
         { timeout: 15000 }
-      ).catch(() => null);
+      ).catch((): null => null);
       await saveBtn.click();
       await rolePost;
       const validatedRole = page.locator('a').getByText('Zacchaeus Test Role');
@@ -131,7 +146,8 @@ test.describe.serial('Settings Management', () => {
       await searchBox.fill('Jennifer Williams');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
+      // Result rows render an icon-only AppIconButton (aria-label "Add").
+      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
       await selectBtn.click();
       // Person has email → auto-saves and opens SendInviteDialog. Dismiss it
       // before asserting on the Members table (which is the target column).
@@ -186,6 +202,10 @@ test.describe.serial('Settings Management', () => {
   });
 
   test.describe.serial('Mobile Settings', () => {
+    // Tab create/edit/delete isn't idempotent — a retry would add a duplicate
+    // tab and break the count assertions.
+    test.describe.configure({ retries: 0 });
+
     test.beforeEach(async () => {
       // "Mobile" is a primary nav item (not in settings secondary menu),
       // gated by ContentApi content.edit permission. Navigate via the primary nav.
@@ -199,34 +219,38 @@ test.describe.serial('Settings Management', () => {
       await expect(page.locator('button').getByText('Add Tab')).toBeVisible({ timeout: 10000 });
     });
 
+    // "Settings Tab" names are private to this spec — mobile-app.spec owns
+    // "Zacchaeus Test Tab" on the same page and the two files run in parallel
+    // workers; sharing a name breaks both files' count assertions. Edit clicks
+    // are row-scoped for the same reason.
     test('should create mobile app tab', async () => {
       const addBtn = page.locator('button').getByText('Add Tab');
       await addBtn.dispatchEvent('click');
       const tabName = page.locator('[name="text"]');
-      await tabName.fill('Zacchaeus Test Tab')
+      await tabName.fill('Zacchaeus Settings Tab')
       const url = page.locator('[name="url"]');
       await url.fill('https://pony.town/');
       const saveBtn = page.locator('button').getByText('Save Tab');
       await saveBtn.click();
-      const validatedTab = page.locator('h6').getByText('Zacchaeus Test Tab');
+      const validatedTab = page.locator('h6').getByText('Zacchaeus Settings Tab');
       await expect(validatedTab).toHaveCount(1);
     });
 
     test('should edit mobile app tab', async () => {
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      const row = page.getByRole('listitem').filter({ hasText: 'Zacchaeus Settings Tab' }).first();
+      await row.locator('button[aria-label="Edit"]').click();
       const tabName = page.locator('[name="text"]');
-      await expect(tabName).toHaveValue('Zacchaeus Test Tab', { timeout: 10000 });
-      await tabName.fill('Zebedee Test Tab')
+      await expect(tabName).toHaveValue('Zacchaeus Settings Tab', { timeout: 10000 });
+      await tabName.fill('Zebedee Settings Tab')
       const saveBtn = page.locator('button').getByText('Save Tab');
       await saveBtn.click();
-      const validatedTab = page.locator('h6').getByText('Zebedee Test Tab');
+      const validatedTab = page.locator('h6').getByText('Zebedee Settings Tab');
       await expect(validatedTab).toHaveCount(1);
     });
 
     test('should cancel edit mobile app tab', async () => {
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      const row = page.getByRole('listitem').filter({ hasText: 'Zebedee Settings Tab' }).first();
+      await row.locator('button[aria-label="Edit"]').click();
       const tabName = page.locator('[name="text"]');
       await expect(tabName).toHaveCount(1);
       const cancelBtn = page.locator('button').getByText('Cancel');
@@ -241,24 +265,19 @@ test.describe.serial('Settings Management', () => {
         await dialog.accept();
       });
 
-      const editBtn = editIconButton(page).first();
-      await editBtn.click();
+      const row = page.getByRole('listitem').filter({ hasText: 'Zebedee Settings Tab' }).first();
+      await row.locator('button[aria-label="Edit"]').click();
       const deleteBtn = page.locator('button').getByText('Delete');
       await deleteBtn.click();
-      const validatedDeletion = page.locator('h6').getByText('Zebedee Test Tab');
+      const validatedDeletion = page.locator('h6').getByText('Zebedee Settings Tab');
       await expect(validatedDeletion).toHaveCount(0);
     });
   });
 
   test.describe.serial('Form Settings', () => {
     test.beforeEach(async () => {
-      // Mobile Settings tests leave us on /mobile, where the Form secondary
-      // menu doesn't exist — re-enter /settings before clicking the tab.
-      if (!/\/settings(\?|$|\/$)/.test(page.url())) {
-        await navigateToSettings(page);
-      }
-      const formTab = page.locator('[id="secondaryMenu"]').getByText('Form');
-      await formTab.dispatchEvent('click');
+      // Forms now live under People → Forms; navigate there before each test.
+      await navigateToForms(page);
       await expect(page.locator('[data-testid="add-form-button"]')).toBeVisible({ timeout: 10000 });
     });
 
@@ -425,7 +444,8 @@ test.describe.serial('Settings Management', () => {
       await personSearch.fill('Dorothy Jackson');
       const searchBtn = page.locator('[id="searchButton"]');
       await searchBtn.click();
-      const addBtn = page.locator('button').getByText('Select');
+      // Result rows render an icon-only AppIconButton (aria-label "Add").
+      const addBtn = page.locator('[data-testid^="add-person-"]').first();
       await addBtn.click();
 
       const validatedAddition = page.locator('td a').getByText('Dorothy Jackson');
@@ -470,26 +490,32 @@ test.describe.serial('Settings Management', () => {
   });
 
   // Edge-case extensions: extra surface checks per .notes/B1Admin-test-coverage-gaps.md §3.
-  test.describe('General Settings — extras', () => {
+  test.describe('Settings landing — extras', () => {
     test.beforeEach(async () => {
       // Form/Mobile Settings tests leave us on a sub-tab (or /mobile) — return
-      // to the General Settings root so Edit Settings / Roles are in the DOM.
+      // to the settings landing so the configuration list is in the DOM.
       await navigateToSettings(page);
+      await expect(page.locator('[data-testid="settings-section-church-info"]')).toBeVisible({ timeout: 15000 });
     });
 
-    test('Edit Settings drawer exposes the Church Info name field', async () => {
-      // settingsTest fixture lands on /settings/ (ManageChurch). Header has Edit Settings.
-      const editBtn = page.locator('button').getByText('Edit Settings').first();
-      await editBtn.click();
-      // ChurchSettingsEdit uses MUI TextFields labeled "Church Name" and "Subdomain".
+    test('Church Information section edit exposes the name and subdomain fields', async () => {
+      // Church Information is the default-selected section on the landing.
+      const editBtn = page.locator('[data-testid="small-button-edit"]').first();
+      await editBtn.dispatchEvent('click');
+      // The edit InputBox renders MUI TextFields labeled "Church Name" and "Subdomain".
       await expect(page.getByLabel('Church Name').first()).toBeVisible({ timeout: 10000 });
       await expect(page.getByLabel('Subdomain').first()).toBeVisible();
+      // Restore read-only view for any following tests.
+      await page.locator('button').getByText('Cancel').click();
     });
 
-    test('Roles tab is the default selection on the Settings page', async () => {
-      // The Roles button uses variant="contained" when selected — anchor on its label.
-      const rolesButton = page.getByRole('button', { name: /^Roles$/ }).first();
-      await expect(rolesButton).toBeVisible({ timeout: 10000 });
+    test('Settings landing shows the configuration list and Roles in the secondary nav', async () => {
+      // The configuration master list is the new default landing content.
+      await expect(page.locator('[data-testid="settings-section-church-info"]')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('[data-testid="settings-section-campuses"]')).toBeVisible();
+      // Roles moved out of the landing into the settings secondary nav.
+      const rolesNav = page.locator('[id="secondaryMenu"]').getByText('Roles', { exact: true });
+      await expect(rolesNav).toBeVisible({ timeout: 10000 });
     });
   });
 

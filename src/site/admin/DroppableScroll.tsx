@@ -1,7 +1,7 @@
 
 
 import { Box } from "@mui/material";
-import React, { CSSProperties } from "react";
+import React, { type CSSProperties } from "react";
 import { useDrop } from "react-dnd";
 
 type Props = {
@@ -16,7 +16,7 @@ export function DroppableScroll(props: Props) {
   const stepsRef = React.useRef<number>(0);
 
   const defaultTypes = ["section", "sectionBlock", "element", "elementBlock"];
-  const [{ isOver, canDrop, item }, drop] = useDrop(
+  const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: props.acceptTypes || defaultTypes,
       collect: (monitor) => ({

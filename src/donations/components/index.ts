@@ -1,6 +1,8 @@
 export * from "../../components";
 export { BatchEdit } from "./BatchEdit";
 export { BulkDonationEntry } from "./BulkDonationEntry";
+export { CampaignEdit } from "./CampaignEdit";
+export { PledgeEdit } from "./PledgeEdit";
 export { DonationEdit } from "./DonationEdit";
 export { Donations } from "./Donations";
 export { Funds } from "./Funds";

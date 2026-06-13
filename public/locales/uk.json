@@ -213,6 +213,7 @@
     "done": "Готово",
     "duplicate": "Дублювати",
     "edit": "Редагувати",
+    "element": "Елемент",
     "errorBoundary": {
       "message": "Щось пішло не так. Спробуйте ще раз або зверніться до служби підтримки, якщо проблема не зникає.",
       "retry": "Повторити",
@@ -259,8 +260,7 @@
     "tryAgain": "Спробуйте ще раз",
     "update": "Оновити",
     "website": "Веб-сайт",
-    "yes": "Так",
-    "element": "Елемент"
+    "yes": "Так"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Додати секцію",
+      "backToSite": "Назад до сайту",
       "blockPreview": "Попередній перегляд блоку",
+      "discard": "Відхилити",
+      "discardElementMessage": "Відхилити незбережені зміни цього елемента?",
+      "discardElementTitle": "Відхилити зміни?",
+      "discardSectionMessage": "Відхилити незбережені зміни цієї секції?",
       "dropToAddElement": "Перетягніть сюди, щоб додати елемент",
       "dropToAddSection": "Перетягніть сюди, щоб додати секцію",
+      "keepEditing": "Продовжити редагування",
       "scrollDown": "Прокрутити вниз",
-      "scrollUp": "Прокрутити вгору"
+      "scrollUp": "Прокрутити вгору",
+      "smallScreenMessage": "Відкрийте цю сторінку на планшеті або комп'ютері, щоб редагувати свій вебсайт.",
+      "smallScreenTitle": "Цьому редактору потрібен більший екран"
     },
     "cssEdit": {
       "advancedFeature": "Розширена функція:",
@@ -2937,13 +2946,24 @@
       "ago": "тому",
       "block": "Блок",
       "desktop": "Desktop",
+      "disablePublish": "Вимкнути публікацію",
+      "disablePublishConfirm": "Вимкнути публікацію для цієї сторінки? Зміни знову одразу з'являтимуться на сайті.",
+      "discardChanges": "Відхилити неопубліковані зміни",
+      "discardChangesConfirm": "Відхилити всі зміни, зроблені після останньої публікації? Редактор буде відновлено до опублікованої версії.",
       "exit": "Вихід",
       "justNow": "щойно",
       "mobile": "Мобільний",
-      "notSavedYet": "Поки немає змін",
       "page": "Page",
+      "publish": "Опублікувати",
+      "publishOffTip": "Наразі зміни одразу з'являються на сайті. Опублікуйте, щоб зберегти опубліковану версію, а майбутні зміни залишатимуться прихованими до наступної публікації.",
+      "publishedLabel": "Опубліковано",
       "redoTip": "Повторити (Ctrl+Shift+Z)",
+      "saveError": "Не вдалося зберегти",
       "savedAllChanges": "Усі зміни збережено",
+      "saving": "Збереження…",
+      "statusLiveOnSave": "На сайті після збереження",
+      "statusPublished": "Опубліковано",
+      "statusUnpublishedChanges": "Неопубліковані зміни",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Скасувати (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Картка",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Колонка",
       "common": "Поширені",
       "content": "Вміст",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Увімкнути Lightbox"
+      "enableLightbox": "Увімкнути Lightbox",
+      "groupAnimation": "Анімація",
+      "groupContent": "Вміст",
+      "groupStyle": "Стиль"
     },
     "elementSelection": {
       "moveDown": "Перемістити вниз",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Повна документація",
       "moveBody": "Перетягуйте секції та елементи, щоб змінити порядок. Використовуйте стрілки вгору/вниз на панелі вибору для точних переміщень.",
       "moveTitle": "Переставити",
+      "shortcutsBody": "Delete видаляє вибраний елемент, Ctrl+D дублює його, Alt+вгору/вниз переміщує його, а Esc знімає виділення.",
+      "shortcutsTitle": "Комбінації клавіш",
       "title": "Основи редактора сторінок",
       "undoBody": "Використовуйте Ctrl+Z для скасування і Ctrl+Shift+Z для повторення. Відкрийте панель Історія з меню, щоб перейти до будь-якого попереднього стану.",
       "undoTitle": "Скасування та історія"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Почати з шаблону",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Це назавжди видалить секцію та все, що в ній. Ви можете скасувати це за допомогою Ctrl+Z.",
+      "deleteSectionTitle": "Видалити секцію?",
       "editSection": "Редагувати секцію",
       "layoutContainer": "Контейнер макета",
       "section": "Секція"
@@ -3362,6 +3391,95 @@
       "duplicate": "Дублювати",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Наша історія",
+      "all": "Усі",
+      "blank": "Порожня секція",
+      "category": {
+        "about": "Про нас",
+        "cta": "Заклик до дії",
+        "giving": "Пожертви",
+        "hero": "Головний банер",
+        "media": "Медіа",
+        "people": "Люди та групи",
+        "services": "Служби"
+      },
+      "connectColumns": "Контактні колонки",
+      "ctaBanner": "Банер «Наступний крок»",
+      "faqSection": "Поширені запитання",
+      "findUs": "Знайдіть нас",
+      "galleryRow": "Ряд фотографій",
+      "givingBanner": "Банер пожертв",
+      "givingOptions": "Способи пожертвувати",
+      "groupListSection": "Список груп",
+      "groupsBrowser": "Перегляд груп",
+      "heroCentered": "Головний банер із фото",
+      "heroGradient": "Головний банер із градієнтом",
+      "heroSplit": "Розділений головний банер",
+      "ministriesCards": "Картки служінь",
+      "sermonsLatest": "Останні проповіді",
+      "serviceTimes": "Розклад служб",
+      "staffGrid": "Сітка співробітників",
+      "storyColumns": "Три колонки",
+      "testimony": "Цитата свідчення",
+      "title": "Додати секцію",
+      "verseBanner": "Банер із віршем",
+      "watchOnline": "Дивитися онлайн",
+      "welcome": "Текст привітання"
+    },
+    "sectionToolbar": {
+      "delete": "Видалити секцію",
+      "dragToReorder": "Перетягніть, щоб змінити порядок",
+      "duplicate": "Дублювати секцію",
+      "moveDown": "Перемістити секцію вниз",
+      "moveUp": "Перемістити секцію вгору",
+      "settings": "Налаштування секції"
+    },
+    "siteTemplates": {
+      "back": "Назад",
+      "create": "Створити сайт",
+      "creating": "Створення {title}...",
+      "descriptions": {
+        "classic": "Повноцінний традиційний сайт із привітною головною сторінкою, сторінкою про нас та сторінкою планування візиту.",
+        "community": "Ставить групи та служіння на чільне місце, щоб люди швидко знаходили спільноту.",
+        "heritage": "Класичний дизайн з акцентом на Святе Письмо для церков із давньою традицією.",
+        "media": "Побудований навколо вашої прямої трансляції та архіву проповідей — для церков із сильною онлайн-присутністю.",
+        "modern": "Сучасний вигляд із виразними градієнтами, онлайн-службами та сторінкою для зв’язку.",
+        "simple": "Простий стартовий сайт із двох сторінок — ідеальний для новостворених церков і малих громад.",
+        "visitor": "Зосереджений на відповідях на запитання гостя, який приходить уперше, ще до його візиту."
+      },
+      "errFailed": "Не вдалося створити сайт. Спробуйте ще раз.",
+      "exists": "Вже існує",
+      "existsNote": "Сторінки з позначкою «вже існує» залишаться без змін.",
+      "intro": "Оберіть стартовий сайт нижче. Ми створимо сторінки та навігаційні посилання за вас — усе можна буде відредагувати пізніше.",
+      "names": {
+        "classic": "Класична церква",
+        "community": "Життя спільноти",
+        "heritage": "Спадщина",
+        "media": "Онлайн насамперед",
+        "modern": "Сучасне привітання",
+        "simple": "Простий старт",
+        "visitor": "Фокус на гостях"
+      },
+      "nav": {
+        "about": "Про нас",
+        "connect": "Зв’язок",
+        "give": "Пожертви",
+        "home": "Головна",
+        "live": "Наживо",
+        "sermons": "Проповіді",
+        "visit": "Візит"
+      },
+      "navLinksNote": "Також додає навігаційні посилання на вбудовані сторінки:",
+      "pageCount": "{count} сторінок",
+      "pages": {
+        "about": "Про нас",
+        "connect": "Зв’язок",
+        "home": "Головна",
+        "visit": "Заплануйте візит"
+      },
+      "title": "Почати з шаблону"
     },
     "spacingScaleEdit": {
       "buttonOne": "Кнопка 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Анімації",
       "animationsDesc": "Ефект для відображення елемента.",
+      "hideOnDesktop": "Приховати на комп'ютері",
+      "hideOnMobile": "Приховати на мобільному",
       "styles": "Стилі",
-      "stylesDesc": "Розширені параметри зовнішнього вигляду."
+      "stylesDesc": "Розширені параметри зовнішнього вигляду.",
+      "visibility": "Видимість:"
     },
     "stylesManager": {
       "color": "Палітра кольорів",

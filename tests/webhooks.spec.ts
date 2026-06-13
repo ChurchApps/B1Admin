@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { login } from './helpers/auth';
-import { navigateTo } from './helpers/navigation';
+import { navigateToDeveloper } from './helpers/navigation';
 import { STORAGE_STATE_PATH } from './global-setup';
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or
@@ -9,9 +9,9 @@ const WEBHOOK_NAME = 'Zacchaeus Test Webhook';
 const WEBHOOK_NAME_EDITED = 'Zebedee Test Webhook';
 const WEBHOOK_URL = 'https://example.com/hooks/playwright';
 
-// Webhooks now lives as a sub-tab under the Developer secondary-nav item.
+// Webhooks lives as a sub-tab of the Developer section on the Settings landing.
 const openWebhooksPage = async (page: Page) => {
-  await navigateTo(page, 'developer');
+  await navigateToDeveloper(page);
   await page.getByRole('tab', { name: 'Webhooks', exact: true }).click();
   await expect(page.getByRole('button', { name: 'New Webhook' })).toBeVisible({ timeout: 15000 });
 };

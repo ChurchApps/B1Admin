@@ -14,7 +14,7 @@ export const OAuthPage: React.FC = () => {
 
   React.useEffect(() => {
     if (clientId) {
-      ApiHelper.get(`/oauth/clients/clientId/${clientId}`, "MembershipApi").then((client) => {
+      ApiHelper.get(`/oauth/clients/clientId/${clientId}`, "MembershipApi").then((client: any) => {
         if (client) setClientName(client.name);
       });
     }
@@ -80,7 +80,6 @@ export const OAuthPage: React.FC = () => {
                 <Button
                   fullWidth
                   variant="contained"
-                  color="error"
                   onClick={() => {
                     window.location.href = redirectUri || "/";
                   }}

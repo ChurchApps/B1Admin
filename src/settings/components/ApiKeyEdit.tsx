@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { TextField, FormControlLabel, Checkbox, Box, Typography, Stack, Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import { ApiHelper, InputBox, ErrorMessages, Locale } from "@churchapps/apphelper";
-import type { ApiKeyInterface } from "../DeveloperPage";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
+import type { ApiKeyInterface } from "./DeveloperSection";
 
 interface Props {
   onSave: () => void;
@@ -24,6 +25,19 @@ export const ApiKeyEdit: React.FC<Props> = ({ onSave, onCancel }) => {
   const toggleScope = (scope: string) => {
     setScopes((prev) => (prev.includes(scope) ? prev.filter((s) => s !== scope) : [...prev, scope]));
   };
+
+  // Group scopes by their resource prefix ("people:read" → "people") so the
+  // catalog reads as labelled sections instead of one long checkbox run.
+  const groupedCatalog = useMemo(() => {
+    const groups = new Map<string, string[]>();
+    catalog.forEach((scope) => {
+      const resource = scope.includes(":") ? scope.split(":")[0] : Locale.label("settings.apiKeyEdit.generalScopes");
+      const list = groups.get(resource) || [];
+      list.push(scope);
+      groups.set(resource, list);
+    });
+    return Array.from(groups.entries());
+  }, [catalog]);
 
   const validate = () => {
     const errs: string[] = [];
@@ -55,19 +69,26 @@ export const ApiKeyEdit: React.FC<Props> = ({ onSave, onCancel }) => {
 
   return (
     <>
-      <InputBox headerIcon="key" headerText={Locale.label("settings.apiKeyEdit.newKey")} saveFunction={handleSave} cancelFunction={onCancel}>
+      <FormCard icon="key" title={Locale.label("settings.apiKeyEdit.newKey")} onSave={handleSave} onCancel={onCancel}>
         <ErrorMessages errors={errors} />
         <TextField fullWidth label={Locale.label("settings.apiKeyEdit.name")} placeholder={Locale.label("settings.apiKeyEdit.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
         <TextField fullWidth type="date" label={Locale.label("settings.apiKeyEdit.expires")} InputLabelProps={{ shrink: true }} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} helperText={Locale.label("settings.apiKeyEdit.expiresHelp")} />
         <Box sx={{ mt: 2 }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.apiKeyEdit.scopes")}</Typography>
-          <Stack direction="row" flexWrap="wrap">
-            {catalog.map((scope) => (
-              <FormControlLabel key={scope} control={<Checkbox size="small" checked={scopes.includes(scope)} onChange={() => toggleScope(scope)} />} label={scope} />
+          <Stack spacing={1.5}>
+            {groupedCatalog.map(([resource, items]) => (
+              <Box key={resource}>
+                <Typography variant="caption" sx={{ display: "block", fontWeight: 700, textTransform: "capitalize", color: "text.secondary", mb: 0.25 }}>{resource}</Typography>
+                <Stack direction="row" flexWrap="wrap" sx={{ gap: 0.5 }}>
+                  {items.map((scope) => (
+                    <FormControlLabel key={scope} sx={{ mr: 0 }} control={<Checkbox size="small" checked={scopes.includes(scope)} onChange={() => toggleScope(scope)} />} label={scope} />
+                  ))}
+                </Stack>
+              </Box>
             ))}
           </Stack>
         </Box>
-      </InputBox>
+      </FormCard>
 
       <Dialog open={!!rawKey} onClose={closeKey} maxWidth="sm" fullWidth>
         <DialogTitle>{Locale.label("settings.apiKeyEdit.keyTitle")}</DialogTitle>

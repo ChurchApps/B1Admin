@@ -3,7 +3,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
 import { Button, Icon, Snackbar, Stack, Menu, MenuItem } from "@mui/material";
-import { EventNote as EventNoteIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
+import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { EventHelper, UserHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 import { EditCalendarEventModal } from "./EditCalendarEventModal";
@@ -80,7 +81,7 @@ export function CuratedEventCalendar(props: Props) {
     ev.end = new Date(ev.end);
     if (ev.recurrenceRule) {
       const dates = EventHelper.getRange(ev, startRange, endRange);
-      dates.forEach((date) => {
+      dates.forEach((date: any) => {
         const evt = { ...event };
         const diff = new Date(evt.end).getTime() - new Date(evt.start).getTime();
         evt.start = date;
@@ -98,7 +99,7 @@ export function CuratedEventCalendar(props: Props) {
       <Stack direction="row" justifyContent="space-between" alignItems="center" marginBottom="17px" marginTop="12px">
         <div>
           <Button
-            startIcon={<Icon>link</Icon>}
+            startIcon={<LinkIcon />}
             endIcon={<ArrowDropDownIcon />}
             title={Locale.label("calendars.calendar.subscribeTitle")}
             size="small"
@@ -120,15 +121,14 @@ export function CuratedEventCalendar(props: Props) {
           </Menu>
         </div>
         {props.mode === "edit" && (
-          <Button
-            endIcon={<EventNoteIcon />}
-            size="small"
-            variant="contained"
+          <AppIconButton
+            tone="card"
+            intent="add"
+            label={Locale.label("common.add")}
+            icon={<AddIcon />}
             onClick={() => setOpen(true)}
             data-testid="calendar-add-event-button"
-          >
-            {Locale.label("calendars.calendar.add")}
-          </Button>
+          />
         )}
       </Stack>
       <Calendar

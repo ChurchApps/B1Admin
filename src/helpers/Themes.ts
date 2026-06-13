@@ -15,6 +15,9 @@ const getBaseThemeOptions = (mode: PaletteMode): ThemeOptions => ({
       styleOverrides: { root: { "& .MuiOutlinedInput-root": { backgroundColor: mode === "light" ? "rgba(255, 255, 255, 0.8)" : "rgba(255, 255, 255, 0.05)" } } }
     },
     MuiFormControl: { defaultProps: { margin: "normal" } },
+    // always-shrunk labels: react-hook-form reset() fills inputs without events, so MUI's filled-state detection misses them
+    MuiInputLabel: { defaultProps: { shrink: true } },
+    MuiOutlinedInput: { defaultProps: { notched: true } },
     MuiButton: {
       styleOverrides: {
         root: {

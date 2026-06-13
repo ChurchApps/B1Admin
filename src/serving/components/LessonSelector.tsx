@@ -9,7 +9,6 @@ import {
   Typography,
   Box,
   CircularProgress,
-  IconButton,
   Breadcrumbs,
   Link,
   TextField,
@@ -18,6 +17,7 @@ import {
 import { ArrowBack as ArrowBackIcon, Search as SearchIcon } from "@mui/icons-material";
 import { ProviderChipSelector } from "./ProviderChipSelector";
 import { BrowseGrid } from "./BrowseGrid";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { Locale } from "@churchapps/apphelper";
 import { type ContentFolder } from "@churchapps/content-providers";
 import { useProviderBrowser } from "../hooks/useProviderBrowser";
@@ -149,9 +149,7 @@ export const LessonSelector: React.FC<Props> = ({ open, onClose, onSelect, retur
       <DialogTitle>
         <Stack direction="row" alignItems="center" spacing={1}>
           {browser.currentPath && (
-            <IconButton onClick={handleBack} size="small">
-              <ArrowBackIcon />
-            </IconButton>
+            <AppIconButton label={Locale.label("common.back")} icon={<ArrowBackIcon />} onClick={handleBack} />
           )}
           <span>{Locale.label("plans.lessonSelector.associateLesson")}</span>
         </Stack>

@@ -1,7 +1,8 @@
 import React from "react";
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { type PlanTypeInterface } from "../../helpers";
 
 interface Props {
@@ -48,14 +49,14 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
       <DialogContent>
         <Box sx={{ pt: 1 }}>
           {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
-          <InputBox headerIcon="assignment" headerText={Locale.label("plans.planType.details")}>
+          <FormCard icon="assignment" title={Locale.label("plans.planType.details")}>
             <TextField fullWidth label={Locale.label("plans.planTypeEdit.planTypeName")} required margin="normal" placeholder={Locale.label("placeholders.planType.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planTypeEdit.nameRequired") })} />
-          </InputBox>
+          </FormCard>
         </Box>
       </DialogContent>
       <DialogActions>
         {planType?.id && (
-          <Button onClick={handleDelete} disabled={loading} color="error" sx={{ mr: "auto" }}>
+          <Button onClick={handleDelete} disabled={loading} sx={{ mr: "auto" }}>
             {Locale.label("common.delete")}
           </Button>
         )}

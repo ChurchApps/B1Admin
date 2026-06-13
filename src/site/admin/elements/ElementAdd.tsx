@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Dialog, DialogTitle, DialogContent, Icon, IconButton, InputAdornment, TextField, Tabs, Tab, Box, Fade } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Icon, InputAdornment, TextField, Tabs, Tab, Box, Fade } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ElementTypes } from "@churchapps/helpers";
 import type { BlockInterface } from "../../../helpers";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { useDrag } from "react-dnd";
 
 type Props = {
@@ -9,6 +12,7 @@ type Props = {
   includeSection: boolean
   updateCallback: () => void
   draggingCallback: () => void
+  onSelect?: (config: { type: string; dndType: string; blockId?: string }) => void
   inPanel?: boolean
 };
 
@@ -25,7 +29,7 @@ interface ElementConfig {
   blockId?: string;
 }
 
-function DraggableElement({ config, draggingCallback, index }: { config: ElementConfig; draggingCallback: () => void; index: number; }) {
+function DraggableElement({ config, draggingCallback, index, onSelect }: { config: ElementConfig; draggingCallback: () => void; index: number; onSelect?: (config: { type: string; dndType: string; blockId?: string }) => void; }) {
   const dragRef = React.useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -49,9 +53,13 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
       ref={dragRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => {
+        if (isDragging) return;
+        onSelect?.({ type: config.type, dndType: config.dndType, blockId: config.blockId });
+      }}
       style={{
         background: "#fff",
-        border: `1px solid ${isHovered ? "#1976d2" : "#e5e7eb"}`,
+        border: `1px solid ${isHovered ? "var(--c1)" : "var(--border-main)"}`,
         borderRadius: "8px",
         padding: "10px 12px",
         cursor: isDragging ? "grabbing" : "grab",
@@ -72,26 +80,26 @@ function DraggableElement({ config, draggingCallback, index }: { config: Element
           width: 32,
           height: 32,
           borderRadius: "6px",
-          background: "#f3f4f6",
+          background: "var(--bg-sub)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0
         }}
       >
-        <Icon sx={{ color: "#374151", fontSize: 18 }}>{config.icon}</Icon>
+        <Icon sx={{ color: "text.primary", fontSize: 18 }}>{config.icon}</Icon>
       </Box>
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Box sx={{ color: "#111827", fontSize: "0.85rem", fontWeight: 600, lineHeight: 1.2 }}>
+        <Box sx={{ color: "text.primary", fontSize: "0.85rem", fontWeight: 600, lineHeight: 1.2 }}>
           {config.label}
         </Box>
         {isHovered && (
-          <Box sx={{ color: "#6b7280", fontSize: "0.72rem", lineHeight: 1.3, mt: 0.25 }}>
+          <Box sx={{ color: "text.secondary", fontSize: "0.72rem", lineHeight: 1.3, mt: 0.25 }}>
             {config.description}
           </Box>
         )}
       </Box>
-      <Icon sx={{ color: "#d1d5db", fontSize: 14, flexShrink: 0 }}>drag_indicator</Icon>
+      <Icon sx={{ color: "divider", fontSize: 14, flexShrink: 0 }}>drag_indicator</Icon>
     </div>
   );
 }
@@ -109,6 +117,33 @@ export function ElementAdd(props: Props) {
 
   useEffect(loadData, []);
 
+  const elementUI: Record<string, { icon: string; labelKey?: string; descKey?: string; label?: string; description?: string }> = {
+    row: { icon: "view_column", labelKey: "site.elementAdd.row", descKey: "site.elementAdd.descRow" },
+    box: { icon: "crop_square", labelKey: "site.elementAdd.box", descKey: "site.elementAdd.descBox" },
+    carousel: { icon: "view_carousel", labelKey: "site.elementAdd.carousel", descKey: "site.elementAdd.descCarousel" },
+    text: { icon: "text_fields", labelKey: "site.elementAdd.text", descKey: "site.elementAdd.descText" },
+    textWithPhoto: { icon: "article", labelKey: "site.elementAdd.textWithPhoto", descKey: "site.elementAdd.descTextWithPhoto" },
+    card: { icon: "dashboard", labelKey: "site.elementAdd.card", descKey: "site.elementAdd.descCard" },
+    faq: { icon: "help_outline", labelKey: "site.elementAdd.expandable", descKey: "site.elementAdd.descExpandable" },
+    table: { icon: "table_chart", labelKey: "site.elementAdd.table", descKey: "site.elementAdd.descTable" },
+    image: { icon: "image", labelKey: "site.elementAdd.image", descKey: "site.elementAdd.descImage" },
+    video: { icon: "play_circle", labelKey: "site.elementAdd.video", descKey: "site.elementAdd.descVideo" },
+    map: { icon: "place", labelKey: "site.elementAdd.location", descKey: "site.elementAdd.descLocation" },
+    logo: { icon: "church", labelKey: "site.elementAdd.logo", descKey: "site.elementAdd.descLogo" },
+    sermons: { icon: "video_library", labelKey: "common.sermons", descKey: "site.elementAdd.descSermons" },
+    stream: { icon: "live_tv", labelKey: "site.elementAdd.stream", descKey: "site.elementAdd.descStream" },
+    donation: { icon: "favorite", labelKey: "site.elementAdd.donation", descKey: "site.elementAdd.descDonation" },
+    donateLink: { icon: "volunteer_activism", labelKey: "site.elementAdd.donateLink", descKey: "site.elementAdd.descDonateLink" },
+    form: { icon: "assignment", labelKey: "site.elementAdd.form", descKey: "site.elementAdd.descForm" },
+    calendar: { icon: "event", labelKey: "site.elementAdd.calendar", descKey: "site.elementAdd.descCalendar" },
+    groupList: { icon: "groups", labelKey: "site.elementAdd.groupList", descKey: "site.elementAdd.descGroupList" },
+    groups: { icon: "manage_search", label: "Groups Browser", description: "Filterable directory of all church groups, with optional search and category filters." },
+    rawHTML: { icon: "code", labelKey: "site.elementAdd.html", descKey: "site.elementAdd.descHtml" },
+    iframe: { icon: "web", labelKey: "site.elementAdd.embedPage", descKey: "site.elementAdd.descEmbedPage" }
+  };
+
+  const hiddenTypes = ["column", "block", "whiteSpace", "buttonLink"];
+
   const allElements: ElementConfig[] = useMemo(() => {
     const elements: ElementConfig[] = [];
 
@@ -116,30 +151,18 @@ export function ElementAdd(props: Props) {
       elements.push({ type: "section", dndType: "section", icon: "view_agenda", label: Locale.label("site.elementAdd.section"), description: Locale.label("site.elementAdd.descSection"), category: "layout" });
     }
 
-    elements.push(
-      { type: "row", dndType: "element", icon: "view_column", label: Locale.label("site.elementAdd.row"), description: Locale.label("site.elementAdd.descRow"), category: "layout" },
-      { type: "box", dndType: "element", icon: "crop_square", label: Locale.label("site.elementAdd.box"), description: Locale.label("site.elementAdd.descBox"), category: "layout" },
-      { type: "carousel", dndType: "element", icon: "view_carousel", label: Locale.label("site.elementAdd.carousel"), description: Locale.label("site.elementAdd.descCarousel"), category: "layout" },
-      { type: "text", dndType: "element", icon: "text_fields", label: Locale.label("site.elementAdd.text"), description: Locale.label("site.elementAdd.descText"), category: "content" },
-      { type: "textWithPhoto", dndType: "element", icon: "article", label: Locale.label("site.elementAdd.textWithPhoto"), description: Locale.label("site.elementAdd.descTextWithPhoto"), category: "content" },
-      { type: "card", dndType: "element", icon: "dashboard", label: Locale.label("site.elementAdd.card"), description: Locale.label("site.elementAdd.descCard"), category: "content" },
-      { type: "faq", dndType: "element", icon: "help_outline", label: Locale.label("site.elementAdd.expandable"), description: Locale.label("site.elementAdd.descExpandable"), category: "content" },
-      { type: "table", dndType: "element", icon: "table_chart", label: Locale.label("site.elementAdd.table"), description: Locale.label("site.elementAdd.descTable"), category: "content" },
-      { type: "image", dndType: "element", icon: "image", label: Locale.label("site.elementAdd.image"), description: Locale.label("site.elementAdd.descImage"), category: "media" },
-      { type: "video", dndType: "element", icon: "play_circle", label: Locale.label("site.elementAdd.video"), description: Locale.label("site.elementAdd.descVideo"), category: "media" },
-      { type: "map", dndType: "element", icon: "place", label: Locale.label("site.elementAdd.location"), description: Locale.label("site.elementAdd.descLocation"), category: "media" },
-      { type: "logo", dndType: "element", icon: "church", label: Locale.label("site.elementAdd.logo"), description: Locale.label("site.elementAdd.descLogo"), category: "church" },
-      { type: "sermons", dndType: "element", icon: "video_library", label: Locale.label("common.sermons"), description: Locale.label("site.elementAdd.descSermons"), category: "church" },
-      { type: "stream", dndType: "element", icon: "live_tv", label: Locale.label("site.elementAdd.stream"), description: Locale.label("site.elementAdd.descStream"), category: "church" },
-      { type: "donation", dndType: "element", icon: "favorite", label: Locale.label("site.elementAdd.donation"), description: Locale.label("site.elementAdd.descDonation"), category: "church" },
-      { type: "donateLink", dndType: "element", icon: "volunteer_activism", label: Locale.label("site.elementAdd.donateLink"), description: Locale.label("site.elementAdd.descDonateLink"), category: "church" },
-      { type: "form", dndType: "element", icon: "assignment", label: Locale.label("site.elementAdd.form"), description: Locale.label("site.elementAdd.descForm"), category: "church" },
-      { type: "calendar", dndType: "element", icon: "event", label: Locale.label("site.elementAdd.calendar"), description: Locale.label("site.elementAdd.descCalendar"), category: "church" },
-      { type: "groupList", dndType: "element", icon: "groups", label: Locale.label("site.elementAdd.groupList"), description: Locale.label("site.elementAdd.descGroupList"), category: "church" },
-      { type: "groups", dndType: "element", icon: "manage_search", label: "Groups Browser", description: "Filterable directory of all church groups, with optional search and category filters.", category: "church" },
-      { type: "rawHTML", dndType: "element", icon: "code", label: Locale.label("site.elementAdd.html"), description: Locale.label("site.elementAdd.descHtml"), category: "advanced" },
-      { type: "iframe", dndType: "element", icon: "web", label: Locale.label("site.elementAdd.embedPage"), description: Locale.label("site.elementAdd.descEmbedPage"), category: "advanced" }
-    );
+    Object.values(ElementTypes).forEach((def) => {
+      if (hiddenTypes.includes(def.elementType)) return;
+      const ui = elementUI[def.elementType];
+      elements.push({
+        type: def.elementType,
+        dndType: "element",
+        icon: ui?.icon || "widgets",
+        label: ui?.label || (ui?.labelKey ? Locale.label(ui.labelKey) : def.label),
+        description: ui?.description || (ui?.descKey ? Locale.label(ui.descKey) : def.label),
+        category: def.category
+      });
+    });
 
     return elements;
   }, [props.includeSection]);
@@ -186,7 +209,7 @@ export function ElementAdd(props: Props) {
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <Icon sx={{ color: "#9ca3af", fontSize: 20 }}>search</Icon>
+            <Icon sx={{ color: "text.secondary", fontSize: 20 }}>search</Icon>
           </InputAdornment>
         )
       }}
@@ -206,13 +229,13 @@ export function ElementAdd(props: Props) {
           textTransform: "none",
           fontSize: "0.8rem",
           fontWeight: 500,
-          color: "#6b7280",
+          color: "text.secondary",
           minWidth: "auto",
           px: 1.5,
           py: 0.5,
-          "&.Mui-selected": { color: "#1d4ed8", fontWeight: 600 }
+          "&.Mui-selected": { color: "primary.main", fontWeight: 600 }
         },
-        "& .MuiTabs-indicator": { height: 2, backgroundColor: "#1d4ed8" }
+        "& .MuiTabs-indicator": { height: 2, backgroundColor: "primary.main" }
       }}
     >
       {tabs.map((tab) => (
@@ -222,7 +245,7 @@ export function ElementAdd(props: Props) {
   );
 
   const emptyState = (
-    <Box sx={{ textAlign: "center", py: 5, color: "#6b7280" }}>
+    <Box sx={{ textAlign: "center", py: 5, color: "text.secondary" }}>
       <Icon sx={{ fontSize: 36, mb: 1, opacity: 0.5 }}>search_off</Icon>
       <Box sx={{ fontSize: "0.85rem", fontWeight: 500 }}>
         {Locale.label("site.elementAdd.noElementsFound")}
@@ -237,8 +260,8 @@ export function ElementAdd(props: Props) {
     return (
       <Box sx={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         <Box sx={{ px: 1.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
-        <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1, flexShrink: 0 }}>{tabsBar}</Box>
-        <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", p: 1.25, background: "#f9fafb" }}>
+        <Box sx={{ borderBottom: "1px solid var(--border-main)", px: 1, flexShrink: 0 }}>{tabsBar}</Box>
+        <Box sx={{ flex: 1, overflowY: "auto", overflowX: "hidden", p: 1.25, background: "var(--bg-sub)" }}>
           {filteredElements.length === 0 ? (
             emptyState
           ) : (
@@ -249,6 +272,7 @@ export function ElementAdd(props: Props) {
                   config={config}
                   draggingCallback={props.draggingCallback}
                   index={index}
+                  onSelect={props.onSelect}
                 />
               ))}
             </Box>
@@ -268,20 +292,18 @@ export function ElementAdd(props: Props) {
       TransitionComponent={Fade}
       transitionDuration={150}
     >
-      <DialogTitle sx={{ p: 2.5, pb: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e5e7eb" }}>
-        <Box sx={{ fontSize: "1.05rem", fontWeight: 600, color: "#111827" }}>
+      <DialogTitle sx={{ p: 2.5, pb: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid var(--border-main)" }}>
+        <Box sx={{ fontSize: "1.05rem", fontWeight: 600, color: "text.primary" }}>
           {Locale.label("site.elementAdd.addElements")}
         </Box>
-        <IconButton size="small" onClick={props.updateCallback} aria-label="close">
-          <Icon fontSize="small">close</Icon>
-        </IconButton>
+        <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={props.updateCallback} />
       </DialogTitle>
 
       <Box sx={{ px: 2.5, pt: 1.5, pb: 1, flexShrink: 0 }}>{searchField}</Box>
 
-      <Box sx={{ borderBottom: "1px solid #e5e7eb", px: 1.5, flexShrink: 0 }}>{tabsBar}</Box>
+      <Box sx={{ borderBottom: "1px solid var(--border-main)", px: 1.5, flexShrink: 0 }}>{tabsBar}</Box>
 
-      <DialogContent sx={{ p: 2, overflowY: "auto", background: "#f9fafb", flex: 1 }}>
+      <DialogContent sx={{ p: 2, overflowY: "auto", background: "var(--bg-sub)", flex: 1 }}>
         {filteredElements.length === 0 ? (
           emptyState
         ) : (
@@ -292,6 +314,7 @@ export function ElementAdd(props: Props) {
                 config={config}
                 draggingCallback={props.draggingCallback}
                 index={index}
+                onSelect={props.onSelect}
               />
             ))}
           </Box>

@@ -213,6 +213,7 @@
     "done": "Tapos na",
     "duplicate": "Kopyahin",
     "edit": "I-edit",
+    "element": "Elemento",
     "errorBoundary": {
       "message": "May mali. Mangyaring subukang muli o makipag -ugnay sa suporta kung magpapatuloy ang problema.",
       "retry": "Muling",
@@ -259,8 +260,7 @@
     "tryAgain": "Subukan muli",
     "update": "I-update",
     "website": "Website",
-    "yes": "Oo",
-    "element": "Elemento"
+    "yes": "Oo"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Magdagdag ng section",
+      "backToSite": "Bumalik sa Site",
       "blockPreview": "Preview ng Block",
+      "discard": "I-discard",
+      "discardElementMessage": "I-discard ang mga hindi na-save na pagbabago sa element na ito?",
+      "discardElementTitle": "I-discard ang mga pagbabago?",
+      "discardSectionMessage": "I-discard ang mga hindi na-save na pagbabago sa section na ito?",
       "dropToAddElement": "I-drop dito upang magdagdag ng element",
       "dropToAddSection": "I-drop dito upang magdagdag ng section",
+      "keepEditing": "Magpatuloy sa pag-edit",
       "scrollDown": "Mag-scroll Pababa",
-      "scrollUp": "Mag-scroll Pataas"
+      "scrollUp": "Mag-scroll Pataas",
+      "smallScreenMessage": "Buksan ang pahinang ito sa tablet o desktop upang i-edit ang iyong website.",
+      "smallScreenTitle": "Kailangan ng editor na ito ng mas malaking screen"
     },
     "cssEdit": {
       "advancedFeature": "Advanced Feature:",
@@ -2937,13 +2946,24 @@
       "ago": "ang nakalipas",
       "block": "I -block",
       "desktop": "Desktop",
+      "disablePublish": "I-off ang pag-publish",
+      "disablePublishConfirm": "I-off ang pag-publish para sa pahinang ito? Ang mga pagbabago ay agad na magiging live muli.",
+      "discardChanges": "I-discard ang mga hindi pa na-publish na pagbabago",
+      "discardChangesConfirm": "I-discard ang lahat ng pagbabagong ginawa mula noong huling pag-publish? Ibabalik ang editor sa live na bersyon.",
       "exit": "Lumabas",
       "justNow": "ngayon lang",
       "mobile": "Mobile",
-      "notSavedYet": "Wala pang pagbabago",
       "page": "Pahina",
+      "publish": "I-publish",
+      "publishOffTip": "Kasalukuyang agad na nagiging live ang mga pagbabago. Mag-publish para mag-save ng live na bersyon at panatilihing pribado ang mga susunod na pagbabago hanggang sa susunod na pag-publish.",
+      "publishedLabel": "Na-publish",
       "redoTip": "Redo (Ctrl+Shift+Z)",
+      "saveError": "Hindi ma-save",
       "savedAllChanges": "Lahat ng pagbabago ay na-save",
+      "saving": "Nagse-save…",
+      "statusLiveOnSave": "Magiging live kapag na-save",
+      "statusPublished": "Na-publish",
+      "statusUnpublishedChanges": "Mga hindi pa na-publish na pagbabago",
       "switchToDesktop": "Lumipat sa view ng desktop",
       "switchToMobile": "Lumipat sa mobile view",
       "undoTip": "Undo (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Simbahan",
+      "column": "Column",
       "common": "Karaniwan",
       "content": "Nilalaman",
       "descBox": "Flexible na container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Paganahin ang Lightbox"
+      "enableLightbox": "Paganahin ang Lightbox",
+      "groupAnimation": "Animation",
+      "groupContent": "Nilalaman",
+      "groupStyle": "Istilo"
     },
     "elementSelection": {
       "moveDown": "Ilipat pababa",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Kumpletong dokumentasyon",
       "moveBody": "I-drag ang mga section at element upang muling ayusin ang mga ito. Gamitin ang up/down arrows sa selection toolbar para sa mga tumpak na paglilipat.",
       "moveTitle": "Muling ayusin",
+      "shortcutsBody": "Tinatanggal ng Delete ang napiling element, dinodoble ito ng Ctrl+D, inililipat ito ng Alt+Up/Down, at ina-deselect ng Esc.",
+      "shortcutsTitle": "Mga keyboard shortcut",
       "title": "Mga pangunahing kaalaman sa Page editor",
       "undoBody": "Gamitin ang Ctrl+Z upang mag-undo at Ctrl+Shift+Z upang mag-redo. Buksan ang History panel mula sa menu upang tumalon sa anumang nakaraang estado.",
       "undoTitle": "Undo at history"
@@ -3239,6 +3265,7 @@
       "previewPage": "PREVIEW PAGE",
       "showLogin": "Magpakita ng pag -login",
       "showLoginTooltip": "Ipakita ang pindutan ng pag -login sa nabigasyon bar",
+      "startFromTemplate": "Magsimula sa isang Template",
       "subtitle": "Pamahalaan ang iyong mga pahina ng website, nilalaman, at nabigasyon",
       "toggleLoginVisibility": "Toggle Button Button Visibility",
       "totalPages": "Kabuuang mga pahina",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Sigurado ka bang nais mong permanenteng tanggalin ang seksyon na ito?",
       "confirmDuplicate": "Sigurado ka bang nais mong gumawa ng kopya ng seksyon na ito at lahat ng nilalaman nito?",
+      "deleteSectionBody": "Permanente nitong tatanggalin ang section at lahat ng nasa loob nito. Maaari mo itong i-undo gamit ang Ctrl+Z.",
+      "deleteSectionTitle": "Tanggalin ang section?",
       "editSection": "I-edit ang Seksyon",
       "layoutContainer": "Layout container",
       "section": "Section"
@@ -3362,6 +3391,95 @@
       "duplicate": "Kopyahin",
       "duplicateSection": "Kopyahin ang Seksyon",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Ang Aming Kuwento",
+      "all": "Lahat",
+      "blank": "Blangkong Seksyon",
+      "category": {
+        "about": "Tungkol sa Amin",
+        "cta": "Call to Action",
+        "giving": "Pagbibigay",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Mga Tao at Grupo",
+        "services": "Mga Serbisyo"
+      },
+      "connectColumns": "Mga Contact Column",
+      "ctaBanner": "Banner ng Susunod na Hakbang",
+      "faqSection": "Mga Karaniwang Tanong",
+      "findUs": "Hanapin Kami",
+      "galleryRow": "Hilera ng mga Larawan",
+      "givingBanner": "Banner ng Pagbibigay",
+      "givingOptions": "Mga Paraan ng Pagbibigay",
+      "groupListSection": "Listahan ng mga Grupo",
+      "groupsBrowser": "Browser ng mga Grupo",
+      "heroCentered": "Hero na may Larawan",
+      "heroGradient": "Gradient na Hero",
+      "heroSplit": "Split na Hero",
+      "ministriesCards": "Mga Card ng Ministeryo",
+      "sermonsLatest": "Mga Pinakabagong Mensahe",
+      "serviceTimes": "Mga Oras ng Serbisyo",
+      "staffGrid": "Grid ng Staff",
+      "storyColumns": "Tatlong Column",
+      "testimony": "Quote ng Patotoo",
+      "title": "Magdagdag ng Seksyon",
+      "verseBanner": "Banner ng Bersikulo",
+      "watchOnline": "Manood Online",
+      "welcome": "Teksto ng Pagbati"
+    },
+    "sectionToolbar": {
+      "delete": "Tanggalin ang section",
+      "dragToReorder": "I-drag upang muling ayusin",
+      "duplicate": "Kopyahin ang section",
+      "moveDown": "Ilipat pababa ang section",
+      "moveUp": "Ilipat pataas ang section",
+      "settings": "Mga setting ng section"
+    },
+    "siteTemplates": {
+      "back": "Bumalik",
+      "create": "Gumawa ng Site",
+      "creating": "Ginagawa ang {title}...",
+      "descriptions": {
+        "classic": "Isang kumpletong tradisyonal na site na may malugod na home page, pahina tungkol sa amin, at pahina para sa pagplano ng pagbisita.",
+        "community": "Inilalagay sa unahan ang mga grupo at ministeryo para mabilis na makakonekta ang mga tao.",
+        "heritage": "Isang klasiko at nakasentro sa Kasulatan na disenyo para sa mga matagal nang kongregasyon.",
+        "media": "Nakabuo sa paligid ng iyong live stream at archive ng mga mensahe, para sa mga simbahang may malakas na presensya online.",
+        "modern": "Isang makabagong itsura na may matitingkad na gradient, mga online na serbisyo, at pahina para makakonekta.",
+        "simple": "Isang malinis na panimulang site na may dalawang pahina, perpekto para sa mga bagong tatag na simbahan at maliliit na kongregasyon.",
+        "visitor": "Nakatuon sa pagsagot sa mga tanong ng unang beses na bisita bago pa sila dumating."
+      },
+      "errFailed": "Hindi nagawa ang site. Pakisubukang muli.",
+      "exists": "Mayroon na",
+      "existsNote": "Ang mga pahinang minarkahang \"mayroon na\" ay hindi babaguhin.",
+      "intro": "Pumili ng panimulang site sa ibaba. Gagawin namin ang mga pahina at mga link sa nabigasyon para sa iyo — maaaring i-edit ang lahat pagkatapos.",
+      "names": {
+        "classic": "Klasikong Simbahan",
+        "community": "Buhay ng Komunidad",
+        "heritage": "Pamana",
+        "media": "Online Muna",
+        "modern": "Makabagong Pagtanggap",
+        "simple": "Simpleng Simula",
+        "visitor": "Pokus sa Bisita"
+      },
+      "nav": {
+        "about": "Tungkol sa Amin",
+        "connect": "Kumonekta",
+        "give": "Magbigay",
+        "home": "Bahay",
+        "live": "Live",
+        "sermons": "Mga Sermon",
+        "visit": "Bumisita"
+      },
+      "navLinksNote": "Nagdaragdag din ng mga link sa nabigasyon papunta sa mga built-in na pahina:",
+      "pageCount": "{count} na pahina",
+      "pages": {
+        "about": "Tungkol sa Amin",
+        "connect": "Kumonekta",
+        "home": "Bahay",
+        "visit": "Planuhin ang Iyong Pagbisita"
+      },
+      "title": "Magsimula sa isang Template"
     },
     "spacingScaleEdit": {
       "buttonOne": "Button 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Mga Animation",
       "animationsDesc": "Effect kapag ipinapakita ang element.",
+      "hideOnDesktop": "Itago sa desktop",
+      "hideOnMobile": "Itago sa mobile",
       "styles": "Mga Style",
-      "stylesDesc": "Mga advanced na opsyon ng hitsura."
+      "stylesDesc": "Mga advanced na opsyon ng hitsura.",
+      "visibility": "Visibility:"
     },
     "stylesManager": {
       "color": "Color Palette",

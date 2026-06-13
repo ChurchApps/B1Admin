@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ApiHelper } from "../../helpers";
+import { trackSave } from "../admin/saveStatusTracker";
 import type { PageInterface, BlockInterface, SectionInterface, ElementInterface } from "../../helpers/Interfaces";
 
 interface HistoryEntry {
@@ -96,7 +97,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
   // Server-side restore function using history ID
   const restoreByHistoryId = async (historyId: string): Promise<ContainerSnapshot | null> => {
     try {
-      const result = await ApiHelper.post(`/pageHistory/restore/${historyId}`, {}, "ContentApi");
+      const result = await trackSave(ApiHelper.post(`/pageHistory/restore/${historyId}`, {}, "ContentApi"));
       if (result.success && result.snapshot) {
         return result.snapshot;
       }
@@ -110,7 +111,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
   // Server-side restore function using snapshot directly (fallback when no ID)
   const restoreBySnapshot = async (snapshot: ContainerSnapshot): Promise<boolean> => {
     try {
-      const result = await ApiHelper.post("/pageHistory/restoreSnapshot", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshot }, "ContentApi");
+      const result = await trackSave(ApiHelper.post("/pageHistory/restoreSnapshot", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshot }, "ContentApi"));
       return result.success === true;
     } catch (err) {
       console.error("Failed to restore snapshot on server:", err);
@@ -130,7 +131,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     setIsRestoring(true);
 
     // Call server to restore
-    let restoreSuccess = false;
+    let restoreSuccess: boolean;
     if (previousState.id) {
       const serverSnapshot = await restoreByHistoryId(previousState.id);
       restoreSuccess = serverSnapshot !== null;
@@ -172,7 +173,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     setIsRestoring(true);
 
     // Call server to restore
-    let restoreSuccess = false;
+    let restoreSuccess: boolean;
     if (nextState.id) {
       const serverSnapshot = await restoreByHistoryId(nextState.id);
       restoreSuccess = serverSnapshot !== null;
@@ -267,7 +268,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
 
     // Save to API and get the ID
     if (pageIdRef.current || blockIdRef.current) {
-      ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result) => {
+      ApiHelper.post("/pageHistory", { pageId: pageIdRef.current, blockId: blockIdRef.current, snapshotJSON: JSON.stringify(snapshot), description }, "ContentApi").then((result: any) => {
         // Update entry with the server ID
         setUndoStack(prev => {
           // Find and update the entry we just added
@@ -277,7 +278,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
               : e);
           return newStack;
         });
-      }).catch(err => {
+      }).catch((err: any) => {
         console.error("Failed to save history to API:", err);
       });
     }
@@ -324,7 +325,7 @@ export function useUndoRedo(options: UseUndoRedoOptions): UseUndoRedoReturn {
     const targetEntry = fullHistory[targetIndex];
 
     // Call server to restore
-    let restoreSuccess = false;
+    let restoreSuccess: boolean;
     if (targetEntry.id) {
       const serverSnapshot = await restoreByHistoryId(targetEntry.id);
       restoreSuccess = serverSnapshot !== null;

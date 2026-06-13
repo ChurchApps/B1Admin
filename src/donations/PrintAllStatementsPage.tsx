@@ -1,10 +1,11 @@
 import { CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type FundDonationInterface, type FundInterface, type PersonInterface } from "@churchapps/helpers";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import UserContext from "../UserContext";
 import { Box, CircularProgress, Typography } from "@mui/material";
+import { type PledgeProgressRowInterface } from "../helpers";
 
 export const PrintAllStatementsPage = () => {
   const navigate = useNavigate();
@@ -14,25 +15,26 @@ export const PrintAllStatementsPage = () => {
   const context = useContext(UserContext);
   const [currency, setCurrency] = useState<string>("usd");
 
-  // Fetch all donations
   const allDonations = useQuery<DonationInterface[]>({
     queryKey: ["/donations", "GivingApi"],
     placeholderData: []
   });
 
-  // Fetch all fund donations
   const allFundDonations = useQuery<FundDonationInterface[]>({
     queryKey: ["/fundDonations", "GivingApi"],
     placeholderData: []
   });
 
-  // Fetch all funds
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
     placeholderData: []
   });
 
-  // Filter donations by selected year
+  const pledgeProgress = useQuery<PledgeProgressRowInterface[]>({
+    queryKey: ["/campaigns/progress/people", "GivingApi"],
+    placeholderData: []
+  });
+
   const yearDonations = useMemo(() => {
     return (
       allDonations.data?.filter((don) => {
@@ -43,7 +45,6 @@ export const PrintAllStatementsPage = () => {
     );
   }, [allDonations.data, currYear]);
 
-  // Get unique person IDs from donations
   const personIds = useMemo(() => {
     const ids = new Set<string>();
     yearDonations.forEach((donation) => {
@@ -54,14 +55,12 @@ export const PrintAllStatementsPage = () => {
     return Array.from(ids).sort();
   }, [yearDonations]);
 
-  // Fetch all people who made donations
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people/ids?ids=" + personIds.join(","), "MembershipApi"],
     placeholderData: [],
     enabled: personIds.length > 0
   });
 
-  // Filter fund donations for selected year
   const yearFundDonations = useMemo(() => {
     return allFundDonations.data?.filter((fundDonation) =>
       yearDonations.some((donation) => donation.id === fundDonation.donationId)) || [];
@@ -83,12 +82,6 @@ export const PrintAllStatementsPage = () => {
       setCurrency(result);
     });
   }, []);
-
-  const getDate = () => {
-    const date = DateHelper.prettyDate(new Date());
-    const time = DateHelper.prettyTime(new Date());
-    return `${date} ${time}`;
-  };
 
   const getTotalContributions = (personId: string) => {
     let result = 0;
@@ -120,6 +113,8 @@ export const PrintAllStatementsPage = () => {
 
     return result;
   };
+
+  const getPledgeRows = (personId: string) => pledgeProgress.data?.filter((row) => row.personId === personId) || [];
 
   const getDonationDetails = (personId: string) => {
     const result: any[] = [];
@@ -378,6 +373,7 @@ export const PrintAllStatementsPage = () => {
         const totalContributions = getTotalContributions(person.id!);
         const fundTotals = getFundTotals(person.id!);
         const donationDetails = getDonationDetails(person.id!);
+        const pledgeRows = getPledgeRows(person.id!);
 
         return (
           <div key={person.id} className={index < people.data!.length - 1 ? "page-break" : ""}>
@@ -387,7 +383,7 @@ export const PrintAllStatementsPage = () => {
               <div className="title-section">
                 <h1 className="page-title">{Locale.label("donations.printAllStatementsPage.annualStatementTitle").replace("{year}", currYear.toString())}</h1>
                 <p className="subtitle">{Locale.label("donations.printAllStatementsPage.period").replace("{year}", currYear.toString())}</p>
-                <p className="meta-text">{Locale.label("donations.printAllStatementsPage.issued")} {getDate()}</p>
+                <p className="meta-text">{Locale.label("donations.printAllStatementsPage.issued")} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>
               </div>
 
               <div className="gradient-divider"></div>
@@ -483,6 +479,32 @@ export const PrintAllStatementsPage = () => {
                   </tbody>
                 </table>
               </div>
+
+              {pledgeRows.length > 0 && (
+                <div className="section-container">
+                  <h2 className="section-title">{Locale.label("donations.printAllStatementsPage.pledgeProgress")}</h2>
+                  <table className="data-table">
+                    <thead className="table-header">
+                      <tr>
+                        <th>{Locale.label("donations.printAllStatementsPage.campaign")}</th>
+                        <th className="align-right">{Locale.label("donations.printAllStatementsPage.pledged")}</th>
+                        <th className="align-right">{Locale.label("donations.printAllStatementsPage.given")}</th>
+                        <th>{Locale.label("donations.printAllStatementsPage.status")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pledgeRows.map((row, idx) => (
+                        <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
+                          <td className="table-cell">{row.campaignName}</td>
+                          <td className="table-cell align-right">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</td>
+                          <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</td>
+                          <td className="table-cell">{Locale.label("donations.pledgeStatus." + row.status)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
 
               <div className="footer-note">
                 <p>

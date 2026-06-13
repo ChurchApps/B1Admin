@@ -1,9 +1,10 @@
 import React, { useEffect, memo, useMemo } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type SongDetailInterface, type SongDetailLinkInterface } from "../../../helpers";
-import { Stack, Box, Card, CardContent, Typography, Avatar, Button, IconButton } from "@mui/material";
+import { Stack, Box, Card, CardContent, Typography, Avatar, Button } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { Link as LinkIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 
 interface Props {
   songDetail: SongDetailInterface;
@@ -15,7 +16,7 @@ export const SongDetailLinks = memo((props: Props) => {
 
   useEffect(() => {
     if (props.songDetail?.id) {
-      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetail?.id, "ContentApi").then((data) => {
+      ApiHelper.get("/songDetailLinks/songDetail/" + props.songDetail?.id, "ContentApi").then((data: any) => {
         setSongDetailLinks(data);
       });
     }
@@ -119,20 +120,12 @@ export const SongDetailLinks = memo((props: Props) => {
       <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
         <Stack direction="row" spacing={1} alignItems="center">
           <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+          <Typography variant="h6">
             {Locale.label("songs.songDetailLinks.externalLinks")}
           </Typography>
         </Stack>
         {props.onEdit && (
-          <IconButton
-            onClick={props.onEdit}
-            size="small"
-            sx={{
-              color: "primary.main",
-              "&:hover": { backgroundColor: "primary.light" }
-            }}>
-            <EditIcon fontSize="small" />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="card" onClick={props.onEdit} />
         )}
       </Stack>
 

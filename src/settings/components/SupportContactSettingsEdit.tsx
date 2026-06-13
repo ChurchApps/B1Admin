@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Icon, Stack, TextField, Tooltip, Typography } from "@mui/material";
-import { type GenericSettingInterface, UniqueIdHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { UniqueIdHelper, ApiHelper, Locale } from "@churchapps/apphelper";
+import { type GenericSettingInterface } from "@churchapps/helpers";
 
 interface Props {
   churchId: string;

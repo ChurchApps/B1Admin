@@ -4,6 +4,7 @@ import { StyleList } from "./StyleList";
 import { AnimationsEdit } from "./AnimationsEdit";
 import { Accordion, AccordionSummary, Typography, AccordionDetails, Icon, Box } from "@mui/material";
 import { Locale } from "@churchapps/apphelper";
+import { VisibilityToggles } from "./VisibilityToggles";
 
 interface Props {
   fields: string[],
@@ -27,6 +28,9 @@ export const StylesAnimations: React.FC<Props> = (props) => {
 */
   return <>
     <Box sx={{ backgroundColor: "background.subtle", padding: "10px", marginBottom: "10px" }}>
+      <Box sx={{ paddingLeft: "8px", paddingBottom: "6px" }}>
+        <VisibilityToggles styles={props.styles} onChange={props.onStylesChange} />
+      </Box>
       <Accordion expanded={expanded === "styles"} onChange={() => setExpanded((expanded === "styles") ? "" : "styles")}>
         <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
           <Typography sx={{ width: "33%", flexShrink: 0 }}>{Locale.label("site.stylesAnimations.styles")}</Typography>

@@ -1,15 +1,15 @@
 import React, { useCallback } from "react";
-import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem } from "@mui/material";
-import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
+import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem, Chip } from "@mui/material";
+import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon, Undo as UndoIcon, EditNote as PreparedIcon } from "@mui/icons-material";
 import {
   type AssignmentInterface,
   type BlockoutDateInterface,
   type GroupInterface,
   type PersonInterface,
-  type PlanInterface,
   type PositionInterface,
   type TimeInterface
 } from "@churchapps/helpers";
+import { type PlanInterface } from "../../helpers";
 import {
   ApiHelper,
   ArrayHelper,
@@ -52,7 +52,6 @@ export const Assignment = (props: Props) => {
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
 
-  // Get the most recent plan that is before the current plan's date
   const previousPlan = React.useMemo(() => {
     if (allPlans.length === 0 || !props.plan?.serviceDate) return null;
     const currentDate = new Date(props.plan.serviceDate).getTime();
@@ -60,12 +59,12 @@ export const Assignment = (props: Props) => {
       .filter(p => {
         if (p.id === props.plan?.id) return false;
         const planDate = p.serviceDate ? new Date(p.serviceDate).getTime() : 0;
-        return planDate < currentDate;  // Only include plans before current plan
+        return planDate < currentDate;
       })
       .sort((a, b) => {
         const dateA = a.serviceDate ? new Date(a.serviceDate).getTime() : 0;
         const dateB = b.serviceDate ? new Date(b.serviceDate).getTime() : 0;
-        return dateB - dateA;  // Sort descending to get most recent previous plan first
+        return dateB - dateA;
       });
     return sorted[0] || null;
   }, [allPlans, props.plan?.id, props.plan?.serviceDate]);
@@ -83,7 +82,6 @@ export const Assignment = (props: Props) => {
   const getAddPositionActions = () => {
     if (!canEdit) return null;
 
-    // When no positions exist, show copy from previous dropdown instead of Auto Assign
     if (positions.length === 0 && previousPlan) {
       return (
         <Stack direction="row" spacing={1} alignItems="center">
@@ -136,9 +134,24 @@ export const Assignment = (props: Props) => {
       );
     }
 
-    // When positions exist, show Auto Assign and Add Position buttons
     return (
       <Stack direction="row" spacing={1}>
+        {plan?.lastAutofillRunId && (
+          <Button
+            variant="outlined"
+            color="warning"
+            startIcon={<UndoIcon />}
+            onClick={handleUndoAutoAssign}
+            data-testid="undo-auto-assign-button"
+            size="small"
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              fontWeight: 600
+            }}>
+            {Locale.label("plans.assignment.undoAutoAssign") || "Undo Auto Assign"}
+          </Button>
+        )}
         <Button
           variant="outlined"
           startIcon={<AutoAssignIcon />}
@@ -191,6 +204,10 @@ export const Assignment = (props: Props) => {
 
   const loadData = useCallback(async () => {
     setPlan(props.plan);
+    // Refresh the plan row itself — autofill/undo/publish mutate prepared and lastAutofillRunId.
+    ApiHelper.get("/plans/" + props.plan?.id, "DoingApi").then((data: PlanInterface) => {
+      if (data?.id) setPlan(data);
+    });
     const positionsData = await ApiHelper.get("/positions/plan/" + props.plan?.id, "DoingApi");
     setPositions(positionsData);
 
@@ -201,10 +218,10 @@ export const Assignment = (props: Props) => {
       });
     }
 
-    ApiHelper.get("/times/plan/" + props.plan?.id, "DoingApi").then((data) => {
+    ApiHelper.get("/times/plan/" + props.plan?.id, "DoingApi").then((data: any) => {
       setTimes(data);
     });
-    ApiHelper.get("/blockoutDates/upcoming", "DoingApi").then((data) => {
+    ApiHelper.get("/blockoutDates/upcoming", "DoingApi").then((data: any) => {
       setBlockoutDates(data);
     });
     const d = await ApiHelper.get("/assignments/plan/" + props.plan?.id, "DoingApi");
@@ -236,7 +253,12 @@ export const Assignment = (props: Props) => {
     });
   };
 
-  // Load all plans for the plan type to find previous plan for copy functionality
+  const handleUndoAutoAssign = async () => {
+    ApiHelper.post("/plans/autofill/" + props.plan.id + "/undo", {}, "DoingApi").then(() => {
+      loadData();
+    });
+  };
+
   const loadPlans = useCallback(async () => {
     if (props.plan?.planTypeId) {
       const plans = await ApiHelper.get("/plans/types/" + props.plan.planTypeId, "DoingApi");
@@ -257,7 +279,6 @@ export const Assignment = (props: Props) => {
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: 8 }}>
-        {/* Assignments Section */}
         <Card
           sx={{
             mb: 3,
@@ -270,10 +291,20 @@ export const Assignment = (props: Props) => {
           <CardContent>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <AutoAssignIcon sx={{ color: "primary.main", fontSize: 28 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <AutoAssignIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("plans.planPage.assign") || "Serving Team Assignments"}
                 </Typography>
+                {plan?.prepared && (
+                  <Chip
+                    icon={<PreparedIcon />}
+                    label={Locale.label("plans.assignment.penciledIn") || "Penciled In"}
+                    size="small"
+                    color="warning"
+                    variant="outlined"
+                    data-testid="penciled-in-chip"
+                  />
+                )}
               </Stack>
               {getAddPositionActions()}
             </Stack>
@@ -281,7 +312,6 @@ export const Assignment = (props: Props) => {
           </CardContent>
         </Card>
 
-        {/* Notes Section */}
         <Card
           sx={{
             borderRadius: 2,
@@ -293,8 +323,8 @@ export const Assignment = (props: Props) => {
           <CardContent>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <NotesIcon sx={{ color: "primary.main", fontSize: 28 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                <NotesIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">
                   {Locale.label("common.notes") || "Plan Notes"}
                 </Typography>
               </Stack>
@@ -341,7 +371,6 @@ export const Assignment = (props: Props) => {
 
       <Grid size={{ xs: 12, md: 4 }}>
         <Stack spacing={3}>
-          {/* Position/Assignment Edit */}
           {canEdit && position && !assignment && (
             <PositionEdit
               position={position}
@@ -361,15 +390,11 @@ export const Assignment = (props: Props) => {
             />
           )}
 
-          {/* Time List */}
           <TimeList times={times} positions={positions} plan={plan} canEdit={canEdit} onUpdate={loadData} />
-
-          {/* Plan Validation */}
           <PlanValidation plan={plan} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
         </Stack>
       </Grid>
 
-      {/* Success Snackbar */}
       <Snackbar
         open={showSuccessMessage}
         autoHideDuration={3000}

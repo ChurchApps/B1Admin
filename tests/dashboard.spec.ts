@@ -4,8 +4,8 @@ import { loggedInTest as test, expect } from './helpers/test-fixtures';
 test.describe('Dashboard Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/dashboard');
-    // Wait for the main page header to confirm dashboard rendered.
-    await expect(page.locator('h1, h2, h3').getByText('Dashboard').first()).toBeVisible({ timeout: 15000 });
+    // Wait for the main page header to confirm dashboard rendered (welcome greeting).
+    await expect(page.locator('h1, h2, h3').getByText(/Welcome to/).first()).toBeVisible({ timeout: 15000 });
     // Wait for the People search card to render — it's the first thing in the main column.
     await expect(page.locator('#searchText')).toBeVisible({ timeout: 15000 });
   });
@@ -40,7 +40,7 @@ test.describe('Dashboard Management', () => {
     const searchBtn = page.locator('[data-testid="dashboard-search-button"]');
     await expect(searchBtn).toBeEnabled();
     await searchBtn.click();
-    const results = page.locator('h6').getByText('Dorothy Jackson');
+    const results = page.getByRole('link', { name: 'Dorothy Jackson' }).first();
     await expect(results).toBeVisible({ timeout: 10000 });
     await results.click();
     await expect(page).toHaveURL(/\/people\/PER\w+/, { timeout: 10000 });
@@ -76,8 +76,9 @@ test.describe('Dashboard Management', () => {
       await personSearch.fill('Demo User');
       const searchBtn = page.locator('[data-testid="search-button"]');
       await searchBtn.click();
-      const selectBtn = page.locator('button').getByText('Select');
-      await selectBtn.first().click();
+      // Result rows render an icon-only AppIconButton (aria-label "Select").
+      const selectBtn = page.locator('[data-testid^="add-person-"]').first();
+      await selectBtn.click();
 
       const taskName = page.locator('[name="title"]');
       await taskName.fill('Dashboard Task');
@@ -88,10 +89,10 @@ test.describe('Dashboard Management', () => {
       await expect(saveBtn).toBeVisible();
       await saveBtn.click();
 
-      // After save, the task should appear under both "Assigned to me" and
-      // "Created by me" sections of the dashboard TaskList → 2 link copies.
+      // The dashboard TaskList is tabbed; the new task is assigned to Demo User,
+      // so it shows under the active "Assigned to Me" tab → 1 link copy.
       const validatedTask = page.locator('a').getByText('Dashboard Task');
-      await expect(validatedTask).toHaveCount(2, { timeout: 15000 });
+      await expect(validatedTask).toHaveCount(1, { timeout: 15000 });
     });
 
     test('should load task from dashboard', async ({ page }) => {

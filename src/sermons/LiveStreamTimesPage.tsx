@@ -14,7 +14,7 @@ import { NavigationTabs } from "../components/ui/NavigationTabs";
 export const LiveStreamTimesPage = memo(() => {
   const [selectedTab, setSelectedTab] = React.useState("services");
 
-  const services = useQuery<StreamingServiceInterface[]>({
+  useQuery<StreamingServiceInterface[]>({
     queryKey: ["/streamingServices", "ContentApi"],
     placeholderData: []
   });

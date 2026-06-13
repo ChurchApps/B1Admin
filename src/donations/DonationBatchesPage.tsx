@@ -1,17 +1,19 @@
 import React from "react";
 import { BatchEdit, DonationEvents } from "./components";
-import { DateHelper, UserHelper, ExportLink, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { DateHelper, UserHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Card, Stack, Button } from "@mui/material";
-import { VolunteerActivism as DonationIcon, Add as AddIcon, FileDownload as ExportIcon, CalendarMonth as DateIcon } from "@mui/icons-material";
+import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Card, Stack, Button } from "@mui/material";
+import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as DateIcon, Edit as EditIcon } from "@mui/icons-material";
+import { AppIconButton } from "../components/ui/AppIconButton";
+import { CountChip, EmptyState, ExportButton, SortableTableHead, type SortDirection } from "../components/ui";
 
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
-  const [sortDirection, setSortDirection] = React.useState<boolean | null>(null);
-  const [currentSortedCol, setCurrentSortedCol] = React.useState<string>("");
+  const [sortBy, setSortBy] = React.useState<string>("");
+  const [sortDirection, setSortDirection] = React.useState<SortDirection>("asc");
   const [currency, setCurrency] = React.useState<string>("usd");
 
   const batches = useQuery<DonationBatchInterface[]>({
@@ -57,60 +59,30 @@ export const DonationBatchesPage = () => {
     return result;
   };
 
-  const sortTable = (key: string, asc: boolean | null) => {
-    if (asc === null) asc = false;
-    setCurrentSortedCol(key);
-
-    batches.data.sort(function (a: any, b: any) {
-      if (a[key] === null) return Infinity;
-
-      if (key === "batchDate") {
-        if (typeof new Date(a[key]).getMonth === "function") {
-          return asc ? new Date(a[key])?.getTime() - new Date(b[key])?.getTime() : new Date(b[key])?.getTime() - new Date(a[key])?.getTime();
-        }
-      }
-
-      const parsedNum = parseInt(a[key]);
-      if (!isNaN(parsedNum)) {
-        return asc ? a[key] - b[key] : b[key] - a[key];
-      }
-
-      const valA = a[key].toUpperCase();
-      const valB = b[key].toUpperCase();
-      if (valA < valB) {
-        return asc ? 1 : -1;
-      }
-      if (valA > valB) {
-        return asc ? -1 : 1;
-      }
-
-      return 0;
-    });
-    batches.refetch();
-    setSortDirection(!asc);
+  const handleSort = (key: string) => {
+    setSortDirection(sortBy === key && sortDirection === "asc" ? "desc" : "asc");
+    setSortBy(key);
   };
 
-  const getSortArrows = (key: string) => (
-    <div style={{ display: "flex" }}>
-      <div style={{ marginTop: "5px" }} className={`${sortDirection && currentSortedCol === key ? "sortAscActive" : "sortAsc"}`}></div>
-      <div style={{ marginTop: "14px" }} className={`${!sortDirection && currentSortedCol === key ? "sortDescActive" : "sortDesc"}`}></div>
-    </div>
-  );
+  const sortedBatches = React.useMemo(() => {
+    const result = [...(batches.data || [])];
+    if (sortBy) {
+      const dir = sortDirection === "asc" ? 1 : -1;
+      result.sort((a: any, b: any) => {
+        if (sortBy === "batchDate") return (new Date(a.batchDate).getTime() - new Date(b.batchDate).getTime()) * dir;
+        return (a[sortBy] || "").toString().toUpperCase().localeCompare((b[sortBy] || "").toString().toUpperCase()) * dir;
+      });
+    }
+    return result;
+  }, [batches.data, sortBy, sortDirection]);
 
   const getRows = () => {
     const result: JSX.Element[] = [];
 
-    if (batches.data.length === 0) {
+    if (sortedBatches.length === 0) {
       result.push(
         <TableRow key="0">
-          <TableCell colSpan={5} sx={{ textAlign: "center", py: 4 }}>
-            <Stack spacing={2} alignItems="center">
-              <DonationIcon sx={{ fontSize: 48, color: "text.secondary" }} />
-              <Typography variant="body1" color="text.secondary">
-                {Locale.label("donations.donationsPage.noBatch")}
-              </Typography>
-            </Stack>
-          </TableCell>
+          <EmptyState variant="table" colSpan={5} icon={<DonationIcon />} title={Locale.label("donations.donationsPage.noBatch")} />
         </TableRow>
       );
       return result;
@@ -119,16 +91,14 @@ export const DonationBatchesPage = () => {
     const canEdit = UserHelper.checkAccess(Permissions.givingApi.donations.edit);
     const canViewBatch = UserHelper.checkAccess(Permissions.givingApi.donations.view);
 
-    for (let i = 0; i < batches.data.length; i++) {
-      const b = batches.data[i];
+    for (let i = 0; i < sortedBatches.length; i++) {
+      const b = sortedBatches[i];
       const editLink = canEdit ? (
-        <Button size="small" variant="outlined" startIcon={<Icon>edit</Icon>} data-cy={`edit-${i}`} data-id={b.id} onClick={showEditBatch} sx={{ minWidth: "auto" }}>
-          Edit
-        </Button>
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-cy={`edit-${i}`} data-id={b.id} onClick={showEditBatch} />
       ) : null;
 
       const batchLink = canViewBatch ? (
-        <Typography component={Link} to={"/donations/batches/" + b.id} variant="body2" sx={{ textDecoration: "none", color: "primary.light", fontWeight: 500 }}>
+        <Typography component={Link} to={"/donations/batches/" + b.id} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
           {b.name}
         </Typography>
       ) : (
@@ -148,7 +118,7 @@ export const DonationBatchesPage = () => {
           }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
-              <DonationIcon sx={{ color: "primary.light", fontSize: 20 }} />
+              <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />
               {batchLink}
             </Stack>
           </TableCell>
@@ -171,68 +141,11 @@ export const DonationBatchesPage = () => {
               {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount, currency)}
             </Typography>
           </TableCell>
-          <TableCell>{editLink}</TableCell>
+          <TableCell align="right" className="rowActions">{editLink}</TableCell>
         </TableRow>
       );
     }
     return result;
-  };
-
-  const getTableHeader = () => {
-    const rows: JSX.Element[] = [];
-
-    if (batches.data.length === 0) {
-      return rows;
-    }
-
-    rows.push(
-      <TableRow key="header">
-        <TableCell
-          sx={{
-            fontWeight: 600,
-            cursor: "pointer",
-            "&:hover": { backgroundColor: "action.hover" }
-          }}
-          onClick={() => sortTable("name", sortDirection)}>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              {Locale.label("common.name")}
-            </Typography>
-            {getSortArrows("name")}
-          </Stack>
-        </TableCell>
-        <TableCell
-          sx={{
-            fontWeight: 600,
-            cursor: "pointer",
-            "&:hover": { backgroundColor: "action.hover" }
-          }}
-          onClick={() => sortTable("batchDate", sortDirection)}>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              {Locale.label("donations.donationsPage.date")}
-            </Typography>
-            {getSortArrows("batchDate")}
-          </Stack>
-        </TableCell>
-        <TableCell sx={{ fontWeight: 600 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-            {Locale.label("donations.donationsPage.don")}
-          </Typography>
-        </TableCell>
-        <TableCell sx={{ fontWeight: 600 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-            {Locale.label("donations.donationsPage.total")}
-          </Typography>
-        </TableCell>
-        <TableCell sx={{ fontWeight: 600 }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-            {Locale.label("common.edit")}
-          </Typography>
-        </TableCell>
-      </TableRow>
-    );
-    return rows;
   };
 
   const getTable = () => {
@@ -240,16 +153,20 @@ export const DonationBatchesPage = () => {
     else {
       return (
         <Table sx={{ minWidth: 650 }}>
-          <TableHead
-            sx={{
-              backgroundColor: "background.paper",
-              "& .MuiTableCell-root": {
-                borderBottom: "2px solid",
-                borderBottomColor: "divider"
-              }
-            }}>
-            {getTableHeader()}
-          </TableHead>
+          {sortedBatches.length > 0 && (
+            <SortableTableHead
+              columns={[
+                { key: "name", label: Locale.label("common.name"), sortable: true },
+                { key: "batchDate", label: Locale.label("donations.donationsPage.date"), sortable: true },
+                { key: "donationCount", label: Locale.label("donations.donationsPage.don") },
+                { key: "totalAmount", label: Locale.label("donations.donationsPage.total") },
+                { key: "edit", label: "", align: "right" }
+              ]}
+              sortBy={sortBy}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+            />
+          )}
           <TableBody>{getRows()}</TableBody>
         </Table>
       );
@@ -343,18 +260,15 @@ export const DonationBatchesPage = () => {
 
         {/* Main table */}
         <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <DonationIcon />
-                <Typography variant="h6">{Locale.label("donations.donationsPage.batch")}</Typography>
+                <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6">{Locale.label("donations.donations.batches")}</Typography>
+                {sortedBatches.length > 0 && <CountChip count={sortedBatches.length} />}
               </Stack>
               <Stack direction="row" spacing={1} alignItems="center">
-                {batches.data && (
-                  <Button size="small" variant="outlined" startIcon={<ExportIcon />} component={ExportLink} data={batches.data} filename="donationbatches.csv" sx={{ mr: 1 }}>
-                    {Locale.label("donations.donationBatchesPage.export")}
-                  </Button>
-                )}
+                {batches.data && <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
               </Stack>
             </Stack>
           </Box>
@@ -369,7 +283,7 @@ export const DonationBatchesPage = () => {
         {/* Stripe Import link */}
         {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
           <Box sx={{ mt: 4, textAlign: "center" }}>
-            <Link to="/donations/stripe-import" style={{ color: "#999", fontSize: "0.85rem", textDecoration: "none" }}>
+            <Link to="/donations/stripe-import" style={{ color: "var(--text-muted)", fontSize: "0.85rem", textDecoration: "none" }}>
               {Locale.label("donations.donationBatchesPage.stripeImportLink")}
             </Link>
           </Box>

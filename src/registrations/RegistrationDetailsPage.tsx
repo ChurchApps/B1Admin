@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Typography,
@@ -12,8 +12,6 @@ import {
   Stack,
   Chip,
   Button,
-  IconButton,
-  Tooltip,
   LinearProgress,
   Grid
 } from "@mui/material";
@@ -27,6 +25,7 @@ import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from 
 import { type EventInterface, type RegistrationInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const RegistrationDetailsPage = () => {
   const params = useParams();
@@ -105,17 +104,13 @@ export const RegistrationDetailsPage = () => {
       <TableCell>{reg.members?.length || 0}</TableCell>
       <TableCell>{getStatusChip(reg.status)}</TableCell>
       <TableCell>{reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString() : ""}</TableCell>
-      <TableCell align="right">
+      <TableCell align="right" className="rowActions">
         {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
           <>
             {reg.status !== "cancelled" && (
-              <Tooltip title={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} arrow>
-                <IconButton size="small" onClick={() => handleCancel(reg.id)} color="warning"><CancelIcon fontSize="small" /></IconButton>
-              </Tooltip>
+              <AppIconButton label={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} icon={<CancelIcon />} onClick={() => handleCancel(reg.id)} />
             )}
-            <Tooltip title={Locale.label("registrations.registrationDetailsPage.delete")} arrow>
-              <IconButton size="small" onClick={() => handleDelete(reg.id)} color="error"><DeleteIcon fontSize="small" /></IconButton>
-            </Tooltip>
+            <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(reg.id)} />
           </>
         )}
       </TableCell>
@@ -135,11 +130,11 @@ export const RegistrationDetailsPage = () => {
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 8 }}>
             <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
                 <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <RegIcon sx={{ color: "primary.main" }} />
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+                    <RegIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                    <Typography variant="h6">
                       {Locale.label("registrations.registrationDetailsPage.registrations")} ({count}{event.capacity ? ` / ${event.capacity}` : ""})
                     </Typography>
                   </Stack>
@@ -155,13 +150,13 @@ export const RegistrationDetailsPage = () => {
                 </Box>
               ) : (
                 <Table size="small">
-                  <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+                  <TableHead sx={{ backgroundColor: "var(--bg-sub)" }}>
                     <TableRow>
                       <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.name")}</TableCell>
                       <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.members")}</TableCell>
                       <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.status")}</TableCell>
                       <TableCell sx={{ fontWeight: 600 }}>{Locale.label("registrations.registrationDetailsPage.date")}</TableCell>
-                      <TableCell sx={{ fontWeight: 600 }} align="right">{Locale.label("registrations.registrationDetailsPage.actions")}</TableCell>
+                      <TableCell align="right" />
                     </TableRow>
                   </TableHead>
                   <TableBody>{getRows()}</TableBody>

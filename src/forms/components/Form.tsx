@@ -3,6 +3,9 @@ import { FormQuestionEdit } from ".";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps/apphelper";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
+import { ArrowUpward as ArrowUpwardIcon, ArrowDownward as ArrowDownwardIcon } from "@mui/icons-material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CountChip } from "../../components/ui";
 
 interface Props {
   id: string;
@@ -18,10 +21,10 @@ export const Form: React.FC<Props> = (props) => {
     setEditQuestionId("notset");
   };
   const loadData = () => {
-    ApiHelper.get("/forms/" + props.id, "MembershipApi").then((data) => setForm(data));
+    ApiHelper.get("/forms/" + props.id, "MembershipApi").then((data: any) => setForm(data));
     loadQuestions();
   };
-  const loadQuestions = () => ApiHelper.get("/questions?formId=" + props.id, "MembershipApi").then((data) => setQuestions(data));
+  const loadQuestions = () => ApiHelper.get("/questions?formId=" + props.id, "MembershipApi").then((data: any) => setQuestions(data));
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const anchor = e.currentTarget as HTMLAnchorElement;
@@ -73,17 +76,13 @@ export const Form: React.FC<Props> = (props) => {
         i === 0 ? (
           <span style={{ display: "inline-block", width: 20 }} />
         ) : (
-          <Button size="small" onClick={moveUp} sx={{ minWidth: "auto", p: 0.5, mr: 0.5 }} aria-label={Locale.label("forms.form.moveUpAria")}>
-            <Icon sx={{ fontSize: 18 }}>arrow_upward</Icon>
-          </Button>
+          <AppIconButton label={Locale.label("forms.form.moveUpAria")} icon={<ArrowUpwardIcon />} onClick={moveUp} sx={{ p: 0.5, mr: 0.5 }} />
         );
       const downArrow =
         i === questions.length - 1 ? (
           <></>
         ) : (
-          <Button size="small" onClick={moveDown} sx={{ minWidth: "auto", p: 0.5 }} aria-label={Locale.label("forms.form.moveDownAria")}>
-            <Icon sx={{ fontSize: 18 }}>arrow_downward</Icon>
-          </Button>
+          <AppIconButton label={Locale.label("forms.form.moveDownAria")} icon={<ArrowDownwardIcon />} onClick={moveDown} sx={{ p: 0.5 }} />
         );
       rows.push(
         <TableRow
@@ -98,7 +97,7 @@ export const Form: React.FC<Props> = (props) => {
               component="button"
               type="button"
               onClick={handleClick}
-              sx={{ background: "none", border: 0, p: 0, color: "primary.light", cursor: "pointer", fontWeight: 500 }}>
+              sx={{ background: "none", border: 0, p: 0, color: "var(--link)", cursor: "pointer", fontWeight: 500 }}>
               {questions[i].title}
             </Box>
           </TableCell>
@@ -186,11 +185,12 @@ export const Form: React.FC<Props> = (props) => {
         {/* Main Questions Content - Full Width Card */}
         <Card sx={{ width: "100%" }}>
           {/* Card Header */}
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Stack direction="row" spacing={1} alignItems="center">
-                <Icon>help</Icon>
+                <Icon sx={{ color: "primary.main", fontSize: 20 }}>help</Icon>
                 <Typography variant="h6">{Locale.label("forms.form.questions")}</Typography>
+                {questions?.length > 0 && <CountChip count={questions.length} />}
               </Stack>
               {formPermission && (
                 <Button

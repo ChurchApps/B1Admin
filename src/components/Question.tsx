@@ -6,14 +6,16 @@ import { DateHelper, Locale } from "@churchapps/apphelper";
 interface Props {
   question: QuestionInterface;
   answer: AnswerInterface;
+  showEmpty?: boolean;
 }
 
 export const Question: React.FC<Props> = memo((props) => {
   const q = props.question;
   const a = props.answer;
+  const showEmpty = props.showEmpty;
 
-  // Don't render if no answer (unless it's a heading)
-  if (a === null && q.fieldType !== "Heading") return null;
+  // Don't render if no answer (unless it's a heading or we're showing empty fields PCO-style)
+  if (a === null && q.fieldType !== "Heading" && !showEmpty) return null;
 
   // Handle heading type specially
   if (q.fieldType === "Heading") {
@@ -34,7 +36,7 @@ export const Question: React.FC<Props> = memo((props) => {
   }
 
   // Process the answer value based on field type
-  let displayValue = "";
+  let displayValue: string;
   let chipColor: "default" | "primary" | "secondary" | "error" | "info" | "success" | "warning" = "default";
 
   switch (q.fieldType) {
@@ -66,8 +68,10 @@ export const Question: React.FC<Props> = memo((props) => {
       break;
   }
 
-  // Don't render if no display value
-  if (!displayValue) return null;
+  // Hide empty fields unless explicitly showing them (PCO-style "—" placeholder)
+  const isEmpty = !displayValue;
+  if (isEmpty && !showEmpty) return null;
+  const shownValue = isEmpty ? "—" : displayValue;
 
   return (
     <Box
@@ -90,9 +94,9 @@ export const Question: React.FC<Props> = memo((props) => {
         {q.title}
       </Typography>
 
-      {q.fieldType === "Yes/No" ? (
+      {q.fieldType === "Yes/No" && !isEmpty ? (
         <Chip
-          label={displayValue}
+          label={shownValue}
           color={chipColor}
           variant="filled"
           size="small"
@@ -105,11 +109,11 @@ export const Question: React.FC<Props> = memo((props) => {
         <Typography
           variant="body2"
           sx={{
-            color: "text.secondary",
+            color: isEmpty ? "text.disabled" : "text.secondary",
             fontWeight: 400,
             wordBreak: "break-word"
           }}>
-          {displayValue}
+          {shownValue}
         </Typography>
       )}
     </Box>

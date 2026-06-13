@@ -1,5 +1,4 @@
 import { test, expect, type BrowserContext, type Page } from "@playwright/test";
-import { login } from "./helpers/auth";
 
 /**
  * Cross-user realtime test for person notes — the exact manual scenario the
@@ -12,7 +11,6 @@ import { login } from "./helpers/auth";
  */
 
 const TARGET_PERSON_ID = "PER00000081"; // Carol Clark — neutral target neither tester is
-const API_BASE = "http://localhost:8084";
 
 async function signIn(page: Page, email: string) {
   // Use the same login helper the rest of the suite uses. It accepts any seeded
@@ -62,27 +60,6 @@ async function postNote(page: Page, content: string) {
   // Send is the IconButton wrapping <Icon>send</Icon> (MUI font icon, not SVG).
   const sendButton = notesBox.locator("button").filter({ has: page.locator('text="send"') }).last();
   await sendButton.click();
-}
-
-/**
- * Block until the server-side connections table reports at least `expected`
- * sockets joined to (churchId, conversationId). Used to remove the timing race
- * between "Notes mounted" and "POST /connections completed".
- */
-async function waitForRoomJoinCount(page: Page, churchId: string, conversationId: string, expected: number) {
-  const apiBase = "http://localhost:8084";
-  await page.waitForFunction(
-    async ([base, ch, cv, want]) => {
-      try {
-        const res = await fetch(`${base}/messaging/connections/${ch}/${cv}`);
-        if (!res.ok) return false;
-        const list = await res.json();
-        return Array.isArray(list) && list.length >= (want as number);
-      } catch { return false; }
-    },
-    [apiBase, churchId, conversationId, expected],
-    { timeout: 20000, polling: 250 }
-  );
 }
 
 test.describe("Realtime — cross-user person notes", () => {

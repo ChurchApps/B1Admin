@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { Stack, Typography } from "@mui/material";
 
 interface IconTextProps {
@@ -14,7 +14,7 @@ interface IconTextProps {
 export const IconText: React.FC<IconTextProps> = ({ icon, children, iconSize = 18, iconColor = "primary.light", spacing = 1, variant = "body2", color }) => {
   return (
     <Stack direction="row" spacing={spacing} alignItems="center">
-      {React.cloneElement(icon as React.ReactElement, { sx: { fontSize: iconSize, color: iconColor } })}
+      {React.cloneElement(icon as React.ReactElement<any>, { sx: { fontSize: iconSize, color: iconColor } })}
       <Typography variant={variant} color={color}>
         {children}
       </Typography>

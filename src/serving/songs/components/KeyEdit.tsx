@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type ArrangementKeyInterface } from "../../../helpers";
 import { TextField } from "@mui/material";
+import { FormCard } from "../../../components/ui";
 
 interface Props {
   arrangementKey: ArrangementKeyInterface;
@@ -21,7 +22,7 @@ export const KeyEdit = (props: Props) => {
 
   const onValid = (values: AnyRecord) => {
     const k: ArrangementKeyInterface = { ...props.arrangementKey, ...values };
-    ApiHelper.post("/arrangementKeys", [k], "ContentApi").then((data) => {
+    ApiHelper.post("/arrangementKeys", [k], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
   };
@@ -35,9 +36,9 @@ export const KeyEdit = (props: Props) => {
   };
 
   return (
-    <InputBox headerText={props.arrangementKey?.keySignature || Locale.label("songs.key.edit")} headerIcon="library_music" saveFunction={handleSubmit(onValid)} cancelFunction={props.onCancel} deleteFunction={props.arrangementKey?.id ? handleDelete : null}>
+    <FormCard title={props.arrangementKey?.keySignature || Locale.label("songs.key.edit")} icon="library_music" onSave={handleSubmit(onValid)} onCancel={props.onCancel} onDelete={props.arrangementKey?.id ? handleDelete : undefined}>
       <TextField label={Locale.label("songs.key.signature")} fullWidth placeholder={Locale.label("placeholders.song.keySignature")} {...register("keySignature")} />
       <TextField label={Locale.label("songs.key.labelOptional") || "Label (optional)"} multiline fullWidth placeholder={Locale.label("songs.key.defaultLabel")} {...register("shortDescription")} />
-    </InputBox>
+    </FormCard>
   );
 };

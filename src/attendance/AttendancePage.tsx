@@ -1,17 +1,20 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Grid, Icon, Card, CardContent, Stack, Typography } from "@mui/material";
 import { CalendarMonth as CalendarIcon, Group as GroupIcon } from "@mui/icons-material";
 import { Locale, ApiHelper, PageHeader } from "@churchapps/apphelper";
 import { AttendanceSetup } from "./components/AttendanceSetup";
 import { AttendanceNavigation } from "./components/AttendanceNavigation";
 import { ReportWithFilter } from "../components/reporting";
-import { CheckinThemeEdit } from "./components/CheckinThemeEdit";
 import { PageContainer } from "../components/ui/PageContainer";
+import { useCampuses } from "../hooks/useCampuses";
 
 export const AttendancePage = () => {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = React.useState("setup");
+  // Campuses are mastered in the membership module.
+  const campuses = useCampuses();
   const [stats, setStats] = React.useState({
-    campuses: 0,
     serviceTimes: 0,
     scheduledGroups: 0,
     unscheduledGroups: 0,
@@ -24,7 +27,6 @@ export const AttendancePage = () => {
       case "setup": currentTab = <AttendanceSetup />; break;
       case "attendance": currentTab = <ReportWithFilter keyName="attendanceTrend" autoRun={true} />; break;
       case "groups": currentTab = <ReportWithFilter keyName="groupAttendance" autoRun={true} />; break;
-      case "kiosk": currentTab = <CheckinThemeEdit />; break;
     }
     return currentTab;
   };
@@ -37,11 +39,9 @@ export const AttendancePage = () => {
         ApiHelper.get("/groupservicetimes", "AttendanceApi")
       ]);
 
-      const campuses = new Set();
       let serviceTimes = 0;
 
       attendanceData.forEach((a: any) => {
-        if (a.campus?.name) campuses.add(a.campus.name);
         if (a.serviceTime) serviceTimes++;
       });
 
@@ -51,7 +51,6 @@ export const AttendancePage = () => {
       const unscheduledGroups = trackingGroups.filter((g: any) => !assignedGroupIds.has(g.id)).length;
 
       setStats({
-        campuses: campuses.size,
         serviceTimes,
         scheduledGroups,
         unscheduledGroups,
@@ -88,7 +87,7 @@ export const AttendancePage = () => {
           <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <Icon sx={{ color: "#FFF", fontSize: 24 }}>church</Icon>
-              <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.campuses}</Typography>
+              <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{campuses.length}</Typography>
             </Stack>
             <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("attendance.attendancePage.campuses")}</Typography>
           </Stack>
@@ -122,7 +121,7 @@ export const AttendancePage = () => {
           </Stack>
         </Stack>
       </PageHeader>
-      <AttendanceNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} />
+      <AttendanceNavigation selectedTab={selectedTab} onTabChange={(tab) => (tab === "labels" ? navigate("/attendance/labels") : setSelectedTab(tab))} />
 
       {/* Main Content */}
       <PageContainer>

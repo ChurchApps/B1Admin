@@ -10,7 +10,6 @@ import {
   ApiHelper,
   DisplayBox,
   UserHelper,
-  ExportLink,
   Permissions,
   ArrayHelper,
   Locale,
@@ -24,7 +23,6 @@ import {
   Chip,
   Divider,
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Paper,
@@ -37,7 +35,6 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Tooltip,
   Typography
 } from "@mui/material";
 import {
@@ -52,6 +49,8 @@ import {
 } from "@mui/icons-material";
 import { SendInviteDialog } from "../../components";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { AppIconButton } from "../../components/ui/AppIconButton";
+import { ExportButton } from "../../components/ui";
 
 interface Props {
   group: GroupInterface;
@@ -167,53 +166,40 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       let leaderToggle: JSX.Element | null = null;
       if (canEdit) {
         leaderToggle = gm.leader ? (
-          <Tooltip title={Locale.label("groups.groupMembers.removeLeaderAccess")}>
-            <IconButton
-              size="small"
-              onClick={() => handleToggleLeader(gm)}
-              data-testid={`remove-leader-button-${gm.id}`}
-              aria-label={Locale.label("groups.groupMembers.removeLeaderAccessAria").replace("{name}", personName)}
-              sx={{
-                color: "warning.main",
-                transition: "background-color 0.15s",
-                "&:hover": { bgcolor: "warning.50" }
-              }}>
-              <StarIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          <AppIconButton
+            label={Locale.label("groups.groupMembers.removeLeaderAccess")}
+            icon={<StarIcon />}
+            onClick={() => handleToggleLeader(gm)}
+            data-testid={`remove-leader-button-${gm.id}`}
+            sx={{
+              color: "warning.main",
+              transition: "background-color 0.15s",
+              "&:hover": { bgcolor: "warning.50" }
+            }}
+          />
         ) : (
-          <Tooltip title={Locale.label("groups.groupMembers.makeLeader")}>
-            <IconButton
-              size="small"
-              onClick={() => handleToggleLeader(gm)}
-              data-testid={`promote-leader-button-${gm.id}`}
-              aria-label={Locale.label("groups.groupMembers.promoteToLeaderAria").replace("{name}", personName)}
-              sx={{
-                color: "text.disabled",
-                transition: "color 0.15s, background-color 0.15s",
-                "&:hover": { color: "warning.main", bgcolor: "warning.50" }
-              }}>
-              <StarBorderIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          <AppIconButton
+            label={Locale.label("groups.groupMembers.makeLeader")}
+            icon={<StarBorderIcon />}
+            onClick={() => handleToggleLeader(gm)}
+            data-testid={`promote-leader-button-${gm.id}`}
+            sx={{
+              color: "text.disabled",
+              transition: "color 0.15s, background-color 0.15s",
+              "&:hover": { color: "warning.main", bgcolor: "warning.50" }
+            }}
+          />
         );
       }
 
       const removeButton = canEdit ? (
-        <Tooltip title={Locale.label("common.remove")}>
-          <IconButton
-            size="small"
-            onClick={() => handleRemove(gm)}
-            data-testid={`remove-member-button-${gm.id}`}
-            aria-label={Locale.label("groups.groupMembers.removeFromGroupAria").replace("{name}", personName)}
-            sx={{
-              color: "text.disabled",
-              transition: "color 0.15s, background-color 0.15s",
-              "&:hover": { color: "error.main", bgcolor: "error.50" }
-            }}>
-            <PersonRemoveIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
+        <AppIconButton
+          intent="remove"
+          label={Locale.label("common.remove")}
+          icon={<PersonRemoveIcon />}
+          onClick={() => handleRemove(gm)}
+          data-testid={`remove-member-button-${gm.id}`}
+        />
       ) : null;
 
       rows.push(
@@ -235,16 +221,14 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
                 component="span"
                 sx={{
                   fontWeight: 500,
-                  color: "text.primary",
-                  transition: "color 0.15s",
-                  "&:hover": { color: "primary.main" }
+                  color: "var(--link)"
                 }}>
                 {personName}
               </Typography>
             </Link>
           </TableCell>
           <TableCell sx={{ ...cellSx, width: 120 }}>{roleCell}</TableCell>
-          <TableCell sx={{ ...cellSx, width: 110, textAlign: "right", whiteSpace: "nowrap" }}>
+          <TableCell align="right" className="rowActions" sx={{ ...cellSx, width: 110, whiteSpace: "nowrap" }}>
             {canEdit && (
               <Stack
                 direction="row"
@@ -332,11 +316,9 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   const getEditContent = () => (
     <>
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
-        <Tooltip title={Locale.label("groups.groupMembers.sendMemMsg")}>
-          <IconButton size="small" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" aria-label={Locale.label("groups.groupMembers.sendMessageAria")}><EditNoteIcon fontSize="small" /></IconButton>
-        </Tooltip>
+        <AppIconButton label={Locale.label("groups.groupMembers.sendMemMsg")} icon={<EditNoteIcon />} tone="card" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" />
       )}
-      <ExportLink data={exportData} spaceAfter={true} filename="groupmembers.csv" />
+      <ExportButton data={exportData} filename="groupmembers.csv" text={Locale.label("groups.groupsPage.export")} />
     </>
   );
 
@@ -447,13 +429,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
             sx={{ fontWeight: 600, color: "text.primary", letterSpacing: "0.01em" }}>
             {Locale.label("groups.groupMembers.sendMemMsg")}
           </Typography>
-          <IconButton
-            size="small"
-            onClick={closeComposer}
-            aria-label={Locale.label("common.close")}
-            sx={{ color: "text.secondary" }}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} onClick={closeComposer} />
         </Stack>
 
         {showTemplates ? (

@@ -4,8 +4,11 @@ import { B1AdminPersonHelper } from ".";
 import { CreatePerson } from "../../components";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, Loading, ApiHelper, ArrayHelper, Locale, PersonAvatar } from "@churchapps/apphelper";
-import { Table, TableBody, TableRow, TableCell, TableHead, Tooltip, Icon, IconButton, Typography, Stack, Box, Chip, Card, Checkbox } from "@mui/material";
-import { Email as EmailIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon, Phone as PhoneIcon } from "@mui/icons-material";
+import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Card, Checkbox } from "@mui/material";
+import { AppIconButton } from "../../components/ui/AppIconButton";
+import { SortableTableHead, StatusChip, type SortableColumn } from "../../components/ui";
+import { useCampuses } from "../../hooks/useCampuses";
+import { Delete as DeleteIcon, Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
   people: PersonInterface[];
@@ -28,6 +31,12 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const [currentSortedCol, setCurrentSortedCol] = useState<string>("");
   const [optionalColumns, setOptionalColumns] = React.useState<any[]>([]);
   const [formSubmissions, setFormSubmissions] = React.useState<any[]>([]);
+  const campuses = useCampuses();
+  const campusMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    campuses.forEach((c) => { if (c.id) map[c.id] = c.name || ""; });
+    return map;
+  }, [campuses]);
   const selectedPersonIds = props.selectedPersonIds || [];
   const visiblePersonIds = useMemo(() => people?.map((person) => person.id).filter((id): id is string => !!id && id !== props.currentPersonId) || [], [people, props.currentPersonId]);
   const allVisibleSelected = visiblePersonIds.length > 0 && visiblePersonIds.every((id) => selectedPersonIds.includes(id));
@@ -100,23 +109,14 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           result = (
             <Box>
               <Link to={"/people/" + (p.id || "")} style={{ textDecoration: "none" }}>
-                <Typography variant="h6" sx={{ color: "primary.main", "&:hover": { textDecoration: "underline" } }}>
+                <Typography variant="body2" sx={{ color: "var(--link)", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}>
                   {p?.name?.display}
                 </Typography>
               </Link>
               {p.membershipStatus && (
-                <Chip
-                  label={p.membershipStatus}
-                  size="small"
-                  variant="outlined"
-                  sx={{
-                    fontSize: "0.75rem",
-                    mt: 0.5,
-                    backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "background.subtle",
-                    color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "text.secondary",
-                    borderColor: "transparent"
-                  }}
-                />
+                <Box sx={{ mt: 0.5 }}>
+                  <StatusChip status={p.membershipStatus} />
+                </Box>
               )}
             </Box>
           );
@@ -133,7 +133,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             <Stack direction="row" spacing={1} alignItems="center">
               {p?.contactInfo?.email && (
                 <>
-                  <EmailIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+                  <EmailIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                   <Typography variant="body2">{p?.contactInfo?.email}</Typography>
                 </>
               )}
@@ -145,55 +145,42 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             <Stack direction="row" spacing={1} alignItems="center">
               {(p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone) && (
                 <>
-                  <PhoneIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+                  <PhoneIcon sx={{ fontSize: 18, color: "text.secondary" }} />
                   <Typography variant="body2">{p?.contactInfo?.mobilePhone || p?.contactInfo?.homePhone || p?.contactInfo?.workPhone}</Typography>
                 </>
               )}
             </Stack>
           );
           break;
-        case "birthDate": result = <>{p.birthDate === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.birthDate)}</>; break;
+        case "birthDate": result = <>{p.birthDate === null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.birthDate))}</>; break;
         case "birthDay": result = <>{B1AdminPersonHelper.getBirthDay(p)}</>; break;
         case "age":
           result = (
             <Typography variant="body2" color="text.secondary">
-              {p.birthDate === null ? "" : PersonHelper.getAge(p.birthDate)}
+              {p.birthDate === null ? "" : PersonHelper.getAge(new Date(p.birthDate))}
             </Typography>
           );
           break;
         case "gender": result = <>{p.gender}</>; break;
         case "membershipStatus":
-          result = (
-            <Chip
-              label={p.membershipStatus || "Unknown"}
-              size="small"
-              variant="outlined"
-              sx={{
-                fontSize: "0.75rem",
-                backgroundColor: p.membershipStatus === "Member" ? "rgba(46, 125, 50, 0.15)" : p.membershipStatus === "Visitor" ? "rgba(237, 108, 2, 0.15)" : "background.subtle",
-                color: p.membershipStatus === "Member" ? "#4caf50" : p.membershipStatus === "Visitor" ? "#ff9800" : "text.secondary",
-                borderColor: "transparent"
-              }}
-            />
-          );
+          result = <StatusChip status={p.membershipStatus || "Unknown"} />;
           break;
         case "maritalStatus": result = <>{p.maritalStatus}</>; break;
-        case "anniversary": result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(p.anniversary)}</>; break;
+        case "campus": result = <>{p.campusId ? (campusMap[p.campusId] || "") : ""}</>; break;
+        case "anniversary": result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.anniversary))}</>; break;
         case "nametagNotes": result = <>{p.nametagNotes}</>; break;
         case "deleteOption":
           result = (
-            <Tooltip title={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)} arrow placement="left-start">
-              <IconButton
-                sx={{ color: "#c84545" }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (p.id) handleDelete(p.id.toString());
-                }}
-                data-testid={`delete-person-button-${p.id}`}
-                aria-label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)}>
-                <Icon>delete</Icon>
-              </IconButton>
-            </Tooltip>
+            <AppIconButton
+              intent="remove"
+              label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)}
+              icon={<DeleteIcon />}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (p.id) handleDelete(p.id.toString());
+              }}
+              data-testid={`delete-person-button-${p.id}`}
+            />
           );
           break;
         case key: result = getAnswer(p, key); break;
@@ -201,7 +188,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
 
       return result;
     },
-    [getPhotoJSX, handleDelete, getAnswer]
+    [getPhotoJSX, handleDelete, getAnswer, campusMap]
   );
 
   const getColumns = useCallback(
@@ -209,7 +196,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       const result: JSX.Element[] = [];
       columns.forEach((c) => {
         if (selectedColumns.indexOf(c.key) > -1) {
-          result.push(<TableCell key={c.key}>{getColumn(p, c.key)}</TableCell>);
+          if (c.key === "deleteOption") result.push(<TableCell key={c.key} align="right" className="rowActions">{getColumn(p, c.key)}</TableCell>);
+          else result.push(<TableCell key={c.key}>{getColumn(p, c.key)}</TableCell>);
         }
       });
       if (optionalColumns.length > 0) {
@@ -225,13 +213,13 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   );
 
   useEffect(() => {
-    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data) => {
+    ApiHelper.get("/forms?contentType=person", "MembershipApi").then((data: any) => {
       if (data.length > 0) {
         const personForms = data.filter((f: any) => f.contentType === "person");
         if (personForms.length > 0) {
           personForms.forEach((f: any) => {
-            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q) => setOptionalColumns((prevState) => [...prevState, ...q]));
-            ApiHelper.get(`/formsubmissions/formId/${f.id}/?include=questions,answers`, "MembershipApi").then((fs) => setFormSubmissions((prevState) => [...prevState, ...fs]));
+            ApiHelper.get("/questions?formId=" + f.id, "MembershipApi").then((q: any) => setOptionalColumns((prevState) => [...prevState, ...q]));
+            ApiHelper.get(`/formsubmissions/formId/${f.id}/?include=questions,answers`, "MembershipApi").then((fs: any) => setFormSubmissions((prevState) => [...prevState, ...fs]));
           });
         }
       } else setOptionalColumns([]);
@@ -340,42 +328,32 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
     );
   }, [people, getColumns, navigate, props.canSelectPeople, props.currentPersonId, props.togglePersonSelection, selectedPersonIds]);
 
-  const getSortArrows = useCallback(
-    (isActive: boolean) => (
-      <Box
-        component="span"
-        sx={{
-          display: "inline-flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          ml: 0.5,
-          flexShrink: 0,
-          lineHeight: 0,
-          color: isActive ? "text.primary" : "text.secondary"
-        }}>
-        <KeyboardArrowUpIcon
-          sx={{
-            fontSize: 16,
-            mb: "-6px",
-            opacity: isActive && sortDirection ? 1 : 0.45
-          }}
-        />
-        <KeyboardArrowDownIcon
-          sx={{
-            fontSize: 16,
-            opacity: isActive && !sortDirection ? 1 : 0.45
-          }}
-        />
-      </Box>
-    ),
-    [sortDirection]
-  );
+  const headColumns = useMemo<SortableColumn[]>(() => {
+    const result: SortableColumn[] = [];
+    columns.forEach((c) => {
+      if (selectedColumns.indexOf(c.key) > -1) {
+        result.push({
+          key: c.key,
+          label: c.key === "deleteOption" ? "" : c.shortName,
+          sortable: c.key !== "photo" && c.key !== "deleteOption",
+          minWidth: c.key === "photo" ? 88 : 160,
+          align: c.key === "deleteOption" ? "right" : undefined
+        });
+      }
+    });
+    optionalColumns.forEach((c) => {
+      if (selectedColumns.indexOf(c.id) > -1) result.push({ key: c.id, label: c.title, sortable: true, minWidth: 160 });
+    });
+    return result;
+  }, [columns, selectedColumns, optionalColumns]);
 
-  const headers = useMemo(() => {
-    const result: JSX.Element[] = [];
-    if (props.canSelectPeople) {
-      result.push(
+  const headers = useMemo(() => (
+    <SortableTableHead
+      columns={headColumns}
+      sortBy={currentSortedCol}
+      sortDirection={sortDirection ? "asc" : "desc"}
+      onSort={sortTableByKey}
+      leading={props.canSelectPeople ? (
         <TableCell key="bulkSelect" padding="checkbox">
           <Checkbox
             checked={allVisibleSelected}
@@ -384,68 +362,15 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             slotProps={{ input: { "aria-label": "Select all visible people" } }}
           />
         </TableCell>
-      );
-    }
-    columns.forEach((c) => {
-      if (selectedColumns.indexOf(c.key) > -1) {
-        const isSortable = c.key !== "photo" && c.key !== "deleteOption";
-        const isActive = currentSortedCol === c.key;
-        result.push(
-          <TableCell
-            key={c.key}
-            onClick={isSortable ? () => sortTableByKey(c.key) : undefined}
-            sx={{
-              whiteSpace: "nowrap",
-              minWidth: c.key === "photo" ? 88 : 160,
-              cursor: isSortable ? "pointer" : "default"
-            }}>
-            <Box component="span" sx={{ display: "inline-flex", alignItems: "center", verticalAlign: "middle" }}>
-              <Box component="span">{c.shortName}</Box>
-              {isSortable && getSortArrows(isActive)}
-            </Box>
-          </TableCell>
-        );
-      }
-    });
-
-    if (optionalColumns.length > 0) {
-      optionalColumns.forEach((c) => {
-        const key = c.id;
-        if (selectedColumns.indexOf(key) > -1) {
-          const isActive = currentSortedCol === key;
-          result.push(
-            <TableCell
-              key={key}
-              onClick={() => sortTableByKey(key)}
-              sx={{
-                whiteSpace: "nowrap",
-                minWidth: 160,
-                cursor: "pointer"
-              }}>
-              <Box component="span" sx={{ display: "inline-flex", alignItems: "center", verticalAlign: "middle" }}>
-                <Box component="span">{c.title}</Box>
-                {getSortArrows(isActive)}
-              </Box>
-            </TableCell>
-          );
-        }
-      });
-    }
-
-    return (
-      <TableHead>
-        <TableRow>{result}</TableRow>
-      </TableHead>
-    );
-  }, [
+      ) : undefined}
+    />
+  ), [
     allVisibleSelected,
-    columns,
+    headColumns,
     currentSortedCol,
-    getSortArrows,
-    optionalColumns,
+    sortDirection,
     props.canSelectPeople,
     props.toggleAllVisiblePeople,
-    selectedColumns,
     someVisibleSelected,
     sortTableByKey
   ]);
@@ -476,20 +401,8 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             minWidth: "100%",
             tableLayout: "auto",
             "& .MuiTableCell-root": {
-              borderBottom: "1px solid",
-              borderBottomColor: "divider",
-              py: 2,
-              px: 2,
               verticalAlign: "top",
               whiteSpace: "nowrap"
-            },
-            "& .MuiTableHead-root .MuiTableCell-root": {
-              backgroundColor: "background.subtle",
-              fontWeight: 600,
-              color: "text.primary",
-              "&:hover": { color: "text.primary" },
-              "&:active": { color: "text.primary" },
-              "& span": { color: "inherit" }
             }
           }}>
           {headers}
@@ -505,7 +418,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
       {getResults()}
       <Card sx={{ mt: 3 }} id="createPersonForm">
         <Box sx={{ p: 3 }}>
-          <CreatePerson onCreate={navigateToPersonCreate} updatedFunction={props.updatedFunction} />
+          <CreatePerson onCreate={navigateToPersonCreate} />
         </Box>
       </Card>
     </Box>

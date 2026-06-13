@@ -1,8 +1,9 @@
 import React, { useState, memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch, Tooltip, IconButton } from "@mui/material";
+import { Box, Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Stack, Button, Paper, Switch } from "@mui/material";
 import { Info } from "@mui/icons-material";
 import { PersonAdd } from "../../components";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PersonInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { DisplayBox, ApiHelper, PersonHelper, Locale } from "@churchapps/apphelper";
 
@@ -15,7 +16,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
   const [formMembers, setFormMembers] = useState<MemberPermissionInterface[]>([]);
 
   const loadData = useCallback(() => {
-    ApiHelper.get("/memberpermissions/form/" + props.formId, "MembershipApi").then((results) => {
+    ApiHelper.get("/memberpermissions/form/" + props.formId, "MembershipApi").then((results: any) => {
       const filterMembers: string[] = [];
       results.forEach((member: MemberPermissionInterface) => filterMembers.push(member.memberId));
       setFilterList(filterMembers);
@@ -32,7 +33,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         action: "view",
         personName: p.name.display
       };
-      ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then((result) => {
+      ApiHelper.post("/memberpermissions?formId=" + props.formId, [newMember], "MembershipApi").then((result: any) => {
         const fm = [...formMembers];
         fm.push(result[0]);
         setFormMembers(fm);
@@ -108,12 +109,13 @@ export const FormMembers: React.FC<Props> = memo((props) => {
           </TableCell>
           <TableCell>
             {
-              <button
+              <Box
+                component="button"
                 type="button"
                 onClick={() => handleRemoveMember(fm.memberId)}
-                style={{ display: "flex", alignItems: "center", color: "#dc3545", background: "none", border: 0, padding: 0, cursor: "pointer" }}>
+                sx={{ display: "flex", alignItems: "center", color: "error.main", background: "none", border: 0, padding: 0, cursor: "pointer" }}>
                 <Icon sx={{ marginRight: "5px" }}>person_remove</Icon> {Locale.label("common.remove")}
-              </button>
+              </Box>
             }
           </TableCell>
           <TableCell>
@@ -139,11 +141,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         <th>{Locale.label("forms.formMembers.act")}</th>
         <th>
           {Locale.label("forms.formMembers.emailNotif")}
-          <Tooltip title={Locale.label("forms.formMembers.emailNotifMsg")} arrow>
-            <IconButton data-testid="email-notification-info-button" aria-label={Locale.label("forms.formMembers.emailNotifInfoAria")}>
-              <Info fontSize="small" color="primary" />
-            </IconButton>
-          </Tooltip>
+          <AppIconButton tone="card" label={Locale.label("forms.formMembers.emailNotifMsg")} icon={<Info />} data-testid="email-notification-info-button" />
         </th>
       </TableRow>
     );

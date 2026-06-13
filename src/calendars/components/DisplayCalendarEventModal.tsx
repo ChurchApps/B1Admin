@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogActions, Typography, Box, Button } from "@mui/material";
+import { HowToReg as RegIcon } from "@mui/icons-material";
 import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
 
@@ -10,8 +12,11 @@ interface Props {
 }
 
 export function DisplayCalendarEventModal(props: Props) {
+  const navigate = useNavigate();
+  const realEventId = (props.event as CuratedEventWithEventInterface & { realEventId?: string }).realEventId;
+
   const getDisplayTime = () => {
-    let result = "";
+    let result: string;
     if (props.event.allDay) {
       const prettyStartDate = DateHelper.prettyDate(props.event.start);
       const prettyEndDate = DateHelper.prettyDate(props.event.end);
@@ -31,7 +36,11 @@ export function DisplayCalendarEventModal(props: Props) {
 
   const handleDelete = () => {
     if (confirm(Locale.label("calendars.calendarEvent.confirmDelete"))) {
-      ApiHelper.delete("/curatedEvents/calendar/" + props.curatedCalendarId + "/event/" + props.event.id, "ContentApi").then(() => {
+      const deleteUrl = props.event.eventId
+        ? "/curatedEvents/calendar/" + props.curatedCalendarId + "/event/" + props.event.eventId
+        : "/curatedEvents/" + props.event.id;
+
+      ApiHelper.delete(deleteUrl, "ContentApi").then(() => {
         if (props.onDone) props.onDone();
       });
     }
@@ -64,7 +73,12 @@ export function DisplayCalendarEventModal(props: Props) {
         <Button variant="text" onClick={props.onDone} data-testid="calendar-event-cancel-button">
           {Locale.label("calendars.calendarEvent.cancel")}
         </Button>
-        {props.event.eventId && props.mode === "edit" && (
+        {realEventId && props.mode === "edit" && (
+          <Button variant="outlined" startIcon={<RegIcon />} onClick={() => navigate("/registrations/" + realEventId)} data-testid="calendar-event-registrations-button">
+            {Locale.label("calendars.calendarEvent.manageRegistrations")}
+          </Button>
+        )}
+        {props.event.id && props.mode === "edit" && (
           <Button variant="contained" onClick={handleDelete} data-testid="calendar-event-delete-button">
             {Locale.label("calendars.calendarEvent.delete")}
           </Button>

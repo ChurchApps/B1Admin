@@ -1,28 +1,30 @@
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, UserHelper, Permissions, DateHelper, PersonAvatar, ApiHelper, Locale } from "@churchapps/apphelper";
-import { Typography, IconButton, Stack, Chip, Tooltip, Box } from "@mui/material";
+import { Typography, Stack, Chip, Box } from "@mui/material";
 import {
-  Edit as EditIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
   Home as HomeIcon,
-  Sms as SmsIcon
+  Sms as SmsIcon,
+  ViewKanban as WorkflowIcon
 } from "@mui/icons-material";
-import React, { memo, useMemo, useState, useEffect } from "react";
+import { memo, useMemo, useState, useEffect } from "react";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 import { StatusChip } from "../../components";
 import { SendTextDialog } from "../../groups/components/SendTextDialog";
+import { AddToWorkflowDialog } from "./AddToWorkflowDialog";
 
 interface Props {
   person: PersonInterface;
   togglePhotoEditor?: (show: boolean) => void;
-  onEdit?: () => void;
 }
 
 export const PersonBanner = memo((props: Props) => {
-  const { person, togglePhotoEditor, onEdit } = props;
+  const { person, togglePhotoEditor } = props;
 
   const [userEmail, setUserEmail] = useState<string>("");
   const [showTextDialog, setShowTextDialog] = useState(false);
+  const [showWorkflowDialog, setShowWorkflowDialog] = useState(false);
   const [hasTextingProvider, setHasTextingProvider] = useState(false);
 
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
@@ -57,7 +59,7 @@ export const PersonBanner = memo((props: Props) => {
     const stats = [];
 
     if (person.birthDate) {
-      const age = PersonHelper.getAge(person.birthDate);
+      const age = PersonHelper.getAge(new Date(person.birthDate));
       stats.push({ label: Locale.label("people.personBanner.age"), value: `${age}` });
     }
 
@@ -169,9 +171,7 @@ export const PersonBanner = memo((props: Props) => {
                 {person?.name?.display}
               </Typography>
               {canEdit && (
-                <IconButton size="small" sx={{ color: "#FFF" }} onClick={onEdit}>
-                  <EditIcon fontSize="small" />
-                </IconButton>
+                <AppIconButton label={Locale.label("people.personBanner.addToWorkflow")} icon={<WorkflowIcon />} tone="header" data-testid="add-to-workflow-button" onClick={() => setShowWorkflowDialog(true)} />
               )}
             </Stack>
             <Stack direction="row" flexWrap="wrap" gap={1}>
@@ -211,11 +211,7 @@ export const PersonBanner = memo((props: Props) => {
                 {info.value}
               </Typography>
               {info.showTextButton && (
-                <Tooltip title={Locale.label("people.personBanner.sendTextMessage")}>
-                  <IconButton size="small" sx={{ color: "#FFF", p: 0.25 }} onClick={() => setShowTextDialog(true)}>
-                    <SmsIcon sx={{ fontSize: 14 }} />
-                  </IconButton>
-                </Tooltip>
+                <AppIconButton label={Locale.label("people.personBanner.sendTextMessage")} icon={<SmsIcon />} tone="header" sx={{ p: 0.25 }} onClick={() => setShowTextDialog(true)} />
               )}
             </Stack>
           ))}
@@ -228,6 +224,9 @@ export const PersonBanner = memo((props: Props) => {
           phoneNumber={person.contactInfo.mobilePhone}
           onClose={() => setShowTextDialog(false)}
         />
+      )}
+      {showWorkflowDialog && person?.id && (
+        <AddToWorkflowDialog person={person} onClose={() => setShowWorkflowDialog(false)} />
       )}
     </Box>
   );

@@ -8,7 +8,8 @@ import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon,
 import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
-import { SmartTabs } from "../components/ui";
+import { CountChip, SmartTabs } from "../components/ui";
+import { AppIconButton } from "../components/ui/AppIconButton";
 
 export const FormsPage = () => {
   const [selectedFormId, setSelectedFormId] = React.useState("notset");
@@ -44,13 +45,13 @@ export const FormsPage = () => {
         UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || (UserHelper.checkAccess(Permissions.membershipApi.forms.edit) && form.contentType !== "form") || form?.action === "admin";
       const editLink =
         canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" startIcon={<EditIcon />} onClick={() => setSelectedFormId(form.id)} data-testid={`edit-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.editFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.edit")}</Button>
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setSelectedFormId(form.id)} data-testid={`edit-form-button-${form.id}`} />
         ) : null;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
       const archiveLink =
         canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.archive")}</Button>
+          <Button size="small" variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.archive")}</Button>
         ) : null;
       const unarchiveLink =
         canEdit && isArchived ? (
@@ -60,7 +61,8 @@ export const FormsPage = () => {
         <TableRow key={form.id}>
           <TableCell>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Icon sx={{ fontSize: 20, marginRight: "5px" }}>format_align_left</Icon> <Link to={"/forms/" + form.id}>{form.name}</Link>
+              <Icon sx={{ color: "primary.main", fontSize: 20, marginRight: "5px" }}>format_align_left</Icon>{" "}
+              <Link to={"/forms/" + form.id} style={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>{form.name}</Link>
             </Box>
           </TableCell>
           <TableCell>{formLink}</TableCell>
@@ -129,15 +131,13 @@ export const FormsPage = () => {
 
   const formsCard = (
     <Card sx={{ mt: getSidebar() ? 2 : 0 }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
-            <DescriptionIcon />
+            <DescriptionIcon sx={{ color: "primary.main", fontSize: 20 }} />
             <Typography variant="h6">{Locale.label("forms.formsPage.forms")}</Typography>
+            {formsCount > 0 && <CountChip count={formsCount} />}
           </Stack>
-          <Typography variant="body2" color="text.secondary">
-            {(formsCount === 1 ? Locale.label("forms.formsPage.formCount") : Locale.label("forms.formsPage.formCountPlural")).replace("{count}", formsCount.toString())}
-          </Typography>
         </Stack>
       </Box>
       <Box sx={{ p: 0 }}>{renderTable(getRows(false), false)}</Box>
@@ -146,15 +146,13 @@ export const FormsPage = () => {
 
   const archivedCard = (
     <Card>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Stack direction="row" spacing={1} alignItems="center">
-            <ArchiveIcon />
+            <ArchiveIcon sx={{ color: "primary.main", fontSize: 20 }} />
             <Typography variant="h6">{Locale.label("forms.formsPage.archForms")}</Typography>
+            {archivedCount > 0 && <CountChip count={archivedCount} />}
           </Stack>
-          <Typography variant="body2" color="text.secondary">
-            {(archivedCount === 1 ? Locale.label("forms.formsPage.formArchivedCount") : Locale.label("forms.formsPage.formArchivedCountPlural")).replace("{count}", archivedCount.toString())}
-          </Typography>
         </Stack>
       </Box>
       <Box sx={{ p: 0 }}>{renderTable(getArchivedRows(), true)}</Box>

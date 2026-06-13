@@ -1,5 +1,7 @@
-import { Box, Icon, IconButton, Tooltip } from "@mui/material";
+import { Box, Icon } from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface AddContentPanelProps {
   open: boolean;
@@ -16,7 +18,7 @@ export function AddContentPanel({ open, onClose, width = 300, children }: AddCon
         flexShrink: 0,
         overflow: "hidden",
         transition: "width 0.18s ease-out",
-        borderRight: open ? "1px solid #e5e7eb" : "none",
+        borderRight: open ? "1px solid var(--border-main)" : "none",
         backgroundColor: "#ffffff",
         display: "flex",
         flexDirection: "column",
@@ -39,9 +41,9 @@ export function AddContentPanel({ open, onClose, width = 300, children }: AddCon
             justifyContent: "space-between",
             px: 2,
             py: 1.25,
-            borderBottom: "1px solid #e5e7eb",
+            borderBottom: "1px solid var(--border-main)",
             flexShrink: 0,
-            backgroundColor: "#fafafa"
+            backgroundColor: "var(--bg-sub)"
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -50,23 +52,19 @@ export function AddContentPanel({ open, onClose, width = 300, children }: AddCon
                 width: 28,
                 height: 28,
                 borderRadius: "6px",
-                background: "#eff6ff",
+                background: "var(--c1l7)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center"
               }}
             >
-              <Icon sx={{ color: "#1d4ed8", fontSize: 18 }}>add</Icon>
+              <Icon sx={{ color: "primary.main", fontSize: 18 }}>add</Icon>
             </Box>
-            <Box sx={{ fontSize: "0.9rem", fontWeight: 600, color: "#111827" }}>
+            <Box sx={{ fontSize: "0.9rem", fontWeight: 600, color: "text.primary" }}>
               {Locale.label("site.elementAdd.addElements")}
             </Box>
           </Box>
-          <Tooltip title={Locale.label("common.close", "Close")} placement="bottom">
-            <IconButton size="small" onClick={onClose} aria-label="close" sx={{ color: "#6b7280" }}>
-              <Icon fontSize="small">close</Icon>
-            </IconButton>
-          </Tooltip>
+          <AppIconButton label={Locale.label("common.close", "Close")} icon={<CloseIcon />} onClick={onClose} />
         </Box>
         <Box sx={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
           {children}

@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Alert, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { ApiHelper, InputBox, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../components/ui";
 import { type DeviceInterface } from "../DevicesPage";
 import { DeviceContent } from "./DeviceContent";
 
@@ -29,11 +30,11 @@ export const DeviceEdit = (props: Props) => {
 
   return (
     <>
-      <InputBox headerText={Locale.label("profile.devices.editDevice")} headerIcon="tv" saveFunction={handleSubmit(onValid)} cancelFunction={props.updatedFunction}>
+      <FormCard title={Locale.label("profile.devices.editDevice")} icon="tv" onSave={handleSubmit(onValid)} onCancel={props.updatedFunction}>
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
         <TextField fullWidth label={Locale.label("profile.deviceEdit.label")} type="text" placeholder={Locale.label("placeholders.device.label")} error={!!e.label} helperText={e.label?.message} {...register("label", { required: Locale.label("profile.deviceEdit.labelRequired") })} />
         <DeviceContent device={props.device} />
-      </InputBox>
+      </FormCard>
     </>
   );
 };

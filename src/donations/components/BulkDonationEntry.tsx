@@ -110,7 +110,7 @@ export const BulkDonationEntry = memo((props: Props) => {
               type="button"
               className="text-decoration"
               onClick={handleAnonymousSelect}
-              style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer" }}>
+              style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
               {Locale.label("donations.donationEdit.anon")}
             </button>
           </Box>
@@ -129,7 +129,7 @@ export const BulkDonationEntry = memo((props: Props) => {
           <button
             type="button"
             onClick={() => setShowPersonSearch(true)}
-            style={{ background: "none", border: 0, padding: 0, color: "#1976d2", cursor: "pointer", textDecoration: "underline" }}>
+            style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer", textDecoration: "underline" }}>
             {Locale.label("common.change")}
           </button>
         </Box>

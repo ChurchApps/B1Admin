@@ -213,6 +213,7 @@
     "done": "Selesai",
     "duplicate": "Duplikat",
     "edit": "Edit",
+    "element": "Elemen",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Coba Lagi",
@@ -259,8 +260,7 @@
     "tryAgain": "Coba Lagi",
     "update": "Perbarui",
     "website": "Situs Web",
-    "yes": "Ya",
-    "element": "Elemen"
+    "yes": "Ya"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Tambah bagian",
+      "backToSite": "Kembali ke Situs",
       "blockPreview": "Pratinjau Blok",
+      "discard": "Buang",
+      "discardElementMessage": "Buang perubahan yang belum disimpan pada elemen ini?",
+      "discardElementTitle": "Buang perubahan?",
+      "discardSectionMessage": "Buang perubahan yang belum disimpan pada bagian ini?",
       "dropToAddElement": "Letakkan di sini untuk menambah elemen",
       "dropToAddSection": "Letakkan di sini untuk menambah bagian",
+      "keepEditing": "Lanjutkan mengedit",
       "scrollDown": "Gulir ke Bawah",
-      "scrollUp": "Gulir ke Atas"
+      "scrollUp": "Gulir ke Atas",
+      "smallScreenMessage": "Buka halaman ini di tablet atau desktop untuk mengedit situs web Anda.",
+      "smallScreenTitle": "Editor ini membutuhkan layar yang lebih besar"
     },
     "cssEdit": {
       "advancedFeature": "Fitur Lanjutan:",
@@ -2937,13 +2946,24 @@
       "ago": "yang lalu",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Matikan penerbitan",
+      "disablePublishConfirm": "Matikan penerbitan untuk halaman ini? Perubahan akan kembali langsung tayang.",
+      "discardChanges": "Buang perubahan yang belum diterbitkan",
+      "discardChangesConfirm": "Buang semua perubahan sejak penerbitan terakhir? Editor akan dikembalikan ke versi tayang.",
       "exit": "Keluar",
       "justNow": "baru saja",
       "mobile": "Seluler",
-      "notSavedYet": "Belum ada perubahan",
       "page": "Page",
+      "publish": "Terbitkan",
+      "publishOffTip": "Saat ini perubahan langsung tayang. Terbitkan untuk menyimpan versi tayang dan menjaga perubahan berikutnya tetap privat hingga penerbitan selanjutnya.",
+      "publishedLabel": "Diterbitkan",
       "redoTip": "Ulang (Ctrl+Shift+Z)",
+      "saveError": "Tidak dapat menyimpan",
       "savedAllChanges": "Semua perubahan disimpan",
+      "saving": "Menyimpan…",
+      "statusLiveOnSave": "Tayang saat disimpan",
+      "statusPublished": "Diterbitkan",
+      "statusUnpublishedChanges": "Perubahan belum diterbitkan",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Batalkan (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Kartu",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Kolom",
       "common": "Umum",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Aktifkan Lightbox"
+      "enableLightbox": "Aktifkan Lightbox",
+      "groupAnimation": "Animasi",
+      "groupContent": "Konten",
+      "groupStyle": "Gaya"
     },
     "elementSelection": {
       "moveDown": "Pindah ke bawah",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Dokumentasi lengkap",
       "moveBody": "Seret bagian dan elemen untuk mengatur ulang. Gunakan panah atas/bawah pada bilah alat pemilihan untuk pemindahan presisi.",
       "moveTitle": "Atur Ulang",
+      "shortcutsBody": "Delete menghapus elemen yang dipilih, Ctrl+D menduplikatnya, Alt+Up/Down memindahkannya, dan Esc membatalkan pilihan.",
+      "shortcutsTitle": "Pintasan keyboard",
       "title": "Dasar editor halaman",
       "undoBody": "Gunakan Ctrl+Z untuk membatalkan dan Ctrl+Shift+Z untuk mengulang. Buka panel Riwayat dari menu untuk melompat ke status sebelumnya.",
       "undoTitle": "Batalkan & riwayat"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Mulai dari Template",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Ini menghapus bagian beserta seluruh isinya secara permanen. Anda dapat membatalkannya dengan Ctrl+Z.",
+      "deleteSectionTitle": "Hapus bagian?",
       "editSection": "Edit Section",
       "layoutContainer": "Wadah tata letak",
       "section": "Bagian"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplikat",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Kisah Kami",
+      "all": "Semua",
+      "blank": "Bagian Kosong",
+      "category": {
+        "about": "Tentang",
+        "cta": "Ajakan Bertindak",
+        "giving": "Persembahan",
+        "hero": "Hero",
+        "media": "Media",
+        "people": "Orang & Grup",
+        "services": "Ibadah"
+      },
+      "connectColumns": "Kolom Kontak",
+      "ctaBanner": "Banner Langkah Berikutnya",
+      "faqSection": "Pertanyaan Umum",
+      "findUs": "Temukan Kami",
+      "galleryRow": "Baris Foto",
+      "givingBanner": "Banner Persembahan",
+      "givingOptions": "Cara Memberi",
+      "groupListSection": "Daftar Grup",
+      "groupsBrowser": "Penjelajah Grup",
+      "heroCentered": "Hero Foto",
+      "heroGradient": "Hero Gradien",
+      "heroSplit": "Hero Terbagi",
+      "ministriesCards": "Kartu Pelayanan",
+      "sermonsLatest": "Pesan Terbaru",
+      "serviceTimes": "Jadwal Ibadah",
+      "staffGrid": "Kisi Staf",
+      "storyColumns": "Tiga Kolom",
+      "testimony": "Kutipan Kesaksian",
+      "title": "Tambahkan Bagian",
+      "verseBanner": "Banner Ayat",
+      "watchOnline": "Tonton Online",
+      "welcome": "Teks Sambutan"
+    },
+    "sectionToolbar": {
+      "delete": "Hapus bagian",
+      "dragToReorder": "Seret untuk mengubah urutan",
+      "duplicate": "Duplikat bagian",
+      "moveDown": "Pindahkan bagian ke bawah",
+      "moveUp": "Pindahkan bagian ke atas",
+      "settings": "Pengaturan bagian"
+    },
+    "siteTemplates": {
+      "back": "Kembali",
+      "create": "Buat Situs",
+      "creating": "Membuat {title}...",
+      "descriptions": {
+        "classic": "Situs tradisional lengkap dengan halaman beranda yang ramah, halaman tentang kami, dan halaman rencana kunjungan.",
+        "community": "Menampilkan grup dan pelayanan di posisi utama agar orang-orang cepat terhubung.",
+        "heritage": "Desain klasik yang berfokus pada Alkitab untuk jemaat yang sudah mapan.",
+        "media": "Dibangun di sekitar siaran langsung dan arsip khotbah Anda, untuk gereja dengan kehadiran online yang kuat.",
+        "modern": "Tampilan kontemporer dengan gradien yang berani, ibadah online, dan halaman terhubung.",
+        "simple": "Situs awal dua halaman yang bersih, sempurna untuk perintisan gereja dan jemaat kecil.",
+        "visitor": "Berfokus menjawab pertanyaan tamu yang baru pertama kali datang sebelum mereka tiba."
+      },
+      "errFailed": "Gagal membuat situs. Silakan coba lagi.",
+      "exists": "Sudah ada",
+      "existsNote": "Halaman yang ditandai \"sudah ada\" tidak akan diubah.",
+      "intro": "Pilih situs awal di bawah ini. Kami akan membuatkan halaman dan tautan navigasi untuk Anda — semuanya dapat diedit setelahnya.",
+      "names": {
+        "classic": "Gereja Klasik",
+        "community": "Kehidupan Komunitas",
+        "heritage": "Warisan",
+        "media": "Utamakan Online",
+        "modern": "Sambutan Modern",
+        "simple": "Awal Sederhana",
+        "visitor": "Fokus Pengunjung"
+      },
+      "nav": {
+        "about": "Tentang",
+        "connect": "Terhubung",
+        "give": "Persembahan",
+        "home": "Beranda",
+        "live": "Siaran Langsung",
+        "sermons": "Khotbah",
+        "visit": "Kunjungan"
+      },
+      "navLinksNote": "Juga menambahkan tautan navigasi ke halaman bawaan:",
+      "pageCount": "{count} halaman",
+      "pages": {
+        "about": "Tentang Kami",
+        "connect": "Terhubung",
+        "home": "Beranda",
+        "visit": "Rencanakan Kunjungan Anda"
+      },
+      "title": "Mulai dari Template"
     },
     "spacingScaleEdit": {
       "buttonOne": "Tombol 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animasi",
       "animationsDesc": "Efek saat elemen ditampilkan.",
+      "hideOnDesktop": "Sembunyikan di desktop",
+      "hideOnMobile": "Sembunyikan di seluler",
       "styles": "Gaya",
-      "stylesDesc": "Opsi tampilan lanjutan."
+      "stylesDesc": "Opsi tampilan lanjutan.",
+      "visibility": "Visibilitas:"
     },
     "stylesManager": {
       "color": "Palet Warna",

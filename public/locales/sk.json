@@ -213,6 +213,7 @@
     "done": "Done",
     "duplicate": "Duplicate",
     "edit": "Upraviť",
+    "element": "Prvok",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
@@ -259,8 +260,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Áno",
-    "element": "Prvok"
+    "yes": "Áno"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Pridať sekciu",
+      "backToSite": "Späť na stránku",
       "blockPreview": "Náhľad bloku",
+      "discard": "Zahodiť",
+      "discardElementMessage": "Zahodiť neuložené zmeny v tomto prvku?",
+      "discardElementTitle": "Zahodiť zmeny?",
+      "discardSectionMessage": "Zahodiť neuložené zmeny v tejto sekcii?",
       "dropToAddElement": "Pustite sem na pridanie prvku",
       "dropToAddSection": "Pustite sem na pridanie sekcie",
+      "keepEditing": "Pokračovať v úpravách",
       "scrollDown": "Posunúť dole",
-      "scrollUp": "Posunúť hore"
+      "scrollUp": "Posunúť hore",
+      "smallScreenMessage": "Otvorte túto stránku na tablete alebo počítači, aby ste mohli upravovať svoju webovú lokalitu.",
+      "smallScreenTitle": "Tento editor potrebuje väčšiu obrazovku"
     },
     "cssEdit": {
       "advancedFeature": "Pokročilá funkcia:",
@@ -2937,13 +2946,24 @@
       "ago": "pred",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Vypnúť publikovanie",
+      "disablePublishConfirm": "Vypnúť publikovanie pre túto stránku? Úpravy budú opäť okamžite naživo.",
+      "discardChanges": "Zahodiť nepublikované zmeny",
+      "discardChangesConfirm": "Zahodiť všetky zmeny vykonané od posledného publikovania? Editor sa obnoví na živú verziu.",
       "exit": "Ukončiť",
       "justNow": "práve teraz",
       "mobile": "Mobilný",
-      "notSavedYet": "Zatiaľ žiadne zmeny",
       "page": "Page",
+      "publish": "Publikovať",
+      "publishOffTip": "Úpravy sa momentálne zverejňujú okamžite. Publikovaním uložíte živú verziu a ďalšie úpravy zostanú súkromné až do nasledujúceho publikovania.",
+      "publishedLabel": "Publikované",
       "redoTip": "Znova (Ctrl+Shift+Z)",
+      "saveError": "Nepodarilo sa uložiť",
       "savedAllChanges": "Všetky zmeny uložené",
+      "saving": "Ukladá sa…",
+      "statusLiveOnSave": "Naživo po uložení",
+      "statusPublished": "Publikované",
+      "statusUnpublishedChanges": "Nepublikované zmeny",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Späť (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Card",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Stĺpec",
       "common": "Bežné",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Povoliť Lightbox"
+      "enableLightbox": "Povoliť Lightbox",
+      "groupAnimation": "Animácia",
+      "groupContent": "Obsah",
+      "groupStyle": "Štýl"
     },
     "elementSelection": {
       "moveDown": "Presunúť dole",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Úplná dokumentácia",
       "moveBody": "Presúvajte sekcie a prvky, aby ste ich preusporiadali. Použite šípky hore/dole na paneli výberu pre presné pohyby.",
       "moveTitle": "Preusporiadať",
+      "shortcutsBody": "Delete odstráni vybraný prvok, Ctrl+D ho duplikuje, Alt+Hore/Dole ho presunie a Esc zruší výber.",
+      "shortcutsTitle": "Klávesové skratky",
       "title": "Základy editora stránok",
       "undoBody": "Použite Ctrl+Z na vrátenie a Ctrl+Shift+Z na opätovné vykonanie. Otvorte panel Histórie z menu, aby ste prešli na ľubovoľný skorší stav.",
       "undoTitle": "Späť a história"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Začať zo šablóny",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Týmto sa natrvalo odstráni sekcia a všetko v nej. Môžete to vrátiť späť pomocou Ctrl+Z.",
+      "deleteSectionTitle": "Odstrániť sekciu?",
       "editSection": "Edit Section",
       "layoutContainer": "Kontajner rozloženia",
       "section": "Sekcia"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplicate",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Náš príbeh",
+      "all": "Všetky",
+      "blank": "Prázdna sekcia",
+      "category": {
+        "about": "O nás",
+        "cta": "Výzva na akciu",
+        "giving": "Dary",
+        "hero": "Hero",
+        "media": "Médiá",
+        "people": "Ľudia a skupiny",
+        "services": "Bohoslužby"
+      },
+      "connectColumns": "Kontaktné stĺpce",
+      "ctaBanner": "Banner ďalšieho kroku",
+      "faqSection": "Časté otázky",
+      "findUs": "Nájdite nás",
+      "galleryRow": "Rad fotografií",
+      "givingBanner": "Banner darovania",
+      "givingOptions": "Spôsoby darovania",
+      "groupListSection": "Zoznam skupín",
+      "groupsBrowser": "Prehliadač skupín",
+      "heroCentered": "Hero s fotografiou",
+      "heroGradient": "Hero s gradientom",
+      "heroSplit": "Rozdelený hero",
+      "ministriesCards": "Karty služieb",
+      "sermonsLatest": "Najnovšie kázne",
+      "serviceTimes": "Časy bohoslužieb",
+      "staffGrid": "Mriežka tímu",
+      "storyColumns": "Tri stĺpce",
+      "testimony": "Svedectvo",
+      "title": "Pridať sekciu",
+      "verseBanner": "Banner s veršom",
+      "watchOnline": "Sledovať online",
+      "welcome": "Uvítací text"
+    },
+    "sectionToolbar": {
+      "delete": "Odstrániť sekciu",
+      "dragToReorder": "Ťahaním zmeníte poradie",
+      "duplicate": "Duplikovať sekciu",
+      "moveDown": "Presunúť sekciu nadol",
+      "moveUp": "Presunúť sekciu nahor",
+      "settings": "Nastavenia sekcie"
+    },
+    "siteTemplates": {
+      "back": "Späť",
+      "create": "Vytvoriť web",
+      "creating": "Vytvára sa {title}...",
+      "descriptions": {
+        "classic": "Kompletný tradičný web s vľúdnou domovskou stránkou, stránkou o nás a stránkou na naplánovanie návštevy.",
+        "community": "Dáva skupiny a služby do popredia, aby sa ľudia rýchlo zapojili.",
+        "heritage": "Klasický dizajn s dôrazom na Písmo pre etablované spoločenstvá.",
+        "media": "Postavený okolo vášho živého vysielania a archívu kázní, pre cirkvi so silnou online prítomnosťou.",
+        "modern": "Súčasný vzhľad s výraznými gradientmi, online bohoslužbami a kontaktnou stránkou.",
+        "simple": "Prehľadný štart s dvoma stránkami, ideálny pre nové a malé spoločenstvá.",
+        "visitor": "Zameraný na zodpovedanie otázok prvého návštevníka ešte pred jeho príchodom."
+      },
+      "errFailed": "Web sa nepodarilo vytvoriť. Skúste to znova.",
+      "exists": "Už existuje",
+      "existsNote": "Stránky označené ako \"už existuje\" zostanú nezmenené.",
+      "intro": "Vyberte si nižšie štartovací web. Stránky a navigačné odkazy vytvoríme za vás — všetko sa dá následne upraviť.",
+      "names": {
+        "classic": "Klasická cirkev",
+        "community": "Život spoločenstva",
+        "heritage": "Dedičstvo",
+        "media": "Online na prvom mieste",
+        "modern": "Moderné privítanie",
+        "simple": "Jednoduchý štart",
+        "visitor": "Zameranie na návštevníkov"
+      },
+      "nav": {
+        "about": "O nás",
+        "connect": "Zapojte sa",
+        "give": "Darovať",
+        "home": "Domov",
+        "live": "Naživo",
+        "sermons": "Kázne",
+        "visit": "Návšteva"
+      },
+      "navLinksNote": "Pridá aj navigačné odkazy na vstavané stránky:",
+      "pageCount": "Počet stránok: {count}",
+      "pages": {
+        "about": "O nás",
+        "connect": "Zapojte sa",
+        "home": "Domov",
+        "visit": "Naplánujte si návštevu"
+      },
+      "title": "Začať zo šablóny"
     },
     "spacingScaleEdit": {
       "buttonOne": "Tlačidlo 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animácie",
       "animationsDesc": "Efekt pri zobrazení prvku.",
+      "hideOnDesktop": "Skryť na počítači",
+      "hideOnMobile": "Skryť na mobile",
       "styles": "Štýly",
-      "stylesDesc": "Pokročilé možnosti vzhľadu."
+      "stylesDesc": "Pokročilé možnosti vzhľadu.",
+      "visibility": "Viditeľnosť:"
     },
     "stylesManager": {
       "color": "Farebná paleta",

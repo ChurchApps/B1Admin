@@ -213,6 +213,7 @@
     "done": "Fertig",
     "duplicate": "Duplizieren",
     "edit": "Bearbeiten",
+    "element": "Element",
     "errorBoundary": {
       "message": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
       "retry": "Wiederholen",
@@ -259,8 +260,7 @@
     "tryAgain": "Erneut versuchen",
     "update": "Aktualisieren",
     "website": "Website",
-    "yes": "Ja",
-    "element": "Element"
+    "yes": "Ja"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Abschnitt hinzufügen",
+      "backToSite": "Zurück zur Website",
       "blockPreview": "Block-Vorschau",
+      "discard": "Verwerfen",
+      "discardElementMessage": "Nicht gespeicherte Änderungen an diesem Element verwerfen?",
+      "discardElementTitle": "Änderungen verwerfen?",
+      "discardSectionMessage": "Nicht gespeicherte Änderungen an diesem Abschnitt verwerfen?",
       "dropToAddElement": "Hier ablegen, um Element hinzuzufügen",
       "dropToAddSection": "Hier ablegen, um Abschnitt hinzuzufügen",
+      "keepEditing": "Weiter bearbeiten",
       "scrollDown": "Nach unten scrollen",
-      "scrollUp": "Nach oben scrollen"
+      "scrollUp": "Nach oben scrollen",
+      "smallScreenMessage": "Öffnen Sie diese Seite auf einem Tablet oder Desktop, um Ihre Website zu bearbeiten.",
+      "smallScreenTitle": "Dieser Editor benötigt einen größeren Bildschirm"
     },
     "cssEdit": {
       "advancedFeature": "Erweiterte Funktion:",
@@ -2937,13 +2946,24 @@
       "ago": "her",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Veröffentlichung deaktivieren",
+      "disablePublishConfirm": "Veröffentlichung für diese Seite deaktivieren? Änderungen gehen sofort wieder live.",
+      "discardChanges": "Unveröffentlichte Änderungen verwerfen",
+      "discardChangesConfirm": "Alle Änderungen seit der letzten Veröffentlichung verwerfen? Der Editor wird auf die Live-Version zurückgesetzt.",
       "exit": "Beenden",
       "justNow": "gerade eben",
       "mobile": "Mobil",
-      "notSavedYet": "Noch keine Änderungen",
       "page": "Seite",
+      "publish": "Veröffentlichen",
+      "publishOffTip": "Änderungen gehen derzeit sofort live. Beim Veröffentlichen wird eine Live-Version gespeichert und zukünftige Änderungen bleiben bis zur nächsten Veröffentlichung privat.",
+      "publishedLabel": "Veröffentlicht",
       "redoTip": "Wiederherstellen (Strg+Shift+Z)",
+      "saveError": "Speichern fehlgeschlagen",
       "savedAllChanges": "Alle Änderungen gespeichert",
+      "saving": "Wird gespeichert…",
+      "statusLiveOnSave": "Live beim Speichern",
+      "statusPublished": "Veröffentlicht",
+      "statusUnpublishedChanges": "Unveröffentlichte Änderungen",
       "switchToDesktop": "Zur Desktop-Ansicht wechseln",
       "switchToMobile": "Zur mobilen Ansicht wechseln",
       "undoTip": "Rückgängig (Strg+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Karte",
       "carousel": "Karussell",
       "church": "Gemeinde",
+      "column": "Spalte",
       "common": "Häufig",
       "content": "Inhalt",
       "descBox": "Flexibler Container-Box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Lightbox aktivieren"
+      "enableLightbox": "Lightbox aktivieren",
+      "groupAnimation": "Animation",
+      "groupContent": "Inhalt",
+      "groupStyle": "Stil"
     },
     "elementSelection": {
       "moveDown": "Nach unten verschieben",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Vollständige Dokumentation",
       "moveBody": "Ziehen Sie Abschnitte und Elemente, um sie neu anzuordnen. Verwenden Sie die Auf-/Ab-Pfeile in der Auswahl-Symbolleiste für präzise Bewegungen.",
       "moveTitle": "Neu anordnen",
+      "shortcutsBody": "Delete entfernt das ausgewählte Element, Strg+D dupliziert es, Alt+Auf/Ab verschiebt es und Esc hebt die Auswahl auf.",
+      "shortcutsTitle": "Tastaturkürzel",
       "title": "Grundlagen des Seiteneditors",
       "undoBody": "Verwenden Sie Strg+Z zum Rückgängigmachen und Strg+Shift+Z zum Wiederherstellen. Öffnen Sie das Verlaufsfenster aus dem Menü, um zu einem früheren Zustand zu springen.",
       "undoTitle": "Rückgängig & Verlauf"
@@ -3239,6 +3265,7 @@
       "previewPage": "Seite vorschauen",
       "showLogin": "Login anzeigen",
       "showLoginTooltip": "Login-Button in der Navigationsleiste anzeigen",
+      "startFromTemplate": "Mit einer Vorlage starten",
       "subtitle": "Verwalten Sie Ihre Webseiten, Inhalte und Navigation",
       "toggleLoginVisibility": "Sichtbarkeit des Login-Buttons umschalten",
       "totalPages": "Seiten gesamt",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Sind Sie sicher, dass Sie diesen Abschnitt dauerhaft löschen möchten?",
       "confirmDuplicate": "Sind Sie sicher, dass Sie eine Kopie dieses Abschnitts und aller seiner Inhalte erstellen möchten?",
+      "deleteSectionBody": "Dies löscht den Abschnitt und alle seine Inhalte dauerhaft. Sie können dies mit Strg+Z rückgängig machen.",
+      "deleteSectionTitle": "Abschnitt löschen?",
       "editSection": "Abschnitt bearbeiten",
       "layoutContainer": "Layout-Container",
       "section": "Abschnitt"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplizieren",
       "duplicateSection": "Abschnitt duplizieren",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Unsere Geschichte",
+      "all": "Alle",
+      "blank": "Leerer Abschnitt",
+      "category": {
+        "about": "Über uns",
+        "cta": "Call-to-Action",
+        "giving": "Spenden",
+        "hero": "Hero",
+        "media": "Medien",
+        "people": "Personen & Gruppen",
+        "services": "Gottesdienste"
+      },
+      "connectColumns": "Kontaktspalten",
+      "ctaBanner": "Banner für den nächsten Schritt",
+      "faqSection": "Häufige Fragen",
+      "findUs": "So finden Sie uns",
+      "galleryRow": "Fotoreihe",
+      "givingBanner": "Spendenbanner",
+      "givingOptions": "Spendenmöglichkeiten",
+      "groupListSection": "Gruppenliste",
+      "groupsBrowser": "Gruppen-Browser",
+      "heroCentered": "Foto-Hero",
+      "heroGradient": "Hero mit Farbverlauf",
+      "heroSplit": "Geteilter Hero",
+      "ministriesCards": "Dienstbereich-Karten",
+      "sermonsLatest": "Aktuelle Predigten",
+      "serviceTimes": "Gottesdienstzeiten",
+      "staffGrid": "Mitarbeiterübersicht",
+      "storyColumns": "Drei Spalten",
+      "testimony": "Zeugnis-Zitat",
+      "title": "Abschnitt hinzufügen",
+      "verseBanner": "Bibelvers-Banner",
+      "watchOnline": "Online ansehen",
+      "welcome": "Willkommenstext"
+    },
+    "sectionToolbar": {
+      "delete": "Abschnitt löschen",
+      "dragToReorder": "Zum Neuanordnen ziehen",
+      "duplicate": "Abschnitt duplizieren",
+      "moveDown": "Abschnitt nach unten verschieben",
+      "moveUp": "Abschnitt nach oben verschieben",
+      "settings": "Abschnittseinstellungen"
+    },
+    "siteTemplates": {
+      "back": "Zurück",
+      "create": "Website erstellen",
+      "creating": "{title} wird erstellt...",
+      "descriptions": {
+        "classic": "Eine vollständige traditionelle Website mit einladender Startseite, Über-uns-Seite und einer Seite zur Besuchsplanung.",
+        "community": "Stellt Gruppen und Dienstbereiche in den Mittelpunkt, damit Menschen schnell Anschluss finden.",
+        "heritage": "Ein klassisches Design mit Fokus auf der Heiligen Schrift für etablierte Gemeinden.",
+        "media": "Aufgebaut rund um Ihren Livestream und Ihr Predigtarchiv – für Gemeinden mit starker Online-Präsenz.",
+        "modern": "Ein modernes Erscheinungsbild mit kräftigen Farbverläufen, Online-Gottesdiensten und einer Kontaktseite.",
+        "simple": "Ein übersichtlicher Einstieg mit zwei Seiten, perfekt für Gemeindegründungen und kleine Gemeinden.",
+        "visitor": "Darauf ausgerichtet, die Fragen von Erstbesuchern schon vor ihrem Besuch zu beantworten."
+      },
+      "errFailed": "Die Website konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+      "exists": "Bereits vorhanden",
+      "existsNote": "Seiten mit der Markierung „bereits vorhanden“ bleiben unverändert.",
+      "intro": "Wählen Sie unten eine Startvorlage aus. Wir erstellen die Seiten und Navigationslinks für Sie – alles kann anschließend bearbeitet werden.",
+      "names": {
+        "classic": "Klassische Gemeinde",
+        "community": "Gemeinschaftsleben",
+        "heritage": "Tradition",
+        "media": "Online zuerst",
+        "modern": "Modernes Willkommen",
+        "simple": "Einfacher Start",
+        "visitor": "Besucherfokus"
+      },
+      "nav": {
+        "about": "Über uns",
+        "connect": "Kontakt",
+        "give": "Spenden",
+        "home": "Startseite",
+        "live": "Live",
+        "sermons": "Predigten",
+        "visit": "Besuch"
+      },
+      "navLinksNote": "Fügt außerdem Navigationslinks zu integrierten Seiten hinzu:",
+      "pageCount": "{count} Seiten",
+      "pages": {
+        "about": "Über uns",
+        "connect": "Kontakt",
+        "home": "Startseite",
+        "visit": "Besuch planen"
+      },
+      "title": "Mit einer Vorlage starten"
     },
     "spacingScaleEdit": {
       "buttonOne": "Schaltfläche 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animationen",
       "animationsDesc": "Effekt, wenn das Element angezeigt wird.",
+      "hideOnDesktop": "Auf Desktop ausblenden",
+      "hideOnMobile": "Auf Mobilgeräten ausblenden",
       "styles": "Stile",
-      "stylesDesc": "Erweiterte Erscheinungsoptionen."
+      "stylesDesc": "Erweiterte Erscheinungsoptionen.",
+      "visibility": "Sichtbarkeit:"
     },
     "stylesManager": {
       "color": "Farbpalette",

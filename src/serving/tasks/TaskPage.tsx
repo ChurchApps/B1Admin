@@ -1,6 +1,7 @@
 import React, { useContext, useCallback } from "react";
 import { Menu, MenuItem, Box, Stack, Button } from "@mui/material";
-import { ApiHelper, type TaskInterface, Notes, DateHelper, type ConversationInterface, Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading, PageHeader } from "@churchapps/apphelper";
+import { type TaskInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
@@ -103,11 +104,11 @@ export const TaskPage = () => {
               onClick={(e) => setAnchorEl(e.currentTarget)}
               sx={{
                 color: task.data.status === "Open" ? "#FFF" : "#FFF",
-                backgroundColor: task.data.status === "Open" ? "#f57c00" : "transparent",
-                borderColor: task.data.status === "Open" ? "#f57c00" : "#4caf50",
+                backgroundColor: task.data.status === "Open" ? "warning.main" : "transparent",
+                borderColor: task.data.status === "Open" ? "warning.main" : "success.main",
                 "&:hover": {
-                  backgroundColor: task.data.status === "Open" ? "#ef6c00" : "rgba(76, 175, 80, 0.2)",
-                  borderColor: task.data.status === "Open" ? "#ef6c00" : "#4caf50"
+                  backgroundColor: task.data.status === "Open" ? "warning.dark" : "rgba(76, 175, 80, 0.2)",
+                  borderColor: task.data.status === "Open" ? "warning.dark" : "success.main"
                 },
                 textTransform: "none",
                 fontWeight: 600

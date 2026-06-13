@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Divider } from "@mui/material";
+import { Grid, Typography, Card, CardContent, Stack, Box, Chip, Button, Divider, Tabs, Tab } from "@mui/material";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
@@ -27,8 +27,16 @@ interface Props {
   onStatusChange?: (status: string) => void;
 }
 
+const taskTabLabel = (text: string, count: number) => (
+  <Stack direction="row" spacing={1} alignItems="center">
+    <span>{text}</span>
+    <Chip label={count} size="small" color="primary" sx={{ height: 20, fontWeight: 600, fontSize: "0.7rem", "& .MuiChip-label": { px: 0.75 } }} />
+  </Stack>
+);
+
 export const TaskList = memo((props: Props) => {
   const [showAdd, setShowAdd] = React.useState(false);
+  const [tab, setTab] = React.useState(0);
   const context = React.useContext(UserContext);
 
   // React Query hooks for data fetching
@@ -285,14 +293,15 @@ export const TaskList = memo((props: Props) => {
         sx={{
           borderRadius: 2,
           border: "1px solid",
-          borderColor: "divider"
+          borderColor: "divider",
+          marginTop: 4
         }}>
         <CardContent>
           {/* Header */}
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <TaskIcon sx={{ color: "primary.main" }} />
-              <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
+              <TaskIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              <Typography variant="h6">
                 {Locale.label("tasks.taskList.tasks")}
               </Typography>
             </Stack>
@@ -332,7 +341,19 @@ export const TaskList = memo((props: Props) => {
           </Stack>
 
           {/* Content */}
-          {hasAnyTasks ? (
+          {props.compact ? (
+            <>
+              <Tabs value={tab} onChange={(_e, v) => setTab(v)} variant="scrollable" scrollButtons="auto" sx={{ borderBottom: 1, borderColor: "divider", mb: 2, minHeight: 40 }}>
+                <Tab data-testid="tasklist-tab-assigned" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignMe"), assignedToMe.length)} />
+                <Tab data-testid="tasklist-tab-groups" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.assignGroup"), assignedToMyGroups.length)} />
+                <Tab data-testid="tasklist-tab-created" sx={{ textTransform: "none", minHeight: 40, py: 0 }} label={taskTabLabel(Locale.label("tasks.taskList.reqMe"), createdByMe.length)} />
+              </Tabs>
+              {(() => {
+                const active = tab === 0 ? assignedToMe : tab === 1 ? assignedToMyGroups : createdByMe;
+                return active.length > 0 ? <Stack spacing={2}>{active.map((t) => getTask(t))}</Stack> : <EmptyState icon={<TaskIcon />} title={Locale.label("tasks.taskList.noTasks")} />;
+              })()}
+            </>
+          ) : hasAnyTasks ? (
             <Stack spacing={4}>
               {getAssignedToMe()}
               {getAssignedToMyGroups()}

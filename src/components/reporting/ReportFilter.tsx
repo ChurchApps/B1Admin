@@ -3,7 +3,7 @@
 import React from "react";
 import type { ReportInterface, ParameterInterface } from "@churchapps/helpers";
 import { ArrayHelper, Locale } from "../../helpers";
-import { InputBox } from "../";
+import { FormCard } from "../ui";
 import { ReportFilterField } from "./ReportFilterField";
 
 interface Props {
@@ -87,9 +87,9 @@ export const ReportFilter = (props: Props) => {
   const inputs = getInputs();
   if (inputs.length > 0) {
     return (
-      <InputBox id="formSubmissionBox" headerText={Locale.label("common.reportFilter.title")} headerIcon="summarize" saveFunction={handleRunReport} saveText={Locale.label("reporting.runReport")}>
+      <FormCard id="formSubmissionBox" title={Locale.label("common.reportFilter.title")} icon="summarize" onSave={handleRunReport} saveText={Locale.label("reporting.runReport")}>
         {inputs}
-      </InputBox>
+      </FormCard>
     );
   } else return <> </>;
 };

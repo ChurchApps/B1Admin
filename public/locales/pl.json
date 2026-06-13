@@ -213,6 +213,7 @@
     "done": "Gotowe",
     "duplicate": "Duplikat",
     "edit": "Edytuj",
+    "element": "Element",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Ponów",
@@ -259,8 +260,7 @@
     "tryAgain": "Spróbuj ponownie",
     "update": "Aktualizuj",
     "website": "Strona internetowa",
-    "yes": "Tak",
-    "element": "Element"
+    "yes": "Tak"
   },
   "components": {
     "associatedForms": {
@@ -2871,11 +2871,20 @@
       "placeholder": "#FF0000"
     },
     "contentEditor": {
+      "addSectionHere": "Dodaj sekcję",
+      "backToSite": "Wróć do witryny",
       "blockPreview": "Podgląd bloku",
+      "discard": "Odrzuć",
+      "discardElementMessage": "Odrzucić niezapisane zmiany w tym elemencie?",
+      "discardElementTitle": "Odrzucić zmiany?",
+      "discardSectionMessage": "Odrzucić niezapisane zmiany w tej sekcji?",
       "dropToAddElement": "Upuść tutaj, aby dodać element",
       "dropToAddSection": "Upuść tutaj, aby dodać sekcję",
+      "keepEditing": "Kontynuuj edycję",
       "scrollDown": "Przewiń w dół",
-      "scrollUp": "Przewiń w górę"
+      "scrollUp": "Przewiń w górę",
+      "smallScreenMessage": "Otwórz tę stronę na tablecie lub komputerze, aby edytować swoją witrynę.",
+      "smallScreenTitle": "Ten edytor wymaga większego ekranu"
     },
     "cssEdit": {
       "advancedFeature": "Funkcja zaawansowana:",
@@ -2937,13 +2946,24 @@
       "ago": "temu",
       "block": "Block",
       "desktop": "Desktop",
+      "disablePublish": "Wyłącz publikowanie",
+      "disablePublishConfirm": "Wyłączyć publikowanie dla tej strony? Zmiany znów będą od razu widoczne na żywo.",
+      "discardChanges": "Odrzuć nieopublikowane zmiany",
+      "discardChangesConfirm": "Odrzucić wszystkie zmiany wprowadzone od ostatniej publikacji? Edytor zostanie przywrócony do wersji opublikowanej.",
       "exit": "Wyjdź",
       "justNow": "teraz",
       "mobile": "Mobilny",
-      "notSavedYet": "Brak zmian",
       "page": "Page",
+      "publish": "Opublikuj",
+      "publishOffTip": "Zmiany są obecnie natychmiast widoczne na żywo. Opublikuj, aby zapisać wersję opublikowaną, a przyszłe zmiany pozostaną prywatne do następnej publikacji.",
+      "publishedLabel": "Opublikowano",
       "redoTip": "Ponów (Ctrl+Shift+Z)",
+      "saveError": "Nie udało się zapisać",
       "savedAllChanges": "Wszystkie zmiany zapisane",
+      "saving": "Zapisywanie…",
+      "statusLiveOnSave": "Na żywo po zapisaniu",
+      "statusPublished": "Opublikowano",
+      "statusUnpublishedChanges": "Nieopublikowane zmiany",
       "switchToDesktop": "Switch to Desktop View",
       "switchToMobile": "Switch to Mobile View",
       "undoTip": "Cofnij (Ctrl+Z)",
@@ -2959,6 +2979,7 @@
       "card": "Karta",
       "carousel": "Carousel",
       "church": "Church",
+      "column": "Kolumna",
       "common": "Wspólne",
       "content": "Content",
       "descBox": "Flexible container box",
@@ -3012,7 +3033,10 @@
       "video": "Video"
     },
     "elementEdit": {
-      "enableLightbox": "Włącz Lightbox"
+      "enableLightbox": "Włącz Lightbox",
+      "groupAnimation": "Animacja",
+      "groupContent": "Treść",
+      "groupStyle": "Styl"
     },
     "elementSelection": {
       "moveDown": "Przesuń w dół",
@@ -3165,6 +3189,8 @@
       "fullDocs": "Pełna dokumentacja",
       "moveBody": "Przeciągaj sekcje i elementy, aby zmienić ich kolejność. Użyj strzałek w górę/dół na pasku narzędzi zaznaczenia dla precyzyjnych ruchów.",
       "moveTitle": "Zmień układ",
+      "shortcutsBody": "Delete usuwa zaznaczony element, Ctrl+D go duplikuje, Alt+Góra/Dół go przenosi, a Esc usuwa zaznaczenie.",
+      "shortcutsTitle": "Skróty klawiszowe",
       "title": "Podstawy edytora stron",
       "undoBody": "Użyj Ctrl+Z do cofnięcia i Ctrl+Shift+Z do ponowienia. Otwórz panel historii z menu, aby przejść do wcześniejszego stanu.",
       "undoTitle": "Cofnij i historia"
@@ -3239,6 +3265,7 @@
       "previewPage": "Preview page",
       "showLogin": "Show Login",
       "showLoginTooltip": "Show login button in the navigation bar",
+      "startFromTemplate": "Zacznij od szablonu",
       "subtitle": "Manage your website pages, content, and navigation",
       "toggleLoginVisibility": "Toggle login button visibility",
       "totalPages": "Total Pages",
@@ -3345,6 +3372,8 @@
     "section": {
       "confirmDelete": "Are you sure you wish to permanently delete this section?",
       "confirmDuplicate": "Are you sure you wish to make a copy of this section and all of it's contents?",
+      "deleteSectionBody": "Spowoduje to trwałe usunięcie sekcji i całej jej zawartości. Możesz to cofnąć za pomocą Ctrl+Z.",
+      "deleteSectionTitle": "Usunąć sekcję?",
       "editSection": "Edit Section",
       "layoutContainer": "Kontener układu",
       "section": "Sekcja"
@@ -3362,6 +3391,95 @@
       "duplicate": "Duplikat",
       "duplicateSection": "Duplicate Section",
       "id": "ID"
+    },
+    "sectionTemplates": {
+      "aboutSplit": "Nasza historia",
+      "all": "Wszystkie",
+      "blank": "Pusta sekcja",
+      "category": {
+        "about": "O nas",
+        "cta": "Wezwanie do działania",
+        "giving": "Ofiarność",
+        "hero": "Hero",
+        "media": "Multimedia",
+        "people": "Ludzie i grupy",
+        "services": "Nabożeństwa"
+      },
+      "connectColumns": "Kolumny kontaktowe",
+      "ctaBanner": "Baner następnego kroku",
+      "faqSection": "Częste pytania",
+      "findUs": "Znajdź nas",
+      "galleryRow": "Rząd zdjęć",
+      "givingBanner": "Baner ofiarności",
+      "givingOptions": "Sposoby przekazywania ofiar",
+      "groupListSection": "Lista grup",
+      "groupsBrowser": "Przeglądarka grup",
+      "heroCentered": "Hero ze zdjęciem",
+      "heroGradient": "Hero z gradientem",
+      "heroSplit": "Hero dzielony",
+      "ministriesCards": "Karty służb",
+      "sermonsLatest": "Najnowsze kazania",
+      "serviceTimes": "Godziny nabożeństw",
+      "staffGrid": "Siatka zespołu",
+      "storyColumns": "Trzy kolumny",
+      "testimony": "Świadectwo",
+      "title": "Dodaj sekcję",
+      "verseBanner": "Baner z wersetem",
+      "watchOnline": "Oglądaj online",
+      "welcome": "Tekst powitalny"
+    },
+    "sectionToolbar": {
+      "delete": "Usuń sekcję",
+      "dragToReorder": "Przeciągnij, aby zmienić kolejność",
+      "duplicate": "Duplikuj sekcję",
+      "moveDown": "Przenieś sekcję w dół",
+      "moveUp": "Przenieś sekcję w górę",
+      "settings": "Ustawienia sekcji"
+    },
+    "siteTemplates": {
+      "back": "Wstecz",
+      "create": "Utwórz witrynę",
+      "creating": "Tworzenie {title}...",
+      "descriptions": {
+        "classic": "Kompletna, tradycyjna witryna z przyjazną stroną główną, stroną o nas i stroną planowania wizyty.",
+        "community": "Stawia grupy i służby na pierwszym planie, aby ludzie szybko nawiązywali kontakt.",
+        "heritage": "Klasyczny projekt z Pismem Świętym na pierwszym miejscu, dla ugruntowanych wspólnot.",
+        "media": "Zbudowana wokół transmisji na żywo i archiwum kazań, dla kościołów z silną obecnością online.",
+        "modern": "Współczesny wygląd z wyrazistymi gradientami, nabożeństwami online i stroną kontaktową.",
+        "simple": "Przejrzysty start z dwiema stronami, idealny dla nowo powstających i małych wspólnot.",
+        "visitor": "Skupiona na odpowiadaniu na pytania osób odwiedzających po raz pierwszy, zanim jeszcze przyjdą."
+      },
+      "errFailed": "Nie udało się utworzyć witryny. Spróbuj ponownie.",
+      "exists": "Już istnieje",
+      "existsNote": "Strony oznaczone jako \"już istnieje\" pozostaną bez zmian.",
+      "intro": "Wybierz poniżej witrynę startową. Utworzymy za Ciebie strony i linki nawigacyjne — wszystko można później edytować.",
+      "names": {
+        "classic": "Klasyczny kościół",
+        "community": "Życie wspólnoty",
+        "heritage": "Dziedzictwo",
+        "media": "Najpierw online",
+        "modern": "Nowoczesne powitanie",
+        "simple": "Prosty start",
+        "visitor": "Z myślą o gościach"
+      },
+      "nav": {
+        "about": "O nas",
+        "connect": "Kontakt",
+        "give": "Ofiarność",
+        "home": "Strona główna",
+        "live": "Na żywo",
+        "sermons": "Kazania",
+        "visit": "Wizyta"
+      },
+      "navLinksNote": "Dodaje także linki nawigacyjne do stron wbudowanych:",
+      "pageCount": "Strony: {count}",
+      "pages": {
+        "about": "O nas",
+        "connect": "Kontakt",
+        "home": "Strona główna",
+        "visit": "Zaplanuj wizytę"
+      },
+      "title": "Zacznij od szablonu"
     },
     "spacingScaleEdit": {
       "buttonOne": "Przycisk 1",
@@ -3413,8 +3531,11 @@
     "stylesAnimations": {
       "animations": "Animacje",
       "animationsDesc": "Efekt wyświetlania elementu.",
+      "hideOnDesktop": "Ukryj na komputerze",
+      "hideOnMobile": "Ukryj na urządzeniach mobilnych",
       "styles": "Style",
-      "stylesDesc": "Zaawansowane opcje wyglądu."
+      "stylesDesc": "Zaawansowane opcje wyglądu.",
+      "visibility": "Widoczność:"
     },
     "stylesManager": {
       "color": "Paleta kolorów",

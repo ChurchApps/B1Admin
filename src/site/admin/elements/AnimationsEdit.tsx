@@ -1,6 +1,7 @@
 import type { AnimationsInterface } from "../../../helpers";
 import type { SelectChangeEvent } from "@mui/material";
-import { InputBox, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
+import { FormCard } from "../../../components/ui";
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect } from "react";
 
@@ -36,7 +37,7 @@ export const AnimationsEdit: React.FC<Props> = (props) => {
     setAnimations(a);
   };
 
-  return <InputBox saveFunction={handleSave} saveText={Locale.label("common.update")} headerText={Locale.label("site.animations.editAnimations")} cancelFunction={() => { props.onSave(null); }}>
+  return <FormCard onSave={handleSave} saveText={Locale.label("common.update")} title={Locale.label("site.animations.editAnimations")} onCancel={() => { props.onSave(null); }}>
     <Grid container spacing={2}>
       <Grid size={{ xs: 6 }}>
         <FormControl size="small" fullWidth style={{ marginTop: 10 }}>
@@ -69,6 +70,6 @@ export const AnimationsEdit: React.FC<Props> = (props) => {
     </Grid>
 
 
-  </InputBox>;
+  </FormCard>;
 
 };

@@ -12,7 +12,7 @@ import { Breadcrumbs } from "../../components/ui";
 export const PlanPage = () => {
   const params = useParams();
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
-  const [ministry, setMinistry] = React.useState<GroupInterface | null>(null);
+  const [, setMinistry] = React.useState<GroupInterface | null>(null);
   const [planType, setPlanType] = React.useState<PlanTypeInterface | null>(null);
   const [selectedTab, setSelectedTab] = React.useState("assignments");
 
@@ -53,7 +53,7 @@ export const PlanPage = () => {
     );
   }
 
-  const breadcrumbItems = [{ label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving" }];
+  const breadcrumbItems: { label: string; path?: string }[] = [{ label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving" }];
 
   if (planType) {
     breadcrumbItems.push({ label: planType.name, path: `/serving/planTypes/${planType.id}` });

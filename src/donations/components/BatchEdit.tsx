@@ -1,8 +1,9 @@
 import React, { memo, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { ApiHelper, InputBox, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
+import { FormCard } from "../../components/ui";
 
 interface Props {
   batchId: string;
@@ -45,16 +46,22 @@ export const BatchEdit = memo((props: Props) => {
   React.useEffect(loadData, [loadData]);
 
   return (
-    <InputBox
+    <FormCard
       id="batchBox"
-      headerIcon="volunteer_activism"
-      headerText={Locale.label("common.edit")}
-      cancelFunction={handleCancel}
-      deleteFunction={getDeleteFunction()}
-      saveFunction={handleSubmit(onValid)}
+      icon="volunteer_activism"
+      title={Locale.label("common.edit")}
+      onCancel={handleCancel}
+      onDelete={getDeleteFunction()}
+      onSave={handleSubmit(onValid)}
       help="docs/b1-admin/donations/recording-donations">
-      <TextField fullWidth data-cy="batch-name" label={Locale.label("donations.batchEdit.opName")} placeholder={Locale.label("placeholders.batch.name")} {...register("name")} name="name" />
-      <TextField fullWidth type="date" data-cy="batch-date" InputLabelProps={{ shrink: true }} label={Locale.label("donations.batchEdit.date")} {...register("date")} name="date" />
-    </InputBox>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField fullWidth data-cy="batch-name" label={Locale.label("donations.batchEdit.opName")} placeholder={Locale.label("placeholders.batch.name")} {...register("name")} name="name" />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField fullWidth type="date" data-cy="batch-date" label={Locale.label("donations.batchEdit.date")} {...register("date")} name="date" />
+        </Grid>
+      </Grid>
+    </FormCard>
   );
 });

@@ -4,6 +4,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab or through HTTP API
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   sync:
     name: 'Submodules Sync'
@@ -17,7 +20,7 @@ jobs:
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         submodules: true

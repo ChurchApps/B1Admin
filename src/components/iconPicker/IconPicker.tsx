@@ -8,12 +8,12 @@ import {
   Icon,
   Box,
   Typography,
-  IconButton,
   Stack,
   Pagination
 } from "@mui/material";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
+import { AppIconButton } from "../ui/AppIconButton";
 import { IconNamesList } from "./IconNamesList";
 
 interface Props {
@@ -91,7 +91,7 @@ export const IconPicker: React.FC<Props> = (props) => {
       PaperProps={{ sx: { borderRadius: 2 } }}
     >
       <DialogTitle sx={{
-        backgroundColor: "#1976d2",
+        backgroundColor: "primary.main",
         color: "#FFF",
         p: 2
       }}>
@@ -117,13 +117,7 @@ export const IconPicker: React.FC<Props> = (props) => {
               </Typography>
             </Box>
           </Stack>
-          <IconButton
-            onClick={props.onClose}
-            sx={{ color: "#FFF" }}
-            size="small"
-          >
-            <CloseIcon />
-          </IconButton>
+          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} tone="header" onClick={props.onClose} />
         </Stack>
       </DialogTitle>
 
@@ -202,7 +196,7 @@ export const IconPicker: React.FC<Props> = (props) => {
               >
                 <Icon sx={{ fontSize: 40, color: "text.secondary" }}>search_off</Icon>
                 <Typography variant="body2" color="text.secondary">
-                  {Locale.label("common.iconPicker.noResults", { searchText })}
+                  {Locale.t("common.iconPicker.noResults", { searchText })}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   {Locale.label("common.iconPicker.tryDifferent")}
@@ -229,8 +223,8 @@ export const IconPicker: React.FC<Props> = (props) => {
               <Icon sx={{ fontSize: 14, color: "text.secondary" }}>info</Icon>
               <Typography variant="caption" color="text.secondary" sx={{ fontSize: "0.7rem" }}>
                 {searchText
-                  ? Locale.label("common.iconPicker.showingMatching", { count: filteredIcons.length, searchText })
-                  : Locale.label("common.iconPicker.showingDefault", { count: defaultIcons.length })
+                  ? Locale.t("common.iconPicker.showingMatching", { count: filteredIcons.length, searchText })
+                  : Locale.t("common.iconPicker.showingDefault", { count: defaultIcons.length })
                 }
               </Typography>
             </Stack>

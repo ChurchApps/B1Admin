@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from "react";
 import { GroupDetailsEdit, ServiceTimes } from ".";
 import { type GroupInterface } from "@churchapps/helpers";
-import { Loading, Locale, ImageEditor } from "@churchapps/apphelper";
+import { ImageEditor, Loading, Locale } from "@churchapps/apphelper";
 import { MarkdownPreview } from "@churchapps/apphelper/markdown";
 import { Chip, Grid, Box, Typography, Stack, Card, CardContent, Divider } from "@mui/material";
 import { LocationOn as LocationIcon, Schedule as ScheduleIcon, Category as CategoryIcon, Label as LabelIcon, Group as GroupIcon } from "@mui/icons-material";
@@ -227,7 +227,7 @@ export const GroupDetails = memo((props: Props) => {
     <>
       {imageEditor}
 
-      {editMode === "edit" ? <GroupDetailsEdit id="groupDetailsBox" group={group} updatedFunction={handleUpdated} togglePhotoEditor={togglePhotoEditor} /> : <>{getDisplayContent}</>}
+      {editMode === "edit" ? <GroupDetailsEdit id="groupDetailsBox" group={group} updatedFunction={handleUpdated} /> : <>{getDisplayContent}</>}
     </>
   );
 });

@@ -1,13 +1,11 @@
 export * from "../helpers";
 
 // AppHelper UI components (for donation and person components)
-export { DisplayBox, Loading, InputBox, ErrorMessages, ExportLink, ImageEditor, PageHeader } from "@churchapps/apphelper";
+export { DisplayBox, Loading, InputBox, ErrorMessages, ExportLink, PageHeader, ImageEditor, FileUpload } from "@churchapps/apphelper";
 
 export { ErrorBoundary } from "./ErrorBoundary";
-export { Footer } from "./Footer";
 export { AssociatedForms } from "./AssociatedForms";
 export { ComboBox } from "./ComboBox";
-export { FileUpload } from "./FileUpload";
 export { FormSubmission } from "./FormSubmission";
 export { Question } from "./Question";
 export { Search } from "./Search";

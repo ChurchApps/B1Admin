@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { Box, Button, Stack, Typography, Paper } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography, Paper } from "@mui/material";
 import { Edit as EditIcon, Settings as SettingsIcon } from "@mui/icons-material";
 import { ApiHelper, PageHeader, Locale } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
@@ -82,10 +82,18 @@ export const PagePreview: React.FC = () => {
       <Box sx={{ p: 3 }}>
         <Paper elevation={0} sx={{ borderRadius: 2, overflow: "hidden", border: "1px solid", borderColor: "grey.200" }}>
           <Box sx={{ backgroundColor: "grey.50", p: 2, borderBottom: "1px solid", borderColor: "divider" }}>
-            <Stack direction="row" alignItems="center" justifyContent="center">
+            <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.5}>
               <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
                 {pageData.title}
               </Typography>
+              <Chip
+                size="small"
+                data-testid="preview-publish-status"
+                label={pageData.publishedAt ? Locale.label("site.editorToolbar.statusPublished") : Locale.label("site.editorToolbar.statusLiveOnSave")}
+                sx={pageData.publishedAt
+                  ? { fontWeight: 600, fontSize: "0.7rem", backgroundColor: "rgba(46, 125, 50, 0.1)", color: "success.dark" }
+                  : { fontWeight: 600, fontSize: "0.7rem", backgroundColor: "var(--bg-sub)", color: "text.secondary" }}
+              />
             </Stack>
           </Box>
 

@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Button, Stack, TextField, FormControl, Icon, InputLabel, Select, MenuItem, Dialog, Box, Divider, IconButton, Grid, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
+import { useEffect, useState, useCallback } from "react";
+import { Button, Stack, TextField, FormControl, Icon, InputLabel, Select, MenuItem, Dialog, Box, Divider, Grid, Checkbox, FormControlLabel, FormGroup, Typography } from "@mui/material";
 import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import type { LinkInterface, GroupInterface } from "@churchapps/helpers";
 import { IconPicker } from "../../components/iconPicker";
-import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale, GalleryModal } from "@churchapps/apphelper";
+import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
+import { GalleryModal } from "../../components/gallery";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
+import { AppIconButton } from "../../components/ui/AppIconButton";
 
 interface PageInterface {
   id?: string;
@@ -143,7 +145,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
         icon={<EditIcon />}
         actions={
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" color="error" startIcon={<CancelIcon />} onClick={updatedFunction} size="small" sx={{ textTransform: "none" }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" startIcon={<CancelIcon />} onClick={updatedFunction} size="small" sx={{ textTransform: "none" }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSaving} loadingText={Locale.label("settings.appEdit.saving")} variant="contained" startIcon={<SaveIcon />} onClick={handleSubmit(onValid)} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.saveTab")}</LoadingButton>
           </Stack>
         }
@@ -155,7 +157,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                 fullWidth
                 label={Locale.label("settings.appEdit.tabName")}
                 {...register("text")}
-                InputProps={{ endAdornment: (<IconButton onClick={() => setIsModalOpen(true)} data-testid="icon-dropdown-button" sx={{ color: "primary.main" }}><Icon>{icon}</Icon></IconButton>) }}
+                InputProps={{ endAdornment: (<AppIconButton label={Locale.label("common.change")} icon={<Icon>{icon}</Icon>} tone="card" onClick={() => setIsModalOpen(true)} data-testid="icon-dropdown-button" />) }}
                 helperText={Locale.label("settings.app.tabNameHelper")}
               />
 
@@ -238,7 +240,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                 <>
                   <Divider sx={{ mt: 2 }} />
                   <Box sx={{ textAlign: "center" }}>
-                    <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={handleDelete} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.deleteTab")}</Button>
+                    <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleDelete} size="small" sx={{ textTransform: "none" }}>{Locale.label("settings.appEdit.deleteTab")}</Button>
                   </Box>
                 </>
               )}
