@@ -6,6 +6,7 @@ import { StyleHelper } from "@churchapps/apphelper/website";
 import { Box, Container } from "@mui/material";
 import { DraggableWrapper, YoutubeBackground, DroppableArea, Element } from "@churchapps/apphelper/website";
 import type { ChurchInterface } from "@churchapps/helpers";
+import { ElementTypes } from "@churchapps/helpers";
 import { ElementSelection } from "./ElementSelection";
 import { FloatingElementSelection } from "./FloatingElementSelection";
 import { SectionToolbar } from "./SectionToolbar";
@@ -451,6 +452,7 @@ export const Section: React.FC<Props> = props => {
       if (data.blockId) element.answersJSON = JSON.stringify({ targetBlockId: data.blockId });
       else if (data.elementType === "row") element.answersJSON = JSON.stringify({ columns: "6,6" });
       else if (data.elementType === "box") element.answersJSON = JSON.stringify({ background: "var(--light)", text: "var(--dark)" });
+      else element.answersJSON = JSON.stringify(ElementTypes[data.elementType]?.defaults ?? {});
       props.onEdit(null, element);
     }
   };
