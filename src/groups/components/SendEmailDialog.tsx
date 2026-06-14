@@ -50,6 +50,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const [preview, setPreview] = React.useState<PreviewData | null>(null);
   const [loadingPreview, setLoadingPreview] = React.useState(false);
   const [loadingTemplates, setLoadingTemplates] = React.useState(true);
+  const [bodyEditorKey, setBodyEditorKey] = React.useState(0);
 
   // Load templates on mount
   React.useEffect(() => {
@@ -77,6 +78,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       const fullTemplate = await ApiHelper.get("/emailTemplates/" + templateId, "MessagingApi");
       setSubject(fullTemplate.subject || "");
       setHtmlContent(fullTemplate.htmlContent || "");
+      setBodyEditorKey(k => k + 1);
     } catch {
       const t = templates.find(t => t.id === templateId);
       if (t) setSubject(t.subject || "");
@@ -210,6 +212,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
             </Box>
             <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1 }}>
               <HtmlEditor
+                key={bodyEditorKey}
                 value={htmlContent}
                 onChange={(val) => setHtmlContent(val)}
                 style={{ minHeight: 200 }}
