@@ -1,4 +1,5 @@
 import { ApiHelper, Locale, UniqueIdHelper } from "@churchapps/apphelper";
+import { getPaymentProvider } from "@churchapps/apphelper/donations";
 import { type GenericSettingInterface } from "@churchapps/helpers";
 import { Grid, Icon, InputAdornment, TextField } from "@mui/material";
 import React from "react";
@@ -139,9 +140,10 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
     setLoadedCurrency(currentCurrency);
   }, [props.currency, hasLoadedData, loadedCurrency, setValue]);
 
-  const showStripeFields = props.provider === "Stripe";
-  const showPayPalFields = props.provider === "Paypal";
-  const showKFFields = props.provider === "KingdomFunding";
+  const feeFields = props.provider ? getPaymentProvider(props.provider).descriptor.feeFields : [];
+  const showStripeFields = feeFields.includes("card");
+  const showPayPalFields = feeFields.includes("paypal");
+  const showKFFields = feeFields.includes("kf");
   const currentCurrency = (props.currency || "usd").toLowerCase();
   const showACHFields = currentCurrency === "usd";
 

@@ -4,6 +4,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Controller, useForm } from "react-hook-form";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
+import { listPaymentProviders, getPaymentProvider } from "@churchapps/apphelper/donations";
 import { type ChurchInterface } from "@churchapps/helpers";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PaymentGatewaysInterface } from "../../helpers";
@@ -18,12 +19,7 @@ interface Props {
 
 type AnyRecord = Record<string, any>;
 
-const stripeSupportedCurrencies = [
-  "usd", "eur", "gbp", "cad", "aud", "inr", "jpy", "sgd", "hkd", "sek", "nok", "dkk", "chf", "mxn", "brl"
-];
-
-// ponytail: temp prod kill-switch for KingdomFunding — delete when it launches
-const kfSelectable = process.env.REACT_APP_STAGE !== "prod";
+const isProd = process.env.REACT_APP_STAGE === "prod";
 
 export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const [gateway, setGateway] = React.useState<PaymentGatewaysInterface>(null);
@@ -34,32 +30,23 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const provider = watch("provider");
   const currency = watch("currency");
 
-  const kfWebhookUrl = React.useMemo(() => {
-    if (!props.churchId) return "";
-    const base = ApiHelper.getConfig("GivingApi")?.url?.replace(/\/+$/, "") || "";
-    return base ? base + "/donate/webhook/kingdomfunding?churchId=" + props.churchId : "";
-  }, [props.churchId]);
+  // Everything provider-specific comes from the registry descriptor, so a new
+  // gateway shows up here (dropdown, key labels, currency, setup) with no edits.
+  const descriptor = provider ? getPaymentProvider(provider).descriptor : undefined;
+  const providerOptions = listPaymentProviders().filter((p) => p.descriptor.selectableInAdmin && (!p.descriptor.betaOnly || !isProd || p.descriptor.adminValue === provider));
 
-  const getKfSignupUrl = () => {
-    const ci = props.churchInfo;
-    const fullName = ((UserHelper.user?.firstName || "") + " " + (UserHelper.user?.lastName || "")).trim();
-    const params: [string, string][] = [
-      ["sponsor", "b1"],
-      ["email", UserHelper.user?.email],
-      ["org", ci?.name],
-      ["full_name", fullName],
-      ["phone", UserHelper.person?.contactInfo?.workPhone],
-      ["address1", ci?.address1],
-      ["address2", ci?.address2],
-      ["state", ci?.state],
-      ["zip", ci?.zip],
-      ["country", ci?.country]
-    ];
-    return "https://kingdomfunding.org/begin-registration/?" + params.map(([k, v]) => k + "=" + encodeURIComponent(v || "")).join("&");
-  };
+  const webhookUrl = React.useMemo(() => {
+    if (!props.churchId || !descriptor?.keyLabels.webhook) return "";
+    const base = ApiHelper.getConfig("GivingApi")?.url?.replace(/\/+$/, "") || "";
+    return base ? base + "/donate/webhook/" + getPaymentProvider(provider).key + "?churchId=" + props.churchId : "";
+  }, [props.churchId, provider, descriptor?.keyLabels.webhook]);
+
+  const signupHref = descriptor?.signupUrl
+    ? descriptor.signupUrl(props.churchInfo, { ...UserHelper.user, contactInfo: UserHelper.person?.contactInfo })
+    : undefined;
 
   const copyWebhookUrl = () => {
-    navigator.clipboard.writeText(kfWebhookUrl).then(() => setCopySnackbar(true)).catch(() => {});
+    navigator.clipboard.writeText(webhookUrl).then(() => setCopySnackbar(true)).catch(() => {});
   };
 
   const save = async () => {
@@ -120,16 +107,9 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   }, [props.saveTrigger]);
 
   const getKeys = () => {
-    if (!provider) return null;
-    let publicLabel = Locale.label("settings.givingSettingsEdit.pubKey");
-    let privateLabel = Locale.label("settings.givingSettingsEdit.secKey");
-    if (provider === "Paypal") {
-      publicLabel = Locale.label("settings.givingSettingsEdit.clientId");
-      privateLabel = Locale.label("settings.givingSettingsEdit.clientSecret");
-    } else if (provider === "KingdomFunding") {
-      publicLabel = Locale.label("settings.givingSettingsEdit.tokenizationKey");
-      privateLabel = Locale.label("settings.givingSettingsEdit.sourceKey");
-    }
+    if (!descriptor) return null;
+    const publicLabel = Locale.label(descriptor.keyLabels.public);
+    const privateLabel = Locale.label(descriptor.keyLabels.private);
     return (
       <>
         <Grid size={{ xs: 12, md: 4 }}>
@@ -138,9 +118,9 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         <Grid size={{ xs: 12, md: 4 }}>
           <TextField fullWidth label={privateLabel} placeholder={Locale.label("settings.giving.secretPlaceholder")} type="password" {...register("privateKey")} />
         </Grid>
-        {provider === "KingdomFunding" && (
+        {descriptor.keyLabels.webhook && (
           <Grid size={{ xs: 12, md: 4 }}>
-            <TextField fullWidth label={Locale.label("settings.givingSettingsEdit.webhookKey")} placeholder={Locale.label("settings.giving.secretPlaceholder")} type="password" helperText={Locale.label("settings.givingSettingsEdit.webhookKeyHelper")} {...register("webhookKey")} />
+            <TextField fullWidth label={Locale.label(descriptor.keyLabels.webhook)} placeholder={Locale.label("settings.giving.secretPlaceholder")} type="password" helperText={Locale.label("settings.givingSettingsEdit.webhookKeyHelper")} {...register("webhookKey")} />
           </Grid>
         )}
         <Grid size={{ xs: 12 }}>
@@ -159,7 +139,8 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   };
 
   const getCurrency = () => {
-    if (provider !== "Stripe") return null;
+    const currencyOptions = Array.isArray(descriptor?.currencies) ? descriptor!.currencies : [];
+    if (!currencyOptions.length) return null;
     return (
       <Grid size={{ xs: 12, md: 4 }}>
         <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>
@@ -172,7 +153,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
             <FormControl fullWidth>
               <InputLabel>{Locale.label("settings.givingSettingsEdit.currency")}</InputLabel>
               <Select {...field} label={Locale.label("settings.givingSettingsEdit.currency")}>
-                {stripeSupportedCurrencies.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
+                {currencyOptions.map((c) => <MenuItem key={c} value={c}>{c.toUpperCase()}</MenuItem>)}
               </Select>
             </FormControl>
           )}
@@ -194,35 +175,23 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
                 <InputLabel>{Locale.label("settings.givingSettingsEdit.prov")}</InputLabel>
                 <Select {...field} label={Locale.label("settings.givingSettingsEdit.prov")}>
                   <MenuItem value="">{Locale.label("settings.givingSettingsEdit.none")}</MenuItem>
-                  <MenuItem value="Stripe">{Locale.label("settings.givingSettingsEdit.stripe")}</MenuItem>
-                  {(kfSelectable || provider === "KingdomFunding") && <MenuItem value="KingdomFunding">{Locale.label("settings.givingSettingsEdit.kingdomFunding")}</MenuItem>}
+                  {providerOptions.map((p) => (
+                    <MenuItem key={p.key} value={p.descriptor.adminValue}>{p.descriptor.label}</MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             )}
           />
         </Grid>
-        {provider === "Stripe" && (
+        {descriptor && (descriptor.setupInstructionsKey || signupHref) && (
           <Grid size={{ xs: 12 }}>
             <Typography variant="body2" color="textSecondary" component="div">
-              {Locale.label("settings.givingSettingsEdit.stripeVisit")} <a href="https://dashboard.stripe.com/" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a> {Locale.label("settings.givingSettingsEdit.stripeGoTo")} <strong>{Locale.label("settings.givingSettingsEdit.developersApiKeys")}</strong> {Locale.label("settings.givingSettingsEdit.stripeCopyKeys")}
+              {descriptor.setupInstructionsKey ? Locale.label(descriptor.setupInstructionsKey) : ""}
+              {signupHref && <> <a href={signupHref} target="_blank" rel="noopener noreferrer">{descriptor.label}</a></>}
             </Typography>
-          </Grid>
-        )}
-        {provider === "Paypal" && (
-          <Grid size={{ xs: 12 }}>
-            <Typography variant="body2" color="textSecondary" component="div">
-              {Locale.label("settings.givingSettingsEdit.paypalGoTo")} <a href="https://developer.paypal.com/" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.paypalDeveloper")}</a>, {Locale.label("settings.givingSettingsEdit.paypalLogin")} <strong>{Locale.label("settings.givingSettingsEdit.apiCredentials")}</strong> {Locale.label("settings.givingSettingsEdit.paypalCreateApp")}
-            </Typography>
-          </Grid>
-        )}
-        {provider === "KingdomFunding" && (
-          <Grid size={{ xs: 12 }}>
-            <Typography variant="body2" color="textSecondary" component="div">
-              {Locale.label("settings.givingSettingsEdit.kfVisit")} <a href={getKfSignupUrl()} target="_blank" rel="noopener noreferrer">kingdomfunding.org</a> {Locale.label("settings.givingSettingsEdit.kfGetStarted")}
-            </Typography>
-            {kfWebhookUrl && (
+            {webhookUrl && (
               <Typography variant="body2" color="textSecondary" component="div" sx={{ mt: 1 }}>
-                {Locale.label("settings.givingSettingsEdit.kfWebhookInstructions")} <code style={{ wordBreak: "break-all" }}>{kfWebhookUrl}</code>
+                {Locale.label("settings.givingSettingsEdit.kfWebhookInstructions")} <code style={{ wordBreak: "break-all" }}>{webhookUrl}</code>
                 <IconButton size="small" onClick={copyWebhookUrl} aria-label={Locale.label("settings.givingSettingsEdit.copyWebhookUrl")} sx={{ ml: 0.5, verticalAlign: "middle" }}>
                   <ContentCopyIcon fontSize="small" />
                 </IconButton>

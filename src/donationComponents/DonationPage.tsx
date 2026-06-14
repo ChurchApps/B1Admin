@@ -3,9 +3,8 @@
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import type { Stripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import { DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
-import { DonationForm, MultiGatewayDonationForm, RecurringDonations, PaymentMethods, StripePaymentMethod, DonationHelper } from "@churchapps/apphelper/donations";
+import { MultiGatewayDonationForm, RecurringDonations, PaymentMethods, StripePaymentMethod, DonationHelper, getPaymentProvider } from "@churchapps/apphelper/donations";
 import type { PaymentGateway } from "@churchapps/apphelper/donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
 import type { DonationInterface, PersonInterface, ChurchInterface } from "@churchapps/helpers";
@@ -31,7 +30,6 @@ export const DonationPage: React.FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currency, setCurrency] = React.useState<string>("usd");
   const open = Boolean(anchorEl);
-  const hasKF = paymentGateways.some((g) => DonationHelper.isProvider(g.provider, "kingdomfunding"));
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -55,7 +53,7 @@ export const DonationPage: React.FC<Props> = (props) => {
       } else {
         // New flat array format from normalized API response
         const methods = data
-          .filter((pm: any) => DonationHelper.isProvider(pm.provider, "stripe") || DonationHelper.isProvider(pm.provider, "kingdomfunding"))
+          .filter((pm: any) => getPaymentProvider(pm.provider).capabilities.savedCard)
           .map((pm: any) => new StripePaymentMethod(pm));
         // Get customerId from first payment method if available
         const firstMethod = data.find((pm: any) => pm.customerId);
@@ -258,30 +256,16 @@ export const DonationPage: React.FC<Props> = (props) => {
     else {
       return (
         <>
-          {hasKF ? (
-            <MultiGatewayDonationForm
-              person={person}
-              customerId={customerId}
-              paymentMethods={paymentMethods || []}
-              paymentGateways={paymentGateways}
-              stripePromise={stripePromise}
-              donationSuccess={handleDataUpdate}
-              church={props?.church}
-              churchLogo={props?.churchLogo}
-            />
-          ) : (
-            <Elements stripe={stripePromise}>
-              <DonationForm
-                person={person}
-                customerId={customerId}
-                paymentMethods={paymentMethods}
-                stripePromise={stripePromise}
-                donationSuccess={handleDataUpdate}
-                church={props?.church}
-                churchLogo={props?.churchLogo}
-              />
-            </Elements>
-          )}
+          <MultiGatewayDonationForm
+            person={person}
+            customerId={customerId}
+            paymentMethods={paymentMethods || []}
+            paymentGateways={paymentGateways}
+            stripePromise={stripePromise}
+            donationSuccess={handleDataUpdate}
+            church={props?.church}
+            churchLogo={props?.churchLogo}
+          />
           <DisplayBox headerIcon="payments" headerText={Locale.label("donation.donationPage.donations")} editContent={getEditContent()}>
             {getTable()}
           </DisplayBox>
