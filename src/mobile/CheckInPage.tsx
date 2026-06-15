@@ -1,13 +1,16 @@
 import React from "react";
-import { Box, Button, Icon, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Icon, Stack, Switch, TextField, Typography } from "@mui/material";
 import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 import { QRCodeCanvas } from "qrcode.react";
 import { PermissionDenied } from "../components";
+import { FormCard } from "../components/ui";
 import { EnvironmentHelper } from "../helpers";
 import { KioskThemeEdit } from "./KioskThemeEdit";
 
 export const CheckInPage: React.FC = () => {
+  const navigate = useNavigate();
   const [enabled, setEnabled] = React.useState(false);
   const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
@@ -69,25 +72,17 @@ export const CheckInPage: React.FC = () => {
     <>
       <PageHeader title={Locale.label("mobile.checkInPage.title")} subtitle={Locale.label("mobile.checkInPage.subtitle")} />
       <Box sx={{ p: 3 }}>
-        <Box sx={{ maxWidth: 600, p: 3, backgroundColor: "background.paper", borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
-          <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("mobile.checkInPage.qrGuestRegistration")}</Typography>
-            <Tooltip title={Locale.label("mobile.checkInPage.qrTooltip")} arrow>
-              <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
-            </Tooltip>
-          </Stack>
-          <Stack direction="row" alignItems="center" sx={{ mb: 3 }}>
+        <FormCard title={Locale.label("mobile.checkInPage.qrGuestRegistration")} icon="qr_code_2" onSave={handleSave} isSubmitting={saving}>
+          <Typography variant="body2" color="text.secondary">{Locale.label("mobile.checkInPage.qrTooltip")}</Typography>
+          <Stack direction="row" alignItems="center">
             <Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)} />
             <Typography variant="body2" sx={{ ml: 1, color: "text.secondary" }}>
               {enabled ? Locale.label("mobile.checkInPage.enabled") : Locale.label("mobile.checkInPage.disabled")}
             </Typography>
           </Stack>
-          <Button variant="contained" onClick={handleSave} disabled={saving}>
-            {saving ? Locale.label("common.saving") : Locale.label("common.save")}
-          </Button>
 
           {enabled && registrationUrl && (
-            <Box sx={{ mt: 3, pt: 3, borderTop: "1px solid", borderColor: "divider" }}>
+            <Box>
               <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 0.5 }}>{Locale.label("mobile.checkInPage.qrShareTitle")}</Typography>
               <Typography variant="body2" sx={{ color: "text.secondary", mb: 2 }}>{Locale.label("mobile.checkInPage.qrShareDescription")}</Typography>
               <Stack direction={{ xs: "column", sm: "row" }} spacing={3} alignItems={{ xs: "center", sm: "flex-start" }}>
@@ -118,11 +113,23 @@ export const CheckInPage: React.FC = () => {
               </Stack>
             </Box>
           )}
-        </Box>
+        </FormCard>
 
-        <Box sx={{ mt: 3 }}>
-          <KioskThemeEdit />
-        </Box>
+        {UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit) && (
+          <FormCard
+            title={Locale.label("attendance.labels.title")}
+            icon="label"
+            headerActions={
+              <Button variant="outlined" endIcon={<Icon>arrow_forward</Icon>} onClick={() => navigate("/mobile/checkin/labels")}>
+                {Locale.label("mobile.checkInPage.manageLabels")}
+              </Button>
+            }
+          >
+            <Typography variant="body2" color="text.secondary">{Locale.label("attendance.labels.subtitle")}</Typography>
+          </FormCard>
+        )}
+
+        <KioskThemeEdit />
       </Box>
     </>
   );

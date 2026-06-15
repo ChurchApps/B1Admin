@@ -98,7 +98,7 @@ export const LabelsPage = () => {
             : templates.length === 0
               ? <EmptyState icon={<LabelIcon />} title={Locale.label("attendance.labels.noTemplates")} description={Locale.label("attendance.labels.noTemplatesDesc")} />
               : (
-                <TableContainer component={Paper} sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+                <TableContainer component={Paper} variant="outlined">
                   <Table data-testid="labels-table">
                     <TableHead>
                       <TableRow>

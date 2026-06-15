@@ -1402,6 +1402,7 @@
         "uploadImage": "Upload Image"
       },
       "linkCopied": "Copied!",
+      "manageLabels": "Design Labels",
       "qrGuestRegistration": "QR Guest Registration",
       "qrShareDescription": "Print this QR code on flyers, bulletins, or signage. Guests can scan it to register from their phone.  It will also show in app.",
       "qrShareTitle": "Share registration QR code",

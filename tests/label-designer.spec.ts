@@ -24,15 +24,15 @@ test.describe.serial("Check-in label designer", () => {
     await page?.context().close();
   });
 
-  test("reaches the designer from the Attendance Labels tab", async () => {
-    await page.goto("/attendance");
-    await page.getByRole("tab", { name: "Labels" }).click();
-    await page.waitForURL(/\/attendance\/labels/, { timeout: 15000 });
+  test("reaches the designer from the B1 CheckIn settings page", async () => {
+    await page.goto("/mobile/checkin");
+    await page.getByRole("button", { name: "Design Labels" }).click();
+    await page.waitForURL(/\/mobile\/checkin\/labels/, { timeout: 15000 });
     await expect(page.locator('[data-testid="add-label"]')).toBeVisible({ timeout: 15000 });
   });
 
   test("creates a starter nametag template and opens the editor", async () => {
-    await page.goto("/attendance/labels");
+    await page.goto("/mobile/checkin/labels");
     await page.locator('[data-testid="add-label"]').click();
     await page.locator('[data-testid="add-nametag-starter"]').click();
     await expect(page.locator('[data-testid="label-canvas"]')).toBeVisible({ timeout: 15000 });

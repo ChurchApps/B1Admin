@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { Box, Button, Card, CardContent, Checkbox, Divider, FormControlLabel, Grid, MenuItem, Paper, Stack, TextField, Typography } from "@mui/material";
-import { Delete as DeleteIcon, Save as SaveIcon } from "@mui/icons-material";
+import { Box, Button, Checkbox, Divider, FormControlLabel, Grid, Icon, MenuItem, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import { QRCodeSVG } from "qrcode.react";
+import { CardWithHeader, LoadingButton } from "../../components/ui";
 
 export interface LabelTemplateInterface {
   id?: string;
@@ -110,6 +111,7 @@ export function LabelEditor(props: Props) {
   });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [nameError, setNameError] = useState(false);
   const drag = useRef<{ id: string; startX: number; startY: number; origX: number; origY: number } | null>(null);
 
   const canvasH = Math.round(CANVAS_W * (Number(tpl.height) || 1) / (Number(tpl.width) || 1));
@@ -142,6 +144,7 @@ export function LabelEditor(props: Props) {
   };
 
   const handleSave = () => {
+    if (!tpl.name?.trim()) { setNameError(true); return; }
     setSaving(true);
     const t = { ...tpl, width: Number(tpl.width), height: Number(tpl.height), content: JSON.stringify(blocks) };
     ApiHelper.post("/labeltemplates", [t], "AttendanceApi").then(() => {
@@ -265,59 +268,56 @@ export function LabelEditor(props: Props) {
   };
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} data-testid="label-editor">
       <Grid size={{ xs: 12, md: 2 }}>
-        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-          <CardContent>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("attendance.labels.palette")}</Typography>
-            <Stack spacing={1}>
-              {fields.map((f) => paletteButton(f, f))}
-              <Divider />
-              {paletteButton("text", Locale.label("attendance.labels.text"))}
-              {paletteButton("barcode", Locale.label("attendance.labels.barcode"))}
-              {paletteButton("qrcode", Locale.label("attendance.labels.qrCode"))}
-              {paletteButton("box", Locale.label("attendance.labels.box"))}
-            </Stack>
-          </CardContent>
-        </Card>
+        <CardWithHeader title={Locale.label("attendance.labels.palette")} icon={<Icon sx={{ color: "primary.main" }}>widgets</Icon>}>
+          <Stack spacing={1}>
+            {fields.map((f) => paletteButton(f, f))}
+            <Divider />
+            {paletteButton("text", Locale.label("attendance.labels.text"))}
+            {paletteButton("barcode", Locale.label("attendance.labels.barcode"))}
+            {paletteButton("qrcode", Locale.label("attendance.labels.qrCode"))}
+            {paletteButton("box", Locale.label("attendance.labels.box"))}
+          </Stack>
+        </CardWithHeader>
       </Grid>
       <Grid size={{ xs: 12, md: 7 }}>
-        <Stack spacing={2}>
-          <Stack direction="row" spacing={1}>
-            <TextField fullWidth label={Locale.label("attendance.labels.name")} value={tpl.name || ""} onChange={(e) => setTpl({ ...tpl, name: e.target.value })} data-testid="template-name-input" />
-            <TextField select label={Locale.label("attendance.labels.type")} value={tpl.labelType || "nametag"} onChange={(e) => setTpl({ ...tpl, labelType: e.target.value })} sx={{ minWidth: 130 }} data-testid="template-type-select">
-              <MenuItem value="nametag">{Locale.label("attendance.labels.nametag")}</MenuItem>
-              <MenuItem value="pickup">{Locale.label("attendance.labels.pickup")}</MenuItem>
-            </TextField>
-            <TextField type="number" label={Locale.label("attendance.labels.width")} value={tpl.width ?? ""} onChange={(e) => setTpl({ ...tpl, width: e.target.value as any })} sx={{ minWidth: 100 }} data-testid="template-width-input" />
-            <TextField type="number" label={Locale.label("attendance.labels.height")} value={tpl.height ?? ""} onChange={(e) => setTpl({ ...tpl, height: e.target.value as any })} sx={{ minWidth: 100 }} data-testid="template-height-input" />
+        <CardWithHeader
+          title={tpl.name?.trim() || Locale.label("attendance.labels.title")}
+          icon={<Icon sx={{ color: "primary.main" }}>label</Icon>}
+          actions={
+            <Stack direction="row" spacing={1}>
+              <Button onClick={props.updatedCallback}>{Locale.label("common.cancel")}</Button>
+              <LoadingButton variant="contained" disableElevation loading={saving} onClick={handleSave}>{Locale.label("common.save")}</LoadingButton>
+            </Stack>
+          }
+        >
+          <Stack spacing={2}>
+            <Stack direction="row" spacing={1}>
+              <TextField fullWidth label={Locale.label("attendance.labels.name")} value={tpl.name || ""} onChange={(e) => { setTpl({ ...tpl, name: e.target.value }); setNameError(false); }} error={nameError} data-testid="template-name-input" />
+              <TextField select label={Locale.label("attendance.labels.type")} value={tpl.labelType || "nametag"} onChange={(e) => setTpl({ ...tpl, labelType: e.target.value })} sx={{ minWidth: 130 }} data-testid="template-type-select">
+                <MenuItem value="nametag">{Locale.label("attendance.labels.nametag")}</MenuItem>
+                <MenuItem value="pickup">{Locale.label("attendance.labels.pickup")}</MenuItem>
+              </TextField>
+              <TextField type="number" label={Locale.label("attendance.labels.width")} value={tpl.width ?? ""} onChange={(e) => setTpl({ ...tpl, width: e.target.value as any })} sx={{ minWidth: 100 }} data-testid="template-width-input" />
+              <TextField type="number" label={Locale.label("attendance.labels.height")} value={tpl.height ?? ""} onChange={(e) => setTpl({ ...tpl, height: e.target.value as any })} sx={{ minWidth: 100 }} data-testid="template-height-input" />
+            </Stack>
+            <Box sx={{ overflowX: "auto" }}>
+              <Paper sx={{ position: "relative", width: CANVAS_W, height: canvasH, border: "1px solid", borderColor: "divider", boxSizing: "content-box", overflow: "hidden", bgcolor: "#FFF" }} onPointerDown={() => setSelectedId(null)} data-testid="label-canvas">
+                {blocks.map((b) => (
+                  <div key={b.id} style={blockStyle(b)} onPointerDown={(e) => handlePointerDown(e, b)} onPointerMove={handlePointerMove} onPointerUp={() => { drag.current = null; }} data-testid={`block-${b.id}`}>
+                    {blockContent(b)}
+                  </div>
+                ))}
+              </Paper>
+            </Box>
           </Stack>
-          <Box sx={{ overflowX: "auto" }}>
-            <Paper sx={{ position: "relative", width: CANVAS_W, height: canvasH, border: "1px solid", borderColor: "divider", boxSizing: "content-box", overflow: "hidden", bgcolor: "#FFF" }} onPointerDown={() => setSelectedId(null)} data-testid="label-canvas">
-              {blocks.map((b) => (
-                <div key={b.id} style={blockStyle(b)} onPointerDown={(e) => handlePointerDown(e, b)} onPointerMove={handlePointerMove} onPointerUp={() => { drag.current = null; }} data-testid={`block-${b.id}`}>
-                  {blockContent(b)}
-                </div>
-              ))}
-            </Paper>
-          </Box>
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            <Button variant="outlined" onClick={props.updatedCallback} sx={{ textTransform: "none", borderRadius: 2 }}>
-              {Locale.label("common.cancel")}
-            </Button>
-            <Button variant="contained" onClick={handleSave} disabled={saving || !tpl.name?.trim()} startIcon={<SaveIcon />} sx={{ textTransform: "none", borderRadius: 2, fontWeight: 600 }} data-testid="save-label-button">
-              {Locale.label("common.save")}
-            </Button>
-          </Stack>
-        </Stack>
+        </CardWithHeader>
       </Grid>
       <Grid size={{ xs: 12, md: 3 }}>
-        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-          <CardContent>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("attendance.labels.properties")}</Typography>
-            {getProperties()}
-          </CardContent>
-        </Card>
+        <CardWithHeader title={Locale.label("attendance.labels.properties")} icon={<Icon sx={{ color: "primary.main" }}>tune</Icon>}>
+          {getProperties()}
+        </CardWithHeader>
       </Grid>
     </Grid>
   );
