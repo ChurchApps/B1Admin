@@ -131,14 +131,17 @@ export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
   React.useEffect(() => {
     if (!hasLoadedData) return;
     const currentCurrency = (props.currency || "usd").toLowerCase();
-    if (currentCurrency === loadedCurrency) return;
     const fees = stripeCurrencyFees[currentCurrency as keyof typeof stripeCurrencyFees];
     if (!fees) return;
-    setValue("flatRateCC", fees.fixed.toString());
-    setValue("transFeeCC", fees.percent.toString());
+    // Always keep the symbol in sync — loadData can run before the real currency propagates.
     setSymbol(fees.symbol);
+    if (currentCurrency === loadedCurrency) return;
     setLoadedCurrency(currentCurrency);
-  }, [props.currency, hasLoadedData, loadedCurrency, setValue]);
+    // Re-default ONLY unsaved fees so the stale-USD default is corrected once the real currency
+    // arrives, without ever clobbering values the church explicitly saved.
+    if (flatRateCC === null) setValue("flatRateCC", fees.fixed.toString());
+    if (transFeeCC === null) setValue("transFeeCC", fees.percent.toString());
+  }, [props.currency, hasLoadedData, loadedCurrency, flatRateCC, transFeeCC, setValue]);
 
   const feeFields = props.provider ? getPaymentProvider(props.provider).descriptor.feeFields : [];
   const showStripeFields = feeFields.includes("card");

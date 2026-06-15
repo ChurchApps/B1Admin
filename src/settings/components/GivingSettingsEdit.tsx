@@ -32,7 +32,11 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
 
   // Everything provider-specific comes from the registry descriptor, so a new
   // gateway shows up here (dropdown, key labels, currency, setup) with no edits.
-  const descriptor = provider ? getPaymentProvider(provider).descriptor : undefined;
+  // getPaymentProvider() falls back to Stripe for an unrecognized value; in the admin UI
+  // that would silently show Stripe's key labels/fees for a misconfigured gateway, so detect
+  // an unknown provider and suppress the (wrong) fields instead.
+  const knownProvider = !provider || listPaymentProviders().some((p) => p.descriptor.adminValue?.toLowerCase() === String(provider).toLowerCase());
+  const descriptor = (provider && knownProvider) ? getPaymentProvider(provider).descriptor : undefined;
   const providerOptions = listPaymentProviders().filter((p) => p.descriptor.selectableInAdmin && (!p.descriptor.betaOnly || !isProd || p.descriptor.adminValue === provider));
 
   const webhookUrl = React.useMemo(() => {
@@ -144,7 +148,9 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     return (
       <Grid size={{ xs: 12, md: 4 }}>
         <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>
-          {Locale.label("settings.givingSettingsEdit.currencyHelper")} <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a>
+          {Locale.label("settings.givingSettingsEdit.currencyHelper")}
+          {/* The currency reference link is Stripe-specific; only show it for Stripe. */}
+          {provider === "stripe" && <> <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></>}
         </Typography>
         <Controller
           control={control}
@@ -183,6 +189,12 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
             )}
           />
         </Grid>
+        {provider && !knownProvider && (
+          <Grid size={{ xs: 12 }}>
+            {/* ponytail: admin-only misconfiguration warning — intentionally not localized (rare, English-only edge). */}
+            <Alert severity="warning">This church is configured with an unrecognized payment provider (&quot;{provider}&quot;). Please reselect a provider above.</Alert>
+          </Grid>
+        )}
         {descriptor && (descriptor.setupInstructionsKey || signupHref) && (
           <Grid size={{ xs: 12 }}>
             <Typography variant="body2" color="textSecondary" component="div">
