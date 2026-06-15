@@ -267,8 +267,8 @@
       "allRoomsResources": "All rooms & resources",
       "approvalGroup": "Approval Group",
       "approvalGroupHint": "Requests are auto-approved for members of this group; everyone else needs approval.",
-      "blockouts": "Blockouts",
       "blockoutTarget": "Applies To",
+      "blockouts": "Blockouts",
       "capacity": "Capacity",
       "confirmDeleteBlockout": "Are you sure you wish to delete this blockout?",
       "confirmDeleteResource": "Are you sure you wish to delete this resource?",
@@ -311,12 +311,14 @@
     "appTheme": "App Theme",
     "b1CheckIn": "B1 CheckIn",
     "b1Mobile": "B1 Mobile",
+    "back": "Back",
     "bottom": "Bottom",
     "cancel": "Cancel",
     "center": "Center",
     "change": "Change",
     "changePhoto": "Change Photo",
     "close": "Close",
+    "collapse": "Collapse",
     "comboBox": {
       "addNew": "Add New..."
     },
@@ -333,16 +335,16 @@
     "custom": "Custom",
     "delete": "Delete",
     "done": "Done",
-    "collapse": "Collapse",
     "duplicate": "Duplicate",
     "edit": "Edit",
     "element": "Element",
-    "expand": "Expand",
+    "error": "Error",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
       "title": "Oops! An Error Occurred"
     },
+    "expand": "Expand",
     "formSubmission": {
       "edit": "Edit",
       "noData": "No data available",
@@ -365,6 +367,7 @@
     "name": "Name",
     "navigation": "Navigation",
     "no": "No",
+    "noAccess": "You do not have access to this section.",
     "notes": "Notes",
     "person": "Person",
     "print": "Print",
@@ -387,9 +390,7 @@
     "tryAgain": "Try Again",
     "update": "Update",
     "website": "Website",
-    "yes": "Yes",
-    "back": "Back",
-    "noAccess": "You do not have access to this section."
+    "yes": "Yes"
   },
   "components": {
     "associatedForms": {
@@ -732,6 +733,14 @@
       "subtitle": "Track pledge campaigns and progress toward giving goals",
       "totalCampaigns": "Total Campaigns"
     },
+    "donationBatchPage": {
+      "batchDate": "Batch Date:",
+      "donations": "Donations",
+      "editBatch": "Edit Batch",
+      "subtitle": "Manage donations in this batch",
+      "title": "Donation Batch",
+      "totalAmount": "Total Amount"
+    },
     "donationBatchesPage": {
       "addBatch": "Add Batch",
       "batches": "Batches",
@@ -739,14 +748,6 @@
       "export": "Export",
       "stripeImportLink": "Import missing Stripe transactions",
       "subtitle": "Manage donation batches and track giving records",
-      "totalAmount": "Total Amount"
-    },
-    "donationBatchPage": {
-      "batchDate": "Batch Date:",
-      "donations": "Donations",
-      "editBatch": "Edit Batch",
-      "subtitle": "Manage donations in this batch",
-      "title": "Donation Batch",
       "totalAmount": "Total Amount"
     },
     "donationEdit": {
@@ -866,15 +867,15 @@
       "donorInformation": "Donor Information",
       "fund": "Fund",
       "fundBreakdown": "Fund Breakdown",
+      "given": "Given",
       "issued": "Issued:",
       "loadingStatements": "Loading statements...",
       "noteLabel": "Note:",
       "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
       "organization": "Organization",
       "period": "Period: January 1 - December 31, {year}",
-      "pledged": "Pledged",
       "pledgeProgress": "Pledge Campaigns",
-      "given": "Given",
+      "pledged": "Pledged",
       "statementSummary": "Statement Summary",
       "status": "Status",
       "totalContributions": "Total Contributions",
@@ -888,14 +889,14 @@
       "donorInformation": "Donor Information",
       "fund": "Fund",
       "fundBreakdown": "Fund Breakdown",
+      "given": "Given",
       "issued": "Issued:",
       "noteLabel": "Note:",
       "noteText": "This statement summarizes contributions made to {churchName} during the calendar year {year}. Please retain this document for your tax records. For questions regarding this statement, please contact the church office.",
       "organization": "Organization",
       "period": "Period: January 1 - December 31, {year}",
-      "pledged": "Pledged",
       "pledgeProgress": "Pledge Campaigns",
-      "given": "Given",
+      "pledged": "Pledged",
       "statementSummary": "Statement Summary",
       "status": "Status",
       "totalContributions": "Total Contributions",
@@ -912,10 +913,10 @@
       "eventId": "Event ID",
       "failedFetch": "Failed to fetch events",
       "failedImport": "Failed to import events",
-      "imported": "Imported",
-      "importedLabel": "Imported:",
       "importMissing": "Import Missing",
       "importResults": "Import Results",
+      "imported": "Imported",
+      "importedLabel": "Imported:",
       "new": "New",
       "newLabel": "New:",
       "noEvents": "No events found. Select a date range and click Preview.",
@@ -1009,6 +1010,16 @@
       "wholeNum": "Whole Number",
       "yesNo": "Yes/No"
     },
+    "formSubmissions": {
+      "anon": "Anonymous",
+      "noSubmissions": "No form submissions found",
+      "printSummaryAria": "print-summary",
+      "subBy": "Submitted By",
+      "subDate": "Submission Date",
+      "subFor": "Submitted For",
+      "subRes": "Form Submission Results",
+      "subSum": "Form Submission Summary"
+    },
     "formsPage": {
       "addForm": "Add Form",
       "archForms": "Archived Forms",
@@ -1030,22 +1041,17 @@
       "subtitleManage": "Create and manage custom forms",
       "url": "URL"
     },
-    "formSubmissions": {
-      "anon": "Anonymous",
-      "noSubmissions": "No form submissions found",
-      "printSummaryAria": "print-summary",
-      "subBy": "Submitted By",
-      "subDate": "Submission Date",
-      "subFor": "Submitted For",
-      "subRes": "Form Submission Results",
-      "subSum": "Form Submission Summary"
-    },
     "tabs": {
       "formMem": "Form Members",
       "formSub": "Form Submissions",
       "questions": "Questions",
       "unAuth": "Unauthorized"
     }
+  },
+  "gallery": {
+    "aspectRatio": "Aspect Ratio",
+    "confirmDelete": "Confirm Delete",
+    "freeForm": "Free Form"
   },
   "groups": {
     "groupAdd": {
@@ -1072,6 +1078,22 @@
       "textTooltip": "Text this group",
       "trackAttendance": "Track Attendance"
     },
+    "groupCalendar": {
+      "addEvents": "Add Events",
+      "bulkAddTitle": "Add Recurring Events",
+      "confirmDelete": "Delete \"{title}\" and all of its occurrences?",
+      "datesPreview": "{count} meetings will be created. Uncheck any dates to skip.",
+      "events": "Events",
+      "everyTwoWeeks": "Every 2 Weeks",
+      "firstMeeting": "First Meeting",
+      "lastMeeting": "Last Meeting",
+      "noDates": "No meeting dates fall in the selected range.",
+      "noEvents": "No events yet. Use Add Events to schedule this group's meetings.",
+      "oneTime": "One time",
+      "skipHolidays": "Skip holidays",
+      "skippedDates": "Skipped Dates",
+      "until": "until"
+    },
     "groupDetails": {
       "about": "About",
       "attendanceSettings": "Attendance Settings",
@@ -1089,9 +1111,9 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "attTrack": "Track Attendance",
       "attendance": "Attendance",
       "attendanceReminders": "Attendance Reminder Emails",
-      "attTrack": "Track Attendance",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Change group photo",
@@ -1113,6 +1135,23 @@
       "parPick": "Parent Pickup",
       "prinName": "Print Nametag",
       "slug": "Slug (key name used for urls)"
+    },
+    "groupHealth": {
+      "attendance": "Attendance",
+      "attendanceTrend": "Attendance Trend",
+      "avgAge": "Avg Age",
+      "avgAttendance": "Avg Attendance",
+      "churn90": "Churn (90d)",
+      "joined": "Joined",
+      "joined90": "Joined (90d)",
+      "left": "Left",
+      "left90": "Left (90d)",
+      "members": "Members",
+      "membershipChanges": "Membership Changes (12 months)",
+      "month": "Month",
+      "subtitle": "Compare growth, churn and attendance across groups",
+      "title": "Group Health",
+      "week": "Week"
     },
     "groupLabelsEdit": {
       "addNewLabel": "Add New Label",
@@ -1155,39 +1194,6 @@
       "health": "Health",
       "members": "Members",
       "sessions": "Sessions"
-    },
-    "groupCalendar": {
-      "addEvents": "Add Events",
-      "bulkAddTitle": "Add Recurring Events",
-      "confirmDelete": "Delete \"{title}\" and all of its occurrences?",
-      "datesPreview": "{count} meetings will be created. Uncheck any dates to skip.",
-      "events": "Events",
-      "everyTwoWeeks": "Every 2 Weeks",
-      "firstMeeting": "First Meeting",
-      "lastMeeting": "Last Meeting",
-      "noDates": "No meeting dates fall in the selected range.",
-      "noEvents": "No events yet. Use Add Events to schedule this group's meetings.",
-      "oneTime": "One time",
-      "skipHolidays": "Skip holidays",
-      "skippedDates": "Skipped Dates",
-      "until": "until"
-    },
-    "groupHealth": {
-      "attendance": "Attendance",
-      "attendanceTrend": "Attendance Trend",
-      "avgAge": "Avg Age",
-      "avgAttendance": "Avg Attendance",
-      "churn90": "Churn (90d)",
-      "joined": "Joined",
-      "joined90": "Joined (90d)",
-      "left": "Left",
-      "left90": "Left (90d)",
-      "members": "Members",
-      "membershipChanges": "Membership Changes (12 months)",
-      "month": "Month",
-      "subtitle": "Compare growth, churn and attendance across groups",
-      "title": "Group Health",
-      "week": "Week"
     },
     "groupPage": {
       "addPpl": "Add Person"
@@ -1239,8 +1245,8 @@
       "eligibleSummarySingular": "{eligibleCount} of {totalMembers} member will receive this email.",
       "emailGroupTitle": "Email Group: {groupName}",
       "fallbackError": "Failed to send email.",
-      "loadingRecipients": "Loading recipients...",
       "loadTemplate": "Load Template (optional)",
+      "loadingRecipients": "Loading recipients...",
       "manageTemplates": "Manage Templates",
       "mergeFieldChurchName": "Church Name",
       "mergeFieldDisplayName": "Display Name",
@@ -1430,20 +1436,6 @@
     "september": "September"
   },
   "people": {
-    "demographics": {
-      "title": "Demographics",
-      "subtitle": "An overview of your congregation",
-      "age": "Age",
-      "membershipStatus": "Membership Types",
-      "gender": "Gender",
-      "maritalStatus": "Marital Status",
-      "campus": "Campus",
-      "female": "Female",
-      "male": "Male",
-      "total": "Total",
-      "unassigned": "Unassigned",
-      "noData": "No data available"
-    },
     "advancedPeopleSearch": {
       "loadingCustomFields": "Loading custom fields...",
       "noCustomFields": "No custom fields defined. Create custom fields in Forms to search by them."
@@ -1455,8 +1447,8 @@
     },
     "aiSearch": {
       "exampleMen": "- Show me men over 30 with birthdays in July.",
-      "examples": "Examples:",
       "exampleWomen": "- Show me women who are married.",
+      "examples": "Examples:",
       "placeholder": "Show me men over 30 with birthdays in July",
       "search": "Search",
       "searching": "Searching...",
@@ -1468,7 +1460,10 @@
       "addToGroup": "Add To Group",
       "addToGroupPrompt": "Add {count} selected people to a group.",
       "addToGroupTitle": "Add to Group",
+      "addToWorkflow": "Add to Workflow",
+      "addToWorkflowPrompt": "Add {count} selected people to a workflow as cards.",
       "apply": "Apply",
+      "campusTitle": "Assign to Campus",
       "clearSelection": "Clear Selection",
       "createNewGroup": "Create New Group",
       "delete": "Delete",
@@ -1488,16 +1483,27 @@
       "removeFromGroupPrompt": "Remove {count} selected people from a group.",
       "removeFromGroupTitle": "Remove from Group",
       "removeSuccess": "Removed {count} people from {group}.",
-      "campusTitle": "Assign to Campus",
       "selected": "Selected",
       "setCampus": "Assign to Campus",
       "setGender": "Set Gender",
       "setMaritalStatus": "Set Marital Status",
       "setMembershipStatus": "Set Membership Status",
       "setOptedOut": "Set Opted Out",
-      "addToWorkflow": "Add to Workflow",
-      "addToWorkflowPrompt": "Add {count} selected people to a workflow as cards.",
       "workflowSuccess": "Added {count} people to the workflow."
+    },
+    "demographics": {
+      "age": "Age",
+      "campus": "Campus",
+      "female": "Female",
+      "gender": "Gender",
+      "male": "Male",
+      "maritalStatus": "Marital Status",
+      "membershipStatus": "Membership Types",
+      "noData": "No data available",
+      "subtitle": "An overview of your congregation",
+      "title": "Demographics",
+      "total": "Total",
+      "unassigned": "Unassigned"
     },
     "editCondition": {
       "act": "Activity",
@@ -1564,12 +1570,37 @@
       "child": "Child",
       "head": "Head",
       "house": " Household",
-      "householdNameAria": "Household name",
       "houseName": "Household Name",
+      "householdNameAria": "Household name",
       "other": "Other",
       "removeMemberAria": "Remove household member",
       "spouse": "Spouse",
       "updQuestion": "Would you like to update"
+    },
+    "lists": {
+      "autoRefresh": "Refresh nightly",
+      "category": "Category",
+      "categoryPlaceholder": "Optional — group related lists",
+      "confirmDelete": "Delete the list \"{name}\"? This cannot be undone.",
+      "createdBy": "by {name}",
+      "delete": "Delete List",
+      "empty": "No saved lists yet. Build an advanced search, then \"Save as List.\"",
+      "household": "Include household",
+      "householdAll": "Entire household",
+      "householdChildren": "Children of matches",
+      "householdNone": "Matches only",
+      "match": "Match",
+      "matchAll": "All filters",
+      "matchAny": "Any filter",
+      "name": "List Name",
+      "notifyOnChange": "Email me when membership changes",
+      "rename": "Rename",
+      "saveAs": "Save as List",
+      "settings": "List Settings",
+      "sharing": "Who can see this list",
+      "sharingOrg": "All staff",
+      "sharingPrivate": "Only me",
+      "title": "Saved Lists"
     },
     "merge": {
       "merge": "merge",
@@ -1589,31 +1620,6 @@
       "selMsg": "Please select a value for all fields",
       "with": "with"
     },
-    "lists": {
-      "title": "Saved Lists",
-      "empty": "No saved lists yet. Build an advanced search, then \"Save as List.\"",
-      "saveAs": "Save as List",
-      "name": "List Name",
-      "category": "Category",
-      "categoryPlaceholder": "Optional — group related lists",
-      "createdBy": "by {name}",
-      "rename": "Rename",
-      "delete": "Delete List",
-      "confirmDelete": "Delete the list \"{name}\"? This cannot be undone.",
-      "settings": "List Settings",
-      "sharing": "Who can see this list",
-      "sharingOrg": "All staff",
-      "sharingPrivate": "Only me",
-      "match": "Match",
-      "matchAll": "All filters",
-      "matchAny": "Any filter",
-      "household": "Include household",
-      "householdNone": "Matches only",
-      "householdChildren": "Children of matches",
-      "householdAll": "Entire household",
-      "autoRefresh": "Refresh nightly",
-      "notifyOnChange": "Email me when membership changes"
-    },
     "peopleColumns": {
       "appFilt": "Apply Filters",
       "cust": "Custom",
@@ -1624,6 +1630,7 @@
     },
     "peoplePage": {
       "addPerson": "Add Person",
+      "allMembers": "All Members",
       "bDay": "Birthday",
       "bDayNo": "Birthday (No Year)",
       "deleteOp": "Delete Option",
@@ -1639,7 +1646,6 @@
       "primEmail": "Primary Email",
       "primPhone": "Primary Phone",
       "printDirectory": "Print Directory",
-      "allMembers": "All Members",
       "recentPpl": "Recently Added People",
       "searchPpl": "Search People",
       "searchResults": "Search Results",
@@ -1688,12 +1694,12 @@
       "noAttMsg": "No attendance records. Attendance will appear once attendance has been tracked for a group session."
     },
     "personBanner": {
+      "addToWorkflow": "Add to Workflow",
       "age": "Age",
       "gender": "Gender",
       "hasLogin": "Has login",
       "maritalStatus": "Marital Status",
-      "sendTextMessage": "Send text message",
-      "addToWorkflow": "Add to Workflow"
+      "sendTextMessage": "Send text message"
     },
     "personEdit": {
       "applyQuestion": "Would you like to apply that to the entire",
@@ -1712,6 +1718,7 @@
       "mergePersonAria": "Merge person",
       "mobile": "Mobile",
       "nameNote": "Name Tag Notes",
+      "noCampus": "No Campus",
       "persDet": "Personal Details",
       "upAddress": "You updated the address to",
       "valEmail": "Please enter a valid email address.",
@@ -2013,8 +2020,8 @@
       "expiresPrefix": "Expires:",
       "link": "Link",
       "linkAccount": "Link Account",
-      "linked": "Linked",
       "linkNew": "Link New Provider",
+      "linked": "Linked",
       "noLinkedDescription": "Link a content provider to access their content in your service plans.",
       "noProvidersAvailable": "No content providers available",
       "pkceInstructions": "Click the button below to authorize in a popup window:",
@@ -2058,9 +2065,9 @@
     "lessonScheduleEdit": {
       "dateRequired": "Please select a date",
       "fallbackLesson": "Lesson",
+      "scheduleLesson": "Schedule Lesson",
       "scheduledDate": "Scheduled Date",
       "scheduledDateAria": "Scheduled date",
-      "scheduleLesson": "Schedule Lesson",
       "selectLesson": "Select Lesson",
       "venueRequired": "Please select a venue"
     },
@@ -2744,17 +2751,17 @@
       "act": "Active",
       "arch": "Archived",
       "church": "Church",
-      "churches": "Churches",
       "churchName": "Church Name",
+      "churches": "Churches",
       "impersonateUser": "Impersonate User",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
+      "noUsers": "No users found. Please search for a different name or email.",
       "noteFour": "Comparable software is ProPresenter.  It's $399 for a site license.  I made assumptions that the average church installs the software on 3 computers and divided our total installs by 3 to get the number of churches.  I also made the assumption that churches will upgrade to a newer version every 5 years on average.  So $399 / 5 years / 3 computers = $26.60 annual cost per computer.  If we can quantify these assumptions we should update this number.",
       "noteOne": "Comparable software is Breeze.  They charge $72/mo or $864/year.",
-      "notes": "Notes",
       "noteThree": "Comparable content is Orange.  They charge $1023/year for churches with 26-50 viewers for 252 Basic.",
       "noteTwo": "Comparable software is SubSplash.  They start at $99/mo or $1200/year.  This does not include the cut they take on donations.",
-      "noUsers": "No users found. Please search for a different name or email.",
+      "notes": "Notes",
       "regist": "Registered",
       "searchResults": "Search Results",
       "servAdmin": "Server Admin",
@@ -2806,29 +2813,26 @@
     }
   },
   "settings": {
+    "apiKeyEdit": {
+      "close": "Close",
+      "copied": "Copied",
+      "copy": "Copy",
+      "expires": "Expires",
+      "expiresHelp": "Leave blank for a key that never expires.",
+      "generalScopes": "general",
+      "keyIntro": "Copy your API key now — it will not be shown again.",
+      "keyTitle": "API Key",
+      "name": "Name",
+      "namePlaceholder": "e.g. Zapier integration",
+      "nameRequired": "Name is required",
+      "newKey": "New API Key",
+      "scopes": "Scopes",
+      "scopesRequired": "Select at least one scope"
+    },
     "app": {
       "confirmDeleteTab": "Are you sure you wish to delete this tab?",
       "tabNameHelper": "Choose a descriptive name for your tab",
       "urlHelper": "Enter the full URL (e.g., https://example.com)"
-    },
-    "campuses": {
-      "campuses": "Campuses",
-      "campus": "Campus",
-      "subtitle": "Manage your church's physical locations",
-      "addCampus": "Add Campus",
-      "location": "Location",
-      "none": "No campuses have been added yet."
-    },
-    "campusEdit": {
-      "name": "Name",
-      "address2": "Address Line 2",
-      "timezone": "Time Zone",
-      "noTimezone": "None",
-      "website": "Website",
-      "confirmDelete": "Are you sure you wish to delete this campus?",
-      "validate": {
-        "name": "Please enter a campus name."
-      }
     },
     "appEdit": {
       "addTab": "Add Tab",
@@ -2915,6 +2919,25 @@
       "subtitle": "Track changes and activity across your church",
       "title": "Audit Log"
     },
+    "campusEdit": {
+      "address2": "Address Line 2",
+      "confirmDelete": "Are you sure you wish to delete this campus?",
+      "name": "Name",
+      "noTimezone": "None",
+      "timezone": "Time Zone",
+      "validate": {
+        "name": "Please enter a campus name."
+      },
+      "website": "Website"
+    },
+    "campuses": {
+      "addCampus": "Add Campus",
+      "campus": "Campus",
+      "campuses": "Campuses",
+      "location": "Location",
+      "none": "No campuses have been added yet.",
+      "subtitle": "Manage your church's physical locations"
+    },
     "church": {
       "subdomainHelper": "Your church's unique web address"
     },
@@ -2938,6 +2961,27 @@
       "textingSubtitle": "Configure SMS texting provider",
       "textingTitle": "Texting"
     },
+    "developer": {
+      "actions": "Actions",
+      "apiKeys": "API Keys",
+      "app": "Application",
+      "authorized": "Authorized",
+      "connectedApps": "Connected Apps",
+      "delete": "Delete",
+      "deleteKeyConfirm": "Delete API key \"{name}\"? Any integration using it will stop working.",
+      "expires": "Expires",
+      "lastUsed": "Last Used",
+      "name": "Name",
+      "newKey": "New API Key",
+      "noConnections": "No apps have been authorized yet.",
+      "noKeys": "No API keys yet.",
+      "prefix": "Key",
+      "revoke": "Revoke",
+      "revokeConfirm": "Revoke access for \"{name}\"?",
+      "scopes": "Scopes",
+      "subtitle": "Manage API keys and connected applications",
+      "title": "Developer"
+    },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Directory Approval Group",
       "forceMsg": "This group will handle all the member directory updates. Only after their approval, changes will be applied.",
@@ -2958,13 +3002,13 @@
       "errorInvalid": "Invalid format. Enter domain only (e.g., yoursite.com or sub.yoursite.org). Do not include http://, paths, or trailing slashes."
     },
     "domainSettingsEdit": {
-      "domain": "Domain",
-      "domains": "Domains",
       "domMsg": "You can make your B1 website answer for any custom domain you wish.  Enter the associated domain name here and then add the following record to your DNS:",
       "domMsg2": "If your DNS provider will not allow you to add a CNAME record you can alternatively use an A record:",
       "domMsg3": "If you receive SSL errors after adding the DNS entry.  Click here to ",
       "domMsg4": ".  It can take up to 5 minutes.",
-      "domMsgConnect": "connect"
+      "domMsgConnect": "connect",
+      "domain": "Domain",
+      "domains": "Domains"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Body content is required.",
@@ -3067,14 +3111,14 @@
       "uploadImageAria": "Upload image"
     },
     "landing": {
-      "configuration": "Configuration",
-      "developerSubtitle": "API keys, webhooks, connected apps",
-      "campusesSubtitle": "Physical locations",
       "campusesCount": "{count} locations",
       "campusesOne": "1 location",
+      "campusesSubtitle": "Physical locations",
+      "configuration": "Configuration",
+      "developerSubtitle": "API keys, webhooks, connected apps",
       "domainsCount": "{count} connected",
-      "domainsOne": "1 connected",
       "domainsNone": "No custom domains",
+      "domainsOne": "1 connected",
       "givingProvider": "{provider} · {currency}",
       "notConfigured": "Not configured",
       "notSet": "Not set"
@@ -3122,9 +3166,6 @@
     "rolePermissions": {
       "permEdit": "Edit Permissions"
     },
-    "rolesPage": {
-      "subtitle": "Manage roles and permissions"
-    },
     "roles": {
       "acc": "Accounting",
       "accDesc": "Has access to view and manage donations.",
@@ -3144,6 +3185,9 @@
       "role": "Role",
       "roleCreate": "Do you wish to create a new role of ",
       "roles": "Roles"
+    },
+    "rolesPage": {
+      "subtitle": "Manage roles and permissions"
     },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to contact the church",
@@ -3246,43 +3290,6 @@
       "tooltipDelete": "Delete",
       "tooltipEdit": "Edit",
       "url": "URL"
-    },
-    "apiKeyEdit": {
-      "close": "Close",
-      "copied": "Copied",
-      "copy": "Copy",
-      "expires": "Expires",
-      "expiresHelp": "Leave blank for a key that never expires.",
-      "generalScopes": "general",
-      "keyIntro": "Copy your API key now — it will not be shown again.",
-      "keyTitle": "API Key",
-      "name": "Name",
-      "namePlaceholder": "e.g. Zapier integration",
-      "nameRequired": "Name is required",
-      "newKey": "New API Key",
-      "scopes": "Scopes",
-      "scopesRequired": "Select at least one scope"
-    },
-    "developer": {
-      "actions": "Actions",
-      "apiKeys": "API Keys",
-      "app": "Application",
-      "authorized": "Authorized",
-      "connectedApps": "Connected Apps",
-      "delete": "Delete",
-      "deleteKeyConfirm": "Delete API key \"{name}\"? Any integration using it will stop working.",
-      "expires": "Expires",
-      "lastUsed": "Last Used",
-      "name": "Name",
-      "newKey": "New API Key",
-      "noConnections": "No apps have been authorized yet.",
-      "noKeys": "No API keys yet.",
-      "prefix": "Key",
-      "revoke": "Revoke",
-      "revokeConfirm": "Revoke access for \"{name}\"?",
-      "scopes": "Scopes",
-      "subtitle": "Manage API keys and connected applications",
-      "title": "Developer"
     }
   },
   "site": {
@@ -3473,10 +3480,10 @@
       "urlPlaceholder": "/donate"
     },
     "donationEdit": {
-      "allowedFunds": "Limit to specific funds",
-      "allowedFundsHelper": "Leave empty to allow all funds. Donors will only see the funds you select here.",
       "allowRecurring": "Allow recurring gifts",
       "allowSingleGift": "Allow single (one-time) gifts",
+      "allowedFunds": "Limit to specific funds",
+      "allowedFundsHelper": "Leave empty to allow all funds. Donors will only see the funds you select here.",
       "defaultFund": "Default fund",
       "defaultFundHelper": "Preselect this fund when the page loads. Combine with hiding the fund selector to route every gift here.",
       "fundOptions": "Fund Options",
@@ -3496,11 +3503,11 @@
       "justNow": "just now",
       "page": "Page",
       "publish": "Publish",
-      "publishedLabel": "Published",
       "publishOffTip": "Edits currently go live immediately. Publish to save a live version and keep future edits private until the next publish.",
+      "publishedLabel": "Published",
       "redoTip": "Redo (Ctrl+Shift+Z)",
-      "savedAllChanges": "All changes saved",
       "saveError": "Couldn't save",
+      "savedAllChanges": "All changes saved",
       "saving": "Saving…",
       "statusLiveOnSave": "Live on save",
       "statusPublished": "Published",
@@ -3575,6 +3582,10 @@
       "groupAnimation": "Animation",
       "groupContent": "Content",
       "groupStyle": "Style"
+    },
+    "elementSelection": {
+      "moveDown": "Move down",
+      "moveUp": "Move up"
     },
     "elements": {
       "address": "Address",
@@ -3654,10 +3665,6 @@
       "youtube": "YouTube",
       "zoomLevel": "Zoom Level",
       "zoomLevelExample": "10 is a good default. Higher is more zoomed in."
-    },
-    "elementSelection": {
-      "moveDown": "Move down",
-      "moveUp": "Move up"
     },
     "emptyState": {
       "addFirstSection": "Add your first section",
@@ -4202,8 +4209,8 @@
       "artist": "Artist",
       "bpm": "BPM",
       "key": "Key",
-      "keys": "Keys",
       "keySignature": "Key Signature",
+      "keys": "Keys",
       "language": "Language",
       "length": "Length",
       "meter": "Meter",
@@ -4317,11 +4324,16 @@
     },
     "title": "Songs"
   },
+  "stockPhotos": {
+    "photoBy": "Photo By",
+    "providedBy": "Provided By"
+  },
   "tasks": {
     "actionEdit": {
-      "actionTypeAria": "Action type",
       "actType": "Action Type",
       "actTypeHelp": "Select the type of action to perform",
+      "actionTypeAria": "Action type",
+      "addToWorkflow": "Add to Workflow",
       "assignTo": "Assign to",
       "assignToAria": "Assign to",
       "editAct": "Action Edit",
@@ -4329,8 +4341,7 @@
       "taskNote": "Task Note",
       "taskNoteAria": "Task note",
       "taskTitle": "Task Title",
-      "taskTitleAria": "Task title",
-      "addToWorkflow": "Add to Workflow"
+      "taskTitleAria": "Task title"
     },
     "automationDetails": {
       "active": "Active",
@@ -4417,11 +4428,11 @@
     },
     "conditionEdit": {
       "conDetails": "Condition Details",
-      "conditionTypeAria": "Condition type",
       "conEdit": "Edit Condition",
-      "confirmMsg": "Are you sure you want to delete this condition?",
       "conInfo": "Contact Info",
       "conType": "Condition Type",
+      "conditionTypeAria": "Condition type",
+      "confirmMsg": "Are you sure you want to delete this condition?",
       "gen": "General",
       "persAtt": "Personal Attributes",
       "today": "Today's Date"
@@ -4451,6 +4462,71 @@
       "pers": "Person",
       "sel": "Select",
       "selPers": "Select a Person or Group"
+    },
+    "eventTriggers": {
+      "active": "Active",
+      "addCondition": "Add Condition",
+      "addTrigger": "Add Trigger",
+      "conditions": "Only if",
+      "editTrigger": "Edit Trigger",
+      "event": "When this happens",
+      "field": "Field",
+      "firstStep": "First step",
+      "kindEvent": "When something happens",
+      "kindSchedule": "On a schedule",
+      "manage": "Triggers",
+      "matchAll": "Match ALL conditions",
+      "matchAny": "Match ANY condition",
+      "name": "Name",
+      "noConditions": "Runs for every matching event.",
+      "noTriggers": "No event triggers configured.",
+      "oncePerSubject": "Only once per person",
+      "operator": "Operator",
+      "pauseAll": "Pause automation",
+      "paused": "Paused",
+      "recur_daily": "Daily",
+      "recur_monthly": "Monthly",
+      "recur_weekly": "Weekly",
+      "recur_yearly": "Yearly",
+      "recurs": "Repeats",
+      "resumeAll": "Resume automation",
+      "runNow": "Run now",
+      "runNowFailed": "Run now failed.",
+      "runNowResult": "Applied to {created} people; {skipped} skipped (already in workflow).",
+      "saveRuleFirst": "Save the rule first to add conditions.",
+      "selectEvent": "Select an event",
+      "step": "Starting step",
+      "subtitle": "Start a workflow automatically when a record is added, changed, or removed — including form submissions.",
+      "title": "Triggers",
+      "value": "Value",
+      "workflow": "Add to workflow"
+    },
+    "executions": {
+      "attempts": "Attempts",
+      "deletedTrigger": "(deleted trigger)",
+      "noExecutions": "No executions yet. They appear here when a trigger fires.",
+      "pause": "Pause",
+      "refresh": "Refresh",
+      "resume": "Resume",
+      "retry": "Retry",
+      "statusHeader": "Status",
+      "status_failed": "Failed",
+      "status_paused": "Paused",
+      "status_pending": "Pending",
+      "status_success": "Success",
+      "subject": "Person",
+      "title": "Execution History",
+      "trigger": "Trigger",
+      "when": "When"
+    },
+    "myCards": {
+      "noCards": "You have no assigned cards.",
+      "subtitle": "Cards assigned to you",
+      "title": "My Cards"
+    },
+    "myWork": {
+      "subtitle": "Your workflow cards and tasks",
+      "title": "My Work"
     },
     "newTask": {
       "assignPers": "Please assign this task to a person.",
@@ -4483,9 +4559,9 @@
     "taskList": {
       "addTask": "Add Task",
       "addTaskAria": "Add task",
-      "assignedTo": "Assigned to",
       "assignGroup": "Assigned to My Groups",
       "assignMe": "Assigned to Me",
+      "assignedTo": "Assigned to",
       "associatedWith": "Associated with",
       "noTasks": "No tasks found",
       "notSpecified": "Not specified",
@@ -4519,194 +4595,129 @@
       "tasks": "Tasks",
       "workflows": "Workflows"
     },
-    "workflowsPage": {
-      "title": "Workflows",
-      "subtitle": "Move people through a series of steps",
-      "addWorkflow": "Add Workflow",
-      "noWorkflows": "No workflows yet. Add one to get started.",
-      "added": "Added to workflow.",
-      "duplicate": "Duplicate",
-      "blankWorkflow": "Blank workflow"
-    },
-    "workflowEdit": {
-      "editWorkflow": "Edit Workflow",
-      "name": "Name",
-      "active": "Active",
-      "inactive": "Inactive"
+    "workflowActions": {
+      "add": "Add Action",
+      "days": "Wait days",
+      "noAssignee": "Unassigned",
+      "noGroup": "No group selected",
+      "none": "No actions",
+      "note": "Note",
+      "pickAssignee": "Pick assignee",
+      "pickGroup": "Pick group",
+      "saveFirst": "Save the step before adding actions.",
+      "selectField": "Field",
+      "selectTemplate": "Select email template",
+      "selectWorkflow": "Select workflow",
+      "subjectOverride": "Subject (optional)",
+      "taskDescription": "Description (optional)",
+      "taskTitle": "Task title",
+      "title": "Automated actions",
+      "type": {
+        "addNote": "Add note",
+        "addToGroup": "Add to group",
+        "addToWorkflow": "Add to workflow",
+        "createTask": "Create task",
+        "delay": "Wait",
+        "removeFromGroup": "Remove from group",
+        "sendEmail": "Send email",
+        "setField": "Set field",
+        "webhook": "Webhook"
+      },
+      "value": "Value",
+      "webhookUrl": "Webhook URL (https)"
     },
     "workflowBoard": {
-      "subtitle": "Drag cards between steps",
-      "addStep": "Add Step",
       "addCard": "Add Card",
-      "step": "Step",
-      "unassigned": "Unassigned",
-      "selectedCount": "{count} selected",
-      "moveTo": "Move to…",
+      "addStep": "Add Step",
+      "boardTab": "Board",
       "clearSelection": "Clear",
-      "boardTab": "Board"
-    },
-    "workflowStepEdit": {
-      "editStep": "Edit Step",
-      "stepName": "Step Name",
-      "dueDays": "Due in (days)",
-      "dueDaysHelp": "Sets a due date when a card enters this step",
-      "defaultAssignee": "Default assignee"
-    },
-    "workflowActions": {
-      "title": "Automated actions",
-      "add": "Add Action",
-      "none": "No actions",
-      "saveFirst": "Save the step before adding actions.",
-      "days": "Wait days",
-      "selectTemplate": "Select email template",
-      "subjectOverride": "Subject (optional)",
-      "noGroup": "No group selected",
-      "pickGroup": "Pick group",
-      "selectWorkflow": "Select workflow",
-      "note": "Note",
-      "selectField": "Field",
-      "value": "Value",
-      "webhookUrl": "Webhook URL (https)",
-      "type": {
-        "delay": "Wait",
-        "sendEmail": "Send email",
-        "addToGroup": "Add to group",
-        "removeFromGroup": "Remove from group",
-        "addToWorkflow": "Add to workflow",
-        "addNote": "Add note",
-        "setField": "Set field",
-        "webhook": "Webhook",
-        "createTask": "Create task"
-      },
-      "taskTitle": "Task title",
-      "taskDescription": "Description (optional)",
-      "noAssignee": "Unassigned",
-      "pickAssignee": "Pick assignee"
+      "moveTo": "Move to…",
+      "selectedCount": "{count} selected",
+      "step": "Step",
+      "subtitle": "Drag cards between steps",
+      "unassigned": "Unassigned"
     },
     "workflowCard": {
       "assign": "Assign",
       "assignedTo": "Assigned to",
       "complete": "Complete",
+      "history": "Activity",
+      "outcome": "Outcome",
       "overdue": "Overdue",
-      "snoozed": "Snoozed",
-      "snooze": "Snooze",
-      "snooze1Day": "1 Day",
-      "snooze3Days": "3 Days",
-      "snooze1Week": "1 Week",
       "pin": "Pin assignment",
       "pinnedNote": "Pinned — keeps this owner across steps",
       "sendBack": "Send Back",
       "skip": "Skip",
-      "outcome": "Outcome",
-      "history": "Activity"
-    },
-    "workflowRouting": {
-      "title": "Routing",
-      "saveStepFirst": "Save the step before adding routing.",
-      "outcomes": "Outcomes (when completed)",
-      "outcomesHelp": "Buttons shown when completing a card on this step. Each can send the card to another step, hand it off to another workflow, or close it.",
-      "sendToWorkflow": "Send to another workflow",
-      "addOutcome": "Add Outcome",
-      "automatic": "Automatic routing (on entry)",
-      "automaticHelp": "When a card enters this step, send it onward automatically if the person matches.",
-      "addAuto": "Add Automatic Route",
-      "outcomeLabel": "Button label",
-      "targetStep": "Go to step",
-      "completeCard": "Complete the card",
-      "conditions": "Conditions",
-      "addCondition": "Add Condition",
-      "noConditions": "No conditions yet — this route matches everyone.",
-      "remove": "Remove",
-      "closes": "close",
-      "ifMatch": "if matches",
-      "always": "always"
+      "snooze": "Snooze",
+      "snooze1Day": "1 Day",
+      "snooze1Week": "1 Week",
+      "snooze3Days": "3 Days",
+      "snoozed": "Snoozed"
     },
     "workflowCategories": {
-      "title": "Category",
-      "uncategorized": "Uncategorized",
       "addCategory": "Add Category",
-      "newCategory": "New category name"
+      "newCategory": "New category name",
+      "title": "Category",
+      "uncategorized": "Uncategorized"
+    },
+    "workflowEdit": {
+      "active": "Active",
+      "editWorkflow": "Edit Workflow",
+      "inactive": "Inactive",
+      "name": "Name"
     },
     "workflowReports": {
-      "title": "Reports",
-      "subtitle": "Workflow analytics",
-      "perStep": "Cards per Step",
+      "noData": "No data yet",
       "overdue": "Overdue",
+      "perStep": "Cards per Step",
+      "subtitle": "Workflow analytics",
       "throughput": "Completed (30 days)",
-      "noData": "No data yet"
+      "title": "Reports"
     },
-    "myCards": {
-      "title": "My Cards",
-      "subtitle": "Cards assigned to you",
-      "noCards": "You have no assigned cards."
+    "workflowRouting": {
+      "addAuto": "Add Automatic Route",
+      "addCondition": "Add Condition",
+      "addOutcome": "Add Outcome",
+      "always": "always",
+      "automatic": "Automatic routing (on entry)",
+      "automaticHelp": "When a card enters this step, send it onward automatically if the person matches.",
+      "closes": "close",
+      "completeCard": "Complete the card",
+      "conditions": "Conditions",
+      "ifMatch": "if matches",
+      "noConditions": "No conditions yet — this route matches everyone.",
+      "outcomeLabel": "Button label",
+      "outcomes": "Outcomes (when completed)",
+      "outcomesHelp": "Buttons shown when completing a card on this step. Each can send the card to another step, hand it off to another workflow, or close it.",
+      "remove": "Remove",
+      "saveStepFirst": "Save the step before adding routing.",
+      "sendToWorkflow": "Send to another workflow",
+      "targetStep": "Go to step",
+      "title": "Routing"
     },
-    "myWork": {
-      "title": "My Work",
-      "subtitle": "Your workflow cards and tasks"
+    "workflowStepEdit": {
+      "defaultAssignee": "Default assignee",
+      "dueDays": "Due in (days)",
+      "dueDaysHelp": "Sets a due date when a card enters this step",
+      "editStep": "Edit Step",
+      "stepName": "Step Name"
     },
     "workflowTriggers": {
-      "title": "Triggers",
-      "subtitle": "Automatically add people to this workflow when they submit a form.",
       "addTrigger": "Add Trigger",
-      "noTriggers": "No triggers configured.",
       "formTrigger": "Form submission",
-      "selectForm": "Form"
+      "noTriggers": "No triggers configured.",
+      "selectForm": "Form",
+      "subtitle": "Automatically add people to this workflow when they submit a form.",
+      "title": "Triggers"
     },
-    "eventTriggers": {
-      "title": "Triggers",
-      "subtitle": "Start a workflow automatically when a record is added, changed, or removed — including form submissions.",
-      "manage": "Triggers",
-      "addTrigger": "Add Trigger",
-      "editTrigger": "Edit Trigger",
-      "noTriggers": "No event triggers configured.",
-      "name": "Name",
-      "event": "When this happens",
-      "workflow": "Add to workflow",
-      "step": "Starting step",
-      "firstStep": "First step",
-      "conditions": "Only if",
-      "addCondition": "Add Condition",
-      "matchAll": "Match ALL conditions",
-      "matchAny": "Match ANY condition",
-      "field": "Field",
-      "operator": "Operator",
-      "value": "Value",
-      "oncePerSubject": "Only once per person",
-      "active": "Active",
-      "noConditions": "Runs for every matching event.",
-      "selectEvent": "Select an event",
-      "kindEvent": "When something happens",
-      "kindSchedule": "On a schedule",
-      "recurs": "Repeats",
-      "recur_daily": "Daily",
-      "recur_weekly": "Weekly",
-      "recur_monthly": "Monthly",
-      "recur_yearly": "Yearly",
-      "saveRuleFirst": "Save the rule first to add conditions.",
-      "runNow": "Run now",
-      "runNowResult": "Applied to {created} people; {skipped} skipped (already in workflow).",
-      "runNowFailed": "Run now failed.",
-      "pauseAll": "Pause automation",
-      "resumeAll": "Resume automation",
-      "paused": "Paused"
-    },
-    "executions": {
-      "title": "Execution History",
-      "refresh": "Refresh",
-      "noExecutions": "No executions yet. They appear here when a trigger fires.",
-      "when": "When",
-      "trigger": "Trigger",
-      "subject": "Person",
-      "statusHeader": "Status",
-      "attempts": "Attempts",
-      "retry": "Retry",
-      "pause": "Pause",
-      "resume": "Resume",
-      "status_success": "Success",
-      "status_pending": "Pending",
-      "status_failed": "Failed",
-      "status_paused": "Paused",
-      "deletedTrigger": "(deleted trigger)"
+    "workflowsPage": {
+      "addWorkflow": "Add Workflow",
+      "added": "Added to workflow.",
+      "blankWorkflow": "Blank workflow",
+      "duplicate": "Duplicate",
+      "noWorkflows": "No workflows yet. Add one to get started.",
+      "subtitle": "Move people through a series of steps",
+      "title": "Workflows"
     }
   },
   "ui": {

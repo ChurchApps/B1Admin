@@ -20,9 +20,6 @@
     }
   },
   "attendance": {
-    "attendanceNavigation": {
-      "kioskTheme": "سمة الكشك"
-    },
     "attendancePage": {
       "att": "الحضور",
       "campus": "الحرم الجامعي",
@@ -57,24 +54,51 @@
         "name": "اسم الحرم الجامعي مطلوب."
       }
     },
-    "checkinThemeEdit": {
-      "addSlide": "إضافة شريحة",
-      "background": "الخلفية",
-      "backgroundImage": "صورة الخلفية",
-      "backgroundImageDesc": "صورة خلفية اختيارية لشاشة البحث/الترحيب. مستحسن: 1920x1080.",
-      "change": "تغيير",
-      "changeImage": "تغيير الصورة",
-      "duration": "المدة (ث)",
-      "enableIdleScreen": "تمكين شاشة الخمول",
-      "headerSubtitle": "تُدار ألوان الكشك في الإعدادات > سمة التطبيق. قم بتكوين صور الخلفية وسلوك شاشة الخمول أدناه.",
-      "idleScreen": "شاشة الخمول / حافظة الشاشة",
-      "kioskSettings": "إعدادات الكشك",
-      "remove": "إزالة",
-      "slide": "شريحة {index}",
-      "slides": "الشرائح",
-      "timeoutSeconds": "المهلة (ثوانٍ)",
-      "upload": "تحميل",
-      "uploadImage": "تحميل صورة"
+    "labels": {
+      "align": "محاذاة",
+      "always": "دائمًا",
+      "barcode": "باركود",
+      "blank": "فارغ",
+      "bold": "عريض",
+      "border": "حدود",
+      "box": "مربع",
+      "center": "وسط",
+      "condition": "شرط",
+      "confirmDelete": "هل أنت متأكد من حذف قالب الملصق هذا؟",
+      "default": "افتراضي",
+      "empty": "فارغ",
+      "equals": "يساوي",
+      "field": "حقل",
+      "fill": "تعبئة",
+      "fontSize": "حجم الخط",
+      "height": "الارتفاع (بوصة)",
+      "italic": "مائل",
+      "left": "يسار",
+      "name": "الاسم",
+      "nametag": "بطاقة الاسم",
+      "noTemplates": "لا توجد قوالب ملصقات",
+      "noTemplatesDesc": "أنشئ قالب ملصق لتخصيص الملصقات المطبوعة في أكشاك تسجيل الحضور.",
+      "notEmpty": "غير فارغ",
+      "notEquals": "لا يساوي",
+      "operator": "عامل",
+      "palette": "إضافة كتلة",
+      "pickup": "قسيمة الاستلام",
+      "properties": "خصائص",
+      "qrCode": "رمز QR",
+      "removeBlock": "حذف الكتلة",
+      "right": "يمين",
+      "selectBlock": "اختر كتلة على اللوحة لتعديلها.",
+      "setDefault": "تعيين كافتراضي",
+      "size": "الحجم",
+      "starterNametag": "بطاقة اسم 3.5\" × 1.1\"",
+      "starterPickup": "قسيمة استلام 3.5\" × 1.1\"",
+      "subtitle": "تصميم ملصقات بطاقة الاسم والاستلام المطبوعة عند تسجيل الحضور",
+      "symbology": "رمزية",
+      "text": "نص",
+      "title": "ملصقات تسجيل الحضور",
+      "type": "النوع",
+      "value": "القيمة",
+      "width": "العرض (بوصة)"
     },
     "serviceEdit": {
       "campus": "الحرم الجامعي",
@@ -102,10 +126,27 @@
     "tabs": {
       "attTrend": "اتجاه الحضور",
       "groupAtt": "حضور المجموعة",
+      "labels": "الملصقات",
       "setup": "الإعداد"
     }
   },
   "calendars": {
+    "approvals": {
+      "approve": "موافقة",
+      "bookingRequests": "طلبات القاعات والموارد",
+      "conflicts": "تعارضات",
+      "description": "الوصف",
+      "event": "حدث",
+      "eventRequests": "طلبات الأحداث",
+      "noConflicts": "لا توجد تعارضات",
+      "noPendingBookings": "لا توجد طلبات قاعات أو موارد معلقة.",
+      "noPendingEvents": "لا توجد طلبات أحداث معلقة.",
+      "reject": "رفض",
+      "roomResource": "القاعة / المورد",
+      "status": "الحالة",
+      "subtitle": "مراجعة طلبات القاعات والموارد والأحداث المعلقة",
+      "title": "الموافقات"
+    },
     "calendar": {
       "add": "إضافة",
       "copiedToClipboard": "تم النسخ إلى الحافظة",
@@ -137,6 +178,7 @@
       "cancel": "إلغاء",
       "confirmDelete": "هل أنت متأكد من رغبتك في حذف هذا الحدث؟",
       "delete": "حذف",
+      "manageRegistrations": "إدارة التسجيلات",
       "noGroups": "لم يتم العثور على مجموعات."
     },
     "calendarList": {
@@ -168,7 +210,10 @@
       "confirmRemoveGroup": "Are you sure you wish to remove this group from the calendar?",
       "groupName": "Group Name",
       "groupsInCalendar": "Groups in Calendar",
+      "importIcs": "استيراد .ics",
+      "newEvent": "حدث جديد",
       "noGroupsAdded": "No groups added yet",
+      "print": "طباعة",
       "removeGroup": "Remove Group",
       "removeGroupAria": "Remove Group Aria",
       "subtitle": "Manage calendar events and groups"
@@ -182,6 +227,82 @@
       "noEventsFound": "No events found",
       "save": "حفظ",
       "selectGroup": "Select a Group"
+    },
+    "importIcs": {
+      "chooseFile": "اختر ملف .ics",
+      "failed": "فشل الاستيراد. تحقق من محتوى الملف.",
+      "group": "المجموعة",
+      "import": "استيراد",
+      "imported": "تم استيراد {} حدث.",
+      "noEventsFound": "لم يتم العثور على أحداث في الملف.",
+      "pasteHint": "أو الصق محتوى .ics هنا",
+      "title": "استيراد تقويم .ics"
+    },
+    "newEvent": {
+      "daily": "يوميًا",
+      "description": "الوصف",
+      "doesNotRepeat": "لا يتكرر",
+      "end": "النهاية",
+      "eventTitle": "العنوان",
+      "group": "المجموعة",
+      "monthly": "شهريًا",
+      "noTemplate": "(بدون قالب)",
+      "private": "خاص",
+      "public": "عام",
+      "repeats": "التكرار",
+      "resources": "الموارد",
+      "rooms": "القاعات",
+      "seats": "مقاعد {}",
+      "start": "البداية",
+      "template": "القالب",
+      "title": "حدث جديد",
+      "visibility": "الظهور",
+      "weekly": "أسبوعيًا"
+    },
+    "rooms": {
+      "addBlockout": "إضافة فترة حجب",
+      "addResource": "إضافة مورد",
+      "addRoom": "إضافة قاعة",
+      "addTemplate": "إضافة قالب",
+      "allRoomsResources": "جميع القاعات والموارد",
+      "approvalGroup": "مجموعة الموافقة",
+      "approvalGroupHint": "تُعتمد الطلبات تلقائيًا لأعضاء هذه المجموعة؛ ويحتاج الباقون إلى موافقة.",
+      "blockoutTarget": "ينطبق على",
+      "blockouts": "فترات الحجب",
+      "capacity": "السعة",
+      "confirmDeleteBlockout": "هل أنت متأكد من حذف فترة الحجب هذه؟",
+      "confirmDeleteResource": "هل أنت متأكد من حذف هذا المورد؟",
+      "confirmDeleteRoom": "هل أنت متأكد من حذف هذه القاعة؟",
+      "confirmDeleteTemplate": "هل أنت متأكد من حذف هذا القالب؟",
+      "description": "الوصف",
+      "durationMinutes": "المدة (دقائق)",
+      "editBlockout": "تعديل فترة الحجب",
+      "editResource": "تعديل المورد",
+      "editRoom": "تعديل القاعة",
+      "editTemplate": "تعديل القالب",
+      "endTime": "النهاية",
+      "eventDescription": "وصف الحدث",
+      "eventTitle": "عنوان الحدث",
+      "noApprovalNeeded": "لا تلزم موافقة",
+      "noBlockouts": "لا توجد فترات حجب بعد",
+      "noBlockoutsDesc": "احجب التواريخ التي تكون فيها القاعات أو الموارد غير متاحة.",
+      "noResources": "لا توجد موارد بعد",
+      "noResourcesDesc": "أضف الموارد المشتركة (أجهزة عرض، طاولات، حافلات) مع الكميات.",
+      "noRooms": "لا توجد قاعات بعد",
+      "noRoomsDesc": "أضف قاعات لتمكين حجزها في الأحداث واكتشاف التعارضات.",
+      "noTemplates": "لا توجد قوالب بعد",
+      "noTemplatesDesc": "تملأ القوالب الأحداث الجديدة تلقائيًا بعنوان ومدة وقاعات وموارد.",
+      "quantity": "الكمية",
+      "reason": "السبب",
+      "resourceName": "اسم المورد",
+      "resources": "الموارد",
+      "roomName": "اسم القاعة",
+      "rooms": "القاعات",
+      "startTime": "البداية",
+      "subtitle": "إدارة القاعات القابلة للحجز والموارد المشتركة وفترات الحجب وقوالب الأحداث",
+      "templateName": "اسم القالب",
+      "templates": "القوالب",
+      "title": "القاعات والموارد"
     }
   },
   "common": {
@@ -197,11 +318,14 @@
     "change": "Change",
     "changePhoto": "Change Photo",
     "close": "إغلاق",
+    "collapse": "طي",
     "comboBox": {
       "addNew": "Add New..."
     },
+    "confirm": "تأكيد",
+    "copy": "نسخ",
     "createPerson": {
-      "confirmDuplicate": "{{existingName}} already exists with an email of {{existingEmail}}. Are you sure you wish to add {{firstName}} {{lastName}}?",
+      "confirmDuplicate": "{existingName} already exists with an email of {existingEmail}. Are you sure you wish to add {firstName} {lastName}?",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -214,11 +338,13 @@
     "duplicate": "Duplicate",
     "edit": "تحرير",
     "element": "عنصر",
+    "error": "خطأ",
     "errorBoundary": {
       "message": "Something went wrong. Please try again or contact support if the problem persists.",
       "retry": "Retry",
       "title": "Oops! An Error Occurred"
     },
+    "expand": "توسيع",
     "formSubmission": {
       "edit": "تحرير",
       "noData": "No data available",
@@ -226,21 +352,25 @@
     },
     "help": "مساعدة",
     "iconPicker": {
-      "noResults": "No icons found matching \"{{searchText}}\"",
+      "noResults": "No icons found matching \"{searchText}\"",
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
-      "showingDefault": "Showing {{count}} commonly used icons. Use search to find more.",
-      "showingMatching": "Showing {{count}} icons matching \"{{searchText}}\"",
+      "showingDefault": "Showing {count} commonly used icons. Use search to find more.",
+      "showingMatching": "Showing {count} icons matching \"{searchText}\"",
       "title": "Select Icon",
       "tryDifferent": "Try a different search term"
     },
     "left": "Left",
+    "loading": "جارٍ التحميل",
     "mobile": "Mobile",
+    "more": "المزيد",
     "name": "الاسم",
     "navigation": "Navigation",
     "no": "لا",
+    "noAccess": "ليس لديك صلاحية الوصول إلى هذا القسم.",
     "notes": "ملاحظات",
     "person": "Person",
+    "print": "طباعة",
     "remove": "Remove",
     "reportFilter": {
       "title": "Filter Report"
@@ -267,7 +397,9 @@
       "addForm": "إضافة نموذج"
     },
     "bezChat": {
+      "ariaClose": "إغلاق المحادثة",
       "ariaOpen": "فتح محادثة Bez",
+      "ariaSend": "إرسال رسالة",
       "errorAnswer": "آسف، لم أتمكن من العثور على إجابة.",
       "errorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
       "intro": "مرحبًا، أنا Bez! يمكنني مساعدتك في التنقل في B1 Admin. حاول أن تسألني:",
@@ -278,7 +410,9 @@
       "title": "اسأل Bez"
     },
     "docChat": {
+      "ariaClose": "إغلاق المحادثة",
       "ariaOpen": "فتح محادثة المساعدة",
+      "ariaSend": "إرسال رسالة",
       "composing": "جارٍ تأليف الإجابة...",
       "errorAnswer": "آسف، لم أتمكن من العثور على إجابة.",
       "errorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
@@ -336,7 +470,9 @@
       "noTitle": "[بدون عنوان]"
     },
     "superBeeChat": {
+      "ariaClose": "إغلاق المحادثة",
       "ariaOpen": "فتح محادثة SuperBee",
+      "ariaSend": "إرسال رسالة",
       "errorAnswer": "حتى الأبطال الخارقون يصطدمون بالجدار أحيانًا. حاول مرة أخرى!",
       "errorGeneric": "حدث خطأ ما. لكن لا تقلق - سأعود أقوى!",
       "intro": "مرحبًا، أيها البطل! أنا SuperBee - قوتك في B1 Admin. اطرح علي أصعب أسئلتك!",
@@ -348,11 +484,13 @@
     },
     "wrapper": {
       "att": "الحضور",
+      "automations": "الأتمتة",
       "dash": "لوحة التحكم",
       "don": "Donations",
       "form": "Form",
       "forms": "Forms",
       "groups": "المجموعات",
+      "myWork": "عملي",
       "plans": "Plans",
       "ppl": "People",
       "servAdmin": "Server Admin",
@@ -360,7 +498,8 @@
       "set": "الإعدادات",
       "songs": "Songs",
       "tasks": "Tasks",
-      "teams": "Teams"
+      "teams": "Teams",
+      "workflows": "سير العمل"
     }
   },
   "createPerson": {
@@ -400,8 +539,7 @@
       "yourProfile": "ملفك الشخصي"
     },
     "dashboardPage": {
-      "dash": "لوحة التحكم",
-      "subtitle": "Welcome to your church management dashboard. Search for people, view your groups, and manage your open tasks."
+      "dash": "لوحة التحكم"
     },
     "memberWelcome": {
       "downloadAppDesc": "احصل على تطبيق B1.church على هاتفك لتبقى متصلاً أينما ذهبت.",
@@ -556,6 +694,45 @@
       "pressEnter": "Press Enter to save and add another donation",
       "selectPerson": "Select Person or Anonymous"
     },
+    "campaignEdit": {
+      "allowSelfPledge": "السماح للمتبرعين بتقديم التزامات",
+      "confirmMsg": "هل أنت متأكد من الحذف الدائم لهذه الحملة وجميع الالتزامات بداخلها؟",
+      "description": "الوصف",
+      "endDate": "تاريخ الانتهاء (اختياري)",
+      "errBlank": "أدخل اسم الحملة",
+      "errFund": "اختر صندوقًا",
+      "errStartDate": "أدخل تاريخ البداية",
+      "fund": "الصندوق",
+      "goalAmount": "المبلغ المستهدف (اختياري)",
+      "showPublic": "إظهار التقدم في صفحة التبرع",
+      "startDate": "تاريخ البداية"
+    },
+    "campaignPage": {
+      "addPledge": "إضافة التزام",
+      "anon": "مجهول",
+      "donor": "المتبرع",
+      "editCampaign": "تعديل الحملة",
+      "noPledges": "لم تُقدَّم أي التزامات لهذه الحملة بعد.",
+      "ofGoal": "من الهدف",
+      "pledges": "الالتزامات",
+      "status": "الحالة",
+      "subtitle": "الالتزامات وتقدم التبرعات لهذه الحملة"
+    },
+    "campaignsPage": {
+      "addCampaign": "إضافة حملة",
+      "campaigns": "الحملات",
+      "dates": "التواريخ",
+      "export": "تصدير",
+      "fund": "الصندوق",
+      "given": "المُعطى",
+      "goal": "الهدف",
+      "noCampaigns": "لم يتم إنشاء أي حملات بعد.",
+      "ongoing": "مستمرة",
+      "pledged": "الملتزم به",
+      "progress": "التقدم",
+      "subtitle": "تتبع حملات الالتزام والتقدم نحو أهداف التبرع",
+      "totalCampaigns": "إجمالي الحملات"
+    },
     "donationBatchPage": {
       "batchDate": "Batch Date:",
       "donations": "التبرعات",
@@ -601,6 +778,7 @@
       "amt": "Amount",
       "anon": "Anonymous",
       "batches": "Batches",
+      "campaigns": "الحملات",
       "date": "التاريخ",
       "don": "Donations",
       "edit": "تحرير",
@@ -661,47 +839,66 @@
       "taxStatus": "الحالة الضريبية",
       "totalFunds": "إجمالي الصناديق"
     },
-    "kpi": {
-      "avgGift": "Average Gift",
-      "donationCount": "Total Donations",
-      "donorCount": "Unique Donors",
-      "totalGiving": "Total Giving"
-    },
     "period": {
       "monthly": "Monthly",
       "quarterly": "Quarterly",
       "weekly": "Weekly"
     },
+    "pledgeEdit": {
+      "addPledge": "إضافة التزام",
+      "amount": "مبلغ الالتزام",
+      "confirmMsg": "هل أنت متأكد من الحذف الدائم لهذا الالتزام؟",
+      "editPledge": "تعديل الالتزام",
+      "errAmount": "أدخل مبلغ التزام أكبر من صفر",
+      "errPerson": "اختر شخصًا"
+    },
+    "pledgeStatus": {
+      "beyondPledged": "تجاوز الملتزم به",
+      "fulfilled": "مُنجز",
+      "inProgress": "قيد التنفيذ",
+      "nonPledged": "غير ملتزم",
+      "notStarted": "لم يبدأ"
+    },
     "printAllStatementsPage": {
       "annualStatementTitle": "بيان التبرعات السنوي {year}",
+      "campaign": "الحملة",
       "contributionDetails": "تفاصيل المساهمة",
       "disclaimer": "لم تقدم {churchName} أي سلع أو خدمات مقابل هذه التبرعات. الفائدة الوحيدة المتلقاة كانت فائدة دينية غير ملموسة. {churchName} هي منظمة غير ربحية.",
       "donorInformation": "معلومات المتبرع",
       "fund": "الصندوق",
       "fundBreakdown": "تفصيل الصندوق",
+      "given": "المُعطى",
       "issued": "صادر:",
       "loadingStatements": "جارٍ تحميل البيانات...",
       "noteLabel": "ملاحظة:",
       "noteText": "يلخص هذا البيان المساهمات المقدمة لـ {churchName} خلال السنة التقويمية {year}. يرجى الاحتفاظ بهذا المستند لسجلاتك الضريبية. لأي أسئلة بخصوص هذا البيان، يرجى الاتصال بمكتب الكنيسة.",
       "organization": "المنظمة",
       "period": "الفترة: 1 يناير - 31 ديسمبر، {year}",
+      "pledgeProgress": "حملات الالتزام",
+      "pledged": "الملتزم به",
       "statementSummary": "ملخص البيان",
+      "status": "الحالة",
       "totalContributions": "إجمالي المساهمات",
       "totalContributionsLabel": "إجمالي المساهمات:"
     },
     "printDonationPage": {
       "annualStatementTitle": "بيان التبرعات السنوي {year}",
+      "campaign": "الحملة",
       "contributionDetails": "تفاصيل المساهمة",
       "disclaimer": "لم تقدم {churchName} أي سلع أو خدمات مقابل هذه التبرعات. الفائدة الوحيدة المتلقاة كانت فائدة دينية غير ملموسة. {churchName} هي منظمة غير ربحية.",
       "donorInformation": "معلومات المتبرع",
       "fund": "الصندوق",
       "fundBreakdown": "تفصيل الصندوق",
+      "given": "المُعطى",
       "issued": "صادر:",
       "noteLabel": "ملاحظة:",
       "noteText": "يلخص هذا البيان المساهمات المقدمة لـ {churchName} خلال السنة التقويمية {year}. يرجى الاحتفاظ بهذا المستند لسجلاتك الضريبية. لأي أسئلة بخصوص هذا البيان، يرجى الاتصال بمكتب الكنيسة.",
       "organization": "المنظمة",
       "period": "الفترة: 1 يناير - 31 ديسمبر، {year}",
+      "pledgeProgress": "حملات الالتزام",
+      "pledged": "الملتزم به",
       "statementSummary": "ملخص البيان",
+      "status": "الحالة",
       "totalContributions": "إجمالي المساهمات",
       "totalContributionsLabel": "إجمالي المساهمات:"
     },
@@ -797,7 +994,6 @@
       "date": "التاريخ",
       "decNum": "Decimal",
       "desc": "الوصف",
-      "fieldReq": "Field type is required.",
       "fund": "Fund",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
@@ -833,7 +1029,6 @@
       "confirmMsg2": "Are you sure you want to restore this form?",
       "edit": "تحرير",
       "editFormAria": "تحرير النموذج {name}",
-      "form": "نموذج",
       "formArchivedCount": "{count} نموذج مؤرشف",
       "formArchivedCountPlural": "{count} نماذج مؤرشفة",
       "formCount": "{count} نموذج",
@@ -852,6 +1047,11 @@
       "questions": "Questions",
       "unAuth": "Unauthorized"
     }
+  },
+  "gallery": {
+    "aspectRatio": "نسبة العرض إلى الارتفاع",
+    "confirmDelete": "تأكيد الحذف",
+    "freeForm": "حر"
   },
   "groups": {
     "groupAdd": {
@@ -878,6 +1078,22 @@
       "textTooltip": "أرسل رسالة نصية إلى هذه المجموعة",
       "trackAttendance": "Track Attendance"
     },
+    "groupCalendar": {
+      "addEvents": "إضافة أحداث",
+      "bulkAddTitle": "إضافة أحداث متكررة",
+      "confirmDelete": "حذف \"{title}\" وجميع تكراراته؟",
+      "datesPreview": "سيتم إنشاء {count} اجتماعات. أزل علامة الاختيار عن التواريخ المراد تخطيها.",
+      "events": "الأحداث",
+      "everyTwoWeeks": "كل أسبوعين",
+      "firstMeeting": "الاجتماع الأول",
+      "lastMeeting": "الاجتماع الأخير",
+      "noDates": "لا توجد تواريخ اجتماعات في النطاق المحدد.",
+      "noEvents": "لا توجد أحداث بعد. استخدم إضافة أحداث لجدولة اجتماعات هذه المجموعة.",
+      "oneTime": "مرة واحدة",
+      "skipHolidays": "تخطي الأعياد",
+      "skippedDates": "التواريخ المتخطاة",
+      "until": "حتى"
+    },
     "groupDetails": {
       "about": "حول",
       "attendanceSettings": "Attendance Settings",
@@ -897,11 +1113,13 @@
       "addPhoto": "Add Photo",
       "attTrack": "Track Attendance",
       "attendance": "الحضور",
+      "attendanceReminders": "تذكيرات الحضور عبر البريد الإلكتروني",
       "catName": "Category Name",
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "تغيير صورة المجموعة",
       "clickToAddPhoto": "Click to add photo",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
+      "enrollment": "التسجيل",
       "groupDesc": "Group Description",
       "groupDescriptionAria": "وصف المجموعة",
       "groupDet": "Group Details",
@@ -918,6 +1136,23 @@
       "prinName": "Print Nametag",
       "slug": "Slug (key name used for urls)"
     },
+    "groupHealth": {
+      "attendance": "الحضور",
+      "attendanceTrend": "اتجاه الحضور",
+      "avgAge": "متوسط العمر",
+      "avgAttendance": "متوسط الحضور",
+      "churn90": "التسرب (90 يومًا)",
+      "joined": "الانضمام",
+      "joined90": "انضم (90 يومًا)",
+      "left": "المغادرة",
+      "left90": "غادر (90 يومًا)",
+      "members": "الأعضاء",
+      "membershipChanges": "تغييرات العضوية (12 شهرًا)",
+      "month": "الشهر",
+      "subtitle": "مقارنة النمو والتسرب والحضور عبر المجموعات",
+      "title": "صحة المجموعة",
+      "week": "الأسبوع"
+    },
     "groupLabelsEdit": {
       "addNewLabel": "Add New Label",
       "addNewLabelAria": "إضافة تسمية جديدة",
@@ -926,13 +1161,20 @@
     },
     "groupMembers": {
       "groupMem": "Group Members",
-      "noMem": "No group members found.",
-      "promoteToLeader": "ترقية إلى قائد",
+      "leader": "قائد",
+      "leaderLower": "قائد",
+      "leadersLower": "قادة",
+      "makeLeader": "تعيين قائدًا",
+      "member": "عضو",
+      "members": "أعضاء",
+      "messagePlaceholder": "اكتب رسالة لإرسالها إلى جميع أعضاء المجموعة…",
+      "noMemDesc": "أضف أعضاء من اللوحة الجانبية لبدء بناء هذه المجموعة.",
+      "noMemTitle": "لا يوجد أعضاء بعد",
       "promoteToLeaderAria": "ترقية {name} إلى قائد",
-      "remove": "إزالة",
       "removeFromGroupAria": "إزالة {name} من المجموعة",
       "removeLeaderAccess": "إزالة وصول القائد",
       "removeLeaderAccessAria": "إزالة وصول القائد لـ {name}",
+      "role": "الدور",
       "send": "Send",
       "sendMemMsg": "Send a message to members",
       "sendMessageAria": "إرسال رسالة إلى الأعضاء",
@@ -948,6 +1190,8 @@
       "unknown": "غير معروف"
     },
     "groupNavigation": {
+      "calendar": "التقويم",
+      "health": "الصحة",
       "members": "الأعضاء",
       "sessions": "Sessions"
     },
@@ -974,6 +1218,7 @@
       "addGroup": "Add Group",
       "cat": "الفئة",
       "categories": "Categories",
+      "export": "تصدير",
       "groups": "المجموعات",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
@@ -995,8 +1240,6 @@
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "إدراج حقل دمج في النص:",
-      "cancel": "إلغاء",
-      "close": "إغلاق",
       "composePlaceholder": "اكتب بريدك الإلكتروني هنا...",
       "eligibleSummary": "{eligibleCount} من {totalMembers} عضوًا سيتلقون هذا البريد.",
       "eligibleSummarySingular": "{eligibleCount} من {totalMembers} عضو سيتلقى هذا البريد.",
@@ -1025,10 +1268,8 @@
       "subjectPlaceholder": "مثال: مرحبًا {firstName}، تحديث من {churchName}"
     },
     "sendTextDialog": {
-      "cancel": "إلغاء",
       "characterCount": "{count} حرفًا ({segments} مقاطع SMS)",
       "characterCountSingular": "{count} حرف ({segments} مقطع SMS)",
-      "close": "إغلاق",
       "eligibleSummary": "{eligibleCount} من {totalMembers} عضوًا سيتلقون هذه الرسالة.",
       "eligibleSummarySingular": "{eligibleCount} من {totalMembers} عضو سيتلقى هذه الرسالة.",
       "fallbackError": "فشل في إرسال الرسالة النصية.",
@@ -1107,6 +1348,7 @@
     },
     "secondaryMenuHelper": {
       "appearance": "المظهر",
+      "approvals": "الموافقات",
       "blocks": "الكتل",
       "bulkImport": "استيراد جماعي",
       "calendars": "التقويمات",
@@ -1118,6 +1360,7 @@
       "profile": "الملف الشخصي",
       "quickActions": "إجراءات سريعة",
       "registrations": "التسجيلات",
+      "roomsResources": "القاعات والموارد",
       "sermons": "العظات",
       "stripeImport": "استيراد Stripe",
       "website": "الموقع الإلكتروني"
@@ -1139,10 +1382,32 @@
       "title": "B1 Mobile"
     },
     "checkInPage": {
+      "copyLink": "نسخ الرابط",
       "disabled": "Disabled",
+      "downloadQr": "تنزيل PNG",
       "enabled": "Enabled — QR code will appear on kiosk",
+      "kiosk": {
+        "addSlide": "إضافة شريحة",
+        "backgroundImage": "صورة الخلفية",
+        "backgroundImageDesc": "صورة خلفية اختيارية لشاشة البحث/الترحيب. الموصى به: 1920×1080.",
+        "changeImage": "تغيير الصورة",
+        "duration": "المدة (ثانية)",
+        "enableIdleScreen": "تفعيل شاشة الخمول",
+        "headerSubtitle": "تُدار ألوان الكشك في الإعدادات > سمة التطبيق. قم بتكوين صور الخلفية وسلوك شاشة الخمول أدناه.",
+        "idleScreen": "شاشة الخمول / شاشة التوقف",
+        "sectionTitle": "سمة الكشك",
+        "slides": "الشرائح",
+        "timeoutSeconds": "مهلة الخمول (ثوانٍ)",
+        "upload": "رفع",
+        "uploadImage": "رفع صورة"
+      },
+      "linkCopied": "تم النسخ!",
       "qrGuestRegistration": "QR Guest Registration",
+      "qrShareDescription": "اطبع رمز QR هذا على المنشورات أو النشرات أو اللافتات. يمكن للضيوف مسحه ضوئيًا للتسجيل من هواتفهم. سيظهر أيضًا في التطبيق.",
+      "qrShareTitle": "مشاركة رمز QR للتسجيل",
       "qrTooltip": "Display a QR code on the check-in kiosk so guests can self-register on their phone",
+      "registrationUrl": "رابط التسجيل",
+      "saveToActivate": "احفظ تغييراتك لتفعيل هذا الرابط.",
       "subtitle": "Configure settings for the B1 CheckIn kiosk app",
       "title": "B1 CheckIn"
     }
@@ -1188,6 +1453,57 @@
       "search": "بحث",
       "searching": "جارٍ البحث...",
       "title": "AI Search"
+    },
+    "bulk": {
+      "actions": "الإجراءات",
+      "addSuccess": "تمت إضافة {count} شخص إلى {group}.",
+      "addToGroup": "إضافة إلى مجموعة",
+      "addToGroupPrompt": "إضافة {count} شخصًا محددًا إلى مجموعة.",
+      "addToGroupTitle": "إضافة إلى مجموعة",
+      "addToWorkflow": "إضافة إلى سير العمل",
+      "addToWorkflowPrompt": "إضافة {count} شخصًا محددًا إلى سير العمل كبطاقات.",
+      "apply": "تطبيق",
+      "campusTitle": "تعيين إلى حرم",
+      "clearSelection": "إلغاء التحديد",
+      "createNewGroup": "إنشاء مجموعة جديدة",
+      "delete": "حذف",
+      "error": "خطأ",
+      "fieldPrompt": "تحديث الحقل لـ {count} شخصًا محددًا.",
+      "fieldSuccess": "تم تحديث {count} شخص.",
+      "genderTitle": "تعيين الجنس",
+      "group": "المجموعة",
+      "maritalStatusTitle": "تعيين الحالة الاجتماعية",
+      "membershipStatusTitle": "تعيين حالة العضوية",
+      "newGroupName": "اسم المجموعة الجديدة",
+      "optedOutField": "حقل الانسحاب",
+      "optedOutNo": "لم ينسحب",
+      "optedOutTitle": "تعيين الانسحاب",
+      "optedOutYes": "منسحب",
+      "removeFromGroup": "إزالة من مجموعة",
+      "removeFromGroupPrompt": "إزالة {count} شخصًا محددًا من مجموعة.",
+      "removeFromGroupTitle": "إزالة من مجموعة",
+      "removeSuccess": "تمت إزالة {count} شخص من {group}.",
+      "selected": "محدد",
+      "setCampus": "تعيين إلى حرم",
+      "setGender": "تعيين الجنس",
+      "setMaritalStatus": "تعيين الحالة الاجتماعية",
+      "setMembershipStatus": "تعيين حالة العضوية",
+      "setOptedOut": "تعيين الانسحاب",
+      "workflowSuccess": "تمت إضافة {count} شخص إلى سير العمل."
+    },
+    "demographics": {
+      "age": "العمر",
+      "campus": "الحرم",
+      "female": "أنثى",
+      "gender": "الجنس",
+      "male": "ذكر",
+      "maritalStatus": "الحالة الاجتماعية",
+      "membershipStatus": "أنواع العضوية",
+      "noData": "لا توجد بيانات متاحة",
+      "subtitle": "نظرة عامة على مجتمع كنيستك",
+      "title": "البيانات الديموغرافية",
+      "total": "الإجمالي",
+      "unassigned": "غير معين"
     },
     "editCondition": {
       "act": "Activity",
@@ -1239,7 +1555,9 @@
       "age": "العمر:",
       "demoGroups": "المجموعات: خدمة الشباب، فريق العبادة",
       "demoLastActivity": "آخر نشاط: 24 نوفمبر 2024",
+      "groups": "المجموعات:",
       "house": " Household",
+      "lastActivity": "آخر نشاط:",
       "noContactInfo": "لا توجد معلومات اتصال",
       "status": "الحالة:"
     },
@@ -1258,6 +1576,31 @@
       "removeMemberAria": "إزالة فرد من الأسرة",
       "spouse": "Spouse",
       "updQuestion": "Would you like to update"
+    },
+    "lists": {
+      "autoRefresh": "تحديث ليلي تلقائي",
+      "category": "الفئة",
+      "categoryPlaceholder": "اختياري — تجميع القوائم المتعلقة",
+      "confirmDelete": "حذف القائمة \"{name}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "createdBy": "بواسطة {name}",
+      "delete": "حذف القائمة",
+      "empty": "لا توجد قوائم محفوظة بعد. أنشئ بحثًا متقدمًا ثم \"حفظ كقائمة\".",
+      "household": "تضمين الأسرة",
+      "householdAll": "الأسرة بأكملها",
+      "householdChildren": "أطفال المتطابقين",
+      "householdNone": "المتطابقون فقط",
+      "match": "مطابقة",
+      "matchAll": "جميع الفلاتر",
+      "matchAny": "أي فلتر",
+      "name": "اسم القائمة",
+      "notifyOnChange": "إشعاري بالبريد عند تغيير العضوية",
+      "rename": "إعادة التسمية",
+      "saveAs": "حفظ كقائمة",
+      "settings": "إعدادات القائمة",
+      "sharing": "من يمكنه رؤية هذه القائمة",
+      "sharingOrg": "جميع الموظفين",
+      "sharingPrivate": "أنا فقط",
+      "title": "القوائم المحفوظة"
     },
     "merge": {
       "merge": "merge",
@@ -1287,6 +1630,7 @@
     },
     "peoplePage": {
       "addPerson": "Add Person",
+      "allMembers": "جميع الأعضاء",
       "bDay": "Birthday",
       "bDayNo": "Birthday (No Year)",
       "deleteOp": "Delete Option",
@@ -1301,9 +1645,12 @@
       "photo": "Photo",
       "primEmail": "Primary Email",
       "primPhone": "Primary Phone",
+      "printDirectory": "طباعة الدليل",
       "recentPpl": "Recently Added People",
       "searchPpl": "Search People",
       "searchResults": "نتائج البحث",
+      "showAll": "عرض جميع الأعضاء",
+      "showingMembers": "عرض {count} عضو",
       "showingRecent": "عرض {count} من أحدث الأشخاص"
     },
     "peopleSearch": {
@@ -1347,6 +1694,7 @@
       "noAttMsg": "No attendance records. Attendance will appear once attendance has been tracked for a group session."
     },
     "personBanner": {
+      "addToWorkflow": "إضافة إلى سير العمل",
       "age": "العمر",
       "gender": "الجنس",
       "hasLogin": "لديه تسجيل دخول",
@@ -1370,16 +1718,16 @@
       "mergePersonAria": "دمج الشخص",
       "mobile": "Mobile",
       "nameNote": "Name Tag Notes",
+      "noCampus": "بدون حرم",
       "persDet": "Personal Details",
       "upAddress": "You updated the address to",
       "valEmail": "Please enter a valid email address.",
       "work": "Work"
     },
     "personForm": {
-      "addForm": "Add Form",
-      "addFormAria": "إضافة إرسال {name}",
+      "editAria": "تعديل {name}",
       "form": "Form",
-      "noFormMsg": "No form submission found for this person"
+      "notFilledOut": "لم يتم ملؤها بعد."
     },
     "personNav": {
       "customForms": "Custom Forms",
@@ -1392,11 +1740,15 @@
       "donations": "التبرعات",
       "forms": "النماذج",
       "groups": "المجموعات",
-      "notes": "ملاحظات"
+      "notes": "ملاحظات",
+      "profile": "الملف الشخصي"
     },
     "personPage": {
       "notesSuffix": " ملاحظات",
       "thisPerson": "هذا الشخص"
+    },
+    "personProfile": {
+      "railLabel": "الملف الشخصي والنماذج"
     },
     "personView": {
       "edit": "تحرير",
@@ -1421,6 +1773,7 @@
     "age": "Age",
     "anniversary": "Anniversary",
     "birthDate": "Birth Date",
+    "campus": "الحرم",
     "city": "المدينة",
     "country": "الدولة",
     "deceased": "متوفى",
@@ -1429,7 +1782,6 @@
     "email": "البريد الإلكتروني",
     "female": "Female",
     "firstName": "الاسم الأول",
-    "formerMember": "عضو سابق",
     "gender": "Gender",
     "inactive": "غير نشطة",
     "lastName": "الاسم الأخير",
@@ -1624,10 +1976,10 @@
       "autoAssign": "Auto Assign",
       "notesPlaceholder": "أضف ملاحظات لخطة الخدمة هذه...",
       "notesPlaceholderReadOnly": "ملاحظات الخطة (للقراءة فقط)",
-      "planNotes": "ملاحظات الخطة",
+      "penciledIn": "مقيد مبدئيًا",
       "planNotesAria": "ملاحظات الخطة",
       "saveNotes": "Save Notes",
-      "saveSuccess": "تم حفظ الملاحظات بنجاح"
+      "undoAutoAssign": "التراجع عن التعيين التلقائي"
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
@@ -1647,22 +1999,20 @@
       "loadFailed": "فشل تحميل بيانات الدرس. يرجى المحاولة مرة أخرى.",
       "loadingSeries": "جارٍ تحميل سلسلة الدروس...",
       "noLessonsInSeries": "لم يتم العثور على دروس في هذه السلسلة.",
-      "noPreviousLesson": "No previous lesson found to continue from. Schedule at least one lesson first.",
-      "noRemainingLessons": "No remaining lessons in this series. You've completed them all!",
       "pathNotSupported": "تنسيق مسار الدرس المختار غير مدعوم للجدولة الجماعية.",
       "savingFailed": "فشل في إنشاء بعض الخطط. يرجى التحقق والمحاولة مرة أخرى.",
       "schedulingProgress": "جارٍ الجدولة...",
       "startDate": "Start Date",
       "startingLesson": "Starting Lesson",
+      "substituted": "تم الاستبدال",
       "title": "Bulk Schedule Lessons",
       "venue": "Venue",
+      "venueMismatch": "عدم تطابق المكان",
       "weekly": "Weekly"
     },
     "contentProviderAuth": {
-      "accountLinked": "تم ربط الحساب",
       "authExpired": "انتهت صلاحية المصادقة أو فشلت",
       "authFailed": "فشلت المصادقة",
-      "contentProviderAccounts": "حسابات مزودي المحتوى",
       "deviceFlowFailed": "فشل بدء تدفق الجهاز",
       "deviceFlowInstructions": "Visit the URL below and enter the code to authorize:",
       "deviceFlowUnsupported": "المزود لا يدعم تدفق الجهاز",
@@ -1674,7 +2024,6 @@
       "linked": "Linked",
       "noLinkedDescription": "Link a content provider to access their content in your service plans.",
       "noProvidersAvailable": "No content providers available",
-      "noProvidersAvailableLong": "لا يوجد مزودو محتوى متاحون يتطلبون المصادقة.",
       "pkceInstructions": "Click the button below to authorize in a popup window:",
       "pkceUnsupported": "المزود لا يدعم مصادقة PKCE",
       "pkceWaiting": "Waiting for authorization in popup...",
@@ -1741,6 +2090,7 @@
       "subtitle": "Organize ministry teams and service plans"
     },
     "planEdit": {
+      "autoReplaceOnDecline": "جدولة بديل تلقائيًا عند رفض المتطوع",
       "copyAll": "Positions and Assignments",
       "copyNothing": "Nothing",
       "copyPositions": "Positions Only",
@@ -1750,6 +2100,7 @@
       "planEdit": "Edit Plan",
       "planNameAria": "اسم الخطة",
       "planReq": "Plan name is required.",
+      "prepared": "مقيد مبدئيًا (إخفاء التعيينات عن المتطوعين حتى النشر)",
       "servDate": "Service Date",
       "servReq": "Service date is required.",
       "serviceDateAria": "تاريخ الخدمة",
@@ -1778,6 +2129,7 @@
       "editHeader": "Edit Header",
       "editSong": "Edit Song",
       "enterSearch": "Enter search term",
+      "includeInServices": "تضمين في الخدمات",
       "minutes": "Minutes",
       "planItemDescriptionAria": "وصف عنصر الخطة",
       "planItemNameAria": "اسم عنصر الخطة",
@@ -1813,11 +2165,28 @@
     },
     "planTypeEdit": {
       "add": "إضافة",
+      "confirmDelete": "تأكيد الحذف",
       "edit": "تحرير",
+      "errorDeleting": "خطأ في الحذف",
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
       "planTypeName": "Plan Type Name"
+    },
+    "planTypeGroups": {
+      "addGroup": "إضافة مجموعة",
+      "description": "ستظهر خطط هذا النوع في صفحة المجموعة في B1App للمجموعات المدرجة أدناه.",
+      "heading": "المجموعات المرتبطة",
+      "noGroups": "لا توجد مجموعات مرتبطة",
+      "noGroupsDescription": "اربط مجموعات بهذا النوع من الخطط حتى يرى الأعضاء الخطط في صفحة مجموعتهم في B1App.",
+      "removeConfirm": "إزالة ارتباط هذه المجموعة؟",
+      "selectGroup": "اختر مجموعة",
+      "showsLabel": "يعرض",
+      "timeFilter": {
+        "both": "الخطط السابقة والقادمة",
+        "future": "الخطط القادمة فقط",
+        "past": "الخطط السابقة فقط"
+      }
     },
     "planTypeList": {
       "addPlanType": "Add Plan Type",
@@ -1829,17 +2198,8 @@
     "planTypePage": {
       "notFound": "Plan type not found",
       "overview": "نظرة عامة",
-      "pairTvApp": "Pair TV App",
       "planType": "Plan Type",
-      "subtitle": "Configure plan type settings",
-      "tvAppDescription": "Show your lesson content on any TV or display using our free app"
-    },
-    "planTypePairDialog": {
-      "downloadTitle": "Download the Lessons.church TV App",
-      "instructions": "Enter the 4-character code displayed on the TV app screen:",
-      "pairTitle": "Pair Your Device",
-      "success": "Successfully paired! The TV app will now show content from this plan type.",
-      "title": "Pair TV App"
+      "subtitle": "Configure plan type settings"
     },
     "planValidation": {
       "and": "and",
@@ -1847,14 +2207,21 @@
       "blockCon": "Blockout date conflict of",
       "cons": "Conflicts",
       "during": "during",
+      "householdApart": "يفضل عدم الخدمة في نفس يوم",
       "more": "more",
       "needed": "needed.",
       "notify": "Notify",
+      "overMaxPerMonth": "مجدول",
+      "penciledIn": "مقيد مبدئيًا — لا يمكن للمتطوعين رؤية هذه التعيينات بعد.",
       "person": "person",
       "pleaseConfirm": "Please log in and confirm.",
       "ppl": "people",
+      "prefTimeMismatch": "يفضل الخدمة في",
+      "publish": "نشر الخطة",
+      "publishNotify": "نشر وإشعار",
       "timeCon": "Time conflict between",
       "timeCon2": "Time conflict at",
+      "timesThisMonth": "مرات هذا الشهر، متجاوزًا الحد المفضل لديه وهو",
       "to": "to",
       "val": "Validation",
       "valPlan": "Plan is valid.",
@@ -1894,6 +2261,17 @@
       "serviceOrder": "SERVICE ORDER",
       "time": "الوقت"
     },
+    "schedulingPreference": {
+      "household": "جدولة الأسرة",
+      "householdApart": "عدم جدولة الأسرة في نفس اليوم",
+      "householdNone": "لا تفضيل",
+      "householdTogether": "جدولة الأسرة معًا",
+      "maxPerMonth": "الحد الأقصى لعدد المرات شهريًا",
+      "maxPerMonthHelper": "اتركه فارغًا لعدم التحديد",
+      "preferredTimes": "أوقات الخدمة المفضلة",
+      "preferredTimesHelper": "مثال: 9:00 صباحًا أو الخدمة الأولى. افصل بين الأوقات المتعددة بفواصل.",
+      "title": "تفضيلات الجدولة"
+    },
     "serviceOrder": {
       "addFromLesson": "Add From Lesson",
       "addSection": "Add Section",
@@ -1907,8 +2285,10 @@
       "orderOfService": "Order of Service",
       "previewBanner": "This is a preview of the associated lesson. Click \"Customize\" to edit.",
       "print": "Print",
+      "runTimes": "أوقات التشغيل",
       "scrollDown": "التمرير للأسفل",
-      "scrollUp": "التمرير للأعلى"
+      "scrollUp": "التمرير للأعلى",
+      "viewingAs": "عرض بصفة"
     },
     "servingOverviewPage": {
       "endDate": "تاريخ الانتهاء",
@@ -1952,13 +2332,17 @@
       "startTimeAria": "وقت البدء",
       "teamNeed": "Needed Teams",
       "teamPrefix": "الفريق",
-      "teamReq": "Please Select Team(s).",
       "timeAdd": "Add a Time",
       "timeDisplayNameAria": "الاسم المعروض للوقت",
       "timeEdit": "Edit Time",
       "timeEnd": "End Time",
       "timeStart": "Start Time",
-      "tip": "Tip"
+      "tip": "Tip",
+      "type": "النوع",
+      "typeAria": "نوع وقت الخدمة",
+      "typeOther": "أخرى",
+      "typeRehearsal": "بروفة",
+      "typeService": "خدمة"
     },
     "timeList": {
       "addTimeAria": "إضافة وقت",
@@ -2088,7 +2472,6 @@
     },
     "noData": "No data available",
     "reportOutput": {
-      "anonymous": "مجهول",
       "print": "طباعة"
     },
     "runReport": "Run Report",
@@ -2314,6 +2697,7 @@
       "title": "Playlists"
     },
     "publishDate": "Publish Date",
+    "search": "بحث",
     "searchPlaceholder": "Search sermons by title or playlist...",
     "sermon": "Sermon",
     "sermonEdit": {
@@ -2369,9 +2753,9 @@
       "church": "Church",
       "churchName": "Church Name",
       "churches": "Churches",
+      "impersonateUser": "انتحال هوية مستخدم",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
-      "noUserChurches": "This user has no churches associated with their account.",
       "noUsers": "No users found. Please search for a different name or email.",
       "noteFour": "Comparable software is ProPresenter.  It's $399 for a site license.  I made assumptions that the average church installs the software on 3 computers and divided our total installs by 3 to get the number of churches.  I also made the assumption that churches will upgrade to a newer version every 5 years on average.  So $399 / 5 years / 3 computers = $26.60 annual cost per computer.  If we can quantify these assumptions we should update this number.",
       "noteOne": "Comparable software is Breeze.  They charge $72/mo or $864/year.",
@@ -2381,23 +2765,40 @@
       "regist": "Registered",
       "searchResults": "Search Results",
       "servAdmin": "Server Admin",
+      "serverHealth": "صحة الخادم",
       "subtitle": "Manage server-wide settings and churches",
       "translationLookups": "Translation Lookups",
       "usageTrends": "Usage Trends",
-      "userChurches": "Churches",
-      "userSearch": "Search by Name or Email",
-      "userSearchPlaceholder": "Search by name or email",
-      "users": "Users",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
       "churchNameSearchAria": "البحث باسم الكنيسة",
       "searchChurchesAria": "البحث عن الكنائس"
     },
+    "impersonateTab": {
+      "confirmMessage": "سيتم تسجيل خروجك من جلستك وتسجيل الدخول بصفة {email}. للعودة إلى حسابك، سجّل الخروج ثم أعد الدخول.",
+      "confirmTitle": "انتحال هوية هذا المستخدم؟",
+      "description": "ابحث عن حساب مستخدم بالبريد الإلكتروني وانتحل هويته. ستُستبدل جلستك بجلسته وستمر بإجراء تسجيل الدخول المعتاد.",
+      "impersonate": "انتحال الهوية",
+      "searchAria": "البحث عن مستخدمين لانتحال هويتهم",
+      "searchLabel": "بريد المستخدم",
+      "searchPlaceholder": "البحث ببريد تسجيل الدخول"
+    },
     "reportPage": {
       "adminOnly": "Admin Only",
       "report": "Report",
       "serverAdmin": "Server Admin"
+    },
+    "serverHealth": {
+      "detail": "التفاصيل",
+      "environment": "البيئة",
+      "loadError": "تعذر تحميل صحة الخادم.",
+      "no": "لا",
+      "setting": "الإعداد",
+      "status": "الحالة",
+      "subtitle": "يشير إلى ما إذا كان كل إعداد API مُهيأً. لا تُعرض القيم.",
+      "title": "صحة الخادم",
+      "yes": "نعم"
     },
     "translation": {
       "abbreviations": "Abbreviations",
@@ -2409,14 +2810,25 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "البحث في إحصاءات الترجمة"
-    },
-    "usersTab": {
-      "noPersonLinked": "لا يوجد شخص مرتبط",
-      "searchUsersAria": "البحث عن المستخدمين",
-      "userNameOrEmailSearchAria": "البحث باسم المستخدم أو البريد الإلكتروني"
     }
   },
   "settings": {
+    "apiKeyEdit": {
+      "close": "إغلاق",
+      "copied": "تم النسخ",
+      "copy": "نسخ",
+      "expires": "تاريخ الانتهاء",
+      "expiresHelp": "اتركه فارغًا لمفتاح لا ينتهي أبدًا.",
+      "generalScopes": "عام",
+      "keyIntro": "انسخ مفتاح API الآن — لن يُعرض مجددًا.",
+      "keyTitle": "مفتاح API",
+      "name": "الاسم",
+      "namePlaceholder": "مثال: تكامل Zapier",
+      "nameRequired": "الاسم مطلوب",
+      "newKey": "مفتاح API جديد",
+      "scopes": "الصلاحيات",
+      "scopesRequired": "اختر صلاحية واحدة على الأقل"
+    },
     "app": {
       "confirmDeleteTab": "Are you sure you wish to delete this tab?",
       "tabNameHelper": "Choose a descriptive name for your tab",
@@ -2443,10 +2855,12 @@
       "myGroups": "My Groups",
       "noGroupsFound": "لم يتم العثور على مجموعات",
       "page": "Page",
+      "plans": "خطط الخدمة",
       "saveTab": "Save Tab",
       "saving": "جاري الحفظ...",
       "selectGroups": "اختر المجموعات:",
       "selectImage": "Select Image",
+      "sermons": "العظات",
       "staffOnly": "الموظفون فقط",
       "tabIconAlt": "أيقونة علامة التبويب",
       "tabName": "Tab Name",
@@ -2505,6 +2919,25 @@
       "subtitle": "تتبع التغييرات والأنشطة في كنيستك",
       "title": "سجل التدقيق"
     },
+    "campusEdit": {
+      "address2": "سطر العنوان 2",
+      "confirmDelete": "هل أنت متأكد من حذف هذا الحرم؟",
+      "name": "الاسم",
+      "noTimezone": "لا شيء",
+      "timezone": "المنطقة الزمنية",
+      "validate": {
+        "name": "يرجى إدخال اسم الحرم."
+      },
+      "website": "الموقع الإلكتروني"
+    },
+    "campuses": {
+      "addCampus": "إضافة حرم",
+      "campus": "الحرم",
+      "campuses": "الأحرام",
+      "location": "الموقع",
+      "none": "لم تتم إضافة أي أحرام بعد.",
+      "subtitle": "إدارة المواقع الجغرافية لكنيستك"
+    },
     "church": {
       "subdomainHelper": "Your church's unique web address"
     },
@@ -2527,6 +2960,27 @@
       "subdomainAria": "نطاق فرعي",
       "textingSubtitle": "تكوين مزود الرسائل النصية",
       "textingTitle": "الرسائل النصية"
+    },
+    "developer": {
+      "actions": "الإجراءات",
+      "apiKeys": "مفاتيح API",
+      "app": "التطبيق",
+      "authorized": "مُصرح له",
+      "connectedApps": "التطبيقات المتصلة",
+      "delete": "حذف",
+      "deleteKeyConfirm": "حذف مفتاح API \"{name}\"؟ سيتوقف أي تكامل يستخدمه عن العمل.",
+      "expires": "تاريخ الانتهاء",
+      "lastUsed": "آخر استخدام",
+      "name": "الاسم",
+      "newKey": "مفتاح API جديد",
+      "noConnections": "لم يتم تفويض أي تطبيقات بعد.",
+      "noKeys": "لا توجد مفاتيح API بعد.",
+      "prefix": "المفتاح",
+      "revoke": "إلغاء الوصول",
+      "revokeConfirm": "إلغاء وصول \"{name}\"؟",
+      "scopes": "الصلاحيات",
+      "subtitle": "إدارة مفاتيح API والتطبيقات المتصلة",
+      "title": "المطور"
     },
     "directoryApprovalSettingsEdit": {
       "directoryApprovalGroup": "Directory Approval Group",
@@ -2604,6 +3058,8 @@
       "achHardLimit": "Hard limit [ ACH ]",
       "creditCardFlatRate": "Flat Rate [ Credit Card ]",
       "creditCardTransactionFee": "Transaction Fee [ Credit Card ]",
+      "kfFlatRate": "رسوم ثابتة [ Kingdom Funding ]",
+      "kfTransactionFee": "رسوم المعاملة [ Kingdom Funding ]",
       "paypalFlatRate": "Flat Rate [ PayPal ]",
       "paypalTransactionFee": "Transaction Fee [ PayPal ]"
     },
@@ -2614,39 +3070,63 @@
       "apiCredentials": "API Credentials",
       "clientId": "Client ID",
       "clientSecret": "Client Secret",
+      "copyWebhookUrl": "نسخ رابط Webhook",
       "currency": "العملة",
       "currencyHelper": "تأكد من تمكين هذه العملة أيضًا في لوحة تحكم Stripe الخاصة بك. قم بتمكين العملة هنا:",
       "developersApiKeys": "Developers → API keys",
       "forceMsg": "Automatically forces users to cover the transaction fees",
       "forceSslHelpAria": "مساعدة فرض SSL",
       "giving": "Giving",
+      "kfGetStarted": "للبدء. أدخل مفتاح Tokenization ومفتاح Source من لوحة تحكم Kingdom Funding.",
+      "kfSetup": "أدخل مفتاح Tokenization ومفتاح Source من لوحة تحكم Kingdom Funding. ابدأ على",
+      "kfVisit": "زيارة",
+      "kfWebhookInstructions": "قدم رابط Webhook هذا لممثل Kingdom Funding أثناء الإعداد حتى تتدفق تحديثات المعاملات إلى تقارير التبرع:",
+      "kingdomFunding": "Kingdom Funding",
       "none": "None",
-      "paypal": "PayPal",
       "paypalCreateApp": "create an app to get your Client ID and Secret.",
       "paypalDeveloper": "PayPal Developer",
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
+      "paypalSetup": "أنشئ تطبيق PayPal REST والصق معرف العميل والمفتاح السري أدناه. ابدأ على",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",
       "secKey": "Secret Key",
+      "sourceKey": "مفتاح Source",
       "stripe": "Stripe",
       "stripeCopyKeys": "to copy your Publishable and Secret keys (test & live).",
       "stripeDashboard": "Stripe Dashboard",
       "stripeGoTo": "and go to",
+      "stripeSetup": "انسخ مفاتيح Publishable و Secret من لوحة تحكم Stripe (المطورون ← مفاتيح API) والصقها أدناه. افتح",
       "stripeVisit": "Visit",
-      "transFee": "Transaction Fee"
+      "tokenizationKey": "مفتاح Tokenization",
+      "transFee": "Transaction Fee",
+      "webhookKey": "مفتاح Webhook",
+      "webhookKeyHelper": "سر توقيع Webhook من لوحة تحكم Accept Blue. مطلوب لتحديثات حالة المعاملات.",
+      "webhookUrlCopied": "تم نسخ رابط Webhook إلى الحافظة"
     },
     "imageEditor": {
       "crop": "Crop",
       "upload": "رفع",
       "uploadImageAria": "تحميل صورة"
     },
+    "landing": {
+      "campusesCount": "{count} موقع",
+      "campusesOne": "موقع واحد",
+      "campusesSubtitle": "المواقع الجغرافية",
+      "configuration": "الإعدادات",
+      "developerSubtitle": "مفاتيح API، Webhooks، التطبيقات المتصلة",
+      "domainsCount": "{count} متصل",
+      "domainsNone": "لا نطاقات مخصصة",
+      "domainsOne": "1 متصل",
+      "givingProvider": "{provider} · {currency}",
+      "notConfigured": "غير مُهيأ",
+      "notSet": "غير محدد"
+    },
     "manageChurch": {
       "auditLog": "سجل التدقيق",
       "editSettings": "Edit Settings",
       "imEx": "Import/Export",
-      "mobileApps": "Mobile Apps",
       "noData": "No church data available",
       "subtitle": "Configure church settings and preferences",
       "title": "Manage Church"
@@ -2672,7 +3152,6 @@
     "roleMembers": {
       "addRoleMemberAria": "إضافة عضو للدور",
       "confirmMsg": "Are you sure you wish to delete this user from",
-      "edit": "تحرير",
       "editRoleMemberAria": "تحرير عضو الدور {firstName} {lastName}",
       "lastAdminWarning": "يلزم وجود مسؤول نطاق واحد على الأقل. أضف مسؤولًا آخر قبل إزالة هذا.",
       "mem": "الأعضاء",
@@ -2698,7 +3177,6 @@
       "contAdmin": "Content Admin",
       "contAdminDesc": "Can edit website content, mobile content and sermons.",
       "custAdd": "Add Custom Role",
-      "edit": "تحرير",
       "editRoleAria": "تحرير الدور",
       "everyone": "Everyone",
       "itMsg": "? It ",
@@ -2707,6 +3185,9 @@
       "role": "Role",
       "roleCreate": "Do you wish to create a new role of ",
       "roles": "Roles"
+    },
+    "rolesPage": {
+      "subtitle": "إدارة الأدوار والصلاحيات"
     },
     "supportContactSettingsEdit": {
       "forceMsg": "This link will be used by users to contact the church",
@@ -2752,6 +3233,63 @@
       "members": "الأعضاء",
       "phoneNum": "Phone Number",
       "visibilityPreference": "Visibility Preference"
+    },
+    "webhookEdit": {
+      "active": "نشط",
+      "attempts": "المحاولات",
+      "close": "إغلاق",
+      "connectorDiscord": "Discord",
+      "connectorSlack": "Slack",
+      "connectorStandard": "قياسي (JSON خام)",
+      "connectorType": "نوع الموصل",
+      "copied": "تم النسخ",
+      "copy": "نسخ",
+      "date": "التاريخ",
+      "deliveries": "عمليات التسليم الأخيرة",
+      "deliveryDetail": "تفاصيل التسليم",
+      "discordUrlHelp": "الصق رابط Incoming Webhook لقناة Discord. يتم تسليم الأحداث كرسائل دردشة مقروءة.",
+      "editWebhook": "تعديل Webhook",
+      "event": "الحدث",
+      "events": "الأحداث",
+      "eventsRequired": "اختر حدثًا واحدًا على الأقل",
+      "name": "الاسم",
+      "namePlaceholder": "مثال: Zapier — أعضاء جدد",
+      "nameRequired": "الاسم مطلوب",
+      "newWebhook": "Webhook جديد",
+      "noDeliveries": "لا توجد عمليات تسليم بعد.",
+      "payload": "الحمولة",
+      "redeliver": "إعادة التسليم",
+      "regenerateConfirm": "إعادة توليد سر التوقيع؟ يتوقف السر الحالي عن العمل فورًا.",
+      "regenerateSecret": "إعادة توليد السر",
+      "response": "الاستجابة",
+      "responseBody": "محتوى الاستجابة",
+      "secretIntro": "انسخ سر التوقيع الآن — لن يُعرض مجددًا.",
+      "secretSignNote": "استخدمه للتحقق من رأس X-B1-Signature في كل عملية تسليم.",
+      "secretTitle": "سر التوقيع",
+      "sendTest": "إرسال حدث اختباري",
+      "sendingTest": "جارٍ الإرسال…",
+      "slackUrlHelp": "الصق رابط Incoming Webhook لقناة Slack. يتم تسليم الأحداث كرسائل دردشة مقروءة.",
+      "url": "رابط الحمولة",
+      "urlPlaceholder": "https://example.com/webhooks/b1",
+      "urlRequired": "الرابط مطلوب"
+    },
+    "webhooksPage": {
+      "actions": "الإجراءات",
+      "active": "نشط",
+      "createWebhook": "إنشاء Webhook",
+      "deleteConfirm": "حذف Webhook \"{name}\"؟",
+      "disabled": "معطل",
+      "emptyDescription": "أنشئ Webhook لإشعار الأدوات الخارجية عند تغيير بيانات الأشخاص أو المجموعات أو الأسر.",
+      "emptyTitle": "لا توجد Webhooks بعد",
+      "events": "الأحداث",
+      "name": "الاسم",
+      "newWebhook": "Webhook جديد",
+      "status": "الحالة",
+      "subtitle": "إرسال بيانات الكنيسة إلى أدوات خارجية عند وقوع أحداث",
+      "title": "Webhooks",
+      "tooltipDelete": "حذف",
+      "tooltipEdit": "تعديل",
+      "url": "الرابط"
     }
   },
   "site": {
@@ -2941,18 +3479,28 @@
       "urlLabel": "Url",
       "urlPlaceholder": "/donate"
     },
+    "donationEdit": {
+      "allowRecurring": "السماح بالتبرعات الدورية",
+      "allowSingleGift": "السماح بالتبرع المرة الواحدة",
+      "allowedFunds": "التقييد بصناديق محددة",
+      "allowedFundsHelper": "اتركه فارغًا للسماح بجميع الصناديق. سيرى المتبرعون الصناديق التي تختارها فقط.",
+      "defaultFund": "الصندوق الافتراضي",
+      "defaultFundHelper": "تحديد هذا الصندوق مسبقًا عند تحميل الصفحة. ادمجه مع إخفاء محدد الصندوق لتوجيه كل التبرعات إليه.",
+      "fundOptions": "خيارات الصندوق",
+      "giftOptions": "خيارات التبرع",
+      "noDefaultFund": "بدون افتراضي",
+      "showFundSelector": "إظهار محدد الصندوق للمتبرعين"
+    },
     "editorToolbar": {
       "addContent": "Add Content",
       "ago": "مضت",
       "block": "Block",
-      "desktop": "Desktop",
       "disablePublish": "إيقاف النشر",
       "disablePublishConfirm": "هل تريد إيقاف النشر لهذه الصفحة؟ ستصبح التعديلات منشورة فورًا مرة أخرى.",
       "discardChanges": "تجاهل التغييرات غير المنشورة",
       "discardChangesConfirm": "هل تريد تجاهل جميع التغييرات التي أُجريت منذ آخر نشر؟ سيُستعاد المحرر إلى النسخة المنشورة.",
       "exit": "خروج",
       "justNow": "الآن",
-      "mobile": "Mobile",
       "page": "Page",
       "publish": "نشر",
       "publishOffTip": "تُنشر التعديلات حاليًا فورًا. انشر لحفظ نسخة منشورة وإبقاء التعديلات المستقبلية خاصة حتى النشر التالي.",
@@ -2973,6 +3521,7 @@
       "addElements": "Add Elements",
       "advanced": "Advanced",
       "all": "All",
+      "block": "كتلة",
       "blocks": "Blocks",
       "box": "Box",
       "calendar": "التقويم",
@@ -2981,7 +3530,6 @@
       "church": "Church",
       "column": "عمود",
       "common": "شائع",
-      "content": "Content",
       "descBox": "Flexible container box",
       "descCalendar": "Event calendar view",
       "descCard": "Content card with image",
@@ -3008,15 +3556,12 @@
       "descVideo": "Video embed or upload",
       "donateLink": "Donate Link",
       "donation": "Donation",
-      "dragAndDrop": "Drag and drop onto page",
-      "dragHint": "Drag elements onto the page to add them",
       "embedPage": "Embed Page",
       "expandable": "Expandable",
       "form": "Form",
       "groupList": "Group List",
       "html": "HTML",
       "image": "Image",
-      "layout": "Layout",
       "location": "Location",
       "logo": "Logo",
       "media": "Media",
@@ -3153,7 +3698,6 @@
       "storageLimit": "/ 100MB"
     },
     "filesPage": {
-      "loading": "جارٍ التحميل...",
       "subtitle": "Manage files and media for your website",
       "title": "Files"
     },
@@ -3208,9 +3752,26 @@
     "navLinkEdit": {
       "errLinkText": "يرجى إدخال نص الرابط",
       "linkText": "نص الرابط",
+      "noParent": "(لا شيء)",
+      "parentPage": "الصفحة الرئيسية",
       "unauthorizedCreate": "غير مصرح لك بإنشاء الصفحات",
       "unauthorizedDelete": "غير مصرح لك بحذف الصفحات",
       "url": "URL"
+    },
+    "navStyleEdit": {
+      "activeColor": "لون الرابط النشط",
+      "backgroundColor": "لون الخلفية",
+      "headerSubtitle": "طابق التنقل مع هوية كنيستك البصرية",
+      "headerTitle": "تنسيق شريط التنقل",
+      "linkColor": "لون الرابط",
+      "linkHoverColor": "لون الرابط عند التمرير",
+      "override": "تجاوز",
+      "saveNav": "حفظ التنقل",
+      "solidSection": "الرأس (خلفية صلبة)",
+      "solidSectionDesc": "يُستخدم في معظم الصفحات. كل لون اختياري — اتركه بدون تجاوز للحفاظ على التصيير الحالي للموقع.",
+      "transparentSection": "الرأس فوق البطل (شفاف)",
+      "transparentSectionDesc": "يُستخدم عندما يطفو التنقل فوق صورة بطل. اتركه بدون تجاوز لمطابقة لون نص البطل تلقائيًا.",
+      "unset": "افتراضي"
     },
     "pageLink": {
       "check": "Check",
@@ -3297,7 +3858,6 @@
     },
     "pickColors": {
       "background": "الخلفية",
-      "backgroundField": "الخلفية",
       "backgroundOpacity": "شفافية الخلفية",
       "backgroundType": "نوع الخلفية",
       "color": "اللون",
@@ -3549,6 +4109,8 @@
       "loadingPreview": "جارٍ تحميل المعاينة...",
       "logo": "الشعار",
       "logoDesc": "قم بتحميل وإدارة شعارك",
+      "nav": "التنقل",
+      "navDesc": "تنسيق شريط تنقل الموقع",
       "siteFooterName": "تذييل الموقع",
       "spacing": "مقياس التباعد",
       "spacingDesc": "حدد قيم تباعد متسقة",
@@ -3666,7 +4228,6 @@
     "keys": {
       "add": "إضافة",
       "addExternalLink": "Add external link",
-      "addExternalLinkAria": "إضافة رابط خارجي",
       "addFiles": "Add Files",
       "availableDownloads": "التنزيلات المتاحة",
       "editSelectedKeyAria": "تحرير المفتاح المحدد",
@@ -3706,6 +4267,9 @@
     },
     "praiseChartsProducts": {
       "close": "إغلاق",
+      "collapse": "طي",
+      "download": "تنزيل",
+      "expand": "توسيع",
       "free": "مجاني",
       "linkAccountPrefix": "ليس لديك حساب PraiseCharts مرتبط. انتقل إلى",
       "linkAccountSuffix": "لربط حساب.",
@@ -3760,11 +4324,16 @@
     },
     "title": "Songs"
   },
+  "stockPhotos": {
+    "photoBy": "صورة بواسطة",
+    "providedBy": "مقدمة من"
+  },
   "tasks": {
     "actionEdit": {
       "actType": "Action Type",
       "actTypeHelp": "Select the type of action to perform",
       "actionTypeAria": "نوع الإجراء",
+      "addToWorkflow": "إضافة إلى سير العمل",
       "assignTo": "Assign to",
       "assignToAria": "تعيين إلى",
       "editAct": "Action Edit",
@@ -3894,6 +4463,71 @@
       "sel": "Select",
       "selPers": "Select a Person or Group"
     },
+    "eventTriggers": {
+      "active": "نشط",
+      "addCondition": "إضافة شرط",
+      "addTrigger": "إضافة محفز",
+      "conditions": "فقط إذا",
+      "editTrigger": "تعديل المحفز",
+      "event": "عند حدوث هذا",
+      "field": "الحقل",
+      "firstStep": "الخطوة الأولى",
+      "kindEvent": "عند وقوع حدث",
+      "kindSchedule": "وفق جدول زمني",
+      "manage": "المحفزات",
+      "matchAll": "مطابقة جميع الشروط",
+      "matchAny": "مطابقة أي شرط",
+      "name": "الاسم",
+      "noConditions": "يُطبق على كل حدث مطابق.",
+      "noTriggers": "لا توجد محفزات أحداث مُهيأة.",
+      "oncePerSubject": "مرة واحدة فقط لكل شخص",
+      "operator": "العامل",
+      "pauseAll": "إيقاف الأتمتة مؤقتًا",
+      "paused": "موقوف مؤقتًا",
+      "recur_daily": "يوميًا",
+      "recur_monthly": "شهريًا",
+      "recur_weekly": "أسبوعيًا",
+      "recur_yearly": "سنويًا",
+      "recurs": "التكرار",
+      "resumeAll": "استئناف الأتمتة",
+      "runNow": "تشغيل الآن",
+      "runNowFailed": "فشل التشغيل الآن.",
+      "runNowResult": "طُبِّق على {created} شخص؛ تم تخطي {skipped} (موجودون بالفعل في سير العمل).",
+      "saveRuleFirst": "احفظ القاعدة أولًا لإضافة الشروط.",
+      "selectEvent": "اختر حدثًا",
+      "step": "الخطوة الابتدائية",
+      "subtitle": "بدء سير العمل تلقائيًا عند إضافة سجل أو تغييره أو حذفه — بما في ذلك تقديم النماذج.",
+      "title": "المحفزات",
+      "value": "القيمة",
+      "workflow": "إضافة إلى سير العمل"
+    },
+    "executions": {
+      "attempts": "المحاولات",
+      "deletedTrigger": "(محفز محذوف)",
+      "noExecutions": "لا توجد عمليات تنفيذ بعد. تظهر هنا عند تشغيل محفز.",
+      "pause": "إيقاف مؤقت",
+      "refresh": "تحديث",
+      "resume": "استئناف",
+      "retry": "إعادة المحاولة",
+      "statusHeader": "الحالة",
+      "status_failed": "فشل",
+      "status_paused": "موقوف مؤقتًا",
+      "status_pending": "معلق",
+      "status_success": "ناجح",
+      "subject": "الشخص",
+      "title": "سجل التنفيذ",
+      "trigger": "المحفز",
+      "when": "التوقيت"
+    },
+    "myCards": {
+      "noCards": "لا توجد بطاقات مسندة إليك.",
+      "subtitle": "البطاقات المسندة إليك",
+      "title": "بطاقاتي"
+    },
+    "myWork": {
+      "subtitle": "بطاقات سير العمل والمهام الخاصة بك",
+      "title": "عملي"
+    },
     "newTask": {
       "assignPers": "Please assign this task to a person.",
       "assignTo": "Assign to",
@@ -3958,7 +4592,132 @@
       "showClosed": "Show Closed",
       "showOpen": "Show Open",
       "subtitle": "Manage tasks and automations",
-      "tasks": "Tasks"
+      "tasks": "Tasks",
+      "workflows": "سير العمل"
+    },
+    "workflowActions": {
+      "add": "إضافة إجراء",
+      "days": "أيام الانتظار",
+      "noAssignee": "غير مسند",
+      "noGroup": "لم تُحدد مجموعة",
+      "none": "لا توجد إجراءات",
+      "note": "ملاحظة",
+      "pickAssignee": "اختر المسند إليه",
+      "pickGroup": "اختر مجموعة",
+      "saveFirst": "احفظ الخطوة قبل إضافة الإجراءات.",
+      "selectField": "الحقل",
+      "selectTemplate": "اختر قالب البريد الإلكتروني",
+      "selectWorkflow": "اختر سير العمل",
+      "subjectOverride": "الموضوع (اختياري)",
+      "taskDescription": "الوصف (اختياري)",
+      "taskTitle": "عنوان المهمة",
+      "title": "الإجراءات التلقائية",
+      "type": {
+        "addNote": "إضافة ملاحظة",
+        "addToGroup": "إضافة إلى مجموعة",
+        "addToWorkflow": "إضافة إلى سير العمل",
+        "createTask": "إنشاء مهمة",
+        "delay": "انتظار",
+        "removeFromGroup": "إزالة من مجموعة",
+        "sendEmail": "إرسال بريد إلكتروني",
+        "setField": "تعيين حقل",
+        "webhook": "Webhook"
+      },
+      "value": "القيمة",
+      "webhookUrl": "رابط Webhook (https)"
+    },
+    "workflowBoard": {
+      "addCard": "إضافة بطاقة",
+      "addStep": "إضافة خطوة",
+      "boardTab": "اللوحة",
+      "clearSelection": "مسح",
+      "moveTo": "نقل إلى…",
+      "selectedCount": "{count} محدد",
+      "step": "الخطوة",
+      "subtitle": "اسحب البطاقات بين الخطوات",
+      "unassigned": "غير مسند"
+    },
+    "workflowCard": {
+      "assign": "إسناد",
+      "assignedTo": "مسند إلى",
+      "complete": "اكتمل",
+      "history": "النشاط",
+      "outcome": "النتيجة",
+      "overdue": "متأخر",
+      "pin": "تثبيت الإسناد",
+      "pinnedNote": "مثبت — يحتفظ بهذا المالك عبر الخطوات",
+      "sendBack": "إرسال للخلف",
+      "skip": "تخطي",
+      "snooze": "تأجيل",
+      "snooze1Day": "يوم واحد",
+      "snooze1Week": "أسبوع واحد",
+      "snooze3Days": "3 أيام",
+      "snoozed": "مؤجل"
+    },
+    "workflowCategories": {
+      "addCategory": "إضافة فئة",
+      "newCategory": "اسم الفئة الجديدة",
+      "title": "الفئة",
+      "uncategorized": "غير مصنف"
+    },
+    "workflowEdit": {
+      "active": "نشط",
+      "editWorkflow": "تعديل سير العمل",
+      "inactive": "غير نشط",
+      "name": "الاسم"
+    },
+    "workflowReports": {
+      "noData": "لا توجد بيانات بعد",
+      "overdue": "متأخر",
+      "perStep": "البطاقات لكل خطوة",
+      "subtitle": "تحليلات سير العمل",
+      "throughput": "مكتمل (30 يومًا)",
+      "title": "التقارير"
+    },
+    "workflowRouting": {
+      "addAuto": "إضافة توجيه تلقائي",
+      "addCondition": "إضافة شرط",
+      "addOutcome": "إضافة نتيجة",
+      "always": "دائمًا",
+      "automatic": "التوجيه التلقائي (عند الدخول)",
+      "automaticHelp": "عند دخول بطاقة هذه الخطوة، أرسلها تلقائيًا إذا تطابق الشخص.",
+      "closes": "إغلاق",
+      "completeCard": "اكتمال البطاقة",
+      "conditions": "الشروط",
+      "ifMatch": "إذا تطابق",
+      "noConditions": "لا توجد شروط بعد — هذا المسار يطابق الجميع.",
+      "outcomeLabel": "نص الزر",
+      "outcomes": "النتائج (عند الاكتمال)",
+      "outcomesHelp": "أزرار تظهر عند اكتمال بطاقة في هذه الخطوة. يمكن لكل منها إرسال البطاقة إلى خطوة أخرى أو تحويلها إلى سير عمل آخر أو إغلاقها.",
+      "remove": "إزالة",
+      "saveStepFirst": "احفظ الخطوة أولًا قبل إضافة التوجيه.",
+      "sendToWorkflow": "إرسال إلى سير عمل آخر",
+      "targetStep": "الانتقال إلى الخطوة",
+      "title": "التوجيه"
+    },
+    "workflowStepEdit": {
+      "defaultAssignee": "المسند إليه الافتراضي",
+      "dueDays": "تاريخ الاستحقاق (أيام)",
+      "dueDaysHelp": "يضبط تاريخ استحقاق عند دخول بطاقة هذه الخطوة",
+      "editStep": "تعديل الخطوة",
+      "stepName": "اسم الخطوة"
+    },
+    "workflowTriggers": {
+      "addTrigger": "إضافة محفز",
+      "formTrigger": "تقديم نموذج",
+      "noTriggers": "لا توجد محفزات مُهيأة.",
+      "selectForm": "النموذج",
+      "subtitle": "إضافة الأشخاص تلقائيًا إلى سير العمل هذا عند تقديمهم نموذجًا.",
+      "title": "المحفزات"
+    },
+    "workflowsPage": {
+      "addWorkflow": "إضافة سير عمل",
+      "added": "تمت الإضافة إلى سير العمل.",
+      "blankWorkflow": "سير عمل فارغ",
+      "duplicate": "تكرار",
+      "noWorkflows": "لا توجد مسارات عمل بعد. أضف واحدة للبدء.",
+      "subtitle": "تحريك الأشخاص عبر سلسلة من الخطوات",
+      "title": "سير العمل"
     }
   },
   "ui": {
