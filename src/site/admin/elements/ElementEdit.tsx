@@ -700,24 +700,10 @@ export function ElementEdit(props: Props) {
     let result = getJsonFields();
     switch (element?.elementType) {
       case "row":
-        result = (
-          <>
-            <RowEdit parsedData={parsedData} onRealtimeChange={handleRowChange} setErrors={setInnerErrors} />
-            {getAppearanceFields([
-              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-            ])}
-          </>
-        );
+        result = <RowEdit parsedData={parsedData} onRealtimeChange={handleRowChange} setErrors={setInnerErrors} />;
         break;
       case "table":
-        result = (
-          <>
-            <TableEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />
-            {getAppearanceFields([
-              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-            ])}
-          </>
-        );
+        result = <TableEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />;
         break;
       case "box": result = getBoxFields(); break;
       case "text": result = getTextFields(); break;
@@ -725,22 +711,10 @@ export function ElementEdit(props: Props) {
       case "card": result = getCardFields(); break;
       case "logo": result = getLogoFields(); break;
       case "donation":
-        result = (
-          <>
-            <DonationEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />
-            {getAppearanceFields([
-              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-            ])}
-          </>
-        );
+        result = <DonationEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />;
         break;
       case "donateLink":
-        result = (
-          <>
-            <DonateLinkEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />
-            {getAppearanceFields(["border"])}
-          </>
-        );
+        result = <DonateLinkEdit parsedData={parsedData} onRealtimeChange={handleRowChange} />;
         break;
       case "stream": result = getStreamFields(); break;
       case "iframe": result = getIframeFields(); break;
@@ -748,24 +722,10 @@ export function ElementEdit(props: Props) {
       case "video": result = getVideoFields(); break;
       case "rawHTML": result = getRawHTML(); break;
       case "form":
-        result = (
-          <>
-            <FormEdit parsedData={parsedData} handleChange={handleChange} />
-            {getAppearanceFields([
-              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-            ])}
-          </>
-        );
+        result = <FormEdit parsedData={parsedData} handleChange={handleChange} />;
         break;
       case "faq":
-        result = (
-          <>
-            <FaqEdit parsedData={parsedData} handleChange={handleChange} handleHtmlChange={handleHtmlChange} />
-            {getAppearanceFields([
-              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-            ])}
-          </>
-        );
+        result = <FaqEdit parsedData={parsedData} handleChange={handleChange} handleHtmlChange={handleHtmlChange} />;
         break;
       case "map": result = getMapFields(); break;
       case "sermons": result = <></>; break;
@@ -773,14 +733,7 @@ export function ElementEdit(props: Props) {
       case "image": result = getImageFields(); break;
       case "whiteSpace": result = getWhiteSpaceFields(); break;
       case "calendar":
-        result = (
-          <>
-            <CalendarElementEdit parsedData={parsedData} handleChange={handleChange} />
-            {getAppearanceFields([
-              "border", "background", "color", "font", "height", "line", "margin", "padding", "width"
-            ])}
-          </>
-        );
+        result = <CalendarElementEdit parsedData={parsedData} handleChange={handleChange} />;
         break;
       case "groupList": result = getGroupListFields(); break;
       case "groups": result = getGroupsFields(); break;
