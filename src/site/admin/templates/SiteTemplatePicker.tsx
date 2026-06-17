@@ -21,6 +21,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
   const [selected, setSelected] = useState<SiteTemplateDef | null>(null);
   const [existingPages, setExistingPages] = useState<PageSummary[]>([]);
   const [existingLinks, setExistingLinks] = useState<LinkInterface[]>([]);
+  const [existingStyle, setExistingStyle] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
@@ -31,6 +32,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
       setErrors([]);
       ApiHelper.get("/pages", "ContentApi").then((data: PageSummary[]) => setExistingPages(data || []));
       ApiHelper.get("/links?category=website", "ContentApi").then((data: LinkInterface[]) => setExistingLinks(data || []));
+      ApiHelper.get("/globalStyles", "ContentApi").then((gs: any) => setExistingStyle(gs || {}));
     }
   }, [props.open]);
 
@@ -72,6 +74,11 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
           }
         }
       }
+      // Theme the site to the chosen template, but never overwrite a church's own palette.
+      if (selected.theme && existingStyle && !existingStyle.palette) {
+        const gs = { ...existingStyle, palette: JSON.stringify(selected.theme.palette), fonts: JSON.stringify(selected.theme.fonts) };
+        await ApiHelper.post("/globalStyles", [gs], "ContentApi");
+      }
       props.updatedCallback(firstCreatedPageId);
     } catch (err: any) {
       setErrors([err?.message || label("errFailed")]);
@@ -99,7 +106,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
         {siteTemplates.map((template) => (
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={template.key}>
             <Box sx={cardSx} onClick={() => setSelected(template)} data-testid={"site-template-" + template.key}>
-              <SiteTemplatePreview page={template.pages[0]} navLabels={navLabels(template)} churchName={churchName} maxHeight={260} />
+              <SiteTemplatePreview page={template.pages[0]} navLabels={navLabels(template)} churchName={churchName} maxHeight={260} palette={template.theme?.palette} />
               <Typography sx={{ fontSize: "0.95rem", fontWeight: 600, marginTop: "10px" }}>{label("names." + template.key)}</Typography>
               <Typography sx={{ fontSize: "0.8rem", color: "text.secondary" }}>{label("descriptions." + template.key)}</Typography>
               <Typography sx={{ fontSize: "0.72rem", color: "text.disabled", marginTop: "4px" }}>
@@ -133,7 +140,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
                 <Typography sx={{ fontSize: "0.85rem", fontWeight: 600 }}>{pageTitle(p)}</Typography>
                 {pageExists(p) && <Chip label={label("exists")} size="small" color="warning" sx={{ fontSize: "0.65rem", height: 18 }} />}
               </Box>
-              <SiteTemplatePreview page={p} navLabels={navLabels(selected)} churchName={churchName} maxHeight={340} />
+              <SiteTemplatePreview page={p} navLabels={navLabels(selected)} churchName={churchName} maxHeight={340} palette={selected.theme?.palette} />
             </Grid>
           ))}
         </Grid>

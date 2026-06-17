@@ -1,5 +1,5 @@
 import React from "react";
-import { TemplateMiniRender } from "./TemplateMiniRender";
+import { TemplateMiniRender, type MiniPalette } from "./TemplateMiniRender";
 import { getSectionDefs, type SiteTemplatePageDef } from "./siteTemplates";
 
 interface Props {
@@ -7,8 +7,9 @@ interface Props {
   navLabels?: string[];
   churchName?: string;
   maxHeight?: number;
+  palette?: MiniPalette;
 }
 
-export const SiteTemplatePreview: React.FC<Props> = ({ page, navLabels, churchName, maxHeight = 240 }) => (
-  <TemplateMiniRender sections={getSectionDefs(page.sections)} navLabels={navLabels} churchName={churchName} maxHeight={maxHeight} />
+export const SiteTemplatePreview: React.FC<Props> = ({ page, navLabels, churchName, maxHeight = 240, palette }) => (
+  <TemplateMiniRender sections={getSectionDefs(page.sections)} navLabels={navLabels} churchName={churchName} maxHeight={maxHeight} palette={palette} />
 );

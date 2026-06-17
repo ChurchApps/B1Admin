@@ -2,6 +2,8 @@ import React, { useLayoutEffect, useRef, useState } from "react";
 import { Box } from "@mui/material";
 import type { SectionContentDef, TemplateElementDef } from "./sectionTemplates";
 
+export interface MiniPalette { light: string; lightAccent: string; accent: string; darkAccent: string; dark: string }
+
 const PALETTE_FALLBACKS: Record<string, string> = {
   "var(--light)": "#f4f5f7",
   "var(--lightAccent)": "#dbeafe",
@@ -11,7 +13,22 @@ const PALETTE_FALLBACKS: Record<string, string> = {
   "var(--primary)": "#1976d2",
   "var(--secondary)": "#9333ea"
 };
-const resolveBackground = (background: string) => PALETTE_FALLBACKS[background] || background;
+
+const buildTheme = (palette?: MiniPalette) => {
+  if (!palette) return { resolve: (bg: string) => PALETTE_FALLBACKS[bg] || bg, accent: "#1976d2" };
+  const map: Record<string, string> = {
+    "var(--light)": palette.light,
+    "var(--lightAccent)": palette.lightAccent,
+    "var(--accent)": palette.accent,
+    "var(--darkAccent)": palette.darkAccent,
+    "var(--dark)": palette.dark,
+    "var(--primary)": palette.accent,
+    "var(--secondary)": palette.darkAccent
+  };
+  return { resolve: (bg: string) => map[bg] || bg, accent: palette.accent };
+};
+
+const ThemeCtx = React.createContext(buildTheme());
 
 const STOCK = "https://content.churchapps.org/stockPhotos";
 const SAMPLE_SERMONS = [
@@ -26,21 +43,25 @@ const SAMPLE_GROUPS = [
 ];
 
 // Like the real renderer, buttons are inline and inherit the section's text-align.
-const MiniButton: React.FC<{ text: string; variant?: string }> = ({ text, variant }) => (
-  <div style={{ textAlign: "inherit", marginTop: 8 }}>
-    <span style={{
-      display: "inline-block",
-      padding: "10px 26px",
-      borderRadius: 4,
-      fontSize: 15,
-      fontWeight: 600,
-      letterSpacing: 0.5,
-      ...(variant === "outlined" ? { border: "1.5px solid currentColor" } : { backgroundColor: "#1976d2", color: "#fff" })
-    }}>{text}</span>
-  </div>
-);
+const MiniButton: React.FC<{ text: string; variant?: string }> = ({ text, variant }) => {
+  const { accent } = React.useContext(ThemeCtx);
+  return (
+    <div style={{ textAlign: "inherit", marginTop: 8 }}>
+      <span style={{
+        display: "inline-block",
+        padding: "10px 26px",
+        borderRadius: 4,
+        fontSize: 15,
+        fontWeight: 600,
+        letterSpacing: 0.5,
+        ...(variant === "outlined" ? { border: "1.5px solid currentColor" } : { backgroundColor: accent, color: "#fff" })
+      }}>{text}</span>
+    </div>
+  );
+};
 
 const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
+  const { resolve: resolveBackground, accent } = React.useContext(ThemeCtx);
   const a: Record<string, any> = def.answers || {};
   switch (def.elementType) {
     case "row":
@@ -110,7 +131,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
               <div style={{ position: "relative", borderRadius: 6, overflow: "hidden" }}>
                 <img src={s.photo} alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block", filter: "brightness(0.65)" }} />
                 <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ width: 34, height: 34, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", color: "#1976d2", fontSize: 14, paddingLeft: 3 }}>▶</div>
+                  <div style={{ width: 34, height: 34, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", color: accent, fontSize: 14, paddingLeft: 3 }}>▶</div>
                 </div>
               </div>
               <div style={{ fontSize: 15, fontWeight: 600, marginTop: 8 }}>{s.title}</div>
@@ -147,7 +168,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
         <div style={{ textAlign: "center" }}>
           <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 12 }}>
             {["$25", "$50", "$100"].map((amt) => (
-              <span key={amt} style={{ border: "1.5px solid #1976d2", color: "#1976d2", borderRadius: 4, padding: "8px 18px", fontSize: 14, fontWeight: 600 }}>{amt}</span>
+              <span key={amt} style={{ border: `1.5px solid ${accent}`, color: accent, borderRadius: 4, padding: "8px 18px", fontSize: 14, fontWeight: 600 }}>{amt}</span>
             ))}
           </div>
           <MiniButton text="Give Now" centered />
@@ -159,6 +180,7 @@ const MiniElement: React.FC<{ def: TemplateElementDef }> = ({ def }) => {
 };
 
 const MiniSection: React.FC<{ section: SectionContentDef }> = ({ section }) => {
+  const { resolve: resolveBackground } = React.useContext(ThemeCtx);
   const background = resolveBackground(section.section.background);
   const isImage = background.indexOf("/") > -1 && !background.startsWith("linear-gradient");
   const light = section.section.textColor === "light";
@@ -189,11 +211,13 @@ interface Props {
   navLabels?: string[];
   churchName?: string;
   maxHeight: number;
+  palette?: MiniPalette;
 }
 
 const DESIGN_WIDTH = 800;
 
-export const TemplateMiniRender: React.FC<Props> = ({ sections, navLabels, churchName, maxHeight }) => {
+export const TemplateMiniRender: React.FC<Props> = ({ sections, navLabels, churchName, maxHeight, palette }) => {
+  const theme = buildTheme(palette);
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.3);
@@ -234,20 +258,22 @@ export const TemplateMiniRender: React.FC<Props> = ({ sections, navLabels, churc
         "& .miniText p": { fontSize: "16px", lineHeight: 1.55, margin: "6px 0" }
       }}
     >
-      <div ref={innerRef} style={{ width: DESIGN_WIDTH, transform: `scale(${scale})`, transformOrigin: "top left" }}>
-        {navLabels && navLabels.length > 0 && (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 32px", backgroundColor: "#fff", borderBottom: "1px solid #e5e8ec" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: "#1976d2" }} />
-              <span style={{ fontSize: 17, fontWeight: 700, color: "#222" }}>{churchName || "Your Church"}</span>
+      <ThemeCtx.Provider value={theme}>
+        <div ref={innerRef} style={{ width: DESIGN_WIDTH, transform: `scale(${scale})`, transformOrigin: "top left" }}>
+          {navLabels && navLabels.length > 0 && (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 32px", backgroundColor: "#fff", borderBottom: "1px solid #e5e8ec" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: theme.accent }} />
+                <span style={{ fontSize: 17, fontWeight: 700, color: "#222" }}>{churchName || "Your Church"}</span>
+              </div>
+              <div style={{ display: "flex", gap: 22 }}>
+                {navLabels.map((l, i) => <span key={i} style={{ fontSize: 14, fontWeight: 500, color: i === 0 ? theme.accent : "#444" }}>{l}</span>)}
+              </div>
             </div>
-            <div style={{ display: "flex", gap: 22 }}>
-              {navLabels.map((l, i) => <span key={i} style={{ fontSize: 14, fontWeight: 500, color: i === 0 ? "#1976d2" : "#444" }}>{l}</span>)}
-            </div>
-          </div>
-        )}
-        {sections.map((section, i) => <MiniSection key={i} section={section} />)}
-      </div>
+          )}
+          {sections.map((section, i) => <MiniSection key={i} section={section} />)}
+        </div>
+      </ThemeCtx.Provider>
       {clipped && <Box sx={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 36, background: "linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.9))" }} />}
     </Box>
   );

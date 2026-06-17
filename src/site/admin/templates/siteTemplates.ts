@@ -8,10 +8,32 @@ export interface SiteTemplatePageDef {
   sections?: (string | SectionContentDef)[];
 }
 
+export interface SiteTemplateTheme {
+  palette: { light: string; lightAccent: string; accent: string; darkAccent: string; dark: string; radius?: { sm: string; md: string; lg: string; xl: string }; typeScale?: number };
+  fonts: { heading: string; body: string };
+}
+
 export interface SiteTemplateDef {
   key: string;
+  theme: SiteTemplateTheme;
   pages: SiteTemplatePageDef[];
 }
+
+const sharp = { sm: "2px", md: "4px", lg: "6px", xl: "8px" };
+const soft = { sm: "6px", md: "12px", lg: "18px", xl: "24px" };
+const round = { sm: "10px", md: "18px", lg: "26px", xl: "32px" };
+
+// Each template ships a distinct palette + font pairing + corner style so fresh sites
+// open with a real visual identity instead of all defaulting to blue / Roboto / 8px.
+const themes: Record<string, SiteTemplateTheme> = {
+  classic: { palette: { light: "#ffffff", lightAccent: "#ece3cf", accent: "#1f3a5f", darkAccent: "#b8902f", dark: "#14233a", radius: sharp }, fonts: { heading: "Playfair Display", body: "Lato" } },
+  simple: { palette: { light: "#ffffff", lightAccent: "#d6edf2", accent: "#0f766e", darkAccent: "#134e4a", dark: "#0b1f1d", radius: soft }, fonts: { heading: "Inter", body: "Inter" } },
+  modern: { palette: { light: "#ffffff", lightAccent: "#e0e7ff", accent: "#4f46e5", darkAccent: "#312e81", dark: "#1e1b3a", radius: round, typeScale: 1.05 }, fonts: { heading: "Poppins", body: "Open Sans" } },
+  visitor: { palette: { light: "#ffffff", lightAccent: "#ffe1d4", accent: "#ef5a2a", darkAccent: "#0b4a7f", dark: "#1a1a1a", radius: round }, fonts: { heading: "Montserrat", body: "Open Sans" } },
+  community: { palette: { light: "#ffffff", lightAccent: "#dde8d3", accent: "#4d7c3a", darkAccent: "#2f5128", dark: "#18220f", radius: soft }, fonts: { heading: "Raleway", body: "Lato" } },
+  media: { palette: { light: "#ffffff", lightAccent: "#d4d6e0", accent: "#dc2626", darkAccent: "#1f2937", dark: "#0a0a0f", radius: sharp }, fonts: { heading: "Oswald", body: "Roboto" } },
+  heritage: { palette: { light: "#fffdf8", lightAccent: "#ece0cf", accent: "#7a2e2e", darkAccent: "#4a1f1f", dark: "#261410", radius: sharp }, fonts: { heading: "Playfair Display", body: "Lato" } }
+};
 
 const sermonsNav: SiteTemplatePageDef = { url: "/sermons", navKey: "sermons", navIcon: "play_circle" };
 const giveNav: SiteTemplatePageDef = { url: "/donate", navKey: "give", navIcon: "favorite" };
@@ -96,6 +118,7 @@ const heritageHeroBand: SectionContentDef = {
 export const siteTemplates: SiteTemplateDef[] = [
   {
     key: "classic",
+    theme: themes.classic,
     pages: [
       { titleKey: "home", url: "/", navKey: "home", navIcon: "home", sections: ["heroCentered", "welcome", "serviceTimes", "ministriesCards", "testimony", "ctaBanner"] },
       { titleKey: "about", url: "/about", navKey: "about", navIcon: "info", sections: ["aboutSplit", "storyColumns", "staffGrid", "verseBanner"] },
@@ -106,6 +129,7 @@ export const siteTemplates: SiteTemplateDef[] = [
   },
   {
     key: "simple",
+    theme: themes.simple,
     pages: [
       { titleKey: "home", url: "/", navKey: "home", navIcon: "home", sections: ["heroSplit", "serviceTimes", "findUs", "givingBanner", "connectColumns"] },
       { titleKey: "about", url: "/about", navKey: "about", navIcon: "info", sections: ["welcome", "storyColumns", "staffGrid", "faqSection"] },
@@ -114,6 +138,7 @@ export const siteTemplates: SiteTemplateDef[] = [
   },
   {
     key: "modern",
+    theme: themes.modern,
     pages: [
       { titleKey: "home", url: "/", navKey: "home", navIcon: "home", sections: [modernHero, "galleryRow", "serviceTimes", "watchOnline", "givingBanner", "connectColumns"] },
       { titleKey: "about", url: "/about", navKey: "about", navIcon: "info", sections: ["aboutSplit", "staffGrid", "faqSection"] },
@@ -124,6 +149,7 @@ export const siteTemplates: SiteTemplateDef[] = [
   },
   {
     key: "visitor",
+    theme: themes.visitor,
     pages: [
       { titleKey: "home", url: "/", navKey: "home", navIcon: "home", sections: [visitorHero, "faqSection", "serviceTimes", "testimony", "ctaBanner"] },
       { titleKey: "visit", url: "/visit", navKey: "visit", navIcon: "location_on", sections: ["findUs", "ministriesCards", "faqSection"] },
@@ -134,6 +160,7 @@ export const siteTemplates: SiteTemplateDef[] = [
   },
   {
     key: "community",
+    theme: themes.community,
     pages: [
       { titleKey: "home", url: "/", navKey: "home", navIcon: "home", sections: [communityHero, "ministriesCards", "testimony", "ctaBanner"] },
       { titleKey: "connect", url: "/connect", navKey: "connect", navIcon: "groups", sections: ["groupsBrowser", "faqSection"] },
@@ -144,6 +171,7 @@ export const siteTemplates: SiteTemplateDef[] = [
   },
   {
     key: "media",
+    theme: themes.media,
     pages: [
       { titleKey: "home", url: "/", navKey: "home", navIcon: "home", sections: [mediaHero, "sermonsLatest", "watchOnline", "givingBanner"] },
       { titleKey: "about", url: "/about", navKey: "about", navIcon: "info", sections: ["welcome", "staffGrid", "connectColumns"] },
@@ -154,6 +182,7 @@ export const siteTemplates: SiteTemplateDef[] = [
   },
   {
     key: "heritage",
+    theme: themes.heritage,
     pages: [
       { titleKey: "home", url: "/", navKey: "home", navIcon: "home", sections: [heritageHeroQuote, heritageHeroBand, "serviceTimes", "findUs", "connectColumns"] },
       { titleKey: "about", url: "/about", navKey: "about", navIcon: "info", sections: ["storyColumns", "aboutSplit", "staffGrid", "testimony"] },
