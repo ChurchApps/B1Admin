@@ -126,6 +126,8 @@ export function SectionEdit(props: Props) {
     <PickColors
       background={section?.background}
       backgroundOpacity={parsedData?.backgroundOpacity}
+      overlayColor={parsedData?.overlayColor}
+      focalPoint={parsedData?.focalPoint}
       textColor={section?.textColor}
       headingColor={section?.headingColor}
       linkColor={section?.linkColor}

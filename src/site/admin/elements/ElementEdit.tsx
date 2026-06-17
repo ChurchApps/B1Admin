@@ -862,11 +862,15 @@ export function ElementEdit(props: Props) {
                 {element?.elementType === "box" && (
                   <PickColors
                     background={parsedData?.background}
+                    backgroundOpacity={parsedData?.backgroundOpacity}
+                    overlayColor={parsedData?.overlayColor}
+                    focalPoint={parsedData?.focalPoint}
                     textColor={parsedData?.textColor}
                     headingColor={parsedData?.headingColor || parsedData?.textColor}
                     linkColor={parsedData?.linkColor}
                     updatedCallback={selectColors}
                     globalStyles={props.globalStyles}
+                    onChange={handleChange}
                   />
                 )}
                 <StyleList fields={appearanceFields} styles={parsedStyles} onChange={handleStyleChange} />
