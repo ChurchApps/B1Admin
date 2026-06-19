@@ -28,7 +28,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
   const [errors, setErrors] = React.useState<string[]>([]);
   const [copySnackbar, setCopySnackbar] = React.useState(false);
 
-  // Build the webhook URL for KingdomFunding (Accept Blue) using the active GivingApi base URL.
+  // Build the webhook URL for KingdomFunding (NMI) using the active GivingApi base URL.
   // This is the URL the church gives to their KF representative during onboarding.
   const kfWebhookUrl = React.useMemo(() => {
     if (!props.churchId) return "";
