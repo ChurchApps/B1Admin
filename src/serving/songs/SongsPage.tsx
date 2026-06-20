@@ -34,9 +34,9 @@ export const SongsPage = memo(() => {
         selectedSong = song;
       } else {
         const s: SongInterface = { name: songDetail.title, dateAdded: new Date() };
-        const songs = await ApiHelper.post("/songs", [s], "ContentApi");
+        const newSongs = await ApiHelper.post("/songs", [s], "ContentApi");
         const a: ArrangementInterface = {
-          songId: songs[0].id,
+          songId: newSongs[0].id,
           songDetailId: songDetail.id,
           name: "(Default)",
           lyrics: ""
@@ -48,7 +48,7 @@ export const SongsPage = memo(() => {
           shortDescription: "Default"
         };
         await ApiHelper.post("/arrangementKeys", [key], "ContentApi");
-        selectedSong = songs[0];
+        selectedSong = newSongs[0];
       }
 
       songs.refetch();

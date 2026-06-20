@@ -26,7 +26,10 @@ export function FontEdit(props: Props) {
   ];
 
   useEffect(() => {
-    if (props.globalStyle) setFonts(JSON.parse(props.globalStyle.fonts));
+    if (props.globalStyle) {
+      const parsed = props.globalStyle.fonts ? JSON.parse(props.globalStyle.fonts) : { heading: "Roboto", body: "Roboto" };
+      setFonts(parsed);
+    }
   }, [props.globalStyle]);
 
   const handleSave = () => {

@@ -25,13 +25,15 @@ export function StylesManager() {
       if (gs.palette) setGlobalStyle(gs);
       else {
         setGlobalStyle({
-          palette: JSON.stringify({
+          ...gs,
+          palette: gs.palette || JSON.stringify({
             light: "#FFFFFF",
             lightAccent: "#DDDDDD",
             accent: "#0000DD",
             darkAccent: "#9999DD",
             dark: "#000000"
-          })
+          }),
+          fonts: gs.fonts || JSON.stringify({ heading: "Roboto", body: "Roboto" })
         });
       }
     });
