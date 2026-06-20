@@ -60,7 +60,7 @@ export const SongSearchDialog: React.FC<Props> = memo((props) => {
       if (!songDetail.id) {
         songDetail = await ApiHelper.post("/songDetails/create", songDetail, "ContentApi");
       }
-      props.onSelect(songDetail);
+      if (songDetail) props.onSelect(songDetail);
     },
     [props.onSelect]
   );

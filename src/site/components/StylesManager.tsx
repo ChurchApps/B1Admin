@@ -7,6 +7,7 @@ import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit
 import { useNavigate, useLocation } from "react-router-dom";
 import { CardWithHeader } from "../../components/ui";
 import React from "react";
+import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 
 export function StylesManager() {
   const navigate = useNavigate();
@@ -16,6 +17,13 @@ export function StylesManager() {
   const [section, setSection] = useState<string>(["palette", "fonts", "typography", "spacing", "nav", "css", "logo"].includes(hash) ? hash : "");
   const [churchSettings, setChurchSettings] = useState<any>(null);
   const [currentSettings, setCurrentSettings] = useState<GenericSettingInterface[]>([]);
+
+  const clearSiteCache = () => {
+    const subDomain = UserHelper.currentUserChurch?.church?.subDomain;
+    if (!subDomain) return;
+    const b1Url = EnvironmentHelper.B1Url.replace("{subdomain}", subDomain);
+    fetch(b1Url + "/api/revalidate/" + subDomain, { method: "POST" }).catch(() => { /* best-effort */ });
+  };
 
   const loadData = () => {
     ApiHelper.getAnonymous("/settings/public/" + UserHelper.currentUserChurch.church.id, "MembershipApi").then((s: any) => setChurchSettings(s));
@@ -43,7 +51,7 @@ export function StylesManager() {
     if (paletteJson) {
       const gs = { ...globalStyle };
       gs.palette = paletteJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => loadData());
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
     }
     setSection("");
   };
@@ -52,13 +60,13 @@ export function StylesManager() {
     if (fontsJson) {
       const gs = { ...globalStyle };
       gs.fonts = fontsJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => loadData());
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
     }
     setSection("");
   };
 
   const handleUpdate = (gs: GlobalStyleInterface) => {
-    if (gs) ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => loadData());
+    if (gs) ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
     setSection("");
   };
 
@@ -66,7 +74,7 @@ export function StylesManager() {
     if (typographyJson) {
       const gs = { ...globalStyle };
       gs.typography = typographyJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => loadData());
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
     }
     setSection("");
   };
@@ -75,7 +83,7 @@ export function StylesManager() {
     if (spacingJson) {
       const gs = { ...globalStyle };
       gs.spacing = spacingJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => loadData());
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
     }
     setSection("");
   };
@@ -84,7 +92,7 @@ export function StylesManager() {
     if (navStylesJson) {
       const gs = { ...globalStyle };
       gs.navStyles = navStylesJson;
-      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => loadData());
+      ApiHelper.post("/globalStyles", [gs], "ContentApi").then(() => { loadData(); clearSiteCache(); });
     }
     setSection("");
   };
