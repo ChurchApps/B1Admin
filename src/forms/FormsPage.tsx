@@ -4,7 +4,7 @@ import { type FormInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper, Permissions, Loading, Locale } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
-import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Delete as DeleteIcon, Undo as UndoIcon } from "@mui/icons-material";
+import { Description as DescriptionIcon, Add as AddIcon, Archive as ArchiveIcon, Edit as EditIcon, Delete as DeleteIcon, Undo as UndoIcon, ContentCopy as CopyIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
@@ -49,6 +49,10 @@ export const FormsPage = () => {
         ) : null;
       const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
+      const duplicateLink =
+        canEdit && !isArchived ? (
+          <AppIconButton label={Locale.label("forms.formsPage.duplicate")} icon={<CopyIcon />} onClick={() => handleDuplicate(form.id)} data-testid={`duplicate-form-button-${form.id}`} />
+        ) : null;
       const archiveLink =
         canEdit && !isArchived ? (
           <Button size="small" variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.archive")}</Button>
@@ -67,12 +71,16 @@ export const FormsPage = () => {
           </TableCell>
           <TableCell>{formLink}</TableCell>
           <TableCell style={{ textAlign: "right" }}>
-            {archiveLink || unarchiveLink} {editLink}
+            {archiveLink || unarchiveLink} {duplicateLink} {editLink}
           </TableCell>
         </TableRow>
       );
     });
     return result;
+  };
+
+  const handleDuplicate = (formId: string) => {
+    ApiHelper.post("/forms/duplicate/" + formId, {}, "MembershipApi").then(() => { forms.refetch(); });
   };
 
   const handleArchiveChange = (form: FormInterface, archive: boolean) => {

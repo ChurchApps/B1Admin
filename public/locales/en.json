@@ -1049,6 +1049,7 @@
       "forms": "Forms",
       "noArch": "No archived forms.",
       "noCustomMsg": "No custom forms have been created yet. They will appear here when added.",
+      "duplicate": "Duplicate",
       "restore": "Restore",
       "restoreFormAria": "Restore form {name}",
       "subtitleManage": "Create and manage custom forms",
