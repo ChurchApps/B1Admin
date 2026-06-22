@@ -15,7 +15,8 @@ export class SecondaryMenuHelper {
     else if (path.startsWith("/settings") || path.startsWith("/admin")) result = this.getSettingsMenu(path);
     else if (path.startsWith("/serving")) result = this.getServingMenu(path, data);
     else if (path.startsWith("/donations")) result = this.getDonationsMenu(path);
-    else if (path.startsWith("/site") || path.startsWith("/calendars") || path.startsWith("/registrations")) result = this.getSiteMenu(path);
+    else if (path.startsWith("/calendars") || path.startsWith("/registrations")) result = this.getCalendarMenu(path);
+    else if (path.startsWith("/site")) result = this.getSiteMenu(path);
     else if (path.startsWith("/sermons")) result = this.getSermonsMenu(path);
     else if (path.startsWith("/profile")) result = this.getProfileMenu(path);
     else if (path === "/" || path.startsWith("/dashboard")) result = this.getDashboardMenu();
@@ -137,6 +138,22 @@ export class SecondaryMenuHelper {
       menuItems.push({ url: "/site/blocks", label: Locale.label("helpers.secondaryMenuHelper.blocks"), icon: "widgets" });
       menuItems.push({ url: "/site/appearance", label: Locale.label("helpers.secondaryMenuHelper.appearance"), icon: "palette" });
       menuItems.push({ url: "/site/files", label: Locale.label("helpers.secondaryMenuHelper.files"), icon: "folder_open" });
+    }
+
+    if (path.startsWith("/site/pages")) label = Locale.label("helpers.secondaryMenuHelper.pages");
+    else if (path.startsWith("/site/blocks")) label = Locale.label("helpers.secondaryMenuHelper.blocks");
+    else if (path.startsWith("/site/appearance")) label = Locale.label("helpers.secondaryMenuHelper.appearance");
+    else if (path.startsWith("/site/files")) label = Locale.label("helpers.secondaryMenuHelper.files");
+    else if (path.startsWith("/site")) label = Locale.label("helpers.secondaryMenuHelper.website");
+
+    return { menuItems, label };
+  };
+
+  static getCalendarMenu = (path: string) => {
+    const menuItems: MenuItem[] = [];
+    let label: string = Locale.label("helpers.secondaryMenuHelper.calendars");
+
+    if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       menuItems.push({ url: "/calendars", label: Locale.label("helpers.secondaryMenuHelper.calendars"), icon: "calendar_month" });
       menuItems.push({ url: "/calendars/availability", label: Locale.label("helpers.secondaryMenuHelper.availability"), icon: "event_note" });
       menuItems.push({ url: "/calendars/rooms", label: Locale.label("helpers.secondaryMenuHelper.roomsResources"), icon: "meeting_room" });
@@ -145,15 +162,10 @@ export class SecondaryMenuHelper {
     }
 
     if (path.startsWith("/registrations")) label = Locale.label("helpers.secondaryMenuHelper.registrations");
-    else if (path.startsWith("/site/pages")) label = Locale.label("helpers.secondaryMenuHelper.pages");
-    else if (path.startsWith("/site/blocks")) label = Locale.label("helpers.secondaryMenuHelper.blocks");
-    else if (path.startsWith("/site/appearance")) label = Locale.label("helpers.secondaryMenuHelper.appearance");
-    else if (path.startsWith("/site/files")) label = Locale.label("helpers.secondaryMenuHelper.files");
     else if (path.startsWith("/calendars/availability")) label = Locale.label("helpers.secondaryMenuHelper.availability");
     else if (path.startsWith("/calendars/rooms")) label = Locale.label("helpers.secondaryMenuHelper.roomsResources");
     else if (path.startsWith("/calendars/approvals")) label = Locale.label("helpers.secondaryMenuHelper.approvals");
     else if (path.startsWith("/calendars")) label = Locale.label("helpers.secondaryMenuHelper.calendars");
-    else if (path.startsWith("/site")) label = Locale.label("helpers.secondaryMenuHelper.website");
 
     return { menuItems, label };
   };
