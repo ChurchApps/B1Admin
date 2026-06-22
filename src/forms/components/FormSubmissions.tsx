@@ -170,7 +170,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
           </Typography>
         </TableCell>
       );
-      formSubmissions.data[0].questions.forEach((question: QuestionInterface) =>
+      [...formSubmissions.data[0].questions].sort((a: QuestionInterface, b: QuestionInterface) => (a.title > b.title ? 1 : -1)).forEach((question: QuestionInterface) =>
         result.push(
           <TableCell key={question.id} sx={{ fontWeight: 600 }}>
             <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
