@@ -147,6 +147,14 @@
       "subtitle": "Peržiūrėkite laukiančius patalpų, išteklių ir renginių prašymus",
       "title": "Patvirtinimai"
     },
+    "availability": {
+      "allRoomsResources": "Visos patalpos ir ištekliai",
+      "blocked": "Užblokuota",
+      "book": "Rezervuoti",
+      "filter": "Patalpa / išteklius",
+      "subtitle": "Peržiūrėkite rezervacijas visose patalpose ir ištekliuose",
+      "title": "Prieinamumas"
+    },
     "calendar": {
       "add": "Pridėti",
       "copiedToClipboard": "Nukopijuota į iškarpą",
@@ -239,6 +247,7 @@
       "title": "Importuoti .ics kalendorių"
     },
     "newEvent": {
+      "customWindow": "Pasirinktinis rezervavimo langas",
       "daily": "Kasdien",
       "description": "Aprašymas",
       "doesNotRepeat": "Nesikartoja",
@@ -250,10 +259,14 @@
       "private": "Privatus",
       "public": "Viešas",
       "repeats": "Kartojasi",
+      "reserveFrom": "Rezervuoti nuo",
+      "reserveUntil": "Rezervuoti iki",
       "resources": "Ištekliai",
       "rooms": "Patalpos",
       "seats": "Vietos {}",
+      "setupMinutes": "Paruošimas (min prieš)",
       "start": "Pradžia",
+      "teardownMinutes": "Sutvarkymas (min po)",
       "template": "Šablonas",
       "title": "Naujas renginys",
       "visibility": "Matomumas",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Išvaizda",
       "approvals": "Patvirtinimai",
+      "availability": "Prieinamumas",
       "blocks": "Blokai",
       "bulkImport": "Masinis importavimas",
       "calendars": "Kalendoriai",

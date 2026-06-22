@@ -147,6 +147,14 @@
       "subtitle": "Beoordeel openstaande ruimte-, middelen- en evenementaanvragen",
       "title": "Goedkeuringen"
     },
+    "availability": {
+      "allRoomsResources": "Alle ruimtes & middelen",
+      "blocked": "Geblokkeerd",
+      "book": "Boeken",
+      "filter": "Ruimte / Middel",
+      "subtitle": "Bekijk wat er geboekt is in ruimtes en middelen",
+      "title": "Beschikbaarheid"
+    },
     "calendar": {
       "add": "Toevoegen",
       "copiedToClipboard": "Gekopieerd naar klembord",
@@ -239,6 +247,7 @@
       "title": ".ics-agenda importeren"
     },
     "newEvent": {
+      "customWindow": "Aangepast reserveringsvenster",
       "daily": "Dagelijks",
       "description": "Omschrijving",
       "doesNotRepeat": "Herhaalt niet",
@@ -250,10 +259,14 @@
       "private": "Privé",
       "public": "Openbaar",
       "repeats": "Herhaalt",
+      "reserveFrom": "Reserveer vanaf",
+      "reserveUntil": "Reserveer tot",
       "resources": "Middelen",
       "rooms": "Ruimten",
       "seats": "Plaatsen {}",
+      "setupMinutes": "Instellen (min voor)",
       "start": "Begin",
+      "teardownMinutes": "Afbreken (min na)",
       "template": "Sjabloon",
       "title": "Nieuw evenement",
       "visibility": "Zichtbaarheid",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Uiterlijk",
       "approvals": "Goedkeuringen",
+      "availability": "Beschikbaarheid",
       "blocks": "Blokken",
       "bulkImport": "Bulkimport",
       "calendars": "Agenda's",

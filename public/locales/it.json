@@ -147,6 +147,14 @@
       "subtitle": "Revisiona le richieste in attesa di sale, risorse ed eventi",
       "title": "Approvazioni"
     },
+    "availability": {
+      "allRoomsResources": "Tutte le sale e risorse",
+      "blocked": "Bloccato",
+      "book": "Prenota",
+      "filter": "Sala / Risorsa",
+      "subtitle": "Visualizza le prenotazioni di sale e risorse",
+      "title": "Disponibilità"
+    },
     "calendar": {
       "add": "Aggiungi",
       "copiedToClipboard": "Copiato negli appunti",
@@ -239,6 +247,7 @@
       "title": "Importa calendario .ics"
     },
     "newEvent": {
+      "customWindow": "Finestra di prenotazione personalizzata",
       "daily": "Giornaliero",
       "description": "Descrizione",
       "doesNotRepeat": "Non si ripete",
@@ -250,10 +259,14 @@
       "private": "Privato",
       "public": "Pubblico",
       "repeats": "Si ripete",
+      "reserveFrom": "Prenota da",
+      "reserveUntil": "Prenota fino a",
       "resources": "Risorse",
       "rooms": "Sale",
       "seats": "Posti {}",
+      "setupMinutes": "Preparazione (min prima)",
       "start": "Inizio",
+      "teardownMinutes": "Smontaggio (min dopo)",
       "template": "Modello",
       "title": "Nuovo evento",
       "visibility": "Visibilità",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Aspetto",
       "approvals": "Approvazioni",
+      "availability": "Disponibilità",
       "blocks": "Blocchi",
       "bulkImport": "Importazione in Massa",
       "calendars": "Calendari",

@@ -147,6 +147,14 @@
       "subtitle": "Zkontrolujte čekající žádosti o místnosti, prostředky a události",
       "title": "Schválení"
     },
+    "availability": {
+      "allRoomsResources": "Všechny místnosti a prostředky",
+      "blocked": "Blokováno",
+      "book": "Rezervovat",
+      "filter": "Místnost / prostředek",
+      "subtitle": "Zjistěte, co je zarezervováno v místnostech a prostředcích",
+      "title": "Dostupnost"
+    },
     "calendar": {
       "add": "Přidat",
       "copiedToClipboard": "Zkopírováno do schránky",
@@ -239,6 +247,7 @@
       "title": "Importovat kalendář .ics"
     },
     "newEvent": {
+      "customWindow": "Vlastní rezervační okno",
       "daily": "Denně",
       "description": "Popis",
       "doesNotRepeat": "Neopakuje se",
@@ -250,10 +259,14 @@
       "private": "Soukromá",
       "public": "Veřejná",
       "repeats": "Opakování",
+      "reserveFrom": "Rezervovat od",
+      "reserveUntil": "Rezervovat do",
       "resources": "Prostředky",
       "rooms": "Místnosti",
       "seats": "Místa {}",
+      "setupMinutes": "Příprava (min před)",
       "start": "Začátek",
+      "teardownMinutes": "Úklid (min po)",
       "template": "Šablona",
       "title": "Nová událost",
       "visibility": "Viditelnost",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Vzhled",
       "approvals": "Schválení",
+      "availability": "Dostupnost",
       "blocks": "Bloky",
       "bulkImport": "Hromadný import",
       "calendars": "Kalendáře",

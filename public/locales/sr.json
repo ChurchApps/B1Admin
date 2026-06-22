@@ -147,6 +147,14 @@
       "subtitle": "Прегледајте захтеве за просторије, ресурсе и догађаје на чекању",
       "title": "Одобрења"
     },
+    "availability": {
+      "allRoomsResources": "Све просторије и ресурси",
+      "blocked": "Блокирано",
+      "book": "Резервиши",
+      "filter": "Просторија / Ресурс",
+      "subtitle": "Погледај шта је резервисано у свим просторијама и ресурсима",
+      "title": "Доступност"
+    },
     "calendar": {
       "add": "Додај",
       "copiedToClipboard": "Копирано у клипборд",
@@ -239,6 +247,7 @@
       "title": "Увези .ics календар"
     },
     "newEvent": {
+      "customWindow": "Прилагођени прозор резервације",
       "daily": "Дневно",
       "description": "Опис",
       "doesNotRepeat": "Не понавља се",
@@ -250,10 +259,14 @@
       "private": "Приватно",
       "public": "Јавно",
       "repeats": "Понавља се",
+      "reserveFrom": "Резервиши од",
+      "reserveUntil": "Резервиши до",
       "resources": "Ресурси",
       "rooms": "Просторије",
       "seats": "Места {}",
+      "setupMinutes": "Podešavanje (min pre)",
       "start": "Почетак",
+      "teardownMinutes": "Raspremanje (min posle)",
       "template": "Шаблон",
       "title": "Нови догађај",
       "visibility": "Видљивост",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Изглед",
       "approvals": "Одобрења",
+      "availability": "Доступност",
       "blocks": "Блокови",
       "bulkImport": "Масовни увоз",
       "calendars": "Календари",

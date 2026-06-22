@@ -147,6 +147,14 @@
       "subtitle": "Preglejte čakajoče zahteve za sobe, vire in dogodke",
       "title": "Odobritve"
     },
+    "availability": {
+      "allRoomsResources": "Vse sobe in viri",
+      "blocked": "Blokirano",
+      "book": "Rezerviraj",
+      "filter": "Soba / vir",
+      "subtitle": "Oglejte si, kaj je rezervirano v sobah in virih",
+      "title": "Razpoložljivost"
+    },
     "calendar": {
       "add": "Dodaj",
       "copiedToClipboard": "Kopirano v odložišče",
@@ -239,6 +247,7 @@
       "title": "Uvozi .ics koledar"
     },
     "newEvent": {
+      "customWindow": "Okno rezervacije po meri",
       "daily": "Dnevno",
       "description": "Opis",
       "doesNotRepeat": "Se ne ponavlja",
@@ -250,10 +259,14 @@
       "private": "Zasebno",
       "public": "Javno",
       "repeats": "Ponavljanje",
+      "reserveFrom": "Rezerviraj od",
+      "reserveUntil": "Rezerviraj do",
       "resources": "Viri",
       "rooms": "Sobe",
       "seats": "Mesta {}",
+      "setupMinutes": "Priprava (min pred)",
       "start": "Začetek",
+      "teardownMinutes": "Razstavljanje (min po)",
       "template": "Predloga",
       "title": "Nov dogodek",
       "visibility": "Vidnost",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Videz",
       "approvals": "Odobritve",
+      "availability": "Razpoložljivost",
       "blocks": "Bloki",
       "bulkImport": "Množični uvoz",
       "calendars": "Koledarji",

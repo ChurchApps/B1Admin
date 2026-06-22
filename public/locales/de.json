@@ -147,6 +147,14 @@
       "subtitle": "Ausstehende Raum-, Ressourcen- und Veranstaltungsanfragen prüfen",
       "title": "Genehmigungen"
     },
+    "availability": {
+      "allRoomsResources": "Alle Räume & Ressourcen",
+      "blocked": "Blockiert",
+      "book": "Buchen",
+      "filter": "Raum / Ressource",
+      "subtitle": "Sehen Sie, was in Räumen und Ressourcen gebucht ist",
+      "title": "Verfügbarkeit"
+    },
     "calendar": {
       "add": "Hinzufügen",
       "copiedToClipboard": "In die Zwischenablage kopiert",
@@ -239,6 +247,7 @@
       "title": ".ics-Kalender importieren"
     },
     "newEvent": {
+      "customWindow": "Benutzerdefiniertes Reservierungsfenster",
       "daily": "Täglich",
       "description": "Beschreibung",
       "doesNotRepeat": "Wiederholt sich nicht",
@@ -250,10 +259,14 @@
       "private": "Privat",
       "public": "Öffentlich",
       "repeats": "Wiederholt sich",
+      "reserveFrom": "Reservieren ab",
+      "reserveUntil": "Reservieren bis",
       "resources": "Ressourcen",
       "rooms": "Räume",
       "seats": "Plätze {}",
+      "setupMinutes": "Aufbau (Min. vorher)",
       "start": "Start",
+      "teardownMinutes": "Abbau (Min. nachher)",
       "template": "Vorlage",
       "title": "Neue Veranstaltung",
       "visibility": "Sichtbarkeit",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Erscheinungsbild",
       "approvals": "Genehmigungen",
+      "availability": "Verfügbarkeit",
       "blocks": "Blöcke",
       "bulkImport": "Massenimport",
       "calendars": "Kalender",

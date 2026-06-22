@@ -147,6 +147,14 @@
       "subtitle": "Перегляньте очікувані запити на кімнати, ресурси та події",
       "title": "Схвалення"
     },
+    "availability": {
+      "allRoomsResources": "Усі кімнати та ресурси",
+      "blocked": "Заблоковано",
+      "book": "Забронювати",
+      "filter": "Кімната / Ресурс",
+      "subtitle": "Перегляньте, що заброньовано в кімнатах і ресурсах",
+      "title": "Доступність"
+    },
     "calendar": {
       "add": "Додати",
       "copiedToClipboard": "Скопійовано в буфер обміну",
@@ -239,6 +247,7 @@
       "title": "Імпортувати календар .ics"
     },
     "newEvent": {
+      "customWindow": "Налаштоване вікно бронювання",
       "daily": "Щодня",
       "description": "Опис",
       "doesNotRepeat": "Не повторюється",
@@ -250,10 +259,14 @@
       "private": "Приватна",
       "public": "Публічна",
       "repeats": "Повторюється",
+      "reserveFrom": "Бронювати з",
+      "reserveUntil": "Бронювати до",
       "resources": "Ресурси",
       "rooms": "Кімнати",
       "seats": "Місця {}",
+      "setupMinutes": "Підготовка (хв до)",
       "start": "Початок",
+      "teardownMinutes": "Прибирання (хв після)",
       "template": "Шаблон",
       "title": "Нова подія",
       "visibility": "Видимість",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Зовнішній вигляд",
       "approvals": "Схвалення",
+      "availability": "Доступність",
       "blocks": "Блоки",
       "bulkImport": "Масовий імпорт",
       "calendars": "Календарі",

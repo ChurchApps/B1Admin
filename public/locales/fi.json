@@ -147,6 +147,14 @@
       "subtitle": "Tarkastele odottavia tila-, resurssi- ja tapahtumapyyntöjä",
       "title": "Hyväksynnät"
     },
+    "availability": {
+      "allRoomsResources": "Kaikki tilat ja resurssit",
+      "blocked": "Estetty",
+      "book": "Varaa",
+      "filter": "Tila / Resurssi",
+      "subtitle": "Katso mitä on varattuna tiloissa ja resursseissa",
+      "title": "Saatavuus"
+    },
     "calendar": {
       "add": "Lisää",
       "copiedToClipboard": "Kopioitu leikepöydälle",
@@ -239,6 +247,7 @@
       "title": "Tuo .ics-kalenteri"
     },
     "newEvent": {
+      "customWindow": "Mukautettu varausikkuna",
       "daily": "Päivittäin",
       "description": "Kuvaus",
       "doesNotRepeat": "Ei toistu",
@@ -250,10 +259,14 @@
       "private": "Yksityinen",
       "public": "Julkinen",
       "repeats": "Toistuu",
+      "reserveFrom": "Varaa alkaen",
+      "reserveUntil": "Varaa asti",
       "resources": "Resurssit",
       "rooms": "Tilat",
       "seats": "Paikat {}",
+      "setupMinutes": "Valmistelu (min ennen)",
       "start": "Alku",
+      "teardownMinutes": "Purku (min jälkeen)",
       "template": "Mallipohja",
       "title": "Uusi tapahtuma",
       "visibility": "Näkyvyys",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Ulkoasu",
       "approvals": "Hyväksynnät",
+      "availability": "Saatavuus",
       "blocks": "Lohkot",
       "bulkImport": "Joukkotuonti",
       "calendars": "Kalenterit",

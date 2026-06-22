@@ -147,6 +147,14 @@
       "subtitle": "Review pending room, resource and event requests",
       "title": "Approvals"
     },
+    "availability": {
+      "allRoomsResources": "All rooms & resources",
+      "blocked": "Blocked",
+      "book": "Book",
+      "filter": "Room / Resource",
+      "subtitle": "See what's booked across rooms and resources",
+      "title": "Availability"
+    },
     "calendar": {
       "add": "Add",
       "copiedToClipboard": "Copied to clipboard",
@@ -239,6 +247,7 @@
       "title": "Import .ics Calendar"
     },
     "newEvent": {
+      "customWindow": "Custom reservation window",
       "daily": "Daily",
       "description": "Description",
       "doesNotRepeat": "Does not repeat",
@@ -250,10 +259,14 @@
       "private": "Private",
       "public": "Public",
       "repeats": "Repeats",
+      "reserveFrom": "Reserve from",
+      "reserveUntil": "Reserve until",
       "resources": "Resources",
       "rooms": "Rooms",
       "seats": "Seats {}",
+      "setupMinutes": "Setup (min before)",
       "start": "Start",
+      "teardownMinutes": "Teardown (min after)",
       "template": "Template",
       "title": "New Event",
       "visibility": "Visibility",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Appearance",
       "approvals": "Approvals",
+      "availability": "Availability",
       "blocks": "Blocks",
       "bulkImport": "Bulk Import",
       "calendars": "Calendars",

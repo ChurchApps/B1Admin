@@ -147,6 +147,14 @@
       "subtitle": "Tinjau permintaan ruangan, sumber daya, dan acara yang tertunda",
       "title": "Persetujuan"
     },
+    "availability": {
+      "allRoomsResources": "Semua ruangan & sumber daya",
+      "blocked": "Diblokir",
+      "book": "Pesan",
+      "filter": "Ruangan / Sumber Daya",
+      "subtitle": "Lihat apa yang dipesan di semua ruangan dan sumber daya",
+      "title": "Ketersediaan"
+    },
     "calendar": {
       "add": "Tambah",
       "copiedToClipboard": "Disalin ke clipboard",
@@ -239,6 +247,7 @@
       "title": "Impor Kalender .ics"
     },
     "newEvent": {
+      "customWindow": "Jendela reservasi kustom",
       "daily": "Harian",
       "description": "Deskripsi",
       "doesNotRepeat": "Tidak berulang",
@@ -250,10 +259,14 @@
       "private": "Pribadi",
       "public": "Publik",
       "repeats": "Berulang",
+      "reserveFrom": "Reservasi dari",
+      "reserveUntil": "Reservasi hingga",
       "resources": "Sumber Daya",
       "rooms": "Ruangan",
       "seats": "Kursi {}",
+      "setupMinutes": "Persiapan (menit sebelum)",
       "start": "Mulai",
+      "teardownMinutes": "Pembersihan (menit sesudah)",
       "template": "Template",
       "title": "Acara Baru",
       "visibility": "Visibilitas",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Tampilan",
       "approvals": "Persetujuan",
+      "availability": "Ketersediaan",
       "blocks": "Blok",
       "bulkImport": "Impor Massal",
       "calendars": "Kalender",

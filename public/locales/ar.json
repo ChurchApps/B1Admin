@@ -147,6 +147,14 @@
       "subtitle": "مراجعة طلبات القاعات والموارد والأحداث المعلقة",
       "title": "الموافقات"
     },
+    "availability": {
+      "allRoomsResources": "جميع القاعات والموارد",
+      "blocked": "محجوز",
+      "book": "احجز",
+      "filter": "القاعة / المورد",
+      "subtitle": "اطلع على ما هو محجوز عبر القاعات والموارد",
+      "title": "التوفر"
+    },
     "calendar": {
       "add": "إضافة",
       "copiedToClipboard": "تم النسخ إلى الحافظة",
@@ -239,6 +247,7 @@
       "title": "استيراد تقويم .ics"
     },
     "newEvent": {
+      "customWindow": "نافذة حجز مخصصة",
       "daily": "يوميًا",
       "description": "الوصف",
       "doesNotRepeat": "لا يتكرر",
@@ -250,10 +259,14 @@
       "private": "خاص",
       "public": "عام",
       "repeats": "التكرار",
+      "reserveFrom": "حجز من",
+      "reserveUntil": "حجز حتى",
       "resources": "الموارد",
       "rooms": "القاعات",
       "seats": "مقاعد {}",
+      "setupMinutes": "الإعداد (دقائق قبل البدء)",
       "start": "البداية",
+      "teardownMinutes": "التجهيز (دقائق بعد الانتهاء)",
       "template": "القالب",
       "title": "حدث جديد",
       "visibility": "الظهور",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "المظهر",
       "approvals": "الموافقات",
+      "availability": "التوفر",
       "blocks": "الكتل",
       "bulkImport": "استيراد جماعي",
       "calendars": "التقويمات",

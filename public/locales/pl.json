@@ -147,6 +147,14 @@
       "subtitle": "Przeglądaj oczekujące prośby o sale, zasoby i wydarzenia",
       "title": "Zatwierdzenia"
     },
+    "availability": {
+      "allRoomsResources": "Wszystkie sale i zasoby",
+      "blocked": "Zablokowane",
+      "book": "Zarezerwuj",
+      "filter": "Sala / Zasób",
+      "subtitle": "Sprawdź, co jest zarezerwowane w salach i zasobach",
+      "title": "Dostępność"
+    },
     "calendar": {
       "add": "Dodaj",
       "copiedToClipboard": "Skopiowano do schowka",
@@ -239,6 +247,7 @@
       "title": "Importuj kalendarz .ics"
     },
     "newEvent": {
+      "customWindow": "Niestandardowe okno rezerwacji",
       "daily": "Codziennie",
       "description": "Opis",
       "doesNotRepeat": "Nie powtarza się",
@@ -250,10 +259,14 @@
       "private": "Prywatne",
       "public": "Publiczne",
       "repeats": "Powtarza się",
+      "reserveFrom": "Rezerwuj od",
+      "reserveUntil": "Rezerwuj do",
       "resources": "Zasoby",
       "rooms": "Sale",
       "seats": "Miejsca {}",
+      "setupMinutes": "Przygotowanie (min przed)",
       "start": "Początek",
+      "teardownMinutes": "Sprzątanie (min po)",
       "template": "Szablon",
       "title": "Nowe wydarzenie",
       "visibility": "Widoczność",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Wygląd",
       "approvals": "Zatwierdzenia",
+      "availability": "Dostępność",
       "blocks": "Bloki",
       "bulkImport": "Import zbiorczy",
       "calendars": "Kalendarze",

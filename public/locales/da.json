@@ -147,6 +147,14 @@
       "subtitle": "Gennemgå afventende lokale-, ressource- og begivenhedsanmodninger",
       "title": "Godkendelser"
     },
+    "availability": {
+      "allRoomsResources": "Alle lokaler og ressourcer",
+      "blocked": "Blokeret",
+      "book": "Reservér",
+      "filter": "Lokale / ressource",
+      "subtitle": "Se hvad der er booket på tværs af lokaler og ressourcer",
+      "title": "Tilgængelighed"
+    },
     "calendar": {
       "add": "Tilføj",
       "copiedToClipboard": "Kopieret til udklipsholder",
@@ -239,6 +247,7 @@
       "title": "Importér .ics-kalender"
     },
     "newEvent": {
+      "customWindow": "Brugerdefineret reservationsvindue",
       "daily": "Dagligt",
       "description": "Beskrivelse",
       "doesNotRepeat": "Gentages ikke",
@@ -250,10 +259,14 @@
       "private": "Privat",
       "public": "Offentlig",
       "repeats": "Gentages",
+      "reserveFrom": "Reservér fra",
+      "reserveUntil": "Reservér indtil",
       "resources": "Ressourcer",
       "rooms": "Lokaler",
       "seats": "Pladser {}",
+      "setupMinutes": "Klargøring (min før)",
       "start": "Start",
+      "teardownMinutes": "Oprydning (min efter)",
       "template": "Skabelon",
       "title": "Ny begivenhed",
       "visibility": "Synlighed",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Udseende",
       "approvals": "Godkendelser",
+      "availability": "Tilgængelighed",
       "blocks": "Blokke",
       "bulkImport": "Masseimport",
       "calendars": "Kalendere",

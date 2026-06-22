@@ -147,6 +147,14 @@
       "subtitle": "Skontrolujte čakajúce žiadosti o miestnosti, zdroje a udalosti",
       "title": "Schválenia"
     },
+    "availability": {
+      "allRoomsResources": "Všetky miestnosti a zdroje",
+      "blocked": "Zablokované",
+      "book": "Rezervovať",
+      "filter": "Miestnosť / Zdroj",
+      "subtitle": "Pozrite sa, čo je rezervované v miestnostiach a zdrojoch",
+      "title": "Dostupnosť"
+    },
     "calendar": {
       "add": "Pridať",
       "copiedToClipboard": "Copied to clipboard",
@@ -239,6 +247,7 @@
       "title": "Importovať kalendár .ics"
     },
     "newEvent": {
+      "customWindow": "Vlastné okno rezervácie",
       "daily": "Denne",
       "description": "Popis",
       "doesNotRepeat": "Neopakuje sa",
@@ -250,10 +259,14 @@
       "private": "Súkromné",
       "public": "Verejné",
       "repeats": "Opakuje sa",
+      "reserveFrom": "Rezervovať od",
+      "reserveUntil": "Rezervovať do",
       "resources": "Zdroje",
       "rooms": "Miestnosti",
       "seats": "Miesta {}",
+      "setupMinutes": "Príprava (min pred)",
       "start": "Začiatok",
+      "teardownMinutes": "Upratovanie (min po)",
       "template": "Šablóna",
       "title": "Nová udalosť",
       "visibility": "Viditeľnosť",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Vzhľad",
       "approvals": "Schválenia",
+      "availability": "Dostupnosť",
       "blocks": "Bloky",
       "bulkImport": "Hromadný import",
       "calendars": "Kalendáre",

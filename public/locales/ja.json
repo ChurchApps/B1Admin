@@ -147,6 +147,14 @@
       "subtitle": "保留中の部屋・リソース・イベントリクエストを確認",
       "title": "承認"
     },
+    "availability": {
+      "allRoomsResources": "すべての部屋とリソース",
+      "blocked": "ブロック済み",
+      "book": "予約",
+      "filter": "部屋 / リソース",
+      "subtitle": "部屋とリソースの予約状況を確認",
+      "title": "空き状況"
+    },
     "calendar": {
       "add": "追加",
       "copiedToClipboard": "Copied to clipboard",
@@ -239,6 +247,7 @@
       "title": ".icsカレンダーをインポート"
     },
     "newEvent": {
+      "customWindow": "カスタム予約ウィンドウ",
       "daily": "毎日",
       "description": "説明",
       "doesNotRepeat": "繰り返しなし",
@@ -250,10 +259,14 @@
       "private": "非公開",
       "public": "公開",
       "repeats": "繰り返し",
+      "reserveFrom": "予約開始",
+      "reserveUntil": "予約終了",
       "resources": "リソース",
       "rooms": "部屋",
       "seats": "座席 {}",
+      "setupMinutes": "準備（前の分）",
       "start": "開始",
+      "teardownMinutes": "片付け（後の分）",
       "template": "テンプレート",
       "title": "新しいイベント",
       "visibility": "公開設定",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "外観",
       "approvals": "承認",
+      "availability": "空き状況",
       "blocks": "ブロック",
       "bulkImport": "一括インポート",
       "calendars": "カレンダー",

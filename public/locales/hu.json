@@ -147,6 +147,14 @@
       "subtitle": "Függőben lévő terem-, erőforrás- és eseménykérések áttekintése",
       "title": "Jóváhagyások"
     },
+    "availability": {
+      "allRoomsResources": "Összes terem és erőforrás",
+      "blocked": "Foglalt",
+      "book": "Foglalás",
+      "filter": "Terem / Erőforrás",
+      "subtitle": "Nézze meg, mi van lefoglalva a termekben és erőforrásokban",
+      "title": "Elérhetőség"
+    },
     "calendar": {
       "add": "Add",
       "copiedToClipboard": "Copied to clipboard",
@@ -239,6 +247,7 @@
       "title": ".ics naptár importálása"
     },
     "newEvent": {
+      "customWindow": "Egyéni foglalási ablak",
       "daily": "Naponta",
       "description": "Leírás",
       "doesNotRepeat": "Nem ismétlődik",
@@ -250,10 +259,14 @@
       "private": "Privát",
       "public": "Nyilvános",
       "repeats": "Ismétlés",
+      "reserveFrom": "Foglalás kezdete",
+      "reserveUntil": "Foglalás vége",
       "resources": "Erőforrások",
       "rooms": "Termek",
       "seats": "Helyek {}",
+      "setupMinutes": "Előkészítés (perc előtte)",
       "start": "Kezdete",
+      "teardownMinutes": "Lebontás (perc utána)",
       "template": "Sablon",
       "title": "Új esemény",
       "visibility": "Láthatóság",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Megjelenés",
       "approvals": "Jóváhagyások",
+      "availability": "Elérhetőség",
       "blocks": "Blokkok",
       "bulkImport": "Tömeges importálás",
       "calendars": "Naptárak",

@@ -147,6 +147,14 @@
       "subtitle": "Bekleyen oda, kaynak ve etkinlik taleplerini inceleyin",
       "title": "Onaylar"
     },
+    "availability": {
+      "allRoomsResources": "Tüm odalar ve kaynaklar",
+      "blocked": "Engellendi",
+      "book": "Rezervasyon Yap",
+      "filter": "Oda / Kaynak",
+      "subtitle": "Odalar ve kaynaklar genelinde nelerin rezerve edildiğini görün",
+      "title": "Müsaitlik"
+    },
     "calendar": {
       "add": "Ekle",
       "copiedToClipboard": "Copied to clipboard",
@@ -239,6 +247,7 @@
       "title": ".ics Takvimi İçe Aktar"
     },
     "newEvent": {
+      "customWindow": "Özel rezervasyon penceresi",
       "daily": "Günlük",
       "description": "Açıklama",
       "doesNotRepeat": "Tekrarlanmaz",
@@ -250,10 +259,14 @@
       "private": "Özel",
       "public": "Herkese Açık",
       "repeats": "Tekrar",
+      "reserveFrom": "Şu tarihten itibaren rezerve et",
+      "reserveUntil": "Şu tarihe kadar rezerve et",
       "resources": "Kaynaklar",
       "rooms": "Odalar",
       "seats": "Koltuk {}",
+      "setupMinutes": "Hazırlık (dk önce)",
       "start": "Başlangıç",
+      "teardownMinutes": "Toplama (dk sonra)",
       "template": "Şablon",
       "title": "Yeni Etkinlik",
       "visibility": "Görünürlük",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Görünüm",
       "approvals": "Onaylar",
+      "availability": "Müsaitlik",
       "blocks": "Bloklar",
       "bulkImport": "Toplu İçe Aktarma",
       "calendars": "Takvimler",

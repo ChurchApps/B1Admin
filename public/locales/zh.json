@@ -147,6 +147,14 @@
       "subtitle": "审核待处理的房间、资源和活动申请",
       "title": "审批"
     },
+    "availability": {
+      "allRoomsResources": "所有房间和资源",
+      "blocked": "已封锁",
+      "book": "预订",
+      "filter": "房间 / 资源",
+      "subtitle": "查看各房间和资源的预订情况",
+      "title": "可用性"
+    },
     "calendar": {
       "add": "添加",
       "copiedToClipboard": "已复制到剪贴板",
@@ -239,6 +247,7 @@
       "title": "导入 .ics 日历"
     },
     "newEvent": {
+      "customWindow": "自定义预约窗口",
       "daily": "每天",
       "description": "描述",
       "doesNotRepeat": "不重复",
@@ -250,10 +259,14 @@
       "private": "私密",
       "public": "公开",
       "repeats": "重复",
+      "reserveFrom": "预约开始",
+      "reserveUntil": "预约截止",
       "resources": "资源",
       "rooms": "房间",
       "seats": "座位 {}",
+      "setupMinutes": "布置（活动前分钟）",
       "start": "开始",
+      "teardownMinutes": "拆除（活动后分钟）",
       "template": "模板",
       "title": "新建活动",
       "visibility": "可见性",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "外观",
       "approvals": "审批",
+      "availability": "可用性",
       "blocks": "区块",
       "bulkImport": "批量导入",
       "calendars": "日历",

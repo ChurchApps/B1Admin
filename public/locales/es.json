@@ -147,6 +147,14 @@
       "subtitle": "Revisar solicitudes pendientes de sala, recurso y evento",
       "title": "Aprobaciones"
     },
+    "availability": {
+      "allRoomsResources": "Todas las salas y recursos",
+      "blocked": "Bloqueado",
+      "book": "Reservar",
+      "filter": "Sala / Recurso",
+      "subtitle": "Ver qué está reservado en salas y recursos",
+      "title": "Disponibilidad"
+    },
     "calendar": {
       "add": "Agregar",
       "copiedToClipboard": "Copiado al portapapeles",
@@ -239,6 +247,7 @@
       "title": "Importar calendario .ics"
     },
     "newEvent": {
+      "customWindow": "Ventana de reserva personalizada",
       "daily": "Diario",
       "description": "Descripción",
       "doesNotRepeat": "No se repite",
@@ -250,10 +259,14 @@
       "private": "Privado",
       "public": "Público",
       "repeats": "Se repite",
+      "reserveFrom": "Reservar desde",
+      "reserveUntil": "Reservar hasta",
       "resources": "Recursos",
       "rooms": "Salas",
       "seats": "Asientos {}",
+      "setupMinutes": "Preparación (min antes)",
       "start": "Inicio",
+      "teardownMinutes": "Desmontaje (min después)",
       "template": "Plantilla",
       "title": "Nuevo evento",
       "visibility": "Visibilidad",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Apariencia",
       "approvals": "Aprobaciones",
+      "availability": "Disponibilidad",
       "blocks": "Bloques",
       "bulkImport": "Importación Masiva",
       "calendars": "Calendarios",

@@ -147,6 +147,14 @@
       "subtitle": "Gjennomgå ventende rom-, ressurs- og arrangementforespørsler",
       "title": "Godkjenninger"
     },
+    "availability": {
+      "allRoomsResources": "Alle rom og ressurser",
+      "blocked": "Blokkert",
+      "book": "Bestill",
+      "filter": "Rom / ressurs",
+      "subtitle": "Se hva som er booket i rom og ressurser",
+      "title": "Tilgjengelighet"
+    },
     "calendar": {
       "add": "Legg til",
       "copiedToClipboard": "Kopiert til utklippstavlen",
@@ -239,6 +247,7 @@
       "title": "Importer .ics-kalender"
     },
     "newEvent": {
+      "customWindow": "Egendefinert reservasjonsvindu",
       "daily": "Daglig",
       "description": "Beskrivelse",
       "doesNotRepeat": "Gjentas ikke",
@@ -250,10 +259,14 @@
       "private": "Privat",
       "public": "Offentlig",
       "repeats": "Gjentas",
+      "reserveFrom": "Reserver fra",
+      "reserveUntil": "Reserver til",
       "resources": "Ressurser",
       "rooms": "Rom",
       "seats": "Plasser {}",
+      "setupMinutes": "Klargjøring (min før)",
       "start": "Start",
+      "teardownMinutes": "Rydding (min etter)",
       "template": "Mal",
       "title": "Nytt arrangement",
       "visibility": "Synlighet",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Utseende",
       "approvals": "Godkjenninger",
+      "availability": "Tilgjengelighet",
       "blocks": "Blokker",
       "bulkImport": "Masseimport",
       "calendars": "Kalendere",

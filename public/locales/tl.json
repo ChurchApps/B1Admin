@@ -147,6 +147,14 @@
       "subtitle": "Suriin ang mga nakabinbing kahilingan sa silid, mapagkukunan at kaganapan",
       "title": "Mga Aprubasyon"
     },
+    "availability": {
+      "allRoomsResources": "Lahat ng silid at mapagkukunan",
+      "blocked": "Naharang",
+      "book": "Mag-book",
+      "filter": "Silid / Mapagkukunan",
+      "subtitle": "Tingnan kung ano ang naka-book sa mga silid at mapagkukunan",
+      "title": "Availability"
+    },
     "calendar": {
       "add": "Magdagdag",
       "copiedToClipboard": "Kinopya sa clipboard",
@@ -239,6 +247,7 @@
       "title": "Mag-import ng .ics Calendar"
     },
     "newEvent": {
+      "customWindow": "Custom reservation window",
       "daily": "Araw-araw",
       "description": "Paglalarawan",
       "doesNotRepeat": "Hindi umuulit",
@@ -250,10 +259,14 @@
       "private": "Pribado",
       "public": "Pampubliko",
       "repeats": "Umuulit",
+      "reserveFrom": "Mag-reserve mula sa",
+      "reserveUntil": "Mag-reserve hanggang",
       "resources": "Mga Mapagkukunan",
       "rooms": "Mga Silid",
       "seats": "Mga Upuan {}",
+      "setupMinutes": "Paghahanda (min bago)",
       "start": "Simula",
+      "teardownMinutes": "Paglilinis (min pagkatapos)",
       "template": "Template",
       "title": "Bagong Kaganapan",
       "visibility": "Visibility",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Hitsura",
       "approvals": "Mga Aprubasyon",
+      "availability": "Availability",
       "blocks": "Mga Block",
       "bulkImport": "Bulk Import",
       "calendars": "Mga Kalendaryo",

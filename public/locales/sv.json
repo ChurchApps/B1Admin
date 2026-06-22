@@ -147,6 +147,14 @@
       "subtitle": "Granska väntande lokal-, resurs- och händelseförfrågningar",
       "title": "Godkännanden"
     },
+    "availability": {
+      "allRoomsResources": "Alla lokaler och resurser",
+      "blocked": "Blockerad",
+      "book": "Boka",
+      "filter": "Lokal / Resurs",
+      "subtitle": "Se vad som är bokat för lokaler och resurser",
+      "title": "Tillgänglighet"
+    },
     "calendar": {
       "add": "Lägg till",
       "copiedToClipboard": "Kopierat till urklipp",
@@ -239,6 +247,7 @@
       "title": "Importera .ics-kalender"
     },
     "newEvent": {
+      "customWindow": "Anpassat bokningsfönster",
       "daily": "Dagligen",
       "description": "Beskrivning",
       "doesNotRepeat": "Upprepas inte",
@@ -250,10 +259,14 @@
       "private": "Privat",
       "public": "Offentlig",
       "repeats": "Upprepas",
+      "reserveFrom": "Reservera från",
+      "reserveUntil": "Reservera till",
       "resources": "Resurser",
       "rooms": "Lokaler",
       "seats": "Platser {}",
+      "setupMinutes": "Förberedelse (min före)",
       "start": "Start",
+      "teardownMinutes": "Nedmontering (min efter)",
       "template": "Mall",
       "title": "Ny händelse",
       "visibility": "Synlighet",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Utseende",
       "approvals": "Godkännanden",
+      "availability": "Tillgänglighet",
       "blocks": "Block",
       "bulkImport": "Massimport",
       "calendars": "Kalendrar",

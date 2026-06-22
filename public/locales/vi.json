@@ -147,6 +147,14 @@
       "subtitle": "Xem xét các yêu cầu phòng, tài nguyên và sự kiện đang chờ xử lý",
       "title": "Phê duyệt"
     },
+    "availability": {
+      "allRoomsResources": "Tất cả phòng và tài nguyên",
+      "blocked": "Đã chặn",
+      "book": "Đặt chỗ",
+      "filter": "Phòng / Tài nguyên",
+      "subtitle": "Xem những gì đã được đặt trong các phòng và tài nguyên",
+      "title": "Tình trạng sẵn có"
+    },
     "calendar": {
       "add": "Thêm",
       "copiedToClipboard": "Copied to clipboard",
@@ -239,6 +247,7 @@
       "title": "Nhập lịch .ics"
     },
     "newEvent": {
+      "customWindow": "Cửa sổ đặt chỗ tùy chỉnh",
       "daily": "Hàng ngày",
       "description": "Mô tả",
       "doesNotRepeat": "Không lặp lại",
@@ -250,10 +259,14 @@
       "private": "Riêng tư",
       "public": "Công khai",
       "repeats": "Lặp lại",
+      "reserveFrom": "Đặt chỗ từ",
+      "reserveUntil": "Đặt chỗ đến",
       "resources": "Tài nguyên",
       "rooms": "Phòng",
       "seats": "Chỗ ngồi {}",
+      "setupMinutes": "Chuẩn bị (phút trước)",
       "start": "Bắt đầu",
+      "teardownMinutes": "Dọn dẹp (phút sau)",
       "template": "Mẫu",
       "title": "Sự kiện mới",
       "visibility": "Hiển thị",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Giao diện",
       "approvals": "Phê duyệt",
+      "availability": "Tình trạng sẵn có",
       "blocks": "Khối",
       "bulkImport": "Nhập hàng loạt",
       "calendars": "Lịch",

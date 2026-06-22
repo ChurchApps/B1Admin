@@ -147,6 +147,14 @@
       "subtitle": "लंबित कमरा, संसाधन और कार्यक्रम अनुरोधों की समीक्षा करें",
       "title": "स्वीकृतियाँ"
     },
+    "availability": {
+      "allRoomsResources": "सभी कमरे और संसाधन",
+      "blocked": "अवरुद्ध",
+      "book": "बुक करें",
+      "filter": "कमरा / संसाधन",
+      "subtitle": "कमरों और संसाधनों में बुकिंग देखें",
+      "title": "उपलब्धता"
+    },
     "calendar": {
       "add": "जोड़ें",
       "copiedToClipboard": "क्लिपबोर्ड पर कॉपी किया गया",
@@ -239,6 +247,7 @@
       "title": ".ics कैलेंडर आयात करें"
     },
     "newEvent": {
+      "customWindow": "कस्टम आरक्षण विंडो",
       "daily": "दैनिक",
       "description": "विवरण",
       "doesNotRepeat": "दोहराता नहीं",
@@ -250,10 +259,14 @@
       "private": "निजी",
       "public": "सार्वजनिक",
       "repeats": "दोहराएं",
+      "reserveFrom": "से आरक्षित करें",
+      "reserveUntil": "तक आरक्षित करें",
       "resources": "संसाधन",
       "rooms": "कमरे",
       "seats": "सीटें {}",
+      "setupMinutes": "सेटअप (मिनट पहले)",
       "start": "प्रारंभ",
+      "teardownMinutes": "समापन (मिनट बाद)",
       "template": "टेम्पलेट",
       "title": "नया कार्यक्रम",
       "visibility": "दृश्यता",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "रूप",
       "approvals": "स्वीकृतियाँ",
+      "availability": "उपलब्धता",
       "blocks": "ब्लॉक",
       "bulkImport": "बल्क आयात",
       "calendars": "कैलेंडर",

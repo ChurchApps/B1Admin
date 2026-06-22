@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
-import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, ListItemText, MenuItem, Stack, TextField } from "@mui/material";
+import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField } from "@mui/material";
 import { type ConflictInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
 
 interface Props {
   churchId: string;
-  curatedCalendarId: string;
+  curatedCalendarId?: string;
+  initialRoomId?: string;
+  initialResourceId?: string;
   onDone: (saved: boolean) => void;
 }
 
@@ -30,10 +32,27 @@ export function NewEventModal(props: Props) {
   const [end, setEnd] = useState("");
   const [recurrence, setRecurrence] = useState("");
   const [visibility, setVisibility] = useState("public");
-  const [roomIds, setRoomIds] = useState<string[]>([]);
-  const [resourceIds, setResourceIds] = useState<string[]>([]);
+  const [roomIds, setRoomIds] = useState<string[]>(props.initialRoomId ? [props.initialRoomId] : []);
+  const [resourceIds, setResourceIds] = useState<string[]>(props.initialResourceId ? [props.initialResourceId] : []);
   const [conflicts, setConflicts] = useState<ConflictInterface[]>([]);
+  const [setupMinutes, setSetupMinutes] = useState("");
+  const [teardownMinutes, setTeardownMinutes] = useState("");
+  const [customWindow, setCustomWindow] = useState(false);
+  const [windowStart, setWindowStart] = useState("");
+  const [windowEnd, setWindowEnd] = useState("");
   const [saving, setSaving] = useState(false);
+
+  const toInt = (v: string) => (v.trim() ? parseInt(v, 10) || 0 : 0);
+
+  const hasBookings = roomIds.length > 0 || resourceIds.length > 0;
+
+  const toggleCustomWindow = (on: boolean) => {
+    setCustomWindow(on);
+    if (on) {
+      if (!windowStart) setWindowStart(start);
+      if (!windowEnd) setWindowEnd(end);
+    }
+  };
 
   useEffect(() => {
     ApiHelper.get("/groups", "MembershipApi").then(setGroups);
@@ -60,12 +79,18 @@ export function NewEventModal(props: Props) {
         start: new Date(start),
         end: new Date(end),
         recurrenceRule: getRecurrenceRule(),
+        setupMinutes: toInt(setupMinutes),
+        teardownMinutes: toInt(teardownMinutes),
+        startTime: customWindow && windowStart ? new Date(windowStart) : undefined,
+        endTime: customWindow && windowEnd ? new Date(windowEnd) : undefined,
         roomIds,
         resources: resourceIds.map((id) => ({ resourceId: id, quantity: 1 }))
       }, "ContentApi").then(setConflicts).catch(() => setConflicts([]));
     }, 400);
     return () => clearTimeout(timeout);
-  }, [start, end, recurrence, roomIds, resourceIds]);
+  }, [
+    start, end, recurrence, roomIds, resourceIds, setupMinutes, teardownMinutes, customWindow, windowStart, windowEnd
+  ]);
 
   const applyTemplate = (id: string) => {
     setTemplateId(id);
@@ -103,12 +128,15 @@ export function NewEventModal(props: Props) {
       } as EventInterface;
       const savedEvents = await ApiHelper.post("/events", [event], "ContentApi");
       const eventId = savedEvents[0].id;
+      const window = customWindow && windowStart && windowEnd
+        ? { startTime: new Date(windowStart), endTime: new Date(windowEnd) }
+        : { setupMinutes: toInt(setupMinutes) || undefined, teardownMinutes: toInt(teardownMinutes) || undefined };
       const bookings = [
-        ...roomIds.map((roomId) => ({ eventId, roomId })),
-        ...resourceIds.map((resourceId) => ({ eventId, resourceId, quantity: 1 }))
+        ...roomIds.map((roomId) => ({ eventId, roomId, ...window })),
+        ...resourceIds.map((resourceId) => ({ eventId, resourceId, quantity: 1, ...window }))
       ];
       if (bookings.length > 0) await ApiHelper.post("/eventBookings", bookings, "ContentApi");
-      await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
+      if (props.curatedCalendarId) await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
       props.onDone(true);
     } catch {
       setSaving(false);
@@ -184,6 +212,26 @@ export function NewEventModal(props: Props) {
                 </MenuItem>
               ))}
             </TextField>
+          )}
+          {hasBookings && (
+            <>
+              {!customWindow && (
+                <Stack direction="row" spacing={2}>
+                  <TextField fullWidth type="number" label={Locale.label("calendars.newEvent.setupMinutes")} value={setupMinutes} onChange={(e) => setSetupMinutes(e.target.value)} inputProps={{ min: 0 }} data-testid="new-event-setup-minutes" />
+                  <TextField fullWidth type="number" label={Locale.label("calendars.newEvent.teardownMinutes")} value={teardownMinutes} onChange={(e) => setTeardownMinutes(e.target.value)} inputProps={{ min: 0 }} data-testid="new-event-teardown-minutes" />
+                </Stack>
+              )}
+              <FormControlLabel
+                control={<Switch checked={customWindow} onChange={(e) => toggleCustomWindow(e.target.checked)} data-testid="new-event-custom-window-toggle" />}
+                label={Locale.label("calendars.newEvent.customWindow")}
+              />
+              {customWindow && (
+                <Stack direction="row" spacing={2}>
+                  <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.reserveFrom")} value={windowStart} onChange={(e) => setWindowStart(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-window-start" />
+                  <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.reserveUntil")} value={windowEnd} onChange={(e) => setWindowEnd(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-window-end" />
+                </Stack>
+              )}
+            </>
           )}
           {conflicts.length > 0 && (
             <Alert severity="warning" data-testid="new-event-conflict-warnings">

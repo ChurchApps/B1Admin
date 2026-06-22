@@ -147,6 +147,14 @@
       "subtitle": "Examiner les demandes de salle, de ressource et d'événement en attente",
       "title": "Approbations"
     },
+    "availability": {
+      "allRoomsResources": "Toutes les salles et ressources",
+      "blocked": "Bloqué",
+      "book": "Réserver",
+      "filter": "Salle / Ressource",
+      "subtitle": "Voir ce qui est réservé dans les salles et ressources",
+      "title": "Disponibilité"
+    },
     "calendar": {
       "add": "Ajouter",
       "copiedToClipboard": "Copié dans le presse-papiers",
@@ -239,6 +247,7 @@
       "title": "Importer un calendrier .ics"
     },
     "newEvent": {
+      "customWindow": "Fenêtre de réservation personnalisée",
       "daily": "Quotidien",
       "description": "Description",
       "doesNotRepeat": "Ne se répète pas",
@@ -250,10 +259,14 @@
       "private": "Privé",
       "public": "Public",
       "repeats": "Se répète",
+      "reserveFrom": "Réserver à partir de",
+      "reserveUntil": "Réserver jusqu'au",
       "resources": "Ressources",
       "rooms": "Salles",
       "seats": "Places {}",
+      "setupMinutes": "Installation (min avant)",
       "start": "Début",
+      "teardownMinutes": "Démontage (min après)",
       "template": "Modèle",
       "title": "Nouvel événement",
       "visibility": "Visibilité",
@@ -1349,6 +1362,7 @@
     "secondaryMenuHelper": {
       "appearance": "Apparence",
       "approvals": "Approbations",
+      "availability": "Disponibilité",
       "blocks": "Blocs",
       "bulkImport": "Importation en masse",
       "calendars": "Calendriers",

@@ -24,6 +24,10 @@ export interface EventBookingInterface {
   resourceId?: string;
   quantity?: number;
   status?: string;
+  setupMinutes?: number;
+  teardownMinutes?: number;
+  startTime?: Date | string;
+  endTime?: Date | string;
   requestedBy?: string;
   requestedDate?: Date | string;
   resolvedBy?: string;
@@ -33,6 +37,7 @@ export interface EventBookingInterface {
   eventTitle?: string;
   eventStart?: Date | string;
   eventEnd?: Date | string;
+  eventRecurrenceRule?: string;
   conflicts?: ConflictInterface[];
 }
 
