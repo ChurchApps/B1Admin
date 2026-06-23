@@ -51,10 +51,10 @@ To accept online donations you must first register for developer credentials wit
   2. Kingdom Funding will walk you through the account onboarding process, including identity verification and bank account setup.
   3. Once your account is approved, you will receive your API Source Key (private key) and Tokenization Key (public key) from the merchant portal.
   4. In B1Admin, go to **Settings → Giving Settings**, select **Kingdom Funding** as the provider, paste in your Public Key (Tokenization Key) and Private Key (API Source Key), and save.
-  5. **Configure the webhook URL in your Accept Blue Control Panel** so the system gets notified about transaction state changes (recurring charges, ACH settlements, returns):
+  5. **Configure the webhook URL in your Kingdom Funding (NMI) merchant portal** so the system gets notified about transaction state changes (recurring charges, ACH settlements, returns):
      - URL: `https://api.churchapps.org/giving/donate/webhook/kingdomfunding?churchId={YOUR_CHURCH_ID}` (replace `{YOUR_CHURCH_ID}` with the church ID from B1Admin — the exact URL is also shown with a copy button in Giving Settings when Kingdom Funding is selected)
-     - Generate a Webhook Signing Secret in the Accept Blue Control Panel and paste the same value into the **Webhook Key** field in B1Admin's Giving Settings. Both sides must match — webhooks are rejected if the key is missing or wrong.
-     - Subscribe at minimum to: `transaction.succeeded.charge`, `transaction.declined.charge`, `transaction.status.settled`, `transaction.status.returned`.
+     - Kingdom Funding does not generate a signing key for you: choose your own secret, enter it on the webhook endpoint in the merchant portal, and paste the same value into the **Webhook Key** field in B1Admin's Giving Settings. Both sides must match — webhooks are rejected if the key is missing or wrong.
+     - Subscribe at minimum to: `transaction.sale.success`, `transaction.auth.success`, the refund events, and the ACH `check.*` status events (e.g. `check.status.settled`, `check.status.returned`).
 
 After obtaining your tokens, open **Settings → Giving Settings** in B1Admin, select the provider, paste in your Public and Private keys, and toggle "Pay Fees" as desired. Finally, configure your fee parameters in **Fee Options**.
 

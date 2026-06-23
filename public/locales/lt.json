@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenizavimo raktas",
       "transFee": "Transaction Fee",
       "webhookKey": "Webhook raktas",
-      "webhookKeyHelper": "Webhook pasirašymo paslaptis iš Accept Blue valdymo skydelio. Reikalinga sandorių būsenos atnaujinimams.",
+      "webhookKeyHelper": "Webhook pasirašymo paslaptis iš Kingdom Funding valdymo skydelio. Reikalinga sandorių būsenos atnaujinimams.",
       "webhookUrlCopied": "Webhook URL nukopijuotas į iškarpinę"
     },
     "imageEditor": {

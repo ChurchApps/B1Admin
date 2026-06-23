@@ -3116,7 +3116,7 @@
       "tokenizationKey": "トークナイゼーションキー",
       "transFee": "Transaction Fee",
       "webhookKey": "Webhookキー",
-      "webhookKeyHelper": "Accept Blueコントロールパネルのウェブフック署名シークレット。取引ステータスの更新に必要です。",
+      "webhookKeyHelper": "Kingdom Fundingコントロールパネルのウェブフック署名シークレット。取引ステータスの更新に必要です。",
       "webhookUrlCopied": "Webhook URLをクリップボードにコピーしました"
     },
     "imageEditor": {

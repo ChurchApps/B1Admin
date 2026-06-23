@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenization Key",
       "transFee": "Bayad sa Transaksyon",
       "webhookKey": "Webhook Key",
-      "webhookKeyHelper": "Webhook signing secret mula sa Accept Blue control panel. Kailangan para sa mga update ng katayuan ng transaksyon.",
+      "webhookKeyHelper": "Webhook signing secret mula sa Kingdom Funding control panel. Kailangan para sa mga update ng katayuan ng transaksyon.",
       "webhookUrlCopied": "Nakopya ang webhook URL sa clipboard"
     },
     "imageEditor": {

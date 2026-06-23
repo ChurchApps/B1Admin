@@ -3116,7 +3116,7 @@
       "tokenizationKey": "令牌密钥",
       "transFee": "交易费",
       "webhookKey": "Webhook 密钥",
-      "webhookKeyHelper": "来自 Accept Blue 控制面板的 Webhook 签名密钥。交易状态更新所必需。",
+      "webhookKeyHelper": "来自 Kingdom Funding 控制面板的 Webhook 签名密钥。交易状态更新所必需。",
       "webhookUrlCopied": "Webhook URL 已复制到剪贴板"
     },
     "imageEditor": {

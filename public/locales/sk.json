@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenizačný kľúč",
       "transFee": "Transaction Fee",
       "webhookKey": "Kľúč webhooku",
-      "webhookKeyHelper": "Podpisový tajný kľúč webhooku z ovládacieho panela Accept Blue. Vyžaduje sa pre aktualizácie stavu transakcií.",
+      "webhookKeyHelper": "Podpisový tajný kľúč webhooku z ovládacieho panela Kingdom Funding. Vyžaduje sa pre aktualizácie stavu transakcií.",
       "webhookUrlCopied": "URL webhooku skopírovaná do schránky"
     },
     "imageEditor": {

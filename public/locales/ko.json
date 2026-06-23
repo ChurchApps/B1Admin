@@ -3116,7 +3116,7 @@
       "tokenizationKey": "토큰화 키",
       "transFee": "거래 수수료",
       "webhookKey": "웹훅 키",
-      "webhookKeyHelper": "Accept Blue 제어판의 웹훅 서명 시크릿입니다. 거래 상태 업데이트에 필요합니다.",
+      "webhookKeyHelper": "Kingdom Funding 제어판의 웹훅 서명 시크릿입니다. 거래 상태 업데이트에 필요합니다.",
       "webhookUrlCopied": "웹훅 URL이 클립보드에 복사되었습니다"
     },
     "imageEditor": {

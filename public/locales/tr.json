@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenizasyon Anahtarı",
       "transFee": "Transaction Fee",
       "webhookKey": "Webhook Anahtarı",
-      "webhookKeyHelper": "Accept Blue kontrol panelinden gelen webhook imzalama gizli anahtarı. İşlem durumu güncellemeleri için gereklidir.",
+      "webhookKeyHelper": "Kingdom Funding kontrol panelinden gelen webhook imzalama gizli anahtarı. İşlem durumu güncellemeleri için gereklidir.",
       "webhookUrlCopied": "Webhook URL'si panoya kopyalandı"
     },
     "imageEditor": {

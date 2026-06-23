@@ -3116,7 +3116,7 @@
       "tokenizationKey": "مفتاح Tokenization",
       "transFee": "Transaction Fee",
       "webhookKey": "مفتاح Webhook",
-      "webhookKeyHelper": "سر توقيع Webhook من لوحة تحكم Accept Blue. مطلوب لتحديثات حالة المعاملات.",
+      "webhookKeyHelper": "سر توقيع Webhook من لوحة تحكم Kingdom Funding. مطلوب لتحديثات حالة المعاملات.",
       "webhookUrlCopied": "تم نسخ رابط Webhook إلى الحافظة"
     },
     "imageEditor": {

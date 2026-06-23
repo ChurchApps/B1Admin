@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenisierungsschlüssel",
       "transFee": "Transaktionsgebühr",
       "webhookKey": "Webhook-Schlüssel",
-      "webhookKeyHelper": "Webhook-Signiergeheimnis aus dem Accept Blue-Bedienfeld. Erforderlich für Transaktionsstatusaktualisierungen.",
+      "webhookKeyHelper": "Webhook-Signiergeheimnis aus dem Kingdom Funding-Bedienfeld. Erforderlich für Transaktionsstatusaktualisierungen.",
       "webhookUrlCopied": "Webhook-URL in Zwischenablage kopiert"
     },
     "imageEditor": {

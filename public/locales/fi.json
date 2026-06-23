@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenisointiavain",
       "transFee": "Transaction Fee",
       "webhookKey": "Webhook-avain",
-      "webhookKeyHelper": "Webhook-allekirjoitussalaisuus Accept Blue -ohjauspaneelista. Vaaditaan tapahtumatilapäivityksiin.",
+      "webhookKeyHelper": "Webhook-allekirjoitussalaisuus Kingdom Funding -ohjauspaneelista. Vaaditaan tapahtumatilapäivityksiin.",
       "webhookUrlCopied": "Webhook-URL kopioitu leikepöydälle"
     },
     "imageEditor": {

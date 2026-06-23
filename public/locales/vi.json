@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Khóa mã hóa",
       "transFee": "Transaction Fee",
       "webhookKey": "Khóa webhook",
-      "webhookKeyHelper": "Bí mật ký webhook từ bảng điều khiển Accept Blue. Bắt buộc để cập nhật trạng thái giao dịch.",
+      "webhookKeyHelper": "Bí mật ký webhook từ bảng điều khiển Kingdom Funding. Bắt buộc để cập nhật trạng thái giao dịch.",
       "webhookUrlCopied": "Đã sao chép URL webhook vào bộ nhớ tạm"
     },
     "imageEditor": {

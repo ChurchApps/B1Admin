@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokeniseringsnøgle",
       "transFee": "Transaktionsgebyr",
       "webhookKey": "Webhook-nøgle",
-      "webhookKeyHelper": "Webhook-signeringshemmelighed fra Accept Blue-kontrolpanelet. Kræves til opdateringer af transaktionsstatus.",
+      "webhookKeyHelper": "Webhook-signeringshemmelighed fra Kingdom Funding-kontrolpanelet. Kræves til opdateringer af transaktionsstatus.",
       "webhookUrlCopied": "Webhook-URL kopieret til udklipsholderen"
     },
     "imageEditor": {

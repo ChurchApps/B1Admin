@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Ključ za tokenizacijo",
       "transFee": "Transaction Fee",
       "webhookKey": "Ključ webhooka",
-      "webhookKeyHelper": "Podpisna skrivnost webhooka iz nadzorne plošče Accept Blue. Potrebna za posodobitve stanja transakcij.",
+      "webhookKeyHelper": "Podpisna skrivnost webhooka iz nadzorne plošče Kingdom Funding. Potrebna za posodobitve stanja transakcij.",
       "webhookUrlCopied": "URL webhooka kopiran v odložišče"
     },
     "imageEditor": {

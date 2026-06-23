@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Chave de tokenização",
       "transFee": "Taxa de Transação",
       "webhookKey": "Chave de webhook",
-      "webhookKeyHelper": "Segredo de assinatura do webhook do painel Accept Blue. Necessário para atualizações de status de transações.",
+      "webhookKeyHelper": "Segredo de assinatura do webhook do painel Kingdom Funding. Necessário para atualizações de status de transações.",
       "webhookUrlCopied": "URL do webhook copiada para a área de transferência"
     },
     "imageEditor": {

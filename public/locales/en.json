@@ -3118,7 +3118,7 @@
       "tokenizationKey": "Tokenization Key",
       "transFee": "Transaction Fee",
       "webhookKey": "Webhook Key",
-      "webhookKeyHelper": "Webhook signing secret from the Accept Blue control panel. Required for transaction status updates.",
+      "webhookKeyHelper": "Webhook signing secret from the Kingdom Funding control panel. Required for transaction status updates.",
       "webhookUrlCopied": "Webhook URL copied to clipboard"
     },
     "imageEditor": {

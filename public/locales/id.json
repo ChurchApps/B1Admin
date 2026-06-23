@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Kunci Tokenisasi",
       "transFee": "Transaction Fee",
       "webhookKey": "Kunci Webhook",
-      "webhookKeyHelper": "Rahasia penandatanganan webhook dari panel kontrol Accept Blue. Diperlukan untuk pembaruan status transaksi.",
+      "webhookKeyHelper": "Rahasia penandatanganan webhook dari panel kontrol Kingdom Funding. Diperlukan untuk pembaruan status transaksi.",
       "webhookUrlCopied": "URL webhook disalin ke clipboard"
     },
     "imageEditor": {

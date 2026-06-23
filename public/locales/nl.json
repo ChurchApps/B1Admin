@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenisatiesleutel",
       "transFee": "Transactiekosten",
       "webhookKey": "Webhooksleutel",
-      "webhookKeyHelper": "Webhook-ondertekeningsgeheim uit het Accept Blue-configuratiescherm. Vereist voor statusupdates van transacties.",
+      "webhookKeyHelper": "Webhook-ondertekeningsgeheim uit het Kingdom Funding-configuratiescherm. Vereist voor statusupdates van transacties.",
       "webhookUrlCopied": "Webhook-URL gekopieerd naar klembord"
     },
     "imageEditor": {

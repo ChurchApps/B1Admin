@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Ключ токенізації",
       "transFee": "Transaction Fee",
       "webhookKey": "Ключ вебхука",
-      "webhookKeyHelper": "Секрет підпису вебхука з панелі управління Accept Blue. Потрібний для оновлень статусу транзакцій.",
+      "webhookKeyHelper": "Секрет підпису вебхука з панелі управління Kingdom Funding. Потрібний для оновлень статусу транзакцій.",
       "webhookUrlCopied": "URL вебхука скопійовано в буфер обміну"
     },
     "imageEditor": {

@@ -3116,7 +3116,7 @@
       "tokenizationKey": "टोकनाइज़ेशन कुंजी",
       "transFee": "लेनदेन शुल्क",
       "webhookKey": "वेबहुक कुंजी",
-      "webhookKeyHelper": "Accept Blue कंट्रोल पैनल से वेबहुक साइनिंग सीक्रेट। लेनदेन स्थिति अपडेट के लिए आवश्यक।",
+      "webhookKeyHelper": "Kingdom Funding कंट्रोल पैनल से वेबहुक साइनिंग सीक्रेट। लेनदेन स्थिति अपडेट के लिए आवश्यक।",
       "webhookUrlCopied": "वेबहुक URL क्लिपबोर्ड पर कॉपी हो गया"
     },
     "imageEditor": {

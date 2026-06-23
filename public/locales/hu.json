@@ -3116,7 +3116,7 @@
       "tokenizationKey": "Tokenizálási kulcs",
       "transFee": "Transaction Fee",
       "webhookKey": "Webhook-kulcs",
-      "webhookKeyHelper": "Webhook-aláírási titok az Accept Blue vezérlőpaneljéről. A tranzakcióállapot-frissítésekhez szükséges.",
+      "webhookKeyHelper": "Webhook-aláírási titok az Kingdom Funding vezérlőpaneljéről. A tranzakcióállapot-frissítésekhez szükséges.",
       "webhookUrlCopied": "A webhook URL vágólapra másolva"
     },
     "imageEditor": {
