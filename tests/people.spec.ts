@@ -101,6 +101,50 @@ test.describe("People Management", () => {
       await expect(page.locator("p").getByText("Married")).toBeVisible();
     });
 
+    test("should AI search for people, keep search text, and support clearing", async ({ page }) => {
+      // Mock the AskApi call to /query/people
+      await page.route("**/query/people", async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify([{ field: "gender", operator: "equals", value: "Male" }])
+        });
+      });
+
+      // Mock the MembershipApi call to /people/advancedSearch
+      await page.route("**/people/advancedSearch", async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify([
+            { id: "1", name: { display: "Donald Clark", first: "Donald", last: "Clark" }, contactInfo: { email: "donald@example.com" } }
+          ])
+        });
+      });
+
+      const searchInput = page.locator('[id="display-box"] textarea').first();
+      await searchInput.fill("show me users that contain 'gol'");
+
+      const searchBtn = page.locator('[id="display-box"] button').getByText("Search").first();
+      await expect(searchBtn).toBeEnabled();
+      await searchBtn.click();
+
+      // Check if search results are displayed
+      const donaldRow = page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first();
+      await expect(donaldRow).toBeVisible({ timeout: 10000 });
+
+      // Verify input value is NOT cleared
+      await expect(searchInput).toHaveValue("show me users that contain 'gol'");
+
+      // Clear search should restore original list
+      const clearBtn = page.getByTestId("ai-search-clear");
+      await expect(clearBtn).toBeVisible();
+      await clearBtn.click();
+
+      // Verify input value IS cleared
+      await expect(searchInput).toHaveValue("");
+    });
+
     test("should open notes tab", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const notesBtn = page.locator("button").getByText("Notes");

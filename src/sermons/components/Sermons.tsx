@@ -352,11 +352,17 @@ export const Sermons = () => {
     </div>
   );
 
-  if (currentSermon !== null) return <SermonEdit currentSermon={currentSermon} updatedFunction={handleUpdated} />;
+  if (currentSermon !== null) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <SermonEdit currentSermon={currentSermon} updatedFunction={handleUpdated} />
+      </Box>
+    );
+  }
 
   if (currentPlaylist !== null) {
     return (
-      <>
+      <Box sx={{ p: 3 }}>
         {imageEditor}
         <PlaylistEdit
           currentPlaylist={currentPlaylist}
@@ -364,7 +370,7 @@ export const Sermons = () => {
           showPhotoEditor={showPhotoEditor}
           updatedPhoto={(photoType === "playlist" && photoUrl) || null}
         />
-      </>
+      </Box>
     );
   }
 

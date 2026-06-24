@@ -9,6 +9,34 @@ import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { CountChip, ExportButton, SortableTableHead } from "../components/ui";
 
+const formatHeader = (key: string): string => {
+  const customMap: Record<string, string> = {
+    id: "ID",
+    churchId: "Church ID",
+    campusId: "Campus ID",
+    categoryName: "Category Name",
+    joinPolicy: "Join Policy",
+    labelCount: "Label Count",
+    memberCount: "Member Count",
+    meetingLocation: "Meeting Location",
+    meetingTime: "Meeting Time",
+    name: "Name",
+    labels: "Labels",
+    tags: "Tags"
+  };
+
+  if (customMap[key]) {
+    return customMap[key];
+  }
+
+  // Programmatic camelCase to spaced Title Case fallback
+  const result = key
+    .replace(/([A-Z])/g, " $1")
+    .replace(/([0-9]+)/g, " $1")
+    .trim();
+  return result.charAt(0).toUpperCase() + result.slice(1);
+};
+
 const GroupsPage = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [showAdd, setShowAdd] = useState(false);
@@ -56,7 +84,7 @@ const GroupsPage = () => {
   const exportData = groups.map((g) => {
     const { labelArray, ...rest } = g;
 
-    return {
+    const rawExport: any = {
       ...rest,
 
       labels: Array.isArray(labelArray)
@@ -69,6 +97,13 @@ const GroupsPage = () => {
 
       memberCount: Number(g.memberCount || 0)
     };
+
+    const formattedExport: any = {};
+    Object.keys(rawExport).forEach((key) => {
+      formattedExport[formatHeader(key)] = rawExport[key];
+    });
+
+    return formattedExport;
   });
 
   const getRows = () => {

@@ -1,18 +1,20 @@
 import React from "react";
 import { type SearchCondition, type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DisplayBox, ErrorMessages, Locale } from "@churchapps/apphelper";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { B1AdminPersonHelper } from "../../helpers";
 
 interface Props {
   updateSearchResults: (people: PersonInterface[]) => void;
   // Reports the AI-generated conditions so the parent can offer "Save as List".
   onReportCriteria?: (criteria: SearchCondition[] | null) => void;
+  resetSearchResults?: () => void;
 }
 
 export const AISearch = (props: Props) => {
   const [text, setText] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isSearched, setIsSearched] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<string[]>([]);
 
   const handleSearch = async (e: any) => {
@@ -27,13 +29,21 @@ export const AISearch = (props: Props) => {
 
       props.updateSearchResults(response?.map((p: PersonInterface) => B1AdminPersonHelper.getExpandedPersonObject(p)));
       if (filters?.length) props.onReportCriteria?.(filters);
+      setIsSearched(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       setErrors([message]);
     } finally {
       setIsLoading(false);
-      setText("");
     }
+  };
+
+  const handleClear = () => {
+    setText("");
+    setIsSearched(false);
+    setErrors([]);
+    props.onReportCriteria?.(null);
+    props.resetSearchResults?.();
   };
 
   return (
@@ -56,9 +66,16 @@ export const AISearch = (props: Props) => {
         {Locale.label("people.aiSearch.exampleMen")}
         <br />{Locale.label("people.aiSearch.exampleWomen")}
       </Typography>
-      <Button fullWidth variant="contained" onClick={handleSearch} disabled={isLoading || !text || text === ""}>
-        {isLoading ? Locale.label("people.aiSearch.searching") : Locale.label("people.aiSearch.search")}
-      </Button>
+      <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+        <Button fullWidth variant="contained" onClick={handleSearch} disabled={isLoading || !text || text === ""} sx={{ flex: 1 }}>
+          {isLoading ? Locale.label("people.aiSearch.searching") : Locale.label("people.aiSearch.search")}
+        </Button>
+        {(text || isSearched) && (
+          <Button fullWidth variant="outlined" onClick={handleClear} disabled={isLoading} sx={{ flex: 1 }} data-testid="ai-search-clear">
+            {Locale.label("people.aiSearch.clearSearch", "Clear Search")}
+          </Button>
+        )}
+      </Stack>
     </DisplayBox>
   );
 };

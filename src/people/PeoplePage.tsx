@@ -4,7 +4,7 @@ import { Permissions, UserHelper, type PersonInterface, type SearchCondition } f
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { Grid, Box, Typography, Card, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select } from "@mui/material";
-import { B1AdminPersonHelper } from "../helpers";
+import { B1AdminPersonHelper, EnvironmentHelper } from "../helpers";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
 import { buildRulesFromCriteria } from "./components/listRules";
@@ -25,6 +25,56 @@ interface BulkDeleteResponse {
 }
 
 const INITIAL_PAGE_SIZE = 50;
+
+const formatHeader = (key: string): string => {
+  const customMap: Record<string, string> = {
+    address: "Address",
+    address1: "Address 1",
+    address2: "Address 2",
+    age: "Age",
+    anniversary: "Anniversary",
+    birthDate: "Birth Date",
+    campusId: "Campus ID",
+    churchId: "Church ID",
+    city: "City",
+    contactCity: "Contact City",
+    contactEmail: "Contact Email",
+    contactState: "Contact State",
+    contactZip: "Contact Zip",
+    conversationId: "Conversation ID",
+    display: "Display Name",
+    first: "First Name",
+    last: "Last Name",
+    middle: "Middle Name",
+    middleName: "Middle Name",
+    mobilePhone: "Mobile Phone",
+    nametagNotes: "Nametag Notes",
+    nick: "Nick Name",
+    optedOut: "Opted Out",
+    phone: "Phone",
+    photo: "Photo",
+    photoUpdated: "Photo Updated",
+    state: "State",
+    workPhone: "Work Phone",
+    firstName: "First Name",
+    lastName: "Last Name",
+    gender: "Gender",
+    membershipStatus: "Membership Status",
+    id: "ID",
+    householdId: "Household ID"
+  };
+
+  if (customMap[key]) {
+    return customMap[key];
+  }
+
+  // Programmatic camelCase to spaced Title Case fallback
+  const result = key
+    .replace(/([A-Z])/g, " $1")
+    .replace(/([0-9]+)/g, " $1")
+    .trim();
+  return result.charAt(0).toUpperCase() + result.slice(1);
+};
 
 export const PeoplePage = memo(() => {
   const [searchResults, setSearchResults] = React.useState<PersonInterface[] | null>(null);
@@ -259,9 +309,11 @@ export const PeoplePage = memo(() => {
   const getExportData = (people: PersonInterface[]) => {
     return people.map((person) => {
       const { name, contactInfo, ...rest } = person;
+      const photoUrl = person.photo ? (person.photo.startsWith("http") ? person.photo : (EnvironmentHelper.Common.ContentRoot + person.photo)) : "";
 
-      return {
+      const rawExport: any = {
         ...rest,
+        photo: photoUrl,
 
         display: name?.display,
         first: name?.first,
@@ -285,6 +337,13 @@ export const PeoplePage = memo(() => {
         contactZip: contactInfo?.zip,
         contactEmail: contactInfo?.email
       };
+
+      const formattedExport: any = {};
+      Object.keys(rawExport).forEach((key) => {
+        formattedExport[formatHeader(key)] = rawExport[key];
+      });
+
+      return formattedExport;
     });
   };
 
@@ -367,6 +426,7 @@ export const PeoplePage = memo(() => {
                 setIsSearchPerformed(true);
               }}
               onReportCriteria={setSaveableCriteria}
+              resetSearchResults={resetSearchResults}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 9 }}>
