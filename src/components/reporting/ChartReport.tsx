@@ -110,13 +110,15 @@ export const ChartReport = (props: Props) => {
   let result = <p>{Locale.label("reporting.noData")}</p>;
   if (props.reportResult.table?.length > 0) {
     result = (
-      <Chart
-        chartType={chartType}
-        data={getChartData()}
-        width="100%"
-        height="400px"
-        options={options}
-      />
+      <div className="report-chart-container">
+        <Chart
+          chartType={chartType}
+          data={getChartData()}
+          width="100%"
+          height="400px"
+          options={options}
+        />
+      </div>
     );
   }
 
