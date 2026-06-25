@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Tạo ứng dụng REST PayPal và dán Client ID và Secret bên dưới. Bắt đầu tại",
+      "privateKeyRequired": "Vui lòng nhập khóa bí mật/riêng tư cho nhà cung cấp này trước khi lưu.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to Lưu giving Cài đặt",

@@ -3102,6 +3102,7 @@
       "paypalGoTo": "前往",
       "paypalLogin": "登录，然后在",
       "paypalSetup": "创建 PayPal REST 应用并将其客户端 ID 和密钥粘贴到下方。请访问",
+      "privateKeyRequired": "保存前请输入此提供商的密钥/私钥。",
       "prov": "提供商",
       "pubKey": "公钥",
       "saveError": "无法保存给予设置",

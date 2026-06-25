@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Pumunta sa",
       "paypalLogin": "mag-login, pagkatapos sa ilalim ng",
       "paypalSetup": "Gumawa ng PayPal REST app at i-paste ang Client ID at Secret nito sa ibaba. Magsimula sa",
+      "privateKeyRequired": "Pakilagay ang sikreto/pribadong key para sa provider na ito bago mag-save.",
       "prov": "Provider",
       "pubKey": "Publikong Susi",
       "saveError": "Nabigong makatipid ng mga setting ng pagbibigay",

@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "PayPal RESTアプリを作成して、クライアントIDとシークレットを以下に貼り付けてください。開始するには",
+      "privateKeyRequired": "保存する前に、このプロバイダーのシークレット/プライベートキーを入力してください。",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Utwórz aplikację PayPal REST i wklej jej identyfikator klienta i klucz tajny poniżej. Zacznij od",
+      "privateKeyRequired": "Przed zapisaniem wprowadź tajny/prywatny klucz dla tego dostawcy.",
       "prov": "Dostawca",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

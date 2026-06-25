@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Hozz létre egy PayPal REST alkalmazást, és illeszd be az ügyfél-azonosítót és a titkos kulcsot az alábbiakba. Kezdés:",
+      "privateKeyRequired": "Mentés előtt adja meg a szolgáltató titkos/privát kulcsát.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

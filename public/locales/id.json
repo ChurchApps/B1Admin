@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Buat aplikasi REST PayPal dan tempel Client ID dan Secret-nya di bawah. Mulai di",
+      "privateKeyRequired": "Harap masukkan kunci rahasia/pribadi untuk penyedia ini sebelum menyimpan.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

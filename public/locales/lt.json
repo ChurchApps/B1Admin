@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Sukurkite PayPal REST programą ir žemiau įklijuokite jos Kliento ID ir Slaptąjį raktą. Pradėkite adresu",
+      "privateKeyRequired": "Prieš išsaugodami įveskite šio teikėjo slaptąjį / privatųjį raktą.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

@@ -59,7 +59,13 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
       if (values.provider === "") {
         if (!UniqueIdHelper.isMissing(gateway?.id)) await ApiHelper.delete("/gateways/" + gateway.id, "GivingApi");
       } else {
-        if (values.privateKey === "") return;
+        const providerChanged = !!gateway && gateway.provider !== values.provider;
+        if ((gateway === null || providerChanged) && values.privateKey === "") {
+          const message = Locale.label("settings.givingSettingsEdit.privateKeyRequired");
+          setErrors([message]);
+          if (props.onError) props.onError([message]);
+          return;
+        }
         const gw: PaymentGatewaysInterface = gateway === null ? { churchId: props.churchId } : { ...gateway };
         gw.provider = values.provider;
         gw.publicKey = values.publicKey;

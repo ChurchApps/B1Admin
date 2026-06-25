@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Přejděte na",
       "paypalLogin": "přihlaste se, poté pod",
       "paypalSetup": "Vytvořte aplikaci PayPal REST a vložte níže její Client ID a Secret. Začněte na",
+      "privateKeyRequired": "Před uložením zadejte tajný/soukromý klíč pro tohoto poskytovatele.",
       "prov": "Poskytovatel",
       "pubKey": "Veřejný klíč",
       "saveError": "Nepodařilo se uložit nastavení darování",

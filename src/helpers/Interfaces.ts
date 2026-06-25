@@ -134,6 +134,8 @@ export interface PlanTypeInterface {
   churchId?: string;
   ministryId?: string;
   name?: string;
+  reminderOffsets?: string;
+  reminderMessage?: string;
 }
 
 export interface AssociatedGroupInterface {

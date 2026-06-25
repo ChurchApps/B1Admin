@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Bir PayPal REST uygulaması oluşturun ve İstemci Kimliğini ve Gizli Anahtarı aşağıya yapıştırın. Başlamak için",
+      "privateKeyRequired": "Kaydetmeden önce lütfen bu sağlayıcının gizli/özel anahtarını girin.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

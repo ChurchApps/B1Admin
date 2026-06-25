@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Створіть REST-застосунок PayPal і вставте його Client ID та Secret нижче. Розпочніть на",
+      "privateKeyRequired": "Перед збереженням введіть секретний/приватний ключ для цього постачальника.",
       "prov": "Постачальник",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

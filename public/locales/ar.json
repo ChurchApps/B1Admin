@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "أنشئ تطبيق PayPal REST والصق معرف العميل والمفتاح السري أدناه. ابدأ على",
+      "privateKeyRequired": "يرجى إدخال المفتاح السري/الخاص لهذا المزود قبل الحفظ.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

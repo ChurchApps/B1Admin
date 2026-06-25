@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Vytvorte REST aplikáciu PayPal a vložte jej Client ID a Secret nižšie. Začnite na",
+      "privateKeyRequired": "Pred uložením zadajte tajný/súkromný kľúč pre tohto poskytovateľa.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

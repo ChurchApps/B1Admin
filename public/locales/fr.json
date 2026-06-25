@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Allez sur",
       "paypalLogin": "connectez-vous, puis sous",
       "paypalSetup": "Créez une application REST PayPal et collez son identifiant client et son secret ci-dessous. Commencez sur",
+      "privateKeyRequired": "Veuillez saisir la clé secrète/privée de ce fournisseur avant d'enregistrer.",
       "prov": "Fournisseur",
       "pubKey": "Clé publique",
       "saveError": "Échec de l'enregistrement des paramètres de don",

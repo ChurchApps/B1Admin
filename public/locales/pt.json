@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Vá para",
       "paypalLogin": "faça login, depois em",
       "paypalSetup": "Crie um aplicativo REST PayPal e cole o ID do cliente e o segredo abaixo. Comece em",
+      "privateKeyRequired": "Insira a chave secreta/privada deste provedor antes de salvar.",
       "prov": "Fornecedor",
       "pubKey": "Chave Pública",
       "saveError": "Falha ao salvar as configurações",

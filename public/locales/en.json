@@ -3104,6 +3104,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Create a PayPal REST app and paste its Client ID and Secret below. Get started at",
+      "privateKeyRequired": "Please enter the secret/private key for this provider before saving.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

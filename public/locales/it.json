@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Vada su",
       "paypalLogin": "acceda, quindi sotto",
       "paypalSetup": "Crea un'app REST PayPal e incolla il suo Client ID e Secret qui sotto. Inizia su",
+      "privateKeyRequired": "Inserisci la chiave segreta/privata di questo provider prima di salvare.",
       "prov": "Fornitore",
       "pubKey": "Chiave Pubblica",
       "saveError": "Impossibile salvare le impostazioni delle donazioni",

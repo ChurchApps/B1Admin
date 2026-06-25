@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Ga naar",
       "paypalLogin": "log in en onder",
       "paypalSetup": "Maak een PayPal REST-app aan en plak hieronder de Client-ID en het geheim. Ga aan de slag op",
+      "privateKeyRequired": "Voer de geheime/privésleutel voor deze provider in voordat u opslaat.",
       "prov": "Provider",
       "pubKey": "Openbare sleutel",
       "saveError": "Donatie-instellingen opslaan mislukt",

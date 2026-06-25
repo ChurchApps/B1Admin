@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Ustvarite aplikacijo PayPal REST in spodaj prilepite njen ID odjemalca in skrivnost. Začnite na",
+      "privateKeyRequired": "Pred shranjevanjem vnesite tajni/zasebni ključ za tega ponudnika.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",

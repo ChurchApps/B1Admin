@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Gehen Sie zu",
       "paypalLogin": "melden Sie sich an, dann unter",
       "paypalSetup": "Erstellen Sie eine PayPal-REST-App und fügen Sie ihre Client-ID und das Geheimnis unten ein. Beginnen Sie unter",
+      "privateKeyRequired": "Bitte geben Sie den geheimen/privaten Schlüssel für diesen Anbieter ein, bevor Sie speichern.",
       "prov": "Anbieter",
       "pubKey": "Öffentlicher Schlüssel",
       "saveError": "Die Spendeeinstellungen konnten nicht gespeichert werden",

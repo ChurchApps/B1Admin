@@ -3102,6 +3102,7 @@
       "paypalGoTo": "이동",
       "paypalLogin": "로그인한 다음",
       "paypalSetup": "PayPal REST 앱을 만들고 클라이언트 ID와 시크릿을 아래에 붙여넣으세요. 시작 방법은",
+      "privateKeyRequired": "저장하기 전에 이 공급자의 비밀/개인 키를 입력하세요.",
       "prov": "제공자",
       "pubKey": "공개 키",
       "saveError": "제공 설정을 저장하지 못했습니다.",

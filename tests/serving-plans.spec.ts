@@ -1,15 +1,15 @@
-import type { Page } from '@playwright/test';
-import { servingTest as test, expect } from './helpers/test-fixtures';
-import { editIconButton, dismissSendInviteIfPresent } from './helpers/fixtures';
-import { login } from './helpers/auth';
-import { navigateToServing } from './helpers/navigation';
-import { STORAGE_STATE_PATH } from './global-setup';
+import type { Page } from "@playwright/test";
+import { servingTest as test, expect } from "./helpers/test-fixtures";
+import { editIconButton, dismissSendInviteIfPresent } from "./helpers/fixtures";
+import { login } from "./helpers/auth";
+import { navigateToServing } from "./helpers/navigation";
+import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 // Entire file is one chain: create Zacchaeus Ministry -> rename to Zebedee ->
 // add plan types/teams under it -> tear down in reverse. Every test pivots on
 // the shared Zebedee Ministry tab.
-test.describe.serial('Serving Management - Plans', () => {
+test.describe.serial("Serving Management - Plans", () => {
   let page: Page;
 
   test.beforeAll(async ({ browser }) => {
@@ -35,36 +35,36 @@ test.describe.serial('Serving Management - Plans', () => {
     }
   });
 
-  test.describe('Ministry CRUD', () => {
+  test.describe("Ministry CRUD", () => {
     // Ministry tests share data — a retry would create duplicate "Zacchaeus
     // Ministry"/"Zebedee Ministry" tabs and break subsequent assertions.
     test.describe.configure({ retries: 0 });
 
-    test('should add ministry', async () => {
-      const addBtn = page.locator('button').getByText('Add Ministry');
+    test("should add ministry", async () => {
+      const addBtn = page.locator("button").getByText("Add Ministry");
       await addBtn.click();
       const minName = page.locator('[name="name"]');
-      await minName.fill('Zacchaeus Ministry');
-      const saveBtn = page.locator('button').getByText('Add').first();
+      await minName.fill("Zacchaeus Ministry");
+      const saveBtn = page.locator("button").getByText("Add").first();
       await saveBtn.click();
-      const verifiedMin = page.locator('[role="tab"]').getByText('Zacchaeus Ministry');
+      const verifiedMin = page.locator('[role="tab"]').getByText("Zacchaeus Ministry");
       await expect(verifiedMin).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel adding ministry', async () => {
-      const addBtn = page.locator('button').getByText('Add Ministry');
+    test("should cancel adding ministry", async () => {
+      const addBtn = page.locator("button").getByText("Add Ministry");
       await addBtn.click();
       const minName = page.locator('[name="name"]');
       await expect(minName).toHaveCount(1, { timeout: 10000 });
-      const cancelBtn = page.locator('button').getByText('cancel');
+      const cancelBtn = page.locator("button").getByText("cancel");
       await cancelBtn.click();
       await expect(minName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should edit ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zacchaeus Ministry').first();
+    test("should edit ministry", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zacchaeus Ministry").first();
       await minBtn.click();
-      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
       const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -72,24 +72,24 @@ test.describe.serial('Serving Management - Plans', () => {
 
       const minName = page.locator('[name="name"]');
       await expect(minName).toBeVisible({ timeout: 10000 });
-      await minName.fill('Zebedee Ministry');
-      const saveBtn = page.locator('button').getByText('Save');
+      await minName.fill("Zebedee Ministry");
+      const saveBtn = page.locator("button").getByText("Save");
       // Wait for the group save POST so the cache invalidation has a chance
       // to update the banner before we assert on it.
       const groupPost = page.waitForResponse(
-        r => r.url().includes('/membership/groups') && r.request().method() === 'POST',
+        r => r.url().includes("/membership/groups") && r.request().method() === "POST",
         { timeout: 15000 }
       ).catch((): null => null);
       await saveBtn.click();
       await groupPost;
-      const verifiedEdit = page.locator('p').getByText('Zebedee Ministry');
+      const verifiedEdit = page.locator("p").getByText("Zebedee Ministry");
       await expect(verifiedEdit).toHaveCount(1, { timeout: 15000 });
     });
 
-    test('should cancel editing ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should cancel editing ministry", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
       const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -97,40 +97,40 @@ test.describe.serial('Serving Management - Plans', () => {
 
       const minName = page.locator('[name="name"]');
       await expect(minName).toHaveCount(1, { timeout: 10000 });
-      const cancelBtn = page.locator('button').getByText('Cancel');
+      const cancelBtn = page.locator("button").getByText("Cancel");
       await cancelBtn.click();
       await expect(minName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add person to ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should add person to ministry", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
 
       const personSearch = page.locator('[name="personAddText"]');
       await expect(personSearch).toBeVisible({ timeout: 10000 });
-      await personSearch.fill('Dorothy');
+      await personSearch.fill("Dorothy");
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
       // Result rows render icon-only AppIconButtons; a text "Add" locator would
       // substring-match the "Add a New Person" button and open the wrong dialog.
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
-      const memberPost = page.waitForResponse(r => r.url().includes('/groupmembers') && r.request().method() === 'POST', { timeout: 15000 }).catch((): null => null);
+      const memberPost = page.waitForResponse(r => r.url().includes("/groupmembers") && r.request().method() === "POST", { timeout: 15000 }).catch((): null => null);
       await addBtn.click();
       await memberPost;
-      const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Dorothy Jackson');
+      const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText("Dorothy Jackson");
       await expect(verifiedPerson).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should advanced add person to ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should advanced add person to ministry", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
 
-      const advBtn = page.locator('button').getByText('Advanced');
+      const advBtn = page.locator("button").getByText("Advanced");
       await expect(advBtn).toBeVisible({ timeout: 10000 });
       await advBtn.click();
       const firstCheck = page.locator('div input[type="checkbox"]').first();
@@ -141,20 +141,20 @@ test.describe.serial('Serving Management - Plans', () => {
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
       // Advanced search fires automatically as conditions change — no Search button.
-      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch((): null => null);
-      await firstName.fill('Grace');
+      const searched = page.waitForResponse(r => r.url().includes("/people") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
+      await firstName.fill("Grace");
       await searched;
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText('Grace Jackson');
+      const verifiedPerson = page.locator('[id="groupMemberTable"] a').getByText("Grace Jackson");
       await expect(verifiedPerson).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should promote person to ministry leader', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should promote person to ministry leader", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
 
       const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
@@ -165,96 +165,96 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(verifiedPromoted).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should remove person from ministry', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should remove person from ministry", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
 
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').first();
       await expect(removeBtn).toBeVisible({ timeout: 10000 });
       await removeBtn.click();
-      const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
+      const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText("Dorothy Jackson");
       await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
     });
   });
 
-  test.describe('Plan Types', () => {
+  test.describe("Plan Types", () => {
     // Plan Type tests share data — a retry would create duplicate "Zacchaeus
     // Plans" rows and break subsequent assertions.
     test.describe.configure({ retries: 0 });
 
-    test('should create plan type', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should create plan type", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
 
-      const addBtn = page.locator('button').getByText('Create Plan Type');
+      const addBtn = page.locator("button").getByText("Create Plan Type");
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      const typeName = page.locator('[type="text"]');
-      await typeName.fill('Zacchaeus Plans');
-      const saveBtn = page.locator('button').getByText('Save');
+      const typeName = page.locator('[name="name"]');
+      await typeName.fill("Zacchaeus Plans");
+      const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
-      const verifiedType = page.locator('a').getByText('Zacchaeus Plans');
+      const verifiedType = page.locator("a").getByText("Zacchaeus Plans");
       await expect(verifiedType).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit plan type', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should edit plan type", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
 
       const editBtn = editIconButton(page).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      const typeName = page.locator('[type="text"]');
-      await typeName.fill('Zebedee Plans');
-      const saveBtn = page.locator('button').getByText('Save');
+      const typeName = page.locator('[name="name"]');
+      await typeName.fill("Zebedee Plans");
+      const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
-      const verifiedType = page.locator('a').getByText('Zebedee Plans');
+      const verifiedType = page.locator("a").getByText("Zebedee Plans");
       await expect(verifiedType).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing plan type', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should cancel editing plan type", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
 
       const editBtn = editIconButton(page).last();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      const typeName = page.locator('[type="text"]');
+      const typeName = page.locator('[name="name"]');
       await expect(typeName).toHaveCount(1, { timeout: 10000 });
-      const cancelBtn = page.locator('button').getByText('cancel');
+      const cancelBtn = page.locator("button").getByText("cancel");
       await cancelBtn.click();
       await expect(typeName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should add service plan", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Zebedee Plans');
+      const plansBtn = page.locator("a").getByText("Zebedee Plans");
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
-      await plansBtn.click()
+      await plansBtn.click();
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
       const addBtn = page.locator('[data-testid="add-plan-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const planName = page.locator('[name="name"]');
-      await planName.fill('Mar 10, 2030');
+      await planName.fill("Mar 10, 2030");
       const date = page.locator('[id="serviceDate"]');
-      await date.fill('2030-03-01');
-      const saveBtn = page.locator('button').getByText('Save');
+      await date.fill("2030-03-01");
+      const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
-      const verifiedPlan = page.locator('a').getByText('Mar 10, 2030');
+      const verifiedPlan = page.locator("a").getByText("Mar 10, 2030");
       await expect(verifiedPlan).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should edit service plan", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Zebedee Plans');
+      const plansBtn = page.locator("a").getByText("Zebedee Plans");
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
-      await plansBtn.click()
+      await plansBtn.click();
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
       // Plan rows expose an icon-only AppIconButton ("Edit"), no text.
@@ -262,19 +262,19 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
       const planName = page.locator('[name="name"]');
-      await planName.fill('Mar 1, 2030');
-      const saveBtn = page.locator('button').getByText('Save');
+      await planName.fill("Mar 1, 2030");
+      const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
-      const verifiedPlan = page.locator('a').getByText('Mar 1, 2030');
+      const verifiedPlan = page.locator("a").getByText("Mar 1, 2030");
       await expect(verifiedPlan).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should cancel editing service plan", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Zebedee Plans');
+      const plansBtn = page.locator("a").getByText("Zebedee Plans");
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
-      await plansBtn.click()
+      await plansBtn.click();
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
       const editBtn = page.locator('button[aria-label="Edit"]').first();
@@ -282,93 +282,93 @@ test.describe.serial('Serving Management - Plans', () => {
       await editBtn.click();
       const planName = page.locator('[name="name"]');
       await expect(planName).toHaveCount(1, { timeout: 10000 });
-      const cancelBtn = page.locator('button').getByText('Cancel');
+      const cancelBtn = page.locator("button").getByText("Cancel");
       await cancelBtn.click();
       await expect(planName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete service plan', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should delete service plan", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const plansBtn = page.locator('a').getByText('Zebedee Plans');
+      const plansBtn = page.locator("a").getByText("Zebedee Plans");
       await expect(plansBtn).toBeVisible({ timeout: 10000 });
-      await plansBtn.click()
+      await plansBtn.click();
       await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
 
       const editBtn = page.locator('button[aria-label="Edit"]').first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
+      const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
-      const verifiedPlan = page.locator('a').getByText('Mar 1, 2030');
+      const verifiedPlan = page.locator("a").getByText("Mar 1, 2030");
       await expect(verifiedPlan).toHaveCount(0, { timeout: 10000 });
     });
   });
 
-  test.describe('Teams', () => {
-    test('should add team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+  test.describe("Teams", () => {
+    test("should add team", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
 
       const addBtn = page.locator('[data-testid="add-team-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       const teamName = page.locator('[name="name"]');
-      await teamName.fill('Zacchaeus Team');
-      const saveBtn = page.locator('button').getByText('Add').last();
+      await teamName.fill("Zacchaeus Team");
+      const saveBtn = page.locator("button").getByText("Add").last();
       await saveBtn.click();
-      const verifiedTeam = page.locator('a').getByText('Zacchaeus Team');
+      const verifiedTeam = page.locator("a").getByText("Zacchaeus Team");
       await expect(verifiedTeam).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should edit team", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const teamBtn = page.locator('a').getByText('Zacchaeus Team');
+      const teamBtn = page.locator("a").getByText("Zacchaeus Team");
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
-      await teamBtn.click()
+      await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
       const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
       const teamName = page.locator('[name="name"]');
-      await teamName.fill('Zebedee Team');
-      const saveBtn = page.locator('button').getByText('Save');
+      await teamName.fill("Zebedee Team");
+      const saveBtn = page.locator("button").getByText("Save");
       await saveBtn.click();
-      const verifiedHeader = page.locator('p').getByText('Zebedee Team');
+      const verifiedHeader = page.locator("p").getByText("Zebedee Team");
       await expect(verifiedHeader).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should add person to team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should add person to team", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const teamBtn = page.locator('a').getByText('Zebedee Team');
+      const teamBtn = page.locator("a").getByText("Zebedee Team");
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
-      await teamBtn.click()
+      await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
 
       const personSearch = page.locator('[name="personAddText"]');
       await expect(personSearch).toBeVisible({ timeout: 10000 });
-      await personSearch.fill('Dorothy');
+      await personSearch.fill("Dorothy");
       const searchBtn = page.locator('[data-testid="person-add-search-button"]');
       await searchBtn.click();
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Dorothy Jackson');
+      const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText("Dorothy Jackson");
       await expect(verifiedPerson).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should advanced add person to team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should advanced add person to team", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const teamBtn = page.locator('a').getByText('Zebedee Team');
+      const teamBtn = page.locator("a").getByText("Zebedee Team");
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
-      await teamBtn.click()
+      await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
 
-      const advBtn = page.locator('button').getByText('Advanced');
+      const advBtn = page.locator("button").getByText("Advanced");
       await expect(advBtn).toBeVisible({ timeout: 10000 });
       await advBtn.click();
       const firstCheck = page.locator('div input[type="checkbox"]').first();
@@ -379,22 +379,22 @@ test.describe.serial('Serving Management - Plans', () => {
       await equalsCondition.click();
       const firstName = page.locator('input[type="text"]');
       // Advanced search fires automatically as conditions change — no Search button.
-      const searched = page.waitForResponse(r => r.url().includes('/people') && r.status() === 200, { timeout: 10000 }).catch((): null => null);
-      await firstName.fill('Grace');
+      const searched = page.waitForResponse(r => r.url().includes("/people") && r.status() === 200, { timeout: 10000 }).catch((): null => null);
+      await firstName.fill("Grace");
       await searched;
       const addBtn = page.locator('[data-testid^="add-person-button-"]').first();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
-      const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
+      const verifiedPerson = page.locator('[id="groupMembersBox"] a').getByText("Grace Jackson");
       await expect(verifiedPerson).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should promote person to team leader', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should promote person to team leader", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const teamBtn = page.locator('a').getByText('Zebedee Team');
+      const teamBtn = page.locator("a").getByText("Zebedee Team");
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
-      await teamBtn.click()
+      await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
 
       const promoteBtn = page.locator('[data-testid^="promote-leader-button-"]').first();
@@ -405,86 +405,86 @@ test.describe.serial('Serving Management - Plans', () => {
       await expect(verifiedPromoted).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should remove person from team', async () => {
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+    test("should remove person from team", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const teamBtn = page.locator('a').getByText('Zebedee Team');
+      const teamBtn = page.locator("a").getByText("Zebedee Team");
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
-      await teamBtn.click()
+      await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
 
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').last();
       await expect(removeBtn).toBeVisible({ timeout: 10000 });
       await removeBtn.click();
-      const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText('Grace Jackson');
+      const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText("Grace Jackson");
       await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete team', async () => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
+    test("should delete team", async () => {
+      page.once("dialog", async dialog => {
+        expect(dialog.type()).toBe("confirm");
+        expect(dialog.message()).toContain("Are you sure");
         await dialog.accept();
       });
 
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const teamBtn = page.locator('a').getByText('Zebedee Team');
+      const teamBtn = page.locator("a").getByText("Zebedee Team");
       await expect(teamBtn).toBeVisible({ timeout: 10000 });
-      await teamBtn.click()
+      await teamBtn.click();
       await expect(page).toHaveURL(/\/groups\/[^/]+/);
       const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
-      const deleteBtn = page.locator('button').getByText('Delete');
+      const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
-      const verifiedRemoved = page.locator('table a').getByText('Zebedee Team');
+      const verifiedRemoved = page.locator("table a").getByText("Zebedee Team");
       await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
     });
   });
 
-  test.describe('Cleanup', () => {
-    test('should delete ministry', async () => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
+  test.describe("Cleanup", () => {
+    test("should delete ministry", async () => {
+      page.once("dialog", async dialog => {
+        expect(dialog.type()).toBe("confirm");
+        expect(dialog.message()).toContain("Are you sure");
         await dialog.accept();
       });
 
-      const minBtn = page.locator('[role="tab"]').getByText('Zebedee Ministry').first();
+      const minBtn = page.locator('[role="tab"]').getByText("Zebedee Ministry").first();
       await minBtn.click();
-      const manageBtn = page.locator('a').getByText('Edit Ministry');
+      const manageBtn = page.locator("a").getByText("Edit Ministry");
       await manageBtn.click();
       const editBtn = editIconButton(page).first();
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
 
-      const deleteBtn = page.locator('button').getByText('Delete');
+      const deleteBtn = page.locator("button").getByText("Delete");
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      const verifiedRemoved = page.locator('table a').getByText('Zebedee Ministry');
+      const verifiedRemoved = page.locator("table a").getByText("Zebedee Ministry");
       await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
     });
   });
 });
 
 // Edge-case extensions: Plans page navigation surface (independent of Zebedee chain).
-test.describe('Plans page navigation', () => {
-  test('Add Ministry button is visible on the Serving Plans page', async ({ page }) => {
-    await page.goto('/serving/plans');
+test.describe("Plans page navigation", () => {
+  test("Add Ministry button is visible on the Serving Plans page", async ({ page }) => {
+    await page.goto("/serving/plans");
     await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
-    await expect(page.locator('button').getByText('Add Ministry').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator("button").getByText("Add Ministry").first()).toBeVisible({ timeout: 15000 });
   });
 
-  test('Plans subnavigation reveals secondary entries (Songs, My Work)', async ({ page }) => {
+  test("Plans subnavigation reveals secondary entries (Songs, My Work)", async ({ page }) => {
     // SecondaryMenu surfaces entries based on the active primary section.
-    await expect(page.locator('[id="secondaryMenu"]').getByText('Songs').first()).toBeVisible({ timeout: 15000 });
-    await expect(page.locator('[id="secondaryMenu"]').getByText('My Work').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[id="secondaryMenu"]').getByText("Songs").first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[id="secondaryMenu"]').getByText("My Work").first()).toBeVisible({ timeout: 15000 });
   });
 
-  test('My Work secondary item navigates to /serving/tasks', async ({ page }) => {
-    await page.locator('[id="secondaryMenu"]').getByText('My Work').first().click();
+  test("My Work secondary item navigates to /serving/tasks", async ({ page }) => {
+    await page.locator('[id="secondaryMenu"]').getByText("My Work").first().click();
     await page.waitForURL(/\/serving\/tasks/, { timeout: 10000 });
     await expect(page).toHaveURL(/\/serving\/tasks/);
   });

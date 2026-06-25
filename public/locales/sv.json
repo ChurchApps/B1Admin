@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Gå till",
       "paypalLogin": "logga in, sedan under",
       "paypalSetup": "Skapa en PayPal REST-app och klistra in dess klient-ID och hemlighet nedan. Kom igång på",
+      "privateKeyRequired": "Ange den hemliga/privata nyckeln för den här leverantören innan du sparar.",
       "prov": "Leverantör",
       "pubKey": "Publik nyckel",
       "saveError": "Kunde inte spara givoinställningar",

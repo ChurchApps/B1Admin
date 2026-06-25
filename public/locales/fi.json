@@ -3102,6 +3102,7 @@
       "paypalGoTo": "Go to",
       "paypalLogin": "log in, then under",
       "paypalSetup": "Luo PayPal REST -sovellus ja liitä sen asiakastunnus ja salaisuus alle. Aloita osoitteessa",
+      "privateKeyRequired": "Anna tämän palveluntarjoajan salainen/yksityinen avain ennen tallentamista.",
       "prov": "Provider",
       "pubKey": "Public Key",
       "saveError": "Failed to save giving settings",
