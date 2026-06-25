@@ -130,7 +130,7 @@ export const PrintDirectoryPage = () => {
     if (!people.isLoading && households.length > 0) {
       const t = setTimeout(() => {
         window.print();
-        navigate(-1);
+        navigate("/people");
       }, 1500);
       return () => clearTimeout(t);
     }

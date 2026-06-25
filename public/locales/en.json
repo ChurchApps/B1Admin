@@ -1462,6 +1462,7 @@
       "valuePlaceholder": "Value"
     },
     "aiSearch": {
+      "clearSearch": "Clear Search",
       "exampleMen": "- Show me men over 30 with birthdays in July.",
       "exampleWomen": "- Show me women who are married.",
       "examples": "Examples:",
