@@ -5,9 +5,9 @@
   "type": "module",
   "packageManager": "yarn@4.15.0",
   "dependencies": {
-    "@churchapps/apphelper": "^0.15.0",
-    "@churchapps/content-providers": "^0.3.1",
-    "@churchapps/helpers": "^1.8.1",
+    "@churchapps/apphelper": "^0.17.0",
+    "@churchapps/content-providers": "^0.4.1",
+    "@churchapps/helpers": "^1.8.2",
     "@mui/icons-material": "^7.3.11",
     "@mui/material": "^7.3.11",
     "@react-google-maps/api": "^2.20.0",
