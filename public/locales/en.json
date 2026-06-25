@@ -2187,7 +2187,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Custom reminder message (optional)",
+      "reminderMessageHelp": "Added to the reminder email and notification for this plan type.",
+      "reminderOffsets": "Reminder days before service",
+      "reminderOffsetsHelp": "Comma-separated days before the service to send reminders (0 = day of). Leave blank to turn reminders off.",
+      "reminders": "Reminders"
     },
     "planTypeGroups": {
       "addGroup": "Add Group",

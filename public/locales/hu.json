@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Egyéni emlékeztető üzenet (opcionális)",
+      "reminderMessageHelp": "Hozzáadódik az ehhez a tervtípushoz tartozó emlékeztető e-mailhez és értesítéshez.",
+      "reminderOffsets": "Emlékeztető napjai az istentisztelet előtt",
+      "reminderOffsetsHelp": "Az istentisztelet előtti napok az emlékeztetők küldéséhez, vesszővel elválasztva (0 = aznap). Hagyja üresen az emlékeztetők kikapcsolásához.",
+      "reminders": "Emlékeztetők"
     },
     "planTypeGroups": {
       "addGroup": "Csoport hozzáadása",

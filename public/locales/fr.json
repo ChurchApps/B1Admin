@@ -2185,7 +2185,12 @@
       "errorSaving": "Type de plan d'enregistrement d'erreur",
       "nameRequired": "Le nom du type de forfait est obligatoire",
       "planType": "Type de régime",
-      "planTypeName": "Nom du type de forfait"
+      "planTypeName": "Nom du type de forfait",
+      "reminderMessage": "Message de rappel personnalisé (facultatif)",
+      "reminderMessageHelp": "Ajouté à l'e-mail et à la notification de rappel pour ce type de plan.",
+      "reminderOffsets": "Jours de rappel avant le service",
+      "reminderOffsetsHelp": "Jours avant le service pour envoyer des rappels, séparés par des virgules (0 = le jour même). Laissez vide pour désactiver les rappels.",
+      "reminders": "Rappels"
     },
     "planTypeGroups": {
       "addGroup": "Ajouter un groupe",

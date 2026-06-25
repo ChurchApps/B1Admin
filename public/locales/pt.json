@@ -2185,7 +2185,12 @@
       "errorSaving": "Erro ao salvar o tipo de plano",
       "nameRequired": "O nome do tipo de plano é obrigatório",
       "planType": "Tipo de plano",
-      "planTypeName": "Nome do tipo de plano"
+      "planTypeName": "Nome do tipo de plano",
+      "reminderMessage": "Mensagem de lembrete personalizada (opcional)",
+      "reminderMessageHelp": "Adicionada ao e-mail e à notificação de lembrete para este tipo de plano.",
+      "reminderOffsets": "Dias de antecedência do lembrete",
+      "reminderOffsetsHelp": "Dias antes do culto para enviar lembretes, separados por vírgulas (0 = no próprio dia). Deixe em branco para desativar os lembretes.",
+      "reminders": "Lembretes"
     },
     "planTypeGroups": {
       "addGroup": "Adicionar grupo",

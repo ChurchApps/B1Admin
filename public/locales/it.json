@@ -2185,7 +2185,12 @@
       "errorSaving": "Errore durante il salvataggio del tipo di piano",
       "nameRequired": "Il nome del tipo di piano è obbligatorio",
       "planType": "Tipo di piano",
-      "planTypeName": "Nome del tipo di piano"
+      "planTypeName": "Nome del tipo di piano",
+      "reminderMessage": "Messaggio di promemoria personalizzato (facoltativo)",
+      "reminderMessageHelp": "Aggiunto all'e-mail e alla notifica di promemoria per questo tipo di piano.",
+      "reminderOffsets": "Giorni di promemoria prima del servizio",
+      "reminderOffsetsHelp": "Giorni prima del servizio per inviare i promemoria, separati da virgole (0 = il giorno stesso). Lascia vuoto per disattivare i promemoria.",
+      "reminders": "Promemoria"
     },
     "planTypeGroups": {
       "addGroup": "Aggiungi gruppo",

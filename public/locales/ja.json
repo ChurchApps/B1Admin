@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "カスタムリマインダーメッセージ（任意）",
+      "reminderMessageHelp": "この計画タイプのリマインダーのメールと通知に追加されます。",
+      "reminderOffsets": "礼拝前のリマインダー日数",
+      "reminderOffsetsHelp": "リマインダーを送信する礼拝前の日数をカンマ区切りで指定（0 = 当日）。空欄にするとリマインダーがオフになります。",
+      "reminders": "リマインダー"
     },
     "planTypeGroups": {
       "addGroup": "グループを追加",

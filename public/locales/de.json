@@ -2185,7 +2185,12 @@
       "errorSaving": "Fehler beim Speichern des Plantyps",
       "nameRequired": "Der Name des Plantyps ist erforderlich",
       "planType": "Plantyp",
-      "planTypeName": "Name des Plantyps"
+      "planTypeName": "Name des Plantyps",
+      "reminderMessage": "Benutzerdefinierte Erinnerungsnachricht (optional)",
+      "reminderMessageHelp": "Wird der Erinnerungs-E-Mail und -Benachrichtigung für diesen Plantyp hinzugefügt.",
+      "reminderOffsets": "Erinnerung: Tage vor dem Gottesdienst",
+      "reminderOffsetsHelp": "Tage vor dem Gottesdienst zum Senden von Erinnerungen, durch Kommas getrennt (0 = am selben Tag). Leer lassen, um Erinnerungen zu deaktivieren.",
+      "reminders": "Erinnerungen"
     },
     "planTypeGroups": {
       "addGroup": "Gruppe hinzufügen",

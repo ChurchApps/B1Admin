@@ -2185,7 +2185,12 @@
       "errorSaving": "Fel vid sparande av plantyp",
       "nameRequired": "Plantypsnamn krävs",
       "planType": "Plantyp",
-      "planTypeName": "Plantypsnamn"
+      "planTypeName": "Plantypsnamn",
+      "reminderMessage": "Anpassat påminnelsemeddelande (valfritt)",
+      "reminderMessageHelp": "Läggs till i påminnelsemejlet och -aviseringen för den här plantypen.",
+      "reminderOffsets": "Påminnelsedagar före gudstjänsten",
+      "reminderOffsetsHelp": "Dagar före gudstjänsten då påminnelser skickas, separerade med komma (0 = samma dag). Lämna tomt för att stänga av påminnelser.",
+      "reminders": "Påminnelser"
     },
     "planTypeGroups": {
       "addGroup": "Lägg till grupp",

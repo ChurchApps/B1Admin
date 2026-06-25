@@ -52,9 +52,9 @@ export const PlanTypeEdit: React.FC<Props> = ({ planType, onClose }) => {
           <FormCard icon="assignment" title={Locale.label("plans.planType.details")}>
             <TextField fullWidth label={Locale.label("plans.planTypeEdit.planTypeName")} required margin="normal" placeholder={Locale.label("placeholders.planType.name")} error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("plans.planTypeEdit.nameRequired") })} />
           </FormCard>
-          <FormCard icon="notifications" title={Locale.label("plans.planTypeEdit.reminders") || "Reminders"}>
-            <TextField fullWidth label={Locale.label("plans.planTypeEdit.reminderOffsets") || "Reminder days before service"} margin="normal" placeholder="7,1,0" helperText={Locale.label("plans.planTypeEdit.reminderOffsetsHelp") || "Comma-separated days before the service to send reminders (0 = day of). Leave blank to turn reminders off."} {...register("reminderOffsets")} />
-            <TextField fullWidth multiline minRows={2} label={Locale.label("plans.planTypeEdit.reminderMessage") || "Custom reminder message (optional)"} margin="normal" helperText={Locale.label("plans.planTypeEdit.reminderMessageHelp") || "Added to the reminder email/notification for this plan type."} {...register("reminderMessage")} />
+          <FormCard icon="notifications" title={Locale.label("plans.planTypeEdit.reminders")}>
+            <TextField fullWidth label={Locale.label("plans.planTypeEdit.reminderOffsets")} margin="normal" placeholder="7,1,0" helperText={Locale.label("plans.planTypeEdit.reminderOffsetsHelp")} {...register("reminderOffsets")} />
+            <TextField fullWidth multiline minRows={2} label={Locale.label("plans.planTypeEdit.reminderMessage")} margin="normal" helperText={Locale.label("plans.planTypeEdit.reminderMessageHelp")} {...register("reminderMessage")} />
           </FormCard>
         </Box>
       </DialogContent>

@@ -2185,7 +2185,12 @@
       "errorSaving": "Chyba při ukládání typu plánu",
       "nameRequired": "Název typu plánu je povinný",
       "planType": "Typ plánu",
-      "planTypeName": "Název typu plánu"
+      "planTypeName": "Název typu plánu",
+      "reminderMessage": "Vlastní text připomenutí (volitelné)",
+      "reminderMessageHelp": "Přidá se do e-mailu a oznámení s připomenutím pro tento typ plánu.",
+      "reminderOffsets": "Počet dní připomenutí před bohoslužbou",
+      "reminderOffsetsHelp": "Počet dní před bohoslužbou pro odeslání připomenutí, oddělené čárkami (0 = v den konání). Ponechte prázdné pro vypnutí připomenutí.",
+      "reminders": "Připomenutí"
     },
     "planTypeGroups": {
       "addGroup": "Přidat skupinu",

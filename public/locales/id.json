@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Pesan pengingat khusus (opsional)",
+      "reminderMessageHelp": "Ditambahkan ke email dan notifikasi pengingat untuk jenis rencana ini.",
+      "reminderOffsets": "Hari pengingat sebelum ibadah",
+      "reminderOffsetsHelp": "Jumlah hari sebelum ibadah untuk mengirim pengingat, dipisahkan dengan koma (0 = hari yang sama). Biarkan kosong untuk menonaktifkan pengingat.",
+      "reminders": "Pengingat"
     },
     "planTypeGroups": {
       "addGroup": "Tambah Grup",

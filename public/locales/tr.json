@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Özel hatırlatma mesajı (isteğe bağlı)",
+      "reminderMessageHelp": "Bu plan türü için hatırlatma e-postasına ve bildirimine eklenir.",
+      "reminderOffsets": "Hizmetten önce hatırlatma günleri",
+      "reminderOffsetsHelp": "Hatırlatıcı göndermek için hizmetten önceki günler, virgülle ayrılmış (0 = aynı gün). Hatırlatıcıları kapatmak için boş bırakın.",
+      "reminders": "Hatırlatıcılar"
     },
     "planTypeGroups": {
       "addGroup": "Grup Ekle",

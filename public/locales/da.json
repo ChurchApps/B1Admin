@@ -2185,7 +2185,12 @@
       "errorSaving": "Fejl ved lagring af plantype",
       "nameRequired": "Navn på plantype er påkrævet",
       "planType": "Plantype",
-      "planTypeName": "Navn på plantype"
+      "planTypeName": "Navn på plantype",
+      "reminderMessage": "Tilpasset påmindelsesbesked (valgfrit)",
+      "reminderMessageHelp": "Føjes til påmindelsesmailen og -notifikationen for denne plantype.",
+      "reminderOffsets": "Påmindelsesdage før gudstjenesten",
+      "reminderOffsetsHelp": "Dage før gudstjenesten, hvor påmindelser sendes, adskilt med komma (0 = samme dag). Lad feltet stå tomt for at slå påmindelser fra.",
+      "reminders": "Påmindelser"
     },
     "planTypeGroups": {
       "addGroup": "Tilføj gruppe",

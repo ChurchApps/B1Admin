@@ -2185,7 +2185,12 @@
       "errorSaving": "계획 유형을 저장하는 중에 오류가 발생했습니다.",
       "nameRequired": "계획 유형 이름은 필수 항목입니다.",
       "planType": "계획 유형",
-      "planTypeName": "계획 유형 이름"
+      "planTypeName": "계획 유형 이름",
+      "reminderMessage": "사용자 지정 알림 메시지 (선택 사항)",
+      "reminderMessageHelp": "이 플랜 유형의 알림 이메일과 알림에 추가됩니다.",
+      "reminderOffsets": "예배 전 알림 일수",
+      "reminderOffsetsHelp": "예배 전 알림을 보낼 일수, 쉼표로 구분 (0 = 당일). 비워 두면 알림이 꺼집니다.",
+      "reminders": "알림"
     },
     "planTypeGroups": {
       "addGroup": "그룹 추가",

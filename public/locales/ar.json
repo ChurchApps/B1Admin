@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "رسالة تذكير مخصصة (اختياري)",
+      "reminderMessageHelp": "تُضاف إلى البريد الإلكتروني وإشعار التذكير لهذا النوع من الخطط.",
+      "reminderOffsets": "أيام التذكير قبل الخدمة",
+      "reminderOffsetsHelp": "عدد الأيام قبل الخدمة لإرسال التذكيرات، مفصولة بفواصل (0 = في اليوم نفسه). اتركه فارغًا لإيقاف التذكيرات.",
+      "reminders": "التذكيرات"
     },
     "planTypeGroups": {
       "addGroup": "إضافة مجموعة",

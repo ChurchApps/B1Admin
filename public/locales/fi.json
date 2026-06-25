@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Mukautettu muistutusviesti (valinnainen)",
+      "reminderMessageHelp": "Lisätään tämän suunnitelmatyypin muistutussähköpostiin ja -ilmoitukseen.",
+      "reminderOffsets": "Muistutuspäivät ennen jumalanpalvelusta",
+      "reminderOffsetsHelp": "Päivät ennen jumalanpalvelusta, jolloin muistutukset lähetetään, pilkulla erotettuna (0 = samana päivänä). Jätä tyhjäksi poistaaksesi muistutukset käytöstä.",
+      "reminders": "Muistutukset"
     },
     "planTypeGroups": {
       "addGroup": "Lisää ryhmä",

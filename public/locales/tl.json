@@ -2185,7 +2185,12 @@
       "errorSaving": "Error sa pag -save ng uri ng plano",
       "nameRequired": "Kinakailangan ang pangalan ng uri ng plano",
       "planType": "Uri ng plano",
-      "planTypeName": "Pangalan ng uri ng plano"
+      "planTypeName": "Pangalan ng uri ng plano",
+      "reminderMessage": "Custom na mensahe ng paalala (opsyonal)",
+      "reminderMessageHelp": "Idinaragdag sa email at notification ng paalala para sa uri ng planong ito.",
+      "reminderOffsets": "Mga araw ng paalala bago ang serbisyo",
+      "reminderOffsetsHelp": "Mga araw bago ang serbisyo para magpadala ng mga paalala, pinaghihiwalay ng kuwit (0 = sa mismong araw). Iwanang blangko para i-off ang mga paalala.",
+      "reminders": "Mga Paalala"
     },
     "planTypeGroups": {
       "addGroup": "Magdagdag ng Grupo",

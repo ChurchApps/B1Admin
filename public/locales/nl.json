@@ -2185,7 +2185,12 @@
       "errorSaving": "Fout bij opslaan plantype",
       "nameRequired": "Naam plantype is verplicht",
       "planType": "Plantype",
-      "planTypeName": "Naam plantype"
+      "planTypeName": "Naam plantype",
+      "reminderMessage": "Aangepast herinneringsbericht (optioneel)",
+      "reminderMessageHelp": "Wordt toegevoegd aan de herinnerings-e-mail en -melding voor dit plantype.",
+      "reminderOffsets": "Herinnering: dagen voor de dienst",
+      "reminderOffsetsHelp": "Aantal dagen vóór de dienst om herinneringen te versturen, gescheiden door komma's (0 = op de dag zelf). Laat leeg om herinneringen uit te schakelen.",
+      "reminders": "Herinneringen"
     },
     "planTypeGroups": {
       "addGroup": "Groep toevoegen",

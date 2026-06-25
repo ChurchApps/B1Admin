@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Sporočilo opomnika po meri (neobvezno)",
+      "reminderMessageHelp": "Doda se e-pošti in obvestilu opomnika za to vrsto načrta.",
+      "reminderOffsets": "Dnevi opomnika pred bogoslužjem",
+      "reminderOffsetsHelp": "Dnevi pred bogoslužjem za pošiljanje opomnikov, ločeni z vejicami (0 = na isti dan). Pustite prazno, da izklopite opomnike.",
+      "reminders": "Opomniki"
     },
     "planTypeGroups": {
       "addGroup": "Dodaj skupino",

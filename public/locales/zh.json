@@ -2185,7 +2185,12 @@
       "errorSaving": "保存计划类型时出错",
       "nameRequired": "计划类型名称为必填项",
       "planType": "计划类型",
-      "planTypeName": "计划类型名称"
+      "planTypeName": "计划类型名称",
+      "reminderMessage": "自定义提醒消息（可选）",
+      "reminderMessageHelp": "添加到此计划类型的提醒电子邮件和通知中。",
+      "reminderOffsets": "聚会前提醒天数",
+      "reminderOffsetsHelp": "聚会前发送提醒的天数，用逗号分隔（0 = 当天）。留空可关闭提醒。",
+      "reminders": "提醒"
     },
     "planTypeGroups": {
       "addGroup": "添加团体",

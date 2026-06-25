@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Vlastná správa pripomienky (voliteľné)",
+      "reminderMessageHelp": "Pridá sa do e-mailu a oznámenia s pripomienkou pre tento typ plánu.",
+      "reminderOffsets": "Počet dní pripomienky pred bohoslužbou",
+      "reminderOffsetsHelp": "Počet dní pred bohoslužbou na odoslanie pripomienok, oddelené čiarkami (0 = v deň konania). Ponechajte prázdne na vypnutie pripomienok.",
+      "reminders": "Pripomienky"
     },
     "planTypeGroups": {
       "addGroup": "Pridať skupinu",

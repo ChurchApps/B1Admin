@@ -2185,7 +2185,12 @@
       "errorSaving": "Error saving plan type",
       "nameRequired": "Plan type name is required",
       "planType": "Plan Type",
-      "planTypeName": "Plan Type Name"
+      "planTypeName": "Plan Type Name",
+      "reminderMessage": "Pasirinktinis priminimo pranešimas (neprivaloma)",
+      "reminderMessageHelp": "Pridedama prie šio plano tipo priminimo el. laiško ir pranešimo.",
+      "reminderOffsets": "Priminimo dienos prieš pamaldas",
+      "reminderOffsetsHelp": "Dienos prieš pamaldas priminimams siųsti, atskirtos kableliais (0 = tą pačią dieną). Palikite tuščią, kad išjungtumėte priminimus.",
+      "reminders": "Priminimai"
     },
     "planTypeGroups": {
       "addGroup": "Pridėti grupę",

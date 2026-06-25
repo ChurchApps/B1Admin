@@ -2185,7 +2185,12 @@
       "errorSaving": "Error al guardar el tipo de plan",
       "nameRequired": "El nombre del tipo de plan es obligatorio",
       "planType": "Tipo de plan",
-      "planTypeName": "Nombre del tipo de plan"
+      "planTypeName": "Nombre del tipo de plan",
+      "reminderMessage": "Mensaje de recordatorio personalizado (opcional)",
+      "reminderMessageHelp": "Se añade al correo electrónico y a la notificación del recordatorio para este tipo de plan.",
+      "reminderOffsets": "Días de antelación del recordatorio",
+      "reminderOffsetsHelp": "Días antes del servicio para enviar recordatorios, separados por comas (0 = el mismo día). Déjalo en blanco para desactivar los recordatorios.",
+      "reminders": "Recordatorios"
     },
     "planTypeGroups": {
       "addGroup": "Agregar grupo",
