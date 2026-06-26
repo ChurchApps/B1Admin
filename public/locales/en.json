@@ -1991,10 +1991,13 @@
     "assignment": {
       "addPosition": "Add Position",
       "autoAssign": "Auto Assign",
+      "fullyStaffed": "Fully staffed",
+      "needed": "needed",
       "notesPlaceholder": "Add notes for this service plan...",
       "notesPlaceholderReadOnly": "Plan notes (read-only)",
       "penciledIn": "Penciled In",
       "planNotesAria": "Plan notes",
+      "positionsFilled": "{filled} of {total} positions filled",
       "saveNotes": "Save Notes",
       "undoAutoAssign": "Undo Auto Assign"
     },

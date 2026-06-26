@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem, Chip } from "@mui/material";
+import { Grid, TextField, Card, CardContent, Typography, Stack, Button, Snackbar, Alert, Menu, MenuItem, Chip, LinearProgress } from "@mui/material";
 import { PublishedWithChanges as AutoAssignIcon, Add as AddIcon, StickyNote2 as NotesIcon, Save as SaveIcon, ContentCopy as CopyIcon, ArrowDropDown as ArrowDropDownIcon, Undo as UndoIcon, EditNote as PreparedIcon } from "@mui/icons-material";
 import {
   type AssignmentInterface,
@@ -276,6 +276,11 @@ export const Assignment = (props: Props) => {
     loadPlans();
   }, [props.plan?.id, loadData, loadPlans]);
 
+  const totalNeeded = positions.reduce((s, p) => s + (p.count || 0), 0);
+  const totalFilled = positions.reduce((s, p) => s + Math.min(assignments.filter((a) => a.positionId === p.id).length, p.count || 0), 0);
+  const remaining = Math.max(0, totalNeeded - totalFilled);
+  const progress = totalNeeded > 0 ? (totalFilled / totalNeeded) * 100 : 0;
+
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: 8 }}>
@@ -308,6 +313,22 @@ export const Assignment = (props: Props) => {
               </Stack>
               {getAddPositionActions()}
             </Stack>
+            {positions.length > 0 && (
+              <Stack sx={{ mb: 3 }} spacing={0.5}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Typography variant="caption" color="text.secondary">
+                    {Locale.label("plans.assignment.positionsFilled").replace("{filled}", totalFilled.toString()).replace("{total}", totalNeeded.toString())}
+                  </Typography>
+                  <Chip
+                    size="small"
+                    variant="outlined"
+                    color={remaining > 0 ? "warning" : "success"}
+                    label={remaining > 0 ? remaining + " " + Locale.label("plans.assignment.needed") : Locale.label("plans.assignment.fullyStaffed")}
+                  />
+                </Stack>
+                <LinearProgress variant="determinate" value={progress} sx={{ height: 8, borderRadius: 4 }} />
+              </Stack>
+            )}
             <PositionList positions={positions} assignments={assignments} people={people} groups={groups} canEdit={canEdit} onSelect={(p) => setPosition(p)} onAssignmentSelect={handleAssignmentSelect} />
           </CardContent>
         </Card>

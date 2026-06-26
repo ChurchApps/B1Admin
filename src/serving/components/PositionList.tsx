@@ -118,7 +118,7 @@ export const PositionList = (props: Props) => {
               {group && <span style={{ color: "var(--text-muted)", marginLeft: "8px" }}>({group.name})</span>}
             </span>
           )}
-          {position.allowSelfSignup && <Chip label={assignments.length + "/" + position.count + " " + Locale.label("plans.positionList.signupSuffix")} size="small" color="info" variant="outlined" sx={{ ml: 1, fontSize: "0.6875rem" }} />}
+          <Chip label={assignments.length + "/" + (position.count || 0) + (position.allowSelfSignup ? " " + Locale.label("plans.positionList.signupSuffix") : "")} size="small" color={assignments.length >= (position.count || 0) ? "success" : "default"} variant="outlined" sx={{ ml: 1, fontSize: "0.6875rem" }} />
         </TableCell>
         <TableCell style={{ paddingTop: hasPeople ? 2 : 10, paddingBottom: hasPeople ? 2 : 10, verticalAlign: "top" }}>{getPeopleLinks(position)}</TableCell>
       </TableRow>
