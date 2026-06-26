@@ -3,12 +3,13 @@ import { Box, Card, CardContent, Typography, Stack, Chip, Avatar, Button, Menu, 
 import { EmptyState } from "../../components/ui/EmptyState";
 import { CountChip } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon } from "@mui/icons-material";
+import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon, Bookmarks as BookmarksIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type PlanInterface } from "../../helpers";
 import { ArrayHelper, DateHelper, Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
 import { PlanEdit } from "./PlanEdit";
+import { PlanTemplateManager } from "./PlanTemplateManager";
 import { LessonScheduleEdit } from "./LessonScheduleEdit";
 import { BulkLessonSchedule } from "./BulkLessonSchedule";
 import { useQuery } from "@tanstack/react-query";
@@ -26,6 +27,7 @@ export const PlanList = memo((props: Props) => {
   const [showPast, setShowPast] = React.useState(false);
   const [showLessonSchedule, setShowLessonSchedule] = React.useState(false);
   const [showBulkSchedule, setShowBulkSchedule] = React.useState(false);
+  const [showTemplates, setShowTemplates] = React.useState(false);
   const [lessonMenuAnchor, setLessonMenuAnchor] = React.useState<null | HTMLElement>(null);
   const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
 
@@ -201,6 +203,13 @@ export const PlanList = memo((props: Props) => {
                 onClick={(e) => setLessonMenuAnchor(e.currentTarget)}>
                 {Locale.label("plans.planList.scheduleLesson") || "Schedule Lesson"}
               </Button>
+              <Button
+                variant="outlined"
+                size="medium"
+                startIcon={<BookmarksIcon />}
+                onClick={() => setShowTemplates(true)}>
+                {Locale.label("plans.templates.button") || "Templates"}
+              </Button>
             </Stack>
           )}
         </Stack>
@@ -318,6 +327,10 @@ export const PlanList = memo((props: Props) => {
           <ListItemText>{Locale.label("plans.planList.bulkSchedule") || "Bulk Schedule"}</ListItemText>
         </MenuItem>
       </Menu>
+
+      {showTemplates && canEdit && (
+        <PlanTemplateManager ministryId={props.ministry.id} plans={plans} onClose={() => setShowTemplates(false)} />
+      )}
     </Box>
   );
 });

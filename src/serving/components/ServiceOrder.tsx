@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, MenuItem, Chip, Snackbar, Alert, TextField } from "@mui/material";
-import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
+import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon, BookmarkAdd as BookmarkAddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { type PlanItemInterface } from "../../helpers";
@@ -13,6 +13,7 @@ import { LessonHeaderSelector } from "./LessonHeaderSelector";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlanItem } from "./PlanItem";
+import { SaveTemplateDialog } from "./SaveTemplateDialog";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { DroppableWrapper } from "../../components/DroppableWrapper";
@@ -87,6 +88,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
   const [exclusions, setExclusions] = React.useState<PlanItemTimeInterface[]>([]);
   const [selectedServiceTimeId, setSelectedServiceTimeId] = React.useState<string>("");
+  const [showSaveTemplate, setShowSaveTemplate] = React.useState(false);
 
   // Get the provider dynamically based on plan's providerId
   const provider: IProvider | null = useMemo(() => {
@@ -333,6 +335,11 @@ export const ServiceOrder = memo((props: Props) => {
           onClick={() => window.open(`/serving/plans/print/${props.plan?.id}`, "_blank")} />
         {canEdit && (
           <>
+            <AppIconButton
+              label={Locale.label("plans.templates.saveTitle") || "Save as Template"}
+              icon={<BookmarkAddIcon />}
+              tone="card"
+              onClick={() => setShowSaveTemplate(true)} />
             {hasAssociatedContent ? (
               <Chip
                 icon={<MenuBookIcon sx={{ fontSize: 18 }} />}
@@ -566,6 +573,10 @@ export const ServiceOrder = memo((props: Props) => {
         providerPath={getContentPath() || undefined}
         ministryId={props.plan?.ministryId}
       />
+
+      {showSaveTemplate && canEdit && (
+        <SaveTemplateDialog plan={props.plan} onClose={() => setShowSaveTemplate(false)} />
+      )}
 
       <Card
         sx={{

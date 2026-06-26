@@ -2344,6 +2344,26 @@
       "noTeam": "No serving teams found. Please create a serving team.",
       "teams": "Serving Teams"
     },
+    "templates": {
+      "apply": "Apply",
+      "applyTitle": "Apply Template",
+      "applyTo": "Apply to plans",
+      "button": "Templates",
+      "confirmDelete": "Delete this template?",
+      "none": "No templates yet. Open a plan and choose \"Save as Template\".",
+      "noPlans": "No upcoming plans.",
+      "optPositions": "Positions",
+      "optServiceOrder": "Order of Service",
+      "plan": "Plan",
+      "positionsWarning": "Applying positions replaces existing positions and their assignments on the selected plans.",
+      "rename": "Rename Template",
+      "saveTitle": "Save as Template",
+      "startBlank": "None",
+      "startFrom": "Start from template",
+      "title": "Plan Templates",
+      "updateFromPlan": "Update from plan",
+      "updateFromPlanHelp": "Replace this template's contents with a plan's current order of service and positions."
+    },
     "timeEdit": {
       "disName": "Display Name",
       "disNameReq": "Display name is required.",

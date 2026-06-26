@@ -143,6 +143,14 @@ export interface PlanTypeInterface {
   reminderMessage?: string;
 }
 
+export interface PlanTemplateInterface {
+  id?: string;
+  churchId?: string;
+  ministryId?: string;
+  name?: string;
+  data?: string;
+}
+
 export interface AssociatedGroupInterface {
   id?: string;
   churchId?: string;

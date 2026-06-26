@@ -5,7 +5,7 @@ import { DateHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PlanInterface } from "../../helpers";
 import { CampusSelect } from "../../components/CampusSelect";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../queryClient";
 
 interface Props {
@@ -19,6 +19,14 @@ type AnyRecord = Record<string, any>;
 export const PlanEdit = (props: Props) => {
   const [copyMode, setCopyMode] = React.useState<string>("all");
   const [copyServiceOrder, setCopyServiceOrder] = React.useState<boolean>(false);
+  const [templateId, setTemplateId] = React.useState<string>("");
+
+  const templatesQuery = useQuery<any[]>({
+    queryKey: [`/plantemplates/ministry/${props.plan?.ministryId}`, "DoingApi"],
+    enabled: !props.plan?.id && !!props.plan?.ministryId,
+    placeholderData: []
+  });
+  const templates = templatesQuery.data || [];
 
   const { control, register, handleSubmit, watch } = useForm<AnyRecord>({
     defaultValues: {
@@ -63,6 +71,13 @@ export const PlanEdit = (props: Props) => {
   const savePlanMutation = useMutation({
     mutationFn: async (plan: PlanInterface) => {
       const { ApiHelper } = await import("@churchapps/apphelper");
+      // Starting from a template: create the (empty) plan, then apply the snapshot.
+      if (!plan.id && templateId) {
+        const saved = await ApiHelper.post("/plans", [plan], "DoingApi");
+        const newPlan = Array.isArray(saved) ? saved[0] : saved;
+        await ApiHelper.post("/plantemplates/apply/" + templateId, { planIds: [newPlan.id], serviceOrder: true, positions: true }, "DoingApi");
+        return saved;
+      }
       // The copy-from-previous options only render for new plans; an existing
       // plan must save plainly or the copy endpoint duplicates its positions
       // (and 401s when the loaded plan row lacks ministryId).
@@ -126,7 +141,16 @@ export const PlanEdit = (props: Props) => {
           </Grid>
         </Grid>
         <CampusSelect control={control} testId="plan-campus-select" />
-        {!props.plan?.id && previousPlan && (
+        {!props.plan?.id && templates.length > 0 && (
+          <FormControl fullWidth>
+            <InputLabel id="templateId">{Locale.label("plans.templates.startFrom") || "Start from template"}</InputLabel>
+            <Select labelId="templateId" label={Locale.label("plans.templates.startFrom") || "Start from template"} value={templateId} onChange={(e) => setTemplateId(e.target.value)} data-testid="template-select">
+              <MenuItem value="">{Locale.label("plans.templates.startBlank") || "None"}</MenuItem>
+              {templates.map((t) => <MenuItem key={t.id} value={t.id}>{t.name}</MenuItem>)}
+            </Select>
+          </FormControl>
+        )}
+        {!props.plan?.id && !templateId && previousPlan && (
           <>
             <FormControl fullWidth>
               <InputLabel id="copyMode">{Locale.label("plans.planEdit.copyPrevious") || "Copy from previous plan"}:</InputLabel>
