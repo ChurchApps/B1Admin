@@ -2316,12 +2316,22 @@
       "viewingAs": "Viewing as"
     },
     "servingOverviewPage": {
+      "autoSchedule": "Auto-schedule",
+      "autoScheduleResult": "Auto-scheduled {filled} of {total} plans",
+      "close": "Close",
+      "emailAll": "Email Volunteers",
+      "emailEmpty": "No assigned volunteers in this range to email.",
+      "emailResult": "Emailed {sent} volunteers ({failed} failed)",
       "endDate": "End Date",
       "exportCsv": "Export CSV",
       "filename": "serving-overview.csv",
+      "gapsOnly": "Unfilled only",
+      "highlightAll": "Everyone",
+      "highlightPerson": "Highlight",
       "noData": "No serving data found for the selected date range.",
       "overviewSuffix": "Overview",
       "position": "Position",
+      "remove": "Remove",
       "startDate": "Start Date",
       "subtitle": "Positions by date with assigned volunteers",
       "title": "Serving Overview"
