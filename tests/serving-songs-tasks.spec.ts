@@ -66,6 +66,30 @@ test.describe('Serving Management - Songs & Tasks', () => {
       await expect(validatedSong).toBeVisible({ timeout: 10000 });
     });
 
+    test('should add a blank arrangement (same-song variation, not a PraiseCharts cover)', async () => {
+      const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
+      await songsBtn.click();
+      await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
+      await page.locator('[data-testid="add-song-button"]').waitFor({ state: 'visible', timeout: 10000 });
+      const song = page.locator('a').getByText('Frolic', { exact: true }).first();
+      await song.click();
+      await expect(page.getByRole('heading', { name: 'Frolic' })).toBeVisible({ timeout: 10000 });
+
+      // "Add Arrangement" creates a blank arrangement inline — it must NOT open
+      // the PraiseCharts song-search dialog.
+      await page.locator('button').getByText('Add Arrangement').first().click();
+      await expect(page.getByText('New Arrangement').first()).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('[data-testid="song-search-dialog-input"]')).toHaveCount(0);
+
+      // Clean up so the single-arrangement assertions later in the chain hold:
+      // delete the new arrangement; the "(Default)" sibling keeps the song alive.
+      page.once('dialog', async dialog => { await dialog.accept(); });
+      const arrCard = page.locator('.MuiCard-root').filter({ hasText: 'Arrangement - New Arrangement' });
+      await arrCard.getByRole('button', { name: 'Edit' }).first().click();
+      await page.locator('button').getByText('Delete').last().click();
+      await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
+    });
+
     test('should add song key', async () => {
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText('Songs');
       await songsBtn.click();

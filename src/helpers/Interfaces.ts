@@ -63,6 +63,7 @@ export interface PaymentGatewaysInterface {
 
 export interface SongInterface {
   id?: string;
+  songDetailId?: string;
   name?: string;
   dateAdded: Date;
 }
@@ -101,6 +102,10 @@ export interface ArrangementInterface {
   songDetailId?: string;
   name?: string;
   lyrics?: string;
+  bpm?: number;
+  seconds?: number;
+  meter?: string;
+  sequence?: string;
 }
 
 export interface ArrangementKeyInterface {

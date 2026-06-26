@@ -2,7 +2,7 @@ import React, { useEffect, memo, useCallback, useMemo } from "react";
 import { type ArrangementInterface, type SongDetailInterface } from "../../../helpers";
 import { ChordProHelper } from "../../../helpers/ChordProHelper";
 import { ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { Card, CardContent, Typography, Stack, Box, Alert, Button } from "@mui/material";
+import { Card, CardContent, Typography, Stack, Box, Alert, Button, Chip } from "@mui/material";
 import { Edit as EditIcon, QueueMusic as ArrangementIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { Keys } from "./Keys";
@@ -21,12 +21,20 @@ export const Arrangement = memo((props: Props) => {
   const [edit, setEdit] = React.useState(false);
   const [canImportLyrics, setCanImportLyrics] = React.useState(false);
 
+  const formatSeconds = useCallback((seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return mins + ":" + (secs < 10 ? "0" : "") + secs;
+  }, []);
+
   const loadData = useCallback(async () => {
-    if (props.arrangement) {
+    if (props.arrangement?.songDetailId) {
       const sd: SongDetailInterface = await ApiHelper.get("/songDetails/" + props.arrangement.songDetailId, "ContentApi");
       setSongDetail(sd);
       // Check if lyrics can be imported
       if (!props.arrangement?.lyrics && sd?.praiseChartsId) setCanImportLyrics(true);
+    } else {
+      setSongDetail(null);
     }
   }, [props.arrangement]);
 
@@ -93,6 +101,15 @@ export const Arrangement = memo((props: Props) => {
             )}
           </Stack>
 
+          {(props.arrangement?.bpm || props.arrangement?.seconds || props.arrangement?.meter || props.arrangement?.sequence) && (
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 2 }}>
+              {props.arrangement?.bpm ? <Chip size="small" variant="outlined" label={`${props.arrangement.bpm} ${Locale.label("songs.details.bpm") || "BPM"}`} /> : null}
+              {props.arrangement?.meter ? <Chip size="small" variant="outlined" label={props.arrangement.meter} /> : null}
+              {props.arrangement?.seconds ? <Chip size="small" variant="outlined" label={formatSeconds(props.arrangement.seconds)} /> : null}
+              {props.arrangement?.sequence ? <Chip size="small" variant="outlined" label={props.arrangement.sequence} /> : null}
+            </Stack>
+          )}
+
           {/* Import Lyrics Alert */}
           {canImportLyrics && canEdit && (
             <Alert
@@ -134,7 +151,7 @@ export const Arrangement = memo((props: Props) => {
         </CardContent>
       </Card>
     ),
-    [props.arrangement, canEdit, canImportLyrics, importLyrics]
+    [props.arrangement, canEdit, canImportLyrics, importLyrics, formatSeconds]
   );
 
   return (

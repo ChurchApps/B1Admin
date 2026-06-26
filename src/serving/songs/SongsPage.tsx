@@ -33,7 +33,7 @@ export const SongsPage = memo(() => {
         const song = await ApiHelper.get("/songs/" + existing[0].songId, "ContentApi");
         selectedSong = song;
       } else {
-        const s: SongInterface = { name: songDetail.title, dateAdded: new Date() };
+        const s: SongInterface = { name: songDetail.title, songDetailId: songDetail.id, dateAdded: new Date() };
         const newSongs = await ApiHelper.post("/songs", [s], "ContentApi");
         const a: ArrangementInterface = {
           songId: newSongs[0].id,

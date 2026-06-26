@@ -22,6 +22,8 @@ export const ArrangementEdit = (props: Props) => {
 
   const onValid = (values: AnyRecord) => {
     const a: ArrangementInterface = { ...props.arrangement, ...values };
+    if (Number.isNaN(a.bpm as number)) a.bpm = undefined;
+    if (Number.isNaN(a.seconds as number)) a.seconds = undefined;
     ApiHelper.post("/arrangements", [a], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
@@ -38,6 +40,10 @@ export const ArrangementEdit = (props: Props) => {
   return (
     <FormCard title={props.arrangement?.name || Locale.label("songs.arrangement.edit")} icon="library_music" onSave={handleSubmit(onValid)} onCancel={props.onCancel} onDelete={props.arrangement?.id ? handleDelete : undefined}>
       <TextField label={Locale.label("songs.arrangement.name")} fullWidth placeholder={Locale.label("placeholders.song.arrangementName")} {...register("name")} />
+      <TextField label={Locale.label("songs.details.bpm") || "BPM"} type="number" fullWidth {...register("bpm", { valueAsNumber: true })} />
+      <TextField label={Locale.label("songs.details.meter") || "Meter"} fullWidth {...register("meter")} />
+      <TextField label={Locale.label("songs.details.length") || "Length"} type="number" placeholder="seconds" fullWidth {...register("seconds", { valueAsNumber: true })} />
+      <TextField label="Sequence" fullWidth placeholder="Verse 1, Chorus, Verse 2, Chorus, Bridge" {...register("sequence")} />
       <TextField label={Locale.label("songs.arrangement.lyrics")} multiline fullWidth placeholder={Locale.label("placeholders.song.lyrics")} {...register("lyrics")} />
     </FormCard>
   );
