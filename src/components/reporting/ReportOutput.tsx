@@ -221,6 +221,48 @@ export const ReportOutput = (props: Props) => {
     else {
       return (
         <>
+          <style dangerouslySetInnerHTML={{ __html: `
+            @media print {
+              @page {
+                size: portrait;
+                margin: 20mm 15mm 20mm 15mm;
+              }
+              body {
+                margin: 0 !important;
+                padding: 0 !important;
+              }
+              #reportsBox {
+                padding-left: 24px !important;
+                padding-right: 24px !important;
+                margin: 0 auto !important;
+                width: auto !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: transparent !important;
+              }
+              .report-chart-container {
+                display: block !important;
+                margin: 0 auto 30px auto !important;
+                width: 800px !important;
+                transform: scale(0.85) !important;
+                transform-origin: left top !important;
+                margin-left: calc((100% - 680px) / 2) !important;
+                page-break-inside: avoid !important;
+              }
+              .MuiTable-root {
+                width: 100% !important;
+                margin-top: 20px !important;
+              }
+              .MuiTableCell-root {
+                padding: 12px 16px !important;
+                font-size: 14px !important;
+                border-bottom: 1px solid #ddd !important;
+              }
+              .MuiTableRow-root {
+                page-break-inside: avoid !important;
+              }
+            }
+          `}} />
           {kpis && <GivingKpiCards kpis={kpis} currency={currency} />}
           <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
             {getOutputs()}

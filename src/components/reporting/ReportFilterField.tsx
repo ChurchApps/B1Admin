@@ -173,8 +173,8 @@ export const ReportFilterField = (props: Props) => {
     case "dropdown":
       result = (
         <FormControl fullWidth>
-          <InputLabel>{props.parameter.displayName}</InputLabel>
-          <Select value={options.find((v) => v.value === props.parameter.value)?.value || ""} label={props.parameter.displayName} onChange={handleChange} name={props.parameter.keyName}>
+          <InputLabel shrink>{props.parameter.displayName}</InputLabel>
+          <Select displayEmpty value={options.find((v) => v.value === props.parameter.value)?.value || ""} label={props.parameter.displayName} onChange={handleChange} name={props.parameter.keyName}>
             {options.map((o, i) => (
               <MenuItem key={i} value={o.value}>
                 {o.text}
