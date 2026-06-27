@@ -18,9 +18,20 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
   const loadData = () => {
     ApiHelper.get("/groups", "MembershipApi").then((data: any) => {
       setGroups(data);
+      setSearchResults(data);
     });
   };
   React.useEffect(loadData, []);
+
+  React.useEffect(() => {
+    const term = searchText.trim().toLowerCase();
+    if (!term) {
+      setSearchResults(groups);
+    } else {
+      const result = groups.filter((g) => g.name.toLowerCase().indexOf(term) > -1);
+      setSearchResults(result);
+    }
+  }, [searchText, groups]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
