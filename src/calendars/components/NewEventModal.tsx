@@ -55,7 +55,7 @@ export function NewEventModal(props: Props) {
   };
 
   useEffect(() => {
-    ApiHelper.get("/groups", "MembershipApi").then(setGroups);
+    ApiHelper.get("/groups/tag/standard", "MembershipApi").then(setGroups);
     ApiHelper.get("/eventTemplates", "ContentApi").then(setTemplates);
     ApiHelper.get("/rooms", "ContentApi").then(setRooms);
     ApiHelper.get("/resources", "ContentApi").then(setResources);

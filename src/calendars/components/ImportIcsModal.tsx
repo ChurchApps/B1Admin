@@ -16,7 +16,7 @@ export function ImportIcsModal(props: Props) {
   const [importing, setImporting] = useState(false);
 
   useEffect(() => {
-    ApiHelper.get("/groups", "MembershipApi").then(setGroups);
+    ApiHelper.get("/groups/tag/standard", "MembershipApi").then(setGroups);
   }, []);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
