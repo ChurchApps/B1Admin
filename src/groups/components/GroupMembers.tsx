@@ -314,12 +314,12 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
   });
 
   const getEditContent = () => (
-    <>
+    <Stack direction="row" spacing={1} alignItems="center" display="inline-flex">
       {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit) && (
         <AppIconButton label={Locale.label("groups.groupMembers.sendMemMsg")} icon={<EditNoteIcon />} tone="card" onClick={() => { setCount(0); setShow(!show); }} data-testid="send-message-button" />
       )}
       <ExportButton data={exportData} filename="groupmembers.csv" text={Locale.label("groups.groupsPage.export")} />
-    </>
+    </Stack>
   );
 
   const handleSend = async () => {

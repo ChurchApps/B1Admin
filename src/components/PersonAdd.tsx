@@ -28,6 +28,20 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
+  const loadRecent = () => {
+    ApiHelper.get("/people/recent", "MembershipApi").then((data: PersonInterface[]) => {
+      const filteredResult = data.filter((s) => !filterList.includes(s.id));
+      setSearchResults(filteredResult);
+    });
+  };
+
+  React.useEffect(() => {
+    if (!searchText.trim()) {
+      loadRecent();
+      setHasSearched(false);
+    }
+  }, [searchText, filterList]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setHasSearched(false);

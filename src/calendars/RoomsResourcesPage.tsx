@@ -32,7 +32,7 @@ export const RoomsResourcesPage = () => {
       ApiHelper.get("/resources", "ContentApi"),
       ApiHelper.get("/calendarBlockouts", "ContentApi"),
       ApiHelper.get("/eventTemplates", "ContentApi"),
-      ApiHelper.get("/groups", "MembershipApi")
+      ApiHelper.get("/groups/tag/standard", "MembershipApi")
     ]).then(([r, res, blk, tpl, grp]) => {
       setRooms(r);
       setResources(res);
