@@ -84,7 +84,7 @@ export const SongDetailLinks = memo((props: Props) => {
             }
           }}
           component="a"
-          href={link.url}
+          href={/^https?:\/\//i.test(link.url || "") || /^mailto:/i.test(link.url || "") ? link.url : "#"}
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: "none" }}>

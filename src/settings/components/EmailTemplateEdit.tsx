@@ -234,7 +234,12 @@ export const EmailTemplateEdit: React.FC<Props> = ({ template, onSave, onCancel,
           <Typography variant="body1" sx={{ mb: 2, fontWeight: 600 }}>{getPreviewSubject()}</Typography>
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewBody")}</Typography>
           <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "var(--bg-sub)" }}>
-            <div dangerouslySetInnerHTML={{ __html: getPreviewHtml() }} />
+            <iframe
+              sandbox=""
+              srcDoc={getPreviewHtml()}
+              title="Email preview"
+              style={{ width: "100%", minHeight: 300, border: "none" }}
+            />
           </Box>
           <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
             {Locale.label("settings.emailTemplateEdit.previewSampleData")}

@@ -93,6 +93,13 @@ export class ChordProHelper {
     return result.join("\n");
   };
 
+  static escapeHtml = (s: string) => s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
   static formatLyrics = (lyrics: string, keyOffset: number) => {
     const lines = lyrics.split("\n");
     const result: string[] = [];
@@ -103,9 +110,10 @@ export class ChordProHelper {
       else if (l.length === 0) lineType = "empty";
       switch (lineType) {
         case "header":
-          result.push('<h3 style="margin-bottom:0px">' + l.substring(1, l.length - 1) + "</h3>");
+          result.push('<h3 style="margin-bottom:0px">' + this.escapeHtml(l.substring(1, l.length - 1)) + "</h3>");
           break;
         case "line":
+          l = this.escapeHtml(l);
           l = this.transposeChords(l, keyOffset);
           l = this.replaceChords(l);
           result.push('<div class="line">' + l + "</div>");

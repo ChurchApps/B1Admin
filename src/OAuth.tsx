@@ -66,7 +66,9 @@ export const OAuthPage: React.FC = () => {
               <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
               <h2>{clientName || Locale.label("app.oauth.loading")}</h2>
               <p>
-                <span dangerouslySetInnerHTML={{ __html: Locale.label("app.oauth.promptAccess").replace("{churchName}", "<b>" + UserHelper.currentUserChurch.church.name + "</b>") }} />
+                {Locale.label("app.oauth.promptAccess").split("{churchName}").map((part, i, arr) => (
+                  <React.Fragment key={i}>{part}{i < arr.length - 1 && <b>{UserHelper.currentUserChurch.church.name}</b>}</React.Fragment>
+                ))}
               </p>
             </div>
 
@@ -81,7 +83,9 @@ export const OAuthPage: React.FC = () => {
                   fullWidth
                   variant="contained"
                   onClick={() => {
-                    window.location.href = redirectUri || "/";
+                    const target = redirectUri || "/";
+                    const isSafeRelative = target.startsWith("/") && !target.startsWith("//");
+                    window.location.href = isSafeRelative ? target : "/";
                   }}
                   data-testid="oauth-deny-button"
                   aria-label={Locale.label("app.oauth.denyAria")}>

@@ -43,6 +43,14 @@ export const Login: React.FC = () => {
 
   let jwt = forceLogin ? "" : (search.get("jwt") || cookies.jwt);
   let auth = search.get("auth");
+
+  React.useEffect(() => {
+    if (search.get("jwt")) {
+      search.delete("jwt");
+      const newUrl = window.location.pathname + (search.toString() ? "?" + search.toString() : "") + window.location.hash;
+      window.history.replaceState(null, "", newUrl);
+    }
+  }, []);
   if (!jwt) jwt = "";
   if (!auth) auth = "";
 

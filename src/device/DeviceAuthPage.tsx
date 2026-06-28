@@ -210,7 +210,9 @@ export const DeviceAuthPage: React.FC = () => {
             <Icon sx={{ fontSize: 120, mt: 3.75, color: "text.secondary" }}>lock</Icon>
             <h2>{clientName || Locale.label("device.deviceAuthPage.loading")}</h2>
             <p>
-              <span dangerouslySetInnerHTML={{ __html: Locale.label("device.deviceAuthPage.confirmPrompt").replace("{churchName}", "<b>" + (churchName || "") + "</b>") }} />
+              {Locale.label("device.deviceAuthPage.confirmPrompt").split("<b>{churchName}</b>").map((part, i, arr) => (
+                <React.Fragment key={i}>{part}{i < arr.length - 1 && <b>{churchName || ""}</b>}</React.Fragment>
+              ))}
             </p>
           </div>
           <div style={{ marginLeft: 50, marginRight: 50 }}>
