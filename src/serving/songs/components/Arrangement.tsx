@@ -138,6 +138,8 @@ export const Arrangement = memo((props: Props) => {
               borderRadius: 1,
               p: 2,
               minHeight: 200,
+              maxHeight: 600,
+              overflowY: "auto",
               fontFamily: "monospace",
               fontSize: "0.875rem",
               lineHeight: 1.6,
