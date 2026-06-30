@@ -143,7 +143,7 @@ export const PersonPage = () => {
         );
         break;
       case "notes": currentTab = <PersonNotes key={`notes-${person?.conversationId || "new"}`} context={context} conversationId={person?.conversationId} createConversation={handleCreateConversation} />; break;
-      case "attendance": currentTab = <PersonAttendance key="attendance" personId={person.id} updatedFunction={refetch} />; break;
+      case "attendance": currentTab = <PersonAttendance key="attendance" personId={person.id} personName={person.name?.display} updatedFunction={refetch} />; break;
       case "donations": currentTab = <PersonDonations key="donations" personId={person.id} />; break;
       case "groups": currentTab = <Groups key="groups" personId={person?.id} updatedFunction={refetch} />; break;
       default: currentTab = <div key="default">{Locale.label("people.tabs.noImplement")}</div>; break;
