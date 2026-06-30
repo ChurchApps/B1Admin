@@ -1271,6 +1271,7 @@
       "noEmailNoticeSingular": "{count} member has no email address on file and will be skipped.",
       "noEmailSkipped": "{count} skipped (no email address on file).",
       "none": "None",
+      "permissionError": "You do not have permission to send group emails.",
       "send": "Send Email",
       "sendDefault": "This will send an email to eligible group members.",
       "sendFailedDetail": "{count} failed to send.",

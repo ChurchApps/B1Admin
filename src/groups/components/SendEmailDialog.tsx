@@ -98,7 +98,11 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
         setResult(resp);
       }
     } catch (err: any) {
-      setError(err?.message || Locale.label("groups.sendEmailDialog.fallbackError"));
+      if (err?.message === "Unauthorized") {
+        setError(Locale.label("groups.sendEmailDialog.permissionError"));
+      } else {
+        setError(err?.message || Locale.label("groups.sendEmailDialog.fallbackError"));
+      }
     } finally {
       setSending(false);
     }

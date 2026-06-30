@@ -1,4 +1,4 @@
-{
+﻿{
   "app": {
     "login": {
       "demoCredentials": "メール \"{email}\" とパスワード \"{password}\" を使用してください。",

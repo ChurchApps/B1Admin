@@ -1,4 +1,4 @@
-{
+﻿{
   "app": {
     "login": {
       "demoCredentials": "使用电子邮件 \"{email}\" 和密码 \"{password}\"。",
