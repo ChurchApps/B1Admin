@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { siteTest as test, expect } from "./helpers/test-fixtures";
 import { trashIconButton } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
-import { navigateToSite } from "./helpers/navigation";
+import { navigateToSite, navigateToCalendars } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -466,22 +466,27 @@ test.describe("Website Management", () => {
       const templateCard = page.locator('[data-testid="site-template-classic"]');
       await expect(templateCard).toBeVisible({ timeout: 10000 });
       await templateCard.click();
-      // Demo data already has a home page; the detail view flags it as existing.
-      await expect(page.getByText("Already exists", { exact: true })).toBeVisible({ timeout: 10000 });
+      // Demo data already has pages at "/" (Home) and "/about" (About); the classic
+      // template's Home and About pages collide on URL and get flagged/skipped — only
+      // "Plan Your Visit" (/visit) is actually new. The detail view flags each existing
+      // page — just confirm the indicator shows up.
+      await expect(page.getByText("Already exists", { exact: true }).first()).toBeVisible({ timeout: 10000 });
       const treePost = page.waitForResponse(r => r.url().includes("/content/sections/tree") && r.request().method() === "POST", { timeout: 20000 });
       await page.locator('[data-testid="site-template-create-button"]').click();
       expect((await treePost).status()).toBe(200);
-      // Creation finishes by opening the first created page (About, since Home was skipped) in the preview.
+      // Creation finishes by opening the only newly-created page (Visit) in the preview.
       await page.waitForURL(/\/site\/pages\/preview\/[^/]+/, { timeout: 30000 });
-      await expect(page.locator("h6").getByText("About Us").first()).toBeVisible({ timeout: 10000 });
-      // Both template pages now exist; the pre-existing home page was left untouched.
+      await expect(page.locator("h6").getByText("Plan Your Visit").first()).toBeVisible({ timeout: 10000 });
+      // The new Visit page now exists; the pre-existing Home/About pages were left untouched.
       await navigateToSite(page);
-      await expect(page.locator("td").getByText("About Us")).toHaveCount(1, { timeout: 10000 });
-      await expect(page.locator("td").getByText("Plan Your Visit")).toHaveCount(1);
+      await expect(page.locator("td").getByText("Plan Your Visit")).toHaveCount(1, { timeout: 10000 });
       // Exactly one row for "/" — the pre-existing home page was not duplicated.
       const homeRow = page.locator("tr").filter({ has: page.locator("td").getByText("/", { exact: true }) });
       await expect(homeRow).toHaveCount(1);
       await expect(homeRow.locator("td").getByText("Home", { exact: true })).toBeVisible();
+      // Exactly one row for "/about" — the pre-existing About page was not duplicated either.
+      const aboutRow = page.locator("tr").filter({ has: page.locator("td").getByText("/about", { exact: true }) });
+      await expect(aboutRow).toHaveCount(1);
       // Only the Visit nav link is new — Home/About/Sermons/Give links already existed and were not duplicated.
       await expect(page.getByText("Visit", { exact: true })).toBeVisible({ timeout: 10000 });
     });
@@ -756,7 +761,9 @@ test.describe("Website Management", () => {
       const linkToggle = page.locator('[data-testid="nav-solid-link-toggle"] input[type="checkbox"]');
       const linkInput = page.locator('[data-testid="nav-solid-link-input"] input[type="color"]');
       await expect(linkInput).toBeVisible({ timeout: 10000 });
-      await expect(linkInput).toBeDisabled();
+      // Demo data seeds a solid-nav linkColor override (see globalStyles in demo.sql), so
+      // the field starts enabled rather than disabled — just ensure the toggle is on
+      // (check() is a no-op if already checked) instead of assuming a disabled start state.
       await linkToggle.check();
       await expect(linkInput).toBeEnabled();
       // `fill` does not work on type=color; use React's native setter.
@@ -856,8 +863,9 @@ test.describe("Website Management", () => {
     });
 
     test.beforeEach(async () => {
-      const calendarHomeBtn = page.locator("a").getByText("Calendar").first();
-      await calendarHomeBtn.click();
+      // Calendars is its own top-level primary nav item (sibling of Website), not a
+      // link reachable directly from the Website page — go through the primary drawer.
+      await navigateToCalendars(page);
       await expect(page).toHaveURL(/\/calendars/);
     });
 
@@ -987,7 +995,9 @@ test.describe("Website Management", () => {
       await page.goto("/site/pages/PAG00000001");
       await expect(page.locator(".elementWrapper").first()).toBeVisible({ timeout: 20000 });
       expect(await page.locator(".elementWrapper").count()).toBeGreaterThan(5);
-      await expect(page.getByText("Welcome to Grace Community Church").first()).toBeVisible();
+      // Demo home hero copy is "Welcome Home to Grace Community Church" (2026-06 redesign) —
+      // match loosely so small wording tweaks don't break this.
+      await expect(page.getByText(/Welcome.*Grace Community Church/).first()).toBeVisible();
     });
   });
 

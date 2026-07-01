@@ -1,9 +1,9 @@
-import { type Page } from '@playwright/test';
-import { donationsTest as test, expect } from './helpers/test-fixtures';
-import { fillFundForm } from './helpers/donations';
-import { login } from './helpers/auth';
-import { navigateToDonations } from './helpers/navigation';
-import { STORAGE_STATE_PATH } from './global-setup';
+import { type Page } from "@playwright/test";
+import { donationsTest as test, expect } from "./helpers/test-fixtures";
+import { fillFundForm } from "./helpers/donations";
+import { login } from "./helpers/auth";
+import { navigateToDonations } from "./helpers/navigation";
+import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 // donations.spec.ts:
@@ -15,10 +15,10 @@ import { STORAGE_STATE_PATH } from './global-setup';
 //   Fund detail page — clicking a fund opens donation history with date filters
 //   (donation-report.md steps 13-14).
 
-const TEST_FUND_INITIAL = 'Zacchaeus Fund';
-const TEST_FUND_RENAMED = 'Zebedee Fund';
-const TEST_BATCH_INITIAL = 'October 10, 2025 Batch';
-const TEST_BATCH_RENAMED = 'October 1, 2025 Batch';
+const TEST_FUND_INITIAL = "Zacchaeus Fund";
+const TEST_FUND_RENAMED = "Zebedee Fund";
+const TEST_BATCH_INITIAL = "October 10, 2025 Batch";
+const TEST_BATCH_RENAMED = "October 1, 2025 Batch";
 
 // Find a fund row's edit button by the fund's display name. The funds list is
 // alphabetically sorted, so .last() / .nth(N) is brittle; this helper anchors on
@@ -27,26 +27,26 @@ const TEST_BATCH_RENAMED = 'October 1, 2025 Batch';
 // resolve to the wrapper element so the React onClick handler doesn't fire.
 function fundRowEditButton(page: Page, name: string) {
   return page
-    .locator('tr')
-    .filter({ has: page.locator('a').getByText(name, { exact: true }) })
-    .getByRole('button', { name: /Edit/ });
+    .locator("tr")
+    .filter({ has: page.locator("a").getByText(name, { exact: true }) })
+    .getByRole("button", { name: /Edit/ });
 }
 
 async function openFundsTab(page: Page) {
-  const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds');
+  const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds");
   await fundsBtn.click();
   await expect(page).toHaveURL(/\/donations\/funds/);
 }
 
 async function openBatchesTab(page: Page) {
-  const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches');
+  const batchesBtn = page.locator('[id="secondaryMenu"]').getByText("Batches");
   await batchesBtn.click();
   await expect(page).toHaveURL(/\/donations\/batches/);
 }
 
 // Entire describe.serial chain — create fund → create batch → add/edit/delete donation →
 // delete batch → delete fund. Each step relies on entities created earlier.
-test.describe.serial('Donations Management', () => {
+test.describe.serial("Donations Management", () => {
   let page: Page;
 
   test.beforeAll(async ({ browser }) => {
@@ -60,12 +60,12 @@ test.describe.serial('Donations Management', () => {
     await page?.context().close();
   });
 
-  test.describe('Funds', () => {
+  test.describe("Funds", () => {
     // Funds tests share data — a retry would create duplicate "Zacchaeus
     // Fund" rows and break subsequent assertions. Disable retries here.
     test.describe.configure({ retries: 0 });
 
-    test('should create fund', async () => {
+    test("should create fund", async () => {
       await openFundsTab(page);
       const addBtn = page.locator('[data-testid="add-fund-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
@@ -73,12 +73,12 @@ test.describe.serial('Donations Management', () => {
       // Toggle off — saves as Non-Deductible so we can verify edit later flips it back.
       await fillFundForm(page, { name: TEST_FUND_INITIAL, toggleTaxDeductible: true });
 
-      await expect(page.locator('a').getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(1, { timeout: 10000 });
       // After this, exactly one Non-Deductible row should exist (the Zacchaeus Fund).
-      await expect(page.locator('p').getByText('Non-Deductible')).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("p").getByText("Non-Deductible")).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit fund', async () => {
+    test("should edit fund", async () => {
       await openFundsTab(page);
 
       // Target the Zacchaeus Fund row specifically — alphabetical sort puts other
@@ -89,13 +89,13 @@ test.describe.serial('Donations Management', () => {
       // Toggle taxDeductible: Zacchaeus was non-deductible → Zebedee becomes deductible.
       await fillFundForm(page, { name: TEST_FUND_RENAMED, toggleTaxDeductible: true });
 
-      await expect(page.locator('a').getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
-      await expect(page.locator('a').getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_FUND_INITIAL, { exact: true })).toHaveCount(0, { timeout: 10000 });
       // Zebedee is now deductible, so no fund in the list should be Non-Deductible.
-      await expect(page.locator('p').getByText('Non-Deductible')).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("p").getByText("Non-Deductible")).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should cancel editing fund', async () => {
+    test("should cancel editing fund", async () => {
       await openFundsTab(page);
       const editBtn = fundRowEditButton(page, TEST_FUND_RENAMED);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -107,35 +107,35 @@ test.describe.serial('Donations Management', () => {
       await expect(fundName).toHaveValue(TEST_FUND_RENAMED, { timeout: 10000 });
       // The Cancel button can re-render mid-click as the fund-detail panel
       // refreshes; force-click avoids the "element detached" race.
-      await page.locator('button').getByText('Cancel').click({ force: true });
+      await page.locator("button").getByText("Cancel").click({ force: true });
       await expect(fundName).toHaveCount(0, { timeout: 10000 });
     });
   });
 
-  test.describe('Batches', () => {
+  test.describe("Batches", () => {
     // Batch creation isn't idempotent — a serial-chain retry re-creates the
     // batch and the toHaveCount(1) assertions see duplicates (same policy as Funds).
     test.describe.configure({ retries: 0 });
 
-    test('should create batch', async () => {
+    test("should create batch", async () => {
       await openBatchesTab(page);
 
       const addBtn = page.locator('[data-testid="add-batch-button"]');
       await expect(addBtn).toBeVisible({ timeout: 10000 });
       await addBtn.click();
       await page.locator('[name="name"]').fill(TEST_BATCH_INITIAL);
-      await page.locator('[name="date"]').fill('2025-10-10');
+      await page.locator('[name="date"]').fill("2025-10-10");
       // Wait for the save POST so a slow API under 4-worker load doesn't
       // time out the count assertion below.
-      const batchPost = page.waitForResponse(r => r.url().includes('/donationbatches') && r.request().method() === 'POST', { timeout: 15000 }).catch((): null => null);
-      await page.locator('button').getByText('Save').click();
+      const batchPost = page.waitForResponse(r => r.url().includes("/donationbatches") && r.request().method() === "POST", { timeout: 15000 }).catch((): null => null);
+      await page.locator("button").getByText("Save").click();
       await batchPost;
 
-      await expect(page.locator('a').getByText(TEST_BATCH_INITIAL)).toHaveCount(1, { timeout: 10000 });
-      await expect(page.locator('p').getByText('Oct 10, 2025')).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_BATCH_INITIAL)).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("p").getByText("Oct 10, 2025")).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should edit batch', async () => {
+    test("should edit batch", async () => {
       await openBatchesTab(page);
 
       // Find the row for the just-created batch and click its edit button.
@@ -143,12 +143,12 @@ test.describe.serial('Donations Management', () => {
       // e.currentTarget on the React handler still resolve to the Button,
       // but data-id only lives on the Button itself — pierce to the button
       // element directly via getByRole so the click target is unambiguous.
-      const row = page.locator('tr').filter({ has: page.locator('a').getByText(TEST_BATCH_INITIAL) });
-      const editBtn = row.getByRole('button', { name: /Edit/ });
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_INITIAL) });
+      const editBtn = row.getByRole("button", { name: /Edit/ });
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       // Wait for the BatchEdit GET to complete before asserting on the input.
       const batchGet = page.waitForResponse(
-        r => /\/giving\/donationbatches\/[^/?]+(\?|$)/.test(r.url()) && r.request().method() === 'GET',
+        r => /\/giving\/donationbatches\/[^/?]+(\?|$)/.test(r.url()) && r.request().method() === "GET",
         { timeout: 15000 }
       ).catch((): null => null);
       await editBtn.click();
@@ -158,45 +158,53 @@ test.describe.serial('Donations Management', () => {
       // BatchEdit renders empty, then async-populates from /donationbatches.
       // Clicking fill mid-load detaches the input. Wait until the value is
       // non-empty before filling.
-      await expect(batchName).not.toHaveValue('', { timeout: 10000 });
+      await expect(batchName).not.toHaveValue("", { timeout: 10000 });
       await batchName.fill(TEST_BATCH_RENAMED);
-      await page.locator('[name="date"]').fill('2025-10-01');
-      await page.locator('button').getByText('Save').click();
+      await page.locator('[name="date"]').fill("2025-10-01");
+      await page.locator("button").getByText("Save").click();
 
-      await expect(page.locator('a').getByText(TEST_BATCH_RENAMED)).toHaveCount(1, { timeout: 10000 });
-      await expect(page.locator('p').getByText('Oct 1, 2025')).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_BATCH_RENAMED)).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("p").getByText("Oct 1, 2025")).toHaveCount(1, { timeout: 10000 });
     });
 
-    test('should cancel editing batch', async () => {
+    test("should cancel editing batch", async () => {
       await openBatchesTab(page);
 
-      const row = page.locator('tr').filter({ has: page.locator('a').getByText(TEST_BATCH_RENAMED) });
-      const editBtn = row.getByRole('button', { name: /Edit/ });
+      const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_BATCH_RENAMED) });
+      const editBtn = row.getByRole("button", { name: /Edit/ });
       await expect(editBtn).toBeVisible({ timeout: 10000 });
+      // Wait for the BatchEdit GET to complete before asserting on the input — same
+      // batchId as the previous "should edit batch" run, so without this wait the
+      // form can still show the stale (pre-load) empty value when polled.
+      const batchGet = page.waitForResponse(
+        r => /\/giving\/donationbatches\/[^/?]+(\?|$)/.test(r.url()) && r.request().method() === "GET",
+        { timeout: 15000 }
+      ).catch((): null => null);
       await editBtn.click();
+      await batchGet;
       const batchName = page.locator('[name="name"]');
       await expect(batchName).toBeVisible({ timeout: 10000 });
       // Wait for the API to populate the form before clicking Cancel — the
       // form re-renders when data lands and detaches the Cancel button.
-      await expect(batchName).not.toHaveValue('', { timeout: 10000 });
-      await page.locator('button').getByText('Cancel').click();
+      await expect(batchName).not.toHaveValue("", { timeout: 10000 });
+      await page.locator("button").getByText("Cancel").click();
       await expect(batchName).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should add donation to batch', async () => {
+    test("should add donation to batch", async () => {
       await openBatchesTab(page);
 
-      await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
+      await page.locator("a").getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
 
       // Choose Anonymous on the BulkDonationEntry person picker.
-      const anon = page.locator('button').getByText('Anonymous');
+      const anon = page.locator("button").getByText("Anonymous");
       await expect(anon).toBeVisible({ timeout: 10000 });
       await anon.click();
 
       // MUI TextField puts data-testid on the wrapping FormControl div — drill
       // into the underlying input to issue fill/click actions.
-      await page.locator('[data-testid="bulk-donation-date"] input').fill('2025-05-02');
+      await page.locator('[data-testid="bulk-donation-date"] input').fill("2025-05-02");
 
       // Method dropdown — switch to Cash so methodDetails field is hidden.
       // For MUI Select, the clickable trigger is the [role="combobox"] inside.
@@ -207,23 +215,23 @@ test.describe.serial('Donations Management', () => {
       // Fund dropdown — only renders when there is more than one fund (always true in seed).
       const fundSelect = page.locator('[data-testid="bulk-donation-fund"] [role="combobox"]');
       await fundSelect.click();
-      await page.locator('li').getByText(TEST_FUND_RENAMED, { exact: true }).click();
+      await page.locator("li").getByText(TEST_FUND_RENAMED, { exact: true }).click();
 
-      await page.locator('[data-testid="bulk-donation-notes"] input').fill('Test Donation Notes');
-      await page.locator('[data-testid="bulk-donation-amount"] input').fill('20.00');
+      await page.locator('[data-testid="bulk-donation-notes"] input').fill("Test Donation Notes");
+      await page.locator('[data-testid="bulk-donation-amount"] input').fill("20.00");
       const submitBtn = page.locator('[data-testid="add-donation-submit"]');
       await expect(submitBtn).toBeVisible({ timeout: 10000 });
       await submitBtn.click();
 
-      await expect(page.locator('table td').getByText('Anonymous')).toHaveCount(1, { timeout: 10000 });
-      await expect(page.locator('table td').getByText('May 2, 2025')).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("table td").getByText("Anonymous")).toHaveCount(1, { timeout: 10000 });
+      await expect(page.locator("table td").getByText("May 2, 2025")).toHaveCount(1, { timeout: 10000 });
       // Two cells contain a $ sign: the donation row and the totals row.
-      await expect(page.locator('table td').getByText('$')).toHaveCount(2, { timeout: 10000 });
+      await expect(page.locator("table td").getByText("$")).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should edit a batch donation', async () => {
+    test("should edit a batch donation", async () => {
       await openBatchesTab(page);
-      await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
+      await page.locator("a").getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
 
       const editBtn = page.locator('[data-cy="edit-link-0"]');
@@ -235,21 +243,21 @@ test.describe.serial('Donations Management', () => {
       // FundDonations component for each fund row.
       const amount = page.locator('[name="amount"]').first();
       await expect(amount).toBeVisible({ timeout: 10000 });
-      await amount.fill('30.00');
-      await page.locator('button').getByText('Save').click();
+      await amount.fill("30.00");
+      await page.locator("button").getByText("Save").click();
 
       // After save, look for the amount text in the table. CurrencyHelper formats
-      // with a non-breaking space ( ) between $ and the amount on some locales.
+      // with a non-breaking space ( ) between $ and the amount on some locales.
       // Match the digits — locale-independent.
-      await expect(page.locator('table td').filter({ hasText: /30\.00/ })).toHaveCount(2, { timeout: 10000 });
+      await expect(page.locator("table td").filter({ hasText: /30\.00/ })).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should split a donation across multiple funds', async () => {
+    test("should split a donation across multiple funds", async () => {
       // donation-report.md step 26 / manual-input.md steps 10-13: a donation can
       // be allocated across multiple funds; the total automatically calculates
       // from the sum of the fund allocations.
       await openBatchesTab(page);
-      await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
+      await page.locator("a").getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
 
       const editBtn = page.locator('[data-cy="edit-link-0"]');
@@ -261,25 +269,25 @@ test.describe.serial('Donations Management', () => {
       // shows a clearly-different value after saving.
       const firstAmount = page.locator('input[name="amount"]').first();
       await expect(firstAmount).toBeVisible({ timeout: 10000 });
-      await firstAmount.fill('20.00');
+      await firstAmount.fill("20.00");
 
       const addRowBtn = page.locator('[aria-label="add-fund-donation"]');
       await expect(addRowBtn).toBeVisible({ timeout: 10000 });
       await addRowBtn.click();
 
       // Second amount row is now present.
-      await page.locator('input[name="amount"]').nth(1).fill('15.00');
+      await page.locator('input[name="amount"]').nth(1).fill("15.00");
 
-      await page.locator('button').getByText('Save').click();
+      await page.locator("button").getByText("Save").click();
 
       // The donations table now shows the new total ($35.00) — appearing in both
       // the donation row and the totals row.
-      await expect(page.locator('table td').filter({ hasText: /35\.00/ })).toHaveCount(2, { timeout: 10000 });
+      await expect(page.locator("table td").filter({ hasText: /35\.00/ })).toHaveCount(2, { timeout: 10000 });
     });
 
-    test('should cancel editing a batch donation', async () => {
+    test("should cancel editing a batch donation", async () => {
       await openBatchesTab(page);
-      await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
+      await page.locator("a").getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
 
       const editBtn = page.locator('[data-cy="edit-link-0"]');
@@ -287,53 +295,53 @@ test.describe.serial('Donations Management', () => {
       await editBtn.click();
       const amount = page.locator('[name="amount"]').first();
       await expect(amount).toBeVisible({ timeout: 10000 });
-      await page.locator('button').getByText('Cancel').click();
+      await page.locator("button").getByText("Cancel").click();
       await expect(amount).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete a batch donation', async () => {
+    test("should delete a batch donation", async () => {
       await openBatchesTab(page);
-      await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
+      await page.locator("a").getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
 
       const editBtn = page.locator('[data-cy="edit-link-0"]');
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
-      const deleteBtn = page.locator('button').getByText('Delete');
+      const deleteBtn = page.locator("button").getByText("Delete");
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
 
       // The donation row is gone — the donations table should now show no donation rows.
-      await expect(page.locator('table td').getByText('Anonymous')).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("table td").getByText("Anonymous")).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should go back to person select on donation entry', async () => {
+    test("should go back to person select on donation entry", async () => {
       await openBatchesTab(page);
-      await page.locator('a').getByText(TEST_BATCH_RENAMED).click();
+      await page.locator("a").getByText(TEST_BATCH_RENAMED).click();
       await expect(page).toHaveURL(/\/donations\/batches\//);
 
-      const anon = page.locator('button').getByText('Anonymous');
+      const anon = page.locator("button").getByText("Anonymous");
       await expect(anon).toBeVisible({ timeout: 10000 });
       await anon.click();
-      const change = page.locator('button').getByText('Change');
+      const change = page.locator("button").getByText("Change");
       await expect(change).toBeVisible({ timeout: 10000 });
       await change.click();
       // After Change, the person selector is shown again — the Anonymous link is
       // visible once more.
-      await expect(page.locator('button').getByText('Anonymous')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator("button").getByText("Anonymous")).toBeVisible({ timeout: 10000 });
     });
 
-    test('should delete batch', async () => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
+    test("should delete batch", async () => {
+      page.once("dialog", async dialog => {
+        expect(dialog.type()).toBe("confirm");
+        expect(dialog.message()).toContain("Are you sure");
         await dialog.accept();
       });
 
       await openBatchesTab(page);
       const editBtn = page
-        .locator('tr')
-        .filter({ has: page.locator('a').getByText(TEST_BATCH_RENAMED) })
+        .locator("tr")
+        .filter({ has: page.locator("a").getByText(TEST_BATCH_RENAMED) })
         .locator('[data-cy^="edit-"]');
       await expect(editBtn).toBeVisible({ timeout: 10000 });
       await editBtn.click();
@@ -341,13 +349,13 @@ test.describe.serial('Donations Management', () => {
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
 
-      await expect(page.locator('a').getByText(TEST_BATCH_RENAMED)).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_BATCH_RENAMED)).toHaveCount(0, { timeout: 10000 });
     });
 
-    test('should delete fund', async () => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('confirm');
-        expect(dialog.message()).toContain('Are you sure');
+    test("should delete fund", async () => {
+      page.once("dialog", async dialog => {
+        expect(dialog.type()).toBe("confirm");
+        expect(dialog.message()).toContain("Are you sure");
         await dialog.accept();
       });
 
@@ -358,14 +366,14 @@ test.describe.serial('Donations Management', () => {
       const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
-      await expect(page.locator('a').getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(0, { timeout: 10000 });
     });
   });
 });
 
 // Read-only summary + fund-detail tests run in parallel — no mutation, no chain.
-test.describe('Donations summary and fund detail (read-only)', () => {
-  test('summary period toggle switches between Weekly / Monthly / Quarterly reports', async ({ page }) => {
+test.describe("Donations summary and fund detail (read-only)", () => {
+  test("summary period toggle switches between Weekly / Monthly / Quarterly reports", async ({ page }) => {
     // donation-report.md step 28: "Donations Summary page shows visual reports
     // with options to view different report formats."
     // The page header for the Weekly variant comes from the report definition.
@@ -373,98 +381,98 @@ test.describe('Donations summary and fund detail (read-only)', () => {
 
     // Wait for autoRun to land — the Filter Report card always renders once the
     // report definition arrives.
-    await expect(page.getByRole('heading', { name: 'Filter Report' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("heading", { name: "Filter Report" })).toBeVisible({ timeout: 15000 });
 
     // Switch to Monthly — Reset reportToRun + report state, refilter.
-    await page.getByRole('button', { name: 'Monthly' }).click();
-    await expect(page.getByRole('button', { name: 'Monthly' })).toHaveAttribute('aria-pressed', 'true');
+    await page.getByRole("button", { name: "Monthly" }).click();
+    await expect(page.getByRole("button", { name: "Monthly" })).toHaveAttribute("aria-pressed", "true");
 
     // Wait for the new report definition to load — the Filter card re-renders.
-    await expect(page.getByRole('heading', { name: 'Filter Report' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("heading", { name: "Filter Report" })).toBeVisible({ timeout: 15000 });
 
     // Switch to Quarterly.
-    await page.getByRole('button', { name: 'Quarterly' }).click();
-    await expect(page.getByRole('button', { name: 'Quarterly' })).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.getByRole('heading', { name: 'Filter Report' })).toBeVisible({ timeout: 15000 });
+    await page.getByRole("button", { name: "Quarterly" }).click();
+    await expect(page.getByRole("button", { name: "Quarterly" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("heading", { name: "Filter Report" })).toBeVisible({ timeout: 15000 });
   });
 
-  test('Run Report renders the Giving Dashboard report with KPI cards', async ({ page }) => {
+  test("Run Report renders the Giving Dashboard report with KPI cards", async ({ page }) => {
     // donation-report.md steps 1-2: dashboard with charts and filters.
     // Verify the report header (displayName) and KPI cards render after running.
     const startDate = page.locator('[name="startDate"]');
     await expect(startDate).toBeVisible({ timeout: 15000 });
-    await startDate.fill('2025-03-01');
-    await page.locator('[name="endDate"]').fill('2025-05-01');
-    await page.locator('button').getByText('Run Report').click();
+    await startDate.fill("2025-03-01");
+    await page.locator('[name="endDate"]').fill("2025-05-01");
+    await page.locator("button").getByText("Run Report").click();
 
     // The DisplayBox header shows the report's displayName once reportResult arrives.
-    await expect(page.getByText('Giving Dashboard - Weekly')).toBeVisible({ timeout: 20000 });
+    await expect(page.getByText("Giving Dashboard - Weekly")).toBeVisible({ timeout: 20000 });
     // KPI cards render once the /donations/kpis call returns.
-    await expect(page.getByText('Total Giving')).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText('Unique Donors')).toBeVisible();
+    await expect(page.getByText("Total Giving")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Unique Donors")).toBeVisible();
   });
 
-  test('clicking a fund opens its detail page with date filter and donation history', async ({ page }) => {
+  test("clicking a fund opens its detail page with date filter and donation history", async ({ page }) => {
     // donation-report.md steps 13-14: "Click on a fund name to view detailed
     // donation history. The fund detail page shows all donations with date range
     // filters and summary statistics."
-    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds');
+    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds");
     await fundsBtn.click();
     await expect(page).toHaveURL(/\/donations\/funds/);
 
-    await page.locator('a').getByText('General Fund', { exact: true }).click();
+    await page.locator("a").getByText("General Fund", { exact: true }).click();
     await expect(page).toHaveURL(/\/donations\/funds\/FUN00000001/);
 
     // Date filter card + Filter button.
     await expect(page.locator('[data-cy="start-date"]')).toBeVisible({ timeout: 10000 });
     await expect(page.locator('[data-cy="end-date"]')).toBeVisible();
-    const filterBtn = page.locator('button').filter({ hasText: /^Filter$/ });
+    const filterBtn = page.locator("button").filter({ hasText: /^Filter$/ });
     await expect(filterBtn).toBeVisible();
 
     // Use a wide date range so seed data (March-May 2025) is included.
     // [data-cy] is on the FormControl wrapper — drill into the input.
-    await page.locator('[data-cy="start-date"] input').fill('2025-01-01');
-    await page.locator('[data-cy="end-date"] input').fill('2025-12-31');
+    await page.locator('[data-cy="start-date"] input').fill("2025-01-01");
+    await page.locator('[data-cy="end-date"] input').fill("2025-12-31");
     await filterBtn.click();
 
     // Donations table shows seed donations — every General Fund seed row is from
     // a known person, so the donor column should not be empty after filter.
-    await expect(page.locator('table tbody tr').first()).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('table tbody tr a').first()).toBeVisible();
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("table tbody tr a").first()).toBeVisible();
   });
 });
 
 // Edge-case extensions: gaps from .notes/B1Admin-test-coverage-gaps.md §3 (donations).
-test.describe('Donations — navigation and listing extras', () => {
-  test('Donations primary page exposes Funds, Batches, Statements secondary nav', async ({ page }) => {
-    await expect(page.locator('[id="secondaryMenu"]').getByText('Funds').first()).toBeVisible({ timeout: 15000 });
-    await expect(page.locator('[id="secondaryMenu"]').getByText('Batches').first()).toBeVisible();
-    await expect(page.locator('[id="secondaryMenu"]').getByText('Giving Statements').first()).toBeVisible();
+test.describe("Donations — navigation and listing extras", () => {
+  test("Donations primary page exposes Funds, Batches, Statements secondary nav", async ({ page }) => {
+    await expect(page.locator('[id="secondaryMenu"]').getByText("Funds").first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[id="secondaryMenu"]').getByText("Batches").first()).toBeVisible();
+    await expect(page.locator('[id="secondaryMenu"]').getByText("Giving Statements").first()).toBeVisible();
   });
 
-  test('Funds list page shows the seed General Fund', async ({ page }) => {
-    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText('Funds').first();
+  test("Funds list page shows the seed General Fund", async ({ page }) => {
+    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
     await fundsBtn.click();
     await page.waitForURL(/\/donations\/funds/, { timeout: 10000 });
-    await expect(page.locator('a').getByText('General Fund', { exact: true })).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("a").getByText("General Fund", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 
-  test('Batches list page exposes Add Batch and Stripe import affordances', async ({ page }) => {
-    const batchesBtn = page.locator('[id="secondaryMenu"]').getByText('Batches').first();
+  test("Batches list page exposes Add Batch and Stripe import affordances", async ({ page }) => {
+    const batchesBtn = page.locator('[id="secondaryMenu"]').getByText("Batches").first();
     await batchesBtn.click();
     await page.waitForURL(/\/donations\/batches/, { timeout: 10000 });
     // Either an "Add" button or "+" icon button on the batches page.
-    const addBtn = page.locator('button').getByText(/Add/).first();
+    const addBtn = page.locator("button").getByText(/Add/).first();
     await expect(addBtn).toBeVisible({ timeout: 10000 });
     // Stripe import link is shown on Batches page (see donation-statements.spec for the navigation).
-    await expect(page.locator('a').filter({ hasText: /Import missing Stripe transactions/i }).first())
+    await expect(page.locator("a").filter({ hasText: /Import missing Stripe transactions/i }).first())
       .toBeVisible({ timeout: 10000 });
   });
 
-  test('Donation Summary autorun loads default report on landing', async ({ page }) => {
+  test("Donation Summary autorun loads default report on landing", async ({ page }) => {
     // No navigation needed — donationsTest fixture lands on /donations which auto-runs the report.
-    await expect(page.getByRole('heading', { name: 'Filter Report' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole("heading", { name: "Filter Report" })).toBeVisible({ timeout: 15000 });
     // Period toggle: Weekly is the default selection.
-    await expect(page.getByRole('button', { name: 'Weekly' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole("button", { name: "Weekly" })).toHaveAttribute("aria-pressed", "true");
   });
 });

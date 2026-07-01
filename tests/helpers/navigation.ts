@@ -5,6 +5,8 @@ import type { Page } from "@playwright/test";
 // NOTE: "tasks" is intentionally NOT a primary item — for the demo user (who has
 // plans access), Header.tsx renders /serving as primary and Tasks shows up as a
 // secondary item under Serving. See SECONDARY_ROUTES below.
+// NOTE: "calendars" is its own top-level primary item (Header.tsx pushes /calendars
+// as a sibling of /site/pages, not nested under Website) — see nav-item-calendars.
 type PrimarySection =
   | "dashboard"
   | "people"
@@ -12,6 +14,7 @@ type PrimarySection =
   | "serving"
   | "sermons"
   | "website"
+  | "calendars"
   | "mobile"
   | "settings";
 
@@ -28,7 +31,6 @@ type SecondarySection =
   | "blocks"
   | "appearance"
   | "files"
-  | "calendars"
   | "roomsResources"
   | "approvals"
   | "registrations"
@@ -48,6 +50,7 @@ const PRIMARY_URL_PATTERNS: Record<PrimarySection, RegExp> = {
   serving: /\/serving\/tasks/,
   sermons: /\/sermons(?!\/)/,
   website: /\/site\/pages/,
+  calendars: /\/calendars(?!\/)/,
   mobile: /\/mobile/,
   settings: /\/settings/
 };
@@ -68,10 +71,9 @@ const SECONDARY_ROUTES: Record<
   blocks: { parent: "website", label: "Blocks", url: /\/site\/blocks/ },
   appearance: { parent: "website", label: "Appearance", url: /\/site\/appearance/ },
   files: { parent: "website", label: "Files", url: /\/site\/files/ },
-  calendars: { parent: "website", label: "Calendars", url: /\/calendars/ },
-  roomsResources: { parent: "website", label: "Rooms & Resources", url: /\/calendars\/rooms/ },
-  approvals: { parent: "website", label: "Approvals", url: /\/calendars\/approvals/ },
-  registrations: { parent: "website", label: "Registrations", url: /\/registrations/ },
+  roomsResources: { parent: "calendars", label: "Rooms & Resources", url: /\/calendars\/rooms/ },
+  approvals: { parent: "calendars", label: "Approvals", url: /\/calendars\/approvals/ },
+  registrations: { parent: "calendars", label: "Registrations", url: /\/registrations/ },
   batches: { parent: "donations", label: "Batches", url: /\/donations\/batches/ },
   funds: { parent: "donations", label: "Funds", url: /\/donations\/funds/ },
   campaigns: { parent: "donations", label: "Campaigns", url: /\/donations\/campaigns/ },

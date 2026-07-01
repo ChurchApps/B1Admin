@@ -1,9 +1,9 @@
-import type { Page, Locator } from '@playwright/test';
-import { test, expect } from '@playwright/test';
-import { login } from './helpers/auth';
-import { navigateToSettings, navigateToPeople, navigateToGroups } from './helpers/navigation';
-import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE } from './helpers/fixtures';
-import { STORAGE_STATE_PATH } from './global-setup';
+import type { Page, Locator } from "@playwright/test";
+import { test, expect } from "@playwright/test";
+import { login } from "./helpers/auth";
+import { navigateToSettings, navigateToPeople, navigateToGroups } from "./helpers/navigation";
+import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE } from "./helpers/fixtures";
+import { STORAGE_STATE_PATH } from "./global-setup";
 
 // Planning-Center-style church-wide Campus feature. Exercises every surface the
 // campus work added: the Settings management page (CRUD), per-person campus
@@ -13,11 +13,11 @@ import { STORAGE_STATE_PATH } from './global-setup';
 //
 // "Main Campus" is seeded in membership demo.sql (id CAM00000001). The created
 // "North/South Campus" rows are this suite's own fixtures.
-const MAIN = 'Main Campus';
-const NORTH = 'North Campus';
-const SOUTH = 'South Campus';
+const MAIN = "Main Campus";
+const NORTH = "North Campus";
+const SOUTH = "South Campus";
 
-test.describe.serial('Campus multi-site', () => {
+test.describe.serial("Campus multi-site", () => {
   // This suite creates campuses by name. A serial-group retry re-runs the
   // create test and would leave duplicate "North/South Campus" rows, making the
   // option selectors ambiguous — so disable retries (same reason as Settings).
@@ -36,7 +36,7 @@ test.describe.serial('Campus multi-site', () => {
   });
 
   // Run `action` and wait for the matching API call it triggers (default POST/200).
-  const expectResponse = async (urlPart: string, action: () => Promise<void>, method = 'POST') => {
+  const expectResponse = async (urlPart: string, action: () => Promise<void>, method = "POST") => {
     const resp = page.waitForResponse(
       (r) => r.url().includes(urlPart) && r.request().method() === method && r.status() === 200,
       { timeout: 15000 }
@@ -48,80 +48,80 @@ test.describe.serial('Campus multi-site', () => {
   // Open a MUI Select (or any listbox trigger) and click the named option.
   const pickOption = async (trigger: Locator, name: string) => {
     await trigger.click();
-    await page.getByRole('option', { name }).click();
+    await page.getByRole("option", { name }).click();
   };
 
-  const saveInputBox = (boxId: string) => () => page.locator(boxId).getByRole('button', { name: 'Save' }).click();
-  const clickSave = () => page.locator('button').getByText('Save', { exact: true }).click();
+  const saveInputBox = (boxId: string) => () => page.locator(boxId).getByRole("button", { name: "Save" }).click();
+  const clickSave = () => page.locator("button").getByText("Save", { exact: true }).click();
 
   const gotoCampuses = async () => {
     await navigateToSettings(page);
-    await page.getByRole('button', { name: 'Campuses' }).click();
-    await expect(page.getByTestId('add-campus-button')).toBeVisible({ timeout: 15000 });
+    await page.getByRole("button", { name: "Campuses" }).click();
+    await expect(page.getByTestId("add-campus-button")).toBeVisible({ timeout: 15000 });
   };
 
   const createCampus = async (name: string) => {
-    await page.getByTestId('add-campus-button').click();
+    await page.getByTestId("add-campus-button").click();
     // data-testid sits on the MUI TextField wrapper; the editable element is the inner <input>.
-    const nameInput = page.getByTestId('campus-name-input').locator('input');
+    const nameInput = page.getByTestId("campus-name-input").locator("input");
     await expect(nameInput).toBeVisible({ timeout: 10000 });
     await nameInput.fill(name);
-    await expectResponse('/campuses', saveInputBox('#campusBox'));
-    await expect(page.locator('table tbody tr').filter({ hasText: name }).first()).toBeVisible({ timeout: 10000 });
+    await expectResponse("/campuses", saveInputBox("#campusBox"));
+    await expect(page.locator("table tbody tr").filter({ hasText: name }).first()).toBeVisible({ timeout: 10000 });
   };
 
-  test('lists seeded Main Campus and creates North/South campuses', async () => {
+  test("lists seeded Main Campus and creates North/South campuses", async () => {
     await gotoCampuses();
-    await expect(page.locator('table tbody tr').filter({ hasText: MAIN }).first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("table tbody tr").filter({ hasText: MAIN }).first()).toBeVisible({ timeout: 10000 });
     await createCampus(NORTH);
     await createCampus(SOUTH);
   });
 
-  test('edits a campus and persists the change', async () => {
-    await page.locator('table tbody tr').filter({ hasText: NORTH }).first().click();
-    const city = page.locator('#city');
+  test("edits a campus and persists the change", async () => {
+    await page.locator("table tbody tr").filter({ hasText: NORTH }).first().click();
+    const city = page.locator("#city");
     await expect(city).toBeVisible({ timeout: 10000 });
-    await city.fill('Northtown');
-    await expectResponse('/campuses', saveInputBox('#campusBox'));
+    await city.fill("Northtown");
+    await expectResponse("/campuses", saveInputBox("#campusBox"));
     // Reopen the row and confirm the value round-tripped through the API.
-    await page.locator('table tbody tr').filter({ hasText: NORTH }).first().click();
-    await expect(page.locator('#city')).toHaveValue('Northtown', { timeout: 10000 });
+    await page.locator("table tbody tr").filter({ hasText: NORTH }).first().click();
+    await expect(page.locator("#city")).toHaveValue("Northtown", { timeout: 10000 });
   });
 
-  test('assigns a person to a campus and persists', async () => {
+  test("assigns a person to a campus and persists", async () => {
     await openKnownPerson(page, SEED_PEOPLE.DONALD);
     await personDetailsEditButton(page).first().click();
-    const select = page.getByTestId('campus-select');
+    const select = page.getByTestId("campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });
     await pickOption(select, NORTH);
-    await expectResponse('/people', clickSave);
+    await expectResponse("/people", clickSave);
     // Reopen the editor; the dropdown should show the saved campus.
     await personDetailsEditButton(page).first().click();
-    await expect(page.getByTestId('campus-select')).toContainText(NORTH, { timeout: 10000 });
+    await expect(page.getByTestId("campus-select")).toContainText(NORTH, { timeout: 10000 });
   });
 
-  test('shows the campus column on the people list', async () => {
+  test("shows the campus column on the people list", async () => {
     await navigateToPeople(page);
-    await page.getByTestId('columns-button').click();
+    await page.getByTestId("columns-button").click();
     // The MUI Checkbox forwards `name` to its inner <input>; target that to .check().
     const checkbox = page.locator('#fieldsMenu input[name="campus"]');
     await expect(checkbox).toBeVisible({ timeout: 10000 });
     await checkbox.check();
-    await page.locator('#fieldsMenu').getByRole('button', { name: 'Close' }).click();
-    const donaldRow = page.locator('table tbody tr').filter({ hasText: 'Donald Clark' }).first();
+    await page.locator("#fieldsMenu").getByRole("button", { name: "Close" }).click();
+    const donaldRow = page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first();
     await expect(donaldRow).toContainText(NORTH, { timeout: 10000 });
   });
 
-  test('filters people by the belongs-to-campus condition', async () => {
+  test("filters people by the belongs-to-campus condition", async () => {
     await navigateToPeople(page);
     // The toggle is "▶ Advanced" / "▼ Advanced"; match the arrow so we don't
     // also hit the SavedLists "...advanced search..." copy.
-    await page.locator('p').getByText(/[▶▼] Advanced/).click();
-    const membership = page.locator('.MuiAccordion-root').filter({ hasText: 'Membership & Groups' });
-    await membership.getByText('Membership & Groups').click();
+    await page.locator("p").getByText(/[▶▼] Advanced/).click();
+    const membership = page.locator(".MuiAccordion-root").filter({ hasText: "Membership & Groups" });
+    await membership.getByText("Membership & Groups").click();
     // Enable the Campus filter via the checkbox next to the "Campus" label
     // (label-relative so it survives field reordering).
-    const campusCheckbox = membership.getByText('Campus', { exact: true })
+    const campusCheckbox = membership.getByText("Campus", { exact: true })
       .locator('xpath=preceding-sibling::span//input[@type="checkbox"]');
     await expect(campusCheckbox).toBeVisible({ timeout: 10000 });
     await campusCheckbox.check();
@@ -129,107 +129,107 @@ test.describe.serial('Campus multi-site', () => {
     // filter matches Donald, who was assigned to North above.
     const valueSelect = membership.locator('[aria-haspopup="listbox"]').first();
     await expect(valueSelect).toBeVisible({ timeout: 10000 });
-    await expectResponse('/people/advancedSearch', () => pickOption(valueSelect, NORTH));
-    await expect(page.locator('table tbody tr').filter({ hasText: 'Donald Clark' }).first()).toBeVisible({ timeout: 10000 });
+    await expectResponse("/people/advancedSearch", () => pickOption(valueSelect, NORTH));
+    await expect(page.locator("table tbody tr").filter({ hasText: "Donald Clark" }).first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('bulk-assigns selected people to a campus', async () => {
+  test("bulk-assigns selected people to a campus", async () => {
     await navigateToPeople(page);
-    const row = page.locator('table tbody tr').filter({ hasText: SEED_PEOPLE.CAROL }).first();
+    const row = page.locator("table tbody tr").filter({ hasText: SEED_PEOPLE.CAROL }).first();
     await expect(row).toBeVisible({ timeout: 10000 });
-    await row.getByRole('checkbox').check();
-    await page.getByTestId('bulk-actions-button').click();
-    await page.getByTestId('bulk-action-campusId').click();
-    const dialog = page.getByRole('dialog');
+    await row.getByRole("checkbox").check();
+    await page.getByTestId("bulk-actions-button").click();
+    await page.getByTestId("bulk-action-campusId").click();
+    const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible({ timeout: 10000 });
-    await pickOption(dialog.getByTestId('bulk-field-select'), SOUTH);
-    await expectResponse('/people/bulk-update', () => dialog.getByTestId('bulk-field-apply').click());
+    await pickOption(dialog.getByTestId("bulk-field-select"), SOUTH);
+    await expectResponse("/people/bulk-update", () => dialog.getByTestId("bulk-field-apply").click());
     await expect(dialog).toHaveCount(0, { timeout: 10000 });
   });
 
-  test('assigns a group to a campus and persists', async () => {
+  test("assigns a group to a campus and persists", async () => {
     await navigateToGroups(page);
-    await page.locator('table tbody tr a').first().click();
+    await page.locator("table tbody tr a").first().click();
     await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
     await editIconButton(page).first().click();
-    const select = page.getByTestId('group-campus-select');
+    const select = page.getByTestId("group-campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });
     await pickOption(select, NORTH);
-    await expectResponse('/membership/groups', clickSave);
+    await expectResponse("/membership/groups", clickSave);
     await editIconButton(page).first().click();
-    await expect(page.getByTestId('group-campus-select')).toContainText(NORTH, { timeout: 10000 });
+    await expect(page.getByTestId("group-campus-select")).toContainText(NORTH, { timeout: 10000 });
   });
 
-  test('renders the campus distribution chart on Demographics', async () => {
-    await page.goto('/people/demographics');
+  test("renders the campus distribution chart on Demographics", async () => {
+    await page.goto("/people/demographics");
     // The campus donut only renders once the demographics payload resolves, so
     // asserting its title is enough (and avoids racing on the XHR vs. page load).
-    await expect(page.getByText('Campus', { exact: true }).first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("Campus", { exact: true }).first()).toBeVisible({ timeout: 15000 });
   });
 
-  test('assigns a plan to a campus', async () => {
+  test("assigns a plan to a campus", async () => {
     // The Serving section defaults to My Work; ministries live at /serving/plans.
     // Uses a test-created ministry: the demo admin's DoingApi JWT carries no
     // Plans__Edit permission, so PlanAuth only authorizes ministry MEMBERS —
     // creating the ministry adds the user, while seeded-ministry plans 401
     // (see the fixme below).
-    await page.goto('/serving/plans');
+    await page.goto("/serving/plans");
     await page.waitForURL(/\/serving\/plans/, { timeout: 15000 });
-    await page.locator('button').getByText('Add Ministry').click();
-    await page.locator('[name="name"]').fill('Barnabas Ministry');
-    await page.locator('button').getByText('Add').first().click();
-    const minTab = page.locator('[role="tab"]').getByText('Barnabas Ministry').first();
+    await page.locator("button").getByText("Add Ministry").click();
+    await page.locator('[name="name"]').fill("Barnabas Ministry");
+    await page.locator("button").getByText("Add").first().click();
+    const minTab = page.locator('[role="tab"]').getByText("Barnabas Ministry").first();
     await expect(minTab).toBeVisible({ timeout: 10000 });
     await minTab.click();
-    await page.locator('button').getByText('Create Plan Type').click();
-    await page.locator('[type="text"]').fill('Barnabas Plans');
-    await page.locator('button').getByText('Save').click();
-    const planType = page.locator('a').getByText('Barnabas Plans');
+    await page.locator("button").getByText("Create Plan Type").click();
+    await page.locator('[name="name"]').fill("Barnabas Plans");
+    await page.locator("button").getByText("Save").click();
+    const planType = page.locator("a").getByText("Barnabas Plans");
     await expect(planType).toBeVisible({ timeout: 10000 });
     await planType.click();
     await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/, { timeout: 10000 });
     await page.locator('[data-testid="add-plan-button"]').click();
-    await page.locator('[name="name"]').fill('Campus Assignment Plan');
-    await page.locator('[id="serviceDate"]').fill('2030-04-01');
-    await expectResponse('/plans', clickSave);
+    await page.locator('[name="name"]').fill("Campus Assignment Plan");
+    await page.locator('[id="serviceDate"]').fill("2030-04-01");
+    await expectResponse("/plans", clickSave);
     // Reopen the plan and assign the campus — the feature under test.
     // Plan rows expose an icon-only AppIconButton ("Edit"), no text.
     const editBtn = page.locator('button[aria-label="Edit"]').first();
     await expect(editBtn).toBeVisible({ timeout: 10000 });
     await editBtn.click();
-    const select = page.getByTestId('plan-campus-select');
+    const select = page.getByTestId("plan-campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });
     await pickOption(select, MAIN);
-    await expectResponse('/plans', clickSave);
+    await expectResponse("/plans", clickSave);
   });
 
   // Regression guard for the 2026-06-09 Plans-permission move: Plans/Edit now
   // lives under DoingApi in permissionsList (PlanAuth checks the DoingApi
   // principal), so a Domain Admin can edit seeded-ministry plans without being
   // a ministry member. History in .notes/B1Admin-test-judgment-log.md.
-  test('Domain Admin can edit a seeded ministry plan without being a member', async () => {
-    await page.goto('/serving/plans');
-    const planType = page.locator('a').getByText('Sunday Service').first();
+  test("Domain Admin can edit a seeded ministry plan without being a member", async () => {
+    await page.goto("/serving/plans");
+    const planType = page.locator("a").getByText("Sunday Service").first();
     await expect(planType).toBeVisible({ timeout: 10000 });
     await planType.click();
     await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/, { timeout: 10000 });
     await page.locator('button[aria-label="Edit"]').first().click();
-    const select = page.getByTestId('plan-campus-select');
+    const select = page.getByTestId("plan-campus-select");
     await expect(select).toBeVisible({ timeout: 10000 });
     await pickOption(select, MAIN);
-    await expectResponse('/plans', clickSave);
+    await expectResponse("/plans", clickSave);
   });
 
-  test('deletes the created campuses', async () => {
+  test("deletes the created campuses", async () => {
     await gotoCampuses();
     for (const name of [NORTH, SOUTH]) {
-      const row = page.locator('table tbody tr').filter({ hasText: name }).first();
+      const row = page.locator("table tbody tr").filter({ hasText: name }).first();
       if (!(await row.isVisible({ timeout: 5000 }).catch(() => false))) continue;
       await row.click();
-      await expect(page.locator('#campusBox')).toBeVisible({ timeout: 10000 });
-      page.once('dialog', (d) => d.accept());
-      await expectResponse('/campuses', () => page.locator('#campusBox').getByRole('button', { name: 'Delete' }).click(), 'DELETE');
-      await expect(page.locator('table tbody tr').filter({ hasText: name })).toHaveCount(0, { timeout: 10000 });
+      await expect(page.locator("#campusBox")).toBeVisible({ timeout: 10000 });
+      page.once("dialog", (d) => d.accept());
+      await expectResponse("/campuses", () => page.locator("#campusBox").getByRole("button", { name: "Delete" }).click(), "DELETE");
+      await expect(page.locator("table tbody tr").filter({ hasText: name })).toHaveCount(0, { timeout: 10000 });
     }
   });
 });

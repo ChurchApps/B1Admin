@@ -1,4 +1,4 @@
-﻿{
+{
   "app": {
     "login": {
       "demoCredentials": "Используйте email \"{email}\" и пароль \"{password}\".",
@@ -37,22 +37,8 @@
       "unscheduled": "Внеплановый"
     },
     "attendanceSetup": {
-      "addCampusAria": "Добавить кампус",
-      "addService": "Добавить служение",
-      "addServiceTime": "Добавить время служения",
-      "newCampus": "Новый кампус",
-      "newService": "Новая услуга",
-      "newServiceTime": "Новое время обслуживания",
       "setupMessage": "Настройте кампусы, услуги и время обслуживания, чтобы начать отслеживать посещаемость.",
       "unassigned": "Неназначенный"
-    },
-    "campusEdit": {
-      "confirmDelete": "Вы уверены, что хотите удалить этот кампус?",
-      "name": "Название кампуса",
-      "nameAria": "Название кампуса",
-      "validate": {
-        "name": "Укажите название кампуса."
-      }
     },
     "labels": {
       "align": "Выравнивание",
@@ -126,7 +112,6 @@
     "tabs": {
       "attTrend": "Тенденция посещаемости",
       "groupAtt": "Групповая посещаемость",
-      "labels": "Этикетки",
       "setup": "Настройка"
     }
   },
@@ -156,7 +141,6 @@
       "title": "Доступность"
     },
     "calendar": {
-      "add": "Добавить",
       "copiedToClipboard": "Скопировано в буфер обмена",
       "copyIcsLink": "Копировать ссылку ICS",
       "downloadIcsFile": "Скачать файл ICS",
@@ -194,7 +178,6 @@
       "aboutParagraph2": "Вы можете создать несколько календарей для разных целей, таких как богослужения, молодежные мероприятия и работа с общественностью.",
       "aboutParagraph3": "Делитесь своими календарями с участниками через каналы ICS или встраивайте их на свой веб-сайт.",
       "aboutTitle": "О календарях",
-      "actions": "Действия",
       "active": "Активный",
       "addCalendar": "Добавить календарь",
       "calendar": "Календарь",
@@ -202,7 +185,6 @@
       "createCalendar": "Создать календарь",
       "createFirstCalendar": "Создать первый календарь",
       "curatedCalendar": "Кураторский календарь",
-      "edit": "Редактировать",
       "manageEvents": "Управление событиями",
       "noCalendars": "Календари не найдены",
       "status": "Статус",
@@ -211,7 +193,6 @@
       "title": "Календари"
     },
     "calendarPage": {
-      "actions": "Действия",
       "addEventsHint": "Добавляйте события, выбирая группы",
       "calendar": "Календарь",
       "calendarEvents": "Календарные события",
@@ -222,8 +203,6 @@
       "newEvent": "Новое мероприятие",
       "noGroupsAdded": "Группы пока не добавлены",
       "print": "Печать",
-      "removeGroup": "Удалить группу",
-      "removeGroupAria": "Удалить группу Aria",
       "subtitle": "Управление событиями и группами календаря"
     },
     "editEvent": {
@@ -235,6 +214,22 @@
       "noEventsFound": "События не найдены",
       "save": "Сохранить",
       "selectGroup": "Выберите группу"
+    },
+    "eventReminders": {
+      "channels": "Каналы",
+      "enableReminders": "Включить напоминания",
+      "maxOffsets": "Максимум 3 выбранных времени",
+      "message": "Сообщение (необязательно)",
+      "messageHint": "Поле слияния: {{eventTitle}}",
+      "modeAuto": "Авто",
+      "modeGroup": "Участники группы",
+      "modeRegistrants": "Только зарегистрированные",
+      "modeRegistrantsHoh": "Только главы семей / зарегистрированные",
+      "timeOfDay": "Время суток",
+      "timeOfDayHint": "Местное время церкви (напр., 9:00)",
+      "title": "Напоминания",
+      "when": "Когда (до 3)",
+      "who": "Кто"
     },
     "importIcs": {
       "chooseFile": "Выбрать файл .ics",
@@ -338,7 +333,6 @@
     "confirm": "Подтвердить",
     "copy": "Копировать",
     "createPerson": {
-      "confirmDuplicate": "{existingName} уже существует с адресом электронной почты {existingEmail}. Вы уверены, что хотите добавить {firstName} {lastName}?",
       "validate": {
         "firstName": "Пожалуйста, введите имя.",
         "lastName": "Пожалуйста, введите фамилию.",
@@ -359,17 +353,13 @@
     },
     "expand": "Развернуть",
     "formSubmission": {
-      "edit": "Редактировать",
       "noData": "Нет доступных данных",
       "noQuestions": "Вопросов не найдено"
     },
     "help": "Помощь",
     "iconPicker": {
-      "noResults": "Не найдено значков, соответствующих \"{searchText}\"",
       "searchLabel": "Поиск иконок",
       "searchPlaceholder": "Введите для поиска (например, человек, дом, церковь)...",
-      "showingDefault": "Показаны {count} часто используемых значков. Используйте поиск, чтобы найти больше.",
-      "showingMatching": "Показаны значки {count}, соответствующие \"{searchText}\"",
       "title": "Выберите значок",
       "tryDifferent": "Попробуйте другой поисковый запрос"
     },
@@ -406,11 +396,7 @@
     "yes": "Да"
   },
   "components": {
-    "associatedForms": {
-      "addForm": "Добавить форму"
-    },
     "bezChat": {
-      "ariaClose": "Закрыть чат",
       "ariaOpen": "Открыть чат Bez",
       "ariaSend": "Отправить сообщение",
       "errorAnswer": "Извините, я не смог найти ответ.",
@@ -423,7 +409,6 @@
       "title": "Спросить Bez"
     },
     "docChat": {
-      "ariaClose": "Закрыть чат",
       "ariaOpen": "Открыть чат справки",
       "ariaSend": "Отправить сообщение",
       "composing": "Составление ответа...",
@@ -443,13 +428,6 @@
     "droppableWrapper": {
       "ariaLabel": "Зона для перетаскивания"
     },
-    "fileUpload": {
-      "file": "Файл"
-    },
-    "footer": {
-      "phone": "Телефон",
-      "rights": "Все права защищены."
-    },
     "loginHeroPanel": {
       "featureDonations": "Пожертвования и финансовый учёт",
       "featurePeople": "Управление людьми и семьями",
@@ -462,11 +440,7 @@
       "contactAdmin": "Пожалуйста, свяжитесь с администратором вашей церкви, чтобы запросить доступ.",
       "defaultMessage": "У вас нет необходимых разрешений для доступа к этой функции:"
     },
-    "personAdd": {
-      "select": "Выбрать"
-    },
     "search": {
-      "ariaSearch": "Поиск",
       "ariaSearchInput": "Поиск человека",
       "ariaSelectPerson": "Выбрать человека"
     },
@@ -483,7 +457,6 @@
       "noTitle": "[Без названия]"
     },
     "superBeeChat": {
-      "ariaClose": "Закрыть чат",
       "ariaOpen": "Открыть чат SuperBee",
       "ariaSend": "Отправить сообщение",
       "errorAnswer": "Даже супергерой иногда упирается в стену. Попробуйте снова!",
@@ -497,7 +470,6 @@
     },
     "wrapper": {
       "att": "Посещаемость",
-      "automations": "Автоматизации",
       "dash": "Панель",
       "don": "Пожертвования",
       "form": "Форма",
@@ -523,30 +495,19 @@
   },
   "dashboard": {
     "adminWelcome": {
-      "addCongregationDesc": "Импортируйте или добавьте людей, чтобы отслеживать посещаемость, группы и пожертвования.",
       "addCongregationTitle": "Добавьте вашу общину",
-      "addLogoDesc": "Загрузите ваш логотип и обновите контактную информацию церкви.",
       "addLogoTitle": "Добавьте логотип церкви",
-      "createGroupDesc": "Настройте малые группы, классы или служебные команды.",
       "createGroupTitle": "Создайте вашу первую группу",
-      "createWebpageDesc": "Создайте публичный сайт, где посетители смогут узнать о вас.",
       "createWebpageTitle": "Создайте вашу первую веб-страницу",
-      "freePlayDesc": "Создайте служение и класс для уроков FreePlay на вашем телевизоре.",
       "freePlayTitle": "Настройте ваш класс FreePlay",
-      "freeShowDesc": "Подключите FreeShow для резервного копирования ваших песен и планов служений.",
       "freeShowTitle": "Настройте резервное копирование FreeShow",
-      "intro": "Нажмите на любую карточку ниже, чтобы начать. Вы всегда сможете найти их в меню позже.",
-      "inviteTeamDesc": "Добавьте сотрудников и волонтеров в качестве администраторов, чтобы помогать управлять.",
       "inviteTeamTitle": "Пригласите членов команды",
-      "onlineGivingDesc": "Подключите Stripe, чтобы ваша община могла жертвовать онлайн.",
       "onlineGivingTitle": "Настройте онлайн-пожертвования",
       "peopleAndGroups": "Люди и группы",
       "servingAndContent": "Служение и контент",
-      "setAvatarDesc": "Загрузите фото профиля, чтобы ваша команда могла узнавать вас.",
       "setAvatarTitle": "Установите ваш аватар",
       "subtitle": "Давайте настроим вашу церковь. Вот несколько вещей, которые вы, вероятно, захотите сделать в первую очередь.",
       "title": "Добро пожаловать в B1.church!",
-      "uploadSermonDesc": "Делитесь вашими проповедями онлайн, чтобы люди могли смотреть в любое время.",
       "uploadSermonTitle": "Загрузите проповедь",
       "yourChurch": "Ваша церковь",
       "yourProfile": "Ваш профиль"
@@ -555,21 +516,14 @@
       "dash": "Панель"
     },
     "memberWelcome": {
-      "downloadAppDesc": "Получите приложение B1.church на ваш телефон, чтобы оставаться на связи где бы вы ни были.",
       "downloadAppTitle": "Скачать мобильное приложение",
       "fallbackChurchName": "ваша церковь",
-      "findPeopleDesc": "Поиск в каталоге церкви, чтобы найти и связаться с другими в общине.",
       "findPeopleTitle": "Найти знакомых",
-      "intro": "Начните с заполнения вашего профиля и изучения того, что предлагает ваша церковь.",
-      "joinGroupDesc": "Просмотрите малые группы, классы и служебные команды, чтобы найти своё сообщество.",
       "joinGroupTitle": "Присоединиться к группе",
-      "onlineGivingDesc": "Жертвуйте онлайн быстро и легко, и при желании настройте регулярные пожертвования.",
       "onlineGivingTitle": "Настроить онлайн-пожертвования",
-      "setPhotoDesc": "Загрузите фото профиля, чтобы люди в церкви могли узнавать вас и связать лицо с именем.",
       "setPhotoTitle": "Добавьте ваше фото",
       "subtitle": "Вот несколько вещей, которые вы можете сделать, чтобы быть в курсе.",
       "title": "Добро пожаловать в {churchName}!",
-      "upcomingEventsDesc": "Узнайте о предстоящих событиях, времени служений и способах участия.",
       "upcomingEventsTitle": "Узнать, что происходит"
     },
     "myGroups": "Мои группы",
@@ -634,34 +588,8 @@
     }
   },
   "donation": {
-    "donationForm": {
-      "annually": "Ежегодно",
-      "biWeekly": "Раз в две недели",
-      "cover": "Покрыть комиссию за транзакцию",
-      "fees": "Комиссии",
-      "frequencyLabel": "Частота",
-      "funds": "Фонды",
-      "make": "Сделать пожертвование",
-      "makeRecurring": "Сделать это регулярным пожертвованием",
-      "monthly": "Ежемесячно",
-      "quarterly": "Ежеквартально",
-      "startDate": "Дата начала",
-      "thankYou": "Спасибо за ваше пожертвование!",
-      "totalAmount": "Общая сумма",
-      "validate": {
-        "amount": "Пожалуйста, введите сумму пожертвования.",
-        "email": "Требуется email.",
-        "firstName": "Требуется имя.",
-        "lastName": "Требуется фамилия.",
-        "validEmail": "Пожалуйста, введите действительный адрес электронной почты."
-      },
-      "weekly": "Еженедельно"
-    },
     "donationPage": {
       "donations": "Пожертвования"
-    },
-    "nonAuthDonation": {
-      "donate": "Пожертвовать"
     },
     "page": {
       "amount": "Сумма",
@@ -794,7 +722,6 @@
       "campaigns": "Кампании",
       "date": "Дата",
       "don": "Пожертвования",
-      "edit": "Редактировать",
       "errMsg": "Фонд не найден. Пожалуйста, создайте фонд перед внесением пожертвования",
       "export": "Экспорт",
       "funds": "Фонды",
@@ -806,7 +733,6 @@
       "total": "Итого"
     },
     "donationsPage": {
-      "batch": "Пакет",
       "date": "Дата",
       "don": "Пожертвования",
       "noBatch": "Пакетов не найдено.",
@@ -829,7 +755,6 @@
       "totalAmount": "Общая сумма"
     },
     "funds": {
-      "addFund": "Добавить фонд",
       "fund": "Фонды",
       "noFund": "Фонды не найдены."
     },
@@ -990,7 +915,6 @@
       "addPpl": "Добавить человека",
       "admin": "Администратор",
       "emailNotif": "Уведомление по электронной почте",
-      "emailNotifInfoAria": "Информация о email-уведомлениях",
       "emailNotifMsg": "Каждый раз, когда форма будет отправлена, вы получите уведомление по почте.",
       "formMem": "Участники формы",
       "perm": "Разрешение",
@@ -1040,12 +964,7 @@
       "archiveFormAria": "Архивировать форму {name}",
       "confirmMsg1": "Вы уверены, что хотите заархивировать эту форму?",
       "confirmMsg2": "Вы уверены, что хотите восстановить эту форму?",
-      "edit": "Редактировать",
-      "editFormAria": "Редактировать форму {name}",
-      "formArchivedCount": "{count} архивная форма",
-      "formArchivedCountPlural": "{count} архивных форм",
-      "formCount": "{count} форма",
-      "formCountPlural": "{count} форм",
+      "duplicate": "Дублировать",
       "forms": "Формы",
       "noArch": "Нет архивных форм.",
       "noCustomMsg": "Пользовательские формы еще не созданы. Они появятся здесь при добавлении.",
@@ -1134,7 +1053,6 @@
       "confirmMsg": "Вы уверены, что хотите навсегда удалить эту группу?",
       "enrollment": "Запись",
       "groupDesc": "Описание группы",
-      "groupDescriptionAria": "Описание группы",
       "groupDet": "Детали группы",
       "groupName": "Название группы",
       "groupNameAria": "Название группы",
@@ -1183,14 +1101,10 @@
       "messagePlaceholder": "Напишите сообщение всем участникам группы…",
       "noMemDesc": "Добавьте участников из панели справа, чтобы начать формирование группы.",
       "noMemTitle": "Участников пока нет",
-      "promoteToLeaderAria": "Повысить {name} до лидера",
-      "removeFromGroupAria": "Удалить {name} из группы",
       "removeLeaderAccess": "Удалить доступ лидера",
-      "removeLeaderAccessAria": "Удалить доступ лидера для {name}",
       "role": "Роль",
       "send": "Отправить",
       "sendMemMsg": "Отправить сообщение участникам",
-      "sendMessageAria": "Отправить сообщение членам",
       "showTemplates": "Показать шаблоны",
       "templates": {
         "none": "Нет",
@@ -1219,8 +1133,6 @@
       "noAttendance": "Записи о посещаемости не найдены",
       "noSesMsg": "Сессий нет.",
       "noSessionsFound": "Сеансы не найдены",
-      "removeAria": "Удалить {name} из сессии",
-      "removeButton": "Удалить",
       "selectSession": "Выберите сеанс",
       "session": "Сессия",
       "sessions": "Сессии",
@@ -1230,7 +1142,6 @@
     "groupsPage": {
       "addGroup": "Добавить группу",
       "cat": "Категория",
-      "categories": "Категории",
       "export": "Экспорт",
       "groups": "Группы",
       "labels": "Метки",
@@ -1242,11 +1153,9 @@
         "create": "Начните с создания своей первой группы.",
         "manage": "Организуйте и управляйте своими церковными группами"
       },
-      "totalGroups": "Всего групп",
-      "totalMembers": "Всего участников"
+      "totalGroups": "Всего групп"
     },
     "membersAdd": {
-      "addMemberAria": "Добавить члена в группу",
       "availableMem": "Доступные участники группы",
       "noMem": "Нет доступных участников группы.",
       "unknown": "Неизвестно"
@@ -1270,6 +1179,7 @@
       "noEmailNoticeSingular": "{count} не имеет email-адреса в записях.",
       "noEmailSkipped": "{count} пропущено (нет email-адреса в записях).",
       "none": "Нет",
+      "permissionError": "У вас нет разрешения на отправку групповых писем.",
       "send": "Отправить email",
       "sendDefault": "Это отправит email подходящим членам группы.",
       "sendFailedDetail": "{count} не удалось отправить.",
@@ -1317,10 +1227,6 @@
       "sesDate": "Дата сессии",
       "sessionDateAria": "Дата сессии",
       "srvTime": "Время служения"
-    },
-    "sessionAttendance": {
-      "removeVisitorAria": "Удалить {name} из сессии",
-      "visitor": "посетитель"
     },
     "sessionCard": {
       "active": "Активный",
@@ -1370,7 +1276,6 @@
       "files": "Файлы",
       "liveStreamTimes": "Время прямых трансляций",
       "pages": "Страницы",
-      "playlists": "Плейлисты",
       "profile": "Профиль",
       "quickActions": "Быстрые действия",
       "registrations": "Регистрации",
@@ -1416,6 +1321,7 @@
         "uploadImage": "Загрузить изображение"
       },
       "linkCopied": "Скопировано!",
+      "manageLabels": "Дизайн этикеток",
       "qrGuestRegistration": "QR-регистрация гостей",
       "qrShareDescription": "Распечатайте этот QR-код на флаерах, листовках или вывесках. Гости могут отсканировать его для регистрации с телефона. Он также отображается в приложении.",
       "qrShareTitle": "Поделиться QR-кодом регистрации",
@@ -1460,6 +1366,7 @@
       "valuePlaceholder": "Значение"
     },
     "aiSearch": {
+      "clearSearch": "Очистить поиск",
       "exampleMen": "- Покажите мне мужчин старше 30 с днями рождения в июле.",
       "exampleWomen": "- Покажите мне замужних женщин.",
       "examples": "Примеры:",
@@ -1470,10 +1377,7 @@
     },
     "bulk": {
       "actions": "Действия",
-      "addSuccess": "Добавлено {count} человек в {group}.",
       "addToGroup": "Добавить в группу",
-      "addToGroupPrompt": "Добавить {count} выбранных человек в группу.",
-      "addToGroupTitle": "Добавить в группу",
       "addToWorkflow": "Добавить в рабочий процесс",
       "addToWorkflowPrompt": "Добавить {count} выбранных человек в рабочий процесс в виде карточек.",
       "apply": "Применить",
@@ -1494,15 +1398,7 @@
       "optedOutTitle": "Установить отказ",
       "optedOutYes": "Отказ: да",
       "removeFromGroup": "Удалить из группы",
-      "removeFromGroupPrompt": "Удалить {count} выбранных человек из группы.",
-      "removeFromGroupTitle": "Удалить из группы",
-      "removeSuccess": "Удалено {count} человек из {group}.",
       "selected": "Выбрано",
-      "setCampus": "Назначить кампус",
-      "setGender": "Указать пол",
-      "setMaritalStatus": "Указать семейное положение",
-      "setMembershipStatus": "Указать статус членства",
-      "setOptedOut": "Установить отказ",
       "workflowSuccess": "Добавлено {count} человек в рабочий процесс."
     },
     "demographics": {
@@ -1567,8 +1463,6 @@
     },
     "household": {
       "age": "Возраст:",
-      "demoGroups": "Группы: Молодёжное служение, Команда поклонения",
-      "demoLastActivity": "Последняя активность: 24 нояб. 2024",
       "groups": "Группы:",
       "house": " Домохозяйство",
       "lastActivity": "Последняя активность:",
@@ -1578,16 +1472,13 @@
     "householdEdit": {
       "addMatch": "адрес для сопоставления",
       "addMember": "Добавить члена семьи",
-      "addMemberAria": "Добавить члена семьи",
       "blankMsg": "Пожалуйста, укажите название домохозяйства.",
-      "cancelAddMember": "Отменить добавление члена",
       "child": "Ребенок",
       "head": "Глава",
       "house": " Домохозяйство",
       "houseName": "Название домохозяйства",
       "householdNameAria": "Название семьи",
       "other": "Другое",
-      "removeMemberAria": "Удалить члена семьи",
       "spouse": "Супруг",
       "updQuestion": "Хотите ли вы обновить"
     },
@@ -1608,7 +1499,6 @@
       "matchAny": "Любой фильтр",
       "name": "Название списка",
       "notifyOnChange": "Уведомлять меня по email при изменении состава",
-      "rename": "Переименовать",
       "saveAs": "Сохранить как список",
       "settings": "Настройки списка",
       "sharing": "Кто может видеть этот список",
@@ -1660,12 +1550,10 @@
       "primEmail": "Основной email",
       "primPhone": "Основной телефон",
       "printDirectory": "Печать справочника",
-      "recentPpl": "Недавно добавленные люди",
       "searchPpl": "Поиск людей",
       "searchResults": "Результаты поиска",
       "showAll": "Показать всех участников",
-      "showingMembers": "Показано участников: {count}",
-      "showingRecent": "Показано {count} самых последних людей"
+      "showingMembers": "Показано участников: {count}"
     },
     "peopleSearch": {
       "active": "активный:",
@@ -1697,12 +1585,7 @@
     },
     "personAdd": {
       "createNewPersonAria": "Создать нового человека",
-      "searchForPersonAria": "Поиск человека",
       "searchForPersonToAddAria": "Поиск человека для добавления"
-    },
-    "personAddResults": {
-      "add": "Добавить",
-      "addPersonAria": "Добавить человека {name}"
     },
     "personAttendance": {
       "noAttMsg": "Нет записей о посещаемости. Посещаемость появится после того, как будет отслежена посещаемость групповой сессии."
@@ -1724,19 +1607,16 @@
       "family": "семья",
       "firstReq": "Требуется имя",
       "for": "для",
-      "home": "Домашний",
       "invalForm": "Неверный формат",
       "lastReq": "Требуется фамилия",
       "maritalStatus": "Семейное положение",
       "merge": "Объединить",
       "mergePersonAria": "Объединить человека",
-      "mobile": "Мобильный",
       "nameNote": "Примечания к бейджу",
       "noCampus": "Без кампуса",
       "persDet": "Личная информация",
       "upAddress": "Вы обновили адрес на",
-      "valEmail": "Пожалуйста, введите действительный адрес электронной почты.",
-      "work": "Рабочий"
+      "valEmail": "Пожалуйста, введите действительный адрес электронной почты."
     },
     "personForm": {
       "editAria": "Редактировать {name}",
@@ -1765,7 +1645,6 @@
       "railLabel": "Профиль и формы"
     },
     "personView": {
-      "edit": "Редактировать",
       "hasLoginLabel": "Имеет вход: {email}",
       "home": "Домашний",
       "memShip": "Членство:",
@@ -1835,9 +1714,6 @@
     },
     "block": {
       "name": "Раздел приветствия"
-    },
-    "campus": {
-      "name": "Главный кампус"
     },
     "choices": {
       "text": "Первый вариант",
@@ -1988,10 +1864,13 @@
     "assignment": {
       "addPosition": "Добавить позицию",
       "autoAssign": "Автоматическое назначение",
+      "fullyStaffed": "Полностью укомплектовано",
+      "needed": "требуется",
       "notesPlaceholder": "Добавить заметки для этого плана служения...",
       "notesPlaceholderReadOnly": "Заметки к плану (только для чтения)",
       "penciledIn": "Предварительно назначен",
       "planNotesAria": "Заметки к плану",
+      "positionsFilled": "Заполнено {filled} из {total} позиций",
       "saveNotes": "Сохранить заметки",
       "undoAutoAssign": "Отменить автоназначение"
     },
@@ -2148,7 +2027,6 @@
       "planItemDescriptionAria": "Описание элемента плана",
       "planItemNameAria": "Название элемента плана",
       "searchBoxAria": "searchBox",
-      "searchSongsAria": "Поиск песен",
       "seconds": "Секунды"
     },
     "planList": {
@@ -2303,19 +2181,27 @@
       "noItems": "В заказе на обслуживание нет позиций",
       "orderOfService": "Порядок обслуживания",
       "previewBanner": "Это предварительный просмотр связанного урока. Нажмите \"Настроить\", чтобы изменить.",
-      "print": "Распечатать",
       "runTimes": "Продолжительность",
       "scrollDown": "Прокрутить вниз",
       "scrollUp": "Прокрутить вверх",
       "viewingAs": "Просмотр как"
     },
     "servingOverviewPage": {
+      "autoSchedule": "Автоматическое планирование",
+      "autoScheduleResult": "Автоматически запланировано {filled} из {total} планов",
+      "emailAll": "Отправить письмо волонтёрам",
+      "emailEmpty": "В этом диапазоне нет назначенных волонтёров для рассылки.",
+      "emailResult": "Письмо отправлено {sent} волонтёрам ({failed} не удалось)",
       "endDate": "Дата окончания",
       "exportCsv": "Экспорт CSV",
       "filename": "obzor-sluzheniya.csv",
+      "gapsOnly": "Только незаполненные",
+      "highlightAll": "Все",
+      "highlightPerson": "Выделить",
       "noData": "Не найдены данные служения для выбранного диапазона дат.",
       "overviewSuffix": "Обзор",
       "position": "Позиция",
+      "remove": "Удалить",
       "startDate": "Дата начала",
       "subtitle": "Позиции по дате с назначенными волонтёрами",
       "title": "Обзор служения"
@@ -2341,6 +2227,26 @@
       "noTeam": "Команды не найдены. Пожалуйста, создайте команду.",
       "teams": "Команды"
     },
+    "templates": {
+      "apply": "Применить",
+      "applyTitle": "Применить шаблон",
+      "applyTo": "Применить к планам",
+      "button": "Шаблоны",
+      "confirmDelete": "Удалить этот шаблон?",
+      "noPlans": "Нет предстоящих планов.",
+      "none": "Пока нет шаблонов. Откройте план и выберите «Сохранить как шаблон».",
+      "optPositions": "Позиции",
+      "optServiceOrder": "Порядок служения",
+      "plan": "План",
+      "positionsWarning": "Применение позиций заменяет существующие позиции и их назначения в выбранных планах.",
+      "rename": "Переименовать шаблон",
+      "saveTitle": "Сохранить как шаблон",
+      "startBlank": "Нет",
+      "startFrom": "Начать с шаблона",
+      "title": "Шаблоны планов",
+      "updateFromPlan": "Обновить из плана",
+      "updateFromPlanHelp": "Заменяет содержимое этого шаблона текущим порядком служения и позициями из плана."
+    },
     "timeEdit": {
       "disName": "Отображаемое имя",
       "disNameReq": "Требуется отображаемое имя.",
@@ -2364,7 +2270,6 @@
       "typeService": "Богослужение"
     },
     "timeList": {
-      "addTimeAria": "Добавить время",
       "noTime": "Время еще не добавлено",
       "sunServ": "Воскресное служение",
       "times": "Время"
@@ -2386,9 +2291,6 @@
       "lastActiveDate": "Дата последней активности",
       "registrationDate": "Дата регистрации",
       "title": "Устройства"
-    },
-    "devicesPage": {
-      "addDevice": "Добавить устройство"
     },
     "linkedAccounts": {
       "link": "Ссылка",
@@ -2433,7 +2335,6 @@
   },
   "registrations": {
     "registrationDetailsPage": {
-      "actions": "Действия",
       "cancelConfirm": "Отменить эту регистрацию?",
       "cancelRegistration": "Отменить регистрацию",
       "csvDate": "Дата",
@@ -2441,7 +2342,6 @@
       "csvName": "Имя",
       "csvStatus": "Статус",
       "date": "Дата",
-      "delete": "Удалить",
       "deleteConfirm": "Удалить эту регистрацию навсегда?",
       "eventNotFound": "Событие не найдено",
       "eventRegistrations": "Регистрации на событие",
@@ -2490,9 +2390,6 @@
       "totalGiving": "Всего пожертвований"
     },
     "noData": "Нет доступных данных",
-    "reportOutput": {
-      "print": "печать"
-    },
     "runReport": "Запустить отчет",
     "sampleTemplate": "Образец шаблона",
     "summary": "Сводка",
@@ -2525,7 +2422,6 @@
     "addSermon": "Добавить Проповедь",
     "adjustSearchTerms": "Попробуйте изменить условия поиска",
     "bulkImport": {
-      "backToSelection": "Вернуться к Выбору",
       "chooseSource": "Выберите Источник Импорта",
       "fetch": "Получить",
       "fetching": "Получение...",
@@ -2549,8 +2445,6 @@
       "minutes": "Минуты",
       "seconds": "Секунды"
     },
-    "edit": "Редактировать",
-    "editSermonAria": "Редактировать {title}",
     "getStarted": "Начните с добавления вашей первой проповеди",
     "liveStreamTimes": {
       "externalLinks": {
@@ -2594,7 +2488,6 @@
       },
       "navigationLinks": {
         "add": "Добавить",
-        "edit": "Редактировать",
         "home": "Домашний",
         "title": "Навигационные Ссылки"
       },
@@ -2635,7 +2528,6 @@
       "settings": "Настройки",
       "sidebarTabs": {
         "add": "Добавить",
-        "edit": "Редактировать",
         "title": "Вкладки Содержимого"
       },
       "subtitle": "Настройте повторяющееся время служений",
@@ -2681,12 +2573,7 @@
     "notScheduled": "Не запланировано",
     "playlist": "Плейлист",
     "playlists": {
-      "actions": "Действия",
-      "addPlaylist": "Добавить Плейлист",
-      "adjustSearchTerms": "Попробуйте изменить условия поиска",
       "createFirstPlaylist": "Создать Первый Плейлист",
-      "editPlaylist": "Редактировать плейлист",
-      "getStarted": "Начните с создания вашего первого плейлиста",
       "noPlaylistsFound": "Плейлисты не найдены",
       "noPlaylistsMatch": "Нет плейлистов, соответствующих вашему поиску",
       "playlistEdit": {
@@ -2710,13 +2597,10 @@
         "unauthorized": "Нет прав на создание плейлистов",
         "unauthorizedDelete": "Нет прав на удаление плейлистов"
       },
-      "search": "Поиск",
       "searchPlaceholder": "Поиск плейлистов...",
-      "subtitle": "Управляйте видео плейлистами и организуйте свой контент",
       "title": "Плейлисты"
     },
     "publishDate": "Дата Публикации",
-    "search": "Поиск",
     "searchPlaceholder": "Поиск проповедей по названию или плейлисту...",
     "sermon": "Проповедь",
     "sermonEdit": {
@@ -2805,8 +2689,7 @@
     },
     "reportPage": {
       "adminOnly": "Только администратор",
-      "report": "Отчет",
-      "serverAdmin": "Админ сервера"
+      "report": "Отчет"
     },
     "serverHealth": {
       "detail": "Подробности",
@@ -2891,7 +2774,6 @@
       "volunteerOpportunities": "Возможности волонтёрства"
     },
     "appTabs": {
-      "editTab": "Редактировать Вкладку",
       "moveDown": "Вниз",
       "moveUp": "Двигаться вверх",
       "noTabs": "Вкладки не настроены",
@@ -2986,7 +2868,6 @@
       "app": "Приложение",
       "authorized": "Авторизовано",
       "connectedApps": "Подключённые приложения",
-      "delete": "Удалить",
       "deleteKeyConfirm": "Удалить API-ключ \"{name}\"? Любая интеграция, использующая его, перестанет работать.",
       "expires": "Истекает",
       "lastUsed": "Последнее использование",
@@ -2998,7 +2879,6 @@
       "revoke": "Отозвать",
       "revokeConfirm": "Отозвать доступ для \"{name}\"?",
       "scopes": "Области доступа",
-      "subtitle": "Управляйте API-ключами и подключёнными приложениями",
       "title": "Разработчик"
     },
     "directoryApprovalSettingsEdit": {
@@ -3057,7 +2937,6 @@
       "yourChurch": "Ваша церковь"
     },
     "emailTemplatesPage": {
-      "actions": "Действия",
       "category": "Категория",
       "createTemplate": "Создать шаблон",
       "deleteConfirm": "Удалить шаблон \"{name}\"?",
@@ -3068,9 +2947,7 @@
       "newTemplate": "Новый шаблон",
       "subject": "Тема",
       "subtitle": "Создание и управление переиспользуемыми email-шаблонами",
-      "title": "Email-шаблоны",
-      "tooltipDelete": "Удалить",
-      "tooltipEdit": "Редактировать"
+      "title": "Email-шаблоны"
     },
     "feeOptionsSettings": {
       "achFlatRate": "Фиксированная ставка [ ACH ]",
@@ -3086,26 +2963,16 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
-      "apiCredentials": "Учетные данные API",
       "clientId": "ID клиента",
       "clientSecret": "Секрет клиента",
       "copyWebhookUrl": "Скопировать URL вебхука",
       "currency": "Валюта",
       "currencyHelper": "Убедитесь, что эта валюта также включена в вашей панели Stripe. Включите валюту здесь:",
-      "developersApiKeys": "Разработчики → Ключи API",
       "forceMsg": "Автоматически заставляет пользователей покрывать комиссию за транзакцию",
-      "forceSslHelpAria": "Помощь по принудительному SSL",
       "giving": "Пожертвования",
-      "kfGetStarted": "для начала работы. Введите ключ токенизации и исходный ключ из панели Kingdom Funding.",
       "kfSetup": "Введите ключ токенизации и исходный ключ из панели Kingdom Funding. Начните работу на сайте",
-      "kfVisit": "Посетите",
       "kfWebhookInstructions": "Предоставьте этот URL вебхука представителю Kingdom Funding при подключении, чтобы обновления транзакций поступали в ваши отчёты о пожертвованиях:",
-      "kingdomFunding": "Kingdom Funding",
       "none": "Нет",
-      "paypalCreateApp": "создайте приложение, чтобы получить ваш ID клиента и секрет.",
-      "paypalDeveloper": "Разработчик PayPal",
-      "paypalGoTo": "Перейдите в",
-      "paypalLogin": "войдите, затем в разделе",
       "paypalSetup": "Создайте приложение PayPal REST и вставьте Client ID и Secret ниже. Начните работу на сайте",
       "privateKeyRequired": "Перед сохранением введите секретный/закрытый ключ для этого поставщика.",
       "prov": "Провайдер",
@@ -3113,22 +2980,13 @@
       "saveError": "Не удалось сохранить настройки предоставления.",
       "secKey": "Секретный ключ",
       "sourceKey": "Исходный ключ",
-      "stripe": "Stripe",
-      "stripeCopyKeys": "чтобы скопировать ваши публичный и секретный ключи (тестовые и боевые).",
       "stripeDashboard": "Панель Stripe",
-      "stripeGoTo": "и перейдите в",
       "stripeSetup": "Скопируйте публичный и секретный ключи из панели Stripe (Разработчики → API-ключи) и вставьте ниже. Откройте",
-      "stripeVisit": "Посетите",
       "tokenizationKey": "Ключ токенизации",
       "transFee": "Комиссия за транзакцию",
       "webhookKey": "Ключ вебхука",
       "webhookKeyHelper": "Секрет подписи вебхука из панели управления Kingdom Funding. Необходим для обновления статусов транзакций.",
       "webhookUrlCopied": "URL вебхука скопирован в буфер обмена"
-    },
-    "imageEditor": {
-      "crop": "Обрезать",
-      "upload": "Загрузить",
-      "uploadImageAria": "Загрузить изображение"
     },
     "landing": {
       "campusesCount": "{count} мест",
@@ -3145,7 +3003,6 @@
     },
     "manageChurch": {
       "auditLog": "Журнал аудита",
-      "editSettings": "Редактировать настройки",
       "imEx": "Импорт/Экспорт",
       "noData": "Данных о церкви нет.",
       "subtitle": "Настройка параметров и предпочтений церкви",
@@ -3155,9 +3012,6 @@
       "addTab": "Добавить вкладку",
       "subtitle": "Настройте параметры мобильного приложения",
       "title": "Настройки мобильного приложения"
-    },
-    "preview": {
-      "preview": "Предварительный просмотр"
     },
     "roleCheck": {
       "permissionAria": "Разрешение {label}"
@@ -3172,10 +3026,8 @@
     "roleMembers": {
       "addRoleMemberAria": "Добавить члена роли",
       "confirmMsg": "Вы уверены, что хотите удалить этого пользователя из",
-      "editRoleMemberAria": "Редактировать члена роли {firstName} {lastName}",
       "lastAdminWarning": "Требуется как минимум один Domain Admin. Добавьте другого администратора перед удалением этого.",
       "mem": "Участники",
-      "removeRoleMemberAria": "Удалить члена роли {firstName} {lastName}",
       "roleAppMsg": "Эта роль применяется ко всем участникам церкви."
     },
     "rolePage": {
@@ -3197,7 +3049,6 @@
       "contAdmin": "Администратор контента",
       "contAdminDesc": "Может редактировать контент сайта, мобильный контент и проповеди.",
       "custAdd": "Добавить пользовательскую роль",
-      "editRoleAria": "Редактировать роль",
       "everyone": "Все",
       "itMsg": "? ",
       "lesAdmin": "Администратор уроков",
@@ -3294,9 +3145,7 @@
       "urlRequired": "URL обязателен"
     },
     "webhooksPage": {
-      "actions": "Действия",
       "active": "Активен",
-      "createWebhook": "Создать вебхук",
       "deleteConfirm": "Удалить вебхук \"{name}\"?",
       "disabled": "Отключён",
       "emptyDescription": "Создайте вебхук для уведомления внешних инструментов при изменении данных людей, групп или домохозяйств.",
@@ -3305,10 +3154,7 @@
       "name": "Название",
       "newWebhook": "Новый вебхук",
       "status": "Статус",
-      "subtitle": "Отправляйте данные церкви в сторонние инструменты при наступлении событий",
       "title": "Вебхуки",
-      "tooltipDelete": "Удалить",
-      "tooltipEdit": "Редактировать",
       "url": "URL"
     }
   },
@@ -3405,7 +3251,6 @@
     "blocksPage": {
       "actions": "Действия",
       "addBlock": "Добавить блок",
-      "block": "блокировать",
       "blocks": "Блоки",
       "createFirstBlock": "Создать первый блок",
       "elements": "Элемент(ы)",
@@ -3705,10 +3550,6 @@
       "uploadFiles": "Загрузить файлы"
     },
     "filesManager": {
-      "actions": "Действия",
-      "deleteFile": "Удалить файл",
-      "fileCountPlural": "файлов",
-      "fileCountSingular": "файл",
       "files": "Файлы",
       "getStarted": "Начните с загрузки первого файла",
       "name": "Название",
@@ -3830,7 +3671,6 @@
     "pagesPage": {
       "actions": "Действия",
       "addFirstPage": "Добавить первую страницу",
-      "addNavigationLink": "Добавить навигационную ссылку",
       "addPage": "Добавить страницу",
       "autoGenerated": "Автоматически генерируется",
       "confirmConvert": "Хотите ли вы конвертировать эту автоматически созданную страницу в пользовательскую страницу?",
@@ -3961,10 +3801,6 @@
       "editSection": "Редактировать раздел",
       "layoutContainer": "Контейнер макета",
       "section": "Раздел"
-    },
-    "sectionBlock": {
-      "deleteSection": "Удалить раздел",
-      "edit": "Редактировать"
     },
     "sectionEdit": {
       "block": "Блок",
@@ -4182,7 +4018,6 @@
       "noneRadius": "Нет (0px)",
       "primary": "Основной",
       "secondary": "Вторичный",
-      "selectToken": "Выбрать токен",
       "small": "Маленький (8px)",
       "smallRadius": "Маленький (4px)",
       "smallSize": "Маленький размер",
@@ -4254,7 +4089,6 @@
       "addExternalLink": "Добавить внешнюю ссылку",
       "addFiles": "Добавить файлы",
       "availableDownloads": "Доступные загрузки",
-      "editSelectedKeyAria": "Редактировать выбранную тональность",
       "externalLinks": "Внешние ссылки",
       "import": "Импорт",
       "importFromPraiseCharts": "Импортировать файлы из PraiseCharts",
@@ -4282,18 +4116,13 @@
       "key": "Тональность"
     },
     "oldArrangements": {
-      "addArrangement": "Добавить аранжировку",
-      "addArrangementAria": "Добавить аранжировку",
       "arrangements": "Аранжировки",
-      "edit": "Редактировать",
       "editArrangementAria": "Редактировать аранжировку",
       "noArrangements": "Аранжировки не найдены."
     },
     "praiseChartsProducts": {
       "close": "Закрыть",
-      "collapse": "Свернуть",
       "download": "Скачать",
-      "expand": "Развернуть",
       "free": "Бесплатно",
       "linkAccountPrefix": "У вас нет привязанного аккаунта PraiseCharts. Перейдите в ваш",
       "linkAccountSuffix": "чтобы привязать аккаунт.",
@@ -4321,13 +4150,11 @@
       "service": "Служба"
     },
     "songDetails": {
-      "editSongDetailsAria": "Редактировать подробности песни",
       "fallbackTitle": "Подробности песни",
       "noDetails": "Дополнительные подробности для этой песни недоступны."
     },
     "songPage": {
       "addArrangement": "Добавить аранжировку",
-      "deleteSongAria": "Удалить песню",
       "loading": "Загрузка...",
       "noArrangementDescription": "Выберите аранжировку из боковой панели, чтобы начать.",
       "noArrangementSelected": "Аранжировка не выбрана",
@@ -4336,7 +4163,6 @@
     "songSearchDialog": {
       "closeDialogAria": "Закрыть диалог",
       "poweredBy": "Работает на:",
-      "searchSongsAria": "Поиск песен",
       "songTitleOrArtistAria": "Название песни или исполнитель"
     },
     "songsPage": {
@@ -4353,52 +4179,6 @@
     "providedBy": "Предоставлено:"
   },
   "tasks": {
-    "actionEdit": {
-      "actType": "Тип действия",
-      "actTypeHelp": "Выберите тип действия для выполнения",
-      "actionTypeAria": "Тип действия",
-      "addToWorkflow": "Добавить в рабочий процесс",
-      "assignTo": "Назначить",
-      "assignToAria": "Назначить",
-      "editAct": "Редактировать действие",
-      "taskAssign": "Назначить задачу",
-      "taskNote": "Примечание к задаче",
-      "taskNoteAria": "Заметка задачи",
-      "taskTitle": "Название задачи",
-      "taskTitleAria": "Название задачи"
-    },
-    "automationDetails": {
-      "active": "Активный",
-      "acts": "Действия",
-      "addAct": "Добавить действие",
-      "auto": "Детали автоматизации",
-      "inactive": "Неактивный",
-      "noAct": "Действия не настроены",
-      "recurs": "Повторяется"
-    },
-    "automationEdit": {
-      "active": "Активный",
-      "autoEdit": "Редактировать автоматизацию",
-      "automationTitleAria": "Название автоматизации",
-      "inactive": "Неактивный",
-      "monthly": "Ежемесячно",
-      "never": "Никогда",
-      "recurHelp": "Установите, как часто должна запускаться эта автоматизация.",
-      "recurrenceAria": "Повторение",
-      "rep": "Повтор",
-      "weekly": "Еженедельно",
-      "yearly": "Ежегодно"
-    },
-    "automationsPage": {
-      "active": "Активный",
-      "addAuto": "Добавить автоматизацию",
-      "auto": "Автоматизированные задачи",
-      "inactive": "Неактивный",
-      "manageAuto": "Управление автоматизированными задачами",
-      "noAuto": "Автоматизация не настроена",
-      "recurs": "Повторяется",
-      "subtitle": "Автоматизируйте задачи в зависимости от условий"
-    },
     "conditionAttendance": {
       "anywhere": "Где угодно",
       "campus": "Кампус",
@@ -4434,22 +4214,6 @@
       "weekDay": "День недели",
       "yearsE": "Прошедших лет"
     },
-    "conditionDetails": {
-      "addCon": "Добавить условие",
-      "addCondition": "Добавить условие",
-      "addConditionAria": "Добавить условие",
-      "addConj": "Добавить союз",
-      "addConjunctionAria": "Добавить связь",
-      "all": "Все",
-      "and": "И",
-      "any": "Любой",
-      "con": "Условия:",
-      "editConditionAria": "Редактировать условие",
-      "editConjunctionAria": "Редактировать связь",
-      "noCond": "Условия не добавлены",
-      "or": "ИЛИ",
-      "trueCon": "из этих условий истинны"
-    },
     "conditionEdit": {
       "conDetails": "Подробности состояния",
       "conEdit": "Редактировать условие",
@@ -4474,13 +4238,6 @@
       "op": "Оператор",
       "startW": "начинается с"
     },
-    "conjunctionEdit": {
-      "and": "И - Все условия истинны",
-      "conjEdit": "Редактировать союз",
-      "conjType": "Тип союза",
-      "conjunctionTypeAria": "Тип связи",
-      "or": "ИЛИ - Любое из условий истинно"
-    },
     "contentPicker": {
       "group": "Группа",
       "pers": "Человек",
@@ -4498,7 +4255,6 @@
       "firstStep": "Первый шаг",
       "kindEvent": "При наступлении события",
       "kindSchedule": "По расписанию",
-      "manage": "Триггеры",
       "matchAll": "Соответствие ВСЕМ условиям",
       "matchAny": "Соответствие ЛЮБОМУ условию",
       "name": "Название",
@@ -4518,12 +4274,10 @@
       "runNowFailed": "Запуск не выполнен.",
       "runNowResult": "Применено к {created} людям; {skipped} пропущено (уже в рабочем процессе).",
       "saveRuleFirst": "Сначала сохраните правило, чтобы добавить условия.",
-      "selectEvent": "Выберите событие",
       "step": "Начальный шаг",
       "subtitle": "Запускайте рабочий процесс автоматически при добавлении, изменении или удалении записи — включая отправку форм.",
       "title": "Триггеры",
-      "value": "Значение",
-      "workflow": "Добавить в рабочий процесс"
+      "value": "Значение"
     },
     "executions": {
       "attempts": "Попытки",
@@ -4545,7 +4299,6 @@
     },
     "myCards": {
       "noCards": "У вас нет назначенных карточек.",
-      "subtitle": "Карточки, назначенные вам",
       "title": "Мои карточки"
     },
     "myWork": {
@@ -4612,19 +4365,14 @@
       "unassigned": "Неназначенный"
     },
     "tasksPage": {
-      "auto": "Автоматизация",
       "showClosed": "Показать закрытые",
-      "showOpen": "Показать открытые",
-      "subtitle": "Управляйте задачами и автоматизацией",
-      "tasks": "Задачи",
-      "workflows": "Рабочие процессы"
+      "showOpen": "Показать открытые"
     },
     "workflowActions": {
       "add": "Добавить действие",
       "days": "Дней ожидания",
       "noAssignee": "Не назначен",
       "noGroup": "Группа не выбрана",
-      "none": "Нет действий",
       "note": "Заметка",
       "pickAssignee": "Выбрать ответственного",
       "pickGroup": "Выбрать группу",
@@ -4699,8 +4447,6 @@
       "title": "Отчёты"
     },
     "workflowRouting": {
-      "addAuto": "Добавить автоматический маршрут",
-      "addCondition": "Добавить условие",
       "addOutcome": "Добавить результат",
       "always": "всегда",
       "automatic": "Автоматическая маршрутизация (при входе)",
@@ -4711,9 +4457,7 @@
       "ifMatch": "если соответствует",
       "noConditions": "Условий нет — этот маршрут применяется ко всем.",
       "outcomeLabel": "Название кнопки",
-      "outcomes": "Результаты (при завершении)",
       "outcomesHelp": "Кнопки, отображаемые при завершении карточки на этом шаге. Каждая может направить карточку на другой шаг, передать в другой рабочий процесс или закрыть её.",
-      "remove": "Удалить",
       "saveStepFirst": "Сохраните шаг перед добавлением маршрутизации.",
       "sendToWorkflow": "Направить в другой рабочий процесс",
       "targetStep": "Перейти к шагу",
@@ -4726,19 +4470,10 @@
       "editStep": "Редактировать шаг",
       "stepName": "Название шага"
     },
-    "workflowTriggers": {
-      "addTrigger": "Добавить триггер",
-      "formTrigger": "Отправка формы",
-      "noTriggers": "Триггеры не настроены.",
-      "selectForm": "Форма",
-      "subtitle": "Автоматически добавляйте людей в этот рабочий процесс при отправке ими формы.",
-      "title": "Триггеры"
-    },
     "workflowsPage": {
       "addWorkflow": "Добавить рабочий процесс",
       "added": "Добавлено в рабочий процесс.",
       "blankWorkflow": "Пустой рабочий процесс",
-      "duplicate": "Дублировать",
       "noWorkflows": "Рабочих процессов пока нет. Добавьте один для начала работы.",
       "subtitle": "Проводите людей через серию шагов",
       "title": "Рабочие процессы"

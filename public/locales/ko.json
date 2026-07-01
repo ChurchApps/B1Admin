@@ -1,4 +1,4 @@
-﻿{
+{
   "app": {
     "login": {
       "demoCredentials": "이메일 \"{email}\" 및 비밀번호 \"{password}\"를 사용하세요.",
@@ -37,22 +37,8 @@
       "unscheduled": "예정되지 않은"
     },
     "attendanceSetup": {
-      "addCampusAria": "캠퍼스 추가",
-      "addService": "서비스 추가",
-      "addServiceTime": "서비스 시간 추가",
-      "newCampus": "뉴캠퍼스",
-      "newService": "새로운 서비스",
-      "newServiceTime": "새로운 서비스 시간",
       "setupMessage": "출석 추적을 시작하려면 캠퍼스, 서비스 및 서비스 시간을 설정하세요.",
       "unassigned": "할당되지 않음"
-    },
-    "campusEdit": {
-      "confirmDelete": "이 캠퍼스를 삭제하시겠습니까?",
-      "name": "캠퍼스 이름",
-      "nameAria": "캠퍼스 이름",
-      "validate": {
-        "name": "캠퍼스 이름이 필요합니다."
-      }
     },
     "labels": {
       "align": "정렬",
@@ -126,7 +112,6 @@
     "tabs": {
       "attTrend": "출석 추세",
       "groupAtt": "그룹 출석",
-      "labels": "라벨",
       "setup": "설정"
     }
   },
@@ -156,7 +141,6 @@
       "title": "이용 가능 여부"
     },
     "calendar": {
-      "add": "추가",
       "copiedToClipboard": "클립보드에 복사됨",
       "copyIcsLink": "ICS 링크 복사",
       "downloadIcsFile": "ICS 파일 다운로드",
@@ -194,7 +178,6 @@
       "aboutParagraph2": "예배, 청소년 행사, 지역 사회 봉사 활동 등 다양한 목적으로 여러 달력을 만들 수 있습니다.",
       "aboutParagraph3": "ICS 피드를 통해 회원과 캘린더를 공유하거나 웹사이트에 삽입하세요.",
       "aboutTitle": "캘린더 정보",
-      "actions": "작업",
       "active": "활성",
       "addCalendar": "캘린더 추가",
       "calendar": "달력",
@@ -202,7 +185,6 @@
       "createCalendar": "달력 만들기",
       "createFirstCalendar": "첫 번째 달력 만들기",
       "curatedCalendar": "선별된 달력",
-      "edit": "편집",
       "manageEvents": "이벤트 관리",
       "noCalendars": "캘린더를 찾을 수 없습니다.",
       "status": "상태",
@@ -211,7 +193,6 @@
       "title": "달력"
     },
     "calendarPage": {
-      "actions": "작업",
       "addEventsHint": "그룹을 선택하여 이벤트 추가",
       "calendar": "달력",
       "calendarEvents": "캘린더 이벤트",
@@ -222,8 +203,6 @@
       "newEvent": "새 이벤트",
       "noGroupsAdded": "아직 추가된 그룹이 없습니다.",
       "print": "인쇄",
-      "removeGroup": "그룹 제거",
-      "removeGroupAria": "그룹 제거 Aria",
       "subtitle": "캘린더 이벤트 및 그룹 관리"
     },
     "editEvent": {
@@ -235,6 +214,22 @@
       "noEventsFound": "이벤트를 찾을 수 없습니다.",
       "save": "저장",
       "selectGroup": "그룹 선택"
+    },
+    "eventReminders": {
+      "channels": "채널",
+      "enableReminders": "알림 사용",
+      "maxOffsets": "최대 3개 시간 선택 가능",
+      "message": "메시지(선택 사항)",
+      "messageHint": "병합 필드: {{eventTitle}}",
+      "modeAuto": "자동",
+      "modeGroup": "그룹 구성원",
+      "modeRegistrants": "등록자만",
+      "modeRegistrantsHoh": "세대주/등록자만",
+      "timeOfDay": "시간대",
+      "timeOfDayHint": "교회 현지 시간(예: 오전 9:00)",
+      "title": "알림",
+      "when": "시기(최대 3개)",
+      "who": "대상"
     },
     "importIcs": {
       "chooseFile": ".ics 파일 선택",
@@ -338,7 +333,6 @@
     "confirm": "확인",
     "copy": "복사",
     "createPerson": {
-      "confirmDuplicate": "{existingName}은(는) 이메일이 {existingEmail}인 이미 존재합니다. 정말로 {firstName} {lastName}을(를) 추가하시겠습니까?",
       "validate": {
         "firstName": "이름을 입력하세요.",
         "lastName": "성을 입력하세요.",
@@ -359,17 +353,13 @@
     },
     "expand": "확장",
     "formSubmission": {
-      "edit": "편집",
       "noData": "사용 가능한 데이터 없음",
       "noQuestions": "질문이 없습니다."
     },
     "help": "도움말",
     "iconPicker": {
-      "noResults": "\"{searchText}\"과(와) 일치하는 아이콘이 없습니다.",
       "searchLabel": "아이콘 검색",
       "searchPlaceholder": "검색어 입력 (예: 사람, 집, 교회)...",
-      "showingDefault": "일반적으로 사용되는 {count} 아이콘을 표시합니다. 더 많은 정보를 찾으려면 검색을 사용하세요.",
-      "showingMatching": "\"{searchText}\"과(와) 일치하는 {count} 아이콘 표시 중",
       "title": "아이콘 선택",
       "tryDifferent": "다른 검색어를 사용해 보세요."
     },
@@ -406,11 +396,7 @@
     "yes": "예"
   },
   "components": {
-    "associatedForms": {
-      "addForm": "양식 추가"
-    },
     "bezChat": {
-      "ariaClose": "채팅 닫기",
       "ariaOpen": "Bez 채팅 열기",
       "ariaSend": "메시지 보내기",
       "errorAnswer": "죄송합니다. 답변을 찾을 수 없습니다.",
@@ -423,7 +409,6 @@
       "title": "Bez에게 묻기"
     },
     "docChat": {
-      "ariaClose": "채팅 닫기",
       "ariaOpen": "도움말 채팅 열기",
       "ariaSend": "메시지 보내기",
       "composing": "답변 작성 중...",
@@ -443,13 +428,6 @@
     "droppableWrapper": {
       "ariaLabel": "드롭 영역"
     },
-    "fileUpload": {
-      "file": "파일"
-    },
-    "footer": {
-      "phone": "전화",
-      "rights": "모든 권리 보유."
-    },
     "loginHeroPanel": {
       "featureDonations": "헌금 및 재정 추적",
       "featurePeople": "인원 및 가구 관리",
@@ -462,11 +440,7 @@
       "contactAdmin": "액세스를 요청하려면 교회 관리자에게 문의하세요.",
       "defaultMessage": "이 기능에 액세스하는 데 필요한 권한이 없습니다:"
     },
-    "personAdd": {
-      "select": "선택"
-    },
     "search": {
-      "ariaSearch": "검색",
       "ariaSearchInput": "사람 검색",
       "ariaSelectPerson": "사람 선택"
     },
@@ -483,7 +457,6 @@
       "noTitle": "[제목 없음]"
     },
     "superBeeChat": {
-      "ariaClose": "채팅 닫기",
       "ariaOpen": "SuperBee 채팅 열기",
       "ariaSend": "메시지 보내기",
       "errorAnswer": "슈퍼히어로도 가끔 벽에 부딪힙니다. 다시 시도해 주세요!",
@@ -497,7 +470,6 @@
     },
     "wrapper": {
       "att": "출석",
-      "automations": "자동화",
       "dash": "대시보드",
       "don": "기부",
       "form": "양식",
@@ -523,30 +495,19 @@
   },
   "dashboard": {
     "adminWelcome": {
-      "addCongregationDesc": "출석, 그룹 및 헌금을 추적하려면 사람들을 가져오거나 추가하세요.",
       "addCongregationTitle": "회중 추가",
-      "addLogoDesc": "로고를 업로드하고 교회의 연락처 정보를 업데이트하세요.",
       "addLogoTitle": "교회 로고 추가",
-      "createGroupDesc": "소그룹, 교실 또는 봉사 팀을 설정하세요.",
       "createGroupTitle": "첫 번째 그룹 만들기",
-      "createWebpageDesc": "방문자가 여러분에 대해 알 수 있는 공개 웹사이트를 구축하세요.",
       "createWebpageTitle": "첫 번째 웹페이지 만들기",
-      "freePlayDesc": "TV에서 FreePlay 수업용 사역과 교실을 만드세요.",
       "freePlayTitle": "FreePlay 교실 설정",
-      "freeShowDesc": "FreeShow를 연결하여 곡과 예배 계획을 백업하세요.",
       "freeShowTitle": "FreeShow 백업 설정",
-      "intro": "시작하려면 아래 카드를 클릭하세요. 메뉴에서 나중에 언제든지 찾을 수 있습니다.",
-      "inviteTeamDesc": "스태프와 자원봉사자를 관리자로 추가하여 관리를 돕도록 하세요.",
       "inviteTeamTitle": "팀원 초대",
-      "onlineGivingDesc": "Stripe를 연결하여 회중이 온라인으로 헌금할 수 있도록 하세요.",
       "onlineGivingTitle": "온라인 헌금 설정",
       "peopleAndGroups": "사람 및 그룹",
       "servingAndContent": "봉사 및 콘텐츠",
-      "setAvatarDesc": "팀이 당신을 알아볼 수 있도록 프로필 사진을 업로드하세요.",
       "setAvatarTitle": "아바타 설정",
       "subtitle": "교회를 설정해 보세요. 가장 먼저 하고 싶은 몇 가지 작업이 있습니다.",
       "title": "B1.church에 오신 것을 환영합니다!",
-      "uploadSermonDesc": "사람들이 언제든지 시청할 수 있도록 설교를 온라인으로 공유하세요.",
       "uploadSermonTitle": "설교 업로드",
       "yourChurch": "내 교회",
       "yourProfile": "내 프로필"
@@ -555,21 +516,14 @@
       "dash": "대시보드"
     },
     "memberWelcome": {
-      "downloadAppDesc": "어디서나 연결을 유지하려면 휴대폰에 B1.church 앱을 받으세요.",
       "downloadAppTitle": "모바일 앱 다운로드",
       "fallbackChurchName": "당신의 교회",
-      "findPeopleDesc": "교회 디렉토리를 검색하여 회중의 다른 사람들을 찾고 연결하세요.",
       "findPeopleTitle": "아는 사람 찾기",
-      "intro": "프로필을 완성하고 교회가 제공하는 것을 탐색하는 것부터 시작하세요.",
-      "joinGroupDesc": "소그룹, 교실, 봉사 팀을 둘러보고 자신의 공동체를 찾으세요.",
       "joinGroupTitle": "그룹 가입",
-      "onlineGivingDesc": "온라인으로 빠르고 쉽게 헌금하고, 선택적으로 정기 기부를 설정하세요.",
       "onlineGivingTitle": "온라인 헌금 설정",
-      "setPhotoDesc": "교회의 사람들이 당신을 알아보고 이름과 얼굴을 연결할 수 있도록 프로필 사진을 업로드하세요.",
       "setPhotoTitle": "사진 추가",
       "subtitle": "연결을 유지하기 위해 할 수 있는 몇 가지 작업입니다.",
       "title": "{churchName}에 오신 것을 환영합니다!",
-      "upcomingEventsDesc": "다가오는 이벤트, 예배 시간, 참여 방법을 확인하세요.",
       "upcomingEventsTitle": "무슨 일이 있는지 보기"
     },
     "myGroups": "내 그룹",
@@ -634,34 +588,8 @@
     }
   },
   "donation": {
-    "donationForm": {
-      "annually": "연간",
-      "biWeekly": "격주",
-      "cover": "거래 수수료 부담",
-      "fees": "수수료",
-      "frequencyLabel": "빈도",
-      "funds": "기금",
-      "make": "기부하기",
-      "makeRecurring": "정기 기부로 설정",
-      "monthly": "월간",
-      "quarterly": "분기별",
-      "startDate": "시작 날짜",
-      "thankYou": "기부해 주셔서 감사합니다!",
-      "totalAmount": "총액",
-      "validate": {
-        "amount": "기부 금액을 입력해주세요.",
-        "email": "이메일이 필요합니다.",
-        "firstName": "이름이 필요합니다.",
-        "lastName": "성이 필요합니다.",
-        "validEmail": "유효한 이메일 주소를 입력해주세요."
-      },
-      "weekly": "주간"
-    },
     "donationPage": {
       "donations": "기부"
-    },
-    "nonAuthDonation": {
-      "donate": "기부하기"
     },
     "page": {
       "amount": "금액",
@@ -794,7 +722,6 @@
       "campaigns": "캠페인",
       "date": "날짜",
       "don": "기부",
-      "edit": "편집",
       "errMsg": "기금을 찾을 수 없습니다. 기부하기 전에 기금을 생성해주세요",
       "export": "내보내기",
       "funds": "기금",
@@ -806,7 +733,6 @@
       "total": "총액"
     },
     "donationsPage": {
-      "batch": "배치",
       "date": "날짜",
       "don": "기부",
       "noBatch": "배치를 찾을 수 없습니다.",
@@ -829,7 +755,6 @@
       "totalAmount": "총액"
     },
     "funds": {
-      "addFund": "펀드 추가",
       "fund": "기금",
       "noFund": "기금을 찾을 수 없습니다."
     },
@@ -990,7 +915,6 @@
       "addPpl": "사람 추가",
       "admin": "관리자",
       "emailNotif": "이메일 알림",
-      "emailNotifInfoAria": "이메일 알림 정보",
       "emailNotifMsg": "양식이 제출될 때마다 메일로 알림을 받습니다.",
       "formMem": "양식 멤버",
       "perm": "권한",
@@ -1040,12 +964,7 @@
       "archiveFormAria": "양식 {name} 보관",
       "confirmMsg1": "이 양식을 보관하시겠습니까?",
       "confirmMsg2": "이 양식을 복원하시겠습니까?",
-      "edit": "편집",
-      "editFormAria": "양식 {name} 편집",
-      "formArchivedCount": "{count}개의 보관된 양식",
-      "formArchivedCountPlural": "{count}개의 보관된 양식",
-      "formCount": "{count}개 양식",
-      "formCountPlural": "{count}개 양식",
+      "duplicate": "복제",
       "forms": "양식",
       "noArch": "보관된 양식이 없습니다.",
       "noCustomMsg": "아직 생성된 맞춤 양식이 없습니다. 추가되면 여기에 나타납니다.",
@@ -1134,7 +1053,6 @@
       "confirmMsg": "이 그룹을 영구적으로 삭제하시겠습니까?",
       "enrollment": "등록",
       "groupDesc": "그룹 설명",
-      "groupDescriptionAria": "그룹 설명",
       "groupDet": "그룹 세부사항",
       "groupName": "그룹 이름",
       "groupNameAria": "그룹 이름",
@@ -1183,14 +1101,10 @@
       "messagePlaceholder": "모든 그룹 구성원에게 보낼 메시지를 작성하세요…",
       "noMemDesc": "오른쪽 패널에서 구성원을 추가하여 이 그룹을 구성하세요.",
       "noMemTitle": "아직 구성원 없음",
-      "promoteToLeaderAria": "{name}을(를) 리더로 승격",
-      "removeFromGroupAria": "{name}을(를) 그룹에서 제거",
       "removeLeaderAccess": "리더 액세스 제거",
-      "removeLeaderAccessAria": "{name}의 리더 액세스 제거",
       "role": "역할",
       "send": "보내기",
       "sendMemMsg": "멤버에게 메시지 보내기",
-      "sendMessageAria": "회원에게 메시지 보내기",
       "showTemplates": "템플릿 표시",
       "templates": {
         "none": "없음",
@@ -1219,8 +1133,6 @@
       "noAttendance": "출석 기록을 찾을 수 없습니다.",
       "noSesMsg": "세션이 없습니다.",
       "noSessionsFound": "세션을 찾을 수 없습니다.",
-      "removeAria": "세션에서 {name} 제거",
-      "removeButton": "제거",
       "selectSession": "세션 선택",
       "session": "세션",
       "sessions": "세션",
@@ -1230,7 +1142,6 @@
     "groupsPage": {
       "addGroup": "그룹 추가",
       "cat": "범주",
-      "categories": "카테고리",
       "export": "내보내기",
       "groups": "그룹",
       "labels": "레이블",
@@ -1242,11 +1153,9 @@
         "create": "첫 번째 그룹을 만들어 시작해 보세요.",
         "manage": "교회 그룹을 조직하고 관리하세요"
       },
-      "totalGroups": "총 그룹",
-      "totalMembers": "총 회원 수"
+      "totalGroups": "총 그룹"
     },
     "membersAdd": {
-      "addMemberAria": "그룹에 회원 추가",
       "availableMem": "사용 가능한 그룹 멤버",
       "noMem": "사용 가능한 그룹 멤버가 없습니다.",
       "unknown": "알 수 없음"
@@ -1270,6 +1179,7 @@
       "noEmailNoticeSingular": "{count}명에게 등록된 이메일 주소가 없습니다.",
       "noEmailSkipped": "{count}명 건너뜀 (이메일 주소 없음).",
       "none": "없음",
+      "permissionError": "그룹 이메일을 보낼 권한이 없습니다.",
       "send": "이메일 보내기",
       "sendDefault": "그룹의 대상 회원에게 이메일을 보냅니다.",
       "sendFailedDetail": "{count}건 전송 실패.",
@@ -1317,10 +1227,6 @@
       "sesDate": "세션 날짜",
       "sessionDateAria": "세션 날짜",
       "srvTime": "서비스 시간"
-    },
-    "sessionAttendance": {
-      "removeVisitorAria": "세션에서 {name} 제거",
-      "visitor": "방문자"
     },
     "sessionCard": {
       "active": "활성",
@@ -1370,7 +1276,6 @@
       "files": "파일",
       "liveStreamTimes": "라이브 스트림 시간",
       "pages": "페이지",
-      "playlists": "재생 목록",
       "profile": "프로필",
       "quickActions": "빠른 작업",
       "registrations": "등록",
@@ -1416,6 +1321,7 @@
         "uploadImage": "이미지 업로드"
       },
       "linkCopied": "복사됨!",
+      "manageLabels": "라벨 디자인",
       "qrGuestRegistration": "QR 방문자 등록",
       "qrShareDescription": "이 QR 코드를 전단지, 주보 또는 안내판에 인쇄하세요. 방문자가 스캔하여 휴대폰으로 등록할 수 있습니다. 앱에도 표시됩니다.",
       "qrShareTitle": "등록 QR 코드 공유",
@@ -1460,6 +1366,7 @@
       "valuePlaceholder": "값"
     },
     "aiSearch": {
+      "clearSearch": "검색 지우기",
       "exampleMen": "- 7월 생일이 있는 30세 이상 남성 보여주기.",
       "exampleWomen": "- 결혼한 여성 보여주기.",
       "examples": "예:",
@@ -1470,10 +1377,7 @@
     },
     "bulk": {
       "actions": "작업",
-      "addSuccess": "{group}에 {count}명을 추가했습니다.",
       "addToGroup": "그룹에 추가",
-      "addToGroupPrompt": "선택한 {count}명을 그룹에 추가합니다.",
-      "addToGroupTitle": "그룹에 추가",
       "addToWorkflow": "워크플로에 추가",
       "addToWorkflowPrompt": "선택한 {count}명을 워크플로 카드로 추가합니다.",
       "apply": "적용",
@@ -1494,15 +1398,7 @@
       "optedOutTitle": "수신 거부 설정",
       "optedOutYes": "수신 거부 예",
       "removeFromGroup": "그룹에서 제거",
-      "removeFromGroupPrompt": "선택한 {count}명을 그룹에서 제거합니다.",
-      "removeFromGroupTitle": "그룹에서 제거",
-      "removeSuccess": "{group}에서 {count}명을 제거했습니다.",
       "selected": "선택됨",
-      "setCampus": "캠퍼스 배정",
-      "setGender": "성별 설정",
-      "setMaritalStatus": "혼인 상태 설정",
-      "setMembershipStatus": "교적 상태 설정",
-      "setOptedOut": "수신 거부 설정",
       "workflowSuccess": "워크플로에 {count}명을 추가했습니다."
     },
     "demographics": {
@@ -1567,8 +1463,6 @@
     },
     "household": {
       "age": "나이:",
-      "demoGroups": "그룹: 청소년 사역, 워십팀",
-      "demoLastActivity": "최근 활동: 2024년 11월 24일",
       "groups": "그룹:",
       "house": " 가구",
       "lastActivity": "마지막 활동:",
@@ -1578,16 +1472,13 @@
     "householdEdit": {
       "addMatch": "일치하는 주소",
       "addMember": "가구 구성원 추가",
-      "addMemberAria": "가구 구성원 추가",
       "blankMsg": "가구 이름을 입력해주세요.",
-      "cancelAddMember": "구성원 추가 취소",
       "child": "자녀",
       "head": "가장",
       "house": " 가구",
       "houseName": "가구 이름",
       "householdNameAria": "가구 이름",
       "other": "기타",
-      "removeMemberAria": "가구 구성원 제거",
       "spouse": "배우자",
       "updQuestion": "업데이트하시겠습니까"
     },
@@ -1608,7 +1499,6 @@
       "matchAny": "필터 중 하나",
       "name": "목록 이름",
       "notifyOnChange": "구성원이 변경될 때 이메일로 알림",
-      "rename": "이름 변경",
       "saveAs": "목록으로 저장",
       "settings": "목록 설정",
       "sharing": "이 목록을 볼 수 있는 사람",
@@ -1660,12 +1550,10 @@
       "primEmail": "기본 이메일",
       "primPhone": "기본 전화",
       "printDirectory": "명부 인쇄",
-      "recentPpl": "최근 추가된 사람",
       "searchPpl": "사람 검색",
       "searchResults": "검색 결과",
       "showAll": "모든 구성원 표시",
-      "showingMembers": "{count}명 표시 중",
-      "showingRecent": "가장 최근 {count}명 표시 중"
+      "showingMembers": "{count}명 표시 중"
     },
     "peopleSearch": {
       "active": "활성:",
@@ -1697,12 +1585,7 @@
     },
     "personAdd": {
       "createNewPersonAria": "새 사람 만들기",
-      "searchForPersonAria": "사람 검색",
       "searchForPersonToAddAria": "추가할 사람 검색"
-    },
-    "personAddResults": {
-      "add": "추가",
-      "addPersonAria": "{name} 추가"
     },
     "personAttendance": {
       "noAttMsg": "출석 기록이 없습니다. 그룹 세션에 대한 출석이 추적되면 여기에 표시됩니다."
@@ -1724,19 +1607,16 @@
       "family": "가족",
       "firstReq": "이름은 필수 항목입니다",
       "for": "대상",
-      "home": "집",
       "invalForm": "유효하지 않은 형식",
       "lastReq": "성은 필수 항목입니다",
       "maritalStatus": "결혼 상태",
       "merge": "병합",
       "mergePersonAria": "사람 병합",
-      "mobile": "휴대폰",
       "nameNote": "이름표 메모",
       "noCampus": "캠퍼스 없음",
       "persDet": "개인 정보",
       "upAddress": "다음으로 주소를 업데이트했습니다",
-      "valEmail": "유효한 이메일 주소를 입력해주세요.",
-      "work": "직장"
+      "valEmail": "유효한 이메일 주소를 입력해주세요."
     },
     "personForm": {
       "editAria": "{name} 편집",
@@ -1765,7 +1645,6 @@
       "railLabel": "프로필 및 양식"
     },
     "personView": {
-      "edit": "편집",
       "hasLoginLabel": "로그인 있음: {email}",
       "home": "집",
       "memShip": "회원 자격:",
@@ -1835,9 +1714,6 @@
     },
     "block": {
       "name": "환영 섹션"
-    },
-    "campus": {
-      "name": "본당 캠퍼스"
     },
     "choices": {
       "text": "첫 번째 옵션",
@@ -1988,10 +1864,13 @@
     "assignment": {
       "addPosition": "직책 추가",
       "autoAssign": "자동 할당",
+      "fullyStaffed": "인원 충족됨",
+      "needed": "필요",
       "notesPlaceholder": "이 예배 계획에 대한 메모 추가...",
       "notesPlaceholderReadOnly": "계획 메모 (읽기 전용)",
       "penciledIn": "예비 배정",
       "planNotesAria": "계획 메모",
+      "positionsFilled": "{total}개 중 {filled}개 포지션 충원됨",
       "saveNotes": "메모 저장",
       "undoAutoAssign": "자동 배정 취소"
     },
@@ -2148,7 +2027,6 @@
       "planItemDescriptionAria": "계획 항목 설명",
       "planItemNameAria": "계획 항목 이름",
       "searchBoxAria": "검색창",
-      "searchSongsAria": "곡 검색",
       "seconds": "초"
     },
     "planList": {
@@ -2303,19 +2181,27 @@
       "noItems": "서비스 주문에 항목이 없습니다.",
       "orderOfService": "서비스 순서",
       "previewBanner": "이것은 연결된 수업의 미리보기입니다. 편집하려면 \"사용자 정의\"를 클릭하세요.",
-      "print": "인쇄",
       "runTimes": "진행 시간",
       "scrollDown": "아래로 스크롤",
       "scrollUp": "위로 스크롤",
       "viewingAs": "보기 대상"
     },
     "servingOverviewPage": {
+      "autoSchedule": "자동 스케줄링",
+      "autoScheduleResult": "{total}개 중 {filled}개 플랜 자동 스케줄링됨",
+      "emailAll": "자원봉사자에게 이메일 보내기",
+      "emailEmpty": "이 기간에 이메일을 보낼 배정된 자원봉사자가 없습니다.",
+      "emailResult": "자원봉사자 {sent}명에게 이메일 발송됨({failed}건 실패)",
       "endDate": "종료 날짜",
       "exportCsv": "CSV 내보내기",
       "filename": "serving-overview.csv",
+      "gapsOnly": "미충원만",
+      "highlightAll": "전체",
+      "highlightPerson": "강조 표시",
       "noData": "선택한 날짜 범위에 대한 봉사 데이터를 찾을 수 없습니다.",
       "overviewSuffix": "개요",
       "position": "직책",
+      "remove": "제거",
       "startDate": "시작 날짜",
       "subtitle": "할당된 자원봉사자가 있는 날짜별 직책",
       "title": "봉사 개요"
@@ -2341,6 +2227,26 @@
       "noTeam": "팀을 찾을 수 없습니다. 팀을 생성해주세요.",
       "teams": "팀"
     },
+    "templates": {
+      "apply": "적용",
+      "applyTitle": "템플릿 적용",
+      "applyTo": "플랜에 적용",
+      "button": "템플릿",
+      "confirmDelete": "이 템플릿을 삭제하시겠습니까?",
+      "noPlans": "예정된 플랜이 없습니다.",
+      "none": "아직 템플릿이 없습니다. 플랜을 열고 \"템플릿으로 저장\"을 선택하세요.",
+      "optPositions": "포지션",
+      "optServiceOrder": "예배 순서",
+      "plan": "플랜",
+      "positionsWarning": "포지션을 적용하면 선택한 플랜의 기존 포지션과 배정이 대체됩니다.",
+      "rename": "템플릿 이름 변경",
+      "saveTitle": "템플릿으로 저장",
+      "startBlank": "없음",
+      "startFrom": "템플릿에서 시작",
+      "title": "플랜 템플릿",
+      "updateFromPlan": "플랜에서 업데이트",
+      "updateFromPlanHelp": "이 템플릿의 내용을 플랜의 현재 예배 순서와 포지션으로 교체합니다."
+    },
     "timeEdit": {
       "disName": "표시 이름",
       "disNameReq": "표시 이름이 필요합니다.",
@@ -2364,7 +2270,6 @@
       "typeService": "예배"
     },
     "timeList": {
-      "addTimeAria": "시간 추가",
       "noTime": "아직 추가된 시간이 없습니다",
       "sunServ": "주일 예배",
       "times": "시간"
@@ -2386,9 +2291,6 @@
       "lastActiveDate": "마지막 활성 날짜",
       "registrationDate": "등록일",
       "title": "기기"
-    },
-    "devicesPage": {
-      "addDevice": "기기 추가"
     },
     "linkedAccounts": {
       "link": "링크",
@@ -2433,7 +2335,6 @@
   },
   "registrations": {
     "registrationDetailsPage": {
-      "actions": "동작",
       "cancelConfirm": "이 등록을 취소하시겠습니까?",
       "cancelRegistration": "등록 취소",
       "csvDate": "날짜",
@@ -2441,7 +2342,6 @@
       "csvName": "이름",
       "csvStatus": "상태",
       "date": "날짜",
-      "delete": "삭제",
       "deleteConfirm": "이 등록을 영구 삭제하시겠습니까?",
       "eventNotFound": "이벤트를 찾을 수 없습니다",
       "eventRegistrations": "이벤트 등록",
@@ -2490,9 +2390,6 @@
       "totalGiving": "총 헌금액"
     },
     "noData": "사용 가능한 데이터 없음",
-    "reportOutput": {
-      "print": "인쇄"
-    },
     "runReport": "보고서 실행",
     "sampleTemplate": "샘플 템플릿",
     "summary": "요약",
@@ -2525,7 +2422,6 @@
     "addSermon": "설교 추가",
     "adjustSearchTerms": "검색어를 조정해 보세요",
     "bulkImport": {
-      "backToSelection": "선택으로 돌아가기",
       "chooseSource": "가져오기 소스 선택",
       "fetch": "가져오기",
       "fetching": "가져오는 중...",
@@ -2549,8 +2445,6 @@
       "minutes": "분",
       "seconds": "초"
     },
-    "edit": "편집",
-    "editSermonAria": "{title} 편집",
     "getStarted": "첫 번째 설교를 추가하여 시작하세요",
     "liveStreamTimes": {
       "externalLinks": {
@@ -2594,7 +2488,6 @@
       },
       "navigationLinks": {
         "add": "추가",
-        "edit": "편집",
         "home": "집",
         "title": "탐색 링크"
       },
@@ -2635,7 +2528,6 @@
       "settings": "설정",
       "sidebarTabs": {
         "add": "추가",
-        "edit": "편집",
         "title": "콘텐츠 탭"
       },
       "subtitle": "반복되는 예배 시간 구성",
@@ -2681,12 +2573,7 @@
     "notScheduled": "예약되지 않음",
     "playlist": "재생목록",
     "playlists": {
-      "actions": "작업",
-      "addPlaylist": "재생목록 추가",
-      "adjustSearchTerms": "검색어를 조정해 보세요",
       "createFirstPlaylist": "첫 번째 재생목록 만들기",
-      "editPlaylist": "재생목록 편집",
-      "getStarted": "첫 번째 재생목록을 만들어 시작하세요",
       "noPlaylistsFound": "재생목록을 찾을 수 없습니다",
       "noPlaylistsMatch": "검색과 일치하는 재생목록이 없습니다",
       "playlistEdit": {
@@ -2710,13 +2597,10 @@
         "unauthorized": "재생목록을 만들 권한이 없습니다",
         "unauthorizedDelete": "재생목록을 삭제할 권한이 없습니다"
       },
-      "search": "검색",
       "searchPlaceholder": "재생목록 검색...",
-      "subtitle": "비디오 재생목록을 관리하고 콘텐츠를 정리하세요",
       "title": "재생목록"
     },
     "publishDate": "게시 날짜",
-    "search": "검색",
     "searchPlaceholder": "제목 또는 재생목록으로 설교 검색...",
     "sermon": "설교",
     "sermonEdit": {
@@ -2805,8 +2689,7 @@
     },
     "reportPage": {
       "adminOnly": "관리자 전용",
-      "report": "보고서",
-      "serverAdmin": "서버 관리자"
+      "report": "보고서"
     },
     "serverHealth": {
       "detail": "세부 정보",
@@ -2891,7 +2774,6 @@
       "volunteerOpportunities": "자원봉사 기회"
     },
     "appTabs": {
-      "editTab": "탭 편집",
       "moveDown": "아래로 이동",
       "moveUp": "위로 이동",
       "noTabs": "구성된 탭이 없습니다.",
@@ -2986,7 +2868,6 @@
       "app": "애플리케이션",
       "authorized": "승인됨",
       "connectedApps": "연결된 앱",
-      "delete": "삭제",
       "deleteKeyConfirm": "API 키 \"{name}\"을(를) 삭제하시겠습니까? 이 키를 사용하는 연동이 중단됩니다.",
       "expires": "만료",
       "lastUsed": "마지막 사용",
@@ -2998,7 +2879,6 @@
       "revoke": "취소",
       "revokeConfirm": "\"{name}\"의 접근 권한을 취소하시겠습니까?",
       "scopes": "범위",
-      "subtitle": "API 키 및 연결된 애플리케이션 관리",
       "title": "개발자"
     },
     "directoryApprovalSettingsEdit": {
@@ -3057,7 +2937,6 @@
       "yourChurch": "내 교회"
     },
     "emailTemplatesPage": {
-      "actions": "동작",
       "category": "카테고리",
       "createTemplate": "템플릿 만들기",
       "deleteConfirm": "템플릿 \"{name}\"을(를) 삭제하시겠습니까?",
@@ -3068,9 +2947,7 @@
       "newTemplate": "새 템플릿",
       "subject": "제목",
       "subtitle": "재사용 가능한 이메일 템플릿 생성 및 관리",
-      "title": "이메일 템플릿",
-      "tooltipDelete": "삭제",
-      "tooltipEdit": "편집"
+      "title": "이메일 템플릿"
     },
     "feeOptionsSettings": {
       "achFlatRate": "정액 요금 [ ACH ]",
@@ -3086,26 +2963,16 @@
       "secretPlaceholder": "********"
     },
     "givingSettingsEdit": {
-      "apiCredentials": "API 자격 증명",
       "clientId": "클라이언트 ID",
       "clientSecret": "클라이언트 비밀키",
       "copyWebhookUrl": "웹훅 URL 복사",
       "currency": "통화",
       "currencyHelper": "이 통화가 Stripe 대시보드에서도 활성화되어 있는지 확인하세요. 여기에서 통화를 활성화하세요:",
-      "developersApiKeys": "개발자 → API 키",
       "forceMsg": "사용자가 거래 수수료를 자동으로 부담하도록 강제합니다",
-      "forceSslHelpAria": "Force SSL 도움말",
       "giving": "기부",
-      "kfGetStarted": "시작하려면. Kingdom Funding 대시보드의 토큰화 키와 소스 키를 입력하세요.",
       "kfSetup": "Kingdom Funding 대시보드의 토큰화 키와 소스 키를 입력하세요. 시작 방법은",
-      "kfVisit": "방문",
       "kfWebhookInstructions": "온보딩 중 Kingdom Funding 담당자에게 이 웹훅 URL을 제공하여 거래 업데이트가 헌금 보고서에 반영되도록 하세요:",
-      "kingdomFunding": "Kingdom Funding",
       "none": "없음",
-      "paypalCreateApp": "클라이언트 ID와 비밀키를 얻으려면 앱을 만드세요.",
-      "paypalDeveloper": "PayPal 개발자",
-      "paypalGoTo": "이동",
-      "paypalLogin": "로그인한 다음",
       "paypalSetup": "PayPal REST 앱을 만들고 클라이언트 ID와 시크릿을 아래에 붙여넣으세요. 시작 방법은",
       "privateKeyRequired": "저장하기 전에 이 공급자의 비밀/개인 키를 입력하세요.",
       "prov": "제공자",
@@ -3113,22 +2980,13 @@
       "saveError": "제공 설정을 저장하지 못했습니다.",
       "secKey": "비밀 키",
       "sourceKey": "소스 키",
-      "stripe": "Stripe",
-      "stripeCopyKeys": "게시 가능 키와 비밀 키(테스트 및 라이브)를 복사하세요.",
       "stripeDashboard": "Stripe 대시보드",
-      "stripeGoTo": "그리고 이동",
       "stripeSetup": "Stripe 대시보드(개발자 → API 키)에서 공개 키와 시크릿 키를 복사하여 아래에 붙여넣으세요.",
-      "stripeVisit": "방문",
       "tokenizationKey": "토큰화 키",
       "transFee": "거래 수수료",
       "webhookKey": "웹훅 키",
       "webhookKeyHelper": "Kingdom Funding 제어판의 웹훅 서명 시크릿입니다. 거래 상태 업데이트에 필요합니다.",
       "webhookUrlCopied": "웹훅 URL이 클립보드에 복사되었습니다"
-    },
-    "imageEditor": {
-      "crop": "자르기",
-      "upload": "업로드",
-      "uploadImageAria": "이미지 업로드"
     },
     "landing": {
       "campusesCount": "위치 {count}개",
@@ -3145,7 +3003,6 @@
     },
     "manageChurch": {
       "auditLog": "감사 로그",
-      "editSettings": "설정 편집",
       "imEx": "가져오기/내보내기",
       "noData": "사용 가능한 교회 데이터가 없습니다.",
       "subtitle": "교회 설정 및 기본 설정 구성",
@@ -3155,9 +3012,6 @@
       "addTab": "탭 추가",
       "subtitle": "모바일 앱 설정 구성",
       "title": "모바일 앱 설정"
-    },
-    "preview": {
-      "preview": "미리보기"
     },
     "roleCheck": {
       "permissionAria": "권한 {label}"
@@ -3172,10 +3026,8 @@
     "roleMembers": {
       "addRoleMemberAria": "역할 구성원 추가",
       "confirmMsg": "정말로 이 사용자를 삭제하시겠습니까",
-      "editRoleMemberAria": "역할 구성원 {firstName} {lastName} 편집",
       "lastAdminWarning": "최소 한 명의 도메인 관리자가 필요합니다. 이를 제거하기 전에 다른 관리자를 추가하세요.",
       "mem": "멤버",
-      "removeRoleMemberAria": "역할 구성원 {firstName} {lastName} 제거",
       "roleAppMsg": "이 역할은 교회의 모든 멤버에게 적용됩니다."
     },
     "rolePage": {
@@ -3197,7 +3049,6 @@
       "contAdmin": "콘텐츠 관리자",
       "contAdminDesc": "웹사이트 콘텐츠, 모바일 콘텐츠 및 설교를 편집할 수 있습니다.",
       "custAdd": "사용자 정의 역할 추가",
-      "editRoleAria": "역할 편집",
       "everyone": "모든 사람",
       "itMsg": "? ",
       "lesAdmin": "레슨 관리자",
@@ -3294,9 +3145,7 @@
       "urlRequired": "URL이 필요합니다"
     },
     "webhooksPage": {
-      "actions": "작업",
       "active": "활성",
-      "createWebhook": "웹훅 만들기",
       "deleteConfirm": "웹훅 \"{name}\"을(를) 삭제하시겠습니까?",
       "disabled": "비활성",
       "emptyDescription": "사람, 그룹 또는 가구가 변경될 때 외부 도구에 알리는 웹훅을 만드세요.",
@@ -3305,10 +3154,7 @@
       "name": "이름",
       "newWebhook": "새 웹훅",
       "status": "상태",
-      "subtitle": "이벤트 발생 시 교회 데이터를 외부 도구로 전송",
       "title": "웹훅",
-      "tooltipDelete": "삭제",
-      "tooltipEdit": "편집",
       "url": "URL"
     }
   },
@@ -3405,7 +3251,6 @@
     "blocksPage": {
       "actions": "작업",
       "addBlock": "블록 추가",
-      "block": "차단하다",
       "blocks": "블록",
       "createFirstBlock": "첫 번째 블록 생성",
       "elements": "강요)",
@@ -3705,10 +3550,6 @@
       "uploadFiles": "파일 업로드"
     },
     "filesManager": {
-      "actions": "동작",
-      "deleteFile": "파일 삭제",
-      "fileCountPlural": "파일",
-      "fileCountSingular": "파일",
       "files": "파일",
       "getStarted": "첫 번째 파일을 업로드하여 시작하세요",
       "name": "이름",
@@ -3830,7 +3671,6 @@
     "pagesPage": {
       "actions": "작업",
       "addFirstPage": "첫 페이지 추가",
-      "addNavigationLink": "탐색 링크 추가",
       "addPage": "페이지 추가",
       "autoGenerated": "자동 생성",
       "confirmConvert": "이 자동 생성 페이지를 사용자 정의 페이지로 변환하시겠습니까?",
@@ -3961,10 +3801,6 @@
       "editSection": "섹션 편집",
       "layoutContainer": "레이아웃 컨테이너",
       "section": "섹션"
-    },
-    "sectionBlock": {
-      "deleteSection": "섹션 삭제",
-      "edit": "편집"
     },
     "sectionEdit": {
       "block": "블록",
@@ -4182,7 +4018,6 @@
       "noneRadius": "없음 (0px)",
       "primary": "기본",
       "secondary": "보조",
-      "selectToken": "토큰 선택",
       "small": "스몰 (8px)",
       "smallRadius": "스몰 (4px)",
       "smallSize": "스몰 크기",
@@ -4254,7 +4089,6 @@
       "addExternalLink": "외부 링크 추가",
       "addFiles": "파일 추가",
       "availableDownloads": "사용 가능한 다운로드",
-      "editSelectedKeyAria": "선택한 키 편집",
       "externalLinks": "외부 링크",
       "import": "가져오기",
       "importFromPraiseCharts": "PraiseCharts에서 파일 가져오기",
@@ -4282,18 +4116,13 @@
       "key": "키"
     },
     "oldArrangements": {
-      "addArrangement": "편곡 추가",
-      "addArrangementAria": "편곡 추가",
       "arrangements": "편곡",
-      "edit": "편집",
       "editArrangementAria": "편곡 편집",
       "noArrangements": "편곡을 찾을 수 없습니다."
     },
     "praiseChartsProducts": {
       "close": "닫기",
-      "collapse": "축소",
       "download": "다운로드",
-      "expand": "확장",
       "free": "무료",
       "linkAccountPrefix": "연결된 PraiseCharts 계정이 없습니다. 다음으로 이동하세요:",
       "linkAccountSuffix": "계정을 연결하려면.",
@@ -4321,13 +4150,11 @@
       "service": "서비스"
     },
     "songDetails": {
-      "editSongDetailsAria": "곡 세부 정보 편집",
       "fallbackTitle": "곡 세부 정보",
       "noDetails": "이 곡에 사용 가능한 추가 세부 정보가 없습니다."
     },
     "songPage": {
       "addArrangement": "편곡 추가",
-      "deleteSongAria": "곡 삭제",
       "loading": "로딩 중...",
       "noArrangementDescription": "시작하려면 사이드바에서 편곡을 선택하세요.",
       "noArrangementSelected": "편곡이 선택되지 않음",
@@ -4336,7 +4163,6 @@
     "songSearchDialog": {
       "closeDialogAria": "대화 상자 닫기",
       "poweredBy": "제공:",
-      "searchSongsAria": "곡 검색",
       "songTitleOrArtistAria": "곡 제목 또는 아티스트"
     },
     "songsPage": {
@@ -4353,52 +4179,6 @@
     "providedBy": "제공"
   },
   "tasks": {
-    "actionEdit": {
-      "actType": "작업 유형",
-      "actTypeHelp": "수행할 작업 유형을 선택하세요.",
-      "actionTypeAria": "동작 유형",
-      "addToWorkflow": "워크플로에 추가",
-      "assignTo": "할당 대상",
-      "assignToAria": "할당 대상",
-      "editAct": "작업 편집",
-      "taskAssign": "작업 할당",
-      "taskNote": "작업 메모",
-      "taskNoteAria": "작업 메모",
-      "taskTitle": "작업 제목",
-      "taskTitleAria": "작업 제목"
-    },
-    "automationDetails": {
-      "active": "활성",
-      "acts": "작업",
-      "addAct": "액션 추가",
-      "auto": "자동화 세부사항",
-      "inactive": "비활성",
-      "noAct": "구성된 작업이 없습니다.",
-      "recurs": "재발"
-    },
-    "automationEdit": {
-      "active": "활성",
-      "autoEdit": "자동화 편집",
-      "automationTitleAria": "자동화 제목",
-      "inactive": "비활성",
-      "monthly": "월간",
-      "never": "사용 안 함",
-      "recurHelp": "이 자동화를 얼마나 자주 실행해야 하는지 설정하세요.",
-      "recurrenceAria": "반복",
-      "rep": "반복",
-      "weekly": "주간",
-      "yearly": "연간"
-    },
-    "automationsPage": {
-      "active": "활성",
-      "addAuto": "자동화 추가",
-      "auto": "자동화된 작업",
-      "inactive": "비활성",
-      "manageAuto": "자동화된 작업 관리",
-      "noAuto": "구성된 자동화가 없습니다.",
-      "recurs": "재발",
-      "subtitle": "조건에 따라 작업 자동화"
-    },
     "conditionAttendance": {
       "anywhere": "어디에서나",
       "campus": "캠퍼스",
@@ -4434,22 +4214,6 @@
       "weekDay": "요일",
       "yearsE": "경과 연수"
     },
-    "conditionDetails": {
-      "addCon": "조건 추가",
-      "addCondition": "조건 추가",
-      "addConditionAria": "조건 추가",
-      "addConj": "접속사 추가",
-      "addConjunctionAria": "연결 추가",
-      "all": "모두",
-      "and": "그리고",
-      "any": "일부",
-      "con": "조건:",
-      "editConditionAria": "조건 편집",
-      "editConjunctionAria": "연결 편집",
-      "noCond": "추가된 조건 없음",
-      "or": "또는",
-      "trueCon": "이 조건 중"
-    },
     "conditionEdit": {
       "conDetails": "조건 세부정보",
       "conEdit": "조건 편집",
@@ -4474,13 +4238,6 @@
       "op": "연산자",
       "startW": "로 시작"
     },
-    "conjunctionEdit": {
-      "and": "AND - 모든 조건이 참",
-      "conjEdit": "접속사 편집",
-      "conjType": "접속사 유형",
-      "conjunctionTypeAria": "연결 유형",
-      "or": "OR - 조건 중 하나가 참"
-    },
     "contentPicker": {
       "group": "그룹",
       "pers": "사람",
@@ -4498,7 +4255,6 @@
       "firstStep": "첫 번째 단계",
       "kindEvent": "무언가 발생할 때",
       "kindSchedule": "일정에 따라",
-      "manage": "트리거",
       "matchAll": "모든 조건 일치",
       "matchAny": "하나의 조건 일치",
       "name": "이름",
@@ -4518,12 +4274,10 @@
       "runNowFailed": "지금 실행에 실패했습니다.",
       "runNowResult": "{created}명에게 적용됨; {skipped}명 건너뜀 (이미 워크플로에 있음).",
       "saveRuleFirst": "조건을 추가하기 전에 규칙을 저장하세요.",
-      "selectEvent": "이벤트 선택",
       "step": "시작 단계",
       "subtitle": "레코드가 추가, 변경 또는 제거될 때 자동으로 워크플로를 시작합니다 — 양식 제출 포함.",
       "title": "트리거",
-      "value": "값",
-      "workflow": "워크플로에 추가"
+      "value": "값"
     },
     "executions": {
       "attempts": "시도 횟수",
@@ -4545,7 +4299,6 @@
     },
     "myCards": {
       "noCards": "배정된 카드가 없습니다.",
-      "subtitle": "나에게 배정된 카드",
       "title": "내 카드"
     },
     "myWork": {
@@ -4612,19 +4365,14 @@
       "unassigned": "할당되지 않음"
     },
     "tasksPage": {
-      "auto": "자동화",
       "showClosed": "닫힌 항목 표시",
-      "showOpen": "열린 항목 표시",
-      "subtitle": "작업 및 자동화 관리",
-      "tasks": "작업",
-      "workflows": "워크플로"
+      "showOpen": "열린 항목 표시"
     },
     "workflowActions": {
       "add": "작업 추가",
       "days": "대기 일수",
       "noAssignee": "미배정",
       "noGroup": "그룹 선택 안 됨",
-      "none": "작업 없음",
       "note": "노트",
       "pickAssignee": "담당자 선택",
       "pickGroup": "그룹 선택",
@@ -4699,8 +4447,6 @@
       "title": "보고서"
     },
     "workflowRouting": {
-      "addAuto": "자동 경로 추가",
-      "addCondition": "조건 추가",
       "addOutcome": "결과 추가",
       "always": "항상",
       "automatic": "자동 라우팅 (입장 시)",
@@ -4711,9 +4457,7 @@
       "ifMatch": "일치하면",
       "noConditions": "아직 조건 없음 — 이 경로는 모든 사람에게 적용됩니다.",
       "outcomeLabel": "버튼 라벨",
-      "outcomes": "결과 (완료 시)",
       "outcomesHelp": "이 단계에서 카드를 완료할 때 표시되는 버튼입니다. 각 버튼은 카드를 다른 단계로 보내거나, 다른 워크플로로 전달하거나, 닫을 수 있습니다.",
-      "remove": "제거",
       "saveStepFirst": "라우팅을 추가하기 전에 단계를 저장하세요.",
       "sendToWorkflow": "다른 워크플로로 보내기",
       "targetStep": "단계로 이동",
@@ -4726,19 +4470,10 @@
       "editStep": "단계 편집",
       "stepName": "단계 이름"
     },
-    "workflowTriggers": {
-      "addTrigger": "트리거 추가",
-      "formTrigger": "양식 제출",
-      "noTriggers": "구성된 트리거가 없습니다.",
-      "selectForm": "양식",
-      "subtitle": "사람이 양식을 제출할 때 자동으로 이 워크플로에 추가합니다.",
-      "title": "트리거"
-    },
     "workflowsPage": {
       "addWorkflow": "워크플로 추가",
       "added": "워크플로에 추가되었습니다.",
       "blankWorkflow": "빈 워크플로",
-      "duplicate": "복제",
       "noWorkflows": "아직 워크플로가 없습니다. 시작하려면 추가하세요.",
       "subtitle": "일련의 단계를 통해 사람들을 안내하세요",
       "title": "워크플로"

@@ -116,9 +116,7 @@ test.describe("People Management", () => {
         await route.fulfill({
           status: 200,
           contentType: "application/json",
-          body: JSON.stringify([
-            { id: "1", name: { display: "Donald Clark", first: "Donald", last: "Clark" }, contactInfo: { email: "donald@example.com" } }
-          ])
+          body: JSON.stringify([{ id: "1", name: { display: "Donald Clark", first: "Donald", last: "Clark" }, contactInfo: { email: "donald@example.com" } }])
         });
       });
 
@@ -276,9 +274,11 @@ test.describe("People Management", () => {
       const attBtn = page.locator("button").getByText("Attendance");
       await expect(attBtn).toBeVisible({ timeout: 10000 });
       await attBtn.click();
-      const seekText = page.locator("p").getByText("No attendance records");
-      const seekDate = page.locator("li").first();
-      await expect(seekText.or(seekDate)).toBeVisible({ timeout: 10000 });
+      // PersonAttendance renders a Table of visits, or an EmptyState (an <h6>,
+      // not a <p>) when there are none — match on text, not a specific tag.
+      const seekText = page.getByText(/No attendance records/i);
+      const seekRow = page.locator("table tbody tr").first();
+      await expect(seekText.or(seekRow)).toBeVisible({ timeout: 10000 });
     });
 
     test("should open group from people attendance", async ({ page }) => {
@@ -286,9 +286,9 @@ test.describe("People Management", () => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const attBtn = page.locator("button").getByText("Attendance");
       await attBtn.click();
-      // Attendance rows are non-clickable ListItems; the group navigates via
-      // the Link inside the group Chip's label.
-      const seekGroup = page.locator('li a[href^="/groups/"]').first();
+      // Attendance rows render as a Table; the group navigates via a Link
+      // inside the row's Group cell (no <li> wrapper).
+      const seekGroup = page.locator('table a[href^="/groups/"]').first();
       await expect(seekGroup).toBeVisible({ timeout: 10000 });
       await seekGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -334,7 +334,10 @@ test.describe("People Management", () => {
       const addCardMenuItem = page.locator('[aria-labelledby="addBtnGroup"] li[aria-label="add-card"]');
       await expect(addCardMenuItem).toBeVisible({ timeout: 10000 });
       await addCardMenuItem.click();
-      await page.locator("button").getByText("Cancel").click();
+      // The page always shows the quick-donate box's own Cancel button (id="donation-form")
+      // alongside the card-edit form's (id="input-box") — scope to the latter, not .first()/.last(),
+      // since DOM order isn't a reliable signal.
+      await page.locator("#input-box").getByRole("button", { name: "Cancel" }).click();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
     });
 
@@ -364,7 +367,9 @@ test.describe("People Management", () => {
       const addBankMenuItem = page.locator('[aria-labelledby="addBtnGroup"] li[aria-label="add-bank"]');
       await expect(addBankMenuItem).toBeVisible({ timeout: 10000 });
       await addBankMenuItem.click();
-      const cancelBtn = page.locator("button").getByText("Cancel").first();
+      // Scope to the bank-edit form's own Cancel (id="input-box"), not the quick-donate
+      // box's (id="donation-form") — both render "Cancel" simultaneously on this page.
+      const cancelBtn = page.locator("#input-box").getByRole("button", { name: "Cancel" });
       await expect(cancelBtn).toBeVisible({ timeout: 10000 });
       await cancelBtn.click();
       await expect(addBtn).toBeVisible({ timeout: 10000 });
@@ -807,10 +812,10 @@ test.describe("People Management", () => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const attBtn = page.locator("button").getByText("Attendance");
       await attBtn.click();
-      // The container renders either a list (with visits) or an empty-state paragraph.
-      const list = page.locator("ul li").first();
-      const empty = page.locator("p").getByText(/No attendance/i);
-      await expect(list.or(empty)).toBeVisible({ timeout: 10000 });
+      // The container renders either a Table (with visits) or an empty-state (an <h6>).
+      const rows = page.locator("table tbody tr").first();
+      const empty = page.getByText(/No attendance/i);
+      await expect(rows.or(empty)).toBeVisible({ timeout: 10000 });
     });
   });
 });

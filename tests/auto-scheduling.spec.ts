@@ -98,7 +98,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
   test("setup: create plan type and plan", async () => {
     await openMinistryTab();
     await page.locator("button").getByText("Create Plan Type").click();
-    await page.locator('[type="text"]').fill("Jethro Plans");
+    await page.locator('[name="name"]').fill("Jethro Plans");
     await page.locator("button").getByText("Save").click();
     const plansBtn = page.locator("a").getByText("Jethro Plans");
     await expect(plansBtn).toBeVisible({ timeout: 10000 });
