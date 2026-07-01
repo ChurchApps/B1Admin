@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField } from "@mui/material";
 import { type ConflictInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
+import { EventReminderEdit, type EventReminderEditRef } from "./EventReminderEdit";
 
 interface Props {
   churchId: string;
@@ -41,6 +42,7 @@ export function NewEventModal(props: Props) {
   const [windowStart, setWindowStart] = useState("");
   const [windowEnd, setWindowEnd] = useState("");
   const [saving, setSaving] = useState(false);
+  const reminderRef = useRef<EventReminderEditRef>(null);
 
   const toInt = (v: string) => (v.trim() ? parseInt(v, 10) || 0 : 0);
 
@@ -137,6 +139,7 @@ export function NewEventModal(props: Props) {
       ];
       if (bookings.length > 0) await ApiHelper.post("/eventBookings", bookings, "ContentApi");
       if (props.curatedCalendarId) await ApiHelper.post("/curatedEvents", [{ curatedCalendarId: props.curatedCalendarId, groupId, eventIds: [eventId] }], "ContentApi");
+      await reminderRef.current?.save(eventId);
       props.onDone(true);
     } catch {
       setSaving(false);
@@ -240,6 +243,7 @@ export function NewEventModal(props: Props) {
               </Stack>
             </Alert>
           )}
+          <EventReminderEdit ref={reminderRef} hasRegistration={false} />
         </Stack>
       </DialogContent>
       <DialogActions>

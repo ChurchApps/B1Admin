@@ -221,7 +221,8 @@ export const ReportOutput = (props: Props) => {
     else {
       return (
         <>
-          <style dangerouslySetInnerHTML={{ __html: `
+          <style dangerouslySetInnerHTML={{
+            __html: `
             @media print {
               @page {
                 size: portrait;
@@ -262,7 +263,8 @@ export const ReportOutput = (props: Props) => {
                 page-break-inside: avoid !important;
               }
             }
-          `}} />
+          `
+          }} />
           {kpis && <GivingKpiCards kpis={kpis} currency={currency} />}
           <DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={props.report.displayName} editContent={getEditContent()}>
             {getOutputs()}
