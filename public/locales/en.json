@@ -387,6 +387,7 @@
     "saving": "Saving...",
     "search": "Search",
     "searching": "Searching...",
+    "select": "Select",
     "sermons": "Sermons",
     "title": "Title",
     "top": "Top",
@@ -4167,6 +4168,8 @@
     },
     "songsPage": {
       "addSongAria": "Add song",
+      "deleteSelected": "Delete Selected",
+      "deleteSelectedConfirm": "Delete the selected songs? This cannot be undone.",
       "search": "Search",
       "searchSongs": "Search Songs",
       "songs": "Songs",

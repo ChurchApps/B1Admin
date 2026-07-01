@@ -1,8 +1,8 @@
 import React, { memo, useMemo, useCallback } from "react";
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Link, Navigate } from "react-router-dom";
-import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment, Tooltip } from "@mui/material";
-import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon, PlayCircle as PlayIcon, Timer as TimerIcon, Person as ArtistIcon } from "@mui/icons-material";
+import { Button, Box, Card, CardContent, Typography, Stack, Avatar, Chip, IconButton, TextField, InputAdornment, Tooltip, Checkbox } from "@mui/material";
+import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon, PlayCircle as PlayIcon, Timer as TimerIcon, Person as ArtistIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
@@ -15,6 +15,7 @@ export const SongsPage = memo(() => {
   const [searchFilter, setSearchFilter] = React.useState("");
   const [showSearchField, setShowSearchField] = React.useState(false);
   const [failedImages, setFailedImages] = React.useState<Set<string>>(new Set());
+  const [selected, setSelected] = React.useState<Set<string>>(new Set());
 
   const songs = useQuery<SongDetailInterface[]>({
     queryKey: ["/songDetails", "ContentApi"],
@@ -57,6 +58,23 @@ export const SongsPage = memo(() => {
     },
     [songs]
   );
+
+  const toggleSelected = useCallback((songId: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(songId)) next.delete(songId);
+      else next.add(songId);
+      return next;
+    });
+  }, []);
+
+  const handleBulkDelete = useCallback(async () => {
+    if (selected.size === 0) return;
+    if (!window.confirm(Locale.label("songs.songsPage.deleteSelectedConfirm") || "Delete the selected songs? This cannot be undone.")) return;
+    await Promise.all([...selected].map((id) => ApiHelper.delete("/songs/" + id, "ContentApi")));
+    setSelected(new Set());
+    songs.refetch();
+  }, [selected, songs]);
 
   const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const imgSrc = e.currentTarget.src;
@@ -116,6 +134,13 @@ export const SongsPage = memo(() => {
             <Card key={(songDetail as any).songId || songDetail.id} sx={{ transition: "all 0.2s ease-in-out", "&:hover": { transform: "translateY(-1px)", boxShadow: 2 } }}>
               <CardContent sx={{ pb: 2, "&:last-child": { pb: 2 } }}>
                 <Stack direction="row" spacing={2} alignItems="center">
+                  {canEdit && (
+                    <Checkbox
+                      checked={selected.has((songDetail as any).songId || songDetail.id)}
+                      onChange={() => toggleSelected((songDetail as any).songId || songDetail.id)}
+                      aria-label={Locale.label("common.select") || "Select"}
+                    />
+                  )}
                   {/* Thumbnail/Avatar */}
                   <Avatar
                     src={songDetail.thumbnail && !failedImages.has(songDetail.thumbnail) ? songDetail.thumbnail : undefined}
@@ -168,7 +193,9 @@ export const SongsPage = memo(() => {
         </Stack>
       </Box>
     );
-  }, [songs.isLoading, songs.data, filteredSongs, formatSeconds, handleImageError, failedImages, canEdit]);
+  }, [
+    songs.isLoading, songs.data, filteredSongs, formatSeconds, handleImageError, failedImages, canEdit, selected, toggleSelected
+  ]);
 
   if (redirect) return <Navigate to={redirect} />;
 
@@ -182,6 +209,16 @@ export const SongsPage = memo(() => {
           sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
           {Locale.label("songs.songsPage.search")}
         </Button>
+        {canEdit && selected.size > 0 && (
+          <Button
+            onClick={handleBulkDelete}
+            variant="outlined"
+            startIcon={<DeleteIcon />}
+            data-testid="delete-selected-button"
+            sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>
+            {(Locale.label("songs.songsPage.deleteSelected") || "Delete Selected") + " (" + selected.size + ")"}
+          </Button>
+        )}
         {canEdit && (
           <Button
             onClick={() => setShowSearch(true)}
