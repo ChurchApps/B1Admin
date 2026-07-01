@@ -107,10 +107,31 @@ export const WorkflowTriggersManager: React.FC<Props> = (props) => {
       <List dense>
         {triggers.map((t) => (
           <ListItem key={t.id} disablePadding secondaryAction={rowActions(t)}>
-            <ListItemButton data-testid={"event-trigger-row-" + t.id} onClick={() => props.canManage && setEditing(t)} sx={{ borderRadius: 1, mb: 0.5, border: "1px solid", borderColor: "divider" }}>
+            <ListItemButton
+              data-testid={"event-trigger-row-" + t.id}
+              onClick={() => props.canManage && setEditing(t)}
+              sx={{
+                borderRadius: 2,
+                mb: 1.25,
+                border: "1px solid",
+                borderColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.08)" : "#e2e8f0",
+                backgroundColor: "background.paper",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
+                transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                "&:hover": {
+                  boxShadow: "0 6px 12px rgba(0,0,0,0.05)",
+                  transform: "translateY(-1px)",
+                  borderColor: "primary.light",
+                  backgroundColor: "background.paper"
+                }
+              }}
+            >
               <ListItemIcon>{isSchedule(t) ? <ScheduleIcon sx={{ color: t.active ? "primary.main" : "grey.400" }} /> : <TriggerIcon sx={{ color: t.active ? "primary.main" : "grey.400" }} />}</ListItemIcon>
-              <ListItemText primary={t.name} secondary={descriptor(t)} />
-              {!t.active && <Chip size="small" label={Locale.label("tasks.eventTriggers.paused")} />}
+              <ListItemText
+                primary={<Typography variant="body1" sx={{ fontWeight: 600, color: "text.primary" }}>{t.name}</Typography>}
+                secondary={<Typography variant="body2" sx={{ color: "text.secondary", mt: 0.25 }}>{descriptor(t)}</Typography>}
+              />
+              {!t.active && <Chip size="small" label={Locale.label("tasks.eventTriggers.paused")} sx={{ fontWeight: 500 }} />}
             </ListItemButton>
           </ListItem>
         ))}

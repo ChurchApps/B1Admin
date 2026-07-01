@@ -335,7 +335,8 @@ export function AddPageModal(props: Props) {
     return (
 
       <Dialog open={true} onClose={props.onDone} className="dialogForm">
-        <FormCard id="dialogForm" title={(pageTemplate === "link") ? Locale.label("site.addPage.newLink") : Locale.label("site.addPage.newPage")} icon="article" onSave={handleSave} onCancel={handleCancel} data-testid="add-page-modal" isSubmitting={isSubmitting}>
+        <FormCard id="dialogForm" title={(pageTemplate === "link") ? Locale.label("site.addPage.newLink") : Locale.label("site.addPage.newPage")} icon="article" onSave={handleSave} onCancel={handleCancel} data-testid="add-page-modal" isSubmitting={isSubmitting} elevation={0}>
+
           <ErrorMessages errors={errors} />
 
           <InputLabel>{Locale.label("site.addPage.pageType")}</InputLabel>

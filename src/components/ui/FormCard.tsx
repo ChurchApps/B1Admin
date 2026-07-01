@@ -17,9 +17,11 @@ interface FormCardProps {
   cancelText?: string;
   deleteText?: string;
   isSubmitting?: boolean;
+  disabled?: boolean;
   headerActions?: ReactNode;
   stickyFooter?: boolean;
   "data-testid"?: string;
+  elevation?: number;
 }
 
 /** Card-based form shell: icon + h6 header, padded content, footer divider with
@@ -29,7 +31,8 @@ export const FormCard: React.FC<FormCardProps> = (props) => {
   const hasFooter = props.onSave || props.onCancel || props.onDelete;
 
   return (
-    <Card id={props.id} data-testid={props["data-testid"]} sx={{ mb: 3, position: "relative" }}>
+    <Card id={props.id} data-testid={props["data-testid"]} elevation={props.elevation} sx={{ mb: props.elevation === 0 ? 0 : 3, position: "relative" }}>
+
       {props.help && <HelpIcon article={props.help} />}
       <Box sx={{ p: 2, borderBottom: "1px solid var(--border-light)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -52,7 +55,7 @@ export const FormCard: React.FC<FormCardProps> = (props) => {
             <Box sx={{ flex: 1 }} />
             {props.onCancel && <Button onClick={props.onCancel}>{props.cancelText || Locale.label("common.cancel")}</Button>}
             {props.onSave && (
-              <LoadingButton variant="contained" disableElevation loading={!!props.isSubmitting} onClick={props.onSave}>
+              <LoadingButton variant="contained" disableElevation loading={!!props.isSubmitting} disabled={props.disabled} onClick={props.onSave}>
                 {props.saveText || Locale.label("common.save")}
               </LoadingButton>
             )}
