@@ -1100,7 +1100,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         }
         onSave={handleAdvancedSearch}
         saveText={Locale.label("people.advancedSearch.search")}
-        isSubmitting={Object.keys(activeFilters).length < 1}
+        disabled={Object.keys(activeFilters).length < 1}
         help="docs/b1-admin/people/searching-people">
         {renderContent()}
       </FormCard>

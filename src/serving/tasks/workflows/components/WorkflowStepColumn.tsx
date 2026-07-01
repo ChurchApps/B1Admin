@@ -58,19 +58,47 @@ export const WorkflowStepColumn = (props: Props) => {
   };
 
   return (
-    <Box data-testid={"workflow-column-" + step.id} sx={{ minWidth: 280, width: 280, flexShrink: 0, backgroundColor: "action.hover", borderRadius: 2, p: 1, mr: 2 }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1, px: 0.5 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{step.name}</Typography>
-          <Chip size="small" label={cards.length} data-testid={"step-count-" + step.id} />
+    <Box
+      data-testid={"workflow-column-" + step.id}
+      sx={{
+        minWidth: 290,
+        width: 290,
+        flexShrink: 0,
+        backgroundColor: (theme) => theme.palette.mode === "dark" ? "background.paper" : "#f8fafc",
+        backgroundImage: (theme) => theme.palette.mode === "dark" ? "linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03))" : "none",
+        borderRadius: 3,
+        p: 2,
+        mr: 2.5,
+        border: "1px solid",
+        borderColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.06)" : "#e2e8f0",
+        boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)"
+      }}
+    >
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1.5, px: 0.5 }}>
+        <Stack direction="row" alignItems="center" spacing={1.25}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: "0.95rem", color: "text.primary" }}>{step.name}</Typography>
+          <Chip
+            size="small"
+            label={cards.length}
+            data-testid={"step-count-" + step.id}
+            sx={{
+              fontWeight: 700,
+              fontSize: "0.75rem",
+              height: 20,
+              minWidth: 20,
+              backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0, 0, 0, 0.06)",
+              color: "text.primary",
+              "& .MuiChip-label": { px: 1 }
+            }}
+          />
         </Stack>
         {props.canManage && (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} />
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon sx={{ fontSize: 18 }} />} onClick={() => props.onEditStep(step)} data-testid={"edit-step-" + step.id} />
         )}
       </Stack>
 
       {actions.length > 0 && (
-        <Stack direction="row" alignItems="center" spacing={0.5} flexWrap="wrap" data-testid={"step-actions-" + step.id} sx={{ mb: 1, px: 0.5, color: "text.secondary" }}>
+        <Stack direction="row" alignItems="center" spacing={0.5} flexWrap="wrap" data-testid={"step-actions-" + step.id} sx={{ mb: 1.5, px: 0.5, color: "text.secondary" }}>
           <ActionIcon sx={{ fontSize: 13 }} />
           {actions.map((a) => (
             <Chip key={a.id} size="small" variant="outlined" label={Locale.label("tasks.workflowActions.type." + a.actionType)} sx={{ height: 18, fontSize: 11 }} />
@@ -79,13 +107,29 @@ export const WorkflowStepColumn = (props: Props) => {
       )}
 
       {routes.length > 0 && (
-        <Box data-testid={"step-routes-" + step.id} sx={{ mb: 1, px: 0.5 }}>
+        <Box data-testid={"step-routes-" + step.id} sx={{ mb: 1.5, px: 0.5 }}>
           {routes.map((r) => (
-            <Stack key={r.id} direction="row" alignItems="center" spacing={0.25} data-testid={"route-annotation-" + r.id} sx={{ color: "text.secondary", py: 0.1 }}>
-              {r.trigger === "onComplete" ? <OutcomeIcon sx={{ fontSize: 13 }} /> : <AutoIcon sx={{ fontSize: 13 }} />}
-              <Typography variant="caption" noWrap sx={{ fontWeight: 600 }}>{routeSource(r)}</Typography>
-              <ArrowIcon sx={{ fontSize: 14 }} />
-              <Typography variant="caption" noWrap sx={{ fontStyle: r.targetStepId ? "normal" : "italic" }}>
+            <Stack
+              key={r.id}
+              direction="row"
+              alignItems="center"
+              spacing={0.5}
+              data-testid={"route-annotation-" + r.id}
+              sx={{
+                color: "text.secondary",
+                py: 0.5,
+                px: 1,
+                mb: 0.5,
+                borderRadius: 1,
+                backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.02)" : "rgba(0, 0, 0, 0.02)",
+                border: "1px solid",
+                borderColor: (theme) => theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.04)" : "rgba(0, 0, 0, 0.04)"
+              }}
+            >
+              {r.trigger === "onComplete" ? <OutcomeIcon sx={{ fontSize: 14, color: "success.main" }} /> : <AutoIcon sx={{ fontSize: 14, color: "info.main" }} />}
+              <Typography variant="caption" noWrap sx={{ fontWeight: 600, fontSize: "0.7rem" }}>{routeSource(r)}</Typography>
+              <ArrowIcon sx={{ fontSize: 12, color: "text.disabled" }} />
+              <Typography variant="caption" noWrap sx={{ fontStyle: r.targetStepId ? "normal" : "italic", fontSize: "0.7rem", color: "text.primary", fontWeight: 500 }}>
                 {routeTarget(r)}
               </Typography>
             </Stack>
@@ -110,7 +154,28 @@ export const WorkflowStepColumn = (props: Props) => {
       </DroppableWrapper>
 
       {props.canEdit && (
-        <Button fullWidth size="small" startIcon={<AddIcon />} data-testid={"add-card-" + step.id} onClick={() => setShowPicker(true)} sx={{ mt: 1, textTransform: "none" }}>
+        <Button
+          fullWidth
+          size="small"
+          startIcon={<AddIcon />}
+          data-testid={"add-card-" + step.id}
+          onClick={() => setShowPicker(true)}
+          sx={{
+            mt: 1.5,
+            py: 0.75,
+            textTransform: "none",
+            fontWeight: 500,
+            borderRadius: 2,
+            color: "primary.main",
+            backgroundColor: "transparent",
+            border: "1px dashed",
+            borderColor: "rgba(25, 118, 210, 0.3)",
+            "&:hover": {
+              backgroundColor: (theme) => theme.palette.mode === "dark" ? "rgba(25, 118, 210, 0.08)" : "rgba(25, 118, 210, 0.04)",
+              borderColor: "primary.main"
+            }
+          }}
+        >
           {Locale.label("tasks.workflowBoard.addCard")}
         </Button>
       )}

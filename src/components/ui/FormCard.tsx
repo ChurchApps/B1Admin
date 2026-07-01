@@ -17,6 +17,7 @@ interface FormCardProps {
   cancelText?: string;
   deleteText?: string;
   isSubmitting?: boolean;
+  disabled?: boolean;
   headerActions?: ReactNode;
   stickyFooter?: boolean;
   "data-testid"?: string;
@@ -52,7 +53,7 @@ export const FormCard: React.FC<FormCardProps> = (props) => {
             <Box sx={{ flex: 1 }} />
             {props.onCancel && <Button onClick={props.onCancel}>{props.cancelText || Locale.label("common.cancel")}</Button>}
             {props.onSave && (
-              <LoadingButton variant="contained" disableElevation loading={!!props.isSubmitting} onClick={props.onSave}>
+              <LoadingButton variant="contained" disableElevation loading={!!props.isSubmitting} disabled={props.disabled} onClick={props.onSave}>
                 {props.saveText || Locale.label("common.save")}
               </LoadingButton>
             )}
