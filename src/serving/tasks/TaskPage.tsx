@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { ContentPicker } from "./components/ContentPicker";
 import UserContext from "../../UserContext";
 import { RequestedChanges } from "./components/RequestedChanges";
+import { TaskReminderEdit } from "./components/TaskReminderEdit";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Person as PersonIcon, Group as GroupIcon, CheckCircle as CompletedIcon, RadioButtonUnchecked as OpenIcon } from "@mui/icons-material";
 
@@ -171,6 +172,9 @@ export const TaskPage = () => {
         {/* Task Content */}
         <Box sx={{ p: 3 }}>
           {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
+          <Box sx={{ mb: 2 }}>
+            <TaskReminderEdit taskId={task.data.id} dueDate={task.data.dueDate} />
+          </Box>
           <Notes context={context} conversationId={task.data?.conversationId} createConversation={handleCreateConversation} />
         </Box>
 

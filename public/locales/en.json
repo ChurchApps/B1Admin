@@ -4351,6 +4351,22 @@
       "tasks": "Tasks",
       "unassigned": "Unassigned"
     },
+    "reminders": {
+      "channels": "Channels",
+      "day1": "1 day before",
+      "dayOf": "On due date",
+      "days3": "3 days before",
+      "days7": "7 days before",
+      "enable": "Send reminders",
+      "message": "Message (optional)",
+      "messageHint": "Leave blank to use a default reminder message.",
+      "noDueDate": "This task has no due date, so reminders won't send until one is set.",
+      "save": "Save Reminder",
+      "saved": "Reminder saved.",
+      "timeOfDay": "Time of day",
+      "title": "Reminders",
+      "when": "When to remind (before the due date)"
+    },
     "taskPage": {
       "ago": "ago",
       "assign": "Assign",
