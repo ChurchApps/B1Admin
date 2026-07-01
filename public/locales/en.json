@@ -272,6 +272,22 @@
       "visibility": "Visibility",
       "weekly": "Weekly"
     },
+    "eventReminders": {
+      "channels": "Channels",
+      "enableReminders": "Enable reminders",
+      "maxOffsets": "Maximum of 3 times selected",
+      "message": "Message (optional)",
+      "messageHint": "Merge field: {{eventTitle}}",
+      "modeAuto": "Auto",
+      "modeGroup": "Group members",
+      "modeRegistrants": "Registrants only",
+      "modeRegistrantsHoh": "Heads / registrants only",
+      "timeOfDay": "Time of day",
+      "timeOfDayHint": "Church local time (e.g. 9:00 AM)",
+      "title": "Reminders",
+      "when": "When (up to 3)",
+      "who": "Who"
+    },
     "rooms": {
       "addBlockout": "Add Blockout",
       "addResource": "Add Resource",

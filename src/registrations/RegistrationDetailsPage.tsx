@@ -26,6 +26,7 @@ import { type EventInterface, type RegistrationInterface } from "@churchapps/hel
 import { PermissionDenied } from "../components";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
 
 export const RegistrationDetailsPage = () => {
   const params = useParams();
@@ -167,6 +168,9 @@ export const RegistrationDetailsPage = () => {
 
           <Grid size={{ xs: 12, md: 4 }}>
             <RegistrationSettingsEdit event={event} onUpdate={loadData} />
+            <Box sx={{ mt: 2 }}>
+              <EventReminderEdit eventId={event.id} hasRegistration={event.registrationEnabled} />
+            </Box>
           </Grid>
         </Grid>
       </Box>
