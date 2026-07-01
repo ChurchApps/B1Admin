@@ -124,7 +124,7 @@ export const AvailabilityPage = () => {
       </PageHeader>
       <Box sx={{ p: 3 }}>
         <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-          <TextField select size="small" label={Locale.label("calendars.availability.filter")} value={filter} onChange={(e) => setFilter(e.target.value)} sx={{ minWidth: 240 }} data-testid="availability-filter">
+          <TextField select size="small" label={Locale.label("calendars.availability.filter")} value={filter} onChange={(e) => setFilter(e.target.value)} sx={{ minWidth: 240 }} data-testid="availability-filter" SelectProps={{ displayEmpty: true }}>
             <MenuItem value="">{Locale.label("calendars.availability.allRoomsResources")}</MenuItem>
             {rooms.map((r) => <MenuItem key={r.id} value={"room:" + r.id}>{r.name}</MenuItem>)}
             {resources.map((r) => <MenuItem key={r.id} value={"resource:" + r.id}>{r.name}</MenuItem>)}

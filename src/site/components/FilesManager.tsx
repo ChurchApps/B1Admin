@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
-import { FileUpload, ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { CardWithHeader, CountChip, EmptyState, FormCard } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { CustomFileUpload } from "./CustomFileUpload";
+
 
 export function FilesManager() {
   const [pendingFileSave, setPendingFileSave] = useState(false);
@@ -121,23 +123,14 @@ export function FilesManager() {
           </CardWithHeader>
         </Grid>
         <Grid size={{ md: 4, xs: 12 }}>
-          <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} onSave={handleSave} saveText={Locale.label("site.files.upload")} data-testid="file-upload-inputbox">
+          <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} onSave={handleSave} saveText={Locale.label("site.files.upload")} data-testid="file-upload-inputbox" isSubmitting={pendingFileSave}>
+
             {getStorage()}
             <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
               {Locale.label("site.files.storageInfo")}
             </Typography>
             {usedSpace < 100000000 && (
-              <Box sx={{
-                border: "2px dashed",
-                borderColor: "divider",
-                borderRadius: 2,
-                p: 3,
-                textAlign: "center",
-                "&:hover": { borderColor: "primary.main", backgroundColor: "action.hover" },
-                transition: "all 0.2s ease"
-              }}>
-                <FileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} />
-              </Box>
+              <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} />
             )}
           </FormCard>
         </Grid>

@@ -112,6 +112,8 @@ export function PageLinkEdit(props: Props) {
         onSave={handleSubmit(onValid)}
         onCancel={handleCancel}
         onDelete={handleDelete}
+        elevation={0}
+
         headerActions={
           props.page?.id && (
             <a href="about:blank" onClick={handleDuplicate}>
