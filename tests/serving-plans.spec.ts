@@ -208,7 +208,8 @@ test.describe.serial("Serving Management - Plans", () => {
       await editBtn.click();
       const typeName = page.locator('[name="name"]');
       await typeName.fill("Zebedee Plans");
-      const saveBtn = page.locator("button").getByText("Save");
+      // exact: the reminder editor inside this dialog has its own "Save Reminder" button
+      const saveBtn = page.getByRole("button", { name: "Save", exact: true });
       await saveBtn.click();
       const verifiedType = page.locator("a").getByText("Zebedee Plans");
       await expect(verifiedType).toHaveCount(1, { timeout: 10000 });

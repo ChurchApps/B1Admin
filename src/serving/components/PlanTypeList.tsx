@@ -17,7 +17,8 @@ interface Props {
 export const PlanTypeList = React.memo(({ ministry }: Props) => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [editItem, setEditItem] = React.useState<PlanTypeInterface | null>(null);
-  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  // Server-side PlanAuth checks the DoingApi Plans/Edit grant; the membershipApi constant is legacy.
+  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || UserHelper.checkAccess({ api: "DoingApi", contentType: "Plans", action: "Edit" });
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
     queryKey: ["/groups/my/ministry", "MembershipApi"],
