@@ -7,7 +7,6 @@ import { Edit as EditIcon, QueueMusic as ArrangementIcon } from "@mui/icons-mate
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { Keys } from "./Keys";
 import { ArrangementEdit } from "./ArrangementEdit";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   arrangement: ArrangementInterface;
@@ -15,7 +14,6 @@ interface Props {
 }
 
 export const Arrangement = memo((props: Props) => {
-  const navigate = useNavigate();
   const [songDetail, setSongDetail] = React.useState<SongDetailInterface>(null);
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
   const [edit, setEdit] = React.useState(false);
@@ -100,15 +98,11 @@ export const Arrangement = memo((props: Props) => {
   }, [songDetail?.praiseChartsId, props.arrangement, props.reload]);
 
   const handleSave = useCallback(
-    (arrangement: ArrangementInterface) => {
+    () => {
       setEdit(false);
-      if (arrangement) {
-        props.reload();
-      } else {
-        navigate("/serving/songs");
-      }
+      props.reload();
     },
-    [props.reload, navigate]
+    [props.reload]
   );
 
   const arrangementCard = useMemo(
