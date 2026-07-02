@@ -44,9 +44,12 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.1",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.59.1",
+    "@rolldown/plugin-babel": "^0.2.3",
     "@tanstack/react-query-devtools": "^5.100.9",
+    "@types/babel__core": "^7.20.5",
     "@types/react": "^19.2.14",
     "@types/react-big-calendar": "^1.16.3",
     "@types/react-csv": "^1.1.10",
@@ -55,7 +58,7 @@
     "@typescript-eslint/eslint-plugin": "^8.59.2",
     "@typescript-eslint/parser": "^8.59.2",
     "@vitejs/plugin-react": "^6.0.1",
-    "@vitejs/plugin-react-swc": "^4.3.0",
+    "babel-plugin-react-compiler": "^1.0.0",
     "copyfiles": "^2.4.1",
     "esbuild": "^0.28.0",
     "eslint": "^10.3.0",
