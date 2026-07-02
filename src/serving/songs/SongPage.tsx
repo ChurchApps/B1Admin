@@ -63,10 +63,16 @@ export const SongPage = memo(() => {
         const updatedArrangement = arrangementResult.data.find((arr) => arr.id === selectedArrangement.id);
         if (updatedArrangement) {
           setSelectedArrangement(updatedArrangement);
+        } else {
+          const nextArrangement = arrangementResult.data.length > 0 ? arrangementResult.data[0] : null;
+          setSelectedArrangement(nextArrangement);
+          if (!nextArrangement) {
+            navigate("/serving/songs");
+          }
         }
       }
     }
-  }, [song, arrangements, songDetail, selectedArrangement?.id]);
+  }, [song, arrangements, songDetail, selectedArrangement?.id, navigate]);
 
   const handleDeleteSong = useCallback(() => {
     if (window.confirm(Locale.label("songs.deleteSong.confirm"))) {

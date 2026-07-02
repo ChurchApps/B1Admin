@@ -423,7 +423,15 @@ export const PrintDirectoryPage = () => {
                     <div className="member-photos">
                       {h.members.map((m) => (
                         <div key={m.id} className="member-photo-block">
-                          <img className="member-photo" src={PersonHelper.getPhotoUrl(m)} alt="" />
+                          <img
+                            className="member-photo"
+                            src={PersonHelper.getPhotoUrl(m)}
+                            alt=""
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = "/images/sample-profile.png";
+                            }}
+                          />
                           <div className="member-photo-name">{firstName(m)}</div>
                         </div>
                       ))}

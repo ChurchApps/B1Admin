@@ -90,9 +90,11 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
         );
       case "custom":
         return (
-          <Grid container spacing={0.5} sx={{ minHeight: 323 }}>
-            {optionalColumns.length > 0 ? <>{optionalItems}</> : <div>{Locale.label("people.peopleColumns.noFilt")}</div>}
-          </Grid>
+          <Box sx={{ minHeight: 323 }}>
+            <Grid container spacing={0.5}>
+              {optionalColumns.length > 0 ? <>{optionalItems}</> : <div>{Locale.label("people.peopleColumns.noFilt")}</div>}
+            </Grid>
+          </Box>
         );
       default: return null;
     }
