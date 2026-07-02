@@ -33,6 +33,7 @@ const stripeCurrencyFees = {
 };
 
 export const FeeOptionsSettingsEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [flatRateCC, setFlatRateCC] = React.useState<GenericSettingInterface>(null);
   const [transFeeCC, setTransFeeCC] = React.useState<GenericSettingInterface>(null);
   const [flatRateACH, setFlatRateACH] = React.useState<GenericSettingInterface>(null);

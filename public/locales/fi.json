@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Rahaston nimi",
       "ariaTaxDeductible": "Verovähennyskelpoinen",
+      "ariaVisible": "Näkyvissä lahjoittajille",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Kirjoita rahaston nimi",
       "taxDeductible": "Verovähennyskelpoinen",
       "trackDonations": "Seurantaa lahjoituksia.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Näkyvissä lahjoittajille"
     },
     "fundPage": {
       "donors": "Lahjoittajat",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Rahastot",
+      "hidden": "Piilotettu",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Liittyvät palvelut",
+      "confirmDuplicate": "Monistetaanko tämä ryhmä? Jäseniä ei kopioida.",
+      "copySuffix": "(Kopio)",
+      "duplicateTooltip": "Monista tämä ryhmä",
       "emailTooltip": "Lähetä sähköpostia tälle ryhmälle",
       "labels": "Otsikot",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Arkistoi",
+      "archiveAria": "Arkistoi ryhmä",
       "attTrack": "Seuraa osallistumista",
       "attendance": "Osallistuminen",
       "attendanceReminders": "Läsnäolo­muistutussähköpostit",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Vaihda ryhmäkuva",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Haluatko varmasti arkistoida tämän ryhmän? Se piilotetaan ryhmälistalta, kunnes se palautetaan.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Ilmoittautuminen",
       "groupDesc": "Ryhmän kuvaus",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "Ihmiset",
+      "restore": "Palauta",
+      "showArchived": "Näytä arkistoidut",
       "spPpl": " people",
       "subtitle": {
         "create": "Aloita luomalla ensimmäinen ryhmä",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Lisää osallistuja",
+      "addAttendeeError": "Osallistujan rekisteröinti epäonnistui.",
       "cancelConfirm": "Peruutetaanko tämä ilmoittautuminen?",
       "cancelRegistration": "Peruuta ilmoittautuminen",
       "csvDate": "Päivämäärä",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Tila",
       "date": "Päivämäärä",
       "deleteConfirm": "Poistetaanko tämä ilmoittautuminen pysyvästi?",
+      "eventFull": "Tämä tapahtuma on saavuttanut kapasiteettinsa.",
       "eventNotFound": "Tapahtumaa ei löytynyt",
       "eventRegistrations": "Tapahtuman ilmoittautumiset",
       "exportCsv": "Vie CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Ilmoittautumiset",
       "status": "Tila",
       "subtitle": "Hallitse tämän tapahtuman ilmoittautumisia",
-      "unknown": "Tuntematon"
+      "unansweredOnly": "Vain vastaamattomat kysymykset",
+      "unknown": "Tuntematon",
+      "viewAnswers": "Näytä vastaukset"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapasiteetti",
       "capacityPlaceholder": "Jätä tyhjäksi rajoittamatonta varten",
       "enableRegistration": "Ota ilmoittautuminen käyttöön",
+      "none": "Ei mitään",
       "registrationCloses": "Ilmoittautuminen sulkeutuu",
       "registrationOpens": "Ilmoittautuminen aukeaa",
+      "registrationQuestions": "Ilmoittautumiskysymykset",
       "registrationSettings": "Ilmoittautumisasetukset",
       "saveSettings": "Tallenna asetukset",
       "tags": "Tunnisteet",

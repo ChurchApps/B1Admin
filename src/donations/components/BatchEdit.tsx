@@ -13,6 +13,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const BatchEdit = memo((props: Props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: "", date: DateHelper.formatHtml5Date(new Date()) } });
 
   const handleCancel = useCallback(() => { props.updatedFunction(); }, [props.updatedFunction]);

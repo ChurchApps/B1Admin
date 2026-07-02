@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Fon adı",
       "ariaTaxDeductible": "Vergiden düşülebilir",
+      "ariaVisible": "Bağışçılara görünür",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Bağışçılara Görünür"
     },
     "fundPage": {
       "donors": "Bağışçılar",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "Gizli",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "Bu grup çoğaltılsın mı? Üyeler kopyalanmayacak.",
+      "copySuffix": "(Kopya)",
+      "duplicateTooltip": "Bu grubu çoğalt",
       "emailTooltip": "Bu gruba e-posta gönder",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Arşivle",
+      "archiveAria": "Grubu arşivle",
       "attTrack": "Track Attendance",
       "attendance": "Katılım",
       "attendanceReminders": "Katılım Hatırlatma E-postaları",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Grup fotoğrafını değiştir",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Bu grubu arşivlemek istediğinizden emin misiniz? Geri yüklenene kadar grup listesinden gizlenecektir.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Kayıt",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "İnsanlar",
+      "restore": "Geri Yükle",
+      "showArchived": "Arşivlenenleri göster",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Katılımcı Ekle",
+      "addAttendeeError": "Katılımcı kaydedilemedi.",
       "cancelConfirm": "Bu kayıt iptal edilsin mi?",
       "cancelRegistration": "Kaydı İptal Et",
       "csvDate": "Tarih",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Durum",
       "date": "Tarih",
       "deleteConfirm": "Bu kayıt kalıcı olarak silinsin mi?",
+      "eventFull": "Bu etkinlik kapasitesine ulaştı.",
       "eventNotFound": "Etkinlik bulunamadı",
       "eventRegistrations": "Etkinlik Kayıtları",
       "exportCsv": "CSV Olarak Dışa Aktar",
@@ -2353,14 +2367,18 @@
       "registrations": "Kayıtlar",
       "status": "Durum",
       "subtitle": "Bu etkinlik için kayıtları yönetin",
-      "unknown": "Bilinmiyor"
+      "unansweredOnly": "Yalnızca yanıtlanmamış sorular",
+      "unknown": "Bilinmiyor",
+      "viewAnswers": "Yanıtları Görüntüle"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapasite",
       "capacityPlaceholder": "Sınırsız için boş bırakın",
       "enableRegistration": "Kaydı Etkinleştir",
+      "none": "Yok",
       "registrationCloses": "Kayıt Kapanışı",
       "registrationOpens": "Kayıt Açılışı",
+      "registrationQuestions": "Kayıt Soruları",
       "registrationSettings": "Kayıt Ayarları",
       "saveSettings": "Ayarları Kaydet",
       "tags": "Etiketler",

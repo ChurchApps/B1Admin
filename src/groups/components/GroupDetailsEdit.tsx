@@ -22,6 +22,7 @@ interface Props {
 }
 
 export const GroupDetailsEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [redirect, setRedirect] = React.useState("");
   const [showGalleryModal, setShowGalleryModal] = React.useState(false);
   // Non-RHF state for external widgets
@@ -110,6 +111,13 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     }
   };
 
+  const handleArchive = () => {
+    if (window.confirm(Locale.label("groups.groupDetailsEdit.confirmArchive"))) {
+      const group: GroupInterface = { ...props.group, archived: true };
+      ApiHelper.post("/groups", [group], "MembershipApi").then(() => setRedirect("/groups"));
+    }
+  };
+
   const handlePhotoSelected = (newPhotoUrl: string) => {
     setPhotoUrl(newPhotoUrl);
     setShowGalleryModal(false);
@@ -192,7 +200,12 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
   return (
     <>
       {galleryModal}
-      <FormCard id="groupDetailsBox" title={Locale.label("groups.groupDetailsEdit.groupDet")} icon="group" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} help="docs/b1-admin/groups/">
+      <FormCard id="groupDetailsBox" title={Locale.label("groups.groupDetailsEdit.groupDet")} icon="group" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} help="docs/b1-admin/groups/"
+        headerActions={
+          <Button size="small" onClick={handleArchive} data-testid="archive-group-button" aria-label={Locale.label("groups.groupDetailsEdit.archiveAria")}>
+            {Locale.label("groups.groupDetailsEdit.archive")}
+          </Button>
+        }>
         <ErrorMessages errors={summaryErrors} />
         <Grid container spacing={3}>
           {!teamMode && (

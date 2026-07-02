@@ -167,6 +167,10 @@ export async function navigateToApprovals(page: Page) {
   await navigateTo(page, "approvals");
 }
 
+export async function navigateToRegistrations(page: Page) {
+  await navigateTo(page, "registrations");
+}
+
 export async function navigateToServing(page: Page) {
   await navigateTo(page, "serving");
 }

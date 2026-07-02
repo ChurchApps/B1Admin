@@ -21,6 +21,9 @@ export const WorkflowEdit = (props: Props) => {
   const [categories, setCategories] = React.useState<WorkflowCategoryInterface[]>([]);
   const [addingCategory, setAddingCategory] = React.useState(false);
   const [newCategoryName, setNewCategoryName] = React.useState("");
+  // Hoisted: the compiler emits a non-optional guard read (workflow.id) for the
+  // handleDelete closure dep, which crashes while workflow is still null.
+  const workflowId = workflow ? workflow.id : null;
 
   React.useEffect(() => {
     setWorkflow(props.workflow);
@@ -36,7 +39,7 @@ export const WorkflowEdit = (props: Props) => {
   };
 
   const handleDelete = async () => {
-    await ApiHelper.delete("/workflows/" + workflow.id, "DoingApi");
+    await ApiHelper.delete("/workflows/" + workflowId, "DoingApi");
     props.onDelete?.();
   };
 
@@ -127,7 +130,7 @@ export const WorkflowEdit = (props: Props) => {
           </Stack>
 
           <Stack direction="row" spacing={2} justifyContent="flex-end">
-            {workflow?.id && (
+            {workflowId && (
               <Button variant="outlined" startIcon={<DeleteIcon />} onClick={handleDelete} data-testid="workflow-delete-button" sx={{ borderRadius: 2, textTransform: "none", fontWeight: 600 }}>
                 {Locale.label("common.delete")}
               </Button>

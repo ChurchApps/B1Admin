@@ -476,3 +476,64 @@ test.describe("Donations — navigation and listing extras", () => {
     await expect(page.getByRole("button", { name: "Weekly" })).toHaveAttribute("aria-pressed", "true");
   });
 });
+
+// "Visible to Donors" checkbox on FundEdit (default checked) + the "Hidden" chip Funds.tsx
+// renders when unchecked. Self-contained — creates and deletes its own disposable fund.
+test.describe("Fund visibility", () => {
+  // Fund creation isn't idempotent — a retry would create a duplicate "Zacchaeus
+  // Hidden Fund" row and break the row-scoped assertions (same policy as Funds above).
+  test.describe.configure({ retries: 0 });
+
+  test("unchecking Visible to Donors shows a Hidden chip; re-checking it removes the chip", async ({ page }) => {
+    const TEST_HIDDEN_FUND = "Zacchaeus Concealed Fund";
+
+    const fundsBtn = page.locator('[id="secondaryMenu"]').getByText("Funds").first();
+    await fundsBtn.click();
+    await expect(page).toHaveURL(/\/donations\/funds/, { timeout: 10000 });
+
+    const addBtn = page.locator('[data-testid="add-fund-button"]');
+    await expect(addBtn).toBeVisible({ timeout: 10000 });
+    await addBtn.click();
+
+    const fundName = page.locator('[name="fundName"]');
+    await expect(fundName).toBeVisible({ timeout: 10000 });
+    await fundName.fill(TEST_HIDDEN_FUND);
+
+    // Visible to Donors defaults to checked. Drive the input directly and verify the
+    // toggle landed before saving — FundEdit hydrates async and can re-render mid-click.
+    const visibleInput = page.locator('[data-testid="fund-visible-checkbox"] input');
+    await expect(visibleInput).toBeChecked();
+    await visibleInput.click({ force: true });
+    await expect(visibleInput).not.toBeChecked();
+
+    const fundPost1 = page.waitForResponse((r) => r.url().includes("/giving/funds") && r.request().method() === "POST", { timeout: 15000 });
+    await page.locator("#fundsBox").getByRole("button", { name: "Save" }).click();
+    await fundPost1;
+
+    const row = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_HIDDEN_FUND, { exact: true }) });
+    await expect(row).toBeVisible({ timeout: 10000 });
+    await expect(row.getByText("Hidden", { exact: true })).toBeVisible({ timeout: 10000 });
+
+    // Re-open and re-check Visible to Donors — the Hidden chip disappears.
+    const editBtn = row.getByRole("button", { name: /Edit/ });
+    await editBtn.click();
+    const visibleInput2 = page.locator('[data-testid="fund-visible-checkbox"] input');
+    await expect(visibleInput2).toBeVisible({ timeout: 10000 });
+    await expect(visibleInput2).not.toBeChecked();
+    await visibleInput2.click({ force: true });
+    await expect(visibleInput2).toBeChecked();
+    const fundPost2 = page.waitForResponse((r) => r.url().includes("/giving/funds") && r.request().method() === "POST", { timeout: 15000 });
+    await page.locator("#fundsBox").getByRole("button", { name: "Save" }).click();
+    await fundPost2;
+
+    const row2 = page.locator("tr").filter({ has: page.locator("a").getByText(TEST_HIDDEN_FUND, { exact: true }) });
+    await expect(row2).toBeVisible({ timeout: 10000 });
+    await expect(row2.getByText("Hidden", { exact: true })).toHaveCount(0, { timeout: 10000 });
+
+    // Cleanup — delete the disposable fund.
+    page.once("dialog", async (dialog) => { await dialog.accept(); });
+    await row2.getByRole("button", { name: /Edit/ }).click();
+    await page.locator("#fundsBox").getByRole("button", { name: "Delete" }).click();
+    await expect(page.locator("a").getByText(TEST_HIDDEN_FUND, { exact: true })).toHaveCount(0, { timeout: 10000 });
+  });
+});

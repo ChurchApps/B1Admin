@@ -14,6 +14,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const LinkEdit = (props: Props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { url: "", text: "" } });
 
   useEffect(() => {

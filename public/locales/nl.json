@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Fondsnaam",
       "ariaTaxDeductible": "Fiscaal aftrekbaar",
+      "ariaVisible": "Zichtbaar voor donoren",
       "confirmMsg": "Weet u zeker dat u dit fonds en alle bijbehorende donaties permanent wilt verwijderen?",
       "errBlank": "Voer een fondsnaam in",
       "taxDeductible": "Fiscaal aftrekbaar",
       "trackDonations": "Volgt donaties.",
-      "trackNonDonations": "Volgt niet-donatietransacties zoals kampinschrijvingen, T-shirts, evenemententickets, enz."
+      "trackNonDonations": "Volgt niet-donatietransacties zoals kampinschrijvingen, T-shirts, evenemententickets, enz.",
+      "visible": "Zichtbaar voor donoren"
     },
     "fundPage": {
       "donors": "Donateurs",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Fondsen",
+      "hidden": "Verborgen",
       "noFund": "Geen fondsen gevonden."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Gekoppelde diensten",
+      "confirmDuplicate": "Deze groep dupliceren? Leden worden niet gekopieerd.",
+      "copySuffix": "(Kopie)",
+      "duplicateTooltip": "Dupliceer deze groep",
       "emailTooltip": "E-mail deze groep",
       "labels": "Labels",
       "meetingInfo": "Vergaderinformatie",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Foto toevoegen",
+      "archive": "Archiveren",
+      "archiveAria": "Groep archiveren",
       "attTrack": "Aanwezigheid bijhouden",
       "attendance": "Aanwezigheid",
       "attendanceReminders": "Herinneringsmails aanwezigheid",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Voer een categorienaam in.",
       "changePhotoAria": "Groepsfoto wijzigen",
       "clickToAddPhoto": "Klik om foto toe te voegen",
+      "confirmArchive": "Weet u zeker dat u deze groep wilt archiveren? Deze wordt verborgen uit de groepenlijst totdat deze wordt hersteld.",
       "confirmMsg": "Weet u zeker dat u deze groep permanent wilt verwijderen?",
       "enrollment": "Inschrijving",
       "groupDesc": "Groepsbeschrijving",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Geen groepen gevonden. Maak een groep aan.",
       "pers": "1 persoon",
       "ppl": "Mensen",
+      "restore": "Herstellen",
+      "showArchived": "Gearchiveerde groepen tonen",
       "spPpl": " mensen",
       "subtitle": {
         "create": "Begin met het aanmaken van uw eerste groep",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Deelnemer toevoegen",
+      "addAttendeeError": "Deelnemer registreren mislukt",
       "cancelConfirm": "Deze registratie annuleren?",
       "cancelRegistration": "Registratie annuleren",
       "csvDate": "Datum",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Status",
       "date": "Datum",
       "deleteConfirm": "Deze registratie permanent verwijderen?",
+      "eventFull": "Dit evenement heeft de maximale capaciteit bereikt.",
       "eventNotFound": "Gebeurtenis niet gevonden",
       "eventRegistrations": "Gebeurtenisregistraties",
       "exportCsv": "CSV exporteren",
@@ -2353,14 +2367,18 @@
       "registrations": "Registraties",
       "status": "Status",
       "subtitle": "Beheer registraties voor dit evenement",
-      "unknown": "Onbekend"
+      "unansweredOnly": "Alleen onbeantwoorde vragen",
+      "unknown": "Onbekend",
+      "viewAnswers": "Antwoorden bekijken"
     },
     "registrationSettingsEdit": {
       "capacity": "Capaciteit",
       "capacityPlaceholder": "Laat leeg voor onbeperkt",
       "enableRegistration": "Registratie inschakelen",
+      "none": "Geen",
       "registrationCloses": "Registratie sluit",
       "registrationOpens": "Registratie opent",
+      "registrationQuestions": "Registratievragen",
       "registrationSettings": "Registratie-instellingen",
       "saveSettings": "Instellingen opslaan",
       "tags": "Tags",

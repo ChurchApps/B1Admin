@@ -18,6 +18,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const DonationEdit = memo((props: Props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [donation, setDonation] = React.useState<DonationInterface>({});
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [showSelectPerson, setShowSelectPerson] = React.useState(false);

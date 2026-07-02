@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Pangalan ng pondo",
       "ariaTaxDeductible": "Buwagang ibabawas",
+      "ariaVisible": "Makikita ng mga Donor",
       "confirmMsg": "Sigurado ka bang nais mong permanenteng tanggalin ang pondo na ito at lahat ng donasyon dito?",
       "errBlank": "Ilagay ang pangalan ng pondo",
       "taxDeductible": "Maaaring Bawasan sa Buwis",
       "trackDonations": "Sumusubaybay sa mga donasyon.",
-      "trackNonDonations": "Sumusubaybay sa mga transaksyon na hindi donasyon tulad ng mga pagrerehistro sa kampo, t-shirt, tiket sa kaganapan, atbp."
+      "trackNonDonations": "Sumusubaybay sa mga transaksyon na hindi donasyon tulad ng mga pagrerehistro sa kampo, t-shirt, tiket sa kaganapan, atbp.",
+      "visible": "Makikita ng mga Donor"
     },
     "fundPage": {
       "donors": "Mga Donor",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Pondo",
+      "hidden": "Nakatago",
       "noFund": "Walang natagpuang pondo."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Mga Kaugnay na Serbisyo",
+      "confirmDuplicate": "Kopyahin ang grupong ito? Hindi kokopyahin ang mga miyembro.",
+      "copySuffix": "(Kopya)",
+      "duplicateTooltip": "Kopyahin ang grupong ito",
       "emailTooltip": "Mag-email sa grupong ito",
       "labels": "Mga Label",
       "meetingInfo": "Pagpupulong ng impormasyon",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Magdagdag ng larawan",
+      "archive": "I-archive",
+      "archiveAria": "I-archive ang grupo",
       "attTrack": "Pagsubaybay sa Pagdalo",
       "attendance": "Pagdalo",
       "attendanceReminders": "Mga Email na Paalala sa Pagdalo",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Mangyaring ilagay ang pangalan ng kategorya.",
       "changePhotoAria": "Baguhin ang larawan ng grupo",
       "clickToAddPhoto": "Mag -click upang magdagdag ng larawan",
+      "confirmArchive": "Sigurado ka bang nais mong i-archive ang grupong ito? Itatago ito sa listahan ng mga grupo hanggang sa maibalik.",
       "confirmMsg": "Sigurado ka bang nais mong permanenteng tanggalin ang grupong ito?",
       "enrollment": "Enrollment",
       "groupDesc": "Paglalarawan ng Grupo",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Walang natagpuang grupo. Mangyaring gumawa ng grupo.",
       "pers": "1 tao",
       "ppl": "Mga Tao",
+      "restore": "Ibalik",
+      "showArchived": "Ipakita ang mga naka-archive",
       "spPpl": " mga tao",
       "subtitle": {
         "create": "Magsimula sa pamamagitan ng paglikha ng iyong unang pangkat",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Magdagdag ng Kalahok",
+      "addAttendeeError": "Nabigo ang pagpaparehistro ng kalahok.",
       "cancelConfirm": "Kanselahin ang pagpaparehistrong ito?",
       "cancelRegistration": "Kanselahin ang Pagpaparehistro",
       "csvDate": "Petsa",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Katayuan",
       "date": "Petsa",
       "deleteConfirm": "Permanenteng tanggalin ang pagpaparehistrong ito?",
+      "eventFull": "Naabot na ng event na ito ang kapasidad nito.",
       "eventNotFound": "Hindi nahanap ang event",
       "eventRegistrations": "Mga Pagpaparehistro sa Event",
       "exportCsv": "I-export ang CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Mga Pagpaparehistro",
       "status": "Katayuan",
       "subtitle": "Pamahalaan ang mga pagpaparehistro para sa event na ito",
-      "unknown": "Hindi alam"
+      "unansweredOnly": "Mga hindi pa nasasagot na katanungan lamang",
+      "unknown": "Hindi alam",
+      "viewAnswers": "Tingnan ang mga Sagot"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapasidad",
       "capacityPlaceholder": "Iwanang blangko para sa walang limitasyon",
       "enableRegistration": "Paganahin ang Pagpaparehistro",
+      "none": "Wala",
       "registrationCloses": "Pagsasara ng Pagpaparehistro",
       "registrationOpens": "Pagbubukas ng Pagpaparehistro",
+      "registrationQuestions": "Mga Katanungan sa Pagpaparehistro",
       "registrationSettings": "Mga Setting ng Pagpaparehistro",
       "saveSettings": "I-save ang Mga Setting",
       "tags": "Mga Tag",

@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Nama dana",
       "ariaTaxDeductible": "Dapat dikurangkan pajak",
+      "ariaVisible": "Terlihat oleh donatur",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Terlihat oleh Donatur"
     },
     "fundPage": {
       "donors": "Donatur",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "Tersembunyi",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "Duplikat grup ini? Anggota tidak akan disalin.",
+      "copySuffix": "(Salinan)",
+      "duplicateTooltip": "Duplikat grup ini",
       "emailTooltip": "Email grup ini",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Arsipkan",
+      "archiveAria": "Arsipkan grup",
       "attTrack": "Track Attendance",
       "attendance": "Kehadiran",
       "attendanceReminders": "Email Pengingat Kehadiran",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Ubah foto grup",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Apakah Anda yakin ingin mengarsipkan grup ini? Grup akan disembunyikan dari daftar grup hingga dipulihkan.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Pendaftaran",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "Orang",
+      "restore": "Pulihkan",
+      "showArchived": "Tampilkan yang diarsipkan",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Tambah Peserta",
+      "addAttendeeError": "Gagal mendaftarkan peserta",
       "cancelConfirm": "Batalkan pendaftaran ini?",
       "cancelRegistration": "Batalkan Pendaftaran",
       "csvDate": "Tanggal",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Status",
       "date": "Tanggal",
       "deleteConfirm": "Hapus pendaftaran ini secara permanen?",
+      "eventFull": "Acara ini telah mencapai kapasitas.",
       "eventNotFound": "Acara tidak ditemukan",
       "eventRegistrations": "Pendaftaran Acara",
       "exportCsv": "Ekspor CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Pendaftaran",
       "status": "Status",
       "subtitle": "Kelola pendaftaran untuk acara ini",
-      "unknown": "Tidak diketahui"
+      "unansweredOnly": "Hanya pertanyaan yang belum dijawab",
+      "unknown": "Tidak diketahui",
+      "viewAnswers": "Lihat Jawaban"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapasitas",
       "capacityPlaceholder": "Biarkan kosong untuk tidak terbatas",
       "enableRegistration": "Aktifkan Pendaftaran",
+      "none": "Tidak ada",
       "registrationCloses": "Pendaftaran Ditutup",
       "registrationOpens": "Pendaftaran Dibuka",
+      "registrationQuestions": "Pertanyaan Pendaftaran",
       "registrationSettings": "Pengaturan Pendaftaran",
       "saveSettings": "Simpan Pengaturan",
       "tags": "Tag",

@@ -33,9 +33,12 @@ export function SectionEdit(props: Props) {
   const [blocks, setBlocks] = useState<BlockInterface[]>(null);
   const [section, setSection] = useState<SectionInterface>(null);
   const [errors, setErrors] = useState([]);
-  const parsedData = (section?.answersJSON) ? JSON.parse(section.answersJSON) : {};
-  const parsedStyles = (section?.stylesJSON) ? JSON.parse(section.stylesJSON) : {};
-  const parsedAnimations = (section?.animationsJSON) ? JSON.parse(section.animationsJSON) : {};
+  // Hoisted null-safe view of section: the compiler merges optional member deps
+  // (section?.answersJSON) into non-optional guard reads that crash while section is null.
+  const sec: SectionInterface = section || ({} as SectionInterface);
+  const parsedData = sec.answersJSON ? JSON.parse(sec.answersJSON) : {};
+  const parsedStyles = sec.stylesJSON ? JSON.parse(sec.stylesJSON) : {};
+  const parsedAnimations = sec.animationsJSON ? JSON.parse(sec.animationsJSON) : {};
   const baselineRef = React.useRef<string>(null);
   const dirtyRef = React.useRef(false);
 
@@ -97,7 +100,7 @@ export function SectionEdit(props: Props) {
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("site.section.confirmDelete"))) {
-      trackSave(ApiHelper.delete("/sections/" + section.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
+      trackSave(ApiHelper.delete("/sections/" + sec.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
     }
   };
 
@@ -148,7 +151,7 @@ export function SectionEdit(props: Props) {
     return (<>
       <FormControl fullWidth>
         <InputLabel>{Locale.label("site.sectionEdit.block")}</InputLabel>
-        <Select fullWidth label={Locale.label("site.sectionEdit.block")} name="targetBlockId" value={section.targetBlockId || ""} onChange={handleChange}>
+        <Select fullWidth label={Locale.label("site.sectionEdit.block")} name="targetBlockId" value={sec.targetBlockId || ""} onChange={handleChange}>
           {options}
         </Select>
       </FormControl>
@@ -208,7 +211,7 @@ export function SectionEdit(props: Props) {
       </>)}
     >
       <div id="dialogFormContent">
-        {(section?.targetBlockId) ? getBlockFields() : getStandardFields()}
+        {sec.targetBlockId ? getBlockFields() : getStandardFields()}
       </div>
     </FormCard>
   );

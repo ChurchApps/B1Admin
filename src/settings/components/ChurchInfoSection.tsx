@@ -23,6 +23,7 @@ const DisplayRow: React.FC<{ label: string; value?: string }> = ({ label, value 
 );
 
 export const ChurchInfoSection: React.FC<Props> = ({ church, onSaved }) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [editing, setEditing] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
 

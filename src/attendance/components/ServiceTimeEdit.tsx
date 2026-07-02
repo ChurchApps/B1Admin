@@ -14,6 +14,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const ServiceTimeEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [services, setServices] = React.useState([] as ServiceInterface[]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const isMounted = useMountedState();

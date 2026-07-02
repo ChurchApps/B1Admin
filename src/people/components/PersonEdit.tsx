@@ -63,6 +63,7 @@ const buildFormDefaults = (p: PersonInterface) => ({
 });
 
 export const PersonEdit = memo((props: Props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const context = React.useContext(UserContext);
   const [redirect, setRedirect] = useState("");
   const [showUpdateAddressModal, setShowUpdateAddressModal] = useState(false);

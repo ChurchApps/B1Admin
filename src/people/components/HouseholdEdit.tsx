@@ -19,6 +19,7 @@ interface Props {
 }
 
 export function HouseholdEdit(props: Props) {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [members, setMembers] = React.useState<PersonInterface[]>([...(props.currentMembers || [])]);
   const [showAdd, setShowAdd] = React.useState(false);
   const [showUpdateAddressModal, setShowUpdateAddressModal] = React.useState<boolean>(false);

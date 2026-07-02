@@ -26,6 +26,7 @@ interface Props {
 }
 
 export const ChurchSettingsEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [errors, setErrors] = React.useState<string[]>([]);
   const [saveTrigger, setSaveTrigger] = React.useState<Date | null>(null);
   const childErrorsRef = React.useRef<string[]>([]);

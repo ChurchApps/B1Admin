@@ -24,6 +24,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () => {} }: Props) {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [icon, setIcon] = useState<string>("");
   const [photo, setPhoto] = useState<string>("");
   const [groupIdsJson, setGroupIdsJson] = useState<string>("");

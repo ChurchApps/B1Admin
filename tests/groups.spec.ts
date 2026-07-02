@@ -556,3 +556,101 @@ test.describe("Group service times (optional) field", () => {
     await expect(box.locator("table tbody tr").filter({ hasText: "9:00 AM Service" })).toHaveCount(0, { timeout: 10000 });
   });
 });
+
+// Duplicate (GroupBanner), Archive (GroupDetailsEdit header), and Show archived + Restore
+// (GroupsPage). Uses its own browser context/serial chain, targeting a seed group untouched
+// by the "Group Management" chain above ("Empty Nesters Group", GRP00000015) so ordering
+// between the two chains doesn't matter. The chain operates on the *duplicate*, not the
+// seed group, and deletes it at the end.
+test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
+  let page: Page;
+  const SOURCE_GROUP = "Empty Nesters Group";
+  const DUPLICATE_NAME = `${SOURCE_GROUP} (Copy)`;
+
+  test.beforeAll(async ({ browser }) => {
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+    await navigateToGroups(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test("duplicates a group via the GroupBanner icon, copying settings but not members", async () => {
+    const groupLink = page.locator("table tbody tr a").getByText(SOURCE_GROUP, { exact: true });
+    await expect(groupLink).toBeVisible({ timeout: 10000 });
+    await groupLink.click();
+    await page.waitForURL(/\/groups\/GRP\w+/, { timeout: 10000 });
+    const originalUrl = page.url();
+
+    page.once("dialog", async (d) => {
+      expect(d.message()).toContain("Members will not be copied");
+      await d.accept();
+    });
+    const groupPost = page.waitForResponse((r) => r.url().includes("/groups") && r.request().method() === "POST", { timeout: 15000 });
+    await page.locator('[data-testid="duplicate-group-button"]').click();
+    await groupPost;
+
+    // Navigates to the copy's own detail page (a different GRP id).
+    await page.waitForURL((url) => /\/groups\/[\w-]+$/.test(url.pathname) && url.href !== originalUrl, { timeout: 15000 });
+    await expect(page.getByText(DUPLICATE_NAME).first()).toBeVisible({ timeout: 10000 });
+
+    // Settings were copied (meeting location from the source group)...
+    await expect(page.getByText("Various Homes").first()).toBeVisible({ timeout: 10000 });
+    // ...but members were not — the source group has 4 seed members, the copy has none.
+    await expect(page.locator("#groupMemberTable tbody tr")).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("archives the duplicated group from the GroupDetailsEdit header", async () => {
+    // Still on the duplicate's detail page from the previous test.
+    const editBtn = editIconButton(page).first();
+    await editBtn.click();
+    const archiveBtn = page.locator('[data-testid="archive-group-button"]');
+    await expect(archiveBtn).toBeVisible({ timeout: 10000 });
+
+    page.once("dialog", async (d) => {
+      expect(d.message()).toContain("archive");
+      await d.accept();
+    });
+    await archiveBtn.click();
+    // Archiving redirects back to the groups list.
+    await page.waitForURL(/\/groups$/, { timeout: 15000 });
+  });
+
+  test('archived group is hidden by default and reappears with "Show archived"', async () => {
+    await navigateToGroups(page);
+    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toHaveCount(0, { timeout: 10000 });
+
+    const toggle = page.locator('[data-testid="show-archived-toggle"] input');
+    await toggle.click();
+    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toBeVisible({ timeout: 10000 });
+  });
+
+  test("Restore returns the group to the active (non-archived) list", async () => {
+    const row = page.locator("table tbody tr").filter({ has: page.locator("a").getByText(DUPLICATE_NAME) });
+    const restoreResp = page.waitForResponse((r) => r.url().includes("/groups") && r.request().method() === "POST", { timeout: 15000 });
+    await row.locator('[data-testid^="restore-group-"]').click();
+    await restoreResp;
+
+    // Toggle "Show archived" back off — the restored group now shows in the default list.
+    const toggle = page.locator('[data-testid="show-archived-toggle"] input');
+    await toggle.click();
+    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toBeVisible({ timeout: 10000 });
+  });
+
+  test("cleanup: deletes the duplicated group", async () => {
+    const groupLink = page.locator("table tbody tr a").getByText(DUPLICATE_NAME, { exact: true });
+    await groupLink.click();
+    await page.waitForURL(/\/groups\/[\w-]+$/, { timeout: 10000 });
+    const editBtn = editIconButton(page).first();
+    await editBtn.click();
+    const deleteBtn = page.locator("button").getByText("Delete");
+    await expect(deleteBtn).toBeVisible({ timeout: 10000 });
+    page.once("dialog", async (d) => { await d.accept(); });
+    await deleteBtn.click();
+    await page.waitForURL(/\/groups$/, { timeout: 15000 });
+    await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toHaveCount(0, { timeout: 10000 });
+  });
+});

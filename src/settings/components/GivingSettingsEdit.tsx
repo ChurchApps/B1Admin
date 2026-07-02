@@ -22,6 +22,7 @@ type AnyRecord = Record<string, any>;
 const isProd = process.env.REACT_APP_STAGE === "prod";
 
 export const GivingSettingsEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [gateway, setGateway] = React.useState<PaymentGatewaysInterface>(null);
   const [errors, setErrors] = React.useState<string[]>([]);
   const [copySnackbar, setCopySnackbar] = React.useState(false);

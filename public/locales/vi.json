@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Tên quỹ",
       "ariaTaxDeductible": "Được khấu trừ thuế",
+      "ariaVisible": "Hiển thị với người đóng góp",
       "confirmMsg": "Are you sure you wish to permanently Xóa this fund and Tất cả donations within it?",
       "errBlank": "Enter a fund Tên",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Hiển thị với người đóng góp"
     },
     "fundPage": {
       "donors": "Người đóng góp",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "Ẩn",
       "noFund": "Không funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Các buổi lễ",
+      "confirmDuplicate": "Nhân bản nhóm này? Các thành viên sẽ không được sao chép.",
+      "copySuffix": "(Bản sao)",
+      "duplicateTooltip": "Nhân bản nhóm này",
       "emailTooltip": "Email cho nhóm này",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Thêm Photo",
+      "archive": "Lưu trữ",
+      "archiveAria": "Lưu trữ nhóm",
       "attTrack": "Theo dõi Tham dự",
       "attendance": "Tham dự",
       "attendanceReminders": "Email nhắc nhở điểm danh",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a Danh mục Tên.",
       "changePhotoAria": "Thay đổi ảnh nhóm",
       "clickToAddPhoto": "Click to Thêm photo",
+      "confirmArchive": "Bạn có chắc chắn muốn lưu trữ nhóm này không? Nhóm sẽ bị ẩn khỏi danh sách nhóm cho đến khi được khôi phục.",
       "confirmMsg": "Are you sure you wish to permanently Xóa this Nhóm?",
       "enrollment": "Đăng ký",
       "groupDesc": "Nhóm Mô tả",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Không Các nhóm found. Please Tạo mới a Nhóm.",
       "pers": "1 person",
       "ppl": "People",
+      "restore": "Khôi phục",
+      "showArchived": "Hiển thị mục đã lưu trữ",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first Nhóm",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Thêm người tham dự",
+      "addAttendeeError": "Đăng ký người tham dự thất bại.",
       "cancelConfirm": "Hủy đăng ký này?",
       "cancelRegistration": "Hủy đăng ký",
       "csvDate": "Ngày",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Trạng thái",
       "date": "Ngày",
       "deleteConfirm": "Xóa vĩnh viễn đăng ký này?",
+      "eventFull": "Sự kiện này đã đạt đến sức chứa tối đa.",
       "eventNotFound": "Không tìm thấy sự kiện",
       "eventRegistrations": "Đăng ký sự kiện",
       "exportCsv": "Xuất CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Đăng ký",
       "status": "Trạng thái",
       "subtitle": "Quản lý đăng ký cho sự kiện này",
-      "unknown": "Không xác định"
+      "unansweredOnly": "Chỉ các câu hỏi chưa trả lời",
+      "unknown": "Không xác định",
+      "viewAnswers": "Xem câu trả lời"
     },
     "registrationSettingsEdit": {
       "capacity": "Sức chứa",
       "capacityPlaceholder": "Để trống cho không giới hạn",
       "enableRegistration": "Bật đăng ký",
+      "none": "Không có",
       "registrationCloses": "Đăng ký đóng",
       "registrationOpens": "Đăng ký mở",
+      "registrationQuestions": "Câu hỏi đăng ký",
       "registrationSettings": "Cài đặt đăng ký",
       "saveSettings": "Lưu cài đặt",
       "tags": "Thẻ",

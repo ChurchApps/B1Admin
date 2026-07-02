@@ -4,7 +4,7 @@ import { UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
-import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Card, Stack, Button } from "@mui/material";
+import { Chip, Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Card, Stack, Button } from "@mui/material";
 import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../components/ui/AppIconButton";
@@ -107,6 +107,7 @@ export const FundsPage = () => {
             <Stack direction="row" spacing={1} alignItems="center">
               <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />
               {fundLink}
+              {f.visible === false && <Chip label={Locale.label("donations.funds.hidden")} size="small" />}
             </Stack>
           </TableCell>
           <TableCell>

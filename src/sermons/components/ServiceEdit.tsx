@@ -36,6 +36,7 @@ interface Props { currentService: StreamingServiceInterface, updatedFunction?: (
 type AnyRecord = Record<string, any>;
 
 export const ServiceEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
 

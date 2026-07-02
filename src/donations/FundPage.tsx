@@ -28,6 +28,9 @@ export const FundPage = () => {
     uniqueDonors: 0
   });
   const [currency, setCurrency] = React.useState<string>("usd");
+  // Hoisted: the compiler emits non-optional guard reads (fundDonations.length) for closure
+  // deps, which crash while fundDonations is still null.
+  const donationList = fundDonations || [];
 
   const loadData = () => {
     ApiHelper.get("/funds/" + params.id, "GivingApi").then((data: any) => {
@@ -77,7 +80,7 @@ export const FundPage = () => {
   const getRows = () => {
     const result: JSX.Element[] = [];
 
-    if (fundDonations.length === 0) {
+    if (donationList.length === 0) {
       result.push(
         <TableRow key="0">
           <TableCell colSpan={4} sx={{ textAlign: "center", py: 4 }}>
@@ -93,8 +96,8 @@ export const FundPage = () => {
       return result;
     }
 
-    for (let i = 0; i < fundDonations.length; i++) {
-      const fd = fundDonations[i];
+    for (let i = 0; i < donationList.length; i++) {
+      const fd = donationList[i];
       const isAnonymous = UniqueIdHelper.isMissing(fd.donation?.personId);
 
       const personCol = isAnonymous ? (
@@ -156,7 +159,7 @@ export const FundPage = () => {
   const getTableHeader = () => {
     const rows: JSX.Element[] = [];
 
-    if (fundDonations.length === 0) {
+    if (donationList.length === 0) {
       return rows;
     }
 

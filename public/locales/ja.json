@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "ファンド名",
       "ariaTaxDeductible": "税控除対象",
+      "ariaVisible": "献金者に表示",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "献金者に表示"
     },
     "fundPage": {
       "donors": "寄付者",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "非表示",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "このグループを複製しますか？メンバーはコピーされません。",
+      "copySuffix": "（コピー）",
+      "duplicateTooltip": "このグループを複製",
       "emailTooltip": "このグループにメールを送信",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "アーカイブ",
+      "archiveAria": "グループをアーカイブ",
       "attTrack": "Track Attendance",
       "attendance": "出席",
       "attendanceReminders": "出席リマインダーメール",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "グループ写真を変更",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "このグループをアーカイブしてもよろしいですか？復元するまでグループ一覧から非表示になります。",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "登録",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "人々",
+      "restore": "復元",
+      "showArchived": "アーカイブ済みを表示",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "参加者を追加",
+      "addAttendeeError": "参加者の登録に失敗しました",
       "cancelConfirm": "この登録をキャンセルしますか？",
       "cancelRegistration": "登録をキャンセル",
       "csvDate": "日付",
@@ -2343,6 +2356,7 @@
       "csvStatus": "ステータス",
       "date": "日付",
       "deleteConfirm": "この登録を完全に削除しますか？",
+      "eventFull": "このイベントは定員に達しています。",
       "eventNotFound": "イベントが見つかりません",
       "eventRegistrations": "イベント登録",
       "exportCsv": "CSVをエクスポート",
@@ -2353,14 +2367,18 @@
       "registrations": "登録",
       "status": "ステータス",
       "subtitle": "このイベントの登録を管理",
-      "unknown": "不明"
+      "unansweredOnly": "未回答の質問のみ",
+      "unknown": "不明",
+      "viewAnswers": "回答を表示"
     },
     "registrationSettingsEdit": {
       "capacity": "定員",
       "capacityPlaceholder": "無制限の場合は空欄",
       "enableRegistration": "登録を有効にする",
+      "none": "なし",
       "registrationCloses": "登録終了",
       "registrationOpens": "登録開始",
+      "registrationQuestions": "登録の質問",
       "registrationSettings": "登録設定",
       "saveSettings": "設定を保存",
       "tags": "タグ",

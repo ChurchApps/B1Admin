@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Nom du fonds",
       "ariaTaxDeductible": "Déductible des impôts",
+      "ariaVisible": "Visible pour les donateurs",
       "confirmMsg": "Êtes-vous sûr de vouloir supprimer définitivement ce fonds et tous les dons qu'il contient ?",
       "errBlank": "Entrez un nom de fonds",
       "taxDeductible": "Déductible des Impôts",
       "trackDonations": "Suit les dons.",
-      "trackNonDonations": "Suit les transactions non-don comme les inscriptions au camp, les t-shirts, les billets d'événement, etc."
+      "trackNonDonations": "Suit les transactions non-don comme les inscriptions au camp, les t-shirts, les billets d'événement, etc.",
+      "visible": "Visible pour les Donateurs"
     },
     "fundPage": {
       "donors": "Donateurs",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Fonds",
+      "hidden": "Masqué",
       "noFund": "Aucun fonds trouvé."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Services associés",
+      "confirmDuplicate": "Dupliquer ce groupe ? Les membres ne seront pas copiés.",
+      "copySuffix": "(Copie)",
+      "duplicateTooltip": "Dupliquer ce groupe",
       "emailTooltip": "Envoyer un e-mail à ce groupe",
       "labels": "Étiquettes",
       "meetingInfo": "Informations sur la réunion",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Ajouter une photo",
+      "archive": "Archiver",
+      "archiveAria": "Archiver le groupe",
       "attTrack": "Suivi de la présence",
       "attendance": "Présence",
       "attendanceReminders": "E-mails de rappel de présence",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Veuillez entrer un nom de catégorie.",
       "changePhotoAria": "Changer la photo du groupe",
       "clickToAddPhoto": "Cliquez pour ajouter une photo",
+      "confirmArchive": "Êtes-vous sûr de vouloir archiver ce groupe ? Il sera masqué de la liste des groupes jusqu'à sa restauration.",
       "confirmMsg": "Êtes-vous sûr de vouloir supprimer définitivement ce groupe ?",
       "enrollment": "Inscription",
       "groupDesc": "Description du groupe",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Aucun groupe trouvé. Veuillez créer un groupe.",
       "pers": "1 personne",
       "ppl": "Personnes",
+      "restore": "Restaurer",
+      "showArchived": "Afficher les archivés",
       "spPpl": " personnes",
       "subtitle": {
         "create": "Commencez par créer votre premier groupe",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Ajouter un participant",
+      "addAttendeeError": "Échec de l'enregistrement du participant.",
       "cancelConfirm": "Annuler cette inscription ?",
       "cancelRegistration": "Annuler l'inscription",
       "csvDate": "Date",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Statut",
       "date": "Date",
       "deleteConfirm": "Supprimer définitivement cette inscription ?",
+      "eventFull": "Cet événement a atteint sa capacité.",
       "eventNotFound": "Événement non trouvé",
       "eventRegistrations": "Inscriptions à l'événement",
       "exportCsv": "Exporter en CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Inscriptions",
       "status": "Statut",
       "subtitle": "Gérer les inscriptions pour cet événement",
-      "unknown": "Inconnu"
+      "unansweredOnly": "Questions sans réponse uniquement",
+      "unknown": "Inconnu",
+      "viewAnswers": "Voir les réponses"
     },
     "registrationSettingsEdit": {
       "capacity": "Capacité",
       "capacityPlaceholder": "Laisser vide pour illimité",
       "enableRegistration": "Activer l'inscription",
+      "none": "Aucun",
       "registrationCloses": "Clôture des inscriptions",
       "registrationOpens": "Ouverture des inscriptions",
+      "registrationQuestions": "Questions d'inscription",
       "registrationSettings": "Paramètres d'inscription",
       "saveSettings": "Enregistrer les paramètres",
       "tags": "Étiquettes",

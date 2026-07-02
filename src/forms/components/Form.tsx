@@ -15,6 +15,9 @@ export const Form: React.FC<Props> = (props) => {
   const [form, setForm] = React.useState<FormInterface>({} as FormInterface);
   const [questions, setQuestions] = React.useState<QuestionInterface[]>(null);
   const [editQuestionId, setEditQuestionId] = React.useState("notset");
+  // Hoisted: the compiler emits non-optional guard reads (questions.length) for closure deps,
+  // which crash while questions is still null.
+  const questionList = questions || [];
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
   const questionUpdated = () => {
     loadQuestions();
@@ -30,7 +33,7 @@ export const Form: React.FC<Props> = (props) => {
     const anchor = e.currentTarget as HTMLAnchorElement;
     const row = anchor.parentNode.parentNode as HTMLElement;
     const idx = parseInt(row.getAttribute("data-index"));
-    setEditQuestionId(questions[idx].id);
+    setEditQuestionId(questionList[idx].id);
   };
   const moveUp = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -56,7 +59,7 @@ export const Form: React.FC<Props> = (props) => {
   };
   const getRows = () => {
     const rows: JSX.Element[] = [];
-    if (questions.length === 0) {
+    if (questionList.length === 0) {
       rows.push(
         <TableRow key="0">
           <TableCell colSpan={4} sx={{ textAlign: "center", py: 4 }}>
@@ -71,7 +74,7 @@ export const Form: React.FC<Props> = (props) => {
       );
       return rows;
     }
-    for (let i = 0; i < questions.length; i++) {
+    for (let i = 0; i < questionList.length; i++) {
       const upArrow =
         i === 0 ? (
           <span style={{ display: "inline-block", width: 20 }} />
@@ -79,7 +82,7 @@ export const Form: React.FC<Props> = (props) => {
           <AppIconButton label={Locale.label("forms.form.moveUpAria")} icon={<ArrowUpwardIcon />} onClick={moveUp} sx={{ p: 0.5, mr: 0.5 }} />
         );
       const downArrow =
-        i === questions.length - 1 ? (
+        i === questionList.length - 1 ? (
           <></>
         ) : (
           <AppIconButton label={Locale.label("forms.form.moveDownAria")} icon={<ArrowDownwardIcon />} onClick={moveDown} sx={{ p: 0.5 }} />
@@ -98,11 +101,11 @@ export const Form: React.FC<Props> = (props) => {
               type="button"
               onClick={handleClick}
               sx={{ background: "none", border: 0, p: 0, color: "var(--link)", cursor: "pointer", fontWeight: 500 }}>
-              {questions[i].title}
+              {questionList[i].title}
             </Box>
           </TableCell>
           <TableCell>
-            <Typography variant="body2">{questions[i].fieldType}</Typography>
+            <Typography variant="body2">{questionList[i].fieldType}</Typography>
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={0.5} alignItems="center">
@@ -111,7 +114,7 @@ export const Form: React.FC<Props> = (props) => {
             </Stack>
           </TableCell>
           <TableCell>
-            <Typography variant="body2">{questions[i].required ? Locale.label("common.yes") : Locale.label("common.no")}</Typography>
+            <Typography variant="body2">{questionList[i].required ? Locale.label("common.yes") : Locale.label("common.no")}</Typography>
           </TableCell>
         </TableRow>
       );
@@ -120,7 +123,7 @@ export const Form: React.FC<Props> = (props) => {
   };
   const getTableHeader = () => {
     const rows: JSX.Element[] = [];
-    if (questions.length === 0) {
+    if (questionList.length === 0) {
       return rows;
     }
     rows.push(
@@ -190,7 +193,7 @@ export const Form: React.FC<Props> = (props) => {
               <Stack direction="row" spacing={1} alignItems="center">
                 <Icon sx={{ color: "primary.main", fontSize: 20 }}>help</Icon>
                 <Typography variant="h6">{Locale.label("forms.form.questions")}</Typography>
-                {questions?.length > 0 && <CountChip count={questions.length} />}
+                {questionList.length > 0 && <CountChip count={questionList.length} />}
               </Stack>
               {formPermission && (
                 <Button

@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "基金名称",
       "ariaTaxDeductible": "可免税",
+      "ariaVisible": "对捐赠者可见",
       "confirmMsg": "您确定要永久删除该基金及其中的所有捐款吗？",
       "errBlank": "输入基金名称",
       "taxDeductible": "可抵税",
       "trackDonations": "追踪捐款。",
-      "trackNonDonations": "追踪非捐款交易，如营地注册、T恤、活动门票等。"
+      "trackNonDonations": "追踪非捐款交易，如营地注册、T恤、活动门票等。",
+      "visible": "对捐赠者可见"
     },
     "fundPage": {
       "donors": "捐赠者",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "基金",
+      "hidden": "隐藏",
       "noFund": "未找到基金。"
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "相关服务",
+      "confirmDuplicate": "复制此群组？成员不会被复制。",
+      "copySuffix": "(副本)",
+      "duplicateTooltip": "复制此群组",
       "emailTooltip": "向此小组发送电子邮件",
       "labels": "标签",
       "meetingInfo": "会议信息",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "添加照片",
+      "archive": "存档",
+      "archiveAria": "存档群组",
       "attTrack": "追踪出席",
       "attendance": "出席率",
       "attendanceReminders": "出勤提醒邮件",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "请输入类别名称。",
       "changePhotoAria": "更改小组照片",
       "clickToAddPhoto": "点击添加照片",
+      "confirmArchive": "您确定要存档此群组吗？在恢复之前，它将从群组列表中隐藏。",
       "confirmMsg": "您确定要永久删除此群组吗？",
       "enrollment": "报名",
       "groupDesc": "团体描述",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "未找到任何群组。请创建一个群组。",
       "pers": "1人",
       "ppl": "人员",
+      "restore": "恢复",
+      "showArchived": "显示已存档",
       "spPpl": " 人",
       "subtitle": {
         "create": "首先创建您的第一个组",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "添加参与者",
+      "addAttendeeError": "参与者报名失败。",
       "cancelConfirm": "取消此报名？",
       "cancelRegistration": "取消报名",
       "csvDate": "日期",
@@ -2343,6 +2356,7 @@
       "csvStatus": "状态",
       "date": "日期",
       "deleteConfirm": "永久删除此报名？",
+      "eventFull": "此活动已达名额上限。",
       "eventNotFound": "未找到活动",
       "eventRegistrations": "活动报名",
       "exportCsv": "导出 CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "报名",
       "status": "状态",
       "subtitle": "管理此活动的报名",
-      "unknown": "未知"
+      "unansweredOnly": "仅未回答的问题",
+      "unknown": "未知",
+      "viewAnswers": "查看答案"
     },
     "registrationSettingsEdit": {
       "capacity": "容量",
       "capacityPlaceholder": "留空表示无限制",
       "enableRegistration": "启用报名",
+      "none": "无",
       "registrationCloses": "报名截止",
       "registrationOpens": "报名开放",
+      "registrationQuestions": "报名问题",
       "registrationSettings": "报名设置",
       "saveSettings": "保存设置",
       "tags": "标签",

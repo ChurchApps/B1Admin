@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Nombre del fondo",
       "ariaTaxDeductible": "Deducible de impuestos",
+      "ariaVisible": "Visible para los donantes",
       "confirmMsg": "¿Está seguro de que desea eliminar permanentemente este fondo y todas las donaciones dentro de él?",
       "errBlank": "Ingrese un nombre para el fondo",
       "taxDeductible": "Deducible de Impuestos",
       "trackDonations": "Rastrea donaciones.",
-      "trackNonDonations": "Rastrea transacciones que no son donaciones como registros de campamentos, camisetas, boletos de eventos, etc."
+      "trackNonDonations": "Rastrea transacciones que no son donaciones como registros de campamentos, camisetas, boletos de eventos, etc.",
+      "visible": "Visible para los Donantes"
     },
     "fundPage": {
       "donors": "Donantes",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Fondos",
+      "hidden": "Oculto",
       "noFund": "No se encontraron fondos."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Servicios asociados",
+      "confirmDuplicate": "¿Duplicar este grupo? Los miembros no se copiarán.",
+      "copySuffix": "(Copia)",
+      "duplicateTooltip": "Duplicar este grupo",
       "emailTooltip": "Enviar correo a este grupo",
       "labels": "Etiquetas",
       "meetingInfo": "Información de la reunión",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Agregar foto",
+      "archive": "Archivar",
+      "archiveAria": "Archivar grupo",
       "attTrack": "Rastrear Asistencia",
       "attendance": "Asistencia",
       "attendanceReminders": "Correos de recordatorio de asistencia",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Por favor ingrese un nombre de categoría.",
       "changePhotoAria": "Cambiar foto del grupo",
       "clickToAddPhoto": "Haga clic para agregar foto",
+      "confirmArchive": "¿Está seguro de que desea archivar este grupo? Se ocultará de la lista de grupos hasta que se restaure.",
       "confirmMsg": "¿Está seguro de que desea eliminar permanentemente este grupo?",
       "enrollment": "Inscripción",
       "groupDesc": "Descripción del Grupo",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No se encontraron grupos. Por favor cree un grupo.",
       "pers": "1 persona",
       "ppl": "Personas",
+      "restore": "Restaurar",
+      "showArchived": "Mostrar archivados",
       "spPpl": " personas",
       "subtitle": {
         "create": "Comience creando su primer grupo",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Agregar Asistente",
+      "addAttendeeError": "No se pudo registrar al asistente.",
       "cancelConfirm": "¿Cancelar este registro?",
       "cancelRegistration": "Cancelar Registro",
       "csvDate": "Fecha",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Estado",
       "date": "Fecha",
       "deleteConfirm": "¿Eliminar permanentemente este registro?",
+      "eventFull": "Este evento ha alcanzado su capacidad.",
       "eventNotFound": "Evento no encontrado",
       "eventRegistrations": "Registros del Evento",
       "exportCsv": "Exportar CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Registros",
       "status": "Estado",
       "subtitle": "Gestionar registros para este evento",
-      "unknown": "Desconocido"
+      "unansweredOnly": "Solo preguntas sin responder",
+      "unknown": "Desconocido",
+      "viewAnswers": "Ver Respuestas"
     },
     "registrationSettingsEdit": {
       "capacity": "Capacidad",
       "capacityPlaceholder": "Dejar vacío para sin límite",
       "enableRegistration": "Habilitar Registro",
+      "none": "Ninguno",
       "registrationCloses": "Cierre de Registro",
       "registrationOpens": "Apertura de Registro",
+      "registrationQuestions": "Preguntas de Registro",
       "registrationSettings": "Configuración de Registro",
       "saveSettings": "Guardar Configuración",
       "tags": "Etiquetas",

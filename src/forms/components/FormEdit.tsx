@@ -25,6 +25,7 @@ export interface FormInterface {
 type AnyRecord = Record<string, any>;
 
 export function FormEdit(props: Props) {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [standAloneForm, setStandAloneForm] = useState<boolean>(false);
   const [showDates, setShowDates] = useState<boolean>(false);
   const isMounted = useMountedState();

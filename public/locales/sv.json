@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Fondnamn",
       "ariaTaxDeductible": "Avdragsgill",
+      "ariaVisible": "Synlig för givare",
       "confirmMsg": "Är du säker på att du vill ta bort denna fond och alla gåvor i den permanent?",
       "errBlank": "Ange ett fondnamn",
       "taxDeductible": "Avdragsgill",
       "trackDonations": "Spårar gåvor.",
-      "trackNonDonations": "Spårar icke-gåvotransaktioner som lägerregistreringar, t-shirts, evenemangsbiljetter, etc."
+      "trackNonDonations": "Spårar icke-gåvotransaktioner som lägerregistreringar, t-shirts, evenemangsbiljetter, etc.",
+      "visible": "Synlig för givare"
     },
     "fundPage": {
       "donors": "Givare",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Fonder",
+      "hidden": "Dold",
       "noFund": "Inga fonder hittades."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Kopplade gudstjänster",
+      "confirmDuplicate": "Duplicera denna grupp? Medlemmar kopieras inte.",
+      "copySuffix": "(Kopia)",
+      "duplicateTooltip": "Duplicera denna grupp",
       "emailTooltip": "Skicka e-post till denna grupp",
       "labels": "Etiketter",
       "meetingInfo": "Mötesinformation",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Lägg till foto",
+      "archive": "Arkivera",
+      "archiveAria": "Arkivera grupp",
       "attTrack": "Spåra närvaro",
       "attendance": "Närvaro",
       "attendanceReminders": "Påminnelsemail för närvaro",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Vänligen ange ett kategorinamn.",
       "changePhotoAria": "Ändra gruppfoto",
       "clickToAddPhoto": "Klicka för att lägga till foto",
+      "confirmArchive": "Är du säker på att du vill arkivera denna grupp? Den kommer att döljas från grupplistan tills den återställs.",
       "confirmMsg": "Är du säker på att du vill ta bort denna grupp permanent?",
       "enrollment": "Inskrivning",
       "groupDesc": "Gruppbeskrivning",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Inga grupper hittades. Vänligen skapa en grupp.",
       "pers": "1 person",
       "ppl": "Personer",
+      "restore": "Återställ",
+      "showArchived": "Visa arkiverade",
       "spPpl": " personer",
       "subtitle": {
         "create": "Kom igång genom att skapa din första grupp",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Lägg till deltagare",
+      "addAttendeeError": "Registrering av deltagare misslyckades.",
       "cancelConfirm": "Avbryt denna registrering?",
       "cancelRegistration": "Avbryt registrering",
       "csvDate": "Datum",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Status",
       "date": "Datum",
       "deleteConfirm": "Ta bort denna registrering permanent?",
+      "eventFull": "Denna händelse har nått sin kapacitet.",
       "eventNotFound": "Evenemanget hittades inte",
       "eventRegistrations": "Evenemangsregistreringar",
       "exportCsv": "Exportera CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Registreringar",
       "status": "Status",
       "subtitle": "Hantera registreringar för detta evenemang",
-      "unknown": "Okänd"
+      "unansweredOnly": "Endast obesvarade frågor",
+      "unknown": "Okänd",
+      "viewAnswers": "Visa svar"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapacitet",
       "capacityPlaceholder": "Lämna tomt för obegränsat",
       "enableRegistration": "Aktivera registrering",
+      "none": "Ingen",
       "registrationCloses": "Registreringen stänger",
       "registrationOpens": "Registreringen öppnar",
+      "registrationQuestions": "Registreringsfrågor",
       "registrationSettings": "Registreringsinställningar",
       "saveSettings": "Spara inställningar",
       "tags": "Taggar",

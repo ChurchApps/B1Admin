@@ -13,20 +13,37 @@ import {
   Chip,
   Button,
   LinearProgress,
-  Grid
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Alert
 } from "@mui/material";
 import {
   HowToReg as RegIcon,
   Cancel as CancelIcon,
   Delete as DeleteIcon,
-  Download as DownloadIcon
+  Download as DownloadIcon,
+  PersonAdd as PersonAddIcon,
+  Description as DescriptionIcon
 } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
-import { type EventInterface, type RegistrationInterface } from "@churchapps/helpers";
-import { PermissionDenied } from "../components";
+import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper } from "@churchapps/apphelper";
+import { type EventInterface, type RegistrationInterface, type PersonInterface } from "@churchapps/helpers";
+import { PermissionDenied, PersonAdd, FormSubmission } from "../components";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
+
+const parseErrorMessage = (raw: string) => {
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed?.status === "full") return Locale.label("registrations.registrationDetailsPage.eventFull");
+    return parsed?.error || raw;
+  } catch {
+    return raw;
+  }
+};
 
 export const RegistrationDetailsPage = () => {
   const params = useParams();
@@ -35,6 +52,10 @@ export const RegistrationDetailsPage = () => {
   const [registrations, setRegistrations] = useState<RegistrationInterface[]>([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
+  const [showAddAttendee, setShowAddAttendee] = useState(false);
+  const [addError, setAddError] = useState("");
+  const [unansweredOnly, setUnansweredOnly] = useState(false);
+  const [viewSubmissionId, setViewSubmissionId] = useState("");
 
   const loadData = async () => {
     if (!eventId) return;
@@ -61,6 +82,18 @@ export const RegistrationDetailsPage = () => {
     if (!confirm(Locale.label("registrations.registrationDetailsPage.deleteConfirm"))) return;
     await ApiHelper.delete("/registrations/" + regId, "ContentApi");
     loadData();
+  };
+
+  const handleAddAttendee = async (person: PersonInterface) => {
+    if (!event) return;
+    setAddError("");
+    try {
+      await ApiHelper.post("/registrations/register", { churchId: event.churchId, eventId: event.id, personId: person.id }, "ContentApi");
+      setShowAddAttendee(false);
+      loadData();
+    } catch (err: any) {
+      setAddError(parseErrorMessage(err?.message || "") || Locale.label("registrations.registrationDetailsPage.addAttendeeError"));
+    }
   };
 
   const handleExportCSV = () => {
@@ -94,7 +127,9 @@ export const RegistrationDetailsPage = () => {
     return <Chip label={status} size="small" color={colorMap[status] || "default"} />;
   };
 
-  const getRows = () => registrations.map((reg) => (
+  const visibleRegistrations = event?.formId && unansweredOnly ? registrations.filter((r) => !r.formSubmissionId) : registrations;
+
+  const getRows = () => visibleRegistrations.map((reg) => (
     <TableRow key={reg.id}>
       <TableCell>
         {reg.members && reg.members.length > 0
@@ -106,6 +141,9 @@ export const RegistrationDetailsPage = () => {
       <TableCell>{getStatusChip(reg.status)}</TableCell>
       <TableCell>{reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString() : ""}</TableCell>
       <TableCell align="right" className="rowActions">
+        {event?.formId && reg.formSubmissionId && (
+          <AppIconButton label={Locale.label("registrations.registrationDetailsPage.viewAnswers")} icon={<DescriptionIcon />} onClick={() => setViewSubmissionId(reg.formSubmissionId)} />
+        )}
         {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
           <>
             {reg.status !== "cancelled" && (
@@ -139,13 +177,28 @@ export const RegistrationDetailsPage = () => {
                       {Locale.label("registrations.registrationDetailsPage.registrations")} ({count}{event.capacity ? ` / ${event.capacity}` : ""})
                     </Typography>
                   </Stack>
-                  <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+                      <Button startIcon={<PersonAddIcon />} size="small" variant="outlined" onClick={() => setShowAddAttendee(true)}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
+                    )}
+                    <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
+                  </Stack>
                 </Stack>
                 {event.capacity && (
                   <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mt: 1 }} />
                 )}
+                {event.formId && (
+                  <Chip
+                    label={Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
+                    size="small"
+                    color={unansweredOnly ? "primary" : "default"}
+                    variant={unansweredOnly ? "filled" : "outlined"}
+                    onClick={() => setUnansweredOnly(!unansweredOnly)}
+                    sx={{ mt: 1 }}
+                  />
+                )}
               </Box>
-              {registrations.length === 0 ? (
+              {visibleRegistrations.length === 0 ? (
                 <Box sx={{ p: 3, textAlign: "center" }}>
                   <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
                 </Box>
@@ -174,6 +227,29 @@ export const RegistrationDetailsPage = () => {
           </Grid>
         </Grid>
       </Box>
+      {showAddAttendee && (
+        <Dialog open onClose={() => setShowAddAttendee(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</DialogTitle>
+          <DialogContent>
+            {addError && <Alert severity="error" sx={{ mb: 2 }}>{addError}</Alert>}
+            <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handleAddAttendee} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowAddAttendee(false)}>{Locale.label("common.cancel")}</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+      {viewSubmissionId && (
+        <Dialog open onClose={() => setViewSubmissionId("")} maxWidth="md" fullWidth>
+          <DialogTitle>{Locale.label("registrations.registrationDetailsPage.viewAnswers")}</DialogTitle>
+          <DialogContent>
+            <FormSubmission formSubmissionId={viewSubmissionId} editFunction={() => {}} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setViewSubmissionId("")}>{Locale.label("common.close")}</Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </>
   );
 };

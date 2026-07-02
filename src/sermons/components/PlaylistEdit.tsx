@@ -36,6 +36,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const PlaylistEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const thumbnailRef = React.useRef<string>(null);
   const [thumbnailDisplay, setThumbnailDisplay] = React.useState<string>(null);
 

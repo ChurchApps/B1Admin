@@ -26,17 +26,20 @@ interface Props {
 export const TimeList = (props: Props) => {
   const [time, setTime] = React.useState<TimeInterface>(null);
   const { canEdit } = props;
+  // Hoisted null-safe view: the compiler emits non-optional guard reads (props.plan.id)
+  // for the handleAdd closure deps, which crash while the parent's plan is still null.
+  const plan: PlanInterface = props.plan || ({} as PlanInterface);
 
   const handleAdd = () => {
-    const startTime = new Date(props.plan.serviceDate);
+    const startTime = new Date(plan.serviceDate);
     startTime.setHours(9);
     startTime.setMinutes(0);
-    const endTime = new Date(props.plan.serviceDate);
+    const endTime = new Date(plan.serviceDate);
     endTime.setHours(10);
     endTime.setMinutes(30);
 
     setTime({
-      planId: props.plan.id,
+      planId: plan.id,
       displayName: Locale.label("plans.timeList.sunServ"),
       startTime,
       endTime,

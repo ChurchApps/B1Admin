@@ -14,6 +14,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const TimeEdit = (props: Props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [teams, setTeams] = React.useState<string>(props.time?.teams ?? "");
 
   const { control, register, handleSubmit, reset } = useForm<AnyRecord>({

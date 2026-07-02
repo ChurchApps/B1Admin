@@ -69,6 +69,7 @@ const suggestions = [
 ];
 
 export function PaletteEdit(props: Props) {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loaded, setLoaded] = useState(false);
 

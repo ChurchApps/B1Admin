@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { RRuleEditor } from "@churchapps/apphelper/website";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField } from "@mui/material";
 import { type ConflictInterface, type EventTemplateInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
@@ -18,8 +19,6 @@ const toInputValue = (d: Date) => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
-const RECURRENCE_DAYS = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
-
 export function NewEventModal(props: Props) {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [templates, setTemplates] = useState<EventTemplateInterface[]>([]);
@@ -31,7 +30,7 @@ export function NewEventModal(props: Props) {
   const [description, setDescription] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
-  const [recurrence, setRecurrence] = useState("");
+  const [rRule, setRRule] = useState("");
   const [visibility, setVisibility] = useState("public");
   const [roomIds, setRoomIds] = useState<string[]>(props.initialRoomId ? [props.initialRoomId] : []);
   const [resourceIds, setResourceIds] = useState<string[]>(props.initialResourceId ? [props.initialResourceId] : []);
@@ -63,13 +62,7 @@ export function NewEventModal(props: Props) {
     ApiHelper.get("/resources", "ContentApi").then(setResources);
   }, []);
 
-  const getRecurrenceRule = () => {
-    if (!recurrence || !start) return undefined;
-    if (recurrence === "daily") return "FREQ=DAILY";
-    if (recurrence === "weekly") return "FREQ=WEEKLY;BYDAY=" + RECURRENCE_DAYS[new Date(start).getDay()];
-    if (recurrence === "monthly") return "FREQ=MONTHLY";
-    return undefined;
-  };
+  const handleToggleRecurring = (checked: boolean) => setRRule(checked ? "FREQ=DAILY;INTERVAL=1" : "");
 
   useEffect(() => {
     if (!start || !end || (roomIds.length === 0 && resourceIds.length === 0)) {
@@ -80,7 +73,7 @@ export function NewEventModal(props: Props) {
       ApiHelper.post("/events/conflicts", {
         start: new Date(start),
         end: new Date(end),
-        recurrenceRule: getRecurrenceRule(),
+        recurrenceRule: rRule || undefined,
         setupMinutes: toInt(setupMinutes),
         teardownMinutes: toInt(teardownMinutes),
         startTime: customWindow && windowStart ? new Date(windowStart) : undefined,
@@ -91,7 +84,7 @@ export function NewEventModal(props: Props) {
     }, 400);
     return () => clearTimeout(timeout);
   }, [
-    start, end, recurrence, roomIds, resourceIds, setupMinutes, teardownMinutes, customWindow, windowStart, windowEnd
+    start, end, rRule, roomIds, resourceIds, setupMinutes, teardownMinutes, customWindow, windowStart, windowEnd
   ]);
 
   const applyTemplate = (id: string) => {
@@ -126,7 +119,7 @@ export function NewEventModal(props: Props) {
         end: new Date(end),
         allDay: false,
         visibility,
-        recurrenceRule: getRecurrenceRule()
+        recurrenceRule: rRule || undefined
       } as EventInterface;
       const savedEvents = await ApiHelper.post("/events", [event], "ContentApi");
       const eventId = savedEvents[0].id;
@@ -168,18 +161,17 @@ export function NewEventModal(props: Props) {
             <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.start")} value={start} onChange={(e) => handleStartChange(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-start-input" />
             <TextField fullWidth type="datetime-local" label={Locale.label("calendars.newEvent.end")} value={end} onChange={(e) => setEnd(e.target.value)} InputLabelProps={{ shrink: true }} data-testid="new-event-end-input" />
           </Stack>
-          <Stack direction="row" spacing={2}>
-            <TextField fullWidth select label={Locale.label("calendars.newEvent.repeats")} value={recurrence} onChange={(e) => setRecurrence(e.target.value)} data-testid="new-event-recurrence-select">
-              <MenuItem value="">{Locale.label("calendars.newEvent.doesNotRepeat")}</MenuItem>
-              <MenuItem value="daily">{Locale.label("calendars.newEvent.daily")}</MenuItem>
-              <MenuItem value="weekly">{Locale.label("calendars.newEvent.weekly")}</MenuItem>
-              <MenuItem value="monthly">{Locale.label("calendars.newEvent.monthly")}</MenuItem>
-            </TextField>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <FormControlLabel
+              control={<Checkbox checked={!!rRule} onChange={(e) => handleToggleRecurring(e.target.checked)} data-testid="new-event-recurring-checkbox" />}
+              label={Locale.label("calendars.newEvent.repeats")}
+            />
             <TextField fullWidth select label={Locale.label("calendars.newEvent.visibility")} value={visibility} onChange={(e) => setVisibility(e.target.value)} data-testid="new-event-visibility-select">
               <MenuItem value="public">{Locale.label("calendars.newEvent.public")}</MenuItem>
               <MenuItem value="private">{Locale.label("calendars.newEvent.private")}</MenuItem>
             </TextField>
           </Stack>
+          {rRule && start && <RRuleEditor start={new Date(start)} rRule={rRule} onChange={setRRule} />}
           {rooms.length > 0 && (
             <TextField
               fullWidth

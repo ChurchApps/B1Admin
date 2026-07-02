@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Назва фонду",
       "ariaTaxDeductible": "Звільнено від податків",
+      "ariaVisible": "Видимий для жертводавців",
       "confirmMsg": "Ви впевнені, що хочете назавжди видалити цей фонд і всі пожертви в ньому?",
       "errBlank": "Введіть назву фонду",
       "taxDeductible": "Звільнено від податків",
       "trackDonations": "Відстежує пожертви.",
-      "trackNonDonations": "Відстежує транзакції, що не є пожертвами, як-от реєстрації на табори, футболки, квитки на події тощо."
+      "trackNonDonations": "Відстежує транзакції, що не є пожертвами, як-от реєстрації на табори, футболки, квитки на події тощо.",
+      "visible": "Видимий для жертводавців"
     },
     "fundPage": {
       "donors": "Жертводавці",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Фонди",
+      "hidden": "Приховано",
       "noFund": "Фондів не знайдено."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Пов'язані служби",
+      "confirmDuplicate": "Дублювати цю групу? Учасники не будуть скопійовані.",
+      "copySuffix": "(Копія)",
+      "duplicateTooltip": "Дублювати цю групу",
       "emailTooltip": "Надіслати лист цій групі",
       "labels": "Мітки",
       "meetingInfo": "Інформація про зустріч",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Додати фото",
+      "archive": "Архівувати",
+      "archiveAria": "Архівувати групу",
       "attTrack": "Відстежувати відвідуваність",
       "attendance": "Відвідування",
       "attendanceReminders": "Нагадування про відвідуваність електронною поштою",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Змінити фото групи",
       "clickToAddPhoto": "Натисніть, щоб додати фото",
+      "confirmArchive": "Ви впевнені, що хочете архівувати цю групу? Вона буде прихована зі списку груп, поки не буде відновлена.",
       "confirmMsg": "Ви впевнені, що хочете назавжди видалити цю групу?",
       "enrollment": "Запис",
       "groupDesc": "Опис групи",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Груп не знайдено. Створіть групу.",
       "pers": "1 особа",
       "ppl": "Люди",
+      "restore": "Відновити",
+      "showArchived": "Показати архівовані",
       "spPpl": " людей",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Додати учасника",
+      "addAttendeeError": "Не вдалося зареєструвати учасника.",
       "cancelConfirm": "Скасувати цю реєстрацію?",
       "cancelRegistration": "Скасувати реєстрацію",
       "csvDate": "Дата",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Статус",
       "date": "Дата",
       "deleteConfirm": "Назавжди видалити цю реєстрацію?",
+      "eventFull": "Ця подія заповнена.",
       "eventNotFound": "Подію не знайдено",
       "eventRegistrations": "Реєстрації на подію",
       "exportCsv": "Експортувати CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Реєстрації",
       "status": "Статус",
       "subtitle": "Керувати реєстраціями для цієї події",
-      "unknown": "Невідомо"
+      "unansweredOnly": "Лише питання без відповіді",
+      "unknown": "Невідомо",
+      "viewAnswers": "Переглянути відповіді"
     },
     "registrationSettingsEdit": {
       "capacity": "Місткість",
       "capacityPlaceholder": "Залиште порожнім для необмеженої кількості",
       "enableRegistration": "Увімкнути реєстрацію",
+      "none": "Немає",
       "registrationCloses": "Реєстрація закривається",
       "registrationOpens": "Реєстрація відкривається",
+      "registrationQuestions": "Питання реєстрації",
       "registrationSettings": "Параметри реєстрації",
       "saveSettings": "Зберегти налаштування",
       "tags": "Теги",

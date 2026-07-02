@@ -21,6 +21,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const SermonEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [errors, setErrors] = React.useState<string[]>([]);
   const [playlists, setPlaylists] = React.useState<PlaylistInterface[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);

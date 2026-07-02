@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "펀드 이름",
       "ariaTaxDeductible": "세금 공제 가능",
+      "ariaVisible": "기부자에게 공개",
       "confirmMsg": "이 기금과 그 안에 포함된 모든 기부를 영구적으로 삭제하시겠습니까?",
       "errBlank": "기금 이름을 입력하세요",
       "taxDeductible": "세금 공제 가능",
       "trackDonations": "기부를 추적합니다.",
-      "trackNonDonations": "캠프 등록, 티셔츠, 이벤트 티켓 등 비기부 거래를 추적합니다."
+      "trackNonDonations": "캠프 등록, 티셔츠, 이벤트 티켓 등 비기부 거래를 추적합니다.",
+      "visible": "기부자에게 공개"
     },
     "fundPage": {
       "donors": "기부자",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "기금",
+      "hidden": "숨김",
       "noFund": "기금을 찾을 수 없습니다."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "관련 서비스",
+      "confirmDuplicate": "이 그룹의 복사본을 만드시겠습니까? 구성원은 복사되지 않습니다.",
+      "copySuffix": "(복사본)",
+      "duplicateTooltip": "그룹 복제",
       "emailTooltip": "이 그룹에 이메일 보내기",
       "labels": "레이블",
       "meetingInfo": "회의정보",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "사진 추가",
+      "archive": "보관",
+      "archiveAria": "그룹 보관",
       "attTrack": "출석 추적",
       "attendance": "출석",
       "attendanceReminders": "출석 알림 이메일",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "범주 이름을 입력해주세요.",
       "changePhotoAria": "그룹 사진 변경",
       "clickToAddPhoto": "사진을 추가하려면 클릭하세요.",
+      "confirmArchive": "이 그룹을 보관하시겠습니까? 복원할 때까지 그룹 목록에서 숨겨집니다.",
       "confirmMsg": "이 그룹을 영구적으로 삭제하시겠습니까?",
       "enrollment": "등록",
       "groupDesc": "그룹 설명",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "그룹을 찾을 수 없습니다. 그룹을 생성해주세요.",
       "pers": "1명",
       "ppl": "사람들",
+      "restore": "복원",
+      "showArchived": "보관된 항목 표시",
       "spPpl": " 명",
       "subtitle": {
         "create": "첫 번째 그룹을 만들어 시작해 보세요.",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "참석자 추가",
+      "addAttendeeError": "참석자 등록에 실패했습니다",
       "cancelConfirm": "이 등록을 취소하시겠습니까?",
       "cancelRegistration": "등록 취소",
       "csvDate": "날짜",
@@ -2343,6 +2356,7 @@
       "csvStatus": "상태",
       "date": "날짜",
       "deleteConfirm": "이 등록을 영구 삭제하시겠습니까?",
+      "eventFull": "이 이벤트는 정원에 도달했습니다.",
       "eventNotFound": "이벤트를 찾을 수 없습니다",
       "eventRegistrations": "이벤트 등록",
       "exportCsv": "CSV 내보내기",
@@ -2353,14 +2367,18 @@
       "registrations": "등록",
       "status": "상태",
       "subtitle": "이 이벤트의 등록 관리",
-      "unknown": "알 수 없음"
+      "unansweredOnly": "미답변 질문만",
+      "unknown": "알 수 없음",
+      "viewAnswers": "답변 보기"
     },
     "registrationSettingsEdit": {
       "capacity": "정원",
       "capacityPlaceholder": "무제한은 비워두세요",
       "enableRegistration": "등록 활성화",
+      "none": "없음",
       "registrationCloses": "등록 마감",
       "registrationOpens": "등록 시작",
+      "registrationQuestions": "등록 질문",
       "registrationSettings": "등록 설정",
       "saveSettings": "설정 저장",
       "tags": "태그",

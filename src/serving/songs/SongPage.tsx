@@ -37,11 +37,12 @@ export const SongPage = memo(() => {
     enabled: !!song.data?.songDetailId
   });
 
-  // Set selected arrangement when arrangements load
+  // Set selected arrangement when arrangements load; fall back to the first one when
+  // the current selection no longer exists (e.g. deleted, or stale from a kept-alive visit).
   React.useEffect(() => {
-    if (arrangements.data && arrangements.data.length > 0 && !selectedArrangement) {
-      setSelectedArrangement(arrangements.data[0]);
-    }
+    if (!arrangements.data || arrangements.data.length === 0) return;
+    const stillExists = selectedArrangement && arrangements.data.some((a) => a.id === selectedArrangement.id);
+    if (!stillExists) setSelectedArrangement(arrangements.data[0]);
   }, [arrangements.data, selectedArrangement]);
 
   const selectArrangement = useCallback(

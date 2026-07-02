@@ -13,7 +13,8 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const FundEdit: React.FC<Props> = (props) => {
-  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { fundName: "", taxDeductible: true } });
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
+  const { control, register, handleSubmit, reset, watch, formState } = useForm<AnyRecord>({ defaultValues: { fundName: "", taxDeductible: true, visible: true } });
   const e = formState.errors as any;
   const summaryErrors: string[] = [];
   if (e.fundName?.message) summaryErrors.push(e.fundName.message);
@@ -21,11 +22,11 @@ export const FundEdit: React.FC<Props> = (props) => {
   const taxDeductible = watch("taxDeductible");
 
   React.useEffect(() => {
-    reset({ fundName: props.fund?.name ?? "", taxDeductible: props.fund?.taxDeductible ?? true });
+    reset({ fundName: props.fund?.name ?? "", taxDeductible: props.fund?.taxDeductible ?? true, visible: props.fund?.visible ?? true });
   }, [props.fund, reset]);
 
   const onValid = (values: AnyRecord) => {
-    const fund = { ...props.fund, name: values.fundName.trim(), taxDeductible: values.taxDeductible };
+    const fund = { ...props.fund, name: values.fundName.trim(), taxDeductible: values.taxDeductible, visible: values.visible };
     ApiHelper.post("/funds", [fund], "GivingApi").then(() => props.updatedFunction());
   };
 
@@ -57,6 +58,14 @@ export const FundEdit: React.FC<Props> = (props) => {
       <Typography sx={{ fontStyle: "italic", fontSize: "12px", marginLeft: "5px" }}>
         {taxDeductible ? Locale.label("donations.fundEdit.trackDonations") : Locale.label("donations.fundEdit.trackNonDonations")}
       </Typography>
+      <FormControlLabel
+        control={
+          <Controller name="visible" control={control} render={({ field }) => (
+            <Checkbox {...field} checked={!!field.value} sx={{ marginLeft: "5px" }} data-testid="fund-visible-checkbox" aria-label={Locale.label("donations.fundEdit.ariaVisible")} name="visible" />
+          )} />
+        }
+        label={Locale.label("donations.fundEdit.visible")}
+      />
     </FormCard>
   );
 };

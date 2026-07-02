@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "फंड का नाम",
       "ariaTaxDeductible": "कर कटौती योग्य",
+      "ariaVisible": "दाताओं के लिए दृश्यमान",
       "confirmMsg": "क्या आप वाकई इस फंड और इसके अंतर्गत सभी दान को स्थायी रूप से हटाना चाहते हैं?",
       "errBlank": "कृपया एक फंड नाम दर्ज करें",
       "taxDeductible": "कर कटौती योग्य",
       "trackDonations": "दान ट्रैक करता है।",
-      "trackNonDonations": "गैर-दान लेनदेन को ट्रैक करता है जैसे कैंप पंजीकरण, टी-शर्ट, इवेंट टिकट, आदि।"
+      "trackNonDonations": "गैर-दान लेनदेन को ट्रैक करता है जैसे कैंप पंजीकरण, टी-शर्ट, इवेंट टिकट, आदि।",
+      "visible": "दाताओं के लिए दृश्यमान"
     },
     "fundPage": {
       "donors": "दानकर्ता",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "फंड",
+      "hidden": "छिपा हुआ",
       "noFund": "कोई फंड नहीं मिला।"
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "संबद्ध सेवाएँ",
+      "confirmDuplicate": "इस समूह को डुप्लिकेट करें? सदस्यों की प्रतिलिपि नहीं बनाई जाएगी।",
+      "copySuffix": "(प्रतिलिपि)",
+      "duplicateTooltip": "इस समूह को डुप्लिकेट करें",
       "emailTooltip": "इस समूह को ईमेल भेजें",
       "labels": "लेबल",
       "meetingInfo": "बैठक की जानकारी",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "तस्वीर जोड़ो",
+      "archive": "संग्रह",
+      "archiveAria": "समूह संग्रहीत करें",
       "attTrack": "उपस्थिति ट्रैक करें",
       "attendance": "उपस्थिति",
       "attendanceReminders": "उपस्थिति अनुस्मारक ईमेल",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "कृपया एक श्रेणी का नाम दर्ज करें।",
       "changePhotoAria": "समूह फ़ोटो बदलें",
       "clickToAddPhoto": "फ़ोटो जोड़ने के लिए क्लिक करें",
+      "confirmArchive": "क्या आप वाकई इस समूह को संग्रहीत करना चाहते हैं? यह पुनर्स्थापित होने तक समूह सूची से छिपा रहेगा।",
       "confirmMsg": "क्या आप वाकई इस समूह को स्थायी रूप से हटाना चाहते हैं?",
       "enrollment": "नामांकन",
       "groupDesc": "समूह विवरण",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "कोई समूह नहीं मिला। कृपया एक समूह बनाएं।",
       "pers": "1 व्यक्ति",
       "ppl": "लोग",
+      "restore": "पुनर्स्थापित करें",
+      "showArchived": "संग्रहीत दिखाएं",
       "spPpl": " लोग",
       "subtitle": {
         "create": "अपना पहला समूह बनाकर आरंभ करें",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "उपस्थित जोड़ें",
+      "addAttendeeError": "उपस्थित पंजीकृत करने में विफल",
       "cancelConfirm": "इस पंजीकरण को रद्द करें?",
       "cancelRegistration": "पंजीकरण रद्द करें",
       "csvDate": "तिथि",
@@ -2343,6 +2356,7 @@
       "csvStatus": "स्थिति",
       "date": "तिथि",
       "deleteConfirm": "इस पंजीकरण को स्थायी रूप से हटाएं?",
+      "eventFull": "यह कार्यक्रम अपनी क्षमता तक पहुँच गया है।",
       "eventNotFound": "ईवेंट नहीं मिला",
       "eventRegistrations": "ईवेंट पंजीकरण",
       "exportCsv": "CSV निर्यात करें",
@@ -2353,14 +2367,18 @@
       "registrations": "पंजीकरण",
       "status": "स्थिति",
       "subtitle": "इस ईवेंट के लिए पंजीकरण प्रबंधित करें",
-      "unknown": "अज्ञात"
+      "unansweredOnly": "केवल अनुत्तरित प्रश्न",
+      "unknown": "अज्ञात",
+      "viewAnswers": "उत्तर देखें"
     },
     "registrationSettingsEdit": {
       "capacity": "क्षमता",
       "capacityPlaceholder": "असीमित के लिए खाली छोड़ें",
       "enableRegistration": "पंजीकरण सक्षम करें",
+      "none": "कोई नहीं",
       "registrationCloses": "पंजीकरण बंद होता है",
       "registrationOpens": "पंजीकरण खुलता है",
+      "registrationQuestions": "पंजीकरण प्रश्न",
       "registrationSettings": "पंजीकरण सेटिंग्स",
       "saveSettings": "सेटिंग्स सहेजें",
       "tags": "टैग",

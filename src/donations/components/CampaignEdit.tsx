@@ -13,6 +13,7 @@ interface Props {
 }
 
 export const CampaignEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { control, register, handleSubmit, reset, formState } = useForm<Record<string, any>>({ defaultValues: { name: "", fundId: "", goalAmount: "", startDate: "", endDate: "", description: "", showPublic: false, allowSelfPledge: false } });
   const e = formState.errors as any;
   const summaryErrors: string[] = [];

@@ -98,7 +98,7 @@ export const AssignmentEdit = (props: Props) => {
         saveText={Locale.label("plans.assignmentEdit.done")}>
         <Table size="small">{getMembers()}</Table>
       </FormCard>
-      {preferencePerson && <SchedulingPreferenceEdit personId={preferencePerson.id} personName={preferencePerson.name} onClose={() => setPreferencePerson(null)} />}
+      {preferencePerson && <SchedulingPreferenceEdit personId={preferencePerson?.id} personName={preferencePerson?.name} onClose={() => setPreferencePerson(null)} />}
     </>
   );
 };

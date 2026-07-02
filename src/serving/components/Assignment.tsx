@@ -49,6 +49,9 @@ export const Assignment = (props: Props) => {
   const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
   const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
+  // Hoisted: the compiler emits non-optional guard reads (position.count/position.id) for
+  // the AssignmentEdit JSX deps, which crash while position is still null.
+  const peopleNeededForPosition = position ? position.count - ArrayHelper.getAll(assignments, "positionId", position.id).length : 0;
 
   const previousPlan = React.useMemo(() => {
     if (allPlans.length === 0 || !props.plan?.serviceDate) return null;
@@ -404,7 +407,7 @@ export const Assignment = (props: Props) => {
             <AssignmentEdit
               position={position}
               assignment={assignment}
-              peopleNeeded={position.count - ArrayHelper.getAll(assignments, "positionId", position.id).length}
+              peopleNeeded={peopleNeededForPosition}
               updatedFunction={handleAssignmentUpdate}
             />
           )}

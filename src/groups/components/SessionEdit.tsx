@@ -21,6 +21,7 @@ const validateDate = (val: string) => {
 };
 
 export const SessionEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [loading, setLoading] = React.useState(true);
 

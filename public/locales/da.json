@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Fondsnavn",
       "ariaTaxDeductible": "Fradragsberettiget",
+      "ariaVisible": "Synlig for donorer",
       "confirmMsg": "Er du sikker på, at du vil slette denne fond og alle donationer i den permanent?",
       "errBlank": "Indtast et fondsnavn",
       "taxDeductible": "Fradragsberettiget",
       "trackDonations": "Sporer donationer.",
-      "trackNonDonations": "Sporer ikke-donationstransaktioner som lejrtilmeldinger, t-shirts, begivenhedsbilletter osv."
+      "trackNonDonations": "Sporer ikke-donationstransaktioner som lejrtilmeldinger, t-shirts, begivenhedsbilletter osv.",
+      "visible": "Synlig for donorer"
     },
     "fundPage": {
       "donors": "Donorer",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Fonde",
+      "hidden": "Skjult",
       "noFund": "Ingen fonde fundet."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Tilknyttede gudstjenester",
+      "confirmDuplicate": "Dupliker denne gruppe? Medlemmer bliver ikke kopieret.",
+      "copySuffix": "(Kopi)",
+      "duplicateTooltip": "Dupliker denne gruppe",
       "emailTooltip": "Send e-mail til denne gruppe",
       "labels": "Etiketter",
       "meetingInfo": "Mødeinformation",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Tilføj foto",
+      "archive": "Arkivér",
+      "archiveAria": "Arkivér gruppe",
       "attTrack": "Spor fremmøde",
       "attendance": "Fremmøde",
       "attendanceReminders": "Fremmødepåmindelses-e-mails",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Indtast venligst et kategorinavn.",
       "changePhotoAria": "Skift gruppefoto",
       "clickToAddPhoto": "Klik for at tilføje foto",
+      "confirmArchive": "Er du sikker på, at du vil arkivere denne gruppe? Den vil blive skjult fra gruppelisten, indtil den gendannes.",
       "confirmMsg": "Er du sikker på, at du vil slette denne gruppe permanent?",
       "enrollment": "Tilmelding",
       "groupDesc": "Gruppebeskrivelse",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Ingen grupper fundet. Opret venligst en gruppe.",
       "pers": "1 person",
       "ppl": "Personer",
+      "restore": "Gendan",
+      "showArchived": "Vis arkiverede",
       "spPpl": " personer",
       "subtitle": {
         "create": "Kom i gang ved at oprette din første gruppe",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Tilføj deltager",
+      "addAttendeeError": "Kunne ikke registrere deltager.",
       "cancelConfirm": "Annuller denne tilmelding?",
       "cancelRegistration": "Annuller tilmelding",
       "csvDate": "Dato",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Status",
       "date": "Dato",
       "deleteConfirm": "Slet denne tilmelding permanent?",
+      "eventFull": "Denne begivenhed har nået sin kapacitet.",
       "eventNotFound": "Begivenhed ikke fundet",
       "eventRegistrations": "Begivenhedstilmeldinger",
       "exportCsv": "Eksportér CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Tilmeldinger",
       "status": "Status",
       "subtitle": "Administrer tilmeldinger til denne begivenhed",
-      "unknown": "Ukendt"
+      "unansweredOnly": "Kun ubesvarede spørgsmål",
+      "unknown": "Ukendt",
+      "viewAnswers": "Vis svar"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapacitet",
       "capacityPlaceholder": "Lad være tom for ubegrænset",
       "enableRegistration": "Aktivér tilmelding",
+      "none": "Ingen",
       "registrationCloses": "Tilmelding lukker",
       "registrationOpens": "Tilmelding åbner",
+      "registrationQuestions": "Tilmeldingsspørgsmål",
       "registrationSettings": "Tilmeldingsindstillinger",
       "saveSettings": "Gem indstillinger",
       "tags": "Tags",

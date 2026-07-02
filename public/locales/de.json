@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Fondsname",
       "ariaTaxDeductible": "Steuerlich absetzbar",
+      "ariaVisible": "Für Spender sichtbar",
       "confirmMsg": "Sind Sie sicher, dass Sie diesen Fonds und alle darin enthaltenen Spenden dauerhaft löschen möchten?",
       "errBlank": "Geben Sie einen Fondsnamen ein",
       "taxDeductible": "Steuerlich absetzbar",
       "trackDonations": "Verfolgt Spenden.",
-      "trackNonDonations": "Verfolgt Nicht-Spenden-Transaktionen wie Lagerregistrierungen, T-Shirts, Veranstaltungstickets usw."
+      "trackNonDonations": "Verfolgt Nicht-Spenden-Transaktionen wie Lagerregistrierungen, T-Shirts, Veranstaltungstickets usw.",
+      "visible": "Für Spender sichtbar"
     },
     "fundPage": {
       "donors": "Spender",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Fonds",
+      "hidden": "Ausgeblendet",
       "noFund": "Keine Fonds gefunden."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Zugehörige Dienste",
+      "confirmDuplicate": "Diese Gruppe duplizieren? Mitglieder werden nicht kopiert.",
+      "copySuffix": "(Kopie)",
+      "duplicateTooltip": "Diese Gruppe duplizieren",
       "emailTooltip": "Diese Gruppe per E-Mail anschreiben",
       "labels": "Etiketten",
       "meetingInfo": "Besprechungsinformationen",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Foto hinzufügen",
+      "archive": "Archivieren",
+      "archiveAria": "Gruppe archivieren",
       "attTrack": "Anwesenheit verfolgen",
       "attendance": "Anwesenheit",
       "attendanceReminders": "Anwesenheitserinnerungs-E-Mails",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Bitte geben Sie einen Kategorienamen ein.",
       "changePhotoAria": "Gruppenfoto ändern",
       "clickToAddPhoto": "Klicken Sie, um ein Foto hinzuzufügen",
+      "confirmArchive": "Sind Sie sicher, dass Sie diese Gruppe archivieren möchten? Sie wird aus der Gruppenliste ausgeblendet, bis sie wiederhergestellt wird.",
       "confirmMsg": "Sind Sie sicher, dass Sie diese Gruppe dauerhaft löschen möchten?",
       "enrollment": "Einschreibung",
       "groupDesc": "Gruppenbeschreibung",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "Keine Gruppen gefunden. Bitte erstellen Sie eine Gruppe.",
       "pers": "1 Person",
       "ppl": "Personen",
+      "restore": "Wiederherstellen",
+      "showArchived": "Archivierte anzeigen",
       "spPpl": " Personen",
       "subtitle": {
         "create": "Beginnen Sie mit der Erstellung Ihrer ersten Gruppe",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Teilnehmer hinzufügen",
+      "addAttendeeError": "Teilnehmer konnte nicht registriert werden.",
       "cancelConfirm": "Diese Anmeldung stornieren?",
       "cancelRegistration": "Anmeldung stornieren",
       "csvDate": "Datum",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Status",
       "date": "Datum",
       "deleteConfirm": "Diese Anmeldung dauerhaft löschen?",
+      "eventFull": "Diese Veranstaltung hat ihre Kapazität erreicht.",
       "eventNotFound": "Veranstaltung nicht gefunden",
       "eventRegistrations": "Veranstaltungsanmeldungen",
       "exportCsv": "CSV exportieren",
@@ -2353,14 +2367,18 @@
       "registrations": "Anmeldungen",
       "status": "Status",
       "subtitle": "Anmeldungen für diese Veranstaltung verwalten",
-      "unknown": "Unbekannt"
+      "unansweredOnly": "Nur unbeantwortete Fragen",
+      "unknown": "Unbekannt",
+      "viewAnswers": "Antworten anzeigen"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapazität",
       "capacityPlaceholder": "Leer lassen für unbegrenzt",
       "enableRegistration": "Anmeldung aktivieren",
+      "none": "Keine",
       "registrationCloses": "Anmeldung schließt",
       "registrationOpens": "Anmeldung öffnet",
+      "registrationQuestions": "Anmeldefragen",
       "registrationSettings": "Anmeldeeinstellungen",
       "saveSettings": "Einstellungen speichern",
       "tags": "Tags",

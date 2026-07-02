@@ -14,6 +14,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const ServiceEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   // Campuses are mastered in the membership module; read the shared cached list.
   const campuses = useCampuses();
   const [isSubmitting, setIsSubmitting] = React.useState(false);

@@ -32,6 +32,9 @@ export const ReportOutput = (props: Props) => {
   const open = Boolean(anchorEl);
   const contentRef = useRef<HTMLDivElement>(null);
   const isMounted = useMountedState();
+  // Hoisted: the compiler merges optional member deps (reportResult?.table) into a
+  // non-optional guard read that crashes while reportResult is still null.
+  const reportTable = reportResult ? reportResult.table : null;
 
   React.useEffect(() => {
     CurrencyHelper.loadCurrency().then((result) => {
@@ -145,10 +148,10 @@ export const ReportOutput = (props: Props) => {
           {Locale.label("reporting.downloadOptions")}
         </Button>
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          {reportResult?.table?.length > 0 && (
+          {reportTable?.length > 0 && (
             <MenuItem sx={{ padding: "5px" }} onClick={handleClose}>
               <ExportLink
-                data={props.keyName === "groupAttendance" ? downloadData?.table : reportResult.table}
+                data={props.keyName === "groupAttendance" ? downloadData?.table : reportTable}
                 filename={props.report.displayName.replace(" ", "_") + ".csv"}
                 text={Locale.label("reporting.summary")}
                 icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"}
@@ -193,7 +196,7 @@ export const ReportOutput = (props: Props) => {
         <AppIconButton key="print" label={Locale.label("common.print")} icon={<PrintIcon />} tone="card" onClick={handlePrint} />
       );
     }
-    if (reportResult?.table.length > 0 || detailedPersonSummary?.length > 0) {
+    if (reportTable?.length > 0 || detailedPersonSummary?.length > 0) {
       result.push(getExportMenu());
     }
     return result;

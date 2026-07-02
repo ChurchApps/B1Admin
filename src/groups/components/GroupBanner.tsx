@@ -11,9 +11,11 @@ import {
   Event as CalendarIcon,
   Sms as SmsIcon,
   Email as EmailIcon,
-  NotificationsActive as NotificationsActiveIcon
+  NotificationsActive as NotificationsActiveIcon,
+  ContentCopy as ContentCopyIcon
 } from "@mui/icons-material";
 import React, { memo, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
 import { SendNotificationDialog } from "./SendNotificationDialog";
@@ -27,6 +29,7 @@ interface Props {
 
 export const GroupBanner = memo((props: Props) => {
   const { group, onEdit } = props;
+  const navigate = useNavigate();
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
   const [showTextDialog, setShowTextDialog] = React.useState(false);
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
@@ -36,6 +39,29 @@ export const GroupBanner = memo((props: Props) => {
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
   const canSendNotifications = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
+
+  const handleDuplicate = () => {
+    if (!group || !window.confirm(Locale.label("groups.groupBanner.confirmDuplicate"))) return;
+    const copy: GroupInterface = {
+      categoryName: group.categoryName,
+      name: group.name + " " + Locale.label("groups.groupBanner.copySuffix"),
+      trackAttendance: group.trackAttendance,
+      attendanceReminders: group.attendanceReminders,
+      parentPickup: group.parentPickup,
+      printNametag: group.printNametag,
+      about: group.about,
+      photoUrl: group.photoUrl,
+      tags: group.tags,
+      meetingTime: group.meetingTime,
+      meetingLocation: group.meetingLocation,
+      labelArray: group.labelArray,
+      campusId: group.campusId,
+      joinPolicy: group.joinPolicy
+    };
+    ApiHelper.post("/groups", [copy], "MembershipApi").then((result: GroupInterface[]) => {
+      if (result?.[0]?.id) navigate("/groups/" + result[0].id);
+    });
+  };
 
   React.useEffect(() => {
     if (canText) {
@@ -235,6 +261,9 @@ export const GroupBanner = memo((props: Props) => {
                 )}
                 {canText && hasTextingProvider && (
                   <AppIconButton label={Locale.label("groups.groupBanner.textTooltip")} icon={<SmsIcon />} tone="header" onClick={() => setShowTextDialog(true)} />
+                )}
+                {canEdit && (
+                  <AppIconButton label={Locale.label("groups.groupBanner.duplicateTooltip")} icon={<ContentCopyIcon />} tone="header" onClick={handleDuplicate} data-testid="duplicate-group-button" />
                 )}
                 {canEdit && (
                   <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={onEdit} data-testid="edit-group-button" />

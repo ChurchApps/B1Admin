@@ -27,6 +27,7 @@ const getTimezones = (): string[] => {
 const TIMEZONES = getTimezones();
 
 export const CampusEdit: React.FC<Props> = (props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "" } });

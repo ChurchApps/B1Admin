@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Fondo pavadinimas",
       "ariaTaxDeductible": "Atskaitoma nuo mokesčių",
+      "ariaVisible": "Matoma aukotojams",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Matoma aukotojams"
     },
     "fundPage": {
       "donors": "Aukotojai",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "Paslėpta",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "Dubliuoti šią grupę? Nariai nebus nukopijuoti.",
+      "copySuffix": "(Kopija)",
+      "duplicateTooltip": "Dubliuoti šią grupę",
       "emailTooltip": "Siųsti el. laišką šiai grupei",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Archyvuoti",
+      "archiveAria": "Archyvuoti grupę",
       "attTrack": "Track Attendance",
       "attendance": "Lankomumas",
       "attendanceReminders": "Lankomumo priminimo el. laiškai",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Pakeisti grupės nuotrauką",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Ar tikrai norite archyvuoti šią grupę? Ji bus paslėpta iš grupių sąrašo, kol nebus atkurta.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Įtraukimas",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "People",
+      "restore": "Atkurti",
+      "showArchived": "Rodyti archyvuotas grupes",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Pridėti dalyvį",
+      "addAttendeeError": "Nepavyko užregistruoti dalyvio",
       "cancelConfirm": "Atšaukti šią registraciją?",
       "cancelRegistration": "Atšaukti registraciją",
       "csvDate": "Data",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Būsena",
       "date": "Data",
       "deleteConfirm": "Visam laikui ištrinti šią registraciją?",
+      "eventFull": "Šis renginys jau pilnas.",
       "eventNotFound": "Renginys nerastas",
       "eventRegistrations": "Renginio registracijos",
       "exportCsv": "Eksportuoti CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Registracijos",
       "status": "Būsena",
       "subtitle": "Tvarkykite šio renginio registracijas",
-      "unknown": "Nežinoma"
+      "unansweredOnly": "Tik neatsakyti klausimai",
+      "unknown": "Nežinoma",
+      "viewAnswers": "Peržiūrėti atsakymus"
     },
     "registrationSettingsEdit": {
       "capacity": "Talpa",
       "capacityPlaceholder": "Palikite tuščią, jei neribota",
       "enableRegistration": "Įjungti registraciją",
+      "none": "Nėra",
       "registrationCloses": "Registracija baigiasi",
       "registrationOpens": "Registracija prasideda",
+      "registrationQuestions": "Registracijos klausimai",
       "registrationSettings": "Registracijos nustatymai",
       "saveSettings": "Išsaugoti nustatymus",
       "tags": "Žymos",

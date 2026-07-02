@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Alap neve",
       "ariaTaxDeductible": "Adóból levonható",
+      "ariaVisible": "Látható az adományozók számára",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Látható az adományozók számára"
     },
     "fundPage": {
       "donors": "Adományozók",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "Rejtett",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "Duplikálod ezt a csoportot? A tagok nem lesznek átmásolva.",
+      "copySuffix": "(Másolat)",
+      "duplicateTooltip": "Csoport duplikálása",
       "emailTooltip": "E-mail küldése ennek a csoportnak",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Archiválás",
+      "archiveAria": "Csoport archiválása",
       "attTrack": "Track Attendance",
       "attendance": "Jelenlét",
       "attendanceReminders": "Jelenléti emlékeztető e-mailek",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Csoportkép módosítása",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Biztosan szeretné archiválni ezt a csoportot? A csoportok listájából rejtve lesz, amíg vissza nem állítja.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Beiratkozás",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "People",
+      "restore": "Visszaállítás",
+      "showArchived": "Archiváltak megjelenítése",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Résztvevő hozzáadása",
+      "addAttendeeError": "Nem sikerült regisztrálni a résztvevőt.",
       "cancelConfirm": "Megszakítja ezt a regisztrációt?",
       "cancelRegistration": "Regisztráció megszakítása",
       "csvDate": "Dátum",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Állapot",
       "date": "Dátum",
       "deleteConfirm": "Véglegesen törli ezt a regisztrációt?",
+      "eventFull": "Ez az esemény megtelt.",
       "eventNotFound": "Esemény nem található",
       "eventRegistrations": "Esemény regisztrációk",
       "exportCsv": "CSV exportálása",
@@ -2353,14 +2367,18 @@
       "registrations": "Regisztrációk",
       "status": "Állapot",
       "subtitle": "Esemény regisztrációinak kezelése",
-      "unknown": "Ismeretlen"
+      "unansweredOnly": "Csak megválaszolatlan kérdések",
+      "unknown": "Ismeretlen",
+      "viewAnswers": "Válaszok megtekintése"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapacitás",
       "capacityPlaceholder": "Hagyja üresen a korlátlan értékhez",
       "enableRegistration": "Regisztráció engedélyezése",
+      "none": "Nincs",
       "registrationCloses": "Regisztráció zárása",
       "registrationOpens": "Regisztráció nyitása",
+      "registrationQuestions": "Regisztrációs kérdések",
       "registrationSettings": "Regisztrációs beállítások",
       "saveSettings": "Beállítások mentése",
       "tags": "Címkék",

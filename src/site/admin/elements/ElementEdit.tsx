@@ -77,9 +77,12 @@ export function ElementEdit(props: Props) {
   const [element, setElement] = useState<ElementInterface>(null);
   const [errors, setErrors] = useState([]);
   const [innerErrors, setInnerErrors] = useState([]);
-  const parsedData = element?.answersJSON ? JSON.parse(element.answersJSON) : {};
-  const parsedStyles = element?.stylesJSON ? JSON.parse(element.stylesJSON) : {};
-  const parsedAnimations = element?.animationsJSON ? JSON.parse(element.animationsJSON) : {};
+  // Hoisted null-safe view of element: the compiler merges optional member deps
+  // (element?.answersJSON) into non-optional guard reads that crash while element is null.
+  const el: ElementInterface = element || ({} as ElementInterface);
+  const parsedData = el.answersJSON ? JSON.parse(el.answersJSON) : {};
+  const parsedStyles = el.stylesJSON ? JSON.parse(el.stylesJSON) : {};
+  const parsedAnimations = el.animationsJSON ? JSON.parse(el.animationsJSON) : {};
   const baselineRef = React.useRef<{ answersJSON?: string; stylesJSON?: string; animationsJSON?: string }>(null);
   const normalizedHtmlFieldsRef = React.useRef<Set<string>>(new Set());
   const dirtyRef = React.useRef(false);
@@ -155,7 +158,7 @@ export function ElementEdit(props: Props) {
       const p = { ...element };
       p.answers = parsedData;
       p.answersJSON = JSON.stringify(parsedData);
-      if (p.answersJSON !== element.answersJSON) {
+      if (p.answersJSON !== el.answersJSON) {
         setElement(p);
       }
     } catch (error) {
@@ -233,7 +236,7 @@ export function ElementEdit(props: Props) {
 
   const handleDelete = () => {
     if (window.confirm(Locale.label("site.elements.confirmDelete"))) {
-      trackSave(ApiHelper.delete("/elements/" + element.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
+      trackSave(ApiHelper.delete("/elements/" + el.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
     }
   };
 
@@ -243,7 +246,7 @@ export function ElementEdit(props: Props) {
       size="small"
       label={Locale.label("site.elements.answersJSON")}
       name="answersJSON"
-      value={element.answersJSON}
+      value={el.answersJSON}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       multiline
@@ -754,7 +757,7 @@ export function ElementEdit(props: Props) {
     e.answersJSON = JSON.stringify(parsedData);
     if (element?.elementType === "row" && typeof parsedData.columns === "string") {
       const sizes: number[] = parsedData.columns.split(",").map((s: string) => parseInt(s, 10)).filter((n: number) => !isNaN(n));
-      const existing = element.elements || [];
+      const existing = el.elements || [];
       e.elements = sizes.map((size, idx) => {
         const src = existing[idx];
         if (src) {
@@ -766,9 +769,9 @@ export function ElementEdit(props: Props) {
         return {
           id: `__preview_col_${idx}`,
           elementType: "column",
-          parentId: element.id,
-          sectionId: element.sectionId,
-          blockId: element.blockId,
+          parentId: el.id,
+          sectionId: el.sectionId,
+          blockId: el.blockId,
           sort: idx + 1,
           answers: newAnswers,
           answersJSON: JSON.stringify(newAnswers),
@@ -814,7 +817,7 @@ export function ElementEdit(props: Props) {
   // Auto-save elements that have no settings to edit
   useEffect(() => {
     const elementHasNoSettings = (elementType: string): boolean => elementType === "sermons";
-    if (element && !element.id && elementHasNoSettings(element.elementType)) {
+    if (element && !el.id && elementHasNoSettings(el.elementType)) {
       handleSave();
     }
   }, [element]);

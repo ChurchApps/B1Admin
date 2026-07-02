@@ -20,6 +20,7 @@ const buildDefaults = (sd: SongDetailInterface): AnyRecord => ({
 });
 
 export const SongDetailsEdit = (props: Props) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset, control } = useForm<AnyRecord>({ defaultValues: buildDefaults(props.songDetail) });
 
   useEffect(() => {

@@ -14,6 +14,7 @@ interface Props {
 type AnyRecord = Record<string, any>;
 
 export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { roleName: "" } });
   const e = formState.errors as any;
   const summaryErrors: string[] = [];

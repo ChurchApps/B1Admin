@@ -743,11 +743,13 @@
     "fundEdit": {
       "ariaFundName": "Fund name",
       "ariaTaxDeductible": "Tax deductible",
+      "ariaVisible": "Visible to donors",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Visible to Donors"
     },
     "fundPage": {
       "donors": "Donors",
@@ -757,6 +759,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "Hidden",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -1000,6 +1003,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "Duplicate this group? Members will not be copied.",
+      "copySuffix": "(Copy)",
+      "duplicateTooltip": "Duplicate this group",
       "emailTooltip": "Email this group",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1044,6 +1050,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Archive",
+      "archiveAria": "Archive group",
       "attTrack": "Track Attendance",
       "attendance": "Attendance",
       "attendanceReminders": "Attendance Reminder Emails",
@@ -1051,6 +1059,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Change group photo",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Are you sure you wish to archive this group? It will be hidden from the groups list until restored.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Enrollment",
       "groupDesc": "Group Description",
@@ -1149,6 +1158,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "People",
+      "restore": "Restore",
+      "showArchived": "Show archived",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2347,6 +2358,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Add Attendee",
+      "addAttendeeError": "Failed to register attendee",
       "cancelConfirm": "Cancel this registration?",
       "cancelRegistration": "Cancel Registration",
       "csvDate": "Date",
@@ -2355,6 +2368,7 @@
       "csvStatus": "Status",
       "date": "Date",
       "deleteConfirm": "Permanently delete this registration?",
+      "eventFull": "This event is at capacity.",
       "eventNotFound": "Event not found",
       "eventRegistrations": "Event Registrations",
       "exportCsv": "Export CSV",
@@ -2365,14 +2379,18 @@
       "registrations": "Registrations",
       "status": "Status",
       "subtitle": "Manage registrations for this event",
-      "unknown": "Unknown"
+      "unansweredOnly": "Unanswered questions only",
+      "unknown": "Unknown",
+      "viewAnswers": "View Answers"
     },
     "registrationSettingsEdit": {
       "capacity": "Capacity",
       "capacityPlaceholder": "Leave empty for unlimited",
       "enableRegistration": "Enable Registration",
+      "none": "None",
       "registrationCloses": "Registration Closes",
       "registrationOpens": "Registration Opens",
+      "registrationQuestions": "Registration Questions",
       "registrationSettings": "Registration Settings",
       "saveSettings": "Save Settings",
       "tags": "Tags",

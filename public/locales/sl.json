@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Ime sklada",
       "ariaTaxDeductible": "Davčno priznano",
+      "ariaVisible": "Vidno darovalcem",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Vidno darovalcem"
     },
     "fundPage": {
       "donors": "Darovalci",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Sredstva",
+      "hidden": "Skrito",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "Podvoji to skupino? Člani ne bodo kopirani.",
+      "copySuffix": "(Kopija)",
+      "duplicateTooltip": "Podvoji to skupino",
       "emailTooltip": "Pošlji e-pošto tej skupini",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Arhiviraj",
+      "archiveAria": "Arhiviraj skupino",
       "attTrack": "Track Attendance",
       "attendance": "Obisk",
       "attendanceReminders": "E-poštni opomniki za obisk",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Spremeni fotografijo skupine",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Ali ste prepričani, da želite arhivirati to skupino? Skrita bo s seznama skupin, dokler je ne obnovite.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Vpisovanje",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "Ljudje",
+      "restore": "Obnovi",
+      "showArchived": "Prikaži arhivirane",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Dodaj udeleženca",
+      "addAttendeeError": "Prijava udeleženca ni uspela.",
       "cancelConfirm": "Prekliči to prijavo?",
       "cancelRegistration": "Prekliči prijavo",
       "csvDate": "Datum",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Status",
       "date": "Datum",
       "deleteConfirm": "Trajno izbriši to prijavo?",
+      "eventFull": "Ta dogodek je dosegel kapaciteto.",
       "eventNotFound": "Dogodek ni bil najden",
       "eventRegistrations": "Prijave na dogodek",
       "exportCsv": "Izvozi CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Prijave",
       "status": "Status",
       "subtitle": "Upravljaj prijave za ta dogodek",
-      "unknown": "Neznano"
+      "unansweredOnly": "Samo neodgovorjena vprašanja",
+      "unknown": "Neznano",
+      "viewAnswers": "Poglej odgovore"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapaciteta",
       "capacityPlaceholder": "Pustite prazno za neomejeno",
       "enableRegistration": "Omogoči prijavo",
+      "none": "Brez",
       "registrationCloses": "Prijava se zapre",
       "registrationOpens": "Prijava se odpre",
+      "registrationQuestions": "Vprašanja prijave",
       "registrationSettings": "Nastavitve prijave",
       "saveSettings": "Shrani nastavitve",
       "tags": "Oznake",

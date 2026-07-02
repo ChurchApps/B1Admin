@@ -13,6 +13,7 @@ type Props = {
 type AnyRecord = Record<string, any>;
 
 export function BlockEdit(props: Props) {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { control, register, handleSubmit, reset, setError, formState } = useForm<AnyRecord>({ defaultValues: { name: "", blockType: "elementBlock" } });
   const e = formState.errors as any;
   const summaryErrors: string[] = [];

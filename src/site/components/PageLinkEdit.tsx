@@ -20,6 +20,7 @@ type Props = {
 type AnyRecord = Record<string, any>;
 
 export function PageLinkEdit(props: Props) {
+  "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [checked, setChecked] = useState<boolean>(false);
 
   const { control, register, handleSubmit, reset, setValue, setError, watch, formState } = useForm<AnyRecord>({ defaultValues: { title: "", url: "", layout: "", linkText: "", linkUrl: "" } });

@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "اسم الصندوق",
       "ariaTaxDeductible": "قابل للخصم الضريبي",
+      "ariaVisible": "مرئي للمتبرعين",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "مرئي للمتبرعين"
     },
     "fundPage": {
       "donors": "المتبرعون",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "مخفي",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "تكرار هذه المجموعة؟ لن يتم نسخ الأعضاء.",
+      "copySuffix": "(نسخة)",
+      "duplicateTooltip": "تكرار هذه المجموعة",
       "emailTooltip": "أرسل بريدًا إلكترونيًا إلى هذه المجموعة",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "أرشفة",
+      "archiveAria": "أرشفة المجموعة",
       "attTrack": "Track Attendance",
       "attendance": "الحضور",
       "attendanceReminders": "تذكيرات الحضور عبر البريد الإلكتروني",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "تغيير صورة المجموعة",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "هل أنت متأكد من رغبتك في أرشفة هذه المجموعة؟ ستُخفى من قائمة المجموعات حتى تتم استعادتها.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "التسجيل",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "People",
+      "restore": "استعادة",
+      "showArchived": "إظهار المؤرشف",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "إضافة مشارك",
+      "addAttendeeError": "فشل تسجيل المشارك.",
       "cancelConfirm": "إلغاء هذا التسجيل؟",
       "cancelRegistration": "إلغاء التسجيل",
       "csvDate": "التاريخ",
@@ -2343,6 +2356,7 @@
       "csvStatus": "الحالة",
       "date": "التاريخ",
       "deleteConfirm": "حذف هذا التسجيل نهائيًا؟",
+      "eventFull": "وصل هذا الحدث إلى السعة القصوى.",
       "eventNotFound": "الحدث غير موجود",
       "eventRegistrations": "تسجيلات الحدث",
       "exportCsv": "تصدير CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "التسجيلات",
       "status": "الحالة",
       "subtitle": "إدارة التسجيلات لهذا الحدث",
-      "unknown": "غير معروف"
+      "unansweredOnly": "الأسئلة غير المجابة فقط",
+      "unknown": "غير معروف",
+      "viewAnswers": "عرض الإجابات"
     },
     "registrationSettingsEdit": {
       "capacity": "السعة",
       "capacityPlaceholder": "اتركه فارغًا لعدم وجود حد",
       "enableRegistration": "تمكين التسجيل",
+      "none": "لا شيء",
       "registrationCloses": "إغلاق التسجيل",
       "registrationOpens": "فتح التسجيل",
+      "registrationQuestions": "أسئلة التسجيل",
       "registrationSettings": "إعدادات التسجيل",
       "saveSettings": "حفظ الإعدادات",
       "tags": "العلامات",

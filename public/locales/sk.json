@@ -742,11 +742,13 @@
     "fundEdit": {
       "ariaFundName": "Názov fondu",
       "ariaTaxDeductible": "Daňovo odpočítateľné",
+      "ariaVisible": "Viditeľné darcom",
       "confirmMsg": "Are you sure you wish to permanently delete this fund and all donations within it?",
       "errBlank": "Enter a fund name",
       "taxDeductible": "Tax Deductible",
       "trackDonations": "Tracks donations.",
-      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc."
+      "trackNonDonations": "Tracks non-donation transactions like camp registrations, tshirts, event tickets, etc.",
+      "visible": "Viditeľné darcom"
     },
     "fundPage": {
       "donors": "Darcovia",
@@ -756,6 +758,7 @@
     },
     "funds": {
       "fund": "Funds",
+      "hidden": "Skryté",
       "noFund": "No funds found."
     },
     "fundsPage": {
@@ -999,6 +1002,9 @@
     },
     "groupBanner": {
       "associatedServices": "Associated Services",
+      "confirmDuplicate": "Duplikovať túto skupinu? Členovia sa neskopírujú.",
+      "copySuffix": "(Kópia)",
+      "duplicateTooltip": "Duplikovať túto skupinu",
       "emailTooltip": "Poslať e-mail tejto skupine",
       "labels": "Labels",
       "meetingInfo": "Meeting Information",
@@ -1043,6 +1049,8 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Add Photo",
+      "archive": "Archivovať",
+      "archiveAria": "Archivovať skupinu",
       "attTrack": "Track Attendance",
       "attendance": "Dochádzka",
       "attendanceReminders": "E-mailové upomienky dochádzky",
@@ -1050,6 +1058,7 @@
       "catNameMsg": "Please enter a category name.",
       "changePhotoAria": "Zmeniť fotku skupiny",
       "clickToAddPhoto": "Click to add photo",
+      "confirmArchive": "Ste si istí, že chcete archivovať túto skupinu? Bude skrytá zo zoznamu skupín, kým nebude obnovená.",
       "confirmMsg": "Are you sure you wish to permanently delete this group?",
       "enrollment": "Zápis",
       "groupDesc": "Group Description",
@@ -1148,6 +1157,8 @@
       "noGroupMsg": "No groups found. Please create a group.",
       "pers": "1 person",
       "ppl": "Ľudia",
+      "restore": "Obnoviť",
+      "showArchived": "Zobraziť archivované",
       "spPpl": " people",
       "subtitle": {
         "create": "Get started by creating your first group",
@@ -2335,6 +2346,8 @@
   },
   "registrations": {
     "registrationDetailsPage": {
+      "addAttendee": "Pridať účastníka",
+      "addAttendeeError": "Nepodarilo sa zaregistrovať účastníka",
       "cancelConfirm": "Zrušiť túto registráciu?",
       "cancelRegistration": "Zrušiť registráciu",
       "csvDate": "Dátum",
@@ -2343,6 +2356,7 @@
       "csvStatus": "Stav",
       "date": "Dátum",
       "deleteConfirm": "Trvalo odstrániť túto registráciu?",
+      "eventFull": "Táto udalosť je na plnej kapacite.",
       "eventNotFound": "Udalosť nenájdená",
       "eventRegistrations": "Registrácie na udalosť",
       "exportCsv": "Exportovať CSV",
@@ -2353,14 +2367,18 @@
       "registrations": "Registrácie",
       "status": "Stav",
       "subtitle": "Spravovať registrácie pre túto udalosť",
-      "unknown": "Neznámy"
+      "unansweredOnly": "Iba nezodpovedané otázky",
+      "unknown": "Neznámy",
+      "viewAnswers": "Zobraziť odpovede"
     },
     "registrationSettingsEdit": {
       "capacity": "Kapacita",
       "capacityPlaceholder": "Nechajte prázdne pre neobmedzenú",
       "enableRegistration": "Povoliť registráciu",
+      "none": "Žiadny",
       "registrationCloses": "Registrácia sa uzavrie",
       "registrationOpens": "Registrácia sa otvorí",
+      "registrationQuestions": "Otázky registrácie",
       "registrationSettings": "Nastavenia registrácie",
       "saveSettings": "Uložiť nastavenia",
       "tags": "Štítky",
