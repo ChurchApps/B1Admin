@@ -1,4 +1,5 @@
 import { Locale, UserHelper, Permissions } from "@churchapps/apphelper";
+import { hasPlansEditAccess } from "./PlanPermissionHelper";
 
 interface MenuItem {
   url: string;
@@ -86,7 +87,7 @@ export class SecondaryMenuHelper {
   static getServingMenu = (path: string, data?: any) => {
     const menuItems: MenuItem[] = [];
     let label: string = "";
-    const canViewPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || data?.isMinistryMember;
+    const canViewPlans = hasPlansEditAccess() || data?.isMinistryMember;
     menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.myWork"), icon: "list_alt" });
     menuItems.push({ url: "/serving/tasks/workflows", label: Locale.label("components.wrapper.workflows"), icon: "view_kanban" });
     if (canViewPlans) {

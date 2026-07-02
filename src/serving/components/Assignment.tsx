@@ -9,13 +9,11 @@ import {
   type PositionInterface,
   type TimeInterface
 } from "@churchapps/helpers";
-import { type PlanInterface } from "../../helpers";
+import { type PlanInterface, hasPlansEditAccess } from "../../helpers";
 import {
   ApiHelper,
   ArrayHelper,
-  Locale,
-  UserHelper,
-  Permissions
+  Locale
 } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { PositionEdit } from "./PositionEdit";
@@ -30,7 +28,7 @@ interface Props {
 
 export const Assignment = (props: Props) => {
   const [plan, setPlan] = React.useState<PlanInterface>(null);
-  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
     queryKey: ["/groups/my/ministry", "MembershipApi"],

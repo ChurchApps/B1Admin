@@ -2,6 +2,7 @@ import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelpe
 import React, { useEffect, useMemo } from "react";
 
 import { SecondaryMenuHelper } from "../helpers/SecondaryMenuHelper";
+import { hasPlansEditAccess } from "../helpers";
 import { SiteHeader } from "@churchapps/apphelper";
 import UserContext from "../UserContext";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +26,7 @@ export const Header: React.FC = () => {
       ApiHelper.get("/memberpermissions/member/" + context.person?.id, "MembershipApi").then((data: any) => setIsFormMember(data?.length > 0));
     }
 
-    if (!UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) {
+    if (!hasPlansEditAccess()) {
       ApiHelper.get("/groups/my/ministry", "MembershipApi").then((data: any) => setIsMinistryMember(data?.length > 0));
     }
   }, [formPermission, context?.person?.id]);
@@ -38,7 +39,7 @@ export const Header: React.FC = () => {
     else if (formPermission || isFormMember) menuItems.push({ url: "/forms", icon: "person", label: Locale.label("components.wrapper.ppl") });
     if (UserHelper.checkAccess(Permissions.givingApi.donations.viewSummary)) menuItems.push({ url: "/donations", label: Locale.label("components.wrapper.don"), icon: donationIcon });
 
-    const canViewPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || isMinistryMember;
+    const canViewPlans = hasPlansEditAccess() || isMinistryMember;
     if (canViewPlans) menuItems.push({ url: "/serving", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
     else menuItems.push({ url: "/serving/tasks", label: Locale.label("components.wrapper.serving"), icon: "assignment" });
 

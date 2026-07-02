@@ -3,8 +3,8 @@ import { Stack, Typography, Button, ButtonGroup, Box, Card, CardContent, Menu, M
 import { Print as PrintIcon, Add as AddIcon, Album as AlbumIcon, MenuBook as MenuBookIcon, ArrowDropDown as ArrowDropDownIcon, Link as LinkIcon, Close as CloseIcon, Schedule as ScheduleIcon, BookmarkAdd as BookmarkAddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
-import { type PlanItemInterface } from "../../helpers";
-import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { type PlanItemInterface, hasPlansEditAccess } from "../../helpers";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-providers";
 import { PlanItemEdit } from "./PlanItemEdit";
@@ -66,7 +66,7 @@ function instructionToPlanItem(item: InstructionItem, providerId?: string, provi
 
 export const ServiceOrder = memo((props: Props) => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
-  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
     queryKey: ["/groups/my/ministry", "MembershipApi"],

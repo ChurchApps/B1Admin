@@ -6,8 +6,8 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { Add as AddIcon, ArrowDropDown as ArrowDropDownIcon, Assignment as AssignmentIcon, CalendarMonth as CalendarIcon, Edit as EditIcon, EventNote as EventNoteIcon, MenuBook as MenuBookIcon, DateRange as DateRangeIcon, History as HistoryIcon, Bookmarks as BookmarksIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { type GroupInterface } from "@churchapps/helpers";
-import { type PlanInterface } from "../../helpers";
-import { ArrayHelper, DateHelper, Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
+import { type PlanInterface, hasPlansEditAccess } from "../../helpers";
+import { ArrayHelper, DateHelper, Locale, Loading } from "@churchapps/apphelper";
 import { PlanEdit } from "./PlanEdit";
 import { PlanTemplateManager } from "./PlanTemplateManager";
 import { LessonScheduleEdit } from "./LessonScheduleEdit";
@@ -29,7 +29,7 @@ export const PlanList = memo((props: Props) => {
   const [showBulkSchedule, setShowBulkSchedule] = React.useState(false);
   const [showTemplates, setShowTemplates] = React.useState(false);
   const [lessonMenuAnchor, setLessonMenuAnchor] = React.useState<null | HTMLElement>(null);
-  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
     queryKey: ["/groups/my/ministry", "MembershipApi"],

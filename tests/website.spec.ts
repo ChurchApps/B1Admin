@@ -39,10 +39,8 @@ test.describe("Website Management", () => {
     // open, and the dialog blocks pointer events on the primary nav.
     test.beforeEach(async () => {
       const settingsDialog = page.locator('div[role="dialog"]:has-text("Page Settings")');
-      if (await settingsDialog.isVisible({ timeout: 200 }).catch(() => false)) {
-        await settingsDialog.locator('button:has-text("Cancel")').click();
-        await settingsDialog.waitFor({ state: "hidden", timeout: 5000 }).catch(() => { });
-      }
+      await settingsDialog.locator('button:has-text("Cancel")').click({ timeout: 2000 }).catch(() => { });
+      await settingsDialog.waitFor({ state: "hidden", timeout: 5000 }).catch(() => { });
       if (!/\/site\/pages(\?|$)/.test(page.url())) {
         await navigateToSite(page);
       }
@@ -819,7 +817,6 @@ test.describe("Website Management", () => {
 
     test("should upload file", async () => {
       const chooseFileBtn = page.locator('[id="fileUpload"]');
-      await chooseFileBtn.click();
       await chooseFileBtn.setInputFiles("public/images/logo.png");
       const uploadBtn = page.locator("button").getByText("Upload");
       const filesPost = page.waitForResponse(r => r.url().includes("/content/files") && r.request().method() === "POST" && !r.url().includes("postUrl"), { timeout: 30000 });

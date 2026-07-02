@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Button, Typography, Stack, Paper, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
 import { Add as AddIcon, Assignment as AssignmentIcon, Edit as EditIcon } from "@mui/icons-material";
-import { Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
+import { Locale, Loading } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
-import { type PlanTypeInterface } from "../../helpers";
+import { type PlanTypeInterface, hasPlansEditAccess } from "../../helpers";
 import { PlanTypeEdit } from "./PlanTypeEdit";
 import { CountChip, EmptyState } from "../../components/ui";
 import { Link } from "react-router-dom";
@@ -17,8 +17,7 @@ interface Props {
 export const PlanTypeList = React.memo(({ ministry }: Props) => {
   const [showAdd, setShowAdd] = React.useState(false);
   const [editItem, setEditItem] = React.useState<PlanTypeInterface | null>(null);
-  // Server-side PlanAuth checks the DoingApi Plans/Edit grant; the membershipApi constant is legacy.
-  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit) || UserHelper.checkAccess({ api: "DoingApi", contentType: "Plans", action: "Edit" });
+  const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
     queryKey: ["/groups/my/ministry", "MembershipApi"],

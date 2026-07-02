@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, S
 import { ApiHelper, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import UserContext from "../../UserContext";
+import { hasPlansEditAccess } from "../../helpers";
 
 export type WizardType = "freeshow" | "freeplay" | "webpage" | "group";
 
@@ -112,7 +113,7 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
   };
 
   const handleFreeplaySetup = async () => {
-    if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit) || !UserHelper.checkAccess(Permissions.membershipApi.plans.edit)) {
+    if (!UserHelper.checkAccess(Permissions.membershipApi.groups.edit) || !hasPlansEditAccess()) {
       setError(Locale.label("dashboard.quickSetupModal.errorPermFreePlay"));
       return;
     }

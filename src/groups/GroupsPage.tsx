@@ -8,6 +8,7 @@ import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps
 import { useMountedState, Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { CountChip, ExportButton, SortableTableHead } from "../components/ui";
+import { hasPlansEditAccess } from "../helpers";
 
 const formatHeader = (key: string): string => {
   const customMap: Record<string, string> = {
@@ -73,7 +74,7 @@ const GroupsPage = () => {
   });
   const pendingCount = pendingRequests?.length || 0;
 
-  const canEditPlans = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const canEditPlans = hasPlansEditAccess();
   const { data: myMinistries = [] } = useQuery<GroupInterface[]>({
     queryKey: ["/groups/my/ministry", "MembershipApi"],
     placeholderData: [],

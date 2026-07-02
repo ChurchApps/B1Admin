@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Button, Typography, Stack, Paper, Table, TableBody, TableCell, TableRow, TableHead, Select, MenuItem, Autocomplete, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { Add as AddIcon, Groups as GroupsIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { ApiHelper, Locale, Loading, UserHelper, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
-import { type AssociatedGroupInterface } from "../../helpers";
+import { type AssociatedGroupInterface, hasPlansEditAccess } from "../../helpers";
 import { CountChip, EmptyState } from "../../components/ui";
 
 interface Props {
@@ -17,7 +17,7 @@ type TimeFilter = "past" | "future" | "both";
 const CONTENT_TYPE = "planType";
 
 export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => {
-  const hasPlansEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
     queryKey: ["/groups/my/ministry", "MembershipApi"],

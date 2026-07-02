@@ -1,9 +1,10 @@
 import React from "react";
-import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, PageHeader, Permissions, UserHelper, type PersonInterface } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, PageHeader, type PersonInterface } from "@churchapps/apphelper";
 import { type AssignmentInterface, type PositionInterface } from "@churchapps/helpers";
 import { Alert, Box, Button, Card, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from "@mui/material";
 import { Close as CloseIcon, Clear as ClearIcon, Email as EmailIcon, PublishedWithChanges as AutoScheduleIcon } from "@mui/icons-material";
 import { ExportButton } from "../components/ui";
+import { hasPlansEditAccess } from "../helpers";
 import { AssignmentEdit } from "./components/AssignmentEdit";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
@@ -75,7 +76,7 @@ export const ServingOverviewPage = () => {
   const [endDate, setEndDate] = React.useState(defaults.endDate);
   const ministryId = searchParams.get("ministryId") || "";
   const planTypeId = searchParams.get("planTypeId") || "";
-  const canEdit = UserHelper.checkAccess(Permissions.membershipApi.plans.edit);
+  const canEdit = hasPlansEditAccess();
 
   const [editingKey, setEditingKey] = React.useState<{ rowKey: string; date: string } | null>(null);
   const [highlightPersonId, setHighlightPersonId] = React.useState("");
