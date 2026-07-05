@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
-import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Card, Stack } from "@mui/material";
+import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
 import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as DateIcon, Edit as EditIcon, Receipt as ReceiptIcon } from "@mui/icons-material";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, EmptyState, ExportButton, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
+import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
 
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
@@ -195,39 +195,13 @@ export const DonationBatchesPage = () => {
           sx={{ width: "100%" }}
         >
           {stats.totalBatches > 0 && (
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={{ xs: 2, sm: 4, md: 5 }}
-              sx={{
-                position: { xs: "static", md: "absolute" },
-                left: { md: "50%" },
-                top: { md: "50%" },
-                transform: { md: "translateY(-50%)" },
-                flexWrap: "wrap"
-              }}
-            >
-              <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <DonationIcon sx={{ color: "#FFF", fontSize: 24 }} />
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalBatches}</Typography>
-                </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.donationBatchesPage.batches")}</Typography>
-              </Stack>
-              <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Icon sx={{ color: "#FFF", fontSize: 24 }}>receipt</Icon>
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalDonations}</Typography>
-                </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.donationBatchesPage.donations")}</Typography>
-              </Stack>
-              <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  {/* <Icon sx={{ color: "#FFF", fontSize: 24 }}>attach_money</Icon> */}
-                  <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</Typography>
-                </Stack>
-                <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.donationBatchesPage.totalAmount")}</Typography>
-              </Stack>
-            </Stack>
+            <PageHeaderStats
+              items={[
+                { icon: <DonationIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalBatches, label: Locale.label("donations.donationBatchesPage.batches"), minWidth: 80 },
+                { icon: <Icon sx={{ color: "#FFF", fontSize: 24 }}>receipt</Icon>, value: stats.totalDonations, label: Locale.label("donations.donationBatchesPage.donations"), minWidth: 80 },
+                { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.donationBatchesPage.totalAmount") }
+              ]}
+            />
           )}
           {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
             <HeaderPrimaryButton
@@ -246,21 +220,14 @@ export const DonationBatchesPage = () => {
       <Box sx={{ p: 3 }}>
         {editBatchId !== "notset" && <Box sx={{ mb: 3 }}>{getSidebarModules()}</Box>}
 
-        <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("donations.donations.batches")}</Typography>
-                {sortedBatches.length > 0 && <CountChip count={sortedBatches.length} />}
-              </Stack>
-              <Stack direction="row" spacing={1} alignItems="center">
-                {batches.data && <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
-              </Stack>
-            </Stack>
-          </Box>
-          <Box>{getTable()}</Box>
-        </Card>
+        <CardWithHeader
+          icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          title={Locale.label("donations.donations.batches")}
+          count={sortedBatches.length}
+          actions={batches.data && <ExportButton data={batches.data} filename="donationbatches.csv" text={Locale.label("donations.donationBatchesPage.export")} />}
+        >
+          {getTable()}
+        </CardWithHeader>
 
         <Box sx={{ mt: 3 }}>
           <DonationEvents />

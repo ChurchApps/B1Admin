@@ -1,6 +1,7 @@
 import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, Typography } from "@mui/material";
+import { useBulkApplyDialog } from "./useBulkApplyDialog";
 
 export interface BulkFieldOption { value: string; label: string }
 
@@ -20,31 +21,23 @@ interface Props {
 
 export const BulkFieldDialog: React.FC<Props> = (props) => {
   const [value, setValue] = React.useState("");
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  React.useEffect(() => {
-    if (props.open) setValue("");
-  }, [props.open]);
-
-  const handleApply = async () => {
-    if (value === "") return;
-    const updateValue = props.isBoolean ? value === "true" : value;
-    setIsSubmitting(true);
-    try {
+  const { isSubmitting, handleApply } = useBulkApplyDialog({
+    open: props.open,
+    onClose: props.onClose,
+    onComplete: props.onComplete,
+    onOpen: () => setValue(""),
+    apply: async () => {
+      const updateValue = props.isBoolean ? value === "true" : value;
       const updates = { [props.field]: updateValue };
       await ApiHelper.post("/people/bulk-update", { personIds: props.personIds, updates }, "MembershipApi");
-      props.onComplete({
+      return {
         message: Locale.label("people.bulk.fieldSuccess").replace("{count}", props.personIds.length.toString()),
         severity: "success",
         fieldUpdates: updates
-      });
-      props.onClose();
-    } catch (error) {
-      props.onComplete({ message: error instanceof Error ? error.message : Locale.label("people.bulk.error"), severity: "error" });
-    } finally {
-      setIsSubmitting(false);
+      };
     }
-  };
+  });
 
   return (
     <Dialog open={props.open} onClose={() => !isSubmitting && props.onClose()} maxWidth="xs" fullWidth>

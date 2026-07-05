@@ -1,44 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Stack, TextField, Button, Typography, MenuItem, Chip } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type CommerceEventInterface, type RegistrationCouponInterface } from "../registrationCommerce";
+import { useEditableRowList, toNum } from "./useEditableRowList";
 
 interface Props {
   event: CommerceEventInterface;
 }
 
-const toNum = (v: any) => (v === null || v === undefined || v === "" ? null : Number(v));
 const toLocalInput = (d: Date | string | undefined) => (d ? new Date(d).toISOString().slice(0, 16) : "");
 const toDate = (v: string) => (v ? new Date(v) : null);
 
 export const RegistrationCouponsEdit: React.FC<Props> = ({ event }) => {
-  const [rows, setRows] = useState<RegistrationCouponInterface[]>([]);
-  const [saving, setSaving] = useState(false);
-
-  const load = () => {
-    ApiHelper.get(`/registrations/coupons/event/${event.id}`, "ContentApi")
-      .then((data: RegistrationCouponInterface[]) => setRows(data || []));
-  };
-
-  useEffect(() => { if (event.id) load(); }, [event.id]);
-
-  const update = (i: number, field: keyof RegistrationCouponInterface, value: any) => {
-    setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
-  };
-
-  const addRow = () => setRows((prev) => [...prev, { code: "", discountType: "percent", value: 0, active: true }]);
-
-  const removeRow = async (i: number) => {
-    const row = rows[i];
-    if (row.id) await ApiHelper.delete(`/registrations/coupons/${row.id}`, "ContentApi");
-    setRows((prev) => prev.filter((_, idx) => idx !== i));
-  };
-
-  const save = async () => {
-    setSaving(true);
-    const payload = rows.filter((r) => (r.code || "").trim()).map((r) => ({
+  const { rows, saving, update, addRow, removeRow, save } = useEditableRowList<RegistrationCouponInterface>({
+    loadUrl: `/registrations/coupons/event/${event.id}`,
+    saveUrl: "/registrations/coupons",
+    deleteUrlPrefix: "/registrations/coupons/",
+    api: "ContentApi",
+    enabled: !!event.id,
+    newRow: () => ({ code: "", discountType: "percent", value: 0, active: true }),
+    filter: (r) => !!(r.code || "").trim(),
+    coerce: (r) => ({
       id: r.id,
       churchId: r.churchId,
       eventId: event.id,
@@ -50,11 +34,8 @@ export const RegistrationCouponsEdit: React.FC<Props> = ({ event }) => {
       minMembers: toNum(r.minMembers),
       maxUses: toNum(r.maxUses),
       active: r.active !== false
-    }));
-    if (payload.length > 0) await ApiHelper.post("/registrations/coupons", payload, "ContentApi");
-    setSaving(false);
-    load();
-  };
+    })
+  });
 
   return (
     <Stack spacing={1.5}>

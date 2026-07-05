@@ -1,8 +1,10 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, MenuItem, Select, Typography, CircularProgress, Alert, TextField, Box, Chip, Stack, Tabs, Tab } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale, UserHelper } from "@churchapps/apphelper";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
+import { useSendDialog } from "./useSendDialog";
+import { SendDialogShell } from "./SendDialogShell";
 
 const MERGE_FIELDS = [
   { key: "{{firstName}}", label: Locale.label("groups.sendEmailDialog.mergeFieldFirstName") },
@@ -67,14 +69,24 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const [selectedTemplateId, setSelectedTemplateId] = React.useState("");
   const [subject, setSubject] = React.useState("");
   const [htmlContent, setHtmlContent] = React.useState("");
-  const [sending, setSending] = React.useState(false);
-  const [result, setResult] = React.useState<SendResult | null>(null);
-  const [error, setError] = React.useState("");
-  const [preview, setPreview] = React.useState<PreviewData | null>(null);
-  const [loadingPreview, setLoadingPreview] = React.useState(false);
   const [loadingTemplates, setLoadingTemplates] = React.useState(true);
   const [bodyEditorKey, setBodyEditorKey] = React.useState(0);
   const [showPreview, setShowPreview] = React.useState(false);
+
+  const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
+    previewUrl: props.groupId ? "/emailTemplates/preview/" + props.groupId : null,
+    sendUrl: "/emailTemplates/send",
+    buildPayload: () => {
+      if (!subject.trim() || !htmlContent.trim()) return null;
+      return { groupId: props.groupId, subject, htmlContent };
+    },
+    fallbackError: Locale.label("groups.sendEmailDialog.fallbackError"),
+    buildError: (err: any) => {
+      const status = err?.status || err?.response?.status;
+      if (status === 401 || err?.message === "Unauthorized") return Locale.label("groups.sendEmailDialog.permissionError");
+      return err?.message || Locale.label("groups.sendEmailDialog.fallbackError");
+    }
+  });
 
   const getPreviewHtml = () => {
     const churchName = UserHelper.currentUserChurch?.church?.name || Locale.label("settings.emailTemplateEdit.yourChurch");
@@ -106,15 +118,6 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       .finally(() => setLoadingTemplates(false));
   }, []);
 
-  React.useEffect(() => {
-    if (!props.groupId) return;
-    setLoadingPreview(true);
-    ApiHelper.get("/emailTemplates/preview/" + props.groupId, "MessagingApi")
-      .then((data: any) => setPreview(data))
-      .catch(() => { /* preview is optional */ })
-      .finally(() => setLoadingPreview(false));
-  }, [props.groupId]);
-
   const handleTemplateSelect = async (templateId: string) => {
     setSelectedTemplateId(templateId);
     if (!templateId) return;
@@ -126,30 +129,6 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     } catch {
       const t = templates.find(t => t.id === templateId);
       if (t) setSubject(t.subject || "");
-    }
-  };
-
-  const handleSend = async () => {
-    if (!subject.trim() || !htmlContent.trim()) return;
-    setSending(true);
-    setError("");
-    try {
-      const payload: any = { groupId: props.groupId, subject, htmlContent };
-      const resp = await ApiHelper.post("/emailTemplates/send", payload, "MessagingApi");
-      if (resp.error) {
-        setError(resp.error);
-      } else {
-        setResult(resp);
-      }
-    } catch (err: any) {
-      const status = err?.status || err?.response?.status;
-      if (status === 401 || err?.message === "Unauthorized") {
-        setError(Locale.label("groups.sendEmailDialog.permissionError"));
-      } else {
-        setError(err?.message || Locale.label("groups.sendEmailDialog.fallbackError"));
-      }
-    } finally {
-      setSending(false);
     }
   };
 
@@ -194,126 +173,115 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const canSend = !sending && subject.trim().length > 0 && htmlContent.trim().length > 0 && (!preview || preview.eligibleCount > 0);
 
   return (
-    <Dialog open={true} onClose={props.onClose} maxWidth="md" fullWidth>
-      <DialogTitle>{Locale.label("groups.sendEmailDialog.emailGroupTitle").replace("{groupName}", props.groupName)}</DialogTitle>
-      <DialogContent>
-        {result ? renderResult() : (
-          <>
-            {renderPreview()}
-            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+    <SendDialogShell
+      onClose={props.onClose}
+      maxWidth="md"
+      title={Locale.label("groups.sendEmailDialog.emailGroupTitle").replace("{groupName}", props.groupName)}
+      isComplete={!!result}
+      resultContent={renderResult()}
+      sending={sending}
+      canSend={canSend}
+      onSend={handleSend}
+      closeLabel={Locale.label("common.close")}
+      cancelLabel={Locale.label("common.cancel")}
+      sendLabel={Locale.label("groups.sendEmailDialog.send")}
+      sendingLabel={Locale.label("groups.sendEmailDialog.sending")}
+    >
+      {renderPreview()}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
-            <Tabs value={showPreview ? 1 : 0} onChange={(_, val) => setShowPreview(val === 1)} sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
-              <Tab label="Edit" />
-              <Tab label="Preview" disabled={!subject.trim() && !htmlContent.trim()} />
-            </Tabs>
+      <Tabs value={showPreview ? 1 : 0} onChange={(_, val) => setShowPreview(val === 1)} sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
+        <Tab label="Edit" />
+        <Tab label="Preview" disabled={!subject.trim() && !htmlContent.trim()} />
+      </Tabs>
 
-            {!showPreview ? (
-              <>
-                {!loadingTemplates && (
-                  <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
-                    {templates.length > 0 && (
-                      <FormControl sx={{ flex: 1 }}>
-                        <InputLabel>{Locale.label("groups.sendEmailDialog.loadTemplate")}</InputLabel>
-                        <Select
-                          label={Locale.label("groups.sendEmailDialog.loadTemplate")}
-                          value={selectedTemplateId}
-                          onChange={(e: SelectChangeEvent) => handleTemplateSelect(e.target.value)}
-                          disabled={sending}
-                        >
-                          <MenuItem value=""><em>{Locale.label("groups.sendEmailDialog.none")}</em></MenuItem>
-                          {templates.map((t) => (
-                            <MenuItem key={t.id} value={t.id}>
-                              {t.name} {t.category ? `(${t.category})` : ""}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    )}
-                    <a href="/settings/email-templates" style={{ whiteSpace: "nowrap" }}>{Locale.label("groups.sendEmailDialog.manageTemplates")}</a>
-                  </Box>
-                )}
-
-                <Box sx={{ mb: 1 }}>
-                  <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
-                    {Locale.label("groups.sendEmailDialog.subjectMergeFieldHint")}
-                  </Typography>
-                  <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
-                    {MERGE_FIELDS.map(f => (
-                      <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => setSubject(prev => prev + f.key)} sx={{ cursor: "pointer" }} />
+      {!showPreview ? (
+        <>
+          {!loadingTemplates && (
+            <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
+              {templates.length > 0 && (
+                <FormControl sx={{ flex: 1 }}>
+                  <InputLabel>{Locale.label("groups.sendEmailDialog.loadTemplate")}</InputLabel>
+                  <Select
+                    label={Locale.label("groups.sendEmailDialog.loadTemplate")}
+                    value={selectedTemplateId}
+                    onChange={(e: SelectChangeEvent) => handleTemplateSelect(e.target.value)}
+                    disabled={sending}
+                  >
+                    <MenuItem value=""><em>{Locale.label("groups.sendEmailDialog.none")}</em></MenuItem>
+                    {templates.map((t) => (
+                      <MenuItem key={t.id} value={t.id}>
+                        {t.name} {t.category ? `(${t.category})` : ""}
+                      </MenuItem>
                     ))}
-                  </Stack>
-                </Box>
-                <TextField
-                  fullWidth
-                  label={Locale.label("groups.sendEmailDialog.subject")}
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  disabled={sending}
-                  placeholder={Locale.label("groups.sendEmailDialog.subjectPlaceholder")}
-                  sx={{ mb: 2 }}
-                />
+                  </Select>
+                </FormControl>
+              )}
+              <a href="/settings/email-templates" style={{ whiteSpace: "nowrap" }}>{Locale.label("groups.sendEmailDialog.manageTemplates")}</a>
+            </Box>
+          )}
 
-                <Box sx={{ mb: 1 }}>
-                  <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
-                    {Locale.label("groups.sendEmailDialog.bodyMergeFieldHint")}
-                  </Typography>
-                  <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
-                    {MERGE_FIELDS.map(f => (
-                      <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => {
-                        setHtmlContent(prev => appendMergeFieldToHtml(prev, f.key));
-                        setBodyEditorKey(k => k + 1);
-                      }} sx={{ cursor: "pointer" }} />
-                    ))}
-                  </Stack>
-                </Box>
-                <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1 }}>
-                  <HtmlEditor
-                    key={bodyEditorKey}
-                    value={htmlContent}
-                    onChange={(val) => setHtmlContent(val)}
-                    style={{ minHeight: 200 }}
-                    placeholder={Locale.label("groups.sendEmailDialog.composePlaceholder")}
-                  />
-                </Box>
-              </>
-            ) : (
-              <>
-                <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewSubject")}</Typography>
-                <Typography variant="body1" sx={{ mb: 2, fontWeight: 600 }}>{getPreviewSubject()}</Typography>
-                <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewBody")}</Typography>
-                <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "var(--bg-sub)" }}>
-                  <iframe
-                    sandbox=""
-                    srcDoc={getPreviewHtml()}
-                    title="Email preview"
-                    style={{ width: "100%", minHeight: 300, border: "none" }}
-                  />
-                </Box>
-                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
-                  {Locale.label("settings.emailTemplateEdit.previewSampleData")}
-                </Typography>
-              </>
-            )}
-          </>
-        )}
-      </DialogContent>
-      <DialogActions>
-        {result ? (
-          <Button onClick={props.onClose}>{Locale.label("common.close")}</Button>
-        ) : (
-          <>
-            <Button onClick={props.onClose} disabled={sending}>{Locale.label("common.cancel")}</Button>
-            <Button
-              variant="contained"
-              onClick={handleSend}
-              disabled={!canSend}
-              startIcon={sending ? <CircularProgress size={16} /> : null}
-            >
-              {sending ? Locale.label("groups.sendEmailDialog.sending") : Locale.label("groups.sendEmailDialog.send")}
-            </Button>
-          </>
-        )}
-      </DialogActions>
-    </Dialog>
+          <Box sx={{ mb: 1 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
+              {Locale.label("groups.sendEmailDialog.subjectMergeFieldHint")}
+            </Typography>
+            <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
+              {MERGE_FIELDS.map(f => (
+                <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => setSubject(prev => prev + f.key)} sx={{ cursor: "pointer" }} />
+              ))}
+            </Stack>
+          </Box>
+          <TextField
+            fullWidth
+            label={Locale.label("groups.sendEmailDialog.subject")}
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            disabled={sending}
+            placeholder={Locale.label("groups.sendEmailDialog.subjectPlaceholder")}
+            sx={{ mb: 2 }}
+          />
+
+          <Box sx={{ mb: 1 }}>
+            <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: "block" }}>
+              {Locale.label("groups.sendEmailDialog.bodyMergeFieldHint")}
+            </Typography>
+            <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mb: 1 }}>
+              {MERGE_FIELDS.map(f => (
+                <Chip key={f.key} label={f.label} size="small" variant="outlined" onClick={() => {
+                  setHtmlContent(prev => appendMergeFieldToHtml(prev, f.key));
+                  setBodyEditorKey(k => k + 1);
+                }} sx={{ cursor: "pointer" }} />
+              ))}
+            </Stack>
+          </Box>
+          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 1 }}>
+            <HtmlEditor
+              key={bodyEditorKey}
+              value={htmlContent}
+              onChange={(val) => setHtmlContent(val)}
+              style={{ minHeight: 200 }}
+              placeholder={Locale.label("groups.sendEmailDialog.composePlaceholder")}
+            />
+          </Box>
+        </>
+      ) : (
+        <>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewSubject")}</Typography>
+          <Typography variant="body1" sx={{ mb: 2, fontWeight: 600 }}>{getPreviewSubject()}</Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>{Locale.label("settings.emailTemplateEdit.previewBody")}</Typography>
+          <Box sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, p: 2, backgroundColor: "var(--bg-sub)" }}>
+            <iframe
+              sandbox=""
+              srcDoc={getPreviewHtml()}
+              title="Email preview"
+              style={{ width: "100%", minHeight: 300, border: "none" }}
+            />
+          </Box>
+          <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
+            {Locale.label("settings.emailTemplateEdit.previewSampleData")}
+          </Typography>
+        </>
+      )}
+    </SendDialogShell>
   );
 };

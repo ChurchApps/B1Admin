@@ -4,11 +4,11 @@ import { UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
-import { Chip, Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Card, Stack } from "@mui/material";
+import { Chip, Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
 import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon, AccountBalance as AccountBalanceIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, EmptyState, ExportButton, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
+import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
 
 export const FundsPage = () => {
   const [editFundId, setEditFundId] = React.useState("notset");
@@ -169,27 +169,11 @@ export const FundsPage = () => {
         subtitle={Locale.label("donations.fundsPage.subtitle")}
       >
         {stats.totalFunds > 0 && (
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
+          <PageHeaderStats
+            spread
             spacing={{ xs: 2, sm: 2, md: 4 }}
-            sx={{
-              position: { xs: "static", md: "absolute" },
-              left: { md: "50%" },
-              top: { md: "50%" },
-              transform: { md: "translateY(-50%)" },
-              right: { md: "24px" },
-              justifyContent: { md: "space-between" },
-              flexWrap: "wrap"
-            }}
-          >
-            <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <FundIcon sx={{ color: "#FFF", fontSize: 24 }} />
-                <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalFunds}</Typography>
-              </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.fundsPage.totalFunds")}</Typography>
-            </Stack>
-          </Stack>
+            items={[{ icon: <FundIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalFunds, label: Locale.label("donations.fundsPage.totalFunds"), minWidth: 80 }]}
+          />
         )}
         {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
           <HeaderPrimaryButton
@@ -206,21 +190,14 @@ export const FundsPage = () => {
       <Box sx={{ p: 3 }}>
         {editFundId !== "notset" && <Box sx={{ mb: 3 }}>{getSidebarModules()}</Box>}
 
-        <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("donations.funds.fund")}</Typography>
-                {sortedFunds.length > 0 && <CountChip count={sortedFunds.length} />}
-              </Stack>
-              <Stack direction="row" spacing={1} alignItems="center">
-                {funds.data && <ExportButton data={funds.data} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
-              </Stack>
-            </Stack>
-          </Box>
-          <Box>{getTable()}</Box>
-        </Card>
+        <CardWithHeader
+          icon={<FundIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          title={Locale.label("donations.funds.fund")}
+          count={sortedFunds.length}
+          actions={funds.data && <ExportButton data={funds.data} filename="funds.csv" text={Locale.label("donations.fundsPage.export")} />}
+        >
+          {getTable()}
+        </CardWithHeader>
       </Box>
     </>
   );

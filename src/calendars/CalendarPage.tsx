@@ -20,7 +20,7 @@ import { CuratedCalendar } from "./components/CuratedCalendar";
 import { NewEventModal } from "./components/NewEventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip } from "../components/ui";
+import { CountChip, EmptyState } from "../components/ui";
 import { HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui/headerButtons";
 
 const printStyles = `@media print {
@@ -152,14 +152,13 @@ export const CalendarPage = () => {
                     <Loading data-testid="groups-loading" />
                   </Box>
                 ) : addedGroups.length === 0 ? (
-                  <Box sx={{ p: 3, textAlign: "center" }}>
-                    <GroupsIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      {Locale.label("calendars.calendarPage.noGroupsAdded")}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {Locale.label("calendars.calendarPage.addEventsHint")}
-                    </Typography>
+                  <Box sx={{ p: 2 }}>
+                    <EmptyState
+                      variant="card"
+                      icon={<GroupsIcon />}
+                      title={Locale.label("calendars.calendarPage.noGroupsAdded")}
+                      description={Locale.label("calendars.calendarPage.addEventsHint")}
+                    />
                   </Box>
                 ) : (
                   <Table size="small">

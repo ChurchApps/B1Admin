@@ -1,10 +1,10 @@
 import React from "react";
 import { type PersonFieldInterface } from "../../helpers/Interfaces";
 import { Locale, Loading } from "@churchapps/apphelper";
-import { Box, Button, Card, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { ListAlt as ListAltIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { CountChip } from "../../components/ui";
+import { SectionListCard } from "../../components/ui";
 import { CustomFieldEdit } from "./CustomFieldEdit";
 
 // Custom field definition management (list + inline editor). Shared by the Settings
@@ -48,37 +48,35 @@ export const CustomFieldsSection: React.FC = () => {
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: editField ? 7 : 12 }}>
-        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <ListAltIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">{Locale.label("settings.customFields.customFields")}</Typography>
-              {data.length > 0 && <CountChip count={data.length} />}
-            </Stack>
-            <Button variant="outlined" size="small" startIcon={<AddIcon />} onClick={() => setEditField({})} data-testid="add-custom-field-button">
-              {Locale.label("settings.customFields.addField")}
-            </Button>
-          </Stack>
-          {rows.length > 0 ? (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{Locale.label("settings.customFieldEdit.name")}</TableCell>
-                  <TableCell>{Locale.label("settings.customFieldEdit.fieldType")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{rows}</TableBody>
-            </Table>
-          ) : (
-            <Box sx={{ p: 5, textAlign: "center" }}>
-              <ListAltIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("settings.customFields.none")}</Typography>
+        <SectionListCard
+          icon={<ListAltIcon />}
+          title={Locale.label("settings.customFields.customFields")}
+          count={data.length}
+          onAdd={() => setEditField({})}
+          addLabel={Locale.label("settings.customFields.addField")}
+          addButtonVariant="outlined"
+          addButtonSize="small"
+          addButtonTestId="add-custom-field-button"
+          cardSx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}
+          empty={{
+            icon: <ListAltIcon />,
+            title: Locale.label("settings.customFields.none"),
+            action: (
               <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setEditField({})} data-testid="add-custom-field-button-empty">
                 {Locale.label("settings.customFields.addField")}
               </Button>
-            </Box>
-          )}
-        </Card>
+            )
+          }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("settings.customFieldEdit.name")}</TableCell>
+                <TableCell>{Locale.label("settings.customFieldEdit.fieldType")}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{rows}</TableBody>
+          </Table>
+        </SectionListCard>
       </Grid>
       {editField && (
         <Grid size={{ xs: 12, md: 5 }}>

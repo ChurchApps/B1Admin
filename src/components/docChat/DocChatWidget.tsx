@@ -1,40 +1,22 @@
 import React from "react";
-import { Fab, Drawer, useMediaQuery, useTheme } from "@mui/material";
+import { Fab } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { Locale } from "@churchapps/apphelper";
+import { ChatWidgetShell } from "../chatShared/ChatWidgetShell";
 import { DocChatPanel } from "./DocChatPanel";
 
-export const DocChatWidget: React.FC = () => {
-  const [open, setOpen] = React.useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  return (
-    <>
-      {!open && (
-        <Fab
-          color="primary"
-          onClick={() => setOpen(true)}
-          sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 1200 }}
-          aria-label={Locale.label("components.docChat.ariaOpen")}
-        >
-          <QuestionAnswerIcon />
-        </Fab>
-      )}
-      <Drawer
-        anchor="right"
-        open={open}
-        onClose={() => setOpen(false)}
-        variant="persistent"
-        sx={{
-          "& .MuiDrawer-paper": {
-            width: isMobile ? "100%" : 400,
-            maxWidth: "100vw"
-          }
-        }}
+export const DocChatWidget: React.FC = () => (
+  <ChatWidgetShell
+    renderTrigger={(open) => (
+      <Fab
+        color="primary"
+        onClick={open}
+        sx={{ position: "fixed", bottom: 24, right: 24, zIndex: 1200 }}
+        aria-label={Locale.label("components.docChat.ariaOpen")}
       >
-        <DocChatPanel onClose={() => setOpen(false)} />
-      </Drawer>
-    </>
-  );
-};
+        <QuestionAnswerIcon />
+      </Fab>
+    )}
+    renderPanel={(close) => <DocChatPanel onClose={close} />}
+  />
+);

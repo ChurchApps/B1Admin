@@ -1,135 +1,40 @@
 import React from "react";
-import { Box, TextField, Typography, Paper, AppBar, Toolbar } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import CloseIcon from "@mui/icons-material/Close";
+import { Typography } from "@mui/material";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
-import { AppIconButton } from "../ui/AppIconButton";
-import { DocChatMessage } from "./DocChatMessage";
-
-interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
+import { Locale } from "@churchapps/apphelper";
+import { ChatPanel } from "../chatShared/ChatPanel";
+import { ChatMessageBubble } from "../chatShared/ChatMessageBubble";
+import { DocChatLoading } from "./DocChatLoading";
 
 interface Props {
   onClose: () => void;
 }
 
-export const DocChatPanel: React.FC<Props> = ({ onClose }) => {
-  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
-  const [input, setInput] = React.useState("");
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [statusText, setStatusText] = React.useState(Locale.label("components.docChat.searching"));
-  const messagesEndRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
-
-  React.useEffect(() => {
-    if (isLoading) {
-      setStatusText(Locale.label("components.docChat.searching"));
-      const timer = setTimeout(() => setStatusText(Locale.label("components.docChat.composing")), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
-
-  const handleSend = async () => {
-    const question = input.trim();
-    if (!question || isLoading) return;
-
-    const userMessage: ChatMessage = { role: "user", content: question };
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
-    setInput("");
-    setIsLoading(true);
-
-    try {
-      const response = await ApiHelper.post("/docChat/ask", { question, conversationHistory: messages }, "AskApi");
-      setMessages([...updatedMessages, { role: "assistant", content: response.answer || Locale.label("components.docChat.errorAnswer") }]);
-    } catch {
-      setMessages([...updatedMessages, { role: "assistant", content: Locale.label("components.docChat.errorGeneric") }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
-
-  return (
-    <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <AppBar position="static" color="primary" elevation={0}>
-        <Toolbar variant="dense">
-          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: "1rem" }}>{Locale.label("components.docChat.title")}</Typography>
-          <AppIconButton label={Locale.label("common.close")} icon={<CloseIcon />} tone="header" onClick={onClose} edge="end" />
-        </Toolbar>
-      </AppBar>
-
-      <Box sx={{ flexGrow: 1, overflow: "auto", p: 2 }}>
-        {messages.length === 0 && (
-          <Typography color="text.secondary" sx={{ textAlign: "center", mt: 4 }}>
-            {Locale.label("components.docChat.intro")}
-            <br /><br />
-            {Locale.label("components.docChat.sampleGiving")}
-            <br />
-            {Locale.label("components.docChat.sampleCsv")}
-            <br />
-            {Locale.label("components.docChat.sampleGroup")}
-          </Typography>
-        )}
-        {messages.map((msg, index) => (
-          <DocChatMessage key={index} message={msg} />
-        ))}
-        {isLoading && (
-          <Box sx={{ mb: 1.5 }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 1 }}>
-              <SmartToyIcon sx={{ mt: 1, color: "primary.main", fontSize: 20 }} />
-              <Paper elevation={1} sx={{ p: 1.5, backgroundColor: "background.paper" }}>
-                <Box sx={{ display: "flex", gap: 0.5, alignItems: "center", height: 20 }}>
-                  {[0, 1, 2].map((i) => (
-                    <Box key={i} sx={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: "50%",
-                      backgroundColor: "text.secondary",
-                      animation: "docChatBounce 1.4s infinite ease-in-out",
-                      animationDelay: `${i * 0.16}s`,
-                      "@keyframes docChatBounce": { "0%, 80%, 100%": { transform: "scale(0.6)", opacity: 0.4 }, "40%": { transform: "scale(1)", opacity: 1 } }
-                    }} />
-                  ))}
-                </Box>
-              </Paper>
-            </Box>
-            <Typography variant="caption" color="text.secondary" sx={{ ml: 4.5, mt: 0.5, display: "block" }}>
-              {statusText}
-            </Typography>
-          </Box>
-        )}
-        <div ref={messagesEndRef} />
-      </Box>
-
-      <Box sx={{ p: 2, borderTop: 1, borderColor: "divider" }}>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <TextField
-            fullWidth
-            size="small"
-            placeholder={Locale.label("components.docChat.placeholderInput")}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={isLoading}
-            multiline
-            maxRows={3}
-          />
-          <AppIconButton label={Locale.label("components.docChat.ariaSend")} icon={<SendIcon />} tone="card" onClick={handleSend} disabled={isLoading || !input.trim()} />
-        </Box>
-      </Box>
-    </Box>
-  );
-};
+export const DocChatPanel: React.FC<Props> = ({ onClose }) => (
+  <ChatPanel
+    onClose={onClose}
+    labelPrefix="components.docChat"
+    title={Locale.label("components.docChat.title")}
+    headerColor="primary"
+    renderIntro={() => (
+      <Typography color="text.secondary" sx={{ textAlign: "center", mt: 4 }}>
+        {Locale.label("components.docChat.intro")}
+        <br /><br />
+        {Locale.label("components.docChat.sampleGiving")}
+        <br />
+        {Locale.label("components.docChat.sampleCsv")}
+        <br />
+        {Locale.label("components.docChat.sampleGroup")}
+      </Typography>
+    )}
+    renderLoading={() => <DocChatLoading />}
+    renderMessage={(message, index) => (
+      <ChatMessageBubble
+        key={index}
+        message={message}
+        assistantBg="background.paper"
+        assistantAvatar={<SmartToyIcon sx={{ mt: 1, color: "primary.main", fontSize: 20 }} />}
+      />
+    )}
+  />
+);

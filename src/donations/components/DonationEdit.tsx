@@ -1,4 +1,4 @@
-import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box } from "@mui/material";
 import React, { memo, useCallback, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { PersonAdd } from "../../components";
@@ -26,7 +26,6 @@ export const DonationEdit = memo((props: Props) => {
   const { register, handleSubmit, reset, control, watch } = useForm<AnyRecord>({ defaultValues: { date: "", method: "Check", methodDetails: "", notes: "" } });
   const method = watch("method");
   const methodDetails = watch("methodDetails");
-  const summaryErrors: string[] = [];
 
   const handleCancel = useCallback(() => props.updatedFunction(), [props.updatedFunction]);
 
@@ -128,7 +127,6 @@ export const DonationEdit = memo((props: Props) => {
 
   return (
     <FormCard id="donationBox" icon="volunteer_activism" title={Locale.label("common.edit")} onCancel={handleCancel} onDelete={getDeleteFunction()} onSave={handleSubmit(onValid)} help="docs/b1-admin/donations/">
-      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <Box>
         <label>{Locale.label("common.person")}</label>
         {personSection}

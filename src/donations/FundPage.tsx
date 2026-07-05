@@ -2,7 +2,7 @@ import React from "react";
 import { ApiHelper, DateHelper, UserHelper, Permissions, UniqueIdHelper, ArrayHelper, Loading, CurrencyHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { type DonationBatchInterface, type FundDonationInterface, type PersonInterface } from "@churchapps/helpers";
 import { useParams, Link } from "react-router-dom";
-import { Table, TableBody, TableRow, TableCell, TableHead, TextField, Box, Typography, Card, Stack, Button } from "@mui/material";
+import { Table, TableBody, TableRow, TableCell, TableHead, TextField, Box, Typography, Stack, Button } from "@mui/material";
 import {
   VolunteerActivism as FundIcon,
   FilterAlt as FilterIcon,
@@ -11,7 +11,7 @@ import {
   Receipt as ReceiptIcon,
   AccountBalance as AccountBalanceIcon
 } from "@mui/icons-material";
-import { CountChip, ExportButton } from "../components/ui";
+import { CardWithHeader, ExportButton, PageHeaderStats } from "../components/ui";
 
 export const FundPage = () => {
   const params = useParams();
@@ -197,53 +197,23 @@ export const FundPage = () => {
         subtitle={Locale.label("donations.fundPage.subtitle")}
       >
         {stats.totalDonations > 0 && (
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={{ xs: 2, sm: 4, md: 5 }}
-            sx={{
-              position: { xs: "static", md: "absolute" },
-              left: { md: "50%" },
-              top: { md: "50%" },
-              transform: { md: "translateY(-50%)" },
-              right: { md: "24px" },
-              justifyContent: { md: "space-between" },
-              flexWrap: "wrap"
-            }}
-          >
-            <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />
-                <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalDonations}</Typography>
-              </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>Donations</Typography>
-            </Stack>
-            <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <PersonIcon sx={{ color: "#FFF", fontSize: 24 }} />
-                <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.uniqueDonors}</Typography>
-              </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.fundPage.donors")}</Typography>
-            </Stack>
-            <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                {/* <MoneyIcon sx={{ color: "#FFF", fontSize: 24 }} /> */}
-                <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0)}</Typography>
-              </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.fundPage.totalAmount")}</Typography>
-            </Stack>
-          </Stack>
+          <PageHeaderStats
+            spread
+            items={[
+              { icon: <ReceiptIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalDonations, label: "Donations", minWidth: 80 },
+              { icon: <PersonIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.uniqueDonors, label: Locale.label("donations.fundPage.donors"), minWidth: 80 },
+              { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalAmount, currency, 0), label: Locale.label("donations.fundPage.totalAmount") }
+            ]}
+          />
         )}
       </PageHeader>
 
       <Box sx={{ p: 3 }}>
-        <Card sx={{ mb: 3 }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <FilterIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">{Locale.label("donations.fundsPage.donFilt")}</Typography>
-            </Stack>
-          </Box>
-          <Box sx={{ p: 3 }}>
+        <Box sx={{ mb: 3 }}>
+          <CardWithHeader
+            icon={<FilterIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+            title={Locale.label("donations.fundsPage.donFilt")}
+          >
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems="center">
               <TextField
                 label={Locale.label("donations.fundsPage.dateStart")}
@@ -269,24 +239,17 @@ export const FundPage = () => {
                 {Locale.label("donations.fundPage.filter")}
               </Button>
             </Stack>
-          </Box>
-        </Card>
+          </CardWithHeader>
+        </Box>
 
-        <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("donations.fundsPage.don")}</Typography>
-                {fundDonations?.length > 0 && <CountChip count={fundDonations.length} />}
-              </Stack>
-              <Stack direction="row" spacing={1} alignItems="center">
-                {fundDonations && <ExportButton data={fundDonations} filename="funddonations.csv" text={Locale.label("donations.fundsPage.export")} />}
-              </Stack>
-            </Stack>
-          </Box>
-          <Box>{getTable()}</Box>
-        </Card>
+        <CardWithHeader
+          icon={<FundIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          title={Locale.label("donations.fundsPage.don")}
+          count={fundDonations?.length}
+          actions={fundDonations && <ExportButton data={fundDonations} filename="funddonations.csv" text={Locale.label("donations.fundsPage.export")} />}
+        >
+          {getTable()}
+        </CardWithHeader>
       </Box>
     </>
   );

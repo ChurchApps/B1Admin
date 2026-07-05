@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Stack, Box, Divider, Table, TableBody, TableRow, TableCell, TableHead, Chip } from "@mui/material";
-import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, CurrencyHelper } from "@churchapps/apphelper";
 import { FormSubmission } from "../../components";
 import { type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type RegistrationPaymentInterface } from "../registrationCommerce";
 
@@ -11,15 +11,17 @@ interface Props {
   onClose: () => void;
 }
 
-const money = (n: number | null | undefined) => `$${(Number(n) || 0).toFixed(2)}`;
-
 export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, typeMap, selMap, onClose }) => {
   const [reg, setReg] = useState<(CommerceRegistrationInterface & { selectionChoices?: any[]; payments?: RegistrationPaymentInterface[] }) | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currency, setCurrency] = useState("usd");
 
   useEffect(() => {
     ApiHelper.get(`/registrations/${registrationId}`, "ContentApi").then((data) => { setReg(data); setLoading(false); });
   }, [registrationId]);
+  useEffect(() => { CurrencyHelper.loadCurrency().then(setCurrency); }, []);
+
+  const money = (n: number | null | undefined) => CurrencyHelper.formatCurrencyWithLocale(Number(n) || 0, currency);
 
   const total = Number(reg?.totalAmount) || 0;
   const paid = Number(reg?.amountPaid) || 0;

@@ -1,11 +1,11 @@
 import React from "react";
 import { ArrayHelper, ApiHelper, UserHelper, DateHelper, CurrencyHelper, Permissions, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { type DonationInterface, type DonationBatchInterface, type FundInterface } from "@churchapps/helpers";
-import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Box, Chip } from "@mui/material";
+import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Icon, Chip } from "@mui/material";
 import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CountChip, ExportButton } from "../../components/ui";
+import { CardWithHeader, ExportButton } from "../../components/ui";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -172,23 +172,17 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     if (!donations) return <Loading />;
 
     return (
-      <>
-        <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">{Locale.label("donations.donations.don")}</Typography>
-              {donations?.length > 0 && <CountChip count={donations.length} />}
-            </Stack>
-            {getHeaderActions()}
-          </Stack>
-        </Box>
-
+      <CardWithHeader
+        icon={<DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+        title={Locale.label("donations.donations.don")}
+        count={donations?.length}
+        actions={getHeaderActions()}
+      >
         <Table sx={{ minWidth: 650 }}>
           {getTableHeader()}
           <TableBody>{getRows()}</TableBody>
         </Table>
-      </>
+      </CardWithHeader>
     );
   }, [donations, getRows, getTableHeader, getHeaderActions]);
 

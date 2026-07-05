@@ -4,7 +4,7 @@ import { Email as EmailIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddI
 import { ApiHelper, Loading, PageHeader, UserHelper, Locale } from "@churchapps/apphelper";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { HeaderPrimaryButton } from "../components/ui";
+import { EmptyState, HeaderPrimaryButton } from "../components/ui";
 
 export interface EmailTemplateInterface {
   id?: string;
@@ -77,12 +77,11 @@ export const EmailTemplatesPage: React.FC = () => {
         )}
 
         {templates.length === 0 ? (
-          <Box sx={{ textAlign: "center", py: 6 }}>
-            <EmailIcon sx={{ fontSize: 48, color: "text.secondary", mb: 2 }} />
-            <Typography variant="h6" color="text.secondary">{Locale.label("settings.emailTemplatesPage.emptyTitle")}</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("settings.emailTemplatesPage.emptyDescription")}</Typography>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={handleNew}>{Locale.label("settings.emailTemplatesPage.createTemplate")}</Button>
-          </Box>
+          <EmptyState
+            icon={<EmailIcon />}
+            title={Locale.label("settings.emailTemplatesPage.emptyTitle")}
+            description={Locale.label("settings.emailTemplatesPage.emptyDescription")}
+            action={<Button variant="contained" startIcon={<AddIcon />} onClick={handleNew}>{Locale.label("settings.emailTemplatesPage.createTemplate")}</Button>} />
         ) : (
           <Table>
             <TableHead>

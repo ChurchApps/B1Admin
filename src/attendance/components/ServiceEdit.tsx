@@ -1,8 +1,8 @@
 import React from "react";
-import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { type ServiceInterface } from "@churchapps/helpers";
-import { ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UniqueIdHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
 
@@ -57,7 +57,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         icon="calendar_month"
         isSubmitting={isSubmitting}
         help="docs/b1-admin/attendance/">
-        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <ErrorMessages errors={summaryErrors} />
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <FormControl fullWidth>

@@ -7,7 +7,6 @@ import { PersonAddAdvanced } from "../../people/components/PersonAddAdvanced";
 import { GroupSessionsList } from "./GroupSessionsList";
 import { SessionAttendance } from "./SessionAttendance";
 import { MembersAdd } from "./MembersAdd";
-import { SessionAdd } from "./SessionAdd";
 import { SessionEdit } from "./SessionEdit";
 
 interface Props {
@@ -73,7 +72,7 @@ export const GroupSessionsTab = (props: Props) => {
         />
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
-        {addSessionVisible && <SessionAdd key="sessionAdd" group={props.group} updatedFunction={handleSessionAdd} />}
+        {addSessionVisible && <SessionEdit key="sessionAdd" group={props.group} updatedFunction={handleSessionAdd} />}
         {editSessionVisible && editingSession && <SessionEdit key="sessionEdit" group={props.group} session={editingSession} updatedFunction={handleSessionUpdated} />}
         {!addSessionVisible && !editSessionVisible && UserHelper.checkAccess(Permissions.attendanceApi.attendance.edit) && (
           <>

@@ -3,6 +3,7 @@ import { type GroupInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, TextField, Typography, FormControlLabel, Checkbox } from "@mui/material";
 import { type BulkResult } from "./BulkFieldDialog";
+import { useBulkApplyDialog } from "./useBulkApplyDialog";
 
 interface Props {
   open: boolean;
@@ -13,28 +14,21 @@ interface Props {
 }
 
 export const BulkGroupDialog: React.FC<Props> = (props) => {
-  const [groups, setGroups] = React.useState<GroupInterface[]>([]);
   const [groupId, setGroupId] = React.useState("");
   const [createNew, setCreateNew] = React.useState(false);
   const [newGroupName, setNewGroupName] = React.useState("");
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!props.open) return;
-    setGroupId("");
-    setCreateNew(false);
-    setNewGroupName("");
-    ApiHelper.get("/groups", "MembershipApi").then((data: GroupInterface[]) => setGroups(data || []));
-  }, [props.open]);
 
   const isAdd = props.mode === "add";
   const count = props.personIds.length;
   const canApply = (createNew && newGroupName.trim() !== "") || (!createNew && groupId !== "");
 
-  const handleApply = async () => {
-    if (!canApply) return;
-    setIsSubmitting(true);
-    try {
+  const { options: groups, isSubmitting, handleApply } = useBulkApplyDialog<GroupInterface>({
+    open: props.open,
+    onClose: props.onClose,
+    onComplete: props.onComplete,
+    onOpen: () => { setGroupId(""); setCreateNew(false); setNewGroupName(""); },
+    loadOptions: () => ApiHelper.get("/groups", "MembershipApi"),
+    apply: async () => {
       let targetGroup: GroupInterface | undefined = groups.find((g) => g.id === groupId);
       if (isAdd && createNew) {
         const created = await ApiHelper.post("/groups", [{ name: newGroupName.trim(), tags: "standard" }], "MembershipApi");
@@ -46,17 +40,12 @@ export const BulkGroupDialog: React.FC<Props> = (props) => {
       const response = await ApiHelper.post(route, { groupId: targetGroup.id, personIds: props.personIds }, "MembershipApi");
       const affected = response?.count ?? count;
       const messageKey = isAdd ? "people.bulk.addSuccess" : "people.bulk.removeSuccess";
-      props.onComplete({
+      return {
         message: Locale.label(messageKey).replace("{count}", affected.toString()).replace("{group}", targetGroup.name || ""),
         severity: "success"
-      });
-      props.onClose();
-    } catch (error) {
-      props.onComplete({ message: error instanceof Error ? error.message : Locale.label("people.bulk.error"), severity: "error" });
-    } finally {
-      setIsSubmitting(false);
+      };
     }
-  };
+  });
 
   return (
     <Dialog open={props.open} onClose={() => !isSubmitting && props.onClose()} maxWidth="xs" fullWidth>

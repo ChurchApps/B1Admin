@@ -1,0 +1,404 @@
+import { CurrencyHelper, DateHelper, Locale } from "@churchapps/apphelper";
+import { type ChurchInterface, type PersonInterface } from "@churchapps/helpers";
+import { type PledgeProgressRowInterface } from "../../helpers";
+
+interface FundTotal {
+  fund: string | undefined;
+  total: number;
+}
+
+interface ContributionRow {
+  date: string;
+  method: string | undefined;
+  fund: string | undefined;
+  amount: number;
+}
+
+interface Props {
+  labelPrefix: string;
+  person?: PersonInterface;
+  church?: ChurchInterface;
+  year: number;
+  currency: string;
+  totalContributions: number;
+  fundTotals: FundTotal[];
+  contributions: ContributionRow[];
+  pledgeRows: PledgeProgressRowInterface[];
+  showPageBreak: boolean;
+  showStyles?: boolean;
+}
+
+const styleBlock = `
+          @media print {
+            @page {
+              margin: 0;
+              size: auto;
+            }
+            body {
+              margin: 0;
+            }
+            .page-break {
+              page-break-after: always;
+              break-after: page;
+            }
+          }
+
+          .print-container {
+            margin: 0;
+            padding: 40px 60px;
+            height: 100%;
+            width: 100%;
+            background-color: white;
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            box-sizing: border-box;
+          }
+
+          .page-break {
+            page-break-after: always;
+            break-after: page;
+          }
+
+          .header-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #1976D2 0%, #1565C0 100%);
+          }
+
+          .title-section {
+            margin-bottom: 32px;
+            text-align: center;
+          }
+
+          .page-title {
+            font-size: 32px;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+            color: #1976D2;
+            letter-spacing: -0.5px;
+          }
+
+          .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin: 4px 0;
+          }
+
+          .meta-text {
+            font-size: 13px;
+            color: #999;
+            margin: 4px 0;
+          }
+
+          .gradient-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #1976D2 20%, #1976D2 80%, transparent 100%);
+            margin: 24px 0 32px 0;
+          }
+
+          .info-section {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+          }
+
+          .info-column {
+            flex: 1;
+            min-width: 0;
+          }
+
+          .section-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1976D2;
+            margin: 0 0 12px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .info-card {
+            padding: 16px;
+            background-color: #F8F9FA;
+            border-radius: 4px;
+            border-left: 3px solid #1976D2;
+          }
+
+          .info-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #333;
+          }
+
+          .info-detail {
+            font-size: 13px;
+            margin: 4px 0;
+            color: #666;
+          }
+
+          .section-container {
+            margin-bottom: 40px;
+          }
+
+          .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #1976D2;
+            margin: 0 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #E3F2FD;
+          }
+
+          .summary-grid {
+            display: flex;
+            gap: 32px;
+          }
+
+          .summary-column {
+            flex: 1;
+          }
+
+          .total-box {
+            padding: 24px;
+            text-align: center;
+            border: 2px solid #1976D2;
+            border-radius: 8px;
+            background-color: #F8F9FA;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+          }
+
+          .total-amount {
+            font-size: 36px;
+            font-weight: 600;
+            color: #1976D2;
+            letter-spacing: -1px;
+          }
+
+          .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          }
+
+          .table-header {
+            background-color: #1976D2;
+          }
+
+          .table-header th {
+            padding: 12px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .table-header th.align-right {
+            text-align: right;
+          }
+
+          .table-row-even {
+            background-color: white;
+          }
+
+          .table-row-odd {
+            background-color: #F8F9FA;
+          }
+
+          .table-cell {
+            padding: 12px;
+            font-size: 13px;
+            color: #333;
+            border-bottom: 1px solid #E0E0E0;
+          }
+
+          .table-cell.align-right {
+            text-align: right;
+            font-weight: 500;
+          }
+
+          .table-footer-row {
+            background-color: #E3F2FD;
+          }
+
+          .table-footer-cell {
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1976D2;
+          }
+
+          .footer-note {
+            margin-top: 40px;
+            padding: 16px;
+            background-color: #F8F9FA;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+          }
+
+          .footer-note p {
+            margin: 0;
+          }
+        `;
+
+export const GivingStatementDocument = (props: Props) => {
+  const { labelPrefix, person, church, year, currency, totalContributions, fundTotals, contributions, pledgeRows, showPageBreak, showStyles = true } = props;
+  const label = (key: string) => Locale.label(labelPrefix + "." + key);
+  const churchName = church?.name || "";
+  const formattedTotal = CurrencyHelper.formatCurrencyWithLocale(totalContributions, currency);
+
+  return (
+    <div className={showPageBreak ? "page-break" : ""}>
+      {showStyles && <style>{styleBlock}</style>}
+      <div className="print-container">
+        <div className="header-bar"></div>
+
+        <div className="title-section">
+          <h1 className="page-title">{label("annualStatementTitle").replace("{year}", year.toString())}</h1>
+          <p className="subtitle">{label("period").replace("{year}", year.toString())}</p>
+          <p className="meta-text">{label("issued")} {`${DateHelper.prettyDate(new Date())} ${DateHelper.prettyTime(new Date())}`}</p>
+        </div>
+
+        <div className="gradient-divider"></div>
+
+        <div className="info-section">
+          <div className="info-column">
+            <h2 className="section-label">{label("donorInformation")}</h2>
+            <div className="info-card">
+              <p className="info-name">{person?.name?.display}</p>
+              {person?.contactInfo?.address1 && <p className="info-detail">{person.contactInfo.address1}</p>}
+              {person?.contactInfo?.address2 && <p className="info-detail">{person.contactInfo.address2}</p>}
+              {person?.contactInfo?.mobilePhone && <p className="info-detail">{person.contactInfo.mobilePhone}</p>}
+              {person?.contactInfo?.email && <p className="info-detail">{person.contactInfo.email}</p>}
+            </div>
+          </div>
+
+          <div className="info-column">
+            <h2 className="section-label">{label("organization")}</h2>
+            <div className="info-card">
+              <p className="info-name">{church?.name}</p>
+              {church?.address1 && <p className="info-detail">{church.address1}</p>}
+              {church?.address2 && <p className="info-detail">{church.address2}</p>}
+              {(church?.city || church?.country || church?.zip) && (
+                <p className="info-detail">
+                  {[church?.city, church?.country, church?.zip]
+                    .filter(Boolean)
+                    .join(", ")}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="section-container">
+          <h2 className="section-title">{label("statementSummary")}</h2>
+          <div className="summary-grid">
+            <div className="summary-column">
+              <p className="section-label">{label("totalContributions")}</p>
+              <div className="total-box">
+                <div className="total-amount">{formattedTotal}</div>
+              </div>
+            </div>
+
+            <div className="summary-column">
+              <p className="section-label">{label("fundBreakdown")}</p>
+              <table className="data-table">
+                <thead className="table-header">
+                  <tr>
+                    <th>{label("fund")}</th>
+                    <th className="align-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {fundTotals.map((ft, idx) => (
+                    <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
+                      <td className="table-cell">{ft.fund}</td>
+                      <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(ft.total, currency)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div className="section-container">
+          <h2 className="section-title">{label("contributionDetails")}</h2>
+          <table className="data-table">
+            <thead className="table-header">
+              <tr>
+                <th>Date</th>
+                <th>Method</th>
+                <th>{label("fund")}</th>
+                <th className="align-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contributions.map((detail, idx) => (
+                <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
+                  <td className="table-cell">
+                    {DateHelper.prettyDate(new Date(detail.date.split("T")[0] + "T00:00:00")).toString()}
+                  </td>
+                  <td className="table-cell">{detail.method}</td>
+                  <td className="table-cell">{detail.fund}</td>
+                  <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(detail.amount, currency)}</td>
+                </tr>
+              ))}
+              <tr className="table-footer-row">
+                <td colSpan={2} className="table-footer-cell"></td>
+                <td className="table-footer-cell" style={{ textAlign: "right" }}>{label("totalContributionsLabel")}</td>
+                <td className="table-footer-cell" style={{ textAlign: "right" }}>{formattedTotal}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {pledgeRows.length > 0 && (
+          <div className="section-container">
+            <h2 className="section-title">{label("pledgeProgress")}</h2>
+            <table className="data-table">
+              <thead className="table-header">
+                <tr>
+                  <th>{label("campaign")}</th>
+                  <th className="align-right">{label("pledged")}</th>
+                  <th className="align-right">{label("given")}</th>
+                  <th>{label("status")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pledgeRows.map((row, idx) => (
+                  <tr key={idx} className={idx % 2 === 0 ? "table-row-even" : "table-row-odd"}>
+                    <td className="table-cell">{row.campaignName}</td>
+                    <td className="table-cell align-right">{row.pledgedAmount ? CurrencyHelper.formatCurrencyWithLocale(row.pledgedAmount, currency) : "-"}</td>
+                    <td className="table-cell align-right">{CurrencyHelper.formatCurrencyWithLocale(row.givenAmount || 0, currency)}</td>
+                    <td className="table-cell">{Locale.label("donations.pledgeStatus." + row.status)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        <div className="footer-note">
+          <p>
+            <strong>{label("noteLabel")}</strong> {label("noteText")
+              .replace("{churchName}", churchName)
+              .replace("{year}", year.toString())}
+          </p>
+          <p style={{ fontSize: "10px", marginTop: "4px" }}>
+            {label("disclaimer").split("{churchName}").join(churchName)}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};

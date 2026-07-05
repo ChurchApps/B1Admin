@@ -2,30 +2,26 @@ import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
+import { ChatMessage } from "./useChat";
 
 interface Props {
-  message: { role: "user" | "assistant"; content: string };
+  message: ChatMessage;
+  assistantAvatar: React.ReactNode;
+  assistantBg: string;
 }
 
-export const SuperBeeChatMessage: React.FC<Props> = ({ message }) => {
+export const ChatMessageBubble: React.FC<Props> = ({ message, assistantAvatar, assistantBg }) => {
   const isUser = message.role === "user";
 
   return (
     <Box sx={{ display: "flex", justifyContent: isUser ? "flex-end" : "flex-start", mb: 1.5, gap: 1 }}>
-      {!isUser && (
-        <Box
-          component="img"
-          src="/images/superbee-icon.png"
-          alt="SuperBee"
-          sx={{ width: 24, height: 24, borderRadius: "50%", mt: 1 }}
-        />
-      )}
+      {!isUser && assistantAvatar}
       <Paper
         elevation={1}
         sx={{
           p: 1.5,
           maxWidth: "80%",
-          backgroundColor: isUser ? "primary.main" : "var(--bg-sub)",
+          backgroundColor: isUser ? "primary.main" : assistantBg,
           color: isUser ? "primary.contrastText" : "text.primary"
         }}
       >

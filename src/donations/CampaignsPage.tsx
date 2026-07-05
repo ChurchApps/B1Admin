@@ -2,13 +2,13 @@ import React from "react";
 import { CurrencyHelper, DateHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom";
-import { Box, Card, LinearProgress, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
+import { Box, LinearProgress, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import { Flag as CampaignIcon, Add as AddIcon, Edit as EditIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { type CampaignInterface, type CampaignProgressInterface } from "../helpers";
 import { CampaignEdit } from "./components";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, EmptyState, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
+import { CardWithHeader, EmptyState, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
 
 export const CampaignsPage = () => {
   const [editCampaignId, setEditCampaignId] = React.useState("notset");
@@ -144,27 +144,15 @@ export const CampaignsPage = () => {
     <>
       <PageHeader icon={<CampaignIcon />} title={Locale.label("donations.campaignsPage.campaigns")} subtitle={Locale.label("donations.campaignsPage.subtitle")}>
         {stats.totalCampaigns > 0 && (
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
+          <PageHeaderStats
+            spread
             spacing={{ xs: 2, sm: 2, md: 4 }}
-            sx={{ position: { xs: "static", md: "absolute" }, left: { md: "50%" }, top: { md: "50%" }, transform: { md: "translateY(-50%)" }, right: { md: "24px" }, justifyContent: { md: "space-between" }, flexWrap: "wrap" }}
-          >
-            <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 80 }}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <CampaignIcon sx={{ color: "#FFF", fontSize: 24 }} />
-                <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{stats.totalCampaigns}</Typography>
-              </Stack>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.campaignsPage.totalCampaigns")}</Typography>
-            </Stack>
-            <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
-              <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalPledged, currency, 0)}</Typography>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.campaignsPage.pledged")}</Typography>
-            </Stack>
-            <Stack spacing={0.5} alignItems="center" sx={{ minWidth: 100 }}>
-              <Typography variant="h5" sx={{ color: "#FFF", fontWeight: 700 }}>{CurrencyHelper.formatCurrencyWithLocale(stats.totalGiven, currency, 0)}</Typography>
-              <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: 0.5 }}>{Locale.label("donations.campaignsPage.given")}</Typography>
-            </Stack>
-          </Stack>
+            items={[
+              { icon: <CampaignIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalCampaigns, label: Locale.label("donations.campaignsPage.totalCampaigns"), minWidth: 80 },
+              { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalPledged, currency, 0), label: Locale.label("donations.campaignsPage.pledged") },
+              { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalGiven, currency, 0), label: Locale.label("donations.campaignsPage.given") }
+            ]}
+          />
         )}
         {UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (
           <HeaderPrimaryButton
@@ -179,18 +167,13 @@ export const CampaignsPage = () => {
       <Box sx={{ p: 3 }}>
         {editCampaignId !== "notset" && <Box sx={{ mb: 3 }}>{getEditContent()}</Box>}
 
-        <Card>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <CampaignIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("donations.campaignsPage.campaigns")}</Typography>
-                {sortedCampaigns.length > 0 && <CountChip count={sortedCampaigns.length} />}
-              </Stack>
-            </Stack>
-          </Box>
-          <Box>{getTable()}</Box>
-        </Card>
+        <CardWithHeader
+          icon={<CampaignIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          title={Locale.label("donations.campaignsPage.campaigns")}
+          count={sortedCampaigns.length}
+        >
+          {getTable()}
+        </CardWithHeader>
       </Box>
     </>
   );

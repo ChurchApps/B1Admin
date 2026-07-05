@@ -7,7 +7,7 @@ import { SmartButton as BlockIcon, Add as AddIcon, Edit as EditIcon, Settings as
 import { Link } from "react-router-dom";
 import { BlockEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
 import { PermissionDenied } from "../components";
-import { CountChip, HeaderPrimaryButton } from "../components/ui";
+import { CountChip, EmptyState, HeaderPrimaryButton } from "../components/ui";
 
 export const BlocksPage = () => {
   const [blocks, setBlocks] = useState<BlockInterface[]>([]);
@@ -44,18 +44,13 @@ export const BlocksPage = () => {
     if (blocks.length === 0) {
       result.push(
         <TableRow key="empty">
-          <TableCell colSpan={3} sx={{ textAlign: "center", py: 6 }}>
-            <Stack spacing={2} alignItems="center">
-              <BlockIcon sx={{ fontSize: 48, color: "text.secondary" }} />
-              <Typography variant="h6" color="text.secondary">
-                {Locale.label("site.blocksPage.noBlocksFound")}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                {Locale.label("site.blocksPage.getStarted")}
-              </Typography>
-              <Button variant="contained" startIcon={<AddIcon />} onClick={() => setEditBlock({ blockType: "elementBlock", siteId })} sx={{ mt: 2 }}>{Locale.label("site.blocksPage.createFirstBlock")}</Button>
-            </Stack>
-          </TableCell>
+          <EmptyState
+            variant="table"
+            colSpan={3}
+            icon={<BlockIcon />}
+            title={Locale.label("site.blocksPage.noBlocksFound")}
+            description={Locale.label("site.blocksPage.getStarted")}
+            action={<Button variant="contained" startIcon={<AddIcon />} onClick={() => setEditBlock({ blockType: "elementBlock", siteId })}>{Locale.label("site.blocksPage.createFirstBlock")}</Button>} />
         </TableRow>
       );
       return result;

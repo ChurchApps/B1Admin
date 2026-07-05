@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Alert, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { type CampaignInterface } from "../../helpers";
 import { FormCard } from "../../components/ui";
@@ -64,7 +64,7 @@ export const CampaignEdit: React.FC<Props> = (props) => {
       onSave={handleSubmit(onValid)}
       onDelete={props.campaign?.id ? handleDelete : undefined}
       help="docs/b1-admin/donations/">
-      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+      <ErrorMessages errors={summaryErrors} />
       <TextField fullWidth label={Locale.label("common.name")} data-testid="campaign-name-input" error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("donations.campaignEdit.errBlank") })} />
       <FormControl fullWidth error={!!e.fundId}>
         <InputLabel id="campaign-fund-label">{Locale.label("donations.campaignEdit.fund")}</InputLabel>

@@ -1,53 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Stack, TextField, Button, Typography } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type CommerceEventInterface, type RegistrationSelectionInterface } from "../registrationCommerce";
+import { useEditableRowList, toNum } from "./useEditableRowList";
 
 interface Props {
   event: CommerceEventInterface;
 }
 
-const toNum = (v: any) => (v === null || v === undefined || v === "" ? null : Number(v));
-
 export const RegistrationSelectionsEdit: React.FC<Props> = ({ event }) => {
-  const [rows, setRows] = useState<RegistrationSelectionInterface[]>([]);
-  const [saving, setSaving] = useState(false);
-
-  const load = () => {
-    ApiHelper.get(`/registrations/selections/event/${event.id}?churchId=${event.churchId}`, "ContentApi")
-      .then((data: RegistrationSelectionInterface[]) => setRows((data || []).sort((a, b) => (a.sort || 0) - (b.sort || 0))));
-  };
-
-  useEffect(() => { if (event.id) load(); }, [event.id]);
-
-  const update = (i: number, field: keyof RegistrationSelectionInterface, value: any) => {
-    setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
-  };
-
-  const addRow = () => setRows((prev) => [...prev, { name: "", description: "", price: null, capacity: null, maxQuantity: null, sort: prev.length + 1, active: true }]);
-
-  const removeRow = async (i: number) => {
-    const row = rows[i];
-    if (row.id) await ApiHelper.delete(`/registrations/selections/${row.id}`, "ContentApi");
-    setRows((prev) => prev.filter((_, idx) => idx !== i));
-  };
-
-  const save = async () => {
-    setSaving(true);
-    const payload = rows.filter((r) => (r.name || "").trim()).map((r) => ({
-      ...r,
-      eventId: event.id,
-      price: toNum(r.price),
-      capacity: toNum(r.capacity),
-      maxQuantity: toNum(r.maxQuantity),
-      sort: toNum(r.sort)
-    }));
-    if (payload.length > 0) await ApiHelper.post("/registrations/selections", payload, "ContentApi");
-    setSaving(false);
-    load();
-  };
+  const { rows, saving, update, addRow, removeRow, save } = useEditableRowList<RegistrationSelectionInterface>({
+    loadUrl: `/registrations/selections/event/${event.id}?churchId=${event.churchId}`,
+    saveUrl: "/registrations/selections",
+    deleteUrlPrefix: "/registrations/selections/",
+    api: "ContentApi",
+    enabled: !!event.id,
+    sortBy: "sort",
+    newRow: (current) => ({ name: "", description: "", price: null, capacity: null, maxQuantity: null, sort: current.length + 1, active: true }),
+    filter: (r) => !!(r.name || "").trim(),
+    coerce: (r) => ({ ...r, eventId: event.id, price: toNum(r.price), capacity: toNum(r.capacity), maxQuantity: toNum(r.maxQuantity), sort: toNum(r.sort) })
+  });
 
   return (
     <Stack spacing={1.5}>

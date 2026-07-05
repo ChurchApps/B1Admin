@@ -1,10 +1,10 @@
 import React from "react";
 import { type CampusInterface } from "./CampusInterface";
 import { Locale, Loading } from "@churchapps/apphelper";
-import { Box, Button, Card, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Business as BusinessIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { CountChip } from "../../components/ui";
+import { SectionListCard } from "../../components/ui";
 import { CampusEdit } from "./CampusEdit";
 
 // Campus management (list + inline editor). Shared by the Settings landing's
@@ -54,38 +54,36 @@ export const CampusesSection: React.FC = () => {
   return (
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, md: editCampus ? 7 : 12 }}>
-        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <BusinessIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">{Locale.label("settings.campuses.campuses")}</Typography>
-              {data.length > 0 && <CountChip count={data.length} />}
-            </Stack>
-            <Button variant="outlined" size="small" startIcon={<AddIcon />} onClick={() => setEditCampus({})} data-testid="add-campus-button">
-              {Locale.label("settings.campuses.addCampus")}
-            </Button>
-          </Stack>
-          {rows.length > 0 ? (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{Locale.label("settings.campusEdit.name")}</TableCell>
-                  <TableCell>{Locale.label("settings.campuses.location")}</TableCell>
-                  <TableCell>{Locale.label("settings.campusEdit.timezone")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{rows}</TableBody>
-            </Table>
-          ) : (
-            <Box sx={{ p: 5, textAlign: "center" }}>
-              <BusinessIcon sx={{ fontSize: 48, color: "grey.400", mb: 1 }} />
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>{Locale.label("settings.campuses.none")}</Typography>
+        <SectionListCard
+          icon={<BusinessIcon />}
+          title={Locale.label("settings.campuses.campuses")}
+          count={data.length}
+          onAdd={() => setEditCampus({})}
+          addLabel={Locale.label("settings.campuses.addCampus")}
+          addButtonVariant="outlined"
+          addButtonSize="small"
+          addButtonTestId="add-campus-button"
+          cardSx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}
+          empty={{
+            icon: <BusinessIcon />,
+            title: Locale.label("settings.campuses.none"),
+            action: (
               <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setEditCampus({})} data-testid="add-campus-button-empty">
                 {Locale.label("settings.campuses.addCampus")}
               </Button>
-            </Box>
-          )}
-        </Card>
+            )
+          }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("settings.campusEdit.name")}</TableCell>
+                <TableCell>{Locale.label("settings.campuses.location")}</TableCell>
+                <TableCell>{Locale.label("settings.campusEdit.timezone")}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>{rows}</TableBody>
+          </Table>
+        </SectionListCard>
       </Grid>
       {editCampus && (
         <Grid size={{ xs: 12, md: 5 }}>

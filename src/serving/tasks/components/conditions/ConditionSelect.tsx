@@ -4,6 +4,7 @@ import { ConditionHelper } from "../../../../helpers";
 import { Locale } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
 import { getLocalizedMembershipStatusOptions } from "../../../../people/helpers/MembershipStatusOptions";
+import { applyConditionChange } from "./conditionHelpers";
 
 interface Props {
   condition: ConditionInterface;
@@ -27,14 +28,7 @@ export const ConditionSelect = (props: Props) => {
   React.useEffect(init, [props.condition.field]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    const c = { ...props.condition };
-    const val = e.target.value;
-    switch (e.target.name) {
-      case "value": c.value = val; break;
-      case "operator": c.operator = val; break;
-    }
-    c.label = ConditionHelper.getLabel(c);
-    props.onChange(c);
+    props.onChange(applyConditionChange(props.condition, e.target.name, e.target.value));
   };
 
   const getGender = () => (

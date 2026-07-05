@@ -1,6 +1,6 @@
 import React from "react";
-import { Alert, TextField, Typography } from "@mui/material";
-import { ApiHelper, Locale, PersonHelper } from "@churchapps/apphelper";
+import { TextField, Typography } from "@mui/material";
+import { ApiHelper, ErrorMessages, Locale, PersonHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { type PledgeInterface } from "../../helpers";
 import { PersonAdd } from "../../components";
@@ -59,7 +59,7 @@ export const PledgeEdit: React.FC<Props> = (props) => {
       onSave={handleSave}
       onDelete={props.pledge?.id ? handleDelete : undefined}
       help="docs/b1-admin/donations/">
-      {errors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{errors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+      <ErrorMessages errors={errors} />
       {personSection}
       <TextField
         fullWidth

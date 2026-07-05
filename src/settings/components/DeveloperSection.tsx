@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Card, Stack, Chip } from "@mui/material";
-import { Key as KeyIcon, Delete as DeleteIcon, Add as AddIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
-import { CountChip, NavigationTabs, type NavigationTab } from "../../components/ui";
+import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Stack, Chip } from "@mui/material";
+import { Key as KeyIcon, Delete as DeleteIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { NavigationTabs, type NavigationTab, SectionListCard } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { ApiKeyEdit } from "./ApiKeyEdit";
 import { WebhooksSection } from "./WebhooksSection";
@@ -44,9 +44,6 @@ const renderScopes = (scopes?: string) => {
 };
 
 type DeveloperTab = "apiKeys" | "webhooks" | "connections";
-
-const sectionToolbarSx = { p: 2, borderBottom: 1, borderColor: "var(--border-light)" };
-const emptyStateSx = { textAlign: "center" as const, py: 6, px: 2 };
 
 // Developer portal (API keys, webhooks, connected apps). Rendered as a section of
 // the Settings landing's configuration list.
@@ -102,100 +99,81 @@ export const DeveloperSection: React.FC = () => {
         {tab === "apiKeys" && (showKeyEdit ? (
           <ApiKeyEdit onSave={handleKeySaved} onCancel={() => setShowKeyEdit(false)} />
         ) : (
-          <Card>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={sectionToolbarSx}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <KeyIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("settings.developer.apiKeys")}</Typography>
-                {apiKeys.length > 0 && <CountChip count={apiKeys.length} />}
-              </Stack>
-              <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowKeyEdit(true)}>
-                {Locale.label("settings.developer.newKey")}
-              </Button>
-            </Stack>
-            {loading ? <Loading /> : apiKeys.length === 0 ? (
-              <Box sx={emptyStateSx}>
-                <KeyIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
-                <Typography variant="body2" color="text.secondary">{Locale.label("settings.developer.noKeys")}</Typography>
-              </Box>
-            ) : (
-              <TableContainer>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>{Locale.label("settings.developer.name")}</TableCell>
-                      <TableCell>{Locale.label("settings.developer.prefix")}</TableCell>
-                      <TableCell>{Locale.label("settings.developer.scopes")}</TableCell>
-                      <TableCell>{Locale.label("settings.developer.lastUsed")}</TableCell>
-                      <TableCell>{Locale.label("settings.developer.expires")}</TableCell>
-                      <TableCell align="right"></TableCell>
+          <SectionListCard
+            icon={<KeyIcon />}
+            title={Locale.label("settings.developer.apiKeys")}
+            count={apiKeys.length}
+            onAdd={() => setShowKeyEdit(true)}
+            addLabel={Locale.label("settings.developer.newKey")}
+            loading={loading}
+            empty={{ icon: <KeyIcon />, title: Locale.label("settings.developer.noKeys") }}>
+            <TableContainer>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{Locale.label("settings.developer.name")}</TableCell>
+                    <TableCell>{Locale.label("settings.developer.prefix")}</TableCell>
+                    <TableCell>{Locale.label("settings.developer.scopes")}</TableCell>
+                    <TableCell>{Locale.label("settings.developer.lastUsed")}</TableCell>
+                    <TableCell>{Locale.label("settings.developer.expires")}</TableCell>
+                    <TableCell align="right"></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {apiKeys.map((k) => (
+                    <TableRow key={k.id} hover>
+                      <TableCell><Typography fontWeight={600}>{k.name}</Typography></TableCell>
+                      <TableCell><Typography variant="body2" fontFamily="monospace">cak_{k.prefix}…</Typography></TableCell>
+                      <TableCell>{renderScopes(k.scopes)}</TableCell>
+                      <TableCell>{fmtDate(k.lastUsedAt)}</TableCell>
+                      <TableCell>{fmtDate(k.expiresAt)}</TableCell>
+                      <TableCell align="right" className="rowActions">
+                        <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDeleteKey(k)} />
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {apiKeys.map((k) => (
-                      <TableRow key={k.id} hover>
-                        <TableCell><Typography fontWeight={600}>{k.name}</Typography></TableCell>
-                        <TableCell><Typography variant="body2" fontFamily="monospace">cak_{k.prefix}…</Typography></TableCell>
-                        <TableCell>{renderScopes(k.scopes)}</TableCell>
-                        <TableCell>{fmtDate(k.lastUsedAt)}</TableCell>
-                        <TableCell>{fmtDate(k.expiresAt)}</TableCell>
-                        <TableCell align="right" className="rowActions">
-                          <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleDeleteKey(k)} />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </Card>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </SectionListCard>
         ))}
 
         {tab === "webhooks" && <WebhooksSection />}
 
         {tab === "connections" && (
-          <Card>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={sectionToolbarSx}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <LinkIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                <Typography variant="h6">{Locale.label("settings.developer.connectedApps")}</Typography>
-                {connections.length > 0 && <CountChip count={connections.length} />}
-              </Stack>
-            </Stack>
-            {loading ? <Loading /> : connections.length === 0 ? (
-              <Box sx={emptyStateSx}>
-                <LinkIcon sx={{ fontSize: 48, color: "text.secondary", mb: 1 }} />
-                <Typography variant="body2" color="text.secondary">{Locale.label("settings.developer.noConnections")}</Typography>
-              </Box>
-            ) : (
-              <TableContainer>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>{Locale.label("settings.developer.app")}</TableCell>
-                      <TableCell>{Locale.label("settings.developer.scopes")}</TableCell>
-                      <TableCell>{Locale.label("settings.developer.authorized")}</TableCell>
-                      <TableCell>{Locale.label("settings.developer.expires")}</TableCell>
-                      <TableCell align="right">{Locale.label("settings.developer.actions")}</TableCell>
+          <SectionListCard
+            icon={<LinkIcon />}
+            title={Locale.label("settings.developer.connectedApps")}
+            count={connections.length}
+            loading={loading}
+            empty={{ icon: <LinkIcon />, title: Locale.label("settings.developer.noConnections") }}>
+            <TableContainer>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{Locale.label("settings.developer.app")}</TableCell>
+                    <TableCell>{Locale.label("settings.developer.scopes")}</TableCell>
+                    <TableCell>{Locale.label("settings.developer.authorized")}</TableCell>
+                    <TableCell>{Locale.label("settings.developer.expires")}</TableCell>
+                    <TableCell align="right">{Locale.label("settings.developer.actions")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {connections.map((c) => (
+                    <TableRow key={c.id} hover>
+                      <TableCell><Typography fontWeight={600}>{c.clientName}</Typography></TableCell>
+                      <TableCell>{renderScopes(c.scopes)}</TableCell>
+                      <TableCell>{fmtDate(c.createdAt)}</TableCell>
+                      <TableCell>{fmtDate(c.expiresAt)}</TableCell>
+                      <TableCell align="right" className="rowActions">
+                        <Button size="small" onClick={() => handleRevoke(c)}>{Locale.label("settings.developer.revoke")}</Button>
+                      </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {connections.map((c) => (
-                      <TableRow key={c.id} hover>
-                        <TableCell><Typography fontWeight={600}>{c.clientName}</Typography></TableCell>
-                        <TableCell>{renderScopes(c.scopes)}</TableCell>
-                        <TableCell>{fmtDate(c.createdAt)}</TableCell>
-                        <TableCell>{fmtDate(c.expiresAt)}</TableCell>
-                        <TableCell align="right" className="rowActions">
-                          <Button size="small" onClick={() => handleRevoke(c)}>{Locale.label("settings.developer.revoke")}</Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </Card>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </SectionListCard>
         )}
       </Box>
     </>

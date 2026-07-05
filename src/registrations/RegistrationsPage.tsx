@@ -7,9 +7,7 @@ import {
   TableRow,
   TableCell,
   TableHead,
-  Card,
   Box,
-  Stack,
   Chip,
   LinearProgress
 } from "@mui/material";
@@ -17,7 +15,7 @@ import { HowToReg as RegIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
 import { PermissionDenied } from "../components";
-import { CountChip } from "../components/ui";
+import { CountChip, CardWithHeader } from "../components/ui";
 
 export const RegistrationsPage = () => {
   const [events, setEvents] = useState<EventInterface[]>([]);
@@ -78,16 +76,10 @@ export const RegistrationsPage = () => {
     <>
       <PageHeader icon={<RegIcon />} title={Locale.label("registrations.registrationsPage.title")} subtitle={Locale.label("registrations.registrationsPage.subtitle")} />
       <Box sx={{ p: 3 }}>
-        <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-          <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <RegIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6">
-                {Locale.label("registrations.registrationsPage.enabledEvents")}
-              </Typography>
-              {events.length > 0 && <CountChip count={events.length} />}
-            </Stack>
-          </Box>
+        <CardWithHeader
+          title={Locale.label("registrations.registrationsPage.enabledEvents")}
+          icon={<RegIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          actions={events.length > 0 ? <CountChip count={events.length} /> : undefined}>
           {loading ? (
             <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>
           ) : events.length === 0 ? (
@@ -113,7 +105,7 @@ export const RegistrationsPage = () => {
               <TableBody>{getRows()}</TableBody>
             </Table>
           )}
-        </Card>
+        </CardWithHeader>
       </Box>
     </>
   );

@@ -1,50 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Stack, TextField, Button, Typography } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type CommerceEventInterface, type RegistrationTypeInterface } from "../registrationCommerce";
+import { useEditableRowList, toNum } from "./useEditableRowList";
 
 interface Props {
   event: CommerceEventInterface;
 }
 
 export const RegistrationTypesEdit: React.FC<Props> = ({ event }) => {
-  const [rows, setRows] = useState<RegistrationTypeInterface[]>([]);
-  const [saving, setSaving] = useState(false);
-
-  const load = () => {
-    ApiHelper.get(`/registrations/types/event/${event.id}?churchId=${event.churchId}`, "ContentApi")
-      .then((data: RegistrationTypeInterface[]) => setRows((data || []).sort((a, b) => (a.sort || 0) - (b.sort || 0))));
-  };
-
-  useEffect(() => { if (event.id) load(); }, [event.id]);
-
-  const update = (i: number, field: keyof RegistrationTypeInterface, value: any) => {
-    setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, [field]: value } : r)));
-  };
-
-  const addRow = () => setRows((prev) => [...prev, { name: "", price: null, capacity: null, sort: prev.length + 1, active: true }]);
-
-  const removeRow = async (i: number) => {
-    const row = rows[i];
-    if (row.id) await ApiHelper.delete(`/registrations/types/${row.id}`, "ContentApi");
-    setRows((prev) => prev.filter((_, idx) => idx !== i));
-  };
-
-  const save = async () => {
-    setSaving(true);
-    const payload = rows.filter((r) => (r.name || "").trim()).map((r) => ({
-      ...r,
-      eventId: event.id,
-      price: r.price === null || r.price === undefined || (r.price as any) === "" ? null : Number(r.price),
-      capacity: r.capacity === null || r.capacity === undefined || (r.capacity as any) === "" ? null : Number(r.capacity),
-      sort: r.sort === null || r.sort === undefined || (r.sort as any) === "" ? null : Number(r.sort)
-    }));
-    if (payload.length > 0) await ApiHelper.post("/registrations/types", payload, "ContentApi");
-    setSaving(false);
-    load();
-  };
+  const { rows, saving, update, addRow, removeRow, save } = useEditableRowList<RegistrationTypeInterface>({
+    loadUrl: `/registrations/types/event/${event.id}?churchId=${event.churchId}`,
+    saveUrl: "/registrations/types",
+    deleteUrlPrefix: "/registrations/types/",
+    api: "ContentApi",
+    enabled: !!event.id,
+    sortBy: "sort",
+    newRow: (current) => ({ name: "", price: null, capacity: null, sort: current.length + 1, active: true }),
+    filter: (r) => !!(r.name || "").trim(),
+    coerce: (r) => ({ ...r, eventId: event.id, price: toNum(r.price), capacity: toNum(r.capacity), sort: toNum(r.sort) })
+  });
 
   return (
     <Stack spacing={1.5}>

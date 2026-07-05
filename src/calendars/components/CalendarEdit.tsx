@@ -1,25 +1,9 @@
 import { useState, useEffect } from "react";
-import { ApiHelper, UserHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, UserHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
 import { Permissions, type CuratedCalendarInterface } from "@churchapps/helpers";
-import {
-  Box,
-  Card,
-  CardContent,
-  TextField,
-  Button,
-  Stack,
-  Typography,
-  Divider,
-  Alert
-} from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
-import {
-  Save as SaveIcon,
-  Close as CloseIcon,
-  Delete as DeleteIcon,
-  CalendarMonth as CalendarIcon
-} from "@mui/icons-material";
-import { AppIconButton } from "../../components/ui/AppIconButton";
+import { FormCard } from "../../components/ui";
 
 type Props = {
   calendar: CuratedCalendarInterface;
@@ -99,111 +83,42 @@ export function CalendarEdit(props: Props) {
   const isNew = !calendar.id;
 
   return (
-    <Card sx={{
-      borderRadius: 2,
-      border: "1px solid",
-      borderColor: "grey.200",
-      height: "fit-content"
-    }}>
-      <Box sx={{ p: 2, borderBottom: 1, borderColor: "divider" }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Stack direction="row" spacing={1} alignItems="center">
-            <CalendarIcon sx={{ color: "primary.main" }} />
-            <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>
-              {isNew ? Locale.label("calendars.calendarEdit.createCalendar") : Locale.label("calendars.calendarEdit.editCalendar")}
-            </Typography>
-          </Stack>
-          <AppIconButton
-            tone="card"
-            label={Locale.label("common.close")}
-            icon={<CloseIcon />}
-            onClick={handleCancel}
-          />
-        </Stack>
+    <FormCard
+      title={isNew ? Locale.label("calendars.calendarEdit.createCalendar") : Locale.label("calendars.calendarEdit.editCalendar")}
+      icon="calendar_month"
+      onSave={handleSave}
+      onCancel={handleCancel}
+      onDelete={isNew ? undefined : handleDelete}
+      isSubmitting={saving}
+      disabled={saving || deleting || !calendar.name?.trim()}
+      saveText={isNew ? Locale.label("calendars.calendarEdit.create") : Locale.label("calendars.calendarEdit.save")}
+      cancelText={Locale.label("calendars.calendarEdit.cancel")}
+      deleteText={Locale.label("calendars.calendarEdit.delete")}
+      saveTestId="save-calendar-button"
+      deleteTestId="delete-calendar-button">
+      {errors.length > 0 && <ErrorMessages errors={errors} data-testid="calendar-errors" />}
+
+      <TextField
+        fullWidth
+        label={Locale.label("calendars.calendarEdit.calendarName")}
+        name="name"
+        value={calendar.name || ""}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        data-testid="calendar-name-input"
+        aria-label={Locale.label("calendars.calendarEdit.calendarNameAria")}
+        placeholder={Locale.label("calendars.calendarEdit.namePlaceholder")}
+        variant="outlined"
+      />
+
+      <Box>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+          {Locale.label("calendars.calendarEdit.calendarDetails")}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {Locale.label("calendars.calendarEdit.calendarDetailsDesc")}
+        </Typography>
       </Box>
-
-      <CardContent>
-        <Stack spacing={3}>
-          {errors.length > 0 && (
-            <Alert severity="error" data-testid="calendar-errors">
-              <Stack spacing={1}>
-                {errors.map((error, index) => (
-                  <Typography key={index} variant="body2">{error}</Typography>
-                ))}
-              </Stack>
-            </Alert>
-          )}
-
-          <TextField
-            fullWidth
-            label={Locale.label("calendars.calendarEdit.calendarName")}
-            name="name"
-            value={calendar.name || ""}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            data-testid="calendar-name-input"
-            aria-label={Locale.label("calendars.calendarEdit.calendarNameAria")}
-            placeholder={Locale.label("calendars.calendarEdit.namePlaceholder")}
-            variant="outlined"
-          />
-
-          <Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              {Locale.label("calendars.calendarEdit.calendarDetails")}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {Locale.label("calendars.calendarEdit.calendarDetailsDesc")}
-            </Typography>
-          </Box>
-
-          <Divider />
-
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            <Button
-              variant="outlined"
-              onClick={handleCancel}
-              disabled={saving || deleting}
-              sx={{
-                textTransform: "none",
-                borderRadius: 2
-              }}
-            >
-              {Locale.label("calendars.calendarEdit.cancel")}
-            </Button>
-
-            {!isNew && (
-              <Button
-                variant="outlined"
-                onClick={handleDelete}
-                disabled={saving || deleting}
-                startIcon={deleting ? undefined : <DeleteIcon />}
-                sx={{
-                  textTransform: "none",
-                  borderRadius: 2
-                }}
-                data-testid="delete-calendar-button"
-              >
-                {deleting ? Locale.label("calendars.calendarEdit.deleting") : Locale.label("calendars.calendarEdit.delete")}
-              </Button>
-            )}
-
-            <Button
-              variant="contained"
-              onClick={handleSave}
-              disabled={saving || deleting || !calendar.name?.trim()}
-              startIcon={saving ? undefined : <SaveIcon />}
-              sx={{
-                textTransform: "none",
-                borderRadius: 2,
-                fontWeight: 600
-              }}
-              data-testid="save-calendar-button"
-            >
-              {saving ? Locale.label("calendars.calendarEdit.saving") : (isNew ? Locale.label("calendars.calendarEdit.create") : Locale.label("calendars.calendarEdit.save"))}
-            </Button>
-          </Stack>
-        </Stack>
-      </CardContent>
-    </Card>
+    </FormCard>
   );
 }

@@ -7,7 +7,6 @@ import {
   TableRow,
   TableCell,
   TableHead,
-  Card,
   Box,
   Stack,
   Chip,
@@ -30,12 +29,13 @@ import {
   ReceiptLong as ReceiptIcon,
   ArrowUpward as PromoteIcon
 } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper, CurrencyHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PermissionDenied, PersonAdd, FormSubmission } from "../components";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { RegistrationDetailDialog } from "./components/RegistrationDetailDialog";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { CardWithHeader } from "../components/ui";
 import { EventReminderEdit } from "../calendars/components/EventReminderEdit";
 import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface } from "./registrationCommerce";
 
@@ -63,6 +63,7 @@ export const RegistrationDetailsPage = () => {
   const [unansweredOnly, setUnansweredOnly] = useState(false);
   const [viewSubmissionId, setViewSubmissionId] = useState("");
   const [viewDetailId, setViewDetailId] = useState("");
+  const [currency, setCurrency] = useState("usd");
 
   const loadData = async () => {
     if (!eventId) return;
@@ -82,6 +83,7 @@ export const RegistrationDetailsPage = () => {
   };
 
   useEffect(() => { loadData(); }, [eventId]);
+  useEffect(() => { CurrencyHelper.loadCurrency().then(setCurrency); }, []);
 
   const handleCancel = async (regId: string) => {
     if (!confirm(Locale.label("registrations.registrationDetailsPage.cancelConfirm"))) return;
@@ -112,7 +114,7 @@ export const RegistrationDetailsPage = () => {
     loadData();
   };
 
-  const money = (n: number | null | undefined) => `$${(Number(n) || 0).toFixed(2)}`;
+  const money = (n: number | null | undefined) => CurrencyHelper.formatCurrencyWithLocale(Number(n) || 0, currency);
 
   const typeMap = new Map<string, RegistrationTypeInterface>(types.map((t) => [t.id as string, t]));
   const selMap = new Map<string, RegistrationSelectionInterface>(selections.map((s) => [s.id as string, s]));
@@ -277,43 +279,37 @@ export const RegistrationDetailsPage = () => {
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 8 }}>
-            <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
-              <Box sx={{ p: 2, borderBottom: 1, borderColor: "var(--border-light)" }}>
-                <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <RegIcon sx={{ color: "primary.main", fontSize: 20 }} />
-                    <Typography variant="h6">
-                      {Locale.label("registrations.registrationDetailsPage.registrations")} ({count}{event.capacity ? ` / ${event.capacity}` : ""})
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
-                      <Button startIcon={<PersonAddIcon />} size="small" variant="outlined" onClick={() => setShowAddAttendee(true)}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
-                    )}
-                    <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
-                  </Stack>
+            <CardWithHeader
+              title={`${Locale.label("registrations.registrationDetailsPage.registrations")} (${count}${event.capacity ? ` / ${event.capacity}` : ""})`}
+              icon={<RegIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+              actions={(
+                <Stack direction="row" spacing={1} alignItems="center">
+                  {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
+                    <Button startIcon={<PersonAddIcon />} size="small" variant="outlined" onClick={() => setShowAddAttendee(true)}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
+                  )}
+                  <Button startIcon={<DownloadIcon />} size="small" onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
                 </Stack>
-                {event.capacity && (
-                  <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mt: 1 }} />
-                )}
-                {types.length > 0 && (
-                  <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mt: 1 }} data-testid="type-counts">
-                    {types.map((t) => (
-                      <Chip key={t.id} size="small" variant="outlined" label={`${t.name}: ${getTypeCounts().get(t.id as string) || 0}`} />
-                    ))}
-                  </Stack>
-                )}
-                {event.formId && (
-                  <Chip
-                    label={Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
-                    size="small"
-                    color={unansweredOnly ? "primary" : "default"}
-                    variant={unansweredOnly ? "filled" : "outlined"}
-                    onClick={() => setUnansweredOnly(!unansweredOnly)}
-                    sx={{ mt: 1 }}
-                  />
-                )}
-              </Box>
+              )}>
+              {event.capacity ? (
+                <LinearProgress variant="determinate" value={capacityPct} color={capacityPct >= 100 ? "error" : "primary"} sx={{ mb: 1 }} />
+              ) : null}
+              {types.length > 0 && (
+                <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mb: 1 }} data-testid="type-counts">
+                  {types.map((t) => (
+                    <Chip key={t.id} size="small" variant="outlined" label={`${t.name}: ${getTypeCounts().get(t.id as string) || 0}`} />
+                  ))}
+                </Stack>
+              )}
+              {event.formId && (
+                <Chip
+                  label={Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
+                  size="small"
+                  color={unansweredOnly ? "primary" : "default"}
+                  variant={unansweredOnly ? "filled" : "outlined"}
+                  onClick={() => setUnansweredOnly(!unansweredOnly)}
+                  sx={{ mb: 1 }}
+                />
+              )}
               {visibleRegistrations.length === 0 ? (
                 <Box sx={{ p: 3, textAlign: "center" }}>
                   <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
@@ -334,7 +330,7 @@ export const RegistrationDetailsPage = () => {
                   <TableBody>{getRows()}</TableBody>
                 </Table>
               )}
-            </Card>
+            </CardWithHeader>
           </Grid>
 
           <Grid size={{ xs: 12, md: 4 }}>

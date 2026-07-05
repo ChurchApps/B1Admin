@@ -1,6 +1,8 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Typography, CircularProgress, Alert } from "@mui/material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { TextField, Typography, Alert } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
+import { useSendDialog } from "./useSendDialog";
+import { SendDialogShell } from "./SendDialogShell";
 
 interface Props {
   groupId?: string;
@@ -29,47 +31,22 @@ interface SendResult {
 
 export const SendTextDialog: React.FC<Props> = (props) => {
   const [message, setMessage] = React.useState("");
-  const [sending, setSending] = React.useState(false);
-  const [result, setResult] = React.useState<SendResult | null>(null);
-  const [error, setError] = React.useState("");
-  const [preview, setPreview] = React.useState<PreviewData | null>(null);
-  const [loadingPreview, setLoadingPreview] = React.useState(false);
 
   const isGroupMode = !!props.groupId;
   const charCount = message.length;
   const segmentCount = charCount <= 160 ? 1 : Math.ceil(charCount / 153);
 
-  React.useEffect(() => {
-    if (!isGroupMode || !props.groupId) return;
-    setLoadingPreview(true);
-    ApiHelper.get("/texting/preview/" + props.groupId, "MessagingApi")
-      .then((data: any) => { setPreview(data); })
-      .catch(() => { /* preview is optional — allow send even if it fails */ })
-      .finally(() => { setLoadingPreview(false); });
-  }, [isGroupMode, props.groupId]);
-
-  const handleSend = async () => {
-    if (!message.trim()) return;
-    setSending(true);
-    setError("");
-    try {
-      let resp;
-      if (isGroupMode) {
-        resp = await ApiHelper.post("/texting/send", { groupId: props.groupId, message }, "MessagingApi");
-      } else {
-        resp = await ApiHelper.post("/texting/sendPerson", { personId: props.personId, phoneNumber: props.phoneNumber, message }, "MessagingApi");
-      }
-      if (resp.error) {
-        setError(resp.error);
-      } else {
-        setResult(resp);
-      }
-    } catch (err: any) {
-      setError(err?.message || Locale.label("groups.sendTextDialog.fallbackError"));
-    } finally {
-      setSending(false);
-    }
-  };
+  const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
+    previewUrl: isGroupMode && props.groupId ? "/texting/preview/" + props.groupId : null,
+    sendUrl: isGroupMode ? "/texting/send" : "/texting/sendPerson",
+    buildPayload: () => {
+      if (!message.trim()) return null;
+      return isGroupMode
+        ? { groupId: props.groupId, message }
+        : { personId: props.personId, phoneNumber: props.phoneNumber, message };
+    },
+    fallbackError: Locale.label("groups.sendTextDialog.fallbackError")
+  });
 
   const getTitle = () => {
     if (isGroupMode) return Locale.label("groups.sendTextDialog.textGroupTitle").replace("{groupName}", props.groupName || "");
@@ -121,50 +98,39 @@ export const SendTextDialog: React.FC<Props> = (props) => {
   const canSend = !sending && message.trim().length > 0 && (!isGroupMode || !preview || preview.eligibleCount > 0);
 
   return (
-    <Dialog open={true} onClose={props.onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>{getTitle()}</DialogTitle>
-      <DialogContent>
-        {result ? renderResult() : (
-          <>
-            {renderPreview()}
-            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-            <TextField
-              fullWidth
-              multiline
-              minRows={3}
-              maxRows={6}
-              label={Locale.label("groups.sendTextDialog.messageLabel")}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              disabled={sending}
-              inputProps={{ maxLength: 1600 }}
-            />
-            <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: "block" }}>
-              {(charCount !== 1
-                ? Locale.label("groups.sendTextDialog.characterCount")
-                : Locale.label("groups.sendTextDialog.characterCountSingular")
-              ).replace("{count}", charCount.toString()).replace("{segments}", segmentCount.toString())}
-            </Typography>
-          </>
-        )}
-      </DialogContent>
-      <DialogActions>
-        {result ? (
-          <Button onClick={props.onClose}>{Locale.label("common.close")}</Button>
-        ) : (
-          <>
-            <Button onClick={props.onClose} disabled={sending}>{Locale.label("common.cancel")}</Button>
-            <Button
-              variant="contained"
-              onClick={handleSend}
-              disabled={!canSend}
-              startIcon={sending ? <CircularProgress size={16} /> : null}
-            >
-              {sending ? Locale.label("groups.sendTextDialog.sending") : Locale.label("groups.sendTextDialog.send")}
-            </Button>
-          </>
-        )}
-      </DialogActions>
-    </Dialog>
+    <SendDialogShell
+      onClose={props.onClose}
+      maxWidth="sm"
+      title={getTitle()}
+      isComplete={!!result}
+      resultContent={renderResult()}
+      sending={sending}
+      canSend={canSend}
+      onSend={handleSend}
+      closeLabel={Locale.label("common.close")}
+      cancelLabel={Locale.label("common.cancel")}
+      sendLabel={Locale.label("groups.sendTextDialog.send")}
+      sendingLabel={Locale.label("groups.sendTextDialog.sending")}
+    >
+      {renderPreview()}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      <TextField
+        fullWidth
+        multiline
+        minRows={3}
+        maxRows={6}
+        label={Locale.label("groups.sendTextDialog.messageLabel")}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        disabled={sending}
+        inputProps={{ maxLength: 1600 }}
+      />
+      <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: "block" }}>
+        {(charCount !== 1
+          ? Locale.label("groups.sendTextDialog.characterCount")
+          : Locale.label("groups.sendTextDialog.characterCountSingular")
+        ).replace("{count}", charCount.toString()).replace("{segments}", segmentCount.toString())}
+      </Typography>
+    </SendDialogShell>
   );
 };

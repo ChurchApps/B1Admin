@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Alert, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { type FundInterface } from "@churchapps/helpers";
 import { FormCard } from "../../components/ui";
 
@@ -45,7 +45,7 @@ export const FundEdit: React.FC<Props> = (props) => {
       onSave={handleSubmit(onValid)}
       onDelete={props.fund?.id === "" ? undefined : handleDelete}
       help="docs/b1-admin/donations/">
-      {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+      <ErrorMessages errors={summaryErrors} />
       <TextField fullWidth label={Locale.label("common.name")} placeholder={Locale.label("placeholders.fund.name")} data-testid="fund-name-input" aria-label={Locale.label("donations.fundEdit.ariaFundName")} error={!!e.fundName} helperText={e.fundName?.message} {...register("fundName", { required: Locale.label("donations.fundEdit.errBlank") })} />
       <FormControlLabel
         control={

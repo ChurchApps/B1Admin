@@ -3,6 +3,7 @@ import React from "react";
 import { Locale } from "@churchapps/apphelper";
 import { type ConditionInterface } from "@churchapps/helpers";
 import { ConditionHelper } from "../../../../helpers";
+import { applyConditionChange } from "./conditionHelpers";
 
 interface Props {
   condition: ConditionInterface;
@@ -24,16 +25,14 @@ export const ConditionDate = (props: Props) => {
   React.useEffect(init, [props.condition.field]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
-    const c = { ...props.condition };
-    const val = e.target.value;
-    switch (e.target.name) {
-      case "value": c.value = val; break;
-      case "operator": c.operator = val; break;
-      case "datePart":
-        c.fieldData = JSON.stringify({ datePart: val });
-        if (val === "dayOfWeek" || val === "month" || val === "dayOfMonth" || val === "years") c.value = "1";
-        break;
+    if (e.target.name !== "datePart") {
+      props.onChange(applyConditionChange(props.condition, e.target.name, e.target.value));
+      return;
     }
+    const val = e.target.value;
+    const c = { ...props.condition };
+    c.fieldData = JSON.stringify({ datePart: val });
+    if (val === "dayOfWeek" || val === "month" || val === "dayOfMonth" || val === "years") c.value = "1";
     c.label = ConditionHelper.getLabel(c);
     props.onChange(c);
   };

@@ -11,7 +11,7 @@ export { GroupSessions } from "./GroupSessions";
 export { MembersAdd } from "./MembersAdd";
 export { ServiceTimes } from "./ServiceTimes";
 export { ServiceTimesEdit } from "./ServiceTimesEdit";
-export { SessionAdd } from "./SessionAdd";
+export { SessionEdit } from "./SessionEdit";
 export { SessionCard } from "./SessionCard";
 export { SendTextDialog } from "./SendTextDialog";
 export { SendEmailDialog } from "./SendEmailDialog";

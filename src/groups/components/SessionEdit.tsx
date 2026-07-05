@@ -9,7 +9,7 @@ type AnyRecord = Record<string, any>;
 
 interface Props {
   group: GroupInterface;
-  session: SessionInterface;
+  session?: SessionInterface;
   updatedFunction: (session: SessionInterface) => void;
 }
 
@@ -22,10 +22,11 @@ const validateDate = (val: string) => {
 
 export const SessionEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
+  const isAdd = !props.session?.id;
   const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(!isAdd);
 
-  const { control, register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "" } });
+  const { control, register, handleSubmit, reset, setValue } = useForm<AnyRecord>({ defaultValues: { sessionDate: DateHelper.formatHtml5Date(new Date()), serviceTimeId: "" } });
 
   const { errors } = useFormState({ control });
   const e = errors as any;
@@ -51,16 +52,19 @@ export const SessionEdit: React.FC<Props> = (props) => {
   const loadData = React.useCallback(() => {
     ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => {
       setGroupServiceTimes(data);
+      if (isAdd && data.length > 0) setValue("serviceTimeId", data[0].serviceTimeId);
     });
-  }, [props.group]);
+  }, [props.group, isAdd, setValue]);
 
   const onValid = (values: AnyRecord) => {
+    if (!props.group?.id) return;
     const sessionDate = new Date(values.sessionDate);
-    const s = { ...props.session, groupId: props.group.id, sessionDate } as SessionInterface;
+    const s = { ...(props.session || {}), groupId: props.group.id, sessionDate } as SessionInterface;
     if (!UniqueIdHelper.isMissing(values.serviceTimeId)) s.serviceTimeId = values.serviceTimeId;
     else s.serviceTimeId = null;
     ApiHelper.post("/sessions", [s], "AttendanceApi").then(() => {
       props.updatedFunction(s);
+      if (isAdd) setValue("sessionDate", DateHelper.formatHtml5Date(new Date()));
     });
   };
 
@@ -118,13 +122,13 @@ export const SessionEdit: React.FC<Props> = (props) => {
   }
 
   return (
-    <Box data-cy="edit-session-box">
+    <Box data-cy={isAdd ? "add-session-box" : "edit-session-box"}>
       <FormCard
-        icon="edit"
-        title={Locale.label("groups.sessionEdit.sesEdit")}
+        icon={isAdd ? "calendar_month" : "edit"}
+        title={isAdd ? Locale.label("groups.sessionAdd.sesAdd") : Locale.label("groups.sessionEdit.sesEdit")}
         onSave={handleSubmit(onValid)}
         onCancel={handleCancel}
-        onDelete={handleDelete}
+        onDelete={isAdd ? undefined : handleDelete}
         help="docs/b1-admin/attendance/">
         <ErrorMessages errors={summaryErrors} />
         <Grid container spacing={2}>

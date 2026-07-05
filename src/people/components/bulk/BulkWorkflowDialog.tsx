@@ -3,6 +3,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem, Typography } from "@mui/material";
 import { type BulkResult } from "./BulkFieldDialog";
 import { type WorkflowInterface } from "@churchapps/helpers";
+import { useBulkApplyDialog } from "./useBulkApplyDialog";
 
 interface Props {
   open: boolean;
@@ -12,31 +13,21 @@ interface Props {
 }
 
 export const BulkWorkflowDialog: React.FC<Props> = (props) => {
-  const [workflows, setWorkflows] = React.useState<WorkflowInterface[]>([]);
   const [workflowId, setWorkflowId] = React.useState("");
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const count = props.personIds.length;
 
-  React.useEffect(() => {
-    if (!props.open) return;
-    setWorkflowId("");
-    ApiHelper.get("/workflows", "DoingApi").then((data: WorkflowInterface[]) => setWorkflows((data || []).filter((w) => w.active !== false)));
-  }, [props.open]);
-
-  const handleApply = async () => {
-    if (!workflowId) return;
-    setIsSubmitting(true);
-    try {
+  const { options: workflows, isSubmitting, handleApply } = useBulkApplyDialog<WorkflowInterface>({
+    open: props.open,
+    onClose: props.onClose,
+    onComplete: props.onComplete,
+    onOpen: () => setWorkflowId(""),
+    loadOptions: () => ApiHelper.get("/workflows", "DoingApi").then((data: WorkflowInterface[]) => (data || []).filter((w) => w.active !== false)),
+    apply: async () => {
       const people = props.personIds.map((id) => ({ id }));
       await ApiHelper.post("/tasks/bulkAddToWorkflow", { workflowId, people }, "DoingApi");
-      props.onComplete({ message: Locale.label("people.bulk.workflowSuccess").replace("{count}", count.toString()), severity: "success" });
-      props.onClose();
-    } catch (error) {
-      props.onComplete({ message: error instanceof Error ? error.message : Locale.label("people.bulk.error"), severity: "error" });
-    } finally {
-      setIsSubmitting(false);
+      return { message: Locale.label("people.bulk.workflowSuccess").replace("{count}", count.toString()), severity: "success" };
     }
-  };
+  });
 
   return (
     <Dialog open={props.open} onClose={() => !isSubmitting && props.onClose()} maxWidth="xs" fullWidth>

@@ -1,9 +1,9 @@
 import React from "react";
-import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { type ServiceTimeInterface, type ServiceInterface } from "@churchapps/helpers";
-import { useMountedState, ApiHelper, Locale } from "@churchapps/apphelper";
+import { useMountedState, ApiHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 
 interface Props {
@@ -59,7 +59,7 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
         isSubmitting={isSubmitting}
         icon="schedule"
         help="docs/b1-admin/attendance/">
-        {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
+        <ErrorMessages errors={summaryErrors} />
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <FormControl fullWidth>
