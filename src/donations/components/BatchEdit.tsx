@@ -4,6 +4,7 @@ import { ApiHelper, DateHelper, UniqueIdHelper, Locale } from "@churchapps/apphe
 import { type DonationBatchInterface } from "@churchapps/helpers";
 import { Grid, TextField } from "@mui/material";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   batchId: string;
@@ -16,15 +17,17 @@ export const BatchEdit = memo((props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: "", date: DateHelper.formatHtml5Date(new Date()) } });
 
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
+
   const handleCancel = useCallback(() => { props.updatedFunction(); }, [props.updatedFunction]);
 
-  const handleDelete = useCallback(() => {
-    if (window.confirm(Locale.label("donations.batchEdit.confirmMsg"))) {
+  const handleDelete = useCallback(async () => {
+    if (await confirm(Locale.label("donations.batchEdit.confirmMsg"))) {
       ApiHelper.get("/donationbatches/" + props.batchId, "GivingApi").then((data: DonationBatchInterface) => {
         ApiHelper.delete("/donationbatches/" + data.id, "GivingApi").then(() => props.updatedFunction());
       });
     }
-  }, [props.batchId, props.updatedFunction]);
+  }, [props.batchId, props.updatedFunction, confirm]);
 
   const getDeleteFunction = useCallback(() => (!UniqueIdHelper.isMissing(props.batchId) ? handleDelete : undefined), [props.batchId, handleDelete]);
 
@@ -47,22 +50,25 @@ export const BatchEdit = memo((props: Props) => {
   React.useEffect(loadData, [loadData]);
 
   return (
-    <FormCard
-      id="batchBox"
-      icon="volunteer_activism"
-      title={Locale.label("common.edit")}
-      onCancel={handleCancel}
-      onDelete={getDeleteFunction()}
-      onSave={handleSubmit(onValid)}
-      help="docs/b1-admin/donations/recording-donations">
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField fullWidth data-cy="batch-name" label={Locale.label("donations.batchEdit.opName")} placeholder={Locale.label("placeholders.batch.name")} {...register("name")} name="name" />
+    <>
+      {ConfirmDialogElement}
+      <FormCard
+        id="batchBox"
+        icon="volunteer_activism"
+        title={Locale.label("common.edit")}
+        onCancel={handleCancel}
+        onDelete={getDeleteFunction()}
+        onSave={handleSubmit(onValid)}
+        help="docs/b1-admin/donations/recording-donations">
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth data-cy="batch-name" label={Locale.label("donations.batchEdit.opName")} placeholder={Locale.label("placeholders.batch.name")} {...register("name")} name="name" />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField fullWidth type="date" data-cy="batch-date" label={Locale.label("donations.batchEdit.date")} {...register("date")} name="date" />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <TextField fullWidth type="date" data-cy="batch-date" label={Locale.label("donations.batchEdit.date")} {...register("date")} name="date" />
-        </Grid>
-      </Grid>
-    </FormCard>
+      </FormCard>
+    </>
   );
 });

@@ -10,6 +10,7 @@ import { AppIconButton } from "../components/ui/AppIconButton";
 import { FormCard } from "../components/ui/FormCard";
 import { useMutation } from "@tanstack/react-query";
 import { useThemeMode } from "../ThemeContext";
+import { useConfirmDelete } from "../hooks";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export const ProfilePage = () => {
   const [errors, setErrors] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
     const { email, firstName, lastName } = UserHelper.user;
@@ -120,8 +122,8 @@ export const ProfilePage = () => {
     return errors.length === 0;
   };
 
-  const handleAccountDelete = () => {
-    if (window.confirm(Locale.label("profile.profilePage.confirmMsg"))) {
+  const handleAccountDelete = async () => {
+    if (await confirm(Locale.label("profile.profilePage.confirmMsg"))) {
       deleteAccountMutation.mutate();
     }
   };
@@ -139,6 +141,7 @@ export const ProfilePage = () => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <PageHeader icon={<PersonIcon />} title={Locale.label("profile.profilePage.profEdit")} subtitle={Locale.label("profile.profilePage.subtitle")} />
 
       <Box sx={{ p: 3 }}>

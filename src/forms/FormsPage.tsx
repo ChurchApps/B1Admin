@@ -10,10 +10,12 @@ import { PermissionDenied } from "../components";
 import { useQuery } from "@tanstack/react-query";
 import { CountChip, NavigationTabs, HeaderPrimaryButton, type NavigationTab } from "../components/ui";
 import { AppIconButton } from "../components/ui/AppIconButton";
+import { useConfirmDelete } from "../hooks";
 
 export const FormsPage = () => {
   const [selectedFormId, setSelectedFormId] = React.useState("notset");
   const [selectedTab, setSelectedTab] = React.useState("forms");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
 
   const forms = useQuery<FormInterface[]>({
@@ -82,9 +84,9 @@ export const FormsPage = () => {
     ApiHelper.post("/forms/duplicate/" + formId, {}, "MembershipApi").then(() => { forms.refetch(); });
   };
 
-  const handleArchiveChange = (form: FormInterface, archive: boolean) => {
-    const conf = archive ? window.confirm(Locale.label("forms.formsPage.confirmMsg1")) : window.confirm(Locale.label("forms.formsPage.confirmMsg2"));
-    if (!conf) return;
+  const handleArchiveChange = async (form: FormInterface, archive: boolean) => {
+    const message = archive ? Locale.label("forms.formsPage.confirmMsg1") : Locale.label("forms.formsPage.confirmMsg2");
+    if (!(await confirm(message, { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
     form.archived = archive;
     ApiHelper.post("/forms", [form], "MembershipApi").then(() => {
       forms.refetch();
@@ -174,6 +176,7 @@ export const FormsPage = () => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <PageHeader
         icon={<DescriptionIcon />}
         title={Locale.label("forms.formsPage.forms")}

@@ -11,7 +11,7 @@ import {
   Receipt as ReceiptIcon,
   AccountBalance as AccountBalanceIcon
 } from "@mui/icons-material";
-import { CardWithHeader, ExportButton, PageHeaderStats } from "../components/ui";
+import { CardWithHeader, ExportButton, PageHeaderStats, hoverRowSx } from "../components/ui";
 
 export const FundPage = () => {
   const params = useParams();
@@ -119,12 +119,7 @@ export const FundPage = () => {
       );
 
       result.push(
-        <TableRow
-          key={i}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease"
-          }}>
+        <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <DateIcon sx={{ color: "text.secondary", fontSize: 18 }} />

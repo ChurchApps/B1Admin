@@ -4,6 +4,7 @@ import { type RoleMemberInterface, type RoleInterface } from "@churchapps/helper
 import { Alert, Button, Stack, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   role: RoleInterface;
@@ -16,6 +17,7 @@ interface Props {
 export const RoleMembers: React.FC<Props> = memo((props) => {
   const { roleMembers } = props;
   const isRoleEveryone = props.role.id === null;
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleAdd = useCallback(
     (e: React.MouseEvent) => {
@@ -31,12 +33,12 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
   }, [isRoleEveryone, handleAdd]);
 
   const handleRemove = useCallback(
-    (roleMember: RoleMemberInterface) => {
-      if (window.confirm(`${Locale.label("settings.roleMembers.confirmMsg")} ${props.role.name}?`)) {
+    async (roleMember: RoleMemberInterface) => {
+      if (await confirm(`${Locale.label("settings.roleMembers.confirmMsg")} ${props.role.name}?`)) {
         ApiHelper.delete("/rolemembers/" + roleMember.id, "MembershipApi").then(() => props.updatedFunction());
       }
     },
-    [props.role.name, props.updatedFunction]
+    [props.role.name, props.updatedFunction, confirm]
   );
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.roles.edit), []);
@@ -102,12 +104,15 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
   }, [props.role.name, roleMembers.length]);
 
   return (
-    <DisplayBox id="roleMembersBox" headerText={Locale.label("settings.roleMembers.mem")} headerIcon="person" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
-      <Table id="roleMemberTable">
-        <TableHead>{tableHeader}</TableHead>
-        <TableBody>{tableRows}</TableBody>
-      </Table>
-      {lastAdminWarning}
-    </DisplayBox>
+    <>
+      {ConfirmDialogElement}
+      <DisplayBox id="roleMembersBox" headerText={Locale.label("settings.roleMembers.mem")} headerIcon="person" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
+        <Table id="roleMemberTable">
+          <TableHead>{tableHeader}</TableHead>
+          <TableBody>{tableRows}</TableBody>
+        </Table>
+        {lastAdminWarning}
+      </DisplayBox>
+    </>
   );
 });

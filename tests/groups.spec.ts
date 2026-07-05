@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { groupsTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, editIconButton, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -390,12 +390,6 @@ test.describe.serial("Group Management", () => {
     });
 
     test("should delete group", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const firstGroup = page.locator("table tbody tr a").first();
       await firstGroup.click();
       await page.waitForURL(/\/groups\/GRP\d+/, { timeout: 10000 });
@@ -406,6 +400,7 @@ test.describe.serial("Group Management", () => {
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
 
       const deletedGroup = page.locator("table tbody tr a").getByText("Elementary (3-5)");
       const editedDeletedGroup = page.locator("table tbody tr a").getByText("Elementary (2-5)");
@@ -516,12 +511,9 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
     await page.waitForURL(/\/groups\/GRP\w+/, { timeout: 10000 });
     const originalUrl = page.url();
 
-    page.once("dialog", async (d) => {
-      expect(d.message()).toContain("Members will not be copied");
-      await d.accept();
-    });
     const groupPost = page.waitForResponse((r) => r.url().includes("/groups") && r.request().method() === "POST", { timeout: 15000 });
     await page.locator('[data-testid="duplicate-group-button"]').click();
+    await confirmDelete(page);
     await groupPost;
 
     await page.waitForURL((url) => /\/groups\/[\w-]+$/.test(url.pathname) && url.href !== originalUrl, { timeout: 15000 });
@@ -538,11 +530,8 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
     const archiveBtn = page.locator('[data-testid="archive-group-button"]');
     await expect(archiveBtn).toBeVisible({ timeout: 10000 });
 
-    page.once("dialog", async (d) => {
-      expect(d.message()).toContain("archive");
-      await d.accept();
-    });
     await archiveBtn.click();
+    await confirmDelete(page);
     await page.waitForURL(/\/groups$/, { timeout: 15000 });
   });
 
@@ -574,8 +563,8 @@ test.describe.serial("Groups — Duplicate, Archive, Restore", () => {
     await editBtn.click();
     const deleteBtn = page.locator("button").getByText("Delete");
     await expect(deleteBtn).toBeVisible({ timeout: 10000 });
-    page.once("dialog", async (d) => { await d.accept(); });
     await deleteBtn.click();
+    await confirmDelete(page);
     await page.waitForURL(/\/groups$/, { timeout: 15000 });
     await expect(page.locator("table tbody tr a").getByText(DUPLICATE_NAME)).toHaveCount(0, { timeout: 10000 });
   });

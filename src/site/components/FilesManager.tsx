@@ -1,37 +1,37 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FileInterface } from "../../helpers/Interfaces";
 import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography, Stack, LinearProgress } from "@mui/material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { Folder as FolderIcon, InsertDriveFile as FileIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import { CardWithHeader, CountChip, EmptyState, FormCard } from "../../components/ui";
+import { CardWithHeader, CountChip, EmptyState, FormCard, hoverRowSx } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
 import { CustomFileUpload } from "./CustomFileUpload";
 
 
 export function FilesManager() {
   const [pendingFileSave, setPendingFileSave] = useState(false);
-  const [files, setFiles] = useState<FileInterface[]>(null);
+  const filesQuery = useQuery<FileInterface[]>({ queryKey: ["/files", "ContentApi"], placeholderData: [] });
+  const files = filesQuery.data || [];
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   let usedSpace = 0;
   files?.forEach((f) => (usedSpace += f.size));
 
   const handleFileSaved = () => {
     setPendingFileSave(false);
-    loadData();
+    filesQuery.refetch();
   };
 
   const handleSave = () => {
     setPendingFileSave(true);
   };
 
-  const loadData = () => {
-    ApiHelper.get("/files", "ContentApi").then((d: any) => setFiles(d));
-  };
-
   const handleDelete = async (file: FileInterface) => {
-    if (confirm(Locale.label("site.files.confirmDelete") + " '" + file.fileName + "'?")) {
+    if (await confirm(Locale.label("site.files.confirmDelete") + " '" + file.fileName + "'?")) {
       await ApiHelper.delete("/files/" + file.id, "ContentApi");
-      loadData();
+      filesQuery.refetch();
     }
   };
 
@@ -63,13 +63,9 @@ export function FilesManager() {
     );
   };
 
-  useEffect(() => {
-    ApiHelper.get("/files", "ContentApi").then((d: any) => setFiles(d));
-  }, []);
-
   const fileRows = files?.length > 0
     ? files.map((file) => (
-      <TableRow key={file.id} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
+      <TableRow key={file.id} sx={hoverRowSx}>
         <TableCell>
           <Stack direction="row" spacing={1} alignItems="center">
             <FileIcon sx={{ fontSize: 20, color: "primary.main" }} />
@@ -98,6 +94,7 @@ export function FilesManager() {
 
   return (
     <Box sx={{ p: 3 }}>
+      {ConfirmDialogElement}
       <Grid container spacing={3}>
         <Grid size={{ md: 8, xs: 12 }}>
           <CardWithHeader

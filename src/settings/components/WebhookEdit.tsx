@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { TextField, MenuItem, FormControlLabel, Switch, Checkbox, Box, Typography, Stack, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 import type { WebhookInterface, WebhookDeliveryInterface } from "./WebhooksSection";
 
 interface Props {
@@ -33,6 +34,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
   const [deliveries, setDeliveries] = useState<WebhookDeliveryInterface[]>([]);
   const [detail, setDetail] = useState<WebhookDeliveryInterface | null>(null);
   const [testing, setTesting] = useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const loadDeliveries = useCallback(() => {
     if (!webhook.id) return;
@@ -67,7 +69,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
   };
 
   const handleRegenerate = async () => {
-    if (!window.confirm(Locale.label("settings.webhookEdit.regenerateConfirm"))) return;
+    if (!(await confirm(Locale.label("settings.webhookEdit.regenerateConfirm"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
     const res: { secret?: string } = await ApiHelper.post("/webhooks/" + webhook.id + "/regenerate-secret", {}, "MembershipApi");
     if (res?.secret) setSecret(res.secret);
   };
@@ -100,6 +102,7 @@ export const WebhookEdit: React.FC<Props> = ({ webhook, onSave, onCancel, onDele
 
   return (
     <>
+      {ConfirmDialogElement}
       <FormCard icon="webhook" title={webhook.id ? Locale.label("settings.webhookEdit.editWebhook") : Locale.label("settings.webhookEdit.newWebhook")} onSave={handleSave} onCancel={onCancel} onDelete={onDelete}>
         <ErrorMessages errors={errors} />
         <TextField fullWidth label={Locale.label("settings.webhookEdit.name")} placeholder={Locale.label("settings.webhookEdit.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />

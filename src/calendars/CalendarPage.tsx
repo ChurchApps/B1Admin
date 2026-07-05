@@ -15,7 +15,7 @@ import {
 import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon, Add as AddIcon, Print as PrintIcon, UploadFile as ImportIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Loading, PageHeader, Locale, Permissions } from "@churchapps/apphelper";
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
-import { PermissionDenied } from "../components";
+import { useConfirmDelete, useRequirePermission } from "../hooks";
 import { CuratedCalendar } from "./components/CuratedCalendar";
 import { NewEventModal } from "./components/NewEventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
@@ -39,6 +39,8 @@ export const CalendarPage = () => {
   const [refresh, refresher] = useState({});
   const [showNewEvent, setShowNewEvent] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
   const curatedCalendarId = params.id;
 
@@ -60,8 +62,8 @@ export const CalendarPage = () => {
     });
   };
 
-  const handleGroupDelete = (groupId: string) => {
-    if (confirm(Locale.label("calendars.calendarPage.confirmRemoveGroup"))) {
+  const handleGroupDelete = async (groupId: string) => {
+    if (await confirm(Locale.label("calendars.calendarPage.confirmRemoveGroup"))) {
       ApiHelper.delete("/curatedEvents/calendar/" + curatedCalendarId + "/group/" + groupId, "ContentApi").then(() => {
         loadData();
         refresher({});
@@ -76,10 +78,11 @@ export const CalendarPage = () => {
   }, [curatedCalendarId]);
 
   if (!curatedCalendarId) return null;
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  if (denied) return denied;
 
   return (
     <>
+      {ConfirmDialogElement}
       <style>{printStyles}</style>
       <PageHeader
         icon={<CalendarIcon />}

@@ -4,6 +4,7 @@ import { siteTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSite } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 const MEMBERSHIP = "http://localhost:8084/membership";
 const SITE_NAME = "Youth";
@@ -90,10 +91,6 @@ test.describe.serial("Multiple Websites", () => {
   });
 
   test("deletes the Youth site and returns to Main Website", async () => {
-    page.once("dialog", async dialog => {
-      expect(dialog.type()).toBe("confirm");
-      await dialog.accept();
-    });
     await page.locator('[data-testid="site-switcher"]').click();
     await page.locator('[data-testid="manage-sites"]').click();
     // Let the dialog's open transition settle before clicking inside it,
@@ -104,6 +101,7 @@ test.describe.serial("Multiple Websites", () => {
     // Generous timeout: the server's best-effort Caddy sync can add up to ~10s when the admin API is unreachable.
     const siteDelete = page.waitForResponse(r => /\/membership\/sites\/[^/]+$/.test(r.url()) && r.request().method() === "DELETE", { timeout: 30000 });
     await deleteButton.click();
+    await confirmDelete(page);
     expect((await siteDelete).status()).toBe(200);
     await expect(page.locator(`[data-testid="delete-site-${SITE_SUBDOMAIN}"]`)).toHaveCount(0, { timeout: 10000 });
     await page.locator('[data-testid="close-sites-dialog"]').click();

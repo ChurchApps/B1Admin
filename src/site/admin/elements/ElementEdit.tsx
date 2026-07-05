@@ -5,6 +5,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Autocomplete, Box, Butto
 import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { ElementTypes } from "@churchapps/helpers";
 import { FormCard } from "../../../components/ui";
+import { useConfirmDelete } from "../../../hooks";
 import { GalleryModal } from "../../../components/gallery";
 import React from "react";
 
@@ -85,6 +86,7 @@ type Props = {
 };
 
 export function ElementEdit(props: Props) {
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const [blocks, setBlocks] = useState<BlockInterface[]>(null);
   const [groupLabelOptions, setGroupLabelOptions] = useState<string[]>([]);
   const [groupCategoryOptions, setGroupCategoryOptions] = useState<string[]>([]);
@@ -253,8 +255,8 @@ export function ElementEdit(props: Props) {
     </FormControl>
   );
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("site.elements.confirmDelete"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("site.elements.confirmDelete"))) {
       trackSave(ApiHelper.delete("/elements/" + el.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
     }
   };
@@ -1131,9 +1133,9 @@ export function ElementEdit(props: Props) {
     );
   };
 
-  const handleDuplicate = (e: React.MouseEvent) => {
+  const handleDuplicate = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (confirm(Locale.label("site.elements.confirmDuplicate"))) {
+    if (await confirm(Locale.label("site.elements.confirmDuplicate"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
       trackSave(ApiHelper.post("/elements/duplicate/" + props.element.id, {}, "ContentApi")).then((data: any) => {
         props.updatedCallback(data);
       });
@@ -1144,6 +1146,7 @@ export function ElementEdit(props: Props) {
 
   const formContent = (
     <>
+      {ConfirmDialogElement}
       <FormCard
         id="dialogForm"
         title={Locale.label("site.elements.editElement")}

@@ -3,6 +3,7 @@ import { Alert, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useErrorSummary } from "../../hooks";
 import { type DeviceInterface } from "../DevicesPage";
 import { DeviceContent } from "./DeviceContent";
 
@@ -17,8 +18,7 @@ export const DeviceEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { label: "" } });
   const e = formState.errors as any;
-  const summaryErrors: string[] = [];
-  if (e.label?.message) summaryErrors.push(e.label.message);
+  const summaryErrors = useErrorSummary(formState.errors, ["label"]);
 
   useEffect(() => {
     reset({ ...props.device });

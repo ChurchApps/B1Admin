@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type GroupInterface } from "@churchapps/helpers";
 import { type AssociatedGroupInterface, hasPlansEditAccess } from "../../helpers";
 import { CountChip, EmptyState } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   planTypeId: string;
@@ -29,6 +30,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
   const canEdit = hasPlansEdit || isMinistryMember;
   const [showPicker, setShowPicker] = React.useState(false);
   const [pickerValue, setPickerValue] = React.useState<GroupInterface | null>(null);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const associations = useQuery<AssociatedGroupInterface[]>({
     queryKey: [`/associatedGroups/content/${CONTENT_TYPE}/${planTypeId}`, "MembershipApi"],
@@ -70,10 +72,10 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
 
   const handleRemove = React.useCallback(async (assoc: AssociatedGroupInterface) => {
     if (!assoc.id) return;
-    if (!window.confirm(Locale.label("plans.planTypeGroups.removeConfirm"))) return;
+    if (!(await confirm(Locale.label("plans.planTypeGroups.removeConfirm")))) return;
     await ApiHelper.delete("/associatedGroups/" + assoc.id, "MembershipApi");
     associations.refetch();
-  }, [associations]);
+  }, [associations, confirm]);
 
   if (associations.isLoading || groups.isLoading) return <Loading />;
 
@@ -115,6 +117,7 @@ export const PlanTypeGroups = React.memo(({ planTypeId, ministryId }: Props) => 
 
   return (
     <Box>
+      {ConfirmDialogElement}
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <GroupsIcon sx={{ color: "primary.main", fontSize: 20 }} />

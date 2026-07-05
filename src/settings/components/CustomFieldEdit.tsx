@@ -4,6 +4,7 @@ import { type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type PersonFieldInterface, type PersonFieldChoice } from "../../helpers/Interfaces";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 import { ChoicesEdit } from "../../forms/components/ChoicesEdit";
 
 const FIELD_TYPES = ["Textbox", "Whole Number", "Decimal", "Date", "Yes/No", "Multiple Choice"];
@@ -19,6 +20,7 @@ export const CustomFieldEdit: React.FC<Props> = (props) => {
   const [choices, setChoices] = React.useState<PersonFieldChoice[]>([]);
   const [error, setError] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
     setName(props.field?.name || "");
@@ -45,8 +47,8 @@ export const CustomFieldEdit: React.FC<Props> = (props) => {
       .finally(() => { setIsSubmitting(false); });
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("settings.customFieldEdit.confirmDelete"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("settings.customFieldEdit.confirmDelete"))) {
       ApiHelper.delete("/personfields/" + props.field.id, "MembershipApi").then(props.updatedFunction);
     }
   };
@@ -64,6 +66,7 @@ export const CustomFieldEdit: React.FC<Props> = (props) => {
       onDelete={props.field?.id ? handleDelete : undefined}
       isSubmitting={isSubmitting}
       help="docs/b1-admin/settings/">
+      {ConfirmDialogElement}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       <TextField fullWidth label={Locale.label("settings.customFieldEdit.name")} data-testid="custom-field-name-input" value={name} onChange={(e) => setName(e.target.value)} sx={{ mb: 1 }} />
       <TextField fullWidth select label={Locale.label("settings.customFieldEdit.fieldType")} data-testid="custom-field-type-select" value={fieldType} onChange={(e) => setFieldType(e.target.value)} sx={{ mb: 1 }}>

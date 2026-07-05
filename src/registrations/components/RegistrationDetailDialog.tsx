@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Stack, Box, Divider, Table, TableBody, TableRow, TableCell, TableHead, Chip } from "@mui/material";
 import { ApiHelper, Loading, Locale, CurrencyHelper } from "@churchapps/apphelper";
 import { FormSubmission } from "../../components";
+import { formatDateSafe } from "../../helpers/DateFormatHelper";
 import { type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type RegistrationPaymentInterface } from "../registrationCommerce";
 
 interface Props {
@@ -96,7 +97,7 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
                         <TableCell align="right">{money(p.amount)}</TableCell>
                         <TableCell>{[p.method, p.provider].filter(Boolean).join(" / ")}</TableCell>
                         <TableCell>{p.kind}</TableCell>
-                        <TableCell>{p.createdDate ? new Date(p.createdDate).toLocaleDateString() : ""}</TableCell>
+                        <TableCell>{formatDateSafe(p.createdDate)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

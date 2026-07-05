@@ -100,6 +100,17 @@ export async function recoverFromViteError(page: import("@playwright/test").Page
   }
 }
 
+// Styled MUI ConfirmDialog (src/components/ui/ConfirmDialog.tsx) replaced the
+// native window.confirm for deletes/archives. Click its contained confirm
+// button (the only contained button in the dialog). `.last()` targets the
+// topmost dialog so this works even when the edit form is itself in a dialog.
+export async function confirmDelete(page: Page, timeout = 8000) {
+  const dialog = page.locator('div[role="dialog"]').last();
+  const confirmBtn = dialog.locator("button.MuiButton-contained");
+  await confirmBtn.waitFor({ state: "visible", timeout });
+  await confirmBtn.click();
+}
+
 // SendInviteDialog appears whenever a person with an email is added to a
 // group, team, or role. Most demo people have emails, so any add-person flow
 // must dismiss this dialog before the test continues. The dialog is opened by

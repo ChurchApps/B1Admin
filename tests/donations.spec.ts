@@ -4,6 +4,7 @@ import { fillFundForm } from "./helpers/donations";
 import { login } from "./helpers/auth";
 import { navigateToDonations } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 // Test names: ZACCHAEUS/ZEBEDEE used throughout; covers Funds + Batches + Donation entry from donation-report.md/manual-input.md (steps 3-27).
 
@@ -265,12 +266,6 @@ test.describe.serial("Donations Management", () => {
     });
 
     test("should delete batch", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       await openBatchesTab(page);
       const editBtn = page
         .locator("tr")
@@ -281,17 +276,12 @@ test.describe.serial("Donations Management", () => {
       const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      await confirmDelete(page);
 
       await expect(page.locator("a").getByText(TEST_BATCH_RENAMED)).toHaveCount(0, { timeout: 10000 });
     });
 
     test("should delete fund", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       await openFundsTab(page);
       const editBtn = fundRowEditButton(page, TEST_FUND_RENAMED);
       await expect(editBtn).toBeVisible({ timeout: 10000 });
@@ -299,6 +289,7 @@ test.describe.serial("Donations Management", () => {
       const deleteBtn = page.locator('[id="delete"]');
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      await confirmDelete(page);
       await expect(page.locator("a").getByText(TEST_FUND_RENAMED, { exact: true })).toHaveCount(0, { timeout: 10000 });
     });
   });
@@ -433,9 +424,9 @@ test.describe("Fund visibility", () => {
     await expect(row2).toBeVisible({ timeout: 10000 });
     await expect(row2.getByText("Hidden", { exact: true })).toHaveCount(0, { timeout: 10000 });
 
-    page.once("dialog", async (dialog) => { await dialog.accept(); });
     await row2.getByRole("button", { name: /Edit/ }).click();
     await page.locator("#fundsBox").getByRole("button", { name: "Delete" }).click();
+    await confirmDelete(page);
     await expect(page.locator("a").getByText(TEST_HIDDEN_FUND, { exact: true })).toHaveCount(0, { timeout: 10000 });
   });
 });

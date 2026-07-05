@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { settingsTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToRoles, navigateToForms } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -172,16 +172,11 @@ test.describe.serial("Settings Management", () => {
     });
 
     test("should delete role", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const editBtn = page.locator('[data-testid="edit-role-button"]').last();
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator("a").getByText("Zebedee Test Role");
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -240,16 +235,11 @@ test.describe.serial("Settings Management", () => {
     });
 
     test("should delete mobile app tab", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const row = page.getByRole("listitem").filter({ hasText: "Zebedee Settings Tab" }).first();
       await row.locator('button[aria-label="Edit"]').click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator("h6").getByText("Zebedee Settings Tab");
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -392,8 +382,6 @@ test.describe.serial("Settings Management", () => {
     });
 
     test("should delete form questions", async () => {
-      page.once("dialog", dialog => dialog.accept());
-
       const form = page.locator("a").getByText("Zebedee Test Form").first();
       await form.click();
 
@@ -404,6 +392,7 @@ test.describe.serial("Settings Management", () => {
       const deleteBtn = page.locator("button#delete");
       await expect(deleteBtn).toBeVisible({ timeout: 5000 });
       await deleteBtn.click();
+      await confirmDelete(page);
       await expect(question).toHaveCount(0, { timeout: 10000 });
     });
 
@@ -447,9 +436,9 @@ test.describe.serial("Settings Management", () => {
         await editBtn.click();
         const formName = page.locator('[name="name"]');
         await expect(formName).toHaveValue("Zebedee Test Form", { timeout: 10000 });
-        page.once("dialog", d => d.accept());
         // Use button#delete instead of getByText to avoid race with transient buttons.
         await page.locator("button#delete").click();
+        await confirmDelete(page);
         await expect(octavRow).toHaveCount(0, { timeout: 10000 }).catch(() => { });
       }
       const validatedDeletion = page.locator("a").getByText("Zebedee Test Form");

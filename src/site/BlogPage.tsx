@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Box, Button, Card, Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Add as AddIcon, Article as ArticleIcon, Delete as DeleteIcon, Edit as EditIcon, RssFeed as RssFeedIcon } from "@mui/icons-material";
-import { ApiHelper, PageHeader, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, PageHeader, Locale, Permissions } from "@churchapps/apphelper";
 import { BlogPostEdit } from "./components";
-import { PermissionDenied } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { HeaderPrimaryButton } from "../components/ui";
-import { ConfirmDialog } from "./admin/ConfirmDialog";
+import { ConfirmDialog } from "../components/ui/ConfirmDialog";
+import { formatDateSafe } from "../helpers/DateFormatHelper";
+import { useRequirePermission } from "../hooks";
 import type { PostInterface } from "../helpers/Interfaces";
 
 export const BlogPage = () => {
@@ -26,13 +27,8 @@ export const BlogPage = () => {
     ApiHelper.delete("/posts/" + p.id, "ContentApi").then(() => { setDeletePost(null); loadData(); });
   };
 
-  const formatDate = (value: Date | string | null): string => {
-    if (!value) return "";
-    const d = new Date(value);
-    return isNaN(d.getTime()) ? "" : d.toLocaleDateString();
-  };
-
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
+  if (denied) return denied;
 
   return (
     <>
@@ -90,7 +86,7 @@ export const BlogPage = () => {
                       <TableCell>
                         <Chip size="small" label={post.publishDate ? Locale.label("site.blogEdit.published") : Locale.label("site.blogEdit.draft")} color={post.publishDate ? "success" : "default"} sx={{ fontSize: "0.7rem", height: 20 }} />
                       </TableCell>
-                      <TableCell><Typography variant="body2">{formatDate(post.publishDate)}</Typography></TableCell>
+                      <TableCell><Typography variant="body2">{formatDateSafe(post.publishDate)}</Typography></TableCell>
                       <TableCell><Typography variant="body2">{post.category}</Typography></TableCell>
                     </TableRow>
                   ))}

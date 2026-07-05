@@ -5,6 +5,7 @@ import { ChoicesEdit } from ".";
 import { type QuestionInterface } from "@churchapps/helpers";
 import { useMountedState, ApiHelper, UniqueIdHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { PaymentEdit } from "./PaymentEdit";
 
 interface Props {
@@ -24,12 +25,8 @@ export function FormQuestionEdit(props: Props) {
 
   const { errors } = useFormState({ control });
   const e = errors as any;
-  const summaryErrors: string[] = React.useMemo(() => {
-    const errs: string[] = [];
-    if (e.title?.message) errs.push(e.title.message);
-    if (e.fieldType?.message) errs.push(e.fieldType.message);
-    return errs;
-  }, [errors]);
+  const summaryErrors = useErrorSummary(errors, ["title", "fieldType"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const fieldType = watch("fieldType");
   const watchedQuestion = watch() as QuestionInterface;
@@ -62,8 +59,8 @@ export function FormQuestionEdit(props: Props) {
       .finally(() => { setIsSubmitting(false); });
   };
 
-  function handleDelete() {
-    if (window.confirm(Locale.label("forms.formQuestionEdit.confirmMsg"))) {
+  async function handleDelete() {
+    if (await confirm(Locale.label("forms.formQuestionEdit.confirmMsg"))) {
       ApiHelper.delete("/questions/" + watchedQuestion.id + "/?formId=" + props.formId, "MembershipApi").then(props.updatedFunction);
     }
   }
@@ -72,6 +69,7 @@ export function FormQuestionEdit(props: Props) {
 
   return (
     <FormCard id="questionBox" icon="help" title={Locale.label("forms.formQuestionEdit.questionEdit")} onSave={handleSubmit(onValid)} onCancel={props.updatedFunction} isSubmitting={isSubmitting} onDelete={!UniqueIdHelper.isMissing(watchedQuestion.id) ? handleDelete : undefined} help="docs/b1-admin/forms/">
+      {ConfirmDialogElement}
       <ErrorMessages errors={summaryErrors} />
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6 }}>

@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type CampaignProgressInterface, type PledgeInterface, type PledgeProgressRowInterface, type PledgeStatus } from "../helpers";
 import { CampaignEdit, PledgeEdit } from "./components";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, HeaderSecondaryButton, type SortDirection } from "../components/ui";
+import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, HeaderSecondaryButton, hoverRowSx, type SortDirection } from "../components/ui";
 
 const statusColors: Record<PledgeStatus, "default" | "info" | "success" | "warning"> = {
   notStarted: "default",
@@ -109,7 +109,7 @@ export const CampaignPage = () => {
       );
 
       result.push(
-        <TableRow key={i} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
+        <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <PersonIcon sx={{ color: "text.secondary", fontSize: 18 }} />

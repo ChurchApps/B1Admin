@@ -7,6 +7,7 @@ import type { PersonInterface, HouseholdInterface } from "@churchapps/helpers";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
 import { ErrorMessages } from "@churchapps/apphelper";
 import { useMountedState } from "@churchapps/apphelper";
+import { useConfirmDelete } from "../hooks";
 
 interface CommonProps {
   onCreate?: (person: PersonInterface) => void;
@@ -21,6 +22,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
   const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const isMounted = useMountedState();
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const validate = () => {
     const result = [];
@@ -81,13 +83,14 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
           const existingPerson = await checkExistingEmail();
           if (existingPerson) {
             if (
-              window.confirm(
+              await confirm(
                 Locale.t("common.createPerson.confirmDuplicate", {
                   existingName: existingPerson.name.display,
                   existingEmail: existingPerson.contactInfo.email,
                   firstName: person.name.first,
                   lastName: person.name.last
-                })
+                }),
+                { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }
               )
             ) {
               handleSave();
@@ -106,6 +109,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
   if (showInModal) {
     return (
       <>
+        {ConfirmDialogElement}
         <ErrorMessages errors={errors} />
         <Dialog open onClose={props.onClose} fullWidth>
           <DialogTitle>{Locale.label("createPerson.addNewPerson")}</DialogTitle>
@@ -166,6 +170,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
   }
   return (
     <div>
+      {ConfirmDialogElement}
       <p className="pl-1 mb-3 text-dark">
         <b>{Locale.label("createPerson.addNewPerson")}</b>
       </p>

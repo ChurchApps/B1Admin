@@ -1,10 +1,10 @@
-import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Box, Card, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { MonitorHeart as HealthIcon } from "@mui/icons-material";
 import { Loading, Locale, PageHeader } from "@churchapps/apphelper";
-import { SortableTableHead, type SortDirection } from "../components/ui";
+import { SortableTableHead } from "../components/ui";
+import { useSortableData } from "../hooks";
 
 interface GroupHealthRow {
   groupId: string;
@@ -26,31 +26,15 @@ interface AttendanceSummaryRow {
 }
 
 const GroupsHealthPage = () => {
-  const [sortBy, setSortBy] = useState("name");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
-
   const health = useQuery<GroupHealthRow[]>({ queryKey: ["/groups/health/summary", "MembershipApi"], placeholderData: [] });
   const attendance = useQuery<AttendanceSummaryRow[]>({ queryKey: ["/attendancerecords/groupsummary", "AttendanceApi"], placeholderData: [] });
 
-  const handleSort = (key: string) => {
-    if (sortBy === key) setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    else {
-      setSortBy(key);
-      setSortDirection("asc");
-    }
-  };
-
-  const rows = (health.data || []).map((g) => {
+  const mergedRows = (health.data || []).map((g) => {
     const att = (attendance.data || []).find((a) => a.groupId === g.groupId);
     return { ...g, averageAttendance: att?.averageAttendance ?? null, sessionCount: att?.sessionCount ?? 0 };
   });
 
-  rows.sort((a: any, b: any) => {
-    const av = a[sortBy] ?? "";
-    const bv = b[sortBy] ?? "";
-    const result = typeof av === "number" && typeof bv === "number" ? av - bv : String(av).localeCompare(String(bv));
-    return sortDirection === "asc" ? result : -result;
-  });
+  const { sorted: rows, sortBy, sortDirection, handleSort } = useSortableData(mergedRows, "name");
 
   const columns = [
     { key: "name", label: Locale.label("common.name"), sortable: true },

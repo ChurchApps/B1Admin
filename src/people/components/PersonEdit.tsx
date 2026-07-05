@@ -8,6 +8,7 @@ import { QuestionEdit } from "@churchapps/apphelper/forms";
 import { type QuestionInterface, type AnswerInterface } from "@churchapps/helpers";
 import { GdprActions } from "./GdprActions";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 import { Navigate } from "react-router-dom";
 import UserContext from "../../UserContext";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Box, FormControlLabel, Checkbox } from "@mui/material";
@@ -80,6 +81,7 @@ export const PersonEdit = memo((props: Props) => {
   const [customValues, setCustomValues] = useState<Record<string, string>>({});
 
   const { control, register, handleSubmit, reset, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person) });
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const { errors } = useFormState({ control });
 
@@ -168,16 +170,16 @@ export const PersonEdit = memo((props: Props) => {
     await updatePerson(p);
   }, [props.person, members, context, updatePerson, buildPerson]);
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = useCallback(async () => {
     if (!props.person?.id) return;
     if (B1AdminPersonHelper.getExpandedPersonObject(props.person).id === context.person?.id) {
       alert(Locale.label("people.personEdit.cannotDeleteSelf"));
       return;
     }
-    if (window.confirm(Locale.label("people.personEdit.confirmMsg"))) {
+    if (await confirm(Locale.label("people.personEdit.confirmMsg"))) {
       ApiHelper.delete("/people/" + props.person.id.toString(), "MembershipApi").then(() => setRedirect("/people"));
     }
-  }, [props.person?.id, context.person?.id]);
+  }, [props.person?.id, context.person?.id, confirm]);
 
   const handleYes = useCallback(async () => {
     setShowUpdateAddressModal(false);
@@ -199,6 +201,7 @@ export const PersonEdit = memo((props: Props) => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <UpdateHouseHold show={showUpdateAddressModal} text={modalText} onHide={() => setShowUpdateAddressModal(false)} handleNo={handleNo} handleYes={handleYes} />
       <FormCard id={props.id} icon="person" title={Locale.label("people.personEdit.persDet")} onCancel={props.updatedFunction} onDelete={handleDelete} onSave={handleSubmit(onValid)} isSubmitting={isSubmitting}
         headerActions={

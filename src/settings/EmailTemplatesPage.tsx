@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, Stack, Button, Typography, Chip } from "@mui/material";
 import { Email as EmailIcon, Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import { ApiHelper, Loading, PageHeader, UserHelper, Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { EmailTemplateEdit } from "./components/EmailTemplateEdit";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { EmptyState, HeaderPrimaryButton } from "../components/ui";
+import { useConfirmDelete } from "../hooks";
+import { formatDateSafe } from "../helpers/DateFormatHelper";
 
 export interface EmailTemplateInterface {
   id?: string;
@@ -18,23 +21,15 @@ export interface EmailTemplateInterface {
 }
 
 export const EmailTemplatesPage: React.FC = () => {
-  const [templates, setTemplates] = useState<EmailTemplateInterface[]>([]);
   const [editTemplate, setEditTemplate] = useState<EmailTemplateInterface | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const loadData = useCallback(() => {
-    setLoading(true);
-    ApiHelper.get("/emailTemplates", "MessagingApi")
-      .then((data: EmailTemplateInterface[]) => setTemplates(data || []))
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => { loadData(); }, [loadData]);
+  const templatesQuery = useQuery<EmailTemplateInterface[]>({ queryKey: ["/emailTemplates", "MessagingApi"], placeholderData: [] });
+  const templates = templatesQuery.data || [];
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleDelete = async (template: EmailTemplateInterface) => {
-    if (!window.confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name))) return;
+    if (!(await confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name)))) return;
     await ApiHelper.delete("/emailTemplates/" + UserHelper.currentUserChurch.church.id + "/" + template.id, "MessagingApi");
-    loadData();
+    templatesQuery.refetch();
   };
 
   const handleEdit = (template: EmailTemplateInterface) => {
@@ -50,19 +45,14 @@ export const EmailTemplatesPage: React.FC = () => {
 
   const handleSaved = () => {
     setEditTemplate(null);
-    loadData();
+    templatesQuery.refetch();
   };
 
-  const formatDate = (date: Date | string | undefined) => {
-    if (!date) return "";
-    const d = new Date(date);
-    return d.toLocaleDateString();
-  };
-
-  if (loading) return <Loading />;
+  if (templatesQuery.isLoading) return <Loading />;
 
   return (
     <>
+      {ConfirmDialogElement}
       <PageHeader icon={<EmailIcon />} title={Locale.label("settings.emailTemplatesPage.title")} subtitle={Locale.label("settings.emailTemplatesPage.subtitle")}>
         <HeaderPrimaryButton startIcon={<AddIcon />} onClick={handleNew}>
           {Locale.label("settings.emailTemplatesPage.newTemplate")}
@@ -99,7 +89,7 @@ export const EmailTemplatesPage: React.FC = () => {
                   <TableCell><Typography fontWeight={600}>{t.name}</Typography></TableCell>
                   <TableCell>{t.subject}</TableCell>
                   <TableCell>{t.category && <Chip label={t.category} size="small" />}</TableCell>
-                  <TableCell>{formatDate(t.dateModified)}</TableCell>
+                  <TableCell>{formatDateSafe(t.dateModified)}</TableCell>
                   <TableCell align="right" className="rowActions">
                     <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                       <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => handleEdit(t)} />

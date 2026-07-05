@@ -17,3 +17,5 @@ export type { SortableColumn, SortDirection } from "./SortableTableHead";
 export { CountChip } from "./CountChip";
 export { ExportButton } from "./ExportButton";
 export { HeaderPrimaryButton, HeaderSecondaryButton } from "./headerButtons";
+export { ConfirmDialog } from "./ConfirmDialog";
+export { hoverRowSx, clickableRowSx } from "./tableStyles";

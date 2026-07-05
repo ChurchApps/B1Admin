@@ -2,7 +2,7 @@ import type { Page, Locator } from "@playwright/test";
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers/auth";
 import { navigateToSettings, navigateToPeople, navigateToGroups } from "./helpers/navigation";
-import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE } from "./helpers/fixtures";
+import { openKnownPerson, editIconButton, personDetailsEditButton, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 const MAIN = "Main Campus";
@@ -202,8 +202,10 @@ test.describe.serial("Campus multi-site", () => {
       if (!(await row.isVisible({ timeout: 5000 }).catch(() => false))) continue;
       await row.click();
       await expect(page.locator("#campusBox")).toBeVisible({ timeout: 10000 });
-      page.once("dialog", (d) => d.accept());
-      await expectResponse("/campuses", () => page.locator("#campusBox").getByRole("button", { name: "Delete" }).click(), "DELETE");
+      await expectResponse("/campuses", async () => {
+        await page.locator("#campusBox").getByRole("button", { name: "Delete" }).click();
+        await confirmDelete(page);
+      }, "DELETE");
       await expect(page.locator("table tbody tr").filter({ hasText: name })).toHaveCount(0, { timeout: 10000 });
     }
   });

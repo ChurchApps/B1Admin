@@ -1,5 +1,5 @@
-import React from "react";
-import { ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
+import { DisplayBox, Locale } from "@churchapps/apphelper";
 import { Box, Chip, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { CheckCircle as YesIcon, Cancel as NoIcon } from "@mui/icons-material";
 
@@ -21,17 +21,7 @@ interface ServerHealthResponse {
 }
 
 export const ServerHealthTab = () => {
-  const [data, setData] = React.useState<ServerHealthResponse | null>(null);
-  const [loading, setLoading] = React.useState<boolean>(true);
-
-  const loadData = React.useCallback(() => {
-    setLoading(true);
-    ApiHelper.get("/serverHealth", "MembershipApi")
-      .then((d: any) => setData(d))
-      .finally(() => setLoading(false));
-  }, []);
-
-  React.useEffect(loadData, [loadData]);
+  const { data, isLoading: loading } = useQuery<ServerHealthResponse>({ queryKey: ["/serverHealth", "MembershipApi"] });
 
   const renderStatus = (configured: boolean) => (
     <Chip

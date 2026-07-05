@@ -4,7 +4,7 @@ import { Locale, Loading } from "@churchapps/apphelper";
 import { Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { Business as BusinessIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { SectionListCard } from "../../components/ui";
+import { SectionListCard, clickableRowSx } from "../../components/ui";
 import { CampusEdit } from "./CampusEdit";
 
 // Campus management (list + inline editor). Shared by the Settings landing's
@@ -31,7 +31,7 @@ export const CampusesSection: React.FC = () => {
     return (
       <TableRow
         key={c.id}
-        sx={{ cursor: "pointer", "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}
+        sx={clickableRowSx}
         hover
         onClick={() => setEditCampus(c)}
         data-testid={`campus-row-${c.id}`}>

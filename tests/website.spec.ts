@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { siteTest as test, expect } from "./helpers/test-fixtures";
-import { trashIconButton } from "./helpers/fixtures";
+import { trashIconButton, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSite, navigateToCalendars } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -263,14 +263,11 @@ test.describe("Website Management", () => {
       await expect(page.locator("p").getByText("Draft Only Text")).toBeVisible({ timeout: 10000 });
       await expect(page.locator('[data-testid="publish-status-pill"]')).toHaveAttribute("data-status", "unpublished-changes");
 
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        await dialog.accept();
-      });
       await page.locator('[data-testid="content-editor-overflow-button"]').click();
       const discardItem = page.locator('[data-testid="discard-changes-menu-item"]');
       await expect(discardItem).toBeVisible({ timeout: 10000 });
       const discardPost = page.waitForResponse(r => /\/content\/pages\/[^/]+\/discard/.test(r.url()) && r.request().method() === "POST", { timeout: 15000 });
+      page.once("dialog", async dialog => { await dialog.accept(); });
       await discardItem.click();
       expect((await discardPost).status()).toBe(200);
       await expect(page.locator("p").getByText("Draft Only Text")).toHaveCount(0, { timeout: 10000 });
@@ -278,14 +275,11 @@ test.describe("Website Management", () => {
       await expect(page.locator('[data-testid="publish-status-pill"]')).toHaveAttribute("data-status", "published");
 
       // Turn publishing back off so later tests see live-on-save behavior.
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        await dialog.accept();
-      });
       await page.locator('[data-testid="content-editor-overflow-button"]').click();
       const disableItem = page.locator('[data-testid="disable-publish-menu-item"]');
       await expect(disableItem).toBeVisible({ timeout: 10000 });
       const unpublishDelete = page.waitForResponse(r => /\/content\/pages\/[^/]+\/published/.test(r.url()) && r.request().method() === "DELETE", { timeout: 15000 });
+      page.once("dialog", async dialog => { await dialog.accept(); });
       await disableItem.click();
       expect((await unpublishDelete).status()).toBe(200);
       await expect(page.locator('[data-testid="publish-status-pill"]')).toHaveAttribute("data-status", "live-on-save");
@@ -440,17 +434,13 @@ test.describe("Website Management", () => {
     });
 
     test("should cancel deleting page", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        await dialog.dismiss();
-      });
-
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
       const settingsBtn = page.locator("button").getByText("Page Settings");
       await settingsBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await page.locator('div[role="dialog"]').last().getByRole("button", { name: "Cancel" }).click();
       // After dismiss, we should still be on the page editor with the renamed page intact.
       await expect(page).toHaveURL(/\/site\/pages\/preview\/[^/]+/);
       const stillExists = page.locator("h6").getByText("Zebedee Test Page");
@@ -458,18 +448,13 @@ test.describe("Website Management", () => {
     });
 
     test("should delete page", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const editBtn = page.locator('[data-testid="edit-page-button"]').last();
       await editBtn.click();
       const settingsBtn = page.locator("button").getByText("Page Settings");
       await settingsBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
 
       const validatedDeletion = page.locator("td").getByText("Zebedee Test Page");
       await expect(validatedDeletion).toHaveCount(0);
@@ -845,15 +830,10 @@ test.describe("Website Management", () => {
     });
 
     test("should remove file", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const targetRow = page.locator("tr", { has: page.locator("td").getByText("logo.png", { exact: true }) }).first();
       const deleteBtn = targetRow.locator("button[aria-label]").last();
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator("td").getByText("logo.png", { exact: true });
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -925,16 +905,11 @@ test.describe("Website Management", () => {
     });
 
     test("should remove group events from calendar", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const editBtn = page.locator('[aria-label="Manage Events"]').last();
       await editBtn.click();
       const removeBtn = trashIconButton(page).first();
       await removeBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator("td").getByText("Adult Bible Class");
       await expect(validatedDeletion).toHaveCount(0);
     });
@@ -961,16 +936,11 @@ test.describe("Website Management", () => {
     });
 
     test("should delete calendar", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const editBtn = page.locator('[aria-label="Edit"]').last();
       await editBtn.click();
       const deleteBtn = page.locator('[data-testid="delete-calendar-button"]');
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator("h6").getByText("Zebedee Test Calendar");
       await expect(validatedDeletion).toHaveCount(0);
     });

@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { type CampaignInterface, type CampaignProgressInterface } from "../helpers";
 import { CampaignEdit } from "./components";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
+import { CardWithHeader, EmptyState, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx, type SortDirection } from "../components/ui";
 
 export const CampaignsPage = () => {
   const [editCampaignId, setEditCampaignId] = React.useState("notset");
@@ -81,7 +81,7 @@ export const CampaignsPage = () => {
       const dates = formatDate(c.startDate) + " - " + (c.endDate ? formatDate(c.endDate) : Locale.label("donations.campaignsPage.ongoing"));
 
       result.push(
-        <TableRow key={c.id || i} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
+        <TableRow key={c.id || i} sx={hoverRowSx}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <CampaignIcon sx={{ color: "primary.main", fontSize: 20 }} />

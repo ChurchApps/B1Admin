@@ -3,6 +3,7 @@ import { useForm, Controller, useFormState } from "react-hook-form";
 import { CategorySelect, ServiceTimesEdit } from ".";
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { GalleryModal } from "../../components/gallery";
 import { Navigate } from "react-router-dom";
 import { Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Stack, TextField, Box, Typography } from "@mui/material";
@@ -73,13 +74,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
 
   const { errors } = useFormState({ control });
   const e = errors as any;
-
-  const summaryErrors: string[] = React.useMemo(() => {
-    const errs: string[] = [];
-    if (e.categoryName?.message) errs.push(e.categoryName.message);
-    if (e.name?.message) errs.push(e.name.message);
-    return errs;
-  }, [errors]);
+  const summaryErrors = useErrorSummary(errors, ["categoryName", "name"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
     if (isMounted() && props.group) {
@@ -154,14 +150,14 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
     });
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("groups.groupDetailsEdit.confirmMsg"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("groups.groupDetailsEdit.confirmMsg"))) {
       ApiHelper.delete("/groups/" + props.group.id.toString(), "MembershipApi").then(() => setRedirect("/groups"));
     }
   };
 
-  const handleArchive = () => {
-    if (window.confirm(Locale.label("groups.groupDetailsEdit.confirmArchive"))) {
+  const handleArchive = async () => {
+    if (await confirm(Locale.label("groups.groupDetailsEdit.confirmArchive"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
       const group: GroupInterface = { ...props.group, archived: true };
       ApiHelper.post("/groups", [group], "MembershipApi").then(() => setRedirect("/groups"));
     }
@@ -248,6 +244,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
 
   return (
     <>
+      {ConfirmDialogElement}
       {galleryModal}
       <FormCard id="groupDetailsBox" title={Locale.label("groups.groupDetailsEdit.groupDet")} icon="group" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} help="docs/b1-admin/groups/"
         headerActions={

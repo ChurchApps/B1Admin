@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { TextField, MenuItem } from "@mui/material";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 import { type CalendarBlockoutInterface, type ResourceInterface, type RoomInterface } from "../interfaces";
 
 type Props = {
@@ -21,6 +22,7 @@ const toInputValue = (d: Date | string | undefined) => {
 export function BlockoutEdit(props: Props) {
   const [blockout, setBlockout] = useState<CalendarBlockoutInterface>(props.blockout);
   const [saving, setSaving] = useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   useEffect(() => setBlockout(props.blockout), [props.blockout]);
 
@@ -41,8 +43,8 @@ export function BlockoutEdit(props: Props) {
     }).catch(() => setSaving(false));
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("calendars.rooms.confirmDeleteBlockout"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("calendars.rooms.confirmDeleteBlockout"))) {
       ApiHelper.delete("/calendarBlockouts/" + blockout.id, "ContentApi").then(() => props.updatedCallback());
     }
   };
@@ -51,53 +53,56 @@ export function BlockoutEdit(props: Props) {
   const valid = blockout.startTime && blockout.endTime && new Date(blockout.endTime) > new Date(blockout.startTime);
 
   return (
-    <FormCard
-      title={isNew ? Locale.label("calendars.rooms.addBlockout") : Locale.label("calendars.rooms.editBlockout")}
-      icon="event_busy"
-      onSave={handleSave}
-      onCancel={props.updatedCallback}
-      onDelete={isNew ? undefined : handleDelete}
-      isSubmitting={saving}
-      disabled={saving || !valid}
-      saveTestId="save-blockout-button"
-      deleteTestId="delete-blockout-button">
-      <TextField
-        fullWidth
-        select
-        label={Locale.label("calendars.rooms.blockoutTarget")}
-        value={target}
-        onChange={(e) => handleTargetChange(e.target.value)}
-        data-testid="blockout-target-select"
-      >
-        <MenuItem value="">{Locale.label("calendars.rooms.allRoomsResources")}</MenuItem>
-        {props.rooms.map((r) => <MenuItem key={r.id} value={"room:" + r.id}>{r.name}</MenuItem>)}
-        {props.resources.map((r) => <MenuItem key={r.id} value={"resource:" + r.id}>{r.name}</MenuItem>)}
-      </TextField>
-      <TextField
-        fullWidth
-        type="datetime-local"
-        label={Locale.label("calendars.rooms.startTime")}
-        value={toInputValue(blockout.startTime)}
-        onChange={(e) => setBlockout({ ...blockout, startTime: e.target.value ? new Date(e.target.value) : undefined })}
-        InputLabelProps={{ shrink: true }}
-        data-testid="blockout-start-input"
-      />
-      <TextField
-        fullWidth
-        type="datetime-local"
-        label={Locale.label("calendars.rooms.endTime")}
-        value={toInputValue(blockout.endTime)}
-        onChange={(e) => setBlockout({ ...blockout, endTime: e.target.value ? new Date(e.target.value) : undefined })}
-        InputLabelProps={{ shrink: true }}
-        data-testid="blockout-end-input"
-      />
-      <TextField
-        fullWidth
-        label={Locale.label("calendars.rooms.reason")}
-        value={blockout.reason || ""}
-        onChange={(e) => setBlockout({ ...blockout, reason: e.target.value })}
-        data-testid="blockout-reason-input"
-      />
-    </FormCard>
+    <>
+      {ConfirmDialogElement}
+      <FormCard
+        title={isNew ? Locale.label("calendars.rooms.addBlockout") : Locale.label("calendars.rooms.editBlockout")}
+        icon="event_busy"
+        onSave={handleSave}
+        onCancel={props.updatedCallback}
+        onDelete={isNew ? undefined : handleDelete}
+        isSubmitting={saving}
+        disabled={saving || !valid}
+        saveTestId="save-blockout-button"
+        deleteTestId="delete-blockout-button">
+        <TextField
+          fullWidth
+          select
+          label={Locale.label("calendars.rooms.blockoutTarget")}
+          value={target}
+          onChange={(e) => handleTargetChange(e.target.value)}
+          data-testid="blockout-target-select"
+        >
+          <MenuItem value="">{Locale.label("calendars.rooms.allRoomsResources")}</MenuItem>
+          {props.rooms.map((r) => <MenuItem key={r.id} value={"room:" + r.id}>{r.name}</MenuItem>)}
+          {props.resources.map((r) => <MenuItem key={r.id} value={"resource:" + r.id}>{r.name}</MenuItem>)}
+        </TextField>
+        <TextField
+          fullWidth
+          type="datetime-local"
+          label={Locale.label("calendars.rooms.startTime")}
+          value={toInputValue(blockout.startTime)}
+          onChange={(e) => setBlockout({ ...blockout, startTime: e.target.value ? new Date(e.target.value) : undefined })}
+          InputLabelProps={{ shrink: true }}
+          data-testid="blockout-start-input"
+        />
+        <TextField
+          fullWidth
+          type="datetime-local"
+          label={Locale.label("calendars.rooms.endTime")}
+          value={toInputValue(blockout.endTime)}
+          onChange={(e) => setBlockout({ ...blockout, endTime: e.target.value ? new Date(e.target.value) : undefined })}
+          InputLabelProps={{ shrink: true }}
+          data-testid="blockout-end-input"
+        />
+        <TextField
+          fullWidth
+          label={Locale.label("calendars.rooms.reason")}
+          value={blockout.reason || ""}
+          onChange={(e) => setBlockout({ ...blockout, reason: e.target.value })}
+          data-testid="blockout-reason-input"
+        />
+      </FormCard>
+    </>
   );
 }

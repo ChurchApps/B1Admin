@@ -4,6 +4,7 @@ import { request } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 // Phase 2 "Paid registrations" — B1Admin staff surface.
 //   - RegistrationSettingsEdit now hosts Attendee Types / Selections / Discount Codes accordions
@@ -149,8 +150,8 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
       if (await editBtn.count().then((c) => c > 0).catch(() => false)) {
         await editBtn.click();
         await page.locator('[data-testid="calendar-name-input"] input').waitFor({ state: "visible", timeout: 10000 });
-        page.once("dialog", async (d) => { await d.accept(); });
         await page.locator('[data-testid="delete-calendar-button"]').click();
+        await confirmDelete(page);
       }
     } catch { /* ignore */ }
     await page?.context().close();
@@ -242,7 +243,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     await expect(counts).toContainText("General: 1");
     await expect(counts).toContainText("Camper: 1");
 
-    await expect(rosterCard.getByText("$0.00 / $45.00")).toBeVisible();
+    await expect(rosterCard.getByText("$ 0.00 / $ 45.00")).toBeVisible();
 
     // Waitlisted row exposes the Promote action.
     const waitRow = page.locator('[data-testid="registration-row"]').filter({ hasText: "Zacchaeus Waitlisted" });
@@ -256,7 +257,7 @@ test.describe.serial("Registrations Commerce — settings panels, paid roster, w
     await expect(dialog).toBeVisible({ timeout: 10000 });
     await expect(dialog.getByText("Zacchaeus Waitlisted")).toBeVisible();
     await expect(dialog.getByText("Camper")).toBeVisible();
-    await expect(dialog.getByText("$0.00 / $45.00")).toBeVisible();
+    await expect(dialog.getByText("$ 0.00 / $ 45.00")).toBeVisible();
     await dialog.getByRole("button", { name: "Close" }).click();
     await expect(dialog).toHaveCount(0, { timeout: 5000 });
   });

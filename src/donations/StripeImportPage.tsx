@@ -3,7 +3,7 @@ import { ApiHelper, DateHelper, UserHelper, CurrencyHelper, Loading, PageHeader,
 import { Permissions } from "@churchapps/apphelper";
 import { Box, Typography, Card, Stack, Button, TextField, Table, TableBody, TableCell, TableRow, TableHead, Chip, Alert } from "@mui/material";
 import { CloudDownload as ImportIcon, Search as PreviewIcon, CheckCircle, Error as ErrorIcon, Info, SkipNext } from "@mui/icons-material";
-import { CardWithHeader } from "../components/ui";
+import { CardWithHeader, hoverRowSx } from "../components/ui";
 
 interface StripeEventResult {
   eventId: string;
@@ -112,7 +112,7 @@ export const StripeImportPage = () => {
     }
 
     return importData.results.map((event) => (
-      <TableRow key={event.eventId} sx={{ "&:hover": { backgroundColor: "action.hover" } }}>
+      <TableRow key={event.eventId} sx={hoverRowSx}>
         <TableCell>
           <Typography variant="body2" sx={{ fontFamily: "monospace", fontSize: "0.75rem" }}>
             {event.eventId}

@@ -4,6 +4,7 @@ import { Permissions, type CuratedCalendarInterface } from "@churchapps/helpers"
 import { Box, TextField, Typography } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 
 type Props = {
   calendar: CuratedCalendarInterface;
@@ -15,6 +16,7 @@ export function CalendarEdit(props: Props) {
   const [errors, setErrors] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = () => props.updatedCallback(calendar);
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
@@ -25,12 +27,8 @@ export function CalendarEdit(props: Props) {
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     e.preventDefault();
-    const b = { ...calendar };
-    const val = e.target.value;
-    switch (e.target.name) {
-      case "name": b.name = val; break;
-    }
-    setCalendar(b);
+    const { name, value } = e.target;
+    setCalendar({ ...calendar, [name]: value });
   };
 
   const validate = () => {
@@ -54,7 +52,7 @@ export function CalendarEdit(props: Props) {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const errors = [];
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("calendars.calendarEdit.unauthorizedDelete"));
 
@@ -63,7 +61,7 @@ export function CalendarEdit(props: Props) {
       return;
     }
 
-    if (window.confirm(Locale.label("calendars.calendarEdit.confirmDelete"))) {
+    if (await confirm(Locale.label("calendars.calendarEdit.confirmDelete"))) {
       setDeleting(true);
       ApiHelper.delete("/curatedCalendars/" + calendar?.id?.toString(), "ContentApi").then(() => {
         setDeleting(false);
@@ -83,42 +81,45 @@ export function CalendarEdit(props: Props) {
   const isNew = !calendar.id;
 
   return (
-    <FormCard
-      title={isNew ? Locale.label("calendars.calendarEdit.createCalendar") : Locale.label("calendars.calendarEdit.editCalendar")}
-      icon="calendar_month"
-      onSave={handleSave}
-      onCancel={handleCancel}
-      onDelete={isNew ? undefined : handleDelete}
-      isSubmitting={saving}
-      disabled={saving || deleting || !calendar.name?.trim()}
-      saveText={isNew ? Locale.label("calendars.calendarEdit.create") : Locale.label("calendars.calendarEdit.save")}
-      cancelText={Locale.label("calendars.calendarEdit.cancel")}
-      deleteText={Locale.label("calendars.calendarEdit.delete")}
-      saveTestId="save-calendar-button"
-      deleteTestId="delete-calendar-button">
-      {errors.length > 0 && <ErrorMessages errors={errors} data-testid="calendar-errors" />}
+    <>
+      {ConfirmDialogElement}
+      <FormCard
+        title={isNew ? Locale.label("calendars.calendarEdit.createCalendar") : Locale.label("calendars.calendarEdit.editCalendar")}
+        icon="calendar_month"
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onDelete={isNew ? undefined : handleDelete}
+        isSubmitting={saving}
+        disabled={saving || deleting || !calendar.name?.trim()}
+        saveText={isNew ? Locale.label("calendars.calendarEdit.create") : Locale.label("calendars.calendarEdit.save")}
+        cancelText={Locale.label("calendars.calendarEdit.cancel")}
+        deleteText={Locale.label("calendars.calendarEdit.delete")}
+        saveTestId="save-calendar-button"
+        deleteTestId="delete-calendar-button">
+        {errors.length > 0 && <ErrorMessages errors={errors} data-testid="calendar-errors" />}
 
-      <TextField
-        fullWidth
-        label={Locale.label("calendars.calendarEdit.calendarName")}
-        name="name"
-        value={calendar.name || ""}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        data-testid="calendar-name-input"
-        aria-label={Locale.label("calendars.calendarEdit.calendarNameAria")}
-        placeholder={Locale.label("calendars.calendarEdit.namePlaceholder")}
-        variant="outlined"
-      />
+        <TextField
+          fullWidth
+          label={Locale.label("calendars.calendarEdit.calendarName")}
+          name="name"
+          value={calendar.name || ""}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          data-testid="calendar-name-input"
+          aria-label={Locale.label("calendars.calendarEdit.calendarNameAria")}
+          placeholder={Locale.label("calendars.calendarEdit.namePlaceholder")}
+          variant="outlined"
+        />
 
-      <Box>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          {Locale.label("calendars.calendarEdit.calendarDetails")}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {Locale.label("calendars.calendarEdit.calendarDetailsDesc")}
-        </Typography>
-      </Box>
-    </FormCard>
+        <Box>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            {Locale.label("calendars.calendarEdit.calendarDetails")}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {Locale.label("calendars.calendarEdit.calendarDetailsDesc")}
+          </Typography>
+        </Box>
+      </FormCard>
+    </>
   );
 }

@@ -20,7 +20,7 @@ import { EditorToolbar } from "./EditorToolbar";
 import { HelpDialog } from "./HelpDialog";
 import { ZoneBox } from "./ZoneBox";
 import { EmptyState } from "./EmptyState";
-import { ConfirmDialog } from "./ConfirmDialog";
+import { ConfirmDialog } from "../../components/ui/ConfirmDialog";
 import { PropertyPanel } from "./PropertyPanel";
 import { AddContentPanel } from "./AddContentPanel";
 import { getElementTypeMeta } from "./elements/elementTypeMeta";

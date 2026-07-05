@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { ApiHelper, UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { Permissions, type CuratedCalendarInterface } from "@churchapps/helpers";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -26,34 +27,22 @@ import {
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { CalendarEdit } from "./components";
-import { PermissionDenied } from "../components";
+import { useRequirePermission } from "../hooks";
 import { EmptyState } from "../components/ui/EmptyState";
+import { hoverRowSx } from "../components/ui/tableStyles";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { HeaderPrimaryButton } from "../components/ui/headerButtons";
 
 export const CalendarsPage = () => {
-  const [calendars, setCalendars] = useState<CuratedCalendarInterface[]>([]);
+  const calendarsQuery = useQuery<CuratedCalendarInterface[]>({ queryKey: ["/curatedCalendars", "ContentApi"], placeholderData: [] });
   const [currentCalendar, setCurrentCalendar] = useState<CuratedCalendarInterface | null>(null);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
-  const loadData = () => {
-    setLoading(true);
-    ApiHelper.get("/curatedCalendars", "ContentApi").then((data: any) => {
-      setCalendars(data);
-      setLoading(false);
-    }).catch(() => {
-      setLoading(false);
-    });
-  };
-
-  const getRows = () => calendars.map((calendar) => (
+  const getRows = () => calendarsQuery.data.map((calendar) => (
     <TableRow
       key={calendar.id}
-      sx={{
-        "&:hover": { backgroundColor: "action.hover" },
-        transition: "background-color 0.2s ease"
-      }}
+      sx={hoverRowSx}
     >
       <TableCell>
         <Stack direction="row" spacing={2} alignItems="center">
@@ -117,11 +106,7 @@ export const CalendarsPage = () => {
     </TableRow>
   ));
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  if (denied) return denied;
 
   return (
     <>
@@ -129,8 +114,8 @@ export const CalendarsPage = () => {
         icon={<CalendarIcon />}
         title={Locale.label("calendars.calendarList.title")}
         subtitle={
-          calendars.length > 0
-            ? Locale.label("calendars.calendarList.subtitleWithCount", `${calendars.length} ${calendars.length === 1 ? Locale.label("calendars.calendarList.calendar") : Locale.label("calendars.calendarList.calendars")}`)
+          calendarsQuery.data.length > 0
+            ? Locale.label("calendars.calendarList.subtitleWithCount", `${calendarsQuery.data.length} ${calendarsQuery.data.length === 1 ? Locale.label("calendars.calendarList.calendar") : Locale.label("calendars.calendarList.calendars")}`)
             : Locale.label("calendars.calendarList.subtitleEmpty")
         }
       >
@@ -152,15 +137,15 @@ export const CalendarsPage = () => {
               calendar={currentCalendar}
               updatedCallback={() => {
                 setCurrentCalendar(null);
-                loadData();
+                calendarsQuery.refetch();
               }}
             />
           </Box>
         )}
 
-        {loading ? (
+        {calendarsQuery.isLoading ? (
           <Loading data-testid="calendars-loading" />
-        ) : calendars.length === 0 ? (
+        ) : calendarsQuery.data.length === 0 ? (
           <EmptyState
             icon={<CalendarIcon />}
             title={Locale.label("calendars.calendarList.noCalendars")}
@@ -197,7 +182,7 @@ export const CalendarsPage = () => {
           </TableContainer>
         )}
 
-        {calendars.length > 0 && !currentCalendar && (
+        {calendarsQuery.data.length > 0 && !currentCalendar && (
           <Card sx={{ mt: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
             <CardContent>
               <Stack direction="row" spacing={2} alignItems="flex-start">

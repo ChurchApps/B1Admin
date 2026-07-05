@@ -3,6 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToRoomsResources, navigateToApprovals, navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 // Rooms & resources admin (roadmap 2.7/2.8): CRUD, double-booking warnings, approval routing, .ics import.
 const HALL = "Zacchaeus Hall";
@@ -70,8 +71,8 @@ async function deleteViaEdit(page: Page, editButton: import("@playwright/test").
   await editButton.click();
   const deleteBtn = page.locator(`[data-testid="${deleteTestId}"]`);
   await deleteBtn.waitFor({ state: "visible", timeout: 10000 });
-  page.once("dialog", async (d) => { await d.accept(); });
   await deleteBtn.click();
+  await confirmDelete(page);
 }
 
 test.describe.serial("Rooms, resources & approvals", () => {
@@ -247,8 +248,8 @@ test.describe.serial("Rooms, resources & approvals", () => {
     if (await calEditBtn.count().then((c) => c > 0).catch(() => false)) {
       await calEditBtn.click();
       await page.locator('[data-testid="calendar-name-input"] input').waitFor({ state: "visible", timeout: 10000 });
-      page.once("dialog", async (d) => { await d.accept(); });
       await page.locator('[data-testid="delete-calendar-button"]').click();
+      await confirmDelete(page);
     }
     await expect(page.locator("table tbody tr").filter({ hasText: CALENDAR })).toHaveCount(0, { timeout: 15000 });
 

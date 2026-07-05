@@ -2,6 +2,7 @@ import type { Page } from "@playwright/test";
 import { attendanceTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToAttendance } from "./helpers/navigation";
+import { confirmDelete } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
@@ -78,11 +79,11 @@ test.describe("Attendance Management", () => {
     });
 
     test("should delete the service", async () => {
-      page.once("dialog", (dialog) => dialog.accept());
       await page.locator("button").getByText("Zebedee Test Service").click();
       const box = page.locator("#serviceBox");
       await expect(box).toBeVisible({ timeout: 10000 });
       await box.getByRole("button", { name: "Delete" }).click();
+      await confirmDelete(page);
       await expect(page.locator("button").getByText("Zebedee Test Service")).toHaveCount(0, { timeout: 10000 });
     });
   });

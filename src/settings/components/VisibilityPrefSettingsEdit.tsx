@@ -39,14 +39,8 @@ export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
   };
 
   const handlePrefChange = (e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
-    const p = { ...pref } as VisibilityPreferenceInterface;
-    const value = e.target.value;
-    switch (e.target.name) {
-      case "address": p.address = value; break;
-      case "phoneNumber": p.phoneNumber = value; break;
-      case "email": p.email = value; break;
-    }
-    setPref(p);
+    const { name, value } = e.target;
+    setPref({ ...pref, [name]: value } as VisibilityPreferenceInterface);
   };
 
   const save = () => {

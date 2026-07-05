@@ -4,7 +4,7 @@ import { Locale, Loading } from "@churchapps/apphelper";
 import { Button, Grid, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { ListAlt as ListAltIcon, Add as AddIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { SectionListCard } from "../../components/ui";
+import { SectionListCard, clickableRowSx } from "../../components/ui";
 import { CustomFieldEdit } from "./CustomFieldEdit";
 
 // Custom field definition management (list + inline editor). Shared by the Settings
@@ -29,7 +29,7 @@ export const CustomFieldsSection: React.FC = () => {
   const rows = data.map((f) => (
     <TableRow
       key={f.id}
-      sx={{ cursor: "pointer", "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}
+      sx={clickableRowSx}
       hover
       onClick={() => setEditField(f)}
       data-testid={`custom-field-row-${f.id}`}>

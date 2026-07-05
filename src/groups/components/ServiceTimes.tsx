@@ -1,15 +1,19 @@
 import React from "react";
 import { type GroupInterface, type GroupServiceTimeInterface } from "@churchapps/helpers";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableRow, TableCell } from "@mui/material";
 interface Props {
   group: GroupInterface;
 }
 
 export const ServiceTimes: React.FC<Props> = (props) => {
-  const [groupServiceTimes, setGroupServiceTimes] = React.useState<GroupServiceTimeInterface[]>([]);
-
-  const loadData = React.useCallback(() => ApiHelper.get("/groupservicetimes?groupId=" + props.group.id, "AttendanceApi").then((data: any) => setGroupServiceTimes(data)), [props.group.id]);
+  const serviceTimesQuery = useQuery<GroupServiceTimeInterface[]>({
+    queryKey: ["/groupservicetimes?groupId=" + props.group.id, "AttendanceApi"],
+    placeholderData: [],
+    enabled: props.group.id !== undefined
+  });
+  const groupServiceTimes = serviceTimesQuery.data || [];
 
   const getRows = () => {
     const result: JSX.Element[] = [];
@@ -19,10 +23,6 @@ export const ServiceTimes: React.FC<Props> = (props) => {
     }
     return result;
   };
-
-  React.useEffect(() => {
-    if (props.group.id !== undefined) loadData();
-  }, [props.group, loadData]);
 
   return (
     <Table>

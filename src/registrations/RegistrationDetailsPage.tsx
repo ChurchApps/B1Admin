@@ -31,7 +31,8 @@ import {
 } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper, CurrencyHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
-import { PermissionDenied, PersonAdd, FormSubmission } from "../components";
+import { PersonAdd, FormSubmission } from "../components";
+import { useRequirePermission } from "../hooks";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { RegistrationDetailDialog } from "./components/RegistrationDetailDialog";
 import { AppIconButton } from "../components/ui/AppIconButton";
@@ -84,6 +85,8 @@ export const RegistrationDetailsPage = () => {
 
   useEffect(() => { loadData(); }, [eventId]);
   useEffect(() => { CurrencyHelper.loadCurrency().then(setCurrency); }, []);
+
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
   const handleCancel = async (regId: string) => {
     if (!confirm(Locale.label("registrations.registrationDetailsPage.cancelConfirm"))) return;
@@ -267,7 +270,7 @@ export const RegistrationDetailsPage = () => {
     );
   });
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  if (denied) return denied;
   if (loading) return <Box sx={{ p: 3, textAlign: "center" }}><Loading /></Box>;
   if (!event) return <Typography>{Locale.label("registrations.registrationDetailsPage.eventNotFound")}</Typography>;
 

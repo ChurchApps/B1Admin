@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { ApiHelper, UserHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Loading, PageHeader, Locale } from "@churchapps/apphelper";
 import { Permissions, type GroupInterface } from "@churchapps/helpers";
 import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, TableContainer, Paper } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon, MeetingRoom as RoomIcon } from "@mui/icons-material";
-import { PermissionDenied } from "../components";
+import { useRequirePermission } from "../hooks";
 import { EmptyState } from "../components/ui/EmptyState";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { NavigationTabs } from "../components/ui/NavigationTabs";
@@ -26,6 +26,7 @@ export const RoomsResourcesPage = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [editing, setEditing] = useState<Editing>(null);
   const [loading, setLoading] = useState(true);
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
   const loadData = useCallback(() => {
     setLoading(true);
@@ -144,7 +145,7 @@ export const RoomsResourcesPage = () => {
       </TableContainer>
     ));
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  if (denied) return denied;
 
   const getTable = () => {
     switch (tab) {

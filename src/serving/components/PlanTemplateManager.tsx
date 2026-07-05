@@ -5,6 +5,7 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { useQuery } from "@tanstack/react-query";
 import { type PlanInterface, type PlanTemplateInterface } from "../../helpers";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   ministryId: string;
@@ -23,17 +24,19 @@ export const PlanTemplateManager: React.FC<Props> = ({ ministryId, plans, onClos
   const [renameItem, setRenameItem] = React.useState<PlanTemplateInterface | null>(null);
   const [updateItem, setUpdateItem] = React.useState<PlanTemplateInterface | null>(null);
   const [applyItem, setApplyItem] = React.useState<PlanTemplateInterface | null>(null);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const refresh = () => templatesQuery.refetch();
 
   const handleDelete = async (t: PlanTemplateInterface) => {
-    if (!window.confirm(Locale.label("plans.templates.confirmDelete") || "Delete this template?")) return;
+    if (!(await confirm(Locale.label("plans.templates.confirmDelete") || "Delete this template?"))) return;
     await ApiHelper.delete("/plantemplates/" + t.id, "DoingApi");
     refresh();
   };
 
   return (
     <>
+      {ConfirmDialogElement}
       <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
         <DialogTitle>{Locale.label("plans.templates.title") || "Plan Templates"}</DialogTitle>
         <DialogContent>

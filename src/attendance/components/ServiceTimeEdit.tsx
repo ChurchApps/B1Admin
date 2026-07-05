@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { type ServiceTimeInterface, type ServiceInterface } from "@churchapps/helpers";
 import { useMountedState, ApiHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useErrorSummary } from "../../hooks";
 
 interface Props {
   serviceTime: ServiceTimeInterface;
@@ -21,9 +22,7 @@ export const ServiceTimeEdit: React.FC<Props> = (props) => {
 
   const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "", serviceId: "" } });
   const e = formState.errors as any;
-  const summaryErrors: string[] = [];
-  if (e.name?.message) summaryErrors.push(e.name.message);
-  if (e.serviceId?.message) summaryErrors.push(e.serviceId.message);
+  const summaryErrors = useErrorSummary(formState.errors, ["name", "serviceId"]);
 
   const onValid = (values: AnyRecord) => {
     setIsSubmitting(true);

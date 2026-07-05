@@ -1,6 +1,8 @@
 import { useForm, Controller, useFormState } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
 import { Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import {
   Grid,
   InputLabel,
@@ -37,8 +39,8 @@ type AnyRecord = Record<string, any>;
 
 export const ServiceEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const sermonsQuery = useQuery<SermonInterface[]>({ queryKey: ["/sermons", "ContentApi"], placeholderData: [] });
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const { control, register, handleSubmit, watch, reset } = useForm<AnyRecord>({
     defaultValues: {
@@ -57,25 +59,13 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const { errors } = useFormState({ control });
   const e = errors as any;
 
-  const summaryErrors: string[] = React.useMemo(() => {
-    const errs: string[] = [];
-    if (e.serviceLabel?.message) errs.push(e.serviceLabel.message);
-    if (e.serviceTime?.message) errs.push(e.serviceTime.message);
-    return errs;
-  }, [errors]);
+  const summaryErrors = useErrorSummary(errors, ["serviceLabel", "serviceTime"]);
 
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentService?.id)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction(); };
 
-  const loadData = () => {
-    ApiHelper.get("/sermons", "ContentApi").then((data: any) => {
-      setSermons(data);
-      setIsLoading(false);
-    });
-  };
-
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("sermons.liveStreamTimes.serviceEdit.deleteConfirm"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("sermons.liveStreamTimes.serviceEdit.deleteConfirm"))) {
       ApiHelper.delete("/streamingServices/" + props.currentService.id, "ContentApi").then(() => { props.updatedFunction(); });
     }
   };
@@ -146,11 +136,11 @@ export const ServiceEdit: React.FC<Props> = (props) => {
 
   const getSermons = () => {
     const result: React.ReactElement[] = [];
-    sermons.forEach(sermon => {
+    sermonsQuery.data.forEach(sermon => {
       if (sermon.permanentUrl) result.push(<MenuItem key={sermon.id} value={sermon.id}>{sermon.title}</MenuItem>);
     });
     result.push(<Divider key="divider" />);
-    sermons.forEach(sermon => {
+    sermonsQuery.data.forEach(sermon => {
       if (!sermon.permanentUrl) result.push(<MenuItem key={sermon.id} value={sermon.id}>{sermon.title}</MenuItem>);
     });
     return result;
@@ -168,7 +158,6 @@ export const ServiceEdit: React.FC<Props> = (props) => {
       recurs: Boolean(props.currentService?.recurring).toString(),
       sermonId: props.currentService?.sermonId ?? "latest"
     });
-    loadData();
   }, [props.currentService]);
 
   const watchedServiceTime = watch("serviceTime");
@@ -181,235 +170,238 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const chatAndPrayerEndTime = serviceTimeMs && watchedChatAfter ? serviceTimeMs + parseInt(watchedChatAfter) * 60 * 1000 : null;
   const earlyStartTime = serviceTimeMs && watchedEarlyStart ? serviceTimeMs - parseInt(watchedEarlyStart) * 60 * 1000 : null;
 
-  if (isLoading) return <Loading />;
+  if (sermonsQuery.isLoading) return <Loading />;
   else {
     return (
-      <FormCard
-        icon="video_settings"
-        title={UniqueIdHelper.isMissing(props.currentService?.id) ? Locale.label("sermons.liveStreamTimes.serviceEdit.addNewService") : Locale.label("sermons.liveStreamTimes.serviceEdit.editService")}
-        onSave={handleSubmit(onValid)}
-        onCancel={handleCancel}
-        onDelete={checkDelete()}
-        data-testid="edit-service-inputbox"
-      >
-        <Stack spacing={3}>
-          {summaryErrors.length > 0 && (
-            <Alert severity="error">
-              <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
-                {Locale.label("sermons.liveStreamTimes.serviceEdit.errorsCorrectionTitle")}
-              </Typography>
-              <Stack component="ul" spacing={0.5} sx={{ m: 0, pl: 2 }}>
-                {summaryErrors.map((error, index) => (
-                  <Typography key={index} component="li" variant="body2">
-                    {error}
-                  </Typography>
-                ))}
+      <>
+        {ConfirmDialogElement}
+        <FormCard
+          icon="video_settings"
+          title={UniqueIdHelper.isMissing(props.currentService?.id) ? Locale.label("sermons.liveStreamTimes.serviceEdit.addNewService") : Locale.label("sermons.liveStreamTimes.serviceEdit.editService")}
+          onSave={handleSubmit(onValid)}
+          onCancel={handleCancel}
+          onDelete={checkDelete()}
+          data-testid="edit-service-inputbox"
+        >
+          <Stack spacing={3}>
+            {summaryErrors.length > 0 && (
+              <Alert severity="error">
+                <Typography variant="body2" sx={{ fontWeight: 600, mb: 1 }}>
+                  {Locale.label("sermons.liveStreamTimes.serviceEdit.errorsCorrectionTitle")}
+                </Typography>
+                <Stack component="ul" spacing={0.5} sx={{ m: 0, pl: 2 }}>
+                  {summaryErrors.map((error, index) => (
+                    <Typography key={index} component="li" variant="body2">
+                      {error}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Alert>
+            )}
+
+            <Box>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+                <VideoCallIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6" sx={{ color: "primary.main" }}>
+                  {Locale.label("sermons.liveStreamTimes.serviceEdit.basicInformation")}
+                </Typography>
               </Stack>
-            </Alert>
-          )}
 
-          <Box>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <VideoCallIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: "primary.main" }}>
-                {Locale.label("sermons.liveStreamTimes.serviceEdit.basicInformation")}
-              </Typography>
-            </Stack>
+              <Stack spacing={2}>
+                <TextField
+                  fullWidth
+                  label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceName")}
+                  data-testid="service-name-input"
+                  placeholder={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNamePlaceholder")}
+                  error={!!e.serviceLabel}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <VideoCallIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                      </InputAdornment>
+                    )
+                  }}
+                  {...register("serviceLabel", { required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNameRequired") })}
+                />
 
-            <Stack spacing={2}>
-              <TextField
-                fullWidth
-                label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceName")}
-                data-testid="service-name-input"
-                placeholder={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNamePlaceholder")}
-                error={!!e.serviceLabel}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <VideoCallIcon sx={{ fontSize: 18, color: "text.secondary" }} />
-                    </InputAdornment>
-                  )
-                }}
-                {...register("serviceLabel", { required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceNameRequired") })}
-              />
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField
+                      fullWidth
+                      label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTime")}
+                      type="datetime-local"
+                      InputLabelProps={{ shrink: true }}
+                      data-testid="service-time-input"
+                      error={!!e.serviceTime}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                          </InputAdornment>
+                        )
+                      }}
+                      {...register("serviceTime", { required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTimeRequired") })}
+                    />
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <FormControl fullWidth>
+                      <InputLabel>{Locale.label("sermons.liveStreamTimes.serviceEdit.recursWeekly")}</InputLabel>
+                      <Controller name="recurs" control={control} render={({ field }) => (
+                        <Select {...field} value={field.value ?? "false"} label={Locale.label("sermons.liveStreamTimes.serviceEdit.recursWeekly")}
+                          startAdornment={
+                            <InputAdornment position="start">
+                              <AccessTimeIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />
+                            </InputAdornment>
+                          }
+                        >
+                          <MenuItem value="false">
+                            <Stack direction="row" spacing={1} alignItems="center">
+                              <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.no")}</Typography>
+                              <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")} size="small" sx={{ backgroundColor: "rgba(237, 108, 2, 0.08)", color: "warning.main" }} />
+                            </Stack>
+                          </MenuItem>
+                          <MenuItem value="true">
+                            <Stack direction="row" spacing={1} alignItems="center">
+                              <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.yes")}</Typography>
+                              <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
+                            </Stack>
+                          </MenuItem>
+                        </Select>
+                      )} />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </Stack>
+            </Box>
+
+            <Divider />
+
+            <Box>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+                <ChatIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6" sx={{ color: "primary.main" }}>
+                  {Locale.label("sermons.liveStreamTimes.serviceEdit.chatSettings")}
+                </Typography>
+              </Stack>
 
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
                     fullWidth
-                    label={Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTime")}
-                    type="datetime-local"
-                    InputLabelProps={{ shrink: true }}
-                    data-testid="service-time-input"
-                    error={!!e.serviceTime}
+                    label={Locale.label("sermons.liveStreamTimes.serviceEdit.enableChatMinutesBefore")}
+                    type="number"
                     InputProps={{
+                      inputProps: { min: 0, step: 1 },
                       startAdornment: (
                         <InputAdornment position="start">
-                          <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                          <ChatIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Chip
+                            label={chatAndPrayerStartTime ? DateHelper.prettyTime(new Date(chatAndPrayerStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
+                            size="small"
+                            sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
+                          />
                         </InputAdornment>
                       )
                     }}
-                    {...register("serviceTime", { required: Locale.label("sermons.liveStreamTimes.serviceEdit.serviceTimeRequired") })}
+                    {...register("chatBefore")}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label={Locale.label("sermons.liveStreamTimes.serviceEdit.enableChatMinutesAfter")}
+                    type="number"
+                    InputProps={{
+                      inputProps: { min: 0, step: 1 },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <ChatIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Chip
+                            label={chatAndPrayerEndTime ? DateHelper.prettyTime(new Date(chatAndPrayerEndTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
+                            size="small"
+                            sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
+                          />
+                        </InputAdornment>
+                      )
+                    }}
+                    {...register("chatAfter")}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+
+            <Divider />
+
+            <Box>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+                <PlayCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+                <Typography variant="h6" sx={{ color: "primary.main" }}>
+                  {Locale.label("sermons.liveStreamTimes.serviceEdit.videoSettings")}
+                </Typography>
+              </Stack>
+
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label={Locale.label("sermons.liveStreamTimes.serviceEdit.startVideoEarly")}
+                    type="number"
+                    helperText={Locale.label("sermons.liveStreamTimes.serviceEdit.startVideoEarlyHelp")}
+                    InputProps={{
+                      inputProps: { min: 0, step: 1 },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PlayCircleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Chip
+                            label={earlyStartTime ? DateHelper.prettyTime(new Date(earlyStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
+                            size="small"
+                            sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
+                          />
+                        </InputAdornment>
+                      )
+                    }}
+                    {...register("earlyStart")}
                   />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{Locale.label("sermons.liveStreamTimes.serviceEdit.recursWeekly")}</InputLabel>
-                    <Controller name="recurs" control={control} render={({ field }) => (
-                      <Select {...field} value={field.value ?? "false"} label={Locale.label("sermons.liveStreamTimes.serviceEdit.recursWeekly")}
+                    <InputLabel>{Locale.label("sermons.liveStreamTimes.serviceEdit.sermon")}</InputLabel>
+                    <Controller name="sermonId" control={control} render={({ field }) => (
+                      <Select {...field} value={field.value ?? "latest"} label={Locale.label("sermons.liveStreamTimes.serviceEdit.sermon")}
                         startAdornment={
                           <InputAdornment position="start">
-                            <AccessTimeIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />
+                            <MenuBookIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />
                           </InputAdornment>
                         }
                       >
-                        <MenuItem value="false">
+                        <MenuItem value="latest">
                           <Stack direction="row" spacing={1} alignItems="center">
-                            <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.no")}</Typography>
-                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.oneTime")} size="small" sx={{ backgroundColor: "rgba(237, 108, 2, 0.08)", color: "warning.main" }} />
+                            <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.latestSermon")}</Typography>
+                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.auto")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
                           </Stack>
                         </MenuItem>
-                        <MenuItem value="true">
-                          <Stack direction="row" spacing={1} alignItems="center">
-                            <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.yes")}</Typography>
-                            <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.weekly")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
-                          </Stack>
-                        </MenuItem>
+                        {getSermons()}
                       </Select>
                     )} />
                   </FormControl>
                 </Grid>
               </Grid>
-            </Stack>
-          </Box>
-
-          <Divider />
-
-          <Box>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <ChatIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: "primary.main" }}>
-                {Locale.label("sermons.liveStreamTimes.serviceEdit.chatSettings")}
-              </Typography>
-            </Stack>
-
-            <Grid container spacing={2}>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  label={Locale.label("sermons.liveStreamTimes.serviceEdit.enableChatMinutesBefore")}
-                  type="number"
-                  InputProps={{
-                    inputProps: { min: 0, step: 1 },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <ChatIcon sx={{ fontSize: 18, color: "text.secondary" }} />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Chip
-                          label={chatAndPrayerStartTime ? DateHelper.prettyTime(new Date(chatAndPrayerStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
-                          size="small"
-                          sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
-                        />
-                      </InputAdornment>
-                    )
-                  }}
-                  {...register("chatBefore")}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  label={Locale.label("sermons.liveStreamTimes.serviceEdit.enableChatMinutesAfter")}
-                  type="number"
-                  InputProps={{
-                    inputProps: { min: 0, step: 1 },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <ChatIcon sx={{ fontSize: 18, color: "text.secondary" }} />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Chip
-                          label={chatAndPrayerEndTime ? DateHelper.prettyTime(new Date(chatAndPrayerEndTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
-                          size="small"
-                          sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
-                        />
-                      </InputAdornment>
-                    )
-                  }}
-                  {...register("chatAfter")}
-                />
-              </Grid>
-            </Grid>
-          </Box>
-
-          <Divider />
-
-          <Box>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-              <PlayCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />
-              <Typography variant="h6" sx={{ color: "primary.main" }}>
-                {Locale.label("sermons.liveStreamTimes.serviceEdit.videoSettings")}
-              </Typography>
-            </Stack>
-
-            <Grid container spacing={2}>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  label={Locale.label("sermons.liveStreamTimes.serviceEdit.startVideoEarly")}
-                  type="number"
-                  helperText={Locale.label("sermons.liveStreamTimes.serviceEdit.startVideoEarlyHelp")}
-                  InputProps={{
-                    inputProps: { min: 0, step: 1 },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PlayCircleIcon sx={{ fontSize: 18, color: "text.secondary" }} />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Chip
-                          label={earlyStartTime ? DateHelper.prettyTime(new Date(earlyStartTime)) : Locale.label("sermons.liveStreamTimes.serviceEdit.timeChipFallback")}
-                          size="small"
-                          sx={{ backgroundColor: "rgba(25, 118, 210, 0.08)", color: "primary.main" }}
-                        />
-                      </InputAdornment>
-                    )
-                  }}
-                  {...register("earlyStart")}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <FormControl fullWidth>
-                  <InputLabel>{Locale.label("sermons.liveStreamTimes.serviceEdit.sermon")}</InputLabel>
-                  <Controller name="sermonId" control={control} render={({ field }) => (
-                    <Select {...field} value={field.value ?? "latest"} label={Locale.label("sermons.liveStreamTimes.serviceEdit.sermon")}
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <MenuBookIcon sx={{ fontSize: 18, color: "text.secondary", mr: 1 }} />
-                        </InputAdornment>
-                      }
-                    >
-                      <MenuItem value="latest">
-                        <Stack direction="row" spacing={1} alignItems="center">
-                          <Typography>{Locale.label("sermons.liveStreamTimes.serviceEdit.latestSermon")}</Typography>
-                          <Chip label={Locale.label("sermons.liveStreamTimes.serviceEdit.auto")} size="small" sx={{ backgroundColor: "rgba(46, 125, 50, 0.08)", color: "success.main" }} />
-                        </Stack>
-                      </MenuItem>
-                      {getSermons()}
-                    </Select>
-                  )} />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Box>
-        </Stack>
-      </FormCard>
+            </Box>
+          </Stack>
+        </FormCard>
+      </>
     );
   }
 };

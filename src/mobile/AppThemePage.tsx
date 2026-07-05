@@ -1,12 +1,13 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { Locale, PageHeader, Permissions } from "@churchapps/apphelper";
 import { Palette as PaletteIcon } from "@mui/icons-material";
 import { AppThemeEdit } from "../settings/components/AppThemeEdit";
-import { PermissionDenied } from "../components";
+import { useRequirePermission } from "../hooks";
 
 export const AppThemePage: React.FC = () => {
-  if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
+  const denied = useRequirePermission(Permissions.membershipApi.settings.edit);
+  if (denied) return denied;
 
   return (
     <>

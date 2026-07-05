@@ -3,6 +3,7 @@ import { sermonsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToSermons } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or Zebedee entered anywhere, it is a result of these tests.
 test.describe("Sermons Management", () => {
@@ -80,17 +81,12 @@ test.describe("Sermons Management", () => {
     });
 
     test("should delete sermon", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const sermonRow = page.locator("tr").filter({ hasText: "Zebedee Test Sermon" });
       const editBtn = sermonRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.getByText("Zebedee Test Sermon");
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
@@ -133,17 +129,12 @@ test.describe("Sermons Management", () => {
     });
 
     test("should delete live URL", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const urlRow = page.locator("tr").filter({ hasText: "Zebedee Test Live URL" });
       const editBtn = urlRow.locator('[data-testid^="edit-sermon-"]');
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.getByText("Zebedee Test Live URL");
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
@@ -208,15 +199,10 @@ test.describe("Sermons Management", () => {
     });
 
     test("should delete playlist", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       await panelEditButton().click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.getByText("Zebedee Test Playlist");
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
@@ -283,16 +269,11 @@ test.describe("Sermons Management", () => {
     });
 
     test("should delete service", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const editBtn = page.locator('button[aria-label="Edit"]').last();
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete");
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.getByText("Zebedee Test Service");
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });

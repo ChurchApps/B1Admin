@@ -5,6 +5,7 @@ import { type PersonInterface } from "@churchapps/helpers";
 import { type PledgeInterface } from "../../helpers";
 import { PersonAdd } from "../../components";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   campaignId: string;
@@ -17,6 +18,7 @@ export const PledgeEdit: React.FC<Props> = (props) => {
   const [person, setPerson] = React.useState<PersonInterface>(null);
   const [amount, setAmount] = React.useState<string>("");
   const [errors, setErrors] = React.useState<string[]>([]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
     setPerson(null);
@@ -36,8 +38,8 @@ export const PledgeEdit: React.FC<Props> = (props) => {
     ApiHelper.post("/pledges", [pledge], "GivingApi").then(() => props.updatedFunction());
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("donations.pledgeEdit.confirmMsg"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("donations.pledgeEdit.confirmMsg"))) {
       ApiHelper.delete("/pledges/" + props.pledge.id, "GivingApi").then(() => props.updatedFunction());
     }
   };
@@ -51,25 +53,28 @@ export const PledgeEdit: React.FC<Props> = (props) => {
   );
 
   return (
-    <FormCard
-      id="pledgeBox"
-      icon="handshake"
-      title={props.pledge?.id ? Locale.label("donations.pledgeEdit.editPledge") : Locale.label("donations.pledgeEdit.addPledge")}
-      onCancel={props.updatedFunction}
-      onSave={handleSave}
-      onDelete={props.pledge?.id ? handleDelete : undefined}
-      help="docs/b1-admin/donations/">
-      <ErrorMessages errors={errors} />
-      {personSection}
-      <TextField
-        fullWidth
-        type="number"
-        inputProps={{ step: "0.01", min: "0" }}
-        label={Locale.label("donations.pledgeEdit.amount")}
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        data-testid="pledge-amount-input"
-      />
-    </FormCard>
+    <>
+      {ConfirmDialogElement}
+      <FormCard
+        id="pledgeBox"
+        icon="handshake"
+        title={props.pledge?.id ? Locale.label("donations.pledgeEdit.editPledge") : Locale.label("donations.pledgeEdit.addPledge")}
+        onCancel={props.updatedFunction}
+        onSave={handleSave}
+        onDelete={props.pledge?.id ? handleDelete : undefined}
+        help="docs/b1-admin/donations/">
+        <ErrorMessages errors={errors} />
+        {personSection}
+        <TextField
+          fullWidth
+          type="number"
+          inputProps={{ step: "0.01", min: "0" }}
+          label={Locale.label("donations.pledgeEdit.amount")}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          data-testid="pledge-amount-input"
+        />
+      </FormCard>
+    </>
   );
 };

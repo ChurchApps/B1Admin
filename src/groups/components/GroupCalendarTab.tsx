@@ -5,6 +5,7 @@ import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Box, Button, Card, IconButton, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import { Event as EventIcon, Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { SortableTableHead } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 import { BulkGroupEventsModal } from "./BulkGroupEventsModal";
 import { GroupRsvpRosterDialog } from "./GroupRsvpRosterDialog";
 
@@ -24,6 +25,7 @@ interface RsvpBatchEntry {
 export const GroupCalendarTab = (props: Props) => {
   const [showBulkAdd, setShowBulkAdd] = useState(false);
   const [rosterFor, setRosterFor] = useState<EventInterface | null>(null);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const events = useQuery<EventInterface[]>({
     queryKey: [`/events/group/${props.group.id}`, "ContentApi"],
@@ -71,7 +73,7 @@ export const GroupCalendarTab = (props: Props) => {
   };
 
   const handleDelete = async (event: EventInterface) => {
-    if (window.confirm(Locale.label("groups.groupCalendar.confirmDelete").replace("{title}", event.title || ""))) {
+    if (await confirm(Locale.label("groups.groupCalendar.confirmDelete").replace("{title}", event.title || ""))) {
       await ApiHelper.delete(`/events/${event.id}`, "ContentApi");
       events.refetch();
     }
@@ -99,6 +101,7 @@ export const GroupCalendarTab = (props: Props) => {
 
   return (
     <Box sx={{ p: 3 }} data-testid="group-calendar-tab">
+      {ConfirmDialogElement}
       {showBulkAdd && <BulkGroupEventsModal group={props.group} onDone={handleBulkDone} />}
       {rosterFor && <GroupRsvpRosterDialog event={rosterFor} occurrences={rsvpByEvent[rosterFor.id!] || []} onClose={() => setRosterFor(null)} />}
       <Card>

@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 import { settingsTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToForms, navigateToPeople } from "./helpers/navigation";
-import { openPersonRow, SEED_PEOPLE } from "./helpers/fixtures";
+import { openPersonRow, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
@@ -110,8 +110,8 @@ test.describe.serial("People-associated form lifecycle", () => {
   test("archives, restores, and deletes the form", async () => {
     await openFormsPage(page);
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
-    page.once("dialog", async d => { await d.accept(); });
     await row.locator('[data-testid^="archive-form-button-"]').click();
+    await confirmDelete(page);
 
     const archivedTab = page.locator('button[role="tab"]', { hasText: "Archived Forms" }).first();
     await archivedTab.waitFor({ state: "visible", timeout: 10000 });
@@ -121,8 +121,8 @@ test.describe.serial("People-associated form lifecycle", () => {
 
     const restoreBtn = archivedRow.locator('[data-testid^="restore-form-button-"]');
     await restoreBtn.waitFor({ state: "visible", timeout: 10000 });
-    page.once("dialog", async d => { await d.accept(); });
     await restoreBtn.click();
+    await confirmDelete(page);
 
     await openFormsPage(page);
     const activeRow = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
@@ -130,8 +130,8 @@ test.describe.serial("People-associated form lifecycle", () => {
 
     await activeRow.locator('[data-testid^="edit-form-button-"]').first().click();
     await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
-    page.once("dialog", async d => { await d.accept(); });
     await page.locator("#formBox button", { hasText: /^Delete$/ }).click();
+    await confirmDelete(page);
     await page.locator("#formBox").waitFor({ state: "hidden", timeout: 15000 });
     await openFormsPage(page);
     await expect(page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }))
@@ -177,8 +177,8 @@ test.describe.serial("Stand Alone form lifecycle", () => {
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }).first();
     await row.locator('[data-testid^="edit-form-button-"]').first().click();
     await page.locator("#formBox").waitFor({ state: "visible", timeout: 10000 });
-    page.once("dialog", async d => { await d.accept(); });
     await page.locator("#formBox button", { hasText: /^Delete$/ }).click();
+    await confirmDelete(page);
     await page.locator("#formBox").waitFor({ state: "hidden", timeout: 15000 });
     await openFormsPage(page);
     await expect(page.locator("table tbody tr").filter({ hasText: DISPOSABLE_STANDALONE_FORM }))

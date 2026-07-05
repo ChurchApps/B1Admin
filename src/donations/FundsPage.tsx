@@ -8,17 +8,18 @@ import { Chip, Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Sta
 import { VolunteerActivism as FundIcon, Add as AddIcon, Edit as EditIcon, AccountBalance as AccountBalanceIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
+import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
+import { useSortableData } from "../hooks";
 
 export const FundsPage = () => {
   const [editFundId, setEditFundId] = React.useState("notset");
-  const [sortBy, setSortBy] = React.useState<string>("");
-  const [sortDirection, setSortDirection] = React.useState<SortDirection>("asc");
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],
     placeholderData: []
   });
+
+  const { sorted: sortedFunds, sortBy, sortDirection, handleSort } = useSortableData<FundInterface>(funds.data || []);
 
   const fundUpdated = () => {
     setEditFundId("notset");
@@ -50,20 +51,6 @@ export const FundsPage = () => {
     }
     return result;
   };
-
-  const handleSort = (key: string) => {
-    setSortDirection(sortBy === key && sortDirection === "asc" ? "desc" : "asc");
-    setSortBy(key);
-  };
-
-  const sortedFunds = React.useMemo(() => {
-    const result = [...(funds.data || [])];
-    if (sortBy) {
-      const dir = sortDirection === "asc" ? 1 : -1;
-      result.sort((a: any, b: any) => (a[sortBy] || "").toString().toUpperCase().localeCompare((b[sortBy] || "").toString().toUpperCase()) * dir);
-    }
-    return result;
-  }, [funds.data, sortBy, sortDirection]);
 
   const getRows = () => {
     const result: JSX.Element[] = [];
@@ -97,12 +84,7 @@ export const FundsPage = () => {
       );
 
       result.push(
-        <TableRow
-          key={i}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease"
-          }}>
+        <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <FundIcon sx={{ color: "primary.main", fontSize: 20 }} />

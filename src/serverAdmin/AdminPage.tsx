@@ -1,6 +1,5 @@
 import React from "react";
-import { Locale, UserHelper, Permissions } from "@churchapps/apphelper";
-import { PermissionDenied } from "../components";
+import { Locale, Permissions } from "@churchapps/apphelper";
 import { Grid, Box } from "@mui/material";
 import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, AdminPanelSettings as AdminIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
@@ -10,11 +9,13 @@ import { TranslationTab } from "./components/TranslationTab";
 import { ImpersonateTab } from "./components/ImpersonateTab";
 import { ServerHealthTab } from "./components/ServerHealthTab";
 import { SettingsConfigList, type ConfigSection } from "../settings/components/SettingsConfigList";
+import { useRequirePermission } from "../hooks";
 
 export const AdminPage = () => {
   const [selectedTab, setSelectedTab] = React.useState("churches");
 
-  if (!UserHelper.checkAccess(Permissions.membershipApi.server.admin)) return <PermissionDenied permissions={[Permissions.membershipApi.server.admin]} />;
+  const denied = useRequirePermission(Permissions.membershipApi.server.admin);
+  if (denied) return denied;
 
   const getCurrentTab = () => {
     switch (selectedTab) {

@@ -5,6 +5,7 @@ import { type ServiceInterface } from "@churchapps/helpers";
 import { ApiHelper, UniqueIdHelper, Locale, ErrorMessages } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 
 interface Props {
   service: ServiceInterface;
@@ -21,9 +22,8 @@ export const ServiceEdit: React.FC<Props> = (props) => {
 
   const { control, register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "", campusId: "" } });
   const e = formState.errors as any;
-  const summaryErrors: string[] = [];
-  if (e.name?.message) summaryErrors.push(e.name.message);
-  if (e.campusId?.message) summaryErrors.push(e.campusId.message);
+  const summaryErrors = useErrorSummary(formState.errors, ["name", "campusId"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const onValid = (values: AnyRecord) => {
     setIsSubmitting(true);
@@ -33,8 +33,8 @@ export const ServiceEdit: React.FC<Props> = (props) => {
       .finally(() => { setIsSubmitting(false); });
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("attendance.serviceEdit.confirmDelete"))) ApiHelper.delete("/services/" + props.service.id, "AttendanceApi").then(props.updatedFunction);
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("attendance.serviceEdit.confirmDelete"))) ApiHelper.delete("/services/" + props.service.id, "AttendanceApi").then(props.updatedFunction);
   };
 
   const loadData = React.useCallback(() => {
@@ -48,6 +48,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
 
   return (
     <Box data-cy="service-box">
+      {ConfirmDialogElement}
       <FormCard
         id="serviceBox"
         onCancel={props.updatedFunction}

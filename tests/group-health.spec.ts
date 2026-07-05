@@ -3,6 +3,7 @@ import { groupsTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToGroups } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 test.describe.serial("Group Health & Calendar", () => {
   let page: Page;
@@ -79,8 +80,8 @@ test.describe.serial("Group Health & Calendar", () => {
     await page.getByRole("tab", { name: "Calendar" }).click();
     const row = page.locator("[data-testid=\"group-calendar-tab\"] tbody tr", { hasText: "Weekly Gathering" });
     await expect(row).toBeVisible();
-    page.once("dialog", (dialog) => dialog.accept());
     await row.locator("[data-testid^=\"delete-event-\"]").click();
+    await confirmDelete(page);
     await expect(row).toBeHidden({ timeout: 10000 });
   });
 

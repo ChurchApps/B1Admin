@@ -6,6 +6,7 @@ import { Divider, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableR
 import { Add as AddIcon, Edit as EditIcon, Groups as GroupsIcon, Lock as LockIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   selectRoleId: (id: string) => void;
@@ -16,6 +17,7 @@ interface Props {
 export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const roles = useQuery<RoleInterface[]>({
     queryKey: [`/roles/church/${church?.id}`, "MembershipApi"],
@@ -78,7 +80,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
   const addRole = useCallback(
     async (role: any) => {
       handleClose();
-      if (window.confirm(Locale.label("settings.roles.roleCreate") + role.name + Locale.label("settings.roles.itMsg") + role.description.toLowerCase())) {
+      if (await confirm(Locale.label("settings.roles.roleCreate") + role.name + Locale.label("settings.roles.itMsg") + role.description.toLowerCase(), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
         const rolesData = await ApiHelper.post("/roles", [{ name: role.name }], "MembershipApi");
         const r = rolesData[0];
         const perms: RolePermissionInterface[] = [];
@@ -94,7 +96,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
         roles.refetch();
       }
     },
-    [handleClose, roles]
+    [handleClose, roles, confirm]
   );
 
   const handleAddCustomRole = useCallback(() => {
@@ -180,16 +182,19 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
   }, [sortedRoles, canEdit, selectRoleId]);
 
   return (
-    <DisplayBox id="rolesBox" headerText={Locale.label("settings.roles.roles")} headerIcon="lock" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
-      <Table id="roleMemberTable">
-        <TableHead>
-          <TableRow>
-            <TableCell>{Locale.label("common.name")}</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{rows}</TableBody>
-      </Table>
-    </DisplayBox>
+    <>
+      {ConfirmDialogElement}
+      <DisplayBox id="rolesBox" headerText={Locale.label("settings.roles.roles")} headerIcon="lock" editContent={editContent} help="docs/b1-admin/settings/roles-permissions">
+        <Table id="roleMemberTable">
+          <TableHead>
+            <TableRow>
+              <TableCell>{Locale.label("common.name")}</TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>{rows}</TableBody>
+        </Table>
+      </DisplayBox>
+    </>
   );
 });

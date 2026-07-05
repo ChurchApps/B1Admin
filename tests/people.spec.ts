@@ -1,7 +1,7 @@
 import { request, type Page } from "@playwright/test";
 import { peopleTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToPeople } from "./helpers/navigation";
-import { personDetailsEditButton, SEED_PEOPLE, openPersonRow } from "./helpers/fixtures";
+import { personDetailsEditButton, SEED_PEOPLE, openPersonRow, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
@@ -547,12 +547,6 @@ test.describe("People Management", () => {
     });
 
     test("should delete person from details page", async ({ page }) => {
-      page.once("dialog", async (dialog) => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       // Create disposable person for deterministic delete target.
       await page.locator('[name="first"]').fill("Zacchaeus");
       await page.locator('[name="last"]').fill("Disposable");
@@ -563,6 +557,7 @@ test.describe("People Management", () => {
       const editBtn = personDetailsEditButton(page);
       await editBtn.first().click();
       await page.locator("button").getByText("Delete").click();
+      await confirmDelete(page);
 
       await page.waitForURL(/\/people(\?|$)/, { timeout: 10000 });
       const searchInput = page.locator('input[name="searchText"]');

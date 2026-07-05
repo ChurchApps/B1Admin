@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Box,
   Stack,
@@ -18,11 +18,11 @@ import {
   ArrowDownward as ArrowDownIcon,
   Tab as TabIcon
 } from "@mui/icons-material";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { CardWithHeader, EmptyState } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { ensureSequentialSort, moveItemDown, moveItemUp } from "../../helpers/SortHelper";
+import { useReorderableLinks } from "../../hooks";
 
 interface Props {
   onSelected?: (tab: LinkInterface) => void;
@@ -30,27 +30,7 @@ interface Props {
 }
 
 export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
-  const [tabs, setTabs] = useState<LinkInterface[]>([]);
-
-  const loadData = () => {
-    ApiHelper.get("/links?category=b1Tab", "ContentApi").then((data: any) => setTabs(data)).catch(() => { setTabs([]); });
-  };
-
-  const saveChanges = () => {
-    ApiHelper.post("/links", tabs, "ContentApi").then(loadData);
-  };
-
-  const moveUp = (idx: number) => {
-    ensureSequentialSort(tabs);
-    moveItemUp(tabs, idx);
-    saveChanges();
-  };
-
-  const moveDown = (idx: number) => {
-    ensureSequentialSort(tabs);
-    moveItemDown(tabs, idx);
-    saveChanges();
-  };
+  const { links: tabs, moveUp, moveDown } = useReorderableLinks("b1Tab", { refresh: refreshKey });
 
   const handleEdit = (tab: LinkInterface) => {
     onSelected(tab);
@@ -141,9 +121,6 @@ export function AppTabs({ onSelected = () => {}, refreshKey = 0 }: Props) {
       {index < tabs.length - 1 && <Divider />}
     </React.Fragment>
   );
-
-  useEffect(loadData, []);
-  useEffect(loadData, [refreshKey]);
 
   return (
     <CardWithHeader

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
-import { ChatMessage } from "./useChat";
+import type { ChatMessage } from "./useChat";
 
 interface Props {
   message: ChatMessage;

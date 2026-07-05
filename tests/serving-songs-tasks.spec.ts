@@ -3,6 +3,7 @@ import { servingTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 async function openMyTasks(page: Page) {
   await page.locator('[id="secondaryMenu"] a').getByText("My Work").click();
@@ -71,10 +72,10 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await expect(page.locator('[data-testid="song-search-dialog-input"]')).toHaveCount(0);
 
       // Delete new arrangement to keep single-arrangement assertions later.
-      page.once("dialog", async dialog => { await dialog.accept(); });
       const arrCard = page.locator(".MuiCard-root").filter({ hasText: "Arrangement - New Arrangement" });
       await arrCard.getByRole("button", { name: "Edit" }).first().click();
       await page.locator("button").getByText("Delete").last().click();
+      await confirmDelete(page);
       // Frolic still has its default arrangement, so we stay on the song detail (SongPage
       // only returns to the list when the last arrangement is deleted). Confirm cleanup.
       await expect(arrCard).toHaveCount(0, { timeout: 10000 });
@@ -163,12 +164,6 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should delete link from song key menu", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
@@ -183,6 +178,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await linkRow.locator('button:has(svg[data-testid="EditIcon"])').first().dispatchEvent("click");
       const deleteBtn = page.locator("button").getByText("Delete").last();
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator('a[href*="youtu.be"]');
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
@@ -227,12 +223,6 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should delete key", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
@@ -246,6 +236,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete").last();
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator('[role="tab"]').filter({ hasText: "Zacchaeus Key" });
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });
@@ -334,12 +325,6 @@ test.describe("Serving Management - Songs & Tasks", () => {
     });
 
     test("should delete arrangement", async () => {
-      page.once("dialog", async dialog => {
-        expect(dialog.type()).toBe("confirm");
-        expect(dialog.message()).toContain("Are you sure");
-        await dialog.accept();
-      });
-
       const songsBtn = page.locator('[id="secondaryMenu"] a').getByText("Songs");
       await songsBtn.click();
       await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
@@ -352,6 +337,7 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await editBtn.click();
       const deleteBtn = page.locator("button").getByText("Delete").last();
       await deleteBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator("a").getByText("Frolic");
       await expect(validatedDeletion).toHaveCount(0);
     });

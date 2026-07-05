@@ -4,6 +4,7 @@ import { type GroupInterface, type GroupServiceTimeInterface, type SessionInterf
 import { ApiHelper, ErrorMessages, DateHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
 import { TextField, FormControl, Grid, Select, InputLabel, MenuItem, Box } from "@mui/material";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 
 type AnyRecord = Record<string, any>;
 
@@ -30,19 +31,15 @@ export const SessionEdit: React.FC<Props> = (props) => {
 
   const { errors } = useFormState({ control });
   const e = errors as any;
-
-  const summaryErrors: string[] = React.useMemo(() => {
-    const errs: string[] = [];
-    if (e.sessionDate?.message) errs.push(e.sessionDate.message);
-    return errs;
-  }, [errors]);
+  const summaryErrors = useErrorSummary(errors, ["sessionDate"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = () => {
     props.updatedFunction(null);
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("groups.sessionEdit.deleteConfirm"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("groups.sessionEdit.deleteConfirm"))) {
       ApiHelper.delete("/sessions/" + props.session.id, "AttendanceApi").then(() => {
         props.updatedFunction(props.session);
       });
@@ -123,6 +120,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
 
   return (
     <Box data-cy={isAdd ? "add-session-box" : "edit-session-box"}>
+      {ConfirmDialogElement}
       <FormCard
         icon={isAdd ? "calendar_month" : "edit"}
         title={isAdd ? Locale.label("groups.sessionAdd.sesAdd") : Locale.label("groups.sessionEdit.sesEdit")}

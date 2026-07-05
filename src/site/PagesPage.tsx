@@ -25,9 +25,9 @@ import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
-import { PermissionDenied } from "../components";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CountChip, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
+import { CountChip, HeaderPrimaryButton, HeaderSecondaryButton, hoverRowSx } from "../components/ui";
+import { useConfirmDelete, useRequirePermission } from "../hooks";
 
 export const PagesPage = () => {
   const theme = useTheme();
@@ -43,6 +43,8 @@ export const PagesPage = () => {
   const [showGenerateSite, setShowGenerateSite] = useState(false);
   const [showSites, setShowSites] = useState(false);
   const { siteId, setSiteId, sites, selectedSite, reloadSites } = useSiteSelection();
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const getExpandControl = (item: PageLink, level: number) => {
     if (item.children && item.children.length > 0) {
@@ -66,7 +68,7 @@ export const PagesPage = () => {
     const result: React.ReactElement[] = [];
     items.forEach((item) => {
       result.push(
-        <TableRow key={item.url || item.pageId || item.title} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
+        <TableRow key={item.url || item.pageId || item.title} sx={hoverRowSx}>
           <TableCell className="rowActions" sx={{ width: 120 }}>
             {item.custom ? (
               <AppIconButton
@@ -82,8 +84,8 @@ export const PagesPage = () => {
                 variant="outlined"
                 size="small"
                 startIcon={<TransformIcon />}
-                onClick={() => {
-                  if (confirm(Locale.label("site.pagesPage.confirmConvert"))) {
+                onClick={async () => {
+                  if (await confirm(Locale.label("site.pagesPage.confirmConvert"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
                     setRequestedSlug(item.url);
                     setAddMode("unlinked");
                   }
@@ -213,7 +215,7 @@ export const PagesPage = () => {
   const pageStats = getPageStats();
   const checked = showLogin?.value === "true" ? true : false;
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  if (denied) return denied;
 
   if (windowWidth < 882) {
     return <ErrorMessages errors={[Locale.label("site.pagesPage.desktopOnly")]} />;
@@ -221,6 +223,7 @@ export const PagesPage = () => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <SiteTemplatePicker
         open={showSiteTemplates}
         siteId={siteId}

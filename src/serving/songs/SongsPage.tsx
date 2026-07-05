@@ -8,6 +8,7 @@ import { EmptyState } from "../../components/ui/EmptyState";
 import { HeaderPrimaryButton, HeaderSecondaryButton } from "../../components/ui";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
+import { useConfirmDelete } from "../../hooks";
 
 export const SongsPage = memo(() => {
   const [showSearch, setShowSearch] = React.useState(false);
@@ -17,6 +18,7 @@ export const SongsPage = memo(() => {
   const [showSearchField, setShowSearchField] = React.useState(false);
   const [failedImages, setFailedImages] = React.useState<Set<string>>(new Set());
   const [selected, setSelected] = React.useState<Set<string>>(new Set());
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const songs = useQuery<SongDetailInterface[]>({
     queryKey: ["/songDetails", "ContentApi"],
@@ -71,11 +73,11 @@ export const SongsPage = memo(() => {
 
   const handleBulkDelete = useCallback(async () => {
     if (selected.size === 0) return;
-    if (!window.confirm(Locale.label("songs.songsPage.deleteSelectedConfirm") || "Delete the selected songs? This cannot be undone.")) return;
+    if (!(await confirm(Locale.label("songs.songsPage.deleteSelectedConfirm") || "Delete the selected songs? This cannot be undone."))) return;
     await Promise.all([...selected].map((id) => ApiHelper.delete("/songs/" + id, "ContentApi")));
     setSelected(new Set());
     songs.refetch();
-  }, [selected, songs]);
+  }, [selected, songs, confirm]);
 
   const handleImageError = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const imgSrc = e.currentTarget.src;
@@ -197,6 +199,7 @@ export const SongsPage = memo(() => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <PageHeader icon={<MusicIcon />} title={Locale.label("songs.title") || Locale.label("songs.songsPage.songs")} subtitle={Locale.label("songs.songsPage.subtitle")}>
         <HeaderSecondaryButton startIcon={<SearchIcon />} onClick={() => setShowSearchField(!showSearchField)}>
           {Locale.label("songs.songsPage.search")}

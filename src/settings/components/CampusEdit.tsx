@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { type CampusInterface } from "./CampusInterface";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 
 interface Props {
   campus: CampusInterface;
@@ -30,8 +31,8 @@ export const CampusEdit: React.FC<Props> = (props) => {
 
   const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { name: "" } });
   const e = formState.errors as any;
-  const summaryErrors: string[] = [];
-  if (e.name?.message) summaryErrors.push(e.name.message);
+  const summaryErrors = useErrorSummary(formState.errors, ["name"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const onValid = (values: AnyRecord) => {
     setIsSubmitting(true);
@@ -41,8 +42,8 @@ export const CampusEdit: React.FC<Props> = (props) => {
       .finally(() => { setIsSubmitting(false); });
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("settings.campusEdit.confirmDelete"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("settings.campusEdit.confirmDelete"))) {
       ApiHelper.delete("/campuses/" + props.campus.id, "MembershipApi").then(props.updatedFunction);
     }
   };
@@ -73,6 +74,7 @@ export const CampusEdit: React.FC<Props> = (props) => {
       icon="business"
       isSubmitting={isSubmitting}
       help="docs/b1-admin/settings/">
+      {ConfirmDialogElement}
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("settings.campusEdit.name")} id="name" type="text" data-testid="campus-name-input" error={!!e.name} helperText={e.name?.message} {...register("name", { required: Locale.label("settings.campusEdit.validate.name") })} sx={{ mb: 1 }} />
       <Grid container spacing={1} sx={{ mb: 1 }}>

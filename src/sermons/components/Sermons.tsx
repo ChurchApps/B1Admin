@@ -14,6 +14,7 @@ import { SermonEdit } from "./SermonEdit";
 import { PlaylistEdit } from "./PlaylistEdit";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { CountChip, HeaderPrimaryButton } from "../../components/ui";
+import { hoverRowSx } from "../../components/ui/tableStyles";
 
 export const Sermons = () => {
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
@@ -173,10 +174,7 @@ export const Sermons = () => {
       rows.push(
         <TableRow
           key={video.id}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease"
-          }}
+          sx={hoverRowSx}
         >
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -289,11 +287,7 @@ export const Sermons = () => {
     return displayed.map((playlist) => (
       <TableRow
         key={playlist.id}
-        sx={{
-          "&:hover": { backgroundColor: "action.hover" },
-          transition: "background-color 0.2s ease",
-          "&:last-child td": { borderBottom: 0 }
-        }}
+        sx={{ ...hoverRowSx, "&:last-child td": { borderBottom: 0 } }}
       >
         <TableCell>
           <Typography variant="body2" sx={{ fontWeight: 500 }}>

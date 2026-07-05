@@ -1,6 +1,7 @@
 import React from "react";
 import { type PersonInterface } from "@churchapps/helpers";
 import { ApiHelper, DisplayBox, Locale, Permissions, PersonHelper, UniqueIdHelper, UserHelper } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { Avatar, Box, Button, Chip, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
 import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { GalleryModal } from "../../components/gallery";
@@ -27,7 +28,6 @@ interface Props {
 export const PickupPeople: React.FC<Props> = (props) => {
   const householdId = props.person?.householdId;
   const canEdit = UserHelper.checkAccess(Permissions.membershipApi.people.edit);
-  const [people, setPeople] = React.useState<PickupInterface[]>([]);
   const [adding, setAdding] = React.useState(false);
   const [name, setName] = React.useState("");
   const [relationship, setRelationship] = React.useState("");
@@ -35,14 +35,14 @@ export const PickupPeople: React.FC<Props> = (props) => {
   const [photoUrl, setPhotoUrl] = React.useState("");
   const [showGallery, setShowGallery] = React.useState(false);
 
-  const loadData = React.useCallback(() => {
-    if (UniqueIdHelper.isMissing(householdId)) return;
-    ApiHelper.get("/householdpickup/" + householdId, "MembershipApi").then((data: PickupInterface[]) => setPeople(data || []));
-  }, [householdId]);
+  const peopleQuery = useQuery<PickupInterface[]>({
+    queryKey: ["/householdpickup/" + householdId, "MembershipApi"],
+    placeholderData: [],
+    enabled: !UniqueIdHelper.isMissing(householdId)
+  });
+  const people = peopleQuery.data || [];
 
-  React.useEffect(loadData, [loadData]);
-
-  const save = (row: PickupInterface) => ApiHelper.post("/householdpickup", [{ ...row, householdId }], "MembershipApi").then(() => loadData());
+  const save = (row: PickupInterface) => ApiHelper.post("/householdpickup", [{ ...row, householdId }], "MembershipApi").then(() => peopleQuery.refetch());
 
   const resetForm = () => {
     setName("");
@@ -65,7 +65,7 @@ export const PickupPeople: React.FC<Props> = (props) => {
 
   const handleDelete = (row: PickupInterface) => {
     if (!row.id) return;
-    ApiHelper.delete("/householdpickup/" + row.id, "MembershipApi").then(() => loadData());
+    ApiHelper.delete("/householdpickup/" + row.id, "MembershipApi").then(() => peopleQuery.refetch());
   };
 
   const editContent = canEdit ? (

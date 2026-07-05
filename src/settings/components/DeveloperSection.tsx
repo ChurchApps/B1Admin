@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Stack, Chip } from "@mui/material";
 import { Key as KeyIcon, Delete as DeleteIcon, Link as LinkIcon, Webhook as WebhookIcon } from "@mui/icons-material";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { NavigationTabs, type NavigationTab, SectionListCard } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
+import { formatDateSafe } from "../../helpers/DateFormatHelper";
 import { ApiKeyEdit } from "./ApiKeyEdit";
 import { WebhooksSection } from "./WebhooksSection";
 
@@ -27,7 +30,7 @@ export interface ConnectionInterface {
   expiresAt?: Date;
 }
 
-const fmtDate = (d?: Date) => (d ? new Date(d).toLocaleDateString() : "—");
+const fmtDate = (d?: Date) => formatDateSafe(d, "—");
 
 // Scopes come back as a delimited string (e.g. "people:read,groups:edit"). Render
 // each as a compact chip so the column reads as tokens rather than a wall of text.
@@ -49,42 +52,32 @@ type DeveloperTab = "apiKeys" | "webhooks" | "connections";
 // the Settings landing's configuration list.
 export const DeveloperSection: React.FC = () => {
   const [tab, setTab] = useState<DeveloperTab>("apiKeys");
-  const [apiKeys, setApiKeys] = useState<ApiKeyInterface[]>([]);
-  const [connections, setConnections] = useState<ConnectionInterface[]>([]);
   const [showKeyEdit, setShowKeyEdit] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
-  const loadData = useCallback(() => {
-    setLoading(true);
-    Promise.all([
-      ApiHelper.get("/apiKeys", "MembershipApi"),
-      ApiHelper.get("/oauth/connections", "MembershipApi")
-    ])
-      .then(([keys, conns]: [ApiKeyInterface[], ConnectionInterface[]]) => {
-        setApiKeys(keys || []);
-        setConnections(conns || []);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => { loadData(); }, [loadData]);
+  const apiKeysQuery = useQuery<ApiKeyInterface[]>({ queryKey: ["/apiKeys", "MembershipApi"], placeholderData: [] });
+  const connectionsQuery = useQuery<ConnectionInterface[]>({ queryKey: ["/oauth/connections", "MembershipApi"], placeholderData: [] });
+  const apiKeys = apiKeysQuery.data || [];
+  const connections = connectionsQuery.data || [];
+  const loading = apiKeysQuery.isLoading || connectionsQuery.isLoading;
 
   const handleDeleteKey = async (key: ApiKeyInterface) => {
-    if (!window.confirm(Locale.label("settings.developer.deleteKeyConfirm").replace("{name}", key.name || ""))) return;
+    if (!(await confirm(Locale.label("settings.developer.deleteKeyConfirm").replace("{name}", key.name || "")))) return;
     await ApiHelper.delete("/apiKeys/" + key.id, "MembershipApi");
-    loadData();
+    apiKeysQuery.refetch();
   };
 
   const handleRevoke = async (conn: ConnectionInterface) => {
-    if (!window.confirm(Locale.label("settings.developer.revokeConfirm").replace("{name}", conn.clientName || ""))) return;
+    if (!(await confirm(Locale.label("settings.developer.revokeConfirm").replace("{name}", conn.clientName || ""), { confirmLabel: Locale.label("settings.developer.revoke") }))) return;
     await ApiHelper.delete("/oauth/connections/" + conn.id, "MembershipApi");
-    loadData();
+    connectionsQuery.refetch();
   };
 
-  const handleKeySaved = () => { setShowKeyEdit(false); loadData(); };
+  const handleKeySaved = () => { setShowKeyEdit(false); apiKeysQuery.refetch(); };
 
   return (
     <>
+      {ConfirmDialogElement}
       <NavigationTabs
         selectedTab={tab}
         onTabChange={(v) => setTab(v as DeveloperTab)}

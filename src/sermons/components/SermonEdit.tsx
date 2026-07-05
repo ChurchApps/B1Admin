@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
 import { Grid, InputLabel, MenuItem, Select, TextField, FormControl, Button, Box } from "@mui/material";
 import { Loading, Locale } from "@churchapps/apphelper";
 import { ErrorMessages } from "@churchapps/apphelper";
@@ -12,6 +13,7 @@ import { Permissions } from "@churchapps/helpers";
 import type { SermonInterface, PlaylistInterface } from "@churchapps/helpers";
 import { Duration } from "./Duration";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   currentSermon: SermonInterface,
@@ -23,8 +25,8 @@ type AnyRecord = Record<string, any>;
 export const SermonEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [errors, setErrors] = React.useState<string[]>([]);
-  const [playlists, setPlaylists] = React.useState<PlaylistInterface[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const playlistsQuery = useQuery<PlaylistInterface[]>({ queryKey: ["/playlists", "ContentApi"], placeholderData: [] });
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const [showImageEditor, setShowImageEditor] = React.useState(false);
   const [showOption, setShowOption] = React.useState(false);
   const [additionalPlaylistId, setAdditionalPlaylistId] = React.useState("");
@@ -42,13 +44,6 @@ export const SermonEdit: React.FC<Props> = (props) => {
     }
   });
 
-  const loadData = () => {
-    ApiHelper.get("/playlists", "ContentApi").then((data: any) => {
-      setPlaylists(data);
-      setIsLoading(false);
-    });
-  };
-
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentSermon?.id)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction(); };
 
@@ -57,11 +52,11 @@ export const SermonEdit: React.FC<Props> = (props) => {
     setShowImageEditor(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const errs = [];
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.sermonEdit.unauthorizedDelete"));
     if (errs.length > 0) { setErrors(errs); return; }
-    if (window.confirm(Locale.label("sermons.sermonEdit.deleteConfirm"))) {
+    if (await confirm(Locale.label("sermons.sermonEdit.deleteConfirm"))) {
       ApiHelper.delete("/sermons/" + props.currentSermon.id, "ContentApi").then(() => { props.updatedFunction(); });
     }
   };
@@ -164,7 +159,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
 
   const getPlaylists = () => {
     const result: React.ReactElement[] = [];
-    playlists.forEach((playlist: any) => {
+    playlistsQuery.data.forEach((playlist: any) => {
       result.push(<MenuItem key={playlist.id} value={playlist.id} data-testid={`playlist-option-${playlist.id}`} aria-label={playlist.title}>{playlist.title}</MenuItem>);
     });
     return result;
@@ -173,7 +168,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
   const getAdditionalPlaylists = () => {
     const currentPlaylistId = watch("playlistId");
     const result: React.ReactElement[] = [];
-    playlists.forEach((playlist: any) => {
+    playlistsQuery.data.forEach((playlist: any) => {
       if (playlist.id !== currentPlaylistId) result.push(<MenuItem key={playlist.id} value={playlist.id} data-testid={`additional-playlist-option-${playlist.id}`} aria-label={playlist.title}>{playlist.title}</MenuItem>);
     });
     return result;
@@ -190,7 +185,6 @@ export const SermonEdit: React.FC<Props> = (props) => {
     });
     setThumbnail(props.currentSermon?.thumbnail ?? "");
     setDuration(props.currentSermon?.duration ?? 0);
-    loadData();
   }, [props.currentSermon]);
 
   let keyLabel: React.ReactNode = <>{Locale.label("sermons.sermonEdit.sermonEmbedUrl")}</>;
@@ -218,10 +212,11 @@ export const SermonEdit: React.FC<Props> = (props) => {
       break;
   }
 
-  if (isLoading) return <Loading data-testid="sermon-edit-loading" />;
+  if (playlistsQuery.isLoading) return <Loading data-testid="sermon-edit-loading" />;
   else {
     return (
       <>
+        {ConfirmDialogElement}
         {showImageEditor && <ImageEditor aspectRatio={16 / 9} outputWidth={640} outputHeight={360} photoUrl={thumbnail || ""} onCancel={() => setShowImageEditor(false)} onUpdate={handlePhotoUpdated} />}
         <FormCard icon="calendar_month" title={(props.currentSermon?.permanentUrl) ? Locale.label("sermons.sermonEdit.editPermanentLiveUrl") : Locale.label("sermons.sermonEdit.editSermon")} onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={checkDelete()} help="docs/b1-admin/sermons/" data-testid="sermon-edit-box">
           <ErrorMessages errors={errors} data-testid="sermon-errors" />

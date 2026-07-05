@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
-import { dismissSendInviteIfPresent } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 
 const CALENDAR = "Zacchaeus Reminder Calendar";
 const EVENT_TITLE = "Zacchaeus Reminder Event";
@@ -73,8 +73,8 @@ test.describe.serial("Event reminders editor", () => {
       if (await editBtn.count().then((c) => c > 0).catch(() => false)) {
         await editBtn.click();
         await page.locator('[data-testid="calendar-name-input"] input').waitFor({ state: "visible", timeout: 10000 });
-        page.once("dialog", async (d) => { await d.accept(); });
         await page.locator('[data-testid="delete-calendar-button"]').click();
+        await confirmDelete(page);
       }
     } catch { /* ignore */ }
     await page?.context().close();

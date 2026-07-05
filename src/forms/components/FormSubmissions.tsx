@@ -12,7 +12,7 @@ import {
   Locale,
   Loading
 } from "@churchapps/apphelper";
-import { CountChip, ExportButton } from "../../components/ui";
+import { CountChip, ExportButton, hoverRowSx } from "../../components/ui";
 import { useReactToPrint } from "react-to-print";
 import { Grid, Icon, Table, TableBody, TableRow, TableCell, TableHead, Card, Box, Typography, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -212,10 +212,7 @@ export const FormSubmissions: React.FC<Props> = memo((props) => {
       rows.push(
         <TableRow
           key={i}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease"
-          }}>
+          sx={hoverRowSx}>
           <TableCell key="personName">
             {personId ? (
               <Typography component="a" href={"/people/" + personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>

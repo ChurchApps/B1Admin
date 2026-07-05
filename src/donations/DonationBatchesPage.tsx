@@ -8,18 +8,21 @@ import { useQuery } from "@tanstack/react-query";
 import { Icon, Table, TableBody, TableCell, TableRow, Box, Typography, Stack } from "@mui/material";
 import { VolunteerActivism as DonationIcon, Add as AddIcon, CalendarMonth as DateIcon, Edit as EditIcon, Receipt as ReceiptIcon } from "@mui/icons-material";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, type SortDirection } from "../components/ui";
+import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
+import { useSortableData } from "../hooks";
+
+const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBatchInterface) => new Date(a.batchDate).getTime() - new Date(b.batchDate).getTime() };
 
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
-  const [sortBy, setSortBy] = React.useState<string>("");
-  const [sortDirection, setSortDirection] = React.useState<SortDirection>("asc");
   const [currency, setCurrency] = React.useState<string>("usd");
 
   const batches = useQuery<DonationBatchInterface[]>({
     queryKey: ["/donationbatches", "GivingApi"],
     placeholderData: []
   });
+
+  const { sorted: sortedBatches, sortBy, sortDirection, handleSort } = useSortableData<DonationBatchInterface>(batches.data || [], "", "asc", batchComparators);
 
   const batchUpdated = () => {
     setEditBatchId("notset");
@@ -59,23 +62,6 @@ export const DonationBatchesPage = () => {
     return result;
   };
 
-  const handleSort = (key: string) => {
-    setSortDirection(sortBy === key && sortDirection === "asc" ? "desc" : "asc");
-    setSortBy(key);
-  };
-
-  const sortedBatches = React.useMemo(() => {
-    const result = [...(batches.data || [])];
-    if (sortBy) {
-      const dir = sortDirection === "asc" ? 1 : -1;
-      result.sort((a: any, b: any) => {
-        if (sortBy === "batchDate") return (new Date(a.batchDate).getTime() - new Date(b.batchDate).getTime()) * dir;
-        return (a[sortBy] || "").toString().toUpperCase().localeCompare((b[sortBy] || "").toString().toUpperCase()) * dir;
-      });
-    }
-    return result;
-  }, [batches.data, sortBy, sortDirection]);
-
   const getRows = () => {
     const result: JSX.Element[] = [];
 
@@ -110,12 +96,7 @@ export const DonationBatchesPage = () => {
       const dateObj = b.batchDate ? new Date(b.batchDate.toString().split("T")[0] + "T00:00:00") : new Date();
 
       result.push(
-        <TableRow
-          key={i}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease"
-          }}>
+        <TableRow key={i} sx={hoverRowSx}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <DonationIcon sx={{ color: "primary.main", fontSize: 20 }} />

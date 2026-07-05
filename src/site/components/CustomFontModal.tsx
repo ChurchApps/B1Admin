@@ -1,5 +1,6 @@
 import { ArrayHelper, Locale } from "@churchapps/apphelper";
 import { DialogContent, FormControl, Grid, InputLabel, MenuItem, Pagination, Select, type SelectChangeEvent, TextField, Table, TableBody, TableCell, TableHead, TableRow, Typography, Box } from "@mui/material";
+import { clickableRowSx } from "../../components/ui";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState, useEffect } from "react";
@@ -74,7 +75,7 @@ export function CustomFontModal(props: Props) {
           </TableHead>
           <TableBody>
             {pageResults.map((f, index) => (
-              <TableRow key={index} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease", cursor: "pointer" }} onClick={() => props.updateValue(f.family)}>
+              <TableRow key={index} sx={clickableRowSx} onClick={() => props.updateValue(f.family)}>
                 <TableCell><Typography variant="body2" sx={{ color: "primary.main", fontWeight: 500 }}>{f.family}</Typography></TableCell>
                 <TableCell><Typography variant="body2" sx={{ fontFamily: f.family, color: "text.secondary" }}>{Locale.label("site.customFontModal.sampleText")}</Typography></TableCell>
               </TableRow>

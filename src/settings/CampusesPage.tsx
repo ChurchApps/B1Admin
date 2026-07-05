@@ -1,14 +1,13 @@
 import React from "react";
-import { UserHelper, Permissions, Locale, PageHeader } from "@churchapps/apphelper";
+import { Permissions, Locale, PageHeader } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { Church as ChurchIcon } from "@mui/icons-material";
-import { PermissionDenied } from "../components";
 import { CampusesSection } from "./components/CampusesSection";
+import { useRequirePermission } from "../hooks";
 
 export const CampusesPage: React.FC = () => {
-  const hasAccess = UserHelper.checkAccess(Permissions.membershipApi.settings.edit);
-
-  if (!hasAccess) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
+  const denied = useRequirePermission(Permissions.membershipApi.settings.edit);
+  if (denied) return denied;
 
   return (
     <>

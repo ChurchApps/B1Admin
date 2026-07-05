@@ -8,6 +8,7 @@ import { ApiHelper, UniqueIdHelper, ArrayHelper, Locale } from "@churchapps/apph
 import { GalleryModal } from "../../components/gallery";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
 
 interface PageInterface {
   id?: string;
@@ -33,6 +34,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showPhotoGallery, setShowPhotoGallery] = useState<boolean>(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const { register, handleSubmit, reset, control, watch, setValue } = useForm<AnyRecord>({ defaultValues: { text: "", linkType: "", linkData: "", url: "", visibility: "everyone" } });
   const linkType = watch("linkType");
@@ -88,8 +90,8 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
     setIsModalOpen(false);
   }, []);
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("settings.app.confirmDeleteTab"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("settings.app.confirmDeleteTab"))) {
       ApiHelper.delete("/links/" + currentTabFromProps.id, "ContentApi").then(() => updatedFunction());
     }
   };
@@ -141,6 +143,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
   return (
     <>
+      {ConfirmDialogElement}
       <CardWithHeader
         title={UniqueIdHelper.isMissing(currentTabFromProps?.id) ? Locale.label("settings.appEdit.addTab") : Locale.label("settings.appEdit.editTab")}
         icon={<EditIcon />}

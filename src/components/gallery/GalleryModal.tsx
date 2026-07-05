@@ -8,6 +8,7 @@ import { DeleteOutline as DeleteOutlineIcon } from "@mui/icons-material";
 import React, { useState } from "react";
 import { AppIconButton } from "../ui/AppIconButton";
 import { StockPhotos } from "./StockPhotos";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   aspectRatio: number,
@@ -24,6 +25,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   const [tabIndex, setTabIndex] = React.useState(0);
   const [aspectRatio, setAspectRatio] = React.useState(Math.round(props.aspectRatio * 100) / 100);
   const [editorPhotoUrl, setEditorPhotoUrl] = React.useState("");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const contentRoot = props.contentRoot || CommonEnvironmentHelper.ContentRoot;
   const handleClose = () => { if (props.onClose) props.onClose(); else if (props.onCancel) props.onCancel(); };
@@ -64,8 +66,8 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
     }
   };
 
-  const handleDelete = (folder: string, image: string) => {
-    if (window.confirm(Locale.label("gallery.confirmDelete"))) {
+  const handleDelete = async (folder: string, image: string) => {
+    if (await confirm(Locale.label("gallery.confirmDelete"))) {
       ApiHelper.delete("/gallery/" + folder + "/" + image, "ContentApi").then(() => { loadData(); });
     }
   };
@@ -122,6 +124,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   };
 
   return (<>
+    {ConfirmDialogElement}
     <Dialog open={true} onClose={handleClose}>
       <DialogTitle>Select a Photo</DialogTitle>
       <DialogContent style={{ overflowX: "hidden" }}>

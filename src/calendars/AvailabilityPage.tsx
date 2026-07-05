@@ -6,7 +6,7 @@ import { ApiHelper, UserHelper, EventHelper, Loading, PageHeader, Locale } from 
 import { Permissions } from "@churchapps/helpers";
 import { Box, MenuItem, Stack, TextField } from "@mui/material";
 import { Add as AddIcon, EventAvailable as AvailabilityIcon } from "@mui/icons-material";
-import { PermissionDenied } from "../components";
+import { useRequirePermission } from "../hooks";
 import { NewEventModal } from "./components/NewEventModal";
 import { HeaderPrimaryButton } from "../components/ui/headerButtons";
 import { type CalendarBlockoutInterface, type EventBookingInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
@@ -21,6 +21,7 @@ export const AvailabilityPage = () => {
   const [filter, setFilter] = useState("");
   const [showBook, setShowBook] = useState(false);
   const [loading, setLoading] = useState(true);
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
   const localizer = dayjsLocalizer(dayjs);
 
@@ -104,7 +105,7 @@ export const AvailabilityPage = () => {
     return { style: { backgroundColor: bg, borderColor: bg } };
   };
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  if (denied) return denied;
 
   const churchId = UserHelper.currentUserChurch?.church?.id || "";
   const bookRoomId = filter.startsWith("room:") ? filter.slice(5) : undefined;

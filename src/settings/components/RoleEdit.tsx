@@ -5,6 +5,7 @@ import { type RoleInterface } from "@churchapps/helpers";
 import { ApiHelper, UniqueIdHelper, Locale, Loading } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { useQuery } from "@tanstack/react-query";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 
 interface Props {
   roleId: string;
@@ -17,8 +18,8 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { register, handleSubmit, reset, formState } = useForm<AnyRecord>({ defaultValues: { roleName: "" } });
   const e = formState.errors as any;
-  const summaryErrors: string[] = [];
-  if (e.roleName?.message) summaryErrors.push(e.roleName.message);
+  const summaryErrors = useErrorSummary(formState.errors, ["roleName"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const roleQuery = useQuery<RoleInterface>({
     queryKey: [`/roles/${roleId}`, "MembershipApi"],
@@ -38,8 +39,8 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
     ApiHelper.post("/roles", [r], "MembershipApi").then(() => updatedFunction());
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("settings.roleEdit.confirmMsg"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("settings.roleEdit.confirmMsg"))) {
       ApiHelper.delete("/roles/" + roleQuery.data?.id, "MembershipApi").then(() => updatedFunction());
     }
   };
@@ -54,6 +55,7 @@ export const RoleEdit: React.FC<Props> = ({ roleId, updatedFunction }) => {
       onSave={handleSubmit(onValid)}
       onCancel={updatedFunction}
       onDelete={!UniqueIdHelper.isMissing(roleId) && roleQuery.data?.name !== "Domain Admins" ? handleDelete : undefined}>
+      {ConfirmDialogElement}
       {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
       <TextField fullWidth label={Locale.label("settings.roleEdit.roleName")} placeholder={Locale.label("placeholders.role.name")} data-testid="role-name-input" aria-label={Locale.label("settings.roleEdit.roleNameAria")} error={!!e.roleName} helperText={e.roleName?.message} {...register("roleName", { required: Locale.label("settings.roleEdit.valMsg") })} />
     </FormCard>

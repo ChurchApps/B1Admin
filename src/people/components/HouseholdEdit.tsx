@@ -4,6 +4,7 @@ import { UpdateHouseHold } from "./modals/UpdateHouseHold";
 import { type HouseholdInterface, type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, ApiHelper, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useErrorSummary } from "../../hooks";
 import { PersonAdd } from "../../components";
 import { Table, TableBody, TableCell, TableRow, TextField, FormControl, Select, MenuItem, InputLabel, type SelectChangeEvent } from "@mui/material";
 import { PersonRemove as PersonRemoveIcon, PersonAdd as PersonAddIcon, Close as CloseIcon } from "@mui/icons-material";
@@ -31,12 +32,7 @@ export function HouseholdEdit(props: Props) {
 
   const { errors } = useFormState({ control });
   const e = errors as any;
-
-  const summaryErrors: string[] = React.useMemo(() => {
-    const errs: string[] = [];
-    if (e.name?.message) errs.push(e.name.message);
-    return errs;
-  }, [errors]);
+  const summaryErrors = useErrorSummary(errors, ["name"]);
 
   React.useEffect(() => {
     if (props.household) reset({ name: props.household.name || "" });

@@ -4,6 +4,7 @@ import { useForm, Controller, useFormState } from "react-hook-form";
 import { type GroupInterface, type GroupMemberInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useErrorSummary } from "../../hooks";
 import { CategorySelect } from "./CategorySelect";
 import UserContext from "../../UserContext";
 
@@ -23,13 +24,7 @@ export const GroupAdd: React.FC<Props> = (props) => {
 
   const { errors } = useFormState({ control });
   const e = errors as any;
-
-  const summaryErrors: string[] = React.useMemo(() => {
-    const errs: string[] = [];
-    if (e.categoryName?.message) errs.push(e.categoryName.message);
-    if (e.name?.message) errs.push(e.name.message);
-    return errs;
-  }, [errors]);
+  const summaryErrors = useErrorSummary(errors, ["categoryName", "name"]);
 
   const handleCancel = () => {
     props.updatedFunction();

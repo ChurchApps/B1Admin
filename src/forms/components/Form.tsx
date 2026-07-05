@@ -5,7 +5,7 @@ import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button, Card } from "@mui/material";
 import { ArrowUpward as ArrowUpwardIcon, ArrowDownward as ArrowDownwardIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CountChip } from "../../components/ui";
+import { CountChip, hoverRowSx } from "../../components/ui";
 
 interface Props {
   id: string;
@@ -89,10 +89,7 @@ export const Form: React.FC<Props> = (props) => {
         <TableRow
           key={i}
           data-index={i}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease"
-          }}>
+          sx={hoverRowSx}>
           <TableCell>
             <Box
               component="button"

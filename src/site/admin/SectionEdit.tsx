@@ -2,6 +2,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { ErrorMessages, ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 import type { AnimationsInterface, BlockInterface, GlobalStyleInterface, SectionInterface } from "../../helpers";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Checkbox, Dialog, FormControl, FormControlLabel, Icon, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { PickColors } from "./elements/PickColors";
@@ -33,6 +34,7 @@ const sectionFingerprint = (s: SectionInterface) =>
   ]);
 
 export function SectionEdit(props: Props) {
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const [blocks, setBlocks] = useState<BlockInterface[]>(null);
   const [section, setSection] = useState<SectionInterface>(null);
   const [errors, setErrors] = useState([]);
@@ -140,8 +142,8 @@ export function SectionEdit(props: Props) {
     }
   };
 
-  const handleDelete = () => {
-    if (window.confirm(Locale.label("site.section.confirmDelete"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("site.section.confirmDelete"))) {
       trackSave(ApiHelper.delete("/sections/" + sec.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
     }
   };
@@ -223,9 +225,9 @@ export function SectionEdit(props: Props) {
     setSection(p);
   };
 
-  const handleDuplicate = (e: React.MouseEvent) => {
+  const handleDuplicate = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (confirm(Locale.label("site.section.confirmDuplicate"))) {
+    if (await confirm(Locale.label("site.section.confirmDuplicate"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
       trackSave(ApiHelper.post("/sections/duplicate/" + props.section.id, {}, "ContentApi")).then((data: any) => {
         props.updatedCallback(data);
       });
@@ -247,24 +249,27 @@ export function SectionEdit(props: Props) {
   if (!section) return <></>;
 
   const formContent = (
-    <FormCard
-      id="sectionDetailsBox"
-      title={Locale.label("site.section.editSection")}
-      icon="school"
-      stickyFooter={props.inPanel}
-      onSave={handleSave}
-      onCancel={handleCancel}
-      onDelete={handleDelete}
-      data-testid="edit-section-inputbox"
-      headerActions={props.section.id && (<>
-        <Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button>
-        <Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button>
-      </>)}
-    >
-      <div id="dialogFormContent">
-        {sec.targetBlockId ? getBlockFields() : getStandardFields()}
-      </div>
-    </FormCard>
+    <>
+      {ConfirmDialogElement}
+      <FormCard
+        id="sectionDetailsBox"
+        title={Locale.label("site.section.editSection")}
+        icon="school"
+        stickyFooter={props.inPanel}
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onDelete={handleDelete}
+        data-testid="edit-section-inputbox"
+        headerActions={props.section.id && (<>
+          <Button size="small" variant="outlined" onClick={handleConvertToBlock} title={Locale.label("site.sectionEdit.convertToBlock")} endIcon={<Icon>smart_button</Icon>} sx={{ marginRight: 2 }} data-testid="convert-to-block-button" aria-label={Locale.label("site.sectionEdit.convertToBlock")}>{Locale.label("site.sectionEdit.convertTo")}</Button>
+          <Button size="small" variant="outlined" onClick={handleDuplicate} data-testid="duplicate-section-button" aria-label={Locale.label("site.sectionEdit.duplicateSection")}>{Locale.label("site.sectionEdit.duplicate")}</Button>
+        </>)}
+      >
+        <div id="dialogFormContent">
+          {sec.targetBlockId ? getBlockFields() : getStandardFields()}
+        </div>
+      </FormCard>
+    </>
   );
 
   if (props.inPanel) return formContent;

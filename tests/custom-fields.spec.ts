@@ -2,7 +2,7 @@ import { test, expect, chromium, type Browser, type Page } from "@playwright/tes
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { navigateToPeople } from "./helpers/navigation";
-import { openPersonRow, SEED_PEOPLE } from "./helpers/fixtures";
+import { openPersonRow, SEED_PEOPLE, confirmDelete } from "./helpers/fixtures";
 
 // P-2 Custom fields as first-class schema: define a field, set a value on a
 // person (round-trip), then filter by it in Advanced Search. Uses a "Zz"-prefixed
@@ -27,9 +27,9 @@ test.describe.serial("Custom Fields (P-2)", () => {
     await page.goto("/settings/custom-fields").catch(() => { });
     const row = page.locator('[data-testid^="custom-field-row-"]').filter({ hasText: FIELD_NAME }).first();
     if (await row.isVisible({ timeout: 3000 }).catch(() => false)) {
-      page.once("dialog", (d) => d.accept());
       await row.click();
       await page.locator("#customFieldBox").getByRole("button", { name: "Delete" }).click().catch(() => { });
+      await confirmDelete(page).catch(() => { });
       await page.locator("#customFieldBox").waitFor({ state: "hidden", timeout: 10000 }).catch(() => { });
     }
     await browser.close();

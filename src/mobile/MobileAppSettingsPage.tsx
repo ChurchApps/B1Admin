@@ -5,8 +5,8 @@ import { useSearchParams } from "react-router-dom";
 import { UserHelper, Permissions, PageHeader, Locale } from "@churchapps/apphelper";
 import type { LinkInterface } from "@churchapps/helpers";
 import { AppTabs, AppEdit } from "../settings/components";
-import { PermissionDenied } from "../components";
 import { HeaderPrimaryButton } from "../components/ui";
+import { useRequirePermission } from "../hooks";
 
 const ICON_FOR_LINK_TYPE: Record<string, string> = {
   bible: "menu_book",
@@ -67,7 +67,8 @@ export const MobileAppSettingsPage = () => {
     setRefreshKey(Math.random());
   };
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
+  if (denied) return denied;
 
   return (
     <>

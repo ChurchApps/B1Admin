@@ -3,6 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToMobile } from "./helpers/navigation";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 // Mobile App Settings tests per ChurchAppsSupport/b1Admin/mobile-admin.md.
 const DISPOSABLE_TAB = "Zacchaeus Test Tab";
@@ -131,8 +132,8 @@ test.describe.serial("Mobile tab lifecycle", () => {
     const row = await findTabRow(page, DISPOSABLE_TAB);
     await row.getByRole("button", { name: "Edit" }).click();
     await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
-    page.once("dialog", async d => { await d.accept(); });
     await page.getByRole("button", { name: /Delete Tab/i }).click();
+    await confirmDelete(page);
     await expect(page.getByRole("heading", { level: 6, name: DISPOSABLE_TAB, exact: true }))
       .toHaveCount(0, { timeout: 15000 });
   });
@@ -209,8 +210,8 @@ test.describe.serial("Mobile tab ordering", () => {
       const row = await findTabRow(page, name);
       await row.getByRole("button", { name: "Edit" }).click();
       await page.locator('input[name="text"]').waitFor({ state: "visible", timeout: 10000 });
-      page.once("dialog", async d => { await d.accept(); });
       await page.getByRole("button", { name: /Delete Tab/i }).click();
+      await confirmDelete(page);
       await expect(page.getByRole("heading", { level: 6, name, exact: true })).toHaveCount(0, { timeout: 15000 });
     }
   });

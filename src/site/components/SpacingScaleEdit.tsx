@@ -54,16 +54,7 @@ export function SpacingScaleEdit(props: Props) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value);
-    const s = { ...spacing };
-    switch (e.target.name) {
-      case "xs": s.xs = val; break;
-      case "sm": s.sm = val; break;
-      case "md": s.md = val; break;
-      case "lg": s.lg = val; break;
-      case "xl": s.xl = val; break;
-      case "xxl": s.xxl = val; break;
-    }
-    setSpacing(s);
+    setSpacing({ ...spacing, [e.target.name]: val } as SpacingInterface);
   };
 
   const spacingItems = [

@@ -3,6 +3,7 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, 
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
 import type { SiteInterface } from "../../helpers";
 
 type Props = {
@@ -18,6 +19,7 @@ export function SitesDialog(props: Props) {
   const [name, setName] = useState("");
   const [subDomain, setSubDomain] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleAdd = async () => {
     setErrors([]);
@@ -29,7 +31,7 @@ export function SitesDialog(props: Props) {
   };
 
   const handleDelete = async (site: SiteInterface) => {
-    if (!window.confirm(Locale.label("site.sitesDialog.deleteConfirm", "Delete this website? Its pages, navigation and appearance will be permanently deleted. Its custom domains will be reassigned to the main website."))) return;
+    if (!(await confirm(Locale.label("site.sitesDialog.deleteConfirm", "Delete this website? Its pages, navigation and appearance will be permanently deleted. Its custom domains will be reassigned to the main website.")))) return;
     await ApiHelper.delete("/sites/" + site.id, "MembershipApi");
     if (props.siteId === site.id) props.onSelectSite("");
     props.onChanged();
@@ -39,6 +41,7 @@ export function SitesDialog(props: Props) {
     <Dialog open={props.open} onClose={props.onClose} fullWidth maxWidth="sm">
       <DialogTitle>{Locale.label("site.sitesDialog.title", "Websites")}</DialogTitle>
       <DialogContent dividers>
+        {ConfirmDialogElement}
         <ErrorMessages errors={errors} />
         {props.sites.length === 0 && <Typography color="text.secondary" sx={{ mb: 2 }}>{Locale.label("site.sitesDialog.empty", "No additional websites yet.")}</Typography>}
         <Stack spacing={1} sx={{ mb: 3 }}>

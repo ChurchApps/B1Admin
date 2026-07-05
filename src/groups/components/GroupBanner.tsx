@@ -20,6 +20,7 @@ import { SendTextDialog } from "./SendTextDialog";
 import { SendEmailDialog } from "./SendEmailDialog";
 import { SendNotificationDialog } from "./SendNotificationDialog";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   group: GroupInterface;
@@ -38,13 +39,15 @@ export const GroupBanner = memo((props: Props) => {
   const [showEmailDialog, setShowEmailDialog] = React.useState(false);
   const [showNotificationDialog, setShowNotificationDialog] = React.useState(false);
   const [hasTextingProvider, setHasTextingProvider] = React.useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const canEdit = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groups.edit), []);
   const canSendNotifications = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit), []);
   const canText = useMemo(() => UserHelper.checkAccess(Permissions.messagingApi.texting.send), []);
 
-  const handleDuplicate = () => {
-    if (!group || !window.confirm(Locale.label("groups.groupBanner.confirmDuplicate"))) return;
+  const handleDuplicate = async () => {
+    if (!group) return;
+    if (!(await confirm(Locale.label("groups.groupBanner.confirmDuplicate"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
     const copy: GroupInterface = {
       categoryName: group.categoryName,
       name: group.name + " " + Locale.label("groups.groupBanner.copySuffix"),
@@ -188,6 +191,7 @@ export const GroupBanner = memo((props: Props) => {
       {canEdit && (
         <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={onEdit} data-testid="edit-group-button" />
       )}
+      {ConfirmDialogElement}
       {showTextDialog && (
         <SendTextDialog groupId={group?.id} groupName={group?.name} onClose={() => setShowTextDialog(false)} />
       )}

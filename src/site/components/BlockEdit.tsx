@@ -3,6 +3,7 @@ import { Alert, FormControl, Grid, InputLabel, MenuItem, Select, TextField } fro
 import { useForm, Controller } from "react-hook-form";
 import { UserHelper, Permissions, ApiHelper, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import type { BlockInterface } from "../../helpers";
 
 type Props = {
@@ -16,9 +17,8 @@ export function BlockEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const { control, register, handleSubmit, reset, setError, formState } = useForm<AnyRecord>({ defaultValues: { name: "", blockType: "elementBlock" } });
   const e = formState.errors as any;
-  const summaryErrors: string[] = [];
-  if (e.name?.message) summaryErrors.push(e.name.message);
-  if (e.root?.message) summaryErrors.push(e.root.message);
+  const summaryErrors = useErrorSummary(formState.errors, ["name", "root"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = () => props.updatedCallback(props.block);
 
@@ -33,12 +33,12 @@ export function BlockEdit(props: Props) {
     });
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       setError("root", { message: Locale.label("site.blockEdit.unauthorizedDelete") });
       return;
     }
-    if (window.confirm(Locale.label("site.blocks.confirmDelete"))) {
+    if (await confirm(Locale.label("site.blocks.confirmDelete"))) {
       ApiHelper.delete("/blocks/" + props.block.id.toString(), "ContentApi").then(() => props.updatedCallback(null));
     }
   };
@@ -48,6 +48,7 @@ export function BlockEdit(props: Props) {
   if (!props.block) return <></>;
   return (
     <>
+      {ConfirmDialogElement}
       <FormCard id="blockDetailsBox" title={Locale.label("site.blocks.editBlock")} icon="school" onSave={handleSubmit(onValid)} onCancel={handleCancel} onDelete={handleDelete} data-testid="edit-block-inputbox">
         {summaryErrors.length > 0 && <Alert severity="error" sx={{ mb: 2 }}>{summaryErrors.map((msg) => <div key={msg}>{msg}</div>)}</Alert>}
         <Grid container spacing={2}>

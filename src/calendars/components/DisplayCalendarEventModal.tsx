@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogActions, Typography, Box, Button } from "@
 import { HowToReg as RegIcon } from "@mui/icons-material";
 import { DateHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type CuratedEventWithEventInterface } from "@churchapps/helpers";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   event: CuratedEventWithEventInterface;
@@ -13,6 +14,7 @@ interface Props {
 
 export function DisplayCalendarEventModal(props: Props) {
   const navigate = useNavigate();
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const realEventId = (props.event as CuratedEventWithEventInterface & { realEventId?: string }).realEventId;
 
   const getDisplayTime = () => {
@@ -34,8 +36,8 @@ export function DisplayCalendarEventModal(props: Props) {
     return result;
   };
 
-  const handleDelete = () => {
-    if (confirm(Locale.label("calendars.calendarEvent.confirmDelete"))) {
+  const handleDelete = async () => {
+    if (await confirm(Locale.label("calendars.calendarEvent.confirmDelete"))) {
       const deleteUrl = props.event.eventId
         ? "/curatedEvents/calendar/" + props.curatedCalendarId + "/event/" + props.event.eventId
         : "/curatedEvents/" + props.event.id;
@@ -59,31 +61,34 @@ export function DisplayCalendarEventModal(props: Props) {
   };
 
   return (
-    <Dialog open={true} onClose={props.onDone} fullWidth scroll="body">
-      <DialogContent>
-        <Box borderLeft={5} borderRadius={1} borderColor="#1976d2" padding={2} paddingBottom={0}>
-          <Typography variant="h5" fontWeight={550} marginBottom={1}>
-            {props.event.title}
-          </Typography>
-          <i>{getDisplayTime()}</i>
-          {renderDescription()}
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button variant="text" onClick={props.onDone} data-testid="calendar-event-cancel-button">
-          {Locale.label("calendars.calendarEvent.cancel")}
-        </Button>
-        {realEventId && props.mode === "edit" && (
-          <Button variant="outlined" startIcon={<RegIcon />} onClick={() => navigate("/registrations/" + realEventId)} data-testid="calendar-event-registrations-button">
-            {Locale.label("calendars.calendarEvent.manageRegistrations")}
+    <>
+      {ConfirmDialogElement}
+      <Dialog open={true} onClose={props.onDone} fullWidth scroll="body">
+        <DialogContent>
+          <Box borderLeft={5} borderRadius={1} borderColor="#1976d2" padding={2} paddingBottom={0}>
+            <Typography variant="h5" fontWeight={550} marginBottom={1}>
+              {props.event.title}
+            </Typography>
+            <i>{getDisplayTime()}</i>
+            {renderDescription()}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="text" onClick={props.onDone} data-testid="calendar-event-cancel-button">
+            {Locale.label("calendars.calendarEvent.cancel")}
           </Button>
-        )}
-        {props.event.id && props.mode === "edit" && (
-          <Button variant="contained" onClick={handleDelete} data-testid="calendar-event-delete-button">
-            {Locale.label("calendars.calendarEvent.delete")}
-          </Button>
-        )}
-      </DialogActions>
-    </Dialog>
+          {realEventId && props.mode === "edit" && (
+            <Button variant="outlined" startIcon={<RegIcon />} onClick={() => navigate("/registrations/" + realEventId)} data-testid="calendar-event-registrations-button">
+              {Locale.label("calendars.calendarEvent.manageRegistrations")}
+            </Button>
+          )}
+          {props.event.id && props.mode === "edit" && (
+            <Button variant="contained" onClick={handleDelete} data-testid="calendar-event-delete-button">
+              {Locale.label("calendars.calendarEvent.delete")}
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableRow, Box, Card, Chip, Button, Stack, Typography, Switch, FormControlLabel } from "@mui/material";
 import { Add as AddIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, MonitorHeart as HealthIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
-import { useMountedState, Permissions } from "@churchapps/apphelper";
+import { Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
 import { CountChip, ExportButton, SortableTableHead, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
 
@@ -37,40 +37,25 @@ const formatHeader = (key: string): string => {
 };
 
 const GroupsPage = () => {
-  const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [showAdd, setShowAdd] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showArchived, setShowArchived] = useState(false);
-  const isMounted = useMountedState();
 
   const canEditGroups = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
 
+  const groupsQuery = useQuery<GroupInterface[]>({
+    queryKey: [showArchived ? "/groups?archived=1" : "/groups/tag/standard", "MembershipApi"],
+    placeholderData: []
+  });
+  const groups = groupsQuery.data || [];
+
   const handleAddUpdated = () => {
     setShowAdd(false);
-    loadData();
+    groupsQuery.refetch();
   };
-
-  const loadData = () => {
-    setIsLoading(true);
-    const endpoint = showArchived ? "/groups?archived=1" : "/groups/tag/standard";
-    ApiHelper.get(endpoint, "MembershipApi")
-      .then((data: any) => {
-        if (isMounted()) {
-          setGroups(data);
-        }
-      })
-      .finally(() => {
-        if (isMounted()) {
-          setIsLoading(false);
-        }
-      });
-  };
-
-  React.useEffect(loadData, [isMounted, showArchived]);
 
   const handleRestore = (g: GroupInterface) => {
     const group: GroupInterface = { ...g, archived: false };
-    ApiHelper.post("/groups", [group], "MembershipApi").then(() => loadData());
+    ApiHelper.post("/groups", [group], "MembershipApi").then(() => groupsQuery.refetch());
   };
 
   const canApproveRequests = UserHelper.checkAccess(Permissions.membershipApi.groupMembers.edit);
@@ -164,7 +149,7 @@ const GroupsPage = () => {
   const addBox = showAdd ? <GroupAdd updatedFunction={handleAddUpdated} tags="standard" /> : <></>;
 
   const getTable = () => {
-    if (isLoading) return <Loading />;
+    if (groupsQuery.isLoading) return <Loading />;
     else {
       return (
         <Card>

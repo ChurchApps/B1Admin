@@ -3,6 +3,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 // Group-level event editing in B1App; B1Admin manages curated calendars (aggregations for public display).
 
@@ -127,8 +128,8 @@ test.describe.serial("Curated calendar lifecycle", () => {
     const row = await findCalendarRow(page, DISPOSABLE_CALENDAR);
     await row.locator('[data-testid^="edit-calendar-"]').first().click();
     await page.locator('[data-testid="calendar-name-input"] input').waitFor({ state: "visible", timeout: 10000 });
-    page.once("dialog", async d => { await d.accept(); });
     await page.locator('[data-testid="delete-calendar-button"]').click();
+    await confirmDelete(page);
     await expect(page.locator("table tbody tr").filter({ hasText: DISPOSABLE_CALENDAR }))
       .toHaveCount(0, { timeout: 15000 });
   });
@@ -167,8 +168,8 @@ test.describe.serial("New Event modal — Recurring", () => {
       const row = page.locator("table tbody tr").filter({ hasText: RECURRING_CALENDAR }).first();
       await row.locator('[data-testid^="edit-calendar-"]').first().click();
       await page.locator('[data-testid="calendar-name-input"] input').waitFor({ state: "visible", timeout: 10000 });
-      page.once("dialog", async (d) => { await d.accept(); });
       await page.locator('[data-testid="delete-calendar-button"]').click();
+      await confirmDelete(page);
     } catch { /* ignore */ }
     await page?.context().close();
   });

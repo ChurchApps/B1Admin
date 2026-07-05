@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Paper, Box, Typography, Button, Stack } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { hoverRowSx } from "../../components/ui";
 import {
   type AttendanceInterface,
   type CampusInterface,
@@ -230,7 +231,7 @@ export const AttendanceSetup = memo(() => {
       const result = (
         <TableRow
           key={key}
-          sx={{ "&:hover": { backgroundColor: "action.hover" } }}>
+          sx={hoverRowSx}>
           <TableCell sx={{ py: 0.5, border: 0 }}>{campusHtml}</TableCell>
           <TableCell sx={{ py: 0.5, border: 0 }}>{serviceHtml}</TableCell>
           <TableCell sx={{ py: 0.5, border: 0 }}>{serviceTimeHtml}</TableCell>

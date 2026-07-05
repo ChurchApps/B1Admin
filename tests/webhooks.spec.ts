@@ -2,6 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
 import { navigateToDeveloper } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 // ZACCHAEUS/ZEBEDEE are the names used for testing. If you see Zacchaeus or
 // Zebedee entered anywhere, it is a result of these tests.
@@ -36,8 +37,8 @@ test.describe.serial("Webhooks", () => {
     for (let i = 0; i < 10; i++) {
       const row = page.locator("tr").filter({ hasText: /Zacchaeus Test Webhook|Zebedee Test Webhook/ }).first();
       if (await row.count() === 0) break;
-      page.once("dialog", (d) => d.accept());
       await row.getByRole("button", { name: "Delete" }).click();
+      await confirmDelete(page);
       await expect(row).toHaveCount(0, { timeout: 10000 }).catch(() => { });
     }
   });
@@ -156,11 +157,8 @@ test.describe.serial("Webhooks", () => {
 
   test("deletes a webhook", async () => {
     const row = page.locator("tr").filter({ hasText: WEBHOOK_NAME_EDITED }).first();
-    page.once("dialog", async (dialog) => {
-      expect(dialog.type()).toBe("confirm");
-      await dialog.accept();
-    });
     await row.getByRole("button", { name: "Delete" }).click();
+    await confirmDelete(page);
     await expect(page.locator("tr").filter({ hasText: WEBHOOK_NAME_EDITED })).toHaveCount(0, { timeout: 10000 });
   });
 });

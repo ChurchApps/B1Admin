@@ -12,6 +12,7 @@ import { CountChip, HeaderPrimaryButton } from "../../components/ui";
 import { SongDetailsEdit } from "./components/SongDetailsEdit";
 import { SongDetailLinks } from "./components/SongDetailLinks";
 import { SongDetailLinksEdit } from "./components/SongDetailLinksEdit";
+import { useConfirmDelete } from "../../hooks";
 
 export const SongPage = memo(() => {
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
@@ -20,6 +21,7 @@ export const SongPage = memo(() => {
   const [selectedArrangement, setSelectedArrangement] = React.useState(null);
   const params = useParams();
   const navigate = useNavigate();
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const song = useQuery<SongInterface>({
     queryKey: ["/songs/" + params.id, "ContentApi"],
@@ -73,13 +75,13 @@ export const SongPage = memo(() => {
     }
   }, [song, arrangements, songDetail, selectedArrangement?.id, navigate]);
 
-  const handleDeleteSong = useCallback(() => {
-    if (window.confirm(Locale.label("songs.deleteSong.confirm"))) {
+  const handleDeleteSong = useCallback(async () => {
+    if (await confirm(Locale.label("songs.deleteSong.confirm"))) {
       ApiHelper.delete("/songs/" + song.data?.id, "ContentApi").then(() => {
         navigate("/serving/songs");
       });
     }
-  }, [song.data?.id, navigate]);
+  }, [song.data?.id, navigate, confirm]);
 
   const handleAddArrangement = useCallback(async () => {
     if (!song.data?.id) return;
@@ -204,6 +206,7 @@ export const SongPage = memo(() => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <PageHeader icon={<MusicIcon />} title={songDetail.data?.title || song.data?.name || Locale.label("songs.songPage.loading")} subtitle={Locale.label("songs.songPage.subtitle")}>
         {canEdit && (
           <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} tone="header" onClick={() => setEditSongDetails(true)} />

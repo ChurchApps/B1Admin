@@ -3,8 +3,8 @@ import { Box, FormControl, Grid, Icon, InputLabel, MenuItem, Select, Stack, Tool
 import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { PhoneIphone as PhoneIphoneIcon } from "@mui/icons-material";
 import type { GenericSettingInterface, GroupInterface, VisibilityPreferenceInterface } from "@churchapps/helpers";
-import { PermissionDenied } from "../components";
 import { FormCard } from "../components/ui/FormCard";
+import { useRequirePermission } from "../hooks";
 
 export const B1MobilePage: React.FC = () => {
   const [groups, setGroups] = React.useState<GroupInterface[]>(null);
@@ -52,7 +52,8 @@ export const B1MobilePage: React.FC = () => {
 
   React.useEffect(() => { loadData(); }, [loadData]);
 
-  if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
+  const denied = useRequirePermission(Permissions.membershipApi.settings.edit);
+  if (denied) return denied;
 
   const handlePrefChange = (name: string, value: string) => {
     setPref(prev => ({ ...prev, [name]: value }));

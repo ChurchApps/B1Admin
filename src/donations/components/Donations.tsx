@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableRow, TableHead, Typography, Stack, Ic
 import { Edit as EditIcon, Person as PersonIcon, CalendarMonth as DateIcon, VolunteerActivism as DonationIcon, HourglassEmpty as PendingIcon } from "@mui/icons-material";
 import { IconText, EmptyState } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { CardWithHeader, ExportButton } from "../../components/ui";
+import { CardWithHeader, ExportButton, hoverRowSx } from "../../components/ui";
 
 interface Props {
   batch: DonationBatchInterface;
@@ -104,13 +104,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
 
       const isPending = (d as any).status === "pending";
       rows.push(
-        <TableRow
-          key={i}
-          sx={{
-            "&:hover": { backgroundColor: "action.hover" },
-            transition: "background-color 0.2s ease",
-            opacity: isPending ? 0.8 : 1
-          }}>
+        <TableRow key={i} sx={{ ...hoverRowSx, opacity: isPending ? 0.8 : 1 }}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.main" variant="body2">

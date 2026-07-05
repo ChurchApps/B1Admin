@@ -2,6 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
 import { navigateToDeveloper } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 const KEY_NAME = "Barnabas Test Key";
 
@@ -29,8 +30,8 @@ test.describe.serial("Developer Portal", () => {
     for (let i = 0; i < 10; i++) {
       const row = page.locator("tr").filter({ hasText: KEY_NAME }).first();
       if (await row.count() === 0) break;
-      page.once("dialog", (d) => d.accept());
       await row.getByRole("button", { name: "Delete" }).click();
+      await confirmDelete(page);
       await expect(row).toHaveCount(0, { timeout: 10000 }).catch(() => { });
     }
   });
@@ -78,11 +79,8 @@ test.describe.serial("Developer Portal", () => {
 
   test("deletes the API key", async () => {
     const row = page.locator("tr").filter({ hasText: KEY_NAME }).first();
-    page.once("dialog", async (dialog) => {
-      expect(dialog.type()).toBe("confirm");
-      await dialog.accept();
-    });
     await row.getByRole("button", { name: "Delete" }).click();
+    await confirmDelete(page);
     await expect(page.locator("tr").filter({ hasText: KEY_NAME })).toHaveCount(0, { timeout: 10000 });
   });
 });

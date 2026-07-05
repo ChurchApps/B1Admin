@@ -25,6 +25,7 @@ import { Permissions } from "@churchapps/helpers";
 import type { PlaylistInterface } from "@churchapps/helpers";
 import { useForm, Controller } from "react-hook-form";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   currentPlaylist: PlaylistInterface,
@@ -42,6 +43,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
 
   const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { title: "", description: "", publishDate: "" } });
   const watchedId = watch("id");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
     if (props.currentPlaylist) {
@@ -65,12 +67,12 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(watchedId)) return handleDelete; else return undefined; };
   const handleCancel = () => { props.updatedFunction(); };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const errs: string[] = [];
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.playlists.playlistEdit.unauthorizedDelete"));
     if (errs.length > 0) return;
 
-    if (window.confirm(Locale.label("sermons.playlists.playlistEdit.deleteConfirm"))) {
+    if (await confirm(Locale.label("sermons.playlists.playlistEdit.deleteConfirm"))) {
       ApiHelper.delete("/playlists/" + watchedId, "ContentApi").then(() => { props.updatedFunction(); });
     }
   };
@@ -87,6 +89,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <FormCard
         icon="calendar_month"
         title={UniqueIdHelper.isMissing(watchedId) ? Locale.label("sermons.playlists.playlistEdit.createNew") : Locale.label("sermons.playlists.playlistEdit.editPlaylist")}

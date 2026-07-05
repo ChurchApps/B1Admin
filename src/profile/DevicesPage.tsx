@@ -1,7 +1,8 @@
 import { TableHead, Table, TableCell, TableRow, TableBody } from "@mui/material";
 import { Add as AddIcon, Edit as EditIcon, Devices as DevicesIcon } from "@mui/icons-material";
-import React, { useState } from "react";
-import { ApiHelper, ErrorMessages, DisplayBox, DateHelper, Locale, PageHeader } from "@churchapps/apphelper";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { ErrorMessages, DisplayBox, DateHelper, Locale, PageHeader } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { PairScreen } from "./components/PairScreen";
 import { DeviceEdit } from "./components/DeviceEdit";
@@ -21,18 +22,14 @@ export interface DeviceInterface {
 
 export const DevicesPage = () => {
   const [errors] = useState([]);
-  const [devices, setDevices] = useState<DeviceInterface[]>([]);
   const [showAdd, setShowAdd] = useState(false);
   const [editDevice, setEditDevice] = useState<DeviceInterface>(null);
 
-  const loadData = () => {
-    ApiHelper.get("/devices/my", "MessagingApi").then((data: any) => {
-      data = data.filter((d: DeviceInterface) => d.appName === "ChurchAppsPlayer");
-      setDevices(data);
-    });
-  };
-
-  React.useEffect(loadData, []);
+  const devices = useQuery<DeviceInterface[]>({
+    queryKey: ["/devices/my", "MessagingApi"],
+    placeholderData: [],
+    select: (data) => (data || []).filter((d: DeviceInterface) => d.appName === "ChurchAppsPlayer")
+  });
 
   const editContent = (
     <AppIconButton intent="add" label={Locale.label("common.add")} icon={<AddIcon />} tone="card" onClick={() => setShowAdd(true)} data-testid="add-device-button" />
@@ -46,7 +43,7 @@ export const DevicesPage = () => {
           <PairScreen
             updatedFunction={() => {
               setShowAdd(false);
-              loadData();
+              devices.refetch();
             }}
           />
         )}
@@ -55,7 +52,7 @@ export const DevicesPage = () => {
             device={editDevice}
             updatedFunction={() => {
               setEditDevice(null);
-              loadData();
+              devices.refetch();
             }}
           />
         )}
@@ -71,7 +68,7 @@ export const DevicesPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {devices.map((device) => (
+              {(devices.data || []).map((device) => (
                 <TableRow key={device.id}>
                   <TableCell>{device.label || Locale.label("profile.devices.device")}</TableCell>
                   <TableCell>{DateHelper.toDate(device.registrationDate).toLocaleDateString()}</TableCell>

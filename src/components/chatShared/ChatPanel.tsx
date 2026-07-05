@@ -1,10 +1,12 @@
 import React from "react";
-import { Box, TextField, Typography, AppBar, Toolbar, AppBarProps, SxProps, Theme } from "@mui/material";
+import { Box, TextField, Typography, AppBar, Toolbar } from "@mui/material";
+import type { AppBarProps, SxProps, Theme } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import { Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../ui/AppIconButton";
-import { useChat, ChatMessage } from "./useChat";
+import { useChat } from "./useChat";
+import type { ChatMessage } from "./useChat";
 
 interface Props {
   onClose: () => void;

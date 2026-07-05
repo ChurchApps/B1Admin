@@ -12,10 +12,11 @@ import {
   LinearProgress
 } from "@mui/material";
 import { HowToReg as RegIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, PageHeader, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
-import { PermissionDenied } from "../components";
 import { CountChip, CardWithHeader } from "../components/ui";
+import { useRequirePermission } from "../hooks";
+import { formatDateSafe } from "../helpers/DateFormatHelper";
 
 export const RegistrationsPage = () => {
   const [events, setEvents] = useState<EventInterface[]>([]);
@@ -41,7 +42,8 @@ export const RegistrationsPage = () => {
 
   useEffect(() => { loadData(); }, []);
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
+  if (denied) return denied;
 
   const getCapacityDisplay = (event: EventInterface) => {
     const count = counts[event.id] || 0;
@@ -62,7 +64,7 @@ export const RegistrationsPage = () => {
           {event.title}
         </Typography>
       </TableCell>
-      <TableCell>{event.start ? new Date(event.start).toLocaleDateString() : ""}</TableCell>
+      <TableCell>{formatDateSafe(event.start)}</TableCell>
       <TableCell>{getCapacityDisplay(event)}</TableCell>
       <TableCell>
         {event.tags && event.tags.split(",").map((tag) => (

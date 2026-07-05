@@ -49,13 +49,7 @@ export function TypographyEdit(props: Props) {
 
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseFloat(e.target.value);
-    const t = { ...typography };
-    switch (e.target.name) {
-      case "baseSize": t.baseSize = val; break;
-      case "scale": t.scale = val; break;
-      case "lineHeight": t.lineHeight = val; break;
-    }
-    setTypography(t);
+    setTypography({ ...typography, [e.target.name]: val } as TypographyInterface);
   };
 
   const getFontSizePreview = (level: number) => {

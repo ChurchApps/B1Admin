@@ -50,7 +50,7 @@ import {
 import { SendInviteDialog } from "../../components";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { AppIconButton } from "../../components/ui/AppIconButton";
-import { ExportButton } from "../../components/ui";
+import { ExportButton, hoverRowSx } from "../../components/ui";
 
 interface Props {
   group: GroupInterface;
@@ -205,10 +205,7 @@ export const GroupMembers: React.FC<Props> = memo((props) => {
       rows.push(
         <TableRow
           key={gm.id}
-          sx={{
-            transition: "background-color 0.15s ease",
-            "&:hover": { backgroundColor: "action.hover" }
-          }}>
+          sx={hoverRowSx}>
           <TableCell sx={{ ...cellSx, width: 56 }}>
             <PersonAvatar person={gm.person} size="small" />
           </TableCell>

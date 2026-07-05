@@ -4,6 +4,7 @@ import { loggedInTest as test, expect } from "./helpers/test-fixtures";
 import { login } from "./helpers/auth";
 import { navigateToRegistrations } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
+import { confirmDelete } from "./helpers/fixtures";
 
 
 const API_BASE = "http://localhost:8084";
@@ -132,8 +133,8 @@ test.describe.serial("Registrations — Registration Questions, Add Attendee, fi
       if (await editBtn.count().then((c) => c > 0).catch(() => false)) {
         await editBtn.click();
         await page.locator('[data-testid="calendar-name-input"] input').waitFor({ state: "visible", timeout: 10000 });
-        page.once("dialog", async (d) => { await d.accept(); });
         await page.locator('[data-testid="delete-calendar-button"]').click();
+        await confirmDelete(page);
       }
     } catch { /* ignore */ }
     await page?.context().close();

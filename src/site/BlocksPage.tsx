@@ -1,42 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { JSX } from "react";
-import { ApiHelper, Loading, PageHeader, UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { Loading, PageHeader, Permissions, Locale } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import type { BlockInterface } from "../helpers";
 import { TableRow, TableCell, Table, TableBody, TableHead, Box, Typography, Stack, Button, Card, Icon, IconButton, Tooltip } from "@mui/material";
 import { SmartButton as BlockIcon, Add as AddIcon, Edit as EditIcon, Settings as SettingsIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { BlockEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
-import { PermissionDenied } from "../components";
-import { CountChip, EmptyState, HeaderPrimaryButton } from "../components/ui";
+import { CountChip, EmptyState, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
+import { useRequirePermission } from "../hooks";
 
 export const BlocksPage = () => {
-  const [blocks, setBlocks] = useState<BlockInterface[]>([]);
   const [editBlock, setEditBlock] = useState<BlockInterface>(null);
-  const [loading, setLoading] = useState(true);
   const [showSites, setShowSites] = useState(false);
   const { siteId, setSiteId, sites, reloadSites } = useSiteSelection();
+  const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
-  const loadData = () => {
-    setLoading(true);
-    ApiHelper.get("/blocks" + (siteId ? "?siteId=" + siteId : ""), "ContentApi").then((blocksData: any[]) => {
-      const filtered = blocksData.filter((block: BlockInterface) => block.blockType !== "footerBlock");
-      setBlocks(filtered || []);
-      setLoading(false);
-    });
-  };
-
-  useEffect(() => {
-    loadData();
-  }, [siteId]);
-
-  const [stats, setStats] = useState({ totalBlocks: 0 });
-
-  useEffect(() => {
-    if (blocks) {
-      const totalBlocks = blocks.length;
-      setStats({ totalBlocks });
-    }
-  }, [blocks]);
+  const blocksQuery = useQuery<BlockInterface[]>({
+    queryKey: ["/blocks" + (siteId ? "?siteId=" + siteId : ""), "ContentApi"],
+    placeholderData: [],
+    select: (data) => (data || []).filter((block: BlockInterface) => block.blockType !== "footerBlock")
+  });
+  const blocks = blocksQuery.data || [];
+  const loading = blocksQuery.isLoading;
+  const totalBlocks = blocks.length;
 
   const getRows = () => {
     const result: JSX.Element[] = [];
@@ -58,7 +45,7 @@ export const BlocksPage = () => {
 
     blocks.forEach((block) => {
       result.push(
-        <TableRow key={block.id} sx={{ "&:hover": { backgroundColor: "action.hover" }, transition: "background-color 0.2s ease" }}>
+        <TableRow key={block.id} sx={hoverRowSx}>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <BlockIcon sx={{ color: "primary.main", fontSize: 20 }} />
@@ -136,7 +123,7 @@ export const BlocksPage = () => {
     );
   };
 
-  if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) return <PermissionDenied permissions={[Permissions.contentApi.content.edit]} />;
+  if (denied) return denied;
 
   if (loading) {
     return (
@@ -155,7 +142,7 @@ export const BlocksPage = () => {
 
   return (
     <>
-      <PageHeader icon={<BlockIcon />} title={Locale.label("site.blocksPage.reusableBlocks")} subtitle={Locale.label("site.blocksPage.subtitle")} statistics={[{ icon: <BlockIcon />, value: stats.totalBlocks.toString(), label: Locale.label("site.blocksPage.totalBlocks") }]}>
+      <PageHeader icon={<BlockIcon />} title={Locale.label("site.blocksPage.reusableBlocks")} subtitle={Locale.label("site.blocksPage.subtitle")} statistics={[{ icon: <BlockIcon />, value: totalBlocks.toString(), label: Locale.label("site.blocksPage.totalBlocks") }]}>
         <SiteSwitcher siteId={siteId} onChange={setSiteId} sites={sites} onManage={() => setShowSites(true)} />
         <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setEditBlock({ blockType: "elementBlock", siteId })} data-testid="add-block-button">{Locale.label("site.blocksPage.addBlock")}</HeaderPrimaryButton>
       </PageHeader>
@@ -166,7 +153,7 @@ export const BlocksPage = () => {
       <Box sx={{ p: 3 }}>
         {editBlock && (
           <Box sx={{ mb: 3 }}>
-            <BlockEdit block={editBlock} updatedCallback={() => { setEditBlock(null); loadData(); }} />
+            <BlockEdit block={editBlock} updatedCallback={() => { setEditBlock(null); blocksQuery.refetch(); }} />
           </Box>
         )}
 
@@ -176,7 +163,7 @@ export const BlocksPage = () => {
               <Stack direction="row" spacing={1} alignItems="center">
                 <BlockIcon sx={{ color: "primary.main", fontSize: 20 }} />
                 <Typography variant="h6">{Locale.label("site.blocksPage.blocks")}</Typography>
-                {stats.totalBlocks > 0 && <CountChip count={stats.totalBlocks} />}
+                {totalBlocks > 0 && <CountChip count={totalBlocks} />}
               </Stack>
             </Stack>
           </Box>

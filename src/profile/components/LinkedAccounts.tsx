@@ -1,25 +1,20 @@
-import React, { useEffect } from "react";
 import { type SettingInterface } from "@churchapps/helpers";
 import { Locale, ApiHelper } from "@churchapps/apphelper";
+import { useQuery } from "@tanstack/react-query";
 import { Button, Card, CardContent, CardMedia, Grid } from "@mui/material";
 import { Link as LinkIcon } from "@mui/icons-material";
 import { CardWithHeader } from "../../components/ui";
 
 export const LinkedAccounts = () => {
-  const [settings, setSettings] = React.useState<SettingInterface[]>([]);
-
-  const loadData = () => {
-    ApiHelper.get("/settings/my", "ContentApi").then((data: any) => {
-      setSettings(data);
-    });
-  };
+  const settingsQuery = useQuery<SettingInterface[]>({ queryKey: ["/settings/my", "ContentApi"], placeholderData: [] });
+  const settings = settingsQuery.data || [];
 
   const unlinkPraiseCharts = async () => {
     const token = settings.find((s) => s.keyName === "praiseChartsAccessToken");
     const secret = settings.find((s) => s.keyName === "praiseChartsAccessTokenSecret");
     if (secret) await ApiHelper.delete("/settings/my/" + secret.id, "ContentApi");
     if (token) await ApiHelper.delete("/settings/my/" + token.id, "ContentApi");
-    loadData();
+    settingsQuery.refetch();
   };
 
   const openOAuthPopup = async () => {
@@ -41,15 +36,13 @@ export const LinkedAccounts = () => {
       } catch (error) {
         console.error("Failed to complete OAuth flow:", error);
       }
-      loadData();
+      settingsQuery.refetch();
       window.removeEventListener("message", handleMessage);
     };
 
     // Listen for message from popup
     window.addEventListener("message", handleMessage);
   };
-
-  useEffect(loadData, []);
 
   const praiseChartsAccessToken = settings.find((s) => s.keyName === "praiseChartsAccessToken")?.value;
 

@@ -5,9 +5,9 @@ import { ApiHelper, Locale, PageHeader, UniqueIdHelper, UserHelper, Permissions 
 import { HowToReg as CheckInIcon } from "@mui/icons-material";
 import type { GenericSettingInterface } from "@churchapps/helpers";
 import { QRCodeCanvas } from "qrcode.react";
-import { PermissionDenied } from "../components";
 import { FormCard } from "../components/ui";
 import { EnvironmentHelper } from "../helpers";
+import { useRequirePermission } from "../hooks";
 import { KioskThemeEdit } from "./KioskThemeEdit";
 
 export const CheckInPage: React.FC = () => {
@@ -35,7 +35,8 @@ export const CheckInPage: React.FC = () => {
 
   React.useEffect(() => { loadData(); }, [loadData]);
 
-  if (!UserHelper.checkAccess(Permissions.membershipApi.settings.edit)) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
+  const denied = useRequirePermission(Permissions.membershipApi.settings.edit);
+  if (denied) return denied;
 
   const handleSave = async () => {
     setSaving(true);

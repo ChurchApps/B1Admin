@@ -4,6 +4,7 @@ import { Alert, Box, Button, Checkbox, CircularProgress, Dialog, FormControl, Fo
 import { ApiHelper, UserHelper, SlugHelper, Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { Permissions } from "@churchapps/helpers";
 import type { LinkInterface, GroupInterface } from "@churchapps/helpers";
 import type { PageInterface } from "../../helpers/Interfaces";
@@ -33,11 +34,8 @@ export function PageLinkEdit(props: Props) {
   const visibility = watch("visibility");
   const metaDescription = watch("metaDescription") || "";
   const e = formState.errors as any;
-  const summaryErrors: string[] = [];
-  if (e.url?.message) summaryErrors.push(e.url.message);
-  if (e.title?.message) summaryErrors.push(e.title.message);
-  if (e.root?.message) summaryErrors.push(e.root.message);
-  if (e._checkUrl?.message) summaryErrors.push(e._checkUrl.message);
+  const summaryErrors = useErrorSummary(formState.errors, ["url", "title", "root", "_checkUrl"]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = () => props.updatedCallback(props.page, props.link || null);
 
@@ -60,13 +58,13 @@ export function PageLinkEdit(props: Props) {
     props.updatedCallback(pageData, linkData);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
       setError("root", { message: Locale.label("site.pageLinkEdit.unauthorizedDelete") });
       return;
     }
     if (props.page) {
-      if (window.confirm(Locale.label("site.pageLink.confirmDelete"))) {
+      if (await confirm(Locale.label("site.pageLink.confirmDelete"))) {
         ApiHelper.delete("/pages/" + props.page.id?.toString(), "ContentApi").then(() => {
           if (props.link) {
             ApiHelper.delete("/links/" + props.link.id?.toString(), "ContentApi").then(() => props.updatedCallback(null, null));
@@ -89,9 +87,9 @@ export function PageLinkEdit(props: Props) {
     setChecked(true);
   };
 
-  const handleDuplicate = (e: React.MouseEvent) => {
+  const handleDuplicate = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (confirm(Locale.label("site.pageLink.confirmDuplicate"))) {
+    if (await confirm(Locale.label("site.pageLink.confirmDuplicate"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") })) {
       ApiHelper.post("/pages/duplicate/" + props.page?.id, {}, "ContentApi").then((data: any) => {
         props.updatedCallback(data, props.link || null);
       });
@@ -158,6 +156,7 @@ export function PageLinkEdit(props: Props) {
   if (!props.page && !props.link) return <></>;
   return (
     <Dialog open={true} onClose={props.onDone} style={{ minWidth: 800 }}>
+      {ConfirmDialogElement}
       <FormCard
         id="pageDetailsBox"
         title={props.page ? Locale.label("site.pageLink.pageSettings") : Locale.label("site.pageLink.linkSettings")}
