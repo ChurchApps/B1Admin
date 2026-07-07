@@ -1,14 +1,14 @@
 import React from "react";
-import { Box, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 import { FormatListBulleted as FormatListBulletedIcon, MenuBook as MenuBookIcon, MusicNote as MusicNoteIcon } from "@mui/icons-material";
 import { type PlanItemInterface } from "../../helpers";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
-import { DroppableWrapper } from "../../components/DroppableWrapper";
+import { RowDropZone } from "./RowDropZone";
 import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
-import { getNextChildSort } from "./planItemUtils";
+import { getNextChildSort, estimateSeconds, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
@@ -29,6 +29,7 @@ interface Props {
   exclusions?: PlanItemTimeInterface[];
   selectedServiceTimeId?: string;
   excluded?: boolean;
+  mediaLookup?: Record<string, ProviderMediaInfo>;
 }
 
 export const PlanItem = React.memo((props: Props) => {
@@ -123,63 +124,34 @@ export const PlanItem = React.memo((props: Props) => {
     props.planItem.children?.forEach((c, index) => {
       const childStartTime = cumulativeTime;
       const childExcluded = c.itemType !== "header" && isChildExcluded(c.id || "");
+      const childPlanItem = (
+        <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} mediaLookup={props.mediaLookup} />
+      );
       result.push(
         <React.Fragment key={c.id || `child-${index}`}>
-          {props.showItemDrop && (
-            <DroppableWrapper
+          {props.readOnly ? (
+            childPlanItem
+          ) : (
+            <RowDropZone
               accept="planItem"
-              onDrop={(item) => {
-                handleDrop(item, index + 0.5);
+              onDrop={(item, position) => {
+                handleDrop(item, index + (position === "before" ? 0.5 : 1.5));
               }}>
-              <Box
-                sx={{
-                  height: "30px",
-                  border: "2px dashed",
-                  borderColor: "primary.main",
-                  borderRadius: 1,
-                  backgroundColor: "primary.light",
-                  opacity: 0.3,
-                  mb: 0.5
-                }}
-              />
-            </DroppableWrapper>
+              <DraggableWrapper
+                dndType="planItem"
+                data={c}
+                handleClassName="dragHandle"
+                draggingCallback={(isDragging) => {
+                  if (props.onDragChange) props.onDragChange(isDragging);
+                }}>
+                {childPlanItem}
+              </DraggableWrapper>
+            </RowDropZone>
           )}
-
-          <DraggableWrapper
-            dndType="planItem"
-            data={c}
-            draggingCallback={(isDragging) => {
-              if (props.onDragChange) props.onDragChange(isDragging);
-            }}>
-            <PlanItem key={c.id} planItem={c} setEditPlanItem={props.setEditPlanItem} readOnly={props.readOnly} showItemDrop={props.showItemDrop} onDragChange={props.onDragChange} onChange={props.onChange} startTime={childStartTime} associatedContentPath={props.associatedContentPath} associatedProviderId={props.associatedProviderId} ministryId={props.ministryId} serviceTime={props.serviceTime} exclusions={props.exclusions} selectedServiceTimeId={props.selectedServiceTimeId} excluded={childExcluded} />
-          </DraggableWrapper>
         </React.Fragment>
       );
-      if (!childExcluded) cumulativeTime += c.seconds || 0;
+      if (!childExcluded) cumulativeTime += estimateSeconds(c, props.mediaLookup);
     });
-    if (props.showItemDrop) {
-      result.push(
-        <React.Fragment key="trailing-drop-zone">
-          <DroppableWrapper
-            accept="planItem"
-            onDrop={(item) => {
-              handleDrop(item, getNextChildSort(props.planItem.children));
-            }}>
-            <Box
-              sx={{
-                height: 30,
-                border: "2px dashed",
-                borderColor: "primary.main",
-                borderRadius: 1,
-                backgroundColor: "primary.light",
-                opacity: 0.3,
-                mb: 0.5
-              }}
-            />
-          </DroppableWrapper>
-        </React.Fragment>
-      );
-    }
     return result;
   };
 
@@ -191,6 +163,16 @@ export const PlanItem = React.memo((props: Props) => {
       readOnly={props.readOnly}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem(props.planItem)}
+      wrapRow={props.readOnly ? undefined : (row) => (
+        <RowDropZone
+          accept="planItem"
+          mode="into"
+          onDrop={(item) => {
+            handleDrop(item, 0.5);
+          }}>
+          {row}
+        </RowDropZone>
+      )}
     >
       {getChildren()}
     </PlanItemHeader>
@@ -205,6 +187,7 @@ export const PlanItem = React.memo((props: Props) => {
       readOnly={props.readOnly}
       onLabelClick={onLabelClick}
       onEditClick={() => props.setEditPlanItem(props.planItem)}
+      mediaLookup={props.mediaLookup}
     />
   );
 

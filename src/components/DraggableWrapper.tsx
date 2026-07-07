@@ -8,17 +8,20 @@ type Props = {
   data: any;
   onDoubleClick?: () => void;
   draggingCallback?: (isDragging: boolean) => void;
+  /** When set, only the first descendant with this class starts a drag (the whole
+   * element still renders as the drag preview). Without it, the whole element drags. */
+  handleClassName?: string;
 };
 
 export function DraggableWrapper(props: Props) {
-  const { dndType, data, draggingCallback, onDoubleClick, children } = props;
+  const { dndType, data, draggingCallback, onDoubleClick, children, handleClassName } = props;
   const callbackRef = React.useRef(draggingCallback);
 
   useEffect(() => {
     callbackRef.current = draggingCallback;
   }, [draggingCallback]);
 
-  const [{ isDragging }, drag] = useDrag(
+  const [{ isDragging }, drag, preview] = useDrag(
     () => ({
       type: dndType,
       item: { data },
@@ -41,8 +44,16 @@ export function DraggableWrapper(props: Props) {
 
   return (
     <div
-      ref={(node) => { drag(node); }}
-      style={{ opacity, transition: "opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)", cursor: isDragging ? "grabbing" : "grab" }}
+      ref={(node) => {
+        if (handleClassName) {
+          preview(node);
+          const handle = node?.querySelector("." + handleClassName) as HTMLElement | null;
+          drag(handle || node);
+        } else {
+          drag(node);
+        }
+      }}
+      style={{ opacity, transition: "opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)", ...(handleClassName ? {} : { cursor: isDragging ? "grabbing" : "grab" }) }}
       className="dragButton"
       onDoubleClick={onDoubleClick}
       data-testid="draggable-wrapper"

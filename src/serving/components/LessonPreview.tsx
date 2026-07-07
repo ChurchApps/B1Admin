@@ -4,6 +4,7 @@ import { Locale } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../helpers";
 import { getSectionDuration } from "./PlanUtils";
 import { PlanItem } from "./PlanItem";
+import { type ProviderMediaInfo } from "./planItemUtils";
 
 interface Props {
   lessonItems: PlanItemInterface[];
@@ -12,6 +13,7 @@ interface Props {
   associatedProviderId?: string;
   associatedContentPath?: string;
   ministryId?: string;
+  mediaLookup?: Record<string, ProviderMediaInfo>;
 }
 
 export const LessonPreview = memo((props: Props) => {
@@ -34,6 +36,7 @@ export const LessonPreview = memo((props: Props) => {
           associatedProviderId={props.associatedProviderId}
           associatedContentPath={props.associatedContentPath}
           ministryId={props.ministryId}
+          mediaLookup={props.mediaLookup}
         />
       );
       cumulativeTime += getSectionDuration(item);

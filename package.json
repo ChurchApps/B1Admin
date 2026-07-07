@@ -46,6 +46,8 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.59.1",
     "@rolldown/plugin-babel": "^0.2.3",
+    "@stripe/react-stripe-js": "^6.6.0",
+    "@stripe/stripe-js": "^9.8.0",
     "@tanstack/react-query-devtools": "^5.100.9",
     "@types/babel__core": "^7.20.5",
     "@types/react": "^19.2.14",

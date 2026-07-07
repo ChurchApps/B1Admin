@@ -6,6 +6,7 @@ import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
 import { formatTime, formatClockTime } from "../PlanUtils";
 import { PlanItemIcon } from "./PlanItemIcon";
+import { type ProviderMediaInfo, matchProviderMedia, isVideoMedia, estimateSeconds } from "../planItemUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -15,6 +16,7 @@ interface Props {
   readOnly?: boolean;
   onLabelClick?: () => void;
   onEditClick: () => void;
+  mediaLookup?: Record<string, ProviderMediaInfo>;
 }
 
 /**
@@ -27,9 +29,17 @@ export const PlanItemRow: React.FC<Props> = ({
   excluded,
   readOnly,
   onLabelClick,
-  onEditClick
+  onEditClick,
+  mediaLookup
 }) => {
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
+  const providerMedia = planItem.thumbnailUrl ? undefined : matchProviderMedia(planItem, mediaLookup);
+  const showVideoThumb = !!providerMedia && isVideoMedia(planItem.label, providerMedia);
+  // Untimed images show a planning estimate (~5:00) rather than an alarming 0:00 —
+  // stored seconds stay 0 so playback leaves the volunteer in control.
+  const storedSeconds = planItem.seconds ?? 0;
+  const estimatedSeconds = storedSeconds === 0 ? estimateSeconds(planItem, mediaLookup) : 0;
+  const isEstimate = estimatedSeconds > 0;
   return (
     <Box
       className={`planItem${onLabelClick ? " clickableRow" : ""}`}
@@ -42,11 +52,14 @@ export const PlanItemRow: React.FC<Props> = ({
         <span className="timeRailLine" />
       </div>
       {!readOnly && (
-        <DragIndicatorIcon
+        <Box
+          component="span"
           className="dragHandle rowControl"
-          sx={{ color: "text.secondary", flexShrink: 0 }}
-          onClick={(e) => e.stopPropagation()}
-        />
+          sx={{ display: "inline-flex", alignItems: "center", color: "text.secondary", flexShrink: 0 }}
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+        >
+          <DragIndicatorIcon />
+        </Box>
       )}
       <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {planItem.thumbnailUrl ? (
@@ -62,11 +75,40 @@ export const PlanItemRow: React.FC<Props> = ({
               }
             }}
           />
+        ) : providerMedia ? (
+          showVideoThumb ? (
+            <Box
+              component="video"
+              src={providerMedia.url}
+              preload="metadata"
+              muted
+              playsInline
+              // Browsers won't decode a frame until forced; seeking just past 0 paints the first frame without playing.
+              onLoadedMetadata={(e: React.SyntheticEvent<HTMLVideoElement>) => {
+                try { e.currentTarget.currentTime = 0.1; } catch { /* ignore */ }
+              }}
+              sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2, pointerEvents: "none", backgroundColor: "grey.900" }}
+            />
+          ) : (
+            <Box
+              component="img"
+              src={providerMedia.url}
+              alt=""
+              loading="lazy"
+              sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2 }}
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                e.currentTarget.style.display = "none";
+                if (e.currentTarget.nextElementSibling) {
+                  (e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex";
+                }
+              }}
+            />
+          )
         ) : null}
         <Box
           component="span"
           sx={{
-            display: planItem.thumbnailUrl ? "none" : "flex",
+            display: planItem.thumbnailUrl || providerMedia ? "none" : "flex",
             alignItems: "center",
             justifyContent: "center",
             width: 80,
@@ -107,18 +149,21 @@ export const PlanItemRow: React.FC<Props> = ({
             <EditIcon />
           </Box>
         )}
-        <ScheduleIcon sx={{ fontSize: 18, color: planItem.seconds === 0 ? "error.main" : "text.secondary" }} />
+        <ScheduleIcon sx={{ fontSize: 18, color: storedSeconds === 0 && !isEstimate ? "error.main" : "text.secondary" }} />
         <Box
           component="span"
-          title={Locale.label("plans.planItem.duration")}
+          title={isEstimate
+            ? (Locale.label("plans.planItem.estimatedDuration") || "Estimated — advances manually during class")
+            : Locale.label("plans.planItem.duration")}
           sx={{
-            color: planItem.seconds === 0 ? "error.main" : "text.secondary",
+            color: storedSeconds === 0 && !isEstimate ? "error.main" : "text.secondary",
+            fontStyle: isEstimate ? "italic" : "normal",
             fontSize: "0.85rem",
             minWidth: 44,
             textAlign: "right"
           }}
         >
-          {formatTime(planItem.seconds ?? 0)}
+          {isEstimate ? `~${formatTime(estimatedSeconds)}` : formatTime(storedSeconds)}
         </Box>
       </Box>
     </Box>

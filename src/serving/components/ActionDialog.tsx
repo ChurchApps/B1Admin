@@ -29,6 +29,13 @@ export const ActionDialog: React.FC<Props> = (props) => {
     fallbackUrl: props.downloadUrl
   });
 
+  // Provider download links often carry no file extension, so URL sniffing wrongly
+  // defaults videos to "image". The item name still has the extension — trust it.
+  const nameSaysVideo = /\.(mp4|webm|mov|m4v|avi|mkv)\s*$/i.test(props.contentName || "");
+  const effectiveMediaType = nameSaysVideo && (!content?.mediaType || content.mediaType === "image")
+    ? "video"
+    : content?.mediaType;
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (typeof event.data?.height === "number") {
@@ -48,7 +55,7 @@ export const ActionDialog: React.FC<Props> = (props) => {
       <DialogContent sx={{ p: 0, overflow: "hidden" }}>
         <ContentRenderer
           url={content?.url}
-          mediaType={content?.mediaType}
+          mediaType={effectiveMediaType}
           title={props.contentName}
           description={content?.description}
           loading={loading}
