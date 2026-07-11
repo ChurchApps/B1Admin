@@ -169,11 +169,12 @@ export const DonationBatchesPage = () => {
         title={Locale.label("donations.donations.batches")}
         subtitle={Locale.label("donations.donationBatchesPage.subtitle")}
       >
-        <Stack
-          direction={{ xs: "column", md: "row" }}
-          spacing={2}
-          alignItems={{ xs: "flex-start", md: "center" }}
-          sx={{ width: "100%" }}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        alignItems={{ xs: "flex-start", sm: "center" }}
+        justifyContent={{ sm: "space-between" }}
+        width="100%"
         >
           {stats.totalBatches > 0 && (
             <PageHeaderStats

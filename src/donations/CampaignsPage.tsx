@@ -143,10 +143,9 @@ export const CampaignsPage = () => {
   return (
     <>
       <PageHeader icon={<CampaignIcon />} title={Locale.label("donations.campaignsPage.campaigns")} subtitle={Locale.label("donations.campaignsPage.subtitle")}>
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent={{ sm: "space-between" }} width="100%">
         {stats.totalCampaigns > 0 && (
           <PageHeaderStats
-            spread
-            spacing={{ xs: 2, sm: 2, md: 4 }}
             items={[
               { icon: <CampaignIcon sx={{ color: "#FFF", fontSize: 24 }} />, value: stats.totalCampaigns, label: Locale.label("donations.campaignsPage.totalCampaigns"), minWidth: 80 },
               { value: CurrencyHelper.formatCurrencyWithLocale(stats.totalPledged, currency, 0), label: Locale.label("donations.campaignsPage.pledged") },
@@ -162,6 +161,7 @@ export const CampaignsPage = () => {
             {Locale.label("donations.campaignsPage.addCampaign")}
           </HeaderPrimaryButton>
         )}
+      </Stack>
       </PageHeader>
 
       <Box sx={{ p: 3 }}>

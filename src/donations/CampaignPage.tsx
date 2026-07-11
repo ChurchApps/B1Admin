@@ -165,6 +165,7 @@ export const CampaignPage = () => {
   return (
     <>
       <PageHeader icon={<CampaignIcon />} title={campaign?.name || ""} subtitle={Locale.label("donations.campaignPage.subtitle")}>
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} alignItems={{ xs: "flex-start", sm: "center" }} justifyContent={{ sm: "space-between" }} width="100%">
         {progress.data && (
           <PageHeaderStats
             spread
@@ -191,6 +192,7 @@ export const CampaignPage = () => {
             </HeaderPrimaryButton>
           </Stack>
         )}
+      </Stack>
       </PageHeader>
 
       <Box sx={{ p: 3 }}>

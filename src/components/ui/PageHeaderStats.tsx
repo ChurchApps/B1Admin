@@ -16,15 +16,15 @@ interface Props {
 
 export const PageHeaderStats: React.FC<Props> = ({ items, spacing = { xs: 2, sm: 4, md: 5 }, spread = false }) => (
   <Stack
-    direction={{ xs: "column", sm: "row" }}
+    direction="row"
     spacing={spacing}
     sx={{
-      position: { xs: "static", md: "absolute" },
-      left: { md: "50%" },
-      top: { md: "50%" },
-      transform: { md: "translateY(-50%)" },
+    //   position: { xs: "static", md: "absolute" },
+    //   left: { md: "50%" },
+    //   top: { md: "50%" },
+    //   transform: { md: "translateY(-50%)" },
       ...(spread ? { right: { md: "24px" }, justifyContent: { md: "space-between" } } : {}),
-      flexWrap: "wrap"
+      // flexWrap: "wrap",
     }}
   >
     {items.map((item) => (

@@ -82,10 +82,11 @@ export const DonationBatchPage = () => {
         subtitle={batch.data?.batchDate ? `${Locale.label("donations.donationBatchPage.batchDate")} ${DateHelper.prettyDate(new Date(batch.data.batchDate.split("T")[0] + "T00:00:00"))}` : Locale.label("donations.donationBatchPage.subtitle")}
       >
         <Stack
-          direction={{ xs: "column", md: "row" }}
-          spacing={2}
-          alignItems={{ xs: "flex-start", md: "center" }}
-          sx={{ width: "100%" }}
+          direction={{ xs: "column", sm: "row" }} 
+          spacing={{ xs: 2 }}
+          alignItems={{ xs: "flex-start", sm: "center" }}
+          justifyContent={{ sm: "space-between" }}
+          width="100%"
         >
           {stats.totalDonations > 0 && (
             <PageHeaderStats
