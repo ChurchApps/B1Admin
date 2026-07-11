@@ -15,8 +15,8 @@ interface Props {
 }
 
 export const ReportWithFilter = (props: Props) => {
-  const [report, setReport] = React.useState<ReportInterface>(null);
-  const [reportToRun, setReportToRun] = React.useState<ReportInterface>(null);
+  const [report, setReport] = React.useState<ReportInterface | null>(null);
+  const [reportToRun, setReportToRun] = React.useState<ReportInterface | null>(null);
   const isMounted = useMountedState();
 
   const loadData = () => {
@@ -50,6 +50,7 @@ export const ReportWithFilter = (props: Props) => {
 
   const checkAccess = () => {
     let result = true;
+    if (!report) return result;
     report.permissions.forEach((rpg) => {
       const groupResult = checkGroup(rpg.requireOne);
       if (!groupResult) result = false; //between groups use AND

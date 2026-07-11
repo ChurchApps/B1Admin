@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
@@ -143,7 +143,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
     );
   }, [open, anchorEl, handleClick, handleClose, handleAddCustomRole, predefined, addRole]);
 
-  const sortedRoles = useMemo(() => [...(roles.data || [])].sort((a, b) => (a.name > b.name ? 1 : -1)), [roles.data]);
+  const sortedRoles = useMemo(() => [...(roles.data || [])].sort((a, b) => ((a.name || "") > (b.name || "") ? 1 : -1)), [roles.data]);
 
   const canEdit = useMemo(
     () => UserHelper.checkAccess(Permissions.membershipApi.roles.edit) && UserHelper.checkAccess(Permissions.membershipApi.roles.edit) && UserHelper.checkAccess(Permissions.membershipApi.people.view),
@@ -166,7 +166,7 @@ export const Roles = memo(({ selectRoleId, selectedRoleId, church }: Props) => {
 
     sortedRoles.forEach((role) => {
       const editLink = canEdit ? (
-        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => { selectRoleId(role.id); }} data-testid="edit-role-button" />
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => { selectRoleId(role.id || ""); }} data-testid="edit-role-button" />
       ) : null;
       result.push(
         <TableRow key={role.id}>

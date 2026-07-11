@@ -1,5 +1,6 @@
 import { CommonEnvironmentHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { EnvironmentHelper as WebsiteEnvironmentHelper } from "@churchapps/apphelper/dist/website/helpers/EnvironmentHelper.js";
+import { setProviderSecret } from "@churchapps/content-providers";
 
 export class EnvironmentHelper {
   private static LessonsApi = "";
@@ -17,7 +18,8 @@ export class EnvironmentHelper {
       case "prod": EnvironmentHelper.initProd(); break;
       default: EnvironmentHelper.initDev(); break;
     }
-    EnvironmentHelper.Common.init(stage);
+    EnvironmentHelper.Common.init(stage || "");
+    setProviderSecret("gocurriculum", process.env.REACT_APP_GOCURRICULUM_CLIENT_SECRET || "");
 
     // Inlined from apphelper/website EnvironmentHelper.init — that helper crashes due to circular import.
     ApiHelper.apiConfigs = [

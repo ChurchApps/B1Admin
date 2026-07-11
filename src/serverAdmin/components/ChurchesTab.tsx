@@ -4,11 +4,13 @@ import { Navigate } from "react-router-dom";
 import { TextField, Button, Chip, Link, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import UserContext from "../../UserContext";
 import { type ChurchInterface } from "@churchapps/helpers";
+import { useConfirmDelete } from "../../hooks";
 
 export const ChurchesTab = () => {
   const [searchText, setSearchText] = React.useState<string>("");
   const [churches, setChurches] = React.useState<ChurchInterface[]>([]);
   const [redirectUrl, setRedirectUrl] = React.useState<string>("");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const context = React.useContext(UserContext);
 
@@ -17,11 +19,14 @@ export const ChurchesTab = () => {
     ApiHelper.get("/churches/all?term=" + term, "MembershipApi").then((data: any) => setChurches(data));
   };
 
-  const handleArchive = (church: ChurchInterface) => {
+  const handleArchive = async (church: ChurchInterface) => {
+    const isArchiving = !church.archivedDate;
+    const msg = (isArchiving ? Locale.label("serverAdmin.churchesTab.archiveConfirm") : Locale.label("serverAdmin.churchesTab.restoreConfirm")).replace("{name}", church.name || "");
+    if (!(await confirm(msg, { destructive: isArchiving, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
+
     const tmpChurches = [...churches];
     const c = ArrayHelper.getOne(tmpChurches, "id", church.id);
-    if (c.archivedDate) c.archivedDate = null;
-    else c.archivedDate = new Date();
+    c.archivedDate = isArchiving ? new Date() : null;
 
     ApiHelper.post("/churches/" + church.id + "/archive", { archived: c.archivedDate !== null }, "MembershipApi");
 
@@ -38,7 +43,7 @@ export const ChurchesTab = () => {
     return churches.map((c) => (
       <TableRow key={c.id}>
         <TableCell>
-          <Link component="button" type="button" underline="hover" onClick={() => handleEditAccess(c.id)} data-testid={`church-link-${c.id}`}>
+          <Link component="button" type="button" underline="hover" onClick={() => handleEditAccess(c.id || "")} data-testid={`church-link-${c.id}`}>
             {c.name}
           </Link>
         </TableCell>
@@ -65,7 +70,7 @@ export const ChurchesTab = () => {
     if (idx > -1) UserHelper.userChurches.splice(idx, 1);
 
     UserHelper.userChurches.push(...result.userChurches);
-    UserHelper.selectChurch(context, result.userChurches[0].church.id, null);
+    UserHelper.selectChurch(context, result.userChurches[0].church.id, undefined);
     setRedirectUrl(`/settings`);
   };
 
@@ -84,6 +89,7 @@ export const ChurchesTab = () => {
   else {
     return (
       <>
+        {ConfirmDialogElement}
         <DisplayBox headerIcon="church" headerText={Locale.label("serverAdmin.adminPage.churches")}>
           <TextField
             fullWidth

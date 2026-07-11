@@ -17,16 +17,16 @@ import { AppIconButton } from "../ui/AppIconButton";
 
 interface Props {
   keyName: string;
-  report: ReportInterface;
+  report: ReportInterface | null;
 }
 
 export const ReportOutput = (props: Props) => {
-  const [reportResult, setReportResult] = React.useState<ReportResultInterface>(null);
-  const [detailedPersonSummary, setDetailedPersonSummary] = React.useState<any[]>(null);
-  const [customHeaders, setCustomHeaders] = React.useState([]);
+  const [reportResult, setReportResult] = React.useState<ReportResultInterface | null>(null);
+  const [detailedPersonSummary, setDetailedPersonSummary] = React.useState<any[] | null>(null);
+  const [customHeaders, setCustomHeaders] = React.useState<{ label: string; key: string }[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [downloadData, setDownloadData] = React.useState<ReportResultInterface>(null);
-  const [kpis, setKpis] = React.useState<GivingKpis>(null);
+  const [downloadData, setDownloadData] = React.useState<ReportResultInterface | null>(null);
+  const [kpis, setKpis] = React.useState<GivingKpis | null>(null);
   const [currency, setCurrency] = React.useState<string>("usd");
 
   const open = Boolean(anchorEl);
@@ -148,20 +148,20 @@ export const ReportOutput = (props: Props) => {
           {Locale.label("reporting.downloadOptions")}
         </Button>
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          {reportTable?.length > 0 && (
+          {(reportTable?.length || 0) > 0 && (
             <MenuItem sx={{ padding: "5px" }} onClick={handleClose}>
               <ExportLink
-                data={props.keyName === "groupAttendance" ? downloadData?.table : reportTable}
-                filename={props.report.displayName.replace(" ", "_") + ".csv"}
+                data={(props.keyName === "groupAttendance" ? downloadData?.table : reportTable) || []}
+                filename={(props.report?.displayName || "").replace(" ", "_") + ".csv"}
                 text={Locale.label("reporting.summary")}
                 icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"}
               />
             </MenuItem>
           )}
-          {props.keyName === "donationSummary" && detailedPersonSummary?.length > 0 && (
+          {props.keyName === "donationSummary" && (detailedPersonSummary?.length || 0) > 0 && (
             <MenuItem sx={{ padding: "5px" }} onClick={handleClose}>
               <ExportLink
-                data={detailedPersonSummary}
+                data={detailedPersonSummary || []}
                 filename="Detailed_Donation_Summary.csv"
                 text={Locale.label("reporting.detailed")}
                 icon="person"
@@ -170,7 +170,7 @@ export const ReportOutput = (props: Props) => {
               />
             </MenuItem>
           )}
-          {props.keyName === "donationSummary" && detailedPersonSummary?.length > 0 && (
+          {props.keyName === "donationSummary" && (detailedPersonSummary?.length || 0) > 0 && (
             <MenuItem sx={{ padding: "5px" }} onClick={handleClose}>
               <Button
                 startIcon={<DescriptionIcon />}
@@ -196,7 +196,7 @@ export const ReportOutput = (props: Props) => {
         <AppIconButton key="print" label={Locale.label("common.print")} icon={<PrintIcon />} tone="card" onClick={handlePrint} />
       );
     }
-    if (reportTable?.length > 0 || detailedPersonSummary?.length > 0) {
+    if ((reportTable?.length || 0) > 0 || (detailedPersonSummary?.length || 0) > 0) {
       result.push(getExportMenu());
     }
     return result;
@@ -204,6 +204,7 @@ export const ReportOutput = (props: Props) => {
 
   const getOutputs = () => {
     const result: React.ReactElement[] = [];
+    if (!reportResult) return result;
     reportResult.outputs.forEach((o) => {
       if (o.outputType === "table") result.push(<TableReport key={o.outputType} reportResult={reportResult} output={o} />);
       else if (o.outputType === "tree") result.push(<TreeReport key={o.outputType} reportResult={reportResult} output={o} />);
@@ -234,6 +235,9 @@ export const ReportOutput = (props: Props) => {
               body {
                 margin: 0 !important;
                 padding: 0 !important;
+              }
+              #display-box-actions {
+                display: none !important;
               }
               #reportsBox {
                 padding-left: 24px !important;

@@ -18,6 +18,7 @@ function getOgImage(img: any) {
       const ctx = canvas.getContext("2d");
       canvas.width = 1200;
       canvas.height = 630;
+      if (!ctx) return;
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 15, 15);
@@ -63,11 +64,11 @@ export function AppearanceEdit(props: Props) {
   const [currentSettings, setCurrentSettings] = useState<GenericSettingInterface[]>([]);
   const [editLogo, setEditLogo] = useState(false);
   const [currentEditLogo, setCurrentEditLogo] = useState<string>("");
-  const [currentUrl, setCurrentUrl] = useState("about:blank");
+  const [currentUrl, setCurrentUrl] = useState<string | null>("about:blank");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const init = () => {
-    const startingUrl = (ArrayHelper.getOne(props.settings, "keyName", currentEditLogo))?.value;
+    const startingUrl = (ArrayHelper.getOne(props.settings || [], "keyName", currentEditLogo))?.value;
     setCurrentUrl(startingUrl);
   };
 
@@ -141,8 +142,8 @@ export function AppearanceEdit(props: Props) {
 
       return (
         <ImageEditor
-          photoUrl={currentUrl}
-          onUpdate={(dataUrl) => { imageUpdated(dataUrl, logoName); }}
+          photoUrl={currentUrl || ""}
+          onUpdate={(dataUrl) => { imageUpdated(dataUrl || "", logoName); }}
           onCancel={() => { setEditLogo(false); setCurrentUrl(null); }}
           aspectRatio={aspectRatio}
           outputWidth={outputWidth}
@@ -181,13 +182,13 @@ export function AppearanceEdit(props: Props) {
   const handleSave = () => {
     setIsSubmitting(true);
     ApiHelper.post("/settings", currentSettings, "MembershipApi").then(() => {
-      props.updatedFunction();
+      props.updatedFunction?.();
       setIsSubmitting(false);
     });
   };
-  const handleCancel = () => { props.updatedFunction(); };
+  const handleCancel = () => { props.updatedFunction?.(); };
 
-  useEffect(() => { setCurrentSettings(props.settings); }, [props.settings]);
+  useEffect(() => { setCurrentSettings(props.settings || []); }, [props.settings]);
 
   return (
     <Box sx={{ maxWidth: 1200 }}>

@@ -39,12 +39,12 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
     }
   };
 
-  const handleSearch = (e: React.MouseEvent) => {
+  const handleSearch = (e: React.MouseEvent | null) => {
     if (e !== null) e.preventDefault();
     const term = searchText.trim();
     ApiHelper.post("/people/search", { term: term }, "MembershipApi").then((data: PersonInterface[]) => {
       setHasSearched(true);
-      const filteredResult = data.filter((s) => !filterList.includes(s.id));
+      const filteredResult = data.filter((s) => !filterList.includes(s.id || ""));
       setSearchResults(filteredResult);
       if (searchClicked) {
         searchClicked();
@@ -108,7 +108,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
                 },
                 membershipStatus: "Visitor",
                 gender: "",
-                birthDate: null,
+                birthDate: undefined,
                 maritalStatus: "",
                 nametagNotes: ""
               }}

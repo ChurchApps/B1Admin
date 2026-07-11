@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { SelectChangeEvent } from "@mui/material";
 import { Button, Chip, FormControl, Icon, InputAdornment, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import { ApiHelper, CurrencyHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, CurrencyHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 
 type Props = {
   parsedData: any;
@@ -9,10 +9,11 @@ type Props = {
 };
 
 export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
-  const [funds, setFunds] = useState(null);
+  const [funds, setFunds] = useState<any[] | null>(null);
   const [amounts, setAmounts] = useState<number[]>([]);
   const [amountValue, setAmountValue] = useState<number>();
   const [currency, setCurrency] = useState<string>("usd");
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     const data = { ...parsedData };
@@ -35,13 +36,14 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
       a = JSON.parse(data?.amounts);
     }
     if (a.length < 5) {
-      a.push(amountValue);
+      setErrors([]);
+      a.push(amountValue ?? 0);
       setAmounts(a);
       data.amounts = JSON.stringify(a);
       onRealtimeChange(data);
       setAmountValue(0);
     } else {
-      alert(Locale.label("site.donateLink.maxAmountsAlert"));
+      setErrors([Locale.label("site.donateLink.maxAmountsAlert")]);
       return;
     }
   };
@@ -69,6 +71,7 @@ export function DonateLinkEdit({ parsedData, onRealtimeChange }: Props) {
 
   return (
     <>
+      <ErrorMessages errors={errors} />
       {/* <FormControl fullWidth>
         <InputLabel>Link Alignment</InputLabel>
         <Select

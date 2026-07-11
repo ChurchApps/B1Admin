@@ -22,10 +22,10 @@ export const PaymentEdit: React.FC<Props> = (props) => {
       case "amount": setAmount(Number(e.target.value)); break;
     }
     const q = { ...props.question };
-    if (e.target.name === "fundId") {
+    if (e.target.name === "fundId" && q.choices) {
       const fundIndex = q.choices.findIndex((c: any) => c.text === "FundId");
       q.choices[fundIndex].value = e.target.value;
-    } else if (e.target.name === "amount") {
+    } else if (e.target.name === "amount" && q.choices) {
       const amountIndex = q.choices.findIndex((c: any) => c.text === "Amount");
       q.choices[amountIndex].value = e.target.value.toString();
     }

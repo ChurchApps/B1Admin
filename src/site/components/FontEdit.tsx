@@ -7,8 +7,8 @@ import { CardWithHeader, LoadingButton } from "../../components/ui";
 import { CustomFontModal } from "./CustomFontModal";
 
 interface Props {
-  globalStyle?: GlobalStyleInterface;
-  updatedFunction?: (fontsJson: string) => void;
+  globalStyle?: GlobalStyleInterface | null;
+  updatedFunction?: (fontsJson: string | null) => void;
 }
 
 export interface FontsInterface {
@@ -17,7 +17,7 @@ export interface FontsInterface {
 }
 
 export function FontEdit(props: Props) {
-  const [fonts, setFonts] = useState<FontsInterface>(null);
+  const [fonts, setFonts] = useState<FontsInterface | null>(null);
   const [showFont, setShowFont] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -35,13 +35,13 @@ export function FontEdit(props: Props) {
   const handleSave = () => {
     setIsSubmitting(true);
     setTimeout(() => {
-      props.updatedFunction(JSON.stringify(fonts));
+      props.updatedFunction?.(JSON.stringify(fonts));
       setIsSubmitting(false);
     }, 500);
   };
 
   const updateFont = (font: string) => {
-    const f = { ...fonts };
+    const f = { ...fonts! };
     if (showFont === "body") f.body = font;
     else f.heading = font;
     setFonts(f);
@@ -92,7 +92,7 @@ export function FontEdit(props: Props) {
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSubmitting} loadingText={Locale.label("site.fontEdit.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-fonts-button">{Locale.label("site.fontEdit.saveFonts")}</LoadingButton>
           </Stack>
         </Stack>

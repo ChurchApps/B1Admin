@@ -2,6 +2,8 @@ import { memo, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary, Button, Icon } from "@mui/material";
 import { DateHelper, ApiHelper, DisplayBox, Locale } from "@churchapps/apphelper";
+import { getPaymentProvider } from "@churchapps/apphelper/donations";
+import { type PersonInterface } from "@churchapps/helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const DonationEvents = memo(() => {
@@ -17,7 +19,7 @@ export const DonationEvents = memo(() => {
     return errorLogs.data.map((log: any) => log.personId).join(",");
   }, [errorLogs.data]);
 
-  const people = useQuery({
+  const people = useQuery<PersonInterface[]>({
     queryKey: ["/people/ids?ids=" + personIds, "MembershipApi"],
     placeholderData: [],
     enabled: !!personIds
@@ -53,6 +55,7 @@ export const DonationEvents = memo(() => {
   const getErrorLogs = useCallback(() => {
     return errorLogs.data?.map((log: any) => {
       const eventType = log.eventType?.replace(".", " ") || "";
+      const eventUrl = getPaymentProvider(log.provider).descriptor.eventUrl?.(log.id);
       return (
         <Accordion key={log.id}>
           <AccordionSummary>
@@ -67,7 +70,7 @@ export const DonationEvents = memo(() => {
               </li>
               <li key={`event-${log.id}`} className="capitalize">
                 {Locale.label("donations.donationEvents.event")}
-                <a href={"https://dashboard.stripe.com/events/" + log.id}>{eventType}</a>
+                {eventUrl ? <a href={eventUrl}>{eventType}</a> : eventType}
               </li>
               <li key={`message-${log.id}`}>
                 {Locale.label("donations.donationEvents.msg")}

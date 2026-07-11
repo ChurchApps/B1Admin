@@ -28,7 +28,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
     ApiHelper.get("/servicetimes", "AttendanceApi").then((data: any) => {
       setServiceTimes(data);
       const st = data[0] as ServiceTimeInterface;
-      if (data.length > 0) setAddServiceTimeId(st.id);
+      if (data.length > 0) setAddServiceTimeId(st.id || "");
     });
   }, [props.group.id]);
 
@@ -37,7 +37,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
       e.preventDefault();
       const anchor = e.currentTarget as HTMLAnchorElement;
       const id = anchor.getAttribute("data-id");
-      ApiHelper.delete("/groupservicetimes/" + id.toString(), "AttendanceApi").then(loadData);
+      ApiHelper.delete("/groupservicetimes/" + (id || ""), "AttendanceApi").then(loadData);
     },
     [loadData]
   );
@@ -46,7 +46,7 @@ export const ServiceTimesEdit = memo((props: Props) => {
     return groupServiceTimes.map((gst) => (
       <TableRow key={gst.id}>
         <TableCell>
-          <Icon>schedule</Icon> {gst.serviceTime.name}
+          <Icon>schedule</Icon> {gst.serviceTime?.name}
         </TableCell>
         <TableCell>
           <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<PersonRemoveIcon />} data-id={gst.id} onClick={handleRemove} />

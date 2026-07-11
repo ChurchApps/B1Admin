@@ -84,7 +84,7 @@ export const RedirectsEdit: React.FC = () => {
                 <TableRow key={r.id} data-testid="redirect-row">
                   <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace" }}>{r.fromPath}</Typography></TableCell>
                   <TableCell><Typography variant="body2" sx={{ fontFamily: "monospace" }}>{r.toPath}</Typography></TableCell>
-                  <TableCell className="rowActions"><IconButton size="small" onClick={() => handleDelete(r.id)} data-testid="redirect-delete"><Icon fontSize="small">delete</Icon></IconButton></TableCell>
+                  <TableCell className="rowActions"><IconButton size="small" onClick={() => handleDelete(r.id!)} data-testid="redirect-delete"><Icon fontSize="small">delete</Icon></IconButton></TableCell>
                 </TableRow>
               ))}
             </TableBody>

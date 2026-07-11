@@ -3,7 +3,7 @@ import type { SelectChangeEvent } from "@mui/material";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { HtmlEditor } from "@churchapps/apphelper/markdown";
 import { Locale } from "@churchapps/apphelper";
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableRow, TextField } from "@mui/material";
+import { Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableRow, TextField } from "@mui/material";
 import React from "react";
 
 type Props = {
@@ -16,7 +16,7 @@ export function TableEdit(props: Props) {
   const rows = contents.length;
   const cols = (contents.length > 0) ? contents[0].length : 0;
   const markdown = props.parsedData.markdown || false;
-  const [editCellIdx, setEditCellIdx] = React.useState<number[]>(null);
+  const [editCellIdx, setEditCellIdx] = React.useState<number[] | null>(null);
 
   const updateRows = (newRows: number) => {
     const c = [...contents];
@@ -56,8 +56,8 @@ export function TableEdit(props: Props) {
   };
 
   const getMarkdownEditor = () => {
-    const row = editCellIdx[0];
-    const col = editCellIdx[1];
+    const row = editCellIdx![0];
+    const col = editCellIdx![1];
     return (<>
       <HtmlEditor value={contents[row][col]} onChange={val => {
         const c = [...contents];
@@ -105,11 +105,12 @@ export function TableEdit(props: Props) {
         </Grid>
         <Grid size={{ md: 6, xs: 12 }}>
           <FormControl fullWidth size="small">
-            <InputLabel>{Locale.label("site.tableEdit.allowMarkdown")}</InputLabel>
-            <Select fullWidth label={Locale.label("site.tableEdit.allowMarkdown")} size="small" name="markdown" value={props.parsedData.markdown?.toString() || "false"} onChange={handleChange}>
+            <InputLabel>{Locale.label("site.tableEdit.textFormatting")}</InputLabel>
+            <Select fullWidth label={Locale.label("site.tableEdit.textFormatting")} size="small" name="markdown" value={props.parsedData.markdown?.toString() || "false"} onChange={handleChange}>
               <MenuItem value="true">{Locale.label("site.tableEdit.yes")}</MenuItem>
               <MenuItem value="false">{Locale.label("site.tableEdit.no")}</MenuItem>
             </Select>
+            <FormHelperText>{Locale.label("site.tableEdit.markdownHelper")}</FormHelperText>
           </FormControl>
 
         </Grid>

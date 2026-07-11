@@ -13,11 +13,15 @@ import { CustomFileUpload } from "./CustomFileUpload";
 export function FilesManager() {
   const [pendingFileSave, setPendingFileSave] = useState(false);
   const filesQuery = useQuery<FileInterface[]>({ queryKey: ["/files", "ContentApi"], placeholderData: [] });
+  const storageStatus = useQuery<{ provider?: string; usedBytes?: number; quotaBytes?: number }>({ queryKey: ["/storage/status", "ContentApi"] });
   const files = filesQuery.data || [];
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   let usedSpace = 0;
-  files?.forEach((f) => (usedSpace += f.size));
+  files?.forEach((f) => (usedSpace += f.size || 0));
+  const providerQuota = storageStatus.data?.quotaBytes || 0;
+  if (providerQuota > 0 && storageStatus.data?.usedBytes !== undefined) usedSpace = storageStatus.data.usedBytes;
+  const quotaLimit = providerQuota > 0 ? providerQuota : 100000000;
 
   const handleFileSaved = () => {
     setPendingFileSave(false);
@@ -37,17 +41,18 @@ export function FilesManager() {
 
   const formatSize = (bytes: number) => {
     let result = bytes.toString() + "b";
-    if (bytes > 1000000) result = (Math.round(bytes / 10000) / 100).toString() + "MB";
+    if (bytes > 1000000000) result = (Math.round(bytes / 10000000) / 100).toString() + "GB";
+    else if (bytes > 1000000) result = (Math.round(bytes / 10000) / 100).toString() + "MB";
     else if (bytes > 1000) result = (Math.round(bytes / 10) / 100).toString() + "KB";
     return result;
   };
 
   const getStorage = () => {
-    const percent = (usedSpace / 100000000) * 100;
+    const percent = Math.min(100, (usedSpace / quotaLimit) * 100);
     return (
       <Box sx={{ mb: 2 }}>
         <Typography variant="body2" sx={{ mb: 1 }}>
-          {Locale.label("site.filesManager.storage")} {formatSize(usedSpace)} {Locale.label("site.filesManager.storageLimit")}
+          {Locale.label("site.filesManager.storage")} {formatSize(usedSpace)} / {formatSize(quotaLimit)}
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ width: "100%", mr: 1 }}>
@@ -78,7 +83,7 @@ export function FilesManager() {
         </TableCell>
         <TableCell align="right">
           <Typography variant="body2" color="text.secondary">
-            {formatSize(file.size)}
+            {formatSize(file.size || 0)}
           </Typography>
         </TableCell>
         <TableCell align="right" className="rowActions">
@@ -123,10 +128,12 @@ export function FilesManager() {
           <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} onSave={handleSave} saveText={Locale.label("site.files.upload")} data-testid="file-upload-inputbox" isSubmitting={pendingFileSave}>
 
             {getStorage()}
-            <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
-              {Locale.label("site.files.storageInfo")}
-            </Typography>
-            {usedSpace < 100000000 && (
+            {providerQuota === 0 && (
+              <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
+                {Locale.label("site.files.storageInfo")}
+              </Typography>
+            )}
+            {usedSpace < quotaLimit && (
               <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} />
             )}
           </FormCard>

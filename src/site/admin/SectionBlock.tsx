@@ -10,7 +10,7 @@ interface Props {
   section: SectionInterface,
   churchId?: string;
   churchSettings: any;
-  onEdit?: (section: SectionInterface, element: ElementInterface) => void
+  onEdit?: (section: SectionInterface, element: ElementInterface | null) => void
   onMove?: () => void
   onSectionMove?: (section: SectionInterface, direction: "up" | "down") => void;
   onSectionDuplicate?: (sectionId: string) => void;
@@ -28,10 +28,10 @@ export const SectionBlock: React.FC<Props> = props => {
           isFirst={!!props.isFirstSection}
           isLast={!!props.isLastSection}
           dragHandle={<DraggableIcon dndType="section" elementType="section" data={props.section} />}
-          onSettings={() => props.onEdit(props.section, null)}
-          onMoveUp={() => props.onSectionMove(props.section, "up")}
-          onMoveDown={() => props.onSectionMove(props.section, "down")}
-          onDuplicate={() => props.onSectionDuplicate?.(props.section.id)}
+          onSettings={() => props.onEdit?.(props.section, null)}
+          onMoveUp={() => props.onSectionMove?.(props.section, "up")}
+          onMoveDown={() => props.onSectionMove?.(props.section, "down")}
+          onDuplicate={() => props.onSectionDuplicate?.(props.section.id || "")}
           onDelete={() => props.onSectionDelete?.(props.section)}
         />
       );
@@ -40,7 +40,7 @@ export const SectionBlock: React.FC<Props> = props => {
 
   const getSections = () => {
     const result: React.ReactElement[] = [];
-    props.section.sections.forEach(section => {
+    props.section.sections?.forEach(section => {
       result.push(<Section key={section.id} section={section} churchSettings={props.churchSettings} />);
     });
     return result;

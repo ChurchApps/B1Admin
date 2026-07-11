@@ -337,7 +337,8 @@
         "firstName": "Proszę wpisać imię.",
         "lastName": "Proszę wpisać nazwisko.",
         "validEmail": "Proszę wpisać prawidłowy adres e-mail."
-      }
+      },
+      "confirmDuplicate": "Znaleziono już osobę '{{existingName}}' ({{existingEmail}}) z tym adresem e-mail. Czy na pewno chcesz dodać '{{firstName}} {{lastName}}'?"
     },
     "custom": "Niestandardowy",
     "delete": "Usuń",

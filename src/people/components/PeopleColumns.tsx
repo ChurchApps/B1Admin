@@ -36,6 +36,7 @@ export const PeopleColumns = memo(function PeopleColumns(props: Props) {
               <Checkbox
                 size="small"
                 checked={selectedClass === "checked"}
+                disabled={option.key === "displayName" && props.selectedColumns.length === 1 && props.selectedColumns[0] === "displayName"}
                 onChange={(e) => {
                   props.toggleColumn(e.target.name);
                 }}

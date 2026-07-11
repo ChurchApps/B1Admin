@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, Stack, TextField, Typography } from "@mui/material";
 import { CheckCircle as ApproveIcon, Cancel as DeclineIcon } from "@mui/icons-material";
 import { ApiHelper, PersonAvatar } from "@churchapps/apphelper";
 import type { GroupJoinRequestInterface } from "@churchapps/helpers";
@@ -14,12 +14,16 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
   const [declineTarget, setDeclineTarget] = useState<GroupJoinRequestInterface | null>(null);
   const [declineReason, setDeclineReason] = useState("");
   const [working, setWorking] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
   const handleApprove = useCallback(async (req: GroupJoinRequestInterface) => {
-    setWorking(req.id);
+    setWorking(req.id || null);
+    setError("");
     try {
       await ApiHelper.post(`/groupjoinrequests/${req.id}/approve`, {}, "MembershipApi");
       onChanged();
+    } catch {
+      setError("Unable to approve the request. Please try again.");
     } finally {
       setWorking(null);
     }
@@ -27,12 +31,15 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
 
   const handleDeclineSubmit = useCallback(async () => {
     if (!declineTarget) return;
-    setWorking(declineTarget.id);
+    setWorking(declineTarget.id || null);
+    setError("");
     try {
       await ApiHelper.post(`/groupjoinrequests/${declineTarget.id}/decline`, { declineReason: declineReason || undefined }, "MembershipApi");
       setDeclineTarget(null);
       setDeclineReason("");
       onChanged();
+    } catch {
+      setError("Unable to decline the request. Please try again.");
     } finally {
       setWorking(null);
     }
@@ -45,11 +52,12 @@ export const PendingJoinRequests: React.FC<Props> = ({ requests, showGroupName, 
       <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
         Pending Requests ({requests.length})
       </Typography>
+      {error && <Alert severity="error" sx={{ mb: 1 }} onClose={() => setError("")}>{error}</Alert>}
       <Stack spacing={1}>
         {requests.map((req) => (
           <Paper key={req.id} variant="outlined" sx={{ p: 1.5 }} data-testid={`pending-request-${req.id}`}>
             <Stack direction="row" spacing={2} alignItems="center">
-              <PersonAvatar person={req.person} size="small" />
+              <PersonAvatar person={req.person!} size="small" />
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>
                   {req.person?.name?.display || "Unknown"}

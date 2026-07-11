@@ -10,7 +10,7 @@ export class ConditionHelper {
   static getLabel(c: ConditionInterface) {
     const fieldData = c.fieldData ? JSON.parse(c.fieldData) : {};
 
-    let displayField = this.getTitleCase(c.field);
+    let displayField = this.getTitleCase(c.field || "");
     if (fieldData.datePart === "dayOfWeek") displayField += Locale.label("helpers.conditionHelper.dayOfWeek");
     if (fieldData.datePart === "dayOfMonth") displayField += Locale.label("helpers.conditionHelper.dayOfMonth");
     if (fieldData.datePart === "month") displayField += Locale.label("helpers.conditionHelper.month");
@@ -27,10 +27,10 @@ export class ConditionHelper {
     const monthLabels = [
       "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     ];
-    if (fieldData.datePart === "dayOfWeek") displayValue = dayLabels[parseInt(c.value) - 1];
+    if (fieldData.datePart === "dayOfWeek") displayValue = dayLabels[parseInt(c.value || "") - 1];
     if (fieldData.datePart === "month") {
-      if (c.value.indexOf("{") > -1) displayValue = this.getTitleCase(c.value.replace("{", "").replace("}", ""));
-      else displayValue = monthLabels[parseInt(c.value) - 1];
+      if ((c.value || "").indexOf("{") > -1) displayValue = this.getTitleCase((c.value || "").replace("{", "").replace("}", ""));
+      else displayValue = monthLabels[parseInt(c.value || "") - 1];
     }
 
     const result = displayField + " " + displayOperator + " " + displayValue;

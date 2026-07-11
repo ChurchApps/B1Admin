@@ -30,16 +30,16 @@ import { useConfirmDelete } from "../../hooks";
 interface Props {
   currentPlaylist: PlaylistInterface,
   updatedFunction?: () => void,
-  showPhotoEditor: (photoType: string, url: string) => void,
-  updatedPhoto: string
+  showPhotoEditor: (photoType: string, url: string | null) => void,
+  updatedPhoto: string | null
 }
 
 type AnyRecord = Record<string, any>;
 
 export const PlaylistEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const thumbnailRef = React.useRef<string>(null);
-  const [thumbnailDisplay, setThumbnailDisplay] = React.useState<string>(null);
+  const thumbnailRef = React.useRef<string | null>(null);
+  const [thumbnailDisplay, setThumbnailDisplay] = React.useState<string | null>(null);
 
   const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { title: "", description: "", publishDate: "" } });
   const watchedId = watch("id");
@@ -65,7 +65,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
   }, [props.updatedPhoto]);
 
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(watchedId)) return handleDelete; else return undefined; };
-  const handleCancel = () => { props.updatedFunction(); };
+  const handleCancel = () => { props.updatedFunction?.(); };
 
   const handleDelete = async () => {
     const errs: string[] = [];
@@ -73,7 +73,7 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
     if (errs.length > 0) return;
 
     if (await confirm(Locale.label("sermons.playlists.playlistEdit.deleteConfirm"))) {
-      ApiHelper.delete("/playlists/" + watchedId, "ContentApi").then(() => { props.updatedFunction(); });
+      ApiHelper.delete("/playlists/" + watchedId, "ContentApi").then(() => { props.updatedFunction?.(); });
     }
   };
 
@@ -82,8 +82,8 @@ export const PlaylistEdit: React.FC<Props> = (props) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.playlists.playlistEdit.unauthorized"));
     if (errs.length > 0) return;
 
-    const p: PlaylistInterface = { ...props.currentPlaylist, ...values, thumbnail: thumbnailRef.current };
-    p.publishDate = values.publishDate ? DateHelper.toDate(values.publishDate) : null;
+    const p: PlaylistInterface = { ...props.currentPlaylist, ...values, thumbnail: thumbnailRef.current ?? undefined };
+    p.publishDate = values.publishDate ? DateHelper.toDate(values.publishDate) : undefined;
     ApiHelper.post("/playlists", [p], "ContentApi").then(props.updatedFunction);
   };
 

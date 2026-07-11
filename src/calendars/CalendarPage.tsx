@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Typography,
   Grid,
@@ -12,10 +12,10 @@ import {
   Stack,
   TableHead
 } from "@mui/material";
-import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon, Add as AddIcon, Print as PrintIcon, UploadFile as ImportIcon } from "@mui/icons-material";
+import { Delete as DeleteIcon, CalendarMonth as CalendarIcon, Groups as GroupsIcon, Add as AddIcon, Print as PrintIcon, UploadFile as ImportIcon, EventAvailable as ApprovalsIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Loading, PageHeader, Locale, Permissions } from "@churchapps/apphelper";
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
-import { useConfirmDelete, useRequirePermission } from "../hooks";
+import { useConfirmDelete, useRequirePermission, usePendingApprovalsCount } from "../hooks";
 import { CuratedCalendar } from "./components/CuratedCalendar";
 import { NewEventModal } from "./components/NewEventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
@@ -26,8 +26,10 @@ import { HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui/hea
 const printStyles = `@media print {
   body * { visibility: hidden; }
   .print-area, .print-area * { visibility: visible; }
-  .print-area { position: absolute; left: 0; top: 0; width: 100%; border: none !important; }
-  .print-area .rbc-calendar { height: 9.5in !important; }
+  .print-area { position: absolute; left: 0; top: 0; width: 100%; border: none !important; box-shadow: none !important; }
+  .print-area .rbc-calendar { height: 7.8in !important; }
+  .print-area .rbc-calendar:has(.rbc-agenda-view) { height: auto !important; }
+  .print-area .no-print, .print-area .no-print *, .print-area .rbc-btn-group { display: none !important; }
 }`;
 
 export const CalendarPage = () => {
@@ -41,6 +43,7 @@ export const CalendarPage = () => {
   const [showImport, setShowImport] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
+  const pendingApprovals = usePendingApprovalsCount();
 
   const curatedCalendarId = params.id;
 
@@ -89,6 +92,11 @@ export const CalendarPage = () => {
         title={currentCalendar?.name || Locale.label("calendars.calendarPage.calendar")}
         subtitle={Locale.label("calendars.calendarPage.subtitle")}
       >
+        {pendingApprovals > 0 && (
+          <HeaderSecondaryButton startIcon={<ApprovalsIcon />} {...({ component: Link, to: "/calendars/approvals" } as any)} data-testid="pending-approvals-link">
+            {Locale.label("calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
+          </HeaderSecondaryButton>
+        )}
         <HeaderSecondaryButton startIcon={<ImportIcon />} onClick={() => setShowImport(true)} data-testid="import-ics-button">
           {Locale.label("calendars.calendarPage.importIcs")}
         </HeaderSecondaryButton>
@@ -122,7 +130,7 @@ export const CalendarPage = () => {
               <Box sx={{ p: 2 }}>
                 <CuratedCalendar
                   curatedCalendarId={curatedCalendarId}
-                  churchId={UserHelper.currentUserChurch?.church?.id}
+                  churchId={UserHelper.currentUserChurch?.church?.id || ""}
                   mode="edit"
                   updatedCallback={loadData}
                   refresh={refresh}
@@ -181,7 +189,7 @@ export const CalendarPage = () => {
                           </TableCell>
                           {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
                             <TableCell align="right" className="rowActions">
-                              <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<DeleteIcon />} onClick={() => handleGroupDelete(g.id)} data-testid={`remove-group-${g.id}-button`} />
+                              <AppIconButton intent="remove" label={Locale.label("common.remove")} icon={<DeleteIcon />} onClick={() => handleGroupDelete(g.id || "")} data-testid={`remove-group-${g.id}-button`} />
                             </TableCell>
                           )}
                         </TableRow>
@@ -196,7 +204,7 @@ export const CalendarPage = () => {
       </Box>
       {showNewEvent && (
         <NewEventModal
-          churchId={UserHelper.currentUserChurch?.church?.id}
+          churchId={UserHelper.currentUserChurch?.church?.id || ""}
           curatedCalendarId={curatedCalendarId}
           onDone={(saved) => {
             setShowNewEvent(false);

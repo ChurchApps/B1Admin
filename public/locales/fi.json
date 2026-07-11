@@ -337,7 +337,8 @@
         "firstName": "Kirjoita etunimi.",
         "lastName": "Kirjoita sukunimi.",
         "validEmail": "Kirjoita kelvollinen sähköpostiosoite."
-      }
+      },
+      "confirmDuplicate": "Tällä sähköpostilla löytyi jo olemassa oleva henkilö '{{existingName}}' ({{existingEmail}}). Haluatko varmasti lisätä henkilön '{{firstName}} {{lastName}}'?"
     },
     "custom": "Mukautettu",
     "delete": "Poista",

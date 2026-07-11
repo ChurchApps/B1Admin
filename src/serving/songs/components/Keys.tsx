@@ -13,19 +13,19 @@ import { EmptyState } from "../../../components/ui/EmptyState";
 
 interface Props {
   arrangement: ArrangementInterface;
-  songDetail: SongDetailInterface;
+  songDetail: SongDetailInterface | null;
 }
 
 export const Keys = memo((props: Props) => {
   const [keys, setKeys] = React.useState<ArrangementKeyInterface[]>([]);
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
-  const [selectedKey, setSelectedKey] = React.useState<ArrangementKeyInterface>(null);
-  const [editKey, setEditKey] = React.useState<ArrangementKeyInterface>(null);
-  const [editLink, setEditLink] = React.useState<LinkInterface>(null);
+  const [selectedKey, setSelectedKey] = React.useState<ArrangementKeyInterface | null>(null);
+  const [editKey, setEditKey] = React.useState<ArrangementKeyInterface | null>(null);
+  const [editLink, setEditLink] = React.useState<LinkInterface | null>(null);
   const [products, setProducts] = React.useState<any[]>([]);
   const [links, setLinks] = React.useState<LinkInterface[]>([]);
   const [showImport, setShowImport] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -64,7 +64,7 @@ export const Keys = memo((props: Props) => {
   const loadPraiseCharts = useCallback(async () => {
     if (selectedKey && props.songDetail?.praiseChartsId) {
       const data = await ApiHelper.get("/praiseCharts/arrangement/raw/" + props.songDetail.praiseChartsId + "?keys=" + selectedKey.keySignature, "ContentApi");
-      const products = data[selectedKey.keySignature];
+      const products = data[selectedKey.keySignature || ""];
       if (products) {
         setProducts(products);
       } else {
@@ -295,7 +295,7 @@ export const Keys = memo((props: Props) => {
           onClick={() => {
             handleClose();
             setEditLink({
-              category: "arrangementKey_" + selectedKey.id,
+              category: "arrangementKey_" + selectedKey?.id,
               linkType: "url",
               sort: 1,
               linkData: "",
@@ -319,7 +319,7 @@ export const Keys = memo((props: Props) => {
       )}
       {showImport && (
         <PraiseChartsProducts
-          praiseChartsId={props.songDetail?.praiseChartsId}
+          praiseChartsId={props.songDetail?.praiseChartsId || ""}
           keySignature={selectedKey?.keySignature || ""}
           onHide={() => {
             setShowImport(false);

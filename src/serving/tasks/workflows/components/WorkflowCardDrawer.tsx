@@ -5,7 +5,7 @@ import { AppIconButton } from "../../../../components/ui/AppIconButton";
 import { Close as CloseIcon, Person as PersonIcon, CheckCircle as CompleteIcon, Snooze as SnoozeIcon, SkipNext as SkipIcon, Undo as SendBackIcon, PushPin as PinIcon } from "@mui/icons-material";
 import UserContext from "../../../../UserContext";
 import { ContentPicker } from "../../components/ContentPicker";
-import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface } from "@churchapps/helpers";
+import { type WorkflowStepInterface, type TaskInterface, type WorkflowStepRouteInterface, type UserContextInterface } from "@churchapps/helpers";
 import { canEditCard } from "../permissions";
 
 interface Props {
@@ -146,7 +146,7 @@ export const WorkflowCardDrawer = (props: Props) => {
           )}
 
           <Divider />
-          <Notes context={context} conversationId={card.conversationId} createConversation={handleCreateConversation} />
+          <Notes context={context as UserContextInterface} conversationId={card.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
         </Stack>
       </Box>
       {showPicker && <ContentPicker onClose={() => setShowPicker(false)} onSelect={reassign} />}

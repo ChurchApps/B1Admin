@@ -15,6 +15,7 @@ interface Props {
   saveTrigger: Date | null;
   churchInfo?: ChurchInterface;
   onError?: (errors: string[]) => void;
+  onSaveComplete?: (ok: boolean) => void;
 }
 
 type AnyRecord = Record<string, any>;
@@ -23,7 +24,7 @@ const isProd = process.env.REACT_APP_STAGE === "prod";
 
 export const GivingSettingsEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const [gateway, setGateway] = React.useState<PaymentGatewaysInterface>(null);
+  const [gateway, setGateway] = React.useState<PaymentGatewaysInterface | null>(null);
   const [errors, setErrors] = React.useState<string[]>([]);
   const [copySnackbar, setCopySnackbar] = React.useState(false);
 
@@ -54,13 +55,14 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
     try {
       const values = getValues();
       if (values.provider === "") {
-        if (!UniqueIdHelper.isMissing(gateway?.id)) await ApiHelper.delete("/gateways/" + gateway.id, "GivingApi");
+        if (!UniqueIdHelper.isMissing(gateway?.id)) await ApiHelper.delete("/gateways/" + gateway?.id, "GivingApi");
       } else {
         const providerChanged = !!gateway && gateway.provider !== values.provider;
         if ((gateway === null || providerChanged) && values.privateKey === "") {
           const message = Locale.label("settings.givingSettingsEdit.privateKeyRequired");
           setErrors([message]);
           if (props.onError) props.onError([message]);
+          props.onSaveComplete?.(false);
           return;
         }
         const gw: PaymentGatewaysInterface = gateway === null ? { churchId: props.churchId } : { ...gateway };
@@ -72,6 +74,8 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
         if (values.webhookKey !== "") gw.webhookKey = values.webhookKey;
         await ApiHelper.post("/gateways", [gw], "GivingApi");
       }
+      setErrors([]);
+      props.onSaveComplete?.(true);
     } catch (error: any) {
       let message = Locale.label("settings.givingSettingsEdit.saveError");
       if (error?.message) {
@@ -84,6 +88,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
       }
       setErrors([message]);
       if (props.onError) props.onError([message]);
+      props.onSaveComplete?.(false);
     }
   };
 
@@ -152,8 +157,7 @@ export const GivingSettingsEdit: React.FC<Props> = (props) => {
       <Grid size={{ xs: 12, md: 4 }}>
         <Typography variant="body2" color="textSecondary" component="div" sx={{ mb: 1 }}>
           {Locale.label("settings.givingSettingsEdit.currencyHelper")}
-          {/* The currency reference link is Stripe-specific; only show it for Stripe. */}
-          {provider === "stripe" && <> <a href="https://dashboard.stripe.com/settings/currencies" target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></>}
+          {descriptor?.currencyHelpUrl && <> <a href={descriptor.currencyHelpUrl} target="_blank" rel="noopener noreferrer">{Locale.label("settings.givingSettingsEdit.stripeDashboard")}</a></>}
         </Typography>
         <Controller
           control={control}

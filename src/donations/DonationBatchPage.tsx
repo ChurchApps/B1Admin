@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Box, Stack } from "@mui/material";
 import { Receipt as ReceiptIcon, Edit as EditIcon } from "@mui/icons-material";
-import { HeaderSecondaryButton, PageHeaderStats } from "../components/ui";
+import { Breadcrumbs, type BreadcrumbItem, HeaderSecondaryButton, PageHeaderStats } from "../components/ui";
 
 export const DonationBatchPage = () => {
   const params = useParams();
@@ -44,7 +44,7 @@ export const DonationBatchPage = () => {
 
   const getEditModules = () => {
     const result = [];
-    if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data} batchId={batch.data.id} currency={currency} />);
+    if (editDonationId !== "notset") result.push(<DonationEdit key="donationEdit" donationId={editDonationId} updatedFunction={donationUpdated} funds={funds.data || []} batchId={batch.data?.id || ""} currency={currency} />);
     if (editBatch && batch.data?.id) result.push(<BatchEdit key="batchEdit" batchId={batch.data.id} updatedFunction={batchUpdated} />);
     return result;
   };
@@ -74,12 +74,18 @@ export const DonationBatchPage = () => {
 
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.view)) return <></>;
 
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: Locale.label("components.wrapper.don"), path: "/donations" },
+    { label: batch.data?.name || Locale.label("donations.donationBatchPage.title") }
+  ];
+
   return (
     <>
       <PageHeader
         icon={<ReceiptIcon />}
         title={batch.data?.name || Locale.label("donations.donationBatchPage.title")}
         subtitle={batch.data?.batchDate ? `${Locale.label("donations.donationBatchPage.batchDate")} ${DateHelper.prettyDate(new Date(batch.data.batchDate.split("T")[0] + "T00:00:00"))}` : Locale.label("donations.donationBatchPage.subtitle")}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
       >
         <Stack
           direction={{ xs: "column", sm: "row" }} 
@@ -109,18 +115,18 @@ export const DonationBatchPage = () => {
       </PageHeader>
 
       <Box sx={{ p: 3 }}>
-        {editDonationId === "notset" && UserHelper.checkAccess(Permissions.givingApi.donations.edit) && funds.data?.length > 0 && (
+        {editDonationId === "notset" && UserHelper.checkAccess(Permissions.givingApi.donations.edit) && (funds.data?.length ?? 0) > 0 && (
           <BulkDonationEntry
-            batchId={batch.data?.id}
+            batchId={batch.data?.id || ""}
             batchDate={batch.data?.batchDate ? new Date(batch.data.batchDate.split("T")[0] + "T00:00:00") : new Date()}
-            funds={funds.data}
+            funds={funds.data || []}
             updatedFunction={donationUpdated}
           />
         )}
 
         {(editDonationId !== "notset" || editBatch) && <Box sx={{ mb: 3 }}>{getEditModules()}</Box>}
 
-        <Donations key={donationsKey} batch={batch.data} editFunction={showEditDonation} funds={funds.data} currency={currency} />
+        <Donations key={donationsKey} batch={batch.data || {}} editFunction={showEditDonation} funds={funds.data || []} currency={currency} />
       </Box>
     </>
   );

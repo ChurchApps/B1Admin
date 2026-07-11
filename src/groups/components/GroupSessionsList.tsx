@@ -35,10 +35,10 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
       const batchPromises = batch.map(async (session) => {
         try {
           const visitSessions = await ApiHelper.get(`/visitsessions?sessionId=${session.id}`, "AttendanceApi");
-          counts[session.id] = visitSessions.length;
+          counts[session.id!] = visitSessions.length;
         } catch (error) {
           console.error(`Failed to load attendance for session ${session.id}:`, error);
-          counts[session.id] = 0;
+          counts[session.id!] = 0;
         }
       });
       await Promise.all(batchPromises);
@@ -152,7 +152,7 @@ export const GroupSessionsList: React.FC<Props> = memo((props) => {
     const dateLabel = date && !isNaN(date.getTime()) ? date.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" }) : session.displayName || "";
     const dayLabel = date && !isNaN(date.getTime()) ? date.toLocaleDateString("en-US", { weekday: "short" }) : "";
     const timeLabel = session.serviceTime?.name || "";
-    const count = sessionAttendanceCounts[session.id];
+    const count = sessionAttendanceCounts[session.id!];
 
     const rightText = isFuture ? Locale.label("groups.groupSessions.upcoming") : count !== undefined ? String(count) : "";
 

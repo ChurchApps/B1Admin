@@ -1,13 +1,15 @@
 import React from "react";
 import { Locale, Permissions } from "@churchapps/apphelper";
 import { Grid, Box } from "@mui/material";
-import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, AdminPanelSettings as AdminIcon } from "@mui/icons-material";
+import { Church as ChurchIcon, ShowChart as UsageIcon, Book as TranslationIcon, HealthAndSafety as HealthIcon, SwitchAccount as ImpersonateIcon, AdminPanelSettings as AdminIcon, PersonSearch as UsersIcon, Schedule as JobsIcon } from "@mui/icons-material";
 import { PageHeader } from "@churchapps/apphelper";
 import { UsageTrendsTab } from "./components/UsageTrendTab";
 import { ChurchesTab } from "./components/ChurchesTab";
 import { TranslationTab } from "./components/TranslationTab";
 import { ImpersonateTab } from "./components/ImpersonateTab";
 import { ServerHealthTab } from "./components/ServerHealthTab";
+import { UsersTab } from "./components/UsersTab";
+import { JobsTab } from "./components/JobsTab";
 import { SettingsConfigList, type ConfigSection } from "../settings/components/SettingsConfigList";
 import { useRequirePermission } from "../hooks";
 
@@ -20,7 +22,9 @@ export const AdminPage = () => {
   const getCurrentTab = () => {
     switch (selectedTab) {
       case "churches": return <ChurchesTab key="churches" />;
+      case "users": return <UsersTab key="users" />;
       case "impersonate": return <ImpersonateTab key="impersonate" />;
+      case "jobs": return <JobsTab key="jobs" />;
       case "usage": return <UsageTrendsTab key="usage" />;
       case "translation": return <TranslationTab key="translation" />;
       case "serverHealth": return <ServerHealthTab key="serverHealth" />;
@@ -30,7 +34,9 @@ export const AdminPage = () => {
 
   const sections: ConfigSection[] = [
     { key: "churches", title: Locale.label("serverAdmin.adminPage.churches"), subtitle: Locale.label("serverAdmin.adminPage.churchesSubtitle"), icon: <ChurchIcon />, color: "primary" },
+    { key: "users", title: Locale.label("serverAdmin.adminPage.users"), subtitle: Locale.label("serverAdmin.adminPage.usersSubtitle"), icon: <UsersIcon />, color: "primary" },
     { key: "impersonate", title: Locale.label("serverAdmin.adminPage.impersonateUser"), subtitle: Locale.label("serverAdmin.adminPage.impersonateSubtitle"), icon: <ImpersonateIcon />, color: "secondary" },
+    { key: "jobs", title: Locale.label("serverAdmin.adminPage.jobs"), subtitle: Locale.label("serverAdmin.adminPage.jobsSubtitle"), icon: <JobsIcon />, color: "info" },
     { key: "usage", title: Locale.label("serverAdmin.adminPage.usageTrends"), subtitle: Locale.label("serverAdmin.adminPage.usageSubtitle"), icon: <UsageIcon />, color: "info" },
     { key: "translation", title: Locale.label("serverAdmin.adminPage.translationLookups"), subtitle: Locale.label("serverAdmin.adminPage.translationSubtitle"), icon: <TranslationIcon />, color: "warning" },
     { key: "serverHealth", title: Locale.label("serverAdmin.adminPage.serverHealth"), subtitle: Locale.label("serverAdmin.adminPage.serverHealthSubtitle"), icon: <HealthIcon />, color: "success" }

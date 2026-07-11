@@ -85,7 +85,7 @@ export const GroupBanner = memo((props: Props) => {
     }
   }, [group?.id]);
 
-  const isStandard = useMemo(() => group?.tags?.indexOf("standard") > -1, [group?.tags]);
+  const isStandard = useMemo(() => (group?.tags?.indexOf("standard") ?? -1) > -1, [group?.tags]);
 
   const groupTypeChip = useMemo(() => {
     if (!group?.tags) return null;
@@ -136,9 +136,9 @@ export const GroupBanner = memo((props: Props) => {
   const serviceTimeChips = useMemo(() => (
     groupServiceTimes.filter((gst) => gst.serviceTime).map((gst, idx) => (
       <Chip
-        key={`servicetime-${gst.serviceTime.name}-${idx}`}
+        key={`servicetime-${gst.serviceTime!.name}-${idx}`}
         icon={<CalendarIcon />}
-        label={gst.serviceTime.name}
+        label={gst.serviceTime!.name}
         size="small"
         sx={{ ...headerChipSx, fontWeight: 400, "& .MuiChip-icon": { color: "#FFF" } }}
       />
@@ -196,10 +196,10 @@ export const GroupBanner = memo((props: Props) => {
         <SendTextDialog groupId={group?.id} groupName={group?.name} onClose={() => setShowTextDialog(false)} />
       )}
       {showEmailDialog && (
-        <SendEmailDialog groupId={group?.id} groupName={group?.name} onClose={() => setShowEmailDialog(false)} />
+        <SendEmailDialog groupId={group.id || ""} groupName={group.name || ""} onClose={() => setShowEmailDialog(false)} />
       )}
       {showNotificationDialog && (
-        <SendNotificationDialog groupId={group?.id} groupName={group?.name} onClose={() => setShowNotificationDialog(false)} />
+        <SendNotificationDialog groupId={group.id || ""} groupName={group.name || ""} onClose={() => setShowNotificationDialog(false)} />
       )}
     </PageHeader>
   );

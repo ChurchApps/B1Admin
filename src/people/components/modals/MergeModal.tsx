@@ -8,7 +8,7 @@ interface Props {
   show: boolean;
   onHide: () => void;
   person1: PersonInterface;
-  person2: PersonInterface;
+  person2: PersonInterface | null;
   merge: (person: PersonInterface, personToRemove: PersonInterface) => void;
   mergeInProgress: boolean;
 }
@@ -37,9 +37,9 @@ const getDisplayValue = (key: string) => {
 };
 
 export const MergeModal: React.FC<Props> = (props) => {
-  const [aggregatePerson, setAggregatePerson] = React.useState<PersonInterface>(null);
+  const [aggregatePerson, setAggregatePerson] = React.useState<PersonInterface | null>(null);
   const [conflicts, setConflicts] = React.useState<IConflicts[]>([]);
-  const [error, setError] = React.useState<string>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
   const { person1, person2 } = props;
 
@@ -134,7 +134,7 @@ export const MergeModal: React.FC<Props> = (props) => {
       setError(Locale.label("people.mergeModal.selMsg"));
       return;
     }
-    let person: PersonInterface = { ...aggregatePerson };
+    let person: PersonInterface = { ...aggregatePerson } as PersonInterface;
     const contactkeys = person1.contactInfo ? Object.keys(person1.contactInfo) as Array<keyof ContactInfoInterface> : [];
     const nameKeys = person1.name ? Object.keys(person1.name) as Array<keyof NameInterface> : [];
 
@@ -159,7 +159,7 @@ export const MergeModal: React.FC<Props> = (props) => {
       };
     });
     setAggregatePerson(person);
-    props.merge(person, person2);
+    props.merge(person, person2!);
   };
 
   React.useEffect(merge, [person1, person2]);

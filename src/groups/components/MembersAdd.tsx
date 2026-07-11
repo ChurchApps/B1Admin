@@ -28,7 +28,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
     const idx = members.indexOf(gm);
     const person = members[idx].person;
     setGroupMembers(members);
-    props.addFunction(person);
+    props.addFunction(person!);
   };
 
   const getRows = () => {
@@ -53,7 +53,7 @@ export const MembersAdd: React.FC<Props> = (props) => {
       rows.push(
         <TableRow key={gm.personId}>
           <TableCell>
-            <PersonAvatar person={gm.person} size="small" />
+            <PersonAvatar person={gm.person!} size="small" />
           </TableCell>
           <TableCell>
             <Link to={"/people/" + gm.personId} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{personName}</Link>

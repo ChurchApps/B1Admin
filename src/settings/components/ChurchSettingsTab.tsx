@@ -5,7 +5,7 @@ import { ApiHelper, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Navigate } from "react-router-dom";
 
 export const ChurchSettingsTab = () => {
-  const [church, setChurch] = useState<ChurchInterface>(null);
+  const [church, setChurch] = useState<ChurchInterface | null>(null);
   const [redirectUrl, setRedirectUrl] = useState<string>("");
   const churchId = UserHelper.currentUserChurch.church.id;
 
@@ -21,7 +21,7 @@ export const ChurchSettingsTab = () => {
   else {
     return (
       <>
-        <ChurchSettingsEdit church={church} updatedFunction={loadData} />
+        <ChurchSettingsEdit church={church as ChurchInterface} updatedFunction={loadData} />
       </>
     );
   }

@@ -8,7 +8,7 @@ import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterfac
 
 export const PrintPlan = () => {
   const params = useParams();
-  const [plan, setPlan] = React.useState<PlanInterface>(null);
+  const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
   const [people, setPeople] = React.useState<PersonInterface[]>([]);
@@ -29,7 +29,7 @@ export const PrintPlan = () => {
     ApiHelper.get("/positions/plan/" + params.id, "DoingApi").then((data: any) => {
       setPositions(data);
     });
-    ApiHelper.get("/planItems/plan/" + params.id.toString(), "DoingApi").then((d: any) => {
+    ApiHelper.get("/planItems/plan/" + params.id?.toString(), "DoingApi").then((d: any) => {
       setPlanItems(d);
     });
     ApiHelper.get("/times/plan/" + params.id, "DoingApi").then((d: TimeInterface[]) => {
@@ -65,7 +65,8 @@ export const PrintPlan = () => {
   const getPositionCategories = () => {
     const cats: string[] = [];
     positions.forEach((p) => {
-      if (!cats.includes(p.categoryName)) cats.push(p.categoryName);
+      const categoryName = p.categoryName || "";
+      if (!cats.includes(categoryName)) cats.push(categoryName);
     });
     const result: JSX.Element[] = [];
     cats.forEach((c) => {
@@ -89,7 +90,7 @@ export const PrintPlan = () => {
           .filter((a) => a.positionId === p.id)
           .forEach((a) => {
             const person = people.find((p) => p.id === a.personId);
-            names.push(person?.name?.display);
+            names.push(person?.name?.display || "");
           });
 
         result.push(
@@ -115,7 +116,7 @@ export const PrintPlan = () => {
           const timeCells: JSX.Element[] = [];
           if (serviceTimes.length === 0) {
             timeCells.push(<td key="t0" style={Styles.tableCell}>{formatTime(accumulators[0])}</td>);
-            accumulators[0] += pi.seconds;
+            accumulators[0] += pi.seconds || 0;
           } else {
             serviceTimes.forEach((st, i) => {
               const excluded = isExcluded(pi.id || "", st.id || "");
@@ -123,7 +124,7 @@ export const PrintPlan = () => {
                 timeCells.push(<td key={st.id} style={{ ...Styles.tableCell, color: "#999" }}>—</td>);
               } else {
                 timeCells.push(<td key={st.id} style={Styles.tableCell}>{formatClockTime(st.startTime, accumulators[i])}</td>);
-                accumulators[i] += pi.seconds;
+                accumulators[i] += pi.seconds || 0;
               }
             });
           }
@@ -133,7 +134,7 @@ export const PrintPlan = () => {
               <td style={Styles.tableCell}>
                 <b>{pi.label}:</b> {pi.description}
               </td>
-              <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds)}</td>
+              <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>
             </tr>
           );
         }

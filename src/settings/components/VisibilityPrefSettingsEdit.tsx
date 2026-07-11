@@ -9,9 +9,9 @@ interface Props {
 }
 
 export const VisbilityPrefSettingsEdit: React.FC<Props> = (props) => {
-  const [addressSetting, setAddressSetting] = useState<GenericSettingInterface>(null);
-  const [phoneSetting, setPhoneSetting] = useState<GenericSettingInterface>(null);
-  const [emailSetting, setEmailSetting] = useState<GenericSettingInterface>(null);
+  const [addressSetting, setAddressSetting] = useState<GenericSettingInterface | null>(null);
+  const [phoneSetting, setPhoneSetting] = useState<GenericSettingInterface | null>(null);
+  const [emailSetting, setEmailSetting] = useState<GenericSettingInterface | null>(null);
   const [pref, setPref] = useState<VisibilityPreferenceInterface>({ address: "", phoneNumber: "", email: "" } as VisibilityPreferenceInterface);
 
   const loadData = async () => {

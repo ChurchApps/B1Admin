@@ -3,6 +3,7 @@ import React from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { ViewKanban as WorkflowsIcon, Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Check as CheckIcon } from "@mui/icons-material";
 import { AppIconButton } from "../../../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../../../hooks";
 import { type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 
 const ADD_CATEGORY = "__add__";
@@ -17,10 +18,11 @@ interface Props {
 }
 
 export const WorkflowEdit = (props: Props) => {
-  const [workflow, setWorkflow] = React.useState<WorkflowInterface>(null);
+  const [workflow, setWorkflow] = React.useState<WorkflowInterface | null>(null);
   const [categories, setCategories] = React.useState<WorkflowCategoryInterface[]>([]);
   const [addingCategory, setAddingCategory] = React.useState(false);
   const [newCategoryName, setNewCategoryName] = React.useState("");
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   // Hoisted: the compiler emits a non-optional guard read (workflow.id) for the
   // handleDelete closure dep, which crashes while workflow is still null.
   const workflowId = workflow ? workflow.id : null;
@@ -39,11 +41,13 @@ export const WorkflowEdit = (props: Props) => {
   };
 
   const handleDelete = async () => {
+    if (!(await confirm(Locale.label("tasks.workflowEdit.confirmDelete") || "Are you sure you want to delete this workflow?"))) return;
     await ApiHelper.delete("/workflows/" + workflowId, "DoingApi");
     props.onDelete?.();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
+    if (!workflow) return;
     const w = { ...workflow };
     if (e.target.name === "name") w.name = e.target.value;
     else if (e.target.name === "categoryId") {
@@ -55,7 +59,7 @@ export const WorkflowEdit = (props: Props) => {
 
   const handleAddCategory = async () => {
     const name = newCategoryName.trim();
-    if (!name) return;
+    if (!name || !workflow) return;
     const result = await ApiHelper.post("/workflowCategories", [{ name }], "DoingApi");
     const category: WorkflowCategoryInterface = result[0];
     setCategories([...categories, category]);
@@ -72,6 +76,7 @@ export const WorkflowEdit = (props: Props) => {
 
   return (
     <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200", "&:hover": { boxShadow: 2 } }}>
+      {ConfirmDialogElement}
       <CardContent>
         <Stack spacing={3}>
           <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -124,7 +129,7 @@ export const WorkflowEdit = (props: Props) => {
             )}
 
             <FormControlLabel
-              control={<Switch checked={workflow?.active ?? true} onChange={(e) => setWorkflow({ ...workflow, active: e.target.checked })} color="primary" />}
+              control={<Switch checked={workflow?.active ?? true} onChange={(e) => { if (workflow) setWorkflow({ ...workflow, active: e.target.checked }); }} color="primary" />}
               label={<Typography variant="body1">{workflow?.active ?? true ? Locale.label("tasks.workflowEdit.active") : Locale.label("tasks.workflowEdit.inactive")}</Typography>}
             />
           </Stack>

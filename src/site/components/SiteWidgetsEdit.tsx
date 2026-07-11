@@ -11,13 +11,13 @@ interface LauncherAction { label?: string; url?: string; icon?: string; }
 interface LauncherData { actions?: LauncherAction[]; position?: string; color?: string; }
 
 export const SiteWidgetsEdit: React.FC = () => {
-  const [globalStyles, setGlobalStyles] = useState<GlobalStyleInterface>(null);
+  const [globalStyles, setGlobalStyles] = useState<GlobalStyleInterface | null>(null);
   const [settings, setSettings] = useState<GenericSettingInterface[]>([]);
   const [bannerEnabled, setBannerEnabled] = useState(false);
   const [banner, setBanner] = useState<BannerData>({});
   const [launcherEnabled, setLauncherEnabled] = useState(false);
   const [launcher, setLauncher] = useState<LauncherData>({ actions: [], position: "bottomRight" });
-  const [iconPickerIndex, setIconPickerIndex] = useState<number>(null);
+  const [iconPickerIndex, setIconPickerIndex] = useState<number | null>(null);
   const [saved, setSaved] = useState(false);
 
   const loadData = () => {
@@ -100,11 +100,11 @@ export const SiteWidgetsEdit: React.FC = () => {
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <InputLabel sx={{ fontSize: "0.85rem" }}>{Locale.label("site.siteWidgets.backgroundColor")}</InputLabel>
-              <ColorPicker color={banner.backgroundColor || "#1565c0"} updatedCallback={(c) => updateBanner("backgroundColor", c)} globalStyles={globalStyles} />
+              <ColorPicker color={banner.backgroundColor || "#1565c0"} updatedCallback={(c) => updateBanner("backgroundColor", c)} globalStyles={globalStyles as GlobalStyleInterface} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <InputLabel sx={{ fontSize: "0.85rem" }}>{Locale.label("site.siteWidgets.textColor")}</InputLabel>
-              <ColorPicker color={banner.textColor || "#ffffff"} updatedCallback={(c) => updateBanner("textColor", c)} globalStyles={globalStyles} />
+              <ColorPicker color={banner.textColor || "#ffffff"} updatedCallback={(c) => updateBanner("textColor", c)} globalStyles={globalStyles as GlobalStyleInterface} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <TextField fullWidth size="small" type="date" label={Locale.label("site.siteWidgets.startDate")} value={banner.startDate || ""} onChange={(e) => updateBanner("startDate", e.target.value)} InputLabelProps={{ shrink: true }} />
@@ -150,7 +150,7 @@ export const SiteWidgetsEdit: React.FC = () => {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <InputLabel sx={{ fontSize: "0.85rem" }}>{Locale.label("site.siteWidgets.color")}</InputLabel>
-                  <ColorPicker color={launcher.color || "#1565c0"} updatedCallback={(c) => setLauncher((l) => ({ ...l, color: c }))} globalStyles={globalStyles} />
+                  <ColorPicker color={launcher.color || "#1565c0"} updatedCallback={(c) => setLauncher((l) => ({ ...l, color: c }))} globalStyles={globalStyles as GlobalStyleInterface} />
                 </Grid>
               </Grid>
             </>

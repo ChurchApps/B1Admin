@@ -8,7 +8,7 @@ import { EnvironmentHelper } from "../helpers/EnvironmentHelper";
 import type { PageInterface, SiteInterface } from "../helpers/Interfaces";
 import type { LinkInterface } from "@churchapps/helpers";
 import { PageLinkEdit } from "./components/PageLinkEdit";
-import { HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
+import { Breadcrumbs, type BreadcrumbItem, HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui";
 
 export const PagePreview: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -80,12 +80,18 @@ export const PagePreview: React.FC = () => {
     );
   }
 
-  const previewSubDomain = siteSubDomain || context.userChurch?.church?.subDomain || "";
+  const previewSubDomain = siteSubDomain || context?.userChurch?.church?.subDomain || "";
   const previewUrl = EnvironmentHelper.B1Url.replace("{subdomain}", previewSubDomain) + pageData.url + "?t=" + Date.now();
+
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: Locale.label("helpers.secondaryMenuHelper.site"), path: "/site" },
+    { label: Locale.label("helpers.secondaryMenuHelper.pages"), path: "/site/pages" },
+    { label: pageData.title || "" }
+  ];
 
   return (
     <>
-      <PageHeader icon={<WebIcon />} title={Locale.label("site.pagePreview.title")} subtitle={Locale.label("site.pagePreview.subtitle").replace("{title}", pageData.title)}>
+      <PageHeader icon={<WebIcon />} title={Locale.label("site.pagePreview.title")} subtitle={Locale.label("site.pagePreview.subtitle").replace("{title}", pageData.title || "")} breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}>
         <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: { xs: "100%", sm: "auto" } }}>
           <HeaderSecondaryButton startIcon={<EditIcon />} onClick={handleEditContent}>{Locale.label("site.pagePreview.editContent")}</HeaderSecondaryButton>
           <HeaderPrimaryButton startIcon={<SettingsIcon />} onClick={() => setShowSettings(true)}>{Locale.label("site.pagePreview.pageSettings")}</HeaderPrimaryButton>
@@ -113,7 +119,7 @@ export const PagePreview: React.FC = () => {
           </Box>
 
           <Box sx={{ position: "relative" }}>
-            <iframe src={previewUrl} style={{ width: "100%", height: "80vh", minHeight: "600px", border: "none", display: "block" }} title={Locale.label("site.pagePreview.previewOf").replace("{title}", pageData.title)} />
+            <iframe src={previewUrl} style={{ width: "100%", height: "80vh", minHeight: "600px", border: "none", display: "block" }} title={Locale.label("site.pagePreview.previewOf").replace("{title}", pageData.title || "")} />
           </Box>
         </Paper>
       </Box>

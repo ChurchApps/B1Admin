@@ -337,7 +337,8 @@
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
         "validEmail": "Please enter a valid email address."
-      }
+      },
+      "confirmDuplicate": "Bu e-posta adresiyle eşleşen mevcut bir kişi '{{existingName}}' ({{existingEmail}}) bulundu. Yine de '{{firstName}} {{lastName}}' kişisini eklemek istediğinizden emin misiniz?"
     },
     "custom": "Custom",
     "delete": "Sil",

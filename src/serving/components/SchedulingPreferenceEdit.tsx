@@ -9,8 +9,12 @@ interface Props {
   onClose: () => void;
 }
 
+// maxPerMonth is cleared via null (not undefined) so the API explicitly unsets it, but the
+// shared interface only types it as number | undefined - widen locally to match actual usage.
+type LocalPreference = Omit<SchedulingPreferenceInterface, "maxPerMonth"> & { maxPerMonth?: number | null };
+
 export const SchedulingPreferenceEdit = (props: Props) => {
-  const [preference, setPreference] = React.useState<SchedulingPreferenceInterface>({ personId: props.personId });
+  const [preference, setPreference] = React.useState<LocalPreference>({ personId: props.personId });
 
   useEffect(() => {
     ApiHelper.get("/schedulingPreferences/people?ids=" + props.personId, "DoingApi").then((data: SchedulingPreferenceInterface[]) => {

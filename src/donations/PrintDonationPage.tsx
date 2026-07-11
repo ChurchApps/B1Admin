@@ -46,6 +46,7 @@ export const PrintDonationPage = () => {
   const donations = useMemo(() => {
     return (
       allDonations.data?.filter((don) => {
+        if (!don.donationDate) return false;
         const donationDate = new Date(don.donationDate.split("T")[0] + "T00:00:00");
         return donationDate.getFullYear() === currYear;
       }) || []
@@ -75,7 +76,7 @@ export const PrintDonationPage = () => {
     let result = 0;
     fundDonations.forEach((d) => {
       const donation = ArrayHelper.getOne(donations, "id", d.donationId);
-      if (donation) result += d.amount;
+      if (donation) result += d.amount || 0;
     });
     return result;
   }, [fundDonations, donations]);
@@ -87,8 +88,8 @@ export const PrintDonationPage = () => {
       if (donation) {
         const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
         const existing = ArrayHelper.getOne(result, "fund", fund?.name);
-        if (existing) existing.total += fd.amount;
-        else result.push({ fund: fund?.name, total: fd.amount });
+        if (existing) existing.total += fd.amount || 0;
+        else result.push({ fund: fund?.name, total: fd.amount || 0 });
       }
     });
     return result;
@@ -99,7 +100,7 @@ export const PrintDonationPage = () => {
     fundDonations.forEach((fd) => {
       const donation = ArrayHelper.getOne(donations, "id", fd.donationId);
       const fund = ArrayHelper.getOne(funds.data || [], "id", fd.fundId);
-      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, amount: fd.amount });
+      if (donation) result.push({ date: donation.donationDate, method: donation.method, fund: fund?.name, amount: fd.amount || 0 });
     });
     return result;
   }, [fundDonations, donations, funds.data]);
@@ -108,7 +109,7 @@ export const PrintDonationPage = () => {
     <GivingStatementDocument
       labelPrefix="donations.printDonationPage"
       person={person.data}
-      church={context.userChurch?.church}
+      church={context?.userChurch?.church}
       year={currYear}
       currency={currency}
       totalContributions={totalContributions}

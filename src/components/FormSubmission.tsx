@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { Question } from "./";
 import { Grid, Box, Typography, Stack } from "@mui/material";
 import { Edit as EditIcon } from "@mui/icons-material";
-import { type FormSubmissionInterface } from "@churchapps/helpers";
+import { type FormSubmissionInterface, type AnswerInterface } from "@churchapps/helpers";
 import { Permissions, ApiHelper, UserHelper, UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "./ui/AppIconButton";
 
@@ -82,7 +82,7 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
             <Grid size={{ xs: 12, md: questions.length > 1 ? 6 : 12 }}>
               <Stack spacing={2}>
                 {firstHalf.map((question, index) => (
-                  <Question key={`first-${question.id || index}`} question={question} answer={getAnswer(question.id)} />
+                  <Question key={`first-${question.id || index}`} question={question} answer={getAnswer(question.id || "") as AnswerInterface} />
                 ))}
               </Stack>
             </Grid>
@@ -90,7 +90,7 @@ export const FormSubmission: React.FC<Props> = memo((props) => {
               <Grid size={{ xs: 12, md: 6 }}>
                 <Stack spacing={2}>
                   {secondHalf.map((question, index) => (
-                    <Question key={`second-${question.id || index}`} question={question} answer={getAnswer(question.id)} />
+                    <Question key={`second-${question.id || index}`} question={question} answer={getAnswer(question.id || "") as AnswerInterface} />
                   ))}
                 </Stack>
               </Grid>

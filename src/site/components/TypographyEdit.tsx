@@ -6,8 +6,8 @@ import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 
 interface Props {
-  globalStyle?: GlobalStyleInterface;
-  updatedFunction?: (typographyJson: string) => void;
+  globalStyle?: GlobalStyleInterface | null;
+  updatedFunction?: (typographyJson: string | null) => void;
 }
 
 export interface TypographyInterface {
@@ -17,7 +17,7 @@ export interface TypographyInterface {
 }
 
 export function TypographyEdit(props: Props) {
-  const [typography, setTypography] = useState<TypographyInterface>(null);
+  const [typography, setTypography] = useState<TypographyInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export function TypographyEdit(props: Props) {
   const handleSave = () => {
     setIsSubmitting(true);
     setTimeout(() => {
-      props.updatedFunction(JSON.stringify(typography));
+      props.updatedFunction?.(JSON.stringify(typography));
       setIsSubmitting(false);
     }, 500);
   };
@@ -53,7 +53,7 @@ export function TypographyEdit(props: Props) {
   };
 
   const getFontSizePreview = (level: number) => {
-    return Math.round(typography.baseSize * Math.pow(typography.scale, level)) + "px";
+    return Math.round(typography!.baseSize * Math.pow(typography!.scale, level)) + "px";
   };
 
   if (!typography) return null;
@@ -72,7 +72,7 @@ export function TypographyEdit(props: Props) {
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-typography-button">{Locale.label("site.typographyEdit.saveTypography")}</LoadingButton>
           </Stack>
         </Stack>

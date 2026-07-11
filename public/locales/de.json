@@ -337,7 +337,8 @@
         "firstName": "Bitte geben Sie einen Vornamen ein.",
         "lastName": "Bitte geben Sie einen Nachnamen ein.",
         "validEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
-      }
+      },
+      "confirmDuplicate": "Ein bereits existierender Benutzer '{{existingName}}' ({{existingEmail}}) wurde mit dieser E-Mail-Adresse gefunden. Sind Sie sicher, dass Sie '{{firstName}} {{lastName}}' hinzufügen möchten?"
     },
     "custom": "Benutzerdefiniert",
     "delete": "Löschen",

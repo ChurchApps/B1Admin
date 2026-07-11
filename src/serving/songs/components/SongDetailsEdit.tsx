@@ -29,16 +29,16 @@ export const SongDetailsEdit = (props: Props) => {
 
   const onValid = (values: AnyRecord) => {
     const sd: SongDetailInterface = { ...props.songDetail, ...values };
-    sd.releaseDate = values.releaseDate ? DateHelper.toDate(values.releaseDate) : null;
-    sd.bpm = values.bpm !== "" && values.bpm != null ? Number(values.bpm) : null;
-    sd.seconds = values.seconds !== "" && values.seconds != null ? Number(values.seconds) : null;
+    (sd as any).releaseDate = values.releaseDate ? DateHelper.toDate(values.releaseDate) : null;
+    (sd as any).bpm = values.bpm !== "" && values.bpm != null ? Number(values.bpm) : null;
+    (sd as any).seconds = values.seconds !== "" && values.seconds != null ? Number(values.seconds) : null;
     ApiHelper.post("/songDetails", [sd], "ContentApi").then((data: any) => {
       props.onSave(data[0]);
     });
   };
 
   return (
-    <FormCard title={props.songDetail?.title} icon="album" onSave={handleSubmit(onValid)} onCancel={props.onCancel}>
+    <FormCard title={props.songDetail?.title || ""} icon="album" onSave={handleSubmit(onValid)} onCancel={props.onCancel}>
       <TextField label={Locale.label("songs.details.album")} fullWidth size="small" placeholder={Locale.label("placeholders.song.album")} {...register("album")} />
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6 }}>

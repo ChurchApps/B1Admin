@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import type { Stripe } from "@stripe/stripe-js";
 import { DisplayBox, ExportLink, Loading } from "@churchapps/apphelper";
-import { MultiGatewayDonationForm, RecurringDonations, PaymentMethods, StripePaymentMethod, DonationHelper, getPaymentProvider } from "@churchapps/apphelper/donations";
+import { MultiGatewayDonationForm, RecurringDonations, PaymentMethods, SavedPaymentMethod, getPaymentProvider } from "@churchapps/apphelper/donations";
 import type { PaymentGateway } from "@churchapps/apphelper/donations";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
 import type { DonationInterface, PersonInterface, ChurchInterface } from "@churchapps/helpers";
@@ -19,13 +17,12 @@ interface Props {
 }
 
 export const DonationPage: React.FC<Props> = (props) => {
-  const [donations, setDonations] = React.useState<DonationInterface[]>(null);
-  const [stripePromise, setStripe] = React.useState<Promise<Stripe>>(null);
-  const [paymentMethods, setPaymentMethods] = React.useState<StripePaymentMethod[]>(null);
+  const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
+  const [paymentMethods, setPaymentMethods] = React.useState<SavedPaymentMethod[] | null>(null);
   const [paymentGateways, setPaymentGateways] = React.useState<PaymentGateway[]>([]);
-  const [customerId, setCustomerId] = React.useState(null);
-  const [person, setPerson] = React.useState<PersonInterface>(null);
-  const [message, setMessage] = React.useState<string>(null);
+  const [customerId, setCustomerId] = React.useState<string | null>(null);
+  const [person, setPerson] = React.useState<PersonInterface | null>(null);
+  const [message, setMessage] = React.useState<string | null>(null);
   const [appName, setAppName] = React.useState<string>("");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currency, setCurrency] = React.useState<string>("usd");
@@ -46,15 +43,15 @@ export const DonationPage: React.FC<Props> = (props) => {
       // Handle both old nested format and new flat array format
       if (data[0]?.cards?.data || data[0]?.banks?.data) {
         // Old format with nested cards/banks structure
-        const cards = data[0]?.cards?.data?.map((card: any) => new StripePaymentMethod(card)) || [];
-        const banks = data[0]?.banks?.data?.map((bank: any) => new StripePaymentMethod(bank)) || [];
+        const cards = data[0]?.cards?.data?.map((card: any) => new SavedPaymentMethod(card)) || [];
+        const banks = data[0]?.banks?.data?.map((bank: any) => new SavedPaymentMethod(bank)) || [];
         setCustomerId(data[0]?.customer?.id);
         setPaymentMethods(cards.concat(banks));
       } else {
         // New flat array format from normalized API response
         const methods = data
           .filter((pm: any) => getPaymentProvider(pm.provider).capabilities.savedCard)
-          .map((pm: any) => new StripePaymentMethod(pm));
+          .map((pm: any) => new SavedPaymentMethod(pm));
         // Get customerId from first payment method if available
         const firstMethod = data.find((pm: any) => pm.customerId);
         if (firstMethod?.customerId) {
@@ -77,15 +74,13 @@ export const DonationPage: React.FC<Props> = (props) => {
     }
   };
 
-  const loadStripeData = async (gatewayData: any) => {
+  const loadGatewayData = async (gatewayData: any) => {
     if (!gatewayData.length) {
       setPaymentMethods([]);
       return;
     }
 
     setPaymentGateways(gatewayData);
-    const stripeGateway = DonationHelper.findGatewayByProvider(gatewayData, "stripe");
-    if (stripeGateway?.publicKey) setStripe(loadStripe(stripeGateway.publicKey));
     await loadPaymentMethods();
   };
 
@@ -97,8 +92,8 @@ export const DonationPage: React.FC<Props> = (props) => {
       const [donationsData, gatewaysData] = await Promise.all([ApiHelper.get("/donations?personId=" + props.personId, "GivingApi"), ApiHelper.get("/gateways", "GivingApi")]);
 
       setDonations(donationsData);
-      await loadPersonData(); //moved this outside of loadStripeData to fix issue with person data not loading when there's no gateway data
-      await loadStripeData(gatewaysData);
+      await loadPersonData(); //loaded before gateway data to fix issue with person data not loading when there's no gateway data
+      await loadGatewayData(gatewaysData);
     } catch (error) {
       console.error("Error loading donation data:", error);
       setDonations([]);
@@ -107,7 +102,7 @@ export const DonationPage: React.FC<Props> = (props) => {
   };
 
   const handleDataUpdate = (message?: string) => {
-    setMessage(message);
+    setMessage(message || null);
     setPaymentMethods(null);
     loadData();
   };
@@ -118,8 +113,8 @@ export const DonationPage: React.FC<Props> = (props) => {
     const currentY = date.getFullYear();
     const lastY = date.getFullYear() - 1;
 
-    const current_year = donations.length > 0 ? donations.filter((d) => new Date((d.donationDate || "2000-01-01").split("T")[0] + "T00:00:00").getFullYear() === currentY) : [];
-    const last_year = donations.length > 0 ? donations.filter((d) => new Date((d.donationDate || "2000-01-01").split("T")[0] + "T00:00:00").getFullYear() === lastY) : [];
+    const current_year = donations && donations.length > 0 ? donations.filter((d) => new Date((d.donationDate || "2000-01-01").split("T")[0] + "T00:00:00").getFullYear() === currentY) : [];
+    const last_year = donations && donations.length > 0 ? donations.filter((d) => new Date((d.donationDate || "2000-01-01").split("T")[0] + "T00:00:00").getFullYear() === lastY) : [];
     const customHeaders = [
       { label: "amount", key: "amount" },
       { label: "donationDate", key: "donationDate" },
@@ -181,7 +176,7 @@ export const DonationPage: React.FC<Props> = (props) => {
   const getRows = () => {
     const rows: React.ReactElement[] = [];
 
-    if (donations.length === 0) {
+    if (!donations || donations.length === 0) {
       rows.push(
         <TableRow key="0">
           <TableCell>{Locale.label("donation.page.willAppear")}</TableCell>
@@ -196,15 +191,15 @@ export const DonationPage: React.FC<Props> = (props) => {
         <TableRow key={i}>
           {appName !== "B1App" && (
             <TableCell>
-              {d.batchId ? <Link href={"/donations/" + d.batchId}>{d.batchId}</Link> : ""}
+              {d.batchId ? <Link href={"/donations/" + d.batchId}>{Locale.label("donation.page.viewBatch")}</Link> : ""}
             </TableCell>
           )}
           <TableCell>{d.donationDate ? DateHelper.prettyDate(new Date(d.donationDate.split("T")[0] + "T00:00:00")) : ""}</TableCell>
           <TableCell>
             {d.method} - {d.methodDetails}
           </TableCell>
-          <TableCell>{d.fund.name}</TableCell>
-          <TableCell>{CurrencyHelper.formatCurrencyWithLocale(d.fund.amount, currency)}</TableCell>
+          <TableCell>{d.fund?.name}</TableCell>
+          <TableCell>{CurrencyHelper.formatCurrencyWithLocale(d.fund?.amount || 0, currency)}</TableCell>
         </TableRow>
       );
     }
@@ -214,7 +209,7 @@ export const DonationPage: React.FC<Props> = (props) => {
   const getTableHeader = () => {
     const rows: React.ReactElement[] = [];
 
-    if (donations.length > 0) {
+    if (donations && donations.length > 0) {
       rows.push(
         <TableRow key="header" sx={{ textAlign: "left" }}>
           {appName !== "B1App" && <th>{Locale.label("donation.page.batch")}</th>}
@@ -252,16 +247,15 @@ export const DonationPage: React.FC<Props> = (props) => {
   };
 
   const getPaymentMethodComponents = () => {
-    if (!paymentMethods || !donations) return <Loading />;
+    if (!paymentMethods || !donations || !person) return <Loading />;
     else {
       return (
         <>
           <MultiGatewayDonationForm
             person={person}
-            customerId={customerId}
+            customerId={customerId || ""}
             paymentMethods={paymentMethods || []}
             paymentGateways={paymentGateways}
-            stripePromise={stripePromise}
             donationSuccess={handleDataUpdate}
             church={props?.church}
             churchLogo={props?.churchLogo}
@@ -269,8 +263,8 @@ export const DonationPage: React.FC<Props> = (props) => {
           <DisplayBox headerIcon="payments" headerText={Locale.label("donation.donationPage.donations")} editContent={getEditContent()}>
             {getTable()}
           </DisplayBox>
-          <RecurringDonations customerId={customerId} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />
-          <PaymentMethods person={person} customerId={customerId} paymentMethods={paymentMethods} appName={appName} stripePromise={stripePromise} dataUpdate={handleDataUpdate} />
+          <RecurringDonations customerId={customerId || ""} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />
+          <PaymentMethods person={person} customerId={customerId || ""} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />
         </>
       );
     }

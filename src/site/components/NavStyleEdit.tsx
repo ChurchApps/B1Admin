@@ -6,8 +6,8 @@ import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 
 interface Props {
-  globalStyle?: GlobalStyleInterface;
-  updatedFunction?: (navStylesJson: string) => void;
+  globalStyle?: GlobalStyleInterface | null;
+  updatedFunction?: (navStylesJson: string | null) => void;
 }
 
 export interface NavSolidInterface {
@@ -40,7 +40,7 @@ const PICKER_INITIAL = {
 };
 
 export function NavStyleEdit(props: Props) {
-  const [navStyles, setNavStyles] = useState<NavStylesInterface>(null);
+  const [navStyles, setNavStyles] = useState<NavStylesInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -60,17 +60,17 @@ export function NavStyleEdit(props: Props) {
   const handleSave = () => {
     setIsSubmitting(true);
     setTimeout(() => {
-      props.updatedFunction(JSON.stringify(navStyles));
+      props.updatedFunction?.(JSON.stringify(navStyles));
       setIsSubmitting(false);
     }, 500);
   };
 
   const setSolid = (field: keyof NavSolidInterface, value: string | null) => {
-    setNavStyles({ ...navStyles, solid: { ...navStyles.solid, [field]: value } });
+    setNavStyles({ ...navStyles!, solid: { ...navStyles!.solid, [field]: value } });
   };
 
   const setTransparent = (field: keyof NavTransparentInterface, value: string | null) => {
-    setNavStyles({ ...navStyles, transparent: { ...navStyles.transparent, [field]: value } });
+    setNavStyles({ ...navStyles!, transparent: { ...navStyles!.transparent, [field]: value } });
   };
 
   if (!navStyles) return null;
@@ -118,7 +118,7 @@ export function NavStyleEdit(props: Props) {
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-nav-button">{Locale.label("site.navStyleEdit.saveNav")}</LoadingButton>
           </Stack>
         </Stack>

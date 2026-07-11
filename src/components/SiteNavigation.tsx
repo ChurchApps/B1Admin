@@ -81,7 +81,7 @@ export const SiteNavigation: React.FC<Props> = (props) => {
     props.handleDrop(index, parentId, link);
   }, [props.handleDrop]);
 
-  const getNestedChildren = (arr: LinkInterface[], parent: string) => {
+  const getNestedChildren = (arr: LinkInterface[], parent: string | undefined) => {
     const result: LinkInterface[] = [];
     for (const i in arr) {
       if (arr[i].parentId == parent) {

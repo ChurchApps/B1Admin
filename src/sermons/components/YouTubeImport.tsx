@@ -11,11 +11,11 @@ interface Props {
 
 export const YouTubeImport = (props: Props) => {
   const [selectedSermons, setSelectedSermons] = React.useState<SermonInterface[]>([]);
-  const [sermons, setSermons] = React.useState<SermonInterface[]>(null);
+  const [sermons, setSermons] = React.useState<SermonInterface[] | null>(null);
   const [channelId, setChannelId] = React.useState("");
   const [playlistId, setPlaylistId] = React.useState("");
   const [playlists, setPlaylists] = React.useState<PlaylistInterface[]>([]);
-  const [errors, setErrors] = React.useState([]);
+  const [errors, setErrors] = React.useState<string[]>([]);
   const [isFetching, setIsFetching] = React.useState(false);
   const loadData = () => {
     ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
@@ -30,6 +30,7 @@ export const YouTubeImport = (props: Props) => {
 
   const getRows = () => {
     const rows: React.ReactElement[] = [];
+    if (!sermons) return rows;
     sermons.forEach((ser) => {
       const sermon = ser;
       rows.push(<TableRow key={sermon.videoData}>

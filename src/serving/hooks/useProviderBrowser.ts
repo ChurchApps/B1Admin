@@ -3,6 +3,7 @@ import { ApiHelper } from "@churchapps/apphelper";
 import { getProvider, getAvailableProviders, type ContentFolder, type ContentFile, type ContentItem } from "@churchapps/content-providers";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
+import { SERVING_PROVIDER_IDS } from "../servingProviders";
 
 interface UseProviderBrowserOptions {
   ministryId?: string;
@@ -15,7 +16,7 @@ interface UseProviderBrowserOptions {
 }
 
 export function useProviderBrowser(options: UseProviderBrowserOptions) {
-  const { ministryId, defaultProviderId, providerFilter = ["lessonschurch", "signpresenter", "bibleproject", "dropbox", "jesusfilm"], includeFiles = false, autoLoad = true } = options;
+  const { ministryId, defaultProviderId, providerFilter = SERVING_PROVIDER_IDS, includeFiles = false, autoLoad = true } = options;
 
   const [selectedProviderId, setSelectedProviderId] = useState<string>(defaultProviderId || "");
   const [linkedProviders, setLinkedProviders] = useState<ContentProviderAuthInterface[]>([]);

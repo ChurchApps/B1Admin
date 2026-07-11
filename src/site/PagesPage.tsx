@@ -103,13 +103,13 @@ export const PagesPage = () => {
               <Typography
                 variant="body2"
                 sx={{ fontFamily: "monospace", cursor: "pointer", color: "var(--link)", fontWeight: 500, "&:hover": { textDecoration: "underline" } }}
-                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}>
+                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain || "") + item.url, "_blank")}>
                 {item.url}
               </Typography>
               <AppIconButton
                 label={Locale.label("site.pagesPage.previewPage")}
                 icon={<VisibilityIcon sx={{ fontSize: 16 }} />}
-                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain) + item.url, "_blank")}
+                onClick={() => window.open(EnvironmentHelper.B1Url.replace("{subdomain}", selectedSite?.subDomain || UserHelper.currentUserChurch.church.subDomain || "") + item.url, "_blank")}
                 sx={{ p: 0.5 }}
               />
               {!item.custom && <Chip label={Locale.label("site.pagesPage.generated")} size="small" color="default" sx={{ fontSize: "0.7rem", height: 18 }} />}
@@ -145,8 +145,10 @@ export const PagesPage = () => {
     });
   };
 
-  const handleDrop = (index: number, parentId: string, link: LinkInterface) => {
+  const handleDrop = (index: number, parentIdArg: string, link: LinkInterface) => {
+    let parentId: string | null = parentIdArg;
     if (parentId === "") parentId = null;
+    const linkParentId: string | undefined = parentId === null ? undefined : parentId;
     if (parentId === "unlinked") {
       if (link) {
         ApiHelper.delete("/links/" + link.id, "ContentApi").then(() => {
@@ -155,7 +157,7 @@ export const PagesPage = () => {
       }
     } else {
       if (link) {
-        link.parentId = parentId;
+        link.parentId = linkParentId;
         link.sort = index;
         ApiHelper.post("/links", [link], "ContentApi").then(() => {
           loadData();
@@ -171,7 +173,7 @@ export const PagesPage = () => {
           icon: "",
           text: "New Link",
           sort: index,
-          parentId: parentId,
+          parentId: linkParentId,
           siteId: siteId
         };
         ApiHelper.post("/links", [newLink], "ContentApi").then(() => {

@@ -23,7 +23,7 @@ interface Props {
 
 
 export const PlanList = memo((props: Props) => {
-  const [plan, setPlan] = React.useState<PlanInterface>(null);
+  const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [showPast, setShowPast] = React.useState(false);
   const [showLessonSchedule, setShowLessonSchedule] = React.useState(false);
   const [showBulkSchedule, setShowBulkSchedule] = React.useState(false);
@@ -58,7 +58,7 @@ export const PlanList = memo((props: Props) => {
     today.setHours(0, 0, 0, 0);
     return allPlans.filter(p => {
       if (!p.serviceDate) return true;
-      const d = new Date(p.serviceDate);
+      const d = DateHelper.toDate(p.serviceDate);
       d.setHours(0, 0, 0, 0);
       return d >= today;
     });
@@ -99,7 +99,7 @@ export const PlanList = memo((props: Props) => {
   if (showBulkSchedule && canEdit) {
     return (
       <BulkLessonSchedule
-        ministryId={props.ministry.id}
+        ministryId={props.ministry.id || ""}
         planTypeId={props.planTypeId}
         plans={plans}
         onSave={handleUpdated}
@@ -111,7 +111,7 @@ export const PlanList = memo((props: Props) => {
   if (showLessonSchedule && canEdit) {
     return (
       <LessonScheduleEdit
-        ministryId={props.ministry.id}
+        ministryId={props.ministry.id || ""}
         planTypeId={props.planTypeId}
         plans={plans}
         onSave={handleUpdated}
@@ -329,7 +329,7 @@ export const PlanList = memo((props: Props) => {
       </Menu>
 
       {showTemplates && canEdit && (
-        <PlanTemplateManager ministryId={props.ministry.id} plans={plans} onClose={() => setShowTemplates(false)} />
+        <PlanTemplateManager ministryId={props.ministry.id || ""} plans={plans} onClose={() => setShowTemplates(false)} />
       )}
     </Box>
   );

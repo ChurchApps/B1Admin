@@ -337,7 +337,8 @@
         "firstName": "Prosimo, vnesite ime.",
         "lastName": "Prosimo, vnesite priimek.",
         "validEmail": "Prosimo, vnesite veljaven naslov e-pošte."
-      }
+      },
+      "confirmDuplicate": "S tem e-poštnim naslovom je že bila najdena oseba '{{existingName}}' ({{existingEmail}}). Ali ste prepričani, da želite dodati '{{firstName}} {{lastName}}'?"
     },
     "custom": "Po meri",
     "delete": "Izbriši",

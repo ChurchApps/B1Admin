@@ -5,6 +5,7 @@ import { ApiHelper, UserHelper, Permissions, DisplayBox, Locale, PageHeader } fr
 import { useParams } from "react-router-dom";
 import { Box, Grid } from "@mui/material";
 import { Security as SecurityIcon } from "@mui/icons-material";
+import { Breadcrumbs, type BreadcrumbItem } from "../components/ui";
 
 export const RolePage = () => {
   const params = useParams();
@@ -24,7 +25,7 @@ export const RolePage = () => {
 
   const loadData = () => {
     if (params.roleId === "everyone") {
-      setRole({ id: null, name: "Everyone" });
+      setRole({ id: undefined, name: "Everyone" });
       return;
     }
     ApiHelper.get("/roles/" + params.roleId, "MembershipApi").then((data: any) => setRole(data));
@@ -68,9 +69,13 @@ export const RolePage = () => {
 
   if (!UserHelper.checkAccess(Permissions.membershipApi.roles.view)) return <></>;
   else {
+    const breadcrumbItems: BreadcrumbItem[] = [
+      { label: Locale.label("components.wrapper.set"), path: "/settings" },
+      { label: role?.name || "" }
+    ];
     return (
       <>
-        <PageHeader icon={<SecurityIcon />} title={`${Locale.label("settings.rolePage.roleEdit")} ${role?.name || ""}`} />
+        <PageHeader icon={<SecurityIcon />} title={`${Locale.label("settings.rolePage.roleEdit")} ${role?.name || ""}`} breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />} />
         <Box id="mainContent" sx={{ p: 3 }}>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 8 }}>

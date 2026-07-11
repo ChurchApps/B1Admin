@@ -20,18 +20,18 @@ export const Sermons = () => {
   const [sermons, setSermons] = React.useState<SermonInterface[]>([]);
   const [filteredSermons, setFilteredSermons] = React.useState<SermonInterface[]>([]);
   const [playlists, setPlaylists] = React.useState<PlaylistInterface[]>([]);
-  const [currentSermon, setCurrentSermon] = React.useState<SermonInterface>(null);
+  const [currentSermon, setCurrentSermon] = React.useState<SermonInterface | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [showSermonSearch, setShowSermonSearch] = React.useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
-  const [currentPlaylist, setCurrentPlaylist] = React.useState<PlaylistInterface>(null);
+  const [currentPlaylist, setCurrentPlaylist] = React.useState<PlaylistInterface | null>(null);
   const [playlistSearch, setPlaylistSearch] = React.useState<string>("");
   const [showPlaylistSearch, setShowPlaylistSearch] = React.useState<boolean>(false);
-  const [photoUrl, setPhotoUrl] = React.useState<string>(null);
-  const [photoType, setPhotoType] = React.useState<string>(null);
+  const [photoUrl, setPhotoUrl] = React.useState<string | null>(null);
+  const [photoType, setPhotoType] = React.useState<string | null>(null);
   const imageEditorRef = React.useRef<HTMLDivElement>(null);
 
   const handleUpdated = () => { setCurrentSermon(null); loadData(); };
@@ -145,20 +145,20 @@ export const Sermons = () => {
     let result = "";
     if (playlists) {
       const p: PlaylistInterface = ArrayHelper.getOne(playlists, "id", playlistId);
-      if (p) result = p.title;
+      if (p) result = p.title || "";
     }
     return result;
   };
 
   const handlePlaylistUpdated = () => { setCurrentPlaylist(null); loadData(); };
 
-  const showPhotoEditor = (pType: string, url: string) => {
+  const showPhotoEditor = (pType: string, url: string | null) => {
     setPhotoUrl(url);
     setPhotoType(pType);
   };
 
-  const handlePhotoUpdated = (dataUrl: string) => {
-    setPhotoUrl(dataUrl);
+  const handlePhotoUpdated = (dataUrl?: string) => {
+    setPhotoUrl(dataUrl ?? null);
     setPhotoType(photoType);
   };
 

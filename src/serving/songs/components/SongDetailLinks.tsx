@@ -66,8 +66,8 @@ export const SongDetailLinks = memo((props: Props) => {
 
   const linkCards = useMemo(() => {
     return allLinks.map((link, index) => {
-      const logo = serviceLogos[link.service];
-      const color = serviceColors[link.service] || "primary.main";
+      const logo = serviceLogos[link.service ?? ""];
+      const color = serviceColors[link.service ?? ""] || "primary.main";
 
       return (
         <Card

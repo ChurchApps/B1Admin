@@ -23,11 +23,11 @@ export const PersonDetails = memo((props: Props) => {
 
   React.useEffect(() => setPerson(props.person), [props.person]);
 
-  const handlePhotoUpdated = (dataUrl: string) => {
+  const handlePhotoUpdated = (dataUrl?: string) => {
     const updatedPerson = { ...person };
     updatedPerson.photo = dataUrl;
     if (!dataUrl) {
-      updatedPerson.photoUpdated = null;
+      updatedPerson.photoUpdated = undefined;
     }
     setPerson(updatedPerson);
     setInPhotoEditMode(false);

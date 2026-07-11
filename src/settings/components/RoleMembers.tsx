@@ -34,7 +34,7 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
 
   const handleRemove = useCallback(
     async (roleMember: RoleMemberInterface) => {
-      if (await confirm(`${Locale.label("settings.roleMembers.confirmMsg")} ${props.role.name}?`)) {
+      if (await confirm(`${Locale.label("settings.roleMembers.confirmMsg")} ${props.role.name || ""}?`)) {
         ApiHelper.delete("/rolemembers/" + roleMember.id, "MembershipApi").then(() => props.updatedFunction());
       }
     },
@@ -61,14 +61,15 @@ export const RoleMembers: React.FC<Props> = memo((props) => {
         <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} intent="remove" onClick={() => handleRemove(rm)} data-testid={`remove-role-member-button-${rm.id}`} />
       ) : null;
       const editLink = canEdit ? (
-        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => { props.setSelectedRoleMember(rm.userId); }} data-testid={`edit-role-member-button-${rm.id}`} />
+        <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => { props.setSelectedRoleMember(rm.userId || ""); }} data-testid={`edit-role-member-button-${rm.id}`} />
       ) : null;
 
-      const { firstName, lastName } = rm.user;
+      const firstName = rm.user?.firstName;
+      const lastName = rm.user?.lastName;
       rows.push(
         <TableRow key={i}>
           <TableCell>{`${firstName} ${lastName}`}</TableCell>
-          <TableCell>{rm.user.email}</TableCell>
+          <TableCell>{rm.user?.email}</TableCell>
           <TableCell align="right" className="rowActions">
             <Stack direction="row" spacing={1} justifyContent="end">
               {editLink}

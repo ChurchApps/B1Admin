@@ -13,7 +13,7 @@ interface Props {
 
 export const Form: React.FC<Props> = (props) => {
   const [form, setForm] = React.useState<FormInterface>({} as FormInterface);
-  const [questions, setQuestions] = React.useState<QuestionInterface[]>(null);
+  const [questions, setQuestions] = React.useState<QuestionInterface[] | null>(null);
   const [editQuestionId, setEditQuestionId] = React.useState("notset");
   const questionList = questions || []; // Hoisted to avoid guard reads on closure deps while questions is undefined
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
@@ -29,16 +29,16 @@ export const Form: React.FC<Props> = (props) => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const anchor = e.currentTarget as HTMLAnchorElement;
-    const row = anchor.parentNode.parentNode as HTMLElement;
-    const idx = parseInt(row.getAttribute("data-index"));
-    setEditQuestionId(questionList[idx].id);
+    const row = anchor.parentNode!.parentNode as HTMLElement;
+    const idx = parseInt(row.getAttribute("data-index") || "");
+    setEditQuestionId(questionList[idx].id || "");
   };
   const moveUp = (e: React.MouseEvent) => {
     e.preventDefault();
     const button = e.currentTarget as HTMLButtonElement;
     const row = button.closest("tr") as HTMLElement;
-    const idx = parseInt(row.getAttribute("data-index"));
-    const tmpQuestions = [...questions];
+    const idx = parseInt(row.getAttribute("data-index") || "");
+    const tmpQuestions = [...questionList];
     const question = tmpQuestions.splice(idx, 1)[0];
     tmpQuestions.splice(idx - 1, 0, question);
     setQuestions(tmpQuestions);
@@ -48,8 +48,8 @@ export const Form: React.FC<Props> = (props) => {
     e.preventDefault();
     const button = e.currentTarget as HTMLButtonElement;
     const row = button.closest("tr") as HTMLElement;
-    const idx = parseInt(row.getAttribute("data-index"));
-    const tmpQuestions = [...questions];
+    const idx = parseInt(row.getAttribute("data-index") || "");
+    const tmpQuestions = [...questionList];
     const question = tmpQuestions.splice(idx, 1)[0];
     tmpQuestions.splice(idx + 1, 0, question);
     setQuestions(tmpQuestions);
@@ -133,7 +133,7 @@ export const Form: React.FC<Props> = (props) => {
   };
   const getSidebarModules = () => {
     const result = [];
-    if (editQuestionId !== "notset") result.push(<FormQuestionEdit key="form-questions" questionId={editQuestionId} updatedFunction={questionUpdated} formId={form.id} />);
+    if (editQuestionId !== "notset") result.push(<FormQuestionEdit key="form-questions" questionId={editQuestionId} updatedFunction={questionUpdated} formId={form.id || ""} />);
     return result;
   };
 

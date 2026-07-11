@@ -73,9 +73,9 @@ type PanelAction =
 export function ContentEditor(props: Props) {
   const navigate = useNavigate();
   const context = useContext(UserContext);
-  const [container, setContainer] = useState<PageInterface | BlockInterface>(null);
-  const [editSection, setEditSection] = useState<SectionInterface>(null);
-  const [editElement, setEditElement] = useState<ElementInterface>(null);
+  const [container, setContainer] = useState<PageInterface | BlockInterface | null>(null);
+  const [editSection, setEditSection] = useState<SectionInterface | null>(null);
+  const [editElement, setEditElement] = useState<ElementInterface | null>(null);
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null);
   const [deviceType, setDeviceType] = useState("desktop");
   const isMobileViewport = useMediaQuery("(max-width:900px)");
@@ -139,6 +139,8 @@ export function ContentEditor(props: Props) {
   const panelDirtyRef = useRef(false);
   const [pendingPanelAction, setPendingPanelAction] = useState<PanelAction | null>(null);
   const [pendingDeleteSection, setPendingDeleteSection] = useState<SectionInterface | null>(null);
+  const [pendingDiscardChanges, setPendingDiscardChanges] = useState(false);
+  const [pendingUnpublish, setPendingUnpublish] = useState(false);
 
   // Render hidden items dimmed instead of display:none so they stay selectable.
   const getEditorVisibilityCss = (sections: SectionInterface[], device: string) => {
@@ -207,7 +209,7 @@ export function ContentEditor(props: Props) {
   const loadDataInternal = (snapshotDescription?: string) => {
     if (snapshotDescription) setHasUnpublishedChanges(true);
     if (UserHelper.checkAccess(Permissions.contentApi.content.edit)) {
-      props.loadData(props.pageId || props.blockId).then((p: PageInterface | BlockInterface) => {
+      props.loadData(props.pageId || props.blockId || "").then((p: PageInterface | BlockInterface) => {
         if (p?.sections) {
           p.sections.forEach((section) => {
             if (section.elements) section.elements = normalizeElements(section.elements);
@@ -258,7 +260,7 @@ export function ContentEditor(props: Props) {
       const section: SectionInterface = data.data;
       section.sort = sort;
       section.zone = zone;
-      section.pageId = zone === "siteFooter" ? null : props.pageId;
+      section.pageId = (zone === "siteFooter" ? null : props.pageId) as string | undefined;
       trackSave(ApiHelper.post("/sections", [section], "ContentApi")).then(() => {
         loadDataInternal("After adding section");
       });
@@ -272,7 +274,7 @@ export function ContentEditor(props: Props) {
         targetBlockId: data.blockId,
         zone: zone
       };
-      if (sec.zone === "siteFooter") sec.pageId = null;
+      if (sec.zone === "siteFooter") (sec as any).pageId = null;
       requestPanelChange({ kind: "section", section: sec });
     } else {
       setTemplateDrop({ sort, zone });
@@ -285,7 +287,7 @@ export function ContentEditor(props: Props) {
       sort: templateDrop.sort,
       background: "#FFF",
       textColor: "dark",
-      pageId: templateDrop.zone === "siteFooter" ? null : props.pageId,
+      pageId: (templateDrop.zone === "siteFooter" ? null : props.pageId) as string | undefined,
       blockId: props.blockId,
       zone: templateDrop.zone
     };
@@ -389,7 +391,12 @@ export function ContentEditor(props: Props) {
 
   const handleDiscardChanges = () => {
     if (!props.pageId) return;
-    if (!window.confirm(Locale.label("site.editorToolbar.discardChangesConfirm"))) return;
+    setPendingDiscardChanges(true);
+  };
+
+  const confirmDiscardChanges = () => {
+    setPendingDiscardChanges(false);
+    if (!props.pageId) return;
     if (container) saveSnapshot(container, "Before discarding unpublished changes");
     trackSave(ApiHelper.post(`/pages/${props.pageId}/discard`, {}, "ContentApi")).then(() => {
       loadDataInternal("After discarding unpublished changes");
@@ -399,7 +406,12 @@ export function ContentEditor(props: Props) {
 
   const handleUnpublish = () => {
     if (!props.pageId) return;
-    if (!window.confirm(Locale.label("site.editorToolbar.disablePublishConfirm"))) return;
+    setPendingUnpublish(true);
+  };
+
+  const confirmUnpublish = () => {
+    setPendingUnpublish(false);
+    if (!props.pageId) return;
     trackSave(ApiHelper.delete(`/pages/${props.pageId}/published`, "ContentApi")).then(() => {
       setContainer((prev) => (prev ? { ...prev, publishedAt: null } : prev));
       setHasUnpublishedChanges(false);
@@ -417,7 +429,7 @@ export function ContentEditor(props: Props) {
 
   const handlePaletteSelect = (item: { type: string; dndType: string; blockId?: string }) => {
     const defaultZone = props.pageId ? "main" : "block";
-    const zoneSections = defaultZone === "block" ? container?.sections : ArrayHelper.getAll(container?.sections, "zone", defaultZone);
+    const zoneSections = defaultZone === "block" ? container?.sections : ArrayHelper.getAll(container?.sections || [], "zone", defaultZone);
     const lastSection = zoneSections && zoneSections.length > 0 ? zoneSections[zoneSections.length - 1] : null;
     const maxSort = (elements?: ElementInterface[]) => (elements && elements.length > 0 ? Math.max(...elements.map((e) => e.sort || 0)) : 0);
 
@@ -433,7 +445,7 @@ export function ContentEditor(props: Props) {
     let target: { sectionId: string; blockId?: string; parentId?: string; sort: number } | null = null;
     if (selectedElementId) {
       const path = findElementPath(selectedElementId);
-      if (path?.section) target = { sectionId: path.section.id, blockId: path.section.blockId, parentId: path.element.parentId, sort: (path.element.sort || 0) + 0.1 };
+      if (path?.section) target = { sectionId: path.section.id || "", blockId: path.section.blockId, parentId: path.element.parentId, sort: (path.element.sort || 0) + 0.1 };
     }
     if (!target && editSection?.id) target = { sectionId: editSection.id, blockId: editSection.blockId, sort: maxSort(editSection.elements) + 1 };
     if (!target && lastSection) target = { sectionId: lastSection.id, blockId: lastSection.blockId, sort: maxSort(lastSection.elements) + 1 };
@@ -478,7 +490,7 @@ export function ContentEditor(props: Props) {
   const getSections = (zone: string) => {
     const result: React.ReactElement[] = [];
     result.push(getAddSection(0, zone));
-    const sections = zone === "block" ? container?.sections : ArrayHelper.getAll(container?.sections, "zone", zone);
+    const sections = zone === "block" ? container?.sections : ArrayHelper.getAll(container?.sections || [], "zone", zone);
     sections?.forEach((section, index) => {
       if (section.targetBlockId) {
         result.push(
@@ -539,7 +551,7 @@ export function ContentEditor(props: Props) {
     return result;
   };
 
-  const handleSectionEdit = (s: SectionInterface, e: ElementInterface) => {
+  const handleSectionEdit = (s: SectionInterface | null, e: ElementInterface | null) => {
     if (s) {
       if (s.targetBlockId) requestPanelChange({ kind: "blockNav", blockId: s.targetBlockId });
       else requestPanelChange({ kind: "section", section: s });
@@ -607,7 +619,7 @@ export function ContentEditor(props: Props) {
         if (!prev) return prev;
         return {
           ...prev,
-          sections: prev.sections.map((s) => ({
+          sections: (prev.sections || []).map((s) => ({
             ...s,
             elements: s.elements ? replaceElementImmutable(s.elements, original) : s.elements
           }))
@@ -653,7 +665,7 @@ export function ContentEditor(props: Props) {
     if (!path) return null;
     const crumbs: BreadcrumbCrumb[] = [
       { label: Locale.label("site.section.section"), onClick: () => handleSectionEdit(path.section, null) },
-      ...path.ancestors.map((a) => ({ label: getElementTypeMeta(a.elementType).label, onClick: () => handleElementClick(a.id) })),
+      ...path.ancestors.map((a) => ({ label: getElementTypeMeta(a.elementType).label, onClick: () => handleElementClick(a.id || "") })),
       { label: getElementTypeMeta(path.element.elementType).label }
     ];
     return <SelectionBreadcrumb crumbs={crumbs} />;
@@ -692,7 +704,8 @@ export function ContentEditor(props: Props) {
     const findAndMoveElement = (elements: ElementInterface[], _parentElements?: ElementInterface[]): boolean => {
       for (let i = 0; i < elements.length; i++) {
         if (elements[i].id === elementId) {
-          const currentSort = typeof elements[i].sort === "number" ? elements[i].sort : i;
+          const rawSort = elements[i].sort;
+          const currentSort = typeof rawSort === "number" ? rawSort : i;
           const updatedElement = {
             ...elements[i],
             sort: direction === "up" ? currentSort - 1.5 : currentSort + 1.5
@@ -702,8 +715,9 @@ export function ContentEditor(props: Props) {
           });
           return true;
         }
-        if (elements[i].elements && elements[i].elements.length > 0) {
-          if (findAndMoveElement(elements[i].elements, elements)) return true;
+        const childElements = elements[i].elements;
+        if (childElements && childElements.length > 0) {
+          if (findAndMoveElement(childElements, elements)) return true;
         }
       }
       return false;
@@ -735,7 +749,7 @@ export function ContentEditor(props: Props) {
     if (props.pageId) {
       const page = container as PageInterface;
       if (page.layout === "embed") {
-        if (page.url.includes("/stream")) url = "/admin/video/settings";
+        if (page.url?.includes("/stream")) url = "/admin/video/settings";
       }
     }
     if (props.onDone) props.onDone(url);
@@ -795,9 +809,9 @@ export function ContentEditor(props: Props) {
         if (!prevContainer) return prevContainer;
         return {
           ...prevContainer,
-          sections: prevContainer.sections.map((s) => ({
+          sections: (prevContainer.sections || []).map((s) => ({
             ...s,
-            elements: replaceElementImmutable(s.elements, element)
+            elements: replaceElementImmutable(s.elements || [], element)
           }))
         };
       });
@@ -819,8 +833,9 @@ export function ContentEditor(props: Props) {
         elements[i] = element;
         return;
       }
-      if (elements[i].elements && elements[i].elements.length > 0) {
-        realtimeUpdateElement(element, elements[i].elements);
+      const childElements = elements[i].elements;
+      if (childElements && childElements.length > 0) {
+        realtimeUpdateElement(element, childElements);
       }
     }
   };
@@ -853,17 +868,17 @@ export function ContentEditor(props: Props) {
     if (props.pageId) {
       const page = container as PageInterface;
       if (page) {
-        const layoutZones: string[] = zones[page.layout] || ["main"];
+        const layoutZones: string[] = zones[page.layout || ""] || ["main"];
         const showZoneLabel = layoutZones.length > 1;
         layoutZones.forEach((z: string) => {
-          const sections = ArrayHelper.getAll(page?.sections, "zone", z);
+          const sections = ArrayHelper.getAll(page?.sections || [], "zone", z);
           const name = z.substring(0, 1).toUpperCase() + z.substring(1, z.length);
           result.push(getZoneBox(sections, name, z, showZoneLabel));
         });
       }
     } else {
       const block = container as BlockInterface;
-      if (block) result.push(getZoneBox((container as BlockInterface)?.sections, Locale.label("site.contentEditor.blockPreview"), "block", false));
+      if (block) result.push(getZoneBox((container as BlockInterface)?.sections || [], Locale.label("site.contentEditor.blockPreview"), "block", false));
     }
     return <>{result}</>;
   };
@@ -1008,6 +1023,28 @@ export function ContentEditor(props: Props) {
         />
 
         <ConfirmDialog
+          open={pendingDiscardChanges}
+          title={Locale.label("site.editorToolbar.discardChanges")}
+          message={Locale.label("site.editorToolbar.discardChangesConfirm")}
+          confirmLabel={Locale.label("site.editorToolbar.discardChanges")}
+          destructive
+          data-testid="discard-changes-dialog"
+          onConfirm={confirmDiscardChanges}
+          onCancel={() => setPendingDiscardChanges(false)}
+        />
+
+        <ConfirmDialog
+          open={pendingUnpublish}
+          title={Locale.label("site.editorToolbar.disablePublish")}
+          message={Locale.label("site.editorToolbar.disablePublishConfirm")}
+          confirmLabel={Locale.label("site.editorToolbar.disablePublish")}
+          destructive
+          data-testid="disable-publish-dialog"
+          onConfirm={confirmUnpublish}
+          onCancel={() => setPendingUnpublish(false)}
+        />
+
+        <ConfirmDialog
           open={!!pendingPanelAction}
           title={Locale.label("site.contentEditor.discardElementTitle")}
           message={editSection ? Locale.label("site.contentEditor.discardSectionMessage") : Locale.label("site.contentEditor.discardElementMessage")}
@@ -1096,7 +1133,7 @@ export function ContentEditor(props: Props) {
 
             <PropertyPanel
               open={!!(editElement || editSection)}
-              width={editElement && ["text", "textWithPhoto", "card", "faq"].includes(editElement.elementType) ? 520 : 400}
+              width={editElement && ["text", "textWithPhoto", "card", "faq"].includes(editElement.elementType || "") ? 520 : 400}
               title={
                 editElement
                   ? getElementTypeMeta(editElement.elementType).label
@@ -1130,8 +1167,8 @@ export function ContentEditor(props: Props) {
                       if (isNewElement) loadDataInternal("After adding element");
                       else {
                         const c = { ...container };
-                        c.sections.forEach((s) => {
-                          realtimeUpdateElement(updatedElement, s.elements);
+                        c.sections?.forEach((s) => {
+                          realtimeUpdateElement(updatedElement, s.elements || []);
                         });
                         setContainer(c);
                         setHasUnpublishedChanges(true);
@@ -1142,7 +1179,7 @@ export function ContentEditor(props: Props) {
                     }
                   }}
                   onRealtimeChange={handleRealtimeChange}
-                  globalStyles={props.config?.globalStyles}
+                  globalStyles={props.config?.globalStyles as GlobalStyleInterface}
                 />
               )}
               {editSection && (
@@ -1157,7 +1194,7 @@ export function ContentEditor(props: Props) {
                     setEditSection(null);
                     loadDataInternal(isNewSection ? "After adding section" : "After editing section");
                   }}
-                  globalStyles={props.config?.globalStyles}
+                  globalStyles={props.config?.globalStyles as GlobalStyleInterface}
                 />
               )}
             </PropertyPanel>

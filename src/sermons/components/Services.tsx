@@ -12,7 +12,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Services: React.FC = () => {
   const [services, setServices] = React.useState<StreamingServiceInterface[]>([]);
-  const [currentService, setCurrentService] = React.useState<StreamingServiceInterface>(null);
+  const [currentService, setCurrentService] = React.useState<StreamingServiceInterface | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const handleUpdated = () => { setCurrentService(null); loadData(); };
@@ -33,7 +33,7 @@ export const Services: React.FC = () => {
   const loadData = () => {
     ApiHelper.get("/streamingServices", "ContentApi").then((data: any) => {
       data.forEach((s: StreamingServiceInterface) => {
-        s.serviceTime = new Date(Date.parse(s.serviceTime.toString()));
+        s.serviceTime = new Date(Date.parse(s.serviceTime!.toString()));
         s.serviceTime.setMinutes(s.serviceTime.getMinutes() + s.timezoneOffset);
       });
       setServices(data);
@@ -79,7 +79,7 @@ export const Services: React.FC = () => {
           </td>
           <td>
             <Typography variant="body2" color="text.secondary">
-              {DateHelper.prettyDateTime(service.serviceTime)}
+              {DateHelper.prettyDateTime(service.serviceTime as Date)}
             </Typography>
           </td>
           <td style={{ textAlign: "right" }} className="rowActions">

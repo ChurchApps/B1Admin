@@ -11,7 +11,7 @@ import { CountChip, EmptyState, HeaderPrimaryButton, hoverRowSx } from "../compo
 import { useRequirePermission } from "../hooks";
 
 export const BlocksPage = () => {
-  const [editBlock, setEditBlock] = useState<BlockInterface>(null);
+  const [editBlock, setEditBlock] = useState<BlockInterface | null>(null);
   const [showSites, setShowSites] = useState(false);
   const { siteId, setSiteId, sites, reloadSites } = useSiteSelection();
   const denied = useRequirePermission(Permissions.contentApi.content.edit);

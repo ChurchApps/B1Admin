@@ -29,7 +29,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
   const [icon, setIcon] = useState<string>("");
   const [photo, setPhoto] = useState<string>("");
   const [groupIdsJson, setGroupIdsJson] = useState<string>("");
-  const [pages, setPages] = useState<PageInterface[]>(null);
+  const [pages, setPages] = useState<PageInterface[] | null>(null);
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -117,7 +117,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
 
   const onPageChange = (id: string) => {
     setValue("linkData", id);
-    const page = ArrayHelper.getOne(pages, "id", id);
+    const page = ArrayHelper.getOne(pages || [], "id", id);
     if (page) setValue("url", page.url);
   };
 
@@ -231,7 +231,7 @@ export function AppEdit({ currentTab: currentTabFromProps, updatedFunction = () 
                   <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("settings.appEdit.selectGroups")}</Typography>
                   <FormGroup>
                     {groups.map(group => (
-                      <FormControlLabel key={group.id} control={<Checkbox checked={getSelectedGroupIds().includes(group.id)} onChange={(ev) => handleGroupChange(group.id, ev.target.checked)} />} label={group.name} />
+                      <FormControlLabel key={group.id} control={<Checkbox checked={getSelectedGroupIds().includes(group.id || "")} onChange={(ev) => handleGroupChange(group.id || "", ev.target.checked)} />} label={group.name} />
                     ))}
                   </FormGroup>
                   {groups.length === 0 && (

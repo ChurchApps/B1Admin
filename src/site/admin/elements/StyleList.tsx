@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const StyleList: React.FC<Props> = (props) => {
-  const [editStyle, setEditStyle] = React.useState<{ platform: string; name: string; value: any }>(null);
+  const [editStyle, setEditStyle] = React.useState<{ platform: string; name: string; value: any } | null>(null);
 
   const options: StyleOption[] = [];
   allStyleOptions.forEach((o) => {

@@ -16,8 +16,8 @@ interface Props {
 }
 
 export const ConditionEdit = (props: Props) => {
-  const [condition, setCondition] = React.useState<ConditionInterface>(null);
-  const [errors, setErrors] = React.useState([]);
+  const [condition, setCondition] = React.useState<ConditionInterface | null>(null);
+  const [errors, setErrors] = React.useState<string[]>([]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const init = () => {
@@ -41,6 +41,7 @@ export const ConditionEdit = (props: Props) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
+    if (!condition) return;
     const val = e.target.value;
     const c = { ...condition };
     switch (e.target.name) {
@@ -54,6 +55,7 @@ export const ConditionEdit = (props: Props) => {
   };
 
   const getQuestionDetails = () => {
+    if (!condition) return <></>;
     let result = <ConditionText condition={condition} onChange={(c) => setCondition(c)} />;
     switch (condition?.field) {
       case "today":
@@ -74,9 +76,9 @@ export const ConditionEdit = (props: Props) => {
 
   const handleDelete = async () => {
     const conf = await confirm(Locale.label("tasks.conditionEdit.confirmMsg"));
-    if (!conf) return;
+    if (!conf || !condition) return;
     await ApiHelper.delete("/conditions/" + condition.id, "DoingApi");
-    props.onSave(null);
+    props.onSave(null as unknown as ConditionInterface);
   };
 
   if (!condition) return <></>;

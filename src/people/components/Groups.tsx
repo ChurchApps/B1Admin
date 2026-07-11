@@ -1,5 +1,6 @@
 import React, { memo, useMemo } from "react";
 import { UniqueIdHelper, Loading, Locale } from "@churchapps/apphelper";
+import { type GroupMemberInterface } from "@churchapps/helpers";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { Card, CardContent, Typography, Stack, Chip, List, ListItemButton, ListItemAvatar, ListItemText, Avatar } from "@mui/material";
@@ -15,7 +16,7 @@ interface Props {
 }
 
 export const Groups: React.FC<Props> = memo((props) => {
-  const groupMembers = useQuery({
+  const groupMembers = useQuery<GroupMemberInterface[]>({
     queryKey: ["/groupmembers?personId=" + props.personId, "MembershipApi"],
     enabled: !UniqueIdHelper.isMissing(props.personId),
     placeholderData: []

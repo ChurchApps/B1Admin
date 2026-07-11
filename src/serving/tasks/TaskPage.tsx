@@ -1,7 +1,7 @@
 import React, { useContext, useCallback } from "react";
 import { Menu, MenuItem, Box, Stack, Button } from "@mui/material";
 import { ApiHelper, Notes, DateHelper, type ConversationInterface, Locale, Loading, PageHeader } from "@churchapps/apphelper";
-import { type TaskInterface } from "@churchapps/helpers";
+import { type TaskInterface, type UserContextInterface } from "@churchapps/helpers";
 import { useParams } from "react-router-dom";
 import { HeaderPrimaryButton, HeaderSecondaryButton } from "../../components/ui";
 import { ContentPicker } from "./components/ContentPicker";
@@ -61,7 +61,7 @@ export const TaskPage = () => {
       if (!task.data) return;
       const t = { ...task.data };
       t.status = status;
-      t.dateClosed = status === "Open" ? null : new Date();
+      t.dateClosed = status === "Open" ? undefined : new Date();
       updateTaskMutation.mutate(t);
     },
     [task.data, updateTaskMutation]
@@ -156,9 +156,9 @@ export const TaskPage = () => {
         <Box sx={{ p: 3 }}>
           {task.data.taskType === "directoryUpdate" && <RequestedChanges task={task.data} />}
           <Box sx={{ mb: 2 }}>
-            <TaskReminderEdit taskId={task.data.id} dueDate={task.data.dueDate} />
+            <TaskReminderEdit taskId={task.data.id || ""} dueDate={task.data.dueDate} />
           </Box>
-          <Notes context={context} conversationId={task.data?.conversationId} createConversation={handleCreateConversation} />
+          <Notes context={context as UserContextInterface} conversationId={task.data?.conversationId || ""} createConversation={handleCreateConversation as () => Promise<string>} />
         </Box>
 
         {modalField !== "" && <ContentPicker onClose={handleModalClose} onSelect={handleContentPicked} />}

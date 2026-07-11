@@ -9,11 +9,11 @@ interface Props {
 }
 
 export const DirectoryApproveSettingsEdit: React.FC<Props> = (props) => {
-  const [groups, setGroups] = React.useState<GroupInterface[]>(null);
+  const [groups, setGroups] = React.useState<GroupInterface[] | null>(null);
   const [selectedGroupId, setSelectedGroupId] = React.useState<string>("");
-  const [setting, setSetting] = React.useState<GenericSettingInterface>(null);
+  const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
   const [directoryVisibility, setDirectoryVisibility] = React.useState<string>("Members");
-  const [visibilitySetting, setVisibilitySetting] = React.useState<GenericSettingInterface>(null);
+  const [visibilitySetting, setVisibilitySetting] = React.useState<GenericSettingInterface | null>(null);
 
   const save = () => {
     const approvalSetting: GenericSettingInterface = setting === null ? { churchId: props.churchId, public: 1, keyName: "directoryApprovalGroupId" } : setting;
@@ -31,7 +31,7 @@ export const DirectoryApproveSettingsEdit: React.FC<Props> = (props) => {
 
   const getFields = () => {
     const result: JSX.Element[] = [];
-    groups.forEach((g) => {
+    groups?.forEach((g) => {
       result.push(<MenuItem value={g.id}>{g.name}</MenuItem>);
     });
     return result;
@@ -76,7 +76,7 @@ export const DirectoryApproveSettingsEdit: React.FC<Props> = (props) => {
             <InputLabel id="groups">{Locale.label("settings.directoryApprovalSettingsEdit.groups")}</InputLabel>
             <Select labelId="groups" name="groups" label={Locale.label("settings.directoryApprovalSettingsEdit.groups")} value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
               <MenuItem value="">{Locale.label("settings.directoryApprovalSettingsEdit.none")}</MenuItem>
-              {groups?.length > 0 ? (
+              {(groups?.length || 0) > 0 ? (
                 getFields()
               ) : (
                 <MenuItem value="" disabled>

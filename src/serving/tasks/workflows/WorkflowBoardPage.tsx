@@ -20,7 +20,7 @@ import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permission
 export const WorkflowBoardPage = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const workflowId = params.id;
+  const workflowId = params.id || "";
   const [editStep, setEditStep] = React.useState<WorkflowStepInterface | null>(null);
   const [editWorkflow, setEditWorkflow] = React.useState<WorkflowInterface | null>(null);
   const [openCard, setOpenCard] = React.useState<TaskInterface | null>(null);
@@ -165,9 +165,9 @@ export const WorkflowBoardPage = () => {
                       key={step.id}
                       workflowId={workflowId}
                       step={step}
-                      cards={cardsForStep(step.id)}
-                      routes={routesForStep(step.id)}
-                      actions={actionsForStep(step.id)}
+                      cards={cardsForStep(step.id || "")}
+                      routes={routesForStep(step.id || "")}
+                      actions={actionsForStep(step.id || "")}
                       steps={steps}
                       workflows={workflows.data || []}
                       canEdit={canEdit}
@@ -196,7 +196,7 @@ export const WorkflowBoardPage = () => {
             {editStep && canManage && (
               <Box sx={{ width: { xs: "100%", md: 360 }, flexShrink: 0 }}>
                 <WorkflowStepEdit step={editStep} steps={steps} workflows={(workflows.data || []).filter((w) => w.id !== workflowId)}
-                  onCancel={() => setEditStep(null)} onSave={() => { setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
+                  onCancel={() => setEditStep(null)} onSave={(keepOpen) => { if (!keepOpen) setEditStep(null); refetch(); }} onDelete={() => { setEditStep(null); refetch(); }} />
               </Box>
             )}
           </Stack>

@@ -11,7 +11,7 @@ export const ExternalLinks: React.FC<Props> = () => {
 
   const getChurchEditSettingRows = (): React.ReactElement[] => {
     if (!Permissions.membershipApi.settings.edit) return [];
-    const streamUrl = CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/stream";
+    const streamUrl = CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain || "") + "/stream";
     return [
       <tr key="appearance"><td><Link to="/settings/branding" style={{ display: "flex", alignItems: "center" }}><Icon sx={{ marginRight: "5px" }}>edit</Icon>{Locale.label("sermons.liveStreamTimes.externalLinks.customizeAppearance")}</Link></td></tr>,
       <tr key="users"><td><Link to={`/settings`} style={{ display: "flex", alignItems: "center" }}><Icon sx={{ marginRight: "5px" }}>edit</Icon>{Locale.label("sermons.liveStreamTimes.externalLinks.editUsers")}</Link></td></tr>,

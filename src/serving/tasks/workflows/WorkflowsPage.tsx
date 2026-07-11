@@ -67,7 +67,7 @@ export const WorkflowsPage = () => {
                   key={workflow.id}
                   disablePadding
                   secondaryAction={canManage ? (
-                    <AppIconButton label={Locale.label("common.duplicate")} icon={<DuplicateIcon />} edge="end" data-testid={"duplicate-workflow-" + workflow.id} onClick={(e) => duplicate(e, workflow.id)} />
+                    <AppIconButton label={Locale.label("common.duplicate")} icon={<DuplicateIcon />} edge="end" data-testid={"duplicate-workflow-" + workflow.id} onClick={(e) => duplicate(e, workflow.id || "")} />
                   ) : undefined}>
                   <ListItemButton
                     data-testid={"workflow-row-" + workflow.id}
@@ -121,7 +121,7 @@ export const WorkflowsPage = () => {
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
                   <WorkflowsIcon sx={{ color: "primary.main", fontSize: 20 }} />
                   <Typography variant="h6">{Locale.label("tasks.workflowsPage.title")}</Typography>
-                  {(workflows.data?.length || 0) > 0 && <CountChip count={workflows.data.length} />}
+                  {(workflows.data?.length || 0) > 0 && <CountChip count={workflows.data?.length || 0} />}
                 </Stack>
                 {getGroupedList()}
               </CardContent>

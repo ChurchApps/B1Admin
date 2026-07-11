@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack, TextField, Button, Typography, MenuItem, Chip } from "@mui/material";
+import { Alert, Box, Stack, TextField, Button, Typography, MenuItem, Chip } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -14,7 +14,7 @@ const toLocalInput = (d: Date | string | undefined) => (d ? new Date(d).toISOStr
 const toDate = (v: string) => (v ? new Date(v) : null);
 
 export const RegistrationCouponsEdit: React.FC<Props> = ({ event }) => {
-  const { rows, saving, update, addRow, removeRow, save } = useEditableRowList<RegistrationCouponInterface>({
+  const { rows, saving, error, update, addRow, removeRow, save, ConfirmDialogElement } = useEditableRowList<RegistrationCouponInterface>({
     loadUrl: `/registrations/coupons/event/${event.id}`,
     saveUrl: "/registrations/coupons",
     deleteUrlPrefix: "/registrations/coupons/",
@@ -39,6 +39,7 @@ export const RegistrationCouponsEdit: React.FC<Props> = ({ event }) => {
 
   return (
     <Stack spacing={1.5}>
+      {ConfirmDialogElement}
       {rows.length === 0 && (
         <Typography variant="body2" color="text.secondary">{Locale.label("registrations.commerce.noCoupons")}</Typography>
       )}
@@ -66,6 +67,7 @@ export const RegistrationCouponsEdit: React.FC<Props> = ({ event }) => {
           </Stack>
         </Box>
       ))}
+      {error && <Alert severity="error">{error}</Alert>}
       <Stack direction="row" spacing={1}>
         <Button size="small" startIcon={<AddIcon />} onClick={addRow} data-testid="add-registration-coupon">{Locale.label("registrations.commerce.addCoupon")}</Button>
         <Button size="small" variant="contained" onClick={save} disabled={saving} data-testid="save-registration-coupons">{saving ? Locale.label("common.saving") : Locale.label("common.save")}</Button>

@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const Arrangement = memo((props: Props) => {
-  const [songDetail, setSongDetail] = React.useState<SongDetailInterface>(null);
+  const [songDetail, setSongDetail] = React.useState<SongDetailInterface | null>(null);
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
   const [edit, setEdit] = React.useState(false);
   const [canImportLyrics, setCanImportLyrics] = React.useState(false);

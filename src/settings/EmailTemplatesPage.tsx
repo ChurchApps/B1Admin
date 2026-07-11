@@ -27,7 +27,7 @@ export const EmailTemplatesPage: React.FC = () => {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleDelete = async (template: EmailTemplateInterface) => {
-    if (!(await confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name)))) return;
+    if (!(await confirm(Locale.label("settings.emailTemplatesPage.deleteConfirm").replace("{name}", template.name || "")))) return;
     await ApiHelper.delete("/emailTemplates/" + UserHelper.currentUserChurch.church.id + "/" + template.id, "MessagingApi");
     templatesQuery.refetch();
   };

@@ -30,7 +30,7 @@ export const FundsPage = () => {
     e.preventDefault();
     const anchor = e.currentTarget as HTMLAnchorElement;
     const id = anchor.getAttribute("data-id");
-    setEditFundId(id);
+    setEditFundId(id || "");
   };
 
   const [stats, setStats] = React.useState({ totalFunds: 0 });
@@ -46,7 +46,7 @@ export const FundsPage = () => {
   const getSidebarModules = () => {
     const result = [];
     if (editFundId !== "notset") {
-      const fund = editFundId === "" ? { id: "", name: "", taxDeductible: true } : funds.data.find((f) => f.id === editFundId);
+      const fund = editFundId === "" ? { id: "", name: "", taxDeductible: true } : (funds.data || []).find((f) => f.id === editFundId) || { id: "", name: "" };
       result.push(<FundEdit key={result.length - 1} fund={fund} updatedFunction={fundUpdated} />);
     }
     return result;

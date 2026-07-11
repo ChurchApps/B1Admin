@@ -104,6 +104,7 @@ test.describe.serial("Group Management", () => {
       await dismissSendInviteIfPresent(page, 500);
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').last();
       await removeBtn.click();
+      await confirmDelete(page);
     });
 
     test("should delete advanced add conditions", async () => {
@@ -141,6 +142,7 @@ test.describe.serial("Group Management", () => {
 
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').last();
       await removeBtn.click();
+      await confirmDelete(page);
       const validateRemoval = page.locator('[id="groupMemberTable"]').getByText("Donald Clark");
       await expect(validateRemoval).toHaveCount(0, { timeout: 10000 });
     });

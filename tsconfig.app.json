@@ -30,7 +30,6 @@
     "allowJs": true,
     // "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strictNullChecks": false, // we should try to enable this
     "forceConsistentCasingInFileNames": true,
     // "moduleResolution": "node",
     "resolveJsonModule": true,

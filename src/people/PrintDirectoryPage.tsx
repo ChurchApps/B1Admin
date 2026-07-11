@@ -145,7 +145,7 @@ export const PrintDirectoryPage = () => {
     );
   }
 
-  const church = context.userChurch?.church;
+  const church = context?.userChurch?.church;
   const churchLocation = church
     ? [church.city, church.state].filter(Boolean).join(", ")
     : "";

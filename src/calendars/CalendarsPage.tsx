@@ -22,24 +22,26 @@ import {
 import {
   CalendarMonth as CalendarIcon,
   Add as AddIcon,
+  EventAvailable as ApprovalsIcon,
   Edit as EditIcon,
   Event as EventIcon,
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { CalendarEdit } from "./components";
-import { useRequirePermission } from "../hooks";
+import { useRequirePermission, usePendingApprovalsCount } from "../hooks";
 import { EmptyState } from "../components/ui/EmptyState";
 import { hoverRowSx } from "../components/ui/tableStyles";
 import { AppIconButton } from "../components/ui/AppIconButton";
-import { HeaderPrimaryButton } from "../components/ui/headerButtons";
+import { HeaderPrimaryButton, HeaderSecondaryButton } from "../components/ui/headerButtons";
 
 export const CalendarsPage = () => {
   const calendarsQuery = useQuery<CuratedCalendarInterface[]>({ queryKey: ["/curatedCalendars", "ContentApi"], placeholderData: [] });
   const [currentCalendar, setCurrentCalendar] = useState<CuratedCalendarInterface | null>(null);
   const navigate = useNavigate();
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
+  const pendingApprovals = usePendingApprovalsCount();
 
-  const getRows = () => calendarsQuery.data.map((calendar) => (
+  const getRows = () => (calendarsQuery.data || []).map((calendar) => (
     <TableRow
       key={calendar.id}
       sx={hoverRowSx}
@@ -114,11 +116,16 @@ export const CalendarsPage = () => {
         icon={<CalendarIcon />}
         title={Locale.label("calendars.calendarList.title")}
         subtitle={
-          calendarsQuery.data.length > 0
-            ? Locale.label("calendars.calendarList.subtitleWithCount", `${calendarsQuery.data.length} ${calendarsQuery.data.length === 1 ? Locale.label("calendars.calendarList.calendar") : Locale.label("calendars.calendarList.calendars")}`)
+          (calendarsQuery.data?.length || 0) > 0
+            ? Locale.label("calendars.calendarList.subtitleWithCount", `${calendarsQuery.data?.length || 0} ${calendarsQuery.data?.length === 1 ? Locale.label("calendars.calendarList.calendar") : Locale.label("calendars.calendarList.calendars")}`)
             : Locale.label("calendars.calendarList.subtitleEmpty")
         }
       >
+        {pendingApprovals > 0 && (
+          <HeaderSecondaryButton startIcon={<ApprovalsIcon />} {...({ component: Link, to: "/calendars/approvals" } as any)} data-testid="pending-approvals-link">
+            {Locale.label("calendars.calendarPage.pendingApprovals").replace("{count}", String(pendingApprovals))}
+          </HeaderSecondaryButton>
+        )}
         {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
           <HeaderPrimaryButton
             startIcon={<AddIcon />}
@@ -145,7 +152,7 @@ export const CalendarsPage = () => {
 
         {calendarsQuery.isLoading ? (
           <Loading data-testid="calendars-loading" />
-        ) : calendarsQuery.data.length === 0 ? (
+        ) : (calendarsQuery.data?.length || 0) === 0 ? (
           <EmptyState
             icon={<CalendarIcon />}
             title={Locale.label("calendars.calendarList.noCalendars")}
@@ -182,7 +189,7 @@ export const CalendarsPage = () => {
           </TableContainer>
         )}
 
-        {calendarsQuery.data.length > 0 && !currentCalendar && (
+        {(calendarsQuery.data?.length || 0) > 0 && !currentCalendar && (
           <Card sx={{ mt: 3, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
             <CardContent>
               <Stack direction="row" spacing={2} alignItems="flex-start">

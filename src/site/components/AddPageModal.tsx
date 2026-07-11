@@ -23,9 +23,9 @@ interface PageInterface {
 
 export function AddPageModal(props: Props) {
   const navigate = useNavigate();
-  const [page, setPage] = useState<PageInterface>(null);
-  const [link, setLink] = useState<LinkInterface>(null);
-  const [errors, setErrors] = useState([]);
+  const [page, setPage] = useState<PageInterface | null>(null);
+  const [link, setLink] = useState<LinkInterface | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
   const [pageTemplate, setPageTemplate] = useState<string>("blank");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [aiPrompt, setAiPrompt] = useState<string>("");
@@ -55,7 +55,7 @@ export function AddPageModal(props: Props) {
 
   const handleLinkChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     e.preventDefault();
-    const l = { ...link };
+    const l = { ...link } as LinkInterface;
     const val = e.target.value;
     switch (e.target.name) {
       case "linkText": l.text = val; break;
@@ -65,17 +65,17 @@ export function AddPageModal(props: Props) {
   };
 
   const validate = () => {
-    const errors = [];
+    const errors: string[] = [];
     if (pageTemplate === "ai") {
       // AI mode validation is handled in handleAiGenerate
       return true;
     } else if (pageTemplate === "link") {
-      if (!link.url || link.url === "") errors.push(Locale.label("site.addPageModal.errLinkUrl"));
+      if (!link?.url || link.url === "") errors.push(Locale.label("site.addPageModal.errLinkUrl"));
     } else {
-      if (!page.title || page.title === "") errors.push(Locale.label("site.addPageModal.errTitle"));
+      if (!page?.title || page.title === "") errors.push(Locale.label("site.addPageModal.errTitle"));
     }
     if (props.mode === "navigation") {
-      if (!link.text || link.text === "") errors.push(Locale.label("site.addPageModal.errLinkText"));
+      if (!link?.text || link.text === "") errors.push(Locale.label("site.addPageModal.errLinkText"));
     }
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("site.addPageModal.unauthorizedCreate"));
     setErrors(errors);
@@ -286,7 +286,7 @@ export function AddPageModal(props: Props) {
         if (pageTemplate !== "link") {
           const p = { ...page };
           p.siteId = props.siteId || undefined;
-          const slugString = link?.text || page.title || "new-page";
+          const slugString = link?.text || page?.title || "new-page";
           p.url = props.requestedSlug || SlugHelper.slugifyString("/" + slugString.toLowerCase().replace(" ", "-"), "urlPath");
           if (!p.url) p.url = "/untitled";
 
@@ -297,7 +297,7 @@ export function AddPageModal(props: Props) {
         }
 
         if (props.mode === "navigation") {
-          const l: LinkInterface & { siteId?: string } = { ...link, siteId: props.siteId || undefined };
+          const l: LinkInterface & { siteId?: string } = { ...link, siteId: props.siteId || undefined } as LinkInterface & { siteId?: string };
           if (pageTemplate !== "link") l.url = pageData.url;
           await ApiHelper.post("/links", [l], "ContentApi");
         }
@@ -316,7 +316,7 @@ export function AddPageModal(props: Props) {
 
   const selectTemplate = (template: string) => {
     const p = { ...page };
-    const l = { ...link };
+    const l = { ...link } as LinkInterface;
     const churchName = UserHelper.currentUserChurch.church.name || "";
     switch (template) {
       case "sermons": p.title = Locale.label("site.templates.viewSermons"); l.text = Locale.label("common.sermons"); break;
@@ -407,13 +407,13 @@ export function AddPageModal(props: Props) {
           {pageTemplate !== "ai" && (
             <Grid container spacing={2}>
               {(pageTemplate !== "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.pageTitle")} name="title" value={page.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.title")} data-testid="page-title-input" />
+                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.pageTitle")} name="title" value={page?.title || ""} onChange={handleChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.title")} data-testid="page-title-input" />
               </Grid>}
               {(pageTemplate === "link") && <Grid size={(props.mode === "navigation") ? 6 : 12}>
-                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.linkUrl")} name="linkUrl" value={link.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkUrl")} />
+                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.linkUrl")} name="linkUrl" value={link?.url || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkUrl")} />
               </Grid>}
               {(props.mode === "navigation") && <Grid size={6}>
-                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.linkText")} name="linkText" value={link.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkText")} />
+                <TextField size="small" fullWidth label={Locale.label("site.addPageModal.linkText")} name="linkText" value={link?.text || ""} onChange={handleLinkChange} onKeyDown={handleKeyDown} placeholder={Locale.label("placeholders.addPage.linkText")} />
               </Grid>}
             </Grid>
           )}

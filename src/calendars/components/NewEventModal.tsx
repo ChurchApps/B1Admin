@@ -184,7 +184,7 @@ export function NewEventModal(props: Props) {
             >
               {rooms.map((r) => (
                 <MenuItem key={r.id} value={r.id}>
-                  <Checkbox checked={roomIds.includes(r.id)} size="small" />
+                  <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
                   <ListItemText primary={r.name} secondary={r.capacity ? Locale.label("calendars.newEvent.seats").replace("{}", r.capacity.toString()) : undefined} />
                 </MenuItem>
               ))}
@@ -202,7 +202,7 @@ export function NewEventModal(props: Props) {
             >
               {resources.map((r) => (
                 <MenuItem key={r.id} value={r.id}>
-                  <Checkbox checked={resourceIds.includes(r.id)} size="small" />
+                  <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
                   <ListItemText primary={r.name} />
                 </MenuItem>
               ))}

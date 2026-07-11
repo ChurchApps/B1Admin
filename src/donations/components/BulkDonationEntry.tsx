@@ -26,7 +26,7 @@ export const BulkDonationEntry = memo((props: Props) => {
     notes: ""
   });
 
-  const handlePersonAdd = useCallback((p: PersonInterface) => {
+  const handlePersonAdd = useCallback((p: PersonInterface | null) => {
     if (p === null) {
       setSelectedPerson(null);
       setShowPersonSearch(false);
@@ -104,7 +104,7 @@ export const BulkDonationEntry = memo((props: Props) => {
           <Typography variant="h6" sx={{ mb: 2 }}>
             {Locale.label("donations.bulkEntry.selectPerson")}
           </Typography>
-          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} inputRef={searchInputRef} autoSearch />
+          <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handlePersonAdd} inputRef={searchInputRef as React.RefObject<HTMLInputElement>} autoSearch />
           <Box sx={{ mt: 2 }}>
             <button
               type="button"

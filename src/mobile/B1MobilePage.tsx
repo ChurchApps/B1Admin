@@ -7,7 +7,7 @@ import { FormCard } from "../components/ui/FormCard";
 import { useRequirePermission } from "../hooks";
 
 export const B1MobilePage: React.FC = () => {
-  const [groups, setGroups] = React.useState<GroupInterface[]>(null);
+  const [groups, setGroups] = React.useState<GroupInterface[] | null>(null);
   const [selectedGroupId, setSelectedGroupId] = React.useState("");
   const [approvalSetting, setApprovalSetting] = React.useState<GenericSettingInterface | null>(null);
   const [directoryVisibility, setDirectoryVisibility] = React.useState("Members");
@@ -31,7 +31,7 @@ export const B1MobilePage: React.FC = () => {
     const approvalGroupSetting = allSettings.find(s => s.keyName === "directoryApprovalGroupId");
     if (approvalGroupSetting) {
       setApprovalSetting(approvalGroupSetting);
-      setSelectedGroupId(approvalGroupSetting.value);
+      setSelectedGroupId(approvalGroupSetting.value || "");
     }
 
     const dirSetting = allSettings.find(s => s.keyName === "directoryVisibility");
@@ -99,7 +99,7 @@ export const B1MobilePage: React.FC = () => {
                 <InputLabel id="groups">{Locale.label("settings.directoryApprovalSettingsEdit.groups")}</InputLabel>
                 <Select labelId="groups" name="groups" label={Locale.label("settings.directoryApprovalSettingsEdit.groups")} value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
                   <MenuItem value="">{Locale.label("settings.directoryApprovalSettingsEdit.none")}</MenuItem>
-                  {groups?.length > 0 ? (
+                  {groups && groups.length > 0 ? (
                     groups.map(g => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)
                   ) : (
                     <MenuItem value="" disabled>{Locale.label("settings.directoryApprovalSettingsEdit.noGroups")}</MenuItem>

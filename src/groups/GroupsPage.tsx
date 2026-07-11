@@ -2,8 +2,8 @@ import { useState } from "react";
 import { GroupAdd } from "./components";
 import { ApiHelper, UserHelper, Loading, Locale, PageHeader } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { Table, TableBody, TableCell, TableRow, Box, Card, Chip, Button, Stack, Typography, Switch, FormControlLabel } from "@mui/material";
-import { Add as AddIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, MonitorHeart as HealthIcon } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableRow, Box, Card, Chip, Button, Stack, Typography, Switch, FormControlLabel, TextField, InputAdornment } from "@mui/material";
+import { Add as AddIcon, Folder as FolderIcon, Group as GroupIcon, Inbox as InboxIcon, MonitorHeart as HealthIcon, Search as SearchIcon } from "@mui/icons-material";
 import { type GroupInterface, type GroupJoinRequestInterface } from "@churchapps/helpers";
 import { Permissions } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
@@ -39,6 +39,7 @@ const formatHeader = (key: string): string => {
 const GroupsPage = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const canEditGroups = UserHelper.checkAccess(Permissions.membershipApi.groups.edit);
 
@@ -47,6 +48,11 @@ const GroupsPage = () => {
     placeholderData: []
   });
   const groups = groupsQuery.data || [];
+
+  const query = searchText.trim().toLowerCase();
+  const filteredGroups = query
+    ? groups.filter((g) => (g.name || "").toLowerCase().includes(query) || (g.categoryName || "").toLowerCase().includes(query))
+    : groups;
 
   const handleAddUpdated = () => {
     setShowAdd(false);
@@ -94,18 +100,18 @@ const GroupsPage = () => {
   const getRows = () => {
     const rows: JSX.Element[] = [];
 
-    if (groups.length === 0) {
+    if (filteredGroups.length === 0) {
       rows.push(
         <TableRow key="0">
-          <TableCell>{Locale.label("groups.groupsPage.noGroupMsg")}</TableCell>
+          <TableCell>{query ? Locale.label("groups.groupsPage.noMatchMsg") : Locale.label("groups.groupsPage.noGroupMsg")}</TableCell>
         </TableRow>
       );
       return rows;
     }
 
     let lastCat = "";
-    for (let i = 0; i < groups.length; i++) {
-      const g = groups[i];
+    for (let i = 0; i < filteredGroups.length; i++) {
+      const g = filteredGroups[i];
       const cat =
         g.categoryName !== lastCat ? (
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -121,11 +127,11 @@ const GroupsPage = () => {
           <TableCell>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <GroupIcon sx={{ color: "primary.main", fontSize: 20, marginRight: "5px" }} />{" "}
-              <Link to={"/groups/" + g.id.toString()} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{g.name}</Link>
+              <Link to={"/groups/" + (g.id || "")} style={{ color: "var(--link)", fontWeight: 500, textDecoration: "none" }}>{g.name}</Link>
             </Box>
           </TableCell>
           <TableCell>
-            {g.labelArray.map((label, index) => (
+            {(g.labelArray || []).map((label, index) => (
               <Chip key={`${g.id}-${label}-${index}`} label={label} variant="outlined" size="small" style={{ marginRight: 5 }} />
             ))}
           </TableCell>
@@ -141,7 +147,7 @@ const GroupsPage = () => {
           )}
         </TableRow>
       );
-      lastCat = g.categoryName;
+      lastCat = g.categoryName || "";
     }
     return rows;
   };
@@ -172,6 +178,19 @@ const GroupsPage = () => {
                 )}
               </Stack>
             </Stack>
+            {groups.length > 0 && (
+              <TextField
+                fullWidth
+                size="small"
+                variant="outlined"
+                placeholder={Locale.label("groups.groupsPage.searchPlaceholder")}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                data-testid="groups-search"
+                InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon color="action" /></InputAdornment>) }}
+                sx={{ mt: 2 }}
+              />
+            )}
           </Box>
           <Box sx={{ overflowX: "auto" }}>
             <Table>
@@ -202,14 +221,14 @@ const GroupsPage = () => {
         subtitle={groups.length > 0 ? Locale.label("groups.groupsPage.subtitle.manage").replace("{count}", groups.length.toString()) : Locale.label("groups.groupsPage.subtitle.create")}
       >
         {canApproveRequests && pendingCount > 0 && (
-          <HeaderSecondaryButton component={Link} to="/groups/pending" startIcon={<InboxIcon />} data-testid="pending-requests-link">
+          <HeaderSecondaryButton {...({ component: Link, to: "/groups/pending" } as any)} startIcon={<InboxIcon />} data-testid="pending-requests-link">
             {pendingCount === 1
               ? Locale.label("groups.groupsPage.pendingRequestSingular").replace("{count}", pendingCount.toString())
               : Locale.label("groups.groupsPage.pendingRequests").replace("{count}", pendingCount.toString())}
           </HeaderSecondaryButton>
         )}
         {UserHelper.checkAccess(Permissions.membershipApi.groupMembers.view) && (
-          <HeaderSecondaryButton component={Link} to="/groups/health" startIcon={<HealthIcon />} data-testid="group-health-link">
+          <HeaderSecondaryButton {...({ component: Link, to: "/groups/health" } as any)} startIcon={<HealthIcon />} data-testid="group-health-link">
             {Locale.label("groups.groupHealth.title")}
           </HeaderSecondaryButton>
         )}

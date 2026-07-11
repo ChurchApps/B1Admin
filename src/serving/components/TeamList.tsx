@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const TeamList = memo((props: Props) => {
-  const [groups, setGroups] = useState<GroupInterface[]>(null);
+  const [groups, setGroups] = useState<GroupInterface[] | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const isMounted = useMountedState();
 

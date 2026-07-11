@@ -27,8 +27,8 @@ export const AttendanceSetup = memo(() => {
   // frozen/deprecated. Drive the campus rows from the membership list so newly
   // created campuses appear here (ready to have services added).
   const campuses = useCampuses();
-  const [selectedService, setSelectedService] = React.useState<ServiceInterface>(null);
-  const [selectedServiceTime, setSelectedServiceTime] = React.useState<ServiceTimeInterface>(null);
+  const [selectedService, setSelectedService] = React.useState<ServiceInterface | null>(null);
+  const [selectedServiceTime, setSelectedServiceTime] = React.useState<ServiceTimeInterface | null>(null);
 
   const attendance = useQuery<AttendanceInterface[]>({
     queryKey: ["/attendancerecords/tree", "AttendanceApi"],
@@ -78,13 +78,13 @@ export const AttendanceSetup = memo(() => {
     [removeEditors]
   );
 
-  const compare = useCallback((a: GroupInterface, b: GroupInterface) => a.categoryName.localeCompare(b.categoryName) || a.name.localeCompare(b.name), []);
+  const compare = useCallback((a: GroupInterface, b: GroupInterface) => (a.categoryName || "").localeCompare(b.categoryName || "") || (a.name || "").localeCompare(b.name || ""), []);
 
   const unassignedGroups = useMemo(() => {
     const result: GroupInterface[] = [];
-    groups.data.forEach((g) => {
+    (groups.data || []).forEach((g) => {
       if (g.trackAttendance) {
-        const gsts: GroupServiceTimeInterface[] = ArrayHelper.getAll(groupServiceTimes.data, "groupId", g.id);
+        const gsts: GroupServiceTimeInterface[] = ArrayHelper.getAll(groupServiceTimes.data || [], "groupId", g.id);
         if (gsts.length === 0) result.push(g);
       }
     });
@@ -94,9 +94,9 @@ export const AttendanceSetup = memo(() => {
   const getGroups = useCallback(
     (serviceTimeId: string) => {
       const result: GroupInterface[] = [];
-      const gsts: GroupServiceTimeInterface[] = ArrayHelper.getAll(groupServiceTimes.data, "serviceTimeId", serviceTimeId);
+      const gsts: GroupServiceTimeInterface[] = ArrayHelper.getAll(groupServiceTimes.data || [], "serviceTimeId", serviceTimeId);
       gsts.forEach((gst) => {
-        const group: GroupInterface = ArrayHelper.getOne(groups.data, "id", gst.groupId);
+        const group: GroupInterface = ArrayHelper.getOne(groups.data || [], "id", gst.groupId);
         if (group !== null && group.trackAttendance) result.push(group);
       });
       return result;
@@ -105,7 +105,7 @@ export const AttendanceSetup = memo(() => {
   );
 
   const tableHeader = useMemo(() => {
-    if (attendance.data.length === 0 && campuses.length === 0) return [];
+    if ((attendance.data?.length ?? 0) === 0 && campuses.length === 0) return [];
     return [
       <TableRow key="header">
         <TableCell>{Locale.label("attendance.attendancePage.campus")}</TableCell>
@@ -115,7 +115,7 @@ export const AttendanceSetup = memo(() => {
         <TableCell>{Locale.label("attendance.attendancePage.group")}</TableCell>
       </TableRow>
     ];
-  }, [attendance.data.length, campuses.length]);
+  }, [attendance.data?.length, campuses.length]);
 
   const getRows = useCallback(() => {
     const rows: JSX.Element[] = [];
@@ -124,7 +124,7 @@ export const AttendanceSetup = memo(() => {
     let lastServiceTime = "";
     let lastCategory = "";
 
-    if (attendance.data.length === 0 && campuses.length === 0) {
+    if ((attendance.data?.length ?? 0) === 0 && campuses.length === 0) {
       rows.push(
         <TableRow key="0">
           <TableCell colSpan={5} sx={{ textAlign: "center", py: 4 }}>
@@ -136,6 +136,9 @@ export const AttendanceSetup = memo(() => {
               <Typography variant="body2" color="text.secondary">
                 {Locale.label("attendance.attendanceSetup.setupMessage")}
               </Typography>
+              <Button variant="contained" color="primary" component={Link} to="/settings/campuses" startIcon={<AddIcon />}>
+                {Locale.label("attendance.attendanceSetup.manageCampuses")}
+              </Button>
             </Stack>
           </TableCell>
         </TableRow>
@@ -143,7 +146,7 @@ export const AttendanceSetup = memo(() => {
       return rows;
     }
 
-    const getRow = (campus: CampusInterface, service: ServiceInterface, serviceTime: ServiceTimeInterface, group: GroupInterface, key: string, _isLast?: { campus?: boolean; service?: boolean }) => {
+    const getRow = (campus: CampusInterface, service: ServiceInterface | undefined, serviceTime: ServiceTimeInterface | undefined, group: GroupInterface | undefined, key: string, _isLast?: { campus?: boolean; service?: boolean }) => {
       const campusChanged = campus?.name !== lastCampus;
       const serviceChanged = service?.name !== lastService;
 
@@ -240,10 +243,10 @@ export const AttendanceSetup = memo(() => {
         </TableRow>
       );
 
-      lastCampus = campus?.name;
-      lastService = service?.name;
-      lastServiceTime = serviceTime?.name;
-      lastCategory = group?.categoryName;
+      lastCampus = campus?.name || "";
+      lastService = service?.name || "";
+      lastServiceTime = serviceTime?.name || "";
+      lastCategory = group?.categoryName || "";
       return result;
     };
 
@@ -284,7 +287,7 @@ export const AttendanceSetup = memo(() => {
     );
 
     const servicesByCampus: { [campusId: string]: { [serviceName: string]: { service: any; serviceTimes: any[] } } } = {};
-    attendance.data.forEach((a) => {
+    (attendance.data || []).forEach((a) => {
       if (!a.service) return; // campus-only tree row; the campus comes from the membership list below
       const cid = a.campus?.id || "";
       if (!servicesByCampus[cid]) servicesByCampus[cid] = {};
@@ -298,14 +301,14 @@ export const AttendanceSetup = memo(() => {
     const campusList: CampusInterface[] = campuses.map((c) => ({ id: c.id, name: c.name }));
     Object.keys(servicesByCampus).forEach((cid) => {
       if (cid && !campusList.some((c) => c.id === cid)) {
-        const treeCampus = attendance.data.find((a) => a.campus?.id === cid)?.campus;
+        const treeCampus = (attendance.data || []).find((a) => a.campus?.id === cid)?.campus;
         if (treeCampus) campusList.push({ id: treeCampus.id, name: treeCampus.name });
       }
     });
 
     // Render grouped structure
     campusList.forEach((campus, campusIdx) => {
-      const services = servicesByCampus[campus.id] || {};
+      const services = servicesByCampus[campus.id || ""] || {};
       const servicesList = Object.values(services);
 
       if (servicesList.length === 0) {
@@ -371,6 +374,9 @@ export const AttendanceSetup = memo(() => {
               {Locale.label("attendance.attendancePage.groups")}
             </Typography>
           </Stack>
+          <Button variant="outlined" size="small" component={Link} to="/settings/campuses" startIcon={<Icon>church</Icon>}>
+            {Locale.label("attendance.attendanceSetup.manageCampuses")}
+          </Button>
         </Stack>
       </Box>
 

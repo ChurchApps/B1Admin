@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const FormEdit = ({ parsedData, handleChange }: Props) => {
-  const [forms, setForms] = useState<FormInterface[]>(null);
+  const [forms, setForms] = useState<FormInterface[] | null>(null);
 
   useEffect(() => {
     ApiHelper.get("/forms", "MembershipApi").then((data: any) => setForms(data));

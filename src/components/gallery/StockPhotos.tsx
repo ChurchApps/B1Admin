@@ -17,7 +17,7 @@ interface SearchResult { description: string, url: string, photographer: string,
 export const StockPhotos: React.FC<Props> = (props: Props) => {
   const [images, setImages] = useState<string[]>([]);
   const [searchText, setSearchText] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>(null);
+  const [searchResults, setSearchResults] = useState<SearchResult[] | null>(null);
 
   const contentRoot = CommonEnvironmentHelper.ContentRoot;
 
@@ -40,7 +40,7 @@ export const StockPhotos: React.FC<Props> = (props: Props) => {
 
   const getResults = () => {
     const result: React.ReactElement[] = [];
-    searchResults.forEach((p: any) => {
+    searchResults?.forEach((p: any) => {
       result.push(<Grid size={{ xs: 12, md: 4 }}>
         <a href="about:blank" onClick={(e) => { e.preventDefault(); props.onStockSelect(p.large); }}>
           <img

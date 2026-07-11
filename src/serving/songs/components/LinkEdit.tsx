@@ -33,7 +33,7 @@ export const LinkEdit = (props: Props) => {
   const handleDelete = async () => {
     if (await confirm(Locale.label("songs.link.deleteConfirm"))) {
       ApiHelper.delete("/links/" + props.link?.id, "ContentApi").then(() => {
-        props.onSave(null);
+        props.onSave(null as unknown as LinkInterface);
       });
     }
   };

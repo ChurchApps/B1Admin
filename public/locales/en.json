@@ -37,6 +37,7 @@
       "unscheduled": "Unscheduled"
     },
     "attendanceSetup": {
+      "manageCampuses": "Manage Campuses",
       "setupMessage": "Set up campuses, services, and service times to begin tracking attendance.",
       "unassigned": "Unassigned"
     },
@@ -55,6 +56,17 @@
       "empty": "Empty",
       "equals": "Equals",
       "field": "Field",
+      "fieldChildren": "Children",
+      "fieldChildrenAllergies": "Children's Allergies",
+      "fieldChurchName": "Church Name",
+      "fieldDate": "Date",
+      "fieldDisplayName": "Name",
+      "fieldFirstName": "First Name",
+      "fieldLastName": "Last Name",
+      "fieldNametagNotes": "Nametag Notes",
+      "fieldNickName": "Nickname",
+      "fieldSecurityCode": "Security Code",
+      "fieldSessions": "Sessions",
       "fill": "Fill",
       "fontSize": "Font Size",
       "height": "Height (in)",
@@ -66,7 +78,11 @@
       "noTemplatesDesc": "Create a label template to customize the labels printed by check-in kiosks.",
       "notEmpty": "Not Empty",
       "notEquals": "Not Equals",
+      "opDoesNotEqual": "Does not equal",
+      "opEquals": "Equals",
       "operator": "Operator",
+      "opIsBlank": "Is blank",
+      "opIsNotBlank": "Is not blank",
       "palette": "Add Block",
       "pickup": "Pickup Slip",
       "properties": "Properties",
@@ -124,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Approve",
+      "approvedToast": "Request approved.",
       "bookingRequests": "Room & Resource Requests",
+      "confirmReject": "Are you sure you wish to reject this request?",
       "conflicts": "Conflicts",
       "description": "Description",
       "event": "Event",
@@ -133,6 +151,8 @@
       "noPendingBookings": "No pending room or resource requests.",
       "noPendingEvents": "No pending event requests.",
       "reject": "Reject",
+      "rejectedToast": "Request rejected.",
+      "rejectTitle": "Reject Request",
       "roomResource": "Room / Resource",
       "status": "Status",
       "subtitle": "Review pending room, resource and event requests",
@@ -175,6 +195,7 @@
     "calendarEvent": {
       "cancel": "Cancel",
       "confirmDelete": "Are you sure you wish to delete this event?",
+      "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
       "delete": "Delete",
       "manageRegistrations": "Manage Registrations",
       "noGroups": "No groups found."
@@ -208,6 +229,7 @@
       "importIcs": "Import .ics",
       "newEvent": "New Event",
       "noGroupsAdded": "No groups added yet",
+      "pendingApprovals": "{count} pending approvals",
       "print": "Print",
       "subtitle": "Manage calendar events and groups"
     },
@@ -339,6 +361,7 @@
     "confirm": "Confirm",
     "copy": "Copy",
     "createPerson": {
+      "confirmDuplicate": "An existing person '{{existingName}}' ({{existingEmail}}) was found with this email. Are you sure you want to add '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
@@ -390,6 +413,7 @@
     "right": "Right",
     "save": "Save",
     "saveChanges": "Save Changes",
+    "saveError": "Unable to save. Please try again.",
     "saving": "Saving...",
     "search": "Search",
     "searching": "Searching...",
@@ -494,6 +518,9 @@
       "workflows": "Workflows"
     }
   },
+  "controlPanel": {
+    "serverError": "Something went wrong. Please try again."
+  },
   "createPerson": {
     "addNewPerson": "Add New Person",
     "email": "Email",
@@ -534,9 +561,15 @@
       "upcomingEventsTitle": "See What's Happening"
     },
     "myGroups": "My Groups",
+    "needsAttention": {
+      "approvals": "{count} pending calendar approvals",
+      "joinRequests": "{count} pending group join requests",
+      "title": "Needs attention"
+    },
     "peopleSearch": {
       "ariaSearch": "Search people",
       "ariaSearchBox": "searchBox",
+      "clearSearch": "Clear Search",
       "display": "Display",
       "noResults": "No people found matching your search criteria.",
       "photo": "Photo",
@@ -608,6 +641,7 @@
       "lastYearCsv": "Last Year CSV",
       "lastYearPrint": "Last Year Print",
       "method": "Method",
+      "viewBatch": "View batch",
       "willAppear": "Donations will appear here once they have been made."
     }
   },
@@ -664,7 +698,8 @@
       "ofGoal": "of goal",
       "pledges": "Pledges",
       "status": "Status",
-      "subtitle": "Pledges and giving progress for this campaign"
+      "subtitle": "Pledges and giving progress for this campaign",
+      "unknownPerson": "Unknown person"
     },
     "campaignsPage": {
       "addCampaign": "Add Campaign",
@@ -707,6 +742,7 @@
       "cash": "Cash",
       "check": "Check",
       "checkNum": "Check #",
+      "confirmMsg": "Are you sure you wish to permanently delete this donation?",
       "date": "Date",
       "fund": "Fund",
       "inKind": "In-Kind",
@@ -732,6 +768,7 @@
       "errMsg": "No fund found. Please create a fund before making a donation",
       "export": "Export",
       "funds": "Funds",
+      "method": "Method",
       "noDonMsg": "No donations have been tracked. Once donations are entered they will show up here.",
       "pending": "Pending",
       "statements": "Giving Statements",
@@ -785,7 +822,8 @@
       "subtitle": "Manage donation funds and track giving categories",
       "taxDeductible": "Tax Deductible",
       "taxStatus": "Tax Status",
-      "totalFunds": "Total Funds"
+      "totalFunds": "Total Funds",
+      "viewBatch": "View batch"
     },
     "period": {
       "monthly": "Monthly",
@@ -935,6 +973,7 @@
       "emailNotifMsg": "Whenever the form is submitted, you'll get notified via mail.",
       "formMem": "Form Members",
       "perm": "Permission",
+      "removeConfirm": "Remove {name} from this form?",
       "view": "View Only"
     },
     "formPage": {
@@ -948,6 +987,7 @@
       "date": "Date",
       "decNum": "Decimal",
       "desc": "Description",
+      "fieldType": "Field Type",
       "fund": "Fund",
       "multiChoice": "Multiple Choice",
       "payment": "Payment",
@@ -1000,7 +1040,8 @@
   "gallery": {
     "aspectRatio": "Aspect Ratio",
     "confirmDelete": "Confirm Delete",
-    "freeForm": "Free Form"
+    "freeForm": "Free Form",
+    "uploadError": "Image processing completed, but upload failed. The API may not be available in this environment."
   },
   "groups": {
     "groupAdd": {
@@ -1150,8 +1191,10 @@
       "member": "member",
       "members": "members",
       "messagePlaceholder": "Write a message to send to all group members…",
+      "messageSent": "Message sent.",
       "noMemDesc": "Add members from the panel to the right to start building this group.",
       "noMemTitle": "No members yet",
+      "removeConfirm": "Remove {name} from this group?",
       "removeLeaderAccess": "Remove Leader Access",
       "role": "Role",
       "send": "Send",
@@ -1197,11 +1240,13 @@
       "groups": "Groups",
       "labels": "Labels",
       "noGroupMsg": "No groups found. Please create a group.",
+      "noMatchMsg": "No groups match your search.",
       "pendingRequestSingular": "{count} pending request",
       "pendingRequests": "{count} pending requests",
       "pers": "1 person",
       "ppl": "People",
       "restore": "Restore",
+      "searchPlaceholder": "Search groups...",
       "showArchived": "Show archived",
       "spPpl": " people",
       "subtitle": {
@@ -1272,7 +1317,9 @@
       "sentSummary": "Sent to {successCount} of {recipientCount} recipients.",
       "sentSummarySingular": "Sent to {successCount} of {recipientCount} recipient.",
       "textGroupTitle": "Text Group: {groupName}",
-      "textPersonTitle": "Text: {personName}"
+      "textPersonTitle": "Text: {personName}",
+      "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
+      "insufficientCreditsLink": "ministrystuff.org"
     },
     "serviceTimes": {
       "services": "Service(s):"
@@ -1300,6 +1347,11 @@
     "sessionEdit": {
       "deleteConfirm": "Are you sure you wish to permanently delete this session?",
       "sesEdit": "Edit Session"
+    },
+    "sessionsDisabled": {
+      "description": "Turn on attendance tracking to record sessions and check-ins for this group.",
+      "enable": "Enable Attendance",
+      "title": "Attendance tracking isn't enabled"
     },
     "tabs": {
       "mem": "Members",
@@ -1415,6 +1467,11 @@
     "october": "October",
     "sep": "September",
     "september": "September"
+  },
+  "notFound": {
+    "backHome": "Back to Dashboard",
+    "message": "The page you're looking for doesn't exist or may have moved.",
+    "title": "Page Not Found"
   },
   "people": {
     "advancedPeopleSearch": {
@@ -1724,6 +1781,7 @@
       "update": "Update Address"
     },
     "pickup": {
+      "confirmDelete": "Are you sure you want to remove this pickup person?",
       "title": "Pickup",
       "add": "Add",
       "none": "No pickup people added.",
@@ -1952,6 +2010,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Assign Position",
+      "confirmDelete": "Are you sure you wish to remove this volunteer's assignment?",
       "done": "Done",
       "editAssign": "Edit Assignment",
       "noMem": "No group members found."
@@ -2202,7 +2261,11 @@
       "ppl": "people",
       "prefTimeMismatch": "prefers serving at",
       "publish": "Publish Plan",
+      "publishConfirm": "Publish this plan so volunteers can see their assignments?",
+      "publishConfirmLabel": "Publish",
+      "publishConfirmTitle": "Publish Plan",
       "publishNotify": "Publish & Notify",
+      "publishNotifyConfirm": "Publish this plan and notify {count} volunteers of their assignments? Notifications are sent immediately.",
       "timeCon": "Time conflict between",
       "timeCon2": "Time conflict at",
       "timesThisMonth": "times this month, over their preferred max of",
@@ -2223,6 +2286,7 @@
       "allowSelfSignup": "Allow Self-Signup",
       "catName": "Category Name",
       "catNameReq": "Category Name is required.",
+      "confirmDelete": "Are you sure you wish to delete this position? Anyone currently assigned to it will be unscheduled.",
       "description": "Description",
       "descriptionHelper": "Shown to volunteers when browsing signup opportunities",
       "nameReq": "Name is required",
@@ -2294,7 +2358,8 @@
       "title": "Serving Overview"
     },
     "servingPage": {
-      "showAll": "Show All"
+      "showAll": "Show All",
+      "showAllHint": "Your ministries are hidden because you're not a member. Turn on \"Show All\" above to see them."
     },
     "songDialog": {
       "close": "Close",
@@ -2335,6 +2400,7 @@
       "updateFromPlanHelp": "Replace this template's contents with a plan's current order of service and positions."
     },
     "timeEdit": {
+      "confirmDelete": "Are you sure you wish to delete this time?",
       "disName": "Display Name",
       "disNameReq": "Display name is required.",
       "endReq": "End time is required",
@@ -2451,6 +2517,7 @@
       "price": "Price",
       "promote": "Promote",
       "registrationDetails": "Registration Details",
+      "removeConfirm": "Remove this item? This cannot be undone.",
       "selections": "Selections",
       "sort": "Sort",
       "startDate": "Start Date",
@@ -2792,6 +2859,8 @@
       "churchesSubtitle": "Search and manage all churches",
       "impersonateSubtitle": "Log in as another user for support",
       "impersonateUser": "Impersonate User",
+      "jobs": "Background Jobs",
+      "jobsSubtitle": "Last run and failures for scheduled jobs",
       "location": "Location",
       "noChurch": "No churches found.  Please search for a different name.",
       "noUsers": "No users found. Please search for a different name or email.",
@@ -2810,10 +2879,14 @@
       "translationSubtitle": "Look up translated locale strings",
       "usageSubtitle": "View trends in server usage",
       "usageTrends": "Usage Trends",
+      "users": "Users",
+      "usersSubtitle": "Look up any user account for support",
       "valueNotes": "Notes on How Values are Calculated"
     },
     "churchesTab": {
+      "archiveConfirm": "Archive {name}? Members will lose access until it is restored.",
       "churchNameSearchAria": "Church name search",
+      "restoreConfirm": "Restore access for {name}?",
       "searchChurchesAria": "Search churches"
     },
     "impersonateTab": {
@@ -2824,6 +2897,18 @@
       "searchAria": "Search users to impersonate",
       "searchLabel": "User email",
       "searchPlaceholder": "Search by login email"
+    },
+    "jobsTab": {
+      "duration": "Duration",
+      "failed": "Failed",
+      "job": "Job",
+      "lastRun": "Last Run",
+      "loadError": "Unable to load job runs.",
+      "noRuns": "No job runs recorded yet.",
+      "recentFailures": "Recent Failures",
+      "subtitle": "Latest run of each scheduled job. Runs are recorded by the timer handlers and kept for 30 days.",
+      "success": "Success",
+      "title": "Background Jobs"
     },
     "reportPage": {
       "adminOnly": "Admin Only",
@@ -2850,6 +2935,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Search translation statistics"
+    },
+    "usersTab": {
+      "access": "Access",
+      "description": "Search all user accounts by name or email to see their churches and login activity.",
+      "email": "Email",
+      "lastLogin": "Last Login",
+      "member": "Member",
+      "name": "Name",
+      "noChurches": "This user is not linked to any churches.",
+      "searchAria": "Search users",
+      "searchLabel": "Name or email",
+      "staff": "Staff",
+      "subDomain": "Subdomain",
+      "title": "User Lookup"
     }
   },
   "settings": {
@@ -3263,7 +3362,11 @@
       "saveError": "Error saving texting settings.",
       "textInChurchHelper": "Visit",
       "textInChurchHelperLink": "Text In Church Support",
-      "textInChurchHelperSuffix": "to request developer API access. Once approved, create an API Key in your Account Settings > Developer API section."
+      "textInChurchHelperSuffix": "to request developer API access. Once approved, create an API Key in your Account Settings > Developer API section.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Your MinistryStuff texting subscription is active with {} credits remaining this cycle.",
+      "ministryStuffHelper": "No API key needed. Texting credits come from your MinistryStuff subscription, linked to this church automatically. Manage your plan at",
+      "ministryStuffHelperLink": "ministrystuff.org"
     },
     "userAdd": {
       "addTo": "Add To ",
@@ -3377,6 +3480,16 @@
       "undoWarning": "Records modified since this batch was created will be skipped. This cannot be reversed.",
       "undoing": "Undoing…",
       "viewResults": "View Results"
+    },
+    "storageSettingsEdit": {
+      "title": "File Storage",
+      "provider": "Provider",
+      "churchAppsFree": "ChurchApps (Free)",
+      "ministryStuff": "MinistryStuff",
+      "usage": "Using {used} GB of {quota} GB.",
+      "ministryStuffHelper": "Files will be stored on your MinistryStuff storage plan, linked to this church automatically. Manage your plan at",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "saveError": "Error saving storage settings."
     }
   },
   "site": {
@@ -3554,6 +3667,8 @@
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Auto-fills from the title until you edit it. Address:",
+      "slugLabel": "Web address",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -4105,6 +4220,7 @@
     },
     "paletteEdit": {
       "accent": "Accent",
+      "accentDesc": "Main accent — buttons and highlights",
       "applyPaletteAria": "Apply suggested color palette",
       "applySuggested": "Click any palette to apply it instantly",
       "baseColors": "Base Colors",
@@ -4112,20 +4228,29 @@
       "colorValues": "Color Values",
       "dark": "Dark",
       "darkAccent": "Dark Accent",
+      "darkAccentDesc": "Deep accent — headings and links",
+      "darkDesc": "Darkest shade — body text",
       "error": "Error",
+      "errorDesc": "Errors and destructive actions",
       "headerSubtitle": "Customize your website's color scheme. For mobile app, member portal, and kiosk colors, go to Settings > App Theme.",
       "headerTitle": "Color Palette",
       "light": "Light",
       "lightAccent": "Light Accent",
+      "lightAccentDesc": "Soft accent — subtle backgrounds",
+      "lightDesc": "Lightest shade — section backgrounds",
       "palette": "Palette",
       "previewWorkTogether": "Preview how your colors work together",
       "primary": "Primary",
+      "primaryDesc": "Primary buttons and links",
       "savePalette": "Save Palette",
       "secondary": "Secondary",
+      "secondaryDesc": "Secondary buttons and accents",
       "semanticColors": "Semantic Colors",
       "success": "Success",
+      "successDesc": "Success messages and confirmations",
       "suggestedPalettes": "Suggested Palettes",
-      "warning": "Warning"
+      "warning": "Warning",
+      "warningDesc": "Warnings and cautions"
     },
     "pickColors": {
       "background": "Background",
@@ -4513,11 +4638,13 @@
       "columns": "Columns",
       "empty": "(empty)",
       "firstRowHeader": "First Row is Header",
+      "markdownHelper": "Enables Markdown in cells for bold, links, and other formatting.",
       "medium": "Medium",
       "no": "No",
       "rows": "Rows",
       "size": "Size",
       "sizeSmall": "Small",
+      "textFormatting": "Text formatting",
       "yes": "Yes"
     },
     "templates": {
@@ -4994,6 +5121,7 @@
     },
     "workflowEdit": {
       "active": "Active",
+      "confirmDelete": "Are you sure you want to delete this workflow?",
       "editWorkflow": "Edit Workflow",
       "inactive": "Inactive",
       "name": "Name"
@@ -5024,6 +5152,7 @@
       "title": "Routing"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Are you sure you want to delete this step?",
       "defaultAssignee": "Default assignee",
       "dueDays": "Due in (days)",
       "dueDaysHelp": "Sets a due date when a card enters this step",

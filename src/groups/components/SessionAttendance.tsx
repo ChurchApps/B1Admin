@@ -1,5 +1,6 @@
 import React, { useCallback, memo, useMemo } from "react";
 import { type GroupInterface, type PersonInterface, type SessionInterface, type VisitInterface, type VisitSessionInterface } from "@churchapps/helpers";
+import { Link } from "react-router-dom";
 import { ApiHelper, ArrayHelper, Locale, PersonHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { Avatar, Box, Chip, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { PersonRemove as PersonRemoveIcon } from "@mui/icons-material";
@@ -64,7 +65,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
   const handleRemove = useCallback(
     (vs: VisitSessionInterface) => {
       if (!session?.id) return;
-      ApiHelper.delete("/visitsessions?sessionId=" + session.id + "&personId=" + vs.visit.personId, "AttendanceApi").then(() => {
+      ApiHelper.delete("/visitsessions?sessionId=" + session.id + "&personId=" + vs.visit?.personId, "AttendanceApi").then(() => {
         loadAttendance();
       });
     },
@@ -80,7 +81,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
       return `${last}|${first}`;
     };
     const rows = visitSessions
-      .map((vs) => ({ vs, person: ArrayHelper.getOne(people, "id", vs.visit.personId) as PersonInterface | undefined }))
+      .map((vs) => ({ vs, person: ArrayHelper.getOne(people, "id", vs.visit?.personId) as PersonInterface | undefined }))
       .filter((r) => !!r.person)
       .sort((a, b) => sortKey(a.person).localeCompare(sortKey(b.person)));
 
@@ -96,16 +97,16 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
       ) : (
         <></>
       );
-      const checkinType = checkinTypes[vs.visitId];
+      const checkinType = checkinTypes[vs.visitId || ""];
       return (
         <TableRow key={vs.id}>
           <TableCell>
-            <Avatar src={PersonHelper.getPhotoUrl(person)} sx={{ width: 48, height: 48 }} />
+            <Avatar src={PersonHelper.getPhotoUrl(person!)} sx={{ width: 48, height: 48 }} />
           </TableCell>
           <TableCell>
-            <a className="personName" href={"/people/person.aspx?id=" + vs.visit.personId}>
+            <Link className="personName" to={"/people/" + vs.visit?.personId}>
               {person?.name?.display}
-            </a>
+            </Link>
           </TableCell>
           <TableCell>{checkinTypeChip(checkinType)}</TableCell>
           <TableCell align="right" className="rowActions">{editLink}</TableCell>
@@ -114,7 +115,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
     });
   }, [visitSessions, people, canEdit, handleRemove, checkinTypes]);
 
-  const volunteerCount = useMemo(() => visitSessions.filter((vs) => checkinTypes[vs.visitId] === "volunteer").length, [visitSessions, checkinTypes]);
+  const volunteerCount = useMemo(() => visitSessions.filter((vs) => checkinTypes[vs.visitId || ""] === "volunteer").length, [visitSessions, checkinTypes]);
 
   React.useEffect(() => {
     loadAttendance();
@@ -130,7 +131,7 @@ export const SessionAttendance: React.FC<Props> = memo((props) => {
       ApiHelper.post("/visitsessions/log", v, "AttendanceApi").then(() => {
         loadAttendance();
       });
-      addedCallback?.(v.personId);
+      addedCallback?.(v.personId!);
     }
   }, [addedPerson?.id, session?.id, loadAttendance, addedCallback]);
 

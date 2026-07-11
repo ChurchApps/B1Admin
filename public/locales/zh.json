@@ -337,7 +337,8 @@
         "firstName": "请输入名字。",
         "lastName": "请输入姓氏。",
         "validEmail": "请输入有效的电子邮件地址。"
-      }
+      },
+      "confirmDuplicate": "已找到使用此电子邮件的现有人员 '{{existingName}}' ({{existingEmail}})。您确定要添加 '{{firstName}} {{lastName}}' 吗？"
     },
     "custom": "自定义",
     "delete": "删除",

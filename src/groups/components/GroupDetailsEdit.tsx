@@ -128,8 +128,8 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
       about,
       photoUrl,
       labelArray,
-      minAgeMonths: partsToMonths(values.minYears, values.minMonths),
-      maxAgeMonths: partsToMonths(values.maxYears, values.maxMonths),
+      minAgeMonths: partsToMonths(values.minYears, values.minMonths) as number,
+      maxAgeMonths: partsToMonths(values.maxYears, values.maxMonths) as number,
       minGrade: values.minGrade || null,
       maxGrade: values.maxGrade || null
     };
@@ -152,7 +152,7 @@ export const GroupDetailsEdit: React.FC<Props> = (props) => {
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("groups.groupDetailsEdit.confirmMsg"))) {
-      ApiHelper.delete("/groups/" + props.group.id.toString(), "MembershipApi").then(() => setRedirect("/groups"));
+      ApiHelper.delete("/groups/" + props.group.id!.toString(), "MembershipApi").then(() => setRedirect("/groups"));
     }
   };
 

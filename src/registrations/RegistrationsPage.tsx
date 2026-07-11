@@ -33,7 +33,7 @@ export const RegistrationsPage = () => {
     if (data?.length > 0) {
       await Promise.all(data.map(async (event) => {
         const result = await ApiHelper.get("/registrations/event/" + event.id + "/count?churchId=" + event.churchId, "ContentApi");
-        countMap[event.id] = result?.count || 0;
+        countMap[event.id || ""] = result?.count || 0;
       }));
     }
     setCounts(countMap);
@@ -46,7 +46,7 @@ export const RegistrationsPage = () => {
   if (denied) return denied;
 
   const getCapacityDisplay = (event: EventInterface) => {
-    const count = counts[event.id] || 0;
+    const count = counts[event.id || ""] || 0;
     if (!event.capacity) return <Typography variant="body2">{count} {Locale.label("registrations.registrationsPage.registered")}</Typography>;
     const pct = Math.min((count / event.capacity) * 100, 100);
     return (

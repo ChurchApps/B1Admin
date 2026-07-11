@@ -43,7 +43,7 @@ const SAMPLE_GROUPS = [
 ];
 
 // Like the real renderer, buttons are inline and inherit the section's text-align.
-const MiniButton: React.FC<{ text: string; variant?: string }> = ({ text, variant }) => {
+const MiniButton: React.FC<{ text: string; variant?: string; centered?: boolean }> = ({ text, variant }) => {
   const { accent } = React.useContext(ThemeCtx);
   return (
     <div style={{ textAlign: "inherit", marginTop: 8 }}>

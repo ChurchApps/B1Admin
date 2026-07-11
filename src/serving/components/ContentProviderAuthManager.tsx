@@ -6,6 +6,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { getProvider, getAvailableProviders, type IProvider, type DeviceAuthorizationResponse } from "@churchapps/content-providers";
 import { type ContentProviderAuthInterface } from "../../helpers";
 import { ContentProviderAuthHelper } from "../../helpers/ContentProviderAuthHelper";
+import { SERVING_PROVIDER_IDS } from "../servingProviders";
 import { ProviderSelectorModal } from "./ProviderSelectorModal";
 import { AuthFlowDialog, type AuthStatus } from "./AuthFlowDialog";
 
@@ -42,7 +43,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
   useEffect(() => () => { cancelActivePolls(); }, [cancelActivePolls]);
 
   const availableProviders = useMemo(
-    () => getAvailableProviders(["lessonschurch", "signpresenter", "bibleproject", "dropbox", "jesusfilm"]),
+    () => getAvailableProviders(SERVING_PROVIDER_IDS),
     []
   );
 
@@ -105,12 +106,12 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
     setDeviceFlowData(null);
 
     try {
-      if (!("initiateDeviceFlow" in provider)) {
+      if (!provider.initiateDeviceFlow) {
         setAuthError(Locale.label("plans.contentProviderAuth.deviceFlowUnsupported"));
         setAuthStatus("error");
         return;
       }
-      const deviceResponse = await (provider as any).initiateDeviceFlow();
+      const deviceResponse = await provider.initiateDeviceFlow();
       if (!deviceResponse) {
         setAuthError(Locale.label("plans.contentProviderAuth.deviceFlowFailed"));
         setAuthStatus("error");
@@ -142,9 +143,9 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
     const poll = async () => {
       if (isCancelled()) return;
-      if (!("pollDeviceFlowToken" in provider) || typeof provider.pollDeviceFlowToken !== "function") return;
+      if (!provider.pollDeviceFlowToken) return;
       try {
-        const result = await (provider as any).pollDeviceFlowToken(deviceCode);
+        const result = await provider.pollDeviceFlowToken(deviceCode);
         if (isCancelled()) return;
 
         if (result && "access_token" in result) {
@@ -170,7 +171,7 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
             return;
           }
 
-          setAuthError(result.error_description || result.error);
+          setAuthError((result as any).error_description || result.error);
           setAuthStatus("error");
           return;
         }
@@ -197,11 +198,13 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
     setAuthError(null);
 
     try {
-      if (!("generateCodeVerifier" in provider) || !("buildAuthUrl" in provider)) {
+      if (!provider.generateCodeVerifier || !provider.buildAuthUrl) {
         setAuthError(Locale.label("plans.contentProviderAuth.pkceUnsupported"));
         setAuthStatus("error");
         return;
       }
+      const generateCodeVerifier = provider.generateCodeVerifier.bind(provider);
+      const buildAuthUrl = provider.buildAuthUrl.bind(provider);
 
       const relayData = await ApiHelper.post("/oauth/relay/sessions", { provider: providerId }, "MembershipApi");
       if (!relayData?.sessionCode || !relayData?.redirectUri) {
@@ -212,10 +215,10 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
       const { sessionCode, redirectUri, expiresIn } = relayData;
 
-      const verifier = (provider as any).generateCodeVerifier();
+      const verifier = generateCodeVerifier();
       setCodeVerifier(verifier);
 
-      const authResult = await (provider as any).buildAuthUrl(verifier, redirectUri, sessionCode);
+      const authResult = await buildAuthUrl(verifier, redirectUri, sessionCode);
 
       const width = 600;
       const height = 700;
@@ -267,16 +270,11 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
           if (result?.status === "completed" && result?.authCode) {
             popup.close();
 
-            const tokens = await (provider as any).exchangeCodeForTokens(
-              result.authCode,
-              verifier,
-              redirectUri
-            );
+            // Exchange runs server-side: the token endpoint needs the client_secret and sends no CORS headers.
+            const exchanged = await ContentProviderAuthHelper.exchangeCode(ministryId, providerId, result.authCode, verifier, redirectUri);
             if (isCancelled()) return;
 
-            if (tokens) {
-              await ContentProviderAuthHelper.storeAuth(ministryId, providerId, tokens);
-              if (isCancelled()) return;
+            if (exchanged) {
               setAuthStatus("success");
               await loadLinkedProviders();
               if (onAuthChange) onAuthChange();
@@ -340,10 +338,14 @@ export const ContentProviderAuthManager: React.FC<Props> = ({ ministryId, onAuth
 
     setShowProviderSelector(false);
 
-    if (provider.supportsDeviceFlow()) {
+    if (provider.authTypes.includes("device_flow")) {
       startDeviceFlow(providerId);
-    } else {
+    } else if (provider.authTypes.includes("oauth_pkce")) {
       startPKCEFlow(providerId);
+    } else {
+      setAuthProviderId(providerId);
+      setAuthError(Locale.label("plans.contentProviderAuth.pkceUnsupported"));
+      setAuthStatus("error");
     }
   }, [availableProviders, ministryId, loadLinkedProviders, onAuthChange, startDeviceFlow, startPKCEFlow]);
 

@@ -19,7 +19,7 @@ export const ServiceTimes: React.FC<Props> = (props) => {
     const result: JSX.Element[] = [];
     for (let i = 0; i < groupServiceTimes.length; i++) {
       const gst = groupServiceTimes[i];
-      result.push(<div key={gst.id}> {gst.serviceTime.name}</div>);
+      result.push(<div key={gst.id}> {gst.serviceTime?.name}</div>);
     }
     return result;
   };

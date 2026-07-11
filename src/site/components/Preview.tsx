@@ -4,7 +4,7 @@ import type { FontsInterface } from "./FontEdit";
 import type { ColorInterface } from "./PaletteEdit";
 
 interface Props {
-  globalStyle?: GlobalStyleInterface;
+  globalStyle?: GlobalStyleInterface | null;
   churchSettings: any;
   churchName: string;
 }
@@ -12,7 +12,7 @@ interface Props {
 export function Preview(props: Props) {
   if (!props.globalStyle) return null;
 
-  const fonts: FontsInterface = JSON.parse(props.globalStyle.fonts);
+  const fonts: FontsInterface = JSON.parse(props.globalStyle.fonts || "{}");
   const palette: ColorInterface = JSON.parse(props.globalStyle.palette);
 
   return (

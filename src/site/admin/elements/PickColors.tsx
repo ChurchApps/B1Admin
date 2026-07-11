@@ -21,7 +21,7 @@ type Props = {
 };
 
 export function PickColors(props: Props) {
-  const [selectPhotoField, setSelectPhotoField] = useState<string>(null);
+  const [selectPhotoField, setSelectPhotoField] = useState<string | null>(null);
   const [tabValue, setTabValue] = useState<string>("suggested");
 
   const handlePhotoSelected = (image: string) => {
@@ -62,6 +62,7 @@ export function PickColors(props: Props) {
       const colors = [palette.light, palette.lightAccent, palette.accent, palette.darkAccent, palette.dark];
       return getManualOptions(colors, ["var(--light)", "var(--lightAccent)", "var(--accent)", "var(--darkAccent)", "var(--dark)"], field);
     }
+    return <></>;
   };
 
   const updateField = (field: "background" | "textColor" | "headingColor" | "linkColor", value: string) => {

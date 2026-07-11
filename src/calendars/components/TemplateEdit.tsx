@@ -94,7 +94,7 @@ export function TemplateEdit(props: Props) {
         >
           {props.rooms.map((r) => (
             <MenuItem key={r.id} value={r.id}>
-              <Checkbox checked={roomIds.includes(r.id)} size="small" />
+              <Checkbox checked={roomIds.includes(r.id || "")} size="small" />
               <ListItemText primary={r.name} />
             </MenuItem>
           ))}
@@ -113,7 +113,7 @@ export function TemplateEdit(props: Props) {
         >
           {props.resources.map((r) => (
             <MenuItem key={r.id} value={r.id}>
-              <Checkbox checked={resourceIds.includes(r.id)} size="small" />
+              <Checkbox checked={resourceIds.includes(r.id || "")} size="small" />
               <ListItemText primary={r.name} />
             </MenuItem>
           ))}

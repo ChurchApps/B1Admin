@@ -337,7 +337,8 @@
         "firstName": "Por favor insira um primeiro nome.",
         "lastName": "Insira um sobrenome.",
         "validEmail": "Por favor, insira um endereço de email válido."
-      }
+      },
+      "confirmDuplicate": "Uma pessoa existente '{{existingName}}' ({{existingEmail}}) foi encontrada com este e-mail. Tem certeza de que deseja adicionar '{{firstName}} {{lastName}}'?"
     },
     "custom": "Personalizado",
     "delete": "Excluir",

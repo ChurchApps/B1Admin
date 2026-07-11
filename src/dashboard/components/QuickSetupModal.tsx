@@ -150,7 +150,7 @@ export const QuickSetupModal: React.FC<Props> = ({ wizardType, open, onClose, on
       return;
     }
 
-    const churchId = context.userChurch?.church?.id;
+    const churchId = context?.userChurch?.church?.id;
     const page = { title: pageTitle.trim(), churchId, layout: "headerFooter" };
     const result = await ApiHelper.post("/pages", [page], "ContentApi");
 

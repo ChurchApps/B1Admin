@@ -68,7 +68,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
         .finally(() => {
           if (isMounted()) {
             setIsSubmitting(false);
-            if (showInModal) props.onClose();
+            if (showInModal) props.onClose?.();
           }
         });
     });
@@ -156,7 +156,7 @@ export function CreatePerson({ onCreate = () => {}, showInModal = false, ...prop
           <DialogActions>
             <Button
               onClick={() => {
-                props.onClose();
+                props.onClose?.();
               }}>
               {Locale.label("common.cancel")}
             </Button>

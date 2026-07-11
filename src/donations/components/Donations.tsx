@@ -16,7 +16,7 @@ interface Props {
 
 export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   const { batch, funds, editFunction } = props;
-  const [donations, setDonations] = React.useState<DonationInterface[]>(null);
+  const [donations, setDonations] = React.useState<DonationInterface[] | null>(null);
 
   // Memoize permission check to avoid repeated calls
   const canEdit = React.useMemo(() => UserHelper.checkAccess(Permissions.givingApi.donations.edit), []);
@@ -46,7 +46,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
       e.preventDefault();
       const button = e.currentTarget as HTMLButtonElement;
       const id = button.getAttribute("data-id");
-      editFunction(id);
+      editFunction(id || "");
     },
     [editFunction]
   );
@@ -54,7 +54,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
   // Memoize the total calculation to avoid recalculating on every render
   const donationsTotal = React.useMemo(() => {
     if (!donations || donations.length === 0) return 0;
-    return donations.reduce((sum, donation) => sum + donation.amount, 0);
+    return donations.reduce((sum, donation) => sum + (donation.amount || 0), 0);
   }, [donations]);
 
   const getTableHeader = React.useCallback(() => {
@@ -65,7 +65,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
     return (
       <TableHead>
         <TableRow>
-          <TableCell>{Locale.label("donations.donations.tableIdent")}</TableCell>
+          <TableCell>{Locale.label("donations.donations.method")}</TableCell>
           <TableCell>{Locale.label("common.name")}</TableCell>
           <TableCell>{Locale.label("donations.donations.date")}</TableCell>
           <TableCell align="right">{Locale.label("donations.donations.amt")}</TableCell>
@@ -108,7 +108,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <IconText icon={<Icon>receipt</Icon>} iconSize={20} iconColor="primary.main" variant="body2">
-                <span style={{ fontWeight: 500, color: "text.primary" }}>{d.id}</span>
+                <span style={{ fontWeight: 500, color: "text.primary" }}>{[d.method, d.methodDetails].filter(Boolean).join(" - ") || "—"}</span>
               </IconText>
               {isPending && <Chip icon={<PendingIcon />} label={Locale.label("donations.donations.pending")} size="small" color="warning" variant="outlined" />}
             </Stack>
@@ -125,7 +125,7 @@ export const Donations: React.FC<Props> = ({ currency = "usd", ...props }) => {
           </TableCell>
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: isPending ? "warning.main" : "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(d.amount, currency)}
+              {CurrencyHelper.formatCurrencyWithLocale(d.amount || 0, currency)}
             </Typography>
           </TableCell>
           {canEdit && <TableCell align="right" className="rowActions">{editButton}</TableCell>}

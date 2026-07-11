@@ -46,21 +46,21 @@ export const FormsPage = () => {
         UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || (UserHelper.checkAccess(Permissions.membershipApi.forms.edit) && form.contentType !== "form") || form?.action === "admin";
       const editLink =
         canEdit && !isArchived ? (
-          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setSelectedFormId(form.id)} data-testid={`edit-form-button-${form.id}`} />
+          <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} onClick={() => setSelectedFormId(form.id || "")} data-testid={`edit-form-button-${form.id}`} />
         ) : null;
-      const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain) + "/forms/" + form.id;
+      const formUrl = EnvironmentHelper.B1Url.replace("{subdomain}", UserHelper.currentUserChurch.church.subDomain || "") + "/forms/" + form.id;
       const formLink = form.contentType === "form" ? <a href={formUrl}>{formUrl}</a> : null;
       const duplicateLink =
         canEdit && !isArchived ? (
-          <AppIconButton label={Locale.label("forms.formsPage.duplicate")} icon={<CopyIcon />} onClick={() => handleDuplicate(form.id)} data-testid={`duplicate-form-button-${form.id}`} />
+          <AppIconButton label={Locale.label("forms.formsPage.duplicate")} icon={<CopyIcon />} onClick={() => handleDuplicate(form.id || "")} data-testid={`duplicate-form-button-${form.id}`} />
         ) : null;
       const archiveLink =
         canEdit && !isArchived ? (
-          <Button size="small" variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.archive")}</Button>
+          <Button size="small" variant="outlined" startIcon={<DeleteIcon />} onClick={() => handleArchiveChange(form, true)} data-testid={`archive-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.archiveFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.archive")}</Button>
         ) : null;
       const unarchiveLink =
         canEdit && isArchived ? (
-          <Button size="small" variant="outlined" color="success" startIcon={<UndoIcon />} onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.restoreFormAria").replace("{name}", form.name)}>{Locale.label("forms.formsPage.restore")}</Button>
+          <Button size="small" variant="outlined" color="success" startIcon={<UndoIcon />} onClick={() => handleArchiveChange(form, false)} data-testid={`restore-form-button-${form.id}`} aria-label={Locale.label("forms.formsPage.restoreFormAria").replace("{name}", form.name || "")}>{Locale.label("forms.formsPage.restore")}</Button>
         ) : null;
       result.push(
         <TableRow key={form.id}>

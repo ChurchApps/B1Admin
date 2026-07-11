@@ -54,7 +54,7 @@ export const SongDetailLinks: React.FC<Props> = (props) => {
     };
     const safeUrl = /^https?:\/\//i.test(link.url || "") || /^mailto:/i.test(link.url || "") ? link.url : "#";
     let result = <a href={safeUrl} target="_blank" rel="noreferrer">{link.service}</a>;
-    const logo: string = logos[link.service] as string;
+    const logo: string = logos[link.service || ""] as string;
     if (logo) result = <a href={safeUrl} target="_blank" rel="noreferrer"><img src={logo} alt={link.service} style={{ minHeight: 20, maxHeight: 30, maxWidth: 100 }} /></a>;
 
     return result;

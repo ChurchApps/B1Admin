@@ -337,7 +337,8 @@
         "firstName": "Vänligen ange ett förnamn.",
         "lastName": "Vänligen ange ett efternamn.",
         "validEmail": "Vänligen ange en giltig e-postadress."
-      }
+      },
+      "confirmDuplicate": "En befintlig person '{{existingName}}' ({{existingEmail}}) hittades med den här e-postadressen. Är du säker på att du vill lägga till '{{firstName}} {{lastName}}'?"
     },
     "custom": "Anpassad",
     "delete": "Ta bort",

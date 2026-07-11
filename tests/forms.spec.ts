@@ -92,7 +92,7 @@ test.describe.serial("People-associated form lifecycle", () => {
     await page.locator('button[aria-label="addQuestion"]').click();
     await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
 
-    const providerSelect = page.locator("#questionBox").getByLabel("Provider");
+    const providerSelect = page.locator("#questionBox").getByLabel("Field Type");
     await selectMuiOption(page, providerSelect, "Email");
 
     await page.locator('[data-testid="question-title-input"] input').fill("Email Address");

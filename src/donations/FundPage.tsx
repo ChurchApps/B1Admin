@@ -11,7 +11,7 @@ import {
   Receipt as ReceiptIcon,
   AccountBalance as AccountBalanceIcon
 } from "@mui/icons-material";
-import { CardWithHeader, ExportButton, PageHeaderStats, hoverRowSx } from "../components/ui";
+import { Breadcrumbs, type BreadcrumbItem, CardWithHeader, ExportButton, PageHeaderStats, hoverRowSx } from "../components/ui";
 
 export const FundPage = () => {
   const params = useParams();
@@ -19,7 +19,7 @@ export const FundPage = () => {
   initialDate.setDate(initialDate.getDate() - 7);
 
   const [fund, setFund] = React.useState<DonationBatchInterface>({});
-  const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>(null);
+  const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[] | null>(null);
   const [startDate, setStartDate] = React.useState<Date>(initialDate);
   const [endDate, setEndDate] = React.useState<Date>(new Date());
   const [people, setPeople] = React.useState<{ [key: string]: string }>({});
@@ -47,7 +47,7 @@ export const FundPage = () => {
           ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi").then((people: PersonInterface[]) => {
             const data: any = {};
             people.forEach((p) => {
-              data[p.id] = p.name?.display;
+              if (p.id) data[p.id] = p.name?.display;
             });
 
             setPeople(data);
@@ -112,7 +112,7 @@ export const FundPage = () => {
           <Stack direction="row" spacing={1} alignItems="center">
             <PersonIcon sx={{ color: "text.secondary", fontSize: 18 }} />
             <Typography component={Link} to={"/people/" + fd.donation?.personId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
-              {people[fd.donation.personId] || Locale.label("donations.fundsPage.anon")}
+              {people[fd.donation?.personId || ""] || Locale.label("donations.fundsPage.anon")}
             </Typography>
           </Stack>
         </TableCell>
@@ -123,21 +123,21 @@ export const FundPage = () => {
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <DateIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              <Typography variant="body2">{DateHelper.formatHtml5Date(fd.donation.donationDate)}</Typography>
+              <Typography variant="body2">{DateHelper.formatHtml5Date(fd.donation?.donationDate)}</Typography>
             </Stack>
           </TableCell>
           <TableCell>
             <Stack direction="row" spacing={1} alignItems="center">
               <ReceiptIcon sx={{ color: "text.secondary", fontSize: 18 }} />
-              <Typography component={Link} data-cy={`batchId-${fd.donation.batchId}-${i}`} to={"/donations/" + fd.donation.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
-                {fd.donation.batchId}
+              <Typography component={Link} data-cy={`batchId-${fd.donation?.batchId}-${i}`} to={"/donations/" + fd.donation?.batchId} variant="body2" sx={{ textDecoration: "none", color: "var(--link)", fontWeight: 500 }}>
+                {Locale.label("donations.fundsPage.viewBatch")}
               </Typography>
             </Stack>
           </TableCell>
           {personCol}
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(fd.amount, currency)}
+              {CurrencyHelper.formatCurrencyWithLocale(fd.amount || 0, currency)}
             </Typography>
           </TableCell>
         </TableRow>
@@ -184,12 +184,18 @@ export const FundPage = () => {
 
   if (!UserHelper.checkAccess(Permissions.givingApi.donations.view)) return <></>;
 
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: Locale.label("components.wrapper.don"), path: "/donations" },
+    { label: fund.name || "" }
+  ];
+
   return (
     <>
       <PageHeader
         icon={<AccountBalanceIcon />}
         title={`${fund.name} ${Locale.label("donations.fundsPage.don")}`}
         subtitle={Locale.label("donations.fundPage.subtitle")}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
       >
         {stats.totalDonations > 0 && (
           <PageHeaderStats

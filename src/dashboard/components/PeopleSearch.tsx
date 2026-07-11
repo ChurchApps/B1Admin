@@ -27,16 +27,24 @@ export const PeopleSearch = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.currentTarget.value);
 
-  const handleSubmit = (e: React.MouseEvent) => {
-    if (e !== null) e.preventDefault();
+  const handleClear = () => {
+    setSearchText("");
+    setSearchTerm(null);
+  };
+
+  const handleSubmit = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if (e !== null && e !== undefined) e.preventDefault();
     const term = searchText.trim();
-    if (!term) return;
+    if (!term) {
+      handleClear();
+      return;
+    }
     setSearchTerm(term);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleSubmit(e as any);
+      handleSubmit(e);
     }
   };
 
@@ -76,23 +84,41 @@ export const PeopleSearch = () => {
               onKeyPress={handleKeyPress}
               data-testid="dashboard-people-search-input"
               endAdornment={
-                <Button
-                  variant="contained"
-                  onClick={handleSubmit}
-                  data-testid="dashboard-search-button"
-                  aria-label={Locale.label("dashboard.peopleSearch.ariaSearch")}
-                  disabled={searchResults.isLoading || !searchText.trim()}
-                  startIcon={<SearchIcon />}
-                  sx={{
-                    ml: 1,
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      transform: "translateY(-1px)",
-                      boxShadow: 2
-                    }
-                  }}>
-                  {searchResults.isLoading ? Locale.label("common.searching") || "Searching..." : Locale.label("common.search")}
-                </Button>
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  {(searchText || searchTerm) && (
+                    <Button
+                      variant="text"
+                      onClick={handleClear}
+                      size="small"
+                      data-testid="dashboard-clear-button"
+                      sx={{
+                        color: "text.secondary",
+                        whiteSpace: "nowrap",
+                        minWidth: "auto",
+                        px: 1
+                      }}
+                    >
+                      {Locale.label("dashboard.peopleSearch.clearSearch")}
+                    </Button>
+                  )}
+                  <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    data-testid="dashboard-search-button"
+                    aria-label={Locale.label("dashboard.peopleSearch.ariaSearch")}
+                    disabled={searchResults.isLoading || !searchText.trim()}
+                    startIcon={<SearchIcon />}
+                    sx={{
+                      ml: 1,
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": {
+                        transform: "translateY(-1px)",
+                        boxShadow: 2
+                      }
+                    }}>
+                    {searchResults.isLoading ? Locale.label("common.searching") || "Searching..." : Locale.label("common.search")}
+                  </Button>
+                </Stack>
               }
             />
           </FormControl>

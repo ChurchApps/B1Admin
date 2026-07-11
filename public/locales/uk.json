@@ -337,7 +337,8 @@
         "firstName": "Введіть ім'я.",
         "lastName": "Введіть прізвище.",
         "validEmail": "Введіть дійсну адресу електронної пошти."
-      }
+      },
+      "confirmDuplicate": "Користувач '{{existingName}}' ({{existingEmail}}) з такою електронною адресою вже існує. Ви дійсно хочете додати '{{firstName}} {{lastName}}'?"
     },
     "custom": "Власне",
     "delete": "Видалити",

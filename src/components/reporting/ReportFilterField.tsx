@@ -13,8 +13,8 @@ interface Props {
 }
 
 export const ReportFilterField = (props: Props) => {
-  const [rawData, setRawData] = React.useState<any[]>(null);
-  const [secondaryData, setSecondaryData] = React.useState<any[]>(null);
+  const [rawData, setRawData] = React.useState<any[] | null>(null);
+  const [secondaryData, setSecondaryData] = React.useState<any[] | null>(null);
   const isMounted = useMountedState();
 
   const init = async () => {
@@ -117,24 +117,24 @@ export const ReportFilterField = (props: Props) => {
 
   const filterOptions = () => {
     let result = rawData;
-    if (props.parameter.requiredParentIds?.length > 0) {
+    if ((props.parameter.requiredParentIds?.length || 0) > 0) {
       switch (props.parameter.sourceKey) {
         case "service":
-          result = ArrayHelper.getAllArray(rawData, "campusId", props.parameter.requiredParentIds);
+          result = ArrayHelper.getAllArray(rawData || [], "campusId", props.parameter.requiredParentIds || []);
           result.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           break;
         case "serviceTime":
-          result = ArrayHelper.getAllArray(rawData, "serviceId", props.parameter.requiredParentIds);
+          result = ArrayHelper.getAllArray(rawData || [], "serviceId", props.parameter.requiredParentIds || []);
           result.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           break;
         case "group":
-          const times = ArrayHelper.getAllArray(secondaryData, "serviceTimeId", props.parameter.requiredParentIds);
-          result = ArrayHelper.getAllArray(rawData, "id", ArrayHelper.getUniqueValues(times, "groupId"));
+          const times = ArrayHelper.getAllArray(secondaryData || [], "serviceTimeId", props.parameter.requiredParentIds || []);
+          result = ArrayHelper.getAllArray(rawData || [], "id", ArrayHelper.getUniqueValues(times, "groupId"));
           result.unshift({ id: "", name: Locale.label("common.reportFilterField.any") });
           break;
       }
     }
-    return result;
+    return result || [];
   };
 
   const getOptions = () => {

@@ -17,8 +17,8 @@ interface Props {
 export const AssociatedForms: React.FC<Props> = (props) => {
   const [mode, setMode] = useState("display");
   const [editFormSubmissionId, setEditFormSubmissionId] = useState("");
-  const [allForms, setAllForms] = useState(null);
-  const [unsubmittedForms, setUnsubmittedForms] = useState([]);
+  const [allForms, setAllForms] = useState<any[] | null>(null);
+  const [unsubmittedForms, setUnsubmittedForms] = useState<any[]>([]);
   const [selectedFormId, setSelectedFormId] = useState<string>("");
   const [expanded, setExpanded] = useState<string>("");
   const formPermission = UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit);
@@ -57,11 +57,11 @@ export const AssociatedForms: React.FC<Props> = (props) => {
           setExpanded("submitted" + fs.id);
         }}>
         <AccordionSummary>
-          <span>{fs.form.name}</span>
+          <span>{fs.form?.name}</span>
         </AccordionSummary>
         <AccordionDetails>
           <div className="card-body">
-            <FormSubmission formSubmissionId={fs.id} editFunction={handleEdit} />{" "}
+            <FormSubmission formSubmissionId={fs.id || ""} editFunction={handleEdit} />{" "}
           </div>
         </AccordionDetails>
       </Accordion>
@@ -88,7 +88,7 @@ export const AssociatedForms: React.FC<Props> = (props) => {
       ));
 
   const determineUnsubmitted = () => {
-    let unsubmitted = [];
+    let unsubmitted: any[] = [];
     if (allForms !== undefined && allForms !== null && props !== null) {
       const sf = props.formSubmissions;
       if (sf !== undefined && sf !== null) {

@@ -337,7 +337,8 @@
         "firstName": "Voer een voornaam in.",
         "lastName": "Voer een achternaam in.",
         "validEmail": "Voer een geldig e-mailadres in."
-      }
+      },
+      "confirmDuplicate": "Er is al een persoon '{{existingName}}' ({{existingEmail}}) met dit e-mailadres gevonden. Weet u zeker dat u '{{firstName}} {{lastName}}' wilt toevoegen?"
     },
     "custom": "Aangepast",
     "delete": "Verwijderen",

@@ -38,7 +38,7 @@ export const ConditionDate = (props: Props) => {
   };
 
   const getDateField = () => {
-    const label = ConditionHelper.getTitleCase(props.condition.field);
+    const label = ConditionHelper.getTitleCase(props.condition.field || "");
     return (
       <TextField
         fullWidth
@@ -55,7 +55,7 @@ export const ConditionDate = (props: Props) => {
   };
 
   const getNumberField = () => {
-    const label = ConditionHelper.getTitleCase(props.condition.field);
+    const label = ConditionHelper.getTitleCase(props.condition.field || "");
     return (
       <TextField
         fullWidth

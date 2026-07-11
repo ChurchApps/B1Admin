@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 
 interface Props {
   animations: AnimationsInterface,
-  onSave: (animations:AnimationsInterface) => void;
+  onSave: (animations: AnimationsInterface | null) => void;
 }
 
 

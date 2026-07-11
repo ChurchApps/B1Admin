@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, editIconButton, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -213,6 +213,7 @@ test.describe.serial("Auto-Scheduling (2.14/2.15)", () => {
     await expect(publishBtn).toBeVisible({ timeout: 15000 });
     const planPost = page.waitForResponse(r => r.url().includes("/doing/plans") && r.request().method() === "POST", { timeout: 15000 });
     await publishBtn.click();
+    await confirmDelete(page);
     await planPost;
     await expect(page.locator('[data-testid="penciled-in-chip"]')).toHaveCount(0, { timeout: 15000 });
     await expect(page.locator('[data-testid="publish-plan-button"]')).toHaveCount(0, { timeout: 15000 });

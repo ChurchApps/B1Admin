@@ -28,18 +28,19 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 interface Props { currentTab: LinkInterface, updatedFunction?: () => void }
 
 export const TabEdit: React.FC<Props> = (props) => {
-  const [currentTab, setCurrentTab] = useState<LinkInterface>(null);
+  const [currentTab, setCurrentTab] = useState<LinkInterface | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [iconPickerOpen, setIconPickerOpen] = React.useState(false);
 
   const handleDelete = async () => {
+    if (!currentTab) return;
     setIsLoading(true);
     try {
       await ApiHelper.delete("/links/" + currentTab.id, "ContentApi");
       setCurrentTab(null);
-      props.updatedFunction();
+      props.updatedFunction?.();
     } catch {
       setErrors([Locale.label("sermons.liveStreamTimes.tabEdit.errors.deleteFailed")]);
     } finally {
@@ -49,12 +50,14 @@ export const TabEdit: React.FC<Props> = (props) => {
   };
 
   const handleIconUpdate = (icon: string) => {
+    if (!currentTab) return;
     const t = { ...currentTab };
     t.icon = icon;
     setCurrentTab(t);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
+    if (!currentTab) return;
     const val = e.target.value;
     const t = { ...currentTab };
     switch (e.target.name) {
@@ -66,6 +69,7 @@ export const TabEdit: React.FC<Props> = (props) => {
   };
 
   const handleSave = async () => {
+    if (!currentTab) return;
     setIsLoading(true);
     const errors: string[] = [];
 
@@ -81,7 +85,7 @@ export const TabEdit: React.FC<Props> = (props) => {
     try {
       if (currentTab.linkType !== "url") currentTab.url = "";
       await ApiHelper.post("/links", [currentTab], "ContentApi");
-      props.updatedFunction();
+      props.updatedFunction?.();
     } catch {
       setErrors([Locale.label("sermons.liveStreamTimes.tabEdit.errors.saveFailed")]);
     } finally {
@@ -116,7 +120,7 @@ export const TabEdit: React.FC<Props> = (props) => {
     <>
       <Dialog
         open={true}
-        onClose={() => props.updatedFunction()}
+        onClose={() => props.updatedFunction?.()}
         maxWidth="md"
         fullWidth
         PaperProps={{
@@ -158,7 +162,7 @@ export const TabEdit: React.FC<Props> = (props) => {
               label={Locale.label("common.close")}
               icon={<CloseIcon />}
               tone="header"
-              onClick={() => props.updatedFunction()}
+              onClick={() => props.updatedFunction?.()}
             />
           </Stack>
         </DialogTitle>
@@ -299,7 +303,7 @@ export const TabEdit: React.FC<Props> = (props) => {
             <Box sx={{ flex: 1 }} />
             <Button
               variant="outlined"
-              onClick={() => props.updatedFunction()}
+              onClick={() => props.updatedFunction?.()}
               disabled={isLoading}
               sx={{
                 textTransform: "none",

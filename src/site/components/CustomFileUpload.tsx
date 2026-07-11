@@ -84,7 +84,9 @@ export function CustomFileUpload(props: Props) {
     const params = {
       fileName: uploadedFile.name,
       contentType: props.contentType,
-      contentId: props.contentId
+      contentId: props.contentId,
+      size: uploadedFile.size,
+      mimeType: uploadedFile.type
     };
     const presigned = await ApiHelper.post("/files/postUrl", params, "ContentApi");
     const doUpload = presigned.key !== undefined;

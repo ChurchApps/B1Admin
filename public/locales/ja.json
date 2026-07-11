@@ -337,7 +337,8 @@
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
         "validEmail": "Please enter a valid email address."
-      }
+      },
+      "confirmDuplicate": "このメールアドレスを持つ既存の人物 '{{existingName}}' ({{existingEmail}}) が見つかりました。本当に '{{firstName}} {{lastName}}' を追加しますか？"
     },
     "custom": "Custom",
     "delete": "削除",

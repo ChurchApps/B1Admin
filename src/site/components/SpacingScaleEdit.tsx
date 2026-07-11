@@ -6,8 +6,8 @@ import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 
 interface Props {
-  globalStyle?: GlobalStyleInterface;
-  updatedFunction?: (spacingJson: string) => void;
+  globalStyle?: GlobalStyleInterface | null;
+  updatedFunction?: (spacingJson: string | null) => void;
 }
 
 export interface SpacingInterface {
@@ -20,7 +20,7 @@ export interface SpacingInterface {
 }
 
 export function SpacingScaleEdit(props: Props) {
-  const [spacing, setSpacing] = useState<SpacingInterface>(null);
+  const [spacing, setSpacing] = useState<SpacingInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function SpacingScaleEdit(props: Props) {
   const handleSave = () => {
     setIsSubmitting(true);
     setTimeout(() => {
-      props.updatedFunction(JSON.stringify(spacing));
+      props.updatedFunction?.(JSON.stringify(spacing));
       setIsSubmitting(false);
     }, 500);
   };
@@ -82,7 +82,7 @@ export function SpacingScaleEdit(props: Props) {
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-spacing-button">{Locale.label("site.spacingScaleEdit.saveSpacing")}</LoadingButton>
           </Stack>
         </Stack>

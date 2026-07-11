@@ -337,7 +337,8 @@
         "firstName": "이름을 입력하세요.",
         "lastName": "성을 입력하세요.",
         "validEmail": "유효한 이메일 주소를 입력해주세요."
-      }
+      },
+      "confirmDuplicate": "이 이메일 주소를 사용하는 기존 사용자 '{{existingName}}' ({{existingEmail}})이(가) 있습니다. 정말로 '{{firstName}} {{lastName}}'을(를) 추가하시겠습니까?"
     },
     "custom": "사용자 정의",
     "delete": "삭제",

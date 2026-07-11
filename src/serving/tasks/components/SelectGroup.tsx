@@ -28,7 +28,7 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
     if (!term) {
       setSearchResults(groups);
     } else {
-      const result = groups.filter((g) => g.name.toLowerCase().indexOf(term) > -1);
+      const result = groups.filter((g) => (g.name || "").toLowerCase().indexOf(term) > -1);
       setSearchResults(result);
     }
   }, [searchText, groups]);
@@ -44,12 +44,12 @@ export const SelectGroup: React.FC<Props> = (props: Props) => {
     }
   };
 
-  const handleSearch = (e: React.MouseEvent) => {
+  const handleSearch = (e: React.MouseEvent | null) => {
     if (e !== null) e.preventDefault();
     const term = searchText.trim().toLowerCase();
     const result: GroupInterface[] = [];
     groups.forEach((g) => {
-      if (g.name.toLowerCase().indexOf(term) > -1) result.push(g);
+      if ((g.name || "").toLowerCase().indexOf(term) > -1) result.push(g);
     });
     setSearchResults(result);
   };

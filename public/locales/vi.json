@@ -337,7 +337,8 @@
         "firstName": "Please enter a first Tên.",
         "lastName": "Please enter a last Tên.",
         "validEmail": "Please enter a valid Email Địa chỉ."
-      }
+      },
+      "confirmDuplicate": "Một người dùng '{{existingName}}' ({{existingEmail}}) đã tồn tại với email này. Bạn có chắc chắn muốn thêm '{{firstName}} {{lastName}}' không?"
     },
     "custom": "Custom",
     "delete": "Xóa",

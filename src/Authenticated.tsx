@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Routes, Route, useNavigate, Navigate, Outlet } from "react-router-dom";
-import { Wrapper, ErrorBoundary } from "./components";
+import { Wrapper, ErrorBoundary, NotFound } from "./components";
 import { NotificationService, UserHelper } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 import { PageSkeleton } from "./components/ui/PageSkeleton";
@@ -68,7 +68,7 @@ const LoadingFallback: React.FC = () => <PageSkeleton />;
 export const Authenticated: React.FC = () => {
   const navigate = useNavigate();
 
-  const context = React.useContext(UserContext);
+  const context = React.useContext(UserContext)!;
 
   UserHelper.currentUserChurch = context.userChurch;
   UserHelper.userChurches = context.userChurches;
@@ -156,6 +156,7 @@ export const Authenticated: React.FC = () => {
           <Route path="/mobile/*" element={<Mobile />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/" element={<DashboardPage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
 
         <Route

@@ -10,7 +10,7 @@ interface Props {
 
 export const GuestRegistrationSettingsEdit: React.FC<Props> = (props) => {
   const [enabled, setEnabled] = React.useState<boolean>(false);
-  const [setting, setSetting] = React.useState<GenericSettingInterface>(null);
+  const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
 
   const save = () => {
     const s: GenericSettingInterface = setting === null

@@ -28,13 +28,13 @@ export const PlanItemEdit = (props: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setErrors([]);
     const pi = { ...planItem } as PlanItemInterface;
-    if (isNaN(pi.seconds)) pi.seconds = 0;
+    if (pi.seconds === undefined || isNaN(pi.seconds)) pi.seconds = 0;
     const value = e.target.value;
     switch (e.target.name) {
       case "label": pi.label = value; break;
       case "description": pi.description = value; break;
-      case "minutes": pi.seconds = parseInt(value) * 60 + (pi.seconds % 60); break;
-      case "seconds": pi.seconds = Math.floor(pi.seconds / 60) * 60 + parseInt(value); break;
+      case "minutes": pi.seconds = parseInt(value) * 60 + ((pi.seconds || 0) % 60); break;
+      case "seconds": pi.seconds = Math.floor((pi.seconds || 0) / 60) * 60 + parseInt(value); break;
     }
     setPlanItem(pi);
   };
@@ -132,6 +132,7 @@ export const PlanItemEdit = (props: Props) => {
   };
 
   const handleDelete = async () => {
+    if (!planItem) return;
     setIsDeleting(true);
     try {
       await ApiHelper.delete("/planItems/" + planItem.id, "DoingApi");
@@ -261,7 +262,7 @@ export const PlanItemEdit = (props: Props) => {
                   label={Locale.label("plans.planItemEdit.minutes")}
                   name="minutes"
                   type="number"
-                  value={Math.floor(planItem?.seconds / 60)}
+                  value={Math.floor((planItem?.seconds || 0) / 60)}
                   onChange={handleChange}
                   placeholder="5"
                   data-testid="plan-item-minutes-input"
@@ -274,7 +275,7 @@ export const PlanItemEdit = (props: Props) => {
                   label={Locale.label("plans.planItemEdit.seconds")}
                   name="seconds"
                   type="number"
-                  value={planItem?.seconds % 60}
+                  value={(planItem?.seconds || 0) % 60}
                   onChange={handleChange}
                   placeholder="30"
                   data-testid="plan-item-seconds-input"

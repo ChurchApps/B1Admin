@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { ApiHelper } from "@churchapps/apphelper";
+import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { type ApiListType } from "@churchapps/helpers";
+import { useConfirmDelete } from "../../hooks";
 
 export const toNum = (v: any) => (v === null || v === undefined || v === "" ? null : Number(v));
 
@@ -7,7 +9,7 @@ interface EditableRowListOptions<T> {
   loadUrl: string;
   saveUrl: string;
   deleteUrlPrefix: string;
-  api: string;
+  api: ApiListType;
   newRow: (current: T[]) => T;
   enabled?: boolean;
   sortBy?: keyof T;
@@ -19,6 +21,8 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
   const { loadUrl, saveUrl, deleteUrlPrefix, api, newRow, enabled = true, sortBy, filter, coerce } = options;
   const [rows, setRows] = useState<T[]>([]);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const load = () => {
     ApiHelper.get(loadUrl, api).then((data: T[]) => {
@@ -37,18 +41,29 @@ export function useEditableRowList<T extends { id?: string }>(options: EditableR
 
   const removeRow = async (i: number) => {
     const row = rows[i];
-    if (row.id) await ApiHelper.delete(`${deleteUrlPrefix}${row.id}`, api);
+    if (row.id) {
+      if (!(await confirm(Locale.label("registrations.commerce.removeConfirm")))) return;
+      await ApiHelper.delete(`${deleteUrlPrefix}${row.id}`, api);
+    }
     setRows((prev) => prev.filter((_, idx) => idx !== i));
   };
 
-  const save = async () => {
+  const save = async (): Promise<boolean> => {
     setSaving(true);
-    const kept = filter ? rows.filter(filter) : rows;
-    const payload = coerce ? kept.map(coerce) : kept;
-    if (payload.length > 0) await ApiHelper.post(saveUrl, payload, api);
-    setSaving(false);
-    load();
+    setError(null);
+    try {
+      const kept = filter ? rows.filter(filter) : rows;
+      const payload = coerce ? kept.map(coerce) : kept;
+      if (payload.length > 0) await ApiHelper.post(saveUrl, payload, api);
+      load();
+      return true;
+    } catch (e: any) {
+      setError(e?.message || Locale.label("common.saveError"));
+      return false;
+    } finally {
+      setSaving(false);
+    }
   };
 
-  return { rows, saving, update, addRow, removeRow, save };
+  return { rows, saving, error, update, addRow, removeRow, save, ConfirmDialogElement };
 }

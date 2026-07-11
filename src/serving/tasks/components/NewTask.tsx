@@ -27,7 +27,7 @@ export const NewTask = (props: Props) => {
   const [task, setTask] = React.useState<TaskInterface>(initialData);
   const [message, setMessage] = React.useState<MessageInterface>({});
   const [modalField, setModalField] = React.useState("");
-  const [errors, setErrors] = React.useState([]);
+  const [errors, setErrors] = React.useState<string[]>([]);
 
   const createTaskMutation = useMutation({
     mutationFn: async (taskData: { task: TaskInterface; message?: MessageInterface }) => {
@@ -85,7 +85,7 @@ export const NewTask = (props: Props) => {
     };
 
     if (type === "group") {
-      const groupMembers = await ApiHelper.get("/groupmembers?groupId=" + task.assignedToId.toString(), "MembershipApi");
+      const groupMembers = await ApiHelper.get("/groupmembers?groupId=" + task.assignedToId?.toString(), "MembershipApi");
       const ids = ArrayHelper.getIds(groupMembers, "personId");
       data.peopleIds = ids;
     }

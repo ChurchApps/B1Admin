@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const RequestedChanges = (props: Props) => {
-  const requestedChanges: { field: string; label: string; value: string }[] = JSON.parse(props.task?.data);
+  const requestedChanges: { field: string; label: string; value: string }[] = JSON.parse(props.task?.data || "[]");
   const navigate = useNavigate();
 
   const getFieldIcon = (field: string) => {

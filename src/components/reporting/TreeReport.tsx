@@ -11,13 +11,15 @@ interface Props {
 }
 
 export const TreeReport = (props: Props) => {
+  const groupings = props.output.groupings || [];
+
   const getPreviousGroupingCount = (depth: number) => {
     let result = 0;
-    for (let i = 0; i < depth; i++) result += props.output.groupings[i];
+    for (let i = 0; i < depth; i++) result += groupings[i];
     return result;
   };
 
-  const totalGroupings = getPreviousGroupingCount(props.output.groupings.length);
+  const totalGroupings = getPreviousGroupingCount(groupings.length);
 
   const getHeaders = () => {
     const result: React.ReactElement[] = [];
@@ -52,14 +54,14 @@ export const TreeReport = (props: Props) => {
   const getGroupingRows = (previousData: any, data: any) => {
     const result: React.ReactElement[] = [];
     const firstGroupModified = getFirstGroupModified(previousData, data);
-    for (let i = firstGroupModified; i <= props.output.groupings.length; i++) {
+    for (let i = firstGroupModified; i <= groupings.length; i++) {
       result.push(getGroupingRow(data, i));
     }
     return result;
   };
 
   const getGroupingRow = (row: any, groupNumber: number) => {
-    const g = props.output.groupings[groupNumber];
+    const g = groupings[groupNumber];
     const prevCols = getPreviousGroupingCount(groupNumber);
     const outputRow: React.ReactElement[] = [];
     for (let i = prevCols; i < prevCols + g; i++) {
@@ -85,8 +87,8 @@ export const TreeReport = (props: Props) => {
       }
     }
 
-    let firstGroupModified = props.output.groupings.length;
-    for (let i = props.output.groupings.length - 1; i >= 0; i--) {
+    let firstGroupModified = groupings.length;
+    for (let i = groupings.length - 1; i >= 0; i--) {
       const totalColumns = getPreviousGroupingCount(i);
       if (totalColumns >= firstColumnModified) firstGroupModified = i;
     }

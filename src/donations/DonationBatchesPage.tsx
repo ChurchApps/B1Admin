@@ -11,7 +11,7 @@ import { AppIconButton } from "../components/ui/AppIconButton";
 import { CardWithHeader, EmptyState, ExportButton, PageHeaderStats, SortableTableHead, HeaderPrimaryButton, hoverRowSx } from "../components/ui";
 import { useSortableData } from "../hooks";
 
-const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBatchInterface) => new Date(a.batchDate).getTime() - new Date(b.batchDate).getTime() };
+const batchComparators = { batchDate: (a: DonationBatchInterface, b: DonationBatchInterface) => new Date(a.batchDate || 0).getTime() - new Date(b.batchDate || 0).getTime() };
 
 export const DonationBatchesPage = () => {
   const [editBatchId, setEditBatchId] = React.useState("notset");
@@ -33,7 +33,7 @@ export const DonationBatchesPage = () => {
     e.preventDefault();
     const anchor = e.currentTarget as HTMLAnchorElement;
     const id = anchor.getAttribute("data-id");
-    setEditBatchId(id);
+    setEditBatchId(id || "");
   };
 
   const [stats, setStats] = React.useState({
@@ -119,7 +119,7 @@ export const DonationBatchesPage = () => {
           </TableCell>
           <TableCell align="right">
             <Typography variant="body2" sx={{ fontWeight: 600, color: "success.main" }}>
-              {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount, currency)}
+              {CurrencyHelper.formatCurrencyWithLocale(b.totalAmount || 0, currency)}
             </Typography>
           </TableCell>
           <TableCell align="right" className="rowActions">{editLink}</TableCell>

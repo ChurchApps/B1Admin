@@ -113,7 +113,13 @@ export const SendTextDialog: React.FC<Props> = (props) => {
       sendingLabel={Locale.label("groups.sendTextDialog.sending")}
     >
       {renderPreview()}
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error.includes("insufficient_credits")
+            ? <>{Locale.label("groups.sendTextDialog.insufficientCredits")} <a href="https://ministrystuff.org" target="_blank" rel="noopener noreferrer">{Locale.label("groups.sendTextDialog.insufficientCreditsLink")}</a></>
+            : error}
+        </Alert>
+      )}
       <TextField
         fullWidth
         multiline

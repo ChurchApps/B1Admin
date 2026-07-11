@@ -54,7 +54,7 @@ export function BlogPostEdit(props: Props) {
     if (e.length > 0) return;
     setIsSubmitting(true);
     try {
-      const slug = kebab(post.slug);
+      const slug = kebab(post.slug || "");
       const toSave: PostInterface = {
         ...post,
         slug,
@@ -78,7 +78,7 @@ export function BlogPostEdit(props: Props) {
             <TextField size="small" fullWidth label={Locale.label("site.blogEdit.title")} value={post.title || ""} onChange={(ev) => handleTitleChange(ev.target.value)} data-testid="blog-title-input" />
           </Grid>
           <Grid size={{ xs: 12 }}>
-            <TextField size="small" fullWidth label={Locale.label("site.blogEdit.slug")} value={post.slug || ""} onChange={(ev) => { setSlugTouched(true); setPost((p) => ({ ...p, slug: ev.target.value })); }} onBlur={() => setPost((p) => ({ ...p, slug: kebab(p.slug || "") }))} helperText={"/blog/" + (kebab(post.slug || "") || "…")} data-testid="blog-slug-input" />
+            <TextField size="small" fullWidth label={Locale.label("site.blogEdit.slugLabel")} value={post.slug || ""} onChange={(ev) => { setSlugTouched(true); setPost((p) => ({ ...p, slug: ev.target.value })); }} onBlur={() => setPost((p) => ({ ...p, slug: kebab(p.slug || "") }))} helperText={Locale.label("site.blogEdit.slugHelper") + " /blog/" + (kebab(post.slug || "") || "…")} data-testid="blog-slug-input" />
           </Grid>
           <Grid size={{ xs: 12 }}>
             <TextField size="small" fullWidth multiline minRows={2} label={Locale.label("site.blogEdit.excerpt")} value={post.excerpt || ""} onChange={(ev) => setPost((p) => ({ ...p, excerpt: ev.target.value }))} />

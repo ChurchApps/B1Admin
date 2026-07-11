@@ -14,7 +14,7 @@ type Props = {
 
 export function TestimonialEdit({ parsedData, handleChange, handleHtmlChange }: Props) {
   const quotes: Quote[] = Array.isArray(parsedData.quotes) ? parsedData.quotes : [];
-  const [pickIndex, setPickIndex] = useState<number>(null);
+  const [pickIndex, setPickIndex] = useState<number | null>(null);
 
   const updateQuote = (index: number, field: keyof Quote, value: string) => {
     const next = quotes.map((q, i) => (i === index ? { ...q, [field]: value } : q));

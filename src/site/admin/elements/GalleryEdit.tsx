@@ -14,7 +14,7 @@ type Props = {
 
 export function GalleryEdit({ parsedData, handleChange, handleHtmlChange }: Props) {
   const photos: Photo[] = Array.isArray(parsedData.photos) ? parsedData.photos : [];
-  const [pickIndex, setPickIndex] = useState<number>(null);
+  const [pickIndex, setPickIndex] = useState<number | null>(null);
 
   const updatePhoto = (index: number, field: keyof Photo, value: string) => {
     const next = photos.map((p, i) => (i === index ? { ...p, [field]: value } : p));

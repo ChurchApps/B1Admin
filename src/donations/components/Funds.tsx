@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Funds: React.FC = memo(() => {
-  const [editFund, setEditFund] = React.useState<FundInterface>(null);
+  const [editFund, setEditFund] = React.useState<FundInterface | null>(null);
 
   const funds = useQuery<FundInterface[]>({
     queryKey: ["/funds", "GivingApi"],

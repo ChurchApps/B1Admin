@@ -15,7 +15,7 @@ export const GroupMembersTab = (props: Props) => {
   const addPerson = (p: PersonInterface) => setAddedPerson(p);
 
   const handleAddedCallback = () => {
-    setAddedPerson(null);
+    setAddedPerson({} as PersonInterface);
   };
 
   return (

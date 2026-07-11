@@ -19,10 +19,10 @@ export const UserAdd = (props: Props) => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const [fetchedUser, setFetchedUser] = useState<UserInterface>(null);
-  const [errors, setErrors] = useState([]);
-  const [linkedPerson, setLinkedPerson] = useState<PersonInterface>(null);
-  const [selectedPerson, setSelectedPerson] = useState<PersonInterface>(null);
+  const [fetchedUser, setFetchedUser] = useState<UserInterface | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [linkedPerson, setLinkedPerson] = useState<PersonInterface | null>(null);
+  const [selectedPerson, setSelectedPerson] = useState<PersonInterface | null>(null);
   const [showEmailField, setShowEmailField] = useState<boolean>(false);
   const [showNameFields, setShowNameFields] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -43,10 +43,10 @@ export const UserAdd = (props: Props) => {
 
   const saveExistingUser = async () => {
     if (validate()) {
-      await ApiHelper.post(`/users/setDisplayName`, { firstName, lastName, userId: fetchedUser.id }, "MembershipApi");
+      await ApiHelper.post(`/users/setDisplayName`, { firstName, lastName, userId: fetchedUser?.id }, "MembershipApi");
       try {
-        await ApiHelper.post(`/users/updateEmail`, { email, userId: fetchedUser.id }, "MembershipApi");
-        const person = { ...linkedPerson };
+        await ApiHelper.post(`/users/updateEmail`, { email, userId: fetchedUser?.id }, "MembershipApi");
+        const person = { ...linkedPerson! };
         person.contactInfo.email = email;
         person.name.first = firstName;
         person.name.last = lastName;
@@ -61,8 +61,8 @@ export const UserAdd = (props: Props) => {
   const saveNewUser = async () => {
     if (validate()) {
       const user = await createUserAndToGroup(firstName, lastName, email);
-      const person = await createPerson(user.id);
-      await linkUserAndPerson(user.id, person.id);
+      const person = await createPerson(user.id || "");
+      await linkUserAndPerson(user.id || "", person.id || "");
       showInviteOrFinish(email, firstName);
     }
   };
@@ -74,10 +74,10 @@ export const UserAdd = (props: Props) => {
     }
     if (!selectedPerson) return;
     const { first, last } = selectedPerson.name;
-    const userEmail = showEmailField ? email : selectedPerson.contactInfo.email;
-    const user = await createUserAndToGroup(first, last, userEmail);
+    const userEmail = showEmailField ? email : (selectedPerson.contactInfo.email || "");
+    const user = await createUserAndToGroup(first || "", last || "", userEmail);
     try {
-      await linkUserAndPerson(user.id, selectedPerson.id);
+      await linkUserAndPerson(user.id || "", selectedPerson.id || "");
 
       if (showEmailField) {
         const person = { ...selectedPerson };
@@ -88,7 +88,7 @@ export const UserAdd = (props: Props) => {
       setErrors([Locale.label("settings.userAdd.errDiff")]);
     }
 
-    showInviteOrFinish(userEmail, first);
+    showInviteOrFinish(userEmail, first || "");
   };
 
   const handleSave = async () => {
@@ -153,14 +153,14 @@ export const UserAdd = (props: Props) => {
       // Auto-save when person with email is selected
       const { first, last } = person.name;
       const userEmail = person.contactInfo.email;
-      const user = await createUserAndToGroup(first, last, userEmail);
+      const user = await createUserAndToGroup(first || "", last || "", userEmail);
       try {
-        await linkUserAndPerson(user.id, person.id);
+        await linkUserAndPerson(user.id || "", person.id || "");
       } catch {
         setErrors([Locale.label("settings.userAdd.errDiff")]);
         return;
       }
-      showInviteOrFinish(userEmail, first);
+      showInviteOrFinish(userEmail, first || "");
     }
   };
 
@@ -180,9 +180,9 @@ export const UserAdd = (props: Props) => {
         setEditMode(true);
         const user: UserInterface = await ApiHelper.post("/users/loadOrCreate", { userId: props.selectedUser }, "MembershipApi");
         setFetchedUser(user);
-        setFirstName(user.firstName);
-        setLastName(user.lastName);
-        setEmail(user.email);
+        setFirstName(user.firstName || "");
+        setLastName(user.lastName || "");
+        setEmail(user.email || "");
         try {
           const userChurch: UserChurchInterface = await ApiHelper.get(`/userchurch/userid/${user.id}`, "MembershipApi");
           const person = await ApiHelper.get(`/people/${userChurch.personId}`, "MembershipApi");
@@ -217,10 +217,10 @@ export const UserAdd = (props: Props) => {
       <ErrorMessages errors={errors} />
       {(!showNameFields || editMode) && (
         <AssociatePerson
-          person={selectedPerson || linkedPerson}
+          person={(selectedPerson || linkedPerson) as PersonInterface}
           handleAssociatePerson={handleAssociatePerson}
           searchStatus={handleSearchStatus}
-          filterList={props.roleMembers.map((rm) => rm.personId)}
+          filterList={props.roleMembers.map((rm) => rm.personId || "")}
           onChangeClick={() => setShowEmailField(false)}
           showChangeOption={!editMode}
         />
@@ -233,7 +233,7 @@ export const UserAdd = (props: Props) => {
           open={showInviteDialog}
           personName={invitePersonName}
           personEmail={inviteEmail}
-          contextName={props.role.name}
+          contextName={props.role.name || ""}
           onClose={() => { setShowInviteDialog(false); props.updatedFunction(); }}
         />
       )}

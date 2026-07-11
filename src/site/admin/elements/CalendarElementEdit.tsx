@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
-  const [calendars, setCalendars] = useState<GroupInterface[] | CuratedCalendarInterface[]>(null);
+  const [calendars, setCalendars] = useState<GroupInterface[] | CuratedCalendarInterface[] | null>(null);
 
   const loadCalendars = () => {
     const apiCalls = () => {
@@ -33,7 +33,7 @@ export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
         </Select>
       </FormControl>
       <div style={{ marginTop: 15 }}>
-        {parsedData.calendarType && (<>{calendars?.length > 0 ? (<><FormControl fullWidth><InputLabel>{Locale.label("site.calendarElementEdit.selectCalendar")}</InputLabel><Select fullWidth size="small" label={Locale.label("site.calendarElementEdit.selectCalendar")} name="calendarId" onChange={handleChange} value={parsedData.calendarId || ""}>{calendars.map((calendar) => <MenuItem value={calendar.id}>{calendar.name}</MenuItem>)}</Select></FormControl></>) : (<Loading />)}</>)}
+        {parsedData.calendarType && (<>{calendars && calendars.length > 0 ? (<><FormControl fullWidth><InputLabel>{Locale.label("site.calendarElementEdit.selectCalendar")}</InputLabel><Select fullWidth size="small" label={Locale.label("site.calendarElementEdit.selectCalendar")} name="calendarId" onChange={handleChange} value={parsedData.calendarId || ""}>{calendars.map((calendar) => <MenuItem value={calendar.id}>{calendar.name}</MenuItem>)}</Select></FormControl></>) : (<Loading />)}</>)}
       </div>
     </>
   );

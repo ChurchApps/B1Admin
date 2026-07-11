@@ -337,7 +337,8 @@
         "firstName": "Prosím zadejte křestní jméno.",
         "lastName": "Prosím zadejte příjmení.",
         "validEmail": "Prosím zadejte platnou e-mailovou adresu."
-      }
+      },
+      "confirmDuplicate": "S tímto e-mailem byl nalezen existující uživatel '{{existingName}}' ({{existingEmail}}). Opravdu chcete přidat '{{firstName}} {{lastName}}'?"
     },
     "custom": "Vlastní",
     "delete": "Smazat",

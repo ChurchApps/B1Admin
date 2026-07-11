@@ -102,6 +102,21 @@ const NAMETAG_FIELDS = "person.displayName person.firstName person.lastName pers
 const PICKUP_FIELDS = ["children", "childrenAllergies", "securityCode", "date", "churchName"];
 const CANVAS_W = 560;
 
+const FIELD_LABEL_KEYS: Record<string, string> = {
+  "person.displayName": "attendance.labels.fieldDisplayName",
+  "person.firstName": "attendance.labels.fieldFirstName",
+  "person.lastName": "attendance.labels.fieldLastName",
+  "person.nickName": "attendance.labels.fieldNickName",
+  "person.nametagNotes": "attendance.labels.fieldNametagNotes",
+  sessions: "attendance.labels.fieldSessions",
+  securityCode: "attendance.labels.fieldSecurityCode",
+  date: "attendance.labels.fieldDate",
+  churchName: "attendance.labels.fieldChurchName",
+  children: "attendance.labels.fieldChildren",
+  childrenAllergies: "attendance.labels.fieldChildrenAllergies"
+};
+const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale.label(FIELD_LABEL_KEYS[f]) : f);
+
 type Props = { template: LabelTemplateInterface; updatedCallback: () => void };
 
 export function LabelEditor(props: Props) {
@@ -210,7 +225,7 @@ export function LabelEditor(props: Props) {
         {selected.type === "text" && <TextField fullWidth label={Locale.label("attendance.labels.text")} value={selected.text || ""} onChange={(e) => update({ text: e.target.value })} data-testid="prop-text" />}
         {selected.type === "field" && (
           <TextField fullWidth select label={Locale.label("attendance.labels.field")} value={selected.field || ""} onChange={(e) => update({ field: e.target.value })} data-testid="prop-field">
-            {fields.map((f) => <MenuItem key={f} value={f}>{f}</MenuItem>)}
+            {fields.map((f) => <MenuItem key={f} value={f}>{fieldLabel(f)}</MenuItem>)}
           </TextField>
         )}
         {(selected.type === "text" || selected.type === "field") && (
@@ -235,7 +250,7 @@ export function LabelEditor(props: Props) {
         )}
         {(selected.type === "barcode" || selected.type === "qrcode") && (
           <TextField fullWidth select label={Locale.label("attendance.labels.value")} value={selected.value || "securityCode"} onChange={(e) => update({ value: e.target.value })} data-testid="prop-value">
-            {fields.map((f) => <MenuItem key={f} value={f}>{f}</MenuItem>)}
+            {fields.map((f) => <MenuItem key={f} value={f}>{fieldLabel(f)}</MenuItem>)}
           </TextField>
         )}
         {selected.type === "box" && (
@@ -247,14 +262,14 @@ export function LabelEditor(props: Props) {
         <Divider />
         <TextField fullWidth select label={Locale.label("attendance.labels.condition")} value={selected.condition?.field || ""} onChange={(e) => setCondition(e.target.value)} data-testid="prop-cond-field">
           <MenuItem value="">{Locale.label("attendance.labels.always")}</MenuItem>
-          {fields.map((f) => <MenuItem key={f} value={f}>{f}</MenuItem>)}
+          {fields.map((f) => <MenuItem key={f} value={f}>{fieldLabel(f)}</MenuItem>)}
         </TextField>
         {selected.condition && (
           <TextField fullWidth select label={Locale.label("attendance.labels.operator")} value={selected.condition.operator} onChange={(e) => update({ condition: { ...selected.condition!, operator: e.target.value } })} data-testid="prop-cond-operator">
-            <MenuItem value="notEmpty">{Locale.label("attendance.labels.notEmpty")}</MenuItem>
-            <MenuItem value="empty">{Locale.label("attendance.labels.empty")}</MenuItem>
-            <MenuItem value="equals">{Locale.label("attendance.labels.equals")}</MenuItem>
-            <MenuItem value="notEquals">{Locale.label("attendance.labels.notEquals")}</MenuItem>
+            <MenuItem value="notEmpty">{Locale.label("attendance.labels.opIsNotBlank")}</MenuItem>
+            <MenuItem value="empty">{Locale.label("attendance.labels.opIsBlank")}</MenuItem>
+            <MenuItem value="equals">{Locale.label("attendance.labels.opEquals")}</MenuItem>
+            <MenuItem value="notEquals">{Locale.label("attendance.labels.opDoesNotEqual")}</MenuItem>
           </TextField>
         )}
         {selected.condition && (selected.condition.operator === "equals" || selected.condition.operator === "notEquals") && (
@@ -272,7 +287,7 @@ export function LabelEditor(props: Props) {
       <Grid size={{ xs: 12, md: 2 }}>
         <CardWithHeader title={Locale.label("attendance.labels.palette")} icon={<Icon sx={{ color: "primary.main" }}>widgets</Icon>}>
           <Stack spacing={1}>
-            {fields.map((f) => paletteButton(f, f))}
+            {fields.map((f) => paletteButton(f, fieldLabel(f)))}
             <Divider />
             {paletteButton("text", Locale.label("attendance.labels.text"))}
             {paletteButton("barcode", Locale.label("attendance.labels.barcode"))}

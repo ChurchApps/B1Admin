@@ -155,15 +155,28 @@ export const PeoplePage = memo(() => {
   const handleToggleColumn = (key: string) => {
     const sc = [...selectedColumns];
     const index = sc.indexOf(key);
-    if (index === -1) sc.push(key);
-    else sc.splice(index, 1);
+    if (index === -1) {
+      sc.push(key);
+    } else {
+      if (sc.length === 1) {
+        if (key !== "displayName") {
+          sc.splice(index, 1);
+          sc.push("displayName");
+        } else {
+          return;
+        }
+      } else {
+        sc.splice(index, 1);
+      }
+    }
     localStorage.setItem("selectedColumns", JSON.stringify(sc));
     setSelectedColumns(sc);
   };
 
   React.useEffect(() => {
-    if (localStorage.getItem("selectedColumns")) {
-      setSelectedColumns(JSON.parse(localStorage.getItem("selectedColumns")));
+    const stored = localStorage.getItem("selectedColumns");
+    if (stored) {
+      setSelectedColumns(JSON.parse(stored));
     } else {
       localStorage.setItem("selectedColumns", JSON.stringify(["photo", "displayName"]));
     }
@@ -212,7 +225,7 @@ export const PeoplePage = memo(() => {
       });
     } else {
       // New ref on re-select to re-seed advanced panel.
-      setSaveableCriteria(conditions);
+      setSaveableCriteria(conditions ?? null);
       setSelectedListFilters({ ...conditions });
     }
   }, []);
@@ -454,7 +467,7 @@ export const PeoplePage = memo(() => {
               </Box>
               <Box>
                 <PeopleSearchResults
-                  people={searchResults}
+                  people={searchResults || []}
                   columns={columns}
                   selectedColumns={selectedColumns}
                   updateSearchResults={(people) => setSearchResults(people)}

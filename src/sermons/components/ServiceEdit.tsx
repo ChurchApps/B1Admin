@@ -45,7 +45,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const { control, register, handleSubmit, watch, reset } = useForm<AnyRecord>({
     defaultValues: {
       serviceLabel: props.currentService?.label ?? "",
-      serviceTime: DateHelper.formatHtml5DateTime(props.currentService?.serviceTime) ?? "",
+      serviceTime: DateHelper.formatHtml5DateTime(props.currentService?.serviceTime as Date) ?? "",
       chatBefore: props.currentService?.chatBefore ? props.currentService.chatBefore / 60 : "",
       chatAfter: props.currentService?.chatAfter ? props.currentService.chatAfter / 60 : "",
       earlyStart: props.currentService?.earlyStart ? props.currentService.earlyStart / 60 : "",
@@ -62,11 +62,11 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   const summaryErrors = useErrorSummary(errors, ["serviceLabel", "serviceTime"]);
 
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentService?.id)) return handleDelete; else return undefined; };
-  const handleCancel = () => { props.updatedFunction(); };
+  const handleCancel = () => { props.updatedFunction?.(); };
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("sermons.liveStreamTimes.serviceEdit.deleteConfirm"))) {
-      ApiHelper.delete("/streamingServices/" + props.currentService.id, "ContentApi").then(() => { props.updatedFunction(); });
+      ApiHelper.delete("/streamingServices/" + props.currentService.id, "ContentApi").then(() => { props.updatedFunction?.(); });
     }
   };
 
@@ -136,11 +136,11 @@ export const ServiceEdit: React.FC<Props> = (props) => {
 
   const getSermons = () => {
     const result: React.ReactElement[] = [];
-    sermonsQuery.data.forEach(sermon => {
+    (sermonsQuery.data || []).forEach(sermon => {
       if (sermon.permanentUrl) result.push(<MenuItem key={sermon.id} value={sermon.id}>{sermon.title}</MenuItem>);
     });
     result.push(<Divider key="divider" />);
-    sermonsQuery.data.forEach(sermon => {
+    (sermonsQuery.data || []).forEach(sermon => {
       if (!sermon.permanentUrl) result.push(<MenuItem key={sermon.id} value={sermon.id}>{sermon.title}</MenuItem>);
     });
     return result;
@@ -149,7 +149,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   React.useEffect(() => {
     reset({
       serviceLabel: props.currentService?.label ?? "",
-      serviceTime: DateHelper.formatHtml5DateTime(props.currentService?.serviceTime) ?? "",
+      serviceTime: DateHelper.formatHtml5DateTime(props.currentService?.serviceTime as Date) ?? "",
       chatBefore: props.currentService?.chatBefore ? props.currentService.chatBefore / 60 : "",
       chatAfter: props.currentService?.chatAfter ? props.currentService.chatAfter / 60 : "",
       earlyStart: props.currentService?.earlyStart ? props.currentService.earlyStart / 60 : "",

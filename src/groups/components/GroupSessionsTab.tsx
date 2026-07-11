@@ -14,18 +14,18 @@ interface Props {
 }
 
 export const GroupSessionsTab = (props: Props) => {
-  const [addedPerson, setAddedPerson] = React.useState({} as PersonInterface);
+  const [addedPerson, setAddedPerson] = React.useState<PersonInterface | undefined>({} as PersonInterface);
   const [addedSession, setAddedSession] = React.useState({} as SessionInterface);
   const [addSessionVisible, setAddSessionVisible] = React.useState(false);
   const [editSessionVisible, setEditSessionVisible] = React.useState(false);
-  const [editingSession, setEditingSession] = React.useState<SessionInterface>(null);
+  const [editingSession, setEditingSession] = React.useState<SessionInterface | null>(null);
   const [selectedSession, setSelectedSession] = React.useState<SessionInterface | null>(null);
   const [hiddenPeople, setHiddenPeople] = React.useState([] as string[]);
 
   const addPerson = React.useCallback((p: PersonInterface) => setAddedPerson(p), []);
 
   const handleAddedCallback = React.useCallback(() => {
-    setAddedPerson(null);
+    setAddedPerson(undefined);
   }, []);
 
   const handleSessionEdit = React.useCallback((session: SessionInterface) => {
@@ -34,14 +34,14 @@ export const GroupSessionsTab = (props: Props) => {
     setAddSessionVisible(false);
   }, []);
 
-  const handleSessionUpdated = React.useCallback((session: SessionInterface) => {
+  const handleSessionUpdated = React.useCallback((session: SessionInterface | null) => {
     setAddedSession(session ? ({ ...session, _updateTimestamp: Date.now() } as SessionInterface) : ({} as SessionInterface));
     setEditSessionVisible(false);
     setEditingSession(null);
   }, []);
 
-  const handleSessionAdd = React.useCallback((session: SessionInterface) => {
-    setAddedSession(session);
+  const handleSessionAdd = React.useCallback((session: SessionInterface | null) => {
+    setAddedSession(session || ({} as SessionInterface));
     setAddSessionVisible(false);
   }, []);
 

@@ -81,7 +81,7 @@ export const PraiseChartsProducts = (props: Props) => {
 
     window.addEventListener("message", async (event) => {
       if (event.origin !== window.location.origin) return;
-      popup.close();
+      popup?.close();
       loadData();
     });
   };

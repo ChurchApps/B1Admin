@@ -87,17 +87,17 @@ type Props = {
 
 export function ElementEdit(props: Props) {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
-  const [blocks, setBlocks] = useState<BlockInterface[]>(null);
+  const [blocks, setBlocks] = useState<BlockInterface[] | null>(null);
   const [groupLabelOptions, setGroupLabelOptions] = useState<string[]>([]);
   const [groupCategoryOptions, setGroupCategoryOptions] = useState<string[]>([]);
-  const [selectPhotoField, setSelectPhotoField] = React.useState<string>(null);
+  const [selectPhotoField, setSelectPhotoField] = React.useState<string | null>(null);
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [playlists, setPlaylists] = useState<any[]>([]);
   const [funds, setFunds] = useState<any[]>([]);
   const [staffGroups, setStaffGroups] = useState<any[]>([]);
-  const [element, setElement] = useState<ElementInterface>(null);
-  const [errors, setErrors] = useState([]);
-  const [innerErrors, setInnerErrors] = useState([]);
+  const [element, setElement] = useState<ElementInterface | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [innerErrors, setInnerErrors] = useState<string[]>([]);
   // Hoisted null-safe view of element: the compiler merges optional member deps
   // (element?.answersJSON) into non-optional guard reads that crash while element is null.
   const el: ElementInterface = element || ({} as ElementInterface);
@@ -108,7 +108,7 @@ export function ElementEdit(props: Props) {
   const normalizedHtmlFieldsRef = React.useRef<Set<string>>(new Set());
   const dirtyRef = React.useRef(false);
 
-  const reportDirty = (el: ElementInterface) => {
+  const reportDirty = (el: ElementInterface | null) => {
     const b = baselineRef.current;
     if (!b || !el) return;
     const dirty = (el.answersJSON || null) !== (b.answersJSON || null)
@@ -190,7 +190,7 @@ export function ElementEdit(props: Props) {
   const handleStyleChange = (styles: InlineStylesInterface) => {
     const p = { ...element };
     p.styles = styles;
-    p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : null;
+    p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : undefined;
 
     setElement(p);
     props.onRealtimeChange(p);
@@ -199,7 +199,7 @@ export function ElementEdit(props: Props) {
   const handleAnimationChange = (animations: AnimationsInterface) => {
     const p = { ...element };
     p.animations = animations;
-    p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : null;
+    p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : undefined;
 
     setElement(p);
     props.onRealtimeChange(p);
@@ -257,7 +257,7 @@ export function ElementEdit(props: Props) {
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("site.elements.confirmDelete"))) {
-      trackSave(ApiHelper.delete("/elements/" + el.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
+      trackSave(ApiHelper.delete("/elements/" + el.id?.toString(), "ContentApi")).then(() => props.updatedCallback(null as unknown as ElementInterface));
     }
   };
 
@@ -954,7 +954,7 @@ export function ElementEdit(props: Props) {
 
   const handlePhotoSelected = (image: string) => {
     const p = { ...element };
-    parsedData[selectPhotoField] = image;
+    parsedData[selectPhotoField || ""] = image;
     p.answersJSON = JSON.stringify(parsedData);
     setElement(p);
     setSelectPhotoField(null);
@@ -1025,7 +1025,7 @@ export function ElementEdit(props: Props) {
   // Auto-save elements that have no settings to edit
   useEffect(() => {
     const elementHasNoSettings = (_elementType: string): boolean => false;
-    if (element && !el.id && elementHasNoSettings(el.elementType)) {
+    if (element && !el.id && elementHasNoSettings(el.elementType || "")) {
       handleSave();
     }
   }, [element]);
@@ -1067,7 +1067,7 @@ export function ElementEdit(props: Props) {
   const groupTitleSx = { fontWeight: 600, fontSize: "0.9rem" };
 
   const getStandardFields = () => {
-    const appearanceFields = APPEARANCE_FIELDS[element?.elementType];
+    const appearanceFields = APPEARANCE_FIELDS[element?.elementType || ""];
     return (
       <>
         <ErrorMessages errors={errors} />

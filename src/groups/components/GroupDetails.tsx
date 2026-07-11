@@ -22,7 +22,7 @@ export const GroupDetails = memo((props: Props) => {
 
   React.useEffect(() => setGroup(props.group), [props.group]);
 
-  const handlePhotoUpdated = (dataUrl: string) => {
+  const handlePhotoUpdated = (dataUrl?: string) => {
     const updatedGroup = { ...group };
     updatedGroup.photoUrl = dataUrl;
     setGroup(updatedGroup);
@@ -36,14 +36,14 @@ export const GroupDetails = memo((props: Props) => {
     }
   };
 
-  const imageEditor = inPhotoEditMode && <ImageEditor aspectRatio={16 / 9} photoUrl={group.photoUrl} onCancel={() => togglePhotoEditor(false)} onUpdate={handlePhotoUpdated} />;
+  const imageEditor = inPhotoEditMode && <ImageEditor aspectRatio={16 / 9} photoUrl={group.photoUrl || ""} onCancel={() => togglePhotoEditor(false)} onUpdate={handlePhotoUpdated} />;
 
   const handleUpdated = () => {
     setEditMode("display");
     props.loadData();
   };
 
-  const isStandard = useMemo(() => group?.tags?.indexOf("standard") > -1, [group?.tags]);
+  const isStandard = useMemo(() => (group?.tags?.indexOf("standard") ?? -1) > -1, [group?.tags]);
 
   const labelChips = useMemo(
     () => group?.labelArray?.map((label, index) => <Chip key={`${group.id}-${label}-${index}`} label={label} variant="outlined" size="medium" sx={{ mr: 1, mb: 1 }} />) || [],

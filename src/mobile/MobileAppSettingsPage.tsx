@@ -42,7 +42,7 @@ const buildNewTab = (linkType = "url", linkData = ""): LinkInterface => {
 
 export const MobileAppSettingsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedTab, setSelectedTab] = useState<LinkInterface>(() => {
+  const [selectedTab, setSelectedTab] = useState<LinkInterface | null>(() => {
     if (!UserHelper.currentUserChurch) return null;
     const linkType = searchParams.get("linkType");
     if (!linkType) return null;

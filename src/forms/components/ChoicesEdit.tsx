@@ -24,9 +24,9 @@ export const ChoicesEdit: React.FC<Props> = (props) => {
   const handleRemove = (e: React.MouseEvent) => {
     e.preventDefault();
     const anchor = e.currentTarget as HTMLAnchorElement;
-    const idx = parseInt(anchor.getAttribute("data-index"));
+    const idx = parseInt(anchor.getAttribute("data-index") || "");
     const q = { ...props.question };
-    q.choices.splice(idx, 1);
+    q.choices?.splice(idx, 1);
     props.updatedFunction(q);
   };
 

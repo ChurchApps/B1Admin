@@ -287,7 +287,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
           label: Locale.label("person.campus"),
           type: "select",
           operators: ["equals", "notEquals"],
-          options: membershipCampuses.map((c) => ({ value: c.id, label: c.name }))
+          options: membershipCampuses.map((c) => ({ value: c.id || "", label: c.name || "" }))
         }
       ],
       activity: [],
@@ -330,7 +330,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
             return {
               key: `customField_${q.id}`,
-              label: q.title,
+              label: q.title || "",
               type,
               operators,
               options
@@ -347,7 +347,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         label: Locale.label("people.editCondition.groupMem"),
         type: "select",
         operators: ["in", "notIn"],
-        options: groups.map((g) => ({ value: g.id, label: g.name }))
+        options: groups.map((g) => ({ value: g.id || "", label: g.name || "" }))
       });
     }
 

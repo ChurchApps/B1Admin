@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { dismissSendInviteIfPresent, editIconButton, recoverFromViteError } from "./helpers/fixtures";
+import { dismissSendInviteIfPresent, editIconButton, recoverFromViteError, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -270,6 +270,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const deleteBtn = page.locator("button").getByText("Delete");
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      await confirmDelete(page);
       await expect(time).toHaveCount(0, { timeout: 10000 });
     });
   });
@@ -515,6 +516,7 @@ test.describe.serial("Serving Management - Lessons", () => {
       const deleteBtn = page.locator("button").getByText("Delete");
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      await confirmDelete(page);
       await expect(assignment).toHaveCount(0, { timeout: 10000 });
     });
 

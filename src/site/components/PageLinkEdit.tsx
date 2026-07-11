@@ -49,7 +49,7 @@ export function PageLinkEdit(props: Props) {
       return;
     }
 
-    let pageData = props.page ? { ...props.page, title: values.title, url: values.url, layout: values.layout, visibility: values.visibility, metaDescription: values.metaDescription || null, groupIds: values.visibility === "groups" ? (groupIdsJson || null) : null } : null;
+    let pageData = (props.page ? { ...props.page, title: values.title, url: values.url, layout: values.layout, visibility: values.visibility, metaDescription: values.metaDescription || null, groupIds: values.visibility === "groups" ? (groupIdsJson || null) : null } : null) as PageInterface | null;
     let linkData = props.link ? { ...props.link, text: values.linkText, url: values.linkUrl || values.url } : null;
 
     if (pageData) { [pageData] = await ApiHelper.post("/pages", [pageData], "ContentApi"); }
@@ -229,7 +229,7 @@ export function PageLinkEdit(props: Props) {
               <Typography variant="subtitle2" sx={{ mb: 1 }}>{Locale.label("site.pageLinkEdit.selectGroups")}</Typography>
               <FormGroup>
                 {groups.map((group) => (
-                  <FormControlLabel key={group.id} control={<Checkbox checked={getSelectedGroupIds().includes(group.id)} onChange={(ev) => handleGroupChange(group.id, ev.target.checked)} />} label={group.name} />
+                  <FormControlLabel key={group.id} control={<Checkbox checked={getSelectedGroupIds().includes(group.id || "")} onChange={(ev) => handleGroupChange(group.id || "", ev.target.checked)} />} label={group.name} />
                 ))}
               </FormGroup>
               {groups.length === 0 && <Typography variant="body2" color="text.secondary">{Locale.label("site.pageLinkEdit.noGroupsFound")}</Typography>}

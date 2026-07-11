@@ -1,6 +1,6 @@
 import { test, expect, request as pwRequest, type APIRequestContext, type Page } from "@playwright/test";
 import { login } from "./helpers/auth";
-import { editIconButton, openKnownPerson, SEED_PEOPLE } from "./helpers/fixtures";
+import { confirmDelete, editIconButton, openKnownPerson, SEED_PEOPLE } from "./helpers/fixtures";
 import { STORAGE_STATE_PATH } from "./global-setup";
 
 // Phase 3 — Check-Ins child safety (B1Admin side). Covers the Check-In Capacity
@@ -126,6 +126,7 @@ test.describe.serial("Check-Ins child safety", () => {
       const row = page.locator('[data-testid="pickup-row"]').filter({ hasText: name });
       const del = page.waitForResponse((r) => r.url().includes("/householdpickup") && r.request().method() === "DELETE");
       await row.locator('[data-testid="pickup-delete-button"]').click();
+      await confirmDelete(page);
       await del;
       await expect(row).toHaveCount(0, { timeout: 10000 });
     }

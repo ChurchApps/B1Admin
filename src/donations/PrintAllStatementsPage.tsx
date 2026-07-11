@@ -153,7 +153,7 @@ export const PrintAllStatementsPage = () => {
           key={person.id}
           labelPrefix="donations.printAllStatementsPage"
           person={person}
-          church={context.userChurch?.church}
+          church={context?.userChurch?.church}
           year={currYear}
           currency={currency}
           totalContributions={getTotalContributions(person.id!)}

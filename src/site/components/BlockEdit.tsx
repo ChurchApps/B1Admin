@@ -8,7 +8,7 @@ import type { BlockInterface } from "../../helpers";
 
 type Props = {
   block: BlockInterface;
-  updatedCallback: (block: BlockInterface) => void;
+  updatedCallback: (block: BlockInterface | null) => void;
 };
 
 type AnyRecord = Record<string, any>;
@@ -39,7 +39,7 @@ export function BlockEdit(props: Props) {
       return;
     }
     if (await confirm(Locale.label("site.blocks.confirmDelete"))) {
-      ApiHelper.delete("/blocks/" + props.block.id.toString(), "ContentApi").then(() => props.updatedCallback(null));
+      ApiHelper.delete("/blocks/" + props.block.id!.toString(), "ContentApi").then(() => props.updatedCallback(null));
     }
   };
 

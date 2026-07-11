@@ -7,6 +7,7 @@ import { PhotoCamera as PhotoCameraIcon } from "@mui/icons-material";
 import { GalleryModal } from "../../components/gallery";
 import { PersonAdd } from "./PersonAdd";
 import { AppIconButton } from "../../components/ui/AppIconButton";
+import { useConfirmDelete } from "../../hooks";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 
 interface PickupInterface {
@@ -34,6 +35,7 @@ export const PickupPeople: React.FC<Props> = (props) => {
   const [status, setStatus] = React.useState<"trusted" | "notAuthorized">("trusted");
   const [photoUrl, setPhotoUrl] = React.useState("");
   const [showGallery, setShowGallery] = React.useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const peopleQuery = useQuery<PickupInterface[]>({
     queryKey: ["/householdpickup/" + householdId, "MembershipApi"],
@@ -63,8 +65,9 @@ export const PickupPeople: React.FC<Props> = (props) => {
 
   const toggleStatus = (row: PickupInterface) => save({ ...row, status: row.status === "trusted" ? "notAuthorized" : "trusted" });
 
-  const handleDelete = (row: PickupInterface) => {
+  const handleDelete = async (row: PickupInterface) => {
     if (!row.id) return;
+    if (!(await confirm(Locale.label("people.pickup.confirmDelete") || "Are you sure you want to remove this pickup person?"))) return;
     ApiHelper.delete("/householdpickup/" + row.id, "MembershipApi").then(() => peopleQuery.refetch());
   };
 
@@ -95,7 +98,7 @@ export const PickupPeople: React.FC<Props> = (props) => {
 
   const addForm = adding && (
     <Box sx={{ mt: 2, p: 2, backgroundColor: "grey.50", borderRadius: 1 }}>
-      <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handleAddPerson} />
+      <PersonAdd getPhotoUrl={PersonHelper.getPhotoUrl} addFunction={handleAddPerson} showCreatePersonOnNotFound={true} />
       <Typography variant="body2" color="text.secondary" sx={{ my: 1 }}>{Locale.label("people.pickup.orAddByName")}</Typography>
       <Stack spacing={2}>
         <TextField fullWidth size="small" label={Locale.label("people.pickup.name")} value={name} onChange={(e) => setName(e.target.value)} data-testid="pickup-name-input" />
@@ -123,6 +126,7 @@ export const PickupPeople: React.FC<Props> = (props) => {
 
   return (
     <>
+      {ConfirmDialogElement}
       {showGallery && <GalleryModal aspectRatio={1} onSelect={(url) => { setPhotoUrl(url); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
       <DisplayBox id="pickupBox" headerIcon="verified_user" headerText={Locale.label("people.pickup.title")} editContent={editContent} data-testid="pickup-box">
         {people.length === 0 && !adding && <Typography variant="body2" color="text.secondary">{Locale.label("people.pickup.none")}</Typography>}

@@ -77,13 +77,13 @@ export function CuratedEventCalendar(props: Props) {
 
   props.events.forEach((event) => {
     const ev = { ...event };
-    ev.start = new Date(ev.start);
-    ev.end = new Date(ev.end);
+    ev.start = new Date(ev.start!);
+    ev.end = new Date(ev.end!);
     if (ev.recurrenceRule) {
       const dates = EventHelper.getRange(ev, startRange, endRange);
       dates.forEach((date: any) => {
         const evt = { ...event };
-        const diff = new Date(evt.end).getTime() - new Date(evt.start).getTime();
+        const diff = new Date(evt.end!).getTime() - new Date(evt.start!).getTime();
         evt.start = date;
         evt.end = new Date(date.getTime() + diff);
         expandedEvents.push(evt);
@@ -96,7 +96,7 @@ export function CuratedEventCalendar(props: Props) {
 
   return (
     <div data-testid={props["data-testid"]}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" marginBottom="17px" marginTop="12px">
+      <Stack className="no-print" direction="row" justifyContent="space-between" alignItems="center" marginBottom="17px" marginTop="12px">
         <div>
           <Button
             startIcon={<LinkIcon />}
@@ -140,7 +140,7 @@ export function CuratedEventCalendar(props: Props) {
         onSelectEvent={handleEventClick}
       />
       {open && props.mode === "edit" && (
-        <EditCalendarEventModal onDone={handleDone} churchId={props.churchId} curatedCalendarId={props.curatedCalendarId} />
+        <EditCalendarEventModal onDone={handleDone} churchId={props.churchId || ""} curatedCalendarId={props.curatedCalendarId || ""} />
       )}
       {displayCalendarEvent && (
         <DisplayCalendarEventModal event={displayCalendarEvent} curatedCalendarId={props.curatedCalendarId} mode={props.mode} onDone={handleDone} />

@@ -5,6 +5,7 @@ import { Save as SaveIcon, Cancel as CancelIcon, Delete as DeleteIcon, Person as
 import { ContentPicker } from "../../components/ContentPicker";
 import { WorkflowStepRouting } from "./WorkflowStepRouting";
 import { WorkflowStepActions } from "./WorkflowStepActions";
+import { useConfirmDelete } from "../../../../hooks";
 import { type WorkflowStepInterface, type WorkflowInterface } from "@churchapps/helpers";
 import "../types";
 
@@ -13,22 +14,32 @@ interface Props {
   steps?: WorkflowStepInterface[];
   workflows?: WorkflowInterface[];
   onCancel: () => void;
-  onSave: () => void;
+  onSave: (keepOpen?: boolean) => void;
   onDelete?: () => void;
 }
 
 export const WorkflowStepEdit = (props: Props) => {
   const [step, setStep] = React.useState<WorkflowStepInterface>(props.step);
   const [showPicker, setShowPicker] = React.useState(false);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => { setStep(props.step); }, [props.step]);
 
   const handleSave = async () => {
-    await ApiHelper.post("/workflowSteps", [step], "DoingApi");
-    props.onSave();
+    const isNew = !step.id;
+    const result = await ApiHelper.post("/workflowSteps", [step], "DoingApi");
+    // A brand-new step needs an id before its actions editor can appear; keep the
+    // editor open on the now-saved record instead of forcing a save/close/reopen.
+    if (isNew && result?.[0]?.id) {
+      setStep(result[0]);
+      props.onSave(true);
+    } else {
+      props.onSave();
+    }
   };
 
   const handleDelete = async () => {
+    if (!(await confirm(Locale.label("tasks.workflowStepEdit.confirmDelete") || "Are you sure you want to delete this step?"))) return;
     await ApiHelper.delete("/workflowSteps/" + step.id, "DoingApi");
     props.onDelete?.();
   };
@@ -44,6 +55,7 @@ export const WorkflowStepEdit = (props: Props) => {
 
   return (
     <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+      {ConfirmDialogElement}
       <CardContent>
         <Stack spacing={2}>
           <Typography variant="h6" sx={{ fontWeight: 600, color: "primary.main" }}>{Locale.label("tasks.workflowStepEdit.editStep")}</Typography>

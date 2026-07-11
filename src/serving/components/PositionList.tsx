@@ -60,7 +60,7 @@ export const PositionList = (props: Props) => {
         return (
           <button
             type="button"
-            onClick={() => props.onAssignmentSelect(position, assignment || { positionId: position.id })}
+            onClick={() => props.onAssignmentSelect?.(position, assignment || { positionId: position.id })}
             style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}>
             {wrappedImage}
             {personName}
@@ -81,13 +81,13 @@ export const PositionList = (props: Props) => {
     const assignments = ArrayHelper.getAll(props.assignments || [], "positionId", position.id);
     const result: JSX.Element[] = [];
     assignments.forEach((assignment) => result.push(<div key={assignment.id} style={{ margin: "2px 0" }}>{getPersonLink(assignment, position)}</div>));
-    const remaining = position.count - assignments.length;
+    const remaining = (position.count ?? 0) - assignments.length;
     if (remaining > 0 && canEdit) {
       const label = remaining === 1 ? Locale.label("plans.positionList.persNeed") : remaining.toString() + Locale.label("plans.positionList.pplNeed");
       result.push(
         <button
           type="button"
-          onClick={() => props.onAssignmentSelect(position, { positionId: position.id })}
+          onClick={() => props.onAssignmentSelect?.(position, { positionId: position.id })}
           style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
           {label}
         </button>
@@ -107,7 +107,7 @@ export const PositionList = (props: Props) => {
           {canEdit ? (
             <button
               type="button"
-              onClick={() => props.onSelect(position)}
+              onClick={() => props.onSelect?.(position)}
               style={{ background: "none", border: 0, padding: 0, color: "var(--link)", cursor: "pointer" }}>
               {position.name}
               {group && <span style={{ color: "var(--text-muted)", marginLeft: "8px" }}>({group.name})</span>}
@@ -133,7 +133,7 @@ export const PositionList = (props: Props) => {
       const position = props.positions[i];
       if (position.categoryName !== lastCategory) {
         colorIndex++;
-        lastCategory = position.categoryName;
+        lastCategory = position.categoryName || "";
         result.push(getPositionRow(position, colorList[colorIndex], true));
       } else result.push(getPositionRow(position, colorList[colorIndex], false));
     }

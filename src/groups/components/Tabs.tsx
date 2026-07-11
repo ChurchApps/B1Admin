@@ -41,8 +41,8 @@ export const Tabs: React.FC<Props> = (props) => {
           <GroupSessions
             group={props.group}
             sidebarVisibilityFunction={props.sidebarVisibilityFunction}
-            addedSession={props.addedSession}
-            addedPerson={props.addedPerson}
+            addedSession={props.addedSession || ({} as SessionInterface)}
+            addedPerson={props.addedPerson || ({} as PersonInterface)}
             addedCallback={props.addedCallback}
           />
         ),

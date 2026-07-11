@@ -8,7 +8,7 @@ import { useConfirmDelete } from "../../../hooks";
 
 interface Props {
   arrangement: ArrangementInterface;
-  onSave: (arrangement: ArrangementInterface) => void;
+  onSave: (arrangement: ArrangementInterface | null) => void;
   onCancel: () => void;
 }
 

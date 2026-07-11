@@ -337,7 +337,8 @@
         "firstName": "Indtast venligst et fornavn.",
         "lastName": "Indtast venligst et efternavn.",
         "validEmail": "Indtast venligst en gyldig e-mailadresse."
-      }
+      },
+      "confirmDuplicate": "Der blev fundet en eksisterende person '{{existingName}}' ({{existingEmail}}) med denne e-mail. Er du sikker på, at du vil tilføje '{{firstName}} {{lastName}}'?"
     },
     "custom": "Tilpasset",
     "delete": "Slet",

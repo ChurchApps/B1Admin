@@ -4,6 +4,7 @@ import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Se
 import { type GroupInterface, type PositionInterface } from "@churchapps/helpers";
 import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
+import { useConfirmDelete } from "../../hooks";
 import ReactSelect from "react-select";
 
 interface Props {
@@ -26,6 +27,7 @@ export const PositionEdit = (props: Props) => {
   const [categoryInput, setCategoryInput] = React.useState("");
   const [allowSelfSignup, setAllowSelfSignup] = React.useState<boolean>(props.position?.allowSelfSignup ?? false);
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const { control, register, handleSubmit, setValue, watch } = useForm<AnyRecord>({
     defaultValues: {
@@ -52,8 +54,8 @@ export const PositionEdit = (props: Props) => {
     ? categoryOptions[0]
     : { value: watchedCategory, label: watchedCategory };
 
-  const handleCategoryChange = (newValue: { label: string; value: string }) => {
-    setValue("categoryName", newValue.value, { shouldValidate: true });
+  const handleCategoryChange = (newValue: OptionType | null) => {
+    setValue("categoryName", newValue?.value ?? "", { shouldValidate: true });
     setCategoryInput("");
   };
 
@@ -84,7 +86,8 @@ export const PositionEdit = (props: Props) => {
     ApiHelper.post("/positions", [p], "DoingApi").then(props.updatedFunction);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    if (!(await confirm(Locale.label("plans.positionEdit.confirmDelete")))) return;
     ApiHelper.delete("/positions/" + props.position.id, "DoingApi").then(props.updatedFunction);
   };
 
@@ -94,6 +97,7 @@ export const PositionEdit = (props: Props) => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <ErrorMessages errors={summaryErrors} />
       <FormCard
         title={props.position?.id ? Locale.label("plans.positionEdit.posEdit") : Locale.label("plans.positionEdit.posAdd")}

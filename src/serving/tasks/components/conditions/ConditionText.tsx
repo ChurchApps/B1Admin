@@ -28,7 +28,7 @@ export const ConditionText = (props: Props) => {
   };
 
   const getTextField = () => {
-    const label = ConditionHelper.getTitleCase(props.condition.field);
+    const label = ConditionHelper.getTitleCase(props.condition.field || "");
     return (
       <TextField
         fullWidth

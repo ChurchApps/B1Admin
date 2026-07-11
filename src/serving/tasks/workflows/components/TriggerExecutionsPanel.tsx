@@ -48,7 +48,7 @@ export const TriggerExecutionsPanel: React.FC<Props> = (props) => {
   };
 
   const statusChip = (e: AutomationExecutionInterface) => {
-    const chip = <Chip size="small" label={Locale.label("tasks.executions.status_" + e.status) || e.status} color={STATUS_COLORS[e.status] || "default"} data-testid={"execution-status-" + e.id} />;
+    const chip = <Chip size="small" label={Locale.label("tasks.executions.status_" + e.status) || e.status} color={STATUS_COLORS[e.status ?? ""] || "default"} data-testid={"execution-status-" + e.id} />;
     return e.lastError ? <Tooltip title={e.lastError}>{chip}</Tooltip> : chip;
   };
 

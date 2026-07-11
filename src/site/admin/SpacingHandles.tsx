@@ -169,6 +169,8 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
         return { ...base, left: isMargin ? -16 : -8, top: "50%", transform: "translateY(-50%)", width: `${baseSize}px`, height: "40px" };
       case "right":
         return { ...base, right: isMargin ? -16 : -8, top: "50%", transform: "translateY(-50%)", width: `${baseSize}px`, height: "40px" };
+      default:
+        return base;
     }
   };
 
@@ -194,6 +196,8 @@ export const SpacingHandles: React.FC<Props> = ({ element, onUpdate }) => {
         return { ...base, left: -80, top: "50%", transform: "translateY(-50%)" };
       case "right":
         return { ...base, right: -80, top: "50%", transform: "translateY(-50%)" };
+      default:
+        return base;
     }
   };
 

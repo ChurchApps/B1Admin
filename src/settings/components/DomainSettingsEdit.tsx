@@ -15,6 +15,7 @@ interface DomainWithSite extends DomainInterface {
 interface Props {
   churchId: string;
   saveTrigger: Date | null;
+  onSaveComplete?: (ok: boolean) => void;
 }
 
 export const DomainSettingsEdit: React.FC<Props> = (props) => {
@@ -75,13 +76,20 @@ export const DomainSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const save = () => {
-    for (const d of originalDomains) {
-      if (!ArrayHelper.getOne(domains, "id", d.id)) ApiHelper.delete("/domains/" + d.id, "MembershipApi");
+  const save = async () => {
+    try {
+      for (const d of originalDomains) {
+        if (!ArrayHelper.getOne(domains, "id", d.id)) await ApiHelper.delete("/domains/" + d.id, "MembershipApi");
+      }
+      // One upsert for the whole list: rows without id are creates, rows with id are
+      // updates carrying their (possibly changed) siteId.
+      if (domains.length > 0) await ApiHelper.post("/domains", domains, "MembershipApi");
+      setError("");
+      props.onSaveComplete?.(true);
+    } catch (e: any) {
+      setError(e?.message || Locale.label("common.saveError"));
+      props.onSaveComplete?.(false);
     }
-    // One upsert for the whole list: rows without id are creates, rows with id are
-    // updates carrying their (possibly changed) siteId. Fire-and-forget, as before.
-    if (domains.length > 0) ApiHelper.post("/domains", domains, "MembershipApi");
   };
 
   const checkSave = () => {

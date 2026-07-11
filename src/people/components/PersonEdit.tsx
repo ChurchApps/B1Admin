@@ -1,6 +1,6 @@
 import React, { useState, memo, useCallback } from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
-import { MuiTelInput, matchIsValidTel } from "mui-tel-input";
+import { MuiTelInput } from "mui-tel-input";
 import { B1AdminPersonHelper, UpdateHouseHold } from ".";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonHelper, DateHelper, ApiHelper, Loading, ErrorMessages, Locale, PersonAvatar } from "@churchapps/apphelper";
@@ -38,22 +38,21 @@ export function formattedPhoneNumber(value: string) {
 
 const phoneSlotProps = { htmlInput: { "aria-describedby": "errorMsg", "aria-labelledby": "tel-label errorMsg" } };
 const phoneMenuProps = { "aria-label": "phone-number" };
-const phoneRules = (v: string) => !v || v.length <= 4 || matchIsValidTel(v.split("x")[0]) || Locale.label("people.personEdit.invalForm");
-const phoneHelperText = (hasError: boolean) => (
-  <div id="errorMsg">{hasError && <Box component="p" sx={{ margin: 0, color: "error.main" }}>{Locale.label("people.personEdit.invalForm")}</Box>}</div>
-);
 
 // Normalize legacy phone formats like "(217) 555-2504" or "217-555-2504" into E.164
-// so MuiTelInput can render them with country flag and spacing.
+// so MuiTelInput can render them with country flag and spacing. Anything that isn't a
+// US 10/11-digit number or already "+"-prefixed is left as-is — forcing "+" onto a
+// 7-digit partial makes the widget misread it as a foreign country code.
 const normalizePhone = (raw: string | null | undefined): string => {
   if (!raw) return "";
   const [base, ext] = raw.split("x");
-  const digits = (base ?? "").replace(/\D/g, "");
+  const trimmed = (base ?? "").trim();
+  const digits = trimmed.replace(/\D/g, "");
   if (!digits) return ext ? "x" + ext : "";
-  const normalized = (base ?? "").trim().startsWith("+") ? "+" + digits
+  const normalized = trimmed.startsWith("+") ? "+" + digits
     : digits.length === 10 ? "+1" + digits
       : digits.length === 11 && digits.startsWith("1") ? "+" + digits
-        : "+" + digits;
+        : trimmed;
   return ext ? normalized + "x" + ext : normalized;
 };
 
@@ -75,10 +74,11 @@ export const PersonEdit = memo((props: Props) => {
   const [redirect, setRedirect] = useState("");
   const [showUpdateAddressModal, setShowUpdateAddressModal] = useState(false);
   const [modalText, setModalText] = useState("");
-  const [members, setMembers] = useState<PersonInterface[]>(null);
+  const [members, setMembers] = useState<PersonInterface[] | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customFields, setCustomFields] = useState<PersonFieldInterface[]>([]);
   const [customValues, setCustomValues] = useState<Record<string, string>>({});
+  const [saveErrors, setSaveErrors] = useState<string[]>([]);
 
   const { control, register, handleSubmit, reset, getValues } = useForm<AnyRecord>({ defaultValues: buildFormDefaults(props.person) });
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -133,11 +133,11 @@ export const PersonEdit = memo((props: Props) => {
     const p: PersonInterface = JSON.parse(JSON.stringify(props.person));
     Object.assign(p, values);
     // "" = the Unassigned option; store as null so it matches campusId IS NULL.
-    if (!p.campusId) p.campusId = null;
+    if (!p.campusId) p.campusId = null as unknown as string;
     if (p.contactInfo) {
-      p.contactInfo.homePhone = (p.contactInfo.homePhone?.length ?? 0) <= 4 ? null : p.contactInfo.homePhone;
-      p.contactInfo.workPhone = (p.contactInfo.workPhone?.length ?? 0) <= 4 ? null : p.contactInfo.workPhone;
-      p.contactInfo.mobilePhone = (p.contactInfo.mobilePhone?.length ?? 0) <= 4 ? null : p.contactInfo.mobilePhone;
+      p.contactInfo.homePhone = ((p.contactInfo.homePhone?.length ?? 0) <= 4 ? null : p.contactInfo.homePhone) as unknown as string;
+      p.contactInfo.workPhone = ((p.contactInfo.workPhone?.length ?? 0) <= 4 ? null : p.contactInfo.workPhone) as unknown as string;
+      p.contactInfo.mobilePhone = ((p.contactInfo.mobilePhone?.length ?? 0) <= 4 ? null : p.contactInfo.mobilePhone) as unknown as string;
     }
     return p;
   }, [props.person]);
@@ -146,18 +146,21 @@ export const PersonEdit = memo((props: Props) => {
     try {
       await ApiHelper.post("/people/", [p], "MembershipApi");
       await saveCustomFields();
+      setSaveErrors([]);
       props.updatedFunction();
     } catch (error) {
       console.error("Error updating person:", error);
+      setSaveErrors([Locale.label("common.saveError")]);
     }
     setIsSubmitting(false);
   }, [props.updatedFunction, saveCustomFields]);
 
   const onValid = useCallback(async (values: AnyRecord) => {
     setIsSubmitting(true);
+    setSaveErrors([]);
     const p = buildPerson(values);
 
-    if (B1AdminPersonHelper.getExpandedPersonObject(p).id === context.person?.id) context.setPerson(p);
+    if (B1AdminPersonHelper.getExpandedPersonObject(p).id === context?.person?.id) context?.setPerson(p);
 
     if (members && members.length > 1 && PersonHelper.compareAddress(props.person.contactInfo, p.contactInfo)) {
       setModalText(
@@ -172,19 +175,19 @@ export const PersonEdit = memo((props: Props) => {
 
   const handleDelete = useCallback(async () => {
     if (!props.person?.id) return;
-    if (B1AdminPersonHelper.getExpandedPersonObject(props.person).id === context.person?.id) {
-      alert(Locale.label("people.personEdit.cannotDeleteSelf"));
+    if (B1AdminPersonHelper.getExpandedPersonObject(props.person).id === context?.person?.id) {
+      setSaveErrors([Locale.label("people.personEdit.cannotDeleteSelf")]);
       return;
     }
     if (await confirm(Locale.label("people.personEdit.confirmMsg"))) {
       ApiHelper.delete("/people/" + props.person.id.toString(), "MembershipApi").then(() => setRedirect("/people"));
     }
-  }, [props.person?.id, context.person?.id, confirm]);
+  }, [props.person?.id, context?.person?.id, confirm]);
 
   const handleYes = useCallback(async () => {
     setShowUpdateAddressModal(false);
     const p = buildPerson(getValues());
-    await Promise.all(members.map(async (member) => {
+    await Promise.all((members || []).map(async (member) => {
       member.contactInfo = PersonHelper.changeOnlyAddress(member.contactInfo, p.contactInfo);
       try { await ApiHelper.post("/people", [member], "MembershipApi"); } catch (error) { console.log(`error in updating ${p.name.display}"s address`, error); }
     }));
@@ -210,6 +213,7 @@ export const PersonEdit = memo((props: Props) => {
           </Button>
         }>
         <ErrorMessages errors={summaryErrors} />
+        <ErrorMessages errors={saveErrors} />
         <Grid container spacing={3}>
           <Grid size={{ sm: 3 }} className="my-auto">
             <Box sx={{ textAlign: "center" }}>
@@ -337,10 +341,10 @@ export const PersonEdit = memo((props: Props) => {
           <Grid size={{ md: 3 }}>
             <div className="section">{Locale.label("person.phone")}</div>
             {(["homePhone", "workPhone", "mobilePhone"] as const).map((field) => {
-              const labelKey = field === "homePhone" ? "people.personEdit.home" : field === "workPhone" ? "people.personEdit.work" : "people.personEdit.mobile";
+              const labelKey = field === "homePhone" ? "people.personView.home" : field === "workPhone" ? "people.personView.work" : "people.personView.mobile";
               return (
-                <Controller key={field} name={`contactInfo.${field}`} control={control} rules={{ validate: phoneRules }} render={({ field: f, fieldState }) => (
-                  <MuiTelInput fullWidth id={field} label={Locale.label(labelKey)} value={f.value?.split("x")[0] ?? ""} onChange={(v) => { const ext = f.value?.split("x")[1] ?? ""; f.onChange(ext ? v + "x" + ext : v); }} defaultCountry="US" focusOnSelectCountry slotProps={phoneSlotProps} error={!!fieldState.error} MenuProps={phoneMenuProps} helperText={phoneHelperText(!!fieldState.error)} />
+                <Controller key={field} name={`contactInfo.${field}`} control={control} render={({ field: f }) => (
+                  <MuiTelInput fullWidth id={field} label={Locale.label(labelKey)} value={f.value?.split("x")[0] ?? ""} onChange={(v) => { const ext = f.value?.split("x")[1] ?? ""; f.onChange(ext ? v + "x" + ext : v); }} defaultCountry="US" forceCallingCode focusOnSelectCountry slotProps={phoneSlotProps} MenuProps={phoneMenuProps} />
                 )} />
               );
             })}
@@ -349,7 +353,7 @@ export const PersonEdit = memo((props: Props) => {
           <Grid size={{ md: 1 }}>
             <div className="section">{Locale.label("people.personEdit.exten")}</div>
             {(["homePhone", "workPhone", "mobilePhone"] as const).map((field) => {
-              const labelKey = field === "homePhone" ? "people.personEdit.home" : field === "workPhone" ? "people.personEdit.work" : "people.personEdit.mobile";
+              const labelKey = field === "homePhone" ? "people.personView.home" : field === "workPhone" ? "people.personView.work" : "people.personView.mobile";
               return (
                 <Controller key={field} name={`contactInfo.${field}`} control={control} render={({ field: f }) => (
                   <TextField fullWidth label={Locale.label(labelKey)} value={f.value?.split("x")[1] ?? ""} onChange={(ev) => { const base = f.value?.split("x")[0] ?? ""; f.onChange(base + "x" + ev.target.value); }} InputProps={{ inputProps: { maxLength: 4 } }} placeholder={Locale.label("placeholders.person.phoneExt")} />

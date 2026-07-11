@@ -37,8 +37,8 @@ export const PlanPage = () => {
   }, [loadData]);
 
   const getCurrentTab = () => {
-    if (selectedTab === "assignments") return <Assignment plan={plan} />;
-    if (selectedTab === "order") return <ServiceOrder plan={plan} onPlanUpdate={loadData} />;
+    if (selectedTab === "assignments") return <Assignment plan={plan!} />;
+    if (selectedTab === "order") return <ServiceOrder plan={plan!} onPlanUpdate={loadData} />;
     return null;
   };
 
@@ -57,7 +57,7 @@ export const PlanPage = () => {
   const breadcrumbItems: BreadcrumbItem[] = [{ label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving" }];
 
   if (planType) {
-    breadcrumbItems.push({ label: planType.name, path: `/serving/planTypes/${planType.id}` });
+    breadcrumbItems.push({ label: planType.name || "", path: `/serving/planTypes/${planType.id}` });
   }
 
   breadcrumbItems.push({ label: plan.name || Locale.label("plans.planPage.servicePlan") });

@@ -28,21 +28,21 @@ export const RolePermissions: React.FC<Props> = (props) => {
   const getSections = () => {
     const lastSection: string[] = [];
     const result: JSX.Element[] = [];
-    const sortedPermissions = [...permissions].sort((a, b) => (a.displaySection > b.displaySection ? 1 : -1));
+    const sortedPermissions = [...permissions].sort((a, b) => ((a.displaySection || "") > (b.displaySection || "") ? 1 : -1));
 
     sortedPermissions.forEach((p, index) => {
-      if (!lastSection.includes(p.displaySection)) {
+      if (!lastSection.includes(p.displaySection || "")) {
         result.push(
           <Accordion expanded={expanded === "panel" + index} onChange={handleChange("panel" + index)}>
             <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
               <Typography>{p.displaySection}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <div>{getChecks(p.displaySection)}</div>
+              <div>{getChecks(p.displaySection || "")}</div>
             </AccordionDetails>
           </Accordion>
         );
-        lastSection.push(p.displaySection);
+        lastSection.push(p.displaySection || "");
       }
     });
     return result;
@@ -52,7 +52,7 @@ export const RolePermissions: React.FC<Props> = (props) => {
     const result: JSX.Element[] = [];
     permissions.forEach((p, index) => {
       if (p.displaySection === displaySection) {
-        result.push(<RoleCheck key={index} roleId={props.role.id} rolePermissions={rolePermissions} apiName={p.apiName} contentType={p.section} action={p.action} label={p.displayAction} />);
+        result.push(<RoleCheck key={index} roleId={props.role.id || ""} rolePermissions={rolePermissions} apiName={p.apiName || ""} contentType={p.section || ""} action={p.action || ""} label={p.displayAction || ""} />);
       }
     });
     return result;

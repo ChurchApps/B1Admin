@@ -15,7 +15,7 @@ type AnyRecord = Record<string, any>;
 interface Props {
   updatedFunction: () => void;
   household: HouseholdInterface;
-  currentMembers: PersonInterface[];
+  currentMembers: PersonInterface[] | null;
   currentPerson: PersonInterface;
 }
 
@@ -25,7 +25,7 @@ export function HouseholdEdit(props: Props) {
   const [showAdd, setShowAdd] = React.useState(false);
   const [showUpdateAddressModal, setShowUpdateAddressModal] = React.useState<boolean>(false);
   const [text, setText] = React.useState("");
-  const [selectedPerson, setSelectedPerson] = React.useState<PersonInterface>(null);
+  const [selectedPerson, setSelectedPerson] = React.useState<PersonInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { control, register, handleSubmit, reset } = useForm<AnyRecord>({ defaultValues: { name: props.household?.name || "" } });
@@ -63,7 +63,7 @@ export function HouseholdEdit(props: Props) {
   }
 
   function addPerson(person?: PersonInterface) {
-    const addPerson: PersonInterface = person || selectedPerson;
+    const addPerson: PersonInterface | null = person || selectedPerson;
     if (!addPerson || !props.household?.id) return;
     addPerson.householdId = props.household.id;
     addPerson.householdRole = "Other";
@@ -92,6 +92,7 @@ export function HouseholdEdit(props: Props) {
 
   async function handleYes() {
     setShowUpdateAddressModal(false);
+    if (!selectedPerson) return;
     selectedPerson.contactInfo = PersonHelper.changeOnlyAddress(selectedPerson.contactInfo, props.currentPerson.contactInfo);
     try {
       await ApiHelper.post("/people", [selectedPerson], "MembershipApi");

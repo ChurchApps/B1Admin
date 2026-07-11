@@ -15,7 +15,7 @@ interface Props {
 
 export const SongSearchDialog: React.FC<Props> = memo((props) => {
   const [searchText, setSearchText] = React.useState<string>(props.searchText || "");
-  const [songDetails, setSongDetails] = React.useState<SongDetailInterface[]>(null);
+  const [songDetails, setSongDetails] = React.useState<SongDetailInterface[] | null>(null);
   const [showCreate, setShowCreate] = React.useState(false);
   const [isSearching, setIsSearching] = React.useState(false);
 

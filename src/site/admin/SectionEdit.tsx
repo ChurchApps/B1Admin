@@ -35,9 +35,9 @@ const sectionFingerprint = (s: SectionInterface) =>
 
 export function SectionEdit(props: Props) {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
-  const [blocks, setBlocks] = useState<BlockInterface[]>(null);
-  const [section, setSection] = useState<SectionInterface>(null);
-  const [errors, setErrors] = useState([]);
+  const [blocks, setBlocks] = useState<BlockInterface[] | null>(null);
+  const [section, setSection] = useState<SectionInterface | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
   // Hoisted null-safe view of section: the compiler merges optional member deps
   // (section?.answersJSON) into non-optional guard reads that crash while section is null.
   const sec: SectionInterface = section || ({} as SectionInterface);
@@ -144,7 +144,7 @@ export function SectionEdit(props: Props) {
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("site.section.confirmDelete"))) {
-      trackSave(ApiHelper.delete("/sections/" + sec.id.toString(), "ContentApi")).then(() => props.updatedCallback(null));
+      trackSave(ApiHelper.delete("/sections/" + sec.id?.toString(), "ContentApi")).then(() => props.updatedCallback(null as unknown as SectionInterface));
     }
   };
 
@@ -171,13 +171,13 @@ export function SectionEdit(props: Props) {
     <ErrorMessages errors={errors} />
     <TextField fullWidth size="small" label={Locale.label("site.sectionEdit.id")} name="sectionId" value={parsedData.sectionId || ""} onChange={handleChange} />
     <PickColors
-      background={section?.background}
+      background={section?.background || ""}
       backgroundOpacity={parsedData?.backgroundOpacity}
       overlayColor={parsedData?.overlayColor}
       focalPoint={parsedData?.focalPoint}
-      textColor={section?.textColor}
-      headingColor={section?.headingColor}
-      linkColor={section?.linkColor}
+      textColor={section?.textColor || ""}
+      headingColor={section?.headingColor || ""}
+      linkColor={section?.linkColor || ""}
       updatedCallback={selectColors}
       globalStyles={props.globalStyles}
       onChange={handleChange}
@@ -214,14 +214,14 @@ export function SectionEdit(props: Props) {
   const handleStyleChange = (styles: { name: string, value: string }[]) => {
     const p = { ...section };
     p.styles = styles;
-    p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : null;
+    p.stylesJSON = styles && Object.keys(styles).length > 0 ? JSON.stringify(styles) : undefined;
     setSection(p);
   };
 
-  const handleAnimationChange = (animations: AnimationsInterface) => {
+  const handleAnimationChange = (animations: AnimationsInterface | null) => {
     const p = { ...section };
-    p.animations = animations;
-    p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : null;
+    p.animations = animations || undefined;
+    p.animationsJSON = animations && Object.keys(animations).length > 0 ? JSON.stringify(animations) : undefined;
     setSection(p);
   };
 

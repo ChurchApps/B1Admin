@@ -122,7 +122,7 @@ export function WebsiteHeader(props: Props) {
   }, [props.overlayContent]);
 
   const getLinkClass = () => {
-    const sections = ArrayHelper.getAll(props.sections, "zone", "main");
+    const sections = ArrayHelper.getAll(props.sections || [], "zone", "main");
     let result = "";
     let lc = (sections.length > 0 ? sections[0].linkColor : null);
     if (lc) {
@@ -134,7 +134,7 @@ export function WebsiteHeader(props: Props) {
 
   const getLogo = () => {
     if (transparent) {
-      const textColor = StyleHelper.getTextColor(props.sections?.[0]?.textColor, props.globalStyles || {}, props.appearance);
+      const textColor = StyleHelper.getTextColor(props.sections?.[0]?.textColor || "", props.globalStyles || {}, props.appearance);
       const logo = AppearanceHelper.getLogoByTextColor(props.appearance?.logoLight || null, props.appearance?.logoDark || null, textColor);
       return logo !== "" ? logo : null;
     } else {
@@ -163,7 +163,7 @@ export function WebsiteHeader(props: Props) {
   let appBarClass = "";
   if (transparent) {
     appBarClass = "transparent " + getLinkClass();
-    const firstSection = ArrayHelper.getAll(props.sections, "zone", "main")[0];
+    const firstSection = ArrayHelper.getAll(props.sections || [], "zone", "main")[0];
     if (firstSection) {
       const textColor = StyleHelper.getTextColor(firstSection.textColor, props.globalStyles || {}, props.appearance);
       // Mirrors the logo-by-textColor logic: when the section's text is dark, its background is light, so the icon must be dark too.

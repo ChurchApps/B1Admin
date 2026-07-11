@@ -12,7 +12,6 @@ export const ReportPage = memo(() => {
 
   const report = useQuery<ReportInterface>({
     queryKey: ["/reports/" + params.keyName, "ReportingApi"],
-    placeholderData: null,
     enabled: !!params.keyName
   });
 
@@ -48,7 +47,7 @@ export const ReportPage = memo(() => {
                 </Box>
               ) : (
                 <Box sx={{ "& .report-container": { p: 0 } }}>
-                  <ReportWithFilter keyName={params.keyName} autoRun={false} />
+                  <ReportWithFilter keyName={params.keyName || ""} autoRun={false} />
                 </Box>
               )}
             </CardContent>

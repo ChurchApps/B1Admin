@@ -30,22 +30,22 @@ interface Props {
 }
 
 export const LinkEdit: React.FC<Props> = (props) => {
-  const [currentLink, setCurrentLink] = useState<LinkInterface>(null);
+  const [currentLink, setCurrentLink] = useState<LinkInterface | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
-  const [links, setLinks] = useState<LinkInterface[]>(null);
-  const [subName, setSubName] = useState<string>(null);
+  const [links, setLinks] = useState<LinkInterface[] | null>(null);
+  const [subName, setSubName] = useState<string | null>(null);
   const [toggleSubName, setToggleSubName] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
 
-  const filteredGroupLinks = links && links.filter((link) => link.id !== currentLink.id);
+  const filteredGroupLinks = links && links.filter((link) => link.id !== currentLink!.id);
 
   const handleDelete = async () => {
     setIsLoading(true);
     const errors: string[] = [];
     let i = 0;
-    links.forEach(link => {
-      if (currentLink.id === link.parentId) { i++; }
+    links!.forEach(link => {
+      if (currentLink!.id === link.parentId) { i++; }
     });
 
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("sermons.liveStreamTimes.linkEdit.errors.unauthorizedDelete"));
@@ -58,9 +58,9 @@ export const LinkEdit: React.FC<Props> = (props) => {
     }
 
     try {
-      await ApiHelper.delete("/links/" + currentLink.id, "ContentApi");
+      await ApiHelper.delete("/links/" + currentLink!.id, "ContentApi");
       setCurrentLink(null);
-      props.updatedFunction();
+      props.updatedFunction?.();
     } catch {
       setErrors([Locale.label("sermons.liveStreamTimes.linkEdit.errors.deleteFailed")]);
     } finally {
@@ -71,7 +71,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.currentTarget.value;
-    const l = { ...currentLink };
+    const l = { ...currentLink! };
     switch (e.currentTarget.name) {
       case "text": l.text = val; break;
       case "url": l.url = val; break;
@@ -81,16 +81,16 @@ export const LinkEdit: React.FC<Props> = (props) => {
 
   const toggleChange = (e: React.MouseEvent<HTMLElement>, val: string | null) => {
     setSubName(e?.currentTarget?.innerText);
-    const l = { ...currentLink };
-    l.parentId = val;
+    const l = { ...currentLink! };
+    l.parentId = val ?? undefined;
     setCurrentLink(l);
   };
 
   const handleSave = async () => {
     setIsLoading(true);
     const errors: string[] = [];
-    if (!currentLink.text.trim()) errors.push(Locale.label("sermons.liveStreamTimes.linkEdit.errors.textRequired"));
-    if (!currentLink.url.trim()) errors.push(Locale.label("sermons.liveStreamTimes.linkEdit.errors.urlRequired"));
+    if (!currentLink!.text!.trim()) errors.push(Locale.label("sermons.liveStreamTimes.linkEdit.errors.textRequired"));
+    if (!currentLink!.url!.trim()) errors.push(Locale.label("sermons.liveStreamTimes.linkEdit.errors.urlRequired"));
     if (!UserHelper.checkAccess(Permissions.contentApi.content.edit)) errors.push(Locale.label("sermons.liveStreamTimes.linkEdit.errors.unauthorized"));
 
     if (errors.length > 0) {
@@ -101,7 +101,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
 
     try {
       await ApiHelper.post("/links", [currentLink], "ContentApi");
-      props.updatedFunction();
+      props.updatedFunction?.();
     } catch {
       setErrors([Locale.label("sermons.liveStreamTimes.linkEdit.errors.saveFailed")]);
     } finally {
@@ -118,7 +118,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
     <>
       <Dialog
         open={true}
-        onClose={() => props.updatedFunction()}
+        onClose={() => props.updatedFunction?.()}
         maxWidth="md"
         fullWidth
         PaperProps={{
@@ -160,7 +160,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
               label={Locale.label("common.close")}
               icon={<CloseIcon />}
               tone="header"
-              onClick={() => props.updatedFunction()}
+              onClick={() => props.updatedFunction?.()}
             />
           </Stack>
         </DialogTitle>
@@ -207,7 +207,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
               </CardContent>
             </Card>
 
-            {filteredGroupLinks?.length > 0 && (
+            {(filteredGroupLinks?.length ?? 0) > 0 && (
               <Card sx={{ borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
                 <CardContent>
                   <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
@@ -249,15 +249,15 @@ export const LinkEdit: React.FC<Props> = (props) => {
                           gap: 1
                         }}
                       >
-                        {filteredGroupLinks.map((link: LinkInterface) => (
+                        {filteredGroupLinks!.map((link: LinkInterface) => (
                           <ToggleButton
                             key={link.id}
-                            value={link.id}
+                            value={link.id || ""}
                             size="small"
                             color="primary"
                             onClick={() => setToggleSubName(!toggleSubName)}
                             data-testid={`submenu-toggle-${link.id}`}
-                            aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.submenuUnderAria").replace("{text}", link.text)}
+                            aria-label={Locale.label("sermons.liveStreamTimes.linkEdit.submenuUnderAria").replace("{text}", link.text || "")}
                             sx={{
                               borderRadius: 1,
                               textTransform: "none",
@@ -303,7 +303,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
             <Box sx={{ flex: 1 }} />
             <Button
               variant="outlined"
-              onClick={() => props.updatedFunction()}
+              onClick={() => props.updatedFunction?.()}
               disabled={isLoading}
               sx={{
                 textTransform: "none",
@@ -340,7 +340,7 @@ export const LinkEdit: React.FC<Props> = (props) => {
           <Typography>
             {Locale.label("sermons.liveStreamTimes.linkEdit.deleteConfirm")}
           </Typography>
-          {links?.some(link => link.parentId === currentLink.id) && (
+          {links?.some(link => link.parentId === currentLink!.id) && (
             <Box sx={{ mt: 2, p: 2, backgroundColor: "warning.light", borderRadius: 1 }}>
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Icon sx={{ color: "warning.main" }}>info</Icon>

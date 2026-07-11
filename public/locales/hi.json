@@ -337,7 +337,8 @@
         "firstName": "कृपया पहला नाम दर्ज करें.",
         "lastName": "कृपया एक अंतिम नाम दर्ज करें.",
         "validEmail": "कृपया एक मान्य ईमेल पता दर्ज करें।"
-      }
+      },
+      "confirmDuplicate": "इस ईमेल के साथ एक मौजूदा व्यक्ति '{{existingName}}' ({{existingEmail}}) पाया गया था। क्या आप वाकई '{{firstName}} {{lastName}}' जोड़ना चाहते हैं?"
     },
     "custom": "कस्टम",
     "delete": "हटाएं",

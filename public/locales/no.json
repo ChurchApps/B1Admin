@@ -337,7 +337,8 @@
         "firstName": "Vennligst skriv inn et fornavn.",
         "lastName": "Vennligst skriv inn et etternavn.",
         "validEmail": "Vennligst skriv inn en gyldig e-postadresse."
-      }
+      },
+      "confirmDuplicate": "En eksisterende person '{{existingName}}' ({{existingEmail}}) ble funnet med denne e-posten. Er du sikker på at du vil legge til '{{firstName}} {{lastName}}'?"
     },
     "custom": "Tilpasset",
     "delete": "Slett",

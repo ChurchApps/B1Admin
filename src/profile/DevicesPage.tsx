@@ -23,7 +23,7 @@ export interface DeviceInterface {
 export const DevicesPage = () => {
   const [errors] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
-  const [editDevice, setEditDevice] = useState<DeviceInterface>(null);
+  const [editDevice, setEditDevice] = useState<DeviceInterface | null>(null);
 
   const devices = useQuery<DeviceInterface[]>({
     queryKey: ["/devices/my", "MessagingApi"],

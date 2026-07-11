@@ -22,16 +22,16 @@ export const ProfilePage = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   React.useEffect(() => {
     const { email, firstName, lastName } = UserHelper.user;
-    setFirstName(firstName);
-    setLastName(lastName);
-    setEmail(email);
+    setFirstName(firstName || "");
+    setLastName(lastName || "");
+    setEmail(email || "");
   }, []);
 
   const sendEventToReactNative = (eventName: string, data?: any) => {

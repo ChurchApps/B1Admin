@@ -18,7 +18,7 @@ export const CategorySelect: React.FC<Props> = (props) => {
   const loadCategories = () => {
     const tags = props.tags || "standard";
     ApiHelper.get("/groups/tag/" + tags, "MembershipApi").then((data: GroupInterface[]) => {
-      const uniqueCategories = Array.from(new Set(data.map((g) => g.categoryName).filter((c) => c)));
+      const uniqueCategories = Array.from(new Set(data.map((g) => g.categoryName).filter((c): c is string => !!c)));
       setCategories(uniqueCategories);
     });
   };

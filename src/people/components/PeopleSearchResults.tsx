@@ -8,6 +8,7 @@ import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Card, Ch
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { SortableTableHead, StatusChip, type SortableColumn } from "../../components/ui";
 import { useCampuses } from "../../hooks/useCampuses";
+import { useConfirmDelete } from "../../hooks";
 import { Delete as DeleteIcon, Email as EmailIcon, Phone as PhoneIcon } from "@mui/icons-material";
 
 interface Props {
@@ -31,6 +32,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   const [currentSortedCol, setCurrentSortedCol] = useState<string>("");
   const [optionalColumns, setOptionalColumns] = React.useState<any[]>([]);
   const [formSubmissions, setFormSubmissions] = React.useState<any[]>([]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const campuses = useCampuses();
   const campusMap = useMemo(() => {
     const map: Record<string, string> = {};
@@ -79,25 +81,26 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
 
   const getAnswer = useCallback(
     (p: PersonInterface, key: string) => {
-      const value = getAnswerValue(p.id, key);
+      const value = getAnswerValue(p.id || "", key);
       return value ? <>{value}</> : <></>;
     },
     [getAnswerValue]
   );
 
   const handleDelete = useCallback(
-    (personId: string) => {
+    async (personId: string) => {
+      if (!(await confirm(Locale.label("people.personEdit.confirmMsg")))) return;
       const peopleArray = [...people];
       ApiHelper.delete("/people/" + personId, "MembershipApi").then(() => {
         const idx = ArrayHelper.getIndex(peopleArray, "id", personId);
         if (idx > -1) {
           peopleArray.splice(idx, 1);
-          props?.updateSearchResults(peopleArray);
+          props.updateSearchResults?.(peopleArray);
           if (props.updatedFunction) props.updatedFunction();
         }
       });
     },
-    [people, props]
+    [people, props, confirm]
   );
 
   const getColumn = useCallback(
@@ -152,12 +155,12 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
             </Stack>
           );
           break;
-        case "birthDate": result = <>{p.birthDate === null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.birthDate))}</>; break;
+        case "birthDate": result = <>{p.birthDate == null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.birthDate))}</>; break;
         case "birthDay": result = <>{B1AdminPersonHelper.getBirthDay(p)}</>; break;
         case "age":
           result = (
             <Typography variant="body2" color="text.secondary">
-              {p.birthDate === null ? "" : PersonHelper.getAge(new Date(p.birthDate))}
+              {p.birthDate == null ? "" : PersonHelper.getAge(new Date(p.birthDate))}
             </Typography>
           );
           break;
@@ -167,13 +170,13 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
           break;
         case "maritalStatus": result = <>{p.maritalStatus}</>; break;
         case "campus": result = <>{p.campusId ? (campusMap[p.campusId] || "") : ""}</>; break;
-        case "anniversary": result = <>{p.anniversary === null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.anniversary))}</>; break;
+        case "anniversary": result = <>{p.anniversary == null ? "" : B1AdminPersonHelper.getDateStringFromDate(new Date(p.anniversary))}</>; break;
         case "nametagNotes": result = <>{p.nametagNotes}</>; break;
         case "deleteOption":
           result = (
             <AppIconButton
               intent="remove"
-              label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display)}
+              label={Locale.label("people.peopleSearchResults.deletePersonAria").replace("{name}", p?.name?.display || "")}
               icon={<DeleteIcon />}
               onClick={(e) => {
                 e.stopPropagation();
@@ -416,6 +419,7 @@ const PeopleSearchResults = memo(function PeopleSearchResults(props: Props) {
   if (!people) return <Loading />;
   return (
     <Box>
+      {ConfirmDialogElement}
       {getResults()}
       <Card sx={{ mt: 3 }} id="createPersonForm">
         <Box sx={{ p: 3 }}>

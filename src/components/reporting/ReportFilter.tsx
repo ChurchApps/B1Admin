@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Alert } from "@mui/material";
 import type { ReportInterface, ParameterInterface } from "@churchapps/helpers";
 import { ArrayHelper, Locale } from "../../helpers";
 import { FormCard } from "../ui";
@@ -13,6 +14,8 @@ interface Props {
 }
 
 export const ReportFilter = (props: Props) => {
+  const [dateError, setDateError] = React.useState("");
+
   const handleChange = (parameter: ParameterInterface, permittedChildIds: string[]) => {
     const r = { ...props.report };
     const p: ParameterInterface = ArrayHelper.getOne(r.parameters, "keyName", parameter.keyName);
@@ -46,11 +49,12 @@ export const ReportFilter = (props: Props) => {
       const toDate = new Date(toParam.value + "T00:00:00");
 
       if (toDate < fromDate) {
-        alert(Locale.label("reporting.toDateBeforeFromDate"));
+        setDateError(Locale.label("reporting.toDateBeforeFromDate"));
         return false;
       }
     }
 
+    setDateError("");
     return true;
   };
 
@@ -88,6 +92,7 @@ export const ReportFilter = (props: Props) => {
   if (inputs.length > 0) {
     return (
       <FormCard id="formSubmissionBox" title={Locale.label("common.reportFilter.title")} icon="summarize" onSave={handleRunReport} saveText={Locale.label("reporting.runReport")}>
+        {dateError && <Alert severity="error" sx={{ mb: 2 }} data-testid="report-filter-error">{dateError}</Alert>}
         {inputs}
       </FormCard>
     );

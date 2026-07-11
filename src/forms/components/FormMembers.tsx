@@ -6,6 +6,7 @@ import { PersonAdd } from "../../components";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PersonInterface, type MemberPermissionInterface } from "@churchapps/helpers";
 import { DisplayBox, ApiHelper, PersonHelper, Locale } from "@churchapps/apphelper";
+import { useConfirmDelete } from "../../hooks";
 
 interface Props {
   formId: string;
@@ -14,11 +15,12 @@ interface Props {
 export const FormMembers: React.FC<Props> = memo((props) => {
   const [filterList, setFilterList] = useState<string[]>([]);
   const [formMembers, setFormMembers] = useState<MemberPermissionInterface[]>([]);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const loadData = useCallback(() => {
     ApiHelper.get("/memberpermissions/form/" + props.formId, "MembershipApi").then((results: any) => {
       const filterMembers: string[] = [];
-      results.forEach((member: MemberPermissionInterface) => filterMembers.push(member.memberId));
+      results.forEach((member: MemberPermissionInterface) => filterMembers.push(member.memberId || ""));
       setFilterList(filterMembers);
       setFormMembers(results);
     });
@@ -38,7 +40,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
         fm.push(result[0]);
         setFormMembers(fm);
       });
-      updateFilterList(p.id, "add");
+      updateFilterList(p.id || "", "add");
     },
     [props.formId, formMembers]
   );
@@ -71,14 +73,16 @@ export const FormMembers: React.FC<Props> = memo((props) => {
   );
 
   const handleRemoveMember = useCallback(
-    (personId: string) => {
+    async (personId: string) => {
+      const name = formMembers.find((p) => p.memberId === personId)?.personName || "";
+      if (!(await confirm(Locale.label("forms.formMembers.removeConfirm").replace("{name}", name)))) return;
       updateFilterList(personId, "remove");
       let fm = [...formMembers];
       fm = fm.filter((p: MemberPermissionInterface) => p.memberId !== personId);
       setFormMembers(fm);
       ApiHelper.delete("/memberpermissions/member/" + personId + "?formId=" + props.formId, "MembershipApi");
     },
-    [props.formId, formMembers, updateFilterList]
+    [props.formId, formMembers, updateFilterList, confirm]
   );
 
   const tableRows = useMemo(() => {
@@ -94,14 +98,14 @@ export const FormMembers: React.FC<Props> = memo((props) => {
               <Button
                 variant={fm.action === "admin" ? "contained" : "outlined"}
                 onClick={() => {
-                  handleActionChange(fm.memberId, { action: "admin" });
+                  handleActionChange(fm.memberId || "", { action: "admin" });
                 }}>
                 {Locale.label("forms.formMembers.admin")}
               </Button>
               <Button
                 variant={fm.action === "view" ? "contained" : "outlined"}
                 onClick={() => {
-                  handleActionChange(fm.memberId, { action: "view" });
+                  handleActionChange(fm.memberId || "", { action: "view" });
                 }}>
                 {Locale.label("forms.formMembers.view")}
               </Button>
@@ -112,7 +116,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
               <Box
                 component="button"
                 type="button"
-                onClick={() => handleRemoveMember(fm.memberId)}
+                onClick={() => handleRemoveMember(fm.memberId || "")}
                 sx={{ display: "flex", alignItems: "center", color: "error.main", background: "none", border: 0, padding: 0, cursor: "pointer" }}>
                 <Icon sx={{ marginRight: "5px" }}>person_remove</Icon> {Locale.label("common.remove")}
               </Box>
@@ -122,7 +126,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
             <Switch
               checked={fm.emailNotification === true}
               onChange={(e) => {
-                handleActionChange(fm.memberId, { emailNotification: e.target.checked });
+                handleActionChange(fm.memberId || "", { emailNotification: e.target.checked });
               }}
             />
           </TableCell>
@@ -161,6 +165,7 @@ export const FormMembers: React.FC<Props> = memo((props) => {
 
   return (
     <Grid container spacing={3}>
+      {ConfirmDialogElement}
       <Grid size={{ xs: 12, md: 8 }}>
         <DisplayBox headerText={Locale.label("forms.formMembers.formMem")} headerIcon="group" help="docs/b1-admin/forms/">
           {getTable()}

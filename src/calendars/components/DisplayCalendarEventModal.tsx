@@ -20,14 +20,14 @@ export function DisplayCalendarEventModal(props: Props) {
   const getDisplayTime = () => {
     let result: string;
     if (props.event.allDay) {
-      const prettyStartDate = DateHelper.prettyDate(props.event.start);
-      const prettyEndDate = DateHelper.prettyDate(props.event.end);
+      const prettyStartDate = DateHelper.prettyDate(props.event.start!);
+      const prettyEndDate = DateHelper.prettyDate(props.event.end!);
       if (prettyStartDate === prettyEndDate) result = prettyStartDate;
       else result = `${prettyStartDate} - ${prettyEndDate}`;
     } else {
-      const prettyStart = DateHelper.prettyDateTime(props.event.start);
-      const prettyEnd = DateHelper.prettyDateTime(props.event.end);
-      const prettyEndTime = DateHelper.prettyTime(props.event.end);
+      const prettyStart = DateHelper.prettyDateTime(props.event.start!);
+      const prettyEnd = DateHelper.prettyDateTime(props.event.end!);
+      const prettyEndTime = DateHelper.prettyTime(props.event.end!);
       const startDate = DateHelper.prettyDate(new Date(prettyStart));
       const endDate = DateHelper.prettyDate(new Date(prettyEnd));
       if (startDate === endDate) result = `${prettyStart} - ${prettyEndTime}`;
@@ -37,7 +37,8 @@ export function DisplayCalendarEventModal(props: Props) {
   };
 
   const handleDelete = async () => {
-    if (await confirm(Locale.label("calendars.calendarEvent.confirmDelete"))) {
+    const message = props.event.recurrenceRule ? Locale.label("calendars.calendarEvent.confirmDeleteSeries") : Locale.label("calendars.calendarEvent.confirmDelete");
+    if (await confirm(message)) {
       const deleteUrl = props.event.eventId
         ? "/curatedEvents/calendar/" + props.curatedCalendarId + "/event/" + props.event.eventId
         : "/curatedEvents/" + props.event.id;

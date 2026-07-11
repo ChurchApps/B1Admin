@@ -70,11 +70,11 @@ test.describe("Attendance Management", () => {
     });
 
     test("should delete the service time", async () => {
-      page.once("dialog", (dialog) => dialog.accept());
       await page.locator("button").getByText("Zebedee Test Time").click();
       const box = page.locator("#serviceTimeBox");
       await expect(box).toBeVisible({ timeout: 10000 });
       await box.getByRole("button", { name: "Delete" }).click();
+      await confirmDelete(page);
       await expect(page.locator("button").getByText("Zebedee Test Time")).toHaveCount(0, { timeout: 10000 });
     });
 

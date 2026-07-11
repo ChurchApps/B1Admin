@@ -337,7 +337,8 @@
         "firstName": "Silakan masukkan nama depan.",
         "lastName": "Silakan masukkan nama belakang.",
         "validEmail": "Silakan masukkan alamat email yang valid."
-      }
+      },
+      "confirmDuplicate": "Orang dengan email ini sudah ada: '{{existingName}}' ({{existingEmail}}). Apakah Anda yakin ingin menambahkan '{{firstName}} {{lastName}}'?"
     },
     "custom": "Kustom",
     "delete": "Hapus",

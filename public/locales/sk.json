@@ -337,7 +337,8 @@
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
         "validEmail": "Please enter a valid email address."
-      }
+      },
+      "confirmDuplicate": "S týmto e-mailom sa našiel existujúci užívateľ '{{existingName}}' ({{existingEmail}}). Naozaj chcete pridať '{{firstName}} {{lastName}}'?"
     },
     "custom": "Custom",
     "delete": "Vymazať",

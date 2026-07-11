@@ -1,12 +1,13 @@
 import React from "react";
 import { ApiHelper } from "@churchapps/apphelper";
+import type { ApiListType } from "@churchapps/helpers";
 
 interface UseSendDialogOptions {
   previewUrl: string | null;
   sendUrl: string;
   buildPayload: () => Record<string, any> | null;
   fallbackError: string;
-  apiName?: string;
+  apiName?: ApiListType;
   buildError?: (err: any) => string;
 }
 

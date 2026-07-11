@@ -337,7 +337,8 @@
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
         "validEmail": "Please enter a valid email address."
-      }
+      },
+      "confirmDuplicate": "تم العثور على شخص موجود بالفعل باسم '{{existingName}}' ({{existingEmail}}) بهذا البريد الإلكتروني. هل أنت متأكد من رغبتك في إضافة '{{firstName}} {{lastName}}'؟"
     },
     "custom": "Custom",
     "delete": "حذف",

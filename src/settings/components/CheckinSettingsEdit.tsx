@@ -1,16 +1,18 @@
 import React from "react";
 import { type GenericSettingInterface } from "@churchapps/helpers";
 import { ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 
 interface Props {
   churchId: string;
   saveTrigger: Date | null;
+  onSaveComplete?: (ok: boolean) => void;
 }
 
 export const CheckinSettingsEdit: React.FC<Props> = (props) => {
   const [ratioEnforcement, setRatioEnforcement] = React.useState("warn");
-  const [setting, setSetting] = React.useState<GenericSettingInterface>(null);
+  const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [error, setError] = React.useState("");
 
   const loadData = async () => {
     const allSettings: GenericSettingInterface[] = await ApiHelper.get("/settings", "MembershipApi");
@@ -21,10 +23,17 @@ export const CheckinSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const save = () => {
+  const save = async () => {
     const s: GenericSettingInterface = setting === null ? { churchId: props.churchId, public: 1, keyName: "ratioEnforcement" } : setting;
     s.value = ratioEnforcement;
-    ApiHelper.post("/settings", [s], "MembershipApi");
+    try {
+      await ApiHelper.post("/settings", [s], "MembershipApi");
+      setError("");
+      props.onSaveComplete?.(true);
+    } catch (e: any) {
+      setError(e?.message || Locale.label("common.saveError"));
+      props.onSaveComplete?.(false);
+    }
   };
 
   const checkSave = () => {
@@ -38,6 +47,7 @@ export const CheckinSettingsEdit: React.FC<Props> = (props) => {
 
   return (
     <Box>
+      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7 }}>
         {Locale.label("settings.checkinSettingsEdit.help")}
       </Typography>

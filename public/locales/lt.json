@@ -337,7 +337,8 @@
         "firstName": "Please enter a first name.",
         "lastName": "Please enter a last name.",
         "validEmail": "Please enter a valid email address."
-      }
+      },
+      "confirmDuplicate": "Šiuo el. paštu jau rasta esama kortelė '{{existingName}}' ({{existingEmail}}). Ar tikrai norite pridėti '{{firstName}} {{lastName}}'?"
     },
     "custom": "Custom",
     "delete": "Panaikinti",

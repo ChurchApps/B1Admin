@@ -109,7 +109,7 @@ export const SongsPage = memo(() => {
   const songsContent = useMemo(() => {
     if (songs.isLoading) return <Loading size="sm" />;
 
-    if (songs.data.length === 0) {
+    if ((songs.data?.length ?? 0) === 0) {
       return (
         <EmptyState
           icon={<LibraryIcon />}

@@ -5,7 +5,7 @@ export class B1AdminPersonHelper {
   static getBirthDay(person: PersonInterface) {
     if (person?.birthDate === null) return "";
     else {
-      const parts = B1AdminPersonHelper.getDateStringFromDate(new Date(person.birthDate)).split(" ");
+      const parts = B1AdminPersonHelper.getDateStringFromDate(new Date(person.birthDate as string)).split(" ");
 
       return parts[1] + " " + parts[2];
     }
@@ -34,7 +34,7 @@ export class B1AdminPersonHelper {
       lastName: person?.name?.last,
       firstName: person?.name?.first,
       middleName: person?.name?.middle,
-      age: person?.birthDate === null ? "" : PersonHelper.getAge(new Date(person?.birthDate)).split(" ")[0],
+      age: person?.birthDate === null ? "" : PersonHelper.getAge(new Date(person?.birthDate as string)).split(" ")[0],
       displayName: person?.name?.display,
       birthDate: person?.birthDate ? new Date(person?.birthDate) : null,
       anniversary: person?.anniversary ? new Date(person?.anniversary) : null

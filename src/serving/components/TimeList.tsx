@@ -24,17 +24,17 @@ interface Props {
 }
 
 export const TimeList = (props: Props) => {
-  const [time, setTime] = React.useState<TimeInterface>(null);
+  const [time, setTime] = React.useState<TimeInterface | null>(null);
   const { canEdit } = props;
   // Hoisted null-safe view: the compiler emits non-optional guard reads (props.plan.id)
   // for the handleAdd closure deps, which crash while the parent's plan is still null.
   const plan: PlanInterface = props.plan || ({} as PlanInterface);
 
   const handleAdd = () => {
-    const startTime = new Date(plan.serviceDate);
+    const startTime = new Date(plan.serviceDate || new Date());
     startTime.setHours(9);
     startTime.setMinutes(0);
-    const endTime = new Date(plan.serviceDate);
+    const endTime = new Date(plan.serviceDate || new Date());
     endTime.setHours(10);
     endTime.setMinutes(30);
 
@@ -48,8 +48,8 @@ export const TimeList = (props: Props) => {
   };
 
   const handleSelect = (t: TimeInterface) => {
-    t.startTime = new Date(t.startTime);
-    t.endTime = new Date(t.endTime);
+    t.startTime = new Date(t.startTime || new Date());
+    t.endTime = new Date(t.endTime || new Date());
     t.startTime.setMinutes(t.startTime.getMinutes() - t.startTime.getTimezoneOffset());
     t.endTime.setMinutes(t.endTime.getMinutes() - t.endTime.getTimezoneOffset());
     setTime(t);
@@ -63,9 +63,9 @@ export const TimeList = (props: Props) => {
     const result: JSX.Element[] = [];
     props.times.forEach((t) => {
       const teamList = t.teams?.split(",") || [];
-      const startTime = new Date(t.startTime);
+      const startTime = new Date(t.startTime || new Date());
       //startTime.setMinutes(startTime.getMinutes() - startTime.getTimezoneOffset());
-      const endTime = new Date(t.endTime);
+      const endTime = new Date(t.endTime || new Date());
       //endTime.setMinutes(endTime.getMinutes() - endTime.getTimezoneOffset());
       const typeIcon = t.serviceTimeType === "rehearsal" ? "music_note" : t.serviceTimeType === "other" ? "event_note" : "schedule";
       const typeLabel = t.serviceTimeType === "rehearsal"

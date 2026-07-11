@@ -1,5 +1,5 @@
 import React from "react";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ErrorMessages, Locale } from "@churchapps/apphelper";
 import { type RolePermissionInterface } from "@churchapps/helpers";
 import { FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 
@@ -13,7 +13,8 @@ interface Props {
 }
 
 export const RoleCheck: React.FC<Props> = (props) => {
-  const [rolePermission, setRolePermission] = React.useState<RolePermissionInterface>(null);
+  const [rolePermission, setRolePermission] = React.useState<RolePermissionInterface | null>(null);
+  const [errors, setErrors] = React.useState<string[]>([]);
 
   const init = () => {
     for (let i = 0; i < props.rolePermissions.length; i++) {
@@ -22,7 +23,7 @@ export const RoleCheck: React.FC<Props> = (props) => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       const rp: RolePermissionInterface = {
         roleId: props.roleId,
@@ -30,13 +31,23 @@ export const RoleCheck: React.FC<Props> = (props) => {
         contentType: props.contentType,
         action: props.action
       };
-      ApiHelper.post("/rolepermissions/", [rp], "MembershipApi").then((data: any) => {
-        rp.id = data[0];
-        setRolePermission(rp);
-      });
+      setRolePermission(rp); // optimistic
+      try {
+        const data: any = await ApiHelper.post("/rolepermissions/", [rp], "MembershipApi");
+        setRolePermission({ ...rp, id: data[0] });
+      } catch {
+        setRolePermission(null); // revert
+        setErrors([Locale.label("common.saveError")]);
+      }
     } else {
-      ApiHelper.delete("/rolepermissions/" + rolePermission.id, "MembershipApi");
-      setRolePermission(null);
+      const previous = rolePermission;
+      setRolePermission(null); // optimistic
+      try {
+        await ApiHelper.delete("/rolepermissions/" + previous!.id, "MembershipApi");
+      } catch {
+        setRolePermission(previous); // revert
+        setErrors([Locale.label("common.saveError")]);
+      }
     }
   };
 
@@ -44,6 +55,7 @@ export const RoleCheck: React.FC<Props> = (props) => {
 
   return (
     <FormGroup>
+      <ErrorMessages errors={errors} />
       <FormControlLabel
         control={
           <Checkbox checked={rolePermission !== null} onChange={handleChange} data-testid={`role-permission-checkbox-${props.contentType}-${props.action}`} aria-label={Locale.label("settings.roleCheck.permissionAria").replace("{label}", props.label)} />

@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from "react";
 import { HouseholdEdit } from ".";
-import { type GroupMemberInterface, type PersonInterface, type VisitInterface } from "@churchapps/helpers";
+import { type GroupMemberInterface, type HouseholdInterface, type PersonInterface, type VisitInterface } from "@churchapps/helpers";
 import { DisplayBox, ApiHelper, UserHelper, Permissions, UniqueIdHelper, Loading, PersonHelper, Locale, PersonAvatar, DateHelper } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableRow, TableCell, Typography, Stack, Box, Chip } from "@mui/material";
@@ -13,8 +13,8 @@ interface Props {
 }
 
 export const Household: React.FC<Props> = memo((props) => {
-  const [household, setHousehold] = React.useState(null);
-  const [members, setMembers] = React.useState<PersonInterface[]>(null);
+  const [household, setHousehold] = React.useState<HouseholdInterface | null>(null);
+  const [members, setMembers] = React.useState<PersonInterface[] | null>(null);
   const [memberGroups, setMemberGroups] = React.useState<Record<string, string[]>>({});
   const [memberLastActivity, setMemberLastActivity] = React.useState<Record<string, string>>({});
   const [mode, setMode] = React.useState("display");
@@ -196,5 +196,5 @@ export const Household: React.FC<Props> = memo((props) => {
         {getTable()}
       </DisplayBox>
     );
-  } else return <HouseholdEdit household={household} currentMembers={members} updatedFunction={handleUpdate} currentPerson={props.person} />;
+  } else return <HouseholdEdit household={household!} currentMembers={members} updatedFunction={handleUpdate} currentPerson={props.person} />;
 });

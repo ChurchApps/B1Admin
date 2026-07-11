@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 
@@ -15,6 +15,7 @@ export const GdprActions: React.FC<Props> = (props) => {
   const [anonymizeOpen, setAnonymizeOpen] = useState(false);
   const [anonymizing, setAnonymizing] = useState(false);
   const [confirmText, setConfirmText] = useState("");
+  const [anonymizeError, setAnonymizeError] = useState("");
 
   const handleExport = async () => {
     setExporting(true);
@@ -34,12 +35,14 @@ export const GdprActions: React.FC<Props> = (props) => {
 
   const handleAnonymize = async () => {
     setAnonymizing(true);
+    setAnonymizeError("");
     try {
       await ApiHelper.delete("/gdpr/people/" + props.personId + "/anonymize", "MembershipApi");
       setAnonymizeOpen(false);
       setConfirmText("");
       if (props.onAnonymized) props.onAnonymized();
-    } catch {
+    } catch (e: any) {
+      setAnonymizeError(e?.message || Locale.label("common.saveError"));
       setAnonymizing(false);
     }
   };
@@ -58,7 +61,7 @@ export const GdprActions: React.FC<Props> = (props) => {
             <Button variant="outlined" size="small" onClick={handleExport} disabled={exporting}>
               {exporting ? Locale.label("people.gdprActions.exporting") : Locale.label("people.gdprActions.exportData")}
             </Button>
-            <Button variant="outlined" size="small" onClick={() => setAnonymizeOpen(true)}>
+            <Button variant="outlined" size="small" onClick={() => { setAnonymizeError(""); setAnonymizeOpen(true); }}>
               {Locale.label("people.gdprActions.anonymize")}
             </Button>
           </Stack>
@@ -68,6 +71,7 @@ export const GdprActions: React.FC<Props> = (props) => {
       <Dialog open={anonymizeOpen} onClose={() => { if (!anonymizing) setAnonymizeOpen(false); }}>
         <DialogTitle>{Locale.label("people.gdprActions.anonymizeTitle").replace("{personName}", props.personName)}</DialogTitle>
         <DialogContent>
+          {anonymizeError && <Alert severity="error" sx={{ mb: 2 }}>{anonymizeError}</Alert>}
           <DialogContentText sx={{ mb: 2 }}>
             {Locale.label("people.gdprActions.anonymizeDescription")}
           </DialogContentText>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack, TextField, Button, Typography } from "@mui/material";
+import { Alert, Box, Stack, TextField, Button, Typography } from "@mui/material";
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { AppIconButton } from "../../components/ui/AppIconButton";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const RegistrationSelectionsEdit: React.FC<Props> = ({ event }) => {
-  const { rows, saving, update, addRow, removeRow, save } = useEditableRowList<RegistrationSelectionInterface>({
+  const { rows, saving, error, update, addRow, removeRow, save, ConfirmDialogElement } = useEditableRowList<RegistrationSelectionInterface>({
     loadUrl: `/registrations/selections/event/${event.id}?churchId=${event.churchId}`,
     saveUrl: "/registrations/selections",
     deleteUrlPrefix: "/registrations/selections/",
@@ -25,6 +25,7 @@ export const RegistrationSelectionsEdit: React.FC<Props> = ({ event }) => {
 
   return (
     <Stack spacing={1.5}>
+      {ConfirmDialogElement}
       {rows.length === 0 && (
         <Typography variant="body2" color="text.secondary">{Locale.label("registrations.commerce.noSelections")}</Typography>
       )}
@@ -44,6 +45,7 @@ export const RegistrationSelectionsEdit: React.FC<Props> = ({ event }) => {
           </Stack>
         </Box>
       ))}
+      {error && <Alert severity="error">{error}</Alert>}
       <Stack direction="row" spacing={1}>
         <Button size="small" startIcon={<AddIcon />} onClick={addRow} data-testid="add-registration-selection">{Locale.label("registrations.commerce.addSelection")}</Button>
         <Button size="small" variant="contained" onClick={save} disabled={saving} data-testid="save-registration-selections">{saving ? Locale.label("common.saving") : Locale.label("common.save")}</Button>

@@ -124,6 +124,7 @@ export const SiteTemplatePicker: React.FC<Props> = (props) => {
   );
 
   const getDetailView = () => {
+    if (!selected) return null;
     const pages = customPages(selected);
     const navOnly = navOnlyPages(selected);
     const hasConflicts = pages.some(pageExists);

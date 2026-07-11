@@ -41,7 +41,7 @@ export const CampaignsPage = () => {
     if (editCampaignId === "notset") return null;
     const campaign: CampaignInterface = editCampaignId === ""
       ? { name: "", startDate: DateHelper.formatHtml5Date(new Date()) }
-      : progress.data.find((c) => c.campaign?.id === editCampaignId)?.campaign || {};
+      : (progress.data || []).find((c) => c.campaign?.id === editCampaignId)?.campaign || {};
     return <CampaignEdit campaign={campaign} funds={funds.data || []} updatedFunction={campaignUpdated} />;
   };
 
@@ -104,7 +104,7 @@ export const CampaignsPage = () => {
             )}
           </TableCell>
           <TableCell align="right" className="rowActions">
-            {canEdit && <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-id={c.id} onClick={() => setEditCampaignId(c.id)} />}
+            {canEdit && <AppIconButton label={Locale.label("common.edit")} icon={<EditIcon />} data-id={c.id} onClick={() => setEditCampaignId(c.id || "")} />}
           </TableCell>
         </TableRow>
       );

@@ -12,7 +12,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 
 export const Tabs: React.FC = () => {
   const { links: tabs, isLoading, loadData, moveUp, moveDown } = useReorderableLinks("streamingTab");
-  const [currentTab, setCurrentTab] = React.useState<LinkInterface>(null);
+  const [currentTab, setCurrentTab] = React.useState<LinkInterface | null>(null);
 
   const handleUpdated = () => { setCurrentTab(null); loadData(); };
   const getEditContent = () => <Button size="small" variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>{Locale.label("sermons.liveStreamTimes.sidebarTabs.add")}</Button>;
@@ -22,8 +22,8 @@ export const Tabs: React.FC = () => {
     setCurrentTab(tab);
   };
 
-  const handleMoveUp = (e: React.MouseEvent) => { e.preventDefault(); moveUp(parseInt(e.currentTarget.getAttribute("data-idx"))); };
-  const handleMoveDown = (e: React.MouseEvent) => { e.preventDefault(); moveDown(parseInt(e.currentTarget.getAttribute("data-idx"))); };
+  const handleMoveUp = (e: React.MouseEvent) => { e.preventDefault(); moveUp(parseInt(e.currentTarget.getAttribute("data-idx") || "0")); };
+  const handleMoveDown = (e: React.MouseEvent) => { e.preventDefault(); moveDown(parseInt(e.currentTarget.getAttribute("data-idx") || "0")); };
 
   const getRows = () => {
     let idx = 0;

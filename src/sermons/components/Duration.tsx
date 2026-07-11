@@ -15,7 +15,7 @@ export const Duration: React.FC<Props> = (props) => {
       case "sec": sec = val; break;
     }
     const total = min * 60 + sec;
-    props.updatedFunction(total);
+    props.updatedFunction?.(total);
   };
 
   return (

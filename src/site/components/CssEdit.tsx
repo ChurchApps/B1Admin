@@ -6,12 +6,12 @@ import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 
 interface Props {
-  globalStyle?: GlobalStyleInterface;
-  updatedFunction?: (globalStyle: GlobalStyleInterface) => void;
+  globalStyle?: GlobalStyleInterface | null;
+  updatedFunction?: (globalStyle: GlobalStyleInterface | null) => void;
 }
 
 export function CssEdit(props: Props) {
-  const [globalStyle, setGlobalStyle] = useState<GlobalStyleInterface>(null);
+  const [globalStyle, setGlobalStyle] = useState<GlobalStyleInterface | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function CssEdit(props: Props) {
   const handleSave = () => {
     setIsSubmitting(true);
     setTimeout(() => {
-      props.updatedFunction(globalStyle);
+      props.updatedFunction?.(globalStyle);
       setIsSubmitting(false);
     }, 500);
   };
@@ -98,7 +98,7 @@ a:hover {
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSubmitting} loadingText={Locale.label("site.cssEdit.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }}>{Locale.label("site.cssEdit.saveChanges")}</LoadingButton>
           </Stack>
         </Stack>

@@ -340,9 +340,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/apphelper@npm:^0.21.0":
-  version: 0.21.0
-  resolution: "@churchapps/apphelper@npm:0.21.0"
+"@churchapps/apphelper@npm:^0.22.2":
+  version: 0.22.2
+  resolution: "@churchapps/apphelper@npm:0.22.2"
   dependencies:
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
@@ -403,14 +403,14 @@ __metadata:
       optional: true
     react-google-recaptcha:
       optional: true
-  checksum: 10c0/79281905ed975def18813bc74bad6172f930ffe764f275f762b73cfab9f637a451c51f584856081475e33356ac8e856b12624fe815da48596beea734352776f2
+  checksum: 10c0/27f510a6084575f1e9b6c3f231a865b24c7ecd9075ed27be4750cc8142aa865a01912f72116fe973ac712663b9de438cec60f080664f5e72a7c99adda65c6de3
   languageName: node
   linkType: hard
 
-"@churchapps/content-providers@npm:^0.5.1":
-  version: 0.5.1
-  resolution: "@churchapps/content-providers@npm:0.5.1"
-  checksum: 10c0/00e97adeb25d2fffae5ad18e5dc52a50a8f30c988ef336edb53fec48f21d7a80a0861b3ec0956e58e148a85cef9e7c5854fb59245c194e19b946f1e31a69023f
+"@churchapps/content-providers@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "@churchapps/content-providers@npm:0.7.0"
+  checksum: 10c0/8f602ade3b37922ac9291048dd7a1b622ab1c66178b1fca24d0d26868ecdef9e3ff924c20b9f16f5cf1181bcfaed1defe790ac4851a3a7bbaaf8c7f0538cf89f
   languageName: node
   linkType: hard
 
@@ -2009,23 +2009,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/react-stripe-js@npm:^3.10.0":
-  version: 3.10.0
-  resolution: "@stripe/react-stripe-js@npm:3.10.0"
+"@stripe/react-stripe-js@npm:^6.6.0":
+  version: 6.6.0
+  resolution: "@stripe/react-stripe-js@npm:6.6.0"
   dependencies:
     prop-types: "npm:^15.7.2"
   peerDependencies:
-    "@stripe/stripe-js": ">=1.44.1 <8.0.0"
+    "@stripe/stripe-js": ">=9.5.0 <10.0.0"
     react: ">=16.8.0 <20.0.0"
     react-dom: ">=16.8.0 <20.0.0"
-  checksum: 10c0/d7629436629571883e1ab44b1fdbdd5bc002c9020400bbad212caccddad5eaedefbdb171e970bd34276b72d9c23deac86d1e0898db11961de2a7e8951bf9711a
+  checksum: 10c0/fb093073d19efb15c18cd4b4007b886bfff4bbee17b270fabb86c82e1dad0377ebb15d58bab37c41c3ea01599fc0a5117747611226ac232e1350ebbfeecb17a7
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:^7.9.0":
-  version: 7.9.0
-  resolution: "@stripe/stripe-js@npm:7.9.0"
-  checksum: 10c0/ca7dd386df944ed05be115422dde9f5a2b04846e508f482d996db273d95bf8ac8ab5078e58480534b8bc6e29c26c67e16c7e75e478c3112813f971ec6aba49f8
+"@stripe/stripe-js@npm:^9.8.0":
+  version: 9.8.0
+  resolution: "@stripe/stripe-js@npm:9.8.0"
+  checksum: 10c0/90c473b938800a3c7f5794e052b22b2a277e1e61a1b54353a8117c3fd630e42cba2530d42ca12a9e06b674cd3ad5d74adf815b54763dc14726aeb05056592031
   languageName: node
   linkType: hard
 
@@ -2578,8 +2578,8 @@ __metadata:
   resolution: "b1admin@workspace:."
   dependencies:
     "@babel/core": "npm:^8.0.1"
-    "@churchapps/apphelper": "npm:^0.21.0"
-    "@churchapps/content-providers": "npm:^0.5.1"
+    "@churchapps/apphelper": "npm:^0.22.2"
+    "@churchapps/content-providers": "npm:^0.7.0"
     "@churchapps/helpers": "npm:^1.10.1"
     "@eslint/js": "npm:^10.0.1"
     "@mui/icons-material": "npm:^7.3.11"
@@ -2589,8 +2589,8 @@ __metadata:
     "@react-hook/window-size": "npm:^3.1.1"
     "@rolldown/plugin-babel": "npm:^0.2.3"
     "@sentry/react": "npm:^10.52.0"
-    "@stripe/react-stripe-js": "npm:^3.10.0"
-    "@stripe/stripe-js": "npm:^7.9.0"
+    "@stripe/react-stripe-js": "npm:^6.6.0"
+    "@stripe/stripe-js": "npm:^9.8.0"
     "@tanstack/react-query": "npm:^5.100.9"
     "@tanstack/react-query-devtools": "npm:^5.100.9"
     "@types/babel__core": "npm:^7.20.5"

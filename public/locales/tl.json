@@ -337,7 +337,8 @@
         "firstName": "Mangyaring magpasok ng isang unang pangalan.",
         "lastName": "Mangyaring magpasok ng isang apelyido.",
         "validEmail": "Mangyaring magpasok ng balidong email address."
-      }
+      },
+      "confirmDuplicate": "May nahanap na umiiral na tao na '{{existingName}}' ({{existingEmail}}) gamit ang email na ito. Sigurado ka bang gusto mong idagdag si '{{firstName}} {{lastName}}'?"
     },
     "custom": "Pasadya",
     "delete": "Tanggalin",

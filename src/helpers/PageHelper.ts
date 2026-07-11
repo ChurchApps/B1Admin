@@ -19,7 +19,7 @@ export class PageHelper {
     const templatePages: PageLink[] = await PageHelper.getTemplatePages();
     let result: PageLink[] = [...templatePages];
 
-    const groupPage = result.find((p) => p.url === "/groups");
+    const groupPage = result.find((p) => p.url === "/groups")!;
     customPages.forEach((p: any) => {
       const url = p.url || "";
       const page: PageLink = { pageId: p.id, title: p.title, url: url, custom: true };
@@ -27,11 +27,11 @@ export class PageHelper {
         const existing = result.find((r) => r.url === p.url);
         if (existing) { existing.title = p.title; existing.custom = true; existing.pageId = p.id; } else result.push(page);
       } else {
-        const existing = groupPage.children.find((r) => r.url === p.url);
-        if (existing) { existing.title = p.title; existing.custom = true; existing.pageId = p.id; } else groupPage.children.push(page);
+        const existing = groupPage.children!.find((r) => r.url === p.url);
+        if (existing) { existing.title = p.title; existing.custom = true; existing.pageId = p.id; } else groupPage.children!.push(page);
       }
     });
-    groupPage.children = PageHelper.sortLevel(groupPage.children);
+    groupPage.children = PageHelper.sortLevel(groupPage.children!);
     result = PageHelper.sortLevel(result);
     return result;
   };
@@ -42,7 +42,7 @@ export class PageHelper {
       result.push(p);
       if (p.children) {
         result = result.concat(PageHelper.flatten(p.children));
-        p.children = null;
+        p.children = undefined;
       }
     });
     return result;
@@ -68,12 +68,12 @@ export class PageHelper {
     });
 
     labels.forEach((l: string) => {
-      groupPage.children.push({ title: l, url: `/groups/${l.toLowerCase().replace(" ", "-")}`, custom: false });
+      groupPage.children!.push({ title: l, url: `/groups/${l.toLowerCase().replace(" ", "-")}`, custom: false });
     });
 
 
     groups.forEach((g: any) => {
-      groupPage.children.push({ title: g.name, url: `/groups/details/${g.slug}`, custom: false });
+      groupPage.children!.push({ title: g.name, url: `/mobile/groups/${g.slug}`, custom: false });
     });
     templatePages.push(groupPage);
     return templatePages;

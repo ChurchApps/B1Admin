@@ -26,7 +26,7 @@ export const LiveStreamTimesPage = memo(() => {
     { value: "settings", label: Locale.label("sermons.liveStreamTimes.settings"), icon: <SettingsIcon /> }
   ];
 
-  const streamUrl = CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain) + "/stream";
+  const streamUrl = CommonEnvironmentHelper.B1Root.replace("{key}", UserHelper.currentUserChurch.church.subDomain || "") + "/stream";
 
   const getCurrentTab = () => {
     switch (selectedTab) {

@@ -20,7 +20,7 @@ interface Props {
   category?: string;
 }
 
-const getNestedChildren = (arr: LinkInterface[], parent: string) => {
+const getNestedChildren = (arr: LinkInterface[], parent: string | undefined) => {
   const result: LinkInterface[] = [];
   for (const i in arr) {
     if (arr[i].parentId == parent) {
@@ -37,7 +37,7 @@ const getNestedChildren = (arr: LinkInterface[], parent: string) => {
 export const Links: React.FC<Props> = (props) => {
   const cat = props.category ? props.category : "website";
   const { links, isLoading, loadData, moveUp, moveDown } = useReorderableLinks(cat, { refresh: props?.refresh });
-  const [currentLink, setCurrentLink] = React.useState<LinkInterface>(null);
+  const [currentLink, setCurrentLink] = React.useState<LinkInterface | null>(null);
 
   const handleUpdated = () => { setCurrentLink(null); loadData(); };
   const getEditContent = () => <Button size="small" variant="contained" startIcon={<AddIcon />} onClick={handleAdd} data-testid="add-link-button">{Locale.label("sermons.liveStreamTimes.navigationLinks.add")}</Button>;
@@ -51,17 +51,17 @@ export const Links: React.FC<Props> = (props) => {
 
   const handleMoveUp = (e: React.MouseEvent, list: LinkInterface[]) => {
     e.preventDefault();
-    moveUp(parseInt(e.currentTarget.getAttribute("data-idx")), list);
+    moveUp(parseInt(e.currentTarget.getAttribute("data-idx") || ""), list);
   };
 
   const handleMoveDown = (e: React.MouseEvent, list: LinkInterface[]) => {
     e.preventDefault();
-    moveDown(parseInt(e.currentTarget.getAttribute("data-idx")), list);
+    moveDown(parseInt(e.currentTarget.getAttribute("data-idx") || ""), list);
   };
 
   const RecursiveLinks = ({ childrenLinks, nestedLevel }: RecursiveInterface) => {
     //nestedLevel shows the level of recursion based on which styling is done.
-    nestedLevel = nestedLevel + 1;
+    nestedLevel = (nestedLevel ?? 0) + 1;
     let idx = 0;
     return (
       <>

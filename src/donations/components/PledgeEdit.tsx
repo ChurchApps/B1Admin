@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const PledgeEdit: React.FC<Props> = (props) => {
-  const [person, setPerson] = React.useState<PersonInterface>(null);
+  const [person, setPerson] = React.useState<PersonInterface | null>(null);
   const [amount, setAmount] = React.useState<string>("");
   const [errors, setErrors] = React.useState<string[]>([]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();

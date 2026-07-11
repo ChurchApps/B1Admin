@@ -30,7 +30,7 @@ export const FaqEdit = ({ parsedData, handleChange, handleHtmlChange }: Props) =
     </Box>
     <Box sx={{ marginTop: 2 }}>
       <InputLabel>{Locale.label("site.faqEdit.iconColor")}</InputLabel>
-      <ColorPicker color={parsedData?.iconColor || "#03a9f4"} updatedCallback={(c) => handleHtmlChange("iconColor", c)} globalStyles={null} />
+      <ColorPicker color={parsedData?.iconColor || "#03a9f4"} updatedCallback={(c) => handleHtmlChange("iconColor", c)} globalStyles={null as any} />
     </Box>
   </>
 );

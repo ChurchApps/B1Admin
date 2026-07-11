@@ -14,7 +14,7 @@ interface Props {
 
 export const Search: React.FC<Props> = (props) => {
   const [searchText, setSearchText] = React.useState<string>("");
-  const [rows, setRows] = React.useState(null);
+  const [rows, setRows] = React.useState<any[] | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -39,7 +39,7 @@ export const Search: React.FC<Props> = (props) => {
             type="button"
             className="no-default-style"
             onClick={() => {
-              props.handleClickAction(person.id);
+              props.handleClickAction(person.id || "");
             }}
             data-testid="select-person-button"
             aria-label={Locale.label("components.search.ariaSelectPerson")}>

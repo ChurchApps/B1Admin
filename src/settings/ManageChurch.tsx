@@ -4,7 +4,7 @@ import { UserHelper, Permissions, Locale, ApiHelper, Loading, PageHeader } from 
 import { useNavigate, useLocation } from "react-router-dom";
 import { PermissionDenied } from "../components";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon } from "@mui/icons-material";
+import { PlayArrow as PlayArrowIcon, History as HistoryIcon, Layers as LayersIcon, Business as BusinessIcon, Tune as TuneIcon, VolunteerActivism as VolunteerActivismIcon, Sms as SmsIcon, Language as LanguageIcon, Link as LinkIcon, Code as CodeIcon, School as SchoolIcon, HowToReg as HowToRegIcon, ListAlt as ListAltIcon, Cloud as CloudIcon } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { HeaderSecondaryButton } from "../components/ui";
 import { SettingsConfigList, type ConfigSection } from "./components/SettingsConfigList";
@@ -16,12 +16,14 @@ import { DeveloperSection } from "./components/DeveloperSection";
 import { SupportContactSettingsEdit } from "./components/SupportContactSettingsEdit";
 import { GivingSettingsEdit } from "./components/GivingSettingsEdit";
 import { TextingSettingsEdit } from "./components/TextingSettingsEdit";
+import { StorageSettingsEdit } from "./components/StorageSettingsEdit";
+import { MINISTRYSTUFF_ENABLED } from "../helpers/MinistryStuffFlag";
 import { DomainSettingsEdit } from "./components/DomainSettingsEdit";
 import { GradePromotionSettingsEdit } from "./components/GradePromotionSettingsEdit";
 import { CheckinSettingsEdit } from "./components/CheckinSettingsEdit";
 
 const SECTION_KEYS = [
-  "church-info", "general", "giving", "texting", "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
+  "church-info", "general", "giving", "texting", ...(MINISTRYSTUFF_ENABLED ? ["storage"] : []), "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
 ];
 
 const SummaryRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
@@ -37,7 +39,7 @@ export const ManageChurch = () => {
   const hash = location.hash?.replace("#", "");
 
   const jwt = ApiHelper.getConfig("MembershipApi").jwt;
-  const churchId = UserHelper.currentUserChurch.church.id;
+  const churchId = UserHelper.currentUserChurch.church.id || "";
 
   const hasAccess = UserHelper.checkAccess(Permissions.membershipApi.settings.edit);
   const hasGiving = UserHelper.checkAccess(Permissions.givingApi.settings.edit);
@@ -51,6 +53,7 @@ export const ManageChurch = () => {
   const settingsQ = useQuery<any[]>({ queryKey: ["/settings", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const gateways = useQuery<any[]>({ queryKey: ["/gateways", "GivingApi"], placeholderData: [], enabled: hasGiving });
   const texting = useQuery<any[]>({ queryKey: ["/texting/providers", "MessagingApi"], placeholderData: [], enabled: hasAccess });
+  const storage = useQuery<any[]>({ queryKey: ["/storage/providers", "ContentApi"], placeholderData: [], enabled: hasAccess && MINISTRYSTUFF_ENABLED });
   const domains = useQuery<any[]>({ queryKey: ["/domains", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const campuses = useQuery<any[]>({ queryKey: ["/campuses", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const personFields = useQuery<any[]>({ queryKey: ["/personfields", "MembershipApi"], placeholderData: [], enabled: hasAccess });
@@ -60,8 +63,9 @@ export const ManageChurch = () => {
     settingsQ.refetch();
     gateways.refetch();
     texting.refetch();
+    storage.refetch();
     domains.refetch();
-  }, [church, settingsQ, gateways, texting, domains]);
+  }, [church, settingsQ, gateways, texting, storage, domains]);
 
   if (!hasAccess) return <PermissionDenied permissions={[Permissions.membershipApi.settings.edit]} />;
   if (church.isLoading) return <Loading />;
@@ -97,12 +101,15 @@ export const ManageChurch = () => {
     ? Locale.label("settings.landing.givingProvider").replace("{provider}", gateway.provider || "").replace("{currency}", (gateway.currency || "").toUpperCase())
     : Locale.label("settings.landing.notConfigured");
   const textingSubtitle = textingProvider || Locale.label("settings.landing.notConfigured");
+  const storageProviderName = (storage.data || []).find((p) => p.enabled)?.provider;
+  const storageSubtitle = storageProviderName === "ministrystuff" ? "MinistryStuff" : Locale.label("settings.storageSettingsEdit.churchAppsFree");
 
   const sections: ConfigSection[] = [
     { key: "church-info", title: Locale.label("settings.churchSettingsEdit.churchInfo"), subtitle: church.data.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle"), icon: <BusinessIcon />, color: "primary" },
     { key: "general", title: Locale.label("settings.churchSettingsEdit.general"), subtitle: Locale.label("settings.supportContactSettingsEdit.supportContact"), icon: <TuneIcon />, color: "secondary" },
     ...(hasGiving ? [{ key: "giving", title: Locale.label("settings.givingSettingsEdit.giving"), subtitle: givingSubtitle, icon: <VolunteerActivismIcon />, color: "success" } as ConfigSection] : []),
     { key: "texting", title: Locale.label("settings.churchSettingsEdit.textingTitle"), subtitle: textingSubtitle, icon: <SmsIcon />, color: "warning" },
+    ...(MINISTRYSTUFF_ENABLED ? [{ key: "storage", title: Locale.label("settings.storageSettingsEdit.title"), subtitle: storageSubtitle, icon: <CloudIcon />, color: "info" } as ConfigSection] : []),
     { key: "domains", title: Locale.label("settings.domainSettingsEdit.domains"), subtitle: domainsSubtitle, icon: <LanguageIcon />, color: "info" },
     { key: "grade-promotion", title: Locale.label("settings.gradePromotionSettingsEdit.title"), subtitle: gradePromotionSubtitle, icon: <SchoolIcon />, color: "secondary" },
     { key: "check-ins", title: Locale.label("settings.checkinSettingsEdit.title"), subtitle: checkinsSubtitle, icon: <HowToRegIcon />, color: "info" },
@@ -146,7 +153,7 @@ export const ManageChurch = () => {
             headerIcon="tune"
             data-testid="settings-general"
             view={<SummaryRow label={Locale.label("settings.supportContactSettingsEdit.supportContact")} value={supportContact || Locale.label("settings.landing.notSet")} />}
-            renderEdit={(saveTrigger) => <SupportContactSettingsEdit churchId={churchId} saveTrigger={saveTrigger} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <SupportContactSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );
@@ -157,7 +164,7 @@ export const ManageChurch = () => {
             headerIcon="volunteer_activism"
             data-testid="settings-giving"
             view={givingView}
-            renderEdit={(saveTrigger, onError) => <GivingSettingsEdit churchId={churchId} churchInfo={church.data} saveTrigger={saveTrigger} onError={onError} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <GivingSettingsEdit churchId={churchId} churchInfo={church.data} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );
@@ -168,7 +175,18 @@ export const ManageChurch = () => {
             headerIcon="sms"
             data-testid="settings-texting"
             view={<SummaryRow label={Locale.label("settings.textingSettingsEdit.provider")} value={textingProvider || Locale.label("settings.landing.notConfigured")} />}
-            renderEdit={(saveTrigger, onError) => <TextingSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onError={onError} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <TextingSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
+            onSaved={handleSaved}
+          />
+        );
+      case "storage":
+        return (
+          <SettingsToggleSection
+            headerText={Locale.label("settings.storageSettingsEdit.title")}
+            headerIcon="cloud"
+            data-testid="settings-storage"
+            view={<SummaryRow label={Locale.label("settings.storageSettingsEdit.provider")} value={storageSubtitle} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <StorageSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );
@@ -179,7 +197,7 @@ export const ManageChurch = () => {
             headerIcon="language"
             data-testid="settings-domains"
             view={domainsView}
-            renderEdit={(saveTrigger) => <DomainSettingsEdit churchId={churchId} saveTrigger={saveTrigger} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <DomainSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );
@@ -190,7 +208,7 @@ export const ManageChurch = () => {
             headerIcon="school"
             data-testid="settings-grade-promotion"
             view={<SummaryRow label={Locale.label("settings.gradePromotionSettingsEdit.title")} value={gradePromotionSubtitle} />}
-            renderEdit={(saveTrigger) => <GradePromotionSettingsEdit churchId={churchId} saveTrigger={saveTrigger} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <GradePromotionSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );
@@ -201,7 +219,7 @@ export const ManageChurch = () => {
             headerIcon="how_to_reg"
             data-testid="settings-check-ins"
             view={<SummaryRow label={Locale.label("settings.checkinSettingsEdit.ratioEnforcement")} value={checkinsSubtitle} />}
-            renderEdit={(saveTrigger) => <CheckinSettingsEdit churchId={churchId} saveTrigger={saveTrigger} />}
+            renderEdit={(saveTrigger, onSaveComplete) => <CheckinSettingsEdit churchId={churchId} saveTrigger={saveTrigger} onSaveComplete={onSaveComplete} />}
             onSaved={handleSaved}
           />
         );
@@ -230,7 +248,9 @@ export const ManageChurch = () => {
               {Locale.label("settings.manageChurch.batches")}
             </HeaderSecondaryButton>
           )}
-          <HeaderSecondaryButton startIcon={<PlayArrowIcon />} href={`https://transfer.b1.church/login?jwt=${jwt}&churchId=${churchId}`} target="_blank" rel="noreferrer noopener">
+          <HeaderSecondaryButton
+            {...({ href: `https://transfer.b1.church/login?jwt=${jwt}&churchId=${churchId}`, target: "_blank", rel: "noreferrer noopener" } as any)}
+            startIcon={<PlayArrowIcon />}>
             {Locale.label("settings.manageChurch.imEx")}
           </HeaderSecondaryButton>
         </Stack>

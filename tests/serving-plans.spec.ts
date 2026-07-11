@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { servingTest as test, expect } from "./helpers/test-fixtures";
-import { editIconButton, dismissSendInviteIfPresent } from "./helpers/fixtures";
+import { editIconButton, dismissSendInviteIfPresent, confirmDelete } from "./helpers/fixtures";
 import { login } from "./helpers/auth";
 import { navigateToServing } from "./helpers/navigation";
 import { STORAGE_STATE_PATH } from "./global-setup";
@@ -165,6 +165,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').first();
       await expect(removeBtn).toBeVisible({ timeout: 10000 });
       await removeBtn.click();
+      await confirmDelete(page);
       const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText("Dorothy Jackson");
       await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
     });
@@ -407,6 +408,7 @@ test.describe.serial("Serving Management - Plans", () => {
       const removeBtn = page.locator('[data-testid^="remove-member-button-"]').last();
       await expect(removeBtn).toBeVisible({ timeout: 10000 });
       await removeBtn.click();
+      await confirmDelete(page);
       const verifiedRemoved = page.locator('[id="groupMembersBox"] a').getByText("Grace Jackson");
       await expect(verifiedRemoved).toHaveCount(0, { timeout: 10000 });
     });

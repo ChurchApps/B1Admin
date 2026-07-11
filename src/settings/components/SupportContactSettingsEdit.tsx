@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Box, Icon, Stack, TextField, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Icon, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { UniqueIdHelper, ApiHelper, Locale } from "@churchapps/apphelper";
 import { type GenericSettingInterface } from "@churchapps/helpers";
 
 interface Props {
   churchId: string;
   saveTrigger: Date | null;
+  onSaveComplete?: (ok: boolean) => void;
 }
 
 export const SupportContactSettingsEdit: React.FC<Props> = (props) => {
   const [value, setValue] = useState<string>("");
-  const [setting, setSetting] = useState<GenericSettingInterface>(null);
+  const [setting, setSetting] = useState<GenericSettingInterface | null>(null);
+  const [error, setError] = useState("");
 
-  const save = () => {
+  const save = async () => {
     const s: GenericSettingInterface = setting === null ? { churchId: props.churchId, public: 1, keyName: "supportContact" } : setting;
     s.value = value;
-    ApiHelper.post("/settings", [s], "MembershipApi");
+    try {
+      await ApiHelper.post("/settings", [s], "MembershipApi");
+      setError("");
+      props.onSaveComplete?.(true);
+    } catch (e: any) {
+      setError(e?.message || Locale.label("common.saveError"));
+      props.onSaveComplete?.(false);
+    }
   };
 
   const checkSave = () => {
@@ -38,6 +47,7 @@ export const SupportContactSettingsEdit: React.FC<Props> = (props) => {
 
   return (
     <Box sx={{ mb: 2.5, pb: 2.5, borderBottom: "1px solid", borderColor: "divider", "&:last-child": { borderBottom: "none", mb: 0, pb: 0 } }}>
+      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
       <Stack direction="row" alignItems="center" sx={{ mb: 1.5 }}>
         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("settings.supportContactSettingsEdit.supportContact")}</Typography>
         <Tooltip arrow title={Locale.label("settings.supportContactSettingsEdit.forceMsg")}>

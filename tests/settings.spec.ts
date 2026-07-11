@@ -423,6 +423,7 @@ test.describe.serial("Settings Management", () => {
 
       const removeBtn = page.locator("button").getByText("Remove").last();
       await removeBtn.click();
+      await confirmDelete(page);
       const validatedDeletion = page.locator("td a").getByText("Dorothy Jackson");
       await expect(validatedDeletion).toHaveCount(0, { timeout: 10000 });
     });

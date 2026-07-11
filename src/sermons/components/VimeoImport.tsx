@@ -11,12 +11,12 @@ interface Props {
 
 export const VimeoImport = (props: Props) => {
   const [channelId, setChannelId] = useState("");
-  const [sermons, setSermons] = useState<SermonInterface[]>(null);
+  const [sermons, setSermons] = useState<SermonInterface[] | null>(null);
   const [playlists, setPlaylists] = useState<PlaylistInterface[]>([]);
   const [playlistId, setPlaylistId] = useState("");
   const [selectedSermons, setSelectedSermons] = useState<SermonInterface[]>([]);
   const [isFetching, setIsFetching] = useState(false);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState<string[]>([]);
   const loadData = () => {
     ApiHelper.get("/playlists", "ContentApi").then((data: any) => { setPlaylists(data); });
   };
@@ -30,6 +30,7 @@ export const VimeoImport = (props: Props) => {
 
   const getRows = () => {
     const rows: React.ReactElement[] = [];
+    if (!sermons) return rows;
     sermons.forEach((sermon) => {
       rows.push(
         <TableRow key={sermon.videoData}>

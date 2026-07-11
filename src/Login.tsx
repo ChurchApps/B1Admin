@@ -2,6 +2,7 @@ import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { UserHelper, Permissions, Locale } from "@churchapps/apphelper";
+import { type UserInterface, type LoginUserChurchInterface } from "@churchapps/helpers";
 import UserContext from "./UserContext";
 import { LoginPage } from "@churchapps/apphelper/login";
 import { Alert } from "@mui/material";
@@ -25,9 +26,9 @@ export const Login: React.FC = () => {
       removeCookie("jwt", { path: "/" });
       // Clear user context
       if (context) {
-        context.setUser(null);
-        context.setUserChurch(null);
-        context.setUserChurches(null);
+        context.setUser(null as unknown as UserInterface);
+        context.setUserChurch(null as unknown as LoginUserChurchInterface);
+        context.setUserChurches(null as unknown as LoginUserChurchInterface[]);
       }
     }
   }, [forceLogin, context, removeCookie]);
@@ -69,7 +70,7 @@ export const Login: React.FC = () => {
         )}
         <LoginPage
           auth={auth}
-          context={context}
+          context={context!}
           jwt={jwt}
           appName="B1Admin"
           appUrl={window.location.href}

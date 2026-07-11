@@ -23,11 +23,14 @@ export function SitesDialog(props: Props) {
 
   const handleAdd = async () => {
     setErrors([]);
-    const resp = await ApiHelper.post("/sites", [{ name, subDomain }], "MembershipApi");
-    if (resp?.errors) { setErrors(resp.errors); return; }
-    setName("");
-    setSubDomain("");
-    props.onChanged();
+    try {
+      await ApiHelper.post("/sites", [{ name, subDomain }], "MembershipApi");
+      setName("");
+      setSubDomain("");
+      props.onChanged();
+    } catch (e: any) {
+      setErrors([e?.message || e?.toString() || "Error"]);
+    }
   };
 
   const handleDelete = async (site: SiteInterface) => {

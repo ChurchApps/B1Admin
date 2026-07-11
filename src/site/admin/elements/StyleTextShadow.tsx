@@ -48,6 +48,6 @@ export const StyleTextShadow: React.FC<Props> = (props) => {
     <TextField fullWidth style={{ marginTop: 10 }} size="small" label={Locale.label("site.styleEdit.offsetX")} name="offsetX" value={offsetX} onChange={handleChange} type="number" />
     <TextField fullWidth style={{ marginTop: 10 }} size="small" label={Locale.label("site.styleEdit.offsetY")} name="offsetY" value={offsetY} onChange={handleChange} type="number" />
     <TextField fullWidth style={{ marginTop: 10 }} size="small" label={Locale.label("site.styleEdit.blurRadius")} name="blurRadius" value={blurRadius} onChange={handleChange} type="number" />
-    <ColorPicker color={color} updatedCallback={(c) => setColor(c)} globalStyles={null} />
+    <ColorPicker color={color} updatedCallback={(c) => setColor(c)} globalStyles={null as any} />
   </>;
 };

@@ -56,6 +56,16 @@ export class ContentProviderAuthHelper {
     ], "DoingApi");
   }
 
+  // Server-side PKCE exchange: token endpoint needs the client_secret (Api-only) and sends no CORS headers.
+  static async exchangeCode(ministryId: string, providerId: string, code: string, codeVerifier: string, redirectUri: string): Promise<boolean> {
+    try {
+      const result = await ApiHelper.post("/contentProviderAuths/exchange", { ministryId, providerId, code, codeVerifier, redirectUri }, "DoingApi");
+      return !result?.error;
+    } catch {
+      return false;
+    }
+  }
+
   static async removeAuth(authId: string): Promise<void> {
     await ApiHelper.delete(`/contentProviderAuths/${authId}`, "DoingApi");
   }

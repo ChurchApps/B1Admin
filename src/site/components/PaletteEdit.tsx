@@ -7,8 +7,8 @@ import type { GlobalStyleInterface } from "../../helpers/Interfaces";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
 
 interface Props {
-  globalStyle?: GlobalStyleInterface;
-  updatedFunction?: (paletteJson: string) => void;
+  globalStyle?: GlobalStyleInterface | null;
+  updatedFunction?: (paletteJson: string | null) => void;
 }
 
 export interface ColorInterface {
@@ -98,7 +98,7 @@ export function PaletteEdit(props: Props) {
   const handleSave = () => {
     setIsSubmitting(true);
     setTimeout(() => {
-      props.updatedFunction(JSON.stringify(getValues()));
+      props.updatedFunction?.(JSON.stringify(getValues()));
       setIsSubmitting(false);
     }, 500);
   };
@@ -160,7 +160,7 @@ export function PaletteEdit(props: Props) {
             </Box>
           </Stack>
           <Stack direction="row" spacing={1}>
-            <Button variant="outlined" onClick={() => props.updatedFunction(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
+            <Button variant="outlined" onClick={() => props.updatedFunction?.(null)} sx={{ color: "#FFF", borderColor: "rgba(255,255,255,0.5)", "&:hover": { borderColor: "#FFF", backgroundColor: "rgba(255,255,255,0.1)" } }}>{Locale.label("common.cancel")}</Button>
             <LoadingButton loading={isSubmitting} loadingText={Locale.label("common.saving")} variant="contained" onClick={handleSave} sx={{ backgroundColor: "#FFF", color: "primary.light", "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" } }} data-testid="save-palette-button">{Locale.label("site.paletteEdit.savePalette")}</LoadingButton>
           </Stack>
         </Stack>
@@ -171,38 +171,38 @@ export function PaletteEdit(props: Props) {
           <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.primary" }}>{Locale.label("site.paletteEdit.baseColors")}</Typography>
           <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.light")} fullWidth data-testid="light-color-input" aria-label="Light color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("light")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.light")} helperText={Locale.label("site.paletteEdit.lightDesc")} fullWidth data-testid="light-color-input" aria-label="Light color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("light")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.lightAccent")} fullWidth data-testid="light-accent-color-input" aria-label="Light accent color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("lightAccent")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.lightAccent")} helperText={Locale.label("site.paletteEdit.lightAccentDesc")} fullWidth data-testid="light-accent-color-input" aria-label="Light accent color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("lightAccent")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.accent")} fullWidth data-testid="accent-color-input" aria-label="Accent color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("accent")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.accent")} helperText={Locale.label("site.paletteEdit.accentDesc")} fullWidth data-testid="accent-color-input" aria-label="Accent color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("accent")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.darkAccent")} fullWidth data-testid="dark-accent-color-input" aria-label="Dark accent color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("darkAccent")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.darkAccent")} helperText={Locale.label("site.paletteEdit.darkAccentDesc")} fullWidth data-testid="dark-accent-color-input" aria-label="Dark accent color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("darkAccent")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.dark")} fullWidth data-testid="dark-color-input" aria-label="Dark color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("dark")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.dark")} helperText={Locale.label("site.paletteEdit.darkDesc")} fullWidth data-testid="dark-color-input" aria-label="Dark color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("dark")} />
             </Grid>
           </Grid>
 
           <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 2, color: "text.primary" }}>{Locale.label("site.paletteEdit.semanticColors")}</Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.primary")} fullWidth data-testid="primary-color-input" aria-label="Primary color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("primary")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.primary")} helperText={Locale.label("site.paletteEdit.primaryDesc")} fullWidth data-testid="primary-color-input" aria-label="Primary color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("primary")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.secondary")} fullWidth data-testid="secondary-color-input" aria-label="Secondary color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("secondary")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.secondary")} helperText={Locale.label("site.paletteEdit.secondaryDesc")} fullWidth data-testid="secondary-color-input" aria-label="Secondary color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("secondary")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.success")} fullWidth data-testid="success-color-input" aria-label="Success color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("success")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.success")} helperText={Locale.label("site.paletteEdit.successDesc")} fullWidth data-testid="success-color-input" aria-label="Success color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("success")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.warning")} fullWidth data-testid="warning-color-input" aria-label="Warning color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("warning")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.warning")} helperText={Locale.label("site.paletteEdit.warningDesc")} fullWidth data-testid="warning-color-input" aria-label="Warning color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("warning")} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-              <TextField type="color" label={Locale.label("site.paletteEdit.error")} fullWidth data-testid="error-color-input" aria-label="Error color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("error")} />
+              <TextField type="color" label={Locale.label("site.paletteEdit.error")} helperText={Locale.label("site.paletteEdit.errorDesc")} fullWidth data-testid="error-color-input" aria-label="Error color" sx={{ "& .MuiInputBase-input": { height: 48 } }} {...register("error")} />
             </Grid>
           </Grid>
         </CardWithHeader>

@@ -9,8 +9,8 @@ export interface RegistrationTypeInterface {
   eventId?: string;
   name?: string;
   description?: string;
-  price?: number;
-  capacity?: number;
+  price?: number | null;
+  capacity?: number | null;
   minAgeYears?: number;
   maxAgeYears?: number;
   formId?: string;
@@ -25,9 +25,9 @@ export interface RegistrationSelectionInterface {
   eventId?: string;
   name?: string;
   description?: string;
-  price?: number;
-  capacity?: number;
-  maxQuantity?: number;
+  price?: number | null;
+  capacity?: number | null;
+  maxQuantity?: number | null;
   sort?: number;
   active?: boolean;
 }
@@ -63,8 +63,11 @@ export interface RegistrationPaymentInterface {
   createdDate?: Date | string;
 }
 
-export interface CommerceEventInterface extends EventInterface {
+export interface CommerceEventInterface extends Omit<EventInterface, "capacity" | "registrationOpenDate" | "registrationCloseDate"> {
   waitlistEnabled?: boolean;
+  capacity?: number | null;
+  registrationOpenDate?: Date | null;
+  registrationCloseDate?: Date | null;
 }
 
 export interface CommerceMemberInterface extends RegistrationMemberInterface {
@@ -75,6 +78,6 @@ export interface CommerceRegistrationInterface extends RegistrationInterface {
   totalAmount?: number;
   amountPaid?: number;
   couponId?: string;
-  waitlistNotifiedDate?: Date | string;
+  waitlistNotifiedDate?: Date;
   members?: CommerceMemberInterface[];
 }

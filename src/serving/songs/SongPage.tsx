@@ -18,7 +18,7 @@ export const SongPage = memo(() => {
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
   const [editSongDetails, setEditSongDetails] = React.useState(false);
   const [editLinks, setEditLinks] = React.useState(false);
-  const [selectedArrangement, setSelectedArrangement] = React.useState(null);
+  const [selectedArrangement, setSelectedArrangement] = React.useState<ArrangementInterface | null>(null);
   const params = useParams();
   const navigate = useNavigate();
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
@@ -49,7 +49,7 @@ export const SongPage = memo(() => {
 
   const selectArrangement = useCallback(
     (arrangementId: string) => {
-      const arr = ArrayHelper.getOne(arrangements.data, "id", arrangementId);
+      const arr = ArrayHelper.getOne(arrangements.data || [], "id", arrangementId);
       setSelectedArrangement(arr);
     },
     [arrangements.data]
@@ -107,16 +107,16 @@ export const SongPage = memo(() => {
               <Typography variant="h6">
                 {Locale.label("songs.oldArrangements.arrangements")}
               </Typography>
-              {arrangements.data.length > 0 && <CountChip count={arrangements.data.length} />}
+              {(arrangements.data?.length ?? 0) > 0 && <CountChip count={arrangements.data?.length ?? 0} />}
             </Stack>
 
             <List sx={{ p: 0 }}>
-              {arrangements.data.map((arrangement, index) => (
+              {arrangements.data?.map((arrangement, index) => (
                 <Box key={arrangement.id}>
                   <ListItem sx={{ px: 0 }}>
                     <ListItemButton
                       selected={selectedArrangement?.id === arrangement.id}
-                      onClick={() => selectArrangement(arrangement.id)}
+                      onClick={() => selectArrangement(arrangement.id!)}
                       sx={{
                         borderRadius: 1,
                         "&.Mui-selected": {
@@ -139,7 +139,7 @@ export const SongPage = memo(() => {
                       />
                     </ListItemButton>
                   </ListItem>
-                  {index < arrangements.data.length - 1 && <Divider sx={{ my: 0.5 }} />}
+                  {index < (arrangements.data?.length ?? 0) - 1 && <Divider sx={{ my: 0.5 }} />}
                 </Box>
               ))}
             </List>
@@ -172,7 +172,7 @@ export const SongPage = memo(() => {
             {songDetail.data &&
               (editLinks && canEdit ? (
                 <SongDetailLinksEdit
-                  songDetailId={songDetail.data.id}
+                  songDetailId={songDetail.data.id!}
                   reload={() => {
                     setEditLinks(false);
                     refetch();
@@ -224,7 +224,7 @@ export const SongPage = memo(() => {
       <Box sx={{ p: 3 }}>
         {editSongDetails && canEdit ? (
           <SongDetailsEdit
-            songDetail={songDetail.data}
+            songDetail={songDetail.data!}
             onCancel={() => setEditSongDetails(false)}
             onSave={() => {
               setEditSongDetails(false);

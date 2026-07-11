@@ -69,10 +69,10 @@ export const FormPage = () => {
   return form.data?.id ? (
     <>
       <PageHeader
-        title={form.data.name}
+        title={form.data.name || ""}
         subtitle={Locale.label("forms.formPage.subtitleConfig")}
         icon={<DescriptionIcon />}
-        tabs={<FormNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} form={form.data} memberPermission={memberPermission.data} onHeader />}>
+        tabs={<FormNavigation selectedTab={selectedTab} onTabChange={setSelectedTab} form={form.data} memberPermission={memberPermission.data || { personName: "" }} onHeader />}>
         {canEditSettings && (
           <HeaderPrimaryButton startIcon={<EditIcon />} onClick={() => setEditingSettings(true)} data-testid="edit-form-settings-button">
             {Locale.label("forms.formEdit.editForm")}
@@ -89,7 +89,7 @@ export const FormPage = () => {
               "& > *:first-of-type": { mb: 2 },
               "& > *:not(:first-of-type)": { mt: 0 }
             }}>
-            <Tabs form={form.data} memberPermission={memberPermission.data} selectedTab={selectedTab} onTabChange={setSelectedTab} />
+            <Tabs form={form.data} memberPermission={memberPermission.data || { personName: "" }} selectedTab={selectedTab} onTabChange={setSelectedTab} />
           </Box>
         )}
       </Box>

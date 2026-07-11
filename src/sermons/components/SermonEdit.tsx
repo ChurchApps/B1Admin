@@ -45,10 +45,10 @@ export const SermonEdit: React.FC<Props> = (props) => {
   });
 
   const checkDelete = () => { if (!UniqueIdHelper.isMissing(props.currentSermon?.id)) return handleDelete; else return undefined; };
-  const handleCancel = () => { props.updatedFunction(); };
+  const handleCancel = () => { props.updatedFunction?.(); };
 
-  const handlePhotoUpdated = (dataUrl: string) => {
-    setThumbnail(dataUrl);
+  const handlePhotoUpdated = (dataUrl?: string) => {
+    setThumbnail(dataUrl ?? "");
     setShowImageEditor(false);
   };
 
@@ -57,7 +57,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
     if (!UserHelper.checkAccess(Permissions.contentApi.streamingServices.edit)) errs.push(Locale.label("sermons.sermonEdit.unauthorizedDelete"));
     if (errs.length > 0) { setErrors(errs); return; }
     if (await confirm(Locale.label("sermons.sermonEdit.deleteConfirm"))) {
-      ApiHelper.delete("/sermons/" + props.currentSermon.id, "ContentApi").then(() => { props.updatedFunction(); });
+      ApiHelper.delete("/sermons/" + props.currentSermon.id, "ContentApi").then(() => { props.updatedFunction?.(); });
     }
   };
 
@@ -131,9 +131,9 @@ export const SermonEdit: React.FC<Props> = (props) => {
       thumbnail,
       duration,
       videoUrl: buildVideoUrl(values.videoType, values.videoData),
-      id: null
+      id: undefined
     };
-    ApiHelper.post("/sermons", [sermon], "ContentApi").then(() => { setShowOption(false); props.updatedFunction(); });
+    ApiHelper.post("/sermons", [sermon], "ContentApi").then(() => { setShowOption(false); props.updatedFunction?.(); });
   };
 
   const watchedVideoType = watch("videoType");
@@ -159,7 +159,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
 
   const getPlaylists = () => {
     const result: React.ReactElement[] = [];
-    playlistsQuery.data.forEach((playlist: any) => {
+    (playlistsQuery.data || []).forEach((playlist: any) => {
       result.push(<MenuItem key={playlist.id} value={playlist.id} data-testid={`playlist-option-${playlist.id}`} aria-label={playlist.title}>{playlist.title}</MenuItem>);
     });
     return result;
@@ -168,7 +168,7 @@ export const SermonEdit: React.FC<Props> = (props) => {
   const getAdditionalPlaylists = () => {
     const currentPlaylistId = watch("playlistId");
     const result: React.ReactElement[] = [];
-    playlistsQuery.data.forEach((playlist: any) => {
+    (playlistsQuery.data || []).forEach((playlist: any) => {
       if (playlist.id !== currentPlaylistId) result.push(<MenuItem key={playlist.id} value={playlist.id} data-testid={`additional-playlist-option-${playlist.id}`} aria-label={playlist.title}>{playlist.title}</MenuItem>);
     });
     return result;

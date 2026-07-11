@@ -15,7 +15,7 @@ export const PageEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const context = useContext(UserContext);
-  const [config, setConfig] = useState<ConfigInterface>(null);
+  const [config, setConfig] = useState<ConfigInterface | undefined>(undefined);
 
   const loadData = async (id: string) =>
     await ApiHelper.get("/pages/" + UserHelper.currentUserChurch.church.id + "/tree?id=" + id, "ContentApi");

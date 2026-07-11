@@ -59,7 +59,7 @@ export const ReportPage = () => {
                 </Box>
               ) : (
                 <Box sx={{ "& .report-container": { p: 0 } }}>
-                  <ReportWithFilter keyName={params.keyName} autoRun={false} />
+                  <ReportWithFilter keyName={params.keyName || ""} autoRun={false} />
                 </Box>
               )}
             </CardContent>

@@ -32,7 +32,7 @@ interface SectionProps {
 const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSettings, globalStyles }) => {
   const getElements = () => {
     const result: React.ReactElement[] = [];
-    const textColor = StyleHelper.getTextColor(section?.textColor, globalStyles || {}, churchSettings);
+    const textColor = StyleHelper.getTextColor(section?.textColor || "", globalStyles || {}, churchSettings);
     section?.elements?.forEach(e => {
       result.push(<ElementRenderer key={e.id} element={e} churchSettings={churchSettings} textColor={textColor} />);
     });
@@ -41,7 +41,7 @@ const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSetting
 
   const getStyle = (): CSSProperties => {
     let result: CSSProperties;
-    if (section.background?.indexOf("/") > -1) {
+    if (section.background && section.background.indexOf("/") > -1) {
       result = { backgroundImage: "url('" + section.background + "')" };
     } else {
       result = { background: section.background };
@@ -52,7 +52,7 @@ const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSetting
 
   const getClassName = () => {
     let result = "section";
-    if (section.background?.indexOf("/") > -1) result += " sectionBG";
+    if (section.background && section.background.indexOf("/") > -1) result += " sectionBG";
     if (section.textColor === "light") result += " sectionDark";
     if (first) result += " sectionFirst";
 
@@ -112,7 +112,7 @@ const SectionRenderer: React.FC<SectionProps> = ({ section, first, churchSetting
 };
 
 export function WebsiteFooter(props: Props) {
-  if (props.footerSections?.length > 0) {
+  if (props.footerSections && props.footerSections.length > 0) {
     return (
       <>
         {props.footerSections.map((section, index) => (

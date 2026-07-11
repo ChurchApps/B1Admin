@@ -32,7 +32,7 @@ import {
 import { ApiHelper, Loading, Locale, PageHeader, UserHelper, Permissions, PersonHelper, CurrencyHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { PersonAdd, FormSubmission } from "../components";
-import { useRequirePermission } from "../hooks";
+import { useRequirePermission, useConfirmDelete } from "../hooks";
 import { RegistrationSettingsEdit } from "./components/RegistrationSettingsEdit";
 import { RegistrationDetailDialog } from "./components/RegistrationDetailDialog";
 import { AppIconButton } from "../components/ui/AppIconButton";
@@ -87,15 +87,16 @@ export const RegistrationDetailsPage = () => {
   useEffect(() => { CurrencyHelper.loadCurrency().then(setCurrency); }, []);
 
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
+  const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const handleCancel = async (regId: string) => {
-    if (!confirm(Locale.label("registrations.registrationDetailsPage.cancelConfirm"))) return;
+    if (!(await confirm(Locale.label("registrations.registrationDetailsPage.cancelConfirm"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
     await ApiHelper.post("/registrations/" + regId + "/cancel", {}, "ContentApi");
     loadData();
   };
 
   const handleDelete = async (regId: string) => {
-    if (!confirm(Locale.label("registrations.registrationDetailsPage.deleteConfirm"))) return;
+    if (!(await confirm(Locale.label("registrations.registrationDetailsPage.deleteConfirm")))) return;
     await ApiHelper.delete("/registrations/" + regId, "ContentApi");
     loadData();
   };
@@ -242,27 +243,27 @@ export const RegistrationDetailsPage = () => {
         </TableCell>
         <TableCell>
           <Stack direction="row" spacing={0.5} alignItems="center">
-            {getStatusChip(reg.status)}
-            {reg.status === "waitlisted" && waitlistPos.get(reg.id) && (
-              <Typography variant="caption" color="text.secondary">#{waitlistPos.get(reg.id)}</Typography>
+            {getStatusChip(reg.status || "")}
+            {reg.status === "waitlisted" && waitlistPos.get(reg.id || "") && (
+              <Typography variant="caption" color="text.secondary">#{waitlistPos.get(reg.id || "")}</Typography>
             )}
           </Stack>
         </TableCell>
         <TableCell>{reg.registeredDate ? new Date(reg.registeredDate).toLocaleDateString() : ""}</TableCell>
         <TableCell align="right" className="rowActions">
-          <AppIconButton label={Locale.label("registrations.commerce.registrationDetails")} icon={<ReceiptIcon />} onClick={() => setViewDetailId(reg.id)} />
+          <AppIconButton label={Locale.label("registrations.commerce.registrationDetails")} icon={<ReceiptIcon />} onClick={() => setViewDetailId(reg.id || "")} />
           {event?.formId && reg.formSubmissionId && (
-            <AppIconButton label={Locale.label("registrations.registrationDetailsPage.viewAnswers")} icon={<DescriptionIcon />} onClick={() => setViewSubmissionId(reg.formSubmissionId)} />
+            <AppIconButton label={Locale.label("registrations.registrationDetailsPage.viewAnswers")} icon={<DescriptionIcon />} onClick={() => setViewSubmissionId(reg.formSubmissionId || "")} />
           )}
           {UserHelper.checkAccess(Permissions.contentApi.content.edit) && (
             <>
               {reg.status === "waitlisted" && (
-                <AppIconButton intent="add" label={Locale.label("registrations.commerce.promote")} icon={<PromoteIcon />} onClick={() => handlePromote(reg.id)} />
+                <AppIconButton intent="add" label={Locale.label("registrations.commerce.promote")} icon={<PromoteIcon />} onClick={() => handlePromote(reg.id || "")} />
               )}
               {reg.status !== "cancelled" && (
-                <AppIconButton label={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} icon={<CancelIcon />} onClick={() => handleCancel(reg.id)} />
+                <AppIconButton label={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} icon={<CancelIcon />} onClick={() => handleCancel(reg.id || "")} />
               )}
-              <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(reg.id)} />
+              <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(reg.id || "")} />
             </>
           )}
         </TableCell>
@@ -278,6 +279,7 @@ export const RegistrationDetailsPage = () => {
 
   return (
     <>
+      {ConfirmDialogElement}
       <PageHeader icon={<RegIcon />} title={event.title || Locale.label("registrations.registrationDetailsPage.eventRegistrations")} subtitle={Locale.label("registrations.registrationDetailsPage.subtitle")} />
       <Box sx={{ p: 3 }}>
         <Grid container spacing={3}>

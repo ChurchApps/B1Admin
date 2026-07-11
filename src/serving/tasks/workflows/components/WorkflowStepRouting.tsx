@@ -29,7 +29,7 @@ export const WorkflowStepRouting = (props: Props) => {
     const map: { [routeId: string]: ConditionInterface[] } = {};
     await Promise.all(
       data.filter((r) => r.kind === "personMatch" && r.id).map(async (r) => {
-        map[r.id] = await ApiHelper.get("/conditions/stepRoute/" + r.id, "DoingApi");
+        map[r.id!] = await ApiHelper.get("/conditions/stepRoute/" + r.id, "DoingApi");
       })
     );
     setConditions(map);
@@ -144,10 +144,10 @@ export const WorkflowStepRouting = (props: Props) => {
             <Box sx={{ mt: 1 }}>
               <Typography variant="caption" color="text.secondary">{Locale.label("tasks.workflowRouting.conditions")}</Typography>
               <Stack direction="row" spacing={0.5} flexWrap="wrap" sx={{ mt: 0.5 }}>
-                {(conditions[route.id] || []).map((c) => (
+                {(conditions[route.id ?? ""] || []).map((c) => (
                   <Chip key={c.id} size="small" label={c.label || c.field} onDelete={() => deleteCondition(c)} />
                 ))}
-                {(conditions[route.id] || []).length === 0 && <Typography variant="caption" color="text.secondary" sx={{ fontStyle: "italic" }}>{Locale.label("tasks.workflowRouting.noConditions")}</Typography>}
+                {(conditions[route.id ?? ""] || []).length === 0 && <Typography variant="caption" color="text.secondary" sx={{ fontStyle: "italic" }}>{Locale.label("tasks.workflowRouting.noConditions")}</Typography>}
               </Stack>
               <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" data-testid={"add-condition-" + route.id} onClick={() => addCondition(route)} sx={{ mt: 0.5 }} />
             </Box>

@@ -17,7 +17,7 @@ type AnyRecord = Record<string, any>;
 export const SongDetailLinksEdit = (props: Props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [songDetailLinks, setSongDetailLinks] = React.useState<SongDetailLinkInterface[]>([]);
-  const [editLink, setEditLink] = React.useState<SongDetailLinkInterface>(null);
+  const [editLink, setEditLink] = React.useState<SongDetailLinkInterface | null>(null);
 
   const { control, register, handleSubmit, reset, watch } = useForm<AnyRecord>({ defaultValues: { service: "Apple", serviceKey: "" } });
   const watchedService = watch("service");
@@ -69,6 +69,7 @@ export const SongDetailLinksEdit = (props: Props) => {
   };
 
   const handleDelete = () => {
+    if (!editLink) return;
     ApiHelper.delete("/songDetailLinks/" + editLink.id, "ContentApi").then(() => {
       loadData();
       setEditLink(null);
@@ -76,6 +77,7 @@ export const SongDetailLinksEdit = (props: Props) => {
   };
 
   const onValid = (values: AnyRecord) => {
+    if (!editLink) return;
     const l: SongDetailLinkInterface = { ...editLink, service: values.service, serviceKey: values.serviceKey };
     l.url = determineUrl(values.service, values.serviceKey);
     ApiHelper.post("/songDetailLinks", [l], "ContentApi").then(() => {

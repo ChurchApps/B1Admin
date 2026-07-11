@@ -38,7 +38,7 @@ export const CampaignEdit: React.FC<Props> = (props) => {
       ...props.campaign,
       name: values.name.trim(),
       fundId: values.fundId,
-      goalAmount: values.goalAmount === "" ? null : parseFloat(values.goalAmount),
+      goalAmount: values.goalAmount === "" ? undefined : parseFloat(values.goalAmount),
       startDate: values.startDate,
       endDate: values.endDate === "" ? null : values.endDate,
       description: values.description,

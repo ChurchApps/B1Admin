@@ -11,7 +11,7 @@ type AnyRecord = Record<string, any>;
 interface Props {
   group: GroupInterface;
   session?: SessionInterface;
-  updatedFunction: (session: SessionInterface) => void;
+  updatedFunction: (session: SessionInterface | null) => void;
 }
 
 const validateDate = (val: string) => {
@@ -40,8 +40,8 @@ export const SessionEdit: React.FC<Props> = (props) => {
 
   const handleDelete = async () => {
     if (await confirm(Locale.label("groups.sessionEdit.deleteConfirm"))) {
-      ApiHelper.delete("/sessions/" + props.session.id, "AttendanceApi").then(() => {
-        props.updatedFunction(props.session);
+      ApiHelper.delete("/sessions/" + props.session!.id, "AttendanceApi").then(() => {
+        props.updatedFunction(props.session!);
       });
     }
   };
@@ -58,7 +58,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
     const sessionDate = new Date(values.sessionDate);
     const s = { ...(props.session || {}), groupId: props.group.id, sessionDate } as SessionInterface;
     if (!UniqueIdHelper.isMissing(values.serviceTimeId)) s.serviceTimeId = values.serviceTimeId;
-    else s.serviceTimeId = null;
+    else (s as any).serviceTimeId = null;
     ApiHelper.post("/sessions", [s], "AttendanceApi").then(() => {
       props.updatedFunction(s);
       if (isAdd) setValue("sessionDate", DateHelper.formatHtml5Date(new Date()));
@@ -100,7 +100,7 @@ export const SessionEdit: React.FC<Props> = (props) => {
           <InputLabel id="service-time">{Locale.label("groups.sessionAdd.srvTime")}</InputLabel>
           <Select {...field} value={field.value ?? ""} label={Locale.label("groups.sessionAdd.srvTime")} labelId="service-time">
             {groupServiceTimes.map((gst, i) => (
-              <MenuItem key={i} value={gst.serviceTimeId}>{gst.serviceTime.name}</MenuItem>
+              <MenuItem key={i} value={gst.serviceTimeId}>{gst.serviceTime?.name}</MenuItem>
             ))}
           </Select>
         </FormControl>

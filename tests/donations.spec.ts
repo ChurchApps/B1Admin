@@ -247,6 +247,7 @@ test.describe.serial("Donations Management", () => {
       const deleteBtn = page.locator("button").getByText("Delete");
       await expect(deleteBtn).toBeVisible({ timeout: 10000 });
       await deleteBtn.click();
+      await confirmDelete(page);
 
       await expect(page.locator("table td").getByText("Anonymous")).toHaveCount(0, { timeout: 10000 });
     });

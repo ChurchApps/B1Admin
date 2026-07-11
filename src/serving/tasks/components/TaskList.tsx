@@ -51,7 +51,7 @@ export const TaskList = memo((props: Props) => {
   });
 
   const groupIds = useMemo(() => {
-    if (groupMembers.data?.length > 0) {
+    if (groupMembers.data && groupMembers.data.length > 0) {
       return ArrayHelper.getIds(groupMembers.data, "groupId");
     }
     return [];
@@ -207,20 +207,20 @@ export const TaskList = memo((props: Props) => {
   );
 
   const assignedToMyGroups = useMemo(() => {
-    if (groupMembers.data?.length > 0) {
+    if (groupMembers.data && groupMembers.data.length > 0) {
       const memberGroupIds = ArrayHelper.getIds(groupMembers.data, "groupId");
-      return groupTasks.data?.length > 0 ? ArrayHelper.getAllArray(groupTasks.data, "assignedToId", memberGroupIds) : [];
+      return groupTasks.data && groupTasks.data.length > 0 ? ArrayHelper.getAllArray(groupTasks.data, "assignedToId", memberGroupIds) : [];
     }
     return [];
   }, [groupMembers.data, groupTasks.data]);
 
   const assignedToMe = useMemo(() => {
-    return tasks.data?.length > 0 ? ArrayHelper.getAll(tasks.data, "assignedToId", context.person?.id) : [];
-  }, [tasks.data, context.person?.id]);
+    return tasks.data && tasks.data.length > 0 ? ArrayHelper.getAll(tasks.data, "assignedToId", context?.person?.id) : [];
+  }, [tasks.data, context?.person?.id]);
 
   const createdByMe = useMemo(() => {
-    return tasks.data?.length > 0 ? ArrayHelper.getAll(tasks.data, "createdById", context.person?.id) : [];
-  }, [tasks.data, context.person?.id]);
+    return tasks.data && tasks.data.length > 0 ? ArrayHelper.getAll(tasks.data, "createdById", context?.person?.id) : [];
+  }, [tasks.data, context?.person?.id]);
 
   const getAssignedToMyGroups = () => {
     if (assignedToMyGroups.length === 0) return null;
@@ -306,7 +306,7 @@ export const TaskList = memo((props: Props) => {
                     variant="outlined"
                     size="small"
                     startIcon={<ClosedTasksIcon />}
-                    onClick={() => props.onStatusChange("Closed")}
+                    onClick={() => props.onStatusChange?.("Closed")}
                     data-testid="show-closed-tasks-button"
                     aria-label={Locale.label("tasks.taskList.showClosedTasksAria")}
                     sx={{
@@ -320,7 +320,7 @@ export const TaskList = memo((props: Props) => {
                     variant="outlined"
                     size="small"
                     startIcon={<OpenTasksIcon />}
-                    onClick={() => props.onStatusChange("Open")}
+                    onClick={() => props.onStatusChange?.("Open")}
                     data-testid="show-open-tasks-button"
                     aria-label={Locale.label("tasks.taskList.showOpenTasksAria")}
                     sx={{

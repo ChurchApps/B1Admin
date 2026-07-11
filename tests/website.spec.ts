@@ -267,8 +267,10 @@ test.describe("Website Management", () => {
       const discardItem = page.locator('[data-testid="discard-changes-menu-item"]');
       await expect(discardItem).toBeVisible({ timeout: 10000 });
       const discardPost = page.waitForResponse(r => /\/content\/pages\/[^/]+\/discard/.test(r.url()) && r.request().method() === "POST", { timeout: 15000 });
-      page.once("dialog", async dialog => { await dialog.accept(); });
       await discardItem.click();
+      const discardChangesDialog = page.locator('[data-testid="discard-changes-dialog"]');
+      await expect(discardChangesDialog).toBeVisible({ timeout: 10000 });
+      await discardChangesDialog.locator("button.MuiButton-contained").click();
       expect((await discardPost).status()).toBe(200);
       await expect(page.locator("p").getByText("Draft Only Text")).toHaveCount(0, { timeout: 10000 });
       await expect(page.locator("p").getByText("Zacchaeus Test Text").first()).toBeVisible({ timeout: 10000 });
@@ -279,8 +281,10 @@ test.describe("Website Management", () => {
       const disableItem = page.locator('[data-testid="disable-publish-menu-item"]');
       await expect(disableItem).toBeVisible({ timeout: 10000 });
       const unpublishDelete = page.waitForResponse(r => /\/content\/pages\/[^/]+\/published/.test(r.url()) && r.request().method() === "DELETE", { timeout: 15000 });
-      page.once("dialog", async dialog => { await dialog.accept(); });
       await disableItem.click();
+      const disablePublishDialog = page.locator('[data-testid="disable-publish-dialog"]');
+      await expect(disablePublishDialog).toBeVisible({ timeout: 10000 });
+      await disablePublishDialog.locator("button.MuiButton-contained").click();
       expect((await unpublishDelete).status()).toBe(200);
       await expect(page.locator('[data-testid="publish-status-pill"]')).toHaveAttribute("data-status", "live-on-save");
       await page.locator('[data-testid="content-editor-overflow-button"]').click();

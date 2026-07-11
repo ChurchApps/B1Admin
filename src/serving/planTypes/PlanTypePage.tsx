@@ -38,7 +38,7 @@ export const PlanTypePage = () => {
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: Locale.label("components.wrapper.plans") || "Plans", path: "/serving" },
-    { label: planType.data.name }
+    { label: planType.data.name || "" }
   ];
 
   return (
@@ -50,9 +50,11 @@ export const PlanTypePage = () => {
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} showHome={true} />}
       >
         <HeaderSecondaryButton
-          component={Link}
-          to={`/serving/overview?planTypeId=${planType.data.id}&ministryId=${planType.data.ministryId}`}
-          startIcon={<GridOnIcon />}
+          {...({
+            component: Link,
+            to: `/serving/overview?planTypeId=${planType.data.id}&ministryId=${planType.data.ministryId}`,
+            startIcon: <GridOnIcon />
+          } as any)}
         >
           {Locale.label("plans.planTypePage.overview")}
         </HeaderSecondaryButton>

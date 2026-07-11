@@ -7,3 +7,4 @@ export { useSortableData } from "./useSortableData";
 export { useErrorSummary } from "./useErrorSummary";
 export { useReorderableLinks } from "./useReorderableLinks";
 export { useRequirePermission } from "./useRequirePermission";
+export { usePendingApprovalsCount, usePendingJoinRequestsCount } from "./usePendingCounts";

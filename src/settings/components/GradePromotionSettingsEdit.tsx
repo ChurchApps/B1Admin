@@ -1,11 +1,12 @@
 import React from "react";
 import { type GenericSettingInterface } from "@churchapps/helpers";
 import { ApiHelper, UniqueIdHelper, Locale } from "@churchapps/apphelper";
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Switch, Typography } from "@mui/material";
+import { Alert, Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Switch, Typography } from "@mui/material";
 
 interface Props {
   churchId: string;
   saveTrigger: Date | null;
+  onSaveComplete?: (ok: boolean) => void;
 }
 
 const MONTHS = [
@@ -18,7 +19,8 @@ export const GradePromotionSettingsEdit: React.FC<Props> = (props) => {
   const [enabled, setEnabled] = React.useState(false);
   const [month, setMonth] = React.useState("08");
   const [day, setDay] = React.useState("01");
-  const [setting, setSetting] = React.useState<GenericSettingInterface>(null);
+  const [setting, setSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [error, setError] = React.useState("");
 
   const loadData = async () => {
     const allSettings: GenericSettingInterface[] = await ApiHelper.get("/settings", "MembershipApi");
@@ -34,13 +36,20 @@ export const GradePromotionSettingsEdit: React.FC<Props> = (props) => {
     }
   };
 
-  const save = () => {
-    if (enabled) {
-      const s: GenericSettingInterface = setting === null ? { churchId: props.churchId, public: 1, keyName: "gradePromotionDate" } : setting;
-      s.value = `${month}-${day}`;
-      ApiHelper.post("/settings", [s], "MembershipApi");
-    } else if (setting?.id) {
-      ApiHelper.delete("/settings/" + setting.id, "MembershipApi");
+  const save = async () => {
+    try {
+      if (enabled) {
+        const s: GenericSettingInterface = setting === null ? { churchId: props.churchId, public: 1, keyName: "gradePromotionDate" } : setting;
+        s.value = `${month}-${day}`;
+        await ApiHelper.post("/settings", [s], "MembershipApi");
+      } else if (setting?.id) {
+        await ApiHelper.delete("/settings/" + setting.id, "MembershipApi");
+      }
+      setError("");
+      props.onSaveComplete?.(true);
+    } catch (e: any) {
+      setError(e?.message || Locale.label("common.saveError"));
+      props.onSaveComplete?.(false);
     }
   };
 
@@ -63,6 +72,7 @@ export const GradePromotionSettingsEdit: React.FC<Props> = (props) => {
 
   return (
     <Box>
+      {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.7 }}>
         {Locale.label("settings.gradePromotionSettingsEdit.help")}
       </Typography>

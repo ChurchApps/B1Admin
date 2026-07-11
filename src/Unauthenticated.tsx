@@ -8,6 +8,7 @@ export const Unauthenticated = () => (
       <Route path="/pingback" element={<Pingback />} />
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   </>
 );

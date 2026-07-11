@@ -337,7 +337,8 @@
         "firstName": "Молимо унеси име.",
         "lastName": "Молимо унеси презиме.",
         "validEmail": "Молимо унеси важећу имејл адресу."
-      }
+      },
+      "confirmDuplicate": "Већ постоји особа '{{existingName}}' ({{existingEmail}}) са овом имејл адресом. Да ли сте сигурни да желите да додате '{{firstName}} {{lastName}}'?"
     },
     "custom": "Прилагођено",
     "delete": "Обриши",

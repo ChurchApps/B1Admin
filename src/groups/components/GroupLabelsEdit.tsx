@@ -10,7 +10,7 @@ interface Props {
 
 export const GroupLabelsEdit: React.FC<Props> = (props) => {
   const [allLabels, setAllLabels] = React.useState<string[]>(["Small Group", "Sunday School Class"]);
-  const groupLabels = props.group?.labelArray;
+  const groupLabels = props.group?.labelArray || [];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.currentTarget.name;
@@ -41,7 +41,7 @@ export const GroupLabelsEdit: React.FC<Props> = (props) => {
     ApiHelper.get("/groups", "MembershipApi").then((groups: any) => {
       const result: string[] = [];
       groups.forEach((group: GroupInterface) => {
-        group.labelArray.forEach((label) => {
+        (group.labelArray || []).forEach((label) => {
           if (!result.includes(label)) result.push(label);
         });
       });

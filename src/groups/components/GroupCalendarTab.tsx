@@ -97,7 +97,7 @@ export const GroupCalendarTab = (props: Props) => {
     );
   };
 
-  const sorted = [...(events.data || [])].sort((a, b) => new Date(b.start).getTime() - new Date(a.start).getTime());
+  const sorted = [...(events.data || [])].sort((a, b) => new Date(b.start!).getTime() - new Date(a.start!).getTime());
 
   return (
     <Box sx={{ p: 3 }} data-testid="group-calendar-tab">
@@ -138,7 +138,7 @@ export const GroupCalendarTab = (props: Props) => {
               {sorted.map((ev) => (
                 <TableRow key={ev.id} sx={{ whiteSpace: "nowrap" }}>
                   <TableCell>{ev.title}</TableCell>
-                  <TableCell>{new Date(ev.start).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</TableCell>
+                  <TableCell>{new Date(ev.start!).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</TableCell>
                   <TableCell>{describeRecurrence(ev.recurrenceRule)}</TableCell>
                   <TableCell align="right">{(ev as any).exceptionDates?.length || 0}</TableCell>
                   <TableCell>{ev.visibility === "private" ? Locale.label("calendars.newEvent.private") : Locale.label("calendars.newEvent.public")}</TableCell>

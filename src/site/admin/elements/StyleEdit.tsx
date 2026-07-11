@@ -22,23 +22,23 @@ export const StyleEdit: React.FC<Props> = (props) => {
   const getInputField = () => {
     let result = <></>;
 
-    switch (field.type) {
+    switch (field?.type) {
       case "text":
-        result = <TextField fullWidth size="small" label={field.label} name="value" value={value} onChange={(e:any) => { setValue(e.target.value); }} />;
+        result = <TextField fullWidth size="small" label={field?.label} name="value" value={value} onChange={(e:any) => { setValue(e.target.value); }} />;
         break;
       case "select":
         result = <FormControl size="small" fullWidth style={{ marginTop: 10 }}>
-          <InputLabel>{field.label}</InputLabel>
-          <Select size="small" fullWidth label={field.label} name="value" value={value} onChange={(e) => { setValue(e.target.value); }}>
-            {field.options.map(o => <MenuItem value={o}>{o}</MenuItem>)}
+          <InputLabel>{field?.label}</InputLabel>
+          <Select size="small" fullWidth label={field?.label} name="value" value={value} onChange={(e) => { setValue(e.target.value); }}>
+            {field?.options?.map(o => <MenuItem value={o}>{o}</MenuItem>)}
           </Select>
         </FormControl>;
         break;
       case "px":
-        result = <TextField fullWidth style={{ marginTop: 10 }} size="small" label={field.label + " - px"} name="value" value={value} onChange={(e:any) => { setValue(e.target.value); }} type="number" />;
+        result = <TextField fullWidth style={{ marginTop: 10 }} size="small" label={field?.label + " - px"} name="value" value={value} onChange={(e:any) => { setValue(e.target.value); }} type="number" />;
         break;
       case "color":
-        result = <ColorPicker color={value} updatedCallback={(c) => setValue(c)} globalStyles={null} />;
+        result = <ColorPicker color={value} updatedCallback={(c) => setValue(c)} globalStyles={null as any} />;
         break;
       case "text-shadow":
         result = <StyleTextShadow value={value} onChange={(v) => setValue(v)} />;
@@ -49,12 +49,12 @@ export const StyleEdit: React.FC<Props> = (props) => {
 
   useEffect(() => {
     if (name === props.style.name) setValue(props.style.value.replace("px", ""));
-    else setValue(props.fieldOptions.find((o: any) => o.key === name).default);
+    else setValue(props.fieldOptions.find((o: any) => o.key === name)?.default);
   }, [name]);
 
   const handleSave = () => {
     let storedValue = value;
-    if (field.type === "px") storedValue = value + "px";
+    if (field?.type === "px") storedValue = value + "px";
     props.onSave(props.style.platform, name, storedValue);
   };
 

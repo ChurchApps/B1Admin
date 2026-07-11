@@ -30,7 +30,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
 
   const loadRecent = () => {
     ApiHelper.get("/people/recent", "MembershipApi").then((data: PersonInterface[]) => {
-      const filteredResult = data.filter((s) => !filterList.includes(s.id));
+      const filteredResult = data.filter((s) => !filterList.includes(s.id || ""));
       setSearchResults(filteredResult);
     });
   };
@@ -51,7 +51,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
       const term = value.trim();
       ApiHelper.post("/people/search", { term: term }, "MembershipApi").then((data: PersonInterface[]) => {
         setHasSearched(true);
-        const filteredResult = data.filter((s) => !filterList.includes(s.id));
+        const filteredResult = data.filter((s) => !filterList.includes(s.id || ""));
         setSearchResults(filteredResult);
         if (searchClicked) searchClicked();
       });
@@ -71,12 +71,12 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
     }
   };
 
-  const handleSearch = (e: React.MouseEvent) => {
+  const handleSearch = (e: React.MouseEvent | null) => {
     if (e !== null) e.preventDefault();
     const term = searchText.trim();
     ApiHelper.post("/people/search", { term: term }, "MembershipApi").then((data: PersonInterface[]) => {
       setHasSearched(true);
-      const filteredResult = data.filter((s) => !filterList.includes(s.id));
+      const filteredResult = data.filter((s) => !filterList.includes(s.id || ""));
       setSearchResults(filteredResult);
       if (searchClicked) {
         searchClicked();

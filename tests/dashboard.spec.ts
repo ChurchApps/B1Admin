@@ -53,6 +53,24 @@ test.describe("Dashboard Management", () => {
     await expect(page.getByText("No people found matching your search criteria.")).toBeVisible({ timeout: 10000 });
   });
 
+  test("should clear the people search", async ({ page }) => {
+    const searchBox = page.locator("#searchText");
+    const clearBtn = page.locator('[data-testid="dashboard-clear-button"]');
+    // Hidden while the field is empty
+    await expect(clearBtn).toHaveCount(0);
+    // Appears once there is text
+    await searchBox.fill("Dorothy Jackson");
+    await expect(clearBtn).toBeVisible();
+    // Run the search, then clear it
+    await page.locator('[data-testid="dashboard-search-button"]').click();
+    await expect(page.getByRole("link", { name: "Dorothy Jackson" }).first()).toBeVisible({ timeout: 10000 });
+    await clearBtn.click();
+    // Input, button, and results all reset
+    await expect(searchBox).toHaveValue("");
+    await expect(clearBtn).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Dorothy Jackson" })).toHaveCount(0);
+  });
+
   test.describe.serial("Dashboard Task lifecycle", () => {
     test("should add task from dashboard", async ({ page }) => {
       // Note: this spec runs in parallel with serving-songs-tasks.spec, which also

@@ -8,7 +8,7 @@ import { useCampuses } from "../../hooks/useCampuses";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
 
 interface Props {
-  service: ServiceInterface;
+  service: ServiceInterface | null;
   updatedFunction: () => void;
 }
 
@@ -34,7 +34,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
   };
 
   const handleDelete = async () => {
-    if (await confirm(Locale.label("attendance.serviceEdit.confirmDelete"))) ApiHelper.delete("/services/" + props.service.id, "AttendanceApi").then(props.updatedFunction);
+    if (await confirm(Locale.label("attendance.serviceEdit.confirmDelete"))) ApiHelper.delete("/services/" + props.service?.id, "AttendanceApi").then(props.updatedFunction);
   };
 
   const loadData = React.useCallback(() => {
@@ -54,7 +54,7 @@ export const ServiceEdit: React.FC<Props> = (props) => {
         onCancel={props.updatedFunction}
         onSave={handleSubmit(onValid)}
         onDelete={props.service?.id ? handleDelete : undefined}
-        title={props.service.name}
+        title={props.service.name || ""}
         icon="calendar_month"
         isSubmitting={isSubmitting}
         help="docs/b1-admin/attendance/">

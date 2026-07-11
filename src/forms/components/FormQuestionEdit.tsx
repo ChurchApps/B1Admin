@@ -74,9 +74,9 @@ export function FormQuestionEdit(props: Props) {
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6 }}>
           <FormControl fullWidth>
-            <InputLabel id="provider">{Locale.label("forms.formQuestionEdit.prov")}</InputLabel>
+            <InputLabel id="provider">{Locale.label("forms.formQuestionEdit.fieldType")}</InputLabel>
             <Controller name="fieldType" control={control} render={({ field }) => (
-              <Select {...field} value={field.value ?? "Textbox"} labelId="provider" label={Locale.label("forms.formQuestionEdit.prov")}>
+              <Select {...field} value={field.value ?? "Textbox"} labelId="provider" label={Locale.label("forms.formQuestionEdit.fieldType")}>
                 <MenuItem value="Textbox">{Locale.label("forms.formQuestionEdit.textBox")}</MenuItem>
                 <MenuItem value="Whole Number">{Locale.label("forms.formQuestionEdit.wholeNum")}</MenuItem>
                 <MenuItem value="Decimal">{Locale.label("forms.formQuestionEdit.decNum")}</MenuItem>

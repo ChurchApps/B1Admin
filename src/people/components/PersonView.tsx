@@ -12,7 +12,7 @@ import { formatFieldValue } from "../../helpers/PersonFieldHelper";
 interface Props {
   id?: string;
   person: PersonInterface;
-  editFunction: () => void;
+  editFunction?: () => void;
   updatedFunction: () => void;
   showForms?: boolean;
   headerActions?: React.ReactNode;
@@ -263,7 +263,7 @@ export const PersonView = memo(({ person, editFunction, updatedFunction, showFor
           )}
         </Stack>
       ) : undefined}
-      footerContent={showForms ? <AssociatedForms contentType="person" contentId={person?.id} formSubmissions={person?.formSubmissions} updatedFunction={updatedFunction} /> : undefined}>
+      footerContent={showForms ? <AssociatedForms contentType="person" contentId={person?.id || ""} formSubmissions={person?.formSubmissions || []} updatedFunction={updatedFunction} /> : undefined}>
       {personFields}
     </DisplayBox>
   );

@@ -60,7 +60,8 @@ export default defineConfig(({ mode }) => {
       "process.env.NEXT_PUBLIC_B1_ROOT": JSON.stringify(env.REACT_APP_B1_ROOT),
       "process.env.NEXT_PUBLIC_B1ADMIN_ROOT": JSON.stringify(env.REACT_APP_B1ADMIN_ROOT),
       "process.env.NEXT_PUBLIC_LESSONS_ROOT": JSON.stringify(env.REACT_APP_LESSONS_ROOT),
-      "process.env.REACT_APP_CHAT_MODE": JSON.stringify(env.REACT_APP_CHAT_MODE)
+      "process.env.REACT_APP_CHAT_MODE": JSON.stringify(env.REACT_APP_CHAT_MODE),
+      "process.env.REACT_APP_GOCURRICULUM_CLIENT_SECRET": JSON.stringify(env.REACT_APP_GOCURRICULUM_CLIENT_SECRET)
     }
   } satisfies UserConfig;
 });

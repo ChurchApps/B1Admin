@@ -6,7 +6,6 @@ import type { GlobalStyleInterface, BlockInterface, GenericSettingInterface, Sit
 import { PaletteEdit, FontEdit, CssEdit, Preview, AppearanceEdit, TypographyEdit, SpacingScaleEdit, NavStyleEdit } from "./";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SettingsConfigList, type ConfigSection } from "../../settings/components/SettingsConfigList";
-import React from "react";
 import { EnvironmentHelper } from "../../helpers/EnvironmentHelper";
 
 type Props = {
@@ -20,7 +19,7 @@ export function StylesManager(props: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const hash = location.hash?.replace("#", "");
-  const [globalStyle, setGlobalStyle] = useState<GlobalStyleInterface>(null);
+  const [globalStyle, setGlobalStyle] = useState<GlobalStyleInterface | null>(null);
   const [section, setSection] = useState<string>(["palette", "fonts", "typography", "spacing", "nav", "css", "logo"].includes(hash) ? hash : "");
   const [churchSettings, setChurchSettings] = useState<any>(null);
   const [currentSettings, setCurrentSettings] = useState<GenericSettingInterface[]>([]);
@@ -65,7 +64,7 @@ export function StylesManager(props: Props) {
     });
   };
 
-  const handlePaletteUpdate = (paletteJson: string) => {
+  const handlePaletteUpdate = (paletteJson: string | null) => {
     if (paletteJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.palette = paletteJson;
@@ -74,7 +73,7 @@ export function StylesManager(props: Props) {
     setSection("");
   };
 
-  const handleFontsUpdate = (fontsJson: string) => {
+  const handleFontsUpdate = (fontsJson: string | null) => {
     if (fontsJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.fonts = fontsJson;
@@ -83,12 +82,12 @@ export function StylesManager(props: Props) {
     setSection("");
   };
 
-  const handleUpdate = (gs: GlobalStyleInterface) => {
+  const handleUpdate = (gs: GlobalStyleInterface | null) => {
     if (gs) ApiHelper.post("/globalStyles", [prepareForSave(gs)], "ContentApi").then(() => { loadData(); clearSiteCache(); });
     setSection("");
   };
 
-  const handleTypographyUpdate = (typographyJson: string) => {
+  const handleTypographyUpdate = (typographyJson: string | null) => {
     if (typographyJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.typography = typographyJson;
@@ -97,7 +96,7 @@ export function StylesManager(props: Props) {
     setSection("");
   };
 
-  const handleSpacingUpdate = (spacingJson: string) => {
+  const handleSpacingUpdate = (spacingJson: string | null) => {
     if (spacingJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.spacing = spacingJson;
@@ -106,7 +105,7 @@ export function StylesManager(props: Props) {
     setSection("");
   };
 
-  const handleNavUpdate = (navStylesJson: string) => {
+  const handleNavUpdate = (navStylesJson: string | null) => {
     if (navStylesJson) {
       const gs = prepareForSave({ ...globalStyle });
       gs.navStyles = navStylesJson;

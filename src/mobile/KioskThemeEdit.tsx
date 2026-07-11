@@ -81,7 +81,7 @@ export const KioskThemeEdit: React.FC = () => {
     }
   };
 
-  const handleBackgroundImageUpdate = async (dataUrl: string) => {
+  const handleBackgroundImageUpdate = async (dataUrl?: string) => {
     if (!dataUrl) { setEditingImage(null); return; }
     const imgSetting: GenericSettingInterface = { keyName: "checkinSettings_bg", value: dataUrl, public: 1 };
     const saved = await ApiHelper.post("/settings", [imgSetting], "MembershipApi");
@@ -92,7 +92,7 @@ export const KioskThemeEdit: React.FC = () => {
     setEditingImage(null);
   };
 
-  const handleSlideImageUpdate = async (dataUrl: string) => {
+  const handleSlideImageUpdate = async (dataUrl?: string) => {
     if (!dataUrl) { setEditingImage(null); return; }
     const slideKey = "checkinSettings_slide_" + editingSlideIndex;
     const imgSetting: GenericSettingInterface = { keyName: slideKey, value: dataUrl, public: 1 };

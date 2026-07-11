@@ -103,13 +103,13 @@ export const PersonForms: React.FC<Props> = (props) => {
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: questions.length > 1 ? 6 : 12 }}>
             <Stack spacing={2}>
-              {firstHalf.map((q, index) => <Question key={`first-${q.id || index}`} question={q} answer={getAnswer(q.id)} showEmpty />)}
+              {firstHalf.map((q, index) => <Question key={`first-${q.id || index}`} question={q} answer={getAnswer(q.id || "") as AnswerInterface} showEmpty />)}
             </Stack>
           </Grid>
           {secondHalf.length > 0 && (
             <Grid size={{ xs: 12, md: 6 }}>
               <Stack spacing={2}>
-                {secondHalf.map((q, index) => <Question key={`second-${q.id || index}`} question={q} answer={getAnswer(q.id)} showEmpty />)}
+                {secondHalf.map((q, index) => <Question key={`second-${q.id || index}`} question={q} answer={getAnswer(q.id || "") as AnswerInterface} showEmpty />)}
               </Stack>
             </Grid>
           )}
@@ -128,7 +128,7 @@ export const PersonForms: React.FC<Props> = (props) => {
             formSubmissionId={submission?.id || ""}
             addFormId={submission ? "" : form.id}
             contentType="person"
-            contentId={contentId}
+            contentId={contentId || ""}
             personId={contentId}
             showHeader={false}
             updatedFunction={handleSaved}

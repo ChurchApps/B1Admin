@@ -27,7 +27,7 @@ interface Props {
 }
 
 export const Assignment = (props: Props) => {
-  const [plan, setPlan] = React.useState<PlanInterface>(null);
+  const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
@@ -42,8 +42,8 @@ export const Assignment = (props: Props) => {
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
   const [people, setPeople] = React.useState<PersonInterface[]>([]);
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
-  const [position, setPosition] = React.useState<PositionInterface>(null);
-  const [assignment, setAssignment] = React.useState<AssignmentInterface>(null);
+  const [position, setPosition] = React.useState<PositionInterface | null>(null);
+  const [assignment, setAssignment] = React.useState<AssignmentInterface | null>(null);
   const [times, setTimes] = React.useState<TimeInterface[]>([]);
   const [blockoutDates, setBlockoutDates] = React.useState<BlockoutDateInterface[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
@@ -51,7 +51,7 @@ export const Assignment = (props: Props) => {
   const [copyMenuAnchor, setCopyMenuAnchor] = React.useState<null | HTMLElement>(null);
   // Hoisted: the compiler emits non-optional guard reads (position.count/position.id) for
   // the AssignmentEdit JSX deps, which crash while position is still null.
-  const peopleNeededForPosition = position ? position.count - ArrayHelper.getAll(assignments, "positionId", position.id).length : 0;
+  const peopleNeededForPosition = position ? (position.count || 0) - ArrayHelper.getAll(assignments, "positionId", position.id).length : 0;
 
   const previousPlan = React.useMemo(() => {
     if (allPlans.length === 0 || !props.plan?.serviceDate) return null;
@@ -247,7 +247,7 @@ export const Assignment = (props: Props) => {
     const teams: { positionId: string; personIds: string[] }[] = [];
     positions.forEach((p) => {
       const filteredMembers = ArrayHelper.getAll(groupMembers, "groupId", p.groupId);
-      teams.push({ positionId: p.id, personIds: filteredMembers.map((m) => m.personId) || [] });
+      teams.push({ positionId: p.id || "", personIds: filteredMembers.map((m) => m.personId) || [] });
     });
     ApiHelper.post("/plans/autofill/" + props.plan.id, { teams }, "DoingApi").then(() => {
       loadData();
@@ -371,7 +371,7 @@ export const Assignment = (props: Props) => {
               rows={4}
               value={plan?.notes || ""}
               onChange={canEdit ? (e) => {
-                setPlan({ ...plan, notes: e.target.value });
+                setPlan({ ...(plan || {}), notes: e.target.value });
               } : undefined}
               data-testid="plan-notes-input"
               aria-label={Locale.label("plans.assignment.planNotesAria")}
@@ -412,8 +412,8 @@ export const Assignment = (props: Props) => {
             />
           )}
 
-          <TimeList times={times} positions={positions} plan={plan} canEdit={canEdit} onUpdate={loadData} />
-          <PlanValidation plan={plan} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
+          <TimeList times={times} positions={positions} plan={plan as PlanInterface} canEdit={canEdit} onUpdate={loadData} />
+          <PlanValidation plan={plan as PlanInterface} positions={positions} assignments={assignments} people={people} times={times} blockoutDates={blockoutDates} canEdit={canEdit} onUpdate={loadData} />
         </Stack>
       </Grid>
 

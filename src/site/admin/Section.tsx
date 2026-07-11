@@ -19,7 +19,7 @@ interface Props {
   section: SectionInterface,
   church?: ChurchInterface;
   churchSettings: any;
-  onEdit?: (section: SectionInterface, element: ElementInterface) => void;
+  onEdit?: (section: SectionInterface | null, element: ElementInterface | null) => void;
   onMove?: () => void;
   onBeforeChange?: (description: string) => void;
   selectedElementId?: string | null;
@@ -324,7 +324,7 @@ export const Section: React.FC<Props> = props => {
   const getElements = () => {
     const result: React.ReactElement[] = [];
     props.section?.elements?.forEach(e => {
-      const textColor = StyleHelper.getTextColor(props.section?.textColor, {}, props.churchSettings);
+      const textColor = StyleHelper.getTextColor(props.section?.textColor || "", {}, props.churchSettings);
       const elementComponent = <Element key={e.id} element={e} onEdit={props.onEdit} onMove={props.onMove} church={props.church} churchSettings={props.churchSettings} textColor={textColor} />;
 
       // Wrap with ElementSelection if selection handlers are provided
@@ -337,11 +337,11 @@ export const Section: React.FC<Props> = props => {
             <ElementSelection
               element={e}
               isSelected={props.selectedElementId === e.id}
-              onEdit={() => props.onEdit(null, e)}
-              onDelete={() => props.onElementDelete(e.id)}
-              onDuplicate={() => props.onElementDuplicate(e.id)}
-              onMoveUp={() => props.onElementMove(e.id, "up")}
-              onMoveDown={() => props.onElementMove(e.id, "down")}
+              onEdit={() => props.onEdit?.(null, e)}
+              onDelete={() => props.onElementDelete?.(e.id || "")}
+              onDuplicate={() => props.onElementDuplicate?.(e.id || "")}
+              onMoveUp={() => props.onElementMove?.(e.id || "", "up")}
+              onMoveDown={() => props.onElementMove?.(e.id || "", "down")}
               onUpdate={props.onElementUpdate}
             >
               {elementComponent}
@@ -367,7 +367,7 @@ export const Section: React.FC<Props> = props => {
   const getStyle = () => {
 
     let result: CSSProperties;
-    if (props.section.background.indexOf("/") > -1) {
+    if ((props.section.background || "").indexOf("/") > -1) {
       result = { backgroundImage: "url('" + props.section.background + "')" };
     } else {
       result = { background: props.section.background };
@@ -403,7 +403,7 @@ export const Section: React.FC<Props> = props => {
 
   const getClassName = () => {
     let result = "section";
-    if (props.section.background.indexOf("/") > -1) result += " sectionBG";
+    if ((props.section.background || "").indexOf("/") > -1) result += " sectionBG";
     if (props.section.textColor === "light") result += " sectionDark";
     if (props.first) result += " sectionFirst";
     if (props.onEdit) result += " sectionWrapper";
@@ -451,14 +451,14 @@ export const Section: React.FC<Props> = props => {
       element.sort = sort;
       element.sectionId = props.section.id;
       if (props.onBeforeChange) props.onBeforeChange("Before moving element");
-      trackSave(ApiHelper.post("/elements", [element], "ContentApi")).then(() => { props.onMove(); });
+      trackSave(ApiHelper.post("/elements", [element], "ContentApi")).then(() => { props.onMove?.(); });
     } else {
       const element: ElementInterface = { sectionId: props.section.id, elementType: data.elementType, sort, blockId: props.section.blockId };
       if (data.blockId) element.answersJSON = JSON.stringify({ targetBlockId: data.blockId });
       else if (data.elementType === "row") element.answersJSON = JSON.stringify({ columns: "6,6" });
       else if (data.elementType === "box") element.answersJSON = JSON.stringify({ background: "var(--light)", text: "var(--dark)" });
       else element.answersJSON = JSON.stringify(ElementTypes[data.elementType]?.defaults ?? {});
-      props.onEdit(null, element);
+      props.onEdit?.(null, element);
     }
   };
 
@@ -522,7 +522,7 @@ export const Section: React.FC<Props> = props => {
         : `#el-${props.selectedElementId}`;
     if (type === "column") {
       // Columns render without an el-{id} node; target the indexed .rowColumn inside the parent row instead.
-      const parent = findParentElement(props.section?.elements || [], selectedElement.id);
+      const parent = findParentElement(props.section?.elements || [], selectedElement.id || "");
       const idx = parent?.elements?.findIndex((c) => c.id === selectedElement.id) ?? -1;
       if (parent?.id && idx >= 0) targetSelector = `#el-${parent.id} .rowColumn-${idx}`;
     }
@@ -531,11 +531,11 @@ export const Section: React.FC<Props> = props => {
       <FloatingElementSelection
         element={selectedElement}
         targetSelector={targetSelector}
-        onEdit={() => props.onEdit(null, selectedElement)}
-        onDelete={() => props.onElementDelete(selectedElement.id)}
-        onDuplicate={() => props.onElementDuplicate(selectedElement.id)}
-        onMoveUp={() => props.onElementMove(selectedElement.id, "up")}
-        onMoveDown={() => props.onElementMove(selectedElement.id, "down")}
+        onEdit={() => props.onEdit?.(null, selectedElement)}
+        onDelete={() => props.onElementDelete?.(selectedElement.id || "")}
+        onDuplicate={() => props.onElementDuplicate?.(selectedElement.id || "")}
+        onMoveUp={() => props.onElementMove?.(selectedElement.id || "", "up")}
+        onMoveDown={() => props.onElementMove?.(selectedElement.id || "", "down")}
       />
     );
   };
@@ -549,7 +549,7 @@ export const Section: React.FC<Props> = props => {
   if (props.onEdit) {
     return (
       <div className="sectionEditWrapper" data-section-id={props.section.id}>
-        <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest(".elementWrapper")) { props.onEdit(props.section, null); } }}>
+        <DraggableWrapper dndType="section" elementType="section" data={props.section} onDoubleClick={(e: React.MouseEvent) => { const target = e.target as HTMLElement; if (!target.closest(".elementWrapper")) { props.onEdit?.(props.section, null); } }}>
           {result}
           <div className="sectionHoverEdge" />
           {props.onSectionMove && (
@@ -557,13 +557,13 @@ export const Section: React.FC<Props> = props => {
               isFirst={!!props.isFirstSection}
               isLast={!!props.isLastSection}
               visible={props.isSectionEditing}
-              onSettings={() => props.onEdit(props.section, null)}
-              onMoveUp={() => props.onSectionMove(props.section, "up")}
-              onMoveDown={() => props.onSectionMove(props.section, "down")}
-              onDuplicate={() => props.onSectionDuplicate?.(props.section.id)}
+              onSettings={() => props.onEdit?.(props.section, null)}
+              onMoveUp={() => props.onSectionMove?.(props.section, "up")}
+              onMoveDown={() => props.onSectionMove?.(props.section, "down")}
+              onDuplicate={() => props.onSectionDuplicate?.(props.section.id || "")}
               onDelete={() => props.onSectionDelete?.(props.section)}
-              onSwitchLayout={props.onSectionSwitchLayout && !props.section.targetBlockId && hasExtractableContent(props.section) ? () => props.onSectionSwitchLayout(props.section) : undefined}
-              onAiRewrite={props.onSectionAiRewrite && !props.section.targetBlockId ? () => props.onSectionAiRewrite(props.section) : undefined}
+              onSwitchLayout={props.onSectionSwitchLayout && !props.section.targetBlockId && hasExtractableContent(props.section) ? () => props.onSectionSwitchLayout?.(props.section) : undefined}
+              onAiRewrite={props.onSectionAiRewrite && !props.section.targetBlockId ? () => props.onSectionAiRewrite?.(props.section) : undefined}
             />
           )}
         </DraggableWrapper>
