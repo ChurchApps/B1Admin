@@ -96,7 +96,7 @@ services:
         NEXT_PUBLIC_MESSAGING_API_SOCKET: ${SOCKET_URL:-ws://localhost:8084}
         NEXT_PUBLIC_B1ADMIN_ROOT: ${B1ADMIN_URL:-http://localhost:3101}
     ports:
-      - "3000:3000"
+      - "${B1APP_HOST_PORT:-3000}:3000"
     restart: unless-stopped
 
 volumes:
