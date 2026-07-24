@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "environment": "staging",
+  "projectName": "b1admin",
+  "environmentName": "staging",
+  "region": "us-east-1",
+  "stackNames": {
+    "backend": "b1admin-staging-backend",
+    "frontend": "b1admin-staging-frontend"
+  },
+  "outputDir": ".tmp-save-split-stack-contract",
+  "files": {
+    "backendOutputsFile": ".tmp-save-split-stack-contract/backend-outputs.json",
+    "frontendOutputsFile": ".tmp-save-split-stack-contract/frontend-outputs.json",
+    "summaryFile": ".tmp-save-split-stack-contract/deployment-summary.json",
+    "preflightPlanFile": ".tmp-save-split-stack-contract/preflight-plan.md"
+  },
+  "resolved": {
+    "apiBaseUrl": "https://api.example.com",
+    "frontendAppUrl": "https://admin.example.com",
+    "frontendBucketName": "example-frontend-bucket",
+    "frontendDistributionId": "EXAMPLE123",
+    "appConfigSecretArn": "arn:aws:secretsmanager:us-east-1:123456789012:secret:example"
+  },
+  "followUpCommands": {
+    "showDeploymentSummary": "yarn show:deployment-summary -- --summary-file=.tmp-save-split-stack-contract/deployment-summary.json --output=markdown",
+    "verifyFromSavedOutputs": "yarn verify:split-stack -- --region=us-east-1 --backend-outputs-file=.tmp-save-split-stack-contract/backend-outputs.json --frontend-outputs-file=.tmp-save-split-stack-contract/frontend-outputs.json",
+    "verifyFromSavedOutputsWithHttp": "yarn verify:split-stack -- --region=us-east-1 --backend-outputs-file=.tmp-save-split-stack-contract/backend-outputs.json --frontend-outputs-file=.tmp-save-split-stack-contract/frontend-outputs.json --check-http=true",
+    "publishFrontendAssetsFromSavedOutputs": "yarn publish:frontend-assets -- --frontend-outputs-file=.tmp-save-split-stack-contract/frontend-outputs.json --backend-outputs-file=.tmp-save-split-stack-contract/backend-outputs.json",
+    "publishFromSavedOutputs": "yarn deploy:aws -- --region=us-east-1 --project-name=b1admin --environment=staging --frontend-parameters-file=infrastructure/environments/staging/frontend-parameters.json --backend-parameters-file=infrastructure/environments/staging/backend-parameters.json --frontend-outputs-file=.tmp-save-split-stack-contract/frontend-outputs.json --backend-outputs-file=.tmp-save-split-stack-contract/backend-outputs.json --skip-backend --skip-frontend --publish-frontend-assets"
+  }
+}

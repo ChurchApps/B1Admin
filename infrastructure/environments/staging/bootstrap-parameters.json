@@ -1,0 +1,7 @@
+{
+  "ProjectName": "b1admin",
+  "EnvironmentName": "staging",
+  "TemplateBucketName": "replace-me-staging-template-bucket",
+  "ArtifactBucketName": "replace-me-staging-artifact-bucket",
+  "EnableBucketVersioning": "true"
+}

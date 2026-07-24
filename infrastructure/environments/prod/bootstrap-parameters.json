@@ -1,0 +1,7 @@
+{
+  "ProjectName": "b1admin",
+  "EnvironmentName": "prod",
+  "TemplateBucketName": "replace-me-prod-template-bucket",
+  "ArtifactBucketName": "replace-me-prod-artifact-bucket",
+  "EnableBucketVersioning": "true"
+}

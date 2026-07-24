@@ -1,0 +1,17 @@
+{
+  "stackName": "example-frontend",
+  "region": "us-east-1",
+  "environmentName": "prod",
+  "bucket": "example-frontend-bucket",
+  "distributionId": "EXAMPLE123",
+  "appUrl": "https://admin.example.com",
+  "outputs": {
+    "SiteBucketName": "example-frontend-bucket",
+    "CloudFrontDistributionId": "EXAMPLE123",
+    "AppUrl": "https://admin.example.com"
+  },
+  "backendBuildEnv": {},
+  "skipBuild": false,
+  "infrastructureOnly": true,
+  "frontendPublished": false
+}

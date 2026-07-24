@@ -1,0 +1,32 @@
+{
+  "apiRepoPath": "<api-repo-path>",
+  "projectName": "b1admin",
+  "packageMode": "self-contained",
+  "environment": "prod",
+  "build": true,
+  "buildCommand": "build:prod",
+  "buildLayer": false,
+  "buildLayerCommand": "",
+  "backendArtifactPath": "api-prod-self-contained.zip",
+  "migrationArtifactPath": "",
+  "dependenciesLayerArtifactPath": "",
+  "manifestPath": "package-manifest.sample.json",
+  "recommendedBackendArtifactKey": "b1admin/prod/backend/api.zip",
+  "recommendedMigrationArtifactKey": "b1admin/prod/backend/migrations.zip",
+  "recommendedNextSteps": {
+    "uploadBackendArtifact": "yarn upload:backend-artifact -- --source-file=infrastructure/artifacts/api/api-prod-self-contained.zip --artifact-key=b1admin/prod/backend/api.zip",
+    "uploadMigrationArtifact": "",
+    "publishDependenciesLayer": "",
+    "deployBackend": "yarn deploy:backend -- --package-manifest-file=infrastructure/artifacts/api/api-prod-self-contained.manifest.json",
+    "deployAws": "yarn deploy:aws -- --package-manifest-file=infrastructure/artifacts/api/api-prod-self-contained.manifest.json",
+    "deployFullStack": "yarn deploy:full-stack -- --package-manifest-file=infrastructure/artifacts/api/api-prod-self-contained.manifest.json",
+    "deployMode": "Use the resulting backend zip directly with deploy:backend, deploy:aws, or deploy:full-stack."
+  },
+  "includedBackendEntries": [
+    "config",
+    "dist",
+    "lambda.js",
+    "package.json",
+    "node_modules"
+  ]
+}

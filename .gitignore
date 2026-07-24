@@ -5,6 +5,7 @@
 .serena
 .claude
 Notes.md
+.DS_Store
 #yarn.lock
 
 # Logs
@@ -101,6 +102,12 @@ typings/
 .env.*
 !.env.sample
 !.env.example
+infrastructure/environments/*/app-config-secret.json
+infrastructure/environments/*/bootstrap-admin-secret.json
+deployment/
+infrastructure/debug/
+infrastructure/iam/generated/
+infrastructure/artifacts/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

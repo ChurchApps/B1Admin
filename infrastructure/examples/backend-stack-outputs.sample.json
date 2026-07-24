@@ -1,0 +1,13 @@
+{
+  "DatabaseEndpoint": "b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com",
+  "DatabaseClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:b1admin-prod-cluster",
+  "DatabasePort": "3306",
+  "DatabaseSecretArn": "arn:aws:secretsmanager:us-east-1:123456789012:secret:b1admin-prod-db-master-abc123",
+  "MembershipDatabaseName": "membership",
+  "AttendanceDatabaseName": "attendance",
+  "ContentDatabaseName": "content",
+  "GivingDatabaseName": "giving",
+  "MessagingDatabaseName": "messaging",
+  "DoingDatabaseName": "doing",
+  "ReportingDatabaseName": "reporting"
+}

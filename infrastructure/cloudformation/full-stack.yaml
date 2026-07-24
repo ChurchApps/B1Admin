@@ -1,0 +1,499 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: B1Admin full AWS deployment entrypoint using nested backend and frontend stacks.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: b1admin
+    AllowedPattern: "^[a-z0-9-]+$"
+  EnvironmentName:
+    Type: String
+    Default: prod
+    AllowedPattern: "^[a-z0-9-]+$"
+  BackendTemplateUrl:
+    Type: String
+    Description: S3 or HTTPS URL for backend-api.yaml uploaded template.
+  FrontendTemplateUrl:
+    Type: String
+    Description: S3 or HTTPS URL for frontend-site.yaml uploaded template.
+  LambdaCodeS3Bucket:
+    Type: String
+  LambdaCodeS3Key:
+    Type: String
+  LambdaHandler:
+    Type: String
+    Default: lambda.web
+  LambdaRuntime:
+    Type: String
+    Default: nodejs22.x
+  LambdaArchitecture:
+    Type: String
+    Default: arm64
+    AllowedValues: [arm64, x86_64]
+  LambdaMemorySize:
+    Type: Number
+    Default: 1024
+  LambdaTimeout:
+    Type: Number
+    Default: 30
+  LambdaReservedConcurrency:
+    Type: Number
+    Default: 0
+  DependenciesLayerArn:
+    Type: String
+    Default: ""
+  ObservabilityLayerArn:
+    Type: String
+    Default: ""
+  LambdaNodeOptions:
+    Type: String
+    Default: ""
+  EnableWebSocketApi:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  SocketLambdaHandler:
+    Type: String
+    Default: lambda.socket
+  SocketLambdaMemorySize:
+    Type: Number
+    Default: 1024
+  SocketLambdaTimeout:
+    Type: Number
+    Default: 30
+  EnableScheduledWorkers:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  Timer15MinLambdaHandler:
+    Type: String
+    Default: lambda.timer15Min
+  TimerMidnightLambdaHandler:
+    Type: String
+    Default: lambda.timerMidnight
+  TimerScheduledTasksLambdaHandler:
+    Type: String
+    Default: lambda.timerScheduledTasks
+  TimerWebhooksLambdaHandler:
+    Type: String
+    Default: lambda.timerWebhooks
+  TimerLambdaMemorySize:
+    Type: Number
+    Default: 256
+  TimerLambdaTimeout:
+    Type: Number
+    Default: 300
+  RunMigrations:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+  MigrationCodeS3Bucket:
+    Type: String
+    Default: ""
+  MigrationCodeS3Key:
+    Type: String
+    Default: ""
+  MigrationHandler:
+    Type: String
+    Default: ""
+  MigrationRuntime:
+    Type: String
+    Default: ""
+  MigrationMemorySize:
+    Type: Number
+    Default: 1024
+  MigrationTimeout:
+    Type: Number
+    Default: 900
+  MigrationTrigger:
+    Type: String
+    Default: ""
+  DatabaseName:
+    Type: String
+    Default: membership
+  MembershipDatabaseName:
+    Type: String
+    Default: ""
+  AttendanceDatabaseName:
+    Type: String
+    Default: ""
+  ContentDatabaseName:
+    Type: String
+    Default: ""
+  GivingDatabaseName:
+    Type: String
+    Default: ""
+  MessagingDatabaseName:
+    Type: String
+    Default: ""
+  DoingDatabaseName:
+    Type: String
+    Default: ""
+  ReportingDatabaseName:
+    Type: String
+    Default: ""
+  DatabaseEngine:
+    Type: String
+    Default: aurora-mysql
+    AllowedValues:
+      - aurora-mysql
+      - aurora-postgresql
+  DatabasePort:
+    Type: Number
+    Default: 3306
+  DatabaseMasterUsername:
+    Type: String
+    Default: app_admin
+  DatabaseMinCapacity:
+    Type: Number
+    Default: 0.5
+  DatabaseMaxCapacity:
+    Type: Number
+    Default: 2
+  ApiCustomDomainName:
+    Type: String
+    Default: ""
+  ApiCertificateArn:
+    Type: String
+    Default: ""
+  ApiHostedZoneId:
+    Type: String
+    Default: ""
+  CreateNatGateway:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  VpcCidr:
+    Type: String
+    Default: 10.30.0.0/16
+  PublicSubnet1Cidr:
+    Type: String
+    Default: 10.30.0.0/24
+  PublicSubnet2Cidr:
+    Type: String
+    Default: 10.30.1.0/24
+  PrivateSubnet1Cidr:
+    Type: String
+    Default: 10.30.10.0/24
+  PrivateSubnet2Cidr:
+    Type: String
+    Default: 10.30.11.0/24
+  FrontendBucketName:
+    Type: String
+    Default: ""
+  FrontendAlternateDomainName:
+    Type: String
+    Default: ""
+  FrontendAcmCertificateArn:
+    Type: String
+    Default: ""
+  FrontendHostedZoneId:
+    Type: String
+    Default: ""
+  FrontendPriceClass:
+    Type: String
+    Default: PriceClass_100
+    AllowedValues:
+      - PriceClass_100
+      - PriceClass_200
+      - PriceClass_All
+  WebsiteBaseUrl:
+    Type: String
+    Default: ""
+  ContentRootUrl:
+    Type: String
+    Default: ""
+  B1AdminRootUrl:
+    Type: String
+    Default: ""
+  CorsOrigin:
+    Type: String
+    Default: "*"
+  FileStore:
+    Type: String
+    Default: "S3"
+  ManageAssetBucket:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  AssetBucketName:
+    Type: String
+    Default: ""
+  AppConfigSecretArn:
+    Type: String
+    Default: ""
+  MailSystem:
+    Type: String
+    Default: "SES"
+  DeliveryProvider:
+    Type: String
+    Default: "aws"
+  StoreApiUrl:
+    Type: String
+    Default: ""
+  AiProvider:
+    Type: String
+    Default: ""
+  EmailOnRegistration:
+    Type: String
+    Default: ""
+    AllowedValues: ["", "true", "false"]
+  CaddyHost:
+    Type: String
+    Default: ""
+  CaddyPort:
+    Type: String
+    Default: ""
+  TransferUrl:
+    Type: String
+    Default: ""
+  SupportEmail:
+    Type: String
+    Default: ""
+  SupportPhone:
+    Type: String
+    Default: ""
+  SupportSiteUrl:
+    Type: String
+    Default: ""
+  MobileAppUrl:
+    Type: String
+    Default: ""
+  DomainCnameTarget:
+    Type: String
+    Default: ""
+  DomainATarget:
+    Type: String
+    Default: ""
+  DefaultStockPhoto:
+    Type: String
+    Default: ""
+  GoogleAnalyticsTag:
+    Type: String
+    Default: ""
+  SentryDsn:
+    Type: String
+    Default: ""
+
+Rules:
+  ApiDomainRequiresCertificate:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref ApiCustomDomainName, ""]
+          - !Not [!Equals [!Ref ApiCertificateArn, ""]]
+        AssertDescription: ApiCertificateArn is required when ApiCustomDomainName is set.
+  MigrationRequiresHandler:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref RunMigrations, "false"]
+          - !Not [!Equals [!Ref MigrationHandler, ""]]
+        AssertDescription: MigrationHandler is required when RunMigrations is true.
+  FrontendDomainRequiresCertificate:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref FrontendAlternateDomainName, ""]
+          - !Not [!Equals [!Ref FrontendAcmCertificateArn, ""]]
+        AssertDescription: FrontendAcmCertificateArn is required when FrontendAlternateDomainName is set.
+
+Resources:
+  BackendStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref BackendTemplateUrl
+      Parameters:
+        ProjectName: !Ref ProjectName
+        EnvironmentName: !Ref EnvironmentName
+        LambdaCodeS3Bucket: !Ref LambdaCodeS3Bucket
+        LambdaCodeS3Key: !Ref LambdaCodeS3Key
+        LambdaHandler: !Ref LambdaHandler
+        LambdaRuntime: !Ref LambdaRuntime
+        LambdaArchitecture: !Ref LambdaArchitecture
+        LambdaMemorySize: !Ref LambdaMemorySize
+        LambdaTimeout: !Ref LambdaTimeout
+        LambdaReservedConcurrency: !Ref LambdaReservedConcurrency
+        DependenciesLayerArn: !Ref DependenciesLayerArn
+        ObservabilityLayerArn: !Ref ObservabilityLayerArn
+        LambdaNodeOptions: !Ref LambdaNodeOptions
+        EnableWebSocketApi: !Ref EnableWebSocketApi
+        SocketLambdaHandler: !Ref SocketLambdaHandler
+        SocketLambdaMemorySize: !Ref SocketLambdaMemorySize
+        SocketLambdaTimeout: !Ref SocketLambdaTimeout
+        EnableScheduledWorkers: !Ref EnableScheduledWorkers
+        Timer15MinLambdaHandler: !Ref Timer15MinLambdaHandler
+        TimerMidnightLambdaHandler: !Ref TimerMidnightLambdaHandler
+        TimerScheduledTasksLambdaHandler: !Ref TimerScheduledTasksLambdaHandler
+        TimerWebhooksLambdaHandler: !Ref TimerWebhooksLambdaHandler
+        TimerLambdaMemorySize: !Ref TimerLambdaMemorySize
+        TimerLambdaTimeout: !Ref TimerLambdaTimeout
+        RunMigrations: !Ref RunMigrations
+        MigrationCodeS3Bucket: !Ref MigrationCodeS3Bucket
+        MigrationCodeS3Key: !Ref MigrationCodeS3Key
+        MigrationHandler: !Ref MigrationHandler
+        MigrationRuntime: !Ref MigrationRuntime
+        MigrationMemorySize: !Ref MigrationMemorySize
+        MigrationTimeout: !Ref MigrationTimeout
+        MigrationTrigger: !Ref MigrationTrigger
+        DatabaseName: !Ref DatabaseName
+        MembershipDatabaseName: !Ref MembershipDatabaseName
+        AttendanceDatabaseName: !Ref AttendanceDatabaseName
+        ContentDatabaseName: !Ref ContentDatabaseName
+        GivingDatabaseName: !Ref GivingDatabaseName
+        MessagingDatabaseName: !Ref MessagingDatabaseName
+        DoingDatabaseName: !Ref DoingDatabaseName
+        ReportingDatabaseName: !Ref ReportingDatabaseName
+        DatabaseEngine: !Ref DatabaseEngine
+        DatabasePort: !Ref DatabasePort
+        DatabaseMasterUsername: !Ref DatabaseMasterUsername
+        DatabaseMinCapacity: !Ref DatabaseMinCapacity
+        DatabaseMaxCapacity: !Ref DatabaseMaxCapacity
+        ApiCustomDomainName: !Ref ApiCustomDomainName
+        ApiCertificateArn: !Ref ApiCertificateArn
+        ApiHostedZoneId: !Ref ApiHostedZoneId
+        CreateNatGateway: !Ref CreateNatGateway
+        VpcCidr: !Ref VpcCidr
+        PublicSubnet1Cidr: !Ref PublicSubnet1Cidr
+        PublicSubnet2Cidr: !Ref PublicSubnet2Cidr
+        PrivateSubnet1Cidr: !Ref PrivateSubnet1Cidr
+        PrivateSubnet2Cidr: !Ref PrivateSubnet2Cidr
+        WebsiteBaseUrl: !Ref WebsiteBaseUrl
+        ContentRootUrl: !Ref ContentRootUrl
+        B1AdminRootUrl: !Ref B1AdminRootUrl
+        CorsOrigin: !Ref CorsOrigin
+        FileStore: !Ref FileStore
+        ManageAssetBucket: !Ref ManageAssetBucket
+        AssetBucketName: !Ref AssetBucketName
+        AppConfigSecretArn: !Ref AppConfigSecretArn
+        MailSystem: !Ref MailSystem
+        DeliveryProvider: !Ref DeliveryProvider
+        StoreApiUrl: !Ref StoreApiUrl
+        AiProvider: !Ref AiProvider
+        EmailOnRegistration: !Ref EmailOnRegistration
+        CaddyHost: !Ref CaddyHost
+        CaddyPort: !Ref CaddyPort
+        TransferUrl: !Ref TransferUrl
+        SupportEmail: !Ref SupportEmail
+        SupportPhone: !Ref SupportPhone
+        SupportSiteUrl: !Ref SupportSiteUrl
+        MobileAppUrl: !Ref MobileAppUrl
+        DomainCnameTarget: !Ref DomainCnameTarget
+        DomainATarget: !Ref DomainATarget
+        DefaultStockPhoto: !Ref DefaultStockPhoto
+        GoogleAnalyticsTag: !Ref GoogleAnalyticsTag
+        SentryDsn: !Ref SentryDsn
+
+  FrontendStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref FrontendTemplateUrl
+      Parameters:
+        ProjectName: !Ref ProjectName
+        EnvironmentName: !Ref EnvironmentName
+        BucketName: !Ref FrontendBucketName
+        AlternateDomainName: !Ref FrontendAlternateDomainName
+        AcmCertificateArn: !Ref FrontendAcmCertificateArn
+        HostedZoneId: !Ref FrontendHostedZoneId
+        PriceClass: !Ref FrontendPriceClass
+
+Outputs:
+  BackendStackId:
+    Value: !Ref BackendStack
+  FrontendStackId:
+    Value: !Ref FrontendStack
+  ApiBaseUrl:
+    Value: !GetAtt BackendStack.Outputs.ApiBaseUrl
+  PublicApiBaseUrl:
+    Value: !GetAtt BackendStack.Outputs.PublicApiBaseUrl
+  ApiFunctionName:
+    Value: !GetAtt BackendStack.Outputs.ApiFunctionName
+  ApiFunctionArn:
+    Value: !GetAtt BackendStack.Outputs.ApiFunctionArn
+  MigrationFunctionName:
+    Value: !GetAtt BackendStack.Outputs.MigrationFunctionName
+  SocketFunctionName:
+    Value: !GetAtt BackendStack.Outputs.SocketFunctionName
+  WebSocketApiId:
+    Value: !GetAtt BackendStack.Outputs.WebSocketApiId
+  WebSocketApiEndpoint:
+    Value: !GetAtt BackendStack.Outputs.WebSocketApiEndpoint
+  Timer15MinFunctionName:
+    Value: !GetAtt BackendStack.Outputs.Timer15MinFunctionName
+  TimerMidnightFunctionName:
+    Value: !GetAtt BackendStack.Outputs.TimerMidnightFunctionName
+  TimerScheduledTasksFunctionName:
+    Value: !GetAtt BackendStack.Outputs.TimerScheduledTasksFunctionName
+  TimerWebhooksFunctionName:
+    Value: !GetAtt BackendStack.Outputs.TimerWebhooksFunctionName
+  ApiCustomDomainName:
+    Value: !GetAtt BackendStack.Outputs.ApiCustomDomainName
+  DatabaseEndpoint:
+    Value: !GetAtt BackendStack.Outputs.DatabaseEndpoint
+  DatabaseReaderEndpoint:
+    Value: !GetAtt BackendStack.Outputs.DatabaseReaderEndpoint
+  DatabaseClusterArn:
+    Value: !GetAtt BackendStack.Outputs.DatabaseClusterArn
+  DatabasePort:
+    Value: !GetAtt BackendStack.Outputs.DatabasePort
+  DatabaseName:
+    Value: !GetAtt BackendStack.Outputs.DatabaseName
+  MembershipDatabaseName:
+    Value: !GetAtt BackendStack.Outputs.MembershipDatabaseName
+  AttendanceDatabaseName:
+    Value: !GetAtt BackendStack.Outputs.AttendanceDatabaseName
+  ContentDatabaseName:
+    Value: !GetAtt BackendStack.Outputs.ContentDatabaseName
+  GivingDatabaseName:
+    Value: !GetAtt BackendStack.Outputs.GivingDatabaseName
+  MessagingDatabaseName:
+    Value: !GetAtt BackendStack.Outputs.MessagingDatabaseName
+  DoingDatabaseName:
+    Value: !GetAtt BackendStack.Outputs.DoingDatabaseName
+  ReportingDatabaseName:
+    Value: !GetAtt BackendStack.Outputs.ReportingDatabaseName
+  DatabaseSecretArn:
+    Value: !GetAtt BackendStack.Outputs.DatabaseSecretArn
+  AppConfigSecretArn:
+    Value: !GetAtt BackendStack.Outputs.AppConfigSecretArn
+  VpcId:
+    Value: !GetAtt BackendStack.Outputs.VpcId
+  PrivateSubnet1Id:
+    Value: !GetAtt BackendStack.Outputs.PrivateSubnet1Id
+  PrivateSubnet2Id:
+    Value: !GetAtt BackendStack.Outputs.PrivateSubnet2Id
+  LambdaSecurityGroupId:
+    Value: !GetAtt BackendStack.Outputs.LambdaSecurityGroupId
+  ContentRootUrl:
+    Value: !GetAtt BackendStack.Outputs.ContentRootUrl
+  AssetBucketName:
+    Value: !GetAtt BackendStack.Outputs.AssetBucketName
+  WebsiteBaseUrl:
+    Value: !GetAtt BackendStack.Outputs.WebsiteBaseUrl
+  LessonsApiUrl:
+    Value: !GetAtt BackendStack.Outputs.LessonsApiUrl
+  TransferUrl:
+    Value: !GetAtt BackendStack.Outputs.TransferUrl
+  SupportEmail:
+    Value: !GetAtt BackendStack.Outputs.SupportEmail
+  SupportPhone:
+    Value: !GetAtt BackendStack.Outputs.SupportPhone
+  SupportSiteUrl:
+    Value: !GetAtt BackendStack.Outputs.SupportSiteUrl
+  MobileAppUrl:
+    Value: !GetAtt BackendStack.Outputs.MobileAppUrl
+  DomainCnameTarget:
+    Value: !GetAtt BackendStack.Outputs.DomainCnameTarget
+  DomainATarget:
+    Value: !GetAtt BackendStack.Outputs.DomainATarget
+  DefaultStockPhoto:
+    Value: !GetAtt BackendStack.Outputs.DefaultStockPhoto
+  GoogleAnalyticsTag:
+    Value: !GetAtt BackendStack.Outputs.GoogleAnalyticsTag
+  SentryDsn:
+    Value: !GetAtt BackendStack.Outputs.SentryDsn
+  FrontendBucketName:
+    Value: !GetAtt FrontendStack.Outputs.SiteBucketName
+  FrontendDistributionId:
+    Value: !GetAtt FrontendStack.Outputs.CloudFrontDistributionId
+  FrontendDistributionDomainName:
+    Value: !GetAtt FrontendStack.Outputs.CloudFrontDistributionDomainName
+  FrontendAppUrl:
+    Value: !GetAtt FrontendStack.Outputs.AppUrl

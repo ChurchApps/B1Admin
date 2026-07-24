@@ -1,0 +1,206 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: B1Admin static frontend hosting with S3, CloudFront, and optional custom domain.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: b1admin
+    AllowedPattern: "^[a-z0-9-]+$"
+    Description: Lowercase project slug used for resource names and tagging.
+  EnvironmentName:
+    Type: String
+    Default: prod
+    AllowedPattern: "^[a-z0-9-]+$"
+    Description: Environment slug such as dev, staging, or prod.
+  BucketName:
+    Type: String
+    Default: ""
+    Description: Optional globally unique S3 bucket name. Leave blank to let CloudFormation generate one.
+  AlternateDomainName:
+    Type: String
+    Default: ""
+    Description: Optional custom domain for CloudFront, such as admin.example.com.
+  AcmCertificateArn:
+    Type: String
+    Default: ""
+    Description: Optional ACM certificate ARN in us-east-1. Required when AlternateDomainName is set.
+  HostedZoneId:
+    Type: String
+    Default: ""
+    Description: Optional Route53 hosted zone ID for creating the DNS alias record.
+  PriceClass:
+    Type: String
+    Default: PriceClass_100
+    AllowedValues:
+      - PriceClass_100
+      - PriceClass_200
+      - PriceClass_All
+    Description: CloudFront price class.
+
+Rules:
+  DomainRequiresCertificate:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref AlternateDomainName, ""]
+          - !Not [!Equals [!Ref AcmCertificateArn, ""]]
+        AssertDescription: AcmCertificateArn is required when AlternateDomainName is set.
+  HostedZoneRequiresDomain:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref HostedZoneId, ""]
+          - !Not [!Equals [!Ref AlternateDomainName, ""]]
+        AssertDescription: AlternateDomainName is required when HostedZoneId is set.
+
+Conditions:
+  HasBucketName: !Not [!Equals [!Ref BucketName, ""]]
+  HasAlternateDomain: !Not [!Equals [!Ref AlternateDomainName, ""]]
+  HasHostedZone: !Not [!Equals [!Ref HostedZoneId, ""]]
+  CreateDnsRecord: !And
+    - !Condition HasAlternateDomain
+    - !Condition HasHostedZone
+
+Resources:
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !If [HasBucketName, !Ref BucketName, !Ref "AWS::NoValue"]
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  SiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref SiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipalReadOnly
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${SiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${SiteDistribution}"
+
+  CloudFrontOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${ProjectName}-${EnvironmentName}-oac"
+        Description: Access control for the B1Admin frontend bucket.
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  SiteDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases: !If
+          - HasAlternateDomain
+          - [!Ref AlternateDomainName]
+          - !Ref "AWS::NoValue"
+        Comment: !Sub "${ProjectName}-${EnvironmentName} frontend"
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf
+          TargetOriginId: site-bucket-origin
+          ViewerProtocolPolicy: redirect-to-https
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 0
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+            ErrorCachingMinTTL: 0
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2and3
+        IPV6Enabled: true
+        Origins:
+          - Id: site-bucket-origin
+            DomainName: !GetAtt SiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
+            S3OriginConfig: {}
+        PriceClass: !Ref PriceClass
+        ViewerCertificate: !If
+          - HasAlternateDomain
+          - AcmCertificateArn: !Ref AcmCertificateArn
+            MinimumProtocolVersion: TLSv1.2_2021
+            SslSupportMethod: sni-only
+          - CloudFrontDefaultCertificate: true
+
+  SiteDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: CreateDnsRecord
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref AlternateDomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt SiteDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+        EvaluateTargetHealth: false
+
+  SiteDnsRecordIpv6:
+    Type: AWS::Route53::RecordSet
+    Condition: CreateDnsRecord
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref AlternateDomainName
+      Type: AAAA
+      AliasTarget:
+        DNSName: !GetAtt SiteDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+        EvaluateTargetHealth: false
+
+Outputs:
+  SiteBucketName:
+    Description: S3 bucket that stores the frontend assets.
+    Value: !Ref SiteBucket
+  SiteBucketArn:
+    Description: ARN of the frontend asset bucket.
+    Value: !GetAtt SiteBucket.Arn
+  CloudFrontDistributionId:
+    Description: CloudFront distribution ID.
+    Value: !Ref SiteDistribution
+  CloudFrontDistributionDomainName:
+    Description: CloudFront distribution domain name.
+    Value: !GetAtt SiteDistribution.DomainName
+  AppUrl:
+    Description: URL for the deployed site.
+    Value: !If
+      - HasAlternateDomain
+      - !Sub "https://${AlternateDomainName}"
+      - !Sub "https://${SiteDistribution.DomainName}"

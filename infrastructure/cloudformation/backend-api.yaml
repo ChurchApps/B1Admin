@@ -1,0 +1,1850 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: B1Admin backend foundation with VPC, Lambda, HTTP API, and Aurora Serverless v2.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: b1admin
+    AllowedPattern: "^[a-z0-9-]+$"
+  EnvironmentName:
+    Type: String
+    Default: prod
+    AllowedPattern: "^[a-z0-9-]+$"
+  VpcCidr:
+    Type: String
+    Default: 10.30.0.0/16
+  PublicSubnet1Cidr:
+    Type: String
+    Default: 10.30.0.0/24
+  PublicSubnet2Cidr:
+    Type: String
+    Default: 10.30.1.0/24
+  PrivateSubnet1Cidr:
+    Type: String
+    Default: 10.30.10.0/24
+  PrivateSubnet2Cidr:
+    Type: String
+    Default: 10.30.11.0/24
+  CreateNatGateway:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  LambdaCodeS3Bucket:
+    Type: String
+    Description: S3 bucket containing the packaged backend Lambda zip.
+  LambdaCodeS3Key:
+    Type: String
+    Description: S3 key for the packaged backend Lambda zip.
+  LambdaHandler:
+    Type: String
+    Default: lambda.web
+  LambdaRuntime:
+    Type: String
+    Default: nodejs22.x
+    AllowedValues:
+      - nodejs20.x
+      - nodejs22.x
+      - python3.12
+      - python3.13
+      - provided.al2023
+  LambdaArchitecture:
+    Type: String
+    Default: arm64
+    AllowedValues: [arm64, x86_64]
+  LambdaMemorySize:
+    Type: Number
+    Default: 1024
+    MinValue: 128
+  LambdaTimeout:
+    Type: Number
+    Default: 30
+    MinValue: 1
+    MaxValue: 900
+  LambdaReservedConcurrency:
+    Type: Number
+    Default: 0
+    MinValue: 0
+  DependenciesLayerArn:
+    Type: String
+    Default: ""
+    Description: Optional Lambda layer ARN for packaged backend dependencies.
+  ObservabilityLayerArn:
+    Type: String
+    Default: ""
+    Description: Optional Lambda layer ARN for Sentry or other observability tooling.
+  LambdaNodeOptions:
+    Type: String
+    Default: ""
+    Description: Optional NODE_OPTIONS value applied to all backend Lambdas.
+  EnableWebSocketApi:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  SocketLambdaHandler:
+    Type: String
+    Default: lambda.socket
+  SocketLambdaMemorySize:
+    Type: Number
+    Default: 1024
+    MinValue: 128
+  SocketLambdaTimeout:
+    Type: Number
+    Default: 30
+    MinValue: 1
+    MaxValue: 900
+  EnableScheduledWorkers:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  Timer15MinLambdaHandler:
+    Type: String
+    Default: lambda.timer15Min
+  TimerMidnightLambdaHandler:
+    Type: String
+    Default: lambda.timerMidnight
+  TimerScheduledTasksLambdaHandler:
+    Type: String
+    Default: lambda.timerScheduledTasks
+  TimerWebhooksLambdaHandler:
+    Type: String
+    Default: lambda.timerWebhooks
+  TimerLambdaMemorySize:
+    Type: Number
+    Default: 256
+    MinValue: 128
+  TimerLambdaTimeout:
+    Type: Number
+    Default: 300
+    MinValue: 1
+    MaxValue: 900
+  RunMigrations:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+    Description: Whether to create and invoke a migration Lambda as a CloudFormation custom resource.
+  MigrationCodeS3Bucket:
+    Type: String
+    Default: ""
+    Description: Optional S3 bucket for the migration Lambda package. Falls back to LambdaCodeS3Bucket when omitted.
+  MigrationCodeS3Key:
+    Type: String
+    Default: ""
+    Description: Optional S3 key for the migration Lambda package. Falls back to LambdaCodeS3Key when omitted.
+  MigrationHandler:
+    Type: String
+    Default: ""
+    Description: Optional handler for the migration Lambda. Required when RunMigrations=true.
+  MigrationRuntime:
+    Type: String
+    Default: ""
+    Description: Optional runtime for the migration Lambda. Falls back to LambdaRuntime when omitted.
+  MigrationMemorySize:
+    Type: Number
+    Default: 1024
+    MinValue: 128
+  MigrationTimeout:
+    Type: Number
+    Default: 900
+    MinValue: 1
+    MaxValue: 900
+  MigrationTrigger:
+    Type: String
+    Default: ""
+    Description: Optional value to force the migration custom resource to re-run on stack update.
+  DatabaseName:
+    Type: String
+    Default: membership
+    AllowedPattern: "^[a-zA-Z][a-zA-Z0-9_]*$"
+    Description: Legacy/default database name. Used as the membership database when MembershipDatabaseName is not set.
+  MembershipDatabaseName:
+    Type: String
+    Default: ""
+    AllowedPattern: "^$|^[a-zA-Z][a-zA-Z0-9_]*$"
+  AttendanceDatabaseName:
+    Type: String
+    Default: ""
+    AllowedPattern: "^$|^[a-zA-Z][a-zA-Z0-9_]*$"
+  ContentDatabaseName:
+    Type: String
+    Default: ""
+    AllowedPattern: "^$|^[a-zA-Z][a-zA-Z0-9_]*$"
+  GivingDatabaseName:
+    Type: String
+    Default: ""
+    AllowedPattern: "^$|^[a-zA-Z][a-zA-Z0-9_]*$"
+  MessagingDatabaseName:
+    Type: String
+    Default: ""
+    AllowedPattern: "^$|^[a-zA-Z][a-zA-Z0-9_]*$"
+  DoingDatabaseName:
+    Type: String
+    Default: ""
+    AllowedPattern: "^$|^[a-zA-Z][a-zA-Z0-9_]*$"
+  ReportingDatabaseName:
+    Type: String
+    Default: ""
+    AllowedPattern: "^$|^[a-zA-Z][a-zA-Z0-9_]*$"
+  DatabaseEngine:
+    Type: String
+    Default: aurora-mysql
+    AllowedValues:
+      - aurora-mysql
+      - aurora-postgresql
+  DatabasePort:
+    Type: Number
+    Default: 3306
+  DatabaseMasterUsername:
+    Type: String
+    Default: app_admin
+  DatabaseMinCapacity:
+    Type: Number
+    Default: 0.5
+  DatabaseMaxCapacity:
+    Type: Number
+    Default: 2
+  ApiCustomDomainName:
+    Type: String
+    Default: ""
+    Description: Optional custom domain for the HTTP API, such as api.example.com
+  ApiCertificateArn:
+    Type: String
+    Default: ""
+    Description: Optional ACM certificate ARN for the API custom domain
+  ApiHostedZoneId:
+    Type: String
+    Default: ""
+    Description: Optional Route53 hosted zone ID for the API custom domain
+  WebsiteBaseUrl:
+    Type: String
+    Default: ""
+    Description: Public member-facing website pattern, such as https://{subdomain}.example.com
+  ContentRootUrl:
+    Type: String
+    Default: ""
+  B1AdminRootUrl:
+    Type: String
+    Default: ""
+    Description: Public URL for the B1Admin frontend, used by backend-generated links.
+  CorsOrigin:
+    Type: String
+    Default: "*"
+  FileStore:
+    Type: String
+    Default: "S3"
+  ManageAssetBucket:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  AssetBucketName:
+    Type: String
+    Default: ""
+    Description: Optional S3 bucket name used by the Api repo for uploaded content when FILE_STORE=S3.
+  AppConfigSecretArn:
+    Type: String
+    Default: ""
+    Description: Optional Secrets Manager ARN containing JSON fields for Api repo runtime secrets and config values.
+  MailSystem:
+    Type: String
+    Default: "SES"
+  DeliveryProvider:
+    Type: String
+    Default: "aws"
+  StoreApiUrl:
+    Type: String
+    Default: ""
+  AiProvider:
+    Type: String
+    Default: ""
+  EmailOnRegistration:
+    Type: String
+    Default: ""
+    AllowedValues: ["", "true", "false"]
+  CaddyHost:
+    Type: String
+    Default: ""
+  CaddyPort:
+    Type: String
+    Default: ""
+  TransferUrl:
+    Type: String
+    Default: ""
+  SupportEmail:
+    Type: String
+    Default: ""
+  SupportPhone:
+    Type: String
+    Default: ""
+  SupportSiteUrl:
+    Type: String
+    Default: ""
+  MobileAppUrl:
+    Type: String
+    Default: ""
+  DomainCnameTarget:
+    Type: String
+    Default: ""
+  DomainATarget:
+    Type: String
+    Default: ""
+  DefaultStockPhoto:
+    Type: String
+    Default: ""
+  GoogleAnalyticsTag:
+    Type: String
+    Default: ""
+  SentryDsn:
+    Type: String
+    Default: ""
+
+Rules:
+  ApiDomainRequiresCertificate:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref ApiCustomDomainName, ""]
+          - !Not [!Equals [!Ref ApiCertificateArn, ""]]
+        AssertDescription: ApiCertificateArn is required when ApiCustomDomainName is set.
+  MigrationRequiresHandler:
+    Assertions:
+      - Assert: !Or
+          - !Equals [!Ref RunMigrations, "false"]
+          - !Not [!Equals [!Ref MigrationHandler, ""]]
+        AssertDescription: MigrationHandler is required when RunMigrations is true.
+
+Conditions:
+  UseNatGateway: !Equals [!Ref CreateNatGateway, "true"]
+  CreatePrivateAwsEndpoints: !Equals [!Ref CreateNatGateway, "false"]
+  CreateWebSocketApi: !Equals [!Ref EnableWebSocketApi, "true"]
+  CreateScheduledWorkers: !Equals [!Ref EnableScheduledWorkers, "true"]
+  RunMigrationResources: !Equals [!Ref RunMigrations, "true"]
+  HasApiCustomDomainName: !Not [!Equals [!Ref ApiCustomDomainName, ""]]
+  HasApiCertificateArn: !Not [!Equals [!Ref ApiCertificateArn, ""]]
+  HasApiHostedZoneId: !Not [!Equals [!Ref ApiHostedZoneId, ""]]
+  CreateApiCustomDomain: !And
+    - !Condition HasApiCustomDomainName
+    - !Condition HasApiCertificateArn
+  CreateApiDnsRecord: !And
+    - !Condition CreateApiCustomDomain
+    - !Condition HasApiHostedZoneId
+  HasWebsiteBaseUrl: !Not [!Equals [!Ref WebsiteBaseUrl, ""]]
+  HasContentRootUrl: !Not [!Equals [!Ref ContentRootUrl, ""]]
+  HasB1AdminRootUrl: !Not [!Equals [!Ref B1AdminRootUrl, ""]]
+  HasTransferUrl: !Not [!Equals [!Ref TransferUrl, ""]]
+  HasSupportEmail: !Not [!Equals [!Ref SupportEmail, ""]]
+  HasSupportPhone: !Not [!Equals [!Ref SupportPhone, ""]]
+  HasSupportSiteUrl: !Not [!Equals [!Ref SupportSiteUrl, ""]]
+  HasMobileAppUrl: !Not [!Equals [!Ref MobileAppUrl, ""]]
+  HasDomainCnameTarget: !Not [!Equals [!Ref DomainCnameTarget, ""]]
+  HasDomainATarget: !Not [!Equals [!Ref DomainATarget, ""]]
+  HasDefaultStockPhoto: !Not [!Equals [!Ref DefaultStockPhoto, ""]]
+  HasGoogleAnalyticsTag: !Not [!Equals [!Ref GoogleAnalyticsTag, ""]]
+  HasSentryDsn: !Not [!Equals [!Ref SentryDsn, ""]]
+  HasReservedConcurrency: !Not [!Equals [!Ref LambdaReservedConcurrency, 0]]
+  HasDependenciesLayerArn: !Not [!Equals [!Ref DependenciesLayerArn, ""]]
+  HasObservabilityLayerArn: !Not [!Equals [!Ref ObservabilityLayerArn, ""]]
+  HasMigrationCodeS3Bucket: !Not [!Equals [!Ref MigrationCodeS3Bucket, ""]]
+  HasMigrationCodeS3Key: !Not [!Equals [!Ref MigrationCodeS3Key, ""]]
+  HasMigrationRuntime: !Not [!Equals [!Ref MigrationRuntime, ""]]
+  HasLambdaNodeOptions: !Not [!Equals [!Ref LambdaNodeOptions, ""]]
+  UseS3FileStore: !Equals [!Ref FileStore, "S3"]
+  ManageAssetBucketEnabled: !Equals [!Ref ManageAssetBucket, "true"]
+  HasAssetBucketName: !Not [!Equals [!Ref AssetBucketName, ""]]
+  CreateManagedAssetBucket: !And
+    - !Condition UseS3FileStore
+    - !Condition ManageAssetBucketEnabled
+    - !Not [!Condition HasAssetBucketName]
+  HasResolvedAssetBucket: !Or
+    - !Condition HasAssetBucketName
+    - !Condition CreateManagedAssetBucket
+  HasAppConfigSecretArn: !Not [!Equals [!Ref AppConfigSecretArn, ""]]
+  UseSesMailSystem: !Equals [!Ref MailSystem, "SES"]
+  HasAiProvider: !Not [!Equals [!Ref AiProvider, ""]]
+  HasEmailOnRegistration: !Not [!Equals [!Ref EmailOnRegistration, ""]]
+  HasCaddyHost: !Not [!Equals [!Ref CaddyHost, ""]]
+  HasCaddyPort: !Not [!Equals [!Ref CaddyPort, ""]]
+  HasMembershipDatabaseName: !Not [!Equals [!Ref MembershipDatabaseName, ""]]
+  HasAttendanceDatabaseName: !Not [!Equals [!Ref AttendanceDatabaseName, ""]]
+  HasContentDatabaseName: !Not [!Equals [!Ref ContentDatabaseName, ""]]
+  HasGivingDatabaseName: !Not [!Equals [!Ref GivingDatabaseName, ""]]
+  HasMessagingDatabaseName: !Not [!Equals [!Ref MessagingDatabaseName, ""]]
+  HasDoingDatabaseName: !Not [!Equals [!Ref DoingDatabaseName, ""]]
+  HasReportingDatabaseName: !Not [!Equals [!Ref ReportingDatabaseName, ""]]
+
+Resources:
+  BackendVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidr
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-vpc"
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-igw"
+
+  VpcGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref BackendVpc
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref BackendVpc
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: !Ref PublicSubnet1Cidr
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-public-a"
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref BackendVpc
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      CidrBlock: !Ref PublicSubnet2Cidr
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-public-b"
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref BackendVpc
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: !Ref PrivateSubnet1Cidr
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-private-a"
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref BackendVpc
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      CidrBlock: !Ref PrivateSubnet2Cidr
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-private-b"
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref BackendVpc
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-public-rt"
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VpcGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  NatEip:
+    Type: AWS::EC2::EIP
+    Condition: UseNatGateway
+    Properties:
+      Domain: vpc
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Condition: UseNatGateway
+    Properties:
+      AllocationId: !GetAtt NatEip.AllocationId
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-nat"
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref BackendVpc
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-private-rt"
+
+  PrivateDefaultRoute:
+    Type: AWS::EC2::Route
+    Condition: UseNatGateway
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRouteTable
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRouteTable
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Lambda security group for backend API
+      VpcId: !Ref BackendVpc
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-lambda-sg"
+
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Aurora security group for backend API
+      VpcId: !Ref BackendVpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref DatabasePort
+          ToPort: !Ref DatabasePort
+          SourceSecurityGroupId: !Ref LambdaSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-db-sg"
+
+  VpcEndpointSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Condition: CreatePrivateAwsEndpoints
+    Properties:
+      GroupDescription: Interface endpoint security group for backend private AWS service access
+      VpcId: !Ref BackendVpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          SourceSecurityGroupId: !Ref LambdaSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-vpce-sg"
+
+  SecretsManagerVpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Condition: CreatePrivateAwsEndpoints
+    Properties:
+      VpcId: !Ref BackendVpc
+      VpcEndpointType: Interface
+      PrivateDnsEnabled: true
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.secretsmanager"
+      SecurityGroupIds:
+        - !Ref VpcEndpointSecurityGroup
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+
+  S3VpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Condition: CreatePrivateAwsEndpoints
+    Properties:
+      VpcId: !Ref BackendVpc
+      VpcEndpointType: Gateway
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
+      RouteTableIds:
+        - !Ref PrivateRouteTable
+
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Private subnets for the Aurora cluster
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+      DBSubnetGroupName: !Sub "${ProjectName}-${EnvironmentName}-db-subnets"
+
+  DatabaseMasterSecret:
+    Type: AWS::SecretsManager::Secret
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Description: !Sub "Master database credentials for ${ProjectName} ${EnvironmentName}"
+      GenerateSecretString:
+        SecretStringTemplate: !Sub '{"username":"${DatabaseMasterUsername}"}'
+        GenerateStringKey: password
+        ExcludeCharacters: "\"'@/\\:?%#[]{}()<>&+=,;"
+
+  DatabaseCluster:
+    Type: AWS::RDS::DBCluster
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Properties:
+      Engine: !Ref DatabaseEngine
+      DBClusterIdentifier: !Sub "${ProjectName}-${EnvironmentName}-cluster"
+      DatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+      MasterUsername: !Ref DatabaseMasterUsername
+      MasterUserPassword: !Sub "{{resolve:secretsmanager:${DatabaseMasterSecret}:SecretString:password}}"
+      Port: !Ref DatabasePort
+      ServerlessV2ScalingConfiguration:
+        MinCapacity: !Ref DatabaseMinCapacity
+        MaxCapacity: !Ref DatabaseMaxCapacity
+      StorageEncrypted: true
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref DatabaseSecurityGroup
+      EnableHttpEndpoint: true
+      DeletionProtection: false
+      BackupRetentionPeriod: 7
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  DatabaseInstanceWriter:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBClusterIdentifier: !Ref DatabaseCluster
+      DBInstanceClass: db.serverless
+      Engine: !Ref DatabaseEngine
+      PubliclyAccessible: false
+      AutoMinorVersionUpgrade: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${EnvironmentName}-writer"
+
+  ApiFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${ProjectName}-${EnvironmentName}-api-role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      Policies:
+        - PolicyName: database-and-secrets
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Ref DatabaseMasterSecret
+              - Effect: Allow
+                Action:
+                  - rds-data:BatchExecuteStatement
+                  - rds-data:BeginTransaction
+                  - rds-data:CommitTransaction
+                  - rds-data:ExecuteStatement
+                  - rds-data:RollbackTransaction
+                Resource: !GetAtt DatabaseCluster.DBClusterArn
+
+  AppConfigSecretAccessPolicy:
+    Type: AWS::IAM::Policy
+    Condition: HasAppConfigSecretArn
+    Properties:
+      PolicyName: !Sub "${ProjectName}-${EnvironmentName}-app-config-secret"
+      Roles:
+        - !Ref ApiFunctionRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:GetSecretValue
+            Resource: !Ref AppConfigSecretArn
+
+  WebSocketManageConnectionsPolicy:
+    Type: AWS::IAM::Policy
+    Condition: CreateWebSocketApi
+    Properties:
+      PolicyName: !Sub "${ProjectName}-${EnvironmentName}-ws-manage-connections"
+      Roles:
+        - !Ref ApiFunctionRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - execute-api:ManageConnections
+            Resource: !Sub "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${BackendWebSocketApi}/*"
+
+  AssetBucketAccessPolicy:
+    Type: AWS::IAM::Policy
+    Condition: HasResolvedAssetBucket
+    Properties:
+      PolicyName: !Sub "${ProjectName}-${EnvironmentName}-asset-bucket-access"
+      Roles:
+        - !Ref ApiFunctionRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:PutObject
+              - s3:DeleteObject
+              - s3:AbortMultipartUpload
+            Resource: !Sub
+              - "arn:${AWS::Partition}:s3:::${ResolvedBucketName}/*"
+              - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+            Resource: !Sub
+              - "arn:${AWS::Partition}:s3:::${ResolvedBucketName}"
+              - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+
+  SesSendPolicy:
+    Type: AWS::IAM::Policy
+    Condition: UseSesMailSystem
+    Properties:
+      PolicyName: !Sub "${ProjectName}-${EnvironmentName}-ses-send"
+      Roles:
+        - !Ref ApiFunctionRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+              - ses:SendRawEmail
+              - ses:SendTemplatedEmail
+              - ses:SendBulkTemplatedEmail
+            Resource: "*"
+
+  PollyAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub "${ProjectName}-${EnvironmentName}-polly-access"
+      Roles:
+        - !Ref ApiFunctionRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - polly:SynthesizeSpeech
+            Resource: "*"
+
+  ManagedAssetBucket:
+    Type: AWS::S3::Bucket
+    Condition: CreateManagedAssetBucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ["*"]
+            AllowedMethods: [GET, HEAD, PUT]
+            AllowedOrigins: ["*"]
+            ExposedHeaders: [ETag]
+            MaxAge: 3000
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      VersioningConfiguration:
+        Status: Enabled
+
+  ManagedAssetBucketPublicReadPolicy:
+    Type: AWS::S3::BucketPolicy
+    Condition: CreateManagedAssetBucket
+    Properties:
+      Bucket: !Ref ManagedAssetBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action:
+              - s3:GetObject
+            Resource: !Sub "arn:${AWS::Partition}:s3:::${ManagedAssetBucket}/*"
+
+  ApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ProjectName}-${EnvironmentName}-api"
+      RetentionInDays: 30
+
+  ApiFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "${ProjectName}-${EnvironmentName}-api"
+      Code:
+        S3Bucket: !Ref LambdaCodeS3Bucket
+        S3Key: !Ref LambdaCodeS3Key
+      Handler: !Ref LambdaHandler
+      Runtime: !Ref LambdaRuntime
+      Architectures:
+        - !Ref LambdaArchitecture
+      Layers:
+        - !If [HasDependenciesLayerArn, !Ref DependenciesLayerArn, !Ref "AWS::NoValue"]
+        - !If [HasObservabilityLayerArn, !Ref ObservabilityLayerArn, !Ref "AWS::NoValue"]
+      MemorySize: !Ref LambdaMemorySize
+      Timeout: !Ref LambdaTimeout
+      Role: !GetAtt ApiFunctionRole.Arn
+      ReservedConcurrentExecutions: !If [HasReservedConcurrency, !Ref LambdaReservedConcurrency, !Ref "AWS::NoValue"]
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+      Environment:
+        Variables:
+          APP_ENV: !Ref EnvironmentName
+          ENVIRONMENT: !Ref EnvironmentName
+          STAGE: !Ref EnvironmentName
+          NODE_OPTIONS: !Ref LambdaNodeOptions
+          WEBSOCKET_API_ID: !If [CreateWebSocketApi, !Ref BackendWebSocketApi, ""]
+          SOCKET_URL: !If
+            - CreateWebSocketApi
+            - !Sub "wss://${BackendWebSocketApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${EnvironmentName}"
+            - ""
+          SOCKET_PORT: "8087"
+          CORS_ORIGIN: !Ref CorsOrigin
+          FILE_STORE: !Ref FileStore
+          AWS_S3_BUCKET: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+          JWT_SECRET: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:jwtSecret}}"
+            - ""
+          ENCRYPTION_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:encryptionKey}}"
+            - ""
+          MAIL_SYSTEM: !Ref MailSystem
+          DELIVERY_PROVIDER: !Ref DeliveryProvider
+          STORE_API_URL: !Ref StoreApiUrl
+          AI_PROVIDER: !Ref AiProvider
+          EMAIL_ON_REGISTRATION: !Ref EmailOnRegistration
+          CADDY_HOST: !Ref CaddyHost
+          CADDY_PORT: !Ref CaddyPort
+          HUBSPOT_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:hubspotKey}}"
+            - ""
+          MAUTIC_URL: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:mauticUrl}}"
+            - ""
+          MAUTIC_USER: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:mauticUser}}"
+            - ""
+          MAUTIC_PASSWORD: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:mauticPassword}}"
+            - ""
+          YOUTUBE_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:youTubeApiKey}}"
+            - ""
+          PEXELS_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:pexelsKey}}"
+            - ""
+          VIMEO_TOKEN: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:vimeoToken}}"
+            - ""
+          API_BIBLE_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:apiBibleKey}}"
+            - ""
+          YOUVERSION_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:youVersionApiKey}}"
+            - ""
+          PRAISECHARTS_CONSUMER_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:praiseChartsConsumerKey}}"
+            - ""
+          PRAISECHARTS_CONSUMER_SECRET: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:praiseChartsConsumerSecret}}"
+            - ""
+          GOOGLE_RECAPTCHA_SECRET_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:googleRecaptchaSecretKey}}"
+            - ""
+          OPENROUTER_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:openRouterApiKey}}"
+            - ""
+          OPENAI_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:openAiApiKey}}"
+            - ""
+          WEB_PUSH_PUBLIC_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:webPushPublicKey}}"
+            - ""
+          WEB_PUSH_PRIVATE_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:webPushPrivateKey}}"
+            - ""
+          WEB_PUSH_SUBJECT: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:webPushSubject}}"
+            - ""
+          DB_ENGINE: !Ref DatabaseEngine
+          DB_HOST: !GetAtt DatabaseCluster.Endpoint.Address
+          DB_PORT: !Ref DatabasePort
+          DB_NAME: !Ref DatabaseName
+          DB_SECRET_ARN: !Ref DatabaseMasterSecret
+          MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          ATTENDANCE_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedAttendanceDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedAttendanceDatabaseName: !If [HasAttendanceDatabaseName, !Ref AttendanceDatabaseName, "attendance"]
+          CONTENT_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedContentDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedContentDatabaseName: !If [HasContentDatabaseName, !Ref ContentDatabaseName, "content"]
+          GIVING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedGivingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedGivingDatabaseName: !If [HasGivingDatabaseName, !Ref GivingDatabaseName, "giving"]
+          MESSAGING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMessagingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMessagingDatabaseName: !If [HasMessagingDatabaseName, !Ref MessagingDatabaseName, "messaging"]
+          DOING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedDoingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedDoingDatabaseName: !If [HasDoingDatabaseName, !Ref DoingDatabaseName, "doing"]
+          REPORTING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedReportingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedReportingDatabaseName: !If [HasReportingDatabaseName, !Ref ReportingDatabaseName, "reporting"]
+          DOING_MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          WEBSITE_BASE_URL: !Ref WebsiteBaseUrl
+          CONTENT_ROOT_URL: !If
+            - HasContentRootUrl
+            - !Ref ContentRootUrl
+            - !If
+              - HasResolvedAssetBucket
+              - !Sub
+                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
+                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - ""
+          CONTENT_ROOT: !If
+            - HasContentRootUrl
+            - !Ref ContentRootUrl
+            - !If
+              - HasResolvedAssetBucket
+              - !Sub
+                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
+                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - ""
+          B1ADMIN_ROOT: !If [HasB1AdminRootUrl, !Ref B1AdminRootUrl, !Ref WebsiteBaseUrl]
+          TRANSFER_URL: !Ref TransferUrl
+          SUPPORT_EMAIL: !Ref SupportEmail
+          SUPPORT_PHONE: !Ref SupportPhone
+          SUPPORT_SITE_URL: !Ref SupportSiteUrl
+          MOBILE_APP_URL: !Ref MobileAppUrl
+          DOMAIN_CNAME_TARGET: !Ref DomainCnameTarget
+          DOMAIN_A_TARGET: !Ref DomainATarget
+          DEFAULT_STOCK_PHOTO: !Ref DefaultStockPhoto
+          GOOGLE_ANALYTICS_TAG: !Ref GoogleAnalyticsTag
+          SENTRY_DSN: !Ref SentryDsn
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  MigrationLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: RunMigrationResources
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ProjectName}-${EnvironmentName}-migration"
+      RetentionInDays: 30
+
+  MigrationFunction:
+    Type: AWS::Lambda::Function
+    Condition: RunMigrationResources
+    Properties:
+      FunctionName: !Sub "${ProjectName}-${EnvironmentName}-migration"
+      Code:
+        S3Bucket: !If [HasMigrationCodeS3Bucket, !Ref MigrationCodeS3Bucket, !Ref LambdaCodeS3Bucket]
+        S3Key: !If [HasMigrationCodeS3Key, !Ref MigrationCodeS3Key, !Ref LambdaCodeS3Key]
+      Handler: !Ref MigrationHandler
+      Runtime: !If [HasMigrationRuntime, !Ref MigrationRuntime, !Ref LambdaRuntime]
+      Architectures:
+        - !Ref LambdaArchitecture
+      Layers:
+        - !If [HasDependenciesLayerArn, !Ref DependenciesLayerArn, !Ref "AWS::NoValue"]
+        - !If [HasObservabilityLayerArn, !Ref ObservabilityLayerArn, !Ref "AWS::NoValue"]
+      MemorySize: !Ref MigrationMemorySize
+      Timeout: !Ref MigrationTimeout
+      Role: !GetAtt ApiFunctionRole.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+      Environment:
+        Variables:
+          APP_ENV: !Ref EnvironmentName
+          ENVIRONMENT: !Ref EnvironmentName
+          STAGE: !Ref EnvironmentName
+          NODE_OPTIONS: !Ref LambdaNodeOptions
+          WEBSOCKET_API_ID: !If [CreateWebSocketApi, !Ref BackendWebSocketApi, ""]
+          SOCKET_URL: !If
+            - CreateWebSocketApi
+            - !Sub "wss://${BackendWebSocketApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${EnvironmentName}"
+            - ""
+          SOCKET_PORT: "8087"
+          CORS_ORIGIN: !Ref CorsOrigin
+          FILE_STORE: !Ref FileStore
+          AWS_S3_BUCKET: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+          JWT_SECRET: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:jwtSecret}}"
+            - ""
+          ENCRYPTION_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:encryptionKey}}"
+            - ""
+          MAIL_SYSTEM: !Ref MailSystem
+          DELIVERY_PROVIDER: !Ref DeliveryProvider
+          STORE_API_URL: !Ref StoreApiUrl
+          AI_PROVIDER: !Ref AiProvider
+          EMAIL_ON_REGISTRATION: !Ref EmailOnRegistration
+          CADDY_HOST: !Ref CaddyHost
+          CADDY_PORT: !Ref CaddyPort
+          HUBSPOT_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:hubspotKey}}"
+            - ""
+          MAUTIC_URL: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:mauticUrl}}"
+            - ""
+          MAUTIC_USER: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:mauticUser}}"
+            - ""
+          MAUTIC_PASSWORD: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:mauticPassword}}"
+            - ""
+          YOUTUBE_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:youTubeApiKey}}"
+            - ""
+          PEXELS_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:pexelsKey}}"
+            - ""
+          VIMEO_TOKEN: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:vimeoToken}}"
+            - ""
+          API_BIBLE_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:apiBibleKey}}"
+            - ""
+          YOUVERSION_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:youVersionApiKey}}"
+            - ""
+          PRAISECHARTS_CONSUMER_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:praiseChartsConsumerKey}}"
+            - ""
+          PRAISECHARTS_CONSUMER_SECRET: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:praiseChartsConsumerSecret}}"
+            - ""
+          GOOGLE_RECAPTCHA_SECRET_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:googleRecaptchaSecretKey}}"
+            - ""
+          OPENROUTER_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:openRouterApiKey}}"
+            - ""
+          OPENAI_API_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:openAiApiKey}}"
+            - ""
+          WEB_PUSH_PUBLIC_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:webPushPublicKey}}"
+            - ""
+          WEB_PUSH_PRIVATE_KEY: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:webPushPrivateKey}}"
+            - ""
+          WEB_PUSH_SUBJECT: !If
+            - HasAppConfigSecretArn
+            - !Sub "{{resolve:secretsmanager:${AppConfigSecretArn}:SecretString:webPushSubject}}"
+            - ""
+          DB_ENGINE: !Ref DatabaseEngine
+          DB_HOST: !GetAtt DatabaseCluster.Endpoint.Address
+          DB_PORT: !Ref DatabasePort
+          DB_NAME: !Ref DatabaseName
+          DB_SECRET_ARN: !Ref DatabaseMasterSecret
+          MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          ATTENDANCE_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedAttendanceDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedAttendanceDatabaseName: !If [HasAttendanceDatabaseName, !Ref AttendanceDatabaseName, "attendance"]
+          CONTENT_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedContentDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedContentDatabaseName: !If [HasContentDatabaseName, !Ref ContentDatabaseName, "content"]
+          GIVING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedGivingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedGivingDatabaseName: !If [HasGivingDatabaseName, !Ref GivingDatabaseName, "giving"]
+          MESSAGING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMessagingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMessagingDatabaseName: !If [HasMessagingDatabaseName, !Ref MessagingDatabaseName, "messaging"]
+          DOING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedDoingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedDoingDatabaseName: !If [HasDoingDatabaseName, !Ref DoingDatabaseName, "doing"]
+          REPORTING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedReportingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedReportingDatabaseName: !If [HasReportingDatabaseName, !Ref ReportingDatabaseName, "reporting"]
+          DOING_MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          CONTENT_ROOT: !If
+            - HasContentRootUrl
+            - !Ref ContentRootUrl
+            - !If
+              - HasResolvedAssetBucket
+              - !Sub
+                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
+                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - ""
+          B1ADMIN_ROOT: !If [HasB1AdminRootUrl, !Ref B1AdminRootUrl, !Ref WebsiteBaseUrl]
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  MigrationRunner:
+    Type: Custom::MigrationRunner
+    Condition: RunMigrationResources
+    Properties:
+      ServiceToken: !GetAtt MigrationFunction.Arn
+      MigrationTrigger: !Ref MigrationTrigger
+      DatabaseSecretArn: !Ref DatabaseMasterSecret
+      DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+      DatabaseName: !Ref DatabaseName
+      EnvironmentName: !Ref EnvironmentName
+
+  SocketLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: CreateWebSocketApi
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ProjectName}-${EnvironmentName}-socket"
+      RetentionInDays: 30
+
+  SocketFunction:
+    Type: AWS::Lambda::Function
+    Condition: CreateWebSocketApi
+    Properties:
+      FunctionName: !Sub "${ProjectName}-${EnvironmentName}-socket"
+      Code:
+        S3Bucket: !Ref LambdaCodeS3Bucket
+        S3Key: !Ref LambdaCodeS3Key
+      Handler: !Ref SocketLambdaHandler
+      Runtime: !Ref LambdaRuntime
+      Architectures:
+        - !Ref LambdaArchitecture
+      Layers:
+        - !If [HasDependenciesLayerArn, !Ref DependenciesLayerArn, !Ref "AWS::NoValue"]
+        - !If [HasObservabilityLayerArn, !Ref ObservabilityLayerArn, !Ref "AWS::NoValue"]
+      MemorySize: !Ref SocketLambdaMemorySize
+      Timeout: !Ref SocketLambdaTimeout
+      Role: !GetAtt ApiFunctionRole.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+      Environment:
+        Variables:
+          APP_ENV: !Ref EnvironmentName
+          ENVIRONMENT: !Ref EnvironmentName
+          STAGE: !Ref EnvironmentName
+          NODE_OPTIONS: !Ref LambdaNodeOptions
+          WEBSOCKET_API_ID: !Ref BackendWebSocketApi
+          SOCKET_URL: !Sub "wss://${BackendWebSocketApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${EnvironmentName}"
+          SOCKET_PORT: "8087"
+          CORS_ORIGIN: !Ref CorsOrigin
+          FILE_STORE: !Ref FileStore
+          AWS_S3_BUCKET: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+          MAIL_SYSTEM: !Ref MailSystem
+          DELIVERY_PROVIDER: !Ref DeliveryProvider
+          STORE_API_URL: !Ref StoreApiUrl
+          AI_PROVIDER: !Ref AiProvider
+          EMAIL_ON_REGISTRATION: !Ref EmailOnRegistration
+          CADDY_HOST: !Ref CaddyHost
+          CADDY_PORT: !Ref CaddyPort
+          DB_ENGINE: !Ref DatabaseEngine
+          DB_HOST: !GetAtt DatabaseCluster.Endpoint.Address
+          DB_PORT: !Ref DatabasePort
+          DB_NAME: !Ref DatabaseName
+          DB_SECRET_ARN: !Ref DatabaseMasterSecret
+          MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          MESSAGING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMessagingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMessagingDatabaseName: !If [HasMessagingDatabaseName, !Ref MessagingDatabaseName, "messaging"]
+          CONTENT_ROOT: !If
+            - HasContentRootUrl
+            - !Ref ContentRootUrl
+            - !If
+              - HasResolvedAssetBucket
+              - !Sub
+                - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
+                - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+              - ""
+          B1ADMIN_ROOT: !If [HasB1AdminRootUrl, !Ref B1AdminRootUrl, !Ref WebsiteBaseUrl]
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  BackendWebSocketApi:
+    Type: AWS::ApiGatewayV2::Api
+    Condition: CreateWebSocketApi
+    Properties:
+      Name: !Sub "${ProjectName}-${EnvironmentName}-websocket-api"
+      ProtocolType: WEBSOCKET
+      RouteSelectionExpression: "$request.body.action"
+
+  BackendWebSocketIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Condition: CreateWebSocketApi
+    Properties:
+      ApiId: !Ref BackendWebSocketApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt SocketFunction.Arn
+
+  BackendWebSocketRouteConnect:
+    Type: AWS::ApiGatewayV2::Route
+    Condition: CreateWebSocketApi
+    Properties:
+      ApiId: !Ref BackendWebSocketApi
+      RouteKey: $connect
+      Target: !Sub "integrations/${BackendWebSocketIntegration}"
+
+  BackendWebSocketRouteDisconnect:
+    Type: AWS::ApiGatewayV2::Route
+    Condition: CreateWebSocketApi
+    Properties:
+      ApiId: !Ref BackendWebSocketApi
+      RouteKey: $disconnect
+      Target: !Sub "integrations/${BackendWebSocketIntegration}"
+
+  BackendWebSocketRouteDefault:
+    Type: AWS::ApiGatewayV2::Route
+    Condition: CreateWebSocketApi
+    Properties:
+      ApiId: !Ref BackendWebSocketApi
+      RouteKey: $default
+      Target: !Sub "integrations/${BackendWebSocketIntegration}"
+
+  BackendWebSocketStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Condition: CreateWebSocketApi
+    Properties:
+      ApiId: !Ref BackendWebSocketApi
+      StageName: !Ref EnvironmentName
+      AutoDeploy: true
+
+  SocketInvokePermission:
+    Type: AWS::Lambda::Permission
+    Condition: CreateWebSocketApi
+    Properties:
+      FunctionName: !Ref SocketFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${BackendWebSocketApi}/*"
+
+  Timer15MinLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: CreateScheduledWorkers
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ProjectName}-${EnvironmentName}-timer15min"
+      RetentionInDays: 30
+
+  Timer15MinFunction:
+    Type: AWS::Lambda::Function
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Sub "${ProjectName}-${EnvironmentName}-timer15min"
+      Code:
+        S3Bucket: !Ref LambdaCodeS3Bucket
+        S3Key: !Ref LambdaCodeS3Key
+      Handler: !Ref Timer15MinLambdaHandler
+      Runtime: !Ref LambdaRuntime
+      Architectures:
+        - !Ref LambdaArchitecture
+      Layers:
+        - !If [HasDependenciesLayerArn, !Ref DependenciesLayerArn, !Ref "AWS::NoValue"]
+        - !If [HasObservabilityLayerArn, !Ref ObservabilityLayerArn, !Ref "AWS::NoValue"]
+      MemorySize: !Ref TimerLambdaMemorySize
+      Timeout: !Ref TimerLambdaTimeout
+      Role: !GetAtt ApiFunctionRole.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+      Environment:
+        Variables:
+          APP_ENV: !Ref EnvironmentName
+          ENVIRONMENT: !Ref EnvironmentName
+          STAGE: !Ref EnvironmentName
+          NODE_OPTIONS: !Ref LambdaNodeOptions
+          WEBSOCKET_API_ID: !If [CreateWebSocketApi, !Ref BackendWebSocketApi, ""]
+          AI_PROVIDER: !Ref AiProvider
+          EMAIL_ON_REGISTRATION: !Ref EmailOnRegistration
+          CADDY_HOST: !Ref CaddyHost
+          CADDY_PORT: !Ref CaddyPort
+          MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          MESSAGING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMessagingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMessagingDatabaseName: !If [HasMessagingDatabaseName, !Ref MessagingDatabaseName, "messaging"]
+
+  Timer15MinRule:
+    Type: AWS::Events::Rule
+    Condition: CreateScheduledWorkers
+    Properties:
+      ScheduleExpression: rate(30 minutes)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt Timer15MinFunction.Arn
+          Id: timer15MinTarget
+
+  Timer15MinInvokePermission:
+    Type: AWS::Lambda::Permission
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Ref Timer15MinFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt Timer15MinRule.Arn
+
+  TimerMidnightLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: CreateScheduledWorkers
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ProjectName}-${EnvironmentName}-timer-midnight"
+      RetentionInDays: 30
+
+  TimerMidnightFunction:
+    Type: AWS::Lambda::Function
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Sub "${ProjectName}-${EnvironmentName}-timer-midnight"
+      Code:
+        S3Bucket: !Ref LambdaCodeS3Bucket
+        S3Key: !Ref LambdaCodeS3Key
+      Handler: !Ref TimerMidnightLambdaHandler
+      Runtime: !Ref LambdaRuntime
+      Architectures:
+        - !Ref LambdaArchitecture
+      Layers:
+        - !If [HasDependenciesLayerArn, !Ref DependenciesLayerArn, !Ref "AWS::NoValue"]
+        - !If [HasObservabilityLayerArn, !Ref ObservabilityLayerArn, !Ref "AWS::NoValue"]
+      MemorySize: !Ref TimerLambdaMemorySize
+      Timeout: !Ref TimerLambdaTimeout
+      Role: !GetAtt ApiFunctionRole.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+      Environment:
+        Variables:
+          APP_ENV: !Ref EnvironmentName
+          ENVIRONMENT: !Ref EnvironmentName
+          STAGE: !Ref EnvironmentName
+          NODE_OPTIONS: !Ref LambdaNodeOptions
+          WEBSOCKET_API_ID: !If [CreateWebSocketApi, !Ref BackendWebSocketApi, ""]
+          AI_PROVIDER: !Ref AiProvider
+          EMAIL_ON_REGISTRATION: !Ref EmailOnRegistration
+          CADDY_HOST: !Ref CaddyHost
+          CADDY_PORT: !Ref CaddyPort
+          MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          MESSAGING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMessagingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMessagingDatabaseName: !If [HasMessagingDatabaseName, !Ref MessagingDatabaseName, "messaging"]
+          CONTENT_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedContentDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedContentDatabaseName: !If [HasContentDatabaseName, !Ref ContentDatabaseName, "content"]
+
+  TimerMidnightRule:
+    Type: AWS::Events::Rule
+    Condition: CreateScheduledWorkers
+    Properties:
+      ScheduleExpression: cron(0 5 * * ? *)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt TimerMidnightFunction.Arn
+          Id: timerMidnightTarget
+
+  TimerMidnightInvokePermission:
+    Type: AWS::Lambda::Permission
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Ref TimerMidnightFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt TimerMidnightRule.Arn
+
+  TimerScheduledTasksLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: CreateScheduledWorkers
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ProjectName}-${EnvironmentName}-timer-scheduled-tasks"
+      RetentionInDays: 30
+
+  TimerScheduledTasksFunction:
+    Type: AWS::Lambda::Function
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Sub "${ProjectName}-${EnvironmentName}-timer-scheduled-tasks"
+      Code:
+        S3Bucket: !Ref LambdaCodeS3Bucket
+        S3Key: !Ref LambdaCodeS3Key
+      Handler: !Ref TimerScheduledTasksLambdaHandler
+      Runtime: !Ref LambdaRuntime
+      Architectures:
+        - !Ref LambdaArchitecture
+      Layers:
+        - !If [HasDependenciesLayerArn, !Ref DependenciesLayerArn, !Ref "AWS::NoValue"]
+        - !If [HasObservabilityLayerArn, !Ref ObservabilityLayerArn, !Ref "AWS::NoValue"]
+      MemorySize: !Ref TimerLambdaMemorySize
+      Timeout: !Ref TimerLambdaTimeout
+      Role: !GetAtt ApiFunctionRole.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+      Environment:
+        Variables:
+          APP_ENV: !Ref EnvironmentName
+          ENVIRONMENT: !Ref EnvironmentName
+          STAGE: !Ref EnvironmentName
+          NODE_OPTIONS: !Ref LambdaNodeOptions
+          WEBSOCKET_API_ID: !If [CreateWebSocketApi, !Ref BackendWebSocketApi, ""]
+          AI_PROVIDER: !Ref AiProvider
+          EMAIL_ON_REGISTRATION: !Ref EmailOnRegistration
+          CADDY_HOST: !Ref CaddyHost
+          CADDY_PORT: !Ref CaddyPort
+          MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+          MESSAGING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMessagingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMessagingDatabaseName: !If [HasMessagingDatabaseName, !Ref MessagingDatabaseName, "messaging"]
+          DOING_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedDoingDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedDoingDatabaseName: !If [HasDoingDatabaseName, !Ref DoingDatabaseName, "doing"]
+
+  TimerScheduledTasksRule:
+    Type: AWS::Events::Rule
+    Condition: CreateScheduledWorkers
+    Properties:
+      ScheduleExpression: cron(0 5 * * ? *)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt TimerScheduledTasksFunction.Arn
+          Id: timerScheduledTasksTarget
+
+  TimerScheduledTasksInvokePermission:
+    Type: AWS::Lambda::Permission
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Ref TimerScheduledTasksFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt TimerScheduledTasksRule.Arn
+
+  TimerWebhooksLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: CreateScheduledWorkers
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ProjectName}-${EnvironmentName}-timer-webhooks"
+      RetentionInDays: 30
+
+  TimerWebhooksFunction:
+    Type: AWS::Lambda::Function
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Sub "${ProjectName}-${EnvironmentName}-timer-webhooks"
+      Code:
+        S3Bucket: !Ref LambdaCodeS3Bucket
+        S3Key: !Ref LambdaCodeS3Key
+      Handler: !Ref TimerWebhooksLambdaHandler
+      Runtime: !Ref LambdaRuntime
+      Architectures:
+        - !Ref LambdaArchitecture
+      Layers:
+        - !If [HasDependenciesLayerArn, !Ref DependenciesLayerArn, !Ref "AWS::NoValue"]
+        - !If [HasObservabilityLayerArn, !Ref ObservabilityLayerArn, !Ref "AWS::NoValue"]
+      MemorySize: 256
+      Timeout: 120
+      Role: !GetAtt ApiFunctionRole.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+      Environment:
+        Variables:
+          APP_ENV: !Ref EnvironmentName
+          ENVIRONMENT: !Ref EnvironmentName
+          STAGE: !Ref EnvironmentName
+          NODE_OPTIONS: !Ref LambdaNodeOptions
+          WEBSOCKET_API_ID: !If [CreateWebSocketApi, !Ref BackendWebSocketApi, ""]
+          AI_PROVIDER: !Ref AiProvider
+          EMAIL_ON_REGISTRATION: !Ref EmailOnRegistration
+          CADDY_HOST: !Ref CaddyHost
+          CADDY_PORT: !Ref CaddyPort
+          MEMBERSHIP_CONNECTION_STRING: !Sub
+            - "mysql://${DatabaseMasterUsername}:{{resolve:secretsmanager:${DatabaseSecretArn}:SecretString:password}}@${DatabaseHost}:${DatabasePort}/${ResolvedMembershipDatabaseName}"
+            - DatabaseHost: !GetAtt DatabaseCluster.Endpoint.Address
+              DatabaseSecretArn: !Ref DatabaseMasterSecret
+              ResolvedMembershipDatabaseName: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+
+  TimerWebhooksRule:
+    Type: AWS::Events::Rule
+    Condition: CreateScheduledWorkers
+    Properties:
+      ScheduleExpression: rate(1 minute)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt TimerWebhooksFunction.Arn
+          Id: timerWebhooksTarget
+
+  TimerWebhooksInvokePermission:
+    Type: AWS::Lambda::Permission
+    Condition: CreateScheduledWorkers
+    Properties:
+      FunctionName: !Ref TimerWebhooksFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt TimerWebhooksRule.Arn
+
+  BackendHttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub "${ProjectName}-${EnvironmentName}-http-api"
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          - OPTIONS
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - authorization
+          - content-type
+          - x-requested-with
+        ExposeHeaders:
+          - content-type
+        MaxAge: 86400
+
+  BackendHttpApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref BackendHttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt ApiFunction.Arn
+      PayloadFormatVersion: "2.0"
+
+  BackendHttpApiRouteDefault:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref BackendHttpApi
+      RouteKey: "$default"
+      Target: !Sub "integrations/${BackendHttpApiIntegration}"
+
+  BackendHttpApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref BackendHttpApi
+      StageName: "$default"
+      AutoDeploy: true
+
+  BackendHttpApiDomainName:
+    Type: AWS::ApiGatewayV2::DomainName
+    Condition: CreateApiCustomDomain
+    Properties:
+      DomainName: !Ref ApiCustomDomainName
+      DomainNameConfigurations:
+        - CertificateArn: !Ref ApiCertificateArn
+          EndpointType: REGIONAL
+          SecurityPolicy: TLS_1_2
+
+  BackendHttpApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Condition: CreateApiCustomDomain
+    Properties:
+      ApiId: !Ref BackendHttpApi
+      DomainName: !Ref BackendHttpApiDomainName
+      Stage: !Ref BackendHttpApiStage
+
+  BackendHttpApiDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: CreateApiDnsRecord
+    Properties:
+      HostedZoneId: !Ref ApiHostedZoneId
+      Name: !Ref ApiCustomDomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt BackendHttpApiDomainName.RegionalDomainName
+        HostedZoneId: !GetAtt BackendHttpApiDomainName.RegionalHostedZoneId
+        EvaluateTargetHealth: false
+
+  BackendHttpApiDnsRecordIpv6:
+    Type: AWS::Route53::RecordSet
+    Condition: CreateApiDnsRecord
+    Properties:
+      HostedZoneId: !Ref ApiHostedZoneId
+      Name: !Ref ApiCustomDomainName
+      Type: AAAA
+      AliasTarget:
+        DNSName: !GetAtt BackendHttpApiDomainName.RegionalDomainName
+        HostedZoneId: !GetAtt BackendHttpApiDomainName.RegionalHostedZoneId
+        EvaluateTargetHealth: false
+
+  ApiInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ApiFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${BackendHttpApi}/*/*"
+
+Outputs:
+  ApiBaseUrl:
+    Description: Public base URL for the backend API.
+    Value: !If
+      - CreateApiCustomDomain
+      - !Sub "https://${ApiCustomDomainName}"
+      - !Sub "https://${BackendHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}"
+  PublicApiBaseUrl:
+    Description: Alias output for frontend deployment tooling.
+    Value: !If
+      - CreateApiCustomDomain
+      - !Sub "https://${ApiCustomDomainName}"
+      - !Sub "https://${BackendHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}"
+  ApiFunctionName:
+    Value: !Ref ApiFunction
+  ApiFunctionArn:
+    Value: !GetAtt ApiFunction.Arn
+  MigrationFunctionName:
+    Value: !If [RunMigrationResources, !Ref MigrationFunction, ""]
+  SocketFunctionName:
+    Value: !If [CreateWebSocketApi, !Ref SocketFunction, ""]
+  WebSocketApiId:
+    Value: !If [CreateWebSocketApi, !Ref BackendWebSocketApi, ""]
+  WebSocketApiEndpoint:
+    Value: !If
+      - CreateWebSocketApi
+      - !Sub "wss://${BackendWebSocketApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${EnvironmentName}"
+      - ""
+  Timer15MinFunctionName:
+    Value: !If [CreateScheduledWorkers, !Ref Timer15MinFunction, ""]
+  TimerMidnightFunctionName:
+    Value: !If [CreateScheduledWorkers, !Ref TimerMidnightFunction, ""]
+  TimerScheduledTasksFunctionName:
+    Value: !If [CreateScheduledWorkers, !Ref TimerScheduledTasksFunction, ""]
+  TimerWebhooksFunctionName:
+    Value: !If [CreateScheduledWorkers, !Ref TimerWebhooksFunction, ""]
+  DatabaseEndpoint:
+    Value: !GetAtt DatabaseCluster.Endpoint.Address
+  DatabaseClusterArn:
+    Value: !GetAtt DatabaseCluster.DBClusterArn
+  DatabaseReaderEndpoint:
+    Value: !GetAtt DatabaseCluster.ReadEndpoint.Address
+  DatabasePort:
+    Value: !Ref DatabasePort
+  DatabaseName:
+    Value: !Ref DatabaseName
+  MembershipDatabaseName:
+    Value: !If [HasMembershipDatabaseName, !Ref MembershipDatabaseName, !Ref DatabaseName]
+  AttendanceDatabaseName:
+    Value: !If [HasAttendanceDatabaseName, !Ref AttendanceDatabaseName, "attendance"]
+  ContentDatabaseName:
+    Value: !If [HasContentDatabaseName, !Ref ContentDatabaseName, "content"]
+  GivingDatabaseName:
+    Value: !If [HasGivingDatabaseName, !Ref GivingDatabaseName, "giving"]
+  MessagingDatabaseName:
+    Value: !If [HasMessagingDatabaseName, !Ref MessagingDatabaseName, "messaging"]
+  DoingDatabaseName:
+    Value: !If [HasDoingDatabaseName, !Ref DoingDatabaseName, "doing"]
+  ReportingDatabaseName:
+    Value: !If [HasReportingDatabaseName, !Ref ReportingDatabaseName, "reporting"]
+  DatabaseSecretArn:
+    Value: !Ref DatabaseMasterSecret
+  AppConfigSecretArn:
+    Value: !Ref AppConfigSecretArn
+  VpcId:
+    Value: !Ref BackendVpc
+  PrivateSubnet1Id:
+    Value: !Ref PrivateSubnet1
+  PrivateSubnet2Id:
+    Value: !Ref PrivateSubnet2
+  LambdaSecurityGroupId:
+    Value: !Ref LambdaSecurityGroup
+  AssetBucketName:
+    Value: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+  ContentRootUrl:
+    Value: !If
+      - HasContentRootUrl
+      - !Ref ContentRootUrl
+      - !If
+        - HasResolvedAssetBucket
+        - !Sub
+          - "https://${ResolvedBucketName}.s3.${AWS::Region}.${AWS::URLSuffix}"
+          - ResolvedBucketName: !If [CreateManagedAssetBucket, !Ref ManagedAssetBucket, !Ref AssetBucketName]
+        - ""
+  WebsiteBaseUrl:
+    Value: !Ref WebsiteBaseUrl
+  LessonsApiUrl:
+    Value: !If
+      - CreateApiCustomDomain
+      - !Sub "https://${ApiCustomDomainName}"
+      - !Sub "https://${BackendHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}"
+  TransferUrl:
+    Value: !Ref TransferUrl
+  SupportEmail:
+    Value: !Ref SupportEmail
+  SupportPhone:
+    Value: !Ref SupportPhone
+  SupportSiteUrl:
+    Value: !Ref SupportSiteUrl
+  MobileAppUrl:
+    Value: !Ref MobileAppUrl
+  DomainCnameTarget:
+    Value: !Ref DomainCnameTarget
+  DomainATarget:
+    Value: !Ref DomainATarget
+  DefaultStockPhoto:
+    Value: !Ref DefaultStockPhoto
+  GoogleAnalyticsTag:
+    Value: !Ref GoogleAnalyticsTag
+  SentryDsn:
+    Value: !Ref SentryDsn
+  ApiCustomDomainName:
+    Value: !Ref ApiCustomDomainName

@@ -80,3 +80,7 @@ To accept online donations you must first register for developer credentials wit
 After obtaining your tokens, open **Settings → Giving Settings** in B1Admin, select the provider, paste in your Public and Private keys, and toggle "Pay Fees" as desired. Finally, configure your fee parameters in **Fee Options**.
 
 [![B1Admin Dev Setup](https://img.youtube.com/vi/5zsEJEp6yMw/0.jpg)](https://www.youtube.com/watch?v=5zsEJEp6yMw)
+
+### AWS Self-Hosting
+
+To deploy B1Admin into your own AWS account, or update an existing AWS install, start with the [AWS self-hosting guide](./infrastructure/environments/start-here.md).

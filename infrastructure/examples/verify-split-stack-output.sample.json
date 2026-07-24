@@ -1,0 +1,76 @@
+{
+  "ok": true,
+  "mode": "split-stack",
+  "region": "us-east-1",
+  "backendStackName": "",
+  "frontendStackName": "",
+  "backendOutputsFile": "infrastructure/examples/backend-outputs.sample.json",
+  "frontendOutputsFile": "infrastructure/examples/frontend-outputs.sample.json",
+  "checkAws": false,
+  "checkHttp": false,
+  "resolved": {
+    "apiBaseUrl": "https://api.example.com",
+    "contentRootUrl": "https://content.example.com",
+    "websiteBaseUrl": "https://{subdomain}.example.com",
+    "frontendAppUrl": "https://admin.example.com",
+    "frontendBucketName": "example-frontend-bucket",
+    "frontendDistributionId": "EXAMPLE123"
+  },
+  "checks": [
+    {
+      "name": "backend outputs source",
+      "ok": true,
+      "detail": "Loaded backend outputs file /abs/path/to/B1Admin/infrastructure/examples/backend-outputs.sample.json"
+    },
+    {
+      "name": "frontend outputs source",
+      "ok": true,
+      "detail": "Loaded frontend outputs file /abs/path/to/B1Admin/infrastructure/examples/frontend-outputs.sample.json"
+    },
+    {
+      "name": "api base url output",
+      "ok": true,
+      "detail": "Resolved from ApiBaseUrl/PublicApiBaseUrl: https://api.example.com"
+    },
+    {
+      "name": "frontend app url output",
+      "ok": true,
+      "detail": "Resolved from AppUrl/FrontendAppUrl: https://admin.example.com"
+    },
+    {
+      "name": "frontend bucket output",
+      "ok": true,
+      "detail": "Resolved from SiteBucketName/FrontendBucketName: example-frontend-bucket"
+    },
+    {
+      "name": "frontend distribution output",
+      "ok": true,
+      "detail": "Resolved from CloudFrontDistributionId/FrontendDistributionId: EXAMPLE123"
+    },
+    {
+      "name": "frontend bucket aws reachability",
+      "ok": true,
+      "skipped": true,
+      "detail": "Skipped because --check-aws=false."
+    },
+    {
+      "name": "frontend distribution aws reachability",
+      "ok": true,
+      "skipped": true,
+      "detail": "Skipped because --check-aws=false."
+    },
+    {
+      "name": "frontend app http reachability",
+      "ok": true,
+      "skipped": true,
+      "detail": "Skipped because --check-http=false."
+    },
+    {
+      "name": "api probe http reachability",
+      "ok": true,
+      "skipped": true,
+      "detail": "Skipped because --check-http=false."
+    }
+  ],
+  "errors": []
+}

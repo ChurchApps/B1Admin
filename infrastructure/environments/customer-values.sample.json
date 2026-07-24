@@ -1,0 +1,29 @@
+{
+  "awsRegion": "us-east-1",
+  "accountId": "",
+  "repo": "",
+  "deployRepoDir": "../b1admin-deploy",
+  "deployEnvDir": "../b1admin-deploy/environments",
+  "rootDomain": "",
+  "supportEmail": "",
+  "supportPhone": "",
+  "firstAdminEmail": "",
+  "firstAdminPassword": "",
+  "firstChurchName": "",
+  "b1adminRepo": "ChurchApps/B1Admin",
+  "b1adminRef": "main",
+  "apiRepo": "ChurchApps/Api",
+  "apiRef": "main",
+  "environments": {
+    "staging": {
+      "frontendDomain": "",
+      "frontendCertificateArn": "",
+      "frontendHostedZoneId": ""
+    },
+    "prod": {
+      "frontendDomain": "",
+      "frontendCertificateArn": "",
+      "frontendHostedZoneId": ""
+    }
+  }
+}

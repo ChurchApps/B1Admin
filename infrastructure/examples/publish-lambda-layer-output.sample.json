@@ -1,0 +1,18 @@
+{
+  "Content": {
+    "Location": "https://lambda.us-east-1.amazonaws.com/2018-10-31/layers/b1admin-prod-dependencies/versions/3",
+    "CodeSha256": "examplecodesha256value=",
+    "CodeSize": 12345
+  },
+  "LayerArn": "arn:aws:lambda:us-east-1:123456789012:layer:b1admin-prod-dependencies",
+  "LayerVersionArn": "arn:aws:lambda:us-east-1:123456789012:layer:b1admin-prod-dependencies:3",
+  "Description": "Published by B1Admin AWS deployment tooling",
+  "CreatedDate": "2026-01-15T12:34:56.000+0000",
+  "Version": 3,
+  "CompatibleRuntimes": [
+    "nodejs22.x"
+  ],
+  "CompatibleArchitectures": [
+    "arm64"
+  ]
+}

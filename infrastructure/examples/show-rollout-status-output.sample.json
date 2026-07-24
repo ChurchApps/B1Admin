@@ -1,0 +1,223 @@
+{
+  "ok": false,
+  "deploymentIntent": "all",
+  "ignoredBlockerCategories": [],
+  "environmentCount": 2,
+  "readyEnvironmentCount": 0,
+  "blockedEnvironmentCount": 2,
+  "readyEnvironments": [],
+  "blockedEnvironments": [
+    "staging",
+    "prod"
+  ],
+  "recommendedNextCommand": "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --output=json",
+  "commandSummary": {
+    "global": [
+      "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --output=json"
+    ],
+    "all": [
+      "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --output=json",
+      "yarn audit:environment-starter -- --environment=staging --only-blockers=true --output=markdown",
+      "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --output=commands",
+      "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --write=true",
+      "AWS_REGION='us-east-1' SYNC_APP_CONFIG_SECRET='false' RUN_API_MIGRATIONS='false' VERIFY_HTTP_AFTER_DEPLOY='false' API_REPO_PATH='../Api' ./infrastructure/environments/staging/deploy-split-stack.sh",
+      "yarn dispatch:github-aws-deploy -- --environment=staging --deployment-source=api-repo --region=us-east-1",
+      "gh workflow run deploy-aws-self-hosted.yml -f environment='staging' -f aws_region='us-east-1' -f deployment_source='api-repo' -f api_repo='ChurchApps/Api' -f api_ref='main' -f package_manifest_file='' -f backend_artifact_source_file='' -f migration_artifact_source_file='' -f dependencies_layer_source_file='' -f sync_app_config_secret='false' -f run_api_migrations='false' -f api_migration_action='up' -f api_migration_module='all' -f verify_http_after_deploy='false'",
+      "yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json",
+      "yarn dispatch:github-aws-deploy -- --environment=prod --deployment-source=api-repo --region=us-east-1",
+      "gh workflow run deploy-aws-self-hosted.yml -f environment='prod' -f aws_region='us-east-1' -f deployment_source='api-repo' -f api_repo='ChurchApps/Api' -f api_ref='main' -f package_manifest_file='' -f backend_artifact_source_file='' -f migration_artifact_source_file='' -f dependencies_layer_source_file='' -f sync_app_config_secret='false' -f run_api_migrations='false' -f api_migration_action='up' -f api_migration_module='all' -f verify_http_after_deploy='false'",
+      "AWS_REGION='us-east-1' SYNC_APP_CONFIG_SECRET='false' RUN_API_MIGRATIONS='false' VERIFY_HTTP_AFTER_DEPLOY='false' API_REPO_PATH='../Api' ./infrastructure/environments/prod/deploy-split-stack.sh",
+      "yarn plan:environment-deploy -- --environment=prod --deployment-source=package-manifest --package-manifest-file=<manifest-path> --region=us-east-1 --output=markdown",
+      "yarn plan:environment-deploy -- --environment=prod --deployment-source=backend-artifact --backend-artifact-source-file=<backend-zip-path> --region=us-east-1 --output=markdown"
+    ],
+    "byEnvironment": {
+      "staging": [
+        "yarn audit:environment-starter -- --environment=staging --only-blockers=true --output=markdown",
+        "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --output=commands",
+        "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --write=true",
+        "AWS_REGION='us-east-1' SYNC_APP_CONFIG_SECRET='false' RUN_API_MIGRATIONS='false' VERIFY_HTTP_AFTER_DEPLOY='false' API_REPO_PATH='../Api' ./infrastructure/environments/staging/deploy-split-stack.sh",
+        "yarn dispatch:github-aws-deploy -- --environment=staging --deployment-source=api-repo --region=us-east-1",
+        "gh workflow run deploy-aws-self-hosted.yml -f environment='staging' -f aws_region='us-east-1' -f deployment_source='api-repo' -f api_repo='ChurchApps/Api' -f api_ref='main' -f package_manifest_file='' -f backend_artifact_source_file='' -f migration_artifact_source_file='' -f dependencies_layer_source_file='' -f sync_app_config_secret='false' -f run_api_migrations='false' -f api_migration_action='up' -f api_migration_module='all' -f verify_http_after_deploy='false'"
+      ],
+      "prod": [
+        "yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json",
+        "yarn dispatch:github-aws-deploy -- --environment=prod --deployment-source=api-repo --region=us-east-1",
+        "gh workflow run deploy-aws-self-hosted.yml -f environment='prod' -f aws_region='us-east-1' -f deployment_source='api-repo' -f api_repo='ChurchApps/Api' -f api_ref='main' -f package_manifest_file='' -f backend_artifact_source_file='' -f migration_artifact_source_file='' -f dependencies_layer_source_file='' -f sync_app_config_secret='false' -f run_api_migrations='false' -f api_migration_action='up' -f api_migration_module='all' -f verify_http_after_deploy='false'",
+        "AWS_REGION='us-east-1' SYNC_APP_CONFIG_SECRET='false' RUN_API_MIGRATIONS='false' VERIFY_HTTP_AFTER_DEPLOY='false' API_REPO_PATH='../Api' ./infrastructure/environments/prod/deploy-split-stack.sh",
+        "yarn plan:environment-deploy -- --environment=prod --deployment-source=package-manifest --package-manifest-file=<manifest-path> --region=us-east-1 --output=markdown",
+        "yarn plan:environment-deploy -- --environment=prod --deployment-source=backend-artifact --backend-artifact-source-file=<backend-zip-path> --region=us-east-1 --output=markdown"
+      ]
+    }
+  },
+  "blockerCategories": {
+    "starterOrInput": {
+      "environmentCount": 1,
+      "environments": [
+        "staging"
+      ]
+    },
+    "localExecution": {
+      "environmentCount": 2,
+      "environments": [
+        "staging",
+        "prod"
+      ]
+    },
+    "githubActionsExecution": {
+      "environmentCount": 2,
+      "environments": [
+        "staging",
+        "prod"
+      ]
+    },
+    "localGithubDispatch": {
+      "environmentCount": 0,
+      "environments": []
+    }
+  },
+  "intentBlockerCategories": {
+    "starterOrInput": {
+      "environmentCount": 1,
+      "environments": [
+        "staging"
+      ]
+    },
+    "localExecution": {
+      "environmentCount": 2,
+      "environments": [
+        "staging",
+        "prod"
+      ]
+    },
+    "githubActionsExecution": {
+      "environmentCount": 2,
+      "environments": [
+        "staging",
+        "prod"
+      ]
+    },
+    "localGithubDispatch": {
+      "environmentCount": 0,
+      "environments": []
+    }
+  },
+  "overallHighlightedBlockers": [
+    "Resolve 2 blocker values in .tmp-rollout-status-sample-env/staging/bootstrap-parameters.json: TemplateBucketName, ArtifactBucketName",
+    "Resolve 10 blocker values in .tmp-rollout-status-sample-env/staging/backend-parameters.json: LambdaCodeS3Bucket, WebsiteBaseUrl, ContentRootUrl, B1AdminRootUrl, CorsOrigin, StoreApiUrl, TransferUrl, SupportEmail, SupportPhone, SupportSiteUrl",
+    "Resolve 3 blocker values in .tmp-rollout-status-sample-env/staging/app-config-secret.template.json: jwtSecret, encryptionKey, webPushSubject",
+    "Local api-repo path is not readable from this workspace: ../Api",
+    "Use the GitHub Actions api-repo path, or switch this local run to deployment-source=package-manifest or deployment-source=backend-artifact.",
+    "GitHub Actions will not receive the local app-config-secret.json file from this workspace. Enable sync-app-config-secret and provide AWS_APP_CONFIG_SECRET_JSON in the GitHub Environment, or use a local deploy/package-manifest path instead."
+  ],
+  "recommendedNextSteps": [
+    "Run the starter prep helper, review the proposed file changes, and then clear any remaining blocker values before the first live deployment.",
+    "Run `yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json` first if you want the GitHub Actions path, then re-run the deploy plan or dispatch helper."
+  ],
+  "environments": [
+    {
+      "ok": true,
+      "environment": "staging",
+      "status": "blocked",
+      "githubFocusedStatus": "blocked",
+      "recommendedPath": "none",
+      "recommendedReason": "Shared starter or input blockers still exist, so neither the local path nor the GitHub Actions path is ready yet.",
+      "primaryCommand": "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --output=json",
+      "alternateCommands": [
+        "yarn audit:environment-starter -- --environment=staging --only-blockers=true --output=markdown",
+        "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --output=commands",
+        "yarn prepare:environment-starter -- --environment=staging --account-id=<aws-account-id> --write=true",
+        "AWS_REGION='us-east-1' SYNC_APP_CONFIG_SECRET='false' RUN_API_MIGRATIONS='false' VERIFY_HTTP_AFTER_DEPLOY='false' API_REPO_PATH='../Api' ./infrastructure/environments/staging/deploy-split-stack.sh",
+        "yarn dispatch:github-aws-deploy -- --environment=staging --deployment-source=api-repo --region=us-east-1",
+        "gh workflow run deploy-aws-self-hosted.yml -f environment='staging' -f aws_region='us-east-1' -f deployment_source='api-repo' -f api_repo='ChurchApps/Api' -f api_ref='main' -f package_manifest_file='' -f backend_artifact_source_file='' -f migration_artifact_source_file='' -f dependencies_layer_source_file='' -f sync_app_config_secret='false' -f run_api_migrations='false' -f api_migration_action='up' -f api_migration_module='all' -f verify_http_after_deploy='false'"
+      ],
+      "starterBlockerCount": 15,
+      "inputBlockerCount": 0,
+      "starterAndInputBlockerCount": 15,
+      "localExecutionOk": false,
+      "localExecutionBlockerCount": 5,
+      "githubActionsExecutionOk": false,
+      "githubActionsExecutionBlockerCount": 3,
+      "localGithubDispatchOk": true,
+      "localGithubDispatchBlockerCount": 0,
+      "appConfigSecretFilePresent": false,
+      "warnings": [
+        "HTTP verification after deploy is disabled. The stack and output checks still run, but public URL reachability will not be probed automatically.",
+        "API migrations are disabled for this plan. If the target database is empty, schedule a migration pass after the first infrastructure deploy."
+      ],
+      "highlightedBlockers": [
+        "Resolve 2 blocker values in .tmp-rollout-status-sample-env/staging/bootstrap-parameters.json: TemplateBucketName, ArtifactBucketName",
+        "Resolve 10 blocker values in .tmp-rollout-status-sample-env/staging/backend-parameters.json: LambdaCodeS3Bucket, WebsiteBaseUrl, ContentRootUrl, B1AdminRootUrl, CorsOrigin, StoreApiUrl, TransferUrl, SupportEmail, SupportPhone, SupportSiteUrl",
+        "Resolve 3 blocker values in .tmp-rollout-status-sample-env/staging/app-config-secret.template.json: jwtSecret, encryptionKey, webPushSubject",
+        "Local api-repo path is not readable from this workspace: ../Api",
+        "Use the GitHub Actions api-repo path, or switch this local run to deployment-source=package-manifest or deployment-source=backend-artifact."
+      ],
+      "githubFocusedHighlightedBlockers": [
+        "Resolve 2 blocker values in .tmp-rollout-status-sample-env/staging/bootstrap-parameters.json: TemplateBucketName, ArtifactBucketName",
+        "Resolve 10 blocker values in .tmp-rollout-status-sample-env/staging/backend-parameters.json: LambdaCodeS3Bucket, WebsiteBaseUrl, ContentRootUrl, B1AdminRootUrl, CorsOrigin, StoreApiUrl, TransferUrl, SupportEmail, SupportPhone, SupportSiteUrl",
+        "Resolve 3 blocker values in .tmp-rollout-status-sample-env/staging/app-config-secret.template.json: jwtSecret, encryptionKey, webPushSubject"
+      ],
+      "nextSteps": [
+        "Run the starter prep helper, review the proposed file changes, and then clear any remaining blocker values before the first live deployment.",
+        "If the local Api repo is unreadable here, switch the local run to package-manifest or backend-artifact mode with the fallback commands below.",
+        "Save the backend and frontend outputs after staging so prod can reuse the proven values.",
+        "Decide whether app-config-secret should be synced on the first live run or introduced later."
+      ],
+      "githubFocusedNextSteps": [
+        "Run the starter prep helper, review the proposed file changes, and then clear any remaining blocker values before the first live deployment.",
+        "Save the backend and frontend outputs after staging so prod can reuse the proven values.",
+        "Decide whether app-config-secret should be synced on the first live run or introduced later."
+      ]
+    },
+    {
+      "ok": true,
+      "environment": "prod",
+      "status": "blocked",
+      "githubFocusedStatus": "blocked",
+      "recommendedPath": "none",
+      "recommendedReason": "Execution-specific blockers still need to be cleared before running a deploy.",
+      "primaryCommand": "yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json",
+      "alternateCommands": [
+        "yarn dispatch:github-aws-deploy -- --environment=prod --deployment-source=api-repo --region=us-east-1",
+        "gh workflow run deploy-aws-self-hosted.yml -f environment='prod' -f aws_region='us-east-1' -f deployment_source='api-repo' -f api_repo='ChurchApps/Api' -f api_ref='main' -f package_manifest_file='' -f backend_artifact_source_file='' -f migration_artifact_source_file='' -f dependencies_layer_source_file='' -f sync_app_config_secret='false' -f run_api_migrations='false' -f api_migration_action='up' -f api_migration_module='all' -f verify_http_after_deploy='false'",
+        "AWS_REGION='us-east-1' SYNC_APP_CONFIG_SECRET='false' RUN_API_MIGRATIONS='false' VERIFY_HTTP_AFTER_DEPLOY='false' API_REPO_PATH='../Api' ./infrastructure/environments/prod/deploy-split-stack.sh",
+        "yarn plan:environment-deploy -- --environment=prod --deployment-source=package-manifest --package-manifest-file=<manifest-path> --region=us-east-1 --output=markdown",
+        "yarn plan:environment-deploy -- --environment=prod --deployment-source=backend-artifact --backend-artifact-source-file=<backend-zip-path> --region=us-east-1 --output=markdown"
+      ],
+      "starterBlockerCount": 0,
+      "inputBlockerCount": 0,
+      "starterAndInputBlockerCount": 0,
+      "localExecutionOk": false,
+      "localExecutionBlockerCount": 2,
+      "githubActionsExecutionOk": false,
+      "githubActionsExecutionBlockerCount": 1,
+      "localGithubDispatchOk": true,
+      "localGithubDispatchBlockerCount": 0,
+      "appConfigSecretFilePresent": true,
+      "warnings": [
+        "HTTP verification after deploy is disabled. The stack and output checks still run, but public URL reachability will not be probed automatically.",
+        "API migrations are disabled for this plan. If the target database is empty, schedule a migration pass after the first infrastructure deploy."
+      ],
+      "highlightedBlockers": [
+        "Local api-repo path is not readable from this workspace: ../Api",
+        "Use the GitHub Actions api-repo path, or switch this local run to deployment-source=package-manifest or deployment-source=backend-artifact.",
+        "GitHub Actions will not receive the local app-config-secret.json file from this workspace. Enable sync-app-config-secret and provide AWS_APP_CONFIG_SECRET_JSON in the GitHub Environment, or use a local deploy/package-manifest path instead."
+      ],
+      "githubFocusedHighlightedBlockers": [
+        "GitHub Actions will not receive the local app-config-secret.json file from this workspace. Enable sync-app-config-secret and provide AWS_APP_CONFIG_SECRET_JSON in the GitHub Environment, or use a local deploy/package-manifest path instead."
+      ],
+      "nextSteps": [
+        "Run `yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json` first if you want the GitHub Actions path, then re-run the deploy plan or dispatch helper.",
+        "If the local Api repo is unreadable here, switch the local run to package-manifest or backend-artifact mode with the fallback commands below.",
+        "If you want the GitHub Actions path, run `yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json` to populate `AWS_APP_CONFIG_SECRET_JSON` from this checkout.",
+        "Save the backend and frontend outputs after staging so prod can reuse the proven values.",
+        "If you want the GitHub Actions path, enable sync-app-config-secret and set AWS_APP_CONFIG_SECRET_JSON in the GitHub Environment so the runner can recreate app-config-secret.json."
+      ],
+      "githubFocusedNextSteps": [
+        "Run `yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json` first if you want the GitHub Actions path, then re-run the deploy plan or dispatch helper.",
+        "If you want the GitHub Actions path, run `yarn sync:github-app-config-secret -- --environment=prod --secret-file=.tmp-rollout-status-sample-env/prod/app-config-secret.json` to populate `AWS_APP_CONFIG_SECRET_JSON` from this checkout.",
+        "Save the backend and frontend outputs after staging so prod can reuse the proven values.",
+        "If you want the GitHub Actions path, enable sync-app-config-secret and set AWS_APP_CONFIG_SECRET_JSON in the GitHub Environment so the runner can recreate app-config-secret.json."
+      ]
+    }
+  ]
+}

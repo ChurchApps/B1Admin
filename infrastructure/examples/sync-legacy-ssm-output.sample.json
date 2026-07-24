@@ -1,0 +1,51 @@
+{
+  "stackName": "example-backend",
+  "region": "us-east-1",
+  "environment": "prod",
+  "prefix": "/prod",
+  "overwrite": true,
+  "dryRun": true,
+  "parameterCount": 10,
+  "parameters": [
+    {
+      "name": "/prod/jwtSecret",
+      "value": "replace-me"
+    },
+    {
+      "name": "/prod/encryptionKey",
+      "value": "replace-me"
+    },
+    {
+      "name": "/prod/membershipApi/connectionString",
+      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/membership"
+    },
+    {
+      "name": "/prod/attendanceApi/connectionString",
+      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/attendance"
+    },
+    {
+      "name": "/prod/contentApi/connectionString",
+      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/content"
+    },
+    {
+      "name": "/prod/givingApi/connectionString",
+      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/giving"
+    },
+    {
+      "name": "/prod/messagingApi/connectionString",
+      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/messaging"
+    },
+    {
+      "name": "/prod/doingApi/connectionString",
+      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/doing"
+    },
+    {
+      "name": "/prod/reportingApi/connectionString",
+      "value": "mysql://churchapps:replace-me@b1admin-prod.cluster-example.us-east-1.rds.amazonaws.com:3306/reporting"
+    },
+    {
+      "name": "/prod/webPushSubject",
+      "value": "mailto:support@example.com"
+    }
+  ]
+}

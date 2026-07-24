@@ -1,0 +1,108 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Bootstrap resources for B1Admin AWS deployments.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: b1admin
+    AllowedPattern: "^[a-z0-9-]+$"
+  EnvironmentName:
+    Type: String
+    Default: prod
+    AllowedPattern: "^[a-z0-9-]+$"
+  TemplateBucketName:
+    Type: String
+    Default: ""
+    Description: Optional explicit S3 bucket name for uploaded CloudFormation templates.
+  ArtifactBucketName:
+    Type: String
+    Default: ""
+    Description: Optional explicit S3 bucket name for packaged Lambda artifacts.
+  EnableBucketVersioning:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+
+Conditions:
+  HasTemplateBucketName: !Not [!Equals [!Ref TemplateBucketName, ""]]
+  HasArtifactBucketName: !Not [!Equals [!Ref ArtifactBucketName, ""]]
+  UseBucketVersioning: !Equals [!Ref EnableBucketVersioning, "true"]
+
+Resources:
+  TemplateBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !If [HasTemplateBucketName, !Ref TemplateBucketName, !Ref "AWS::NoValue"]
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      VersioningConfiguration: !If
+        - UseBucketVersioning
+        - Status: Enabled
+        - !Ref "AWS::NoValue"
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+        - Key: Purpose
+          Value: cloudformation-templates
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !If [HasArtifactBucketName, !Ref ArtifactBucketName, !Ref "AWS::NoValue"]
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      VersioningConfiguration: !If
+        - UseBucketVersioning
+        - Status: Enabled
+        - !Ref "AWS::NoValue"
+      LifecycleConfiguration:
+        Rules:
+          - Id: AbortIncompleteMultipartUploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref EnvironmentName
+        - Key: Purpose
+          Value: deployment-artifacts
+
+Outputs:
+  TemplateBucketName:
+    Description: S3 bucket for nested CloudFormation templates.
+    Value: !Ref TemplateBucket
+  TemplateBucketArn:
+    Value: !GetAtt TemplateBucket.Arn
+  ArtifactBucketName:
+    Description: S3 bucket for Lambda artifacts and other packaged assets.
+    Value: !Ref ArtifactBucket
+  ArtifactBucketArn:
+    Value: !GetAtt ArtifactBucket.Arn

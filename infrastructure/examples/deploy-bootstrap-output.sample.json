@@ -1,0 +1,15 @@
+{
+  "stackName": "example-bootstrap",
+  "region": "us-east-1",
+  "parameters": {
+    "ProjectName": "b1admin",
+    "EnvironmentName": "prod",
+    "TemplateBucketName": "b1admin-prod-templates-123456789012",
+    "ArtifactBucketName": "b1admin-prod-artifacts-123456789012",
+    "EnableBucketVersioning": "true"
+  },
+  "outputs": {
+    "TemplateBucketName": "b1admin-prod-templates-123456789012",
+    "ArtifactBucketName": "b1admin-prod-artifacts-123456789012"
+  }
+}

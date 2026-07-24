@@ -1,0 +1,14 @@
+{
+  "ApiBaseUrl": "https://api.example.com",
+  "ContentRootUrl": "https://content.example.com",
+  "WebsiteBaseUrl": "https://{subdomain}.example.com",
+  "LessonsApiUrl": "https://lessons-api.example.com",
+  "TransferUrl": "https://transfer.example.com",
+  "SupportEmail": "support@example.com",
+  "SupportPhone": "555-555-5555",
+  "SupportSiteUrl": "https://support.example.com",
+  "MobileAppUrl": "https://example.com/app",
+  "DomainCnameTarget": "proxy.example.com",
+  "DomainATarget": "203.0.113.10",
+  "DefaultStockPhoto": "https://content.example.com/stockPhotos/default.jpg"
+}

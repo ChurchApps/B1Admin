@@ -1,0 +1,5 @@
+{
+  "SiteBucketName": "example-frontend-bucket",
+  "CloudFrontDistributionId": "EXAMPLE123",
+  "AppUrl": "https://admin.example.com"
+}

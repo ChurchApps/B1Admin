@@ -1,0 +1,9 @@
+{
+  "ProjectName": "b1admin",
+  "EnvironmentName": "staging",
+  "BucketName": "",
+  "AlternateDomainName": "",
+  "AcmCertificateArn": "",
+  "HostedZoneId": "",
+  "PriceClass": "PriceClass_100"
+}

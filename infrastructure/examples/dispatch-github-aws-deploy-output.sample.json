@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "action": "validated",
+  "environment": "staging",
+  "workflowEnvironmentName": "aws-staging",
+  "deploymentSource": "package-manifest",
+  "previewOnly": false,
+  "syncAppConfigSecret": true,
+  "secretSync": {
+    "attempted": true,
+    "performed": false,
+    "command": "yarn sync:github-app-config-secret -- --environment=staging --secret-file=.tmp-dispatch-github-deploy-env/app-config-secret.json"
+  },
+  "dispatchCommand": "gh workflow run deploy-aws-self-hosted.yml --repo 'ChurchApps/B1Admin' -f environment='staging' -f aws_region='us-east-1' -f deployment_source='package-manifest' -f api_repo='' -f api_ref='' -f package_manifest_file='.tmp-dispatch-github-deploy-env/package-manifest.json' -f backend_artifact_source_file='' -f migration_artifact_source_file='' -f dependencies_layer_source_file='' -f sync_app_config_secret='true' -f run_api_migrations='false' -f api_migration_action='up' -f api_migration_module='all' -f verify_http_after_deploy='false' -f preview_only='false'",
+  "followUpCommands": {
+    "listRuns": "gh run list --workflow deploy-aws-self-hosted.yml --limit 5 --repo 'ChurchApps/B1Admin'",
+    "watchLatestRun": "gh run watch $(gh run list --workflow deploy-aws-self-hosted.yml --limit 1 --json databaseId --jq '.[0].databaseId' --repo 'ChurchApps/B1Admin') --compact --exit-status --repo 'ChurchApps/B1Admin'",
+    "viewLatestRun": "gh run view $(gh run list --workflow deploy-aws-self-hosted.yml --limit 1 --json databaseId --jq '.[0].databaseId' --repo 'ChurchApps/B1Admin') --repo 'ChurchApps/B1Admin'"
+  },
+  "workflowInputs": {
+    "environment": "staging",
+    "aws_region": "us-east-1",
+    "deployment_source": "package-manifest",
+    "api_repo": "",
+    "api_ref": "",
+    "package_manifest_file": ".tmp-dispatch-github-deploy-env/package-manifest.json",
+    "backend_artifact_source_file": "",
+    "migration_artifact_source_file": "",
+    "dependencies_layer_source_file": "",
+    "sync_app_config_secret": "true",
+    "run_api_migrations": "false",
+    "api_migration_action": "up",
+    "api_migration_module": "all",
+    "verify_http_after_deploy": "false",
+    "preview_only": "false"
+  },
+  "blockers": []
+}

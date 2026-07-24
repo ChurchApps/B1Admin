@@ -1,0 +1,341 @@
+{
+  "ok": false,
+  "environment": "staging",
+  "onlyBlockers": false,
+  "environmentDir": "infrastructure/environments/staging",
+  "summary": {
+    "placeholderCount": 5,
+    "unsafeDefaultCount": 10,
+    "requiredBlankCount": 0,
+    "optionalBlankCount": 41
+  },
+  "blockerSummary": {
+    "placeholderCount": 5,
+    "unsafeDefaultCount": 10,
+    "requiredBlankCount": 0,
+    "blockerCount": 15
+  },
+  "nextSteps": [
+    {
+      "file": "infrastructure/environments/staging/bootstrap-parameters.json",
+      "action": "Replace or fill 2 blocker values.",
+      "keys": [
+        "TemplateBucketName",
+        "ArtifactBucketName"
+      ]
+    },
+    {
+      "file": "infrastructure/environments/staging/backend-parameters.json",
+      "action": "Replace or fill 10 blocker values.",
+      "keys": [
+        "LambdaCodeS3Bucket",
+        "WebsiteBaseUrl",
+        "ContentRootUrl",
+        "B1AdminRootUrl",
+        "CorsOrigin",
+        "StoreApiUrl",
+        "TransferUrl",
+        "SupportEmail",
+        "SupportPhone",
+        "SupportSiteUrl"
+      ]
+    },
+    {
+      "file": "infrastructure/environments/staging/app-config-secret.template.json",
+      "action": "Replace or fill 3 blocker values.",
+      "keys": [
+        "jwtSecret",
+        "encryptionKey",
+        "webPushSubject"
+      ]
+    }
+  ],
+  "suggestions": [
+    {
+      "file": "infrastructure/environments/staging/bootstrap-parameters.json",
+      "recommendation": "Choose globally unique S3 bucket names for the template and artifact buckets.",
+      "example": "b1admin-staging-templates-<account-id> and b1admin-staging-artifacts-<account-id>"
+    },
+    {
+      "file": "infrastructure/environments/staging/backend-parameters.json",
+      "recommendation": "Point LambdaCodeS3Bucket at the same artifact bucket chosen in bootstrap-parameters.json.",
+      "example": "b1admin-staging-artifacts-<account-id>"
+    },
+    {
+      "file": "infrastructure/environments/staging/backend-parameters.json",
+      "recommendation": "Replace the checked-in starter hostnames and support values with real environment URLs and contact details before the first deploy.",
+      "example": "B1AdminRootUrl=https://admin-staging.yourdomain.com, CorsOrigin=https://admin-staging.yourdomain.com, SupportEmail=support@yourdomain.com"
+    },
+    {
+      "file": "infrastructure/environments/staging/app-config-secret.template.json",
+      "recommendation": "Copy the template to app-config-secret.json, replace jwtSecret and encryptionKey with long random values, and set webPushSubject to the real support mailbox before syncing the secret.",
+      "example": "cp infrastructure/environments/staging/app-config-secret.template.json infrastructure/environments/staging/app-config-secret.json"
+    }
+  ],
+  "files": [
+    {
+      "fileName": "bootstrap-parameters.json",
+      "relativePath": "infrastructure/environments/staging/bootstrap-parameters.json",
+      "placeholders": [
+        {
+          "key": "TemplateBucketName",
+          "value": "replace-me-b1admin-staging-templates-123456789012"
+        },
+        {
+          "key": "ArtifactBucketName",
+          "value": "replace-me-b1admin-staging-artifacts-123456789012"
+        }
+      ],
+      "unsafeDefaults": [],
+      "requiredBlankValues": [],
+      "optionalBlankValues": [],
+      "resolvedBySecretFile": []
+    },
+    {
+      "fileName": "backend-parameters.json",
+      "relativePath": "infrastructure/environments/staging/backend-parameters.json",
+      "placeholders": [
+        {
+          "key": "LambdaCodeS3Bucket",
+          "value": "replace-me-b1admin-staging-artifacts-123456789012"
+        }
+      ],
+      "unsafeDefaults": [
+        {
+          "key": "WebsiteBaseUrl",
+          "value": "https://{subdomain}.example.com"
+        },
+        {
+          "key": "ContentRootUrl",
+          "value": "https://content-staging.example.com"
+        },
+        {
+          "key": "B1AdminRootUrl",
+          "value": "https://admin-staging.example.com"
+        },
+        {
+          "key": "CorsOrigin",
+          "value": "https://admin-staging.example.com"
+        },
+        {
+          "key": "StoreApiUrl",
+          "value": "https://store-staging.example.com"
+        },
+        {
+          "key": "TransferUrl",
+          "value": "https://transfer-staging.example.com"
+        },
+        {
+          "key": "SupportEmail",
+          "value": "support@example.com"
+        },
+        {
+          "key": "SupportPhone",
+          "value": "555-555-5555"
+        },
+        {
+          "key": "SupportSiteUrl",
+          "value": "https://support.example.com"
+        }
+      ],
+      "requiredBlankValues": [],
+      "optionalBlankValues": [
+        {
+          "key": "DependenciesLayerArn",
+          "value": ""
+        },
+        {
+          "key": "ObservabilityLayerArn",
+          "value": ""
+        },
+        {
+          "key": "MigrationCodeS3Bucket",
+          "value": ""
+        },
+        {
+          "key": "MigrationCodeS3Key",
+          "value": ""
+        },
+        {
+          "key": "MigrationHandler",
+          "value": ""
+        },
+        {
+          "key": "MigrationRuntime",
+          "value": ""
+        },
+        {
+          "key": "MigrationTrigger",
+          "value": ""
+        },
+        {
+          "key": "ApiCustomDomainName",
+          "value": ""
+        },
+        {
+          "key": "ApiCertificateArn",
+          "value": ""
+        },
+        {
+          "key": "ApiHostedZoneId",
+          "value": ""
+        },
+        {
+          "key": "AssetBucketName",
+          "value": ""
+        },
+        {
+          "key": "AppConfigSecretArn",
+          "value": ""
+        },
+        {
+          "key": "CaddyHost",
+          "value": ""
+        },
+        {
+          "key": "CaddyPort",
+          "value": ""
+        },
+        {
+          "key": "MobileAppUrl",
+          "value": ""
+        },
+        {
+          "key": "DomainCnameTarget",
+          "value": ""
+        },
+        {
+          "key": "DomainATarget",
+          "value": ""
+        },
+        {
+          "key": "DefaultStockPhoto",
+          "value": ""
+        },
+        {
+          "key": "GoogleAnalyticsTag",
+          "value": ""
+        },
+        {
+          "key": "SentryDsn",
+          "value": ""
+        }
+      ],
+      "resolvedBySecretFile": []
+    },
+    {
+      "fileName": "frontend-parameters.json",
+      "relativePath": "infrastructure/environments/staging/frontend-parameters.json",
+      "placeholders": [],
+      "unsafeDefaults": [],
+      "requiredBlankValues": [],
+      "optionalBlankValues": [
+        {
+          "key": "BucketName",
+          "value": ""
+        },
+        {
+          "key": "AlternateDomainName",
+          "value": ""
+        },
+        {
+          "key": "AcmCertificateArn",
+          "value": ""
+        },
+        {
+          "key": "HostedZoneId",
+          "value": ""
+        }
+      ],
+      "resolvedBySecretFile": []
+    },
+    {
+      "fileName": "app-config-secret.template.json",
+      "relativePath": "infrastructure/environments/staging/app-config-secret.template.json",
+      "placeholders": [
+        {
+          "key": "jwtSecret",
+          "value": "replace-me-long-random-jwt-secret"
+        },
+        {
+          "key": "encryptionKey",
+          "value": "replace-me-long-random-encryption-key"
+        }
+      ],
+      "unsafeDefaults": [
+        {
+          "key": "webPushSubject",
+          "value": "mailto:support@example.com"
+        }
+      ],
+      "requiredBlankValues": [],
+      "optionalBlankValues": [
+        {
+          "key": "hubspotKey",
+          "value": ""
+        },
+        {
+          "key": "mauticUrl",
+          "value": ""
+        },
+        {
+          "key": "mauticUser",
+          "value": ""
+        },
+        {
+          "key": "mauticPassword",
+          "value": ""
+        },
+        {
+          "key": "youTubeApiKey",
+          "value": ""
+        },
+        {
+          "key": "pexelsKey",
+          "value": ""
+        },
+        {
+          "key": "vimeoToken",
+          "value": ""
+        },
+        {
+          "key": "apiBibleKey",
+          "value": ""
+        },
+        {
+          "key": "youVersionApiKey",
+          "value": ""
+        },
+        {
+          "key": "praiseChartsConsumerKey",
+          "value": ""
+        },
+        {
+          "key": "praiseChartsConsumerSecret",
+          "value": ""
+        },
+        {
+          "key": "googleRecaptchaSecretKey",
+          "value": ""
+        },
+        {
+          "key": "openRouterApiKey",
+          "value": ""
+        },
+        {
+          "key": "openAiApiKey",
+          "value": ""
+        },
+        {
+          "key": "webPushPublicKey",
+          "value": ""
+        },
+        {
+          "key": "webPushPrivateKey",
+          "value": ""
+        }
+      ],
+      "resolvedBySecretFile": []
+    }
+  ]
+}
