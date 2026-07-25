@@ -3125,7 +3125,8 @@
       "saveError": "Kesalahan menyimpan pengaturan SMS.",
       "textInChurchHelper": "Kunjungi",
       "textInChurchHelperLink": "Dukungan Text In Church",
-      "textInChurchHelperSuffix": "untuk meminta akses API pengembang. Setelah disetujui, buat Kunci API di bagian Pengaturan Akun > API Pengembang."
+      "textInChurchHelperSuffix": "untuk meminta akses API pengembang. Setelah disetujui, buat Kunci API di bagian Pengaturan Akun > API Pengembang.",
+      "textInChurch": "Teks di Gereja"
     },
     "userAdd": {
       "addTo": "Add To ",

@@ -3372,7 +3372,8 @@
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Your MinistryStuff texting subscription is active with {} credits remaining this cycle.",
       "ministryStuffHelper": "No API key needed. Texting credits come from your MinistryStuff subscription, linked to this church automatically. Manage your plan at",
-      "ministryStuffHelperLink": "ministrystuff.org"
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "textInChurch": "Text In Church"
     },
     "userAdd": {
       "addTo": "Add To ",

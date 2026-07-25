@@ -3125,7 +3125,8 @@
       "saveError": "Klaida išsaugant SMS žinučių nustatymus.",
       "textInChurchHelper": "Apsilankykite",
       "textInChurchHelperLink": "Text In Church palaikyme",
-      "textInChurchHelperSuffix": "kad paprašytumėte kūrėjo API prieigos. Patvirtinus, sukurkite API raktą savo Paskyros nustatymai > Kūrėjo API skiltyje."
+      "textInChurchHelperSuffix": "kad paprašytumėte kūrėjo API prieigos. Patvirtinus, sukurkite API raktą savo Paskyros nustatymai > Kūrėjo API skiltyje.",
+      "textInChurch": "Tekstas bažnyčioje"
     },
     "userAdd": {
       "addTo": "Add To ",

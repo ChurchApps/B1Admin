@@ -3125,7 +3125,8 @@
       "saveError": "Napaka pri shranjevanju nastavitev SMS.",
       "textInChurchHelper": "Obišči",
       "textInChurchHelperLink": "Podporo Text In Church",
-      "textInChurchHelperSuffix": "za zahtevo dostopa do razvijalskega API. Po odobritvi ustvarite API ključ v razdelku Nastavitve računa > Razvijalski API."
+      "textInChurchHelperSuffix": "za zahtevo dostopa do razvijalskega API. Po odobritvi ustvarite API ključ v razdelku Nastavitve računa > Razvijalski API.",
+      "textInChurch": "Besedilo v cerkvi"
     },
     "userAdd": {
       "addTo": "Add To ",

@@ -3125,7 +3125,8 @@
       "saveError": "Erreur lors de l'enregistrement des paramètres SMS.",
       "textInChurchHelper": "Visitez",
       "textInChurchHelperLink": "Support Text In Church",
-      "textInChurchHelperSuffix": "pour demander l'accès à l'API développeur. Une fois approuvé, créez une clé API dans la section Paramètres de compte > API développeur."
+      "textInChurchHelperSuffix": "pour demander l'accès à l'API développeur. Une fois approuvé, créez une clé API dans la section Paramètres de compte > API développeur.",
+      "textInChurch": "Texte à l'église"
     },
     "userAdd": {
       "addTo": "Ajouter à ",
