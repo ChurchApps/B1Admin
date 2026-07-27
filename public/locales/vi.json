@@ -3125,7 +3125,8 @@
       "saveError": "Lỗi khi lưu cài đặt nhắn tin.",
       "textInChurchHelper": "Truy cập",
       "textInChurchHelperLink": "Hỗ trợ Text In Church",
-      "textInChurchHelperSuffix": "để yêu cầu quyền truy cập API nhà phát triển. Sau khi được chấp thuận, tạo Khóa API trong Cài đặt tài khoản > phần Developer API."
+      "textInChurchHelperSuffix": "để yêu cầu quyền truy cập API nhà phát triển. Sau khi được chấp thuận, tạo Khóa API trong Cài đặt tài khoản > phần Developer API.",
+      "textInChurch": "Văn bản trong nhà thờ"
     },
     "userAdd": {
       "addTo": "Thêm To ",

@@ -3125,7 +3125,8 @@
       "saveError": "テキスティング設定の保存中にエラーが発生しました。",
       "textInChurchHelper": "訪問",
       "textInChurchHelperLink": "Text In Churchサポート",
-      "textInChurchHelperSuffix": "開発者APIアクセスをリクエストするため。承認されたら、アカウント設定 > 開発者APIセクションでAPIキーを作成してください。"
+      "textInChurchHelperSuffix": "開発者APIアクセスをリクエストするため。承認されたら、アカウント設定 > 開発者APIセクションでAPIキーを作成してください。",
+      "textInChurch": "教会でのテキスト"
     },
     "userAdd": {
       "addTo": "Add To ",

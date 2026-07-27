@@ -3125,7 +3125,8 @@
       "saveError": "خطأ في حفظ إعدادات الرسائل النصية.",
       "textInChurchHelper": "قم بزيارة",
       "textInChurchHelperLink": "دعم Text In Church",
-      "textInChurchHelperSuffix": "لطلب وصول API للمطورين. بعد الموافقة، قم بإنشاء مفتاح API في إعدادات حسابك > قسم API للمطورين."
+      "textInChurchHelperSuffix": "لطلب وصول API للمطورين. بعد الموافقة، قم بإنشاء مفتاح API في إعدادات حسابك > قسم API للمطورين.",
+      "textInChurch": "نص في الكنيسة"
     },
     "userAdd": {
       "addTo": "Add To ",

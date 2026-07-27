@@ -3125,7 +3125,8 @@
       "saveError": "Error al guardar la configuración de mensajería.",
       "textInChurchHelper": "Visite",
       "textInChurchHelperLink": "Soporte de Text In Church",
-      "textInChurchHelperSuffix": "para solicitar acceso de API para desarrolladores. Una vez aprobado, cree una Clave API en su Configuración de Cuenta > sección de API para desarrolladores."
+      "textInChurchHelperSuffix": "para solicitar acceso de API para desarrolladores. Una vez aprobado, cree una Clave API en su Configuración de Cuenta > sección de API para desarrolladores.",
+      "textInChurch": "Texto en la Iglesia"
     },
     "userAdd": {
       "addTo": "Agregar A ",

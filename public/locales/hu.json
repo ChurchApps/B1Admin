@@ -3125,7 +3125,8 @@
       "saveError": "Hiba az üzenetküldési beállítások mentésekor.",
       "textInChurchHelper": "Látogasson el a",
       "textInChurchHelperLink": "Text In Church támogatási oldalra",
-      "textInChurchHelperSuffix": "fejlesztői API hozzáférés kéréséhez. Jóváhagyás után hozzon létre API kulcsot a Fiók beállítások > Fejlesztői API részben."
+      "textInChurchHelperSuffix": "fejlesztői API hozzáférés kéréséhez. Jóváhagyás után hozzon létre API kulcsot a Fiók beállítások > Fejlesztői API részben.",
+      "textInChurch": "Szöveg a templomban"
     },
     "userAdd": {
       "addTo": "Add To ",

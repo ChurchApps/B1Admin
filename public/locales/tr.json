@@ -3125,7 +3125,8 @@
       "saveError": "Mesajlaşma ayarları kaydedilirken hata oluştu.",
       "textInChurchHelper": "Ziyaret edin:",
       "textInChurchHelperLink": "Text In Church Destek",
-      "textInChurchHelperSuffix": "geliştirici API erişimi talep etmek için. Onaylandıktan sonra, Hesap Ayarları > Geliştirici API bölümünde bir API Anahtarı oluşturun."
+      "textInChurchHelperSuffix": "geliştirici API erişimi talep etmek için. Onaylandıktan sonra, Hesap Ayarları > Geliştirici API bölümünde bir API Anahtarı oluşturun.",
+      "textInChurch": "Kilisede Metin"
     },
     "userAdd": {
       "addTo": "Add To ",

@@ -3125,7 +3125,8 @@
       "saveError": "Error sa pag-save ng texting settings.",
       "textInChurchHelper": "Bisitahin",
       "textInChurchHelperLink": "Text In Church Support",
-      "textInChurchHelperSuffix": "upang humiling ng developer API access. Kapag naaprubahan, gumawa ng API Key sa iyong Account Settings > Developer API section."
+      "textInChurchHelperSuffix": "upang humiling ng developer API access. Kapag naaprubahan, gumawa ng API Key sa iyong Account Settings > Developer API section.",
+      "textInChurch": "Teksto sa Simbahan"
     },
     "userAdd": {
       "addTo": "Magdagdag sa ",

@@ -3125,7 +3125,8 @@
       "saveError": "Virhe tallennettaessa tekstiviestiasetuksia.",
       "textInChurchHelper": "Käy",
       "textInChurchHelperLink": "Text In Church -tuessa",
-      "textInChurchHelperSuffix": "pyytääksesi kehittäjän API-pääsyä. Kun se on hyväksytty, luo API-avain Tilin asetukset > Kehittäjän API -osiossa."
+      "textInChurchHelperSuffix": "pyytääksesi kehittäjän API-pääsyä. Kun se on hyväksytty, luo API-avain Tilin asetukset > Kehittäjän API -osiossa.",
+      "textInChurch": "Teksti kirkossa"
     },
     "userAdd": {
       "addTo": "Add To ",

@@ -3125,7 +3125,8 @@
       "saveError": "Грешка при чувању подешавања за СМС.",
       "textInChurchHelper": "Посетите",
       "textInChurchHelperLink": "Text In Church подршку",
-      "textInChurchHelperSuffix": "да захтевате приступ developer API. Када се одобри, креирајте API кључ у одељку Account Settings > Developer API."
+      "textInChurchHelperSuffix": "да захтевате приступ developer API. Када се одобри, креирајте API кључ у одељку Account Settings > Developer API.",
+      "textInChurch": "Текст у цркви"
     },
     "userAdd": {
       "addTo": "Додај у ",
