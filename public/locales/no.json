@@ -3125,7 +3125,8 @@
       "saveError": "Feil ved lagring av SMS-innstillinger.",
       "textInChurchHelper": "Besøk",
       "textInChurchHelperLink": "Text In Church-støtte",
-      "textInChurchHelperSuffix": "for å be om utvikler-API-tilgang. Når godkjent, opprett en API-nøkkel under Account Settings > Developer API."
+      "textInChurchHelperSuffix": "for å be om utvikler-API-tilgang. Når godkjent, opprett en API-nøkkel under Account Settings > Developer API.",
+      "textInChurch": "Tekst i kirken"
     },
     "userAdd": {
       "addTo": "Legg til i ",

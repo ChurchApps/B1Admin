@@ -3125,7 +3125,8 @@
       "saveError": "Errore nel salvataggio delle impostazioni SMS.",
       "textInChurchHelper": "Visita",
       "textInChurchHelperLink": "Supporto Text In Church",
-      "textInChurchHelperSuffix": "per richiedere l'accesso API per sviluppatori. Una volta approvato, crea una chiave API nella sezione Impostazioni Account > API per Sviluppatori."
+      "textInChurchHelperSuffix": "per richiedere l'accesso API per sviluppatori. Una volta approvato, crea una chiave API nella sezione Impostazioni Account > API per Sviluppatori.",
+      "textInChurch": "Testo in Chiesa"
     },
     "userAdd": {
       "addTo": "Aggiungi a ",

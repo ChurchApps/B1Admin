@@ -3125,7 +3125,8 @@
       "saveError": "保存短信设置时出错。",
       "textInChurchHelper": "访问",
       "textInChurchHelperLink": "Text In Church 支持",
-      "textInChurchHelperSuffix": "申请开发者 API 访问权限。批准后，在您的“账户设置 > 开发者 API”部分创建 API 密钥。"
+      "textInChurchHelperSuffix": "申请开发者 API 访问权限。批准后，在您的“账户设置 > 开发者 API”部分创建 API 密钥。",
+      "textInChurch": "教会里的文本"
     },
     "userAdd": {
       "addTo": "添加到 ",

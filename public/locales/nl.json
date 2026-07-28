@@ -3125,7 +3125,8 @@
       "saveError": "Fout bij het opslaan van sms-instellingen.",
       "textInChurchHelper": "Bezoek",
       "textInChurchHelperLink": "Text In Church-ondersteuning",
-      "textInChurchHelperSuffix": "om ontwikkelaars-API-toegang aan te vragen. Eenmaal goedgekeurd, maak een API-sleutel aan in je Accountinstellingen > Ontwikkelaars-API-sectie."
+      "textInChurchHelperSuffix": "om ontwikkelaars-API-toegang aan te vragen. Eenmaal goedgekeurd, maak een API-sleutel aan in je Accountinstellingen > Ontwikkelaars-API-sectie.",
+      "textInChurch": "Tekst in de kerk"
     },
     "userAdd": {
       "addTo": "Toevoegen aan ",

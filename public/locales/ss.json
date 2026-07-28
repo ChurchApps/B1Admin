@@ -3368,7 +3368,8 @@
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Kubhaliswa kwakho kwekutfumela imiyalezo kwe-MinistryStuff kuyasebenta ngema-credit langu-{} lasele kulesigceme.",
       "ministryStuffHelper": "Akukho i-API key ledzingekako. Ema-credit ekutfumela imiyalezo asuka ekubhaliseni kwakho kwe-MinistryStuff, lokuhlotjiswe naleli bandla ngekutitentekela. Phatsa luhlelo lwakho ku",
-      "ministryStuffHelperLink": "ministrystuff.org"
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "textInChurch": "Umbhalo eSontweni"
     },
     "userAdd": {
       "addTo": "Engeta Ku ",

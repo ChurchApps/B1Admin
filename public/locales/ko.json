@@ -3125,7 +3125,8 @@
       "saveError": "텍스팅 설정 저장 중 오류가 발생했습니다.",
       "textInChurchHelper": "방문",
       "textInChurchHelperLink": "Text In Church 지원",
-      "textInChurchHelperSuffix": "개발자 API 액세스를 요청합니다. 승인되면 계정 설정 > 개발자 API 섹션에서 API 키를 생성하세요."
+      "textInChurchHelperSuffix": "개발자 API 액세스를 요청합니다. 승인되면 계정 설정 > 개발자 API 섹션에서 API 키를 생성하세요.",
+      "textInChurch": "교회에서의 텍스트"
     },
     "userAdd": {
       "addTo": "다음에 추가 ",

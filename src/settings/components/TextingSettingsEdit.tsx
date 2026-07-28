@@ -121,6 +121,7 @@ export const TextingSettingsEdit: React.FC<Props> = (props) => {
               <MenuItem value="">{Locale.label("settings.textingSettingsEdit.none")}</MenuItem>
               {MINISTRYSTUFF_ENABLED && <MenuItem value="MinistryStuff">{Locale.label("settings.textingSettingsEdit.ministryStuff")}</MenuItem>}
               <MenuItem value="Clearstream">{Locale.label("settings.textingSettingsEdit.clearstream")}</MenuItem>
+              <MenuItem value="TextInChurch">{Locale.label("settings.textingSettingsEdit.textInChurch")}</MenuItem>
             </Select>
           </FormControl>
         </Grid>

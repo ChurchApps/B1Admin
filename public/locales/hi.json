@@ -3125,7 +3125,8 @@
       "saveError": "टेक्स्टिंग सेटिंग्स सहेजने में त्रुटि।",
       "textInChurchHelper": "जाएँ",
       "textInChurchHelperLink": "Text In Church सहायता",
-      "textInChurchHelperSuffix": "डेवलपर API पहुँच का अनुरोध करने के लिए। एक बार स्वीकृत होने पर, अपने खाता सेटिंग्स > डेवलपर API अनुभाग में एक API कुंजी बनाएं।"
+      "textInChurchHelperSuffix": "डेवलपर API पहुँच का अनुरोध करने के लिए। एक बार स्वीकृत होने पर, अपने खाता सेटिंग्स > डेवलपर API अनुभाग में एक API कुंजी बनाएं।",
+      "textInChurch": "चर्च में टेक्स्ट"
     },
     "userAdd": {
       "addTo": "इसमें जोड़ें ",

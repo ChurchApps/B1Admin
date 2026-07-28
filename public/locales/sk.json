@@ -3125,7 +3125,8 @@
       "saveError": "Chyba pri ukladaní nastavení SMS.",
       "textInChurchHelper": "Navštívte",
       "textInChurchHelperLink": "Podporu Text In Church",
-      "textInChurchHelperSuffix": "pre žiadosť o prístup k API pre vývojárov. Po schválení vytvorte API kľúč v sekcii Account Settings > Developer API."
+      "textInChurchHelperSuffix": "pre žiadosť o prístup k API pre vývojárov. Po schválení vytvorte API kľúč v sekcii Account Settings > Developer API.",
+      "textInChurch": "Text v cirkvi"
     },
     "userAdd": {
       "addTo": "Add To ",
