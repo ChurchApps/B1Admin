@@ -289,7 +289,7 @@ export const TaskList = memo((props: Props) => {
           borderRadius: 2,
           border: "1px solid",
           borderColor: "divider",
-          marginTop: 4
+          marginTop: showAdd ? 4 : 0
         }}>
         <CardContent>
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
