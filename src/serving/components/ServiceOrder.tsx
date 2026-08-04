@@ -10,8 +10,6 @@ import { getProvider, type InstructionItem, type IProvider, type Instructions } 
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
 import { LessonHeaderSelector } from "./LessonHeaderSelector";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlanItem } from "./PlanItem";
 import { SaveTemplateDialog } from "./SaveTemplateDialog";
 import { LessonPreview } from "./LessonPreview";
@@ -711,33 +709,31 @@ export const ServiceOrder = memo((props: Props) => {
             {editContent}
           </Stack>
 
-          <DndProvider backend={HTML5Backend}>
-            {planItems.length === 0 ? (
-              showPreviewMode ? (
-                <LessonPreview
-                  lessonItems={previewLessonItems}
-                  contentName={contentName}
-                  onCustomize={handleCustomizeLesson}
-                  associatedProviderId={props.plan?.providerId}
-                  associatedContentPath={getContentPath() || undefined}
-                  ministryId={props.plan?.ministryId}
-                  mediaLookup={mediaLookup}
-                />
-              ) : (
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    py: 4,
-                    color: "text.secondary"
-                  }}>
-                  <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
-                  <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
-                </Box>
-              )
+          {planItems.length === 0 ? (
+            showPreviewMode ? (
+              <LessonPreview
+                lessonItems={previewLessonItems}
+                contentName={contentName}
+                onCustomize={handleCustomizeLesson}
+                associatedProviderId={props.plan?.providerId}
+                associatedContentPath={getContentPath() || undefined}
+                ministryId={props.plan?.ministryId}
+                mediaLookup={mediaLookup}
+              />
             ) : (
-              renderPlanItems()
-            )}
-          </DndProvider>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  py: 4,
+                  color: "text.secondary"
+                }}>
+                <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
+                <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
+              </Box>
+            )
+          ) : (
+            renderPlanItems()
+          )}
         </CardContent>
       </Card>
       <Snackbar

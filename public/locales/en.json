@@ -2073,6 +2073,7 @@
       "waitingForAuth": "Waiting for authorization..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Your browser does not support audio playback.",
       "fallbackPreview": "Preview",
       "fallbackTitle": "Content Preview",
       "noContent": "No content to display.",

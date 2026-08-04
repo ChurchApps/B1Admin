@@ -5,7 +5,7 @@ import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 
 interface ContentRendererProps {
   url?: string;
-  mediaType?: "video" | "image" | "text" | "iframe";
+  mediaType?: "video" | "image" | "audio" | "text" | "iframe";
   title?: string;
   description?: string;
   loading?: boolean;
@@ -19,6 +19,13 @@ function isVideoUrl(url: string): boolean {
   const videoExtensions = [".mp4", ".webm", ".ogg", ".m3u8", ".mov", ".avi"];
   const lowerUrl = url.toLowerCase();
   return videoExtensions.some(ext => lowerUrl.includes(ext));
+}
+
+// Helper to detect if a URL is audio (.ogg stays in the video list; provider content already relies on it)
+export function isAudioUrl(url: string): boolean {
+  const audioExtensions = [".mp3", ".m4a", ".aac", ".wav", ".flac", ".oga"];
+  const lowerUrl = url.toLowerCase();
+  return audioExtensions.some(ext => lowerUrl.includes(ext));
 }
 
 // Helper to detect if a URL is an iframe embed URL
@@ -95,7 +102,9 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
   // Determine content type from URL if not explicitly provided
   let effectiveMediaType = mediaType;
   if (!effectiveMediaType) {
-    if (isVideoUrl(url)) {
+    if (isAudioUrl(url)) {
+      effectiveMediaType = "audio";
+    } else if (isVideoUrl(url)) {
       effectiveMediaType = "video";
     } else if (isIframeUrl(url)) {
       effectiveMediaType = "iframe";
@@ -120,6 +129,15 @@ export const ContentRenderer: React.FC<ContentRendererProps> = ({
           >
             {Locale.label("plans.contentRenderer.videoUnsupported")}
           </video>
+        </Box>
+      );
+
+    case "audio":
+      return (
+        <Box sx={{ width: "100%", p: 2 }}>
+          <audio controls preload="metadata" style={{ width: "100%" }} src={url}>
+            {Locale.label("plans.contentRenderer.audioUnsupported")}
+          </audio>
         </Box>
       );
 

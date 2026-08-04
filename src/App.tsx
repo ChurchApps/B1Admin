@@ -10,6 +10,8 @@ import "@churchapps/apphelper/dist/markdown/components/markdownEditor/editor.css
 import { EnvironmentHelper } from "./helpers";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./queryClient";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 declare module "@mui/material/styles" {
   interface Palette {
@@ -126,11 +128,14 @@ const ThemedApp: React.FC = () => {
       <QueryClientProvider client={queryClient}>
         <CookiesProvider defaultSetOptions={{ path: "/" }}>
           <UserProvider>
-            <Router>
-              <Routes>
-                <Route path="/*" element={<ControlPanel />} />
-              </Routes>
-            </Router>
+            {/* Single app-lifetime backend: multiple DndProviders race on window.__isReactDndBackendSetUp ("Cannot have two HTML5 backends") */}
+            <DndProvider backend={HTML5Backend}>
+              <Router>
+                <Routes>
+                  <Route path="/*" element={<ControlPanel />} />
+                </Routes>
+              </Router>
+            </DndProvider>
           </UserProvider>
         </CookiesProvider>
       </QueryClientProvider>
