@@ -6,7 +6,7 @@ import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanI
 import { type PlanItemInterface, hasPlansEditAccess } from "../../helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-providers";
+import { getProvider, type InstructionItem, type IProvider } from "@churchapps/content-providers";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
 import { LessonHeaderSelector } from "./LessonHeaderSelector";
@@ -16,23 +16,13 @@ import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { RowDropZone } from "./RowDropZone";
 import { formatTime } from "./PlanUtils";
-import { findThumbnailRecursive, buildProviderMediaLookup, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, type ProviderMediaInfo } from "./planItemUtils";
+import { findThumbnailRecursive, buildProviderMediaLookup, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, getProviderInstructions, type ProviderMediaInfo } from "./planItemUtils";
 
 interface Props {
   plan: PlanInterface;
   onPlanUpdate?: () => void;
 }
 
-
-// Helper to get instructions from provider based on its capabilities
-async function getProviderInstructions(provider: IProvider, path: string, ministryId?: string, providerId?: string): Promise<Instructions | null> {
-  const capabilities = provider.capabilities;
-  if (!capabilities.instructions || !provider.getInstructions) return null;
-  if (provider.requiresAuth && ministryId && providerId) {
-    return ApiHelper.post("/providerProxy/getInstructions", { ministryId, providerId, path }, "DoingApi");
-  }
-  return provider.getInstructions(path);
-}
 
 // Helper to convert InstructionItem to PlanItemInterface
 function instructionToPlanItem(item: InstructionItem, providerId?: string, providerPath?: string, pathIndices: number[] = []): PlanItemInterface {

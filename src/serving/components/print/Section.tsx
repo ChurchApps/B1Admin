@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader } from "@mui/material";
+import { Locale } from "@churchapps/apphelper";
 import { type FeedSectionInterface } from "../../../helpers";
 import { Action } from "./Action";
 
@@ -27,17 +28,17 @@ export function Section(props: Props) {
 
   return (
     <Card id={"section-" + props.section.name} className="sectionCard" style={{ marginBottom: 20 }}>
-        <CardHeader
-          title={props.section.name}
-          subheader={
-            props.section.materials && (
-              <>
-                <b>Materials:</b> {props.section.materials}
-              </>
-            )
-          }
-        />
-        <CardContent>{getParts()}</CardContent>
-      </Card>
-    );
+      <CardHeader
+        title={props.section.name}
+        subheader={
+          props.section.materials && (
+            <>
+              <b>{Locale.label("plans.printPreview.materials") || "Materials:"}</b> {props.section.materials}
+            </>
+          )
+        }
+      />
+      <CardContent>{getParts()}</CardContent>
+    </Card>
+  );
 }

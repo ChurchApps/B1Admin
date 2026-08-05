@@ -2314,6 +2314,14 @@
       "serviceOrder": "SERVICE ORDER",
       "time": "Time"
     },
+    "printPreview": {
+      "colorCoded": "Color Coded",
+      "format": "Format:",
+      "materials": "Materials:",
+      "script": "Script",
+      "serviceOrder": "Service Order",
+      "title": "Print Preview"
+    },
     "schedulingPreference": {
       "household": "Household scheduling",
       "householdApart": "Don't schedule household the same day",

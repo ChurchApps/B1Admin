@@ -1,5 +1,16 @@
-import { type InstructionItem } from "@churchapps/content-providers";
+import { type InstructionItem, type Instructions, type IProvider } from "@churchapps/content-providers";
+import { ApiHelper } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../helpers";
+
+/** Gets instructions from a provider based on its capabilities, proxying through the API when auth is required. */
+export async function getProviderInstructions(provider: IProvider, path: string, ministryId?: string, providerId?: string): Promise<Instructions | null> {
+  const capabilities = provider.capabilities;
+  if (!capabilities.instructions || !provider.getInstructions) return null;
+  if (provider.requiresAuth && ministryId && providerId) {
+    return ApiHelper.post("/providerProxy/getInstructions", { ministryId, providerId, path }, "DoingApi");
+  }
+  return provider.getInstructions(path);
+}
 
 /**
  * Recursively searches an instruction tree for a thumbnail.
