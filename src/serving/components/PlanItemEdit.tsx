@@ -142,6 +142,21 @@ export const PlanItemEdit = (props: Props) => {
     }
   };
 
+  const handleDuplicate = async () => {
+    if (!planItem) return;
+    setIsSaving(true);
+    try {
+      const copy = { ...planItem };
+      delete copy.id;
+      delete copy.children;
+      copy.sort = (copy.sort || 0) + 1;
+      await ApiHelper.post("/planItems", [copy], "DoingApi");
+      props.onDone();
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const selectSong = (song: SongDetailInterface) => {
     const pi = {
       ...planItem,
@@ -308,9 +323,14 @@ export const PlanItemEdit = (props: Props) => {
       </DialogContent>
       <DialogActions>
         {planItem?.id && (
-          <Button onClick={() => setShowDeleteConfirm(true)} sx={{ mr: "auto" }} disabled={isSaving}>
-            {Locale.label("common.delete") || "Delete"}
-          </Button>
+          <>
+            <Button onClick={() => setShowDeleteConfirm(true)} disabled={isSaving}>
+              {Locale.label("common.delete") || "Delete"}
+            </Button>
+            <Button onClick={handleDuplicate} sx={{ mr: "auto" }} disabled={isSaving}>
+              {Locale.label("common.duplicate") || "Duplicate"}
+            </Button>
+          </>
         )}
         <Button onClick={props.onDone} variant="outlined" disabled={isSaving}>{Locale.label("common.cancel") || "Cancel"}</Button>
         <Button onClick={handleSave} variant="contained" disabled={isSaving} startIcon={isSaving ? <CircularProgress size={16} /> : null}>
