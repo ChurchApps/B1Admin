@@ -3305,6 +3305,7 @@
       "slow": "Lento"
     },
     "appearanceEdit": {
+      "appSettings": "Configuración de la aplicación",
       "branding": "Logo y Marca",
       "brandingDescription": "Sube y gestiona los logos y elementos de marca de tu organización",
       "edit": "Editar",
@@ -3320,6 +3321,8 @@
       "noImage": "Sin imagen",
       "ogImage": "Imagen para Redes Sociales",
       "ogImageDesc": "Usado para compartir en redes sociales y SEO. Tamaño ideal: 1200×630px",
+      "pwaShortName": "Nombre corto de la PWA (máx. 12 caracteres)",
+      "pwaShortNameHelper": "Se usa como nombre del icono de la aplicación en la pantalla de inicio del dispositivo.",
       "seoAssets": "Recursos de SEO y Navegador",
       "upload": "Subir"
     },

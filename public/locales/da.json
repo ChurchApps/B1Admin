@@ -3305,6 +3305,7 @@
       "slow": "Langsom"
     },
     "appearanceEdit": {
+      "appSettings": "App-indstillinger",
       "branding": "Logo & branding",
       "brandingDescription": "Upload og administrer din organisations logoer og brandingressourcer",
       "edit": "Rediger",
@@ -3320,6 +3321,8 @@
       "noImage": "Intet billede",
       "ogImage": "Billede til sociale medier",
       "ogImageDesc": "Bruges til social deling og SEO. Ideel størrelse: 1200×630px",
+      "pwaShortName": "PWA kort navn (maks. 12 tegn)",
+      "pwaShortNameHelper": "Bruges som navn på app-ikonet på enhedens startskærm.",
       "seoAssets": "SEO og browserressourcer",
       "upload": "Upload"
     },

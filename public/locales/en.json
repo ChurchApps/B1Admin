@@ -3599,6 +3599,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "App Settings",
       "branding": "Logo & Branding",
       "brandingDescription": "Upload and manage your organization's logos and branding assets",
       "edit": "Edit",
@@ -3614,6 +3615,8 @@
       "noImage": "No image",
       "ogImage": "Social Media Image",
       "ogImageDesc": "Used for social sharing and SEO. Ideal size: 1200×630px",
+      "pwaShortName": "PWA Short Name (Max 12 chars)",
+      "pwaShortNameHelper": "Used for the mobile app icon name on the device home screen.",
       "seoAssets": "SEO & Browser Assets",
       "upload": "Upload"
     },

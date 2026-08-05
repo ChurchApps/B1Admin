@@ -3305,6 +3305,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Pengaturan Aplikasi",
       "branding": "Logo & Branding",
       "brandingDescription": "Unggah dan kelola logo serta aset branding organisasi Anda",
       "edit": "Edit",
@@ -3320,6 +3321,8 @@
       "noImage": "Tidak ada gambar",
       "ogImage": "Gambar Media Sosial",
       "ogImageDesc": "Digunakan untuk berbagi sosial dan SEO. Ukuran ideal: 1200×630px",
+      "pwaShortName": "Nama Singkat PWA (Maks. 12 karakter)",
+      "pwaShortNameHelper": "Digunakan sebagai nama ikon aplikasi di layar utama perangkat.",
       "seoAssets": "Aset SEO & Browser",
       "upload": "Unggah"
     },

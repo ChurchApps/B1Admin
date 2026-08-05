@@ -3305,6 +3305,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Alkalmazásbeállítások",
       "branding": "Logó és arculat",
       "brandingDescription": "Töltse fel és kezelje a szervezet logóit és arculati elemeit",
       "edit": "Szerkesztés",
@@ -3320,6 +3321,8 @@
       "noImage": "Nincs kép",
       "ogImage": "Közösségi média kép",
       "ogImageDesc": "Közösségi megosztáshoz és SEO-hoz használatos. Ideális méret: 1200×630px",
+      "pwaShortName": "PWA rövid név (max. 12 karakter)",
+      "pwaShortNameHelper": "Az alkalmazás ikonjának neveként jelenik meg az eszköz kezdőképernyőjén.",
       "seoAssets": "SEO és böngésző elemek",
       "upload": "Feltöltés"
     },

@@ -3305,6 +3305,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Nastavitve aplikacije",
       "branding": "Logotip in znamčenje",
       "brandingDescription": "Naložite in upravljajte logotipe in znamčna sredstva svoje organizacije",
       "edit": "Uredi",
@@ -3320,6 +3321,8 @@
       "noImage": "Brez slike",
       "ogImage": "Slika za družbena omrežja",
       "ogImageDesc": "Uporablja se za deljenje na družbenih omrežjih in SEO. Idealna velikost: 1200×630px",
+      "pwaShortName": "Kratko ime PWA (največ 12 znakov)",
+      "pwaShortNameHelper": "Uporablja se kot ime ikone aplikacije na začetnem zaslonu naprave.",
       "seoAssets": "SEO in sredstva brskalnika",
       "upload": "Naloži"
     },

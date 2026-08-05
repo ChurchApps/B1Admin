@@ -3305,6 +3305,7 @@
       "slow": "Pomalá"
     },
     "appearanceEdit": {
+      "appSettings": "Nastavení aplikace",
       "branding": "Logo a značka",
       "brandingDescription": "Nahrávejte a spravujte loga a značkové prvky vaší organizace",
       "edit": "Upravit",
@@ -3320,6 +3321,8 @@
       "noImage": "Žádný obrázek",
       "ogImage": "Obrázek pro sociální média",
       "ogImageDesc": "Použito pro sdílení na sociálních sítích a SEO. Ideální velikost: 1200×630px",
+      "pwaShortName": "Krátký název PWA (max. 12 znaků)",
+      "pwaShortNameHelper": "Používá se jako název ikony aplikace na domovské obrazovce zařízení.",
       "seoAssets": "Prostředky SEO a prohlížeče",
       "upload": "Nahrát"
     },

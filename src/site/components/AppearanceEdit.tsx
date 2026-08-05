@@ -134,7 +134,6 @@ export function AppearanceEdit(props: Props) {
     setCurrentSettings(settings);
   };
 
-
   const getLogoEditor = (logoName: string) => {
     if (!editLogo) return null;
     else {
@@ -231,10 +230,8 @@ export function AppearanceEdit(props: Props) {
 
           <Stack spacing={3}>
             <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>App Settings</Typography>
-              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
-                <TextField label="PWA Short Name (Max 12 chars)" value={getSetting("pwaShortName")} onChange={(e) => handleTextChange("pwaShortName", e.target.value)} inputProps={{ maxLength: 12 }} fullWidth helperText="Used for the mobile app icon name on the device home screen." />
-              </Box>
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.appearanceEdit.appSettings")}</Typography>
+              <TextField label={Locale.label("site.appearanceEdit.pwaShortName")} value={getSetting("pwaShortName")} onChange={(e) => handleTextChange("pwaShortName", e.target.value)} inputProps={{ maxLength: 12 }} fullWidth helperText={Locale.label("site.appearanceEdit.pwaShortNameHelper")} />
             </Box>
 
             <Box>

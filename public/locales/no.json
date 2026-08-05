@@ -3305,6 +3305,7 @@
       "slow": "Langsom"
     },
     "appearanceEdit": {
+      "appSettings": "Appinnstillinger",
       "branding": "Logo og merkevarebygging",
       "brandingDescription": "Last opp og administrer organisasjonens logoer og merkevarebyggingsressurser",
       "edit": "Rediger",
@@ -3320,6 +3321,8 @@
       "noImage": "Ingen bilde",
       "ogImage": "Sosialt medier-bilde",
       "ogImageDesc": "Brukes til sosial deling og SEO. Ideell størrelse: 1200×630px",
+      "pwaShortName": "PWA kortnavn (maks. 12 tegn)",
+      "pwaShortNameHelper": "Brukes som navn på appikonet på enhetens startskjerm.",
       "seoAssets": "SEO og nettleserressurser",
       "upload": "Last opp"
     },
