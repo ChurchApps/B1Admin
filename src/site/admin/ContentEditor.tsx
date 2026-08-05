@@ -163,6 +163,8 @@ export function ContentEditor(props: Props) {
     [container?.sections, deviceType]
   );
 
+  const fontUrls = useMemo(() => StyleHelper.getFontUrls(container?.sections || []), [container?.sections]);
+
   const hoverCss = useMemo(() => EDITOR_HOVER_CSS + getSelectionSuppressCss(selectedElementId), [selectedElementId]);
 
   const a11yIssueCount = useMemo(() => checkPageAccessibility(container?.sections).length, [container?.sections]);
@@ -958,6 +960,7 @@ export function ContentEditor(props: Props) {
       <CssBaseline />
       <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "var(--bg-main)" }}>
         <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
+        {fontUrls.map((url) => <link key={url} rel="stylesheet" href={url} precedence="default" />)}
         <style>{css}</style>
         <style>{hoverCss}</style>
 
