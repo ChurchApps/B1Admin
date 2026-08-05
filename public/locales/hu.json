@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Delete",
       "manageRegistrations": "Regisztrációk kezelése",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "editEvent": "Esemény szerkesztése"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",

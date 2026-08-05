@@ -17,7 +17,7 @@ import { ApiHelper, UserHelper, Loading, PageHeader, Locale, Permissions } from 
 import { type CuratedCalendarInterface, type GroupInterface, type CuratedEventInterface } from "@churchapps/helpers";
 import { useConfirmDelete, useRequirePermission, usePendingApprovalsCount } from "../hooks";
 import { CuratedCalendar } from "./components/CuratedCalendar";
-import { NewEventModal } from "./components/NewEventModal";
+import { EventModal } from "./components/EventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CountChip, EmptyState } from "../components/ui";
@@ -203,7 +203,7 @@ export const CalendarPage = () => {
         </Grid>
       </Box>
       {showNewEvent && (
-        <NewEventModal
+        <EventModal
           churchId={UserHelper.currentUserChurch?.church?.id || ""}
           curatedCalendarId={curatedCalendarId}
           onDone={(saved) => {

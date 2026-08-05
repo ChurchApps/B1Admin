@@ -171,7 +171,8 @@
       "confirmDelete": "Sigurado ka bang nais mong tanggalin ang kaganapang ito?",
       "delete": "Tanggalin",
       "manageRegistrations": "Pamahalaan ang Mga Rehistrasyon",
-      "noGroups": "Walang natagpuang grupo."
+      "noGroups": "Walang natagpuang grupo.",
+      "editEvent": "I-edit ang Kaganapan"
     },
     "calendarList": {
       "aboutParagraph1": "Pinapayagan ka ng mga kalendaryo na ayusin at ipakita ang mga kaganapan para sa iyong simbahan.",

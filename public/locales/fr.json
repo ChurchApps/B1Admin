@@ -171,7 +171,8 @@
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet événement ?",
       "delete": "Supprimer",
       "manageRegistrations": "Gérer les inscriptions",
-      "noGroups": "Aucun groupe trouvé."
+      "noGroups": "Aucun groupe trouvé.",
+      "editEvent": "Modifier l'événement"
     },
     "calendarList": {
       "aboutParagraph1": "Les calendriers vous permettent d'organiser et d'afficher des événements pour votre église.",

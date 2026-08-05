@@ -171,7 +171,8 @@
       "confirmDelete": "您确定要删除此活动吗？",
       "delete": "删除",
       "manageRegistrations": "管理报名",
-      "noGroups": "未找到组。"
+      "noGroups": "未找到组。",
+      "editEvent": "编辑活动"
     },
     "calendarList": {
       "aboutParagraph1": "日历允许您组织和显示教堂的活动。",

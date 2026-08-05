@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Poista",
       "manageRegistrations": "Hallinnoi ilmoittautumisia",
-      "noGroups": "Ryhmiä ei löytynyt."
+      "noGroups": "Ryhmiä ei löytynyt.",
+      "editEvent": "Muokkaa tapahtumaa"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",

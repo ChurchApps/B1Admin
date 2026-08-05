@@ -171,7 +171,8 @@
       "confirmDelete": "Opravdu chcete smazat tuto událost?",
       "delete": "Smazat",
       "manageRegistrations": "Spravovat registrace",
-      "noGroups": "Nebyly nalezeny žádné skupiny."
+      "noGroups": "Nebyly nalezeny žádné skupiny.",
+      "editEvent": "Upravit událost"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendáře vám umožňují organizovat a zobrazovat události pro váš sbor.",

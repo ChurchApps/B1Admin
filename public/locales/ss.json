@@ -198,7 +198,8 @@
       "confirmDeleteSeries": "Lona ngumcimbi lophindzaphindzako. Kuwususa kutakususa lonkhe luhlu kanye nato tonkhe tikhatsi lawenteka ngato. Ingabe uciniseka?",
       "delete": "Susa",
       "manageRegistrations": "Phatsa Kubhaliswa",
-      "noGroups": "Akukho emacembu latfoliwe."
+      "noGroups": "Akukho emacembu latfoliwe.",
+      "editEvent": "Hlela umcimbi"
     },
     "calendarList": {
       "aboutParagraph1": "Emakhalenda akuvumela kutsi uhlele futsi ubonise imicimbi yebandla lakho.",

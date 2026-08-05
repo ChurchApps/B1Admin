@@ -171,7 +171,8 @@
       "confirmDelete": "Ar tikrai norite panaikinti šį renginį?",
       "delete": "Panaikinti",
       "manageRegistrations": "Tvarkyti registracijas",
-      "noGroups": "Grupių nerasta."
+      "noGroups": "Grupių nerasta.",
+      "editEvent": "Redaguoti įvykį"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",

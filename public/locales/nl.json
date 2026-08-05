@@ -171,7 +171,8 @@
       "confirmDelete": "Weet u zeker dat u dit evenement wilt verwijderen?",
       "delete": "Verwijderen",
       "manageRegistrations": "Registraties beheren",
-      "noGroups": "Geen groepen gevonden."
+      "noGroups": "Geen groepen gevonden.",
+      "editEvent": "Evenement bewerken"
     },
     "calendarList": {
       "aboutParagraph1": "Met kalenders kunt u evenementen voor uw kerk organiseren en weergeven.",

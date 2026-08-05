@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "削除",
       "manageRegistrations": "登録を管理",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "editEvent": "イベントを編集"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",

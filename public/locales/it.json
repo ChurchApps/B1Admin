@@ -171,7 +171,8 @@
       "confirmDelete": "È sicuro di voler eliminare questo evento?",
       "delete": "Elimina",
       "manageRegistrations": "Gestisci registrazioni",
-      "noGroups": "Nessun gruppo trovato."
+      "noGroups": "Nessun gruppo trovato.",
+      "editEvent": "Modifica evento"
     },
     "calendarList": {
       "aboutParagraph1": "I calendari ti consentono di organizzare e visualizzare eventi per la tua chiesa.",

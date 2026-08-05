@@ -171,7 +171,8 @@
       "confirmDelete": "Ali ste prepričani, da želite izbrisati ta dogodek?",
       "delete": "Izbriši",
       "manageRegistrations": "Upravljaj registracije",
-      "noGroups": "Nobene skupina niso bile najdene."
+      "noGroups": "Nobene skupina niso bile najdene.",
+      "editEvent": "Uredi dogodek"
     },
     "calendarList": {
       "aboutParagraph1": "Koledarji vam omogočajo, da organizirate in prikazujete dogodke vaše cerkve.",

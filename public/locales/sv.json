@@ -171,7 +171,8 @@
       "confirmDelete": "Är du säker på att du vill ta bort denna händelse?",
       "delete": "Ta bort",
       "manageRegistrations": "Hantera anmälningar",
-      "noGroups": "Inga grupper hittades."
+      "noGroups": "Inga grupper hittades.",
+      "editEvent": "Redigera evenemang"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendrar låter dig organisera och visa evenemang för din kyrka.",

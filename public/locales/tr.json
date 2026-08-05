@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Sil",
       "manageRegistrations": "Kayıtları Yönet",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "editEvent": "Etkinliği Düzenle"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",

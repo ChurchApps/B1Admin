@@ -197,6 +197,7 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
       "delete": "Delete",
+      "editEvent": "Edit Event",
       "manageRegistrations": "Manage Registrations",
       "noGroups": "No groups found."
     },

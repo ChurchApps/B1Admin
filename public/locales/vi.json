@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to Xóa this event?",
       "delete": "Xóa",
       "manageRegistrations": "Quản lý đăng ký",
-      "noGroups": "Không Các nhóm found."
+      "noGroups": "Không Các nhóm found.",
+      "editEvent": "Chỉnh sửa sự kiện"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",

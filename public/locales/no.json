@@ -171,7 +171,8 @@
       "confirmDelete": "Er du sikker på at du vil slette denne hendelsen?",
       "delete": "Slett",
       "manageRegistrations": "Administrer påmeldinger",
-      "noGroups": "Ingen grupper funnet."
+      "noGroups": "Ingen grupper funnet.",
+      "editEvent": "Rediger hendelse"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendere lar deg organisere og vise arrangementer for kirken din.",

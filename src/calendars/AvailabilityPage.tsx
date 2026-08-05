@@ -7,11 +7,11 @@ import { Permissions } from "@churchapps/helpers";
 import { Box, MenuItem, Stack, TextField } from "@mui/material";
 import { Add as AddIcon, EventAvailable as AvailabilityIcon } from "@mui/icons-material";
 import { useRequirePermission } from "../hooks";
-import { NewEventModal } from "./components/NewEventModal";
+import { EventModal } from "./components/EventModal";
 import { HeaderPrimaryButton } from "../components/ui/headerButtons";
 import { type CalendarBlockoutInterface, type EventBookingInterface, type ResourceInterface, type RoomInterface } from "./interfaces";
 
-type CalEvent = { title: string; start: Date; end: Date; kind: "approved" | "pending" | "blockout" };
+type CalEvent = { title: string; start: Date; end: Date; kind: "approved" | "pending" | "blockout"; eventId?: string; eventTitle?: string; targets?: string[]; };
 
 export const AvailabilityPage = () => {
   const [bookings, setBookings] = useState<EventBookingInterface[]>([]);
@@ -20,6 +20,7 @@ export const AvailabilityPage = () => {
   const [blockouts, setBlockouts] = useState<CalendarBlockoutInterface[]>([]);
   const [filter, setFilter] = useState("");
   const [showBook, setShowBook] = useState(false);
+  const [bookEventId, setBookEventId] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
 
@@ -62,12 +63,17 @@ export const AvailabilityPage = () => {
     const rangeEnd = new Date();
     rangeEnd.setFullYear(rangeEnd.getFullYear() + 1);
 
+    const resultItems: (CalEvent & { eventTitle?: string; target?: string })[] = [];
     bookings.forEach((b) => {
       const target = b.roomName || b.resourceName || "";
-      const title = `${b.eventTitle || ""}${target ? " — " + target : ""}`;
       const kind = b.status === "approved" ? "approved" : "pending";
+      
+      const pushItem = (start: Date, end: Date) => {
+        resultItems.push({ title: "", eventTitle: b.eventTitle || "", target, start, end, kind, eventId: b.eventId });
+      };
+
       if (b.startTime && b.endTime) {
-        result.push({ title, start: new Date(b.startTime as any), end: new Date(b.endTime as any), kind });
+        pushItem(new Date(b.startTime as any), new Date(b.endTime as any));
         return;
       }
       const setupMs = (b.setupMinutes || 0) * 60000;
@@ -78,11 +84,37 @@ export const AvailabilityPage = () => {
       if (b.eventRecurrenceRule) {
         const dates = EventHelper.getRange({ start, end, recurrenceRule: b.eventRecurrenceRule } as any, rangeStart, rangeEnd);
         const diff = end.getTime() - start.getTime();
-        dates.forEach((d: any) => result.push({ title, ...pad(d, new Date(d.getTime() + diff)), kind }));
+        dates.forEach((d: any) => {
+          const padded = pad(d, new Date(d.getTime() + diff));
+          pushItem(padded.start, padded.end);
+        });
       } else {
-        result.push({ title, ...pad(start, end), kind });
+        const padded = pad(start, end);
+        pushItem(padded.start, padded.end);
       }
     });
+
+    const combined: CalEvent[] = [];
+    resultItems.forEach((r) => {
+      const existing = combined.find((c) => c.eventId === r.eventId && c.start.getTime() === r.start.getTime() && c.end.getTime() === r.end.getTime());
+      if (existing) {
+        if (r.target && !existing.targets?.includes(r.target)) {
+          existing.targets?.push(r.target);
+          existing.title = `${r.eventTitle}${existing.targets?.length ? " — " + existing.targets.join(" — ") : ""}`;
+        }
+      } else {
+        combined.push({
+          title: `${r.eventTitle}${r.target ? " — " + r.target : ""}`,
+          start: r.start,
+          end: r.end,
+          kind: r.kind,
+          eventId: r.eventId,
+          eventTitle: r.eventTitle,
+          targets: r.target ? [r.target] : []
+        });
+      }
+    });
+    result.push(...combined);
 
     const selRoom = filter.startsWith("room:") ? filter.slice(5) : "";
     const selResource = filter.startsWith("resource:") ? filter.slice(9) : "";
@@ -116,38 +148,47 @@ export const AvailabilityPage = () => {
       <PageHeader icon={<AvailabilityIcon />} title={Locale.label("calendars.availability.title")} subtitle={Locale.label("calendars.availability.subtitle")}>
         <HeaderPrimaryButton
           startIcon={<AddIcon />}
-          onClick={() => setShowBook(true)}
+          onClick={() => { setBookEventId(undefined); setShowBook(true); }}
           data-testid="availability-book-button"
         >
           {Locale.label("calendars.availability.book")}
         </HeaderPrimaryButton>
       </PageHeader>
       <Box sx={{ p: 3 }}>
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-          <TextField select size="small" label={Locale.label("calendars.availability.filter")} value={filter} onChange={(e) => setFilter(e.target.value)} sx={{ minWidth: 240 }} data-testid="availability-filter" SelectProps={{ displayEmpty: true }}>
-            <MenuItem value="">{Locale.label("calendars.availability.allRoomsResources")}</MenuItem>
-            {rooms.map((r) => <MenuItem key={r.id} value={"room:" + r.id}>{r.name}</MenuItem>)}
-            {resources.map((r) => <MenuItem key={r.id} value={"resource:" + r.id}>{r.name}</MenuItem>)}
-          </TextField>
-        </Stack>
-        {loading ? <Loading /> : (
-          <Calendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 600 }}
-            eventPropGetter={eventStyle as any}
-            data-testid="availability-calendar"
-          />
-        )}
+        <Box sx={{ bgcolor: "background.paper", p: 2, borderRadius: 2, border: "1px solid", borderColor: "grey.200" }}>
+          <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
+            <TextField select size="small" label={Locale.label("calendars.availability.filter")} value={filter} onChange={(e) => setFilter(e.target.value)} sx={{ minWidth: 240 }} data-testid="availability-filter" SelectProps={{ displayEmpty: true }}>
+              <MenuItem value="">{Locale.label("calendars.availability.allRoomsResources")}</MenuItem>
+              {rooms.map((r) => <MenuItem key={r.id} value={"room:" + r.id}>{r.name}</MenuItem>)}
+              {resources.map((r) => <MenuItem key={r.id} value={"resource:" + r.id}>{r.name}</MenuItem>)}
+            </TextField>
+          </Stack>
+          {loading ? <Loading /> : (
+            <Calendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: 600 }}
+              eventPropGetter={eventStyle as any}
+              onSelectEvent={(e) => {
+                if (e.eventId) {
+                  setBookEventId(e.eventId);
+                  setShowBook(true);
+                }
+              }}
+              data-testid="availability-calendar"
+            />
+          )}
+        </Box>
       </Box>
       {showBook && (
-        <NewEventModal
+        <EventModal
           churchId={churchId}
+          eventId={bookEventId}
           initialRoomId={bookRoomId}
           initialResourceId={bookResourceId}
-          onDone={(saved) => { setShowBook(false); if (saved) loadBookings(); }}
+          onDone={(saved) => { setShowBook(false); setBookEventId(undefined); if (saved) loadBookings(); }}
         />
       )}
     </>

@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Hapus",
       "manageRegistrations": "Kelola Pendaftaran",
-      "noGroups": "Tidak ada grup yang ditemukan."
+      "noGroups": "Tidak ada grup yang ditemukan.",
+      "editEvent": "Edit Acara"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
