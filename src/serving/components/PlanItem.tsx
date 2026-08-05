@@ -8,7 +8,7 @@ import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/help
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
-import { getNextChildSort, estimateSeconds, type ProviderMediaInfo } from "./planItemUtils";
+import { getNextChildSort, estimateSeconds, duplicatePlanItem, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
@@ -113,13 +113,16 @@ export const PlanItem = React.memo((props: Props) => {
     });
   };
 
+  const duplicating = React.useRef(false);
   const handleDuplicate = async () => {
-    const copy = { ...props.planItem };
-    delete copy.id;
-    delete copy.children;
-    copy.sort = (copy.sort || 0) + 1;
-    await ApiHelper.post("/planItems", [copy], "DoingApi");
-    if (props.onChange) props.onChange();
+    if (duplicating.current) return;
+    duplicating.current = true;
+    try {
+      await duplicatePlanItem(props.planItem);
+      if (props.onChange) props.onChange();
+    } finally {
+      duplicating.current = false;
+    }
   };
 
   const isChildExcluded = (childId: string): boolean => {
@@ -172,7 +175,6 @@ export const PlanItem = React.memo((props: Props) => {
       readOnly={props.readOnly}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
-      onDuplicateClick={handleDuplicate}
       wrapRow={props.readOnly ? undefined : (row) => (
         <RowDropZone
           accept="planItem"

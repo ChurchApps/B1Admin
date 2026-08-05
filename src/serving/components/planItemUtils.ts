@@ -32,6 +32,16 @@ export function getNextChildSort(children: PlanItemInterface[] | undefined | nul
   return (children?.length ?? 0) + 1;
 }
 
+/** Copies a plan item directly below the original. Uses the fractional-sort convention
+ * (same as drag-and-drop) via /planItems/sort, which renumbers siblings server-side. */
+export async function duplicatePlanItem(planItem: PlanItemInterface): Promise<void> {
+  const copy = { ...planItem };
+  delete copy.id;
+  delete copy.children;
+  copy.sort = (copy.sort || 0) + 0.5;
+  await ApiHelper.post("/planItems/sort", copy, "DoingApi");
+}
+
 /** Fresh media info for a provider item, fetched per page load (provider links can expire). */
 export interface ProviderMediaInfo {
   url: string;
