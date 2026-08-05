@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --c1: #1565C0;
   --c1l1: #3578CC;
   --c1l2: #568BDA;
@@ -777,4 +777,206 @@ label .description {
 #videoContainer.embedded #noVideoContent {
   position: absolute;
   align-self: auto;
+}
+
+/* Lesson Print Styles */
+#olfPrint {
+  background-color: #fff;
+  color: #000;
+}
+.olfSection H2 {
+  text-align: center;
+  color: #fff;
+  padding: 5px;
+}
+.olfSection:nth-child(5n-4) H2 {
+  background-color: #f7c411;
+}
+.olfSection:nth-child(5n-3) H2 {
+  background-color: #f17094;
+}
+.olfSection:nth-child(5n-2) H2 {
+  background-color: #f68b1f;
+}
+.olfSection:nth-child(5n-1) H2 {
+  background-color: #538ec5;
+}
+.olfSection:nth-child(5n) H2 {
+  background-color: #92c94f;
+}
+.olfSection:nth-child(5n-4) .olfActionBlock {
+  border-color: #f7c411;
+}
+.olfSection:nth-child(5n-3) .olfActionBlock {
+  border-color: #f17094;
+}
+.olfSection:nth-child(5n-2) .olfActionBlock {
+  border-color: #f68b1f;
+}
+.olfSection:nth-child(5n-1) .olfActionBlock {
+  border-color: #538ec5;
+}
+.olfSection:nth-child(5n) .olfActionBlock {
+  border-color: #92c94f;
+}
+.olfActionBlock {
+  border-width: 3px;
+  border-radius: 10px;
+  padding: 15px;
+  border-style: solid;
+  margin-bottom: 10px;
+}
+.olfActionBlock td:first-child {
+  width: 100px;
+  font-weight: bold;
+  text-transform: uppercase;
+  vertical-align: top;
+}
+.olfActionBlock ul {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 0px;
+}
+.olfHeader {
+  border-bottom: 5px solid #000;
+  padding-bottom: 10px;
+}
+.olfHeader H1 {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+.olfHeader H2 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.olfScriptHeader {
+  text-align: center;
+  width: 80%;
+  padding-left: 10%;
+  page-break-after: always;
+  margin-bottom: 40px;
+}
+.olfScriptSection H2 {
+  text-transform: uppercase;
+  color: #000;
+  text-decoration: underline;
+}
+.olfScriptSection .olfAction {
+  list-style: none;
+}
+.olfScriptSection .olfAction.play span {
+  background-color: #000;
+  color: #fff;
+  text-transform: uppercase;
+  list-style: none;
+}
+.olfScriptSection .olfAction.note {
+  background-image: none;
+  padding-left: 0px;
+  font-style: italic;
+}
+.olfScriptSection .olfAction.do {
+  font-weight: bold;
+}
+.olfScriptSection .olfAction.say {
+  width: 80%;
+  margin-left: 10%;
+}
+.olfScriptSection .olfAction.say p {
+  float: none;
+  background-color: #fff;
+  width: auto;
+  border-radius: 0px;
+  padding: 0px;
+}
+.olfScriptSection .olfAction.say p strong:first-child {
+  display: block;
+  text-transform: uppercase;
+  text-align: center;
+}
+.sectionCard {
+  margin-bottom: 20px;
+}
+.sectionCard .MuiCardHeader-root {
+  background-color: #eff8fd;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.sectionCard .MuiCardHeader-title {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 20px;
+  color: #1d6fb8;
+}
+.sectionCard .MuiCardHeader-subheader {
+  color: #333;
+  display: inline-block;
+  padding-left: 20px;
+  font-size: 13px;
+}
+.playAction {
+  clear: both;
+  height: 72px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  vertical-align: middle;
+  background-color: #fff;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.playAction img {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  float: left;
+}
+.playAction .text {
+  display: inline-block;
+  padding-top: 20px;
+  padding-left: 20px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.playAction .duration {
+  float: right;
+  padding-right: 20px;
+  padding-top: 23px;
+  font-size: 14px;
+}
+.part .note {
+  background-image: url("/images/lesson/note.png");
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  min-height: 50px;
+  padding-left: 85px;
+  padding-top: 4px;
+}
+.part .note ul {
+  padding-left: 20px;
+}
+.say {
+  clear: both;
+  margin-bottom: 20px;
+}
+.say::after {
+  clear: both;
+}
+.say p {
+  background-color: #ebf7ff;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  width: 55%;
+  clear: both;
+  border-radius: 10px;
+  padding: 5px 20px 5px 20px;
+}
+.say p:nth-of-type(even) {
+  background-color: #edfeff;
+  float: right;
+  margin-bottom: 10px;
+}
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }

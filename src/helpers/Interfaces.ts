@@ -456,3 +456,52 @@ export const allStyleOptions: StyleOption[] = [
   { label: "Text Shadow", key: "text-shadow", type: "text-shadow", default: "1px 1px 2px black;" },
   { label: "Width", key: "width", type: "px", default: 500 }
 ];
+
+export interface FeedActionInterface {
+  actionType?: string;
+  content?: string;
+  role?: string;
+  files?: FeedFileInterface[];
+  id?: string;
+}
+
+export interface FeedDownloadInterface {
+  name?: string;
+  files?: FeedFileInterface[];
+}
+
+export interface FeedFileInterface {
+  name?: string;
+  url?: string;
+  streamUrl?: string;
+  bytes?: number;
+  fileType?: string;
+  seconds?: number;
+  thumbnail?: string;
+  loop?: boolean;
+  id?: string;
+  expires?: Date;
+}
+
+export interface FeedSectionInterface {
+  name?: string;
+  actions?: FeedActionInterface[];
+  materials?: string;
+}
+
+export interface FeedVenueInterface {
+  id?: string;
+  name?: string;
+  lessonId: string;
+  lessonName?: string;
+  lessonImage?: string;
+  lessonDescription?: string;
+  studyName?: string;
+  studySlug?: string;
+  programName?: string;
+  programSlug?: string;
+  programAbout?: string;
+  downloads?: FeedDownloadInterface[];
+  sections?: FeedSectionInterface[];
+}
+
