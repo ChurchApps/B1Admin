@@ -113,6 +113,15 @@ export const PlanItem = React.memo((props: Props) => {
     });
   };
 
+  const handleDuplicate = async () => {
+    const copy = { ...props.planItem };
+    delete copy.id;
+    delete copy.children;
+    copy.sort = (copy.sort || 0) + 1;
+    await ApiHelper.post("/planItems", [copy], "DoingApi");
+    if (props.onChange) props.onChange();
+  };
+
   const isChildExcluded = (childId: string): boolean => {
     if (!props.selectedServiceTimeId) return false;
     return (props.exclusions || []).some((ex) => ex.planItemId === childId && ex.timeId === props.selectedServiceTimeId && ex.excluded);
@@ -163,6 +172,7 @@ export const PlanItem = React.memo((props: Props) => {
       readOnly={props.readOnly}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
+      onDuplicateClick={handleDuplicate}
       wrapRow={props.readOnly ? undefined : (row) => (
         <RowDropZone
           accept="planItem"
@@ -187,6 +197,7 @@ export const PlanItem = React.memo((props: Props) => {
       readOnly={props.readOnly}
       onLabelClick={onLabelClick}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
+      onDuplicateClick={handleDuplicate}
       mediaLookup={props.mediaLookup}
     />
   );
