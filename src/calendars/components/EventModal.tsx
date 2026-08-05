@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ApiHelper, Locale } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale } from "@churchapps/apphelper";
 import { RRuleEditor } from "@churchapps/apphelper/website";
 import { type EventInterface, type GroupInterface } from "@churchapps/helpers";
 import { Alert, Button, Checkbox, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, ListItemText, MenuItem, Stack, Switch, TextField } from "@mui/material";
@@ -87,29 +87,24 @@ export function EventModal(props: Props) {
             setWindowEnd(toInputValue(new Date(first.endTime)));
           }
         }
-        setLoading(false);
-      });
+      }).finally(() => setLoading(false));
     }
   }, [props.eventId]);
 
   useEffect(() => {
-    ApiHelper.get("/groups/tag/standard", "MembershipApi").then((data: GroupInterface[]) => {
-      setGroups(data);
-      if (props.eventId) {
-        // Ensure the event's group is fetched if it's not a standard group
-        ApiHelper.get("/events/" + props.eventId, "ContentApi").then((ev: EventInterface) => {
-          if (ev.groupId && !data.some(g => g.id === ev.groupId?.toString())) {
-            ApiHelper.get("/groups/" + ev.groupId, "MembershipApi").then((g: GroupInterface) => {
-              if (g.id) setGroups(prev => [...prev, g]);
-            });
-          }
-        });
-      }
-    });
+    ApiHelper.get("/groups/tag/standard", "MembershipApi").then(setGroups);
     ApiHelper.get("/eventTemplates", "ContentApi").then(setTemplates);
     ApiHelper.get("/rooms", "ContentApi").then(setRooms);
     ApiHelper.get("/resources", "ContentApi").then(setResources);
   }, []);
+
+  // Ensure the event's group appears in the list even when it's not a standard group
+  useEffect(() => {
+    if (!groupId || groups.some(g => g.id === groupId)) return;
+    ApiHelper.get("/groups/" + groupId, "MembershipApi").then((g: GroupInterface) => {
+      if (g.id) setGroups(prev => prev.some(p => p.id === g.id) ? prev : [...prev, g]);
+    });
+  }, [groups, groupId]);
 
   const handleToggleRecurring = (checked: boolean) => setRRule(checked ? "FREQ=DAILY;INTERVAL=1" : "");
 
@@ -120,6 +115,7 @@ export function EventModal(props: Props) {
     }
     const timeout = setTimeout(() => {
       ApiHelper.post("/events/conflicts", {
+        eventId: props.eventId,
         start: new Date(start),
         end: new Date(end),
         recurrenceRule: rRule || undefined,
@@ -183,14 +179,12 @@ export function EventModal(props: Props) {
       });
       const newResourceBookings = resourceIds.map((resourceId) => {
         const existing = existingBookings.find(b => b.resourceId === resourceId) || {};
-        return { ...existing, eventId, resourceId, quantity: 1, ...window };
+        return { ...existing, eventId, resourceId, quantity: existing.quantity ?? 1, ...window };
       });
 
       const bookings = [...newRoomBookings, ...newResourceBookings];
 
-      const toDelete = existingBookings.filter(b =>
-        !roomIds.includes(b.roomId) && !resourceIds.includes(b.resourceId)
-      );
+      const toDelete = existingBookings.filter(b => !roomIds.includes(b.roomId) && !resourceIds.includes(b.resourceId));
 
       for (const b of toDelete) {
         if (b.id) await ApiHelper.delete("/eventBookings/" + b.id, "ContentApi");
@@ -211,9 +205,9 @@ export function EventModal(props: Props) {
     <>
       {ConfirmDialogElement}
       <Dialog open={true} onClose={() => props.onDone(false)} fullWidth scroll="body">
-        <DialogTitle>{props.eventId ? Locale.label("calendars.calendarEvent.editEvent") || "Edit Event" : Locale.label("calendars.newEvent.title")}</DialogTitle>
+        <DialogTitle>{props.eventId ? Locale.label("calendars.calendarEvent.editEvent", "Edit Event") : Locale.label("calendars.newEvent.title")}</DialogTitle>
         <DialogContent>
-          <Stack spacing={2} sx={{ mt: 1 }}>
+          {loading ? <Loading /> : <Stack spacing={2} sx={{ mt: 1 }}>
             <TextField fullWidth select label={Locale.label("calendars.newEvent.group")} value={groupId} onChange={(e) => setGroupId(e.target.value)} data-testid="new-event-group-select">
               {groups.map((g) => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
             </TextField>
@@ -303,14 +297,14 @@ export function EventModal(props: Props) {
                 </Stack>
               </Alert>
             )}
-            <EventReminderEdit ref={reminderRef} hasRegistration={false} />
-          </Stack>
+            <EventReminderEdit ref={reminderRef} eventId={props.eventId} hasRegistration={false} />
+          </Stack>}
         </DialogContent>
         <DialogActions>
           <Button variant="text" onClick={() => props.onDone(false)} data-testid="new-event-cancel-button">{Locale.label("common.cancel")}</Button>
           {props.eventId && (
             <Button variant="contained" color="error" onClick={async () => {
-              if (await confirm(Locale.label("calendars.calendarEvent.confirmDelete") || "Are you sure?")) {
+              if (await confirm(rRule ? Locale.label("calendars.calendarEvent.confirmDeleteSeries", "This is a recurring event. Deleting it will remove the entire series. Are you sure?") : Locale.label("calendars.calendarEvent.confirmDelete", "Are you sure?"))) {
                 await ApiHelper.delete("/events/" + props.eventId, "ContentApi");
                 props.onDone(true);
               }

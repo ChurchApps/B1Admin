@@ -26,6 +26,7 @@ type SecondarySection =
   | "appearance"
   | "files"
   | "roomsResources"
+  | "availability"
   | "approvals"
   | "registrations"
   | "batches"
@@ -66,6 +67,7 @@ const SECONDARY_ROUTES: Record<
   appearance: { parent: "website", label: "Appearance", url: /\/site\/appearance/ },
   files: { parent: "website", label: "Files", url: /\/site\/files/ },
   roomsResources: { parent: "calendars", label: "Rooms & Resources", url: /\/calendars\/rooms/ },
+  availability: { parent: "calendars", label: "Availability", url: /\/calendars\/availability/ },
   approvals: { parent: "calendars", label: "Approvals", url: /\/calendars\/approvals/ },
   registrations: { parent: "calendars", label: "Registrations", url: /\/registrations/ },
   batches: { parent: "donations", label: "Batches", url: /\/donations\/batches/ },
@@ -159,6 +161,10 @@ export async function navigateToRoomsResources(page: Page) {
 
 export async function navigateToApprovals(page: Page) {
   await navigateTo(page, "approvals");
+}
+
+export async function navigateToAvailability(page: Page) {
+  await navigateTo(page, "availability");
 }
 
 export async function navigateToRegistrations(page: Page) {

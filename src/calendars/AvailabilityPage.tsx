@@ -67,7 +67,6 @@ export const AvailabilityPage = () => {
     bookings.forEach((b) => {
       const target = b.roomName || b.resourceName || "";
       const kind = b.status === "approved" ? "approved" : "pending";
-      
       const pushItem = (start: Date, end: Date) => {
         resultItems.push({ title: "", eventTitle: b.eventTitle || "", target, start, end, kind, eventId: b.eventId });
       };
@@ -98,6 +97,7 @@ export const AvailabilityPage = () => {
     resultItems.forEach((r) => {
       const existing = combined.find((c) => c.eventId === r.eventId && c.start.getTime() === r.start.getTime() && c.end.getTime() === r.end.getTime());
       if (existing) {
+        if (r.kind === "pending") existing.kind = "pending";
         if (r.target && !existing.targets?.includes(r.target)) {
           existing.targets?.push(r.target);
           existing.title = `${r.eventTitle}${existing.targets?.length ? " — " + existing.targets.join(" — ") : ""}`;

@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { loggedInTest as test, expect } from "./helpers/test-fixtures";
-import { navigateToRoomsResources, navigateToApprovals, navigateToCalendars } from "./helpers/navigation";
+import { navigateToRoomsResources, navigateToApprovals, navigateToAvailability, navigateToCalendars } from "./helpers/navigation";
 import { login } from "./helpers/auth";
 import { STORAGE_STATE_PATH } from "./global-setup";
 import { confirmDelete } from "./helpers/fixtures";
@@ -62,6 +62,19 @@ async function selectOption(page: Page, selectTestId: string, optionName: string
 
 async function openTab(page: Page, tab: "rooms" | "resources" | "blockouts" | "templates") {
   await page.locator(`[data-testid="tab-${tab}"]`).click();
+}
+
+// The availability calendar opens on the current month; a block ~2 weeks out may be in the next one.
+async function findAvailabilityBlock(page: Page, name: string) {
+  await page.locator(".rbc-calendar").waitFor({ state: "visible", timeout: 15000 });
+  const block = page.locator(".rbc-event").filter({ hasText: name }).first();
+  try {
+    await block.waitFor({ state: "visible", timeout: 5000 });
+  } catch {
+    await page.locator(".rbc-toolbar").getByRole("button", { name: "Next" }).click();
+    await block.waitFor({ state: "visible", timeout: 10000 });
+  }
+  return block;
 }
 
 // Idempotent: serial-chain retries re-run cleanup, so already-deleted rows are skipped.
@@ -227,6 +240,39 @@ test.describe.serial("Rooms, resources & approvals", () => {
     const pendingRow = page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: "Zacchaeus Event C" });
     await pendingRow.locator('[data-testid^="approve-booking-"]').click();
     await expect(page.locator('[data-testid="pending-bookings-table"] tbody tr').filter({ hasText: "Zacchaeus Event C" })).toHaveCount(0, { timeout: 15000 });
+  });
+
+  test("clicking an availability block opens the edit modal pre-populated", async () => {
+    await navigateToAvailability(page);
+    const block = await findAvailabilityBlock(page, "Zacchaeus Event A");
+    await block.click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toHaveValue("Zacchaeus Event A", { timeout: 15000 });
+    await expect(page.locator('[data-testid="event-delete-button"]')).toBeVisible();
+    await expect(page.locator('[data-testid="new-event-rooms-select"]')).toContainText(HALL);
+    await page.locator('[data-testid="new-event-cancel-button"]').click();
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 10000 });
+  });
+
+  test("edits the event title from the availability calendar", async () => {
+    const block = await findAvailabilityBlock(page, "Zacchaeus Event A");
+    await block.click();
+    const title = page.locator('[data-testid="new-event-title-input"] input');
+    await expect(title).toHaveValue("Zacchaeus Event A", { timeout: 15000 });
+    await title.fill("Zacchaeus Event A Edited");
+    await page.locator('[data-testid="new-event-save-button"]').click();
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+    await expect(await findAvailabilityBlock(page, "Zacchaeus Event A Edited")).toBeVisible();
+  });
+
+  test("deletes the event from the availability calendar", async () => {
+    const block = await findAvailabilityBlock(page, "Zacchaeus Event A Edited");
+    await block.click();
+    await expect(page.locator('[data-testid="new-event-title-input"] input')).toHaveValue("Zacchaeus Event A Edited", { timeout: 15000 });
+    await page.locator('[data-testid="event-delete-button"]').click();
+    await confirmDelete(page);
+    await expect(page.locator('[data-testid="new-event-save-button"]')).toHaveCount(0, { timeout: 15000 });
+    await page.locator(".rbc-calendar").waitFor({ state: "visible", timeout: 15000 });
+    await expect(page.locator(".rbc-event").filter({ hasText: "Zacchaeus Event A" })).toHaveCount(0, { timeout: 15000 });
   });
 
   test("imports events from a pasted .ics calendar", async () => {
