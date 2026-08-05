@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Resizer from "react-image-file-resizer";
-import { Box, Typography, Stack, Button, Card, CardContent, alpha } from "@mui/material";
+import { Box, Typography, Stack, Button, Card, CardContent, alpha, TextField } from "@mui/material";
 import { Image as ImageIcon, CloudUpload as CloudUploadIcon, Edit as EditIcon } from "@mui/icons-material";
 import { ArrayHelper, ApiHelper, ImageEditor, Locale } from "@churchapps/apphelper";
 import { CardWithHeader, LoadingButton } from "../../components/ui";
@@ -122,6 +122,19 @@ export function AppearanceEdit(props: Props) {
     }
   };
 
+  const getSetting = (keyName: string) => {
+    return ArrayHelper.getOne(currentSettings, "keyName", keyName)?.value || "";
+  };
+
+  const handleTextChange = (keyName: string, value: string) => {
+    const settings = [...currentSettings];
+    const keySetting = settings.filter((s: any) => s.keyName === keyName);
+    if (keySetting.length === 0) settings.push({ keyName, value, public: 1 });
+    else keySetting[0].value = value;
+    setCurrentSettings(settings);
+  };
+
+
   const getLogoEditor = (logoName: string) => {
     if (!editLogo) return null;
     else {
@@ -217,6 +230,13 @@ export function AppearanceEdit(props: Props) {
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>{Locale.label("site.appearanceEdit.logoUploadDescription")}</Typography>
 
           <Stack spacing={3}>
+            <Box>
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>App Settings</Typography>
+              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+                <TextField label="PWA Short Name (Max 12 chars)" value={getSetting("pwaShortName")} onChange={(e) => handleTextChange("pwaShortName", e.target.value)} inputProps={{ maxLength: 12 }} fullWidth helperText="Used for the mobile app icon name on the device home screen." />
+              </Box>
+            </Box>
+
             <Box>
               <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "primary.main" }}>{Locale.label("site.appearanceEdit.mainLogos")}</Typography>
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
