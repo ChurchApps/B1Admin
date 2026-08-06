@@ -17,13 +17,12 @@ import { SupportContactSettingsEdit } from "./components/SupportContactSettingsE
 import { GivingSettingsEdit } from "./components/GivingSettingsEdit";
 import { TextingSettingsEdit } from "./components/TextingSettingsEdit";
 import { StorageSettingsEdit } from "./components/StorageSettingsEdit";
-import { MINISTRYSTUFF_ENABLED } from "../helpers/MinistryStuffFlag";
 import { DomainSettingsEdit } from "./components/DomainSettingsEdit";
 import { GradePromotionSettingsEdit } from "./components/GradePromotionSettingsEdit";
 import { CheckinSettingsEdit } from "./components/CheckinSettingsEdit";
 
 const SECTION_KEYS = [
-  "church-info", "general", "giving", "texting", ...(MINISTRYSTUFF_ENABLED ? ["storage"] : []), "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
+  "church-info", "general", "giving", "texting", "storage", "domains", "grade-promotion", "check-ins", "campuses", "custom-fields", "developer"
 ];
 
 const SummaryRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
@@ -53,7 +52,7 @@ export const ManageChurch = () => {
   const settingsQ = useQuery<any[]>({ queryKey: ["/settings", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const gateways = useQuery<any[]>({ queryKey: ["/gateways", "GivingApi"], placeholderData: [], enabled: hasGiving });
   const texting = useQuery<any[]>({ queryKey: ["/texting/providers", "MessagingApi"], placeholderData: [], enabled: hasAccess });
-  const storage = useQuery<any[]>({ queryKey: ["/storage/providers", "ContentApi"], placeholderData: [], enabled: hasAccess && MINISTRYSTUFF_ENABLED });
+  const storage = useQuery<any[]>({ queryKey: ["/storage/providers", "ContentApi"], placeholderData: [], enabled: hasAccess });
   const domains = useQuery<any[]>({ queryKey: ["/domains", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const campuses = useQuery<any[]>({ queryKey: ["/campuses", "MembershipApi"], placeholderData: [], enabled: hasAccess });
   const personFields = useQuery<any[]>({ queryKey: ["/personfields", "MembershipApi"], placeholderData: [], enabled: hasAccess });
@@ -102,14 +101,15 @@ export const ManageChurch = () => {
     : Locale.label("settings.landing.notConfigured");
   const textingSubtitle = textingProvider || Locale.label("settings.landing.notConfigured");
   const storageProviderName = (storage.data || []).find((p) => p.enabled)?.provider;
-  const storageSubtitle = storageProviderName === "ministrystuff" ? "MinistryStuff" : Locale.label("settings.storageSettingsEdit.churchAppsFree");
+  const storageNames: Record<string, string> = { ministrystuff: "MinistryStuff", googledrive: "Google Drive", dropbox: "Dropbox", onedrive: "OneDrive", s3: "S3" };
+  const storageSubtitle = storageNames[storageProviderName] || Locale.label("settings.storageSettingsEdit.churchAppsFree");
 
   const sections: ConfigSection[] = [
     { key: "church-info", title: Locale.label("settings.churchSettingsEdit.churchInfo"), subtitle: church.data.name || Locale.label("settings.churchSettingsEdit.churchInfoSubtitle"), icon: <BusinessIcon />, color: "primary" },
     { key: "general", title: Locale.label("settings.churchSettingsEdit.general"), subtitle: Locale.label("settings.supportContactSettingsEdit.supportContact"), icon: <TuneIcon />, color: "secondary" },
     ...(hasGiving ? [{ key: "giving", title: Locale.label("settings.givingSettingsEdit.giving"), subtitle: givingSubtitle, icon: <VolunteerActivismIcon />, color: "success" } as ConfigSection] : []),
     { key: "texting", title: Locale.label("settings.churchSettingsEdit.textingTitle"), subtitle: textingSubtitle, icon: <SmsIcon />, color: "warning" },
-    ...(MINISTRYSTUFF_ENABLED ? [{ key: "storage", title: Locale.label("settings.storageSettingsEdit.title"), subtitle: storageSubtitle, icon: <CloudIcon />, color: "info" } as ConfigSection] : []),
+    { key: "storage", title: Locale.label("settings.storageSettingsEdit.title"), subtitle: storageSubtitle, icon: <CloudIcon />, color: "info" },
     { key: "domains", title: Locale.label("settings.domainSettingsEdit.domains"), subtitle: domainsSubtitle, icon: <LanguageIcon />, color: "info" },
     { key: "grade-promotion", title: Locale.label("settings.gradePromotionSettingsEdit.title"), subtitle: gradePromotionSubtitle, icon: <SchoolIcon />, color: "secondary" },
     { key: "check-ins", title: Locale.label("settings.checkinSettingsEdit.title"), subtitle: checkinsSubtitle, icon: <HowToRegIcon />, color: "info" },

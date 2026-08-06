@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import { FileHelper } from "@churchapps/helpers";
 import { LinearProgress, Box, Typography, Button, IconButton, Stack } from "@mui/material";
 import {
   InsertDriveFile as FileIcon,
@@ -67,7 +67,7 @@ export function CustomFileUpload(props: Props) {
       if (!preUploaded) {
         const base64 = await convertBase64();
         f.fileContents = base64;
-      }
+      } else if (preUploaded.externalId) f.externalId = preUploaded.externalId;
       const data = await ApiHelper.post("/files", [f], "ContentApi");
       handleClear();
       props.saveCallback(data[0]);
@@ -90,7 +90,7 @@ export function CustomFileUpload(props: Props) {
     }
   };
 
-  const preUpload = async () => {
+  const preUpload = async (): Promise<{ externalId?: string } | false> => {
     if (!uploadedFile) return false;
     const params = {
       fileName: uploadedFile.name,
@@ -100,32 +100,9 @@ export function CustomFileUpload(props: Props) {
       mimeType: uploadedFile.type
     };
     const presigned = await ApiHelper.post("/files/postUrl", params, "ContentApi");
-    const doUpload = presigned.key !== undefined;
-    if (doUpload) await postPresignedFile(presigned);
-    return doUpload;
-  };
-
-  const postPresignedFile = (presigned: any) => {
-    if (!uploadedFile) return;
-    const formData = new FormData();
-    formData.append("acl", "public-read");
-    formData.append("Content-Type", uploadedFile.type);
-    for (const property in presigned.fields) {
-      formData.append(property, presigned.fields[property]);
-    }
-    formData.append("file", uploadedFile);
-
-    const axiosConfig = {
-      headers: { "Content-Type": "multipart/form-data" },
-      onUploadProgress: (progressEvent: any) => {
-        if (progressEvent.total) {
-          setUploadProgress(
-            Math.round((100 * progressEvent.loaded) / progressEvent.total)
-          );
-        }
-      }
-    };
-    return axios.post(presigned.url, formData, axiosConfig);
+    if (presigned.error) throw new Error(presigned.error);
+    if (presigned.key === undefined) return false;
+    return FileHelper.uploadPresignedFile(presigned, uploadedFile, setUploadProgress);
   };
 
   useEffect(checkSave, [props.pendingSave]);

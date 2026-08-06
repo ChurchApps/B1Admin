@@ -3514,7 +3514,24 @@
       "usage": "Using {used} GB of {quota} GB.",
       "ministryStuffHelper": "Files will be stored on your MinistryStuff storage plan, linked to this church automatically. Manage your plan at",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "saveError": "Error saving storage settings."
+      "saveError": "Error saving storage settings.",
+      "connect": "Connect Account",
+      "connecting": "Waiting for sign-in...",
+      "connected": "Account connected",
+      "connectFirst": "Connect your account before saving.",
+      "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
+      "s3AccessKey": "Access Key Id",
+      "s3SecretKey": "Secret Access Key",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Endpoint (blank for AWS)",
+      "s3Region": "Region",
+      "s3PublicBase": "Public URL Base",
+      "s3Required": "Bucket and public URL base are required.",
+      "s3Helper": "The bucket must allow public read access and CORS PUT requests from this site. Works with AWS S3, Cloudflare R2 and Backblaze B2.",
+      "popupBlocked": "Popup blocked. Please allow popups and try again.",
+      "sessionFailed": "Could not start the sign-in session.",
+      "sessionExpired": "The sign-in session expired. Please try again.",
+      "authFailed": "Sign-in failed. Please try again."
     }
   },
   "site": {
@@ -4031,11 +4048,12 @@
     },
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
-      "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
+      "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. Need more? Link your own Google Drive, Dropbox, OneDrive or S3 bucket under Settings, File Storage.",
       "upload": "Upload",
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "externalStorage": "Stored in your linked account",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Name",
