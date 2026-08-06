@@ -143,22 +143,32 @@ export const StorageSettingsEdit: React.FC<Props> = (props) => {
           setErrors([Locale.label("settings.storageSettingsEdit.sessionExpired", "The sign-in session expired. Please try again.")]);
           return;
         }
+        let result;
         try {
-          const result = await ApiHelper.getAnonymous(`/oauth/relay/sessions/${relayData.sessionCode}`, "MembershipApi");
-          if (isCancelled()) return;
-          if (result?.status === "completed" && result?.authCode) {
-            popup.close();
-            // Exchange runs server-side: the token endpoint needs the client_secret and sends no CORS headers.
-            await ApiHelper.post("/storage/exchange", { provider: descriptor.id, code: result.authCode, codeVerifier: verifier, redirectUri: relayData.redirectUri }, "ContentApi");
-            if (isCancelled()) return;
-            setConnecting(false);
-            await loadData();
-            return;
-          }
-          window.setTimeout(poll, 3000);
+          result = await ApiHelper.getAnonymous(`/oauth/relay/sessions/${relayData.sessionCode}`, "MembershipApi");
         } catch {
           if (!isCancelled()) window.setTimeout(poll, 5000);
+          return;
         }
+        if (isCancelled()) return;
+        if (result?.status === "completed" && result?.authCode) {
+          popup.close();
+          // Exchange runs server-side: the token endpoint needs the client_secret and sends no CORS headers.
+          // The relay session is consumed by the completed read, so a failed exchange is terminal — surface it, don't re-poll.
+          try {
+            await ApiHelper.post("/storage/exchange", { provider: descriptor.id, code: result.authCode, codeVerifier: verifier, redirectUri: relayData.redirectUri }, "ContentApi");
+          } catch (e: any) {
+            if (isCancelled()) return;
+            setConnecting(false);
+            setErrors([e?.message || Locale.label("settings.storageSettingsEdit.authFailed", "Sign-in failed. Please try again.")]);
+            return;
+          }
+          if (isCancelled()) return;
+          setConnecting(false);
+          await loadData();
+          return;
+        }
+        window.setTimeout(poll, 3000);
       };
       window.setTimeout(poll, 3000);
     } catch (error: any) {
