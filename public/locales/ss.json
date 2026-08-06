@@ -198,7 +198,8 @@
       "confirmDeleteSeries": "Lona ngumcimbi lophindzaphindzako. Kuwususa kutakususa lonkhe luhlu kanye nato tonkhe tikhatsi lawenteka ngato. Ingabe uciniseka?",
       "delete": "Susa",
       "manageRegistrations": "Phatsa Kubhaliswa",
-      "noGroups": "Akukho emacembu latfoliwe."
+      "noGroups": "Akukho emacembu latfoliwe.",
+      "editEvent": "Hlela umcimbi"
     },
     "calendarList": {
       "aboutParagraph1": "Emakhalenda akuvumela kutsi uhlele futsi ubonise imicimbi yebandla lakho.",
@@ -3594,6 +3595,7 @@
       "slow": "Kancane"
     },
     "appearanceEdit": {
+      "appSettings": "Tilungiselelo Te-App",
       "branding": "Logo Nekutiveta",
       "brandingDescription": "Layisha futsi uphatse emalogo nemphahla yekutiveta yenhlangano yakho",
       "edit": "Hlela",
@@ -3609,6 +3611,8 @@
       "noImage": "Asikho sitfombe",
       "ogImage": "Sitfombe Setinkhundla Temphakatsi",
       "ogImageDesc": "Isetjentiswa ekwabelaneni etinkhundla temphakatsi nase-SEO. Bukhulu lobufanele: 1200×630px",
+      "pwaShortName": "Ligama Lelifishane le-PWA (kufika ku-12 tinhlamvu)",
+      "pwaShortNameHelper": "Isetjentiswa njengeligama le-ayikhoni ye-app esikrinini sasekhaya sedivayisi.",
       "seoAssets": "Imphahla ye-SEO Nebhrawuza",
       "upload": "Layisha"
     },

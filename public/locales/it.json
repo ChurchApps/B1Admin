@@ -171,7 +171,8 @@
       "confirmDelete": "È sicuro di voler eliminare questo evento?",
       "delete": "Elimina",
       "manageRegistrations": "Gestisci registrazioni",
-      "noGroups": "Nessun gruppo trovato."
+      "noGroups": "Nessun gruppo trovato.",
+      "editEvent": "Modifica evento"
     },
     "calendarList": {
       "aboutParagraph1": "I calendari ti consentono di organizzare e visualizzare eventi per la tua chiesa.",
@@ -3305,6 +3306,7 @@
       "slow": "Lento"
     },
     "appearanceEdit": {
+      "appSettings": "Impostazioni dell'app",
       "branding": "Logo e Branding",
       "brandingDescription": "Carica e gestisci i loghi e le risorse di branding della tua organizzazione",
       "edit": "Modifica",
@@ -3320,6 +3322,8 @@
       "noImage": "Nessuna immagine",
       "ogImage": "Immagine Social Media",
       "ogImageDesc": "Usato per la condivisione sui social e SEO. Dimensione ideale: 1200×630px",
+      "pwaShortName": "Nome breve PWA (max 12 caratteri)",
+      "pwaShortNameHelper": "Utilizzato come nome dell'icona dell'app nella schermata principale del dispositivo.",
       "seoAssets": "SEO e Risorse Browser",
       "upload": "Carica"
     },

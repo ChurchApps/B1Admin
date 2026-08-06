@@ -5,7 +5,7 @@ import { AppIconButton } from "../../components/ui/AppIconButton";
 import { type PlanItemInterface, type SongDetailInterface } from "../../helpers";
 import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale } from "@churchapps/apphelper";
-import { shouldShowLabel, shouldShowDescription, shouldShowDuration } from "./planItemUtils";
+import { shouldShowLabel, shouldShowDescription, shouldShowDuration, duplicatePlanItem } from "./planItemUtils";
 
 interface Props {
   planItem: PlanItemInterface;
@@ -139,6 +139,17 @@ export const PlanItemEdit = (props: Props) => {
       props.onDone();
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const handleDuplicate = async () => {
+    if (!planItem) return;
+    setIsSaving(true);
+    try {
+      await duplicatePlanItem(planItem);
+      props.onDone();
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -308,9 +319,16 @@ export const PlanItemEdit = (props: Props) => {
       </DialogContent>
       <DialogActions>
         {planItem?.id && (
-          <Button onClick={() => setShowDeleteConfirm(true)} sx={{ mr: "auto" }} disabled={isSaving}>
-            {Locale.label("common.delete") || "Delete"}
-          </Button>
+          <>
+            <Button onClick={() => setShowDeleteConfirm(true)} disabled={isSaving} sx={{ mr: "auto" }}>
+              {Locale.label("common.delete") || "Delete"}
+            </Button>
+            {planItem.itemType !== "header" && (
+              <Button onClick={handleDuplicate} disabled={isSaving}>
+                {Locale.label("common.duplicate") || "Duplicate"}
+              </Button>
+            )}
+          </>
         )}
         <Button onClick={props.onDone} variant="outlined" disabled={isSaving}>{Locale.label("common.cancel") || "Cancel"}</Button>
         <Button onClick={handleSave} variant="contained" disabled={isSaving} startIcon={isSaving ? <CircularProgress size={16} /> : null}>

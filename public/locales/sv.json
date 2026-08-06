@@ -171,7 +171,8 @@
       "confirmDelete": "Är du säker på att du vill ta bort denna händelse?",
       "delete": "Ta bort",
       "manageRegistrations": "Hantera anmälningar",
-      "noGroups": "Inga grupper hittades."
+      "noGroups": "Inga grupper hittades.",
+      "editEvent": "Redigera evenemang"
     },
     "calendarList": {
       "aboutParagraph1": "Kalendrar låter dig organisera och visa evenemang för din kyrka.",
@@ -3305,6 +3306,7 @@
       "slow": "Långsam"
     },
     "appearanceEdit": {
+      "appSettings": "Appinställningar",
       "branding": "Logotyp och varumärke",
       "brandingDescription": "Ladda upp och hantera din organisations logotyper och varumärkestillgångar",
       "edit": "Redigera",
@@ -3320,6 +3322,8 @@
       "noImage": "Ingen bild",
       "ogImage": "Bild för sociala medier",
       "ogImageDesc": "Används för sociala medier och SEO. Idealisk storlek: 1200×630px",
+      "pwaShortName": "PWA kortnamn (max 12 tecken)",
+      "pwaShortNameHelper": "Används som namn på appikonen på enhetens hemskärm.",
       "seoAssets": "SEO och webbläsartillgångar",
       "upload": "Ladda upp"
     },

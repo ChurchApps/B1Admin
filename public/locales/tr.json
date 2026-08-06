@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Sil",
       "manageRegistrations": "Kayıtları Yönet",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "editEvent": "Etkinliği Düzenle"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -3305,6 +3306,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Uygulama Ayarları",
       "branding": "Logo ve Markalama",
       "brandingDescription": "Kuruluşunuzun logolarını ve markalama varlıklarını yükleyin ve yönetin",
       "edit": "Düzenle",
@@ -3320,6 +3322,8 @@
       "noImage": "Görsel yok",
       "ogImage": "Sosyal Medya Görseli",
       "ogImageDesc": "Sosyal paylaşım ve SEO için kullanılır. İdeal boyut: 1200×630px",
+      "pwaShortName": "PWA Kısa Adı (En fazla 12 karakter)",
+      "pwaShortNameHelper": "Cihazın ana ekranındaki uygulama simgesinin adı olarak kullanılır.",
       "seoAssets": "SEO ve Tarayıcı Varlıkları",
       "upload": "Yükle"
     },

@@ -22,6 +22,9 @@ export function FilesManager() {
   const providerQuota = storageStatus.data?.quotaBytes || 0;
   if (providerQuota > 0 && storageStatus.data?.usedBytes !== undefined) usedSpace = storageStatus.data.usedBytes;
   const quotaLimit = providerQuota > 0 ? providerQuota : 100000000;
+  // linked BYOS storage reports no quota — the church's own account is the limit
+  const storageProvider = storageStatus.data?.provider || "churchapps";
+  const unlimited = storageProvider !== "churchapps" && providerQuota === 0;
 
   const handleFileSaved = () => {
     setPendingFileSave(false);
@@ -48,6 +51,15 @@ export function FilesManager() {
   };
 
   const getStorage = () => {
+    if (unlimited) {
+      return (
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body2">
+            {Locale.label("site.filesManager.storage")} {formatSize(usedSpace)} · {Locale.label("site.filesManager.externalStorage", "Stored in your linked account")}
+          </Typography>
+        </Box>
+      );
+    }
     const percent = Math.min(100, (usedSpace / quotaLimit) * 100);
     return (
       <Box sx={{ mb: 2 }}>
@@ -128,12 +140,12 @@ export function FilesManager() {
           <FormCard icon="cloud_upload" title={Locale.label("site.files.uploadFiles")} onSave={handleSave} saveText={Locale.label("site.files.upload")} data-testid="file-upload-inputbox" isSubmitting={pendingFileSave}>
 
             {getStorage()}
-            {providerQuota === 0 && (
+            {!unlimited && providerQuota === 0 && (
               <Typography variant="body2" sx={{ mb: 2, color: "text.secondary" }}>
                 {Locale.label("site.files.storageInfo")}
               </Typography>
             )}
-            {usedSpace < quotaLimit && (
+            {(unlimited || usedSpace < quotaLimit) && (
               <CustomFileUpload contentType="website" contentId="" pendingSave={pendingFileSave} saveCallback={handleFileSaved} />
             )}
           </FormCard>

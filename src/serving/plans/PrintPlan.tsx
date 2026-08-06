@@ -7,6 +7,8 @@ import { formatClockTime } from "../components/PlanUtils";
 import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
+import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
+import { getProviderInstructions } from "../components/planItemUtils";
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -18,7 +20,7 @@ export const PrintPlan = () => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
   const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
   const [exclusions, setExclusions] = React.useState<PlanItemTimeInterface[]>([]);
-  const [feed, setFeed] = React.useState<any | null>(null);
+  const [feed, setFeed] = React.useState<FeedVenueInterface | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const formatTime = (seconds: number) => {
@@ -27,45 +29,81 @@ export const PrintPlan = () => {
     return minutes + ":" + (secs < 10 ? "0" : "") + secs;
   };
 
-  const buildFeedFromPlanItems = (items: PlanItemInterface[], currentPlan: PlanInterface | null): FeedVenueInterface => {
+  const instructionsToFeed = (instructions: Instructions, currentPlan: PlanInterface): FeedVenueInterface => {
     const sections: FeedSectionInterface[] = [];
 
-    items.forEach(pi => {
-      if (pi.itemType === "header" || pi.itemType === "providerSection") {
-        const actions: FeedActionInterface[] = [];
-        if (pi.children) {
-          pi.children.forEach(child => {
-            actions.push({
-              actionType: child.itemType === "providerPresentation" || child.itemType === "action" ? "play" : "note",
-              content: child.label || child.description || "",
-              files: child.thumbnailUrl ? [{
-                url: child.link || "",
-                thumbnail: child.thumbnailUrl || ""
-              }] : []
-            });
-          });
+    const toAction = (item: InstructionItem): FeedActionInterface => {
+      const file = item.children?.find(c => c.itemType === "file");
+      const url = item.downloadUrl || file?.downloadUrl;
+      const thumbnail = item.thumbnail || file?.thumbnail;
+      return {
+        actionType: item.actionType || "note",
+        content: item.content || item.label || "",
+        files: url || thumbnail ? [{ name: item.label, url, thumbnail, seconds: item.seconds || file?.seconds }] : []
+      };
+    };
+
+    const collectActions = (items: InstructionItem[], into: FeedActionInterface[]) => {
+      items.forEach(item => {
+        if (item.itemType === "action" || !item.children?.length) into.push(toAction(item));
+        else collectActions(item.children, into);
+      });
+    };
+
+    const walk = (items: InstructionItem[]) => {
+      items.forEach(item => {
+        if (item.itemType === "section") {
+          const actions: FeedActionInterface[] = [];
+          collectActions(item.children || [], actions);
+          sections.push({ name: item.label || "", actions });
+        } else if (item.children?.length) {
+          walk(item.children);
         }
-        console.log(actions, '--actions')
-        sections.push({
-          name: pi.label || "",
-          materials: pi.description || "",
-          actions
-        });
+      });
+    };
+    walk(instructions.items || []);
+
+    const findThumb = (items: InstructionItem[]): string => {
+      for (const item of items) {
+        if (item.thumbnail) return item.thumbnail;
+        const found = item.children ? findThumb(item.children) : "";
+        if (found) return found;
       }
-    });
+      return "";
+    };
 
     return {
-      id: currentPlan?.id || "",
-      name: currentPlan?.name || "",
-      lessonId: currentPlan?.providerPlanId || "",
-      lessonName: currentPlan?.providerPlanName || currentPlan?.name || "",
-      lessonImage: items.find(i => i.thumbnailUrl)?.thumbnailUrl || "",
-      lessonDescription: currentPlan?.notes || "",
-      studyName: currentPlan?.providerPlanName || currentPlan?.name || "",
+      id: currentPlan.id || "",
+      name: instructions.name || currentPlan.providerPlanName || "",
+      lessonId: currentPlan.providerPlanId || "",
+      lessonName: currentPlan.providerPlanName || instructions.name || "",
+      lessonImage: findThumb(instructions.items || []),
+      studyName: currentPlan.name || "",
       sections
     };
   };
 
+  // Saved plan items are lossy (customize strips actions; preview state has none),
+  // so provider prints always come from the live provider content.
+  const loadProviderFeed = async (planData: PlanInterface): Promise<FeedVenueInterface | null> => {
+    if (planData.providerId === "lessonschurch" && planData.contentId) {
+      try {
+        const venueFeed = await ApiHelper.get("/venues/public/feed/" + planData.contentId, "LessonsApi");
+        if (venueFeed?.sections?.length) return venueFeed;
+      } catch { /* fall through to provider instructions */ }
+    }
+    try {
+      const provider = planData.providerId ? getProvider(planData.providerId) : null;
+      if (!provider || !planData.providerPlanId) return null;
+      const instructions = await getProviderInstructions(provider, planData.providerPlanId, planData.ministryId, planData.providerId);
+      if (!instructions?.items?.length) return null;
+      const result = instructionsToFeed(instructions, planData);
+      return result.sections?.length ? result : null;
+    } catch (error) {
+      console.error("Failed to load provider print feed:", error);
+      return null;
+    }
+  };
   const loadData = async () => {
     setIsLoading(true);
 
@@ -97,18 +135,37 @@ export const PrintPlan = () => {
       setPeople(peopleData);
     }
 
-    let currentFeed = null;
+    let currentFeed: FeedVenueInterface | null = null;
     if (planData?.providerId) {
-      currentFeed = buildFeedFromPlanItems(planItemsData, planData);
-      setFeed(currentFeed);
+      currentFeed = await loadProviderFeed(planData);
     } else if (planData?.contentId && (planData?.contentType === "venue" || planData?.contentType === "lesson")) {
       try {
         currentFeed = await ApiHelper.get("/venues/public/feed/" + planData.contentId, "LessonsApi");
-        setFeed(currentFeed);
       } catch (error) {
         console.error("Failed to load lesson feed:", error);
       }
     }
+
+    if (currentFeed?.sections) {
+      const planSectionNames = planItemsData.map((pi: any) => pi.label || "");
+      currentFeed.sections = currentFeed.sections.filter((s: any) => planSectionNames.includes(s.name));
+
+      currentFeed.sections.forEach((s: any) => {
+        const sectionItem = planItemsData.find((pi: any) => pi.label === s.name);
+        if (sectionItem && sectionItem.children) {
+          const planActionIds = sectionItem.children.map((child: any) => child.relatedId).filter((id: any) => id);
+          const planActionNames = sectionItem.children.map((child: any) => child.label || child.description || "");
+          s.actions = (s.actions || []).filter((a: any) =>
+            (a.id && planActionIds.includes(a.id)) ||
+            planActionNames.some((name: any) => a.content?.includes(name) || name.includes(a.content))
+          );
+        } else {
+          s.actions = [];
+        }
+      });
+    }
+
+    setFeed(currentFeed);
 
     if (!currentFeed) {
       setTimeout(() => {

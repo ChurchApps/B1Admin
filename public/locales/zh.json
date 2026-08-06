@@ -171,7 +171,8 @@
       "confirmDelete": "您确定要删除此活动吗？",
       "delete": "删除",
       "manageRegistrations": "管理报名",
-      "noGroups": "未找到组。"
+      "noGroups": "未找到组。",
+      "editEvent": "编辑活动"
     },
     "calendarList": {
       "aboutParagraph1": "日历允许您组织和显示教堂的活动。",
@@ -3305,6 +3306,7 @@
       "slow": "慢速"
     },
     "appearanceEdit": {
+      "appSettings": "应用设置",
       "branding": "标志与品牌",
       "brandingDescription": "上传和管理您组织的标志和品牌资产",
       "edit": "编辑",
@@ -3320,6 +3322,8 @@
       "noImage": "无图像",
       "ogImage": "社交媒体图像",
       "ogImageDesc": "用于社交分享和 SEO。理想尺寸：1200×630px",
+      "pwaShortName": "PWA 简称(最多 12 个字符)",
+      "pwaShortNameHelper": "用作设备主屏幕上应用图标的名称。",
       "seoAssets": "SEO 与浏览器资产",
       "upload": "上传"
     },

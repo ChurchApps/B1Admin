@@ -171,7 +171,8 @@
       "confirmDelete": "Tem certeza de que deseja excluir este evento?",
       "delete": "Excluir",
       "manageRegistrations": "Gerenciar inscrições",
-      "noGroups": "Nenhum grupo encontrado."
+      "noGroups": "Nenhum grupo encontrado.",
+      "editEvent": "Editar Evento"
     },
     "calendarList": {
       "aboutParagraph1": "Os calendários permitem que você organize e exiba eventos da sua igreja.",
@@ -3305,6 +3306,7 @@
       "slow": "Lento"
     },
     "appearanceEdit": {
+      "appSettings": "Configurações do aplicativo",
       "branding": "Logo e Marca",
       "brandingDescription": "Envie e gerencie os logotipos e ativos de marca da sua organização",
       "edit": "Editar",
@@ -3320,6 +3322,8 @@
       "noImage": "Nenhuma imagem",
       "ogImage": "Imagem para Redes Sociais",
       "ogImageDesc": "Usada para compartilhamento social e SEO. Tamanho ideal: 1200×630px",
+      "pwaShortName": "Nome curto do PWA (máx. 12 caracteres)",
+      "pwaShortNameHelper": "Usado como nome do ícone do aplicativo na tela inicial do dispositivo.",
       "seoAssets": "SEO e Recursos do Navegador",
       "upload": "Enviar"
     },

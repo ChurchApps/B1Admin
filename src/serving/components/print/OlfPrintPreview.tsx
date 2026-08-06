@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Tab, Tabs } from "@mui/material";
-import { SmallButton } from "@churchapps/apphelper";
+import { Locale, SmallButton } from "@churchapps/apphelper";
 import { type FeedVenueInterface } from "../../../helpers";
 import { Section } from "./Section";
 import { OlfPrint } from "./OlfPrint";
@@ -49,7 +49,7 @@ export const OlfPrintPreview: React.FC<Props> = (props: Props) => {
 
   const getTabs = () => (
     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-      <span>Format:</span>
+      <span>{Locale.label("plans.printPreview.format") || "Format:"}</span>
       <Box sx={{ borderBottom: 1, borderColor: "divider", marginRight: 2 }}>
         <Tabs
           value={format}
@@ -59,9 +59,9 @@ export const OlfPrintPreview: React.FC<Props> = (props: Props) => {
           aria-label="print format tabs"
         >
           <Tab label="Lessons.church" value="lessons.church" />
-          <Tab label="Color Coded" value="colorCoded" />
-          <Tab label="Script" value="script" />
-          <Tab label="Service Order" value="worshipOrder" />
+          <Tab label={Locale.label("plans.printPreview.colorCoded") || "Color Coded"} value="colorCoded" />
+          <Tab label={Locale.label("plans.printPreview.script") || "Script"} value="script" />
+          <Tab label={Locale.label("plans.printPreview.serviceOrder") || "Service Order"} value="worshipOrder" />
         </Tabs>
       </Box>
     </Box>
@@ -70,17 +70,17 @@ export const OlfPrintPreview: React.FC<Props> = (props: Props) => {
   return (
     <Dialog open={true} onClose={props.onClose} fullScreen={true}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", px: 3, py: 1, borderBottom: "1px solid", borderColor: "divider" }} className="no-print">
-        <DialogTitle sx={{ p: 0 }}>Print Preview</DialogTitle>
+        <DialogTitle sx={{ p: 0 }}>{Locale.label("plans.printPreview.title") || "Print Preview"}</DialogTitle>
         <DialogActions sx={{ p: 0 }}>
           {getTabs()}
           <SmallButton
             icon="print"
-            text="Print"
+            text={Locale.label("common.print")}
             onClick={() => {
               handlePrint();
             }}
           />
-          <SmallButton icon="close" text="Close" onClick={props.onClose} />
+          <SmallButton icon="close" text={Locale.label("common.close")} onClick={props.onClose} />
         </DialogActions>
       </Box>
 

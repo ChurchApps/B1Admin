@@ -171,7 +171,8 @@
       "confirmDelete": "Weet u zeker dat u dit evenement wilt verwijderen?",
       "delete": "Verwijderen",
       "manageRegistrations": "Registraties beheren",
-      "noGroups": "Geen groepen gevonden."
+      "noGroups": "Geen groepen gevonden.",
+      "editEvent": "Evenement bewerken"
     },
     "calendarList": {
       "aboutParagraph1": "Met kalenders kunt u evenementen voor uw kerk organiseren en weergeven.",
@@ -3305,6 +3306,7 @@
       "slow": "Langzaam"
     },
     "appearanceEdit": {
+      "appSettings": "App-instellingen",
       "branding": "Logo & branding",
       "brandingDescription": "Upload en beheer de logo's en brandingsmiddelen van je organisatie",
       "edit": "Bewerken",
@@ -3320,6 +3322,8 @@
       "noImage": "Geen afbeelding",
       "ogImage": "Afbeelding voor sociale media",
       "ogImageDesc": "Gebruikt voor sociaal delen en SEO. Ideale grootte: 1200×630px",
+      "pwaShortName": "PWA korte naam (max. 12 tekens)",
+      "pwaShortNameHelper": "Wordt gebruikt als naam van het app-pictogram op het startscherm van het apparaat.",
       "seoAssets": "SEO & browser-middelen",
       "upload": "Uploaden"
     },

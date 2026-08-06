@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to Xóa this event?",
       "delete": "Xóa",
       "manageRegistrations": "Quản lý đăng ký",
-      "noGroups": "Không Các nhóm found."
+      "noGroups": "Không Các nhóm found.",
+      "editEvent": "Chỉnh sửa sự kiện"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -3305,6 +3306,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Cài đặt ứng dụng",
       "branding": "Logo & Thương hiệu",
       "brandingDescription": "Tải lên và quản lý logo cùng tài sản thương hiệu của tổ chức",
       "edit": "Chỉnh sửa",
@@ -3320,6 +3322,8 @@
       "noImage": "Không có hình ảnh",
       "ogImage": "Hình ảnh mạng xã hội",
       "ogImageDesc": "Dùng cho chia sẻ mạng xã hội và SEO. Kích thước lý tưởng: 1200×630px",
+      "pwaShortName": "Tên ngắn PWA (tối đa 12 ký tự)",
+      "pwaShortNameHelper": "Được dùng làm tên biểu tượng ứng dụng trên màn hình chính của thiết bị.",
       "seoAssets": "Tài sản SEO & Trình duyệt",
       "upload": "Tải lên"
     },

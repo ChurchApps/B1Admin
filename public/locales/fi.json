@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Poista",
       "manageRegistrations": "Hallinnoi ilmoittautumisia",
-      "noGroups": "Ryhmiä ei löytynyt."
+      "noGroups": "Ryhmiä ei löytynyt.",
+      "editEvent": "Muokkaa tapahtumaa"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -3305,6 +3306,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Sovelluksen asetukset",
       "branding": "Logo ja brändäys",
       "brandingDescription": "Lataa ja hallitse organisaatiosi logoja ja brändäysvarallisuutta",
       "edit": "Muokkaa",
@@ -3320,6 +3322,8 @@
       "noImage": "Ei kuvaa",
       "ogImage": "Sosiaalisen median kuva",
       "ogImageDesc": "Käytetään sosiaaliseen jakamiseen ja SEO:hon. Ihanteellinen koko: 1200×630px",
+      "pwaShortName": "PWA:n lyhyt nimi (enintään 12 merkkiä)",
+      "pwaShortNameHelper": "Käytetään sovelluskuvakkeen nimenä laitteen aloitusnäytöllä.",
       "seoAssets": "SEO- ja selainvarallisuus",
       "upload": "Lataa"
     },

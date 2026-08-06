@@ -171,7 +171,8 @@
       "confirmDelete": "Sind Sie sicher, dass Sie dieses Ereignis löschen möchten?",
       "delete": "Löschen",
       "manageRegistrations": "Anmeldungen verwalten",
-      "noGroups": "Keine Gruppen gefunden."
+      "noGroups": "Keine Gruppen gefunden.",
+      "editEvent": "Ereignis bearbeiten"
     },
     "calendarList": {
       "aboutParagraph1": "Mit Kalendern können Sie Veranstaltungen für Ihre Kirche organisieren und anzeigen.",
@@ -3305,6 +3306,7 @@
       "slow": "Langsam"
     },
     "appearanceEdit": {
+      "appSettings": "App-Einstellungen",
       "branding": "Logo & Branding",
       "brandingDescription": "Laden Sie die Logos und Markenelemente Ihrer Organisation hoch und verwalten Sie sie",
       "edit": "Bearbeiten",
@@ -3320,6 +3322,8 @@
       "noImage": "Kein Bild",
       "ogImage": "Bild für soziale Medien",
       "ogImageDesc": "Wird für Social Sharing und SEO verwendet. Ideale Größe: 1200×630px",
+      "pwaShortName": "PWA-Kurzname (max. 12 Zeichen)",
+      "pwaShortNameHelper": "Wird als Name des App-Symbols auf dem Startbildschirm des Geräts verwendet.",
       "seoAssets": "SEO- und Browser-Ressourcen",
       "upload": "Hochladen"
     },

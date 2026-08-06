@@ -8,7 +8,7 @@ import { type TimeInterface, type PlanItemTimeInterface } from "@churchapps/help
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { SongDialog } from "./SongDialog";
 import { LessonDialog } from "./LessonDialog";
-import { getNextChildSort, estimateSeconds, type ProviderMediaInfo } from "./planItemUtils";
+import { getNextChildSort, estimateSeconds, duplicatePlanItem, type ProviderMediaInfo } from "./planItemUtils";
 import { ActionDialog } from "./ActionDialog";
 import { ActionSelector } from "./ActionSelector";
 import { PlanItemHeader, PlanItemRow } from "./planItem/index";
@@ -113,6 +113,18 @@ export const PlanItem = React.memo((props: Props) => {
     });
   };
 
+  const duplicating = React.useRef(false);
+  const handleDuplicate = async () => {
+    if (duplicating.current) return;
+    duplicating.current = true;
+    try {
+      await duplicatePlanItem(props.planItem);
+      if (props.onChange) props.onChange();
+    } finally {
+      duplicating.current = false;
+    }
+  };
+
   const isChildExcluded = (childId: string): boolean => {
     if (!props.selectedServiceTimeId) return false;
     return (props.exclusions || []).some((ex) => ex.planItemId === childId && ex.timeId === props.selectedServiceTimeId && ex.excluded);
@@ -187,6 +199,7 @@ export const PlanItem = React.memo((props: Props) => {
       readOnly={props.readOnly}
       onLabelClick={onLabelClick}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
+      onDuplicateClick={handleDuplicate}
       mediaLookup={props.mediaLookup}
     />
   );

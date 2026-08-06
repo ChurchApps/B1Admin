@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon } from "@mui/icons-material";
+import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
 import { type PlanItemInterface } from "../../../helpers";
@@ -16,6 +16,7 @@ interface Props {
   readOnly?: boolean;
   onLabelClick?: () => void;
   onEditClick: () => void;
+  onDuplicateClick?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
 }
 
@@ -30,6 +31,7 @@ export const PlanItemRow: React.FC<Props> = ({
   readOnly,
   onLabelClick,
   onEditClick,
+  onDuplicateClick,
   mediaLookup
 }) => {
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
@@ -138,16 +140,30 @@ export const PlanItemRow: React.FC<Props> = ({
       </Box>
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>
         {!readOnly && (
-          <Box
-            component="button"
-            type="button"
-            className="actionButton rowControl"
-            onClick={(e: React.MouseEvent) => { e.stopPropagation(); onEditClick(); }}
-            aria-label={Locale.label("plans.planItem.editItem") || "Edit item"}
-            sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
-          >
-            <EditIcon />
-          </Box>
+          <>
+            <Box
+              component="button"
+              type="button"
+              className="actionButton rowControl"
+              onClick={(e: React.MouseEvent) => { e.stopPropagation(); onEditClick(); }}
+              aria-label={Locale.label("plans.planItem.editItem") || "Edit item"}
+              sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
+            >
+              <EditIcon />
+            </Box>
+            {onDuplicateClick && (
+              <Box
+                component="button"
+                type="button"
+                className="actionButton rowControl"
+                onClick={(e: React.MouseEvent) => { e.stopPropagation(); onDuplicateClick(); }}
+                aria-label={Locale.label("common.duplicate") || "Duplicate"}
+                sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}
+              >
+                <ContentCopyIcon />
+              </Box>
+            )}
+          </>
         )}
         <ScheduleIcon sx={{ fontSize: 18, color: storedSeconds === 0 && !isEstimate ? "error.main" : "text.secondary" }} />
         <Box

@@ -16,6 +16,8 @@ export const B1MobilePage: React.FC = () => {
   const [phoneSetting, setPhoneSetting] = React.useState<GenericSettingInterface | null>(null);
   const [emailSetting, setEmailSetting] = React.useState<GenericSettingInterface | null>(null);
   const [pref, setPref] = React.useState<VisibilityPreferenceInterface>({ address: "", phoneNumber: "", email: "" } as VisibilityPreferenceInterface);
+  const [messagingMinimumAge, setMessagingMinimumAge] = React.useState("18");
+  const [msgAgeSetting, setMsgAgeSetting] = React.useState<GenericSettingInterface | null>(null);
   const [saving, setSaving] = React.useState(false);
 
   const churchId = UserHelper.currentUserChurch?.church?.id;
@@ -48,6 +50,9 @@ export const B1MobilePage: React.FC = () => {
     const email = allSettings.find(s => s.keyName === "emailVisibility");
     if (email) { setEmailSetting(email); p.email = email.value; }
     setPref(p);
+
+    const msgAge = allSettings.find(s => s.keyName === "messagingMinimumAge");
+    if (msgAge) { setMsgAgeSetting(msgAge); setMessagingMinimumAge(msgAge.value || "18"); }
   }, [churchId]);
 
   React.useEffect(() => { loadData(); }, [loadData]);
@@ -75,7 +80,10 @@ export const B1MobilePage: React.FC = () => {
       const emailSett: GenericSettingInterface = emailSetting || { churchId, public: 1, keyName: "emailVisibility" };
       emailSett.value = pref.email;
 
-      await ApiHelper.post("/settings", [approval, visibility, addrSett, phoneSett, emailSett], "MembershipApi");
+      const msgAge: GenericSettingInterface = msgAgeSetting || { churchId, public: 1, keyName: "messagingMinimumAge" };
+      msgAge.value = messagingMinimumAge;
+
+      await ApiHelper.post("/settings", [approval, visibility, addrSett, phoneSett, emailSett, msgAge], "MembershipApi");
       await loadData();
     } finally {
       setSaving(false);
@@ -159,6 +167,31 @@ export const B1MobilePage: React.FC = () => {
                   <MenuItem value="everyone">{Locale.label("settings.visibilityPrefSettingsEdit.everyone")}</MenuItem>
                   <MenuItem value="members">{Locale.label("settings.visibilityPrefSettingsEdit.members")}</MenuItem>
                   <MenuItem value="groups">{Locale.label("settings.visibilityPrefSettingsEdit.groups")}</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{Locale.label("settings.messagingMinimumAge.label")}</Typography>
+            <Tooltip title={Locale.label("settings.messagingMinimumAge.helpText")} arrow>
+              <Icon fontSize="small" sx={{ cursor: "pointer", color: "text.disabled", ml: 0.5 }}>help_outline</Icon>
+            </Tooltip>
+          </Stack>
+          <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FormControl fullWidth size="small">
+                <InputLabel id="messagingMinimumAge">{Locale.label("settings.messagingMinimumAge.label")}</InputLabel>
+                <Select
+                  fullWidth
+                  labelId="messagingMinimumAge"
+                  label={Locale.label("settings.messagingMinimumAge.label")}
+                  name="messagingMinimumAge"
+                  value={messagingMinimumAge}
+                  onChange={(e) => setMessagingMinimumAge(e.target.value)}>
+                  <MenuItem value="0">{Locale.label("settings.messagingMinimumAge.off")}</MenuItem>
+                  <MenuItem value="13">{Locale.label("settings.messagingMinimumAge.age13")}</MenuItem>
+                  <MenuItem value="16">{Locale.label("settings.messagingMinimumAge.age16")}</MenuItem>
+                  <MenuItem value="18">{Locale.label("settings.messagingMinimumAge.age18")}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

@@ -1,5 +1,16 @@
-import { type InstructionItem } from "@churchapps/content-providers";
+import { type InstructionItem, type Instructions, type IProvider } from "@churchapps/content-providers";
+import { ApiHelper } from "@churchapps/apphelper";
 import { type PlanItemInterface } from "../../helpers";
+
+/** Gets instructions from a provider based on its capabilities, proxying through the API when auth is required. */
+export async function getProviderInstructions(provider: IProvider, path: string, ministryId?: string, providerId?: string): Promise<Instructions | null> {
+  const capabilities = provider.capabilities;
+  if (!capabilities.instructions || !provider.getInstructions) return null;
+  if (provider.requiresAuth && ministryId && providerId) {
+    return ApiHelper.post("/providerProxy/getInstructions", { ministryId, providerId, path }, "DoingApi");
+  }
+  return provider.getInstructions(path);
+}
 
 /**
  * Recursively searches an instruction tree for a thumbnail.
@@ -19,6 +30,16 @@ export function findThumbnailRecursive(item: InstructionItem): string | undefine
 /** Handles undefined/null children arrays to avoid NaN. */
 export function getNextChildSort(children: PlanItemInterface[] | undefined | null): number {
   return (children?.length ?? 0) + 1;
+}
+
+/** Copies a plan item directly below the original. Uses the fractional-sort convention
+ * (same as drag-and-drop) via /planItems/sort, which renumbers siblings server-side. */
+export async function duplicatePlanItem(planItem: PlanItemInterface): Promise<void> {
+  const copy = { ...planItem };
+  delete copy.id;
+  delete copy.children;
+  copy.sort = (copy.sort || 0) + 0.5;
+  await ApiHelper.post("/planItems/sort", copy, "DoingApi");
 }
 
 /** Fresh media info for a provider item, fetched per page load (provider links can expire). */

@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "Vymazať",
       "manageRegistrations": "Spravovať registrácie",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "editEvent": "Upraviť udalosť"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -3305,6 +3306,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Nastavenia aplikácie",
       "branding": "Logo a značka",
       "brandingDescription": "Nahrajte a spravujte logá a značkové aktíva vašej organizácie",
       "edit": "Upraviť",
@@ -3320,6 +3322,8 @@
       "noImage": "Bez obrázku",
       "ogImage": "Obrázok pre sociálne médiá",
       "ogImageDesc": "Používa sa pre zdieľanie na sociálnych sieťach a SEO. Ideálna veľkosť: 1200×630px",
+      "pwaShortName": "Krátky názov PWA (max. 12 znakov)",
+      "pwaShortNameHelper": "Používa sa ako názov ikony aplikácie na domovskej obrazovke zariadenia.",
       "seoAssets": "SEO a aktíva prehliadača",
       "upload": "Nahrať"
     },
