@@ -11,9 +11,9 @@ export interface ByosProviderDescriptor {
 // onedrive (new Azure AD confidential app), dropbox (new "app folder" access-type app with files.content.read/write;
 // don't reuse the content-providers serving app 9io0q0q9angdz9j — it's read-scoped and full-Dropbox access type).
 // Options render disabled while their id is empty.
-const GOOGLE_CLIENT_ID = "";
+const GOOGLE_CLIENT_ID = "214868247432-hao323qmsfu96h345udaifs8f1nc7i71.apps.googleusercontent.com";
 const ONEDRIVE_CLIENT_ID = "";
-const DROPBOX_CLIENT_ID = "";
+const DROPBOX_CLIENT_ID = "6whskt40gy3ekjo";
 
 export const BYOS_PROVIDERS: ByosProviderDescriptor[] = [
   {
