@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
@@ -18,6 +18,7 @@ interface Props {
   onEditClick: () => void;
   onDuplicateClick?: () => void;
   mediaLookup?: Record<string, ProviderMediaInfo>;
+  onChange?: () => void;
 }
 
 /**
@@ -32,7 +33,8 @@ export const PlanItemRow: React.FC<Props> = ({
   onLabelClick,
   onEditClick,
   onDuplicateClick,
-  mediaLookup
+  mediaLookup,
+  onChange
 }) => {
   const railLabel = excluded ? "—" : (serviceStartTime ? formatClockTime(serviceStartTime, startTime) : formatTime(startTime));
   const providerMedia = planItem.thumbnailUrl ? undefined : matchProviderMedia(planItem, mediaLookup);
@@ -42,11 +44,54 @@ export const PlanItemRow: React.FC<Props> = ({
   const storedSeconds = planItem.seconds ?? 0;
   const estimatedSeconds = storedSeconds === 0 ? estimateSeconds(planItem, mediaLookup) : 0;
   const isEstimate = estimatedSeconds > 0;
+
+  const isScriptLine = !planItem.thumbnailUrl && !providerMedia && ["lessonAction", "action", "item", "providerPresentation"].includes(planItem.itemType || "");
+
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [editText, setEditText] = React.useState(planItem.textOverride ?? planItem.description ?? planItem.label ?? "");
+
+  const displayText = planItem.textOverride ?? planItem.description ?? planItem.label;
+
+  const handleSaveText = async () => {
+    setIsEditing(false);
+    if (editText !== displayText) {
+      const pi = { ...planItem };
+      if (pi.providerId || pi.providerPath) {
+        pi.textOverride = editText;
+      } else {
+        if (pi.description) pi.description = editText;
+        else pi.label = editText;
+      }
+
+      const { ApiHelper } = await import("@churchapps/apphelper");
+      await ApiHelper.post("/planItems", [pi], "DoingApi");
+      onChange?.();
+    }
+  };
+
+  const handleRestore = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const pi = { ...planItem, textOverride: "" };
+    const { ApiHelper } = await import("@churchapps/apphelper");
+    await ApiHelper.post("/planItems", [pi], "DoingApi");
+    onChange?.();
+  };
+
+  const handleTextClick = (e: React.MouseEvent) => {
+    if (readOnly || !isScriptLine) {
+      if (onLabelClick) onLabelClick();
+      return;
+    }
+    e.stopPropagation();
+    setEditText(displayText || "");
+    setIsEditing(true);
+  };
+
   return (
     <Box
-      className={`planItem${onLabelClick ? " clickableRow" : ""}`}
-      sx={{ display: "flex", alignItems: "center", cursor: onLabelClick ? "pointer" : "default", opacity: excluded ? 0.5 : 1 }}
-      onClick={onLabelClick}
+      className={`planItem${onLabelClick || (isScriptLine && !readOnly) ? " clickableRow" : ""}`}
+      sx={{ display: "flex", alignItems: "center", cursor: onLabelClick || (isScriptLine && !readOnly) ? "pointer" : "default", opacity: excluded ? 0.5 : 1 }}
+      onClick={isEditing ? undefined : (isScriptLine && !readOnly ? handleTextClick : onLabelClick)}
     >
       <div className="timeRailCell">
         <span className="timeRailLabel" style={excluded ? { color: "var(--text-muted)" } : undefined}>{railLabel}</span>
@@ -63,40 +108,13 @@ export const PlanItemRow: React.FC<Props> = ({
           <DragIndicatorIcon />
         </Box>
       )}
-      <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        {planItem.thumbnailUrl ? (
-          <Box
-            component="img"
-            src={planItem.thumbnailUrl}
-            alt=""
-            sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2 }}
-            onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-              e.currentTarget.style.display = "none";
-              if (e.currentTarget.nextElementSibling) {
-                (e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex";
-              }
-            }}
-          />
-        ) : providerMedia ? (
-          showVideoThumb ? (
-            <Box
-              component="video"
-              src={providerMedia.url}
-              preload="metadata"
-              muted
-              playsInline
-              // Browsers won't decode a frame until forced; seeking just past 0 paints the first frame without playing.
-              onLoadedMetadata={(e: React.SyntheticEvent<HTMLVideoElement>) => {
-                try { e.currentTarget.currentTime = 0.1; } catch { /* ignore */ }
-              }}
-              sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2, pointerEvents: "none", backgroundColor: "grey.900" }}
-            />
-          ) : (
+      {!isScriptLine && (
+        <Box sx={{ width: 80, height: 45, mr: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {planItem.thumbnailUrl ? (
             <Box
               component="img"
-              src={providerMedia.url}
+              src={planItem.thumbnailUrl}
               alt=""
-              loading="lazy"
               sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2 }}
               onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                 e.currentTarget.style.display = "none";
@@ -105,37 +123,97 @@ export const PlanItemRow: React.FC<Props> = ({
                 }
               }}
             />
-          )
-        ) : null}
-        <Box
-          component="span"
-          sx={{
-            display: planItem.thumbnailUrl || providerMedia ? "none" : "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 80,
-            height: 45,
-            backgroundColor: "grey.300",
-            borderRadius: 2
-          }}
-        >
-          <PlanItemIcon itemType={planItem.itemType} />
-        </Box>
-      </Box>
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <div>{planItem.label}</div>
-        {planItem.description && (
+          ) : providerMedia ? (
+            showVideoThumb ? (
+              <Box
+                component="video"
+                src={providerMedia.url}
+                preload="metadata"
+                muted
+                playsInline
+                // Browsers won't decode a frame until forced; seeking just past 0 paints the first frame without playing.
+                onLoadedMetadata={(e: React.SyntheticEvent<HTMLVideoElement>) => {
+                  try { e.currentTarget.currentTime = 0.1; } catch { /* ignore */ }
+                }}
+                sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2, pointerEvents: "none", backgroundColor: "grey.900" }}
+              />
+            ) : (
+              <Box
+                component="img"
+                src={providerMedia.url}
+                alt=""
+                loading="lazy"
+                sx={{ width: 80, height: 45, objectFit: "cover", borderRadius: 2 }}
+                onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                  e.currentTarget.style.display = "none";
+                  if (e.currentTarget.nextElementSibling) {
+                    (e.currentTarget.nextElementSibling as HTMLElement).style.display = "flex";
+                  }
+                }}
+              />
+            )
+          ) : null}
           <Box
-            className="planItemDescription"
+            component="span"
             sx={{
-              clear: "both",
-              width: "100%",
-              pt: 0.5,
-              fontSize: "0.9rem"
+              display: planItem.thumbnailUrl || providerMedia ? "none" : "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 80,
+              height: 45,
+              backgroundColor: "grey.300",
+              borderRadius: 2
             }}
           >
-            <MarkdownPreviewLight value={planItem.description || ""} />
+            <PlanItemIcon itemType={planItem.itemType} />
           </Box>
+        </Box>
+      )}
+      <Box sx={{ flex: 1, minWidth: 0, ml: isScriptLine ? 2 : 0 }}>
+        {isEditing ? (
+          <TextField
+            autoFocus
+            multiline
+            fullWidth
+            size="small"
+            variant="outlined"
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            onBlur={handleSaveText}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSaveText();
+              }
+            }}
+            onClick={(e) => e.stopPropagation()}
+            sx={{
+              backgroundColor: "white",
+              "& .MuiOutlinedInput-root": { padding: "8px" }
+            }}
+          />
+        ) : (
+          <>
+            <div style={isScriptLine ? { fontSize: "1.1rem", lineHeight: 1.4 } : undefined}>{displayText}</div>
+            {(!isScriptLine && planItem.description && (!planItem.textOverride || planItem.textOverride === "")) && (
+              <Box
+                className="planItemDescription"
+                sx={{
+                  clear: "both",
+                  width: "100%",
+                  pt: 0.5,
+                  fontSize: "0.9rem"
+                }}
+              >
+                <MarkdownPreviewLight value={planItem.description || ""} />
+              </Box>
+            )}
+            {planItem.textOverride && (planItem.providerId || planItem.providerPath) && !readOnly && (
+              <Box component="span" sx={{ fontSize: "0.8rem", color: "primary.main", cursor: "pointer", mt: 0.5, display: "inline-block" }} onClick={handleRestore}>
+                {Locale.label("plans.planItem.restoreOriginal") || "Restore Original"}
+              </Box>
+            )}
+          </>
         )}
       </Box>
       <Box component="span" sx={{ display: "flex", alignItems: "center", gap: 0.75, flexShrink: 0, ml: 1.5 }}>

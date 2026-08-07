@@ -146,6 +146,60 @@ export const PrintPlan = () => {
         console.error("Failed to load lesson feed:", error);
       }
     }
+
+    if (currentFeed?.sections) {
+      const flattenItems = (items: any[]): any[] => {
+        let result: any[] = [];
+        items.forEach(item => {
+          result.push(item);
+          if (item.children) result = result.concat(flattenItems(item.children));
+        });
+        return result;
+      };
+      const flatPlanItems = flattenItems(planItemsData);
+
+      const unexpandedSectionNames = flatPlanItems
+        .filter((pi: any) => ["section", "providerSection", "lessonSection", "header"].includes(pi.itemType))
+        .map((pi: any) => pi.label || pi.description || "")
+        .filter((name: string) => name.trim() !== "");
+
+      currentFeed.sections.forEach((s: any) => {
+        const isUnexpandedSection = unexpandedSectionNames.includes(s.name);
+        if (!isUnexpandedSection) {
+          s.actions = (s.actions || []).filter((a: any) => {
+            let matchedPi: any = null;
+            if (a.id) {
+              matchedPi = flatPlanItems.find((pi: any) => pi.relatedId === a.id);
+            }
+            if (!matchedPi && a.content) {
+              matchedPi = flatPlanItems.find((pi: any) => {
+                const name = pi.label || pi.description || "";
+                return name.trim() !== "" && (a.content.includes(name) || name.includes(a.content));
+              });
+            }
+
+            if (matchedPi) {
+              // Apply text override if it exists
+              if (matchedPi.textOverride) {
+                a.content = matchedPi.textOverride;
+              } else if (matchedPi.description) {
+                a.content = matchedPi.description;
+              } else if (matchedPi.label) {
+                a.content = matchedPi.label;
+              }
+              return true;
+            }
+            return false;
+          });
+        }
+      });
+
+      currentFeed.sections = currentFeed.sections.filter((s: any) => {
+        if (unexpandedSectionNames.includes(s.name)) return true;
+        return s.actions && s.actions.length > 0;
+      });
+    }
+
     setFeed(currentFeed);
 
     if (!currentFeed) {

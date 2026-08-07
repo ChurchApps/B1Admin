@@ -154,6 +154,7 @@ export interface PlanItemInterface {
   providerPath?: string;
   providerContentPath?: string;
   thumbnailUrl?: string;
+  textOverride?: string;
 
   children?: PlanItemInterface[];
 }
