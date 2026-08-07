@@ -37,6 +37,7 @@ export const PrintPlan = () => {
       const url = item.downloadUrl || file?.downloadUrl;
       const thumbnail = item.thumbnail || file?.thumbnail;
       return {
+        id: item.id,
         actionType: item.actionType || "note",
         content: item.content || item.label || "",
         files: url || thumbnail ? [{ name: item.label, url, thumbnail, seconds: item.seconds || file?.seconds }] : []
@@ -104,7 +105,6 @@ export const PrintPlan = () => {
       return null;
     }
   };
-
   const loadData = async () => {
     setIsLoading(true);
 
@@ -136,16 +136,64 @@ export const PrintPlan = () => {
       setPeople(peopleData);
     }
 
+    const flattenItems = (items: any[]): any[] => {
+      let result: any[] = [];
+      items.forEach(item => {
+        result.push(item);
+        if (item.children) result = result.concat(flattenItems(item.children));
+      });
+      return result;
+    };
+
+    const flatPlanItems = flattenItems(planItemsData);
+
+    const primaryLessonItem = flatPlanItems.find((pi: any) => pi.providerId && pi.providerPath);
+    const activeProviderId = primaryLessonItem?.providerId || planData?.providerId;
+    const activeContentId = primaryLessonItem?.providerPath || planData?.contentId;
+    const activeContentType = primaryLessonItem ? "lesson" : planData?.contentType;
+
     let currentFeed: FeedVenueInterface | null = null;
-    if (planData?.providerId) {
-      currentFeed = await loadProviderFeed(planData);
-    } else if (planData?.contentId && (planData?.contentType === "venue" || planData?.contentType === "lesson")) {
+    if (activeProviderId) {
+      const mockPlanData = { ...planData, providerId: activeProviderId, contentId: activeContentId } as PlanInterface;
+      currentFeed = await loadProviderFeed(mockPlanData);
+    } else if (activeContentId && (activeContentType === "venue" || activeContentType === "lesson")) {
       try {
-        currentFeed = await ApiHelper.get("/venues/public/feed/" + planData.contentId, "LessonsApi");
+        currentFeed = await ApiHelper.get("/venues/public/feed/" + activeContentId, "LessonsApi");
       } catch (error) {
         console.error("Failed to load lesson feed:", error);
       }
     }
+
+    if (currentFeed?.sections) {
+      const planActionIds = flatPlanItems.map((pi: any) => pi.relatedId).filter((id: any) => id);
+      const planItemNames = flatPlanItems
+        .map((pi: any) => pi.label || pi.description || "")
+        .filter((name: string) => name.trim() !== "");
+
+      const unexpandedSectionNames = flatPlanItems
+        .filter((pi: any) => ["section", "providerSection", "lessonSection", "header"].includes(pi.itemType))
+        .map((pi: any) => pi.label || pi.description || "")
+        .filter((name: string) => name.trim() !== "");
+
+      currentFeed.sections.forEach((s: any) => {
+        const isUnexpandedSection = unexpandedSectionNames.includes(s.name);
+        if (!isUnexpandedSection) {
+          s.actions = (s.actions || []).filter((a: any) => {
+            if (a.id) return planActionIds.includes(a.id);
+            if (a.content) {
+              return planItemNames.some((name: string) => a.content.includes(name) || name.includes(a.content));
+            }
+            return false;
+          });
+        }
+      });
+
+      currentFeed.sections = currentFeed.sections.filter((s: any) => {
+        if (unexpandedSectionNames.includes(s.name)) return true;
+        return s.actions && s.actions.length > 0;
+      });
+    }
+
     setFeed(currentFeed);
 
     if (!currentFeed) {
