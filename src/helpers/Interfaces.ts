@@ -484,6 +484,7 @@ export interface FeedFileInterface {
 }
 
 export interface FeedSectionInterface {
+  id?: string;
   name?: string;
   actions?: FeedActionInterface[];
   materials?: string;

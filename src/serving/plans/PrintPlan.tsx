@@ -37,7 +37,8 @@ export const PrintPlan = () => {
       const url = item.downloadUrl || file?.downloadUrl;
       const thumbnail = item.thumbnail || file?.thumbnail;
       return {
-        id: item.id,
+        // relatedId first: expanded plan items store relatedId || id, so the feed must match.
+        id: item.relatedId || item.id,
         actionType: item.actionType || "note",
         content: item.content || item.label || "",
         files: url || thumbnail ? [{ name: item.label, url, thumbnail, seconds: item.seconds || file?.seconds }] : []
@@ -56,7 +57,7 @@ export const PrintPlan = () => {
         if (item.itemType === "section") {
           const actions: FeedActionInterface[] = [];
           collectActions(item.children || [], actions);
-          sections.push({ name: item.label || "", actions });
+          sections.push({ id: item.relatedId || item.id, name: item.label || "", actions });
         } else if (item.children?.length) {
           walk(item.children);
         }
@@ -136,8 +137,8 @@ export const PrintPlan = () => {
       setPeople(peopleData);
     }
 
-    const flattenItems = (items: any[]): any[] => {
-      let result: any[] = [];
+    const flattenItems = (items: PlanItemInterface[]): PlanItemInterface[] => {
+      let result: PlanItemInterface[] = [];
       items.forEach(item => {
         result.push(item);
         if (item.children) result = result.concat(flattenItems(item.children));
@@ -145,16 +146,21 @@ export const PrintPlan = () => {
       return result;
     };
 
-    const flatPlanItems = flattenItems(planItemsData);
+    const flatPlanItems = flattenItems(planItemsData || []);
 
-    const primaryLessonItem = flatPlanItems.find((pi: any) => pi.providerId && pi.providerPath);
+    const primaryLessonItem = flatPlanItems.find(pi => pi.providerId && pi.providerPath);
     const activeProviderId = primaryLessonItem?.providerId || planData?.providerId;
     const activeContentId = primaryLessonItem?.providerPath || planData?.contentId;
-    const activeContentType = primaryLessonItem ? "lesson" : planData?.contentType;
+    const activeContentType = planData?.contentType;
 
     let currentFeed: FeedVenueInterface | null = null;
     if (activeProviderId) {
-      const mockPlanData = { ...planData, providerId: activeProviderId, contentId: activeContentId } as PlanInterface;
+      const mockPlanData = {
+        ...planData,
+        providerId: activeProviderId,
+        contentId: activeContentId,
+        providerPlanId: primaryLessonItem?.providerPath || planData?.providerPlanId
+      } as PlanInterface;
       currentFeed = await loadProviderFeed(mockPlanData);
     } else if (activeContentId && (activeContentType === "venue" || activeContentType === "lesson")) {
       try {
@@ -164,34 +170,32 @@ export const PrintPlan = () => {
       }
     }
 
+    // Sections still present in the plan print as-is; sections expanded to
+    // individual actions keep only the actions still present in the plan.
     if (currentFeed?.sections) {
-      const planActionIds = flatPlanItems.map((pi: any) => pi.relatedId).filter((id: any) => id);
-      const planItemNames = flatPlanItems
-        .map((pi: any) => pi.label || pi.description || "")
-        .filter((name: string) => name.trim() !== "");
+      const norm = (s?: string) => (s || "").trim().toLowerCase();
+      const planActionIds = new Set(flatPlanItems.map(pi => pi.relatedId).filter(Boolean));
+      const providerItemNames = new Set(flatPlanItems
+        .filter(pi => pi.providerId || pi.relatedId)
+        .map(pi => norm(pi.label || pi.description))
+        .filter(Boolean));
 
-      const unexpandedSectionNames = flatPlanItems
-        .filter((pi: any) => ["section", "providerSection", "lessonSection", "header"].includes(pi.itemType))
-        .map((pi: any) => pi.label || pi.description || "")
-        .filter((name: string) => name.trim() !== "");
+      const sectionItems = flatPlanItems.filter(pi => ["section", "providerSection", "lessonSection", "header"].includes(pi.itemType));
+      const sectionIdsInPlan = new Set(sectionItems.map(pi => pi.relatedId).filter(Boolean));
+      const sectionNamesInPlan = new Set(sectionItems.map(pi => norm(pi.label || pi.description)).filter(Boolean));
+      const sectionInPlan = (s: FeedSectionInterface) => (!!s.id && sectionIdsInPlan.has(s.id)) || sectionNamesInPlan.has(norm(s.name));
 
-      currentFeed.sections.forEach((s: any) => {
-        const isUnexpandedSection = unexpandedSectionNames.includes(s.name);
-        if (!isUnexpandedSection) {
-          s.actions = (s.actions || []).filter((a: any) => {
-            if (a.id) return planActionIds.includes(a.id);
-            if (a.content) {
-              return planItemNames.some((name: string) => a.content.includes(name) || name.includes(a.content));
-            }
-            return false;
-          });
-        }
+      currentFeed.sections.forEach((s: FeedSectionInterface) => {
+        if (sectionInPlan(s)) return;
+        s.actions = (s.actions || []).filter((a: FeedActionInterface) => {
+          if (a.id) return planActionIds.has(a.id);
+          // ponytail: id-less actions fall back to exact normalized name match — still
+          // plan-global; scope per-section if duplicate action text misprints in practice.
+          return !!a.content && providerItemNames.has(norm(a.content));
+        });
       });
 
-      currentFeed.sections = currentFeed.sections.filter((s: any) => {
-        if (unexpandedSectionNames.includes(s.name)) return true;
-        return s.actions && s.actions.length > 0;
-      });
+      currentFeed.sections = currentFeed.sections.filter((s: FeedSectionInterface) => sectionInPlan(s) || (s.actions && s.actions.length > 0));
     }
 
     setFeed(currentFeed);
