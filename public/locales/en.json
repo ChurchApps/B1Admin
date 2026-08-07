@@ -3518,6 +3518,7 @@
       "connect": "Connect Account",
       "connecting": "Waiting for sign-in...",
       "connected": "Account connected",
+      "reconnect": "Reconnect",
       "connectFirst": "Connect your account before saving.",
       "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
       "s3AccessKey": "Access Key Id",

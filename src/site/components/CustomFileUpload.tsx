@@ -73,10 +73,14 @@ export function CustomFileUpload(props: Props) {
       props.saveCallback(data[0]);
     } catch (error) {
       setUploadProgress(-1);
-      const isQuota = String((error as Error)?.message || error).includes("storage_quota_exceeded");
-      setUploadError(isQuota
-        ? Locale.label("fileUpload.quotaExceeded", "Storage quota exceeded. Delete unused files or upgrade your storage plan.")
-        : Locale.label("fileUpload.uploadFailed", "Upload failed. Please try again."));
+      const message = String((error as Error)?.message || error);
+      if (message.includes("storage_quota_exceeded")) {
+        setUploadError(Locale.label("fileUpload.quotaExceeded", "Storage quota exceeded. Delete unused files or upgrade your storage plan."));
+      } else if (message.includes("storage_provider_error")) {
+        setUploadError(message.substring(message.indexOf("storage_provider_error")));
+      } else {
+        setUploadError(Locale.label("fileUpload.uploadFailed", "Upload failed. Please try again."));
+      }
     }
   };
 

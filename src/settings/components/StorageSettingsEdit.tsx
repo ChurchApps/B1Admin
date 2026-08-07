@@ -205,11 +205,14 @@ export const StorageSettingsEdit: React.FC<Props> = (props) => {
         </Grid>
         {selectedDescriptor?.oauth && (
           <Grid size={{ xs: 12, md: 8 }} sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            {selectedRow?.connected
-              ? <Chip icon={<CheckCircleIcon />} color="success" label={Locale.label("settings.storageSettingsEdit.connected", "Account connected")} />
-              : <Button variant="contained" onClick={startConnect} disabled={connecting} data-testid="byos-connect-button">
-                {connecting ? Locale.label("settings.storageSettingsEdit.connecting", "Waiting for sign-in...") : Locale.label("settings.storageSettingsEdit.connect", "Connect Account")}
-              </Button>}
+            {selectedRow?.connected && <Chip icon={<CheckCircleIcon />} color="success" label={Locale.label("settings.storageSettingsEdit.connected", "Account connected")} />}
+            <Button variant={selectedRow?.connected ? "outlined" : "contained"} onClick={startConnect} disabled={connecting} data-testid="byos-connect-button">
+              {connecting
+                ? Locale.label("settings.storageSettingsEdit.connecting", "Waiting for sign-in...")
+                : selectedRow?.connected
+                  ? Locale.label("settings.storageSettingsEdit.reconnect", "Reconnect")
+                  : Locale.label("settings.storageSettingsEdit.connect", "Connect Account")}
+            </Button>
           </Grid>
         )}
         {selectedDescriptor?.oauth && (
