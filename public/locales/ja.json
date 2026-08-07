@@ -171,7 +171,8 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "delete": "削除",
       "manageRegistrations": "登録を管理",
-      "noGroups": "No groups found."
+      "noGroups": "No groups found.",
+      "editEvent": "イベントを編集"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -3305,6 +3306,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "アプリ設定",
       "branding": "ロゴとブランディング",
       "brandingDescription": "組織のロゴとブランディング資産をアップロードおよび管理",
       "edit": "編集",
@@ -3320,6 +3322,8 @@
       "noImage": "画像なし",
       "ogImage": "ソーシャルメディア画像",
       "ogImageDesc": "ソーシャル共有とSEOに使用。理想的なサイズ：1200×630px",
+      "pwaShortName": "PWA短縮名(最大12文字)",
+      "pwaShortNameHelper": "デバイスのホーム画面のアプリアイコン名に使用されます。",
       "seoAssets": "SEOおよびブラウザ資産",
       "upload": "アップロード"
     },

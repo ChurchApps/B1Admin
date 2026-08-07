@@ -171,7 +171,8 @@
       "confirmDelete": "Sigurado ka bang nais mong tanggalin ang kaganapang ito?",
       "delete": "Tanggalin",
       "manageRegistrations": "Pamahalaan ang Mga Rehistrasyon",
-      "noGroups": "Walang natagpuang grupo."
+      "noGroups": "Walang natagpuang grupo.",
+      "editEvent": "I-edit ang Kaganapan"
     },
     "calendarList": {
       "aboutParagraph1": "Pinapayagan ka ng mga kalendaryo na ayusin at ipakita ang mga kaganapan para sa iyong simbahan.",
@@ -3305,6 +3306,7 @@
       "slow": "Mabagal"
     },
     "appearanceEdit": {
+      "appSettings": "Mga Setting ng App",
       "branding": "Logo at Branding",
       "brandingDescription": "Mag-upload at mamahala ng mga logo at branding assets ng iyong organisasyon",
       "edit": "I-edit",
@@ -3320,6 +3322,8 @@
       "noImage": "Walang imahe",
       "ogImage": "Imahe para sa Social Media",
       "ogImageDesc": "Ginagamit para sa social sharing at SEO. Inirerekomendang sukat: 1200×630px",
+      "pwaShortName": "Maikling Pangalan ng PWA (Max na 12 character)",
+      "pwaShortNameHelper": "Ginagamit bilang pangalan ng icon ng app sa home screen ng device.",
       "seoAssets": "SEO at Browser Assets",
       "upload": "Mag-upload"
     },

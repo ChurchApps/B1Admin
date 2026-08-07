@@ -22,8 +22,6 @@ import { SiteTemplatePicker } from "./admin/templates/SiteTemplatePicker";
 import { PageHelper, EnvironmentHelper } from "../helpers";
 import type { PageLink } from "../helpers";
 import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { SiteNavigation } from "../components/SiteNavigation";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { CountChip, HeaderPrimaryButton, HeaderSecondaryButton, hoverRowSx } from "../components/ui";
@@ -318,34 +316,32 @@ export const PagesPage = () => {
       </PageHeader>
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 2 }} style={{ backgroundColor: theme.palette.background.paper, paddingLeft: 40, paddingTop: 24, position: "relative", zIndex: 1 }}>
-          <DndProvider backend={HTML5Backend}>
-            <h2 style={{ marginTop: 0 }}>{Locale.label("site.pagesPage.pages")}</h2>
-            <div>
-              <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <Typography sx={{ fontSize: "13.5px", fontStyle: "italic" }}>{Locale.label("site.pagesPage.showLogin")}</Typography>
-                  <Tooltip title={Locale.label("site.pagesPage.showLoginTooltip")} arrow>
-                    <Icon color="primary" sx={{ fontSize: 18, cursor: "pointer" }}>
-                      info
-                    </Icon>
-                  </Tooltip>
-                </Stack>
-                <Switch
-                  onChange={handleSwitchChange}
-                  checked={showLogin ? checked : true}
-                  slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") } }}
-                  data-testid="show-login-switch"
-                />
+          <h2 style={{ marginTop: 0 }}>{Locale.label("site.pagesPage.pages")}</h2>
+          <div>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Typography sx={{ fontSize: "13.5px", fontStyle: "italic" }}>{Locale.label("site.pagesPage.showLogin")}</Typography>
+                <Tooltip title={Locale.label("site.pagesPage.showLoginTooltip")} arrow>
+                  <Icon color="primary" sx={{ fontSize: 18, cursor: "pointer" }}>
+                    info
+                  </Icon>
+                </Tooltip>
               </Stack>
+              <Switch
+                onChange={handleSwitchChange}
+                checked={showLogin ? checked : true}
+                slotProps={{ input: { "aria-label": Locale.label("site.pagesPage.toggleLoginVisibility") } }}
+                data-testid="show-login-switch"
+              />
+            </Stack>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
+            <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
+            <div style={{ flexShrink: 0, marginLeft: 8 }}>
+              <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "", siteId } as LinkInterface)} data-testid="add-navigation-link" />
             </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8, minHeight: 36 }}>
-              <h3 style={{ margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1, minWidth: 0 }}>{Locale.label("site.pagesPage.mainNavigation")}</h3>
-              <div style={{ flexShrink: 0, marginLeft: 8 }}>
-                <AppIconButton label={Locale.label("common.add")} icon={<AddIcon />} intent="add" onClick={() => setEditLink({ churchId: UserHelper.currentUserChurch.church.id, category: "website", linkType: "url", sort: 99, linkData: "", icon: "", siteId } as LinkInterface)} data-testid="add-navigation-link" />
-              </div>
-            </div>
-            <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} siteId={siteId} />
-          </DndProvider>
+          </div>
+          <SiteNavigation links={links} refresh={loadData} select={() => {}} handleDrop={handleDrop} siteId={siteId} />
         </Grid>
         <Grid size={{ xs: 12, md: 10 }} style={{ position: "relative", zIndex: 1 }}>
           <Box sx={{ p: 3 }}>

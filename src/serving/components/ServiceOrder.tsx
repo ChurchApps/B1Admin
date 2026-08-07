@@ -6,35 +6,23 @@ import { type GroupInterface, type PlanInterface, type TimeInterface, type PlanI
 import { type PlanItemInterface, hasPlansEditAccess } from "../../helpers";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { useQuery } from "@tanstack/react-query";
-import { getProvider, type InstructionItem, type IProvider, type Instructions } from "@churchapps/content-providers";
+import { getProvider, type InstructionItem, type IProvider } from "@churchapps/content-providers";
 import { PlanItemEdit } from "./PlanItemEdit";
 import { LessonSelector } from "./LessonSelector";
 import { LessonHeaderSelector } from "./LessonHeaderSelector";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlanItem } from "./PlanItem";
 import { SaveTemplateDialog } from "./SaveTemplateDialog";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
 import { RowDropZone } from "./RowDropZone";
 import { formatTime } from "./PlanUtils";
-import { findThumbnailRecursive, buildProviderMediaLookup, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, type ProviderMediaInfo } from "./planItemUtils";
+import { findThumbnailRecursive, buildProviderMediaLookup, matchProviderMedia, isVideoMedia, getVideoDuration, estimateSeconds, getProviderInstructions, type ProviderMediaInfo } from "./planItemUtils";
 
 interface Props {
   plan: PlanInterface;
   onPlanUpdate?: () => void;
 }
 
-
-// Helper to get instructions from provider based on its capabilities
-async function getProviderInstructions(provider: IProvider, path: string, ministryId?: string, providerId?: string): Promise<Instructions | null> {
-  const capabilities = provider.capabilities;
-  if (!capabilities.instructions || !provider.getInstructions) return null;
-  if (provider.requiresAuth && ministryId && providerId) {
-    return ApiHelper.post("/providerProxy/getInstructions", { ministryId, providerId, path }, "DoingApi");
-  }
-  return provider.getInstructions(path);
-}
 
 // Helper to convert InstructionItem to PlanItemInterface
 function instructionToPlanItem(item: InstructionItem, providerId?: string, providerPath?: string, pathIndices: number[] = []): PlanItemInterface {
@@ -711,33 +699,31 @@ export const ServiceOrder = memo((props: Props) => {
             {editContent}
           </Stack>
 
-          <DndProvider backend={HTML5Backend}>
-            {planItems.length === 0 ? (
-              showPreviewMode ? (
-                <LessonPreview
-                  lessonItems={previewLessonItems}
-                  contentName={contentName}
-                  onCustomize={handleCustomizeLesson}
-                  associatedProviderId={props.plan?.providerId}
-                  associatedContentPath={getContentPath() || undefined}
-                  ministryId={props.plan?.ministryId}
-                  mediaLookup={mediaLookup}
-                />
-              ) : (
-                <Box
-                  sx={{
-                    textAlign: "center",
-                    py: 4,
-                    color: "text.secondary"
-                  }}>
-                  <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
-                  <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
-                </Box>
-              )
+          {planItems.length === 0 ? (
+            showPreviewMode ? (
+              <LessonPreview
+                lessonItems={previewLessonItems}
+                contentName={contentName}
+                onCustomize={handleCustomizeLesson}
+                associatedProviderId={props.plan?.providerId}
+                associatedContentPath={getContentPath() || undefined}
+                ministryId={props.plan?.ministryId}
+                mediaLookup={mediaLookup}
+              />
             ) : (
-              renderPlanItems()
-            )}
-          </DndProvider>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  py: 4,
+                  color: "text.secondary"
+                }}>
+                <AlbumIcon sx={{ fontSize: 48, mb: 2, color: "text.secondary" }} />
+                <Typography variant="body1">{Locale.label("plans.serviceOrder.noItems")}</Typography>
+              </Box>
+            )
+          ) : (
+            renderPlanItems()
+          )}
         </CardContent>
       </Card>
       <Snackbar

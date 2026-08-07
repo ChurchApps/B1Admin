@@ -1,13 +1,18 @@
-import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale } from "@churchapps/apphelper";
+import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale, Loading } from "@churchapps/apphelper";
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { type PlanItemInterface } from "../../helpers";
 import { formatClockTime } from "../components/PlanUtils";
 import { type PlanItemTimeInterface, type AssignmentInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
+import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
+import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
+import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
+import { getProviderInstructions } from "../components/planItemUtils";
 
 export const PrintPlan = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
@@ -15,6 +20,8 @@ export const PrintPlan = () => {
   const [planItems, setPlanItems] = React.useState<PlanItemInterface[]>([]);
   const [serviceTimes, setServiceTimes] = React.useState<TimeInterface[]>([]);
   const [exclusions, setExclusions] = React.useState<PlanItemTimeInterface[]>([]);
+  const [feed, setFeed] = React.useState<FeedVenueInterface | null>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -22,37 +29,132 @@ export const PrintPlan = () => {
     return minutes + ":" + (secs < 10 ? "0" : "") + secs;
   };
 
-  const loadData = async () => {
-    ApiHelper.get("/plans/" + params.id, "DoingApi").then((data: any) => {
-      setPlan(data);
-    });
-    ApiHelper.get("/positions/plan/" + params.id, "DoingApi").then((data: any) => {
-      setPositions(data);
-    });
-    ApiHelper.get("/planItems/plan/" + params.id?.toString(), "DoingApi").then((d: any) => {
-      setPlanItems(d);
-    });
-    ApiHelper.get("/times/plan/" + params.id, "DoingApi").then((d: TimeInterface[]) => {
-      const services = (d || []).filter((t) => (t.serviceTimeType ?? "service") === "service");
-      services.sort((a, b) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
-      setServiceTimes(services);
-    });
-    ApiHelper.get("/planItemTimes/plan/" + params.id, "DoingApi").then((d: PlanItemTimeInterface[]) => {
-      setExclusions(d || []);
-    });
+  const instructionsToFeed = (instructions: Instructions, currentPlan: PlanInterface): FeedVenueInterface => {
+    const sections: FeedSectionInterface[] = [];
 
-    const d = await ApiHelper.get("/assignments/plan/" + params.id, "DoingApi");
-    setAssignments(d);
-    const peopleIds = ArrayHelper.getUniqueValues(d, "personId");
-    if (peopleIds.length > 0) {
-      ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi").then((data: PersonInterface[]) => {
-        setPeople(data);
+    const toAction = (item: InstructionItem): FeedActionInterface => {
+      const file = item.children?.find(c => c.itemType === "file");
+      const url = item.downloadUrl || file?.downloadUrl;
+      const thumbnail = item.thumbnail || file?.thumbnail;
+      return {
+        actionType: item.actionType || "note",
+        content: item.content || item.label || "",
+        files: url || thumbnail ? [{ name: item.label, url, thumbnail, seconds: item.seconds || file?.seconds }] : []
+      };
+    };
+
+    const collectActions = (items: InstructionItem[], into: FeedActionInterface[]) => {
+      items.forEach(item => {
+        if (item.itemType === "action" || !item.children?.length) into.push(toAction(item));
+        else collectActions(item.children, into);
       });
+    };
+
+    const walk = (items: InstructionItem[]) => {
+      items.forEach(item => {
+        if (item.itemType === "section") {
+          const actions: FeedActionInterface[] = [];
+          collectActions(item.children || [], actions);
+          sections.push({ name: item.label || "", actions });
+        } else if (item.children?.length) {
+          walk(item.children);
+        }
+      });
+    };
+    walk(instructions.items || []);
+
+    const findThumb = (items: InstructionItem[]): string => {
+      for (const item of items) {
+        if (item.thumbnail) return item.thumbnail;
+        const found = item.children ? findThumb(item.children) : "";
+        if (found) return found;
+      }
+      return "";
+    };
+
+    return {
+      id: currentPlan.id || "",
+      name: instructions.name || currentPlan.providerPlanName || "",
+      lessonId: currentPlan.providerPlanId || "",
+      lessonName: currentPlan.providerPlanName || instructions.name || "",
+      lessonImage: findThumb(instructions.items || []),
+      studyName: currentPlan.name || "",
+      sections
+    };
+  };
+
+  // Saved plan items are lossy (customize strips actions; preview state has none),
+  // so provider prints always come from the live provider content.
+  const loadProviderFeed = async (planData: PlanInterface): Promise<FeedVenueInterface | null> => {
+    if (planData.providerId === "lessonschurch" && planData.contentId) {
+      try {
+        const venueFeed = await ApiHelper.get("/venues/public/feed/" + planData.contentId, "LessonsApi");
+        if (venueFeed?.sections?.length) return venueFeed;
+      } catch { /* fall through to provider instructions */ }
+    }
+    try {
+      const provider = planData.providerId ? getProvider(planData.providerId) : null;
+      if (!provider || !planData.providerPlanId) return null;
+      const instructions = await getProviderInstructions(provider, planData.providerPlanId, planData.ministryId, planData.providerId);
+      if (!instructions?.items?.length) return null;
+      const result = instructionsToFeed(instructions, planData);
+      return result.sections?.length ? result : null;
+    } catch (error) {
+      console.error("Failed to load provider print feed:", error);
+      return null;
+    }
+  };
+
+  const loadData = async () => {
+    setIsLoading(true);
+
+    const promises = [
+      ApiHelper.get("/plans/" + params.id, "DoingApi"),
+      ApiHelper.get("/positions/plan/" + params.id, "DoingApi"),
+      ApiHelper.get("/planItems/plan/" + params.id?.toString(), "DoingApi"),
+      ApiHelper.get("/times/plan/" + params.id, "DoingApi"),
+      ApiHelper.get("/planItemTimes/plan/" + params.id, "DoingApi"),
+      ApiHelper.get("/assignments/plan/" + params.id, "DoingApi")
+    ];
+
+    const [planData, positionsData, planItemsData, timesData, exclusionsData, assignmentsData] = await Promise.all(promises);
+
+    setPlan(planData);
+    setPositions(positionsData);
+    setPlanItems(planItemsData);
+
+    const services = (timesData || []).filter((t: any) => (t.serviceTimeType ?? "service") === "service");
+    services.sort((a: any, b: any) => new Date(a.startTime || 0).getTime() - new Date(b.startTime || 0).getTime());
+    setServiceTimes(services);
+
+    setExclusions(exclusionsData || []);
+    setAssignments(assignmentsData);
+
+    const peopleIds = ArrayHelper.getUniqueValues(assignmentsData, "personId");
+    if (peopleIds.length > 0) {
+      const peopleData = await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi");
+      setPeople(peopleData);
     }
 
-    setTimeout(() => {
-      window.print();
-    }, 1000);
+    let currentFeed: FeedVenueInterface | null = null;
+    if (planData?.providerId) {
+      currentFeed = await loadProviderFeed(planData);
+    } else if (planData?.contentId && (planData?.contentType === "venue" || planData?.contentType === "lesson")) {
+      try {
+        currentFeed = await ApiHelper.get("/venues/public/feed/" + planData.contentId, "LessonsApi");
+      } catch (error) {
+        console.error("Failed to load lesson feed:", error);
+      }
+    }
+    setFeed(currentFeed);
+
+    if (!currentFeed) {
+      setTimeout(() => {
+        window.print();
+      }, 1000);
+    }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -180,35 +282,49 @@ export const PrintPlan = () => {
     tableCell: { verticalAlign: "top", padding: 5, textAlign: "left" }
   };
 
-  return (
-    <>
-      <div style={Styles.body} className="printBackgrounds">
-        <Grid container>
-          <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
-            {Locale.label("plans.printPlan.serviceOrder")}
-          </Grid>
-          <Grid size={{ xs: 4 }} style={{ ...Styles.header, borderTop: "5px solid #000" }}>
-            {plan && DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate))}
-          </Grid>
-          <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
-            {Locale.label("plans.printPlan.serviceOrder")}
-          </Grid>
+  const renderWorshipOrder = () => (
+    <div style={Styles.body} className="printBackgrounds">
+      <Grid container>
+        <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
+          {Locale.label("plans.printPlan.serviceOrder")}
         </Grid>
-        <div style={Styles.divider}>&nbsp;</div>
-        <Grid container>
-          <Grid size={{ xs: 4 }} style={{ padding: 5 }}>
-            <div style={{ border: "2px solid #000", textAlign: "left", padding: 10 }}>{getPositionCategories()}</div>
-          </Grid>
-          <Grid size={{ xs: 8 }} style={{ padding: 5 }}>
-            <div style={{ border: "5px solid #000" }}>
-              <table style={{ width: "100%", margin: 0 }} cellSpacing={0}>
-                {renderHeaderRow()}
-                {renderRows()}
-              </table>
-            </div>
-          </Grid>
+        <Grid size={{ xs: 4 }} style={{ ...Styles.header, borderTop: "5px solid #000" }}>
+          {plan && DateHelper.prettyDate(DateHelper.toDate(plan.serviceDate))}
         </Grid>
-      </div>
-    </>
+        <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
+          {Locale.label("plans.printPlan.serviceOrder")}
+        </Grid>
+      </Grid>
+      <div style={Styles.divider}>&nbsp;</div>
+      <Grid container>
+        <Grid size={{ xs: 4 }} style={{ padding: 5 }}>
+          <div style={{ border: "2px solid #000", textAlign: "left", padding: 10 }}>{getPositionCategories()}</div>
+        </Grid>
+        <Grid size={{ xs: 8 }} style={{ padding: 5 }}>
+          <div style={{ border: "5px solid #000" }}>
+            <table style={{ width: "100%", margin: 0 }} cellSpacing={0}>
+              {renderHeaderRow()}
+              {renderRows()}
+            </table>
+          </div>
+        </Grid>
+      </Grid>
+    </div>
   );
+
+  if (isLoading) {
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}><Loading /></div>;
+  }
+
+  if (feed) {
+    return (
+      <OlfPrintPreview
+        feed={feed}
+        onClose={() => navigate("/serving/plans/" + params.id)}
+        worshipOrderRender={renderWorshipOrder}
+      />
+    );
+  }
+
+  return renderWorshipOrder();
 };

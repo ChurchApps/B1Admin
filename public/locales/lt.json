@@ -171,7 +171,8 @@
       "confirmDelete": "Ar tikrai norite panaikinti šį renginį?",
       "delete": "Panaikinti",
       "manageRegistrations": "Tvarkyti registracijas",
-      "noGroups": "Grupių nerasta."
+      "noGroups": "Grupių nerasta.",
+      "editEvent": "Redaguoti įvykį"
     },
     "calendarList": {
       "aboutParagraph1": "Calendars allow you to organize and display events for your church.",
@@ -3305,6 +3306,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "Programos nustatymai",
       "branding": "Logotipas ir prekės ženklas",
       "brandingDescription": "Įkelkite ir tvarkykite organizacijos logotipus ir prekės ženklo išteklius",
       "edit": "Redaguoti",
@@ -3320,6 +3322,8 @@
       "noImage": "Nėra paveikslėlio",
       "ogImage": "Socialinių tinklų paveikslėlis",
       "ogImageDesc": "Naudojama dalijimuisi socialiniuose tinkluose ir SEO. Idealus dydis: 1200×630 piks.",
+      "pwaShortName": "PWA trumpasis pavadinimas (daugiausia 12 simbolių)",
+      "pwaShortNameHelper": "Naudojamas kaip programos piktogramos pavadinimas įrenginio pradžios ekrane.",
       "seoAssets": "SEO ir naršyklės ištekliai",
       "upload": "Įkelti"
     },

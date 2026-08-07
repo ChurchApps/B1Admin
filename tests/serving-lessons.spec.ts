@@ -413,6 +413,60 @@ test.describe.serial("Serving Management - Lessons", () => {
       await expect(verifiedEdit).toHaveCount(1, { timeout: 10000 });
     });
 
+    test("should duplicate service order item directly below the original", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Apollos Ministry");
+      await minBtn.click();
+      const plansBtn = page.locator("a").getByText("Apollos Plans");
+      await expect(plansBtn).toBeVisible({ timeout: 10000 });
+      await plansBtn.click();
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      const lesson = page.locator("a").getByText("Zacchaeus Lesson");
+      await expect(lesson).toBeVisible({ timeout: 10000 });
+      await lesson.click();
+      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
+      await expect(servOrder).toBeVisible({ timeout: 10000 });
+      await servOrder.click();
+
+      // Rows at this point in the chain: [Amazing Grace, Zebedee Item].
+      const rows = page.locator(".planItem");
+      await expect(rows).toHaveCount(2, { timeout: 10000 });
+      const duplicateBtn = page.locator('button:has(svg[data-testid="ContentCopyIcon"])').first();
+      await duplicateBtn.click();
+      // The copy must land directly below the original, not at the end.
+      await expect(rows).toHaveCount(3, { timeout: 10000 });
+      await expect(rows.nth(0)).toContainText("Amazing Grace");
+      await expect(rows.nth(1)).toContainText("Amazing Grace");
+      await expect(rows.nth(2)).toContainText("Zebedee Item");
+    });
+
+    test("should duplicate item from the edit dialog", async () => {
+      const minBtn = page.locator('[role="tab"]').getByText("Apollos Ministry");
+      await minBtn.click();
+      const plansBtn = page.locator("a").getByText("Apollos Plans");
+      await expect(plansBtn).toBeVisible({ timeout: 10000 });
+      await plansBtn.click();
+      await expect(page).toHaveURL(/\/serving\/planTypes\/[^/]+/);
+      const lesson = page.locator("a").getByText("Zacchaeus Lesson");
+      await expect(lesson).toBeVisible({ timeout: 10000 });
+      await lesson.click();
+      const servOrder = page.locator('[role="tab"]').getByText("Service Order");
+      await expect(servOrder).toBeVisible({ timeout: 10000 });
+      await servOrder.click();
+
+      // Zebedee Item is the last row; its edit icon is the last on the page.
+      const editBtn = editIconButton(page).last();
+      await expect(editBtn).toBeVisible({ timeout: 10000 });
+      await editBtn.click();
+      // Row hover icons share the "Duplicate" label; scope to the dialog.
+      const duplicateBtn = page.getByRole("dialog").getByRole("button", { name: "Duplicate" });
+      await expect(duplicateBtn).toBeVisible({ timeout: 10000 });
+      await duplicateBtn.click();
+      const rows = page.locator(".planItem");
+      await expect(rows).toHaveCount(4, { timeout: 10000 });
+      await expect(rows.nth(2)).toContainText("Zebedee Item");
+      await expect(rows.nth(3)).toContainText("Zebedee Item");
+    });
+
     // Lesson Action and Add-On pick from lessons.church (LessonsApi on port 8090, not in local stack).
     test.skip("should add lesson action to service order", async () => {
       const minBtn = page.locator('[role="tab"]').getByText("Apollos Ministry");

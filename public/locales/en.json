@@ -197,6 +197,7 @@
       "confirmDelete": "Are you sure you wish to delete this event?",
       "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
       "delete": "Delete",
+      "editEvent": "Edit Event",
       "manageRegistrations": "Manage Registrations",
       "noGroups": "No groups found."
     },
@@ -2073,6 +2074,7 @@
       "waitingForAuth": "Waiting for authorization..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Your browser does not support audio playback.",
       "fallbackPreview": "Preview",
       "fallbackTitle": "Content Preview",
       "noContent": "No content to display.",
@@ -2312,6 +2314,14 @@
       "length": "Length",
       "serviceOrder": "SERVICE ORDER",
       "time": "Time"
+    },
+    "printPreview": {
+      "colorCoded": "Color Coded",
+      "format": "Format:",
+      "materials": "Materials:",
+      "script": "Script",
+      "serviceOrder": "Service Order",
+      "title": "Print Preview"
     },
     "schedulingPreference": {
       "household": "Household scheduling",
@@ -3298,6 +3308,14 @@
       "subtitle": "Configure church settings and preferences",
       "title": "Manage Church"
     },
+    "messagingMinimumAge": {
+      "age13": "13 and older",
+      "age16": "16 and older",
+      "age18": "18 and older",
+      "helpText": "Blocks new private-message conversations when either person is under this age, based on their birthdate. People below the age stay visible in the directory. Existing conversations are not affected.",
+      "label": "Minimum Age for Private Messages",
+      "off": "Off (no restriction)"
+    },
     "mobileAppSettings": {
       "addTab": "Add Tab",
       "subtitle": "Configure mobile app settings",
@@ -3496,7 +3514,25 @@
       "usage": "Using {used} GB of {quota} GB.",
       "ministryStuffHelper": "Files will be stored on your MinistryStuff storage plan, linked to this church automatically. Manage your plan at",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "saveError": "Error saving storage settings."
+      "saveError": "Error saving storage settings.",
+      "connect": "Connect Account",
+      "connecting": "Waiting for sign-in...",
+      "connected": "Account connected",
+      "reconnect": "Reconnect",
+      "connectFirst": "Connect your account before saving.",
+      "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
+      "s3AccessKey": "Access Key Id",
+      "s3SecretKey": "Secret Access Key",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Endpoint (blank for AWS)",
+      "s3Region": "Region",
+      "s3PublicBase": "Public URL Base",
+      "s3Required": "Bucket and public URL base are required.",
+      "s3Helper": "The bucket must allow public read access and CORS PUT requests from this site. Works with AWS S3, Cloudflare R2 and Backblaze B2.",
+      "popupBlocked": "Popup blocked. Please allow popups and try again.",
+      "sessionFailed": "Could not start the sign-in session.",
+      "sessionExpired": "The sign-in session expired. Please try again.",
+      "authFailed": "Sign-in failed. Please try again."
     }
   },
   "site": {
@@ -3598,6 +3634,7 @@
       "slow": "Slow"
     },
     "appearanceEdit": {
+      "appSettings": "App Settings",
       "branding": "Logo & Branding",
       "brandingDescription": "Upload and manage your organization's logos and branding assets",
       "edit": "Edit",
@@ -3613,6 +3650,8 @@
       "noImage": "No image",
       "ogImage": "Social Media Image",
       "ogImageDesc": "Used for social sharing and SEO. Ideal size: 1200×630px",
+      "pwaShortName": "PWA Short Name (Max 12 chars)",
+      "pwaShortNameHelper": "Used for the mobile app icon name on the device home screen.",
       "seoAssets": "SEO & Browser Assets",
       "upload": "Upload"
     },
@@ -4010,11 +4049,12 @@
     },
     "files": {
       "confirmDelete": "Are you sure you wish to delete",
-      "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. We suggest using Google Drive or Dropbox to store files if additional space is needed.",
+      "storageInfo": "100 MB of storage space is provided for free for storing PDFs and other documents commonly needed for church websites. Need more? Link your own Google Drive, Dropbox, OneDrive or S3 bucket under Settings, File Storage.",
       "upload": "Upload",
       "uploadFiles": "Upload Files"
     },
     "filesManager": {
+      "externalStorage": "Stored in your linked account",
       "files": "Files",
       "getStarted": "Get started by uploading your first file",
       "name": "Name",

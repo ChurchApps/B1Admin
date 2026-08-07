@@ -5,8 +5,6 @@ import type { BlockInterface, ElementInterface, PageInterface, SectionInterface,
 import { ApiHelper, ArrayHelper, UserHelper } from "../../helpers";
 import { Permissions } from "@churchapps/helpers";
 import { Section } from "./Section";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import React from "react";
 import { Theme, DroppableArea } from "@churchapps/apphelper/website";
 import { SectionBlock } from "./SectionBlock";
@@ -164,6 +162,8 @@ export function ContentEditor(props: Props) {
     () => StyleHelper.getCss(container?.sections || [], deviceType) + "\n" + getEditorVisibilityCss(container?.sections || [], deviceType),
     [container?.sections, deviceType]
   );
+
+  const fontUrls = useMemo(() => StyleHelper.getFontUrls(container?.sections || []), [container?.sections]);
 
   const hoverCss = useMemo(() => EDITOR_HOVER_CSS + getSelectionSuppressCss(selectedElementId), [selectedElementId]);
 
@@ -960,6 +960,7 @@ export function ContentEditor(props: Props) {
       <CssBaseline />
       <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 64px)", overflow: "hidden", backgroundColor: "var(--bg-main)" }}>
         <Theme globalStyles={props.config?.globalStyles} appearance={props.config?.appearance} />
+        {fontUrls.map((url) => <link key={url} rel="stylesheet" href={url} precedence="default" />)}
         <style>{css}</style>
         <style>{hoverCss}</style>
 
@@ -1079,127 +1080,125 @@ export function ContentEditor(props: Props) {
           onRewrite={handleAiRewrite}
         />
 
-        <DndProvider backend={HTML5Backend}>
-          <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden", minHeight: 0 }}>
-            <AddContentPanel open={showAdd} onClose={() => setShowAdd(false)}>
-              {showAdd && (
-                <ElementAdd
-                  inPanel
-                  includeBlocks={!elementOnlyMode}
-                  includeSection={!elementOnlyMode}
-                  updateCallback={() => setShowAdd(false)}
-                  draggingCallback={() => { /* persistent panel â€” stay open while dragging */ }}
-                  onSelect={handlePaletteSelect}
-                />
+        <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden", minHeight: 0 }}>
+          <AddContentPanel open={showAdd} onClose={() => setShowAdd(false)}>
+            {showAdd && (
+              <ElementAdd
+                inPanel
+                includeBlocks={!elementOnlyMode}
+                includeSection={!elementOnlyMode}
+                updateCallback={() => setShowAdd(false)}
+                draggingCallback={() => { /* persistent panel â€” stay open while dragging */ }}
+                onSelect={handlePaletteSelect}
+              />
+            )}
+          </AddContentPanel>
+
+          <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden", minWidth: 0 }} onClick={handleClickOutside}>
+            <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
+
+            <div style={{ marginTop: 0, paddingTop: 0 }}>
+              {showScrollHelpers && (
+                <>
+                  <div
+                    style={{
+                      position: "fixed",
+                      bottom: "30px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      zIndex: 1000,
+                      width: "min(600px, 80%)",
+                      maxWidth: "600px"
+                    }}>
+                    <DroppableScroll key={"scrollDown"} text={Locale.label("site.contentEditor.scrollDown")} direction="down" />
+                  </div>
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: "120px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      zIndex: 1000,
+                      width: "min(600px, 80%)",
+                      maxWidth: "600px"
+                    }}>
+                    <DroppableScroll key={"scrollUp"} text={Locale.label("site.contentEditor.scrollUp")} direction="up" />
+                  </div>
+                </>
               )}
-            </AddContentPanel>
 
-            <div ref={contentRef} style={{ flex: 1, overflowY: "auto", overflowX: "hidden", minWidth: 0 }} onClick={handleClickOutside}>
-              <HelpDialog open={showHelp} onClose={() => setShowHelp(false)} />
-
-              <div style={{ marginTop: 0, paddingTop: 0 }}>
-                {showScrollHelpers && (
-                  <>
-                    <div
-                      style={{
-                        position: "fixed",
-                        bottom: "30px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        zIndex: 1000,
-                        width: "min(600px, 80%)",
-                        maxWidth: "600px"
-                      }}>
-                      <DroppableScroll key={"scrollDown"} text={Locale.label("site.contentEditor.scrollDown")} direction="down" />
-                    </div>
-                    <div
-                      style={{
-                        position: "fixed",
-                        top: "120px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        zIndex: 1000,
-                        width: "min(600px, 80%)",
-                        maxWidth: "600px"
-                      }}>
-                      <DroppableScroll key={"scrollUp"} text={Locale.label("site.contentEditor.scrollUp")} direction="up" />
-                    </div>
-                  </>
-                )}
-
-                <ThemeProvider theme={previewTheme}>{getZoneBoxes()}</ThemeProvider>
-              </div>
+              <ThemeProvider theme={previewTheme}>{getZoneBoxes()}</ThemeProvider>
             </div>
-
-            <PropertyPanel
-              open={!!(editElement || editSection)}
-              width={editElement && ["text", "textWithPhoto", "card", "faq"].includes(editElement.elementType || "") ? 520 : 400}
-              title={
-                editElement
-                  ? getElementTypeMeta(editElement.elementType).label
-                  : Locale.label("site.section.section")
-              }
-              subtitle={
-                editElement
-                  ? Locale.label("common.element")
-                  : Locale.label("site.section.layoutContainer")
-              }
-              breadcrumb={getPanelBreadcrumb()}
-              icon={
-                editElement
-                  ? getElementTypeMeta(editElement.elementType).icon
-                  : "view_agenda"
-              }
-              onClose={() => requestPanelChange({ kind: "close" })}
-            >
-              {editElement && (
-                <ElementEdit
-                  key={`${editElement.id || "new"}-${editElement.elementType || "element"}`}
-                  inPanel
-                  element={editElement}
-                  onCancel={() => requestPanelChange({ kind: "close" })}
-                  onDirtyChange={(dirty) => { panelDirtyRef.current = dirty; }}
-                  updatedCallback={(updatedElement) => {
-                    panelDirtyRef.current = false;
-                    setEditElement(null);
-                    if (updatedElement) {
-                      const isNewElement = !editElement.id;
-                      if (isNewElement) loadDataInternal("After adding element");
-                      else {
-                        const c = { ...container };
-                        c.sections?.forEach((s) => {
-                          realtimeUpdateElement(updatedElement, s.elements || []);
-                        });
-                        setContainer(c);
-                        setHasUnpublishedChanges(true);
-                        saveSnapshot(c, "After editing element");
-                      }
-                    } else {
-                      loadDataInternal();
-                    }
-                  }}
-                  onRealtimeChange={handleRealtimeChange}
-                  globalStyles={props.config?.globalStyles as GlobalStyleInterface}
-                />
-              )}
-              {editSection && (
-                <SectionEdit
-                  inPanel
-                  section={editSection}
-                  onCancel={() => requestPanelChange({ kind: "close" })}
-                  onDirtyChange={(dirty) => { panelDirtyRef.current = dirty; }}
-                  updatedCallback={() => {
-                    const isNewSection = !editSection.id;
-                    panelDirtyRef.current = false;
-                    setEditSection(null);
-                    loadDataInternal(isNewSection ? "After adding section" : "After editing section");
-                  }}
-                  globalStyles={props.config?.globalStyles as GlobalStyleInterface}
-                />
-              )}
-            </PropertyPanel>
           </div>
-        </DndProvider>
+
+          <PropertyPanel
+            open={!!(editElement || editSection)}
+            width={editElement && ["text", "textWithPhoto", "card", "faq"].includes(editElement.elementType || "") ? 520 : 400}
+            title={
+              editElement
+                ? getElementTypeMeta(editElement.elementType).label
+                : Locale.label("site.section.section")
+            }
+            subtitle={
+              editElement
+                ? Locale.label("common.element")
+                : Locale.label("site.section.layoutContainer")
+            }
+            breadcrumb={getPanelBreadcrumb()}
+            icon={
+              editElement
+                ? getElementTypeMeta(editElement.elementType).icon
+                : "view_agenda"
+            }
+            onClose={() => requestPanelChange({ kind: "close" })}
+          >
+            {editElement && (
+              <ElementEdit
+                key={`${editElement.id || "new"}-${editElement.elementType || "element"}`}
+                inPanel
+                element={editElement}
+                onCancel={() => requestPanelChange({ kind: "close" })}
+                onDirtyChange={(dirty) => { panelDirtyRef.current = dirty; }}
+                updatedCallback={(updatedElement) => {
+                  panelDirtyRef.current = false;
+                  setEditElement(null);
+                  if (updatedElement) {
+                    const isNewElement = !editElement.id;
+                    if (isNewElement) loadDataInternal("After adding element");
+                    else {
+                      const c = { ...container };
+                      c.sections?.forEach((s) => {
+                        realtimeUpdateElement(updatedElement, s.elements || []);
+                      });
+                      setContainer(c);
+                      setHasUnpublishedChanges(true);
+                      saveSnapshot(c, "After editing element");
+                    }
+                  } else {
+                    loadDataInternal();
+                  }
+                }}
+                onRealtimeChange={handleRealtimeChange}
+                globalStyles={props.config?.globalStyles as GlobalStyleInterface}
+              />
+            )}
+            {editSection && (
+              <SectionEdit
+                inPanel
+                section={editSection}
+                onCancel={() => requestPanelChange({ kind: "close" })}
+                onDirtyChange={(dirty) => { panelDirtyRef.current = dirty; }}
+                updatedCallback={() => {
+                  const isNewSection = !editSection.id;
+                  panelDirtyRef.current = false;
+                  setEditSection(null);
+                  loadDataInternal(isNewSection ? "After adding section" : "After editing section");
+                }}
+                globalStyles={props.config?.globalStyles as GlobalStyleInterface}
+              />
+            )}
+          </PropertyPanel>
+        </div>
       </div>
     </ThemeProvider>
   );

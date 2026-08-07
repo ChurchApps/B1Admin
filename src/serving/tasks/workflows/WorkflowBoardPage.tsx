@@ -1,7 +1,5 @@
 import { Box, Button, Stack, Paper, Typography, Select, MenuItem, Menu } from "@mui/material";
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { ApiHelper, Locale, Loading, PageHeader } from "@churchapps/apphelper";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -158,33 +156,31 @@ export const WorkflowBoardPage = () => {
         <Box sx={{ p: 3 }}>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
             <Box sx={{ flexGrow: 1, overflowX: "auto" }}>
-              <DndProvider backend={HTML5Backend}>
-                <Box sx={{ display: "flex", flexDirection: "row", alignItems: "flex-start", pb: 2 }} data-testid="workflow-board">
-                  {steps.map((step) => (
-                    <WorkflowStepColumn
-                      key={step.id}
-                      workflowId={workflowId}
-                      step={step}
-                      cards={cardsForStep(step.id || "")}
-                      routes={routesForStep(step.id || "")}
-                      actions={actionsForStep(step.id || "")}
-                      steps={steps}
-                      workflows={workflows.data || []}
-                      canEdit={canEdit}
-                      canManage={canManage}
-                      selectedIds={selectedIds}
-                      onToggleSelect={toggleSelect}
-                      onDropCard={handleDropCard}
-                      onOpenCard={setOpenCard}
-                      onEditStep={setEditStep}
-                      onChanged={refetch}
-                    />
-                  ))}
-                  {steps.length === 0 && canManage && (
-                    <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-first-step-button">{Locale.label("tasks.workflowBoard.addStep")}</Button>
-                  )}
-                </Box>
-              </DndProvider>
+              <Box sx={{ display: "flex", flexDirection: "row", alignItems: "flex-start", pb: 2 }} data-testid="workflow-board">
+                {steps.map((step) => (
+                  <WorkflowStepColumn
+                    key={step.id}
+                    workflowId={workflowId}
+                    step={step}
+                    cards={cardsForStep(step.id || "")}
+                    routes={routesForStep(step.id || "")}
+                    actions={actionsForStep(step.id || "")}
+                    steps={steps}
+                    workflows={workflows.data || []}
+                    canEdit={canEdit}
+                    canManage={canManage}
+                    selectedIds={selectedIds}
+                    onToggleSelect={toggleSelect}
+                    onDropCard={handleDropCard}
+                    onOpenCard={setOpenCard}
+                    onEditStep={setEditStep}
+                    onChanged={refetch}
+                  />
+                ))}
+                {steps.length === 0 && canManage && (
+                  <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddStep} data-testid="add-first-step-button">{Locale.label("tasks.workflowBoard.addStep")}</Button>
+                )}
+              </Box>
             </Box>
 
             {editWorkflow && canManage && (

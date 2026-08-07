@@ -14,7 +14,7 @@ export interface ProviderContentChild {
 
 export interface ProviderContent {
   url?: string;
-  mediaType?: "video" | "image" | "text" | "iframe";
+  mediaType?: "video" | "image" | "audio" | "text" | "iframe";
   description?: string;
   label?: string;
   children?: ProviderContentChild[];
@@ -35,11 +35,15 @@ export interface UseProviderContentParams {
 }
 
 // Helper to detect media type from URL
-function detectMediaType(url: string): "video" | "image" | "iframe" {
+function detectMediaType(url: string): "video" | "image" | "audio" | "iframe" {
   const lowerUrl = url.toLowerCase();
+  const audioExtensions = [".mp3", ".m4a", ".aac", ".wav", ".flac", ".oga"];
   const videoExtensions = [".mp4", ".webm", ".ogg", ".m3u8", ".mov", ".avi"];
   const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp"];
 
+  if (audioExtensions.some(ext => lowerUrl.includes(ext))) {
+    return "audio";
+  }
   if (videoExtensions.some(ext => lowerUrl.includes(ext))) {
     return "video";
   }
