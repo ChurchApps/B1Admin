@@ -1,11 +1,12 @@
 import React, { memo } from "react";
-import { Notes } from "@churchapps/apphelper";
+import { DisplayBox, Notes } from "@churchapps/apphelper";
 import { Box } from "@mui/material";
 
 interface Props {
   context: any;
   conversationId: string;
   createConversation: () => Promise<string>;
+  title?: string;
 }
 
 export const PersonNotes: React.FC<Props> = memo((props) => {
@@ -80,7 +81,11 @@ export const PersonNotes: React.FC<Props> = memo((props) => {
           "&:hover": { backgroundColor: "primary.dark" }
         }
       }}>
-      <Notes context={props.context} conversationId={props.conversationId} createConversation={props.createConversation} />
+      {props.title
+        ? <DisplayBox headerText={props.title} headerIcon="lock" data-testid="confidential-notes-box">
+          <Notes context={props.context} conversationId={props.conversationId} createConversation={props.createConversation} noDisplayBox />
+        </DisplayBox>
+        : <Notes context={props.context} conversationId={props.conversationId} createConversation={props.createConversation} />}
     </Box>
   );
 });

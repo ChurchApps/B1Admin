@@ -19,6 +19,15 @@ export const PersonPage = () => {
   const [personForms, setPersonForms] = React.useState<PersonFormOption[]>([]);
 
   const formPermission = useMemo(() => UserHelper.checkAccess(Permissions.membershipApi.forms.admin) || UserHelper.checkAccess(Permissions.membershipApi.forms.edit), []);
+  const canViewConfidentialNotes = useMemo(() => UserHelper.checkAccess({ api: "MembershipApi", contentType: "People", action: "View Confidential Notes" }), []);
+  const [confidentialConversationId, setConfidentialConversationId] = React.useState("");
+
+  React.useEffect(() => {
+    if (!canViewConfidentialNotes || !params.id || params.id === "add") return;
+    ApiHelper.get("/conversations/messages/personConfidential/" + params.id + "?limit=1", "MessagingApi")
+      .then((data: ConversationInterface[]) => setConfidentialConversationId(data?.[0]?.id || ""))
+      .catch(() => setConfidentialConversationId(""));
+  }, [canViewConfidentialNotes, params.id]);
 
   React.useEffect(() => {
     if (!formPermission) return;
@@ -117,6 +126,20 @@ export const PersonPage = () => {
     return result[0].id || "";
   };
 
+  const handleCreateConfidentialConversation = async () => {
+    if (!person) return "";
+    const conv: ConversationInterface = {
+      allowAnonymousPosts: false,
+      contentType: "personConfidential",
+      contentId: person.id,
+      title: person.name.display + Locale.label("people.personPage.confidentialNotesSuffix"),
+      visibility: "hidden"
+    };
+    const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
+    setConfidentialConversationId(result[0].id);
+    return result[0].id || "";
+  };
+
   const defaultTab: string = "details";
 
   React.useEffect(() => {
@@ -148,7 +171,21 @@ export const PersonPage = () => {
           />
         );
         break;
-      case "notes": currentTab = <PersonNotes key={`notes-${person?.conversationId || "new"}`} context={context} conversationId={person.conversationId || ""} createConversation={handleCreateConversation} />; break;
+      case "notes":
+        currentTab = (
+          <React.Fragment key={`notes-${person?.conversationId || "new"}-${confidentialConversationId || "new"}`}>
+            <PersonNotes context={context} conversationId={person.conversationId || ""} createConversation={handleCreateConversation} />
+            {canViewConfidentialNotes && (
+              <PersonNotes
+                title={Locale.label("people.personPage.confidentialNotes")}
+                context={context}
+                conversationId={confidentialConversationId}
+                createConversation={handleCreateConfidentialConversation}
+              />
+            )}
+          </React.Fragment>
+        );
+        break;
       case "attendance": currentTab = <PersonAttendance key="attendance" personId={person.id!} personName={person.name?.display} updatedFunction={refetch} />; break;
       case "donations": currentTab = <PersonDonations key="donations" personId={person.id!} />; break;
       case "forms": currentTab = <PersonForms key="forms" person={person} forms={personForms} updatedFunction={refetch} />; break;

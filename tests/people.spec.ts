@@ -137,9 +137,22 @@ test.describe("People Management", () => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const notesBtn = page.locator("button").getByText("Notes");
       await notesBtn.click();
-      // AddNote textarea renders once initial messages load.
-      const seekNotes = page.locator('[name="noteText"]');
+      // AddNote textarea renders once initial messages load. Scope to the standard
+      // notes box: admins also see a Confidential Notes box with its own composer.
+      const seekNotes = page.getByTestId("notes-box").locator('[name="noteText"]');
       await expect(seekNotes).toBeVisible({ timeout: 10000 });
+    });
+
+    test("should add a confidential note as admin", async ({ page }) => {
+      await openPersonRow(page, SEED_PEOPLE.DONALD);
+      await page.locator("button").getByText("Notes").click();
+      // Domain admins hold People/View Confidential Notes, so the section renders.
+      const confBox = page.getByTestId("confidential-notes-box");
+      const composer = confBox.locator('[name="noteText"]');
+      await expect(composer).toBeVisible({ timeout: 10000 });
+      await composer.fill("Confidential Zacchaeus Note");
+      await confBox.locator("button").getByText("send").click();
+      await expect(confBox.getByText("Confidential Zacchaeus Note").first()).toBeVisible({ timeout: 15000 });
     });
 
     // Serial: each test owns the most recent note via .last() (avoid race with fullyParallel).
@@ -170,10 +183,10 @@ test.describe("People Management", () => {
         await openPersonRow(page, SEED_PEOPLE.DONALD);
         const notesBtn = page.locator("button").getByText("Notes");
         await notesBtn.click();
-        const seekNotes = page.locator('[name="noteText"]');
+        const seekNotes = page.getByTestId("notes-box").locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
         await seekNotes.fill("Zacchaeus Test Note");
-        const sendBtn = page.locator("button").getByText("send");
+        const sendBtn = page.getByTestId("notes-box").locator("button").getByText("send");
         await sendBtn.click();
         const validatedNote = page.locator("p").getByText("Zacchaeus Test Note");
         await expect(validatedNote.first()).toBeVisible({ timeout: 15000 });
@@ -184,23 +197,23 @@ test.describe("People Management", () => {
         const notesBtn = page.locator("button").getByText("Notes");
         await notesBtn.click();
         // Add a note first so the edit affordance definitely exists for this person.
-        const seekNotes = page.locator('[name="noteText"]');
+        const seekNotes = page.getByTestId("notes-box").locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
         // AddNote useEffect resets message after conversation loads; wait for prior note + tick.
         await expect(page.locator("p").getByText("Zacchaeus Test Note").first()).toBeVisible({ timeout: 10000 });
         await page.waitForTimeout(500);
         await seekNotes.fill("Zacchaeus Pre-edit Note");
         await expect(seekNotes).toHaveValue("Zacchaeus Pre-edit Note", { timeout: 5000 });
-        await page.locator("button").getByText("send").click();
+        await page.getByTestId("notes-box").locator("button").getByText("send").click();
         await expect(page.locator("p").getByText("Zacchaeus Pre-edit Note").first()).toBeVisible({ timeout: 15000 });
 
-        const editBtn = page.locator('button[aria-label="editNote"]').filter({ has: page.locator("text=edit") });
+        const editBtn = page.getByTestId("notes-box").locator('button[aria-label="editNote"]').filter({ has: page.locator("text=edit") });
         // Edit the most recent note via .last().
         await editBtn.last().click();
         // AddNote fetches async; wait for form to show original content before fill.
         await expect(seekNotes).toHaveValue("Zacchaeus Pre-edit Note", { timeout: 10000 });
         await seekNotes.fill("Zebedee Test Note");
-        await page.locator("button").getByText("send").click();
+        await page.getByTestId("notes-box").locator("button").getByText("send").click();
         const validatedEdit = page.locator("p").getByText("Zebedee Test Note");
         await expect(validatedEdit.first()).toBeVisible({ timeout: 15000 });
       });
@@ -210,19 +223,19 @@ test.describe("People Management", () => {
         const notesBtn = page.locator("button").getByText("Notes");
         await notesBtn.click();
         // Seed a note for delete target.
-        const seekNotes = page.locator('[name="noteText"]');
+        const seekNotes = page.getByTestId("notes-box").locator('[name="noteText"]');
         await expect(seekNotes).toBeVisible({ timeout: 10000 });
         await seekNotes.fill("Zacchaeus Delete Target");
-        await page.locator("button").getByText("send").click();
+        await page.getByTestId("notes-box").locator("button").getByText("send").click();
         const target = page.locator("p").getByText("Zacchaeus Delete Target");
         await expect(target.first()).toBeVisible({ timeout: 15000 });
 
         // Edit the most recent note via .last().
-        await page.locator('button[aria-label="editNote"]').last().click();
+        await page.getByTestId("notes-box").locator('button[aria-label="editNote"]').last().click();
         // Wait for edit mode before clicking delete.
         await expect(seekNotes).toHaveValue("Zacchaeus Delete Target", { timeout: 10000 });
         // Edit mode shows material-icon delete button.
-        const deleteBtn = page.locator("button").getByText("delete", { exact: true });
+        const deleteBtn = page.getByTestId("notes-box").locator("button").getByText("delete", { exact: true });
         await deleteBtn.click();
         await expect(target).toHaveCount(0, { timeout: 15000 });
       });
