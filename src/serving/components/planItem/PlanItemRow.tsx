@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, CircularProgress } from "@mui/material";
 import { DragIndicator as DragIndicatorIcon, Edit as EditIcon, Schedule as ScheduleIcon, ContentCopy as ContentCopyIcon } from "@mui/icons-material";
 import { Locale } from "@churchapps/apphelper";
 import { MarkdownPreviewLight } from "@churchapps/apphelper/markdown";
@@ -48,33 +48,104 @@ export const PlanItemRow: React.FC<Props> = ({
   const isScriptLine = !planItem.thumbnailUrl && !providerMedia && ["lessonAction", "action", "item", "providerPresentation"].includes(planItem.itemType || "");
 
   const [isEditing, setIsEditing] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
+  const [optimisticText, setOptimisticText] = React.useState<string | null>(null);
   const [editText, setEditText] = React.useState(planItem.textOverride ?? planItem.description ?? planItem.label ?? "");
 
-  const displayText = planItem.textOverride ?? planItem.description ?? planItem.label;
+  React.useEffect(() => {
+    setOptimisticText(null);
+  }, [planItem]);
 
-  const handleSaveText = async () => {
-    setIsEditing(false);
-    if (editText !== displayText) {
-      const pi = { ...planItem };
-      if (pi.providerId || pi.providerPath) {
-        pi.textOverride = editText;
-      } else {
-        if (pi.description) pi.description = editText;
-        else pi.label = editText;
-      }
+  const displayText = optimisticText ?? planItem.textOverride ?? planItem.description ?? planItem.label;
 
+  const handleDelete = async () => {
+    setIsSaving(true);
+    try {
       const { ApiHelper } = await import("@churchapps/apphelper");
-      await ApiHelper.post("/planItems", [pi], "DoingApi");
+      await ApiHelper.delete("/planItems/" + planItem.id, "DoingApi");
       onChange?.();
+    } catch (e) {
+      console.error(e);
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveText = async (insertBelow = false) => {
+    const newText = editText.trim();
+    if (newText === "") {
+      await handleDelete();
+      return;
+    }
+
+    if (editText !== (planItem.textOverride ?? planItem.description ?? planItem.label)) {
+      setIsSaving(true);
+      setIsEditing(false);
+      setOptimisticText(editText);
+      try {
+        const pi = { ...planItem };
+        if (pi.providerId || pi.providerPath) {
+          pi.textOverride = editText;
+        } else {
+          if (pi.description) pi.description = editText;
+          else pi.label = editText;
+        }
+
+        const { ApiHelper } = await import("@churchapps/apphelper");
+        await ApiHelper.post("/planItems", [pi], "DoingApi");
+
+        if (insertBelow) {
+          const newItem: any = {
+            planId: planItem.planId,
+            parentId: planItem.parentId,
+            itemType: "item",
+            label: "",
+            sort: (planItem.sort || 0) + 0.5,
+          };
+          await ApiHelper.post("/planItems/sort", newItem, "DoingApi");
+        }
+
+        onChange?.();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsSaving(false);
+      }
+    } else {
+      setIsEditing(false);
+      if (insertBelow) {
+        setIsSaving(true);
+        try {
+          const { ApiHelper } = await import("@churchapps/apphelper");
+          const newItem: any = {
+            planId: planItem.planId,
+            parentId: planItem.parentId,
+            itemType: "item",
+            label: "",
+            sort: (planItem.sort || 0) + 0.5,
+          };
+          await ApiHelper.post("/planItems/sort", newItem, "DoingApi");
+          onChange?.();
+        } catch (e) {
+          console.error(e);
+        } finally {
+          setIsSaving(false);
+        }
+      }
     }
   };
 
   const handleRestore = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const pi = { ...planItem, textOverride: "" };
-    const { ApiHelper } = await import("@churchapps/apphelper");
-    await ApiHelper.post("/planItems", [pi], "DoingApi");
-    onChange?.();
+    setIsSaving(true);
+    setOptimisticText("");
+    try {
+      const pi = { ...planItem, textOverride: "" };
+      const { ApiHelper } = await import("@churchapps/apphelper");
+      await ApiHelper.post("/planItems", [pi], "DoingApi");
+      onChange?.();
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleTextClick = (e: React.MouseEvent) => {
@@ -179,11 +250,11 @@ export const PlanItemRow: React.FC<Props> = ({
             variant="outlined"
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
-            onBlur={handleSaveText}
+            onBlur={() => handleSaveText()}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                handleSaveText();
+                handleSaveText(true);
               }
             }}
             onClick={(e) => e.stopPropagation()}
@@ -194,7 +265,10 @@ export const PlanItemRow: React.FC<Props> = ({
           />
         ) : (
           <>
-            <div style={isScriptLine ? { fontSize: "1.1rem", lineHeight: 1.4 } : undefined}>{displayText}</div>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <div style={isScriptLine ? { fontSize: "1.1rem", lineHeight: 1.4, whiteSpace: "pre-wrap" } : { whiteSpace: "pre-wrap" }}>{displayText}</div>
+              {isSaving && <CircularProgress size={16} />}
+            </Box>
             {(!isScriptLine && planItem.description && (!planItem.textOverride || planItem.textOverride === "")) && (
               <Box
                 className="planItemDescription"

@@ -288,7 +288,13 @@ export const PrintPlan = () => {
             <tr key={pi.id}>
               {timeCells}
               <td style={Styles.tableCell}>
-                <b>{pi.label}:</b> {pi.description}
+                {pi.textOverride ? (
+                  pi.textOverride
+                ) : (
+                  <>
+                    {pi.label && <b>{pi.label}:</b>} {pi.description}
+                  </>
+                )}
               </td>
               <td style={{ ...Styles.tableCell, textAlign: "right" }}>{formatTime(pi.seconds || 0)}</td>
             </tr>
@@ -333,11 +339,12 @@ export const PrintPlan = () => {
       fontWeight: "bold"
     },
     divider: { borderBottom: "20px solid #000" },
-    tableCell: { verticalAlign: "top", padding: 5, textAlign: "left" }
+    tableCell: { verticalAlign: "top", padding: 5, textAlign: "left", whiteSpace: "pre-wrap" }
   };
 
   const renderWorshipOrder = () => (
     <div style={Styles.body} className="printBackgrounds">
+      <style>{`.sectionCard { display: none !important; }`}</style>
       <Grid container>
         <Grid size={{ xs: 4 }} style={Styles.inverseHeader}>
           {Locale.label("plans.printPlan.serviceOrder")}
