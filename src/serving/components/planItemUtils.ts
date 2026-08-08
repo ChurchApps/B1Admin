@@ -27,6 +27,21 @@ export function findThumbnailRecursive(item: InstructionItem): string | undefine
   return undefined;
 }
 
+/** Finds an instruction item by relatedId (or id) anywhere in the tree, returning it with its
+ * current dot-notation path. Index paths go stale when the provider edits content; relatedId doesn't. */
+export function findByRelatedId(items: InstructionItem[], relatedId: string, parentPath = ""): { item: InstructionItem; path: string } | null {
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const currentPath = parentPath ? `${parentPath}.${i}` : `${i}`;
+    if (item.relatedId === relatedId || item.id === relatedId) return { item, path: currentPath };
+    if (item.children) {
+      const found = findByRelatedId(item.children, relatedId, currentPath);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
 /** Handles undefined/null children arrays to avoid NaN. */
 export function getNextChildSort(children: PlanItemInterface[] | undefined | null): number {
   return (children?.length ?? 0) + 1;
@@ -64,6 +79,7 @@ export function findFileRecursive(item: InstructionItem): InstructionItem | unde
 /** Match a plan item to its fresh provider media by content path, falling back to label. */
 export function matchProviderMedia(planItem: PlanItemInterface, lookup?: Record<string, ProviderMediaInfo>): ProviderMediaInfo | undefined {
   if (!lookup) return undefined;
+  if (planItem.relatedId && lookup["related:" + planItem.relatedId]) return lookup["related:" + planItem.relatedId];
   if (planItem.providerContentPath && lookup[planItem.providerContentPath]) return lookup[planItem.providerContentPath];
   if (planItem.label && lookup["label:" + planItem.label]) return lookup["label:" + planItem.label];
   return undefined;
@@ -117,8 +133,9 @@ export function getVideoDuration(url: string, timeoutMs = 15000): Promise<number
 
 /**
  * Builds a lookup of fresh media urls from a provider instructions tree.
- * Keys: dot-notation content paths ("0.2.1", matching providerContentPath on saved
- * plan items) plus "label:<label>" fallbacks for items saved before paths existed.
+ * Keys: "related:<relatedId>" (stable across provider edits), dot-notation content paths
+ * ("0.2.1", matching providerContentPath on saved plan items), plus "label:<label>"
+ * fallbacks for items saved before paths existed.
  */
 export function buildProviderMediaLookup(items: InstructionItem[]): Record<string, ProviderMediaInfo> {
   const lookup: Record<string, ProviderMediaInfo> = {};
@@ -129,6 +146,7 @@ export function buildProviderMediaLookup(items: InstructionItem[]): Record<strin
       if (file?.downloadUrl) {
         const info: ProviderMediaInfo = { url: file.downloadUrl, mediaType: file.mediaType, seconds: file.seconds ?? item.seconds };
         lookup[path.join(".")] = info;
+        if (item.relatedId && !lookup["related:" + item.relatedId]) lookup["related:" + item.relatedId] = info;
         if (item.label && !lookup["label:" + item.label]) lookup["label:" + item.label] = info;
       }
       if (item.children) walk(item.children, path);

@@ -268,6 +268,7 @@ export const PlanItem = React.memo((props: Props) => {
           downloadUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
           providerContentPath={props.planItem.providerContentPath}
+          relatedId={props.planItem.relatedId}
           ministryId={props.ministryId}
         />
       )}
@@ -279,6 +280,7 @@ export const PlanItem = React.memo((props: Props) => {
           downloadUrl={props.planItem.link}
           providerPath={props.planItem.providerPath}
           providerContentPath={props.planItem.providerContentPath}
+          relatedId={props.planItem.relatedId}
           ministryId={props.ministryId}
         />
       )}
