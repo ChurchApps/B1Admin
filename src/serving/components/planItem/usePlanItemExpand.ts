@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { ApiHelper } from "@churchapps/apphelper";
 import { navigateToPath, type Instructions, type InstructionItem } from "@churchapps/content-providers";
 import { type PlanItemInterface } from "../../../helpers";
-import { findThumbnailRecursive } from "../planItemUtils";
+import { findThumbnailRecursive, findByRelatedId } from "../planItemUtils";
 
 interface ExpandOptions {
   planItem: PlanItemInterface;
@@ -37,10 +37,13 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
   ): Partial<PlanItemInterface>[] => {
     if (!section.children || section.children.length === 0) return [];
 
+    // Fractional sorts keep the new items in the deleted section's slot without
+    // colliding with later siblings; a /planItems/sort call renumbers afterward.
+    const count = section.children.length;
     return section.children.map((action, index) => ({
       planId: planItem.planId,
       parentId: planItem.parentId,
-      sort: currentSort + index,
+      sort: currentSort + (index + 1) / (count + 1),
       itemType: "providerPresentation",
       relatedId: action.relatedId || action.id || "",
       label: action.label || "",
@@ -51,6 +54,13 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       thumbnailUrl: findThumbnailRecursive(action)
     }));
   }, [planItem.planId, planItem.parentId]);
+
+  const replaceSectionWith = useCallback(async (actionItems: Partial<PlanItemInterface>[]) => {
+    // Post replacement items first to preserve original if post fails.
+    const saved = await ApiHelper.post("/planItems", actionItems, "DoingApi");
+    await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
+    if (saved?.[0]) await ApiHelper.post("/planItems/sort", saved[0], "DoingApi");
+  }, [planItem.id]);
 
   const expandViaProvider = useCallback(async () => {
     const { providerId, providerPath, providerContentPath, sort } = planItem;
@@ -64,26 +74,25 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
 
     if (!instructions?.items) return;
 
-    const section = navigateToPath(instructions, providerContentPath);
+    // Prefer relatedId (stable across provider edits); the stored index path may be stale.
+    const found = planItem.relatedId ? findByRelatedId(instructions.items, planItem.relatedId) : null;
+    const section = found?.item || navigateToPath(instructions, providerContentPath);
+    const pathPrefix = found?.path || providerContentPath;
     if (!section?.children || section.children.length === 0) return;
 
     const actionItems = createActionItems(
       section,
-      providerContentPath,
+      pathPrefix,
       providerId,
       providerPath,
       sort || 1
     );
 
-    if (actionItems.length > 0) {
-      // Post replacement items first to preserve original if post fails.
-      await ApiHelper.post("/planItems", actionItems, "DoingApi");
-      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
-    }
-  }, [planItem, ministryId, createActionItems]);
+    if (actionItems.length > 0) await replaceSectionWith(actionItems);
+  }, [planItem, ministryId, createActionItems, replaceSectionWith]);
 
   const expandViaPlan = useCallback(async () => {
-    if (!associatedProviderId || !associatedContentPath || !ministryId) return;
+    if (!associatedProviderId || !associatedContentPath || !ministryId || !planItem.relatedId) return;
 
     const instructions: Instructions = await ApiHelper.post(
       "/providerProxy/getInstructions",
@@ -93,22 +102,7 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
 
     if (!instructions?.items) return;
 
-    const findSection = (items: InstructionItem[], parentPath: string): { item: InstructionItem; path: string } | null => {
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-        const currentPath = parentPath ? `${parentPath}.${i}` : `${i}`;
-        if (item.relatedId === planItem.relatedId || item.id === planItem.relatedId) {
-          return { item, path: currentPath };
-        }
-        if (item.children) {
-          const found = findSection(item.children, currentPath);
-          if (found) return found;
-        }
-      }
-      return null;
-    };
-
-    const found = findSection(instructions.items, "");
+    const found = findByRelatedId(instructions.items, planItem.relatedId);
     if (!found || !found.item.children || found.item.children.length === 0) return;
 
     const actionItems = createActionItems(
@@ -119,12 +113,8 @@ export function usePlanItemExpand(options: ExpandOptions): ExpandResult {
       planItem.sort || 1
     );
 
-    if (actionItems.length > 0) {
-      // Post replacement items first to preserve original if post fails.
-      await ApiHelper.post("/planItems", actionItems, "DoingApi");
-      await ApiHelper.delete(`/planItems/${planItem.id}`, "DoingApi");
-    }
-  }, [planItem, associatedProviderId, associatedContentPath, ministryId, createActionItems]);
+    if (actionItems.length > 0) await replaceSectionWith(actionItems);
+  }, [planItem, associatedProviderId, associatedContentPath, ministryId, createActionItems, replaceSectionWith]);
 
   const handleExpandToActions = useCallback(async () => {
     if (!canExpand) {

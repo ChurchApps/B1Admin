@@ -1763,6 +1763,8 @@
       "profile": "Profile"
     },
     "personPage": {
+      "confidentialNotes": "Confidential Notes",
+      "confidentialNotesSuffix": " Confidential Notes",
       "notesSuffix": " Notes",
       "thisPerson": "this person"
     },

@@ -13,8 +13,10 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const getInitialMode = (): ThemeMode => {
   if (typeof window === "undefined") return "light";
-  const stored = localStorage.getItem(THEME_STORAGE_KEY);
-  if (stored === "dark" || stored === "light") return stored;
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === "dark" || stored === "light") return stored;
+  } catch { /* storage unavailable, e.g. embedded WebView */ }
   return "light";
 };
 
@@ -26,7 +28,7 @@ export const ThemeContextProvider = ({ children }: Props) => {
   const [mode, setMode] = useState<ThemeMode>(getInitialMode);
 
   useEffect(() => {
-    localStorage.setItem(THEME_STORAGE_KEY, mode);
+    try { localStorage.setItem(THEME_STORAGE_KEY, mode); } catch { /* storage unavailable */ }
     if (mode === "dark") {
       document.body.classList.add("dark-theme");
     } else {

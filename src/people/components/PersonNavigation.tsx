@@ -7,7 +7,7 @@ import {
   Description as DescriptionIcon
 } from "@mui/icons-material";
 import { memo, useMemo } from "react";
-import { Locale } from "@churchapps/apphelper";
+import { Locale, Permissions, UserHelper } from "@churchapps/apphelper";
 import { NavigationTabs, type NavigationTab } from "../../components/ui";
 
 interface Props {
@@ -23,11 +23,11 @@ export const PersonNavigation = memo((props: Props) => {
   const tabs: NavigationTab[] = useMemo(() => {
     const list: NavigationTab[] = [
       { value: "details", label: Locale.label("people.personNavigation.details"), icon: <PersonIcon /> },
-      { value: "notes", label: Locale.label("people.personNavigation.notes"), icon: <NotesIcon /> },
       { value: "groups", label: Locale.label("people.personNavigation.groups"), icon: <GroupIcon /> },
       { value: "attendance", label: Locale.label("people.personNavigation.attendance"), icon: <AttendanceIcon /> },
       { value: "donations", label: Locale.label("people.personNavigation.donations"), icon: <DonationIcon /> }
     ];
+    if (UserHelper.checkAccess(Permissions.membershipApi.people.edit)) list.splice(1, 0, { value: "notes", label: Locale.label("people.personNavigation.notes"), icon: <NotesIcon /> });
     if (showForms) list.splice(1, 0, { value: "forms", label: Locale.label("people.personNavigation.forms"), icon: <DescriptionIcon /> });
     return list;
   }, [showForms]);
