@@ -1522,7 +1522,12 @@
       "removeFromGroup": "Remove From Group",
       "selected": "Selected",
       "workflowSuccess": "Added {count} people to the workflow.",
-      "setCampus": "Set Campus"
+      "setCampus": "Set Campus",
+      "deleteSelected": "Delete Selected People",
+      "deleteConfirm": "Are you sure you want to delete {count} selected people? This action cannot be undone.",
+      "deleting": "Deleting...",
+      "deleteSuccess": "{count} people deleted successfully",
+      "deleteError": "Unable to delete selected people"
     },
     "demographics": {
       "age": "Age",

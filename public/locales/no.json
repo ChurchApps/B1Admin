@@ -37,8 +37,15 @@
       "unscheduled": "Uplanlagt"
     },
     "attendanceSetup": {
-      "setupMessage": "Sett opp studiesteder, tjenester og tjenestetider for å begynne å spore oppmøte.",
-      "unassigned": "Ikke tilordnet"
+      "manageCampuses": "Administrer campuser",
+      "setupMessage": "Sett opp campuser, tjenester og tjenestetider for å begynne å spore oppmøte.",
+      "unassigned": "Ikke tildelt"
+    },
+    "checkinType": {
+      "guest": "Guest",
+      "header": "Type",
+      "volunteer": "Volunteer",
+      "volunteers": "volunteers"
     },
     "labels": {
       "align": "Juster",
@@ -55,6 +62,17 @@
       "empty": "Tom",
       "equals": "Er lik",
       "field": "Felt",
+      "fieldChildren": "Barn",
+      "fieldChildrenAllergies": "Barns allergier",
+      "fieldChurchName": "Kirkenavn",
+      "fieldDate": "Dato",
+      "fieldDisplayName": "Navn",
+      "fieldFirstName": "Fornavn",
+      "fieldLastName": "Etternavn",
+      "fieldNametagNotes": "Navneskilt Notater",
+      "fieldNickName": "Kallenavn",
+      "fieldSecurityCode": "Sikkerhetskode",
+      "fieldSessions": "Økter",
       "fill": "Fyll",
       "fontSize": "Skriftstørrelse",
       "height": "Høyde (tommer)",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "Opprett en etikettmal for å tilpasse etikettene som skrives ut av innsjekkingskiosker.",
       "notEmpty": "Ikke tom",
       "notEquals": "Er ikke lik",
+      "opDoesNotEqual": "Does not equal",
+      "opEquals": "Equals",
+      "opIsBlank": "Is blank",
+      "opIsNotBlank": "Is not blank",
       "operator": "Operator",
       "palette": "Legg til blokk",
       "pickup": "Henteseddel",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "Godkjenn",
+      "approvedToast": "Request approved.",
       "bookingRequests": "Rom- og ressursforespørsler",
+      "confirmReject": "Are you sure you wish to reject this request?",
       "conflicts": "Konflikter",
       "description": "Beskrivelse",
       "event": "Arrangement",
@@ -127,6 +151,8 @@
       "noPendingBookings": "Ingen ventende rom- eller ressursforespørsler.",
       "noPendingEvents": "Ingen ventende arrangementforespørsler.",
       "reject": "Avslå",
+      "rejectTitle": "Reject Request",
+      "rejectedToast": "Request rejected.",
       "roomResource": "Rom / ressurs",
       "status": "Status",
       "subtitle": "Gjennomgå ventende rom-, ressurs- og arrangementforespørsler",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "Avbryt",
       "confirmDelete": "Er du sikker på at du vil slette denne hendelsen?",
+      "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
       "delete": "Slett",
+      "editEvent": "Rediger hendelse",
       "manageRegistrations": "Administrer påmeldinger",
-      "noGroups": "Ingen grupper funnet.",
-      "editEvent": "Rediger hendelse"
+      "noGroups": "Ingen grupper funnet."
     },
     "calendarList": {
       "aboutParagraph1": "Kalendere lar deg organisere og vise arrangementer for kirken din.",
@@ -203,6 +230,7 @@
       "importIcs": "Importer .ics",
       "newEvent": "Nytt arrangement",
       "noGroupsAdded": "Ingen grupper lagt til ennå",
+      "pendingApprovals": "{count} pending approvals",
       "print": "Skriv ut",
       "subtitle": "Administrer kalenderhendelser og grupper"
     },
@@ -334,12 +362,12 @@
     "confirm": "Bekreft",
     "copy": "Kopier",
     "createPerson": {
+      "confirmDuplicate": "En eksisterende person '{{existingName}}' ({{existingEmail}}) ble funnet med denne e-posten. Er du sikker på at du vil legge til '{{firstName}} {{lastName}}'?",
       "validate": {
         "firstName": "Vennligst skriv inn et fornavn.",
         "lastName": "Vennligst skriv inn et etternavn.",
         "validEmail": "Vennligst skriv inn en gyldig e-postadresse."
-      },
-      "confirmDuplicate": "En eksisterende person '{{existingName}}' ({{existingEmail}}) ble funnet med denne e-posten. Er du sikker på at du vil legge til '{{firstName}} {{lastName}}'?"
+      }
     },
     "custom": "Tilpasset",
     "delete": "Slett",
@@ -386,6 +414,7 @@
     "right": "Høyre",
     "save": "Lagre",
     "saveChanges": "Lagre endringer",
+    "saveError": "Unable to save. Please try again.",
     "saving": "Lagrer...",
     "search": "Søk",
     "searching": "Søker...",
@@ -490,6 +519,9 @@
       "workflows": "Arbeidsflyter"
     }
   },
+  "controlPanel": {
+    "serverError": "Something went wrong. Please try again."
+  },
   "createPerson": {
     "addNewPerson": "Legg til ny person",
     "email": "E-post",
@@ -538,6 +570,7 @@
     "peopleSearch": {
       "ariaSearch": "Søk personer",
       "ariaSearchBox": "searchBox",
+      "clearSearch": "Clear Search",
       "display": "Visning",
       "noResults": "Ingen personer funnet som samsvarer med søkekriteriene.",
       "photo": "Foto",
@@ -590,6 +623,8 @@
       "invalidCode": "Ugyldig eller utløpt kode. Vennligst sjekk og prøv igjen.",
       "loading": "Laster...",
       "noChurchSelected": "Ingen menighet valgt. Vennligst logg inn igjen og velg en menighet.",
+      "planType": "Show Plans For",
+      "planTypeNone": "None (browse only)",
       "requestedPermissions": "Forespurte tillatelser:",
       "title": "Autoriser enhet",
       "verifyFailed": "Kunne ikke verifisere koden. Vennligst prøv igjen."
@@ -609,6 +644,7 @@
       "lastYearCsv": "CSV i fjor",
       "lastYearPrint": "Siste års utskrift",
       "method": "Metode",
+      "viewBatch": "View batch",
       "willAppear": "Donasjoner vil vises her når de er gjort."
     }
   },
@@ -665,7 +701,8 @@
       "ofGoal": "av mål",
       "pledges": "Løfter",
       "status": "Status",
-      "subtitle": "Løfter og giverfremgang for denne kampanjen"
+      "subtitle": "Løfter og giverfremgang for denne kampanjen",
+      "unknownPerson": "Unknown person"
     },
     "campaignsPage": {
       "addCampaign": "Legg til kampanje",
@@ -708,6 +745,7 @@
       "cash": "Kontanter",
       "check": "Sjekk",
       "checkNum": "Sjekk #",
+      "confirmMsg": "Are you sure you wish to permanently delete this donation?",
       "date": "Dato",
       "fund": "Fond",
       "inKind": "Naturalytelse",
@@ -733,6 +771,7 @@
       "errMsg": "Ingen fond funnet. Vennligst opprett et fond før du gir en donasjon",
       "export": "Eksporter",
       "funds": "Fond",
+      "method": "Method",
       "noDonMsg": "Ingen donasjoner er registrert. Når donasjoner er lagt inn, vil de vises her.",
       "pending": "Venter",
       "statements": "Giveoppgaver",
@@ -786,7 +825,8 @@
       "subtitle": "Administrer donasjonsfond og spor givekategorier",
       "taxDeductible": "Fradragsberettiget",
       "taxStatus": "Skattestatus",
-      "totalFunds": "Totale fond"
+      "totalFunds": "Totale fond",
+      "viewBatch": "View batch"
     },
     "period": {
       "monthly": "Månedlig",
@@ -936,6 +976,7 @@
       "emailNotifMsg": "Når skjemaet sendes inn, vil du bli varslet via e-post.",
       "formMem": "Skjemamedlemmer",
       "perm": "Tillatelse",
+      "removeConfirm": "Remove {name} from this form?",
       "view": "Kun visning"
     },
     "formPage": {
@@ -949,6 +990,7 @@
       "date": "Dato",
       "decNum": "Desimal",
       "desc": "Beskrivelse",
+      "fieldType": "Field Type",
       "fund": "Fond",
       "multiChoice": "Flervalg",
       "payment": "Betaling",
@@ -1001,7 +1043,8 @@
   "gallery": {
     "aspectRatio": "Størrelsesforhold",
     "confirmDelete": "Bekreft sletting",
-    "freeForm": "Friform"
+    "freeForm": "Friform",
+    "uploadError": "Image processing completed, but upload failed. The API may not be available in this environment."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1065,9 @@
       "duplicateTooltip": "Dupliser denne gruppen",
       "emailTooltip": "Send e-post til denne gruppen",
       "labels": "Etiketter",
+      "location": "Location",
       "meetingInfo": "Møteinformasjon",
+      "meetingTime": "Meeting Time",
       "moreLabels": "Flere etiketter",
       "parentPickup": "Henting av foreldre",
       "printNametag": "Skriv ut navnelapp",
@@ -1033,6 +1078,7 @@
     },
     "groupCalendar": {
       "addEvents": "Legg til arrangementer",
+      "allowRsvps": "Allow RSVPs",
       "bulkAddTitle": "Legg til gjentakende arrangementer",
       "confirmDelete": "Slette \"{title}\" og alle forekomster av det?",
       "datesPreview": "{count} møter vil bli opprettet. Fjern avhukingen for datoer du vil hoppe over.",
@@ -1042,7 +1088,15 @@
       "lastMeeting": "Siste møte",
       "noDates": "Ingen møtedatoer faller i det valgte området.",
       "noEvents": "Ingen arrangementer ennå. Bruk Legg til arrangementer for å planlegge gruppens møter.",
+      "noResponses": "No responses yet.",
       "oneTime": "Én gang",
+      "response_maybe": "Maybe",
+      "response_no": "No",
+      "response_yes": "Yes",
+      "rosterTitle": "RSVP Responses",
+      "rsvpSummary": "{yes} yes · {maybe} maybe · {no} no",
+      "rsvps": "RSVPs",
+      "rsvpsDisabled": "Disabled",
       "skipHolidays": "Hopp over helligdager",
       "skippedDates": "Hoppede datoer",
       "until": "til"
@@ -1064,15 +1118,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "Legg til bilde",
+      "ageGrade": "Age & Grade",
       "archive": "Arkiver",
       "archiveAria": "Arkiver gruppe",
       "attTrack": "Spor oppmøte",
       "attendance": "Oppmøte",
       "attendanceReminders": "E-postpåminnelser om oppmøte",
+      "capacity": "Capacity",
       "catName": "Kategorinavn",
       "catNameMsg": "Vennligst skriv inn et kategorinavn.",
       "changePhotoAria": "Endre gruppebilde",
+      "checkinCapacity": "Check-In Capacity",
+      "checkinClosed": "Closed for Check-In",
       "clickToAddPhoto": "Klikk for å legge til bilde",
+      "confidential": "Confidential group",
+      "confidentialHelp": "Hide this group and its roster from public pages, the group finder, and non-members.",
       "confirmArchive": "Er du sikker på at du vil arkivere denne gruppen? Den vil bli skjult fra gruppelisten til den gjenopprettes.",
       "confirmMsg": "Er du sikker på at du ønsker å slette denne gruppen permanent?",
       "enrollment": "Påmelding",
@@ -1083,14 +1143,24 @@
       "groupNameMsg": "Vennligst skriv inn et gruppenavn.",
       "groupPhotoAlt": "gruppe",
       "groupSlugAria": "Gruppe-slug",
+      "guestCapacity": "Guest Capacity",
+      "maxAge": "Maximum Age",
+      "maxGrade": "Maximum Grade",
       "meetingLocation": "Møtested",
       "meetingLocationAria": "Møtested",
       "meetingTime": "Møtetid",
       "meetingTimeAria": "Møtetid",
+      "minAge": "Minimum Age",
+      "minGrade": "Minimum Grade",
+      "minVolunteers": "Minimum Volunteers",
+      "months": "Months",
+      "noLimit": "No limit",
       "parPick": "Henting av foreldre",
       "prinName": "Skriv ut navnelapp",
       "publicRoster": "Vis medlemsliste på nettsted",
-      "slug": "Slug (nøkkelnavn brukt for url-er)"
+      "slug": "Slug (nøkkelnavn brukt for url-er)",
+      "volunteerRatio": "Children per Volunteer",
+      "years": "Years"
     },
     "groupHealth": {
       "attendance": "Oppmøte",
@@ -1124,8 +1194,10 @@
       "member": "medlem",
       "members": "medlemmer",
       "messagePlaceholder": "Skriv en melding som skal sendes til alle gruppemedlemmer…",
+      "messageSent": "Message sent.",
       "noMemDesc": "Legg til medlemmer fra panelet til høyre for å begynne å bygge denne gruppen.",
       "noMemTitle": "Ingen medlemmer ennå",
+      "removeConfirm": "Remove {name} from this group?",
       "removeLeaderAccess": "Fjern ledertilgang",
       "role": "Rolle",
       "send": "Send",
@@ -1171,9 +1243,13 @@
       "groups": "Grupper",
       "labels": "Etiketter",
       "noGroupMsg": "Ingen grupper funnet. Vennligst opprett en gruppe.",
+      "noMatchMsg": "No groups match your search.",
+      "pendingRequestSingular": "{count} pending request",
+      "pendingRequests": "{count} pending requests",
       "pers": "1 person",
       "ppl": "Personer",
       "restore": "Gjenopprett",
+      "searchPlaceholder": "Search groups...",
       "showArchived": "Vis arkiverte",
       "spPpl": " personer",
       "subtitle": {
@@ -1186,6 +1262,11 @@
       "availableMem": "Tilgjengelige gruppemedlemmer",
       "noMem": "Ingen gruppemedlemmer tilgjengelig.",
       "unknown": "Ukjent"
+    },
+    "pendingRequestsPage": {
+      "empty": "No pending requests.",
+      "subtitle": "Approve or decline member-initiated requests across all groups.",
+      "title": "Pending Join Requests"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "Sett inn flettefelt i meldingsteksten:",
@@ -1223,6 +1304,8 @@
       "eligibleSummary": "{eligibleCount} av {totalMembers} medlemmer vil motta denne meldingen.",
       "eligibleSummarySingular": "{eligibleCount} av {totalMembers} medlem vil motta denne meldingen.",
       "fallbackError": "Kunne ikke sende SMS.",
+      "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Laster mottakere...",
       "messageLabel": "Melding",
       "noPhoneNotice": "{count} har ingen telefonnummer registrert.",
@@ -1268,6 +1351,11 @@
       "deleteConfirm": "Er du sikker på at du ønsker å slette denne økten permanent?",
       "sesEdit": "Rediger økt"
     },
+    "sessionsDisabled": {
+      "description": "Turn on attendance tracking to record sessions and check-ins for this group.",
+      "enable": "Enable Attendance",
+      "title": "Attendance tracking isn't enabled"
+    },
     "tabs": {
       "mem": "Medlemmer",
       "ses": "Økter"
@@ -1309,8 +1397,8 @@
       "registrations": "Registreringer",
       "roomsResources": "Rom og ressurser",
       "sermons": "Prekener",
-      "stripeImport": "Stripe-import",
       "site": "Nettsted",
+      "stripeImport": "Stripe-import",
       "website": "Nettsted"
     }
   },
@@ -1384,6 +1472,11 @@
     "sep": "September",
     "september": "September"
   },
+  "notFound": {
+    "backHome": "Back to Dashboard",
+    "message": "The page you're looking for doesn't exist or may have moved.",
+    "title": "Page Not Found"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "Laster egendefinerte felt...",
@@ -1414,6 +1507,11 @@
       "clearSelection": "Fjern valg",
       "createNewGroup": "Opprett ny gruppe",
       "delete": "Slett",
+      "deleteConfirm": "Er du sikker på at du vil slette {count} valgte personer? Denne handlingen kan ikke angres.",
+      "deleteError": "Kunne ikke slette valgte personer",
+      "deleteSelected": "Slett valgte personer",
+      "deleteSuccess": "{count} personer ble slettet",
+      "deleting": "Sletter...",
       "error": "Feil",
       "fieldPrompt": "Oppdater feltet for {count} valgte personer.",
       "fieldSuccess": "Oppdaterte {count} personer.",
@@ -1428,8 +1526,8 @@
       "optedOutYes": "Avmelding ja",
       "removeFromGroup": "Fjern fra gruppe",
       "selected": "Valgt",
-      "workflowSuccess": "La til {count} personer i arbeidsflyten.",
-      "setCampus": "Angi campus"
+      "setCampus": "Angi campus",
+      "workflowSuccess": "La til {count} personer i arbeidsflyten."
     },
     "demographics": {
       "age": "Alder",
@@ -1623,6 +1721,7 @@
     "personBanner": {
       "addToWorkflow": "Legg til i arbeidsflyt",
       "age": "Alder",
+      "emailPerson": "Email this person",
       "gender": "Kjønn",
       "hasLogin": "Har innlogging",
       "maritalStatus": "Sivilstand",
@@ -1632,6 +1731,7 @@
       "applyQuestion": "Vil du bruke det på hele",
       "cannotDeleteSelf": "Du kan ikke slette din egen personpost.",
       "confirmMsg": "Er du sikker på at du ønsker å slette denne personposten permanent?",
+      "customFields": "Custom Fields",
       "donorNumber": "Givnummer",
       "exten": "Forlengelse",
       "family": "familie",
@@ -1668,6 +1768,8 @@
       "profile": "Profil"
     },
     "personPage": {
+      "confidentialNotes": "Konfidensielle notater",
+      "confidentialNotesSuffix": " Konfidensielle notater",
       "notesSuffix": " Notater",
       "thisPerson": "denne personen"
     },
@@ -1681,6 +1783,18 @@
       "mobile": "Mobil",
       "persDet": "Personlige detaljer",
       "work": "Arbeid"
+    },
+    "pickup": {
+      "add": "Legg til",
+      "confirmDelete": "Er du sikker på at du vil fjerne denne henterpersonen?",
+      "name": "Navn",
+      "none": "Ingen henterpersoner lagt til.",
+      "notAuthorized": "Ikke autorisert",
+      "orAddByName": "Eller legg til noen som ikke er i systemet:",
+      "relationship": "Relasjon",
+      "status": "Status",
+      "title": "Henting",
+      "trusted": "Pålitelig"
     },
     "tabs": {
       "att": "Oppmøte",
@@ -1706,6 +1820,7 @@
     "female": "Kvinne",
     "firstName": "Fornavn",
     "gender": "Kjønn",
+    "grade": "Karakter",
     "inactive": "Inaktiv",
     "lastName": "Etternavn",
     "line1": "Linje 1",
@@ -1723,6 +1838,7 @@
     "phone": "Telefon",
     "prefix": "Prefiks",
     "regularAttendee": "Fast deltaker",
+    "school": "Skole",
     "single": "Singel",
     "staff": "Ansatte",
     "state": "Stat/Provins",
@@ -1906,6 +2022,7 @@
     },
     "assignmentEdit": {
       "assignPos": "Tildel posisjon",
+      "confirmDelete": "Are you sure you wish to remove this volunteer's assignment?",
       "done": "Ferdig",
       "editAssign": "Rediger tildeling",
       "noMem": "Ingen gruppemedlemmer funnet."
@@ -1964,6 +2081,7 @@
       "waitingForAuth": "Venter på autorisasjon..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Your browser does not support audio playback.",
       "fallbackPreview": "Forhåndsvisning",
       "fallbackTitle": "Innholdsforhåndsvisning",
       "noContent": "Ingen innhold å vise.",
@@ -2156,7 +2274,11 @@
       "ppl": "folk",
       "prefTimeMismatch": "foretrekker å tjene klokken",
       "publish": "Publiser plan",
+      "publishConfirm": "Publish this plan so volunteers can see their assignments?",
+      "publishConfirmLabel": "Publish",
+      "publishConfirmTitle": "Publish Plan",
       "publishNotify": "Publiser og varsle",
+      "publishNotifyConfirm": "Publish this plan and notify {count} volunteers of their assignments? Notifications are sent immediately.",
       "timeCon": "Tidskonflikt mellom",
       "timeCon2": "Tidskonflikt ved",
       "timesThisMonth": "ganger denne måneden, over foretrukket maks på",
@@ -2177,6 +2299,7 @@
       "allowSelfSignup": "Tillat selvpåmelding",
       "catName": "Kategorinavn",
       "catNameReq": "Kategorinavn er påkrevd.",
+      "confirmDelete": "Are you sure you wish to delete this position? Anyone currently assigned to it will be unscheduled.",
       "description": "Beskrivelse",
       "descriptionHelper": "Vises til frivillige når de blar gjennom påmeldingsmuligheter",
       "nameReq": "Navn er påkrevd",
@@ -2198,6 +2321,14 @@
       "length": "Lengde",
       "serviceOrder": "TJENESTEORDEN",
       "time": "Tid"
+    },
+    "printPreview": {
+      "colorCoded": "Color Coded",
+      "format": "Format:",
+      "materials": "Materials:",
+      "script": "Script",
+      "serviceOrder": "Service Order",
+      "title": "Print Preview"
     },
     "schedulingPreference": {
       "household": "Husstandsplanlegging",
@@ -2248,7 +2379,8 @@
       "title": "Tjenesteoversikt"
     },
     "servingPage": {
-      "showAll": "Vis alle"
+      "showAll": "Vis alle",
+      "showAllHint": "Your ministries are hidden because you're not a member. Turn on \"Show All\" above to see them."
     },
     "songDialog": {
       "close": "Lukk",
@@ -2289,6 +2421,7 @@
       "updateFromPlanHelp": "Erstatter innholdet i denne malen med en plans nåværende gudstjenesterekkefølge og stillinger."
     },
     "timeEdit": {
+      "confirmDelete": "Are you sure you wish to delete this time?",
       "disName": "Visningsnavn",
       "disNameReq": "Visningsnavn er påkrevd.",
       "endReq": "Slutttid er påkrevd",
@@ -2341,7 +2474,9 @@
     "pairScreen": {
       "codeRequired": "Paringskode kreves",
       "invalidCode": "Ugyldig sammenkoblingskode",
-      "pairingCode": "Paringskode"
+      "pairingCode": "Paringskode",
+      "planType": "Show Plans For",
+      "planTypeNone": "None (notifications only)"
     },
     "profilePage": {
       "accDel": "Konto sletting",
@@ -2375,6 +2510,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "Add Discount Code",
+      "addSelection": "Add Selection",
+      "addType": "Add Type",
+      "amount": "Amount",
+      "attendeeTypes": "Attendee Types",
+      "balance": "Balance",
+      "capacity": "Capacity",
+      "code": "Code",
+      "description": "Description",
+      "discountCodes": "Discount Codes",
+      "discountType": "Type",
+      "endDate": "End Date",
+      "kind": "Kind",
+      "maxQuantity": "Max Qty",
+      "maxUses": "Max Uses",
+      "method": "Method",
+      "minMembers": "Min Members",
+      "name": "Name",
+      "noCoupons": "No discount codes yet.",
+      "noPayments": "No payments recorded.",
+      "noSelections": "No selections yet.",
+      "noTypes": "No attendee types yet.",
+      "paid": "Paid",
+      "paidTotal": "Paid / Total",
+      "payments": "Payments",
+      "percent": "Percent",
+      "price": "Price",
+      "promote": "Promote",
+      "registrationDetails": "Registration Details",
+      "removeConfirm": "Remove this item? This cannot be undone.",
+      "selections": "Selections",
+      "sort": "Sort",
+      "startDate": "Start Date",
+      "total": "Total",
+      "type": "Type",
+      "usesSoFar": "Uses: {count}",
+      "value": "Value"
+    },
     "registrationDetailsPage": {
       "addAttendee": "Legg til deltaker",
       "addAttendeeError": "Kunne ikke registrere deltaker",
@@ -2405,6 +2579,7 @@
       "capacity": "Kapasitet",
       "capacityPlaceholder": "La stå tom for ubegrenset",
       "enableRegistration": "Aktiver registrering",
+      "enableWaitlist": "Enable Waitlist",
       "none": "Ingen",
       "registrationCloses": "Registrering stenger",
       "registrationOpens": "Registrering åpner",
@@ -2704,7 +2879,11 @@
       "church": "Kirke",
       "churchName": "Kirkenavn",
       "churches": "Kirker",
+      "churchesSubtitle": "Search and manage all churches",
+      "impersonateSubtitle": "Log in as another user for support",
       "impersonateUser": "Etterlign bruker",
+      "jobs": "Background Jobs",
+      "jobsSubtitle": "Last run and failures for scheduled jobs",
       "location": "Sted",
       "noChurch": "Ingen kirker funnet. Vennligst søk etter et annet navn.",
       "noUsers": "Ingen brukere funnet. Vennligst søk etter et annet navn eller e-post.",
@@ -2717,13 +2896,20 @@
       "searchResults": "Søkeresultater",
       "servAdmin": "Serveradmin",
       "serverHealth": "Serverhelse",
+      "serverHealthSubtitle": "Check the health of backend services",
       "subtitle": "Administrer server-omfattende innstillinger og kirker",
       "translationLookups": "Oversettelsesoppslag",
+      "translationSubtitle": "Look up translated locale strings",
+      "usageSubtitle": "View trends in server usage",
       "usageTrends": "Brukstrender",
+      "users": "Users",
+      "usersSubtitle": "Look up any user account for support",
       "valueNotes": "Notater om hvordan verdiene beregnes"
     },
     "churchesTab": {
+      "archiveConfirm": "Archive {name}? Members will lose access until it is restored.",
       "churchNameSearchAria": "Søk i menighetsnavn",
+      "restoreConfirm": "Restore access for {name}?",
       "searchChurchesAria": "Søk i menigheter"
     },
     "impersonateTab": {
@@ -2734,6 +2920,18 @@
       "searchAria": "Søk etter brukere å etterligne",
       "searchLabel": "Brukerens e-post",
       "searchPlaceholder": "Søk med innloggings-e-post"
+    },
+    "jobsTab": {
+      "duration": "Duration",
+      "failed": "Failed",
+      "job": "Job",
+      "lastRun": "Last Run",
+      "loadError": "Unable to load job runs.",
+      "noRuns": "No job runs recorded yet.",
+      "recentFailures": "Recent Failures",
+      "subtitle": "Latest run of each scheduled job. Runs are recorded by the timer handlers and kept for 30 days.",
+      "success": "Success",
+      "title": "Background Jobs"
     },
     "reportPage": {
       "adminOnly": "Kun administrator",
@@ -2760,6 +2958,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "Søk i oversettelsesstatistikk"
+    },
+    "usersTab": {
+      "access": "Access",
+      "description": "Search all user accounts by name or email to see their churches and login activity.",
+      "email": "Email",
+      "lastLogin": "Last Login",
+      "member": "Member",
+      "name": "Name",
+      "noChurches": "This user is not linked to any churches.",
+      "searchAria": "Search users",
+      "searchLabel": "Name or email",
+      "staff": "Staff",
+      "subDomain": "Subdomain",
+      "title": "User Lookup"
     }
   },
   "settings": {
@@ -2848,25 +3060,71 @@
     "auditLogPage": {
       "action": "Handling",
       "allCategories": "Alle kategorier",
+      "allModules": "Alle moduler",
       "category": "Kategori",
       "categoryDonation": "Donasjoner",
       "categoryForm": "Skjemaer",
       "categoryGroup": "Grupper",
-      "categoryLogin": "Innlogging",
+      "categoryLogin": "Pålogging",
       "categoryPermission": "Tillatelser",
       "categoryPerson": "Personer",
       "categorySettings": "Innstillinger",
+      "changes": "Endringer",
       "date": "Dato",
+      "deletedRecord": "Slettet post",
       "details": "Detaljer",
       "endDate": "Sluttdato",
       "entity": "Enhet",
       "exportCsv": "Eksporter CSV",
+      "field": "Felt",
       "ipAddress": "IP-adresse",
-      "noEntries": "Ingen revisjonsloggoppføringer funnet",
+      "module": "Modul",
+      "moduleAttendance": "Oppmøte",
+      "moduleContent": "Innhold",
+      "moduleDoing": "Tjeneste",
+      "moduleGiving": "Giver",
+      "moduleLessons": "Leksjoner",
+      "moduleMembership": "Medlemskap",
+      "moduleMessaging": "Meldinger",
+      "newValue": "Ny verdi",
+      "noDetails": "Ingen endringsdetaljer tilgjengelig",
+      "noEntries": "Ingen endringslogg-oppføringer funnet",
+      "noPrevious": "Ingen tidligere oppføring funnet; viser kun innsendte verdier.",
+      "oldValue": "Gammel verdi",
       "search": "Søk",
       "startDate": "Startdato",
-      "subtitle": "Spor endringer og aktivitet i menigheten din",
-      "title": "Revisjonslogg"
+      "subtitle": "Spor endringer og aktivitet i kirken din",
+      "title": "Endringslogg",
+      "truncated": "Detaljer ble avkortet, og denne oppføringen kan ikke angres."
+    },
+    "batches": {
+      "action": "Action",
+      "actions": "Actions",
+      "created": "Created",
+      "creator": "Creator",
+      "date": "Date",
+      "entityId": "Entity ID",
+      "entityType": "Entity Type",
+      "failed": "Failed ({count})",
+      "items": "Items",
+      "label": "Label",
+      "noEntries": "No batches found",
+      "noResults": "No records in this batch",
+      "restored": "Restored {count} record(s).",
+      "resultsTitle": "Batch Results",
+      "skipped": "Skipped ({count})",
+      "skippedHelp": "Records modified since the batch was created were skipped to avoid overwriting newer changes.",
+      "source": "Source",
+      "status": "Status",
+      "subtitle": "Review and undo bulk imports and actions",
+      "title": "Batches",
+      "undo": "Undo",
+      "undoConfirm": "Undo batch \"{label}\"? This will restore affected records to their state before the batch.",
+      "undoError": "The undo request failed.",
+      "undoTitle": "Undo Batch",
+      "undoWarning": "Records modified since this batch was created will be skipped. This cannot be reversed.",
+      "undoing": "Undoing…",
+      "viewResults": "View Results"
     },
     "campusEdit": {
       "address2": "Adresselinje 2",
@@ -2886,6 +3144,13 @@
       "location": "Sted",
       "none": "Ingen campuser er lagt til ennå.",
       "subtitle": "Administrer menighetens fysiske steder"
+    },
+    "checkinSettingsEdit": {
+      "block": "Block (prevent check-in)",
+      "help": "Choose how check-in responds when a room is over its volunteer-to-child ratio or below its minimum volunteers.",
+      "ratioEnforcement": "Volunteer Ratio Enforcement",
+      "title": "Innsjekking",
+      "warn": "Advar (tillat med bekreftelse)"
     },
     "church": {
       "subdomainHelper": "Kirkens unike webadresse"
@@ -2909,6 +3174,21 @@
       "subdomainAria": "Underdomene",
       "textingSubtitle": "Konfigurer SMS-tjenesteleverandør",
       "textingTitle": "SMS"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Are you sure you wish to delete this custom field? Its stored values will also be removed.",
+      "fieldType": "Field Type",
+      "name": "Name",
+      "validate": {
+        "name": "Please enter a field name."
+      }
+    },
+    "customFields": {
+      "addField": "Add Field",
+      "customFields": "Egendefinerte felt",
+      "field": "Custom Field",
+      "none": "No custom fields have been added yet.",
+      "subtitle": "Define custom fields to track on people"
     },
     "developer": {
       "actions": "Handlinger",
@@ -2955,7 +3235,9 @@
       "domMsg4": ". Dette kan ta opptil 5 minutter.",
       "domMsgConnect": "koble til",
       "domain": "Domene",
-      "domains": "Domener"
+      "domains": "Domener",
+      "mainWebsite": "Main Website",
+      "site": "Website"
     },
     "emailTemplateEdit": {
       "bodyRequired": "Brødtekstinnhold er påkrevd.",
@@ -3036,25 +3318,46 @@
       "webhookKeyHelper": "Webhook-signeringshemmelighet fra Kingdom Funding-kontrollpanelet. Kreves for oppdateringer av transaksjonsstatus.",
       "webhookUrlCopied": "Webhook-URL kopiert til utklippstavlen"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "Day",
+      "disabled": "Disabled",
+      "enabled": "Enabled",
+      "help": "On this date each year, everyone with a grade is promoted to the next grade automatically (12th grade becomes Graduated). Leave disabled to turn off automatic promotion.",
+      "month": "Month",
+      "title": "Klasseopprykk"
+    },
     "landing": {
       "campusesCount": "{count} steder",
       "campusesOne": "1 sted",
       "campusesSubtitle": "Fysiske steder",
       "configuration": "Konfigurasjon",
+      "customFieldsCount": "{count} custom fields",
+      "customFieldsSubtitle": "Ingen egendefinerte felt ennå",
       "developerSubtitle": "API-nøkler, webhooks, tilkoblede apper",
       "domainsCount": "{count} tilkoblet",
       "domainsNone": "Ingen egendefinerte domener",
       "domainsOne": "1 tilkoblet",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "Automatisk opprykk deaktivert",
+      "gradePromotionOn": "Promotes on {date} each year",
       "notConfigured": "Ikke konfigurert",
       "notSet": "Ikke angitt"
     },
     "manageChurch": {
       "auditLog": "Revisjonslogg",
+      "batches": "Partier",
       "imEx": "Importer/eksporter",
       "noData": "Ingen kirkedata tilgjengelig",
       "subtitle": "Konfigurer kirkeinnstillinger og preferanser",
       "title": "Administrer kirken"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 and older",
+      "age16": "16 and older",
+      "age18": "18 and older",
+      "helpText": "Blocks new private-message conversations when either person is under this age, based on their birthdate. People below the age stay visible in the directory. Existing conversations are not affected.",
+      "label": "Minimum Age for Private Messages",
+      "off": "Off (no restriction)"
     },
     "mobileAppSettings": {
       "addTab": "Legg til fane",
@@ -3108,6 +3411,34 @@
     "rolesPage": {
       "subtitle": "Administrer roller og tillatelser"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Sign-in failed. Please try again.",
+      "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
+      "churchAppsFree": "ChurchApps (Gratis)",
+      "connect": "Connect Account",
+      "connectFirst": "Connect your account before saving.",
+      "connected": "Account connected",
+      "connecting": "Waiting for sign-in...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Files will be stored on your MinistryStuff storage plan, linked to this church automatically. Manage your plan at",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup blocked. Please allow popups and try again.",
+      "provider": "Provider",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "Access Key Id",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Endpoint (blank for AWS)",
+      "s3Helper": "The bucket must allow public read access and CORS PUT requests from this site. Works with AWS S3, Cloudflare R2 and Backblaze B2.",
+      "s3PublicBase": "Public URL Base",
+      "s3Region": "Region",
+      "s3Required": "Bucket and public URL base are required.",
+      "s3SecretKey": "Secret Access Key",
+      "saveError": "Error saving storage settings.",
+      "sessionExpired": "The sign-in session expired. Please try again.",
+      "sessionFailed": "Could not start the sign-in session.",
+      "title": "Fillagring",
+      "usage": "Using {used} GB of {quota} GB."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "Denne lenken vil bli brukt av brukere for å kontakte kirken",
       "link": "Lenke",
@@ -3121,13 +3452,17 @@
       "clearstreamHelper": "Opprett en API-nøkkel i din",
       "clearstreamHelperLink": "Clearstream-kontoinnstillinger",
       "clearstreamHelperSuffix": "under API-nøkler.",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Your MinistryStuff texting subscription is active with {} credits remaining this cycle.",
+      "ministryStuffHelper": "No API key needed. Texting credits come from your MinistryStuff subscription, linked to this church automatically. Manage your plan at",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "Ingen",
       "provider": "Leverandør",
       "saveError": "Feil ved lagring av SMS-innstillinger.",
+      "textInChurch": "Tekst i kirken",
       "textInChurchHelper": "Besøk",
       "textInChurchHelperLink": "Text In Church-støtte",
-      "textInChurchHelperSuffix": "for å be om utvikler-API-tilgang. Når godkjent, opprett en API-nøkkel under Account Settings > Developer API.",
-      "textInChurch": "Tekst i kirken"
+      "textInChurchHelperSuffix": "for å be om utvikler-API-tilgang. Når godkjent, opprett en API-nøkkel under Account Settings > Developer API."
     },
     "userAdd": {
       "addTo": "Legg til i ",
@@ -3364,27 +3699,38 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
+      "draft": "Draft",
       "editContent": "Edit content",
+      "navHint": "Besøkende kan lese innleggene dine på /blog. Legg til en navigasjonslenke på Sider-skjermen slik at de kan finne den:",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Published",
+      "scheduled": "Scheduled",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "View on Site"
     },
     "blogEdit": {
+      "author": "Author",
       "category": "Category",
+      "content": "Content",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "That web address is already used by another post.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "Preview",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Auto-fills from the title until you edit it. Address:",
+      "slugLabel": "Web address",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4062,7 @@
       "uploadFiles": "Last opp filer"
     },
     "filesManager": {
+      "externalStorage": "Stored in your linked account",
       "files": "Filer",
       "getStarted": "Kom i gang ved å laste opp din første fil",
       "name": "Navn",
@@ -3936,6 +4283,7 @@
     },
     "paletteEdit": {
       "accent": "Aksent",
+      "accentDesc": "Main accent — buttons and highlights",
       "applyPaletteAria": "Bruk foreslått fargepalett",
       "applySuggested": "Klikk på en palett for å bruke den umiddelbart",
       "baseColors": "Grunnfarger",
@@ -3943,20 +4291,29 @@
       "colorValues": "Fargeverdier",
       "dark": "Mørk",
       "darkAccent": "Mørk aksent",
+      "darkAccentDesc": "Deep accent — headings and links",
+      "darkDesc": "Darkest shade — body text",
       "error": "Feil",
+      "errorDesc": "Errors and destructive actions",
       "headerSubtitle": "Tilpass nettstedets fargeskjema. For mobilapp, medlemsportal og kioskfarger, gå til Innstillinger > Apptema.",
       "headerTitle": "Fargepalett",
       "light": "Lys",
       "lightAccent": "Lys aksent",
+      "lightAccentDesc": "Soft accent — subtle backgrounds",
+      "lightDesc": "Lightest shade — section backgrounds",
       "palette": "Palett",
       "previewWorkTogether": "Forhåndsvis hvordan fargene dine fungerer sammen",
       "primary": "Primær",
+      "primaryDesc": "Primary buttons and links",
       "savePalette": "Lagre palett",
       "secondary": "Sekundær",
+      "secondaryDesc": "Secondary buttons and accents",
       "semanticColors": "Semantiske farger",
       "success": "Suksess",
+      "successDesc": "Success messages and confirmations",
       "suggestedPalettes": "Foreslåtte paletter",
-      "warning": "Advarsel"
+      "warning": "Advarsel",
+      "warningDesc": "Warnings and cautions"
     },
     "pickColors": {
       "background": "Bakgrunn",
@@ -4144,6 +4501,10 @@
       "showCampus": "Vis campus",
       "title": "Tittel"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Main Website",
+      "manageSites": "Manage websites…"
+    },
     "siteTemplates": {
       "back": "Tilbake",
       "create": "Opprett nettsted",
@@ -4212,6 +4573,15 @@
       "textColor": "Tekstfarge",
       "title": "Nettstedswidgets",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Add Website",
+      "deleteConfirm": "Delete this website? Its pages, navigation and appearance will be permanently deleted. Its custom domains will be reassigned to the main website.",
+      "empty": "No additional websites yet.",
+      "name": "Name",
+      "subDomain": "Subdomain",
+      "subDomainHint": "Lowercase letters and numbers only. Becomes {subdomain}.b1.church",
+      "title": "Websites"
     },
     "socialIconsEdit": {
       "alignment": "Justering",
@@ -4331,11 +4701,13 @@
       "columns": "Kolonner",
       "empty": "(tom)",
       "firstRowHeader": "Første rad er overskrift",
+      "markdownHelper": "Enables Markdown in cells for bold, links, and other formatting.",
       "medium": "Middels",
       "no": "Nei",
       "rows": "Rader",
       "size": "Størrelse",
       "sizeSmall": "Liten",
+      "textFormatting": "Text formatting",
       "yes": "Ja"
     },
     "templates": {
@@ -4812,6 +5184,7 @@
     },
     "workflowEdit": {
       "active": "Aktiv",
+      "confirmDelete": "Are you sure you want to delete this workflow?",
       "editWorkflow": "Rediger arbeidsflyt",
       "inactive": "Inaktiv",
       "name": "Navn"
@@ -4842,6 +5215,7 @@
       "title": "Ruting"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Are you sure you want to delete this step?",
       "defaultAssignee": "Standard ansvarlig",
       "dueDays": "Forfall om (dager)",
       "dueDaysHelp": "Angir en forfallsdato når et kort kommer inn i dette trinnet",

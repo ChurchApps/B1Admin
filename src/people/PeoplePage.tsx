@@ -306,13 +306,13 @@ export const PeoplePage = memo(() => {
       setShowBulkDeleteConfirm(false);
       setToast({
         open: true,
-        message: `${response?.count || deletedIds.length} people deleted successfully`,
+        message: Locale.label("people.bulk.deleteSuccess").replace("{count}", (response?.count || deletedIds.length).toString()),
         severity: "success"
       });
     } catch (error) {
       setToast({
         open: true,
-        message: error instanceof Error ? error.message : "Unable to delete selected people",
+        message: error instanceof Error ? error.message : Locale.label("people.bulk.deleteError"),
         severity: "error"
       });
     } finally {
@@ -538,18 +538,18 @@ export const PeoplePage = memo(() => {
       </Dialog>
 
       <Dialog open={showBulkDeleteConfirm} onClose={() => !isBulkDeleting && setShowBulkDeleteConfirm(false)} maxWidth="xs" fullWidth>
-        <DialogTitle>Delete Selected People</DialogTitle>
+        <DialogTitle>{Locale.label("people.bulk.deleteSelected")}</DialogTitle>
         <DialogContent>
           <Typography>
-            {`Are you sure you want to delete ${selectedPersonIds.length} selected people? This action cannot be undone.`}
+            {Locale.label("people.bulk.deleteConfirm").replace("{count}", selectedPersonIds.length.toString())}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowBulkDeleteConfirm(false)} variant="outlined" disabled={isBulkDeleting}>
-            {Locale.label("common.cancel") || "Cancel"}
+            {Locale.label("common.cancel")}
           </Button>
           <Button onClick={handleBulkDelete} color="error" variant="contained" disabled={isBulkDeleting}>
-            {isBulkDeleting ? "Deleting..." : "Delete"}
+            {isBulkDeleting ? Locale.label("people.bulk.deleting") : Locale.label("people.bulk.delete")}
           </Button>
         </DialogActions>
       </Dialog>

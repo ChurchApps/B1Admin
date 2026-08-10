@@ -37,8 +37,15 @@
       "unscheduled": "计划外"
     },
     "attendanceSetup": {
-      "setupMessage": "设置校园、服务和服务时间以开始跟踪出勤情况。",
+      "manageCampuses": "管理校区",
+      "setupMessage": "设置校区、服务和服务时间，以开始跟踪出勤情况。",
       "unassigned": "未分配"
+    },
+    "checkinType": {
+      "guest": "Guest",
+      "header": "Type",
+      "volunteer": "Volunteer",
+      "volunteers": "volunteers"
     },
     "labels": {
       "align": "对齐",
@@ -55,6 +62,17 @@
       "empty": "为空",
       "equals": "等于",
       "field": "字段",
+      "fieldChildren": "儿童",
+      "fieldChildrenAllergies": "儿童过敏",
+      "fieldChurchName": "教会名称",
+      "fieldDate": "日期",
+      "fieldDisplayName": "姓名",
+      "fieldFirstName": "名",
+      "fieldLastName": "姓",
+      "fieldNametagNotes": "名牌备注",
+      "fieldNickName": "昵称",
+      "fieldSecurityCode": "安全码",
+      "fieldSessions": "会话",
       "fill": "填充",
       "fontSize": "字体大小",
       "height": "高度（英寸）",
@@ -66,6 +84,10 @@
       "noTemplatesDesc": "创建标签模板以自定义签到自助终端打印的标签。",
       "notEmpty": "不为空",
       "notEquals": "不等于",
+      "opDoesNotEqual": "Does not equal",
+      "opEquals": "Equals",
+      "opIsBlank": "Is blank",
+      "opIsNotBlank": "Is not blank",
       "operator": "运算符",
       "palette": "添加块",
       "pickup": "取票条",
@@ -118,7 +140,9 @@
   "calendars": {
     "approvals": {
       "approve": "批准",
+      "approvedToast": "Request approved.",
       "bookingRequests": "房间与资源申请",
+      "confirmReject": "Are you sure you wish to reject this request?",
       "conflicts": "冲突",
       "description": "描述",
       "event": "活动",
@@ -127,6 +151,8 @@
       "noPendingBookings": "无待处理的房间或资源申请。",
       "noPendingEvents": "无待处理的活动申请。",
       "reject": "拒绝",
+      "rejectTitle": "Reject Request",
+      "rejectedToast": "Request rejected.",
       "roomResource": "房间 / 资源",
       "status": "状态",
       "subtitle": "审核待处理的房间、资源和活动申请",
@@ -169,10 +195,11 @@
     "calendarEvent": {
       "cancel": "取消",
       "confirmDelete": "您确定要删除此活动吗？",
+      "confirmDeleteSeries": "This is a recurring event. Deleting it will remove the entire series and all of its occurrences. Are you sure?",
       "delete": "删除",
+      "editEvent": "编辑活动",
       "manageRegistrations": "管理报名",
-      "noGroups": "未找到组。",
-      "editEvent": "编辑活动"
+      "noGroups": "未找到组。"
     },
     "calendarList": {
       "aboutParagraph1": "日历允许您组织和显示教堂的活动。",
@@ -203,6 +230,7 @@
       "importIcs": "导入 .ics",
       "newEvent": "新建活动",
       "noGroupsAdded": "尚未添加群组",
+      "pendingApprovals": "{count} pending approvals",
       "print": "打印",
       "subtitle": "管理日历事件和组"
     },
@@ -334,12 +362,12 @@
     "confirm": "确认",
     "copy": "复制",
     "createPerson": {
+      "confirmDuplicate": "已找到使用此电子邮件的现有人员 '{{existingName}}' ({{existingEmail}})。您确定要添加 '{{firstName}} {{lastName}}' 吗？",
       "validate": {
         "firstName": "请输入名字。",
         "lastName": "请输入姓氏。",
         "validEmail": "请输入有效的电子邮件地址。"
-      },
-      "confirmDuplicate": "已找到使用此电子邮件的现有人员 '{{existingName}}' ({{existingEmail}})。您确定要添加 '{{firstName}} {{lastName}}' 吗？"
+      }
     },
     "custom": "自定义",
     "delete": "删除",
@@ -386,6 +414,7 @@
     "right": "右",
     "save": "保存",
     "saveChanges": "保存更改",
+    "saveError": "Unable to save. Please try again.",
     "saving": "保存中...",
     "search": "搜索",
     "searching": "搜索中...",
@@ -490,6 +519,9 @@
       "workflows": "工作流"
     }
   },
+  "controlPanel": {
+    "serverError": "Something went wrong. Please try again."
+  },
   "createPerson": {
     "addNewPerson": "添加新人",
     "email": "电子邮件",
@@ -538,6 +570,7 @@
     "peopleSearch": {
       "ariaSearch": "搜索人员",
       "ariaSearchBox": "searchBox",
+      "clearSearch": "Clear Search",
       "display": "显示",
       "noResults": "未找到符合搜索条件的人员。",
       "photo": "照片",
@@ -590,6 +623,8 @@
       "invalidCode": "代码无效或已过期。请检查后重试。",
       "loading": "加载中...",
       "noChurchSelected": "未选择教会。请重新登录并选择教会。",
+      "planType": "Show Plans For",
+      "planTypeNone": "None (browse only)",
       "requestedPermissions": "请求的权限：",
       "title": "授权设备",
       "verifyFailed": "验证代码失败。请重试。"
@@ -609,6 +644,7 @@
       "lastYearCsv": "去年 CSV",
       "lastYearPrint": "去年印刷",
       "method": "方法",
+      "viewBatch": "View batch",
       "willAppear": "捐款将在完成后显示在此处。"
     }
   },
@@ -665,7 +701,8 @@
       "ofGoal": "占目标",
       "pledges": "承诺",
       "status": "状态",
-      "subtitle": "此活动的承诺和奉献进度"
+      "subtitle": "此活动的承诺和奉献进度",
+      "unknownPerson": "Unknown person"
     },
     "campaignsPage": {
       "addCampaign": "添加活动",
@@ -708,6 +745,7 @@
       "cash": "现金",
       "check": "支票",
       "checkNum": "支票 #",
+      "confirmMsg": "Are you sure you wish to permanently delete this donation?",
       "date": "日期",
       "fund": "基金",
       "inKind": "实物捐赠",
@@ -733,6 +771,7 @@
       "errMsg": "未找到基金。请在捐款前创建一个基金",
       "export": "导出",
       "funds": "基金",
+      "method": "Method",
       "noDonMsg": "尚未追踪任何捐款。输入捐款后，它们将显示在这里。",
       "pending": "待处理",
       "statements": "捐赠报表",
@@ -786,7 +825,8 @@
       "subtitle": "管理捐赠基金和跟踪捐赠类别",
       "taxDeductible": "可免税",
       "taxStatus": "税务状态",
-      "totalFunds": "基金总数"
+      "totalFunds": "基金总数",
+      "viewBatch": "View batch"
     },
     "period": {
       "monthly": "每月",
@@ -936,6 +976,7 @@
       "emailNotifMsg": "每当提交表单时，您都会收到邮件通知。",
       "formMem": "表单成员",
       "perm": "权限",
+      "removeConfirm": "Remove {name} from this form?",
       "view": "仅查看"
     },
     "formPage": {
@@ -949,6 +990,7 @@
       "date": "日期",
       "decNum": "小数",
       "desc": "描述",
+      "fieldType": "Field Type",
       "fund": "基金",
       "multiChoice": "多项选择",
       "payment": "付款",
@@ -1001,7 +1043,8 @@
   "gallery": {
     "aspectRatio": "宽高比",
     "confirmDelete": "确认删除",
-    "freeForm": "自由形式"
+    "freeForm": "自由形式",
+    "uploadError": "Image processing completed, but upload failed. The API may not be available in this environment."
   },
   "groups": {
     "groupAdd": {
@@ -1022,7 +1065,9 @@
       "duplicateTooltip": "复制此群组",
       "emailTooltip": "向此小组发送电子邮件",
       "labels": "标签",
+      "location": "Location",
       "meetingInfo": "会议信息",
+      "meetingTime": "Meeting Time",
       "moreLabels": "更多标签",
       "parentPickup": "家长接送",
       "printNametag": "打印名牌",
@@ -1033,6 +1078,7 @@
     },
     "groupCalendar": {
       "addEvents": "添加活动",
+      "allowRsvps": "Allow RSVPs",
       "bulkAddTitle": "添加重复活动",
       "confirmDelete": "删除\"{title}\"及其所有重复活动？",
       "datesPreview": "将创建 {count} 次会议。取消勾选任意日期可跳过。",
@@ -1042,7 +1088,15 @@
       "lastMeeting": "最后一次会议",
       "noDates": "所选范围内没有会议日期。",
       "noEvents": "暂无活动。使用「添加活动」安排本团体的会议。",
+      "noResponses": "No responses yet.",
       "oneTime": "一次性",
+      "response_maybe": "Maybe",
+      "response_no": "No",
+      "response_yes": "Yes",
+      "rosterTitle": "RSVP Responses",
+      "rsvpSummary": "{yes} yes · {maybe} maybe · {no} no",
+      "rsvps": "RSVPs",
+      "rsvpsDisabled": "Disabled",
       "skipHolidays": "跳过节假日",
       "skippedDates": "跳过的日期",
       "until": "至"
@@ -1064,15 +1118,21 @@
     },
     "groupDetailsEdit": {
       "addPhoto": "添加照片",
+      "ageGrade": "Age & Grade",
       "archive": "存档",
       "archiveAria": "存档群组",
       "attTrack": "追踪出席",
       "attendance": "出席率",
       "attendanceReminders": "出勤提醒邮件",
+      "capacity": "Capacity",
       "catName": "分类名称",
       "catNameMsg": "请输入类别名称。",
       "changePhotoAria": "更改小组照片",
+      "checkinCapacity": "Check-In Capacity",
+      "checkinClosed": "Closed for Check-In",
       "clickToAddPhoto": "点击添加照片",
+      "confidential": "Confidential group",
+      "confidentialHelp": "Hide this group and its roster from public pages, the group finder, and non-members.",
       "confirmArchive": "您确定要存档此群组吗？在恢复之前，它将从群组列表中隐藏。",
       "confirmMsg": "您确定要永久删除此群组吗？",
       "enrollment": "报名",
@@ -1083,14 +1143,24 @@
       "groupNameMsg": "请输入群组名称。",
       "groupPhotoAlt": "小组",
       "groupSlugAria": "小组别名",
+      "guestCapacity": "Guest Capacity",
+      "maxAge": "Maximum Age",
+      "maxGrade": "Maximum Grade",
       "meetingLocation": "聚会地点",
       "meetingLocationAria": "聚会地点",
       "meetingTime": "聚会时间",
       "meetingTimeAria": "聚会时间",
+      "minAge": "Minimum Age",
+      "minGrade": "Minimum Grade",
+      "minVolunteers": "Minimum Volunteers",
+      "months": "Months",
+      "noLimit": "No limit",
       "parPick": "家长接送",
       "prinName": "打印名牌",
       "publicRoster": "在网站上显示名单",
-      "slug": "简称（用于URL的键名）"
+      "slug": "简称（用于URL的键名）",
+      "volunteerRatio": "Children per Volunteer",
+      "years": "Years"
     },
     "groupHealth": {
       "attendance": "出勤",
@@ -1124,8 +1194,10 @@
       "member": "成员",
       "members": "成员们",
       "messagePlaceholder": "给所有团体成员写一条消息……",
+      "messageSent": "Message sent.",
       "noMemDesc": "从右侧面板添加成员以开始建立此团体。",
       "noMemTitle": "暂无成员",
+      "removeConfirm": "Remove {name} from this group?",
       "removeLeaderAccess": "移除领袖权限",
       "role": "角色",
       "send": "发送",
@@ -1171,9 +1243,13 @@
       "groups": "团体",
       "labels": "标签",
       "noGroupMsg": "未找到任何群组。请创建一个群组。",
+      "noMatchMsg": "No groups match your search.",
+      "pendingRequestSingular": "{count} pending request",
+      "pendingRequests": "{count} pending requests",
       "pers": "1人",
       "ppl": "人员",
       "restore": "恢复",
+      "searchPlaceholder": "Search groups...",
       "showArchived": "显示已存档",
       "spPpl": " 人",
       "subtitle": {
@@ -1186,6 +1262,11 @@
       "availableMem": "可用的群组成员",
       "noMem": "没有可用的群组成员。",
       "unknown": "未知"
+    },
+    "pendingRequestsPage": {
+      "empty": "No pending requests.",
+      "subtitle": "Approve or decline member-initiated requests across all groups.",
+      "title": "Pending Join Requests"
     },
     "sendEmailDialog": {
       "bodyMergeFieldHint": "在正文中插入合并字段：",
@@ -1223,6 +1304,8 @@
       "eligibleSummary": "{totalMembers} 名成员中有 {eligibleCount} 名将收到此短信。",
       "eligibleSummarySingular": "{totalMembers} 名成员中有 {eligibleCount} 名将收到此短信。",
       "fallbackError": "发送短信失败。",
+      "insufficientCredits": "Your church is out of texting credits for this billing cycle. No messages were sent. Upgrade or wait for your credits to renew at",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "正在加载收件人...",
       "messageLabel": "消息",
       "noPhoneNotice": "{count} 人没有登记的电话号码。",
@@ -1268,6 +1351,11 @@
       "deleteConfirm": "您确定要永久删除此会话吗？",
       "sesEdit": "编辑会话"
     },
+    "sessionsDisabled": {
+      "description": "Turn on attendance tracking to record sessions and check-ins for this group.",
+      "enable": "Enable Attendance",
+      "title": "Attendance tracking isn't enabled"
+    },
     "tabs": {
       "mem": "成员",
       "ses": "会话"
@@ -1309,8 +1397,8 @@
       "registrations": "报名",
       "roomsResources": "房间与资源",
       "sermons": "讲道",
-      "stripeImport": "Stripe 导入",
       "site": "站点",
+      "stripeImport": "Stripe 导入",
       "website": "网站"
     }
   },
@@ -1384,6 +1472,11 @@
     "sep": "九月",
     "september": "九月"
   },
+  "notFound": {
+    "backHome": "Back to Dashboard",
+    "message": "The page you're looking for doesn't exist or may have moved.",
+    "title": "Page Not Found"
+  },
   "people": {
     "advancedPeopleSearch": {
       "loadingCustomFields": "正在加载自定义字段...",
@@ -1414,6 +1507,11 @@
       "clearSelection": "清除选择",
       "createNewGroup": "创建新团体",
       "delete": "删除",
+      "deleteConfirm": "您确定要删除 {count} 名选定的人员吗？此操作无法撤消。",
+      "deleteError": "无法删除选定的人员",
+      "deleteSelected": "删除选定的人员",
+      "deleteSuccess": "成功删除 {count} 人",
+      "deleting": "正在删除...",
       "error": "错误",
       "fieldPrompt": "更新 {count} 名选中人员的字段。",
       "fieldSuccess": "已更新 {count} 人。",
@@ -1428,8 +1526,8 @@
       "optedOutYes": "已退出",
       "removeFromGroup": "从团体中移除",
       "selected": "已选中",
-      "workflowSuccess": "已将 {count} 人添加到工作流。",
-      "setCampus": "设置校园"
+      "setCampus": "设置校园",
+      "workflowSuccess": "已将 {count} 人添加到工作流。"
     },
     "demographics": {
       "age": "年龄",
@@ -1623,6 +1721,7 @@
     "personBanner": {
       "addToWorkflow": "添加到工作流",
       "age": "年龄",
+      "emailPerson": "Email this person",
       "gender": "性别",
       "hasLogin": "有登录账号",
       "maritalStatus": "婚姻状况",
@@ -1632,6 +1731,7 @@
       "applyQuestion": "您想将其应用到整个",
       "cannotDeleteSelf": "您不能删除自己的人员记录。",
       "confirmMsg": "您确定要永久删除此人记录吗？",
+      "customFields": "Custom Fields",
       "donorNumber": "捐赠者编号",
       "exten": "分机",
       "family": "家庭",
@@ -1668,7 +1768,9 @@
       "profile": "个人资料"
     },
     "personPage": {
-      "notesSuffix": " 笔记",
+      "confidentialNotes": "机密备注",
+      "confidentialNotesSuffix": " 机密备注",
+      "notesSuffix": " 备注",
       "thisPerson": "此人"
     },
     "personProfile": {
@@ -1681,6 +1783,18 @@
       "mobile": "手机",
       "persDet": "个人详情",
       "work": "工作"
+    },
+    "pickup": {
+      "add": "添加",
+      "confirmDelete": "您确定要删除此接送人员吗？",
+      "name": "姓名",
+      "none": "未添加接送人员。",
+      "notAuthorized": "未授权",
+      "orAddByName": "或添加系统中不存在的人员：",
+      "relationship": "关系",
+      "status": "状态",
+      "title": "接送",
+      "trusted": "受信任"
     },
     "tabs": {
       "att": "出席",
@@ -1706,6 +1820,7 @@
     "female": "女性",
     "firstName": "名字",
     "gender": "性别",
+    "grade": "年级",
     "inactive": "不活跃",
     "lastName": "姓氏",
     "line1": "第1行",
@@ -1723,6 +1838,7 @@
     "phone": "电话",
     "prefix": "前缀",
     "regularAttendee": "常规参加者",
+    "school": "学校",
     "single": "单身",
     "staff": "职员",
     "state": "州/省",
@@ -1906,6 +2022,7 @@
     },
     "assignmentEdit": {
       "assignPos": "分配位置",
+      "confirmDelete": "Are you sure you wish to remove this volunteer's assignment?",
       "done": "完成",
       "editAssign": "编辑分配",
       "noMem": "未找到群组成员。"
@@ -1964,6 +2081,7 @@
       "waitingForAuth": "等待授权..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Your browser does not support audio playback.",
       "fallbackPreview": "预览",
       "fallbackTitle": "内容预览",
       "noContent": "无内容可显示。",
@@ -2156,7 +2274,11 @@
       "ppl": "人",
       "prefTimeMismatch": "偏好在此时间服侍",
       "publish": "发布计划",
+      "publishConfirm": "Publish this plan so volunteers can see their assignments?",
+      "publishConfirmLabel": "Publish",
+      "publishConfirmTitle": "Publish Plan",
       "publishNotify": "发布并通知",
+      "publishNotifyConfirm": "Publish this plan and notify {count} volunteers of their assignments? Notifications are sent immediately.",
       "timeCon": "时间冲突在",
       "timeCon2": "时间冲突在",
       "timesThisMonth": "次（本月），超过其偏好最大值",
@@ -2177,6 +2299,7 @@
       "allowSelfSignup": "允许自行报名",
       "catName": "类别名称",
       "catNameReq": "类别名称为必填项。",
+      "confirmDelete": "Are you sure you wish to delete this position? Anyone currently assigned to it will be unscheduled.",
       "description": "描述",
       "descriptionHelper": "在浏览报名机会时向志愿者显示",
       "nameReq": "名称为必填项",
@@ -2198,6 +2321,14 @@
       "length": "长度",
       "serviceOrder": "服务顺序",
       "time": "时间"
+    },
+    "printPreview": {
+      "colorCoded": "Color Coded",
+      "format": "Format:",
+      "materials": "Materials:",
+      "script": "Script",
+      "serviceOrder": "Service Order",
+      "title": "Print Preview"
     },
     "schedulingPreference": {
       "household": "家庭排班",
@@ -2248,7 +2379,8 @@
       "title": "服事概览"
     },
     "servingPage": {
-      "showAll": "显示全部"
+      "showAll": "显示全部",
+      "showAllHint": "Your ministries are hidden because you're not a member. Turn on \"Show All\" above to see them."
     },
     "songDialog": {
       "close": "关闭",
@@ -2289,6 +2421,7 @@
       "updateFromPlanHelp": "用某个计划当前的崇拜程序和职位替换此模板的内容。"
     },
     "timeEdit": {
+      "confirmDelete": "Are you sure you wish to delete this time?",
       "disName": "显示名称",
       "disNameReq": "显示名称为必填项。",
       "endReq": "结束时间为必填项",
@@ -2341,7 +2474,9 @@
     "pairScreen": {
       "codeRequired": "需要配对码",
       "invalidCode": "配对码无效",
-      "pairingCode": "配对码"
+      "pairingCode": "配对码",
+      "planType": "Show Plans For",
+      "planTypeNone": "None (notifications only)"
     },
     "profilePage": {
       "accDel": "账户删除",
@@ -2375,6 +2510,45 @@
     }
   },
   "registrations": {
+    "commerce": {
+      "addCoupon": "Add Discount Code",
+      "addSelection": "Add Selection",
+      "addType": "Add Type",
+      "amount": "Amount",
+      "attendeeTypes": "Attendee Types",
+      "balance": "Balance",
+      "capacity": "Capacity",
+      "code": "Code",
+      "description": "Description",
+      "discountCodes": "Discount Codes",
+      "discountType": "Type",
+      "endDate": "End Date",
+      "kind": "Kind",
+      "maxQuantity": "Max Qty",
+      "maxUses": "Max Uses",
+      "method": "Method",
+      "minMembers": "Min Members",
+      "name": "Name",
+      "noCoupons": "No discount codes yet.",
+      "noPayments": "No payments recorded.",
+      "noSelections": "No selections yet.",
+      "noTypes": "No attendee types yet.",
+      "paid": "Paid",
+      "paidTotal": "Paid / Total",
+      "payments": "Payments",
+      "percent": "Percent",
+      "price": "Price",
+      "promote": "Promote",
+      "registrationDetails": "Registration Details",
+      "removeConfirm": "Remove this item? This cannot be undone.",
+      "selections": "Selections",
+      "sort": "Sort",
+      "startDate": "Start Date",
+      "total": "Total",
+      "type": "Type",
+      "usesSoFar": "Uses: {count}",
+      "value": "Value"
+    },
     "registrationDetailsPage": {
       "addAttendee": "添加参与者",
       "addAttendeeError": "参与者报名失败。",
@@ -2405,6 +2579,7 @@
       "capacity": "容量",
       "capacityPlaceholder": "留空表示无限制",
       "enableRegistration": "启用报名",
+      "enableWaitlist": "Enable Waitlist",
       "none": "无",
       "registrationCloses": "报名截止",
       "registrationOpens": "报名开放",
@@ -2704,7 +2879,11 @@
       "church": "教会",
       "churchName": "教会名称",
       "churches": "教会",
+      "churchesSubtitle": "Search and manage all churches",
+      "impersonateSubtitle": "Log in as another user for support",
       "impersonateUser": "模拟用户",
+      "jobs": "Background Jobs",
+      "jobsSubtitle": "Last run and failures for scheduled jobs",
       "location": "地点",
       "noChurch": "未找到教会。请搜索其他名称。",
       "noUsers": "未找到用户。请搜索其他姓名或电子邮件。",
@@ -2717,13 +2896,20 @@
       "searchResults": "搜索结果",
       "servAdmin": "服务器管理",
       "serverHealth": "服务器健康",
+      "serverHealthSubtitle": "Check the health of backend services",
       "subtitle": "管理服务器范围的设置和教堂",
       "translationLookups": "翻译查找",
+      "translationSubtitle": "Look up translated locale strings",
+      "usageSubtitle": "View trends in server usage",
       "usageTrends": "使用趋势",
+      "users": "Users",
+      "usersSubtitle": "Look up any user account for support",
       "valueNotes": "关于值计算方式的说明"
     },
     "churchesTab": {
+      "archiveConfirm": "Archive {name}? Members will lose access until it is restored.",
       "churchNameSearchAria": "教会名称搜索",
+      "restoreConfirm": "Restore access for {name}?",
       "searchChurchesAria": "搜索教会"
     },
     "impersonateTab": {
@@ -2734,6 +2920,18 @@
       "searchAria": "搜索要模拟的用户",
       "searchLabel": "用户邮箱",
       "searchPlaceholder": "按登录邮箱搜索"
+    },
+    "jobsTab": {
+      "duration": "Duration",
+      "failed": "Failed",
+      "job": "Job",
+      "lastRun": "Last Run",
+      "loadError": "Unable to load job runs.",
+      "noRuns": "No job runs recorded yet.",
+      "recentFailures": "Recent Failures",
+      "subtitle": "Latest run of each scheduled job. Runs are recorded by the timer handlers and kept for 30 days.",
+      "success": "Success",
+      "title": "Background Jobs"
     },
     "reportPage": {
       "adminOnly": "仅限管理员",
@@ -2760,6 +2958,20 @@
     },
     "translationTab": {
       "searchTranslationStatsAria": "搜索翻译统计"
+    },
+    "usersTab": {
+      "access": "Access",
+      "description": "Search all user accounts by name or email to see their churches and login activity.",
+      "email": "Email",
+      "lastLogin": "Last Login",
+      "member": "Member",
+      "name": "Name",
+      "noChurches": "This user is not linked to any churches.",
+      "searchAria": "Search users",
+      "searchLabel": "Name or email",
+      "staff": "Staff",
+      "subDomain": "Subdomain",
+      "title": "User Lookup"
     }
   },
   "settings": {
@@ -2848,25 +3060,71 @@
     "auditLogPage": {
       "action": "操作",
       "allCategories": "所有类别",
+      "allModules": "所有模块",
       "category": "类别",
-      "categoryDonation": "奉献",
-      "categoryForm": "表单",
-      "categoryGroup": "小组",
+      "categoryDonation": "捐款",
+      "categoryForm": "表格",
+      "categoryGroup": "群组",
       "categoryLogin": "登录",
       "categoryPermission": "权限",
       "categoryPerson": "人员",
       "categorySettings": "设置",
+      "changes": "变更",
       "date": "日期",
-      "details": "详情",
+      "deletedRecord": "已删除记录",
+      "details": "详细信息",
       "endDate": "结束日期",
       "entity": "实体",
       "exportCsv": "导出 CSV",
+      "field": "字段",
       "ipAddress": "IP 地址",
+      "module": "模块",
+      "moduleAttendance": "考勤",
+      "moduleContent": "内容",
+      "moduleDoing": "服务",
+      "moduleGiving": "奉献",
+      "moduleLessons": "课程",
+      "moduleMembership": "会员",
+      "moduleMessaging": "消息",
+      "newValue": "新值",
+      "noDetails": "无变更详情",
       "noEntries": "未找到审计日志条目",
+      "noPrevious": "未找到之前的条目；仅显示提交的值。",
+      "oldValue": "旧值",
       "search": "搜索",
       "startDate": "开始日期",
-      "subtitle": "跟踪您教会内的更改和活动",
-      "title": "审计日志"
+      "subtitle": "跟踪您教会的变更和活动",
+      "title": "审计日志",
+      "truncated": "详细信息已被截断，此条目无法撤消。"
+    },
+    "batches": {
+      "action": "Action",
+      "actions": "Actions",
+      "created": "Created",
+      "creator": "Creator",
+      "date": "Date",
+      "entityId": "Entity ID",
+      "entityType": "Entity Type",
+      "failed": "Failed ({count})",
+      "items": "Items",
+      "label": "Label",
+      "noEntries": "No batches found",
+      "noResults": "No records in this batch",
+      "restored": "Restored {count} record(s).",
+      "resultsTitle": "Batch Results",
+      "skipped": "Skipped ({count})",
+      "skippedHelp": "Records modified since the batch was created were skipped to avoid overwriting newer changes.",
+      "source": "Source",
+      "status": "Status",
+      "subtitle": "Review and undo bulk imports and actions",
+      "title": "Batches",
+      "undo": "Undo",
+      "undoConfirm": "Undo batch \"{label}\"? This will restore affected records to their state before the batch.",
+      "undoError": "The undo request failed.",
+      "undoTitle": "Undo Batch",
+      "undoWarning": "Records modified since this batch was created will be skipped. This cannot be reversed.",
+      "undoing": "Undoing…",
+      "viewResults": "View Results"
     },
     "campusEdit": {
       "address2": "地址行 2",
@@ -2886,6 +3144,13 @@
       "location": "位置",
       "none": "尚未添加任何堂区。",
       "subtitle": "管理您教会的实体位置"
+    },
+    "checkinSettingsEdit": {
+      "block": "Block (prevent check-in)",
+      "help": "Choose how check-in responds when a room is over its volunteer-to-child ratio or below its minimum volunteers.",
+      "ratioEnforcement": "Volunteer Ratio Enforcement",
+      "title": "签到",
+      "warn": "警告（确认后允许）"
     },
     "church": {
       "subdomainHelper": "您的教会独特的网址"
@@ -2909,6 +3174,21 @@
       "subdomainAria": "子域名",
       "textingSubtitle": "配置 SMS 短信提供商",
       "textingTitle": "短信"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Are you sure you wish to delete this custom field? Its stored values will also be removed.",
+      "fieldType": "Field Type",
+      "name": "Name",
+      "validate": {
+        "name": "Please enter a field name."
+      }
+    },
+    "customFields": {
+      "addField": "Add Field",
+      "customFields": "自定义字段",
+      "field": "Custom Field",
+      "none": "No custom fields have been added yet.",
+      "subtitle": "Define custom fields to track on people"
     },
     "developer": {
       "actions": "操作",
@@ -2955,7 +3235,9 @@
       "domMsg4": "。最多可能需要5分钟。",
       "domMsgConnect": "连接",
       "domain": "域名",
-      "domains": "域名"
+      "domains": "域名",
+      "mainWebsite": "Main Website",
+      "site": "Website"
     },
     "emailTemplateEdit": {
       "bodyRequired": "正文内容为必填项。",
@@ -3036,25 +3318,46 @@
       "webhookKeyHelper": "来自 Kingdom Funding 控制面板的 Webhook 签名密钥。交易状态更新所必需。",
       "webhookUrlCopied": "Webhook URL 已复制到剪贴板"
     },
+    "gradePromotionSettingsEdit": {
+      "day": "Day",
+      "disabled": "Disabled",
+      "enabled": "Enabled",
+      "help": "On this date each year, everyone with a grade is promoted to the next grade automatically (12th grade becomes Graduated). Leave disabled to turn off automatic promotion.",
+      "month": "Month",
+      "title": "升学"
+    },
     "landing": {
       "campusesCount": "{count} 个位置",
       "campusesOne": "1 个位置",
       "campusesSubtitle": "实体位置",
       "configuration": "配置",
+      "customFieldsCount": "{count} custom fields",
+      "customFieldsSubtitle": "暂无自定义字段",
       "developerSubtitle": "API 密钥、Webhook、已连接应用",
       "domainsCount": "{count} 个已连接",
       "domainsNone": "无自定义域名",
       "domainsOne": "1 个已连接",
       "givingProvider": "{provider} · {currency}",
+      "gradePromotionOff": "自动升学已禁用",
+      "gradePromotionOn": "Promotes on {date} each year",
       "notConfigured": "未配置",
       "notSet": "未设置"
     },
     "manageChurch": {
       "auditLog": "审计日志",
+      "batches": "批次",
       "imEx": "导入/导出",
       "noData": "没有可用的教会数据",
       "subtitle": "配置教会设置和首选项",
       "title": "管理教会"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 and older",
+      "age16": "16 and older",
+      "age18": "18 and older",
+      "helpText": "Blocks new private-message conversations when either person is under this age, based on their birthdate. People below the age stay visible in the directory. Existing conversations are not affected.",
+      "label": "Minimum Age for Private Messages",
+      "off": "Off (no restriction)"
     },
     "mobileAppSettings": {
       "addTab": "添加选项卡",
@@ -3108,6 +3411,34 @@
     "rolesPage": {
       "subtitle": "管理角色和权限"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Sign-in failed. Please try again.",
+      "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
+      "churchAppsFree": "ChurchApps (免费)",
+      "connect": "Connect Account",
+      "connectFirst": "Connect your account before saving.",
+      "connected": "Account connected",
+      "connecting": "Waiting for sign-in...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Files will be stored on your MinistryStuff storage plan, linked to this church automatically. Manage your plan at",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup blocked. Please allow popups and try again.",
+      "provider": "Provider",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "Access Key Id",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Endpoint (blank for AWS)",
+      "s3Helper": "The bucket must allow public read access and CORS PUT requests from this site. Works with AWS S3, Cloudflare R2 and Backblaze B2.",
+      "s3PublicBase": "Public URL Base",
+      "s3Region": "Region",
+      "s3Required": "Bucket and public URL base are required.",
+      "s3SecretKey": "Secret Access Key",
+      "saveError": "Error saving storage settings.",
+      "sessionExpired": "The sign-in session expired. Please try again.",
+      "sessionFailed": "Could not start the sign-in session.",
+      "title": "文件存储",
+      "usage": "Using {used} GB of {quota} GB."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "此链接将被用户用来联系教会",
       "link": "链接",
@@ -3121,13 +3452,17 @@
       "clearstreamHelper": "在您的",
       "clearstreamHelperLink": "Clearstream 账号设置",
       "clearstreamHelperSuffix": "中的“API Keys”下创建 API 密钥。",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffActive": "Your MinistryStuff texting subscription is active with {} credits remaining this cycle.",
+      "ministryStuffHelper": "No API key needed. Texting credits come from your MinistryStuff subscription, linked to this church automatically. Manage your plan at",
+      "ministryStuffHelperLink": "ministrystuff.org",
       "none": "无",
       "provider": "提供商",
       "saveError": "保存短信设置时出错。",
+      "textInChurch": "教会里的文本",
       "textInChurchHelper": "访问",
       "textInChurchHelperLink": "Text In Church 支持",
-      "textInChurchHelperSuffix": "申请开发者 API 访问权限。批准后，在您的“账户设置 > 开发者 API”部分创建 API 密钥。",
-      "textInChurch": "教会里的文本"
+      "textInChurchHelperSuffix": "申请开发者 API 访问权限。批准后，在您的“账户设置 > 开发者 API”部分创建 API 密钥。"
     },
     "userAdd": {
       "addTo": "添加到 ",
@@ -3364,27 +3699,38 @@
       "confirmDelete": "Delete this post and its linked page? This cannot be undone.",
       "date": "Date",
       "deleteTitle": "Delete Post",
+      "draft": "Draft",
       "editContent": "Edit content",
+      "navHint": "访问者可以在 /blog 上阅读您的帖子。在页面屏幕上添加导航链接，以便他们找到它：",
       "noPosts": "No posts yet",
       "posts": "Posts",
+      "published": "Published",
+      "scheduled": "Scheduled",
       "state": "State",
       "subtitle": "Create and manage blog posts for your website",
-      "title": "Blog"
+      "title": "Blog",
+      "view": "View on Site"
     },
     "blogEdit": {
+      "author": "Author",
       "category": "Category",
+      "content": "Content",
       "draft": "Draft",
       "editPost": "Edit Post",
       "errSave": "Failed to save post.",
       "errSlug": "Please enter a slug.",
+      "errSlugTaken": "That web address is already used by another post.",
       "errTitle": "Please enter a title.",
       "excerpt": "Excerpt",
       "image": "Image",
       "newPost": "New Post",
+      "preview": "Preview",
       "publishDate": "Publish Date",
       "published": "Published",
       "selectImage": "Select Image",
       "slug": "Slug",
+      "slugHelper": "Auto-fills from the title until you edit it. Address:",
+      "slugLabel": "Web address",
       "tags": "Tags",
       "tagsHelper": "Comma-separated",
       "title": "Title"
@@ -3716,6 +4062,7 @@
       "uploadFiles": "上传文件"
     },
     "filesManager": {
+      "externalStorage": "Stored in your linked account",
       "files": "文件",
       "getStarted": "开始上传您的第一个文件",
       "name": "名称",
@@ -3936,6 +4283,7 @@
     },
     "paletteEdit": {
       "accent": "强调色",
+      "accentDesc": "Main accent — buttons and highlights",
       "applyPaletteAria": "应用建议的调色板",
       "applySuggested": "点击任何调色板即可立即应用",
       "baseColors": "基础颜色",
@@ -3943,20 +4291,29 @@
       "colorValues": "颜色值",
       "dark": "深色",
       "darkAccent": "深色强调",
+      "darkAccentDesc": "Deep accent — headings and links",
+      "darkDesc": "Darkest shade — body text",
       "error": "错误",
+      "errorDesc": "Errors and destructive actions",
       "headerSubtitle": "自定义您网站的配色方案。对于移动应用、成员门户和自助终端的颜色，请前往“设置 > 应用主题”。",
       "headerTitle": "调色板",
       "light": "浅色",
       "lightAccent": "浅色强调",
+      "lightAccentDesc": "Soft accent — subtle backgrounds",
+      "lightDesc": "Lightest shade — section backgrounds",
       "palette": "调色板",
       "previewWorkTogether": "预览您的颜色如何协同工作",
       "primary": "主色",
+      "primaryDesc": "Primary buttons and links",
       "savePalette": "保存调色板",
       "secondary": "辅色",
+      "secondaryDesc": "Secondary buttons and accents",
       "semanticColors": "语义颜色",
       "success": "成功",
+      "successDesc": "Success messages and confirmations",
       "suggestedPalettes": "建议的调色板",
-      "warning": "警告"
+      "warning": "警告",
+      "warningDesc": "Warnings and cautions"
     },
     "pickColors": {
       "background": "背景",
@@ -4144,6 +4501,10 @@
       "showCampus": "显示校园",
       "title": "标题"
     },
+    "siteSwitcher": {
+      "mainWebsite": "Main Website",
+      "manageSites": "Manage websites…"
+    },
     "siteTemplates": {
       "back": "返回",
       "create": "创建网站",
@@ -4212,6 +4573,15 @@
       "textColor": "文字颜色",
       "title": "网站小组件",
       "url": "URL"
+    },
+    "sitesDialog": {
+      "add": "Add Website",
+      "deleteConfirm": "Delete this website? Its pages, navigation and appearance will be permanently deleted. Its custom domains will be reassigned to the main website.",
+      "empty": "No additional websites yet.",
+      "name": "Name",
+      "subDomain": "Subdomain",
+      "subDomainHint": "Lowercase letters and numbers only. Becomes {subdomain}.b1.church",
+      "title": "Websites"
     },
     "socialIconsEdit": {
       "alignment": "对齐方式",
@@ -4331,11 +4701,13 @@
       "columns": "列",
       "empty": "（空）",
       "firstRowHeader": "首行作为标题",
+      "markdownHelper": "Enables Markdown in cells for bold, links, and other formatting.",
       "medium": "中",
       "no": "否",
       "rows": "行",
       "size": "大小",
       "sizeSmall": "小",
+      "textFormatting": "Text formatting",
       "yes": "是"
     },
     "templates": {
@@ -4812,6 +5184,7 @@
     },
     "workflowEdit": {
       "active": "已激活",
+      "confirmDelete": "Are you sure you want to delete this workflow?",
       "editWorkflow": "编辑工作流",
       "inactive": "已停用",
       "name": "名称"
@@ -4842,6 +5215,7 @@
       "title": "路由"
     },
     "workflowStepEdit": {
+      "confirmDelete": "Are you sure you want to delete this step?",
       "defaultAssignee": "默认负责人",
       "dueDays": "截止天数",
       "dueDaysHelp": "卡片进入此步骤时设置截止日期",
