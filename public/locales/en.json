@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "Showing {{count}} default icons",
+      "showingMatching": "Showing {{count}} matching icons",
+      "noResults": "No results found"
     },
     "left": "Left",
     "loading": "Loading",
@@ -1522,7 +1525,12 @@
       "removeFromGroup": "Remove From Group",
       "selected": "Selected",
       "workflowSuccess": "Added {count} people to the workflow.",
-      "setCampus": "Set Campus"
+      "setCampus": "Set Campus",
+      "deleteSelected": "Delete Selected People",
+      "deleteConfirm": "Are you sure you want to delete {count} selected people? This action cannot be undone.",
+      "deleting": "Deleting...",
+      "deleteSuccess": "{count} people deleted successfully",
+      "deleteError": "Unable to delete selected people"
     },
     "demographics": {
       "age": "Age",

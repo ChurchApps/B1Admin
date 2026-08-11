@@ -37,9 +37,15 @@
       "unscheduled": "Akuhlelwanga"
     },
     "attendanceSetup": {
-      "manageCampuses": "Phatsa Emakhampasi",
-      "setupMessage": "Setha emakhampasi, tinkhonzo, kanye netikhatsi tetinkhonzo kute ucale kulandzelela bukhona.",
-      "unassigned": "Akukho Lonikwe"
+      "manageCampuses": "Phatha Emakhampasi",
+      "setupMessage": "Hlela emakhampasi, tinsita netikhatsi tetinsita kute ucale kulandzelela kubakhona.",
+      "unassigned": "Akayabelwe"
+    },
+    "checkinType": {
+      "guest": "Simenywa",
+      "header": "Luhlobo",
+      "volunteer": "Umsebenti Wesihle",
+      "volunteers": "tisebenti tesihle"
     },
     "labels": {
       "align": "Lungisa Kuhleleka",
@@ -80,9 +86,9 @@
       "notEquals": "Akulingani Na-",
       "opDoesNotEqual": "akulingani na-",
       "opEquals": "kulingana na-",
-      "operator": "Sisebentisi",
       "opIsBlank": "akunalutfo",
       "opIsNotBlank": "akusiyo lokungenalutfo",
+      "operator": "Sisebentisi",
       "palette": "Engeta Sicu",
       "pickup": "Liphepha Lekulanda",
       "properties": "Timfanelo",
@@ -129,12 +135,6 @@
       "attTrend": "Kutfutfuka Kwebukhona",
       "groupAtt": "Bukhona Belicembu",
       "setup": "Kulungiselelwa"
-    },
-    "checkinType": {
-      "header": "Luhlobo",
-      "volunteer": "Umsebenti Wesihle",
-      "guest": "Simenywa",
-      "volunteers": "tisebenti tesihle"
     }
   },
   "calendars": {
@@ -151,8 +151,8 @@
       "noPendingBookings": "Akukho tsicelo temagumbi nobe tinsita letisalindzile.",
       "noPendingEvents": "Akukho tsicelo temicimbi letisalindzile.",
       "reject": "Ala",
-      "rejectedToast": "Sicelo saliwe.",
       "rejectTitle": "Ala Sicelo",
+      "rejectedToast": "Sicelo saliwe.",
       "roomResource": "Ligumbi / Insita",
       "status": "Simo",
       "subtitle": "Hlola tsicelo letisalindzile temagumbi, tinsita nemicimbi",
@@ -197,9 +197,9 @@
       "confirmDelete": "Ingabe uciniseka kutsi ufuna kususa lomcimbi?",
       "confirmDeleteSeries": "Lona ngumcimbi lophindzaphindzako. Kuwususa kutakususa lonkhe luhlu kanye nato tonkhe tikhatsi lawenteka ngato. Ingabe uciniseka?",
       "delete": "Susa",
+      "editEvent": "Hlela umcimbi",
       "manageRegistrations": "Phatsa Kubhaliswa",
-      "noGroups": "Akukho emacembu latfoliwe.",
-      "editEvent": "Hlela umcimbi"
+      "noGroups": "Akukho emacembu latfoliwe."
     },
     "calendarList": {
       "aboutParagraph1": "Emakhalenda akuvumela kutsi uhlele futsi ubonise imicimbi yebandla lakho.",
@@ -391,7 +391,10 @@
       "searchLabel": "Sesha Emaphawu",
       "searchPlaceholder": "Bhala kute usesha (sibonelo: umuntfu, likhaya, libandla)...",
       "title": "Khetsa Liphawu",
-      "tryDifferent": "Zama ligama lekusesha lelehlukile"
+      "tryDifferent": "Zama ligama lekusesha lelehlukile",
+      "showingDefault": "Kukhonjiswa {{count}} timphawu letimisiwe",
+      "showingMatching": "Kukhonjiswa {{count}} timphawu letifanako",
+      "noResults": "Kute imiphumela etfolakele"
     },
     "left": "Kwesancele",
     "loading": "Iyalayisha",
@@ -623,6 +626,8 @@
       "invalidCode": "Ikhodi lengakalungi noma lesiphelelwe. Sicela uhlole bese uzama futsi.",
       "loading": "Iyalayisha...",
       "noChurchSelected": "Akukho libandla lelikhetsiwe. Sicela ungene futsi bese ukhetsa libandla.",
+      "planType": "Show Plans For",
+      "planTypeNone": "None (browse only)",
       "requestedPermissions": "Timvumo Leticeliwe:",
       "title": "Vumela Idivayisi",
       "verifyFailed": "Kwehlulekile kuchaza ikhodi. Sicela uzame futsi."
@@ -943,10 +948,10 @@
       "accessLevelAria": "Lizinga lekufinyelela",
       "alone": "Kuma Kwako",
       "associate": "Hlanganisa Na-",
+      "autoCreatePerson": "Akha umlandvo wemuntfu kusuka kulokutfunyelwe",
       "available": "Setha Sikhatsi Sekutfolakala Kwelifomu",
       "availableEnd": "Lusuku Lekucedza Kutfolakala",
       "availableStart": "Lusuku Lekucala Kutfolakala",
-      "autoCreatePerson": "Akha umlandvo wemuntfu kusuka kulokutfunyelwe",
       "confirmMsg": "Uciniseka yini kutsi ufuna kususa lelifomu ngalokuphelele?",
       "contentTypeAria": "Luhlobo lwekucuketfwe",
       "displayConversational": "Kwengcoco (umbuto munye ngesikhatsi)",
@@ -1122,9 +1127,12 @@
       "attTrack": "Landzelela Bukhona",
       "attendance": "Bukhona",
       "attendanceReminders": "Ema-imeyili Ekukhumbuta Ngebukhona",
+      "capacity": "Emandla",
       "catName": "Ligama Lesigaba",
       "catNameMsg": "Ngicela fake ligama lesigaba.",
       "changePhotoAria": "Shintja sitfombe selicembu",
+      "checkinCapacity": "Emandla Ekungena",
+      "checkinClosed": "Kuvaliwe Kungena",
       "clickToAddPhoto": "Chofota kute wengete sitfombe",
       "confidential": "Licembu Lelifihlakele",
       "confidentialHelp": "Fihla lelicembu kanye nemalunga awo kumakhasi eluntfu, kusesho selicembu, nakubantfu labangesibo emalunga.",
@@ -1138,6 +1146,7 @@
       "groupNameMsg": "Ngicela fake ligama lelicembu.",
       "groupPhotoAlt": "licembu",
       "groupSlugAria": "I-slug yelicembu",
+      "guestCapacity": "Emandla Etivakashi",
       "maxAge": "Iminyaka Lephakeme Kakhulu",
       "maxGrade": "Libanga Leliphakeme Kakhulu",
       "meetingLocation": "Indzawo Yemhlangano",
@@ -1146,19 +1155,15 @@
       "meetingTimeAria": "sikhatsi semhlangano",
       "minAge": "Iminyaka Lencane Kakhulu",
       "minGrade": "Libanga Lelincane Kakhulu",
+      "minVolunteers": "Emavolontiya Lamancane Kakhulu",
       "months": "Tinyanga",
       "noLimit": "Akukho mkhawulo",
       "parPick": "Kulandvwa Ngumtali",
       "prinName": "Shicilela Lebula Legama",
       "publicRoster": "Khombisa luhlu lwemalunga kuwebhusayithi",
       "slug": "I-slug (ligama lelisetjentiswa kuma-URL)",
-      "years": "Iminyaka",
-      "checkinCapacity": "Emandla Ekungena",
-      "capacity": "Emandla",
-      "guestCapacity": "Emandla Etivakashi",
       "volunteerRatio": "Bantfwana Ngelivolontiya",
-      "minVolunteers": "Emavolontiya Lamancane Kakhulu",
-      "checkinClosed": "Kuvaliwe Kungena"
+      "years": "Iminyaka"
     },
     "groupHealth": {
       "attendance": "Bukhona",
@@ -1302,6 +1307,8 @@
       "eligibleSummary": "{eligibleCount} kwe-{totalMembers} emalunga atawutfola lomlayeto.",
       "eligibleSummarySingular": "{eligibleCount} kwe-{totalMembers} lilunga litawutfola lomlayeto.",
       "fallbackError": "Kwehlulekile kutfumela umlayeto.",
+      "insufficientCredits": "Lebandla lakho alisenawo emakhredithi ekutfumela imilayeto kulesikhatsi sekukhokha. Ayikho imilayeto letfunyelwe. Phakamisa nobe ulindze emakhredithi akho avuselelwe ku",
+      "insufficientCreditsLink": "ministrystuff.org",
       "loadingRecipients": "Kulayishwa labemukeli...",
       "messageLabel": "Umlayeto",
       "noPhoneNotice": "{count} emalunga akanato inombolo yelucingo lebhaliwe futsi atawewulwa.",
@@ -1318,9 +1325,7 @@
       "sentSummary": "Kutfunyelwe ku-{successCount} kwe-{recipientCount} labemukeli.",
       "sentSummarySingular": "Kutfunyelwe ku-{successCount} kwe-{recipientCount} umemukeli.",
       "textGroupTitle": "Tfumela Umlayeto Elicenjini: {groupName}",
-      "textPersonTitle": "Umlayeto: {personName}",
-      "insufficientCredits": "Lebandla lakho alisenawo emakhredithi ekutfumela imilayeto kulesikhatsi sekukhokha. Ayikho imilayeto letfunyelwe. Phakamisa nobe ulindze emakhredithi akho avuselelwe ku",
-      "insufficientCreditsLink": "ministrystuff.org"
+      "textPersonTitle": "Umlayeto: {personName}"
     },
     "serviceTimes": {
       "services": "Inkonzo(ti):"
@@ -1395,8 +1400,8 @@
       "registrations": "Kubhalisa",
       "roomsResources": "Emakamelo & Tinsita",
       "sermons": "Tishumayelo",
-      "stripeImport": "Kungenisa kwe-Stripe",
       "site": "Isayithi",
+      "stripeImport": "Kungenisa kwe-Stripe",
       "website": "Iwebhusayithi"
     }
   },
@@ -1505,6 +1510,11 @@
       "clearSelection": "Sula Lokukhetsiwe",
       "createNewGroup": "Dala Licembu Lelisha",
       "delete": "Susa",
+      "deleteConfirm": "Ucinisekile kutsi ufuna kucisha bantfu labangu-{count} labakhetfwe? Lesento asikwati kuhlehliswa.",
+      "deleteError": "Kwehlulekile kucisha bantfu labakhetfwe",
+      "deleteSelected": "Susa Bantfu Labakhetfwe",
+      "deleteSuccess": "Bantfu labangu-{count} bacishwe ngemphumelelo",
+      "deleting": "Kuyacishwa...",
       "error": "Liphutsa",
       "fieldPrompt": "Buyeketa inkambu yebantfu labakhetsiwe labangu-{count}.",
       "fieldSuccess": "Kubuyeketwe bantfu labangu-{count}.",
@@ -1519,8 +1529,8 @@
       "optedOutYes": "Utikhiphile",
       "removeFromGroup": "Susa Elicenjini",
       "selected": "Kukhetsiwe",
-      "workflowSuccess": "Kufakwe bantfu labangu-{count} kuyinchubo yemsebenti.",
-      "setCampus": "Setha ikhampasi"
+      "setCampus": "Setha ikhampasi",
+      "workflowSuccess": "Kufakwe bantfu labangu-{count} kuyinchubo yemsebenti."
     },
     "demographics": {
       "age": "Iminyaka",
@@ -1761,7 +1771,9 @@
       "profile": "Iphrofayela"
     },
     "personPage": {
-      "notesSuffix": " Imibhalo",
+      "confidentialNotes": "Emanotsi Layimfihlo",
+      "confidentialNotesSuffix": " Emanotsi Layimfihlo",
+      "notesSuffix": " Emanotsi",
       "thisPerson": "lomuntfu"
     },
     "personProfile": {
@@ -1775,6 +1787,18 @@
       "persDet": "Imininingwane Yebuwena",
       "work": "Emsebentini"
     },
+    "pickup": {
+      "add": "Faka",
+      "confirmDelete": "Ucinisekile kutsi ufuna kususa lomuntfu lowetfwele?",
+      "name": "Ligama",
+      "none": "Kute bantfu labafakiwe.",
+      "notAuthorized": "Akagunyaziwe",
+      "orAddByName": "Noma faka lotsite longekho kuhlelo:",
+      "relationship": "Buhlobo",
+      "status": "Simo",
+      "title": "Kulandza",
+      "trusted": "Lwetsembekile"
+    },
     "tabs": {
       "att": "Kubakhona",
       "don": "Iminikelo",
@@ -1782,18 +1806,6 @@
     },
     "updateHouseHold": {
       "update": "Buyeketa Likheli"
-    },
-    "pickup": {
-      "confirmDelete": "Uceceshile yini kutsi ufuna kususa lomuntfu wekulanda?",
-      "title": "Kulanda",
-      "add": "Faka",
-      "none": "Akukho bantfu bekulanda labafakiwe.",
-      "name": "Ligama",
-      "relationship": "Buhlobo",
-      "status": "Simo",
-      "trusted": "Wetsembekile",
-      "notAuthorized": "Akavunyelwe",
-      "orAddByName": "Nome faka lomunye lomuntfu longekho kulesistimu:"
     }
   },
   "person": {
@@ -1811,7 +1823,7 @@
     "female": "Wesifazane",
     "firstName": "Ligama Lekucala",
     "gender": "Bulili",
-    "grade": "Ligreyidi",
+    "grade": "Libanga",
     "inactive": "Akasebenti",
     "lastName": "Sibongo",
     "line1": "Umugca 1",
@@ -2072,6 +2084,7 @@
       "waitingForAuth": "Kulindzelwe kugunyatwa..."
     },
     "contentRenderer": {
+      "audioUnsupported": "Your browser does not support audio playback.",
       "fallbackPreview": "Buka Kucala",
       "fallbackTitle": "Kubuka Lokucuketfwe Kucala",
       "noContent": "Akukho lokucuketfwe lokungaboniswa.",
@@ -2312,6 +2325,14 @@
       "serviceOrder": "LUHLELO LWENKHONZO",
       "time": "Sikhatsi"
     },
+    "printPreview": {
+      "colorCoded": "Color Coded",
+      "format": "Format:",
+      "materials": "Materials:",
+      "script": "Script",
+      "serviceOrder": "Service Order",
+      "title": "Print Preview"
+    },
     "schedulingPreference": {
       "household": "Kuhlela Kwemndeni",
       "householdApart": "Ungahleli emndeni ngalona lusuku",
@@ -2456,7 +2477,9 @@
     "pairScreen": {
       "codeRequired": "Ikhodi yekuphatanisa iyadzingeka",
       "invalidCode": "Ikhodi yekuphatanisa lengakalungi",
-      "pairingCode": "Ikhodi Yekuphatanisa"
+      "pairingCode": "Ikhodi Yekuphatanisa",
+      "planType": "Show Plans For",
+      "planTypeNone": "None (notifications only)"
     },
     "profilePage": {
       "accDel": "Kususwa Kwe-akhawunti",
@@ -3077,6 +3100,35 @@
       "title": "I-Audit Log",
       "truncated": "Imininingwane yancishiswa futsi lengeniso ayikwati kuhlehliswa."
     },
+    "batches": {
+      "action": "Sento",
+      "actions": "Tento",
+      "created": "Kwakhiwe",
+      "creator": "Umakhi",
+      "date": "Lusuku",
+      "entityId": "I-ID Yesakhiwo",
+      "entityType": "Luhlobo Lwesakhiwo",
+      "failed": "Kwehlulekile ({count})",
+      "items": "Titfo",
+      "label": "Lebula",
+      "noEntries": "Akukho ema-batch latfoliwe",
+      "noResults": "Akukho imilandvo kulelibatch",
+      "restored": "Kubuyiselwe {count} umlandvo/imilandvo.",
+      "resultsTitle": "Imiphumela Ye-Batch",
+      "skipped": "Kweqiwe ({count})",
+      "skippedHelp": "Imilandvo leshintjiwe kusukela nasakhiwa lelibatch yeqiwe kute kungabhujiswa kushintja lokusha.",
+      "source": "Umtfombo",
+      "status": "Simo",
+      "subtitle": "Buka futsi uhlehlise kungenisa nemitento yebunyeni",
+      "title": "Ema-Batch",
+      "undo": "Hlehlisa",
+      "undoConfirm": "Hlehlisa i-batch \"{label}\"? Loku kutawubuyisela imilandvo lehlotjiswe esimeni layo ngembi kwe-batch.",
+      "undoError": "Sicelo sekuhlehlisa sehlulekile.",
+      "undoTitle": "Hlehlisa I-Batch",
+      "undoWarning": "Imilandvo leshintjiwe kusukela nasakhiwa lelibatch itawuyekwa. Loku ngeke kuhlehliswe.",
+      "undoing": "Kuyahlehliswa…",
+      "viewResults": "Buka Imiphumela"
+    },
     "campusEdit": {
       "address2": "Umugca Wekheli 2",
       "confirmDelete": "Uneqiniso yini kutsi ufuna kususa lelikhempasi?",
@@ -3096,23 +3148,15 @@
       "none": "Akukho emakhempasi lakengengetwa.",
       "subtitle": "Phatsa tindzawo letibonakalako telibandla lakho"
     },
+    "checkinSettingsEdit": {
+      "block": "Vimbela (vimbela kungena)",
+      "help": "Khetsa kutsi kungena kuphendvula njani nangabe likamelo lidlulisile emkhawulweni waso wemasiko kubantfwana nome liphansi kwemasiko waso lamancane.",
+      "ratioEnforcement": "Kucinisekiswa Kwemasiko Yebasizi",
+      "title": "Check-In",
+      "warn": "Warn (allow with confirmation)"
+    },
     "church": {
       "subdomainHelper": "Likheli le-web lelihlukile lelibandla lakho"
-    },
-    "customFieldEdit": {
-      "confirmDelete": "Uneqiniso yini kutsi ufuna kususa lesikhala lesitentiwe? Emanani lagciniwe nawo atawususwa.",
-      "fieldType": "Luhlobo Lwesikhala",
-      "name": "Libito",
-      "validate": {
-        "name": "Ngicela ufake libito lesikhala."
-      }
-    },
-    "customFields": {
-      "addField": "Engeta Sikhala",
-      "customFields": "Tikhala Letitentiwe",
-      "field": "Sikhala Lesitentiwe",
-      "none": "Akukho tikhala letitentiwe letengetiwe.",
-      "subtitle": "Chaza tikhala letitentiwe tekulandzelela kubantfu"
     },
     "churchSettingsEdit": {
       "address1": "Umugca Wekheli 1",
@@ -3133,6 +3177,21 @@
       "subdomainAria": "I-subdomain",
       "textingSubtitle": "Hlela umhlinzeki wekutfumela imiyalezo",
       "textingTitle": "Kutfumela Imiyalezo"
+    },
+    "customFieldEdit": {
+      "confirmDelete": "Uneqiniso yini kutsi ufuna kususa lesikhala lesitentiwe? Emanani lagciniwe nawo atawususwa.",
+      "fieldType": "Luhlobo Lwesikhala",
+      "name": "Libito",
+      "validate": {
+        "name": "Ngicela ufake libito lesikhala."
+      }
+    },
+    "customFields": {
+      "addField": "Engeta Sikhala",
+      "customFields": "Custom Fields",
+      "field": "Sikhala Lesitentiwe",
+      "none": "Akukho tikhala letitentiwe letengetiwe.",
+      "subtitle": "Chaza tikhala letitentiwe tekulandzelela kubantfu"
     },
     "developer": {
       "actions": "Tento",
@@ -3268,7 +3327,7 @@
       "enabled": "Kuvuliwe",
       "help": "Ngalolusuku minyaka yonkhe, wonkhe umuntfu lonebanga uyakhushulwa aye ebangeni lelilandzelako ngekutitentekela (ibanga leli-12 liba Lisiciniwe). Shiya kuvaliwe kute uvale kukhushulwa lokutitentekelako.",
       "month": "Inyanga",
-      "title": "Kukhushulwa Kwebanga"
+      "title": "Grade Promotion"
     },
     "landing": {
       "campusesCount": "{count} tindzawo",
@@ -3276,24 +3335,32 @@
       "campusesSubtitle": "Tindzawo letibonakalako",
       "configuration": "Kuhlelwa",
       "customFieldsCount": "{count} tikhala letitentiwe",
-      "customFieldsSubtitle": "Akukho tikhala letitentiwe kwakamanje",
+      "customFieldsSubtitle": "No custom fields yet",
       "developerSubtitle": "Ema-API key, ema-webhook, ti-app letixhunyiwe",
       "domainsCount": "{count} tixhunyiwe",
       "domainsNone": "Akukho emadomeni lakhetsiwe",
       "domainsOne": "Kunye lokuxhunyiwe",
       "givingProvider": "{provider} · {currency}",
-      "gradePromotionOff": "Kukhushulwa lokutitentekelako kuvaliwe",
+      "gradePromotionOff": "Automatic promotion disabled",
       "gradePromotionOn": "Iyakhushula nga-{date} minyaka yonkhe",
       "notConfigured": "Akukahlelwa",
       "notSet": "Akukabekwa"
     },
     "manageChurch": {
       "auditLog": "I-Audit Log",
-      "batches": "Ema-Batch",
+      "batches": "Batches",
       "imEx": "Kungenisa/Kukhipha",
       "noData": "Akukho imininingwane yelibandla lekhona",
       "subtitle": "Hlela tilungiselelo netitsandvo telibandla",
       "title": "Phatsa Libandla"
+    },
+    "messagingMinimumAge": {
+      "age13": "13 and older",
+      "age16": "16 and older",
+      "age18": "18 and older",
+      "helpText": "Blocks new private-message conversations when either person is under this age, based on their birthdate. People below the age stay visible in the directory. Existing conversations are not affected.",
+      "label": "Minimum Age for Private Messages",
+      "off": "Off (no restriction)"
     },
     "mobileAppSettings": {
       "addTab": "Engeta Ithebhu",
@@ -3347,6 +3414,34 @@
     "rolesPage": {
       "subtitle": "Phatsa tikhundla nemvumo"
     },
+    "storageSettingsEdit": {
+      "authFailed": "Sign-in failed. Please try again.",
+      "byosHelper": "New uploads are stored in your own account and downloads are served from it. Files already uploaded stay where they are.",
+      "churchAppsFree": "ChurchApps (Free)",
+      "connect": "Connect Account",
+      "connectFirst": "Connect your account before saving.",
+      "connected": "Account connected",
+      "connecting": "Waiting for sign-in...",
+      "ministryStuff": "MinistryStuff",
+      "ministryStuffHelper": "Emafayela atawugcinwa eluhlelweni lwakho lwekugcina lwe-MinistryStuff, lohlotjiswe naleli bandla ngekutitentekela. Phatsa luhlelo lwakho ku",
+      "ministryStuffHelperLink": "ministrystuff.org",
+      "popupBlocked": "Popup blocked. Please allow popups and try again.",
+      "provider": "Umhlinzeki",
+      "reconnect": "Reconnect",
+      "s3AccessKey": "Access Key Id",
+      "s3Bucket": "Bucket",
+      "s3Endpoint": "Endpoint (blank for AWS)",
+      "s3Helper": "The bucket must allow public read access and CORS PUT requests from this site. Works with AWS S3, Cloudflare R2 and Backblaze B2.",
+      "s3PublicBase": "Public URL Base",
+      "s3Region": "Region",
+      "s3Required": "Bucket and public URL base are required.",
+      "s3SecretKey": "Secret Access Key",
+      "saveError": "Liphutsa lekugcina tilungiselelo tekugcina.",
+      "sessionExpired": "The sign-in session expired. Please try again.",
+      "sessionFailed": "Could not start the sign-in session.",
+      "title": "File Storage",
+      "usage": "Kusetjentiswa {used} GB kwa-{quota} GB."
+    },
     "supportContactSettingsEdit": {
       "forceMsg": "Lelilinki litawusetjentiswa ngulabasebentisi kute baxhumane nelibandla",
       "link": "Ilinki",
@@ -3360,17 +3455,17 @@
       "clearstreamHelper": "Akha i-API Key ku",
       "clearstreamHelperLink": "Tilungiselelo Te-Akhawunti ye-Clearstream",
       "clearstreamHelperSuffix": "ngaphansi kwe-API Keys.",
-      "none": "Kute",
-      "provider": "Umhlinzeki",
-      "saveError": "Liphutsa lekugcina tilungiselelo tekutfumela imiyalezo.",
-      "textInChurchHelper": "Vakashela",
-      "textInChurchHelperLink": "Kusekelwa kwe-Text In Church",
-      "textInChurchHelperSuffix": "kute ucele imvumo ye-API yemtfutfukisi. Uma sekuvunyiwe, akha i-API Key encenyeni yakho ye-Account Settings > Developer API.",
       "ministryStuff": "MinistryStuff",
       "ministryStuffActive": "Kubhaliswa kwakho kwekutfumela imiyalezo kwe-MinistryStuff kuyasebenta ngema-credit langu-{} lasele kulesigceme.",
       "ministryStuffHelper": "Akukho i-API key ledzingekako. Ema-credit ekutfumela imiyalezo asuka ekubhaliseni kwakho kwe-MinistryStuff, lokuhlotjiswe naleli bandla ngekutitentekela. Phatsa luhlelo lwakho ku",
       "ministryStuffHelperLink": "ministrystuff.org",
-      "textInChurch": "Umbhalo eSontweni"
+      "none": "Kute",
+      "provider": "Umhlinzeki",
+      "saveError": "Liphutsa lekugcina tilungiselelo tekutfumela imiyalezo.",
+      "textInChurch": "Umbhalo eSontweni",
+      "textInChurchHelper": "Vakashela",
+      "textInChurchHelperLink": "Kusekelwa kwe-Text In Church",
+      "textInChurchHelperSuffix": "kute ucele imvumo ye-API yemtfutfukisi. Uma sekuvunyiwe, akha i-API Key encenyeni yakho ye-Account Settings > Developer API."
     },
     "userAdd": {
       "addTo": "Engeta Ku ",
@@ -3448,52 +3543,6 @@
       "status": "Simo",
       "title": "Ema-Webhook",
       "url": "I-URL"
-    },
-    "checkinSettingsEdit": {
-      "title": "Kungena",
-      "help": "Khetsa kutsi kungena kuphendvula njani nangabe likamelo lidlulisile emkhawulweni waso wemasiko kubantfwana nome liphansi kwemasiko waso lamancane.",
-      "ratioEnforcement": "Kucinisekiswa Kwemasiko Yebasizi",
-      "warn": "Xwayisa (vumela ngekucinisekisa)",
-      "block": "Vimbela (vimbela kungena)"
-    },
-    "batches": {
-      "action": "Sento",
-      "actions": "Tento",
-      "created": "Kwakhiwe",
-      "creator": "Umakhi",
-      "date": "Lusuku",
-      "entityId": "I-ID Yesakhiwo",
-      "entityType": "Luhlobo Lwesakhiwo",
-      "failed": "Kwehlulekile ({count})",
-      "items": "Titfo",
-      "label": "Lebula",
-      "noEntries": "Akukho ema-batch latfoliwe",
-      "noResults": "Akukho imilandvo kulelibatch",
-      "restored": "Kubuyiselwe {count} umlandvo/imilandvo.",
-      "resultsTitle": "Imiphumela Ye-Batch",
-      "skipped": "Kweqiwe ({count})",
-      "skippedHelp": "Imilandvo leshintjiwe kusukela nasakhiwa lelibatch yeqiwe kute kungabhujiswa kushintja lokusha.",
-      "source": "Umtfombo",
-      "status": "Simo",
-      "subtitle": "Buka futsi uhlehlise kungenisa nemitento yebunyeni",
-      "title": "Ema-Batch",
-      "undo": "Hlehlisa",
-      "undoConfirm": "Hlehlisa i-batch \"{label}\"? Loku kutawubuyisela imilandvo lehlotjiswe esimeni layo ngembi kwe-batch.",
-      "undoError": "Sicelo sekuhlehlisa sehlulekile.",
-      "undoTitle": "Hlehlisa I-Batch",
-      "undoWarning": "Imilandvo leshintjiwe kusukela nasakhiwa lelibatch itawuyekwa. Loku ngeke kuhlehliswe.",
-      "undoing": "Kuyahlehliswa…",
-      "viewResults": "Buka Imiphumela"
-    },
-    "storageSettingsEdit": {
-      "title": "Kugcinwa Kwemafayela",
-      "provider": "Umhlinzeki",
-      "churchAppsFree": "ChurchApps (Mahhala)",
-      "ministryStuff": "MinistryStuff",
-      "usage": "Kusetjentiswa {used} GB kwa-{quota} GB.",
-      "ministryStuffHelper": "Emafayela atawugcinwa eluhlelweni lwakho lwekugcina lwe-MinistryStuff, lohlotjiswe naleli bandla ngekutitentekela. Phatsa luhlelo lwakho ku",
-      "ministryStuffHelperLink": "ministrystuff.org",
-      "saveError": "Liphutsa lekugcina tilungiselelo tekugcina."
     }
   },
   "site": {
@@ -3653,23 +3702,31 @@
       "confirmDelete": "Sula lesi sihloko nelikhasi lelixhunywe kuso? Loku angeke kubuyiselwe emuva.",
       "date": "Lusuku",
       "deleteTitle": "Sula Sihloko",
+      "draft": "Draft",
+      "navHint": "Tivakashi tingafundza tiposti takho ku /blog. Faka linki yekuzula esikrinini semakhasi ukuze bakhone kuyitfola:",
       "noPosts": "Ayikho imibhalo okwamanje",
       "posts": "Timbhalo",
+      "published": "Published",
+      "scheduled": "Scheduled",
       "state": "Simo",
       "subtitle": "Yakha futsi uphatse timbhalo teBulogo yeweb sayithi yakho",
-      "title": "Bulogo"
+      "title": "Bulogo",
+      "view": "View on Site"
     },
     "blogEdit": {
+      "author": "Author",
       "category": "Sigaba",
       "content": "Sichubo",
       "draft": "Umdvwebo",
       "editPost": "Hlela Sihloko",
       "errSave": "Kwehlulekile kugcina sihloko.",
       "errSlug": "Sicela ufake i-slug.",
+      "errSlugTaken": "That web address is already used by another post.",
       "errTitle": "Sicela ufake sihloko.",
       "excerpt": "Sicutjulo",
       "image": "Sitfombe",
       "newPost": "Sihloko Lesisha",
+      "preview": "Preview",
       "publishDate": "Lusuku Lwekushicelela",
       "published": "Kushicelelwe",
       "selectImage": "Khetsa Sitfombe",
@@ -4007,6 +4064,7 @@
       "uploadFiles": "Layisha Emafayela"
     },
     "filesManager": {
+      "externalStorage": "Stored in your linked account",
       "files": "Emafayela",
       "getStarted": "Cala ngekulayisha lifayela lakho lekucala",
       "name": "Ligama",
@@ -4363,20 +4421,20 @@
       "convertTo": "Guqulela Ku",
       "convertToBlock": "Guqulela Ku-Block",
       "convertToBlockPrompt": "Uneliciniso yini kutsi ufuna kukopisha lengxenye nako konkhe lokukuyo kuyise ku-block?",
+      "dividerBottom": "Sihlukanisi Sangaphansi",
+      "dividerColor": "Umbala",
+      "dividerFlip": "Gucula Ngokucambe",
+      "dividerHeight": "Bude",
+      "dividerNone": "Akukho",
+      "dividerShape": "Simo",
+      "dividerTop": "Sihlukanisi Sangetulu",
       "divider_curve": "Sisombolo",
       "divider_peaks": "Tincotjana",
       "divider_slant": "Sitjekele",
       "divider_triangle": "Unxantatfu",
       "divider_wave": "Ligagasi",
       "divider_waves": "Emagagasi",
-      "dividerBottom": "Sihlukanisi Sangaphansi",
-      "dividerColor": "Umbala",
-      "dividerFlip": "Gucula Ngokucambe",
-      "dividerHeight": "Bude",
-      "dividerNone": "Akukho",
       "dividers": "Tihlukanisi Tesimo",
-      "dividerShape": "Simo",
-      "dividerTop": "Sihlukanisi Sangetulu",
       "duplicate": "Phindza",
       "duplicateSection": "Phindza Ingxenye",
       "id": "ID"
@@ -4662,8 +4720,8 @@
       "author": "Umbhali",
       "displayMode": "Simo Sekubonakala",
       "noQuotes": "Akukho emavi lengetiwe okwamanje.",
-      "quotes": "Emavi",
       "quoteText": "Livi",
+      "quotes": "Emavi",
       "removeQuote": "Susa Livi",
       "role": "Sikhundla",
       "rotate": "Jikela",
@@ -4997,6 +5055,22 @@
       "taskTitleAria": "Sihloko semsebenti",
       "titleTask": "Ngicela ufake sihloko salomsebenti."
     },
+    "reminders": {
+      "channels": "Tindlela",
+      "day1": "Lilanga lelinye ngaphambili",
+      "dayOf": "Ngelusuku lokugcina",
+      "days3": "Emalanga lamatsatfu ngaphambili",
+      "days7": "Emalanga lasikhombisa ngaphambili",
+      "enable": "Tfumela tikhumbuto",
+      "message": "Umlayeto (akuphocelekile)",
+      "messageHint": "Shiya kungenalutfo kute kusetjentiswe umlayeto lojwayelekile wesikhumbuto.",
+      "noDueDate": "Lomsebenti awunalo lusuku lokugcina, ngako tikhumbuto ngeke titfunyelwe kuze kusethwe lona.",
+      "save": "Gcina Sikhumbuto",
+      "saved": "Sikhumbuto sigciniwe.",
+      "timeOfDay": "Sikhatsi selilanga",
+      "title": "Tikhumbuto",
+      "when": "Ngunini kukhumbuta (ngaphambi kwelusuku lokugcina)"
+    },
     "requestedChanges": {
       "applied": "Tishintjo tisetjentisiwe",
       "apply": "Sebentisa",
@@ -5025,22 +5099,6 @@
       "showOpenTasksAria": "Khombisa imisebenti levulekile",
       "tasks": "Imisebenti",
       "unassigned": "Akukho lonikeziwe"
-    },
-    "reminders": {
-      "channels": "Tindlela",
-      "day1": "Lilanga lelinye ngaphambili",
-      "dayOf": "Ngelusuku lokugcina",
-      "days3": "Emalanga lamatsatfu ngaphambili",
-      "days7": "Emalanga lasikhombisa ngaphambili",
-      "enable": "Tfumela tikhumbuto",
-      "message": "Umlayeto (akuphocelekile)",
-      "messageHint": "Shiya kungenalutfo kute kusetjentiswe umlayeto lojwayelekile wesikhumbuto.",
-      "noDueDate": "Lomsebenti awunalo lusuku lokugcina, ngako tikhumbuto ngeke titfunyelwe kuze kusethwe lona.",
-      "save": "Gcina Sikhumbuto",
-      "saved": "Sikhumbuto sigciniwe.",
-      "timeOfDay": "Sikhatsi selilanga",
-      "title": "Tikhumbuto",
-      "when": "Ngunini kukhumbuta (ngaphambi kwelusuku lokugcina)"
     },
     "taskPage": {
       "ago": "kuvele",
