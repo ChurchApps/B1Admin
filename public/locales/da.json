@@ -391,7 +391,10 @@
       "searchLabel": "Søg ikoner",
       "searchPlaceholder": "Skriv for at søge (f.eks. person, hjem, kirke)...",
       "title": "Vælg ikon",
-      "tryDifferent": "Prøv et andet søgeord"
+      "tryDifferent": "Prøv et andet søgeord",
+      "showingDefault": "Viser {{count}} standardikoner",
+      "showingMatching": "Viser {{count}} matchende ikoner",
+      "noResults": "Ingen resultater fundet"
     },
     "left": "Venstre",
     "loading": "Indlæser",

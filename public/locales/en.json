@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "Showing {{count}} default icons",
+      "showingMatching": "Showing {{count}} matching icons",
+      "noResults": "No results found"
     },
     "left": "Left",
     "loading": "Loading",

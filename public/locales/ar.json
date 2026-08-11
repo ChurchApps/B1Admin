@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "عرض {{count}} من الرموز الافتراضية",
+      "showingMatching": "عرض {{count}} من الرموز المطابقة",
+      "noResults": "لم يتم العثور على نتائج"
     },
     "left": "Left",
     "loading": "جارٍ التحميل",

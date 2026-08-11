@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "Menampilkan {{count}} ikon bawaan",
+      "showingMatching": "Menampilkan {{count}} ikon yang cocok",
+      "noResults": "Tidak ada hasil yang ditemukan"
     },
     "left": "Kiri",
     "loading": "Memuat",

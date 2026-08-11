@@ -391,7 +391,10 @@
       "searchLabel": "Tìm kiếm Icons",
       "searchPlaceholder": "Type to Tìm kiếm (e.g., person, Trang chủ, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different Tìm kiếm term"
+      "tryDifferent": "Try a different Tìm kiếm term",
+      "showingDefault": "Đang hiển thị {{count}} biểu tượng mặc định",
+      "showingMatching": "Đang hiển thị {{count}} biểu tượng phù hợp",
+      "noResults": "Không tìm thấy kết quả nào"
     },
     "left": "Left",
     "loading": "Đang tải",

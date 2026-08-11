@@ -391,7 +391,10 @@
       "searchLabel": "Etsi kuvakkeita",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Valitse kuvake",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "Näytetään {{count}} oletuskuvaketta",
+      "showingMatching": "Näytetään {{count}} vastaavaa kuvaketta",
+      "noResults": "Ei tuloksia"
     },
     "left": "Vasemmalle",
     "loading": "Ladataan",

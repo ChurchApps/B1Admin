@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "Zobrazených {{count}} predvolených ikon",
+      "showingMatching": "Zobrazených {{count}} zodpovedajúcich ikon",
+      "noResults": "Nenašli sa žiadne výsledky"
     },
     "left": "Left",
     "loading": "Načítava sa",

@@ -391,7 +391,10 @@
       "searchLabel": "Iskanje ikon",
       "searchPlaceholder": "Vnesite za iskanje (npr. oseba, dom, cerkev)...",
       "title": "Izberite ikono",
-      "tryDifferent": "Poskusite drugačen iskalni izraz"
+      "tryDifferent": "Poskusite drugačen iskalni izraz",
+      "showingDefault": "Prikaz {{count}} privzetih ikon",
+      "showingMatching": "Prikaz {{count}} ujemajočih se ikon",
+      "noResults": "Ni zadetkov"
     },
     "left": "Levo",
     "loading": "Nalaganje",

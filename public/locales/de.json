@@ -391,7 +391,10 @@
       "searchLabel": "Symbole suchen",
       "searchPlaceholder": "Zum Suchen eingeben (z.B. Person, Haus, Kirche)...",
       "title": "Wählen Sie Symbol",
-      "tryDifferent": "Versuchen Sie es mit einem anderen Suchbegriff"
+      "tryDifferent": "Versuchen Sie es mit einem anderen Suchbegriff",
+      "showingDefault": "Zeige {{count}} Standard-Symbole",
+      "showingMatching": "Zeige {{count}} passende Symbole",
+      "noResults": "Keine Ergebnisse gefunden"
     },
     "left": "Links",
     "loading": "Wird geladen",

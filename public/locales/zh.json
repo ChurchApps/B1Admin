@@ -391,7 +391,10 @@
       "searchLabel": "搜索图标",
       "searchPlaceholder": "输入搜索（例如：person、home、church）...",
       "title": "选择图标",
-      "tryDifferent": "尝试不同的搜索词"
+      "tryDifferent": "尝试不同的搜索词",
+      "showingDefault": "正在显示 {{count}} 个默认图标",
+      "showingMatching": "正在显示 {{count}} 个匹配的图标",
+      "noResults": "未找到结果"
     },
     "left": "左",
     "loading": "加载中",

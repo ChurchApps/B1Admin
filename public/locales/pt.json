@@ -391,7 +391,10 @@
       "searchLabel": "Pesquisar Ícones",
       "searchPlaceholder": "Digite para pesquisar (ex., pessoa, casa, igreja)...",
       "title": "Selecione o ícone",
-      "tryDifferent": "Experimente um termo de pesquisa diferente"
+      "tryDifferent": "Experimente um termo de pesquisa diferente",
+      "showingDefault": "Mostrando {{count}} ícones padrão",
+      "showingMatching": "Mostrando {{count}} ícones correspondentes",
+      "noResults": "Nenhum resultado encontrado"
     },
     "left": "Esquerda",
     "loading": "Carregando",

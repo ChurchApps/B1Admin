@@ -391,7 +391,10 @@
       "searchLabel": "Sök ikoner",
       "searchPlaceholder": "Skriv för att söka (t.ex. person, hem, kyrka)...",
       "title": "Välj ikon",
-      "tryDifferent": "Prova ett annat sökord"
+      "tryDifferent": "Prova ett annat sökord",
+      "showingDefault": "Visar {{count}} standardikoner",
+      "showingMatching": "Visar {{count}} matchande ikoner",
+      "noResults": "Inga resultat hittades"
     },
     "left": "Vänster",
     "loading": "Laddar",

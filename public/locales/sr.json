@@ -391,7 +391,10 @@
       "searchLabel": "Претрага икона",
       "searchPlaceholder": "Куцај да потражиш (нпр. особа, кућа, црква)...",
       "title": "Одабери икону",
-      "tryDifferent": "Покушај другачији термин за претрагу"
+      "tryDifferent": "Покушај другачији термин за претрагу",
+      "showingDefault": "Prikazuje se {{count}} podrazumevanih ikona",
+      "showingMatching": "Prikazuje se {{count}} odgovarajućih ikona",
+      "noResults": "Nema rezultata"
     },
     "left": "Лево",
     "loading": "Учитавање",

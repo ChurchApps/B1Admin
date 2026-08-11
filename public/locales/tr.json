@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "{{count}} varsayılan simge gösteriliyor",
+      "showingMatching": "{{count}} eşleşen simge gösteriliyor",
+      "noResults": "Sonuç bulunamadı"
     },
     "left": "Left",
     "loading": "Yükleniyor",

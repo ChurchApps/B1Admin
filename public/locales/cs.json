@@ -391,7 +391,10 @@
       "searchLabel": "Hledat ikony",
       "searchPlaceholder": "Zadejte pro vyhledání (např. osoba, domov, kostel)...",
       "title": "Vybrat ikonu",
-      "tryDifferent": "Zkuste jiný hledaný výraz"
+      "tryDifferent": "Zkuste jiný hledaný výraz",
+      "showingDefault": "Zobrazeno {{count}} výchozích ikon",
+      "showingMatching": "Zobrazeno {{count}} odpovídajících ikon",
+      "noResults": "Nebyly nalezeny žádné výsledky"
     },
     "left": "Vlevo",
     "loading": "Načítání",

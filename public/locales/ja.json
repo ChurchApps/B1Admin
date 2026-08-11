@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "{{count}} 個のデフォルトアイコンを表示中",
+      "showingMatching": "{{count}} 個の一致するアイコンを表示中",
+      "noResults": "結果が見つかりません"
     },
     "left": "Left",
     "loading": "読み込み中",

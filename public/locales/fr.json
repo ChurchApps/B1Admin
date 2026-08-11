@@ -391,7 +391,10 @@
       "searchLabel": "Rechercher des Icônes",
       "searchPlaceholder": "Tapez pour rechercher (ex: personne, maison, église)...",
       "title": "Sélectionnez l'icône",
-      "tryDifferent": "Essayez un autre terme de recherche"
+      "tryDifferent": "Essayez un autre terme de recherche",
+      "showingDefault": "Affichage de {{count}} icônes par défaut",
+      "showingMatching": "Affichage de {{count}} icônes correspondantes",
+      "noResults": "Aucun résultat trouvé"
     },
     "left": "Gauche",
     "loading": "Chargement",

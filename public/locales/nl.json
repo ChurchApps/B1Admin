@@ -391,7 +391,10 @@
       "searchLabel": "Pictogrammen zoeken",
       "searchPlaceholder": "Typ om te zoeken (bijv. persoon, huis, kerk)...",
       "title": "Pictogram selecteren",
-      "tryDifferent": "Probeer een andere zoekterm"
+      "tryDifferent": "Probeer een andere zoekterm",
+      "showingDefault": "Toont {{count}} standaard pictogrammen",
+      "showingMatching": "Toont {{count}} overeenkomende pictogrammen",
+      "noResults": "Geen resultaten gevonden"
     },
     "left": "Links",
     "loading": "Laden",

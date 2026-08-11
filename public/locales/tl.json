@@ -391,7 +391,10 @@
       "searchLabel": "Maghanap ng mga Icon",
       "searchPlaceholder": "Mag-type upang maghanap (hal., tao, bahay, simbahan)...",
       "title": "Piliin ang icon",
-      "tryDifferent": "Subukan ang ibang term sa paghahanap"
+      "tryDifferent": "Subukan ang ibang term sa paghahanap",
+      "showingDefault": "Ipinapakita ang {{count}} na mga default na icon",
+      "showingMatching": "Ipinapakita ang {{count}} na mga tumutugmang icon",
+      "noResults": "Walang nahanap na mga resulta"
     },
     "left": "Kaliwa",
     "loading": "Naglo-load",

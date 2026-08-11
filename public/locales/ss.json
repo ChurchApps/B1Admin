@@ -391,7 +391,10 @@
       "searchLabel": "Sesha Emaphawu",
       "searchPlaceholder": "Bhala kute usesha (sibonelo: umuntfu, likhaya, libandla)...",
       "title": "Khetsa Liphawu",
-      "tryDifferent": "Zama ligama lekusesha lelehlukile"
+      "tryDifferent": "Zama ligama lekusesha lelehlukile",
+      "showingDefault": "Kukhonjiswa {{count}} timphawu letimisiwe",
+      "showingMatching": "Kukhonjiswa {{count}} timphawu letifanako",
+      "noResults": "Kute imiphumela etfolakele"
     },
     "left": "Kwesancele",
     "loading": "Iyalayisha",

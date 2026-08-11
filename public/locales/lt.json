@@ -391,7 +391,10 @@
       "searchLabel": "Search Icons",
       "searchPlaceholder": "Type to search (e.g., person, home, church)...",
       "title": "Select Icon",
-      "tryDifferent": "Try a different search term"
+      "tryDifferent": "Try a different search term",
+      "showingDefault": "Rodoma {{count}} numatytųjų piktogramų",
+      "showingMatching": "Rodoma {{count}} atitinkančių piktogramų",
+      "noResults": "Rezultatų nerasta"
     },
     "left": "Left",
     "loading": "Įkeliama",
